@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2019 Algorand, Inc.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/assetCardRootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:background="@drawable/bg_card_green">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/assetCardConstraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/asset_detail_card_height"
+        android:paddingStart="24dp"
+        android:paddingTop="26dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/assetNameTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/publicsans_medium"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            app:autoSizeMaxTextSize="14sp"
+            app:autoSizeMinTextSize="10sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Algos" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/totalBalanceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:drawablePadding="8dp"
+            android:fontFamily="@font/publicsans_medium"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            android:textSize="32sp"
+            app:autoSizeMaxTextSize="32sp"
+            app:autoSizeMinTextSize="20sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:drawableEnd="@drawable/ic_algo_sign_white"
+            tools:text="1377.00" />
+
+        <TextView
+            android:id="@+id/balanceInCurrencyTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:alpha="0.9"
+            android:fontFamily="@font/publicsans_medium"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/totalBalanceTextView"
+            tools:text="280.7 USD" />
+
+        <TextView
+            android:id="@+id/algoBalanceLabelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:alpha=".8"
+            android:text="@string/algos"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/balanceInCurrencyTextView" />
+
+        <TextView
+            android:id="@+id/algoBalanceTextView"
+            style="@style/TextAppearance.Balance.Small.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:gravity="start|center_vertical"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/algoBalanceLabelTextView"
+            tools:text="1030.90" />
+
+        <TextView
+            android:id="@+id/rewardLabelTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/publicsans_regular"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="@string/rewards"
+            android:textColor="@color/white"
+            app:drawableEndCompat="@drawable/ic_info_small"
+            app:layout_constraintStart_toStartOf="@id/algoRewardBarrier"
+            app:layout_constraintTop_toTopOf="@id/algoBalanceLabelTextView" />
+
+        <TextView
+            android:id="@+id/rewardTextView"
+            style="@style/TextAppearance.Balance.Small.Medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="20dp"
+            android:gravity="start|center_vertical"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/algoRewardBarrier"
+            app:layout_constraintTop_toBottomOf="@id/rewardLabelTextView"
+            tools:text="0.00201215" />
+
+        <TextView
+            android:id="@+id/assetIdTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:drawablePadding="12dp"
+            android:fontFamily="@font/publicsans_regular"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:drawableStartCompat="@drawable/ic_copy_small"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="ID 312769" />
+
+        <TextView
+            android:id="@+id/algoCurrencyValueTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:alpha=".8"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:autoSizeMaxTextSize="14sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="@id/analyticsButton"
+            app:layout_constraintEnd_toStartOf="@id/analyticsIconImageView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/analyticsButton"
+            tools:text="1 ALGO = $1.35" />
+
+        <ImageView
+            android:id="@+id/analyticsIconImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/analyticsButton"
+            app:layout_constraintEnd_toStartOf="@id/analyticsButton"
+            app:layout_constraintTop_toTopOf="@id/analyticsButton"
+            app:srcCompat="@drawable/ic_analytics" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/analyticsButton"
+            style="@style/TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="4dp"
+            android:enabled="false"
+            android:text="@string/analytics"
+            android:textColor="@color/white"
+            app:icon="@drawable/ic_right_arrow_small"
+            app:iconGravity="end"
+            app:iconPadding="12dp"
+            app:iconTint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/algoRewardBarrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="end"
+            app:barrierMargin="24dp"
+            app:constraint_referenced_ids="algoBalanceLabelTextView, algoBalanceTextView" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/algoRelatedViewsGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="balanceInCurrencyTextView, algoBalanceLabelTextView, algoBalanceTextView, rewardLabelTextView, rewardTextView, analyticsButton, algoCurrencyValueTextView, analyticsIconImageView, algoRewardBarrier"
+            tools:visibility="visible" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/otherAssetRelatedViewsGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="assetIdTextView, assetNameTextView"
+            tools:visibility="visible" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

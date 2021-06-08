@@ -1,0 +1,27 @@
+<!--
+  ~ Copyright 2019 Algorand, Inc.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group
+        android:scaleX="0.54"
+        android:scaleY="0.54"
+        android:translateX="26.46"
+        android:translateY="26.46">
+        <path
+            android:fillColor="#ffffff"
+            android:pathData="M85.076,85.069H74.412L67.487,59.346L52.605,85.069H40.702L63.705,45.258L60.01,31.435L28.986,85.076H17.076L56.393,17.076H66.814L71.383,33.974H82.14L74.792,46.724L85.076,85.069Z" />
+    </group>
+</vector>

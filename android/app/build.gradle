@@ -1,0 +1,200 @@
+plugins {
+    id "io.gitlab.arturbosch.detekt" version "1.14.1"
+    id "com.android.application"
+    id "com.google.firebase.crashlytics"
+    id "kotlin-android"
+    id "kotlin-parcelize"
+    id "kotlin-kapt"
+    id "androidx.navigation.safeargs.kotlin"
+    id "dagger.hilt.android.plugin"
+}
+
+apply from: 'https://raw.githubusercontent.com/Hipo/macaron/master/config/quality/quality.gradle'
+
+android {
+    compileSdkVersion targets.compileSdkVersion
+    defaultConfig {
+        minSdkVersion targets.minSdkVersion
+        targetSdkVersion targets.targetSdkVersion
+        versionCode application.versionCode
+        versionName application.versionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
+    }
+
+    signingConfigs {
+        releaseLocal {
+            def localProps = new Properties()
+            try {
+                localProps.load(new FileInputStream(file('../local.properties')))
+                storeFile file(localProps["RELEASE_STORE_FILE"])
+                storePassword localProps["RELEASE_STORE_PASSWORD"]
+                keyAlias localProps["RELEASE_KEY_ALIAS"]
+                keyPassword localProps["RELEASE_KEY_PASSWORD"]
+            } catch (e) {
+                println(e)
+            }
+        }
+    }
+
+    buildTypes {
+        releaseLocal {
+            signingConfig signingConfigs.releaseLocal
+
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [enableCrashReporting: "true"]
+        }
+
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [enableCrashReporting: "true"]
+        }
+
+        debug {
+            multiDexEnabled true
+
+            minifyEnabled false
+            manifestPlaceholders = [enableCrashReporting: "false"]
+        }
+    }
+
+    flavorDimensions "server"
+    productFlavors {
+        def apiKeyProps = new Properties()
+        staging {
+            applicationId application.stagingApplicationId
+            versionNameSuffix " (DEMO)"
+
+            apiKeyProps.load(new FileInputStream(file('../app/src/staging/api-key.properties')))
+            buildConfigField "String", "ALGORAND_BASE_URL", '"https://node-testnet.aws.algodev.network/"'
+            buildConfigField "String", "ALGORAND_API_KEY", apiKeyProps["ALGORAND_API_KEY"]
+            buildConfigField "String", "INDEXER_API_KEY", apiKeyProps["INDEXER_API_KEY"]
+            buildConfigField "String", "MOBILE_ALGORAND_BASE_URL", '"https://staging.mobile-api.algorand.com/api/"'
+            buildConfigField "String", "ALGO_EXPLORER_BASE_URL", '"https://price.algoexplorerapi.io/price/"'
+        }
+        prod {
+            applicationId application.applicationId
+
+            apiKeyProps.load(new FileInputStream(file('../app/src/prod/api-key.properties')))
+            buildConfigField "String", "ALGORAND_BASE_URL", '"https://node-mainnet.aws.algodev.network/"'
+            buildConfigField "String", "ALGORAND_API_KEY", apiKeyProps["ALGORAND_API_KEY"]
+            buildConfigField "String", "INDEXER_API_KEY", apiKeyProps["INDEXER_API_KEY"]
+            buildConfigField "String", "MOBILE_ALGORAND_BASE_URL", '"https://mobile-api.algorand.com/api/"'
+            buildConfigField "String", "ALGO_EXPLORER_BASE_URL", '"https://price.algoexplorerapi.io/price/"'
+        }
+    }
+
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+
+        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+    sourceSets {
+        // Adds exported schema location as test app assets.
+        androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
+    }
+
+    bundle {
+        language {
+            enableSplit = false
+        }
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${libVersions.coroutines}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${libVersions.coroutines}"
+
+    implementation "com.google.android.material:material:${libVersions.material}"
+    implementation "com.google.android:flexbox:${libVersions.flexbox}"
+    implementation "androidx.appcompat:appcompat:${libVersions.appCompat}"
+    implementation "androidx.legacy:legacy-support-v4:${libVersions.legacySupport}"
+    implementation "androidx.lifecycle:lifecycle-extensions:${libVersions.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${libVersions.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-common-java8:${libVersions.lifecycle}"
+    implementation "androidx.constraintlayout:constraintlayout:${libVersions.constraintLayout}"
+    implementation "androidx.core:core-ktx:${libVersions.coreKtx}"
+
+    implementation "com.google.firebase:firebase-analytics-ktx:${libVersions.firebase}"
+    implementation "com.google.firebase:firebase-messaging:${libVersions.firebasemessaging}"
+    implementation "com.google.firebase:firebase-crashlytics:${libVersions.crashlytics}"
+
+    implementation "androidx.biometric:biometric:${libVersions.biometric}"
+
+    implementation "com.journeyapps:zxing-android-embedded:${libVersions.zxing}"
+
+    implementation "androidx.room:room-runtime:${libVersions.room}"
+    implementation "androidx.room:room-ktx:${libVersions.room}"
+    kapt "androidx.room:room-compiler:${libVersions.room}"
+
+    implementation "androidx.navigation:navigation-fragment-ktx:${libVersions.navigation}"
+    implementation "androidx.navigation:navigation-ui-ktx:${libVersions.navigation}"
+
+    implementation "no.nordicsemi.android:ble:${libVersions.ble}"
+
+    implementation "androidx.fragment:fragment-ktx:${libVersions.fragment}"
+
+    implementation "androidx.multidex:multidex:${libVersions.multidex}"
+
+    implementation "androidx.browser:browser:${libVersions.browser}"
+
+    implementation "androidx.paging:paging-runtime-ktx:${libVersions.paging}"
+
+    implementation "com.google.crypto.tink:tink-android:${libVersions.tink}"
+
+    implementation "com.google.android.play:core:${libVersions.playcore}"
+
+    implementation "com.google.dagger:hilt-android:$dagger_gradle_version"
+    kapt "com.google.dagger:hilt-android-compiler:$dagger_gradle_version"
+
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:${libVersions.daggerViewModel}"
+    kapt "androidx.hilt:hilt-compiler:${libVersions.daggerViewModel}"
+
+    implementation "com.github.bumptech.glide:glide:${libVersions.glide}"
+    kapt "com.github.bumptech.glide:compiler:${libVersions.glide}"
+
+    implementation "com.airbnb.android:lottie:${libVersions.lottie}"
+
+    implementation "com.squareup.retrofit2:retrofit:${libVersions.retrofit}"
+    implementation "com.squareup.retrofit2:converter-gson:${libVersions.retrofit}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${libVersions.okhttp}"
+
+    implementation "com.akexorcist:localization:${libVersions.localization}"
+
+    implementation "com.hipo.macaron:hipoexceptions:${libVersions.hipoexceptions}"
+
+    // Chart
+    implementation "com.github.PhilJay:MPAndroidChart:${libVersions.mpAndroidChart}"
+
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:${libVersions.desugar}"
+
+    testImplementation "junit:junit:${testLibVersions.junit}"
+    androidTestImplementation "androidx.room:room-testing:${libVersions.room}"
+    androidTestImplementation "androidx.test:runner:${testLibVersions.runner}"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${testLibVersions.espresso}"
+
+    apply plugin: 'com.google.gms.google-services'
+}

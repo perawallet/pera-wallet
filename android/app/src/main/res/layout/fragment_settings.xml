@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2019 Algorand, Inc.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primaryBackground"
+        android:orientation="vertical">
+
+        <com.algorand.android.customviews.SettingsListItem
+            android:id="@+id/changePasswordListItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:settingsIcon="@drawable/ic_lock"
+            app:settingsShowArrow="true"
+            app:settingsText="@string/set_change_password" />
+
+        <com.algorand.android.customviews.SettingsListItem
+            android:id="@+id/biometricListItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/changePasswordListItem"
+            app:settingsIcon="@drawable/ic_shield"
+            app:settingsShowArrow="false"
+            app:settingsText="@string/enable_face_id_touch_id">
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/biometricSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:useMaterialThemeColors="false" />
+
+        </com.algorand.android.customviews.SettingsListItem>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="20dp"
+            android:background="@color/dividerColor"
+            app:layout_constraintBottom_toTopOf="@id/changePasswordListItem"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/biometricListItem" />
+
+        <View
+            android:id="@+id/securityDivider"
+            android:layout_width="0dp"
+            android:layout_height="8dp"
+            android:background="@color/settingsDividerColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/biometricListItem" />
+
+        <com.algorand.android.customviews.SettingsListItem
+            android:id="@+id/notificationListItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/securityDivider"
+            app:settingsIcon="@drawable/ic_empty_notification"
+            app:settingsShowArrow="true"
+            app:settingsText="@string/notifications"/>
+
+        <com.algorand.android.customviews.SettingsListItem
+            android:id="@+id/rewardsListItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/notificationListItem"
+            app:settingsIcon="@drawable/ic_reward"
+            app:settingsShowArrow="false"
+            app:settingsText="@string/show_rewards">
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/rewardsSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:useMaterialThemeColors="false" />
+
+        </com.algorand.android.customviews.SettingsListItem>
+
+        <com.algorand.android.customviews.SettingsListItem
+            android:id="@+id/languageListItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rewardsListItem"
+            app:settingsIcon="@drawable/ic_language"
+            app:settingsShowArrow="true"
+            app:settingsText="@string/language" />
+
+        <com.algorand.android.customviews.SettingsListItem
+            android:id="@+id/currencyListItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/languageListItem"
+            app:settingsIcon="@drawable/ic_currency"
+            app:settingsShowArrow="true"
+            app:settingsText="@string/currency" />
+
+        <com.algorand.android.customviews.SettingsListItem
+            android:id="@+id/themeListItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/currencyListItem"
+            app:settingsIcon="@drawable/ic_eye"
+            app:settingsShowArrow="true"
+            app:settingsText="@string/set_theme" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="20dp"
+            android:background="@color/dividerColor"
+            app:layout_constraintBottom_toTopOf="@id/notificationListItem"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rewardsListItem" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="20dp"
+            android:background="@color/dividerColor"
+            app:layout_constraintBottom_toTopOf="@id/rewardsListItem"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/notificationListItem" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="20dp"
+            android:background="@color/dividerColor"
+            app:layout_constraintBottom_toTopOf="@id/languageListItem"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rewardsListItem" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="20dp"
+            android:background="@color/dividerColor"
+            app:layout_constraintBottom_toTopOf="@id/currencyListItem"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/languageListItem" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="20dp"
+            android:background="@color/dividerColor"
+            app:layout_constraintBottom_toTopOf="@id/themeListItem"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/currencyListItem" />
+
+        <View
+            android:id="@+id/notificationPreferencesDivider"
+            android:layout_width="0dp"
+            android:layout_height="8dp"
+            android:background="@color/settingsDividerColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/themeListItem" />
+
+        <com.algorand.android.customviews.SettingsListItem
+            android:id="@+id/supportCenterListItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/notificationPreferencesDivider"
+            app:settingsIcon="@drawable/ic_feedback"
+            app:settingsShowArrow="true"
+            app:settingsText="@string/support_center" />
+
+        <com.algorand.android.customviews.SettingsListItem
+            android:id="@+id/rateListItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/supportCenterListItem"
+            app:settingsIcon="@drawable/ic_rate_star"
+            app:settingsShowArrow="false"
+            app:settingsText="@string/rate_algorand_wallet" />
+
+        <com.algorand.android.customviews.SettingsListItem
+            android:id="@+id/termsAndServicesListItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rateListItem"
+            app:settingsIcon="@drawable/ic_terms_and_services"
+            app:settingsShowArrow="true"
+            app:settingsText="@string/terms_and_services" />
+
+        <com.algorand.android.customviews.SettingsListItem
+            android:id="@+id/privacyPolicyListItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/termsAndServicesListItem"
+            app:settingsIcon="@drawable/ic_terms_and_services"
+            app:settingsShowArrow="true"
+            app:settingsText="@string/privacy_policy" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="20dp"
+            android:background="@color/dividerColor"
+            app:layout_constraintBottom_toTopOf="@id/rateListItem"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/supportCenterListItem" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="20dp"
+            android:background="@color/dividerColor"
+            app:layout_constraintBottom_toTopOf="@id/termsAndServicesListItem"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rateListItem" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="20dp"
+            android:background="@color/dividerColor"
+            app:layout_constraintBottom_toTopOf="@id/privacyPolicyListItem"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/termsAndServicesListItem" />
+
+        <View
+            android:id="@+id/notificationPolicyDivider"
+            android:layout_width="0dp"
+            android:layout_height="8dp"
+            android:background="@color/settingsDividerColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/privacyPolicyListItem" />
+
+        <com.algorand.android.customviews.SettingsListItem
+            android:id="@+id/developerListItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/notificationPolicyDivider"
+            app:settingsIcon="@drawable/ic_code"
+            app:settingsShowArrow="true"
+            app:settingsText="@string/developer_settings" />
+
+        <View
+            android:id="@+id/notificationDeveloperDivider"
+            android:layout_width="0dp"
+            android:layout_height="8dp"
+            android:background="@color/settingsDividerColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/developerListItem" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/logoutButton"
+            style="@style/Button.Secondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/keyline_1"
+            android:fontFamily="@font/publicsans_medium"
+            android:paddingHorizontal="40dp"
+            android:text="@string/delete_all_data"
+            app:layout_constraintBottom_toTopOf="@id/versionCodeTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/notificationDeveloperDivider"
+            app:layout_constraintVertical_bias="1"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/versionCodeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="24dp"
+            android:fontFamily="@font/publicsans_regular"
+            android:textColor="@color/gray_8A"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/logoutButton"
+            tools:text="@tools:sample/lorem[3]" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

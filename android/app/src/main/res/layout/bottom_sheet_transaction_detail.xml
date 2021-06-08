@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2019 Algorand, Inc.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:background="@color/secondaryBackground">
+
+    <com.algorand.android.customviews.CustomToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_toolbar_height" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/dividerColor" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/fieldsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/page_horizontal_spacing"
+            android:paddingBottom="24dp">
+
+            <TextView
+                android:id="@+id/statusLabelTextView"
+                style="@style/TextAppearance.Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/status"
+                app:layout_constraintBottom_toBottomOf="@id/statusTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/statusTextView" />
+
+            <TextView
+                android:id="@+id/statusTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:drawablePadding="4dp"
+                android:fontFamily="@font/publicsans_bold"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="4dp"
+                android:textAllCaps="true"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:background="@drawable/bg_greenec_30dp_radius"
+                tools:drawableLeft="@drawable/ic_check_20dp"
+                tools:text="Confirmed"
+                tools:textColor="@color/green_0D" />
+
+            <View
+                android:id="@+id/statusDividerView"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/dividerColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/statusTextView" />
+
+            <TextView
+                android:id="@+id/amountLabelTextView"
+                style="@style/TextAppearance.Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/amount"
+                app:layout_constraintBottom_toBottomOf="@id/amountTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/amountTextView" />
+
+            <com.algorand.android.customviews.AmountTextView
+                android:id="@+id/amountTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/keyline_1"
+                android:layout_marginTop="20dp"
+                app:algoFontFamily="@font/publicsans_medium"
+                app:algoLogoViewSize="10dp"
+                app:algoTextViewSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/labelBarrier"
+                app:layout_constraintTop_toBottomOf="@id/statusDividerView"
+                app:showOperator="true"
+                app:useMicroAlgos="false"
+                tools:algoFontFamily="@null" />
+
+            <View
+                android:id="@+id/amountDividerView"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/dividerColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/amountTextView" />
+
+            <TextView
+                android:id="@+id/closeAmountLabelTextView"
+                style="@style/TextAppearance.Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/close_amount"
+                app:layout_constraintBottom_toBottomOf="@id/closeAmountTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/closeAmountTextView" />
+
+            <com.algorand.android.customviews.AmountTextView
+                android:id="@+id/closeAmountTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/keyline_1"
+                android:layout_marginTop="20dp"
+                app:algoFontFamily="@font/publicsans_medium"
+                app:algoLogoViewSize="10dp"
+                app:algoTextViewSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/labelBarrier"
+                app:layout_constraintTop_toBottomOf="@id/amountDividerView"
+                app:useMicroAlgos="false"
+                tools:algoFontFamily="@null" />
+
+            <View
+                android:id="@+id/closeAmountDividerView"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/dividerColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/closeAmountTextView" />
+
+            <TextView
+                android:id="@+id/rewardLabelTextView"
+                style="@style/TextAppearance.Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reward"
+                app:layout_constraintBottom_toBottomOf="@id/rewardTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/rewardTextView" />
+
+            <com.algorand.android.customviews.AmountTextView
+                android:id="@+id/rewardTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/keyline_1"
+                android:layout_marginTop="20dp"
+                app:algoFontFamily="@font/publicsans_medium"
+                app:algoLogoViewSize="10dp"
+                app:algoTextViewSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/labelBarrier"
+                app:layout_constraintTop_toBottomOf="@id/closeAmountDividerView"
+                app:showOperator="true"
+                app:useMicroAlgos="false"
+                tools:algoFontFamily="@null" />
+
+            <View
+                android:id="@+id/rewardDividerView"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/dividerColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rewardTextView" />
+
+            <TextView
+                android:id="@+id/accountLabelTextView"
+                style="@style/TextAppearance.Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@id/accountNameTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/accountNameTextView" />
+
+            <TextView
+                android:id="@+id/accountNameTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/keyline_1"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/publicsans_medium"
+                android:gravity="end"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/labelBarrier"
+                app:layout_constraintTop_toBottomOf="@id/rewardDividerView"
+                tools:text="@tools:sample/lorem[1]" />
+
+            <View
+                android:id="@+id/accountNameDividerView"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/dividerColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/accountNameTextView" />
+
+            <TextView
+                android:id="@+id/targetUserLabelTextView"
+                style="@style/TextAppearance.Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@id/targetUserView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/targetUserView" />
+
+            <ImageView
+                android:id="@+id/targetUserCopyImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/keyline_1_minus_8dp"
+                app:layout_constraintBottom_toBottomOf="@id/targetUserLabelTextView"
+                app:layout_constraintStart_toEndOf="@id/targetUserLabelTextView"
+                app:layout_constraintTop_toTopOf="@id/targetUserLabelTextView"
+                app:srcCompat="@drawable/ic_copy" />
+
+            <com.algorand.android.customviews.TargetUserView
+                android:id="@+id/targetUserView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/keyline_1"
+                android:layout_marginTop="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/labelBarrier"
+                app:layout_constraintTop_toBottomOf="@+id/accountNameDividerView" />
+
+            <View
+                android:id="@+id/targetUserDividerView"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/dividerColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/targetUserView" />
+
+            <TextView
+                android:id="@+id/closeToLabelTextView"
+                style="@style/TextAppearance.Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/close_to"
+                app:layout_constraintBottom_toBottomOf="@id/closeToTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/closeToTextView" />
+
+            <TextView
+                android:id="@+id/closeToTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/keyline_1"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/publicsans_medium"
+                android:gravity="end"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/labelBarrier"
+                app:layout_constraintTop_toBottomOf="@+id/targetUserDividerView"
+                tools:text="@tools:sample/lorem[3]" />
+
+            <View
+                android:id="@+id/closeToDividerView"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/dividerColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/closeToTextView" />
+
+            <TextView
+                android:id="@+id/feeLabelTextView"
+                style="@style/TextAppearance.Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fee"
+                app:layout_constraintBottom_toBottomOf="@id/feeTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/feeTextView" />
+
+            <com.algorand.android.customviews.AmountTextView
+                android:id="@+id/feeTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/keyline_1"
+                android:layout_marginTop="20dp"
+                app:algoFontFamily="@font/publicsans_medium"
+                app:algoLogoViewSize="10dp"
+                app:algoTextViewSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/labelBarrier"
+                app:layout_constraintTop_toBottomOf="@id/closeToDividerView"
+                tools:algoFontFamily="@null" />
+
+            <View
+                android:id="@+id/feeDividerView"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/dividerColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/feeTextView" />
+
+            <TextView
+                android:id="@+id/dateLabelTextView"
+                style="@style/TextAppearance.Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/date"
+                app:layout_constraintBottom_toBottomOf="@id/dateTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/dateTextView" />
+
+            <TextView
+                android:id="@+id/dateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/keyline_1"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/publicsans_medium"
+                android:textSize="14sp"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintStart_toEndOf="@id/dateLabelTextView"
+                app:layout_constraintTop_toBottomOf="@id/feeDividerView"
+                tools:text="August 10, 2020 - 14:55" />
+
+            <View
+                android:id="@+id/dateDividerView"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/dividerColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dateTextView" />
+
+            <TextView
+                android:id="@+id/roundLabelTextView"
+                style="@style/TextAppearance.Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/round"
+                app:layout_constraintBottom_toBottomOf="@id/roundTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/roundTextView" />
+
+            <TextView
+                android:id="@+id/roundTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/keyline_1"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/publicsans_medium"
+                android:textSize="14sp"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintStart_toEndOf="@id/labelBarrier"
+                app:layout_constraintTop_toBottomOf="@id/dateDividerView"
+                tools:text="3217" />
+
+            <View
+                android:id="@+id/roundDividerView"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/dividerColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/roundTextView" />
+
+            <TextView
+                android:id="@+id/idLabelTextView"
+                style="@style/TextAppearance.Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:drawableEnd="@drawable/ic_copy"
+                android:drawablePadding="@dimen/keyline_1_minus_8dp"
+                android:gravity="center_vertical"
+                android:text="@string/transaction_id"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/roundDividerView" />
+
+            <TextView
+                android:id="@+id/idTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/keyline_1_minus_8dp"
+                android:fontFamily="@font/publicsans_medium"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/idLabelTextView"
+                tools:text="PT4MUMAFIOCRHYPIO7E6T4MGQYQ7GQ5LHXFPWIUDD74M45CZZQBQ" />
+
+            <View
+                android:id="@+id/idDividerView"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/dividerColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/idTextView" />
+
+            <TextView
+                android:id="@+id/noteLabelTextView"
+                style="@style/TextAppearance.Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:drawableEnd="@drawable/ic_copy"
+                android:drawablePadding="@dimen/keyline_1_minus_8dp"
+                android:gravity="center_vertical"
+                android:text="@string/note"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/idDividerView" />
+
+            <TextView
+                android:id="@+id/noteTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/keyline_1_minus_8dp"
+                android:fontFamily="@font/publicsans_medium"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/noteLabelTextView" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/idGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="idLabelTextView, idTextView, idDividerView"
+                tools:visibility="visible" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/dateGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="dateLabelTextView, dateTextView, dateDividerView"
+                tools:visibility="visible" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/closeToGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="closeAmountLabelTextView,closeAmountTextView, closeAmountDividerView, closeToDividerView, closeToLabelTextView, closeToTextView"
+                tools:visibility="visible" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/noteGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="idDividerView,noteLabelTextView,noteTextView" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/rewardGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="rewardDividerView,rewardLabelTextView,rewardTextView" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/roundGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="roundLabelTextView,roundDividerView,roundTextView" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/labelBarrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="end"
+                app:constraint_referenced_ids="
+                    roundLabelTextView,rewardLabelTextView,
+                    accountLabelTextView,amountLabelTextView,
+                    statusLabelTextView,targetUserLabelTextView,
+                    closeToLabelTextView, closeAmountLabelTextView" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

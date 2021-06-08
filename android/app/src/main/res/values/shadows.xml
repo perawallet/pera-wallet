@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2019 Algorand, Inc.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<resources>
+    <!--   Small Shadow Margins (intended margin - inset)  -->
+    <dimen name="smallshadow_start_6dp_margin">0dp</dimen>
+    <dimen name="smallshadow_start_8dp_margin">2dp</dimen>
+    <dimen name="smallshadow_start_10dp_margin">4dp</dimen>
+    <dimen name="smallshadow_start_16dp_margin">10dp</dimen>
+    <dimen name="smallshadow_start_20dp_margin">14dp</dimen>
+
+    <dimen name="smallshadow_end_6dp_margin">0dp</dimen>
+    <dimen name="smallshadow_end_8dp_margin">2dp</dimen>
+    <dimen name="smallshadow_end_12dp_margin">6dp</dimen>
+    <dimen name="smallshadow_end_16dp_margin">10dp</dimen>
+    <dimen name="smallshadow_end_20dp_margin">14dp</dimen>
+
+    <dimen name="smallshadow_bottom_margin_10dp">0dp</dimen>
+    <dimen name="smallshadow_bottom_margin_12dp">2dp</dimen>
+    <dimen name="smallshadow_bottom_margin_16dp">6dp</dimen>
+    <dimen name="smallshadow_bottom_margin_20dp">10dp</dimen>
+    <dimen name="smallshadow_bottom_margin_24dp">14dp</dimen>
+    <dimen name="smallshadow_bottom_margin_28dp">18dp</dimen>
+
+    <dimen name="smallshadow_top_margin_2dp">0dp</dimen>
+    <dimen name="smallshadow_top_margin_4dp">2dp</dimen>
+    <dimen name="smallshadow_top_margin_8dp">6dp</dimen>
+    <dimen name="smallshadow_top_margin_12dp">10dp</dimen>
+    <dimen name="smallshadow_top_margin_16dp">14dp</dimen>
+    <dimen name="smallshadow_top_margin_20dp">18dp</dimen>
+
+    <!--  Content Padding (inset + intended padding)  -->
+    <dimen name="smallshadow_start_padding_4dp">10dp</dimen>
+    <dimen name="smallshadow_start_padding_10dp">16dp</dimen>
+    <dimen name="smallshadow_start_padding_16dp">22dp</dimen>
+
+    <dimen name="smallshadow_end_padding_4dp">10dp</dimen>
+    <dimen name="smallshadow_end_padding_10dp">16dp</dimen>
+    <dimen name="smallshadow_end_padding_16dp">22dp</dimen>
+
+    <dimen name="smallshadow_top_padding_4dp">6dp</dimen>
+    <dimen name="smallshadow_top_padding_12dp">14dp</dimen>
+    <dimen name="smallshadow_top_padding_14dp">16dp</dimen>
+    <dimen name="smallshadow_top_padding_24dp">26dp</dimen>
+
+    <dimen name="smallshadow_bottom_padding_4dp">14dp</dimen>
+    <dimen name="smallshadow_bottom_padding_12dp">22dp</dimen>
+    <dimen name="smallshadow_bottom_padding_14dp">24dp</dimen>
+    <dimen name="smallshadow_bottom_padding_24dp">34dp</dimen>
+
+    <!--   Default Inset for Shadow -->
+    <dimen name="smallshadow_bottom_inset">10dp</dimen>
+    <dimen name="smallshadow_top_inset">2dp</dimen>
+    <dimen name="smallshadow_start_inset">6dp</dimen>
+    <dimen name="smallshadow_end_inset">6dp</dimen>
+
+    <!--   Medium Shadow Margins (intended margin - inset)  -->
+    <dimen name="mediumshadow_start_12dp_margin">0dp</dimen>
+    <dimen name="mediumshadow_start_20dp_margin">8dp</dimen>
+
+    <dimen name="mediumshadow_end_12dp_margin">0dp</dimen>
+    <dimen name="mediumshadow_end_20dp_margin">8dp</dimen>
+
+    <dimen name="mediumshadow_bottom_margin_16dp">0dp</dimen>
+
+    <dimen name="mediumshadow_top_margin_8dp">0dp</dimen>
+    <dimen name="mediumshadow_top_margin_10dp">2dp</dimen>
+
+    <!--  Content Padding (inset + intended padding)  -->
+    <dimen name="mediumshadow_start_padding_4dp">16dp</dimen>
+    <dimen name="mediumshadow_start_padding_16dp">28dp</dimen>
+    <dimen name="mediumshadow_start_padding_20dp">32dp</dimen>
+
+    <dimen name="mediumshadow_top_padding_4dp">12dp</dimen>
+    <dimen name="mediumshadow_top_padding_16dp">24dp</dimen>
+    <dimen name="mediumshadow_top_padding_24dp">32dp</dimen>
+
+    <dimen name="mediumshadow_end_padding_4dp">16dp</dimen>
+    <dimen name="mediumshadow_end_padding_16dp">28dp</dimen>
+    <dimen name="mediumshadow_end_padding_20dp">32dp</dimen>
+
+    <dimen name="mediumshadow_bottom_padding_4dp">20dp</dimen>
+    <dimen name="mediumshadow_bottom_padding_16dp">32dp</dimen>
+    <dimen name="mediumshadow_bottom_padding_24dp">40dp</dimen>
+
+    <!--   Default Inset for Medium Shadow -->
+</resources>

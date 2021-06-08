@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2019 Algorand, Inc.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="20dp"
+    android:paddingTop="@dimen/keyline_1"
+    android:paddingEnd="20dp">
+
+    <ImageView
+        android:id="@+id/pendingImageView"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="12dp"
+        app:srcCompat="@drawable/ic_pending" />
+
+    <TextView
+        android:id="@+id/nameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="20dp"
+        android:layout_toStartOf="@+id/amountTextView"
+        android:layout_toEndOf="@id/pendingImageView"
+        android:fontFamily="@font/publicsans_medium"
+        android:singleLine="true"
+        android:textSize="14sp"
+        tools:text="Father Savings" />
+
+    <com.algorand.android.customviews.AmountTextView
+        android:id="@+id/amountTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="4dp"
+        app:algoFontFamily="@font/publicsans_medium"
+        app:algoLogoViewSize="10dp"
+        app:algoTextViewSize="14sp"
+        app:showOperator="true"
+        app:useMicroAlgos="false"
+        tools:algoFontFamily="@null"
+        tools:text="+ 10.20" />
+
+    <TextView
+        android:id="@+id/adressTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nameTextView"
+        android:layout_alignBaseline="@id/dateTextView"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="@dimen/keyline_1"
+        android:layout_toStartOf="@id/dateTextView"
+        android:layout_toEndOf="@id/pendingImageView"
+        android:fontFamily="@font/publicsans_regular"
+        android:singleLine="true"
+        android:textColor="@color/secondaryTextColor"
+        android:textSize="12sp"
+        tools:text="X2YHQU7W6OJG66TMLL3PZ7JQS2D42YEGATBBNDXH22Q6JSNOFR6LVZYXXM" />
+
+    <TextView
+        android:id="@+id/dateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/amountTextView"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:fontFamily="@font/publicsans_regular"
+        android:textColor="@color/secondaryTextColor"
+        android:textSize="12sp"
+        tools:text="July 20, 2018" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/dateTextView"
+        android:layout_marginTop="15dp"
+        android:background="@color/dividerColor" />
+
+</RelativeLayout>

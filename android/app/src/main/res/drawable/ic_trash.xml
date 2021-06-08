@@ -1,0 +1,53 @@
+<!--
+  ~ Copyright 2019 Algorand, Inc.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M6,6H18V18C18,19.6569 16.6569,21 15,21H9C7.3432,21 6,19.6569 6,18V6Z"
+        android:strokeWidth="2"
+        android:strokeColor="#8A8993"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M4,6H20"
+        android:strokeWidth="2"
+        android:strokeColor="#8A8993"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M9,4C9,3.4477 9.4477,3 10,3H14C14.5523,3 15,3.4477 15,4V6H9V4Z"
+        android:strokeWidth="2"
+        android:strokeColor="#8A8993"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M10,11V16"
+        android:strokeWidth="2"
+        android:strokeColor="#8A8993"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M14,11V16"
+        android:strokeWidth="2"
+        android:strokeColor="#8A8993"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+</vector>

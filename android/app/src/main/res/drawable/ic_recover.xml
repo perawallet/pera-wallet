@@ -1,0 +1,50 @@
+<!--
+  Copyright 2019 Algorand, Inc.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+  <path
+      android:pathData="M20,22.5L28,22.5A2,2 0,0 1,30 24.5L30,29.5A2,2 0,0 1,28 31.5L20,31.5A2,2 0,0 1,18 29.5L18,24.5A2,2 0,0 1,20 22.5z"
+      android:strokeLineJoin="round"
+      android:strokeWidth="2.5"
+      android:fillColor="#00000000"
+      android:strokeColor="#1DAD98"
+      android:strokeLineCap="round"/>
+  <path
+      android:pathData="M21,19.5C21,17.8431 22.3431,16.5 24,16.5V16.5C25.6569,16.5 27,17.8431 27,19.5V22.5H21V19.5Z"
+      android:strokeLineJoin="round"
+      android:strokeWidth="2.5"
+      android:fillColor="#00000000"
+      android:strokeColor="#1DAD98"
+      android:strokeLineCap="round"/>
+  <path
+      android:pathData="M13.883,35.0965L13.6202,39.3476L9.3691,39.0848M13.6122,38.6503C12.5447,37.8788 11.5371,36.99 10.6278,35.9608C4.0205,28.4827 4.7267,17.0613 12.2048,10.454C16.7564,6.4325 22.7618,5.1481 28.2605,6.4226"
+      android:strokeAlpha="0.6"
+      android:strokeLineJoin="round"
+      android:strokeWidth="2.37762"
+      android:fillColor="#00000000"
+      android:strokeColor="#1DAD98"
+      android:fillAlpha="0.6"
+      android:strokeLineCap="round"/>
+  <path
+      android:pathData="M34.4582,12.8976L34.721,8.6465L38.9722,8.9093M34.7274,9.3342C35.7949,10.1057 36.8025,10.9945 37.7118,12.0236C44.3191,19.5018 43.6129,30.9232 36.1348,37.5305C31.5817,41.5533 25.5763,42.8377 20.0791,41.5619"
+      android:strokeAlpha="0.6"
+      android:strokeLineJoin="round"
+      android:strokeWidth="2.37762"
+      android:fillColor="#00000000"
+      android:strokeColor="#1DAD98"
+      android:fillAlpha="0.6"
+      android:strokeLineCap="round"/>
+</vector>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2019 Algorand, Inc.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<resources>
+    <color name="colorPrimary">@color/green_1D</color>
+    <color name="colorPrimaryVariant">@color/green_0D</color>
+    <color name="colorSecondary">@color/orange_F0</color>
+    <color name="colorSecondaryVariant">@color/orange_E5</color>
+    <color name="colorError">@color/red_E9</color>
+
+    <!--    Background Colors -->
+    <color name="primaryBackground">@color/gray_16</color>
+    <color name="transparentPrimaryBackground">@color/gray_16_alpha_100</color>
+    <color name="secondaryBackground">@color/gray_21</color>
+    <color name="tertiaryBackground">@color/gray_16</color>
+    <color name="disabledBackground">@color/gray_11</color>
+    <color name="splashBackgroundColor">@color/gray_16</color>
+    <color name="surfaceOnBackground">@color/gray_21</color>
+    <color name="settingsDividerColor">@color/gray_11</color>
+    <color name="dialpadBackgroundColor">@color/gray_2A</color>
+    <color name="dialpadRippleColor">@color/gray_55</color>
+    <color name="mainBottomCancelBackgroundColor">@color/gray_01</color>
+    <color name="toolbarButtonColor">@color/gray_2B</color>
+    <color name="primaryBackgroundRippleColor">@color/gray_21</color>
+    <color name="secondaryButtonBackgroundColor">@color/gray_2B</color>
+    <color name="tertiaryButtonBackgroundColor">@color/gray_21</color>
+    <color name="photoPrimaryBackgroundColor">@color/gray_21</color>
+    <color name="photoSecondaryBackgroundColor">@color/gray_21</color>
+    <color name="passphraseBackgroundColor">@color/gray_21</color>
+    <color name="unelevatedButtonDisabledBackgroundColor">@color/gray_2B</color>
+    <color name="unelevatedButtonDisabledTextColor">@color/gray_59</color>
+
+    <color name="backgroundOnPrimary">@color/gray_16</color>
+    <color name="horizontalSwitchBackgroundColor">@color/gray_11</color>
+    <color name="passphraseUnselectedBackgroundColor">@color/gray_21</color>
+    <color name="passphraseSelectedBackgroundColor">@color/gray_21</color>
+    <color name="noteDisabledBackgroundColor">@color/gray_11</color>
+
+    <!--    Text Colors     -->
+    <color name="primaryTextColor">@color/gray_DB</color>
+    <color name="secondaryTextColor">@color/gray_8D</color>
+    <color name="tertiaryTextColor">@color/gray_8D</color>
+    <color name="hintTextColor">@color/gray_6B</color>
+    <color name="primaryButtonTextColor">@color/gray_16</color>
+    <color name="secondaryButtonTextColor">@color/gray_DB</color>
+    <color name="textButtonTextColor">@color/gray_8D</color>
+    <color name="linkTextColor">@color/green_1D</color>
+
+    <!--   Icon Tint Color  -->
+    <color name="primaryIconTintColor">@color/gray_55</color>
+    <color name="secondaryIconTintColor">@color/gray_6B</color>
+    <color name="algoDefaultIconTintColor">@color/gray_8D</color>
+    <color name="accountHeaderIconTintColor">@color/gray_8D</color>
+    <color name="pasteIconTintColor">@color/white</color>
+    <color name="unfilledPasswordDigitIconTintColor">@color/gray_55</color>
+    <color name="unselectedDotIconColor">@color/gray_2B</color>
+    <color name="qrIconTintColor">@color/gray_DB</color>
+
+    <color name="maxButtonStrokeColor">@color/gray_55</color>
+
+    <color name="dividerColor">@color/gray_1D</color>
+
+    <color name="bottomSheetIndicatorColor">#2B2B33</color>
+    <color name="chartTimeFrameButtonColor">@color/gray_2B</color>
+    <color name="chartTimeFrameDefaultTextColor">@color/gray_8D</color>
+</resources>
+

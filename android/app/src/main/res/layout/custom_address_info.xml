@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2019 Algorand, Inc.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/addressInfoRootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <!--DEFAULT NOT SET VIEWS-->
+
+    <LinearLayout
+        android:id="@+id/accountsLayout"
+        style="@style/SendOption"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/contactsLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            style="@style/AddressInfoIcon"
+            app:srcCompat="@drawable/ic_accounts" />
+
+        <TextView
+            style="@style/TextAppearance.SendOptions"
+            android:text="@string/accounts" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/contactsLayout"
+        style="@style/SendOption"
+        android:layout_marginStart="@dimen/smallshadow_start_10dp_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/addressLayout"
+        app:layout_constraintStart_toEndOf="@+id/accountsLayout"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            style="@style/AddressInfoIcon"
+            app:srcCompat="@drawable/ic_contacts" />
+
+        <TextView
+            style="@style/TextAppearance.SendOptions"
+            android:text="@string/contacts" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/addressLayout"
+        style="@style/SendOption"
+        android:layout_marginStart="@dimen/smallshadow_start_10dp_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/scanQrLayout"
+        app:layout_constraintStart_toEndOf="@id/contactsLayout"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            style="@style/AddressInfoIcon"
+            app:srcCompat="@drawable/ic_hashtag" />
+
+        <TextView
+            style="@style/TextAppearance.SendOptions"
+            android:text="@string/address" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/scanQrLayout"
+        style="@style/SendOption"
+        android:layout_marginStart="@dimen/smallshadow_start_10dp_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/addressLayout"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            style="@style/AddressInfoIcon"
+            app:srcCompat="@drawable/ic_qr_scan_green"
+            app:tint="@null" />
+
+        <TextView
+            style="@style/TextAppearance.SendOptions"
+            android:text="@string/scan_qr" />
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/fillingTypeGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="addressLayout,contactsLayout,accountsLayout,scanQrLayout" />
+
+    <!--    Edit Address Text   -->
+
+    <EditText
+        android:id="@+id/addressEditText"
+        style="@style/Input.WithoutBackground.Address"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/keyline_1"
+        android:gravity="top"
+        android:hint="@string/enter_address"
+        android:lineSpacingExtra="6dp"
+        android:maxLength="@integer/account_public_key_character_limit"
+        android:minLines="2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/cancelButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/editTextGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="addressEditText"
+        tools:visibility="gone" />
+
+    <!--  Address -->
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/contactDetailGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="contactImageView,contactNameTextView,adressTextView"
+        tools:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/contactImageView"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="@dimen/keyline_1"
+        android:layout_marginTop="@dimen/keyline_1"
+        android:layout_marginBottom="@dimen/keyline_1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/contactNameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="@dimen/keyline_1_minus_8dp"
+        android:fontFamily="@font/publicsans_semibold"
+        android:textColor="@color/primaryTextColor"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@+id/adressTextView"
+        app:layout_constraintEnd_toStartOf="@+id/cancelButton"
+        app:layout_constraintStart_toEndOf="@+id/contactImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Eddie Lobanovskiy" />
+
+    <TextView
+        android:id="@+id/adressTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="@dimen/keyline_1_minus_8dp"
+        android:layout_marginBottom="14dp"
+        android:fontFamily="@font/publicsans_medium"
+        android:textAllCaps="true"
+        android:textColor="@color/gray_8A"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/cancelButton"
+        app:layout_constraintStart_toEndOf="@+id/contactImageView"
+        app:layout_constraintTop_toBottomOf="@+id/contactNameTextView"
+        tools:text="XYXHQU...NOXLXM" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/cancelButton"
+        style="@style/BaseIconButton.Circle"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginEnd="@dimen/keyline_1"
+        android:visibility="gone"
+        app:backgroundTint="@color/primaryBackground"
+        app:icon="@drawable/ic_close"
+        app:iconTint="@color/gray_A4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_goneMarginEnd="0dp"
+        tools:visibility="visible" />
+
+</merge>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2019 Algorand, Inc.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/bottom_safe_area_margin"
+    tools:background="@color/white">
+
+    <TextView
+        android:id="@+id/titleTextView"
+        style="@style/TextAppearance.ToolbarTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/keyline_1"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/adding_asset" />
+
+    <View
+        android:id="@+id/backgroundView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_on_primary_12dp_radius"
+        android:minHeight="160dp"
+        app:layout_constraintBottom_toBottomOf="@id/nameTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleTextView" />
+
+    <LinearLayout
+        android:id="@+id/headerLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/smallshadow_start_8dp_margin"
+        android:layout_marginTop="@dimen/smallshadow_top_margin_8dp"
+        android:layout_marginEnd="@dimen/smallshadow_end_8dp_margin"
+        android:background="@drawable/bg_small_shadow"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@id/backgroundView"
+        app:layout_constraintStart_toStartOf="@id/backgroundView"
+        app:layout_constraintTop_toTopOf="@id/backgroundView">
+
+        <ImageView
+            android:id="@+id/verifiedImageView"
+            android:layout_width="44dp"
+            android:layout_height="match_parent"
+            android:scaleType="center"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/ic_verified_asset"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/idTextView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:fontFamily="@font/publicsans_semibold"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textSize="14sp"
+            tools:text="13212312" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/copyButton"
+            style="@style/BaseIconButton.Transparent"
+            android:layout_width="44dp"
+            android:layout_height="match_parent"
+            app:icon="@drawable/ic_copy" />
+
+    </LinearLayout>
+
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/loadingProgressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/backgroundView"
+        app:layout_constraintEnd_toEndOf="@id/backgroundView"
+        app:layout_constraintStart_toStartOf="@id/backgroundView"
+        app:layout_constraintTop_toTopOf="@id/backgroundView"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/AbbrTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="@dimen/smallshadow_bottom_margin_20dp"
+        android:fontFamily="@font/publicsans_bold"
+        android:gravity="center_horizontal"
+        android:lines="1"
+        android:textColor="@color/colorPrimary"
+        android:textSize="32sp"
+        app:layout_constraintEnd_toEndOf="@id/backgroundView"
+        app:layout_constraintStart_toStartOf="@id/backgroundView"
+        app:layout_constraintTop_toBottomOf="@id/headerLayout"
+        tools:text="DRM" />
+
+    <TextView
+        android:id="@+id/nameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/publicsans_medium"
+        android:gravity="center_horizontal"
+        android:lines="1"
+        android:paddingBottom="20dp"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@id/backgroundView"
+        app:layout_constraintStart_toStartOf="@id/backgroundView"
+        app:layout_constraintTop_toBottomOf="@+id/AbbrTextView"
+        tools:text="Dharma" />
+
+    <TextView
+        android:id="@+id/descriptionTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/publicsans_regular"
+        android:gravity="center"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/backgroundView"
+        tools:text=" Adding an assetDescription requires sending a transaction with a minimum transaction fee of Algos. This will appear on your transaction history." />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/positiveButton"
+        style="@style/UnelevatedButton.General"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionTextView"
+        tools:text="Approve" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/negativeButton"
+        style="@style/UnelevatedButton.General.Secondary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/keyline_1_minus_8dp"
+        android:text="@string/cancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/positiveButton"
+        app:rippleColor="@null" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

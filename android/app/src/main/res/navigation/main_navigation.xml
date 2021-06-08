@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2019 Algorand, Inc.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainNavigation"
+    app:startDestination="@id/ledgerPairInfoBottomSheet">
+
+    <include app:graph="@navigation/home_navigation" />
+
+    <include app:graph="@navigation/login_navigation" />
+
+    <include app:graph="@navigation/lock_preference_navigation" />
+
+    <action
+        android:id="@+id/action_to_mainNavigation"
+        app:destination="@id/mainNavigation"
+        app:popUpTo="@id/mainNavigation"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_newAccount"
+        app:destination="@id/loginNavigation" />
+
+    <action
+        android:id="@+id/action_to_lockPreferenceNavigation"
+        app:destination="@id/lockPreferenceNavigation" />
+
+    <action
+        android:id="@+id/action_reset_to_loginNavigation"
+        app:destination="@id/loginNavigation"
+        app:popUpTo="@id/mainNavigation"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_global_singleButtonBottomSheet"
+        app:destination="@id/singleButtonBottomSheet" />
+
+    <action
+        android:id="@+id/action_global_ledgerTroubleshootingFragment"
+        app:destination="@id/ledgerTroubleshootingFragment" />
+
+    <action
+        android:id="@+id/action_global_lockFragment"
+        app:destination="@id/lockFragment" />
+
+    <action
+        android:id="@+id/action_global_ledgerInformationBottomSheet"
+        app:destination="@id/ledgerInformationBottomSheet" />
+
+    <fragment
+        android:id="@+id/addAccountFragment"
+        android:name="com.algorand.android.ui.register.AddAccountFragment"
+        android:label="fragment_intro"
+        tools:layout="@layout/fragment_add_account">
+        <action
+            android:id="@+id/action_addAccountFragment_to_loginNavigation"
+            app:destination="@id/loginNavigation" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/lockFragment"
+        android:name="com.algorand.android.ui.lock.LockFragment"
+        android:label="LockFragment"
+        tools:layout="@layout/fragment_lock">
+        <action
+            android:id="@+id/action_lockFragment_to_homeNavigation"
+            app:destination="@id/homeNavigation"
+            app:popUpTo="@id/lockFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_lockFragment_to_warningConfirmationBottomSheet"
+            app:destination="@id/warningConfirmationBottomSheet" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/ledgerTroubleshootingFragment"
+        android:name="com.algorand.android.ui.ledgersearch.LedgerTroubleshootingFragment"
+        android:label="LedgerTroubleshootingFragment"
+        tools:layout="@layout/layout_ledger_troubleshoot_instructions" />
+
+    <dialog
+        android:id="@+id/singleButtonBottomSheet"
+        android:name="com.algorand.android.utils.SingleButtonBottomSheet"
+        android:label="SingleButtonBottomSheet"
+        tools:layout="@layout/bottom_sheet_single_button">
+        <argument
+            android:name="titleResId"
+            app:argType="reference" />
+        <argument
+            android:name="drawableResId"
+            app:argType="reference" />
+        <argument
+            android:name="buttonTextResId"
+            app:argType="reference" />
+        <argument
+            android:name="isResultNeeded"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <argument
+            android:name="descriptionAnnotatedString"
+            app:argType="com.algorand.android.models.AnnotatedString" />
+        <argument
+            android:name="buttonBackgroundTintResId"
+            android:defaultValue="@color/green_1D"
+            app:argType="reference" />
+        <argument
+            android:name="imageBackgroundTintResId"
+            android:defaultValue="@color/green_1D"
+            app:argType="reference" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/warningConfirmationBottomSheet"
+        android:name="com.algorand.android.ui.common.warningconfirmation.WarningConfirmationBottomSheet"
+        android:label="RemoveConfirmationBottomSheet"
+        tools:layout="@layout/bottom_sheet_warning_confirmation">
+        <argument
+            android:name="drawableResId"
+            app:argType="reference" />
+        <argument
+            android:name="titleTextResId"
+            app:argType="reference" />
+        <argument
+            android:name="descriptionTextResId"
+            app:argType="reference" />
+        <argument
+            android:name="positiveButtonTextResId"
+            app:argType="reference" />
+        <argument
+            android:name="negativeButtonTextResId"
+            app:argType="reference" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/ledgerInformationBottomSheet"
+        android:name="com.algorand.android.ui.ledgersearch.LedgerInformationFragment"
+        android:label="LedgerInformationFragment"
+        tools:layout="@layout/bottom_sheet_ledger_information">
+        <argument
+            android:name="selectedLedgerAccountSelectionListItem"
+            app:argType="com.algorand.android.models.AccountSelectionListItem" />
+        <argument
+            android:name="authLedgerAccountSelectionListItem"
+            app:argType="com.algorand.android.models.AccountSelectionListItem"
+            app:nullable="true" />
+        <argument
+            android:name="rekeyedAccountSelectionListItem"
+            app:argType="com.algorand.android.models.AccountSelectionListItem[]"
+            app:nullable="true" />
+    </dialog>
+    <dialog
+        android:id="@+id/ledgerPairInfoBottomSheet"
+        android:name="com.algorand.android.ui.ledgersearch.LedgerPairInfoBottomSheet"
+        tools:layout="@layout/bottom_sheet_ledger_pair_info"
+        android:label="LedgerPairInfoBottomSheet" >
+
+        <argument
+            android:name="infoType"
+            app:argType="com.algorand.android.ui.ledgersearch.LedgerPairInfoBottomSheet$InfoType" />
+    </dialog>
+    <action
+        android:id="@+id/action_global_ledgerPairInfoBottomSheet"
+        app:destination="@id/ledgerPairInfoBottomSheet" />
+
+</navigation>

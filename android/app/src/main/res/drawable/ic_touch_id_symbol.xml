@@ -1,0 +1,35 @@
+<!--
+  ~ Copyright 2019 Algorand, Inc.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <path
+        android:fillColor="@color/secondaryBackground"
+        android:pathData="M0,0h48v48h-48z" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M6,32V23.9995C6,20.2993 7.1164,16.86 9.0309,14M40,34C41.3153,31.3695 42,28.4689 42,25.5279V23.6059C42,13.8824 34.1176,6 24.3941,6H24C21.1263,6 18.4099,6.6734 16,7.8709M14,23.9994C14,18.4765 18.4772,14 24,14C26.2512,14 28.3287,14.7439 30,15.9993M34,24V26.7889C34,31.4909 32.6082,36.0877 30,40M12,38C13.0596,35.8808 13.71,33.5867 13.9228,31.2371M24,22V25.0557C24,30.9377 22.6305,36.739 20,42"
+        android:strokeWidth="2.66667"
+        android:strokeColor="#20B59E"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M14,23.9994C14,18.4765 18.4772,14 24,14C26.2512,14 28.3287,14.7439 30,15.9993M34,24V26.7889C34,31.4909 32.6082,36.0877 30,40M12,38C13.0596,35.8808 13.71,33.5867 13.9228,31.2371"
+        android:strokeWidth="2.66667"
+        android:strokeColor="#1DAD98"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+</vector>

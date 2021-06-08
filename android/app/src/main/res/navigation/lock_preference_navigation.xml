@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  Copyright 2019 Algorand, Inc.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+  -->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lockPreferenceNavigation"
+    app:startDestination="@id/choosePasswordInfoFragment">
+
+    <fragment
+        android:id="@+id/choosePasswordInfoFragment"
+        android:name="com.algorand.android.ui.lockpreference.ChoosePasswordInfoFragment"
+        android:label="ChoosePasswordInfoFragment"
+        tools:layout="@layout/fragment_choose_password_info" >
+        <action
+            android:id="@+id/action_choosePasswordInfoFragment_to_choosePasswordFragment"
+            app:destination="@id/choosePasswordFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/choosePasswordFragment"
+        android:name="com.algorand.android.ui.lockpreference.ChoosePasswordFragment"
+        android:label="ChoosePasswordFragment"
+        tools:layout="@layout/fragment_choose_password" >
+        <action
+            android:id="@+id/action_choosePasswordFragment_to_biometricRegistrationFragment"
+            app:destination="@id/biometricRegistrationFragment" />
+        <action
+            android:id="@+id/action_pop_lockPreferenceNavigation"
+            app:popUpTo="@id/lockPreferenceNavigation"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        tools:layout="@layout/fragment_biometric_registration"
+        android:id="@+id/biometricRegistrationFragment"
+        android:name="com.algorand.android.ui.lockpreference.BiometricRegistrationFragment"
+        android:label="BiometricRegistrationFragment" >
+        <action
+            android:id="@+id/action_biometricRegistrationFragment_pop_including_choose_password_navigation"
+            app:popUpTo="@id/lockPreferenceNavigation"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+
+</navigation>

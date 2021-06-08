@@ -1,0 +1,56 @@
+ext {
+    targets = [
+            compileSdkVersion: 30,
+            minSdkVersion    : 21,
+            targetSdkVersion : 30
+    ]
+
+    application = [
+            stagingApplicationId: 'staging.com.algorand.android',
+            applicationId       : 'com.algorand.android',
+            versionCode         : 46,
+            versionName         : "4.9.1"
+    ]
+
+    libVersions = [
+            coroutines       : '1.4.0',
+            material         : '1.3.0',
+            appCompat        : '1.2.0',
+            legacySupport    : '1.0.0',
+            lifecycle        : '2.2.0',
+            constraintLayout : '2.0.4',
+            fragment         : '1.3.0',
+            coreKtx          : '1.3.2',
+            navigation       : '2.3.3',
+            paging           : '3.0.0-alpha11',
+            retrofit         : '2.7.1',
+            okhttp           : '4.3.1',
+            dagger           : '2.26',
+            daggerViewModel  : '1.0.0-alpha02',
+            biometric        : '1.0.1',
+            flexbox          : '1.1.0',
+            zxing            : '3.6.0',
+            room             : '2.2.6',
+            firebase         : '18.0.0',
+            crashlytics      : '17.3.0',
+            firebasemessaging: '21.0.1',
+            glide            : '4.9.0',
+            multidex         : '2.0.1',
+            tink             : '1.2.2',
+            mpChart          : '3.1.0',
+            browser          : '1.3.0',
+            playcore         : '1.9.0',
+            ble              : '2.1.1',
+            lottie           : '3.7.0',
+            desugar          : '1.0.9',
+            localization     : '1.2.6',
+            hipoexceptions   : '1.0.0',
+            mpAndroidChart   : 'v3.1.0'
+    ]
+
+    testLibVersions = [
+            junit   : '4.13',
+            runner  : '1.3.0',
+            espresso: '3.3.0'
+    ]
+}

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  Copyright 2019 Algorand, Inc.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:background="@color/secondaryBackground">
+
+    <com.algorand.android.customviews.CustomToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/descriptionTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:text="@string/before_you_finalize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+    <ImageView
+        android:id="@+id/leftImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="6dp"
+        app:layout_constraintEnd_toStartOf="@+id/loadingAnimationLottieView"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionTextView"
+        app:srcCompat="@drawable/ic_phone" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/loadingAnimationLottieView"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/leftImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/leftImageView"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/transaction_animation" />
+
+    <ImageView
+        android:id="@+id/rightImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        app:layout_constraintStart_toEndOf="@+id/loadingAnimationLottieView"
+        app:layout_constraintTop_toTopOf="@+id/leftImageView"
+        app:srcCompat="@drawable/ic_phone"
+        app:tint="@color/green_1D" />
+
+    <TextView
+        android:id="@+id/firstStepTextView"
+        style="@style/TextAppearance.LedgerInstructionStepNumber"
+        android:layout_marginStart="@dimen/page_horizontal_spacing"
+        android:layout_marginTop="36dp"
+        android:text="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/leftImageView" />
+
+    <TextView
+        android:id="@+id/firstDescriptionTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="@dimen/page_horizontal_spacing"
+        android:fontFamily="@font/publicsans_regular"
+        android:text="@string/when_sending_to_an_address"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/firstStepTextView"
+        app:layout_constraintTop_toTopOf="@id/firstStepTextView" />
+
+    <TextView
+        android:id="@+id/secondStepTextView"
+        style="@style/TextAppearance.LedgerInstructionStepNumber"
+        android:layout_marginStart="@dimen/page_horizontal_spacing"
+        android:layout_marginTop="24dp"
+        android:text="2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/firstDescriptionTextView" />
+
+    <TextView
+        android:id="@+id/secondDescriptionTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="@dimen/page_horizontal_spacing"
+        android:fontFamily="@font/publicsans_regular"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/secondStepTextView"
+        app:layout_constraintTop_toTopOf="@id/secondStepTextView"
+        tools:text="@string/exchanges_change_their" />
+
+    <View
+        android:id="@+id/descriptionDivider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="32dp"
+        android:background="@color/dividerColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/secondDescriptionTextView" />
+
+    <TextView
+        android:id="@+id/moreInfoTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="33dp"
+        android:layout_marginTop="29dp"
+        android:fontFamily="@font/publicsans_regular"
+        android:gravity="center"
+        android:padding="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/descriptionDivider"
+        tools:text="@string/for_more_information_on" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/positiveButton"
+        style="@style/UnelevatedButton.General"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/keyline_1"
+        android:layout_marginBottom="@dimen/bottom_safe_area_margin"
+        android:text="@string/i_understand"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/moreInfoTextView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2019 Algorand, Inc.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<resources>
+  <string name="app_name">Algorand Wallet</string>
+  <string name="create_account">アカウントの作成</string>
+  <string name="recover_from_passphrase">パスフレーズでのリカバリー</string>
+  <string name="already_have_an_account">すでにアカウントをお持ちですか？</string>
+  <string name="choose_passcode">パスコードを選択</string>
+  <string name="choose_a_six_digit">6桁のPINを入力してください</string>
+  <string name="we_recommend_this_for_improved_security">セキュリティ向上のために\n推奨します</string>
+  <string name="yes">はい</string>
+  <string name="please_scan_your_fingerprint_or">続行するには、指紋または顔をスキャンしてください。</string>
+  <string name="cancel">キャンセル</string>
+  <string name="new_account">新規アカウント</string>
+  <string name="back_up_passphrase">パスフレーズのバックアップ</string>
+  <string name="share">共有する</string>
+  <string name="ensure_that_you_backup">このアカウントのパスフレーズを確実にバックアップしてください。これは、Algorandアカウントをリカバリーする唯一の方法です。</string>
+  <string name="share_via">共有する</string>
+  <string name="ok">OK</string>
+  <string name="question_format">%2$d問中%1$d問目の質問</string>
+  <string name="select_passphrase_format">パスフレーズの%1$sの単語を選択してください</string>
+  <string name="verify_recovery_phrase">リカバリーパスフレーズの確認</string>
+  <string name="next">次</string>
+  <string name="please_name_your_account">アカウントに名前を付けてください</string>
+  <string name="account_name">アカウント名</string>
+  <string name="passphrase_verified">パスフレーズ検証済み</string>
+  <string name="your_passphrase_has_been_verified">パスフレーズが検証されました。このパスフレーズは、アカウントを復元する際に必要となりますので、必ずバックアップを取っておいてください。</string>
+  <string name="verify_passcode">パスコードの検証</string>
+  <string name="enter_the_same_six_digits">同じ6桁のPINを入力してください</string>
+  <string name="name">名前</string>
+  <string name="verify">検証</string>
+  <string name="close">閉じる</string>
+  <string name="account_verified">アカウント認証済み</string>
+  <string name="account_verified_message"><annotation type="bold">Algorand</annotation>へようこそ！\nお客様のアカウントはすぐにお使いいただけます。</string>
+  <string name="accounts">アカウント</string>
+  <string name="settings">設定</string>
+  <string name="history">履歴</string>
+  <string name="contacts">連絡先</string>
+  <string name="enter_passphrase_or_scan_qr">パスフレーズ入力またはQRをスキャン</string>
+  <string name="passphrase_qr">パスフレーズQR</string>
+  <string name="search_contacts">連絡先を検索</string>
+  <string name="send">送信</string>
+  <string name="from">From</string>
+  <string name="to">To</string>
+  <string name="enter_address">アドレスの入力</string>
+  <string name="preview">プレビュー</string>
+  <string name="preview_and_sign_with">プレビューおよびLedgerでの署名</string>
+  <string name="fee">料金</string>
+  <string name="amount">金額</string>
+  <string name="transaction_id">トランザクションID</string>
+  <string name="add_contact">連絡先を追加</string>
+  <string name="contact_name">連絡先名</string>
+  <string name="paste_hash_or_scan_qr">＃を貼り付けるか、QRをスキャン</string>
+  <string name="contact_info">連絡先情報</string>
+  <string name="edit_contact">連絡先の編集</string>
+  <string name="scan_qr">QRをスキャン</string>
+  <string name="request">リクエスト</string>
+  <string name="view_passphrase">パスフレーズの表示</string>
+  <string name="edit_account_name">アカウント名の編集</string>
+  <string name="remove_account">アカウントの削除</string>
+  <string name="copied_to_clipboard">クリップボードにコピーされました</string>
+  <string name="you_are_about_to_remove_an_account">アカウントを削除しようとしています。この選択を続行してもよろしいですか？</string>
+  <string name="remove">削除</string>
+  <string name="enter_six_digit_pin">6桁のPINを入力してください</string>
+  <string name="wrong_password">間違ったパスワード</string>
+  <string name="password_did_not_match_with_previous_password">パスワードが以前のパスワードと一致しませんでした。</string>
+  <string name="account_to_be_sent_must_not_be_blank">送信するアカウントは空欄にできません。</string>
+  <string name="account_must_be_selected">アカウントを選択する必要があります。</string>
+  <string name="node_settings">ノード設定</string>
+  <string name="language">言語</string>
+  <string name="set_change_password">パスワードの設定/変更</string>
+  <string name="enable_face_id">Face ID/Touchを有効にする</string>
+  <string name="enable_face_id_touch_id">Face ID/Touch IDを有効にする</string>
+  <string name="select_the_node">ノードの選択</string>
+  <string name="key">キー</string>
+  <string name="an_error_occured">エラーが発生しました</string>
+  <string name="warning">警告</string>
+  <string name="error">エラー</string>
+  <string name="passphrase_must_not_be_blank">パスフレーズは空欄にできません。</string>
+  <string name="account_name_must_not_be_blank">アカウント名は空欄にできません。</string>
+  <string name="your_passphrase_is_invalid_please">パスフレーズが無効です。正しく入力されているかご確認ください。</string>
+  <string name="transaction_detail">トランザクションの詳細</string>
+  <string name="none_of_the_active_nodes_seem">どのノードもアクティブではないようです。続行する前に、少なくとも1つのアクティブなノードがあることを確認してください。</string>
+  <string name="this_account_already_exists">このアカウントはすでに存在します</string>
+  <string name="delete">削除</string>
+  <string name="round">ラウンド</string>
+  <string name="account">アカウント</string>
+  <string name="delete_contact">連絡先を削除</string>
+  <string name="are_you_sure_you_want_to_delete">この連絡先を削除してもよろしいですか？</string>
+  <string name="address">アドレス</string>
+  <string name="version_format">バージョン%1$s</string>
+  <string name="none_of_your_active_nodes">オンラインのアクティブなノードはありません。他のノードを追加または選択してください。</string>
+  <string name="pending">保留中</string>
+  <string name="unknown">不明</string>
+  <string name="enter_six_digit_pin_to_see_passphrase">パスフレーズを表示するには、6桁のPINを入力してください</string>
+  <string name="you_should_enter_your_correct_password">パスフレーズを表示するには、正しいパスワードを入力する必要があります</string>
+  <string name="wrong_choice">選択が間違っています</string>
+  <string name="there_s_no_biometric_registration">デバイスに生体認証が登録されていないか、生体認証ハードウェアが見つかりません</string>
+  <string name="you_re_trying_to_send">残高が最低残高に満たないアカウントにトランザクションを送信しようとしています。金額は最低でも %1$s algosでなければなりません。</string>
+  <string name="transaction_amount">取引金額は、最小口座残高の<annotation replacement="min_balance"> </annotation> algosを下回る結果になります。</string>
+  <string name="transaction_amount_cannot">取引額が利用可能額を超えることはできません。</string>
+  <string name="transaction_amount_results">トランザクションの結果、残高がマイナスになります。</string>
+  <string name="dollar_value">ドル建て価格</string>
+  <string name="send_feedback">フィードバックの送信</string>
+  <string name="note">メモ</string>
+  <string name="what_s_on_your_mind">ご意見をお聞かせください</string>
+  <string name="email">Eメール</string>
+  <string name="type_of_feedback">フィードバックの種類</string>
+  <string name="rewards">リワード</string>
+  <string name="show_rewards">リワードを表示する</string>
+  <string name="category">カテゴリー</string>
+  <string name="max">最大</string>
+  <string name="you_earn_rewards_just">Algosを保有するだけでリワードを獲得できます！\n前回のトランザクション以降のリワード活動をまとめました。これらのリワードは常にお客様の残高に含まれています。</string>
+  <string name="since_last_transaction">前回のトランザクション以降</string>
+  <string name="for_more_information">Algorand Rewardsの詳細については、<annotation custom="faq_color"><annotation type="bold">FAQ</annotation></annotation>をご覧ください</string>
+  <string name="reward">リワード</string>
+  <string name="account_to_be_sent_must_have_58">送信するアカウントには58文字の公開鍵が必要です。</string>
+  <string name="category_must_be_selected">フィードバックを送信する前に、カテゴリを選択する必要があります。</string>
+  <string name="note_must_not_be_blank">メモは空欄にできません。</string>
+  <string name="notifications">通知</string>
+  <string name="the_internet_connection">インターネット接続がオフラインのようです。</string>
+  <string name="confirmed">確認済み</string>
+  <string name="status">状態</string>
+  <string name="your_account_is_about">アカウントが削除されます。続行してもよろしいですか？</string>
+  <string name="to_keep_an_account_open">アカウントを維持するには、最低でも0.01 ALGOが必要です。最大量を送信した場合、アカウントは削除され、お客様の有効な参加キーも削除されます。</string>
+  <string name="in_order_to_delete">アカウントを削除するためには、資産アカウントの残高を空にし、作成した資産があればそれを破棄する必要があります。</string>
+  <string name="proceed">進む</string>
+  <string name="remove_assets">資産の削除</string>
+  <string name="asset">資産</string>
+  <string name="assets">資産</string>
+  <string name="send_format">%1$sを送信する</string>
+  <string name="receive_title_format">%1$sを受け取る</string>
+  <string name="asset_must_be_selected">資産を選択する必要があります。</string>
+  <string name="you_dont_have_any">この資産のアカウントを持っていません。続ける前に資産を追加してください。</string>
+  <string name="add_asset_fee">資産手数料の追加</string>
+  <string name="select_sending_account">送信アカウントの選択</string>
+  <string name="select_receiving_account">受信アカウントの選択</string>
+  <string name="unnamed">無名</string>
+  <string name="entered_address_is_not_valid">入力されたアドレスは有効ではありません。</string>
+  <string name="an_error_more">詳細を取得中にエラーが発生しました。後でもう一度お試しください。</string>
+  <string name="search_assets_id">資産IDまたは名前の検索</string>
+  <string name="no_asset_found">資産が見つかりません</string>
+  <string name="you_already_have">すでにこの資産を所有しています。</string>
+  <string name="adding_asset">資産の追加</string>
+  <string name="removing_asset">資産の削除</string>
+  <string name="to_remove_the_balance"><![CDATA[<b>%1$s</b>を削除するには、残高が0である必要があります。残高を別のアカウントに転送して、もう一度お試しください。]]></string>
+  <string name="you_are_about_to"><![CDATA[<b>%2$s</b>から<b>%1$s</b>を削除しようとしています。再度追加しない限り、このアカウントからこの資産を取引することはできません。]]></string>
+  <string name="adding_an_asset">資産を追加するには、最小の取引手数料でトランザクションを送信する必要があります。これは取引履歴に表示されます。</string>
+  <string name="unfortunately_this_account">残念ながら、このアカウントはこの資産を追加していません。アカウントの所有者に資産の追加を指示してから、再度お試しください。</string>
+  <string name="transfer_balance">転送残高</string>
+  <string name="approve">承認する</string>
+  <string name="this_account_has_not">このアカウントはこの資産を追加していません。続行するには、この資産を追加してください。</string>
+  <string name="this_account_does_not">アカウントにはこの資産が含まれていません</string>
+  <string name="account_does_not_accept">アカウントはこの資産を受け入れません</string>
+  <string name="you_are_about_to_receive">まもなく資産を受け取れます！</string>
+  <string name="you_are_about_to_receive_description"><![CDATA[<b>%1$s</b>で資産を受け取ろうとしています。この資産をこのアカウントに追加して受け取りますか？]]></string>
+  <string name="min_transaction_error">最小トランザクションエラー！</string>
+  <string name="you_need_at_least">この資産を追加するには、最低でも<annotation replacement="min_balance"></annotation> Algosが必要です</string>
+  <string name="your_accounts_do_not">アカウントにはこの資産が含まれていません</string>
+  <string name="please_add_this">この資産を追加して再度お試しください。</string>
+  <string name="the_qr_contains">QRには、選択したものとは異なる資産が含まれています。金額はデコード時に無視されます。</string>
+  <string name="key_not_valid">キーが無効です。正しいキーをお持ちかどうかご確認ください。</string>
+  <string name="you_just_scanned">トランザクションリクエストのQRコードをスキャンしました。変更されている可能性がありますので、すべてのトランザクションフィールドを確認してください。</string>
+  <string name="qr_scan">QRをスキャン</string>
+  <string name="scanned_qr_is_not_valid">スキャンしたQRが無効です。</string>
+  <string name="create_account_error">アカウントの作成中にエラーが発生しました。もう一度お試しください。</string>
+  <string name="pair_ledger_account">Ledgerアカウントのペアリング</string>
+  <string name="connect">接続</string>
+  <string name="error_default_title">エラー！</string>
+  <string name="pair_ledger_device">Ledgerデバイスのペアリング</string>
+  <string name="follow_the_steps_below">以下の手順に従って、新しいLedgerアカウントを作成します</string>
+  <string name="make_sure_your_ledger">Ledgerデバイスがオンになっていて、Bluetoothが有効になっていることを確認してください。</string>
+  <string name="install_the_algorand_app">お使いのLedgerデバイスにAlgorandアプリ（バージョン1.2.9以降）をインストールします。</string>
+  <string name="open_the_algorand_app">お使いのLedgerでAlgorandアプリを開きます。</string>
+  <string name="make_sure_bluetooth">スマートフォンのBluetoothが有効になっていることを確認してください。</string>
+  <string name="search_for_ledger">Ledgerを検索する</string>
+  <string name="bluetooth_is_enabled">Bluetoothが有効です。</string>
+  <string name="verified_with_icon">検証済み<annotation type="verified-icon"></annotation></string>
+  <string name="all">すべて</string>
+  <string name="verified_assets">検証済み資産</string>
+  <string name="what_does_asset">資産の検証とはどういう意味ですか？</string>
+  <string name="verified_assets_first_paragraph">Algorand Inc.が資産の発行者と関係を持っている特定の資産については、それらの資産を「検証済み」としてマークしています（青いチェックマーク記号で示されます）。</string>
+  <string name="verified_assets_second_paragraph">これは、誤って意図しない資産と取引しないための二次的な防御策として機能します。</string>
+  <string name="verified_assets_third_paragraph">ただし、その資産を取引する前に、資産のIDが意図したものかどうかを<annotation type="color">常に再確認する</annotation>必要があります。</string>
+  <string name="verified_assets_fourth_paragraph">検証プロセスに関するご質問や、アプリについての一般的なご意見がございましたら、<annotation type="color">ご連絡ください</annotation>。</string>
+  <string name="advanced_troubleshooting">高度なトラブルシューティング</string>
+  <string name="looking_for_other_ledger">他のLedgerデバイスを探しています</string>
+  <string name="trouble_shoot">トラブルシューティング</string>
+  <string name="connecting_to_ledger">Ledgerに接続しています…</string>
+  <string name="ledger_approval">Ledgerの承認</string>
+  <string name="please_make_sure">Ledgerデバイスでトランザクションを確認してください</string>
+  <string name="ledger_info_power_first_paragraph">
+    <annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">LedgerのBluetooth機能の一般的な使用法については、Ledgerの公式<annotation type="bold"><annotation type="color">Bluetooth Connection Guide</annotation></annotation>をご覧ください。</annotation>
+  </string>
+  <string name="ledger_info_power_second_paragraph">
+    <annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">より高度なトラブルシューティングについては、Ledgerの公式<annotation type="bold"><annotation type="color">Bluetooth Troubleshooting Guide</annotation></annotation>をご覧ください。</annotation>
+  </string>
+  <string name="ledger_info_ledger_first_paragraph">
+    <annotation url="https://www.ledger.com/start">まず、Ledgerの包括的な<annotation type="bold"><annotation type="color">Getting Started</annotation></annotation>チュートリアルに従ってください。</annotation>
+  </string>
+  <string name="ledger_info_ledger_second_paragraph">チュートリアルで「デバイスにインストールするアプリケーションを選択してください」という指示が出たら、検索バーにAlgorandと入力してインストールしてください。</string>
+  <string name="ledger_info_algorand_first_paragraph">
+    <annotation url="https://www.ledger.com/start">まず、Ledgerの包括的な<annotation type="bold"><annotation type="color">Getting Started</annotation></annotation>チュートリアルに従ってください。このチュートリアルでは、Ledgerデバイスにアプリケーションをインストールして開く方法を説明しています。</annotation>
+  </string>
+  <string name="ledger_info_algorand_second_paragraph">まだLedgerデバイスに<annotation type="bold">Algorand</annotation>アプリをインストールしていない場合、チュートリアルで「デバイスにインストールするアプリケーションを選択してください」という指示が出たら、検索バーにAlgorandと入力してインストールしてください。</string>
+  <string name="error_connection_title">接続エラー</string>
+  <string name="error_connection_message">Ledgerデバイスに接続できませんでした。デバイスのロックが解除されているか、近くにあるか、Bluetoothが有効になっているかを確認してください。</string>
+  <string name="error_app_closed_title">Ledgerの接続エラー</string>
+  <string name="error_app_closed_message">お使いのLedgerデバイスでAlgorandアプリを開いてください。</string>
+  <string name="error_bluetooth_title">Bluetoothエラー</string>
+  <string name="error_bluetooth_message">近くのLedgerデバイスを検索するには、デバイスでBluetoothが有効になっている必要があります。</string>
+  <string name="error_permission_title">アクセス拒否</string>
+  <string name="error_location_message">近くのLedgerを検索するには、位置情報の許可が必要です。</string>
+  <string name="error_transmission_title">送信エラー</string>
+  <string name="error_sending_message">お使いのLedgerデバイスにトランザクションを送信できませんでした。もう一度お試しください。</string>
+  <string name="error_receiving_message">お使いのLedgerデバイスの公開鍵を受信できませんでした。もう一度お試しください。</string>
+  <string name="error_cancelled_title">トランザクションのキャンセル</string>
+  <string name="error_cancelled_message">ペアリングされたLedgerデバイスがトランザクション要求をキャンセルしました。</string>
+  <string name="error_unsupported_title">サポートされていないデバイス</string>
+  <string name="error_unsupported_message">接続しようとしているデバイスは、Algorand Walletではサポートされていません。</string>
+  <string name="bluetooth_location_services">Bluetooth位置情報サービスエラー</string>
+  <string name="please_ensure">位置情報サービスが有効になっていることを確認してください。</string>
+  <string name="terms_and_services">利用規約とサービス</string>
+  <string name="unknown_error">不明なエラー</string>
+  <string name="show_qr">QRを表示</string>
+  <string name="do_not_use_face">Face ID/Touchを使用しない</string>
+  <string name="manage_all_assets">1つのアプリからすべての資産を管理</string>
+  <string name="manage_all_assets_two_line">1つのアプリから\nすべての資産を管理</string>
+  <string name="account_details">アカウント詳細</string>
+  <string name="passphrase">パスフレーズ</string>
+  <string name="scan_qr_code">QRコードのスキャン</string>
+  <string name="you_can_only">このページからのみQRをスキャンできます。QRを表示するには、アカウントのアイコンを選択してください</string>
+  <string name="step_number">ステップ%1$d</string>
+  <string name="go_to_home">ホームに移動</string>
+  <string name="accept">承認</string>
+  <string name="add_new_asset">新規資産の追加</string>
+  <string name="add_new_account">新規アカウントの追加</string>
+  <string name="try_different">別の資産名または資産IDをお試しください</string>
+  <string name="share_qr">QRを共有する</string>
+  <string name="copy_address">アドレスをコピー</string>
+  <string name="account_address">アカウントアドレス</string>
+  <string name="keep">維持する</string>
+  <string name="keep_it">維持する</string>
+  <string name="done">完了</string>
+  <string name="you_havent">まだ連絡先を追加していません</string>
+  <string name="please_try_a_different">別の連絡先名をお試しください。</string>
+  <string name="contact_name_must">連絡先名は空欄にできません</string>
+  <string name="edit">編集</string>
+  <string name="transactions">トランザクション</string>
+  <string name="no_transaction_yet">まだトランザクションはありません</string>
+  <string name="no_transaction_have">この資産を使ったトランザクションは行われていません。</string>
+  <string name="rewards_since_last">最新トランザクション以降の<annotation custom="rewards_color"><annotation replacement="rewards_value"></annotation>リワード</annotation></string>
+  <string name="choose_asset">資産を選択</string>
+  <string name="preview_send_asset">送信資産のプレビュー</string>
+  <string name="cancel_approval">承認の取り消し</string>
+  <string name="delete_all_data">全データの削除</string>
+  <string name="remove_contact">連絡先を削除</string>
+  <string name="are_you_sure">すべてのデータを削除してもよろしいですか？</string>
+  <string name="your_feedback">フィードバックが送信されました</string>
+  <string name="thank_you">ありがとうございます、フィードバックを受け取りました</string>
+  <string name="close_amount">金額を閉じる</string>
+  <string name="close_to">Toを閉じる</string>
+  <string name="your_accounts_address">お客様のアカウントのアドレスQRはこちらで確認できます。</string>
+  <string name="sort_by_date">日付順に表示</string>
+  <string name="all_time">全期間</string>
+  <string name="today">今日</string>
+  <string name="yesterday">昨日</string>
+  <string name="last_week">先週</string>
+  <string name="last_month">先月</string>
+  <string name="custom_range">カスタム範囲</string>
+  <string name="you_can_now_filter">トランザクション履歴をフィルタリングできるようになりました</string>
+  <string name="press_and_hold">長押しでクリップボードにコピー</string>
+  <string name="something_went_wrong">問題が発生しました</string>
+  <string name="sorry_something_went">申し訳ありませんが、問題が発生しました。</string>
+  <string name="try_again">やり直す</string>
+  <string name="couldnt_create">CSVファイルを作成できませんでした。もう一度やり直してください。</string>
+  <string name="no_current_notifications">通知は現在ありません</string>
+  <string name="your_recent_transactions">最近のトランザクション、資産リクエスト、その他の通知がここに表示されます</string>
+  <string name="removing_an_asset">資産の削除</string>
+  <string name="to_remove_an_asset">資産を削除するには、まずその資産の残高を他の口座に移す必要があります。</string>
+  <string name="select_asset">資産の選択</string>
+  <string name="connect_to_internet">インターネットへの接続</string>
+  <string name="we_couldn_t_reach">サーバーにアクセスできません。インターネットに接続されていることを確認してください</string>
+  <string name="enter_note_here">ここにメモを入力してください</string>
+  <string name="add_note">メモを追加</string>
+  <string name="try_again_in">やり直してください</string>
+  <string name="rekey_account">アカウントの再キー化</string>
+  <string name="start_process">プロセスの開始</string>
+  <string name="replace_your_account">アカウント元帳を新しいLedgerデバイスと置き換えます</string>
+  <string name="replace_your_accounts">アカウントのパスフレーズをLedgerデバイスに置き換える。</string>
+  <string name="what_to_expect">予想される状況:</string>
+  <string name="future_transactions_will_be">今後のトランザクションは、お使いの新しいLedgerデバイスによって署名されます。</string>
+  <string name="this_account">このアカウントのパスフレーズは、このアカウントでは機能しなくなります。</string>
+  <string name="your_old_ledger">古いLedgerデバイスはこのアカウントでは機能しなくなります。</string>
+  <string name="your_account_s_public">アカウントの公開鍵、残高、設定は変更されません。</string>
+  <string name="add_account">アカウントの追加</string>
+  <string name="confirm_rekeying">再キー化の確認</string>
+  <string name="rekeying_transaction">トランザクションの再キー化</string>
+  <string name="total_rekeying_fee">再キー化料金の合計は%1$s</string>
+  <string name="plus_more_assets">+%1$dの資産</string>
+  <string name="finalize_rekeying">再キー化を完了する</string>
+  <string name="new_ledger">新Ledger</string>
+  <string name="old_ledger">旧Ledger</string>
+  <string name="account_rekeyed">アカウントが再キー化されました</string>
+  <string name="the_account_name">アカウント<annotation font="publicsans_bold">\"<annotation replacement="account_name"> </annotation>\"</annotation>が正常に再キー化されました。</string>
+  <string name="just_now">たった今</string>
+  <string name="asset_support_success"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>が<annotation replacement="asset">assetPlaceholder</annotation>をアカウントに追加しました。<annotation replacement="asset">assetPlaceholder</annotation>を送信可能です。</string>
+  <string name="asset_support_request"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>が<annotation replacement="asset">assetPlaceholder</annotation>を送信しようとしていますが、これはサポートされていません。必要に応じて、アカウントに追加できます。</string>
+  <string name="transaction_send_successful"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>から<annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>への、<annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation>のトランザクションが完了しました。</string>
+  <string name="transaction_send_failed"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>から<annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>への、<annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation>のトランザクションが失敗しました。</string>
+  <string name="transaction_received"><annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> が、<annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>によって<annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>に送信されました。</string>
+  <string name="algorand_app_is_locked">Algorandアプリはロックされました</string>
+  <string name="too_many_pin_attempts">PINの試行回数が多すぎます</string>
+  <string name="reset_all_data">全データのリセット</string>
+  <string name="this_ledger_device">接続されたLedgerデバイスは、以下のアカウントのトランザクションに署名できます。Algorand Walletに追加するアカウントを選択してください。</string>
+  <string name="the_connected_ledger">接続されたLedgerデバイスは、このアカウントのトランザクションに署名できません。署名するには、<annotation replacement="auth_address"></annotation>を接続してください。</string>
+  <string name="this_account_has">このアカウントは再キー化されました。トランザクションに署名するには、パスフレーズまたはLedgerデバイスでこのアカウントをリカバリーしてください。</string>
+  <string name="auth_account_address">Authアカウントアドレス</string>
+  <string name="pair_your_new_ledger">新しいLedgerデバイスのペアリング</string>
+  <string name="rekeying_account">アカウントの再キー化中…</string>
+  <string name="recover_ledger_account">Ledgerアカウントの復元</string>
+  <string name="you_cannot_send">最大残高を自分自身に送ることはできません。別の金額または受取人を選択して、やり直してください。</string>
+  <string name="account_optional">アカウント<annotation custom="optional_color">（オプション）</annotation></string>
+  <string name="choose_account">アカウントの選択</string>
+  <string name="email_must_not_be_blank">Eメールは空欄にできません。</string>
+  <string name="account_address_to_watch">監視するアカウントアドレス</string>
+  <string name="date">日付</string>
+  <string name="copy">コピー</string>
+  <string name="open_in_explorer">エクスプローラーで開く</string>
+  <string name="developer_settings">開発者設定</string>
+  <string name="currency">通貨</string>
+  <string name="algorand_dispenser">Algorand Dispenser</string>
+  <string name="by_creating_account">アカウントを作成することで、お客様はAlgorandの<annotation custom="terms_click">利用規約</annotation>と<annotation custom="privacy_click">プライバシーポリシー</annotation>に同意したとみなされます</string>
+  <string name="choose_account_type">アカウントタイプの選択</string>
+  <string name="recover_an_account">25語のパスフレーズを持つ、アカウントのリカバリー</string>
+  <string name="pair_an_account">Ledgerハードウェアウォレットに紐づけされたアカウントをペアリング</string>
+  <string name="create_new_account">新規アカウントの作成</string>
+  <string name="generate_an_account">アドレスとパスフレーズを持つ、新しいアカウントを作成</string>
+  <string name="watch_account">ウォッチアカウント</string>
+  <string name="follow_the_account">アドレスだけを使用してアカウントのトランザクションを監視する</string>
+  <string name="new_uppercase">新</string>
+  <string name="this_account_is_rekeyed">このアカウントは再キー化されています。このアカウントを使って取引をすることはできません。</string>
+  <string name="receive">受け取る</string>
+  <string name="paste_address_or">アドレスを貼り付けるか、QRコードをスキャン</string>
+  <string name="set_theme">テーマを設定する</string>
+  <string name="system_default">システムのデフォルト</string>
+  <string name="light">ライト</string>
+  <string name="dark">ダーク</string>
+  <string name="privacy_policy">個人情報保護方針</string>
+  <plurals name="min_ago">
+    <item quantity="other">%1$s分前</item>
+  </plurals>
+  <plurals name="hours_ago">
+    <item quantity="other">%1$s時間前</item>
+  </plurals>
+  <plurals name="days_ago">
+    <item quantity="other">%1$s日前</item>
+  </plurals>
+  <plurals name="account_found">
+    <item quantity="other">%1$dアカウントが見つかりました</item>
+  </plurals>
+  <string name="push_notifications">プッシュ通知</string>
+  <string name="mute_notifications">通知のミュート</string>
+  <string name="unmute_notifications">通知のミュート解除</string>
+  <string name="show_notification_for">通知の表示</string>
+  <string name="rate_algorand_wallet">Algorand Walletを評価する</string>
+  <string name="ledger_position">Ledger #<annotation replacement="account_index">accountIndexPlaceholder</annotation></string>
+  <string name="ledger_details">Ledgerの詳細</string>
+  <string name="can_be_signed_by">署名できるのは</string>
+  <string name="can_sign_for_these">これらのアカウントに署名できます</string>
+  <string name="select_account">アカウントの選択</string>
+  <string name="choose_the_account">このアカウントへの署名に使用するアカウントを選択します。</string>
+  <string name="a_network_error">アカウントの詳細を取得中にネットワークエラーが発生しました。プロセスを再開してください。</string>
+  <string name="it_appears_this">このLedgerデバイスがリセットされ、デバイス上のアカウントとこのアカウントが一致しないようです。再度、ホームページからLedgerのペアリングを行ってください。</string>
+  <plurals name="asset_count">
+    <item quantity="other">+%1$d 資産</item>
+  </plurals>
+  <string name="continue_text">続ける</string>
+  <string name="dont_show_this_again">今後表示しない</string>
+  <string name="maximum_balance">最大残高</string>
+  <string name="rekeyed_maximum_error_message">この再キー化アカウントで最大残高を送信するには、<annotation replacement="min_balance">min_balance_placeholder</annotation> Algosの最低残高を維持する必要があります。これは、再キー化されたアカウントに何も変化がないことを確認するためです。\n\n\nこの変更を反映して、お客様の取引額が自動的に更新されます。次のステップでトランザクションをプレビューできます。</string>
+  <string name="support_center">サポートセンター</string>
+  <string name="when_sending_to_an_address">初めてのアドレスに送信する場合、大きな金額を送信する前に少額のテストトランザクションを行うと便利です。</string>
+  <string name="exchanges_change_their">交換所は頻繁に入金アドレスを変更するため、保存されている交換所のアドレスはすでに使用されていない可能性があります。<annotation custom="highlight_color">正しいアドレスに送信しているか確認してください。</annotation></string>
+  <string name="for_more_information_on">トランザクションの詳細については、<annotation custom="tap_here_color">こちらをタップ</annotation></string>
+  <string name="i_understand">分かりました</string>
+  <string name="before_you_finalize">完了前に、いくつかのヒントを覚えておいてください。</string>
+  <string name="the_transaction_cannot_be">トランザクション後の残高が、最小口座残高の<annotation replacement="min_balance">min_balance_placeholder</annotation> Algosを下回る結果になるため、トランザクションを完了できません。</string>
+  <string name="recovery_passphrase">リカバリーパスフレーズ</string>
+  <string name="select_word">次の番号の単語の選択 #<annotation replacement="word_number">wordNumberPlaceholder</annotation></string>
+  <string name="back_up_your_account">リカバリーパスフレーズを使ったアカウントのバックアップ</string>
+  <string name="without_your_recovery">リカバリーパスフレーズがない場合、デバイスを紛失したり、アプリを削除したり、携帯電話を紛失すると、Algorandアカウントに永久にアクセスできなくなります。</string>
+  <string name="backup_now">今すぐバックアップ</string>
+  <string name="prepare_to_write">リカバリーパスフレーズを書き留める用意</string>
+  <string name="im_ready_to_begin">始める準備ができました</string>
+  <string name="create_a_watch">ウォッチアカウントの作成</string>
+  <string name="recover_an_algorand">Algorandアカウントの復元</string>
+  <string name="in_the_following">次の手順では、25語のリカバリーパスフレーズを入力して、Algorandアカウントを復元します。始める前に、リカバリーフレーズをご用意ください。</string>
+  <string name="account_name_optional">アカウント名（オプション）</string>
+  <string name="finish_account_creation">アカウント作成完了</string>
+  <string name="welcome_to_algorand">Algorand Walletへようこそ</string>
+  <string name="i_want_to_create">新しいAlgorandアカウントを作成したい</string>
+  <string name="recover_with_passphrase">パスフレーズでのリカバリー</string>
+  <string name="i_already_have">すでにアカウントを持っている</string>
+  <string name="create_a_new">Algorandアカウントの新規作成</string>
+  <string name="use_your_ledger">AlgorandアプリからLedgerアカウントを使用する</string>
+  <string name="recover">復元</string>
+  <string name="enter_your_passphrase">パスフレーズの入力</string>
+  <string name="the_last_copied_text">コピーされたテキストは、25語の有効なパスフレーズではありません。有効なパスフレーズをコピーして、再試行してください。</string>
+  <string name="make_sure_to_record">対応する番号を使用して、これらの単語を正しい順序で記録してください。</string>
+  <string name="this_6_digit_pin">この6桁のPINは、Algorand Walletを使用するために必要になります。携帯電話の盗難に備えウォレットのセキュリティを強化するために、PINを作成することを強くお勧めします。</string>
+  <string name="increase_your_security">PINでセキュリティを強化</string>
+  <string name="name_your_account">アカウントに名前を付ける</string>
+  <plurals name="add_account_count">
+    <item quantity="other">アカウントの追加</item>
+  </plurals>
+  <string name="enable_biometric">生体認証を有効にする</string>
+  <string name="do_not_use_biometric">生体認証を使用しない</string>
+  <string name="please_use_biometric">続行するには、生体認証を使用してください。</string>
+  <string name="passcode_will_be_required">アカウントと個人情報を表示するには、パスコードが必要になります。</string>
+  <string name="set_passcode">パスコードの設定</string>
+  <string name="not_now">今はしない</string>
+  <string name="pair_with_ledger">Ledgerとのペアリング</string>
+  <string name="enable_biometric_authentication">生体認証を有効にする</string>
+  <string name="your_biometric_will">アプリを使用するには、生体情報が必要になります。携帯電話の盗難に備えウォレットのセキュリティを強化するために、生体認証を有効にすることをお勧めします。</string>
+  <string name="create_an_account">アカウントの作成</string>
+  <string name="you_need_to_create">資産の取引を開始するには、アカウントを作成する必要があります。</string>
+  <string name="skip">スキップ</string>
+  <string name="do_not_ask_again">今後表示しない</string>
+  <string name="selected_words_are">選択された単語が間違っています。もう一度お試しください。</string>
+  <string name="paste_full_passphrase">パスフレーズ全体の貼り付け</string>
+  <string name="verify_recovery_passphrase">リカバリーパスフレーズのバックアップを確認</string>
+  <string name="please_enter_a_destination">送信先のアドレスを入力してください</string>
+  <string name="transacting_tips">トランザクションのヒント</string>
+  <string name="the_only_way_to">このリカバリーパスフレーズを使う以外に、Algorandアカウントを復元する方法はありません。\n\n<annotation font="publicsans_regular_italic"><annotation custom="warning_color"><annotation type="bold">警告</annotation>：このパスフレーズは、アカウントへの完全なアクセスを許可するものですので、誰にも教えないでください。</annotation></annotation></string>
+  <string name="monitor_activity_of">リカバリーパスフレーズの必要無く、アカウントのアクティビティを監視できます。これは、コールドストレージに保管されている資産を監視するのに便利です。\n\n<annotation font="publicsans_regular_italic"><annotation custom="warning_color"><annotation type="bold">警告</annotation>：対応するリカバリーパスフレーズがない場合は、このアカウントに資産を送信しないでください。</annotation></annotation></string>
+  <string name="i_want_a_new">新規アドレスと回復用パスフレーズを持つ、新しいアカウントを作成</string>
+  <string name="i_want_to_monitor">コールドストレージに保管されているアカウントを監視したい</string>
+  <string name="i_want_to_create_an">Ledgerハードウェアウォレットに紐づけされたアカウントを作成したい</string>
+  <string name="you_are_creating">Algorandアカウントの読み取り専用ビューを作成しています。このアカウントに資産を送信し、対応するリカバリーパスフレーズがない場合、それらの資産は失われます。</string>
+  <string name="name_your_account_to">Algorand Walletを使用する際、簡単に識別できるようにアカウントに名前を付けてください。これらの名前はローカルに保存され、ユーザーだけが見ることができます。</string>
+  <string name="keep_this_recovery_passphrase">このリカバリーパスフレーズは、本人だけがアクセス可能な安全な場所に保管してください。このリカバリーパスフレーズをなくさないでください。</string>
+  <string name="learn_more">さらに詳しく</string>
+  <string name="no_contact_found">連絡先が見つかりません</string>
+  <string name="you_can_make_the">新しい連絡先を追加することで、資産の送信プロセスを高速化できます。</string>
+  <string name="no_contact_found_description">別の連絡先名をお試しください。</string>
+  <string name="verify_account_addresses">Ledgerによるアカウントアドレスの確認</string>
+  <string name="the_following_account">以下のアカウントアドレスがLedgerデバイスに表示されます。デバイスのペアリングを完了するために、各アドレスを慎重に比較・確認してください。</string>
+  <string name="add_verified_accounts">認証済みアカウントの追加</string>
+  <string name="awaiting_verification">認証待ち</string>
+  <string name="not_verified">未認証</string>
+  <string name="verify_selected_account">選択したアカウントの認証</string>
+  <plurals name="verify_selected_count">
+    <item quantity="other">選択したアカウントの認証</item>
+  </plurals>
+  <string name="open_in_algoexplorer">AlgoExplorerで開く</string>
+  <string name="open_in_goalseeker">GoalSeekerで開く</string>
+  <string name="overwrite_existing_contract">既存の連絡先を上書きする</string>
+  <string name="this_address_is_already_in_your_contract">このアドレスは、すでに連絡先に%1$sとして登録されています。連絡先を入れ替えますか？</string>
+  <string name="one_hour_abbr">1時間</string>
+  <string name="one_day_abbr">1日</string>
+  <string name="one_week_abbr">1週</string>
+  <string name="one_month_abbr">1月</string>
+  <string name="one_year_abbr">1年</string>
+  <string name="all_time_abbr">すべて</string>
+  <string name="no_chart_data_available">価格APIは現在利用できません、改めてご確認ください。</string>
+  <string name="balance">残高</string>
+  <string name="value">価値</string>
+  <string name="last_one_hour">過去1時間</string>
+  <string name="last_one_day">過去1日</string>
+  <string name="last_one_week">過去1週間</string>
+  <string name="last_one_month">過去1か月</string>
+  <string name="last_one_year">過去1年間</string>
+  <string name="analytics">アナリティクス</string>
+  <string name="algos">Algos</string>
+  <string name="algo_rewards">Algoリワード</string>
+  <string name="minimum_balance_required">必要な最小残高</string>
+  <string name="transaction_maximum_error_message_singular">このアカウントには（<annotation replacement="account_name">account_name_placeholder</annotation>）他の資産 <annotation replacement="asset_count">asset_count_placeholder</annotation> があるため、Algorandブロックチェーンでは <annotation replacement="min_balance">min_balance_placeholder</annotation> Algosの最低残高を維持する必要があります。\n\n続行をクリックすると、取引額がこの変更を反映して自動的に更新されます。次のステップで、この変更をプレビューできます。</string>
+  <string name="transaction_maximum_error_message_plural">このアカウントには（<annotation replacement="account_name">account_name_placeholder</annotation>）他の資産 <annotation replacement="asset_count">asset_count_placeholder</annotation> があるため、Algorandブロックチェーンでは <annotation replacement="min_balance">min_balance_placeholder</annotation> Algosの最低残高を維持する必要があります。\n\n続行をクリックすると、取引額がこの変更を反映して自動的に更新されます。次のステップで、この変更をプレビューできます。</string>
+</resources>

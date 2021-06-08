@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2019 Algorand, Inc.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/descriptionLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/mediumshadow_start_20dp_margin"
+        android:layout_marginTop="@dimen/mediumshadow_top_margin_10dp"
+        android:layout_marginEnd="@dimen/mediumshadow_end_20dp_margin"
+        android:background="@drawable/bg_medium_shadow"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/mediumshadow_start_padding_16dp"
+        android:paddingTop="@dimen/mediumshadow_top_padding_16dp"
+        android:paddingEnd="@dimen/mediumshadow_end_padding_16dp"
+        android:paddingBottom="@dimen/mediumshadow_bottom_padding_16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/descriptionTitleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="20dp"
+            android:fontFamily="@font/publicsans_medium"
+            android:gravity="center_vertical"
+            android:text="@string/removing_an_asset"
+            android:textSize="14sp"
+            app:drawableStartCompat="@drawable/ic_info" />
+
+        <TextView
+            android:id="@+id/descriptionTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="@dimen/keyline_1_minus_8dp"
+            android:fontFamily="@font/publicsans_regular"
+            android:text="@string/to_remove_an_asset"
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/assetsRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/mediumshadow_bottom_margin_16dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/descriptionLayout"
+        tools:listitem="@layout/item_remove_asset" />
+
+    <include
+        android:id="@+id/removeAssetsLoadingLayout"
+        layout="@layout/layout_loading" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

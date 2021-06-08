@@ -1,0 +1,146 @@
+<!--
+  ~ Copyright 2019 Algorand, Inc.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rootLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/categoryLabelTextView"
+            style="@style/TextAppearance.Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/input_label_horizontal_margin"
+            android:layout_marginTop="@dimen/keyline_1"
+            android:text="@string/category"
+            app:layout_constraintStart_toStartOf="@id/categorySelectionView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.algorand.android.customviews.SelectionView
+            android:id="@+id/categorySelectionView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/smallshadow_start_20dp_margin"
+            android:layout_marginTop="@dimen/input_label_vertical_margin"
+            android:layout_marginEnd="@dimen/smallshadow_end_20dp_margin"
+            android:background="@drawable/bg_small_shadow"
+            app:hintText="@string/type_of_feedback"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/categoryLabelTextView" />
+
+        <TextView
+            android:id="@+id/accountLabelTextView"
+            style="@style/TextAppearance.Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/input_label_horizontal_margin"
+            android:layout_marginTop="@dimen/smallshadow_bottom_margin_20dp"
+            app:layout_constraintStart_toStartOf="@id/emailEditText"
+            app:layout_constraintTop_toBottomOf="@id/categorySelectionView" />
+
+        <com.algorand.android.customviews.AccountSelectionView
+            android:id="@+id/accountSelectionView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/smallshadow_start_20dp_margin"
+            android:layout_marginTop="@dimen/input_label_vertical_margin"
+            android:layout_marginEnd="@dimen/smallshadow_end_20dp_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/accountLabelTextView" />
+
+        <TextView
+            android:id="@+id/emailLabelTextView"
+            style="@style/TextAppearance.Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/input_label_horizontal_margin"
+            android:layout_marginTop="@dimen/smallshadow_bottom_margin_20dp"
+            android:text="@string/email"
+            app:layout_constraintStart_toStartOf="@id/emailEditText"
+            app:layout_constraintTop_toBottomOf="@id/accountSelectionView" />
+
+        <EditText
+            android:id="@+id/emailEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/smallshadow_start_20dp_margin"
+            android:layout_marginTop="@dimen/input_label_vertical_margin"
+            android:layout_marginEnd="@dimen/smallshadow_end_20dp_margin"
+            android:hint="@string/email"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/emailLabelTextView" />
+
+        <TextView
+            android:id="@+id/noteLabelTextView"
+            style="@style/TextAppearance.Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/input_label_horizontal_margin"
+            android:layout_marginTop="@dimen/smallshadow_bottom_margin_20dp"
+            android:text="@string/note"
+            app:layout_constraintStart_toStartOf="@id/noteEditText"
+            app:layout_constraintTop_toBottomOf="@id/emailEditText" />
+
+        <EditText
+            android:id="@+id/noteEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/smallshadow_start_20dp_margin"
+            android:layout_marginTop="@dimen/input_label_vertical_margin"
+            android:layout_marginEnd="@dimen/smallshadow_end_20dp_margin"
+            android:gravity="top"
+            android:hint="@string/what_s_on_your_mind"
+            android:lines="8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/noteLabelTextView" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/sendButton"
+            style="@style/UnelevatedButton.General"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/smallshadow_bottom_margin_28dp"
+            android:layout_marginBottom="@dimen/bottom_safe_area_margin"
+            android:text="@string/send_feedback"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/noteEditText"
+            app:layout_constraintVertical_bias="0" />
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/loadingProgressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
+

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2019 Algorand, Inc.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rootConstraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipChildren="false"
+        android:clipToPadding="false">
+
+        <TextView
+            android:id="@+id/assetLabelTextView"
+            style="@style/TextAppearance.Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/input_label_horizontal_margin"
+            android:layout_marginTop="12dp"
+            android:text="@string/asset"
+            app:layout_constraintStart_toStartOf="@id/accountAssetSelector"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.algorand.android.customviews.AccountAssetSelector
+            android:id="@+id/accountAssetSelector"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/input_horizontal_20dp_margin"
+            android:layout_marginTop="@dimen/input_label_vertical_margin"
+            android:layout_marginEnd="@dimen/input_horizontal_20dp_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/assetLabelTextView"
+            app:showAccountType="true"
+            app:showBalance="true" />
+
+        <com.algorand.android.customviews.AmountInput
+            android:id="@+id/amountInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/input_horizontal_20dp_margin"
+            android:layout_marginTop="@dimen/smallshadow_bottom_margin_20dp"
+            android:layout_marginEnd="@dimen/input_horizontal_20dp_margin"
+            app:editableAmount="true"
+            app:isMaxEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/accountAssetSelector" />
+
+        <TextView
+            android:id="@+id/accountSelectionDivider"
+            style="@style/TextAppearance.Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/input_label_horizontal_margin"
+            android:layout_marginTop="@dimen/smallshadow_bottom_margin_20dp"
+            android:text="@string/to"
+            app:layout_constraintStart_toStartOf="@id/addressInfoView"
+            app:layout_constraintTop_toBottomOf="@id/amountInput" />
+
+        <com.algorand.android.customviews.AddressInfoView
+            android:id="@+id/addressInfoView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/smallshadow_start_20dp_margin"
+            android:layout_marginTop="@dimen/input_label_vertical_margin"
+            android:layout_marginEnd="@dimen/smallshadow_end_20dp_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/accountSelectionDivider" />
+
+        <TextView
+            android:id="@+id/noteLabelTextView"
+            style="@style/TextAppearance.Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/input_label_horizontal_margin"
+            android:layout_marginTop="@dimen/smallshadow_bottom_margin_20dp"
+            android:text="@string/add_note"
+            app:layout_constraintStart_toStartOf="@id/noteEditText"
+            app:layout_constraintTop_toBottomOf="@id/addressInfoView" />
+
+        <EditText
+            android:id="@+id/noteEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/smallshadow_start_20dp_margin"
+            android:layout_marginTop="@dimen/input_label_vertical_margin"
+            android:layout_marginEnd="@dimen/smallshadow_end_20dp_margin"
+            android:background="@drawable/bg_note"
+            android:textColor="@color/note_text_color"
+            android:gravity="top"
+            android:hint="@string/enter_note_here"
+            android:maxLines="5"
+            android:minLines="2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/noteLabelTextView" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/previewButton"
+            style="@style/UnelevatedButton.General"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="@dimen/bottom_safe_area_margin"
+            android:text="@string/preview"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/noteEditText"
+            app:layout_constraintVertical_bias="0" />
+
+        <include
+            android:id="@+id/blockerLoading"
+            layout="@layout/layout_loading_blocker" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

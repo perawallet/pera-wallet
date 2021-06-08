@@ -1,0 +1,30 @@
+<!--
+  ~ Copyright 2019 Algorand, Inc.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#8A8993"
+        android:fillType="evenOdd"
+        android:pathData="M12,4C10.3431,4 9,5.3432 9,7C9,8.6568 10.3431,10 12,10C13.6569,10 15,8.6568 15,7C15,5.3432 13.6569,4 12,4ZM7,7C7,4.2386 9.2386,2 12,2C14.7614,2 17,4.2386 17,7C17,9.7614 14.7614,12 12,12C9.2386,12 7,9.7614 7,7Z" />
+    <path
+        android:fillColor="#8A8993"
+        android:fillType="evenOdd"
+        android:pathData="M19,15C19,14.4477 18.5523,14 18,14C17.4477,14 17,14.4477 17,15V17H15C14.4477,17 14,17.4477 14,18C14,18.5523 14.4477,19 15,19H17V21C17,21.5523 17.4477,22 18,22C18.5523,22 19,21.5523 19,21V19H21C21.5523,19 22,18.5523 22,18C22,17.4477 21.5523,17 21,17H19V15Z" />
+    <path
+        android:fillColor="#8A8993"
+        android:fillType="evenOdd"
+        android:pathData="M9,14C5.6863,14 3,16.6863 3,20C3,21.1046 3.8954,22 5,22H14.1013C13.0031,21.7446 12.0774,20.9921 11.5307,20H5C5,17.7909 6.7909,16 9,16H11.4923C12.0334,15.0029 12.9769,14.2614 14.1013,14H9Z" />
+</vector>

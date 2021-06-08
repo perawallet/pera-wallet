@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2019 Algorand, Inc.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<resources>
+
+    <declare-styleable name="PadView">
+        <attr name="number" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="AccountAssetSelector">
+        <attr name="showBalance" format="boolean" />
+        <attr name="showArrow" format="boolean" />
+        <attr name="showAccountType" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="AmountInput">
+        <attr name="amountInputBackground" format="reference" />
+        <attr name="isMaxEnabled" format="boolean" />
+        <attr name="editableAmount" format="boolean" />
+        <attr name="editTextSize" format="dimension" />
+        <attr name="logoSize" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="AmountTextView">
+        <attr name="showOperator" format="boolean" />
+        <attr name="useMicroAlgos" format="boolean" />
+        <attr name="algoTextViewSize" format="dimension" />
+        <attr name="algoLogoViewSize" format="dimension" />
+        <attr name="defaultTintColor" format="color" />
+        <attr name="algoFontFamily" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="SendRequestCustomButton">
+        <attr name="buttonType" format="enum">
+            <enum name="Send" value="0" />
+            <enum name="Request" value="1" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="SelectionView">
+        <attr name="hintText" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="AssetNameTextView">
+        <attr name="showSubText" format="boolean" />
+        <attr name="showId" format="boolean" />
+        <attr name="anchorTextsToEnd" format="boolean" />
+        <attr name="showAlgoIcon" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="CollapsibleAccountView">
+        <attr name="collapsedListSize" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="EmptyListView">
+        <attr name="emptyImageSrc" format="reference" />
+        <attr name="emptyTitleText" format="string" />
+        <attr name="emptyDescriptionText" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="SettingsListItem">
+        <attr name="settingsShowArrow" format="boolean" />
+        <attr name="settingsIcon" format="reference" />
+        <attr name="settingsText" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="RegisterTypeSelectionItem">
+        <attr name="typeSelectionIcon" format="reference" />
+        <attr name="typeSelectionTitleText" format="string" />
+        <attr name="typeSelectionDescriptionText" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="LockableInput">
+        <attr name="lockedBackground" format="reference" />
+        <attr name="lockedTextColor" format="color" />
+    </declare-styleable>
+
+</resources>

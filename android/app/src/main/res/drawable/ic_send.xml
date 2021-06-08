@@ -1,0 +1,24 @@
+<!--
+  ~ Copyright 2019 Algorand, Inc.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="12dp"
+    android:height="13dp"
+    android:viewportWidth="12"
+    android:viewportHeight="13">
+    <path
+        android:fillColor="@color/white"
+        android:pathData="M7.1428,12.1429C7.1428,12.6162 6.6951,13 6.1428,13C5.5905,13 5.1428,12.6162 5.1428,12.1429L5.1428,1.8571C5.1428,1.3837 5.5905,1 6.1428,1C6.6951,1 7.1428,1.3837 7.1428,1.8571L7.1428,12.1429Z" />
+    <path
+        android:fillColor="@color/white"
+        android:pathData="M1.4632,6.7437C1.1285,7.0854 0.5858,7.0854 0.2511,6.7437C-0.0837,6.402 -0.0837,5.848 0.2511,5.5063L5.3939,0.2563C5.7184,-0.075 6.2409,-0.0866 6.5792,0.23L11.722,5.0425C12.071,5.369 12.0946,5.9225 11.7747,6.2788C11.4548,6.635 10.9126,6.659 10.5637,6.3325L6.0258,2.0861L1.4632,6.7437Z" />
+</vector>

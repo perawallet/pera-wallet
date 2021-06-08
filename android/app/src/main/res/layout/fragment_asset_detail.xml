@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2019 Algorand, Inc.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/assetDetailMotionLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layoutDescription="@xml/asset_detail_motion_scene"
+    app:visibilityMode="ignore"
+    tools:context=".ui.assetdetail.AssetDetailFragment">
+
+    <TextView
+        android:id="@+id/titleTextView"
+        style="@style/TextAppearance.ToolbarTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/toolbar_navigation_item_width"
+        android:layout_marginEnd="@dimen/keyline_1_minus_8dp"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        tools:text="@tools:sample/lorem" />
+
+    <TextView
+        android:id="@+id/subtitleTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/publicsans_medium"
+        android:gravity="center"
+        android:textAllCaps="true"
+        android:textColor="@color/gray_8A"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/backButton"
+        style="?attr/toolbarNavigationButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/default_toolbar_height"
+        android:layout_gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_back_navigation" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/cardsViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/asset_detail_card_height"
+        android:layout_marginTop="20dp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:paddingHorizontal="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/backButton" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/pageIndicator"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/transparent"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardsViewPager"
+        app:tabBackground="@drawable/dot_selector"
+        app:tabGravity="center"
+        app:tabIndicatorHeight="0dp"
+        app:tabMaxWidth="18dp"
+        tools:visibility="visible" />
+
+    <View
+        android:id="@+id/transactionsBackgroundView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_secondary_top_20dp_radius"
+        android:clickable="true"
+        android:elevation="3dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/historyTitleTextView" />
+
+    <TextView
+        android:id="@+id/historyTitleTextView"
+        android:layout_width="0dp"
+        android:layout_height="68dp"
+        android:elevation="3dp"
+        android:fontFamily="@font/publicsans_semibold"
+        android:gravity="center_vertical"
+        android:maxLines="2"
+        android:paddingHorizontal="20dp"
+        android:text="@string/transactions"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@id/filterButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pageIndicator" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/filterButton"
+        style="@style/BaseIconButton.Transparent"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_marginEnd="@dimen/keyline_1"
+        android:elevation="3dp"
+        app:icon="@drawable/ic_filter"
+        app:layout_constraintBottom_toBottomOf="@id/historyTitleTextView"
+        app:layout_constraintEnd_toStartOf="@id/shareButton"
+        app:layout_constraintTop_toTopOf="@id/historyTitleTextView"
+        app:rippleColor="@color/gray_D9" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/shareButton"
+        style="@style/BaseIconButton.Transparent"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_marginEnd="@dimen/keyline_1"
+        android:elevation="3dp"
+        app:icon="@drawable/ic_share"
+        app:iconTint="@color/gray_71"
+        app:layout_constraintBottom_toBottomOf="@id/historyTitleTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/historyTitleTextView"
+        app:rippleColor="@color/gray_D9" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:elevation="3dp"
+        app:layout_constraintBottom_toTopOf="@id/sendReceiveBottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/historyTitleTextView">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/historyList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_transaction" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <com.algorand.android.customviews.EmptyListView
+        android:id="@+id/emptyListView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:elevation="3dp"
+        android:visibility="gone"
+        app:emptyDescriptionText="@string/no_transaction_have"
+        app:emptyImageSrc="@drawable/ic_empty_transaction_list"
+        app:emptyTitleText="@string/no_transaction_yet"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/swipeRefresh" />
+
+    <com.algorand.android.customviews.ErrorListView
+        android:id="@+id/errorListView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        android:elevation="3dp"
+        android:paddingTop="4dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/sendReceiveBottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/swipeRefresh" />
+
+    <com.algorand.android.customviews.SendReceiveBottomView
+        android:id="@+id/sendReceiveBottom"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/secondaryBackground"
+        android:elevation="4dp"
+        android:outlineProvider="none"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:visibilityMode="ignore"
+        tools:visibility="visible" />
+
+    <FrameLayout
+        android:id="@+id/blockerLoading"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:elevation="5dp"
+        android:focusable="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+    </FrameLayout>
+
+</androidx.constraintlayout.motion.widget.MotionLayout>

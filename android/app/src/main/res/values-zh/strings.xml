@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright 2019 Algorand, Inc.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+  -->
+
+<resources>
+  <string name="app_name">Algorand钱包</string>
+  <string name="create_account">创建账户</string>
+  <string name="recover_from_passphrase">通过密码短语恢复账户</string>
+  <string name="already_have_an_account">已有账户？</string>
+  <string name="choose_passcode">请选择密码</string>
+  <string name="choose_a_six_digit">请选择6位数密码</string>
+  <string name="we_recommend_this_for_improved_security">我们推荐这种方式来提高安全性</string>
+  <string name="yes">是</string>
+  <string name="please_scan_your_fingerprint_or">请扫描您的指纹或进行脸部识别。</string>
+  <string name="cancel">取消</string>
+  <string name="new_account">新账户</string>
+  <string name="back_up_passphrase">备份密码短语</string>
+  <string name="share">分享</string>
+  <string name="ensure_that_you_backup">请确保您备份本账户助记词。这是您恢复Algorand账户的唯一途径。</string>
+  <string name="share_via">分享通过</string>
+  <string name="ok">好的</string>
+  <string name="question_format">%2$d 个的问题中的第%1$d个</string>
+  <string name="select_passphrase_format">请选择您助记词中的 %1$s 词语</string>
+  <string name="verify_recovery_phrase">验证恢复助记词</string>
+  <string name="next">下一步</string>
+  <string name="please_name_your_account">请输入您的账户名称</string>
+  <string name="account_name">账户名称</string>
+  <string name="passphrase_verified">助记词验证</string>
+  <string name="your_passphrase_has_been_verified">助记词已通过验证。您将需要它来恢复账户，因此请确保您有备份好该助记词。</string>
+  <string name="verify_passcode">密码验证</string>
+  <string name="enter_the_same_six_digits">输入相同的六位密码</string>
+  <string name="name">名称</string>
+  <string name="verify">验证</string>
+  <string name="close">关闭</string>
+  <string name="account_verified">账户验证</string>
+  <string name="account_verified_message">欢迎来到 <annotation type="bold">Algorand!</annotation>\n您的账户已准备就绪。</string>
+  <string name="accounts">账户</string>
+  <string name="settings">设置</string>
+  <string name="history">记录</string>
+  <string name="contacts">联系人</string>
+  <string name="enter_passphrase_or_scan_qr">输入助记词或扫描二维码</string>
+  <string name="passphrase_qr">助记词二维码</string>
+  <string name="search_contacts">搜索联系人</string>
+  <string name="send">发送</string>
+  <string name="from">来自</string>
+  <string name="to">发送至</string>
+  <string name="enter_address">输入地址</string>
+  <string name="preview">预览</string>
+  <string name="preview_and_sign_with">预览并通过Ledger签署</string>
+  <string name="fee">费用</string>
+  <string name="amount">金额</string>
+  <string name="transaction_id">交易编号</string>
+  <string name="add_contact">添加联系人</string>
+  <string name="contact_name">联系人姓名</string>
+  <string name="paste_hash_or_scan_qr">复制 # 或扫描二维码</string>
+  <string name="contact_info">联系人信息</string>
+  <string name="edit_contact">编辑联系人</string>
+  <string name="scan_qr">扫描二维码</string>
+  <string name="request">请求</string>
+  <string name="view_passphrase">查看助记词</string>
+  <string name="edit_account_name">编辑账户名称</string>
+  <string name="remove_account">移除账户</string>
+  <string name="copied_to_clipboard">复制到剪贴板</string>
+  <string name="you_are_about_to_remove_an_account">您将移除账户。您确定要这样做吗？</string>
+  <string name="remove">移除</string>
+  <string name="enter_six_digit_pin">输入6位数密码</string>
+  <string name="wrong_password">密码错误</string>
+  <string name="password_did_not_match_with_previous_password">与前面输入的密码不匹配。</string>
+  <string name="account_to_be_sent_must_not_be_blank">发送账户不得为空。</string>
+  <string name="account_must_be_selected">必须选择账户</string>
+  <string name="node_settings">节点设置</string>
+  <string name="language">语言</string>
+  <string name="set_change_password">设置/更改密码</string>
+  <string name="enable_face_id">使用人脸识别/触控</string>
+  <string name="enable_face_id_touch_id">使用人脸识别/触控</string>
+  <string name="select_the_node">选择节点</string>
+  <string name="key">密钥</string>
+  <string name="an_error_occured">出现错误</string>
+  <string name="warning">警告</string>
+  <string name="error">错误</string>
+  <string name="passphrase_must_not_be_blank">助记词不得为空。</string>
+  <string name="account_name_must_not_be_blank">账户名称不得为空。</string>
+  <string name="your_passphrase_is_invalid_please">您的助记词无效。请确认输入正确的助记词。</string>
+  <string name="transaction_detail">交易细节</string>
+  <string name="none_of_the_active_nodes_seem">所有的活跃节点似乎都不在线。在下一步之前，请确认您至少有一个活跃节点。</string>
+  <string name="this_account_already_exists">该账户已经存在</string>
+  <string name="delete">删除</string>
+  <string name="round">区块高度</string>
+  <string name="account">账户</string>
+  <string name="delete_contact">删除联系人</string>
+  <string name="are_you_sure_you_want_to_delete">确定要删除该联系人吗？</string>
+  <string name="address">地址</string>
+  <string name="version_format">%1$s 版本</string>
+  <string name="none_of_your_active_nodes">您的活跃节点均不在线。请添加或选择其他节点。</string>
+  <string name="pending">待处理</string>
+  <string name="unknown">未知的</string>
+  <string name="enter_six_digit_pin_to_see_passphrase">请输入6位数密码来查看助记词。</string>
+  <string name="you_should_enter_your_correct_password">请输入正确的密码来查看助记词。</string>
+  <string name="wrong_choice">选择错误</string>
+  <string name="there_s_no_biometric_registration">未在设备上找到生物特征注册或硬件</string>
+  <string name="you_re_trying_to_send">您正在尝试向余额低于最小余额的账户发送交易。金额应当大于%1$s ALGO。</string>
+  <string name="transaction_amount">交易后的账户余额低于最小账户余额 <annotation replacement="min_balance"> </annotation> ALGO。</string>
+  <string name="transaction_amount_cannot">交易金额不可超过所持有的金额。</string>
+  <string name="transaction_amount_results">交易金额导致账户余额为负。</string>
+  <string name="dollar_value">美元价值</string>
+  <string name="send_feedback">发送反馈</string>
+  <string name="note">备注</string>
+  <string name="what_s_on_your_mind">您有什么想法？</string>
+  <string name="email">电子邮箱</string>
+  <string name="type_of_feedback">反馈类别</string>
+  <string name="rewards">奖励</string>
+  <string name="show_rewards">显示奖励</string>
+  <string name="category">类别</string>
+  <string name="max">最大值</string>
+  <string name="you_earn_rewards_just">持有ALGO即可获得奖励！\n以下是自从您上笔交易后的奖励汇总。您的余额中将始终包括这些奖励。</string>
+  <string name="since_last_transaction">自从上笔交易后</string>
+  <string name="for_more_information">更多关于Algorand奖励的信息，请访问我们的 <annotation custom="faq_color"><annotation type="bold">常见问题解答</annotation></annotation></string>
+  <string name="reward">奖励</string>
+  <string name="account_to_be_sent_must_have_58">发送账户必须拥有长度58个字节的公钥。</string>
+  <string name="category_must_be_selected">发送反馈前，必须先选择类别。</string>
+  <string name="note_must_not_be_blank">备注栏不得为空。</string>
+  <string name="notifications">通知</string>
+  <string name="the_internet_connection">网络正处于离线状态。</string>
+  <string name="confirmed">已确认</string>
+  <string name="status">状态</string>
+  <string name="your_account_is_about">您的账户将被删除，您确定要继续吗？</string>
+  <string name="to_keep_an_account_open">账户至少需持有0.01个ALGO才能保持开通状态。若您发送全部ALGO，账户将被删除，您的有效参与密钥也同样会被删除。</string>
+  <string name="in_order_to_delete">您必须清零账户余额，并销毁所创建的所有资产后，才能删除账户。</string>
+  <string name="proceed">继续</string>
+  <string name="remove_assets">移除资产</string>
+  <string name="asset">资产</string>
+  <string name="assets">资产</string>
+  <string name="send_format">发送 %1$s</string>
+  <string name="receive_title_format">收到%1$s</string>
+  <string name="asset_must_be_selected">必须选择资产。</string>
+  <string name="you_dont_have_any">您的账户中不含这类资产。请先添加资产，再进行下一步。</string>
+  <string name="add_asset_fee">添加资产费用</string>
+  <string name="select_sending_account">选择发送账户</string>
+  <string name="select_receiving_account">选择接收账户</string>
+  <string name="unnamed">未命名</string>
+  <string name="entered_address_is_not_valid">所输入的地址无效。</string>
+  <string name="an_error_more">获取更多时出现错误。请稍后再尝试。</string>
+  <string name="search_assets_id">搜索资产编号或名称</string>
+  <string name="no_asset_found">未找到资产</string>
+  <string name="you_already_have">您已拥有该资产。</string>
+  <string name="adding_asset">添加资产</string>
+  <string name="removing_asset">移除资产</string>
+  <string name="to_remove_the_balance"><![CDATA[若需移除 <b>%1$s</b>，余额必须为0。请将余额转移到其他账户后，再做尝试。]]></string>
+  <string name="you_are_about_to"><![CDATA[您将要从<b>%2$s</b>中移除 <b>%1$s</b>。除非您重新启用该资产，否则不能再进行该资产的交易。]]></string>
+  <string name="adding_an_asset">添加资产前，需要发送一笔产生最低交易费用的交易。交易记录中将会显示该笔交易。</string>
+  <string name="unfortunately_this_account">很抱歉，本账户尚未添加该资产。请让账户所有者添加资产，并稍后再试。</string>
+  <string name="transfer_balance">余额转账</string>
+  <string name="approve">同意</string>
+  <string name="this_account_has_not">账户尚未添加该资产。请在添加该资产后继续。</string>
+  <string name="this_account_does_not">账户不含有该资产。</string>
+  <string name="account_does_not_accept">账户不接受这项资产。</string>
+  <string name="you_are_about_to_receive">您将要收到一项资产！</string>
+  <string name="you_are_about_to_receive_description"><![CDATA[您将会在<b>%1$s</b>收到一项资产。请问您需要添加这项资产到账户上来接收它吗？]]></string>
+  <string name="min_transaction_error">最小交易错误！</string>
+  <string name="you_need_at_least">您需要至少 <annotation replacement="min_balance"> </annotation> ALGO来添加这项资产</string>
+  <string name="your_accounts_do_not">您的账户不包含此项资产</string>
+  <string name="please_add_this">请添加该资产，并再次尝试。</string>
+  <string name="the_qr_contains">二维码中包含资产与所选资产不同。解码时将忽略金额。</string>
+  <string name="key_not_valid">密钥无效，请确保您拥有正确的密钥。</string>
+  <string name="you_just_scanned">您刚扫描了一个交易请求二维码。由于交易信息栏可能会有变化，请仔细检查。</string>
+  <string name="qr_scan">扫描二维码</string>
+  <string name="scanned_qr_is_not_valid">所扫二维码无效。</string>
+  <string name="create_account_error">创建账户时出错。请稍后再试。</string>
+  <string name="pair_ledger_account">配对Ledger账户</string>
+  <string name="connect">连接</string>
+  <string name="error_default_title">出错！</string>
+  <string name="pair_ledger_device">Ledger设备配对</string>
+  <string name="follow_the_steps_below">请按照下列步骤来创建新的Ledger账户</string>
+  <string name="make_sure_your_ledger">确保您的Ledger设备已开启，并启用了蓝牙功能。</string>
+  <string name="install_the_algorand_app">请在Ledger设备上安装Algorand应用（1.2.9版本或更新的版本）。</string>
+  <string name="open_the_algorand_app">在Ledger上打开Algorand应用。</string>
+  <string name="make_sure_bluetooth">确认开启手机上的蓝牙功能。</string>
+  <string name="search_for_ledger">搜索Ledger</string>
+  <string name="bluetooth_is_enabled">蓝牙功能已开启。</string>
+  <string name="verified_with_icon">已认证 <annotation type="verified-icon"> </annotation></string>
+  <string name="all">全部</string>
+  <string name="verified_assets">已验证的资产</string>
+  <string name="what_does_asset">资产验证是什么意思？</string>
+  <string name="verified_assets_first_paragraph">对于与Algorand Inc.有合作关系的资产发行者，我们会将这些资产标注为“已认证”（蓝V标记）。</string>
+  <string name="verified_assets_second_paragraph">这有助于防止错误地使用其他资产进行交易。</string>
+  <string name="verified_assets_third_paragraph">也就是说，在进行交易资产之前，您应当<annotation type="color">反复核实</annotation> 该资产编号是否是您想要选择的。</string>
+  <string name="verified_assets_fourth_paragraph">若您对验证过程有疑问，或对本应用有任何反馈，欢迎<annotation type="color"> 联系我们</annotation>。</string>
+  <string name="advanced_troubleshooting">高级故障排除</string>
+  <string name="looking_for_other_ledger">寻找其他Ledger设备</string>
+  <string name="trouble_shoot">故障排除</string>
+  <string name="connecting_to_ledger">正在连接Ledger...</string>
+  <string name="ledger_approval">Ledger批准</string>
+  <string name="please_make_sure">请在Ledger设备上确认交易</string>
+  <string name="ledger_info_power_first_paragraph">
+    <annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">关于Ledger蓝牙功能的一般使用，请查阅Ledger的官方 <annotation type="bold"><annotation type="color">蓝牙连接指南</annotation></annotation></annotation>
+  </string>
+  <string name="ledger_info_power_second_paragraph">
+    <annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">关于更多高级故障排除功能，请查阅Ledger的官方 <annotation type="bold"><annotation type="color">蓝牙故障排除指南。</annotation></annotation></annotation>
+  </string>
+  <string name="ledger_info_ledger_first_paragraph">
+    <annotation url="https://www.ledger.com/start">遵循Ledger的完整<annotation type="bold"><annotation type="color">开始使用</annotation></annotation>教程。</annotation>
+  </string>
+  <string name="ledger_info_ledger_second_paragraph">当教程指导您“选择想在设备上安装的应用”，请在搜索栏上输入Algorand，并进行安装。</string>
+  <string name="ledger_info_algorand_first_paragraph">
+    <annotation url="https://www.ledger.com/start">Ledger的完整<annotation type="bold"><annotation type="color">开始使用</annotation></annotation> 教程，会教您如何在Ledger设备上安装和打开应用。</annotation>
+  </string>
+  <string name="ledger_info_algorand_second_paragraph">若您尚未在Ledger设备上安装<annotation type="bold">Algorand</annotation> 应用，当教程指导您“选择想在设备上安装的应用”，请在搜索栏上输入Algorand，并进行安装。</string>
+  <string name="error_connection_title">连接错误</string>
+  <string name="error_connection_message">无法连接Ledger设备。请确认该设备在附近并已解锁，而且蓝牙功能已开启。</string>
+  <string name="error_app_closed_title">Ledger连接错误</string>
+  <string name="error_app_closed_message">请在您的Ledger设备上打开Algorand应用。</string>
+  <string name="error_bluetooth_title">蓝牙错误</string>
+  <string name="error_bluetooth_message">想要搜索附近的Ledger设备，请确保您已开启蓝牙功能。</string>
+  <string name="error_permission_title">拒绝访问</string>
+  <string name="error_location_message">请开启定位服务来搜索附近的Ledger。</string>
+  <string name="error_transmission_title">传输错误</string>
+  <string name="error_sending_message">我们无法将交易发送到Ledger设备上。请重试。</string>
+  <string name="error_receiving_message">我们无法接收到您Ledger设备的公钥。请重试。</string>
+  <string name="error_cancelled_title">交易已被取消</string>
+  <string name="error_cancelled_message">配对的Ledger设备已取消交易请求。</string>
+  <string name="error_unsupported_title">不支持的设备</string>
+  <string name="error_unsupported_message">Algorand钱包尚不支持您尝试连接的设备。</string>
+  <string name="bluetooth_location_services">蓝牙定位信息服务错误</string>
+  <string name="please_ensure">请确认定位相关权限已开启。</string>
+  <string name="terms_and_services">服务条款</string>
+  <string name="unknown_error">未知错误</string>
+  <string name="show_qr">显示二维码</string>
+  <string name="do_not_use_face">不使用人脸识别/触控</string>
+  <string name="manage_all_assets">在一个应用上管理全部资产</string>
+  <string name="manage_all_assets_two_line">在一个应用上\n管理全部资产</string>
+  <string name="account_details">账户详情</string>
+  <string name="passphrase">助记词</string>
+  <string name="scan_qr_code">扫描二维码</string>
+  <string name="you_can_only">您只能在本页扫描二维码，如需查看二维码，请选择账户上的图标。</string>
+  <string name="step_number">第%1$d步</string>
+  <string name="go_to_home">返回主页</string>
+  <string name="accept">接受</string>
+  <string name="add_new_asset">添加新资产</string>
+  <string name="add_new_account">添加新账户</string>
+  <string name="try_different">请尝试不同的资产名称或资产编号。</string>
+  <string name="share_qr">分享二维码</string>
+  <string name="copy_address">复制地址</string>
+  <string name="account_address">账户地址</string>
+  <string name="keep">保留</string>
+  <string name="keep_it">保留</string>
+  <string name="done">完成</string>
+  <string name="you_havent">尚未添加任何联系人。</string>
+  <string name="please_try_a_different">请输入一个不同的联系人姓名。</string>
+  <string name="contact_name_must">联系人姓名不得为空。</string>
+  <string name="edit">编辑</string>
+  <string name="transactions">交易</string>
+  <string name="no_transaction_yet">尚未有交易</string>
+  <string name="no_transaction_have">该资产尚未有相关交易。</string>
+  <string name="rewards_since_last">自上笔交易以来，您获得<annotation custom="rewards_color"> <annotation replacement="rewards_value"> </annotation>奖励</annotation></string>
+  <string name="choose_asset">选择资产</string>
+  <string name="preview_send_asset">预览发送资产</string>
+  <string name="cancel_approval">取消批准</string>
+  <string name="delete_all_data">删除全部数据</string>
+  <string name="remove_contact">移除联系人</string>
+  <string name="are_you_sure">您确定要删除全部数据吗？</string>
+  <string name="your_feedback">您的反馈已经送达</string>
+  <string name="thank_you">谢谢您，我们已经收到您的反馈</string>
+  <string name="close_amount">成交金额</string>
+  <string name="close_to">接近</string>
+  <string name="your_accounts_address">您可以在此找到账户地址二维码。</string>
+  <string name="sort_by_date">按日期排序</string>
+  <string name="all_time">全部时间</string>
+  <string name="today">今天</string>
+  <string name="yesterday">昨天</string>
+  <string name="last_week">上周</string>
+  <string name="last_month">上个月</string>
+  <string name="custom_range">自定义范围</string>
+  <string name="you_can_now_filter">您现在可以筛选交易记录</string>
+  <string name="press_and_hold">长按复制到剪贴板</string>
+  <string name="something_went_wrong">出错了</string>
+  <string name="sorry_something_went">抱歉，出错了。</string>
+  <string name="try_again">请再次尝试</string>
+  <string name="couldnt_create">无法创建CSV文件。请再次尝试。</string>
+  <string name="no_current_notifications">暂无通知</string>
+  <string name="your_recent_transactions">这里将会显示您的最近交易、资产请求和其他通知。</string>
+  <string name="removing_an_asset">移除资产</string>
+  <string name="to_remove_an_asset">如需移除某项资产，请先将资产余额转到其他账户上。</string>
+  <string name="select_asset">选择资产</string>
+  <string name="connect_to_internet">连接网络</string>
+  <string name="we_couldn_t_reach">无法连接到服务器，请确认已连接到网络</string>
+  <string name="enter_note_here">在此输入备注</string>
+  <string name="add_note">添加备注</string>
+  <string name="try_again_in">再次尝试</string>
+  <string name="rekey_account">密钥更新账户</string>
+  <string name="start_process">启动进程</string>
+  <string name="replace_your_account">通过新的Ledger设备替换现有账户。</string>
+  <string name="replace_your_accounts">通过Ledger设备替换您的账户助记词。</string>
+  <string name="what_to_expect">值得期待：</string>
+  <string name="future_transactions_will_be">使用新的Ledger设备签署未来的交易。</string>
+  <string name="this_account">该账户将不再支持这些助记词。</string>
+  <string name="your_old_ledger">该账户将不再支持您旧的Ledger设备。</string>
+  <string name="your_account_s_public">您账户的公钥、余额以及配置不会改变。</string>
+  <string name="add_account">添加账户</string>
+  <string name="confirm_rekeying">确认密钥更新</string>
+  <string name="rekeying_transaction">密钥更新交易</string>
+  <string name="total_rekeying_fee">%1$s的密钥更新总费用</string>
+  <string name="plus_more_assets">+%1$d 更多资产</string>
+  <string name="finalize_rekeying">最终确认密钥更新</string>
+  <string name="new_ledger">新的Ledger</string>
+  <string name="old_ledger">旧的Ledger</string>
+  <string name="account_rekeyed">账户密钥更新</string>
+  <string name="the_account_name">账户<annotation font="publicsans_bold">\"<annotation replacement="account_name"> </annotation>\"</annotation>密钥成功更新。</string>
+  <string name="just_now">刚刚</string>
+  <string name="asset_support_success"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> 已添加<annotation replacement="asset">assetPlaceholder</annotation> 到他们的账户上。您可以给他们发送 <annotation replacement="asset">assetPlaceholder</annotation>。</string>
+  <string name="asset_support_request"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>正在向您发送<annotation replacement="asset">assetPlaceholder</annotation>，但是您尚不支持该交易。如果有需要，我们可以添加到您的账户上。</string>
+  <string name="transaction_send_successful">您从 <annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> 发送至 <annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>的交易 <annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> 已经完成。</string>
+  <string name="transaction_send_failed">您从 <annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> 发送至 <annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>的交易 <annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation>  没有成功。</string>
+  <string name="transaction_received"><annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> 已发送至 <annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> ，发送人是 <annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>。</string>
+  <string name="algorand_app_is_locked">Algorand钱包已被锁定</string>
+  <string name="too_many_pin_attempts">密码输入次数过于频繁</string>
+  <string name="reset_all_data">重置所有数据</string>
+  <string name="this_ledger_device">该Ledger设备可为下列账户签署交易。请选择要添加到您Algorand钱包的账户。</string>
+  <string name="the_connected_ledger">连接的Ledger设备无法为此账户签署交易。如有需要，请连接<annotation replacement="auth_address"> </annotation></string>
+  <string name="this_account_has">账户密钥已更新。如需签署交易，请通过助记词或Ledger设备恢复本账户。</string>
+  <string name="auth_account_address">授权账户地址</string>
+  <string name="pair_your_new_ledger">配对新的Ledger设备</string>
+  <string name="rekeying_account">账户密钥更新...</string>
+  <string name="recover_ledger_account">恢复Ledger账户</string>
+  <string name="you_cannot_send">无法向自己发送所有余额。请在选择其他账户或收款人后，再次尝试。</string>
+  <string name="account_optional">账户 <annotation custom="optional_color">(选填)</annotation></string>
+  <string name="choose_account">选择账户</string>
+  <string name="email_must_not_be_blank">电子邮箱一栏不得为空</string>
+  <string name="account_address_to_watch">Watch的账户地址</string>
+  <string name="date">日期</string>
+  <string name="copy">复制</string>
+  <string name="open_in_explorer">在浏览器中打开</string>
+  <string name="developer_settings">开发者设置</string>
+  <string name="currency">币种</string>
+  <string name="algorand_dispenser">Algorand Dispenser</string>
+  <string name="by_creating_account">创建账户表明您同意Algorand的 <annotation custom="terms_click">条款和条件</annotation> 与 <annotation custom="privacy_click">隐私政策</annotation></string>
+  <string name="choose_account_type">选择账户类型</string>
+  <string name="recover_an_account">利用25个助记词恢复账户</string>
+  <string name="pair_an_account">与Ledger硬件钱包支持的账户配对</string>
+  <string name="create_new_account">创建新的账户</string>
+  <string name="generate_an_account">用新地址与助记词创建账户</string>
+  <string name="watch_account">Watch账户</string>
+  <string name="follow_the_account">仅使用账户地址监控账户交易</string>
+  <string name="new_uppercase">全新</string>
+  <string name="this_account_is_rekeyed">&gt;该账户的密钥已更新。您无法使用该账户签署交易。</string>
+  <string name="receive">接收</string>
+  <string name="paste_address_or">粘贴钱包地址或扫描二维码</string>
+  <string name="set_theme">设定主题</string>
+  <string name="system_default">系统默认</string>
+  <string name="light">浅色模式</string>
+  <string name="dark">深色模式</string>
+  <string name="privacy_policy">隐私政策</string>
+  <plurals name="min_ago">
+    <item quantity="zero"></item>
+    <item quantity="one"></item>
+    <item quantity="two"></item>
+    <item quantity="few"></item>
+    <item quantity="many"></item>
+    <item quantity="other">%1$s 分钟前\"</item>
+  </plurals>
+  <plurals name="hours_ago">
+    <item quantity="zero"></item>
+    <item quantity="one"></item>
+    <item quantity="two"></item>
+    <item quantity="few"></item>
+    <item quantity="many"></item>
+    <item quantity="other">%1$s 小时前\"</item>
+  </plurals>
+  <plurals name="days_ago">
+    <item quantity="zero"></item>
+    <item quantity="one"></item>
+    <item quantity="two"></item>
+    <item quantity="few"></item>
+    <item quantity="many"></item>
+    <item quantity="other">%1$s 天前\"</item>
+  </plurals>
+  <plurals name="account_found">
+    <item quantity="zero"></item>
+    <item quantity="one"></item>
+    <item quantity="two"></item>
+    <item quantity="few"></item>
+    <item quantity="many"></item>
+    <item quantity="other">找到账户\"</item>
+  </plurals>
+  <string name="push_notifications">推送通知</string>
+  <string name="mute_notifications">通知免打扰</string>
+  <string name="unmute_notifications">解除通知静音</string>
+  <string name="show_notification_for">显示通知</string>
+  <string name="rate_algorand_wallet">为Algorand钱包评分</string>
+  <string name="ledger_position">Ledger #<annotation replacement="account_index">accountIndexPlaceholder</annotation></string>
+  <string name="ledger_details">Ledger详情</string>
+  <string name="can_be_signed_by">签署人为</string>
+  <string name="can_sign_for_these">请为这些账户进行签名</string>
+  <string name="select_account">选择账户</string>
+  <string name="choose_the_account">请选择想要登录的账户。</string>
+  <string name="a_network_error">获取账户详细信息时出现网络错误。请稍后重试。</string>
+  <string name="it_appears_this">Ledger设备已重置，该设备上的账户与此账户不再匹配。请在首页上再次配对Ledger。</string>
+  <plurals name="asset_count">
+    <item quantity="other">+%1$d资产</item>
+  </plurals>
+  <string name="continue_text">继续</string>
+  <string name="dont_show_this_again">不再显示此内容</string>
+  <string name="maximum_balance">最高余额</string>
+  <string name="rekeyed_maximum_error_message">如需在重置密钥的账户上发送最高余额，请维持<annotation replacement="min_balance">min_balance_placeholder</annotation>ALGO的最低余额。该举措是为了确保重置密钥的账户不会发生改变。\n \n您的交易金额将自动更新，显示这一变化。您将可以在下一步中预览交易。</string>
+  <string name="support_center">支持中心</string>
+  <string name="when_sending_to_an_address">如果是首次向该地址发送交易时，可以尝试在发送大笔交易之前，先发送一笔小额的交易测试。</string>
+  <string name="exchanges_change_their">交易所经常改变存款地址，所保存的交易所地址可能失效。<annotation custom="highlight_color">请确保您的汇款地址是正确的。</annotation></string>
+  <string name="for_more_information_on">有关交易的更多信息，请<annotation custom="tap_here_color">点击这里</annotation></string>
+  <string name="i_understand">我明白</string>
+  <string name="before_you_finalize">在最终确认前，请记住几个小技巧：</string>
+  <string name="the_transaction_cannot_be">交易无法完成，因为该交易会使您的帐户余额低于<annotation replacement="min_balance">最低要求余额</annotation>ALGO。</string>
+  <string name="recovery_passphrase">恢复助记词</string>
+  <string name="select_word">选择词语 #<annotation replacement="word_number">wordNumberPlaceholder</annotation></string>
+  <string name="back_up_your_account">使用恢复助记词来备份账户</string>
+  <string name="without_your_recovery">若无恢复用的助记词，设备丢失或删除APP后，您会永久无法访问该Algorand账户。</string>
+  <string name="backup_now">立即备份</string>
+  <string name="prepare_to_write">请写下用来恢复的密码短语</string>
+  <string name="im_ready_to_begin">我已经准备好了</string>
+  <string name="create_a_watch">创建Watch账户</string>
+  <string name="recover_an_algorand">恢复Algorand帐户</string>
+  <string name="in_the_following">在以下步骤中，您将输入25字节的密码短语来恢复Algorand账户。在您开始之前，请准备好您的恢复密码短语。</string>
+  <string name="account_name_optional">账户名称（可选）</string>
+  <string name="finish_account_creation">完成账户创建</string>
+  <string name="welcome_to_algorand">欢迎使用Algorand钱包</string>
+  <string name="i_want_to_create">我想要创建新的Algorand账户</string>
+  <string name="recover_with_passphrase">使用密码短语进行恢复</string>
+  <string name="i_already_have">我已经有一个账户了</string>
+  <string name="create_a_new">创建新的Algorand账户</string>
+  <string name="use_your_ledger">在Algorand的APP上使用Ledger账户</string>
+  <string name="recover">恢复</string>
+  <string name="enter_your_passphrase">输入您的密码短语</string>
+  <string name="the_last_copied_text">最后复制的文字不是有效的25个字节密码短语。请复制有效的密码短语后，再重试一次。</string>
+  <string name="make_sure_to_record">请务必使用相应的数字以正确的顺序记录这些单词。</string>
+  <string name="this_6_digit_pin">要有6位数的PIN码，才能使用Algorand钱包。我们强烈创建您创建PIN码，即便手机被盗，也能够维护钱包的安全性。</string>
+  <string name="increase_your_security">使用PIN码提升账户安全</string>
+  <string name="name_your_account">账户命名</string>
+  <plurals name="add_account_count">
+    <item quantity="other">添加账户</item>
+  </plurals>
+  <string name="enable_biometric">启用生物识别认证</string>
+  <string name="do_not_use_biometric">不使用生物识别认证</string>
+  <string name="please_use_biometric">请使用生物识别技术进行操作。</string>
+  <string name="passcode_will_be_required">需要使用密码来查看账户和个人数据。</string>
+  <string name="set_passcode">设置密码</string>
+  <string name="not_now">暂时不要</string>
+  <string name="pair_with_ledger">Ledger配对</string>
+  <string name="enable_biometric_authentication">启用生物识别认证</string>
+  <string name="your_biometric_will">您需要使用APP来进行生物识别认证。我们建议启用生物识别认证，即便在手机被盗的情况下，钱包也能更安全。</string>
+  <string name="create_an_account">创建账户</string>
+  <string name="you_need_to_create">您需要创建账户开始资产交易。</string>
+  <string name="skip">跳过</string>
+  <string name="do_not_ask_again">不再提示</string>
+  <string name="selected_words_are">所选字词有误，请重试。</string>
+  <string name="paste_full_passphrase">粘贴完整的密码短语</string>
+  <string name="verify_recovery_passphrase">验证恢复密码短语备份</string>
+  <string name="please_enter_a_destination">请输入目的地地址</string>
+  <string name="transacting_tips">交易技巧</string>
+  <string name="the_only_way_to">恢复Algorand账户的唯一途径是使用恢复助记词。<annotation font="publicsans_regular_italic"><annotation custom="warning_color"><annotation type="bold">警告</annotation>：请勿与任何人分享恢复助记词，因为助记词拥有完整的账户访问权限。</annotation></annotation></string>
+  <string name="monitor_activity_of">无需恢复助记词也可监控账户活动。这对有助于监控冷存储中的资产。<annotation font="publicsans_regular_italic"><annotation custom="warning_color"><annotation type="bold">警告：</annotation>若您没有相应的恢复助记词，请勿向该账户发送资产。</annotation></annotation></string>
+  <string name="i_want_a_new">用新地址与助记词创建账户</string>
+  <string name="i_want_to_monitor">监控冷储存中的账户。</string>
+  <string name="i_want_to_create_an">创建由Ledger硬件钱包支持的账户。</string>
+  <string name="you_are_creating">您正在创建Algorand 账户的只读视图。如果您向该账户发送资产，但没有相应的恢复助记词，所发送的资产将会丢失。</string>
+  <string name="name_your_account_to">在使用Algorand钱包时，请为账户取一个容易识别的名称。名称储存在本地，仅个人可见。</string>
+  <string name="keep_this_recovery_passphrase">请将恢复助记词保存在仅您能访问的安全位置，请勿丢失恢复助记词。</string>
+  <string name="learn_more">了解更多</string>
+  <string name="no_contact_found">未找到联系人</string>
+  <string name="you_can_make_the">添加新联系人，发送资产会更快速。</string>
+  <string name="no_contact_found_description">请尝试使用其他联系人姓名。</string>
+  <string name="verify_account_addresses">通过Ledger来验证账户地址</string>
+  <string name="the_following_account">以下账户地址会显示在您的Ledger设备上。请仔细比较和验证每个地址，完整最终的设备配对。</string>
+  <string name="add_verified_accounts">添加验证过的账户</string>
+  <string name="awaiting_verification">等待验证</string>
+  <string name="not_verified">未验证</string>
+  <string name="verify_selected_account">验证所选账户</string>
+  <plurals name="verify_selected_count">
+    <item quantity="other">验证所选账户</item>
+  </plurals>
+  <string name="open_in_algoexplorer">在AlgoExplorer中打开</string>
+  <string name="open_in_goalseeker">在GoalSeeker中打开</string>
+  <string name="overwrite_existing_contract">覆盖现有联系人</string>
+  <string name="this_address_is_already_in_your_contract">该地址在您的联系列表中名为%1$s。您想替换该联系人吗？</string>
+  <string name="one_hour_abbr">1小时</string>
+  <string name="one_day_abbr">1天</string>
+  <string name="one_week_abbr">1周</string>
+  <string name="one_month_abbr">1个月</string>
+  <string name="one_year_abbr">1年</string>
+  <string name="all_time_abbr">全部</string>
+  <string name="no_chart_data_available">价格API当前不可用，请稍后再回来查看。</string>
+  <string name="balance">余额</string>
+  <string name="value">价值</string>
+  <string name="last_one_hour">最近1小时</string>
+  <string name="last_one_day">最近1天</string>
+  <string name="last_one_week">最近1周</string>
+  <string name="last_one_month">最近1个月</string>
+  <string name="last_one_year">最近1年</string>
+  <string name="analytics">分析工具</string>
+  <string name="algos">ALGO</string>
+  <string name="algo_rewards">ALGO奖励</string>
+  <string name="minimum_balance_required">最低余额要求</string>
+  <string name="transaction_maximum_error_message_singular">由于您在此账户中有<annotation replacement="asset_count">资产数量</annotation>的其他资产（<annotation replacement="account_name">资产名称</annotation>），Algorand区块链要求至少要持有<annotation replacement="min_balance">最低余额数量</annotation>ALGOs的最低余额。\n\n通过点击继续，您的交易金额将自动更新以反映这一变化。您将能在下一步预览这一变化。</string>
+  <string name="transaction_maximum_error_message_plural">由于您在此账户中有<annotation replacement="asset_count">资产数量</annotation>的其他资产（<annotation replacement="account_name">资产名称</annotation>），Algorand区块链要求至少要持有<annotation replacement="min_balance">最低余额数量</annotation>ALGOs的最低余额。\n\n通过点击继续，您的交易金额将自动更新以反映这一变化。您将能在下一步预览这一变化。</string>
+</resources>

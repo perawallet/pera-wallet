@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2019 Algorand, Inc.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/loginNavigation"
+    app:startDestination="@id/registerIntroFragment">
+
+    <action
+        android:id="@+id/action_global_to_homeNavigation"
+        app:destination="@id/homeNavigation"
+        app:popUpTo="@id/mainNavigation"
+        app:popUpToInclusive="true" />
+
+    <fragment
+        android:id="@+id/backupPassphraseFragment"
+        android:name="com.algorand.android.ui.register.BackupPassphraseFragment"
+        android:label="fragment_backup_passphrase"
+        tools:layout="@layout/fragment_backup_passphrase">
+        <action
+            android:id="@+id/action_backupPassphrase_to_passphraseQuestion"
+            app:destination="@id/passphraseQuestionFragment" />
+        <action
+            android:id="@+id/action_backupPassphraseFragment_to_showQrBottomSheet"
+            app:destination="@id/showQrBottomSheet" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/passphraseQuestionFragment"
+        android:name="com.algorand.android.ui.register.PassphraseValidationFragment"
+        android:label="fragment_passphrase_question"
+        tools:layout="@layout/fragment_passphrase_validation">
+        <action
+            android:id="@+id/action_passphraseQuestionFragment_to_accountNameRegistrationFragment"
+            app:destination="@id/accountNameRegistrationFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/accountNameRegistrationFragment"
+        android:name="com.algorand.android.ui.register.NameRegistrationFragment"
+        android:label="fragment_account_name_registration"
+        tools:layout="@layout/fragment_name_registration" />
+
+    <fragment
+        android:id="@+id/recoverWithPassphraseFragment"
+        android:name="com.algorand.android.ui.register.recover.RecoverWithPassphraseFragment"
+        android:label="fragment_recover_from_seed"
+        tools:layout="@layout/fragment_recover_with_passphrase">
+        <action
+            android:id="@+id/action_recoverWithPassphraseFragment_to_qrCodeScannerFragment"
+            app:destination="@id/qrCodeScannerFragment" />
+        <action
+            android:id="@+id/action_recoverWithPassphraseFragment_to_recoverOptionsBottomSheet"
+            app:destination="@id/recoverOptionsBottomSheet" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/qrCodeScannerFragment"
+        android:name="com.algorand.android.ui.qr.QrCodeScannerFragment"
+        android:label="fragment_qr_code_scanner"
+        tools:layout="@layout/fragment_qr_code_scanner">
+        <argument
+            android:name="scanReturnType"
+            android:defaultValue="MNEMONIC_NAVIGATE_BACK"
+            app:argType="com.algorand.android.ui.qr.QrCodeScannerFragment$ScanReturnType" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/registerWatchAccountFragment"
+        android:name="com.algorand.android.ui.register.watch.RegisterWatchAccountFragment"
+        android:label="RegisterWatchAccountFragment"
+        tools:layout="@layout/fragment_register_watch_account">
+        <action
+            android:id="@+id/action_registerWatchAccountFragment_to_qrCodeScannerFragment"
+            app:destination="@id/qrCodeScannerFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/registerIntroFragment"
+        android:name="com.algorand.android.ui.register.registerintro.RegisterIntroFragment"
+        android:label="RegisterIntroFragment"
+        tools:layout="@layout/fragment_register_type_selection">
+        <action
+            android:id="@+id/action_registerIntroFragment_to_addAccountTypeSelectionFragment"
+            app:destination="@id/addAccountTypeSelectionFragment" />
+        <action
+            android:id="@+id/action_registerIntroFragment_to_registerInfoFragment"
+            app:destination="@id/registerInfoFragment" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/showQrBottomSheet"
+        android:name="com.algorand.android.utils.ShowQrBottomSheet"
+        android:label="fragment_show_qr"
+        tools:layout="@layout/fragment_show_qr">
+        <argument
+            android:name="title"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="qrText"
+            app:argType="string" />
+        <argument
+            android:name="state"
+            android:defaultValue="MNEMONIC_QR"
+            app:argType="com.algorand.android.utils.ShowQrBottomSheet$State" />
+    </dialog>
+    <fragment
+        android:id="@+id/registerInfoFragment"
+        android:name="com.algorand.android.ui.registerinfo.RegisterInfoFragment"
+        android:label="RegisterInfoFragment"
+        tools:layout="@layout/fragment_register_info">
+        <argument
+            android:name="type"
+            app:argType="com.algorand.android.ui.registerinfo.RegisterInfoFragment$Type" />
+        <action
+            android:id="@+id/action_registerInfoFragment_self"
+            app:destination="@id/registerInfoFragment" />
+        <action
+            android:id="@+id/action_registerInfoFragment_to_backupPassphraseFragment"
+            app:destination="@id/backupPassphraseFragment" />
+        <action
+            android:id="@+id/action_registerInfoFragment_to_recoverWithPassphraseFragment"
+            app:destination="@id/recoverWithPassphraseFragment" />
+        <action
+            android:id="@+id/action_registerInfoFragment_to_registerWatchAccountFragment"
+            app:destination="@id/registerWatchAccountFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addAccountTypeSelectionFragment"
+        android:name="com.algorand.android.ui.register.addaccounttypeselection.AddAccountTypeSelectionFragment"
+        android:label="AddAccountTypeSelectionFragment">
+        <action
+            android:id="@+id/action_addAccountTypeSelectionFragment_to_pairLedgerNavigation"
+            app:destination="@id/pairLedgerNavigation" />
+        <action
+            android:id="@+id/action_addAccountTypeSelectionFragment_to_registerInfoFragment"
+            app:destination="@id/registerInfoFragment" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/recoverOptionsBottomSheet"
+        android:name="com.algorand.android.ui.register.recover.RecoverOptionsBottomSheet"
+        android:label="RecoverOptionsBottomSheet"
+        tools:layout="@layout/bottom_sheet_recover_options" />
+
+    <include app:graph="@navigation/pair_ledger_navigation" />
+
+</navigation>

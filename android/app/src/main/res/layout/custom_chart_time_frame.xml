@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2019 Algorand, Inc.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/hourButton"
+        style="@style/ChartTimeFrameButton"
+        android:layout_width="wrap_content"
+        android:text="@string/one_hour_abbr"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/dayButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/dayButton"
+        style="@style/ChartTimeFrameButton"
+        android:layout_width="wrap_content"
+        android:text="@string/one_day_abbr"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/weekButton"
+        app:layout_constraintStart_toEndOf="@id/hourButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/weekButton"
+        style="@style/ChartTimeFrameButton"
+        android:layout_width="wrap_content"
+        android:text="@string/one_week_abbr"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/monthButton"
+        app:layout_constraintStart_toEndOf="@id/dayButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/monthButton"
+        style="@style/ChartTimeFrameButton"
+        android:layout_width="wrap_content"
+        android:text="@string/one_month_abbr"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/yearButton"
+        app:layout_constraintStart_toEndOf="@id/weekButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/yearButton"
+        style="@style/ChartTimeFrameButton"
+        android:layout_width="wrap_content"
+        android:text="@string/one_year_abbr"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/allButton"
+        app:layout_constraintStart_toEndOf="@id/monthButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/allButton"
+        style="@style/ChartTimeFrameButton"
+        android:layout_width="wrap_content"
+        android:text="@string/all_time_abbr"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/yearButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</merge>

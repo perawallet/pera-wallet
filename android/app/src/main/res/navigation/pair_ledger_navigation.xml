@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  Copyright 2019 Algorand, Inc.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+  -->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/pairLedgerNavigation"
+    app:startDestination="@id/ledgerInstructionFragment">
+
+    <fragment
+        android:id="@+id/verifyLedgerAddressFragment"
+        android:name="com.algorand.android.ui.register.ledger.verify.VerifyLedgerAddressFragment"
+        android:label="VerifyLedgerAddressFragment"
+        tools:layout="@layout/fragment_verify_ledger_address" />
+
+    <fragment
+        android:id="@+id/registerLedgerSearchFragment"
+        android:name="com.algorand.android.ui.ledgersearch.RegisterLedgerSearchFragment"
+        android:label="RegisterLedgerSearchFragment"
+        tools:layout="@layout/fragment_ledger_search">
+        <action
+            android:id="@+id/action_registerLedgerSearchFragment_to_ledgerAccountSelectionFragment"
+            app:destination="@id/registerLedgerAccountSelectionFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/registerLedgerAccountSelectionFragment"
+        android:name="com.algorand.android.ui.register.ledger.RegisterLedgerAccountSelectionFragment"
+        android:label="RegisterLedgerAccountSelectionFragment"
+        tools:layout="@layout/fragment_ledger_account_selection">
+        <argument
+            android:name="bluetoothName"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="bluetoothAddress"
+            app:argType="string" />
+        <argument
+            android:name="ledgerAccountsInformation"
+            app:argType="com.algorand.android.models.AccountInformation[]" />
+        <action
+            android:id="@+id/action_registerLedgerAccountSelectionFragment_to_verifyLedgerAddressFragment"
+            app:destination="@id/verifyLedgerAddressFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/ledgerInstructionFragment"
+        android:name="com.algorand.android.ui.register.ledger.LedgerInstructionFragment"
+        android:label="LedgerInstructionFragment"
+        tools:layout="@layout/fragment_ledger_instruction">
+        <action
+            android:id="@+id/action_ledgerInstructionFragment_to_registerLedgerSearchFragment"
+            app:destination="@id/registerLedgerSearchFragment" />
+    </fragment>
+
+</navigation>

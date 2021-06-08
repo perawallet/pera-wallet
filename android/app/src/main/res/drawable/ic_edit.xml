@@ -1,0 +1,32 @@
+<!--
+  ~ Copyright 2019 Algorand, Inc.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M14.6717,5.299C15.4528,4.5179 16.7191,4.5179 17.5002,5.299L18.5862,6.385C19.3673,7.1661 19.3673,8.4324 18.5862,9.2135L9.3808,18.4189C9.0748,18.7249 8.6778,18.9234 8.2494,18.9846L5.6624,19.3542C5.0024,19.4485 4.4367,18.8828 4.531,18.2228L4.9006,15.6358C4.9618,15.2074 5.1603,14.8104 5.4663,14.5044L14.6717,5.299Z"
+        android:strokeWidth="2"
+        android:strokeColor="#ffffff"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M13.4766,6.4944L17.3911,10.4089"
+        android:strokeWidth="2"
+        android:strokeColor="#ffffff"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+</vector>

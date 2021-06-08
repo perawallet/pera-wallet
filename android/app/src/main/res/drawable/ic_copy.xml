@@ -1,0 +1,22 @@
+<!--
+  ~ Copyright 2019 Algorand, Inc.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#A4A3AB"
+        android:fillType="evenOdd"
+        android:pathData="M6,3C4.3432,3 3,4.3432 3,6V12C3,13.6569 4.3432,15 6,15C6.5523,15 7,14.5523 7,14C7,13.4477 6.5523,13 6,13C5.4477,13 5,12.5523 5,12V6C5,5.4477 5.4477,5 6,5H12C12.5523,5 13,5.4477 13,6C13,6.5523 13.4477,7 14,7C14.5523,7 15,6.5523 15,6C15,4.3432 13.6569,3 12,3H6ZM12,9C10.3431,9 9,10.3431 9,12V18C9,19.6569 10.3431,21 12,21H18C19.6569,21 21,19.6569 21,18V12C21,10.3431 19.6569,9 18,9H12ZM11,12C11,11.4477 11.4477,11 12,11H18C18.5523,11 19,11.4477 19,12V18C19,18.5523 18.5523,19 18,19H12C11.4477,19 11,18.5523 11,18V12Z" />
+</vector>

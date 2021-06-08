@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  Copyright 2019 Algorand, Inc.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+  -->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="@drawable/bg_small_shadow"
+    tools:layout_height="wrap_content"
+    tools:layout_width="300dp"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <TextView
+        android:id="@+id/passphraseIndexTextView"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="10dp"
+        android:gravity="end"
+        android:text="1"
+        android:textColor="@color/secondaryTextColor"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.algorand.android.customviews.PasteAwareEditText
+        android:id="@+id/passphraseInputEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/keyline_1_minus_8dp"
+        android:background="@null"
+        android:inputType="textVisiblePassword"
+        android:maxLines="1"
+        android:paddingVertical="12dp"
+        android:paddingStart="0dp"
+        android:paddingEnd="12dp"
+        android:saveEnabled="false"
+        android:textColor="@color/red_E9"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/passphraseIndexTextView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/passphraseInputLine"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="@dimen/smallshadow_end_20dp_margin"
+        android:layout_marginBottom="@dimen/keyline_1_minus_8dp"
+        android:background="@color/dividerColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/passphraseInputEditText"
+        app:layout_constraintStart_toStartOf="@id/passphraseInputEditText" />
+
+</merge>

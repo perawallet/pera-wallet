@@ -1,0 +1,118 @@
+<!--
+  ~ Copyright 2019 Algorand, Inc.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/tertiaryBackground"
+    tools:context=".ui.register.AddAccountFragment">
+
+    <ImageView
+        android:id="@+id/outerCircleImageView"
+        android:layout_width="608dp"
+        android:layout_height="608dp"
+        android:layout_gravity="center"
+        app:layout_constraintBottom_toBottomOf="@id/innerCircleImageView"
+        app:layout_constraintEnd_toEndOf="@id/innerCircleImageView"
+        app:layout_constraintStart_toStartOf="@id/innerCircleImageView"
+        app:layout_constraintTop_toTopOf="@id/innerCircleImageView"
+        app:srcCompat="@drawable/ic_register_outer_circle" />
+
+    <ImageView
+        android:id="@+id/middleCircleImageView"
+        android:layout_width="448dp"
+        android:layout_height="448dp"
+        app:layout_constraintBottom_toBottomOf="@id/innerCircleImageView"
+        app:layout_constraintEnd_toEndOf="@id/innerCircleImageView"
+        app:layout_constraintStart_toStartOf="@id/innerCircleImageView"
+        app:layout_constraintTop_toTopOf="@id/innerCircleImageView"
+        app:srcCompat="@drawable/ic_register_middle_circle" />
+
+    <ImageView
+        android:id="@+id/innerCircleImageView"
+        android:layout_width="288dp"
+        android:layout_height="288dp"
+        app:layout_constraintBottom_toTopOf="@id/nextButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_register_inner_circle" />
+
+    <ImageButton
+        android:id="@+id/closeImageButton"
+        style="?attr/toolbarNavigationButtonStyle"
+        android:layout_width="@dimen/toolbar_navigation_item_width"
+        android:layout_height="56dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_close" />
+
+    <ImageView
+        android:id="@+id/logoImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/titleTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:srcCompat="@drawable/ic_welcome_logo"
+        app:tint="@color/colorPrimary" />
+
+    <!-- Used `dp` here to avoid dynamic font size changes. -->
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/page_horizontal_spacing"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/publicsans_medium"
+        android:gravity="center"
+        android:letterSpacing="-0.02"
+        android:textSize="24dp"
+        app:layout_constraintBottom_toTopOf="@id/nextButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logoImageView"
+        tools:text="Add Account" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/nextButton"
+        style="@style/UnelevatedButton.General"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:text="@string/add_account"
+        app:layout_constraintBottom_toTopOf="@+id/policyTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/policyTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginBottom="24dp"
+        android:fontFamily="@font/publicsans_regular"
+        android:gravity="center"
+        android:textColor="@color/tertiaryTextColor"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="By create account on Algorand, you agree to our Terms and Conditions and Privacy Policy" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
