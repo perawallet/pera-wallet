@@ -1,0 +1,170 @@
+{
+  "reward-base": 25538,
+  "rewards": 0,
+  "assets": [
+    {
+      "amount": 0,
+      "is-frozen": false,
+      "asset-id": 180132,
+      "creator": ""
+    },
+    {
+      "amount": 0,
+      "is-frozen": false,
+      "asset-id": 316588,
+      "creator": ""
+    },
+    {
+      "amount": 500099980000000,
+      "is-frozen": false,
+      "asset-id": 180436,
+      "creator": ""
+    },
+    {
+      "amount": 0,
+      "is-frozen": false,
+      "asset-id": 173367,
+      "creator": ""
+    },
+    {
+      "amount": 275949,
+      "is-frozen": false,
+      "asset-id": 11711,
+      "creator": ""
+    },
+    {
+      "amount": 999999944113,
+      "is-frozen": false,
+      "asset-id": 19026,
+      "creator": ""
+    },
+    {
+      "amount": 1789,
+      "is-frozen": false,
+      "asset-id": 135270,
+      "creator": ""
+    }
+  ],
+  "amount-without-pending-rewards": 3313579804,
+  "amount": 3313579804,
+  "type": "standard",
+  "receivesNotification": true,
+  "pending-rewards": 10000,
+  "address": "T4EWBDWPEXNLEILKLD74RBLO4HFEGY522ELHW6JIGCNRX5TISUHCUU6QRM",
+  "assetDetails": [
+    {
+      "index": 11711,
+      "params": {
+        "is_verified": false,
+        "manager": "ANC4BH2C6QJTCXZMEMCB7XEW7TFZVNSAH3RJ5YTMNUPNXU4DKD2BHAAZSU",
+        "unit-name": "HIPO",
+        "freeze": "ANC4BH2C6QJTCXZMEMCB7XEW7TFZVNSAH3RJ5YTMNUPNXU4DKD2BHAAZSU",
+        "total": 23000000000000,
+        "url": "https:\/\/www.hipolabs.com",
+        "isRemoved": false,
+        "decimals": 0,
+        "default-frozen": false,
+        "creator": "ANC4BH2C6QJTCXZMEMCB7XEW7TFZVNSAH3RJ5YTMNUPNXU4DKD2BHAAZSU",
+        "isRecentlyAdded": false,
+        "clawback": "ANC4BH2C6QJTCXZMEMCB7XEW7TFZVNSAH3RJ5YTMNUPNXU4DKD2BHAAZSU",
+        "reserve": "ANC4BH2C6QJTCXZMEMCB7XEW7TFZVNSAH3RJ5YTMNUPNXU4DKD2BHAAZSU",
+        "name": "HipoCoin"
+      }
+    },
+    {
+      "index": 180132,
+      "params": {
+        "is_verified": true,
+        "manager": "EZG6H7XKLBMWRJ2OX47J5LZA672BTCUESIQVCZZ7BEWLQO2GPW5XKJKBLE",
+        "unit-name": "units",
+        "freeze": "LMPBYSUEWG4AW2YU6EYQOFTBGOWUH7VQPTS3OJAZ7K7V6FRGAOFZ36C3TA",
+        "total": 1000,
+        "url": "http:\/\/www.google.com",
+        "isRemoved": false,
+        "decimals": 3,
+        "default-frozen": false,
+        "creator": "EZG6H7XKLBMWRJ2OX47J5LZA672BTCUESIQVCZZ7BEWLQO2GPW5XKJKBLE",
+        "isRecentlyAdded": false,
+        "clawback": "LMPBYSUEWG4AW2YU6EYQOFTBGOWUH7VQPTS3OJAZ7K7V6FRGAOFZ36C3TA",
+        "reserve": "LMPBYSUEWG4AW2YU6EYQOFTBGOWUH7VQPTS3OJAZ7K7V6FRGAOFZ36C3TA",
+        "name": "testasset2"
+      }
+    },
+    {
+      "index": 180436,
+      "params": {
+        "is_verified": false,
+        "manager": "X2YHQU7W6OJG66TMLL3PZ7JQS2D42YEGATBBNDXH22Q6JSNOFR6LVZYXXM",
+        "unit-name": "MAX",
+        "freeze": "X2YHQU7W6OJG66TMLL3PZ7JQS2D42YEGATBBNDXH22Q6JSNOFR6LVZYXXM",
+        "total": 18446744073709551615,
+        "isRemoved": false,
+        "decimals": 5,
+        "default-frozen": false,
+        "creator": "X2YHQU7W6OJG66TMLL3PZ7JQS2D42YEGATBBNDXH22Q6JSNOFR6LVZYXXM",
+        "isRecentlyAdded": false,
+        "clawback": "X2YHQU7W6OJG66TMLL3PZ7JQS2D42YEGATBBNDXH22Q6JSNOFR6LVZYXXM",
+        "reserve": "X2YHQU7W6OJG66TMLL3PZ7JQS2D42YEGATBBNDXH22Q6JSNOFR6LVZYXXM",
+        "name": "MAXIMUM_LIMIT"
+      }
+    },
+    {
+      "index": 173367,
+      "params": {
+        "is_verified": true,
+        "manager": "KWTLPJID2N5GUKY4LIOK6NEQQKUSF2JCUITH4SVSMGPSKPSFSQKQAIRBTQ",
+        "unit-name": "TF",
+        "freeze": "KWTLPJID2N5GUKY4LIOK6NEQQKUSF2JCUITH4SVSMGPSKPSFSQKQAIRBTQ",
+        "total": 100000,
+        "isRemoved": false,
+        "decimals": 0,
+        "default-frozen": true,
+        "creator": "5HK7W4APMCOUC2DZYPZHY343S7DFIRB4Q64PD36VAF5I6BPBJM3KFJLZPA",
+        "isRecentlyAdded": false,
+        "clawback": "KWTLPJID2N5GUKY4LIOK6NEQQKUSF2JCUITH4SVSMGPSKPSFSQKQAIRBTQ",
+        "reserve": "KWTLPJID2N5GUKY4LIOK6NEQQKUSF2JCUITH4SVSMGPSKPSFSQKQAIRBTQ",
+        "name": "TestFrozen"
+      }
+    },
+    {
+      "index": 135270,
+      "params": {
+        "is_verified": false,
+        "manager": "PZOGQXHCDMCR4DVL6HPFDUNM3WQLOPJVBJA2HJEDV7WUX6PBJQGXJGND54",
+        "unit-name": "TRY",
+        "freeze": "PZOGQXHCDMCR4DVL6HPFDUNM3WQLOPJVBJA2HJEDV7WUX6PBJQGXJGND54",
+        "total": 1000000000,
+        "isRemoved": false,
+        "decimals": 2,
+        "default-frozen": false,
+        "creator": "PZOGQXHCDMCR4DVL6HPFDUNM3WQLOPJVBJA2HJEDV7WUX6PBJQGXJGND54",
+        "isRecentlyAdded": false,
+        "clawback": "PZOGQXHCDMCR4DVL6HPFDUNM3WQLOPJVBJA2HJEDV7WUX6PBJQGXJGND54",
+        "reserve": "PZOGQXHCDMCR4DVL6HPFDUNM3WQLOPJVBJA2HJEDV7WUX6PBJQGXJGND54",
+        "name": "Turkish lira"
+      }
+    },
+    {
+      "index": 19026,
+      "params": {
+        "is_verified": false,
+        "manager": "WLH5LELVSEVQL45LBRQYCLJAX6KQPGWUY5WHJXVRV2NPYZUBQAFPH22Q7A",
+        "unit-name": "nugget",
+        "freeze": "WLH5LELVSEVQL45LBRQYCLJAX6KQPGWUY5WHJXVRV2NPYZUBQAFPH22Q7A",
+        "total": 1000000000000000,
+        "isRemoved": false,
+        "decimals": 0,
+        "default-frozen": false,
+        "creator": "WLH5LELVSEVQL45LBRQYCLJAX6KQPGWUY5WHJXVRV2NPYZUBQAFPH22Q7A",
+        "isRecentlyAdded": false,
+        "clawback": "WLH5LELVSEVQL45LBRQYCLJAX6KQPGWUY5WHJXVRV2NPYZUBQAFPH22Q7A",
+        "reserve": "WLH5LELVSEVQL45LBRQYCLJAX6KQPGWUY5WHJXVRV2NPYZUBQAFPH22Q7A",
+        "name": "gold"
+      }
+    }
+  ],
+  "sig-type": "sig",
+  "round": 11713920,
+  "status": "Offline",
+  "name": "Chase"
+}

@@ -1,0 +1,621 @@
+
+// MARK: Common
+"title-yes" = "YES";
+"title-no" = "NO";
+"title-ok" = "OK";
+"title-next" = "Next";
+"title-accept" = "Accept";
+"title-verify" = "Verify";
+"title-cancel" = "Cancel";
+"title-remove" = "Remove";
+"title-proceed" = "Proceed";
+"title-approve" = "Approve";
+"title-go-home" = "Go To Home";
+"title-share-qr" = "Share QR";
+"title-go-to-settings" = "Go To Settings";
+"title-error" = "Error";
+"title-save" = "Save";
+"title-close" = "Close";
+"title-send" = "Send";
+"title-receive" = "Receive";
+"title-preview" = "Preview";
+"title-done" = "Done";
+"title-loading" = "Loading";
+"default-error-message" = "An error occured.";
+"title-max" = "MAX";
+"title-internet-connection" = "The internet connection appears to be offline.";
+"title-unknown" = "Unnamed";
+"title-preview-and-sign-with-ledger-title" = "Preview and Sign With Ledger";
+"title-keep" = "Keep it";
+"title-edit" = "Edit";
+"title-testnet" = "TESTNET";
+"title-account" = "Account";
+"title-id" = "ID";
+"title-copy" = "Copy";
+"title-new-uppercased" = "NEW";
+"title-skip" = "Skip";
+"title-learn-more" = "Learn More";
+
+// MARK: Account Type Selection
+"account-type-choose-title" = "Choose Account Type";
+"account-type-selection-add" = "Add Account";
+"account-type-selection-add-detail" = "I want a new account with a new address and recovery passphrase";
+"account-type-selection-create" = "Create New Account";
+"account-type-selection-create-detail" = "I want to create a new Algorand account";
+"account-type-selection-watch-detail" = "I want to monitor an account that's held in cold storage";
+"account-type-selection-recover" = "Recover With Passphrase";
+"account-type-selection-recover-detail" = "I already have an account";
+"account-type-selection-ledger" = "Pair Ledger Device";
+"account-type-selection-ledger-detail" = "I want to create an account that is backed by my Ledger hardware wallet";
+"account-welcome-wallet-title" = "Welcome to the\nAlgorand Wallet";
+
+// MARK: Introduction
+
+"introduction-title-text" = "Manage all assets\nfrom one app";
+"introduction-title-add-text" = "Add New Account";
+"introduction-add-account-text" = "Add Account";
+"introduction-title-terms-and-services" = "By creating an account, you agree to Algorand’s <a href=\"https://www.algorand.com/wallet-disclaimer\">Terms and Conditions</a> and <a href=\"https://www.algorand.com/wallet-privacy-policy\">Privacy Policy</a>";
+
+// MARK: Password Setting
+"choose-password-title" = "Choose PIN";
+"password-set-subtitle" = "Choose your 6-digit PIN";
+"password-verify-title" = "Verify PIN";
+"password-change-subtitle" = "Enter 6-digit PIN";
+"password-verify-subtitle" = "Re-enter your 6-digit PIN";
+"password-verify-fail-title" = "Wrong PIN";
+"password-verify-fail-message" = "PIN did not match with previous PIN.";
+"password-change-title" = "Change PIN";
+
+// MARK: Local Authentication Preferences
+"local-authentication-preference-title" = "Enable Biometric Authentication";
+"local-authentication-preference-subtitle" = "Your FaceID or TouchID will be required to use the app. We recommend enabling biometric authentication to help increase wallet security in the event your phone is stolen.";
+"local-authentication-reason-face-id-title" = "Use Face ID to unlock";
+"local-authentication-reason-touch-id-title" = "Use Touch ID to unlock";
+"local-authentication-go-settings-title" = "Biometric Authentication";
+"local-authentication-go-settings-text" = "You have disabled biometric authentication. Please go to Settings and enable this option.";
+"local-authentication-enable" = "Enable Face ID/Touch ID";
+"local-authentication-no" = "Do not use Face ID/Touch ID";
+"local-authentication-enabled-title" = "Biometric Authentication Enabled";
+"local-authentication-enabled-subtitle" = "Your passcode has been verified. Your Algorand account is more secure now.";
+"title-go-to-accounts" = "Go to Accounts";
+
+// MARK: Passphrase Back Up
+"recover-passphrase-title" = "Recovery passphrase";
+"back-up-phrase-qr" = "Show QR";
+"passphrase-bottom-title" = "Make sure to record these words in the correct order, using the corresponding numbers.";
+
+// MARK: Passphrase Verify
+"pass-phrase-verify-pop-up-title" = "Passphrase Verified";
+"pass-phrase-verify-select-title" = "Select the %@ word of your passphrase";
+"pass-phrase-verify-question-title" = "Question %@ of %@";
+"pass-phrase-verify-wrong-selection" = "Wrong choice";
+"pass-phrase-verify-pop-up-explanation" = "Keep this recovery passphrase in a secure location that is accessible only by you. Do not lose this recovery passphrase.";
+"pass-phrase-verify-invalid-passphrase" = "Your passphrase is invalid. Please make sure that you entered correct one.";
+"passphrase-verify-invalid-title" = "Wrong Passphrase";
+"pass-phrase-verify-sdk-error" = "There is something wrong. Please try again later.";
+"passphrase-question-another" = "%@th";
+"passphrase-question-third" = "3rd";
+"passphrase-question-second" = "2nd";
+"passphrase-question-first" = "1st";
+"passphrase-select-n-word" = "Select the %@ word of your passphrase";
+"passphrase-qeustion-counter" = "Question %@ of %@";
+"passphrase-verify-wrong-message" = "Selected words are wrong. Please try again.";
+
+"passphrase-verify-title" = "Verify recovery passphrase backup";
+"passphrase-verify-select-word" = "Select word #%@";
+
+// MARK: Account Name Setup
+"account-details-title" = "Name your account";
+"account-name-setup-explanation" = "Account Name (Optional)";
+"account-name-setup-placeholder" = "Account Name";
+"account-name-setup-description" = "Name your account to easily identify it while using the Algorand Wallet. These names are stored locally, and can only be seen by you.";
+"account-name-setup-finish" = "Finish account creation";
+
+// MARK: Recover From Seed
+"recover-from-seed-title" = "Enter Your Recovery Passphrase";
+"recover-from-seed-name-title" = "Name";
+"recover-from-seed-name-placeholder" = "Example name";
+"recover-from-seed-passphrase-title" = "Passphrase";
+"pass-pharase-enter-placeholder" = "Enter Passphrase or Scan QR";
+"recover-from-seed-verify-pop-up-explanation" = "Welcome to Algorand!\nYour account is ready to use.";
+"recover-from-seed-verify-pop-up-title" = "Account Verified";
+"recover-from-seed-verify-exist-error" = "This account already exists";
+"recover-title" = "Recover";
+"recover-fill-all-error" = "Please fill all passphrase";
+"recover-copy-error" = "The last copied text is not valid passphrase with 25 words. Please copy valid passphrase and try again.";
+
+// MARK: QR Scanning
+"qr-scan-title" = "Scan QR Code";
+"qr-scan-error-title" = "Camera is not available";
+"qr-scan-error-message" = "Your device does not support scanning a qr code.";
+"qr-scan-go-settings-title" = "Camera Disabled";
+"qr-scan-go-settings-message" = "You have disabled camera. Please go to Settings and enable this option.";
+"qr-scan-should-scan-address-message" = "You should scan valid account address";
+"qr-scan-should-scan-mnemonics-message" = "You should scan valid passphrases";
+"qr-scan-message-text" = "You can only scan your QR from this page, To view your QR please select the icon on your account";
+"qr-scan-should-scan-valid-qr" = "QR is not valid.";
+
+// MARK: QR Creation
+"qr-creation-title" = "Passphrase QR";
+"qr-creation-sharing-title" = "Share QR and Address";
+"qr-creation-copy-address" = "Copy address";
+"qr-creation-copied" = "Address copied to clipboard";
+"qr-creation-address" = "Account address";
+
+// MARK: Login
+"login-title" = "Unlock";
+"login-subtitle" = "Enter six digit pin";
+
+// MARK: Accounts
+"accounts-tranaction-empty-text" = "No Transactions Yet";
+"accounts-tranaction-empty-detail" = "No transactions have been made with this asset.";
+"tranaction-empty-text" = "No Transactions Found";
+"accounts-algos-available-title" = "Algos";
+"accounts-dollar-value-title" = "Dollar Value";
+"accounts-transaction-history-title" = "Transaction History";
+"accounts-add-account" = "+ ADD ACCOUNT";
+"accounts-title" = "Accounts";
+"accounts-add-new" = "Add new asset";
+"accounts-qr-tooltip" = "Your account's address QR can be found here";
+
+// MARK: Asset
+"asset-title" = "Asset";
+"asset-not-found-title" = "No asset found";
+"asset-not-found-detail" = "Please try a different asset name or asset ID";
+"asset-algos-title" = "Algos";
+"asset-remove-title" = "Removing an asset";
+"asset-remove-subtitle" = "To remove an asset, you must first transfer that asset’s balance to another account";
+"asset-search-placeholder" = "Search Assets ID or Name";
+"asset-remove-confirmation-title" = "Removing Asset";
+"asset-transfer-balance" = "Transfer Balance";
+"title-remove-assets" = "Remove Assets";
+"title-add-asset" = "Add New Asset";
+"asset-add-warning" = "Adding an asset requires sending a transaction with a minimum transaction fee. This will appear on your transaction history.";
+"asset-support-error" = "Unfortunately, this account has not added this asset. Please instruct the account owner to add the asset, and then try again.";
+"asset-support-title" = "Account does not accept this asset";
+"asset-add-confirmation-title" = "Adding Asset";
+"internet-connection-error-title" = "Connect to the Internet";
+"internet-connection-error-detail" = "We couldn’t reach the server, make sure you are connected to the internet";
+"asset-remove-warning" = "To remove %@, the balance must be 0. Please transfer the balance to another account and try again.";
+"asset-remove-transaction-warning" = "You are about to remove %@ from %@. You will not be able to transact with this asset from this account unless you re-add it.";
+"asset-creation-fee-title" = "Add Asset Fee";
+"asset-min-transaction-error-title" = "Min Transaction Error!";
+"asset-min-transaction-error-message" = "You need at least %@ Algos to add this asset";
+"asset-you-already-own-message" = "You already own this asset";
+"asset-support-not-same-error" = "This account has added this asset but this is not the selected asset. Please select the correct asset, and then try again.";
+"asset-support-not-same-title" = "Account does not accept this asset";
+"asset-support-add-title" = "You are about to receive an asset!";
+"asset-support-add-message" = "You are about to receive an asset to %@. Would you like to add this asset to this account to receive it?";
+"asset-id-copied-title" = "ID copied to clipboard";
+"asset-verified-title" = "Verified";
+"asset-support-your-add-title" = "Your accounts do not contain this asset";
+"asset-support-your-add-message" = "Please add this asset and try again.";
+"asset-all-title" = "All";
+"asset-detail-id-title" = "ID %@";
+
+// MARK: Algos Send
+"send-algos-title" = "Send Algos";
+"send-algos-select" = "Select Account";
+"send-sending-algos-select" = "Select Sending Account";
+"send-receiving-algos-select" = "Select Receiving Account";
+"send-select-asset" = "Select Asset";
+"send-choose-asset" = "Choose asset";
+"send-algos-address" = "Address";
+"send-algos-to" = "To";
+"send-algos-balance-title" = "Balance:";
+"send-algos-amount" = "Amount";
+"send-algos-sent-title" = "Algos Sent!";
+"send-algos-alert-incomplete-title" = "Incomplete Transaction";
+"send-algos-alert-message-address" = "Please enter a destination address.";
+"send-algos-alert-message" = "Please fill the fields.";
+"send-algos-minimum-amount-error-new-account" = "You're trying to send money to a new account. The amount must be at least 0.1 algos.";
+"send-algos-minimum-amount-error" = "Transaction amount results in a balance below the minimum account balance of 0.1 algos.";
+"send-algos-minimum-amount-custom-error" = "The transaction cannot be completed because the amount will put your account below minimum required balance of %@ Algos.";
+"send-algos-amount-error" = "Transaction amount cannot be more than your available algos";
+"send-asset-amount-error" = "Transaction amount cannot be more than your available amount.";
+"send-algos-contact-not-found" = "Contact not found";
+"send-algos-address-not-selected" = "Address not selected";
+"send-algos-contacts" = "Contacts";
+"send-algos-scan" = "Scan QR";
+"send-algos-account-delete-title" = "Your account is about to be deleted, are you sure you want to proceed?";
+"send-algos-account-delete-body" = "To keep an account open, the account must have at least 0.01 ALGO. If you send the max amount, the account will be deleted and your active participation keys will be deleted as well.";
+"send-algos-receiver-address-validation" = "Key not valid, please make sure you have the right key.";
+"send-qr-scan-alert-title" = "QR Scan";
+"send-qr-scan-alert-message" = "You just scanned a QR code of a transaction request. Please review all transaction fields as they may have changed.";
+"send-qr-different-asset-alert" = "The QR contains different asset than selected one. Amount is ignored while decoding.";
+"send-enter-note-placeholder" = "Enter note here";
+"send-enter-note-title" = "Add Note";
+"send-transaction-max-same-account-error" = "You cannot send your max balance to yourself. Please select a different amount or recipient and try again.";
+"send-trasaction-address-placeholder" = "Paste #";
+
+// MARK: Algos Request
+"request-algos-title" = "Request Algos";
+"request-title" = "Request";
+
+// MARK: Options
+"options-title" = "ACCOUNT SETTINGS";
+"options-show-qr" = "Show QR and address";
+"options-rekey" = "Rekey Account";
+"options-remove-assets" = "Remove Assets";
+"options-view-passphrase" = "View Passphrase";
+"options-edit-account-name" = "Edit Account Name";
+"options-remove-account" = "Remove Account";
+"options-remove-alert-explanation" = "You are about to remove an account. Are you sure you want to proceed with this choice?";
+"options-view-passphrase-password-alert-message" = "You should enter your correct password to display your passphrase.";
+"options-auth-account" = "Auth Account Address";
+"options-mute-notification" = "Mute Notifications";
+"options-unmute-notification" = "Unmute Notifications";
+
+// MARK: Contacts
+"contacts-title" = "Contacts";
+"contacts-search" = "Search Contacts";
+"contacts-add" = "Add Contact";
+"contacts-info" = "Contact Info";
+"contacts-info-edit" = "Edit Contact Info";
+"contacts-input-name-explanation" = "Name";
+"contacts-input-name-placeholder" = "Contact name";
+"contacts-input-address-explanation" = "Address";
+"contacts-input-address-placeholder" = "Paste # or Scan QR";
+"contacts-transactions-title" = "Transactions";
+"contacts-empty-text" = "You haven't added any contacts yet";
+"contacts-empty-detail-text" = "You can make the process of sending assets faster by adding new contacts.";
+"contacts-name-validation-error" = "Name is empty.";
+"contacts-address-validation-error" = "Address is wrong. Please make sure that you entered correct one.";
+"contacts-delete-contact" = "Delete Contact";
+"contacts-delete-contact-alert-explanation" = "Are you sure you want to delete this contact?";
+"contacts-close-warning-title" = "Are you sure?";
+"contacts-close-warning-subtitle" = "Your unsaved progress will be lost. Are you sure?";
+"accounts-title-assets" = "Assets";
+"contacts-title-assets" = "Assets:";
+"title-select-asset" = "Select Asset";
+"contact-search-empty-title" = "No contact found";
+"contact-search-empty-detail" = "Please try a different contact name";
+
+// MARK: Settings
+"settings-title" = "Settings";
+"settings-server-node-settings" = "Node Settings";
+"settings-change-password" = "Set/Change Password";
+"settings-local-authentication" = "Enable FaceID/Touch ID";
+"settings-language" = "Language";
+"settings-language-english" = "English";
+"settings-notification-go-settings-title" = "Notifications";
+"settings-notification-disabled-go-settings-text" = "You have disabled notifications. Please go to Settings and enable this option.";
+"settings-notification-enabled-go-settings-text" = "You have enabled notifications. Please go to Settings and disable this option.";
+"settings-logout-title" = "Delete All Data";
+"settings-logout-detail" = "Are you sure you want to delete all the data?";
+"settings-developer" = "Developer Settings";
+"settings-currency" = "Currency";
+"settings-developer-dispenser" = "Algorand Dispenser";
+"settings-currency-usd" = "USD";
+"settings-rate-title" = "Rate Algorand Wallet";
+"settings-app-version" = "Version %@";
+"settings-language-change-title" = "Set App Language";
+"settings-language-change-detail" = "Due to updates to your phone, there are different steps to change your language.\n\n1. Proceed to the next screen.\n2. Tap Language to select the language you want.\n\nIf no language setting is available, go to your general iPhone language settings to first set a preferred language.";
+"settings-support-title" = "Support Center";
+
+// MARK: Node Settings
+"node-settings-title" = "Node Settings";
+"node-settings-warning-title" = "Warning";
+"add-node-title" = "Add Node";
+"edit-node-title" = "Edit Node";
+"node-settings-subtitle" = "Select the Node";
+"node-settings-enter-node-name" = "Name: ";
+"node-settings-enter-node-address" = "Address: ";
+"node-settings-api-key" = "Key: ";
+"node-settings-placeholder-name" = "Node Name";
+"node-settings-placeholder-address" = "http://yournode.com:8000";
+"node-settings-placeholder-api-key" = "65ef12c245b47fcf497b1c7d0faea4d82df470671974eeeed3e29ab4df1ed918";
+"node-settings-test-button-title" = "TEST";
+"node-settings-text-validation-empty-error" = "Please fill all fields.";
+"node-settings-text-validation-health-error" = "Please verify the address and token and try again.";
+"node-settings-has-same-result" = "You cannot create same node twice";
+"node-settings-none-active-node-error-description" = "None of the active nodes seem to be active. Please make sure you have at least one active node before proceeding.";
+"node-settings-db-error-title" = "System operation failed";
+"node-settings-test-error-title" = "Connection failed";
+"node-settings-test-success-title" = "Connection successful!";
+"node-settings-database-error-description" = "An error occured on system.";
+"node-settings-warning-message" = "This action will remove the node. Are you sure?";
+"node-settings-action-delete-title" = "Delete";
+"node-settings-default-node-name" = "Algorand MainNet Node";
+"node-settings-default-test-node-name" = "TestNet";
+"node-settings-health-problem-message" = "None of your active nodes are online. Please add or select another node";
+
+// MARK: Transaction Detail
+"transaction-detail-title" = "Transaction Detail";
+"transaction-detail-status" = "Status";
+"transaction-detail-amount" = "Amount";
+"transaction-detail-reward" = "Reward";
+"transaction-detail-from" = "From";
+"transaction-detail-to" = "To";
+"transaction-detail-fee" = "Fee";
+"transaction-detail-date" = "Date";
+"transaction-detail-round" = "Round";
+"transaction-detail-id" = "Transaction ID";
+"transaction-detail-note" = "Note";
+"transaction-detail-close-to" = "Close To";
+"transaction-detail-close-amount" = "Close Amount";
+"transaction-detail-note-copied" = "Transaction note copied to clipboard";
+"transaction-detail-id-copied" = "Transaction ID copied to clipboard";
+"transaction-detail-copy-tooltip" = "Press and hold to Copy to Clipboard";
+"transaction-id-open-algoexplorer" = "Open in AlgoExplorer";
+"transaction-id-open-goalseeker" = "Open in GoalSeeker";
+
+// MARK: Feedback
+"feedback-title" = "Send Feedback";
+"feedback-title-category" = "Categories";
+"feedback-subtitle-category" = "Type of feedback";
+"feedback-title-note" = "Note";
+"feedback-subtitle-note" = "What’s on your mind";
+"feedback-title-email" = "Email";
+"feedback-subtitle-account-title" = "Account (Optional)";
+"feedback-subtitle-account-detail" = "Choose Account";
+"feedback-empty-title" = "Error";
+"feedback-empty-category-message" = "Please select a category.";
+"feedback-empty-note-message" = "Please add your note.";
+"feedback-error-title" = "Error";
+"feedback-error-message" = "Your feedback could not sent!";
+"feedback-success-title" = "Your feedback has been sent";
+"feedback-success-detail" = "Thank you, we’ve recived your feedback";
+
+// MARK: Rewards
+"rewards-title" = "Rewards";
+"rewards-show-title" = "Show Rewards";
+"rewards-detail-subtitle" = "You earn rewards just by owning Algos! Here's a summary of your rewards activity since your last transaction. These rewards are always included in your balance.";
+"total-rewards-faq-title" = "For more information on Algorand Rewards, visit our FAQ.";
+"total-rewards-faq" = "FAQ.";
+"reward-list-title" = "Reward";
+"total-rewards-title" = "%@ Rewards";
+"rewards-since-last-text" = "Since Last Transaction";
+
+// MARK: Notifications
+"notification-sent-success" = "Your transaction of %@ from %@ to %@ is complete.";
+"notification-sent-failed" = "Your transaction of %@ from %@ to %@ has failed.";
+"notification-received" = "%@ were sent to %@ by %@.";
+"notification-support-success" = "%@ has added %@ to their account. You can send them.";
+"notification-support-request" ="%@ is trying to send you %@ however, you do not support this. If you want, we can add to your account.";
+
+// MARK: Verified Asset Information
+"verified-assets-title" = "Verified Assets";
+"verified-asset-information-title" = "What does asset verification mean?";
+"verified-asset-information-text" = "For certain assets in which Algorand Inc. has a relationship with the asset’s issuer, we mark those assets as “Verified” (which is denoted by a blue checkmark symbol).\n\nThis helps to serve as a secondary defense against mistakenly transacting with an unintended asset.\n\nThat being said, you should always double check that the asset’s ID is the one that you intended to choose before transacting with that asset.\n\nIf you have questions about the verification process or general feedback about the app, we encourage you to visit www.algorandwallet.com/support";
+"verified-asset-double-check" = "always double check";
+"verified-asset-information-visit-site" = "visit www.algorandwallet.com/support";
+
+// MARK: Ledger Tutorial
+"ledger-pair-title" = "Create Ledger Account";
+"ledger-tutorial-title-text" = "Pair with Ledger";
+"ledger-tutorial-turned-on" = "Make sure that your ledger device is on and has Bluetooth enabled.";
+"ledger-tutorial-install-app" = "Install the Algorand app (version 1.2.9 or later) onto your Ledger.";
+"ledger-tutorial-open-app" = "Open the Algorand app on your Ledger.";
+"ledger-tutorial-bluetooth" = "Make sure Bluetooth is enabled on your smartphone.";
+"ledger-search-button-title" = "Search for Ledger";
+
+// MARK: Ledger Device List
+"ledger-device-list-title" = "Pair Ledger Device";
+"ledger-device-list-looking" = "Looking for Other Ledger Devices";
+"ledger-device-list-connect" = "Connect";
+"ledger-device-list-troubleshoot" = "Troubleshoot";
+
+// MARK: Ledger Troubleshooting
+"title-step-1" = "Step 1";
+"title-step-2" = "Step 2";
+"title-step-3" = "Step 3";
+"title-step-4" = "Step 4";
+"ledger-troubleshooting-title" = "Advanced Troubleshooting";
+"ledger-troubleshooting-close-others" = "Close other applications (Ledger apps, crypto wallets, or anything that might be trying to pair with the ledger.)";
+"ledger-troubleshooting-restart" = "Restart the Algorand Wallet and/or your device.";
+"ledger-troubleshooting-app-support" = "For help installing the Algorand Ledger app onto your device, visit %@";
+"ledger-troubleshooting-ledger-support" = "For general troubleshooting of the ledger device, please visit ";
+"ledger-troubleshooting-ledger-support-title" = "Ledger Support.";
+
+"ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "For general usage of your Ledger’s Bluetooth feature, please refer to Ledger’s official <a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">Bluetooth Connection Guide</a>.";
+"ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "For more advanced troubleshooting, please refer to Ledger’s official <a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">Bluetooth Troubleshooting Guide</a>.";
+"ledger-troubleshooting-bluetooth-connection-html" = "Disable or Enable Bluetooth for an iOS device. <br /> <br />
+<ul>
+<li>Tap on <b>Settings</b></li>
+<li>Select <b>“General”</b></li>
+<li>Tap on <b>“Bluetooth”</b></li>
+<li>Flip the <b>On/Off button</b> to toggle</li>
+<li>Bluetooth <b>On or Off</b></li>
+</ul>";
+"ledger-troubleshooting-install-app-first-html" = "Begin by following Ledger’s comprehensive <a href=\"https://www.ledger.com/start\">Getting Started</a> tutorial.";
+"ledger-troubleshooting-install-app-second-html" = "When the tutorial gets to the point where it directs you to “Select the application(s) you want to install on your device,” type <b>Algorand</b> in the search bar and install.";
+"ledger-troubleshooting-open-app-first-html" = "Begin by following Ledger’s comprehensive <a href=\"https://www.ledger.com/start\">Getting Started</a> tutorial, which will direct you how to install and open apps on your ledger device.";
+"ledger-troubleshooting-open-app-second-html" = "If you haven’t already installed the <b>Algorand</b> app on your Ledger device, when the tutorial gets to the point where it directs you to “Select the application(s) you want to install on your device,” type <b>Algorand</b> in the search bar and install.";
+
+// MARK: BLE Errors
+"ble-error-search-title" = "Search Error";
+"ble-error-connection-title" = "Connection Error";
+"ble-error-bluetooth-title" = "Bluetooth Error";
+"ble-error-ledger-connection-title" = "Ledger Connection Error";
+"ble-error-ledger-connection-open-app-error" = "Please open the Algorand App on your ledger device.";
+"ble-error-unsupported-device-title" = "Unsupported Device";
+"ble-error-transaction-cancelled-title" = "Transaction Cancelled";
+"ble-error-transmission-title" = "Transmission Error";
+"ble-error-fail-connect-peripheral" = "Could not connect to the Ledger device. Make sure the device is unlocked, nearby and has bluetooth enabled.";
+"ble-error-disconnected-peripheral" = "Disconnected from device";
+"ble-error-fail-fetch-account-address" = "We were unable to receive the public key of your ledger device. Please try again.";
+"ble-error-fail-sign-transaction" = "The paired ledger device has cancelled the transaction request.";
+"ble-error-fail-ble-connection-power" = "Bluetooth must be enabled on your device in order to search for nearby Ledger devices.";
+"ble-error-fail-ble-connection-unsupported" = "The device you are trying to connect to is not supported with the Algorand Wallet.";
+"ble-error-fail-ble-connection-unauthorized" = "Bluetooth permission needs to be granted in order to search nearby Ledgers.";
+"ble-error-fail-ble-connection-resetting" = "Failed BLE connection for Resetting";
+
+// MARK: Ledger Approval
+"ledger-approval-title" = "Preview and Sign";
+"ledger-approval-message" = "Please review and sign the transaction on your ledger device.";
+"ledger-approval-connection-title" = "Ledger Connection";
+"ledger-approval-connection-message" = "Waiting for ledger to connect.";
+
+// MARK: Terms and Services
+"terms-and-services-title" = "Terms and Services";
+"privacy-policy-title" = "Privacy Policy";
+
+// MARK: Notifications Tab
+"notifications-title" = "Notifications";
+"notifications-empty-title" = "No current notifications";
+"notifications-empty-subtitle" = "Your recent transactions, asset requests and other notifications will appear here.";
+
+// MARK: Transaction Filter
+"transaction-filter-title-sort" = "Sort by Date";
+"transaction-filter-option-all" = "All Time";
+"transaction-filter-option-today" = "Today";
+"transaction-filter-option-yesterday" = "Yesterday";
+"transaction-filter-option-week" = "Last Week";
+"transaction-filter-option-month" = "Last Month";
+"transaction-filter-option-custom" = "Custom Range";
+"transaction-filter-tooltip" = "You can now filter the history of transactions";
+"transaction-filter-try-again" = "Try Again";
+"transaction-filter-error-title" = "Something went wrong";
+"transaction-filter-error-subtitle" = "Sorry, something went wrong there.";
+"csv-download-title" = "Creating CSV File";
+"csv-download-error" = "Could not create a csv file for the transaction history.";
+"transaction-download-from" = "From: Address";
+"transaction-download-to" = "To: Address";
+"transaction-download-close-to" = "Close To: Address";
+
+// MARK: Pin Limit
+"pin-limit-title" = "Algorand app is locked";
+"pin-limit-try-again" = "Try again in";
+"pin-limit-too-many" = "Too many PIN attempts";
+"pin-limit-reset-all" = "Reset All Data";
+
+// MARK: Rekey Instruction
+"rekey-instruction-start" = "Start Process";
+"rekey-instruction-title" = "Rekey Account";
+"rekey-instruction-subtitle-ledger" = "Replace your account ledger with a new Ledger Device";
+"rekey-instruction-subtitle-standard" = "Replace your account’s passphrase with a Ledger Device.";
+"rekey-instruction-header" = "What to expect:";
+"rekey-instruction-first" = "Future transactions will be signed by your new Ledger Device.";
+"rekey-instruction-second-ledger" = "Your old Ledger will no longer function for this account.";
+"rekey-instruction-second-standard" = "This account's passphrase will no longer function for this account";
+"rekey-instruction-third" = "Your account’s public key, balances, and configuration will not change.";
+
+// MARK: Rekey Confirm
+"ledger-rekey-confirm-title" = "Confirm Rekeying";
+"ledger-rekey-transaction-title" = "Rekeying transaction";
+"ledger-rekey-ledger-old" = "Old Ledger";
+"ledger-rekey-ledger-passphrase" = "Passphrase";
+"ledger-rekey-ledger-new" = "New Ledger";
+"ledger-rekey-finalize" = "Finalize Rekeying";
+"ledger-rekey-total-fee" = "Total Rekeying fee of %@ Algos";
+"ledger-rekey-more-assets" = "+%@ more assets";
+"ledger-rekey-success-title" = "Account Rekeyed";
+"ledger-rekey-success-message" = "The account %@ has been successfully rekeyed";
+
+// MARK: Ledger Account Selection
+"ledger-account-selection-title-singular" = "%d Account Found";
+"ledger-account-selection-title-plural" = "%d Accounts Found";
+"ledger-account-selection-detail" = "This ledger device can sign transactions for the following account. Select the account to add to your Algorand Wallet.";
+"ledger-account-selection-detail-rekey" = "Choose the account you want to use for signing this account.";
+"ledger-account-selection-verify" = "Verify Selected Account";
+"ledger-account-selection-verify-plural" = "Verify Selected Accounts";
+"ledger-rekey-error-add-auth" = "The connected Ledger device cannot sign transactions for this account. In order to do so, please connect %@.";
+"ledger-rekey-error-not-found" = "This account has been rekeyed. Please recover this account with a passphrase or Ledger device.";
+"ledger-transaction-account-match-error" = "It appears this Ledger device has been reset and the account on the device no longer matches this account. Please pair the Ledger again from the homepage.";
+
+// MARK: Watch Account
+"title-watch-account" = "Watch Account";
+"watch-account-create" = "Create a Watch Account";
+"watch-account-input-explanation" = "Account Address to Watch";
+"watch-account-explanation-title" = "You are creating a read-only view of an Algorand account. If you send assets to this account and you do not have the corresponding recovery passphrase, those assets will be lost.";
+"watch-account-input-placeholder" = "Paste Address or Scan QR";
+"watch-account-error-address" = "Please enter a valid address.";
+
+"settings-theme-set" = "Set Theme";
+"settings-theme-dark" = "Dark";
+"settings-theme-light" = "Light";
+"settings-theme-system" = "System Default";
+
+"notification-filter-show-title" = "Push Notifications";
+"notification-filter-show-for" = "Show notification for";
+
+"title-plus-asset-count" = "+%@ Assets";
+"ledger-account-details-title" = "Ledger details";
+"ledger-account-detail-can-sign" = "Can sign for these accounts";
+"ledger-account-detail-can-signed" = "Can be signed by";
+"ledger-account-fetct-error" = "A network error occured while fetching account details. Restart the process.";
+
+"maximum-balance-warning-title" = "Maximum Balance";
+"min-balance-title" = "Minimum Balance Required";
+"title-continue" = "Continue";
+"title-dont-show-again" = "Don’t Show This Again";
+
+"screenshot-title" = "Screenshot Detected";
+"screenshot-description" = "Do not backup your recovery passphrase by taking a screenshot. Having an image containing your passphrase is a security risk.";
+
+"tutorial-title-back-up" = "Back up your account using a recovery passphrase";
+"tutorial-title-recover" = "Recover an Algorand Account";
+"tutorial-title-write" = "Prepare to write down your recovery passphrase";
+"tutorial-title-passcode" = "Increase your security with a PIN";
+
+"tutorial-description-back-up" = "Without your recovery passphrase, if you lose your device or delete the app, you will permanently lose access to your Algorand account.";
+"tutorial-description-recover" = "In the following steps, you'll enter your 25-word recovery passphrase to recover an Algorand account. Have your recovery phrase handy before you begin.";
+"tutorial-description-write" = "The only way to recover an Algorand account is with this recovery passphrase.\n\nWarning: Do not share this passphrase with anyone, as it grants full access to your account.";
+"tutorial-description-write-italic" = "Warning: Do not share this passphrase with anyone, as it grants full access to your account.";
+"tutorial-description-watch" =  "Monitor activity of an account without needing a recovery passphrase. This is useful for monitoring assets that are kept in cold storage.\n\nWarning: If you do not have the corresponding recovery passphrase, do not send assets to this account.";
+"tutorial-description-warning-title" = "Warning:";
+"tutorial-description-watch-italic" = "Warning: If you do not have the corresponding recovery passphrase, do not send assets to this account.";
+"tutorial-description-passcode" = "This 6-digit PIN will be required to use the Algorand Wallet. We highly recommend creating a PIN to help increase wallet security in the event your phone is stolen.";
+"tutorial-description-local" = "Your FaceID or TouchID will be required to use the app. We recommend enabling biometric authentication to help increase wallet security in the event your phone is stolen.";
+
+"tutorial-main-title-back-up" = "I understand";
+"tutorial-main-title-recover" = "Recover an Algorand Account";
+"tutorial-main-title-write" = "I'm ready to begin";
+"tutorial-main-title-passcode" = "Set Passcode";
+
+"tutorial-action-title-passcode" = "Not now";
+
+"maximum-balance-warning-description" = "Sending your maximum balance on this rekeyed account requires you to maintain a minimum balance of %@ Algos. This is to ensure that nothing changes with your rekeyed account.\n\n\nYour transaction amount will be automatically updated to reflect this change. You will be able to preview the transaction in the next step.";
+"maximum-balance-standard-account-warning-description" = "Because you have %@ other Assets in this account %@, the Algorand Blockchain requires you to maintain a minimum balance of %@ Algos.\n\n\nBy hitting continue, your transaction amount will be automatically updated to reflect this change. You'll be able to preview this change in the next step.";
+"maximum-balance-standard-account-warning-description-singular" = "Because you have %@ other Asset in this account %@, the Algorand Blockchain requires you to maintain a minimum balance of %@ Algos.\n\n\nBy hitting continue, your transaction amount will be automatically updated to reflect this change. You'll be able to preview this change in the next step.";
+
+"transaction-tutorial-title" = "Transacting Tips";
+"transaction-tutorial-subtitle" = "We notice that this is your first transaction. Before you finalize, keep in mind a couple of tips:";
+"transaction-tutorial-subtitle-other" = "Before you finalize your transaction, keep in mind a couple of tips:";
+"transaction-tutorial-tip-first" = "When sending to an address for the first time, It’s useful to send a small test transaction before sending a large amount.";
+"transaction-tutorial-tip-second" = "Exchanges change their deposit addresses frequently, and saved exchange addresses may no longer be in use. Ensure you're sending to the correct address.";
+"transaction-tutorial-tip-second-highlighted" = "Ensure you're sending to the correct address.";
+"transaction-tutorial-tap-to-more" = "For more information on transacting, tap here";
+"transaction-tutorial-tap-to-more-highlighted" = "tap here";
+"title-i-understand" = "I understand";
+
+"empty-accounts-title" = "Create an Account";
+"empty-accounts-detail" = "You need to create an account to start transacting your assets.";
+"empty-accounts-action" = "Create new Account";
+
+"title-dont-ask" = "Don’t ask again";
+"title-paste-passphrase" = "Paste Full Passphrase";
+"title-enter-pin-for-passphrase" = "Please enter your PIN to view passphrase";
+
+"title-analytics" = "Analytics";
+"title-algo-rewards" = "Rewards";
+"value-one-algo" = "1 ALGO = %@";
+
+"title-algorand" = "Algorand";
+"title-account-balance" = "Balance";
+"title-algorand-value" = "Value";
+
+"chart-time-selection-hourly" = "1H";
+"chart-time-selection-daily" = "1D";
+"chart-time-selection-weekly" = "1W";
+"chart-time-selection-monthly" = "1M";
+"chart-time-selection-yearly" = "1Y";
+"chart-time-selection-all" = "ALL";
+
+"chart-no-data-text" = "Price API is currently unavailable, please check back soon.";
+
+"chart-time-last-hour" = "Last 1 Hour";
+"chart-time-last-day" = "Last 1 Day";
+"chart-time-last-week" = "Last 1 Week";
+"chart-time-last-month" = "Last 1 Month";
+"chart-time-last-year" = "Last 1 Year";
+"chart-time-all" = "All Time";
+
+"ledger-account-verification-status-awaiting" = "Awaiting Verification";
+"ledger-account-verification-status-pending" = "Pending";
+"ledger-account-verification-status-verified" = "Account Verified";
+"ledger-account-verification-status-not-verified" = "Not Verified";
+"ledger-verified-add" = "Add Verified Accounts";
+"ledger-verify-header-title" = "Verify Account Addresses via Ledger";
+"ledger-verify-header-subtitle" = "The following account addresses will display on your Ledger device. Please carefully compare and verify each address in order to finalize device pairing.";

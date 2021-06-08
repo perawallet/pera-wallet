@@ -1,0 +1,17 @@
+{
+  "index": 135270,
+  "params": {
+    "manager": "EZG6H7XKLBMWRJ2OX47J5LZA672BTCUESIQVCZZ7BEWLQO2GPW5XKJKBLE",
+    "unit-name": "Lira",
+    "freeze": "LMPBYSUEWG4AW2YU6EYQOFTBGOWUH7VQPTS3OJAZ7K7V6FRGAOFZ36C3TA",
+    "total": 1000000,
+    "url": "http:\/\/www.google.com",
+    "decimals": 2,
+    "default-frozen": false,
+    "creator": "EZG6H7XKLBMWRJ2OX47J5LZA672BTCUESIQVCZZ7BEWLQO2GPW5XKJKBLE",
+    "metadata-hash": "MTZlZmFhMzkyNGE2ZmQ5ZDNhNDgyNDc5OWE0YWM2NWQ=",
+    "clawback": "LMPBYSUEWG4AW2YU6EYQOFTBGOWUH7VQPTS3OJAZ7K7V6FRGAOFZ36C3TA",
+    "name": "TurkishLira",
+    "reserve": "LMPBYSUEWG4AW2YU6EYQOFTBGOWUH7VQPTS3OJAZ7K7V6FRGAOFZ36C3TA"
+  }
+}

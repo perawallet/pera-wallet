@@ -1,0 +1,37 @@
+{
+  "accounts": [
+    {
+      "address": "T4EWBDWPEXNLEILKLD74RBLO4HFEGY522ELHW6JIGCNRX5TISUHCUU6QRM",
+      "receivesNotification": true,
+      "name": "Chase",
+      "type": "standard"
+    },
+    {
+      "address": "FPCCYLM2PBLFS3TJFON3YF2RGVPF5YXIFIRWICF6ARRWQBI7GXKHP2572I",
+      "receivesNotification": false,
+      "name": "Close",
+      "type": "standard"
+    },
+    {
+      "address": "X2YHQU7W6OJG66TMLL3PZ7JQS2D42YEGATBBNDXH22Q6JSNOFR6LVZYXXM",
+      "receivesNotification": true,
+      "name": "Venue",
+      "type": "standard"
+    },
+    {
+      "address": "64G4FSHVXJ3NNUDZHXOLMNUQ22YMUHO47L3UTIMXADXDCNKNFTL5222I4A",
+      "receivesNotification": true,
+      "name": "Rekeyed Name",
+      "type": "rekeyed",
+      "rekeyDetail" : {
+        "OA5W3RZ4FMBJ3GDCZPE3CWOPSXWFUP4JDOIMSOOJZJZ7AIDWWVJZ2Y77B4" : {
+          "id" : "2867714E-FFD6-2285-490C-7E7B712B0565",
+          "name" : "\bNano X 8696",
+          "index" : 0
+        }
+      }
+    }
+  ],
+  "defaultNode": "testnet",
+  "deviceId": "3368999771413241362"
+}

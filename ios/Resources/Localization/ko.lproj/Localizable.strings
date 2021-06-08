@@ -1,0 +1,1551 @@
+/* MARK: Account Name Setup */
+"account-details-title" = "계정 정보";
+
+/* (No Comment) */
+"account-name-setup-description" = "알고랜드 지갑을 사용하는 동안 쉽게 알아볼 수 있도록 계정 이름을 지정하세요. 계정 이름은 로컬에 저장되며, 사용자만 볼 수 있습니다.";
+
+/* (No Comment) */
+"account-name-setup-explanation" = "계정명";
+
+/* (No Comment) */
+"account-name-setup-finish" = "계정 생성 완료";
+
+/* (No Comment) */
+"account-name-setup-placeholder" = "저축 계정";
+
+/* MARK: Account Type Selection */
+"account-type-choose-title" = "계정 유형 선택";
+
+/* (No Comment) */
+"account-type-selection-add" = "계정 추가";
+
+/* (No Comment) */
+"account-type-selection-add-detail" = "새로운 주소와 복구 비밀문구로 새 계정을 생성합니다";
+
+/* (No Comment) */
+"account-type-selection-create" = "새 계정 만들기";
+
+/* (No Comment) */
+"account-type-selection-create-detail" = "새로운 주소와 비밀문구로 계정을 생성합니다";
+
+/* (No Comment) */
+"account-type-selection-ledger" = "Ledger 계정 페어링";
+
+/* (No Comment) */
+"account-type-selection-ledger-detail" = "Ledger 하드웨어 지갑을 사용하는 계정을 페어링합니다";
+
+/* (No Comment) */
+"account-type-selection-recover" = "비밀문구로 복구";
+
+/* (No Comment) */
+"account-type-selection-recover-detail" = "25자 비밀문구로 계정 복구";
+
+/* (No Comment) */
+"account-type-selection-watch-detail" = "계정 주소만 있으면 계정의 트랜잭션을 조회할 수 있습니다";
+
+/* (No Comment) */
+"account-welcome-wallet-title" = "알고랜드 지갑에\n오신 것을 환영합니다";
+
+/* (No Comment) */
+"accounts-add-account" = "+계정 추가";
+
+/* (No Comment) */
+"accounts-add-new" = "새 자산 추가";
+
+/* (No Comment) */
+"accounts-algos-available-title" = "알고";
+
+/* (No Comment) */
+"accounts-dollar-value-title" = "달러로 환산한 가치";
+
+/* (No Comment) */
+"accounts-qr-tooltip" = "내 계정의 주소 QR 코드를 찾아보실 수 있습니다";
+
+/* (No Comment) */
+"accounts-title" = "계정";
+
+/* (No Comment) */
+"accounts-title-assets" = "자산";
+
+/* (No Comment) */
+"accounts-tranaction-empty-detail" = "이 자산으로 진행된 트랜잭션이 없습니다.";
+
+/* MARK: Accounts */
+"accounts-tranaction-empty-text" = "트랜잭션 없음";
+
+/* (No Comment) */
+"accounts-transaction-history-title" = "트랜잭션 내역";
+
+/* (No Comment) */
+"add-node-title" = "노드 추가";
+
+/* (No Comment) */
+"asset-add-confirmation-title" = "자산 추가 중";
+
+/* (No Comment) */
+"asset-add-warning" = "자산 추가 시 최소 트랜잭션 수수료의 트랜잭션을 전송해야 합니다. 해당 정보는 트랜잭션 내역에 표시됩니다.";
+
+/* (No Comment) */
+"asset-algos-title" = "알고";
+
+/* (No Comment) */
+"asset-all-title" = "전체";
+
+/* (No Comment) */
+"asset-creation-fee-title" = "자산 수수료 추가";
+
+/* (No Comment) */
+"asset-detail-id-title" = "ID %@";
+
+/* (No Comment) */
+"asset-id-copied-title" = "ID를 클립보드로 복사 완료";
+
+/* (No Comment) */
+"asset-min-transaction-error-message" = "%@ 이상의 알고를 보유해야 자산 추가가 가능합니다";
+
+/* (No Comment) */
+"asset-min-transaction-error-title" = "최소 트랜잭션 오류!";
+
+/* (No Comment) */
+"asset-not-found-detail" = "다른 자산명이나 자산 ID를 사용해보세요";
+
+/* (No Comment) */
+"asset-not-found-title" = "자산을 찾을 수 없습니다";
+
+/* (No Comment) */
+"asset-remove-confirmation-title" = "자산 삭제 중";
+
+/* (No Comment) */
+"asset-remove-subtitle" = "자산을 삭제하려면 먼저 자산 잔액을 다른 계정으로 전송하셔야 합니다";
+
+/* (No Comment) */
+"asset-remove-title" = "자산 삭제";
+
+/* (No Comment) */
+"asset-remove-transaction-warning" = "%@을(를) %@에서 삭제하려고 하십니다. 다시 추가하기 전까지는 이 계정에서 해당 자산을 거래하실 수 없습니다.";
+
+/* (No Comment) */
+"asset-remove-warning" = "잔액이 0인 경우에만 %@ 삭제가 가능합니다. 잔액을 다른 계정으로 전송한 다음 다시 시도하시기 바랍니다.";
+
+/* (No Comment) */
+"asset-search-placeholder" = "자산 ID 또는 이름 검색";
+
+/* (No Comment) */
+"asset-support-add-message" = "%@에서 자산 수신을 진행합니다. 자산을 수신 대상 계정에 추가하시겠습니까?";
+
+/* (No Comment) */
+"asset-support-add-title" = "수신할 자산이 있습니다!";
+
+/* (No Comment) */
+"asset-support-error" = "죄송합니다, 계정에 자산이 추가되지 않았습니다. 계정 소유주에게 자산 추가법을 문의하신 후 다시 시도해 주세요.";
+
+/* (No Comment) */
+"asset-support-not-same-error" = "계정에 자산을 추가했습니다. 단, 선택하신 자산이 아니니 유의하세요. 정확한 자산을 선택한 다음 다시 시도하시기 바랍니다.";
+
+/* (No Comment) */
+"asset-support-not-same-title" = "계정에서 자산을 받지 않습니다.";
+
+/* (No Comment) */
+"asset-support-title" = "계정에서 자산을 받지 않습니다.";
+
+/* (No Comment) */
+"asset-support-your-add-message" = "자산을 추가한 다음 다시 시도해 주세요.";
+
+/* (No Comment) */
+"asset-support-your-add-title" = "내 계정에 자산이 없습니다";
+
+/* MARK: Asset */
+"asset-title" = "자산";
+
+/* (No Comment) */
+"asset-transfer-balance" = "보내는 금액";
+
+/* (No Comment) */
+"asset-verified-title" = "인증 완료";
+
+/* (No Comment) */
+"asset-you-already-own-message" = "이미 보유 중인 자산입니다";
+
+/* (No Comment) */
+"back-up-phrase-qr" = "QR 표시";
+
+/* (No Comment) */
+"ble-error-bluetooth-title" = "Bluetooth 오류";
+
+/* (No Comment) */
+"ble-error-connection-title" = "연결 오류";
+
+/* (No Comment) */
+"ble-error-disconnected-peripheral" = "기기 연결 끊김";
+
+/* (No Comment) */
+"ble-error-fail-ble-connection-power" = "근처 Ledger 기기를 찾으려면 기기에서 Bluetooth 기능을 활성화해야 합니다.";
+
+/* (No Comment) */
+"ble-error-fail-ble-connection-resetting" = "키 재지정을 위한 BLE 연결 실패";
+
+/* (No Comment) */
+"ble-error-fail-ble-connection-unauthorized" = "근처 Ledger 기기를 찾으려면 Bluetooth를 허용해 주셔야 합니다.";
+
+/* (No Comment) */
+"ble-error-fail-ble-connection-unsupported" = "알고랜드 지갑에서 연결하고자 하는 기기를 지원하지 않습니다.";
+
+/* (No Comment) */
+"ble-error-fail-connect-peripheral" = "Ledger 기기에 연결할 수 없습니다. 기기의 잠금을 해제하고 스마트폰 가까이에 두었는지, Bluetooth를 켰는지 확인해 주세요.";
+
+/* (No Comment) */
+"ble-error-fail-fetch-account-address" = "Ledger 기기의 공개 키를 수신하지 못했습니다. 다시 시도해 주세요.";
+
+/* (No Comment) */
+"ble-error-fail-sign-transaction" = "페어링된 Ledger 기기가 트랜잭션 요청을 취소했습니다.";
+
+/* (No Comment) */
+"ble-error-ledger-connection-open-app-error" = "Ledger 기기에서 알고랜드 앱을 실행해 주세요.";
+
+/* (No Comment) */
+"ble-error-ledger-connection-title" = "Ledger 연결 오류";
+
+/* MARK: BLE Errors */
+"ble-error-search-title" = "검색 오류";
+
+/* (No Comment) */
+"ble-error-transaction-cancelled-title" = "트랜잭션 취소";
+
+/* (No Comment) */
+"ble-error-transmission-title" = "전송 오류";
+
+/* (No Comment) */
+"ble-error-unsupported-device-title" = "지원되지 않는 기기";
+
+/* (No Comment) */
+"chart-no-data-text" = "현재 가격 API를 사용할 수 없습니다. 잠시 후 다시 확인해 주십시오.";
+
+/* (No Comment) */
+"chart-time-all" = "전체 기간";
+
+/* (No Comment) */
+"chart-time-last-day" = "최근 1일";
+
+/* (No Comment) */
+"chart-time-last-hour" = "최근 1시간";
+
+/* (No Comment) */
+"chart-time-last-month" = "최근 1개월";
+
+/* (No Comment) */
+"chart-time-last-week" = "최근 1주일";
+
+/* (No Comment) */
+"chart-time-last-year" = "최근 1년";
+
+/* (No Comment) */
+"chart-time-selection-all" = "전체";
+
+/* (No Comment) */
+"chart-time-selection-daily" = "1일";
+
+/* (No Comment) */
+"chart-time-selection-hourly" = "1시간";
+
+/* (No Comment) */
+"chart-time-selection-monthly" = "1개월";
+
+/* (No Comment) */
+"chart-time-selection-weekly" = "1주일";
+
+/* (No Comment) */
+"chart-time-selection-yearly" = "1년";
+
+/* MARK: Password Setting */
+"choose-password-title" = "비밀번호 선택";
+
+/* (No Comment) */
+"contact-search-empty-detail" = "다른 연락처 이름을 사용해보세요";
+
+/* (No Comment) */
+"contact-search-empty-title" = "연락처 찾을 수 없음";
+
+/* (No Comment) */
+"contacts-add" = "연락처 추가";
+
+/* (No Comment) */
+"contacts-address-validation-error" = "잘못된 주소입니다. 정확한 비밀문구를 입력했는지 확인하시기 바랍니다.";
+
+/* (No Comment) */
+"contacts-close-warning-subtitle" = "저장하지 않은 내용이 손실됩니다. 계속 진행하시겠습니까?";
+
+/* (No Comment) */
+"contacts-close-warning-title" = "계속 진행하시겠습니까?";
+
+/* (No Comment) */
+"contacts-delete-contact" = "연락처 삭제";
+
+/* (No Comment) */
+"contacts-delete-contact-alert-explanation" = "정말로 연락처를 삭제하시겠습니까?";
+
+/* (No Comment) */
+"contacts-empty-detail-text" = "새 연락처로 추가하면 자산을 더 빠르게 전송하실 수 있습니다.";
+
+/* (No Comment) */
+"contacts-empty-text" = "추가한 연락처가 없습니다";
+
+/* (No Comment) */
+"contacts-info" = "연락처 정보";
+
+/* (No Comment) */
+"contacts-info-edit" = "연락처 정보 수정";
+
+/* (No Comment) */
+"contacts-input-address-explanation" = "주소";
+
+/* (No Comment) */
+"contacts-input-address-placeholder" = "# 붙여넣기 또는 QR 스캔하기";
+
+/* (No Comment) */
+"contacts-input-name-explanation" = "이름";
+
+/* (No Comment) */
+"contacts-input-name-placeholder" = "연락처 이름";
+
+/* (No Comment) */
+"contacts-name-validation-error" = "이름은 필수 입력 항목입니다.";
+
+/* (No Comment) */
+"contacts-search" = "연락처 검색";
+
+/* MARK: Contacts */
+"contacts-title" = "연락처";
+
+/* (No Comment) */
+"contacts-title-assets" = "자산:";
+
+/* (No Comment) */
+"contacts-transactions-title" = "트랜잭션";
+
+/* (No Comment) */
+"csv-download-error" = "트랜잭션 내역 CSV 파일을 생성할 수 없습니다.";
+
+/* (No Comment) */
+"csv-download-title" = "CSV 파일 생성 중";
+
+/* (No Comment) */
+"default-error-message" = "오류가 발생했습니다.";
+
+/* (No Comment) */
+"edit-node-title" = "노드 수정";
+
+/* (No Comment) */
+"empty-accounts-action" = "새 계정 만들기";
+
+/* (No Comment) */
+"empty-accounts-detail" = "자산 거래를 시작하려면 계정을 만들어야 합니다.";
+
+/* (No Comment) */
+"empty-accounts-title" = "계정 만들기";
+
+/* (No Comment) */
+"feedback-empty-category-message" = "카테고리를 선택해 주세요.";
+
+/* (No Comment) */
+"feedback-empty-note-message" = "참조할 내용을 추가해 주세요.";
+
+/* (No Comment) */
+"feedback-empty-title" = "오류";
+
+/* (No Comment) */
+"feedback-error-message" = "피드백을 보내지 못했습니다!";
+
+/* (No Comment) */
+"feedback-error-title" = "오류";
+
+/* (No Comment) */
+"feedback-subtitle-account-detail" = "계정 선택";
+
+/* (No Comment) */
+"feedback-subtitle-account-title" = "계정(선택 사항)";
+
+/* (No Comment) */
+"feedback-subtitle-category" = "피드백 유형";
+
+/* (No Comment) */
+"feedback-subtitle-note" = "말씀하실 사항이 무엇인가요?";
+
+/* (No Comment) */
+"feedback-success-detail" = "감사합니다, 피드백을 받았습니다";
+
+/* (No Comment) */
+"feedback-success-title" = "피드백을 보냈습니다";
+
+/* MARK: Feedback */
+"feedback-title" = "피드백 전송";
+
+/* (No Comment) */
+"feedback-title-category" = "카테고리";
+
+/* (No Comment) */
+"feedback-title-email" = "이메일(선택)";
+
+/* (No Comment) */
+"feedback-title-note" = "참조";
+
+/* (No Comment) */
+"internet-connection-error-detail" = "서버에 접속할 수 없습니다, 인터넷에 연결되어 있는지 확인해 주세요.";
+
+/* (No Comment) */
+"internet-connection-error-title" = "인터넷 연결";
+
+/* (No Comment) */
+"introduction-add-account-text" = "계정 추가";
+
+/* (No Comment) */
+"introduction-title-add-text" = "새 계정 추가";
+
+/* (No Comment) */
+"introduction-title-terms-and-services" = "계정을 만드시면 알고랜드의 <a href=\"https://www.algorand.com/wallet-disclaimer\">이용약관</a>과 <a href=\"https://www.algorand.com/wallet-privacy-policy\">개인정보 보호 정책</a>에 동의하신 것으로 간주합니다";
+
+/* MARK: Introduction */
+"introduction-title-text" = "모든 자산을\n한 앱에서 관리하세요";
+
+/* (No Comment) */
+"ledger-account-detail-can-sign" = "해당 계정으로 서명 가능합니다";
+
+/* (No Comment) */
+"ledger-account-detail-can-signed" = "다음에서 서명 가능:";
+
+/* (No Comment) */
+"ledger-account-details-title" = "Ledger 정보";
+
+/* (No Comment) */
+"ledger-account-fetct-error" = "계정 정보를 불러오던 중 네트워크 오류가 발생했습니다. 절차를 다시 시작하십시오.";
+
+/* (No Comment) */
+"ledger-account-selection-detail" = "이 Ledger 기기는 다음 계정의 트랜잭션에 서명 가능합니다. 알고랜드 지갑에 추가할 계정을 선택하세요.";
+
+/* (No Comment) */
+"ledger-account-selection-detail-rekey" = "본 계정에 서명 시 사용할 계정을 선택하십시오.";
+
+/* (No Comment) */
+"ledger-account-selection-title-plural" = "계정 %d개 찾음";
+
+/* MARK: Ledger Account Selection */
+"ledger-account-selection-title-singular" = "계정 %d개 찾음";
+
+/* (No Comment) */
+"ledger-account-selection-verify" = "선택 계정 인증";
+
+/* (No Comment) */
+"ledger-account-selection-verify-plural" = "선택 계정 인증";
+
+/* (No Comment) */
+"ledger-account-verification-status-awaiting" = "인증 대기 중";
+
+/* (No Comment) */
+"ledger-account-verification-status-not-verified" = "인증되지 않음";
+
+/* (No Comment) */
+"ledger-account-verification-status-pending" = "대기 중";
+
+/* (No Comment) */
+"ledger-account-verification-status-verified" = "계정 인증 완료";
+
+/* (No Comment) */
+"ledger-approval-connection-message" = "Ledger 연결을 기다리고 있습니다.";
+
+/* (No Comment) */
+"ledger-approval-connection-title" = "Ledger 연결";
+
+/* (No Comment) */
+"ledger-approval-message" = "Ledger 기기에서 트랜잭션을 검토하고 서명해 주세요.";
+
+/* MARK: Ledger Approval */
+"ledger-approval-title" = "미리보기 & 서명";
+
+/* (No Comment) */
+"ledger-device-list-connect" = "연결";
+
+/* (No Comment) */
+"ledger-device-list-looking" = "다른 Ledger 기기를 찾는 중";
+
+/* MARK: Ledger Device List */
+"ledger-device-list-title" = "Ledger 기기 페어링";
+
+/* (No Comment) */
+"ledger-device-list-troubleshoot" = "문제 해결";
+
+/* MARK: Ledger Tutorial */
+"ledger-pair-title" = "Ledger 계정 만들기";
+
+/* MARK: Rekey Confirm */
+"ledger-rekey-confirm-title" = "키 재지정 확인";
+
+/* (No Comment) */
+"ledger-rekey-error-add-auth" = "연결된 Ledger 기기는 이 계정의 트랜잭션에 서명할 수 없습니다. 이를 실행하려면 %@에 연결해 주세요.";
+
+/* (No Comment) */
+"ledger-rekey-error-not-found" = "계정의 키가 재지정되었습니다. 비밀문구나 Ledger 기기로 계정을 복구해 주세요.";
+
+/* (No Comment) */
+"ledger-rekey-finalize" = "키 재지정 확정";
+
+/* (No Comment) */
+"ledger-rekey-ledger-new" = "새 Ledger";
+
+/* (No Comment) */
+"ledger-rekey-ledger-old" = "기존 Ledger";
+
+/* (No Comment) */
+"ledger-rekey-ledger-passphrase" = "비밀문구";
+
+/* (No Comment) */
+"ledger-rekey-more-assets" = "+%@ 추가 자산";
+
+/* (No Comment) */
+"ledger-rekey-success-message" = "%@ 계정의 키가 재지정되었습니다";
+
+/* (No Comment) */
+"ledger-rekey-success-title" = "계정 키 재지정 완료";
+
+/* (No Comment) */
+"ledger-rekey-total-fee" = "총 %@의 키 재지정 수수료";
+
+/* (No Comment) */
+"ledger-rekey-transaction-title" = "트랜잭션 키 재지정";
+
+/* (No Comment) */
+"ledger-search-button-title" = "Ledger를 찾습니다.";
+
+/* (No Comment) */
+"ledger-transaction-account-match-error" = "본 Ledger 기기가 초기화되어, 본 계정과 기기에 저장된 계정이 일치하지 않는 것 같습니다. 홈페이지에서 Ledger를 다시 페어링해주십시오.";
+
+/* (No Comment) */
+"ledger-troubleshooting-app-support" = "알고랜드 Ledger 앱의 기기 설치와 관련해 도움이 필요하신 경우 %@를 참조하세요.";
+
+/* (No Comment) */
+"ledger-troubleshooting-bluetooth-connection-html" = "iOS 기기의 Bluetooth 켜기/끄기 <br /> <br />\n<ul>\n<li><b>설정</b>을 누릅니다</li>\n<li><b>“일반”</b>을 선택합니다</li>\n<li> <b>“Bluetooth”</b>를 누릅니다</li>\n<li><b>켬/끔 버튼</b>을 토글 전환합니다</li>\n<li>Bluetooth가<b>켜지거나 꺼집니다</b></li>\n</ul>";
+
+/* (No Comment) */
+"ledger-troubleshooting-close-others" = "다른 애플리케이션(Ledger 앱, 암호화폐 지갑 또는 기타 Ledger에 페어링을 시도할 수 있는 모든 앱)을 종료합니다.";
+
+/* (No Comment) */
+"ledger-troubleshooting-install-app-first-html" = "Ledger의 종합적인 <a href=\"https://www.ledger.com/start\">시작하기</a> 튜토리얼부터 따라서 시작해보세요.";
+
+/* (No Comment) */
+"ledger-troubleshooting-install-app-second-html" = "튜토리얼에서 “기기에 설치하고자 하는 애플리케이션 선택(Select the application(s) you want to install on your device)” 단계까지 진행하셨다면 검색창에 <b>알고랜드(Algorand)</b>를 입력하고 설치해 주세요.";
+
+/* (No Comment) */
+"ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "고급 문제 해결 안내가 필요하신 경우 Ledger의 공식 <a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">Bluetooth 문제 해결 가이드</a>를 참조하세요.";
+
+/* (No Comment) */
+"ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "Ledger의 Bluetooth 기능 사용법은 Ledger의 공식 <a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">Bluetooth 연결 가이드</a>에서 찾아보실 수 있습니다.";
+
+/* (No Comment) */
+"ledger-troubleshooting-ledger-support" = "Ledger 기기의 일반적인 문제 해결에 도움이 필요한 경우에는 ";
+
+/* (No Comment) */
+"ledger-troubleshooting-ledger-support-title" = "Ledger 지원을 방문해 주세요.";
+
+/* (No Comment) */
+"ledger-troubleshooting-open-app-first-html" = "Ledger의 종합적인 <a href=\"https://www.ledger.com/start\">시작하기</a> 튜토리얼부터 따라서 시작해보세요. Ledger 기기에서 앱을 설치하고 실행하는 방법을 안내해 드립니다.";
+
+/* (No Comment) */
+"ledger-troubleshooting-open-app-second-html" = "아직 Ledger 기기에 <b>알고랜드</b>앱을 설치하지 않으신 경우, 튜토리얼에서 “기기에 설치하고자 하는 애플리케이션 선택(Select the application(s) you want to install on your device)” 단계까지 진행하시고 검색창에 <b>알고랜드(Algorand)</b>를 입력해 설치해 주세요.";
+
+/* (No Comment) */
+"ledger-troubleshooting-restart" = "알고랜드 지갑 및/또는 내 기기를 재시작합니다.";
+
+/* (No Comment) */
+"ledger-troubleshooting-title" = "고급 문제 해결";
+
+/* (No Comment) */
+"ledger-tutorial-bluetooth" = "내 스마트폰에서 Bluetooth가 켜졌는지 확인합니다.";
+
+/* (No Comment) */
+"ledger-tutorial-install-app" = "Ledger에 알고랜드 앱을 설치하세요(버전 1.2.9 이상).";
+
+/* (No Comment) */
+"ledger-tutorial-open-app" = "Ledger에서 알고랜드 앱을 엽니다.";
+
+/* (No Comment) */
+"ledger-tutorial-title-text" = "다음의 절차를 따라 새 Ledger 계정을\n만들어 주세요.";
+
+/* (No Comment) */
+"ledger-tutorial-turned-on" = "Ledger 기기 전원을 켜고 Bluetooth를 활성화했는지 확인하세요.";
+
+/* (No Comment) */
+"ledger-verified-add" = "인증된 계정 추가";
+
+/* (No Comment) */
+"ledger-verify-header-subtitle" = "다음의 계정 주소가 Ledger 기기에 표시됩니다. 각 주소를 신중하게 비교하고 확인하신 다음 기기 페어링을 완료해주세요.";
+
+/* (No Comment) */
+"ledger-verify-header-title" = "Ledger를 통해 계정 주소 인증";
+
+/* (No Comment) */
+"local-authentication-enable" = "Face ID/Touch 활성화";
+
+/* (No Comment) */
+"local-authentication-enabled-subtitle" = "비밀문구가 확인되었습니다. 알고랜드 계정이 더욱 안전해졌습니다.";
+
+/* (No Comment) */
+"local-authentication-enabled-title" = "생체 인증 활성화 완료";
+
+/* (No Comment) */
+"local-authentication-go-settings-text" = "생체 인증을 비활성화하셨습니다. 설정으로 이동해 옵션을 켜실 수 있습니다.";
+
+/* (No Comment) */
+"local-authentication-go-settings-title" = "생체 인증";
+
+/* (No Comment) */
+"local-authentication-no" = "Face ID/Touch를 사용하지 않습니다";
+
+/* (No Comment) */
+"local-authentication-preference-subtitle" = "보안 수준 향상 차원에서 권장합니다";
+
+/* MARK: Local Authentication Preferences */
+"local-authentication-preference-title" = "Face ID/Touch 활성화";
+
+/* (No Comment) */
+"local-authentication-reason-face-id-title" = "Face ID로 잠금 해제";
+
+/* (No Comment) */
+"local-authentication-reason-touch-id-title" = "Touch ID로 잠금 해제";
+
+/* (No Comment) */
+"login-subtitle" = "6자리 PIN 번호를 입력하세요";
+
+/* MARK: Login */
+"login-title" = "잠금 해제";
+
+/* (No Comment) */
+"maximum-balance-standard-account-warning-description" = "%@개의 기타 자산을 계정(%@)에 보유하신 관계로, 알고랜드 블록체인에서 최소 잔액(%@알고)를 유지하셔야 합니다.\n\n계속을 누르시면 본 변동 사항을 반영하여 트랜잭션 금액이 자동으로 업데이트됩니다. 다음 단계에서 변경 내용을 미리 볼 수 있습니다.";
+
+/* (No Comment) */
+"maximum-balance-standard-account-warning-description-singular" = "%@개의 기타 자산을 계정(%@)에 보유하신 관계로, 알고랜드 블록체인에서 최소 잔액(%@알고)를 유지하셔야 합니다.\n\n계속을 누르시면 본 변동 사항을 반영하여 트랜잭션 금액이 자동으로 업데이트됩니다. 다음 단계에서 변경 내용을 미리 볼 수 있습니다.";
+
+/* (No Comment) */
+"maximum-balance-warning-description" = "키 재지정(rekey) 계정에서 최대 잔액을 보내려면 최소 잔액(%@알고)을 유지하셔야 합니다. 키를 재지정한 계정에 변동 사항이 없도록 하기 위한 조치이니 양해 부탁드립니다.\n\n본 변동 사항을 반영하여 트랜잭션 금액을 자동으로 업데이트합니다. 다음 단계에서 트랜잭션 내용을 미리 볼 수 있습니다.";
+
+/* (No Comment) */
+"maximum-balance-warning-title" = "최대 잔액";
+
+/* (No Comment) */
+"min-balance-title" = "최소 잔액 필요";
+
+/* (No Comment) */
+"node-settings-action-delete-title" = "삭제";
+
+/* (No Comment) */
+"node-settings-api-key" = "핵심: ";
+
+/* (No Comment) */
+"node-settings-database-error-description" = "시스템에서 오류가 발생했습니다.";
+
+/* (No Comment) */
+"node-settings-db-error-title" = "시스템 작동 실패";
+
+/* (No Comment) */
+"node-settings-default-node-name" = "알고랜드 메인넷 노드";
+
+/* (No Comment) */
+"node-settings-default-test-node-name" = "테스트넷";
+
+/* (No Comment) */
+"node-settings-enter-node-address" = "주소: ";
+
+/* (No Comment) */
+"node-settings-enter-node-name" = "이름: ";
+
+/* (No Comment) */
+"node-settings-has-same-result" = "같은 노드를 두 번 생성할 수 없습니다";
+
+/* (No Comment) */
+"node-settings-health-problem-message" = "활성 노드 중 온라인 상태인 노드가 없습니다. 노드를 추가하거나 다른 노드를 선택해 주세요";
+
+/* (No Comment) */
+"node-settings-none-active-node-error-description" = "활성 노드 중 활성화된 노드가 없습니다. 진행하기 전에 최소한 활성 노드가 한 개 이상인지 확인하시기 바랍니다.";
+
+/* (No Comment) */
+"node-settings-placeholder-address" = "http://yournode.com:8000";
+
+/* (No Comment) */
+"node-settings-placeholder-api-key" = "65ef12c245b47fcf497b1c7d0faea4d82df470671974eeeed3e29ab4df1ed918";
+
+/* (No Comment) */
+"node-settings-placeholder-name" = "노드명";
+
+/* (No Comment) */
+"node-settings-subtitle" = "사용할 노드에서 토글을 전환하세요";
+
+/* (No Comment) */
+"node-settings-test-button-title" = "테스트";
+
+/* (No Comment) */
+"node-settings-test-error-title" = "연결 실패";
+
+/* (No Comment) */
+"node-settings-test-success-title" = "연결 성공!";
+
+/* (No Comment) */
+"node-settings-text-validation-empty-error" = "모든 입력란에 정보를 입력해 주세요.";
+
+/* (No Comment) */
+"node-settings-text-validation-health-error" = "주소와 토큰을 확인한 다음 다시 시도해 주세요.";
+
+/* MARK: Node Settings */
+"node-settings-title" = "노드 설정";
+
+/* (No Comment) */
+"node-settings-warning-message" = "계속하시면 노드가 삭제됩니다. 계속 진행하시겠습니까?";
+
+/* (No Comment) */
+"node-settings-warning-title" = "주의";
+
+/* (No Comment) */
+"notification-filter-show-for" = "알림 표시";
+
+/* (No Comment) */
+"notification-filter-show-title" = "푸시 알림";
+
+/* (No Comment) */
+"notification-received" = "%@ 자산이 %@ 주소로 전송되었습니다(보내는 주소: %@).";
+
+/* (No Comment) */
+"notification-sent-failed" = "내 %@ 트랜잭션이(보내는 주소: %@, 받으시는 주소: %@) 실패했습니다.";
+
+/* MARK: Notifications */
+"notification-sent-success" = "내 %@ 트랜잭션이(보내는 주소: %@, 받으시는 주소: %@) 완료되었습니다.";
+
+/* (No Comment) */
+"notification-support-request" = "%@에서 %@ 자산을 전송하려 했으나, 내 계정에서 지원되지 않습니다. 원하시는 경우 계정에 추가해드릴 수 있습니다.";
+
+/* (No Comment) */
+"notification-support-success" = "%@에서 %@ 자산을 계정에 추가했습니다. 이제 해당 자산을 전송하실 수 있습니다.";
+
+/* (No Comment) */
+"notifications-empty-subtitle" = "최근 트랜잭션, 자산 요청 및 기타 알림이 표시됩니다.";
+
+/* (No Comment) */
+"notifications-empty-title" = "현재 알림 없음";
+
+/* MARK: Notifications Tab */
+"notifications-title" = "알림";
+
+/* (No Comment) */
+"options-auth-account" = "계정 주소 인증";
+
+/* (No Comment) */
+"options-edit-account-name" = "계정명 수정";
+
+/* (No Comment) */
+"options-mute-notification" = "알림 음소거";
+
+/* (No Comment) */
+"options-rekey" = "계정 키 재지정";
+
+/* (No Comment) */
+"options-remove-account" = "계정 삭제";
+
+/* (No Comment) */
+"options-remove-alert-explanation" = "계정을 삭제하려고 하십니다. 정말로 계정을 삭제하시겠습니까?";
+
+/* (No Comment) */
+"options-remove-assets" = "자산 삭제";
+
+/* (No Comment) */
+"options-show-qr" = "QR 및 주소 표시";
+
+/* MARK: Options */
+"options-title" = "자산 설정";
+
+/* (No Comment) */
+"options-unmute-notification" = "알림 음소거 해제";
+
+/* (No Comment) */
+"options-view-passphrase" = "비밀문구 보기";
+
+/* (No Comment) */
+"options-view-passphrase-password-alert-message" = "정확한 비밀번호를 입력해야 비밀문구를 확인할 수 있습니다.";
+
+/* (No Comment) */
+"pass-pharase-enter-placeholder" = "비밀문구를 입력하거나 QR 코드를 스캔하세요";
+
+/* (No Comment) */
+"pass-phrase-verify-invalid-passphrase" = "잘못된 비밀문구입니다. 정확한 비밀문구를 입력했는지 확인하시기 바랍니다.";
+
+/* (No Comment) */
+"pass-phrase-verify-pop-up-explanation" = "비밀문구가 인증되었습니다. 계정 복구 시 필요하므로 비밀문구를 백업하시기 바랍니다.";
+
+/* MARK: Passphrase Verify */
+"pass-phrase-verify-pop-up-title" = "비밀문구 확인 완료";
+
+/* (No Comment) */
+"pass-phrase-verify-question-title" = "질문 %@ / %@";
+
+/* (No Comment) */
+"pass-phrase-verify-sdk-error" = "문제가 발생했습니다. 잠시 후 다시 시도해 주세요.";
+
+/* (No Comment) */
+"pass-phrase-verify-select-title" = "%@자의 비밀문구를 선택하세요";
+
+/* (No Comment) */
+"pass-phrase-verify-wrong-selection" = "잘못 고르셨습니다";
+
+/* (No Comment) */
+"passphrase-bottom-title" = "번호를 붙여서 단어들을 올바른 순서로 기록하시기 바랍니다.";
+
+/* (No Comment) */
+"passphrase-qeustion-counter" = "질문 %@ / %@";
+
+/* (No Comment) */
+"passphrase-question-another" = "%@번째";
+
+/* (No Comment) */
+"passphrase-question-first" = "1번째";
+
+/* (No Comment) */
+"passphrase-question-second" = "2번째";
+
+/* (No Comment) */
+"passphrase-question-third" = "3번째";
+
+/* (No Comment) */
+"passphrase-select-n-word" = "%@자의 비밀문구를 선택하세요";
+
+/* (No Comment) */
+"passphrase-verify-invalid-title" = "잘못된 비밀문구";
+
+/* (No Comment) */
+"passphrase-verify-select-word" = "단어 #%@개 선택";
+
+/* (No Comment) */
+"passphrase-verify-title" = "복구 비밀문구 백업 확인";
+
+/* (No Comment) */
+"passphrase-verify-wrong-message" = "잘못된 단어를 선택하셨습니다. 다시 시도해 주세요.";
+
+/* (No Comment) */
+"password-change-subtitle" = "6자리 PIN 번호를 입력하세요";
+
+/* (No Comment) */
+"password-change-title" = "비밀번호 변경";
+
+/* (No Comment) */
+"password-set-subtitle" = "6자리 비밀번호를 선택하세요";
+
+/* (No Comment) */
+"password-verify-fail-message" = "비밀번호가 이전 비밀번호와 일치하지 않습니다.";
+
+/* (No Comment) */
+"password-verify-fail-title" = "잘못된 비밀번호입니다";
+
+/* (No Comment) */
+"password-verify-subtitle" = "동일한 6자리 숫자를 입력하세요";
+
+/* (No Comment) */
+"password-verify-title" = "비밀문구 확인";
+
+/* (No Comment) */
+"pin-limit-reset-all" = "전체 데이터 초기화";
+
+/* MARK: Pin Limit */
+"pin-limit-title" = "알고랜드 앱이 잠겼습니다";
+
+/* (No Comment) */
+"pin-limit-too-many" = "PIN 입력을 너무 많이 시도하셨습니다";
+
+/* (No Comment) */
+"pin-limit-try-again" = "다시 시도해 주세요. 대기 시간:";
+
+/* No comment provided by engineer. */
+"primaryText" = "primaryText";
+
+/* (No Comment) */
+"privacy-policy-title" = "개인정보 보호 정책";
+
+/* (No Comment) */
+"qr-creation-address" = "계정 주소";
+
+/* (No Comment) */
+"qr-creation-copied" = "주소를 클립보드로 복사 완료";
+
+/* (No Comment) */
+"qr-creation-copy-address" = "주소 복사";
+
+/* (No Comment) */
+"qr-creation-sharing-title" = "QR 및 주소 공유";
+
+/* MARK: QR Creation */
+"qr-creation-title" = "비밀문구 QR";
+
+/* (No Comment) */
+"qr-scan-error-message" = "내 기기에서 QR 코드 스캔을 지원하지 않습니다.";
+
+/* (No Comment) */
+"qr-scan-error-title" = "카메라를 사용할 수 없습니다";
+
+/* (No Comment) */
+"qr-scan-go-settings-message" = "카메라를 비활성화하셨습니다. 설정으로 이동해 옵션을 켜실 수 있습니다.";
+
+/* (No Comment) */
+"qr-scan-go-settings-title" = "카메라 비활성화됨";
+
+/* (No Comment) */
+"qr-scan-message-text" = "이 페이지에서만 QR 코드를 스캔할 수 있습니다. 계정 아래의 아이콘을 선택해 QR 코드를 확인하실 수 있습니다.";
+
+/* (No Comment) */
+"qr-scan-should-scan-address-message" = "유효한 계정 주소를 스캔하셔야 합니다.";
+
+/* (No Comment) */
+"qr-scan-should-scan-mnemonics-message" = "유효한 비밀문구를 스캔하셔야 합니다.";
+
+/* (No Comment) */
+"qr-scan-should-scan-valid-qr" = "잘못된 QR 코드입니다.";
+
+/* MARK: QR Scanning */
+"qr-scan-title" = "QR 코드 스캔";
+
+/* (No Comment) */
+"recover-copy-error" = "마지막으로 복사된 텍스트가 25단어의 유효한 비밀문구가 아닙니다. 정확한 비밀문구를 복사하고 다시 시도해 주세요.";
+
+/* (No Comment) */
+"recover-fill-all-error" = "모든 비밀문구를 입력해 주세요.";
+
+/* (No Comment) */
+"recover-from-seed-name-placeholder" = "이름 예시";
+
+/* (No Comment) */
+"recover-from-seed-name-title" = "이름";
+
+/* (No Comment) */
+"recover-from-seed-passphrase-title" = "비밀문구";
+
+/* MARK: Recover From Seed */
+"recover-from-seed-title" = "비밀문구로 복구";
+
+/* (No Comment) */
+"recover-from-seed-verify-exist-error" = "이미 존재하는 계정입니다";
+
+/* (No Comment) */
+"recover-from-seed-verify-pop-up-explanation" = "알고랜드에 오신 것을 환영합니다!\n계정을 사용하실 수 있습니다.";
+
+/* (No Comment) */
+"recover-from-seed-verify-pop-up-title" = "계정 인증 완료";
+
+/* MARK: Passphrase Back Up */
+"recover-passphrase-title" = "복구 비밀문구";
+
+/* (No Comment) */
+"recover-title" = "복원";
+
+/* (No Comment) */
+"rekey-instruction-first" = "앞으로 새 Ledger 기기로 트랜잭션에 서명하게 됩니다.";
+
+/* (No Comment) */
+"rekey-instruction-header" = "예상되는 결과:";
+
+/* (No Comment) */
+"rekey-instruction-second-ledger" = "기존의 Ledger는 더 이상 이 계정에서 사용할 수 없습니다.";
+
+/* (No Comment) */
+"rekey-instruction-second-standard" = "계정에 설정된 비밀문구는 더 이상 이 계정에서 사용할 수 없습니다.";
+
+/* MARK: Rekey Instruction */
+"rekey-instruction-start" = "절차 시작";
+
+/* (No Comment) */
+"rekey-instruction-subtitle-ledger" = "내 계정의 Ledger를 새 Ledger 기기로 교체합니다";
+
+/* (No Comment) */
+"rekey-instruction-subtitle-standard" = "내 계정의 비밀문구를 새 Ledger 기기로 교체합니다";
+
+/* (No Comment) */
+"rekey-instruction-third" = "계정의 공개 키, 잔액, 설정은 그대로 유지됩니다.";
+
+/* (No Comment) */
+"rekey-instruction-title" = "계정 키 재지정";
+
+/* MARK: Algos Request */
+"request-algos-title" = "알고 요청";
+
+/* (No Comment) */
+"request-title" = "요청";
+
+/* (No Comment) */
+"reward-list-title" = "보상";
+
+/* (No Comment) */
+"rewards-detail-subtitle" = "알고를 보유하시면 보상을 드립니다! 여기에서 최종 트랜잭션 이후 발생한 보상 활동의 요약을 확인해보세요. 보상은 이미 계정 잔액에 포함되어 있습니다.";
+
+/* (No Comment) */
+"rewards-show-title" = "보상 표시";
+
+/* (No Comment) */
+"rewards-since-last-text" = "최종 트랜잭션 이후";
+
+/* MARK: Rewards */
+"rewards-title" = "보상";
+
+/* (No Comment) */
+"screenshot-description" = "스크린샷을 찍어 복구 비밀문구를 백업하지 마세요. 비밀문구가 포함된 이미지가 존재하면 보안상의 위험이 있습니다.";
+
+/* (No Comment) */
+"screenshot-title" = "스크린샷 감지됨";
+
+/* (No Comment) */
+"send-algos-account-delete-body" = "계정을 활성 상태로 유지하려면 계정 잔액이 0.01알고 이상이어야 합니다. 최대 금액을 전송하는 경우, 계정이 삭제되며 활성화된 참여 키 역시 삭제됩니다.";
+
+/* (No Comment) */
+"send-algos-account-delete-title" = "계정이 삭제됩니다, 계속하시겠습니까?";
+
+/* (No Comment) */
+"send-algos-address" = "주소";
+
+/* (No Comment) */
+"send-algos-address-not-selected" = "선택된 주소 없음";
+
+/* (No Comment) */
+"send-algos-alert-incomplete-title" = "미완료 트랜잭션";
+
+/* (No Comment) */
+"send-algos-alert-message" = "입력란에 정보를 입력해 주세요.";
+
+/* (No Comment) */
+"send-algos-alert-message-address" = "전송 대상의 주소를 정확하게 입력하세요.";
+
+/* (No Comment) */
+"send-algos-amount" = "총액";
+
+/* (No Comment) */
+"send-algos-amount-error" = "트랜잭션 금액을 사용 가능한 알고 금액 이상으로 설정할 수 없습니다";
+
+/* (No Comment) */
+"send-algos-balance-title" = "잔액:";
+
+/* (No Comment) */
+"send-algos-contact-not-found" = "연락처 찾을 수 없음";
+
+/* (No Comment) */
+"send-algos-contacts" = "연락처";
+
+/* (No Comment) */
+"send-algos-minimum-amount-custom-error" = "트랜잭션 진행 시 계정의 잔액이 최소 잔액 수준(%@ 알고) 이하로 떨어집니다.";
+
+/* (No Comment) */
+"send-algos-minimum-amount-error" = "트랜잭션 진행 시 계정의 잔액이 최소 잔액 수준(0.1알고) 이하로 떨어집니다.";
+
+/* (No Comment) */
+"send-algos-minimum-amount-error-new-account" = "새 계정에 자금을 이체하려고 하십니다. 금액은 0.1알고 이상이어야 합니다.";
+
+/* (No Comment) */
+"send-algos-receiver-address-validation" = "잘못된 키입니다, 보유한 키가 정확한지 확인해 주세요.";
+
+/* (No Comment) */
+"send-algos-scan" = "QR 스캔";
+
+/* (No Comment) */
+"send-algos-select" = "금액 선택";
+
+/* (No Comment) */
+"send-algos-sent-title" = "알고 전송 완료!";
+
+/* MARK: Algos Send */
+"send-algos-title" = "알고 전송";
+
+/* (No Comment) */
+"send-algos-to" = "받으시는 분";
+
+/* (No Comment) */
+"send-asset-amount-error" = "트랜잭션 금액을 사용 가능한 금액 이상으로 설정할 수 없습니다.";
+
+/* (No Comment) */
+"send-choose-asset" = "자산 선택";
+
+/* (No Comment) */
+"send-enter-note-placeholder" = "참조할 내용을 입력하세요";
+
+/* (No Comment) */
+"send-enter-note-title" = "참조 추가";
+
+/* (No Comment) */
+"send-qr-different-asset-alert" = "QR 코드에 선택하신 것과 다른 자산이 포함되어 있습니다. 디코딩 중 금액은 무시됩니다.";
+
+/* (No Comment) */
+"send-qr-scan-alert-message" = "트랜잭션 요청 QR 코드를 스캔하셨습니다. 트랜잭션 항목이 변경되었을 수 있으니 모든 항목을 검토해 주세요.";
+
+/* (No Comment) */
+"send-qr-scan-alert-title" = "QR 스캔";
+
+/* (No Comment) */
+"send-receiving-algos-select" = "수신액 선택";
+
+/* (No Comment) */
+"send-select-asset" = "자산 선택";
+
+/* (No Comment) */
+"send-sending-algos-select" = "송금액 선택";
+
+/* (No Comment) */
+"send-transaction-max-same-account-error" = "나 자신에게 최대 잔액을 전송할 수 없습니다. 다른 금액을 선택하거나 받으시는 분을 변경한 다음 다시 시도해 주세요.";
+
+/* (No Comment) */
+"send-trasaction-address-placeholder" = "# 붙여넣기";
+
+/* (No Comment) */
+"settings-app-version" = "버전 %@";
+
+/* (No Comment) */
+"settings-change-password" = "비밀번호 설정/변경";
+
+/* (No Comment) */
+"settings-currency" = "통화";
+
+/* (No Comment) */
+"settings-currency-usd" = "달러";
+
+/* (No Comment) */
+"settings-developer" = "개발자 설정";
+
+/* (No Comment) */
+"settings-developer-dispenser" = "알고랜드 디스펜서";
+
+/* (No Comment) */
+"settings-language" = "언어";
+
+/* (No Comment) */
+"settings-language-change-detail" = "스마트폰의 업데이트로 인해 언어 변경 절차가 변경되었습니다.\n\n1. 다음 화면으로 진행하세요.\n2. 원하는 언어를 눌러 선택하세요.\n\n언어 설정이 불가능한 경우 일반적인 iPhone 언어 설정으로 가셔서 사용할 언어를 먼저 설정하시기 바랍니다.";
+
+/* (No Comment) */
+"settings-language-change-title" = "앱 언어 설정";
+
+/* (No Comment) */
+"settings-language-english" = "한국어";
+
+/* (No Comment) */
+"settings-local-authentication" = "Face ID/Touch ID 활성화";
+
+/* (No Comment) */
+"settings-logout-detail" = "정말로 모든 데이터를 삭제하시겠습니까?";
+
+/* (No Comment) */
+"settings-logout-title" = "전체 데이터 삭제";
+
+/* (No Comment) */
+"settings-notification-disabled-go-settings-text" = "알림을 비활성화하셨습니다. 설정으로 이동해 옵션을 켜실 수 있습니다.";
+
+/* (No Comment) */
+"settings-notification-enabled-go-settings-text" = "알림을 활성화하셨습니다. 설정으로 이동해 옵션을 끄실 수 있습니다.";
+
+/* (No Comment) */
+"settings-notification-go-settings-title" = "알림";
+
+/* (No Comment) */
+"settings-rate-title" = "알고랜드 지갑 평가하기";
+
+/* (No Comment) */
+"settings-server-node-settings" = "노드 설정";
+
+/* (No Comment) */
+"settings-support-title" = "지원 센터";
+
+/* (No Comment) */
+"settings-theme-dark" = "어두운";
+
+/* (No Comment) */
+"settings-theme-light" = "빛";
+
+/* (No Comment) */
+"settings-theme-set" = "테마 설정";
+
+/* (No Comment) */
+"settings-theme-system" = "시스템 기본값";
+
+/* MARK: Settings */
+"settings-title" = "설정";
+
+/* MARK: Terms and Services */
+"terms-and-services-title" = "이용 약관";
+
+/* (No Comment) */
+"title-accept" = "동의";
+
+/* (No Comment) */
+"title-account" = "계정";
+
+/* (No Comment) */
+"title-account-balance" = "잔액";
+
+/* (No Comment) */
+"title-add-asset" = "새 자산 추가";
+
+/* (No Comment) */
+"title-algo-rewards" = "알고 보상";
+
+/* (No Comment) */
+"title-algorand" = "알고랜드";
+
+/* (No Comment) */
+"title-algorand-value" = "가치";
+
+/* (No Comment) */
+"title-analytics" = "분석";
+
+/* (No Comment) */
+"title-approve" = "승인";
+
+/* (No Comment) */
+"title-cancel" = "취소";
+
+/* (No Comment) */
+"title-close" = "닫기";
+
+/* (No Comment) */
+"title-continue" = "계속 진행";
+
+/* (No Comment) */
+"title-copy" = "복사";
+
+/* (No Comment) */
+"title-done" = "완료";
+
+/* (No Comment) */
+"title-dont-ask" = "다시 묻지 않음";
+
+/* (No Comment) */
+"title-dont-show-again" = "다시 표시하지 않음";
+
+/* (No Comment) */
+"title-edit" = "수정";
+
+/* (No Comment) */
+"title-enter-pin-for-passphrase" = "비밀문구를 확인하려면 PIN 번호를 입력해 주세요";
+
+/* (No Comment) */
+"title-error" = "오류";
+
+/* (No Comment) */
+"title-go-home" = "홈으로 이동";
+
+/* (No Comment) */
+"title-go-to-accounts" = "계정으로 이동";
+
+/* (No Comment) */
+"title-go-to-settings" = "설정으로 이동";
+
+/* (No Comment) */
+"title-i-understand" = "알겠습니다";
+
+/* (No Comment) */
+"title-id" = "ID";
+
+/* (No Comment) */
+"title-internet-connection" = "인터넷 연결이 오프라인입니다.";
+
+/* (No Comment) */
+"title-keep" = "유지";
+
+/* (No Comment) */
+"title-learn-more" = "더 알아보기";
+
+/* (No Comment) */
+"title-loading" = "불러오는 중";
+
+/* (No Comment) */
+"title-max" = "최대";
+
+/* (No Comment) */
+"title-new-uppercased" = "NEW";
+
+/* (No Comment) */
+"title-next" = "다음";
+
+/* (No Comment) */
+"title-no" = "아니요";
+
+/* (No Comment) */
+"title-ok" = "확인";
+
+/* (No Comment) */
+"title-paste-passphrase" = "비밀문구 전체 붙여넣기";
+
+/* (No Comment) */
+"title-plus-asset-count" = "+%@ 자산";
+
+/* (No Comment) */
+"title-preview" = "미리보기";
+
+/* (No Comment) */
+"title-preview-and-sign-with-ledger-title" = "미리보기 & Ledger로 서명하기";
+
+/* (No Comment) */
+"title-proceed" = "진행";
+
+/* (No Comment) */
+"title-receive" = "받기";
+
+/* (No Comment) */
+"title-remove" = "삭제";
+
+/* (No Comment) */
+"title-remove-assets" = "자산 삭제";
+
+/* (No Comment) */
+"title-save" = "저장";
+
+/* (No Comment) */
+"title-select-asset" = "자산 선택";
+
+/* (No Comment) */
+"title-send" = "전송";
+
+/* (No Comment) */
+"title-share-qr" = "QR 공유";
+
+/* (No Comment) */
+"title-skip" = "건너뛰기";
+
+/* MARK: Ledger Troubleshooting */
+"title-step-1" = "1단계";
+
+/* (No Comment) */
+"title-step-2" = "2단계";
+
+/* (No Comment) */
+"title-step-3" = "3단계";
+
+/* (No Comment) */
+"title-step-4" = "4단계";
+
+/* (No Comment) */
+"title-testnet" = "테스트넷";
+
+/* (No Comment) */
+"title-unknown" = "이름 없음";
+
+/* (No Comment) */
+"title-verify" = "확인";
+
+/* MARK: Watch Account */
+"title-watch-account" = "계정 조회";
+
+/* MARK: Common */
+"title-yes" = "네";
+
+/* (No Comment) */
+"total-rewards-faq" = "FAQ.";
+
+/* (No Comment) */
+"total-rewards-faq-title" = "알고랜드 보상을 자세히 알아보려면 FAQ 페이지를 참조하세요.";
+
+/* (No Comment) */
+"total-rewards-title" = "보상: %@";
+
+/* (No Comment) */
+"tranaction-empty-text" = "트랜잭션을 찾을 수 없음";
+
+/* (No Comment) */
+"transaction-detail-amount" = "총액";
+
+/* (No Comment) */
+"transaction-detail-close-amount" = "계정 삭제용 송금액";
+
+/* (No Comment) */
+"transaction-detail-close-to" = "계정 삭제용 송금을 받으시는 분";
+
+/* (No Comment) */
+"transaction-detail-copy-tooltip" = "오래 누르면 클립보드로 복사됩니다";
+
+/* (No Comment) */
+"transaction-detail-date" = "날짜";
+
+/* (No Comment) */
+"transaction-detail-fee" = "수수료";
+
+/* (No Comment) */
+"transaction-detail-from" = "보내는 사람";
+
+/* (No Comment) */
+"transaction-detail-id" = "트랜잭션 ID";
+
+/* (No Comment) */
+"transaction-detail-id-copied" = "트랜잭션 ID 클립보드로 복사 완료";
+
+/* (No Comment) */
+"transaction-detail-note" = "참조";
+
+/* (No Comment) */
+"transaction-detail-note-copied" = "트랜잭션 참조 내용 클립보드로 복사 완료";
+
+/* (No Comment) */
+"transaction-detail-reward" = "보상";
+
+/* (No Comment) */
+"transaction-detail-round" = "라운드";
+
+/* (No Comment) */
+"transaction-detail-status" = "상태";
+
+/* MARK: Transaction Detail */
+"transaction-detail-title" = "트랜잭션 상세 정보";
+
+/* (No Comment) */
+"transaction-detail-to" = "받으시는 분";
+
+/* (No Comment) */
+"transaction-download-close-to" = "계정 삭제용 송금을 받으시는 분: 주소";
+
+/* (No Comment) */
+"transaction-download-from" = "보내는 사람: 주소";
+
+/* (No Comment) */
+"transaction-download-to" = "받는 사람: 주소";
+
+/* (No Comment) */
+"transaction-filter-error-subtitle" = "죄송합니다, 문제가 발생했습니다.";
+
+/* (No Comment) */
+"transaction-filter-error-title" = "문제가 발생했습니다";
+
+/* (No Comment) */
+"transaction-filter-option-all" = "전체 기간";
+
+/* (No Comment) */
+"transaction-filter-option-custom" = "범위 설정";
+
+/* (No Comment) */
+"transaction-filter-option-month" = "지난달";
+
+/* (No Comment) */
+"transaction-filter-option-today" = "오늘";
+
+/* (No Comment) */
+"transaction-filter-option-week" = "지난주";
+
+/* (No Comment) */
+"transaction-filter-option-yesterday" = "어제";
+
+/* MARK: Transaction Filter */
+"transaction-filter-title-sort" = "날짜별 정렬";
+
+/* (No Comment) */
+"transaction-filter-tooltip" = "트랜잭션 내역을 필터링하실 수 있습니다.";
+
+/* (No Comment) */
+"transaction-filter-try-again" = "다시 시도해 주세요";
+
+/* (No Comment) */
+"transaction-id-open-algoexplorer" = "AlgoExplorer에서 열기";
+
+/* (No Comment) */
+"transaction-id-open-goalseeker" = "GoalSeeker에서 열기";
+
+/* (No Comment) */
+"transaction-tutorial-subtitle" = "첫 번째 트랜잭션을 진행하고 계십니다. 거래를 마무리하기 전에 몇 가지 팁을 고려해보세요.";
+
+/* (No Comment) */
+"transaction-tutorial-subtitle-other" = "거래를 마무리하기 전에 몇 가지 팁을 고려해보세요.";
+
+/* (No Comment) */
+"transaction-tutorial-tap-to-more" = "트랜잭션을 자세히 알아보려면 여기를 눌러주세요";
+
+/* (No Comment) */
+"transaction-tutorial-tap-to-more-highlighted" = "여기를 눌러주세요";
+
+/* (No Comment) */
+"transaction-tutorial-tip-first" = "해당 주소로 처음 송금하는 경우, 큰 금액을 보내기 전에 소규모로 테스트 트랜잭션을 보내보시기를 권장합니다.";
+
+/* (No Comment) */
+"transaction-tutorial-tip-second" = "거래소는 입금 주소를 자주 변경하며, 저장된 거래소 주소가 더 이상 사용되지 않을 수 있습니다. 올바른 주소로 송금하고 있는지 확인해주세요.";
+
+/* (No Comment) */
+"transaction-tutorial-tip-second-highlighted" = "올바른 주소로 송금하고 있는지 확인해주세요.";
+
+/* (No Comment) */
+"transaction-tutorial-title" = "트랜잭션 팁";
+
+/* (No Comment) */
+"tutorial-action-title-passcode" = "나중에";
+
+/* (No Comment) */
+"tutorial-description-back-up" = "기기 분실, 앱 삭제 시 복구 비밀문구가 없는 경우, 알고랜드 계정에 영구적으로 접속할 수 없습니다.";
+
+/* (No Comment) */
+"tutorial-description-local" = "FaceID 또는 TouchID 인증을 통과해야 앱을 사용할 수 있게 됩니다. 휴대폰 도난에 대비해 지갑의 보안을 강화하려면 생체 인증을 활성화하시길 권장합니다.";
+
+/* (No Comment) */
+"tutorial-description-passcode" = "6자리 PIN 번호를 입력해야 알고랜드 지갑을 사용할 수 있게 됩니다. 휴대폰 도난에 대비해 지갑의 보안을 강화하려면 PIN을 설정하시길 권장합니다.";
+
+/* (No Comment) */
+"tutorial-description-recover" = "다음 단계에서는 알고랜드 계정을 복원하기 위해 25단어로 구성된 복구 비밀문구를 입력하셔야 합니다. 시작하기 전에 복구 비밀문구를 준비하시기 바랍니다.";
+
+/* (No Comment) */
+"tutorial-description-warning-title" = "주의:";
+
+/* (No Comment) */
+"tutorial-description-watch" = "읽기 전용 계정을 사용하면 비밀문구가 없어도 계정 활동을 모니터링할 수 있습니다. 콜드 스토리지에 보관된 자산을 모니터링하는 데 유용한 기능입니다.\n\n경고: 계정에 설정된 복구 비밀문구를 모르는 경우, 이 계정으로 자산을 보내지 마세요.";
+
+/* (No Comment) */
+"tutorial-description-watch-italic" = "경고: 계정에 설정된 복구 비밀문구를 모르는 경우 이 계정으로 자산을 보내지 마세요.";
+
+/* (No Comment) */
+"tutorial-description-write" = "주의: 알고랜드 계정을 복원하는 유일한 방법은 이 복구 비밀문구를 사용하는 것뿐입니다. 비밀문구가 있으면 계정의 모든 기능을 이용 가능하므로, 다른 사람과 비밀문구를 공유하지 마세요.\n\n알고랜드 직원은 계정의 비밀문구를 묻지 않습니다.";
+
+/* (No Comment) */
+"tutorial-description-write-italic" = "알고랜드 직원은 절대로 비밀문구를 묻지 않습니다.";
+
+/* (No Comment) */
+"tutorial-main-title-back-up" = "알겠습니다";
+
+/* (No Comment) */
+"tutorial-main-title-passcode" = "비밀문구 설정";
+
+/* (No Comment) */
+"tutorial-main-title-recover" = "알고랜드 계정 복구";
+
+/* (No Comment) */
+"tutorial-main-title-write" = "시작할 준비가 되었습니다";
+
+/* (No Comment) */
+"tutorial-title-back-up" = "복구 비밀문구를 사용해 계정을 백업하세요";
+
+/* (No Comment) */
+"tutorial-title-passcode" = "PIN으로 보안을 강화하세요";
+
+/* (No Comment) */
+"tutorial-title-recover" = "알고랜드 계정 복구";
+
+/* (No Comment) */
+"tutorial-title-write" = "복구 비밀문구를 받아적을 준비를 해주세요";
+
+/* (No Comment) */
+"value-one-algo" = "1 알고 = %@";
+
+/* (No Comment) */
+"verified-asset-double-check" = "확인하신 다음";
+
+/* (No Comment) */
+"verified-asset-information-text" = "알고랜드(Algorand Inc.)가 자산 발행사와 관계를 맺고 있는 특정 자산의 경우, 해당 자산을 “인증 완료”로 표시합니다(파란색 체크 기호로 알아보실 수 있습니다).\n\n이는 의도하지 않은 자산을 실수로 전송하지 않도록 한 번 더 막아주는 역할을 합니다.\n\n즉, 항상 선택하고자 하는 자산의 ID를 정확하게 선택했는지 확인하신 다음 자산을 전송하셔야 합니다.\n\n인증 절차나 앱과 관련하여 일반적인 피드백이 있는 경우, 알고랜드로 문의해 주세요.";
+
+/* (No Comment) */
+"verified-asset-information-title" = "자산 인증은 무엇인가요?";
+
+/* (No Comment) */
+"verified-asset-information-visit-site" = "www.algorandwallet.com/support 페이지를 방문하세요";
+
+/* MARK: Verified Asset Information */
+"verified-assets-title" = "인증된 자산";
+
+/* (No Comment) */
+"watch-account-create" = "읽기 전용 계정 만들기";
+
+/* (No Comment) */
+"watch-account-error-address" = "정확한 주소를 입력하세요.";
+
+/* (No Comment) */
+"watch-account-explanation-title" = "주의: 알고랜드 계정의 읽기 전용 조회 화면을 생성하고 있습니다. 이 계정으로 자산을 보냈으나 계정에 상응하는 복구 비밀문구가 없는 경우, 보내신 자산은 손실됩니다.";
+
+/* (No Comment) */
+"watch-account-input-explanation" = "조회할 계정 주소";
+
+/* (No Comment) */
+"watch-account-input-placeholder" = "주소를 붙여넣거나 QR 코드를 스캔하세요";
+

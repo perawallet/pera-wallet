@@ -1,0 +1,25 @@
+{
+  "asset-transfer-transaction": {
+    "amount": 0,
+    "asset-id": 31566704,
+    "close-amount": 0,
+    "receiver": "X2YHQU7W6OJG66TMLL3PZ7JQS2D42YEGATBBNDXH22Q6JSNOFR6LVZYXXM"
+  },
+  "close-rewards": 0,
+  "closing-amount": 0,
+  "confirmed-round": 9908386,
+  "fee": 1000,
+  "first-valid": 9908384,
+  "genesis-hash": "wGHE2Pwdvd7S12BL5FaOP20EGYesN73ktiC1qzkkit8=",
+  "id": "PGQNBLKKJ7T3G2HG45KKMONVYG2WXDERV352VM44KVNZOQXAWSRA",
+  "intra-round-offset": 45,
+  "last-valid": 9909384,
+  "receiver-rewards": 0,
+  "round-time": 1603818087,
+  "sender": "X2YHQU7W6OJG66TMLL3PZ7JQS2D42YEGATBBNDXH22Q6JSNOFR6LVZYXXM",
+  "sender-rewards": 0,
+  "signature": {
+    "sig": "CfYVi+A8FDrXkeFZ+b1zEBx7Jju8faOs4OP3pRF9hMn2maMdJ0mJw2KZaFOFyHhlRxg9zD5bhNGBOacA995lCg=="
+  },
+  "tx-type": "axfer"
+}

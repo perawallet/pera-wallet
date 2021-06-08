@@ -1,0 +1,13 @@
+{
+  "address": "64G4FSHVXJ3NNUDZHXOLMNUQ22YMUHO47L3UTIMXADXDCNKNFTL5222I4A",
+  "receivesNotification": true,
+  "name": "Rekeyed Name",
+  "type": "rekeyed",
+  "rekeyDetail" : {
+    "OA5W3RZ4FMBJ3GDCZPE3CWOPSXWFUP4JDOIMSOOJZJZ7AIDWWVJZ2Y77B4" : {
+      "id" : "2867714E-FFD6-2285-490C-7E7B712B0565",
+      "name" : "\bNano X 8696",
+      "index" : 0
+    }
+  }
+}

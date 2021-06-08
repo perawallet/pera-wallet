@@ -1,0 +1,25 @@
+{
+  "close-rewards": 0,
+  "closing-amount": 0,
+  "confirmed-round": 11378354,
+  "fee": 1000,
+  "first-valid": 11378352,
+  "genesis-hash": "wGHE2Pwdvd7S12BL5FaOP20EGYesN73ktiC1qzkkit8=",
+  "id": "GCHLA33JQVQWIAREYP777QGE43RGIGVDMWBZRZREM6G5K474EGQQ",
+  "intra-round-offset": 19,
+  "last-valid": 11379352,
+  "payment-transaction": {
+    "amount": 100000,
+    "close-amount": 0,
+    "receiver": "K5JG4HOL3DIVIUQRHHM6DG3VNF4QHRC7XYSWYSRKBV46SHHZRRIVI4XNCU"
+  },
+  "receiver-rewards": 0,
+  "round-time": 1610307800,
+  "sender": "X2YHQU7W6OJG66TMLL3PZ7JQS2D42YEGATBBNDXH22Q6JSNOFR6LVZYXXM",
+  "sender-rewards": 50,
+  "note": "V2F6emFwIPCfppY=",
+  "signature": {
+    "sig": "+k+kXHk8gp8Cwcwt1DSjeTkcGjRgOoaJHJagbiMU0SDbr/6dglxxvKwqcPdcb7xkpenuPyMC49wi02uyG/5gBw=="
+  },
+  "tx-type": "pay"
+}

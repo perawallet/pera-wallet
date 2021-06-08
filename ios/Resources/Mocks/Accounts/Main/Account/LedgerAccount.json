@@ -1,0 +1,48 @@
+{
+  "reward-base": 25538,
+  "rewards": 0,
+  "assets": [
+    {
+      "amount": 22994127584480,
+      "is-frozen": false,
+      "asset-id": 11711,
+      "creator": ""
+    }
+  ],
+  "amount-without-pending-rewards": 3697787821,
+  "amount": 3697787821,
+  "type": "ledger",
+  "receivesNotification": true,
+  "pending-rewards": 0,
+  "address": "OA5W3RZ4FMBJ3GDCZPE3CWOPSXWFUP4JDOIMSOOJZJZ7AIDWWVJZ2Y77B4",
+  "assetDetails": [
+    {
+      "index": 11711,
+      "params": {
+        "is_verified": false,
+        "manager": "ANC4BH2C6QJTCXZMEMCB7XEW7TFZVNSAH3RJ5YTMNUPNXU4DKD2BHAAZSU",
+        "unit-name": "HIPO",
+        "freeze": "ANC4BH2C6QJTCXZMEMCB7XEW7TFZVNSAH3RJ5YTMNUPNXU4DKD2BHAAZSU",
+        "total": 23000000000000,
+        "url": "https:\/\/www.hipolabs.com",
+        "isRemoved": false,
+        "decimals": 0,
+        "default-frozen": false,
+        "creator": "ANC4BH2C6QJTCXZMEMCB7XEW7TFZVNSAH3RJ5YTMNUPNXU4DKD2BHAAZSU",
+        "isRecentlyAdded": false,
+        "clawback": "ANC4BH2C6QJTCXZMEMCB7XEW7TFZVNSAH3RJ5YTMNUPNXU4DKD2BHAAZSU",
+        "reserve": "ANC4BH2C6QJTCXZMEMCB7XEW7TFZVNSAH3RJ5YTMNUPNXU4DKD2BHAAZSU",
+        "name": "HipoCoin"
+      }
+    }
+  ],
+  "sig-type": "sig",
+  "round": 11713968,
+  "status": "Offline",
+  "name": "Ledger Name",
+  "ledgerDetail": {
+      "id" : "2867714E-FFD6-2285-490C-7E7B712B0565",
+      "name" : "\bNano X 8696",
+      "index" : 0
+  }
+}

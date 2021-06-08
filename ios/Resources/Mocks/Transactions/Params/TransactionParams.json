@@ -1,0 +1,8 @@
+{
+  "consensus-version": "https://github.com/algorandfoundation/specs/tree/3a83c4c743f8b17adfd73944b4319c25722a6782",
+  "fee": 0,
+  "genesis-hash": "wGHE2Pwdvd7S12BL5FaOP20EGYesN73ktiC1qzkkit8=",
+  "genesis-id": "mainnet-v1.0",
+  "last-round": 11430660,
+  "min-fee": 1000
+}

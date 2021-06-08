@@ -1,0 +1,256 @@
+{
+  "reward-base": 25538,
+  "rewards": 0,
+  "assets": [
+    {
+      "amount": 663197960016564,
+      "is-frozen": false,
+      "asset-id": 19029,
+      "creator": ""
+    },
+    {
+      "amount": 0,
+      "is-frozen": false,
+      "asset-id": 355059,
+      "creator": ""
+    },
+    {
+      "amount": 156278708,
+      "is-frozen": false,
+      "asset-id": 135208,
+      "creator": ""
+    },
+    {
+      "amount": 0,
+      "is-frozen": false,
+      "asset-id": 180132,
+      "creator": ""
+    },
+    {
+      "amount": 22994127584480,
+      "is-frozen": false,
+      "asset-id": 11711,
+      "creator": ""
+    },
+    {
+      "amount": 1000000000000,
+      "is-frozen": false,
+      "asset-id": 19026,
+      "creator": ""
+    },
+    {
+      "amount": 999881911,
+      "is-frozen": false,
+      "asset-id": 135270,
+      "creator": ""
+    },
+    {
+      "amount": 244629449,
+      "is-frozen": false,
+      "asset-id": 19028,
+      "creator": ""
+    },
+    {
+      "amount": 18446243973709551615,
+      "is-frozen": false,
+      "asset-id": 180436,
+      "creator": ""
+    }
+  ],
+  "amount-without-pending-rewards": 3697787821,
+  "amount": 3697787821,
+  "created-assets": [
+    {
+      "index": 180436,
+      "params": {
+        "is_verified": false,
+        "manager": "X2YHQU7W6OJG66TMLL3PZ7JQS2D42YEGATBBNDXH22Q6JSNOFR6LVZYXXM",
+        "unit-name": "MAX",
+        "freeze": "X2YHQU7W6OJG66TMLL3PZ7JQS2D42YEGATBBNDXH22Q6JSNOFR6LVZYXXM",
+        "total": 18446744073709551615,
+        "isRemoved": false,
+        "decimals": 5,
+        "default-frozen": false,
+        "creator": "X2YHQU7W6OJG66TMLL3PZ7JQS2D42YEGATBBNDXH22Q6JSNOFR6LVZYXXM",
+        "isRecentlyAdded": false,
+        "clawback": "X2YHQU7W6OJG66TMLL3PZ7JQS2D42YEGATBBNDXH22Q6JSNOFR6LVZYXXM",
+        "reserve": "X2YHQU7W6OJG66TMLL3PZ7JQS2D42YEGATBBNDXH22Q6JSNOFR6LVZYXXM",
+        "name": "MAXIMUM_LIMIT"
+      }
+    }
+  ],
+  "type": "standard",
+  "receivesNotification": true,
+  "pending-rewards": 0,
+  "address": "X2YHQU7W6OJG66TMLL3PZ7JQS2D42YEGATBBNDXH22Q6JSNOFR6LVZYXXM",
+  "assetDetails": [
+    {
+      "index": 180132,
+      "params": {
+        "is_verified": true,
+        "manager": "EZG6H7XKLBMWRJ2OX47J5LZA672BTCUESIQVCZZ7BEWLQO2GPW5XKJKBLE",
+        "unit-name": "units",
+        "freeze": "LMPBYSUEWG4AW2YU6EYQOFTBGOWUH7VQPTS3OJAZ7K7V6FRGAOFZ36C3TA",
+        "total": 1000,
+        "url": "http:\/\/www.google.com",
+        "isRemoved": false,
+        "decimals": 3,
+        "default-frozen": false,
+        "creator": "EZG6H7XKLBMWRJ2OX47J5LZA672BTCUESIQVCZZ7BEWLQO2GPW5XKJKBLE",
+        "isRecentlyAdded": false,
+        "clawback": "LMPBYSUEWG4AW2YU6EYQOFTBGOWUH7VQPTS3OJAZ7K7V6FRGAOFZ36C3TA",
+        "reserve": "LMPBYSUEWG4AW2YU6EYQOFTBGOWUH7VQPTS3OJAZ7K7V6FRGAOFZ36C3TA",
+        "name": "testasset2"
+      }
+    },
+    {
+      "index": 11711,
+      "params": {
+        "is_verified": false,
+        "manager": "ANC4BH2C6QJTCXZMEMCB7XEW7TFZVNSAH3RJ5YTMNUPNXU4DKD2BHAAZSU",
+        "unit-name": "HIPO",
+        "freeze": "ANC4BH2C6QJTCXZMEMCB7XEW7TFZVNSAH3RJ5YTMNUPNXU4DKD2BHAAZSU",
+        "total": 23000000000000,
+        "url": "https:\/\/www.hipolabs.com",
+        "isRemoved": false,
+        "decimals": 0,
+        "default-frozen": false,
+        "creator": "ANC4BH2C6QJTCXZMEMCB7XEW7TFZVNSAH3RJ5YTMNUPNXU4DKD2BHAAZSU",
+        "isRecentlyAdded": false,
+        "clawback": "ANC4BH2C6QJTCXZMEMCB7XEW7TFZVNSAH3RJ5YTMNUPNXU4DKD2BHAAZSU",
+        "reserve": "ANC4BH2C6QJTCXZMEMCB7XEW7TFZVNSAH3RJ5YTMNUPNXU4DKD2BHAAZSU",
+        "name": "HipoCoin"
+      }
+    },
+    {
+      "index": 19026,
+      "params": {
+        "is_verified": false,
+        "manager": "WLH5LELVSEVQL45LBRQYCLJAX6KQPGWUY5WHJXVRV2NPYZUBQAFPH22Q7A",
+        "unit-name": "nugget",
+        "freeze": "WLH5LELVSEVQL45LBRQYCLJAX6KQPGWUY5WHJXVRV2NPYZUBQAFPH22Q7A",
+        "total": 1000000000000000,
+        "isRemoved": false,
+        "decimals": 0,
+        "default-frozen": false,
+        "creator": "WLH5LELVSEVQL45LBRQYCLJAX6KQPGWUY5WHJXVRV2NPYZUBQAFPH22Q7A",
+        "isRecentlyAdded": false,
+        "clawback": "WLH5LELVSEVQL45LBRQYCLJAX6KQPGWUY5WHJXVRV2NPYZUBQAFPH22Q7A",
+        "reserve": "WLH5LELVSEVQL45LBRQYCLJAX6KQPGWUY5WHJXVRV2NPYZUBQAFPH22Q7A",
+        "name": "gold"
+      }
+    },
+    {
+      "index": 135270,
+      "params": {
+        "is_verified": false,
+        "manager": "PZOGQXHCDMCR4DVL6HPFDUNM3WQLOPJVBJA2HJEDV7WUX6PBJQGXJGND54",
+        "unit-name": "TRY",
+        "freeze": "PZOGQXHCDMCR4DVL6HPFDUNM3WQLOPJVBJA2HJEDV7WUX6PBJQGXJGND54",
+        "total": 1000000000,
+        "isRemoved": false,
+        "decimals": 2,
+        "default-frozen": false,
+        "creator": "PZOGQXHCDMCR4DVL6HPFDUNM3WQLOPJVBJA2HJEDV7WUX6PBJQGXJGND54",
+        "isRecentlyAdded": false,
+        "clawback": "PZOGQXHCDMCR4DVL6HPFDUNM3WQLOPJVBJA2HJEDV7WUX6PBJQGXJGND54",
+        "reserve": "PZOGQXHCDMCR4DVL6HPFDUNM3WQLOPJVBJA2HJEDV7WUX6PBJQGXJGND54",
+        "name": "Turkish lira"
+      }
+    },
+    {
+      "index": 180436,
+      "params": {
+        "is_verified": false,
+        "manager": "X2YHQU7W6OJG66TMLL3PZ7JQS2D42YEGATBBNDXH22Q6JSNOFR6LVZYXXM",
+        "unit-name": "MAX",
+        "freeze": "X2YHQU7W6OJG66TMLL3PZ7JQS2D42YEGATBBNDXH22Q6JSNOFR6LVZYXXM",
+        "total": 18446744073709551615,
+        "isRemoved": false,
+        "decimals": 5,
+        "default-frozen": false,
+        "creator": "X2YHQU7W6OJG66TMLL3PZ7JQS2D42YEGATBBNDXH22Q6JSNOFR6LVZYXXM",
+        "isRecentlyAdded": false,
+        "clawback": "X2YHQU7W6OJG66TMLL3PZ7JQS2D42YEGATBBNDXH22Q6JSNOFR6LVZYXXM",
+        "reserve": "X2YHQU7W6OJG66TMLL3PZ7JQS2D42YEGATBBNDXH22Q6JSNOFR6LVZYXXM",
+        "name": "MAXIMUM_LIMIT"
+      }
+    },
+    {
+      "index": 355059,
+      "params": {
+        "is_verified": false,
+        "manager": "ALGOVP5KCBHBU2ZYILN6RDFFZB6S35KHUNVCOEXIUHCZ5O6BHRLTIJM2W4",
+        "unit-name": "VM",
+        "freeze": "ALGOVP5KCBHBU2ZYILN6RDFFZB6S35KHUNVCOEXIUHCZ5O6BHRLTIJM2W4",
+        "total": 1,
+        "isRemoved": false,
+        "decimals": 0,
+        "default-frozen": false,
+        "creator": "ALGOVP5KCBHBU2ZYILN6RDFFZB6S35KHUNVCOEXIUHCZ5O6BHRLTIJM2W4",
+        "isRecentlyAdded": false,
+        "clawback": "ALGOVP5KCBHBU2ZYILN6RDFFZB6S35KHUNVCOEXIUHCZ5O6BHRLTIJM2W4",
+        "reserve": "ALGOVP5KCBHBU2ZYILN6RDFFZB6S35KHUNVCOEXIUHCZ5O6BHRLTIJM2W4",
+        "name": "a547229fe5694d17bfb8e7e1566ea7cf"
+      }
+    },
+    {
+      "index": 19029,
+      "params": {
+        "is_verified": false,
+        "manager": "WLH5LELVSEVQL45LBRQYCLJAX6KQPGWUY5WHJXVRV2NPYZUBQAFPH22Q7A",
+        "unit-name": "bronze",
+        "freeze": "WLH5LELVSEVQL45LBRQYCLJAX6KQPGWUY5WHJXVRV2NPYZUBQAFPH22Q7A",
+        "total": 100000000000000000,
+        "isRemoved": false,
+        "decimals": 0,
+        "default-frozen": false,
+        "creator": "WLH5LELVSEVQL45LBRQYCLJAX6KQPGWUY5WHJXVRV2NPYZUBQAFPH22Q7A",
+        "isRecentlyAdded": false,
+        "clawback": "WLH5LELVSEVQL45LBRQYCLJAX6KQPGWUY5WHJXVRV2NPYZUBQAFPH22Q7A",
+        "reserve": "WLH5LELVSEVQL45LBRQYCLJAX6KQPGWUY5WHJXVRV2NPYZUBQAFPH22Q7A",
+        "name": "bronze"
+      }
+    },
+    {
+      "index": 135208,
+      "params": {
+        "is_verified": false,
+        "manager": "WLH5LELVSEVQL45LBRQYCLJAX6KQPGWUY5WHJXVRV2NPYZUBQAFPH22Q7A",
+        "unit-name": "MYC",
+        "freeze": "WLH5LELVSEVQL45LBRQYCLJAX6KQPGWUY5WHJXVRV2NPYZUBQAFPH22Q7A",
+        "total": 50000000000000000,
+        "isRemoved": false,
+        "decimals": 2,
+        "default-frozen": false,
+        "creator": "WLH5LELVSEVQL45LBRQYCLJAX6KQPGWUY5WHJXVRV2NPYZUBQAFPH22Q7A",
+        "isRecentlyAdded": false,
+        "clawback": "WLH5LELVSEVQL45LBRQYCLJAX6KQPGWUY5WHJXVRV2NPYZUBQAFPH22Q7A",
+        "reserve": "WLH5LELVSEVQL45LBRQYCLJAX6KQPGWUY5WHJXVRV2NPYZUBQAFPH22Q7A",
+        "name": "MyCoin"
+      }
+    },
+    {
+      "index": 19028,
+      "params": {
+        "is_verified": false,
+        "manager": "WLH5LELVSEVQL45LBRQYCLJAX6KQPGWUY5WHJXVRV2NPYZUBQAFPH22Q7A",
+        "unit-name": "silver",
+        "freeze": "WLH5LELVSEVQL45LBRQYCLJAX6KQPGWUY5WHJXVRV2NPYZUBQAFPH22Q7A",
+        "total": 10000000000000000,
+        "isRemoved": false,
+        "decimals": 0,
+        "default-frozen": false,
+        "creator": "WLH5LELVSEVQL45LBRQYCLJAX6KQPGWUY5WHJXVRV2NPYZUBQAFPH22Q7A",
+        "isRecentlyAdded": false,
+        "clawback": "WLH5LELVSEVQL45LBRQYCLJAX6KQPGWUY5WHJXVRV2NPYZUBQAFPH22Q7A",
+        "reserve": "WLH5LELVSEVQL45LBRQYCLJAX6KQPGWUY5WHJXVRV2NPYZUBQAFPH22Q7A",
+        "name": "silver"
+      }
+    }
+  ],
+  "sig-type": "sig",
+  "round": 11713968,
+  "status": "Offline",
+  "name": "Venue"
+}

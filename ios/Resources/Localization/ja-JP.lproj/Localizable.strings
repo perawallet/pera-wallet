@@ -1,0 +1,1551 @@
+/* MARK: Account Name Setup */
+"account-details-title" = "アカウントに名前を付ける";
+
+/* (No Comment) */
+"account-name-setup-description" = "Algorand Walletを使用する際、簡単に識別できるようにアカウントに名前を付けてください。これらの名前はローカルに保存され、ユーザーだけが見ることができます。";
+
+/* (No Comment) */
+"account-name-setup-explanation" = "アカウント名（オプション）";
+
+/* (No Comment) */
+"account-name-setup-finish" = "アカウント作成完了";
+
+/* (No Comment) */
+"account-name-setup-placeholder" = "アカウント名";
+
+/* MARK: Account Type Selection */
+"account-type-choose-title" = "アカウントタイプの選択";
+
+/* (No Comment) */
+"account-type-selection-add" = "アカウントの追加";
+
+/* (No Comment) */
+"account-type-selection-add-detail" = "新規アドレスと回復用パスフレーズを持つ、新しいアカウントを作成";
+
+/* (No Comment) */
+"account-type-selection-create" = "新規アカウントの作成";
+
+/* (No Comment) */
+"account-type-selection-create-detail" = "新しいAlgorandアカウントを作成したい";
+
+/* (No Comment) */
+"account-type-selection-ledger" = "Ledgerデバイスのペアリング";
+
+/* (No Comment) */
+"account-type-selection-ledger-detail" = "Ledgerハードウェアウォレットに紐づけされたアカウントを作成したい";
+
+/* (No Comment) */
+"account-type-selection-recover" = "パスフレーズでのリカバリー";
+
+/* (No Comment) */
+"account-type-selection-recover-detail" = "すでにアカウントを持っている";
+
+/* (No Comment) */
+"account-type-selection-watch-detail" = "コールドストレージに保管されているアカウントを監視したい";
+
+/* (No Comment) */
+"account-welcome-wallet-title" = "Algorand Walletへ\nようこそ";
+
+/* (No Comment) */
+"accounts-add-account" = "+ アカウントを追加";
+
+/* (No Comment) */
+"accounts-add-new" = "新規資産の追加";
+
+/* (No Comment) */
+"accounts-algos-available-title" = "Algos";
+
+/* (No Comment) */
+"accounts-dollar-value-title" = "ドル建て価格";
+
+/* (No Comment) */
+"accounts-qr-tooltip" = "お客様のアカウントのアドレスQRはこちらで確認できます";
+
+/* (No Comment) */
+"accounts-title" = "アカウント";
+
+/* (No Comment) */
+"accounts-title-assets" = "資産";
+
+/* (No Comment) */
+"accounts-tranaction-empty-detail" = "この資産を使ったトランザクションは行われていません。";
+
+/* MARK: Accounts */
+"accounts-tranaction-empty-text" = "まだトランザクションはありません";
+
+/* (No Comment) */
+"accounts-transaction-history-title" = "取引履歴";
+
+/* (No Comment) */
+"add-node-title" = "ノードの追加";
+
+/* (No Comment) */
+"asset-add-confirmation-title" = "資産の追加";
+
+/* (No Comment) */
+"asset-add-warning" = "資産を追加するには、最小の取引手数料でトランザクションを送信する必要があります。これは取引履歴に表示されます。";
+
+/* (No Comment) */
+"asset-algos-title" = "Algos";
+
+/* (No Comment) */
+"asset-all-title" = "すべて";
+
+/* (No Comment) */
+"asset-creation-fee-title" = "資産手数料の追加";
+
+/* (No Comment) */
+"asset-detail-id-title" = "ID %@";
+
+/* (No Comment) */
+"asset-id-copied-title" = "IDがクリップボードにコピーされました";
+
+/* (No Comment) */
+"asset-min-transaction-error-message" = "この資産を追加するには、最低でも%@ Algosが必要です。";
+
+/* (No Comment) */
+"asset-min-transaction-error-title" = "最小トランザクションエラー！";
+
+/* (No Comment) */
+"asset-not-found-detail" = "別の資産名または資産IDをお試しください";
+
+/* (No Comment) */
+"asset-not-found-title" = "資産が見つかりません";
+
+/* (No Comment) */
+"asset-remove-confirmation-title" = "資産の削除";
+
+/* (No Comment) */
+"asset-remove-subtitle" = "資産を削除するには、まずその資産の残高を他の口座に移す必要があります。";
+
+/* (No Comment) */
+"asset-remove-title" = "資産の削除";
+
+/* (No Comment) */
+"asset-remove-transaction-warning" = "%@から%@を削除しようとしています。再度追加しない限り、このアカウントからこの資産を取引することはできません。";
+
+/* (No Comment) */
+"asset-remove-warning" = "%@を削除するには、残高が0である必要があります。残高を別のアカウントに転送して、もう一度お試しください。";
+
+/* (No Comment) */
+"asset-search-placeholder" = "資産IDまたは名前の検索";
+
+/* (No Comment) */
+"asset-support-add-message" = "%@で資産を受け取ろうとしています。この資産をこのアカウントに追加して受け取りますか？";
+
+/* (No Comment) */
+"asset-support-add-title" = "まもなく資産を受け取れます！";
+
+/* (No Comment) */
+"asset-support-error" = "残念ながら、このアカウントはこの資産を追加していません。アカウントの所有者に資産の追加を指示してから、再度お試しください。";
+
+/* (No Comment) */
+"asset-support-not-same-error" = "このアカウントにこの資産を追加しましたが、これは選択された資産ではありません。正しい資産を選択してから、もう一度やり直してください。";
+
+/* (No Comment) */
+"asset-support-not-same-title" = "アカウントはこの資産を受け入れません";
+
+/* (No Comment) */
+"asset-support-title" = "アカウントはこの資産を受け入れません";
+
+/* (No Comment) */
+"asset-support-your-add-message" = "この資産を追加して再度お試しください。";
+
+/* (No Comment) */
+"asset-support-your-add-title" = "アカウントにはこの資産が含まれていません";
+
+/* MARK: Asset */
+"asset-title" = "資産";
+
+/* (No Comment) */
+"asset-transfer-balance" = "転送残高";
+
+/* (No Comment) */
+"asset-verified-title" = "確認済み";
+
+/* (No Comment) */
+"asset-you-already-own-message" = "すでにこの資産を所有しています";
+
+/* (No Comment) */
+"back-up-phrase-qr" = "QRを表示";
+
+/* (No Comment) */
+"ble-error-bluetooth-title" = "Bluetoothエラー";
+
+/* (No Comment) */
+"ble-error-connection-title" = "接続エラー";
+
+/* (No Comment) */
+"ble-error-disconnected-peripheral" = "デバイスから切断されました";
+
+/* (No Comment) */
+"ble-error-fail-ble-connection-power" = "近くのLedgerデバイスを検索するには、デバイスでBluetoothが有効になっている必要があります。";
+
+/* (No Comment) */
+"ble-error-fail-ble-connection-resetting" = "リセット用のBLE接続に失敗しました";
+
+/* (No Comment) */
+"ble-error-fail-ble-connection-unauthorized" = "近くのLedgerを検索するには、Bluetoothの許可が必要です。";
+
+/* (No Comment) */
+"ble-error-fail-ble-connection-unsupported" = "接続しようとしているデバイスは、Algorand Walletではサポートされていません。";
+
+/* (No Comment) */
+"ble-error-fail-connect-peripheral" = "Ledgerデバイスに接続できませんでした。デバイスのロックが解除されているか、近くにあるか、Bluetoothが有効になっているかを確認してください。";
+
+/* (No Comment) */
+"ble-error-fail-fetch-account-address" = "お使いのLedgerデバイスの公開鍵を受信できませんでした。もう一度お試しください。";
+
+/* (No Comment) */
+"ble-error-fail-sign-transaction" = "ペアリングされたLedgerデバイスがトランザクション要求をキャンセルしました。";
+
+/* (No Comment) */
+"ble-error-ledger-connection-open-app-error" = "お使いのLedgerデバイスでAlgorandアプリを開いてください。";
+
+/* (No Comment) */
+"ble-error-ledger-connection-title" = "Ledgerの接続エラー";
+
+/* MARK: BLE Errors */
+"ble-error-search-title" = "検索エラー";
+
+/* (No Comment) */
+"ble-error-transaction-cancelled-title" = "トランザクションのキャンセル";
+
+/* (No Comment) */
+"ble-error-transmission-title" = "送信エラー";
+
+/* (No Comment) */
+"ble-error-unsupported-device-title" = "サポートされていないデバイス";
+
+/* (No Comment) */
+"chart-no-data-text" = "価格APIは現在利用できません、改めてご確認ください。";
+
+/* (No Comment) */
+"chart-time-all" = "全期間";
+
+/* (No Comment) */
+"chart-time-last-day" = "過去1日";
+
+/* (No Comment) */
+"chart-time-last-hour" = "過去1時間";
+
+/* (No Comment) */
+"chart-time-last-month" = "過去1か月";
+
+/* (No Comment) */
+"chart-time-last-week" = "過去1週間";
+
+/* (No Comment) */
+"chart-time-last-year" = "過去1年間";
+
+/* (No Comment) */
+"chart-time-selection-all" = "すべて";
+
+/* (No Comment) */
+"chart-time-selection-daily" = "1日";
+
+/* (No Comment) */
+"chart-time-selection-hourly" = "1時間";
+
+/* (No Comment) */
+"chart-time-selection-monthly" = "1月";
+
+/* (No Comment) */
+"chart-time-selection-weekly" = "1週";
+
+/* (No Comment) */
+"chart-time-selection-yearly" = "1年";
+
+/* MARK: Password Setting */
+"choose-password-title" = "PINを選択";
+
+/* (No Comment) */
+"contact-search-empty-detail" = "別の連絡先名をお試しください";
+
+/* (No Comment) */
+"contact-search-empty-title" = "連絡先が見つかりません";
+
+/* (No Comment) */
+"contacts-add" = "連絡先を追加";
+
+/* (No Comment) */
+"contacts-address-validation-error" = "アドレスが違います。正しいアドレスを入力してください。";
+
+/* (No Comment) */
+"contacts-close-warning-subtitle" = "保存されていない進行状況は失われます。よろしいですか？";
+
+/* (No Comment) */
+"contacts-close-warning-title" = "よろしいですか？";
+
+/* (No Comment) */
+"contacts-delete-contact" = "連絡先を削除";
+
+/* (No Comment) */
+"contacts-delete-contact-alert-explanation" = "この連絡先を削除してもよろしいですか？";
+
+/* (No Comment) */
+"contacts-empty-detail-text" = "新しい連絡先を追加することで、資産の送信プロセスを高速化できます。";
+
+/* (No Comment) */
+"contacts-empty-text" = "まだ連絡先を追加していません";
+
+/* (No Comment) */
+"contacts-info" = "連絡先情報";
+
+/* (No Comment) */
+"contacts-info-edit" = "連絡先情報の編集";
+
+/* (No Comment) */
+"contacts-input-address-explanation" = "アドレス";
+
+/* (No Comment) */
+"contacts-input-address-placeholder" = "＃を貼り付けるか、QRをスキャン";
+
+/* (No Comment) */
+"contacts-input-name-explanation" = "名前";
+
+/* (No Comment) */
+"contacts-input-name-placeholder" = "連絡先名";
+
+/* (No Comment) */
+"contacts-name-validation-error" = "名前が空欄です。";
+
+/* (No Comment) */
+"contacts-search" = "連絡先を検索";
+
+/* MARK: Contacts */
+"contacts-title" = "連絡先";
+
+/* (No Comment) */
+"contacts-title-assets" = "資産:";
+
+/* (No Comment) */
+"contacts-transactions-title" = "トランザクション";
+
+/* (No Comment) */
+"csv-download-error" = "トランザクション履歴のcsvファイルを作成できませんでした。";
+
+/* (No Comment) */
+"csv-download-title" = "CSVファイルの作成";
+
+/* (No Comment) */
+"default-error-message" = "エラーが発生しました。";
+
+/* (No Comment) */
+"edit-node-title" = "ノードの編集";
+
+/* (No Comment) */
+"empty-accounts-action" = "新規アカウントの作成";
+
+/* (No Comment) */
+"empty-accounts-detail" = "資産の取引を開始するには、アカウントを作成する必要があります。";
+
+/* (No Comment) */
+"empty-accounts-title" = "アカウントの作成";
+
+/* (No Comment) */
+"feedback-empty-category-message" = "カテゴリを選択してください。";
+
+/* (No Comment) */
+"feedback-empty-note-message" = "メモを追加してください。";
+
+/* (No Comment) */
+"feedback-empty-title" = "エラー";
+
+/* (No Comment) */
+"feedback-error-message" = "フィードバックを送信できませんでした！";
+
+/* (No Comment) */
+"feedback-error-title" = "エラー";
+
+/* (No Comment) */
+"feedback-subtitle-account-detail" = "アカウントの選択";
+
+/* (No Comment) */
+"feedback-subtitle-account-title" = "アカウント（オプション）";
+
+/* (No Comment) */
+"feedback-subtitle-category" = "フィードバックの種類";
+
+/* (No Comment) */
+"feedback-subtitle-note" = "ご意見をお聞かせください";
+
+/* (No Comment) */
+"feedback-success-detail" = "ありがとうございます、フィードバックを受け取りました";
+
+/* (No Comment) */
+"feedback-success-title" = "フィードバックが送信されました";
+
+/* MARK: Feedback */
+"feedback-title" = "フィードバックの送信";
+
+/* (No Comment) */
+"feedback-title-category" = "カテゴリ";
+
+/* (No Comment) */
+"feedback-title-email" = "Eメール";
+
+/* (No Comment) */
+"feedback-title-note" = "メモ";
+
+/* (No Comment) */
+"internet-connection-error-detail" = "サーバーにアクセスできません。インターネットに接続されていることを確認してください";
+
+/* (No Comment) */
+"internet-connection-error-title" = "インターネットへの接続";
+
+/* (No Comment) */
+"introduction-add-account-text" = "アカウントの追加";
+
+/* (No Comment) */
+"introduction-title-add-text" = "新規アカウントの追加";
+
+/* (No Comment) */
+"introduction-title-terms-and-services" = "アカウントを作成することで、お客様はAlgorandの <a href=\"https://www.algorand.com/wallet-disclaimer\">Terms and Conditions</a> および <a href=\"https://www.algorand.com/wallet-privacy-policy\">Privacy Policy</a>に同意したとみなされます。";
+
+/* MARK: Introduction */
+"introduction-title-text" = "1つのアプリから\nすべての資産を管理";
+
+/* (No Comment) */
+"ledger-account-detail-can-sign" = "これらのアカウントに署名できます";
+
+/* (No Comment) */
+"ledger-account-detail-can-signed" = "署名できるのは";
+
+/* (No Comment) */
+"ledger-account-details-title" = "元帳の詳細";
+
+/* (No Comment) */
+"ledger-account-fetct-error" = "アカウントの詳細を取得中にネットワークエラーが発生しました。プロセスを再開してください。";
+
+/* (No Comment) */
+"ledger-account-selection-detail" = "接続されたLedgerデバイスは、以下のアカウントのトランザクションに署名できます。Algorand Walletに追加するアカウントを選択してください。";
+
+/* (No Comment) */
+"ledger-account-selection-detail-rekey" = "このアカウントへの署名に使用するアカウントを選択します。";
+
+/* (No Comment) */
+"ledger-account-selection-title-plural" = "%dアカウントが見つかりました";
+
+/* MARK: Ledger Account Selection */
+"ledger-account-selection-title-singular" = "%dアカウントが見つかりました";
+
+/* (No Comment) */
+"ledger-account-selection-verify" = "選択したアカウントの認証";
+
+/* (No Comment) */
+"ledger-account-selection-verify-plural" = "選択したアカウントの認証";
+
+/* (No Comment) */
+"ledger-account-verification-status-awaiting" = "認証待ち";
+
+/* (No Comment) */
+"ledger-account-verification-status-not-verified" = "未認証";
+
+/* (No Comment) */
+"ledger-account-verification-status-pending" = "保留中";
+
+/* (No Comment) */
+"ledger-account-verification-status-verified" = "アカウント認証済み";
+
+/* (No Comment) */
+"ledger-approval-connection-message" = "Ledgerの接続を待っています。";
+
+/* (No Comment) */
+"ledger-approval-connection-title" = "Ledgerの接続";
+
+/* (No Comment) */
+"ledger-approval-message" = "Ledgerデバイスでトランザクションを確認して署名してください。";
+
+/* MARK: Ledger Approval */
+"ledger-approval-title" = "プレビューと署名";
+
+/* (No Comment) */
+"ledger-device-list-connect" = "接続";
+
+/* (No Comment) */
+"ledger-device-list-looking" = "他のLedgerデバイスを探しています";
+
+/* MARK: Ledger Device List */
+"ledger-device-list-title" = "Ledgerデバイスのペアリング";
+
+/* (No Comment) */
+"ledger-device-list-troubleshoot" = "トラブルシューティング";
+
+/* MARK: Ledger Tutorial */
+"ledger-pair-title" = "Ledgerアカウントの作成";
+
+/* MARK: Rekey Confirm */
+"ledger-rekey-confirm-title" = "再キー化の確認";
+
+/* (No Comment) */
+"ledger-rekey-error-add-auth" = "接続されたLedgerデバイスは、このアカウントのトランザクションに署名できません。署名するには、%@を接続してください。";
+
+/* (No Comment) */
+"ledger-rekey-error-not-found" = "このアカウントは再キー化されました。パスフレーズまたはLedgerデバイスでこのアカウントをリカバリーしてください。";
+
+/* (No Comment) */
+"ledger-rekey-finalize" = "再キー化を完了する";
+
+/* (No Comment) */
+"ledger-rekey-ledger-new" = "新Ledger";
+
+/* (No Comment) */
+"ledger-rekey-ledger-old" = "旧Ledger";
+
+/* (No Comment) */
+"ledger-rekey-ledger-passphrase" = "パスフレーズ";
+
+/* (No Comment) */
+"ledger-rekey-more-assets" = "+%@ の資産";
+
+/* (No Comment) */
+"ledger-rekey-success-message" = "アカウント %@ は正常に再キー化されました。";
+
+/* (No Comment) */
+"ledger-rekey-success-title" = "アカウントが再キー化されました";
+
+/* (No Comment) */
+"ledger-rekey-total-fee" = "再キー化料金の合計は %@ Algos";
+
+/* (No Comment) */
+"ledger-rekey-transaction-title" = "トランザクションの再キー化";
+
+/* (No Comment) */
+"ledger-search-button-title" = "Ledgerを検索する";
+
+/* (No Comment) */
+"ledger-transaction-account-match-error" = "このLedgerデバイスがリセットされ、デバイス上のアカウントとこのアカウントが一致しないようです。再度、ホームページからLedgerのペアリングを行ってください。";
+
+/* (No Comment) */
+"ledger-troubleshooting-app-support" = "Algorand Ledgerアプリをデバイスにインストールする方法については、%@ をご覧ください。";
+
+/* (No Comment) */
+"ledger-troubleshooting-bluetooth-connection-html" = "iOSデバイスのBluetoothを無効または有効にします。 <br /> <br />\n<ul>\n<li>設定を<b>タップ</b></li>\n<li>「一般」を<b>選択</b></li>\n<li>「Bluetooth」を<b>タップ</b></li>\n<li>オン/オフボタンを<b>切り替え</b> to toggle</li>\n<li>Bluetoothを<b>オンまたはオフ</b></li>\n</ul>";
+
+/* (No Comment) */
+"ledger-troubleshooting-close-others" = "他のアプリケーション（Ledgerアプリ、暗号通貨ウォレット、Ledgerとペアリングしようとする可能性のあるもの）を閉じます。";
+
+/* (No Comment) */
+"ledger-troubleshooting-install-app-first-html" = "まず、Ledgerの包括的な <a href=\"https://www.ledger.com/start\">Getting Started</a> チュートリアルに従ってください。";
+
+/* (No Comment) */
+"ledger-troubleshooting-install-app-second-html" = "チュートリアルで「デバイスにインストールするアプリケーションを選択してください」という指示が出たら、検索バーに<b>Algorand</b>と入力してインストールしてください。";
+
+/* (No Comment) */
+"ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "より高度なトラブルシューティングについては、Ledgerの公式 <a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">Bluetooth Troubleshooting Guide</a>をご覧ください。";
+
+/* (No Comment) */
+"ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "LedgerのBluetooth機能の一般的な使用法については、Ledgerの公式 <a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">Bluetooth Connection Guide</a>をご覧ください。";
+
+/* (No Comment) */
+"ledger-troubleshooting-ledger-support" = "Ledgerデバイスの一般的なトラブルシューティングについては、次のWebサイトをご覧ください。";
+
+/* (No Comment) */
+"ledger-troubleshooting-ledger-support-title" = "Ledgerサポート";
+
+/* (No Comment) */
+"ledger-troubleshooting-open-app-first-html" = "まず、Ledgerの包括的な <a href=\"https://www.ledger.com/start\">Getting Started</a> チュートリアルに従ってください。このチュートリアルでは、Ledgerデバイスにアプリケーションをインストールして開く方法を説明しています。";
+
+/* (No Comment) */
+"ledger-troubleshooting-open-app-second-html" = "まだLedgerデバイスに<b>Algorand</b>アプリをインストールしていない場合、チュートリアルで「デバイスにインストールするアプリケーションを選択してください」という指示が出たら、検索バーに<b>Algorand</b>と入力してインストールしてください。";
+
+/* (No Comment) */
+"ledger-troubleshooting-restart" = "Algorand Walletおよび/またはお客様のデバイスを再起動します。";
+
+/* (No Comment) */
+"ledger-troubleshooting-title" = "高度なトラブルシューティング";
+
+/* (No Comment) */
+"ledger-tutorial-bluetooth" = "スマートフォンのBluetoothが有効になっていることを確認してください。";
+
+/* (No Comment) */
+"ledger-tutorial-install-app" = "お使いのLedgerにAlgorandアプリ（バージョン1.2.9以降）をインストールします。";
+
+/* (No Comment) */
+"ledger-tutorial-open-app" = "お使いのLedgerでAlgorandアプリを開きます。";
+
+/* (No Comment) */
+"ledger-tutorial-title-text" = "Ledgerとのペアリング";
+
+/* (No Comment) */
+"ledger-tutorial-turned-on" = "Ledgerデバイスがオンになっていて、Bluetoothが有効になっていることを確認してください。";
+
+/* (No Comment) */
+"ledger-verified-add" = "認証済みアカウントの追加";
+
+/* (No Comment) */
+"ledger-verify-header-subtitle" = "以下のアカウントアドレスがLedgerデバイスに表示されます。デバイスのペアリングを完了するために、各アドレスを慎重に比較・確認してください。";
+
+/* (No Comment) */
+"ledger-verify-header-title" = "Ledgerによるアカウントアドレスの確認";
+
+/* (No Comment) */
+"local-authentication-enable" = "Face ID/Touch IDを有効にする";
+
+/* (No Comment) */
+"local-authentication-enabled-subtitle" = "パスコードが確認されました。 Algorandアカウントのセキュリティが向上しました。";
+
+/* (No Comment) */
+"local-authentication-enabled-title" = "生体認証の有効化";
+
+/* (No Comment) */
+"local-authentication-go-settings-text" = "生体認証を無効にしました。このオプションを有効にするには設定に移動してください。";
+
+/* (No Comment) */
+"local-authentication-go-settings-title" = "生体認証";
+
+/* (No Comment) */
+"local-authentication-no" = "Face ID/Touch IDを使用しない";
+
+/* (No Comment) */
+"local-authentication-preference-subtitle" = "アプリを使用するには、FaceIDまたはTouchIDが必要になります。携帯電話の盗難に備えウォレットのセキュリティを強化するために、生体認証を有効にすることをお勧めします。";
+
+/* MARK: Local Authentication Preferences */
+"local-authentication-preference-title" = "生体認証を有効にする";
+
+/* (No Comment) */
+"local-authentication-reason-face-id-title" = "Face IDによるロック解除";
+
+/* (No Comment) */
+"local-authentication-reason-touch-id-title" = "Touch IDによるロック解除";
+
+/* (No Comment) */
+"login-subtitle" = "6桁のPINを入力してください";
+
+/* MARK: Login */
+"login-title" = "ロック解除";
+
+/* (No Comment) */
+"maximum-balance-standard-account-warning-description" = "お客様のアカウント%@に他の資産%@が存在するため、Algorandブロックチェーンでは最小残高%@ Algosを維持する必要があります。\n\n\n続行をクリックすることで、お客様の取引額が自動的に更新され、変更が反映されます。次のステップでこの変更をプレビューできます。";
+
+/* (No Comment) */
+"maximum-balance-standard-account-warning-description-singular" = "お客様のアカウント%@に他の資産%@が存在するため、Algorandブロックチェーンでは最小残高%@ Algosを維持する必要があります。\n\n\n続行をクリックすることで、お客様の取引額が自動的に更新され、変更が反映されます。次のステップでこの変更をプレビューできます。";
+
+/* (No Comment) */
+"maximum-balance-warning-description" = "この再キー化アカウントで最大残高を送信するには、%@ Algosの最低残高を維持する必要があります。これは、再キー化されたアカウントに何も変化がないことを確認するためです。\n\n\nこの変更を反映して、お客様の取引額が自動的に更新されます。次のステップでトランザクションをプレビューできます。";
+
+/* (No Comment) */
+"maximum-balance-warning-title" = "最大残高";
+
+/* (No Comment) */
+"min-balance-title" = "必要な最小残高";
+
+/* (No Comment) */
+"node-settings-action-delete-title" = "削除";
+
+/* (No Comment) */
+"node-settings-api-key" = "キー: ";
+
+/* (No Comment) */
+"node-settings-database-error-description" = "システムでエラーが発生しました。";
+
+/* (No Comment) */
+"node-settings-db-error-title" = "システム操作に失敗しました";
+
+/* (No Comment) */
+"node-settings-default-node-name" = "Algorandメインネットノード";
+
+/* (No Comment) */
+"node-settings-default-test-node-name" = "テストネット";
+
+/* (No Comment) */
+"node-settings-enter-node-address" = "アドレス: ";
+
+/* (No Comment) */
+"node-settings-enter-node-name" = "名前: ";
+
+/* (No Comment) */
+"node-settings-has-same-result" = "同じノードを2回作成することはできません";
+
+/* (No Comment) */
+"node-settings-health-problem-message" = "オンラインのアクティブなノードはありません。他のノードを追加または選択してください";
+
+/* (No Comment) */
+"node-settings-none-active-node-error-description" = "どのノードもアクティブではないようです。続行する前に、少なくとも1つのアクティブなノードがあることを確認してください。";
+
+/* (No Comment) */
+"node-settings-placeholder-address" = "http://yournode.com:8000";
+
+/* (No Comment) */
+"node-settings-placeholder-api-key" = "65ef12c245b47fcf497b1c7d0faea4d82df470671974eeeed3e29ab4df1ed918";
+
+/* (No Comment) */
+"node-settings-placeholder-name" = "ノード名";
+
+/* (No Comment) */
+"node-settings-subtitle" = "ノードの選択";
+
+/* (No Comment) */
+"node-settings-test-button-title" = "テスト";
+
+/* (No Comment) */
+"node-settings-test-error-title" = "接続に失敗しました";
+
+/* (No Comment) */
+"node-settings-test-success-title" = "接続に成功しました！";
+
+/* (No Comment) */
+"node-settings-text-validation-empty-error" = "すべてのフィールドを入力してください。";
+
+/* (No Comment) */
+"node-settings-text-validation-health-error" = "アドレスとトークンを確認して、もう一度お試しください。";
+
+/* MARK: Node Settings */
+"node-settings-title" = "ノード設定";
+
+/* (No Comment) */
+"node-settings-warning-message" = "この操作により、ノードが削除されます。よろしいですか？";
+
+/* (No Comment) */
+"node-settings-warning-title" = "警告";
+
+/* (No Comment) */
+"notification-filter-show-for" = "通知の表示";
+
+/* (No Comment) */
+"notification-filter-show-title" = "プッシュ通知";
+
+/* (No Comment) */
+"notification-received" = "%@ が%@によって%@へ送信されました。";
+
+/* (No Comment) */
+"notification-sent-failed" = "%@から%@への%@トランザクションが失敗しました。";
+
+/* MARK: Notifications */
+"notification-sent-success" = "%@から%@への%@トランザクションが完了しました。";
+
+/* (No Comment) */
+"notification-support-request" = "%@があなたに%@を送信しようとしていますが、サポートしていません。ご希望であれば、お客様のアカウントに追加可能です。";
+
+/* (No Comment) */
+"notification-support-success" = "%@がアカウントに%@を追加しました。送信可能です。";
+
+/* (No Comment) */
+"notifications-empty-subtitle" = "最近のトランザクション、資産リクエスト、その他の通知がここに表示されます。";
+
+/* (No Comment) */
+"notifications-empty-title" = "通知は現在ありません";
+
+/* MARK: Notifications Tab */
+"notifications-title" = "通知";
+
+/* (No Comment) */
+"options-auth-account" = "Authアカウントアドレス";
+
+/* (No Comment) */
+"options-edit-account-name" = "アカウント名の編集";
+
+/* (No Comment) */
+"options-mute-notification" = "通知のミュート";
+
+/* (No Comment) */
+"options-rekey" = "アカウントの再キー化";
+
+/* (No Comment) */
+"options-remove-account" = "アカウントの削除";
+
+/* (No Comment) */
+"options-remove-alert-explanation" = "アカウントを削除しようとしています。この選択を続行してもよろしいですか？";
+
+/* (No Comment) */
+"options-remove-assets" = "資産の削除";
+
+/* (No Comment) */
+"options-show-qr" = "QRとアドレスの表示";
+
+/* MARK: Options */
+"options-title" = "アカウント設定";
+
+/* (No Comment) */
+"options-unmute-notification" = "通知のミュート解除";
+
+/* (No Comment) */
+"options-view-passphrase" = "パスフレーズの表示";
+
+/* (No Comment) */
+"options-view-passphrase-password-alert-message" = "パスフレーズを表示するには、正しいパスワードを入力する必要があります。";
+
+/* (No Comment) */
+"pass-pharase-enter-placeholder" = "パスフレーズ入力またはQRをスキャン";
+
+/* (No Comment) */
+"pass-phrase-verify-invalid-passphrase" = "パスフレーズが無効です。正しく入力されているかご確認ください。";
+
+/* (No Comment) */
+"pass-phrase-verify-pop-up-explanation" = "このリカバリーパスフレーズは、本人だけがアクセス可能な安全な場所に保管してください。このリカバリーパスフレーズをなくさないでください。";
+
+/* MARK: Passphrase Verify */
+"pass-phrase-verify-pop-up-title" = "パスフレーズ検証済み";
+
+/* (No Comment) */
+"pass-phrase-verify-question-title" = "%@問中%@問目の質問";
+
+/* (No Comment) */
+"pass-phrase-verify-sdk-error" = "問題が発生しました。後ほどお試しください。";
+
+/* (No Comment) */
+"pass-phrase-verify-select-title" = "パスフレーズの%@の単語を選択してください";
+
+/* (No Comment) */
+"pass-phrase-verify-wrong-selection" = "選択が間違っています";
+
+/* (No Comment) */
+"passphrase-bottom-title" = "対応する番号を使用して、これらの単語を正しい順序で記録してください。";
+
+/* (No Comment) */
+"passphrase-qeustion-counter" = "%@問中%@問目の質問";
+
+/* (No Comment) */
+"passphrase-question-another" = "%@番目";
+
+/* (No Comment) */
+"passphrase-question-first" = "1番目";
+
+/* (No Comment) */
+"passphrase-question-second" = "2番目";
+
+/* (No Comment) */
+"passphrase-question-third" = "3番目";
+
+/* (No Comment) */
+"passphrase-select-n-word" = "パスフレーズの%@の単語を選択してください";
+
+/* (No Comment) */
+"passphrase-verify-invalid-title" = "誤ったパスフレーズ";
+
+/* (No Comment) */
+"passphrase-verify-select-word" = "単語 #%@ を選択してください";
+
+/* (No Comment) */
+"passphrase-verify-title" = "リカバリーパスフレーズのバックアップを確認";
+
+/* (No Comment) */
+"passphrase-verify-wrong-message" = "選択された単語が間違っています。もう一度お試しください。";
+
+/* (No Comment) */
+"password-change-subtitle" = "6桁のPINを入力してください";
+
+/* (No Comment) */
+"password-change-title" = "PINの変更";
+
+/* (No Comment) */
+"password-set-subtitle" = "6桁のPINを選択してください";
+
+/* (No Comment) */
+"password-verify-fail-message" = "PINが以前のPINと一致しませんでした。";
+
+/* (No Comment) */
+"password-verify-fail-title" = "間違ったPIN";
+
+/* (No Comment) */
+"password-verify-subtitle" = "6桁のPINを再入力してください";
+
+/* (No Comment) */
+"password-verify-title" = "PINの確認";
+
+/* (No Comment) */
+"pin-limit-reset-all" = "全データのリセット";
+
+/* MARK: Pin Limit */
+"pin-limit-title" = "Algorandアプリはロックされました";
+
+/* (No Comment) */
+"pin-limit-too-many" = "PINの試行回数が多すぎます";
+
+/* (No Comment) */
+"pin-limit-try-again" = "やり直してください";
+
+/* No comment provided by engineer. */
+"primaryText" = "primaryText";
+
+/* (No Comment) */
+"privacy-policy-title" = "個人情報保護方針";
+
+/* (No Comment) */
+"qr-creation-address" = "アカウントアドレス";
+
+/* (No Comment) */
+"qr-creation-copied" = "アドレスがクリップボードにコピーされました";
+
+/* (No Comment) */
+"qr-creation-copy-address" = "アドレスをコピー";
+
+/* (No Comment) */
+"qr-creation-sharing-title" = "QRとアドレスの共有";
+
+/* MARK: QR Creation */
+"qr-creation-title" = "パスフレーズQR";
+
+/* (No Comment) */
+"qr-scan-error-message" = "お使いのデバイスは、QRコードのスキャンに対応していません。";
+
+/* (No Comment) */
+"qr-scan-error-title" = "カメラは利用できません";
+
+/* (No Comment) */
+"qr-scan-go-settings-message" = "カメラが無効化されています。設定でこのオプションを有効にしてください。";
+
+/* (No Comment) */
+"qr-scan-go-settings-title" = "カメラが無効";
+
+/* (No Comment) */
+"qr-scan-message-text" = "このページからのみQRをスキャンできます。QRを表示するには、アカウントのアイコンを選択してください";
+
+/* (No Comment) */
+"qr-scan-should-scan-address-message" = "有効なアカウントアドレスをスキャンする必要があります";
+
+/* (No Comment) */
+"qr-scan-should-scan-mnemonics-message" = "有効なパスフレーズをスキャンする必要があります。";
+
+/* (No Comment) */
+"qr-scan-should-scan-valid-qr" = "無効なQRです。";
+
+/* MARK: QR Scanning */
+"qr-scan-title" = "QRコードのスキャン";
+
+/* (No Comment) */
+"recover-copy-error" = "コピーされたテキストは、25語の有効なパスフレーズではありません。有効なパスフレーズをコピーして、再試行してください。";
+
+/* (No Comment) */
+"recover-fill-all-error" = "すべてのパスフレーズを入力してください";
+
+/* (No Comment) */
+"recover-from-seed-name-placeholder" = "名前の例";
+
+/* (No Comment) */
+"recover-from-seed-name-title" = "名前";
+
+/* (No Comment) */
+"recover-from-seed-passphrase-title" = "パスフレーズ";
+
+/* MARK: Recover From Seed */
+"recover-from-seed-title" = "リカバリーパスフレーズの入力";
+
+/* (No Comment) */
+"recover-from-seed-verify-exist-error" = "このアカウントはすでに存在します。";
+
+/* (No Comment) */
+"recover-from-seed-verify-pop-up-explanation" = "Algorandへようこそ！\nお客様のアカウントはすぐにお使いいただけます。";
+
+/* (No Comment) */
+"recover-from-seed-verify-pop-up-title" = "アカウント認証済み";
+
+/* MARK: Passphrase Back Up */
+"recover-passphrase-title" = "リカバリーパスフレーズ";
+
+/* (No Comment) */
+"recover-title" = "復元";
+
+/* (No Comment) */
+"rekey-instruction-first" = "今後のトランザクションは、お使いの新しいLedgerデバイスによって署名されます。";
+
+/* (No Comment) */
+"rekey-instruction-header" = "予想される状況:";
+
+/* (No Comment) */
+"rekey-instruction-second-ledger" = "古いLedgerはこのアカウントでは機能しなくなります。";
+
+/* (No Comment) */
+"rekey-instruction-second-standard" = "このアカウントのパスフレーズは、このアカウントでは機能しなくなります";
+
+/* MARK: Rekey Instruction */
+"rekey-instruction-start" = "プロセスの開始";
+
+/* (No Comment) */
+"rekey-instruction-subtitle-ledger" = "アカウント元帳を新しいLedgerデバイスと置き換えます";
+
+/* (No Comment) */
+"rekey-instruction-subtitle-standard" = "アカウントのパスフレーズをLedgerデバイスに置き換える。";
+
+/* (No Comment) */
+"rekey-instruction-third" = "アカウントの公開鍵、残高、設定は変更されません。";
+
+/* (No Comment) */
+"rekey-instruction-title" = "アカウントの再キー化";
+
+/* MARK: Algos Request */
+"request-algos-title" = "Algosのリクエスト";
+
+/* (No Comment) */
+"request-title" = "リクエスト";
+
+/* (No Comment) */
+"reward-list-title" = "リワード";
+
+/* (No Comment) */
+"rewards-detail-subtitle" = "Algosを保有するだけでリワードを獲得できます！前回のトランザクション以降のリワード活動をまとめました。これらのリワードは常にお客様の残高に含まれています。";
+
+/* (No Comment) */
+"rewards-show-title" = "リワードを表示する";
+
+/* (No Comment) */
+"rewards-since-last-text" = "前回のトランザクション以降";
+
+/* MARK: Rewards */
+"rewards-title" = "リワード";
+
+/* (No Comment) */
+"screenshot-description" = "リカバリーパスフレーズをスクリーンショットでバックアップしないでください。パスフレーズを含む画像があると、セキュリティ上のリスクとなります。";
+
+/* (No Comment) */
+"screenshot-title" = "スクリーンショットの検出";
+
+/* (No Comment) */
+"send-algos-account-delete-body" = "アカウントを維持するには、最低でも0.01 ALGOが必要です。最大量を送信した場合、アカウントは削除され、お客様の有効な参加キーも削除されます。";
+
+/* (No Comment) */
+"send-algos-account-delete-title" = "アカウントが削除されます。続行してもよろしいですか？";
+
+/* (No Comment) */
+"send-algos-address" = "アドレス";
+
+/* (No Comment) */
+"send-algos-address-not-selected" = "アドレスが選択されていません";
+
+/* (No Comment) */
+"send-algos-alert-incomplete-title" = "不完全なトランザクション";
+
+/* (No Comment) */
+"send-algos-alert-message" = "フィールドに記入してください。";
+
+/* (No Comment) */
+"send-algos-alert-message-address" = "送信先のアドレスを入力してください。";
+
+/* (No Comment) */
+"send-algos-amount" = "金額";
+
+/* (No Comment) */
+"send-algos-amount-error" = "利用可能なalgos以上の取引額は設定できません";
+
+/* (No Comment) */
+"send-algos-balance-title" = "残高:";
+
+/* (No Comment) */
+"send-algos-contact-not-found" = "連絡先が見つかりません";
+
+/* (No Comment) */
+"send-algos-contacts" = "連絡先";
+
+/* (No Comment) */
+"send-algos-minimum-amount-custom-error" = "トランザクション後の残高が、最小口座残高の%@Algosを下回る結果になるため、トランザクションを完了できません。";
+
+/* (No Comment) */
+"send-algos-minimum-amount-error" = "取引金額は、最小口座残高の0.1 algosを下回る結果になります。";
+
+/* (No Comment) */
+"send-algos-minimum-amount-error-new-account" = "新しいアカウントに送金しようとしています。金額は0.1 algos以上である必要があります。";
+
+/* (No Comment) */
+"send-algos-receiver-address-validation" = "キーが無効です。正しいキーをお持ちかどうかご確認ください。";
+
+/* (No Comment) */
+"send-algos-scan" = "QRをスキャン";
+
+/* (No Comment) */
+"send-algos-select" = "アカウントの選択";
+
+/* (No Comment) */
+"send-algos-sent-title" = "Algosを送信しました！";
+
+/* MARK: Algos Send */
+"send-algos-title" = "Algosを送信";
+
+/* (No Comment) */
+"send-algos-to" = "To";
+
+/* (No Comment) */
+"send-asset-amount-error" = "取引額が利用可能額を超えることはできません。";
+
+/* (No Comment) */
+"send-choose-asset" = "資産を選択";
+
+/* (No Comment) */
+"send-enter-note-placeholder" = "ここにメモを入力してください";
+
+/* (No Comment) */
+"send-enter-note-title" = "メモを追加";
+
+/* (No Comment) */
+"send-qr-different-asset-alert" = "QRには、選択したものとは異なる資産が含まれています。金額はデコード時に無視されます。";
+
+/* (No Comment) */
+"send-qr-scan-alert-message" = "トランザクションリクエストのQRコードをスキャンしました。変更されている可能性がありますので、すべてのトランザクションフィールドを確認してください。";
+
+/* (No Comment) */
+"send-qr-scan-alert-title" = "QRをスキャン";
+
+/* (No Comment) */
+"send-receiving-algos-select" = "受信アカウントの選択";
+
+/* (No Comment) */
+"send-select-asset" = "資産の選択";
+
+/* (No Comment) */
+"send-sending-algos-select" = "送信アカウントの選択";
+
+/* (No Comment) */
+"send-transaction-max-same-account-error" = "最大残高を自分自身に送ることはできません。別の金額または受取人を選択して、やり直してください。";
+
+/* (No Comment) */
+"send-trasaction-address-placeholder" = "貼り付け #";
+
+/* (No Comment) */
+"settings-app-version" = "バージョン%@";
+
+/* (No Comment) */
+"settings-change-password" = "パスワードの設定/変更";
+
+/* (No Comment) */
+"settings-currency" = "通貨";
+
+/* (No Comment) */
+"settings-currency-usd" = "USD";
+
+/* (No Comment) */
+"settings-developer" = "開発者設定";
+
+/* (No Comment) */
+"settings-developer-dispenser" = "Algorand Dispenser";
+
+/* (No Comment) */
+"settings-language" = "言語";
+
+/* (No Comment) */
+"settings-language-change-detail" = "お使いの携帯電話の更新により、言語を変更するための手順が異なります。 \n\n 1. 次の画面に進みます。\n 2. 言語をタップして、使用言語を選択します。 \n\n言語設定が利用できない場合は、iPhoneの一般的な言語設定に移動して、最初に優先言語を設定してください。";
+
+/* (No Comment) */
+"settings-language-change-title" = "アプリの言語設定";
+
+/* (No Comment) */
+"settings-language-english" = "英語";
+
+/* (No Comment) */
+"settings-local-authentication" = "FaceID/Touch IDを有効にする";
+
+/* (No Comment) */
+"settings-logout-detail" = "すべてのデータを削除してもよろしいですか？";
+
+/* (No Comment) */
+"settings-logout-title" = "全データの削除";
+
+/* (No Comment) */
+"settings-notification-disabled-go-settings-text" = "通知を無効にしました。 このオプションを有効にするには設定に移動してください。";
+
+/* (No Comment) */
+"settings-notification-enabled-go-settings-text" = "通知を有効にしました。 このオプションを無効にするには設定に移動してください。";
+
+/* (No Comment) */
+"settings-notification-go-settings-title" = "通知";
+
+/* (No Comment) */
+"settings-rate-title" = "Algorand Walletを評価する";
+
+/* (No Comment) */
+"settings-server-node-settings" = "ノード設定";
+
+/* (No Comment) */
+"settings-support-title" = "サポートセンター";
+
+/* (No Comment) */
+"settings-theme-dark" = "ダーク";
+
+/* (No Comment) */
+"settings-theme-light" = "ライト";
+
+/* (No Comment) */
+"settings-theme-set" = "テーマを設定する";
+
+/* (No Comment) */
+"settings-theme-system" = "システムのデフォルト";
+
+/* MARK: Settings */
+"settings-title" = "設定";
+
+/* MARK: Terms and Services */
+"terms-and-services-title" = "利用規約とサービス";
+
+/* (No Comment) */
+"title-accept" = "承認";
+
+/* (No Comment) */
+"title-account" = "アカウント";
+
+/* (No Comment) */
+"title-account-balance" = "残高";
+
+/* (No Comment) */
+"title-add-asset" = "新規資産の追加";
+
+/* (No Comment) */
+"title-algo-rewards" = "Algoリワード";
+
+/* (No Comment) */
+"title-algorand" = "Algorand";
+
+/* (No Comment) */
+"title-algorand-value" = "価値";
+
+/* (No Comment) */
+"title-analytics" = "アナリティクス";
+
+/* (No Comment) */
+"title-approve" = "承認する";
+
+/* (No Comment) */
+"title-cancel" = "キャンセル";
+
+/* (No Comment) */
+"title-close" = "閉じる";
+
+/* (No Comment) */
+"title-continue" = "続ける";
+
+/* (No Comment) */
+"title-copy" = "コピー";
+
+/* (No Comment) */
+"title-done" = "完了";
+
+/* (No Comment) */
+"title-dont-ask" = "今後表示しない";
+
+/* (No Comment) */
+"title-dont-show-again" = "今後表示しない";
+
+/* (No Comment) */
+"title-edit" = "編集";
+
+/* (No Comment) */
+"title-enter-pin-for-passphrase" = "パスフレーズを表示するには、PINを入力してください。";
+
+/* (No Comment) */
+"title-error" = "エラー";
+
+/* (No Comment) */
+"title-go-home" = "ホームに移動";
+
+/* (No Comment) */
+"title-go-to-accounts" = "アカウントに移動";
+
+/* (No Comment) */
+"title-go-to-settings" = "設定に移動";
+
+/* (No Comment) */
+"title-i-understand" = "分かりました";
+
+/* (No Comment) */
+"title-id" = "ID";
+
+/* (No Comment) */
+"title-internet-connection" = "インターネット接続がオフラインのようです。";
+
+/* (No Comment) */
+"title-keep" = "維持する";
+
+/* (No Comment) */
+"title-learn-more" = "さらに詳しく";
+
+/* (No Comment) */
+"title-loading" = "読み込み中";
+
+/* (No Comment) */
+"title-max" = "最大";
+
+/* (No Comment) */
+"title-new-uppercased" = "新";
+
+/* (No Comment) */
+"title-next" = "次";
+
+/* (No Comment) */
+"title-no" = "いいえ";
+
+/* (No Comment) */
+"title-ok" = "OK";
+
+/* (No Comment) */
+"title-paste-passphrase" = "パスフレーズ全体の貼り付け";
+
+/* (No Comment) */
+"title-plus-asset-count" = "+%@ 資産";
+
+/* (No Comment) */
+"title-preview" = "プレビュー";
+
+/* (No Comment) */
+"title-preview-and-sign-with-ledger-title" = "プレビューおよびLedgerでの署名";
+
+/* (No Comment) */
+"title-proceed" = "進む";
+
+/* (No Comment) */
+"title-receive" = "受け取る";
+
+/* (No Comment) */
+"title-remove" = "削除";
+
+/* (No Comment) */
+"title-remove-assets" = "資産の削除";
+
+/* (No Comment) */
+"title-save" = "保存";
+
+/* (No Comment) */
+"title-select-asset" = "資産の選択";
+
+/* (No Comment) */
+"title-send" = "送信";
+
+/* (No Comment) */
+"title-share-qr" = "QRを共有する";
+
+/* (No Comment) */
+"title-skip" = "スキップ";
+
+/* MARK: Ledger Troubleshooting */
+"title-step-1" = "ステップ1";
+
+/* (No Comment) */
+"title-step-2" = "ステップ2";
+
+/* (No Comment) */
+"title-step-3" = "ステップ3";
+
+/* (No Comment) */
+"title-step-4" = "ステップ4";
+
+/* (No Comment) */
+"title-testnet" = "テストネット";
+
+/* (No Comment) */
+"title-unknown" = "無名";
+
+/* (No Comment) */
+"title-verify" = "検証";
+
+/* MARK: Watch Account */
+"title-watch-account" = "ウォッチアカウント";
+
+/* MARK: Common */
+"title-yes" = "はい";
+
+/* (No Comment) */
+"total-rewards-faq" = "FAQ.";
+
+/* (No Comment) */
+"total-rewards-faq-title" = "Algorandリワードの詳細については、FAQをご覧ください。";
+
+/* (No Comment) */
+"total-rewards-title" = "%@リワード";
+
+/* (No Comment) */
+"tranaction-empty-text" = "トランザクションが見つかりません";
+
+/* (No Comment) */
+"transaction-detail-amount" = "金額";
+
+/* (No Comment) */
+"transaction-detail-close-amount" = "金額を閉じる";
+
+/* (No Comment) */
+"transaction-detail-close-to" = "Toを閉じる";
+
+/* (No Comment) */
+"transaction-detail-copy-tooltip" = "長押しでクリップボードにコピー";
+
+/* (No Comment) */
+"transaction-detail-date" = "日付";
+
+/* (No Comment) */
+"transaction-detail-fee" = "料金";
+
+/* (No Comment) */
+"transaction-detail-from" = "From";
+
+/* (No Comment) */
+"transaction-detail-id" = "トランザクションID";
+
+/* (No Comment) */
+"transaction-detail-id-copied" = "トランザクションIDがクリップボードにコピーされました";
+
+/* (No Comment) */
+"transaction-detail-note" = "メモ";
+
+/* (No Comment) */
+"transaction-detail-note-copied" = "トランザクションメモがクリップボードにコピーされました";
+
+/* (No Comment) */
+"transaction-detail-reward" = "リワード";
+
+/* (No Comment) */
+"transaction-detail-round" = "ラウンド";
+
+/* (No Comment) */
+"transaction-detail-status" = "状態";
+
+/* MARK: Transaction Detail */
+"transaction-detail-title" = "トランザクションの詳細";
+
+/* (No Comment) */
+"transaction-detail-to" = "To";
+
+/* (No Comment) */
+"transaction-download-close-to" = "To: アドレスを閉じる";
+
+/* (No Comment) */
+"transaction-download-from" = "From: アドレス";
+
+/* (No Comment) */
+"transaction-download-to" = "To: アドレス";
+
+/* (No Comment) */
+"transaction-filter-error-subtitle" = "申し訳ありませんが、問題が発生しました。";
+
+/* (No Comment) */
+"transaction-filter-error-title" = "問題が発生しました";
+
+/* (No Comment) */
+"transaction-filter-option-all" = "全期間";
+
+/* (No Comment) */
+"transaction-filter-option-custom" = "カスタム範囲";
+
+/* (No Comment) */
+"transaction-filter-option-month" = "先月";
+
+/* (No Comment) */
+"transaction-filter-option-today" = "今日";
+
+/* (No Comment) */
+"transaction-filter-option-week" = "先週";
+
+/* (No Comment) */
+"transaction-filter-option-yesterday" = "昨日";
+
+/* MARK: Transaction Filter */
+"transaction-filter-title-sort" = "日付順に表示";
+
+/* (No Comment) */
+"transaction-filter-tooltip" = "トランザクション履歴をフィルタリングできるようになりました";
+
+/* (No Comment) */
+"transaction-filter-try-again" = "やり直す";
+
+/* (No Comment) */
+"transaction-id-open-algoexplorer" = "AlgoExplorerで開く";
+
+/* (No Comment) */
+"transaction-id-open-goalseeker" = "GoalSeekerで開く";
+
+/* (No Comment) */
+"transaction-tutorial-subtitle" = "最初のトランザクションを検知しました。確定する前に、いくつかのヒントを覚えておいてください。";
+
+/* (No Comment) */
+"transaction-tutorial-subtitle-other" = "トランザクションを完了する前に、いくつかのヒントを覚えておいてください。";
+
+/* (No Comment) */
+"transaction-tutorial-tap-to-more" = "トランザクションの詳細については、こちらをタップしてください";
+
+/* (No Comment) */
+"transaction-tutorial-tap-to-more-highlighted" = "ここをタップ";
+
+/* (No Comment) */
+"transaction-tutorial-tip-first" = "初めてのアドレスに送信する場合、大きな金額を送信する前に少額のテストトランザクションを行うと便利です。";
+
+/* (No Comment) */
+"transaction-tutorial-tip-second" = "交換所は頻繁に入金アドレスを変更するため、保存されている交換所のアドレスはすでに使用されていない可能性があります。正しいアドレスに送信しているか確認してください。";
+
+/* (No Comment) */
+"transaction-tutorial-tip-second-highlighted" = "正しいアドレスに送信していることを確認してください。";
+
+/* (No Comment) */
+"transaction-tutorial-title" = "トランザクションのヒント";
+
+/* (No Comment) */
+"tutorial-action-title-passcode" = "今はしない";
+
+/* (No Comment) */
+"tutorial-description-back-up" = "リカバリーパスフレーズがない場合、デバイスを紛失したりアプリを削除したりすると、Algorandアカウントに永久にアクセスできなくなります。";
+
+/* (No Comment) */
+"tutorial-description-local" = "アプリを使用するには、FaceIDまたはTouchIDが必要になります。携帯電話の盗難に備えウォレットのセキュリティを強化するために、生体認証を有効にすることをお勧めします。";
+
+/* (No Comment) */
+"tutorial-description-passcode" = "この6桁のPINは、Algorand Walletを使用するために必要になります。携帯電話の盗難に備えウォレットのセキュリティを強化するために、PINを作成することを強くお勧めします。";
+
+/* (No Comment) */
+"tutorial-description-recover" = "次の手順では、25語のリカバリーパスフレーズを入力して、Algorandアカウントを復元します。始める前に、リカバリーフレーズをご用意ください。";
+
+/* (No Comment) */
+"tutorial-description-warning-title" = "警告：";
+
+/* (No Comment) */
+"tutorial-description-watch" = "リカバリーパスフレーズの必要無く、アカウントのアクティビティを監視できます。これは、コールドストレージに保管されている資産を監視するのに便利です。\n\n警告：対応するリカバリーパスフレーズがない場合は、このアカウントに資産を送信しないでください。";
+
+/* (No Comment) */
+"tutorial-description-watch-italic" = "警告：対応するリカバリーパスフレーズがない場合は、このアカウントに資産を送信しないでください。";
+
+/* (No Comment) */
+"tutorial-description-write" = "このリカバリーパスフレーズを使う以外に、Algorandアカウントを復元する方法はありません。\n\n警告：このパスフレーズは、アカウントへの完全なアクセスを許可するものですので、誰にも教えないでください。";
+
+/* (No Comment) */
+"tutorial-description-write-italic" = "警告：このパスフレーズは、アカウントへの完全なアクセスを許可するものですので、誰にも教えないでください。";
+
+/* (No Comment) */
+"tutorial-main-title-back-up" = "分かりました";
+
+/* (No Comment) */
+"tutorial-main-title-passcode" = "パスコードの設定";
+
+/* (No Comment) */
+"tutorial-main-title-recover" = "Algorandアカウントの復元";
+
+/* (No Comment) */
+"tutorial-main-title-write" = "始める準備ができました";
+
+/* (No Comment) */
+"tutorial-title-back-up" = "リカバリーパスフレーズを使ったアカウントのバックアップ";
+
+/* (No Comment) */
+"tutorial-title-passcode" = "PINでセキュリティを強化";
+
+/* (No Comment) */
+"tutorial-title-recover" = "Algorandアカウントの復元";
+
+/* (No Comment) */
+"tutorial-title-write" = "リカバリーパスフレーズを書き留める用意";
+
+/* (No Comment) */
+"value-one-algo" = "1 ALGO = %@";
+
+/* (No Comment) */
+"verified-asset-double-check" = "常に再確認してください";
+
+/* (No Comment) */
+"verified-asset-information-text" = "Algorand Inc.が資産の発行者と関係を持っている特定の資産については、それらの資産を「検証済み」としてマークしています（青いチェックマーク記号で示されます）。 \n\nこれは、誤って意図しない資産と取引しないための二次的な防御策として機能します。 \n\nただし、その資産を取引する前に、資産のIDが意図したものかどうかを常に再確認する必要があります。 \n\n検証プロセスに関するご質問や、アプリについての一般的なご意見については、www.algorandwallet.com/support をご覧ください。";
+
+/* (No Comment) */
+"verified-asset-information-title" = "資産の検証とはどういう意味ですか？";
+
+/* (No Comment) */
+"verified-asset-information-visit-site" = "www.algorandwallet.com/support にアクセス";
+
+/* MARK: Verified Asset Information */
+"verified-assets-title" = "検証済み資産";
+
+/* (No Comment) */
+"watch-account-create" = "ウォッチアカウントの作成";
+
+/* (No Comment) */
+"watch-account-error-address" = "有効なアドレスを入力してください。";
+
+/* (No Comment) */
+"watch-account-explanation-title" = "Algorandアカウントの読み取り専用ビューを作成しています。このアカウントに資産を送信し、対応するリカバリーパスフレーズがない場合、それらの資産は失われます。";
+
+/* (No Comment) */
+"watch-account-input-explanation" = "監視するアカウントアドレス";
+
+/* (No Comment) */
+"watch-account-input-placeholder" = "アドレスを貼り付けるか、QRコードをスキャン";
+

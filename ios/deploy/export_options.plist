@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>method</key>
+    <string>ad-hoc</string>
+    <key>teamID</key>
+    <string>87QL82XC78</string>
+    <key>compileBitcode</key>
+    <false/>
+    <key>signingCertificate</key>
+    <string>Apple Distribution: Algorand llc (87QL82XC78)</string>
+    <key>provisioningProfiles</key>
+    <dict>
+        <key>com.algorandllc.algorand</key>
+        <string>{com.algorandllc.algorand}</string>
+        <key>com.algorandllc.algoranddemo</key>
+        <string>{com.algorandllc.algoranddemo}</string>
+    </dict>
+</dict>
+</plist>

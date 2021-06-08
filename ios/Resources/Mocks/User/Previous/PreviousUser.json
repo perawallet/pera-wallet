@@ -1,0 +1,24 @@
+{
+  "accounts": [
+    {
+      "address": "T4EWBDWPEXNLEILKLD74RBLO4HFEGY522ELHW6JIGCNRX5TISUHCUU6QRM",
+      "receivesNotification": true,
+      "name": "Chase",
+      "type": "standard"
+    },
+    {
+      "address": "FPCCYLM2PBLFS3TJFON3YF2RGVPF5YXIFIRWICF6ARRWQBI7GXKHP2572I",
+      "receivesNotification": false,
+      "name": "Close",
+      "type": "standard"
+    },
+    {
+      "address": "X2YHQU7W6OJG66TMLL3PZ7JQS2D42YEGATBBNDXH22Q6JSNOFR6LVZYXXM",
+      "receivesNotification": true,
+      "name": "Venue",
+      "type": "standard"
+    }
+  ],
+  "defaultNode": "testnet",
+  "deviceId": "3368999771413241362"
+}

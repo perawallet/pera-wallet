@@ -1,0 +1,1551 @@
+/* MARK: Account Name Setup */
+"account-details-title" = "Dettagli del conto";
+
+/* (No Comment) */
+"account-name-setup-description" = "Assegna un nome al tuo conto per identificarlo facilmente durante l'utilizzo di Algorand Wallet. Questi nomi sono memorizzati localmente e possono essere visti solo da te.";
+
+/* (No Comment) */
+"account-name-setup-explanation" = "Nome del conto";
+
+/* (No Comment) */
+"account-name-setup-finish" = "Completa la creazione del conto";
+
+/* (No Comment) */
+"account-name-setup-placeholder" = "Conto di risparmio";
+
+/* MARK: Account Type Selection */
+"account-type-choose-title" = "Sceglie il tipo di conto";
+
+/* (No Comment) */
+"account-type-selection-add" = "Aggiungi un conto";
+
+/* (No Comment) */
+"account-type-selection-add-detail" = "Voglio un nuovo conto con un nuovo indirizzo e una nuova passphrase di ripristino.";
+
+/* (No Comment) */
+"account-type-selection-create" = "Crea un nuovo conto";
+
+/* (No Comment) */
+"account-type-selection-create-detail" = "Genera un conto con un nuovo indirizzo e una nuova passphrase";
+
+/* (No Comment) */
+"account-type-selection-ledger" = "Associa conto Ledger";
+
+/* (No Comment) */
+"account-type-selection-ledger-detail" = "Associa un conto supportato da un wallet hardware Ledger";
+
+/* (No Comment) */
+"account-type-selection-recover" = "Recupera da passphrase";
+
+/* (No Comment) */
+"account-type-selection-recover-detail" = "Recupera un conto con una passphrase di 25 parole";
+
+/* (No Comment) */
+"account-type-selection-watch-detail" = "Monitora le transazioni di un conto utilizzando solo il suo indirizzo";
+
+/* (No Comment) */
+"account-welcome-wallet-title" = "Benvenuto in\n Algorand Wallet";
+
+/* (No Comment) */
+"accounts-add-account" = "+ AGGIUNGI CONTO";
+
+/* (No Comment) */
+"accounts-add-new" = "Aggiungi nuovo attivo";
+
+/* (No Comment) */
+"accounts-algos-available-title" = "Algo";
+
+/* (No Comment) */
+"accounts-dollar-value-title" = "Valore in dollari";
+
+/* (No Comment) */
+"accounts-qr-tooltip" = "Il QR dell'indirizzo del tuo conto è disponibile qui";
+
+/* (No Comment) */
+"accounts-title" = "Conti";
+
+/* (No Comment) */
+"accounts-title-assets" = "Attivi";
+
+/* (No Comment) */
+"accounts-tranaction-empty-detail" = "Non sono state effettuate operazioni con questo attivo.";
+
+/* MARK: Accounts */
+"accounts-tranaction-empty-text" = "Ancora nessuna transazione";
+
+/* (No Comment) */
+"accounts-transaction-history-title" = "Cronologia delle transazioni";
+
+/* (No Comment) */
+"add-node-title" = "Aggiungi nodo";
+
+/* (No Comment) */
+"asset-add-confirmation-title" = "Aggiunta di un attivo";
+
+/* (No Comment) */
+"asset-add-warning" = "L'aggiunta di un attivo richiede l'invio di una transazione con una commissione di transazione minima. Questo apparirà nella cronologia delle tue transazioni.";
+
+/* (No Comment) */
+"asset-algos-title" = "Algo";
+
+/* (No Comment) */
+"asset-all-title" = "Tutti";
+
+/* (No Comment) */
+"asset-creation-fee-title" = "Aggiungi commissione attivo";
+
+/* (No Comment) */
+"asset-detail-id-title" = "ID %@";
+
+/* (No Comment) */
+"asset-id-copied-title" = "ID copiato negli Appunti";
+
+/* (No Comment) */
+"asset-min-transaction-error-message" = "Occorre almeno %@ Algo per aggiungere questo attivo";
+
+/* (No Comment) */
+"asset-min-transaction-error-title" = "Errore di transazione minima!";
+
+/* (No Comment) */
+"asset-not-found-detail" = "Prova un nome o un ID attivo diverso";
+
+/* (No Comment) */
+"asset-not-found-title" = "Nessun attivo trovato";
+
+/* (No Comment) */
+"asset-remove-confirmation-title" = "Rimozione dell'attivo";
+
+/* (No Comment) */
+"asset-remove-subtitle" = "Per rimuovere un attivo, è necessario prima trasferire il saldo di quell'attivo su un altro conto";
+
+/* (No Comment) */
+"asset-remove-title" = "Rimozione di un attivo";
+
+/* (No Comment) */
+"asset-remove-transaction-warning" = "Stai per rimuovere %@da %@. Non potrai effettuare transazioni con questo attivo da questo conto a meno che non lo aggiungi di nuovo.";
+
+/* (No Comment) */
+"asset-remove-warning" = "Per rimuovere %@, il saldo deve essere 0. Trasferisci il saldo su un altro conto e riprova.";
+
+/* (No Comment) */
+"asset-search-placeholder" = "Cerca ID o nome attivo";
+
+/* (No Comment) */
+"asset-support-add-message" = "Stai per ricevere un attivo per %@. Vuoi aggiungere questo attivo a questo conto per riceverlo?";
+
+/* (No Comment) */
+"asset-support-add-title" = "Stai per ricevere un attivo!";
+
+/* (No Comment) */
+"asset-support-error" = "Sfortunatamente, questo conto non ha aggiunto questo attivo. Istruisci il proprietario del conto affinché aggiunga l'attivo, e poi riprova.";
+
+/* (No Comment) */
+"asset-support-not-same-error" = "Questo conto ha aggiunto questo attivo, ma non è quello selezionato. Seleziona un attivo corretto, e poi riprova.";
+
+/* (No Comment) */
+"asset-support-not-same-title" = "Il conto non accetta questo attivo";
+
+/* (No Comment) */
+"asset-support-title" = "Il conto non accetta questo attivo";
+
+/* (No Comment) */
+"asset-support-your-add-message" = "Aggiungi questo attivo e riprova.";
+
+/* (No Comment) */
+"asset-support-your-add-title" = "I tuoi conti non contengono questo attivo";
+
+/* MARK: Asset */
+"asset-title" = "Attivo";
+
+/* (No Comment) */
+"asset-transfer-balance" = "Trasferisci saldo";
+
+/* (No Comment) */
+"asset-verified-title" = "Verificato";
+
+/* (No Comment) */
+"asset-you-already-own-message" = "Possiedi già questo attivo";
+
+/* (No Comment) */
+"back-up-phrase-qr" = "Mostra QR";
+
+/* (No Comment) */
+"ble-error-bluetooth-title" = "Errore Bluetooth";
+
+/* (No Comment) */
+"ble-error-connection-title" = "Errore di connessione";
+
+/* (No Comment) */
+"ble-error-disconnected-peripheral" = "Disconnesso dal dispositivo";
+
+/* (No Comment) */
+"ble-error-fail-ble-connection-power" = "Il Bluetooth deve essere abilitato sul tuo dispositivo per cercare i dispositivi Ledger nelle vicinanze.";
+
+/* (No Comment) */
+"ble-error-fail-ble-connection-resetting" = "Connessione BLE non riuscita per il ripristino";
+
+/* (No Comment) */
+"ble-error-fail-ble-connection-unauthorized" = "È necessario concedere l'autorizzazione Bluetooth per cercare nei Ledger nelle vicinanze.";
+
+/* (No Comment) */
+"ble-error-fail-ble-connection-unsupported" = "Il dispositivo a cui stai tentando di connetterti non è supportato con Algorand Wallet.";
+
+/* (No Comment) */
+"ble-error-fail-connect-peripheral" = "Impossibile connettersi al dispositivo Ledger. Assicurati che il dispositivo sia sbloccato, nelle vicinanze e abbia il Bluetooth abilitato.";
+
+/* (No Comment) */
+"ble-error-fail-fetch-account-address" = "Impossibile ricevere la chiave pubblica del tuo dispositivo Ledger. Per favore riprova.";
+
+/* (No Comment) */
+"ble-error-fail-sign-transaction" = "Il dispositivo Ledger associato ha annullato la richiesta di transazione.";
+
+/* (No Comment) */
+"ble-error-ledger-connection-open-app-error" = "Apri l'app Algorand sul tuo dispositivo Ledger.";
+
+/* (No Comment) */
+"ble-error-ledger-connection-title" = "Errore di connessione al Ledger";
+
+/* MARK: BLE Errors */
+"ble-error-search-title" = "Errore di ricerca";
+
+/* (No Comment) */
+"ble-error-transaction-cancelled-title" = "Transazione annullata";
+
+/* (No Comment) */
+"ble-error-transmission-title" = "Errore di trasmissione";
+
+/* (No Comment) */
+"ble-error-unsupported-device-title" = "Dispositivo non supportato";
+
+/* (No Comment) */
+"chart-no-data-text" = "L'API del prezzo non è al momento disponibile, ricontrolla a breve.";
+
+/* (No Comment) */
+"chart-time-all" = "Sempre";
+
+/* (No Comment) */
+"chart-time-last-day" = "Ultimo 1 giorno";
+
+/* (No Comment) */
+"chart-time-last-hour" = "Ultima 1 ora";
+
+/* (No Comment) */
+"chart-time-last-month" = "Ultimo 1 mese";
+
+/* (No Comment) */
+"chart-time-last-week" = "Ultima 1 settimana";
+
+/* (No Comment) */
+"chart-time-last-year" = "Ultimo 1 anno";
+
+/* (No Comment) */
+"chart-time-selection-all" = "TUTTI";
+
+/* (No Comment) */
+"chart-time-selection-daily" = "1G";
+
+/* (No Comment) */
+"chart-time-selection-hourly" = "1 ora";
+
+/* (No Comment) */
+"chart-time-selection-monthly" = "1M";
+
+/* (No Comment) */
+"chart-time-selection-weekly" = "1S";
+
+/* (No Comment) */
+"chart-time-selection-yearly" = "1A";
+
+/* MARK: Password Setting */
+"choose-password-title" = "Scegli passcode";
+
+/* (No Comment) */
+"contact-search-empty-detail" = "Prova un nome di contatto diverso";
+
+/* (No Comment) */
+"contact-search-empty-title" = "Nessun contatto trovato";
+
+/* (No Comment) */
+"contacts-add" = "Aggiungi contatto";
+
+/* (No Comment) */
+"contacts-address-validation-error" = "L'indirizzo è sbagliato. Assicurati di aver inserito quello corretto.";
+
+/* (No Comment) */
+"contacts-close-warning-subtitle" = "I tuoi progressi non salvati andranno persi. Sei sicuro?";
+
+/* (No Comment) */
+"contacts-close-warning-title" = "Sei sicuro?";
+
+/* (No Comment) */
+"contacts-delete-contact" = "Elimina contatto";
+
+/* (No Comment) */
+"contacts-delete-contact-alert-explanation" = "Sei sicuro di voler eliminare questo contatto?";
+
+/* (No Comment) */
+"contacts-empty-detail-text" = "Puoi velocizzare il processo di invio degli attivi aggiungendo nuovi contatti.";
+
+/* (No Comment) */
+"contacts-empty-text" = "Non hai ancora aggiunto alcun contatto";
+
+/* (No Comment) */
+"contacts-info" = "Informazioni di contatto";
+
+/* (No Comment) */
+"contacts-info-edit" = "Modifica informazioni di contatto";
+
+/* (No Comment) */
+"contacts-input-address-explanation" = "Indirizzo";
+
+/* (No Comment) */
+"contacts-input-address-placeholder" = "Incolla # o Scansiona QR";
+
+/* (No Comment) */
+"contacts-input-name-explanation" = "Nome";
+
+/* (No Comment) */
+"contacts-input-name-placeholder" = "Nome del contatto";
+
+/* (No Comment) */
+"contacts-name-validation-error" = "Il nome è vuoto.";
+
+/* (No Comment) */
+"contacts-search" = "Ricerca contatti";
+
+/* MARK: Contacts */
+"contacts-title" = "Contatti";
+
+/* (No Comment) */
+"contacts-title-assets" = "Attivi:";
+
+/* (No Comment) */
+"contacts-transactions-title" = "Transazioni";
+
+/* (No Comment) */
+"csv-download-error" = "Impossibile creare un file CSV per la cronologia delle transazioni.";
+
+/* (No Comment) */
+"csv-download-title" = "Creazione di file CSV";
+
+/* (No Comment) */
+"default-error-message" = "Si è verificato un errore.";
+
+/* (No Comment) */
+"edit-node-title" = "Modifica nodo";
+
+/* (No Comment) */
+"empty-accounts-action" = "Crea un nuovo conto";
+
+/* (No Comment) */
+"empty-accounts-detail" = "Devi creare un conto per avviare la transazione delle tue risorse.";
+
+/* (No Comment) */
+"empty-accounts-title" = "Crea un conto";
+
+/* (No Comment) */
+"feedback-empty-category-message" = "Seleziona una categoria.";
+
+/* (No Comment) */
+"feedback-empty-note-message" = "Per favore aggiungi la tua nota.";
+
+/* (No Comment) */
+"feedback-empty-title" = "Errore";
+
+/* (No Comment) */
+"feedback-error-message" = "Non è stato possibile inviare il tuo feedback!";
+
+/* (No Comment) */
+"feedback-error-title" = "Errore";
+
+/* (No Comment) */
+"feedback-subtitle-account-detail" = "Scegliere il conto";
+
+/* (No Comment) */
+"feedback-subtitle-account-title" = "Conto (opzionale)";
+
+/* (No Comment) */
+"feedback-subtitle-category" = "Tipo di feedback";
+
+/* (No Comment) */
+"feedback-subtitle-note" = "A cosa stai pensando?";
+
+/* (No Comment) */
+"feedback-success-detail" = "Grazie, abbiamo ricevuto il tuo feedback";
+
+/* (No Comment) */
+"feedback-success-title" = "Il tuo feedback è stato inviato";
+
+/* MARK: Feedback */
+"feedback-title" = "Invia feedback";
+
+/* (No Comment) */
+"feedback-title-category" = "Categorie";
+
+/* (No Comment) */
+"feedback-title-email" = "E-mail";
+
+/* (No Comment) */
+"feedback-title-note" = "Nota";
+
+/* (No Comment) */
+"internet-connection-error-detail" = "Impossibile raggiungere il server, assicurati di essere connesso a Internet";
+
+/* (No Comment) */
+"internet-connection-error-title" = "Connettiti a Internet";
+
+/* (No Comment) */
+"introduction-add-account-text" = "Aggiungi un conto";
+
+/* (No Comment) */
+"introduction-title-add-text" = "Aggiungi un nuovo conto";
+
+/* (No Comment) */
+"introduction-title-terms-and-services" = "Creando un conto, accetti i <a href=\"https://www.algorand.com/wallet-disclaimer\">Termini e condizioni</a> e l'<a href=\"https://www.algorand.com/wallet-privacy-policy\">Informativa sulla privacy </a>";
+
+/* MARK: Introduction */
+"introduction-title-text" = "Gestire tutti gli attivi\nda un'unica app";
+
+/* (No Comment) */
+"ledger-account-detail-can-sign" = "Può firmare per questi conti";
+
+/* (No Comment) */
+"ledger-account-detail-can-signed" = "Può essere firmato da";
+
+/* (No Comment) */
+"ledger-account-details-title" = "Dettagli del Ledger";
+
+/* (No Comment) */
+"ledger-account-fetct-error" = "Si è verificato un errore di rete durante il recupero dei dettagli del conto. Riavvia il processo.";
+
+/* (No Comment) */
+"ledger-account-selection-detail" = "Questo dispositivo Ledger può firmare transazioni per il seguente conto. Seleziona il conto da aggiungere al tuo Algorand Wallet.";
+
+/* (No Comment) */
+"ledger-account-selection-detail-rekey" = "Scegli il conto che desideri utilizzare per firmare questo conto.";
+
+/* (No Comment) */
+"ledger-account-selection-title-plural" = "%d conti trovati";
+
+/* MARK: Ledger Account Selection */
+"ledger-account-selection-title-singular" = "%d conto trovato";
+
+/* (No Comment) */
+"ledger-account-selection-verify" = "Verifica conto selezionato";
+
+/* (No Comment) */
+"ledger-account-selection-verify-plural" = "Verifica conti selezionati";
+
+/* (No Comment) */
+"ledger-account-verification-status-awaiting" = "In attesa di verifica";
+
+/* (No Comment) */
+"ledger-account-verification-status-not-verified" = "Non verificato";
+
+/* (No Comment) */
+"ledger-account-verification-status-pending" = "In sospeso";
+
+/* (No Comment) */
+"ledger-account-verification-status-verified" = "Conto verificato";
+
+/* (No Comment) */
+"ledger-approval-connection-message" = "In attesa che il Ledger si connetta.";
+
+/* (No Comment) */
+"ledger-approval-connection-title" = "Connessione Ledger";
+
+/* (No Comment) */
+"ledger-approval-message" = "Controlla e firma la transazione sul tuo dispositivo Ledger.";
+
+/* MARK: Ledger Approval */
+"ledger-approval-title" = "Anteprima e firma";
+
+/* (No Comment) */
+"ledger-device-list-connect" = "Collega";
+
+/* (No Comment) */
+"ledger-device-list-looking" = "Ricerca di altri dispositivi Ledger";
+
+/* MARK: Ledger Device List */
+"ledger-device-list-title" = "Associa dispositivo Ledger";
+
+/* (No Comment) */
+"ledger-device-list-troubleshoot" = "Risoluzione dei problemi";
+
+/* MARK: Ledger Tutorial */
+"ledger-pair-title" = "Crea un conto Ledger";
+
+/* MARK: Rekey Confirm */
+"ledger-rekey-confirm-title" = "Conferma ricodifica";
+
+/* (No Comment) */
+"ledger-rekey-error-add-auth" = "Il dispositivo Ledger connesso non può firmare transazioni per questo conto. Per farlo, connetti %@.";
+
+/* (No Comment) */
+"ledger-rekey-error-not-found" = "Questo conto è stato ricodificato. Recupera questo conto con una passphrase o un dispositivo Ledger.";
+
+/* (No Comment) */
+"ledger-rekey-finalize" = "Concludi ricodifica";
+
+/* (No Comment) */
+"ledger-rekey-ledger-new" = "Nuovo Ledger";
+
+/* (No Comment) */
+"ledger-rekey-ledger-old" = "Vecchio Ledger";
+
+/* (No Comment) */
+"ledger-rekey-ledger-passphrase" = "Passphrase";
+
+/* (No Comment) */
+"ledger-rekey-more-assets" = "+%@ più attivi";
+
+/* (No Comment) */
+"ledger-rekey-success-message" = "Il conto %@ è stato ricodificato con successo";
+
+/* (No Comment) */
+"ledger-rekey-success-title" = "Conto ricodificato";
+
+/* (No Comment) */
+"ledger-rekey-total-fee" = "Commissione di ricodifica totale di %@ Algo";
+
+/* (No Comment) */
+"ledger-rekey-transaction-title" = "Ricodifica della transazione";
+
+/* (No Comment) */
+"ledger-search-button-title" = "Cerca Ledger";
+
+/* (No Comment) */
+"ledger-transaction-account-match-error" = "Sembra che questo dispositivo Ledger sia stato ripristinato e che il conto sul dispositivo non corrisponda più a questo conto. SiTi invitiamo ad associare nuovamente il Ledger dalla homepage.";
+
+/* (No Comment) */
+"ledger-troubleshooting-app-support" = "Per assistenza nell'installazione dell'app Algorand Ledger sul tuo dispositivo, visita %@";
+
+/* (No Comment) */
+"ledger-troubleshooting-bluetooth-connection-html" = "Disabilita o abilita il Bluetooth per un dispositivo iOS. <br /> <br />\n <ul>\n <li>Tocca <b>Impostazioni</b></li>\n <li>Seleziona <b>\"Generale\"</b></li>\n <li>Tocca <b>\"Bluetooth\"</b></li>\n <li>Capovolgi il <b>pulsante On/Off</b> per attivare </li> disattivare\n <li>Bluetooth <b>attivato o disattivato</b></li>\n </ul>";
+
+/* (No Comment) */
+"ledger-troubleshooting-close-others" = "Chiudi altre applicazioni (app Ledger, crypto wallet o qualsiasi cosa che potrebbe tentare di associarsi a Ledger).";
+
+/* (No Comment) */
+"ledger-troubleshooting-install-app-first-html" = "Inizia seguendo il tutorial completo di Ledger <a href=\"https://www.ledger.com/start\">Guida introduttiva</a>.";
+
+/* (No Comment) */
+"ledger-troubleshooting-install-app-second-html" = "Quando il tutorial arriva al punto in cui ti chiede \"Seleziona le applicazioni che desideri installare sul tuo dispositivo\", digita <b>Algorand</b> nella barra di ricerca e installalo.";
+
+/* (No Comment) */
+"ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "Per una risoluzione dei problemi più avanzata, fare riferimento alla <a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">Guida alla risoluzione dei problemi Bluetooth</a> ufficiale di Ledger.";
+
+/* (No Comment) */
+"ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "Per l'utilizzo generale della funzione Bluetooth di Ledger, fare riferimento alla <a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\"> Guida alla Connessione Bluetooth</a> ufficiale di Ledger.";
+
+/* (No Comment) */
+"ledger-troubleshooting-ledger-support" = "Per la risoluzione generale dei problemi relativi al dispositivo Ledger, visita ";
+
+/* (No Comment) */
+"ledger-troubleshooting-ledger-support-title" = "Assistenza Ledger.";
+
+/* (No Comment) */
+"ledger-troubleshooting-open-app-first-html" = "Inizia seguendo il tutorial completo della <a href=\"https://www.ledger.com/start\">Guida introduttiva</a> di Ledger, che ti indicherà come installare e aprire le app sul tuo dispositivo Ledger.";
+
+/* (No Comment) */
+"ledger-troubleshooting-open-app-second-html" = "Se non hai già installato l'app <b>Algorand</b> sul tuo dispositivo Ledger, quando il tutorial arriva al punto in cui ti chiede \"Seleziona le applicazioni che desideri installare sul tuo dispositivo\", digita <b>Algorand</b> nella barra di ricerca e installalo.";
+
+/* (No Comment) */
+"ledger-troubleshooting-restart" = "Riavvia Algorand Wallet e/o il tuo dispositivo.";
+
+/* (No Comment) */
+"ledger-troubleshooting-title" = "Risoluzione dei problemi avanzata";
+
+/* (No Comment) */
+"ledger-tutorial-bluetooth" = "Assicurati che il Bluetooth sia abilitato sul tuo smartphone.";
+
+/* (No Comment) */
+"ledger-tutorial-install-app" = "Installa l'app Algorand (versione 1.2.9 o successiva) nel tuo Ledger.";
+
+/* (No Comment) */
+"ledger-tutorial-open-app" = "Apri l'app Algorand sul tuo Ledger.";
+
+/* (No Comment) */
+"ledger-tutorial-title-text" = "Segui i passaggi seguenti per creare un nuovo conto Ledger";
+
+/* (No Comment) */
+"ledger-tutorial-turned-on" = "Assicurati che il tuo dispositivo Ledger sia acceso e abbia il Bluetooth abilitato.";
+
+/* (No Comment) */
+"ledger-verified-add" = "Aggiungi conti verificati";
+
+/* (No Comment) */
+"ledger-verify-header-subtitle" = "I seguenti indirizzi di conto verranno visualizzati sul tuo dispositivo Ledger. Confronta e verifica attentamente ogni indirizzo al fine di completare l'associazione del dispositivo.";
+
+/* (No Comment) */
+"ledger-verify-header-title" = "Verifica gli indirizzi del conto tramite Ledger";
+
+/* (No Comment) */
+"local-authentication-enable" = "Abilita Face ID/Touch";
+
+/* (No Comment) */
+"local-authentication-enabled-subtitle" = "Il tuo codice di accesso è stato verificato. Il tuo conto Algorand ora è più sicuro.";
+
+/* (No Comment) */
+"local-authentication-enabled-title" = "Autenticazione biometrica abilitata";
+
+/* (No Comment) */
+"local-authentication-go-settings-text" = "Hai disabilitato l'autenticazione biometrica. Vai su Impostazioni e abilita questa opzione.";
+
+/* (No Comment) */
+"local-authentication-go-settings-title" = "Autenticazione biometrica";
+
+/* (No Comment) */
+"local-authentication-no" = "Non utilizzare Face ID/Touch";
+
+/* (No Comment) */
+"local-authentication-preference-subtitle" = "Lo consigliamo per una maggiore sicurezza";
+
+/* MARK: Local Authentication Preferences */
+"local-authentication-preference-title" = "Abilita Face ID/Touch";
+
+/* (No Comment) */
+"local-authentication-reason-face-id-title" = "Usa Face ID per sbloccare";
+
+/* (No Comment) */
+"local-authentication-reason-touch-id-title" = "Usare Touch ID per sbloccare";
+
+/* (No Comment) */
+"login-subtitle" = "Inserisci il pin a sei cifre";
+
+/* MARK: Login */
+"login-title" = "Sblocca";
+
+/* (No Comment) */
+"maximum-balance-standard-account-warning-description" = "Poiché hai %@ altre Risorse in questo conto %@, la Blockchain di Algorand ti richiede di mantenere un saldo minimo di %@ Algo.\n\nPremendo continua, l'importo della transazione verrà aggiornato automaticamente per riflettere questa modifica. Sarà possibile visualizzare in anteprima questa modifica nel passaggio successivo.";
+
+/* (No Comment) */
+"maximum-balance-standard-account-warning-description-singular" = "Poiché hai %@ altre Risorse in questo conto %@, la Blockchain di Algorand ti richiede di mantenere un saldo minimo di %@ Algo.\n\nPremendo continua, l'importo della transazione verrà aggiornato automaticamente per riflettere questa modifica. Sarà possibile visualizzare in anteprima questa modifica nel passaggio successivo.";
+
+/* (No Comment) */
+"maximum-balance-warning-description" = "L'invio del tuo saldo massimo su un conto ricodificato richiede che tu mantenga un saldo minimo di %@ Algo. Questo peressere sicuri che nulla cambi nel tuo conto ricodificato.\n\n\nL'importo della transazione verrà automaticamente aggiornato per riflettere questo cambiamento. Sarete in grado di vedere l'anteprima della transazione nella fase successiva.";
+
+/* (No Comment) */
+"maximum-balance-warning-title" = "Saldo massimo";
+
+/* (No Comment) */
+"min-balance-title" = "Saldo minimo richiesto";
+
+/* (No Comment) */
+"node-settings-action-delete-title" = "Elimina";
+
+/* (No Comment) */
+"node-settings-api-key" = "Chiave: ";
+
+/* (No Comment) */
+"node-settings-database-error-description" = "Si è verificato un errore nel sistema.";
+
+/* (No Comment) */
+"node-settings-db-error-title" = "Operazione di sistema non riuscita";
+
+/* (No Comment) */
+"node-settings-default-node-name" = "Nodo Algorand MainNet";
+
+/* (No Comment) */
+"node-settings-default-test-node-name" = "TestNet";
+
+/* (No Comment) */
+"node-settings-enter-node-address" = "Indirizzo: ";
+
+/* (No Comment) */
+"node-settings-enter-node-name" = "Nome: ";
+
+/* (No Comment) */
+"node-settings-has-same-result" = "Non è possibile creare due volte lo stesso nodo";
+
+/* (No Comment) */
+"node-settings-health-problem-message" = "Nessuno dei tuoi nodi attivi è online. Aggiungi o seleziona un altro nodo";
+
+/* (No Comment) */
+"node-settings-none-active-node-error-description" = "Nessuno dei nodi attivi sembra essere attivo. Assicurati di avere almeno un nodo attivo prima di procedere.";
+
+/* (No Comment) */
+"node-settings-placeholder-address" = "http://yournode.com:8000";
+
+/* (No Comment) */
+"node-settings-placeholder-api-key" = "65ef12c245b47fcf497b1c7d0faea4d82df470671974eeeed3e29ab4df1ed918";
+
+/* (No Comment) */
+"node-settings-placeholder-name" = "Nome del nodo";
+
+/* (No Comment) */
+"node-settings-subtitle" = "Selezionare il nodo";
+
+/* (No Comment) */
+"node-settings-test-button-title" = "TEST";
+
+/* (No Comment) */
+"node-settings-test-error-title" = "Connessione non riuscita";
+
+/* (No Comment) */
+"node-settings-test-success-title" = "Connessione riuscita!";
+
+/* (No Comment) */
+"node-settings-text-validation-empty-error" = "Per favore compila tutti i campi.";
+
+/* (No Comment) */
+"node-settings-text-validation-health-error" = "Verifica l'indirizzo e il token e riprova.";
+
+/* MARK: Node Settings */
+"node-settings-title" = "Impostazioni nodo";
+
+/* (No Comment) */
+"node-settings-warning-message" = "Questa azione rimuoverà il nodo. Sei sicuro?";
+
+/* (No Comment) */
+"node-settings-warning-title" = "Attenzione";
+
+/* (No Comment) */
+"notification-filter-show-for" = "Mostra notifica per";
+
+/* (No Comment) */
+"notification-filter-show-title" = "Notifiche push";
+
+/* (No Comment) */
+"notification-received" = "%@ sono stati inviati a %@ da %@.";
+
+/* (No Comment) */
+"notification-sent-failed" = "La tua transazione di %@ da %@ a %@ non è riuscita.";
+
+/* MARK: Notifications */
+"notification-sent-success" = "La tua transazione di %@ da %@ a %@ è stata completata.";
+
+/* (No Comment) */
+"notification-support-request" = "%@ sta cercando di inviarti %@ tuttavia, tu non lo supporti. Se vuoi, possiamo aggiungerlo al tuo conto.";
+
+/* (No Comment) */
+"notification-support-success" = "%@ ha aggiunto %@ al proprio conto. Puoi inviarli.";
+
+/* (No Comment) */
+"notifications-empty-subtitle" = "Le tue transazioni recenti, le richieste di attivi e altre notifiche verranno visualizzate qui.";
+
+/* (No Comment) */
+"notifications-empty-title" = "Nessuna notifica attuale";
+
+/* MARK: Notifications Tab */
+"notifications-title" = "Notifiche";
+
+/* (No Comment) */
+"options-auth-account" = "Autentica indirizzo conto";
+
+/* (No Comment) */
+"options-edit-account-name" = "Modifica il nome del conto";
+
+/* (No Comment) */
+"options-mute-notification" = "Disattiva notifiche";
+
+/* (No Comment) */
+"options-rekey" = "Ricodifica il conto";
+
+/* (No Comment) */
+"options-remove-account" = "Rimuovi conto";
+
+/* (No Comment) */
+"options-remove-alert-explanation" = "Stai per rimuovere un conto. Sei sicuro di voler procedere con questa scelta?";
+
+/* (No Comment) */
+"options-remove-assets" = "Rimuovi attivi";
+
+/* (No Comment) */
+"options-show-qr" = "Mostra QR e indirizzo";
+
+/* MARK: Options */
+"options-title" = "IMPOSTAZIONI DEL CONTO";
+
+/* (No Comment) */
+"options-unmute-notification" = "Riattiva notifiche";
+
+/* (No Comment) */
+"options-view-passphrase" = "Visualizza passphrase";
+
+/* (No Comment) */
+"options-view-passphrase-password-alert-message" = "È necessario inserire la password corretta per visualizzare la passphrase.";
+
+/* (No Comment) */
+"pass-pharase-enter-placeholder" = "Inserisci passphrase o Scansiona QR";
+
+/* (No Comment) */
+"pass-phrase-verify-invalid-passphrase" = "La tua passphrase non è valida. Assicurati di aver inserito quella corretta.";
+
+/* (No Comment) */
+"pass-phrase-verify-pop-up-explanation" = "La tua passphrase è stata verificata. Assicurati di averne eseguito il backup poiché ti servirà per recuperare il tuo conto.";
+
+/* MARK: Passphrase Verify */
+"pass-phrase-verify-pop-up-title" = "Passphrase verificata";
+
+/* (No Comment) */
+"pass-phrase-verify-question-title" = "Domanda %@ di %@";
+
+/* (No Comment) */
+"pass-phrase-verify-sdk-error" = "C'è qualcosa di sbagliato. Per favore riprova più tardi.";
+
+/* (No Comment) */
+"pass-phrase-verify-select-title" = "Seleziona la parola %@ della tua passphrase";
+
+/* (No Comment) */
+"pass-phrase-verify-wrong-selection" = "Scelta sbagliata";
+
+/* (No Comment) */
+"passphrase-bottom-title" = "Assicurati di registrare queste parole nell'ordine corretto, utilizzando i numeri corrispondenti.";
+
+/* (No Comment) */
+"passphrase-qeustion-counter" = "Domanda %@ di %@";
+
+/* (No Comment) */
+"passphrase-question-another" = "%@°";
+
+/* (No Comment) */
+"passphrase-question-first" = "1°";
+
+/* (No Comment) */
+"passphrase-question-second" = "2°";
+
+/* (No Comment) */
+"passphrase-question-third" = "3°";
+
+/* (No Comment) */
+"passphrase-select-n-word" = "Seleziona la parola %@ della tua passphrase";
+
+/* (No Comment) */
+"passphrase-verify-invalid-title" = "Passphrase errata";
+
+/* (No Comment) */
+"passphrase-verify-select-word" = "Seleziona la parola #%@";
+
+/* (No Comment) */
+"passphrase-verify-title" = "Verifica il backup della passphrase di ripristino";
+
+/* (No Comment) */
+"passphrase-verify-wrong-message" = "Le parole selezionate sono sbagliate. Riprova.";
+
+/* (No Comment) */
+"password-change-subtitle" = "Inserisci il pin a sei cifre";
+
+/* (No Comment) */
+"password-change-title" = "Cambia password";
+
+/* (No Comment) */
+"password-set-subtitle" = "Scegli un passcode a sei cifre";
+
+/* (No Comment) */
+"password-verify-fail-message" = "La password non corrisponde alla password precedente.";
+
+/* (No Comment) */
+"password-verify-fail-title" = "Password errata";
+
+/* (No Comment) */
+"password-verify-subtitle" = "Inserisci le stesse sei cifre";
+
+/* (No Comment) */
+"password-verify-title" = "Verifica passcode";
+
+/* (No Comment) */
+"pin-limit-reset-all" = "Reimposta tutti i dati";
+
+/* MARK: Pin Limit */
+"pin-limit-title" = "L'app Algorand è bloccata";
+
+/* (No Comment) */
+"pin-limit-too-many" = "Troppi tentativi di PIN";
+
+/* (No Comment) */
+"pin-limit-try-again" = "Riprova";
+
+/* No comment provided by engineer. */
+"primaryText" = "primaryText";
+
+/* (No Comment) */
+"privacy-policy-title" = "Informativa sulla privacy";
+
+/* (No Comment) */
+"qr-creation-address" = "Indirizzo del conto";
+
+/* (No Comment) */
+"qr-creation-copied" = "Indirizzo copiato negli appunti";
+
+/* (No Comment) */
+"qr-creation-copy-address" = "Copia indirizzo";
+
+/* (No Comment) */
+"qr-creation-sharing-title" = "Condividi QR e indirizzo";
+
+/* MARK: QR Creation */
+"qr-creation-title" = "Passphrase QR";
+
+/* (No Comment) */
+"qr-scan-error-message" = "Il tuo dispositivo non supporta la scansione di un codice QR.";
+
+/* (No Comment) */
+"qr-scan-error-title" = "La videocamera non è disponibile";
+
+/* (No Comment) */
+"qr-scan-go-settings-message" = "Hai disabilitato la videocamera. Vai su Impostazioni e abilita questa opzione.";
+
+/* (No Comment) */
+"qr-scan-go-settings-title" = "Videocamera disattivata";
+
+/* (No Comment) */
+"qr-scan-message-text" = "Puoi scansionare il tuo QR solo da questa pagina. Per visualizzare il tuo QR seleziona l'icona nel tuo conto";
+
+/* (No Comment) */
+"qr-scan-should-scan-address-message" = "È necessario eseguire la scansione di un indirizzo di conto valido";
+
+/* (No Comment) */
+"qr-scan-should-scan-mnemonics-message" = "È necessario eseguire la scansione di passphrase valide";
+
+/* (No Comment) */
+"qr-scan-should-scan-valid-qr" = "QR non valido.";
+
+/* MARK: QR Scanning */
+"qr-scan-title" = "Scansiona il codice QR";
+
+/* (No Comment) */
+"recover-copy-error" = "L'ultimo testo copiato non è una passphrase valida di 25 parole. Copia la passphrase valida e riprova.";
+
+/* (No Comment) */
+"recover-fill-all-error" = "Compila tutte le passphrase";
+
+/* (No Comment) */
+"recover-from-seed-name-placeholder" = "Nome di esempio";
+
+/* (No Comment) */
+"recover-from-seed-name-title" = "Nome";
+
+/* (No Comment) */
+"recover-from-seed-passphrase-title" = "Passphrase";
+
+/* MARK: Recover From Seed */
+"recover-from-seed-title" = "Recupera dalla Passphrase";
+
+/* (No Comment) */
+"recover-from-seed-verify-exist-error" = "Questo conto esiste già";
+
+/* (No Comment) */
+"recover-from-seed-verify-pop-up-explanation" = "Benvenuto in Algorand!\nIl tuo conto è pronto per l'uso.";
+
+/* (No Comment) */
+"recover-from-seed-verify-pop-up-title" = "Conto verificato";
+
+/* MARK: Passphrase Back Up */
+"recover-passphrase-title" = "Passphrase di ripristino";
+
+/* (No Comment) */
+"recover-title" = "Recupera";
+
+/* (No Comment) */
+"rekey-instruction-first" = "Le transazioni future saranno firmate dal tuo nuovo dispositivo Ledger.";
+
+/* (No Comment) */
+"rekey-instruction-header" = "Cosa aspettarsi:";
+
+/* (No Comment) */
+"rekey-instruction-second-ledger" = "Il tuo vecchio Ledger non funzionerà più per questo conto.";
+
+/* (No Comment) */
+"rekey-instruction-second-standard" = "La passphrase di questo conto non funzionerà più per questo conto";
+
+/* MARK: Rekey Instruction */
+"rekey-instruction-start" = "Avvia processo";
+
+/* (No Comment) */
+"rekey-instruction-subtitle-ledger" = "Sostituisci il tuo Ledger del conto con un nuovo dispositivo Ledger";
+
+/* (No Comment) */
+"rekey-instruction-subtitle-standard" = "Sostituisci la passphrase del tuo conto con un dispositivo Ledger.";
+
+/* (No Comment) */
+"rekey-instruction-third" = "La chiave pubblica, i saldi e la configurazione del tuo conto non cambieranno.";
+
+/* (No Comment) */
+"rekey-instruction-title" = "Ricodifica il conto";
+
+/* MARK: Algos Request */
+"request-algos-title" = "Richiedi Algo";
+
+/* (No Comment) */
+"request-title" = "Richiesta";
+
+/* (No Comment) */
+"reward-list-title" = "Ricompensa";
+
+/* (No Comment) */
+"rewards-detail-subtitle" = "Guadagni ricompense solo possedendo Algo! Di seguito è riportato un riepilogo dell'attività delle ricompense dall'ultima transazione. Queste ricompense sono sempre incluse nel tuo saldo.";
+
+/* (No Comment) */
+"rewards-show-title" = "Mostra ricompense";
+
+/* (No Comment) */
+"rewards-since-last-text" = "Dall'ultima transazione";
+
+/* MARK: Rewards */
+"rewards-title" = "Ricompense";
+
+/* (No Comment) */
+"screenshot-description" = "Non eseguire il backup della passphrase di ripristino acquisendo uno screenshot. Avere un'immagine contenente la passphrase è un rischio per la sicurezza.";
+
+/* (No Comment) */
+"screenshot-title" = "Screenshot rilevato";
+
+/* (No Comment) */
+"send-algos-account-delete-body" = "Per mantenere aperto un conto, questo deve contenere almeno 0,01 ALGO. Se invii l'importo massimo, il conto viene cancellato e vengono cancellate anche le chiavi di partecipazione attive.";
+
+/* (No Comment) */
+"send-algos-account-delete-title" = "Il tuo conto sta per essere cancellato, sei sicuro di voler procedere?";
+
+/* (No Comment) */
+"send-algos-address" = "Indirizzo";
+
+/* (No Comment) */
+"send-algos-address-not-selected" = "Indirizzo non selezionato";
+
+/* (No Comment) */
+"send-algos-alert-incomplete-title" = "Transazione incompleta";
+
+/* (No Comment) */
+"send-algos-alert-message" = "Per favore compila i campi.";
+
+/* (No Comment) */
+"send-algos-alert-message-address" = "Inserisci un indirizzo di destinazione.";
+
+/* (No Comment) */
+"send-algos-amount" = "Importo";
+
+/* (No Comment) */
+"send-algos-amount-error" = "L'importo della transazione non può essere superiore ai tuoi Algo disponibili";
+
+/* (No Comment) */
+"send-algos-balance-title" = "Saldo:";
+
+/* (No Comment) */
+"send-algos-contact-not-found" = "Contatto non trovato";
+
+/* (No Comment) */
+"send-algos-contacts" = "Contatti";
+
+/* (No Comment) */
+"send-algos-minimum-amount-custom-error" = "L'importo della transazione determina un saldo inferiore al saldo minimo del conto di %@ algo.";
+
+/* (No Comment) */
+"send-algos-minimum-amount-error" = "L'importo della transazione determina un saldo inferiore al saldo minimo del conto di 0,1 algo.";
+
+/* (No Comment) */
+"send-algos-minimum-amount-error-new-account" = "Stai tentando di inviare denaro a un nuovo conto. L'importo deve essere almeno 0,1 algo.";
+
+/* (No Comment) */
+"send-algos-receiver-address-validation" = "Chiave non valida, assicurati di avere la chiave giusta.";
+
+/* (No Comment) */
+"send-algos-scan" = "Scansiona QR";
+
+/* (No Comment) */
+"send-algos-select" = "Seleziona conto";
+
+/* (No Comment) */
+"send-algos-sent-title" = "Algo inviati!";
+
+/* MARK: Algos Send */
+"send-algos-title" = "Invia Algo";
+
+/* (No Comment) */
+"send-algos-to" = "A";
+
+/* (No Comment) */
+"send-asset-amount-error" = "L'importo della transazione non può essere superiore al tuo importo disponibile";
+
+/* (No Comment) */
+"send-choose-asset" = "Scegli un attivo";
+
+/* (No Comment) */
+"send-enter-note-placeholder" = "Inserisci nota qui";
+
+/* (No Comment) */
+"send-enter-note-title" = "Aggiungi nota";
+
+/* (No Comment) */
+"send-qr-different-asset-alert" = "Il QR contiene un attivo diverso da quello selezionato. L'importo viene ignorato durante la decodifica.";
+
+/* (No Comment) */
+"send-qr-scan-alert-message" = "Hai appena scansionato un codice QR di una richiesta di transazione. Controlla tutti i campi delle transazioni poiché potrebbero essere cambiati.";
+
+/* (No Comment) */
+"send-qr-scan-alert-title" = "Scansione QR";
+
+/* (No Comment) */
+"send-receiving-algos-select" = "Seleziona conto di ricezione";
+
+/* (No Comment) */
+"send-select-asset" = "Seleziona attivo";
+
+/* (No Comment) */
+"send-sending-algos-select" = "Selezionare il conto d'invio";
+
+/* (No Comment) */
+"send-transaction-max-same-account-error" = "Non puoi inviare il saldo massimo a te stesso. Seleziona un importo o un destinatario diverso e riprova.";
+
+/* (No Comment) */
+"send-trasaction-address-placeholder" = "Incolla #";
+
+/* (No Comment) */
+"settings-app-version" = "Versione %@";
+
+/* (No Comment) */
+"settings-change-password" = "Imposta/Cambia la password";
+
+/* (No Comment) */
+"settings-currency" = "Valuta";
+
+/* (No Comment) */
+"settings-currency-usd" = "USD";
+
+/* (No Comment) */
+"settings-developer" = "Impostazioni sviluppatore";
+
+/* (No Comment) */
+"settings-developer-dispenser" = "Algorand Dispenser";
+
+/* (No Comment) */
+"settings-language" = "Lingua";
+
+/* (No Comment) */
+"settings-language-change-detail" = "A causa degli aggiornamenti del telefono, devi eseguire alcuni passaggi per cambiare la lingua.\n\n1. 1. Procedi alla schermata successiva.\n2. 3. Tocca Lingua per selezionare la lingua desiderata.\n\nSe non è disponibile alcuna impostazione linguistica, vai alle impostazioni generali della lingua dell'iPhone per impostare la lingua preferita.";
+
+/* (No Comment) */
+"settings-language-change-title" = "Imposta la lingua dell'app";
+
+/* (No Comment) */
+"settings-language-english" = "Italiano";
+
+/* (No Comment) */
+"settings-local-authentication" = "Attiva FaceID/Touch ID";
+
+/* (No Comment) */
+"settings-logout-detail" = "Sei sicuro di voler cancellare tutti i dati?";
+
+/* (No Comment) */
+"settings-logout-title" = "Cancella tutti i dati";
+
+/* (No Comment) */
+"settings-notification-disabled-go-settings-text" = "Hai disabilitato le notifiche. Vai su Impostazioni e abilita questa opzione.";
+
+/* (No Comment) */
+"settings-notification-enabled-go-settings-text" = "Hai abilitato le notifiche. Vai su Impostazioni e disabilita questa opzione.";
+
+/* (No Comment) */
+"settings-notification-go-settings-title" = "Notifiche";
+
+/* (No Comment) */
+"settings-rate-title" = "Valuta Algorand Wallet";
+
+/* (No Comment) */
+"settings-server-node-settings" = "Impostazioni nodo";
+
+/* (No Comment) */
+"settings-support-title" = "Centro di supporto";
+
+/* (No Comment) */
+"settings-theme-dark" = "Scuro";
+
+/* (No Comment) */
+"settings-theme-light" = "Chiaro";
+
+/* (No Comment) */
+"settings-theme-set" = "Imposta tema";
+
+/* (No Comment) */
+"settings-theme-system" = "Impostazione predefinita del sistema";
+
+/* MARK: Settings */
+"settings-title" = "Impostazioni";
+
+/* MARK: Terms and Services */
+"terms-and-services-title" = "Termini e Servizi";
+
+/* (No Comment) */
+"title-accept" = "Accetta";
+
+/* (No Comment) */
+"title-account" = "Conto";
+
+/* (No Comment) */
+"title-account-balance" = "Saldo";
+
+/* (No Comment) */
+"title-add-asset" = "Aggiungi nuovo attivo";
+
+/* (No Comment) */
+"title-algo-rewards" = "Ricompense Algo";
+
+/* (No Comment) */
+"title-algorand" = "Algorand";
+
+/* (No Comment) */
+"title-algorand-value" = "Valore";
+
+/* (No Comment) */
+"title-analytics" = "Analytics";
+
+/* (No Comment) */
+"title-approve" = "Approva";
+
+/* (No Comment) */
+"title-cancel" = "Annulla";
+
+/* (No Comment) */
+"title-close" = "Chiudi";
+
+/* (No Comment) */
+"title-continue" = "Continua";
+
+/* (No Comment) */
+"title-copy" = "Copia";
+
+/* (No Comment) */
+"title-done" = "Fatto";
+
+/* (No Comment) */
+"title-dont-ask" = "Non chiedere di nuovo";
+
+/* (No Comment) */
+"title-dont-show-again" = "Non visualizzare più questo messaggio";
+
+/* (No Comment) */
+"title-edit" = "Modifica";
+
+/* (No Comment) */
+"title-enter-pin-for-passphrase" = "Inserisci il tuo PIN per visualizzare la passphrase";
+
+/* (No Comment) */
+"title-error" = "Errore";
+
+/* (No Comment) */
+"title-go-home" = "Vai alla Home";
+
+/* (No Comment) */
+"title-go-to-accounts" = "Vai a Conti";
+
+/* (No Comment) */
+"title-go-to-settings" = "Vai alle Impostazioni";
+
+/* (No Comment) */
+"title-i-understand" = "Ho capito";
+
+/* (No Comment) */
+"title-id" = "ID";
+
+/* (No Comment) */
+"title-internet-connection" = "La connessione Internet sembra essere offline.";
+
+/* (No Comment) */
+"title-keep" = "Mantienilo";
+
+/* (No Comment) */
+"title-learn-more" = "Per saperne di più";
+
+/* (No Comment) */
+"title-loading" = "Caricamento in corso";
+
+/* (No Comment) */
+"title-max" = "MAX";
+
+/* (No Comment) */
+"title-new-uppercased" = "NUOVO";
+
+/* (No Comment) */
+"title-next" = "Avanti";
+
+/* (No Comment) */
+"title-no" = "NO";
+
+/* (No Comment) */
+"title-ok" = "OK";
+
+/* (No Comment) */
+"title-paste-passphrase" = "Incolla la passphrase completa";
+
+/* (No Comment) */
+"title-plus-asset-count" = "+%@ Attivi";
+
+/* (No Comment) */
+"title-preview" = "Anteprima";
+
+/* (No Comment) */
+"title-preview-and-sign-with-ledger-title" = "Anteprima e firma con Ledger";
+
+/* (No Comment) */
+"title-proceed" = "Procedi";
+
+/* (No Comment) */
+"title-receive" = "Ricevi";
+
+/* (No Comment) */
+"title-remove" = "Rimuovi";
+
+/* (No Comment) */
+"title-remove-assets" = "Rimuovi attivi";
+
+/* (No Comment) */
+"title-save" = "Salva";
+
+/* (No Comment) */
+"title-select-asset" = "Seleziona attivo";
+
+/* (No Comment) */
+"title-send" = "Invia";
+
+/* (No Comment) */
+"title-share-qr" = "Condividi QR";
+
+/* (No Comment) */
+"title-skip" = "Ignora";
+
+/* MARK: Ledger Troubleshooting */
+"title-step-1" = "Passaggio 1";
+
+/* (No Comment) */
+"title-step-2" = "Passaggio 2";
+
+/* (No Comment) */
+"title-step-3" = "Passaggio 3";
+
+/* (No Comment) */
+"title-step-4" = "Passaggio 4";
+
+/* (No Comment) */
+"title-testnet" = "TESTNET";
+
+/* (No Comment) */
+"title-unknown" = "Senza nome";
+
+/* (No Comment) */
+"title-verify" = "Verifica";
+
+/* MARK: Watch Account */
+"title-watch-account" = "Controlla il conto";
+
+/* MARK: Common */
+"title-yes" = "SÌ";
+
+/* (No Comment) */
+"total-rewards-faq" = "FAQ.";
+
+/* (No Comment) */
+"total-rewards-faq-title" = "Per ulteriori informazioni su Algorand Rewards, visita le nostre FAQ.";
+
+/* (No Comment) */
+"total-rewards-title" = "%@ Ricompense";
+
+/* (No Comment) */
+"tranaction-empty-text" = "Nessuna transazione trovata";
+
+/* (No Comment) */
+"transaction-detail-amount" = "Importo";
+
+/* (No Comment) */
+"transaction-detail-close-amount" = "Chiudi importo";
+
+/* (No Comment) */
+"transaction-detail-close-to" = "Vicino a";
+
+/* (No Comment) */
+"transaction-detail-copy-tooltip" = "Premi e tieni premuto per copiare negli appunti";
+
+/* (No Comment) */
+"transaction-detail-date" = "Data";
+
+/* (No Comment) */
+"transaction-detail-fee" = "Commissione";
+
+/* (No Comment) */
+"transaction-detail-from" = "Da";
+
+/* (No Comment) */
+"transaction-detail-id" = "ID transazione";
+
+/* (No Comment) */
+"transaction-detail-id-copied" = "ID transazione copiato negli appunti";
+
+/* (No Comment) */
+"transaction-detail-note" = "Nota";
+
+/* (No Comment) */
+"transaction-detail-note-copied" = "Nota della transazione copiata negli appunti";
+
+/* (No Comment) */
+"transaction-detail-reward" = "Ricompensa";
+
+/* (No Comment) */
+"transaction-detail-round" = "Round";
+
+/* (No Comment) */
+"transaction-detail-status" = "Stato";
+
+/* MARK: Transaction Detail */
+"transaction-detail-title" = "Dettaglio transazione";
+
+/* (No Comment) */
+"transaction-detail-to" = "A";
+
+/* (No Comment) */
+"transaction-download-close-to" = "Vicino a: Indirizzo";
+
+/* (No Comment) */
+"transaction-download-from" = "Da: indirizzo";
+
+/* (No Comment) */
+"transaction-download-to" = "A: Indirizzo";
+
+/* (No Comment) */
+"transaction-filter-error-subtitle" = "Scusate, qualcosa è andato storto.";
+
+/* (No Comment) */
+"transaction-filter-error-title" = "Qualcosa è andato storto";
+
+/* (No Comment) */
+"transaction-filter-option-all" = "Sempre";
+
+/* (No Comment) */
+"transaction-filter-option-custom" = "Intervallo personalizzato";
+
+/* (No Comment) */
+"transaction-filter-option-month" = "Il mese scorso";
+
+/* (No Comment) */
+"transaction-filter-option-today" = "Oggi";
+
+/* (No Comment) */
+"transaction-filter-option-week" = "La settimana scorsa";
+
+/* (No Comment) */
+"transaction-filter-option-yesterday" = "Ieri";
+
+/* MARK: Transaction Filter */
+"transaction-filter-title-sort" = "Ordina per data";
+
+/* (No Comment) */
+"transaction-filter-tooltip" = "Ora puoi filtrare la cronologia delle transazioni";
+
+/* (No Comment) */
+"transaction-filter-try-again" = "Riprova";
+
+/* (No Comment) */
+"transaction-id-open-algoexplorer" = "Apri in AlgoExplorer";
+
+/* (No Comment) */
+"transaction-id-open-goalseeker" = "Apri in GoalSeeker";
+
+/* (No Comment) */
+"transaction-tutorial-subtitle" = "Notiamo che questa è la tua prima transazione. Prima di concluderla, tieni presente un paio di suggerimenti:";
+
+/* (No Comment) */
+"transaction-tutorial-subtitle-other" = "Prima di concludere la transazione, tieni presente un paio di suggerimenti:";
+
+/* (No Comment) */
+"transaction-tutorial-tap-to-more" = "Per ulteriori informazioni sulle transazioni, tocca qui";
+
+/* (No Comment) */
+"transaction-tutorial-tap-to-more-highlighted" = "tocca qui";
+
+/* (No Comment) */
+"transaction-tutorial-tip-first" = "Quando si invia a un indirizzo per la prima volta, è utile inviare una piccola transazione di prova prima di inviare un grande importo.";
+
+/* (No Comment) */
+"transaction-tutorial-tip-second" = "Gli scambi cambiano frequentemente i loro indirizzi di deposito e gli indirizzi di scambio salvati potrebbero non essere più in uso. Assicurati di inviare all'indirizzo corretto.";
+
+/* (No Comment) */
+"transaction-tutorial-tip-second-highlighted" = "Assicurati di inviare all'indirizzo corretto.";
+
+/* (No Comment) */
+"transaction-tutorial-title" = "Suggerimenti per le transazioni";
+
+/* (No Comment) */
+"tutorial-action-title-passcode" = "Non ora";
+
+/* (No Comment) */
+"tutorial-description-back-up" = "Senza la tua passphrase di ripristino, se perdi il dispositivo o cancelli l'app, perderai definitivamente l'accesso al tuo conto Algorand.";
+
+/* (No Comment) */
+"tutorial-description-local" = "Il tuo FaceID o TouchID sarà richiesto per utilizzare l'app. Ti consigliamo di abilitare l'autenticazione biometrica per aumentare la sicurezza del wallet in caso di furto del telefono.";
+
+/* (No Comment) */
+"tutorial-description-passcode" = "Questo PIN di 6 cifre sarà richiesto per utilizzare Algorand Wallet. Ti consigliamo vivamente di creare un PIN per aumentare la sicurezza del wallet in caso di furto del telefono.";
+
+/* (No Comment) */
+"tutorial-description-recover" = "Nei passaggi seguenti, inserirai la tua passphrase di ripristino di 25 parole per recuperare un account Algorand. Tieni a portata di mano la frase di ripristino prima di iniziare.";
+
+/* (No Comment) */
+"tutorial-description-warning-title" = "Attenzione:";
+
+/* (No Comment) */
+"tutorial-description-watch" = "Un conto Watch ti consente di monitorare l'attività di un conto senza bisogno di avere la passphrase. Ciò è utile per monitorare le risorse conservate in cold storage. \n\nAvviso: se non disponi della passphrase di ripristino corrispondente, non inviare risorse a questo conto.";
+
+/* (No Comment) */
+"tutorial-description-watch-italic" = "Avviso: se non disponi della passphrase di ripristino corrispondente, non inviare risorse a questo conto.";
+
+/* (No Comment) */
+"tutorial-description-write" = "Anche in questo caso, l'unico modo per recuperare un conto Algorand è con questa passphrase di ripristino. Non condividere questa passphrase con nessuno, poiché garantisce l'accesso completo al tuo conto. \n\n I dipendenti di Algorand non ti chiederanno mai la tua passphrase.";
+
+/* (No Comment) */
+"tutorial-description-write-italic" = "I dipendenti di Algorand non ti chiederanno mai la tua passphrase.";
+
+/* (No Comment) */
+"tutorial-main-title-back-up" = "Ho capito";
+
+/* (No Comment) */
+"tutorial-main-title-passcode" = "Imposta passcode";
+
+/* (No Comment) */
+"tutorial-main-title-recover" = "Recupera un conto Algorand";
+
+/* (No Comment) */
+"tutorial-main-title-write" = "Sono pronto per iniziare";
+
+/* (No Comment) */
+"tutorial-title-back-up" = "Esegui il backup del tuo conto utilizzando una passphrase di ripristino";
+
+/* (No Comment) */
+"tutorial-title-passcode" = "Aumenta la tua sicurezza con un PIN";
+
+/* (No Comment) */
+"tutorial-title-recover" = "Recupera un conto Algorand";
+
+/* (No Comment) */
+"tutorial-title-write" = "Preparati a scrivere la tua passphrase di ripristino";
+
+/* (No Comment) */
+"value-one-algo" = "1 ALGO = %@";
+
+/* (No Comment) */
+"verified-asset-double-check" = "ricontrolla sempre";
+
+/* (No Comment) */
+"verified-asset-information-text" = "Per alcuni attivi in cui Algorand Inc. ha una relazione con l'emittente dell'attivo, contrassegniamo tali attivi  come \"Verificati\" (con un segno di spunta blu). \n\nQuesto contribuisce alla difesa secondaria da transazioni errate con un attivo non intenzionale. \n\nDetto questo, dovresti sempre ricontrollare che l'ID dell'attivo sia quello che intendevi scegliere prima di effettuare transazioni con quell'attivo. \n\nIn caso di domande sul processo di verifica o feedback generale sull'app, ti invitiamo a contattarci";
+
+/* (No Comment) */
+"verified-asset-information-title" = "Cosa significa verifica degli attivi?";
+
+/* (No Comment) */
+"verified-asset-information-visit-site" = "visita www.algorandwallet.com/support";
+
+/* MARK: Verified Asset Information */
+"verified-assets-title" = "Attivi verificati";
+
+/* (No Comment) */
+"watch-account-create" = "Crea un conto Watch";
+
+/* (No Comment) */
+"watch-account-error-address" = "Inserisci un indirizzo valido.";
+
+/* (No Comment) */
+"watch-account-explanation-title" = "Stai creando una visualizzazione di sola lettura di un conto Algorand. Se invii risorse a questo conto e non disponi della passphrase di ripristino corrispondente, tali risorse andranno perse.";
+
+/* (No Comment) */
+"watch-account-input-explanation" = "Indirizzo del conto da tenere d'occhio";
+
+/* (No Comment) */
+"watch-account-input-placeholder" = "Incolla indirizzo o Scansiona QR";
+
