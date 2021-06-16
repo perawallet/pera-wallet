@@ -21,7 +21,7 @@ In order to build and run the app from source, you will need to provide the foll
     - For Android, these addresses must be updated in the `android/app/src/staging/java/com/algorand/android/utils/NodeList.kt` and `android/app/src/prod/java/com.algorand.android/utils/NodeList.kt` files.
 
 ##### iOS Deployment Steps
-- Download iOS Project
+- Clone this repo and open `algorand.xcworkspace` in Xcode 
 - Create your Firebase project and add your `GoogleService-Info.plist` file to Support folder.
 - Create `Config.xcconfig` file and add it to Support folder.
 - Add `ALGOD_TOKEN` and `INDEXER_TOKEN` variables to `Config.xcconfig` file. Example format: `ALGOD_TOKEN = 1234` (more details are in the `Config.xcconfig` file)
