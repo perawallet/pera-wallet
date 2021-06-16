@@ -1,10 +1,10 @@
 
-# Building the Algorand Wallet Apps #
+# Building the Algorand Wallet Apps
 
 Some modifications are needed in order to build the applications from this repo. This document
 explains all of the steps needed to build the applications and run them in a simulator.
 
-## Common Steps ##
+## Common Steps
 
 1. **Clone this repo:** Clone or download this repo to your computer.
 
@@ -22,14 +22,11 @@ for further instructions.
 
 After these steps are complete, you are ready to move on to specific steps for iOS or Android.
 
-## iOS Steps ##
+## iOS Steps
 
 > Note: these steps must be ran from a macOS machine.
 
-1. **Install Cocoapods:** Install Cocoapods if you do not already have it. See https://guides.cocoapods.org/using/getting-started.html
-for more information.
-
-2. **Install dependencies:** First, install Cocoapods if you do not already have it. See https://guides.cocoapods.org/using/getting-started.html
+1. **Install dependencies:** First, install Cocoapods if you do not already have it. See https://guides.cocoapods.org/using/getting-started.html
 for more information. Once you have Cocoapods installed, navigate to the `ios` folder and run the
 following command to install build dependencies:
 
@@ -37,13 +34,13 @@ following command to install build dependencies:
 pod install
 ```
 
-3. **Open in Xcode:** At this point you may now open the `ios/algorand.xcworkspace` workspace file in Xcode.
+2. **Open in Xcode:** At this point you may now open the `ios/algorand.xcworkspace` workspace file in Xcode.
 
-4. **Download the iOS Firebase config file:** The Firebase config file for iOS is called `GoogleService-Info.plist`.
+3. **Download the iOS Firebase config file:** The Firebase config file for iOS is called `GoogleService-Info.plist`.
 See this link for how to obtain the config file: https://support.google.com/firebase/answer/7015592.
 Once you've downloaded it, place it in the location `ios/Support/GoogleService-Info.plist`.
 
-5. **Specify network access tokens:** In order to tell the app how to access Algod and Indexer, create
+4. **Specify network access tokens:** In order to tell the app how to access Algod and Indexer, create
 the file `ios/Support/Config.xcconfig`. This file needs to define two values, `ALGOD_TOKEN` and
 `INDEXER_TOKEN`, which are the API tokens for Algod and Indexer respectively. For example, this is
 how to create a config file from the command line where the Algod token is `aaa` and the Indexer
@@ -53,7 +50,7 @@ token is `bbb`:
 echo "ALGOD_TOKEN = aaa\nINDEXER_TOKEN = bbb" > ios/Support/Config.xcconfig
 ```
 
-6. **Specify network addresses:** You will need to change the default addresses for Algod and Indexer
+5. **Specify network addresses:** You will need to change the default addresses for Algod and Indexer
 in the file `ios/Classes/Core/Environment/Environment.swift`. The variables to change are
 `testNetAlgodApi`, `testNetIndexerApi`, `mainNetAlgodApi`, and `mainNetIndexerApi`. For example, if
 your Algod address is `http://localhost:4001` and your Indexer address is `http://localhost:8980`,
@@ -73,10 +70,10 @@ similarly changed):
 
 > Note: it's ok to use a localhost address in the simulator, but that address will not work if you deploy to an actual device.
 
-7. **Build the app:** Once all the above steps are complete, you are ready to build and deploy the
+6. **Build the app:** Once all the above steps are complete, you are ready to build and deploy the
 iOS app in Xcode.
 
-## Android Steps ##
+## Android Steps
 
 1. **Download the Android Firebase config file:** The Firebase config file for Android is called `google-services.json`.
 See this link for how to obtain the config file: https://support.google.com/firebase/answer/7015592.
