@@ -58,5 +58,3 @@ prod {
 ```
 - Create Firebase project and add `google-services.json` into app module. For more detail → https://firebase.google.com/docs/android/setup#console
 Run the application
-
-Note: If you’re mostly interested in the Android APK, we will be hosting the latest versions on www.algorandwallet.com (starting with version 4.9.1 and on).
