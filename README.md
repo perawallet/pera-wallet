@@ -12,6 +12,3 @@ If you simply need help, want to report a bug, or want to suggest a feature, the
 
 ## Building
 For instructions on how to build the applications in this repo, see [BUILDING.md](./BUILDING.md).
-
-Note: If you’re mostly interested in the Android APK, we will be hosting the latest versions on 
-www.algorandwallet.com (starting with version 4.9.1 and on).
