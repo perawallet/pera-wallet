@@ -15,7 +15,6 @@ package com.algorand.android.utils
 import android.content.Context
 import android.graphics.Typeface.BOLD
 import android.text.Annotation
-import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 import android.text.SpannedString
@@ -34,6 +33,8 @@ import com.algorand.android.R
 import com.algorand.android.customviews.CenteredImageSpan
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.AssetInformation
+import com.algorand.android.utils.exceptions.InvalidAnnotationException
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import java.util.Locale
 
 fun SpannableStringBuilder.addSpace() {
@@ -124,12 +125,16 @@ fun TextView.setXmlStyledString(
                     else -> null
                 }
                 if (span != null) {
-                    spannableString.setSpan(
-                        span,
-                        spannableString.getSpanStart(annotation),
-                        spannableString.getSpanEnd(annotation),
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
+                    // This is an empty annotation tag body check. Annotation must contain at least one character.
+                    val spanStartIndex = spannableString.getSpanStart(annotation)
+                    val spanEndIndex = spannableString.getSpanEnd(annotation)
+                    if (spanStartIndex in 0..spannableString.length && spanEndIndex in 0..spannableString.length) {
+                        spannableString.setSpan(span, spanStartIndex, spanEndIndex, SPAN_EXCLUSIVE_EXCLUSIVE)
+                    } else {
+                        FirebaseCrashlytics.getInstance().recordException(
+                            InvalidAnnotationException(xmlText.toString(), annotation.value)
+                        )
+                    }
                 }
             }
             "url" -> {

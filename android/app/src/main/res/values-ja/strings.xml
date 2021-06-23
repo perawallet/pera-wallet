@@ -166,7 +166,7 @@
   <string name="you_are_about_to_receive">まもなく資産を受け取れます！</string>
   <string name="you_are_about_to_receive_description"><![CDATA[<b>%1$s</b>で資産を受け取ろうとしています。この資産をこのアカウントに追加して受け取りますか？]]></string>
   <string name="min_transaction_error">最小トランザクションエラー！</string>
-  <string name="you_need_at_least">この資産を追加するには、最低でも<annotation replacement="min_balance"></annotation> Algosが必要です</string>
+  <string name="you_need_at_least">この資産を追加するには、最低でも<annotation replacement="min_balance"> </annotation> Algosが必要です</string>
   <string name="your_accounts_do_not">アカウントにはこの資産が含まれていません</string>
   <string name="please_add_this">この資産を追加して再度お試しください。</string>
   <string name="the_qr_contains">QRには、選択したものとは異なる資産が含まれています。金額はデコード時に無視されます。</string>
@@ -186,7 +186,7 @@
   <string name="make_sure_bluetooth">スマートフォンのBluetoothが有効になっていることを確認してください。</string>
   <string name="search_for_ledger">Ledgerを検索する</string>
   <string name="bluetooth_is_enabled">Bluetoothが有効です。</string>
-  <string name="verified_with_icon">検証済み<annotation type="verified-icon"></annotation></string>
+  <string name="verified_with_icon">検証済み<annotation type="verified-icon"> </annotation></string>
   <string name="all">すべて</string>
   <string name="verified_assets">検証済み資産</string>
   <string name="what_does_asset">資産の検証とはどういう意味ですか？</string>
@@ -260,7 +260,7 @@
   <string name="transactions">トランザクション</string>
   <string name="no_transaction_yet">まだトランザクションはありません</string>
   <string name="no_transaction_have">この資産を使ったトランザクションは行われていません。</string>
-  <string name="rewards_since_last">最新トランザクション以降の<annotation custom="rewards_color"><annotation replacement="rewards_value"></annotation>リワード</annotation></string>
+  <string name="rewards_since_last">最新トランザクション以降の<annotation custom="rewards_color"><annotation replacement="rewards_value"> </annotation>リワード</annotation></string>
   <string name="choose_asset">資産を選択</string>
   <string name="preview_send_asset">送信資産のプレビュー</string>
   <string name="cancel_approval">承認の取り消し</string>
@@ -324,7 +324,7 @@
   <string name="too_many_pin_attempts">PINの試行回数が多すぎます</string>
   <string name="reset_all_data">全データのリセット</string>
   <string name="this_ledger_device">接続されたLedgerデバイスは、以下のアカウントのトランザクションに署名できます。Algorand Walletに追加するアカウントを選択してください。</string>
-  <string name="the_connected_ledger">接続されたLedgerデバイスは、このアカウントのトランザクションに署名できません。署名するには、<annotation replacement="auth_address"></annotation>を接続してください。</string>
+  <string name="the_connected_ledger">接続されたLedgerデバイスは、このアカウントのトランザクションに署名できません。署名するには、<annotation replacement="auth_address"> </annotation>を接続してください。</string>
   <string name="this_account_has">このアカウントは再キー化されました。トランザクションに署名するには、パスフレーズまたはLedgerデバイスでこのアカウントをリカバリーしてください。</string>
   <string name="auth_account_address">Authアカウントアドレス</string>
   <string name="pair_your_new_ledger">新しいLedgerデバイスのペアリング</string>
