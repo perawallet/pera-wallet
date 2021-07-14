@@ -123,6 +123,7 @@ class MainActivity : CoreMainActivity(),
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         mainViewModel.setupAutoLockManager(lifecycle)
         binding.toolbar.setNodeStatus(indexerInterceptor.currentActiveNode)
@@ -289,7 +290,6 @@ class MainActivity : CoreMainActivity(),
         ): Intent {
             return Intent(context, MainActivity::class.java).apply {
                 putExtra(DEEPLINK_AND_NAVIGATION_INTENT, deepLinkIntent)
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
         }
     }

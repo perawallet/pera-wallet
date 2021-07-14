@@ -25,12 +25,14 @@ private const val TRANSACTION_LEDGER_ACCOUNT_KEY = "ledger" // value
 private const val TRANSACTION_AMOUNT = "amount" // param
 private const val TRANSACTION_IS_MAX = "is_max" // param
 private const val TRANSACTION_ASSET_ID = "asset_id" // param
+private const val TRANSACTION_ID = "tx_id" // param
 
 fun FirebaseAnalytics.logTransactionEvent(
     amount: Long,
     assetId: Long,
     accountType: Account.Type,
-    isMax: Boolean
+    isMax: Boolean,
+    transactionId: String?
 ) {
     val accountTypeValue = when (accountType) {
         Account.Type.STANDARD -> TRANSACTION_STANDARD_ACCOUNT_KEY
@@ -42,7 +44,8 @@ fun FirebaseAnalytics.logTransactionEvent(
         (TRANSACTION_AMOUNT to amount),
         (TRANSACTION_ACCOUNT_TYPE_KEY to accountTypeValue),
         (TRANSACTION_IS_MAX to isMax.toString()),
-        (TRANSACTION_ASSET_ID to getAssetIdAsEventParam(assetId))
+        (TRANSACTION_ASSET_ID to getAssetIdAsEventParam(assetId)),
+        (TRANSACTION_ID to transactionId.orEmpty())
     )
 
     logEvent(TRANSACTION_EVENT_KEY, bundle)

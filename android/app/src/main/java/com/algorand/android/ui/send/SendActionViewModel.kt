@@ -55,7 +55,7 @@ class SendActionViewModel @ViewModelInject constructor(
                     result.data.taxId?.run {
                         transactionsRepository.postTrackTransaction(TrackTransactionRequest(this))
                     }
-                    sendTransactionEvent(signedTransactionDetail)
+                    sendTransactionEvent(signedTransactionDetail, result.data.taxId)
                     sendAlgoResponseLiveData.postValue(Event(Resource.Success(result.data)))
                 }
                 is Result.Error -> {
@@ -65,14 +65,15 @@ class SendActionViewModel @ViewModelInject constructor(
         }
     }
 
-    private fun sendTransactionEvent(signedTransactionDetail: SignedTransactionDetail.Send) {
+    private fun sendTransactionEvent(signedTransactionDetail: SignedTransactionDetail.Send, taxId: String?) {
         if (algodInterceptor.currentActiveNode?.networkSlug == MAINNET_NETWORK_SLUG) {
             with(signedTransactionDetail) {
                 firebaseAnalytics.logTransactionEvent(
                     amount = amount,
                     assetId = assetInformation.assetId,
                     accountType = accountCacheData.account.type ?: Account.Type.STANDARD,
-                    isMax = isMax
+                    isMax = isMax,
+                    transactionId = taxId
                 )
             }
         }

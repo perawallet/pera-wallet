@@ -60,6 +60,7 @@
         <activity
             android:name=".ui.splash.LauncherActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleInstance"
             android:theme="@style/AppTheme.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -75,8 +76,9 @@
 
         <activity
             android:name=".MainActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Splash"
             android:windowSoftInputMode="adjustResize" />
 
         <activity-alias
