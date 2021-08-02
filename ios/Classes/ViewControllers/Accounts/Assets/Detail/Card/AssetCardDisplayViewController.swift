@@ -218,7 +218,7 @@ extension AssetCardDisplayViewController: AlgosCardCellDelegate {
 extension AssetCardDisplayViewController: AssetCardCellDelegate {
     func assetCardCellDidCopyAssetId(_ assetCardCell: AssetCardCell) {
         guard let index = assetCardDisplayView.index(for: assetCardCell),
-              let assetDetail = account.assetDetails[safe: index] else {
+              let assetDetail = account.assetDetails[safe: index - 1] else {
             return
         }
         

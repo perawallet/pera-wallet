@@ -70,7 +70,7 @@ extension PassphraseVerifyLayoutBuilder {
 
 extension PassphraseVerifyLayoutBuilder {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let cellSize = CGSize(width: (UIScreen.main.bounds.width - (24 * 2) - (18 * 2)) / 3, height: 44.0)
+        let cellSize = CGSize(width: (UIScreen.main.bounds.width - (25 * 2) - (18 * 2)) / 3, height: 44.0)
         let headerSize = CGSize(width: UIScreen.main.bounds.width, height: 36.0)
         let sectionInset = UIEdgeInsets(top: 0.0, left: 24.0, bottom: 40.0, right: 24.0)
     }

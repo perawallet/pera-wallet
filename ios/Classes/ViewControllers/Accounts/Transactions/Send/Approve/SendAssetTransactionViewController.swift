@@ -49,13 +49,14 @@ class SendAssetTransactionViewController: SendTransactionViewController, TestNet
     override func completeTransaction(with id: TransactionID) {
         assetTransactionSendDraft.identifier = id.identifier
         
-        if let id = assetTransactionSendDraft.assetIndex {
+        if let assetId = assetTransactionSendDraft.assetIndex {
             log(
                 TransactionEvent(
                     accountType: assetTransactionSendDraft.from.type,
-                    assetId: String(id),
+                    assetId: String(assetId),
                     isMaxTransaction: assetTransactionSendDraft.isMaxTransaction,
-                    amount: assetTransactionSendDraft.amount?.toFraction(of: assetTransactionSendDraft.assetDecimalFraction)
+                    amount: assetTransactionSendDraft.amount?.toFraction(of: assetTransactionSendDraft.assetDecimalFraction),
+                    transactionId: id.identifier
                 )
             )
         }

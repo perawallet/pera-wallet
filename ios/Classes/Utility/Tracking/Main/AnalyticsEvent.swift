@@ -59,4 +59,5 @@ enum AnalyticsParameter: String {
     case unsignedTransaction = "unsigned_transaction"
     case signedTransaction = "signed_transaction"
     case isReceivingNotifications = "is_receiving_notifications"
+    case transactionId = "tx_id"
 }

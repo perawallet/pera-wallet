@@ -4,8 +4,6 @@
 <dict>
 	<key>ALGOD_TOKEN</key>
 	<string>$(ALGOD_TOKEN)</string>
-	<key>INDEXER_TOKEN</key>
-	<string>$(INDEXER_TOKEN)</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -41,6 +39,8 @@
 	<true/>
 	<key>FirebaseScreenReportingEnabled</key>
 	<true/>
+	<key>INDEXER_TOKEN</key>
+	<string>$(INDEXER_TOKEN)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationCategoryType</key>
