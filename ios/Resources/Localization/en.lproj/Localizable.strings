@@ -68,7 +68,7 @@
 
 // MARK: Local Authentication Preferences
 "local-authentication-preference-title" = "Enable Biometric Authentication";
-"local-authentication-preference-subtitle" = "Your FaceID or TouchID will be required to use the app. We recommend enabling biometric authentication to help increase wallet security in the event your phone is stolen.";
+"local-authentication-preference-subtitle" = "Your Face ID or Touch ID will be required to use the app. We recommend enabling biometric authentication to help increase wallet security in the event your phone is stolen.";
 "local-authentication-reason-face-id-title" = "Use Face ID to unlock";
 "local-authentication-reason-touch-id-title" = "Use Touch ID to unlock";
 "local-authentication-go-settings-title" = "Biometric Authentication";
@@ -275,7 +275,7 @@
 "settings-title" = "Settings";
 "settings-server-node-settings" = "Node Settings";
 "settings-change-password" = "Set/Change Password";
-"settings-local-authentication" = "Enable FaceID/Touch ID";
+"settings-local-authentication" = "Enable Face ID/Touch ID";
 "settings-language" = "Language";
 "settings-language-english" = "English";
 "settings-notification-go-settings-title" = "Notifications";
@@ -553,11 +553,11 @@
 "tutorial-description-recover" = "In the following steps, you'll enter your 25-word recovery passphrase to recover an Algorand account. Have your recovery phrase handy before you begin.";
 "tutorial-description-write" = "The only way to recover an Algorand account is with this recovery passphrase.\n\nWarning: Do not share this passphrase with anyone, as it grants full access to your account.";
 "tutorial-description-write-italic" = "Warning: Do not share this passphrase with anyone, as it grants full access to your account.";
-"tutorial-description-watch" =  "Monitor activity of an account without needing a recovery passphrase. This is useful for monitoring assets that are kept in cold storage.\n\nWarning: If you do not have the corresponding recovery passphrase, do not send assets to this account.";
+"tutorial-description-watch" = "Monitor activity of an account without needing a recovery passphrase. This is useful for monitoring assets that are kept in cold storage.\n\nWarning: If you do not have the corresponding recovery passphrase, do not send assets to this account.";
 "tutorial-description-warning-title" = "Warning:";
 "tutorial-description-watch-italic" = "Warning: If you do not have the corresponding recovery passphrase, do not send assets to this account.";
 "tutorial-description-passcode" = "This 6-digit PIN will be required to use the Algorand Wallet. We highly recommend creating a PIN to help increase wallet security in the event your phone is stolen.";
-"tutorial-description-local" = "Your FaceID or TouchID will be required to use the app. We recommend enabling biometric authentication to help increase wallet security in the event your phone is stolen.";
+"tutorial-description-local" = "Your Face ID or Touch ID will be required to use the app. We recommend enabling biometric authentication to help increase wallet security in the event your phone is stolen.";
 
 "tutorial-main-title-back-up" = "I understand";
 "tutorial-main-title-recover" = "Recover an Algorand Account";

@@ -599,7 +599,7 @@
 "local-authentication-no" = "Face ID/Touch IDを使用しない";
 
 /* (No Comment) */
-"local-authentication-preference-subtitle" = "アプリを使用するには、FaceIDまたはTouchIDが必要になります。携帯電話の盗難に備えウォレットのセキュリティを強化するために、生体認証を有効にすることをお勧めします。";
+"local-authentication-preference-subtitle" = "アプリを使用するには、Face IDまたはTouch IDが必要になります。携帯電話の盗難に備えウォレットのセキュリティを強化するために、生体認証を有効にすることをお勧めします。";
 
 /* MARK: Local Authentication Preferences */
 "local-authentication-preference-title" = "生体認証を有効にする";
@@ -1121,7 +1121,7 @@
 "settings-language-english" = "英語";
 
 /* (No Comment) */
-"settings-local-authentication" = "FaceID/Touch IDを有効にする";
+"settings-local-authentication" = "Face ID/Touch IDを有効にする";
 
 /* (No Comment) */
 "settings-logout-detail" = "すべてのデータを削除してもよろしいですか？";
@@ -1469,7 +1469,7 @@
 "tutorial-description-back-up" = "リカバリーパスフレーズがない場合、デバイスを紛失したりアプリを削除したりすると、Algorandアカウントに永久にアクセスできなくなります。";
 
 /* (No Comment) */
-"tutorial-description-local" = "アプリを使用するには、FaceIDまたはTouchIDが必要になります。携帯電話の盗難に備えウォレットのセキュリティを強化するために、生体認証を有効にすることをお勧めします。";
+"tutorial-description-local" = "アプリを使用するには、Face IDまたはTouch IDが必要になります。携帯電話の盗難に備えウォレットのセキュリティを強化するために、生体認証を有効にすることをお勧めします。";
 
 /* (No Comment) */
 "tutorial-description-passcode" = "この6桁のPINは、Algorand Walletを使用するために必要になります。携帯電話の盗難に備えウォレットのセキュリティを強化するために、PINを作成することを強くお勧めします。";

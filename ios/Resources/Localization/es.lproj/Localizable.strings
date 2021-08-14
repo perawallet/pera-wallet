@@ -1469,7 +1469,7 @@
 "tutorial-description-back-up" = "Si no tienes tu frase secreta de recuperación y pierdes tu dispositivo o eliminas la aplicación perderás permanentemente el acceso a tu cuenta de Algorand.";
 
 /* (No Comment) */
-"tutorial-description-local" = "Necesitarás tu FaceID o TouchID para usar la aplicación. Recomendamos habilitar la autenticación biométrica para aumentar la seguridad del monedero en caso de que te roben el teléfono.";
+"tutorial-description-local" = "Necesitarás tu Face ID o Touch ID para usar la aplicación. Recomendamos habilitar la autenticación biométrica para aumentar la seguridad del monedero en caso de que te roben el teléfono.";
 
 /* (No Comment) */
 "tutorial-description-passcode" = "Necesitarás este PIN de 6 dígitos para usar el monedero de Algorand. Recomendamos encarecidamente crear un PIN para aumentar la seguridad del monedero en caso de que te roben el teléfono.";

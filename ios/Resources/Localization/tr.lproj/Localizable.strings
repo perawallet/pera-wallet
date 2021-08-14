@@ -1469,7 +1469,7 @@
 "tutorial-description-back-up" = "Kurtarma parolanız olmadan cihazınızı kaybetmeniz veya uygulamayı silmeniz durumunda Algorand hesabınıza erişimi kalıcı olarak kaybedersiniz.";
 
 /* (No Comment) */
-"tutorial-description-local" = "Uygulamayı kullanmak için FaceID veya TouchID gerekli olacak. Telefonunuzun çalınma ihtimaline karşılık cüzdan güvenliğini artırmaya yardımcı olması için biyometrik kimlik doğrulamasının etkinleştirilmesini öneririz.";
+"tutorial-description-local" = "Uygulamayı kullanmak için Face ID veya Touch ID gerekli olacak. Telefonunuzun çalınma ihtimaline karşılık cüzdan güvenliğini artırmaya yardımcı olması için biyometrik kimlik doğrulamasının etkinleştirilmesini öneririz.";
 
 /* (No Comment) */
 "tutorial-description-passcode" = "Algorand Wallet'ı kullanmak için 6 haneli bir PIN gerekli olacak. Telefonunuzun çalınma ihtimaline karşılık cüzdan güvenliğini artırmaya yardımcı olması için bir PIN oluşturmanızı özellikle öneririz.";

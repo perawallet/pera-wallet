@@ -8,7 +8,7 @@
 "NSCameraUsageDescription" = "Algorand verwendet Ihre Kamera zum Scannen von QR-Codes.";
 
 /* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "Algorand verwendet Ihre Gesichtsprüfung, damit Sie sich sicher anmelden können.";
+"NSFaceIDUsageDescription" = "Algorand verwendet Face ID, damit Sie sich sicher anmelden können.";
 
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Algorand speichert QR-Codes in Ihrer Fotobibliothek.";

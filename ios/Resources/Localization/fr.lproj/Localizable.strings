@@ -599,7 +599,7 @@
 "local-authentication-no" = "Ne pas utiliser Face ID / Touch ID";
 
 /* (No Comment) */
-"local-authentication-preference-subtitle" = "Votre FaceID ou TouchID sera nécessaire pour utiliser l'application. Nous vous recommandons d'activer l'authentification biométrique pour améliorer la sécurité du portefeuille en cas de vol de votre téléphone.";
+"local-authentication-preference-subtitle" = "Votre Face ID ou Touch ID sera nécessaire pour utiliser l'application. Nous vous recommandons d'activer l'authentification biométrique pour améliorer la sécurité du portefeuille en cas de vol de votre téléphone.";
 
 /* MARK: Local Authentication Preferences */
 "local-authentication-preference-title" = "Activer l'authentification biométrique";
@@ -1121,7 +1121,7 @@
 "settings-language-english" = "Anglais";
 
 /* (No Comment) */
-"settings-local-authentication" = "Activer FaceID/Touch ID";
+"settings-local-authentication" = "Activer Face ID/Touch ID";
 
 /* (No Comment) */
 "settings-logout-detail" = "Êtes-vous sûr de vouloir supprimer toutes les données?";
@@ -1469,7 +1469,7 @@
 "tutorial-description-back-up" = "Sans votre phrase secrète de récupération, si vous perdez votre appareil ou supprimez l'application, vous perdrez définitivement l'accès à votre compte Algorand.";
 
 /* (No Comment) */
-"tutorial-description-local" = "Votre autorisation FaceID ou TouchID sera nécessaire pour utiliser l'application. Nous vous recommandons d'activer l'authentification biométrique pour améliorer la sécurité du portefeuille en cas de vol de votre téléphone.";
+"tutorial-description-local" = "Votre autorisation Face ID ou Touch ID sera nécessaire pour utiliser l'application. Nous vous recommandons d'activer l'authentification biométrique pour améliorer la sécurité du portefeuille en cas de vol de votre téléphone.";
 
 /* (No Comment) */
 "tutorial-description-passcode" = "Ce code PIN à 6 chiffres sera nécessaire pour utiliser le Portefeuille Algorand. Nous vous recommandons vivement de créer un code PIN pour améliorer la sécurité du portefeuille en cas de vol de votre téléphone.";
