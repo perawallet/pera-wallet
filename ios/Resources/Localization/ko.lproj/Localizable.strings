@@ -1469,7 +1469,7 @@
 "tutorial-description-back-up" = "기기 분실, 앱 삭제 시 복구 비밀문구가 없는 경우, 알고랜드 계정에 영구적으로 접속할 수 없습니다.";
 
 /* (No Comment) */
-"tutorial-description-local" = "FaceID 또는 TouchID 인증을 통과해야 앱을 사용할 수 있게 됩니다. 휴대폰 도난에 대비해 지갑의 보안을 강화하려면 생체 인증을 활성화하시길 권장합니다.";
+"tutorial-description-local" = "Face ID 또는 Touch ID 인증을 통과해야 앱을 사용할 수 있게 됩니다. 휴대폰 도난에 대비해 지갑의 보안을 강화하려면 생체 인증을 활성화하시길 권장합니다.";
 
 /* (No Comment) */
 "tutorial-description-passcode" = "6자리 PIN 번호를 입력해야 알고랜드 지갑을 사용할 수 있게 됩니다. 휴대폰 도난에 대비해 지갑의 보안을 강화하려면 PIN을 설정하시길 권장합니다.";

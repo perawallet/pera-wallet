@@ -1469,7 +1469,7 @@
 "tutorial-description-back-up" = "Sem sua frase senha de recuperação, caso perca seu dispositivo, exclua o aplicativo ou perca seu telefone, você perderá de forma permanente o acesso à sua conta Algorand.";
 
 /* (No Comment) */
-"tutorial-description-local" = "Para utilizar o aplicativo, será necessária sua FaceID ou TouchID. Recomendamos habilitar a autenticação biométrica para ajudar a aumentar a segurança da carteira no caso de seu telefone ser roubado.";
+"tutorial-description-local" = "Para utilizar o aplicativo, será necessária sua Face ID ou Touch ID. Recomendamos habilitar a autenticação biométrica para ajudar a aumentar a segurança da carteira no caso de seu telefone ser roubado.";
 
 /* (No Comment) */
 "tutorial-description-passcode" = "Esta senha de 6 dígitos será necessária para a utilização da Carteira Algorand. A criação de uma senha é altamente recomendável para aumentar a segurança da carteira para o caso de seu telefone ser roubado.";

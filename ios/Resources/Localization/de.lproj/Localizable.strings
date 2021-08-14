@@ -41,7 +41,7 @@
 "account-type-selection-recover-detail" = "Ein Konto mit einer aus 25 Wörtern bestehenden Passphrase wiederherstellen";
 
 /* (No Comment) */
-"account-type-selection-watch-detail" = "Transaktionen eines Kontos unter Verwendung von nur dieser Adresse überwachen";
+"account-type-selection-watch-detail" = "Transaktionen eines Kontos nur unter Verwendung der Adresse überwachen.";
 
 /* (No Comment) */
 "account-welcome-wallet-title" = "Willkommen bei der \nAlgorand-Wallet";
@@ -128,7 +128,7 @@
 "asset-remove-warning" = "Um %@ zu entfernen, muss das Kontoguthaben 0 sein. Bitte überweisen Sie den Restbetrag auf ein anderes Konto und versuchen Sie es erneut.";
 
 /* (No Comment) */
-"asset-search-placeholder" = "Nach Asset-ID oder Asset-Namen suchen";
+"asset-search-placeholder" = "Asset-ID oder Asset-Namen suchen";
 
 /* (No Comment) */
 "asset-support-add-message" = "Sie werden gleich ein Asset auf <b>%1$s</b> empfangen! Möchten Sie diesem Konto dieses Asset hinzufügen, um die Überweisung empfangen zu können?";
@@ -164,7 +164,7 @@
 "asset-verified-title" = "Verifiziert";
 
 /* (No Comment) */
-"asset-you-already-own-message" = "Sie besitzen dieses Asset nicht";
+"asset-you-already-own-message" = "Sie besitzen dieses Asset bereits";
 
 /* (No Comment) */
 "back-up-phrase-qr" = "QR-Code anzeigen";
@@ -200,7 +200,7 @@
 "ble-error-fail-sign-transaction" = "Das gekoppelte Ledger-Gerät hat die Transaktionsanforderung abgebrochen.";
 
 /* (No Comment) */
-"ble-error-ledger-connection-open-app-error" = "Bitte öffnen Sie in Ihrem Ledger-Gerät die Algorand-App.";
+"ble-error-ledger-connection-open-app-error" = "Bitte öffnen Sie die Algorand-App auf Ihrem Ledger-Gerät.";
 
 /* (No Comment) */
 "ble-error-ledger-connection-title" = "Ledger-Verbindungsfehler";
@@ -506,7 +506,7 @@
 "ledger-rekey-success-title" = "Konto-Rekeying abgeschlossen";
 
 /* (No Comment) */
-"ledger-rekey-total-fee" = "Gesamthafte Rekeying-Gebühr von %@ Algos";
+"ledger-rekey-total-fee" = "Gesamte Rekeying-Gebühr von %@ Algos";
 
 /* (No Comment) */
 "ledger-rekey-transaction-title" = "Rekeying-Transaktion";
@@ -563,7 +563,7 @@
 "ledger-tutorial-install-app" = "Installieren Sie die Algorand-App (Version 1.2.9 oder neuer) auf Ihrem Ledger-Gerät.";
 
 /* (No Comment) */
-"ledger-tutorial-open-app" = "Öffnen Sie auf Ihrem Ledger-Gerät die Algorand-App.";
+"ledger-tutorial-open-app" = "Öffnen Sie die Algorand-App auf Ihrem Ledger-Gerät.";
 
 /* (No Comment) */
 "ledger-tutorial-title-text" = "Führen Sie die folgenden Schritte aus, um ein neues Ledger-Konto zu eröffnen";
@@ -581,7 +581,7 @@
 "ledger-verify-header-title" = "Kontoadressen über Ledger verifizieren";
 
 /* (No Comment) */
-"local-authentication-enable" = "Gesichtsprüfung/Touch-ID aktivieren";
+"local-authentication-enable" = "Face ID/Touch ID aktivieren";
 
 /* (No Comment) */
 "local-authentication-enabled-subtitle" = "Ihr Passcode wurde verifiziert. Ihr Algorand-Konto ist jetzt noch sicherer.";
@@ -596,19 +596,19 @@
 "local-authentication-go-settings-title" = "Biometrische Authentifizierung";
 
 /* (No Comment) */
-"local-authentication-no" = "Gesichtsprüfung/Touch-ID nicht verwenden";
+"local-authentication-no" = "Face ID/Touch ID nicht verwenden";
 
 /* (No Comment) */
 "local-authentication-preference-subtitle" = "Dies wird aus Sicherheitsgründen empfohlen";
 
 /* MARK: Local Authentication Preferences */
-"local-authentication-preference-title" = "Gesichtsprüfung/Touch-ID aktivieren";
+"local-authentication-preference-title" = "Face ID/Touch ID aktivieren";
 
 /* (No Comment) */
-"local-authentication-reason-face-id-title" = "Gesichtsprüfung zum Entsperren verwenden";
+"local-authentication-reason-face-id-title" = "Face ID zum Entsperren verwenden";
 
 /* (No Comment) */
-"local-authentication-reason-touch-id-title" = "Touch-ID zum Entsperren verwenden";
+"local-authentication-reason-touch-id-title" = "Touch ID zum Entsperren verwenden";
 
 /* (No Comment) */
 "login-subtitle" = "Geben Sie die sechsstellige PIN ein";
@@ -623,7 +623,7 @@
 "maximum-balance-standard-account-warning-description-singular" = "Da Sie %@ andere Vermögenswerte auf diesem Konto %@ haben, verlangt die Algorand-Blockchain, dass Sie ein Mindestguthaben von %@ Algos halten.\n\n\nWenn Sie auf „Weiter“ klicken, wird Ihr Transaktionsbetrag automatisch aktualisiert, um diese Änderung widerzuspiegeln. Sie können diese Änderung im nächsten Schritt in der Vorschau sehen.";
 
 /* (No Comment) */
-"maximum-balance-warning-description" = "Um Ihr maximales Guthaben auf einem neu eröffneten Konto zu senden, müssen Sie ein Mindestguthaben von %@ Algos aufrechterhalten. Damit soll sichergestellt werden, dass sich bei Ihrem neu angelegten Konto nichts ändert.\n\n\nIhr Transaktionsbetrag wird automatisch aktualisiert, um diese Änderung widerzuspiegeln. Sie können die Transaktion im nächsten Schritt in der Vorschau anzeigen.";
+"maximum-balance-warning-description" = "Das Senden Ihres maximalen Guthabens auf einem Konto nach dem Rekeying erfordert, dass Sie ein Mindestguthaben von %@ Algos aufrechterhalten. Damit soll sichergestellt werden, dass sich bei Ihrem Konto nach dem Rekeying nichts ändert.\n\n\nIhr Transaktionsbetrag wird automatisch aktualisiert, um diese Änderung widerzuspiegeln. Sie können die Transaktion im nächsten Schritt in der Vorschau sehen.";
 
 /* (No Comment) */
 "maximum-balance-warning-title" = "Maximales Guthaben";
@@ -809,7 +809,7 @@
 "passphrase-question-third" = "3.";
 
 /* (No Comment) */
-"passphrase-select-n-word" = "Wählen Sie das %@. Wort Ihrer Ihrer";
+"passphrase-select-n-word" = "Wählen Sie das %@. Wort Ihrer Passphrase";
 
 /* (No Comment) */
 "passphrase-verify-invalid-title" = "Falsche Passphrase";
@@ -866,7 +866,7 @@
 "qr-creation-address" = "Kontoadresse";
 
 /* (No Comment) */
-"qr-creation-copied" = "In die Zwischenablage";
+"qr-creation-copied" = "In die Zwischenablage kopiert";
 
 /* (No Comment) */
 "qr-creation-copy-address" = "Adresse kopieren";
@@ -1112,7 +1112,7 @@
 "settings-language" = "Sprache";
 
 /* (No Comment) */
-"settings-language-change-detail" = "Aufgrund von Updates für Ihr Telefon müssen Sie mehrere Schritte ausführen, um Ihre Sprache zu ändern.\n\n1. Weiter zur nächsten Maske.\n2. Tippen Sie auf „Sprache“, um die gewünschte Sprache auszuwählen.\n\nWenn keine Spracheinstellung vorhanden ist, gehe zu deinen allgemeinen iPhone-Spracheinstellungen, um zuerst eine bevorzugte Sprache zu wählen.";
+"settings-language-change-detail" = "Aufgrund von Updates für Ihr Telefon müssen Sie mehrere Schritte ausführen, um Ihre Sprache zu ändern.\n\n1. Wählen Sie „Fortfahren“, um zu den Einstellungen zu gelangen.\n2. Tippen Sie auf „Sprache“, um die gewünschte Sprache auszuwählen.\n\nWenn keine Spracheinstellung vorhanden ist, gehen Sie zu den allgemeinen iPhone-Spracheinstellungen, um eine bevorzugte Sprache auszuwählen.";
 
 /* (No Comment) */
 "settings-language-change-title" = "App-Sprache festlegen";
@@ -1121,7 +1121,7 @@
 "settings-language-english" = "Deutsch";
 
 /* (No Comment) */
-"settings-local-authentication" = "Gesichtsprüfung/Touch-ID aktivieren";
+"settings-local-authentication" = "Face ID/Touch ID aktivieren";
 
 /* (No Comment) */
 "settings-logout-detail" = "Sind Sie sicher, dass Sie alle Daten entfernen möchten?";
@@ -1154,10 +1154,10 @@
 "settings-theme-light" = "Hell";
 
 /* (No Comment) */
-"settings-theme-set" = "Thema Setzen";
+"settings-theme-set" = "Erscheinungsbild";
 
 /* (No Comment) */
-"settings-theme-system" = "System zurücksetzen";
+"settings-theme-system" = "Systemstandard";
 
 /* MARK: Settings */
 "settings-title" = "Einstellungen";
@@ -1409,7 +1409,7 @@
 "transaction-filter-option-all" = "Gesamter Zeitraum";
 
 /* (No Comment) */
-"transaction-filter-option-custom" = "Benutzerdefinierten Zeitraum";
+"transaction-filter-option-custom" = "Benutzerdefinierter Zeitraum";
 
 /* (No Comment) */
 "transaction-filter-option-month" = "Letzter Monat";
@@ -1469,10 +1469,10 @@
 "tutorial-description-back-up" = "Ohne Ihre Wiederherstellungs-Passphrase verlieren Sie bei Verlust Ihres Geräts oder beim Löschen der App dauerhaft den Zugriff auf Ihr Algorand-Konto.";
 
 /* (No Comment) */
-"tutorial-description-local" = "Ihre FaceID oder TouchID wird für die Verwendung der App benötigt. Wir empfehlen, die biometrische Authentifizierung zu aktivieren, um die Sicherheit der Wallet im Falle eines Diebstahls Ihres Telefons zu erhöhen.";
+"tutorial-description-local" = "Face ID oder Touch ID wird für die Verwendung der App benötigt. Wir empfehlen, die biometrische Authentifizierung zu aktivieren, um die Sicherheit der Wallet im Falle eines Diebstahls Ihres Telefons zu erhöhen.";
 
 /* (No Comment) */
-"tutorial-description-passcode" = "Diese 6-stellige PIN wird benötigt, um die Algorand Wallet zu verwenden. Wir empfehlen dringend, eine PIN zu erstellen, um die Sicherheit der Wallet zu erhöhen, falls Ihr Telefon gestohlen wird.";
+"tutorial-description-passcode" = "Diese 6-stellige PIN wird benötigt, um die Algorand-Wallet zu verwenden. Wir empfehlen dringend, eine PIN zu erstellen, um die Sicherheit der Wallet zu erhöhen, falls Ihr Telefon gestohlen wird.";
 
 /* (No Comment) */
 "tutorial-description-recover" = "In den folgenden Schritten geben Sie Ihre 25 Worte umfassende Wiederherstellungs-Passphrase ein, um ein Algorand-Konto wiederherzustellen. Halten Sie Ihre Wiederherstellungsphrase bereit, bevor Sie beginnen.";
@@ -1499,7 +1499,7 @@
 "tutorial-main-title-passcode" = "Zugangscode festlegen";
 
 /* (No Comment) */
-"tutorial-main-title-recover" = "Ein  Algorand-Konto wiederherstellen";
+"tutorial-main-title-recover" = "Ein Algorand-Konto wiederherstellen";
 
 /* (No Comment) */
 "tutorial-main-title-write" = "Ich bin bereit zu beginnen";
@@ -1511,7 +1511,7 @@
 "tutorial-title-passcode" = "Erhöhen Sie Ihre Sicherheit mit einer PIN";
 
 /* (No Comment) */
-"tutorial-title-recover" = "Ein  Algorand-Konto wiederherstellen";
+"tutorial-title-recover" = "Ein Algorand-Konto wiederherstellen";
 
 /* (No Comment) */
 "tutorial-title-write" = "Bereiten Sie sich darauf vor, Ihre Wiederherstellungs-Passphrase aufzuschreiben";

@@ -1121,7 +1121,7 @@
 "settings-language-english" = "Italiano";
 
 /* (No Comment) */
-"settings-local-authentication" = "Attiva FaceID/Touch ID";
+"settings-local-authentication" = "Attiva Face ID/Touch ID";
 
 /* (No Comment) */
 "settings-logout-detail" = "Sei sicuro di voler cancellare tutti i dati?";
@@ -1469,7 +1469,7 @@
 "tutorial-description-back-up" = "Senza la tua passphrase di ripristino, se perdi il dispositivo o cancelli l'app, perderai definitivamente l'accesso al tuo conto Algorand.";
 
 /* (No Comment) */
-"tutorial-description-local" = "Il tuo FaceID o TouchID sarà richiesto per utilizzare l'app. Ti consigliamo di abilitare l'autenticazione biometrica per aumentare la sicurezza del wallet in caso di furto del telefono.";
+"tutorial-description-local" = "Il tuo Face ID o Touch ID sarà richiesto per utilizzare l'app. Ti consigliamo di abilitare l'autenticazione biometrica per aumentare la sicurezza del wallet in caso di furto del telefono.";
 
 /* (No Comment) */
 "tutorial-description-passcode" = "Questo PIN di 6 cifre sarà richiesto per utilizzare Algorand Wallet. Ti consigliamo vivamente di creare un PIN per aumentare la sicurezza del wallet in caso di furto del telefono.";
