@@ -150,6 +150,14 @@ extension AnimatedTutorialViewController: AnimatedTutorialViewDelegate {
         switch tutorial {
         case .backUp:
             open(.animatedTutorial(flow: flow, tutorial: .writePassphrase, isActionable: false), by: .push)
+        case .quick:
+            guard let session = self.session,
+                let privateKey = session.generatePrivateKey() else {
+                    return
+            }
+            
+            session.savePrivate(privateKey, for: "temp")
+            open(.accountNameSetup, by: .push)
         case .writePassphrase:
             open(.passphraseView(address: "temp"), by: .push)
         case .watchAccount:
@@ -242,6 +250,7 @@ protocol AnimatedTutorialViewControllerDelegate: class {
 
 enum AnimatedTutorial {
     case backUp
+    case quick
     case writePassphrase
     case watchAccount
     case recover

@@ -32,6 +32,7 @@ class AddAccountViewController: BaseViewController {
         view.backgroundColor = Colors.Background.tertiary
         setTertiaryBackgroundColor()
         addAccountView.configureCreateNewAccountView(with: AccountTypeViewModel(accountSetupMode: .add(type: .create)))
+        addAccountView.configureCreateQuickAccountView(with: AccountTypeViewModel(accountSetupMode: .add(type: .quick)))
         addAccountView.configureWatchAccountView(with: AccountTypeViewModel(accountSetupMode: .add(type: .watch)))
         addAccountView.configurePairAccountView(with: AccountTypeViewModel(accountSetupMode: .add(type: .pair)))
     }
@@ -50,6 +51,8 @@ extension AddAccountViewController: AddAccountViewDelegate {
         switch type {
         case .create:
             open(.animatedTutorial(flow: flow, tutorial: .backUp, isActionable: false), by: .push)
+        case .quick:
+            open(.animatedTutorial(flow: flow, tutorial: .quick, isActionable: false), by: .push)
         case .watch:
             open(.animatedTutorial(flow: flow, tutorial: .watchAccount, isActionable: false), by: .push)
         case .pair:

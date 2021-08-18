@@ -41,6 +41,7 @@
 "account-type-selection-add" = "Add Account";
 "account-type-selection-add-detail" = "I want a new account with a new address and recovery passphrase";
 "account-type-selection-create" = "Create New Account";
+"account-type-selection-quick" = "Create Quick Account";
 "account-type-selection-create-detail" = "I want to create a new Algorand account";
 "account-type-selection-watch-detail" = "I want to monitor an account that's held in cold storage";
 "account-type-selection-recover" = "Recover With Passphrase";
@@ -545,11 +546,13 @@
 "screenshot-description" = "Do not backup your recovery passphrase by taking a screenshot. Having an image containing your passphrase is a security risk.";
 
 "tutorial-title-back-up" = "Back up your account using a recovery passphrase";
+"tutorial-title-quick" = "Create Quick Account";
 "tutorial-title-recover" = "Recover an Algorand Account";
 "tutorial-title-write" = "Prepare to write down your recovery passphrase";
 "tutorial-title-passcode" = "Increase your security with a PIN";
 
 "tutorial-description-back-up" = "Without your recovery passphrase, if you lose your device or delete the app, you will permanently lose access to your Algorand account.";
+"tutorial-description-quick" = "A quick account can't be backed up.  Use it to receive a small amount of funds and quickly transfer them to a more secure address later.  If you lose your device or delete the app, you will permanently lose access to this account.";
 "tutorial-description-recover" = "In the following steps, you'll enter your 25-word recovery passphrase to recover an Algorand account. Have your recovery phrase handy before you begin.";
 "tutorial-description-write" = "The only way to recover an Algorand account is with this recovery passphrase.\n\nWarning: Do not share this passphrase with anyone, as it grants full access to your account.";
 "tutorial-description-write-italic" = "Warning: Do not share this passphrase with anyone, as it grants full access to your account.";
@@ -560,6 +563,7 @@
 "tutorial-description-local" = "Your FaceID or TouchID will be required to use the app. We recommend enabling biometric authentication to help increase wallet security in the event your phone is stolen.";
 
 "tutorial-main-title-back-up" = "I understand";
+"tutorial-main-title-quick" = "I understand";
 "tutorial-main-title-recover" = "Recover an Algorand Account";
 "tutorial-main-title-write" = "I'm ready to begin";
 "tutorial-main-title-passcode" = "Set Passcode";

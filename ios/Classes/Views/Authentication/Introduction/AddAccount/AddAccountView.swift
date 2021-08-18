@@ -45,6 +45,8 @@ class AddAccountView: BaseView {
     }()
 
     private lazy var createNewAccountView = AccountTypeView()
+    
+    private lazy var createQuickAccountView = AccountTypeView()
 
     private lazy var watchAccountView = AccountTypeView()
 
@@ -56,6 +58,7 @@ class AddAccountView: BaseView {
 
     override func setListeners() {
         createNewAccountView.addTarget(self, action: #selector(notifyDelegateToSelectCreateNewAccount), for: .touchUpInside)
+        createQuickAccountView.addTarget(self, action: #selector(notifyDelegateToSelectQuickAccount), for: .touchUpInside)
         watchAccountView.addTarget(self, action: #selector(notifyDelegateToSelectWatchAccount), for: .touchUpInside)
         pairAccountView.addTarget(self, action: #selector(notifyDelegateToSelectPairAccount), for: .touchUpInside)
     }
@@ -81,6 +84,11 @@ extension AddAccountView {
     private func notifyDelegateToSelectPairAccount() {
         delegate?.addAccountView(self, didSelect: .pair)
     }
+    
+    @objc
+    private func notifyDelegateToSelectQuickAccount() {
+        delegate?.addAccountView(self, didSelect: .quick)
+    }
 }
 
 extension AddAccountView {
@@ -104,14 +112,20 @@ extension AddAccountView {
         }
 
         stackView.addArrangedSubview(createNewAccountView)
+        stackView.addArrangedSubview(createQuickAccountView)
         stackView.addArrangedSubview(watchAccountView)
         stackView.addArrangedSubview(pairAccountView)
+        
     }
 }
 
 extension AddAccountView {
     func configureCreateNewAccountView(with viewModel: AccountTypeViewModel) {
         createNewAccountView.bind(viewModel)
+    }
+    
+    func configureCreateQuickAccountView(with viewModel: AccountTypeViewModel) {
+        createQuickAccountView.bind(viewModel)
     }
 
     func configureWatchAccountView(with viewModel: AccountTypeViewModel) {

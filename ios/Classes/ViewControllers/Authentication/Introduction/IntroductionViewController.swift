@@ -124,5 +124,6 @@ enum AccountAdditionType {
     case create
     case watch
     case pair
+    case quick
     case none
 }
