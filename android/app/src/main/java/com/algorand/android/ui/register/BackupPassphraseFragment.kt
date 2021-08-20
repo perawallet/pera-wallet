@@ -15,6 +15,7 @@ package com.algorand.android.ui.register
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.navGraphViewModels
+import com.algorand.algosdk.mobile.Mobile
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentBackupPassphraseBinding
@@ -27,9 +28,7 @@ import com.algorand.android.utils.disableScreenCapture
 import com.algorand.android.utils.enableScreenCapture
 import com.algorand.android.utils.setupMnemonic
 import com.algorand.android.utils.viewbinding.viewBinding
-import crypto.Crypto
 import dagger.hilt.android.AndroidEntryPoint
-import mnemonic.Mnemonic
 
 @AndroidEntryPoint
 class BackupPassphraseFragment : DaggerBaseFragment(R.layout.fragment_backup_passphrase) {
@@ -72,14 +71,14 @@ class BackupPassphraseFragment : DaggerBaseFragment(R.layout.fragment_backup_pas
             if (loginNavigationViewModel.tempAccount == null ||
                 loginNavigationViewModel.tempAccount?.getSecretKey() == null
             ) {
-                secretKeyByteArray = Crypto.generateSK()
-                val publicKey = Crypto.generateAddressFromSK(secretKeyByteArray)
+                secretKeyByteArray = Mobile.generateSK()
+                val publicKey = Mobile.generateAddressFromSK(secretKeyByteArray)
                 val tempAccount = Account.create(publicKey, Account.Detail.Standard(secretKeyByteArray))
                 loginNavigationViewModel.setTempAccount(tempAccount, CreationType.CREATE)
             } else {
                 secretKeyByteArray = loginNavigationViewModel.tempAccount?.getSecretKey()
             }
-            return Mnemonic.fromPrivateKey(secretKeyByteArray)
+            return Mobile.mnemonicFromPrivateKey(secretKeyByteArray)
         } catch (exception: Exception) {
             navBack()
         }

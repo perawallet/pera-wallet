@@ -535,4 +535,72 @@
         <item quantity="one">Verify Selected Account</item>
         <item quantity="other">Verify Selected Accounts</item>
     </plurals>
+
+    <string name="you_have_not_connected">You haven\'t connected any apps yet.</string>
+    <string name="wallet_connect_sessions">WalletConnect Sessions</string>
+    <string name="wallet_wants_to_connect"><annotation type="bold"><annotation replacement="app_name">app_name_placeholder</annotation></annotation> wants to\nconnect to your account</string>
+    <string name="you_do_not_have_any">You don\'t have any account that WalletConnect can connect.</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="close_remainder_to">Close Remainder To</string>
+    <string name="account_balance">Account Balance</string>
+    <string name="show_more_info">Show More Info</string>
+    <string name="raw_txns">Raw Txns</string>
+    <string name="show_raw_transaction">Show Raw Transaction</string>
+    <string name="algoexplorer">AlgoExplorer</string>
+    <string name="show_explorer">Show Explorer</string>
+    <string name="asset_url">Asset URL</string>
+    <string name="show_asset_url">Show Asset URL</string>
+    <string name="asset_metadata">Asset Metadata</string>
+    <string name="show_asset_metadata">Show Asset Metadata</string>
+    <string name="rekey_to">Rekey To</string>
+    <string name="payment_transfer_formatted">Payment to %1$s</string>
+    <string name="asset_transfer_formatted">Asset Transfer to %1$s</string>
+    <string name="opt_in_asset_formatted">Opt-in to asset #%1$s</string>
+    <string name="possible_opt_in_formatted">Possible Opt-in to asset #%1$s</string>
+    <string name="application_call_formatted">Application Call to #%1$s</string>
+    <string name="decline">Decline</string>
+    <string name="transaction_request">Transaction Request</string>
+    <string name="raw_transaction">Raw Transaction</string>
+    <string name="the_user_rejected_the_request">The user rejected the request.</string>
+    <string name="the_requested_operation_and">The requested operation and/or account has not been authorized by the user.</string>
+    <string name="the_wallet_does_not_support">The wallet does not support the requested operation.</string>
+    <string name="the_input_provided_is_invalid">The input provided is invalid.</string>
+    <string name="there_is_not_any_valid">There is not any valid account to sign this transaction.</string>
+    <string name="an_error_occurred_while_signing">An error occurred while signing the transaction.</string>
+    <string name="transaction_succesfully_confirmed">Transaction successfully confirmed</string>
+    <string name="transaction_rejected">Transaction rejected.</string>
+    <string name="assets_opt_in_request">Assets Opt-in Request</string>
+    <string name="transfer_asset_request">Transfer Asset Request</string>
+    <string name="app_call">App Call</string>
+    <string name="sender">Sender</string>
+    <string name="multiple_transaction_request">Multiple Transaction Request</string>
+    <string name="multiple_transactions_formatted">%1$d transactions</string>
+    <string name="unsigned_transactions">Unsigned Transactions</string>
+    <string name="atomic_transaction_request">Atomic Transaction Request</string>
+    <string name="all_transactions_formatted">All transactions (%1$d)</string>
+    <string name="application_id">Application ID</string>
+    <string name="this_transaction_will_transfer">This transaction will transfer ownership of this account. Your current recovery passphrase will no longer grant access to these assets.</string>
+    <string name="the_following_transaction_requests"> The following transaction requests are from external applications that the Algorand Wallet does not control. Please ensure you review these transactions carefully before signing as transactions are irreversible.</string>
+    <string name="got_it">Got it!</string>
+    <string name="once_confirmed_the_connected_application">Once confirmed, the connected application can send these transactions out at their discretion. Please make sure you review the transactions carefully as this process is irreversible.</string>
+    <string name="are_you_sure_question_mark">Are you sure?</string>
+    <string name="this_transaction_is_sending">This transaction is sending your full Algo balance.</string>
+    <string name="close_asset_to">Close Asset To</string>
+    <string name="this_transaction_is_sending_asset">This transaction is sending your full %1$s balance and will remove %1$s from your account.</string>
+    <string name="this_transaction_fee_is_higher">This transaction fee is higher than the usual fee of 0.01 Algos.</string>
+    <string name="wallet_connect_is_not_reachable">WalletConnect is not reachable at the moment. Please try again later.</string>
+    <string name="the_recipient_address_is_not">The recipient address is not a valid Algorand address. Please try again.</string>
+    <string name="application_opt_in_formatted">Application Opt in to #%1$s</string>
+    <string name="application_close_to_formatted">Application Close to #%1$s</string>
+    <string name="connected_with_formatted">Connected with %1$s</string>
+    <string name="algos_amount_formatted">%1$s Algos</string>
+    <string name="this_transaction_will_be">This transaction will be submitted in the future.</string>
+    <plurals name="confirm_transactions">
+        <item quantity="one">Confirm</item>
+        <item quantity="other">Confirm all Transactions</item>
+    </plurals>
+    <plurals name="transaction_requests_formatted">
+        <item quantity="one">Transaction Request (%1$d)</item>
+        <item quantity="other">Transaction Requests (%1$d)</item>
+    </plurals>
 </resources>

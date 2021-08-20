@@ -32,6 +32,7 @@ import com.algorand.android.models.Account
 import com.algorand.android.models.AccountCacheStatus
 import com.algorand.android.models.AccountCacheStatus.DONE
 import com.algorand.android.models.AssetInformation
+import com.algorand.android.models.DecodedQrCode
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.ui.accounts.AccountsFragmentDirections.Companion.actionAccountsFragmentToAccountOptionsBottomSheet
@@ -49,6 +50,7 @@ import com.algorand.android.utils.preference.setQrTutorialShown
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
+import com.algorand.android.utils.walletconnect.WalletConnectViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.AndroidEntryPoint
@@ -80,6 +82,8 @@ class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts) {
     private val binding by viewBinding(FragmentAccountsBinding::bind)
 
     private val accountsViewModel: AccountsViewModel by viewModels()
+
+    private val walletConnectViewModel: WalletConnectViewModel by viewModels()
 
     private var accountAdapter: AccountAdapter? = null
 
@@ -211,6 +215,23 @@ class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts) {
             useSavedStateValue<String>(ViewPassphraseLockFragment.VIEW_PASSPHRASE_ADDRESS_KEY) { address ->
                 nav(actionAccountsFragmentToViewPassphraseBottomSheet(address))
             }
+
+            useSavedStateValue<DecodedQrCode?>(QrCodeScannerFragment.QR_SCAN_RESULT_KEY) {
+                handleWalletConnectDeepLink(it?.walletConnectUrl.orEmpty())
+            }
+        }
+    }
+
+    private fun handleWalletConnectDeepLink(walletConnectUrl: String) {
+        val hasValidAccountForWalletConnect = accountCacheManager.getAccountCacheWithSpecificAsset(
+            AssetInformation.ALGORAND_ID,
+            listOf(Account.Type.WATCH)
+        ).isNotEmpty()
+        if (hasValidAccountForWalletConnect) {
+            (activity as? MainActivity)?.showProgress()
+            walletConnectViewModel.connectToSessionByUrl(walletConnectUrl)
+        } else {
+            showGlobalError(getString(R.string.you_do_not_have_any))
         }
     }
 
@@ -235,7 +256,14 @@ class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts) {
     }
 
     private fun onScanQrClick() {
-        nav(actionAccountsFragmentToMainQrScannerFragment(QrCodeScannerFragment.ScanReturnType.NAVIGATE_FORWARD))
+        nav(
+            actionAccountsFragmentToMainQrScannerFragment(
+                scanReturnType = listOf(
+                    QrCodeScannerFragment.ScanReturnType.NAVIGATE_FORWARD,
+                    QrCodeScannerFragment.ScanReturnType.WALLET_CONNECT_NAVIGATE_BACK
+                ).toTypedArray()
+            )
+        )
     }
 
     companion object {

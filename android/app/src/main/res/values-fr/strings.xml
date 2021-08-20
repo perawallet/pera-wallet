@@ -495,4 +495,71 @@
   <string name="minimum_balance_required">Solde minimum requis</string>
   <string name="transaction_maximum_error_message_singular">Étant donné que vous avez <annotation replacement="asset_count">asset_count_placeholder</annotation> autres actifs dans ce compte (<annotation replacement="account_name"> account_name_placeholder </annotation>), la Blockchain Algorand vous oblige à maintenir un solde minimum de <annotation replacement="min_balance">min_balance_placeholder</annotation> ALGO. \n \n En appuyant sur Continuer, le montant de votre transaction sera automatiquement mis à jour pour refléter ce changement. Vous pourrez prévisualiser ce changement à l\'étape suivante.</string>
   <string name="transaction_maximum_error_message_plural">Étant donné que vous avez <annotation replacement="asset_count">asset_count_placeholder</annotation> autres actifs dans ce compte (<annotation replacement="account_name"> account_name_placeholder </annotation>), la Blockchain Algorand vous oblige à maintenir un solde minimum de <annotation replacement="min_balance">min_balance_placeholder</annotation> ALGO. \n \n En appuyant sur Continuer, le montant de votre transaction sera automatiquement mis à jour pour refléter ce changement. Vous pourrez prévisualiser ce changement à l\'étape suivante.</string>
+  <string name="you_have_not_connected">Vous n\'avez encore connecté aucune application.</string>
+  <string name="wallet_connect_sessions">Sessions WalletConnect</string>
+  <string name="wallet_wants_to_connect"><annotation type="bold"><annotation replacement="app_name">app_name_placeholder</annotation></annotation> veut se \n connecter à votre compte</string>
+  <string name="you_do_not_have_any">Vous n\'avez aucun compte auquel WalletConnect peut se connecter.</string>
+  <string name="disconnect">Déconnecter</string>
+  <string name="account_balance">Solde Compte</string>
+  <string name="show_more_info">Afficher plus d\'informations</string>
+  <string name="raw_txns">Transactions brutes</string>
+  <string name="show_raw_transaction">Afficher la transaction brute</string>
+  <string name="algoexplorer">AlgoExplorer</string>
+  <string name="show_explorer">Afficher l\'explorateur</string>
+  <string name="asset_url">URL de l\'actif</string>
+  <string name="show_asset_url">Afficher l\'URL de l\'actif</string>
+  <string name="asset_metadata">Métadonnées des actifs</string>
+  <string name="show_asset_metadata">Afficher les métadonnées de l\'actif</string>
+  <string name="rekey_to">Rétablir pour</string>
+  <string name="payment_transfer_formatted">Paiement à %1$s</string>
+  <string name="asset_transfer_formatted">Transfert d\'actifs à %1$s</string>
+  <string name="opt_in_asset_formatted">Activer l\'actif # %1$s</string>
+  <string name="possible_opt_in_formatted">Option d\'activation possible de l\'actif # %1$s</string>
+  <string name="application_call_formatted">Appel d\'application # %1$s</string>
+  <string name="decline">Refuser</string>
+  <string name="transaction_request">Demande de transaction</string>
+  <string name="raw_transaction">Transaction Brute</string>
+  <string name="the_user_rejected_the_request">L\'utilisateur a rejeté la demande.</string>
+  <string name="the_requested_operation_and">L\'opération et/ou le compte demandé n\'a pas été autorisé par l\'utilisateur.</string>
+  <string name="the_wallet_does_not_support">Le portefeuille ne prend pas en charge l\'opération demandée.</string>
+  <string name="the_input_provided_is_invalid">L\'entrée fournie est invalide.</string>
+  <string name="there_is_not_any_valid">Il n\'y a pas de compte valide pour signer cette transaction.</string>
+  <string name="an_error_occurred_while_signing">Une erreur s\'est produite lors de la signature de la transaction.</string>
+  <string name="transaction_succesfully_confirmed">Transaction confirmée avec succès</string>
+  <string name="transaction_rejected">Transaction refusée.</string>
+  <string name="assets_opt_in_request">Demande d’inscription des actifs</string>
+  <string name="transfer_asset_request">Demande de transfert d\'actif</string>
+  <string name="sender">Expéditeur</string>
+  <string name="multiple_transaction_request">Demande de transactions multiples</string>
+  <string name="multiple_transactions_formatted">%1$d transactions</string>
+  <string name="unsigned_transactions">Transactions non signées</string>
+  <string name="atomic_transaction_request">Demande de transaction atomique</string>
+  <string name="all_transactions_formatted">Toutes les transactions (%1$d)</string>
+  <string name="application_id">ID d\'application</string>
+  <string name="this_transaction_will_transfer">Cette transaction transférera la propriété de ce compte. Votre mot de passe de récupération actuel n\'autorisera plus l\'accès à ces actifs.</string>
+  <string name="the_following_transaction_requests">Les demandes de transaction suivantes proviennent d\'applications externes que le portefeuille Algorand ne contrôle pas. Veuillez vous assurer d\'examiner attentivement ces transactions avant de signer, car les transactions sont irréversibles.</string>
+  <string name="got_it">J\'ai compris!</string>
+  <string name="once_confirmed_the_connected_application">Une fois confirmées, l\'application connectée peut envoyer ces transactions à sa discrétion. Veuillez vous assurer d\'examiner attentivement les transactions car ce processus est irréversible.</string>
+  <string name="are_you_sure_question_mark">Êtes-vous sûr?</string>
+  <string name="this_transaction_is_sending">Cette transaction envoie votre solde complet d\'Algo.</string>
+  <string name="close_asset_to">Fermer l’actif pour</string>
+  <string name="this_transaction_is_sending_asset">Cette transaction envoie votre %1$s et supprimera %1$s de votre compte.</string>
+  <string name="this_transaction_fee_is_higher">Ces frais de transaction sont supérieurs aux frais habituels de 0,01 Algos.</string>
+  <string name="wallet_connect_is_not_reachable">WalletConnect n\'est pas accessible pour le moment. Veuillez réessayer plus tard.</string>
+  <string name="the_recipient_address_is_not">L\'adresse du destinataire n\'est pas une adresse Algorand valide. Veuillez réessayer.</string>
+  <string name="application_opt_in_formatted">Inscription de l\'application à %1$s</string>
+  <string name="application_close_to_formatted">Clôture application pour %1$s</string>
+  <string name="connected_with_formatted">Connecté avec %1$s</string>
+  <string name="algos_amount_formatted">%1$s ALGO</string>
+  <string name="close_remainder_to">Fermer le reste à</string>
+  <string name="app_call">Demande d\'appel de l\'application</string>
+  <string name="this_transaction_will_be">Cette transaction sera soumise à l\'avenir.</string>
+  <plurals name="confirm_transactions">
+    <item quantity="one">Confirmer</item>
+    <item quantity="other">Confirmer toutes les transactions</item>
+  </plurals>
+  <plurals name="transaction_requests_formatted">
+    <item quantity="one">Demande de transaction (%1$d)</item>
+    <item quantity="other">Demandes de transaction (%1$d)</item>
+  </plurals>
 </resources>

@@ -17,6 +17,8 @@ import android.graphics.Bitmap
 import com.algorand.android.R
 import com.algorand.android.models.DecodedQrCode
 import com.algorand.android.ui.qr.QrCodeScannerFragment
+import com.algorand.android.utils.walletconnect.WALLET_CONNECT_URL_PREFIX
+import com.algorand.android.utils.walletconnect.isValidWalletConnectQr
 import com.google.gson.Gson
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
@@ -87,6 +89,7 @@ fun decodeDeeplink(qrContent: String?): DecodedQrCode? {
     var note: String? = null
     var xnote: String? = null
     val address: String
+
     if (qrContent.startsWith(DEEPLINK_PREFIX)) {
         val addressQuerySplit = qrContent.removePrefix(DEEPLINK_PREFIX).split(QUERY_START_CHAR)
         address = addressQuerySplit.getOrNull(ADDRESS_INDEX) ?: return null
@@ -105,6 +108,8 @@ fun decodeDeeplink(qrContent: String?): DecodedQrCode? {
                     XNOTE_KEY -> xnote = queryValue
                 }
             }
+    } else if (qrContent.startsWith(WALLET_CONNECT_URL_PREFIX)) {
+        return decodeWalletConnectQr(qrContent)
     } else {
         address = qrContent
     }
@@ -122,10 +127,34 @@ fun decodeDeeplink(qrContent: String?): DecodedQrCode? {
     }
 }
 
-fun getContentOfQR(deeplink: String, scanReturnType: QrCodeScannerFragment.ScanReturnType): DecodedQrCode? {
-    return if (scanReturnType == QrCodeScannerFragment.ScanReturnType.MNEMONIC_NAVIGATE_BACK) {
-        decodeMnemonicFromQr(deeplink)
-    } else {
-        decodeDeeplink(deeplink)
+private fun decodeWalletConnectQr(qrCode: String): DecodedQrCode? {
+    return if (isValidWalletConnectQr(qrCode)) {
+        DecodedQrCode(walletConnectUrl = qrCode)
+    } else null
+}
+
+fun getContentOfQR(
+    deeplink: String,
+    scanReturnTypeList: Array<QrCodeScannerFragment.ScanReturnType>
+): Pair<QrCodeScannerFragment.ScanReturnType?, DecodedQrCode?> {
+    var decodedQrCode: DecodedQrCode? = null
+    var scanResult: QrCodeScannerFragment.ScanReturnType? = null
+
+    scanReturnTypeList.forEach { scanType ->
+        scanResult = scanType
+        decodedQrCode = when (scanType) {
+            QrCodeScannerFragment.ScanReturnType.MNEMONIC_NAVIGATE_BACK -> decodeMnemonicFromQr(deeplink)
+            QrCodeScannerFragment.ScanReturnType.WALLET_CONNECT_NAVIGATE_BACK -> decodeWalletConnectQr(deeplink)
+            else -> decodeDeeplink(deeplink)
+        }
+        // TODO: 13.08.2021 decodeDeepLink also handle Wallet Connect QR Code, so we should ignore this case for now.
+        if (scanResult != QrCodeScannerFragment.ScanReturnType.WALLET_CONNECT_NAVIGATE_BACK &&
+            decodedQrCode?.walletConnectUrl != null
+        ) {
+            return@forEach
+        }
+        if (decodedQrCode != null) return Pair(scanResult, decodedQrCode)
     }
+
+    return Pair(scanResult, decodedQrCode)
 }

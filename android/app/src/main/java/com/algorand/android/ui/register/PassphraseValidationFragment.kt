@@ -3,6 +3,7 @@ package com.algorand.android.ui.register
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.navGraphViewModels
+import com.algorand.algosdk.mobile.Mobile
 import com.algorand.android.MainNavigationDirections.Companion.actionGlobalSingleButtonBottomSheet
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
@@ -18,7 +19,6 @@ import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import mnemonic.Mnemonic
 
 @AndroidEntryPoint
 class PassphraseValidationFragment : DaggerBaseFragment(R.layout.fragment_passphrase_validation) {
@@ -54,7 +54,7 @@ class PassphraseValidationFragment : DaggerBaseFragment(R.layout.fragment_passph
 
     private fun getPassphraseWords(): List<String> {
         val tempAccountSecretKey = loginNavigationViewModel.tempAccount!!.getSecretKey()
-        return Mnemonic.fromPrivateKey(tempAccountSecretKey).split(" ")
+        return Mobile.mnemonicFromPrivateKey(tempAccountSecretKey).split(" ")
     }
 
     private fun setupPassphraseValidationView() {

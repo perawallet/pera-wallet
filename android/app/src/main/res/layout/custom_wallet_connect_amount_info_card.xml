@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2019 Algorand, Inc.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~  limitations under the License
+  ~
+  -->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="@drawable/bg_small_shadow"
+    tools:layout_height="wrap_content"
+    tools:layout_width="match_parent"
+    tools:padding="20dp"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <TextView
+        android:id="@+id/toLabelTextView"
+        style="@style/TextAppearance.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/to"
+        app:layout_constraintBottom_toBottomOf="@id/toAccountNameTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/toAccountNameTextView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/toAccountNameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/publicsans_medium"
+        android:gravity="end"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/amountDividerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/labelBarrier"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_goneMarginBottom="@dimen/smallshadow_bottom_margin_20dp"
+        tools:text="@tools:sample/lorem[4]" />
+
+    <View
+        android:id="@+id/amountDividerView"
+        style="@style/HorizontalDivider.WalletConnectCards"
+        app:layout_constraintBottom_toTopOf="@id/reminderCloseToTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toAccountNameTextView"
+        app:layout_goneMarginTop="0dp" />
+
+
+    <TextView
+        android:id="@+id/amountLabelTextView"
+        style="@style/TextAppearance.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/amount"
+        app:layout_constraintBottom_toBottomOf="@id/amountTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/amountTextView" />
+
+    <com.algorand.android.customviews.AmountTextView
+        android:id="@+id/amountTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
+        app:algoFontFamily="@font/publicsans_medium"
+        app:algoLogoViewSize="10dp"
+        app:algoTextViewSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/feeDividerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/labelBarrier"
+        app:layout_constraintTop_toBottomOf="@id/amountDividerView"
+        app:showOperator="true"
+        app:useMicroAlgos="false"
+        tools:algoFontFamily="@null" />
+
+    <View
+        android:id="@+id/feeDividerView"
+        style="@style/HorizontalDivider.WalletConnectCards"
+        app:layout_constraintBottom_toTopOf="@id/feeTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/amountTextView"
+        app:layout_goneMarginTop="0dp" />
+
+    <TextView
+        android:id="@+id/feeLabelTextView"
+        style="@style/TextAppearance.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fee"
+        app:layout_constraintBottom_toBottomOf="@id/feeTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/feeTextView" />
+
+    <com.algorand.android.customviews.AmountTextView
+        android:id="@+id/feeTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
+        app:algoFontFamily="@font/publicsans_medium"
+        app:algoLogoViewSize="10dp"
+        app:algoTextViewSize="14sp"
+        app:iconTint="@color/walletConnectFeeAlgoIconColor"
+        app:layout_constraintBottom_toTopOf="@id/feeWarningTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/labelBarrier"
+        app:layout_constraintTop_toBottomOf="@id/feeDividerView"
+        app:layout_goneMarginTop="0dp"
+        app:showOperator="false"
+        tools:algoFontFamily="@null" />
+
+    <TextView
+        android:id="@+id/feeWarningTextView"
+        style="@style/WalletConnectWarningTextStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/this_transaction_fee_is_higher"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/feeTextView"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/toAddressGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="
+        toLabelTextView,
+        toAccountNameTextView,
+        amountDividerView"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/amountBalanceGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="
+        amountLabelTextView,
+        amountTextView,
+        feeDividerView"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/labelBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="
+        accountBalanceLabelTextView
+        ,amountLabelTextView
+        ,feeLabelTextView" />
+
+</merge>

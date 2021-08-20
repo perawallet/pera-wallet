@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2019 Algorand, Inc.
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -79,6 +78,11 @@
     <color name="chartTimeFrameButtonColor">@color/gray_F3</color>
     <color name="chartTimeFrameDefaultTextColor">@color/gray_8A</color>
 
+    <color name="walletConnectAccountSelectionBorderColor">@color/gray_F3</color>
+    <color name="walletConnectDappIconBackgroundColor">@color/white</color>
+    <color name="walletConnectDappIconBorderColor">@color/gray_F1</color>
+    <color name="walletConnectFeeAlgoIconColor">@color/gray_19</color>
+
     <!-- Design Refactor  -->
 
     <color name="white">#FFFFFF</color>
@@ -109,6 +113,7 @@
     <color name="gray_D9">#D9D9DD</color>
     <color name="gray_E8">#E8E8EB</color>
     <color name="gray_DB">#DBDBE0</color>
+    <color name="gray_F1">#F1F1F2</color>
     <color name="gray_F3">#F3F3F5</color>
     <color name="gray_F3_alpha_100">#00F3F3F5</color>
     <color name="gray_F8">#F8F8FA</color>
@@ -118,6 +123,7 @@
     <color name="blue_49">#496ADE</color>
 
     <color name="green_1D">#1DAD98</color>
+    <color name="green_1D_alpha_10">#1A1DAD98</color>
     <color name="green_0D">#0D927E</color>
     <color name="green_EC">#ECF7F5</color>  <!--  green_1D with alpha10  -->
 
@@ -127,6 +133,7 @@
     <color name="orange_FB">#FBF2E9</color> <!--  orange_F8 with alpha10  -->
     <color name="orange_D9">#D96416</color>
     <color name="orange_F8">#F87E2C</color>
+    <color name="orange_14">#14F87E2C</color><!--  orange_F8 with alpha8  -->
 
     <color name="yellow_F8">#F8A62C</color>
 

@@ -71,8 +71,7 @@
         tools:layout="@layout/fragment_qr_code_scanner">
         <argument
             android:name="scanReturnType"
-            android:defaultValue="MNEMONIC_NAVIGATE_BACK"
-            app:argType="com.algorand.android.ui.qr.QrCodeScannerFragment$ScanReturnType" />
+            app:argType="com.algorand.android.ui.qr.QrCodeScannerFragment$ScanReturnType[]" />
     </fragment>
 
     <fragment

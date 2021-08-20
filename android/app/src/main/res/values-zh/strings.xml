@@ -197,7 +197,7 @@
   <string name="advanced_troubleshooting">高级故障排除</string>
   <string name="looking_for_other_ledger">寻找其他Ledger设备</string>
   <string name="trouble_shoot">故障排除</string>
-  <string name="connecting_to_ledger">正在连接Ledger...</string>
+  <string name="connecting_to_ledger">正在连接Ledger…</string>
   <string name="ledger_approval">Ledger批准</string>
   <string name="please_make_sure">请在Ledger设备上确认交易</string>
   <string name="ledger_info_power_first_paragraph">
@@ -328,7 +328,7 @@
   <string name="this_account_has">账户密钥已更新。如需签署交易，请通过助记词或Ledger设备恢复本账户。</string>
   <string name="auth_account_address">授权账户地址</string>
   <string name="pair_your_new_ledger">配对新的Ledger设备</string>
-  <string name="rekeying_account">账户密钥更新...</string>
+  <string name="rekeying_account">账户密钥更新…</string>
   <string name="recover_ledger_account">恢复Ledger账户</string>
   <string name="you_cannot_send">无法向自己发送所有余额。请在选择其他账户或收款人后，再次尝试。</string>
   <string name="account_optional">账户 <annotation custom="optional_color">(选填)</annotation></string>
@@ -359,35 +359,15 @@
   <string name="dark">深色模式</string>
   <string name="privacy_policy">隐私政策</string>
   <plurals name="min_ago">
-    <item quantity="zero"></item>
-    <item quantity="one"></item>
-    <item quantity="two"></item>
-    <item quantity="few"></item>
-    <item quantity="many"></item>
     <item quantity="other">%1$s 分钟前\"</item>
   </plurals>
   <plurals name="hours_ago">
-    <item quantity="zero"></item>
-    <item quantity="one"></item>
-    <item quantity="two"></item>
-    <item quantity="few"></item>
-    <item quantity="many"></item>
     <item quantity="other">%1$s 小时前\"</item>
   </plurals>
   <plurals name="days_ago">
-    <item quantity="zero"></item>
-    <item quantity="one"></item>
-    <item quantity="two"></item>
-    <item quantity="few"></item>
-    <item quantity="many"></item>
     <item quantity="other">%1$s 天前\"</item>
   </plurals>
   <plurals name="account_found">
-    <item quantity="zero"></item>
-    <item quantity="one"></item>
-    <item quantity="two"></item>
-    <item quantity="few"></item>
-    <item quantity="many"></item>
     <item quantity="other">找到账户\"</item>
   </plurals>
   <string name="push_notifications">推送通知</string>
@@ -410,7 +390,7 @@
   <string name="dont_show_this_again">不再显示此内容</string>
   <string name="maximum_balance">最高余额</string>
   <string name="rekeyed_maximum_error_message">如需在重置密钥的账户上发送最高余额，请维持<annotation replacement="min_balance">min_balance_placeholder</annotation>ALGO的最低余额。该举措是为了确保重置密钥的账户不会发生改变。\n \n您的交易金额将自动更新，显示这一变化。您将可以在下一步中预览交易。</string>
-  <string name="support_center">支持中心</string>
+  <string name="support_center">客服支持中心</string>
   <string name="when_sending_to_an_address">如果是首次向该地址发送交易时，可以尝试在发送大笔交易之前，先发送一笔小额的交易测试。</string>
   <string name="exchanges_change_their">交易所经常改变存款地址，所保存的交易所地址可能失效。<annotation custom="highlight_color">请确保您的汇款地址是正确的。</annotation></string>
   <string name="for_more_information_on">有关交易的更多信息，请<annotation custom="tap_here_color">点击这里</annotation></string>
@@ -422,22 +402,22 @@
   <string name="back_up_your_account">使用恢复助记词来备份账户</string>
   <string name="without_your_recovery">若无恢复用的助记词，设备丢失或删除APP后，您会永久无法访问该Algorand账户。</string>
   <string name="backup_now">立即备份</string>
-  <string name="prepare_to_write">请写下用来恢复的密码短语</string>
+  <string name="prepare_to_write">请写下用来恢复的助记词</string>
   <string name="im_ready_to_begin">我已经准备好了</string>
   <string name="create_a_watch">创建Watch账户</string>
   <string name="recover_an_algorand">恢复Algorand帐户</string>
-  <string name="in_the_following">在以下步骤中，您将输入25字节的密码短语来恢复Algorand账户。在您开始之前，请准备好您的恢复密码短语。</string>
+  <string name="in_the_following">在以下步骤中，您将输入25字节的助记词来恢复Algorand账户。在您开始之前，请准备好您的恢复助记词。</string>
   <string name="account_name_optional">账户名称（可选）</string>
   <string name="finish_account_creation">完成账户创建</string>
   <string name="welcome_to_algorand">欢迎使用Algorand钱包</string>
   <string name="i_want_to_create">我想要创建新的Algorand账户</string>
-  <string name="recover_with_passphrase">使用密码短语进行恢复</string>
+  <string name="recover_with_passphrase">使用助记词进行恢复</string>
   <string name="i_already_have">我已经有一个账户了</string>
   <string name="create_a_new">创建新的Algorand账户</string>
   <string name="use_your_ledger">在Algorand的APP上使用Ledger账户</string>
   <string name="recover">恢复</string>
-  <string name="enter_your_passphrase">输入您的密码短语</string>
-  <string name="the_last_copied_text">最后复制的文字不是有效的25个字节密码短语。请复制有效的密码短语后，再重试一次。</string>
+  <string name="enter_your_passphrase">输入您的助记词</string>
+  <string name="the_last_copied_text">最后复制的文字不是有效的25个字节密码短语。请复制有效的助记词后，再重试一次。</string>
   <string name="make_sure_to_record">请务必使用相应的数字以正确的顺序记录这些单词。</string>
   <string name="this_6_digit_pin">要有6位数的PIN码，才能使用Algorand钱包。我们强烈创建您创建PIN码，即便手机被盗，也能够维护钱包的安全性。</string>
   <string name="increase_your_security">使用PIN码提升账户安全</string>
@@ -459,8 +439,8 @@
   <string name="skip">跳过</string>
   <string name="do_not_ask_again">不再提示</string>
   <string name="selected_words_are">所选字词有误，请重试。</string>
-  <string name="paste_full_passphrase">粘贴完整的密码短语</string>
-  <string name="verify_recovery_passphrase">验证恢复密码短语备份</string>
+  <string name="paste_full_passphrase">粘贴完整的助记词</string>
+  <string name="verify_recovery_passphrase">验证恢复助记词备份</string>
   <string name="please_enter_a_destination">请输入目的地地址</string>
   <string name="transacting_tips">交易技巧</string>
   <string name="the_only_way_to">恢复Algorand账户的唯一途径是使用恢复助记词。<annotation font="publicsans_regular_italic"><annotation custom="warning_color"><annotation type="bold">警告</annotation>：请勿与任何人分享恢复助记词，因为助记词拥有完整的账户访问权限。</annotation></annotation></string>
@@ -469,7 +449,7 @@
   <string name="i_want_to_monitor">监控冷储存中的账户。</string>
   <string name="i_want_to_create_an">创建由Ledger硬件钱包支持的账户。</string>
   <string name="you_are_creating">您正在创建Algorand 账户的只读视图。如果您向该账户发送资产，但没有相应的恢复助记词，所发送的资产将会丢失。</string>
-  <string name="name_your_account_to">在使用Algorand钱包时，请为账户取一个容易识别的名称。名称储存在本地，仅个人可见。</string>
+  <string name="name_your_account_to">在使用Algorand钱包时，请为账户取一个容易识别的名称。将名称储存在本地，仅个人可见。</string>
   <string name="keep_this_recovery_passphrase">请将恢复助记词保存在仅您能访问的安全位置，请勿丢失恢复助记词。</string>
   <string name="learn_more">了解更多</string>
   <string name="no_contact_found">未找到联系人</string>
@@ -497,15 +477,80 @@
   <string name="no_chart_data_available">价格API当前不可用，请稍后再回来查看。</string>
   <string name="balance">余额</string>
   <string name="value">价值</string>
-  <string name="last_one_hour">最近1小时</string>
-  <string name="last_one_day">最近1天</string>
-  <string name="last_one_week">最近1周</string>
-  <string name="last_one_month">最近1个月</string>
-  <string name="last_one_year">最近1年</string>
+  <string name="last_one_hour">过去1小时</string>
+  <string name="last_one_day">过去1天</string>
+  <string name="last_one_week">过去1周</string>
+  <string name="last_one_month">过去1个月</string>
+  <string name="last_one_year">过去1年</string>
   <string name="analytics">分析工具</string>
   <string name="algos">ALGO</string>
   <string name="algo_rewards">ALGO奖励</string>
   <string name="minimum_balance_required">最低余额要求</string>
-  <string name="transaction_maximum_error_message_singular">由于您在此账户中有<annotation replacement="asset_count">资产数量</annotation>的其他资产（<annotation replacement="account_name">资产名称</annotation>），Algorand区块链要求至少要持有<annotation replacement="min_balance">最低余额数量</annotation>ALGOs的最低余额。\n\n通过点击继续，您的交易金额将自动更新以反映这一变化。您将能在下一步预览这一变化。</string>
+  <string name="transaction_maximum_error_message_singular">由于您在此账户中有<annotation replacement="asset_count">资产数量</annotation>的其他资产（<annotation replacement="account_name">资产名称</annotation>），Algorand区块链要求至少要持有<annotation replacement="min_balance">最低余额数量</annotation>ALGOs的最低余额。\n\n点击继续，您的交易金额将自动更新以反映此更改。您将能在下一步预览此更改。</string>
   <string name="transaction_maximum_error_message_plural">由于您在此账户中有<annotation replacement="asset_count">资产数量</annotation>的其他资产（<annotation replacement="account_name">资产名称</annotation>），Algorand区块链要求至少要持有<annotation replacement="min_balance">最低余额数量</annotation>ALGOs的最低余额。\n\n通过点击继续，您的交易金额将自动更新以反映这一变化。您将能在下一步预览这一变化。</string>
+  <string name="you_have_not_connected">尚未添加任何APP。</string>
+  <string name="wallet_connect_sessions">WalletConnect 会话</string>
+  <string name="wallet_wants_to_connect"><annotation type="bold"><annotation replacement="app_name">APP名称</annotation>想要连接到您的账户</annotation></string>
+  <string name="you_do_not_have_any">您没有 WalletConnect 可以连接的帐户。</string>
+  <string name="disconnect">断开</string>
+  <string name="account_balance">账户余额</string>
+  <string name="show_more_info">显示更多信息</string>
+  <string name="raw_txns">原始Txns</string>
+  <string name="show_raw_transaction">显示原始交易</string>
+  <string name="algoexplorer">AlgoExplorer</string>
+  <string name="show_explorer">显示浏览器</string>
+  <string name="asset_url">资产URL</string>
+  <string name="show_asset_url">显示资产URL</string>
+  <string name="asset_metadata">资产元数据</string>
+  <string name="show_asset_metadata">显示资产元数据</string>
+  <string name="rekey_to">密钥更新至</string>
+  <string name="payment_transfer_formatted">支付给%1$s</string>
+  <string name="asset_transfer_formatted">资产转移到%1$s</string>
+  <string name="opt_in_asset_formatted">选择加入资产#%1$s</string>
+  <string name="possible_opt_in_formatted">可能选择加入资产#%1$s</string>
+  <string name="application_call_formatted">应用程序调用至%1$s</string>
+  <string name="decline">拒绝</string>
+  <string name="transaction_request">交易请求</string>
+  <string name="raw_transaction">原始交易</string>
+  <string name="the_user_rejected_the_request">用户拒绝了请求。</string>
+  <string name="the_requested_operation_and">请求的操作和/或账户没有获得用户授权。</string>
+  <string name="the_wallet_does_not_support">钱包不支持所要求的操作。</string>
+  <string name="the_input_provided_is_invalid">输入内容无效。</string>
+  <string name="there_is_not_any_valid">没有可以签署此交易的有效账户。</string>
+  <string name="an_error_occurred_while_signing">签署交易时出错。</string>
+  <string name="transaction_succesfully_confirmed">交易成功确认</string>
+  <string name="transaction_rejected">交易被拒绝。</string>
+  <string name="assets_opt_in_request">资产选入要求</string>
+  <string name="transfer_asset_request">资产转移请求</string>
+  <string name="sender">发送人</string>
+  <string name="multiple_transaction_request">多个交易请求</string>
+  <string name="multiple_transactions_formatted">%1$d交易</string>
+  <string name="unsigned_transactions">未签署的交易</string>
+  <string name="atomic_transaction_request">原子交易请求</string>
+  <string name="all_transactions_formatted">所有交易（%1$d）</string>
+  <string name="application_id">应用程序ID</string>
+  <string name="this_transaction_will_transfer">这项交易将转移该账户的所有权。您当前的恢复密码将不再可以访问这些资产。</string>
+  <string name="the_following_transaction_requests">以下交易请求来自Algorand钱包无法控制的外部应用程序。由于交易发生后不可逆转，请在签署交易前仔细检查。</string>
+  <string name="got_it">明白了！</string>
+  <string name="once_confirmed_the_connected_application">一经确认，连接的外部程序可以自行发送交易。至由于交易发生后不可逆转，在交易前请仔细检查。</string>
+  <string name="are_you_sure_question_mark">确定吗？</string>
+  <string name="this_transaction_is_sending">此交易将发送您的全部ALGO余额。</string>
+  <string name="close_asset_to">资产抄送至</string>
+  <string name="this_transaction_is_sending_asset">此交易将发送您的全部%1$s余额，并将从您的账户中扣除%1$s。</string>
+  <string name="this_transaction_fee_is_higher">此交易费用高于平时的 0.01 ALGO。</string>
+  <string name="wallet_connect_is_not_reachable">目前无法访问 WalletConnect，请稍后再试。</string>
+  <string name="the_recipient_address_is_not">收件人地址不是有效的Algorand地址，请重试。</string>
+  <string name="application_opt_in_formatted">应用程序选择加入%1$s</string>
+  <string name="application_close_to_formatted">应用程序抄送至%1$s</string>
+  <string name="connected_with_formatted">与%1$s连接</string>
+  <string name="algos_amount_formatted">%1$s ALGO</string>
+  <string name="close_remainder_to">剩余资产抄送至</string>
+  <string name="app_call">应用程序调用请求</string>
+  <string name="this_transaction_will_be">交易会在未来提交。</string>
+  <plurals name="confirm_transactions">
+    <item quantity="other">确认所有交易</item>
+  </plurals>
+  <plurals name="transaction_requests_formatted">
+    <item quantity="other">交易请求 (%1$d)</item>
+  </plurals>
 </resources>

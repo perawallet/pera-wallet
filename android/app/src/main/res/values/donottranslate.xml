@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2019 Algorand, Inc.
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -29,5 +28,12 @@
     <string name="accessibility_touch_id_icon" translatable="false">Touch ID Icon</string>
     <string name="accessibility_user_image" translatable="false">User Image</string>
     <string name="accessibility_add_contact_icon" translatable="false">Add Contact Icon</string>
+
+    <!-- Wallet Connect Application Calls -->
+    <string name="on_complete">OnComplete</string>
+    <string name="no_op">NoOp</string>
+    <string name="opt_in">OptIn</string>
+    <string name="close_out">CloseOut</string>
+    <string name="clear_state">ClearState</string>
 
 </resources>

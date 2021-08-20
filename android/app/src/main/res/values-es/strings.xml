@@ -154,7 +154,7 @@
   <string name="you_already_have">Ya posees este activo.</string>
   <string name="adding_asset">Agregando activo</string>
   <string name="removing_asset">Eliminando activo</string>
-  <string name="to_remove_the_balance"><![CDATA[Para eliminar <b>%1$s</b>, el saldo debe ser 0. Transfiere el saldo a otra cuenta e inténtalo de nuevo.]]></string>
+  <string name="to_remove_the_balance"><![CDATA[Para eliminar <b>%1$s</b>, el saldo debe ser 0. Transfiere el saldo a otra cuenta e inténtalo nuevamente.]]></string>
   <string name="you_are_about_to"><![CDATA[Estás a punto de eliminar <b>%1$s</b> de <b>%2$s</b>. No podrás volver a operar con este activo hasta que vuelvas a activarlo.]]></string>
   <string name="adding_an_asset">Agregar un activo requiere que se envíe una transacción con una comisión mínima. Esto aparecerá en tu historial de transacciones.</string>
   <string name="unfortunately_this_account">Lamentablemente, esta cuenta no agregó este activo. Indícale al titular de la cuenta que agregue el activo e inténtalo nuevamente.</string>
@@ -164,7 +164,7 @@
   <string name="this_account_does_not">Esta cuenta no posee este activo</string>
   <string name="account_does_not_accept">La cuenta no acepta este activo</string>
   <string name="you_are_about_to_receive">¡Estas por recibir un activo!</string>
-  <string name="you_are_about_to_receive_description"><![CDATA[Estas por recibir un activo en <b>%1$s</b>.]]></string>
+  <string name="you_are_about_to_receive_description"><![CDATA[Estas por recibir un activo en <b>%1$s</b>. ¿Quieres agregar este activo a esta cuenta para poder recibirlo?]]></string>
   <string name="min_transaction_error">Error en el mínimo de la transacción</string>
   <string name="you_need_at_least">Necesitas al menos <annotation replacement="min_balance"> </annotation> Algos para agregar este activo</string>
   <string name="your_accounts_do_not">Tus cuentas no poseen este activo</string>
@@ -207,7 +207,7 @@
   </string>
   <string name="ledger_info_ledger_second_paragraph">Cuando el tutorial llegue al momento en que debes \"seleccionar las aplicaciones que quieres instalar en tu dispositivo\", ingresa \"Algorand\" en la barra de búsqueda e instala.</string>
   <string name="ledger_info_algorand_first_paragraph">
-    <annotation url="https://www.ledger.com/start">Comienza siguiendo el tutoral completo de Ledger sobre <annotation type="bold"><annotation type="color">Cómo empezar</annotation></annotation>, que te indicará como instalar e iniciar aplicaciones en tu dispositivo Ledger.</annotation>
+    <annotation url="https://www.ledger.com/start">Comienza siguiendo el tutorial completo de Ledger sobre <annotation type="bold"><annotation type="color">Cómo empezar</annotation></annotation>, que te indicará como instalar e iniciar aplicaciones en tu dispositivo Ledger.</annotation>
   </string>
   <string name="ledger_info_algorand_second_paragraph">Si aún no instalaste la aplicación <annotation type="bold">Algorand</annotation> en tu dispositivo Ledger, cuando el tutorial llegue al momento en que debes \"seleccionar las aplicaciones que quieres instalar en tu dispositivo\", ingresa \"Algorand\" en la barra de búsqueda e instala.</string>
   <string name="error_connection_title">Error de conexión</string>
@@ -255,7 +255,7 @@
   <string name="edit">Editar</string>
   <string name="transactions">Transacciones</string>
   <string name="no_transaction_yet">Sin transacciones todavía</string>
-  <string name="no_transaction_have">No se han realizado transacciones con este activo</string>
+  <string name="no_transaction_have">No se han realizado transacciones con este activo.</string>
   <string name="rewards_since_last">%1$s recompensas desde la última transacción</string>
   <string name="choose_asset">Elegir activo</string>
   <string name="preview_send_asset">Vista previa del envío del activo</string>
@@ -296,8 +296,8 @@
   <string name="replace_your_account">Reemplaza tu cuenta de Ledger con un nuevo dispositivo Ledger</string>
   <string name="replace_your_accounts">Reemplaza la clave secreta de tu cuenta con un dispositivo Ledger.</string>
   <string name="what_to_expect">Qué puedes esperar:</string>
-  <string name="future_transactions_will_be">Las transacciones futuras serán firmadas por su nuevo dispositivo Ledger.</string>
-  <string name="this_account">La clave secreta de esta cuenta ya no servirá para esta cuenta.</string>
+  <string name="future_transactions_will_be">Las transacciones futuras serán firmadas por el nuevo dispositivo Ledger.</string>
+  <string name="this_account">La frase secreta de esta cuenta ya no servirá para esta cuenta.</string>
   <string name="your_old_ledger">Su antiguo dispositivo Ledger ya no funcionará con esta cuenta.</string>
   <string name="your_account_s_public">La clave pública, los saldos y la configuración no cambiarán.</string>
   <string name="add_account">Agregar cuenta</string>
@@ -319,8 +319,8 @@
   <string name="algorand_app_is_locked">Se bloqueó la aplicación de Algorand</string>
   <string name="too_many_pin_attempts">Demasiados intentos para cargar el PIN</string>
   <string name="reset_all_data">Restaurar toda la información</string>
-  <string name="this_ledger_device">Este dispositivo Ledger puede firmar transacciones para las siguientes cuentas. Selecciona las cuentas para agregar a su monedero Algorand.</string>
-  <string name="the_connected_ledger">El dispositivo Ledger conectado no puede firmar transacciones para esta cuenta. Para poder hacerlo, conéctate a <annotation replacement="auth_address"> </annotation></string>
+  <string name="this_ledger_device">Este dispositivo Ledger puede firmar transacciones para las siguientes cuentas. Selecciona las cuentas para agregar al monedero Algorand.</string>
+  <string name="the_connected_ledger">El dispositivo Ledger conectado no puede firmar transacciones para esta cuenta. Para poder hacerlo, conecta <annotation replacement="auth_address"> </annotation></string>
   <string name="this_account_has">Esta cuenta cambió su clave. Para poder firmar transacciones, recupera esta cuenta con la frase secreta o un dispositivo Ledger.</string>
   <string name="auth_account_address">Autorizar dirección de la cuenta</string>
   <string name="pair_your_new_ledger">Emparejar el nuevo dispositivo Ledger</string>
@@ -343,17 +343,17 @@
   <string name="pair_an_account">Emparejar una cuenta respaldada por un dispositivo Ledger</string>
   <string name="create_new_account">Crear una nueva cuenta</string>
   <string name="generate_an_account">Generar una cuenta con una nueva dirección y clave secreta</string>
-  <string name="watch_account">Observar cuenta</string>
+  <string name="watch_account">Cuenta en observación</string>
   <string name="follow_the_account">Supervisa las transacciones de una cuenta con solo la dirección</string>
   <string name="new_uppercase">NUEVO</string>
-  <string name="this_account_is_rekeyed"> &gt;Esta cuenta cambió de clave. No puedes firmar transacciones con esta cuenta.</string>
+  <string name="this_account_is_rekeyed">Esta cuenta cambió de clave. No puedes firmar transacciones con esta cuenta.</string>
   <string name="receive">Recibir</string>
   <string name="paste_address_or">Pegar dirección o escanear QR</string>
   <string name="set_theme">Establecer Tema</string>
   <string name="system_default">Sistema Por Defecto</string>
-  <string name="light">Luz</string>
+  <string name="light">Claro</string>
   <string name="dark">Oscuro</string>
-  <string name="privacy_policy">la Política de Privacidad</string>
+  <string name="privacy_policy">Política de Privacidad</string>
   <plurals name="min_ago">
     <item quantity="one">Hace %1$s minuto</item>
     <item quantity="other">Hace %1$s minutos</item>
@@ -390,7 +390,7 @@
   <string name="continue_text">Continuar</string>
   <string name="dont_show_this_again">No volver a mostrar</string>
   <string name="maximum_balance">Saldo máximo</string>
-  <string name="rekeyed_maximum_error_message">Para poder enviar el saldo máximo desde una cuenta a la que se le cambió la clave, debes mantener un saldo mínimo de <annotation replacement="min_balance">min_balance_placeholder</annotation> Algos. Esto sirve para asegurarte de que nada cambie en tu cuenta con clave nueva. \n \n El monto de tu transacción se actualizará automáticamente para reflejar este cambio. Obtendrás una vista previa de la transacción en el siguiente paso.</string>
+  <string name="rekeyed_maximum_error_message">Para enviar el saldo máximo desde una cuenta a la que se le cambió la clave, debes mantener un saldo mínimo de <annotation replacement="min_balance">min_balance_placeholder</annotation> Algos. Esto sirve para asegurarte de que nada cambie en tu cuenta con clave nueva. \n \n El monto de tu transacción se actualizará automáticamente para reflejar este cambio. Obtendrás una vista previa de la transacción en el siguiente paso.</string>
   <string name="support_center">Centro de asistencia</string>
   <string name="when_sending_to_an_address">Al enviar a una dirección por primera vez, resulta útil enviar una pequeña transacción de prueba antes de enviar una suma importante.</string>
   <string name="exchanges_change_their">Las plataformas de intercambio cambian sus direcciones de depósito con frecuencia y es posible que las direcciones de intercambio guardadas ya no estén en uso. <annotation custom="highlight_color"> Asegúrate de enviar a la dirección correcta. </annotation></string>
@@ -401,7 +401,7 @@
   <string name="recovery_passphrase">Frase secreta de recuperación</string>
   <string name="select_word">Selecciona la palabra nro. <annotation replacement="word_number">wordNumberPlaceholder</annotation></string>
   <string name="back_up_your_account">Respalda tu cuenta con una frase secreta de recuperación</string>
-  <string name="without_your_recovery">Si no tienes la frase secreta de recuperación y pierdes tu dispositivo, eliminas la aplicación o pierdes tu teléfono, perderás permanentemente el acceso a tu cuenta de Algorand.</string>
+  <string name="without_your_recovery">Si no tienes tu frase secreta de recuperación y pierdes tu dispositivo o eliminas la aplicación perderás permanentemente el acceso a tu cuenta de Algorand.</string>
   <string name="backup_now">Respaldar ahora</string>
   <string name="prepare_to_write">Prepárate para escribir la frase secreta de recuperación</string>
   <string name="im_ready_to_begin">Estoy listo para empezar</string>
@@ -412,14 +412,14 @@
   <string name="finish_account_creation">Finalizar la creación de la cuenta</string>
   <string name="welcome_to_algorand">Bienvenido al monedero de Algorand</string>
   <string name="i_want_to_create">Quiero crear una nueva cuenta Algorand</string>
-  <string name="recover_with_passphrase">Recuperar con la frase secreta</string>
+  <string name="recover_with_passphrase">Recuperar cuenta con la frase secreta</string>
   <string name="i_already_have">Ya tengo una cuenta</string>
   <string name="create_a_new">Crear una nueva cuenta Algorand</string>
   <string name="use_your_ledger">Usa tu cuenta Ledger desde la aplicación de Algorand</string>
   <string name="recover">Recuperar</string>
   <string name="enter_your_passphrase">Ingresa tu frase secreta</string>
-  <string name="the_last_copied_text">El último texto copiado no es una frase secreta válida de 25 palabras. Copia una frase secreta válida y prueba de nuevo.</string>
-  <string name="make_sure_to_record">Asegúrate de anotar estas palabras en el orden correcto utilizando los números correspondientes.</string>
+  <string name="the_last_copied_text">El último texto copiado no es una frase secreta válida de 25 palabras. Copia una frase secreta válida y vuelve a intentarlo.</string>
+  <string name="make_sure_to_record">Asegúrate de anotar estas palabras en el orden correcto, utilizando los números correspondientes.</string>
   <string name="this_6_digit_pin">Necesitarás este PIN de 6 dígitos para utilizar el monedero de Algorand. Recomendamos encarecidamente crear un PIN para aumentar la seguridad del monedero en caso de que te roben el teléfono.</string>
   <string name="increase_your_security">Aumenta la seguridad con un PIN</string>
   <string name="name_your_account">Ingresa un nombre para tu cuenta</string>
@@ -444,10 +444,10 @@
   <string name="paste_full_passphrase">Pegar la frase secreta completa</string>
   <string name="verify_recovery_passphrase">Verificar respaldo de la frase secreta de recuperación</string>
   <string name="please_enter_a_destination">Ingresa una dirección de destino</string>
-  <string name="transacting_tips">Consejos sobre transacciones</string>
+  <string name="transacting_tips">Sugerencias para transacciones</string>
   <string name="the_only_way_to">La única manera de recuperar una cuenta de Algorand es con esta frase de recuperación.\n\n<annotation font="publicsans_regular_italic"><annotation custom="warning_color"><annotation type="bold">Advertencia</annotation>: No compartas esta frase de recuperación con nadie, ya que concede acceso completo a tu cuenta.</annotation></annotation></string>
-  <string name="monitor_activity_of">Supervisa la actividad de una cuenta sin necesidad de tener la frase secreta. Esto es útil para supervisar los activos en almacenamiento en frío\n\n<annotation font="publicsans_regular_italic"><annotation custom="warning_color"><annotation type="bold">Advertencia</annotation>: Si no tienes la frase de recuperación correspondiente, no envíes activos a esta cuenta.</annotation></annotation></string>
-  <string name="i_want_a_new">Quiero una cuenta nueva con una dirección y frase de recuperación nuevas.</string>
+  <string name="monitor_activity_of">Supervisa la actividad de una cuenta sin necesidad de tener la frase secreta. Esto es útil para monitorear activos en almacenamiento en frío\n\n<annotation font="publicsans_regular_italic"><annotation custom="warning_color"><annotation type="bold">Advertencia</annotation>: Si no tienes la frase de recuperación correspondiente, no envíes activos a esta cuenta.</annotation></annotation></string>
+  <string name="i_want_a_new">Quiero una nueva cuenta con una nueva dirección y nueva frase de recuperación.</string>
   <string name="i_want_to_monitor">Quiero observar una cuenta en almacenamiento en frío.</string>
   <string name="i_want_to_create_an">Quiero crear una cuenta respaldada por mi monedero físico Ledger.</string>
   <string name="you_are_creating">Estás creando una vista de solo lectura de una cuenta de Algorand. Si envías activos a esta cuenta y no tienes la frase de recuperación correspondiente, esos activos se perderán.</string>
@@ -455,7 +455,7 @@
   <string name="keep_this_recovery_passphrase">Guarda esta frase de recuperación en un lugar seguro al que solo tú puedas acceder. No pierdas esta frase de recuperación.</string>
   <string name="learn_more">Más información</string>
   <string name="no_contact_found">No se encontraron contactos</string>
-  <string name="you_can_make_the">Si agregas nuevos contactos puedes acelerar el envío de activos.</string>
+  <string name="you_can_make_the">Al agregar nuevos contactos puedes acelerar el proceso de envío de activos.</string>
   <string name="no_contact_found_description">Intenta con un nombre de contacto diferente.</string>
   <string name="verify_account_addresses">Verificar direcciones de cuenta a través de Ledger</string>
   <string name="the_following_account">Las siguientes direcciones de cuenta se mostrarán en tu dispositivo Ledger. Compara y verifica cuidadosamente cada dirección para finalizar el emparejamiento del dispositivo.</string>
@@ -489,6 +489,73 @@
   <string name="algos">Algos</string>
   <string name="algo_rewards">Recompensas de Algo</string>
   <string name="minimum_balance_required">Saldo mínimo requerido</string>
-  <string name="transaction_maximum_error_message_singular">Como tienes <annotation replacement="asset_count">asset_count_placeholder</annotation> activo(s) más en esta cuenta (<annotation replacement="account_name">account_name_placeholder</annotation>), la blockchain de Algorand requiere que mantengas un saldo mínimo de <annotation replacement="min_balance">min_balance_placeholder</annotation> Algos.\n\nAl seleccionar Continuar, el monto de la transacción se actualizará automáticamente para reflejar este cambio. Tendrás una vista previa de este cambio en el siguiente paso.</string>
-  <string name="transaction_maximum_error_message_plural">Como tienes <annotation replacement="asset_count">asset_count_placeholder</annotation> activo(s) más en esta cuenta (<annotation replacement="account_name">account_name_placeholder</annotation>), la blockchain de Algorand requiere que mantengas un saldo mínimo de <annotation replacement="min_balance">min_balance_placeholder</annotation> Algos.\n\nAl seleccionar Continuar, el monto de la transacción se actualizará automáticamente para reflejar este cambio. Tendrás una vista previa de este cambio en el siguiente paso.</string>
+  <string name="transaction_maximum_error_message_singular">Debido a que tienes <annotation replacement="asset_count">asset_count_placeholder</annotation> activo más en esta cuenta (<annotation replacement="account_name">account_name_placeholder</annotation>), la blockchain de Algorand requiere que mantengas un saldo mínimo de <annotation replacement="min_balance">min_balance_placeholder</annotation> Algos.\n\nAl seleccionar Continuar, el monto de la transacción se actualizará automáticamente para reflejar este cambio. Tendrás una vista previa de este cambio en el siguiente paso.</string>
+  <string name="transaction_maximum_error_message_plural">Debido a que tienes <annotation replacement="asset_count">asset_count_placeholder</annotation> activos más en esta cuenta (<annotation replacement="account_name">account_name_placeholder</annotation>), la blockchain de Algorand requiere que mantengas un saldo mínimo de <annotation replacement="min_balance">min_balance_placeholder</annotation> Algos.\n\nAl seleccionar Continuar, el monto de la transacción se actualizará automáticamente para reflejar este cambio. Tendrás una vista previa de este cambio en el siguiente paso.</string>
+  <string name="you_have_not_connected">Aún no has conectado ninguna aplicación.</string>
+  <string name="wallet_connect_sessions">Sesiones de WalletConnect</string>
+  <string name="wallet_wants_to_connect"><annotation type="bold"><annotation replacement="app_name">app_name_placeholder</annotation></annotation> quiere conectarse a tu cuenta</string>
+  <string name="you_do_not_have_any">No tienes ninguna cuenta que WalletConnect pueda conectar.</string>
+  <string name="disconnect">Desconectar</string>
+  <string name="account_balance">Saldo de la cuenta</string>
+  <string name="show_more_info">Mostrar más información</string>
+  <string name="raw_txns">Txns crudas</string>
+  <string name="show_raw_transaction">Mostrar transacción cruda</string>
+  <string name="algoexplorer">AlgoExplorer</string>
+  <string name="show_explorer">Mostrar explorador</string>
+  <string name="asset_url">URL del activo</string>
+  <string name="show_asset_url">Mostrar URL del activo</string>
+  <string name="asset_metadata">Metadatos del activo</string>
+  <string name="show_asset_metadata">Mostrar metadatos del activo</string>
+  <string name="rekey_to">Cambiar la clave a</string>
+  <string name="payment_transfer_formatted">Pago a %1$s</string>
+  <string name="asset_transfer_formatted">Transferencia de activos a %1$s</string>
+  <string name="opt_in_asset_formatted">Suscribirse al activo nro.%1$s</string>
+  <string name="possible_opt_in_formatted">Posible suscripción al activo nro. %1$s</string>
+  <string name="application_call_formatted">Llamada de aplicación a nro. %1$s</string>
+  <string name="decline">Rechazar</string>
+  <string name="transaction_request">Solicitud de transacción</string>
+  <string name="raw_transaction">Transacción cruda</string>
+  <string name="the_user_rejected_the_request">El usuario rechazó la solicitud.</string>
+  <string name="the_requested_operation_and">La operación y/o cuenta solicitada no ha sido autorizada por el usuario.</string>
+  <string name="the_wallet_does_not_support">El monedero no admite la operación solicitada.</string>
+  <string name="the_input_provided_is_invalid">La entrada ingresada no es válida.</string>
+  <string name="there_is_not_any_valid">No hay ninguna cuenta válida para firmar esta transacción.</string>
+  <string name="an_error_occurred_while_signing">Ocurrió un error al firmar la transacción.</string>
+  <string name="transaction_succesfully_confirmed">Transacción confirmada con éxito</string>
+  <string name="transaction_rejected">Transacción rechazada.</string>
+  <string name="assets_opt_in_request">Solicitud de suscripción de activos</string>
+  <string name="transfer_asset_request">Solicitud de transferencia de activos</string>
+  <string name="sender">Remitente</string>
+  <string name="multiple_transaction_request">Solicitud de varias transacciones</string>
+  <string name="multiple_transactions_formatted">%1$d transacciones</string>
+  <string name="unsigned_transactions">Transacciones sin firmar</string>
+  <string name="atomic_transaction_request">Solicitud de transacción atómica</string>
+  <string name="all_transactions_formatted">Todas las transacciones ( %1$d )</string>
+  <string name="application_id">ID de aplicación</string>
+  <string name="this_transaction_will_transfer">Esta transacción transferirá la propiedad de esta cuenta. Tu frase de recuperación actual ya no otorgará acceso a estos activos.</string>
+  <string name="the_following_transaction_requests">Las siguientes solicitudes de transacción provienen de aplicaciones externas que Algorand Wallet no controla. Asegúrate de revisar estas transacciones detenidamente antes de firmar, ya que las transacciones son irreversibles.</string>
+  <string name="got_it">¡Entendido!</string>
+  <string name="once_confirmed_the_connected_application">Una vez confirmada, la aplicación conectada puede enviar estas transacciones a su criterio.  Asegúrate de revisar estas transacciones detenidamente, ya que este proceso es irreversible.</string>
+  <string name="are_you_sure_question_mark">¿Estás seguro?</string>
+  <string name="this_transaction_is_sending">Esta transacción envía la totalidad de tu saldo en Algo.</string>
+  <string name="close_asset_to">Cierre de activo para</string>
+  <string name="this_transaction_is_sending_asset">Esta transacción envía la totalidad de tu saldo %1$s y eliminará %1$s de su cuenta.</string>
+  <string name="this_transaction_fee_is_higher">Esta tarifa de transacción es más alta que la tarifa habitual de 0,01 Algos.</string>
+  <string name="wallet_connect_is_not_reachable">WalletConnect no está disponible en este momento. Inténtalo más tarde.</string>
+  <string name="the_recipient_address_is_not">La clave no es válida, asegúrate de tener la clave correcta.</string>
+  <string name="application_opt_in_formatted">Suscripción a la aplicación %1$s</string>
+  <string name="application_close_to_formatted">Cierre de aplicación a %1$s</string>
+  <string name="connected_with_formatted">Conectado con %1$s</string>
+  <string name="algos_amount_formatted">%1$s Algos</string>
+  <string name="close_remainder_to">Cierre del resto a</string>
+  <string name="app_call">Solicitud de llamada de aplicación</string>
+  <string name="this_transaction_will_be">Esta transacción se enviará más adelante.</string>
+  <plurals name="confirm_transactions">
+    <item quantity="one">Confirmar</item>
+    <item quantity="other">Confirmar todas las transacciones</item>
+  </plurals>
+  <plurals name="transaction_requests_formatted">
+    <item quantity="one">Solicitud de transacción (%1$d)</item>
+    <item quantity="other">Solicitudes de transacción (%1$d)</item>
+  </plurals>
 </resources>

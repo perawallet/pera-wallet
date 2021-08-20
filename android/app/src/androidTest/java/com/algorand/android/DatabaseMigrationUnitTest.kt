@@ -9,7 +9,10 @@ import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
 import com.algorand.android.database.AlgorandDatabase
+import com.algorand.android.models.WalletConnectPeerMeta
+import com.algorand.android.models.WalletConnectSessionMeta
 import com.algorand.android.utils.defaultNodeList
+import com.google.gson.Gson
 import java.io.IOException
 import org.junit.After
 import org.junit.Assert
@@ -21,9 +24,14 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class DatabaseMigrationUnitTest {
 
-    private val allMigrations =
-        listOf(AlgorandDatabase.MIGRATION_3_4, AlgorandDatabase.MIGRATION_4_5, AlgorandDatabase.MIGRATION_5_6)
+    private val allMigrations = listOf(
+        AlgorandDatabase.MIGRATION_3_4,
+        AlgorandDatabase.MIGRATION_4_5,
+        AlgorandDatabase.MIGRATION_5_6,
+        AlgorandDatabase.MIGRATION_6_7
+    )
     private var migratedDb: SupportSQLiteDatabase? = null
+    private lateinit var gson: Gson
 
     @Rule
     @JvmField
@@ -37,6 +45,7 @@ class DatabaseMigrationUnitTest {
     @Test
     @Throws(IOException::class)
     fun migrate3ToLastVersion() {
+        gson = Gson()
         migratedDb = helper.createDatabase(TEST_DB, 3).apply {
             insertNodeToDatabaseV3()
             insertUser("FirstPublicKey")
@@ -70,9 +79,79 @@ class DatabaseMigrationUnitTest {
         Assert.assertTrue("Users Count After Migration Not Successful", cursor.count == 2)
     }
 
+    @Test
+    fun insertWalletConnectSessionToDatabase() {
+        migratedDb!!.insertWalletConnectSession()
+        val queryString = "SELECT * FROM WalletConnectSessionEntity"
+        val cursor = migratedDb!!.query(queryString, null)
+        Log.d(TAG, "WalletConnectSessionEntity DB :${DatabaseUtils.dumpCursorToString(cursor)}")
+        Log.d(TAG, "Session count in Database: ${cursor.count}")
+        Assert.assertTrue("WalletConnectSession Count After Migration Not Successful", cursor.count == 1)
+    }
+
+    @Test
+    fun insertWalletConnectSessionHistoryToDatabase() {
+        migratedDb!!.insertWalletConnectSessionHistory()
+        val queryString = "SELECT * FROM WalletConnectSessionHistoryEntity"
+        val cursor = migratedDb!!.query(queryString, null)
+        Log.d(TAG, "WalletConnectSessionHistoryEntity DB :${DatabaseUtils.dumpCursorToString(cursor)}")
+        Log.d(TAG, "Session count in Database: ${cursor.count}")
+        Assert.assertTrue("WalletConnectSessionHistory Count After Migration Not Successful", cursor.count == 1)
+    }
+
     @After
     fun closeMigratedDatabase() {
         migratedDb?.close()
+    }
+
+    private fun SupportSQLiteDatabase.insertWalletConnectSession() {
+        val peerMetaJson = gson.toJson(WalletConnectPeerMeta("name", "url", "description", listOf("icon_url")))
+        val sessionMetaJson = gson.toJson(WalletConnectSessionMeta("bridge", "key", "topic", "version"))
+        val address = "KFQMT4AK4ASIPAN23X36T3REP6D26LQDMAQNSAZM3DIEG2HTVKXEF76AP4"
+        execSQL(
+            """
+                INSERT INTO WalletConnectSessionEntity (
+                    id, 
+                    peer_meta,
+                    wc_session,
+                    date_time_stamp, 
+                    connected_account_public_key,
+                    is_connected
+                )
+                VALUES (
+                    1625574947350,
+                    '$peerMetaJson',
+                    '$sessionMetaJson',
+                    1625574947350,
+                    '$address', 
+                    0
+                )
+            """.trimIndent()
+        )
+    }
+
+    private fun SupportSQLiteDatabase.insertWalletConnectSessionHistory() {
+        val peerMetaJson = gson.toJson(WalletConnectPeerMeta("name", "url", "description", listOf("icon_url")))
+        val sessionMetaJson = gson.toJson(WalletConnectSessionMeta("bridge", "key", "topic", "version"))
+        val address = "KFQMT4AK4ASIPAN23X36T3REP6D26LQDMAQNSAZM3DIEG2HTVKXEF76AP4"
+        execSQL(
+            """
+                INSERT INTO WalletConnectSessionHistoryEntity (
+                    id, 
+                    peer_meta,
+                    wc_session,
+                    creation_date_time_stamp, 
+                    connected_account_public_key
+                )
+                VALUES (
+                    1625574947350,
+                    '$peerMetaJson',
+                    '$sessionMetaJson', 
+                    1625574947350,
+                    '$address'
+                )
+            """.trimIndent()
+        )
     }
 
     private fun SupportSQLiteDatabase.insertUser(publicKey: String) {

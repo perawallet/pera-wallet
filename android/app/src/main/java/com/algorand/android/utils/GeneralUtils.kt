@@ -157,3 +157,12 @@ fun EditText.addFilterNotLetters() {
 fun Context.finishAffinityFromFragment() {
     ((this as? ViewComponentManager.FragmentContextWrapper)?.fragment?.activity)?.finishAffinity()
 }
+
+fun String.decodeBase64(): ByteArray? {
+    return try {
+        Base64.decode(this, Base64.DEFAULT)
+    } catch (exception: Exception) {
+        // TODO Log firebase
+        null
+    }
+}

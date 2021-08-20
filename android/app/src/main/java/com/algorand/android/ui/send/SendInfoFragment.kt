@@ -43,6 +43,7 @@ import com.algorand.android.ui.common.assetselector.AssetSelectionBottomSheet
 import com.algorand.android.ui.common.assetselector.AssetSelectionBottomSheet.Companion.ASSET_SELECTION_KEY
 import com.algorand.android.ui.common.warningconfirmation.BaseMaximumBalanceWarningBottomSheet.Companion.MAX_BALANCE_WARNING_RESULT
 import com.algorand.android.ui.contacts.selection.ContactSelectionBottomSheet.Companion.CONTACT_SELECTION_KEY
+import com.algorand.android.ui.qr.QrCodeScannerFragment
 import com.algorand.android.ui.qr.QrCodeScannerFragment.Companion.QR_SCAN_RESULT_KEY
 import com.algorand.android.ui.send.SendInfoFragmentDirections.Companion.actionSendInfoFragmentToAccountSelectionBottomSheet
 import com.algorand.android.ui.send.SendInfoFragmentDirections.Companion.actionSendInfoFragmentToAssetSelectionBottomSheet
@@ -304,7 +305,7 @@ class SendInfoFragment : TransactionBaseFragment(R.layout.fragment_send_info) {
             sendInfoViewModel.fetchToAccountInformation(address)
         } else {
             hideLoading()
-            context?.showAlertDialog(getString(R.string.warning), getString(R.string.key_not_valid))
+            showGlobalError(getString(R.string.the_recipient_address_is_not), getString(R.string.error))
         }
     }
 
@@ -445,7 +446,11 @@ class SendInfoFragment : TransactionBaseFragment(R.layout.fragment_send_info) {
 
         override fun onScanQrCodeClick() {
             binding.addressInfoView.hideKeyboard()
-            nav(SendInfoFragmentDirections.actionSendInfoFragmentToPublicKeyQrScannerFragment())
+            nav(
+                SendInfoFragmentDirections.actionSendInfoFragmentToPublicKeyQrScannerFragment(
+                    listOf(QrCodeScannerFragment.ScanReturnType.ADDRESS_NAVIGATE_BACK).toTypedArray()
+                )
+            )
         }
 
         override fun onContactsClick() {

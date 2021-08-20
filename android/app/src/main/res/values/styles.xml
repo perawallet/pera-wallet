@@ -411,6 +411,18 @@
         <item name="android:layout_marginEnd">20dp</item>
     </style>
 
+    <style name="HorizontalDivider.List">
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_marginTop">16dp</item>
+    </style>
+
+    <style name="HorizontalDivider.WalletConnectCards">
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_marginTop">@dimen/wallet_connect_card_divider_margin</item>
+    </style>
+
     <style name="BottomSheetPrimary" parent="@style/Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/bottom_sheet_dialog_fragment_primary_background
         </item>
@@ -514,6 +526,21 @@
     <style name="ChartPriceTagStyle">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/secondaryTextColor</item>
+    </style>
+
+    <style name="WalletConnectWarningTextStyle">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:background">@drawable/bg_orange_14_12dp_radius</item>
+        <item name="android:drawablePadding">12dp</item>
+        <item name="android:fontFamily">@font/publicsans_medium</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:textColor">@color/orange_D9</item>
+        <item name="android:textSize">12sp</item>
+        <item name="drawableStartCompat">@drawable/ic_warning</item>
     </style>
 
 </resources>

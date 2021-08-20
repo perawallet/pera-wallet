@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2019 Algorand, Inc.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~  limitations under the License
+  ~
+  -->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="@drawable/bg_small_shadow"
+    tools:layout_height="wrap_content"
+    tools:layout_width="match_parent"
+    tools:padding="20dp"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <ImageView
+        android:id="@+id/appIconImageView"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:background="@drawable/bg_wallet_connect_connection_icon_round"
+        android:padding="1dp"
+        android:src="@drawable/ic_algo_green_round"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/appNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:drawablePadding="6dp"
+        android:fontFamily="@font/publicsans_medium"
+        android:maxLines="1"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@+id/appIconImageView"
+        app:layout_constraintTop_toTopOf="@+id/appIconImageView"
+        tools:drawableEnd="@drawable/ic_verified_asset"
+        tools:text="Algorand" />
+
+    <TextView
+        android:id="@+id/appMessagePreviewTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/publicsans_regular"
+        android:maxLines="2"
+        android:textColor="@color/gray_8A"
+        android:textSize="14sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/showMoreInfoTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@+id/appIconImageView"
+        app:layout_constraintTop_toBottomOf="@+id/appNameTextView"
+        app:layout_goneMarginBottom="4dp"
+        tools:text="@tools:sample/lorem[12]"
+        tools:visibility="visible" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/showMoreInfoTextView"
+        style="@style/TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/publicsans_medium"
+        android:minHeight="0dp"
+        android:paddingHorizontal="0dp"
+        android:text="@string/show_more_info"
+        android:textColor="@color/green_0D"
+        android:textSize="14sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/appNameTextView"
+        app:layout_constraintTop_toBottomOf="@+id/appMessagePreviewTextView"
+        tools:visibility="visible" />
+
+</merge>

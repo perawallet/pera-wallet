@@ -41,6 +41,7 @@ private const val NOTIFICATION_REFRESH_DATE_KEY = "notification_refresh_date_key
 private const val CURRENCY_PREFERENCE_KEY = "currency_preference_key"
 private const val APP_REVIEW_START_COUNT_KEY = "app_review_start_count_key"
 private const val REGISTER_SKIP_KEY = "register_skip_key"
+private const val FIRST_REQUEST_WALLET_CONNECT_REQUEST_KEY = "first_request_wallet_connect_request"
 const val SETTINGS = "algorand_settings"
 
 // </editor-fold>
@@ -220,6 +221,18 @@ fun SharedPreferences.setRegisterSkip() {
 
 fun SharedPreferences.getRegisterSkip(): Boolean {
     return getBoolean(REGISTER_SKIP_KEY, false)
+}
+
+// </editor-fold>
+
+// <editor-fold defaultstate="collapsed" desc="Wallet Connect">
+
+fun SharedPreferences.setFirstWalletConnectRequestBottomSheetShown() {
+    edit().putBoolean(FIRST_REQUEST_WALLET_CONNECT_REQUEST_KEY, true).apply()
+}
+
+fun SharedPreferences.getFirstWalletConnectRequestBottomSheetShown(): Boolean {
+    return getBoolean(FIRST_REQUEST_WALLET_CONNECT_REQUEST_KEY, false)
 }
 
 // </editor-fold>

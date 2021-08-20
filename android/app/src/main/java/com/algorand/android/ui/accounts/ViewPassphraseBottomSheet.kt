@@ -15,6 +15,7 @@ package com.algorand.android.ui.accounts
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.navArgs
+import com.algorand.algosdk.mobile.Mobile
 import com.algorand.android.R
 import com.algorand.android.core.AccountManager
 import com.algorand.android.core.DaggerBaseBottomSheet
@@ -26,7 +27,6 @@ import com.algorand.android.utils.setupMnemonic
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import mnemonic.Mnemonic
 
 @AndroidEntryPoint
 class ViewPassphraseBottomSheet : DaggerBaseBottomSheet(
@@ -57,7 +57,7 @@ class ViewPassphraseBottomSheet : DaggerBaseBottomSheet(
     private fun setupPassphraseLayout() {
         accountManager.getAccount(args.accountPublicKey)?.getSecretKey()?.let {
             try {
-                val mnemonic = Mnemonic.fromPrivateKey(it) ?: throw Exception("Mnemonic cannot be null.")
+                val mnemonic = Mobile.mnemonicFromPrivateKey(it) ?: throw Exception("Mnemonic cannot be null.")
                 setupMnemonic(mnemonic, binding.passphraseLeftColumnTextView, binding.passphraseRightColumnTextView)
             } catch (exception: Exception) {
                 navBack()

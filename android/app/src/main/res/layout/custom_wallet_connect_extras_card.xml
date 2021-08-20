@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2019 Algorand, Inc.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~  limitations under the License
+  ~
+  -->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="@drawable/bg_small_shadow"
+    tools:layout_height="wrap_content"
+    tools:layout_width="match_parent"
+    tools:padding="20dp"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <TextView
+        android:id="@+id/noteLabelTextView"
+        style="@style/TextAppearance.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/note"
+        app:layout_constraintBottom_toBottomOf="@id/noteTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/noteTextView" />
+
+    <TextView
+        android:id="@+id/noteTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/publicsans_medium"
+        android:gravity="end"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/noteDividerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/labelBarrier"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@tools:sample/lorem[50]" />
+
+    <View
+        android:id="@+id/noteDividerView"
+        style="@style/HorizontalDivider.WalletConnectCards"
+        app:layout_constraintBottom_toTopOf="@+id/rawTxnsTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/noteTextView" />
+
+    <TextView
+        android:id="@+id/rawTxnsLabelTextView"
+        style="@style/TextAppearance.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/raw_txns"
+        app:layout_constraintBottom_toBottomOf="@id/rawTxnsTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/rawTxnsTextView" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/rawTxnsTextView"
+        style="@style/TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
+        android:minHeight="0dp"
+        android:text="@string/show_raw_transaction"
+        android:textColor="@color/green_0D"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/rawTxnsDividerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/noteDividerView"
+        app:layout_goneMarginTop="0dp" />
+
+    <View
+        android:id="@+id/rawTxnsDividerView"
+        style="@style/HorizontalDivider.WalletConnectCards"
+        app:layout_constraintBottom_toTopOf="@id/algoExplorerTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rawTxnsTextView" />
+
+    <TextView
+        android:id="@+id/algoExplorerLabelTextView"
+        style="@style/TextAppearance.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/algoexplorer"
+        app:layout_constraintBottom_toBottomOf="@id/algoExplorerTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/algoExplorerTextView" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/algoExplorerTextView"
+        style="@style/TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
+        android:minHeight="0dp"
+        android:text="@string/show_explorer"
+        android:textColor="@color/green_0D"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/algoExplorerDividerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rawTxnsDividerView" />
+
+    <View
+        android:id="@+id/algoExplorerDividerView"
+        style="@style/HorizontalDivider.WalletConnectCards"
+        app:layout_constraintBottom_toTopOf="@id/assetUrlTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/algoExplorerTextView" />
+
+    <TextView
+        android:id="@+id/assetUrlLabelTextView"
+        style="@style/TextAppearance.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/asset_url"
+        app:layout_constraintBottom_toBottomOf="@id/assetUrlTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/assetUrlTextView" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/assetUrlTextView"
+        style="@style/TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
+        android:minHeight="0dp"
+        android:text="@string/show_asset_url"
+        android:textColor="@color/green_0D"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/assetUrlDividerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/algoExplorerDividerView"
+        app:layout_goneMarginBottom="@dimen/smallshadow_bottom_margin_20dp" />
+
+    <View
+        android:id="@+id/assetUrlDividerView"
+        style="@style/HorizontalDivider.WalletConnectCards"
+        app:layout_constraintBottom_toTopOf="@id/assetMetadataTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/assetUrlTextView" />
+
+    <TextView
+        android:id="@+id/assetMetadataLabelTextView"
+        style="@style/TextAppearance.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/asset_metadata"
+        app:layout_constraintBottom_toBottomOf="@id/assetMetadataTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/assetMetadataTextView" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/assetMetadataTextView"
+        style="@style/TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
+        android:minHeight="0dp"
+        android:text="@string/show_asset_metadata"
+        android:textColor="@color/green_0D"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/assetUrlDividerView" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/labelBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="algoExplorerLabelTextView,assetMetadataLabelTextView,
+        assetUrlLabelTextView,rawTxnsLabelTextView,noteLabelTextView" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/algoExplorerGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="
+        algoExplorerLabelTextView,
+        rawTxnsDividerView,
+        algoExplorerTextView"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/noteGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="
+        noteDividerView,
+        noteLabelTextView,
+        noteTextView"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/assetUrlGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="
+        algoExplorerDividerView,
+        assetUrlLabelTextView,
+        assetUrlTextView"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/assetMetadataGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="
+        assetUrlDividerView,
+        assetMetadataLabelTextView,
+        assetMetadataTextView"
+        tools:visibility="visible" />
+
+</merge>

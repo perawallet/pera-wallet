@@ -23,6 +23,7 @@ import com.algorand.android.HomeNavigationDirections.Companion.actionGlobalAsset
 import com.algorand.android.core.TransactionManager
 import com.algorand.android.customviews.ForegroundNotificationView
 import com.algorand.android.customviews.SendReceiveTabBarView
+import com.algorand.android.models.Account
 import com.algorand.android.models.AccountCacheStatus
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.Node
@@ -31,31 +32,42 @@ import com.algorand.android.models.NotificationType
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.TransactionData
 import com.algorand.android.models.TransactionManagerResult
+import com.algorand.android.models.WCSessionRequestResult
+import com.algorand.android.models.WalletConnectSession
+import com.algorand.android.models.WalletConnectTransaction
 import com.algorand.android.ui.common.AssetActionBottomSheet
 import com.algorand.android.ui.common.assetselector.AssetSelectionBottomSheet
 import com.algorand.android.ui.lockpreference.AutoLockSuggestionManager
+import com.algorand.android.ui.wcconnection.WalletConnectConnectionBottomSheet
 import com.algorand.android.utils.DEEPLINK_AND_NAVIGATION_INTENT
 import com.algorand.android.utils.Event
+import com.algorand.android.utils.Resource
 import com.algorand.android.utils.analytics.logTapReceive
 import com.algorand.android.utils.analytics.logTapSend
 import com.algorand.android.utils.handleIntent
 import com.algorand.android.utils.inappreview.InAppReviewManager
 import com.algorand.android.utils.isNotificationCanBeShown
 import com.algorand.android.utils.preference.isPasswordChosen
+import com.algorand.android.utils.walletconnect.WalletConnectManager
+import com.algorand.android.utils.walletconnect.WalletConnectTransactionErrorProvider
+import com.algorand.android.utils.walletconnect.WalletConnectViewModel
 import com.google.firebase.analytics.FirebaseAnalytics
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlin.properties.Delegates
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : CoreMainActivity(),
     ForegroundNotificationView.ForegroundNotificationViewListener,
-    AssetActionBottomSheet.AddAssetConfirmationPopupListener {
+    AssetActionBottomSheet.AddAssetConfirmationPopupListener,
+    WalletConnectConnectionBottomSheet.Callback {
 
     val mainViewModel: MainViewModel by viewModels()
+    private val walletConnectViewModel: WalletConnectViewModel by viewModels()
 
     private var pendingIntent: Intent? = null
 
@@ -70,6 +82,12 @@ class MainActivity : CoreMainActivity(),
 
     @Inject
     lateinit var autoLockSuggestionManager: AutoLockSuggestionManager
+
+    @Inject
+    lateinit var walletConnectManager: WalletConnectManager
+
+    @Inject
+    lateinit var errorProvider: WalletConnectTransactionErrorProvider
 
     var isAppUnlocked: Boolean by Delegates.observable(false, { _, oldValue, newValue ->
         if (oldValue != newValue && newValue && isAssetSetupCompleted) {
@@ -111,6 +129,24 @@ class MainActivity : CoreMainActivity(),
         }
     }
 
+    private fun onNewSessionEvent(sessionEvent: Event<Resource<WalletConnectSession>>) {
+        sessionEvent.consume()?.use(
+            onSuccess = { onSessionConnected(it) },
+            onFailed = ::onSessionFailed,
+            onLoading = ::showProgress,
+            onLoadingFinished = ::hideProgress
+        )
+    }
+
+    private fun onSessionConnected(wcSessionRequest: WalletConnectSession) {
+        nav(HomeNavigationDirections.actionGlobalWalletConnectConnectionBottomSheet(wcSessionRequest))
+    }
+
+    private fun onSessionFailed(error: Resource.Error) {
+        val errorMessage = error.parse(this)
+        showGlobalError(errorMessage)
+    }
+
     private fun handleAssetSupportRequest(notificationMetadata: NotificationMetadata) {
         val assetInformation = notificationMetadata.getAssetDescription().convertToAssetInformation()
         AssetActionBottomSheet.show(
@@ -128,6 +164,7 @@ class MainActivity : CoreMainActivity(),
         mainViewModel.setupAutoLockManager(lifecycle)
         binding.toolbar.setNodeStatus(indexerInterceptor.currentActiveNode)
         setupSendRequestTabBarView()
+        setupWalletConnectManager()
 
         binding.foregroundNotificationView.apply {
             setListener(this@MainActivity)
@@ -221,6 +258,26 @@ class MainActivity : CoreMainActivity(),
         mainViewModel.autoLockLiveData.observe(this, autoLockManagerObserver)
 
         mainViewModel.accountBalanceSyncStatus.observe(this, assetSetupCompletedObserver)
+
+        walletConnectViewModel.requestLiveData.observe(this, ::handleWalletConnectTransactionRequest)
+
+        lifecycleScope.launch {
+            walletConnectViewModel.sessionResultFlow.collectLatest(::onNewSessionEvent)
+        }
+    }
+
+    private fun setupWalletConnectManager() {
+        lifecycle.addObserver(walletConnectManager)
+    }
+
+    private fun handleWalletConnectTransactionRequest(requestEvent: Event<Resource<WalletConnectTransaction>>?) {
+        requestEvent?.consume()?.use(
+            onSuccess = ::onNewWalletConnectTransactionRequest
+        )
+    }
+
+    private fun onNewWalletConnectTransactionRequest(transaction: WalletConnectTransaction) {
+        nav(HomeNavigationDirections.actionGlobalWalletConnectRequestNavigation(transaction))
     }
 
     private fun handleDeeplinkAndNotificationNavigation() {
@@ -239,12 +296,30 @@ class MainActivity : CoreMainActivity(),
     private fun handlePendingIntent(): Boolean {
         pendingIntent?.apply {
             if (isAssetSetupCompleted && isAppUnlocked) {
-                val handled = navController.handleIntent(this, accountCacheManager, supportFragmentManager)
+                val handled = navController.handleIntent(
+                    this,
+                    accountCacheManager,
+                    supportFragmentManager,
+                    ::handleWalletConnectDeepLink
+                )
                 pendingIntent = null
                 return handled
             }
         }
         return false
+    }
+
+    private fun handleWalletConnectDeepLink(walletConnectUrl: String) {
+        val hasValidAccountForWalletConnect = accountCacheManager.getAccountCacheWithSpecificAsset(
+            AssetInformation.ALGORAND_ID,
+            listOf(Account.Type.WATCH)
+        ).isNotEmpty()
+        if (hasValidAccountForWalletConnect) {
+            showProgress()
+            walletConnectViewModel.connectToSessionByUrl(walletConnectUrl)
+        } else {
+            showGlobalError(getString(R.string.you_do_not_have_any))
+        }
     }
 
     private fun setupSendRequestTabBarView() {
@@ -281,6 +356,19 @@ class MainActivity : CoreMainActivity(),
         mainViewModel.resetBlockPolling()
         binding.toolbar.setNodeStatus(activatedNode)
         checkIfConnectedToTestNet()
+    }
+
+    override fun onSessionRequestResult(wCSessionRequestResult: WCSessionRequestResult) {
+        handleSessionConnectionResult(wCSessionRequestResult)
+    }
+
+    private fun handleSessionConnectionResult(result: WCSessionRequestResult) {
+        with(walletConnectViewModel) {
+            when (result) {
+                is WCSessionRequestResult.ApproveRequest -> approveSession(result)
+                is WCSessionRequestResult.RejectRequest -> rejectSession(result.session)
+            }
+        }
     }
 
     companion object {

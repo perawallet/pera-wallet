@@ -21,6 +21,7 @@ import com.algorand.android.models.Result
 import com.algorand.android.models.TransactionsResponse
 import com.algorand.android.network.AlgodApi
 import com.algorand.android.network.IndexerApi
+import com.algorand.android.network.request
 import com.algorand.android.network.safeApiCall
 import com.algorand.android.utils.AccountCacheManager
 import javax.inject.Inject
@@ -155,6 +156,22 @@ class AccountRepository @Inject constructor(
                 Result.Error(Exception())
             }
         }
+    }
+
+    suspend fun fetchAndSetAssetDescription(assetId: Long): Result<Unit> {
+        return with(requestFetchAndSetAssetDescription(assetId)) {
+            if (this is Result.Success) {
+                val assetParam = data.asset?.assetParams ?: return Result.Error(Exception())
+                accountCacheManager.setAssetDescription(assetId, assetParam)
+                Result.Success(Unit)
+            } else {
+                Result.Error((this as Result.Error).exception)
+            }
+        }
+    }
+
+    private suspend fun requestFetchAndSetAssetDescription(assetId: Long) = request {
+        indexerApi.getAssetDescription(assetId)
     }
 
     companion object {

@@ -29,7 +29,7 @@
   <string name="share_via">Teilen über</string>
   <string name="ok">OK</string>
   <string name="question_format">Frage %1$d von %2$d</string>
-  <string name="select_passphrase_format">Wählen Sie das %1$s Wort Ihrer Passphrase</string>
+  <string name="select_passphrase_format">Wählen Sie das %1$s. Wort Ihrer Passphrase</string>
   <string name="verify_recovery_phrase">Wiederherstellungsphrase überprüfen</string>
   <string name="next">Weiter</string>
   <string name="please_name_your_account">Bitte benennen Sie Ihr Konto</string>
@@ -42,7 +42,7 @@
   <string name="verify">Verifizieren</string>
   <string name="close">Schließen</string>
   <string name="account_verified">Konto verifiziert</string>
-  <string name="account_verified_message">Welcome bei <annotation type="bold">Algorand!</annotation>\nIhr Konto ist jetzt aktiviert.</string>
+  <string name="account_verified_message">Welcome bei <annotation type="bold">Algorand!</annotation>\nIhr Konto kann jetzt verwendet werden.</string>
   <string name="accounts">Konten</string>
   <string name="settings">Einstellungen</string>
   <string name="history">Verlauf</string>
@@ -63,7 +63,7 @@
   <string name="contact_name">Kontaktname</string>
   <string name="paste_hash_or_scan_qr"># einfügen oder QR-Code scannen</string>
   <string name="contact_info">Kontaktinformationen</string>
-  <string name="edit_contact">Kontakt ändern</string>
+  <string name="edit_contact">Kontakt bearbeiten</string>
   <string name="scan_qr">QR-Code scannen</string>
   <string name="request">Anfordern</string>
   <string name="view_passphrase">Passphrase anzeigen</string>
@@ -140,7 +140,7 @@
   <string name="asset">Asset</string>
   <string name="assets">Assets</string>
   <string name="send_format">%1$s senden</string>
-  <string name="receive_title_format">Empfangen Sie %1$s</string>
+  <string name="receive_title_format">%1$s empfangen</string>
   <string name="asset_must_be_selected">Wählen Sie ein Asset.</string>
   <string name="you_dont_have_any">Sie haben kein Konto mit diesem Asset. Fügen Sie ein Asset hinzu, bevor Sie fortfahren.</string>
   <string name="add_asset_fee">Asset-Gebühr hinzufügen</string>
@@ -148,12 +148,12 @@
   <string name="select_receiving_account">Empfängerkonto wählen</string>
   <string name="unnamed">Unbenannt</string>
   <string name="entered_address_is_not_valid">Die eingegebene Adresse ist ungültig.</string>
-  <string name="an_error_more">Beim Abrufen ist ein Fehler aufgetreten. Bitte versuche es später noch einmal.</string>
+  <string name="an_error_more">Beim Abrufen ist ein Fehler aufgetreten. Bitte versuchen Sie später noch einmal.</string>
   <string name="search_assets_id">Nach Asset-ID oder Asset-Namen suchen</string>
   <string name="no_asset_found">Kein Asset gefunden</string>
-  <string name="you_already_have">Du besitzt dieses Asset bereits.</string>
-  <string name="adding_asset">Asset hinzufügen</string>
-  <string name="removing_asset">Asset entfernen</string>
+  <string name="you_already_have">Sie besitzen dieses Asset bereits.</string>
+  <string name="adding_asset">Asset wird hinzugefügt</string>
+  <string name="removing_asset">Asset wird entfernt</string>
   <string name="to_remove_the_balance"><![CDATA[Um <b>%1$s</b> zu entfernen, muss das Kontoguthaben 0 sein. Bitte überweisen Sie den Restbetrag auf ein anderes Konto und versuchen Sie es erneut.]]></string>
   <string name="you_are_about_to"><![CDATA[Sie sind dabei, <b>%1$s</b> aus <b>%2$s</b> zu entfernen. Um Transaktionen mit diesem Asset zu tätigen, müssen Sie es zuerst wieder aktivieren.]]></string>
   <string name="adding_an_asset">Um ein Asset hinzuzufügen, müssen Sie eine Transaktion mit der Mindesttransaktionsgebühr tätigen. Dies wird in Ihrem Transaktionsverlauf angezeigt.</string>
@@ -163,10 +163,10 @@
   <string name="this_account_has_not">Dieses Asset wurde diesem Konto nicht hinzugefügt. Bitte fügen Sie dieses Asset hinzu, um fortzufahren.</string>
   <string name="this_account_does_not">Dieses Asset wurde diesem Konto noch nicht hinzugefügt.</string>
   <string name="account_does_not_accept">Das Konto unterstützt dieses Asset nicht</string>
-  <string name="you_are_about_to_receive">Sie werden gleich ein Asset erhalten!</string>
-  <string name="you_are_about_to_receive_description"><![CDATA[Sie werden gleich ein Asset auf <b>%1$s</b> erhalten! Möchten Sie diesem Konto dieses Asset hinzufügen, um die Überweisung empfangen zu können?]]></string>
+  <string name="you_are_about_to_receive">Sie werden gleich ein Asset empfangen!</string>
+  <string name="you_are_about_to_receive_description"><![CDATA[Sie werden gleich ein Asset auf <b>%1$s</b> empfangen! Möchten Sie diesem Konto dieses Asset hinzufügen, um die Überweisung empfangen zu können?]]></string>
   <string name="min_transaction_error">Fehler Mindesttransaktion!</string>
-  <string name="you_need_at_least">Sie benötigten mindestens <annotation replacement="min_balance"> </annotation> Algos, um dieses Asset hinzuzufügen.</string>
+  <string name="you_need_at_least">Sie benötigen mindestens <annotation replacement="min_balance"> </annotation> Algos, um dieses Asset hinzuzufügen.</string>
   <string name="your_accounts_do_not">Dieses Asset wurde ihrem Konto noch nicht hinzugefügt.</string>
   <string name="please_add_this">Bitte fügen Sie dieses Asset hinzu und versuchen Sie es erneut.</string>
   <string name="the_qr_contains">Der QR-Code enthält ein anderes Asset als das ausgewählte. Der Betrag wird beim Dekodieren ignoriert.</string>
@@ -235,7 +235,7 @@
   <string name="unknown_error">Unbekannter Fehler</string>
   <string name="show_qr">QR-Code anzeigen</string>
   <string name="do_not_use_face">Gesichtsprüfung/Touch-ID nicht verwenden</string>
-  <string name="manage_all_assets">Verwalten Sie alle Assets über eine App </string>
+  <string name="manage_all_assets">Verwalten Sie alle Assets über eine App</string>
   <string name="manage_all_assets_two_line">Verwalten Sie alle Assets\nüber eine App</string>
   <string name="account_details">Kontodetails</string>
   <string name="passphrase">Passphrase</string>
@@ -262,7 +262,7 @@
   <string name="no_transaction_have">Mit diesem Asset wurden keine Transaktionen durchgeführt</string>
   <string name="rewards_since_last"><annotation custom="rewards_color"><annotation replacement="rewards_value"> </annotation> Rewards</annotation> seit der letzten Transaktion</string>
   <string name="choose_asset">Asset wählen</string>
-  <string name="preview_send_asset">Asset senden – Vorschau </string>
+  <string name="preview_send_asset">Asset senden – Vorschau</string>
   <string name="cancel_approval">Genehmigung abbrechen</string>
   <string name="delete_all_data">Alle Daten löschen</string>
   <string name="remove_contact">Kontakt entfernen</string>
@@ -278,11 +278,11 @@
   <string name="yesterday">Gestern</string>
   <string name="last_week">Letzte Woche</string>
   <string name="last_month">Letzter Monat</string>
-  <string name="custom_range">Benutzerdefinierten Zeitraum</string>
+  <string name="custom_range">Benutzerdefinierter Zeitraum</string>
   <string name="you_can_now_filter">Sie können den Transaktionsverlauf jetzt filtern</string>
   <string name="press_and_hold">Bitte drücken und halten, um es in die Zwischenablage zu kopieren</string>
   <string name="something_went_wrong">Es ist ein Fehler aufgetreten</string>
-  <string name="sorry_something_went">Es tut uns Leid, aber es ist ein Fehler aufgetreten.</string>
+  <string name="sorry_something_went">Es tut uns leid, aber es ist ein Fehler aufgetreten.</string>
   <string name="try_again">Erneut versuchen</string>
   <string name="couldnt_create">CSV-Datei konnte nicht erstellt werden. Bitte versuchen Sie es erneut.</string>
   <string name="no_current_notifications">Keine aktuellen Benachrichtigungen</string>
@@ -307,7 +307,7 @@
   <string name="add_account">Konto hinzufügen</string>
   <string name="confirm_rekeying">Rekeying bestätigen</string>
   <string name="rekeying_transaction">Rekeying-Transaktion</string>
-  <string name="total_rekeying_fee">Gesamthafte Rekeying-Gebühr von %1$s</string>
+  <string name="total_rekeying_fee">Gesamte Rekeying-Gebühr von %1$s</string>
   <string name="plus_more_assets">+%1$d zusätzliche Assets</string>
   <string name="finalize_rekeying">Rekeying abschließen</string>
   <string name="new_ledger">Neues Ledger-Gerät</string>
@@ -315,7 +315,7 @@
   <string name="account_rekeyed">Konto-Rekeying abgeschlossen</string>
   <string name="the_account_name">Für das Konto <annotation font="publicsans_bold">\"<annotation replacement="account_name"> </annotation>\"</annotation> wurde ein erfolgreiches Rekeying durchgeführt.</string>
   <string name="just_now">Gerade eben</string>
-  <string name="asset_support_success"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> hat seinem Konto <annotation replacement="asset">assetPlaceholder</annotation> hinzugefügt. Sie können sie senden <annotation replacement="asset">assetPlaceholder</annotation>.</string>
+  <string name="asset_support_success"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> hat seinem Konto <annotation replacement="asset">assetPlaceholder</annotation> hinzugefügt. Sie können <annotation replacement="asset">assetPlaceholder</annotation> senden.</string>
   <string name="asset_support_request"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> versucht, Ihnen <annotation replacement="asset">assetPlaceholder</annotation> zu senden, jedoch unterstützen Sie dieses Asset nicht. Wenn Sie möchten, können wir das Asset Ihrem Konto hinzufügen.</string>
   <string name="transaction_send_successful">Ihre Transaktion in Höhe von <annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> von <annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> an <annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> wurde erfolgreich ausgeführt.</string>
   <string name="transaction_send_failed">Ihre Transaktion in Höhe von <annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> von <annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> an <annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> ist fehlgeschlagen.</string>
@@ -325,7 +325,7 @@
   <string name="reset_all_data">Alle Daten zurücksetzen</string>
   <string name="this_ledger_device">Dieses Ledger-Gerät kann für folgende Konten Transaktionen signieren. Wählen Sie die Konten, die Sie Ihrer Algorand-Wallet hinzufügen möchten.</string>
   <string name="the_connected_ledger">Das verbundene Ledger-Gerät kann für dieses Konto keine Transaktionen signieren. Verbinden Sie zu diesem Zweck bitte <annotation replacement="auth_address"> </annotation></string>
-  <string name="this_account_has">Das Rekeying für dieses Konto wurde abgeschlossen. Stellen Sie bitte dieses Konto mit einer Passphrase oder einem Ledger-Gerät wieder her, um Transaktionen zu signieren.</string>
+  <string name="this_account_has">Das Rekeying für dieses Konto wurde abgeschlossen. Bitte stellen Sie dieses Konto mit einer Passphrase oder einem Ledger-Gerät wieder her, um Transaktionen zu signieren.</string>
   <string name="auth_account_address">Adresse des authentifizierten Kontos</string>
   <string name="pair_your_new_ledger">Koppeln Sie ihr neues Ledger-Gerät</string>
   <string name="rekeying_account">Konto-Rekeying läuft ...</string>
@@ -344,7 +344,7 @@
   <string name="by_creating_account">Indem Sie ein Konto erstellen, stimmen Sie den <annotation custom="terms_click">Nutzungsbedingungen</annotation> und den <annotation custom="privacy_click">Datenschutzbestimmungen</annotation> von Algorand zu</string>
   <string name="choose_account_type">Kontotyp wählen</string>
   <string name="recover_an_account">Ein Konto mit einer aus 25 Wörtern bestehenden Passphrase wiederherstellen</string>
-  <string name="pair_an_account">Ein Konto koppeln, das von einem Ledger-Hardware-Wallet unterstützt wird</string>
+  <string name="pair_an_account">Ein Konto koppeln, das von einer Ledger-Hardware-Wallet unterstützt wird</string>
   <string name="create_new_account">Neues Konto erstellen</string>
   <string name="generate_an_account">Konto mit neuer Adresse und Passphrase erstellen</string>
   <string name="watch_account">Konto mit Lesezugriff</string>
@@ -353,41 +353,25 @@
   <string name="this_account_is_rekeyed">&gt;Für dieses Konto wurde ein Rekeying durchgeführt. Sie können mit diesem Konto keine Transaktionen signieren.</string>
   <string name="receive">Empfangen</string>
   <string name="paste_address_or">Adresse einfügen oder QR-Code scannen</string>
-  <string name="set_theme">Thema Setzen</string>
-  <string name="system_default">System zurücksetzen</string>
-  <string name="light">Licht</string>
-  <string name="dark">Hell</string>
+  <string name="set_theme">Thema festlegen</string>
+  <string name="system_default">Systemvorgabe</string>
+  <string name="light">Hell</string>
+  <string name="dark">Dunkel</string>
   <string name="privacy_policy">Datenschutzbestimmungen</string>
   <plurals name="min_ago">
-    <item quantity="zero"></item>
     <item quantity="one">Vor %1$s Minute\"</item>
-    <item quantity="two"></item>
-    <item quantity="few"></item>
-    <item quantity="many"></item>
     <item quantity="other">Vor %1$s Minuten\"</item>
   </plurals>
   <plurals name="hours_ago">
-    <item quantity="zero"></item>
     <item quantity="one">Vor %1$s Stunde\"</item>
-    <item quantity="two"></item>
-    <item quantity="few"></item>
-    <item quantity="many"></item>
     <item quantity="other">Vor %1$s Stunden\"</item>
   </plurals>
   <plurals name="days_ago">
-    <item quantity="zero"></item>
     <item quantity="one">Vor %1$s Tag\"</item>
-    <item quantity="two"></item>
-    <item quantity="few"></item>
-    <item quantity="many"></item>
     <item quantity="other">Vor %1$s Tagen\"</item>
   </plurals>
   <plurals name="account_found">
-    <item quantity="zero"></item>
     <item quantity="one">1 Konto gefunden\"</item>
-    <item quantity="two"></item>
-    <item quantity="few"></item>
-    <item quantity="many"></item>
     <item quantity="other">%1$d Konten gefunden\"</item>
   </plurals>
   <string name="push_notifications">Push-Benachrichtigungen</string>
@@ -402,10 +386,10 @@
   <string name="select_account">Konto auswählen</string>
   <string name="choose_the_account">Wählen Sie das Konto, mit dem Sie dieses Konto signieren möchten.</string>
   <string name="a_network_error">Beim Abrufen der Kontodetails ist ein Netzwerkfehler aufgetreten. Bitte starten Sie den Vorgang erneut.</string>
-  <string name="it_appears_this">Es scheint, dass dieses Ledger-Gerät zurückgesetzt wurde und das Konto auf dem Gerät nicht mehr mit diesem Konto übereinstimmt. Bitte verknüpfen Sie den Ledger erneut über die Homepage.</string>
+  <string name="it_appears_this">Es scheint, dass dieses Ledger-Gerät zurückgesetzt wurde und das Konto auf dem Gerät nicht mehr mit diesem Konto übereinstimmt. Bitte verknüpfen Sie das Ledger-Gerät erneut über die Homepage.</string>
   <plurals name="asset_count">
-    <item quantity="one">+%1$d Vermögenswert</item>
-    <item quantity="other">+%1$d Vermögenswert</item>
+    <item quantity="one">+%1$d Asset</item>
+    <item quantity="other">+%1$d Assets</item>
   </plurals>
   <string name="continue_text">Fortfahren</string>
   <string name="dont_show_this_again">Diese Meldung nicht erneut anzeigen</string>
@@ -413,17 +397,17 @@
   <string name="rekeyed_maximum_error_message">Das Senden Ihres maximalen Guthabens auf einem Konto nach dem Rekeying erfordert, dass Sie ein Mindestguthaben von <annotation replacement="min_balance">min_balance_placeholder</annotation> Algos aufrechterhalten. Damit soll sichergestellt werden, dass sich bei Ihrem Konto nach dem Rekeying nichts ändert. \n \n Ihr Transaktionsbetrag wird automatisch aktualisiert, um diese Änderung widerzuspiegeln. Sie können die Transaktion im nächsten Schritt in der Vorschau anzeigen.</string>
   <string name="support_center">Support-Center</string>
   <string name="when_sending_to_an_address">Wenn Sie zum ersten Mal an eine Adresse senden, ist es sinnvoll, eine kleine Testtransaktion zu senden, bevor Sie einen größeren Betrag senden.</string>
-  <string name="exchanges_change_their">Börsen ändern häufig ihre Einzahlungsadressen  und gespeicherte Börsenadressensind ggf. nicht mehr gültig. <annotation custom="highlight_color">Stellen Sie sicher, dass Sie an die richtige Adresse senden.</annotation></string>
-  <string name="for_more_information_on">Für weitere Informationen zu Transaktionen <annotation custom="tap_here_color">tippen Sie hier</annotation>.</string>
+  <string name="exchanges_change_their">Börsen ändern häufig ihre Einzahlungsadressen und gespeicherte Börsenadressen sind ggf. nicht mehr gültig. <annotation custom="highlight_color">Stellen Sie sicher, dass Sie an die richtige Adresse senden.</annotation></string>
+  <string name="for_more_information_on">Weitere Informationen zu Transaktionen finden Sie <annotation custom="tap_here_color">hier</annotation></string>
   <string name="i_understand">Ich verstehe</string>
   <string name="before_you_finalize">Vor dem Abschluss sollten Sie ein paar Tipps beachten:</string>
   <string name="the_transaction_cannot_be">Die Transaktion kann nicht abgeschlossen werden, da der Betrag Ihr Konto unter den erforderlichen Mindestkontostand von <annotation replacement="min_balance">min_balance_placeholder</annotation> Algos bringen würde.</string>
   <string name="recovery_passphrase">Wiederherstellungs-Passphrase</string>
   <string name="select_word">Wählen Sie das Wort #<annotation replacement="word_number">wordNumberPlaceholder</annotation></string>
-  <string name="back_up_your_account">Sichern Sie Ihr Konto mit einer Wiederherstellungspassphrase</string>
-  <string name="without_your_recovery">Ohne Ihre Wiederherstellungs-Passphrase verlieren Sie bei Verlust Ihres Geräts, beim Löschen der App oder bei Verlust Ihres Telefons dauerhaft den Zugriff auf Ihr Algorand-Konto.</string>
+  <string name="back_up_your_account">Sichern Sie Ihr Konto mit einer Wiederherstellungs-Passphrase</string>
+  <string name="without_your_recovery">Ohne Ihre Wiederherstellungs-Passphrase verlieren Sie bei Verlust Ihres Geräts oder beim Löschen der App dauerhaft den Zugriff auf Ihr Algorand-Konto.</string>
   <string name="backup_now">Jetzt sichern</string>
-  <string name="prepare_to_write">Bereiten Sie sich darauf vor, die Wiederherstellungs-Passphrase aufzuschreiben</string>
+  <string name="prepare_to_write">Bereiten Sie sich darauf vor, Ihre Wiederherstellungs-Passphrase aufzuschreiben</string>
   <string name="im_ready_to_begin">Ich bin bereit zu beginnen</string>
   <string name="create_a_watch">Überwachungskonto erstellen</string>
   <string name="recover_an_algorand">Ein  Algorand-Konto wiederherstellen</string>
@@ -459,13 +443,13 @@
   <string name="create_an_account">Konto eröffnen</string>
   <string name="you_need_to_create">Sie müssen ein Konto eröffnen, um mit der Transaktion Ihrer Vermögenswerte zu beginnen. </string>
   <string name="skip">Überspringen</string>
-  <string name="do_not_ask_again">Nicht erneut fragen.</string>
+  <string name="do_not_ask_again">Nicht erneut fragen</string>
   <string name="selected_words_are">Ausgewählte Wörter sind falsch. Bitte versuchen Sie es erneut.</string>
   <string name="paste_full_passphrase">Vollständige Passphrase einfügen</string>
-  <string name="verify_recovery_passphrase">Backup-Wiederherstellungspassphrase verifizieren</string>
+  <string name="verify_recovery_passphrase">Backup-Wiederherstellungs-Passphrase verifizieren</string>
   <string name="please_enter_a_destination">Bitte geben Sie eine Zieladresse ein.</string>
   <string name="transacting_tips">Transaktionstipps</string>
-  <string name="the_only_way_to">Der einzige Weg, ein Algorand-Konto wiederherzustellen, ist mit dieser Wiederherstellungs-Passphrase.\n\n<annotation font="publicsans_regular_italic"><annotation custom="warning_color"><annotation type="bold">Warnung</annotation>: Teilen Sie diese Passphrase mit niemandem, da sie vollen Zugriff auf Ihr Konto gewährt.</annotation></annotation></string>
+  <string name="the_only_way_to">Die einzige Möglichkeit, ein Algorand-Konto wiederherzustellen, ist diese Wiederherstellungs-Passphrase.\n\n<annotation font="publicsans_regular_italic"><annotation custom="warning_color"><annotation type="bold">Warnung</annotation>: Teilen Sie diese Passphrase mit niemandem, da sie vollen Zugriff auf Ihr Konto gewährt.</annotation></annotation></string>
   <string name="monitor_activity_of">Mit einem Überwachungskonto können Sie die Aktivität eines Kontos überwachen, ohne dass Sie die Passphrase haben müssen. Dies ist nützlich für die Überwachung von Assets, die in einem Cold-Storage aufbewahrt werden\n<annotation font="publicsans_regular_italic"><annotation custom="warning_color"><annotation type="bold">Warnung</annotation>: Wenn Sie nicht über die entsprechende Wiederherstellungs-Passphrase verfügen, dürfen Sie keine Assets an dieses Konto senden.</annotation></annotation></string>
   <string name="i_want_a_new">Ich möchte ein neues Konto mit einer neuen Adresse und einer neuen Wiederherstellungs-Passphrase.</string>
   <string name="i_want_to_monitor">Ich möchte ein Konto überwachen, das im Cold Storage gehalten wird.</string>
@@ -509,6 +493,73 @@
   <string name="algos">Algos</string>
   <string name="algo_rewards">Algo-Rewards</string>
   <string name="minimum_balance_required">Mindestguthaben erforderlich</string>
-  <string name="transaction_maximum_error_message_singular">Da Sie <annotation replacement="asset_count">asset_count_placeholder</annotation> andere Assets in diesem Konto<annotation replacement="account_name">(account_name_placeholder</annotation>) haben, verlangt die Algorand-Blockchain, dass Sie ein Mindestguthaben von <annotation replacement="min_balance">min_balance_placeholder</annotation> Algos haben.\n\nDurch Drücken von Fortfahren wird Ihr Transaktionsbetrag automatisch aktualisiert, um diese Änderung zu reflektieren. Sie können diese Änderung im nächsten Schritt in der Vorschau sehen.</string>
-  <string name="transaction_maximum_error_message_plural">Da Sie <annotation replacement="asset_count">asset_count_placeholder</annotation> andere Assets in diesem Konto<annotation replacement="account_name">(account_name_placeholder</annotation>) haben, verlangt die Algorand-Blockchain, dass Sie ein Mindestguthaben von <annotation replacement="min_balance">min_balance_placeholder</annotation> Algos haben.\n\nDurch Drücken von Fortfahren wird Ihr Transaktionsbetrag automatisch aktualisiert, um diese Änderung zu reflektieren. Sie können diese Änderung im nächsten Schritt in der Vorschau sehen.</string>
+  <string name="transaction_maximum_error_message_singular">Da Sie <annotation replacement="asset_count">asset_count_placeholder</annotation> andere Assets in diesem Konto<annotation replacement="account_name">(account_name_placeholder</annotation>) haben, verlangt die Algorand-Blockchain, dass Sie ein Mindestguthaben von <annotation replacement="min_balance">min_balance_placeholder</annotation> Algos haben.\n\nWenn Sie auf „Weiter“ klicken, wird Ihr Transaktionsbetrag automatisch aktualisiert, um diese Änderung widerzuspiegeln. Sie können diese Änderung im nächsten Schritt in der Vorschau sehen.</string>
+  <string name="transaction_maximum_error_message_plural">Da Sie <annotation replacement="asset_count">asset_count_placeholder</annotation> andere Assets in diesem Konto<annotation replacement="account_name">(account_name_placeholder</annotation>) haben, verlangt die Algorand-Blockchain, dass Sie ein Mindestguthaben von <annotation replacement="min_balance">min_balance_placeholder</annotation> Algos haben.\n\nWenn Sie auf „Weiter“ klicken, wird Ihr Transaktionsbetrag automatisch aktualisiert, um diese Änderung widerzuspiegeln. Sie können diese Änderung im nächsten Schritt in der Vorschau sehen.</string>
+  <string name="you_have_not_connected">Sie haben noch keine Apps verbunden.</string>
+  <string name="wallet_connect_sessions">WalletConnect-Sitzungen</string>
+  <string name="wallet_wants_to_connect"><annotation type="bold"><annotation replacement="app_name">app_name_platzhalter</annotation></annotation> möchte eine Verbindung zu Ihrem Konto herstellen</string>
+  <string name="you_do_not_have_any">Sie haben kein Konto, mit dem WalletConnect eine Verbindung herstellen kann.</string>
+  <string name="disconnect">Trennen</string>
+  <string name="account_balance">Kontostand</string>
+  <string name="show_more_info">Mehr Informationen anzeigen</string>
+  <string name="raw_txns">Roh-Txns</string>
+  <string name="show_raw_transaction">Rohtransaktion anzeigen</string>
+  <string name="algoexplorer">AlgoExplorer</string>
+  <string name="show_explorer">Explorer anzeigen</string>
+  <string name="asset_url">Asset-URL</string>
+  <string name="show_asset_url">Asset-URL anzeigen</string>
+  <string name="asset_metadata">Asset-Metadaten</string>
+  <string name="show_asset_metadata">Asset-Metadaten anzeigen</string>
+  <string name="rekey_to">Rekey an</string>
+  <string name="payment_transfer_formatted">Zahlung an %1$s</string>
+  <string name="asset_transfer_formatted">Asset-Transfer an %1$s</string>
+  <string name="opt_in_asset_formatted">Opt-in für Asset %1$s</string>
+  <string name="possible_opt_in_formatted">Mögliches Opt-in für Asset %1$s</string>
+  <string name="application_call_formatted">Anwendungsaufruf an #%1$s</string>
+  <string name="decline">Ablehnen</string>
+  <string name="transaction_request">Transaktionsanfrage</string>
+  <string name="raw_transaction">Rohtransaktion</string>
+  <string name="the_user_rejected_the_request">Der Benutzer hat die Anfrage abgelehnt.</string>
+  <string name="the_requested_operation_and">Der angeforderte Vorgang und/oder das Konto wurde vom Benutzer nicht genehmigt.</string>
+  <string name="the_wallet_does_not_support">Die Wallet unterstützt den angeforderten Vorgang nicht.</string>
+  <string name="the_input_provided_is_invalid">Die eingegebenen Daten sind ungültig.</string>
+  <string name="there_is_not_any_valid">Es gibt kein gültiges Konto, um diese Transaktion zu signieren.</string>
+  <string name="an_error_occurred_while_signing">Beim Signieren der Transaktion ist ein Fehler aufgetreten.</string>
+  <string name="transaction_succesfully_confirmed">Transaktion erfolgreich bestätigt</string>
+  <string name="transaction_rejected">Transaktion abgelehnt.</string>
+  <string name="assets_opt_in_request">Assets-Opt-in-Anfrage</string>
+  <string name="transfer_asset_request">Asset-Transfer-Anfrage</string>
+  <string name="sender">Absender</string>
+  <string name="multiple_transaction_request">Multiple-Transaction-Anfrage</string>
+  <string name="multiple_transactions_formatted">%1$d Transaktionen</string>
+  <string name="unsigned_transactions">Unsignierte Transaktionen</string>
+  <string name="atomic_transaction_request">Atomic-Transaction-Anfrage</string>
+  <string name="all_transactions_formatted">Alle Transaktionen (%1$d)</string>
+  <string name="application_id">Anwendungs-ID</string>
+  <string name="this_transaction_will_transfer">Mit dieser Transaktion wird das Eigentum an diesem Konto übertragen. Ihre derzeitige Passphrase für die Wiederherstellung gewährt keinen Zugriff mehr auf diese Vermögenswerte.</string>
+  <string name="the_following_transaction_requests">Die folgenden Transaktionsanfragen stammen von externen Anwendungen, die von der Algorand Wallet nicht kontrolliert werden. Bitte stellen Sie sicher, dass Sie diese Transaktionen sorgfältig prüfen, bevor Sie sie signieren, da die Transaktionen nicht rückgängig gemacht werden können.</string>
+  <string name="got_it">Alles klar!</string>
+  <string name="once_confirmed_the_connected_application">Nach der Bestätigung kann die angeschlossene Anwendung diese Transaktionen nach eigenem Ermessen versenden. Bitte überprüfen Sie die Transaktionen sorgfältig, da dieser Vorgang unumkehrbar ist.</string>
+  <string name="are_you_sure_question_mark">Sind Sie sicher, dass Sie fortfahren möchten?</string>
+  <string name="this_transaction_is_sending">Mit dieser Transaktion wird Ihr gesamtes Algo-Guthaben gesendet.</string>
+  <string name="close_asset_to">Schließen und Asset senden an</string>
+  <string name="this_transaction_is_sending_asset">Mit dieser Transaktion wird Ihr gesamtes %1$s-Guthaben gesendet und %1$s wird vom Ihrem Konto entfernt.</string>
+  <string name="this_transaction_fee_is_higher">Diese Transaktionsgebühr ist höher als die übliche Gebühr von 0,01 Algos.</string>
+  <string name="wallet_connect_is_not_reachable">WalletConnect ist im Moment nicht erreichbar. Bitte versuchen Sie es später noch einmal.</string>
+  <string name="the_recipient_address_is_not">Die Empfängeradresse ist keine gültige Algorand-Adresse. Bitte versuchen Sie es erneut.</string>
+  <string name="application_opt_in_formatted">Anwendungs-Opt-in an %1$s</string>
+  <string name="application_close_to_formatted">Anwendungsbeendigung an %1$s</string>
+  <string name="connected_with_formatted">Verbunden mit %1$s</string>
+  <string name="algos_amount_formatted">%1$s Algos</string>
+  <string name="close_remainder_to">Schließen und Restbetrag senden an</string>
+  <string name="app_call">App-Anrufanfrage</string>
+  <string name="this_transaction_will_be">Diese Transaktion wird in Zukunft eingereicht werden.</string>
+  <plurals name="confirm_transactions">
+    <item quantity="one">Bestätigen</item>
+    <item quantity="other">Alle Transaktionen bestätigen</item>
+  </plurals>
+  <plurals name="transaction_requests_formatted">
+    <item quantity="one">Transaktionsanfrage (%1$d)</item>
+    <item quantity="other">Transaktionsanfragen (%1$d)</item>
+  </plurals>
 </resources>

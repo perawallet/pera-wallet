@@ -13,7 +13,9 @@
 package com.algorand.android.ledger.operations
 
 import android.bluetooth.BluetoothDevice
+import com.algorand.android.models.AccountCacheData
 import com.algorand.android.models.AccountInformation
+import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.TransactionData
 
 sealed class BaseOperation {
@@ -32,7 +34,51 @@ data class AccountFetchAllOperation(
     val accounts: MutableList<AccountInformation> = mutableListOf()
 ) : BaseOperation()
 
+sealed class BaseTransactionOperation(
+    override val bluetoothDevice: BluetoothDevice
+) : BaseOperation() {
+
+    abstract val transactionByteArray: ByteArray?
+
+    abstract val accountCacheData: AccountCacheData?
+
+    abstract val accountAddress: String
+
+    abstract val accountAuthAddress: String?
+}
+
 data class TransactionOperation(
     override val bluetoothDevice: BluetoothDevice,
     val transactionData: TransactionData
-) : BaseOperation()
+) : BaseTransactionOperation(bluetoothDevice) {
+
+    override val transactionByteArray: ByteArray?
+        get() = transactionData.transactionByteArray
+
+    override val accountCacheData: AccountCacheData
+        get() = transactionData.accountCacheData
+
+    override val accountAddress: String
+        get() = transactionData.accountCacheData.account.address
+
+    override val accountAuthAddress: String?
+        get() = transactionData.accountCacheData.authAddress
+}
+
+data class WalletConnectTransactionOperation(
+    override val bluetoothDevice: BluetoothDevice,
+    val transaction: BaseWalletConnectTransaction
+) : BaseTransactionOperation(bluetoothDevice) {
+
+    override val transactionByteArray: ByteArray?
+        get() = transaction.decodedTransaction
+
+    override val accountCacheData: AccountCacheData?
+        get() = transaction.accountCacheData
+
+    override val accountAddress: String
+        get() = transaction.signer.address?.decodedAddress.orEmpty()
+
+    override val accountAuthAddress: String?
+        get() = transaction.accountCacheData?.authAddress
+}

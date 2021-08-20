@@ -63,6 +63,11 @@ class AmountTextView @JvmOverloads constructor(
                 setOperatorColor(tintColor)
             }
 
+            val iconTint = typedArray.getColor(R.styleable.AmountTextView_iconTint, NO_COLOR_RES_ID)
+            if (iconTint != NO_COLOR_RES_ID) {
+                ImageViewCompat.setImageTintList(binding.algoCurrencyLogoImageView, ColorStateList.valueOf(iconTint))
+            }
+
             val algoTextViewSize =
                 typedArray.getDimension(R.styleable.AmountTextView_algoTextViewSize, -1f)
             if (algoTextViewSize != -1f) {

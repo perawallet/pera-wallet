@@ -24,6 +24,7 @@ sealed class Resource<out T> {
     sealed class Error : Resource<Nothing>() {
         data class Annotated(val annotatedString: AnnotatedString) : Error()
         data class Api(val exception: Throwable) : Error()
+        data class Local(val message: String) : Error()
 
         fun parse(context: Context): CharSequence {
             return when (this) {
@@ -33,11 +34,13 @@ sealed class Resource<out T> {
                 is Api -> {
                     return exception.message.orEmpty()
                 }
+                is Local -> message
             }
         }
     }
 
     object Loading : Resource<Nothing>()
+    object OnLoadingFinished : Resource<Nothing>()
 
     fun use(
         onSuccess: ((T) -> Unit)? = null,
@@ -58,6 +61,9 @@ sealed class Resource<out T> {
             }
             is Loading -> {
                 onLoading?.invoke()
+            }
+            is OnLoadingFinished -> {
+                onLoadingFinished?.invoke()
             }
         }
     }

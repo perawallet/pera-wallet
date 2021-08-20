@@ -52,7 +52,14 @@ class AssetNameTextView @JvmOverloads constructor(
         }
     }
 
-    fun setupUI(showVerified: Boolean?, shortName: String?, fullName: String?, assetId: Long?, isAlgorand: Boolean?) {
+    fun setupUI(
+        showVerified: Boolean?,
+        shortName: String?,
+        fullName: String?,
+        assetId: Long?,
+        isAlgorand: Boolean?,
+        addDotSeparator: Boolean = true
+    ) {
         binding.verifiedImageView.isVisible = showVerified ?: false
         binding.assetIconImageView.isVisible = showAlgoIcon && (isAlgorand ?: false)
 
@@ -73,10 +80,10 @@ class AssetNameTextView @JvmOverloads constructor(
         }
 
         if (showId && isAlgorand == false) {
-            if (subTextStringBuilder.isNotEmpty()) {
-                subTextStringBuilder.append(" · ")
+            with(subTextStringBuilder) {
+                if (isNotEmpty() && addDotSeparator) append(" ·")
+                append(" $assetId")
             }
-            subTextStringBuilder.append(assetId)
         }
 
         val subText = subTextStringBuilder.toString()
@@ -89,9 +96,9 @@ class AssetNameTextView @JvmOverloads constructor(
         }
     }
 
-    fun setupUI(assetInformation: AssetInformation) {
+    fun setupUI(assetInformation: AssetInformation, addDotSeparator: Boolean = true) {
         with(assetInformation) {
-            setupUI(isVerified, shortName, fullName, assetId, isAlgorand())
+            setupUI(isVerified, shortName, fullName, assetId, isAlgorand(), addDotSeparator)
         }
     }
 

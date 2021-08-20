@@ -106,6 +106,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/bottom_safe_area_margin"
         android:text="@string/cancel"
+        android:textColor="@color/white"
         app:backgroundTint="@color/white_alpha_12"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

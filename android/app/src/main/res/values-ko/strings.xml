@@ -155,7 +155,7 @@
   <string name="adding_asset">자산 추가 중</string>
   <string name="removing_asset">자산 삭제 중</string>
   <string name="to_remove_the_balance"><![CDATA[잔액이 0인 경우에만 <b>%1$s</b> 삭제가 가능합니다. 잔액을 다른 계정으로 전송한 다음 다시 시도하시기 바랍니다.]]></string>
-  <string name="you_are_about_to"><![CDATA[<b>%2$s</b>에서 <b>%1$s</b> 삭제를 진행합니다. 재활성화하기 전까지는 해당 자산을 거래하실 수 없습니다.]]></string>
+  <string name="you_are_about_to"><![CDATA[<b>%1$s</b>을(를) <b>%2$s</b>에서 삭제하려고 하십니다. 다시 추가하기 전까지는 이 계정에서 해당 자산을 거래하실 수 없습니다.]]></string>
   <string name="adding_an_asset">자산 추가 시 최소 트랜잭션 수수료의 트랜잭션을 전송해야 합니다. 해당 정보는 트랜잭션 내역에 표시됩니다.</string>
   <string name="unfortunately_this_account">죄송합니다, 계정에 자산이 추가되지 않았습니다. 계정 소유주에게 자산 추가법을 문의하신 후 다시 시도해 주세요.</string>
   <string name="transfer_balance">보내는 금액</string>
@@ -197,7 +197,7 @@
   <string name="advanced_troubleshooting">고급 문제 해결</string>
   <string name="looking_for_other_ledger">다른 Ledger 기기를 찾는 중</string>
   <string name="trouble_shoot">문제 해결</string>
-  <string name="connecting_to_ledger">Ledger에 연결 중...</string>
+  <string name="connecting_to_ledger">Ledger에 연결 중…</string>
   <string name="ledger_approval">Ledger 승인</string>
   <string name="please_make_sure">Ledger 기기에서 트랜잭션을 확인해 주세요</string>
   <string name="ledger_info_power_first_paragraph">
@@ -213,7 +213,7 @@
   <string name="ledger_info_algorand_first_paragraph">
     <annotation url="https://www.ledger.com/start">Ledger의 종합적인 <annotation type="bold"><annotation type="color">시작하기</annotation></annotation> 튜토리얼부터 따라서 시작해보세요. Ledger 기기에서 앱을 설치하고 실행하는 방법을 안내해 드립니다.</annotation>
   </string>
-  <string name="ledger_info_algorand_second_paragraph">아직 Ledger 기기에 <annotation type="bold">알고랜드</annotation> 앱을 설치하지 않으신 경우, 튜토리얼에서 “기기에 설치하고자 하는 애플리케이션 선택(select the application(s) you want to install on your device)” 단계까지 진행하시고 검색창에 알고랜드(Algorand)를 입력해 설치해 주세요. </string>
+  <string name="ledger_info_algorand_second_paragraph">아직 Ledger 기기에 <annotation type="bold">알고랜드</annotation> 앱을 설치하지 않으신 경우, 튜토리얼에서 “기기에 설치하고자 하는 애플리케이션 선택(select the application(s) you want to install on your device)” 단계까지 진행하시고 검색창에 알고랜드(Algorand)를 입력해 설치해 주세요.</string>
   <string name="error_connection_title">연결 오류</string>
   <string name="error_connection_message">Ledger 기기에 연결할 수 없습니다. 기기의 잠금을 해제하고 스마트폰 가까이에 두었는지, Bluetooth를 켰는지 확인해 주세요.</string>
   <string name="error_app_closed_title">Ledger 연결 오류</string>
@@ -328,7 +328,7 @@
   <string name="this_account_has">계정의 키가 재지정되었습니다. 트랜잭션에 서명하려면 비밀문구나 Ledger 기기로 계정을 복구해 주세요.</string>
   <string name="auth_account_address">계정 주소 인증</string>
   <string name="pair_your_new_ledger">새 Ledger 기기 페어링</string>
-  <string name="rekeying_account">계정 키 재지정 중...</string>
+  <string name="rekeying_account">계정 키 재지정 중…</string>
   <string name="recover_ledger_account">Ledger 계정 복구</string>
   <string name="you_cannot_send">나 자신에게 최대 잔액을 전송할 수 없습니다. 다른 금액을 선택하거나 받으시는 분을 변경한 다음 다시 시도해 주세요.</string>
   <string name="account_optional">계정<annotation custom="optional_color">(선택 사항)</annotation></string>
@@ -341,7 +341,7 @@
   <string name="developer_settings">개발자 설정</string>
   <string name="currency">통화</string>
   <string name="algorand_dispenser">알고랜드 디스펜서</string>
-  <string name="by_creating_account">계정을 만드시면 알고랜드의 <annotation custom="terms_click">Terms and Conditions</annotation>이용약관과 <annotation custom="privacy_click">개인정보 보호 정책</annotation>에 동의하신 것으로 간주합니다</string>
+  <string name="by_creating_account">계정을 만드시면 알고랜드의 <annotation custom="terms_click">이용약관</annotation>과 <annotation custom="privacy_click">개인정보 보호 정책</annotation>에 동의하신 것으로 간주합니다</string>
   <string name="choose_account_type">계정 유형 선택</string>
   <string name="recover_an_account">25자 비밀문구로 계정 복구</string>
   <string name="pair_an_account">Ledger 하드웨어 지갑을 사용하는 계정을 페어링합니다</string>
@@ -355,40 +355,20 @@
   <string name="paste_address_or">주소를 붙여넣거나 QR 코드를 스캔하세요</string>
   <string name="set_theme">테마 설정</string>
   <string name="system_default">시스템 기본값</string>
-  <string name="light">빛</string>
-  <string name="dark">어두운</string>
+  <string name="light">밝은 테마</string>
+  <string name="dark">어두운 테마</string>
   <string name="privacy_policy">개인정보 보호 정책</string>
   <plurals name="min_ago">
-    <item quantity="zero"></item>
-    <item quantity="one"></item>
-    <item quantity="two"></item>
-    <item quantity="few"></item>
-    <item quantity="many"></item>
-    <item quantity="other">%1$s분 전\"</item>
+    <item quantity="other">%1$s분 전</item>
   </plurals>
   <plurals name="hours_ago">
-    <item quantity="zero"></item>
-    <item quantity="one"></item>
-    <item quantity="two"></item>
-    <item quantity="few"></item>
-    <item quantity="many"></item>
-    <item quantity="other">%1$s시간 전\"</item>
+    <item quantity="other">%1$s시간 전</item>
   </plurals>
   <plurals name="days_ago">
-    <item quantity="zero"></item>
-    <item quantity="one"></item>
-    <item quantity="two"></item>
-    <item quantity="few"></item>
-    <item quantity="many"></item>
-    <item quantity="other">%1$s일 전\"</item>
+    <item quantity="other">%1$s일 전</item>
   </plurals>
   <plurals name="account_found">
-    <item quantity="zero"></item>
-    <item quantity="one"></item>
-    <item quantity="two"></item>
-    <item quantity="few"></item>
-    <item quantity="many"></item>
-    <item quantity="other">계정 %1$s개 찾음\"</item>
+    <item quantity="other">계정 %1$s개 찾음</item>
   </plurals>
   <string name="push_notifications">푸시 알림</string>
   <string name="mute_notifications">알림 음소거</string>
@@ -464,7 +444,7 @@
   <string name="please_enter_a_destination">전송 대상의 주소를 입력하세요.</string>
   <string name="transacting_tips">트랜잭션 팁</string>
   <string name="the_only_way_to">알고랜드 계정을 복원하는 유일한 방법은 이 복구 비밀문구를 사용하는 것뿐입니다.\n\n<annotation font="publicsans_regular_italic"><annotation custom="warning_color"><annotation type="bold">경고</annotation>: 비밀문구가 있으면 계정의 모든 기능을 이용 가능하므로, 다른 사람과 비밀문구를 공유하지 마세요.</annotation></annotation></string>
-  <string name="monitor_activity_of">복구용 비밀문구가 없어도 계정 활동을 모니터링할 수 있습니다. 콜드 스토리지에 보관된 자산을 모니터링하는 데 유용한 기능입니다.\n\n<annotation font="publicsans_regular_italic"><annotation custom="warning_color"><annotation type="bold">경고</annotation>: 계정에 설정된 복구 비밀문구를 모르는 경우, 이 계정으로 자산을 보내지 마세요.</annotation></annotation></string>
+  <string name="monitor_activity_of">읽기 전용 계정을 사용하면 비밀문구가 없어도 계정 활동을 모니터링할 수 있습니다. 콜드 스토리지에 보관된 자산을 모니터링하는 데 유용한 기능입니다.\n\n<annotation font="publicsans_regular_italic"><annotation custom="warning_color"><annotation type="bold">경고</annotation>: 계정에 설정된 복구 비밀문구를 모르는 경우, 이 계정으로 자산을 보내지 마세요.</annotation></annotation></string>
   <string name="i_want_a_new">새로운 주소와 복구 비밀문구로 새 계정을 생성합니다.</string>
   <string name="i_want_to_monitor">콜드 스토리지에 보관된 계정을 모니터링하고 싶습니다.</string>
   <string name="i_want_to_create_an">Ledger 하드웨어 지갑을 사용하는 계정을 만들고 싶습니다.</string>
@@ -506,6 +486,71 @@
   <string name="algos">알고</string>
   <string name="algo_rewards">알고 보상</string>
   <string name="minimum_balance_required">최소 잔액 필요</string>
-  <string name="transaction_maximum_error_message_singular">이 계정에서(<annotation replacement="account_name">account_name_placeholder</annotation>) <annotation replacement="asset_count">asset_count_placeholder</annotation>개의 다른 자산을 보유하고 계신 관계로, 알고랜드 블록체인에서 최소 잔액(<annotation replacement="min_balance">min_balance_placeholder</annotation> 알고)을 유지해야 합니다.\n\n계속을 누르시면 이 변경 사항을 반영하여 트랜잭션 금액이 자동으로 업데이트됩니다. 다음 단계에서 변경 내역을 미리 볼 수 있습니다.</string>
-  <string name="transaction_maximum_error_message_plural">이 계정에서(<annotation replacement="account_name">account_name_placeholder</annotation>) <annotation replacement="asset_count">asset_count_placeholder</annotation>개의 다른 자산을 보유하고 계신 관계로, 알고랜드 블록체인에서 최소 잔액(<annotation replacement="min_balance">min_balance_placeholder</annotation> 알고)을 유지해야 합니다.\n\n계속을 누르시면 이 변경 사항을 반영하여 트랜잭션 금액이 자동으로 업데이트됩니다. 다음 단계에서 변경 내역을 미리 볼 수 있습니다.</string>
+  <string name="transaction_maximum_error_message_singular"><annotation replacement="asset_count">asset_count_placeholder</annotation>개의 기타 자산을 계정(<annotation replacement="account_name">account_name_placeholder</annotation>)에 보유하신 관계로, 알고랜드 블록체인에서 최소 잔액(<annotation replacement="min_balance">min_balance_placeholder</annotation> 알고)를 유지하셔야 합니다.\n\n계속을 누르시면 이 변경 사항을 반영하여 트랜잭션 금액이 자동으로 업데이트됩니다. 다음 단계에서 변경 내역을 미리 볼 수 있습니다.</string>
+  <string name="transaction_maximum_error_message_plural"><annotation replacement="asset_count">asset_count_placeholder</annotation>개의 기타 자산을 계정(<annotation replacement="account_name">account_name_placeholder</annotation>)에 보유하신 관계로, 알고랜드 블록체인에서 최소 잔액(<annotation replacement="min_balance">min_balance_placeholder</annotation> 알고)를 유지하셔야 합니다.\n\n계속을 누르시면 본 변동 사항을 반영하여 트랜잭션 금액이 자동으로 업데이트됩니다. 다음 단계에서 변경 내용을 미리 볼 수 있습니다.</string>
+  <string name="you_have_not_connected">아직 연동된 앱이 없습니다.</string>
+  <string name="wallet_connect_sessions">WalletConnect 세션</string>
+  <string name="wallet_wants_to_connect"><annotation type="bold"><annotation replacement="app_name">1A1Bapp_name_placeholder1B1A</annotation></annotation> 앱을\n계정에 연동하려고 합니다.</string>
+  <string name="you_do_not_have_any">WalletConnect에 연결할 수 있는 계정이 없습니다.</string>
+  <string name="disconnect">연결 해제</string>
+  <string name="account_balance">계정 잔액</string>
+  <string name="show_more_info">추가 정보 보기</string>
+  <string name="raw_txns">원시 트랜잭션</string>
+  <string name="show_raw_transaction">원시 트랜잭션 보기</string>
+  <string name="algoexplorer">AlgoExplorer</string>
+  <string name="show_explorer">Explorer 보기</string>
+  <string name="asset_url">자산 URL</string>
+  <string name="show_asset_url">자산 URL 보기</string>
+  <string name="asset_metadata">자산 메타데이터</string>
+  <string name="show_asset_metadata">자산 메타데이터 보기</string>
+  <string name="rekey_to">계정 키 재지정:</string>
+  <string name="payment_transfer_formatted">%1$s(으)로 지급</string>
+  <string name="asset_transfer_formatted">%1$s(으)로 자산 이전</string>
+  <string name="opt_in_asset_formatted">#%1$s 자산 옵트인</string>
+  <string name="possible_opt_in_formatted">#%1$s 자산 옵트인 가능</string>
+  <string name="application_call_formatted">애플리케이션: #%1$s(으)로 호출</string>
+  <string name="decline">거부</string>
+  <string name="transaction_request">트랜잭션 요청</string>
+  <string name="raw_transaction">원시 트랜잭션</string>
+  <string name="the_user_rejected_the_request">사용자가 요청을 거부했습니다.</string>
+  <string name="the_requested_operation_and">요청한 작업 및/또는 계정을 사용자가 승인하지 않았습니다.</string>
+  <string name="the_wallet_does_not_support">지갑에서 요청한 작업을 지원하지 않습니다.</string>
+  <string name="the_input_provided_is_invalid">입력값이 잘못되었습니다.</string>
+  <string name="there_is_not_any_valid">이 트랜잭션에 서명할 유효한 계정이 없습니다.</string>
+  <string name="an_error_occurred_while_signing">트랜잭션 서명 중 오류가 발생했습니다.</string>
+  <string name="transaction_succesfully_confirmed">거래가 확정되었습니다</string>
+  <string name="transaction_rejected">트랜잭션이 거부되었습니다.</string>
+  <string name="assets_opt_in_request">자산 옵트인 요청</string>
+  <string name="transfer_asset_request">자산 이전 요청</string>
+  <string name="sender">보내는 사람</string>
+  <string name="multiple_transaction_request">다중 트랜잭션 요청</string>
+  <string name="multiple_transactions_formatted">트랜잭션 %1$d건</string>
+  <string name="unsigned_transactions">미서명 트랜잭션</string>
+  <string name="atomic_transaction_request">아토믹 전송 요청</string>
+  <string name="all_transactions_formatted">모든 트랜잭션(%1$d건)</string>
+  <string name="application_id">애플리케이션 ID</string>
+  <string name="this_transaction_will_transfer">이번 트랜잭션으로 계정의 소유권을 이전합니다. 현재의 복원 비밀문구는 이러한 자산에 대한 접근 권한을 상실하게 됩니다.</string>
+  <string name="the_following_transaction_requests">다음 트랜잭션 요청은 알고랜드 지갑이 관리하지 않는 외부 애플리케이션에서 전송한 것입니다. 트랜잭션을 실행한 후에는 되돌릴 수 없으므로, 서명하기 전에 트랜잭션의 상세 정보를 신중히 검토하시기 바랍니다.</string>
+  <string name="got_it">알겠습니다!</string>
+  <string name="once_confirmed_the_connected_application">확정하신 후에는 연동된 애플리케이션에서 재량에 따라 트랜잭션을 전송할 수 있게 됩니다. 트랜잭션을 실행한 후에는 되돌릴 수 없으므로, 서명하기 전에 트랜잭션의 상세 정보를 신중히 검토하시기 바랍니다.</string>
+  <string name="are_you_sure_question_mark">계속 진행하시겠습니까?</string>
+  <string name="this_transaction_is_sending">이번 트랜잭션으로 알고 잔액 전체를 송금합니다.</string>
+  <string name="close_asset_to">계정 삭제 - 자산을 받으시는 분</string>
+  <string name="this_transaction_is_sending_asset">이번 트랜잭션으로 %1$s 잔액 전체를 송금하고, 계정에서 %1$s이(가) 삭제됩니다.</string>
+  <string name="this_transaction_fee_is_higher">이 트랜잭션 수수료는 일반적인 수수료(0.01알고)보다 높습니다.</string>
+  <string name="wallet_connect_is_not_reachable">현재 WalletConnect에 연결할 수 없습니다. 나중에 다시 시도해 주세요.</string>
+  <string name="the_recipient_address_is_not">받으시는 분 주소가 유효한 알고랜드 주소가 아닙니다. 다시 시도해 주세요.</string>
+  <string name="application_opt_in_formatted">애플리케이션: %1$s(으)로 옵트인</string>
+  <string name="application_close_to_formatted">애플리케이션: %1$s(으)로 자산 삭제용 자산 이전</string>
+  <string name="connected_with_formatted">%1$s 연결</string>
+  <string name="close_remainder_to">계정 삭제 - 잔액을 받으시는 분</string>
+  <string name="app_call">앱 호출 요청</string>
+  <string name="algos_amount_formatted">%1$s 알고</string>
+  <string name="this_transaction_will_be">이 트랜잭션은 추후 제출됩니다.</string>
+  <plurals name="confirm_transactions">
+    <item quantity="other">모든 트랜잭션 확정</item>
+  </plurals>
+  <plurals name="transaction_requests_formatted">
+    <item quantity="other">트랜잭션 요청(%1$d건)</item>
+  </plurals>
 </resources>

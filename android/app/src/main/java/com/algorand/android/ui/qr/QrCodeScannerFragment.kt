@@ -13,6 +13,7 @@
 package com.algorand.android.ui.qr
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -39,6 +40,7 @@ import com.journeyapps.barcodescanner.BarcodeResult
 import com.journeyapps.barcodescanner.DefaultDecoderFactory
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import kotlinx.parcelize.Parcelize
 
 @AndroidEntryPoint
 class QrCodeScannerFragment : DaggerBaseFragment(R.layout.fragment_qr_code_scanner) {
@@ -85,9 +87,9 @@ class QrCodeScannerFragment : DaggerBaseFragment(R.layout.fragment_qr_code_scann
         override fun barcodeResult(barcodeResult: BarcodeResult?) {
             binding.cameraPreview.pause()
             if (barcodeResult != null) {
-                val decodedQRCode = getContentOfQR(barcodeResult.text, args.scanReturnType)
+                val (scanResult, decodedQRCode) = getContentOfQR(barcodeResult.text, args.scanReturnType)
                 if (decodedQRCode != null) {
-                    if (args.scanReturnType == ScanReturnType.NAVIGATE_FORWARD) {
+                    if (scanResult == ScanReturnType.NAVIGATE_FORWARD) {
                         if (findNavController().handleDeeplink(
                                 decodedQRCode,
                                 accountCacheManager,
@@ -137,10 +139,12 @@ class QrCodeScannerFragment : DaggerBaseFragment(R.layout.fragment_qr_code_scann
         navBack()
     }
 
-    enum class ScanReturnType {
+    @Parcelize
+    enum class ScanReturnType : Parcelable {
         MNEMONIC_NAVIGATE_BACK,
         ADDRESS_NAVIGATE_BACK,
-        NAVIGATE_FORWARD
+        NAVIGATE_FORWARD,
+        WALLET_CONNECT_NAVIGATE_BACK
     }
 
     companion object {

@@ -82,5 +82,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <include android:id="@+id/progressBar"
+        layout="@layout/layout_full_screen_progress"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 

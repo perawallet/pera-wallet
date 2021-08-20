@@ -105,7 +105,7 @@ class RegisterWatchAccountFragment : DaggerBaseFragment(R.layout.fragment_regist
     private fun onScanQrClick() {
         nav(
             RegisterWatchAccountFragmentDirections.actionRegisterWatchAccountFragmentToQrCodeScannerFragment(
-                QrCodeScannerFragment.ScanReturnType.ADDRESS_NAVIGATE_BACK
+                scanReturnType = listOf(QrCodeScannerFragment.ScanReturnType.ADDRESS_NAVIGATE_BACK).toTypedArray()
             )
         )
     }

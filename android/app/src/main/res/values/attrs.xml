@@ -11,6 +11,9 @@
   -->
 
 <resources>
+    <attr name="showOperator" format="boolean" />
+    <attr name="algoLogoViewSize" format="dimension" />
+    <attr name="defaultTintColor" format="color" />
 
     <declare-styleable name="PadView">
         <attr name="number" format="integer" />
@@ -31,11 +34,12 @@
     </declare-styleable>
 
     <declare-styleable name="AmountTextView">
-        <attr name="showOperator" format="boolean" />
+        <attr name="showOperator" />
         <attr name="useMicroAlgos" format="boolean" />
         <attr name="algoTextViewSize" format="dimension" />
-        <attr name="algoLogoViewSize" format="dimension" />
-        <attr name="defaultTintColor" format="color" />
+        <attr name="algoLogoViewSize" />
+        <attr name="defaultTintColor" />
+        <attr name="iconTint" />
         <attr name="algoFontFamily" format="reference" />
     </declare-styleable>
 
@@ -82,6 +86,17 @@
     <declare-styleable name="LockableInput">
         <attr name="lockedBackground" format="reference" />
         <attr name="lockedTextColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="TransactionAmountTextView">
+        <attr name="showOperator" />
+        <attr name="algoLogoViewSize" />
+        <attr name="defaultTintColor" />
+        <attr name="amountTextViewSize" format="dimension" />
+        <attr name="amountFontFamily" format="reference" />
+        <attr name="otherAssetTextViewSize" format="dimension" />
+        <attr name="otherAssetFontFamily" format="reference" />
+        <attr name="iconTint" />
     </declare-styleable>
 
 </resources>

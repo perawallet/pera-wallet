@@ -25,7 +25,8 @@ data class DecodedQrCode(
     val note: String? = null,
     val xnote: String? = null, // locked note
     val label: String? = null,
-    private val assetId: Long? = null
+    private val assetId: Long? = null,
+    val walletConnectUrl: String? = null
 ) : Parcelable {
 
     fun getDecodedAssetID(): Long {

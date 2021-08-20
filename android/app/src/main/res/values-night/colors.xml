@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2019 Algorand, Inc.
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -73,5 +72,11 @@
     <color name="bottomSheetIndicatorColor">#2B2B33</color>
     <color name="chartTimeFrameButtonColor">@color/gray_2B</color>
     <color name="chartTimeFrameDefaultTextColor">@color/gray_8D</color>
+
+    <color name="walletConnectAccountSelectionBorderColor">@color/gray_2B</color>
+    <color name="walletConnectDappIconBackgroundColor">@color/gray_2B</color>
+    <color name="walletConnectDappIconBorderColor">@color/transparent</color>
+    <color name="walletConnectFeeAlgoIconColor">@color/gray_8D</color>
+
 </resources>
 

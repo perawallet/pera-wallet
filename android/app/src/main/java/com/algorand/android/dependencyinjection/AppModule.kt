@@ -17,15 +17,20 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.ContextCompat
 import androidx.room.Room
+import com.algorand.android.R
 import com.algorand.android.core.AccountManager
 import com.algorand.android.database.AlgorandDatabase
 import com.algorand.android.database.AlgorandDatabase.Companion.MIGRATION_3_4
 import com.algorand.android.database.AlgorandDatabase.Companion.MIGRATION_4_5
 import com.algorand.android.database.AlgorandDatabase.Companion.MIGRATION_5_6
+import com.algorand.android.database.AlgorandDatabase.Companion.MIGRATION_6_7
 import com.algorand.android.database.ContactDao
 import com.algorand.android.database.NodeDao
 import com.algorand.android.database.NotificationFilterDao
+import com.algorand.android.database.WalletConnectDao
+import com.algorand.android.database.WalletConnectTypeConverters
 import com.algorand.android.ledger.LedgerBleConnectionManager
+import com.algorand.android.network.AlgodInterceptor
 import com.algorand.android.notification.AlgorandNotificationManager
 import com.algorand.android.utils.ALGORAND_KEYSTORE_URI
 import com.algorand.android.utils.AccountCacheManager
@@ -33,6 +38,14 @@ import com.algorand.android.utils.AutoLockManager
 import com.algorand.android.utils.ENCRYPTED_SHARED_PREF_NAME
 import com.algorand.android.utils.KEYSET_HANDLE
 import com.algorand.android.utils.preference.SETTINGS
+import com.algorand.android.utils.walletconnect.WCWalletConnectClient
+import com.algorand.android.utils.walletconnect.WCWalletConnectClient.Companion.CACHE_STORAGE_NAME
+import com.algorand.android.utils.walletconnect.WCWalletConnectMapper
+import com.algorand.android.utils.walletconnect.WalletConnectClient
+import com.algorand.android.utils.walletconnect.WalletConnectEventLogger
+import com.algorand.android.utils.walletconnect.WalletConnectFirebaseEventLogger
+import com.algorand.android.utils.walletconnect.WalletConnectSessionBuilder
+import com.algorand.android.utils.walletconnect.WalletConnectTransactionErrorProvider
 import com.google.crypto.tink.Aead
 import com.google.crypto.tink.KeysetHandle
 import com.google.crypto.tink.aead.AeadFactory
@@ -41,12 +54,18 @@ import com.google.crypto.tink.config.TinkConfig
 import com.google.crypto.tink.integration.android.AndroidKeysetManager
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.gson.Gson
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.io.File
+import javax.inject.Named
 import javax.inject.Singleton
+import okhttp3.OkHttpClient
+import org.walletconnect.impls.FileWCSessionStore
 
 @Suppress("TooManyFunctions")
 @Module
@@ -55,11 +74,15 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideDatabase(@ApplicationContext appContext: Context): AlgorandDatabase {
+    fun provideDatabase(
+        @ApplicationContext appContext: Context,
+        walletConnectTypeConverters: WalletConnectTypeConverters
+    ): AlgorandDatabase {
         return Room
             .databaseBuilder(appContext, AlgorandDatabase::class.java, AlgorandDatabase.DATABASE_NAME)
             .fallbackToDestructiveMigration()
-            .addMigrations(MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6)
+            .addMigrations(MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7)
+            .addTypeConverter(walletConnectTypeConverters)
             .build()
     }
 
@@ -104,6 +127,12 @@ object AppModule {
 
     @Singleton
     @Provides
+    fun provideWalletConnectDao(database: AlgorandDatabase): WalletConnectDao {
+        return database.walletConnect()
+    }
+
+    @Singleton
+    @Provides
     fun provideAlgorandNotificationManager(): AlgorandNotificationManager {
         return AlgorandNotificationManager()
     }
@@ -142,5 +171,63 @@ object AppModule {
     @Provides
     fun provideFirebaseAnalytics(@ApplicationContext appContext: Context): FirebaseAnalytics {
         return FirebaseAnalytics.getInstance(appContext)
+    }
+
+    @Singleton
+    @Provides
+    fun provideMoshi(): Moshi {
+        return Moshi.Builder()
+            .addLast(KotlinJsonAdapterFactory())
+            .build()
+    }
+
+    @Singleton
+    @Provides
+    @Named("wcWalletClient")
+    fun provideWalletConnectClient(
+        walletConnectSessionBuilder: WalletConnectSessionBuilder,
+        walletConnectMapper: WCWalletConnectMapper
+    ): WalletConnectClient {
+        return WCWalletConnectClient(walletConnectSessionBuilder, walletConnectMapper)
+    }
+
+    @Singleton
+    @Provides
+    fun provideWalletConnectSessionBuilder(
+        @Named("walletConnectHttpClient") okHttpClient: OkHttpClient,
+        @ApplicationContext appContext: Context,
+        moshi: Moshi,
+        walletConnectMapper: WCWalletConnectMapper
+    ): WalletConnectSessionBuilder {
+        val storageFile = File(appContext.cacheDir, CACHE_STORAGE_NAME).apply { createNewFile() }
+        return WalletConnectSessionBuilder(
+            moshi,
+            okHttpClient,
+            FileWCSessionStore(storageFile, moshi),
+            walletConnectMapper
+        )
+    }
+
+    @Provides
+    fun provideWalletConnectEventLogger(
+        firebaseAnalytics: FirebaseAnalytics,
+        algodInterceptor: AlgodInterceptor
+    ): WalletConnectEventLogger {
+        return WalletConnectFirebaseEventLogger(firebaseAnalytics, algodInterceptor)
+    }
+
+    @Singleton
+    @Provides
+    fun provideWalletConnectTransactionErrorProvider(
+        @ApplicationContext appContext: Context
+    ): WalletConnectTransactionErrorProvider {
+        return with(appContext) {
+            WalletConnectTransactionErrorProvider(
+                rejectedErrorMessage = getString(R.string.the_user_rejected_the_request),
+                unauthorizedErrorMessage = getString(R.string.the_requested_operation_and),
+                unsupportedErrorMessage = getString(R.string.the_wallet_does_not_support),
+                invalidInputErrorMessage = getString(R.string.the_input_provided_is_invalid)
+            )
+        }
     }
 }

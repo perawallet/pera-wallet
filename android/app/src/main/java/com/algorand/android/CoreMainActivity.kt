@@ -162,7 +162,15 @@ abstract class CoreMainActivity : BaseActivity() {
     fun showGlobalError(errorMessage: CharSequence?, title: String? = null) {
         val safeTitle = title ?: getString(R.string.error_default_title)
         val safeErrorMessage = errorMessage ?: getString(R.string.unknown_error)
-        binding.slidingTopErrorView?.addErrorMessage(safeTitle, safeErrorMessage)
+        binding.slidingTopErrorView.addErrorMessage(safeTitle, safeErrorMessage)
+    }
+
+    fun showProgress() {
+        binding.progressBar.root.visibility = View.VISIBLE
+    }
+
+    fun hideProgress() {
+        binding.progressBar.root.visibility = View.GONE
     }
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {

@@ -148,11 +148,15 @@ class LedgerBleConnectionManager(appContext: Context) : BleManager<LedgerBleConn
             }
             when {
                 data.size == ERROR_DATA_SIZE -> {
-                    if (data.contentEquals(OPERATION_CANCELLED_CODE)) {
-                        mCallbacks.onOperationCancelled()
-                    } else {
-                        disconnect().enqueue()
-                        mCallbacks.onManagerError(R.string.error_app_closed_message, R.string.error_app_closed_title)
+                    when {
+                        data.contentEquals(OPERATION_CANCELLED_CODE) -> mCallbacks.onOperationCancelled()
+                        data.contentEquals(NEXT_PAGE_CODE) -> return
+                        else -> {
+                            disconnect().enqueue()
+                            mCallbacks.onManagerError(
+                                R.string.error_app_closed_message, R.string.error_app_closed_title
+                            )
+                        }
                     }
                 }
                 data.size == PUBLIC_KEY_RESPONSE_DATA_SIZE -> {
@@ -374,6 +378,7 @@ class LedgerBleConnectionManager(appContext: Context) : BleManager<LedgerBleConn
         private const val ERROR_DATA_SIZE = 2
 
         private val OPERATION_CANCELLED_CODE = byteArrayOf(0x69, 0x85.toByte())
+        private val NEXT_PAGE_CODE = byteArrayOf(0x90.toByte(), 0x00.toByte())
 
         private const val TAG = "LedgerBleManager"
     }

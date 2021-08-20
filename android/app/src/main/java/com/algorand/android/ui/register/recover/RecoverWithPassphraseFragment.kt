@@ -23,6 +23,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.navGraphViewModels
+import com.algorand.algosdk.mobile.Mobile
 import com.algorand.android.MainNavigationDirections
 import com.algorand.android.MainViewModel
 import com.algorand.android.R
@@ -56,13 +57,11 @@ import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.toShortenedAddress
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
-import crypto.Crypto
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 import javax.inject.Inject
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import mnemonic.Mnemonic
 
 @AndroidEntryPoint
 class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recover_with_passphrase) {
@@ -132,7 +131,7 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
         recoverWithPassphraseViewModel.mnemonic = binding.passphraseInputGroup.getMnemonicResponse().mnemonic
         nav(
             actionRecoverWithPassphraseFragmentToQrCodeScannerFragment(
-                QrCodeScannerFragment.ScanReturnType.MNEMONIC_NAVIGATE_BACK
+                listOf(QrCodeScannerFragment.ScanReturnType.MNEMONIC_NAVIGATE_BACK).toTypedArray()
             )
         )
     }
@@ -266,9 +265,9 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
                 showGlobalError(errorMessage = mnemonicResponse.error.toString())
                 return
             }
-            val privateKey = Mnemonic.toPrivateKey(mnemonicResponse.mnemonic.toLowerCase(Locale.ENGLISH))
+            val privateKey = Mobile.mnemonicToPrivateKey(mnemonicResponse.mnemonic.toLowerCase(Locale.ENGLISH))
             if (privateKey != null) {
-                val publicKey = Crypto.generateAddressFromSK(privateKey)
+                val publicKey = Mobile.generateAddressFromSK(privateKey)
                 val sameAccount = accountManager.getAccounts().find { account -> account.address == publicKey }
                 if (sameAccount != null &&
                     sameAccount.type != Account.Type.REKEYED &&

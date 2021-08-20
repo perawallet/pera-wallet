@@ -15,17 +15,19 @@ package com.algorand.android.ledger
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothDevice
 import androidx.lifecycle.Lifecycle
+import com.algorand.algosdk.mobile.Mobile
 import com.algorand.android.R
 import com.algorand.android.ledger.operations.AccountFetchAllOperation
 import com.algorand.android.ledger.operations.BaseOperation
+import com.algorand.android.ledger.operations.BaseTransactionOperation
 import com.algorand.android.ledger.operations.TransactionOperation
 import com.algorand.android.ledger.operations.VerifyAddressOperation
+import com.algorand.android.ledger.operations.WalletConnectTransactionOperation
 import com.algorand.android.models.LedgerBleResult
 import com.algorand.android.repository.AccountRepository
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.LifecycleScopedCoroutineOwner
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import crypto.Crypto
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancelChildren
@@ -53,7 +55,7 @@ class LedgerBleOperationManager @Inject constructor(
         currentOperation = newOperation
         currentScope.launch {
             when (newOperation) {
-                is TransactionOperation, is AccountFetchAllOperation -> {
+                is TransactionOperation, is AccountFetchAllOperation, is WalletConnectTransactionOperation -> {
                     sendPublicKeyRequest()
                 }
                 is VerifyAddressOperation -> {
@@ -73,8 +75,8 @@ class LedgerBleOperationManager @Inject constructor(
     }
 
     private suspend fun sendTransactionRequest() {
-        (currentOperation as? TransactionOperation)?.run {
-            val currentTransactionData = transactionData.transactionByteArray
+        (currentOperation as? BaseTransactionOperation)?.run {
+            val currentTransactionData = transactionByteArray
             if (currentTransactionData != null) {
                 if (connectToLedger(bluetoothDevice)) {
                     ledgerBleConnectionManager.sendSignTransactionRequest(currentTransactionData, nextIndex - 1)
@@ -98,16 +100,17 @@ class LedgerBleOperationManager @Inject constructor(
         currentScope.launch(Dispatchers.IO) {
             currentOperation?.run {
                 if (this is VerifyAddressOperation) {
-                    postResult(LedgerBleResult.VerifyPublicKeyResult(
-                        isVerified = publicKey == this.address,
-                        ledgerPublicKey = publicKey,
-                        originalPublicKey = this.address
-                    ))
+                    postResult(
+                        LedgerBleResult.VerifyPublicKeyResult(
+                            isVerified = publicKey == this.address,
+                            ledgerPublicKey = publicKey,
+                            originalPublicKey = this.address
+                        )
+                    )
                     return@launch
                 }
-                if (this is TransactionOperation &&
-                    (publicKey == transactionData.accountCacheData.account.address ||
-                        publicKey == transactionData.accountCacheData.authAddress)
+                if (this is BaseTransactionOperation &&
+                    (publicKey == accountAddress || publicKey == accountAuthAddress)
                 ) {
                     sendTransactionRequest()
                     return@launch
@@ -126,7 +129,7 @@ class LedgerBleOperationManager @Inject constructor(
                                         is AccountFetchAllOperation -> {
                                             LedgerBleResult.AccountResult(accounts, device)
                                         }
-                                        is TransactionOperation -> {
+                                        is TransactionOperation, is WalletConnectTransactionOperation -> {
                                             LedgerBleResult.AppErrorResult(R.string.it_appears_this, R.string.error)
                                         }
                                         is VerifyAddressOperation -> {
@@ -153,12 +156,12 @@ class LedgerBleOperationManager @Inject constructor(
     override fun onTransactionSignatureReceived(device: BluetoothDevice, transactionSignature: ByteArray) {
         currentScope.launch {
             try {
-                (currentOperation as? TransactionOperation)?.transactionData?.run {
-                    val authAddress = accountCacheData.authAddress
-                    val signedTransactionData = if (accountCacheData.isRekeyedToAnotherAccount()) {
-                        Crypto.attachSignatureWithSigner(transactionSignature, transactionByteArray, authAddress)
+                (currentOperation as? BaseTransactionOperation)?.run {
+                    val authAddress = accountCacheData?.authAddress
+                    val signedTransactionData = if (accountCacheData?.isRekeyedToAnotherAccount() == true) {
+                        Mobile.attachSignatureWithSigner(transactionSignature, transactionByteArray, authAddress)
                     } else {
-                        Crypto.attachSignature(transactionSignature, transactionByteArray)
+                        Mobile.attachSignature(transactionSignature, transactionByteArray)
                     }
                     postResult(LedgerBleResult.SignedTransactionResult(signedTransactionData))
                 }

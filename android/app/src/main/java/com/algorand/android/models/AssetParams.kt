@@ -26,10 +26,37 @@ data class AssetParams(
     val decimals: Int?,
     @SerializedName("creator")
     val creatorPublicKey: String?,
+    @SerializedName("url")
+    val url: String? = null,
+    @SerializedName("manager")
+    val manager: String? = null,
+    @SerializedName("freeze")
+    val freeze: String? = null,
+    @SerializedName("total")
+    val total: Long? = null,
+    @SerializedName("reserve")
+    val reserve: String? = null,
+    @SerializedName("clawback")
+    val clawback: String? = null,
+    var id: Long? = null,
     var isVerified: Boolean = false
 ) : Parcelable {
 
-    fun convertToAssetInformation(assetId: Long): AssetInformation {
-        return AssetInformation(assetId, isVerified, creatorPublicKey, shortName, fullName)
+    fun convertToAssetInformation(
+        assetId: Long
+    ): AssetInformation {
+        return AssetInformation(
+            assetId = assetId,
+            isVerified = isVerified,
+            creatorPublicKey = creatorPublicKey,
+            shortName = shortName,
+            fullName = fullName,
+            url = url
+        )
+    }
+
+    fun appendAssetId(assetId: Long): AssetParams {
+        id = assetId
+        return this
     }
 }

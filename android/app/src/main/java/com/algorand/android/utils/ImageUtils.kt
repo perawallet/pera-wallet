@@ -12,11 +12,18 @@
 
 package com.algorand.android.utils
 
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
+import androidx.appcompat.content.res.AppCompatResources
 import com.algorand.android.R
+import com.algorand.android.utils.walletconnect.getRandomPeerMetaIconResId
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 
 fun ImageView.loadContactProfileImage(
     uri: Uri?,
@@ -47,5 +54,34 @@ fun ImageView.loadContactProfileImage(
 fun ImageView.loadImage(@DrawableRes drawableResId: Int) {
     Glide.with(this)
         .load(drawableResId)
+        .into(this)
+}
+
+fun ImageView.loadPeerMetaIcon(url: String?) {
+    Glide.with(this)
+        .load(url)
+        .listener(object : RequestListener<Drawable> {
+            override fun onLoadFailed(
+                e: GlideException?,
+                model: Any?,
+                target: Target<Drawable>?,
+                isFirstResource: Boolean
+            ): Boolean {
+                val errorDrawable = AppCompatResources.getDrawable(context, getRandomPeerMetaIconResId())
+                setImageDrawable(errorDrawable)
+                return true
+            }
+
+            override fun onResourceReady(
+                resource: Drawable?,
+                model: Any?,
+                target: Target<Drawable>?,
+                dataSource: DataSource?,
+                isFirstResource: Boolean
+            ): Boolean {
+                return false
+            }
+        })
+        .circleCrop()
         .into(this)
 }

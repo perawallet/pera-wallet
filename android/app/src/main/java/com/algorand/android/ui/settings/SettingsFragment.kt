@@ -72,21 +72,24 @@ class SettingsFragment : DaggerBaseFragment(R.layout.fragment_settings) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initDialogSavedStateListener()
-        binding.biometricSwitch.isChecked = sharedPref.isBiometricActive()
-        binding.rewardsSwitch.isChecked = sharedPref.isRewardsActivated()
-        initSwitchChangeListeners()
-        binding.notificationListItem.setOnClickListener { onNotificationClick() }
-        binding.themeListItem.setOnClickListener { onThemeClick() }
-        binding.currencyListItem.setOnClickListener { onCurrencyClick() }
-        binding.languageListItem.setOnClickListener { onLanguageClick() }
-        binding.developerListItem.setOnClickListener { onDeveloperSettingsClick() }
-        binding.supportCenterListItem.setOnClickListener { onSupportCenterClick() }
-        binding.changePasswordListItem.setOnClickListener { onChangePasswordClick() }
-        binding.termsAndServicesListItem.setOnClickListener { onTermsAndServicesClick() }
-        binding.privacyPolicyListItem.setOnClickListener { onPrivacyPolicyClick() }
-        binding.rateListItem.setOnClickListener { onRateClick() }
-        binding.logoutButton.setOnClickListener { onLogoutClick() }
-        binding.versionCodeTextView.text = getString(R.string.version_format, BuildConfig.VERSION_NAME)
+        with(binding) {
+            biometricSwitch.isChecked = sharedPref.isBiometricActive()
+            rewardsSwitch.isChecked = sharedPref.isRewardsActivated()
+            initSwitchChangeListeners()
+            notificationListItem.setOnClickListener { onNotificationClick() }
+            themeListItem.setOnClickListener { onThemeClick() }
+            currencyListItem.setOnClickListener { onCurrencyClick() }
+            languageListItem.setOnClickListener { onLanguageClick() }
+            developerListItem.setOnClickListener { onDeveloperSettingsClick() }
+            supportCenterListItem.setOnClickListener { onSupportCenterClick() }
+            changePasswordListItem.setOnClickListener { onChangePasswordClick() }
+            termsAndServicesListItem.setOnClickListener { onTermsAndServicesClick() }
+            privacyPolicyListItem.setOnClickListener { onPrivacyPolicyClick() }
+            walletConnectListItem.setOnClickListener { onWalletConnectSessionsClick() }
+            rateListItem.setOnClickListener { onRateClick() }
+            logoutButton.setOnClickListener { onLogoutClick() }
+            versionCodeTextView.text = getString(R.string.version_format, BuildConfig.VERSION_NAME)
+        }
     }
 
     override fun onResume() {
@@ -172,6 +175,10 @@ class SettingsFragment : DaggerBaseFragment(R.layout.fragment_settings) {
 
     private fun onRateClick() {
         context?.openApplicationPageOnStore()
+    }
+
+    private fun onWalletConnectSessionsClick() {
+        nav(SettingsFragmentDirections.actionSettingsFragmentToWalletConnectSessionsFragment())
     }
 
     private fun onLogoutClick() {

@@ -29,7 +29,6 @@ import androidx.navigation.NavOptions
 import com.algorand.android.CoreMainActivity
 import com.algorand.android.MainActivity
 import com.algorand.android.R
-import com.algorand.android.core.BaseFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 
@@ -58,8 +57,8 @@ fun <T> NavBackStackEntry.useSavedStateValue(key: String, handler: (T) -> Unit) 
     }
 }
 
-// User for transferring data from dialog.
-fun BaseFragment.startSavedStateListener(fragmentId: Int, savedStateListener: NavBackStackEntry.() -> Unit) {
+// Used for transferring data from dialog.
+fun Fragment.startSavedStateListener(fragmentId: Int, savedStateListener: NavBackStackEntry.() -> Unit) {
     var navBackStackEntry: NavBackStackEntry? = null
     try {
         navBackStackEntry = (activity as? CoreMainActivity)?.navController?.getBackStackEntry(fragmentId)

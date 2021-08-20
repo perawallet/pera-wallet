@@ -191,6 +191,13 @@ dependencies {
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:${libVersions.desugar}"
 
+    // Wallet Connect
+    implementation "org.java-websocket:Java-WebSocket:${libVersions.javaWebSocket}"
+    implementation "com.github.komputing:khex:${libVersions.khex}"
+    implementation "com.squareup.moshi:moshi:${libVersions.moshi}"
+    implementation "com.squareup.moshi:moshi-kotlin:${libVersions.moshi}"
+    implementation "org.bouncycastle:bcprov-jdk15to18:${libVersions.bcprov}"
+
     testImplementation "junit:junit:${testLibVersions.junit}"
     androidTestImplementation "androidx.room:room-testing:${libVersions.room}"
     androidTestImplementation "androidx.test:runner:${testLibVersions.runner}"

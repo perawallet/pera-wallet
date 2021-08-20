@@ -33,6 +33,7 @@ import com.algorand.android.models.User
 import com.algorand.android.ui.common.warningconfirmation.WarningConfirmationBottomSheet.Companion.WARNING_CONFIRMATION_KEY
 import com.algorand.android.ui.contacts.addcontact.AddEditContactFragmentDirections.Companion.actionAddContactFragmentToAddContactQrScannerFragment
 import com.algorand.android.ui.contacts.addcontact.AddEditContactFragmentDirections.Companion.actionAddEditContactFragmentToWarningConfirmationBottomSheet
+import com.algorand.android.ui.qr.QrCodeScannerFragment
 import com.algorand.android.ui.qr.QrCodeScannerFragment.Companion.QR_SCAN_RESULT_KEY
 import com.algorand.android.utils.IMAGE_READ_REQUEST
 import com.algorand.android.utils.alertDialog
@@ -167,7 +168,11 @@ class AddEditContactFragment : DaggerBaseFragment(R.layout.fragment_add_edit_con
     private fun openQrScannerForAlgorandAddress() {
         saveInputs()
         binding.scanQrButton.hideKeyboard()
-        nav(actionAddContactFragmentToAddContactQrScannerFragment())
+        nav(
+            actionAddContactFragmentToAddContactQrScannerFragment(
+                listOf(QrCodeScannerFragment.ScanReturnType.ADDRESS_NAVIGATE_BACK).toTypedArray()
+            )
+        )
     }
 
     private fun saveInputs() {

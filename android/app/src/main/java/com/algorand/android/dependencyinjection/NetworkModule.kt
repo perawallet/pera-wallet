@@ -16,12 +16,12 @@ import com.algorand.android.BuildConfig
 import com.algorand.android.models.Account
 import com.algorand.android.models.AccountDeserializer
 import com.algorand.android.network.AlgodApi
+import com.algorand.android.network.AlgodExplorerPriceApi
 import com.algorand.android.network.AlgodInterceptor
 import com.algorand.android.network.IndexerApi
 import com.algorand.android.network.IndexerInterceptor
 import com.algorand.android.network.MobileAlgorandApi
 import com.algorand.android.network.MobileHeaderInterceptor
-import com.algorand.android.network.AlgodExplorerPriceApi
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.hipo.hipoexceptionsandroid.RetrofitErrorHandler
@@ -29,13 +29,13 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
+import java.util.concurrent.TimeUnit
+import javax.inject.Named
+import javax.inject.Singleton
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
-import javax.inject.Named
-import javax.inject.Singleton
 
 /**
  * Module which provides all required dependencies about network
@@ -113,6 +113,19 @@ object NetworkModule {
     @Singleton
     @Named("algodExplorerPriceHttpClient")
     fun provideAlgodExplorerPriceHttpClient(
+        loggingInterceptor: HttpLoggingInterceptor
+    ): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .readTimeout(TIMEOUT_CONSTANT, TimeUnit.SECONDS)
+            .writeTimeout(TIMEOUT_CONSTANT, TimeUnit.SECONDS)
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    @Named("walletConnectHttpClient")
+    fun provideWalletConnectHttpClient(
         loggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()

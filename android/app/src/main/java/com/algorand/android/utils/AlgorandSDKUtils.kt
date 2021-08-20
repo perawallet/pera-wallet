@@ -13,15 +13,17 @@
 package com.algorand.android.utils
 
 import android.util.Base64
+import com.algorand.algosdk.mobile.BytesArray
+import com.algorand.algosdk.mobile.Mobile
+import com.algorand.algosdk.mobile.SuggestedParams
+import com.algorand.algosdk.mobile.Uint64
 import com.algorand.android.models.AssetInformation
+import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.TransactionParams
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import crypto.Crypto
-import transaction.Transaction
-import utils.Utils
 
 fun ByteArray.signTx(secretKey: ByteArray): ByteArray {
-    return Crypto.signTransaction(secretKey, this)
+    return Mobile.signTransaction(secretKey, this)
 }
 
 fun TransactionParams.makeAssetTx(
@@ -31,17 +33,14 @@ fun TransactionParams.makeAssetTx(
     assetId: Long,
     noteInByteArray: ByteArray? = null
 ): ByteArray {
-    return Transaction.makeAssetTransferTxn(
+
+    return Mobile.makeAssetTransferTxn(
         senderAddress,
         receiverAddress,
         "",
-        amount,
-        fee,
-        lastRound,
-        lastRound + ROUND_THRESHOLD,
+        amount.toUint64(),
         noteInByteArray,
-        "",
-        genesisHash,
+        toSuggestedParams(addGenesisId = false),
         assetId
     )
 }
@@ -53,41 +52,29 @@ fun TransactionParams.makeAlgoTx(
     isMax: Boolean,
     noteInByteArray: ByteArray? = null
 ): ByteArray {
-    return Transaction.makePaymentTxn(
+    return Mobile.makePaymentTxn(
         senderAddress,
         receiverAddress,
-        fee,
-        amount,
-        lastRound,
-        lastRound + ROUND_THRESHOLD,
+        amount.toUint64(),
         noteInByteArray,
         if (isMax) receiverAddress else "",
-        genesisId,
-        Base64.decode(genesisHash, Base64.DEFAULT)
+        toSuggestedParams()
     )
 }
 
 fun TransactionParams.makeRekeyTx(rekeyAddress: String, rekeyAdminAddress: String): ByteArray {
-    return Transaction.makeRekeyTxn(
+    return Mobile.makeRekeyTxn(
         rekeyAddress,
         rekeyAdminAddress,
-        fee,
-        lastRound,
-        lastRound + ROUND_THRESHOLD,
-        genesisId,
-        Base64.decode(genesisHash, Base64.DEFAULT)
+        toSuggestedParams()
     )
 }
 
 fun TransactionParams.makeAddAssetTx(publicKey: String, assetId: Long): ByteArray {
-    return Transaction.makeAssetAcceptanceTxn(
+    return Mobile.makeAssetAcceptanceTxn(
         publicKey,
-        fee,
-        lastRound,
-        lastRound + ROUND_THRESHOLD,
         null,
-        genesisId,
-        genesisHash,
+        toSuggestedParams(),
         assetId
     )
 }
@@ -97,17 +84,13 @@ fun TransactionParams.makeRemoveAssetTx(
     creatorPublicKey: String,
     assetId: Long
 ): ByteArray {
-    return Transaction.makeAssetTransferTxn(
+    return Mobile.makeAssetTransferTxn(
         senderAddress,
         creatorPublicKey,
         creatorPublicKey,
-        0,
-        fee,
-        lastRound,
-        lastRound + ROUND_THRESHOLD,
+        0L.toUint64(),
         null,
-        "",
-        genesisHash,
+        toSuggestedParams(addGenesisId = false),
         assetId
     )
 }
@@ -138,18 +121,93 @@ fun String?.isValidAddress(): Boolean {
         return false
     }
     return try {
-        Utils.isValidAddress(this)
+        Mobile.isValidAddress(this)
     } catch (exception: Exception) {
         FirebaseCrashlytics.getInstance().recordException(exception)
         false
     }
 }
 
+fun TransactionParams.toSuggestedParams(
+    addGenesisId: Boolean = true
+): SuggestedParams {
+    return SuggestedParams().apply {
+        fee = this@toSuggestedParams.fee
+        genesisID = if (addGenesisId) genesisId else ""
+        firstRoundValid = lastRound
+        lastRoundValid = lastRound + ROUND_THRESHOLD
+        genesisHash = Base64.decode(this@toSuggestedParams.genesisHash, Base64.DEFAULT)
+    }
+}
+
 fun getPublicKey(addressAsByteArray: ByteArray): String? {
     return try {
-        Crypto.generateAddressFromPublicKey(addressAsByteArray)
+        Mobile.generateAddressFromPublicKey(addressAsByteArray)
     } catch (exception: Exception) {
         FirebaseCrashlytics.getInstance().recordException(exception)
         null
+    }
+}
+
+fun getBase64DecodedPublicKey(address: String?): String? {
+    if (address == null) return null
+    return getPublicKey(Base64.decode(address, Base64.DEFAULT))
+}
+
+fun Long.toUint64(): Uint64 {
+    return Uint64().apply {
+        upper = shr(Int.SIZE_BITS)
+        lower = and(Int.MAX_VALUE.toLong())
+    }
+}
+
+fun decodeBase64DecodedMsgPackToJsonString(msgPack: String): String {
+    return try {
+        val decodedByteArray = Base64.decode(msgPack, Base64.DEFAULT)
+        Mobile.transactionMsgpackToJson(decodedByteArray)
+    } catch (exception: Exception) {
+        FirebaseCrashlytics.getInstance().recordException(exception)
+        ""
+    }
+}
+
+/**
+ * txnGroupList is a pair list that keeps group id and transaction
+ * i.e= listOf(
+ *      Pair(0, A_1),
+ *      Pair(0, A_2),
+ *      Pair(1, B_1),
+ *      Pair(1, B_2),
+ *      Pair(1, B_3)
+ *  )
+ *
+ *  By calling; txnGroupList.groupBy { it.first }.map { it.value.map { it.second } }
+ *  it creates map that keeps group ids as key and txns as values;
+ *      {0=[(0, A_1), (0, A_2)], 1=[(1, B_1), (1, B_2), (1, B_3)]}
+ *  then converts it to nested list
+ *      [[A_1, A_2], [B_1, B_2, B_3]]
+ */
+fun groupWalletConnectTransactions(
+    txnList: List<BaseWalletConnectTransaction>
+): List<List<BaseWalletConnectTransaction>> {
+    val decodedTxnList = txnList.map { Base64.decode(it.rawTransactionPayload.transactionMsgPack, Base64.DEFAULT) }
+    val decodedTxnBytesArray = BytesArray().apply {
+        decodedTxnList.forEach { append(it) }
+    }
+    val txnGroupInt64Array = Mobile.findAndVerifyTxnGroups(decodedTxnBytesArray)
+    val txnGroupList = mutableListOf<Pair<Long, BaseWalletConnectTransaction>>().apply {
+        for (index in 0L until txnGroupInt64Array.length()) {
+            add(txnGroupInt64Array.get(index) to txnList[index.toInt()])
+        }
+    }
+    return txnGroupList.groupBy { it.first }.map { it.value.map { it.second } }
+}
+
+fun getTransactionId(txnByteArray: ByteArray?): String {
+    return try {
+        Mobile.getTxID(txnByteArray)
+    } catch (exception: Exception) {
+        FirebaseCrashlytics.getInstance().recordException(exception)
+        ""
     }
 }

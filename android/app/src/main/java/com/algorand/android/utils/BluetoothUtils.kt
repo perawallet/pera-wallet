@@ -22,6 +22,7 @@ import com.algorand.android.R
 import com.algorand.android.core.BaseFragment
 import com.algorand.android.core.TransactionBaseFragment
 import com.algorand.android.ui.common.BaseLedgerSearchFragment
+import com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionRequestFragment
 
 fun BaseFragment.isBluetoothEnabled(): Boolean {
     val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter() ?: return false
@@ -38,6 +39,9 @@ fun BaseFragment.isBluetoothEnabled(): Boolean {
         when (this) {
             is TransactionBaseFragment -> {
                 permissionDeniedOnTransactionData(R.string.please_ensure, R.string.bluetooth_location_services)
+            }
+            is WalletConnectTransactionRequestFragment -> {
+                permissionDeniedOnTransaction(R.string.please_ensure, R.string.bluetooth_location_services)
             }
             is BaseLedgerSearchFragment -> {
                 showGlobalError(getString(R.string.please_ensure), getString(R.string.bluetooth_location_services))

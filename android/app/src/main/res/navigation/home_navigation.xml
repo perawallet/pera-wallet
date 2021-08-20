@@ -16,6 +16,12 @@
     android:id="@+id/homeNavigation"
     app:startDestination="@id/accountsFragment">
 
+    <include app:graph="@navigation/wallet_connect_request_navigation" />
+
+    <action
+        android:id="@+id/action_global_walletConnectConnectionBottomSheet"
+        app:destination="@id/walletConnectConnectionBottomSheet" />
+
     <action
         android:id="@+id/action_global_assetSelectionBottomSheet"
         app:destination="@id/assetSelectionBottomSheet" />
@@ -33,6 +39,15 @@
     <action
         android:id="@+id/action_global_assetDetailFragment"
         app:destination="@id/assetDetailFragment" />
+
+    <action
+        android:id="@+id/action_global_walletConnectRequestNavigation"
+        app:destination="@id/walletConnectRequestNavigation">
+
+        <argument
+            android:name="transaction"
+            app:argType="com.algorand.android.models.WalletConnectTransaction" />
+    </action>
 
     <fragment
         android:id="@+id/contactsFragment"
@@ -170,8 +185,7 @@
         tools:layout="@layout/fragment_qr_code_scanner">
         <argument
             android:name="scanReturnType"
-            android:defaultValue="ADDRESS_NAVIGATE_BACK"
-            app:argType="com.algorand.android.ui.qr.QrCodeScannerFragment$ScanReturnType" />
+            app:argType="com.algorand.android.ui.qr.QrCodeScannerFragment$ScanReturnType[]" />
         <action
             android:id="@+id/action_mainQrScannerFragment_to_addEditContactFragment"
             app:destination="@id/addEditContactFragment"
@@ -354,6 +368,9 @@
         <action
             android:id="@+id/action_settingsFragment_to_notificationFilterFragment"
             app:destination="@id/notificationFilterFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_walletConnectSessionsFragment"
+            app:destination="@id/walletConnectSessionsFragment" />
     </fragment>
 
     <fragment
@@ -516,6 +533,16 @@
         <argument
             android:name="showDoneButton"
             app:argType="boolean" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/walletConnectSessionsFragment"
+        android:name="com.algorand.android.ui.wcsessions.WalletConnectSessionsFragment"
+        android:label="WalletConnectSessionsFragment"
+        tools:layout="@layout/fragment_wallet_connect_sessions">
+        <action
+            android:id="@+id/action_walletConnectSessionsFragment_to_mainQrScannerFragment"
+            app:destination="@id/mainQrScannerFragment" />
     </fragment>
 
     <dialog
@@ -726,13 +753,25 @@
         android:id="@+id/analyticsDetailBottomSheet"
         android:name="com.algorand.android.ui.analyticsdetail.AnalyticsDetailBottomSheet"
         android:label="AnalyticsDetailBottomSheet"
-        tools:layout="@layout/bottom_sheet_analytics_detail" >
+        tools:layout="@layout/bottom_sheet_analytics_detail">
         <argument
             android:name="algoAccountAddress"
             app:argType="string" />
         <argument
             android:name="selectedCurrency"
             app:argType="com.algorand.android.models.CurrencyValue" />
+    </dialog>
+    <dialog
+        android:id="@+id/walletConnectConnectionBottomSheet"
+        android:name="com.algorand.android.ui.wcconnection.WalletConnectConnectionBottomSheet"
+        android:label="WalletConnectConnectionBottomSheet"
+        tools:layout="@layout/bottom_sheet_wallet_connect_connection">
+        <action
+            android:id="@+id/action_walletConnectConnectionBottomSheet_to_accountSelectionBottomSheet"
+            app:destination="@id/accountSelectionBottomSheet" />
+        <argument
+            android:name="sessionRequest"
+            app:argType="com.algorand.android.models.WalletConnectSession" />
     </dialog>
 
 </navigation>

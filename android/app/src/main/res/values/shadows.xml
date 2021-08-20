@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2019 Algorand, Inc.
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -56,6 +55,7 @@
     <dimen name="smallshadow_bottom_padding_4dp">14dp</dimen>
     <dimen name="smallshadow_bottom_padding_12dp">22dp</dimen>
     <dimen name="smallshadow_bottom_padding_14dp">24dp</dimen>
+    <dimen name="smallshadow_bottom_padding_18dp">28dp</dimen>
     <dimen name="smallshadow_bottom_padding_24dp">34dp</dimen>
 
     <!--   Default Inset for Shadow -->

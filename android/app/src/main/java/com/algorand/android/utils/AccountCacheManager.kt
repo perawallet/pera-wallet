@@ -119,6 +119,10 @@ class AccountCacheManager(private val accountManager: AccountManager) {
         accountCacheMap.value = newMap
     }
 
+    fun addAssetInformationToAccountCache(accountPublicKey: String, assetInformation: AssetInformation) {
+        accountCacheMap.value[accountPublicKey]?.assetsInformation?.add(assetInformation)
+    }
+
     fun removeCacheData(accountPublicKey: String) {
         val newMap = accountCacheMap.value.toMutableMap()
         newMap.remove(accountPublicKey)

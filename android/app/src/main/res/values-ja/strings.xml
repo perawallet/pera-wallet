@@ -488,4 +488,69 @@
   <string name="minimum_balance_required">必要な最小残高</string>
   <string name="transaction_maximum_error_message_singular">このアカウントには（<annotation replacement="account_name">account_name_placeholder</annotation>）他の資産 <annotation replacement="asset_count">asset_count_placeholder</annotation> があるため、Algorandブロックチェーンでは <annotation replacement="min_balance">min_balance_placeholder</annotation> Algosの最低残高を維持する必要があります。\n\n続行をクリックすると、取引額がこの変更を反映して自動的に更新されます。次のステップで、この変更をプレビューできます。</string>
   <string name="transaction_maximum_error_message_plural">このアカウントには（<annotation replacement="account_name">account_name_placeholder</annotation>）他の資産 <annotation replacement="asset_count">asset_count_placeholder</annotation> があるため、Algorandブロックチェーンでは <annotation replacement="min_balance">min_balance_placeholder</annotation> Algosの最低残高を維持する必要があります。\n\n続行をクリックすると、取引額がこの変更を反映して自動的に更新されます。次のステップで、この変更をプレビューできます。</string>
+  <string name="you_have_not_connected">まだどのアプリも接続していません。</string>
+  <string name="wallet_connect_sessions">WalletConnectセッション</string>
+  <string name="wallet_wants_to_connect"><annotation type="bold"><annotation replacement="app_name">app_name_placeholder</annotation></annotation>が\nアカウントへの接続を要求しています</string>
+  <string name="you_do_not_have_any">WalletConnectが接続できるアカウントがありません。</string>
+  <string name="disconnect">接続解除</string>
+  <string name="account_balance">アカウント残高</string>
+  <string name="show_more_info">詳細情報を表示</string>
+  <string name="raw_txns">Raw Txns</string>
+  <string name="show_raw_transaction">Rawトランザクションを表示</string>
+  <string name="algoexplorer">AlgoExplorer</string>
+  <string name="show_explorer">エクスプローラーの表示</string>
+  <string name="asset_url">アセットURL</string>
+  <string name="show_asset_url">アセットURLの表示</string>
+  <string name="asset_metadata">アセットメタデータ</string>
+  <string name="show_asset_metadata">アセットメタデータを表示</string>
+  <string name="rekey_to">再キー化先</string>
+  <string name="payment_transfer_formatted">%1$sへの支払い</string>
+  <string name="asset_transfer_formatted">%1$sへのアセット転送</string>
+  <string name="opt_in_asset_formatted">アセット#%1$sへのオプトイン</string>
+  <string name="possible_opt_in_formatted">アセット#%1$sへの可能なオプトイン</string>
+  <string name="application_call_formatted">#%1$sへのアプリケーションコール</string>
+  <string name="decline">拒否</string>
+  <string name="transaction_request">トランザクションリクエスト</string>
+  <string name="raw_transaction">Rawトランザクション</string>
+  <string name="the_user_rejected_the_request">ユーザーがリクエストを拒否しました。</string>
+  <string name="the_requested_operation_and">要求された操作および/またはアカウントは、ユーザーによって承認されていません。</string>
+  <string name="the_wallet_does_not_support">ウォレットは要求された操作をサポートしていません。</string>
+  <string name="the_input_provided_is_invalid">入力された内容は無効です。</string>
+  <string name="there_is_not_any_valid">このトランザクションに署名するための有効なアカウントはありません。</string>
+  <string name="an_error_occurred_while_signing">トランザクションの署名中にエラーが発生しました。</string>
+  <string name="transaction_succesfully_confirmed">トランザクションが正常に確認されました</string>
+  <string name="transaction_rejected">トランザクションが拒否されました。</string>
+  <string name="assets_opt_in_request">アセットオプトインリクエスト</string>
+  <string name="transfer_asset_request">アセット転送リクエスト</string>
+  <string name="sender">送信者</string>
+  <string name="multiple_transaction_request">複数のトランザクションリクエスト</string>
+  <string name="multiple_transactions_formatted">%1$dトランザクション</string>
+  <string name="unsigned_transactions">未署名のトランザクション</string>
+  <string name="atomic_transaction_request">アトミック トランザクションリクエスト</string>
+  <string name="all_transactions_formatted">すべてのトランザクション (%1$d)</string>
+  <string name="application_id">アプリケーションID</string>
+  <string name="this_transaction_will_transfer">このトランザクションにより、このアカウントの所有権が移転します。あなたの現在の復旧用パスフレーズでは、これらの資産へのアクセスができなくなります。</string>
+  <string name="the_following_transaction_requests">以下のトランザクションリクエストは、Algorand Walletが管理していない外部アプリケーションからのものです。トランザクションは元に戻すことができないため、署名する前にトランザクション内容を慎重にご確認ください。</string>
+  <string name="got_it">了解です！</string>
+  <string name="once_confirmed_the_connected_application">確認後、接続されたアプリケーションは、自由にこれらのトランザクションを送信することができます。このプロセスは元に戻すことができないため、トランザクションの内容を慎重に確認してください。</string>
+  <string name="are_you_sure_question_mark">よろしいですか？</string>
+  <string name="this_transaction_is_sending">このトランザクションは、お客様のすべてのAlgo残高を送信します。</string>
+  <string name="close_asset_to">資産をクローズする</string>
+  <string name="this_transaction_is_sending_asset">このトランザクションは、お客様のすべての%1$s残高を送信し、アカウントから%1$sを削除します。</string>
+  <string name="this_transaction_fee_is_higher">このトランザクション手数料は、通常の手数料（0.01 Algos）よりも高くなっています。</string>
+  <string name="wallet_connect_is_not_reachable">現在、WalletConnectにアクセスできません。後ほどお試しください。</string>
+  <string name="the_recipient_address_is_not">受信者のアドレスは有効なAlgorandアドレスではありません。もう一度お試しください。</string>
+  <string name="application_opt_in_formatted">%1$sへのアプリケーションオプトイン</string>
+  <string name="application_close_to_formatted">%1$sへのアプリケーションクローズ</string>
+  <string name="connected_with_formatted">%1$sと接続しました</string>
+  <string name="algos_amount_formatted">%1$s Algos</string>
+  <string name="close_remainder_to">残りをクローズする</string>
+  <string name="app_call">アプリコールリクエスト</string>
+  <string name="this_transaction_will_be">このトランザクションは後ほど提出されます。</string>
+  <plurals name="confirm_transactions">
+    <item quantity="other">すべてのトランザクションを確認</item>
+  </plurals>
+  <plurals name="transaction_requests_formatted">
+    <item quantity="other">トランザクションリクエスト (%1$d)</item>
+  </plurals>
 </resources>

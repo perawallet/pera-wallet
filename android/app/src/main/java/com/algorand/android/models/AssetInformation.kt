@@ -41,7 +41,8 @@ data class AssetInformation(
     val totalRewards: Long? = null,
     val pendingRewards: Long? = null,
     var assetStatus: AssetStatus = AssetStatus.OWNED_BY_ACCOUNT,
-    val amountWithoutPendingRewards: BigInteger? = null
+    val amountWithoutPendingRewards: BigInteger? = null,
+    val url: String? = null
 ) : Parcelable {
 
     @IgnoredOnParcel
@@ -114,7 +115,8 @@ data class AssetInformation(
                 shortName = assetParams.shortName,
                 fullName = assetParams.fullName,
                 amount = assetHolding.amount,
-                decimals = assetParams.decimals ?: 0
+                decimals = assetParams.decimals ?: 0,
+                url = assetParams.url
             )
         }
     }

@@ -134,7 +134,7 @@
   <string name="status">Estatus</string>
   <string name="your_account_is_about">Sua conta está prestes a ser apagada. Tem certeza de que deseja prosseguir?</string>
   <string name="to_keep_an_account_open">Para permanecer aberta, uma conta precisa ter ao menos 0,01 ALGO. Caso envie a quantia máxima, a conta será apagada junto com suas chaves de participação ativa.</string>
-  <string name="in_order_to_delete">Para apagar uma conta, você precisa esvaziar todo o saldo de ativos na conta e destruir todo ativo que tenha criado.</string>
+  <string name="in_order_to_delete">Para apagar uma conta, é necessário esvaziar todo o saldo de ativos na conta e destruir todo ativo que tenha sido criado.</string>
   <string name="proceed">Prosseguir</string>
   <string name="remove_assets">Remover Ativos</string>
   <string name="asset">Ativo</string>
@@ -197,7 +197,7 @@
   <string name="advanced_troubleshooting">Soluções Avançadas</string>
   <string name="looking_for_other_ledger">Buscando Outros Dispositivos Ledger</string>
   <string name="trouble_shoot">Soluções</string>
-  <string name="connecting_to_ledger">Conectando ao Ledger...</string>
+  <string name="connecting_to_ledger">Conectando ao Ledger…</string>
   <string name="ledger_approval">Aprovação do Ledger</string>
   <string name="please_make_sure">Certifique-se de confirmar a transação em seu dispositivo Ledger</string>
   <string name="ledger_info_power_first_paragraph">
@@ -235,8 +235,8 @@
   <string name="unknown_error">Erro Desconhecido</string>
   <string name="show_qr">Exibir QR</string>
   <string name="do_not_use_face">Não utilizar ID Facial/Toque</string>
-  <string name="manage_all_assets">Gerencie todos os seus ativos por um aplicativo</string>
-  <string name="manage_all_assets_two_line">Gerencie todos os seus ativos por um aplicativo</string>
+  <string name="manage_all_assets">Gerir todos os ativos a partir de um aplicativo</string>
+  <string name="manage_all_assets_two_line">Gerir todos os ativos\na partir de um aplicativo</string>
   <string name="account_details">Detalhes de Conta</string>
   <string name="passphrase">Frase Senha</string>
   <string name="scan_qr_code">Escanear QR</string>
@@ -328,7 +328,7 @@
   <string name="this_account_has">Esta conta foi rechaveada. Para assinar transações, recupere esta conta com uma frase senha ou dispositivo Ledger.</string>
   <string name="auth_account_address">Autenticar Endereço de Conta</string>
   <string name="pair_your_new_ledger">Parear seu novo Dispositivo ledger</string>
-  <string name="rekeying_account">Rechavando Conta...</string>
+  <string name="rekeying_account">Rechavando Conta…</string>
   <string name="recover_ledger_account">Recuperar Conta Ledger</string>
   <string name="you_cannot_send">Você não pode enviar o total de seu saldo para você mesmo. Selecione quantia ou destinatário diferentes e tente novamente.</string>
   <string name="account_optional">Conta <annotation custom="optional_color">(Optional)</annotation></string>
@@ -384,7 +384,7 @@
   <string name="can_be_signed_by">Pode ser assinada por</string>
   <string name="can_sign_for_these">Pode assinar para estas contas</string>
   <string name="select_account">Escolher Conta</string>
-  <string name="choose_the_account">Escolha a conta que deseja usar para assinar esta conta.</string>
+  <string name="choose_the_account">Escolha a conta que deseja utilizar para assinar esta conta.</string>
   <string name="a_network_error">Ocorreu um erro na rede ao buscarmos os detalhes da conta. Tente reiniciar o processo.</string>
   <string name="it_appears_this">Parece que este dispositivo Ledger foi reconfigurado e a conta no dispositivo não coincide mais com esta conta. Tente um novo pareamento do Leger a partir da homepage.</string>
   <plurals name="asset_count">
@@ -462,7 +462,7 @@
   <string name="you_can_make_the">Você pode acelerar o processo de envio de ativos adicionando novos contatos.</string>
   <string name="no_contact_found_description">Tente um novo nome de contato.</string>
   <string name="verify_account_addresses">Confirmar Endereços de Conta via Ledger</string>
-  <string name="the_following_account">Os seguintes endereços de conta serão exibidos em seu dispositivo Ledger. Compare e confirme cuidadosamente cada endereço para concluir o pareamento de dispositivos.</string>
+  <string name="the_following_account">Os seguintes endereços de conta serão exibidos em seu dispositivo Ledger. Compare cuidadosamente e confirme cada endereço para concluir o pareamento de dispositivos.</string>
   <string name="add_verified_accounts">Adicionar Contas Confirmadas</string>
   <string name="awaiting_verification">Aguardando Confirmação</string>
   <string name="not_verified">Não Confirmada</string>
@@ -495,4 +495,71 @@
   <string name="minimum_balance_required">Saldo Mínimo Exigido</string>
   <string name="transaction_maximum_error_message_singular">Como você tem <annotation replacement="asset_count">asset_account_placeholder</annotation> outros Ativos nesta conta (<annotation replacement="account_name">account_name_placeholder</annotation>), a Blockchain Algorand exige que você mantenha um saldo mínimo de <annotation replacement="min_balance">min_balance_placeholder</annotation> Algos.\n\nAo clicar em continuar, o montante de sua transação será automaticamente atualizado para refletir esta mudança. Você poderá visualizar esta mudança na etapa seguinte.</string>
   <string name="transaction_maximum_error_message_plural">Como você tem <annotation replacement="asset_count">asset_account_placeholder</annotation> outros Ativos nesta conta (<annotation replacement="account_name">account_name_placeholder</annotation>), a Blockchain Algorand exige que você mantenha um saldo mínimo de <annotation replacement="min_balance">min_balance_placeholder</annotation> Algos.\n\nAo clicar em continuar, o montante de sua transação será automaticamente atualizado para refletir esta mudança. Você poderá visualizar esta mudança na etapa seguinte.</string>
+  <string name="you_have_not_connected">Você ainda não conectou qualquer aplicativo.</string>
+  <string name="wallet_connect_sessions">Sessões WalletConnect</string>
+  <string name="wallet_wants_to_connect"><annotation type="bold"><annotation replacement="app_name">app_name_placeholder</annotation></annotation> quer\conectar-se com sua conta</string>
+  <string name="you_do_not_have_any">Você não possui qualquer conta que WalletConnect possa conectar.</string>
+  <string name="disconnect">Desconectar</string>
+  <string name="account_balance">Saldo da Conta</string>
+  <string name="show_more_info">Exibir Mais Informações</string>
+  <string name="raw_txns">Transações Brutas</string>
+  <string name="show_raw_transaction">Exibir Transação Bruta</string>
+  <string name="algoexplorer">AlgoExplorer</string>
+  <string name="show_explorer">Exibir Explorer</string>
+  <string name="asset_url">URL do Ativo</string>
+  <string name="show_asset_url">Exibir URL do Ativo</string>
+  <string name="asset_metadata">Metadados de Ativo</string>
+  <string name="show_asset_metadata">Exibir Metadados de Ativo</string>
+  <string name="rekey_to">Rechavear Para</string>
+  <string name="payment_transfer_formatted">Pagamento para %1$s</string>
+  <string name="asset_transfer_formatted">Transferência de Ativo para %1$s</string>
+  <string name="opt_in_asset_formatted">Adesão a ativo #%1$s</string>
+  <string name="possible_opt_in_formatted">Possível Adesão a Ativo #%1$s</string>
+  <string name="application_call_formatted">Chamada do Aplicativo para #%1$s</string>
+  <string name="decline">Recusar</string>
+  <string name="transaction_request">Solicitação de Transação</string>
+  <string name="raw_transaction">Transação Bruta</string>
+  <string name="the_user_rejected_the_request">O usuário recusou a solicitação.</string>
+  <string name="the_requested_operation_and">A operação e/ou conta solicitada não foi autorizada pelo usuário.</string>
+  <string name="the_wallet_does_not_support">A carteira não suporta a operação solicitada.</string>
+  <string name="the_input_provided_is_invalid">A entrada fornecida é inválida.</string>
+  <string name="there_is_not_any_valid">Não há qualquer conta válida para assinar esta transação.</string>
+  <string name="an_error_occurred_while_signing">Ocorreu um erro ao assinar a transação.</string>
+  <string name="transaction_succesfully_confirmed">Transação confirmada com sucesso</string>
+  <string name="transaction_rejected">Transação recusada.</string>
+  <string name="assets_opt_in_request">Solicitação de Adesão a Ativos</string>
+  <string name="transfer_asset_request">Solicitação de Transferência de Ativo</string>
+  <string name="sender">Remetente</string>
+  <string name="multiple_transaction_request">Solicitação de Transação Múltipla</string>
+  <string name="multiple_transactions_formatted">%1$d transações</string>
+  <string name="unsigned_transactions">Transações Não Assinadas</string>
+  <string name="atomic_transaction_request">Solicitação de Transferência Atômica</string>
+  <string name="all_transactions_formatted">Todas as transações (%1$d)</string>
+  <string name="application_id">ID do Aplicativo</string>
+  <string name="this_transaction_will_transfer">Esta transação vai transferir a propriedade desta conta. Sua frase senha de recuperação atual não dará mais acesso a esses ativos.</string>
+  <string name="the_following_transaction_requests"> As solicitações seguintes de transação vêm de aplicativos externos que a Carteira Algorand não controla. Certifique-se de revisar cuidadosamente estas transações antes de assiná-las, já que as transações são irreversíveis.</string>
+  <string name="got_it">Entendi!</string>
+  <string name="once_confirmed_the_connected_application">Uma vez confirmadas, o aplicativo conectado pode enviar essas transações segundo seus critérios. Certifique-se de revisar cuidadosamente as transações, já que este processo é irreversível.</string>
+  <string name="are_you_sure_question_mark">Tem certeza?</string>
+  <string name="this_transaction_is_sending">Esta transação está enviando seu saldo total de Algos.</string>
+  <string name="close_asset_to">Fechar Ativo Para</string>
+  <string name="this_transaction_is_sending_asset">Esta transação está enviando seu %1$s saldo total e vai remover %1$s de sua conta.</string>
+  <string name="this_transaction_fee_is_higher">Esta tarifa de transação é maior do que a tarifa normal de 0,01 Algos.</string>
+  <string name="wallet_connect_is_not_reachable">WalletConnect não está acessível no momento. Tente mais tarde.</string>
+  <string name="the_recipient_address_is_not">O endereço destinatário não é um endereço Algorand válido. Tente novamente.</string>
+  <string name="application_opt_in_formatted">Adesão do aplicativo a %1$s</string>
+  <string name="application_close_to_formatted">Aplicativo fechado para %1$s</string>
+  <string name="connected_with_formatted">Conectado com %1$s</string>
+  <string name="algos_amount_formatted">%1$s Algos</string>
+  <string name="close_remainder_to">Fechar Restante Para</string>
+  <string name="app_call">Solicitação de Chamada de Aplicativo</string>
+  <string name="this_transaction_will_be">Esta transação será enviada no futuro.</string>
+  <plurals name="confirm_transactions">
+    <item quantity="one">Confirmar</item>
+    <item quantity="other">Confirmar Todas as Transações</item>
+  </plurals>
+  <plurals name="transaction_requests_formatted">
+    <item quantity="one">Solicitação de Transação (%1$d)</item>
+    <item quantity="other">Solicitações de Transação (%1$d)</item>
+  </plurals>
 </resources>

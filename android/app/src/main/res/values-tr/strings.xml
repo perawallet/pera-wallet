@@ -197,7 +197,7 @@
   <string name="advanced_troubleshooting">Gelişmiş Sorun Giderme</string>
   <string name="looking_for_other_ledger">Diğer Ledger Cihazları Aranıyor</string>
   <string name="trouble_shoot">Sorun Gider</string>
-  <string name="connecting_to_ledger">Ledger\'a bağlanıyor...</string>
+  <string name="connecting_to_ledger">Ledger\'a bağlanıyor…</string>
   <string name="ledger_approval">Ledger Onayı</string>
   <string name="please_make_sure">İşlemi Ledger cihazınızda onayladığınızdan lütfen emin olun</string>
   <string name="ledger_info_power_first_paragraph">
@@ -328,7 +328,7 @@
   <string name="this_account_has">Bu hesap yeniden anahtarlanmış. İşlemleri imzalamak için lütfen bu hesabı bir parola veya Ledger cihazı ile kurtarın.</string>
   <string name="auth_account_address">Hesap Adresini Doğrula</string>
   <string name="pair_your_new_ledger">Yeni Ledger Cihazınızı Eşleştirin</string>
-  <string name="rekeying_account">Hesap Yeniden Anahtarlanıyor...</string>
+  <string name="rekeying_account">Hesap Yeniden Anahtarlanıyor…</string>
   <string name="recover_ledger_account">Ledger Hesabını Kurtar</string>
   <string name="you_cannot_send">Bakiyenizin tümünü kendinize gönderemezsiniz. Lütfen farklı bir miktar veya alıcı seçerek tekrar deneyin.</string>
   <string name="account_optional">Hesap <annotation custom="optional_color">(Opsiyonel)</annotation></string>
@@ -359,35 +359,19 @@
   <string name="dark">Karanlık</string>
   <string name="privacy_policy">Gizlilik Politikası</string>
   <plurals name="min_ago">
-    <item quantity="zero"></item>
     <item quantity="one">%1$s dakika önce\"</item>
-    <item quantity="two"></item>
-    <item quantity="few"></item>
-    <item quantity="many"></item>
     <item quantity="other">%1$s dakika önce\"</item>
   </plurals>
   <plurals name="hours_ago">
-    <item quantity="zero"></item>
     <item quantity="one">%1$s saat önce\"</item>
-    <item quantity="two"></item>
-    <item quantity="few"></item>
-    <item quantity="many"></item>
     <item quantity="other">%1$s saat önce\"</item>
   </plurals>
   <plurals name="days_ago">
-    <item quantity="zero"></item>
     <item quantity="one">%1$s gün önce\"</item>
-    <item quantity="two"></item>
-    <item quantity="few"></item>
-    <item quantity="many"></item>
     <item quantity="other">%1$s gün önce\"</item>
   </plurals>
   <plurals name="account_found">
-    <item quantity="zero"></item>
     <item quantity="one">1 Hesap Bulundu\"</item>
-    <item quantity="two"></item>
-    <item quantity="few"></item>
-    <item quantity="many"></item>
     <item quantity="other">%1$d Hesap Bulundu\"</item>
   </plurals>
   <string name="push_notifications">Anında İletme Bildirimleri</string>
@@ -511,4 +495,71 @@
   <string name="minimum_balance_required">Gereken Minimum Bakiye</string>
   <string name="transaction_maximum_error_message_singular">Bu hesapta (<annotation replacement="account_name">account_name_placeholder</annotation>) diğer <annotation replacement="asset_count">asset_count_placeholder</annotation> Varlığa sahip olduğunuzdan, Algorand Blok Zinciri en az <annotation replacement="min_balance">min_balance_placeholder</annotation> Algo tutarında bir minimum bakiye tutmanızı gerektirmektedir.\n\nDevam etme seçeneğini tıkladığınızda, işlem tutarınız bu değişikliği yansıtmak için otomatik olarak güncellenecektir. Sonraki adımda bu değişikliğin önizlemesini görüntüleyebileceksiniz.</string>
   <string name="transaction_maximum_error_message_plural">Bu hesapta (<annotation replacement="account_name">account_name_placeholder</annotation>) diğer <annotation replacement="asset_count">asset_count_placeholder</annotation> Varlığa sahip olduğunuzdan, Algorand Blok Zinciri en az <annotation replacement="min_balance">min_balance_placeholder</annotation> Algo tutarında bir minimum bakiye tutmanızı gerektirmektedir.\n\nDevam etme seçeneğini tıkladığınızda, işlem tutarınız bu değişikliği yansıtmak için otomatik olarak güncellenecektir. Sonraki adımda bu değişikliğin önizlemesini görüntüleyebileceksiniz.</string>
+  <string name="you_have_not_connected">Henüz herhangi bir uygulama bağlamadınız.</string>
+  <string name="wallet_connect_sessions">WalletConnect Oturumları</string>
+  <string name="wallet_wants_to_connect"><annotation type="bold"><annotation replacement="app_name">app_name_placeholder</annotation></annotation>, hesabınıza\nbağlanmak istiyor</string>
+  <string name="you_do_not_have_any">WalletConnect\'in bağlanabileceği herhangi bir uygulamanız bulunmuyor.</string>
+  <string name="disconnect">Bağlantıyı Kes</string>
+  <string name="account_balance">Hesap Bakiyesi</string>
+  <string name="show_more_info">Diğer Bilgileri Göster</string>
+  <string name="raw_txns">Ham İşlemler</string>
+  <string name="show_raw_transaction">Ham İşlemleri Göster</string>
+  <string name="algoexplorer">AlgoExplorer</string>
+  <string name="show_explorer">Gezgini Göster</string>
+  <string name="asset_url">Varlık URL\'si</string>
+  <string name="show_asset_url">Varlık URL\'sini Göster</string>
+  <string name="asset_metadata">Varlık Meta Verileri</string>
+  <string name="show_asset_metadata">Varlık Meta Verilerini Göster</string>
+  <string name="rekey_to">Yeniden Anahtarla:</string>
+  <string name="payment_transfer_formatted">%1$s için Ödeme</string>
+  <string name="asset_transfer_formatted">%1$s Konumuna Varlık Transferi</string>
+  <string name="opt_in_asset_formatted">#%1$s varlığına katılım</string>
+  <string name="possible_opt_in_formatted">#%1$s Varlığına Olası Katılım</string>
+  <string name="application_call_formatted">#%1$s için Uygulama Çağrısı</string>
+  <string name="decline">Reddet</string>
+  <string name="transaction_request">İşlem İsteği</string>
+  <string name="raw_transaction">Ham İşlem</string>
+  <string name="the_user_rejected_the_request">Kullanıcı isteği reddetti.</string>
+  <string name="the_requested_operation_and">İstenen işlem ve/veya hesap kullanıcı tarafından yetkilendirilmemiş.</string>
+  <string name="the_wallet_does_not_support">Cüzdan, istenen işlemi desteklemiyor.</string>
+  <string name="the_input_provided_is_invalid">Sağlanan giriş geçersiz.</string>
+  <string name="there_is_not_any_valid">Bu işlemi imzalamak için herhangi bir geçerli hesap yok.</string>
+  <string name="an_error_occurred_while_signing">İşlem imzalanırken bir hata oluştu.</string>
+  <string name="transaction_succesfully_confirmed">İşlem başarıyla onaylandı</string>
+  <string name="transaction_rejected">İşlem reddedildi.</string>
+  <string name="assets_opt_in_request">Varlık Katılım İsteği</string>
+  <string name="transfer_asset_request">Varlık Transfer İsteği</string>
+  <string name="sender">Gönderen</string>
+  <string name="multiple_transaction_request">Çoklu İşlem İsteği</string>
+  <string name="multiple_transactions_formatted">%1$d işlem</string>
+  <string name="unsigned_transactions">İmzalanmamış İşlemler</string>
+  <string name="atomic_transaction_request">Atomik İşlem İsteği</string>
+  <string name="all_transactions_formatted">Tüm işlemler (%1$d)</string>
+  <string name="application_id">Uygulama Kimliği</string>
+  <string name="this_transaction_will_transfer">Bu işlem, bu hesabın sahipliğini devredecek. Mevcut kurtarma parolanızla bu varlıklara erişim sağlamanıza artık izin verilmeyecek.</string>
+  <string name="the_following_transaction_requests">Aşağıdaki işlem istekleri, Algorand Wallet\'ın kontrol etmediği harici uygulamalardan gelmektedir. İşlemler geri alınamaz olduğundan imzalamadan önce bu işlemleri gözden geçirdiğinizden lütfen emin olun.</string>
+  <string name="got_it">Anladım!</string>
+  <string name="once_confirmed_the_connected_application">Onaylanmasının ardından, bağlı olan uygulama bu işlemleri kendi takdirine bağlı olarak gönderebilir. İşlemler geri alınamaz olduğundan imzalamadan önce işlemleri dikkatlice gözden geçirdiğinizden lütfen emin olun.</string>
+  <string name="are_you_sure_question_mark">Emin misiniz?</string>
+  <string name="this_transaction_is_sending">Bu işlem Algo bakiyenizin tümünü gönderecek.</string>
+  <string name="close_asset_to">Kapatılacak Varlık:</string>
+  <string name="this_transaction_is_sending_asset">Bu işlem %1$s bakiyenizin tamamını gönderecek ve %1$s, hesabınızdan kaldırılacak.</string>
+  <string name="this_transaction_fee_is_higher">Bu işlem ücreti, normalde 0,01 Algo olan ücretten daha yüksek.</string>
+  <string name="wallet_connect_is_not_reachable">WalletConnect\'e şu anda ulaşılamıyor. Lütfen daha sonra tekrar deneyin.</string>
+  <string name="the_recipient_address_is_not">Alıcı adresi, geçerli bir Algorand adresi değil. Lütfen tekrar deneyin.</string>
+  <string name="application_opt_in_formatted">%1$s Varlığına Katılım Uygulaması</string>
+  <string name="application_close_to_formatted">%1$s için Kapatma Uygulaması</string>
+  <string name="connected_with_formatted">%1$s ile Bağlandı</string>
+  <string name="algos_amount_formatted">%1$s Algo</string>
+  <string name="close_remainder_to">Kalanı Kapat</string>
+  <string name="app_call">Uygulama Çağrısı İsteği</string>
+  <string name="this_transaction_will_be">Bu işlem ileride gönderilecek.</string>
+  <plurals name="confirm_transactions">
+    <item quantity="one">Onayla</item>
+    <item quantity="other">Tüm İşlemleri Onayla</item>
+  </plurals>
+  <plurals name="transaction_requests_formatted">
+    <item quantity="one">İşlem isteği (%1$d)</item>
+    <item quantity="other">İşlem istekleri (%1$d)</item>
+  </plurals>
 </resources>

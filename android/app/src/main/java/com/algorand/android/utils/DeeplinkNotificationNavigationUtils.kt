@@ -50,11 +50,19 @@ private fun NavController.handleSelectedAssetNavigation(
 fun NavController.handleDeeplink(
     decodedQrCode: DecodedQrCode,
     accountCacheManager: AccountCacheManager,
-    fragmentManager: FragmentManager
+    fragmentManager: FragmentManager,
+    onWalletConnectResult: ((String) -> Unit?)? = null
 ): Boolean {
+
+    if (decodedQrCode.walletConnectUrl != null) {
+        onWalletConnectResult?.invoke(decodedQrCode.walletConnectUrl)
+        return true
+    }
+
     if (decodedQrCode.address == null) {
         return false
     }
+
     if (decodedQrCode.amount != null) {
         val assetId = decodedQrCode.getDecodedAssetID()
         val accountAssetPairList = accountCacheManager.getAccountCacheWithSpecificAsset(
@@ -93,13 +101,14 @@ fun NavController.handleDeeplink(
 fun NavController.handleIntent(
     intentToHandle: Intent,
     accountCacheManager: AccountCacheManager,
-    fragmentManager: FragmentManager
+    fragmentManager: FragmentManager,
+    onWalletConnectResult: (String) -> Unit
 ): Boolean {
     with(intentToHandle) {
         return when {
             dataString != null -> {
                 val decodedDeeplink = decodeDeeplink(dataString) ?: return false
-                handleDeeplink(decodedDeeplink, accountCacheManager, fragmentManager)
+                handleDeeplink(decodedDeeplink, accountCacheManager, fragmentManager, onWalletConnectResult)
             }
             else -> handleIntentWithBundle(this, accountCacheManager, fragmentManager)
         }
