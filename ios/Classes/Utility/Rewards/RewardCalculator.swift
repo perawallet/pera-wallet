@@ -135,6 +135,6 @@ extension RewardCalculator: AccountManagerDelegate {
     }
 }
 
-protocol RewardCalculatorDelegate: class {
+protocol RewardCalculatorDelegate: AnyObject {
     func rewardCalculator(_ rewardCalculator: RewardCalculator, didCalculate rewards: Double)
 }

@@ -265,6 +265,6 @@ extension AssetInputView {
     }
 }
 
-protocol AssetInputViewDelegate: class {
+protocol AssetInputViewDelegate: AnyObject {
     func assetInputViewDidTapMaxButton(_ assetInputView: AssetInputView)
 }

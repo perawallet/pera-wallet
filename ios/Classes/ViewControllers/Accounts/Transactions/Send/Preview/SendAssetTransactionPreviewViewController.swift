@@ -423,7 +423,7 @@ extension SendAssetTransactionPreviewViewController: SendTransactionViewControll
     }
 }
 
-protocol SendAssetTransactionPreviewViewControllerDelegate: class {
+protocol SendAssetTransactionPreviewViewControllerDelegate: AnyObject {
     func sendAssetTransactionPreviewViewController(
         _ viewController: SendAssetTransactionPreviewViewController,
         didCompleteTransactionFor assetDetail: AssetDetail

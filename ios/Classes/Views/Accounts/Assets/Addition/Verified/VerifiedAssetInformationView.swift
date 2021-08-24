@@ -137,6 +137,6 @@ extension VerifiedAssetInformationView {
     }
 }
 
-protocol VerifiedAssetInformationViewDelegate: class {
+protocol VerifiedAssetInformationViewDelegate: AnyObject {
     func verifiedAssetInformationViewDidVisitSite(_ verifiedAssetInformationView: VerifiedAssetInformationView)
 }

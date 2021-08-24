@@ -167,6 +167,6 @@ extension PinLimitViewController: PinLimitViewDelegate {
     }
 }
 
-protocol PinLimitViewControllerDelegate: class {
+protocol PinLimitViewControllerDelegate: AnyObject {
     func pinLimitViewControllerDidResetAllData(_ pinLimitViewController: PinLimitViewController)
 }

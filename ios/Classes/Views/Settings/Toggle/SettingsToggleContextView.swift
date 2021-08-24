@@ -132,6 +132,6 @@ extension SettingsToggleContextView {
     }
 }
 
-protocol SettingsToggleContextViewDelegate: class {
+protocol SettingsToggleContextViewDelegate: AnyObject {
     func settingsToggleContextView(_ settingsToggleContextView: SettingsToggleContextView, didChangeValue value: Bool)
 }

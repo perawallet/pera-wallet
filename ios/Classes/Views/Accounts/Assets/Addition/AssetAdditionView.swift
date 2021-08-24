@@ -162,7 +162,7 @@ extension AssetAdditionView {
     }
 }
 
-protocol AssetAdditionViewDelegate: class {
+protocol AssetAdditionViewDelegate: AnyObject {
     func assetAdditionViewDidTapVerifiedAssets(_ assetAdditionView: AssetAdditionView)
     func assetAdditionViewDidTapAllAssets(_ assetAdditionView: AssetAdditionView)
 }

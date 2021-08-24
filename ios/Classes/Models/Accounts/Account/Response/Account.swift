@@ -34,6 +34,11 @@ class Account: Model {
     var createdRound: Int64?
     var closedRound: Int64?
     var isDeleted: Bool?
+
+    var appsLocalState: [ApplicationLocalState]?
+    var appsTotalExtraPages: Int?
+    var appsTotalSchema: ApplicationStateSchema?
+    var createdApps: [AlgorandApplication]?
     
     var assetDetails: [AssetDetail] = []
     var name: String?
@@ -67,6 +72,10 @@ class Account: Model {
         createdRound = try container.decodeIfPresent(Int64.self, forKey: .createdRound)
         closedRound = try container.decodeIfPresent(Int64.self, forKey: .closedRound)
         isDeleted = try container.decodeIfPresent(Bool.self, forKey: .isDeleted)
+        appsLocalState = try container.decodeIfPresent([ApplicationLocalState].self, forKey: .appsLocalState)
+        appsTotalExtraPages = try container.decodeIfPresent(Int.self, forKey: .appsTotalExtraPages)
+        appsTotalSchema = try container.decodeIfPresent(ApplicationStateSchema.self, forKey: .appsTotalSchema)
+        createdApps = try container.decodeIfPresent([AlgorandApplication].self, forKey: .createdApps)
     }
     
     init(
@@ -127,6 +136,10 @@ extension Account {
         case createdRound = "created-at-round"
         case closedRound = "closed-at-round"
         case isDeleted = "deleted"
+        case appsLocalState = "apps-local-state"
+        case appsTotalExtraPages = "apps-total-extra-pages"
+        case appsTotalSchema = "apps-total-schema"
+        case createdApps = "created-apps"
     }
 }
 

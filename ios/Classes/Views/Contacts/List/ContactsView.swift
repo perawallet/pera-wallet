@@ -128,6 +128,6 @@ extension ContactsView {
     }
 }
 
-protocol ContactsViewDelegate: class {
+protocol ContactsViewDelegate: AnyObject {
     func contactsViewDidTapAddButton(_ contactsView: ContactsView)
 }

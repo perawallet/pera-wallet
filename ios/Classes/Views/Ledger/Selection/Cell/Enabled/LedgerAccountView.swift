@@ -100,6 +100,6 @@ extension LedgerAccountView {
     }
 }
 
-protocol LedgerAccountViewDelegate: class {
+protocol LedgerAccountViewDelegate: AnyObject {
     func ledgerAccountViewDidOpenMoreInfo(_ ledgerAccountView: LedgerAccountView)
 }

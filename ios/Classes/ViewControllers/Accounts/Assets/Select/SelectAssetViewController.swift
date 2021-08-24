@@ -311,7 +311,7 @@ extension SelectAssetViewController {
     }
 }
 
-protocol SelectAssetViewControllerDelegate: class {
+protocol SelectAssetViewControllerDelegate: AnyObject {
     func selectAssetViewController(
         _ selectAssetViewController: SelectAssetViewController,
         didSelectAlgosIn account: Account,

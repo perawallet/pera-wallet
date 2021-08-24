@@ -151,7 +151,7 @@ extension TransactionHistoryHeaderView {
     }
 }
 
-protocol TransactionHistoryHeaderViewDelegate: class {
+protocol TransactionHistoryHeaderViewDelegate: AnyObject {
     func transactionHistoryHeaderViewDidOpenFilterOptions(_ transactionHistoryHeaderView: TransactionHistoryHeaderView)
     func transactionHistoryHeaderViewDidShareHistory(_ transactionHistoryHeaderView: TransactionHistoryHeaderView)
 }

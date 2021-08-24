@@ -18,7 +18,7 @@
 import UIKit
 import Photos
 
-protocol ImagePickerDelegate: class {
+protocol ImagePickerDelegate: AnyObject {
     
     func imagePicker(didPick image: UIImage, withInfo info: [String: Any])
 }

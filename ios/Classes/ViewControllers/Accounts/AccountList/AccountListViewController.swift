@@ -77,8 +77,8 @@ extension AccountListViewController {
             accountListView.titleLabel.text = "send-sending-algos-select".localized
         case .transactionReceiver:
             accountListView.titleLabel.text = "send-receiving-algos-select".localized
-        default:
-            accountListView.titleLabel.text = "send-algos-select".localized
+        case .walletConnect:
+            accountListView.titleLabel.text = "accounts-title".localized
         }
     }
 
@@ -93,7 +93,7 @@ extension AccountListViewController {
 
 extension AccountListViewController: AccountListViewDelegate {
     func accountListViewDidTapCancelButton(_ accountListView: AccountListView) {
-        dismissScreen()
+        delegate?.accountListViewControllerDidCancelScreen(self)
     }
 }
 
@@ -106,21 +106,20 @@ extension AccountListViewController: AccountListLayoutBuilderDelegate {
         }
         
         let account = accounts[indexPath.item]
-        dismissScreen()
         delegate?.accountListViewController(self, didSelectAccount: account)
     }
 }
 
 extension AccountListViewController {
     enum Mode {
-        case empty
-        case assetCount
+        case walletConnect
         case contact(assetDetail: AssetDetail?)
         case transactionReceiver(assetDetail: AssetDetail?)
         case transactionSender(assetDetail: AssetDetail?)
     }
 }
 
-protocol AccountListViewControllerDelegate: class {
+protocol AccountListViewControllerDelegate: AnyObject {
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account)
+    func accountListViewControllerDidCancelScreen(_ viewController: AccountListViewController)
 }

@@ -113,7 +113,7 @@ extension AssetActionConfirmationViewController: AssetActionConfirmationViewDele
     }
 }
 
-protocol AssetActionConfirmationViewControllerDelegate: class {
+protocol AssetActionConfirmationViewControllerDelegate: AnyObject {
     func assetActionConfirmationViewController(
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
         didConfirmedActionFor assetDetail: AssetDetail

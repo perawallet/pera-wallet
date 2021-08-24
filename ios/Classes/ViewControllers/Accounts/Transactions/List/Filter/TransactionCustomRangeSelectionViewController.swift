@@ -163,7 +163,7 @@ extension TransactionCustomRangeSelectionViewController {
     }
 }
 
-protocol TransactionCustomRangeSelectionViewControllerDelegate: class {
+protocol TransactionCustomRangeSelectionViewControllerDelegate: AnyObject {
     func transactionCustomRangeSelectionViewController(
         _ transactionCustomRangeSelectionViewController: TransactionCustomRangeSelectionViewController,
         didSelect range: (from: Date, to: Date)

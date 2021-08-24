@@ -53,6 +53,12 @@ struct ALGBarButtonItem: BarButtonItem {
                 textColor: Colors.Main.primary700,
                 font: UIFont.font(withWeight: .semiBold(size: 14.0))
             )
+        case .copy:
+            return BarButtonItemTitleContent(
+                text: "title-copy".localized,
+                textColor: Colors.ButtonText.actionButton,
+                font: UIFont.font(withWeight: .medium(size: 16.0))
+            )
         default:
             return nil
         }
@@ -104,6 +110,8 @@ struct ALGBarButtonItem: BarButtonItem {
         case .skip:
             return nil
         case .dontAskAgain:
+            return nil
+        case .copy:
             return nil
         }
     }
@@ -169,6 +177,14 @@ struct ALGBarButtonItem: BarButtonItem {
                 ),
                 height: .equal(44.0)
             )
+        case .copy:
+            return .expanded(
+                width: .dynamicWidth(BarButtonExpandedSizeHorizontalInsets(
+                    contentInsets: (left: 0.0, right: 0.0),
+                    titleInsets: (left: 4.0, right: -4.0))
+                ),
+                height: .equal(44.0)
+            )
         }
     }
     
@@ -200,6 +216,7 @@ extension ALGBarButtonItem {
         case paste
         case skip
         case dontAskAgain
+        case copy
     }
 }
 

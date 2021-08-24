@@ -22,16 +22,25 @@ class AccountNameViewModel {
     private(set) var image: UIImage?
     private(set) var name: String?
     
-    init(account: Account) {
-        setImage(from: account)
-        setName(from: account)
+    init(account: Account, hasImage: Bool = true) {
+        setImage(from: account, with: hasImage)
+        setName(from: account, with: hasImage)
     }
     
-    private func setImage(from account: Account) {
+    private func setImage(from account: Account, with hasImage: Bool) {
+        if !hasImage {
+            return
+        }
+
         image = account.accountImage()
     }
     
-    private func setName(from account: Account) {
+    private func setName(from account: Account, with hasImage: Bool) {
+        if !hasImage {
+            name = account.address
+            return
+        }
+
         name = account.name.unwrap(or: account.address.shortAddressDisplay())
     }
 }

@@ -146,7 +146,7 @@ extension ContactInfoView {
     }
 }
 
-protocol ContactInfoViewDelegate: class {
+protocol ContactInfoViewDelegate: AnyObject {
     func contactInfoViewDidTapQRCodeButton(_ contactInfoView: ContactInfoView)
     func contactInfoViewDidTapShareButton(_ contactInfoView: ContactInfoView)
 }

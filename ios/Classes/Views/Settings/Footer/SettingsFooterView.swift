@@ -115,6 +115,6 @@ extension SettingsFooterView {
     }
 }
 
-protocol SettingsFooterViewDelegate: class {
+protocol SettingsFooterViewDelegate: AnyObject {
     func settingsFooterViewDidTapLogoutButton(_ settingsFooterView: SettingsFooterView)
 }

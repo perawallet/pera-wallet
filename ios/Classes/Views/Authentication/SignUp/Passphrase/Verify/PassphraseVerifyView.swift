@@ -136,6 +136,6 @@ extension PassphraseVerifyView {
     }
 }
 
-protocol PassphraseVerifyViewDelegate: class {
+protocol PassphraseVerifyViewDelegate: AnyObject {
     func passphraseVerifyViewDidVerifyPassphrase(_ passphraseVerifyView: PassphraseVerifyView)
 }

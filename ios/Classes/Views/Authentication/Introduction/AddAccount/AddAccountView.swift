@@ -131,6 +131,6 @@ extension AddAccountView {
     }
 }
 
-protocol AddAccountViewDelegate: class {
+protocol AddAccountViewDelegate: AnyObject {
     func addAccountView(_ addAccountView: AddAccountView, didSelect type: AccountAdditionType)
 }

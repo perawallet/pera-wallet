@@ -172,6 +172,6 @@ extension LedgerTroubleshootInstallAppView {
     }
 }
 
-protocol LedgerTroubleshootInstallAppViewDelegate: class {
+protocol LedgerTroubleshootInstallAppViewDelegate: AnyObject {
     func ledgerTroubleshootInstallAppView(_ view: LedgerTroubleshootInstallAppView, didTapUrl url: URL)
 }

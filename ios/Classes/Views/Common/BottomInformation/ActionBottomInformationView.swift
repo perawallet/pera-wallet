@@ -118,7 +118,7 @@ extension ActionBottomInformationView {
     }
 }
 
-protocol ActionBottomInformationViewDelegate: class {
+protocol ActionBottomInformationViewDelegate: AnyObject {
     func actionBottomInformationViewDidTapActionButton(_ actionBottomInformationView: ActionBottomInformationView)
     func actionBottomInformationViewDidTapCancelButton(_ actionBottomInformationView: ActionBottomInformationView)
 }

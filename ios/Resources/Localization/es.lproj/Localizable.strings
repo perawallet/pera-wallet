@@ -1,11 +1,11 @@
 /* MARK: Account Name Setup */
-"account-details-title" = "Detalles de la cuenta";
+"account-details-title" = "Ingresa un nombre para tu cuenta";
 
 /* (No Comment) */
-"account-name-setup-description" = "Ponle un nombre a tu cuenta para identificarla fácilmente mientras usas el monedero de Algorand. Estos nombres se almacenan localmente y solo tú puedes verlos.";
+"account-name-setup-description" = "Dale un nombre a tu cuenta para poder identificarla fácilmente al usar el monedero de Algorand. Estos nombres se almacenan de manera local y solo tú puedes verlos.";
 
 /* (No Comment) */
-"account-name-setup-explanation" = "Nombre de la cuenta";
+"account-name-setup-explanation" = "Nombre de la cuenta (opcional)";
 
 /* (No Comment) */
 "account-name-setup-finish" = "Finalizar la creación de la cuenta";
@@ -20,28 +20,28 @@
 "account-type-selection-add" = "Añadir una cuenta";
 
 /* (No Comment) */
-"account-type-selection-add-detail" = "Quiero una nueva cuenta con una nueva dirección y frase secreta de recuperación.";
+"account-type-selection-add-detail" = "Quiero una nueva cuenta con una nueva dirección y nueva frase de recuperación.";
 
 /* (No Comment) */
 "account-type-selection-create" = "Crear una nueva cuenta";
 
 /* (No Comment) */
-"account-type-selection-create-detail" = "Generar una cuenta con una nueva dirección y clave secreta";
+"account-type-selection-create-detail" = "Quiero crear una nueva cuenta Algorand";
 
 /* (No Comment) */
 "account-type-selection-ledger" = "Emparejar cuenta de Ledger";
 
 /* (No Comment) */
-"account-type-selection-ledger-detail" = "Emparejar una cuenta que está respaldada ";
+"account-type-selection-ledger-detail" = "Quiero crear una cuenta respaldada por mi monedero físico Ledger.";
 
 /* (No Comment) */
 "account-type-selection-recover" = "Recuperar cuenta con la frase secreta";
 
 /* (No Comment) */
-"account-type-selection-recover-detail" = "Recuperar una cuenta con una frase de recuperación de 25 palabras";
+"account-type-selection-recover-detail" = "Ya tengo una cuenta";
 
 /* (No Comment) */
-"account-type-selection-watch-detail" = "Supervisa las transacciones de una cuenta con solo la dirección";
+"account-type-selection-watch-detail" = "Quiero observar una cuenta en almacenamiento en frío.";
 
 /* (No Comment) */
 "account-welcome-wallet-title" = "Bienvenido al\nMonedero de Algorand";
@@ -59,7 +59,7 @@
 "accounts-dollar-value-title" = "Valor en dólares";
 
 /* (No Comment) */
-"accounts-qr-tooltip" = "Aquí puedes encontrar el QR de la dirección de tu cuenta";
+"accounts-qr-tooltip" = "Aquí puedes consultar el QR de la dirección de tu cuenta";
 
 /* (No Comment) */
 "accounts-title" = "Cuentas";
@@ -68,7 +68,7 @@
 "accounts-title-assets" = "Activos";
 
 /* (No Comment) */
-"accounts-tranaction-empty-detail" = "No se han realizado transacciones con este activo";
+"accounts-tranaction-empty-detail" = "No se han realizado transacciones con este activo.";
 
 /* MARK: Accounts */
 "accounts-tranaction-empty-text" = "Sin transacciones todavía";
@@ -200,7 +200,7 @@
 "ble-error-fail-sign-transaction" = "El dispositivo Ledger emparejado canceló la solicitud de transacción.";
 
 /* (No Comment) */
-"ble-error-ledger-connection-open-app-error" = "Abre la aplicación de Algorand en tu dispositivo Ledger.";
+"ble-error-ledger-connection-open-app-error" = "Inicia la aplicación de Algorand en tu dispositivo Ledger.";
 
 /* (No Comment) */
 "ble-error-ledger-connection-title" = "Error de conexión con Ledger";
@@ -263,7 +263,7 @@
 "contact-search-empty-detail" = "Intenta con un nombre de contacto diferente";
 
 /* (No Comment) */
-"contact-search-empty-title" = "No se encontró el contacto";
+"contact-search-empty-title" = "No se encontraron contactos";
 
 /* (No Comment) */
 "contacts-add" = "Agregar contacto";
@@ -419,10 +419,10 @@
 "ledger-account-fetct-error" = "Ocurrió un error de red al buscar los detalles de la cuenta. Reinicia el proceso.";
 
 /* (No Comment) */
-"ledger-account-selection-detail" = "Este dispositivo Ledger puede firmar transacciones para la siguientes cuenta. Selecciona la cuenta para agregar al monedero Algorand.";
+"ledger-account-selection-detail" = "Este dispositivo Ledger puede firmar transacciones para la siguiente cuenta. Selecciona la cuenta para agregar al monedero Algorand.";
 
 /* (No Comment) */
-"ledger-account-selection-detail-rekey" = "Elige la cuenta que deseas usar para firmar esta cuenta.";
+"ledger-account-selection-detail-rekey" = "Elige la cuenta que quieres usar para firmar esta cuenta.";
 
 /* (No Comment) */
 "ledger-account-selection-title-plural" = "Se encontraron %d cuentas";
@@ -515,7 +515,7 @@
 "ledger-search-button-title" = "Buscar Ledger";
 
 /* (No Comment) */
-"ledger-transaction-account-match-error" = "Parece que se ha restablecido este dispositivo Ledger y que la cuenta del dispositivo ya no coincide con esta cuenta. Vuelve a emparejar el dispositivo desde la página de inicio.";
+"ledger-transaction-account-match-error" = "Parece que este dispositivo Ledger se ha restablecido y que la cuenta del dispositivo ya no coincide con esta cuenta. Vuelve a emparejar el dispositivo desde la página de inicio.";
 
 /* (No Comment) */
 "ledger-troubleshooting-app-support" = "Para obtener ayuda para instalar la aplicación de Algorand para Ledger en tu dispositivo, visita %@";
@@ -563,10 +563,10 @@
 "ledger-tutorial-install-app" = "Instala la aplicación Algorand (versión 1.2.9 o posterior) en tu dispositivo Ledger.";
 
 /* (No Comment) */
-"ledger-tutorial-open-app" = "Abre la aplicación de Algorand en tu dispositivo Ledger.";
+"ledger-tutorial-open-app" = "Inicia la aplicación de Algorand en tu dispositivo Ledger.";
 
 /* (No Comment) */
-"ledger-tutorial-title-text" = "Sigue los pasos a continuación para crear una nueva cuenta Ledger";
+"ledger-tutorial-title-text" = "Emparejar con Ledger";
 
 /* (No Comment) */
 "ledger-tutorial-turned-on" = "Asegúrate de que el dispositivo Ledger esté encendido y de que tenga Bluetooth activado.";
@@ -602,7 +602,7 @@
 "local-authentication-preference-subtitle" = "Sugerimos esto para una mayor seguridad";
 
 /* MARK: Local Authentication Preferences */
-"local-authentication-preference-title" = "Activar reconocimiento facial o táctil";
+"local-authentication-preference-title" = "Activar autenticación biométrica";
 
 /* (No Comment) */
 "local-authentication-reason-face-id-title" = "Usar reconocimiento facial para desbloquear";
@@ -617,13 +617,13 @@
 "login-title" = "Desbloquear";
 
 /* (No Comment) */
-"maximum-balance-standard-account-warning-description" = "Debido a que tienes %@ activo(s) más en esta cuenta %@, la blockchain de Algorand requiere que mantengas un saldo mínimo de %@ Algos. \n\n\nAl presionar continuar, el monto de tu transacción se actualizará automáticamente para reflejar este cambio. Podrás ver una vista previa de este cambio en el siguiente paso.";
+"maximum-balance-standard-account-warning-description" = "Debido a que tienes %@ activos más en esta cuenta %@, la blockchain de Algorand requiere que mantengas un saldo mínimo de %@ Algos. \n\n\nAl seleccionar continuar, el monto de la transacción se actualizará automáticamente para reflejar este cambio. Tendrás una vista previa de este cambio en el siguiente paso.";
 
 /* (No Comment) */
-"maximum-balance-standard-account-warning-description-singular" = "Debido a que tienes %@ activo(s) más en esta cuenta %@, la blockchain de Algorand requiere que mantengas un saldo mínimo de %@ Algos. \n\n\nAl seleccionar continuar, el monto de la transacción se actualizará automáticamente para reflejar este cambio. Tendrás una vista previa de este cambio en el siguiente paso.";
+"maximum-balance-standard-account-warning-description-singular" = "Debido a que tienes %@ activo más en esta cuenta %@, la blockchain de Algorand requiere que mantengas un saldo mínimo de %@ Algos. \n\n\nAl seleccionar Continuar, el monto de la transacción se actualizará automáticamente para reflejar este cambio. Tendrás una vista previa de este cambio en el siguiente paso.";
 
 /* (No Comment) */
-"maximum-balance-warning-description" = "Para enviar tu saldo máximo en una cuenta con clave nueva necesitas mantener un saldo mínimo de %@ Algos. Esto es para asegurarnos de que no haya cambios en tu cuenta con clave nueva. \n\n\nEl monto de tu transacción se actualizará automáticamente para reflejar este cambio. Obtendrás una vista previa de la transacción en el siguiente paso.";
+"maximum-balance-warning-description" = "Para enviar el saldo máximo desde una cuenta a la que se le cambió la clave, debes mantener un saldo mínimo de %@ Algos. Esto sirve para asegurarte de que nada cambie en tu cuenta con clave nueva.\n\n\nEl monto de tu transacción se actualizará automáticamente para reflejar este cambio. Obtendrás una vista previa de la transacción en el siguiente paso.";
 
 /* (No Comment) */
 "maximum-balance-warning-title" = "Saldo máximo";
@@ -674,7 +674,7 @@
 "node-settings-placeholder-name" = "Nombre del nodo";
 
 /* (No Comment) */
-"node-settings-subtitle" = "Alternar los nodos que quieres usar";
+"node-settings-subtitle" = "Elegir el nodo";
 
 /* (No Comment) */
 "node-settings-test-button-title" = "PRUEBA";
@@ -737,7 +737,7 @@
 "options-edit-account-name" = "Editar nombre de la cuenta";
 
 /* (No Comment) */
-"options-mute-notification" = "Silenciar notificaciones";
+"options-mute-notification" = "Silenciar alertas";
 
 /* (No Comment) */
 "options-rekey" = "Cambiar la clave de la cuenta";
@@ -758,13 +758,13 @@
 "options-title" = "CONFIGURACIÓN DE LA CUENTA";
 
 /* (No Comment) */
-"options-unmute-notification" = "Activar notificaciones";
+"options-unmute-notification" = "Activar alertas";
 
 /* (No Comment) */
 "options-view-passphrase" = "Ver frase secreta";
 
 /* (No Comment) */
-"options-view-passphrase-password-alert-message" = "Debes ingresar la contraseña correcta para mostrar la frase secreta.";
+"options-view-passphrase-password-alert-message" = "Para ver la frase secreta debes ingresar la contraseña correcta.";
 
 /* (No Comment) */
 "pass-pharase-enter-placeholder" = "Ingresar frase secreta o escanear QR";
@@ -773,7 +773,7 @@
 "pass-phrase-verify-invalid-passphrase" = "Tu frase secreta es inválida. Asegúrate de haber ingresado la correcta.";
 
 /* (No Comment) */
-"pass-phrase-verify-pop-up-explanation" = "Guarda esta frase secreta de recuperación en un lugar seguro al que solo tú puedas acceder. No pierdas esta frase secreta de recuperación.";
+"pass-phrase-verify-pop-up-explanation" = "Guarda esta frase de recuperación en un lugar seguro al que solo tú puedas acceder. No pierdas esta frase de recuperación.";
 
 /* MARK: Passphrase Verify */
 "pass-phrase-verify-pop-up-title" = "Frase secreta verificada";
@@ -818,7 +818,7 @@
 "passphrase-verify-select-word" = "Seleccionar la palabra nro. %@";
 
 /* (No Comment) */
-"passphrase-verify-title" = "Verificar el respaldo de la frase secreta de recuperación";
+"passphrase-verify-title" = "Verificar respaldo de la frase secreta de recuperación";
 
 /* (No Comment) */
 "passphrase-verify-wrong-message" = "Las palabras seleccionadas son incorrectas. Inténtalo de nuevo.";
@@ -938,7 +938,7 @@
 "recover-title" = "Recuperar";
 
 /* (No Comment) */
-"rekey-instruction-first" = "Las transacciones futuras serán firmadas por su nuevo dispositivo Ledger.";
+"rekey-instruction-first" = "Las transacciones futuras serán firmadas por el nuevo dispositivo Ledger.";
 
 /* (No Comment) */
 "rekey-instruction-header" = "Qué puedes esperar:";
@@ -1028,10 +1028,10 @@
 "send-algos-contacts" = "Contactos";
 
 /* (No Comment) */
-"send-algos-minimum-amount-custom-error" = "El monto de la transacción da como resultado un saldo menor al saldo mínimo permitido de %@ Algos.";
+"send-algos-minimum-amount-custom-error" = "La transacción no se puede completar porque el monto dejaría a tu cuenta por debajo del saldo mínimo requerido de %@ Algos.";
 
 /* (No Comment) */
-"send-algos-minimum-amount-error" = "El monto de la transacción da como resultado un saldo menor al saldo mínimo permitido en la cuenta de 0,1 Algos.";
+"send-algos-minimum-amount-error" = "El monto de la transacción da como resultado un saldo menor al saldo mínimo permitido de 0,1 Algos en la cuenta.";
 
 /* (No Comment) */
 "send-algos-minimum-amount-error-new-account" = "Estás intentando enviar dinero a una nueva cuenta. El monto debe ser de al menos 0,1 Algos.";
@@ -1055,7 +1055,7 @@
 "send-algos-to" = "Para";
 
 /* (No Comment) */
-"send-asset-amount-error" = "El importe de la transacción no puede ser mayor que el importe disponible.";
+"send-asset-amount-error" = "El monto de la transacción no puede ser mayor que el importe disponible.";
 
 /* (No Comment) */
 "send-choose-asset" = "Elegir activo";
@@ -1151,7 +1151,7 @@
 "settings-theme-dark" = "Oscuro";
 
 /* (No Comment) */
-"settings-theme-light" = "Luz";
+"settings-theme-light" = "Claro";
 
 /* (No Comment) */
 "settings-theme-set" = "Establecer Tema";
@@ -1161,6 +1161,9 @@
 
 /* MARK: Settings */
 "settings-title" = "Configuración";
+
+/* (No Comment) */
+"settings-wallet-connect-title" = "Sesiones de WalletConnect";
 
 /* MARK: Terms and Services */
 "terms-and-services-title" = "Términos y condiciones de servicio";
@@ -1199,10 +1202,28 @@
 "title-close" = "Cerrar";
 
 /* (No Comment) */
+"title-confirm" = "Confirmar";
+
+/* (No Comment) */
+"title-confirm-all" = "Confirmar todas las transacciones";
+
+/* (No Comment) */
+"title-connect" = "Conectar";
+
+/* (No Comment) */
 "title-continue" = "Continuar";
 
 /* (No Comment) */
 "title-copy" = "Copiar";
+
+/* (No Comment) */
+"title-decline" = "Rechazar";
+
+/* (No Comment) */
+"title-decline-all" = "Rechazar todo";
+
+/* (No Comment) */
+"title-disconnect" = "Desconectar";
 
 /* (No Comment) */
 "title-done" = "Listo";
@@ -1230,6 +1251,9 @@
 
 /* (No Comment) */
 "title-go-to-settings" = "Ir a Configuración";
+
+/* (No Comment) */
+"title-got-it" = "¡Entendido!";
 
 /* (No Comment) */
 "title-i-understand" = "Entiendo";
@@ -1325,7 +1349,7 @@
 "title-verify" = "Verificar";
 
 /* MARK: Watch Account */
-"title-watch-account" = "Observar cuenta";
+"title-watch-account" = "Cuenta en observación";
 
 /* MARK: Common */
 "title-yes" = "SÍ";
@@ -1334,7 +1358,7 @@
 "total-rewards-faq" = "Preguntas Frecuentes";
 
 /* (No Comment) */
-"total-rewards-faq-title" = "Para obtener más información, visita nuestras Preguntas Frecuentes.";
+"total-rewards-faq-title" = "Para obtener más información sobre las recompensas de Algorand, visita nuestras Preguntas Frecuentes.";
 
 /* (No Comment) */
 "total-rewards-title" = "%@ recompensas";
@@ -1344,6 +1368,9 @@
 
 /* (No Comment) */
 "transaction-detail-amount" = "Monto";
+
+/* (No Comment) */
+"transaction-detail-balance" = "Saldo de la cuenta";
 
 /* (No Comment) */
 "transaction-detail-close-amount" = "Monto de cierre";
@@ -1380,6 +1407,9 @@
 
 /* (No Comment) */
 "transaction-detail-round" = "Ronda";
+
+/* (No Comment) */
+"transaction-detail-sender" = "Remitente";
 
 /* (No Comment) */
 "transaction-detail-status" = "Estado";
@@ -1475,19 +1505,19 @@
 "tutorial-description-passcode" = "Necesitarás este PIN de 6 dígitos para usar el monedero de Algorand. Recomendamos encarecidamente crear un PIN para aumentar la seguridad del monedero en caso de que te roben el teléfono.";
 
 /* (No Comment) */
-"tutorial-description-recover" = "En los siguientes pasos ingresarás tu frase secreta de recuperación de 25 palabras para recuperar una cuenta de Algorand. Ten a mano tu frase de recuperación antes de comenzar.";
+"tutorial-description-recover" = "En los siguientes pasos, ingresarás tu frase secreta de recuperación de 25 palabras para recuperar una cuenta de Algorand. Ten a mano tu frase de recuperación antes de comenzar.";
 
 /* (No Comment) */
 "tutorial-description-warning-title" = "Advertencia:";
 
 /* (No Comment) */
-"tutorial-description-watch" = "Una cuenta en observación permite monitorear la actividad de una cuenta sin necesidad de tener la frase secreta. Esto es útil para monitorear activos que se mantienen en almacenamiento en frío. \n\nAdvertencia: si no tienes la frase secreta de recuperación correspondiente, no envíes activos a dicha cuenta.";
+"tutorial-description-watch" = "Supervisa la actividad de una cuenta sin necesidad de tener la frase secreta. Esto es útil para monitorear activos en almacenamiento en frío. \n\nAdvertencia: si no tienes la frase secreta de recuperación correspondiente, no envíes activos a esta cuenta.";
 
 /* (No Comment) */
 "tutorial-description-watch-italic" = "Advertencia: si no tienes la frase secreta de recuperación correspondiente, no envíes activos a esta cuenta.";
 
 /* (No Comment) */
-"tutorial-description-write" = "Recuerda, la única forma de recuperar una cuenta de Algorand es con esta frase secreta de recuperación. No compartas esta frase secreta de recuperación con nadie, ya que otorga acceso completo a tu cuenta. \n\nLos empleados de Algorand nunca te pedirán tu frase secreta.";
+"tutorial-description-write" = "La única manera de recuperar una cuenta de Algorand es con esta frase de recuperación.\n\nAdvertencia: No compartas esta frase de recuperación con nadie, ya que concede acceso completo a tu cuenta.";
 
 /* (No Comment) */
 "tutorial-description-write-italic" = "Los empleados de Algorand nunca te pedirán tu frase secreta.";
@@ -1535,13 +1565,178 @@
 "verified-assets-title" = "Activos verificados";
 
 /* (No Comment) */
+"wallet-connect-raw-transaction-title" = "Transacción cruda";
+
+/* (No Comment) */
+"wallet-connect-session-connected" = "Conectado";
+
+/* (No Comment) */
+"wallet-connect-session-connected-with-account" = "Conectado con %@";
+
+/* MARK: Wallet Connect Session */
+"wallet-connect-session-connection-description" = "%@ quiere conectarse a tu cuenta";
+
+/* (No Comment) */
+"wallet-connect-session-disconnect-fail-message" = "No se pudo desconectar de la sesión %@ .";
+
+/* (No Comment) */
+"wallet-connect-session-disconnect-message" = "¿Quieres desconectarte de %@?";
+
+/* (No Comment) */
+"wallet-connect-session-error-no-account" = "No tienes ninguna cuenta que WalletConnect pueda conectar.";
+
+/* (No Comment) */
+"wallet-connect-session-error-not-reachable" = "WalletConnect no está disponible en este momento. Inténtalo más tarde.";
+
+/* (No Comment) */
+"wallet-connect-session-invalid-qr-message" = "No se ha podido crear una sesión en WalletConnect. Intenta con un QR válido.";
+
+/* (No Comment) */
+"wallet-connect-session-list-empty" = "Aún no has conectado ninguna aplicación.";
+
+/* (No Comment) */
+"wallet-connect-transaction-all-count" = "Todas las transacciones (%d)";
+
+/* (No Comment) */
+"wallet-connect-transaction-all-count-singular" = "Todas las transacciones (1)";
+
+/* (No Comment) */
+"wallet-connect-transaction-count" = "%d transacciones";
+
+/* (No Comment) */
+"wallet-connect-transaction-count-singular" = "1 transacción";
+
+/* MARK: Wallet Connect Transaction Dapp Message */
+"wallet-connect-transaction-dapp-show-more" = "Mostrar más información";
+
+/* (No Comment) */
+"wallet-connect-transaction-detail-asset-url" = "Mostrar URL del activo";
+
+/* (No Comment) */
+"wallet-connect-transaction-detail-explorer" = "Mostrar explorador";
+
+/* (No Comment) */
+"wallet-connect-transaction-detail-metadata" = "Mostrar metadatos del activo";
+
+/* (No Comment) */
+"wallet-connect-transaction-detail-raw" = "Mostrar transacción cruda";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-invalid" = "La entrada ingresada no es válida.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-rejected" = "El usuario rechazó la solicitud.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unauthorized" = "La operación y/o cuenta solicitada no ha sido autorizada por el usuario.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unsupported" = "El monedero no admite la operación solicitada.";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-algos-title" = "Pago a %@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-app-call-title" = "Llamada de aplicación a %@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-app-close-title" = "Cierre de aplicación a %@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-app-opt-in-title" = "Suscripción a la aplicación %@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-asset-addition-title" = "Suscripción al activo %@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-asset-title" = "Transferencia de activos a %@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-possible-asset-addition-title" = "Posible suscripción al activo %@";
+
+/* (No Comment) */
+"wallet-connect-transaction-request-count" = "Solicitudes de transacción ( %d )";
+
+/* (No Comment) */
+"wallet-connect-transaction-request-count-singular" = "Solicitud de transacción (1)";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call" = "Solicitud de llamada de aplicación";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-id" = "ID de aplicación";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-asset" = "Solicitud de transferencia de activos";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-asset-url" = "URL del activo";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-atomic" = "Solicitud de transacción atómica";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-auth-address" = "Autorizar dirección";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-explorer" = "AlgoExplorer";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-metadata" = "Metadatos del activo";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-multiple" = "Solicitud de varias transacciones";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-opt-in" = "Solicitud de suscripción de activos";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-raw" = "Transacciones crudas";
+
+/* MARK: Wallet Connect Transaction */
+"wallet-connect-transaction-title-transaction" = "Solicitud de transacción";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-unsigned" = "Transacciones sin firmar";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-close-algos" = "Esta transacción envía la totalidad de tu saldo en Algo.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-close-algos-title" = "Cierre del resto a";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-close-asset" = "Esta transacción envía la totalidad de tu saldo %@ y eliminará %@ de su cuenta.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-close-asset-title" = "Cierre de activo para";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-confirmation" = "Una vez confirmada, la aplicación conectada puede enviar estas transacciones a su criterio.  Asegúrate de revisar estas transacciones detenidamente, ya que este proceso es irreversible.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-future" = "Esta transacción se enviará más adelante.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-high-fee" = "Esta tarifa de transacción es más alta que la tarifa habitual de 0,01 Algos.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-initial" = "Las siguientes solicitudes de transacción provienen de aplicaciones externas que Algorand Wallet no controla. Asegúrate de revisar estas transacciones detenidamente antes de firmar, ya que las transacciones son irreversibles.";
+
+/* MARK: Wallet Connect Transaction Warning */
+"wallet-connect-transaction-warning-rekey" = "Esta transacción transferirá la propiedad de esta cuenta. Tu frase de recuperación actual ya no otorgará acceso a estos activos.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-rekey-title" = "Cambiar la clave a";
+
+/* (No Comment) */
 "watch-account-create" = "Crear una cuenta en observación";
 
 /* (No Comment) */
 "watch-account-error-address" = "Ingresa una dirección válida.";
 
 /* (No Comment) */
-"watch-account-explanation-title" = "Estás creando una vista de solo lectura de una cuenta Algorand. Si envías activos a esta cuenta y no tienes la frase secreta de recuperación correspondiente, esos activos se perderán.";
+"watch-account-explanation-title" = "Estás creando una vista de solo lectura de una cuenta de Algorand. Si envías activos a esta cuenta y no tienes la frase secreta de recuperación correspondiente, esos activos se perderán.";
 
 /* (No Comment) */
 "watch-account-input-explanation" = "Dirección de la cuenta a observar";

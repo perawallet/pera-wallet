@@ -17,7 +17,7 @@
 
 import Magpie
 
-protocol TransactionControllerDelegate: class {
+protocol TransactionControllerDelegate: AnyObject {
     func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?)
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError<TransactionError>)
     func transactionController(_ transactionController: TransactionController, didCompletedTransaction id: TransactionID)

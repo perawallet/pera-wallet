@@ -173,7 +173,7 @@ extension WelcomeView {
     }
 }
 
-protocol WelcomeViewDelegate: class {
+protocol WelcomeViewDelegate: AnyObject {
     func welcomeView(_ welcomeView: WelcomeView, didSelect mode: AccountSetupMode)
     func welcomeView(_ welcomeView: WelcomeView, didOpen url: URL)
 }

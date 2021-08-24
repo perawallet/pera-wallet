@@ -33,6 +33,6 @@ extension SettingsToggleCell: SettingsToggleContextViewDelegate {
     }
 }
 
-protocol SettingsToggleCellDelegate: class {
+protocol SettingsToggleCellDelegate: AnyObject {
     func settingsToggleCell(_ settingsToggleCell: SettingsToggleCell, didChangeValue value: Bool)
 }

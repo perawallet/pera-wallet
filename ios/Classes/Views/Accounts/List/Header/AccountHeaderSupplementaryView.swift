@@ -46,7 +46,7 @@ extension AccountHeaderSupplementaryView: AccountHeaderViewDelegate {
     }
 }
 
-protocol AccountHeaderSupplementaryViewDelegate: class {
+protocol AccountHeaderSupplementaryViewDelegate: AnyObject {
     func accountHeaderSupplementaryViewDidTapQRButton(_ accountHeaderSupplementaryView: AccountHeaderSupplementaryView)
     func accountHeaderSupplementaryViewDidTapOptionsButton(_ accountHeaderSupplementaryView: AccountHeaderSupplementaryView)
 }

@@ -154,6 +154,6 @@ extension LedgerDeviceListView {
     }
 }
 
-protocol LedgerDeviceListViewDelegate: class {
+protocol LedgerDeviceListViewDelegate: AnyObject {
     func ledgerDeviceListViewDidTapTroubleshootButton(_ ledgerDeviceListView: LedgerDeviceListView)
 }

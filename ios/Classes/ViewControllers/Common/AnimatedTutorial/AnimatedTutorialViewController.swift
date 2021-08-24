@@ -236,7 +236,7 @@ extension AnimatedTutorialViewController {
     }
 }
 
-protocol AnimatedTutorialViewControllerDelegate: class {
+protocol AnimatedTutorialViewControllerDelegate: AnyObject {
     func animatedTutorialViewControllerDidTapDontAskAgain(_ animatedTutorialViewController: AnimatedTutorialViewController)
 }
 

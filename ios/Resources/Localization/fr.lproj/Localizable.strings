@@ -1162,6 +1162,9 @@
 /* MARK: Settings */
 "settings-title" = "Paramètres";
 
+/* (No Comment) */
+"settings-wallet-connect-title" = "Sessions WalletConnect";
+
 /* MARK: Terms and Services */
 "terms-and-services-title" = "Conditions de Service";
 
@@ -1199,10 +1202,28 @@
 "title-close" = "Fermer";
 
 /* (No Comment) */
+"title-confirm" = "Confirmer";
+
+/* (No Comment) */
+"title-confirm-all" = "Confirmer toutes les transactions";
+
+/* (No Comment) */
+"title-connect" = "Connecter";
+
+/* (No Comment) */
 "title-continue" = "Continuer";
 
 /* (No Comment) */
 "title-copy" = "Copier";
+
+/* (No Comment) */
+"title-decline" = "Refuser";
+
+/* (No Comment) */
+"title-decline-all" = "Tout refuser";
+
+/* (No Comment) */
+"title-disconnect" = "Déconnecter";
 
 /* (No Comment) */
 "title-done" = "Terminé";
@@ -1230,6 +1251,9 @@
 
 /* (No Comment) */
 "title-go-to-settings" = "Accéder aux Réglages";
+
+/* (No Comment) */
+"title-got-it" = "J'ai compris!";
 
 /* (No Comment) */
 "title-i-understand" = "Je comprends";
@@ -1346,6 +1370,9 @@
 "transaction-detail-amount" = "Montant";
 
 /* (No Comment) */
+"transaction-detail-balance" = "Solde Compte";
+
+/* (No Comment) */
 "transaction-detail-close-amount" = "Clôturer montant";
 
 /* (No Comment) */
@@ -1380,6 +1407,9 @@
 
 /* (No Comment) */
 "transaction-detail-round" = "Rond";
+
+/* (No Comment) */
+"transaction-detail-sender" = "Expéditeur";
 
 /* (No Comment) */
 "transaction-detail-status" = "Statut";
@@ -1533,6 +1563,171 @@
 
 /* MARK: Verified Asset Information */
 "verified-assets-title" = "Actifs vérifiés";
+
+/* (No Comment) */
+"wallet-connect-raw-transaction-title" = "Transaction Brute";
+
+/* (No Comment) */
+"wallet-connect-session-connected" = "Connecté";
+
+/* (No Comment) */
+"wallet-connect-session-connected-with-account" = "Connecté avec %@";
+
+/* MARK: Wallet Connect Session */
+"wallet-connect-session-connection-description" = "%@ veut se connecter à votre compte";
+
+/* (No Comment) */
+"wallet-connect-session-disconnect-fail-message" = "Échec de la déconnexion de la session %@ .";
+
+/* (No Comment) */
+"wallet-connect-session-disconnect-message" = "Souhaitez-vous vous déconnecter de %@ ?";
+
+/* (No Comment) */
+"wallet-connect-session-error-no-account" = "Vous n'avez aucun compte auquel WalletConnect peut se connecter.";
+
+/* (No Comment) */
+"wallet-connect-session-error-not-reachable" = "WalletConnect n'est pas accessible pour le moment. Veuillez réessayer plus tard.";
+
+/* (No Comment) */
+"wallet-connect-session-invalid-qr-message" = "Impossible de créer une session sur WalletConnect. Veuillez essayer avec un QR valide.";
+
+/* (No Comment) */
+"wallet-connect-session-list-empty" = "Vous n'avez encore connecté aucune application.";
+
+/* (No Comment) */
+"wallet-connect-transaction-all-count" = "Toutes les transactions ( %d )";
+
+/* (No Comment) */
+"wallet-connect-transaction-all-count-singular" = "Toutes les transactions (1)";
+
+/* (No Comment) */
+"wallet-connect-transaction-count" = "%d transactions";
+
+/* (No Comment) */
+"wallet-connect-transaction-count-singular" = "1 transaction";
+
+/* MARK: Wallet Connect Transaction Dapp Message */
+"wallet-connect-transaction-dapp-show-more" = "Afficher plus d'informations";
+
+/* (No Comment) */
+"wallet-connect-transaction-detail-asset-url" = "Afficher l'URL de l'actif";
+
+/* (No Comment) */
+"wallet-connect-transaction-detail-explorer" = "Afficher l'explorateur";
+
+/* (No Comment) */
+"wallet-connect-transaction-detail-metadata" = "Afficher les métadonnées de l'actif";
+
+/* (No Comment) */
+"wallet-connect-transaction-detail-raw" = "Afficher la transaction brute";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-invalid" = "L'entrée fournie est invalide.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-rejected" = "L'utilisateur a rejeté la demande.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unauthorized" = "L'opération et/ou le compte demandé n'a pas été autorisé par l'utilisateur.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unsupported" = "Le portefeuille ne prend pas en charge l'opération demandée.";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-algos-title" = "Paiement à %@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-app-call-title" = "Appel de l'application à %@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-app-close-title" = "Clôture Application pour  %@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-app-opt-in-title" = "Inscription à l'application %@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-asset-addition-title" = "Activer l'actif %@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-asset-title" = "Transfert d'actifs à %@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-possible-asset-addition-title" = "Possibilité d'ajout de l'actif %@";
+
+/* (No Comment) */
+"wallet-connect-transaction-request-count" = "Demandes de transaction ( %d )";
+
+/* (No Comment) */
+"wallet-connect-transaction-request-count-singular" = "Demande de transaction (1)";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call" = "Demande d'appel de l'application";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-id" = "ID d'application";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-asset" = "Demande de transfert d'actif";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-asset-url" = "URL de l'actif";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-atomic" = "Demande de transaction atomique";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-auth-address" = "Adresse d'authentification";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-explorer" = "AlgoExplorer";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-metadata" = "Métadonnées des actifs";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-multiple" = "Demande de transactions multiples";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-opt-in" = "Demande d’inscription des actifs";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-raw" = "Transactions brutes";
+
+/* MARK: Wallet Connect Transaction */
+"wallet-connect-transaction-title-transaction" = "Demande de transaction";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-unsigned" = "Transactions non signées";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-close-algos" = "Cette transaction envoie votre solde complet d'Algo.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-close-algos-title" = "Fermer le reste à";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-close-asset" = "Cette transaction envoie votre solde %@ complet et supprimera %@ de votre compte.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-close-asset-title" = "Fermer l’actif pour";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-confirmation" = "Une fois confirmées, l'application connectée peut envoyer ces transactions à sa discrétion. Veuillez vous assurer d'examiner attentivement les transactions car ce processus est irréversible.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-future" = "Cette transaction sera soumise à l'avenir.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-high-fee" = "Ces frais de transaction sont supérieurs aux frais habituels de 0,01 Algos.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-initial" = "Les demandes de transaction suivantes proviennent d'applications externes que le portefeuille Algorand ne contrôle pas. Veuillez vous assurer d'examiner attentivement ces transactions avant de signer, car les transactions sont irréversibles.";
+
+/* MARK: Wallet Connect Transaction Warning */
+"wallet-connect-transaction-warning-rekey" = "Cette transaction transférera la propriété de ce compte. Votre mot de passe de récupération actuel n'autorisera plus l'accès à ces actifs.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-rekey-title" = "Rétablir pour";
 
 /* (No Comment) */
 "watch-account-create" = "Créer un Compte de Consultation";

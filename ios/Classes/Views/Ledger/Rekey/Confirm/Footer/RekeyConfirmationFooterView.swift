@@ -75,6 +75,6 @@ extension RekeyConfirmationFooterView {
     }
 }
 
-protocol RekeyConfirmationFooterViewDelegate: class {
+protocol RekeyConfirmationFooterViewDelegate: AnyObject {
     func rekeyConfirmationFooterViewDidShowMoreAssets(_ rekeyConfirmationFooterView: RekeyConfirmationFooterView)
 }

@@ -45,6 +45,11 @@ enum AnalyticsEventKey: String {
     case assetDetail = "asset_detail_asset"
     case assetDetailChange = "asset_detail_asset_change"
     case notificationFilter = "notification_filter_change"
+    case wcSessionApproved = "wc_session_approved"
+    case wcSessionRejected = "wc_session_rejected"
+    case wcSessionDisconnected = "wc_session_disconnected"
+    case wcTransactionConfirmed = "wc_transaction_confirmed"
+    case wcTransactionDeclined = "wc_transaction_declined"
 }
 
 enum AnalyticsParameter: String {
@@ -60,4 +65,8 @@ enum AnalyticsParameter: String {
     case signedTransaction = "signed_transaction"
     case isReceivingNotifications = "is_receiving_notifications"
     case transactionId = "tx_id"
+    case dappName = "dapp_name"
+    case dappURL = "dapp_url"
+    case transactionCount = "transaction_count"
+    case topic = "topic"
 }

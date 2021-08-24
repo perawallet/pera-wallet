@@ -143,6 +143,6 @@ extension TransactionContactInformationView {
     }
 }
 
-protocol TransactionContactInformationViewDelegate: class {
+protocol TransactionContactInformationViewDelegate: AnyObject {
     func transactionContactInformationViewDidTapActionButton(_ transactionContactInformationView: TransactionContactInformationView)
 }

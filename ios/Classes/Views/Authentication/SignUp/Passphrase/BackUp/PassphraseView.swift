@@ -170,6 +170,6 @@ extension Colors {
     }
 }
 
-protocol PassphraseBackUpViewDelegate: class {
+protocol PassphraseBackUpViewDelegate: AnyObject {
     func passphraseViewDidTapActionButton(_ passphraseView: PassphraseView)
 }

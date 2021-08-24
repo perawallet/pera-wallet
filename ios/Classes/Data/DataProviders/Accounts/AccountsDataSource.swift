@@ -338,7 +338,7 @@ extension AccountsDataSource {
     }
 }
 
-protocol AccountsDataSourceDelegate: class {
+protocol AccountsDataSourceDelegate: AnyObject {
     func accountsDataSource(_ accountsDataSource: AccountsDataSource, didTapOptionsButtonFor account: Account)
     func accountsDataSource(_ accountsDataSource: AccountsDataSource, didTapAddAssetButtonFor account: Account)
     func accountsDataSource(_ accountsDataSource: AccountsDataSource, didTapQRButtonFor account: Account)

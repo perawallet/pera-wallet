@@ -245,6 +245,6 @@ extension AssetCardDisplayViewController: RewardCalculatorDelegate {
     }
 }
 
-protocol AssetCardDisplayViewControllerDelegate: class {
+protocol AssetCardDisplayViewControllerDelegate: AnyObject {
     func assetCardDisplayViewController(_ assetCardDisplayViewController: AssetCardDisplayViewController, didSelect index: Int)
 }

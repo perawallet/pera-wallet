@@ -158,7 +158,7 @@ extension LedgerAccountSelectionDataSource {
     }
 }
 
-protocol LedgerAccountSelectionDataSourceDelegate: class {
+protocol LedgerAccountSelectionDataSourceDelegate: AnyObject {
     func ledgerAccountSelectionDataSource(
         _ ledgerAccountSelectionDataSource: LedgerAccountSelectionDataSource,
         didFetch accounts: [Account]

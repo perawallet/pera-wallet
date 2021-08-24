@@ -173,6 +173,6 @@ extension LedgerTroubleshootBluetoothView {
     }
 }
 
-protocol LedgerTroubleshootBluetoothViewDelegate: class {
+protocol LedgerTroubleshootBluetoothViewDelegate: AnyObject {
     func ledgerTroubleshootBluetoothView(_ view: LedgerTroubleshootBluetoothView, didTapUrl url: URL)
 }

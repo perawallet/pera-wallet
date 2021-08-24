@@ -84,7 +84,7 @@ extension InputSuggestionsDataController {
     }
 }
 
-protocol InputSuggestionsDataControllerDelegate: class {
+protocol InputSuggestionsDataControllerDelegate: AnyObject {
     func inputSuggestionsDataController(
         _ inputSuggestionsDataController: InputSuggestionsDataController,
         didFailedWith error: InputSuggestionsDataController.SuggestionError

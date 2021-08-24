@@ -177,7 +177,7 @@ extension AnimatedTutorialView {
     }
 }
 
-protocol AnimatedTutorialViewDelegate: class {
+protocol AnimatedTutorialViewDelegate: AnyObject {
     func animatedTutorialViewDidApproveTutorial(_ animatedTutorialView: AnimatedTutorialView)
     func animatedTutorialViewDidTakeAction(_ animatedTutorialView: AnimatedTutorialView)
 }

@@ -121,6 +121,6 @@ extension ScreenshotWarningView {
     }
 }
 
-protocol ScreenshotWarningViewDelegate: class {
+protocol ScreenshotWarningViewDelegate: AnyObject {
     func screenshotWarningViewDidCloseScreen(_ screenshotWarningView: ScreenshotWarningView)
 }

@@ -180,7 +180,7 @@ extension AccountRecoverView {
     }
 }
 
-protocol AccountRecoverViewDelegate: class {
+protocol AccountRecoverViewDelegate: AnyObject {
     func accountRecoverView(_ view: AccountRecoverView, didBeginEditing recoverInputView: RecoverInputView)
     func accountRecoverView(_ view: AccountRecoverView, didChangeInputIn recoverInputView: RecoverInputView)
     func accountRecoverView(_ view: AccountRecoverView, didEndEditing recoverInputView: RecoverInputView)

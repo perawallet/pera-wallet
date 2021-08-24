@@ -130,6 +130,6 @@ extension ChartTimeFrameSelectionView {
     }
 }
 
-protocol ChartTimeFrameSelectionViewDelegate: class {
+protocol ChartTimeFrameSelectionViewDelegate: AnyObject {
     func chartTimeFrameSelectionView(_ view: ChartTimeFrameSelectionView, didSelect timeInterval: AlgosUSDValueInterval)
 }

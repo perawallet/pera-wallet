@@ -101,6 +101,7 @@ class BaseViewController: UIViewController, TabBarConfigurable, AnalyticsScreen 
         setListeners()
         configureAppearance()
         prepareLayout()
+        bindData()
         
         navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font: UIFont.font(withWeight: .semiBold(size: 16.0)),
@@ -111,14 +112,17 @@ class BaseViewController: UIViewController, TabBarConfigurable, AnalyticsScreen 
     func configureAppearance() {
         view.backgroundColor = Colors.Background.primary
     }
-    
-    func prepareLayout() {
-    }
-    
+
     func linkInteractors() {
     }
     
     func setListeners() {
+    }
+
+    func prepareLayout() {
+    }
+    
+    func bindData() {
     }
     
     @available(iOS 12.0, *)
@@ -209,6 +213,10 @@ extension BaseViewController {
     
     var api: AlgorandAPI? {
         return configuration.api
+    }
+
+    var walletConnector: WalletConnector {
+        return configuration.walletConnector
     }
 }
 

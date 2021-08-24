@@ -17,7 +17,7 @@
 
 import Foundation
 
-protocol TransactionDataBuildable: class {
+protocol TransactionDataBuildable: AnyObject {
     var params: TransactionParams? { get }
     var draft: TransactionSendDraft? { get }
 

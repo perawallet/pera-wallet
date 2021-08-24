@@ -230,6 +230,6 @@ extension SendTransactionView {
     }
 }
 
-protocol SendTransactionViewDelegate: class {
+protocol SendTransactionViewDelegate: AnyObject {
     func sendTransactionViewDidTapSendButton(_ sendTransactionView: SendTransactionView)
 }

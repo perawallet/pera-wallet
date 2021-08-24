@@ -48,6 +48,6 @@ extension LedgerAccountCell: LedgerAccountViewDelegate {
     }
 }
 
-protocol LedgerAccountCellDelegate: class {
+protocol LedgerAccountCellDelegate: AnyObject {
     func ledgerAccountCellDidOpenMoreInfo(_ ledgerAccountCell: LedgerAccountCell)
 }

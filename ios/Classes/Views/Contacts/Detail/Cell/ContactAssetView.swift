@@ -90,6 +90,6 @@ extension ContactAssetView {
     }
 }
 
-protocol ContactAssetViewDelegate: class {
+protocol ContactAssetViewDelegate: AnyObject {
     func contactAssetViewDidTapSendButton(_ contactAssetView: ContactAssetView)
 }

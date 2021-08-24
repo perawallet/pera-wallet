@@ -19,7 +19,9 @@ import Foundation
 
 let algosInMicroAlgos = 1000000
 let minimumFee: UInt64 = 1000
-let minimumTransactionMicroAlgosLimit = 100000
+let totalNumIntConstantForMinimumAmount: Int64 = 28500
+let byteSliceConstantForMinimumAmount: Int64 = 50000
+let minimumTransactionMicroAlgosLimit: Int64 = 100000
 let algosFraction = 6
 let dataSizeForMaxTransaction: Int64 = 270
 

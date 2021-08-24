@@ -99,7 +99,7 @@ class AlgoUSDAnalyticsDataController {
     }
 }
 
-protocol AlgoUSDAnalyticsDataControllerDelegate: class {
+protocol AlgoUSDAnalyticsDataControllerDelegate: AnyObject {
     func algoUSDAnalyticsDataController(_ dataController: AlgoUSDAnalyticsDataController, didFetch values: [AlgosUSDValue])
     func algoUSDAnalyticsDataControllerDidFailToFetch(_ dataController: AlgoUSDAnalyticsDataController)
 }

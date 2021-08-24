@@ -100,6 +100,6 @@ extension TransactionFilterView {
     }
 }
 
-protocol TransactionFilterViewDelegate: class {
+protocol TransactionFilterViewDelegate: AnyObject {
     func transactionFilterViewDidDismissView(_ transactionFilterView: TransactionFilterView)
 }

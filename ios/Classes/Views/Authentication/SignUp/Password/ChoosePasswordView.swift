@@ -126,6 +126,6 @@ extension ChoosePasswordView {
     }
 }
 
-protocol ChoosePasswordViewDelegate: class {
+protocol ChoosePasswordViewDelegate: AnyObject {
     func choosePasswordView(_ choosePasswordView: ChoosePasswordView, didSelect value: NumpadKey)
 }

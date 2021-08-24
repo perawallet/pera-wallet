@@ -116,6 +116,6 @@ extension RekeyConfirmationDataSource: RekeyConfirmationFooterSupplementaryViewD
     }
 }
 
-protocol RekeyConfirmationDataSourceDelegate: class {
+protocol RekeyConfirmationDataSourceDelegate: AnyObject {
     func rekeyConfirmationDataSourceDidShowMoreAssets(_ rekeyConfirmationDataSource: RekeyConfirmationDataSource)
 }

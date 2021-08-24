@@ -352,7 +352,7 @@ extension AssetAdditionViewController {
     }
 }
 
-protocol AssetAdditionViewControllerDelegate: class {
+protocol AssetAdditionViewControllerDelegate: AnyObject {
     func assetAdditionViewController(
         _ assetAdditionViewController: AssetAdditionViewController,
         didAdd assetSearchResult: AssetSearchResult,

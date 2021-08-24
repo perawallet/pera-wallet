@@ -39,6 +39,6 @@ extension TitledToggleCell: TitledToggleViewDelegate {
     }
 }
 
-protocol TitledToggleCellDelegate: class {
+protocol TitledToggleCellDelegate: AnyObject {
     func titledToggleCell(_ titledToggleCell: TitledToggleCell, didChangeToggleValue value: Bool)
 }

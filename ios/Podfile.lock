@@ -4,6 +4,7 @@ PODS:
   - Charts (3.6.0):
     - Charts/Core (= 3.6.0)
   - Charts/Core (3.6.0)
+  - CryptoSwift (1.4.0)
   - Firebase/Core (7.9.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics (~> 7.9.0)
@@ -71,6 +72,9 @@ PODS:
   - GoogleUtilities/UserDefaults (7.3.1):
     - GoogleUtilities/Logger
   - KeychainAccess (4.2.2)
+  - Kingfisher (5.15.8):
+    - Kingfisher/Core (= 5.15.8)
+  - Kingfisher/Core (5.15.8)
   - lottie-ios (3.2.1)
   - Macaroon/Banner (0.1.0):
     - Macaroon/Concurrency
@@ -226,6 +230,30 @@ PODS:
     - SnapKit (~> 5.0.0)
   - Macaroon/Core/Views/ListComponents (0.1.0):
     - SnapKit (~> 5.0.0)
+  - Macaroon/MediaPicker (0.1.0)
+  - Macaroon/URLImage (0.1.0):
+    - Kingfisher (~> 5.0)
+    - Macaroon/URLImage/Utils (= 0.1.0)
+    - Macaroon/URLImage/ViewModels (= 0.1.0)
+    - Macaroon/URLImage/Views (= 0.1.0)
+  - Macaroon/URLImage/Utils (0.1.0):
+    - Kingfisher (~> 5.0)
+    - Macaroon/URLImage/Utils/Extensions (= 0.1.0)
+    - Macaroon/URLImage/Utils/Properties (= 0.1.0)
+  - Macaroon/URLImage/Utils/Extensions (0.1.0):
+    - Kingfisher (~> 5.0)
+  - Macaroon/URLImage/Utils/Properties (0.1.0):
+    - Kingfisher (~> 5.0)
+  - Macaroon/URLImage/ViewModels (0.1.0):
+    - Kingfisher (~> 5.0)
+  - Macaroon/URLImage/Views (0.1.0):
+    - Kingfisher (~> 5.0)
+    - Macaroon/URLImage/Views/URLImagePlaceholderView (= 0.1.0)
+    - Macaroon/URLImage/Views/URLImageView (= 0.1.0)
+  - Macaroon/URLImage/Views/URLImagePlaceholderView (0.1.0):
+    - Kingfisher (~> 5.0)
+  - Macaroon/URLImage/Views/URLImageView (0.1.0):
+    - Kingfisher (~> 5.0)
   - Magpie/Alamofire (2.0.5):
     - Alamofire (~> 5.2)
     - Magpie/Core
@@ -249,10 +277,14 @@ PODS:
     - SnapKit (~> 5.0.1)
   - PromisesObjC (1.2.12)
   - SnapKit (5.0.1)
+  - Starscream (3.1.1)
   - SVProgressHUD (2.2.5)
   - SwiftDate (6.3.1)
   - SwiftLint (0.43.1)
   - Valet (4.1.1)
+  - WalletConnectSwift (1.3.1):
+    - CryptoSwift (~> 1.2)
+    - Starscream (~> 3.1)
 
 DEPENDENCIES:
   - BetterSegmentedControl (~> 1.3)
@@ -265,18 +297,22 @@ DEPENDENCIES:
   - Macaroon/BottomOverlay (from `https://github.com/Hipo/macaroon.git`, tag `2.12.0`)
   - Macaroon/BottomSheet (from `https://github.com/Hipo/macaroon.git`, tag `2.12.0`)
   - Macaroon/Core (from `https://github.com/Hipo/macaroon.git`, tag `2.12.0`)
+  - Macaroon/MediaPicker (from `https://github.com/Hipo/macaroon.git`, tag `2.12.0`)
+  - Macaroon/URLImage (from `https://github.com/Hipo/macaroon.git`, tag `2.12.0`)
   - Magpie/HIPAPI (~> 2.0.5)
   - NotificationBannerSwift
   - SnapKit
   - SVProgressHUD
   - SwiftDate
   - SwiftLint
+  - WalletConnectSwift
 
 SPEC REPOS:
   trunk:
     - Alamofire
     - BetterSegmentedControl
     - Charts
+    - CryptoSwift
     - Firebase
     - FirebaseAnalytics
     - FirebaseCore
@@ -287,6 +323,7 @@ SPEC REPOS:
     - GoogleDataTransport
     - GoogleUtilities
     - KeychainAccess
+    - Kingfisher
     - lottie-ios
     - Magpie
     - MarqueeLabel
@@ -294,10 +331,12 @@ SPEC REPOS:
     - NotificationBannerSwift
     - PromisesObjC
     - SnapKit
+    - Starscream
     - SVProgressHUD
     - SwiftDate
     - SwiftLint
     - Valet
+    - WalletConnectSwift
 
 EXTERNAL SOURCES:
   Macaroon:
@@ -313,6 +352,7 @@ SPEC CHECKSUMS:
   Alamofire: 2291f7d21ca607c491dd17642e5d40fdcda0e65c
   BetterSegmentedControl: 85d1b0343a09603b098884d527f550dfc8e6cdd9
   Charts: b1e3a1f5a1c9ba5394438ca3b91bd8c9076310af
+  CryptoSwift: 7cc902df1784de3b389a387756c7d710f197730c
   Firebase: d8bd6bd34b4c7ed57bfdd056c66ff5adcdde53ab
   FirebaseAnalytics: 31b1269830dfe16687db3c60b76082c12bd6d527
   FirebaseCore: 0798738ad1ae0fda67e17c7b9081241c431c6859
@@ -323,6 +363,7 @@ SPEC CHECKSUMS:
   GoogleDataTransport: b006084b73915a42c28a3466961a4edda3065da6
   GoogleUtilities: e1d9ed4e544fc32a93e00e721400cbc3f377200d
   KeychainAccess: c0c4f7f38f6fc7bbe58f5702e25f7bd2f65abf51
+  Kingfisher: a3c03d702433fa6cfedabb2bddbe076fb8f2e902
   lottie-ios: 106e92eaf11fbed0a76590b4cdb9b5ec26123ff7
   Macaroon: 22c469775f6bf16bed6fffdd69b03f3a8e9f470b
   Magpie: 50a82ab4b27defa9b24f44796c9b2b03f3a43110
@@ -331,11 +372,13 @@ SPEC CHECKSUMS:
   NotificationBannerSwift: 7021be2338f8f29cf424b0aca43da462bf9e2a1a
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
+  Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftDate: 72d28954e8e1c6c1c0f917ccc8005e4f83c7d4b2
   SwiftLint: 99f82d07b837b942dd563c668de129a03fc3fb52
   Valet: 11ab0e318b7284888a81392e36136563b4af5deb
+  WalletConnectSwift: cd5e056cec5a2f44e92b8595199e7f2f9f0bd92d
 
-PODFILE CHECKSUM: 003d3a4a82f97566d7ce7b69563fe8a269b68f2e
+PODFILE CHECKSUM: 7d0c6b5c6aa11f22816aedf35b6d17fe3c8d6500
 
 COCOAPODS: 1.10.1

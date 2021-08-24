@@ -91,7 +91,7 @@ extension TransactionReceiverSelectionView {
     }
 }
 
-protocol TransactionReceiverSelectionViewDelegate: class {
+protocol TransactionReceiverSelectionViewDelegate: AnyObject {
     func transactionReceiverSelectionViewDidTapAccountsButton(_ transactionReceiverSelectionView: TransactionReceiverSelectionView)
     func transactionReceiverSelectionViewDidTapContactsButton(_ transactionReceiverSelectionView: TransactionReceiverSelectionView)
     func transactionReceiverSelectionViewDidTapAddressButton(_ transactionReceiverSelectionView: TransactionReceiverSelectionView)

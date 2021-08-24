@@ -167,6 +167,6 @@ extension LedgerTroubleshootOpenAppView {
     }
 }
 
-protocol LedgerTroubleshootOpenAppViewDelegate: class {
+protocol LedgerTroubleshootOpenAppViewDelegate: AnyObject {
     func ledgerTroubleshootOpenAppView(_ view: LedgerTroubleshootOpenAppView, didTapUrl url: URL)
 }

@@ -131,6 +131,6 @@ extension AssetSupportView {
     }
 }
 
-protocol AssetSupportViewDelegate: class {
+protocol AssetSupportViewDelegate: AnyObject {
     func assetSupportViewDidTapOKButton(_ assetSupportView: AssetSupportView)
 }

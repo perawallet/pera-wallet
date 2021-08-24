@@ -37,6 +37,6 @@ extension ContactAssetCell: ContactAssetViewDelegate {
     }
 }
 
-protocol ContactAssetCellDelegate: class {
+protocol ContactAssetCellDelegate: AnyObject {
     func contactAssetCellDidTapSendButton(_ contactAssetCell: ContactAssetCell)
 }

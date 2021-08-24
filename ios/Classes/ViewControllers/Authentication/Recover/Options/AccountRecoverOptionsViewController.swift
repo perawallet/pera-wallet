@@ -125,7 +125,7 @@ extension AccountRecoverOptionsViewController {
     }
 }
 
-protocol AccountRecoverOptionsViewControllerDelegate: class {
+protocol AccountRecoverOptionsViewControllerDelegate: AnyObject {
     func accountRecoverOptionsViewControllerDidOpenScanQR(_ viewController: AccountRecoverOptionsViewController)
     func accountRecoverOptionsViewControllerDidPasteFromClipboard(_ viewController: AccountRecoverOptionsViewController)
     func accountRecoverOptionsViewControllerDidOpenMoreInfo(_ viewController: AccountRecoverOptionsViewController)

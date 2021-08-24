@@ -362,7 +362,7 @@ extension AssetRemovalViewController {
     }
 }
 
-protocol AssetRemovalViewControllerDelegate: class {
+protocol AssetRemovalViewControllerDelegate: AnyObject {
     func assetRemovalViewController(
         _ assetRemovalViewController: AssetRemovalViewController,
         didRemove assetDetail: AssetDetail,

@@ -213,7 +213,7 @@ extension IntroductionView {
     }
 }
 
-protocol IntroductionViewDelegate: class {
+protocol IntroductionViewDelegate: AnyObject {
     func introductionViewDidAddAccount(_ introductionView: IntroductionView)
     func introductionView(_ introductionView: IntroductionView, didOpen url: URL)
 }

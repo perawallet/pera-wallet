@@ -79,7 +79,7 @@ extension CurrencySelectionDataSource {
     }
 }
 
-protocol CurrencySelectionDataSourceDelegate: class {
+protocol CurrencySelectionDataSourceDelegate: AnyObject {
     func currencySelectionDataSourceDidFetchCurrencies(_ currencySelectionDataSource: CurrencySelectionDataSource)
     func currencySelectionDataSourceDidFailToFetch(_ currencySelectionDataSource: CurrencySelectionDataSource)
 }

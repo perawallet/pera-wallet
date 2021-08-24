@@ -17,7 +17,7 @@
 
 import StoreKit
 
-protocol AppStoreReviewer: class {
+protocol AppStoreReviewer: AnyObject {
     typealias APPID = String
     
     func requestReviewIfAppropriate()

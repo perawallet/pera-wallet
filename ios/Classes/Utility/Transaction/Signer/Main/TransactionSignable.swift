@@ -17,6 +17,6 @@
 
 import Foundation
 
-protocol TransactionSignable: class {
+protocol TransactionSignable: AnyObject {
     func sign(_ data: Data?, with privateData: Data?) -> Data?
 }

@@ -21,14 +21,16 @@ class AppConfiguration {
 
     let api: AlgorandAPI
     let session: Session
+    let walletConnector: WalletConnector
     
-    init(api: AlgorandAPI, session: Session) {
+    init(api: AlgorandAPI, session: Session, walletConnector: WalletConnector) {
         self.api = api
         self.session = session
+        self.walletConnector = walletConnector
     }
     
     func all() -> ViewControllerConfiguration {
-        let configuration = ViewControllerConfiguration(api: api, session: session)
+        let configuration = ViewControllerConfiguration(api: api, session: session, walletConnector: walletConnector)
         return configuration
     }
     

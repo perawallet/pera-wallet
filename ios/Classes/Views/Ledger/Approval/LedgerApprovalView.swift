@@ -145,6 +145,6 @@ extension LedgerApprovalView {
     }
 }
 
-protocol LedgerApprovalViewDelegate: class {
+protocol LedgerApprovalViewDelegate: AnyObject {
     func ledgerApprovalViewDidTapCancelButton(_ ledgerApprovalView: LedgerApprovalView)
 }

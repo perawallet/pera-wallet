@@ -21,6 +21,7 @@ enum GeneralSettings: Settings {
     case developer
     case password
     case localAuthentication
+    case walletConnect
     case notifications
     case rewards
     case language
@@ -39,6 +40,8 @@ enum GeneralSettings: Settings {
             return img("icon-settings-password")
         case .localAuthentication:
             return img("icon-settings-faceid")
+        case .walletConnect:
+            return img("icon-settings-wallet-connect")
         case .notifications:
             return img("icon-settings-notification")
         case .rewards:
@@ -68,6 +71,8 @@ enum GeneralSettings: Settings {
             return "settings-change-password".localized
         case .localAuthentication:
             return "settings-local-authentication".localized
+        case .walletConnect:
+            return "settings-wallet-connect-title".localized
         case .notifications:
             return "notifications-title".localized
         case .rewards:

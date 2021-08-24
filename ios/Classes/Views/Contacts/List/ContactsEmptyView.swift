@@ -70,6 +70,6 @@ extension ContactsEmptyView {
     }
 }
 
-protocol ContactsEmptyViewDelegate: class {
+protocol ContactsEmptyViewDelegate: AnyObject {
     func contactsEmptyViewDidTapAddContactButton(_ contactsEmptyView: ContactsEmptyView)
 }

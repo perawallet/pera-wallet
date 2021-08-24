@@ -145,6 +145,6 @@ extension ListErrorView {
     }
 }
 
-protocol ListErrorViewDelegate: class {
+protocol ListErrorViewDelegate: AnyObject {
     func listErrorViewDidTryAgain(_ listErrorView: ListErrorView)
 }

@@ -114,6 +114,6 @@ extension CurrencySelectionViewController: SingleSelectionListViewDelegate {
     }
 }
 
-protocol CurrencySelectionViewControllerDelegate: class {
+protocol CurrencySelectionViewControllerDelegate: AnyObject {
     func currencySelectionViewControllerDidSelectCurrency(_ currencySelectionViewController: CurrencySelectionViewController)
 }

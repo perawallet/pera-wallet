@@ -148,7 +148,7 @@ extension AlgorandChartView {
     }
 }
 
-protocol AlgorandChartViewDelegate: class {
+protocol AlgorandChartViewDelegate: AnyObject {
     func algorandChartView(_ algorandChartView: AlgorandChartView, didSelectItemAt index: Int)
     func algorandChartViewDidDeselect(_ algorandChartView: AlgorandChartView)
 }

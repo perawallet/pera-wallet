@@ -32,6 +32,6 @@ extension SettingsFooterSupplementaryView: SettingsFooterViewDelegate {
     }
 }
 
-protocol SettingsFooterSupplementaryViewDelegate: class {
+protocol SettingsFooterSupplementaryViewDelegate: AnyObject {
     func settingsFooterSupplementaryViewDidTapLogoutButton(_ settingsFooterSupplementaryView: SettingsFooterSupplementaryView)
 }

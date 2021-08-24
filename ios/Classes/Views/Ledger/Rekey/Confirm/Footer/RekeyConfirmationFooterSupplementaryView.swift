@@ -32,7 +32,7 @@ extension RekeyConfirmationFooterSupplementaryView: RekeyConfirmationFooterViewD
     }
 }
 
-protocol RekeyConfirmationFooterSupplementaryViewDelegate: class {
+protocol RekeyConfirmationFooterSupplementaryViewDelegate: AnyObject {
     func rekeyConfirmationFooterSupplementaryViewDidShowMoreAssets(
         _ rekeyConfirmationFooterSupplementaryView: RekeyConfirmationFooterSupplementaryView
     )

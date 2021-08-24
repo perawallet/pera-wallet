@@ -248,7 +248,7 @@ extension AlgosCardView {
     }
 }
 
-protocol AlgosCardViewDelegate: class {
+protocol AlgosCardViewDelegate: AnyObject {
     func algosCardViewDidOpenRewardDetails(_ algosCardView: AlgosCardView)
     func algosCardViewDidOpenAnalytics(_ algosCardView: AlgosCardView)
 }

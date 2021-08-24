@@ -314,6 +314,8 @@ extension SendTransactionPreviewViewController: SendTransactionPreviewViewDelega
 
 extension SendTransactionPreviewViewController: AccountListViewControllerDelegate {
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
+        viewController.dismissScreen()
+
         if shouldUpdateReceiverForSelectedAccount {
             shouldUpdateReceiverForSelectedAccount = false
             assetReceiverState = .myAccount(account)
@@ -326,6 +328,9 @@ extension SendTransactionPreviewViewController: AccountListViewControllerDelegat
             updateSelectedAccountForSender(account)
             selectedAccount = account
         }
+    }
+    func accountListViewControllerDidCancelScreen(_ viewController: AccountListViewController) {
+        viewController.dismissScreen()
     }
 }
 

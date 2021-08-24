@@ -140,7 +140,7 @@ extension QRCreationView {
     }
 }
 
-protocol QRCreationViewDelegate: class {
+protocol QRCreationViewDelegate: AnyObject {
     func qrCreationViewDidShare(_ qrCreationView: QRCreationView)
     func qrCreationView(_ qrCreationView: QRCreationView, didSelect text: String)
 }

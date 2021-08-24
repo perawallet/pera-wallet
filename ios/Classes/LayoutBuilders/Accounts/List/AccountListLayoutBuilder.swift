@@ -17,10 +17,6 @@
 
 import UIKit
 
-protocol AccountListLayoutBuilderDelegate: class {
-    func accountListLayoutBuilder(_ layoutBuilder: AccountListLayoutBuilder, didSelectAt indexPath: IndexPath)
-}
-
 class AccountListLayoutBuilder: NSObject, UICollectionViewDelegateFlowLayout {
     
     weak var delegate: AccountListLayoutBuilderDelegate?
@@ -39,4 +35,8 @@ class AccountListLayoutBuilder: NSObject, UICollectionViewDelegateFlowLayout {
             delegate?.accountListLayoutBuilder(self, didSelectAt: indexPath)
         }
     }
+}
+
+protocol AccountListLayoutBuilderDelegate: AnyObject {
+    func accountListLayoutBuilder(_ layoutBuilder: AccountListLayoutBuilder, didSelectAt indexPath: IndexPath)
 }

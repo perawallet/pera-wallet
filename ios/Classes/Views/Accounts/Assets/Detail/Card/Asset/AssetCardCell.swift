@@ -38,6 +38,6 @@ extension AssetCardCell: AssetCardViewDelegate {
     }
 }
 
-protocol AssetCardCellDelegate: class {
+protocol AssetCardCellDelegate: AnyObject {
     func assetCardCellDidCopyAssetId(_ assetCardCell: AssetCardCell)
 }

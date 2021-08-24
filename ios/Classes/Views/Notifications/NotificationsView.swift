@@ -43,6 +43,8 @@ class NotificationsView: BaseView {
     )
     
     private lazy var errorView = ListErrorView()
+
+    private lazy var noConnectionView = NoInternetConnectionView()
     
     private lazy var notificationsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -148,6 +150,10 @@ extension NotificationsView {
     func setErrorState() {
         notificationsCollectionView.contentState = .error(errorView)
     }
+
+    func setConnectionState() {
+        notificationsCollectionView.contentState = .error(noConnectionView)
+    }
     
     func setNormalState() {
         notificationsCollectionView.contentState = .none
@@ -166,7 +172,7 @@ extension NotificationsView: ListErrorViewDelegate {
     }
 }
 
-protocol NotificationsViewDelegate: class {
+protocol NotificationsViewDelegate: AnyObject {
     func notificationsViewDidRefreshList(_ notificationsView: NotificationsView)
     func notificationsViewDidTryAgain(_ notificationsView: NotificationsView)
     func notificationsViewDidOpenNotificationFilters(_ notificationsView: NotificationsView)

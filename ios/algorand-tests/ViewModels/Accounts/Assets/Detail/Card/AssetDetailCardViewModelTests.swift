@@ -27,7 +27,7 @@ class AssetDetailCardViewModelTests: XCTestCase {
 
     func testAlgosCardAmount() {
         let viewModel = AlgosCardViewModel(account: account, currency: currency)
-        XCTAssertEqual(viewModel.amount, "3,313.579804")
+        XCTAssertEqual(viewModel.algosAmount, "3,313.579804")
     }
 
     func testAlgosCardReward() {

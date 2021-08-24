@@ -107,7 +107,7 @@ extension AccountRecoverDataController {
     }
 }
 
-protocol AccountRecoverDataControllerDelegate: class {
+protocol AccountRecoverDataControllerDelegate: AnyObject {
     func accountRecoverDataController(_ accountRecoverDataController: AccountRecoverDataController, didRecover account: AccountInformation)
     func accountRecoverDataController(
         _ accountRecoverDataController: AccountRecoverDataController,

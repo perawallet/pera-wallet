@@ -89,6 +89,6 @@ extension TitledToggleView {
     }
 }
 
-protocol TitledToggleViewDelegate: class {
+protocol TitledToggleViewDelegate: AnyObject {
     func titledToggleView(_ titledToggleView: TitledToggleView, didChangeToggleValue value: Bool)
 }

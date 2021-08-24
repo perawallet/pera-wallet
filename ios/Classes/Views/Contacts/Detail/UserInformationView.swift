@@ -205,7 +205,7 @@ extension UserInformationView {
     }
 }
 
-protocol UserInformationViewDelegate: class {
+protocol UserInformationViewDelegate: AnyObject {
     func userInformationViewDidTapAddImageButton(_ userInformationView: UserInformationView)
     func userInformationViewDidTapQRCodeButton(_ userInformationView: UserInformationView)
 }

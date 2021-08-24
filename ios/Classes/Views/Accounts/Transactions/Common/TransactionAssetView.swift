@@ -33,32 +33,34 @@ class TransactionAssetView: BaseView {
     }
     
     override func prepareLayout() {
-        setupAssetNameViewLayout()
         setupTitleLabelLayout()
+        setupAssetNameViewLayout()
         setupSeparatorViewLayout()
     }
 }
 
 extension TransactionAssetView {
+    private func setupTitleLabelLayout() {
+        addSubview(titleLabel)
+
+        titleLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.equalToSuperview().inset(layout.current.defaultInset)
+        }
+    }
+
     private func setupAssetNameViewLayout() {
         addSubview(assetNameView)
+
+        assetNameView.setContentHuggingPriority(.required, for: .horizontal)
+        assetNameView.setContentCompressionResistancePriority(.required, for: .horizontal)
         
         assetNameView.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview().inset(layout.current.defaultInset)
             make.trailing.equalToSuperview().inset(layout.current.defaultInset)
         }
     }
-    
-    private func setupTitleLabelLayout() {
-        addSubview(titleLabel)
-        
-        titleLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(assetNameView)
-            make.leading.equalToSuperview().inset(layout.current.defaultInset)
-            make.trailing.lessThanOrEqualTo(assetNameView.snp.leading).offset(-layout.current.minimumOffset)
-        }
-    }
-    
+
     private func setupSeparatorViewLayout() {
         addSubview(separatorView)
         
@@ -71,6 +73,28 @@ extension TransactionAssetView {
 }
 
 extension TransactionAssetView {
+    func bind(_ viewModel: TransactionAssetViewModel) {
+        setAssetName(viewModel.assetName)
+
+        if !viewModel.isVerified {
+            removeVerifiedAsset()
+        }
+
+        if let assetId = viewModel.assetId {
+            setAssetId(assetId)
+        } else {
+            removeAssetId()
+        }
+
+        if let unitName = viewModel.unitName {
+            setAssetCode(unitName)
+        } else {
+            removeAssetUnitName()
+        }
+
+        setSeparatorHidden(viewModel.isSeparatorHidden)
+    }
+
     func setAssetName(for assetDetail: AssetDetail) {
         assetNameView.setAssetName(for: assetDetail)
     }

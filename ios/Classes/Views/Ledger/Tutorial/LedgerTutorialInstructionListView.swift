@@ -145,7 +145,7 @@ extension LedgerTutorialInstructionListView {
     }
 }
 
-protocol LedgerTutorialInstructionListViewDelegate: class {
+protocol LedgerTutorialInstructionListViewDelegate: AnyObject {
     func ledgerTutorialInstructionListViewDidTapLedgerBluetoothConnection(_ view: LedgerTutorialInstructionListView)
     func ledgerTutorialInstructionListViewDidTapInstallApp(_ view: LedgerTutorialInstructionListView)
     func ledgerTutorialInstructionListViewDidTapOpenApp(_ view: LedgerTutorialInstructionListView)

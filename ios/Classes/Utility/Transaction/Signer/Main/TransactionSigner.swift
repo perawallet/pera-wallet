@@ -28,6 +28,6 @@ class TransactionSigner: NSObject, TransactionSignable {
     }
 }
 
-protocol TransactionSignerDelegate: class {
+protocol TransactionSignerDelegate: AnyObject {
     func transactionSigner(_ transactionSigner: TransactionSigner, didFailedSigning error: HIPError<TransactionError>)
 }

@@ -246,7 +246,7 @@ extension OptionsViewController {
     }
 }
 
-protocol OptionsViewControllerDelegate: class {
+protocol OptionsViewControllerDelegate: AnyObject {
     func optionsViewControllerDidOpenRekeying(_ optionsViewController: OptionsViewController)
     func optionsViewControllerDidRemoveAsset(_ optionsViewController: OptionsViewController)
     func optionsViewControllerDidViewPassphrase(_ optionsViewController: OptionsViewController)

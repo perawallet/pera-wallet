@@ -116,7 +116,7 @@ extension AccountNameSetupView: InputViewDelegate {
     }
 }
 
-protocol AccountNameSetupViewDelegate: class {
+protocol AccountNameSetupViewDelegate: AnyObject {
     func accountNameSetupViewDidFinishAccountCreation(_ accountNameSetupView: AccountNameSetupView)
     func accountNameSetupViewDidChangeValue(_ accountNameSetupView: AccountNameSetupView)
 }

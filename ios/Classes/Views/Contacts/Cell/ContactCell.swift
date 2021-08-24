@@ -41,6 +41,6 @@ extension ContactCell: ContactContextViewDelegate {
     }
 }
 
-protocol ContactCellDelegate: class {
+protocol ContactCellDelegate: AnyObject {
     func contactCellDidTapQRDisplayButton(_ cell: ContactCell)
 }

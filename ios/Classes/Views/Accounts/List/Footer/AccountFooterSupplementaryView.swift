@@ -32,7 +32,7 @@ extension AccountFooterSupplementaryView: AccountFooterViewDelegate {
     }
 }
 
-protocol AccountFooterSupplementaryViewDelegate: class {
+protocol AccountFooterSupplementaryViewDelegate: AnyObject {
     func accountFooterSupplementaryViewDidTapAddAssetButton(_ accountFooterSupplementaryView: AccountFooterSupplementaryView)
 }
 

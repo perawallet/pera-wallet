@@ -347,6 +347,6 @@ extension ContactsViewController {
     }
 }
 
-protocol ContactsViewControllerDelegate: class {
+protocol ContactsViewControllerDelegate: AnyObject {
     func contactsViewController(_ contactsViewController: ContactsViewController, didSelect contact: Contact)
 }

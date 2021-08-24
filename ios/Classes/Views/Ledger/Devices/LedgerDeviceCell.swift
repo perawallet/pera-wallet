@@ -37,6 +37,6 @@ extension LedgerDeviceCell: LedgerDeviceViewDelegate {
     }
 }
 
-protocol LedgerDeviceCellDelegate: class {
+protocol LedgerDeviceCellDelegate: AnyObject {
     func ledgerDeviceCellDidTapConnectButton(_ ledgerDeviceCell: LedgerDeviceCell)
 }

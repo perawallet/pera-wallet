@@ -47,6 +47,6 @@ extension TransactionDataBuilder {
     }
 }
 
-protocol TransactionDataBuilderDelegate: class {
+protocol TransactionDataBuilderDelegate: AnyObject {
     func transactionDataBuilder(_ transactionDataBuilder: TransactionDataBuilder, didFailedComposing error: HIPError<TransactionError>)
 }

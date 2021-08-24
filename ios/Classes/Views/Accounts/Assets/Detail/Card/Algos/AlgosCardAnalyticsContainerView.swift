@@ -119,6 +119,6 @@ extension AlgosCardAnalyticsContainerView {
     }
 }
 
-protocol AlgosCardAnalyticsContainerViewDelegate: class {
+protocol AlgosCardAnalyticsContainerViewDelegate: AnyObject {
     func algosCardAnalyticsContainerViewDidOpenAnalytics(_ algosCardAnalyticsContainerView: AlgosCardAnalyticsContainerView)
 }

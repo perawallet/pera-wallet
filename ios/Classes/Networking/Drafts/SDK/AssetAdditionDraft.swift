@@ -21,4 +21,5 @@ struct AssetAdditionDraft: TransactionDraft {
     var from: Account
     var transactionParams: TransactionParams
     let assetIndex: Int64
+    var note: Data?
 }

@@ -140,6 +140,6 @@ extension ContactContextView {
     }
 }
 
-protocol ContactContextViewDelegate: class {
+protocol ContactContextViewDelegate: AnyObject {
     func contactContextViewDidTapQRDisplayButton(_ contactContextView: ContactContextView)
 }

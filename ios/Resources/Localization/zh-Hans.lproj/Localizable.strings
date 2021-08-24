@@ -1037,7 +1037,7 @@
 "send-algos-minimum-amount-error-new-account" = "您正在向一个新账户发送ALGO，该账户必须持有至少0.1个ALGO。";
 
 /* (No Comment) */
-"send-algos-receiver-address-validation" = "密钥无效，请确保您拥有正确的密钥。";
+"send-algos-receiver-address-validation" = "收件人地址不是有效的Algorand地址，请重试。";
 
 /* (No Comment) */
 "send-algos-scan" = "扫描二维码";
@@ -1162,6 +1162,9 @@
 /* MARK: Settings */
 "settings-title" = "设置";
 
+/* (No Comment) */
+"settings-wallet-connect-title" = "WalletConnect 会话";
+
 /* MARK: Terms and Services */
 "terms-and-services-title" = "服务条款";
 
@@ -1199,10 +1202,28 @@
 "title-close" = "关闭";
 
 /* (No Comment) */
+"title-confirm" = "确认";
+
+/* (No Comment) */
+"title-confirm-all" = "确认所有交易";
+
+/* (No Comment) */
+"title-connect" = "连接";
+
+/* (No Comment) */
 "title-continue" = "继续";
 
 /* (No Comment) */
 "title-copy" = "复制";
+
+/* (No Comment) */
+"title-decline" = "拒绝";
+
+/* (No Comment) */
+"title-decline-all" = "全部拒绝";
+
+/* (No Comment) */
+"title-disconnect" = "断开连接";
 
 /* (No Comment) */
 "title-done" = "完成";
@@ -1230,6 +1251,9 @@
 
 /* (No Comment) */
 "title-go-to-settings" = "前往设置";
+
+/* (No Comment) */
+"title-got-it" = "明白！";
 
 /* (No Comment) */
 "title-i-understand" = "我明白";
@@ -1346,6 +1370,9 @@
 "transaction-detail-amount" = "金额";
 
 /* (No Comment) */
+"transaction-detail-balance" = "账户余额";
+
+/* (No Comment) */
 "transaction-detail-close-amount" = "成交金额";
 
 /* (No Comment) */
@@ -1380,6 +1407,9 @@
 
 /* (No Comment) */
 "transaction-detail-round" = "区块高度";
+
+/* (No Comment) */
+"transaction-detail-sender" = "发送人";
 
 /* (No Comment) */
 "transaction-detail-status" = "状态";
@@ -1533,6 +1563,171 @@
 
 /* MARK: Verified Asset Information */
 "verified-assets-title" = "已验证的资产";
+
+/* (No Comment) */
+"wallet-connect-raw-transaction-title" = "原始交易";
+
+/* (No Comment) */
+"wallet-connect-session-connected" = "已连接";
+
+/* (No Comment) */
+"wallet-connect-session-connected-with-account" = "已连接%@";
+
+/* MARK: Wallet Connect Session */
+"wallet-connect-session-connection-description" = "%@想连接您的账户";
+
+/* (No Comment) */
+"wallet-connect-session-disconnect-fail-message" = "与会话%@断开连接失败。";
+
+/* (No Comment) */
+"wallet-connect-session-disconnect-message" = "您想与%@断开联系吗？";
+
+/* (No Comment) */
+"wallet-connect-session-error-no-account" = "您没有 WalletConnect 可以连接的帐户。";
+
+/* (No Comment) */
+"wallet-connect-session-error-not-reachable" = "目前无法访问 WalletConnect。请稍后再试。";
+
+/* (No Comment) */
+"wallet-connect-session-invalid-qr-message" = "无法在WalletConnect上创建会话。请使用有效的二维码。";
+
+/* (No Comment) */
+"wallet-connect-session-list-empty" = "尚未连接任何APP。";
+
+/* (No Comment) */
+"wallet-connect-transaction-all-count" = "全部交易（%d）";
+
+/* (No Comment) */
+"wallet-connect-transaction-all-count-singular" = "全部交易（1）";
+
+/* (No Comment) */
+"wallet-connect-transaction-count" = "%d笔交易";
+
+/* (No Comment) */
+"wallet-connect-transaction-count-singular" = "1笔交易";
+
+/* MARK: Wallet Connect Transaction Dapp Message */
+"wallet-connect-transaction-dapp-show-more" = "显示更多信息";
+
+/* (No Comment) */
+"wallet-connect-transaction-detail-asset-url" = "显示资产URL";
+
+/* (No Comment) */
+"wallet-connect-transaction-detail-explorer" = "显示浏览器";
+
+/* (No Comment) */
+"wallet-connect-transaction-detail-metadata" = "显示资产元数据";
+
+/* (No Comment) */
+"wallet-connect-transaction-detail-raw" = "显示原始交易";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-invalid" = "输入无效。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-rejected" = "该用户拒绝了请求。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unauthorized" = "请求的操作和/或账户没有用户授权。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unsupported" = "钱包不支持所要求的操作。";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-algos-title" = "支付给%@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-app-call-title" = "应用程序调用至%@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-app-close-title" = "应用程序抄送至%@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-app-opt-in-title" = "应用程序选择加入%@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-asset-addition-title" = "选择加入资产%@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-asset-title" = "资产转移到%@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-possible-asset-addition-title" = "有可能选择加入资产%@";
+
+/* (No Comment) */
+"wallet-connect-transaction-request-count" = "交易请求（%d）";
+
+/* (No Comment) */
+"wallet-connect-transaction-request-count-singular" = "交易请求（1）";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call" = "应用程序调用请求";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-id" = "应用ID";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-asset" = "转移资产请求";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-asset-url" = "网址URL";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-atomic" = "原子交易请求";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-auth-address" = "授权地址";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-explorer" = "AlgoExplorer";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-metadata" = "资产元数据";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-multiple" = "多个交易请求";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-opt-in" = "资产选入请求";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-raw" = "原始Txns";
+
+/* MARK: Wallet Connect Transaction */
+"wallet-connect-transaction-title-transaction" = "交易请求";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-unsigned" = "未签署的交易";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-close-algos" = "该交易正在发送您的全部ALGO余额。";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-close-algos-title" = "剩余资产抄送至";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-close-asset" = "此交易将发送您的全部%@余额，并将从您的账户中扣除%@。";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-close-asset-title" = "资产抄送至";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-confirmation" = "一经确认，连接的外部程序可以自行发送交易。至由于交易发生后不可逆转，在交易前请仔细检查。";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-future" = "交易会在未来提交。";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-high-fee" = "此交易费用高于平时的 0.01 ALGO。";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-initial" = "以下交易请求来自Algorand钱包无法控制的外部应用程序。由于交易发生后不可逆转，请在签署交易前仔细检查。";
+
+/* MARK: Wallet Connect Transaction Warning */
+"wallet-connect-transaction-warning-rekey" = "这项交易将转移该账户的所有权。您当前的恢复密码将不再可以访问这些资产。";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-rekey-title" = "密钥更新至";
 
 /* (No Comment) */
 "watch-account-create" = "创建Watch账户";

@@ -187,6 +187,6 @@ extension RekeyConfirmationView {
     }
 }
 
-protocol RekeyConfirmationViewDelegate: class {
+protocol RekeyConfirmationViewDelegate: AnyObject {
     func rekeyConfirmationViewDidFinalizeConfirmation(_ rekeyConfirmationView: RekeyConfirmationView)
 }

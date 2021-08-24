@@ -48,6 +48,6 @@ extension InputSuggestionLayoutBuilder {
     }
 }
 
-protocol InputSuggestionLayoutBuilderDelegate: class {
+protocol InputSuggestionLayoutBuilderDelegate: AnyObject {
     func inputSuggestionLayoutBuilder(_ inputSuggestionLayoutBuilder: InputSuggestionLayoutBuilder, didSelectItemAt index: Int)
 }

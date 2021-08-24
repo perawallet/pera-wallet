@@ -177,7 +177,8 @@ class Router {
         
         let configuration = ViewControllerConfiguration(
             api: rootViewController.appConfiguration.api,
-            session: rootViewController.appConfiguration.session
+            session: rootViewController.appConfiguration.session,
+            walletConnector: rootViewController.appConfiguration.walletConnector
         )
         
         switch screen {
@@ -270,8 +271,6 @@ class Router {
                 assetDetail: assetDetail,
                 configuration: configuration
             )
-        case .feedback:
-            viewController = FeedbackViewController(configuration: configuration)
         case let .assetDetail(account, assetDetail):
             viewController = AssetDetailViewController(account: account, configuration: configuration, assetDetail: assetDetail)
         case let .addAsset(account):
@@ -363,6 +362,10 @@ class Router {
             viewController = MaximumBalanceWarningViewController(account: account, configuration: configuration)
         case .screenshotWarning:
             viewController = ScreenshotWarningViewController(configuration: configuration)
+        case let .warningAlert(warningAlert):
+            viewController = WarningAlertViewController(warningAlert: warningAlert, configuration: configuration)
+        case let .actionableWarningAlert(warningAlert):
+            viewController = ActionableWarningAlertViewController(warningAlert: warningAlert, configuration: configuration)
         case let .animatedTutorial(flow, tutorial, isActionable):
             viewController = AnimatedTutorialViewController(
                 flow: flow,
@@ -382,6 +385,59 @@ class Router {
                 selectedAccounts: selectedAccounts,
                 configuration: configuration
             )
+        case let .wcConnectionApproval(walletConnectSession, completion):
+            viewController = WCConnectionApprovalViewController(
+                walletConnectSession: walletConnectSession,
+                walletConnectSessionConnectionCompletionHandler: completion,
+                configuration: configuration
+            )
+        case .walletConnectSessions:
+            viewController = WCSessionListViewController(configuration: configuration)
+        case let .wcTransactionFullDappDetail(wcSession, message):
+            viewController = WCTransactionFullDappDetailViewController(
+                wcSession: wcSession,
+                message: message,
+                configuration: configuration
+            )
+        case let .wcMainTransaction(transactions, transactionRequest, transactionOption):
+            viewController = WCMainTransactionViewController(
+                transactions: transactions,
+                transactionRequest: transactionRequest,
+                transactionOption: transactionOption,
+                configuration: configuration
+            )
+        case let .wcAlgosTransaction(transaction, transactionRequest):
+            viewController = WCAlgosTransactionViewController(
+                transaction: transaction,
+                transactionRequest: transactionRequest,
+                configuration: configuration
+            )
+        case let .wcAssetTransaction(transaction, transactionRequest):
+            viewController = WCAssetTransactionViewController(
+                transaction: transaction,
+                transactionRequest: transactionRequest,
+                configuration: configuration
+            )
+        case let .wcAssetAdditionTransaction(transaction, transactionRequest):
+            viewController = WCAssetAdditionTransactionViewController(
+                transaction: transaction,
+                transactionRequest: transactionRequest,
+                configuration: configuration
+            )
+        case let .wcGroupTransaction(transactions, transactionRequest):
+            viewController = WCGroupTransactionViewController(
+                transactions: transactions,
+                transactionRequest: transactionRequest,
+                configuration: configuration
+            )
+        case let .wcAppCall(transaction, transactionRequest):
+            viewController = WCAppCallTransactionViewController(
+                transaction: transaction,
+                transactionRequest: transactionRequest,
+                configuration: configuration
+            )
+        case let .jsonDisplay(jsonData, title):
+            viewController = JSONDisplayViewController(jsonData: jsonData, title: title, configuration: configuration)
         }
         
         return viewController as? T

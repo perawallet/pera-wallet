@@ -127,7 +127,7 @@ extension SingleSelectionListView: ListErrorViewDelegate {
     }
 }
 
-protocol SingleSelectionListViewDelegate: class {
+protocol SingleSelectionListViewDelegate: AnyObject {
     func singleSelectionListViewDidRefreshList(_ singleSelectionListView: SingleSelectionListView)
     func singleSelectionListViewDidTryAgain(_ singleSelectionListView: SingleSelectionListView)
 }

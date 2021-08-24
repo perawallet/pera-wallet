@@ -29,7 +29,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private lazy var session = Session()
     private lazy var api = AlgorandAPI(session: session, base: "")
-    private lazy var appConfiguration = AppConfiguration(api: api, session: session)
+    private lazy var walletConnector = WalletConnector()
+    private lazy var appConfiguration = AppConfiguration(api: api, session: session, walletConnector: walletConnector)
     private lazy var pushNotificationController = PushNotificationController(api: api)
     
     private(set) lazy var firebaseAnalytics = FirebaseAnalytics()
@@ -42,6 +43,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private var shouldInvalidateAccountFetch = false
     
     private var shouldInvalidateUserSession: Bool = false
+
+    private(set) var incomingWCSessionRequest: String?
+    
+    private lazy var containerBlurView = UIVisualEffectView()
     
     func application(
         _ application: UIApplication,
@@ -71,6 +76,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationDidEnterBackground(_ application: UIApplication) {
         decideToInvalidateSessionInBackground()
+    }
+    
+    func applicationWillResignActive(_ application: UIApplication) {
+        showBlurOnWindow()
+    }
+    
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        removeBlurOnWindow()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -173,6 +186,19 @@ extension AppDelegate {
 
         invalidateAccountManagerFetchPolling()
     }
+    
+    private func showBlurOnWindow() {
+        containerBlurView.effect = nil
+        UIView.animate(withDuration: 3.0) {
+            self.containerBlurView = VisualEffectViewWithCustomIntensity(effect: UIBlurEffect(style: .light), intensity: 0.25)
+        }
+        containerBlurView.frame = UIScreen.main.bounds
+        window?.addSubview(containerBlurView)
+    }
+    
+    private func removeBlurOnWindow() {
+        containerBlurView.removeFromSuperview()
+    }
 }
 
 extension AppDelegate {
@@ -238,12 +264,26 @@ extension AppDelegate {
     private func shouldHandleDeepLinkRouting(from url: URL) -> Bool {
         let parser = DeepLinkParser(url: url)
 
+        if let sessionRequest = parser.wcSessionRequestText {
+            if let user = appConfiguration.session.authenticatedUser,
+               !user.accounts.isEmpty {
+                incomingWCSessionRequest = sessionRequest
+                return true
+            }
+            
+            return false
+        }
+
         guard let screen = parser.expectedScreen,
             let rootViewController = rootViewController else {
                 return false
         }
 
         return rootViewController.handleDeepLinkRouting(for: screen)
+    }
+
+    func resetWCSessionRequest() {
+        incomingWCSessionRequest = nil
     }
 }
 

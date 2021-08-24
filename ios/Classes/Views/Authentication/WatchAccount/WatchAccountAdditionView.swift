@@ -127,7 +127,7 @@ extension WatchAccountAdditionView {
     }
 }
 
-protocol WatchAccountAdditionViewDelegate: class {
+protocol WatchAccountAdditionViewDelegate: AnyObject {
     func watchAccountAdditionViewDidScanQR(_ watchAccountAdditionView: WatchAccountAdditionView)
     func watchAccountAdditionViewDidAddAccount(_ watchAccountAdditionView: WatchAccountAdditionView)
 }

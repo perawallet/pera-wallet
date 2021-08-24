@@ -101,7 +101,7 @@ extension LedgerAccountVerifyOperation {
     }
 }
 
-protocol LedgerAccountVerifyOperationDelegate: class {
+protocol LedgerAccountVerifyOperationDelegate: AnyObject {
     func ledgerAccountVerifyOperation(_ ledgerAccountVerifyOperation: LedgerAccountVerifyOperation, didVerify account: String)
     func ledgerAccountVerifyOperation(_ ledgerAccountVerifyOperation: LedgerAccountVerifyOperation, didFailed error: LedgerOperationError)
 }

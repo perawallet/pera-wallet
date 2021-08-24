@@ -146,6 +146,6 @@ extension LedgerAccountSelectionView {
     }
 }
 
-protocol LedgerAccountSelectionViewDelegate: class {
+protocol LedgerAccountSelectionViewDelegate: AnyObject {
     func ledgerAccountSelectionViewDidAddAccount(_ ledgerAccountSelectionView: LedgerAccountSelectionView)
 }

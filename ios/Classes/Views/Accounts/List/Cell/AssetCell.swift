@@ -43,7 +43,7 @@ extension BaseAssetCell: AssetViewDelegate {
     }
 }
 
-protocol BaseAssetCellDelegate: class {
+protocol BaseAssetCellDelegate: AnyObject {
     func assetCellDidTapActionButton(_ assetCell: BaseAssetCell)
 }
 

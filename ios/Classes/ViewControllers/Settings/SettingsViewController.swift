@@ -42,7 +42,7 @@ class SettingsViewController: BaseViewController {
     private lazy var settings: [[GeneralSettings]] = [securitySettings, preferenceSettings, appSettings, developerSettings]
     private lazy var securitySettings: [GeneralSettings] = [.password, .localAuthentication]
     private lazy var preferenceSettings: [GeneralSettings] = {
-        var settings: [GeneralSettings] = [.notifications, .rewards, .language, .currency]
+        var settings: [GeneralSettings] = [.walletConnect, .notifications, .rewards, .language, .currency]
         if #available(iOS 13.0, *) {
             settings.append(.appearance)
         }
@@ -57,10 +57,6 @@ class SettingsViewController: BaseViewController {
     
     override func customizeTabBarAppearence() {
         isTabBarHidden = false
-    }
-    
-    override func configureAppearance() {
-        view.backgroundColor = Colors.Background.tertiary
     }
     
     override func linkInteractors() {
@@ -119,6 +115,8 @@ extension SettingsViewController: UICollectionViewDataSource {
             case .localAuthentication:
                 let localAuthenticationStatus = localAuthenticator.localAuthenticationStatus == .allowed
                 return setSettingsToggleCell(from: setting, isOn: localAuthenticationStatus, in: collectionView, at: indexPath)
+            case .walletConnect:
+                return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
             case .notifications:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
             case .rewards:
@@ -277,6 +275,8 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
                 if let url = AlgorandWeb.support.link {
                     open(url)
                 }
+            case .walletConnect:
+                open(.walletConnectSessions, by: .push)
             case .notifications:
                 open(.notificationFilter(flow: .settings), by: .push)
             case .appReview:
@@ -405,6 +405,7 @@ extension SettingsViewController: SettingsToggleCellDelegate {
     
     private func logout() {
         session?.reset(isContactIncluded: true)
+        walletConnector.resetAllSessions()
         NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: nil)
         pushNotificationController.revokeDevice()
         open(.introduction(flow: .initializeAccount(mode: .none)), by: .launch, animated: false)
@@ -413,7 +414,7 @@ extension SettingsViewController: SettingsToggleCellDelegate {
 
 extension SettingsViewController: CurrencySelectionViewControllerDelegate {
     func currencySelectionViewControllerDidSelectCurrency(_ currencySelectionViewController: CurrencySelectionViewController) {
-        settingsView.collectionView.reloadItems(at: [IndexPath(item: 3, section: 1)])
+        settingsView.collectionView.reloadItems(at: [IndexPath(item: 4, section: 1)])
     }
 }
 
@@ -425,6 +426,6 @@ extension SettingsViewController: AppearanceSelectionViewControllerDelegate {
             return
         }
 
-        settingsView.collectionView.reloadItems(at: [IndexPath(item: 4, section: 1)])
+        settingsView.collectionView.reloadItems(at: [IndexPath(item: 5, section: 1)])
     }
 }

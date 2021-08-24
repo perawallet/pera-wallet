@@ -24,6 +24,26 @@ struct DeepLinkParser {
     init(url: URL) {
         self.url = url
     }
+
+    var wcSessionRequestText: String? {
+        let initialAlgorandPrefix = "algorand-wc://"
+
+        if !url.absoluteString.hasPrefix(initialAlgorandPrefix) {
+            return nil
+        }
+
+        let uriQueryKey = "uri"
+
+        guard let possibleWCRequestText = url.queryParameters?[uriQueryKey] else {
+            return nil
+        }
+
+        if possibleWCRequestText.isWalletConnectConnection {
+            return possibleWCRequestText
+        }
+
+        return nil
+    }
     
     var expectedScreen: Screen? {
         guard let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true),

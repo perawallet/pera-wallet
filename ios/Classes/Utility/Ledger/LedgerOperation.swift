@@ -18,7 +18,7 @@
 import UIKit
 import CoreBluetooth
 
-protocol LedgerOperation: class {
+protocol LedgerOperation: AnyObject {
     func startOperation()
     func completeOperation(with data: Data)
     func handleDiscoveryResults(_ peripherals: [CBPeripheral])

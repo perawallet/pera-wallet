@@ -17,6 +17,7 @@
 
 import UIKit
 import AVFoundation
+import Macaroon
 
 class QRScannerViewController: BaseViewController {
     
@@ -37,18 +38,20 @@ class QRScannerViewController: BaseViewController {
     override var hidesCloseBarButtonItem: Bool {
         return true
     }
+
+    private lazy var wcConnectionModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .none
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 454.0))
+    )
     
     weak var delegate: QRScannerViewControllerDelegate?
     
     private(set) lazy var overlayView = QRScannerOverlayView()
 
-    private lazy var cancelButton: UIButton = {
-        UIButton(type: .custom)
-            .withBackgroundImage(img("button-bg-scan-qr"))
-            .withTitle("title-cancel".localized)
-            .withTitleColor(Colors.Main.white)
-            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-    }()
+    private lazy var cancelButton = LoadingButton(.none, loadingIndicator: UIActivityIndicatorView(style: .white))
     
     private var captureSession: AVCaptureSession?
     private let captureSessionQueue = DispatchQueue(label: AVCaptureSession.self.description(), attributes: [], target: nil)
@@ -64,12 +67,16 @@ class QRScannerViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        if captureSession?.isRunning == false {
-            captureSessionQueue.async {
+        if self.captureSession?.isRunning == false {
+            self.captureSessionQueue.async {
                 self.captureSession?.startRunning()
             }
         }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        walletConnector.delegate = self
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -121,12 +128,20 @@ extension QRScannerViewController {
 
     private func setupCancelButtonLayout() {
         view.addSubview(cancelButton)
+        customizeButtonAppearance()
 
         cancelButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview().inset(layout.current.buttonVerticalInset + view.safeAreaBottom)
             make.centerX.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
         }
+    }
+
+    private func customizeButtonAppearance() {
+        cancelButton.setBackgroundImage(img("button-bg-scan-qr"), for: .normal)
+        cancelButton.setTitle("title-cancel".localized, for: .normal)
+        cancelButton.setTitleColor(Colors.Main.white, for: .normal)
+        cancelButton.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 16.0))
     }
 }
 
@@ -246,8 +261,13 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
             }
             
             AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-            
-            if let qrText = try? JSONDecoder().decode(QRText.self, from: qrStringData) {
+
+            if qrString.isWalletConnectConnection {
+                walletConnector.delegate = self
+                cancelButton.startLoading()
+                cancelButton.setBackgroundImage(img("button-bg-scan-qr"), for: .normal)
+                walletConnector.connect(to: qrString)
+            } else if let qrText = try? JSONDecoder().decode(QRText.self, from: qrStringData) {
                 captureSession = nil
                 closeScreen(by: .pop)
                 delegate?.qrScannerViewController(self, didRead: qrText, completionHandler: nil)
@@ -273,6 +293,68 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
     }
 }
 
+extension QRScannerViewController: WalletConnectorDelegate {
+    func walletConnector(
+        _ walletConnector: WalletConnector,
+        shouldStart session: WalletConnectSession,
+        then completion: @escaping WalletConnectSessionConnectionCompletionHandler
+    ) {
+        guard let accounts = self.session?.accounts,
+              accounts.contains(where: { $0.type != .watch }) else {
+            NotificationBanner.showError("title-error".localized, message: "wallet-connect-session-error-no-account".localized)
+            return
+        }
+
+        let controller = open(
+            .wcConnectionApproval(walletConnectSession: session, completion: completion),
+            by: .customPresent(
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: wcConnectionModalPresenter
+            )
+        ) as? WCConnectionApprovalViewController
+        controller?.delegate = self
+    }
+
+    func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WCSession) {
+        delegate?.qrScannerViewControllerDidApproveWCConnection(self)
+        walletConnector.saveConnectedWCSession(session)
+        cancelButton.stopLoading()
+        captureSession = nil
+        closeScreen(by: .pop)
+    }
+
+    func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.Error) {
+        switch error {
+        case .failedToConnect,
+             .failedToCreateSession:
+            cancelButton.stopLoading()
+            captureSessionQueue.async {
+                self.captureSession?.startRunning()
+            }
+            NotificationBanner.showError("title-error".localized, message: "wallet-connect-session-invalid-qr-message".localized)
+            captureSession = nil
+            closeScreen(by: .pop)
+        default:
+            break
+        }
+    }
+}
+
+extension QRScannerViewController: WCConnectionApprovalViewControllerDelegate {
+    func wcConnectionApprovalViewControllerDidApproveConnection(_ wcConnectionApprovalViewController: WCConnectionApprovalViewController) {
+        wcConnectionApprovalViewController.dismissScreen()
+    }
+
+    func wcConnectionApprovalViewControllerDidRejectConnection(_ wcConnectionApprovalViewController: WCConnectionApprovalViewController) {
+        wcConnectionApprovalViewController.dismissScreen()
+        cancelButton.stopLoading()
+        captureSessionQueue.async {
+            self.captureSession?.startRunning()
+        }
+    }
+}
+
 extension QRScannerViewController {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let buttonHorizontalInset: CGFloat = 20.0
@@ -280,12 +362,27 @@ extension QRScannerViewController {
     }
 }
 
-protocol QRScannerViewControllerDelegate: class {
+protocol QRScannerViewControllerDelegate: AnyObject {
+    func qrScannerViewControllerDidApproveWCConnection(_ controller: QRScannerViewController)
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?)
     func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?)
 }
 
-enum QRScannerError: Error {
+extension QRScannerViewControllerDelegate {
+    func qrScannerViewControllerDidApproveWCConnection(_ controller: QRScannerViewController) {
+
+    }
+
+    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) {
+
+    }
+
+    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?) {
+
+    }
+}
+
+enum QRScannerError: Swift.Error {
     case jsonSerialization
     case invalidData
 }

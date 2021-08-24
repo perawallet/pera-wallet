@@ -193,6 +193,6 @@ extension QRSelectableLabel {
     }
 }
 
-protocol QRSelectableLabelDelegate: class {
+protocol QRSelectableLabelDelegate: AnyObject {
     func qrSelectableLabel(_ qrSelectableLabel: QRSelectableLabel, didTapText text: String)
 }

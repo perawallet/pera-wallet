@@ -1,26 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14490.99" systemVersion="18D109" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20D91" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="ApplicationConfiguration" representedClassName="ApplicationConfiguration" syncable="YES">
-        <attribute name="authenticatedUserData" optional="YES" attributeType="Binary" syncable="YES"/>
-        <attribute name="isDefaultNodeActive" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="password" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="authenticatedUserData" optional="YES" attributeType="Binary"/>
+        <attribute name="isDefaultNodeActive" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="password" optional="YES" attributeType="String"/>
     </entity>
     <entity name="Contact" representedClassName="Contact" syncable="YES">
-        <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="address" optional="YES" attributeType="String"/>
+        <attribute name="identifier" optional="YES" attributeType="String"/>
+        <attribute name="image" optional="YES" attributeType="Binary"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
     </entity>
     <entity name="Node" representedClassName="Node" syncable="YES">
-        <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="creationDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="isActive" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="token" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="address" optional="YES" attributeType="String"/>
+        <attribute name="creationDate" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="isActive" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="token" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="WCSessionHistory" representedClassName="WCSessionHistory" syncable="YES">
+        <attribute name="sessionHistory" optional="YES" attributeType="Binary"/>
+    </entity>
+    <entity name="WCSessionList" representedClassName="WCSessionList" syncable="YES">
+        <attribute name="sessions" optional="YES" attributeType="Binary"/>
     </entity>
     <elements>
         <element name="ApplicationConfiguration" positionX="-54" positionY="45" width="128" height="90"/>
         <element name="Contact" positionX="-63" positionY="-18" width="128" height="43"/>
         <element name="Node" positionX="-54" positionY="27" width="128" height="120"/>
+        <element name="WCSessionList" positionX="-54" positionY="54" width="128" height="44"/>
+        <element name="WCSessionHistory" positionX="-54" positionY="54" width="128" height="44"/>
     </elements>
 </model>

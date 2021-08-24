@@ -280,6 +280,8 @@ extension ContactInfoViewController: AddContactViewControllerDelegate {
 
 extension ContactInfoViewController: AccountListViewControllerDelegate {
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
+        viewController.dismissScreen()
+        
         if let assetDetail = selectedAsset {
             selectedAsset = nil
             open(
@@ -296,8 +298,12 @@ extension ContactInfoViewController: AccountListViewControllerDelegate {
             open(.sendAlgosTransactionPreview(account: account, receiver: .contact(contact), isSenderEditable: false), by: .push)
         }
     }
+
+    func accountListViewControllerDidCancelScreen(_ viewController: AccountListViewController) {
+        viewController.dismissScreen()
+    }
 }
 
-protocol ContactInfoViewControllerDelegate: class {
+protocol ContactInfoViewControllerDelegate: AnyObject {
     func contactInfoViewController(_ contactInfoViewController: ContactInfoViewController, didUpdate contact: Contact)
 }

@@ -91,6 +91,6 @@ extension InputSuggestionViewController {
     }
 }
 
-protocol InputSuggestionViewControllerDelegate: class {
+protocol InputSuggestionViewControllerDelegate: AnyObject {
     func inputSuggestionViewController(_ inputSuggestionViewController: InputSuggestionViewController, didSelect mnemonic: String)
 }

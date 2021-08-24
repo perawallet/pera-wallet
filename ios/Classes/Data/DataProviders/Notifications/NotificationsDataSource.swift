@@ -217,7 +217,7 @@ extension NotificationsDataSource {
     }
 }
 
-protocol NotificationsDataSourceDelegate: class {
+protocol NotificationsDataSourceDelegate: AnyObject {
     func notificationsDataSourceDidFetchNotifications(_ notificationsDataSource: NotificationsDataSource)
     func notificationsDataSourceDidFailToFetch(_ notificationsDataSource: NotificationsDataSource)
 }

@@ -80,6 +80,10 @@ extension LedgerTransactionOperation {
     
     func completeOperation(with data: Data) {
         if data.isErrorResponseFromLedger {
+            if data.hasNextPageForLedgerResponse {
+                return
+            }
+
             if data.isLedgerTransactionCancelledError {
                 delegate?.ledgerTransactionOperation(self, didFailed: .cancelled)
             } else {
@@ -197,7 +201,7 @@ extension LedgerTransactionOperation: LedgerAccountFetchOperationDelegate {
     }
 }
 
-protocol LedgerTransactionOperationDelegate: class {
+protocol LedgerTransactionOperationDelegate: AnyObject {
     func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didReceiveSignature data: Data)
     func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didFailed error: LedgerOperationError)
 }

@@ -143,6 +143,6 @@ extension AccountManager {
     }
 }
 
-protocol AccountManagerDelegate: class {
+protocol AccountManagerDelegate: AnyObject {
     func accountManager(_ accountManager: AccountManager, didWaitForNext round: Int64?)
 }

@@ -99,6 +99,6 @@ extension OptionsView {
     }
 }
 
-protocol OptionsViewDelegate: class {
+protocol OptionsViewDelegate: AnyObject {
     func optionsViewDidTapCancelButton(_ optionsView: OptionsView)
 }

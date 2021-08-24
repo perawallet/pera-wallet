@@ -144,6 +144,6 @@ extension ContactDisplayView {
     }
 }
 
-protocol ContactDisplayViewDelegate: class {
+protocol ContactDisplayViewDelegate: AnyObject {
     func contactDisplayViewDidTapActionButton(_ contactDisplayView: ContactDisplayView)
 }

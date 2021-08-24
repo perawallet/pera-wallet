@@ -160,7 +160,7 @@ extension AssetActionConfirmationView {
     }
 }
 
-protocol AssetActionConfirmationViewDelegate: class {
+protocol AssetActionConfirmationViewDelegate: AnyObject {
     func assetActionConfirmationViewDidTapActionButton(_ assetActionConfirmationView: AssetActionConfirmationView)
     func assetActionConfirmationViewDidTapCancelButton(_ assetActionConfirmationView: AssetActionConfirmationView)
 }

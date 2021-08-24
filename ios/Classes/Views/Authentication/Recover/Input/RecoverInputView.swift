@@ -235,7 +235,7 @@ extension RecoverInputView {
     }
 }
 
-protocol RecoverInputViewDelegate: class {
+protocol RecoverInputViewDelegate: AnyObject {
     func recoverInputViewDidBeginEditing(_ recoverInputView: RecoverInputView)
     func recoverInputViewDidChange(_ recoverInputView: RecoverInputView)
     func recoverInputViewDidEndEditing(_ recoverInputView: RecoverInputView)

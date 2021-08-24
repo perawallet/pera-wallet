@@ -23,6 +23,8 @@ class NotificationsViewController: BaseViewController {
     override var shouldShowNavigationBar: Bool {
         return false
     }
+
+    private lazy var isConnectedToInternet = api?.networkMonitor?.isConnected ?? true
     
     private lazy var notificationsView = NotificationsView()
     
@@ -50,6 +52,13 @@ class NotificationsViewController: BaseViewController {
         if isInitialFetchCompleted {
             reloadNotifications()
         }
+
+        api?.addListener(self)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        api?.removeListener(self)
     }
     
     override func setListeners() {
@@ -142,7 +151,9 @@ extension NotificationsViewController: NotificationsDataSourceDelegate {
         isInitialFetchCompleted = true
         notificationsView.endRefreshing()
         
-        if notificationsDataSource.isEmpty {
+        if !isConnectedToInternet {
+            notificationsView.setConnectionState()
+        } else if notificationsDataSource.isEmpty {
             notificationsView.setEmptyState()
         } else {
             notificationsView.setNormalState()
@@ -154,7 +165,13 @@ extension NotificationsViewController: NotificationsDataSourceDelegate {
     func notificationsDataSourceDidFailToFetch(_ notificationsDataSource: NotificationsDataSource) {
         isInitialFetchCompleted = true
         notificationsView.endRefreshing()
-        notificationsView.setErrorState()
+
+        if !isConnectedToInternet {
+            notificationsView.setConnectionState()
+        } else {
+            notificationsView.setErrorState()
+        }
+
         notificationsView.reloadData()
     }
 }
@@ -187,5 +204,24 @@ extension NotificationsViewController: NotificationsViewDelegate {
                 transitioningDelegate: nil
             )
         )
+    }
+}
+
+extension NotificationsViewController: APIListener {
+    func api(
+        _ api: API,
+        networkMonitor: NetworkMonitor,
+        didConnectVia connection: NetworkConnection,
+        from oldConnection: NetworkConnection
+    ) {
+        if UIApplication.shared.isActive {
+            isConnectedToInternet = networkMonitor.isConnected
+        }
+    }
+
+    func api(_ api: API, networkMonitor: NetworkMonitor, didDisconnectFrom oldConnection: NetworkConnection) {
+        if UIApplication.shared.isActive {
+            isConnectedToInternet = networkMonitor.isConnected
+        }
     }
 }

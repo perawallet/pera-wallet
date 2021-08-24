@@ -147,6 +147,6 @@ extension AssetCardView {
     }
 }
 
-protocol AssetCardViewDelegate: class {
+protocol AssetCardViewDelegate: AnyObject {
     func assetCardViewDidCopyAssetId(_ assetCardView: AssetCardView)
 }

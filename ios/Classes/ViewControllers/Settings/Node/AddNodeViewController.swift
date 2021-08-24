@@ -19,7 +19,7 @@ import UIKit
 import SnapKit
 import SVProgressHUD
 
-protocol AddNodeViewControllerDelegate: class {
+protocol AddNodeViewControllerDelegate: AnyObject {
     func addNodeViewController(_ controller: AddNodeViewController, didChangeNodeFor action: AddNodeViewController.ActionType)
 }
 

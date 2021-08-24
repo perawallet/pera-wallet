@@ -332,7 +332,7 @@ extension TransactionDetailView {
     }
 }
 
-protocol TransactionDetailViewDelegate: class {
+protocol TransactionDetailViewDelegate: AnyObject {
     func transactionDetailViewDidTapOpponentActionButton(_ transactionDetailView: TransactionDetailView)
     func transactionDetailViewDidCopyOpponentAddress(_ transactionDetailView: TransactionDetailView)
     func transactionDetailViewDidCopyCloseToAddress(_ transactionDetailView: TransactionDetailView)

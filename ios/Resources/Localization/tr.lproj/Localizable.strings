@@ -1162,6 +1162,9 @@
 /* MARK: Settings */
 "settings-title" = "Ayarlar";
 
+/* (No Comment) */
+"settings-wallet-connect-title" = "WalletConnect Oturumları";
+
 /* MARK: Terms and Services */
 "terms-and-services-title" = "Koşullar ve Hizmetler";
 
@@ -1199,10 +1202,28 @@
 "title-close" = "Kapat";
 
 /* (No Comment) */
+"title-confirm" = "Onayla";
+
+/* (No Comment) */
+"title-confirm-all" = "Tüm İşlemleri Onayla";
+
+/* (No Comment) */
+"title-connect" = "Bağlan";
+
+/* (No Comment) */
 "title-continue" = "Devam Et";
 
 /* (No Comment) */
 "title-copy" = "Kopyala";
+
+/* (No Comment) */
+"title-decline" = "Reddet";
+
+/* (No Comment) */
+"title-decline-all" = "Tümünü Reddet";
+
+/* (No Comment) */
+"title-disconnect" = "Bağlantıyı Kes";
 
 /* (No Comment) */
 "title-done" = "Bitti";
@@ -1230,6 +1251,9 @@
 
 /* (No Comment) */
 "title-go-to-settings" = "Ayarlara Git";
+
+/* (No Comment) */
+"title-got-it" = "Anladım!";
 
 /* (No Comment) */
 "title-i-understand" = "Anladım";
@@ -1346,6 +1370,9 @@
 "transaction-detail-amount" = "Miktar";
 
 /* (No Comment) */
+"transaction-detail-balance" = "Hesap Bakiyesi";
+
+/* (No Comment) */
 "transaction-detail-close-amount" = "Kapanış Miktarı";
 
 /* (No Comment) */
@@ -1380,6 +1407,9 @@
 
 /* (No Comment) */
 "transaction-detail-round" = "Tur";
+
+/* (No Comment) */
+"transaction-detail-sender" = "Gönderen";
 
 /* (No Comment) */
 "transaction-detail-status" = "Durum";
@@ -1533,6 +1563,171 @@
 
 /* MARK: Verified Asset Information */
 "verified-assets-title" = "Doğrulanan Varlıklar";
+
+/* (No Comment) */
+"wallet-connect-raw-transaction-title" = "Ham İşlem";
+
+/* (No Comment) */
+"wallet-connect-session-connected" = "Bağlandı";
+
+/* (No Comment) */
+"wallet-connect-session-connected-with-account" = "%@ ile Bağlandı";
+
+/* MARK: Wallet Connect Session */
+"wallet-connect-session-connection-description" = "%@, hesabınıza bağlanmak istiyor";
+
+/* (No Comment) */
+"wallet-connect-session-disconnect-fail-message" = "%@ Oturumunun bağlantısı kesilemedi.";
+
+/* (No Comment) */
+"wallet-connect-session-disconnect-message" = "%@ bağlantısını kesmek ister misiniz?";
+
+/* (No Comment) */
+"wallet-connect-session-error-no-account" = "WalletConnect'in bağlanabileceği herhangi bir uygulamanız bulunmuyor.";
+
+/* (No Comment) */
+"wallet-connect-session-error-not-reachable" = "WalletConnect'e şu anda ulaşılamıyor. Lütfen daha sonra tekrar deneyin.";
+
+/* (No Comment) */
+"wallet-connect-session-invalid-qr-message" = "WalletConnect'te oturum oluşturulamadı. Lütfen geçerli bir QR ile deneyin.";
+
+/* (No Comment) */
+"wallet-connect-session-list-empty" = "Henüz herhangi bir uygulama bağlamadınız.";
+
+/* (No Comment) */
+"wallet-connect-transaction-all-count" = "Tüm işlemler (%d)";
+
+/* (No Comment) */
+"wallet-connect-transaction-all-count-singular" = "Tüm işlemler (1)";
+
+/* (No Comment) */
+"wallet-connect-transaction-count" = "%d işlem";
+
+/* (No Comment) */
+"wallet-connect-transaction-count-singular" = "1 işlem";
+
+/* MARK: Wallet Connect Transaction Dapp Message */
+"wallet-connect-transaction-dapp-show-more" = "Diğer Bilgileri Göster";
+
+/* (No Comment) */
+"wallet-connect-transaction-detail-asset-url" = "Varlık URL'sini Göster";
+
+/* (No Comment) */
+"wallet-connect-transaction-detail-explorer" = "Gezgini Göster";
+
+/* (No Comment) */
+"wallet-connect-transaction-detail-metadata" = "Varlık Meta Verilerini Göster";
+
+/* (No Comment) */
+"wallet-connect-transaction-detail-raw" = "Ham İşlemleri Göster";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-invalid" = "Sağlanan giriş geçersiz.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-rejected" = "Kullanıcı isteği reddetti.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unauthorized" = "İstenen işlem ve/veya hesap kullanıcı tarafından yetkilendirilmemiş.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unsupported" = "Cüzdan, istenen işlemi desteklemiyor.";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-algos-title" = "%@ için Ödeme";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-app-call-title" = "%@ için Uygulama Çağrısı";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-app-close-title" = "%@ için Kapatma Uygulaması";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-app-opt-in-title" = "%@ Varlığına Katılım Uygulaması";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-asset-addition-title" = "%@ Varlığına Katılım";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-asset-title" = "%@ Konumuna Varlık Transferi";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-possible-asset-addition-title" = "%@ Varlığına Olası Katılım";
+
+/* (No Comment) */
+"wallet-connect-transaction-request-count" = "İşlem istekleri (%d)";
+
+/* (No Comment) */
+"wallet-connect-transaction-request-count-singular" = "İşlem isteği (1)";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call" = "Uygulama Çağrısı İsteği";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-id" = "Uygulama Kimliği";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-asset" = "Varlık Transfer İsteği";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-asset-url" = "Varlık URL'si";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-atomic" = "Atomik İşlem İsteği";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-auth-address" = "Adresi Doğrula";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-explorer" = "AlgoExplorer";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-metadata" = "Varlık Meta Verileri";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-multiple" = "Çoklu İşlem İsteği";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-opt-in" = "Varlık Katılım İsteği";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-raw" = "Ham İşlemler";
+
+/* MARK: Wallet Connect Transaction */
+"wallet-connect-transaction-title-transaction" = "İşlem İsteği";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-unsigned" = "İmzalanmamış İşlemler";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-close-algos" = "Bu işlem Algo bakiyenizin tümünü gönderecek.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-close-algos-title" = "Kalanı Kapat:";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-close-asset" = "Bu işlem %@ bakiyenizin tamamını gönderecek ve %@, hesabınızdan kaldırılacak.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-close-asset-title" = "Kapatılacak Varlık:";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-confirmation" = "Onaylanmasının ardından, bağlı olan uygulama bu işlemleri kendi takdirine bağlı olarak gönderebilir. İşlemler geri alınamaz olduğundan imzalamadan önce işlemleri dikkatlice gözden geçirdiğinizden lütfen emin olun.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-future" = "Bu işlem ileride gönderilecek.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-high-fee" = "Bu işlem ücreti, normalde 0,01 Algo olan ücretten daha yüksek.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-initial" = "Aşağıdaki işlem istekleri, Algorand Wallet'ın kontrol etmediği harici uygulamalardan gelmektedir. İşlemler geri alınamaz olduğundan imzalamadan önce bu işlemleri gözden geçirdiğinizden lütfen emin olun.";
+
+/* MARK: Wallet Connect Transaction Warning */
+"wallet-connect-transaction-warning-rekey" = "Bu işlem, bu hesabın sahipliğini devredecek. Mevcut kurtarma parolanızla bu varlıklara erişim sağlamanıza artık izin verilmeyecek.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-rekey-title" = "Yeniden Anahtarla:";
 
 /* (No Comment) */
 "watch-account-create" = "Bir İzleme Hesabı Oluştur";

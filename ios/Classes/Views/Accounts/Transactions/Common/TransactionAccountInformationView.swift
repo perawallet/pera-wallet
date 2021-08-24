@@ -230,6 +230,6 @@ extension TransactionAccountInformationView {
     }
 }
 
-protocol TransactionAccountInformationViewDelegate: class {
+protocol TransactionAccountInformationViewDelegate: AnyObject {
     func transactionAccountInformationViewDidTapRemoveButton(_ transactionAccountInformationView: TransactionAccountInformationView)
 }

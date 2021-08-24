@@ -180,7 +180,7 @@ extension AlgoUSDAnalyticsView {
     }
 }
 
-protocol AlgoUSDAnalyticsViewDelegate: class {
+protocol AlgoUSDAnalyticsViewDelegate: AnyObject {
     func algoUSDAnalyticsView(_ view: AlgoUSDAnalyticsView, didSelect timeInterval: AlgosUSDValueInterval)
     func algoUSDAnalyticsView(_ view: AlgoUSDAnalyticsView, didSelectItemAt index: Int)
     func algoUSDAnalyticsViewDidDeselect(_ view: AlgoUSDAnalyticsView)

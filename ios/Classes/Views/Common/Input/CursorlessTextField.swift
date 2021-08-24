@@ -49,6 +49,6 @@ extension UITextField {
     }
 }
 
-protocol CursorlessTextFieldDelegate: class {
+protocol CursorlessTextFieldDelegate: AnyObject {
     func cursorlessTextFieldDidDeleteBackward(_ cursorlessTextField: CursorlessTextField)
 }

@@ -40,7 +40,7 @@ extension TransactionHistoryHeaderSupplementaryView: TransactionHistoryHeaderVie
     }
 }
 
-protocol TransactionHistoryHeaderSupplementaryViewDelegate: class {
+protocol TransactionHistoryHeaderSupplementaryViewDelegate: AnyObject {
     func transactionHistoryHeaderSupplementaryViewDidOpenFilterOptions(
         _ transactionHistoryHeaderSupplementaryView: TransactionHistoryHeaderSupplementaryView
     )

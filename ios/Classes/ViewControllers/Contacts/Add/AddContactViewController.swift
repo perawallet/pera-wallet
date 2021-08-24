@@ -356,6 +356,6 @@ extension AddContactViewController: TouchDetectingScrollViewDelegate {
     }
 }
 
-protocol AddContactViewControllerDelegate: class {
+protocol AddContactViewControllerDelegate: AnyObject {
     func addContactViewController(_ addContactViewController: AddContactViewController, didSave contact: Contact)
 }

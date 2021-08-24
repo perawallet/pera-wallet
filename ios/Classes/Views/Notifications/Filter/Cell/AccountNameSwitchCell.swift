@@ -39,6 +39,6 @@ extension AccountNameSwitchCell: AccountNameSwitchViewDelegate {
     }
 }
 
-protocol AccountNameSwitchCellDelegate: class {
+protocol AccountNameSwitchCellDelegate: AnyObject {
     func accountNameSwitchCell(_ accountNameSwitchCell: AccountNameSwitchCell, didChangeToggleValue value: Bool)
 }

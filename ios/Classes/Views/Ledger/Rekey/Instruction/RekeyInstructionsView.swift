@@ -171,6 +171,6 @@ extension RekeyInstructionsView {
     }
 }
 
-protocol RekeyInstructionsViewDelegate: class {
+protocol RekeyInstructionsViewDelegate: AnyObject {
     func rekeyInstructionsViewDidStartRekeying(_ rekeyInstructionsView: RekeyInstructionsView)
 }

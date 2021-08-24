@@ -83,6 +83,6 @@ extension TransactionTutorialViewController: TransactionTutorialViewDelegate {
     }
 }
 
-protocol TransactionTutorialViewControllerDelegate: class {
+protocol TransactionTutorialViewControllerDelegate: AnyObject {
     func transactionTutorialViewControllerDidConfirmTutorial(_ transactionTutorialViewController: TransactionTutorialViewController)
 }

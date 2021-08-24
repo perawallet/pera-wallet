@@ -84,7 +84,7 @@ class LedgerAccountDetailViewDataSource: NSObject {
     }
 }
 
-protocol LedgerAccountDetailViewDataSourceDelegate: class {
+protocol LedgerAccountDetailViewDataSourceDelegate: AnyObject {
     func ledgerAccountDetailViewDataSource(
         _ ledgerAccountDetailViewDataSource: LedgerAccountDetailViewDataSource,
         didReturn account: Account

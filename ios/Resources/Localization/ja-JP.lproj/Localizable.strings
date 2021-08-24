@@ -707,7 +707,7 @@
 "notification-filter-show-title" = "プッシュ通知";
 
 /* (No Comment) */
-"notification-received" = "%@ が%@によって%@へ送信されました。";
+"notification-received" = "%@ を%@宛てに%@が送信しました。";
 
 /* (No Comment) */
 "notification-sent-failed" = "%@から%@への%@トランザクションが失敗しました。";
@@ -1162,6 +1162,9 @@
 /* MARK: Settings */
 "settings-title" = "設定";
 
+/* (No Comment) */
+"settings-wallet-connect-title" = "WalletConnectセッション";
+
 /* MARK: Terms and Services */
 "terms-and-services-title" = "利用規約とサービス";
 
@@ -1199,10 +1202,28 @@
 "title-close" = "閉じる";
 
 /* (No Comment) */
+"title-confirm" = "確認";
+
+/* (No Comment) */
+"title-confirm-all" = "すべてのトランザクションを確認";
+
+/* (No Comment) */
+"title-connect" = "接続";
+
+/* (No Comment) */
 "title-continue" = "続ける";
 
 /* (No Comment) */
 "title-copy" = "コピー";
+
+/* (No Comment) */
+"title-decline" = "拒否";
+
+/* (No Comment) */
+"title-decline-all" = "すべて拒否";
+
+/* (No Comment) */
+"title-disconnect" = "接続解除";
 
 /* (No Comment) */
 "title-done" = "完了";
@@ -1230,6 +1251,9 @@
 
 /* (No Comment) */
 "title-go-to-settings" = "設定に移動";
+
+/* (No Comment) */
+"title-got-it" = "了解です！";
 
 /* (No Comment) */
 "title-i-understand" = "分かりました";
@@ -1346,6 +1370,9 @@
 "transaction-detail-amount" = "金額";
 
 /* (No Comment) */
+"transaction-detail-balance" = "アカウント残高";
+
+/* (No Comment) */
 "transaction-detail-close-amount" = "金額を閉じる";
 
 /* (No Comment) */
@@ -1380,6 +1407,9 @@
 
 /* (No Comment) */
 "transaction-detail-round" = "ラウンド";
+
+/* (No Comment) */
+"transaction-detail-sender" = "送信者";
 
 /* (No Comment) */
 "transaction-detail-status" = "状態";
@@ -1533,6 +1563,171 @@
 
 /* MARK: Verified Asset Information */
 "verified-assets-title" = "検証済み資産";
+
+/* (No Comment) */
+"wallet-connect-raw-transaction-title" = "Rawトランザクション";
+
+/* (No Comment) */
+"wallet-connect-session-connected" = "接続済み";
+
+/* (No Comment) */
+"wallet-connect-session-connected-with-account" = "%@と接続しました";
+
+/* MARK: Wallet Connect Session */
+"wallet-connect-session-connection-description" = "%@があなたのアカウントへの接続を希望しています";
+
+/* (No Comment) */
+"wallet-connect-session-disconnect-fail-message" = "セッション%@からの切断に失敗しました。";
+
+/* (No Comment) */
+"wallet-connect-session-disconnect-message" = "%@から切断しますか？";
+
+/* (No Comment) */
+"wallet-connect-session-error-no-account" = "WalletConnectが接続できるアカウントがありません。";
+
+/* (No Comment) */
+"wallet-connect-session-error-not-reachable" = "現在、WalletConnectにアクセスできません。後ほどお試しください。";
+
+/* (No Comment) */
+"wallet-connect-session-invalid-qr-message" = "WalletConnectでセッションを作成できませんでした。有効なQRでお試しください。";
+
+/* (No Comment) */
+"wallet-connect-session-list-empty" = "まだどのアプリも接続していません。";
+
+/* (No Comment) */
+"wallet-connect-transaction-all-count" = "すべてのトランザクション (%d)";
+
+/* (No Comment) */
+"wallet-connect-transaction-all-count-singular" = "すべてのトランザクション (1)";
+
+/* (No Comment) */
+"wallet-connect-transaction-count" = "%dトランザクション";
+
+/* (No Comment) */
+"wallet-connect-transaction-count-singular" = "1 トランザクション";
+
+/* MARK: Wallet Connect Transaction Dapp Message */
+"wallet-connect-transaction-dapp-show-more" = "詳細情報を表示";
+
+/* (No Comment) */
+"wallet-connect-transaction-detail-asset-url" = "アセットURLの表示";
+
+/* (No Comment) */
+"wallet-connect-transaction-detail-explorer" = "エクスプローラーの表示";
+
+/* (No Comment) */
+"wallet-connect-transaction-detail-metadata" = "アセットメタデータを表示";
+
+/* (No Comment) */
+"wallet-connect-transaction-detail-raw" = "Rawトランザクションを表示";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-invalid" = "入力された内容は無効です。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-rejected" = "ユーザーがリクエストを拒否しました。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unauthorized" = "要求された操作および/またはアカウントは、ユーザーによって承認されていません。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unsupported" = "ウォレットは要求された操作をサポートしていません。";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-algos-title" = "%@への支払い";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-app-call-title" = "%@へのアプリケーションコール";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-app-close-title" = "%@へのアプリケーションクローズ";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-app-opt-in-title" = "%@へのアプリケーションオプトイン";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-asset-addition-title" = "アセット%@へのオプトイン";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-asset-title" = "%@へのアセット転送";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-possible-asset-addition-title" = "アセット%@への可能なオプトイン";
+
+/* (No Comment) */
+"wallet-connect-transaction-request-count" = "トランザクションリクエスト（%d）";
+
+/* (No Comment) */
+"wallet-connect-transaction-request-count-singular" = "トランザクションリクエスト(1)";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call" = "アプリコールリクエスト";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-id" = "アプリケーションID";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-asset" = "アセット転送リクエスト";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-asset-url" = "アセットURL";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-atomic" = "アトミック トランザクションリクエスト";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-auth-address" = "認証アドレス";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-explorer" = "AlgoExplorer";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-metadata" = "アセットメタデータ";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-multiple" = "複数のトランザクションリクエスト";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-opt-in" = "アセットオプトインリクエスト";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-raw" = "Raw Txns";
+
+/* MARK: Wallet Connect Transaction */
+"wallet-connect-transaction-title-transaction" = "トランザクションリクエスト";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-unsigned" = "未署名のトランザクション";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-close-algos" = "このトランザクションは、お客様のすべてのAlgo残高を送信します。";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-close-algos-title" = "残りをクローズする";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-close-asset" = "このトランザクションは、お客様のすべての%@残高を送信し、アカウントから%@を削除します。";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-close-asset-title" = "資産をクローズする";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-confirmation" = "確認後、接続されたアプリケーションは、自由にこれらのトランザクションを送信することができます。このプロセスは元に戻すことができないため、トランザクションの内容を慎重に確認してください。";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-future" = "このトランザクションは後ほど提出されます。";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-high-fee" = "このトランザクション手数料は、通常の手数料（0.01 Algos）よりも高くなっています。";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-initial" = "以下のトランザクションリクエストは、Algorand Walletが管理していない外部アプリケーションからのものです。トランザクションは元に戻すことができないため、署名する前にトランザクション内容を慎重にご確認ください。";
+
+/* MARK: Wallet Connect Transaction Warning */
+"wallet-connect-transaction-warning-rekey" = "このトランザクションにより、このアカウントの所有権が移転します。あなたの現在の復旧用パスフレーズでは、これらの資産へのアクセスができなくなります。";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-rekey-title" = "再キー化先";
 
 /* (No Comment) */
 "watch-account-create" = "ウォッチアカウントの作成";

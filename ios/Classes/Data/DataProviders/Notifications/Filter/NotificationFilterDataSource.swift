@@ -156,7 +156,7 @@ extension NotificationFilterDataSource: AccountNameSwitchCellDelegate {
     }
 }
 
-protocol NotificationFilterDataSourceDelegate: class {
+protocol NotificationFilterDataSourceDelegate: AnyObject {
     func notificationFilterDataSource(
         _ notificationFilterDataSource: NotificationFilterDataSource,
         didChangePushNotificationsToggleValue value: Bool

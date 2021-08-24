@@ -116,6 +116,6 @@ extension LedgerDeviceView {
     }
 }
 
-protocol LedgerDeviceViewDelegate: class {
+protocol LedgerDeviceViewDelegate: AnyObject {
     func ledgerDeviceViewDidTapConnectButton(_ ledgerDeviceView: LedgerDeviceView)
 }

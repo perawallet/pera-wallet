@@ -17,7 +17,7 @@
 
 import UIKit
 
-protocol StatusBarConfigurable: class {
+protocol StatusBarConfigurable: AnyObject {
     
     var isStatusBarHidden: Bool { get set }
     

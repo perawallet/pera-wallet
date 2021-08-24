@@ -31,9 +31,8 @@ class AccountListDataSource: NSObject, UICollectionViewDataSource {
         }
         
         switch mode {
-        case .empty,
-             .assetCount:
-            accounts.append(contentsOf: userAccounts)
+        case .walletConnect:
+            accounts = userAccounts.filter { $0.type != .watch }
         case let .transactionReceiver(assetDetail),
              let .transactionSender(assetDetail),
              let .contact(assetDetail):

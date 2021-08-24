@@ -127,7 +127,7 @@ extension TransactionActionsView {
     }
 }
 
-protocol TransactionActionsViewDelegate: class {
+protocol TransactionActionsViewDelegate: AnyObject {
     func transactionActionsViewDidRequestTransaction(_ transactionActionsView: TransactionActionsView)
     func transactionActionsViewDidSendTransaction(_ transactionActionsView: TransactionActionsView)
 }

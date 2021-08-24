@@ -146,7 +146,7 @@ extension LedgerAccountFetchOperation {
     }
 }
 
-protocol LedgerAccountFetchOperationDelegate: class {
+protocol LedgerAccountFetchOperationDelegate: AnyObject {
     func ledgerAccountFetchOperation(
         _ ledgerAccountFetchOperation: LedgerAccountFetchOperation,
         didReceive accounts: [Account],

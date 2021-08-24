@@ -38,6 +38,7 @@ enum LedgerMessage {
     enum Response {
         static let ledgerError = "6e00"
         static let ledgerTransactionCancelled = "6985"
+        static let nextPage = "9000"
     }
     
     enum Size {

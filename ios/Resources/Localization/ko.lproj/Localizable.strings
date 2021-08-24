@@ -5,13 +5,13 @@
 "account-name-setup-description" = "알고랜드 지갑을 사용하는 동안 쉽게 알아볼 수 있도록 계정 이름을 지정하세요. 계정 이름은 로컬에 저장되며, 사용자만 볼 수 있습니다.";
 
 /* (No Comment) */
-"account-name-setup-explanation" = "계정명";
+"account-name-setup-explanation" = "계정명(선택 사항)";
 
 /* (No Comment) */
 "account-name-setup-finish" = "계정 생성 완료";
 
 /* (No Comment) */
-"account-name-setup-placeholder" = "저축 계정";
+"account-name-setup-placeholder" = "계정명";
 
 /* MARK: Account Type Selection */
 "account-type-choose-title" = "계정 유형 선택";
@@ -830,7 +830,7 @@
 "password-change-title" = "비밀번호 변경";
 
 /* (No Comment) */
-"password-set-subtitle" = "6자리 비밀번호를 선택하세요";
+"password-set-subtitle" = "6자리 PIN 번호를 선택하세요";
 
 /* (No Comment) */
 "password-verify-fail-message" = "비밀번호가 이전 비밀번호와 일치하지 않습니다.";
@@ -1028,7 +1028,7 @@
 "send-algos-contacts" = "연락처";
 
 /* (No Comment) */
-"send-algos-minimum-amount-custom-error" = "트랜잭션 진행 시 계정의 잔액이 최소 잔액 수준(%@ 알고) 이하로 떨어집니다.";
+"send-algos-minimum-amount-custom-error" = "트랜잭션 진행 시 계정의 잔액이 최소 잔액 수준(%@ 알고) 이하로 떨어지므로, 본 트랜잭션을 완료할 수 없습니다.";
 
 /* (No Comment) */
 "send-algos-minimum-amount-error" = "트랜잭션 진행 시 계정의 잔액이 최소 잔액 수준(0.1알고) 이하로 떨어집니다.";
@@ -1148,10 +1148,10 @@
 "settings-support-title" = "지원 센터";
 
 /* (No Comment) */
-"settings-theme-dark" = "어두운";
+"settings-theme-dark" = "어두운 테마";
 
 /* (No Comment) */
-"settings-theme-light" = "빛";
+"settings-theme-light" = "밝은 테마";
 
 /* (No Comment) */
 "settings-theme-set" = "테마 설정";
@@ -1161,6 +1161,9 @@
 
 /* MARK: Settings */
 "settings-title" = "설정";
+
+/* (No Comment) */
+"settings-wallet-connect-title" = "WalletConnect 세션";
 
 /* MARK: Terms and Services */
 "terms-and-services-title" = "이용 약관";
@@ -1199,10 +1202,28 @@
 "title-close" = "닫기";
 
 /* (No Comment) */
+"title-confirm" = "확정";
+
+/* (No Comment) */
+"title-confirm-all" = "모든 트랜잭션 확정";
+
+/* (No Comment) */
+"title-connect" = "연결";
+
+/* (No Comment) */
 "title-continue" = "계속 진행";
 
 /* (No Comment) */
 "title-copy" = "복사";
+
+/* (No Comment) */
+"title-decline" = "거부";
+
+/* (No Comment) */
+"title-decline-all" = "모두 거부";
+
+/* (No Comment) */
+"title-disconnect" = "연결 해제";
 
 /* (No Comment) */
 "title-done" = "완료";
@@ -1230,6 +1251,9 @@
 
 /* (No Comment) */
 "title-go-to-settings" = "설정으로 이동";
+
+/* (No Comment) */
+"title-got-it" = "알겠습니다!";
 
 /* (No Comment) */
 "title-i-understand" = "알겠습니다";
@@ -1268,7 +1292,7 @@
 "title-paste-passphrase" = "비밀문구 전체 붙여넣기";
 
 /* (No Comment) */
-"title-plus-asset-count" = "+%@ 자산";
+"title-plus-asset-count" = "자산 +%@";
 
 /* (No Comment) */
 "title-preview" = "미리보기";
@@ -1346,6 +1370,9 @@
 "transaction-detail-amount" = "총액";
 
 /* (No Comment) */
+"transaction-detail-balance" = "계정 잔액";
+
+/* (No Comment) */
 "transaction-detail-close-amount" = "계정 삭제용 송금액";
 
 /* (No Comment) */
@@ -1380,6 +1407,9 @@
 
 /* (No Comment) */
 "transaction-detail-round" = "라운드";
+
+/* (No Comment) */
+"transaction-detail-sender" = "보내는 사람";
 
 /* (No Comment) */
 "transaction-detail-status" = "상태";
@@ -1533,6 +1563,171 @@
 
 /* MARK: Verified Asset Information */
 "verified-assets-title" = "인증된 자산";
+
+/* (No Comment) */
+"wallet-connect-raw-transaction-title" = "원시 트랜잭션";
+
+/* (No Comment) */
+"wallet-connect-session-connected" = "연결 완료";
+
+/* (No Comment) */
+"wallet-connect-session-connected-with-account" = "%@ 연결";
+
+/* MARK: Wallet Connect Session */
+"wallet-connect-session-connection-description" = "%@에서 계정 연결을 요청합니다.";
+
+/* (No Comment) */
+"wallet-connect-session-disconnect-fail-message" = "%@ 세션에서 연결을 끊지 못했습니다.";
+
+/* (No Comment) */
+"wallet-connect-session-disconnect-message" = "%@에서 연결을 끊으시겠습니까?";
+
+/* (No Comment) */
+"wallet-connect-session-error-no-account" = "WalletConnect에 연결할 수 있는 계정이 없습니다.";
+
+/* (No Comment) */
+"wallet-connect-session-error-not-reachable" = "현재 WalletConnect에 연결할 수 없습니다. 나중에 다시 시도해 주세요.";
+
+/* (No Comment) */
+"wallet-connect-session-invalid-qr-message" = "WalletConnect에서 세션을 생성할 수 없습니다. 유효한 QR 코드를 사용해 주세요.";
+
+/* (No Comment) */
+"wallet-connect-session-list-empty" = "아직 연동된 앱이 없습니다.";
+
+/* (No Comment) */
+"wallet-connect-transaction-all-count" = "모든 트랜잭션(%d건)";
+
+/* (No Comment) */
+"wallet-connect-transaction-all-count-singular" = "모든 트랜잭션(1건)";
+
+/* (No Comment) */
+"wallet-connect-transaction-count" = "트랜잭션 %d건";
+
+/* (No Comment) */
+"wallet-connect-transaction-count-singular" = "트랜잭션 1건";
+
+/* MARK: Wallet Connect Transaction Dapp Message */
+"wallet-connect-transaction-dapp-show-more" = "추가 정보 보기";
+
+/* (No Comment) */
+"wallet-connect-transaction-detail-asset-url" = "자산 URL 보기";
+
+/* (No Comment) */
+"wallet-connect-transaction-detail-explorer" = "Explorer 보기";
+
+/* (No Comment) */
+"wallet-connect-transaction-detail-metadata" = "자산 메타데이터 보기";
+
+/* (No Comment) */
+"wallet-connect-transaction-detail-raw" = "원시 트랜잭션 보기";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-invalid" = "입력값이 잘못되었습니다.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-rejected" = "사용자가 요청을 거부했습니다.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unauthorized" = "요청한 작업 및/또는 계정을 사용자가 승인하지 않았습니다.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unsupported" = "지갑에서 요청한 작업을 지원하지 않습니다.";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-algos-title" = "%@(으)로 지급";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-app-call-title" = "애플리케이션: %@(으)로 호출";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-app-close-title" = "애플리케이션: %@(으)로 자산 삭제용 자산 이전";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-app-opt-in-title" = "애플리케이션: %@(으)로 옵트인";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-asset-addition-title" = "%@ 자산 옵트인";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-asset-title" = "%@(으)로 자산 이전";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-possible-asset-addition-title" = "%@ 자산 옵트인 가능";
+
+/* (No Comment) */
+"wallet-connect-transaction-request-count" = "트랜잭션 요청(%d건)";
+
+/* (No Comment) */
+"wallet-connect-transaction-request-count-singular" = "트랜잭션 요청(1건)";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call" = "앱 호출 요청";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-id" = "애플리케이션 ID";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-asset" = "자산 이전 요청";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-asset-url" = "자산 URL";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-atomic" = "아토믹 전송 요청";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-auth-address" = "인증 주소";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-explorer" = "AlgoExplorer";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-metadata" = "자산 메타데이터";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-multiple" = "다중 트랜잭션 요청";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-opt-in" = "자산 옵트인 요청";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-raw" = "원시 트랜잭션";
+
+/* MARK: Wallet Connect Transaction */
+"wallet-connect-transaction-title-transaction" = "트랜잭션 요청";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-unsigned" = "미서명 트랜잭션";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-close-algos" = "이번 트랜잭션으로 알고 잔액 전체를 송금합니다.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-close-algos-title" = "계정 삭제 - 잔액을 받으시는 분";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-close-asset" = "이번 트랜잭션으로 %@잔액 전체를 송금하고, 계정이 삭제%@됩니다.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-close-asset-title" = "계정 삭제 - 자산을 받으시는 분";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-confirmation" = "확정하신 후에는 연동된 애플리케이션에서 재량에 따라 트랜잭션을 전송할 수 있게 됩니다. 트랜잭션을 실행한 후에는 되돌릴 수 없으므로, 서명하기 전에 트랜잭션의 상세 정보를 신중히 검토하시기 바랍니다.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-future" = "이 트랜잭션은 추후 제출됩니다.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-high-fee" = "이 트랜잭션 수수료는 일반적인 수수료(0.01알고)보다 높습니다.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-initial" = "다음 트랜잭션 요청은 알고랜드 지갑이 관리하지 않는 외부 애플리케이션에서 전송한 것입니다. 트랜잭션을 실행한 후에는 되돌릴 수 없으므로, 서명하기 전에 트랜잭션의 상세 정보를 신중히 검토하시기 바랍니다.";
+
+/* MARK: Wallet Connect Transaction Warning */
+"wallet-connect-transaction-warning-rekey" = "이번 트랜잭션으로 계정의 소유권을 이전합니다. 현재의 복원 비밀문구는 이러한 자산에 대한 접근 권한을 상실하게 됩니다.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-rekey-title" = "계정 키 재지정:";
 
 /* (No Comment) */
 "watch-account-create" = "읽기 전용 계정 만들기";

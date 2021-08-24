@@ -35,6 +35,13 @@
 "title-new-uppercased" = "NEW";
 "title-skip" = "Skip";
 "title-learn-more" = "Learn More";
+"title-connect" = "Connect";
+"title-disconnect" = "Disconnect";
+"title-confirm" = "Confirm";
+"title-confirm-all" = "Confirm All Transactions";
+"title-decline" = "Decline";
+"title-decline-all" = "Decline All";
+"title-got-it" = "Got it!";
 
 // MARK: Account Type Selection
 "account-type-choose-title" = "Choose Account Type";
@@ -219,7 +226,7 @@
 "send-algos-scan" = "Scan QR";
 "send-algos-account-delete-title" = "Your account is about to be deleted, are you sure you want to proceed?";
 "send-algos-account-delete-body" = "To keep an account open, the account must have at least 0.01 ALGO. If you send the max amount, the account will be deleted and your active participation keys will be deleted as well.";
-"send-algos-receiver-address-validation" = "Key not valid, please make sure you have the right key.";
+"send-algos-receiver-address-validation" = "The recipient address is not a valid Algorand address. Please try again.";
 "send-qr-scan-alert-title" = "QR Scan";
 "send-qr-scan-alert-message" = "You just scanned a QR code of a transaction request. Please review all transaction fields as they may have changed.";
 "send-qr-different-asset-alert" = "The QR contains different asset than selected one. Amount is ignored while decoding.";
@@ -292,6 +299,7 @@
 "settings-language-change-title" = "Set App Language";
 "settings-language-change-detail" = "Due to updates to your phone, there are different steps to change your language.\n\n1. Proceed to the next screen.\n2. Tap Language to select the language you want.\n\nIf no language setting is available, go to your general iPhone language settings to first set a preferred language.";
 "settings-support-title" = "Support Center";
+"settings-wallet-connect-title" = "WalletConnect Sessions";
 
 // MARK: Node Settings
 "node-settings-title" = "Node Settings";
@@ -326,6 +334,7 @@
 "transaction-detail-amount" = "Amount";
 "transaction-detail-reward" = "Reward";
 "transaction-detail-from" = "From";
+"transaction-detail-sender" = "Sender";
 "transaction-detail-to" = "To";
 "transaction-detail-fee" = "Fee";
 "transaction-detail-date" = "Date";
@@ -339,6 +348,7 @@
 "transaction-detail-copy-tooltip" = "Press and hold to Copy to Clipboard";
 "transaction-id-open-algoexplorer" = "Open in AlgoExplorer";
 "transaction-id-open-goalseeker" = "Open in GoalSeeker";
+"transaction-detail-balance" = "Account Balance";
 
 // MARK: Feedback
 "feedback-title" = "Send Feedback";
@@ -619,3 +629,68 @@
 "ledger-verified-add" = "Add Verified Accounts";
 "ledger-verify-header-title" = "Verify Account Addresses via Ledger";
 "ledger-verify-header-subtitle" = "The following account addresses will display on your Ledger device. Please carefully compare and verify each address in order to finalize device pairing.";
+
+// MARK: Wallet Connect Session
+"wallet-connect-session-connection-description" = "%@ wants to connect to your account";
+"wallet-connect-session-error-no-account" = "You don't have any account that WalletConnect can connect.";
+"wallet-connect-session-list-empty" = "You haven't connected any apps yet.";
+"wallet-connect-session-disconnect-message" = "Would you like to disconnect from %@?";
+"wallet-connect-session-connected" = "Connected";
+"wallet-connect-session-connected-with-account" = "Connected with %@";
+"wallet-connect-session-disconnect-fail-message" = "Failed to disconnect from Session %@.";
+"wallet-connect-session-invalid-qr-message" = "Couldn't create a session on WalletConnect. Please try with a valid QR.";
+"wallet-connect-session-error-not-reachable" = "WalletConnect is not reachable at the moment. Please try again later.";
+
+// MARK: Wallet Connect Transaction Warning
+"wallet-connect-transaction-warning-rekey" = "This transaction will transfer ownership of this account. Your current recovery passphrase will no longer grant access to these assets.";
+"wallet-connect-transaction-warning-close-algos" = "This transaction is sending your full Algo balance.";
+"wallet-connect-transaction-warning-close-asset" = "This transaction is sending your full %@ balance and will remove %@ from your account.";
+"wallet-connect-transaction-warning-rekey-title" = "Rekey To";
+"wallet-connect-transaction-warning-close-asset-title" = "Close Asset To";
+"wallet-connect-transaction-warning-close-algos-title" = "Close Remainder To";
+"wallet-connect-transaction-warning-high-fee" = "This transaction fee is higher than the usual fee of 0.01 Algos.";
+"wallet-connect-transaction-warning-initial" = "The following transaction requests are from external applications that the Algorand Wallet does not control. Please ensure you review these transactions carefully before signing as transactions are irreversible.";
+"wallet-connect-transaction-warning-future" = "This transaction will be submitted in the future. ";
+"wallet-connect-transaction-warning-confirmation" = "Once confirmed, the connected application can send these transactions out at their discretion. Please make sure you review the transactions carefully as this process is irreversible.";
+
+// MARK: Wallet Connect Transaction Dapp Message
+"wallet-connect-transaction-dapp-show-more" = "Show More Info";
+
+// MARK: Wallet Connect Transaction
+"wallet-connect-transaction-title-transaction" = "Transaction Request";
+"wallet-connect-transaction-title-unsigned" = "Unsigned Transactions";
+"wallet-connect-transaction-title-atomic" = "Atomic Transaction Request";
+"wallet-connect-transaction-title-asset" = "Transfer Asset Request";
+"wallet-connect-transaction-title-opt-in" = "Assets Opt-in Request";
+"wallet-connect-transaction-title-app-call" = "App Call";
+"wallet-connect-transaction-title-multiple" = "Multiple Transaction Request";
+"wallet-connect-transaction-all-count" = "All transactions (%d)";
+"wallet-connect-transaction-all-count-singular" = "All transaction (1)";
+"wallet-connect-transaction-request-count" = "Transaction Requests (%d)";
+"wallet-connect-transaction-request-count-singular" = "Transaction Request (1)";
+"wallet-connect-transaction-count" = "%d transactions";
+"wallet-connect-transaction-count-singular" = "1 transaction";
+"wallet-connect-transaction-title-raw" = "Raw Txns";
+"wallet-connect-transaction-detail-raw" = "Show Raw Transaction";
+"wallet-connect-transaction-title-explorer" = "AlgoExplorer";
+"wallet-connect-transaction-detail-explorer" = "Show Explorer";
+"wallet-connect-transaction-title-auth-address" = "Auth Address";
+"wallet-connect-transaction-title-app-call-on-complete" = "OnComplete";
+"wallet-connect-transaction-title-app-id" = "Application ID";
+"wallet-connect-transaction-title-asset-url" = "Asset URL";
+"wallet-connect-transaction-detail-asset-url" = "Show Asset URL";
+"wallet-connect-transaction-title-metadata" = "Asset Metadata";
+"wallet-connect-transaction-detail-metadata" = "Show Asset Metadata";
+"wallet-connect-transaction-error-rejected" = "The user rejected the request.";
+"wallet-connect-transaction-error-unauthorized" = "The requested operation and/or account has not been authorized by the user.";
+"wallet-connect-transaction-error-unsupported" = "The wallet does not support the requested operation.";
+"wallet-connect-transaction-error-invalid" = "The input provided is invalid.";
+"wallet-connect-raw-transaction-title" = "Raw Transaction";
+
+"wallet-connect-transaction-group-algos-title" = "Payment to %@";
+"wallet-connect-transaction-group-asset-title" = "Asset Transfer to %@";
+"wallet-connect-transaction-group-asset-addition-title" = "Opting in to Asset #%@";
+"wallet-connect-transaction-group-possible-asset-addition-title" = "Possible Opting in to Asset #%@";
+"wallet-connect-transaction-group-app-call-title" = "Application Call to #%@";
+"wallet-connect-transaction-group-app-opt-in-title" = "Application Opt in to #%@";
+"wallet-connect-transaction-group-app-close-title" = "Application Close to #%@";

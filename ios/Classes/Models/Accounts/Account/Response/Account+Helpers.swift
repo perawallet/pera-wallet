@@ -30,6 +30,13 @@ extension Account {
         }
         return asset.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
     }
+
+    func amountWithoutFraction(for assetDetail: AssetDetail) -> Int64? {
+        guard let asset = assets?.first(where: { $0.id == assetDetail.id }) else {
+            return nil
+        }
+        return Int64(asset.amount)
+    }
     
     func amountDisplayWithFraction(for assetDetail: AssetDetail) -> String? {
         return amount(for: assetDetail)?.toFractionStringForLabel(fraction: assetDetail.fractionDecimals)

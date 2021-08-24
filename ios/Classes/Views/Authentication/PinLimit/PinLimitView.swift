@@ -169,6 +169,6 @@ extension PinLimitView {
     }
 }
 
-protocol PinLimitViewDelegate: class {
+protocol PinLimitViewDelegate: AnyObject {
     func pinLimitViewDidResetAllData(_ pinLimitView: PinLimitView)
 }

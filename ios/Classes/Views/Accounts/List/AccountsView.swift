@@ -117,7 +117,7 @@ extension AccountsView {
     }
 }
 
-protocol AccountsViewDelegate: class {
+protocol AccountsViewDelegate: AnyObject {
     func accountsViewDidTapQRButton(_ accountsView: AccountsView)
     func accountsViewDidTapAddButton(_ accountsView: AccountsView)
 }

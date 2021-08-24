@@ -155,7 +155,7 @@ extension LedgerTutorialView {
     }
 }
 
-protocol LedgerTutorialViewDelegate: class {
+protocol LedgerTutorialViewDelegate: AnyObject {
     func ledgerTutorialViewDidTapSearchButton(_ ledgerTutorialView: LedgerTutorialView)
     func ledgerTutorialView(_ ledgerTutorialView: LedgerTutorialView, didTap section: LedgerTutorialSection)
 }

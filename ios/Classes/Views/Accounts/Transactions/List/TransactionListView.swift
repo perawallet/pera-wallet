@@ -168,7 +168,7 @@ extension TransactionListView: ListErrorViewDelegate {
     }
 }
 
-protocol TransactionListViewDelegate: class {
+protocol TransactionListViewDelegate: AnyObject {
     func transactionListViewDidRefreshList(_ transactionListView: TransactionListView)
     func transactionListViewDidTryAgain(_ transactionListView: TransactionListView)
 }

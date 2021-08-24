@@ -202,6 +202,6 @@ extension PassphraseVerifyDataSource {
     }
 }
 
-protocol PassphraseVerifyDataSourceDelegate: class {
+protocol PassphraseVerifyDataSourceDelegate: AnyObject {
     func passphraseVerifyDataSource(_ passphraseVerifyDataSource: PassphraseVerifyDataSource, isValidated: Bool)
 }

@@ -436,7 +436,7 @@ extension TransactionsViewController: CSVExportable {
     }
     
     private func shareCSVFile(for transactions: [Transaction]) {
-        let keys = [
+        let keys: [String] = [
             "transaction-detail-amount".localized,
             "transaction-detail-reward".localized,
             "transaction-detail-close-amount".localized,
@@ -542,7 +542,7 @@ extension TransactionsViewController {
     }
 }
 
-protocol TransactionsViewControllerDelegate: class {
+protocol TransactionsViewControllerDelegate: AnyObject {
     func transactionsViewController(_ transactionsViewController: TransactionsViewController, didScroll scrollView: UIScrollView)
     func transactionsViewController(_ transactionsViewController: TransactionsViewController, didStopScrolling scrollView: UIScrollView)
 }

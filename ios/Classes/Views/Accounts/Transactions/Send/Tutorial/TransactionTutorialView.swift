@@ -298,7 +298,7 @@ extension TransactionTutorialView {
     }
 }
 
-protocol TransactionTutorialViewDelegate: class {
+protocol TransactionTutorialViewDelegate: AnyObject {
     func transactionTutorialViewDidConfirmTutorial(_ transactionTutorialView: TransactionTutorialView)
     func transactionTutorialViewDidOpenMoreInfo(_ transactionTutorialView: TransactionTutorialView)
 }

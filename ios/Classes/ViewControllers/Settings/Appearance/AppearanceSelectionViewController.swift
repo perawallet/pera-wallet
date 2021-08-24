@@ -106,7 +106,7 @@ enum UserInterfaceStyle: String, CaseIterable {
     }
 }
 
-protocol AppearanceSelectionViewControllerDelegate: class {
+protocol AppearanceSelectionViewControllerDelegate: AnyObject {
     func appearanceSelectionViewControllerDidUpdateUserInterfaceStyle(
         _ appearanceSelectionViewController: AppearanceSelectionViewController
     )

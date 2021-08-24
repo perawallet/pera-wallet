@@ -22,7 +22,7 @@ class AddContactView: BaseView {
     private let layout = Layout<LayoutConstants>()
     
     private(set) lazy var userInformationView = UserInformationView()
-    
+        
     private(set) lazy var addContactButton = MainButton(title: "contacts-add".localized)
     
     private(set) lazy var deleteContactButton: AlignedButton = {
@@ -118,7 +118,7 @@ extension AddContactView {
     }
 }
 
-protocol AddContactViewDelegate: class {
+protocol AddContactViewDelegate: AnyObject {
     func addContactViewDidTapActionButton(_ addContactView: AddContactView)
     func addContactViewDidTapAddImageButton(_ addContactView: AddContactView)
     func addContactViewDidTapQRCodeButton(_ addContactView: AddContactView)

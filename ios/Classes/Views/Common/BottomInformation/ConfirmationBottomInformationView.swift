@@ -84,6 +84,6 @@ extension ConfirmationBottomInformationView {
     }
 }
 
-protocol ConfirmationBottomInformationViewDelegate: class {
+protocol ConfirmationBottomInformationViewDelegate: AnyObject {
     func confirmationBottomInformationViewDidTapActionButton(_ confirmationBottomInformationView: ConfirmationBottomInformationView)
 }

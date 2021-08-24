@@ -168,7 +168,7 @@ extension NumpadView {
     }
 }
 
-protocol NumpadViewDelegate: class {
+protocol NumpadViewDelegate: AnyObject {
     func numpadView(_ numpadView: NumpadView, didSelect value: NumpadKey)
 }
 

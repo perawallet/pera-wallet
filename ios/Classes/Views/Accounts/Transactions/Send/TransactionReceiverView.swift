@@ -233,7 +233,7 @@ enum AssetReceiverState: Equatable {
     case address(address: String, amount: String?)
 }
 
-protocol TransactionReceiverViewDelegate: class {
+protocol TransactionReceiverViewDelegate: AnyObject {
     func transactionReceiverViewDidTapCloseButton(_ transactionReceiverView: TransactionReceiverView)
     func transactionReceiverViewDidTapAccountsButton(_ transactionReceiverView: TransactionReceiverView)
     func transactionReceiverViewDidTapContactsButton(_ transactionReceiverView: TransactionReceiverView)

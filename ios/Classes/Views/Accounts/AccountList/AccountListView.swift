@@ -120,6 +120,6 @@ extension AccountListView {
     }
 }
 
-protocol AccountListViewDelegate: class {
+protocol AccountListViewDelegate: AnyObject {
     func accountListViewDidTapCancelButton(_ accountListView: AccountListView)
 }

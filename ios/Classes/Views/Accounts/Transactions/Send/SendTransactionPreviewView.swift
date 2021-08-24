@@ -221,7 +221,7 @@ extension SendTransactionPreviewView {
     }
 }
 
-protocol SendTransactionPreviewViewDelegate: class {
+protocol SendTransactionPreviewViewDelegate: AnyObject {
     func sendTransactionPreviewViewDidTapPreviewButton(_ sendTransactionPreviewView: SendTransactionPreviewView)
     func sendTransactionPreviewViewDidTapCloseButton(_ sendTransactionPreviewView: SendTransactionPreviewView)
     func sendTransactionPreviewViewDidTapAddressButton(_ sendTransactionPreviewView: SendTransactionPreviewView)

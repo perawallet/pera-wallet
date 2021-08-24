@@ -128,6 +128,6 @@ extension TransactionIDLabel {
     }
 }
 
-protocol TransactionIDLabelDelegate: class {
+protocol TransactionIDLabelDelegate: AnyObject {
     func transactionIDLabel(_ transactionIDLabel: TransactionIDLabel, didOpen explorer: AlgoExplorerType)
 }

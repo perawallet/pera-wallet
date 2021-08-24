@@ -61,7 +61,6 @@ indirect enum Screen {
     case addNode
     case editNode(node: Node)
     case transactionDetail(account: Account, transaction: Transaction, transactionType: TransactionType, assetDetail: AssetDetail?)
-    case feedback
     case addAsset(account: Account)
     case removeAsset(account: Account)
     case assetActionConfirmation(assetAlertDraft: AssetAlertDraft)
@@ -96,11 +95,27 @@ indirect enum Screen {
     case notificationFilter(flow: NotificationFilterViewController.Flow)
     case maximumBalanceWarning(account: Account)
     case screenshotWarning
+    case warningAlert(warningAlert: WarningAlert)
+    case actionableWarningAlert(warningAlert: WarningAlert)
     case animatedTutorial(flow: AccountSetupFlow, tutorial: AnimatedTutorial, isActionable: Bool)
     case transactionTutorial(isInitialDisplay: Bool)
     case recoverOptions
     case algoUSDAnalytics(account: Account, currency: Currency)
     case ledgerAccountVerification(flow: AccountSetupFlow, selectedAccounts: [Account])
+    case wcConnectionApproval(walletConnectSession: WalletConnectSession, completion: WalletConnectSessionConnectionCompletionHandler)
+    case walletConnectSessions
+    case wcTransactionFullDappDetail(wcSession: WCSession, message: String)
+    case wcMainTransaction(
+            transactions: [WCTransaction],
+            transactionRequest: WalletConnectRequest,
+            transactionOption: WCTransactionOption?
+         )
+    case wcAlgosTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
+    case wcAssetTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
+    case wcAssetAdditionTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
+    case wcGroupTransaction(transactions: [WCTransaction], transactionRequest: WalletConnectRequest)
+    case wcAppCall(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
+    case jsonDisplay(jsonData: Data, title: String)
 }
 
 extension Screen {

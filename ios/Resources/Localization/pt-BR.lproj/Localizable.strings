@@ -131,7 +131,7 @@
 "asset-search-placeholder" = "Buscar ID ou Nome de Ativos";
 
 /* (No Comment) */
-"asset-support-add-message" = "Você está prestes a receber um ativo em %@. Deseja adicionar este ativo a esta conta para recebê-lo you like to add this asset to this account to receive it?";
+"asset-support-add-message" = "Você está prestes a receber um ativo em %@. Deseja adicionar este ativo a esta conta para recebê-lo?";
 
 /* (No Comment) */
 "asset-support-add-title" = "Você está prestes a receber um ativo!";
@@ -422,7 +422,7 @@
 "ledger-account-selection-detail" = "Este dispositivo ledger pode assinar transações para a seguinte conta. Selecione a conta para adicionar à sua Carteira Algorand.";
 
 /* (No Comment) */
-"ledger-account-selection-detail-rekey" = "Escolha a conta que deseja usar para assinar esta conta.";
+"ledger-account-selection-detail-rekey" = "Escolha a conta que deseja utilizar para assinar esta conta.";
 
 /* (No Comment) */
 "ledger-account-selection-title-plural" = "%d Contas Encontradas";
@@ -575,7 +575,7 @@
 "ledger-verified-add" = "Adicionar Contas Confirmadas";
 
 /* (No Comment) */
-"ledger-verify-header-subtitle" = "Os seguintes endereços de conta serão exibidos em seu dispositivo Ledger. Compare e confirme cuidadosamente cada endereço para concluir o pareamento de dispositivos.";
+"ledger-verify-header-subtitle" = "Os seguintes endereços de conta serão exibidos em seu dispositivo Ledger. Compare cuidadosamente e confirme cada endereço para concluir o pareamento de dispositivos.";
 
 /* (No Comment) */
 "ledger-verify-header-title" = "Confirmar Endereços de Conta via Ledger";
@@ -623,7 +623,7 @@
 "maximum-balance-standard-account-warning-description-singular" = "Como você tem %@ outros Ativos nesta conta %@, a Blockchain Algorand exige que você mantenha um saldo mínimo de %@ Algos.\n\n\nAo clicar continuar, o montante de sua transação será automaticamente atualizado para refletir esta mudança. Você poderá visualizar esta mudança na etapa seguinte.";
 
 /* (No Comment) */
-"maximum-balance-warning-description" = "Enviar seu saldo máximo em uma conta rechaveada exige que você mantenha um saldo mínimo de %@ Algos para garantir que nada será alterado em sua conta rechaveada.\n\n\nO montante de sua transação será automaticamente atualizado para refletir esta mudança. Você será capaz de visualizar a transação na etapa a seguir.";
+"maximum-balance-warning-description" = "Enviar seu saldo máximo nesta conta rechaveada exige que você mantenha um saldo mínimo de %@ Algos para garantir que nada será alterado em sua conta rechaveada.\n\n\nO montante de sua transação será automaticamente atualizado para refletir esta mudança. Você será capaz de visualizar a transação na etapa a seguir.";
 
 /* (No Comment) */
 "maximum-balance-warning-title" = "Saldo Máximo";
@@ -797,7 +797,7 @@
 "passphrase-qeustion-counter" = "Pergunta %@ of %@";
 
 /* (No Comment) */
-"passphrase-question-another" = "%@th";
+"passphrase-question-another" = "%@º";
 
 /* (No Comment) */
 "passphrase-question-first" = "1º";
@@ -1162,6 +1162,9 @@
 /* MARK: Settings */
 "settings-title" = "Configurações";
 
+/* (No Comment) */
+"settings-wallet-connect-title" = "Sessões WalletConnect";
+
 /* MARK: Terms and Services */
 "terms-and-services-title" = "Termos e Serviços";
 
@@ -1199,16 +1202,34 @@
 "title-close" = "Fechar";
 
 /* (No Comment) */
+"title-confirm" = "Confirmar";
+
+/* (No Comment) */
+"title-confirm-all" = "Confirmar Todas as Transações";
+
+/* (No Comment) */
+"title-connect" = "Conectar";
+
+/* (No Comment) */
 "title-continue" = "Continuar";
 
 /* (No Comment) */
 "title-copy" = "Copiar";
 
 /* (No Comment) */
+"title-decline" = "Recusar";
+
+/* (No Comment) */
+"title-decline-all" = "Recusar Todos";
+
+/* (No Comment) */
+"title-disconnect" = "Desconectar";
+
+/* (No Comment) */
 "title-done" = "Feito";
 
 /* (No Comment) */
-"title-dont-ask" = "Não perguntar de novo";
+"title-dont-ask" = "Não perguntar novamente";
 
 /* (No Comment) */
 "title-dont-show-again" = "Não Exibir Novamente";
@@ -1230,6 +1251,9 @@
 
 /* (No Comment) */
 "title-go-to-settings" = "Ir para Configurações";
+
+/* (No Comment) */
+"title-got-it" = "Entendi!";
 
 /* (No Comment) */
 "title-i-understand" = "Compreendo";
@@ -1346,6 +1370,9 @@
 "transaction-detail-amount" = "Quantia";
 
 /* (No Comment) */
+"transaction-detail-balance" = "Saldo da Conta";
+
+/* (No Comment) */
 "transaction-detail-close-amount" = "Fechar Quantia";
 
 /* (No Comment) */
@@ -1380,6 +1407,9 @@
 
 /* (No Comment) */
 "transaction-detail-round" = "Rodada";
+
+/* (No Comment) */
+"transaction-detail-sender" = "Remetente";
 
 /* (No Comment) */
 "transaction-detail-status" = "Estatus";
@@ -1481,13 +1511,13 @@
 "tutorial-description-warning-title" = "Atenção:";
 
 /* (No Comment) */
-"tutorial-description-watch" = "Uma conta de Observação permite que você monitore a atividade de uma conta sem precisar de uma frase senha. Isso é útil para monitorar ativos que são mantidos em armazenamento frio. \n\nAtenção: caso não tenha a frase senha de recuperação correspondente, não envie ativos para esta conta.";
+"tutorial-description-watch" = "Uma conta de Observação permite que você monitore a atividade de uma conta sem precisar de uma frase senha. Isso é útil para monitorar ativos mantidos em armazenamento frio. \n\nAtenção: caso não tenha a frase senha de recuperação correspondente, não envie ativos para esta conta.";
 
 /* (No Comment) */
 "tutorial-description-watch-italic" = "Atenção: caso não possua a frase senha de recuperação correspondente, não envie ativos para esta conta.";
 
 /* (No Comment) */
-"tutorial-description-write" = "Novamente, a única maneira de recuperar uma conta Algorand é com esta frase senha de recuperação. Não compartilhe esta senha com outras pessoas, pois ela dá acesso total à sua conta. \n\n Funcionários da Algorand jamais pedirão sua senha.";
+"tutorial-description-write" = "Novamente, a única maneira de recuperar uma conta Algorand é com esta frase senha de recuperação. Não compartilhe esta frase senha com outras pessoas, pois ela dá acesso total à sua conta. \n\n Funcionários da Algorand jamais pedirão sua senha.";
 
 /* (No Comment) */
 "tutorial-description-write-italic" = "Funcionários da Algorand jamais pedirão sua frase senha.";
@@ -1533,6 +1563,171 @@
 
 /* MARK: Verified Asset Information */
 "verified-assets-title" = "Ativos Confirmados";
+
+/* (No Comment) */
+"wallet-connect-raw-transaction-title" = "Transação Bruta";
+
+/* (No Comment) */
+"wallet-connect-session-connected" = "Conectado";
+
+/* (No Comment) */
+"wallet-connect-session-connected-with-account" = "Conectado com %@";
+
+/* MARK: Wallet Connect Session */
+"wallet-connect-session-connection-description" = "%@ deseja conectar-se à sua conta";
+
+/* (No Comment) */
+"wallet-connect-session-disconnect-fail-message" = "Falha ao desconectar-se da Sessão %@.";
+
+/* (No Comment) */
+"wallet-connect-session-disconnect-message" = "Deseja desconectar-se de %@?";
+
+/* (No Comment) */
+"wallet-connect-session-error-no-account" = "Você não possui qualquer conta que WalletConnect possa conectar.";
+
+/* (No Comment) */
+"wallet-connect-session-error-not-reachable" = "WalletConnect não está acessível no momento. Tente mais tarde.";
+
+/* (No Comment) */
+"wallet-connect-session-invalid-qr-message" = "Não foi possível criar uma sessão no WalletConnect. Tente com um QR válido.";
+
+/* (No Comment) */
+"wallet-connect-session-list-empty" = "Você ainda não conectou qualquer aplicativo.";
+
+/* (No Comment) */
+"wallet-connect-transaction-all-count" = "Todas as transações (%d)";
+
+/* (No Comment) */
+"wallet-connect-transaction-all-count-singular" = "Todas as transações (1)";
+
+/* (No Comment) */
+"wallet-connect-transaction-count" = "%d transações";
+
+/* (No Comment) */
+"wallet-connect-transaction-count-singular" = "1 transação";
+
+/* MARK: Wallet Connect Transaction Dapp Message */
+"wallet-connect-transaction-dapp-show-more" = "Exibir Mais Informações";
+
+/* (No Comment) */
+"wallet-connect-transaction-detail-asset-url" = "Exibir URL do Ativo";
+
+/* (No Comment) */
+"wallet-connect-transaction-detail-explorer" = "Exibir Explorer";
+
+/* (No Comment) */
+"wallet-connect-transaction-detail-metadata" = "Exibir Metadados de Ativo";
+
+/* (No Comment) */
+"wallet-connect-transaction-detail-raw" = "Exibir Transação Bruta";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-invalid" = "A entrada fornecida é inválida.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-rejected" = "O usuário recusou a solicitação.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unauthorized" = "A operação e/ou conta solicitada não foi autorizada pelo usuário.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unsupported" = "A carteira não suporta a operação solicitada.";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-algos-title" = "Pagamento para %@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-app-call-title" = "Chamada do Aplicativo para %@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-app-close-title" = "Aplicativo Fechado para %@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-app-opt-in-title" = "Adesão do Aplicativo a %@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-asset-addition-title" = "Adesão a Ativo %@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-asset-title" = "Transferência de Ativo para %@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-possible-asset-addition-title" = "Possível Adesão a Ativo %@";
+
+/* (No Comment) */
+"wallet-connect-transaction-request-count" = "Solicitações de Transação (%d)";
+
+/* (No Comment) */
+"wallet-connect-transaction-request-count-singular" = "Solicitação de Transação (1)";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call" = "Solicitação de Chamada de Aplicativo";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-id" = "ID do Aplicativo";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-asset" = "Solicitação de Transferência de Ativo";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-asset-url" = "URL do Ativo";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-atomic" = "Solicitação de Transferência Atômica";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-auth-address" = "Endereço de Autenticação";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-explorer" = "AlgoExplorer";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-metadata" = "Metadados de Ativo";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-multiple" = "Solicitação de Transação Múltipla";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-opt-in" = "Solicitação de Adesão a Ativos";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-raw" = "Transações Brutas";
+
+/* MARK: Wallet Connect Transaction */
+"wallet-connect-transaction-title-transaction" = "Solicitação de Transação";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-unsigned" = "Transações Não Assinadas";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-close-algos" = "Esta transação está enviando seu saldo total de Algos.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-close-algos-title" = "Fechar Restante Para";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-close-asset" = "Esta transação está enviando seu %@saldo total e vai remover%@de sua conta.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-close-asset-title" = "Fechar Ativo Para";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-confirmation" = "Uma vez confirmadas, o aplicativo conectado pode enviar essas transações segundo seus critérios. Certifique-se de revisar cuidadosamente as transações, já que este processo é irreversível.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-future" = "Esta transação será enviada no futuro.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-high-fee" = "Esta tarifa de transação é maior do que a tarifa normal de 0,01 Algos.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-initial" = "As solicitações seguintes de transação vêm de aplicativos externos que a Carteira Algorand não controla. Certifique-se de revisar cuidadosamente estas transações antes de assiná-las, já que as transações são irreversíveis.";
+
+/* MARK: Wallet Connect Transaction Warning */
+"wallet-connect-transaction-warning-rekey" = "Esta transação vai transferir a propriedade desta conta. Sua frase senha de recuperação atual não dará mais acesso a esses ativos.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-rekey-title" = "Rechavear Para";
 
 /* (No Comment) */
 "watch-account-create" = "Criar uma Conta de Observação";

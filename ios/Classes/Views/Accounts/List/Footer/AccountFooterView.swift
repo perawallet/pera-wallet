@@ -89,6 +89,6 @@ extension AccountFooterView {
     }
 }
 
-protocol AccountFooterViewDelegate: class {
+protocol AccountFooterViewDelegate: AnyObject {
     func accountFooterViewDidTapAddAssetButton(_ accountFooterView: AccountFooterView)
 }

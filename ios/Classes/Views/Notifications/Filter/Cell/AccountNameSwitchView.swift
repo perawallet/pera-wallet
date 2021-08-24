@@ -96,6 +96,6 @@ extension AccountNameSwitchView {
     }
 }
 
-protocol AccountNameSwitchViewDelegate: class {
+protocol AccountNameSwitchViewDelegate: AnyObject {
     func accountNameSwitchView(_ accountNameSwitchView: AccountNameSwitchView, didChangeToggleValue value: Bool)
 }

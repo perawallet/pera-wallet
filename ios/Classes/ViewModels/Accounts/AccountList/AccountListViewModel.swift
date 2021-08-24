@@ -43,8 +43,8 @@ class AccountListViewModel {
 
     private func setDetail(from account: Account, for mode: AccountListViewController.Mode) {
         switch mode {
-        case .assetCount:
-            detail = "\(account.assetDetails.count) " + "accounts-title-assets".localized
+        case .walletConnect:
+            detail = account.amount.toAlgos.toAlgosStringForLabel
         case let .transactionSender(assetDetail),
              let .transactionReceiver(assetDetail),
              let .contact(assetDetail):
@@ -66,8 +66,6 @@ class AccountListViewModel {
             } else {
                 detail = account.amount.toAlgos.toAlgosStringForLabel
             }
-        default:
-            break
         }
     }
 
@@ -79,8 +77,8 @@ class AccountListViewModel {
             if assetDetail == nil {
                 detailColor = Colors.Text.primary
             }
-        default:
-            break
+        case .walletConnect:
+            detailColor = Colors.Text.primary
         }
     }
 
@@ -92,8 +90,8 @@ class AccountListViewModel {
             if assetDetail == nil {
                 isDisplayingImage = true
             }
-        default:
-            break
+        case .walletConnect:
+            isDisplayingImage = true
         }
     }
 }

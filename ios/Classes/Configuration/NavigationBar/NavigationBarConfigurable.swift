@@ -17,7 +17,7 @@
 
 import UIKit
 
-protocol NavigationBarConfigurable: class {
+protocol NavigationBarConfigurable: AnyObject {
     associatedtype BarButtonItemRef: BarButtonItem
     
     /// Back/Dismiss bar button items should not be added into leftBarButtonItems&rightBarButtonItems.

@@ -150,7 +150,7 @@ extension AccountHeaderView {
     }
 }
 
-protocol AccountHeaderViewDelegate: class {
+protocol AccountHeaderViewDelegate: AnyObject {
     func accountHeaderViewDidTapQRButton(_ accountHeaderView: AccountHeaderView)
     func accountHeaderViewDidTapOptionsButton(_ accountHeaderView: AccountHeaderView)
 }

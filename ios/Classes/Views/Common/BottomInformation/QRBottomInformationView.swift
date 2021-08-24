@@ -104,7 +104,7 @@ extension QRBottomInformationView {
     }
 }
 
-protocol QRBottomInformationViewDelegate: class {
+protocol QRBottomInformationViewDelegate: AnyObject {
     func qrBottomInformationViewDidTapCancelButton(_ qrBottomInformationView: QRBottomInformationView)
     func qrBottomInformationViewDidTapActionButton(_ qrBottomInformationView: QRBottomInformationView)
 }

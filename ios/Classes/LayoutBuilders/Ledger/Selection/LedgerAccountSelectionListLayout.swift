@@ -84,7 +84,7 @@ extension LedgerAccountSelectionListLayout: UICollectionViewDelegateFlowLayout {
     }
 }
 
-protocol LedgerAccountSelectionListLayoutDelegate: class {
+protocol LedgerAccountSelectionListLayoutDelegate: AnyObject {
     func ledgerAccountSelectionListLayout(
         _ ledgerAccountSelectionListLayout: LedgerAccountSelectionListLayout,
         didSelectItemAt indexPath: IndexPath

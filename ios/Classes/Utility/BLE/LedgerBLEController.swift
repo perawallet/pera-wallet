@@ -268,7 +268,7 @@ extension LedgerBLEController {
     }
 }
 
-protocol LedgerBLEControllerDelegate: class {
+protocol LedgerBLEControllerDelegate: AnyObject {
     func ledgerBLEController(_ ledgerBLEController: LedgerBLEController, shouldWrite data: Data)
     func ledgerBLEController(_ ledgerBLEController: LedgerBLEController, didReceive data: Data)
 }

@@ -17,7 +17,7 @@
 
 import UIKit
 
-protocol KeyboardControllerDataSource: class {
+protocol KeyboardControllerDataSource: AnyObject {
     
     func firstResponder(for keyboardController: KeyboardController) -> UIView?
     

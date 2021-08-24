@@ -23,4 +23,5 @@ struct AssetRemovalDraft: TransactionDraft {
     let amount: Int64
     let assetCreatorAddress: String
     let assetIndex: Int64
+    var note: Data?
 }

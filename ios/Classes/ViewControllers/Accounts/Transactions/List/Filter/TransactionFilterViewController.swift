@@ -186,7 +186,7 @@ extension TransactionFilterViewController {
     }
 }
 
-protocol TransactionFilterViewControllerDelegate: class {
+protocol TransactionFilterViewControllerDelegate: AnyObject {
     func transactionFilterViewController(
         _ transactionFilterViewController: TransactionFilterViewController,
         didSelect filterOption: TransactionFilterViewController.FilterOption

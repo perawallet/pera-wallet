@@ -71,6 +71,6 @@ extension MaximumBalanceWarningViewController: MaximumBalanceWarningViewDelegate
     }
 }
 
-protocol MaximumBalanceWarningViewControllerDelegate: class {
+protocol MaximumBalanceWarningViewControllerDelegate: AnyObject {
     func maximumBalanceWarningViewControllerDidConfirmWarning(_ maximumBalanceWarningViewController: MaximumBalanceWarningViewController)
 }

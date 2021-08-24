@@ -19,7 +19,7 @@ import UIKit
 import AVFoundation
 import SVProgressHUD
 
-protocol ChoosePasswordViewControllerDelegate: class {
+protocol ChoosePasswordViewControllerDelegate: AnyObject {
     func choosePasswordViewController(_ choosePasswordViewController: ChoosePasswordViewController, didConfirmPassword isConfirmed: Bool)
 }
 

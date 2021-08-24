@@ -152,7 +152,7 @@ extension MaximumBalanceWarningView {
     }
 }
 
-protocol MaximumBalanceWarningViewDelegate: class {
+protocol MaximumBalanceWarningViewDelegate: AnyObject {
     func maximumBalanceWarningViewDidConfirmWarning(_ maximumBalanceWarningView: MaximumBalanceWarningView)
     func maximumBalanceWarningViewDidCancel(_ maximumBalanceWarningView: MaximumBalanceWarningView)
 }

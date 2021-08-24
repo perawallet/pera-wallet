@@ -162,7 +162,7 @@ extension RewardDetailView {
     }
 }
 
-protocol RewardDetailViewDelegate: class {
+protocol RewardDetailViewDelegate: AnyObject {
     func rewardDetailViewDidTapFAQLabel(_ rewardDetailView: RewardDetailView)
     func rewardDetailViewDidTapOKButton(_ rewardDetailView: RewardDetailView)
 }

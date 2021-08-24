@@ -19,7 +19,7 @@ import UIKit
 import Magpie
 import SVProgressHUD
 
-protocol SendTransactionViewControllerDelegate: class {
+protocol SendTransactionViewControllerDelegate: AnyObject {
     func sendTransactionViewController(_ viewController: SendTransactionViewController, didCompleteTransactionFor asset: Int64?)
 }
 

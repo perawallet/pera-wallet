@@ -185,7 +185,7 @@ extension Colors {
     }
 }
 
-protocol MainHeaderViewDelegate: class {
+protocol MainHeaderViewDelegate: AnyObject {
     func mainHeaderViewDidTapQRButton(_ mainHeaderView: MainHeaderView)
     func mainHeaderViewDidTapAddButton(_ mainHeaderView: MainHeaderView)
 }

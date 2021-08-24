@@ -152,7 +152,7 @@ extension AccountsEmptyStateView {
     }
 }
 
-protocol AccountsEmptyStateViewDelegate: class {
+protocol AccountsEmptyStateViewDelegate: AnyObject {
     func accountsEmptyStateViewDidTapActionButton(_ accountsEmptyStateView: AccountsEmptyStateView)
 }
 

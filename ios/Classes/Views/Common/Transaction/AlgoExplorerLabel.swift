@@ -90,7 +90,7 @@ extension AlgoExplorerLabel {
     }
 }
 
-protocol AlgoExplorerLabelDelegate: class {
+protocol AlgoExplorerLabelDelegate: AnyObject {
     func algoExplorerLabel(_ algoExplorerLabel: AlgoExplorerLabel, didOpen explorer: AlgoExplorerType)
 }
 

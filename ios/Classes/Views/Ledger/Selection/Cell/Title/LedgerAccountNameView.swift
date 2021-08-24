@@ -122,6 +122,6 @@ extension LedgerAccountNameView {
     }
 }
 
-protocol LedgerAccountNameViewDelegate: class {
+protocol LedgerAccountNameViewDelegate: AnyObject {
     func ledgerAccountNameViewDidOpenInfo(_ ledgerAccountNameView: LedgerAccountNameView)
 }

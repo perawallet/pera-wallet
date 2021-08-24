@@ -46,7 +46,7 @@ extension AlgosCardCell: AlgosCardViewDelegate {
     }
 }
 
-protocol AlgosCardCellDelegate: class {
+protocol AlgosCardCellDelegate: AnyObject {
     func algosCardCellDidOpenRewardDetails(_ algosCardCell: AlgosCardCell)
     func algosCardCellDidOpenAnalytics(_ algosCardCell: AlgosCardCell)
 }

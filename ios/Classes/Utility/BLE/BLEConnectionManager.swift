@@ -208,7 +208,7 @@ extension BLEConnectionManager {
     }
 }
 
-protocol BLEConnectionManagerDelegate: class {
+protocol BLEConnectionManagerDelegate: AnyObject {
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didDiscover peripherals: [CBPeripheral])
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didConnect peripheral: CBPeripheral)
     func bleConnectionManagerEnabledToWrite(_ bleConnectionManager: BLEConnectionManager)
