@@ -44,7 +44,7 @@ class AmountInput @JvmOverloads constructor(
         }
     })
 
-    var amount by Delegates.observable<Long>(0, { _, _, _ ->
+    var amount by Delegates.observable<BigInteger>(BigInteger.ZERO, { _, _, _ ->
         binding.customAmountInputMaxButton.isSelected = isAmountMax()
     })
         private set
@@ -102,18 +102,6 @@ class AmountInput @JvmOverloads constructor(
         }
     }
 
-    fun setBalance(amount: Long?) {
-        if (amount == null || amount < 0L) {
-            return
-        }
-        with(binding.customAmountInputTextView) {
-            isTextWatcherEnabled = false
-            this@AmountInput.amount = amount
-            setText(amount.formatAmount(decimals, true))
-            isTextWatcherEnabled = true
-        }
-    }
-
     fun setBalance(amount: BigInteger?) {
         val limitAwareAmount = when {
             amount == null -> {
@@ -122,11 +110,8 @@ class AmountInput @JvmOverloads constructor(
             amount < BigInteger.ZERO -> {
                 return
             }
-            amount > BigInteger.valueOf(Long.MAX_VALUE) -> {
-                Long.MAX_VALUE
-            }
             else -> {
-                amount.toLong()
+                amount
             }
         }
         with(binding.customAmountInputTextView) {
@@ -192,21 +177,17 @@ class AmountInput @JvmOverloads constructor(
     }
 
     private fun setNewAmount(value: BigDecimal) {
-        amount = value.unscaledValue().toLong()
+        amount = value.unscaledValue()
         binding.customAmountInputTextView.setText(fullAmountFormatter.format(value))
     }
 
     fun isAmountMax(): Boolean {
-        return maximumAssetAmountInAccount?.toLong() == amount
+        return maximumAssetAmountInAccount == amount
     }
 
     private fun removeGroupingSeperator(valueText: CharSequence): String {
         return valueText.toString().replace(
             (fullAmountFormatter as DecimalFormat).decimalFormatSymbols.groupingSeparator.toString(), ""
         )
-    }
-
-    fun getAmountAsBigInteger(): BigInteger {
-        return BigInteger.valueOf(amount)
     }
 }

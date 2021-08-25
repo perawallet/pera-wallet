@@ -13,13 +13,14 @@
 package com.algorand.android.models
 
 import android.os.Parcelable
+import java.math.BigInteger
 import kotlinx.parcelize.Parcelize
 
 sealed class SignedTransactionDetail {
     @Parcelize
     data class Send(
         val signedTransactionData: ByteArray,
-        val amount: Long,
+        val amount: BigInteger,
         val accountCacheData: AccountCacheData,
         val targetUser: TargetUser,
         val isMax: Boolean,

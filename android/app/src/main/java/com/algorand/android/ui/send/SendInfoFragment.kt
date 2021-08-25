@@ -264,7 +264,7 @@ class SendInfoFragment : TransactionBaseFragment(R.layout.fragment_send_info) {
             binding.accountAssetSelector.getSelectedAsset()?.isAlgorand() == true
         ) {
             val shouldForceUserRemoveAssets = with(accountInformation) {
-                getMinAlgoBalance().toLong() == binding.amountInput.amount && isThereAnyDifferentAsset()
+                getMinAlgoBalance() == binding.amountInput.amount && isThereAnyDifferentAsset()
             }
             if (shouldForceUserRemoveAssets) {
                 hideLoading()
@@ -338,7 +338,7 @@ class SendInfoFragment : TransactionBaseFragment(R.layout.fragment_send_info) {
 
         if (selectedAsset.isAlgorand()) {
             val minBalance = accountInformation.getMinAlgoBalance()
-            if (selectedAssetBalance + binding.amountInput.getAmountAsBigInteger() < minBalance) {
+            if (selectedAssetBalance + binding.amountInput.amount < minBalance) {
                 context?.showAlertDialog(
                     getString(R.string.warning),
                     getString(R.string.you_re_trying_to_send, (minBalance - selectedAssetBalance).formatAsAlgoString())
@@ -370,10 +370,10 @@ class SendInfoFragment : TransactionBaseFragment(R.layout.fragment_send_info) {
         )
     }
 
-    private fun getMinBalanceCalculatedAmount(selectedAccountCacheData: AccountCacheData): Long {
+    private fun getMinBalanceCalculatedAmount(selectedAccountCacheData: AccountCacheData): BigInteger {
         val amountInput = binding.amountInput.amount
         return with(selectedAccountCacheData) {
-            if (shouldKeepMinimumAlgoBalance()) amountInput - getMinBalance().toLong() - MIN_FEE else amountInput
+            if (shouldKeepMinimumAlgoBalance()) amountInput - getMinBalance() - MIN_FEE.toBigInteger() else amountInput
         }
     }
 
@@ -402,7 +402,7 @@ class SendInfoFragment : TransactionBaseFragment(R.layout.fragment_send_info) {
             showSnackbar(getString(R.string.account_to_be_sent_must_have_58), binding.rootConstraintLayout)
             return
         }
-        if (binding.amountInput.getAmountAsBigInteger() > assetBalance) {
+        if (binding.amountInput.amount > assetBalance) {
             hideLoading()
             showSnackbar(getString(R.string.transaction_amount_cannot), binding.rootConstraintLayout)
             return
@@ -410,7 +410,7 @@ class SendInfoFragment : TransactionBaseFragment(R.layout.fragment_send_info) {
         val selectedAddress = selectedAccount.account.address
         if (
             selectedAsset.isAlgorand() &&
-            binding.amountInput.getAmountAsBigInteger() == assetBalance &&
+            binding.amountInput.amount == assetBalance &&
             accountCacheManager.accountCacheMap.value[selectedAddress]?.isRekeyedToAnotherAccount() == true
         ) {
             hideLoading()
@@ -430,7 +430,7 @@ class SendInfoFragment : TransactionBaseFragment(R.layout.fragment_send_info) {
         val selectedAsset = binding.accountAssetSelector.getSelectedAsset()
         val selectedAccount = binding.accountAssetSelector.getSelectedAccountCacheData()
         return selectedAsset?.isAlgorand() == true &&
-            binding.amountInput.getAmountAsBigInteger() == assetBalance &&
+            binding.amountInput.amount == assetBalance &&
             selectedAccount?.assetsInformation?.size ?: 0 > 1
     }
 
@@ -466,7 +466,7 @@ class SendInfoFragment : TransactionBaseFragment(R.layout.fragment_send_info) {
 
     private fun restoreViewsStateIfPresent() {
         viewStatesBundle?.run {
-            binding.amountInput.setBalance(getLong(AMOUNT_VIEW_KEY))
+            binding.amountInput.setBalance(getString(AMOUNT_VIEW_KEY)?.toBigIntegerOrNull() ?: BigInteger.ZERO)
 
             getParcelable<User>(CONTACT_INFO_VIEW_KEY).let { restoredContact ->
                 if (restoredContact != null) {
@@ -482,8 +482,8 @@ class SendInfoFragment : TransactionBaseFragment(R.layout.fragment_send_info) {
 
     private fun saveViewsState() {
         viewStatesBundle = Bundle().apply {
-            if (binding.amountInput.amount != 0L) {
-                putLong(AMOUNT_VIEW_KEY, binding.amountInput.amount)
+            if (binding.amountInput.amount != BigInteger.ZERO) {
+                putString(AMOUNT_VIEW_KEY, binding.amountInput.amount.toString())
             }
 
             if (binding.addressInfoView.getSelectedContact() != null) {

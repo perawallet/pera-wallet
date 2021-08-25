@@ -21,6 +21,7 @@ import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.TransactionParams
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import java.math.BigInteger
 
 fun ByteArray.signTx(secretKey: ByteArray): ByteArray {
     return Mobile.signTransaction(secretKey, this)
@@ -29,7 +30,7 @@ fun ByteArray.signTx(secretKey: ByteArray): ByteArray {
 fun TransactionParams.makeAssetTx(
     senderAddress: String,
     receiverAddress: String,
-    amount: Long,
+    amount: BigInteger,
     assetId: Long,
     noteInByteArray: ByteArray? = null
 ): ByteArray {
@@ -48,7 +49,7 @@ fun TransactionParams.makeAssetTx(
 fun TransactionParams.makeAlgoTx(
     senderAddress: String,
     receiverAddress: String,
-    amount: Long,
+    amount: BigInteger,
     isMax: Boolean,
     noteInByteArray: ByteArray? = null
 ): ByteArray {
@@ -98,7 +99,7 @@ fun TransactionParams.makeRemoveAssetTx(
 fun TransactionParams.makeTx(
     senderAddress: String,
     receiverAddress: String,
-    amount: Long,
+    amount: BigInteger,
     assetId: Long,
     isMax: Boolean,
     note: String? = null
@@ -158,6 +159,13 @@ fun Long.toUint64(): Uint64 {
     return Uint64().apply {
         upper = shr(Int.SIZE_BITS)
         lower = and(Int.MAX_VALUE.toLong())
+    }
+}
+
+fun BigInteger.toUint64(): Uint64 {
+    return Uint64().apply {
+        upper = shr(Int.SIZE_BITS).toLong()
+        lower = and(UInt.MAX_VALUE.toLong().toBigInteger()).toLong()
     }
 }
 

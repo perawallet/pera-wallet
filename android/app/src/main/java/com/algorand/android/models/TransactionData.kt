@@ -12,17 +12,19 @@
 
 package com.algorand.android.models
 
+import java.math.BigInteger
+
 sealed class TransactionData(
     val accountCacheData: AccountCacheData,
     var calculatedFee: Long? = null,
     var transactionByteArray: ByteArray? = null,
-    var amount: Long = 0
+    var amount: BigInteger = BigInteger.ZERO
 ) {
     abstract fun getSignedTransactionDetail(signedTransactionData: ByteArray): SignedTransactionDetail
 
     class Send(
         accountCacheData: AccountCacheData,
-        amount: Long,
+        amount: BigInteger,
         val assetInformation: AssetInformation,
         val note: String? = null,
         val targetUser: TargetUser,

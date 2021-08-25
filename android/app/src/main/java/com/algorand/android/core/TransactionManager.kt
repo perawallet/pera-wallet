@@ -43,6 +43,7 @@ import com.algorand.android.utils.makeTx
 import com.algorand.android.utils.minBalancePerAssetAsBigInteger
 import com.algorand.android.utils.signTx
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import java.math.BigInteger
 import java.net.ConnectException
 import java.net.SocketException
 import javax.inject.Inject
@@ -289,24 +290,23 @@ class TransactionManager @Inject constructor(
     }
 
     private fun calculateAmount(
-        projectedAmount: Long,
+        projectedAmount: BigInteger,
         isMax: Boolean,
         accountCacheData: AccountCacheData,
         assetId: Long,
         fee: Long
-    ): Long? {
+    ): BigInteger? {
         val calculatedAmount = if (isMax && assetId == AssetInformation.ALGORAND_ID) {
             if (accountCacheData.isRekeyedToAnotherAccount()) {
-                // TODO change with the long one. It's in refactor branch.
-                projectedAmount - fee - accountCacheData.getMinBalance().toLong()
+                projectedAmount - fee.toBigInteger() - accountCacheData.getMinBalance()
             } else {
-                projectedAmount - fee
+                projectedAmount - fee.toBigInteger()
             }
         } else {
             projectedAmount
         }
 
-        if (calculatedAmount < 0) {
+        if (calculatedAmount < BigInteger.ZERO) {
             if (accountCacheData.isRekeyedToAnotherAccount()) {
                 val errorMinBalance = AnnotatedString(
                     stringResId = R.string.the_transaction_cannot_be,
@@ -322,12 +322,12 @@ class TransactionManager @Inject constructor(
         return calculatedAmount
     }
 
-    private fun isTransactionMax(amount: Long, publicKey: String, assetId: Long): Boolean {
+    private fun isTransactionMax(amount: BigInteger, publicKey: String, assetId: Long): Boolean {
         if (assetId != AssetInformation.ALGORAND_ID) {
             return false
         } else {
             accountCacheManager.getAssetInformation(publicKey, assetId)?.let { assetBalanceInformation ->
-                return amount.toBigInteger() == assetBalanceInformation.amount
+                return amount == assetBalanceInformation.amount
             }
             return false
         }
@@ -368,7 +368,7 @@ class TransactionManager @Inject constructor(
             if (this is TransactionData.Send && assetInformation.isAlgorand().not()) {
                 balance - fee
             } else {
-                balance - fee - amount.toBigInteger()
+                balance - fee - amount
             }
 
         if (balanceAfterTransaction < minBalance) {

@@ -13,6 +13,7 @@
 package com.algorand.android.models
 
 import com.google.gson.annotations.SerializedName
+import java.math.BigInteger
 
 data class NotificationMetadata(
     @SerializedName("sender_public_key")
@@ -24,7 +25,7 @@ data class NotificationMetadata(
     @SerializedName("asset")
     private val assetDescription: AssetNotificationDescription? = null,
     @SerializedName("amount")
-    val amount: Long? = null,
+    val amount: BigInteger? = null,
     var alertMessage: String = ""
 ) {
 

@@ -14,6 +14,7 @@ package com.algorand.android.models
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import java.math.BigInteger
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -33,7 +34,7 @@ data class AssetParams(
     @SerializedName("freeze")
     val freeze: String? = null,
     @SerializedName("total")
-    val total: Long? = null,
+    val total: BigInteger? = null,
     @SerializedName("reserve")
     val reserve: String? = null,
     @SerializedName("clawback")

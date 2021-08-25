@@ -15,6 +15,7 @@ package com.algorand.android.utils.analytics
 import androidx.core.os.bundleOf
 import com.algorand.android.models.Account
 import com.google.firebase.analytics.FirebaseAnalytics
+import java.math.BigInteger
 
 private const val TRANSACTION_EVENT_KEY = "transaction" // event type
 
@@ -28,7 +29,7 @@ private const val TRANSACTION_ASSET_ID = "asset_id" // param
 private const val TRANSACTION_ID = "tx_id" // param
 
 fun FirebaseAnalytics.logTransactionEvent(
-    amount: Long,
+    amount: BigInteger,
     assetId: Long,
     accountType: Account.Type,
     isMax: Boolean,
