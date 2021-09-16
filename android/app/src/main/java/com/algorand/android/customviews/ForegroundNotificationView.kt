@@ -105,17 +105,17 @@ class ForegroundNotificationView @JvmOverloads constructor(
                 binding.textView.text = when (getNotificationType()) {
                     NotificationType.TRANSACTION_RECEIVED, NotificationType.ASSET_TRANSACTION_RECEIVED -> {
                         val assetDescription = getAssetDescription()
-                        val formattedAmount = amount.formatAmount(assetDescription.decimals ?: ALGO_DECIMALS)
+                        val formattedAmount = safeAmount.formatAmount(assetDescription.decimals ?: ALGO_DECIMALS)
                         context?.setupAlgoReceivedMessage(formattedAmount, senderName, receiverName, assetDescription)
                     }
                     NotificationType.TRANSACTION_SENT, NotificationType.ASSET_TRANSACTION_SENT -> {
                         val assetDescription = getAssetDescription()
-                        val formattedAmount = amount.formatAmount(assetDescription.decimals ?: ALGO_DECIMALS)
+                        val formattedAmount = safeAmount.formatAmount(assetDescription.decimals ?: ALGO_DECIMALS)
                         context?.setupAlgoSentMessage(formattedAmount, senderName, receiverName, assetDescription)
                     }
                     NotificationType.TRANSACTION_FAILED, NotificationType.ASSET_TRANSACTION_FAILED -> {
                         val assetDescription = getAssetDescription()
-                        val formattedAmount = amount.formatAmount(assetDescription.decimals ?: ALGO_DECIMALS)
+                        val formattedAmount = safeAmount.formatAmount(assetDescription.decimals ?: ALGO_DECIMALS)
                         context?.setupFailedMessage(formattedAmount, senderName, receiverName, assetDescription)
                     }
                     NotificationType.ASSET_SUPPORT_SUCCESS -> {

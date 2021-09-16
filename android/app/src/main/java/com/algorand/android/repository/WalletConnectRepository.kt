@@ -27,6 +27,10 @@ class WalletConnectRepository @Inject constructor(
         return walletConnectDao.getAllDisconnectedWCSessions()
     }
 
+    suspend fun getSessionById(sessionId: Long): WalletConnectSessionEntity? {
+        return walletConnectDao.getSessionById(sessionId)
+    }
+
     suspend fun deleteSessionById(sessionId: Long) {
         walletConnectDao.deleteById(sessionId)
     }

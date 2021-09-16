@@ -154,7 +154,7 @@ class AccountCacheManager(private val accountManager: AccountManager) {
     }
 
     fun getMinBalanceOfAccount(publicKey: String): BigInteger {
-        return accountCacheMap.value[publicKey]?.getMinBalance() ?: minBalancePerAssetAsBigInteger
+        return accountCacheMap.value[publicKey]?.getMinBalance()?.toBigInteger() ?: minBalancePerAssetAsBigInteger
     }
 
     fun getAccountName(publicKey: String) = accountCacheMap.value[publicKey]?.account?.name

@@ -16,7 +16,6 @@ import android.widget.TextView
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
 import com.algorand.android.utils.formatAsAlgoString
-import com.algorand.android.utils.getXmlStyledString
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,25 +24,7 @@ class TransactionMaximumBalanceWarningBottomSheet : BaseMaximumBalanceWarningBot
     private val args: TransactionMaximumBalanceWarningBottomSheetArgs by navArgs()
 
     override fun setDescriptionText(descriptionTextView: TextView) {
-        descriptionTextView.text = with(maximumBalanceWarningViewModel) {
-            val assetCountWithoutAlgo = getAssetCountWithoutAlgoOfAnAccount(args.publicKey)
-            requireContext().getXmlStyledString(
-                getDescriptionStringResId(assetCountWithoutAlgo),
-                replacementList = listOf(
-                    "asset_count" to assetCountWithoutAlgo.toString(),
-                    "account_name" to getAccountName(args.publicKey),
-                    "min_balance" to getMinimumBalance(args.publicKey).formatAsAlgoString()
-                )
-            )
-        }
-    }
-
-    // TODO find a way to use getXmlStyledString and <plural> together
-    private fun getDescriptionStringResId(assetCount: Int): Int {
-        return if (assetCount > 1) {
-            R.string.transaction_maximum_error_message_plural
-        } else {
-            R.string.transaction_maximum_error_message_singular
-        }
+        val formattedMinBalance = maximumBalanceWarningViewModel.getMinimumBalance(args.publicKey).formatAsAlgoString()
+        descriptionTextView.text = getString(R.string.based_on_your_account, formattedMinBalance)
     }
 }

@@ -12,7 +12,7 @@
 
 package com.algorand.android.models
 
-import com.algorand.android.utils.walletconnect.decodeBase64NoteToString
+import com.algorand.android.utils.walletconnect.decodeBase64ToString
 import com.google.gson.annotations.SerializedName
 import java.math.BigInteger
 
@@ -35,9 +35,14 @@ data class WalletConnectTransactionRequest(
     @SerializedName("xaid") val assetId: Long? = null,
     @SerializedName("apaa") val appArgs: List<String>? = null,
     @SerializedName("apan") val appOnComplete: Int? = null,
-    @SerializedName("apid") val appId: Long? = null
+    @SerializedName("apid") val appId: Long? = null,
+    @SerializedName("apgs") val appGlobalSchema: ApplicationCallStateSchema? = null,
+    @SerializedName("apls") val appLocalSchema: ApplicationCallStateSchema? = null,
+    @SerializedName("apep") val appExtraPages: Int? = null,
+    @SerializedName("apap") val approvalHash: String? = null,
+    @SerializedName("apsu") val stateHash: String? = null
 ) {
 
     val decodedNote: String
-        get() = decodeBase64NoteToString(noteInBase64)
+        get() = decodeBase64ToString(noteInBase64)
 }

@@ -31,6 +31,7 @@ import com.algorand.android.utils.Resource.Error.Annotated
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionResult.Error
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionResult.Success
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import java.io.EOFException
 import java.net.ProtocolException
 import javax.inject.Inject
 import javax.inject.Named
@@ -90,7 +91,7 @@ class WalletConnectManager @Inject constructor(
         }
 
         override fun onFailure(sessionId: Long, error: Session.Status.Error) {
-            onSessionFailed(error)
+            onSessionFailed(sessionId, error)
         }
 
         override fun onDisconnected(sessionId: Long) {
@@ -221,15 +222,20 @@ class WalletConnectManager @Inject constructor(
         return (_requestLiveData.value as? Event<*>) == null
     }
 
-    private fun onSessionFailed(error: Session.Status.Error) {
+    private fun onSessionFailed(sessionId: Long, error: Session.Status.Error) {
         coroutineScope?.launch(Dispatchers.IO) {
             when (error.throwable.cause) {
                 is ProtocolException -> {
                     _sessionResultFlow.emit(Event(Annotated(AnnotatedString(R.string.wallet_connect_is_not_reachable))))
                 }
-                // is EOFException -> This one is for socket disconnect error. Will be ignored for now
+                is EOFException -> reconnectToDisconnectedSession(sessionId)
             }
         }
+    }
+
+    private suspend fun reconnectToDisconnectedSession(sessionId: Long) {
+        val disconnectedSessionMeta = walletConnectRepository.getSessionById(sessionId)?.wcSession ?: return
+        walletConnectClient.connect(sessionId, disconnectedSessionMeta)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)

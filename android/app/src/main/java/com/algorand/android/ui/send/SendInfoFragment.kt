@@ -57,6 +57,7 @@ import com.algorand.android.utils.MIN_FEE
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.addByteLimiter
 import com.algorand.android.utils.alertDialog
+import com.algorand.android.utils.calculateMinBalance
 import com.algorand.android.utils.formatAsAlgoString
 import com.algorand.android.utils.hideKeyboard
 import com.algorand.android.utils.isValidAddress
@@ -264,7 +265,8 @@ class SendInfoFragment : TransactionBaseFragment(R.layout.fragment_send_info) {
             binding.accountAssetSelector.getSelectedAsset()?.isAlgorand() == true
         ) {
             val shouldForceUserRemoveAssets = with(accountInformation) {
-                getMinAlgoBalance() == binding.amountInput.amount && isThereAnyDifferentAsset()
+                getMinAlgoBalance() == binding.amountInput.amount &&
+                    (isThereAnyDifferentAsset() || isThereAnOptedInApp())
             }
             if (shouldForceUserRemoveAssets) {
                 hideLoading()
@@ -373,7 +375,8 @@ class SendInfoFragment : TransactionBaseFragment(R.layout.fragment_send_info) {
     private fun getMinBalanceCalculatedAmount(selectedAccountCacheData: AccountCacheData): BigInteger {
         val amountInput = binding.amountInput.amount
         return with(selectedAccountCacheData) {
-            if (shouldKeepMinimumAlgoBalance()) amountInput - getMinBalance() - MIN_FEE.toBigInteger() else amountInput
+            val minBalance = calculateMinBalance(accountInformation, true).toBigInteger()
+            if (shouldKeepMinimumAlgoBalance()) amountInput - minBalance - MIN_FEE.toBigInteger() else amountInput
         }
     }
 
@@ -429,9 +432,10 @@ class SendInfoFragment : TransactionBaseFragment(R.layout.fragment_send_info) {
     private fun shouldKeepMinimumAlgoBalance(): Boolean {
         val selectedAsset = binding.accountAssetSelector.getSelectedAsset()
         val selectedAccount = binding.accountAssetSelector.getSelectedAccountCacheData()
-        return selectedAsset?.isAlgorand() == true &&
-            binding.amountInput.amount == assetBalance &&
-            selectedAccount?.assetsInformation?.size ?: 0 > 1
+        val isThereAnotherAsset = selectedAccount?.accountInformation?.isThereAnyDifferentAsset() ?: false
+        val isThereAppOptedIn = selectedAccount?.accountInformation?.isThereAnOptedInApp() ?: false
+        return selectedAsset?.isAlgorand() == true && binding.amountInput.amount == assetBalance &&
+            (isThereAnotherAsset || isThereAppOptedIn)
     }
 
     private val addressInfoViewListener = object : AddressInfoView.Listener() {

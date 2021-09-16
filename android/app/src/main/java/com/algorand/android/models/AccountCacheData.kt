@@ -15,16 +15,18 @@ package com.algorand.android.models
 import android.os.Parcelable
 import com.algorand.android.R
 import com.algorand.android.utils.AccountCacheManager
-import com.algorand.android.utils.minBalancePerAssetAsBigInteger
-import java.math.BigInteger
+import com.algorand.android.utils.calculateMinBalance
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class AccountCacheData(
     val account: Account,
-    val authAddress: String? = null,
-    val assetsInformation: MutableList<AssetInformation>
+    val assetsInformation: MutableList<AssetInformation>,
+    val accountInformation: AccountInformation
 ) : Parcelable {
+
+    val authAddress: String?
+        get() = accountInformation.rekeyAdminAddress
 
     fun isRekeyedToAnotherAccount(): Boolean {
         return !authAddress.isNullOrBlank() && authAddress != account.address
@@ -64,9 +66,11 @@ data class AccountCacheData(
         }
     }
 
-    fun getMinBalance(): BigInteger {
-        val assetCount = assetsInformation.size
-        return minBalancePerAssetAsBigInteger.multiply(assetCount.toBigInteger())
+    fun getMinBalance(): Long {
+        return calculateMinBalance(
+            accountInformation,
+            isRekeyedToAnotherAccount() || assetsInformation.isNotEmpty() || accountInformation.isThereAnOptedInApp()
+        )
     }
 
     fun getAuthTypeAndDetail(): Account.Detail? {
@@ -88,8 +92,8 @@ data class AccountCacheData(
         ): AccountCacheData {
             return AccountCacheData(
                 account,
-                accountInformation.rekeyAdminAddress,
-                accountInformation.getAssetInformationList(accountCacheManager)
+                accountInformation.getAssetInformationList(accountCacheManager),
+                accountInformation
             )
         }
     }

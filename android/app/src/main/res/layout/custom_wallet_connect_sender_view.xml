@@ -28,7 +28,7 @@
         android:text="@string/sender"
         app:layout_constraintBottom_toBottomOf="@id/senderNameTextView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/senderNameTextView" />
+        app:layout_constraintTop_toTopOf="@id/senderNameTextView" />
 
     <ImageView
         android:id="@+id/senderTypeImageView"
@@ -40,7 +40,7 @@
         app:layout_constraintEnd_toStartOf="@id/senderNameTextView"
         app:layout_constraintHorizontal_bias="1"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toEndOf="@id/labelBarrier"
+        app:layout_constraintStart_toEndOf="@id/senderLabelTextView"
         app:layout_constraintTop_toTopOf="@id/senderNameTextView" />
 
     <TextView
@@ -58,12 +58,12 @@
         app:layout_constraintStart_toEndOf="@id/senderTypeImageView"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_goneMarginBottom="10dp"
-        tools:text="@tools:sample/lorem[2]" />
+        tools:text="@tools:sample/lorem[10]" />
 
     <View
         android:id="@+id/applicationIdDividerView"
         style="@style/HorizontalDivider.WalletConnectCards"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
         app:layout_constraintBottom_toTopOf="@id/applicationIdTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -77,14 +77,14 @@
         android:text="@string/application_id"
         app:layout_constraintBottom_toBottomOf="@id/applicationIdTextView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/applicationIdTextView" />
+        app:layout_constraintTop_toTopOf="@id/applicationIdTextView" />
 
     <TextView
         android:id="@+id/applicationIdTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
         android:ellipsize="end"
         android:fontFamily="@font/publicsans_medium"
         android:gravity="end"
@@ -100,7 +100,7 @@
     <View
         android:id="@+id/onCompleteDividerView"
         style="@style/HorizontalDivider.WalletConnectCards"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
         app:layout_constraintBottom_toTopOf="@id/onCompleteTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -114,21 +114,21 @@
         android:text="@string/on_complete"
         app:layout_constraintBottom_toBottomOf="@id/onCompleteTextView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/onCompleteTextView" />
+        app:layout_constraintTop_toTopOf="@id/onCompleteTextView" />
 
     <TextView
         android:id="@+id/onCompleteTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
         android:ellipsize="end"
         android:fontFamily="@font/publicsans_medium"
         android:gravity="end"
         android:maxLines="1"
         android:textSize="14sp"
         app:layout_constrainedWidth="true"
-        app:layout_constraintBottom_toTopOf="@id/rekeyToDividerView"
+        app:layout_constraintBottom_toTopOf="@id/appGlobalSchemaDividerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/labelBarrier"
         app:layout_constraintTop_toBottomOf="@id/onCompleteDividerView"
@@ -136,13 +136,184 @@
         tools:text="@tools:sample/lorem[2]" />
 
     <View
-        android:id="@+id/rekeyToDividerView"
+        android:id="@+id/appGlobalSchemaDividerView"
         style="@style/HorizontalDivider.WalletConnectCards"
-        android:layout_marginTop="20dp"
-        app:layout_constraintBottom_toTopOf="@id/rekeyToTextView"
+        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
+        app:layout_constraintBottom_toTopOf="@id/appGlobalSchemaTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/onCompleteTextView" />
+
+    <TextView
+        android:id="@+id/appGlobalSchemaLabelTextView"
+        style="@style/TextAppearance.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_global_schema"
+        app:layout_constraintBottom_toBottomOf="@id/appGlobalSchemaTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/appGlobalSchemaTextView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/appGlobalSchemaTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/publicsans_medium"
+        android:gravity="end"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/appLocalSchemaDividerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/labelBarrier"
+        app:layout_constraintTop_toBottomOf="@id/appGlobalSchemaDividerView"
+        tools:text="@tools:sample/lorem[4]" />
+
+    <View
+        android:id="@+id/appLocalSchemaDividerView"
+        style="@style/HorizontalDivider.WalletConnectCards"
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toTopOf="@id/appLocalSchemaTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appGlobalSchemaTextView" />
+
+    <TextView
+        android:id="@+id/appLocalSchemaLabelTextView"
+        style="@style/TextAppearance.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_local_schema"
+        app:layout_constraintBottom_toBottomOf="@id/appLocalSchemaTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/appLocalSchemaTextView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/appLocalSchemaTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
+        android:fontFamily="@font/publicsans_medium"
+        android:gravity="end"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/appExtraPagesDividerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/labelBarrier"
+        app:layout_constraintTop_toBottomOf="@id/appLocalSchemaDividerView"
+        tools:text="@tools:sample/lorem[4]" />
+
+    <View
+        android:id="@+id/appExtraPagesDividerView"
+        style="@style/HorizontalDivider.WalletConnectCards"
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toTopOf="@id/appExtraPagesTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appLocalSchemaTextView" />
+
+    <TextView
+        android:id="@+id/appExtraPagesLabelTextView"
+        style="@style/TextAppearance.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_extra_pages"
+        app:layout_constraintBottom_toBottomOf="@id/appExtraPagesTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/appExtraPagesTextView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/appExtraPagesTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/publicsans_medium"
+        android:gravity="end"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/approvalHashDividerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/labelBarrier"
+        app:layout_constraintTop_toBottomOf="@id/appExtraPagesDividerView"
+        tools:text="@tools:sample/lorem[4]" />
+
+    <View
+        android:id="@+id/approvalHashDividerView"
+        style="@style/HorizontalDivider.WalletConnectCards"
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toTopOf="@id/approvalHashTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appExtraPagesTextView" />
+
+    <TextView
+        android:id="@+id/approvalHashLabelTextView"
+        style="@style/TextAppearance.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/approval_hash"
+        app:layout_constraintBottom_toBottomOf="@id/approvalHashTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/approvalHashTextView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/approvalHashTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
+        android:fontFamily="@font/publicsans_medium"
+        android:gravity="end"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/clearStateHashDividerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/labelBarrier"
+        app:layout_constraintTop_toBottomOf="@id/approvalHashDividerView"
+        tools:text="@tools:sample/lorem[4]" />
+
+    <View
+        android:id="@+id/clearStateHashDividerView"
+        style="@style/HorizontalDivider.WalletConnectCards"
+        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
+        app:layout_constraintBottom_toTopOf="@id/clearStateHashTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/approvalHashTextView" />
+
+    <TextView
+        android:id="@+id/clearStateHashLabelTextView"
+        style="@style/TextAppearance.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/clear_state_hash"
+        app:layout_constraintBottom_toBottomOf="@id/clearStateHashTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/clearStateHashTextView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/clearStateHashTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
+        android:fontFamily="@font/publicsans_medium"
+        android:gravity="end"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/rekeyToDividerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/labelBarrier"
+        app:layout_constraintTop_toBottomOf="@id/clearStateHashDividerView"
+        app:layout_goneMarginBottom="10dp"
+        tools:text="@tools:sample/lorem[4]" />
+
+    <View
+        android:id="@+id/rekeyToDividerView"
+        style="@style/HorizontalDivider.WalletConnectCards"
+        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
+        app:layout_constraintBottom_toTopOf="@id/rekeyToTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/clearStateHashTextView" />
 
     <TextView
         android:id="@+id/rekeyToLabelTextView"
@@ -152,14 +323,14 @@
         android:text="@string/rekey_to"
         app:layout_constraintBottom_toBottomOf="@id/rekeyToTextView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/rekeyToTextView" />
+        app:layout_constraintTop_toTopOf="@id/rekeyToTextView" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/rekeyToTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
         android:fontFamily="@font/publicsans_medium"
         android:gravity="end"
         android:textSize="14sp"
@@ -185,7 +356,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="end"
-        app:constraint_referenced_ids="senderLabelTextView,rekeyToLabelTextView, applicationIdLabelTextView" />
+        app:constraint_referenced_ids="
+        senderLabelTextView,
+        rekeyToLabelTextView,
+        applicationIdLabelTextView,
+        appGlobalSchemaLabelTextView,
+        appLocalSchemaLabelTextView,
+        appExtraPagesLabelTextView,
+        approvalHashLabelTextView,
+        clearStateHashLabelTextView" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/applicationIdGroup"
@@ -208,6 +387,61 @@
         rekeyToTextView,
         rekeyToLabelTextView,
         rekeyToDividerView"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/appGlobalSchemaGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="
+        appGlobalSchemaLabelTextView,
+        appGlobalSchemaDividerView,
+        appGlobalSchemaTextView"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/appLocalSchemaGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="
+        appLocalSchemaLabelTextView,
+        appLocalSchemaDividerView,
+        appLocalSchemaTextView"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/appExtraPagesGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="
+        appExtraPagesLabelTextView,
+        appExtraPagesDividerView,
+        appExtraPagesTextView"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/approvalHashGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="
+        approvalHashLabelTextView,
+        approvalHashDividerView,
+        approvalHashTextView"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/clearStateHashGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="
+        clearStateHashLabelTextView,
+        clearStateHashDividerView,
+        clearStateHashTextView"
         tools:visibility="visible" />
 
 </merge>

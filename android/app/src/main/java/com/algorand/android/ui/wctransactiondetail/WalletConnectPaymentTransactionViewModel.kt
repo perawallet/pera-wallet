@@ -16,6 +16,7 @@ package com.algorand.android.ui.wctransactiondetail
 import androidx.hilt.lifecycle.ViewModelInject
 import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
 import com.algorand.android.models.BasePaymentTransaction
+import com.algorand.android.models.BaseWalletConnectDisplayedAddress
 import com.algorand.android.models.WalletConnectAmountInfo
 import com.algorand.android.models.WalletConnectExtras
 import com.algorand.android.models.WalletConnectTransactionInfo
@@ -36,7 +37,8 @@ class WalletConnectPaymentTransactionViewModel @ViewModelInject constructor() :
                 walletConnectTransactionParams.fee,
                 transactionAmount,
                 assetDecimal,
-                receiverAddress.decodedAddress
+                receiverAddress.decodedAddress,
+                isAlgorand = true
             )
             amountInfoLiveData.value = amountInfo
         }
@@ -47,13 +49,8 @@ class WalletConnectPaymentTransactionViewModel @ViewModelInject constructor() :
             val decodedSenderAddress = senderAddress.decodedAddress ?: return
             val assetInformation = accountCacheData?.assetsInformation?.firstOrNull { it.assetId == ALGORAND_ID }
             val accountBalance = assetInformation?.amount
-            val fromAddress = if (accountCacheData == null) {
-                decodedSenderAddress
-            } else {
-                accountCacheData?.account?.name?.run { ifBlank { decodedSenderAddress } }.orEmpty()
-            }
             val transactionInfo = WalletConnectTransactionInfo(
-                fromAddress,
+                BaseWalletConnectDisplayedAddress.create(decodedSenderAddress, accountCacheData),
                 peerMeta.name,
                 accountCacheData?.getImageResource(),
                 accountBalance,

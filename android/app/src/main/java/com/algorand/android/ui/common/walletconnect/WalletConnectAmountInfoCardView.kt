@@ -41,17 +41,17 @@ class WalletConnectAmountInfoCardView(
 
     fun initAmountInfo(amountInfo: WalletConnectAmountInfo) {
         with(amountInfo) {
-            initAmount(amount, decimal)
+            initAmount(amount, decimal, isAlgorand)
             initToAddress(toAccountAddress)
             initFee(fee)
         }
     }
 
-    private fun initAmount(amount: BigInteger?, decimal: Int) {
+    private fun initAmount(amount: BigInteger?, decimal: Int, isAlgorand: Boolean) {
         if (amount != null) {
             with(binding) {
                 amountBalanceGroup.visibility = View.VISIBLE
-                amountTextView.setAmount(amount, decimal, false)
+                amountTextView.setAmount(amount, decimal, isAlgorand)
             }
         }
     }

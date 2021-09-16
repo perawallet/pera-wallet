@@ -20,5 +20,5 @@ data class WalletConnectAmountInfo(
     val amount: BigInteger? = null,
     val decimal: Int = ALGO_DECIMALS,
     val toAccountAddress: String? = null,
-    val isAlgorand: Boolean = true,
+    val isAlgorand: Boolean = false,
 )

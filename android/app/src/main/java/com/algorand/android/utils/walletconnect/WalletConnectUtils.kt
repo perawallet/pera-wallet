@@ -56,9 +56,9 @@ fun BaseWalletConnectTransaction.signTransaction(secretKey: ByteArray): ByteArra
 
 fun getRandomPeerMetaIconResId() = placeholderIconResIdList.random()
 
-fun decodeBase64NoteToString(noteInBase64: String?): String {
+fun decodeBase64ToString(text: String?): String {
     return try {
-        String(Base64.decode(noteInBase64, Base64.DEFAULT))
+        String(Base64.decode(text, Base64.DEFAULT))
     } catch (exception: Exception) {
         ""
     }

@@ -15,11 +15,16 @@ package com.algorand.android.models
 
 import androidx.annotation.DrawableRes
 
-class WalletConnectSenderInfo(
-    val senderAccountAddress: String,
+data class WalletConnectSenderInfo(
+    val senderDisplayedAddress: BaseWalletConnectDisplayedAddress,
     @DrawableRes val senderTypeImageResId: Int?,
     val dappName: String,
     val rekeyToAccountAddress: String?,
     val applicationId: Long?,
-    val onComplete: BaseAppCallTransaction.AppOnComplete
+    val onComplete: BaseAppCallTransaction.AppOnComplete,
+    val appGlobalSchema: ApplicationCallStateSchema? = null,
+    val appLocalSchema: ApplicationCallStateSchema? = null,
+    val approvalHash: String? = null,
+    val clearStateHash: String? = null,
+    val appExtraPages: Int? = null
 )

@@ -104,15 +104,9 @@ class AmountInput @JvmOverloads constructor(
 
     fun setBalance(amount: BigInteger?) {
         val limitAwareAmount = when {
-            amount == null -> {
-                return
-            }
-            amount < BigInteger.ZERO -> {
-                return
-            }
-            else -> {
-                amount
-            }
+            amount == null -> return
+            amount < BigInteger.ZERO -> return
+            else -> amount
         }
         with(binding.customAmountInputTextView) {
             isTextWatcherEnabled = false
@@ -136,14 +130,13 @@ class AmountInput @JvmOverloads constructor(
 
             if (beforeTextLength < changedText.length) {
                 // IF NEW NUMBER IS ENTERED
-                val lastAddedNumber =
-                    BigDecimal.valueOf(changedText.last().toString().toLongOrNull() ?: 0, decimals)
+                val lastAddedNumber = BigDecimal.valueOf(changedText.last().toString().toLongOrNull() ?: 0, decimals)
 
                 val newValue = beforeAssetValue.scaleByPowerOfTen(1).add(lastAddedNumber)
 
-                if (newValue.unscaledValue() > (BigInteger.valueOf(Long.MAX_VALUE))) {
+                if (newValue.unscaledValue() > BigInteger(ULong.MAX_VALUE.toString())) {
                     // new value is bigger than long.
-                    binding.customAmountInputTextView.setText(changedText.toString().dropLast(1))
+                    binding.customAmountInputTextView.setText(beforeAssetValue.formatAmount(decimals, true))
                     binding.customAmountInputTextView.addTextChangedListener(this)
                     return
                 }

@@ -179,6 +179,16 @@ fun decodeBase64DecodedMsgPackToJsonString(msgPack: String): String {
     }
 }
 
+fun generateAddressFromProgram(hashValue: String?): String {
+    return try {
+        val decodedByteArray = Base64.decode(hashValue, Base64.DEFAULT)
+        Mobile.addressFromProgram(decodedByteArray)
+    } catch (exception: Exception) {
+        FirebaseCrashlytics.getInstance().recordException(exception)
+        ""
+    }
+}
+
 /**
  * txnGroupList is a pair list that keeps group id and transaction
  * i.e= listOf(

@@ -76,7 +76,7 @@
     <color name="walletConnectAccountSelectionBorderColor">@color/gray_2B</color>
     <color name="walletConnectDappIconBackgroundColor">@color/gray_2B</color>
     <color name="walletConnectDappIconBorderColor">@color/transparent</color>
-    <color name="walletConnectFeeAlgoIconColor">@color/gray_8D</color>
+    <color name="walletConnectFeeAlgoIconColor">@color/gray_DB</color>
 
 </resources>
 

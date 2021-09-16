@@ -42,6 +42,9 @@ interface WalletConnectDao {
     @Query("SELECT * FROM WalletConnectSessionEntity")
     fun getAllWCSessions(): Flow<List<WalletConnectSessionEntity>>
 
+    @Query("SELECT * FROM WalletConnectSessionEntity WHERE id = :sessionId")
+    suspend fun getSessionById(sessionId: Long): WalletConnectSessionEntity?
+
     @Query("UPDATE WalletConnectSessionEntity SET is_connected = 0")
     suspend fun setAllSessionsDisconnected()
 

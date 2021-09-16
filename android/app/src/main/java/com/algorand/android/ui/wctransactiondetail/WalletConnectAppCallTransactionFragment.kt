@@ -28,8 +28,7 @@ class WalletConnectAppCallTransactionFragment : BaseWalletConnectTransactionDeta
 
     private val toolbarConfiguration = ToolbarConfiguration(
         startIconResId = R.drawable.ic_back_navigation,
-        startIconClick = ::navBack,
-        titleResId = R.string.app_call
+        startIconClick = ::navBack
     )
 
     override val fragmentConfiguration: FragmentConfiguration = FragmentConfiguration(
@@ -47,11 +46,21 @@ class WalletConnectAppCallTransactionFragment : BaseWalletConnectTransactionDeta
 
     override fun initUi() {
         super.initUi()
+        setToolbarTitle()
         with(walletConnectAppCallTransactionViewModel) {
             getAmountInfo(transaction)
             getSenderInfo(transaction)
             getExtras(transaction)
         }
+    }
+
+    private fun setToolbarTitle() {
+        val toolbarTitleRes: Int = when (transaction) {
+            is BaseAppCallTransaction.AppCallCreationTransaction -> R.string.application_creation
+            else -> R.string.app_call
+        }
+        val toolbarTitle: String = getString(toolbarTitleRes)
+        getAppToolbar()?.changeTitle(toolbarTitle)
     }
 
     override fun initObservers() {

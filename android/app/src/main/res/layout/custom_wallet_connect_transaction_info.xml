@@ -115,7 +115,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/accountBalanceTextView" />
 
-    <TextView
+    <com.algorand.android.customviews.AmountTextView
         android:id="@+id/accountBalanceTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -124,6 +124,7 @@
         android:fontFamily="@font/publicsans_medium"
         android:gravity="end"
         android:textSize="14sp"
+        app:iconTint="@color/walletConnectFeeAlgoIconColor"
         app:layout_constraintBottom_toTopOf="@id/reminderCloseToDividerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/labelBarrier"

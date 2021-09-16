@@ -35,5 +35,7 @@
     <string name="opt_in">OptIn</string>
     <string name="close_out">CloseOut</string>
     <string name="clear_state">ClearState</string>
-
+    <string name="app_call_update">Update</string>
+    <string name="app_call_delete">Delete</string>
+    <string name="byte_uint_formatted">%1$d Byte / %2$d Uint</string>
 </resources>

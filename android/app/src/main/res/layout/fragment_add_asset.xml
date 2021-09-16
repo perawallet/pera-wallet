@@ -40,6 +40,7 @@
         android:layout_marginEnd="@dimen/smallshadow_end_20dp_margin"
         android:hint="@string/search_assets_id"
         android:maxLines="1"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

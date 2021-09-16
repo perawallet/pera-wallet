@@ -11,12 +11,10 @@
   -->
 
 <resources>
-    <!--Standard Strings-->
     <string name="app_name">Algorand Wallet</string>
     <string name="create_account">Create Account</string>
     <string name="recover_from_passphrase">Recover from Passphrase</string>
     <string name="already_have_an_account">Already have an account?</string>
-
     <string name="choose_passcode">Choose passcode</string>
     <string name="choose_a_six_digit">Choose a six digit passcode</string>
     <string name="we_recommend_this_for_improved_security">We recommend this for improved\nsecurity</string>
@@ -150,13 +148,9 @@
     <string name="unnamed">Unnamed</string>
     <string name="entered_address_is_not_valid">Entered address is not valid.</string>
     <string name="an_error_more">Error occurred while fetching more. Try again later.</string>
-
-    <!--    Add Asset   -->
     <string name="search_assets_id">Search Assets ID or Name</string>
     <string name="no_asset_found">No Asset Found</string>
     <string name="you_already_have">You already own this asset.</string>
-
-    <!--    Asset Popup -->
     <string name="adding_asset">Adding Asset</string>
     <string name="removing_asset">Removing Asset</string>
     <string name="to_remove_the_balance"><![CDATA[To remove <b>%1$s</b>, the balance must be 0. Please transfer the balance to another account and try again.]]></string>
@@ -183,8 +177,6 @@
     <string name="pair_ledger_account">Pair Ledger Account</string>
     <string name="connect">Connect</string>
     <string name="error_default_title">Error!</string>
-
-    <!--    LedgerPairInstructionFragment    -->
     <string name="pair_ledger_device">Pair Ledger Device</string>
     <string name="follow_the_steps_below">Follow the steps below to create a new ledger account</string>
     <string name="make_sure_your_ledger">Make sure that your ledger device is on and has Bluetooth enabled.</string>
@@ -193,76 +185,52 @@
     <string name="make_sure_bluetooth">Make sure Bluetooth is enabled on your smartphone.</string>
     <string name="search_for_ledger">Search for Ledger</string>
     <string name="bluetooth_is_enabled">Bluetooth is enabled.</string>
-    <!--    -->
-
     <string name="verified_with_icon">Verified <annotation type="verified-icon"> </annotation></string>
     <string name="all">All</string>
-
-    <!--    Verified Assets -->
     <string name="verified_assets">Verified Assets</string>
     <string name="what_does_asset">What does asset verification mean?</string>
     <string name="verified_assets_first_paragraph">For certain assets in which Algorand Inc. has a relationship with the asset’s issuer, we mark those assets as “Verified” (which is denoted by a blue checkmark symbol).</string>
     <string name="verified_assets_second_paragraph">This helps to serve as a secondary defense against mistakenly transacting with an unintended asset.</string>
     <string name="verified_assets_third_paragraph">That being said, you should <annotation type="color">always double check</annotation> that the asset’s ID is the one that you intended to choose before transacting with that asset.</string>
     <string name="verified_assets_fourth_paragraph">If you have questions about the verification process or general feedback about the app, we encourage you to <annotation type="color">contact us</annotation>.</string>
-
-    <!--    LedgerTroubleShootingFragment-->
     <string name="advanced_troubleshooting">Advanced Troubleshooting</string>
-    <!--    -->
-
-    <!--    LedgerSearchFragment-->
     <string name="looking_for_other_ledger">Looking for Other Ledger Devices</string>
     <string name="trouble_shoot">Troubleshoot</string>
     <string name="connecting_to_ledger">Connecting to Ledger…</string>
-    <!--    -->
-
-    <!--    Ledger Loading -->
     <string name="ledger_approval">Ledger Approval</string>
     <string name="please_make_sure">Please make sure to confirm the transaction on your Ledger device</string>
-    <!--    -->
-
-    <!--    LedgerPairInfoBottomSheet-->
-    <string name="ledger_info_power_first_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">For general usage of your Ledger’s Bluetooth feature, please refer to Ledger’s official <annotation type="bold"><annotation type="color">Bluetooth Connection Guide.</annotation></annotation></annotation></string>
-    <string name="ledger_info_power_second_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">For more advanced troubleshooting, please refer to Ledger’s official <annotation type="bold"><annotation type="color">Bluetooth Troubleshooting Guide.</annotation></annotation></annotation></string>
-
-    <string name="ledger_info_ledger_first_paragraph"><annotation url="https://www.ledger.com/start">Begin by following Ledger’s comprehensive <annotation type="bold"><annotation type="color">Getting Started</annotation></annotation> tutorial.</annotation></string>
+    <string name="ledger_info_power_first_paragraph">
+    <annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">For general usage of your Ledger’s Bluetooth feature, please refer to Ledger’s official <annotation type="bold"><annotation type="color">Bluetooth Connection Guide.</annotation></annotation></annotation>
+  </string>
+    <string name="ledger_info_power_second_paragraph">
+    <annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">For more advanced troubleshooting, please refer to Ledger’s official <annotation type="bold"><annotation type="color">Bluetooth Troubleshooting Guide.</annotation></annotation></annotation>
+  </string>
+    <string name="ledger_info_ledger_first_paragraph">
+    <annotation url="https://www.ledger.com/start">Begin by following Ledger’s comprehensive <annotation type="bold"><annotation type="color">Getting Started</annotation></annotation> tutorial.</annotation>
+  </string>
     <string name="ledger_info_ledger_second_paragraph">When the tutorial gets to the point where it directs you to “select the application(s) you want to install on your device,” type Algorand in the search bar and install.</string>
-
-    <string name="ledger_info_algorand_first_paragraph"><annotation url="https://www.ledger.com/start">Begin by following Ledger’s comprehensive <annotation type="bold"><annotation type="color">Getting Started</annotation></annotation> tutorial, which will direct you how to install and open apps on your ledger device.</annotation></string>
+    <string name="ledger_info_algorand_first_paragraph">
+    <annotation url="https://www.ledger.com/start">Begin by following Ledger’s comprehensive <annotation type="bold"><annotation type="color">Getting Started</annotation></annotation> tutorial, which will direct you how to install and open apps on your ledger device.</annotation>
+  </string>
     <string name="ledger_info_algorand_second_paragraph">If you haven’t already installed the <annotation type="bold">Algorand</annotation> app on your Ledger device, when the tutorial gets to the point where it directs you to “Select the application(s) you want to install on your device,” type Algorand in the search bar and install.</string>
-    <!--    -->
-
-    <!--    Sliding Error Messages  -->
     <string name="error_connection_title">Connection Error</string>
     <string name="error_connection_message">Could not connect to the Ledger device. Make sure the device is unlocked, nearby and has bluetooth enabled.</string>
-
     <string name="error_app_closed_title">Ledger Connection Error</string>
     <string name="error_app_closed_message">Please open the Algorand App on your ledger device.</string>
-
     <string name="error_bluetooth_title">Bluetooth Error</string>
     <string name="error_bluetooth_message">Bluetooth must be enabled on your device in order to search for nearby Ledger devices.</string>
-
     <string name="error_permission_title">Permission Denied</string>
     <string name="error_location_message">Location permission needs to be granted in order to search nearby Ledgers.</string>
-
     <string name="error_transmission_title">Transmission Error</string>
     <string name="error_sending_message">We were unable to send the transaction to the ledger device. Please try again.</string>
     <string name="error_receiving_message">We were unable to receive the public key of your ledger device. Please try again.</string>
-
     <string name="error_cancelled_title">Transaction Cancelled</string>
     <string name="error_cancelled_message">The paired ledger device has cancelled the transaction request.</string>
-
     <string name="error_unsupported_title">Unsupported Device</string>
     <string name="error_unsupported_message">The device you are trying to connect to is not supported with the Algorand Wallet.</string>
-
     <string name="bluetooth_location_services">Bluetooth Location Services Error</string>
     <string name="please_ensure">Please ensure that location services are enabled.</string>
-    <!--    -->
-
-    <!--    Terms & Services Bottom Sheet   -->
     <string name="terms_and_services">Terms and Services</string>
-    <!--    -->
-
     <string name="unknown_error">Unknown Error</string>
     <string name="show_qr">Show QR</string>
     <string name="do_not_use_face">Do not use Face ID/Touch</string>
@@ -389,10 +357,22 @@
     <string name="light">Light</string>
     <string name="dark">Dark</string>
     <string name="privacy_policy">Privacy Policy</string>
-    <string name="continue_text">Continue</string>
-    <string name="dont_show_this_again">Don\'t show this again</string>
-    <string name="maximum_balance">Maximum Balance</string>
-    <string name="rekeyed_maximum_error_message">Sending your maximum balance on this rekeyed account requires you to maintain a minimum balance of <annotation replacement="min_balance">min_balance_placeholder</annotation> Algos. This is to ensure that nothing changes with your rekeyed account. \n \n Your transaction amount will be automatically updated to reflect this change. You will be able to preview the transaction in the next step.</string>
+    <plurals name="min_ago">
+        <item quantity="one">%1$s minute ago</item>
+        <item quantity="other">%1$s minutes ago</item>
+    </plurals>
+    <plurals name="hours_ago">
+        <item quantity="one">%1$s hour ago</item>
+        <item quantity="other">%1$s hours ago</item>
+    </plurals>
+    <plurals name="days_ago">
+        <item quantity="one">%1$s day ago</item>
+        <item quantity="other">%1$s days ago</item>
+    </plurals>
+    <plurals name="account_found">
+        <item quantity="one">1 Account Found</item>
+        <item quantity="other">%1$d Accounts Found</item>
+    </plurals>
     <string name="push_notifications">Push Notifications</string>
     <string name="mute_notifications">Mute Notifications</string>
     <string name="unmute_notifications">Unmute Notifications</string>
@@ -406,66 +386,54 @@
     <string name="choose_the_account">Choose the account you want to use for signing this account.</string>
     <string name="a_network_error">A network error occurred while fetching account details. Please restart the process.</string>
     <string name="it_appears_this">It appears this Ledger device has been reset and the account on the device no longer matches this account. Please pair the Ledger again from the homepage.</string>
+    <plurals name="asset_count">
+        <item quantity="one">+%1$d Asset</item>
+        <item quantity="other">+%1$d Assets</item>
+    </plurals>
+    <string name="continue_text">Continue</string>
+    <string name="dont_show_this_again">Don\'t show this again</string>
+    <string name="maximum_balance">Maximum Balance</string>
+    <string name="rekeyed_maximum_error_message">Sending your maximum balance on this rekeyed account requires you to maintain a minimum balance of <annotation replacement="min_balance">min_balance_placeholder</annotation> Algos. This is to ensure that nothing changes with your rekeyed account. \n \n Your transaction amount will be automatically updated to reflect this change. You will be able to preview the transaction in the next step.</string>
+    <string name="support_center">Support Center</string>
+    <string name="we_notice_that_this">We notice that this is your first transaction. Before you finalize, keep in mind a couple of tips:</string>
+    <string name="when_sending_to_an_address">When sending to an address for the first time, it’s useful to send a small test transaction before sending a large amount.</string>
+    <string name="exchanges_change_their">Exchanges change their deposit addresses frequently, and saved exchange addresses may no longer be in use. <annotation custom="highlight_color">Ensure you\'re sending to the correct address.</annotation></string>
+    <string name="for_more_information_on">For more information on transacting, <annotation custom="tap_here_color">tap here</annotation></string>
+    <string name="i_understand">I understand</string>
+    <string name="transaction_tips">Transaction tips</string>
+    <string name="before_you_finalize">Before you finalize, keep in mind a couple of tips:</string>
+    <string name="the_transaction_cannot_be">The transaction cannot be completed because the amount will put your account below minimum required balance of <annotation replacement="min_balance">min_balance_placeholder</annotation> Algos.</string>
     <string name="recovery_passphrase">Recovery Passphrase</string>
     <string name="select_word">Select word #<annotation replacement="word_number">wordNumberPlaceholder</annotation></string>
     <string name="back_up_your_account">Back up your account using a recovery passphrase</string>
     <string name="without_your_recovery">Without your recovery passphrase, if you lose your device or delete the app, you will permanently lose access to your Algorand account.</string>
     <string name="backup_now">Back up now</string>
     <string name="prepare_to_write">Prepare to write down your recovery passphrase</string>
-    <string name="the_only_way_to">The only way to recover an Algorand account is with this recovery passphrase.\n\n<annotation font="publicsans_regular_italic"><annotation custom="warning_color"><annotation type="bold">Warning</annotation>: Do not share this passphrase with anyone, as it grants full access to your account.</annotation></annotation></string>
+    <string name="if_your_device">Again, the only way to recover an Algorand account is with this recovery passphrase. Do not share this passphrase with anyone, as it grants full access of your account.\n\n<annotation font="publicsans_regular_italic">Algorand employees will never ask you for your passphrase.</annotation></string>
     <string name="im_ready_to_begin">I\’m ready to begin</string>
-    <string name="monitor_activity_of">Monitor activity of an account without needing a recovery passphrase. This is useful for monitoring assets that are kept in cold storage.\n\n<annotation font="publicsans_regular_italic"><annotation custom="warning_color"><annotation type="bold">Warning</annotation>: If you do not have the corresponding recovery passphrase, do not send assets to this account.</annotation></annotation></string>
+    <string name="without_a_backup">A Watch account allows you to monitor activity of an account without needing to have the passphrase. This is useful for monitoring assets that are kept in cold storage\n\n<annotation font="publicsans_regular_italic"><annotation custom="warning_color"><annotation type="bold">Warning</annotation>: If you do not have the corresponding recovery passphrase, do not send assets to this account.</annotation></annotation></string>
     <string name="create_a_watch">Create a Watch Account</string>
     <string name="recover_an_algorand">Recover an Algorand account</string>
     <string name="in_the_following">In the following steps, you\'ll enter your 25-word recovery passphrase to recover an Algorand account. Have your recovery phrase handy before you begin.</string>
     <string name="account_name_optional">Account Name (Optional)</string>
+    <string name="name_your_account_to_easily">Name your account to easily distinguishes them from one another. This is optional and the account names are stored on your device. </string>
     <string name="finish_account_creation">Finish account creation</string>
     <string name="welcome_to_algorand">Welcome to the Algorand Wallet</string>
     <string name="i_want_to_create">I want to create a new Algorand account</string>
     <string name="recover_with_passphrase">Recover with passphrase</string>
     <string name="i_already_have">I already have an account</string>
     <string name="create_a_new">Create a new Algorand account</string>
-    <string name="i_want_a_new">I want a new account with a new address and recovery passphrase</string>
-    <string name="i_want_to_monitor">I want to monitor an account that\'s held in cold storage</string>
+    <string name="follow_the_account_transactions">Follow the account transactions</string>
     <string name="use_your_ledger">Use your Ledger Account from the Algorand App</string>
-    <string name="i_want_to_create_an">I want to create an account that is backed by my Ledger hardware wallet</string>
     <string name="recover">Recover</string>
     <string name="enter_your_passphrase">Enter Your Passphrase</string>
     <string name="the_last_copied_text">The last copied text is not valid passphrase with 25 words. Please copy valid passphrase and try again.</string>
-    <string name="you_are_creating">You are creating a read-only view of an Algorand account. If you send assets to this account and you do not have the corresponding recovery passphrase, those assets will be lost.</string>
+    <string name="again_you_are_creating">Again, you are creating a read-only view of an Algorand Account. If you send assets to this account and you do not have the corresponding recovery passphrase, those assets will be lost.</string>
     <string name="make_sure_to_record">Make sure to record these words in the correct order, using the corresponding numbers.</string>
     <string name="this_6_digit_pin">This 6-digit PIN will be required to use the Algorand Wallet. We highly recommend creating a PIN to help increase wallet security in the event your phone is stolen.</string>
     <string name="increase_your_security">Increase your security with a PIN</string>
     <string name="name_your_account">Name your account</string>
-    <string name="name_your_account_to">Name your account to easily identify it while using the Algorand Wallet. These names are stored locally, and can only be seen by you.</string>
-
-    <plurals name="min_ago">
-        <item quantity="one">%1$s minute ago</item>
-        <item quantity="other">%1$s minutes ago</item>
-    </plurals>
-
-    <plurals name="hours_ago">
-        <item quantity="one">%1$s hour ago</item>
-        <item quantity="other">%1$s hours ago</item>
-    </plurals>
-
-    <plurals name="days_ago">
-        <item quantity="one">%1$s day ago</item>
-        <item quantity="other">%1$s days ago</item>
-    </plurals>
-
-    <plurals name="account_found">
-        <item quantity="one">1 Account Found</item>
-        <item quantity="other">%1$d Accounts Found</item>
-    </plurals>
-
-    <plurals name="asset_count">
-        <item quantity="one">+%1$d Asset</item>
-        <item quantity="other">+%1$d Assets</item>
-    </plurals>
-
     <plurals name="add_account_count">
-        <item quantity="zero">Add Account</item>
         <item quantity="one">Add Account</item>
         <item quantity="other">Add Accounts</item>
     </plurals>
@@ -485,16 +453,16 @@
     <string name="selected_words_are">Selected words are wrong. Please try again.</string>
     <string name="paste_full_passphrase">Paste Full Passphrase</string>
     <string name="verify_recovery_passphrase">Verify recovery passphrase backup</string>
-    <string name="keep_this_recovery_passphrase">Keep this recovery passphrase in a secure location that is accessible only by you. Do not lose this recovery passphrase.</string>
-    <string name="support_center">Support Center</string>
-    <string name="before_you_finalize">Before you finalize, keep in mind a couple of tips:</string>
-    <string name="when_sending_to_an_address">When sending to an address for the first time, it’s useful to send a small test transaction before sending a large amount.</string>
-    <string name="exchanges_change_their">Exchanges change their deposit addresses frequently, and saved exchange addresses may no longer be in use. <annotation custom="highlight_color">Ensure you\'re sending to the correct address.</annotation></string>
-    <string name="for_more_information_on">For more information on transacting, <annotation custom="tap_here_color">tap here</annotation></string>
-    <string name="i_understand">I understand</string>
-    <string name="the_transaction_cannot_be">The transaction cannot be completed because the amount will put your account below minimum required balance of <annotation replacement="min_balance">min_balance_placeholder</annotation> Algos.</string>
     <string name="please_enter_a_destination">Please enter a destination address</string>
     <string name="transacting_tips">Transacting Tips</string>
+    <string name="the_only_way_to">The only way to recover an Algorand account is with this recovery passphrase.\n\n<annotation font="publicsans_regular_italic"><annotation custom="warning_color"><annotation type="bold">Warning</annotation>: Do not share this passphrase with anyone, as it grants full access to your account.</annotation></annotation></string>
+    <string name="monitor_activity_of">Monitor activity of an account without needing a recovery passphrase. This is useful for monitoring assets that are kept in cold storage.\n\n<annotation font="publicsans_regular_italic"><annotation custom="warning_color"><annotation type="bold">Warning</annotation>: If you do not have the corresponding recovery passphrase, do not send assets to this account.</annotation></annotation></string>
+    <string name="i_want_a_new">I want a new account with a new address and recovery passphrase</string>
+    <string name="i_want_to_monitor">I want to monitor an account that\'s held in cold storage</string>
+    <string name="i_want_to_create_an">I want to create an account that is backed by my Ledger hardware wallet</string>
+    <string name="you_are_creating">You are creating a read-only view of an Algorand account. If you send assets to this account and you do not have the corresponding recovery passphrase, those assets will be lost.</string>
+    <string name="name_your_account_to">Name your account to easily identify it while using the Algorand Wallet. These names are stored locally, and can only be seen by you.</string>
+    <string name="keep_this_recovery_passphrase">Keep this recovery passphrase in a secure location that is accessible only by you. Do not lose this recovery passphrase.</string>
     <string name="learn_more">Learn More</string>
     <string name="no_contact_found">No Contact Found</string>
     <string name="you_can_make_the">You can make the process of sending assets faster by adding new contacts.</string>
@@ -505,6 +473,10 @@
     <string name="awaiting_verification">Awaiting Verification</string>
     <string name="not_verified">Not Verified</string>
     <string name="verify_selected_account">Verify Selected Account</string>
+    <plurals name="verify_selected_count">
+        <item quantity="one">Verify Selected Account</item>
+        <item quantity="other">Verify Selected Accounts</item>
+    </plurals>
     <string name="open_in_algoexplorer">Open in AlgoExplorer</string>
     <string name="open_in_goalseeker">Open in GoalSeeker</string>
     <string name="overwrite_existing_contract">Overwrite existing contact</string>
@@ -526,22 +498,16 @@
     <string name="analytics">Analytics</string>
     <string name="algos">Algos</string>
     <string name="algo_rewards">Algo Rewards</string>
+    <string name="transaction_maximum_error_message">Because you have <annotation replacement="asset_count">asset_count_placeholder</annotation> other Assets in this account (<annotation replacement="account_name">account_name_placeholder</annotation>), the Algorand Blockchain requires you to maintain a minimum balance of <annotation replacement="min_balance">min_balance_placeholder</annotation> Algos.\n\nBy hitting continue, your transaction amount will be automatically updated to reflect this change. You’ll be able to preview this change in the next step.</string>
     <string name="minimum_balance_required">Minimum Balance Required</string>
     <string name="transaction_maximum_error_message_singular">Because you have <annotation replacement="asset_count">asset_count_placeholder</annotation> other Asset in this account (<annotation replacement="account_name">account_name_placeholder</annotation>), the Algorand Blockchain requires you to maintain a minimum balance of <annotation replacement="min_balance">min_balance_placeholder</annotation> Algos.\n\nBy hitting continue, your transaction amount will be automatically updated to reflect this change. You’ll be able to preview this change in the next step.</string>
     <string name="transaction_maximum_error_message_plural">Because you have <annotation replacement="asset_count">asset_count_placeholder</annotation> other Assets in this account (<annotation replacement="account_name">account_name_placeholder</annotation>), the Algorand Blockchain requires you to maintain a minimum balance of <annotation replacement="min_balance">min_balance_placeholder</annotation> Algos.\n\nBy hitting continue, your transaction amount will be automatically updated to reflect this change. You’ll be able to preview this change in the next step.</string>
-
-    <plurals name="verify_selected_count">
-        <item quantity="zero">Verify Selected Account</item>
-        <item quantity="one">Verify Selected Account</item>
-        <item quantity="other">Verify Selected Accounts</item>
-    </plurals>
-
     <string name="you_have_not_connected">You haven\'t connected any apps yet.</string>
     <string name="wallet_connect_sessions">WalletConnect Sessions</string>
     <string name="wallet_wants_to_connect"><annotation type="bold"><annotation replacement="app_name">app_name_placeholder</annotation></annotation> wants to\nconnect to your account</string>
     <string name="you_do_not_have_any">You don\'t have any account that WalletConnect can connect.</string>
     <string name="disconnect">Disconnect</string>
-    <string name="close_remainder_to">Close Remainder To</string>
+    <string name="remainder_close_to">Remainder Close To</string>
     <string name="account_balance">Account Balance</string>
     <string name="show_more_info">Show More Info</string>
     <string name="raw_txns">Raw Txns</string>
@@ -558,6 +524,7 @@
     <string name="opt_in_asset_formatted">Opt-in to asset #%1$s</string>
     <string name="possible_opt_in_formatted">Possible Opt-in to asset #%1$s</string>
     <string name="application_call_formatted">Application Call to #%1$s</string>
+    <string name="confirm_all_transactions">Confirm all Transactions</string>
     <string name="decline">Decline</string>
     <string name="transaction_request">Transaction Request</string>
     <string name="raw_transaction">Raw Transaction</string>
@@ -571,7 +538,7 @@
     <string name="transaction_rejected">Transaction rejected.</string>
     <string name="assets_opt_in_request">Assets Opt-in Request</string>
     <string name="transfer_asset_request">Transfer Asset Request</string>
-    <string name="app_call">App Call</string>
+    <string name="app_calls">App Calls</string>
     <string name="sender">Sender</string>
     <string name="multiple_transaction_request">Multiple Transaction Request</string>
     <string name="multiple_transactions_formatted">%1$d transactions</string>
@@ -593,6 +560,8 @@
     <string name="application_opt_in_formatted">Application Opt in to #%1$s</string>
     <string name="application_close_to_formatted">Application Close to #%1$s</string>
     <string name="connected_with_formatted">Connected with %1$s</string>
+    <string name="close_remainder_to">Close Remainder To</string>
+    <string name="app_call">App Call</string>
     <string name="algos_amount_formatted">%1$s Algos</string>
     <string name="this_transaction_will_be">This transaction will be submitted in the future.</string>
     <plurals name="confirm_transactions">
@@ -603,4 +572,13 @@
         <item quantity="one">Transaction Request (%1$d)</item>
         <item quantity="other">Transaction Requests (%1$d)</item>
     </plurals>
+    <string name="application_update_formatted">Application Update to #%1$s</string>
+    <string name="application_delete_formatted">Application Delete to #%1$s</string>
+    <string name="application_creation">App Creation</string>
+    <string name="app_global_schema">App Global Schema</string>
+    <string name="app_local_schema">App Local Schema</string>
+    <string name="app_extra_pages">App Extra Pages</string>
+    <string name="approval_hash">Approval Hash</string>
+    <string name="clear_state_hash">Clear State Hash</string>
+    <string name="based_on_your_account">Based on your account configuration, your minimum balance is %1$s. By hitting continue, your transaction amount will be updated to maintain the Algorand Blockchain\'s minimum required balance. You\'ll be able to preview this change in the next step.</string>
 </resources>

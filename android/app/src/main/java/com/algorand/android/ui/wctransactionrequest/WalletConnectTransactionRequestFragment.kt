@@ -49,7 +49,6 @@ import com.algorand.android.utils.showWithStateCheck
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
-import com.algorand.android.utils.walletconnect.getTransactionCount
 import com.algorand.android.utils.walletconnect.getWalletConnectTransactionRequestDirection
 import com.algorand.android.utils.walletconnect.isFutureTransaction
 import dagger.hilt.android.AndroidEntryPoint
@@ -177,8 +176,8 @@ class WalletConnectTransactionRequestFragment :
             declineButton.setOnClickListener { rejectRequest() }
             confirmButton.apply {
                 setOnClickListener { showConfirmationBottomSheet() }
-                text = resources
-                    .getQuantityString(R.plurals.confirm_transactions, args.transaction.getTransactionCount())
+                val transactionCount = args.transaction.transactionList.size
+                text = resources.getQuantityString(R.plurals.confirm_transactions, transactionCount)
             }
         }
         walletConnectTransaction = args.transaction

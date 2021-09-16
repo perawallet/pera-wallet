@@ -15,7 +15,7 @@ package com.algorand.android.models
 import android.os.Parcelable
 import com.algorand.android.models.Participation.Companion.DEFAULT_PARTICIPATION_KEY
 import com.algorand.android.utils.AccountCacheManager
-import com.algorand.android.utils.minBalancePerAssetAsBigInteger
+import com.algorand.android.utils.calculateMinBalance
 import com.google.gson.annotations.SerializedName
 import java.math.BigInteger
 import java.math.BigInteger.ZERO
@@ -31,7 +31,11 @@ data class AccountInformation(
     @SerializedName("auth-addr") val rekeyAdminAddress: String?,
     @SerializedName("assets") private val allAssetHoldingList: List<AssetHolding>?,
     @SerializedName("created-at-round") val createdAtRound: Long?,
-    @SerializedName("amount-without-pending-rewards") val amountWithoutPendingRewards: BigInteger
+    @SerializedName("amount-without-pending-rewards") val amountWithoutPendingRewards: BigInteger,
+    @SerializedName("created-apps") val createdApps: List<CreatedApps>? = null,
+    @SerializedName("apps-local-state") val appsLocalState: List<CreatedAppLocalState>? = null,
+    @SerializedName("apps-total-schema") val appsTotalSchema: CreatedAppStateScheme? = null,
+    @SerializedName("apps-total-extra-pages") val appsTotalExtraPages: Int? = null
 ) : Parcelable {
 
     private val assetHoldingList: List<AssetHolding>
@@ -67,10 +71,13 @@ data class AccountInformation(
         return assetHoldingList.map { it.assetId }
     }
 
+    fun getOptedInAssetsCount() = allAssetHoldingList?.size ?: 0
+
     fun getMinAlgoBalance(): BigInteger {
-        // plus 1 is algorand.
-        val assetCount = (assetHoldingList.size + 1).toBigInteger()
-        return minBalancePerAssetAsBigInteger.multiply(assetCount)
+        return calculateMinBalance(
+            this,
+            isRekeyed() || isThereAnyDifferentAsset() || isThereAnOptedInApp()
+        ).toBigInteger()
     }
 
     fun isAssetSupported(assetId: Long): Boolean {
@@ -89,6 +96,8 @@ data class AccountInformation(
         !(participation == null || participation.voteParticipationKey == DEFAULT_PARTICIPATION_KEY)
 
     fun isThereAnyDifferentAsset() = assetHoldingList.isNotEmpty()
+
+    fun isThereAnOptedInApp() = appsLocalState?.isNotEmpty() == true || createdApps?.isNotEmpty() == true
 
     companion object {
         fun emptyAccountInformation(accountPublicKey: String): AccountInformation {

@@ -14,6 +14,7 @@ package com.algorand.android.models
 
 import com.google.gson.annotations.SerializedName
 import java.math.BigInteger
+import java.math.BigInteger.ZERO
 
 data class NotificationMetadata(
     @SerializedName("sender_public_key")
@@ -26,8 +27,18 @@ data class NotificationMetadata(
     private val assetDescription: AssetNotificationDescription? = null,
     @SerializedName("amount")
     val amount: BigInteger? = null,
-    var alertMessage: String = ""
+    var alertMessage: String = "",
+    @SerializedName("amount_str")
+    val amountAsString: String = ""
 ) {
+
+    /**
+     * Firebase doesn't support unsigned 64 bit integers,
+     * that's why api sends amount as string if it is exceeds 64 bit signed threshold (9_223_372_036_854_775_807)
+     * Keep amount as BigInteger, because it is being used in notification center
+     */
+    val safeAmount: BigInteger
+        get() = if (amount == ZERO) amountAsString.toBigIntegerOrNull() ?: ZERO else amount ?: ZERO
 
     fun getNotificationType(): NotificationType {
         return notificationType ?: NotificationType.UNKNOWN

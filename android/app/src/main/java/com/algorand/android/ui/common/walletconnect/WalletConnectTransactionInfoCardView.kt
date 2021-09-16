@@ -23,8 +23,8 @@ import androidx.core.view.updatePadding
 import com.algorand.android.R
 import com.algorand.android.databinding.CustomWalletConnectTransactionInfoBinding
 import com.algorand.android.models.AssetInformation
+import com.algorand.android.models.BaseWalletConnectDisplayedAddress
 import com.algorand.android.models.WalletConnectTransactionInfo
-import com.algorand.android.utils.formatAmount
 import com.algorand.android.utils.viewbinding.viewBinding
 import java.math.BigInteger
 
@@ -42,9 +42,9 @@ class WalletConnectTransactionInfoCardView(
     fun initTransactionInfo(transactionInfo: WalletConnectTransactionInfo) {
         binding.root.visibility = View.VISIBLE
         with(transactionInfo) {
-            initFromAddress(fromAccountAddress, accountTypeImageResId)
+            initFromAddress(fromDisplayedAddress, accountTypeImageResId)
             initAssetInformation(assetInformation)
-            initAccountBalance(accountBalance, assetDecimal)
+            initAccountBalance(accountBalance, assetDecimal, assetInformation?.isAlgorand())
             initRekeyToAddress(rekeyToAccountAddress)
             initCloseToAddress(closeToAccountAddress)
         }
@@ -58,9 +58,12 @@ class WalletConnectTransactionInfoCardView(
         binding.reminderStatusTextView.text = warningText
     }
 
-    private fun initFromAddress(address: String, accountTypeImageResId: Int?) {
+    private fun initFromAddress(displayedAddress: BaseWalletConnectDisplayedAddress, accountTypeImageResId: Int?) {
         with(binding) {
-            accountNameTextView.text = address
+            accountNameTextView.apply {
+                text = displayedAddress.displayValue
+                isSingleLine = displayedAddress.isSingleLine
+            }
             if (accountTypeImageResId != null) {
                 accountTypeImageView.apply {
                     setImageResource(accountTypeImageResId)
@@ -79,10 +82,10 @@ class WalletConnectTransactionInfoCardView(
         }
     }
 
-    private fun initAccountBalance(balance: BigInteger?, decimal: Int) {
+    private fun initAccountBalance(balance: BigInteger?, decimal: Int, isAlgorand: Boolean?) {
         if (balance != null) {
             with(binding) {
-                accountBalanceTextView.text = balance.formatAmount(decimal)
+                accountBalanceTextView.setAmount(balance, decimal, isAlgorand ?: false)
                 accountBalanceGroup.visibility = View.VISIBLE
             }
         }

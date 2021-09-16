@@ -298,7 +298,7 @@ class TransactionManager @Inject constructor(
     ): BigInteger? {
         val calculatedAmount = if (isMax && assetId == AssetInformation.ALGORAND_ID) {
             if (accountCacheData.isRekeyedToAnotherAccount()) {
-                projectedAmount - fee.toBigInteger() - accountCacheData.getMinBalance()
+                projectedAmount - fee.toBigInteger() - accountCacheData.getMinBalance().toBigInteger()
             } else {
                 projectedAmount - fee.toBigInteger()
             }

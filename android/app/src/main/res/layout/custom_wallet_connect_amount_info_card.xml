@@ -75,6 +75,7 @@
         app:algoFontFamily="@font/publicsans_medium"
         app:algoLogoViewSize="10dp"
         app:algoTextViewSize="14sp"
+        app:iconTint="@color/walletConnectFeeAlgoIconColor"
         app:layout_constraintBottom_toTopOf="@id/feeDividerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/labelBarrier"

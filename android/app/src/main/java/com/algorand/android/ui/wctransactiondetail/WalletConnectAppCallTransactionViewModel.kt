@@ -15,6 +15,7 @@ package com.algorand.android.ui.wctransactiondetail
 
 import androidx.hilt.lifecycle.ViewModelInject
 import com.algorand.android.models.BaseAppCallTransaction
+import com.algorand.android.models.BaseWalletConnectDisplayedAddress
 import com.algorand.android.models.WalletConnectAmountInfo
 import com.algorand.android.models.WalletConnectExtras
 import com.algorand.android.models.WalletConnectSenderInfo
@@ -28,7 +29,7 @@ class WalletConnectAppCallTransactionViewModel @ViewModelInject constructor(
         extrasLiveData.value = WalletConnectExtras(
             rawTransaction = transaction.rawTransactionPayload,
             note = transaction.note,
-            algoExplorerUrl = transaction.appId.toString(),
+            algoExplorerUrl = transaction.appId?.toString(),
             networkSlug = indexerInterceptor.currentActiveNode?.networkSlug
         )
     }
@@ -40,17 +41,20 @@ class WalletConnectAppCallTransactionViewModel @ViewModelInject constructor(
 
     fun getSenderInfo(transaction: BaseAppCallTransaction) {
         with(transaction) {
-            val decodedSenderAddress = senderAddress.decodedAddress ?: return
-            val senderAddress = accountCacheData?.account?.name?.run {
-                ifBlank { decodedSenderAddress }
-            }.orEmpty()
+            val decodedAddress = senderAddress.decodedAddress ?: return
+            val appCallCreationTransaction = transaction as? BaseAppCallTransaction.AppCallCreationTransaction
             val senderInfo = WalletConnectSenderInfo(
-                senderAccountAddress = senderAddress,
+                senderDisplayedAddress = BaseWalletConnectDisplayedAddress.create(decodedAddress, accountCacheData),
                 senderTypeImageResId = accountCacheData?.getImageResource(),
                 dappName = peerMeta.name,
                 rekeyToAccountAddress = formattedRekeyToAccountAddress,
                 applicationId = appId,
-                onComplete = appOnComplete
+                onComplete = appOnComplete,
+                appGlobalSchema = appCallCreationTransaction?.appGlobalSchema,
+                appLocalSchema = appCallCreationTransaction?.appLocalSchema,
+                appExtraPages = appCallCreationTransaction?.appExtraPages,
+                approvalHash = approvalHash,
+                clearStateHash = stateHash
             )
             senderInfoLiveData.value = senderInfo
         }

@@ -19,6 +19,7 @@ import com.algorand.android.models.WalletConnectPeerMeta
 import com.algorand.android.models.WalletConnectSigner
 import com.algorand.android.models.WalletConnectTransactionRequest
 import com.algorand.android.utils.AccountCacheManager
+import com.algorand.android.utils.generateAddressFromProgram
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionErrorProvider
 import javax.inject.Inject
 
@@ -35,7 +36,9 @@ class AppCallTransactionMapper @Inject constructor(
     ): BaseWalletConnectTransaction? {
         return with(transactionRequest) {
             when {
-                appId == null || appId == 0L -> null /* App Creation Request. Will be supported soon */
+                appId == null || appId == 0L -> {
+                    createAppCallCreationTransaction(peerMeta, transactionRequest, rawTxn)
+                }
                 rekeyAddress != null -> {
                     createAppCallTransactionWithRekey(peerMeta, transactionRequest, rawTxn)
                 }
@@ -62,13 +65,15 @@ class AppCallTransactionMapper @Inject constructor(
                 walletConnectTransactionParams = createTransactionParams(transactionRequest) ?: return null,
                 note = decodedNote,
                 senderAddress = senderWalletConnectAddress ?: return null,
-                appArgs = appArgs ?: return null,
+                appArgs = appArgs,
                 peerMeta = peerMeta,
                 rekeyToAddress = createWalletConnectAddress(rekeyAddress) ?: return null,
                 appId = appId ?: return null,
                 signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
                 accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
-                appOnComplete = BaseAppCallTransaction.AppOnComplete.getByAppNoOrDefault(appOnComplete)
+                appOnComplete = BaseAppCallTransaction.AppOnComplete.getByAppNoOrDefault(appOnComplete),
+                approvalHash = generateAddressFromProgram(approvalHash),
+                stateHash = generateAddressFromProgram(stateHash)
             )
         }
     }
@@ -85,12 +90,41 @@ class AppCallTransactionMapper @Inject constructor(
                 walletConnectTransactionParams = createTransactionParams(transactionRequest) ?: return null,
                 note = decodedNote,
                 senderAddress = senderWalletConnectAddress ?: return null,
-                appArgs = appArgs ?: return null,
+                appArgs = appArgs,
                 peerMeta = peerMeta,
                 appId = appId ?: return null,
                 signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
                 accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
-                appOnComplete = BaseAppCallTransaction.AppOnComplete.getByAppNoOrDefault(appOnComplete)
+                appOnComplete = BaseAppCallTransaction.AppOnComplete.getByAppNoOrDefault(appOnComplete),
+                approvalHash = generateAddressFromProgram(approvalHash),
+                stateHash = generateAddressFromProgram(stateHash)
+            )
+        }
+    }
+
+    private fun createAppCallCreationTransaction(
+        peerMeta: WalletConnectPeerMeta,
+        transactionRequest: WalletConnectTransactionRequest,
+        rawTransaction: WCAlgoTransactionRequest
+    ): BaseAppCallTransaction.AppCallCreationTransaction? {
+        return with(transactionRequest) {
+            val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
+            BaseAppCallTransaction.AppCallCreationTransaction(
+                rawTransactionPayload = rawTransaction,
+                walletConnectTransactionParams = createTransactionParams(transactionRequest) ?: return null,
+                note = decodedNote,
+                senderAddress = senderWalletConnectAddress ?: return null,
+                appArgs = appArgs,
+                peerMeta = peerMeta,
+                appId = appId,
+                signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
+                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
+                appOnComplete = BaseAppCallTransaction.AppOnComplete.getByAppNoOrDefault(appOnComplete),
+                appGlobalSchema = appGlobalSchema,
+                appLocalSchema = appLocalSchema,
+                appExtraPages = appExtraPages ?: 0,
+                approvalHash = generateAddressFromProgram(approvalHash),
+                stateHash = generateAddressFromProgram(stateHash)
             )
         }
     }
@@ -107,12 +141,14 @@ class AppCallTransactionMapper @Inject constructor(
                 walletConnectTransactionParams = createTransactionParams(transactionRequest) ?: return null,
                 note = decodedNote,
                 senderAddress = senderWalletConnectAddress ?: return null,
-                appArgs = appArgs ?: return null,
+                appArgs = appArgs,
                 peerMeta = peerMeta,
                 appId = appId ?: return null,
                 signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
                 accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
-                appOnComplete = BaseAppCallTransaction.AppOnComplete.getByAppNoOrDefault(appOnComplete)
+                appOnComplete = BaseAppCallTransaction.AppOnComplete.getByAppNoOrDefault(appOnComplete),
+                approvalHash = generateAddressFromProgram(approvalHash),
+                stateHash = generateAddressFromProgram(stateHash)
             )
         }
     }

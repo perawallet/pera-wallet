@@ -16,7 +16,7 @@ import androidx.annotation.DrawableRes
 import java.math.BigInteger
 
 data class WalletConnectTransactionInfo(
-    val fromAccountAddress: String,
+    val fromDisplayedAddress: BaseWalletConnectDisplayedAddress,
     val dappName: String,
     @DrawableRes val accountTypeImageResId: Int?,
     val accountBalance: BigInteger? = null,

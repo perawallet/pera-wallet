@@ -109,7 +109,7 @@ class NotificationDataSource(
             )
 
             val decimals = notificationItem.metadata?.getAssetDescription()?.decimals ?: ALGO_DECIMALS
-            val formattedAmount = notificationItem.metadata?.amount.formatAmount(decimals)
+            val formattedAmount = notificationItem.metadata?.safeAmount.formatAmount(decimals)
 
             val timeDifference = nowInTimeMillis - creationZonedDateTime.toInstant().toEpochMilli()
 
