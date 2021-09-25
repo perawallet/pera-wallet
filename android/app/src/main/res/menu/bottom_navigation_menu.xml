@@ -21,7 +21,7 @@
     <item
         android:id="@id/contactsFragment"
         android:icon="@drawable/ic_contacts"
-        android:title="@string/history" />
+        android:title="@string/contacts" />
 
     <item
         android:id="@+id/sendRequestButton"
@@ -31,7 +31,7 @@
     <item
         android:id="@id/notificationCenterFragment"
         android:icon="@drawable/ic_empty_notification"
-        android:title="@string/contacts" />
+        android:title="@string/history" />
 
     <item
         android:id="@id/settingsFragment"
