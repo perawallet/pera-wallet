@@ -59,7 +59,7 @@ class PaymentTransactionMapper @Inject constructor(
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
             BasePaymentTransaction.PaymentTransactionWithRekeyAndClose(
                 rawTransactionPayload = rawTransaction,
-                walletConnectTransactionParams = createTransactionParams(transactionRequest) ?: return null,
+                walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 note = decodedNote,
                 amount = amount ?: BigInteger.ZERO,
                 senderAddress = senderWalletConnectAddress ?: return null,
@@ -82,7 +82,7 @@ class PaymentTransactionMapper @Inject constructor(
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
             BasePaymentTransaction.PaymentTransactionWithRekey(
                 rawTransactionPayload = rawTransaction,
-                walletConnectTransactionParams = createTransactionParams(transactionRequest) ?: return null,
+                walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 note = decodedNote,
                 amount = amount ?: BigInteger.ZERO,
                 senderAddress = senderWalletConnectAddress ?: return null,
@@ -104,7 +104,7 @@ class PaymentTransactionMapper @Inject constructor(
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
             BasePaymentTransaction.PaymentTransactionWithClose(
                 rawTransactionPayload = rawTransaction,
-                walletConnectTransactionParams = createTransactionParams(transactionRequest) ?: return null,
+                walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 note = decodedNote,
                 amount = amount ?: BigInteger.ZERO,
                 senderAddress = senderWalletConnectAddress ?: return null,
@@ -126,7 +126,7 @@ class PaymentTransactionMapper @Inject constructor(
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
             BasePaymentTransaction.PaymentTransaction(
                 rawTransactionPayload = rawTransaction,
-                walletConnectTransactionParams = createTransactionParams(transactionRequest) ?: return null,
+                walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 note = decodedNote,
                 amount = amount ?: BigInteger.ZERO,
                 senderAddress = senderWalletConnectAddress ?: return null,

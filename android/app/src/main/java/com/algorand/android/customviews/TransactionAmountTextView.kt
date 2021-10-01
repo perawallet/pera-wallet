@@ -185,6 +185,15 @@ class TransactionAmountTextView @JvmOverloads constructor(
         setOperatorAccordingToTransactionType(amount, transactionSymbol)
     }
 
+    fun setAssetName(unitName: String?) {
+        with(binding) {
+            transactionAmountTextView.text = unitName ?: resources.getString(R.string.unnamed)
+            otherAssetNameTextView.visibility = GONE
+            algoLogoImageView.visibility = GONE
+            transactionOperatorTextView.visibility = GONE
+        }
+    }
+
     companion object {
         private const val NO_COLOR_RES_ID = -2
     }

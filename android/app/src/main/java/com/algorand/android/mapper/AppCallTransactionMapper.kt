@@ -62,7 +62,7 @@ class AppCallTransactionMapper @Inject constructor(
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
             BaseAppCallTransaction.AppCallTransactionWithRekey(
                 rawTransactionPayload = rawTransaction,
-                walletConnectTransactionParams = createTransactionParams(transactionRequest) ?: return null,
+                walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 note = decodedNote,
                 senderAddress = senderWalletConnectAddress ?: return null,
                 appArgs = appArgs,
@@ -87,7 +87,7 @@ class AppCallTransactionMapper @Inject constructor(
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
             BaseAppCallTransaction.AppCallTransaction(
                 rawTransactionPayload = rawTransaction,
-                walletConnectTransactionParams = createTransactionParams(transactionRequest) ?: return null,
+                walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 note = decodedNote,
                 senderAddress = senderWalletConnectAddress ?: return null,
                 appArgs = appArgs,
@@ -111,7 +111,7 @@ class AppCallTransactionMapper @Inject constructor(
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
             BaseAppCallTransaction.AppCallCreationTransaction(
                 rawTransactionPayload = rawTransaction,
-                walletConnectTransactionParams = createTransactionParams(transactionRequest) ?: return null,
+                walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 note = decodedNote,
                 senderAddress = senderWalletConnectAddress ?: return null,
                 appArgs = appArgs,
@@ -138,7 +138,7 @@ class AppCallTransactionMapper @Inject constructor(
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
             BaseAppCallTransaction.AppOptInTransaction(
                 rawTransactionPayload = rawTransaction,
-                walletConnectTransactionParams = createTransactionParams(transactionRequest) ?: return null,
+                walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 note = decodedNote,
                 senderAddress = senderWalletConnectAddress ?: return null,
                 appArgs = appArgs,

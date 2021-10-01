@@ -64,7 +64,7 @@ class AssetTransferTransactionMapper @Inject constructor(
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
             BaseAssetTransferTransaction.AssetTransferTransactionWithClose(
                 rawTransactionPayload = rawTransaction,
-                walletConnectTransactionParams = createTransactionParams(transactionRequest) ?: return null,
+                walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 note = decodedNote,
                 assetReceiverAddress = createWalletConnectAddress(assetReceiverAddress) ?: return null,
                 senderAddress = senderWalletConnectAddress ?: return null,
@@ -87,7 +87,7 @@ class AssetTransferTransactionMapper @Inject constructor(
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
             BaseAssetTransferTransaction.AssetTransferTransactionWithRekey(
                 rawTransactionPayload = rawTransaction,
-                walletConnectTransactionParams = createTransactionParams(transactionRequest) ?: return null,
+                walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 note = decodedNote,
                 assetReceiverAddress = createWalletConnectAddress(assetReceiverAddress) ?: return null,
                 senderAddress = senderWalletConnectAddress ?: return null,
@@ -110,7 +110,7 @@ class AssetTransferTransactionMapper @Inject constructor(
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
             BaseAssetTransferTransaction.AssetTransferTransactionWithRekeyAndClose(
                 rawTransactionPayload = rawTransaction,
-                walletConnectTransactionParams = createTransactionParams(transactionRequest) ?: return null,
+                walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 note = decodedNote,
                 assetReceiverAddress = createWalletConnectAddress(assetReceiverAddress) ?: return null,
                 senderAddress = senderWalletConnectAddress ?: return null,
@@ -134,7 +134,7 @@ class AssetTransferTransactionMapper @Inject constructor(
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
             BaseAssetTransferTransaction.AssetTransferTransaction(
                 rawTransactionPayload = rawTransaction,
-                walletConnectTransactionParams = createTransactionParams(transactionRequest) ?: return null,
+                walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 note = decodedNote,
                 assetReceiverAddress = createWalletConnectAddress(assetReceiverAddress) ?: return null,
                 senderAddress = senderWalletConnectAddress ?: return null,
@@ -156,7 +156,7 @@ class AssetTransferTransactionMapper @Inject constructor(
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
             BaseAssetTransferTransaction.AssetOptInTransaction(
                 rawTransactionPayload = rawTransaction,
-                walletConnectTransactionParams = createTransactionParams(transactionRequest) ?: return null,
+                walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 note = decodedNote,
                 assetReceiverAddress = createWalletConnectAddress(assetReceiverAddress) ?: return null,
                 senderAddress = senderWalletConnectAddress ?: return null,

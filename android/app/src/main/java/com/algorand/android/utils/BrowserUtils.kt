@@ -60,12 +60,12 @@ fun Context.openTransactionInGoalSeeker(transactionIdWithoutPrefix: String, node
     openUrl("$GOAL_SEEKER_BASE_URL/$nodeSlug/transaction/$transactionIdWithoutPrefix")
 }
 
-fun Context.openAssetInAlgoExplorer(assetId: String?, nodeSlug: String?) {
+fun Context.openAssetInAlgoExplorer(assetId: Long?, nodeSlug: String?) {
     val subDomain = if (nodeSlug == MAINNET_NETWORK_SLUG) "" else "$nodeSlug."
     openUrl("https://$subDomain$ALGO_EXPLORER_URL/asset/$assetId")
 }
 
-fun Context.openApplicationInAlgoExplorer(applicationId: String?, nodeSlug: String?) {
+fun Context.openApplicationInAlgoExplorer(applicationId: Long?, nodeSlug: String?) {
     val subDomain = if (nodeSlug == MAINNET_NETWORK_SLUG) "" else "$nodeSlug."
     openUrl("https://$subDomain$ALGO_EXPLORER_URL/application/$applicationId")
 }

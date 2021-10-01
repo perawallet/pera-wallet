@@ -25,10 +25,13 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.internal.managers.ViewComponentManager
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.RoundingMode
+import java.net.URLDecoder
+import java.nio.charset.StandardCharsets
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.Locale
@@ -163,6 +166,15 @@ fun String.decodeBase64(): ByteArray? {
         Base64.decode(this, Base64.DEFAULT)
     } catch (exception: Exception) {
         // TODO Log firebase
+        null
+    }
+}
+
+fun String.decodeUrl(charset: String = StandardCharsets.UTF_8.name()): String? {
+    return try {
+        URLDecoder.decode(this, charset)
+    } catch (exception: Exception) {
+        FirebaseCrashlytics.getInstance().recordException(exception)
         null
     }
 }

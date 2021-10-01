@@ -40,6 +40,7 @@ class WalletConnectAmountInfoCardView(
     }
 
     fun initAmountInfo(amountInfo: WalletConnectAmountInfo) {
+        binding.root.visibility = View.VISIBLE
         with(amountInfo) {
             initAmount(amount, decimal, isAlgorand)
             initToAddress(toAccountAddress)
@@ -65,10 +66,13 @@ class WalletConnectAmountInfoCardView(
         }
     }
 
-    private fun initFee(fee: Long) {
-        with(binding) {
-            feeTextView.setAmount(fee, ALGO_DECIMALS, true)
-            feeWarningTextView.isVisible = fee > MIN_FEE
+    private fun initFee(fee: Long?) {
+        if (fee != null) {
+            with(binding) {
+                feeTextView.setAmount(fee, ALGO_DECIMALS, true)
+                feeWarningTextView.isVisible = fee > MIN_FEE
+                feeGroup.visibility = VISIBLE
+            }
         }
     }
 

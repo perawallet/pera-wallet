@@ -51,6 +51,7 @@ import com.algorand.android.utils.preference.isPasswordChosen
 import com.algorand.android.utils.walletconnect.WalletConnectManager
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionErrorProvider
 import com.algorand.android.utils.walletconnect.WalletConnectViewModel
+import com.algorand.android.utils.walletconnect.isValidWalletConnectUrl
 import com.google.firebase.analytics.FirebaseAnalytics
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -314,7 +315,7 @@ class MainActivity : CoreMainActivity(),
             AssetInformation.ALGORAND_ID,
             listOf(Account.Type.WATCH)
         ).isNotEmpty()
-        if (hasValidAccountForWalletConnect) {
+        if (hasValidAccountForWalletConnect && isValidWalletConnectUrl(walletConnectUrl)) {
             showProgress()
             walletConnectViewModel.connectToSessionByUrl(walletConnectUrl)
         } else {

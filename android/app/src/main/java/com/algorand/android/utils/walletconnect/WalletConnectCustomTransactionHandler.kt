@@ -153,14 +153,14 @@ class WalletConnectCustomTransactionHandler @Inject constructor(
     }
 
     private suspend fun setAssetParamsIfNeed(walletConnectTxnList: List<BaseWalletConnectTransaction>) {
-        val baseAssetTransferList = walletConnectTxnList.filterIsInstance<BaseAssetTransferTransaction>()
-        if (baseAssetTransferList.isEmpty()) return
-        baseAssetTransferList.forEach {
+        val assetListToBeFetched = walletConnectTxnList.filterIsInstance<WalletConnectAssetDetail>()
+        if (assetListToBeFetched.isEmpty()) return
+        assetListToBeFetched.forEach {
             getAssetParams(it)
         }
     }
 
-    private suspend fun getAssetParams(assetTransaction: BaseAssetTransferTransaction) {
+    private suspend fun getAssetParams(assetTransaction: WalletConnectAssetDetail) {
         val assetParams = accountCacheManager.getAssetDescription(assetTransaction.assetId)
         if (assetParams != null) {
             assetTransaction.assetParams = assetParams

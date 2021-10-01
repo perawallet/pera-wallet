@@ -15,6 +15,7 @@ package com.algorand.android.ui.wctransactiondetail
 
 import androidx.lifecycle.MutableLiveData
 import com.algorand.android.core.BaseViewModel
+import com.algorand.android.models.WalletConnectAccountsInfo
 import com.algorand.android.models.WalletConnectAmountInfo
 import com.algorand.android.models.WalletConnectExtras
 import com.algorand.android.models.WalletConnectSenderInfo
@@ -26,4 +27,5 @@ abstract class BaseWalletConnectTransactionViewModel : BaseViewModel() {
     val amountInfoLiveData = MutableLiveData<WalletConnectAmountInfo>()
     val extrasLiveData = MutableLiveData<WalletConnectExtras>()
     val senderInfoLiveData = MutableLiveData<WalletConnectSenderInfo>()
+    val accountsInfoLiveData = MutableLiveData<WalletConnectAccountsInfo>()
 }

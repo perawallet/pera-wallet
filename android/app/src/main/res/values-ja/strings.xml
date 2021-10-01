@@ -18,8 +18,7 @@
     <string name="already_have_an_account">すでにアカウントをお持ちですか？</string>
     <string name="choose_passcode">パスコードを選択</string>
     <string name="choose_a_six_digit">6桁のPINを入力してください</string>
-    <string name="we_recommend_this_for_improved_security">セキュリティ向上のために
-推奨します</string>
+    <string name="we_recommend_this_for_improved_security">セキュリティ向上のために\n推奨します</string>
     <string name="yes">はい</string>
     <string name="please_scan_your_fingerprint_or">続行するには、指紋または顔をスキャンしてください。</string>
     <string name="cancel">キャンセル</string>
@@ -43,8 +42,7 @@
     <string name="verify">検証</string>
     <string name="close">閉じる</string>
     <string name="account_verified">アカウント認証済み</string>
-    <string name="account_verified_message"><annotation type="bold">Algorand</annotation>へようこそ！
-お客様のアカウントはすぐにお使いいただけます。</string>
+    <string name="account_verified_message"><annotation type="bold">Algorand</annotation>へようこそ！\nお客様のアカウントはすぐにお使いいただけます。</string>
     <string name="accounts">アカウント</string>
     <string name="settings">設定</string>
     <string name="history">履歴</string>
@@ -123,8 +121,7 @@
     <string name="show_rewards">リワードを表示する</string>
     <string name="category">カテゴリー</string>
     <string name="max">最大</string>
-    <string name="you_earn_rewards_just">Algosを保有するだけでリワードを獲得できます！
-前回のトランザクション以降のリワード活動をまとめました。これらのリワードは常にお客様の残高に含まれています。</string>
+    <string name="you_earn_rewards_just">Algosを保有するだけでリワードを獲得できます！\n前回のトランザクション以降のリワード活動をまとめました。これらのリワードは常にお客様の残高に含まれています。</string>
     <string name="since_last_transaction">前回のトランザクション以降</string>
     <string name="for_more_information">Algorand Rewardsの詳細については、<annotation custom="faq_color"><annotation type="bold">FAQ</annotation></annotation>をご覧ください</string>
     <string name="reward">リワード</string>
@@ -239,8 +236,7 @@
     <string name="show_qr">QRを表示</string>
     <string name="do_not_use_face">Face ID/Touchを使用しない</string>
     <string name="manage_all_assets">1つのアプリからすべての資産を管理</string>
-    <string name="manage_all_assets_two_line">1つのアプリから
-すべての資産を管理</string>
+    <string name="manage_all_assets_two_line">1つのアプリから\nすべての資産を管理</string>
     <string name="account_details">アカウント詳細</string>
     <string name="passphrase">パスフレーズ</string>
     <string name="scan_qr_code">QRコードのスキャン</string>
@@ -393,10 +389,7 @@
     <string name="continue_text">続ける</string>
     <string name="dont_show_this_again">今後表示しない</string>
     <string name="maximum_balance">最大残高</string>
-    <string name="rekeyed_maximum_error_message">この再キー化アカウントで最大残高を送信するには、<annotation replacement="min_balance">min_balance_placeholder</annotation> Algosの最低残高を維持する必要があります。これは、再キー化されたアカウントに何も変化がないことを確認するためです。
-
-
-この変更を反映して、お客様の取引額が自動的に更新されます。次のステップでトランザクションをプレビューできます。</string>
+    <string name="rekeyed_maximum_error_message">この再キー化アカウントで最大残高を送信するには、<annotation replacement="min_balance">min_balance_placeholder</annotation> Algosの最低残高を維持する必要があります。これは、再キー化されたアカウントに何も変化がないことを確認するためです。\n\n\nこの変更を反映して、お客様の取引額が自動的に更新されます。次のステップでトランザクションをプレビューできます。</string>
     <string name="support_center">サポートセンター</string>
     <string name="we_notice_that_this">最初のトランザクションを検知しました。確定する前に、いくつかのヒントを覚えておいてください。</string>
     <string name="when_sending_to_an_address">初めてのアドレスに送信する場合、大きな金額を送信する前に少額のテストトランザクションを行うと便利です。</string>
@@ -457,12 +450,8 @@
     <string name="verify_recovery_passphrase">リカバリーパスフレーズのバックアップを確認</string>
     <string name="please_enter_a_destination">送信先のアドレスを入力してください</string>
     <string name="transacting_tips">トランザクションのヒント</string>
-    <string name="the_only_way_to">このリカバリーパスフレーズを使う以外に、Algorandアカウントを復元する方法はありません。
-
-<annotation font="publicsans_regular_italic"><annotation custom="warning_color"><annotation type="bold">警告</annotation>：このパスフレーズは、アカウントへの完全なアクセスを許可するものですので、誰にも教えないでください。</annotation></annotation></string>
-    <string name="monitor_activity_of">リカバリーパスフレーズの必要無く、アカウントのアクティビティを監視できます。これは、コールドストレージに保管されている資産を監視するのに便利です。
-
-<annotation font="publicsans_regular_italic"><annotation custom="warning_color"><annotation type="bold">警告</annotation>：対応するリカバリーパスフレーズがない場合は、このアカウントに資産を送信しないでください。</annotation></annotation></string>
+    <string name="the_only_way_to">このリカバリーパスフレーズを使う以外に、Algorandアカウントを復元する方法はありません。\n\n<annotation font="publicsans_regular_italic"><annotation custom="warning_color"><annotation type="bold">警告</annotation>：このパスフレーズは、アカウントへの完全なアクセスを許可するものですので、誰にも教えないでください。</annotation></annotation></string>
+    <string name="monitor_activity_of">リカバリーパスフレーズの必要無く、アカウントのアクティビティを監視できます。これは、コールドストレージに保管されている資産を監視するのに便利です。\n\n<annotation font="publicsans_regular_italic"><annotation custom="warning_color"><annotation type="bold">警告</annotation>：対応するリカバリーパスフレーズがない場合は、このアカウントに資産を送信しないでください。</annotation></annotation></string>
     <string name="i_want_a_new">新規アドレスと回復用パスフレーズを持つ、新しいアカウントを作成</string>
     <string name="i_want_to_monitor">コールドストレージに保管されているアカウントを監視したい</string>
     <string name="i_want_to_create_an">Ledgerハードウェアウォレットに紐づけされたアカウントを作成したい</string>
@@ -559,7 +548,7 @@
     <string name="this_transaction_is_sending">このトランザクションは、お客様のすべてのAlgo残高を送信します。</string>
     <string name="close_asset_to">資産をクローズする</string>
     <string name="this_transaction_is_sending_asset">このトランザクションは、お客様のすべての%1$s残高を送信し、アカウントから%1$sを削除します。</string>
-    <string name="this_transaction_fee_is_higher">このトランザクション手数料は、通常の手数料（0.01 Algos）よりも高くなっています。</string>
+    <string name="this_transaction_fee_is_higher">このトランザクション手数料は、通常の手数料（0.001 Algos）よりも高くなっています。</string>
     <string name="wallet_connect_is_not_reachable">現在、WalletConnectにアクセスできません。後ほどお試しください。</string>
     <string name="the_recipient_address_is_not">受信者のアドレスは有効なAlgorandアドレスではありません。もう一度お試しください。</string>
     <string name="application_opt_in_formatted">%1$sへのアプリケーションオプトイン</string>
@@ -584,4 +573,21 @@
     <string name="approval_hash">承認ハッシュ</string>
     <string name="clear_state_hash">ステートハッシュのクリア</string>
     <string name="based_on_your_account">お客様のアカウント設定に基づく、最低残高は%1$sになっています。続けるを押すと、取引額はAlgorandブロックチェーンの必要最低残高を維持する額に更新されます。この変更は次のステップでプレビューできます。</string>
+    <string name="asset_reconfiguration_request">資産再構成リクエスト</string>
+    <string name="manager_account">管理者アカウント</string>
+    <string name="reserve_account">リザーブアカウント</string>
+    <string name="clawback_account">クローバックアカウント</string>
+    <string name="freeze_account">アカウントの凍結</string>
+    <string name="decimal_places">小数点</string>
+    <string name="default_frozen">デフォルトで凍結</string>
+    <string name="off">オフ</string>
+    <string name="on">オン</string>
+    <string name="asset_creation_request">資産作成リクエスト</string>
+    <string name="asset_deletion_request">資産削除リクエスト</string>
+    <string name="asset_name">資産名</string>
+    <string name="unit_name">ユニット名</string>
+    <string name="asset_deletion_warning_message">この資産は削除されます。</string>
+    <string name="governance_banner_title">Algorandガバナンス・プログラムが始まります！</string>
+    <string name="governance_banner_description">統治者になりましょう。Algorandの未来を投票で決めましょう。報酬を獲得しましょう。</string>
+    <string name="governance_banner_button_text">始める</string>
 </resources>

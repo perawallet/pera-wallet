@@ -47,10 +47,44 @@
     <View
         android:id="@+id/noteDividerView"
         style="@style/HorizontalDivider.WalletConnectCards"
-        app:layout_constraintBottom_toTopOf="@+id/rawTxnsTextView"
+        app:layout_constraintBottom_toTopOf="@id/metadataHashTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/noteTextView" />
+        app:layout_constraintTop_toBottomOf="@id/noteTextView"
+        app:layout_goneMarginBottom="@dimen/wallet_connect_card_divider_margin" />
+
+    <TextView
+        android:id="@+id/metadataHashLabelTextView"
+        style="@style/TextAppearance.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/asset_metadata"
+        app:layout_constraintBottom_toBottomOf="@id/metadataHashTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/metadataHashTextView" />
+
+    <TextView
+        android:id="@+id/metadataHashTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
+        android:fontFamily="@font/publicsans_medium"
+        android:gravity="end"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/noteDividerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/labelBarrier"
+        app:layout_constraintTop_toBottomOf="@id/noteDividerView"
+        tools:text="@tools:sample/lorem[3]" />
+
+    <View
+        android:id="@+id/metadataHashDividerView"
+        style="@style/HorizontalDivider.WalletConnectCards"
+        app:layout_constraintBottom_toTopOf="@id/rawTxnsTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/metadataHashTextView" />
 
     <TextView
         android:id="@+id/rawTxnsLabelTextView"
@@ -74,7 +108,7 @@
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@id/rawTxnsDividerView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/noteDividerView"
+        app:layout_constraintTop_toBottomOf="@id/metadataHashDividerView"
         app:layout_goneMarginTop="0dp" />
 
     <View
@@ -179,8 +213,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="end"
-        app:constraint_referenced_ids="algoExplorerLabelTextView,assetMetadataLabelTextView,
-        assetUrlLabelTextView,rawTxnsLabelTextView,noteLabelTextView" />
+        app:constraint_referenced_ids="
+        algoExplorerLabelTextView,
+        assetMetadataLabelTextView,
+        metadataHashLabelTextView,
+        assetUrlLabelTextView,
+        rawTxnsLabelTextView,
+        noteLabelTextView" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/algoExplorerGroup"
@@ -201,7 +240,8 @@
         app:constraint_referenced_ids="
         noteDividerView,
         noteLabelTextView,
-        noteTextView"
+        noteTextView,
+        metadataHashLabelTextView"
         tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.Group
@@ -224,6 +264,17 @@
         assetUrlDividerView,
         assetMetadataLabelTextView,
         assetMetadataTextView"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/metadataHashGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="
+        metadataHashDividerView,
+        metadataHashLabelTextView,
+        metadataHashTextView"
         tools:visibility="visible" />
 
 </merge>

@@ -20,8 +20,11 @@ data class WalletConnectTransactionInfo(
     val dappName: String,
     @DrawableRes val accountTypeImageResId: Int?,
     val accountBalance: BigInteger? = null,
-    val assetInformation: AssetInformation?,
+    val assetInformation: AssetInformation? = null,
     val rekeyToAccountAddress: String?,
     val closeToAccountAddress: String?,
-    val assetDecimal: Int
+    val assetDecimal: Int,
+    val assetName: String? = null,
+    val unitName: String? = null,
+    val showAssetDeletionWarning: Boolean = false
 )

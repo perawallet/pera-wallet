@@ -37,7 +37,7 @@ class WalletConnectAssetTransactionViewModel @ViewModelInject constructor(
                     note = transaction.note,
                     assetUrl = assetParams.url,
                     assetMetadata = assetParams.appendAssetId(transaction.assetId),
-                    algoExplorerUrl = transaction.assetId.toString(),
+                    assetId = transaction.assetId,
                     networkSlug = indexerInterceptor.currentActiveNode?.networkSlug
                 )
             }

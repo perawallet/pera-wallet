@@ -200,19 +200,11 @@
     <string name="connecting_to_ledger">Verbindung mit Ledger-Gerät wird hergestellt …</string>
     <string name="ledger_approval">Ledger-Genehmigung</string>
     <string name="please_make_sure">Bitte bestätigen Sie die Transaktion auf Ihrem Ledger-Gerät</string>
-    <string name="ledger_info_power_first_paragraph">
-    <annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">Informationen zur Verwendung der Bluetooth-Funktion Ihres Ledger-Geräts finden Sie in der offiziellen <annotation type="bold"><annotation type="color">Anleitung für Bluetooth-Verbindungen von Ledger.</annotation></annotation></annotation>
-  </string>
-    <string name="ledger_info_power_second_paragraph">
-    <annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">Für eine erweiterte Fehlerbehebung verweisen wir auf die offizielle <annotation type="bold"><annotation type="color">-Anleitung zur Bluetooth-Fehlerbehebung von Ledger.</annotation></annotation></annotation>
-  </string>
-    <string name="ledger_info_ledger_first_paragraph">
-    <annotation url="https://www.ledger.com/start">Folgen Sie zunächst dem umfassenden <annotation type="bold"><annotation type="color">Anfänger-</annotation></annotation>Tutorial von Ledger.</annotation>
-  </string>
+    <string name="ledger_info_power_first_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">Informationen zur Verwendung der Bluetooth-Funktion Ihres Ledger-Geräts finden Sie in der offiziellen <annotation type="bold"><annotation type="color">Anleitung für Bluetooth-Verbindungen von Ledger.</annotation></annotation></annotation></string>
+    <string name="ledger_info_power_second_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">Für eine erweiterte Fehlerbehebung verweisen wir auf die offizielle <annotation type="bold"><annotation type="color">-Anleitung zur Bluetooth-Fehlerbehebung von Ledger.</annotation></annotation></annotation></string>
+    <string name="ledger_info_ledger_first_paragraph"><annotation url="https://www.ledger.com/start">Folgen Sie zunächst dem umfassenden <annotation type="bold"><annotation type="color">Anfänger-</annotation></annotation>Tutorial von Ledger.</annotation></string>
     <string name="ledger_info_ledger_second_paragraph">Wenn Sie in dem Tutorial bei dem Schritt angelangt sind, wo Sie aufgefordert werden, die Anwendungen zu wählen, die Sie auf Ihrem Gerät installieren möchten („Select the application(s) you want to install on your device“), geben Sie „Algorand“ in die Suchleiste ein und installieren Sie die Anwendung.</string>
-    <string name="ledger_info_algorand_first_paragraph">
-    <annotation url="https://www.ledger.com/start">Folgen Sie zunächst dem umfassenden <annotation type="bold"><annotation type="color">Anfänger-</annotation></annotation> Tutorial von Ledger, in dem Sie erfahren, wie Sie Apps auf Ihrem Ledger-Gerät installieren und öffnen.</annotation>
-  </string>
+    <string name="ledger_info_algorand_first_paragraph"><annotation url="https://www.ledger.com/start">Folgen Sie zunächst dem umfassenden <annotation type="bold"><annotation type="color">Anfänger-</annotation></annotation> Tutorial von Ledger, in dem Sie erfahren, wie Sie Apps auf Ihrem Ledger-Gerät installieren und öffnen.</annotation></string>
     <string name="ledger_info_algorand_second_paragraph">Wenn Sie die <annotation type="bold">Algorand -</annotation>App noch nicht installiert haben und Sie in dem Tutorial bei dem Schritt angelangt sind, wo Sie aufgefordert werden, die Anwendungen zu wählen, die Sie auf Ihrem Gerät installieren möchten („Select the application(s) you want to install on your device“), geben Sie „Algorand“ in die Suchleiste ein und installieren Sie die Anwendung. </string>
     <string name="error_connection_title">Verbindungsfehler</string>
     <string name="error_connection_message">Es konnte keine Verbindung zum Ledger-Gerät hergestellt werden. Stellen Sie sicher, dass sich das Gerät in der Nähe befindet und entsperrt ist und dass Bluetooth aktiviert ist.</string>
@@ -571,7 +563,7 @@
     <string name="this_transaction_is_sending">Mit dieser Transaktion wird Ihr gesamtes Algo-Guthaben gesendet.</string>
     <string name="close_asset_to">Schließen und Asset senden an</string>
     <string name="this_transaction_is_sending_asset">Mit dieser Transaktion wird Ihr gesamtes %1$s-Guthaben gesendet und %1$s wird vom Ihrem Konto entfernt.</string>
-    <string name="this_transaction_fee_is_higher">Diese Transaktionsgebühr ist höher als die übliche Gebühr von 0,01 Algos.</string>
+    <string name="this_transaction_fee_is_higher">Diese Transaktionsgebühr ist höher als die übliche Gebühr von 0,001 Algos.</string>
     <string name="wallet_connect_is_not_reachable">WalletConnect ist im Moment nicht erreichbar. Bitte versuchen Sie es später noch einmal.</string>
     <string name="the_recipient_address_is_not">Die Empfängeradresse ist keine gültige Algorand-Adresse. Bitte versuchen Sie es erneut.</string>
     <string name="application_opt_in_formatted">Anwendungs-Opt-in an %1$s</string>
@@ -598,4 +590,21 @@
     <string name="approval_hash">Genehmigungs-Hash</string>
     <string name="clear_state_hash">Status-Hash löschen</string>
     <string name="based_on_your_account">Basierend auf Ihrer Kontokonfiguration beträgt Ihr Mindestguthaben %1$s. Wenn Sie auf \"Weiter\" klicken, wird Ihr Transaktionsbetrag aktualisiert, um das erforderliche Mindestguthaben der Algorand-Blockchain beizubehalten. Sie können diese Änderung im nächsten Schritt in der Vorschau sehen.</string>
+    <string name="asset_reconfiguration_request">Anfrage zur Neukonfiguration von Assets</string>
+    <string name="manager_account">Manager-Konto</string>
+    <string name="reserve_account">Reserve-Konto</string>
+    <string name="clawback_account">Clawback-Konto</string>
+    <string name="freeze_account">Konto einfrieren</string>
+    <string name="decimal_places">Dezimalstellen</string>
+    <string name="default_frozen">Standard eingefroren</string>
+    <string name="off">Aus</string>
+    <string name="on">Ein</string>
+    <string name="asset_creation_request">Anfrage zur Asset-Erstellung</string>
+    <string name="asset_deletion_request">Anfrage zur Asset-Löschung</string>
+    <string name="asset_name">Asset-Name</string>
+    <string name="unit_name">Name der Einheit</string>
+    <string name="asset_deletion_warning_message">Dieses Asset wird gelöscht.</string>
+    <string name="governance_banner_title">Das Algorand-Governance-Programm beginnt!</string>
+    <string name="governance_banner_description">Governor werden. Über die Zukunft von Algorand abstimmen. Belohnungen verdienen.</string>
+    <string name="governance_banner_button_text">Los geht\'s</string>
 </resources>

@@ -15,6 +15,7 @@ package com.algorand.android.ui.wcrawtransaction
 import androidx.hilt.lifecycle.ViewModelInject
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.models.AssetParams
+import com.algorand.android.models.DecodedWalletConnectTransactionRequest
 import com.algorand.android.models.WCAlgoTransactionRequest
 import com.algorand.android.models.WalletConnectRawTransaction
 import com.algorand.android.models.WalletConnectTransactionRequest
@@ -32,8 +33,9 @@ class WalletConnectRawMessageViewModel @ViewModelInject constructor(
             decodeBase64DecodedMsgPackToJsonString(txnRequest.transactionMsgPack),
             WalletConnectTransactionRequest::class.java
         )
+        val decodedTransaction = DecodedWalletConnectTransactionRequest.create(transaction)
         val decodedSignerList = txnRequest.signers?.mapNotNull { getBase64DecodedPublicKey(it) }
-        val rawTxn = WalletConnectRawTransaction(transaction, decodedSignerList)
+        val rawTxn = WalletConnectRawTransaction(decodedTransaction, decodedSignerList)
         return getFormattedJsonArrayString(gson.toJson(rawTxn))
     }
 

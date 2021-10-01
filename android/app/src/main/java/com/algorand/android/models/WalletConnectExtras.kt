@@ -15,8 +15,9 @@ package com.algorand.android.models
 data class WalletConnectExtras(
     val rawTransaction: WCAlgoTransactionRequest,
     val note: String?,
-    val algoExplorerUrl: String? = null,
+    val assetId: Long? = null,
     val assetUrl: String? = null,
     val assetMetadata: AssetParams? = null,
-    val networkSlug: String? = null
+    val networkSlug: String? = null,
+    val metadataHash: String? = null
 )

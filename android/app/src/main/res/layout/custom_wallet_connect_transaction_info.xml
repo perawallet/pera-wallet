@@ -55,11 +55,77 @@
         android:gravity="end"
         android:textSize="14sp"
         app:layout_constrainedWidth="true"
-        app:layout_constraintBottom_toTopOf="@id/assetInfoDividerView"
+        app:layout_constraintBottom_toTopOf="@id/assetNameDividerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/accountTypeImageView"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@tools:sample/lorem[12]" />
+
+    <View
+        android:id="@+id/assetNameDividerView"
+        style="@style/HorizontalDivider.WalletConnectCards"
+        app:layout_constraintBottom_toTopOf="@id/assetTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/accountNameTextView" />
+
+    <TextView
+        android:id="@+id/assetNameLabelTextView"
+        style="@style/TextAppearance.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/asset_name"
+        app:layout_constraintBottom_toBottomOf="@id/assetTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/assetTextView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/assetTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
+        android:fontFamily="@font/publicsans_medium"
+        android:gravity="end"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/assetUnitNameDividerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/labelBarrier"
+        app:layout_constraintTop_toBottomOf="@id/assetNameDividerView"
+        tools:text="@tools:sample/lorem[4]" />
+
+    <View
+        android:id="@+id/assetUnitNameDividerView"
+        style="@style/HorizontalDivider.WalletConnectCards"
+        app:layout_constraintBottom_toTopOf="@id/assetUnitNameTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/assetTextView" />
+
+    <TextView
+        android:id="@+id/assetUnitNameLabelTextView"
+        style="@style/TextAppearance.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/unit_name"
+        app:layout_constraintBottom_toBottomOf="@id/assetUnitNameTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/assetUnitNameTextView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/assetUnitNameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
+        android:fontFamily="@font/publicsans_medium"
+        android:gravity="end"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/assetInfoDividerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/labelBarrier"
+        app:layout_constraintTop_toBottomOf="@id/assetUnitNameDividerView"
+        tools:text="@tools:sample/lorem[4]" />
 
     <View
         android:id="@+id/assetInfoDividerView"
@@ -67,7 +133,7 @@
         app:layout_constraintBottom_toTopOf="@id/assetNameTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/accountNameTextView" />
+        app:layout_constraintTop_toBottomOf="@id/assetUnitNameTextView" />
 
     <TextView
         android:id="@+id/assetLabelTextView"
@@ -88,7 +154,7 @@
         android:fontFamily="@font/publicsans_medium"
         android:textSize="14sp"
         app:anchorTextsToEnd="true"
-        app:layout_constraintBottom_toTopOf="@id/accountBalanceDivider"
+        app:layout_constraintBottom_toTopOf="@id/assetDeletionRequestWarningTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@id/labelBarrier"
@@ -97,13 +163,26 @@
         app:showId="true"
         app:showSubText="true" />
 
+    <TextView
+        android:id="@+id/assetDeletionRequestWarningTextView"
+        style="@style/WalletConnectWarningTextStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/asset_deletion_warning_message"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/accountBalanceDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/assetNameTextView"
+        tools:visibility="visible" />
+
     <View
         android:id="@+id/accountBalanceDivider"
         style="@style/HorizontalDivider.WalletConnectCards"
         app:layout_constraintBottom_toTopOf="@id/accountBalanceTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/assetNameTextView" />
+        app:layout_constraintTop_toBottomOf="@id/assetDeletionRequestWarningTextView" />
 
     <TextView
         android:id="@+id/accountBalanceLabelTextView"
@@ -263,6 +342,28 @@
         assetNameTextView,
         assetLabelTextView,
         assetInfoDividerView"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/assetNameGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="
+        assetNameDividerView,
+        assetNameLabelTextView,
+        assetTextView"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/unitNameGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="
+        assetUnitNameDividerView,
+        assetUnitNameLabelTextView,
+        assetUnitNameTextView"
         tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.Barrier

@@ -15,19 +15,23 @@ package com.algorand.android.utils.walletconnect
 import android.util.Base64
 import androidx.navigation.NavDirections
 import com.algorand.android.R
+import com.algorand.android.WalletConnectRequestNavigationDirections.Companion.actionGlobalWalletConnectAssetConfigurationTransactionFragment
 import com.algorand.android.WalletConnectRequestNavigationDirections.Companion.actionWalletConnectTransactionRequestFragmentToWalletConnectAppCallTransactionFragment
 import com.algorand.android.WalletConnectRequestNavigationDirections.Companion.actionWalletConnectTransactionRequestFragmentToWalletConnectAssetTransactionFragment
 import com.algorand.android.WalletConnectRequestNavigationDirections.Companion.actionWalletConnectTransactionRequestFragmentToWalletConnectPaymentTransactionFragment
 import com.algorand.android.models.BaseAppCallTransaction
+import com.algorand.android.models.BaseAssetConfigurationTransaction
 import com.algorand.android.models.BaseAssetTransferTransaction
 import com.algorand.android.models.BasePaymentTransaction
 import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.WCAlgoTransactionRequest
 import com.algorand.android.models.WalletConnectTransaction
 import com.algorand.android.models.WalletConnectTransactionRequest
+import com.algorand.android.utils.decodeBase64
 import com.algorand.android.utils.decodeBase64DecodedMsgPackToJsonString
 import com.algorand.android.utils.getTransactionId
 import com.algorand.android.utils.signTx
+import com.google.crypto.tink.subtle.Hex
 import com.google.gson.Gson
 
 const val WALLET_CONNECT_URL_PREFIX = "wc:"
@@ -41,8 +45,8 @@ private val placeholderIconResIdList = listOf(
 )
 
 // TODO add more check if possible (bridge and key)
-fun isValidWalletConnectQr(qrCode: String): Boolean {
-    return qrCode.startsWith(WALLET_CONNECT_URL_PREFIX)
+fun isValidWalletConnectUrl(url: String): Boolean {
+    return url.startsWith(WALLET_CONNECT_URL_PREFIX) && url.length > WALLET_CONNECT_URL_PREFIX.length
 }
 
 fun WCAlgoTransactionRequest.getTransactionRequest(gson: Gson): WalletConnectTransactionRequest {
@@ -64,7 +68,16 @@ fun decodeBase64ToString(text: String?): String {
     }
 }
 
+fun encodeBase64EncodedHexString(text: String?): String? {
+    return try {
+        Hex.encode(text?.decodeBase64())
+    } catch (exception: Exception) {
+        null
+    }
+}
+
 fun getWalletConnectTransactionRequestDirection(transaction: BaseWalletConnectTransaction): NavDirections? {
+    // TODO: 28.09.2021 We should move this into their model class
     return when (transaction) {
         is BasePaymentTransaction -> {
             actionWalletConnectTransactionRequestFragmentToWalletConnectPaymentTransactionFragment(transaction)
@@ -74,6 +87,9 @@ fun getWalletConnectTransactionRequestDirection(transaction: BaseWalletConnectTr
         }
         is BaseAppCallTransaction -> {
             actionWalletConnectTransactionRequestFragmentToWalletConnectAppCallTransactionFragment(transaction)
+        }
+        is BaseAssetConfigurationTransaction -> {
+            actionGlobalWalletConnectAssetConfigurationTransactionFragment(transaction)
         }
         else -> null
     }
@@ -91,6 +107,7 @@ fun WalletConnectTransaction.isFutureTransaction(): Boolean {
     return transactionList.flatten().any {
         if (it.requestedBlockCurrentRound == -1L) return false
         val warningThreshold = it.requestedBlockCurrentRound + FUTURE_TRANSACTION_WARNING_THRESHOLD
-        return it.walletConnectTransactionParams.firstValidRound > warningThreshold
+        val firstValidRound = it.walletConnectTransactionParams.firstValidRound
+        return if (firstValidRound == null) false else firstValidRound > warningThreshold
     }
 }

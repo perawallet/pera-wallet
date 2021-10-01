@@ -18,6 +18,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.StringRes
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import androidx.core.view.updatePadding
 import com.algorand.android.R
@@ -41,12 +42,33 @@ class WalletConnectTransactionInfoCardView(
 
     fun initTransactionInfo(transactionInfo: WalletConnectTransactionInfo) {
         binding.root.visibility = View.VISIBLE
+        binding.assetDeletionRequestWarningTextView.isVisible = transactionInfo.showAssetDeletionWarning
         with(transactionInfo) {
             initFromAddress(fromDisplayedAddress, accountTypeImageResId)
-            initAssetInformation(assetInformation)
+            initAssetInformation(assetInformation, showAssetDeletionWarning)
             initAccountBalance(accountBalance, assetDecimal, assetInformation?.isAlgorand())
             initRekeyToAddress(rekeyToAccountAddress)
             initCloseToAddress(closeToAccountAddress)
+            initAssetName(assetName)
+            initUnitName(unitName)
+        }
+    }
+
+    private fun initAssetName(assetName: String?) {
+        if (!assetName.isNullOrEmpty()) {
+            with(binding) {
+                assetTextView.text = assetName
+                assetNameGroup.visibility = VISIBLE
+            }
+        }
+    }
+
+    private fun initUnitName(assetUnitName: String?) {
+        if (!assetUnitName.isNullOrEmpty()) {
+            with(binding) {
+                assetUnitNameTextView.text = assetUnitName
+                unitNameGroup.visibility = VISIBLE
+            }
         }
     }
 
@@ -73,10 +95,11 @@ class WalletConnectTransactionInfoCardView(
         }
     }
 
-    private fun initAssetInformation(assetInformation: AssetInformation?) {
+    private fun initAssetInformation(assetInformation: AssetInformation?, showAssetDeletionMessage: Boolean) {
         if (assetInformation != null) {
             with(binding) {
                 assetNameTextView.setupUI(assetInformation, false)
+                assetDeletionRequestWarningTextView.isVisible = showAssetDeletionMessage
                 assetGroup.visibility = View.VISIBLE
             }
         }

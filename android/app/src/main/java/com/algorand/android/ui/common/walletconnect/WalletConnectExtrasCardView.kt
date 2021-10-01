@@ -15,6 +15,7 @@ package com.algorand.android.ui.common.walletconnect
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
@@ -40,13 +41,15 @@ class WalletConnectExtrasCardView(
     }
 
     fun initExtras(extras: WalletConnectExtras, listener: Listener) {
+        binding.root.visibility = View.VISIBLE
         this.listener = listener
         with(extras) {
             initNote(note)
             initRawTxnsText(rawTransaction)
-            initAlgoExplorer(algoExplorerUrl, networkSlug)
+            initAlgoExplorer(assetId, networkSlug)
             initAssetUrl(assetUrl)
             initAssetMetaData(assetMetadata)
+            initMetadataHash(metadataHash)
         }
     }
 
@@ -61,10 +64,10 @@ class WalletConnectExtrasCardView(
         binding.rawTxnsTextView.setOnClickListener { listener?.onRawTransactionClick(rawTransaction) }
     }
 
-    private fun initAlgoExplorer(algoExplorerUrl: String?, networkSlug: String?) {
+    private fun initAlgoExplorer(assetId: Long?, networkSlug: String?) {
         with(binding) {
-            algoExplorerGroup.isVisible = algoExplorerUrl.isNullOrEmpty().not()
-            algoExplorerTextView.setOnClickListener { listener?.onAlgoExplorerClick(algoExplorerUrl, networkSlug) }
+            algoExplorerGroup.isVisible = assetId != null
+            algoExplorerTextView.setOnClickListener { listener?.onAlgoExplorerClick(assetId, networkSlug) }
         }
     }
 
@@ -82,6 +85,13 @@ class WalletConnectExtrasCardView(
         }
     }
 
+    private fun initMetadataHash(metadataHash: String?) {
+        with(binding) {
+            metadataHashGroup.isVisible = !metadataHash.isNullOrBlank()
+            metadataHashTextView.text = metadataHash
+        }
+    }
+
     private fun initRootLayout() {
         setBackgroundResource(R.drawable.bg_small_shadow)
         setPadding(resources.getDimensionPixelSize(R.dimen.keyline_1_plus_4_dp))
@@ -90,7 +100,7 @@ class WalletConnectExtrasCardView(
 
     interface Listener {
         fun onRawTransactionClick(rawTransaction: WCAlgoTransactionRequest) {}
-        fun onAlgoExplorerClick(algoExplorerId: String?, networkSlug: String?) {}
+        fun onAlgoExplorerClick(assetId: Long?, networkSlug: String?) {}
         fun onAssetUrlClick(assetUrl: String?) {}
         fun onAssetMetadataClick(assetParams: AssetParams?) {}
     }

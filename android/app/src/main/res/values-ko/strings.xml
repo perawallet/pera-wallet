@@ -200,19 +200,11 @@
     <string name="connecting_to_ledger">Ledger에 연결 중…</string>
     <string name="ledger_approval">Ledger 승인</string>
     <string name="please_make_sure">Ledger 기기에서 트랜잭션을 확인해 주세요</string>
-    <string name="ledger_info_power_first_paragraph">
-    <annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">Ledger의 Bluetooth 기능 사용법은 Ledger의 공식 <annotation type="bold"><annotation type="color">Bluetooth 연결 가이드에서 찾아보실 수 있습니다.</annotation></annotation></annotation>
-  </string>
-    <string name="ledger_info_power_second_paragraph">
-    <annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">고급 문제 해결 안내가 필요하신 경우 Ledger의 공식 <annotation type="bold"><annotation type="color">Bluetooth 문제 해결 가이드를 참조하세요.</annotation></annotation></annotation>
-  </string>
-    <string name="ledger_info_ledger_first_paragraph">
-    <annotation url="https://www.ledger.com/start">Ledger의 종합적인 <annotation type="bold"><annotation type="color">시작하기</annotation></annotation> 튜토리얼부터 따라서 시작해보세요.</annotation>
-  </string>
+    <string name="ledger_info_power_first_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">Ledger의 Bluetooth 기능 사용법은 Ledger의 공식 <annotation type="bold"><annotation type="color">Bluetooth 연결 가이드에서 찾아보실 수 있습니다.</annotation></annotation></annotation></string>
+    <string name="ledger_info_power_second_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">고급 문제 해결 안내가 필요하신 경우 Ledger의 공식 <annotation type="bold"><annotation type="color">Bluetooth 문제 해결 가이드를 참조하세요.</annotation></annotation></annotation></string>
+    <string name="ledger_info_ledger_first_paragraph"><annotation url="https://www.ledger.com/start">Ledger의 종합적인 <annotation type="bold"><annotation type="color">시작하기</annotation></annotation> 튜토리얼부터 따라서 시작해보세요.</annotation></string>
     <string name="ledger_info_ledger_second_paragraph">튜토리얼에서 “기기에 설치하고자 하는 애플리케이션 선택(select the application(s) you want to install on your device)” 단계까지 진행하셨다면 검색창에 알고랜드(Algorand)를 입력하고 설치해 주세요.</string>
-    <string name="ledger_info_algorand_first_paragraph">
-    <annotation url="https://www.ledger.com/start">Ledger의 종합적인 <annotation type="bold"><annotation type="color">시작하기</annotation></annotation> 튜토리얼부터 따라서 시작해보세요. Ledger 기기에서 앱을 설치하고 실행하는 방법을 안내해 드립니다.</annotation>
-  </string>
+    <string name="ledger_info_algorand_first_paragraph"><annotation url="https://www.ledger.com/start">Ledger의 종합적인 <annotation type="bold"><annotation type="color">시작하기</annotation></annotation> 튜토리얼부터 따라서 시작해보세요. Ledger 기기에서 앱을 설치하고 실행하는 방법을 안내해 드립니다.</annotation></string>
     <string name="ledger_info_algorand_second_paragraph">아직 Ledger 기기에 <annotation type="bold">알고랜드</annotation> 앱을 설치하지 않으신 경우, 튜토리얼에서 “기기에 설치하고자 하는 애플리케이션 선택(select the application(s) you want to install on your device)” 단계까지 진행하시고 검색창에 알고랜드(Algorand)를 입력해 설치해 주세요.</string>
     <string name="error_connection_title">연결 오류</string>
     <string name="error_connection_message">Ledger 기기에 연결할 수 없습니다. 기기의 잠금을 해제하고 스마트폰 가까이에 두었는지, Bluetooth를 켰는지 확인해 주세요.</string>
@@ -548,7 +540,7 @@
     <string name="this_transaction_is_sending">이번 트랜잭션으로 알고 잔액 전체를 송금합니다.</string>
     <string name="close_asset_to">계정 삭제 - 자산을 받으시는 분</string>
     <string name="this_transaction_is_sending_asset">이번 트랜잭션으로 %1$s 잔액 전체를 송금하고, 계정에서 %1$s이(가) 삭제됩니다.</string>
-    <string name="this_transaction_fee_is_higher">이 트랜잭션 수수료는 일반적인 수수료(0.01알고)보다 높습니다.</string>
+    <string name="this_transaction_fee_is_higher">이 트랜잭션 수수료는 일반적인 수수료(0.001알고)보다 높습니다.</string>
     <string name="wallet_connect_is_not_reachable">현재 WalletConnect에 연결할 수 없습니다. 나중에 다시 시도해 주세요.</string>
     <string name="the_recipient_address_is_not">받으시는 분 주소가 유효한 알고랜드 주소가 아닙니다. 다시 시도해 주세요.</string>
     <string name="application_opt_in_formatted">애플리케이션: #%1$s(으)로 옵트인</string>
@@ -573,6 +565,21 @@
     <string name="approval_hash">승인 해시</string>
     <string name="clear_state_hash">상태 해시 지우기</string>
     <string name="based_on_your_account">계정 설정에 따라, 최소 잔액 기준은 %1$s알고입니다. 계속을 누르시면 알고랜드 블록체인의 필수 잔액을 유지하기 위해 트랜잭션 금액이 업데이트됩니다. 다음 단계에서 변경 내용을 미리 볼 수 있습니다.</string>
+    <string name="asset_reconfiguration_request">자산 재구성 요청</string>
+    <string name="manager_account">관리자 계정</string>
+    <string name="reserve_account">보유 계정</string>
+    <string name="clawback_account">환수 계정</string>
+    <string name="freeze_account">계정 동결</string>
+    <string name="decimal_places">소수점</string>
+    <string name="default_frozen">기본 동결</string>
+    <string name="off">끄기</string>
+    <string name="on">켜기</string>
+    <string name="asset_creation_request">자산 생성 요청</string>
+    <string name="asset_deletion_request">자산 삭제 요청</string>
+    <string name="asset_name">자산 이름</string>
+    <string name="unit_name">단위 이름</string>
+    <string name="asset_deletion_warning_message">자산이 삭제됩니다.</string>
+    <string name="governance_banner_title">알고랜드 거버넌스 프로그램이 시작됩니다!</string>
+    <string name="governance_banner_description">거버너가 되어 알고랜드의 미래에 투표하고 보상을 받으세요.</string>
+    <string name="governance_banner_button_text">시작</string>
 </resources>
-
-

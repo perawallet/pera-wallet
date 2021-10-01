@@ -82,6 +82,10 @@ data class AccountCacheData(
         }
     }
 
+    fun getAssetInfoById(assetId: Long): String? {
+        return assetsInformation.find { it.assetId == assetId }?.fullName
+    }
+
     companion object {
         private const val ASSET_INSERTION_POSITION = 1
 

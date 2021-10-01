@@ -14,12 +14,14 @@
 package com.algorand.android.ui.wctransactiondetail
 
 import androidx.hilt.lifecycle.ViewModelInject
+import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
 import com.algorand.android.models.BasePaymentTransaction
 import com.algorand.android.models.BaseWalletConnectDisplayedAddress
 import com.algorand.android.models.WalletConnectAmountInfo
 import com.algorand.android.models.WalletConnectExtras
 import com.algorand.android.models.WalletConnectTransactionInfo
+import java.math.BigInteger
 
 class WalletConnectPaymentTransactionViewModel @ViewModelInject constructor() :
     BaseWalletConnectTransactionViewModel() {
@@ -47,8 +49,11 @@ class WalletConnectPaymentTransactionViewModel @ViewModelInject constructor() :
     fun getTransactionInfo(transaction: BasePaymentTransaction) {
         with(transaction) {
             val decodedSenderAddress = senderAddress.decodedAddress ?: return
-            val assetInformation = accountCacheData?.assetsInformation?.firstOrNull { it.assetId == ALGORAND_ID }
-            val accountBalance = assetInformation?.amount
+            val accountBalance: BigInteger?
+            val assetInformation = accountCacheData?.assetsInformation?.firstOrNull { it.assetId == ALGORAND_ID }.run {
+                accountBalance = this?.amount
+                this ?: AssetInformation.getAlgorandAsset()
+            }
             val transactionInfo = WalletConnectTransactionInfo(
                 BaseWalletConnectDisplayedAddress.create(decodedSenderAddress, accountCacheData),
                 peerMeta.name,

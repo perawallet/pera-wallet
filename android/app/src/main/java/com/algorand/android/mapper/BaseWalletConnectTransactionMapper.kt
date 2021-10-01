@@ -30,14 +30,14 @@ abstract class BaseWalletConnectTransactionMapper {
 
     protected fun createTransactionParams(
         transactionRequest: WalletConnectTransactionRequest
-    ): WalletConnectTransactionParams? {
+    ): WalletConnectTransactionParams {
         return with(transactionRequest) {
             WalletConnectTransactionParams(
-                fee = fee ?: return null,
-                firstValidRound = firstValidRound ?: return null,
-                lastValidRound = lastValidRound ?: return null,
-                genesisId = genesisId ?: return null,
-                genesisHash = genesisHash ?: return null
+                fee = fee ?: 0L,
+                firstValidRound = firstValidRound,
+                lastValidRound = lastValidRound,
+                genesisId = genesisId,
+                genesisHash = genesisHash
             )
         }
     }

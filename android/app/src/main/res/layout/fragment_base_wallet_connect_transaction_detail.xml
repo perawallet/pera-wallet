@@ -50,13 +50,26 @@
             android:id="@+id/amountInfoCardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <com.algorand.android.ui.common.walletconnect.WalletConnectAccountsInfoCardView
+            android:id="@+id/accountsCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <com.algorand.android.ui.common.walletconnect.WalletConnectExtrasCardView
             android:id="@+id/extrasCardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
     </LinearLayout>
+
 </ScrollView>

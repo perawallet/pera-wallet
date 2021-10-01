@@ -200,19 +200,11 @@
     <string name="connecting_to_ledger">正在连接Ledger…</string>
     <string name="ledger_approval">Ledger批准</string>
     <string name="please_make_sure">请在Ledger设备上确认交易</string>
-    <string name="ledger_info_power_first_paragraph">
-    <annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">关于Ledger蓝牙功能的一般使用，请查阅Ledger的官方 <annotation type="bold"><annotation type="color">蓝牙连接指南</annotation></annotation></annotation>
-  </string>
-    <string name="ledger_info_power_second_paragraph">
-    <annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">关于更多高级故障排除功能，请查阅Ledger的官方 <annotation type="bold"><annotation type="color">蓝牙故障排除指南。</annotation></annotation></annotation>
-  </string>
-    <string name="ledger_info_ledger_first_paragraph">
-    <annotation url="https://www.ledger.com/start">遵循Ledger的完整<annotation type="bold"><annotation type="color">开始使用</annotation></annotation>教程。</annotation>
-  </string>
+    <string name="ledger_info_power_first_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">关于Ledger蓝牙功能的一般使用，请查阅Ledger的官方 <annotation type="bold"><annotation type="color">蓝牙连接指南</annotation></annotation></annotation></string>
+    <string name="ledger_info_power_second_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">关于更多高级故障排除功能，请查阅Ledger的官方 <annotation type="bold"><annotation type="color">蓝牙故障排除指南。</annotation></annotation></annotation></string>
+    <string name="ledger_info_ledger_first_paragraph"><annotation url="https://www.ledger.com/start">遵循Ledger的完整<annotation type="bold"><annotation type="color">开始使用</annotation></annotation>教程。</annotation></string>
     <string name="ledger_info_ledger_second_paragraph">当教程指导您“选择想在设备上安装的应用”，请在搜索栏上输入Algorand，并进行安装。</string>
-    <string name="ledger_info_algorand_first_paragraph">
-    <annotation url="https://www.ledger.com/start">Ledger的完整<annotation type="bold"><annotation type="color">开始使用</annotation></annotation> 教程，会教您如何在Ledger设备上安装和打开应用。</annotation>
-  </string>
+    <string name="ledger_info_algorand_first_paragraph"><annotation url="https://www.ledger.com/start">Ledger的完整<annotation type="bold"><annotation type="color">开始使用</annotation></annotation> 教程，会教您如何在Ledger设备上安装和打开应用。</annotation></string>
     <string name="ledger_info_algorand_second_paragraph">若您尚未在Ledger设备上安装<annotation type="bold">Algorand</annotation> 应用，当教程指导您“选择想在设备上安装的应用”，请在搜索栏上输入Algorand，并进行安装。</string>
     <string name="error_connection_title">连接错误</string>
     <string name="error_connection_message">无法连接Ledger设备。请确认该设备在附近并已解锁，而且蓝牙功能已开启。</string>
@@ -518,9 +510,7 @@
     <string name="transaction_maximum_error_message_plural">由于您在此账户中有<annotation replacement="asset_count">资产数量</annotation>的其他资产（<annotation replacement="account_name">资产名称</annotation>），Algorand区块链要求至少要持有<annotation replacement="min_balance">最低余额数量</annotation>ALGOs的最低余额。\n\n通过点击继续，您的交易金额将自动更新以反映这一变化。您将能在下一步预览这一变化。</string>
     <string name="you_have_not_connected">尚未添加任何APP。</string>
     <string name="wallet_connect_sessions">WalletConnect 会话</string>
-    <string name="wallet_wants_to_connect">
-    <annotation type="bold"><annotation replacement="app_name">APP名称</annotation>想要连接到您的账户</annotation>
-  </string>
+    <string name="wallet_wants_to_connect"><annotation type="bold"><annotation replacement="app_name">APP名称</annotation>想要连接到您的账户</annotation></string>
     <string name="you_do_not_have_any">您没有 WalletConnect 可以连接的帐户。</string>
     <string name="disconnect">断开</string>
     <string name="remainder_close_to">剩余资产抄送至</string>
@@ -570,7 +560,7 @@
     <string name="this_transaction_is_sending">此交易将发送您的全部ALGO余额。</string>
     <string name="close_asset_to">资产抄送至</string>
     <string name="this_transaction_is_sending_asset">此交易将发送您的全部%1$s余额，并将从您的账户中扣除%1$s。</string>
-    <string name="this_transaction_fee_is_higher">此交易费用高于平时的 0.01 ALGO。</string>
+    <string name="this_transaction_fee_is_higher">此交易费用高于平时的 0.001 ALGO。</string>
     <string name="wallet_connect_is_not_reachable">目前无法访问 WalletConnect，请稍后再试。</string>
     <string name="the_recipient_address_is_not">收件人地址不是有效的Algorand地址，请重试。</string>
     <string name="application_opt_in_formatted">应用程序选择加入%1$s</string>
@@ -595,4 +585,21 @@
     <string name="approval_hash">批准哈希</string>
     <string name="clear_state_hash">清理状态哈希</string>
     <string name="based_on_your_account">根据您的账户配置，您的最低余额为%1$s。点击继续后，您的交易金额将被更新，维持Algorand区块链的最低余额要求。你将能够在下一步中预览这一变化。</string>
+    <string name="asset_reconfiguration_request">重新配置资产请求</string>
+    <string name="manager_account">经理账户</string>
+    <string name="reserve_account">储备账户</string>
+    <string name="clawback_account">回拨账户</string>
+    <string name="freeze_account">冻结账户</string>
+    <string name="decimal_places">小数位数</string>
+    <string name="default_frozen">默认冻结</string>
+    <string name="off">关闭</string>
+    <string name="on">启动</string>
+    <string name="asset_creation_request">资产创建请求</string>
+    <string name="asset_deletion_request">资产删除请求</string>
+    <string name="asset_name">资产名称</string>
+    <string name="unit_name">单位名称</string>
+    <string name="asset_deletion_warning_message">该笔资产将被删除。</string>
+    <string name="governance_banner_title">Algorand治理计划已经启动了！</string>
+    <string name="governance_banner_description">成为治理者，为Algorand的未来投票，赚取奖励。</string>
+    <string name="governance_banner_button_text">开始</string>
 </resources>

@@ -78,7 +78,7 @@
         app:iconTint="@color/walletConnectFeeAlgoIconColor"
         app:layout_constraintBottom_toTopOf="@id/feeDividerView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/labelBarrier"
+        app:layout_constraintStart_toEndOf="@id/amountLabelTextView"
         app:layout_constraintTop_toBottomOf="@id/amountDividerView"
         app:showOperator="true"
         app:useMicroAlgos="false"
@@ -132,6 +132,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/feeTextView"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/feeGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="
+        feeLabelTextView,
+        feeTextView"
         tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.Group

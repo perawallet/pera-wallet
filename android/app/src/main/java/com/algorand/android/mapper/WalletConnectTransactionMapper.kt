@@ -17,6 +17,7 @@ import com.algorand.android.models.SignTxnOptions
 import com.algorand.android.models.WCAlgoTransactionRequest
 import com.algorand.android.models.WalletConnectPeerMeta
 import com.algorand.android.models.WalletConnectTransactionType.APP_TRANSACTION
+import com.algorand.android.models.WalletConnectTransactionType.ASSET_CONFIGURATION
 import com.algorand.android.models.WalletConnectTransactionType.ASSET_TRANSACTION
 import com.algorand.android.models.WalletConnectTransactionType.PAY_TRANSACTION
 import com.algorand.android.utils.walletconnect.getTransactionRequest
@@ -27,6 +28,7 @@ class WalletConnectTransactionMapper @Inject constructor(
     private val paymentTransactionMapper: PaymentTransactionMapper,
     private val appCallTransactionMapper: AppCallTransactionMapper,
     private val assetTransferTransactionMapper: AssetTransferTransactionMapper,
+    private val assetConfigurationTransactionMapper: AssetConfigurationTransactionMapper,
     private val gson: Gson
 ) {
 
@@ -63,6 +65,9 @@ class WalletConnectTransactionMapper @Inject constructor(
             }
             ASSET_TRANSACTION -> {
                 assetTransferTransactionMapper.createTransaction(peerMeta, transactionRequest, rawTxn)
+            }
+            ASSET_CONFIGURATION -> {
+                assetConfigurationTransactionMapper.createTransaction(peerMeta, transactionRequest, rawTxn)
             }
             else -> null
         }

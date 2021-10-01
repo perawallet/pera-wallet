@@ -31,15 +31,22 @@
     <action
         android:id="@+id/action_walletConnectTransactionRequestFragment_to_walletConnectAssetTransactionFragment"
         app:destination="@id/walletConnectAssetTransactionFragment" />
+
     <action
         android:id="@+id/action_walletConnectTransactionRequestFragment_to_walletConnectPaymentTransactionFragment"
         app:destination="@id/walletConnectPaymentTransactionFragment" />
+
     <action
         android:id="@+id/action_walletConnectTransactionRequestFragment_to_walletConnectAppCallTransactionFragment"
         app:destination="@id/walletConnectAppCallTransactionFragment" />
+
     <action
         android:id="@+id/action_walletConnectTransactionRequestFragment_to_walletConnectDappMessageBottomSheet"
         app:destination="@id/walletConnectDappMessageBottomSheet" />
+
+    <action
+        android:id="@+id/action_global_walletConnectAssetConfigurationTransactionFragment"
+        app:destination="@id/walletConnectAssetConfigurationTransactionFragment" />
 
     <fragment
         android:id="@+id/walletConnectTransactionRequestFragment"
@@ -106,6 +113,16 @@
             android:name="transactionList"
             app:argType="com.algorand.android.models.BaseWalletConnectTransaction[]" />
     </fragment>
+
+    <fragment
+        android:id="@+id/walletConnectAssetConfigurationTransactionFragment"
+        android:name="com.algorand.android.ui.wctransactiondetail.WalletConnectAssetConfigurationTransactionFragment"
+        android:label="WalletConnectAssetConfigurationTransactionFragment">
+        <argument
+            android:name="transaction"
+            app:argType="com.algorand.android.models.BaseAssetConfigurationTransaction" />
+    </fragment>
+
     <dialog
         android:id="@+id/walletConnectDappMessageBottomSheet"
         android:name="com.algorand.android.ui.common.walletconnect.WalletConnectDappMessageBottomSheet"
@@ -118,6 +135,7 @@
             android:name="peerMeta"
             app:argType="com.algorand.android.models.WalletConnectPeerMeta" />
     </dialog>
+
     <dialog
         android:id="@+id/walletConnectRawTransactionBottomSheet"
         android:name="com.algorand.android.ui.wcrawtransaction.WalletConnectRawTransactionBottomSheet"

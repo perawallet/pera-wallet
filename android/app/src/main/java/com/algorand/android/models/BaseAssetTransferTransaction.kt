@@ -14,14 +14,14 @@ package com.algorand.android.models
 
 import com.algorand.android.R
 import com.algorand.android.utils.toShortenedAddress
+import com.algorand.android.utils.walletconnect.WalletConnectAssetDetail
 import java.math.BigInteger
 import kotlinx.parcelize.Parcelize
 
-sealed class BaseAssetTransferTransaction : BaseWalletConnectTransaction() {
+sealed class BaseAssetTransferTransaction : BaseWalletConnectTransaction(), WalletConnectAssetDetail {
 
     abstract val assetReceiverAddress: WalletConnectAddress
-    abstract val assetId: Long
-    open var assetParams: AssetParams? = null
+    override var assetParams: AssetParams? = null
 
     override val summaryTitleResId: Int = R.string.asset_transfer_formatted
     override val summarySecondaryParameter: String

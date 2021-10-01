@@ -22,6 +22,7 @@ import com.algorand.android.R
 import com.algorand.android.databinding.CustomWalletConnectTransactionSummaryViewBinding
 import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
 import com.algorand.android.models.BaseAppCallTransaction
+import com.algorand.android.models.BaseAssetConfigurationTransaction
 import com.algorand.android.models.BaseAssetTransferTransaction
 import com.algorand.android.models.BasePaymentTransaction
 import com.algorand.android.models.BaseWalletConnectTransaction
@@ -40,10 +41,16 @@ class WalletConnectTransactionSummaryCardView(
     }
 
     fun initTransaction(transaction: BaseWalletConnectTransaction) {
+        binding.root.visibility = View.VISIBLE
         setTitle(transaction)
-        setAmount(transaction)
-        setAccountBalance(transaction)
         binding.transactionInfoImageView.isVisible = transaction.shouldShowWarningIndicator
+        if (transaction is BaseAssetConfigurationTransaction) {
+            // TODO: 28.09.2021  
+            setAssetConfigurationTransaction(transaction)
+        } else {
+            setAmount(transaction)
+            setAccountBalance(transaction)
+        }
     }
 
     private fun setTitle(transaction: BaseWalletConnectTransaction) {
@@ -89,6 +96,58 @@ class WalletConnectTransactionSummaryCardView(
                 }
             }
             accountSummaryContainer.visibility = View.VISIBLE
+        }
+    }
+
+    private fun setAssetConfigurationTransaction(transaction: BaseAssetConfigurationTransaction) {
+        with(binding) {
+            with(transaction) {
+                when (this) {
+                    is BaseAssetConfigurationTransaction.BaseAssetCreationTransaction -> {
+                        accountCacheData?.let {
+                            val accountName = it.account.name.takeIf { it.isNotBlank() }
+                                ?: it.account.address.toShortenedAddress()
+                            transactionAccountNameTextView.text = accountName
+                            transactionAccountTypeImageView.setImageResource(it.getImageResource())
+                            transactionsAmountTextView.setAssetName(getAssetName(context))
+                            accountSummaryContainer.visibility = View.VISIBLE
+                            dotImageView.visibility = View.GONE
+                        } ?: run {
+                            transactionsAmountTextView.setAmount(
+                                amount = totalAmount,
+                                decimal = decimals?.toInt() ?: 0,
+                                isAlgorand = false,
+                                otherAssetName = getUnitName(context)
+                            )
+                        }
+                    }
+                    is BaseAssetConfigurationTransaction.BaseAssetDeletionTransaction -> {
+                        accountCacheData?.let {
+                            val accountName = it.account.name.takeIf { it.isNotBlank() }
+                                ?: it.account.address.toShortenedAddress()
+                            transactionAccountNameTextView.text = accountName
+                            transactionAccountTypeImageView.setImageResource(it.getImageResource())
+                            accountSummaryContainer.visibility = View.VISIBLE
+                            dotImageView.visibility = View.GONE
+                        }
+                        val formattedAssetId = resources.getString(R.string.asset_id_with_hash_tag, assetId)
+                        transactionsAmountTextView.setAssetName(formattedAssetId)
+                    }
+                    is BaseAssetConfigurationTransaction.BaseAssetReconfigurationTransaction -> {
+                        accountCacheData?.let {
+                            val accountName = it.account.name.takeIf { it.isNotBlank() }
+                                ?: it.account.address.toShortenedAddress()
+                            transactionAccountNameTextView.text = accountName
+                            transactionAccountTypeImageView.setImageResource(it.getImageResource())
+                            accountSummaryContainer.visibility = View.VISIBLE
+                            dotImageView.visibility = View.GONE
+                        }
+                        val assetName = accountCacheData?.getAssetInfoById(assetId).takeIf { !it.isNullOrBlank() }
+                            ?: assetParams?.fullName ?: return
+                        transactionsAmountTextView.setAssetName(assetName)
+                    }
+                }
+            }
         }
     }
 

@@ -16,29 +16,29 @@ package com.algorand.android.ui.wctransactiondetail
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
-import com.algorand.android.models.BaseAppCallTransaction
+import com.algorand.android.models.BaseAssetConfigurationTransaction
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.models.WalletConnectPeerMeta
-import com.algorand.android.utils.openApplicationInAlgoExplorer
+import com.algorand.android.utils.openAssetInAlgoExplorer
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class WalletConnectAppCallTransactionFragment : BaseWalletConnectTransactionDetailFragment() {
+class WalletConnectAssetConfigurationTransactionFragment : BaseWalletConnectTransactionDetailFragment() {
 
     private val toolbarConfiguration = ToolbarConfiguration(
         startIconResId = R.drawable.ic_back_navigation,
         startIconClick = ::navBack
     )
 
-    override val fragmentConfiguration: FragmentConfiguration = FragmentConfiguration(
-        toolbarConfiguration = toolbarConfiguration
-    )
+    override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
 
-    private val walletConnectAppCallTransactionViewModel: WalletConnectAppCallTransactionViewModel by viewModels()
-    private val args: WalletConnectAppCallTransactionFragmentArgs by navArgs()
+    private val args by navArgs<WalletConnectAssetConfigurationTransactionFragmentArgs>()
 
-    override val transaction: BaseAppCallTransaction
+    private val walletConnectAssetConfigurationTransactionViewModel:
+        WalletConnectAssetConfigurationTransactionViewModel by viewModels()
+
+    override val transaction: BaseAssetConfigurationTransaction
         get() = args.transaction
 
     override val peerMeta: WalletConnectPeerMeta
@@ -46,32 +46,27 @@ class WalletConnectAppCallTransactionFragment : BaseWalletConnectTransactionDeta
 
     override fun initUi() {
         super.initUi()
-        setToolbarTitle()
-        with(walletConnectAppCallTransactionViewModel) {
-            getAmountInfo(transaction)
-            getSenderInfo(transaction)
+        setToolbar()
+        with(walletConnectAssetConfigurationTransactionViewModel) {
+            getTransactionInfo(transaction)
+            getAccountsInfo(transaction)
             getExtras(transaction)
         }
     }
 
-    private fun setToolbarTitle() {
-        val toolbarTitleRes: Int = when (transaction) {
-            is BaseAppCallTransaction.AppCallCreationTransaction -> R.string.application_creation
-            else -> R.string.app_call
-        }
-        val toolbarTitle: String = getString(toolbarTitleRes)
-        getAppToolbar()?.changeTitle(toolbarTitle)
+    private fun setToolbar() {
+        getAppToolbar()?.changeTitle(getString(transaction.screenTitleResId))
     }
 
     override fun initObservers() {
-        with(walletConnectAppCallTransactionViewModel) {
-            amountInfoLiveData.observe(viewLifecycleOwner, amountInfoObserver)
-            senderInfoLiveData.observe(viewLifecycleOwner, senderInfoObserver)
+        with(walletConnectAssetConfigurationTransactionViewModel) {
+            transactionInfoLiveData.observe(viewLifecycleOwner, transactionInfoObserver)
+            accountsInfoLiveData.observe(viewLifecycleOwner, accountsInfoObserver)
             extrasLiveData.observe(viewLifecycleOwner, extrasObserver)
         }
     }
 
     override fun onAlgoExplorerClick(assetId: Long?, networkSlug: String?) {
-        context?.openApplicationInAlgoExplorer(assetId, networkSlug)
+        context?.openAssetInAlgoExplorer(assetId, networkSlug)
     }
 }

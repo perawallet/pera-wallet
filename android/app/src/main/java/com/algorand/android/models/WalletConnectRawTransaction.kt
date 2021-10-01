@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class WalletConnectRawTransaction(
     @SerializedName("txn")
-    val rawTransactionRequest: WalletConnectTransactionRequest,
+    val rawTransactionRequest: DecodedWalletConnectTransactionRequest,
     @SerializedName("signer")
     val signers: List<String>? = null
 )

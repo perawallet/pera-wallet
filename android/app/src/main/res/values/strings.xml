@@ -554,7 +554,7 @@
     <string name="this_transaction_is_sending">This transaction is sending your full Algo balance.</string>
     <string name="close_asset_to">Close Asset To</string>
     <string name="this_transaction_is_sending_asset">This transaction is sending your full %1$s balance and will remove %1$s from your account.</string>
-    <string name="this_transaction_fee_is_higher">This transaction fee is higher than the usual fee of 0.01 Algos.</string>
+    <string name="this_transaction_fee_is_higher">This transaction fee is higher than the usual fee of 0.001 Algos.</string>
     <string name="wallet_connect_is_not_reachable">WalletConnect is not reachable at the moment. Please try again later.</string>
     <string name="the_recipient_address_is_not">The recipient address is not a valid Algorand address. Please try again.</string>
     <string name="application_opt_in_formatted">Application Opt in to #%1$s</string>
@@ -581,4 +581,21 @@
     <string name="approval_hash">Approval Hash</string>
     <string name="clear_state_hash">Clear State Hash</string>
     <string name="based_on_your_account">Based on your account configuration, your minimum balance is %1$s. By hitting continue, your transaction amount will be updated to maintain the Algorand Blockchain\'s minimum required balance. You\'ll be able to preview this change in the next step.</string>
+    <string name="asset_reconfiguration_request">Asset Reconfiguration Request</string>
+    <string name="manager_account">Manager Account</string>
+    <string name="reserve_account">Reserve Account</string>
+    <string name="clawback_account">Clawback Account</string>
+    <string name="freeze_account">Freeze Account</string>
+    <string name="decimal_places">Decimal Places</string>
+    <string name="default_frozen">Default Frozen</string>
+    <string name="off">Off</string>
+    <string name="on">On</string>
+    <string name="asset_creation_request">Asset Creation Request</string>
+    <string name="asset_deletion_request">Asset Deletion Request</string>
+    <string name="asset_name">Asset Name</string>
+    <string name="unit_name">Unit Name</string>
+    <string name="asset_deletion_warning_message">This asset will be deleted.</string>
+    <string name="governance_banner_title">Algorand Governance Program is starting!</string>
+    <string name="governance_banner_description">Become a governor. Vote on Algorand’s future. Earn rewards.</string>
+    <string name="governance_banner_button_text">Get Started</string>
 </resources>

@@ -200,19 +200,11 @@
     <string name="connecting_to_ledger">Conectando ao Ledger…</string>
     <string name="ledger_approval">Aprovação do Ledger</string>
     <string name="please_make_sure">Certifique-se de confirmar a transação em seu dispositivo Ledger</string>
-    <string name="ledger_info_power_first_paragraph">
-    <annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">Para uso geral do Bluetooth do seu Ledger, confira o Guia para Conexão Bluetooth <annotation type="bold"><annotation type="color">oficial do Ledger.</annotation></annotation></annotation>
-  </string>
-    <string name="ledger_info_power_second_paragraph">
-    <annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">Para soluções mais avançadas, confira o Guia para Soluções Bluetooth <annotation type="bold"><annotation type="color">oficial do Ledger.</annotation></annotation></annotation>
-  </string>
-    <string name="ledger_info_ledger_first_paragraph">
-    <annotation url="https://www.ledger.com/start">Iniciar com o abrangente tutorial para <annotation type="bold"><annotation type="color">Iniciar</annotation></annotation> do Ledger.</annotation>
-  </string>
+    <string name="ledger_info_power_first_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">Para uso geral do Bluetooth do seu Ledger, confira o Guia para Conexão Bluetooth <annotation type="bold"><annotation type="color">oficial do Ledger.</annotation></annotation></annotation></string>
+    <string name="ledger_info_power_second_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">Para soluções mais avançadas, confira o Guia para Soluções Bluetooth <annotation type="bold"><annotation type="color">oficial do Ledger.</annotation></annotation></annotation></string>
+    <string name="ledger_info_ledger_first_paragraph"><annotation url="https://www.ledger.com/start">Iniciar com o abrangente tutorial para <annotation type="bold"><annotation type="color">Iniciar</annotation></annotation> do Ledger.</annotation></string>
     <string name="ledger_info_ledger_second_paragraph">Quando o tutorial direcioná-lo a “selecione os aplicativos que deseja instalar em seu dispositivo”, digite Algorand na barra de busca e instale.</string>
-    <string name="ledger_info_algorand_first_paragraph">
-    <annotation url="https://www.ledger.com/start">Inicie com o abrangente guia Ledger <annotation type="bold"><annotation type="color">Iniciar</annotation></annotation> como tutorial, que vai ensiná-lo como instalar e abrir aplicativos em seu dipositivo ledger.</annotation>
-  </string>
+    <string name="ledger_info_algorand_first_paragraph"><annotation url="https://www.ledger.com/start">Inicie com o abrangente guia Ledger <annotation type="bold"><annotation type="color">Iniciar</annotation></annotation> como tutorial, que vai ensiná-lo como instalar e abrir aplicativos em seu dipositivo ledger.</annotation></string>
     <string name="ledger_info_algorand_second_paragraph">Caso não tenha instalado o aplicativo <annotation type="bold">Algorand</annotation> em seu dispositivo Ledger, quando o tutorial direcioná-lo a “selecione os aplicativos que deseja instalar em seu dispositivo”, digite Algorand na barra de busca e instale.</string>
     <string name="error_connection_title">Erro de Conexão</string>
     <string name="error_connection_message">Não foi possível conectar com o dispositivo Ledger. Certifique-se de que o dispositivo está desbloqueado, próximo e com o bluetooth habilitado.</string>
@@ -555,7 +547,7 @@
     <string name="this_transaction_is_sending">Esta transação está enviando seu saldo total de Algos.</string>
     <string name="close_asset_to">Fechar Ativo Para</string>
     <string name="this_transaction_is_sending_asset">Esta transação está enviando seu %1$s saldo total e vai remover %1$s de sua conta.</string>
-    <string name="this_transaction_fee_is_higher">Esta tarifa de transação é maior do que a tarifa normal de 0,01 Algos.</string>
+    <string name="this_transaction_fee_is_higher">Esta tarifa de transação é maior do que a tarifa normal de 0,001 Algos.</string>
     <string name="wallet_connect_is_not_reachable">WalletConnect não está acessível no momento. Tente mais tarde.</string>
     <string name="the_recipient_address_is_not">O endereço destinatário não é um endereço Algorand válido. Tente novamente.</string>
     <string name="application_opt_in_formatted">Adesão do aplicativo a %1$s</string>
@@ -582,4 +574,21 @@
     <string name="approval_hash">Hash de Aprovação</string>
     <string name="clear_state_hash">Hash de Estado Claro</string>
     <string name="based_on_your_account">Com base na configuração de sua conta, seu saldo mínimo é %1$s. Ao clicar em continuar, o montante de sua transação será atualizado a fim de manter o saldo mínimo exigido pela blockchain Algorand. Esta alteração poderá ser visualizada na etapa seguinte.</string>
+    <string name="asset_reconfiguration_request">Pedido de Reconfiguração de Ativo</string>
+    <string name="manager_account">Conta de Gestão</string>
+    <string name="reserve_account">Conta de Reserva</string>
+    <string name="clawback_account">Conta de Recuperação</string>
+    <string name="freeze_account">Congelar Conta</string>
+    <string name="decimal_places">Casas Decimais</string>
+    <string name="default_frozen">Padrão Congelado</string>
+    <string name="off">Desligado</string>
+    <string name="on">Ligado</string>
+    <string name="asset_creation_request">Pedido de Criação de Ativo</string>
+    <string name="asset_deletion_request">Pedido de Exclusão de Ativo</string>
+    <string name="asset_name">Nome do Ativo</string>
+    <string name="unit_name">Nome da Unidade</string>
+    <string name="asset_deletion_warning_message">Este ativo será excluído.</string>
+    <string name="governance_banner_title">O Programa de Governança Algorand está começando!</string>
+    <string name="governance_banner_description">Seja um Governador. Vote no futuro da Algorand. Ganhe recompensas.</string>
+    <string name="governance_banner_button_text">Comece Agora</string>
 </resources>

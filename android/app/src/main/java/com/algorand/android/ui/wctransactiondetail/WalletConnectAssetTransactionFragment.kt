@@ -73,7 +73,7 @@ class WalletConnectAssetTransactionFragment : BaseWalletConnectTransactionDetail
         }
     }
 
-    override fun onAlgoExplorerClick(algoExplorerId: String?, networkSlug: String?) {
-        context?.openAssetInAlgoExplorer(algoExplorerId, networkSlug)
+    override fun onAlgoExplorerClick(assetId: Long?, networkSlug: String?) {
+        context?.openAssetInAlgoExplorer(assetId, networkSlug)
     }
 }

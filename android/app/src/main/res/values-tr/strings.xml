@@ -200,19 +200,11 @@
     <string name="connecting_to_ledger">Ledger\'a bağlanıyor…</string>
     <string name="ledger_approval">Ledger Onayı</string>
     <string name="please_make_sure">İşlemi Ledger cihazınızda onayladığınızdan lütfen emin olun</string>
-    <string name="ledger_info_power_first_paragraph">
-    <annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">Ledger\'ınızın Bluetooth özelliğinin kullanımı için, lütfen Ledger\'ın resmi <annotation type="bold"><annotation type="color">Bluetooth Bağlantı Kılavuzu</annotation>\'na başvurun.</annotation></annotation>
-  </string>
-    <string name="ledger_info_power_second_paragraph">
-    <annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">Daha gelişmiş sorun giderme için, lütfen Ledger\'ın resmi <annotation type="bold"><annotation type="color">Bluetooth Sorun Giderme Kılavuzu</annotation>\'na başvurun.</annotation></annotation>
-  </string>
-    <string name="ledger_info_ledger_first_paragraph">
-    <annotation url="https://www.ledger.com/start">Ledger\'ın kapsamlı <annotation type="bold"><annotation type="color">Kullanmaya Başlama</annotation></annotation> öğreticisini izleyerek başlayın.</annotation>
-  </string>
+    <string name="ledger_info_power_first_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">Ledger\'ınızın Bluetooth özelliğinin kullanımı için, lütfen Ledger\'ın resmi <annotation type="bold"><annotation type="color">Bluetooth Bağlantı Kılavuzu</annotation>\'na başvurun.</annotation></annotation></string>
+    <string name="ledger_info_power_second_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">Daha gelişmiş sorun giderme için, lütfen Ledger\'ın resmi <annotation type="bold"><annotation type="color">Bluetooth Sorun Giderme Kılavuzu</annotation>\'na başvurun.</annotation></annotation></string>
+    <string name="ledger_info_ledger_first_paragraph"><annotation url="https://www.ledger.com/start">Ledger\'ın kapsamlı <annotation type="bold"><annotation type="color">Kullanmaya Başlama</annotation></annotation> öğreticisini izleyerek başlayın.</annotation></string>
     <string name="ledger_info_ledger_second_paragraph">Öğretici sizi “Cihazınıza yüklemek istediğiniz uygulamaları seçin” adımına getirdiğinde, arama çubuğuna Algorand yazın ve yükleyin.</string>
-    <string name="ledger_info_algorand_first_paragraph">
-    <annotation url="https://www.ledger.com/start">Uygulamaları Ledger cihazınıza nasıl yükleyeceğinizi ve nasıl açacağınızı gösteren Ledger\'ın kapsamlı <annotation type="bold"><annotation type="color">Kullanmaya Başlama</annotation></annotation> öğreticisini izleyerek başlayın.</annotation>
-  </string>
+    <string name="ledger_info_algorand_first_paragraph"><annotation url="https://www.ledger.com/start">Uygulamaları Ledger cihazınıza nasıl yükleyeceğinizi ve nasıl açacağınızı gösteren Ledger\'ın kapsamlı <annotation type="bold"><annotation type="color">Kullanmaya Başlama</annotation></annotation> öğreticisini izleyerek başlayın.</annotation></string>
     <string name="ledger_info_algorand_second_paragraph">Ledger cihazınıza <annotation type="bold">Algorand</annotation> uygulamasını henüz yüklemediyseniz, öğretici sizi “Cihazınıza yüklemek istediğiniz uygulamaları seçin” adımına getirdiğinde, arama çubuğuna Algorand yazın ve yükleyin. </string>
     <string name="error_connection_title">Bağlantı Hatası</string>
     <string name="error_connection_message">Ledger cihazına bağlanamadı. Cihazın kilidinin açık, yakında ve Bluetooth özelliğinin etkin olduğundan emin olun.</string>
@@ -571,7 +563,7 @@
     <string name="this_transaction_is_sending">Bu işlem Algo bakiyenizin tümünü gönderecek.</string>
     <string name="close_asset_to">Kapatılacak Varlık:</string>
     <string name="this_transaction_is_sending_asset">Bu işlem %1$s bakiyenizin tamamını gönderecek ve %1$s, hesabınızdan kaldırılacak.</string>
-    <string name="this_transaction_fee_is_higher">Bu işlem ücreti, normalde 0,01 Algo olan ücretten daha yüksek.</string>
+    <string name="this_transaction_fee_is_higher">Bu işlem ücreti, normalde 0,001 Algo olan ücretten daha yüksek.</string>
     <string name="wallet_connect_is_not_reachable">WalletConnect\'e şu anda ulaşılamıyor. Lütfen daha sonra tekrar deneyin.</string>
     <string name="the_recipient_address_is_not">Alıcı adresi, geçerli bir Algorand adresi değil. Lütfen tekrar deneyin.</string>
     <string name="application_opt_in_formatted">%1$s Varlığına Katılım Uygulaması</string>
@@ -598,4 +590,21 @@
     <string name="approval_hash">Onay Karması</string>
     <string name="clear_state_hash">Durum Karmasını Temizleme</string>
     <string name="based_on_your_account">Hesap yapılandırmanıza göre minimum bakiyeniz: %1$s. Devam etme seçeneğini tıkladığınızda, işlem tutarınız Algorand Blok Zinciri\'nin gerekli olan minimum bakiyesini sürdürmek için güncellenecektir. Sonraki adımda bu değişikliğin önizlemesini görüntüleyebileceksiniz.</string>
+    <string name="asset_reconfiguration_request">Yeniden Varlık Yapılandırma Talebi</string>
+    <string name="manager_account">Yönetici Hesabı</string>
+    <string name="reserve_account">Yedek Hesap</string>
+    <string name="clawback_account">Geri Alma Hesabı</string>
+    <string name="freeze_account">Hesabı Dondur</string>
+    <string name="decimal_places">Ondalık Basamaklar</string>
+    <string name="default_frozen">Varsayılan Dondurulmuş</string>
+    <string name="off">Kapalı</string>
+    <string name="on">Açık</string>
+    <string name="asset_creation_request">Varlık Oluşturma Talebi</string>
+    <string name="asset_deletion_request">Varlık Silme Talebi</string>
+    <string name="asset_name">Varlık Adı</string>
+    <string name="unit_name">Birim Adı</string>
+    <string name="asset_deletion_warning_message">Bu varlık silinecek.</string>
+    <string name="governance_banner_title">Algorand Yönetişim Programı başlıyor!</string>
+    <string name="governance_banner_description">Yönetici olun. Algorand\'ın geleceği için oy verin. Ödül kazanın.</string>
+    <string name="governance_banner_button_text">Başlayın</string>
 </resources>

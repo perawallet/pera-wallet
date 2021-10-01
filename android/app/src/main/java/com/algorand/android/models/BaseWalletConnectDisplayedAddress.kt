@@ -33,8 +33,9 @@ sealed class BaseWalletConnectDisplayedAddress {
 
     companion object {
         fun create(decodedAddress: String, accountCacheData: AccountCacheData?): BaseWalletConnectDisplayedAddress {
+            val isDecodedAddressUsersAddress = accountCacheData?.account?.address == decodedAddress
             return when {
-                accountCacheData == null -> FullAddress(decodedAddress)
+                accountCacheData == null || !isDecodedAddressUsersAddress -> FullAddress(decodedAddress)
                 accountCacheData.account.name.isNullOrBlank().not() -> CustomName(accountCacheData.account.name)
                 else -> ShortenedAddress(decodedAddress.toShortenedAddress())
             }

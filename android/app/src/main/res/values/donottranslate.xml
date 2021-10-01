@@ -38,4 +38,5 @@
     <string name="app_call_update">Update</string>
     <string name="app_call_delete">Delete</string>
     <string name="byte_uint_formatted">%1$d Byte / %2$d Uint</string>
+    <string name="asset_id_with_hash_tag">#%1$d</string>
 </resources>

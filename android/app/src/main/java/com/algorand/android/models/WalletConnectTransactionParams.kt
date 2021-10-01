@@ -18,8 +18,8 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class WalletConnectTransactionParams(
     val fee: Long,
-    val firstValidRound: Long,
-    val genesisId: String,
-    val genesisHash: String,
-    val lastValidRound: Long,
+    val firstValidRound: Long?,
+    val genesisId: String?,
+    val genesisHash: String?,
+    val lastValidRound: Long?,
 ) : Parcelable

@@ -29,7 +29,7 @@ class WalletConnectAppCallTransactionViewModel @ViewModelInject constructor(
         extrasLiveData.value = WalletConnectExtras(
             rawTransaction = transaction.rawTransactionPayload,
             note = transaction.note,
-            algoExplorerUrl = transaction.appId?.toString(),
+            assetId = transaction.appId,
             networkSlug = indexerInterceptor.currentActiveNode?.networkSlug
         )
     }

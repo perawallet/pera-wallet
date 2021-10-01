@@ -25,6 +25,7 @@ import com.algorand.android.databinding.FragmentBaseWalletConnectTransactionDeta
 import com.algorand.android.models.AssetParams
 import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.WCAlgoTransactionRequest
+import com.algorand.android.models.WalletConnectAccountsInfo
 import com.algorand.android.models.WalletConnectAmountInfo
 import com.algorand.android.models.WalletConnectExtras
 import com.algorand.android.models.WalletConnectPeerMeta
@@ -48,7 +49,7 @@ abstract class BaseWalletConnectTransactionDetailFragment : DaggerBaseFragment(
 
     abstract val transaction: BaseWalletConnectTransaction
 
-    open fun onAlgoExplorerClick(algoExplorerId: String?, networkSlug: String?) {
+    open fun onAlgoExplorerClick(assetId: Long?, networkSlug: String?) {
         // Nothing to do in super.
     }
 
@@ -70,13 +71,17 @@ abstract class BaseWalletConnectTransactionDetailFragment : DaggerBaseFragment(
         binding.extrasCardView.initExtras(extras, extrasListener)
     }
 
+    protected val accountsInfoObserver = Observer<WalletConnectAccountsInfo> { accountsInfo ->
+        binding.accountsCardView.initAccountsInfo(accountsInfo)
+    }
+
     private val extrasListener = object : WalletConnectExtrasCardView.Listener {
         override fun onRawTransactionClick(rawTransaction: WCAlgoTransactionRequest) {
             nav(actionGlobalWalletConnectRawTransactionBottomSheet(rawTransaction))
         }
 
-        override fun onAlgoExplorerClick(algoExplorerId: String?, networkSlug: String?) {
-            this@BaseWalletConnectTransactionDetailFragment.onAlgoExplorerClick(algoExplorerId, networkSlug)
+        override fun onAlgoExplorerClick(assetId: Long?, networkSlug: String?) {
+            this@BaseWalletConnectTransactionDetailFragment.onAlgoExplorerClick(assetId, networkSlug)
         }
 
         override fun onAssetUrlClick(assetUrl: String?) {

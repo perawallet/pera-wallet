@@ -10,23 +10,11 @@
  * limitations under the License
  */
 
-package com.algorand.android.models
+package com.algorand.android.utils.walletconnect
 
-import com.google.gson.annotations.SerializedName
+import com.algorand.android.models.AssetParams
 
-enum class WalletConnectTransactionType {
-
-    @SerializedName("pay")
-    PAY_TRANSACTION,
-
-    @SerializedName("axfer")
-    ASSET_TRANSACTION,
-
-    @SerializedName("appl")
-    APP_TRANSACTION,
-
-    @SerializedName("acfg")
-    ASSET_CONFIGURATION,
-
-    UNDEFINED
+interface WalletConnectAssetDetail {
+    val assetId: Long
+    var assetParams: AssetParams?
 }
