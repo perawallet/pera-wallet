@@ -104,8 +104,6 @@ android {
     }
 
     sourceSets {
-        getByName("main").java.srcDirs("build/generated/source/navigation-args")
-
         // Adds exported schema location as test app assets.
         androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
     }

@@ -6,7 +6,7 @@ ext {
     ]
 
     application = [
-            stagingApplicationId: 'com.algorand.android',
+            stagingApplicationId: 'staging.com.algorand.android',
             applicationId       : 'com.algorand.android',
             versionCode         : 52,
             versionName         : "4.10.3"
