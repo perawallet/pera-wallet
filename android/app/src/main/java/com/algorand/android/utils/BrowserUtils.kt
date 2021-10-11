@@ -27,6 +27,7 @@ private const val ALGO_EXPLORER_URL = "algoexplorer.io"
 private const val MARKET_PAGE_URL = "https://play.google.com/store/apps/details?id=com.algorand.android"
 private const val SUPPORT_CENTER_URL = "https://algorandwallet.com/support"
 private const val TRANSACTION_INFO_URL = "https://algorandwallet.com/support/transacting"
+private const val GOVERNANCE_URL = "https://governance.algorand.foundation/"
 
 fun Context.openTermsAndServicesUrl() {
     openUrl(TERMS_AND_SERVICES_URL)
@@ -79,6 +80,15 @@ fun Context.openApplicationPageOnStore() {
         startActivity(Intent(ACTION_VIEW, Uri.parse(MARKET_PAGE_URL)).apply {
             setPackage("com.android.vending")
         })
+    } catch (activityNotFoundException: ActivityNotFoundException) {
+        FirebaseCrashlytics.getInstance().recordException(activityNotFoundException)
+    }
+}
+
+fun Context.openAlgorandGovernancePage() {
+    try {
+        val intent = Intent(ACTION_VIEW, Uri.parse(GOVERNANCE_URL))
+        startActivity(intent)
     } catch (activityNotFoundException: ActivityNotFoundException) {
         FirebaseCrashlytics.getInstance().recordException(activityNotFoundException)
     }

@@ -78,5 +78,6 @@
     <color name="walletConnectDappIconBorderColor">@color/transparent</color>
     <color name="walletConnectFeeAlgoIconColor">@color/gray_DB</color>
 
+    <color name="governance_banner_icon_color">@color/white</color>
 </resources>
 

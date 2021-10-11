@@ -24,6 +24,7 @@ open class BaseAccountListItem {
         ASSET,
         REMOVE_ASSET,
         ADD_ASSET,
+        BANNER
     }
 
     class BaseAccountListDiffUtil : DiffUtil.ItemCallback<BaseAccountListItem>() {

@@ -45,6 +45,7 @@ import com.algorand.android.ui.common.listhelper.AccountAdapter
 import com.algorand.android.ui.common.listhelper.BaseAccountListItem
 import com.algorand.android.ui.qr.QrCodeScannerFragment
 import com.algorand.android.utils.AccountCacheManager
+import com.algorand.android.utils.openAlgorandGovernancePage
 import com.algorand.android.utils.preference.isQrTutorialShown
 import com.algorand.android.utils.preference.setQrTutorialShown
 import com.algorand.android.utils.startSavedStateListener
@@ -100,7 +101,7 @@ class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts) {
         binding.loadingProgressBar.isInvisible = status == DONE
     }
 
-    private val listCollector: suspend (List<BaseAccountListItem>) -> Unit = { value ->
+    private val listCollector: suspend (List<BaseAccountListItem>?) -> Unit = { value ->
         accountAdapter?.submitList(value)
     }
 
@@ -163,7 +164,9 @@ class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts) {
                 onAddAssetClick = ::onAddAssetClick,
                 onAccountOptionsClick = ::onAccountsOptionClick,
                 onShowQrClick = ::onShowQRClick,
-                showQRTutorial = showQrTutorial
+                showQRTutorial = showQrTutorial,
+                onBannerCloseClick = ::onBannerCloseClick,
+                onBannerCheckOutClick = ::onBannerCheckOutClick
             )
             if (showQrTutorial) {
                 sharedPref.setQrTutorialShown()
@@ -217,21 +220,8 @@ class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts) {
             }
 
             useSavedStateValue<DecodedQrCode?>(QrCodeScannerFragment.QR_SCAN_RESULT_KEY) {
-                handleWalletConnectDeepLink(it?.walletConnectUrl.orEmpty())
+                handleWalletConnectUrl(it?.walletConnectUrl.orEmpty())
             }
-        }
-    }
-
-    private fun handleWalletConnectDeepLink(walletConnectUrl: String) {
-        val hasValidAccountForWalletConnect = accountCacheManager.getAccountCacheWithSpecificAsset(
-            AssetInformation.ALGORAND_ID,
-            listOf(Account.Type.WATCH)
-        ).isNotEmpty()
-        if (hasValidAccountForWalletConnect) {
-            (activity as? MainActivity)?.showProgress()
-            walletConnectViewModel.connectToSessionByUrl(walletConnectUrl)
-        } else {
-            showGlobalError(getString(R.string.you_do_not_have_any))
         }
     }
 
@@ -264,6 +254,14 @@ class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts) {
                 ).toTypedArray()
             )
         )
+    }
+
+    private fun onBannerCloseClick() {
+        accountsViewModel.hideBanner()
+    }
+
+    private fun onBannerCheckOutClick() {
+        context?.openAlgorandGovernancePage()
     }
 
     companion object {

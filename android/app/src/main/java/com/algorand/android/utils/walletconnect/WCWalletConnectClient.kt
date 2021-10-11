@@ -15,6 +15,7 @@ package com.algorand.android.utils.walletconnect
 import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.models.WalletConnectSessionMeta
 import com.algorand.android.models.WalletConnectTransactionErrorResponse
+import com.algorand.android.utils.exception.InvalidWalletConnectUrlException
 import org.walletconnect.Session
 import org.walletconnect.Session.MethodCall.Custom
 import org.walletconnect.Session.MethodCall.SessionRequest
@@ -65,7 +66,10 @@ class WCWalletConnectClient(
     }
 
     override fun connect(uri: String) {
-        val session = sessionBuilder.createSession(uri) ?: return
+        val session = sessionBuilder.createSession(uri) ?: run {
+            listener?.onFailure(-1, Session.Status.Error(InvalidWalletConnectUrlException))
+            return
+        }
         connectToSession(session)
     }
 

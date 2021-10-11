@@ -18,7 +18,6 @@ import com.algorand.android.R
 import com.algorand.android.models.DecodedQrCode
 import com.algorand.android.ui.qr.QrCodeScannerFragment
 import com.algorand.android.utils.walletconnect.WALLET_CONNECT_URL_PREFIX
-import com.algorand.android.utils.walletconnect.isValidWalletConnectUrl
 import com.google.gson.Gson
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
@@ -127,10 +126,8 @@ fun decodeDeeplink(qrContent: String?): DecodedQrCode? {
     }
 }
 
-private fun decodeWalletConnectQr(qrCode: String): DecodedQrCode? {
-    return if (isValidWalletConnectUrl(qrCode)) {
-        DecodedQrCode(walletConnectUrl = qrCode)
-    } else null
+private fun decodeWalletConnectQr(qrCode: String): DecodedQrCode {
+    return DecodedQrCode(walletConnectUrl = qrCode)
 }
 
 fun getContentOfQR(

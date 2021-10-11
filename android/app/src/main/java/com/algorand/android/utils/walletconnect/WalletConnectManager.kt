@@ -19,15 +19,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.OnLifecycleEvent
 import com.algorand.android.R
 import com.algorand.android.mapper.WalletConnectMapper
+import com.algorand.android.models.AccountCacheStatus
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.models.WalletConnectSignResult
 import com.algorand.android.models.WalletConnectTransaction
 import com.algorand.android.models.WalletConnectTransactionErrorResponse
 import com.algorand.android.repository.WalletConnectRepository
+import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.Resource.Error.Annotated
+import com.algorand.android.utils.exception.InvalidWalletConnectUrlException
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionResult.Error
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionResult.Success
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -43,6 +46,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.walletconnect.Session
@@ -54,7 +58,8 @@ class WalletConnectManager @Inject constructor(
     private val walletConnectMapper: WalletConnectMapper,
     private val walletConnectCustomTransactionHandler: WalletConnectCustomTransactionHandler,
     private val errorProvider: WalletConnectTransactionErrorProvider,
-    private val eventLogger: WalletConnectEventLogger
+    private val eventLogger: WalletConnectEventLogger,
+    private val accountCacheManager: AccountCacheManager
 ) : LifecycleObserver {
 
     val sessionResultFlow: SharedFlow<Event<Resource<WalletConnectSession>>>
@@ -79,10 +84,21 @@ class WalletConnectManager @Inject constructor(
 
     private var coroutineScope: CoroutineScope? = null
 
+    private val accountCacheStatusFlow = accountCacheManager.getCacheStatusFlow()
+
+    // TODO Find better solution for multiple transaction request
+    private var requestHandlingJob: Job? = null
+    private var latestSessionIdIsBeingHandled: Long? = null
+    private var latestRequestIdIsBeingHandled: Long? = null
+
     private val walletConnectClientListener = object : WalletConnectClientListener {
         override fun onSessionRequest(sessionId: Long, requestId: Long, session: WalletConnectSession) {
             coroutineScope?.launch(Dispatchers.IO) {
-                _sessionResultFlow.emit(Event(Resource.Success((session))))
+                accountCacheStatusFlow.collectLatest {
+                    if (it == AccountCacheStatus.DONE) {
+                        _sessionResultFlow.emit(Event(Resource.Success((session))))
+                    }
+                }
             }
         }
 
@@ -199,14 +215,22 @@ class WalletConnectManager @Inject constructor(
     }
 
     private fun handleCustomTransactionRequest(sessionId: Long, requestId: Long, payloadList: List<*>) {
-        coroutineScope?.launch(Dispatchers.IO) {
-            if (!isLatestRequestHandled()) {
-                walletConnectClient.rejectRequest(sessionId, requestId, errorProvider.rejected)
-                return@launch
-            }
-            val session = walletConnectClient.getWalletConnectSession(sessionId) ?: return@launch
-            with(walletConnectCustomTransactionHandler) {
-                handleCustomTransaction(sessionId, requestId, session, payloadList, ::onCustomTransactionParsed)
+        if (requestHandlingJob?.isActive == true) {
+            requestHandlingJob?.cancel()
+            rejectLatestTransaction(latestRequestIdIsBeingHandled, latestSessionIdIsBeingHandled)
+        } else if (!isLatestRequestHandled()) {
+            rejectLatestTransaction(transaction?.requestId, transaction?.session?.id)
+        }
+        latestSessionIdIsBeingHandled = sessionId
+        latestRequestIdIsBeingHandled = requestId
+        requestHandlingJob = coroutineScope?.launch(Dispatchers.IO) {
+            accountCacheStatusFlow.collectLatest {
+                if (it == AccountCacheStatus.DONE) {
+                    val session = walletConnectClient.getWalletConnectSession(sessionId) ?: return@collectLatest
+                    with(walletConnectCustomTransactionHandler) {
+                        handleCustomTransaction(sessionId, requestId, session, payloadList, ::onCustomTransactionParsed)
+                    }
+                }
             }
         }
     }
@@ -222,11 +246,19 @@ class WalletConnectManager @Inject constructor(
         return (_requestLiveData.value as? Event<*>) == null
     }
 
+    private fun rejectLatestTransaction(requestId: Long?, sessionId: Long?) {
+        walletConnectClient.rejectRequest(sessionId ?: return, requestId ?: return, errorProvider.rejected)
+    }
+
     private fun onSessionFailed(sessionId: Long, error: Session.Status.Error) {
         coroutineScope?.launch(Dispatchers.IO) {
-            when (error.throwable.cause) {
+            when (error.throwable.cause ?: error.throwable) {
                 is ProtocolException -> {
                     _sessionResultFlow.emit(Event(Annotated(AnnotatedString(R.string.wallet_connect_is_not_reachable))))
+                }
+                is InvalidWalletConnectUrlException -> {
+                    // TODO Add invalid url message here
+                    _sessionResultFlow.emit(Event(Resource.OnLoadingFinished))
                 }
                 is EOFException -> reconnectToDisconnectedSession(sessionId)
             }

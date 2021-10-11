@@ -425,8 +425,25 @@ class SendInfoFragment : TransactionBaseFragment(R.layout.fragment_send_info) {
             nav(actionSendInfoFragmentToTransactionMaximumBalanceWarningBottomSheet(selectedAddress))
             return
         }
+        if (isCloseTransactionToSameAccount(selectedAccount, publicAddress, selectedAsset)) {
+            hideLoading()
+            showGlobalError(getString(R.string.you_can_not_send_your))
+            return
+        }
 
         sendInfoViewModel.fetchFromAccountInformation(selectedAccount.account.address)
+    }
+
+    private fun isCloseTransactionToSameAccount(
+        fromAccount: AccountCacheData,
+        toAccount: String,
+        selectedAsset: AssetInformation
+    ): Boolean {
+        val isMax = binding.amountInput.amount == assetBalance
+        val hasOnlyAlgo = with(fromAccount.accountInformation) {
+            !isThereAnOptedInApp() || !isThereAnyDifferentAsset()
+        }
+        return fromAccount.account.address == toAccount && selectedAsset.isAlgorand() && isMax && hasOnlyAlgo
     }
 
     private fun shouldKeepMinimumAlgoBalance(): Boolean {

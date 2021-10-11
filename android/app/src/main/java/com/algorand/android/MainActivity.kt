@@ -23,7 +23,6 @@ import com.algorand.android.HomeNavigationDirections.Companion.actionGlobalAsset
 import com.algorand.android.core.TransactionManager
 import com.algorand.android.customviews.ForegroundNotificationView
 import com.algorand.android.customviews.SendReceiveTabBarView
-import com.algorand.android.models.Account
 import com.algorand.android.models.AccountCacheStatus
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.Node
@@ -50,8 +49,8 @@ import com.algorand.android.utils.isNotificationCanBeShown
 import com.algorand.android.utils.preference.isPasswordChosen
 import com.algorand.android.utils.walletconnect.WalletConnectManager
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionErrorProvider
+import com.algorand.android.utils.walletconnect.WalletConnectUrlHandler
 import com.algorand.android.utils.walletconnect.WalletConnectViewModel
-import com.algorand.android.utils.walletconnect.isValidWalletConnectUrl
 import com.google.firebase.analytics.FirebaseAnalytics
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -127,6 +126,17 @@ class MainActivity : CoreMainActivity(),
                     else -> binding.foregroundNotificationView.addNotification(this)
                 }
             }
+        }
+    }
+
+    private val walletConnectUrlHandlerListener = object : WalletConnectUrlHandler.Listener {
+        override fun onValidWalletConnectUrl(url: String) {
+            showProgress()
+            walletConnectViewModel.connectToSessionByUrl(url)
+        }
+
+        override fun onInvalidWalletConnectUrl(errorResId: Int) {
+            showGlobalError(getString(errorResId))
         }
     }
 
@@ -301,7 +311,7 @@ class MainActivity : CoreMainActivity(),
                     this,
                     accountCacheManager,
                     supportFragmentManager,
-                    ::handleWalletConnectDeepLink
+                    ::handleWalletConnectUrl
                 )
                 pendingIntent = null
                 return handled
@@ -310,17 +320,8 @@ class MainActivity : CoreMainActivity(),
         return false
     }
 
-    private fun handleWalletConnectDeepLink(walletConnectUrl: String) {
-        val hasValidAccountForWalletConnect = accountCacheManager.getAccountCacheWithSpecificAsset(
-            AssetInformation.ALGORAND_ID,
-            listOf(Account.Type.WATCH)
-        ).isNotEmpty()
-        if (hasValidAccountForWalletConnect && isValidWalletConnectUrl(walletConnectUrl)) {
-            showProgress()
-            walletConnectViewModel.connectToSessionByUrl(walletConnectUrl)
-        } else {
-            showGlobalError(getString(R.string.you_do_not_have_any))
-        }
+    fun handleWalletConnectUrl(walletConnectUrl: String) {
+        walletConnectViewModel.handleWalletConnectUrl(walletConnectUrl, walletConnectUrlHandlerListener)
     }
 
     private fun setupSendRequestTabBarView() {

@@ -33,6 +33,7 @@ import com.algorand.android.utils.getTransactionId
 import com.algorand.android.utils.signTx
 import com.google.crypto.tink.subtle.Hex
 import com.google.gson.Gson
+import org.walletconnect.Session
 
 const val WALLET_CONNECT_URL_PREFIX = "wc:"
 private const val FUTURE_TRANSACTION_WARNING_THRESHOLD = 500L
@@ -46,7 +47,23 @@ private val placeholderIconResIdList = listOf(
 
 // TODO add more check if possible (bridge and key)
 fun isValidWalletConnectUrl(url: String): Boolean {
-    return url.startsWith(WALLET_CONNECT_URL_PREFIX) && url.length > WALLET_CONNECT_URL_PREFIX.length
+    return url.startsWith(WALLET_CONNECT_URL_PREFIX) && createSessionConfigFromUrl(url) != null
+}
+
+fun createSessionConfigFromUrl(url: String): Session.Config? {
+    return try {
+        Session.Config.fromWCUri(url)
+    } catch (exception: Exception) {
+        null
+    }
+}
+
+fun createFullyQualifiedSessionConfig(sessionConfig: Session.Config): Session.FullyQualifiedConfig? {
+    return try {
+        sessionConfig.toFullyQualifiedConfig()
+    } catch (exception: Exception) {
+        null
+    }
 }
 
 fun WCAlgoTransactionRequest.getTransactionRequest(gson: Gson): WalletConnectTransactionRequest {

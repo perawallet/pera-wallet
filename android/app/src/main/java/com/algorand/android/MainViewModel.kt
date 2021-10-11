@@ -44,6 +44,7 @@ import com.algorand.android.utils.analytics.logRegisterEvent
 import com.algorand.android.utils.findAllNodes
 import com.algorand.android.utils.preference.getNotificationUserId
 import com.algorand.android.utils.preference.setNotificationUserId
+import com.algorand.android.utils.preference.showGovernanceBanner
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.messaging.FirebaseMessaging
@@ -73,6 +74,7 @@ class MainViewModel @ViewModelInject constructor(
     private val blockChainManager = BlockPollingManager(viewModelScope, transactionRepository)
 
     val addAssetResultLiveData = MutableLiveData<Event<Resource<Unit>>>()
+
     // TODO I'll change after checking usage of flow in activity.
     val accountBalanceSyncStatus = accountCacheManager.getCacheStatusFlow().asLiveData()
     val blockConnectionStableFlow = blockChainManager.blockConnectionStableFlow
@@ -87,10 +89,15 @@ class MainViewModel @ViewModelInject constructor(
     var registerDeviceJob: Job? = null
 
     init {
+        setAlgorandGovernanceBannerAsVisible()
         initializeAccountBalanceRefresher()
         initializeNodeInterceptor()
         registerDevice()
         getVerifiedAssets()
+    }
+
+    private fun setAlgorandGovernanceBannerAsVisible() {
+        sharedPref.showGovernanceBanner()
     }
 
     private fun initializeAccountBalanceRefresher() {

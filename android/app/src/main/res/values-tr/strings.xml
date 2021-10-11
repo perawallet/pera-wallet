@@ -607,4 +607,6 @@
     <string name="governance_banner_title">Algorand Yönetişim Programı başlıyor!</string>
     <string name="governance_banner_description">Yönetici olun. Algorand\'ın geleceği için oy verin. Ödül kazanın.</string>
     <string name="governance_banner_button_text">Başlayın</string>
+    <string name="could_not_create_wallet_connect">WalletConnect\'te oturum oluşturulamadı. Lütfen geçerli bir URL ile deneyin.</string>
+    <string name="you_can_not_send_your">Bakiyenizin tümünü kendinize gönderemezsiniz. Lütfen farklı bir miktar veya alıcı seçerek tekrar deneyin.</string>
 </resources>

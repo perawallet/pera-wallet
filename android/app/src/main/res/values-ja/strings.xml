@@ -590,4 +590,6 @@
     <string name="governance_banner_title">Algorandガバナンス・プログラムが始まります！</string>
     <string name="governance_banner_description">統治者になりましょう。Algorandの未来を投票で決めましょう。報酬を獲得しましょう。</string>
     <string name="governance_banner_button_text">始める</string>
+    <string name="could_not_create_wallet_connect">WalletConnectでセッションを作成できませんでした。有効なURLでお試しください。</string>
+    <string name="you_can_not_send_your">最大残高を自分自身に送ることはできません。別の金額または受取人を選択して、やり直してください。</string>
 </resources>

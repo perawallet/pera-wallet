@@ -10,19 +10,34 @@
  * limitations under the License
  */
 
-package com.algorand.android.ui.wcsessions
+package com.algorand.android.utils.walletconnect
 
-import androidx.hilt.lifecycle.ViewModelInject
-import com.algorand.android.core.BaseViewModel
+import com.algorand.android.R
 import com.algorand.android.models.Account.Type.WATCH
 import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
 import com.algorand.android.utils.AccountCacheManager
+import javax.inject.Inject
 
-class WalletConnectSessionViewModel @ViewModelInject constructor(
-    private val accountCacheManager: AccountCacheManager
-) : BaseViewModel() {
+class WalletConnectUrlHandler @Inject constructor(private val accountCacheManager: AccountCacheManager) {
 
-    fun hasValidAccountForWalletConnect(): Boolean {
+    fun checkWalletConnectUrl(url: String, listener: Listener) {
+        if (hasValidAccountForWalletConnect()) {
+            if (!isValidWalletConnectUrl(url)) {
+                listener.onInvalidWalletConnectUrl(R.string.could_not_create_wallet_connect)
+                return
+            }
+            listener.onValidWalletConnectUrl(url)
+        } else {
+            listener.onInvalidWalletConnectUrl(R.string.you_do_not_have_any)
+        }
+    }
+
+    private fun hasValidAccountForWalletConnect(): Boolean {
         return accountCacheManager.getAccountCacheWithSpecificAsset(ALGORAND_ID, listOf(WATCH)).isNotEmpty()
+    }
+
+    interface Listener {
+        fun onValidWalletConnectUrl(url: String)
+        fun onInvalidWalletConnectUrl(errorResId: Int)
     }
 }

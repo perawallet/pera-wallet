@@ -607,4 +607,6 @@
     <string name="governance_banner_title">Das Algorand-Governance-Programm beginnt!</string>
     <string name="governance_banner_description">Governor werden. Über die Zukunft von Algorand abstimmen. Belohnungen verdienen.</string>
     <string name="governance_banner_button_text">Los geht\'s</string>
+    <string name="could_not_create_wallet_connect">Es konnte keine Sitzung auf WalletConnect erstellt werden. Bitte versuchen Sie es mit einem gültigen URL.</string>
+    <string name="you_can_not_send_your">Sie können Ihr maximales Guthaben nicht an sich selbst senden. Bitte wählen Sie einen anderen Betrag oder Empfänger und versuchen Sie es erneut.</string>
 </resources>

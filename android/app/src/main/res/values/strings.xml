@@ -598,4 +598,6 @@
     <string name="governance_banner_title">Algorand Governance Program is starting!</string>
     <string name="governance_banner_description">Become a governor. Vote on Algorand’s future. Earn rewards.</string>
     <string name="governance_banner_button_text">Get Started</string>
+    <string name="could_not_create_wallet_connect">Couldn\'t create a session on WalletConnect. Please try with a valid URL.</string>
+    <string name="you_can_not_send_your">You cannot send your max balance to yourself. Please select a different amount or recipient and try again.</string>
 </resources>

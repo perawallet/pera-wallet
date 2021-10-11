@@ -24,6 +24,8 @@ import com.algorand.android.ui.common.listhelper.viewholders.AddAssetListItem
 import com.algorand.android.ui.common.listhelper.viewholders.AddAssetViewHolder
 import com.algorand.android.ui.common.listhelper.viewholders.AssetItemViewHolder
 import com.algorand.android.ui.common.listhelper.viewholders.AssetListItem
+import com.algorand.android.ui.common.listhelper.viewholders.BannerAccountListItem
+import com.algorand.android.ui.common.listhelper.viewholders.GovernanceViewHolder
 import com.algorand.android.ui.common.listhelper.viewholders.HeaderAccountListItem
 import com.algorand.android.ui.common.listhelper.viewholders.HeaderViewHolder
 import com.algorand.android.ui.common.listhelper.viewholders.RemoveAssetItemViewHolder
@@ -37,6 +39,8 @@ class AccountAdapter(
     private val onAssetClick: ((String, AssetInformation) -> Unit)? = null,
     private val onAddAssetClick: ((String) -> Unit)? = null,
     private val onRemoveAssetClick: ((String, AssetInformation) -> Unit)? = null,
+    private val onBannerCloseClick: (() -> Unit)? = null,
+    private val onBannerCheckOutClick: (() -> Unit)? = null,
     private var showQRTutorial: Boolean = false
 ) : ListAdapter<BaseAccountListItem, RecyclerView.ViewHolder>(BaseAccountListItem.BaseAccountListDiffUtil()) {
 
@@ -46,6 +50,7 @@ class AccountAdapter(
             is AssetListItem -> BaseAccountListItem.ItemType.ASSET.ordinal
             is AddAssetListItem -> BaseAccountListItem.ItemType.ADD_ASSET.ordinal
             is RemoveAssetListItem -> BaseAccountListItem.ItemType.REMOVE_ASSET.ordinal
+            is BannerAccountListItem -> BaseAccountListItem.ItemType.BANNER.ordinal
             else -> throw Exception("AccountAdapter: List Item is Unknown.")
         }
     }
@@ -110,6 +115,20 @@ class AccountAdapter(
                             (getItem(bindingAdapterPosition) as RemoveAssetListItem).run {
                                 onRemoveAssetClick?.invoke(publicKey, assetInformation)
                             }
+                        }
+                    }
+                }
+            }
+            BaseAccountListItem.ItemType.BANNER.ordinal -> {
+                GovernanceViewHolder.create(parent).apply {
+                    binding.checkOutButton.setOnClickListener {
+                        if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
+                            onBannerCheckOutClick?.invoke()
+                        }
+                    }
+                    binding.closeButton.setOnClickListener {
+                        if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
+                            onBannerCloseClick?.invoke()
                         }
                     }
                 }

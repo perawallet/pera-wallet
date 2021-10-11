@@ -32,7 +32,7 @@ class WalletConnectSessionBuilder @Inject constructor(
 ) {
 
     fun createSession(url: String): WalletConnectSessionCachedData? {
-        val sessionConfig = Config.fromWCUri(url)
+        val sessionConfig = createSessionConfigFromUrl(url) ?: return null
         return createWCSession(sessionConfig)
     }
 
@@ -42,8 +42,9 @@ class WalletConnectSessionBuilder @Inject constructor(
     }
 
     private fun createWCSession(sessionConfig: Config, sessionId: Long? = null): WalletConnectSessionCachedData? {
+        val fullyQualifiedConfig = createFullyQualifiedSessionConfig(sessionConfig) ?: return null
         val session = WCSession(
-            sessionConfig.toFullyQualifiedConfig(),
+            fullyQualifiedConfig,
             MoshiPayloadAdapter(moshi),
             storage,
             OkHttpTransport.Builder(okHttpClient, moshi),

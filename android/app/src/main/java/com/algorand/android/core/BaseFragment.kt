@@ -81,4 +81,8 @@ abstract class BaseFragment(
     fun showGlobalError(errorMessage: CharSequence?, title: String? = null) {
         (activity as? MainActivity)?.showGlobalError(errorMessage, title)
     }
+
+    protected fun handleWalletConnectUrl(url: String) {
+        (activity as? MainActivity)?.handleWalletConnectUrl(url)
+    }
 }

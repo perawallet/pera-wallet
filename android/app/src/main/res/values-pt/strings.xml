@@ -591,4 +591,6 @@
     <string name="governance_banner_title">O Programa de Governança Algorand está começando!</string>
     <string name="governance_banner_description">Seja um Governador. Vote no futuro da Algorand. Ganhe recompensas.</string>
     <string name="governance_banner_button_text">Comece Agora</string>
+    <string name="could_not_create_wallet_connect">Não foi possível criar uma sessão no WalletConnect. Tente com um URL válido.</string>
+    <string name="you_can_not_send_your">Você não pode enviar o total de seu saldo para você mesmo. Selecione quantia ou destinatário diferentes e tente novamente.</string>
 </resources>

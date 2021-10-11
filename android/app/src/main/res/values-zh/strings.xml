@@ -602,4 +602,6 @@
     <string name="governance_banner_title">Algorand治理计划已经启动了！</string>
     <string name="governance_banner_description">成为治理者，为Algorand的未来投票，赚取奖励。</string>
     <string name="governance_banner_button_text">开始</string>
+    <string name="could_not_create_wallet_connect">无法在WalletConnect上创建会话。请使用有效的二维码。</string>
+    <string name="you_can_not_send_your">无法向自己发送所有余额。请在选择其他账户或收款人后，再次尝试。</string>
 </resources>

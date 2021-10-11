@@ -17,6 +17,7 @@
     <dimen name="smallshadow_start_10dp_margin">4dp</dimen>
     <dimen name="smallshadow_start_16dp_margin">10dp</dimen>
     <dimen name="smallshadow_start_20dp_margin">14dp</dimen>
+    <dimen name="smallshadow_start_24dp_margin">18dp</dimen>
 
     <dimen name="smallshadow_end_6dp_margin">0dp</dimen>
     <dimen name="smallshadow_end_8dp_margin">2dp</dimen>
@@ -37,6 +38,7 @@
     <dimen name="smallshadow_top_margin_12dp">10dp</dimen>
     <dimen name="smallshadow_top_margin_16dp">14dp</dimen>
     <dimen name="smallshadow_top_margin_20dp">18dp</dimen>
+    <dimen name="smallshadow_top_margin_24dp">22dp</dimen>
 
     <!--  Content Padding (inset + intended padding)  -->
     <dimen name="smallshadow_start_padding_4dp">10dp</dimen>

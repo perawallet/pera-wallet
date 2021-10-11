@@ -26,7 +26,8 @@ import kotlinx.coroutines.flow.SharedFlow
 
 @Singleton
 class WalletConnectViewModel @ViewModelInject constructor(
-    private val walletConnectManager: WalletConnectManager
+    private val walletConnectManager: WalletConnectManager,
+    private val walletConnectUrlHandler: WalletConnectUrlHandler
 ) : BaseViewModel() {
 
     val sessionResultFlow: SharedFlow<Event<Resource<WalletConnectSession>>>
@@ -58,5 +59,9 @@ class WalletConnectViewModel @ViewModelInject constructor(
 
     fun killSession(session: WalletConnectSession) {
         walletConnectManager.killSession(session)
+    }
+
+    fun handleWalletConnectUrl(url: String, listener: WalletConnectUrlHandler.Listener) {
+        walletConnectUrlHandler.checkWalletConnectUrl(url, listener)
     }
 }

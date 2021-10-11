@@ -18,9 +18,7 @@ import android.view.View
 import android.widget.ImageButton
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.algorand.android.MainActivity
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentWalletConnectSessionsBinding
@@ -41,7 +39,6 @@ import kotlinx.coroutines.flow.collect
 @AndroidEntryPoint
 class WalletConnectSessionsFragment : DaggerBaseFragment(R.layout.fragment_wallet_connect_sessions) {
 
-    private val walletConnectSessionViewModel: WalletConnectSessionViewModel by viewModels()
     private val walletConnectViewModel: WalletConnectViewModel by activityViewModels()
     private val binding by viewBinding(FragmentWalletConnectSessionsBinding::bind)
 
@@ -89,7 +86,7 @@ class WalletConnectSessionsFragment : DaggerBaseFragment(R.layout.fragment_walle
         super.onResume()
         startSavedStateListener(R.id.walletConnectSessionsFragment) {
             useSavedStateValue<DecodedQrCode?>(QR_SCAN_RESULT_KEY) {
-                handleQrScanResult(it)
+                handleWalletConnectUrl(it?.walletConnectUrl.orEmpty())
             }
         }
     }
@@ -105,15 +102,6 @@ class WalletConnectSessionsFragment : DaggerBaseFragment(R.layout.fragment_walle
                 scanReturnType = listOf(WALLET_CONNECT_NAVIGATE_BACK).toTypedArray()
             )
         )
-    }
-
-    private fun handleQrScanResult(decodedQrCode: DecodedQrCode?) {
-        if (walletConnectSessionViewModel.hasValidAccountForWalletConnect()) {
-            (activity as? MainActivity)?.showProgress()
-            walletConnectViewModel.connectToSessionByUrl(decodedQrCode?.walletConnectUrl.orEmpty())
-        } else {
-            showGlobalError(getString(R.string.you_do_not_have_any))
-        }
     }
 
     private fun initAddMoreSessionsButton() {

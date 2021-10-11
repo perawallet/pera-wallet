@@ -582,4 +582,6 @@
     <string name="governance_banner_title">알고랜드 거버넌스 프로그램이 시작됩니다!</string>
     <string name="governance_banner_description">거버너가 되어 알고랜드의 미래에 투표하고 보상을 받으세요.</string>
     <string name="governance_banner_button_text">시작</string>
+    <string name="could_not_create_wallet_connect">WalletConnect에서 세션을 생성할 수 없습니다. 유효한 URL 코드를 사용해 주세요.</string>
+    <string name="you_can_not_send_your">나 자신에게 최대 잔액을 전송할 수 없습니다. 다른 금액을 선택하거나 받으시는 분을 변경한 다음 다시 시도해 주세요.</string>
 </resources>
