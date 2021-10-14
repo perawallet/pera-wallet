@@ -24,7 +24,10 @@ import retrofit2.http.Query
 interface IndexerApi {
 
     @GET("v2/accounts/{public_key}")
-    suspend fun getAccountInformation(@Path("public_key") publicKey: String): Response<AccountInformationResponse>
+    suspend fun getAccountInformation(
+        @Path("public_key") publicKey: String,
+        @Query("include-all") includeClosedAccounts: Boolean = false
+    ): Response<AccountInformationResponse>
 
     @GET("v2/accounts/{public_key}/transactions")
     suspend fun getTransactions(

@@ -45,6 +45,7 @@ import com.algorand.android.utils.walletconnect.WalletConnectClient
 import com.algorand.android.utils.walletconnect.WalletConnectEventLogger
 import com.algorand.android.utils.walletconnect.WalletConnectFirebaseEventLogger
 import com.algorand.android.utils.walletconnect.WalletConnectSessionBuilder
+import com.algorand.android.utils.walletconnect.WalletConnectSessionCachedDataHandler
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionErrorProvider
 import com.google.crypto.tink.Aead
 import com.google.crypto.tink.KeysetHandle
@@ -186,9 +187,10 @@ object AppModule {
     @Named("wcWalletClient")
     fun provideWalletConnectClient(
         walletConnectSessionBuilder: WalletConnectSessionBuilder,
-        walletConnectMapper: WCWalletConnectMapper
+        walletConnectMapper: WCWalletConnectMapper,
+        cachedDataHandler: WalletConnectSessionCachedDataHandler
     ): WalletConnectClient {
-        return WCWalletConnectClient(walletConnectSessionBuilder, walletConnectMapper)
+        return WCWalletConnectClient(walletConnectSessionBuilder, walletConnectMapper, cachedDataHandler)
     }
 
     @Singleton

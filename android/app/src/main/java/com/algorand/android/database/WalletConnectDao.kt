@@ -14,6 +14,7 @@ package com.algorand.android.database
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import com.algorand.android.models.WalletConnectSessionEntity
@@ -23,7 +24,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface WalletConnectDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     @Transaction
     suspend fun insertWalletConnectSessionAndHistory(
         wcSessionEntity: WalletConnectSessionEntity,
@@ -33,10 +34,10 @@ interface WalletConnectDao {
         insertWalletConnectSessionHistory(wcSessionEntityHistory)
     }
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWalletConnectSession(wcSessionEntity: WalletConnectSessionEntity)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWalletConnectSessionHistory(wcSessionEntity: WalletConnectSessionHistoryEntity)
 
     @Query("SELECT * FROM WalletConnectSessionEntity")

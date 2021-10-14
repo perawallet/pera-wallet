@@ -41,7 +41,7 @@ class WalletConnectSessionCachedData(
     }
 
     override fun onMethodCall(call: Session.MethodCall) {
-        Log.e("test", "call -> $call")
+        Log.e(logTag, "onMethodCall -> $call")
         when (call) {
             is Session.MethodCall.SessionRequest -> callback?.onSessionRequest(sessionId, call.id, call)
             is Session.MethodCall.SessionUpdate -> callback?.onSessionUpdate(sessionId, call)
@@ -50,7 +50,7 @@ class WalletConnectSessionCachedData(
     }
 
     override fun onStatus(status: Session.Status) {
-        Log.e("test", "status -> $status")
+        Log.e(logTag, "onStatus -> $status")
         when (status) {
             Session.Status.Connected -> callback?.onSessionConnected(sessionId)
             Session.Status.Disconnected -> callback?.onSessionDisconnected(sessionId)
@@ -60,6 +60,9 @@ class WalletConnectSessionCachedData(
     }
 
     companion object {
+
+        private val logTag = WalletConnectSessionCachedData::class.java.simpleName
+
         fun create(session: WCSession, sessionConfig: Config, sessionId: Long? = null): WalletConnectSessionCachedData {
             val id = sessionId ?: System.currentTimeMillis()
             return WalletConnectSessionCachedData(id, session, sessionConfig)

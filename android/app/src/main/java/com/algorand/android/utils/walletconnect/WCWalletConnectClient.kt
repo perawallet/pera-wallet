@@ -24,12 +24,11 @@ import org.walletconnect.impls.WCSession
 
 class WCWalletConnectClient(
     private val sessionBuilder: WalletConnectSessionBuilder,
-    private val walletConnectMapper: WCWalletConnectMapper
+    private val walletConnectMapper: WCWalletConnectMapper,
+    private val sessionCachedDataHandler: WalletConnectSessionCachedDataHandler
 ) : WalletConnectClient {
 
     private var listener: WalletConnectClientListener? = null
-
-    private val connectedSessions: MutableList<WalletConnectSessionCachedData> = mutableListOf()
 
     private val sessionCacheDataCallback = object : WalletConnectSessionCachedData.Callback {
         override fun onSessionRequest(sessionId: Long, requestId: Long, call: SessionRequest) {
@@ -74,7 +73,7 @@ class WCWalletConnectClient(
     }
 
     override fun connect(sessionId: Long, sessionMeta: WalletConnectSessionMeta) {
-        if (isSessionCached(sessionMeta.topic)) return
+        if (sessionCachedDataHandler.isSessionCached(sessionMeta.topic)) return
         val session = sessionBuilder.createSession(sessionId, sessionMeta) ?: return
         connectToSession(session)
     }
@@ -116,33 +115,20 @@ class WCWalletConnectClient(
             addCallback(sessionCacheDataCallback)
             session.offer()
         }
-        connectedSessions.add(sessionCacheData)
+        sessionCachedDataHandler.addNewCachedData(sessionCacheData)
     }
 
     override fun getWalletConnectSession(sessionId: Long): WalletConnectSession? {
-        val sessionCacheData = getCachedDataById(sessionId) ?: return null
+        val sessionCacheData = sessionCachedDataHandler.getCachedDataById(sessionId) ?: return null
         return walletConnectMapper.createWalletConnectSession(sessionCacheData)
     }
 
     private fun getSessionById(id: Long): WCSession? {
-        return connectedSessions.firstOrNull { it.sessionId == id }?.session
-    }
-
-    private fun getCachedDataById(id: Long): WalletConnectSessionCachedData? {
-        return connectedSessions.firstOrNull { it.sessionId == id }
+        return sessionCachedDataHandler.getSessionById(id)
     }
 
     private fun deleteSessionById(id: Long) {
-        val sessionIndex = connectedSessions.indexOfFirst { it.sessionId == id }
-        if (sessionIndex != -1) {
-            connectedSessions.removeAt(sessionIndex).also {
-                it.removeCallback()
-            }
-        }
-    }
-
-    private fun isSessionCached(topic: String): Boolean {
-        return connectedSessions.any { it.sessionConfig.handshakeTopic == topic }
+        sessionCachedDataHandler.deleteCachedData(id) { it.removeCallback() }
     }
 
     companion object {

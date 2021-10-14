@@ -273,10 +273,16 @@ class WalletConnectManager @Inject constructor(
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     private fun onCreate() {
         coroutineScope = CoroutineScope(Job() + Dispatchers.Main).apply {
-            launch {
+            launch(Dispatchers.IO) {
                 walletConnectRepository.setAllSessionsDisconnected()
-                connectToDisconnectedSessions()
             }
+        }
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    private fun onResume() {
+        coroutineScope?.launch(Dispatchers.IO) {
+            connectToDisconnectedSessions()
         }
     }
 

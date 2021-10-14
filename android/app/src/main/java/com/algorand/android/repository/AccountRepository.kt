@@ -75,11 +75,16 @@ class AccountRepository @Inject constructor(
         }
     }
 
-    suspend fun getOtherAccountInformation(publicKey: String): Result<AccountInformation> =
-        safeApiCall { requestGetOtherAccountInformation(publicKey) }
+    suspend fun getOtherAccountInformation(
+        publicKey: String,
+        includeClosedAccounts: Boolean = false
+    ): Result<AccountInformation> = safeApiCall { requestGetOtherAccountInformation(publicKey, includeClosedAccounts) }
 
-    private suspend fun requestGetOtherAccountInformation(publicKey: String): Result<AccountInformation> {
-        with(indexerApi.getAccountInformation(publicKey)) {
+    private suspend fun requestGetOtherAccountInformation(
+        publicKey: String,
+        includeClosedAccounts: Boolean
+    ): Result<AccountInformation> {
+        with(indexerApi.getAccountInformation(publicKey, includeClosedAccounts)) {
             val accountInformation = body()?.accountInformation
             return if (isSuccessful && accountInformation != null) {
                 accountInformation.getAllAssetIds().forEach { assetId ->

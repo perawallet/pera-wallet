@@ -115,7 +115,7 @@ class LedgerBleOperationManager @Inject constructor(
                     sendTransactionRequest()
                     return@launch
                 } else {
-                    accountRepository.getOtherAccountInformation(publicKey).use(
+                    accountRepository.getOtherAccountInformation(publicKey, includeClosedAccounts = true).use(
                         onSuccess = { fetchedAccountInformation ->
                             if (fetchedAccountInformation.isCreated() || nextIndex == 1) {
                                 if (this is AccountFetchAllOperation) {
