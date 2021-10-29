@@ -592,5 +592,21 @@
     <string name="governance_banner_description">Diventa un governatore. Vota per il futuro di Algorand. Guadagna ricompense.</string>
     <string name="governance_banner_button_text">Iniziare</string>
     <string name="could_not_create_wallet_connect">Impossibile creare una sessione su WalletConnect. Prova con un URL valido.</string>
-    <string name="you_can_not_send_your">Non puoi inviare il saldo massimo a te stesso. Seleziona un importo o un destinatario diverso e riprova.</string>
+    <string name="you_can_not_send_your">Non puoi inviare il tuo saldo massimo a te stesso. Seleziona un importo o un destinatario diverso e riprova.</string>
+    <string name="transaction_count_group_id_formatted"><annotation replacement="transaction_count">transaction_count_placeholder</annotation> Txns - ID gruppo: <annotation replacement="group_id">group_id_placeholder</annotation></string>
+    <string name="group_id">ID gruppo</string>
+    <string name="transaction_request_rejected_user_rejected">Richiesta di transazione rifiutata: l\'utente ha rifiutato la richiesta di transazione.</string>
+    <string name="transaction_request_rejected_transaction_group">Richiesta di transazione rifiutata: la convalida del gruppo di transazioni non è riuscita da parte di Algorand SDK.</string>
+    <string name="transaction_request_rejected_user_currently">Richiesta di transazione rifiutata: l\'utente ha attualmente un\'altra richiesta di transazione in corso.</string>
+    <string name="signing_error_network_mismatch">Errore di firma: mancata corrispondenza di rete tra dApp e wallet. Ad esempio, il wallet è connesso a TestNet e la dApp è connessa a MainNet (o viceversa).</string>
+    <string name="signing_error_transaction_in_request">Errore di firma: una transazione nella richiesta di transazione richiede una chiave privata (firmatario) che non esiste nel wallet connesso.</string>
+    <string name="transaction_request_contains_unsupported">La richiesta di transazione contiene un tipo di transazione non supportato</string>
+    <string name="transaction_request_contains_unsupported_multisig">La richiesta di transazione contiene un tipo di transazione non supportato: Multi-sig</string>
+    <string name="invalid_input_transaction_request">Inserimento non valido: la richiesta di transazione contiene più di 16 transazioni</string>
+    <string name="invalid_input_unable_to_parse">Inserimento non valido: impossibile analizzare la transazione</string>
+    <string name="invalid_input_invalid_public_key">Inserimento non valido: chiave pubblica non valida</string>
+    <string name="invalid_input_invalid_asset">Inserimento non valido: attivo non valido</string>
+    <string name="invalid_input_unable_to_be">Inserimento non valido: impossibile firmare</string>
+    <string name="invalid_input_group_transaction">Inserimento non valido: la transazione di gruppo non ha bisogno di essere firmata dall\'utente del wallet. </string>
+    <string name="invalid_input_requested_signer">Inserimento non valido: il firmatario richiesto non è nel wallet utente</string>
 </resources>

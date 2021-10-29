@@ -51,7 +51,7 @@ class WalletConnectTransactionRequestViewModel @ViewModelInject constructor(
     }
 
     fun rejectRequest(sessionId: Long, requestId: Long) {
-        walletConnectManager.rejectRequest(sessionId, requestId, errorProvider.rejected)
+        walletConnectManager.rejectRequest(sessionId, requestId, errorProvider.rejected.userRejection)
     }
 
     fun shouldShowFirstRequestBottomSheet(): Boolean {

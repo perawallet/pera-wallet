@@ -582,6 +582,22 @@
     <string name="governance_banner_title">알고랜드 거버넌스 프로그램이 시작됩니다!</string>
     <string name="governance_banner_description">거버너가 되어 알고랜드의 미래에 투표하고 보상을 받으세요.</string>
     <string name="governance_banner_button_text">시작</string>
-    <string name="could_not_create_wallet_connect">WalletConnect에서 세션을 생성할 수 없습니다. 유효한 URL 코드를 사용해 주세요.</string>
+    <string name="could_not_create_wallet_connect">WalletConnect에서 세션을 생성할 수 없습니다. 유효한 URL를 사용해 주세요.</string>
     <string name="you_can_not_send_your">나 자신에게 최대 잔액을 전송할 수 없습니다. 다른 금액을 선택하거나 받으시는 분을 변경한 다음 다시 시도해 주세요.</string>
+    <string name="transaction_count_group_id_formatted"><annotation replacement="transaction_count">transaction_count_placeholder</annotation> 트랜잭션 · 그룹 ID: <annotation replacement="group_id">group_id_placeholder</annotation></string>
+    <string name="group_id">그룹 ID</string>
+    <string name="transaction_request_rejected_user_rejected">트랜잭션 요청 거부: 사용자가 트랜잭션 요청을 거부했습니다.</string>
+    <string name="transaction_request_rejected_transaction_group">트랜잭션 요청 거부: 트랜잭션 그룹이 알고랜드 SDK의 유효성 검사를 통과하지 못했습니다.</string>
+    <string name="transaction_request_rejected_user_currently">트랜잭션 요청 거부: 사용자에게 현재 진행 중인 다른 트랜잭션 요청이 있습니다.</string>
+    <string name="signing_error_network_mismatch">서명 오류: 디앱과 지갑 간의 네트워크 불일치. 예를 들어 지갑은 테스트넷에 연결되고 디앱은 메인넷에 연결된 경우입니다(또는 그 반대일 수 있습니다).</string>
+    <string name="signing_error_transaction_in_request">서명 오류: 트랜잭션 요청의 트랜잭션에는 연결된 지갑에 존재하지 않는 개인 키(서명자)가 필요합니다.</string>
+    <string name="transaction_request_contains_unsupported">트랜잭션 요청에 지원되지 않는 트랜잭션 유형이 포함되었습니다.</string>
+    <string name="transaction_request_contains_unsupported_multisig">트랜잭션 요청에 지원되지 않는 트랜잭션 유형(다중 서명)이 포함되었습니다.</string>
+    <string name="invalid_input_transaction_request">잘못된 입력: 트랜잭션 요청에 16개 이상의 트랜잭션이 포함되었습니다.</string>
+    <string name="invalid_input_unable_to_parse">잘못된 입력: 트랜잭션을 구문 분석(파스)할 수 없습니다.</string>
+    <string name="invalid_input_invalid_public_key">잘못된 입력: 잘못된 공개 키입니다</string>
+    <string name="invalid_input_invalid_asset">잘못된 입력: 잘못된 자산입니다</string>
+    <string name="invalid_input_unable_to_be">잘못된 입력: 서명할 수 없습니다</string>
+    <string name="invalid_input_group_transaction">잘못된 입력: 그룹 트랜잭션은 지갑 사용자가 서명할 필요가 없습니다.</string>
+    <string name="invalid_input_requested_signer">잘못된 입력: 요청한 서명자가 사용자 지갑에 없습니다.</string>
 </resources>

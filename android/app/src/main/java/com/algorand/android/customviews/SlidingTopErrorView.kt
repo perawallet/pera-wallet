@@ -19,6 +19,7 @@ import android.util.AttributeSet
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.widget.FrameLayout
+import androidx.core.view.doOnPreDraw
 import androidx.core.view.marginBottom
 import androidx.core.view.marginTop
 import com.algorand.android.databinding.CustomSlidingTopErrorBinding
@@ -31,6 +32,9 @@ class SlidingTopErrorView @JvmOverloads constructor(
 ) : FrameLayout(context, attrs) {
 
     private var isErrorShown = false
+
+    private val errorLayoutAboveScreenStartPosition: Float
+        get() = -height.toFloat() + -marginBottom.toFloat()
 
     private val maxDurationShownHandler: Handler by lazy {
         Handler()
@@ -70,8 +74,11 @@ class SlidingTopErrorView @JvmOverloads constructor(
             binding.slidingTopErrorTitleTextView.text = title
             binding.slidingTopErrorDescriptionTextView.text = description
 
-            moveViewToOriginalPosition()
-            maxDurationShownHandler.postDelayed(privateMaxDurationRunnable, MAX_SHOWN_DURATION)
+            binding.slidingTopErrorLayout.doOnPreDraw {
+                it.translationY = errorLayoutAboveScreenStartPosition
+                moveViewToOriginalPosition()
+                maxDurationShownHandler.postDelayed(privateMaxDurationRunnable, MAX_SHOWN_DURATION)
+            }
         } else {
             isErrorShown = false
         }
@@ -79,7 +86,6 @@ class SlidingTopErrorView @JvmOverloads constructor(
 
     private fun moveViewToOriginalPosition() {
         with(binding.slidingTopErrorLayout) {
-            val cancelYPosition = -height.toFloat() + -marginBottom.toFloat()
             animate()
                 .y(marginTop.toFloat())
                 .setInterpolator(DecelerateInterpolator())
@@ -93,7 +99,7 @@ class SlidingTopErrorView @JvmOverloads constructor(
                     }
 
                     override fun onAnimationCancel(animation: Animator?) {
-                        y = cancelYPosition
+                        y = errorLayoutAboveScreenStartPosition
                     }
 
                     override fun onAnimationStart(animation: Animator?) {
@@ -108,9 +114,8 @@ class SlidingTopErrorView @JvmOverloads constructor(
 
     private fun moveViewToAboveOfScreen() {
         with(binding.slidingTopErrorLayout) {
-            val finishPointY = -height.toFloat() + -marginBottom.toFloat()
             animate()
-                .y(finishPointY)
+                .y(errorLayoutAboveScreenStartPosition)
                 .setInterpolator(AccelerateInterpolator())
                 .setDuration(OUT_ANIMATION_DURATION)
                 .withLayer()
@@ -124,7 +129,7 @@ class SlidingTopErrorView @JvmOverloads constructor(
                     }
 
                     override fun onAnimationCancel(animation: Animator?) {
-                        y = finishPointY
+                        y = errorLayoutAboveScreenStartPosition
                     }
 
                     override fun onAnimationStart(animation: Animator?) {

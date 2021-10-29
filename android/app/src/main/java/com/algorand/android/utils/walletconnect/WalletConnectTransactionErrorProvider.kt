@@ -12,20 +12,14 @@
 
 package com.algorand.android.utils.walletconnect
 
-import com.algorand.android.models.WalletConnectTransactionErrorResponse
+import com.algorand.android.models.BaseWalletConnectErrorProvider
 
 /**
- * This class will be provided by hilt and only purpose is to support multi language error messages
+ * This class will be provided by hilt and its only purpose is to support multi language error messages
  */
-class WalletConnectTransactionErrorProvider(
-    rejectedErrorMessage: String,
-    unauthorizedErrorMessage: String,
-    unsupportedErrorMessage: String,
-    invalidInputErrorMessage: String
-) {
-
-    val unsupported = WalletConnectTransactionErrorResponse.Unsupported(unsupportedErrorMessage)
-    val unauthorized = WalletConnectTransactionErrorResponse.Unauthorized(unauthorizedErrorMessage)
-    val invalidInput = WalletConnectTransactionErrorResponse.InvalidInput(invalidInputErrorMessage)
-    val rejected = WalletConnectTransactionErrorResponse.Rejected(rejectedErrorMessage)
-}
+data class WalletConnectTransactionErrorProvider(
+    val rejected: BaseWalletConnectErrorProvider.RequestRejectedErrorProvider,
+    val unauthorized: BaseWalletConnectErrorProvider.UnauthorizedRequestErrorProvider,
+    val unsupported: BaseWalletConnectErrorProvider.UnsupportedRequestErrorProvider,
+    val invalidInput: BaseWalletConnectErrorProvider.InvalidInputErrorProvider
+)

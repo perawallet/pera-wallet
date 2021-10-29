@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2019 Algorand, Inc.
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -61,7 +60,7 @@
             android:layout_marginBottom="@dimen/keyline_1"
             android:ellipsize="end"
             android:fontFamily="@font/publicsans_regular"
-            android:maxLines="4"
+            android:maxLines="22"
             android:textColor="@color/primaryButtonTextColor"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"

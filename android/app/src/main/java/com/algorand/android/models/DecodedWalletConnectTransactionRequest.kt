@@ -42,7 +42,8 @@ data class DecodedWalletConnectTransactionRequest(
     @SerializedName("apap") val approvalHash: String? = null,
     @SerializedName("apsu") val stateHash: String? = null,
     @SerializedName("caid") val assetIdBeingConfigured: Long? = null,
-    @SerializedName("apar") val decodedAssetConfigParameters: DecodedAssetConfigParameters? = null
+    @SerializedName("apar") val decodedAssetConfigParameters: DecodedAssetConfigParameters? = null,
+    @SerializedName("grp") val groupId: String? = null
 ) {
     companion object {
         fun create(request: WalletConnectTransactionRequest): DecodedWalletConnectTransactionRequest {
@@ -73,7 +74,8 @@ data class DecodedWalletConnectTransactionRequest(
                     approvalHash = approvalHash,
                     stateHash = stateHash,
                     assetIdBeingConfigured = assetIdBeingConfigured,
-                    decodedAssetConfigParameters = DecodedAssetConfigParameters.create(assetConfigParams)
+                    decodedAssetConfigParameters = DecodedAssetConfigParameters.create(assetConfigParams),
+                    groupId = groupId
                 )
             }
         }

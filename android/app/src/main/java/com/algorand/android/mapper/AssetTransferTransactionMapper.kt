@@ -73,7 +73,8 @@ class AssetTransferTransactionMapper @Inject constructor(
                 assetCloseToAddress = createWalletConnectAddress(assetCloseToAddress) ?: return null,
                 signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
                 assetAmount = assetAmount ?: ZERO,
-                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress)
+                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
+                groupId = groupId
             )
         }
     }
@@ -96,7 +97,8 @@ class AssetTransferTransactionMapper @Inject constructor(
                 rekeyAddress = createWalletConnectAddress(rekeyAddress) ?: return null,
                 signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
                 assetAmount = assetAmount ?: ZERO,
-                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress)
+                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
+                groupId = groupId
             )
         }
     }
@@ -120,7 +122,8 @@ class AssetTransferTransactionMapper @Inject constructor(
                 signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
                 assetAmount = assetAmount ?: ZERO,
                 accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
-                closeAddress = createWalletConnectAddress(assetCloseToAddress) ?: return null
+                closeAddress = createWalletConnectAddress(assetCloseToAddress) ?: return null,
+                groupId = groupId
             )
         }
     }
@@ -142,7 +145,8 @@ class AssetTransferTransactionMapper @Inject constructor(
                 peerMeta = peerMeta,
                 assetAmount = assetAmount ?: ZERO,
                 signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
-                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress)
+                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
+                groupId = groupId
             )
         }
     }
@@ -163,7 +167,8 @@ class AssetTransferTransactionMapper @Inject constructor(
                 assetId = assetId ?: return null,
                 peerMeta = peerMeta,
                 signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
-                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress)
+                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
+                groupId = groupId
             )
         }
     }

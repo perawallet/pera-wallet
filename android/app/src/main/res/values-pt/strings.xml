@@ -591,6 +591,22 @@
     <string name="governance_banner_title">O Programa de Governança Algorand está começando!</string>
     <string name="governance_banner_description">Seja um Governador. Vote no futuro da Algorand. Ganhe recompensas.</string>
     <string name="governance_banner_button_text">Comece Agora</string>
-    <string name="could_not_create_wallet_connect">Não foi possível criar uma sessão no WalletConnect. Tente com um URL válido.</string>
+    <string name="could_not_create_wallet_connect">Não foi possível criar uma sessão na WalletConnect. Tente novamente com uma URL válida.</string>
     <string name="you_can_not_send_your">Você não pode enviar o total de seu saldo para você mesmo. Selecione quantia ou destinatário diferentes e tente novamente.</string>
+    <string name="transaction_count_group_id_formatted"><annotation replacement="transaction_count">transaction_count_placeholder</annotation> Txns · Group ID: <annotation replacement="group_id">group_id_placeholder</annotation></string>
+    <string name="group_id">Identificação (ID) do grupo</string>
+    <string name="transaction_request_rejected_user_rejected">Solicitação de Transação Recusada: O Usuário recusou a solicitação de transação.</string>
+    <string name="transaction_request_rejected_transaction_group">Solicitação de Transação Recusada: O grupo de transação não foi validado pelo SDK Algorand.</string>
+    <string name="transaction_request_rejected_user_currently">Solicitação de Transação Recusada: O Usuário atualmente possui outra solicitação de transação em andamento.</string>
+    <string name="signing_error_network_mismatch">Erro de Assinatura: Incompatibilidade de redes entre DApp e Carteira. Por exemplo, a Carteira está conectada à TestNet e a DApp está conectada à MainNet (ou vice-versa).</string>
+    <string name="signing_error_transaction_in_request">Erro de Assinatura: Uma transação na solicitação de transação requer uma chave privada (assinante) que não existe na Carteira conectada.</string>
+    <string name="transaction_request_contains_unsupported">A solicitação de transação contém um Tipo de Transação não Suportado</string>
+    <string name="transaction_request_contains_unsupported_multisig">A solicitação de transação contém um Tipo de Transação não Suportado: Múltipla Assinatura</string>
+    <string name="invalid_input_transaction_request">Entrada Inválida: A solicitação de transação contém mais de 16 transações</string>
+    <string name="invalid_input_unable_to_parse">Entrada Inválida: Incapaz de analisar a transação</string>
+    <string name="invalid_input_invalid_public_key">Entrada Inválida: Chave Pública Inválida</string>
+    <string name="invalid_input_invalid_asset">Entrada Inválida: Ativo Inválido</string>
+    <string name="invalid_input_unable_to_be">Entrada Inválida: Incapaz de ser assinada</string>
+    <string name="invalid_input_group_transaction">Entrada Inválida: A transação de grupo não precisa ser assinada pelo usuário da Carteira. </string>
+    <string name="invalid_input_requested_signer">Entrada Inválida: O assinante solicitado não está na Carteira do Usuário</string>
 </resources>

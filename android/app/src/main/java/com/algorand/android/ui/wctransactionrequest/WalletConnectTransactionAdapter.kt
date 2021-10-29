@@ -19,6 +19,7 @@ import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.WalletConnectPeerMeta
 import com.algorand.android.ui.common.walletconnect.WalletConnectAppPreviewCardView
 import com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionListItem.ItemType.APP_PREVIEW
+import com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionListItem.ItemType.GROUP_ID
 import com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionListItem.ItemType.MULTIPLE_TXN
 import com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionListItem.ItemType.SINGLE_TXN
 import com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionListItem.ItemType.TITLE
@@ -26,6 +27,7 @@ import com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionList
 import com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionListItem.SingleTransactionItem
 import com.algorand.android.ui.wctransactionrequest.viewholder.BaseWalletConnectTransactionViewHolder
 import com.algorand.android.ui.wctransactionrequest.viewholder.WalletConnectAppPreviewViewHolder
+import com.algorand.android.ui.wctransactionrequest.viewholder.WalletConnectGroupIdViewHolder
 import com.algorand.android.ui.wctransactionrequest.viewholder.WalletConnectMultipleRequestViewHolder
 import com.algorand.android.ui.wctransactionrequest.viewholder.WalletConnectRequestTitleViewHolder
 import com.algorand.android.ui.wctransactionrequest.viewholder.WalletConnectSingleRequestViewHolder
@@ -50,6 +52,7 @@ class WalletConnectTransactionAdapter(
             TITLE.ordinal -> WalletConnectRequestTitleViewHolder.create(parent)
             MULTIPLE_TXN.ordinal -> createMultipleTransactionViewHolder(parent)
             SINGLE_TXN.ordinal -> createSingleTransactionViewHolder(parent)
+            GROUP_ID.ordinal -> WalletConnectGroupIdViewHolder.create(parent)
             else -> throw IllegalArgumentException("$logTag: Item View Type is Unknown.")
         }
     }

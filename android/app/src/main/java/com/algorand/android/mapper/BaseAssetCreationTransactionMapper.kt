@@ -79,7 +79,8 @@ class BaseAssetCreationTransactionMapper @Inject constructor(
                 managerAddress = createWalletConnectAddress(assetConfigParams?.managerAddress),
                 reserveAddress = createWalletConnectAddress(assetConfigParams?.reserveAddress),
                 frozenAddress = createWalletConnectAddress(assetConfigParams?.frozenAddress),
-                clawbackAddress = createWalletConnectAddress(assetConfigParams?.clawbackAddress)
+                clawbackAddress = createWalletConnectAddress(assetConfigParams?.clawbackAddress),
+                groupId = groupId
             )
         }
     }
@@ -110,7 +111,8 @@ class BaseAssetCreationTransactionMapper @Inject constructor(
                 managerAddress = createWalletConnectAddress(assetConfigParams?.managerAddress),
                 reserveAddress = createWalletConnectAddress(assetConfigParams?.reserveAddress),
                 frozenAddress = createWalletConnectAddress(assetConfigParams?.frozenAddress),
-                clawbackAddress = createWalletConnectAddress(assetConfigParams?.clawbackAddress)
+                clawbackAddress = createWalletConnectAddress(assetConfigParams?.clawbackAddress),
+                groupId = groupId
             )
         }
     }
@@ -142,7 +144,8 @@ class BaseAssetCreationTransactionMapper @Inject constructor(
                 managerAddress = createWalletConnectAddress(assetConfigParams?.managerAddress),
                 reserveAddress = createWalletConnectAddress(assetConfigParams?.reserveAddress),
                 frozenAddress = createWalletConnectAddress(assetConfigParams?.frozenAddress),
-                clawbackAddress = createWalletConnectAddress(assetConfigParams?.clawbackAddress)
+                clawbackAddress = createWalletConnectAddress(assetConfigParams?.clawbackAddress),
+                groupId = groupId
             )
         }
     }
@@ -173,7 +176,8 @@ class BaseAssetCreationTransactionMapper @Inject constructor(
                 managerAddress = createWalletConnectAddress(assetConfigParams?.managerAddress),
                 reserveAddress = createWalletConnectAddress(assetConfigParams?.reserveAddress),
                 frozenAddress = createWalletConnectAddress(assetConfigParams?.frozenAddress),
-                clawbackAddress = createWalletConnectAddress(assetConfigParams?.clawbackAddress)
+                clawbackAddress = createWalletConnectAddress(assetConfigParams?.clawbackAddress),
+                groupId = groupId
             )
         }
     }

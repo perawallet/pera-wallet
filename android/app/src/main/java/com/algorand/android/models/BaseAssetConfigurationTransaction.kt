@@ -93,7 +93,8 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val managerAddress: WalletConnectAddress? = null,
             override val reserveAddress: WalletConnectAddress? = null,
             override val frozenAddress: WalletConnectAddress? = null,
-            override val clawbackAddress: WalletConnectAddress? = null
+            override val clawbackAddress: WalletConnectAddress? = null,
+            override val groupId: String?
         ) : BaseAssetCreationTransaction()
 
         @Parcelize
@@ -116,6 +117,7 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val reserveAddress: WalletConnectAddress? = null,
             override val frozenAddress: WalletConnectAddress? = null,
             override val clawbackAddress: WalletConnectAddress? = null,
+            override val groupId: String?,
             val closeToAddress: WalletConnectAddress
         ) : BaseAssetCreationTransaction() {
 
@@ -145,6 +147,7 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val reserveAddress: WalletConnectAddress? = null,
             override val frozenAddress: WalletConnectAddress? = null,
             override val clawbackAddress: WalletConnectAddress? = null,
+            override val groupId: String?,
             val rekeyAddress: WalletConnectAddress
         ) : BaseAssetCreationTransaction() {
 
@@ -174,6 +177,7 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val reserveAddress: WalletConnectAddress? = null,
             override val frozenAddress: WalletConnectAddress? = null,
             override val clawbackAddress: WalletConnectAddress? = null,
+            override val groupId: String?,
             val closeToAddress: WalletConnectAddress,
             val rekeyAddress: WalletConnectAddress,
         ) : BaseAssetCreationTransaction() {
@@ -235,6 +239,7 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val frozenAddress: WalletConnectAddress? = null,
             override val clawbackAddress: WalletConnectAddress? = null,
             override var assetParams: AssetParams? = null,
+            override val groupId: String?,
         ) : BaseAssetReconfigurationTransaction()
 
         @Parcelize
@@ -253,6 +258,7 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val frozenAddress: WalletConnectAddress? = null,
             override val clawbackAddress: WalletConnectAddress? = null,
             override var assetParams: AssetParams? = null,
+            override val groupId: String?,
             val closeToAddress: WalletConnectAddress,
         ) : BaseAssetReconfigurationTransaction() {
 
@@ -278,6 +284,7 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val frozenAddress: WalletConnectAddress? = null,
             override val clawbackAddress: WalletConnectAddress? = null,
             override var assetParams: AssetParams? = null,
+            override val groupId: String?,
             val rekeyAddress: WalletConnectAddress,
         ) : BaseAssetReconfigurationTransaction() {
 
@@ -303,6 +310,7 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val frozenAddress: WalletConnectAddress? = null,
             override val clawbackAddress: WalletConnectAddress? = null,
             override var assetParams: AssetParams? = null,
+            override val groupId: String?,
             val closeToAddress: WalletConnectAddress,
             val rekeyAddress: WalletConnectAddress,
         ) : BaseAssetReconfigurationTransaction() {
@@ -359,6 +367,7 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val assetId: Long,
             override val url: String? = null,
             override var assetParams: AssetParams? = null,
+            override val groupId: String?
         ) : BaseAssetDeletionTransaction()
 
         @Parcelize
@@ -373,6 +382,7 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val assetId: Long,
             override val url: String? = null,
             override var assetParams: AssetParams? = null,
+            override val groupId: String?,
             val closeToAddress: WalletConnectAddress,
         ) : BaseAssetDeletionTransaction() {
 
@@ -391,6 +401,7 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val assetId: Long,
             override val url: String? = null,
             override var assetParams: AssetParams? = null,
+            override val groupId: String?,
             val rekeyAddress: WalletConnectAddress,
         ) : BaseAssetDeletionTransaction() {
 
@@ -409,6 +420,7 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val assetId: Long,
             override val url: String? = null,
             override var assetParams: AssetParams? = null,
+            override val groupId: String?,
             val closeToAddress: WalletConnectAddress,
             val rekeyAddress: WalletConnectAddress,
         ) : BaseAssetDeletionTransaction() {

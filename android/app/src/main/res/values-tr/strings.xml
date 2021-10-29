@@ -609,4 +609,20 @@
     <string name="governance_banner_button_text">Başlayın</string>
     <string name="could_not_create_wallet_connect">WalletConnect\'te oturum oluşturulamadı. Lütfen geçerli bir URL ile deneyin.</string>
     <string name="you_can_not_send_your">Bakiyenizin tümünü kendinize gönderemezsiniz. Lütfen farklı bir miktar veya alıcı seçerek tekrar deneyin.</string>
+    <string name="transaction_count_group_id_formatted"><annotation replacement="transaction_count">transaction_count_placeholder</annotation> İşlemler · Grup Kimliği: <annotation replacement="group_id">group_id_placeholder</annotation></string>
+    <string name="group_id">Grup Kimliği</string>
+    <string name="transaction_request_rejected_user_rejected">İşlem İsteği Reddedildi: Kullanıcı işlem isteğini reddetti.</string>
+    <string name="transaction_request_rejected_transaction_group">İşlem İsteği Reddedildi: İşlem grubunun Algorand SDK tarafından doğrulaması yapılamadı.</string>
+    <string name="transaction_request_rejected_user_currently">İşlem İsteği Reddedildi: Kullanıcının sürmekte olan başka bir işlem isteği bulunuyor.</string>
+    <string name="signing_error_network_mismatch">İmzalama Hatası: dApp ile Cüzdan arasında ağ uyuşmazlığı bulunuyor. Örneğin, Cüzdan Test Ağına bağlı durumdayken dApp Ana Ağa bağlı durumda (veya tam tersi).</string>
+    <string name="signing_error_transaction_in_request">İmzalama Hatası: İşlem isteği sürecindeki bir işlem, bağlı olan Cüzdanda bulunmayan bir özel anahtarı (imzalayan) gerektiriyor.</string>
+    <string name="transaction_request_contains_unsupported">İşlem isteği, Desteklenmeyen İşlem Türünü içeriyor</string>
+    <string name="transaction_request_contains_unsupported_multisig">İşlem isteği, Desteklenmeyen İşlem Türünü içeriyor: Çoklu imza</string>
+    <string name="invalid_input_transaction_request">Geçersiz Giriş: İşlem isteği 16\'dan fazla işlemi içeriyor</string>
+    <string name="invalid_input_unable_to_parse">Geçersiz Giriş: İşlem ayrıştırılamıyor</string>
+    <string name="invalid_input_invalid_public_key">Geçersiz Giriş: Ortak Anahtar Geçersiz</string>
+    <string name="invalid_input_invalid_asset">Geçersiz Giriş: Geçersiz Varlık</string>
+    <string name="invalid_input_unable_to_be">Geçersiz Giriş: İmzalanamıyor</string>
+    <string name="invalid_input_group_transaction">Geçersiz Giriş: Grup işlemlerinin Cüzdan kullanıcısı tarafından imzalanmasına gerek yoktur.</string>
+    <string name="invalid_input_requested_signer">Geçersiz Giriş: İstenen imzalayan Kullanıcı Cüzdanında yok</string>
 </resources>

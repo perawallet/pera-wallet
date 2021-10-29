@@ -184,7 +184,6 @@ fun generateAddressFromProgram(hashValue: String?): String {
         val decodedByteArray = Base64.decode(hashValue, Base64.DEFAULT)
         Mobile.addressFromProgram(decodedByteArray)
     } catch (exception: Exception) {
-        FirebaseCrashlytics.getInstance().recordException(exception)
         ""
     }
 }

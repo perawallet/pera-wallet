@@ -13,9 +13,6 @@
 package com.algorand.android.utils.walletconnect
 
 import com.algorand.android.mapper.WalletConnectTransactionMapper
-import com.algorand.android.models.Account.Detail.Ledger
-import com.algorand.android.models.Account.Detail.Rekeyed
-import com.algorand.android.models.Account.Detail.RekeyedAuth
 import com.algorand.android.models.BaseAssetTransferTransaction
 import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.WalletConnectSession
@@ -49,12 +46,12 @@ class WalletConnectCustomTransactionHandler @Inject constructor(
             val wcAlgoTxnRequestList = walletConnectTransactionMapper.parseTransactionPayload(payloadList)
 
             if (wcAlgoTxnRequestList == null) {
-                onResult(Error(sessionId, requestId, errorProvider.invalidInput))
+                onResult(Error(sessionId, requestId, errorProvider.invalidInput.unableToParse))
                 return
             }
 
             if (wcAlgoTxnRequestList.size > MAX_TRANSACTION_COUNT) {
-                onResult(Error(sessionId, requestId, errorProvider.invalidInput))
+                onResult(Error(sessionId, requestId, errorProvider.invalidInput.maxTransactionLimit))
                 return
             }
 
@@ -63,14 +60,14 @@ class WalletConnectCustomTransactionHandler @Inject constructor(
             }
 
             if (walletConnectTxnList.size != wcAlgoTxnRequestList.size) {
-                onResult(Error(sessionId, requestId, errorProvider.invalidInput))
+                onResult(Error(sessionId, requestId, errorProvider.invalidInput.unableToParse))
                 return
             }
 
             setAssetParamsIfNeed(walletConnectTxnList)
 
             if (hasInvalidAssetTransfer(walletConnectTxnList)) {
-                onResult(Error(sessionId, requestId, errorProvider.invalidInput))
+                onResult(Error(sessionId, requestId, errorProvider.invalidInput.invalidAsset))
                 return
             }
 
@@ -78,32 +75,27 @@ class WalletConnectCustomTransactionHandler @Inject constructor(
             val groupedWalletConnectTxnList = groupWalletConnectTransactions(walletConnectTxnList)
 
             if (!areAllAddressPublicKeysValid(groupedWalletConnectTxnList)) {
-                onResult(Error(sessionId, requestId, errorProvider.invalidInput))
+                onResult(Error(sessionId, requestId, errorProvider.invalidInput.invalidPublicKey))
                 return
             }
 
             if (hasValidSigner(walletConnectTxnList)) {
-                onResult(Error(sessionId, requestId, errorProvider.invalidInput))
-                return
-            }
-
-            if (!doAppHaveAtLeastOneSignerAccountInTxn(groupedWalletConnectTxnList)) {
-                onResult(Error(sessionId, requestId, errorProvider.unauthorized))
-                return
-            }
-
-            if (areThereAnyLedgerAtomicTxn(groupedWalletConnectTxnList)) {
-                onResult(Error(sessionId, requestId, errorProvider.unsupported))
+                onResult(Error(sessionId, requestId, errorProvider.invalidInput.invalidSigner))
                 return
             }
 
             if (!hasAllAtomicAtLeastOneTxnNeedsToBeSigned(groupedWalletConnectTxnList)) {
-                onResult(Error(sessionId, requestId, errorProvider.invalidInput))
+                onResult(Error(sessionId, requestId, errorProvider.invalidInput.atomicTxnNoNeedToBeSigned))
+                return
+            }
+
+            if (!doAppHaveAtLeastOneSignerAccountInTxn(groupedWalletConnectTxnList)) {
+                onResult(Error(sessionId, requestId, errorProvider.unauthorized.missingSigner))
                 return
             }
 
             if (!checkIfNodesMatchesAndSetTransactionLastRound(walletConnectTxnList)) {
-                onResult(Error(sessionId, requestId, errorProvider.invalidInput))
+                onResult(Error(sessionId, requestId, errorProvider.unauthorized.mismatchingNodes))
                 return
             }
 
@@ -111,7 +103,7 @@ class WalletConnectCustomTransactionHandler @Inject constructor(
             val result = WalletConnectTransaction(requestId, groupedWalletConnectTxnList, session, transactionMessage)
             onResult(Success(result))
         } catch (exception: Exception) {
-            onResult(Error(sessionId, requestId, errorProvider.invalidInput))
+            onResult(Error(sessionId, requestId, errorProvider.invalidInput.unableToParse))
         }
     }
 
@@ -176,18 +168,8 @@ class WalletConnectCustomTransactionHandler @Inject constructor(
             txnList.all { txn ->
                 txn.getAllAddressPublicKeysTxnIncludes().all { wcAddress ->
                     wcAddress.isValid
-                }
+                } && txn.isAuthAddressValid()
             }
-        }
-    }
-
-    private fun areThereAnyLedgerAtomicTxn(groupedTxnList: List<List<BaseWalletConnectTransaction>>): Boolean {
-        return groupedTxnList.filter { it.size > 1 }.any { txnList ->
-            txnList.filter { it.signer is WalletConnectSigner.Sender || it.signer is WalletConnectSigner.Rekeyed }
-                .any {
-                    val accountType = it.accountCacheData?.account?.detail
-                    accountType is Ledger || accountType is Rekeyed || accountType is RekeyedAuth
-                }
         }
     }
 

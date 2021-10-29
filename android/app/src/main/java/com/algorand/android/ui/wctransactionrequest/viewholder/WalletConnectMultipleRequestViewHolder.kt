@@ -18,6 +18,8 @@ import androidx.core.view.isVisible
 import com.algorand.android.R
 import com.algorand.android.databinding.ItemWalletConnectMultipleRequestBinding
 import com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionListItem
+import com.algorand.android.utils.getXmlStyledString
+import com.algorand.android.utils.toShortenedAddress
 
 class WalletConnectMultipleRequestViewHolder(
     private val binding: ItemWalletConnectMultipleRequestBinding
@@ -25,15 +27,26 @@ class WalletConnectMultipleRequestViewHolder(
 
     override fun bind(item: WalletConnectTransactionListItem) {
         if (item !is WalletConnectTransactionListItem.MultipleTransactionItem) return
-        binding.transactionCountTextView.text = getFormattedCountText(item.transactionList.size)
-        binding.transactionInfoImageView.isVisible = item.transactionList.any { it.shouldShowWarningIndicator }
+        with(binding) {
+            transactionCountTextView.text = getFormattedCountText(item.transactionList.size, item.groupId)
+            transactionInfoImageView.isVisible = item.transactionList.any { it.shouldShowWarningIndicator }
+        }
     }
 
-    private fun getFormattedCountText(transactionListSize: Int): String {
-        return binding.root.resources.getString(R.string.multiple_transactions_formatted, transactionListSize)
+    private fun getFormattedCountText(transactionListSize: Int, groupId: String?): String {
+        return binding.root.context.getXmlStyledString(
+            R.string.transaction_count_group_id_formatted,
+            listOf(
+                "transaction_count" to transactionListSize.toString(),
+                "group_id" to groupId.orEmpty().toShortenedAddress(GROUP_ID_SHORTENED_LETTER_COUNT)
+            )
+        ).toString()
     }
 
     companion object {
+
+        private const val GROUP_ID_SHORTENED_LETTER_COUNT = 4
+
         fun create(parent: ViewGroup): WalletConnectMultipleRequestViewHolder {
             val binding = ItemWalletConnectMultipleRequestBinding
                 .inflate(LayoutInflater.from(parent.context), parent, false)

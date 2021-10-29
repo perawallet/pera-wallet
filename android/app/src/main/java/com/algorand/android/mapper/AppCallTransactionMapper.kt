@@ -73,7 +73,8 @@ class AppCallTransactionMapper @Inject constructor(
                 accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
                 appOnComplete = BaseAppCallTransaction.AppOnComplete.getByAppNoOrDefault(appOnComplete),
                 approvalHash = generateAddressFromProgram(approvalHash),
-                stateHash = generateAddressFromProgram(stateHash)
+                stateHash = generateAddressFromProgram(stateHash),
+                groupId = groupId
             )
         }
     }
@@ -97,7 +98,8 @@ class AppCallTransactionMapper @Inject constructor(
                 accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
                 appOnComplete = BaseAppCallTransaction.AppOnComplete.getByAppNoOrDefault(appOnComplete),
                 approvalHash = generateAddressFromProgram(approvalHash),
-                stateHash = generateAddressFromProgram(stateHash)
+                stateHash = generateAddressFromProgram(stateHash),
+                groupId = groupId
             )
         }
     }
@@ -124,7 +126,8 @@ class AppCallTransactionMapper @Inject constructor(
                 appLocalSchema = appLocalSchema,
                 appExtraPages = appExtraPages ?: 0,
                 approvalHash = generateAddressFromProgram(approvalHash),
-                stateHash = generateAddressFromProgram(stateHash)
+                stateHash = generateAddressFromProgram(stateHash),
+                groupId = groupId
             )
         }
     }
@@ -148,7 +151,8 @@ class AppCallTransactionMapper @Inject constructor(
                 accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
                 appOnComplete = BaseAppCallTransaction.AppOnComplete.getByAppNoOrDefault(appOnComplete),
                 approvalHash = generateAddressFromProgram(approvalHash),
-                stateHash = generateAddressFromProgram(stateHash)
+                stateHash = generateAddressFromProgram(stateHash),
+                groupId = groupId
             )
         }
     }

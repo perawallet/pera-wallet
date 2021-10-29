@@ -68,7 +68,8 @@ class PaymentTransactionMapper @Inject constructor(
                 closeToAddress = createWalletConnectAddress(closeToAddress) ?: return null,
                 rekeyToAddress = createWalletConnectAddress(rekeyAddress) ?: return null,
                 signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
-                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress)
+                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
+                groupId = groupId
             )
         }
     }
@@ -90,7 +91,8 @@ class PaymentTransactionMapper @Inject constructor(
                 peerMeta = peerMeta,
                 rekeyToAddress = createWalletConnectAddress(rekeyAddress) ?: return null,
                 signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
-                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress)
+                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
+                groupId = groupId
             )
         }
     }
@@ -112,7 +114,8 @@ class PaymentTransactionMapper @Inject constructor(
                 peerMeta = peerMeta,
                 closeToAddress = createWalletConnectAddress(closeToAddress) ?: return null,
                 signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
-                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress)
+                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
+                groupId = groupId
             )
         }
     }
@@ -133,7 +136,8 @@ class PaymentTransactionMapper @Inject constructor(
                 receiverAddress = createWalletConnectAddress(receiverAddress) ?: return null,
                 peerMeta = peerMeta,
                 signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
-                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress)
+                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
+                groupId = groupId
             )
         }
     }

@@ -69,6 +69,7 @@ class BaseAssetDeletionTransactionMapper @Inject constructor(
                 accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
                 assetId = assetIdBeingConfigured ?: return null,
                 url = assetConfigParams?.url,
+                groupId = groupId
             )
         }
     }
@@ -91,6 +92,7 @@ class BaseAssetDeletionTransactionMapper @Inject constructor(
                 closeToAddress = createWalletConnectAddress(closeToAddress) ?: return null,
                 assetId = assetIdBeingConfigured ?: return null,
                 url = assetConfigParams?.url,
+                groupId = groupId
             )
         }
     }
@@ -113,6 +115,7 @@ class BaseAssetDeletionTransactionMapper @Inject constructor(
                 rekeyAddress = createWalletConnectAddress(rekeyAddress) ?: return null,
                 assetId = assetIdBeingConfigured ?: return null,
                 url = assetConfigParams?.url,
+                groupId = groupId
             )
         }
     }
@@ -136,6 +139,7 @@ class BaseAssetDeletionTransactionMapper @Inject constructor(
                 rekeyAddress = createWalletConnectAddress(rekeyAddress) ?: return null,
                 assetId = assetIdBeingConfigured ?: return null,
                 url = assetConfigParams?.url,
+                groupId = groupId
             )
         }
     }

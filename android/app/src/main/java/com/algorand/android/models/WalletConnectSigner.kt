@@ -32,33 +32,39 @@ sealed class WalletConnectSigner : Parcelable {
         ): WalletConnectSigner {
             return with(transactionRequest) {
                 when {
-                    hasMultisig -> Multisig(errorProvider.unsupported)
-                    hasMultipleSigner -> Unsignable(errorProvider.unsupported)
+                    hasMultisig -> Multisig(errorProvider.unsupported.multisigTransaction)
+                    hasMultipleSigner -> Unsignable(errorProvider.unsupported.unknownTransactionType)
                     isDisplayOnly -> DisplayOnly
                     firstSignerAddressBase64 != null && authAddressBase64 != null -> {
                         return if (authAddressBase64 == firstSignerAddressBase64) {
                             returnInvalidInputIfAddressIsInvalid(
                                 Rekeyed(WalletConnectAddress.create(authAddressBase64)),
-                                errorProvider.invalidInput
+                                errorProvider.invalidInput.invalidPublicKey
                             )
                         } else {
-                            Unsignable(errorProvider.invalidInput)
+                            Unsignable(errorProvider.invalidInput.unableToSign)
                         }
                     }
                     firstSignerAddressBase64 != null -> {
                         return if (senderAddress.addressBase64 == firstSignerAddressBase64) {
-                            returnInvalidInputIfAddressIsInvalid(Sender(senderAddress), errorProvider.invalidInput)
+                            returnInvalidInputIfAddressIsInvalid(
+                                Sender(senderAddress),
+                                errorProvider.invalidInput.invalidPublicKey
+                            )
                         } else {
-                            Unsignable(errorProvider.invalidInput)
+                            Unsignable(errorProvider.invalidInput.unableToSign)
                         }
                     }
                     authAddressBase64 != null -> {
                         returnInvalidInputIfAddressIsInvalid(
                             Rekeyed(WalletConnectAddress.create(authAddressBase64)),
-                            errorProvider.invalidInput
+                            errorProvider.invalidInput.invalidPublicKey
                         )
                     }
-                    else -> returnInvalidInputIfAddressIsInvalid(Sender(senderAddress), errorProvider.invalidInput)
+                    else -> returnInvalidInputIfAddressIsInvalid(
+                        Sender(senderAddress),
+                        errorProvider.invalidInput.invalidPublicKey
+                    )
                 }
             }
         }

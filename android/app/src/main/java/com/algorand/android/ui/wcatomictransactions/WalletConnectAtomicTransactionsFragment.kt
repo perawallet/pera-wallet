@@ -66,7 +66,8 @@ class WalletConnectAtomicTransactionsFragment :
     }
 
     private fun setTransactionItems(transactionList: List<BaseWalletConnectTransaction>) {
-        val transactionItemList = WalletConnectTransactionListItem.create(transactionList)
+        val groupId = transactionList.firstOrNull()?.groupId
+        val transactionItemList = WalletConnectTransactionListItem.create(transactionList, groupId)
         transactionAdapter.submitList(transactionItemList)
     }
 }

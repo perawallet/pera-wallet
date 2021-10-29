@@ -14,6 +14,7 @@ package com.algorand.android.models
 
 import android.os.Parcelable
 import com.algorand.android.utils.decodeBase64
+import com.algorand.android.utils.isValidAddress
 import java.math.BigInteger
 
 abstract class BaseWalletConnectTransaction : Parcelable {
@@ -24,6 +25,7 @@ abstract class BaseWalletConnectTransaction : Parcelable {
     abstract val peerMeta: WalletConnectPeerMeta
     abstract val rawTransactionPayload: WCAlgoTransactionRequest
     abstract val signer: WalletConnectSigner
+    abstract val groupId: String?
 
     abstract val summaryTitleResId: Int
     abstract val summarySecondaryParameter: String
@@ -54,6 +56,11 @@ abstract class BaseWalletConnectTransaction : Parcelable {
         get() = rawTransactionPayload.signers?.map { addressBase64 ->
             WalletConnectAddress.create(addressBase64)
         }
+
+    fun isAuthAddressValid(): Boolean {
+        val authAddress = rawTransactionPayload.authAddressBase64
+        return authAddress == null || authAddress.isValidAddress()
+    }
 
     abstract fun getAllAddressPublicKeysTxnIncludes(): List<WalletConnectAddress>
 

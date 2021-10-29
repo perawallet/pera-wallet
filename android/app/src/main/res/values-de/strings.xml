@@ -607,6 +607,22 @@
     <string name="governance_banner_title">Das Algorand-Governance-Programm beginnt!</string>
     <string name="governance_banner_description">Governor werden. Über die Zukunft von Algorand abstimmen. Belohnungen verdienen.</string>
     <string name="governance_banner_button_text">Los geht\'s</string>
-    <string name="could_not_create_wallet_connect">Es konnte keine Sitzung auf WalletConnect erstellt werden. Bitte versuchen Sie es mit einem gültigen URL.</string>
+    <string name="could_not_create_wallet_connect">Es konnte keine Sitzung auf WalletConnect erstellt werden. Bitte versuchen Sie es mit einer gültigen URL.</string>
     <string name="you_can_not_send_your">Sie können Ihr maximales Guthaben nicht an sich selbst senden. Bitte wählen Sie einen anderen Betrag oder Empfänger und versuchen Sie es erneut.</string>
+    <string name="transaction_count_group_id_formatted"><annotation replacement="transaction_count">transaction_count_placeholder</annotation> Txns - Gruppen-ID: <annotation replacement="group_id">group_id_placeholder</annotation></string>
+    <string name="group_id">Gruppen-ID</string>
+    <string name="transaction_request_rejected_user_rejected">Transaktionsanforderung abgelehnt: Der Benutzer hat die Transaktionsanforderung abgelehnt.</string>
+    <string name="transaction_request_rejected_transaction_group">Transaktionsanforderung abgelehnt: Die Validierung der Transaktionsgruppe durch das Algorand SDK ist fehlgeschlagen.</string>
+    <string name="transaction_request_rejected_user_currently">Transaktionsanforderung abgelehnt: Der Benutzer hat derzeit eine andere Transaktionsanforderung, die in Bearbeitung ist.</string>
+    <string name="signing_error_network_mismatch">Fehler beim Signieren: Netzwerkübereinstimmung zwischen dApp und Wallet. Zum Beispiel ist Wallet mit dem TestNet verbunden und dApp mit dem MainNet (oder andersherum).</string>
+    <string name="signing_error_transaction_in_request">Fehler beim Signieren: Eine Transaktion in der Transaktionsanforderung erfordert einen privaten Schlüssel (Unterzeichner), der in der verbundenen Wallet nicht existiert.</string>
+    <string name="transaction_request_contains_unsupported">Die Transaktionsanforderung enthält eine nicht unterstützte Transaktionsart</string>
+    <string name="transaction_request_contains_unsupported_multisig">Die Transaktionsanforderung enthält eine nicht unterstützte Transaktionsart: Multi-Sig</string>
+    <string name="invalid_input_transaction_request">Ungültige Eingabe: Transaktionsanforderung enthält mehr als 16 Transaktionen</string>
+    <string name="invalid_input_unable_to_parse">Ungültige Eingabe: Transaktion kann nicht geparst werden</string>
+    <string name="invalid_input_invalid_public_key">Ungültige Eingabe: Ungültiger öffentlicher Schlüssel</string>
+    <string name="invalid_input_invalid_asset">Ungültige Eingabe: Ungültiges Asset</string>
+    <string name="invalid_input_unable_to_be">Ungültige Eingabe: Kann nicht signiert werden</string>
+    <string name="invalid_input_group_transaction">Ungültige Eingabe: Die Gruppentransaktion muss nicht vom Wallet-Benutzer signiert werden. </string>
+    <string name="invalid_input_requested_signer">Ungültige Eingabe: Der angeforderte Unterzeichner befindet sich nicht in der Benutzer-Wallet</string>
 </resources>

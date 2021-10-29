@@ -46,9 +46,13 @@ fun Context.openTransactionInfoUrl() {
 }
 
 fun Context.openUrl(url: String) {
-    CustomTabsIntent.Builder()
-        .build()
-        .launchUrl(this, Uri.parse(url))
+    try {
+        CustomTabsIntent.Builder()
+            .build()
+            .launchUrl(this, Uri.parse(url))
+    } catch (activityNotFoundException: ActivityNotFoundException) {
+        FirebaseCrashlytics.getInstance().recordException(activityNotFoundException)
+    }
 }
 
 // TODO Refactor here

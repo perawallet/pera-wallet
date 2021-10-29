@@ -110,6 +110,14 @@ fun String?.toShortenedAddress(): String {
     }
 }
 
+fun String?.toShortenedAddress(letterCount: Int): String {
+    return if (!this.isNullOrBlank() && length >= letterCount) {
+        "${take(letterCount)}...${takeLast(letterCount)}"
+    } else {
+        ""
+    }
+}
+
 fun TextView.setDrawable(
     start: Drawable? = null,
     top: Drawable? = null,

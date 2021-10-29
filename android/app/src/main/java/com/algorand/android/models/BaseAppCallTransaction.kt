@@ -40,7 +40,8 @@ sealed class BaseAppCallTransaction(appOnComplete: AppOnComplete) : BaseWalletCo
         override val accountCacheData: AccountCacheData?,
         override val appOnComplete: AppOnComplete,
         override val approvalHash: String?,
-        override val stateHash: String?
+        override val stateHash: String?,
+        override val groupId: String?
     ) : BaseAppCallTransaction(appOnComplete) {
 
         override fun getAllAddressPublicKeysTxnIncludes(): List<WalletConnectAddress> {
@@ -61,7 +62,8 @@ sealed class BaseAppCallTransaction(appOnComplete: AppOnComplete) : BaseWalletCo
         override val accountCacheData: AccountCacheData?,
         override val appOnComplete: AppOnComplete,
         override val approvalHash: String?,
-        override val stateHash: String?
+        override val stateHash: String?,
+        override val groupId: String?
     ) : BaseAppCallTransaction(appOnComplete) {
 
         override fun getAllAddressPublicKeysTxnIncludes(): List<WalletConnectAddress> {
@@ -83,6 +85,7 @@ sealed class BaseAppCallTransaction(appOnComplete: AppOnComplete) : BaseWalletCo
         override val appOnComplete: AppOnComplete,
         override val approvalHash: String?,
         override val stateHash: String?,
+        override val groupId: String?,
         val appGlobalSchema: ApplicationCallStateSchema?,
         val appLocalSchema: ApplicationCallStateSchema?,
         val appExtraPages: Int?
@@ -113,6 +116,7 @@ sealed class BaseAppCallTransaction(appOnComplete: AppOnComplete) : BaseWalletCo
         override val appOnComplete: AppOnComplete,
         override val approvalHash: String?,
         override val stateHash: String?,
+        override val groupId: String?,
         val rekeyToAddress: WalletConnectAddress
     ) : BaseAppCallTransaction(appOnComplete) {
 

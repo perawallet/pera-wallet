@@ -90,16 +90,13 @@ class WalletConnectManager @Inject constructor(
     private var requestHandlingJob: Job? = null
     private var latestSessionIdIsBeingHandled: Long? = null
     private var latestRequestIdIsBeingHandled: Long? = null
+    private var latestTransactionRequestId: Long? = null
+    private var sessionEvent: Event<WalletConnectSession>? = null
 
     private val walletConnectClientListener = object : WalletConnectClientListener {
         override fun onSessionRequest(sessionId: Long, requestId: Long, session: WalletConnectSession) {
-            coroutineScope?.launch(Dispatchers.IO) {
-                accountCacheStatusFlow.collectLatest {
-                    if (it == AccountCacheStatus.DONE) {
-                        _sessionResultFlow.emit(Event(Resource.Success((session))))
-                    }
-                }
-            }
+            sessionEvent = Event(session)
+            handleSessionRequest()
         }
 
         override fun onCustomRequest(sessionId: Long, requestId: Long, payloadList: List<*>) {
@@ -197,6 +194,17 @@ class WalletConnectManager @Inject constructor(
         }
     }
 
+    private fun handleSessionRequest() {
+        coroutineScope?.launch(Dispatchers.IO) {
+            accountCacheStatusFlow.collectLatest {
+                if (it == AccountCacheStatus.DONE && sessionEvent?.consumed == false) {
+                    val cachedSession = sessionEvent?.consume() ?: return@collectLatest
+                    _sessionResultFlow.emit(Event(Resource.Success(cachedSession)))
+                }
+            }
+        }
+    }
+
     private suspend fun insertWCSSession(wcSessionRequest: WalletConnectSession, isConnected: Boolean = true) {
         val wcSessionEntity = walletConnectMapper.createWCSessionEntity(wcSessionRequest)
             .copy(isConnected = isConnected)
@@ -225,7 +233,8 @@ class WalletConnectManager @Inject constructor(
         latestRequestIdIsBeingHandled = requestId
         requestHandlingJob = coroutineScope?.launch(Dispatchers.IO) {
             accountCacheStatusFlow.collectLatest {
-                if (it == AccountCacheStatus.DONE) {
+                if (it == AccountCacheStatus.DONE && latestTransactionRequestId != requestId) {
+                    latestTransactionRequestId = requestId
                     val session = walletConnectClient.getWalletConnectSession(sessionId) ?: return@collectLatest
                     with(walletConnectCustomTransactionHandler) {
                         handleCustomTransaction(sessionId, requestId, session, payloadList, ::onCustomTransactionParsed)
@@ -247,7 +256,8 @@ class WalletConnectManager @Inject constructor(
     }
 
     private fun rejectLatestTransaction(requestId: Long?, sessionId: Long?) {
-        walletConnectClient.rejectRequest(sessionId ?: return, requestId ?: return, errorProvider.rejected)
+        val rejectReason = errorProvider.rejected.pendingTransaction
+        walletConnectClient.rejectRequest(sessionId ?: return, requestId ?: return, rejectReason)
     }
 
     private fun onSessionFailed(sessionId: Long, error: Session.Status.Error) {

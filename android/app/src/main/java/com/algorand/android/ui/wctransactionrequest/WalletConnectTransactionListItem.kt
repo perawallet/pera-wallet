@@ -22,7 +22,8 @@ sealed class WalletConnectTransactionListItem {
         APP_PREVIEW,
         TITLE,
         MULTIPLE_TXN,
-        SINGLE_TXN
+        SINGLE_TXN,
+        GROUP_ID
     }
 
     abstract infix fun areItemsTheSame(other: WalletConnectTransactionListItem): Boolean
@@ -41,8 +42,15 @@ sealed class WalletConnectTransactionListItem {
             }
         }
 
-        fun create(transactionList: List<BaseWalletConnectTransaction>): List<WalletConnectTransactionListItem> {
-            return listOf(TitleItem(transactionList.size)) + transactionList.map { SingleTransactionItem(it) }
+        fun create(
+            transactionList: List<BaseWalletConnectTransaction>,
+            groupId: String?
+        ): List<WalletConnectTransactionListItem> {
+            return mutableListOf<WalletConnectTransactionListItem>().apply {
+                if (!groupId.isNullOrBlank()) add(GroupIdItem(groupId))
+                add(TitleItem(transactionList.size))
+                addAll(transactionList.map { SingleTransactionItem(it) })
+            }
         }
 
         private fun createTransactionItems(
@@ -100,6 +108,9 @@ sealed class WalletConnectTransactionListItem {
         override val getItemType: ItemType
             get() = ItemType.MULTIPLE_TXN
 
+        val groupId: String?
+            get() = transactionList.firstOrNull()?.groupId
+
         override fun areItemsTheSame(other: WalletConnectTransactionListItem): Boolean {
             return other is MultipleTransactionItem && transactionList.size == other.transactionList.size
         }
@@ -125,6 +136,22 @@ sealed class WalletConnectTransactionListItem {
 
         override fun areContentsTheSame(other: WalletConnectTransactionListItem): Boolean {
             return other is SingleTransactionItem && transaction == other.transaction
+        }
+    }
+
+    data class GroupIdItem(
+        val groupId: String
+    ) : WalletConnectTransactionListItem() {
+
+        override val getItemType: ItemType
+            get() = ItemType.GROUP_ID
+
+        override fun areItemsTheSame(other: WalletConnectTransactionListItem): Boolean {
+            return other is GroupIdItem && other.groupId == groupId
+        }
+
+        override fun areContentsTheSame(other: WalletConnectTransactionListItem): Boolean {
+            return other is GroupIdItem && other.groupId == groupId
         }
     }
 }

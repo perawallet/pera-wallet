@@ -591,6 +591,22 @@
     <string name="governance_banner_title">Le programme de gouvernance Algorand commence !</string>
     <string name="governance_banner_description">Devenez gouverneur. Votez sur l\'avenir d\'Algorand. Gagner des récompenses.</string>
     <string name="governance_banner_button_text">Commencer</string>
-    <string name="could_not_create_wallet_connect">Impossible de créer une session sur WalletConnect. Veuillez essayer avec un URL valide.</string>
+    <string name="could_not_create_wallet_connect">Impossible de créer une session sur WalletConnect. Veuillez essayer avec une URL valide.</string>
     <string name="you_can_not_send_your">Vous ne pouvez pas vous envoyer votre solde maximum. Veuillez sélectionner un montant ou un destinataire différent et réessayer.</string>
+    <string name="transaction_count_group_id_formatted"><annotation replacement="transaction_count">transaction_count_placeholder</annotation> Txns · ID de groupe : <annotation replacement="group_id">group_id_placeholder</annotation></string>
+    <string name="group_id">ID du groupe</string>
+    <string name="transaction_request_rejected_user_rejected">Demande de transaction rejetée : l\'utilisateur a rejeté la demande de transaction.</string>
+    <string name="transaction_request_rejected_transaction_group">Demande de transaction rejetée : le groupe de transactions n\'a pas été validé par le SDK d\'Algorand.</string>
+    <string name="transaction_request_rejected_user_currently">Demande de transaction rejetée : l\'utilisateur a actuellement une autre demande de transaction en cours.</string>
+    <string name="signing_error_network_mismatch">Erreur de signature : discordance de réseau entre dApp et le Wallet. Par exemple, le Wallet est connecté à TestNet et dApp connecté à MainNet (ou vice versa).</string>
+    <string name="signing_error_transaction_in_request">Erreur de signature : une transaction dans la demande de transaction nécessite une clé privée (signataire) qui n\'existe pas dans le portefeuille connecté.</string>
+    <string name="transaction_request_contains_unsupported">La demande de transaction contient un type de transaction non pris en charge</string>
+    <string name="transaction_request_contains_unsupported_multisig">La demande de transaction contient un type de transaction non pris en charge : Multi-sig</string>
+    <string name="invalid_input_transaction_request">Entrée non valide : la demande de transaction contient plus de 16 transactions</string>
+    <string name="invalid_input_unable_to_parse">Entrée non valide : impossible d\'analyser la transaction</string>
+    <string name="invalid_input_invalid_public_key">Entrée non valide : clé publique non valide</string>
+    <string name="invalid_input_invalid_asset">Entrée non valide : actif non valide</string>
+    <string name="invalid_input_unable_to_be">Entrée invalide : Impossible à signer</string>
+    <string name="invalid_input_group_transaction">Entrée non valide : la transaction de groupe n\'a pas besoin d\'être signée par l\'utilisateur du portefeuille.</string>
+    <string name="invalid_input_requested_signer">Entrée non valide : le signataire demandé n\'est pas dans le portefeuille utilisateur</string>
 </resources>

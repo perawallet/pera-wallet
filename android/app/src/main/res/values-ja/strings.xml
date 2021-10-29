@@ -592,4 +592,20 @@
     <string name="governance_banner_button_text">始める</string>
     <string name="could_not_create_wallet_connect">WalletConnectでセッションを作成できませんでした。有効なURLでお試しください。</string>
     <string name="you_can_not_send_your">最大残高を自分自身に送ることはできません。別の金額または受取人を選択して、やり直してください。</string>
+    <string name="transaction_count_group_id_formatted"><annotation replacement="transaction_count">transaction_count_placeholder</annotation> Txns · グループID: <annotation replacement="group_id">group_id_placeholder</annotation></string>
+    <string name="group_id">グループID</string>
+    <string name="transaction_request_rejected_user_rejected">トランザクションリクエストが拒否されました：ユーザーがトランザクションリクエストを拒否しました。</string>
+    <string name="transaction_request_rejected_transaction_group">トランザクションリクエストが拒否されました：トランザクショングループは、AlgorandSDKによる検証に失敗しました。</string>
+    <string name="transaction_request_rejected_user_currently">トランザクションリクエストが拒否されました：ユーザーには現在進行中の別のトランザクションリクエストがあります。</string>
+    <string name="signing_error_network_mismatch">署名エラー：dAppとウォレット間のネットワークが一致しません。例えば、ウォレットはTestNetに接続され、dAppはMainNetに接続されています（またはその逆）。</string>
+    <string name="signing_error_transaction_in_request">署名エラー：トランザクションリクエストのトランザクションには、接続されたウォレットに存在しない秘密鍵（署名者）が必要です。</string>
+    <string name="transaction_request_contains_unsupported">トランザクションリクエストには、サポートされていないトランザクションタイプが含まれています</string>
+    <string name="transaction_request_contains_unsupported_multisig">トランザクションリクエストには、サポートされていないトランザクションタイプが含まれています：Multi-sig</string>
+    <string name="invalid_input_transaction_request">無効な入力：トランザクションリクエストに16を超えるトランザクションが含まれています</string>
+    <string name="invalid_input_unable_to_parse">無効な入力：トランザクションを解析できません</string>
+    <string name="invalid_input_invalid_public_key">無効な入力：公開鍵が無効です</string>
+    <string name="invalid_input_invalid_asset">無効な入力：無効な資産です</string>
+    <string name="invalid_input_unable_to_be">無効な入力：署名できません</string>
+    <string name="invalid_input_group_transaction">無効な入力：グループトランザクションは、ウォレットユーザーの署名を必要としません。</string>
+    <string name="invalid_input_requested_signer">無効な入力：要求された署名者はユーザーウォレットに存在しません</string>
 </resources>

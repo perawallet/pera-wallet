@@ -591,6 +591,22 @@
     <string name="governance_banner_title">¡Comienza el Programa de Gobernanza de Algorand!</string>
     <string name="governance_banner_description">Conviértete en gobernador. Vota por el futuro de Algorand. Gana recompensas.</string>
     <string name="governance_banner_button_text">Comenzar</string>
-    <string name="could_not_create_wallet_connect">No se ha podido crear una sesión en WalletConnect. Intenta con un URL válido.</string>
+    <string name="could_not_create_wallet_connect">No se pudo iniciar una sesión en WalletConnect. Intenta con una URL válida.</string>
     <string name="you_can_not_send_your">No puedes enviarte el saldo máximo a ti mismo. Selecciona un monto o un destinatario diferente e inténtalo nuevamente.</string>
+    <string name="transaction_count_group_id_formatted"><annotation replacement="transaction_count"> transaction_count_placeholder </annotation> Transacciones · ID de grupo: <annotation replacement="group_id"> group_id_placeholder </annotation></string>
+    <string name="group_id">ID de grupo</string>
+    <string name="transaction_request_rejected_user_rejected">Solicitud de transacción rechazada: El usuario ha rechazado la solicitud de transacción.</string>
+    <string name="transaction_request_rejected_transaction_group">Solicitud de transacción rechazada: El grupo de transacciones no ha superado la validación del SDK de Algorand.</string>
+    <string name="transaction_request_rejected_user_currently">Solicitud de transacción rechazada: El usuario tiene actualmente otra solicitud de transacción en curso.</string>
+    <string name="signing_error_network_mismatch">Error de firma: La conexión de red de la dApp y del monedero no coinciden. Por ejemplo, el monedero está conectado a la TestNet y la dApp a la MainNet (o viceversa).</string>
+    <string name="signing_error_transaction_in_request">Error de firma: Una transacción en la solicitud de transacción requiere una clave privada (firmante) que no existe en el monedero conectado.</string>
+    <string name="transaction_request_contains_unsupported">La solicitud de transacción contiene un tipo de transacción no admitido</string>
+    <string name="transaction_request_contains_unsupported_multisig">La solicitud de transacción contiene un tipo de transacción no admitido: Multifirma</string>
+    <string name="invalid_input_transaction_request">Entrada inválida: La solicitud de transacción contiene más de 16 transacciones</string>
+    <string name="invalid_input_unable_to_parse">Entrada inválida: No se pudo analizar la transacción</string>
+    <string name="invalid_input_invalid_public_key">Entrada inválida: Clave pública no válida</string>
+    <string name="invalid_input_invalid_asset">Entrada inválida: Activo no válido</string>
+    <string name="invalid_input_unable_to_be">Entrada inválida: No se puede firmar</string>
+    <string name="invalid_input_group_transaction">Entrada inválida: La transacción en grupo no necesita ser firmada por el usuario del monedero. </string>
+    <string name="invalid_input_requested_signer">Entrada inválida: El firmante solicitado no está en la monedero del usuario</string>
 </resources>

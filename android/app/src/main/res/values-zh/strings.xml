@@ -604,4 +604,20 @@
     <string name="governance_banner_button_text">开始</string>
     <string name="could_not_create_wallet_connect">无法在WalletConnect上创建会话。请使用有效的二维码。</string>
     <string name="you_can_not_send_your">无法向自己发送所有余额。请在选择其他账户或收款人后，再次尝试。</string>
+    <string name="transaction_count_group_id_formatted"><annotation replacement="transaction_count">transaction_count_placeholder</annotation>Txns ——群组ID：<annotation replacement="group_id">group_id_placeholder</annotation></string>
+    <string name="group_id">群组ID</string>
+    <string name="transaction_request_rejected_user_rejected">交易请求被拒：用户已拒绝交易请求。</string>
+    <string name="transaction_request_rejected_transaction_group">交易请求被拒：该交易组未通过Algorand SDK验证。</string>
+    <string name="transaction_request_rejected_user_currently">交易请求被拒：用户有其他正在进行的交易请求。</string>
+    <string name="signing_error_network_mismatch">签署错误：dApp和钱包之间的网络不匹配。例如，钱包连接到测试网，而dApp连接到主网（或是相反的情况）。</string>
+    <string name="signing_error_transaction_in_request">签名错误：在交易请求中，交易要求连接的钱包没有私钥（签名者）。</string>
+    <string name="transaction_request_contains_unsupported">该交易请求包含一个不支持的交易类型</string>
+    <string name="transaction_request_contains_unsupported_multisig">交易请求包含一个不支持的交易类型:多重签名</string>
+    <string name="invalid_input_transaction_request">无效输入：该交易请求包含超过16个交易</string>
+    <string name="invalid_input_unable_to_parse">无效输入：无法解析交易</string>
+    <string name="invalid_input_invalid_public_key">无效输入：无效公钥</string>
+    <string name="invalid_input_invalid_asset">无效输入：无效资产</string>
+    <string name="invalid_input_unable_to_be">无效输入：无法签名</string>
+    <string name="invalid_input_group_transaction">无效输入：群组交易无需钱包用户签名。</string>
+    <string name="invalid_input_requested_signer">无效输入：所请求的签名人不在用户钱包中</string>
 </resources>

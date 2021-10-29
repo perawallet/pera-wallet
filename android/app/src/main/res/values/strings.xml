@@ -600,4 +600,20 @@
     <string name="governance_banner_button_text">Get Started</string>
     <string name="could_not_create_wallet_connect">Couldn\'t create a session on WalletConnect. Please try with a valid URL.</string>
     <string name="you_can_not_send_your">You cannot send your max balance to yourself. Please select a different amount or recipient and try again.</string>
+    <string name="transaction_count_group_id_formatted"><annotation replacement="transaction_count">transaction_count_placeholder</annotation> Txns · Group ID: <annotation replacement="group_id">group_id_placeholder</annotation></string>
+    <string name="group_id">Group ID</string>
+    <string name="transaction_request_rejected_user_rejected">Transaction Request Rejected: The User has rejected the transaction request.</string>
+    <string name="transaction_request_rejected_transaction_group">Transaction Request Rejected: The transaction group has failed validation by the Algorand SDK.</string>
+    <string name="transaction_request_rejected_user_currently">Transaction Request Rejected: The User currently has another transaction request that is in progress.</string>
+    <string name="signing_error_network_mismatch">Signing Error: Network mismatch between dApp and Wallet. For example, Wallet is connected to TestNet and dApp connected to MainNet (or vice versa).</string>
+    <string name="signing_error_transaction_in_request">Signing Error: A transaction in the transaction request requires a private key (signer) that does not exist in the connected Wallet.</string>
+    <string name="transaction_request_contains_unsupported">The transaction request contains an Unsupported Transaction Type</string>
+    <string name="transaction_request_contains_unsupported_multisig">The transaction request contains an Unsupported Transaction Type: Multi-sig</string>
+    <string name="invalid_input_transaction_request">Invalid Input: Transaction request contains more than 16 transactions</string>
+    <string name="invalid_input_unable_to_parse">Invalid Input: Unable to parse transaction</string>
+    <string name="invalid_input_invalid_public_key">Invalid Input: Invalid Public Key</string>
+    <string name="invalid_input_invalid_asset">Invalid Input: Invalid Asset</string>
+    <string name="invalid_input_unable_to_be">Invalid Input: Unable to be signed</string>
+    <string name="invalid_input_group_transaction">Invalid Input: Group transaction does not need to be signed by Wallet user. </string>
+    <string name="invalid_input_requested_signer">Invalid Input: The requested signer is not in the User Wallet</string>
 </resources>

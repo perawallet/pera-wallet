@@ -42,7 +42,8 @@ sealed class BasePaymentTransaction : BaseWalletConnectTransaction() {
         override val receiverAddress: WalletConnectAddress,
         override val peerMeta: WalletConnectPeerMeta,
         override val signer: WalletConnectSigner,
-        override val accountCacheData: AccountCacheData?
+        override val accountCacheData: AccountCacheData?,
+        override val groupId: String?
     ) : BasePaymentTransaction() {
 
         override fun getAllAddressPublicKeysTxnIncludes(): List<WalletConnectAddress> {
@@ -61,6 +62,7 @@ sealed class BasePaymentTransaction : BaseWalletConnectTransaction() {
         override val peerMeta: WalletConnectPeerMeta,
         override val signer: WalletConnectSigner,
         override val accountCacheData: AccountCacheData?,
+        override val groupId: String?,
         val closeToAddress: WalletConnectAddress
     ) : BasePaymentTransaction() {
 
@@ -85,6 +87,7 @@ sealed class BasePaymentTransaction : BaseWalletConnectTransaction() {
         override val peerMeta: WalletConnectPeerMeta,
         override val signer: WalletConnectSigner,
         override val accountCacheData: AccountCacheData?,
+        override val groupId: String?,
         val rekeyToAddress: WalletConnectAddress,
     ) : BasePaymentTransaction() {
 
@@ -109,6 +112,7 @@ sealed class BasePaymentTransaction : BaseWalletConnectTransaction() {
         override val peerMeta: WalletConnectPeerMeta,
         override val signer: WalletConnectSigner,
         override val accountCacheData: AccountCacheData?,
+        override val groupId: String?,
         val closeToAddress: WalletConnectAddress,
         val rekeyToAddress: WalletConnectAddress
     ) : BasePaymentTransaction() {

@@ -42,7 +42,8 @@ data class WalletConnectTransactionRequest(
     @SerializedName("apap") val approvalHash: String? = null,
     @SerializedName("apsu") val stateHash: String? = null,
     @SerializedName("caid") val assetIdBeingConfigured: Long? = null,
-    @SerializedName("apar") val assetConfigParams: AssetConfigParameters? = null
+    @SerializedName("apar") val assetConfigParams: AssetConfigParameters? = null,
+    @SerializedName("grp") val groupId: String? = null
 ) {
 
     val decodedNote: String
