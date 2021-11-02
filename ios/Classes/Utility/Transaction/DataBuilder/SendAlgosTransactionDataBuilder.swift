@@ -20,8 +20,8 @@ import Foundation
 class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
 
     private let initialSize: Int?
-    private(set) var calculatedTransactionAmount: Int64?
-    private(set) var minimumAccountBalance: Int64?
+    private(set) var calculatedTransactionAmount: UInt64?
+    private(set) var minimumAccountBalance: UInt64?
 
     init(params: TransactionParams?, draft: TransactionSendDraft?, initialSize: Int?) {
         self.initialSize = initialSize
@@ -77,7 +77,7 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
         }
     }
 
-    private func calculateTransactionAmount(isMaxTransaction: Bool) -> Int64 {
+    private func calculateTransactionAmount(isMaxTransaction: Bool) -> UInt64 {
         guard let params = params,
               let algosTransactionDraft = draft as? AlgosTransactionSendDraft,
               var transactionAmount = algosTransactionDraft.amount?.toMicroAlgos else {
@@ -93,23 +93,31 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
             isAfterTransaction: true
         )
 
-        self.minimumAccountBalance = minimumAmountForAccount - calculatedFee
+        let result = minimumAmountForAccount.subtractingReportingOverflow(calculatedFee)
+        self.minimumAccountBalance = result.overflow ? minimumAmountForAccount : result.partialValue
 
         if isMaxTransaction {
-            if isMaxTransactionFromRekeyedAccount() || hasAdditionalAssetsForMaxTransaction() {
+            if isMaxTransactionFromRekeyedAccount() || hasMinAmountFieldsForMaxTransaction() {
                 // Reduce fee and minimum amount possible for the account from transaction amount
-                transactionAmount -= (calculatedFee + (minimumAccountBalance ?? minimumAmountForAccount))
+                let reduceAmount = calculatedFee + (minimumAccountBalance ?? minimumAmountForAccount)
+                let result = transactionAmount.subtractingReportingOverflow(reduceAmount)
+                transactionAmount = result.overflow ? 0 : result.partialValue
             } else {
                 // Reduce fee from transaction amount
-                transactionAmount -= calculatedFee
+                let result = transactionAmount.subtractingReportingOverflow(calculatedFee)
+                transactionAmount = result.overflow ? 0 : result.partialValue
             }
+        }
+
+        if transactionAmount.isBelowZero {
+            transactionAmount = 0
         }
 
         return transactionAmount
     }
 
     private func canSendMaxTransactions() -> Bool {
-        return !isMaxTransactionFromRekeyedAccount() && !hasAdditionalAssetsForMaxTransaction() && hasMaximumAccountAmountForTransaction()
+        return !isMaxTransactionFromRekeyedAccount() && !hasMinAmountFieldsForMaxTransaction() && hasMaximumAccountAmountForTransaction()
     }
 
     private func isMaxTransactionFromRekeyedAccount() -> Bool {
@@ -120,12 +128,12 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
         return algosTransactionDraft.isMaxTransactionFromRekeyedAccount
     }
 
-    private func hasAdditionalAssetsForMaxTransaction() -> Bool {
+    private func hasMinAmountFieldsForMaxTransaction() -> Bool {
         guard let algosTransactionDraft = draft as? AlgosTransactionSendDraft else {
             return false
         }
 
-        return !algosTransactionDraft.from.assetDetails.isEmpty && algosTransactionDraft.isMaxTransaction
+        return algosTransactionDraft.from.hasMinAmountFields && algosTransactionDraft.isMaxTransaction
     }
 
     private func hasMaximumAccountAmountForTransaction() -> Bool {

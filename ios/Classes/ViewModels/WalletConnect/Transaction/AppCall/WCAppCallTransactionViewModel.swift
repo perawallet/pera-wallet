@@ -21,6 +21,11 @@ class WCAppCallTransactionViewModel {
     private(set) var senderInformationViewModel: TitledTransactionAccountNameViewModel?
     private(set) var idInformationViewModel: WCTransactionTextInformationViewModel?
     private(set) var onCompletionInformationViewModel: WCTransactionTextInformationViewModel?
+    private(set) var appGlobalSchemaInformationViewModel: WCTransactionTextInformationViewModel?
+    private(set) var appLocalSchemaInformationViewModel: WCTransactionTextInformationViewModel?
+    private(set) var appExtraPagesInformationViewModel: WCTransactionTextInformationViewModel?
+    private(set) var approvalHashInformationViewModel: WCTransactionTextInformationViewModel?
+    private(set) var clearStateHashInformationViewModel: WCTransactionTextInformationViewModel?
     private(set) var authAccountInformationViewModel: WCTransactionTextInformationViewModel?
     private(set) var closeWarningInformationViewModel: WCTransactionAddressWarningInformationViewModel?
     private(set) var rekeyWarningInformationViewModel: WCTransactionAddressWarningInformationViewModel?
@@ -34,6 +39,11 @@ class WCAppCallTransactionViewModel {
         setSenderInformationViewModel(from: account, and: transaction)
         setIdInformationViewModel(from: transaction)
         setOnCompletionInformationViewModel(from: transaction)
+        setAppGlobalSchemaInformationViewModel(from: transaction)
+        setAppLocalSchemaInformationViewModel(from: transaction)
+        setAppExtraPagesInformationViewModel(from: transaction)
+        setApprovalHashInformationViewModel(from: transaction)
+        setClearStateHashInformationViewModel(from: transaction)
         setAuthAccountInformationViewModel(from: transaction)
         setCloseWarningInformationViewModel(from: transaction)
         setRekeyWarningInformationViewModel(from: transaction)
@@ -69,7 +79,8 @@ class WCAppCallTransactionViewModel {
 
     private func setIdInformationViewModel(from transaction: WCTransaction) {
         guard let transactionDetail = transaction.transactionDetail,
-              let id = transactionDetail.appCallId else {
+              let id = transactionDetail.appCallId,
+              !transactionDetail.isAppCreateTransaction else {
             return
         }
 
@@ -92,6 +103,86 @@ class WCAppCallTransactionViewModel {
             information: TitledInformation(
                 title: "wallet-connect-transaction-title-app-call-on-complete".localized,
                 detail: "\(appCallOnComplete.representation)"
+            ),
+            isLastElement: !shouldDisplayAppHash(for: transactionDetail)
+        )
+    }
+
+    private func setAppGlobalSchemaInformationViewModel(from transaction: WCTransaction) {
+        guard let transactionDetail = transaction.transactionDetail,
+              let globalSchema = transactionDetail.appGlobalSchema,
+              transactionDetail.isAppCreateTransaction else {
+            return
+        }
+
+        appGlobalSchemaInformationViewModel = WCTransactionTextInformationViewModel(
+            information: TitledInformation(
+                title: "wallet-connect-transaction-title-app-call-global-schema".localized,
+                detail: globalSchema.representation
+            ),
+            isLastElement: false
+        )
+    }
+
+    private func setAppLocalSchemaInformationViewModel(from transaction: WCTransaction) {
+        guard let transactionDetail = transaction.transactionDetail,
+              let localSchema = transactionDetail.appLocalSchema,
+              transactionDetail.isAppCreateTransaction else {
+            return
+        }
+
+        appLocalSchemaInformationViewModel = WCTransactionTextInformationViewModel(
+            information: TitledInformation(
+                title: "wallet-connect-transaction-title-app-call-local-schema".localized,
+                detail: localSchema.representation
+            ),
+            isLastElement: false
+        )
+    }
+
+    private func setAppExtraPagesInformationViewModel(from transaction: WCTransaction) {
+        guard let transactionDetail = transaction.transactionDetail,
+              let extraPages = transactionDetail.appExtraPages,
+              transactionDetail.isAppCreateTransaction else {
+            return
+        }
+
+        appExtraPagesInformationViewModel = WCTransactionTextInformationViewModel(
+            information: TitledInformation(
+                title: "wallet-connect-transaction-title-app-call-extra-pages".localized,
+                detail: "\(extraPages)"
+            ),
+            isLastElement: false
+        )
+    }
+
+    private func setApprovalHashInformationViewModel(from transaction: WCTransaction) {
+        guard let transactionDetail = transaction.transactionDetail,
+              let approvalHash = transactionDetail.approvalHash,
+              shouldDisplayAppHash(for: transactionDetail) else {
+            return
+        }
+
+        approvalHashInformationViewModel = WCTransactionTextInformationViewModel(
+            information: TitledInformation(
+                title: "wallet-connect-transaction-title-app-call-approval-hash".localized,
+                detail: AlgorandSDK().getAddressfromProgram(approvalHash)
+            ),
+            isLastElement: false
+        )
+    }
+
+    private func setClearStateHashInformationViewModel(from transaction: WCTransaction) {
+        guard let transactionDetail = transaction.transactionDetail,
+              let stateHash = transactionDetail.stateHash,
+              shouldDisplayAppHash(for: transactionDetail) else {
+            return
+        }
+
+        clearStateHashInformationViewModel = WCTransactionTextInformationViewModel(
+            information: TitledInformation(
+                title: "wallet-connect-transaction-title-app-call-clear-hash".localized,
+                detail: AlgorandSDK().getAddressfromProgram(stateHash)
             ),
             isLastElement: transaction.hasValidAuthAddressForSigner && !transactionDetail.hasRekeyOrCloseAddress
         )
@@ -140,7 +231,8 @@ class WCAppCallTransactionViewModel {
 
     private func setFeeInformationViewModel(from transaction: WCTransaction) {
         guard let transactionDetail = transaction.transactionDetail,
-              let fee = transactionDetail.fee else {
+              let fee = transactionDetail.fee,
+              fee != 0 else {
             return
         }
 
@@ -172,10 +264,30 @@ class WCAppCallTransactionViewModel {
     }
 
     private func setRawTransactionInformationViewModel(from transaction: WCTransaction) {
-        rawTransactionInformationViewModel = WCTransactionActionableInformationViewModel(information: .rawTransaction, isLastElement: false)
+        rawTransactionInformationViewModel = WCTransactionActionableInformationViewModel(
+            information: .rawTransaction,
+            isLastElement: transaction.transactionDetail?.isAppCreateTransaction ?? false
+        )
     }
 
     private func setAlgoExplorerInformationViewModel(from transaction: WCTransaction) {
-        algoExplorerInformationViewModel = WCTransactionActionableInformationViewModel(information: .algoExplorer, isLastElement: true)
+        guard let transactionDetail = transaction.transactionDetail,
+              !transactionDetail.isAppCreateTransaction else {
+            return
+        }
+
+        algoExplorerInformationViewModel = WCTransactionActionableInformationViewModel(
+            information: .algoExplorer,
+            isLastElement: true)
+    }
+}
+
+extension WCAppCallTransactionViewModel {
+    private func shouldDisplayAppHash(for transaction: WCTransactionDetail) -> Bool {
+        guard let onComplete = transaction.appCallOnComplete else {
+            return false
+        }
+
+        return transaction.isAppCreateTransaction || onComplete == .update
     }
 }

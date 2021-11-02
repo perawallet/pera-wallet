@@ -505,7 +505,7 @@ extension TransactionsViewController: CSVExportable {
         return csvData
     }
     
-    private func getFormattedAmount(_ amount: Int64?) -> String {
+    private func getFormattedAmount(_ amount: UInt64?) -> String {
         if let assetDetail = assetDetail {
             return amount?.toFractionStringForLabel(fraction: assetDetail.fractionDecimals) ?? " "
         } else {

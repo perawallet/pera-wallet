@@ -389,6 +389,15 @@
 "feedback-title-note" = "备注";
 
 /* (No Comment) */
+"governance-banner-action" = "开始";
+
+/* (No Comment) */
+"governance-banner-detail" = "成为治理者，为Algorand的未来投票，获取奖励。";
+
+/* (No Comment) */
+"governance-banner-title" = "Algorand 治理计划已经启动了！";
+
+/* (No Comment) */
 "internet-connection-error-detail" = "无法连接到服务器，请确认已连接到网络";
 
 /* (No Comment) */
@@ -617,10 +626,7 @@
 "login-title" = "解锁";
 
 /* (No Comment) */
-"maximum-balance-standard-account-warning-description" = "由于您在此账户%@中还有%@其余资产，Algorand区块链要求您维持%@ALGO的最低余额。\n\n\n\n点击继续，您的交易金额将自动更新以反映此更改。您将可以在下一步中预览此更改。";
-
-/* (No Comment) */
-"maximum-balance-standard-account-warning-description-singular" = "由于您在此账户%@中还有%@其余资产，Algorand区块链要求您维持%@ALGO的最低余额。\n\n\n\n点击继续，您的交易金额将自动更新以反映此更改。您将可以在下一步中预览此更改。";
+"maximum-balance-standard-account-warning-description" = "由于您在此账户中还有其余资产，Algorand区块链要求您维持%@ALGO的最低余额。\n\n\n\n点击继续，您的交易金额将自动更新以反映此更改。您将可以在下一步中预览此更改。";
 
 /* (No Comment) */
 "maximum-balance-warning-description" = "如果您要将最高余额发送到重置密钥的账户上，请您保持%@ ALGO的最低余额。此举能够确保您重置密钥的账户没有任何变化。\n\n\n您的交易金额将自动更新以反映这一变化。您可以在下一步中预览交易。";
@@ -855,9 +861,6 @@
 
 /* (No Comment) */
 "pin-limit-try-again" = "请再试一次";
-
-/* No comment provided by engineer. */
-"primaryText" = "primaryText";
 
 /* (No Comment) */
 "privacy-policy-title" = "隐私政策";
@@ -1286,7 +1289,13 @@
 "title-no" = "不是";
 
 /* (No Comment) */
+"title-off" = "关闭";
+
+/* (No Comment) */
 "title-ok" = "好的";
+
+/* (No Comment) */
+"title-on" = "启用";
 
 /* (No Comment) */
 "title-paste-passphrase" = "粘贴完整的助记词";
@@ -1565,6 +1574,42 @@
 "verified-assets-title" = "已验证的资产";
 
 /* (No Comment) */
+"wallet-connect-asset-clawback-title" = "回拨账户";
+
+/* (No Comment) */
+"wallet-connect-asset-creation-title" = "资产创建请求";
+
+/* (No Comment) */
+"wallet-connect-asset-decimals-title" = "小数位数";
+
+/* (No Comment) */
+"wallet-connect-asset-deletion-title" = "资产删除请求";
+
+/* (No Comment) */
+"wallet-connect-asset-deletion-warning-title" = "该资产将被删除。";
+
+/* (No Comment) */
+"wallet-connect-asset-freeze-title" = "冻结账户";
+
+/* (No Comment) */
+"wallet-connect-asset-frozen-title" = "默认冻结";
+
+/* (No Comment) */
+"wallet-connect-asset-manager-title" = "经理账户";
+
+/* (No Comment) */
+"wallet-connect-asset-name-title" = "资产名称";
+
+/* (No Comment) */
+"wallet-connect-asset-reconfiguration-title" = "重新配置资产请求";
+
+/* (No Comment) */
+"wallet-connect-asset-reserve-title" = "储备账户";
+
+/* (No Comment) */
+"wallet-connect-asset-unit-title" = "单位名称";
+
+/* (No Comment) */
 "wallet-connect-raw-transaction-title" = "原始交易";
 
 /* (No Comment) */
@@ -1622,16 +1667,61 @@
 "wallet-connect-transaction-detail-raw" = "显示原始交易";
 
 /* (No Comment) */
+"wallet-connect-transaction-error-account-not-exist" = "无效输入：所请求的签署人不在用户钱包内";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-already-displayed" = "交易请求被拒：用户还有另一笔正在处理的交易。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group" = "无效输入：群组交易不需要钱包用户签名。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group-unauthorized-user" = "请求的操作和/或账户没有获得用户授权。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group-validation" = "交易请求被拒：交易群组无法通过Algorand SDK的验证。";
+
+/* (No Comment) */
 "wallet-connect-transaction-error-invalid" = "输入无效。";
 
 /* (No Comment) */
+"wallet-connect-transaction-error-invalid-asset" = "无效输入：资产无效";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-invalid-key" = "无效输入：公钥无效";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-invalid-signer" = "签名出错：交易请求中的交易需要的私钥（签署人），而该私钥并不存在连接的钱包中。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-multisig" = "交易请求含有一个不被支持的交易类型：多重签名";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-node" = "签名出错：dApp和钱包之间的网络不匹配。例如，钱包连接到测试网，dApp连接到主网（或相反）。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-parse" = "无效输入：无法解析交易";
+
+/* (No Comment) */
 "wallet-connect-transaction-error-rejected" = "该用户拒绝了请求。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-rejected-user" = "交易请求被拒：用户拒绝了该交易请求。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-transaction-size" = "无效输入：交易请求含有超过 16 笔交易";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unable-sign" = "无效输入：无法签署";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-unauthorized" = "请求的操作和/或账户没有用户授权。";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-unsupported" = "钱包不支持所要求的操作。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unsupported-type" = "该交易请求含有不被支持的交易类型";
 
 /* (No Comment) */
 "wallet-connect-transaction-group-algos-title" = "支付给%@";
@@ -1643,7 +1733,13 @@
 "wallet-connect-transaction-group-app-close-title" = "应用程序抄送至%@";
 
 /* (No Comment) */
+"wallet-connect-transaction-group-app-delete-title" = "APP删除至#%@";
+
+/* (No Comment) */
 "wallet-connect-transaction-group-app-opt-in-title" = "应用程序选择加入%@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-app-update-title" = "APP更新至#%@";
 
 /* (No Comment) */
 "wallet-connect-transaction-group-asset-addition-title" = "选择加入资产%@";
@@ -1662,6 +1758,27 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-title-app-call" = "应用程序调用请求";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-approval-hash" = "批准哈希";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-clear-hash" = "清理状态哈希";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-extra-pages" = "APP额外页面";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-global-schema" = "APP全局架构";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-local-schema" = "APP本地架构";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-on-complete" = "完成";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-creation" = "APP创建";
 
 /* (No Comment) */
 "wallet-connect-transaction-title-app-id" = "应用ID";

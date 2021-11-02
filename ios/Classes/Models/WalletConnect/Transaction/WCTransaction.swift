@@ -210,7 +210,7 @@ extension WCTransaction {
             return false
         }
 
-        let futureTransactionThreshold: Int64 = 500
+        let futureTransactionThreshold: UInt64 = 500
         return firstRound > params.lastRound + futureTransactionThreshold
     }
 }

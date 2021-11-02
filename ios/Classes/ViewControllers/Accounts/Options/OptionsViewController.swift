@@ -38,7 +38,7 @@ class OptionsViewController: BaseViewController {
     init(account: Account, configuration: ViewControllerConfiguration) {
         self.account = account
         
-        if account.isThereAnyDifferentAsset() {
+        if account.isThereAnyDifferentAsset {
             options = Options.allOptions
         } else {
             options = Options.optionsWithoutRemoveAsset

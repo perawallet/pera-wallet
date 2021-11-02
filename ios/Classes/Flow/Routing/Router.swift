@@ -436,6 +436,24 @@ class Router {
                 transactionRequest: transactionRequest,
                 configuration: configuration
             )
+        case let .wcAssetCreationTransaction(transaction, transactionRequest):
+            viewController = WCAssetCreationTransactionViewController(
+                transaction: transaction,
+                transactionRequest: transactionRequest,
+                configuration: configuration
+            )
+        case let .wcAssetReconfigurationTransaction(transaction, transactionRequest):
+            viewController = WCAssetReconfigurationTransactionViewController(
+                transaction: transaction,
+                transactionRequest: transactionRequest,
+                configuration: configuration
+            )
+        case let .wcAssetDeletionTransaction(transaction, transactionRequest):
+            viewController = WCAssetDeletionTransactionViewController(
+                transaction: transaction,
+                transactionRequest: transactionRequest,
+                configuration: configuration
+            )
         case let .jsonDisplay(jsonData, title):
             viewController = JSONDisplayViewController(jsonData: jsonData, title: title, configuration: configuration)
         }

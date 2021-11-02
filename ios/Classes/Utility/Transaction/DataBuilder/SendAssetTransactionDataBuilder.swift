@@ -27,7 +27,7 @@ class SendAssetTransactionDataBuilder: TransactionDataBuilder {
         guard let params = params,
               let assetTransactionDraft = draft as? AssetTransactionSendDraft,
               let assetIndex = assetTransactionDraft.assetIndex,
-              let amountDoubleValue = assetTransactionDraft.amount,
+              let amountDecimalValue = assetTransactionDraft.amount,
               let toAddress = assetTransactionDraft.toAccount else {
             delegate?.transactionDataBuilder(self, didFailedComposing: .inapp(TransactionError.other))
             return nil
@@ -42,7 +42,7 @@ class SendAssetTransactionDataBuilder: TransactionDataBuilder {
             from: assetTransactionDraft.from,
             toAccount: toAddress.trimmed,
             transactionParams: params,
-            amount: amountDoubleValue.toFraction(of: assetTransactionDraft.assetDecimalFraction),
+            amount: amountDecimalValue.toFraction(of: assetTransactionDraft.assetDecimalFraction),
             assetIndex: assetIndex,
             note: assetTransactionDraft.note?.data(using: .utf8)
         )

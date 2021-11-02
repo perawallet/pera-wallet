@@ -18,8 +18,8 @@
 import Magpie
 
 class AssetTransferTransaction: Model {
-    let amount: Int64
-    let closeAmount: Int64?
+    let amount: UInt64
+    let closeAmount: UInt64?
     let closeToAddress: String?
     let assetId: Int64
     let receiverAddress: String?

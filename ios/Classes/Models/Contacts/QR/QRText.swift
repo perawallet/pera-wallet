@@ -22,7 +22,7 @@ class QRText: Codable {
     let version = "1.0"
     let address: String?
     var mnemonic: String?
-    var amount: Int64?
+    var amount: UInt64?
     var label: String?
     var asset: Int64?
     var note: String?
@@ -32,7 +32,7 @@ class QRText: Codable {
         mode: QRMode,
         address: String?,
         mnemonic: String? = nil,
-        amount: Int64? = nil,
+        amount: UInt64? = nil,
         label: String? = nil,
         asset: Int64? = nil,
         note: String? = nil,
@@ -67,7 +67,7 @@ class QRText: Codable {
         mnemonic = try values.decodeIfPresent(String.self, forKey: .mnemonic)
         
         if let amountText = try values.decodeIfPresent(String.self, forKey: .amount) {
-            amount = Int64(amountText)
+            amount = UInt64(amountText)
         }
         
         if let assetText = try values.decodeIfPresent(String.self, forKey: .asset) {

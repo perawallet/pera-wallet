@@ -64,6 +64,7 @@ enum RequestParameter: String, CodingKey {
     case since = "since"
     case until = "until"
     case interval = "interval"
+    case includesAll = "include-all"
 }
 
 typealias QueryParam = ObjectQueryKeyedParam<RequestParameter>

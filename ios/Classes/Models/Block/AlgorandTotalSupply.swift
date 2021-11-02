@@ -18,9 +18,9 @@
 import Magpie
 
 class AlgorandTotalSupply: Model {
-    let currentRound: Int64
-    let onlineMoney: Int64
-    let totalMoney: Int64
+    let currentRound: UInt64
+    let onlineMoney: UInt64
+    let totalMoney: UInt64
 }
 
 extension AlgorandTotalSupply {

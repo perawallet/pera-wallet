@@ -18,10 +18,10 @@
 import Magpie
 
 class AlgorandApplication: Model {
-    var createdAtRound: Int64?
+    var createdAtRound: UInt64?
     var isDeleted: Bool?
     var id: Int64?
-    var deletedInAtRound: Int64?
+    var deletedInAtRound: UInt64?
 }
 
 extension AlgorandApplication {

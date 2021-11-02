@@ -30,7 +30,7 @@ extension WalletConnectSingleTransactionRequestPresentable where Self: BaseViewC
         let account = session?.accounts.first(of: \.address, equalsTo: transactionDetail.sender)
         
         guard let transactionType = transactionDetail.transactionType(for: account) else {
-            walletConnector.rejectTransactionRequest(request, with: .unsupported)
+            walletConnector.rejectTransactionRequest(request, with: .unsupported(.unknownTransaction))
             dismissScreen()
             return
         }
@@ -45,6 +45,15 @@ extension WalletConnectSingleTransactionRequestPresentable where Self: BaseViewC
             open(.wcAssetAdditionTransaction( transaction: transaction, transactionRequest: request), by: .push)
         case .appCall:
             open(.wcAppCall(transaction: transaction, transactionRequest: request), by: .push)
+        case let .assetConfig(type):
+            switch type {
+            case .create:
+                open(.wcAssetCreationTransaction(transaction: transaction, transactionRequest: request), by: .push)
+            case .reconfig:
+                open(.wcAssetReconfigurationTransaction(transaction: transaction, transactionRequest: request), by: .push)
+            case .delete:
+                open(.wcAssetDeletionTransaction(transaction: transaction, transactionRequest: request), by: .push)
+            }
         }
     }
 }

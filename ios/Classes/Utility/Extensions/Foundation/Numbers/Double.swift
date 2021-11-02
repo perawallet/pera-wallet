@@ -17,17 +17,67 @@
 
 import Foundation
 
+extension Decimal {
+    var uint64Value: UInt64 {
+        return NSDecimalNumber(decimal: self).uint64Value
+    }
+
+    var toMicroAlgos: UInt64 {
+        return (Decimal(algosInMicroAlgos) * self).uint64Value
+    }
+
+    func toFraction(of fraction: Int) -> UInt64 {
+        if fraction == 0 {
+            return self.uint64Value
+        }
+
+        return (self * pow(10, fraction)).uint64Value
+    }
+
+    var toDecimalStringForAlgosInput: String? {
+        return Formatter.separatorForAlgosInput.string(from: NSDecimalNumber(decimal: self))
+    }
+
+    var toAlgosStringForLabel: String? {
+        return Formatter.separatorForAlgosLabel.string(from: NSDecimalNumber(decimal: self))
+    }
+
+    var toRewardsStringForLabel: String? {
+        return Formatter.separatorForRewardsLabel.string(from: NSDecimalNumber(decimal: self))
+    }
+
+    func toFractionStringForLabel(fraction: Int) -> String? {
+        return Formatter.separatorWith(fraction: fraction).string(from: NSDecimalNumber(decimal: self))
+    }
+
+    func toExactFractionLabel(fraction: Int) -> String? {
+        return Formatter.separatorForInputWith(fraction: fraction).string(from: NSDecimalNumber(decimal: self))
+    }
+
+    var toCurrencyStringForLabel: String? {
+        return Formatter.currencyFormatter.string(from: NSDecimalNumber(decimal: self))
+    }
+
+    func toCurrencyStringForLabel(with symbol: String) -> String? {
+        return Formatter.currencyFormatter(with: symbol).string(from: NSDecimalNumber(decimal: self))
+    }
+
+    var toPercentage: String? {
+        return Formatter.percentageFormatter.string(from: NSDecimalNumber(decimal: self))
+    }
+}
+
 extension Double {
-    var toMicroAlgos: Int64 {
-        return Int64(Double(algosInMicroAlgos) * self)
+    var toMicroAlgos: UInt64 {
+        return UInt64(Double(algosInMicroAlgos) * self)
     }
     
-    func toFraction(of fraction: Int) -> Int64 {
+    func toFraction(of fraction: Int) -> UInt64 {
         if fraction == 0 {
-            return Int64(self)
+            return UInt64(self)
         }
         
-        return Int64(self * (pow(10, fraction) as NSDecimalNumber).doubleValue)
+        return UInt64(self * (pow(10, fraction) as NSDecimalNumber).doubleValue)
     }
     
     var toDecimalStringForAlgosInput: String? {

@@ -29,6 +29,16 @@ class AccountsDataSource: NSObject, UICollectionViewDataSource {
     
     private var addedAssetDetails: [Account: Set<AssetDetail>] = [:]
     private var removedAssetDetails: [Account: Set<AssetDetail>] = [:]
+
+    private let governanceBannerSection = 0
+    private var isDisplayingBanner: Bool {
+        return UIApplication.shared.rootViewController()?.isDisplayingGovernanceBanner ?? false
+    }
+    var isContentStateAvailableForBanner = true
+
+    private var canDisplayGovernanceBanner: Bool {
+        return isDisplayingBanner && isContentStateAvailableForBanner
+    }
     
     var hasPendingAssetAction: Bool {
         return !addedAssetDetails.isEmpty || !removedAssetDetails.isEmpty
@@ -77,8 +87,20 @@ class AccountsDataSource: NSObject, UICollectionViewDataSource {
             removedAssetDetails[account]?.insert(assetDetail)
         }
     }
+
+    func account(at section: Int) -> Account? {
+        if canDisplayGovernanceBanner {
+            return accounts[safe: section - 1]
+        }
+
+        return accounts[safe: section]
+    }
     
     func section(for account: Account) -> Int? {
+        if canDisplayGovernanceBanner {
+            return accounts.firstIndex(of: account)?.advanced(by: 1)
+        }
+
         return accounts.firstIndex(of: account)
     }
     
@@ -89,12 +111,20 @@ class AccountsDataSource: NSObject, UICollectionViewDataSource {
 
 extension AccountsDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
+        if canDisplayGovernanceBanner {
+            return accounts.count + 1
+        }
+
         return accounts.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let account = accounts[section]
-        if account.assetDetails.isEmpty {
+        if canDisplayGovernanceBanner && section == governanceBannerSection {
+            return 1
+        }
+
+        guard let account = account(at: section),
+              !account.assetDetails.isEmpty else {
             return 1
         }
         
@@ -104,10 +134,26 @@ extension AccountsDataSource {
 
 extension AccountsDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if canDisplayGovernanceBanner && indexPath.section == governanceBannerSection {
+            return dequeueBannerCell(in: collectionView, cellForItemAt: indexPath)
+        }
+
         if indexPath.item == 0 {
             return dequeueAlgoAssetCell(in: collectionView, cellForItemAt: indexPath)
         }
         return dequeueAssetCells(in: collectionView, cellForItemAt: indexPath)
+    }
+
+    private func dequeueBannerCell(in collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: GovernanceComingSoonCell.reusableIdentifier,
+            for: indexPath) as? GovernanceComingSoonCell else {
+                fatalError("Index path is out of bounds")
+        }
+
+        cell.delegate = self
+
+        return cell
     }
     
     private func dequeueAlgoAssetCell(in collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -117,8 +163,7 @@ extension AccountsDataSource {
                 fatalError("Index path is out of bounds")
         }
         
-        if indexPath.section < accounts.count {
-            let account = accounts[indexPath.section]
+        if let account = account(at: indexPath.section) {
             cell.bind(AlgoAssetViewModel(account: account))
         }
         
@@ -126,10 +171,8 @@ extension AccountsDataSource {
     }
     
     private func dequeueAssetCells(in collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if indexPath.section < accounts.count {
-            let account = accounts[indexPath.section]
-            let assetDetail = account.assetDetails[indexPath.item - 1]
-            
+        if let account = account(at: indexPath.section),
+           let assetDetail = account.assetDetails[safe: indexPath.item - 1] {
             if assetDetail.isRemoved || assetDetail.isRecentlyAdded {
                 let cell = layoutBuilder.dequeuePendingAssetCells(
                     in: collectionView,
@@ -139,7 +182,7 @@ extension AccountsDataSource {
                 cell.bind(PendingAssetViewModel(assetDetail: assetDetail))
                 return cell
             } else {
-                guard let assets = accounts[indexPath.section].assets,
+                guard let assets = account.assets,
                     let asset = assets.first(where: { $0.id == assetDetail.id }) else {
                         fatalError("Unexpected Element")
                 }
@@ -164,6 +207,10 @@ extension AccountsDataSource {
         viewForSupplementaryElementOfKind kind: String,
         at indexPath: IndexPath
     ) -> UICollectionReusableView {
+        if canDisplayGovernanceBanner && indexPath.section == governanceBannerSection {
+            return UICollectionReusableView()
+        }
+
         if kind == UICollectionView.elementKindSectionHeader {
             guard let headerView = collectionView.dequeueReusableSupplementaryView(
                 ofKind: kind,
@@ -173,15 +220,21 @@ extension AccountsDataSource {
                 fatalError("Unexpected element kind")
             }
             
-            let account = accounts[indexPath.section]
-            headerView.bind(AccountHeaderSupplementaryViewModel(account: account, isActionEnabled: true))
+            if let account = account(at: indexPath.section) {
+                headerView.bind(AccountHeaderSupplementaryViewModel(account: account, isActionEnabled: true))
+            }
             
             headerView.delegate = self
-            headerView.tag = indexPath.section
-            
+
+            if canDisplayGovernanceBanner {
+                headerView.tag = indexPath.section - 1
+            } else {
+                headerView.tag = indexPath.section
+            }
+
             return headerView
         } else {
-            guard let account = accounts[safe: indexPath.section] else {
+            guard let account = account(at: indexPath.section) else {
                 fatalError("Unexpected element kind")
             }
 
@@ -206,8 +259,13 @@ extension AccountsDataSource {
             }
             
             footerView.delegate = self
-            footerView.tag = indexPath.section
-            
+
+            if canDisplayGovernanceBanner {
+                footerView.tag = indexPath.section - 1
+            } else {
+                footerView.tag = indexPath.section
+            }
+
             return footerView
         }
     }
@@ -238,12 +296,23 @@ extension AccountsDataSource: AccountFooterSupplementaryViewDelegate {
     }
 }
 
+extension AccountsDataSource: GovernanceComingSoonCellDelegate {
+    func governanceComingSoonCellDidTapCancelButton(_ governanceComingSoonCell: GovernanceComingSoonCell) {
+        UIApplication.shared.rootViewController()?.hideGovernanceBanner()
+        delegate?.accountsDataSourceDidCloseGovernance(self)
+    }
+
+    func governanceComingSoonCellDidTapGetStartedButton(_ governanceComingSoonCell: GovernanceComingSoonCell) {
+        delegate?.accountsDataSourceDidGetStartedGovernance(self)
+    }
+}
+
 extension AccountsDataSource {
     private func configureAddedAssetDetails() {
         // Check whether the asset is added to account in block.
         // If it's added, remove from the pending list. If it's not, add to current list again.
         for (account, addedAssets) in addedAssetDetails {
-            if let index = section(for: account) {
+            if let index = accounts.firstIndex(of: account) {
                 filterAddedAssets(at: index, for: account, in: addedAssets)
                 addedAssetDetails.clearValuesIfEmpty(for: account)
             }
@@ -265,7 +334,7 @@ extension AccountsDataSource {
     private func configureRemovedAssetDetails() {
         // Check whether the asset is removed from account in block. If it's removed, remove from the pending list as well.
         for (account, removedAssets) in removedAssetDetails {
-            if let index = section(for: account) {
+            if let index = accounts.firstIndex(of: account) {
                 removedAssetDetails[account] = removedAssets.filter { !accounts[index].assetDetails.contains($0) }
                 removedAssetDetails.clearValuesIfEmpty(for: account)
             }
@@ -284,10 +353,18 @@ extension AccountsDataSource: UICollectionViewDelegateFlowLayout {
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
         let width = UIScreen.main.bounds.width - layout.current.defaultSectionInsets.left - layout.current.defaultSectionInsets.right
+
+        if canDisplayGovernanceBanner && indexPath.section == governanceBannerSection {
+            return CGSize(width: width, height: layout.current.bannerHeight)
+        }
+
         if indexPath.item == 0 {
             return CGSize(width: width, height: layout.current.itemHeight)
         } else {
-            let account = accounts[indexPath.section]
+            guard let account = account(at: indexPath.section) else {
+                return .zero
+            }
+
             let assetDetail = account.assetDetails[indexPath.item - 1]
             
             if assetDetail.hasBothDisplayName() {
@@ -303,6 +380,10 @@ extension AccountsDataSource: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
+        if canDisplayGovernanceBanner && section == governanceBannerSection {
+            return .zero
+        }
+
         return CGSize(
             width: UIScreen.main.bounds.width - layout.current.defaultSectionInsets.left - layout.current.defaultSectionInsets.right,
             height: layout.current.itemHeight
@@ -314,7 +395,11 @@ extension AccountsDataSource: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForFooterInSection section: Int
     ) -> CGSize {
-        if let account = accounts[safe: section],
+        if canDisplayGovernanceBanner && section == governanceBannerSection {
+            return .zero
+        }
+
+        if let account = account(at: section),
            account.isWatchAccount() {
             return CGSize(
                 width: UIScreen.main.bounds.width - layout.current.defaultSectionInsets.left - layout.current.defaultSectionInsets.right,
@@ -333,6 +418,7 @@ extension AccountsDataSource {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let defaultSectionInsets = UIEdgeInsets(top: 0.0, left: 20.0, bottom: 0.0, right: 20.0)
         let itemHeight: CGFloat = 52.0
+        let bannerHeight: CGFloat = 170.0
         let emptyFooterHeight: CGFloat = 44.0
         let multiItemHeight: CGFloat = 72.0
     }
@@ -343,4 +429,6 @@ protocol AccountsDataSourceDelegate: AnyObject {
     func accountsDataSource(_ accountsDataSource: AccountsDataSource, didTapAddAssetButtonFor account: Account)
     func accountsDataSource(_ accountsDataSource: AccountsDataSource, didTapQRButtonFor account: Account)
     func accountsDataSource(_ accountsDataSource: AccountsDataSource, didSelectAt indexPath: IndexPath)
+    func accountsDataSourceDidGetStartedGovernance(_ accountsDataSource: AccountsDataSource)
+    func accountsDataSourceDidCloseGovernance(_ accountsDataSource: AccountsDataSource)
 }

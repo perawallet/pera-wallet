@@ -19,24 +19,13 @@ import Foundation
 
 let algosInMicroAlgos = 1000000
 let minimumFee: UInt64 = 1000
-let totalNumIntConstantForMinimumAmount: Int64 = 28500
-let byteSliceConstantForMinimumAmount: Int64 = 50000
-let minimumTransactionMicroAlgosLimit: Int64 = 100000
+let totalNumIntConstantForMinimumAmount: UInt64 = 28500
+let byteSliceConstantForMinimumAmount: UInt64 = 50000
+let minimumTransactionMicroAlgosLimit: UInt64 = 100000
 let algosFraction = 6
-let dataSizeForMaxTransaction: Int64 = 270
+let dataSizeForMaxTransaction: UInt64 = 270
 
 extension Int {
-    var toAlgos: Double {
-        return Double(self) / Double(algosInMicroAlgos)
-    }
-    
-    func assetAmount(fromFraction decimal: Int) -> Double {
-        if decimal == 0 {
-            return Double(self)
-        }
-        return Double(self) / (pow(10, decimal) as NSDecimalNumber).doubleValue
-    }
-    
     func convertSecondsToHoursMinutesSeconds() -> String? {
         let formatter = DateComponentsFormatter()
         formatter.allowedUnits = [.hour, .minute, .second]
@@ -45,36 +34,23 @@ extension Int {
     }
 }
 
-extension Int64 {
-    var toAlgos: Double {
-        return Double(self) / Double(algosInMicroAlgos)
+extension UInt64 {
+    var toAlgos: Decimal {
+        return Decimal(self) / Decimal(algosInMicroAlgos)
     }
-    
-    func assetAmount(fromFraction decimal: Int) -> Double {
+
+    func assetAmount(fromFraction decimal: Int) -> Decimal {
         if decimal == 0 {
-            return Double(self)
+            return Decimal(self)
         }
-        return Double(self) / (pow(10, decimal) as NSDecimalNumber).doubleValue
+        return Decimal(self) / pow(10, decimal)
     }
-    
+
     func toFractionStringForLabel(fraction: Int) -> String? {
         return Formatter.separatorWith(fraction: fraction).string(from: NSNumber(value: self))
     }
 
     var isBelowZero: Bool {
         return self < 0
-    }
-}
-
-extension UInt64 {
-    var toAlgos: Double {
-        return Double(self) / Double(algosInMicroAlgos)
-    }
-    
-    func assetAmount(fromFraction decimal: Int) -> Double {
-        if decimal == 0 {
-            return Double(self)
-        }
-        return Double(self) / (pow(10, decimal) as NSDecimalNumber).doubleValue
     }
 }

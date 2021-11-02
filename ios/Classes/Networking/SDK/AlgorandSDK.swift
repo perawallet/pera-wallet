@@ -140,6 +140,10 @@ extension AlgorandSDK {
     func getTransactionID(for transaction: Data) -> String {
         return AlgoMobileGetTxID(transaction)
     }
+
+    func getAddressfromProgram(_ program: Data?) -> String {
+        return AlgoMobileAddressFromProgram(program)
+    }
 }
 
 extension AlgorandSDK {
@@ -151,9 +155,9 @@ extension AlgorandSDK {
 fileprivate extension TransactionParams {
     func toSDKSuggestedParams() -> AlgoMobileSuggestedParams {
         let params = AlgoMobileSuggestedParams()
-        params.fee = fee
-        params.firstRoundValid = lastRound
-        params.lastRoundValid = lastRound + AlgorandSDK.roundTreshold // Need to add 1000 as last round
+        params.fee = Int64(fee)
+        params.firstRoundValid = Int64(lastRound)
+        params.lastRoundValid = Int64(lastRound) + AlgorandSDK.roundTreshold // Need to add 1000 as last round
         params.genesisHash = genesisHashData
         params.genesisID = genesisId.unwrap(or: "")
         return params
@@ -182,12 +186,14 @@ fileprivate extension AlgoMobileInt64Array {
     }
 }
 
-fileprivate extension Int64 {
+fileprivate extension UInt64 {
     // Received from: https://github.com/algorand/go-algorand-sdk/blob/MobileWrapper/mobile/utils.go#L22-L27
     func toSDKInt64() -> AlgoMobileUint64 {
         let int64 = AlgoMobileUint64()
-        int64.upper = Int64(self >> 32)
-        int64.lower = Int64(UInt32.max) & self
+        let upperValue = (self >> 32)
+        int64.upper = Int64(upperValue)
+        let lowerValue = UInt64(UInt32.max) & self
+        int64.lower = Int64(lowerValue)
         return int64
     }
 }

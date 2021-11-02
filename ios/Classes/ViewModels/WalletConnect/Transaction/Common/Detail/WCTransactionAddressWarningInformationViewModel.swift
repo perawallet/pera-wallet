@@ -38,7 +38,8 @@ class WCTransactionAddressWarningInformationViewModel {
             title = "wallet-connect-transaction-warning-close-asset-title".localized
         case .rekeyed:
             title = "wallet-connect-transaction-warning-rekey-title".localized
-        case .fee:
+        case .fee,
+             .assetDelete:
             break
         }
     }

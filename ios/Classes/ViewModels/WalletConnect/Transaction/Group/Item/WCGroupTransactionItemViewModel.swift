@@ -68,6 +68,11 @@ class WCGroupTransactionItemViewModel {
                 return
             }
 
+            if transactionDetail.isAppCreateTransaction {
+                title = "wallet-connect-transaction-title-app-creation".localized
+                return
+            }
+
             guard let appCallOnComplete = transactionDetail.appCallOnComplete else {
                 title = "wallet-connect-transaction-group-app-call-title".localized(params: "\(appCallId)")
                 return
@@ -78,9 +83,15 @@ class WCGroupTransactionItemViewModel {
                 title = "wallet-connect-transaction-group-app-close-title".localized(params: "\(appCallId)")
             case .optIn:
                 title = "wallet-connect-transaction-group-app-opt-in-title".localized(params: "\(appCallId)")
+            case .update:
+                title = "wallet-connect-transaction-group-app-update-title".localized(params: "\(appCallId)")
+            case .delete:
+                title = "wallet-connect-transaction-group-app-delete-title".localized(params: "\(appCallId)")
             default:
                 title = "wallet-connect-transaction-group-app-call-title".localized(params: "\(appCallId)")
             }
+        case .assetConfig:
+            break
         }
     }
 
@@ -114,6 +125,10 @@ class WCGroupTransactionItemViewModel {
     }
 
     private func setAccountInformationViewModel(from account: Account?, with assetDetail: AssetDetail?) {
-        accountInformationViewModel = WCGroupTransactionAccountInformationViewModel(account: account, assetDetail: assetDetail)
+        accountInformationViewModel = WCGroupTransactionAccountInformationViewModel(
+            account: account,
+            assetDetail: assetDetail,
+            isDisplayingAmount: true
+        )
     }
 }

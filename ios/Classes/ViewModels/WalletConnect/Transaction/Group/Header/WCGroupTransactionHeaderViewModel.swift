@@ -19,17 +19,23 @@ import UIKit
 
 class WCGroupTransactionHeaderViewModel {
     private(set) var title: String?
+    private(set) var groupID: String?
 
-    init(transactionCount: Int) {
-        setTitle(from: transactionCount)
+    init(transactions: [WCTransaction]) {
+        setTitle(from: transactions)
+        setGroupID(from: transactions)
     }
 
-    private func setTitle(from transactionCount: Int) {
-        if transactionCount == 1 {
+    private func setTitle(from transactions: [WCTransaction]) {
+        if transactions.count == 1 {
             title = "wallet-connect-transaction-all-count-singular".localized
             return
         }
 
-        title = "wallet-connect-transaction-all-count".localized(transactionCount)
+        title = "wallet-connect-transaction-all-count".localized(transactions.count)
+    }
+
+    private func setGroupID(from transactions: [WCTransaction]) {
+        groupID = transactions.first?.transactionDetail?.transactionGroupId
     }
 }

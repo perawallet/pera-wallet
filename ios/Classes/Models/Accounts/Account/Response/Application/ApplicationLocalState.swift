@@ -18,10 +18,10 @@
 import Magpie
 
 class ApplicationLocalState: Model {
-    var closedAtRound: Int64?
+    var closedAtRound: UInt64?
     var isDeleted: Bool?
     var id: Int64?
-    var optedInAtRound: Int64?
+    var optedInAtRound: UInt64?
     var schema: ApplicationStateSchema?
 }
 

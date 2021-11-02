@@ -25,42 +25,32 @@ protocol WCTransactionValidator {
 extension WCTransactionValidator {
     func validateTransactions(_ transactions: [WCTransaction], with transactionGroups: [Int64: [WCTransaction]]) {
         if !hasValidTransactionCount(for: transactions) {
-            rejectTransactionRequest(with: .unsupported)
+            rejectTransactionRequest(with: .invalidInput(.transactionCount))
             return
         }
 
         if !hasValidNetwork(for: transactions) {
-            rejectTransactionRequest(with: .unauthorized)
+            rejectTransactionRequest(with: .unauthorized(.nodeMismatch))
             return
         }
 
         if !hasValidAddresses(in: transactions) {
-            rejectTransactionRequest(with: .invalidInput)
+            rejectTransactionRequest(with: .invalidInput(.publicKey))
             return
         }
 
         if containsMultisigTransaction(in: transactions) {
-            rejectTransactionRequest(with: .unsupported)
+            rejectTransactionRequest(with: .unsupported(.multisig))
             return
         }
 
         if !hasValidSignerAddress(in: transactions) {
-            rejectTransactionRequest(with: .invalidInput)
+            rejectTransactionRequest(with: .invalidInput(.signer))
             return
         }
-
-        if requiresLedgerInAtomicTransaction(for: transactionGroups) {
-            rejectTransactionRequest(with: .unsupported)
-            return
-        }
-
-        if hasInvalidApplicationCallTransaction(in: transactions) {
-            rejectTransactionRequest(with: .unsupported)
-            return
-        }
-
+        
         if hasInvalidGroupedTransaction(in: transactionGroups) {
-            rejectTransactionRequest(with: .invalidInput)
+            rejectTransactionRequest(with: .invalidInput(.group))
             return
         }
     }
@@ -109,31 +99,6 @@ extension WCTransactionValidator {
         }
 
         return true
-    }
-
-    private func requiresLedgerInAtomicTransaction(for transactionGroups: [Int64: [WCTransaction]]) -> Bool {
-        for group in transactionGroups where group.value.count > 1 {
-            for transaction in group.value {
-                if let signerAccount = transaction.signerAccount,
-                   signerAccount.requiresLedgerConnection() {
-                    return true
-                }
-            }
-        }
-
-        return false
-    }
-
-    private func hasInvalidApplicationCallTransaction(in transactions: [WCTransaction]) -> Bool {
-        let appCallTransactions = transactions.filter { $0.transactionDetail?.isAppCallTransaction ?? false }
-
-        if appCallTransactions.isEmpty {
-            return false
-        }
-
-        return appCallTransactions.contains { transaction in
-            return !(transaction.transactionDetail?.isSupportedAppCallTransaction ?? true)
-        }
     }
 
     private func hasInvalidGroupedTransaction(in transactionGroups: [Int64: [WCTransaction]]) -> Bool {

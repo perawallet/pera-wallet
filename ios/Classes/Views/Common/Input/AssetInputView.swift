@@ -25,9 +25,9 @@ class AssetInputView: BaseView {
     
     private var shouldHandleMaxButtonStates: Bool
     private(set) var isMaxButtonSelected = false
-    var maxAmount: Double = 0.0
+    var maxAmount: Decimal = 0.0
     private var inputFieldFraction: Int
-    private let maximumAmount: Int64
+    private let maximumAmount: UInt64
     
     private lazy var explanationLabel: UILabel = {
         UILabel()
@@ -80,7 +80,7 @@ class AssetInputView: BaseView {
     init(inputFieldFraction: Int = algosFraction, shouldHandleMaxButtonStates: Bool = false) {
         self.inputFieldFraction = inputFieldFraction
         self.shouldHandleMaxButtonStates = shouldHandleMaxButtonStates
-        maximumAmount = Int64.max / (pow(10, inputFieldFraction) as NSDecimalNumber).int64Value
+        maximumAmount = UInt64.max / (pow(10, inputFieldFraction) as NSDecimalNumber).uint64Value
         super.init(frame: .zero)
     }
     
@@ -166,21 +166,21 @@ extension AssetInputView {
 extension AssetInputView {
     @objc
     private func didChangeText(_ textField: UITextField) {
-        guard let doubleValueString = textField.text?.currencyInputFormatting(with: inputFieldFraction),
-            let doubleValue = doubleValueString.doubleForSendSeparator(with: inputFieldFraction),
-            doubleValue <= Double(maximumAmount) else {
+        guard let decimalValueString = textField.text?.currencyInputFormatting(with: inputFieldFraction),
+            let decimalValue = decimalValueString.decimalForSendSeparator(with: inputFieldFraction),
+            decimalValue <= Decimal(maximumAmount) else {
             return
         }
         
-        if isMaxButtonSelected && shouldHandleMaxButtonStates && doubleValue != maxAmount {
+        if isMaxButtonSelected && shouldHandleMaxButtonStates && decimalValue != maxAmount {
             toggleMaxButtonState(isSelected: false)
         }
         
-        if doubleValue == maxAmount && shouldHandleMaxButtonStates {
+        if decimalValue == maxAmount && shouldHandleMaxButtonStates {
             toggleMaxButtonState(isSelected: true)
         }
         
-        textField.text = doubleValueString
+        textField.text = decimalValueString
     }
     
     @objc
@@ -218,9 +218,9 @@ extension AssetInputView: UITextFieldDelegate {
             return true
         }
         
-        guard let doubleValueString = text.appending(string).currencyInputFormatting(with: inputFieldFraction),
-            let doubleValue = doubleValueString.doubleForSendSeparator(with: inputFieldFraction),
-            doubleValue <= Double(maximumAmount) else {
+        guard let decimalValueString = text.appending(string).currencyInputFormatting(with: inputFieldFraction),
+            let decimalValue = decimalValueString.decimalForSendSeparator(with: inputFieldFraction),
+            decimalValue <= Decimal(maximumAmount) else {
                 return false
         }
         

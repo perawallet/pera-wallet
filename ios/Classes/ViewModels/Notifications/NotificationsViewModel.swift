@@ -155,7 +155,7 @@ extension NotificationsViewModel {
     }
     
     private func getAmount(from notificationDetail: NotificationDetail) -> String? {
-        let amount = notificationDetail.amount ?? 0
+        let amount = notificationDetail.getAmountValue()
         if let asset = notificationDetail.asset {
             let fraction = asset.fractionDecimals ?? 0
             return amount.assetAmount(fromFraction: fraction).toFractionStringForLabel(fraction: fraction)

@@ -21,11 +21,14 @@ extension AlgorandAPI {
     @discardableResult
     func fetchAccount(
         with draft: AccountFetchDraft,
+        includesClosedAccounts: Bool = false,
         then handler: @escaping (Response.ModelResult<AccountResponse>) -> Void
     ) -> EndpointOperatable {
+        enableLogsInConsole()
         return EndpointBuilder(api: self)
             .base(indexerBase)
             .path("/v2/accounts/\(draft.publicKey)")
+            .query(AccountQuery(includesAll: includesClosedAccounts))
             .headers(indexerAuthenticatedHeaders())
             .completionHandler(handler)
             .build()

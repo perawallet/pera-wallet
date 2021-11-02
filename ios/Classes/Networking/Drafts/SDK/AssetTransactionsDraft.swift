@@ -21,7 +21,7 @@ struct AssetTransactionDraft: TransactionDraft {
     var from: Account
     let toAccount: String
     var transactionParams: TransactionParams
-    let amount: Int64
+    let amount: UInt64
     let assetIndex: Int64
     var note: Data?
 }

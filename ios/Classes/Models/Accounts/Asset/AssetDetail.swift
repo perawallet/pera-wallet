@@ -19,7 +19,7 @@ import Magpie
 
 class AssetDetailResponse: Model {
     let assetDetail: AssetDetail
-    let currentRound: Int64
+    let currentRound: UInt64
 }
 
 extension AssetDetailResponse {

@@ -21,7 +21,7 @@ struct AlgosTransactionDraft: TransactionDraft {
     var from: Account
     let toAccount: String
     var transactionParams: TransactionParams
-    let amount: Int64
+    let amount: UInt64
     let isMaxTransaction: Bool
     var note: Data?
 }

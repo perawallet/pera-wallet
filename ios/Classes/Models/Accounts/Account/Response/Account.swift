@@ -31,8 +31,8 @@ class Account: Model {
     var createdAssets: [AssetDetail]?
     var assets: [Asset]?
     var authAddress: String?
-    var createdRound: Int64?
-    var closedRound: Int64?
+    var createdRound: UInt64?
+    var closedRound: UInt64?
     var isDeleted: Bool?
 
     var appsLocalState: [ApplicationLocalState]?
@@ -50,27 +50,27 @@ class Account: Model {
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        address = try container.decode(String.self, forKey: .address)
-        amount = try container.decode(UInt64.self, forKey: .amount)
-        amountWithoutRewards = try container.decodeIfPresent(UInt64.self, forKey: .amountWithoutRewards) ?? 0
-        rewardsBase = try container.decodeIfPresent(UInt64.self, forKey: .rewardsBase)
-        round = try container.decodeIfPresent(UInt64.self, forKey: .round)
-        signatureType = try container.decodeIfPresent(SignatureType.self, forKey: .signatureType)
-        status = try container.decode(AccountStatus.self, forKey: .status)
-        rewards = try container.decodeIfPresent(UInt64.self, forKey: .rewards)
-        pendingRewards = try container.decodeIfPresent(UInt64.self, forKey: .pendingRewards) ?? 0
-        participation = try container.decodeIfPresent(Participation.self, forKey: .participation)
-        name = try container.decodeIfPresent(String.self, forKey: .name)
-        createdAssets = try? container.decodeIfPresent([AssetDetail].self, forKey: .createdAssets)
-        assets = try? container.decodeIfPresent([Asset].self, forKey: .assets) ?? nil
-        assetDetails = try container.decodeIfPresent([AssetDetail].self, forKey: .assetDetails) ?? []
-        type = try container.decodeIfPresent(AccountType.self, forKey: .type) ?? .standard
-        authAddress = try container.decodeIfPresent(String.self, forKey: .authAddress)
-        ledgerDetail = try container.decodeIfPresent(LedgerDetail.self, forKey: .ledgerDetail)
+        address = try container.decode(String.self, forKey: .address) //
+        amount = try container.decode(UInt64.self, forKey: .amount) //
+        amountWithoutRewards = try container.decodeIfPresent(UInt64.self, forKey: .amountWithoutRewards) ?? 0 //
+        rewardsBase = try container.decodeIfPresent(UInt64.self, forKey: .rewardsBase) //
+        round = try container.decodeIfPresent(UInt64.self, forKey: .round) //
+        signatureType = try container.decodeIfPresent(SignatureType.self, forKey: .signatureType) //
+        status = try container.decode(AccountStatus.self, forKey: .status) //
+        rewards = try container.decodeIfPresent(UInt64.self, forKey: .rewards) //
+        pendingRewards = try container.decodeIfPresent(UInt64.self, forKey: .pendingRewards) ?? 0 //
+        participation = try container.decodeIfPresent(Participation.self, forKey: .participation) //
+        name = try container.decodeIfPresent(String.self, forKey: .name) //
+        createdAssets = try? container.decodeIfPresent([AssetDetail].self, forKey: .createdAssets) //
+        assets = try? container.decodeIfPresent([Asset].self, forKey: .assets) ?? nil //
+        assetDetails = try container.decodeIfPresent([AssetDetail].self, forKey: .assetDetails) ?? [] //
+        type = try container.decodeIfPresent(AccountType.self, forKey: .type) ?? .standard //
+        authAddress = try container.decodeIfPresent(String.self, forKey: .authAddress) //
+        ledgerDetail = try container.decodeIfPresent(LedgerDetail.self, forKey: .ledgerDetail) //
         receivesNotification = try container.decodeIfPresent(Bool.self, forKey: .receivesNotification) ?? true
-        rekeyDetail = try container.decodeIfPresent(RekeyDetail.self, forKey: .rekeyDetail)
-        createdRound = try container.decodeIfPresent(Int64.self, forKey: .createdRound)
-        closedRound = try container.decodeIfPresent(Int64.self, forKey: .closedRound)
+        rekeyDetail = try container.decodeIfPresent(RekeyDetail.self, forKey: .rekeyDetail) //
+        createdRound = try container.decodeIfPresent(UInt64.self, forKey: .createdRound)
+        closedRound = try container.decodeIfPresent(UInt64.self, forKey: .closedRound)
         isDeleted = try container.decodeIfPresent(Bool.self, forKey: .isDeleted)
         appsLocalState = try container.decodeIfPresent([ApplicationLocalState].self, forKey: .appsLocalState)
         appsTotalExtraPages = try container.decodeIfPresent(Int.self, forKey: .appsTotalExtraPages)

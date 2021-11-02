@@ -108,6 +108,14 @@ extension WCMainTransactionDataSource {
             return dequeueAppCallCell(in: collectionView, at: indexPath, for: transaction)
         }
 
+        if transaction.transactionDetail?.isAssetConfigTransaction ?? false {
+            if transaction.signerAccount == nil {
+                return dequeueUnsignableAssetConfigCell(in: collectionView, at: indexPath, for: transaction)
+            }
+
+            return dequeueAssetConfigCell(in: collectionView, at: indexPath, for: transaction)
+        }
+
         if transaction.signerAccount == nil {
             return dequeueUnsignableCell(in: collectionView, at: indexPath, for: transaction)
         }
@@ -128,6 +136,52 @@ extension WCMainTransactionDataSource {
         }
 
         cell.bind(WCAppCallTransactionItemViewModel(transaction: transaction))
+        return cell
+    }
+
+    private func dequeueUnsignableAssetConfigCell(
+        in collectionView: UICollectionView,
+        at indexPath: IndexPath,
+        for transaction: WCTransaction
+    ) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: WCAssetConfigAnotherAccountTransactionItemCell.reusableIdentifier,
+            for: indexPath
+        ) as? WCAssetConfigAnotherAccountTransactionItemCell else {
+            fatalError("Unexpected cell type")
+        }
+
+        cell.bind(
+            WCAssetConfigTransactionItemViewModel(
+                transaction: transaction,
+                account: session?.accounts.first(of: \.address, equalsTo: transaction.transactionDetail?.sender),
+                assetDetail: assetDetail(from: transaction)
+            )
+        )
+
+        return cell
+    }
+
+    private func dequeueAssetConfigCell(
+        in collectionView: UICollectionView,
+        at indexPath: IndexPath,
+        for transaction: WCTransaction
+    ) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: WCAssetConfigTransactionItemCell.reusableIdentifier,
+            for: indexPath
+        ) as? WCAssetConfigTransactionItemCell else {
+            fatalError("Unexpected cell type")
+        }
+
+        cell.bind(
+            WCAssetConfigTransactionItemViewModel(
+                transaction: transaction,
+                account: session?.accounts.first(of: \.address, equalsTo: transaction.transactionDetail?.sender),
+                assetDetail: assetDetail(from: transaction)
+            )
+        )
+
         return cell
     }
 
@@ -223,7 +277,7 @@ extension WCMainTransactionDataSource {
 
     private func assetDetail(from transaction: WCTransaction) -> AssetDetail? {
         guard let session = session,
-              let assetId = transaction.transactionDetail?.assetId else {
+              let assetId = transaction.transactionDetail?.assetId ?? transaction.transactionDetail?.assetIdBeingConfigured else {
             return nil
         }
 

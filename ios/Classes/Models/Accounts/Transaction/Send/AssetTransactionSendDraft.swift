@@ -20,8 +20,8 @@ import Foundation
 struct AssetTransactionSendDraft: TransactionSendDraft {
     var from: Account
     var toAccount: String?
-    var amount: Double?
-    var fee: Int64?
+    var amount: Decimal?
+    var fee: UInt64?
     var isMaxTransaction = false
     var identifier: String?
     let assetIndex: Int64?

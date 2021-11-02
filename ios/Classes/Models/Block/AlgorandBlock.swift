@@ -18,14 +18,14 @@
 import Magpie
 
 class AlgorandBlock: Model {
-    let rewardsRate: Int64
-    let rewardsResidue: Int64
+    let rewardsRate: UInt64
+    let rewardsResidue: UInt64
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let rewardsContainer = try container.nestedContainer(keyedBy: RewardsCodingKeys.self, forKey: .block)
-        rewardsRate = try rewardsContainer.decode(Int64.self, forKey: .rewardsRate)
-        rewardsResidue = try rewardsContainer.decode(Int64.self, forKey: .rewardsResidue)
+        rewardsRate = try rewardsContainer.decode(UInt64.self, forKey: .rewardsRate)
+        rewardsResidue = try rewardsContainer.decode(UInt64.self, forKey: .rewardsResidue)
     }
 
     func encode(to encoder: Encoder) throws {

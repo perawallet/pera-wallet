@@ -35,7 +35,7 @@ class WCAssetAdditionTransactionViewModel {
         setSenderInformationViewModel(from: senderAccount, and: transaction)
         setAssetInformationViewModel(from: transaction, and: assetDetail)
         setAuthAccountInformationViewModel(from: transaction)
-        setCloseWarningInformationViewModel(from: transaction)
+        setCloseWarningInformationViewModel(from: transaction, and: assetDetail)
         setRekeyWarningInformationViewModel(from: transaction)
         setFeeInformationViewModel(from: transaction)
         setFeeWarningViewModel(from: transaction)
@@ -94,15 +94,16 @@ class WCAssetAdditionTransactionViewModel {
         )
     }
 
-    private func setCloseWarningInformationViewModel(from transaction: WCTransaction) {
+    private func setCloseWarningInformationViewModel(from transaction: WCTransaction, and assetDetail: AssetDetail?) {
         guard let transactionDetail = transaction.transactionDetail,
+              let assetDetail = assetDetail,
               let closeAddress = transactionDetail.closeAddress else {
             return
         }
 
         closeWarningInformationViewModel = WCTransactionAddressWarningInformationViewModel(
             address: closeAddress,
-            warning: .closeAlgos,
+            warning: .closeAsset(asset: assetDetail),
             isLastElement: !transactionDetail.isRekeyTransaction
         )
     }
@@ -121,7 +122,8 @@ class WCAssetAdditionTransactionViewModel {
     
     private func setFeeInformationViewModel(from transaction: WCTransaction) {
         guard let transactionDetail = transaction.transactionDetail,
-              let fee = transactionDetail.fee else {
+              let fee = transactionDetail.fee,
+              fee != 0 else {
             return
         }
 

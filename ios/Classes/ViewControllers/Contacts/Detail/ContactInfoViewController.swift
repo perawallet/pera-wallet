@@ -113,7 +113,7 @@ extension ContactInfoViewController {
                 let account = accountWrapper.account
                 self?.contactAccount = account
                 
-                if account.isThereAnyDifferentAsset() {
+                if account.isThereAnyDifferentAsset {
                     if let assets = account.assets {
                         var failedAssetFetchCount = 0
                         for asset in assets {

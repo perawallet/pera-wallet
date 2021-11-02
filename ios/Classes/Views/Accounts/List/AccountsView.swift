@@ -39,6 +39,7 @@ class AccountsView: BaseView {
         collectionView.contentInset = UIEdgeInsets(top: 0.0, left: 20.0, bottom: 20.0, right: 20.0)
         
         collectionView.register(AlgoAssetCell.self, forCellWithReuseIdentifier: AlgoAssetCell.reusableIdentifier)
+        collectionView.register(GovernanceComingSoonCell.self, forCellWithReuseIdentifier: GovernanceComingSoonCell.reusableIdentifier)
         collectionView.register(
             AccountHeaderSupplementaryView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,

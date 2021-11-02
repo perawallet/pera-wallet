@@ -19,7 +19,7 @@ import Magpie
 
 class AccountResponse: Model {
     let account: Account
-    let currentRound: Int64
+    let currentRound: UInt64
 }
 
 extension AccountResponse {

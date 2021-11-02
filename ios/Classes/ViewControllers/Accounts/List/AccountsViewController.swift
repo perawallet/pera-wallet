@@ -112,6 +112,7 @@ class AccountsViewController: BaseViewController {
             } else {
                 accountsDataSource.accounts.removeAll()
                 accountsView.accountsCollectionView.contentState = .empty(noConnectionView)
+                accountsDataSource.isContentStateAvailableForBanner = false
                 accountsView.setHeaderButtonsHidden(true)
                 accountsView.accountsCollectionView.reloadData()
             }
@@ -286,7 +287,7 @@ extension AccountsViewController: AnimatedTutorialViewControllerDelegate {
 
 extension AccountsViewController: AccountsDataSourceDelegate {
     func accountsDataSource(_ accountsDataSource: AccountsDataSource, didSelectAt indexPath: IndexPath) {
-        selectedAccount = accountsDataSource.accounts[indexPath.section]
+        selectedAccount = accountsDataSource.account(at: indexPath.section)
         guard let account = selectedAccount else {
             return
         }
@@ -294,8 +295,9 @@ extension AccountsViewController: AccountsDataSourceDelegate {
         if indexPath.item == 0 {
             open(.assetDetail(account: account, assetDetail: nil), by: .push)
         } else {
-            let assetDetail = account.assetDetails[indexPath.item - 1]
-            open(.assetDetail(account: account, assetDetail: assetDetail), by: .push)
+            if let assetDetail = account.assetDetails[safe: indexPath.item - 1] {
+                open(.assetDetail(account: account, assetDetail: assetDetail), by: .push)
+            }
         }
     }
     
@@ -313,6 +315,17 @@ extension AccountsViewController: AccountsDataSourceDelegate {
     func accountsDataSource(_ accountsDataSource: AccountsDataSource, didTapQRButtonFor account: Account) {
         let draft = QRCreationDraft(address: account.address, mode: .address)
         open(.qrGenerator(title: "qr-creation-sharing-title".localized, draft: draft, isTrackable: true), by: .present)
+    }
+
+    func accountsDataSourceDidCloseGovernance(_ accountsDataSource: AccountsDataSource) {
+        UIApplication.shared.rootViewController()?.hideGovernanceBanner()
+        accountsView.accountsCollectionView.deleteSections(IndexSet(integer: 0))
+    }
+
+    func accountsDataSourceDidGetStartedGovernance(_ accountsDataSource: AccountsDataSource) {
+        if let url = AlgorandWeb.governence.link {
+            UIApplication.shared.open(url)
+        }
     }
 }
 
@@ -496,6 +509,7 @@ extension AccountsViewController {
 
         if !isConnectedToInternet {
             accountsView.accountsCollectionView.contentState = .empty(noConnectionView)
+            accountsDataSource.isContentStateAvailableForBanner = false
             accountsView.setHeaderButtonsHidden(true)
             return
         }
@@ -508,12 +522,14 @@ extension AccountsViewController {
         }
 
         accountsView.accountsCollectionView.contentState = .none
+        accountsDataSource.isContentStateAvailableForBanner = true
         accountsView.setHeaderButtonsHidden(false)
     }
 
     func setEmptyAccountsState() {
         emptyStateView.bind(EmptyStateViewModel(emptyState: .accounts))
         accountsView.accountsCollectionView.contentState = .empty(emptyStateView)
+        accountsDataSource.isContentStateAvailableForBanner = false
         accountsView.setHeaderButtonsHidden(true)
     }
     
@@ -640,7 +656,7 @@ extension AccountsViewController: TooltipPresenter {
  
         guard let headerView = accountsView.accountsCollectionView.supplementaryView(
             forElementKind: UICollectionView.elementKindSectionHeader,
-            at: IndexPath(item: 0, section: 0)
+            at: IndexPath(item: 0, section: 1)
         ) as? AccountHeaderSupplementaryView else {
             return
         }

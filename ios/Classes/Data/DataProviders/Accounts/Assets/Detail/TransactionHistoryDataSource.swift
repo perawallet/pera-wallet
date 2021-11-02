@@ -282,7 +282,7 @@ extension TransactionHistoryDataSource {
             self.transactions.append(transaction)
             if let rewards = transaction.getRewards(for: account.address),
                rewards > 0 {
-                let reward = Reward(amount: Int64(rewards), date: transaction.date)
+                let reward = Reward(amount: UInt64(rewards), date: transaction.date)
                 self.transactions.append(reward)
             }
         }

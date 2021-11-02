@@ -27,6 +27,16 @@ class WCAppCallTransactionView: WCSingleTransactionView {
 
     private lazy var onCompletionInformationView = WCTransactionTextInformationView()
 
+    private lazy var appGlobalSchemaInformationView = WCTransactionTextInformationView()
+
+    private lazy var appLocalSchemaInformationView = WCTransactionTextInformationView()
+
+    private lazy var appExtraPagesInformationView = WCTransactionTextInformationView()
+
+    private lazy var approvalHashInformationView = WCTransactionTextInformationView()
+
+    private lazy var clearStateHashInformationView = WCTransactionTextInformationView()
+
     private lazy var authAccountInformationView = WCTransactionTextInformationView()
 
     private lazy var closeWarningInformationView = WCTransactionAddressWarningInformationView()
@@ -61,6 +71,11 @@ extension WCAppCallTransactionView {
         addParticipantInformationView(accountInformationView)
         addParticipantInformationView(idInformationView)
         addParticipantInformationView(onCompletionInformationView)
+        addParticipantInformationView(appGlobalSchemaInformationView)
+        addParticipantInformationView(appLocalSchemaInformationView)
+        addParticipantInformationView(appExtraPagesInformationView)
+        addParticipantInformationView(approvalHashInformationView)
+        addParticipantInformationView(clearStateHashInformationView)
         addParticipantInformationView(authAccountInformationView)
         addParticipantInformationView(closeWarningInformationView)
         addParticipantInformationView(rekeyWarningInformationView)
@@ -96,10 +111,42 @@ extension WCAppCallTransactionView {
 
         if let idInformationViewModel = viewModel.idInformationViewModel {
             idInformationView.bind(idInformationViewModel)
+        } else {
+            idInformationView.hideViewInStack()
         }
 
         if let onCompletionInformationViewModel = viewModel.onCompletionInformationViewModel {
             onCompletionInformationView.bind(onCompletionInformationViewModel)
+        }
+
+        if let appGlobalSchemaInformationViewModel = viewModel.appGlobalSchemaInformationViewModel {
+            appGlobalSchemaInformationView.bind(appGlobalSchemaInformationViewModel)
+        } else {
+            appGlobalSchemaInformationView.hideViewInStack()
+        }
+
+        if let appLocalSchemaInformationViewModel = viewModel.appLocalSchemaInformationViewModel {
+            appLocalSchemaInformationView.bind(appLocalSchemaInformationViewModel)
+        } else {
+            appLocalSchemaInformationView.hideViewInStack()
+        }
+
+        if let appExtraPagesInformationViewModel = viewModel.appExtraPagesInformationViewModel {
+            appExtraPagesInformationView.bind(appExtraPagesInformationViewModel)
+        } else {
+            appExtraPagesInformationView.hideViewInStack()
+        }
+
+        if let approvalHashInformationViewModel = viewModel.approvalHashInformationViewModel {
+            approvalHashInformationView.bind(approvalHashInformationViewModel)
+        } else {
+            approvalHashInformationView.hideViewInStack()
+        }
+
+        if let clearStateHashInformationViewModel = viewModel.clearStateHashInformationViewModel {
+            clearStateHashInformationView.bind(clearStateHashInformationViewModel)
+        } else {
+            clearStateHashInformationView.hideViewInStack()
         }
 
         if let authAccountInformationViewModel = viewModel.authAccountInformationViewModel {
@@ -120,7 +167,11 @@ extension WCAppCallTransactionView {
             rekeyWarningInformationView.hideViewInStack()
         }
 
-        feeInformationView.bind(viewModel.feeInformationViewModel)
+        if let feeInformationViewModel = viewModel.feeInformationViewModel {
+            feeInformationView.bind(feeInformationViewModel)
+        } else {
+            feeInformationView.hideViewInStack()
+        }
 
         if let feeWarningViewModel = viewModel.feeWarningViewModel {
             feeWarningView.bind(feeWarningViewModel)
@@ -140,6 +191,8 @@ extension WCAppCallTransactionView {
 
         if let algoExplorerInformationViewModel = viewModel.algoExplorerInformationViewModel {
             algoExplorerInformationView.bind(algoExplorerInformationViewModel)
+        } else {
+            algoExplorerInformationView.hideViewInStack()
         }
     }
 }

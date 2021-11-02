@@ -107,6 +107,11 @@ at least MinTxnFee for the current network protocol.
 @end
 
 /**
+ * GetProgramAddress returns the escrow account address for a program, derived from its TEAL bytecode.
+ */
+FOUNDATION_EXPORT NSString* _Nonnull AlgoMobileAddressFromProgram(NSData* _Nullable program);
+
+/**
  * AssignGroupID computes and return list of encoded transactions with Group field set.
  */
 FOUNDATION_EXPORT AlgoMobileBytesArray* _Nullable AlgoMobileAssignGroupID(AlgoMobileBytesArray* _Nullable txns, NSError* _Nullable* _Nullable error);

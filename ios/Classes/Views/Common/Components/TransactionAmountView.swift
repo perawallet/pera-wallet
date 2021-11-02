@@ -112,7 +112,7 @@ extension TransactionAmountView {
         }
     }
     
-    private func setAmount(_ amount: Double, with assetFraction: Int?) {
+    private func setAmount(_ amount: Decimal, with assetFraction: Int?) {
         if let fraction = assetFraction {
             amountLabel.text = amount.toFractionStringForLabel(fraction: fraction)
         } else {
@@ -127,9 +127,9 @@ extension TransactionAmountView {
 
 extension TransactionAmountView {
     enum Mode {
-        case normal(amount: Double, isAlgos: Bool = true, fraction: Int? = nil)
-        case positive(amount: Double, isAlgos: Bool = true, fraction: Int? = nil)
-        case negative(amount: Double, isAlgos: Bool = true, fraction: Int? = nil)
+        case normal(amount: Decimal, isAlgos: Bool = true, fraction: Int? = nil)
+        case positive(amount: Decimal, isAlgos: Bool = true, fraction: Int? = nil)
+        case negative(amount: Decimal, isAlgos: Bool = true, fraction: Int? = nil)
     }
 }
 

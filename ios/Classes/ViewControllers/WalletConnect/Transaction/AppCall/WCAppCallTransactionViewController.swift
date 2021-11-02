@@ -27,7 +27,13 @@ class WCAppCallTransactionViewController: WCSingleTransactionViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
-        title = "wallet-connect-transaction-title-app-call".localized
+
+        if let transactionDetail = transaction.transactionDetail,
+           transactionDetail.isAppCreateTransaction {
+            title = "wallet-connect-transaction-title-app-creation".localized
+        } else {
+            title = "wallet-connect-transaction-title-app-call".localized
+        }
     }
 
     override func linkInteractors() {

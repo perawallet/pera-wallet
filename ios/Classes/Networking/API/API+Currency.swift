@@ -38,7 +38,7 @@ extension AlgorandAPI {
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(mobileApiBase)
-            .path("/api/currencies/\(currencyId)")
+            .path("/api/currencies/\(currencyId)/")
             .headers(mobileApiHeaders())
             .completionHandler(handler)
             .build()

@@ -389,6 +389,15 @@
 "feedback-title-note" = "Not";
 
 /* (No Comment) */
+"governance-banner-action" = "Başlayın";
+
+/* (No Comment) */
+"governance-banner-detail" = "Yönetici olun. Algorand'ın geleceği için oy verin. Ödül kazanın.";
+
+/* (No Comment) */
+"governance-banner-title" = "Algorand Yönetişim Programı başlıyor!";
+
+/* (No Comment) */
 "internet-connection-error-detail" = "Sunucuya ulaşamadık. İnternete bağlı olduğunuzdan emin olun";
 
 /* (No Comment) */
@@ -617,10 +626,7 @@
 "login-title" = "Kilidi aç";
 
 /* (No Comment) */
-"maximum-balance-standard-account-warning-description" = "Diğer %@ Varlığa %@ hesabında sahip olduğunuzdan, Algorand Blok Zinciri en az %@ Algo tutarında bir minimum bakiye tutmanızı gerektirmektedir.\n\n\nDevam etme seçeneğini tıkladığınızda, işlem tutarınız bu değişikliği yansıtmak için otomatik olarak güncellenecektir. Sonraki adımda bu değişikliğin önizlemesini görüntüleyebileceksiniz.";
-
-/* (No Comment) */
-"maximum-balance-standard-account-warning-description-singular" = "Diğer %@ Varlığa %@ hesabında sahip olduğunuzdan, Algorand Blok Zinciri en az %@ Algo tutarında bir minimum bakiye tutmanızı gerektirmektedir.\n\n\nDevam etme seçeneğini tıkladığınızda, işlem tutarınız bu değişikliği yansıtmak için otomatik olarak güncellenecektir. Sonraki adımda bu değişikliğin önizlemesini görüntüleyebileceksiniz.";
+"maximum-balance-standard-account-warning-description" = "Diğer Varlığa hesabında sahip olduğunuzdan, Algorand Blok Zinciri en az %@ Algo tutarında bir minimum bakiye tutmanızı gerektirmektedir.\n\n\nDevam etme seçeneğini tıkladığınızda, işlem tutarınız bu değişikliği yansıtmak için otomatik olarak güncellenecektir. Sonraki adımda bu değişikliğin önizlemesini görüntüleyebileceksiniz.";
 
 /* (No Comment) */
 "maximum-balance-warning-description" = "Yeniden anahtarlanan bir hesaptan maksimum bakiyenizi göndermeniz, hesapta en az %@ Algo tutmanızı gerektirmektedir. Bu işlem, yeniden anahtarlanan hesabınızda herhangi bir şeyin değişmemesini sağlamak içindir. \n\nİşlem tutarınız bu değişikliği yansıtması için otomatik olarak güncellenecektir. İşlemin önizlemesini bir sonraki adımda görüntüleyebileceksiniz.";
@@ -855,9 +861,6 @@
 
 /* (No Comment) */
 "pin-limit-try-again" = "Tekrar deneyin:";
-
-/* No comment provided by engineer. */
-"primaryText" = "primaryText";
 
 /* (No Comment) */
 "privacy-policy-title" = "Gizlilik Politikası";
@@ -1286,7 +1289,13 @@
 "title-no" = "HAYIR";
 
 /* (No Comment) */
+"title-off" = "Kapalı";
+
+/* (No Comment) */
 "title-ok" = "Tamam";
+
+/* (No Comment) */
+"title-on" = "Açık";
 
 /* (No Comment) */
 "title-paste-passphrase" = "Parolanın Tamamını Yapıştır";
@@ -1565,6 +1574,42 @@
 "verified-assets-title" = "Doğrulanan Varlıklar";
 
 /* (No Comment) */
+"wallet-connect-asset-clawback-title" = "Geri Alma Hesabı";
+
+/* (No Comment) */
+"wallet-connect-asset-creation-title" = "Varlık Oluşturma Talebi";
+
+/* (No Comment) */
+"wallet-connect-asset-decimals-title" = "Ondalık Basamaklar";
+
+/* (No Comment) */
+"wallet-connect-asset-deletion-title" = "Varlık Silme Talebi";
+
+/* (No Comment) */
+"wallet-connect-asset-deletion-warning-title" = "Bu varlık silinecek.";
+
+/* (No Comment) */
+"wallet-connect-asset-freeze-title" = "Hesabı Dondur";
+
+/* (No Comment) */
+"wallet-connect-asset-frozen-title" = "Varsayılan Dondurulmuş";
+
+/* (No Comment) */
+"wallet-connect-asset-manager-title" = "Yönetici Hesabı";
+
+/* (No Comment) */
+"wallet-connect-asset-name-title" = "Varlık Adı";
+
+/* (No Comment) */
+"wallet-connect-asset-reconfiguration-title" = "Yeniden Varlık Yapılandırma Talebi";
+
+/* (No Comment) */
+"wallet-connect-asset-reserve-title" = "Yedek Hesap";
+
+/* (No Comment) */
+"wallet-connect-asset-unit-title" = "Birim Adı";
+
+/* (No Comment) */
 "wallet-connect-raw-transaction-title" = "Ham İşlem";
 
 /* (No Comment) */
@@ -1622,16 +1667,61 @@
 "wallet-connect-transaction-detail-raw" = "Ham İşlemleri Göster";
 
 /* (No Comment) */
+"wallet-connect-transaction-error-account-not-exist" = "Geçersiz Giriş: İstenen imzalayan Kullanıcı Cüzdanında yok";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-already-displayed" = "İşlem İsteği Reddedildi: Kullanıcının sürmekte olan başka bir işlem isteği bulunuyor.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group" = "Geçersiz Giriş: Grup işlemlerinin Cüzdan kullanıcısı tarafından imzalanmasına gerek yoktur.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group-unauthorized-user" = "İstenen işlem ve/veya hesap kullanıcı tarafından yetkilendirilmemiş.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group-validation" = "İşlem İsteği Reddedildi: İşlem grubunun Algorand SDK tarafından doğrulaması yapılamadı.";
+
+/* (No Comment) */
 "wallet-connect-transaction-error-invalid" = "Sağlanan giriş geçersiz.";
 
 /* (No Comment) */
+"wallet-connect-transaction-error-invalid-asset" = "Geçersiz Giriş: Geçersiz Varlık";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-invalid-key" = "Geçersiz Giriş: Ortak Anahtar Geçersiz";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-invalid-signer" = "İmzalama Hatası: İşlem isteği sürecindeki bir işlem, bağlı olan Cüzdanda bulunmayan bir özel anahtarı (imzalayan) gerektiriyor.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-multisig" = "İşlem isteği, Desteklenmeyen İşlem Türünü içeriyor: Çoklu imza";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-node" = "İmzalama Hatası: dApp ile Cüzdan arasında ağ uyuşmazlığı bulunuyor. Örneğin, Cüzdan Test Ağına bağlı durumdayken dApp Ana Ağa bağlı durumda (veya tam tersi).";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-parse" = "Geçersiz Giriş: İşlem ayrıştırılamıyor";
+
+/* (No Comment) */
 "wallet-connect-transaction-error-rejected" = "Kullanıcı isteği reddetti.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-rejected-user" = "İşlem İsteği Reddedildi: Kullanıcı işlem isteğini reddetti.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-transaction-size" = "Geçersiz Giriş: İşlem isteği 16'dan fazla işlemi içeriyor";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unable-sign" = "Geçersiz Giriş: İmzalanamıyor";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-unauthorized" = "İstenen işlem ve/veya hesap kullanıcı tarafından yetkilendirilmemiş.";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-unsupported" = "Cüzdan, istenen işlemi desteklemiyor.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unsupported-type" = "İşlem isteği, Desteklenmeyen İşlem Türünü içeriyor";
 
 /* (No Comment) */
 "wallet-connect-transaction-group-algos-title" = "%@ için Ödeme";
@@ -1643,7 +1733,13 @@
 "wallet-connect-transaction-group-app-close-title" = "%@ için Kapatma Uygulaması";
 
 /* (No Comment) */
+"wallet-connect-transaction-group-app-delete-title" = "%@ için Uygulama Silme";
+
+/* (No Comment) */
 "wallet-connect-transaction-group-app-opt-in-title" = "%@ Varlığına Katılım Uygulaması";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-app-update-title" = "%@ için Uygulama Güncellemesi";
 
 /* (No Comment) */
 "wallet-connect-transaction-group-asset-addition-title" = "%@ Varlığına Katılım";
@@ -1662,6 +1758,27 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-title-app-call" = "Uygulama Çağrısı İsteği";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-approval-hash" = "Onay Karması";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-clear-hash" = "Durum Karmasını Temizleme";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-extra-pages" = "Uygulama Ekstra Sayfaları";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-global-schema" = "Uygulama Global Şeması";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-local-schema" = "Uygulama Yerel Şeması";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-on-complete" = "OnComplete";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-creation" = "Uygulama Oluşturma";
 
 /* (No Comment) */
 "wallet-connect-transaction-title-app-id" = "Uygulama Kimliği";

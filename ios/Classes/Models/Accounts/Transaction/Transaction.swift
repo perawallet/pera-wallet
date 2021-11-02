@@ -20,18 +20,18 @@ import Magpie
 protocol TransactionItem {}
 
 class Transaction: Model, TransactionItem {
-    let closeRewards: Int64?
-    let closeAmount: Int64?
-    let confirmedRound: Int64?
-    let fee: Int64?
-    let firstRound: Int64?
+    let closeRewards: UInt64?
+    let closeAmount: UInt64?
+    let confirmedRound: UInt64?
+    let fee: UInt64?
+    let firstRound: UInt64?
     let id: String?
-    let lastRound: Int64?
+    let lastRound: UInt64?
     let note: Data?
     let payment: Payment?
-    let receiverRewards: Int64?
+    let receiverRewards: UInt64?
     let sender: String?
-    let senderRewards: Int64?
+    let senderRewards: UInt64?
     let type: TransferType?
     let createdAssetId: Int64?
     let assetFreeze: AssetFreezeTransaction?
@@ -45,18 +45,18 @@ class Transaction: Model, TransactionItem {
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        closeRewards = try container.decodeIfPresent(Int64.self, forKey: .closeRewards)
-        closeAmount = try container.decodeIfPresent(Int64.self, forKey: .closeAmount)
-        confirmedRound = try container.decodeIfPresent(Int64.self, forKey: .confirmedRound)
-        fee = try container.decodeIfPresent(Int64.self, forKey: .fee)
-        firstRound = try container.decodeIfPresent(Int64.self, forKey: .firstRound)
+        closeRewards = try container.decodeIfPresent(UInt64.self, forKey: .closeRewards)
+        closeAmount = try container.decodeIfPresent(UInt64.self, forKey: .closeAmount)
+        confirmedRound = try container.decodeIfPresent(UInt64.self, forKey: .confirmedRound)
+        fee = try container.decodeIfPresent(UInt64.self, forKey: .fee)
+        firstRound = try container.decodeIfPresent(UInt64.self, forKey: .firstRound)
         id = try container.decodeIfPresent(String.self, forKey: .id)
-        lastRound = try container.decodeIfPresent(Int64.self, forKey: .lastRound)
+        lastRound = try container.decodeIfPresent(UInt64.self, forKey: .lastRound)
         note = try container.decodeIfPresent(Data.self, forKey: .note)
         payment = try container.decodeIfPresent(Payment.self, forKey: .payment)
-        receiverRewards = try container.decodeIfPresent(Int64.self, forKey: .receiverRewards)
+        receiverRewards = try container.decodeIfPresent(UInt64.self, forKey: .receiverRewards)
         sender = try container.decodeIfPresent(String.self, forKey: .sender)
-        senderRewards = try container.decodeIfPresent(Int64.self, forKey: .senderRewards)
+        senderRewards = try container.decodeIfPresent(UInt64.self, forKey: .senderRewards)
         type = try container.decodeIfPresent(TransferType.self, forKey: .type)
         createdAssetId = try container.decodeIfPresent(Int64.self, forKey: .createdAssetId)
         assetFreeze = try container.decodeIfPresent(AssetFreezeTransaction.self, forKey: .assetFreeze)
@@ -92,11 +92,11 @@ extension Transaction {
         return assetTransfer.receiverAddress == address && assetTransfer.amount == 0 && type == .assetTransfer
     }
     
-    func getAmount() -> Int64? {
+    func getAmount() -> UInt64? {
         return payment?.amount ?? assetTransfer?.amount
     }
 
-    func getRewards(for account: String) -> Int64? {
+    func getRewards(for account: String) -> UInt64? {
         return account == sender ? senderRewards : (account == getReceiver() ? receiverRewards : nil)
     }
     
@@ -104,7 +104,7 @@ extension Transaction {
         return payment?.receiver ?? assetTransfer?.receiverAddress
     }
     
-    func getCloseAmount() -> Int64? {
+    func getCloseAmount() -> UInt64? {
         return payment?.closeAmount ?? assetTransfer?.closeAmount
     }
     
@@ -166,7 +166,7 @@ extension Transaction {
 
 extension Transaction {
     enum Constant {
-        static let minimumFee: Int64 = 1000
+        static let minimumFee: UInt64 = 1000
     }
 }
 

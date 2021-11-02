@@ -18,18 +18,18 @@
 import Magpie
 
 class TransactionParams: Model {
-    let fee: Int64
-    let minFee: Int64
-    let lastRound: Int64
+    let fee: UInt64
+    let minFee: UInt64
+    let lastRound: UInt64
     let genesisHashData: Data?
     let genesisId: String?
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        fee = try container.decode(Int64.self, forKey: .fee)
-        minFee = try container.decode(Int64.self, forKey: .minFee)
-        lastRound = try container.decode(Int64.self, forKey: .lastRound)
+        fee = try container.decode(UInt64.self, forKey: .fee)
+        minFee = try container.decode(UInt64.self, forKey: .minFee)
+        lastRound = try container.decode(UInt64.self, forKey: .lastRound)
         if let genesisHashBase64String = try container.decodeIfPresent(String.self, forKey: .genesisHash) {
             genesisHashData = Data(base64Encoded: genesisHashBase64String)
         } else {
@@ -47,9 +47,9 @@ class TransactionParams: Model {
         try container.encodeIfPresent(genesisId, forKey: .genesisId)
     }
     
-    func getProjectedTransactionFee(from dataSize: Int? = nil) -> Int64 {
+    func getProjectedTransactionFee(from dataSize: Int? = nil) -> UInt64 {
         if let dataSize = dataSize {
-            return max(Int64(dataSize) * fee, Transaction.Constant.minimumFee)
+            return max(UInt64(dataSize) * fee, Transaction.Constant.minimumFee)
         }
         return max(dataSizeForMaxTransaction * fee, Transaction.Constant.minimumFee)
     }

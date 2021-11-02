@@ -18,9 +18,9 @@
 import Magpie
 
 class WCTransactionDetail: Model {
-    let fee: Int64?
-    let firstValidRound: Int64?
-    let lastValidRound: Int64?
+    let fee: UInt64?
+    let firstValidRound: UInt64?
+    let lastValidRound: UInt64?
     let genesisHashData: Data?
     let genesisId: String?
     let note: Data?
@@ -28,9 +28,9 @@ class WCTransactionDetail: Model {
     private(set) var sender: String?
     let type: Transaction.TransferType?
 
-    private let algosAmount: Int64?
-    private let assetAmount: Int64?
-    var amount: Int64 {
+    private let algosAmount: UInt64?
+    private let assetAmount: UInt64?
+    var amount: UInt64 {
         return assetAmount ?? algosAmount ?? 0
     }
 
@@ -52,12 +52,20 @@ class WCTransactionDetail: Model {
     let appCallArguments: [String]?
     let appCallOnComplete: AppCallOnComplete?
     let appCallId: Int64?
+    let appGlobalSchema: WCTransactionAppSchema?
+    let appLocalSchema: WCTransactionAppSchema?
+    let appExtraPages: Int?
+    let approvalHash: Data?
+    let stateHash: Data?
+    let assetIdBeingConfigured: Int64?
+    let assetConfigParams: WCAssetConfigParameters?
+    let transactionGroupId: String?
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        fee = try container.decodeIfPresent(Int64.self, forKey: .fee)
-        firstValidRound = try container.decodeIfPresent(Int64.self, forKey: .firstValidRound)
-        lastValidRound = try container.decodeIfPresent(Int64.self, forKey: .lastValidRound)
+        fee = try container.decodeIfPresent(UInt64.self, forKey: .fee)
+        firstValidRound = try container.decodeIfPresent(UInt64.self, forKey: .firstValidRound)
+        lastValidRound = try container.decodeIfPresent(UInt64.self, forKey: .lastValidRound)
         if let genesisHashBase64String = try container.decodeIfPresent(String.self, forKey: .genesisHash) {
             genesisHashData = Data(base64Encoded: genesisHashBase64String)
         } else {
@@ -66,35 +74,52 @@ class WCTransactionDetail: Model {
         genesisId = try container.decodeIfPresent(String.self, forKey: .genesisId)
         note = try container.decodeIfPresent(Data.self, forKey: .note)
         type = try container.decodeIfPresent(Transaction.TransferType.self, forKey: .type)
-        assetAmount = try container.decodeIfPresent(Int64.self, forKey: .assetAmount)
-        algosAmount = try container.decodeIfPresent(Int64.self, forKey: .algosAmount)
+        assetAmount = try container.decodeIfPresent(UInt64.self, forKey: .assetAmount)
+        algosAmount = try container.decodeIfPresent(UInt64.self, forKey: .algosAmount)
         assetId = try container.decodeIfPresent(Int64.self, forKey: .assetId)
         appCallArguments = try container.decodeIfPresent([String].self, forKey: .appCallArguments)
         appCallOnComplete = try container.decodeIfPresent(AppCallOnComplete.self, forKey: .appCallOnComplete) ?? .noOp
         appCallId = try container.decodeIfPresent(Int64.self, forKey: .appCallId) ?? 0
+        approvalHash = try container.decodeIfPresent(Data.self, forKey: .approvalHash)
+        stateHash = try container.decodeIfPresent(Data.self, forKey: .stateHash)
+        transactionGroupId = try container.decodeIfPresent(String.self, forKey: .transactionGroupId)
+
+        if type == .applicationCall {
+            let defaultAppSchema = WCTransactionAppSchema()
+            appGlobalSchema = try container.decodeIfPresent(WCTransactionAppSchema.self, forKey: .appGlobalSchema) ?? defaultAppSchema
+            appLocalSchema = try container.decodeIfPresent(WCTransactionAppSchema.self, forKey: .appLocalSchema) ?? defaultAppSchema
+            appExtraPages = try container.decodeIfPresent(Int.self, forKey: .appExtraPages) ?? 0
+        } else {
+            appGlobalSchema = nil
+            appLocalSchema = nil
+            appExtraPages = nil
+        }
+
+        assetIdBeingConfigured = try container.decodeIfPresent(Int64.self, forKey: .assetIdBeingConfigured)
+        assetConfigParams = try container.decodeIfPresent(WCAssetConfigParameters.self, forKey: .assetConfigParams)
 
         if let senderMsgpack = try container.decodeIfPresent(Data.self, forKey: .sender) {
-            sender = parseAddress(from: senderMsgpack)
+            sender = senderMsgpack.getAlgorandAddressFromPublicKey()
         }
 
         if let assetReceiverMsgpack = try container.decodeIfPresent(Data.self, forKey: .assetReceiver) {
-            assetReceiver = parseAddress(from: assetReceiverMsgpack)
-        } else
+            assetReceiver = assetReceiverMsgpack.getAlgorandAddressFromPublicKey()
+        }
 
         if let algosReceiverMsgpack = try container.decodeIfPresent(Data.self, forKey: .algosReceiver) {
-            algosReceiver = parseAddress(from: algosReceiverMsgpack)
+            algosReceiver = algosReceiverMsgpack.getAlgorandAddressFromPublicKey()
         }
 
         if let assetCloseAddressMsgpack = try container.decodeIfPresent(Data.self, forKey: .assetCloseAddress) {
-            assetCloseAddress = parseAddress(from: assetCloseAddressMsgpack)
+            assetCloseAddress = assetCloseAddressMsgpack.getAlgorandAddressFromPublicKey()
         }
 
         if let algosCloseAddressMsgpack = try container.decodeIfPresent(Data.self, forKey: .algosCloseAddress) {
-            algosCloseAddress = parseAddress(from: algosCloseAddressMsgpack)
+            algosCloseAddress = algosCloseAddressMsgpack.getAlgorandAddressFromPublicKey()
         }
 
         if let rekeyAddressMsgpack = try container.decodeIfPresent(Data.self, forKey: .rekeyAddress) {
-            rekeyAddress = parseAddress(from: rekeyAddressMsgpack)
+            rekeyAddress = rekeyAddressMsgpack.getAlgorandAddressFromPublicKey()
         }
     }
 
@@ -119,6 +144,14 @@ class WCTransactionDetail: Model {
         try container.encodeIfPresent(appCallArguments, forKey: .appCallArguments)
         try container.encodeIfPresent(appCallOnComplete, forKey: .appCallOnComplete)
         try container.encodeIfPresent(appCallId, forKey: .appCallId)
+        try container.encodeIfPresent(appGlobalSchema, forKey: .appGlobalSchema)
+        try container.encodeIfPresent(appLocalSchema, forKey: .appLocalSchema)
+        try container.encodeIfPresent(appExtraPages, forKey: .appExtraPages)
+        try container.encodeIfPresent(approvalHash, forKey: .approvalHash)
+        try container.encodeIfPresent(stateHash, forKey: .stateHash)
+        try container.encodeIfPresent(assetIdBeingConfigured, forKey: .assetIdBeingConfigured)
+        try container.encodeIfPresent(assetConfigParams, forKey: .assetConfigParams)
+        try container.encodeIfPresent(transactionGroupId, forKey: .transactionGroupId)
     }
 }
 
@@ -145,6 +178,20 @@ extension WCTransactionDetail {
             return .algos
         }
 
+        if isAssetConfigTransaction {
+            if isAssetCreationTransaction {
+                return .assetConfig(type: .create)
+            }
+
+            if isAssetReconfigurationTransaction {
+                return .assetConfig(type: .reconfig)
+            }
+
+            if isAssetDeletionTransaction {
+                return .assetConfig(type: .delete)
+            }
+        }
+
         return nil
     }
 
@@ -165,14 +212,28 @@ extension WCTransactionDetail {
     }
 
     func isAssetAdditionTransaction() -> Bool {
-        return type == .assetTransfer &&
-            (assetAmount == nil || assetAmount == 0) &&
-            sender == assetReceiver
+        return type == .assetTransfer && amount == 0 && sender == assetReceiver
     }
 
     var isAppCallTransaction: Bool {
         return type == .applicationCall
     }
+
+    var isAssetConfigTransaction: Bool {
+        return type == .assetConfig
+    }
+
+    var isAssetCreationTransaction: Bool {
+        return type == .assetConfig && (assetIdBeingConfigured == 0 || assetIdBeingConfigured == nil)
+     }
+
+    var isAssetReconfigurationTransaction: Bool {
+         return type == .assetConfig && assetConfigParams != nil && assetIdBeingConfigured != 0
+     }
+
+     var isAssetDeletionTransaction: Bool {
+         return type == .assetConfig && assetConfigParams == nil && assetIdBeingConfigured != 0
+     }
 
     var hasRekeyOrCloseAddress: Bool {
         return isRekeyTransaction || isCloseTransaction
@@ -194,21 +255,21 @@ extension WCTransactionDetail {
         return String(data: noteData, encoding: .utf8) ?? noteData.base64EncodedString()
     }
 
-    var isSupportedAppCallTransaction: Bool {
-        guard let appCallOnComplete = appCallOnComplete else {
-            return false
-        }
-
-        return appCallId != 0 && (
-            appCallOnComplete == .noOp ||
-                appCallOnComplete == .optIn ||
-                appCallOnComplete == .close ||
-                appCallOnComplete == .clearState
-        )
+    var isAppCreateTransaction: Bool {
+        return isAppCallTransaction && appCallId == 0
     }
 
     var validationAddresses: [String?] {
-        return [sender, receiver, closeAddress, rekeyAddress]
+        return [
+            sender,
+            receiver,
+            closeAddress,
+            rekeyAddress,
+            assetConfigParams?.managerAddress,
+            assetConfigParams?.reserveAddress,
+            assetConfigParams?.frozenAddress,
+            assetConfigParams?.clawbackAddress
+        ]
     }
 
     var hasHighFee: Bool {
@@ -218,13 +279,9 @@ extension WCTransactionDetail {
 
          return fee > Transaction.Constant.minimumFee
     }
-}
 
-extension WCTransactionDetail {
-    private func parseAddress(from msgpack: Data) -> String? {
-        var error: NSError?
-        let addressString = AlgorandSDK().addressFromPublicKey(msgpack, error: &error)
-        return error == nil ? addressString : nil
+    var currentAssetId: Int64? {
+        return assetId ?? assetIdBeingConfigured
     }
 }
 
@@ -248,9 +305,9 @@ extension WCTransactionDetail {
             case .clearState:
                 return "ClearState"
             case .update:
-                return "UpdateApplication"
+                return "Update"
             case .delete:
-                return "DeleteApplication"
+                return "Delete"
             }
         }
     }
@@ -277,6 +334,14 @@ extension WCTransactionDetail {
         case appCallArguments = "apaa"
         case appCallOnComplete = "apan"
         case appCallId = "apid"
+        case appGlobalSchema = "apgs"
+        case appLocalSchema = "apls"
+        case appExtraPages = "apep"
+        case approvalHash = "apap"
+        case stateHash = "apsu"
+        case assetIdBeingConfigured = "caid"
+        case assetConfigParams = "apar"
+        case transactionGroupId = "grp"
     }
 }
 
@@ -289,5 +354,28 @@ extension WCTransactionDetail: Equatable {
             lhs.amount == rhs.amount &&
             lhs.genesisHashData == rhs.genesisHashData &&
             lhs.type == rhs.type
+    }
+}
+
+class WCTransactionAppSchema: Model {
+    let numberOfBytes: Int?
+    let numberofInts: Int?
+
+    init() {
+        numberOfBytes = 0
+        numberofInts = 0
+    }
+
+    var representation: String {
+        let numberOfBytes = numberOfBytes ?? 0
+        let numberOfInts = numberofInts ?? 0
+        return "\(numberOfBytes) Bytes / \(numberOfInts) Uint"
+    }
+}
+
+extension WCTransactionAppSchema {
+    private enum CodingKeys: String, CodingKey {
+        case numberOfBytes = "nbs"
+        case numberofInts = "nui"
     }
 }

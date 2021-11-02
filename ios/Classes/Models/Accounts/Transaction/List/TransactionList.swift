@@ -18,7 +18,7 @@
 import Magpie
 
 class TransactionList: Model {
-    let currentRound: Int64
+    let currentRound: UInt64
     let nextToken: String?
     let transactions: [Transaction]
 }

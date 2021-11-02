@@ -42,11 +42,22 @@ extension NavigationController {
     
     private func configureNavigationBarAppearance() {
         navigationBar.isTranslucent = false
-        navigationBar.barTintColor = Colors.Background.primary
-        navigationBar.tintColor = Colors.Background.primary
-        navigationBar.shadowImage = UIImage()
+
+        if #available(iOS 13.0, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithDefaultBackground()
+            appearance.backgroundColor = Colors.Background.primary
+            appearance.shadowColor = .clear
+            navigationBar.standardAppearance = appearance
+            navigationBar.scrollEdgeAppearance = navigationBar.standardAppearance
+        } else {
+            navigationBar.barTintColor = Colors.Background.primary
+            navigationBar.tintColor = Colors.Background.primary
+            navigationBar.shadowImage = UIImage()
+            navigationBar.setBackgroundImage(UIImage(), for: .default)
+        }
+
         navigationBar.layoutMargins = .zero
-        navigationBar.setBackgroundImage(UIImage(), for: .default)
     }
     
     private func configureViewAppearance() {

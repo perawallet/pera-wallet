@@ -66,7 +66,7 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         return .none
     }
     
-    var amount: Double = 0.00
+    var amount: Decimal = 0.00
     var selectedAccount: Account?
     var assetReceiverState: AssetReceiverState
     private var initialQRText: QRText?

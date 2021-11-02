@@ -20,14 +20,16 @@ import Foundation
 class WCGroupTransactionAccountInformationViewModel {
     private(set) var accountNameViewModel: AccountNameViewModel?
     private(set) var isAlgos = true
+    private(set) var isDisplayingDotSeparator = true
     private(set) var balance: String?
     private(set) var assetName: String?
 
-    init(account: Account?, assetDetail: AssetDetail?) {
+    init(account: Account?, assetDetail: AssetDetail?, isDisplayingAmount: Bool) {
         setAccountNameViewModel(from: account)
-        setIsAlgos(from: assetDetail)
-        setBalance(from: account, and: assetDetail)
-        setAssetName(from: assetDetail)
+        setIsAlgos(from: assetDetail, and: isDisplayingAmount)
+        setIsDisplayingDotSeparator(from: isDisplayingAmount)
+        setBalance(from: account, and: assetDetail, with: isDisplayingAmount)
+        setAssetName(from: assetDetail, and: isDisplayingAmount)
     }
 
     private func setAccountNameViewModel(from account: Account?) {
@@ -38,11 +40,24 @@ class WCGroupTransactionAccountInformationViewModel {
         accountNameViewModel = AccountNameViewModel(account: account)
     }
 
-    private func setIsAlgos(from assetDetail: AssetDetail?) {
+    private func setIsAlgos(from assetDetail: AssetDetail?, and isDisplayingAmount: Bool) {
+        if !isDisplayingAmount {
+            isAlgos = false
+            return
+        }
+
         isAlgos = assetDetail == nil
     }
 
-    private func setBalance(from account: Account?, and assetDetail: AssetDetail?) {
+    private func setIsDisplayingDotSeparator(from isDisplayingAmount: Bool) {
+        isDisplayingDotSeparator = isDisplayingAmount
+    }
+
+    private func setBalance(from account: Account?, and assetDetail: AssetDetail?, with isDisplayingAmount: Bool) {
+        if !isDisplayingAmount {
+            return
+        }
+
         guard let account = account else {
             return
         }
@@ -55,7 +70,11 @@ class WCGroupTransactionAccountInformationViewModel {
         balance = account.amount.toAlgos.toAlgosStringForLabel
     }
 
-    private func setAssetName(from assetDetail: AssetDetail?) {
+    private func setAssetName(from assetDetail: AssetDetail?, and isDisplayingAmount: Bool) {
+        if !isDisplayingAmount {
+            return
+        }
+
         if let assetDetail = assetDetail {
             assetName = assetDetail.getDisplayNames().1
         }

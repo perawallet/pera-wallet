@@ -99,7 +99,7 @@ extension LedgerAccountFetchOperation {
 
 extension LedgerAccountFetchOperation {
     private func fetchAccount(_ address: String) {
-        api.fetchAccount(with: AccountFetchDraft(publicKey: address)) { response in
+        api.fetchAccount(with: AccountFetchDraft(publicKey: address), includesClosedAccounts: true) { response in
             switch response {
             case .success(let accountWrapper):
                 if accountWrapper.account.isCreated {

@@ -236,7 +236,7 @@ extension AssetCardDisplayViewController {
 }
 
 extension AssetCardDisplayViewController: RewardCalculatorDelegate {
-    func rewardCalculator(_ rewardCalculator: RewardCalculator, didCalculate rewards: Double) {
+    func rewardCalculator(_ rewardCalculator: RewardCalculator, didCalculate rewards: Decimal) {
         guard let algosCardCell = assetCardDisplayView.item(at: 0) as? AlgosCardCell else {
             return
         }

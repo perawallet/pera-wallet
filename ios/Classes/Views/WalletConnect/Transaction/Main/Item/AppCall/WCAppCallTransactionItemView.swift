@@ -48,22 +48,12 @@ class WCAppCallTransactionItemView: BaseView {
     }
 
     override func prepareLayout() {
-        setupArrowImageViewLayout()
         setupSenderStackViewLayout()
+        setupArrowImageViewLayout()
     }
 }
 
 extension WCAppCallTransactionItemView {
-    private func setupArrowImageViewLayout() {
-        addSubview(arrowImageView)
-
-        arrowImageView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.centerY.equalToSuperview()
-            make.size.equalTo(layout.current.arrowImageSize)
-        }
-    }
-
     private func setupSenderStackViewLayout() {
         addSubview(senderStackView)
 
@@ -75,6 +65,16 @@ extension WCAppCallTransactionItemView {
 
         senderStackView.addArrangedSubview(warningImageView)
         senderStackView.addArrangedSubview(titleLabel)
+    }
+
+    private func setupArrowImageViewLayout() {
+        addSubview(arrowImageView)
+
+        arrowImageView.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.centerY.equalTo(senderStackView)
+            make.size.equalTo(layout.current.arrowImageSize)
+        }
     }
 }
 

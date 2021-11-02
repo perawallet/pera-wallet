@@ -24,11 +24,11 @@ class RewardCalculator {
     private let api: AlgorandAPI
     private var account: Account
 
-    private var totalSupply: Int64?
-    private var rewardRate: Int64?
-    private var rewardResidue: Int64?
+    private var totalSupply: UInt64?
+    private var rewardRate: UInt64?
+    private var rewardResidue: UInt64?
 
-    private var currentRound: Int64
+    private var currentRound: UInt64
 
     private let rewardsDispatchGroup = DispatchGroup()
 
@@ -109,22 +109,22 @@ extension RewardCalculator {
     }
 
     private func updatePendingRewards() {
-        delegate?.rewardCalculator(self, didCalculate: getPendingRewards() / Double(algosInMicroAlgos))
+        delegate?.rewardCalculator(self, didCalculate: getPendingRewards() / Decimal(algosInMicroAlgos))
     }
 
-    private func getPendingRewards() -> Double {
+    private func getPendingRewards() -> Decimal {
         guard let rewardResidue = rewardResidue,
               let rewardRate = rewardRate,
               let totalSupply = totalSupply else {
             return 0
         }
 
-        return account.amountWithoutRewards.toAlgos * (Double(rewardResidue + rewardRate)) / totalSupply.toAlgos
+        return account.amountWithoutRewards.toAlgos * (Decimal(rewardResidue + rewardRate)) / totalSupply.toAlgos
     }
 }
 
 extension RewardCalculator: AccountManagerDelegate {
-    func accountManager(_ accountManager: AccountManager, didWaitForNext round: Int64?) {
+    func accountManager(_ accountManager: AccountManager, didWaitForNext round: UInt64?) {
         guard let currentRound = round else {
             return
         }
@@ -136,5 +136,5 @@ extension RewardCalculator: AccountManagerDelegate {
 }
 
 protocol RewardCalculatorDelegate: AnyObject {
-    func rewardCalculator(_ rewardCalculator: RewardCalculator, didCalculate rewards: Double)
+    func rewardCalculator(_ rewardCalculator: RewardCalculator, didCalculate rewards: Decimal)
 }

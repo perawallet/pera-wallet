@@ -114,6 +114,7 @@ enum AlgorandWeb: String {
     case ledgerSupport = "https://algorandwallet.com/support/security/pairing-your-ledger-nano-x"
     case transactionSupport = "https://algorandwallet.com/support/transacting"
     case rewardsFAQ = "https://algorand.foundation/faq#participation-rewards"
+    case governence = "https://governance.algorand.foundation/"
 }
 
 extension AlgorandWeb {

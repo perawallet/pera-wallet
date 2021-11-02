@@ -107,6 +107,7 @@ extension WCGroupTransactionAccountInformationView {
         }
 
         algosIcon.isHidden = !viewModel.isAlgos
+        dotImage.isHidden = !viewModel.isDisplayingDotSeparator
         balanceLabel.text = viewModel.balance
         assetNameLabel.isHidden = viewModel.isAlgos
         assetNameLabel.text = viewModel.assetName

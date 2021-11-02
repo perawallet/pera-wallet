@@ -357,7 +357,7 @@ extension TransactionController: TransactionSignerDelegate {
 }
 
 extension TransactionController: TransactionFeeCalculatorDelegate {
-    func transactionFeeCalculator(_ transactionFeeCalculator: TransactionFeeCalculator, didFailedWith minimumAmount: Int64) {
+    func transactionFeeCalculator(_ transactionFeeCalculator: TransactionFeeCalculator, didFailedWith minimumAmount: UInt64) {
         handleTransactionComposingError(.inapp(TransactionError.minimumAmount(amount: minimumAmount)))
     }
 }
@@ -394,7 +394,7 @@ extension TransactionController {
 }
 
 enum TransactionError: Error {
-    case minimumAmount(amount: Int64)
+    case minimumAmount(amount: UInt64)
     case invalidAddress(address: String)
     case sdkError(error: NSError?)
     case draft(draft: TransactionSendDraft?)

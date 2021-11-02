@@ -42,6 +42,8 @@
 "title-decline" = "Decline";
 "title-decline-all" = "Decline All";
 "title-got-it" = "Got it!";
+"title-off" = "Off";
+"title-on" = "On";
 
 // MARK: Account Type Selection
 "account-type-choose-title" = "Choose Account Type";
@@ -577,9 +579,7 @@
 "tutorial-action-title-passcode" = "Not now";
 
 "maximum-balance-warning-description" = "Sending your maximum balance on this rekeyed account requires you to maintain a minimum balance of %@ Algos. This is to ensure that nothing changes with your rekeyed account.\n\n\nYour transaction amount will be automatically updated to reflect this change. You will be able to preview the transaction in the next step.";
-"maximum-balance-standard-account-warning-description" = "Because you have %@ other Assets in this account %@, the Algorand Blockchain requires you to maintain a minimum balance of %@ Algos.\n\n\nBy hitting continue, your transaction amount will be automatically updated to reflect this change. You'll be able to preview this change in the next step.";
-"maximum-balance-standard-account-warning-description-singular" = "Because you have %@ other Asset in this account %@, the Algorand Blockchain requires you to maintain a minimum balance of %@ Algos.\n\n\nBy hitting continue, your transaction amount will be automatically updated to reflect this change. You'll be able to preview this change in the next step.";
-
+"maximum-balance-standard-account-warning-description" = "Based on your account configuration, your minimum balance is %@.\n\n\nBy hitting continue, your transaction amount will be updated to maintain the Algorand Blockchain’s minimum required balance. You’ll be able to preview this change in the next step.";
 "transaction-tutorial-title" = "Transacting Tips";
 "transaction-tutorial-subtitle" = "We notice that this is your first transaction. Before you finalize, keep in mind a couple of tips:";
 "transaction-tutorial-subtitle-other" = "Before you finalize your transaction, keep in mind a couple of tips:";
@@ -648,7 +648,7 @@
 "wallet-connect-transaction-warning-rekey-title" = "Rekey To";
 "wallet-connect-transaction-warning-close-asset-title" = "Close Asset To";
 "wallet-connect-transaction-warning-close-algos-title" = "Close Remainder To";
-"wallet-connect-transaction-warning-high-fee" = "This transaction fee is higher than the usual fee of 0.01 Algos.";
+"wallet-connect-transaction-warning-high-fee" = "This transaction fee is higher than the usual fee of 0.001 Algos.";
 "wallet-connect-transaction-warning-initial" = "The following transaction requests are from external applications that the Algorand Wallet does not control. Please ensure you review these transactions carefully before signing as transactions are irreversible.";
 "wallet-connect-transaction-warning-future" = "This transaction will be submitted in the future. ";
 "wallet-connect-transaction-warning-confirmation" = "Once confirmed, the connected application can send these transactions out at their discretion. Please make sure you review the transactions carefully as this process is irreversible.";
@@ -668,14 +668,21 @@
 "wallet-connect-transaction-all-count-singular" = "All transaction (1)";
 "wallet-connect-transaction-request-count" = "Transaction Requests (%d)";
 "wallet-connect-transaction-request-count-singular" = "Transaction Request (1)";
-"wallet-connect-transaction-count" = "%d transactions";
-"wallet-connect-transaction-count-singular" = "1 transaction";
+"wallet-connect-transaction-count" = "%d Txns  ·  Group ID: %@";
+"wallet-connect-transaction-count-singular" = "1 Txn  ·  Group ID: %@";
+"wallet-connect-transaction-group-id" = "Group ID";
 "wallet-connect-transaction-title-raw" = "Raw Txns";
 "wallet-connect-transaction-detail-raw" = "Show Raw Transaction";
 "wallet-connect-transaction-title-explorer" = "AlgoExplorer";
 "wallet-connect-transaction-detail-explorer" = "Show Explorer";
 "wallet-connect-transaction-title-auth-address" = "Auth Address";
 "wallet-connect-transaction-title-app-call-on-complete" = "OnComplete";
+"wallet-connect-transaction-title-app-call-global-schema" = "App Global Schema";
+"wallet-connect-transaction-title-app-call-local-schema" = "App Local Schema";
+"wallet-connect-transaction-title-app-call-extra-pages" = "App Extra Pages";
+"wallet-connect-transaction-title-app-call-approval-hash" = "Approval Hash";
+"wallet-connect-transaction-title-app-call-clear-hash" = "Clear State Hash";
+"wallet-connect-transaction-title-app-creation" = "App Creation";
 "wallet-connect-transaction-title-app-id" = "Application ID";
 "wallet-connect-transaction-title-asset-url" = "Asset URL";
 "wallet-connect-transaction-detail-asset-url" = "Show Asset URL";
@@ -686,6 +693,21 @@
 "wallet-connect-transaction-error-unsupported" = "The wallet does not support the requested operation.";
 "wallet-connect-transaction-error-invalid" = "The input provided is invalid.";
 "wallet-connect-raw-transaction-title" = "Raw Transaction";
+"wallet-connect-transaction-error-rejected-user" = "Transaction Request Rejected: The User has rejected the transaction request.";
+"wallet-connect-transaction-error-group-validation" = "Transaction Request Rejected: The transaction group has failed validation by the Algorand SDK.";
+"wallet-connect-transaction-error-already-displayed" = "Transaction Request Rejected: The User currently has another transaction request that is in progress.";
+"wallet-connect-transaction-error-group-unauthorized-user" = "The requested operation and/or account has not been authorized by the user.";
+"wallet-connect-transaction-error-transaction-size" = "Invalid Input: Transaction request contains more than 16 transactions";
+"wallet-connect-transaction-error-invalid-signer" = "Signing Error: A transaction in the transaction request requires a private key (signer) that does not exist in the connected Wallet.";
+"wallet-connect-transaction-error-node" = "Signing Error: Network mismatch between dApp and Wallet. For example, Wallet is connected to TestNet and dApp connected to MainNet (or vice versa).";
+"wallet-connect-transaction-error-group" = "Invalid Input: Group transaction does not need to be signed by Wallet user.";
+"wallet-connect-transaction-error-account-not-exist" = "Invalid Input: The requested signer is not in the User Wallet";
+"wallet-connect-transaction-error-unsupported-type" = "The transaction request contains an Unsupported Transaction Type";
+"wallet-connect-transaction-error-parse" = "Invalid Input: Unable to parse transaction";
+"wallet-connect-transaction-error-invalid-key" = "Invalid Input: Invalid Public Key";
+"wallet-connect-transaction-error-invalid-asset" = "Invalid Input: Invalid Asset";
+"wallet-connect-transaction-error-multisig" = "The transaction request contains an Unsupported Transaction Type: Multi-sig";
+"wallet-connect-transaction-error-unable-sign" = "Invalid Input: Unable to be signed";
 
 "wallet-connect-transaction-group-algos-title" = "Payment to %@";
 "wallet-connect-transaction-group-asset-title" = "Asset Transfer to %@";
@@ -694,3 +716,22 @@
 "wallet-connect-transaction-group-app-call-title" = "Application Call to #%@";
 "wallet-connect-transaction-group-app-opt-in-title" = "Application Opt in to #%@";
 "wallet-connect-transaction-group-app-close-title" = "Application Close to #%@";
+"wallet-connect-transaction-group-app-update-title" = "Application Update to #%@";
+"wallet-connect-transaction-group-app-delete-title" = "Application Delete to #%@";
+
+"wallet-connect-asset-creation-title" = "Asset Creation Request";
+"wallet-connect-asset-name-title" = "Asset Name";
+"wallet-connect-asset-unit-title" = "Unit Name";
+"wallet-connect-asset-decimals-title" = "Decimal Places";
+"wallet-connect-asset-frozen-title" = "Default Frozen";
+"wallet-connect-asset-manager-title" = "Manager Account";
+"wallet-connect-asset-reserve-title" = "Reserve Account";
+"wallet-connect-asset-freeze-title" = "Freeze Account";
+"wallet-connect-asset-clawback-title" = "Clawback Account";
+"wallet-connect-asset-reconfiguration-title" = "Asset Reconfiguration Request";
+"wallet-connect-asset-deletion-title" = "Asset Deletion Request";
+"wallet-connect-asset-deletion-warning-title" = "This asset will be deleted.";
+
+"governance-banner-title" = "Algorand Governance Program is starting!";
+"governance-banner-detail" = "Become a governor. Vote on Algorand’s future. Earn rewards.";
+"governance-banner-action" = "Get Started";

@@ -115,6 +115,9 @@ indirect enum Screen {
     case wcAssetAdditionTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
     case wcGroupTransaction(transactions: [WCTransaction], transactionRequest: WalletConnectRequest)
     case wcAppCall(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
+    case wcAssetCreationTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
+    case wcAssetReconfigurationTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
+    case wcAssetDeletionTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
     case jsonDisplay(jsonData: Data, title: String)
 }
 

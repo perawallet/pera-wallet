@@ -59,7 +59,8 @@ extension WCAssetAdditionTransactionViewController {
             WCAssetAdditionTransactionViewModel(
                 transaction: transaction,
                 senderAccount: account,
-                assetDetail: assetDetail)
+                assetDetail: assetDetail
+            )
         )
     }
 }

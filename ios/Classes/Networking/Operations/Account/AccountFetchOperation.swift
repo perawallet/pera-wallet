@@ -42,7 +42,7 @@ class AccountFetchOperation: AsyncOperation {
             switch response {
             case .success(let accountWrapper):
                 accountWrapper.account.assets = accountWrapper.account.nonDeletedAssets()
-                if accountWrapper.account.isThereAnyDifferentAsset() {
+                if accountWrapper.account.isThereAnyDifferentAsset {
                     self.fetchAssets(for: accountWrapper.account)
                 } else {
                     self.onCompleted?(accountWrapper.account, nil)

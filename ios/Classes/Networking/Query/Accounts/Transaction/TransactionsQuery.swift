@@ -47,3 +47,17 @@ struct TransactionsQuery: ObjectQuery {
         return params
     }
 }
+
+struct AccountQuery: ObjectQuery {
+    let includesAll: Bool
+
+    var queryParams: [QueryParam] {
+        var params: [QueryParam] = []
+
+        if includesAll {
+            params.append(.init(.includesAll, includesAll))
+        }
+
+        return params
+    }
+}

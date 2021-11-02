@@ -19,7 +19,7 @@ import Magpie
 
 class RekeyedAccountsResponse: Model {
     let accounts: [Account]
-    let currentRound: Int64
+    let currentRound: UInt64
     let nextToken: String?
 }
 

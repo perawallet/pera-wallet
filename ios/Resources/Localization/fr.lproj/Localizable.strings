@@ -389,6 +389,15 @@
 "feedback-title-note" = "Note";
 
 /* (No Comment) */
+"governance-banner-action" = "Commencer";
+
+/* (No Comment) */
+"governance-banner-detail" = "Devenez gouverneur. Votez sur l'avenir d'Algorand. Gagner des récompenses.";
+
+/* (No Comment) */
+"governance-banner-title" = "Le programme de gouvernance Algorand commence !";
+
+/* (No Comment) */
 "internet-connection-error-detail" = "Nous n'avons pas pu atteindre le serveur, assurez-vous que vous êtes connecté à Internet";
 
 /* (No Comment) */
@@ -617,10 +626,7 @@
 "login-title" = "Déverrouiller";
 
 /* (No Comment) */
-"maximum-balance-standard-account-warning-description" = "Parce que vous avez %@ autres actifs dans ce compte %@ , la chaîne de blocs Algorand vous oblige à maintenir un solde minimum de %@ ALGO. \n\n\nEn appuyant sur Continuer, le montant de votre transaction sera automatiquement mis à jour pour refléter ce changement. Vous pourrez prévisualiser ce changement à l'étape suivante.";
-
-/* (No Comment) */
-"maximum-balance-standard-account-warning-description-singular" = "Parce que vous avez %@ autres actifs dans ce compte %@ , la blockchain Algorand vous oblige à maintenir un solde minimum de %@ ALGO. \n\n\nEn appuyant sur Continuer, le montant de votre transaction sera automatiquement mis à jour pour refléter ce changement. Vous pourrez prévisualiser ce changement à l'étape suivante.";
+"maximum-balance-standard-account-warning-description" = "Parce que vous avez autres actifs dans ce compte, la chaîne de blocs Algorand vous oblige à maintenir un solde minimum de %@ ALGO. \n\n\nEn appuyant sur Continuer, le montant de votre transaction sera automatiquement mis à jour pour refléter ce changement. Vous pourrez prévisualiser ce changement à l'étape suivante.";
 
 /* (No Comment) */
 "maximum-balance-warning-description" = "L'envoi de votre solde maximum sur ce compte renouvelé vous oblige à maintenir un solde minimum de %@ ALGO. Cela permet de garantir que rien ne change avec votre compte renouvelé. \n\n\nLe montant de votre transaction sera automatiquement mis à jour pour refléter ce changement. Vous pourrez prévisualiser la transaction à l'étape suivante.";
@@ -855,9 +861,6 @@
 
 /* (No Comment) */
 "pin-limit-try-again" = "Réessayez dans";
-
-/* No comment provided by engineer. */
-"primaryText" = "primaryText";
 
 /* (No Comment) */
 "privacy-policy-title" = "Politique de confidentialité";
@@ -1286,7 +1289,13 @@
 "title-no" = "NON";
 
 /* (No Comment) */
+"title-off" = "Désactivé";
+
+/* (No Comment) */
 "title-ok" = "OK";
+
+/* (No Comment) */
+"title-on" = "Activé";
 
 /* (No Comment) */
 "title-paste-passphrase" = "Coller la phrase de passe complète";
@@ -1565,6 +1574,42 @@
 "verified-assets-title" = "Actifs vérifiés";
 
 /* (No Comment) */
+"wallet-connect-asset-clawback-title" = "Compte de récupération";
+
+/* (No Comment) */
+"wallet-connect-asset-creation-title" = "Demande de création d'actif";
+
+/* (No Comment) */
+"wallet-connect-asset-decimals-title" = "Décimales";
+
+/* (No Comment) */
+"wallet-connect-asset-deletion-title" = "Demande de suppression d'actif";
+
+/* (No Comment) */
+"wallet-connect-asset-deletion-warning-title" = "Cet actif sera supprimé.";
+
+/* (No Comment) */
+"wallet-connect-asset-freeze-title" = "Geler le compte";
+
+/* (No Comment) */
+"wallet-connect-asset-frozen-title" = "Gelé par défaut";
+
+/* (No Comment) */
+"wallet-connect-asset-manager-title" = "Compte administrateur";
+
+/* (No Comment) */
+"wallet-connect-asset-name-title" = "Nom de l'actif";
+
+/* (No Comment) */
+"wallet-connect-asset-reconfiguration-title" = "Demande de reconfiguration des actifs";
+
+/* (No Comment) */
+"wallet-connect-asset-reserve-title" = "Compte de réserve";
+
+/* (No Comment) */
+"wallet-connect-asset-unit-title" = "Nom de l'unité";
+
+/* (No Comment) */
 "wallet-connect-raw-transaction-title" = "Transaction Brute";
 
 /* (No Comment) */
@@ -1622,16 +1667,61 @@
 "wallet-connect-transaction-detail-raw" = "Afficher la transaction brute";
 
 /* (No Comment) */
+"wallet-connect-transaction-error-account-not-exist" = "Entrée non valide : le signataire demandé n'est pas dans le portefeuille utilisateur";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-already-displayed" = "Demande de transaction rejetée : l'utilisateur a actuellement une autre demande de transaction en cours.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group" = "Entrée non valide : la transaction de groupe n'a pas besoin d'être signée par l'utilisateur du portefeuille.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group-unauthorized-user" = "L'opération et/ou le compte demandé n'a pas été autorisé par l'utilisateur.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group-validation" = "Demande de transaction rejetée : le groupe de transactions n'a pas été validé par le SDK d'Algorand.";
+
+/* (No Comment) */
 "wallet-connect-transaction-error-invalid" = "L'entrée fournie est invalide.";
 
 /* (No Comment) */
+"wallet-connect-transaction-error-invalid-asset" = "Entrée non valide : actif non valide";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-invalid-key" = "Entrée non valide : clé publique non valide";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-invalid-signer" = "Erreur de signature : une transaction dans la demande de transaction nécessite une clé privée (signataire) qui n'existe pas dans le portefeuille connecté.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-multisig" = "La demande de transaction contient un type de transaction non pris en charge : Multi-sig";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-node" = "Erreur de signature : discordance de réseau entre dApp et le Wallet. Par exemple, le Wallet est connecté à TestNet et dApp connecté à MainNet (ou vice versa).";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-parse" = "Entrée non valide : impossible d'analyser la transaction";
+
+/* (No Comment) */
 "wallet-connect-transaction-error-rejected" = "L'utilisateur a rejeté la demande.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-rejected-user" = "Demande de transaction rejetée : l'utilisateur a rejeté la demande de transaction.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-transaction-size" = "Entrée non valide : la demande de transaction contient plus de 16 transactions";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unable-sign" = "Entrée invalide : Impossible à signer";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-unauthorized" = "L'opération et/ou le compte demandé n'a pas été autorisé par l'utilisateur.";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-unsupported" = "Le portefeuille ne prend pas en charge l'opération demandée.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unsupported-type" = "La demande de transaction contient un type de transaction non pris en charge";
 
 /* (No Comment) */
 "wallet-connect-transaction-group-algos-title" = "Paiement à %@";
@@ -1643,7 +1733,13 @@
 "wallet-connect-transaction-group-app-close-title" = "Clôture Application pour  %@";
 
 /* (No Comment) */
+"wallet-connect-transaction-group-app-delete-title" = "Suppression de l'application pour #%@";
+
+/* (No Comment) */
 "wallet-connect-transaction-group-app-opt-in-title" = "Inscription à l'application %@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-app-update-title" = "Mise à jour de l'application vers # %@";
 
 /* (No Comment) */
 "wallet-connect-transaction-group-asset-addition-title" = "Activer l'actif %@";
@@ -1662,6 +1758,27 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-title-app-call" = "Demande d'appel de l'application";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-approval-hash" = "Hachage d'approbation";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-clear-hash" = "Effacer le hachage d'état";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-extra-pages" = "Pages supplémentaires de l'application";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-global-schema" = "Schéma global de l'application";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-local-schema" = "Schéma local de l'application";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-on-complete" = "OnComplete";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-creation" = "Création de l'application";
 
 /* (No Comment) */
 "wallet-connect-transaction-title-app-id" = "ID d'application";

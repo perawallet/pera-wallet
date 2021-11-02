@@ -18,5 +18,5 @@
 import Foundation
 
 struct WaitRoundDraft {
-    let round: Int64
+    let round: UInt64
 }

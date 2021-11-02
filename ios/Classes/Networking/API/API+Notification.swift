@@ -41,7 +41,7 @@ extension AlgorandAPI {
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(mobileApiBase)
-            .path("/api/devices/\(draft.id)")
+            .path("/api/devices/\(draft.id)/")
             .method(.put)
             .headers(mobileApiHeaders())
             .body(draft)

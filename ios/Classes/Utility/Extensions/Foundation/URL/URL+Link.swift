@@ -44,7 +44,7 @@ extension URL {
             return QRText(
                 mode: .assetRequest,
                 address: address,
-                amount: Int64(amount),
+                amount: UInt64(amount),
                 asset: Int64(asset),
                 note: queryParameters[QRText.CodingKeys.note.rawValue],
                 lockedNote: queryParameters[QRText.CodingKeys.lockedNote.rawValue]
@@ -55,7 +55,7 @@ extension URL {
             return QRText(
                 mode: .algosRequest,
                 address: address,
-                amount: Int64(amount),
+                amount: UInt64(amount),
                 note: queryParameters[QRText.CodingKeys.note.rawValue],
                 lockedNote: queryParameters[QRText.CodingKeys.lockedNote.rawValue]
             )

@@ -18,8 +18,8 @@
 import Magpie
 
 class RoundDetail: Model {
-    let lastRound: Int64
-    let nextVersionRound: Int64
+    let lastRound: UInt64
+    let nextVersionRound: UInt64
 }
 
 extension RoundDetail {

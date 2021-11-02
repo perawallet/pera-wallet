@@ -35,6 +35,8 @@ class WCTransactionWarningViewModel {
             title = "wallet-connect-transaction-warning-close-asset".localized(params: assetDisplayName, assetDisplayName)
         case .fee:
             title = "wallet-connect-transaction-warning-high-fee".localized
+        case .assetDelete:
+            title = "wallet-connect-asset-deletion-warning-title".localized
         }
     }
 }
@@ -44,4 +46,5 @@ enum WCTransactionWarning {
     case closeAlgos
     case closeAsset(asset: AssetDetail)
     case fee
+    case assetDelete
 }

@@ -18,6 +18,6 @@
 import Foundation
 
 struct Reward: TransactionItem {
-    let amount: Int64
+    let amount: UInt64
     let date: Date?
 }

@@ -58,8 +58,8 @@ class TitledTransactionAmountInformationViewModel {
 
 extension TitledTransactionAmountInformationViewModel {
     enum AmountMode {
-        case fee(value: Int64)
-        case balance(value: Int64, isAlgos: Bool = true, fraction: Int? = nil)
-        case amount(value: Int64, isAlgos: Bool = true, fraction: Int? = nil)
+        case fee(value: UInt64)
+        case balance(value: UInt64, isAlgos: Bool = true, fraction: Int? = nil)
+        case amount(value: UInt64, isAlgos: Bool = true, fraction: Int? = nil)
     }
 }

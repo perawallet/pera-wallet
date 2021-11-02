@@ -36,11 +36,11 @@ class AlgosCardViewModel {
     private func setCurrency(from account: Account, and currency: Currency?) {
         guard let currentCurrency = currency,
               let price = currentCurrency.price,
-              let priceDoubleValue = Double(price) else {
+              let priceDecimalValue = Decimal(string: price) else {
             return
         }
         
-        let currencyAmountForAccount = account.amount.toAlgos * priceDoubleValue
+        let currencyAmountForAccount = account.amount.toAlgos * priceDecimalValue
         
         if let currencyValue = currencyAmountForAccount.toCurrencyStringForLabel {
             self.currency = currencyValue + " " + currentCurrency.id

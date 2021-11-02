@@ -31,8 +31,20 @@ class WCMultipleTransactionItemViewModel {
     }
 
     private func setDetail(from transactions: [WCTransaction]) {
+        guard let groupId = transactions.first?.transactionDetail?.transactionGroupId else {
+            return
+        }
+
+        let id = getShortIDDisplay(from: groupId)
+
         detail = transactions.count == 1 ?
-            "wallet-connect-transaction-count-singular".localized :
-            "wallet-connect-transaction-count".localized(params: transactions.count)
+            "wallet-connect-transaction-count-singular".localized(params: id) :
+            "wallet-connect-transaction-count".localized(params: transactions.count, id)
+    }
+}
+
+extension WCMultipleTransactionItemViewModel {
+    private func getShortIDDisplay(from id: String) -> String {
+        return String(id.prefix(4)) + "..." + String(id.suffix(4))
     }
 }

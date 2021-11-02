@@ -32,7 +32,7 @@ class AlgoUSDAnalyticsFooterViewModel {
 
     private func setValue(from account: Account, and currency: Currency) {
         guard let currencyPrice = currency.price,
-              let currencyPriceDoubleValue = Double(currencyPrice) else {
+              let currencyPriceDoubleValue = Decimal(string: currencyPrice) else {
             return
         }
 

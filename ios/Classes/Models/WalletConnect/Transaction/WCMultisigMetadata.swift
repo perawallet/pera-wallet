@@ -19,7 +19,7 @@ import Magpie
 
 class WCMultisigMetadata: Model {
     let version: Int?
-    let threshold: Int64?
+    let threshold: UInt64?
     let address: String?
 }
 

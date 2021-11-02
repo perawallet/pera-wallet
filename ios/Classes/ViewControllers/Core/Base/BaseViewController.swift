@@ -188,18 +188,45 @@ class BaseViewController: UIViewController, TabBarConfigurable, AnalyticsScreen 
 
 extension BaseViewController {
     func setPrimaryBackgroundColor() {
-        navigationController?.navigationBar.barTintColor = Colors.Background.primary
-        navigationController?.navigationBar.tintColor = Colors.Background.primary
+        if #available(iOS 13.0, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = Colors.Background.primary
+            appearance.shadowColor = .clear
+            navigationController?.navigationBar.standardAppearance = appearance
+            navigationController?.navigationBar.scrollEdgeAppearance = navigationController?.navigationBar.standardAppearance
+        } else {
+            navigationController?.navigationBar.barTintColor = Colors.Background.primary
+            navigationController?.navigationBar.tintColor = Colors.Background.primary
+        }
     }
     
     func setSecondaryBackgroundColor() {
-        navigationController?.navigationBar.barTintColor = Colors.Background.secondary
-        navigationController?.navigationBar.tintColor = Colors.Background.secondary
+        if #available(iOS 13.0, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = Colors.Background.secondary
+            appearance.shadowColor = .clear
+            navigationController?.navigationBar.standardAppearance = appearance
+            navigationController?.navigationBar.scrollEdgeAppearance = navigationController?.navigationBar.standardAppearance
+        } else {
+            navigationController?.navigationBar.barTintColor = Colors.Background.secondary
+            navigationController?.navigationBar.tintColor = Colors.Background.secondary
+        }
     }
     
     func setTertiaryBackgroundColor() {
-        navigationController?.navigationBar.barTintColor = Colors.Background.tertiary
-        navigationController?.navigationBar.tintColor = Colors.Background.tertiary
+        if #available(iOS 13.0, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = Colors.Background.tertiary
+            appearance.shadowColor = .clear
+            navigationController?.navigationBar.standardAppearance = appearance
+            navigationController?.navigationBar.scrollEdgeAppearance = navigationController?.navigationBar.standardAppearance
+        } else {
+            navigationController?.navigationBar.barTintColor = Colors.Background.tertiary
+            navigationController?.navigationBar.tintColor = Colors.Background.tertiary
+        }
     }
 }
 

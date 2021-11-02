@@ -21,7 +21,7 @@ struct TransactionEvent: AnalyticsEvent {
     let accountType: AccountType
     let assetId: String?
     let isMaxTransaction: Bool
-    let amount: Int64?
+    let amount: UInt64?
     let transactionId: String
     
     private let algosEventId = "algos"

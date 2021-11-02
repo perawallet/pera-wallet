@@ -84,6 +84,12 @@ extension Data {
     var isSignedTransactionResponseFromLedger: Bool {
         count > LedgerMessage.Size.address
     }
+
+    func getAlgorandAddressFromPublicKey() -> String? {
+        var error: NSError?
+        let addressString = AlgorandSDK().addressFromPublicKey(self, error: &error)
+        return error == nil ? addressString : nil
+    }
 }
 
 extension Data {

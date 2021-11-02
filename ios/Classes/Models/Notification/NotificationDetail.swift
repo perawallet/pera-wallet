@@ -20,9 +20,25 @@ import Magpie
 class NotificationDetail: Model {
     let senderAddress: String?
     let receiverAddress: String?
-    let amount: Int64?
+    private let amount: UInt64?
+    private let amountStr: String?
     let asset: NotificationAsset?
     let notificationType: NotificationType?
+}
+
+extension NotificationDetail {
+    func getAmountValue() -> UInt64 {
+        if let amount = amount {
+            return amount
+        }
+
+        if let amountStr = amountStr,
+            let amount = UInt64(amountStr) {
+            return amount
+        }
+
+        return 0
+    }
 }
 
 extension NotificationDetail {
@@ -30,6 +46,7 @@ extension NotificationDetail {
         case senderAddress = "sender_public_key"
         case receiverAddress = "receiver_public_key"
         case amount = "amount"
+        case amountStr = "amount_str"
         case asset = "asset"
         case notificationType = "notification_type"
     }

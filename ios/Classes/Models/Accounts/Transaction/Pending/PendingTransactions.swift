@@ -19,18 +19,18 @@ import Magpie
 
 class PendingTransaction: Model, TransactionItem {
     let signature: String?
-    private let algosAmount: Int64?
-    private let assetAmount: Int64?
-    let fee: Int64?
-    let fv: Int64?
+    private let algosAmount: UInt64?
+    private let assetAmount: UInt64?
+    let fee: UInt64?
+    let fv: UInt64?
     let gh: String?
-    let lv: Int64?
+    let lv: UInt64?
     private let assetReceiver: String?
     private let algosReceiver: String?
     let sender: String?
     let type: Transaction.TransferType?
     
-    var amount: Int64 {
+    var amount: UInt64 {
         return assetAmount ?? algosAmount ?? 0
     }
     
@@ -45,12 +45,12 @@ class PendingTransaction: Model, TransactionItem {
         signature = try container.decodeIfPresent(String.self, forKey: .signature)
         let transactionContainer = try container.nestedContainer(keyedBy: TransactionCodingKeys.self, forKey: .transaction)
         
-        algosAmount = try transactionContainer.decodeIfPresent(Int64.self, forKey: .algosAmount)
-        assetAmount = try transactionContainer.decodeIfPresent(Int64.self, forKey: .assetAmount)
-        fee = try transactionContainer.decodeIfPresent(Int64.self, forKey: .fee)
-        fv = try transactionContainer.decodeIfPresent(Int64.self, forKey: .fv)
+        algosAmount = try transactionContainer.decodeIfPresent(UInt64.self, forKey: .algosAmount)
+        assetAmount = try transactionContainer.decodeIfPresent(UInt64.self, forKey: .assetAmount)
+        fee = try transactionContainer.decodeIfPresent(UInt64.self, forKey: .fee)
+        fv = try transactionContainer.decodeIfPresent(UInt64.self, forKey: .fv)
         gh = try transactionContainer.decodeIfPresent(String.self, forKey: .gh)
-        lv = try transactionContainer.decodeIfPresent(Int64.self, forKey: .lv)
+        lv = try transactionContainer.decodeIfPresent(UInt64.self, forKey: .lv)
         algosReceiver = try transactionContainer.decodeIfPresent(String.self, forKey: .algosReceiver)
         assetReceiver = try transactionContainer.decodeIfPresent(String.self, forKey: .assetReceiver)
         sender = try transactionContainer.decodeIfPresent(String.self, forKey: .sender)

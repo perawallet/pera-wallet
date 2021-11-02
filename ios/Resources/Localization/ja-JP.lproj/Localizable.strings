@@ -389,6 +389,15 @@
 "feedback-title-note" = "メモ";
 
 /* (No Comment) */
+"governance-banner-action" = "始める";
+
+/* (No Comment) */
+"governance-banner-detail" = "統治者になりましょう。Algorandの未来を投票で決めましょう。報酬を獲得しましょう。";
+
+/* (No Comment) */
+"governance-banner-title" = "Algorandガバナンス・プログラムが始まります！";
+
+/* (No Comment) */
 "internet-connection-error-detail" = "サーバーにアクセスできません。インターネットに接続されていることを確認してください";
 
 /* (No Comment) */
@@ -617,10 +626,7 @@
 "login-title" = "ロック解除";
 
 /* (No Comment) */
-"maximum-balance-standard-account-warning-description" = "お客様のアカウント%@に他の資産%@が存在するため、Algorandブロックチェーンでは最小残高%@ Algosを維持する必要があります。\n\n\n続行をクリックすることで、お客様の取引額が自動的に更新され、変更が反映されます。次のステップでこの変更をプレビューできます。";
-
-/* (No Comment) */
-"maximum-balance-standard-account-warning-description-singular" = "お客様のアカウント%@に他の資産%@が存在するため、Algorandブロックチェーンでは最小残高%@ Algosを維持する必要があります。\n\n\n続行をクリックすることで、お客様の取引額が自動的に更新され、変更が反映されます。次のステップでこの変更をプレビューできます。";
+"maximum-balance-standard-account-warning-description" = "お客様のアカウントに他の資産が存在するため、Algorandブロックチェーンでは最小残高%@ Algosを維持する必要があります。\n\n\n続行をクリックすることで、お客様の取引額が自動的に更新され、変更が反映されます。次のステップでこの変更をプレビューできます。";
 
 /* (No Comment) */
 "maximum-balance-warning-description" = "この再キー化アカウントで最大残高を送信するには、%@ Algosの最低残高を維持する必要があります。これは、再キー化されたアカウントに何も変化がないことを確認するためです。\n\n\nこの変更を反映して、お客様の取引額が自動的に更新されます。次のステップでトランザクションをプレビューできます。";
@@ -855,9 +861,6 @@
 
 /* (No Comment) */
 "pin-limit-try-again" = "やり直してください";
-
-/* No comment provided by engineer. */
-"primaryText" = "primaryText";
 
 /* (No Comment) */
 "privacy-policy-title" = "個人情報保護方針";
@@ -1286,7 +1289,13 @@
 "title-no" = "いいえ";
 
 /* (No Comment) */
+"title-off" = "オフ";
+
+/* (No Comment) */
 "title-ok" = "OK";
+
+/* (No Comment) */
+"title-on" = "オン";
 
 /* (No Comment) */
 "title-paste-passphrase" = "パスフレーズ全体の貼り付け";
@@ -1565,6 +1574,42 @@
 "verified-assets-title" = "検証済み資産";
 
 /* (No Comment) */
+"wallet-connect-asset-clawback-title" = "クローバックアカウント";
+
+/* (No Comment) */
+"wallet-connect-asset-creation-title" = "資産作成リクエスト";
+
+/* (No Comment) */
+"wallet-connect-asset-decimals-title" = "小数点";
+
+/* (No Comment) */
+"wallet-connect-asset-deletion-title" = "資産削除リクエスト";
+
+/* (No Comment) */
+"wallet-connect-asset-deletion-warning-title" = "この資産は削除されます。";
+
+/* (No Comment) */
+"wallet-connect-asset-freeze-title" = "アカウントの凍結";
+
+/* (No Comment) */
+"wallet-connect-asset-frozen-title" = "デフォルトで凍結";
+
+/* (No Comment) */
+"wallet-connect-asset-manager-title" = "管理者アカウント";
+
+/* (No Comment) */
+"wallet-connect-asset-name-title" = "資産名";
+
+/* (No Comment) */
+"wallet-connect-asset-reconfiguration-title" = "資産再構成リクエスト";
+
+/* (No Comment) */
+"wallet-connect-asset-reserve-title" = "リザーブアカウント";
+
+/* (No Comment) */
+"wallet-connect-asset-unit-title" = "ユニット名";
+
+/* (No Comment) */
 "wallet-connect-raw-transaction-title" = "Rawトランザクション";
 
 /* (No Comment) */
@@ -1622,16 +1667,61 @@
 "wallet-connect-transaction-detail-raw" = "Rawトランザクションを表示";
 
 /* (No Comment) */
+"wallet-connect-transaction-error-account-not-exist" = "無効な入力：要求された署名者はユーザーウォレットに存在しません";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-already-displayed" = "トランザクションリクエストが拒否されました：ユーザーには現在進行中の別のトランザクションリクエストがあります。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group" = "無効な入力：グループトランザクションは、ウォレットユーザーの署名を必要としません。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group-unauthorized-user" = "要求された操作および/またはアカウントは、ユーザーによって承認されていません。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group-validation" = "トランザクションリクエストが拒否されました：トランザクショングループは、AlgorandSDKによる検証に失敗しました。";
+
+/* (No Comment) */
 "wallet-connect-transaction-error-invalid" = "入力された内容は無効です。";
 
 /* (No Comment) */
+"wallet-connect-transaction-error-invalid-asset" = "無効な入力：無効な資産です";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-invalid-key" = "無効な入力：公開鍵が無効です";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-invalid-signer" = "署名エラー：トランザクションリクエストのトランザクションには、接続されたウォレットに存在しない秘密鍵（署名者）が必要です。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-multisig" = "トランザクションリクエストには、サポートされていないトランザクションタイプが含まれています：Multi-sig";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-node" = "署名エラー：dAppとウォレット間のネットワークが一致しません。例えば、ウォレットはTestNetに接続され、dAppはMainNetに接続されています（またはその逆）。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-parse" = "無効な入力：トランザクションを解析できません";
+
+/* (No Comment) */
 "wallet-connect-transaction-error-rejected" = "ユーザーがリクエストを拒否しました。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-rejected-user" = "トランザクションリクエストが拒否されました：ユーザーがトランザクションリクエストを拒否しました。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-transaction-size" = "無効な入力：トランザクションリクエストに16を超えるトランザクションが含まれています";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unable-sign" = "無効な入力：署名できません";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-unauthorized" = "要求された操作および/またはアカウントは、ユーザーによって承認されていません。";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-unsupported" = "ウォレットは要求された操作をサポートしていません。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unsupported-type" = "トランザクションリクエストには、サポートされていないトランザクションタイプが含まれています";
 
 /* (No Comment) */
 "wallet-connect-transaction-group-algos-title" = "%@への支払い";
@@ -1643,7 +1733,13 @@
 "wallet-connect-transaction-group-app-close-title" = "%@へのアプリケーションクローズ";
 
 /* (No Comment) */
+"wallet-connect-transaction-group-app-delete-title" = "#%@へのアプリケーション削除";
+
+/* (No Comment) */
 "wallet-connect-transaction-group-app-opt-in-title" = "%@へのアプリケーションオプトイン";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-app-update-title" = "#%@へのアプリケーション更新";
 
 /* (No Comment) */
 "wallet-connect-transaction-group-asset-addition-title" = "アセット%@へのオプトイン";
@@ -1662,6 +1758,27 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-title-app-call" = "アプリコールリクエスト";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-approval-hash" = "承認ハッシュ";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-clear-hash" = "ステートハッシュのクリア";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-extra-pages" = "アプリの追加ページ";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-global-schema" = "アプリのグローバルスキーマ";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-local-schema" = "アプリのローカルスキーマ";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-on-complete" = "OnComplete";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-creation" = "アプリケーション作成";
 
 /* (No Comment) */
 "wallet-connect-transaction-title-app-id" = "アプリケーションID";

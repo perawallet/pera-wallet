@@ -31,7 +31,7 @@ class TransactionFeeCalculator: NSObject {
         self.params = params
     }
 
-    func calculate(for transactionType: TransactionController.TransactionType) -> Int64? {
+    func calculate(for transactionType: TransactionController.TransactionType) -> UInt64? {
         guard let params = params,
               let transactionData = transactionData,
               let signedTransactionData = transactionData.signedTransaction else {
@@ -48,7 +48,7 @@ class TransactionFeeCalculator: NSObject {
         return calculatedFee
     }
 
-    func isValidTransactionAmount(for transactionType: TransactionController.TransactionType, calculatedFee: Int64) -> Bool {
+    func isValidTransactionAmount(for transactionType: TransactionController.TransactionType, calculatedFee: UInt64) -> Bool {
         guard let account = transactionDraft?.from,
               let isMaxTransaction = transactionDraft?.isMaxTransaction,
               !isMaxTransaction else {
@@ -63,7 +63,8 @@ class TransactionFeeCalculator: NSObject {
             calculatedFee: calculatedFee,
             isAfterTransaction: true
         )
-        if Int64(account.amount) - transactionAmount < minimumAmount {
+        
+        if UInt64(account.amount) < minimumAmount + transactionAmount {
             delegate?.transactionFeeCalculator(self, didFailedWith: minimumAmount)
             return false
         }
@@ -74,10 +75,10 @@ class TransactionFeeCalculator: NSObject {
     func calculateMinimumAmount(
         for account: Account,
         with transactionType: TransactionController.TransactionType,
-        calculatedFee: Int64,
+        calculatedFee: UInt64,
         isAfterTransaction: Bool
-    ) -> Int64 {
-        var assetCount = account.assetDetails.count + 1
+    ) -> UInt64 {
+        var assetCount = (account.assets?.count ?? 0) + 1
 
         switch transactionType {
         case .algosTransaction:
@@ -96,11 +97,11 @@ class TransactionFeeCalculator: NSObject {
             }
         }
 
-        let createdAppAmount = minimumTransactionMicroAlgosLimit * Int64(account.createdApps?.count ?? 0)
-        let localStateAmount = minimumTransactionMicroAlgosLimit * Int64(account.appsLocalState?.count ?? 0)
-        let totalSchemaValueAmount = totalNumIntConstantForMinimumAmount * Int64(account.appsTotalSchema?.intValue ?? 0)
-        let byteSliceAmount = byteSliceConstantForMinimumAmount * Int64(account.appsTotalSchema?.byteSliceCount ?? 0)
-        let extraPagesAmount = minimumTransactionMicroAlgosLimit * Int64(account.appsTotalExtraPages ?? 0)
+        let createdAppAmount = minimumTransactionMicroAlgosLimit * UInt64(account.createdApps?.count ?? 0)
+        let localStateAmount = minimumTransactionMicroAlgosLimit * UInt64(account.appsLocalState?.count ?? 0)
+        let totalSchemaValueAmount = totalNumIntConstantForMinimumAmount * UInt64(account.appsTotalSchema?.intValue ?? 0)
+        let byteSliceAmount = byteSliceConstantForMinimumAmount * UInt64(account.appsTotalSchema?.byteSliceCount ?? 0)
+        let extraPagesAmount = minimumTransactionMicroAlgosLimit * UInt64(account.appsTotalExtraPages ?? 0)
 
         let applicationRelatedMinimumAmount = createdAppAmount +
             localStateAmount +
@@ -108,7 +109,7 @@ class TransactionFeeCalculator: NSObject {
             byteSliceAmount +
             extraPagesAmount
 
-        let minimumAmount = (minimumTransactionMicroAlgosLimit * Int64(assetCount)) +
+        let minimumAmount = (minimumTransactionMicroAlgosLimit * UInt64(assetCount)) +
             applicationRelatedMinimumAmount +
             calculatedFee
 
@@ -117,5 +118,5 @@ class TransactionFeeCalculator: NSObject {
 }
 
 protocol TransactionFeeCalculatorDelegate: AnyObject {
-    func transactionFeeCalculator(_ transactionFeeCalculator: TransactionFeeCalculator, didFailedWith minimumAmount: Int64)
+    func transactionFeeCalculator(_ transactionFeeCalculator: TransactionFeeCalculator, didFailedWith minimumAmount: UInt64)
 }

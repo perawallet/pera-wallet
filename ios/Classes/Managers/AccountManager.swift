@@ -19,7 +19,7 @@ import Foundation
 
 class AccountManager {
     let api: AlgorandAPI
-    var currentRound: Int64?
+    var currentRound: UInt64?
     var params: TransactionParams?
     let queue: OperationQueue
 
@@ -80,7 +80,8 @@ extension AccountManager {
                 
                 if fetchedAccount.amount == currentAccount.amount &&
                     fetchedAccount.rewards == currentAccount.rewards &&
-                    !fetchedAccount.hasDifferentAssets(than: currentAccount) {
+                    !fetchedAccount.hasDifferentAssets(than: currentAccount) &&
+                    !fetchedAccount.hasDifferentApps(than: currentAccount) {
                     return
                 }
                 
@@ -93,7 +94,7 @@ extension AccountManager {
         queue.addOperation(completionOperation)
     }
     
-    func waitForNextRoundAndFetchAccounts(round: Int64?, completion: ((Int64?) -> Void)?) {
+    func waitForNextRoundAndFetchAccounts(round: UInt64?, completion: ((UInt64?) -> Void)?) {
         if let nextRound = round {
             self.api.waitRound(with: WaitRoundDraft(round: nextRound)) { roundDetailResponse in
                 switch roundDetailResponse {
@@ -112,7 +113,7 @@ extension AccountManager {
         }
     }
     
-    private func getTransactionParamsAndFetchAccounts(completion: ((Int64?) -> Void)?) {
+    private func getTransactionParamsAndFetchAccounts(completion: ((UInt64?) -> Void)?) {
         api.getTransactionParams { response in
             switch response {
             case .failure:
@@ -144,5 +145,5 @@ extension AccountManager {
 }
 
 protocol AccountManagerDelegate: AnyObject {
-    func accountManager(_ accountManager: AccountManager, didWaitForNext round: Int64?)
+    func accountManager(_ accountManager: AccountManager, didWaitForNext round: UInt64?)
 }

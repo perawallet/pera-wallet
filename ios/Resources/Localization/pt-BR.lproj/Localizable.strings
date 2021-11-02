@@ -389,6 +389,15 @@
 "feedback-title-note" = "Nota";
 
 /* (No Comment) */
+"governance-banner-action" = "Comece Agora";
+
+/* (No Comment) */
+"governance-banner-detail" = "Seja um Governador. Vote no futuro da Algorand. Ganhe recompensas.";
+
+/* (No Comment) */
+"governance-banner-title" = "O Programa de Governança Algorand está começando!";
+
+/* (No Comment) */
 "internet-connection-error-detail" = "Não pudemos chegar ao servidor, certifique-se de estar conectado à internet";
 
 /* (No Comment) */
@@ -617,10 +626,7 @@
 "login-title" = "Desbloquear";
 
 /* (No Comment) */
-"maximum-balance-standard-account-warning-description" = "Como você tem %@ outros Ativos nesta conta %@, a Blockchain Algorand exige que você mantenha um saldo mínimo de %@ Algos.\n\n\nAo clicar continuar, o montante de sua transação será automaticamente atualizado para refletir esta mudança. Você poderá visualizar esta mudança na etapa seguinte.";
-
-/* (No Comment) */
-"maximum-balance-standard-account-warning-description-singular" = "Como você tem %@ outros Ativos nesta conta %@, a Blockchain Algorand exige que você mantenha um saldo mínimo de %@ Algos.\n\n\nAo clicar continuar, o montante de sua transação será automaticamente atualizado para refletir esta mudança. Você poderá visualizar esta mudança na etapa seguinte.";
+"maximum-balance-standard-account-warning-description" = "Como você tem outros Ativos nesta conta, a Blockchain Algorand exige que você mantenha um saldo mínimo de %@ Algos.\n\n\nAo clicar continuar, o montante de sua transação será automaticamente atualizado para refletir esta mudança. Você poderá visualizar esta mudança na etapa seguinte.";
 
 /* (No Comment) */
 "maximum-balance-warning-description" = "Enviar seu saldo máximo nesta conta rechaveada exige que você mantenha um saldo mínimo de %@ Algos para garantir que nada será alterado em sua conta rechaveada.\n\n\nO montante de sua transação será automaticamente atualizado para refletir esta mudança. Você será capaz de visualizar a transação na etapa a seguir.";
@@ -855,9 +861,6 @@
 
 /* (No Comment) */
 "pin-limit-try-again" = "Tente novamente em";
-
-/* No comment provided by engineer. */
-"primaryText" = "primaryText";
 
 /* (No Comment) */
 "privacy-policy-title" = "Política de Privacidade";
@@ -1286,7 +1289,13 @@
 "title-no" = "NÃO";
 
 /* (No Comment) */
+"title-off" = "Desligado";
+
+/* (No Comment) */
 "title-ok" = "OK";
+
+/* (No Comment) */
+"title-on" = "Ligado";
 
 /* (No Comment) */
 "title-paste-passphrase" = "Colar Frase de Senha Completa";
@@ -1565,6 +1574,42 @@
 "verified-assets-title" = "Ativos Confirmados";
 
 /* (No Comment) */
+"wallet-connect-asset-clawback-title" = "Conta de Recuperação";
+
+/* (No Comment) */
+"wallet-connect-asset-creation-title" = "Pedido de Criação de Ativo";
+
+/* (No Comment) */
+"wallet-connect-asset-decimals-title" = "Casas Decimais";
+
+/* (No Comment) */
+"wallet-connect-asset-deletion-title" = "Pedido de Exclusão de Ativo";
+
+/* (No Comment) */
+"wallet-connect-asset-deletion-warning-title" = "Este ativo será excluído.";
+
+/* (No Comment) */
+"wallet-connect-asset-freeze-title" = "Congelar Conta";
+
+/* (No Comment) */
+"wallet-connect-asset-frozen-title" = "Padrão Congelado";
+
+/* (No Comment) */
+"wallet-connect-asset-manager-title" = "Conta de Gestão";
+
+/* (No Comment) */
+"wallet-connect-asset-name-title" = "Nome do Ativo";
+
+/* (No Comment) */
+"wallet-connect-asset-reconfiguration-title" = "Pedido de Reconfiguração de Ativo";
+
+/* (No Comment) */
+"wallet-connect-asset-reserve-title" = "Conta de Reserva";
+
+/* (No Comment) */
+"wallet-connect-asset-unit-title" = "Nome da Unidade";
+
+/* (No Comment) */
 "wallet-connect-raw-transaction-title" = "Transação Bruta";
 
 /* (No Comment) */
@@ -1622,16 +1667,61 @@
 "wallet-connect-transaction-detail-raw" = "Exibir Transação Bruta";
 
 /* (No Comment) */
+"wallet-connect-transaction-error-account-not-exist" = "Entrada Inválida: O assinante solicitado não está na Carteira do Usuário";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-already-displayed" = "Solicitação de Transação Recusada: O Usuário atualmente possui outra solicitação de transação em andamento.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group" = "Entrada Inválida: A transação de grupo não precisa ser assinada pelo usuário da Carteira. ";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group-unauthorized-user" = "A operação e/ou conta solicitada não foi autorizada pelo usuário.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group-validation" = "Solicitação de Transação Recusada: O grupo de transação não foi validado pelo SDK Algorand.";
+
+/* (No Comment) */
 "wallet-connect-transaction-error-invalid" = "A entrada fornecida é inválida.";
 
 /* (No Comment) */
+"wallet-connect-transaction-error-invalid-asset" = "Entrada Inválida: Ativo Inválido";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-invalid-key" = "Entrada Inválida: Chave Pública Inválida";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-invalid-signer" = "Erro de Assinatura: Uma transação na solicitação de transação requer uma chave privada (assinante) que não existe na Carteira conectada.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-multisig" = "A solicitação de transação contém um Tipo de Transação não Suportado: Múltipla Assinatura";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-node" = "Erro de Assinatura: Incompatibilidade de redes entre DApp e Carteira. Por exemplo, a Carteira está conectada à TestNet e a DApp está conectada à MainNet (ou vice-versa).";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-parse" = "Entrada Inválida: Incapaz de analisar a transação";
+
+/* (No Comment) */
 "wallet-connect-transaction-error-rejected" = "O usuário recusou a solicitação.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-rejected-user" = "Solicitação de Transação Recusada: O Usuário recusou a solicitação de transação.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-transaction-size" = "Entrada Inválida: A solicitação de transação contém mais de 16 transações";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unable-sign" = "Entrada Inválida: Incapaz de ser assinada";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-unauthorized" = "A operação e/ou conta solicitada não foi autorizada pelo usuário.";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-unsupported" = "A carteira não suporta a operação solicitada.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unsupported-type" = "A solicitação de transação contém um Tipo de Transação não Suportado";
 
 /* (No Comment) */
 "wallet-connect-transaction-group-algos-title" = "Pagamento para %@";
@@ -1643,7 +1733,13 @@
 "wallet-connect-transaction-group-app-close-title" = "Aplicativo Fechado para %@";
 
 /* (No Comment) */
+"wallet-connect-transaction-group-app-delete-title" = "Excluir Aplicativo para #%@";
+
+/* (No Comment) */
 "wallet-connect-transaction-group-app-opt-in-title" = "Adesão do Aplicativo a %@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-app-update-title" = "Atualização do Aplicativo para #%@";
 
 /* (No Comment) */
 "wallet-connect-transaction-group-asset-addition-title" = "Adesão a Ativo %@";
@@ -1662,6 +1758,27 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-title-app-call" = "Solicitação de Chamada de Aplicativo";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-approval-hash" = "Hash de Aprovação";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-clear-hash" = "Hash de Estado Claro";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-extra-pages" = "Páginas Extras do Aplicativo";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-global-schema" = "Esquema Global do Aplicativo";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-local-schema" = "Esquema Local do Aplicativo";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-on-complete" = "OnComplete";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-creation" = "Criação do Aplicativo";
 
 /* (No Comment) */
 "wallet-connect-transaction-title-app-id" = "ID do Aplicativo";

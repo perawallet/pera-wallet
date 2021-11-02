@@ -88,7 +88,7 @@ class WCAlgosTransactionViewModel {
 
         balanceInformationViewModel = TitledTransactionAmountInformationViewModel(
             title: "transaction-detail-balance".localized,
-            mode: .balance(value: Int64(senderAccount.amount)),
+            mode: .balance(value: UInt64(senderAccount.amount)),
             isLastElement: transaction.hasValidAuthAddressForSigner && !transactionDetail.hasRekeyOrCloseAddress
         )
     }
@@ -159,7 +159,8 @@ class WCAlgosTransactionViewModel {
 
     private func setFeeInformationViewModel(from transaction: WCTransaction) {
         guard let transactionDetail = transaction.transactionDetail,
-              let fee = transactionDetail.fee else {
+              let fee = transactionDetail.fee,
+              fee != 0 else {
             return
         }
 

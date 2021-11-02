@@ -311,7 +311,7 @@ extension AppDelegate {
         shouldInvalidateAccountFetch = true
     }
 
-    private func fetchAccounts(round: Int64? = nil) {
+    private func fetchAccounts(round: UInt64? = nil) {
         guard !shouldInvalidateAccountFetch else {
             return
         }

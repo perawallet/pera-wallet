@@ -32,7 +32,7 @@ class SendTransactionViewController: BaseViewController {
     private let assetReceiverState: AssetReceiverState
     private(set) var isSenderEditable: Bool
     private(set) var transactionController: TransactionController
-    var fee: Int64?
+    var fee: UInt64?
     
     var transactionData: Data?
     
