@@ -47,6 +47,7 @@ import com.algorand.android.utils.handleIntent
 import com.algorand.android.utils.inappreview.InAppReviewManager
 import com.algorand.android.utils.isNotificationCanBeShown
 import com.algorand.android.utils.preference.isPasswordChosen
+import com.algorand.android.utils.showLedgerScanErrorDialog
 import com.algorand.android.utils.walletconnect.WalletConnectManager
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionErrorProvider
 import com.algorand.android.utils.walletconnect.WalletConnectUrlHandler
@@ -262,6 +263,7 @@ class MainActivity : CoreMainActivity(),
                         val (title, errorMessage) = result.getMessage(this)
                         showGlobalError(title = title, errorMessage = errorMessage)
                     }
+                    is TransactionManagerResult.LedgerScanFailed -> showLedgerScanErrorDialog()
                 }
             }
         })

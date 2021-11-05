@@ -91,7 +91,7 @@ class WalletConnectSignManager @Inject constructor(
         }
 
         override fun onScanError(errorMessageResId: Int, titleResId: Int) {
-            postResult(Defined(AnnotatedString(errorMessageResId), titleResId))
+            postResult(WalletConnectSignResult.LedgerScanFailed)
         }
     }
 

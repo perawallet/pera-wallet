@@ -36,6 +36,7 @@ import com.algorand.android.repository.NotificationRepository
 import com.algorand.android.repository.TransactionsRepository
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.AutoLockManager
+import com.algorand.android.utils.BannerManager
 import com.algorand.android.utils.BlockPollingManager
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
@@ -44,7 +45,6 @@ import com.algorand.android.utils.analytics.logRegisterEvent
 import com.algorand.android.utils.findAllNodes
 import com.algorand.android.utils.preference.getNotificationUserId
 import com.algorand.android.utils.preference.setNotificationUserId
-import com.algorand.android.utils.preference.showGovernanceBanner
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.messaging.FirebaseMessaging
@@ -68,7 +68,8 @@ class MainViewModel @ViewModelInject constructor(
     private val assetRepository: AssetRepository,
     private val transactionRepository: TransactionsRepository,
     private val accountCacheManager: AccountCacheManager,
-    private val firebaseAnalytics: FirebaseAnalytics
+    private val firebaseAnalytics: FirebaseAnalytics,
+    private val bannerManager: BannerManager
 ) : BaseViewModel() {
 
     private val blockChainManager = BlockPollingManager(viewModelScope, transactionRepository)
@@ -97,7 +98,7 @@ class MainViewModel @ViewModelInject constructor(
     }
 
     private fun setAlgorandGovernanceBannerAsVisible() {
-        sharedPref.showGovernanceBanner()
+        bannerManager.setBannerVisible()
     }
 
     private fun initializeAccountBalanceRefresher() {

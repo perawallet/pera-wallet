@@ -31,6 +31,8 @@ interface LedgerBleConnectionManagerCallback : BleManagerCallbacks {
 
     fun onManagerError(@StringRes errorResId: Int, @StringRes titleResId: Int = R.string.error_default_title)
 
+    fun onMissingBytes()
+
     override fun onDeviceDisconnecting(device: BluetoothDevice) {
         // not needed yet.
     }

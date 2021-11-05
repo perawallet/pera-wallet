@@ -12,7 +12,6 @@
 
 package com.algorand.android.ui.accounts
 
-import android.content.SharedPreferences
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.AccountManager
@@ -24,8 +23,7 @@ import com.algorand.android.ui.common.listhelper.viewholders.AssetListItem
 import com.algorand.android.ui.common.listhelper.viewholders.BannerAccountListItem
 import com.algorand.android.ui.common.listhelper.viewholders.HeaderAccountListItem
 import com.algorand.android.utils.AccountCacheManager
-import com.algorand.android.utils.preference.hideGovernanceBanner
-import com.algorand.android.utils.preference.isGovernanceBannerShown
+import com.algorand.android.utils.BannerManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combineTransform
@@ -36,7 +34,7 @@ import kotlinx.coroutines.launch
 class AccountsViewModel @ViewModelInject constructor(
     private val accountCacheManager: AccountCacheManager,
     private val accountManager: AccountManager,
-    private val sharedPreferences: SharedPreferences
+    private val bannerManager: BannerManager
 ) : BaseViewModel() {
 
     val listFlow: Flow<List<BaseAccountListItem>?> get() = _listFlow
@@ -55,7 +53,7 @@ class AccountsViewModel @ViewModelInject constructor(
                 accountManager.accounts
             ) { cacheMap, accounts ->
                 emit(mutableListOf<BaseAccountListItem>().apply {
-                    if (sharedPreferences.isGovernanceBannerShown()) {
+                    if (bannerManager.shouldShowBanner()) {
                         add(BannerAccountListItem)
                     }
                     cacheMap.forEach { (address, cacheData) ->
@@ -79,7 +77,7 @@ class AccountsViewModel @ViewModelInject constructor(
 
     fun hideBanner() {
         viewModelScope.launch {
-            sharedPreferences.hideGovernanceBanner()
+            bannerManager.setBannerInvisible()
             prepareAccountList()
         }
     }

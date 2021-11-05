@@ -49,4 +49,8 @@ sealed class LedgerBleResult {
     object OnLedgerDisconnected : LedgerBleResult()
 
     object OperationCancelledResult : LedgerBleResult()
+
+    object OnBondingFailed : LedgerBleResult()
+
+    object OnMissingBytes : LedgerBleResult()
 }

@@ -52,6 +52,6 @@ sealed class WalletConnectSignResult {
 
     object Loading : WalletConnectSignResult()
     object LedgerWaitingForApproval : WalletConnectSignResult()
-
+    object LedgerScanFailed : WalletConnectSignResult()
     object CanBeSigned : WalletConnectSignResult()
 }

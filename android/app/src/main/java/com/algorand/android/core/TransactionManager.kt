@@ -74,7 +74,7 @@ class TransactionManager @Inject constructor(
         }
 
         override fun onScanError(errorMessageResId: Int, titleResId: Int) {
-            postResult(TransactionManagerResult.Error.Defined(AnnotatedString(errorMessageResId), titleResId))
+            postResult(TransactionManagerResult.LedgerScanFailed)
         }
     }
 

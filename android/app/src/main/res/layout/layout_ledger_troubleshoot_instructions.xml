@@ -64,7 +64,7 @@
 
         <TextView
             style="@style/TextAppearance.LedgerInstructionStepDescription"
-            android:text="@string/open_the_algorand_app" />
+            android:text="@string/after_confirming_pairing_on" />
 
     </LinearLayout>
 

@@ -29,6 +29,10 @@ private const val SUPPORT_CENTER_URL = "https://algorandwallet.com/support"
 private const val TRANSACTION_INFO_URL = "https://algorandwallet.com/support/transacting"
 private const val GOVERNANCE_URL = "https://governance.algorand.foundation/"
 
+@SuppressWarnings("MaxLineLength")
+const val LEDGER_BLUETOOTH_SUPPORT_URL =
+    "https://support.ledger.com/hc/en-us/articles/360025864773-Fix-Bluetooth-pairing-issues?support=true)"
+
 fun Context.openTermsAndServicesUrl() {
     openUrl(TERMS_AND_SERVICES_URL)
 }

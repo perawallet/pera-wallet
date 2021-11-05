@@ -53,4 +53,5 @@ sealed class TransactionManagerResult {
 
     object Loading : TransactionManagerResult()
     object LedgerWaitingForApproval : TransactionManagerResult()
+    object LedgerScanFailed : TransactionManagerResult()
 }

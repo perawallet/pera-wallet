@@ -32,6 +32,7 @@ import com.algorand.android.utils.BLE_OPEN_REQUEST_CODE
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.LOCATION_PERMISSION_REQUEST_CODE
 import com.algorand.android.utils.isBluetoothEnabled
+import com.algorand.android.utils.showLedgerScanErrorDialog
 import com.algorand.android.utils.showWithStateCheck
 import javax.inject.Inject
 
@@ -65,6 +66,10 @@ abstract class TransactionBaseFragment(
                 }
                 TransactionManagerResult.LedgerWaitingForApproval -> {
                     showLedgerLoading()
+                }
+                TransactionManagerResult.LedgerScanFailed -> {
+                    hideLoading()
+                    context?.showLedgerScanErrorDialog()
                 }
             }
         }
@@ -140,6 +145,7 @@ abstract class TransactionBaseFragment(
         hideLoading()
         val (title, errorMessage) = error.getMessage(requireContext())
         showGlobalError(errorMessage, title)
+        transactionManager.manualStopAllResources()
     }
 
     override fun onLedgerLoadingCancelled() {

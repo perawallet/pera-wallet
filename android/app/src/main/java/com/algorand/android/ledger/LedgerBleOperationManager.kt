@@ -13,6 +13,7 @@
 package com.algorand.android.ledger
 
 import android.annotation.SuppressLint
+import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import androidx.lifecycle.Lifecycle
 import com.algorand.algosdk.mobile.Mobile
@@ -49,6 +50,16 @@ class LedgerBleOperationManager @Inject constructor(
     fun setup(lifecycle: Lifecycle) {
         ledgerBleConnectionManager.setGattCallbacks(this)
         assignToLifecycle(lifecycle)
+    }
+
+    override fun onBondingFailed(device: BluetoothDevice) {
+        postResult(LedgerBleResult.OnBondingFailed)
+    }
+
+    fun isBondingRequired(address: String): Boolean {
+        return BluetoothAdapter.getDefaultAdapter().bondedDevices.all {
+            it.address != address
+        }
     }
 
     fun startLedgerOperation(newOperation: BaseOperation) {
@@ -170,6 +181,10 @@ class LedgerBleOperationManager @Inject constructor(
                 postResult(LedgerBleResult.LedgerErrorResult(exception.message.toString()))
             }
         }
+    }
+
+    override fun onMissingBytes() {
+        postResult(LedgerBleResult.OnMissingBytes)
     }
 
     override fun onOperationCancelled() {

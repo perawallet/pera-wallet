@@ -38,11 +38,17 @@ import com.algorand.android.ui.ledgersearch.LedgerSearchViewModel
 import com.algorand.android.utils.BLE_OPEN_REQUEST_CODE
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.LOCATION_PERMISSION_REQUEST_CODE
+import com.algorand.android.utils.alertDialog
 import com.algorand.android.utils.isBluetoothEnabled
 import com.algorand.android.utils.viewbinding.viewBinding
+import java.util.Timer
+import java.util.TimerTask
 import javax.inject.Inject
+import kotlin.properties.Delegates
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 abstract class BaseLedgerSearchFragment(
     @StringRes titleResId: Int
@@ -72,6 +78,16 @@ abstract class BaseLedgerSearchFragment(
 
     private val ledgerSearchViewModel: LedgerSearchViewModel by viewModels()
 
+    private var selectedLedgerDevice: BluetoothDevice? by Delegates.observable(null) { _, oldValue, newValue ->
+        if (newValue != null && oldValue != newValue) {
+            if (ledgerBleOperationManager.isBondingRequired(newValue.address)) {
+                showCloseAlgorandAppDialog(newValue)
+            } else {
+                connectLedger(newValue)
+            }
+        }
+    }
+
     // <editor-fold defaultstate="collapsed" desc="Observers">
 
     private val ledgerDevicesObserver = Observer<Set<BluetoothDevice>> { ledgerDevices ->
@@ -89,6 +105,12 @@ abstract class BaseLedgerSearchFragment(
                 }
                 is LedgerBleResult.LedgerErrorResult -> {
                     showError(errorMessage)
+                }
+                is LedgerBleResult.OnBondingFailed -> {
+                    showError(getString(R.string.pairing_failed))
+                }
+                is LedgerBleResult.OnMissingBytes -> {
+                    connectToLatestLedgerDelayed()
                 }
             }
         }
@@ -112,7 +134,7 @@ abstract class BaseLedgerSearchFragment(
 
     private fun setupRecyclerView() {
         if (ledgerSearchAdapter == null) {
-            ledgerSearchAdapter = LedgerSearchAdapter(::connectLedger)
+            ledgerSearchAdapter = LedgerSearchAdapter(::onLedgerSelected)
         }
 
         binding.ledgersRecyclerView.adapter = ledgerSearchAdapter
@@ -135,6 +157,42 @@ abstract class BaseLedgerSearchFragment(
         viewLifecycleOwner.lifecycle.coroutineScope.launch {
             ledgerBleOperationManager.ledgerBleResultFlow.collect(action = ledgerResultObserver)
         }
+    }
+
+    private fun onLedgerSelected(bluetoothDevice: BluetoothDevice) {
+        if (selectedLedgerDevice == null) {
+            selectedLedgerDevice = bluetoothDevice
+        } else {
+            connectToLatestLedger()
+        }
+    }
+
+    private fun connectToLatestLedger() {
+        selectedLedgerDevice?.run {
+            connectLedger(this)
+        }
+    }
+
+    private fun connectToLatestLedgerDelayed() {
+        Timer().schedule(object : TimerTask() {
+            override fun run() {
+                try {
+                    runBlocking(Dispatchers.Main) {
+                        connectToLatestLedger()
+                    }
+                } catch (exception: Exception) {
+                    showError(getString(R.string.an_error_occured))
+                }
+            }
+        }, MISSING_BYTE_RETRY_DELAY)
+    }
+
+    private fun showCloseAlgorandAppDialog(bluetoothDevice: BluetoothDevice) {
+        context?.alertDialog {
+            setTitle(R.string.pairing_ledger_with_your)
+            setMessage(R.string.open_your_ledger)
+            setPositiveButton(R.string.ok) { _, _ -> connectLedger(bluetoothDevice) }
+        }?.show()
     }
 
     private fun connectLedger(bluetoothDevice: BluetoothDevice) {
@@ -188,5 +246,9 @@ abstract class BaseLedgerSearchFragment(
 
     private fun onTroubleshootClick() {
         nav(actionGlobalLedgerTroubleshootingFragment())
+    }
+
+    companion object {
+        private const val MISSING_BYTE_RETRY_DELAY = 1000L
     }
 }
