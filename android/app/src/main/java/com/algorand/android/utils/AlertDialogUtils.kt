@@ -34,11 +34,3 @@ fun Context.showAlertDialog(title: String, message: String?) {
             }
         }.show()
 }
-
-fun Context.showLedgerScanErrorDialog() {
-    alertDialog {
-        setTitle(R.string.error_connection_title)
-        setMessage(R.string.having_ledger_nano_connection)
-        setPositiveButton(R.string.ok) { dialog, _ -> dialog.dismiss() }
-    }.show()
-}

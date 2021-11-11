@@ -12,34 +12,25 @@
 
 package com.algorand.android.utils
 
-import androidx.navigation.fragment.navArgs
+import com.algorand.android.R
 import com.algorand.android.models.AnnotatedString
 
-class SingleButtonBottomSheet : BaseSingleButtonBottomSheet() {
-
-    private val args: SingleButtonBottomSheetArgs by navArgs()
+class LedgerConnectionIssueBottomSheet : BaseSingleButtonBottomSheet() {
 
     override val titleResId: Int
-        get() = args.titleResId
+        get() = R.string.having_ledger_nano_x
     override val iconDrawableResId: Int
-        get() = args.drawableResId
+        get() = R.drawable.ic_error_warning
     override val descriptionAnnotatedString: AnnotatedString
-        get() = args.descriptionAnnotatedString
+        get() = AnnotatedString(R.string.make_sure_the_device_is)
     override val imageBackgroundTintResId: Int
-        get() = args.imageBackgroundTintResId
+        get() = R.color.orange_F0
     override val buttonTextResId: Int
-        get() = args.buttonTextResId
+        get() = R.string.ok
     override val buttonBackgroundTintResId: Int
-        get() = args.buttonBackgroundTintResId
+        get() = R.color.green_1D
 
     override fun onConfirmationButtonClick() {
-        if (args.isResultNeeded) {
-            setNavigationResult(ACCEPT_KEY, true)
-        }
         navBack()
-    }
-
-    companion object {
-        const val ACCEPT_KEY = "accept_key"
     }
 }

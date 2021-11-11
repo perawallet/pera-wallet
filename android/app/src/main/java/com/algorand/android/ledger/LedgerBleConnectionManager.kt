@@ -114,7 +114,7 @@ class LedgerBleConnectionManager(appContext: Context) : BleManager<LedgerBleConn
                     if (bytesToCopy == 0) {
                         resetReceiver("bytes to copy can't be 0.")
                         disconnect().done {
-                            mCallbacks.onMissingBytes()
+                            mCallbacks.onMissingBytes(device)
                         }.enqueue()
                         return
                     }

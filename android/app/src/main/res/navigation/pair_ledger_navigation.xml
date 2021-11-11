@@ -30,6 +30,9 @@
         <action
             android:id="@+id/action_registerLedgerSearchFragment_to_ledgerAccountSelectionFragment"
             app:destination="@id/registerLedgerAccountSelectionFragment" />
+        <action
+            android:id="@+id/action_registerLedgerSearchFragment_to_ledgerPairInstructionsBottomSheet"
+            app:destination="@id/ledgerPairInstructionsBottomSheet" />
     </fragment>
 
     <fragment
@@ -61,5 +64,14 @@
             android:id="@+id/action_ledgerInstructionFragment_to_registerLedgerSearchFragment"
             app:destination="@id/registerLedgerSearchFragment" />
     </fragment>
+    <dialog
+        android:id="@+id/ledgerPairInstructionsBottomSheet"
+        android:name="com.algorand.android.ui.ledgersearch.LedgerPairInstructionsBottomSheet"
+        android:label="LedgerPairInstructionsBottomSheet"
+        tools:layout="@layout/bottom_sheet_ledger_pair_instructions">
+        <argument
+            android:name="bluetoothDevice"
+            app:argType="android.bluetooth.BluetoothDevice" />
+    </dialog>
 
 </navigation>

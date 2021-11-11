@@ -44,7 +44,6 @@ import com.algorand.android.utils.Event
 import com.algorand.android.utils.LOCATION_PERMISSION_REQUEST_CODE
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.isBluetoothEnabled
-import com.algorand.android.utils.showLedgerScanErrorDialog
 import com.algorand.android.utils.showSnackbar
 import com.algorand.android.utils.showWithStateCheck
 import com.algorand.android.utils.startSavedStateListener
@@ -257,7 +256,14 @@ class WalletConnectTransactionRequestFragment :
 
     private fun showLedgerNotFoundDialog() {
         hideLoading()
-        context?.showLedgerScanErrorDialog()
+        navigateToConnectionIssueBottomSheet()
+    }
+
+    private fun navigateToConnectionIssueBottomSheet() {
+        nav(
+            WalletConnectTransactionRequestFragmentDirections
+                .actionWalletConnectTransactionRequestFragmentToLedgerConnectionIssueBottomSheet()
+        )
     }
 
     private fun showLedgerWaitingForApprovalBottomSheet() {

@@ -60,6 +60,10 @@
         <action
             android:id="@+id/action_walletConnectTransactionRequestFragment_to_walletConnectAtomicTransactionsFragment"
             app:destination="@id/walletConnectAtomicTransactionsFragment" />
+        <action
+            android:id="@+id/action_walletConnectTransactionRequestFragment_to_ledgerConnectionIssueBottomSheet"
+            app:destination="@id/ledgerConnectionIssueBottomSheet" />
+
     </fragment>
 
     <fragment
@@ -156,5 +160,11 @@
             app:argType="com.algorand.android.models.AssetParams"
             app:nullable="true" />
     </dialog>
+
+    <dialog
+        android:id="@+id/ledgerConnectionIssueBottomSheet"
+        android:name="com.algorand.android.utils.LedgerConnectionIssueBottomSheet"
+        android:label="LedgerConnectionIssueBottomSheet"
+        tools:layout="@layout/bottom_sheet_single_button"/>
 
 </navigation>

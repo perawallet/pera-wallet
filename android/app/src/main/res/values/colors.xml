@@ -85,6 +85,8 @@
 
     <color name="governance_banner_icon_color">@color/black</color>
 
+    <color name="text_bullet_point_color">@color/gray_19</color>
+
     <!-- Design Refactor  -->
 
     <color name="white">#FFFFFF</color>

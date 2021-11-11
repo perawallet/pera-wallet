@@ -33,18 +33,19 @@ import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.LedgerBleResult
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.ui.ledgersearch.LedgerPairInstructionsBottomSheet.Companion.BLUETOOTH_DEVICE_KEY
 import com.algorand.android.ui.ledgersearch.LedgerSearchAdapter
 import com.algorand.android.ui.ledgersearch.LedgerSearchViewModel
 import com.algorand.android.utils.BLE_OPEN_REQUEST_CODE
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.LOCATION_PERMISSION_REQUEST_CODE
-import com.algorand.android.utils.alertDialog
 import com.algorand.android.utils.isBluetoothEnabled
+import com.algorand.android.utils.startSavedStateListener
+import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import java.util.Timer
 import java.util.TimerTask
 import javax.inject.Inject
-import kotlin.properties.Delegates
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -52,7 +53,7 @@ import kotlinx.coroutines.runBlocking
 
 abstract class BaseLedgerSearchFragment(
     @StringRes titleResId: Int
-) : DaggerBaseFragment(R.layout.fragment_ledger_search) {
+) : DaggerBaseFragment(R.layout.fragment_ledger_search), LoadingDialogFragment.DismissListener {
 
     @Inject
     lateinit var ledgerBleOperationManager: LedgerBleOperationManager
@@ -61,6 +62,9 @@ abstract class BaseLedgerSearchFragment(
         accountList: List<AccountInformation>,
         ledgerDevice: BluetoothDevice
     )
+
+    abstract fun navigateToPairInstructionBottomSheet(bluetoothDevice: BluetoothDevice)
+    protected abstract val fragmentId: Int
 
     private var isBluetoothEnableRequestFailed = false
     private var isLocationPermissionRequestFailed = false
@@ -77,16 +81,6 @@ abstract class BaseLedgerSearchFragment(
     private val binding by viewBinding(FragmentLedgerSearchBinding::bind)
 
     private val ledgerSearchViewModel: LedgerSearchViewModel by viewModels()
-
-    private var selectedLedgerDevice: BluetoothDevice? by Delegates.observable(null) { _, oldValue, newValue ->
-        if (newValue != null && oldValue != newValue) {
-            if (ledgerBleOperationManager.isBondingRequired(newValue.address)) {
-                showCloseAlgorandAppDialog(newValue)
-            } else {
-                connectLedger(newValue)
-            }
-        }
-    }
 
     // <editor-fold defaultstate="collapsed" desc="Observers">
 
@@ -110,7 +104,7 @@ abstract class BaseLedgerSearchFragment(
                     showError(getString(R.string.pairing_failed))
                 }
                 is LedgerBleResult.OnMissingBytes -> {
-                    connectToLatestLedgerDelayed()
+                    connectToLatestLedgerDelayed(device)
                 }
             }
         }
@@ -145,6 +139,7 @@ abstract class BaseLedgerSearchFragment(
         if (isBluetoothEnableRequestFailed.not() && isLocationPermissionRequestFailed.not()) {
             startBluetoothSearch()
         }
+        initPairInstructionResultListener()
     }
 
     override fun onPause() {
@@ -159,27 +154,27 @@ abstract class BaseLedgerSearchFragment(
         }
     }
 
+    private fun initPairInstructionResultListener() {
+        startSavedStateListener(fragmentId) {
+            useSavedStateValue<BluetoothDevice>(BLUETOOTH_DEVICE_KEY) { bluetoothDevice ->
+                connectLedger(bluetoothDevice)
+            }
+        }
+    }
+
     private fun onLedgerSelected(bluetoothDevice: BluetoothDevice) {
-        if (selectedLedgerDevice == null) {
-            selectedLedgerDevice = bluetoothDevice
+        if (ledgerBleOperationManager.isBondingRequired(bluetoothDevice.address)) {
+            navigateToPairInstructionBottomSheet(bluetoothDevice)
         } else {
-            connectToLatestLedger()
+            connectLedger(bluetoothDevice)
         }
     }
 
-    private fun connectToLatestLedger() {
-        selectedLedgerDevice?.run {
-            connectLedger(this)
-        }
-    }
-
-    private fun connectToLatestLedgerDelayed() {
+    private fun connectToLatestLedgerDelayed(device: BluetoothDevice) {
         Timer().schedule(object : TimerTask() {
             override fun run() {
                 try {
-                    runBlocking(Dispatchers.Main) {
-                        connectToLatestLedger()
-                    }
+                    runBlocking(Dispatchers.Main) { connectLedger(device) }
                 } catch (exception: Exception) {
                     showError(getString(R.string.an_error_occured))
                 }
@@ -187,17 +182,13 @@ abstract class BaseLedgerSearchFragment(
         }, MISSING_BYTE_RETRY_DELAY)
     }
 
-    private fun showCloseAlgorandAppDialog(bluetoothDevice: BluetoothDevice) {
-        context?.alertDialog {
-            setTitle(R.string.pairing_ledger_with_your)
-            setMessage(R.string.open_your_ledger)
-            setPositiveButton(R.string.ok) { _, _ -> connectLedger(bluetoothDevice) }
-        }?.show()
-    }
-
     private fun connectLedger(bluetoothDevice: BluetoothDevice) {
         setLoadingVisibility(isVisible = true)
         ledgerBleOperationManager.startLedgerOperation(AccountFetchAllOperation(bluetoothDevice))
+    }
+
+    override fun onLoadingDialogDismissed() {
+        ledgerBleOperationManager.stopAllResources()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -238,7 +229,8 @@ abstract class BaseLedgerSearchFragment(
 
     fun setLoadingVisibility(isVisible: Boolean) {
         if (isVisible) {
-            loadingDialogFragment = LoadingDialogFragment.show(childFragmentManager, R.string.connecting_to_ledger)
+            loadingDialogFragment =
+                LoadingDialogFragment.show(childFragmentManager, R.string.connecting_to_ledger, true)
         } else {
             loadingDialogFragment?.dismissAllowingStateLoss()
         }

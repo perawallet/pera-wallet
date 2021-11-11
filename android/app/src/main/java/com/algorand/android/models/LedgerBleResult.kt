@@ -52,5 +52,5 @@ sealed class LedgerBleResult {
 
     object OnBondingFailed : LedgerBleResult()
 
-    object OnMissingBytes : LedgerBleResult()
+    data class OnMissingBytes(val device: BluetoothDevice) : LedgerBleResult()
 }

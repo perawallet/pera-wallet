@@ -18,6 +18,7 @@ import android.bluetooth.le.ScanSettings
 import android.os.Handler
 import android.os.ParcelUuid
 import com.algorand.android.R
+import com.algorand.android.ledger.LedgerBleConnectionManager.Companion.SERVICE_UUID
 import javax.inject.Inject
 
 class LedgerBleSearchManager @Inject constructor(
@@ -37,12 +38,13 @@ class LedgerBleSearchManager @Inject constructor(
 
         if (isScanning) return
         isScanning = true
-        this.scanCallback = newScanCallback
+        this.scanCallback = newScanCallback.apply {
+            this.filteredAddress = filteredAddress
+        }
 
         val scanFilters = listOf(
             ScanFilter.Builder()
-                .setServiceUuid(ParcelUuid(LedgerBleConnectionManager.SERVICE_UUID))
-                .setDeviceAddress(filteredAddress)
+                .setServiceUuid(ParcelUuid(SERVICE_UUID))
                 .build()
         )
 

@@ -20,6 +20,7 @@ import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.lifecycle.Observer
+import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.customviews.LedgerLoadingDialog
 import com.algorand.android.models.Account
@@ -32,7 +33,6 @@ import com.algorand.android.utils.BLE_OPEN_REQUEST_CODE
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.LOCATION_PERMISSION_REQUEST_CODE
 import com.algorand.android.utils.isBluetoothEnabled
-import com.algorand.android.utils.showLedgerScanErrorDialog
 import com.algorand.android.utils.showWithStateCheck
 import javax.inject.Inject
 
@@ -69,7 +69,7 @@ abstract class TransactionBaseFragment(
                 }
                 TransactionManagerResult.LedgerScanFailed -> {
                     hideLoading()
-                    context?.showLedgerScanErrorDialog()
+                    navigateToConnectionIssueBottomSheet()
                 }
             }
         }
@@ -125,6 +125,10 @@ abstract class TransactionBaseFragment(
     private fun showLedgerLoading() {
         ledgerLoadingDialog = LedgerLoadingDialog.createLedgerLoadingDialog()
         ledgerLoadingDialog?.showWithStateCheck(childFragmentManager)
+    }
+
+    private fun navigateToConnectionIssueBottomSheet() {
+        nav(HomeNavigationDirections.actionGlobalLedgerConnectionIssueBottomSheet())
     }
 
     fun sendTransaction(transactionData: TransactionData) {

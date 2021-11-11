@@ -617,11 +617,16 @@
     <string name="invalid_input_group_transaction">Invalid Input: Group transaction does not need to be signed by Wallet user. </string>
     <string name="invalid_input_requested_signer">Invalid Input: The requested signer is not in the User Wallet</string>
     <string name="pairing_ledger_with_your">Pairing Ledger with Your Device</string>
-    <string name="open_your_ledger">1. Open your Ledger.\n2. Close the Algorand app on your Ledger before to continue.\n3. A pairing confirmation should now appear to your screen.\n4. You can open your Ledger Algorand App again after pairing.</string>
+    <string name="open_your_ledger">Open your Ledger device.</string>
+    <string name="close_the_algorand_app">Close the Algorand app on the Ledger device.</string>
+    <string name="on_the_ledger_home_screen">On the Ledger home screen, confirm pairing.</string>
+    <string name="once_pairing_is_confirmed">Once pairing is confirmed, open the Algorand Ledger app.</string>
     <string name="pairing_failed">Pairing failed!</string>
     <string name="after_confirming_pairing_on">After confirming pairing on your Ledger device, open the Algorand app.</string>
     <string name="ledger_not_found">Ledger not found!</string>
     <string name="if_you_are_having_ledger">If you’re having Ledger Nano X connection issues, please remove the device from your phone’s bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Algorand Wallet instructions.</string>
     <string name="open_ledger_support">Open Ledger Support</string>
-    <string name="having_ledger_nano_connection">Having Ledger Nano X connection issues?\n\nIf so, please remove the device from your phone’s bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Algorand Wallet instructions.</string>
+    <string name="please_follow_these_steps">Please follow these steps:</string>
+    <string name="having_ledger_nano_x">Having Ledger Nano X connection issues?</string>
+    <string name="make_sure_the_device_is">Make sure the device is unlocked, nearby and has bluetooth enabled. If problems persist, please remove the device from your phone’s bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Algorand Wallet instructions.</string>
 </resources>

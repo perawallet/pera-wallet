@@ -27,6 +27,10 @@
         app:destination="@id/assetSelectionBottomSheet" />
 
     <action
+        android:id="@+id/action_global_ledgerConnectionIssueBottomSheet"
+        app:destination="@id/ledgerConnectionIssueBottomSheet" />
+
+    <action
         android:id="@+id/action_global_sendInfoFragment"
         app:destination="@id/sendInfoFragment"
         app:popUpTo="@+id/mainQrScannerFragment"
@@ -448,6 +452,9 @@
         <action
             android:id="@+id/action_rekeyLedgerSearchFragment_to_rekeyLedgerAccountSelectionFragment"
             app:destination="@id/rekeyLedgerAccountSelectionFragment" />
+        <action
+            android:id="@+id/action_rekeyLedgerSearchFragment_to_ledgerPairInstructionsBottomSheet"
+            app:destination="@id/ledgerPairInstructionsBottomSheet" />
     </fragment>
 
     <fragment
@@ -775,5 +782,20 @@
             android:name="sessionRequest"
             app:argType="com.algorand.android.models.WalletConnectSession" />
     </dialog>
+
+    <dialog
+        android:id="@+id/ledgerPairInstructionsBottomSheet"
+        android:name="com.algorand.android.ui.ledgersearch.LedgerPairInstructionsBottomSheet"
+        android:label="LedgerPairInstructionsBottomSheet"
+        tools:layout="@layout/bottom_sheet_ledger_pair_instructions">
+        <argument
+            android:name="bluetoothDevice"
+            app:argType="android.bluetooth.BluetoothDevice" />
+    </dialog>
+    <dialog
+        android:id="@+id/ledgerConnectionIssueBottomSheet"
+        android:name="com.algorand.android.utils.LedgerConnectionIssueBottomSheet"
+        android:label="LedgerConnectionIssueBottomSheet"
+        tools:layout="@layout/bottom_sheet_single_button" />
 
 </navigation>

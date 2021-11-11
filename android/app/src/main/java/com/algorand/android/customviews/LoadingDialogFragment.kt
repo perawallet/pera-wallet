@@ -12,6 +12,8 @@
 
 package com.algorand.android.customviews
 
+import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -27,14 +29,26 @@ class LoadingDialogFragment : DialogFragment() {
 
     private val binding by viewBinding(DialogFragmentLoadingBinding::bind)
 
+    private var listener: DismissListener? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.dialog_fragment_loading, container, false)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        listener = parentFragment as? DismissListener
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NO_TITLE, R.style.LoadingDialogStyle)
-        isCancelable = false
+        isCancelable = requireArguments().getBoolean(IS_CANCELLABLE_KEY)
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        listener?.onLoadingDialogDismissed()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,13 +56,23 @@ class LoadingDialogFragment : DialogFragment() {
         binding.statusTextView.text = getString(requireArguments().getInt(LOADING_DESCRIPTION_KEY))
     }
 
+    fun interface DismissListener {
+        fun onLoadingDialogDismissed()
+    }
+
     companion object {
         private const val LOADING_DESCRIPTION_KEY = "loading_description"
+        private const val IS_CANCELLABLE_KEY = "is_cancellable"
 
-        fun show(childFragmentManager: FragmentManager, descriptionResId: Int): LoadingDialogFragment {
+        fun show(
+            childFragmentManager: FragmentManager,
+            descriptionResId: Int,
+            isCancellable: Boolean = false
+        ): LoadingDialogFragment {
             return LoadingDialogFragment().apply {
                 arguments = Bundle().apply {
                     putInt(LOADING_DESCRIPTION_KEY, descriptionResId)
+                    putBoolean(IS_CANCELLABLE_KEY, isCancellable)
                 }
             }.also {
                 it.showWithStateCheck(childFragmentManager)

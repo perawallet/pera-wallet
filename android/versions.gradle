@@ -8,8 +8,8 @@ ext {
     application = [
             stagingApplicationId: 'staging.com.algorand.android',
             applicationId       : 'com.algorand.android',
-            versionCode         : 57,
-            versionName         : "4.10.8"
+            versionCode         : 58,
+            versionName         : "4.10.9"
     ]
 
     libVersions = [

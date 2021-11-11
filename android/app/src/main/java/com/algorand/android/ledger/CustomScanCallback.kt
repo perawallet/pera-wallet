@@ -18,10 +18,19 @@ import android.bluetooth.le.ScanResult
 import androidx.annotation.StringRes
 
 abstract class CustomScanCallback : ScanCallback() {
+
+    var filteredAddress: String? = null
+
     override fun onScanResult(callbackType: Int, result: ScanResult?) {
         super.onScanResult(callbackType, result)
         result?.device?.let { foundedDevice ->
-            onLedgerScanned(foundedDevice)
+            if (filteredAddress == null) {
+                onLedgerScanned(foundedDevice)
+            } else {
+                if (foundedDevice.address == filteredAddress) {
+                    onLedgerScanned(foundedDevice)
+                }
+            }
         }
     }
 

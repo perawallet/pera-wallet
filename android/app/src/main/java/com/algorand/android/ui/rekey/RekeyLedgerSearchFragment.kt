@@ -22,6 +22,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class RekeyLedgerSearchFragment : BaseLedgerSearchFragment(titleResId = R.string.pair_your_new_ledger) {
 
+    override val fragmentId: Int = R.id.rekeyLedgerSearchFragment
+
     private val args: RekeyLedgerSearchFragmentArgs by navArgs()
 
     override fun onLedgerConnected(
@@ -33,6 +35,13 @@ class RekeyLedgerSearchFragment : BaseLedgerSearchFragment(titleResId = R.string
             RekeyLedgerSearchFragmentDirections.actionRekeyLedgerSearchFragmentToRekeyLedgerAccountSelectionFragment(
                 ledgerDevice.name, ledgerDevice.address, accountList.toTypedArray(), args.rekeyAddress
             )
+        )
+    }
+
+    override fun navigateToPairInstructionBottomSheet(bluetoothDevice: BluetoothDevice) {
+        nav(
+            RekeyLedgerSearchFragmentDirections
+                .actionRekeyLedgerSearchFragmentToLedgerPairInstructionsBottomSheet(bluetoothDevice)
         )
     }
 }

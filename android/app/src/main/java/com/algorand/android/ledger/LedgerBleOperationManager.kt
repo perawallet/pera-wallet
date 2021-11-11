@@ -183,8 +183,8 @@ class LedgerBleOperationManager @Inject constructor(
         }
     }
 
-    override fun onMissingBytes() {
-        postResult(LedgerBleResult.OnMissingBytes)
+    override fun onMissingBytes(device: BluetoothDevice) {
+        postResult(LedgerBleResult.OnMissingBytes(device))
     }
 
     override fun onOperationCancelled() {

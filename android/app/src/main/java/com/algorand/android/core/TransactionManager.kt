@@ -101,6 +101,14 @@ class TransactionManager @Inject constructor(
                         )
                     )
                 }
+                is LedgerBleResult.OnMissingBytes -> {
+                    postResult(
+                        TransactionManagerResult.Error.Defined(
+                            AnnotatedString(R.string.error_sending_message),
+                            R.string.error_bluetooth_title
+                        )
+                    )
+                }
             }
         }
     }

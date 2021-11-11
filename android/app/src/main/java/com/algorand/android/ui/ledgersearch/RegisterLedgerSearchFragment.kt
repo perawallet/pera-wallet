@@ -23,6 +23,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class RegisterLedgerSearchFragment : BaseLedgerSearchFragment(titleResId = R.string.pair_ledger_device) {
 
+    override val fragmentId: Int = R.id.registerLedgerSearchFragment
+
     private val pairLedgerNavigationViewModel: PairLedgerNavigationViewModel by navGraphViewModels(R.id.pairLedgerNavigation) {
         defaultViewModelProviderFactory
     }
@@ -39,6 +41,13 @@ class RegisterLedgerSearchFragment : BaseLedgerSearchFragment(titleResId = R.str
                 bluetoothName = ledgerDevice.name,
                 bluetoothAddress = ledgerDevice.address
             )
+        )
+    }
+
+    override fun navigateToPairInstructionBottomSheet(bluetoothDevice: BluetoothDevice) {
+        nav(
+            RegisterLedgerSearchFragmentDirections
+                .actionRegisterLedgerSearchFragmentToLedgerPairInstructionsBottomSheet(bluetoothDevice)
         )
     }
 }
