@@ -44,8 +44,8 @@ class WalletConnectAppCallTransactionViewModel @ViewModelInject constructor(
             val decodedAddress = senderAddress.decodedAddress ?: return
             val appCallCreationTransaction = transaction as? BaseAppCallTransaction.AppCallCreationTransaction
             val senderInfo = WalletConnectSenderInfo(
-                senderDisplayedAddress = BaseWalletConnectDisplayedAddress.create(decodedAddress, accountCacheData),
-                senderTypeImageResId = accountCacheData?.getImageResource(),
+                senderDisplayedAddress = BaseWalletConnectDisplayedAddress.create(decodedAddress, account),
+                senderTypeImageResId = getAccountImageResource(),
                 dappName = peerMeta.name,
                 rekeyToAccountAddress = formattedRekeyToAccountAddress,
                 applicationId = appId,

@@ -18,12 +18,11 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import com.algorand.android.HomeNavigationDirections.Companion.actionGlobalAssetDetailFragment
-import com.algorand.android.HomeNavigationDirections.Companion.actionGlobalAssetSelectionBottomSheet
 import com.algorand.android.core.TransactionManager
 import com.algorand.android.customviews.ForegroundNotificationView
 import com.algorand.android.customviews.SendReceiveTabBarView
 import com.algorand.android.models.AccountCacheStatus
+import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.Node
 import com.algorand.android.models.NotificationMetadata
@@ -53,12 +52,12 @@ import com.algorand.android.utils.walletconnect.WalletConnectUrlHandler
 import com.algorand.android.utils.walletconnect.WalletConnectViewModel
 import com.google.firebase.analytics.FirebaseAnalytics
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
-import kotlin.properties.Delegates
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class MainActivity : CoreMainActivity(),
@@ -218,7 +217,10 @@ class MainActivity : CoreMainActivity(),
             val accountCacheData = accountCacheManager.getCacheData(publicKeyToActivate)
             val assetInformation = accountCacheManager.getAssetInformation(publicKeyToActivate, assetIdToActivate)
             if (accountCacheData != null && assetInformation != null) {
-                nav(actionGlobalAssetDetailFragment(assetInformation, accountCacheData.account.address))
+                nav(
+                    HomeNavigationDirections
+                        .actionGlobalAssetDetailFragment(assetInformation, accountCacheData.account.address)
+                )
             }
         }
     }
@@ -276,6 +278,8 @@ class MainActivity : CoreMainActivity(),
         lifecycleScope.launch {
             walletConnectViewModel.sessionResultFlow.collectLatest(::onNewSessionEvent)
         }
+
+        walletConnectViewModel.setWalletConnectSessionTimeoutListener(::onWalletConnectSessionTimedOut)
     }
 
     private fun navigateToConnectionIssueBottomSheet() {
@@ -293,7 +297,7 @@ class MainActivity : CoreMainActivity(),
     }
 
     private fun onNewWalletConnectTransactionRequest(transaction: WalletConnectTransaction) {
-        nav(HomeNavigationDirections.actionGlobalWalletConnectRequestNavigation(transaction))
+        nav(HomeNavigationDirections.actionGlobalWalletConnectRequestNavigation())
     }
 
     private fun handleDeeplinkAndNotificationNavigation() {
@@ -333,12 +337,18 @@ class MainActivity : CoreMainActivity(),
         binding.sendReceiveTabBarView.setListener(object : SendReceiveTabBarView.Listener {
             override fun onSendClick() {
                 firebaseAnalytics.logTapSend()
-                nav(actionGlobalAssetSelectionBottomSheet(flowType = AssetSelectionBottomSheet.FlowType.SEND))
+                nav(
+                    HomeNavigationDirections
+                        .actionGlobalAssetSelectionBottomSheet(flowType = AssetSelectionBottomSheet.FlowType.SEND)
+                )
             }
 
             override fun onRequestClick() {
                 firebaseAnalytics.logTapReceive()
-                nav(actionGlobalAssetSelectionBottomSheet(flowType = AssetSelectionBottomSheet.FlowType.REQUEST))
+                nav(
+                    HomeNavigationDirections
+                        .actionGlobalAssetSelectionBottomSheet(flowType = AssetSelectionBottomSheet.FlowType.REQUEST)
+                )
             }
         })
     }
@@ -376,6 +386,25 @@ class MainActivity : CoreMainActivity(),
                 is WCSessionRequestResult.RejectRequest -> rejectSession(result.session)
             }
         }
+    }
+
+    private fun onWalletConnectSessionTimedOut() {
+        navToWalletConnectSessionTimeoutDialog()
+    }
+
+    private fun navToWalletConnectSessionTimeoutDialog() {
+        nav(
+            HomeNavigationDirections.actionGlobalSingleButtonBottomSheet(
+                titleResId = R.string.connection_failed,
+                drawableResId = R.drawable.ic_close,
+                descriptionAnnotatedString = AnnotatedString(R.string.we_are_sorry_but_the),
+                buttonTextResId = R.string.close,
+                buttonBackgroundTintResId = R.color.secondaryButtonBackgroundColor,
+                buttonTextColorResId = R.color.primaryTextColor,
+                imageBackgroundTintResId = R.color.red_E9_alpha_10,
+                drawableTintResId = R.color.colorError
+            )
+        )
     }
 
     companion object {

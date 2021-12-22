@@ -308,7 +308,7 @@
     <string name="the_account_name"><annotation font="publicsans_bold">\"<annotation replacement="account_name"> </annotation>\"</annotation> 계정의 키가 재지정되었습니다.</string>
     <string name="just_now">방금</string>
     <string name="asset_support_success"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>에서 <annotation replacement="asset">assetPlaceholder</annotation> 자산을 계정에 추가했습니다. 해당 주소로 <annotation replacement="asset">assetPlaceholder</annotation> 자산을 보낼 수 있습니다.</string>
-    <string name="asset_support_request"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>에서 <annotation replacement="asset">assetPlaceholder</annotation> 자산을 전송하려 했으나, 내 계정에서 지원되지 않습니다. 원하시는 경우 계정에 추가해드릴 수 있습니다.</string>
+    <string name="asset_support_request"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>에서 <annotation replacement="asset">assetPlaceholder</annotation> 자산을 전송하려 했으나, 내 계정에서 지원되지 않습니다. 여기를 눌러 계정에 이 자산을 추가하세요.</string>
     <string name="transaction_send_successful">내 <annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> 트랜잭션이(보내는 주소: <annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>, 받으시는 주소: <annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>) 완료되었습니다.</string>
     <string name="transaction_send_failed">내 <annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> 트랜잭션이(보내는 주소: <annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>, 받으시는 주소: <annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>) 실패했습니다.</string>
     <string name="transaction_received"><annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> 자산이 <annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> 주소로 전송되었습니다(보내는 주소: <annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>).</string>
@@ -593,11 +593,24 @@
     <string name="signing_error_transaction_in_request">서명 오류: 트랜잭션 요청의 트랜잭션에는 연결된 지갑에 존재하지 않는 개인 키(서명자)가 필요합니다.</string>
     <string name="transaction_request_contains_unsupported">트랜잭션 요청에 지원되지 않는 트랜잭션 유형이 포함되었습니다.</string>
     <string name="transaction_request_contains_unsupported_multisig">트랜잭션 요청에 지원되지 않는 트랜잭션 유형(다중 서명)이 포함되었습니다.</string>
-    <string name="invalid_input_transaction_request">잘못된 입력: 트랜잭션 요청에 16개 이상의 트랜잭션이 포함되었습니다.</string>
+    <string name="invalid_input_transaction_request">잘못된 입력: 트랜잭션 요청에 %1$d개 이상의 트랜잭션이 포함되었습니다.</string>
     <string name="invalid_input_unable_to_parse">잘못된 입력: 트랜잭션을 구문 분석(파스)할 수 없습니다.</string>
     <string name="invalid_input_invalid_public_key">잘못된 입력: 잘못된 공개 키입니다</string>
     <string name="invalid_input_invalid_asset">잘못된 입력: 잘못된 자산입니다</string>
     <string name="invalid_input_unable_to_be">잘못된 입력: 서명할 수 없습니다</string>
     <string name="invalid_input_group_transaction">잘못된 입력: 그룹 트랜잭션은 지갑 사용자가 서명할 필요가 없습니다.</string>
     <string name="invalid_input_requested_signer">잘못된 입력: 요청한 서명자가 사용자 지갑에 없습니다.</string>
+    <string name="pairing_ledger_with_your">Ledger와 기기의 페어링</string>
+    <string name="open_your_ledger">Ledger 기기를 실행하세요.</string>
+    <string name="close_the_algorand_app">Ledger 기기에서 알고랜드 앱을 닫으세요.</string>
+    <string name="on_the_ledger_home_screen">Ledger 홈 화면에서 페어링을 확인하세요.</string>
+    <string name="once_pairing_is_confirmed">페어링이 확인되면 알고랜드 Ledger 앱을 실행하세요.</string>
+    <string name="pairing_failed">페어링 실패!</string>
+    <string name="after_confirming_pairing_on">Ledger 장치에서 페어링을 확인한 후 알고랜드 앱을 실행하세요.</string>
+    <string name="ledger_not_found">Ledger를 찾을 수 없습니다!</string>
+    <string name="if_you_are_having_ledger">Ledger Nano X 연결 문제가 발생하는 경우 휴대폰의 블루투스 설정에서 기기를 제거하고 Ledger 계정을 삭제한 다음 알고랜드 지갑의 안내에 따라 Ledger을 다시 페어링하세요.</string>
+    <string name="open_ledger_support">Ledger 지원 열기</string>
+    <string name="please_follow_these_steps">다음 단계를 따라주세요.</string>
+    <string name="having_ledger_nano_x">Ledger Nano X 연결 문제가 있나요?</string>
+    <string name="make_sure_the_device_is">기기가 잠금 해제되어 있고 근처에 있으며 블루투스가 활성화되었는지 확인해 주시기 바랍니다. 문제가 지속되는 경우 휴대폰의 블루투스 설정에서 기기를 제거하고 Ledger 계정을 삭제한 다음 알고랜드 지갑의 안내에 따라 Ledger을 다시 페어링하세요.</string>
 </resources>

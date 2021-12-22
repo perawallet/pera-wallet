@@ -64,6 +64,11 @@ class WalletConnectCustomTransactionHandler @Inject constructor(
                 return
             }
 
+            if (!checkIfNodesMatchesAndSetTransactionLastRound(walletConnectTxnList)) {
+                onResult(Error(sessionId, requestId, errorProvider.unauthorized.mismatchingNodes))
+                return
+            }
+
             setAssetParamsIfNeed(walletConnectTxnList)
 
             if (hasInvalidAssetTransfer(walletConnectTxnList)) {
@@ -91,11 +96,6 @@ class WalletConnectCustomTransactionHandler @Inject constructor(
 
             if (!doAppHaveAtLeastOneSignerAccountInTxn(groupedWalletConnectTxnList)) {
                 onResult(Error(sessionId, requestId, errorProvider.unauthorized.missingSigner))
-                return
-            }
-
-            if (!checkIfNodesMatchesAndSetTransactionLastRound(walletConnectTxnList)) {
-                onResult(Error(sessionId, requestId, errorProvider.unauthorized.mismatchingNodes))
                 return
             }
 
@@ -195,6 +195,6 @@ class WalletConnectCustomTransactionHandler @Inject constructor(
     }
 
     companion object {
-        private const val MAX_TRANSACTION_COUNT = 64
+        const val MAX_TRANSACTION_COUNT = 64
     }
 }

@@ -308,7 +308,7 @@
     <string name="the_account_name">Le compte <annotation font="publicsans_bold">\"<annotation replacement="account_name"> </annotation>\"</annotation> a été rétabli avec succès.</string>
     <string name="just_now">Juste maintenant</string>
     <string name="asset_support_success"><annotation font="publicsans_medium"><annotation replacement="sender">addressplaceholder</annotation></annotation> a ajouté <annotation replacement="asset">assetPlaceholder</annotation> à son compte. Vous pouvez leur envoyer <annotation replacement="asset">assetPlaceholder</annotation> .</string>
-    <string name="asset_support_request"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> essaie de vous envoyer <annotation replacement="asset">assetPlaceholder</annotation> mais vous ne le prenez pas en charge. Si vous le souhaitez, nous pouvons l\'ajouter à votre compte.</string>
+    <string name="asset_support_request"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> essaie de vous envoyer <annotation replacement="asset">assetPlaceholder</annotation> mais vous ne le prenez pas en charge. Appuyez ici pour ajouter cet actif à votre compte.</string>
     <string name="transaction_send_successful">Votre transaction de <annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> de <annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> vers <annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> est terminée.</string>
     <string name="transaction_send_failed">Votre transaction de <annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> depuis <annotation font="publicsans_medium"><annotation replacement="sender">addressplaceholder</annotation></annotation> vers <annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> a échoué.</string>
     <string name="transaction_received"><annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> ont été envoyés à <annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> par <annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>.</string>
@@ -602,11 +602,24 @@
     <string name="signing_error_transaction_in_request">Erreur de signature : une transaction dans la demande de transaction nécessite une clé privée (signataire) qui n\'existe pas dans le portefeuille connecté.</string>
     <string name="transaction_request_contains_unsupported">La demande de transaction contient un type de transaction non pris en charge</string>
     <string name="transaction_request_contains_unsupported_multisig">La demande de transaction contient un type de transaction non pris en charge : Multi-sig</string>
-    <string name="invalid_input_transaction_request">Entrée non valide : la demande de transaction contient plus de 16 transactions</string>
+    <string name="invalid_input_transaction_request">Entrée non valide : la demande de transaction contient plus de %1$d transactions</string>
     <string name="invalid_input_unable_to_parse">Entrée non valide : impossible d\'analyser la transaction</string>
     <string name="invalid_input_invalid_public_key">Entrée non valide : clé publique non valide</string>
     <string name="invalid_input_invalid_asset">Entrée non valide : actif non valide</string>
     <string name="invalid_input_unable_to_be">Entrée invalide : Impossible à signer</string>
     <string name="invalid_input_group_transaction">Entrée non valide : la transaction de groupe n\'a pas besoin d\'être signée par l\'utilisateur du portefeuille.</string>
     <string name="invalid_input_requested_signer">Entrée non valide : le signataire demandé n\'est pas dans le portefeuille utilisateur</string>
+    <string name="pairing_ledger_with_your">Jumelage de Ledger avec votre appareil</string>
+    <string name="open_your_ledger">Ouvrez votre appareil Ledger.</string>
+    <string name="close_the_algorand_app">Fermez l\'application Algorand sur l\'appareil Ledger.</string>
+    <string name="on_the_ledger_home_screen">Sur l\'écran d\'accueil du Ledger, confirmez le jumelage.</string>
+    <string name="once_pairing_is_confirmed">Une fois le jumelage confirmé, ouvrez l\'application Algorand sur le Ledger.</string>
+    <string name="pairing_failed">Le jumelage a échoué !</string>
+    <string name="after_confirming_pairing_on">Après avoir confirmé le jumelage sur votre appareil Ledger, ouvrez l\'application Algorand.</string>
+    <string name="ledger_not_found">Ledger non trouvé !</string>
+    <string name="if_you_are_having_ledger">Si vous rencontrez des problèmes de connexion avec le Ledger Nano X, veuillez supprimer l\'appareil des paramètres Bluetooth de votre téléphone, supprimer le compte Ledger, puis jumeler de nouveau votre Ledger en suivant les instructions d\'Algorand Wallet.</string>
+    <string name="open_ledger_support">Ouvrir le support Ledger</string>
+    <string name="please_follow_these_steps">Veuillez suivre ces étapes :</string>
+    <string name="having_ledger_nano_x">Vous avez des problèmes de connexion au Ledger Nano X ?</string>
+    <string name="make_sure_the_device_is">Assurez-vous que l\'appareil est déverrouillé, à proximité et que le Bluetooth est activé. Si les problèmes persistent, veuillez supprimer l\'appareil des paramètres Bluetooth de votre téléphone, supprimez le compte Ledger, puis associez à nouveau votre Ledger en suivant les instructions d\'Algorand Wallet.</string>
 </resources>

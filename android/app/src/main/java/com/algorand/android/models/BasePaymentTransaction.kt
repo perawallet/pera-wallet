@@ -29,7 +29,7 @@ sealed class BasePaymentTransaction : BaseWalletConnectTransaction() {
 
     override val assetDecimal: Int = ALGO_DECIMALS
 
-    override val transactionAmount: BigInteger?
+    override val transactionAmount: BigInteger
         get() = amount
 
     @Parcelize
@@ -42,7 +42,9 @@ sealed class BasePaymentTransaction : BaseWalletConnectTransaction() {
         override val receiverAddress: WalletConnectAddress,
         override val peerMeta: WalletConnectPeerMeta,
         override val signer: WalletConnectSigner,
-        override val accountCacheData: AccountCacheData?,
+        override val authAddress: String?,
+        override val assetInformation: WalletConnectAssetInformation?,
+        override val account: WalletConnectAccount?,
         override val groupId: String?
     ) : BasePaymentTransaction() {
 
@@ -61,7 +63,9 @@ sealed class BasePaymentTransaction : BaseWalletConnectTransaction() {
         override val receiverAddress: WalletConnectAddress,
         override val peerMeta: WalletConnectPeerMeta,
         override val signer: WalletConnectSigner,
-        override val accountCacheData: AccountCacheData?,
+        override val authAddress: String?,
+        override val assetInformation: WalletConnectAssetInformation?,
+        override val account: WalletConnectAccount?,
         override val groupId: String?,
         val closeToAddress: WalletConnectAddress
     ) : BasePaymentTransaction() {
@@ -86,7 +90,9 @@ sealed class BasePaymentTransaction : BaseWalletConnectTransaction() {
         override val receiverAddress: WalletConnectAddress,
         override val peerMeta: WalletConnectPeerMeta,
         override val signer: WalletConnectSigner,
-        override val accountCacheData: AccountCacheData?,
+        override val authAddress: String?,
+        override val assetInformation: WalletConnectAssetInformation?,
+        override val account: WalletConnectAccount?,
         override val groupId: String?,
         val rekeyToAddress: WalletConnectAddress,
     ) : BasePaymentTransaction() {
@@ -111,7 +117,9 @@ sealed class BasePaymentTransaction : BaseWalletConnectTransaction() {
         override val receiverAddress: WalletConnectAddress,
         override val peerMeta: WalletConnectPeerMeta,
         override val signer: WalletConnectSigner,
-        override val accountCacheData: AccountCacheData?,
+        override val authAddress: String?,
+        override val assetInformation: WalletConnectAssetInformation?,
+        override val account: WalletConnectAccount?,
         override val groupId: String?,
         val closeToAddress: WalletConnectAddress,
         val rekeyToAddress: WalletConnectAddress

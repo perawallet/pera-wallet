@@ -32,11 +32,14 @@ sealed class BaseWalletConnectDisplayedAddress {
     }
 
     companion object {
-        fun create(decodedAddress: String, accountCacheData: AccountCacheData?): BaseWalletConnectDisplayedAddress {
-            val isDecodedAddressUsersAddress = accountCacheData?.account?.address == decodedAddress
+        fun create(
+            decodedAddress: String,
+            account: WalletConnectAccount?
+        ): BaseWalletConnectDisplayedAddress {
+            val isDecodedAddressUsersAddress = account?.address == decodedAddress
             return when {
-                accountCacheData == null || !isDecodedAddressUsersAddress -> FullAddress(decodedAddress)
-                accountCacheData.account.name.isNullOrBlank().not() -> CustomName(accountCacheData.account.name)
+                account == null || !isDecodedAddressUsersAddress -> FullAddress(decodedAddress)
+                account.name.isNullOrBlank().not() -> CustomName(account.name.orEmpty())
                 else -> ShortenedAddress(decodedAddress.toShortenedAddress())
             }
         }

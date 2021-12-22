@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2019 Algorand, Inc.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/singleButtonBottomSheetNavigation"
+    app:startDestination="@id/singleButtonBottomSheet">
+
+    <dialog
+        android:id="@+id/singleButtonBottomSheet"
+        android:name="com.algorand.android.utils.SingleButtonBottomSheet"
+        android:label="SingleButtonBottomSheet"
+        tools:layout="@layout/bottom_sheet_single_button">
+        <argument
+            android:name="titleResId"
+            app:argType="reference" />
+        <argument
+            android:name="descriptionAnnotatedString"
+            app:argType="com.algorand.android.models.AnnotatedString" />
+        <argument
+            android:name="drawableResId"
+            app:argType="reference" />
+        <argument
+            android:name="drawableTintResId"
+            android:defaultValue="@color/white"
+            app:argType="reference" />
+        <argument
+            android:name="imageBackgroundTintResId"
+            android:defaultValue="@color/green_1D"
+            app:argType="reference" />
+        <argument
+            android:name="buttonTextResId"
+            app:argType="reference" />
+        <argument
+            android:name="buttonTextColorResId"
+            android:defaultValue="@color/unelevatedbutton_text_color"
+            app:argType="reference" />
+        <argument
+            android:name="buttonBackgroundTintResId"
+            android:defaultValue="@color/green_1D"
+            app:argType="reference" />
+        <argument
+            android:name="isResultNeeded"
+            android:defaultValue="false"
+            app:argType="boolean" />
+    </dialog>
+
+</navigation>

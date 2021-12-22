@@ -168,9 +168,8 @@ class LedgerBleOperationManager @Inject constructor(
         currentScope.launch {
             try {
                 (currentOperation as? BaseTransactionOperation)?.run {
-                    val authAddress = accountCacheData?.authAddress
-                    val signedTransactionData = if (accountCacheData?.isRekeyedToAnotherAccount() == true) {
-                        Mobile.attachSignatureWithSigner(transactionSignature, transactionByteArray, authAddress)
+                    val signedTransactionData = if (isRekeyedToAnotherAccount) {
+                        Mobile.attachSignatureWithSigner(transactionSignature, transactionByteArray, accountAuthAddress)
                     } else {
                         Mobile.attachSignature(transactionSignature, transactionByteArray)
                     }

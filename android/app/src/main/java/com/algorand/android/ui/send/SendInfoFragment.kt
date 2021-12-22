@@ -169,11 +169,7 @@ class SendInfoFragment : TransactionBaseFragment(R.layout.fragment_send_info) {
                 binding.addressInfoView.setAddress(accountCacheData.account.address)
             }
             useSavedStateValue<DecodedQrCode>(QR_SCAN_RESULT_KEY) { decodedQrCode ->
-                with(decodedQrCode) {
-                    if (!address.isNullOrBlank()) {
-                        binding.addressInfoView.setAddress(address)
-                    }
-                }
+                handleScannedQr(decodedQrCode)
             }
             useSavedStateValue<Boolean>(MAX_BALANCE_WARNING_RESULT) { isConfirmed ->
                 if (isConfirmed) {
@@ -309,6 +305,22 @@ class SendInfoFragment : TransactionBaseFragment(R.layout.fragment_send_info) {
             hideLoading()
             showGlobalError(getString(R.string.the_recipient_address_is_not), getString(R.string.error))
         }
+    }
+
+    private fun handleScannedQr(decodedQrCode: DecodedQrCode) {
+        with(decodedQrCode) {
+            when {
+                !address.isNullOrBlank() -> binding.addressInfoView.setAddress(address)
+                !walletConnectUrl.isNullOrBlank() -> showWalletConnectQrScannedError()
+            }
+        }
+    }
+
+    private fun showWalletConnectQrScannedError() {
+        showGlobalError(
+            errorMessage = getString(R.string.the_scanned_qr_is_not),
+            title = getString(R.string.error)
+        )
     }
 
     private fun checkToAccountTransactionRequirements(accountInformation: AccountInformation) {

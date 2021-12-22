@@ -13,9 +13,10 @@
 package com.algorand.android.models
 
 import android.os.Parcelable
-import com.algorand.android.R
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.calculateMinBalance
+import com.algorand.android.utils.getAccountImageResource
+import com.algorand.android.utils.isRekeyedToAnotherAccount
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -29,7 +30,7 @@ data class AccountCacheData(
         get() = accountInformation.rekeyAdminAddress
 
     fun isRekeyedToAnotherAccount(): Boolean {
-        return !authAddress.isNullOrBlank() && authAddress != account.address
+        return isRekeyedToAnotherAccount(authAddress, account.address)
     }
 
     fun addAssetsPendingForAddition(previousAssets: List<AssetInformation>?) {
@@ -55,15 +56,7 @@ data class AccountCacheData(
     }
 
     fun getImageResource(): Int {
-        if (account.type != Account.Type.WATCH && isRekeyedToAnotherAccount()) {
-            return R.drawable.ic_rekeyed_ledger
-        }
-        return when (account.type) {
-            Account.Type.STANDARD -> R.drawable.ic_standard_account
-            Account.Type.LEDGER -> R.drawable.ic_ledger_vectorized
-            Account.Type.WATCH -> R.drawable.ic_watch_account
-            else -> R.drawable.ic_ledger_vectorized
-        }
+        return getAccountImageResource(account.type, isRekeyedToAnotherAccount())
     }
 
     fun getMinBalance(): Long {

@@ -78,7 +78,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/accountSummaryContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -86,10 +86,12 @@
         android:layout_marginTop="14dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/bg_on_primary_8dp_radius"
+        android:orientation="horizontal"
         android:paddingHorizontal="12dp"
         android:paddingVertical="10dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:gravity="center_vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/transactionsAmountTextView"
@@ -100,12 +102,6 @@
             android:id="@+id/transactionAccountTypeImageView"
             android:layout_width="16dp"
             android:layout_height="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/transactionAccountNameTextView"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/ic_wallet" />
 
         <TextView
@@ -118,12 +114,6 @@
             android:maxLines="1"
             android:textColor="@color/gray_59"
             android:textSize="12sp"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/dotImageView"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toEndOf="@+id/transactionAccountTypeImageView"
-            app:layout_constraintTop_toTopOf="parent"
             tools:text="@tools:sample/lorem[3]" />
 
         <ImageView
@@ -131,12 +121,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
-            android:src="@drawable/ic_dot"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/accountBalanceTextView"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toEndOf="@+id/transactionAccountNameTextView"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:src="@drawable/ic_dot" />
 
         <com.algorand.android.customviews.TransactionAmountTextView
             android:id="@+id/accountBalanceTextView"
@@ -147,18 +132,12 @@
             app:amountFontFamily="@font/publicsans_regular"
             app:amountTextViewSize="12sp"
             app:defaultTintColor="@color/gray_59"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toEndOf="@+id/dotImageView"
-            app:layout_constraintTop_toTopOf="parent"
             app:otherAssetFontFamily="@font/publicsans_regular"
             app:otherAssetTextViewSize="12sp"
             app:showOperator="false"
             tools:amountFontFamily="@null"
             tools:otherAssetFontFamily="@null" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </merge>

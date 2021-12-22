@@ -15,6 +15,8 @@ package com.algorand.android.mapper
 import com.algorand.android.models.BaseAssetTransferTransaction
 import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.WCAlgoTransactionRequest
+import com.algorand.android.models.WalletConnectAccount
+import com.algorand.android.models.WalletConnectAssetInformation
 import com.algorand.android.models.WalletConnectPeerMeta
 import com.algorand.android.models.WalletConnectSigner
 import com.algorand.android.models.WalletConnectTransactionRequest
@@ -62,6 +64,7 @@ class AssetTransferTransactionMapper @Inject constructor(
     ): BaseAssetTransferTransaction.AssetTransferTransactionWithClose? {
         return with(transactionRequest) {
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
+            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
             BaseAssetTransferTransaction.AssetTransferTransactionWithClose(
                 rawTransactionPayload = rawTransaction,
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
@@ -73,7 +76,11 @@ class AssetTransferTransactionMapper @Inject constructor(
                 assetCloseToAddress = createWalletConnectAddress(assetCloseToAddress) ?: return null,
                 signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
                 assetAmount = assetAmount ?: ZERO,
-                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
+                authAddress = accountCacheData?.authAddress,
+                account = WalletConnectAccount.create(accountCacheData?.account),
+                assetInformation = WalletConnectAssetInformation.create(
+                    accountCacheData?.assetsInformation?.find { it.assetId == assetId }
+                ),
                 groupId = groupId
             )
         }
@@ -86,6 +93,7 @@ class AssetTransferTransactionMapper @Inject constructor(
     ): BaseAssetTransferTransaction.AssetTransferTransactionWithRekey? {
         return with(transactionRequest) {
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
+            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
             BaseAssetTransferTransaction.AssetTransferTransactionWithRekey(
                 rawTransactionPayload = rawTransaction,
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
@@ -97,7 +105,11 @@ class AssetTransferTransactionMapper @Inject constructor(
                 rekeyAddress = createWalletConnectAddress(rekeyAddress) ?: return null,
                 signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
                 assetAmount = assetAmount ?: ZERO,
-                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
+                authAddress = accountCacheData?.authAddress,
+                account = WalletConnectAccount.create(accountCacheData?.account),
+                assetInformation = WalletConnectAssetInformation.create(
+                    accountCacheData?.assetsInformation?.find { it.assetId == assetId }
+                ),
                 groupId = groupId
             )
         }
@@ -110,6 +122,7 @@ class AssetTransferTransactionMapper @Inject constructor(
     ): BaseAssetTransferTransaction.AssetTransferTransactionWithRekeyAndClose? {
         return with(transactionRequest) {
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
+            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
             BaseAssetTransferTransaction.AssetTransferTransactionWithRekeyAndClose(
                 rawTransactionPayload = rawTransaction,
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
@@ -121,7 +134,11 @@ class AssetTransferTransactionMapper @Inject constructor(
                 rekeyAddress = createWalletConnectAddress(rekeyAddress) ?: return null,
                 signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
                 assetAmount = assetAmount ?: ZERO,
-                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
+                authAddress = accountCacheData?.authAddress,
+                account = WalletConnectAccount.create(accountCacheData?.account),
+                assetInformation = WalletConnectAssetInformation.create(
+                    accountCacheData?.assetsInformation?.find { it.assetId == assetId }
+                ),
                 closeAddress = createWalletConnectAddress(assetCloseToAddress) ?: return null,
                 groupId = groupId
             )
@@ -135,6 +152,7 @@ class AssetTransferTransactionMapper @Inject constructor(
     ): BaseAssetTransferTransaction.AssetTransferTransaction? {
         return with(transactionRequest) {
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
+            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
             BaseAssetTransferTransaction.AssetTransferTransaction(
                 rawTransactionPayload = rawTransaction,
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
@@ -145,7 +163,11 @@ class AssetTransferTransactionMapper @Inject constructor(
                 peerMeta = peerMeta,
                 assetAmount = assetAmount ?: ZERO,
                 signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
-                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
+                authAddress = accountCacheData?.authAddress,
+                account = WalletConnectAccount.create(accountCacheData?.account),
+                assetInformation = WalletConnectAssetInformation.create(
+                    accountCacheData?.assetsInformation?.find { it.assetId == assetId }
+                ),
                 groupId = groupId
             )
         }
@@ -158,6 +180,7 @@ class AssetTransferTransactionMapper @Inject constructor(
     ): BaseAssetTransferTransaction.AssetOptInTransaction? {
         return with(transactionRequest) {
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
+            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
             BaseAssetTransferTransaction.AssetOptInTransaction(
                 rawTransactionPayload = rawTransaction,
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
@@ -167,7 +190,11 @@ class AssetTransferTransactionMapper @Inject constructor(
                 assetId = assetId ?: return null,
                 peerMeta = peerMeta,
                 signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
-                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
+                authAddress = accountCacheData?.authAddress,
+                account = WalletConnectAccount.create(accountCacheData?.account),
+                assetInformation = WalletConnectAssetInformation.create(
+                    accountCacheData?.assetsInformation?.find { it.assetId == assetId }
+                ),
                 groupId = groupId
             )
         }

@@ -75,11 +75,11 @@ class WalletConnectAssetTransactionViewModel @ViewModelInject constructor(
             val decodedSenderAddress = senderAddress.decodedAddress ?: return
             val accountCache = accountCacheManager.getCacheData(decodedSenderAddress)
             val transactionInfo = WalletConnectTransactionInfo(
-                BaseWalletConnectDisplayedAddress.create(decodedSenderAddress, accountCacheData),
+                BaseWalletConnectDisplayedAddress.create(decodedSenderAddress, account),
                 peerMeta.name,
                 accountCache?.getImageResource(),
                 accountCacheManager.getAssetInformation(decodedSenderAddress, assetId)?.amount,
-                assetParams?.convertToAssetInformation(assetId),
+                assetParams?.convertToWalletConnectAssetInformation(assetId),
                 formattedRekeyToAccountAddress,
                 formattedCloseToAccountAddress,
                 assetDecimal

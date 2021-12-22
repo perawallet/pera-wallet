@@ -22,7 +22,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.navGraphViewModels
 import com.algorand.algosdk.mobile.Mobile
 import com.algorand.android.MainNavigationDirections
 import com.algorand.android.MainViewModel
@@ -41,7 +40,7 @@ import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.ui.qr.QrCodeScannerFragment
 import com.algorand.android.ui.qr.QrCodeScannerFragment.Companion.QR_SCAN_RESULT_KEY
-import com.algorand.android.ui.register.LoginNavigationViewModel
+import com.algorand.android.models.AccountCreation
 import com.algorand.android.ui.register.recover.RecoverOptionsBottomSheet.Companion.RESULT_KEY
 import com.algorand.android.ui.register.recover.RecoverWithPassphraseFragmentDirections.Companion.actionGlobalToHomeNavigation
 import com.algorand.android.ui.register.recover.RecoverWithPassphraseFragmentDirections.Companion.actionRecoverWithPassphraseFragmentToQrCodeScannerFragment
@@ -81,10 +80,6 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
 
     private val recoverWithPassphraseViewModel: RecoverWithPassphraseViewModel by viewModels()
 
-    private val loginNavigationViewModel: LoginNavigationViewModel by navGraphViewModels(R.id.loginNavigation) {
-        defaultViewModelProviderFactory
-    }
-
     private val mainViewModel: MainViewModel by activityViewModels()
 
     private val binding by viewBinding(FragmentRecoverWithPassphraseBinding::bind)
@@ -92,6 +87,8 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
     private var keyboardToggleListener: KeyboardToggleListener? = null
 
     private var passphraseInput: PassphraseInput? = null
+
+    private lateinit var accountCreation: AccountCreation
 
     private val onKeyboardToggleAction: (shown: Boolean) -> Unit = { keyboardShown ->
         if (keyboardShown && passphraseInput != null) {
@@ -193,7 +190,7 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
     }
 
     private fun handleNextNavigation() {
-        mainViewModel.addAccount(loginNavigationViewModel.tempAccount, loginNavigationViewModel.creationType)
+        mainViewModel.addAccount(accountCreation.tempAccount, accountCreation.creationType)
         nav(actionGlobalToHomeNavigation())
     }
 
@@ -279,7 +276,7 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
                 val recoveredAccount = Account.create(
                     publicKey, Account.Detail.Standard(privateKey), publicKey.toShortenedAddress()
                 )
-                loginNavigationViewModel.setTempAccount(recoveredAccount, CreationType.RECOVER)
+                accountCreation = AccountCreation(recoveredAccount, CreationType.RECOVER)
                 navigateToSuccess()
             }
         } catch (exception: Exception) {

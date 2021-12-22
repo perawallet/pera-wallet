@@ -20,7 +20,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import com.algorand.android.R
 import com.algorand.android.databinding.CustomWalletConnectTransactionSummaryViewBinding
-import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
 import com.algorand.android.models.BaseAppCallTransaction
 import com.algorand.android.models.BaseAssetConfigurationTransaction
 import com.algorand.android.models.BaseAssetTransferTransaction
@@ -76,19 +75,15 @@ class WalletConnectTransactionSummaryCardView(
     }
 
     private fun setAccountBalance(transaction: BaseWalletConnectTransaction) {
-        if (transaction.accountCacheData == null || transaction is BaseAppCallTransaction) return
-        val transactionAssetId = when (transaction) {
-            is BaseAssetTransferTransaction -> transaction.assetId
-            is BasePaymentTransaction -> ALGORAND_ID
-            else -> null
-        }
+        if (transaction.account == null || transaction is BaseAppCallTransaction) return
         with(binding) {
-            with(transaction.accountCacheData!!) {
-                val accountName = account.name.takeIf { it.isNotBlank() } ?: account.address.toShortenedAddress()
+            with(transaction) {
+                val accountName = account?.name.takeIf { it?.isNotBlank() == true }
+                    ?: account?.address.toShortenedAddress()
                 transactionAccountNameTextView.text = accountName
-                transactionAccountTypeImageView.setImageResource(getImageResource())
-                assetsInformation.firstOrNull { it.assetId == transactionAssetId }?.run {
-                    accountBalanceTextView.setAmount(amount, decimals, isAlgorand(), shortName)
+                transactionAccountTypeImageView.setImageResource(getAccountImageResource())
+                assetInformation?.run {
+                    accountBalanceTextView.setAmount(amount, assetDecimal, isAlgorand, shortName)
                 } ?: run {
                     if (transaction is BaseAssetTransferTransaction) {
                         accountBalanceTextView.setAssetName(transaction.assetParams?.shortName.orEmpty(), false)
@@ -104,11 +99,11 @@ class WalletConnectTransactionSummaryCardView(
             with(transaction) {
                 when (this) {
                     is BaseAssetConfigurationTransaction.BaseAssetCreationTransaction -> {
-                        accountCacheData?.let {
-                            val accountName = it.account.name.takeIf { it.isNotBlank() }
-                                ?: it.account.address.toShortenedAddress()
+                        account?.let {
+                            val accountName = it.name.takeIf { it?.isNotBlank() == true }
+                                ?: it.address.toShortenedAddress()
                             transactionAccountNameTextView.text = accountName
-                            transactionAccountTypeImageView.setImageResource(it.getImageResource())
+                            transactionAccountTypeImageView.setImageResource(getAccountImageResource())
                             transactionsAmountTextView.setAssetName(getAssetName(context))
                             accountSummaryContainer.visibility = View.VISIBLE
                             dotImageView.visibility = View.GONE
@@ -122,11 +117,11 @@ class WalletConnectTransactionSummaryCardView(
                         }
                     }
                     is BaseAssetConfigurationTransaction.BaseAssetDeletionTransaction -> {
-                        accountCacheData?.let {
-                            val accountName = it.account.name.takeIf { it.isNotBlank() }
-                                ?: it.account.address.toShortenedAddress()
+                        account?.let {
+                            val accountName = it.name.takeIf { it?.isNotBlank() == true }
+                                ?: it.address.toShortenedAddress()
                             transactionAccountNameTextView.text = accountName
-                            transactionAccountTypeImageView.setImageResource(it.getImageResource())
+                            transactionAccountTypeImageView.setImageResource(getAccountImageResource())
                             accountSummaryContainer.visibility = View.VISIBLE
                             dotImageView.visibility = View.GONE
                         }
@@ -134,15 +129,15 @@ class WalletConnectTransactionSummaryCardView(
                         transactionsAmountTextView.setAssetName(formattedAssetId)
                     }
                     is BaseAssetConfigurationTransaction.BaseAssetReconfigurationTransaction -> {
-                        accountCacheData?.let {
-                            val accountName = it.account.name.takeIf { it.isNotBlank() }
-                                ?: it.account.address.toShortenedAddress()
+                        account?.let {
+                            val accountName = it.name.takeIf { it?.isNotBlank() == true }
+                                ?: it.address.toShortenedAddress()
                             transactionAccountNameTextView.text = accountName
-                            transactionAccountTypeImageView.setImageResource(it.getImageResource())
+                            transactionAccountTypeImageView.setImageResource(getAccountImageResource())
                             accountSummaryContainer.visibility = View.VISIBLE
                             dotImageView.visibility = View.GONE
                         }
-                        val assetName = accountCacheData?.getAssetInfoById(assetId).takeIf { !it.isNullOrBlank() }
+                        val assetName = assetInformation?.fullName.takeIf { !it.isNullOrBlank() }
                             ?: assetParams?.fullName ?: return
                         transactionsAmountTextView.setAssetName(assetName)
                     }

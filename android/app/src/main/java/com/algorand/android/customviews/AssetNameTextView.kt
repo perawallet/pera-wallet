@@ -23,6 +23,7 @@ import androidx.core.view.isVisible
 import com.algorand.android.R
 import com.algorand.android.databinding.CustomAssetNameBinding
 import com.algorand.android.models.AssetInformation
+import com.algorand.android.models.WalletConnectAssetInformation
 import com.algorand.android.utils.addUnnamedAssetName
 import com.algorand.android.utils.viewbinding.viewBinding
 import java.util.Locale
@@ -93,6 +94,12 @@ class AssetNameTextView @JvmOverloads constructor(
             View.VISIBLE
         } else {
             View.GONE
+        }
+    }
+
+    fun setupUI(assetInformation: WalletConnectAssetInformation, addDotSeparator: Boolean = true) {
+        with(assetInformation) {
+            setupUI(isVerified, shortName, fullName, assetId, isAlgorand, addDotSeparator)
         }
     }
 

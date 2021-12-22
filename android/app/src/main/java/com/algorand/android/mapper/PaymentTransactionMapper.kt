@@ -12,9 +12,12 @@
 
 package com.algorand.android.mapper
 
+import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
 import com.algorand.android.models.BasePaymentTransaction
 import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.WCAlgoTransactionRequest
+import com.algorand.android.models.WalletConnectAccount
+import com.algorand.android.models.WalletConnectAssetInformation
 import com.algorand.android.models.WalletConnectPeerMeta
 import com.algorand.android.models.WalletConnectSigner
 import com.algorand.android.models.WalletConnectTransactionRequest
@@ -57,6 +60,7 @@ class PaymentTransactionMapper @Inject constructor(
     ): BasePaymentTransaction.PaymentTransactionWithRekeyAndClose? {
         return with(transactionRequest) {
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
+            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
             BasePaymentTransaction.PaymentTransactionWithRekeyAndClose(
                 rawTransactionPayload = rawTransaction,
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
@@ -68,7 +72,11 @@ class PaymentTransactionMapper @Inject constructor(
                 closeToAddress = createWalletConnectAddress(closeToAddress) ?: return null,
                 rekeyToAddress = createWalletConnectAddress(rekeyAddress) ?: return null,
                 signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
-                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
+                authAddress = accountCacheData?.authAddress,
+                account = WalletConnectAccount.create(accountCacheData?.account),
+                assetInformation = WalletConnectAssetInformation.create(
+                    accountCacheData?.assetsInformation?.find { it.assetId == ALGORAND_ID }
+                ),
                 groupId = groupId
             )
         }
@@ -81,6 +89,7 @@ class PaymentTransactionMapper @Inject constructor(
     ): BasePaymentTransaction.PaymentTransactionWithRekey? {
         return with(transactionRequest) {
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
+            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
             BasePaymentTransaction.PaymentTransactionWithRekey(
                 rawTransactionPayload = rawTransaction,
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
@@ -91,7 +100,11 @@ class PaymentTransactionMapper @Inject constructor(
                 peerMeta = peerMeta,
                 rekeyToAddress = createWalletConnectAddress(rekeyAddress) ?: return null,
                 signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
-                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
+                authAddress = accountCacheData?.authAddress,
+                account = WalletConnectAccount.create(accountCacheData?.account),
+                assetInformation = WalletConnectAssetInformation.create(
+                    accountCacheData?.assetsInformation?.find { it.assetId == ALGORAND_ID }
+                ),
                 groupId = groupId
             )
         }
@@ -104,6 +117,7 @@ class PaymentTransactionMapper @Inject constructor(
     ): BasePaymentTransaction.PaymentTransactionWithClose? {
         return with(transactionRequest) {
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
+            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
             BasePaymentTransaction.PaymentTransactionWithClose(
                 rawTransactionPayload = rawTransaction,
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
@@ -114,7 +128,11 @@ class PaymentTransactionMapper @Inject constructor(
                 peerMeta = peerMeta,
                 closeToAddress = createWalletConnectAddress(closeToAddress) ?: return null,
                 signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
-                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
+                authAddress = accountCacheData?.authAddress,
+                account = WalletConnectAccount.create(accountCacheData?.account),
+                assetInformation = WalletConnectAssetInformation.create(
+                    accountCacheData?.assetsInformation?.find { it.assetId == ALGORAND_ID }
+                ),
                 groupId = groupId
             )
         }
@@ -127,6 +145,7 @@ class PaymentTransactionMapper @Inject constructor(
     ): BasePaymentTransaction.PaymentTransaction? {
         return with(transactionRequest) {
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
+            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
             BasePaymentTransaction.PaymentTransaction(
                 rawTransactionPayload = rawTransaction,
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
@@ -136,7 +155,11 @@ class PaymentTransactionMapper @Inject constructor(
                 receiverAddress = createWalletConnectAddress(receiverAddress) ?: return null,
                 peerMeta = peerMeta,
                 signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
-                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
+                authAddress = accountCacheData?.authAddress,
+                account = WalletConnectAccount.create(accountCacheData?.account),
+                assetInformation = WalletConnectAssetInformation.create(
+                    accountCacheData?.assetsInformation?.find { it.assetId == ALGORAND_ID }
+                ),
                 groupId = groupId
             )
         }

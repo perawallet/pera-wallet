@@ -18,6 +18,7 @@ import com.algorand.android.models.BaseAssetConfigurationTransaction.BaseAssetCr
 import com.algorand.android.models.BaseAssetConfigurationTransaction.BaseAssetCreationTransaction.Companion.isTransactionWithCloseToAndRekeyed
 import com.algorand.android.models.BaseAssetConfigurationTransaction.BaseAssetCreationTransaction.Companion.isTransactionWithRekeyed
 import com.algorand.android.models.WCAlgoTransactionRequest
+import com.algorand.android.models.WalletConnectAccount
 import com.algorand.android.models.WalletConnectPeerMeta
 import com.algorand.android.models.WalletConnectSigner
 import com.algorand.android.models.WalletConnectTransactionRequest
@@ -61,6 +62,7 @@ class BaseAssetCreationTransactionMapper @Inject constructor(
     ): BaseAssetCreationTransaction.AssetCreationTransaction? {
         return with(transactionRequest) {
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
+            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
             BaseAssetCreationTransaction.AssetCreationTransaction(
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 senderAddress = senderWalletConnectAddress ?: return null,
@@ -68,7 +70,8 @@ class BaseAssetCreationTransactionMapper @Inject constructor(
                 peerMeta = peerMeta,
                 rawTransactionPayload = rawTxn,
                 signer = WalletConnectSigner.create(rawTxn, senderWalletConnectAddress, errorProvider),
-                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
+                authAddress = accountCacheData?.authAddress,
+                account = WalletConnectAccount.create(accountCacheData?.account),
                 totalAmount = assetConfigParams?.totalSupply ?: BigInteger.ZERO,
                 decimals = assetConfigParams?.decimal ?: 0,
                 isFrozen = assetConfigParams?.isFrozen ?: false,
@@ -92,6 +95,7 @@ class BaseAssetCreationTransactionMapper @Inject constructor(
     ): BaseAssetCreationTransaction.AssetCreationTransactionWithCloseTo? {
         return with(transactionRequest) {
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
+            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
             BaseAssetCreationTransaction.AssetCreationTransactionWithCloseTo(
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 senderAddress = senderWalletConnectAddress ?: return null,
@@ -99,7 +103,8 @@ class BaseAssetCreationTransactionMapper @Inject constructor(
                 peerMeta = peerMeta,
                 rawTransactionPayload = rawTxn,
                 signer = WalletConnectSigner.create(rawTxn, senderWalletConnectAddress, errorProvider),
-                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
+                authAddress = accountCacheData?.authAddress,
+                account = WalletConnectAccount.create(accountCacheData?.account),
                 closeToAddress = createWalletConnectAddress(closeToAddress) ?: return null,
                 totalAmount = assetConfigParams?.totalSupply ?: BigInteger.ZERO,
                 decimals = assetConfigParams?.decimal ?: 0,
@@ -124,6 +129,7 @@ class BaseAssetCreationTransactionMapper @Inject constructor(
     ): BaseAssetCreationTransaction.AssetCreationTransactionWithCloseToAndRekey? {
         return with(transactionRequest) {
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
+            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
             BaseAssetCreationTransaction.AssetCreationTransactionWithCloseToAndRekey(
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 senderAddress = senderWalletConnectAddress ?: return null,
@@ -131,7 +137,8 @@ class BaseAssetCreationTransactionMapper @Inject constructor(
                 peerMeta = peerMeta,
                 rawTransactionPayload = rawTxn,
                 signer = WalletConnectSigner.create(rawTxn, senderWalletConnectAddress, errorProvider),
-                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
+                authAddress = accountCacheData?.authAddress,
+                account = WalletConnectAccount.create(accountCacheData?.account),
                 closeToAddress = createWalletConnectAddress(closeToAddress) ?: return null,
                 rekeyAddress = createWalletConnectAddress(rekeyAddress) ?: return null,
                 totalAmount = assetConfigParams?.totalSupply ?: BigInteger.ZERO,
@@ -157,6 +164,7 @@ class BaseAssetCreationTransactionMapper @Inject constructor(
     ): BaseAssetCreationTransaction.AssetCreationTransactionWithRekey? {
         return with(transactionRequest) {
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
+            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
             BaseAssetCreationTransaction.AssetCreationTransactionWithRekey(
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 senderAddress = senderWalletConnectAddress ?: return null,
@@ -164,7 +172,8 @@ class BaseAssetCreationTransactionMapper @Inject constructor(
                 peerMeta = peerMeta,
                 rawTransactionPayload = rawTxn,
                 signer = WalletConnectSigner.create(rawTxn, senderWalletConnectAddress, errorProvider),
-                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
+                authAddress = accountCacheData?.authAddress,
+                account = WalletConnectAccount.create(accountCacheData?.account),
                 rekeyAddress = createWalletConnectAddress(rekeyAddress) ?: return null,
                 totalAmount = assetConfigParams?.totalSupply ?: BigInteger.ZERO,
                 decimals = assetConfigParams?.decimal ?: 0,

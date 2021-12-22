@@ -18,17 +18,21 @@ import com.algorand.android.models.AnnotatedString
 class SingleButtonBottomSheet : BaseSingleButtonBottomSheet() {
 
     private val args: SingleButtonBottomSheetArgs by navArgs()
-
+    // TODO: Use theme instead of passing all individually
     override val titleResId: Int
         get() = args.titleResId
     override val iconDrawableResId: Int
         get() = args.drawableResId
+    override val iconDrawableTintResId: Int
+        get() = args.drawableTintResId
     override val descriptionAnnotatedString: AnnotatedString
         get() = args.descriptionAnnotatedString
     override val imageBackgroundTintResId: Int
         get() = args.imageBackgroundTintResId
     override val buttonTextResId: Int
         get() = args.buttonTextResId
+    override val buttonTextColorResId: Int
+        get() = args.buttonTextColorResId
     override val buttonBackgroundTintResId: Int
         get() = args.buttonBackgroundTintResId
 

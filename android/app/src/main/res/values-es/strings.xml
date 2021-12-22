@@ -308,7 +308,7 @@
     <string name="the_account_name">Se cambió con éxito la clave de la cuenta <annotation font="publicsans_bold">\"<annotation replacement="account_name"> </annotation>\"</annotation>.</string>
     <string name="just_now">Recién</string>
     <string name="asset_support_success"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> agregó <annotation replacement="asset">assetPlaceholder</annotation> a su cuenta. Puedes enviarle <annotation replacement="asset">assetPlaceholder</annotation>.</string>
-    <string name="asset_support_request"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> quiere enviarte <annotation replacement="asset">assetPlaceholder</annotation>, pero no lo tienes en tu cuenta. Si lo deseas, podemos agregarlo a tu cuenta.</string>
+    <string name="asset_support_request"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> está intentando enviarte <annotation replacement="asset">assetPlaceholder</annotation>, pero no tienes ese activo habilitado. Pulsa aquí para agregar este activo a tu cuenta.</string>
     <string name="transaction_send_successful">Se completó la transacción de <annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> de <annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> para <annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>.</string>
     <string name="transaction_send_failed">Falló la transacción <annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> de <annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> para <annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>.</string>
     <string name="transaction_received"><annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> se enviaron a <annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> de <annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>.</string>
@@ -602,11 +602,24 @@
     <string name="signing_error_transaction_in_request">Error de firma: Una transacción en la solicitud de transacción requiere una clave privada (firmante) que no existe en el monedero conectado.</string>
     <string name="transaction_request_contains_unsupported">La solicitud de transacción contiene un tipo de transacción no admitido</string>
     <string name="transaction_request_contains_unsupported_multisig">La solicitud de transacción contiene un tipo de transacción no admitido: Multifirma</string>
-    <string name="invalid_input_transaction_request">Entrada inválida: La solicitud de transacción contiene más de 16 transacciones</string>
+    <string name="invalid_input_transaction_request">Entrada inválida: La solicitud de transacción contiene más de %1$d transacciones</string>
     <string name="invalid_input_unable_to_parse">Entrada inválida: No se pudo analizar la transacción</string>
     <string name="invalid_input_invalid_public_key">Entrada inválida: Clave pública no válida</string>
     <string name="invalid_input_invalid_asset">Entrada inválida: Activo no válido</string>
     <string name="invalid_input_unable_to_be">Entrada inválida: No se puede firmar</string>
     <string name="invalid_input_group_transaction">Entrada inválida: La transacción en grupo no necesita ser firmada por el usuario del monedero. </string>
     <string name="invalid_input_requested_signer">Entrada inválida: El firmante solicitado no está en la monedero del usuario</string>
+    <string name="pairing_ledger_with_your">Emparejar el Ledger con tu dispositivo</string>
+    <string name="open_your_ledger">Abre tu dispositivo Ledger.</string>
+    <string name="close_the_algorand_app">Cierra la aplicación de Algorand en el dispositivo Ledger.</string>
+    <string name="on_the_ledger_home_screen">Confirma el emparejamiento en la pantalla de inicio del Ledger.</string>
+    <string name="once_pairing_is_confirmed">Una vez confirmado el emparejamiento, abre la aplicación Ledger de Algorand.</string>
+    <string name="pairing_failed">Error de emparejamiento.</string>
+    <string name="after_confirming_pairing_on">Después de confirmar el emparejamiento en tu dispositivo Ledger, abre la aplicación Algorand.</string>
+    <string name="ledger_not_found">No se encontró el Ledger</string>
+    <string name="if_you_are_having_ledger">Si tienes problemas de conexión con tu dispositivo Ledger Nano X, elimina el dispositivo de la configuración de Bluetooth de tu teléfono, elimina la cuenta de Ledger y vuelve a emparejar tu Ledger siguiendo las instrucciones del monedero Algorand.</string>
+    <string name="open_ledger_support">Abrir el soporte de Ledger</string>
+    <string name="please_follow_these_steps">Sigue estos pasos:</string>
+    <string name="having_ledger_nano_x">¿Tienes problemas de conexión con el Ledger Nano X?</string>
+    <string name="make_sure_the_device_is">Asegúrate de que el dispositivo esté desbloqueado, cerca y de que tenga el Bluetooth activado. Si sigues teniendo problemas, elimina el dispositivo desde la configuración de Bluetooth de tu teléfono, elimina la cuenta de Ledger y vuelve a emparejar tu Ledger siguiendo las instrucciones del monedero Algorand.</string>
 </resources>

@@ -13,7 +13,6 @@
 package com.algorand.android.ledger.operations
 
 import android.bluetooth.BluetoothDevice
-import com.algorand.android.models.AccountCacheData
 import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.TransactionData
@@ -40,7 +39,7 @@ sealed class BaseTransactionOperation(
 
     abstract val transactionByteArray: ByteArray?
 
-    abstract val accountCacheData: AccountCacheData?
+    abstract val isRekeyedToAnotherAccount: Boolean
 
     abstract val accountAddress: String
 
@@ -55,14 +54,14 @@ data class TransactionOperation(
     override val transactionByteArray: ByteArray?
         get() = transactionData.transactionByteArray
 
-    override val accountCacheData: AccountCacheData
-        get() = transactionData.accountCacheData
-
     override val accountAddress: String
         get() = transactionData.accountCacheData.account.address
 
     override val accountAuthAddress: String?
         get() = transactionData.accountCacheData.authAddress
+
+    override val isRekeyedToAnotherAccount: Boolean
+        get() = transactionData.accountCacheData.isRekeyedToAnotherAccount()
 }
 
 data class WalletConnectTransactionOperation(
@@ -73,12 +72,12 @@ data class WalletConnectTransactionOperation(
     override val transactionByteArray: ByteArray?
         get() = transaction.decodedTransaction
 
-    override val accountCacheData: AccountCacheData?
-        get() = transaction.accountCacheData
-
     override val accountAddress: String
         get() = transaction.signer.address?.decodedAddress.orEmpty()
 
     override val accountAuthAddress: String?
-        get() = transaction.accountCacheData?.authAddress
+        get() = transaction.authAddress
+
+    override val isRekeyedToAnotherAccount: Boolean
+        get() = transaction.isRekeyedToAnotherAccount()
 }

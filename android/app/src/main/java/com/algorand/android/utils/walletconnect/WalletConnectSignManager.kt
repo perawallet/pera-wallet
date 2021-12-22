@@ -129,10 +129,10 @@ class WalletConnectSignManager @Inject constructor(
         accountDetail: Account.Detail,
         checkIfRekeyed: Boolean = true
     ) {
-        if (checkIfRekeyed && accountCacheData?.isRekeyedToAnotherAccount() == true) {
+        if (checkIfRekeyed && isRekeyedToAnotherAccount()) {
             when (accountDetail) {
                 is RekeyedAuth -> {
-                    accountDetail.rekeyedAuthDetail[accountCacheData?.authAddress].let { rekeyedAuthDetail ->
+                    accountDetail.rekeyedAuthDetail[authAddress].let { rekeyedAuthDetail ->
                         if (rekeyedAuthDetail != null) {
                             signTransaction(rekeyedAuthDetail, false)
                         } else {
@@ -180,7 +180,7 @@ class WalletConnectSignManager @Inject constructor(
 
     private fun BaseWalletConnectTransaction.processWithCheckingOtherAccounts() {
         when (
-            val authAccountDetail = accountCacheManager.getCacheData(accountCacheData?.authAddress)?.account?.detail
+            val authAccountDetail = accountCacheManager.getCacheData(authAddress)?.account?.detail
         ) {
             is Standard -> signHelper.cacheSignedTransaction(decodedTransaction?.signTx(authAccountDetail.secretKey))
             is Ledger -> sendTransactionWithLedger(authAccountDetail)

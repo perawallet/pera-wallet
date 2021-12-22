@@ -117,6 +117,20 @@ class AssetDetailFragment : DaggerBaseFragment(R.layout.fragment_asset_detail), 
         }
     }
 
+    private val onCardPageChangeListener = object : OnPageChangeCallback() {
+        override fun onPageSelected(position: Int) {
+            super.onPageSelected(position)
+            selectedAsset = accountCacheData.assetsInformation[position]
+            assetDetailViewModel.start(args.address, selectedAsset)
+            initTransactionRecyclerView()
+            assetDetailViewModel.assetFilterLiveData.postValue(selectedAsset)
+            if (view != null) {
+                assetDetailViewModel.balanceLiveData?.observe(viewLifecycleOwner, balanceObserver)
+            }
+            firebaseAnalytics.get().logAssetDetailChange(selectedAsset.assetId)
+        }
+    }
+
     // <editor-fold defaultstate="collapsed" desc="Observers">
 
     // <editor-fold defaultstate="collapsed" desc="BalanceObservers">
@@ -256,21 +270,11 @@ class AssetDetailFragment : DaggerBaseFragment(R.layout.fragment_asset_detail), 
             orientation = ORIENTATION_HORIZONTAL
             offscreenPageLimit = OFFSCREEN_PAGE_LIMIT_DEFAULT
             adapter = assetCardPagerAdapter
+            registerOnPageChangeCallback(onCardPageChangeListener)
             setPageTransformer(MarginPageTransformer(resources.getDimensionPixelSize(R.dimen.card_margin)))
             val selectedAssetIndex =
                 accountCacheData.assetsInformation.indexOfFirst { it.assetId == selectedAsset.assetId }
             post { currentItem = selectedAssetIndex }
-            registerOnPageChangeCallback(object : OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-                    selectedAsset = accountCacheData.assetsInformation[position]
-                    assetDetailViewModel.start(args.address, selectedAsset)
-                    assetDetailViewModel.balanceLiveData?.observe(viewLifecycleOwner, balanceObserver)
-                    initTransactionRecyclerView()
-                    assetDetailViewModel.assetFilterLiveData.postValue(selectedAsset)
-                    firebaseAnalytics.get().logAssetDetailChange(selectedAsset.assetId)
-                }
-            })
         }
         if (accountCacheData.assetsInformation.size > 1) {
             binding.pageIndicator.visibility = View.VISIBLE
@@ -424,8 +428,10 @@ class AssetDetailFragment : DaggerBaseFragment(R.layout.fragment_asset_detail), 
     }
 
     private fun onNewPendingItemInserted() {
-        binding.emptyListView.visibility = View.GONE
-        binding.historyList.scrollToPosition(0)
+        if (view != null) {
+            binding.emptyListView.visibility = View.GONE
+            binding.historyList.scrollToPosition(0)
+        }
     }
 
     private fun onShareClick() {

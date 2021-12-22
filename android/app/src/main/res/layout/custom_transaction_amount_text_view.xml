@@ -16,16 +16,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    tools:parentTag="android.widget.LinearLayout">
 
     <ImageView
         android:id="@+id/algoLogoImageView"
         android:layout_width="12dp"
         android:layout_height="12dp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_currency_logo"
         tools:visibility="visible" />
 
@@ -37,11 +36,6 @@
         android:layout_marginStart="4dp"
         android:includeFontPadding="false"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toEndOf="@+id/algoLogoImageView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_goneMarginStart="0dp"
         tools:text="+"
         tools:visibility="visible" />
 
@@ -54,11 +48,6 @@
         android:includeFontPadding="false"
         android:maxLines="1"
         android:textSize="16sp"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/transactionOperatorTextView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_goneMarginStart="8dp"
         tools:text="1,000,005.202" />
 
     <TextView
@@ -71,19 +60,7 @@
         android:includeFontPadding="false"
         android:maxLines="1"
         android:textSize="14sp"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/transactionAmountTextView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_goneMarginStart="0dp"
         tools:text="EVAN" />
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/balanceGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="
-        transactionOperatorTextView,
-        transactionAmountTextView" />
 </merge>
 

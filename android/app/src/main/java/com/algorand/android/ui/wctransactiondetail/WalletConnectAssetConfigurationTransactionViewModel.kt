@@ -15,11 +15,11 @@ package com.algorand.android.ui.wctransactiondetail
 
 import androidx.hilt.lifecycle.ViewModelInject
 import com.algorand.android.models.AssetHolding
-import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.AssetParams
 import com.algorand.android.models.BaseAssetConfigurationTransaction
 import com.algorand.android.models.BaseWalletConnectDisplayedAddress
 import com.algorand.android.models.WalletConnectAccountsInfo
+import com.algorand.android.models.WalletConnectAssetInformation
 import com.algorand.android.models.WalletConnectExtras
 import com.algorand.android.models.WalletConnectTransactionInfo
 import com.algorand.android.network.AlgodInterceptor
@@ -36,7 +36,7 @@ class WalletConnectAssetConfigurationTransactionViewModel @ViewModelInject const
         val transactionInfo = with(transaction) {
             val decodedSenderAddress = senderAddress.decodedAddress ?: return
             val accountCache = accountCacheManager.getCacheData(decodedSenderAddress)
-            val fromDisplayAddress = BaseWalletConnectDisplayedAddress.create(decodedSenderAddress, accountCacheData)
+            val fromDisplayAddress = BaseWalletConnectDisplayedAddress.create(decodedSenderAddress, account)
 
             when (this) {
                 // TODO: 28.09.2021 We must create something like `TransactionInfoBuilder` interface and it's model
@@ -58,7 +58,10 @@ class WalletConnectAssetConfigurationTransactionViewModel @ViewModelInject const
                         fromDisplayedAddress = fromDisplayAddress,
                         dappName = peerMeta.name,
                         accountTypeImageResId = accountCache?.getImageResource(),
-                        accountBalance = accountCacheManager.getAssetInformation(decodedSenderAddress, assetId)?.amount,
+                        accountBalance = accountCacheManager.getAssetInformation(
+                            decodedSenderAddress,
+                            assetId
+                        )?.amount,
                         assetInformation = createAssetInformation(assetId, assetParams),
                         rekeyToAccountAddress = formattedRekeyToAccountAddress,
                         closeToAccountAddress = formattedCloseToAccountAddress,
@@ -71,7 +74,10 @@ class WalletConnectAssetConfigurationTransactionViewModel @ViewModelInject const
                         fromDisplayedAddress = fromDisplayAddress,
                         dappName = peerMeta.name,
                         accountTypeImageResId = accountCache?.getImageResource(),
-                        accountBalance = accountCacheManager.getAssetInformation(decodedSenderAddress, assetId)?.amount,
+                        accountBalance = accountCacheManager.getAssetInformation(
+                            decodedSenderAddress,
+                            assetId
+                        )?.amount,
                         assetInformation = createAssetInformation(assetId, assetParams),
                         rekeyToAccountAddress = formattedRekeyToAccountAddress,
                         closeToAccountAddress = formattedCloseToAccountAddress,
@@ -93,16 +99,16 @@ class WalletConnectAssetConfigurationTransactionViewModel @ViewModelInject const
                         createdAssetDecimal = decimals,
                         isFrozen = isFrozen,
                         managerAddress = BaseWalletConnectDisplayedAddress.create(
-                            managerAddress?.decodedAddress.orEmpty(), accountCacheData
+                            managerAddress?.decodedAddress.orEmpty(), account
                         ),
                         reserveAddress = BaseWalletConnectDisplayedAddress.create(
-                            reserveAddress?.decodedAddress.orEmpty(), accountCacheData
+                            reserveAddress?.decodedAddress.orEmpty(), account
                         ),
                         frozenAddress = BaseWalletConnectDisplayedAddress.create(
-                            frozenAddress?.decodedAddress.orEmpty(), accountCacheData
+                            frozenAddress?.decodedAddress.orEmpty(), account
                         ),
                         clawbackAddress = BaseWalletConnectDisplayedAddress.create(
-                            clawbackAddress?.decodedAddress.orEmpty(), accountCacheData
+                            clawbackAddress?.decodedAddress.orEmpty(), account
                         ),
                         transactionAmountDecimal = assetDecimal
                     )
@@ -114,16 +120,16 @@ class WalletConnectAssetConfigurationTransactionViewModel @ViewModelInject const
                     WalletConnectAccountsInfo(
                         fee = walletConnectTransactionParams.fee,
                         managerAddress = BaseWalletConnectDisplayedAddress.create(
-                            managerAddress?.decodedAddress.orEmpty(), accountCacheData
+                            managerAddress?.decodedAddress.orEmpty(), account
                         ),
                         reserveAddress = BaseWalletConnectDisplayedAddress.create(
-                            reserveAddress?.decodedAddress.orEmpty(), accountCacheData
+                            reserveAddress?.decodedAddress.orEmpty(), account
                         ),
                         frozenAddress = BaseWalletConnectDisplayedAddress.create(
-                            frozenAddress?.decodedAddress.orEmpty(), accountCacheData
+                            frozenAddress?.decodedAddress.orEmpty(), account
                         ),
                         clawbackAddress = BaseWalletConnectDisplayedAddress.create(
-                            clawbackAddress?.decodedAddress.orEmpty(), accountCacheData
+                            clawbackAddress?.decodedAddress.orEmpty(), account
                         )
                     )
                 }
@@ -166,9 +172,9 @@ class WalletConnectAssetConfigurationTransactionViewModel @ViewModelInject const
         extrasLiveData.value = extras
     }
 
-    private fun createAssetInformation(assetId: Long, assetParams: AssetParams?): AssetInformation? {
+    private fun createAssetInformation(assetId: Long, assetParams: AssetParams?): WalletConnectAssetInformation? {
         if (assetParams == null) return null
         val defaultAssetHolding = AssetHolding(assetId, BigInteger.ZERO, false)
-        return AssetInformation.createAssetInformation(defaultAssetHolding, assetParams)
+        return WalletConnectAssetInformation.create(defaultAssetHolding, assetParams)
     }
 }

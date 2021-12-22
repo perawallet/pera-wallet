@@ -27,9 +27,11 @@ abstract class BaseSingleButtonBottomSheet : BaseBottomSheet(R.layout.bottom_she
 
     protected abstract val titleResId: Int
     protected abstract val iconDrawableResId: Int
+    protected abstract val iconDrawableTintResId: Int?
     protected abstract val descriptionAnnotatedString: AnnotatedString
     protected abstract val imageBackgroundTintResId: Int
     protected abstract val buttonTextResId: Int
+    protected abstract val buttonTextColorResId: Int
     protected abstract val buttonBackgroundTintResId: Int
 
     abstract fun onConfirmationButtonClick()
@@ -41,15 +43,20 @@ abstract class BaseSingleButtonBottomSheet : BaseBottomSheet(R.layout.bottom_she
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.titleTextView.setText(titleResId)
-        binding.iconImageView.setImageResource(iconDrawableResId)
-        binding.descriptionTextView.text = context?.getXmlStyledString(descriptionAnnotatedString)
-        binding.iconImageView.backgroundTintList =
-            ContextCompat.getColorStateList(requireContext(), imageBackgroundTintResId)
-        binding.confirmationButton.apply {
-            setText(buttonTextResId)
-            backgroundTintList = ContextCompat.getColorStateList(requireContext(), buttonBackgroundTintResId)
-            setOnClickListener { onConfirmationButtonClick() }
+        with(binding) {
+            titleTextView.setText(titleResId)
+            descriptionTextView.text = context?.getXmlStyledString(descriptionAnnotatedString)
+            iconImageView.apply {
+                setImageResource(iconDrawableResId)
+                backgroundTintList = ContextCompat.getColorStateList(context, imageBackgroundTintResId)
+                imageTintList = iconDrawableTintResId?.let { ContextCompat.getColorStateList(context, it) }
+            }
+            confirmationButton.apply {
+                setText(buttonTextResId)
+                setTextColor(ContextCompat.getColor(context, buttonTextColorResId))
+                backgroundTintList = ContextCompat.getColorStateList(context, buttonBackgroundTintResId)
+                setOnClickListener { onConfirmationButtonClick() }
+            }
         }
     }
 }

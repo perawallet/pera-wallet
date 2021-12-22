@@ -316,7 +316,7 @@
     <string name="the_account_name">アカウント<annotation font="publicsans_bold">\"<annotation replacement="account_name"> </annotation>\"</annotation>が正常に再キー化されました。</string>
     <string name="just_now">たった今</string>
     <string name="asset_support_success"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>が<annotation replacement="asset">assetPlaceholder</annotation>をアカウントに追加しました。<annotation replacement="asset">assetPlaceholder</annotation>を送信可能です。</string>
-    <string name="asset_support_request"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>が<annotation replacement="asset">assetPlaceholder</annotation>を送信しようとしていますが、これはサポートされていません。必要に応じて、アカウントに追加できます。</string>
+    <string name="asset_support_request"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>が<annotation replacement="asset">assetPlaceholder</annotation>を送信しようとしていますが、これはサポートされていません。こちらの資産をアカウントに追加するには、ここをクリックしてください。</string>
     <string name="transaction_send_successful"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>から<annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>への、<annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation>のトランザクションが完了しました。</string>
     <string name="transaction_send_failed"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>から<annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>への、<annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation>のトランザクションが失敗しました。</string>
     <string name="transaction_received"><annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> が、<annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>によって<annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>に送信されました。</string>
@@ -601,11 +601,24 @@
     <string name="signing_error_transaction_in_request">署名エラー：トランザクションリクエストのトランザクションには、接続されたウォレットに存在しない秘密鍵（署名者）が必要です。</string>
     <string name="transaction_request_contains_unsupported">トランザクションリクエストには、サポートされていないトランザクションタイプが含まれています</string>
     <string name="transaction_request_contains_unsupported_multisig">トランザクションリクエストには、サポートされていないトランザクションタイプが含まれています：Multi-sig</string>
-    <string name="invalid_input_transaction_request">無効な入力：トランザクションリクエストに16を超えるトランザクションが含まれています</string>
+    <string name="invalid_input_transaction_request">無効な入力：トランザクションリクエストに%1$dを超えるトランザクションが含まれています</string>
     <string name="invalid_input_unable_to_parse">無効な入力：トランザクションを解析できません</string>
     <string name="invalid_input_invalid_public_key">無効な入力：公開鍵が無効です</string>
     <string name="invalid_input_invalid_asset">無効な入力：無効な資産です</string>
     <string name="invalid_input_unable_to_be">無効な入力：署名できません</string>
     <string name="invalid_input_group_transaction">無効な入力：グループトランザクションは、ウォレットユーザーの署名を必要としません。</string>
     <string name="invalid_input_requested_signer">無効な入力：要求された署名者はユーザーウォレットに存在しません</string>
+    <string name="pairing_ledger_with_your">Ledgerとデバイスのペアリング</string>
+    <string name="open_your_ledger">Ledgerデバイスを開きます。</string>
+    <string name="close_the_algorand_app">LedgerデバイスのAlgorandアプリを閉じます。</string>
+    <string name="on_the_ledger_home_screen">Ledgerのホーム画面で、ペアリングを確認します。</string>
+    <string name="once_pairing_is_confirmed">ペアリングを確認した後、Algorand Ledgerアプリを開いてください。</string>
+    <string name="pairing_failed">ペアリング失敗！</string>
+    <string name="after_confirming_pairing_on">Ledgerデバイスでペアリングを確認した後、Algorandアプリを開いてください。</string>
+    <string name="ledger_not_found">Ledgerが見つかりません！</string>
+    <string name="if_you_are_having_ledger">Ledger Nano Xの接続に問題がある場合は、お使いの携帯電話のBluetooth設定からデバイスを削除し、Ledgerアカウントを削除してから、Algorand Walletの指示に従ってLedgerを再ペアリングしてください。</string>
+    <string name="open_ledger_support">Ledgerサポートを開く</string>
+    <string name="please_follow_these_steps">以下の手順に従ってください。</string>
+    <string name="having_ledger_nano_x">Ledger Nano Xの接続でお困りですか？</string>
+    <string name="make_sure_the_device_is">デバイスのロックが解除されていること、近くにあること、Bluetoothが有効になっていることをご確認ください。問題が解決しない場合は、携帯電話のBluetooth設定からデバイスを削除し、Ledgerアカウントを削除してから、Algorand Walletの指示に従ってLedgerを再ペアリングしてください。</string>
 </resources>

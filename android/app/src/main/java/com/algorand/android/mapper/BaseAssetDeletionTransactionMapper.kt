@@ -18,6 +18,8 @@ import com.algorand.android.models.BaseAssetConfigurationTransaction.BaseAssetDe
 import com.algorand.android.models.BaseAssetConfigurationTransaction.BaseAssetDeletionTransaction.Companion.isTransactionWithCloseToAndRekeyed
 import com.algorand.android.models.BaseAssetConfigurationTransaction.BaseAssetDeletionTransaction.Companion.isTransactionWithRekeyed
 import com.algorand.android.models.WCAlgoTransactionRequest
+import com.algorand.android.models.WalletConnectAccount
+import com.algorand.android.models.WalletConnectAssetInformation
 import com.algorand.android.models.WalletConnectPeerMeta
 import com.algorand.android.models.WalletConnectSigner
 import com.algorand.android.models.WalletConnectTransactionRequest
@@ -59,6 +61,7 @@ class BaseAssetDeletionTransactionMapper @Inject constructor(
     ): BaseAssetDeletionTransaction.AssetDeletionTransaction? {
         return with(transactionRequest) {
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
+            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
             BaseAssetDeletionTransaction.AssetDeletionTransaction(
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 senderAddress = senderWalletConnectAddress ?: return null,
@@ -66,7 +69,11 @@ class BaseAssetDeletionTransactionMapper @Inject constructor(
                 peerMeta = peerMeta,
                 rawTransactionPayload = rawTxn,
                 signer = WalletConnectSigner.create(rawTxn, senderWalletConnectAddress, errorProvider),
-                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
+                authAddress = accountCacheData?.authAddress,
+                account = WalletConnectAccount.create(accountCacheData?.account),
+                assetInformation = WalletConnectAssetInformation.create(
+                    accountCacheData?.assetsInformation?.find { it.assetId == assetIdBeingConfigured }
+                ),
                 assetId = assetIdBeingConfigured ?: return null,
                 url = assetConfigParams?.url,
                 groupId = groupId
@@ -81,6 +88,7 @@ class BaseAssetDeletionTransactionMapper @Inject constructor(
     ): BaseAssetDeletionTransaction.AssetDeletionTransactionWithCloseTo? {
         return with(transactionRequest) {
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
+            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
             BaseAssetDeletionTransaction.AssetDeletionTransactionWithCloseTo(
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 senderAddress = senderWalletConnectAddress ?: return null,
@@ -88,7 +96,11 @@ class BaseAssetDeletionTransactionMapper @Inject constructor(
                 peerMeta = peerMeta,
                 rawTransactionPayload = rawTxn,
                 signer = WalletConnectSigner.create(rawTxn, senderWalletConnectAddress, errorProvider),
-                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
+                authAddress = accountCacheData?.authAddress,
+                account = WalletConnectAccount.create(accountCacheData?.account),
+                assetInformation = WalletConnectAssetInformation.create(
+                    accountCacheData?.assetsInformation?.find { it.assetId == assetIdBeingConfigured }
+                ),
                 closeToAddress = createWalletConnectAddress(closeToAddress) ?: return null,
                 assetId = assetIdBeingConfigured ?: return null,
                 url = assetConfigParams?.url,
@@ -104,6 +116,7 @@ class BaseAssetDeletionTransactionMapper @Inject constructor(
     ): BaseAssetDeletionTransaction.AssetDeletionTransactionWithRekey? {
         return with(transactionRequest) {
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
+            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
             BaseAssetDeletionTransaction.AssetDeletionTransactionWithRekey(
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 senderAddress = senderWalletConnectAddress ?: return null,
@@ -111,7 +124,11 @@ class BaseAssetDeletionTransactionMapper @Inject constructor(
                 peerMeta = peerMeta,
                 rawTransactionPayload = rawTxn,
                 signer = WalletConnectSigner.create(rawTxn, senderWalletConnectAddress, errorProvider),
-                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
+                authAddress = accountCacheData?.authAddress,
+                account = WalletConnectAccount.create(accountCacheData?.account),
+                assetInformation = WalletConnectAssetInformation.create(
+                    accountCacheData?.assetsInformation?.find { it.assetId == assetIdBeingConfigured }
+                ),
                 rekeyAddress = createWalletConnectAddress(rekeyAddress) ?: return null,
                 assetId = assetIdBeingConfigured ?: return null,
                 url = assetConfigParams?.url,
@@ -127,6 +144,7 @@ class BaseAssetDeletionTransactionMapper @Inject constructor(
     ): BaseAssetDeletionTransaction.AssetDeletionTransactionWithCloseToAndRekey? {
         return with(transactionRequest) {
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
+            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
             BaseAssetDeletionTransaction.AssetDeletionTransactionWithCloseToAndRekey(
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 senderAddress = senderWalletConnectAddress ?: return null,
@@ -134,7 +152,11 @@ class BaseAssetDeletionTransactionMapper @Inject constructor(
                 peerMeta = peerMeta,
                 rawTransactionPayload = rawTxn,
                 signer = WalletConnectSigner.create(rawTxn, senderWalletConnectAddress, errorProvider),
-                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
+                authAddress = accountCacheData?.authAddress,
+                account = WalletConnectAccount.create(accountCacheData?.account),
+                assetInformation = WalletConnectAssetInformation.create(
+                    accountCacheData?.assetsInformation?.find { it.assetId == assetIdBeingConfigured }
+                ),
                 closeToAddress = createWalletConnectAddress(closeToAddress) ?: return null,
                 rekeyAddress = createWalletConnectAddress(rekeyAddress) ?: return null,
                 assetId = assetIdBeingConfigured ?: return null,

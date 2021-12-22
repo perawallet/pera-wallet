@@ -21,12 +21,16 @@ class LedgerConnectionIssueBottomSheet : BaseSingleButtonBottomSheet() {
         get() = R.string.having_ledger_nano_x
     override val iconDrawableResId: Int
         get() = R.drawable.ic_error_warning
+    override val iconDrawableTintResId: Int?
+        get() = R.color.white
     override val descriptionAnnotatedString: AnnotatedString
         get() = AnnotatedString(R.string.make_sure_the_device_is)
     override val imageBackgroundTintResId: Int
         get() = R.color.orange_F0
     override val buttonTextResId: Int
         get() = R.string.ok
+    override val buttonTextColorResId: Int
+        get() = R.color.unelevatedbutton_text_color
     override val buttonBackgroundTintResId: Int
         get() = R.color.green_1D
 

@@ -14,6 +14,8 @@ package com.algorand.android.models
 
 import android.os.Parcelable
 import com.algorand.android.utils.decodeBase64
+import com.algorand.android.utils.getAccountImageResource
+import com.algorand.android.utils.isRekeyedToAnotherAccount
 import com.algorand.android.utils.isValidAddress
 import java.math.BigInteger
 
@@ -34,7 +36,17 @@ abstract class BaseWalletConnectTransaction : Parcelable {
 
     open val shouldShowWarningIndicator: Boolean = false
 
-    open val accountCacheData: AccountCacheData? = null
+    open val authAddress: String? = null
+    open val account: WalletConnectAccount? = null
+    open val assetInformation: WalletConnectAssetInformation? = null
+
+    fun isRekeyedToAnotherAccount(): Boolean {
+        return isRekeyedToAnotherAccount(authAddress, account?.address)
+    }
+
+    fun getAccountImageResource(): Int {
+        return getAccountImageResource(account?.type, isRekeyedToAnotherAccount())
+    }
 
     open val assetDecimal: Int = DEFAULT_ASSET_DECIMAL
 

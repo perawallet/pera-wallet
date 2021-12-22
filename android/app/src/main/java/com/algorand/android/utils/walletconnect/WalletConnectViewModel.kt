@@ -20,9 +20,9 @@ import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.models.WalletConnectTransaction
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
-import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharedFlow
+import javax.inject.Singleton
 
 @Singleton
 class WalletConnectViewModel @ViewModelInject constructor(
@@ -63,5 +63,9 @@ class WalletConnectViewModel @ViewModelInject constructor(
 
     fun handleWalletConnectUrl(url: String, listener: WalletConnectUrlHandler.Listener) {
         walletConnectUrlHandler.checkWalletConnectUrl(url, listener)
+    }
+
+    fun setWalletConnectSessionTimeoutListener(onSessionTimedOut: () -> Unit) {
+        walletConnectManager.onSessionTimedOut = onSessionTimedOut
     }
 }

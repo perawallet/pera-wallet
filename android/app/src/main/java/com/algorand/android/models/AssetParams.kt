@@ -56,6 +56,17 @@ data class AssetParams(
         )
     }
 
+    fun convertToWalletConnectAssetInformation(
+        assetId: Long
+    ): WalletConnectAssetInformation {
+        return WalletConnectAssetInformation(
+            assetId = assetId,
+            isVerified = isVerified,
+            shortName = shortName,
+            fullName = fullName,
+        )
+    }
+
     fun appendAssetId(assetId: Long): AssetParams {
         id = assetId
         return this

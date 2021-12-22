@@ -23,7 +23,7 @@ import com.algorand.android.ui.common.listhelper.viewholders.AssetListItem
 import com.algorand.android.ui.common.listhelper.viewholders.BannerAccountListItem
 import com.algorand.android.ui.common.listhelper.viewholders.HeaderAccountListItem
 import com.algorand.android.utils.AccountCacheManager
-import com.algorand.android.utils.BannerManager
+import com.algorand.android.utils.BannerUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combineTransform
@@ -34,7 +34,7 @@ import kotlinx.coroutines.launch
 class AccountsViewModel @ViewModelInject constructor(
     private val accountCacheManager: AccountCacheManager,
     private val accountManager: AccountManager,
-    private val bannerManager: BannerManager
+    private val bannerUseCase: BannerUseCase
 ) : BaseViewModel() {
 
     val listFlow: Flow<List<BaseAccountListItem>?> get() = _listFlow
@@ -53,7 +53,7 @@ class AccountsViewModel @ViewModelInject constructor(
                 accountManager.accounts
             ) { cacheMap, accounts ->
                 emit(mutableListOf<BaseAccountListItem>().apply {
-                    if (bannerManager.shouldShowBanner()) {
+                    if (bannerUseCase.shouldShowBanner()) {
                         add(BannerAccountListItem)
                     }
                     cacheMap.forEach { (address, cacheData) ->
@@ -77,7 +77,7 @@ class AccountsViewModel @ViewModelInject constructor(
 
     fun hideBanner() {
         viewModelScope.launch {
-            bannerManager.setBannerInvisible()
+            bannerUseCase.setBannerInvisible()
             prepareAccountList()
         }
     }

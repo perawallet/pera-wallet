@@ -2,9 +2,9 @@ package com.algorand.android.ui.register
 
 import android.os.Bundle
 import android.view.View
-import androidx.navigation.navGraphViewModels
+import androidx.navigation.fragment.navArgs
 import com.algorand.algosdk.mobile.Mobile
-import com.algorand.android.MainNavigationDirections.Companion.actionGlobalSingleButtonBottomSheet
+import com.algorand.android.MainNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.customviews.PassphraseValidationGroupView
@@ -12,7 +12,6 @@ import com.algorand.android.databinding.FragmentPassphraseValidationBinding
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
-import com.algorand.android.ui.register.PassphraseValidationFragmentDirections.Companion.actionPassphraseQuestionFragmentToAccountNameRegistrationFragment
 import com.algorand.android.utils.SingleButtonBottomSheet.Companion.ACCEPT_KEY
 import com.algorand.android.utils.singleVibrate
 import com.algorand.android.utils.startSavedStateListener
@@ -33,11 +32,9 @@ class PassphraseValidationFragment : DaggerBaseFragment(R.layout.fragment_passph
         toolbarConfiguration = toolbarConfiguration
     )
 
-    private val loginNavigationViewModel: LoginNavigationViewModel by navGraphViewModels(R.id.loginNavigation) {
-        defaultViewModelProviderFactory
-    }
-
     private val binding by viewBinding(FragmentPassphraseValidationBinding::bind)
+
+    private val args: PassphraseValidationFragmentArgs by navArgs()
 
     private val passphraseValidationGroupListener = object : PassphraseValidationGroupView.Listener {
         override fun onInputUpdate(allWordsSelected: Boolean) {
@@ -53,7 +50,7 @@ class PassphraseValidationFragment : DaggerBaseFragment(R.layout.fragment_passph
     }
 
     private fun getPassphraseWords(): List<String> {
-        val tempAccountSecretKey = loginNavigationViewModel.tempAccount!!.getSecretKey()
+        val tempAccountSecretKey = args.accountCreation.tempAccount.getSecretKey()
         return Mobile.mnemonicFromPrivateKey(tempAccountSecretKey).split(" ")
     }
 
@@ -64,7 +61,7 @@ class PassphraseValidationFragment : DaggerBaseFragment(R.layout.fragment_passph
     private fun onNextClick() {
         if (binding.passphraseValidationGroupView.isValidated()) {
             nav(
-                actionGlobalSingleButtonBottomSheet(
+                MainNavigationDirections.actionGlobalSingleButtonBottomSheet(
                     titleResId = R.string.passphrase_verified,
                     descriptionAnnotatedString = AnnotatedString(R.string.keep_this_recovery_passphrase),
                     drawableResId = R.drawable.ic_check_sign,
@@ -82,7 +79,10 @@ class PassphraseValidationFragment : DaggerBaseFragment(R.layout.fragment_passph
     private fun initDialogSavedStateListener() {
         startSavedStateListener(R.id.passphraseQuestionFragment) {
             useSavedStateValue<Boolean>(ACCEPT_KEY) {
-                nav(actionPassphraseQuestionFragmentToAccountNameRegistrationFragment())
+                nav(
+                    PassphraseValidationFragmentDirections
+                        .actionPassphraseQuestionFragmentToAccountNameRegistrationFragment(args.accountCreation)
+                )
             }
         }
     }

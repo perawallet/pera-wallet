@@ -18,6 +18,8 @@ import com.algorand.android.models.BaseAssetConfigurationTransaction.BaseAssetRe
 import com.algorand.android.models.BaseAssetConfigurationTransaction.BaseAssetReconfigurationTransaction.Companion.isTransactionWithCloseToAndRekeyed
 import com.algorand.android.models.BaseAssetConfigurationTransaction.BaseAssetReconfigurationTransaction.Companion.isTransactionWithRekeyed
 import com.algorand.android.models.WCAlgoTransactionRequest
+import com.algorand.android.models.WalletConnectAccount
+import com.algorand.android.models.WalletConnectAssetInformation
 import com.algorand.android.models.WalletConnectPeerMeta
 import com.algorand.android.models.WalletConnectSigner
 import com.algorand.android.models.WalletConnectTransactionRequest
@@ -59,6 +61,7 @@ class BaseAssetReconfigurationTransactionMapper @Inject constructor(
     ): BaseAssetReconfigurationTransaction.AssetReconfigurationTransaction? {
         return with(transactionRequest) {
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
+            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
             BaseAssetReconfigurationTransaction.AssetReconfigurationTransaction(
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 senderAddress = senderWalletConnectAddress ?: return null,
@@ -66,7 +69,11 @@ class BaseAssetReconfigurationTransactionMapper @Inject constructor(
                 peerMeta = peerMeta,
                 rawTransactionPayload = rawTxn,
                 signer = WalletConnectSigner.create(rawTxn, senderWalletConnectAddress, errorProvider),
-                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
+                authAddress = accountCacheData?.authAddress,
+                account = WalletConnectAccount.create(accountCacheData?.account),
+                assetInformation = WalletConnectAssetInformation.create(
+                    accountCacheData?.assetsInformation?.find { it.assetId == assetIdBeingConfigured }
+                ),
                 assetId = assetIdBeingConfigured ?: return null,
                 url = assetConfigParams?.url,
                 managerAddress = createWalletConnectAddress(assetConfigParams?.managerAddress),
@@ -85,6 +92,7 @@ class BaseAssetReconfigurationTransactionMapper @Inject constructor(
     ): BaseAssetReconfigurationTransaction.AssetReconfigurationTransactionWithCloseTo? {
         return with(transactionRequest) {
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
+            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
             BaseAssetReconfigurationTransaction.AssetReconfigurationTransactionWithCloseTo(
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 senderAddress = senderWalletConnectAddress ?: return null,
@@ -92,7 +100,11 @@ class BaseAssetReconfigurationTransactionMapper @Inject constructor(
                 peerMeta = peerMeta,
                 rawTransactionPayload = rawTxn,
                 signer = WalletConnectSigner.create(rawTxn, senderWalletConnectAddress, errorProvider),
-                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
+                authAddress = accountCacheData?.authAddress,
+                account = WalletConnectAccount.create(accountCacheData?.account),
+                assetInformation = WalletConnectAssetInformation.create(
+                    accountCacheData?.assetsInformation?.find { it.assetId == assetIdBeingConfigured }
+                ),
                 closeToAddress = createWalletConnectAddress(closeToAddress) ?: return null,
                 assetId = assetIdBeingConfigured ?: return null,
                 url = assetConfigParams?.url,
@@ -112,6 +124,7 @@ class BaseAssetReconfigurationTransactionMapper @Inject constructor(
     ): BaseAssetReconfigurationTransaction.AssetReconfigurationTransactionWithRekey? {
         return with(transactionRequest) {
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
+            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
             BaseAssetReconfigurationTransaction.AssetReconfigurationTransactionWithRekey(
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 senderAddress = senderWalletConnectAddress ?: return null,
@@ -119,7 +132,11 @@ class BaseAssetReconfigurationTransactionMapper @Inject constructor(
                 peerMeta = peerMeta,
                 rawTransactionPayload = rawTxn,
                 signer = WalletConnectSigner.create(rawTxn, senderWalletConnectAddress, errorProvider),
-                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
+                authAddress = accountCacheData?.authAddress,
+                account = WalletConnectAccount.create(accountCacheData?.account),
+                assetInformation = WalletConnectAssetInformation.create(
+                    accountCacheData?.assetsInformation?.find { it.assetId == assetIdBeingConfigured }
+                ),
                 rekeyAddress = createWalletConnectAddress(rekeyAddress) ?: return null,
                 assetId = assetIdBeingConfigured ?: return null,
                 url = assetConfigParams?.url,
@@ -139,6 +156,7 @@ class BaseAssetReconfigurationTransactionMapper @Inject constructor(
     ): BaseAssetReconfigurationTransaction.AssetReconfigurationTransactionWithCloseToAndRekey? {
         return with(transactionRequest) {
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
+            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
             BaseAssetReconfigurationTransaction.AssetReconfigurationTransactionWithCloseToAndRekey(
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 senderAddress = senderWalletConnectAddress ?: return null,
@@ -146,7 +164,11 @@ class BaseAssetReconfigurationTransactionMapper @Inject constructor(
                 peerMeta = peerMeta,
                 rawTransactionPayload = rawTxn,
                 signer = WalletConnectSigner.create(rawTxn, senderWalletConnectAddress, errorProvider),
-                accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress.decodedAddress),
+                authAddress = accountCacheData?.authAddress,
+                account = WalletConnectAccount.create(accountCacheData?.account),
+                assetInformation = WalletConnectAssetInformation.create(
+                    accountCacheData?.assetsInformation?.find { it.assetId == assetIdBeingConfigured }
+                ),
                 closeToAddress = createWalletConnectAddress(closeToAddress) ?: return null,
                 rekeyAddress = createWalletConnectAddress(rekeyAddress) ?: return null,
                 assetId = assetIdBeingConfigured ?: return null,

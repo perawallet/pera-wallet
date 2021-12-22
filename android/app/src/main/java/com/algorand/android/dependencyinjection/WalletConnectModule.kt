@@ -19,6 +19,7 @@ import com.algorand.android.network.AlgodInterceptor
 import com.algorand.android.utils.walletconnect.WCWalletConnectClient
 import com.algorand.android.utils.walletconnect.WCWalletConnectMapper
 import com.algorand.android.utils.walletconnect.WalletConnectClient
+import com.algorand.android.utils.walletconnect.WalletConnectCustomTransactionHandler.Companion.MAX_TRANSACTION_COUNT
 import com.algorand.android.utils.walletconnect.WalletConnectEventLogger
 import com.algorand.android.utils.walletconnect.WalletConnectFirebaseEventLogger
 import com.algorand.android.utils.walletconnect.WalletConnectSessionBuilder
@@ -109,7 +110,10 @@ object WalletConnectModule {
             )
 
             val invalidInputErrorProvider = BaseWalletConnectErrorProvider.InvalidInputErrorProvider(
-                maxTransactionLimitErrorMessage = getString(R.string.invalid_input_transaction_request),
+                maxTransactionLimitErrorMessage = getString(
+                    R.string.invalid_input_transaction_request,
+                    MAX_TRANSACTION_COUNT
+                ),
                 unableToParseErrorMessage = getString(R.string.invalid_input_unable_to_parse),
                 invalidPublicKeyErrorMessage = getString(R.string.invalid_input_invalid_public_key),
                 invalidAssetErrorMessage = getString(R.string.invalid_input_invalid_asset),

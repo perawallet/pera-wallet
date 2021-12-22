@@ -131,11 +131,25 @@ class AddEditContactFragment : DaggerBaseFragment(R.layout.fragment_add_edit_con
                 addEditContactViewModel.removeContactInDatabase(contactDatabaseId)
             }
             useSavedStateValue<DecodedQrCode>(QR_SCAN_RESULT_KEY) { decodedQrCode ->
-                if (!decodedQrCode.address.isNullOrBlank()) {
-                    binding.addressEditText.setText(decodedQrCode.address)
-                }
+                handleScannedQr(decodedQrCode)
             }
         }
+    }
+
+    private fun handleScannedQr(decodedQrCode: DecodedQrCode) {
+        with(decodedQrCode) {
+            when {
+                !address.isNullOrBlank() -> binding.addressEditText.setText(address)
+                !walletConnectUrl.isNullOrBlank() -> showWalletConnectQrScannedError()
+            }
+        }
+    }
+
+    private fun showWalletConnectQrScannedError() {
+        showGlobalError(
+            errorMessage = getString(R.string.the_scanned_qr_is_not),
+            title = getString(R.string.error)
+        )
     }
 
     override fun onRequestPermissionsResult(

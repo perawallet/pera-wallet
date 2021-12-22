@@ -18,15 +18,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageButton
-import androidx.navigation.navGraphViewModels
-import com.algorand.android.MainNavigationDirections.Companion.actionGlobalLedgerPairInfoBottomSheet
+import com.algorand.android.MainNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentLedgerInstructionBinding
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.ui.ledgersearch.LedgerPairInfoBottomSheet
-import com.algorand.android.ui.register.LoginNavigationViewModel
 import com.algorand.android.utils.BLE_OPEN_REQUEST_CODE
 import com.algorand.android.utils.openUrl
 import com.algorand.android.utils.showEnableBluetoothPopup
@@ -45,15 +43,10 @@ class LedgerInstructionFragment : DaggerBaseFragment(R.layout.fragment_ledger_in
 
     private val binding by viewBinding(FragmentLedgerInstructionBinding::bind)
 
-    private val loginNavigationViewModel: LoginNavigationViewModel by navGraphViewModels(R.id.loginNavigation) {
-        defaultViewModelProviderFactory
-    }
-
     override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loginNavigationViewModel.clearTempAccount()
         configureToolbar()
         binding.searchButton.setOnClickListener {
             nav(LedgerInstructionFragmentDirections.actionLedgerInstructionFragmentToRegisterLedgerSearchFragment())
@@ -96,7 +89,7 @@ class LedgerInstructionFragment : DaggerBaseFragment(R.layout.fragment_ledger_in
     }
 
     private fun navToInfoBottomSheet(infoType: LedgerPairInfoBottomSheet.InfoType) {
-        nav(actionGlobalLedgerPairInfoBottomSheet(infoType))
+        nav(MainNavigationDirections.actionGlobalLedgerPairInfoBottomSheet(infoType))
     }
 
     private fun onInfoClick() {

@@ -157,7 +157,7 @@ class AssetCardFragment : DaggerBaseFragment(R.layout.fragment_asset_card) {
                 getString(R.string.title_id),
                 assetInformation.assetId.toString()
             )
-            enableClickToCopy()
+            enableClickToCopy(assetInformation.assetId.toString())
         }
         setTotalBalanceTextViewAttrsBasedOnAsset(isAlgorand = false)
         setViewVisibilityBasedOnAsset(isAlgorand = false)

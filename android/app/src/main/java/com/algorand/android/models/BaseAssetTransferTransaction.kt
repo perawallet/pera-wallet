@@ -40,7 +40,9 @@ sealed class BaseAssetTransferTransaction : BaseWalletConnectTransaction(), Wall
         override val assetId: Long,
         override val peerMeta: WalletConnectPeerMeta,
         override val signer: WalletConnectSigner,
-        override val accountCacheData: AccountCacheData?,
+        override val authAddress: String?,
+        override val assetInformation: WalletConnectAssetInformation?,
+        override val account: WalletConnectAccount?,
         override val groupId: String?,
         val assetAmount: BigInteger
     ) : BaseAssetTransferTransaction() {
@@ -63,7 +65,9 @@ sealed class BaseAssetTransferTransaction : BaseWalletConnectTransaction(), Wall
         override val assetId: Long,
         override val peerMeta: WalletConnectPeerMeta,
         override val signer: WalletConnectSigner,
-        override val accountCacheData: AccountCacheData?,
+        override val authAddress: String?,
+        override val assetInformation: WalletConnectAssetInformation?,
+        override val account: WalletConnectAccount?,
         override val groupId: String?,
         val assetCloseToAddress: WalletConnectAddress,
         val assetAmount: BigInteger
@@ -92,7 +96,9 @@ sealed class BaseAssetTransferTransaction : BaseWalletConnectTransaction(), Wall
         override val assetId: Long,
         override val peerMeta: WalletConnectPeerMeta,
         override val signer: WalletConnectSigner,
-        override val accountCacheData: AccountCacheData?,
+        override val authAddress: String?,
+        override val assetInformation: WalletConnectAssetInformation?,
+        override val account: WalletConnectAccount?,
         override val groupId: String?,
         val rekeyAddress: WalletConnectAddress,
         val assetAmount: BigInteger
@@ -121,7 +127,9 @@ sealed class BaseAssetTransferTransaction : BaseWalletConnectTransaction(), Wall
         override val assetId: Long,
         override val peerMeta: WalletConnectPeerMeta,
         override val signer: WalletConnectSigner,
-        override val accountCacheData: AccountCacheData?,
+        override val authAddress: String?,
+        override val assetInformation: WalletConnectAssetInformation?,
+        override val account: WalletConnectAccount?,
         override val groupId: String?,
         val rekeyAddress: WalletConnectAddress,
         val assetAmount: BigInteger,
@@ -153,7 +161,9 @@ sealed class BaseAssetTransferTransaction : BaseWalletConnectTransaction(), Wall
         override val assetId: Long,
         override val peerMeta: WalletConnectPeerMeta,
         override val signer: WalletConnectSigner,
-        override val accountCacheData: AccountCacheData?,
+        override val authAddress: String?,
+        override val assetInformation: WalletConnectAssetInformation?,
+        override val account: WalletConnectAccount?,
         override val groupId: String?
     ) : BaseAssetTransferTransaction() {
 

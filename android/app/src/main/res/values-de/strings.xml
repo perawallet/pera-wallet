@@ -308,7 +308,7 @@
     <string name="the_account_name">Für das Konto <annotation font="publicsans_bold">\"<annotation replacement="account_name"> </annotation>\"</annotation> wurde ein erfolgreiches Rekeying durchgeführt.</string>
     <string name="just_now">Gerade eben</string>
     <string name="asset_support_success"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> hat seinem Konto <annotation replacement="asset">assetPlaceholder</annotation> hinzugefügt. Sie können <annotation replacement="asset">assetPlaceholder</annotation> senden.</string>
-    <string name="asset_support_request"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> versucht, Ihnen <annotation replacement="asset">assetPlaceholder</annotation> zu senden, jedoch unterstützen Sie dieses Asset nicht. Wenn Sie möchten, können wir das Asset Ihrem Konto hinzufügen.</string>
+    <string name="asset_support_request"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> versucht, Ihnen <annotation replacement="asset">assetPlaceholder</annotation> zu senden, jedoch unterstützen Sie dieses Asset nicht. Tippen Sie hier, um das Asset Ihrem Konto hinzuzufügen.</string>
     <string name="transaction_send_successful">Ihre Transaktion in Höhe von <annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> von <annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> an <annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> wurde erfolgreich ausgeführt.</string>
     <string name="transaction_send_failed">Ihre Transaktion in Höhe von <annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> von <annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> an <annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> ist fehlgeschlagen.</string>
     <string name="transaction_received"><annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> wurden von <annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> an <annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> gesendet.</string>
@@ -618,11 +618,24 @@
     <string name="signing_error_transaction_in_request">Fehler beim Signieren: Eine Transaktion in der Transaktionsanforderung erfordert einen privaten Schlüssel (Unterzeichner), der in der verbundenen Wallet nicht existiert.</string>
     <string name="transaction_request_contains_unsupported">Die Transaktionsanforderung enthält eine nicht unterstützte Transaktionsart</string>
     <string name="transaction_request_contains_unsupported_multisig">Die Transaktionsanforderung enthält eine nicht unterstützte Transaktionsart: Multi-Sig</string>
-    <string name="invalid_input_transaction_request">Ungültige Eingabe: Transaktionsanforderung enthält mehr als 16 Transaktionen</string>
+    <string name="invalid_input_transaction_request">Ungültige Eingabe: Transaktionsanforderung enthält mehr als %1$d Transaktionen</string>
     <string name="invalid_input_unable_to_parse">Ungültige Eingabe: Transaktion kann nicht geparst werden</string>
     <string name="invalid_input_invalid_public_key">Ungültige Eingabe: Ungültiger öffentlicher Schlüssel</string>
     <string name="invalid_input_invalid_asset">Ungültige Eingabe: Ungültiges Asset</string>
     <string name="invalid_input_unable_to_be">Ungültige Eingabe: Kann nicht signiert werden</string>
     <string name="invalid_input_group_transaction">Ungültige Eingabe: Die Gruppentransaktion muss nicht vom Wallet-Benutzer signiert werden. </string>
     <string name="invalid_input_requested_signer">Ungültige Eingabe: Der angeforderte Unterzeichner befindet sich nicht in der Benutzer-Wallet</string>
+    <string name="pairing_ledger_with_your">Ledger mit Ihrem Gerät koppeln</string>
+    <string name="open_your_ledger">Öffnen Sie Ihr Ledger-Gerät.</string>
+    <string name="close_the_algorand_app">Schließen Sie die Algorand-App auf dem Ledger-Gerät.</string>
+    <string name="on_the_ledger_home_screen">Bestätigen Sie auf dem Ledger-Startbildschirm die Kopplung.</string>
+    <string name="once_pairing_is_confirmed">Sobald die Kopplung bestätigt ist, öffnen Sie die Algorand Ledger-App.</string>
+    <string name="pairing_failed">Kopplung fehlgeschlagen!</string>
+    <string name="after_confirming_pairing_on">Nachdem Sie die Kopplung auf Ihrem Ledger-Gerät bestätigt haben, öffnen Sie die Algorand-App.</string>
+    <string name="ledger_not_found">Ledger nicht gefunden!</string>
+    <string name="if_you_are_having_ledger">Wenn Sie Verbindungsprobleme mit dem Ledger Nano X haben, entfernen Sie bitte das Gerät aus den Bluetooth-Einstellungen Ihres Telefons, löschen Sie das Ledger-Konto und koppeln Sie Ihren Ledger erneut, indem Sie den Anweisungen der Algorand Wallet folgen.</string>
+    <string name="open_ledger_support">Ledger-Support öffnen</string>
+    <string name="please_follow_these_steps">Bitte befolgen Sie diese Schritte:</string>
+    <string name="having_ledger_nano_x">Haben Sie Verbindungsprobleme mit dem Ledger Nano X?</string>
+    <string name="make_sure_the_device_is">Stellen Sie sicher, dass das Gerät entsperrt ist, sich in der Nähe befindet und Bluetooth aktiviert ist. Sollten die Probleme weiterhin bestehen, entfernen Sie bitte das Gerät aus den Bluetooth-Einstellungen Ihres Telefons, löschen Sie das Ledger-Konto und koppeln Sie Ihren Ledger erneut, indem Sie den Anweisungen der Algorand Wallet folgen.</string>
 </resources>

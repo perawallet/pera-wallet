@@ -23,8 +23,8 @@ import androidx.core.view.setPadding
 import androidx.core.view.updatePadding
 import com.algorand.android.R
 import com.algorand.android.databinding.CustomWalletConnectTransactionInfoBinding
-import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.BaseWalletConnectDisplayedAddress
+import com.algorand.android.models.WalletConnectAssetInformation
 import com.algorand.android.models.WalletConnectTransactionInfo
 import com.algorand.android.utils.viewbinding.viewBinding
 import java.math.BigInteger
@@ -46,7 +46,7 @@ class WalletConnectTransactionInfoCardView(
         with(transactionInfo) {
             initFromAddress(fromDisplayedAddress, accountTypeImageResId)
             initAssetInformation(assetInformation, showAssetDeletionWarning)
-            initAccountBalance(accountBalance, assetDecimal, assetInformation?.isAlgorand())
+            initAccountBalance(accountBalance, assetDecimal, assetInformation?.isAlgorand)
             initRekeyToAddress(rekeyToAccountAddress)
             initCloseToAddress(closeToAccountAddress)
             initAssetName(assetName)
@@ -95,7 +95,10 @@ class WalletConnectTransactionInfoCardView(
         }
     }
 
-    private fun initAssetInformation(assetInformation: AssetInformation?, showAssetDeletionMessage: Boolean) {
+    private fun initAssetInformation(
+        assetInformation: WalletConnectAssetInformation?,
+        showAssetDeletionMessage: Boolean
+    ) {
         if (assetInformation != null) {
             with(binding) {
                 assetNameTextView.setupUI(assetInformation, false)

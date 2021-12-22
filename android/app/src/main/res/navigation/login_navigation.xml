@@ -43,13 +43,20 @@
         <action
             android:id="@+id/action_passphraseQuestionFragment_to_accountNameRegistrationFragment"
             app:destination="@id/accountNameRegistrationFragment" />
+        <argument
+            android:name="accountCreation"
+            app:argType="com.algorand.android.models.AccountCreation" />
     </fragment>
 
     <fragment
         android:id="@+id/accountNameRegistrationFragment"
         android:name="com.algorand.android.ui.register.NameRegistrationFragment"
         android:label="fragment_account_name_registration"
-        tools:layout="@layout/fragment_name_registration" />
+        tools:layout="@layout/fragment_name_registration" >
+        <argument
+            android:name="accountCreation"
+            app:argType="com.algorand.android.models.AccountCreation" />
+    </fragment>
 
     <fragment
         android:id="@+id/recoverWithPassphraseFragment"

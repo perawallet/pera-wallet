@@ -17,8 +17,9 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.util.AttributeSet
 import android.util.TypedValue
+import android.view.Gravity
 import android.view.View
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.widget.LinearLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.content.res.use
 import androidx.core.view.isVisible
@@ -34,7 +35,7 @@ import kotlin.properties.Delegates
 class TransactionAmountTextView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
-) : ConstraintLayout(context, attrs) {
+) : LinearLayout(context, attrs) {
 
     private val binding = viewBinding(CustomTransactionAmountTextViewBinding::inflate)
 
@@ -46,6 +47,8 @@ class TransactionAmountTextView @JvmOverloads constructor(
     private var value = BigInteger.ZERO
 
     init {
+        orientation = HORIZONTAL
+        gravity = Gravity.CENTER_VERTICAL
         initView(attrs)
     }
 
@@ -145,7 +148,7 @@ class TransactionAmountTextView @JvmOverloads constructor(
         with(binding) {
             transactionAmountTextView.text = value.formatAmount(decimal)
             otherAssetNameTextView.text = otherAssetName
-            balanceGroup.visibility = View.VISIBLE
+            changeBalanceGroupVisibility(true)
         }
     }
 
@@ -153,7 +156,7 @@ class TransactionAmountTextView @JvmOverloads constructor(
         this.isAlgorand = isAlgorand
         with(binding) {
             otherAssetNameTextView.text = assetName
-            balanceGroup.visibility = View.GONE
+            changeBalanceGroupVisibility(false)
         }
     }
 
@@ -180,7 +183,7 @@ class TransactionAmountTextView @JvmOverloads constructor(
         with(binding) {
             transactionAmountTextView.text = formattedAmount
             otherAssetNameTextView.text = otherAssetName
-            balanceGroup.visibility = View.VISIBLE
+            changeBalanceGroupVisibility(true)
         }
         setOperatorAccordingToTransactionType(amount, transactionSymbol)
     }
@@ -191,6 +194,13 @@ class TransactionAmountTextView @JvmOverloads constructor(
             otherAssetNameTextView.visibility = GONE
             algoLogoImageView.visibility = GONE
             transactionOperatorTextView.visibility = GONE
+        }
+    }
+
+    private fun changeBalanceGroupVisibility(isVisible: Boolean) {
+        with(binding) {
+            transactionOperatorTextView.isVisible = isVisible
+            transactionAmountTextView.isVisible = isVisible
         }
     }
 

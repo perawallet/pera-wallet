@@ -44,6 +44,7 @@ const val ROUND_THRESHOLD = 1000L
 const val ALGO_DECIMALS = 6
 const val SHORTENED_ADDRESS_LETTER_COUNT = 6
 const val ALGOS_FULL_NAME = "Algos"
+const val ALGOS_SHORT_NAME = "ALGO"
 private const val ALGO_AMOUNT_FORMAT = "#,##0.00####"
 private const val ALGO_REWARD_AMOUNT_FORMAT = "#,##0.000000"
 private const val ALGO_DISPLAY_AMOUNT_DECIMAL = 2

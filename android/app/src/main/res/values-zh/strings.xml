@@ -308,7 +308,7 @@
     <string name="the_account_name">账户<annotation font="publicsans_bold">\"<annotation replacement="account_name"> </annotation>\"</annotation>密钥成功更新。</string>
     <string name="just_now">刚刚</string>
     <string name="asset_support_success"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> 已添加<annotation replacement="asset">assetPlaceholder</annotation> 到他们的账户上。您可以给他们发送 <annotation replacement="asset">assetPlaceholder</annotation>。</string>
-    <string name="asset_support_request"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>正在向您发送<annotation replacement="asset">assetPlaceholder</annotation>，但是您尚不支持该交易。如果有需要，我们可以添加到您的账户上。</string>
+    <string name="asset_support_request"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>试图向您发送<annotation replacement="asset">assetPlaceholder</annotation>，但并不受到您的支持。点此此处将该资产添加到您的账户中。</string>
     <string name="transaction_send_successful">您从 <annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> 发送至 <annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>的交易 <annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> 已经完成。</string>
     <string name="transaction_send_failed">您从 <annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> 发送至 <annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>的交易 <annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation>  没有成功。</string>
     <string name="transaction_received"><annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> 已发送至 <annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> ，发送人是 <annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>。</string>
@@ -613,11 +613,24 @@
     <string name="signing_error_transaction_in_request">签名错误：在交易请求中，交易要求连接的钱包没有私钥（签名者）。</string>
     <string name="transaction_request_contains_unsupported">该交易请求包含一个不支持的交易类型</string>
     <string name="transaction_request_contains_unsupported_multisig">交易请求包含一个不支持的交易类型:多重签名</string>
-    <string name="invalid_input_transaction_request">无效输入：该交易请求包含超过16个交易</string>
+    <string name="invalid_input_transaction_request">无效输入：该交易请求包含超过%1$d个交易</string>
     <string name="invalid_input_unable_to_parse">无效输入：无法解析交易</string>
     <string name="invalid_input_invalid_public_key">无效输入：无效公钥</string>
     <string name="invalid_input_invalid_asset">无效输入：无效资产</string>
     <string name="invalid_input_unable_to_be">无效输入：无法签名</string>
     <string name="invalid_input_group_transaction">无效输入：群组交易无需钱包用户签名。</string>
     <string name="invalid_input_requested_signer">无效输入：所请求的签名人不在用户钱包中</string>
+    <string name="pairing_ledger_with_your">将您的设备与Ledger配对</string>
+    <string name="open_your_ledger">打开您的Ledger设备。</string>
+    <string name="close_the_algorand_app">在Ledger设备上关闭Algorand的APP。</string>
+    <string name="on_the_ledger_home_screen">在Ledger主屏幕上确认配对。</string>
+    <string name="once_pairing_is_confirmed">一旦确认配对，请打开Algorand Ledger的APP。</string>
+    <string name="pairing_failed">配对失败！</string>
+    <string name="after_confirming_pairing_on">在您的Ledger设备上确认配对后，请打开Algorand Ledger的APP。</string>
+    <string name="ledger_not_found">未找到Ledger！</string>
+    <string name="if_you_are_having_ledger">如果出现Ledger Nano X的连接问题，请从手机的蓝牙设置中删除该设备和Ledger账户，再按照Algorand Wallet的说明重新配对您的Ledger设备与账户。</string>
+    <string name="open_ledger_support">开放的Ledger支持</string>
+    <string name="please_follow_these_steps">请按照以下步骤操作：</string>
+    <string name="having_ledger_nano_x">出现Ledger Nano X的连接问题？</string>
+    <string name="make_sure_the_device_is">请确保已解锁设备，开启蓝牙，且设备就在附近。如果还有问题，请从手机的蓝牙设置中删除该设备和Ledger账户，再按照Algorand Wallet的说明重新配对您的Ledger设备与账户。</string>
 </resources>

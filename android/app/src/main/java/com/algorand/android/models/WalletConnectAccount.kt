@@ -12,19 +12,22 @@
 
 package com.algorand.android.models
 
-import androidx.annotation.DrawableRes
-import java.math.BigInteger
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
-data class WalletConnectTransactionInfo(
-    val fromDisplayedAddress: BaseWalletConnectDisplayedAddress,
-    val dappName: String,
-    @DrawableRes val accountTypeImageResId: Int?,
-    val accountBalance: BigInteger? = null,
-    val assetInformation: WalletConnectAssetInformation? = null,
-    val rekeyToAccountAddress: String?,
-    val closeToAccountAddress: String?,
-    val assetDecimal: Int,
-    val assetName: String? = null,
-    val unitName: String? = null,
-    val showAssetDeletionWarning: Boolean = false
-)
+@Parcelize
+data class WalletConnectAccount constructor(
+    val address: String,
+    var name: String = "",
+    val type: Account.Type? = null
+) : Parcelable {
+
+    companion object {
+        fun create(account: Account?): WalletConnectAccount? {
+            with(account) {
+                if (this == null) return null
+                return WalletConnectAccount(address, name, type)
+            }
+        }
+    }
+}

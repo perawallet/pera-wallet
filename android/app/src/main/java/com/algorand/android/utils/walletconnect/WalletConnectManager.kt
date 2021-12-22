@@ -34,11 +34,6 @@ import com.algorand.android.utils.exception.InvalidWalletConnectUrlException
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionResult.Error
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionResult.Success
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import java.io.EOFException
-import java.net.ProtocolException
-import javax.inject.Inject
-import javax.inject.Named
-import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -50,6 +45,11 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.walletconnect.Session
+import java.io.EOFException
+import java.net.ProtocolException
+import javax.inject.Inject
+import javax.inject.Named
+import javax.inject.Singleton
 
 @Singleton
 class WalletConnectManager @Inject constructor(
@@ -82,9 +82,12 @@ class WalletConnectManager @Inject constructor(
     val transaction: WalletConnectTransaction?
         get() = (requestLiveData.value?.peek() as? Resource.Success)?.data
 
+    var onSessionTimedOut: (() -> Unit)? = null
+
     private var coroutineScope: CoroutineScope? = null
 
     private val accountCacheStatusFlow = accountCacheManager.getCacheStatusFlow()
+    private val sessionConnectionTimer by lazy { WalletConnectSessionTimer(onSessionTimedOut) }
 
     // TODO Find better solution for multiple transaction request
     private var requestHandlingJob: Job? = null
@@ -95,6 +98,7 @@ class WalletConnectManager @Inject constructor(
 
     private val walletConnectClientListener = object : WalletConnectClientListener {
         override fun onSessionRequest(sessionId: Long, requestId: Long, session: WalletConnectSession) {
+            stopSessionConnectionTimer()
             sessionEvent = Event(session)
             handleSessionRequest()
         }
@@ -141,6 +145,7 @@ class WalletConnectManager @Inject constructor(
     }
 
     fun connectToNewSession(url: String) {
+        startSessionConnectionTimer()
         walletConnectClient.connect(url)
     }
 
@@ -278,6 +283,14 @@ class WalletConnectManager @Inject constructor(
     private suspend fun reconnectToDisconnectedSession(sessionId: Long) {
         val disconnectedSessionMeta = walletConnectRepository.getSessionById(sessionId)?.wcSession ?: return
         walletConnectClient.connect(sessionId, disconnectedSessionMeta)
+    }
+
+    private fun startSessionConnectionTimer() {
+        sessionConnectionTimer.start()
+    }
+
+    private fun stopSessionConnectionTimer() {
+        sessionConnectionTimer.cancel()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)

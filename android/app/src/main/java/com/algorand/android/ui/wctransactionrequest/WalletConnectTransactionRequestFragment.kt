@@ -21,10 +21,10 @@ import androidx.activity.OnBackPressedCallback
 import androidx.annotation.StringRes
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.navArgs
+import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.MainNavigationDirections
 import com.algorand.android.R
-import com.algorand.android.WalletConnectRequestNavigationDirections.Companion.actionGlobalWalletConnectDappMessageBottomSheet
+import com.algorand.android.WalletConnectRequestNavigationDirections
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.customviews.LedgerLoadingDialog
 import com.algorand.android.databinding.FragmentWalletConnectTransactionRequestBinding
@@ -38,13 +38,11 @@ import com.algorand.android.models.WalletConnectPeerMeta
 import com.algorand.android.models.WalletConnectSignResult
 import com.algorand.android.models.WalletConnectTransaction
 import com.algorand.android.ui.confirmation.ConfirmationBottomSheet
-import com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionRequestFragmentDirections.Companion.actionWalletConnectTransactionRequestFragmentToWalletConnectAtomicTransactionsFragment
 import com.algorand.android.utils.BLE_OPEN_REQUEST_CODE
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.LOCATION_PERMISSION_REQUEST_CODE
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.isBluetoothEnabled
-import com.algorand.android.utils.showSnackbar
 import com.algorand.android.utils.showWithStateCheck
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
@@ -63,7 +61,6 @@ class WalletConnectTransactionRequestFragment :
     override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
 
     private val binding by viewBinding(FragmentWalletConnectTransactionRequestBinding::bind)
-    private val args by navArgs<WalletConnectTransactionRequestFragmentArgs>()
     private val transactionRequestViewModel: WalletConnectTransactionRequestViewModel by viewModels()
     private var ledgerLoadingDialog: LedgerLoadingDialog? = null
 
@@ -77,7 +74,10 @@ class WalletConnectTransactionRequestFragment :
 
     private val requestResultObserver = Observer<Event<Resource<AnnotatedString>>> {
         it.consume()?.use(
-            onSuccess = { navBack() },
+            onSuccess = {
+                navBack()
+                navToSuccessfulTransactionDialog()
+            },
             onFailed = { navBack() }
         )
     }
@@ -91,7 +91,12 @@ class WalletConnectTransactionRequestFragment :
     private val transactionAdapterListener = object : WalletConnectTransactionAdapter.Listener {
         override fun onMultipleTransactionClick(transactionList: List<BaseWalletConnectTransaction>) {
             val txnArray = transactionList.toTypedArray()
-            nav(actionWalletConnectTransactionRequestFragmentToWalletConnectAtomicTransactionsFragment(txnArray))
+            nav(
+                WalletConnectTransactionRequestFragmentDirections
+                    .actionWalletConnectTransactionRequestFragmentToWalletConnectAtomicTransactionsFragment(
+                        txnArray
+                    )
+            )
         }
 
         override fun onSingleTransactionClick(transaction: BaseWalletConnectTransaction) {
@@ -100,7 +105,10 @@ class WalletConnectTransactionRequestFragment :
         }
 
         override fun onShowMoreMessageClick(peerMeta: WalletConnectPeerMeta, message: String) {
-            nav(actionGlobalWalletConnectDappMessageBottomSheet(message, peerMeta))
+            nav(
+                WalletConnectRequestNavigationDirections
+                    .actionGlobalWalletConnectDappMessageBottomSheet(message, peerMeta)
+            )
         }
     }
 
@@ -151,10 +159,12 @@ class WalletConnectTransactionRequestFragment :
     private fun confirmTransaction() {
         // TODO Check request id
         with(transactionRequestViewModel) {
-            if (isBluetoothNeededToSignTxns(args.transaction)) {
-                if (isBluetoothEnabled()) signTransactionRequest(args.transaction)
-            } else {
-                signTransactionRequest(args.transaction)
+            transaction?.let { transaction ->
+                if (isBluetoothNeededToSignTxns(transaction)) {
+                    if (isBluetoothEnabled()) signTransactionRequest(transaction)
+                } else {
+                    signTransactionRequest(transaction)
+                }
             }
         }
     }
@@ -171,34 +181,39 @@ class WalletConnectTransactionRequestFragment :
     }
 
     private fun initUi() {
+        val transaction = transactionRequestViewModel.transaction
         with(binding) {
             requestsRecyclerView.adapter = transactionAdapter
             declineButton.setOnClickListener { rejectRequest() }
             confirmButton.apply {
                 setOnClickListener { showConfirmationBottomSheet() }
-                val transactionCount = args.transaction.transactionList.size
+                val transactionCount = transaction?.transactionList?.size ?: 0
                 text = resources.getQuantityString(R.plurals.confirm_transactions, transactionCount)
             }
         }
-        walletConnectTransaction = args.transaction
+        walletConnectTransaction = transaction
         rejectRequestOnBackPressed()
         checkIfShouldShowFirstRequestBottomSheet()
     }
 
     private fun showConfirmationBottomSheet() {
         val confirmationText = getString(R.string.once_confirmed_the_connected_application)
-        val descriptionText = if (args.transaction.isFutureTransaction()) {
-            StringBuilder(getString(R.string.this_transaction_will_be)).append(" ").append(confirmationText).toString()
-        } else {
-            confirmationText
+        transactionRequestViewModel.transaction?.let { transaction ->
+            val descriptionText = if (transaction.isFutureTransaction()) {
+                StringBuilder(getString(R.string.this_transaction_will_be))
+                    .append(" ")
+                    .append(confirmationText)
+                    .toString()
+            } else {
+                confirmationText
+            }
+            val confirmationParams = ConfirmationBottomSheetParameters(
+                titleResId = R.string.are_you_sure_question_mark,
+                descriptionText = descriptionText,
+                confirmationIdentifier = transaction.requestId
+            )
+            nav(MainNavigationDirections.actionGlobalConfirmationBottomSheet(confirmationParams))
         }
-
-        val confirmationParams = ConfirmationBottomSheetParameters(
-            titleResId = R.string.are_you_sure_question_mark,
-            descriptionText = descriptionText,
-            confirmationIdentifier = args.transaction.requestId
-        )
-        nav(MainNavigationDirections.actionGlobalConfirmationBottomSheet(confirmationParams))
     }
 
     private fun initTransactionDetails(transaction: WalletConnectTransaction?) {
@@ -212,14 +227,7 @@ class WalletConnectTransactionRequestFragment :
     }
 
     private fun rejectRequest() {
-        val sessionId = args.transaction.session.id
-        val requestId = args.transaction.requestId
-        transactionRequestViewModel.rejectRequest(sessionId, requestId)
-    }
-
-    private fun showSnackBarAndNavBack(text: String) {
-        showSnackbar(text, binding.root)
-        navBack()
+        transactionRequestViewModel.rejectRequest()
     }
 
     private fun checkIfShouldShowFirstRequestBottomSheet() {
@@ -284,5 +292,26 @@ class WalletConnectTransactionRequestFragment :
         hideLoading()
         val (title, errorMessage) = error.getMessage(requireContext())
         showGlobalError(errorMessage, title)
+    }
+
+    private fun navToSuccessfulTransactionDialog() {
+        nav(
+            HomeNavigationDirections.actionGlobalSingleButtonBottomSheet(
+                titleResId = R.string.your_transaction_is_being_processed,
+                drawableResId = R.drawable.ic_check_sign,
+                buttonBackgroundTintResId = R.color.secondaryButtonBackgroundColor,
+                buttonTextColorResId = R.color.primaryTextColor,
+                buttonTextResId = R.string.close,
+                descriptionAnnotatedString = AnnotatedString(
+                    R.string.the_transaction_has_been_signed,
+                    replacementList = listOf(
+                        Pair(
+                            "peer_name",
+                            walletConnectTransaction?.session?.peerMeta?.name.orEmpty()
+                        )
+                    )
+                )
+            )
+        )
     }
 }

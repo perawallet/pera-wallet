@@ -36,7 +36,7 @@ import com.algorand.android.repository.NotificationRepository
 import com.algorand.android.repository.TransactionsRepository
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.AutoLockManager
-import com.algorand.android.utils.BannerManager
+import com.algorand.android.utils.BannerUseCase
 import com.algorand.android.utils.BlockPollingManager
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
@@ -69,7 +69,7 @@ class MainViewModel @ViewModelInject constructor(
     private val transactionRepository: TransactionsRepository,
     private val accountCacheManager: AccountCacheManager,
     private val firebaseAnalytics: FirebaseAnalytics,
-    private val bannerManager: BannerManager
+    private val bannerUseCase: BannerUseCase
 ) : BaseViewModel() {
 
     private val blockChainManager = BlockPollingManager(viewModelScope, transactionRepository)
@@ -98,7 +98,7 @@ class MainViewModel @ViewModelInject constructor(
     }
 
     private fun setAlgorandGovernanceBannerAsVisible() {
-        bannerManager.setBannerVisible()
+        bannerUseCase.setBannerVisible()
     }
 
     private fun initializeAccountBalanceRefresher() {

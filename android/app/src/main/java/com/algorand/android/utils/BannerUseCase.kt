@@ -15,7 +15,7 @@ package com.algorand.android.utils
 import com.algorand.android.repository.BannerRepository
 import javax.inject.Inject
 
-class BannerManager @Inject constructor(
+class BannerUseCase @Inject constructor(
     private val bannerRepository: BannerRepository
 ) {
 
@@ -37,8 +37,8 @@ class BannerManager @Inject constructor(
     }
 
     companion object {
-        // 1 Jan 2022 00:00:00 - 1640995200
-        // 15 Jan 2022 23:59:59 - 1642291199
-        private val BANNER_VISIBILITY_DATE_RANGE = 1640995200..1642291199
+        // 24 December 16:00 UTC -> 1640361600
+        // 6 January 16:00 UTC -> 1641484800
+        private val BANNER_VISIBILITY_DATE_RANGE = 1640361600..1641484800
     }
 }

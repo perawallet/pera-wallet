@@ -53,10 +53,6 @@
         android:name="com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionRequestFragment"
         android:label="WalletConnectTransactionRequestFragment"
         tools:layout="@layout/fragment_wallet_connect_transaction_request">
-
-        <argument
-            android:name="transaction"
-            app:argType="com.algorand.android.models.WalletConnectTransaction" />
         <action
             android:id="@+id/action_walletConnectTransactionRequestFragment_to_walletConnectAtomicTransactionsFragment"
             app:destination="@id/walletConnectAtomicTransactionsFragment" />

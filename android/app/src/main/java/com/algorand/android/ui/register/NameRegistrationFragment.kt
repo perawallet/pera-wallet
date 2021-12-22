@@ -15,8 +15,8 @@ package com.algorand.android.ui.register
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.navGraphViewModels
-import com.algorand.android.LoginNavigationDirections.Companion.actionGlobalToHomeNavigation
+import androidx.navigation.fragment.navArgs
+import com.algorand.android.LoginNavigationDirections
 import com.algorand.android.MainViewModel
 import com.algorand.android.R
 import com.algorand.android.core.AccountManager
@@ -37,10 +37,6 @@ class NameRegistrationFragment : DaggerBaseFragment(R.layout.fragment_name_regis
     @Inject
     lateinit var accountManager: AccountManager
 
-    private val loginNavigationViewModel: LoginNavigationViewModel by navGraphViewModels(R.id.loginNavigation) {
-        defaultViewModelProviderFactory
-    }
-
     private val mainViewModel: MainViewModel by activityViewModels()
 
     private val binding by viewBinding(FragmentNameRegistrationBinding::bind)
@@ -55,6 +51,8 @@ class NameRegistrationFragment : DaggerBaseFragment(R.layout.fragment_name_regis
         toolbarConfiguration = toolbarConfiguration
     )
 
+    private val args: NameRegistrationFragmentArgs by navArgs()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.nextButton.setOnClickListener { onNextButtonClick() }
@@ -68,15 +66,15 @@ class NameRegistrationFragment : DaggerBaseFragment(R.layout.fragment_name_regis
 
     private fun onNextButtonClick() {
         binding.nextButton.setOnClickListener(null)
-        loginNavigationViewModel.tempAccount?.let { registeredAccount ->
+        args.accountCreation.tempAccount.let { registeredAccount ->
             if (accountManager.isThereAnyAccountWithPublicKey(registeredAccount.address).not()) {
                 var accountName = binding.nameEditText.text.toString()
                 if (accountName.isBlank()) {
                     accountName = registeredAccount.address.toShortenedAddress()
                 }
                 registeredAccount.name = accountName
-                mainViewModel.addAccount(registeredAccount, loginNavigationViewModel.creationType)
-                nav(actionGlobalToHomeNavigation())
+                mainViewModel.addAccount(registeredAccount, args.accountCreation.creationType)
+                nav(LoginNavigationDirections.actionGlobalToHomeNavigation())
             } else {
                 context?.showAlertDialog(getString(R.string.error), getString(R.string.this_account_already_exists))
             }

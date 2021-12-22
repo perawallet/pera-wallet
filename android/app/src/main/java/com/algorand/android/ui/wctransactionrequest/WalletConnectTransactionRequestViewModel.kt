@@ -46,12 +46,17 @@ class WalletConnectTransactionRequestViewModel @ViewModelInject constructor(
     val signResultLiveData: LiveData<WalletConnectSignResult>
         get() = walletConnectSignManager.signResultLiveData
 
+    val transaction: WalletConnectTransaction?
+        get() = walletConnectManager.transaction
+
     fun setupWalletConnectSignManager(lifecycle: Lifecycle) {
         walletConnectSignManager.setup(lifecycle)
     }
 
-    fun rejectRequest(sessionId: Long, requestId: Long) {
-        walletConnectManager.rejectRequest(sessionId, requestId, errorProvider.rejected.userRejection)
+    fun rejectRequest() {
+        transaction?.let {
+            walletConnectManager.rejectRequest(it.session.id, it.requestId, errorProvider.rejected.userRejection)
+        }
     }
 
     fun shouldShowFirstRequestBottomSheet(): Boolean {
@@ -76,7 +81,7 @@ class WalletConnectTransactionRequestViewModel @ViewModelInject constructor(
 
     fun isBluetoothNeededToSignTxns(transaction: WalletConnectTransaction): Boolean {
         return transaction.transactionList.flatten().any {
-            val accountDetail = it.accountCacheData?.account?.type ?: return false
+            val accountDetail = it.account?.type ?: return false
             accountDetail == LEDGER || accountDetail == REKEYED || accountDetail == REKEYED_AUTH
         }
     }

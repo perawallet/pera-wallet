@@ -308,7 +308,7 @@
     <string name="the_account_name"><annotation font="publicsans_bold">\"<annotation replacement="account_name"> </annotation>\"</annotation> hesabı, başarıyla yeniden anahtarlandı</string>
     <string name="just_now">Şimdi</string>
     <string name="asset_support_success"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>, hesabına <annotation replacement="asset">assetPlaceholder</annotation> ekledi.  <annotation replacement="asset">assetPlaceholder</annotation> gönderebilirsiniz.</string>
-    <string name="asset_support_request"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>, size <annotation replacement="asset">assetPlaceholder</annotation> göndermeye çalışıyor. Ancak, bunu desteklemiyorsunuz. İsterseniz, hesabınıza ekleyebiliriz.</string>
+    <string name="asset_support_request"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation>, size <annotation replacement="asset">assetPlaceholder</annotation> göndermek istiyor. Ancak, siz bu varlığı desteklemiyorsunuz. Bu varlığı hesabınıza eklemek için buraya dokunun.</annotation></string>
     <string name="transaction_send_successful"><annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> işleminiz, <annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> adresinden <annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> adresine gönderilerek tamamlandı.</string>
     <string name="transaction_send_failed"><annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> işleminiz, <annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> adresinden <annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> adresine gönderilemeyerek başarısız oldu.</string>
     <string name="transaction_received"><annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation>, <annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> adresine <annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> tarafından gönderildi.</string>
@@ -618,11 +618,24 @@
     <string name="signing_error_transaction_in_request">İmzalama Hatası: İşlem isteği sürecindeki bir işlem, bağlı olan Cüzdanda bulunmayan bir özel anahtarı (imzalayan) gerektiriyor.</string>
     <string name="transaction_request_contains_unsupported">İşlem isteği, Desteklenmeyen İşlem Türünü içeriyor</string>
     <string name="transaction_request_contains_unsupported_multisig">İşlem isteği, Desteklenmeyen İşlem Türünü içeriyor: Çoklu imza</string>
-    <string name="invalid_input_transaction_request">Geçersiz Giriş: İşlem isteği 16\'dan fazla işlemi içeriyor</string>
+    <string name="invalid_input_transaction_request">Geçersiz Giriş: İşlem isteği %1$d\'dan fazla işlemi içeriyor</string>
     <string name="invalid_input_unable_to_parse">Geçersiz Giriş: İşlem ayrıştırılamıyor</string>
     <string name="invalid_input_invalid_public_key">Geçersiz Giriş: Ortak Anahtar Geçersiz</string>
     <string name="invalid_input_invalid_asset">Geçersiz Giriş: Geçersiz Varlık</string>
     <string name="invalid_input_unable_to_be">Geçersiz Giriş: İmzalanamıyor</string>
     <string name="invalid_input_group_transaction">Geçersiz Giriş: Grup işlemlerinin Cüzdan kullanıcısı tarafından imzalanmasına gerek yoktur.</string>
     <string name="invalid_input_requested_signer">Geçersiz Giriş: İstenen imzalayan Kullanıcı Cüzdanında yok</string>
+    <string name="pairing_ledger_with_your">Cihazınızla Ledger\'ı Eşleştirme</string>
+    <string name="open_your_ledger">Ledger cihazınızı açın.</string>
+    <string name="close_the_algorand_app">Algorand uygulamasını Ledger cihazında kapatın.</string>
+    <string name="on_the_ledger_home_screen">Ledger ana sayfasında eşleştirmeyi onaylayın.</string>
+    <string name="once_pairing_is_confirmed">Eşleştirmenin onaylanmasının ardından Algorand Ledger uygulamasını açın.</string>
+    <string name="pairing_failed">Eşleştirilemedi!</string>
+    <string name="after_confirming_pairing_on">Eşleşmeyi Ledger cihazınızda onayladıktan sonra Algorand uygulamasını açın.</string>
+    <string name="ledger_not_found">Ledger bulunamadı!</string>
+    <string name="if_you_are_having_ledger">Ledger Nano X bağlantı sorunları yaşıyorsanız, lütfen cihazı telefonunuzun Bluetooth ayarlarından kaldırın, Ledger hesabını da kaldırın. Ardından, Algorand Wallet talimatlarını izleyerek Ledger\'ınızı yeniden eşleştirin.</string>
+    <string name="open_ledger_support">Ledger Support\'u Aç</string>
+    <string name="please_follow_these_steps">Lütfen şu adımları izleyin:</string>
+    <string name="having_ledger_nano_x">Ledger Nano X bağlantı sorunları mı yaşıyorsunuz?</string>
+    <string name="make_sure_the_device_is">Cihazın kilidinin açıldığından, yakında bulunduğundan ve Bluetooth\'unun etkin olduğundan emin olun. Sorun devam ederse, lütfen cihazı telefonunuzun Bluetooth ayarlarından kaldırın, Ledger hesabını da kaldırın. Ardından, Algorand Wallet talimatlarını izleyerek Ledger\'ınızı yeniden eşleştirin.</string>
 </resources>
