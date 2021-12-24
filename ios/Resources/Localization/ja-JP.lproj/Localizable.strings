@@ -179,7 +179,13 @@
 "ble-error-disconnected-peripheral" = "デバイスから切断されました";
 
 /* (No Comment) */
+"ble-error-fail-ble-connection-open-support" = "Ledgerサポートを開く";
+
+/* (No Comment) */
 "ble-error-fail-ble-connection-power" = "近くのLedgerデバイスを検索するには、デバイスでBluetoothが有効になっている必要があります。";
+
+/* (No Comment) */
+"ble-error-fail-ble-connection-repairing" = "Ledger Nano Xの接続に問題がある場合は、お使いの携帯電話のBluetooth設定からデバイスを削除し、Ledgerアカウントを削除してから、Algorand Walletの指示に従ってLedgerを再ペアリングしてください。";
 
 /* (No Comment) */
 "ble-error-fail-ble-connection-resetting" = "リセット用のBLE接続に失敗しました";
@@ -483,6 +489,21 @@
 
 /* MARK: Ledger Tutorial */
 "ledger-pair-title" = "Ledgerアカウントの作成";
+
+/* (No Comment) */
+"ledger-pairing-first-warning-message-description" = "- Ledgerデバイスを開きます。\n- LedgerデバイスのAlgorandアプリを閉じます。\n- Ledgerのホームスクリーンで、ペアリングを確認します。\n- ペアリングが確認できたら、Algorand Ledgerアプリを開きます。";
+
+/* (No Comment) */
+"ledger-pairing-first-warning-message-first" = "Ledgerはこのデバイスとペアリングされていますか？";
+
+/* (No Comment) */
+"ledger-pairing-first-warning-message-second" = "そうでない場合は、以下の手順に従ってください。";
+
+/* (No Comment) */
+"ledger-pairing-first-warning-title" = "Ledgerとデバイスのペアリング";
+
+/* (No Comment) */
+"ledger-pairing-issue-error-title" = "Ledger Nano Xの接続でお困りですか？";
 
 /* MARK: Rekey Confirm */
 "ledger-rekey-confirm-title" = "再キー化の確認";
@@ -891,6 +912,9 @@
 
 /* (No Comment) */
 "qr-scan-go-settings-title" = "カメラが無効";
+
+/* (No Comment) */
+"qr-scan-invalid-wc-screen-error" = "スキャンされたQRは、有効なAlgorandのパブリックアドレスではありません。その他のタイプのQR（WalletConnectトランザクションなど）については、ホームページのスキャンQRボタンをご利用ください。";
 
 /* (No Comment) */
 "qr-scan-message-text" = "このページからのみQRをスキャンできます。QRを表示するには、アカウントのアイコンを選択してください";
@@ -1746,6 +1770,9 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-group-asset-title" = "%@へのアセット転送";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-id" = "グループID：";
 
 /* (No Comment) */
 "wallet-connect-transaction-group-possible-asset-addition-title" = "アセット%@への可能なオプトイン";

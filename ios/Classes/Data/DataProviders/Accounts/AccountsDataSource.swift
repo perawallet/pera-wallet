@@ -16,6 +16,7 @@
 //  AccountsDataSource.swift
 
 import UIKit
+import SwiftDate
 
 class AccountsDataSource: NSObject, UICollectionViewDataSource {
     
@@ -37,7 +38,14 @@ class AccountsDataSource: NSObject, UICollectionViewDataSource {
     var isContentStateAvailableForBanner = true
 
     private var canDisplayGovernanceBanner: Bool {
-        return isDisplayingBanner && isContentStateAvailableForBanner
+        return isDisplayingBanner && isContentStateAvailableForBanner && isCurrentGovernanceStakingDate
+    }
+
+    private var isCurrentGovernanceStakingDate: Bool {
+        let governanceStartDate = TimeInterval(1640361600)
+        let governanceEndDate = TimeInterval(1641484800)
+        let currentDate = Date().timeIntervalSince1970
+        return currentDate >= governanceStartDate && currentDate <= governanceEndDate
     }
     
     var hasPendingAssetAction: Bool {
@@ -418,7 +426,7 @@ extension AccountsDataSource {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let defaultSectionInsets = UIEdgeInsets(top: 0.0, left: 20.0, bottom: 0.0, right: 20.0)
         let itemHeight: CGFloat = 52.0
-        let bannerHeight: CGFloat = 170.0
+        let bannerHeight: CGFloat = 190.0
         let emptyFooterHeight: CGFloat = 44.0
         let multiItemHeight: CGFloat = 72.0
     }

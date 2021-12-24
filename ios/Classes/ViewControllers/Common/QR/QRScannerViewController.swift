@@ -46,6 +46,14 @@ class QRScannerViewController: BaseViewController {
         ),
         initialModalSize: .custom(CGSize(width: view.frame.width, height: 454.0))
     )
+
+    private lazy var wcConnectionErrorModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .none
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 360.0))
+    )
     
     weak var delegate: QRScannerViewControllerDelegate?
     
@@ -63,6 +71,19 @@ class QRScannerViewController: BaseViewController {
                 self.captureSession?.startRunning()
             }
         }
+    }
+
+    private var wcConnectionRepeater: Repeater?
+
+    private let canReadWCSession: Bool
+
+    init(canReadWCSession: Bool, configuration: ViewControllerConfiguration) {
+        self.canReadWCSession = canReadWCSession
+        super.init(configuration: configuration)
+    }
+
+    deinit {
+        wcConnectionRepeater?.invalidate()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -263,10 +284,18 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
             AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
 
             if qrString.isWalletConnectConnection {
+                if !canReadWCSession {
+                    NotificationBanner.showError("title-error".localized, message: "qr-scan-invalid-wc-screen-error".localized)
+                    captureSession = nil
+                    closeScreen(by: .pop)
+                    return
+                }
+
                 walletConnector.delegate = self
                 cancelButton.startLoading()
                 cancelButton.setBackgroundImage(img("button-bg-scan-qr"), for: .normal)
                 walletConnector.connect(to: qrString)
+                startWCConnectionTimer()
             } else if let qrText = try? JSONDecoder().decode(QRText.self, from: qrStringData) {
                 captureSession = nil
                 closeScreen(by: .pop)
@@ -299,45 +328,130 @@ extension QRScannerViewController: WalletConnectorDelegate {
         shouldStart session: WalletConnectSession,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) {
+        stopWCConnectionTimer()
+
         guard let accounts = self.session?.accounts,
               accounts.contains(where: { $0.type != .watch }) else {
-            NotificationBanner.showError("title-error".localized, message: "wallet-connect-session-error-no-account".localized)
+                  asyncMain { [weak self] in
+                      guard self != nil else {
+                          return
+                      }
+
+                      NotificationBanner.showError("title-error".localized, message: "wallet-connect-session-error-no-account".localized)
+                  }
             return
         }
 
-        let controller = open(
-            .wcConnectionApproval(walletConnectSession: session, completion: completion),
-            by: .customPresent(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: wcConnectionModalPresenter
-            )
-        ) as? WCConnectionApprovalViewController
-        controller?.delegate = self
+        asyncMain { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            let controller = self.open(
+                .wcConnectionApproval(walletConnectSession: session, completion: completion),
+                by: .customPresent(
+                    presentationStyle: .custom,
+                    transitionStyle: nil,
+                    transitioningDelegate: self.wcConnectionModalPresenter
+                )
+            ) as? WCConnectionApprovalViewController
+            controller?.delegate = self
+        }
     }
 
     func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WCSession) {
         delegate?.qrScannerViewControllerDidApproveWCConnection(self)
         walletConnector.saveConnectedWCSession(session)
-        cancelButton.stopLoading()
-        captureSession = nil
-        closeScreen(by: .pop)
+        asyncMain { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.captureSession = nil
+            self.cancelButton.stopLoading()
+            self.closeScreen(by: .pop)
+        }
     }
 
     func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.Error) {
         switch error {
         case .failedToConnect,
              .failedToCreateSession:
-            cancelButton.stopLoading()
-            captureSessionQueue.async {
-                self.captureSession?.startRunning()
+            asyncMain { [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.resetUIForScanning()
+                NotificationBanner.showError("title-error".localized, message: "wallet-connect-session-invalid-qr-message".localized)
+                self.captureSession = nil
+                self.closeScreen(by: .pop)
             }
-            NotificationBanner.showError("title-error".localized, message: "wallet-connect-session-invalid-qr-message".localized)
-            captureSession = nil
-            closeScreen(by: .pop)
+
         default:
             break
         }
+    }
+
+    private func startWCConnectionTimer() {
+        /// We need to warn the user after 10 seconds if there's no resposne from the dApp.
+        wcConnectionRepeater = Repeater(intervalInSeconds: 10.0) { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            asyncMain { [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                if self.captureSession?.isRunning == true {
+                    self.captureSessionQueue.async {
+                        self.captureSession?.stopRunning()
+                    }
+                }
+
+                self.openWCConnectionError()
+            }
+
+            self.stopWCConnectionTimer()
+        }
+
+        wcConnectionRepeater?.resume(immediately: false)
+    }
+
+    private func stopWCConnectionTimer() {
+        wcConnectionRepeater?.invalidate()
+        wcConnectionRepeater = nil
+    }
+
+    private func openWCConnectionError() {
+        let transitionStyle = Screen.Transition.Open.customPresent(
+            presentationStyle: .custom,
+            transitionStyle: nil,
+            transitioningDelegate: wcConnectionErrorModalPresenter
+        )
+
+        // swiftlint:disable line_length
+        /// <todo>
+        /// These texts will be localized later.
+        let message = "We are sorry, but the dApp is not responding. Please refresh the page and try scanning a new QR Code. If the error persists, please contact the dApp."
+        // swiftlint:enable line_length
+        let warningAlert = WarningAlert(
+            title: "Connection Failed",
+            image: img("img-error-circle"),
+            description: message,
+            actionTitle: "title-close".localized
+        )
+
+        let controller = open(.warningAlert(warningAlert: warningAlert), by: transitionStyle) as? WarningAlertViewController
+        controller?.delegate = self
+    }
+}
+
+extension QRScannerViewController: WarningAlertViewControllerDelegate {
+    func warningAlertViewControllerDidTakeAction(_ warningAlertViewController: WarningAlertViewController) {
+        resetUIForScanning()
     }
 }
 
@@ -348,7 +462,12 @@ extension QRScannerViewController: WCConnectionApprovalViewControllerDelegate {
 
     func wcConnectionApprovalViewControllerDidRejectConnection(_ wcConnectionApprovalViewController: WCConnectionApprovalViewController) {
         wcConnectionApprovalViewController.dismissScreen()
+        resetUIForScanning()
+    }
+
+    private func resetUIForScanning() {
         cancelButton.stopLoading()
+        customizeButtonAppearance()
         captureSessionQueue.async {
             self.captureSession?.startRunning()
         }

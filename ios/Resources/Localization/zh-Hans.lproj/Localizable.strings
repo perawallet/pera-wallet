@@ -179,7 +179,13 @@
 "ble-error-disconnected-peripheral" = "断开与设备的连接";
 
 /* (No Comment) */
+"ble-error-fail-ble-connection-open-support" = "开放的Ledger支持";
+
+/* (No Comment) */
 "ble-error-fail-ble-connection-power" = "想要搜索附近的Ledger设备，请确保您已开启蓝牙功能";
+
+/* (No Comment) */
+"ble-error-fail-ble-connection-repairing" = "如出现Ledger Nano X连接问题，请从手机的蓝牙设置中删除该设备和Ledger账户，再按照Algorand Wallet的说明重新配对您的Ledger设备与账户。";
 
 /* (No Comment) */
 "ble-error-fail-ble-connection-resetting" = "重新设置的BLE连接失败";
@@ -483,6 +489,21 @@
 
 /* MARK: Ledger Tutorial */
 "ledger-pair-title" = "创建Ledger账户";
+
+/* (No Comment) */
+"ledger-pairing-first-warning-message-description" = "· 启动您的Ledger设备。\n· 关闭Ledger设备上的Algorand应用程序。\n· 在Ledger主屏幕上确认配对。\n· 确认配对后，打开Algorand Ledger应用程序。";
+
+/* (No Comment) */
+"ledger-pairing-first-warning-message-first" = "您的Ledger是否与此设备配对？";
+
+/* (No Comment) */
+"ledger-pairing-first-warning-message-second" = "如果没有，请按照以下步骤操作：";
+
+/* (No Comment) */
+"ledger-pairing-first-warning-title" = "将您的设备与Ledger配对";
+
+/* (No Comment) */
+"ledger-pairing-issue-error-title" = "出现Ledger Nano X的连接问题？";
 
 /* MARK: Rekey Confirm */
 "ledger-rekey-confirm-title" = "确认密钥更新";
@@ -891,6 +912,9 @@
 
 /* (No Comment) */
 "qr-scan-go-settings-title" = "摄像头已禁用";
+
+/* (No Comment) */
+"qr-scan-invalid-wc-screen-error" = "所扫描的二维码不是有效的Algorand公开地址。请使用主页上的扫描二维码按键，获取其他类型的二维码（如WalletConnect交易）。";
 
 /* (No Comment) */
 "qr-scan-message-text" = "您只能在本页扫描二维码，如需查看二维码，请选择账户上的图标。";
@@ -1746,6 +1770,9 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-group-asset-title" = "资产转移到%@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-id" = "群组ID：";
 
 /* (No Comment) */
 "wallet-connect-transaction-group-possible-asset-addition-title" = "有可能选择加入资产%@";

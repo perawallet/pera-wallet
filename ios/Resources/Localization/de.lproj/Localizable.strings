@@ -179,7 +179,13 @@
 "ble-error-disconnected-peripheral" = "Verbindung mit dem Gerät getrennt";
 
 /* (No Comment) */
+"ble-error-fail-ble-connection-open-support" = "Ledger-Support öffnen";
+
+/* (No Comment) */
 "ble-error-fail-ble-connection-power" = "Für die Suche nach Ledger-Geräten in der Nähe muss bei Ihrem Gerät Bluetooth aktiviert sein.";
+
+/* (No Comment) */
+"ble-error-fail-ble-connection-repairing" = "Wenn Sie Verbindungsprobleme mit dem Ledger Nano X haben, entfernen Sie bitte das Gerät aus den Bluetooth-Einstellungen Ihres Telefons, löschen Sie das Ledger-Konto und koppeln Sie Ihren Ledger erneut, indem Sie den Anweisungen der Algorand Wallet folgen.";
 
 /* (No Comment) */
 "ble-error-fail-ble-connection-resetting" = "BLE-Verbindung zum Zurücksetzen fehlgeschlagen";
@@ -483,6 +489,21 @@
 
 /* MARK: Ledger Tutorial */
 "ledger-pair-title" = "Ledger-Konto eröffnen";
+
+/* (No Comment) */
+"ledger-pairing-first-warning-message-description" = "- Öffnen Sie Ihr Ledger-Gerät.\n- Schließen Sie die Algorand-App auf dem Ledger-Gerät.\n- Bestätigen Sie auf dem Ledger-Homescreen die Kopplung.\n- Sobald die Kopplung bestätigt ist, öffnen Sie die Algorand-Ledger-App.";
+
+/* (No Comment) */
+"ledger-pairing-first-warning-message-first" = "Ist Ihr Ledger mit diesem Gerät gekoppelt?";
+
+/* (No Comment) */
+"ledger-pairing-first-warning-message-second" = "Falls nicht, befolgen Sie bitte diese Schritte:";
+
+/* (No Comment) */
+"ledger-pairing-first-warning-title" = "Ledger mit Ihrem Gerät koppeln";
+
+/* (No Comment) */
+"ledger-pairing-issue-error-title" = "Haben Sie Verbindungsprobleme mit dem Ledger Nano X?";
 
 /* MARK: Rekey Confirm */
 "ledger-rekey-confirm-title" = "Rekeying bestätigen";
@@ -891,6 +912,9 @@
 
 /* (No Comment) */
 "qr-scan-go-settings-title" = "Kamera deaktiviert";
+
+/* (No Comment) */
+"qr-scan-invalid-wc-screen-error" = "Der gescannte QR-Code ist keine gültige öffentliche Adresse von Algorand. Für andere QR-Typen (z. B. WalletConnect-Transaktionen) verwenden Sie bitte die QR-Scan-Schaltfläche auf der Homepage.";
 
 /* (No Comment) */
 "qr-scan-message-text" = "Hier können Sie lediglich QR-Codes scannen. Um den QR-Code Ihres Kontos anzuzeigen, tippen Sie bitte in Ihrem Konto auf das entsprechende Symbol";
@@ -1746,6 +1770,9 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-group-asset-title" = "Asset-Transfer an %@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-id" = "Gruppen-ID:";
 
 /* (No Comment) */
 "wallet-connect-transaction-group-possible-asset-addition-title" = "Mögliches Opt-in für Asset %@";

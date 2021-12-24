@@ -13,25 +13,17 @@
 // limitations under the License.
 
 //
-//   OneTimeDisplayStorage.swift
+//   WCSessionSaveErrorLog.swift
 
-import UIKit
+import Foundation
 
-class OneTimeDisplayStorage: Storable {
-    typealias Object = Any
-
-    func setDisplayedOnce(for key: StorageKey) {
-        save(true, for: key.rawValue, to: .defaults)
-    }
-
-    func isDisplayedOnce(for key: StorageKey) -> Bool {
-        return bool(with: key.rawValue, to: .defaults)
-    }
-}
-
-extension OneTimeDisplayStorage {
-    enum StorageKey: String {
-        case wcInitialWarning = "com.algorand.algorand.wc.warning.displayed"
-        case ledgerPairingWarning = "com.algorand.algorand.ledger.pairing.warning.displayed"
+struct WCSessionSaveErrorLog: AnalyticsLog {
+    let dappURL: String
+    
+    var name: AnalyticsLogName = .wcSessionSaveError
+    var params: AnalyticsParameters {
+        return [
+            .dappURL: dappURL
+        ]
     }
 }

@@ -16,6 +16,7 @@
 //  RootViewController.swift
 
 import UIKit
+import Macaroon
 
 class RootViewController: UIViewController {
     
@@ -44,6 +45,14 @@ class RootViewController: UIViewController {
     private let onceWhenViewDidAppear = Once()
 
     private(set) var isDisplayingGovernanceBanner = true
+
+    private lazy var wcTransactionSuccessModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .backgroundTouch
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 350.0))
+    )
 
     private lazy var deepLinkRouter = DeepLinkRouter(rootViewController: self, appConfiguration: appConfiguration)
     
@@ -187,7 +196,16 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
 
         currentWCTransactionRequest = request
 
-        wcMainTransactionViewController = open(
+        /// If there's already a modal presented screen, open the request on top of that screen.
+        let presentingController: UIViewController?
+        if let controller = topMostController,
+           controller.isModal {
+            presentingController = controller
+        } else {
+            presentingController = self
+        }
+
+        wcMainTransactionViewController = presentingController?.open(
             .wcMainTransaction(
                 transactions: transactions,
                 transactionRequest: request,
@@ -204,7 +222,48 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
 extension RootViewController: WCMainTransactionViewControllerDelegate {
     func wcMainTransactionViewController(
         _ wcMainTransactionViewController: WCMainTransactionViewController,
-        didCompleted request: WalletConnectRequest
+        didSigned request: WalletConnectRequest,
+        in session: WCSession?
+    ) {
+        resetCurrentWCTransaction()
+
+        guard let wcSession = session else {
+            return
+        }
+
+        presentWCTransactionSuccessMessage(for: wcSession)
+    }
+
+    private func presentWCTransactionSuccessMessage(for session: WCSession) {
+        let transitionStyle = Screen.Transition.Open.customPresent(
+            presentationStyle: .custom,
+            transitionStyle: nil,
+            transitioningDelegate: wcTransactionSuccessModalPresenter
+        )
+
+        let dappName = session.peerMeta.name
+
+        /// <todo>
+        /// These texts will be localized later.
+        let warningAlert = WarningAlert(
+            title: "Your transaction is being processed!",
+            image: img("img-green-checkmark"),
+            description: "The transaction has been signed and sent to \(dappName). Please visit \(dappName) for the remaining process.",
+            actionTitle: "title-close".localized
+        )
+
+        asyncMainAfter(duration: 0.3) { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.open(.warningAlert(warningAlert: warningAlert), by: transitionStyle)
+        }
+    }
+
+    func wcMainTransactionViewController(
+        _ wcMainTransactionViewController: WCMainTransactionViewController,
+        didRejected request: WalletConnectRequest
     ) {
         resetCurrentWCTransaction()
     }

@@ -143,6 +143,7 @@
 "qr-scan-should-scan-mnemonics-message" = "You should scan valid passphrases";
 "qr-scan-message-text" = "You can only scan your QR from this page, To view your QR please select the icon on your account";
 "qr-scan-should-scan-valid-qr" = "QR is not valid.";
+"qr-scan-invalid-wc-screen-error" = "The scanned QR is not a valid Algorand public address. For other types of QR (such as WalletConnect transactions), please use the scan QR button on the homepage.";
 
 // MARK: QR Creation
 "qr-creation-title" = "Passphrase QR";
@@ -398,7 +399,7 @@
 "ledger-tutorial-title-text" = "Pair with Ledger";
 "ledger-tutorial-turned-on" = "Make sure that your ledger device is on and has Bluetooth enabled.";
 "ledger-tutorial-install-app" = "Install the Algorand app (version 1.2.9 or later) onto your Ledger.";
-"ledger-tutorial-open-app" = "Open the Algorand app on your Ledger.";
+"ledger-tutorial-open-app" = "After confirming pairing on your Ledger device, open the Algorand app.";
 "ledger-tutorial-bluetooth" = "Make sure Bluetooth is enabled on your smartphone.";
 "ledger-search-button-title" = "Search for Ledger";
 
@@ -444,7 +445,7 @@
 "ble-error-unsupported-device-title" = "Unsupported Device";
 "ble-error-transaction-cancelled-title" = "Transaction Cancelled";
 "ble-error-transmission-title" = "Transmission Error";
-"ble-error-fail-connect-peripheral" = "Could not connect to the Ledger device. Make sure the device is unlocked, nearby and has bluetooth enabled.";
+"ble-error-fail-connect-peripheral" = "Could not connect to the Ledger device. Make sure the device is unlocked, nearby and has bluetooth enabled. If problems persist, please remove the device from your phone's bluetooth settings, remove the ledger account, and re-pair.";
 "ble-error-disconnected-peripheral" = "Disconnected from device";
 "ble-error-fail-fetch-account-address" = "We were unable to receive the public key of your ledger device. Please try again.";
 "ble-error-fail-sign-transaction" = "The paired ledger device has cancelled the transaction request.";
@@ -452,6 +453,8 @@
 "ble-error-fail-ble-connection-unsupported" = "The device you are trying to connect to is not supported with the Algorand Wallet.";
 "ble-error-fail-ble-connection-unauthorized" = "Bluetooth permission needs to be granted in order to search nearby Ledgers.";
 "ble-error-fail-ble-connection-resetting" = "Failed BLE connection for Resetting";
+"ble-error-fail-ble-connection-repairing" = "If you’re having Ledger Nano X connection issues, please remove the device from your phone’s bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Algorand Wallet instructions.";
+"ble-error-fail-ble-connection-open-support" = "Open Ledger Support";
 
 // MARK: Ledger Approval
 "ledger-approval-title" = "Preview and Sign";
@@ -525,6 +528,13 @@
 "ledger-rekey-error-add-auth" = "The connected Ledger device cannot sign transactions for this account. In order to do so, please connect %@.";
 "ledger-rekey-error-not-found" = "This account has been rekeyed. Please recover this account with a passphrase or Ledger device.";
 "ledger-transaction-account-match-error" = "It appears this Ledger device has been reset and the account on the device no longer matches this account. Please pair the Ledger again from the homepage.";
+
+"ledger-pairing-issue-error-title" = "Having Ledger Nano X connection issues?";
+"ledger-pairing-issue-error-message" = "Make sure the device is unlocked, nearby and has bluetooth enabled. If problems persist, please remove the device from your phone’s bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Algorand Wallet instructions.";
+"ledger-pairing-first-warning-title" = "Pairing Ledger with Your Device";
+"ledger-pairing-first-warning-message-first" = "Is your Ledger paired with this device?";
+"ledger-pairing-first-warning-message-second" = "If not, please follow these steps:";
+"ledger-pairing-first-warning-message-description" = "· Open your Ledger device.\n· Close the Algorand app on the Ledger device.\n· On the Ledger homescreen, confirm pairing.\n· Once pairing is confirmed, open the Algorand Ledger app.";
 
 // MARK: Watch Account
 "title-watch-account" = "Watch Account";
@@ -697,7 +707,7 @@
 "wallet-connect-transaction-error-group-validation" = "Transaction Request Rejected: The transaction group has failed validation by the Algorand SDK.";
 "wallet-connect-transaction-error-already-displayed" = "Transaction Request Rejected: The User currently has another transaction request that is in progress.";
 "wallet-connect-transaction-error-group-unauthorized-user" = "The requested operation and/or account has not been authorized by the user.";
-"wallet-connect-transaction-error-transaction-size" = "Invalid Input: Transaction request contains more than 16 transactions";
+"wallet-connect-transaction-error-transaction-size" = "Invalid Input: Transaction request contains more than 64 transactions";
 "wallet-connect-transaction-error-invalid-signer" = "Signing Error: A transaction in the transaction request requires a private key (signer) that does not exist in the connected Wallet.";
 "wallet-connect-transaction-error-node" = "Signing Error: Network mismatch between dApp and Wallet. For example, Wallet is connected to TestNet and dApp connected to MainNet (or vice versa).";
 "wallet-connect-transaction-error-group" = "Invalid Input: Group transaction does not need to be signed by Wallet user.";
@@ -731,7 +741,11 @@
 "wallet-connect-asset-reconfiguration-title" = "Asset Reconfiguration Request";
 "wallet-connect-asset-deletion-title" = "Asset Deletion Request";
 "wallet-connect-asset-deletion-warning-title" = "This asset will be deleted.";
+"wallet-connect-signed-information-title" = "Your transaction is being processed!";
+"wallet-connect-signed-information-message" = "The transaction has been signed and sent to %@. Please visit %@ for the remaining process.";
+"wallet-connect-qr-dapp-connection-failed-title" = "Connection Failed";
+"wallet-connect-qr-dapp-connection-failed-message" = "Description: We are sorry, but the dApp is not responding. Please refresh the page and try scanning a new QR Code. If the error persists, please contact the dApp.";
 
-"governance-banner-title" = "Algorand Governance Program is starting!";
+"governance-banner-title" = "The registration window for Governance Period #2 is Dec. 25 to Jan. 7";
 "governance-banner-detail" = "Become a governor. Vote on Algorand’s future. Earn rewards.";
 "governance-banner-action" = "Get Started";

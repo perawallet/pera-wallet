@@ -179,7 +179,13 @@
 "ble-error-disconnected-peripheral" = "Desconectado do dispositivo";
 
 /* (No Comment) */
+"ble-error-fail-ble-connection-open-support" = "Abra o Suporte Ledger";
+
+/* (No Comment) */
 "ble-error-fail-ble-connection-power" = "O Bluetooth deve estar habilitado em seu dispositivo para buscar por dispositivos Ledger próximos.";
+
+/* (No Comment) */
+"ble-error-fail-ble-connection-repairing" = "Caso tenha problemas de conexão com o Ledger Nano X, remova o dispositivo das configurações de bluetooth do seu telefone, remova a conta ledger e refaça o pareamento do seu Ledger segundo instruções da Carteira Algorand.";
 
 /* (No Comment) */
 "ble-error-fail-ble-connection-resetting" = "Conexão BLE não foi possível para o Reinício";
@@ -483,6 +489,21 @@
 
 /* MARK: Ledger Tutorial */
 "ledger-pair-title" = "Criar Conta Ledger";
+
+/* (No Comment) */
+"ledger-pairing-first-warning-message-description" = "· Abra seu dispositivo Ledger.\n· Feche o aplicativo Algorand no dispositivo Ledger.\n· Na tela inicial do Ledger, confirme o pareamento.\n· Assim que o pareamento for confirmado, abra o aplicativo Algorand Ledger.";
+
+/* (No Comment) */
+"ledger-pairing-first-warning-message-first" = "Seu Ledger está pareado com este dispositivo?";
+
+/* (No Comment) */
+"ledger-pairing-first-warning-message-second" = "Se não, siga estes passos:";
+
+/* (No Comment) */
+"ledger-pairing-first-warning-title" = "Pareando o Ledger com Seu Dispositivo";
+
+/* (No Comment) */
+"ledger-pairing-issue-error-title" = "Problemas de conexão com seu Ledger Nano X?";
 
 /* MARK: Rekey Confirm */
 "ledger-rekey-confirm-title" = "Confirmar Rechaveamento";
@@ -891,6 +912,9 @@
 
 /* (No Comment) */
 "qr-scan-go-settings-title" = "Câmera Desabilitada";
+
+/* (No Comment) */
+"qr-scan-invalid-wc-screen-error" = "O QR escaneado não é um endereço público Algorand válido. Para outros tipos de QR (como transações WalletConnect), use o botão de digitalização QR na página inicial.";
 
 /* (No Comment) */
 "qr-scan-message-text" = "Você só pode escanear seu QR nesta página. Para visualizar seu QR, selecione o ícone em sua conta.";
@@ -1746,6 +1770,9 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-group-asset-title" = "Transferência de Ativo para %@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-id" = "Identificação (ID) do grupo:";
 
 /* (No Comment) */
 "wallet-connect-transaction-group-possible-asset-addition-title" = "Possível Adesão a Ativo %@";

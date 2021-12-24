@@ -49,7 +49,10 @@ extension LedgerOperation {
             DispatchQueue.main.async {
                 self.topMostController?.dismissProgressIfNeeded()
                 self.bleConnectionManager.stopScan()
-                NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
+                NotificationBanner.showError("ble-error-connection-title".localized, message: "")
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    self.presentConnectionSupportWarningAlert()
+                }
             }
             
             self.stopTimer()
@@ -117,7 +120,10 @@ extension LedgerOperation where Self: BLEConnectionManagerDelegate {
             topMostController?.dismissProgressIfNeeded()
         default:
             reset()
-            NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
+            NotificationBanner.showError("ble-error-connection-title".localized, message: "")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                self.presentConnectionSupportWarningAlert()
+            }
         }
     }
 }
@@ -166,6 +172,31 @@ extension LedgerOperation {
             .ledgerApproval(mode: ledgerMode),
             by: .customPresent(presentationStyle: .custom, transitionStyle: nil, transitioningDelegate: ledgerApprovalPresenter)
         ) as? LedgerApprovalViewController
+    }
+
+    private func presentConnectionSupportWarningAlert() {
+        let warningModalPresenter = CardModalPresenter(
+            config: ModalConfiguration(
+                animationMode: .normal(duration: 0.25),
+                dismissMode: .backgroundTouch
+            ),
+            initialModalSize: .custom(CGSize(width: UIScreen.main.bounds.width, height: 380.0))
+        )
+
+        let transitionStyle = Screen.Transition.Open.customPresent(
+            presentationStyle: .custom,
+            transitionStyle: nil,
+            transitioningDelegate: warningModalPresenter
+        )
+
+        let warningAlert = WarningAlert(
+            title: "ledger-pairing-issue-error-title".localized,
+            image: img("img-warning-circle"),
+            description: "ble-error-fail-ble-connection-repairing".localized,
+            actionTitle: "title-ok".localized
+        )
+
+        topMostController?.open(.warningAlert(warningAlert: warningAlert), by: transitionStyle)
     }
 }
 

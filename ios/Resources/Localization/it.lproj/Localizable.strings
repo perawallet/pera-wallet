@@ -179,7 +179,13 @@
 "ble-error-disconnected-peripheral" = "Disconnesso dal dispositivo";
 
 /* (No Comment) */
+"ble-error-fail-ble-connection-open-support" = "Apri Supporto Ledger";
+
+/* (No Comment) */
 "ble-error-fail-ble-connection-power" = "Il Bluetooth deve essere abilitato sul tuo dispositivo per cercare i dispositivi Ledger nelle vicinanze.";
+
+/* (No Comment) */
+"ble-error-fail-ble-connection-repairing" = "Se hai problemi di connessione con Ledger Nano X, rimuovi il dispositivo dalle impostazioni bluetooth del telefono, rimuovi l'account Ledger e quindi esegui di nuovo l'associazione del Ledger seguendo le istruzioni di Algorand Wallet.";
 
 /* (No Comment) */
 "ble-error-fail-ble-connection-resetting" = "Connessione BLE non riuscita per il ripristino";
@@ -483,6 +489,21 @@
 
 /* MARK: Ledger Tutorial */
 "ledger-pair-title" = "Crea un conto Ledger";
+
+/* (No Comment) */
+"ledger-pairing-first-warning-message-description" = "- Apri il tuo dispositivo Ledger.\n- Chiudi l'app Algorand sul dispositivo Ledger.\n- Nella schermata iniziale del Ledger, conferma l'associazione.\n- Una volta confermata l'associazione, apri l'app Algorand Ledger.";
+
+/* (No Comment) */
+"ledger-pairing-first-warning-message-first" = "Il tuo Ledger è associato a questo dispositivo?";
+
+/* (No Comment) */
+"ledger-pairing-first-warning-message-second" = "In caso contrario, segui questi passaggi:";
+
+/* (No Comment) */
+"ledger-pairing-first-warning-title" = "Associare Ledger con il dispositivo";
+
+/* (No Comment) */
+"ledger-pairing-issue-error-title" = "Hai problemi di connessione con Ledger Nano X?";
 
 /* MARK: Rekey Confirm */
 "ledger-rekey-confirm-title" = "Conferma ricodifica";
@@ -891,6 +912,9 @@
 
 /* (No Comment) */
 "qr-scan-go-settings-title" = "Videocamera disattivata";
+
+/* (No Comment) */
+"qr-scan-invalid-wc-screen-error" = "Il QR scansionato non è un indirizzo pubblico Algorand valido. Per altri tipi di QR (come le transazioni WalletConnect), utilizza il pulsante di scansione QR sulla home page.";
 
 /* (No Comment) */
 "qr-scan-message-text" = "Puoi scansionare il tuo QR solo da questa pagina. Per visualizzare il tuo QR seleziona l'icona nel tuo conto";
@@ -1746,6 +1770,9 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-group-asset-title" = "Trasferimento risorse a %@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-id" = "ID gruppo:";
 
 /* (No Comment) */
 "wallet-connect-transaction-group-possible-asset-addition-title" = "Possibile Opting in per la risorsa %@";

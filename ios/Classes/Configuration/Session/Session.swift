@@ -335,6 +335,16 @@ extension Session {
     func createUser(with accounts: [AccountInformation] = []) {
         authenticatedUser = User(accounts: accounts)
     }
+
+    var hasAllAccounts: Bool {
+        if let localAccounts = authenticatedUser?.accounts,
+           !localAccounts.isEmpty,
+           accounts.count == localAccounts.count {
+            return true
+        }
+
+        return false
+    }
 }
 
 extension Session {

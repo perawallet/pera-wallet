@@ -4,7 +4,7 @@ PODS:
   - Charts (3.6.0):
     - Charts/Core (= 3.6.0)
   - Charts/Core (3.6.0)
-  - CryptoSwift (1.4.0)
+  - CryptoSwift (1.4.2)
   - Firebase/Core (7.9.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics (~> 7.9.0)
@@ -282,8 +282,8 @@ PODS:
   - SwiftDate (6.3.1)
   - SwiftLint (0.43.1)
   - Valet (4.1.1)
-  - WalletConnectSwift (1.3.1):
-    - CryptoSwift (~> 1.2)
+  - WalletConnectSwift (1.6.0):
+    - CryptoSwift (~> 1.4)
     - Starscream (~> 3.1)
 
 DEPENDENCIES:
@@ -352,7 +352,7 @@ SPEC CHECKSUMS:
   Alamofire: 2291f7d21ca607c491dd17642e5d40fdcda0e65c
   BetterSegmentedControl: 85d1b0343a09603b098884d527f550dfc8e6cdd9
   Charts: b1e3a1f5a1c9ba5394438ca3b91bd8c9076310af
-  CryptoSwift: 7cc902df1784de3b389a387756c7d710f197730c
+  CryptoSwift: a532e74ed010f8c95f611d00b8bbae42e9fe7c17
   Firebase: d8bd6bd34b4c7ed57bfdd056c66ff5adcdde53ab
   FirebaseAnalytics: 31b1269830dfe16687db3c60b76082c12bd6d527
   FirebaseCore: 0798738ad1ae0fda67e17c7b9081241c431c6859
@@ -377,7 +377,7 @@ SPEC CHECKSUMS:
   SwiftDate: 72d28954e8e1c6c1c0f917ccc8005e4f83c7d4b2
   SwiftLint: 99f82d07b837b942dd563c668de129a03fc3fb52
   Valet: 11ab0e318b7284888a81392e36136563b4af5deb
-  WalletConnectSwift: cd5e056cec5a2f44e92b8595199e7f2f9f0bd92d
+  WalletConnectSwift: 1fbff8f5315bd8d41596773ca1b384aa873b6824
 
 PODFILE CHECKSUM: 7d0c6b5c6aa11f22816aedf35b6d17fe3c8d6500
 

@@ -197,7 +197,7 @@ extension SendTransactionPreviewViewController {
 
 extension SendTransactionPreviewViewController {
     private func displayQRScanner() {
-        let qrScannerViewController = open(.qrScanner, by: .push) as? QRScannerViewController
+        let qrScannerViewController = open(.qrScanner(canReadWCSession: false), by: .push) as? QRScannerViewController
         qrScannerViewController?.delegate = self
     }
         

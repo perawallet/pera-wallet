@@ -16,6 +16,7 @@
 //   WCSessionListViewController.swift
 
 import UIKit
+import Macaroon
 
 class WCSessionListViewController: BaseViewController {
 
@@ -81,11 +82,23 @@ extension WCSessionListViewController: WCSessionListDataSourceDelegate {
 
 extension WCSessionListViewController: WalletConnectorDelegate {
     func walletConnector(_ walletConnector: WalletConnector, didDisconnectFrom session: WCSession) {
-        updateScreenAfterDisconnecting(from: session)
+        asyncMain { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.updateScreenAfterDisconnecting(from: session)
+        }
     }
 
     func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.Error) {
-        displayDisconnectionError(error)
+        asyncMain { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.displayDisconnectionError(error)
+        }
     }
 }
 
@@ -107,7 +120,7 @@ extension WCSessionListViewController {
 
 extension WCSessionListViewController {
     private func openQRScanner() {
-        let qrScannerViewController = open(.qrScanner, by: .push) as? QRScannerViewController
+        let qrScannerViewController = open(.qrScanner(canReadWCSession: true), by: .push) as? QRScannerViewController
         qrScannerViewController?.delegate = self
     }
 }
@@ -115,8 +128,14 @@ extension WCSessionListViewController {
 extension WCSessionListViewController: QRScannerViewControllerDelegate {
     func qrScannerViewControllerDidApproveWCConnection(_ controller: QRScannerViewController) {
         dataSource.updateSessions(walletConnector.allWalletConnectSessions)
-        setListContentState()
-        sessionListView.collectionView.reloadData()
+        asyncMain { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.setListContentState()
+            self.sessionListView.collectionView.reloadData()
+        }
     }
 
     func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?) {

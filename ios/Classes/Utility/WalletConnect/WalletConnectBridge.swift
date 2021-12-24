@@ -62,9 +62,7 @@ extension WalletConnectBridge: ServerDelegate {
         shouldStart session: WalletConnectSession,
         completion: @escaping (WalletConnectSession.WalletInfo) -> Void
     ) {
-        DispatchQueue.main.async {
-            self.delegate?.walletConnectBridge(self, shouldStart: session, then: completion)
-        }
+        delegate?.walletConnectBridge(self, shouldStart: session, then: completion)
     }
 
     func server(_ server: WalletConnectServer, didConnect session: WalletConnectSession) {
@@ -78,6 +76,10 @@ extension WalletConnectBridge: ServerDelegate {
     func server(_ server: WalletConnectServer, didFailToConnect url: WalletConnectURL) {
         delegate?.walletConnectBridge(self, didFailToConnect: url)
     }
+
+    func server(_ server: Server, didUpdate session: WalletConnectSession) {
+        delegate?.walletConnectBridge(self, didUpdate: session)
+    }
 }
 
 protocol WalletConnectBridgeDelegate: AnyObject {
@@ -89,11 +91,12 @@ protocol WalletConnectBridgeDelegate: AnyObject {
     func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didFailToConnect url: WalletConnectURL)
     func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didConnectTo session: WalletConnectSession)
     func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didDisconnectFrom session: WalletConnectSession)
+    func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didUpdate session: WalletConnectSession)
 }
 
 typealias WalletConnectSession = WalletConnectSwift.Session
 typealias WalletConnectURL = WCURL
-typealias WalletConnectServer = Server
+typealias WalletConnectServer = WalletConnectSwift.Server
 typealias WalletConnectRequest = WalletConnectSwift.Request
 typealias WalletConnectResponse = WalletConnectSwift.Response
 typealias WalletConnectSessionWalletInfo = WalletConnectSwift.Session.WalletInfo

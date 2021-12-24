@@ -339,6 +339,14 @@ extension SendAlgosTransactionPreviewViewController {
                         self.displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
                     }
                 case let .success(accountWrapper):
+                    if !accountWrapper.account.isSameAccount(with: receiverAddress) {
+                        self.dismissProgressIfNeeded()
+                        UIApplication.shared.firebaseAnalytics?.record(
+                            MismatchAccountErrorLog(requestedAddress: receiverAddress, receivedAddress: accountWrapper.account.address)
+                        )
+                        return
+                    }
+
                     accountWrapper.account.assets = accountWrapper.account.nonDeletedAssets()
                     if accountWrapper.account.amount == 0 {
                         self.dismissProgressIfNeeded()

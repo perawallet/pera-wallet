@@ -282,6 +282,14 @@ extension SendAssetTransactionPreviewViewController {
         api?.fetchAccount(with: AccountFetchDraft(publicKey: address)) { fetchAccountResponse in
             switch fetchAccountResponse {
             case let .success(receiverAccountWrapper):
+                if !receiverAccountWrapper.account.isSameAccount(with: address) {
+                    self.dismissProgressIfNeeded()
+                    UIApplication.shared.firebaseAnalytics?.record(
+                        MismatchAccountErrorLog(requestedAddress: address, receivedAddress: receiverAccountWrapper.account.address)
+                    )
+                    return
+                }
+
                 receiverAccountWrapper.account.assets = receiverAccountWrapper.account.nonDeletedAssets()
                 let receiverAccount = receiverAccountWrapper.account
                 if !selectedAccount.requiresLedgerConnection() {

@@ -217,7 +217,7 @@ extension AccountRecoverViewController {
             return
         }
 
-        let controller = open(.qrScanner, by: .push) as? QRScannerViewController
+        let controller = open(.qrScanner(canReadWCSession: false), by: .push) as? QRScannerViewController
         controller?.delegate = self
     }
 

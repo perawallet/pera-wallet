@@ -52,6 +52,7 @@ class WarningAlertViewController: BaseViewController {
 
 extension WarningAlertViewController: WarningAlertViewDelegate {
     func warningAlertViewDidTakeAction(_ warningAlertView: WarningAlertView) {
+        dismissScreen()
         delegate?.warningAlertViewControllerDidTakeAction(self)
     }
 }

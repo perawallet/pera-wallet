@@ -25,6 +25,8 @@ class WCTransaction: Model {
     let message: String?
     let authAddress: String?
 
+    /// ID is used to separate the transactions that contains exactly the same elements.
+    private let id = UUID()
     private(set) var signerAccount: Account?
 
     required init(from decoder: Decoder) throws {
@@ -226,6 +228,6 @@ extension WCTransaction {
 
 extension WCTransaction: Equatable {
     static func == (lhs: WCTransaction, rhs: WCTransaction) -> Bool {
-        return lhs.unparsedTransactionDetail == rhs.unparsedTransactionDetail && lhs.transactionDetail == rhs.transactionDetail
+        return lhs.id == rhs.id
     }
 }

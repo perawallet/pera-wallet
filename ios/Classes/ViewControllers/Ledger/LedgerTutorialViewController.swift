@@ -22,6 +22,14 @@ class LedgerTutorialViewController: BaseScrollViewController {
     private lazy var ledgerTutorialView = LedgerTutorialView()
     
     private let accountSetupFlow: AccountSetupFlow
+
+    private lazy var pairingWarningModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .none
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 496.0))
+    )
     
     init(accountSetupFlow: AccountSetupFlow, configuration: ViewControllerConfiguration) {
         self.accountSetupFlow = accountSetupFlow
@@ -75,7 +83,14 @@ extension LedgerTutorialViewController {
 
 extension LedgerTutorialViewController: LedgerTutorialViewDelegate {
     func ledgerTutorialViewDidTapSearchButton(_ ledgerTutorialView: LedgerTutorialView) {
-        open(.ledgerDeviceList(flow: accountSetupFlow), by: .push)
+        let transitionStyle = Screen.Transition.Open.customPresent(
+            presentationStyle: .custom,
+            transitionStyle: nil,
+            transitioningDelegate: pairingWarningModalPresenter
+        )
+
+        let controller = open(.ledgerPairWarning, by: transitionStyle) as? LedgerPairWarningViewController
+        controller?.delegate = self
     }
     
     func ledgerTutorialView(_ ledgerTutorialView: LedgerTutorialView, didTap section: LedgerTutorialSection) {
@@ -89,6 +104,12 @@ extension LedgerTutorialViewController: LedgerTutorialViewDelegate {
         case .bluetoothConnection:
             open(.ledgerTroubleshootBluetooth, by: .present)
         }
+    }
+}
+
+extension LedgerTutorialViewController: LedgerPairWarningViewControllerDelegate {
+    func ledgerPairWarningViewControllerDidTakeAction(_ ledgerPairWarningViewController: LedgerPairWarningViewController) {
+        open(.ledgerDeviceList(flow: accountSetupFlow), by: .push)
     }
 }
 

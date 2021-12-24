@@ -26,7 +26,7 @@ indirect enum Screen {
     case passphraseVerify
     case accountNameSetup
     case accountRecover(flow: AccountSetupFlow)
-    case qrScanner
+    case qrScanner(canReadWCSession: Bool)
     case qrGenerator(title: String?, draft: QRCreationDraft, isTrackable: Bool = false)
     case home(route: Screen?)
     case assetDetail(account: Account, assetDetail: AssetDetail?)
@@ -119,6 +119,7 @@ indirect enum Screen {
     case wcAssetReconfigurationTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
     case wcAssetDeletionTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
     case jsonDisplay(jsonData: Data, title: String)
+    case ledgerPairWarning
 }
 
 extension Screen {

@@ -86,7 +86,7 @@ extension WatchAccountAdditionViewController: WatchAccountAdditionViewDelegate {
             return
         }
         
-        guard let qrScannerViewController = open(.qrScanner, by: .push) as? QRScannerViewController else {
+        guard let qrScannerViewController = open(.qrScanner(canReadWCSession: false), by: .push) as? QRScannerViewController else {
             return
         }
         

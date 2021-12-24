@@ -31,4 +31,6 @@ extension AnalyticsLog {
 
 enum AnalyticsLogName: String, CaseIterable {
     case ledgerTransactionError = "LedgerTransactionError"
+    case mismatchAccountError = "MismatchAccount"
+    case wcSessionSaveError = "WCSessionNotSaved"
 }

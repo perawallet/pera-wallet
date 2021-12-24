@@ -29,8 +29,8 @@ extension WCTransactionValidator {
             return
         }
 
-        if !hasValidNetwork(for: transactions) {
-            rejectTransactionRequest(with: .unauthorized(.nodeMismatch))
+        if hasInvalidTransactionDetail(among: transactions) {
+            rejectTransactionRequest(with: .invalidInput(.parse))
             return
         }
 
@@ -55,22 +55,12 @@ extension WCTransactionValidator {
         }
     }
 
-    private func hasValidTransactionCount(for transactions: [WCTransaction]) -> Bool {
-        return transactions.count <= supportedTransactionCount
+    private func hasInvalidTransactionDetail(among transactions: [WCTransaction]) -> Bool {
+        return transactions.contains { $0.transactionDetail == nil }
     }
 
-    private func hasValidNetwork(for transactions: [WCTransaction]) -> Bool {
-        guard let params = UIApplication.shared.appDelegate?.accountManager.params else {
-            return false
-        }
-
-        for transaction in transactions {
-            if !transaction.isInTheSameNetwork(with: params) {
-                return false
-            }
-        }
-
-        return true
+    private func hasValidTransactionCount(for transactions: [WCTransaction]) -> Bool {
+        return transactions.count <= supportedTransactionCount
     }
 
     private func hasValidAddresses(in transactions: [WCTransaction]) -> Bool {
@@ -115,6 +105,6 @@ extension WCTransactionValidator {
 
 extension WCTransactionValidator {
     private var supportedTransactionCount: Int {
-        return 16
+        return 64
     }
 }

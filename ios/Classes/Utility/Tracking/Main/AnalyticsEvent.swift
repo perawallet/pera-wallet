@@ -69,4 +69,6 @@ enum AnalyticsParameter: String {
     case dappURL = "dapp_url"
     case transactionCount = "transaction_count"
     case topic = "topic"
+    case requestedAddress = "requested_address"
+    case receivedAddress = "received_address"
 }

@@ -13,25 +13,15 @@
 // limitations under the License.
 
 //
-//   OneTimeDisplayStorage.swift
+//   MismatchAccountErrorLog.swift
 
-import UIKit
+import Foundation
 
-class OneTimeDisplayStorage: Storable {
-    typealias Object = Any
+struct MismatchAccountErrorLog: AnalyticsLog {
+    var name: AnalyticsLogName = .mismatchAccountError
+    var params: AnalyticsParameters
 
-    func setDisplayedOnce(for key: StorageKey) {
-        save(true, for: key.rawValue, to: .defaults)
-    }
-
-    func isDisplayedOnce(for key: StorageKey) -> Bool {
-        return bool(with: key.rawValue, to: .defaults)
-    }
-}
-
-extension OneTimeDisplayStorage {
-    enum StorageKey: String {
-        case wcInitialWarning = "com.algorand.algorand.wc.warning.displayed"
-        case ledgerPairingWarning = "com.algorand.algorand.ledger.pairing.warning.displayed"
+    init(requestedAddress: String, receivedAddress: String) {
+        params = [.requestedAddress: requestedAddress, .receivedAddress: receivedAddress]
     }
 }

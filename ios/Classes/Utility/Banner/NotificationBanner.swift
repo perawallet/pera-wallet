@@ -19,9 +19,10 @@ import Foundation
 import NotificationBannerSwift
 
 enum NotificationBanner {
-    static func showInformation(_ information: String, completion handler: EmptyHandler? = nil) {
+    static func showInformation(_ information: String, detail: String? = nil, completion handler: EmptyHandler? = nil) {
         let banner = FloatingNotificationBanner(
             title: information,
+            subtitle: detail,
             titleFont: UIFont.font(withWeight: .semiBold(size: 16.0)),
             titleColor: Colors.Text.primary,
             titleTextAlign: .left,

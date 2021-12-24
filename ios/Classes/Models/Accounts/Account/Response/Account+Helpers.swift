@@ -41,6 +41,10 @@ extension Account {
     func amountDisplayWithFraction(for assetDetail: AssetDetail) -> String? {
         return amount(for: assetDetail)?.toExactFractionLabel(fraction: assetDetail.fractionDecimals)
     }
+
+    func isSameAccount(with address: String) -> Bool {
+        return self.address == address
+    }
 }
 
 extension Account {

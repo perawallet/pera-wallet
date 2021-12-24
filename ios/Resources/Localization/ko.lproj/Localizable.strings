@@ -179,7 +179,13 @@
 "ble-error-disconnected-peripheral" = "기기 연결 끊김";
 
 /* (No Comment) */
+"ble-error-fail-ble-connection-open-support" = "Ledger 지원 열기";
+
+/* (No Comment) */
 "ble-error-fail-ble-connection-power" = "근처 Ledger 기기를 찾으려면 기기에서 Bluetooth 기능을 활성화해야 합니다.";
+
+/* (No Comment) */
+"ble-error-fail-ble-connection-repairing" = "Ledger Nano X 연결 문제가 발생하는 경우 휴대폰의 블루투스 설정에서 기기를 제거하고 Ledger 계정을 삭제한 다음 알고랜드 지갑의 안내에 따라 Ledger을 다시 페어링하세요.";
 
 /* (No Comment) */
 "ble-error-fail-ble-connection-resetting" = "키 재지정을 위한 BLE 연결 실패";
@@ -483,6 +489,21 @@
 
 /* MARK: Ledger Tutorial */
 "ledger-pair-title" = "Ledger 계정 만들기";
+
+/* (No Comment) */
+"ledger-pairing-first-warning-message-description" = "· Ledger 기기를 실행하세요.\n· Ledger 기기에서 알고랜드 앱을 닫으세요.\n· Ledger 홈 화면에서 페어링을 확인하세요.\n· 페어링이 확인되면 알고랜드 Ledger 앱을 실행하세요.";
+
+/* (No Comment) */
+"ledger-pairing-first-warning-message-first" = "Ledger가 이 기기와 페어링되어 있나요?";
+
+/* (No Comment) */
+"ledger-pairing-first-warning-message-second" = "그렇지 않은 경우 다음 단계를 따라주세요.";
+
+/* (No Comment) */
+"ledger-pairing-first-warning-title" = "Ledger와 기기의 페어링";
+
+/* (No Comment) */
+"ledger-pairing-issue-error-title" = "Ledger Nano X 연결 문제가 있나요?";
 
 /* MARK: Rekey Confirm */
 "ledger-rekey-confirm-title" = "키 재지정 확인";
@@ -891,6 +912,9 @@
 
 /* (No Comment) */
 "qr-scan-go-settings-title" = "카메라 비활성화됨";
+
+/* (No Comment) */
+"qr-scan-invalid-wc-screen-error" = "스캔한 QR은 유효한 알고랜드 공개 주소가 아닙니다. 다른 형태의 QR 코드를(WalletConnect 트랜잭션 등) 이용하려는 경우 홈페이지의 QR 스캔 버튼을 이용해주세요.";
 
 /* (No Comment) */
 "qr-scan-message-text" = "이 페이지에서만 QR 코드를 스캔할 수 있습니다. 계정 아래의 아이콘을 선택해 QR 코드를 확인하실 수 있습니다.";
@@ -1746,6 +1770,9 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-group-asset-title" = "%@(으)로 자산 이전";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-id" = "그룹 ID:";
 
 /* (No Comment) */
 "wallet-connect-transaction-group-possible-asset-addition-title" = "#%@ 자산 옵트인 가능";
