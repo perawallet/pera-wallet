@@ -37,8 +37,8 @@ class BannerUseCase @Inject constructor(
     }
 
     companion object {
-        // 24 December 16:00 UTC -> 1640361600
-        // 6 January 16:00 UTC -> 1641484800
-        private val BANNER_VISIBILITY_DATE_RANGE = 1640361600..1641484800
+        // 25 December 16:00 UTC -> 1640448000
+        // 7 January 16:00 UTC -> 1641571200
+        private val BANNER_VISIBILITY_DATE_RANGE = 1640448000..1641571200
     }
 }
