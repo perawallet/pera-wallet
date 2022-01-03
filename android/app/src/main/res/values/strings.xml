@@ -631,7 +631,7 @@
     <string name="make_sure_the_device_is">Make sure the device is unlocked, nearby and has bluetooth enabled. If problems persist, please remove the device from your phone’s bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Algorand Wallet instructions.</string>
     <string name="the_scanned_qr_is_not">The scanned QR is not a valid Algorand public address. For other types of QR (such as WalletConnect transactions), please use the scan QR button on the homepage.</string>
     <string name="become_a_governor">Become a governor.\nVote on Algorand\'s future.\nEarn rewards.</string>
-    <string name="the_registration_window_for">The registration window for Governance Period #2 is Dec 24 to Jan 6, 16:00 UTC</string>
+    <string name="the_registration_window_for">The registration window for Governance Period #2 is Dec 25 to Jan 7, 16:00 UTC</string>
     <string name="connection_failed">Connection failed</string>
     <string name="we_are_sorry_but_the">We are sorry, but the dApp is not responding. Please refresh the page and try scanning a new QR Code. If the error persists, please contact the dApp.</string>
     <string name="your_transaction_is_being_processed">Your transaction is being processed</string>
