@@ -36,6 +36,8 @@ class AnimatedTutorialViewModel {
         switch tutorial {
         case .backUp:
             animation = "shield_animation"
+        case .quick:
+            animation = "shield_animation"
         case .recover:
             animation = UIApplication.shared.isDarkModeDisplay ? "recover_animation_dark" : "recover_animation_light"
         case .watchAccount:
@@ -53,6 +55,8 @@ class AnimatedTutorialViewModel {
         switch tutorial {
         case .backUp:
             title = "tutorial-title-back-up".localized
+        case .quick:
+            title = "tutorial-title-quick".localized
         case .recover:
             title = "tutorial-title-recover".localized
         case .watchAccount:
@@ -70,6 +74,8 @@ class AnimatedTutorialViewModel {
         switch tutorial {
         case .backUp:
             description = "tutorial-description-back-up".localized.attributed([.lineSpacing(1.2)])
+        case .quick:
+            description = "tutorial-description-quick".localized.attributed([.lineSpacing(1.2)])
         case .recover:
             description = "tutorial-description-recover".localized.attributed([.lineSpacing(1.2)])
         case .watchAccount:
@@ -109,6 +115,8 @@ class AnimatedTutorialViewModel {
 
     private func setMainTitle(from tutorial: AnimatedTutorial) {
         switch tutorial {
+        case .quick:
+            mainTitle = "tutorial-main-title-quick".localized
         case .backUp:
             mainTitle = "tutorial-main-title-back-up".localized
         case .recover:

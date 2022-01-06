@@ -39,6 +39,8 @@ class AccountTypeViewModel {
                 typeImage = img("icon-add-watch-account")
             case .pair:
                 typeImage = img("icon-pair-ledger-account")
+            case .quick:
+                typeImage = img("icon-add-account")
             case .none:
                 typeImage = img("icon-add-account")
             }
@@ -60,6 +62,8 @@ class AccountTypeViewModel {
                 title = "title-watch-account".localized
             case .pair:
                 title = "account-type-selection-ledger".localized
+            case .quick:
+                title = "account-type-selection-quick".localized
             case .none:
                 title = "account-type-selection-add".localized
             }
@@ -81,6 +85,8 @@ class AccountTypeViewModel {
                 detail = "account-type-selection-watch-detail".localized
             case .pair:
                 detail = "account-type-selection-ledger-detail".localized
+            case .quick:
+                detail = "Get started quickly and backup your account later"
             case .none:
                 detail = "account-type-selection-create-detail".localized
             }
