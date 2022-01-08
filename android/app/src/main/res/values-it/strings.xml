@@ -134,42 +134,42 @@
     <string name="status">Stato</string>
     <string name="your_account_is_about">Il tuo conto sta per essere cancellato, sei sicuro di voler procedere?</string>
     <string name="to_keep_an_account_open">Per mantenere aperto un conto, questo deve avere almeno 0,01 ALGO. Se invi l\'importo massimo, il conto viene cancellato e vengono cancellate anche le chiavi di partecipazione attive.</string>
-    <string name="in_order_to_delete">Per cancellare un conto, è necessario svuotare il saldo degli attivi presenti nel conto e distruggere ogni attivo eventualmente creato.</string>
+    <string name="in_order_to_delete">Per cancellare un conto, è necessario svuotare il saldo degli asset presenti nel conto e distruggere ogni asset eventualmente creato.</string>
     <string name="proceed">Procedi</string>
-    <string name="remove_assets">Rimuovi attivo</string>
-    <string name="asset">Attivo</string>
-    <string name="assets">Attivi</string>
+    <string name="remove_assets">Rimuovi asset</string>
+    <string name="asset">Asset</string>
+    <string name="assets">Asset</string>
     <string name="send_format">Invia %1$s</string>
     <string name="receive_title_format">Ricevi %1$s</string>
-    <string name="asset_must_be_selected">Occorre selezionare un attivo.</string>
-    <string name="you_dont_have_any">Non hai alcun conto con questo attivo. Aggiungi l\'attivo prima di continuare.</string>
-    <string name="add_asset_fee">Aggiungi commissione sugli attivi</string>
+    <string name="asset_must_be_selected">Occorre selezionare un asset.</string>
+    <string name="you_dont_have_any">Non hai alcun conto con questo asset. Aggiungi l\'asset prima di continuare.</string>
+    <string name="add_asset_fee">Aggiungi commissione sugli asset</string>
     <string name="select_sending_account">Seleziona il conto di invio</string>
     <string name="select_receiving_account">Seleziona il conto di ricezione</string>
     <string name="unnamed">Senza nome</string>
     <string name="entered_address_is_not_valid">L\'indirizzo inserito non è valido.</string>
     <string name="an_error_more">Si è verificato un errore durante il recupero di altro. Riprova più tardi.</string>
-    <string name="search_assets_id">Cerca ID o nome degli attivi</string>
-    <string name="no_asset_found">Nessun attivo trovato</string>
-    <string name="you_already_have">Possiedi già questo attivo.</string>
-    <string name="adding_asset">Aggiunta di un attivo</string>
-    <string name="removing_asset">Rimozione di un attivo</string>
+    <string name="search_assets_id">Cerca ID o nome degli asset</string>
+    <string name="no_asset_found">Nessun asset trovato</string>
+    <string name="you_already_have">Possiedi già questo asset.</string>
+    <string name="adding_asset">Aggiunta di un asset</string>
+    <string name="removing_asset">Rimozione di un asset</string>
     <string name="to_remove_the_balance"><![CDATA[Per rimuovere<b>%1$s</b>, il saldo deve essere 0. Trasferisci il saldo su un altro conto e riprova.]]></string>
-    <string name="you_are_about_to"><![CDATA[Stai per rimuovere <b>%1$s</b>da<b>%2$s</b>. Non potrai effettuare transazioni con questo attivo fino a quando non lo riattivi.]]></string>
-    <string name="adding_an_asset">L\'aggiunta di un attivo richiede l\'invio di una transazione con una commissione di transazione minima. Questo apparirà nella cronologia delle tue transazioni.</string>
-    <string name="unfortunately_this_account">Sfortunatamente, questo conto non ha aggiunto questo attivo. Istruisci il proprietario del conto affinché aggiunga l\'attivo, e poi riprova.</string>
+    <string name="you_are_about_to"><![CDATA[Stai per rimuovere <b>%1$s</b>da<b>%2$s</b>. Non potrai effettuare transazioni con questo asset fino a quando non lo riattivi.]]></string>
+    <string name="adding_an_asset">L\'aggiunta di un asset richiede l\'invio di una transazione con una commissione di transazione minima. Questo apparirà nella cronologia delle tue transazioni.</string>
+    <string name="unfortunately_this_account">Sfortunatamente, questo conto non ha aggiunto questo asset. Istruisci il proprietario del conto affinché aggiunga l\'asset, e poi riprova.</string>
     <string name="transfer_balance">Trasferisci saldo</string>
     <string name="approve">Approva</string>
-    <string name="this_account_has_not">Questo conto non ha aggiunto questo attivo. Aggiungi questo attivo per continuare.</string>
-    <string name="this_account_does_not">Questo conto non contiene questo attivo</string>
-    <string name="account_does_not_accept">Il conto non accetta questo attivo</string>
-    <string name="you_are_about_to_receive">Stai per ricevere un attivo!</string>
-    <string name="you_are_about_to_receive_description"><![CDATA[Stai per ricevere un attivo a <b>%1$s</b>. Desideri aggiungere questo attivo a questo conto per riceverlo?]]></string>
+    <string name="this_account_has_not">Questo conto non ha aggiunto questo asset. Aggiungi questo asset per continuare.</string>
+    <string name="this_account_does_not">Questo conto non contiene questo asset</string>
+    <string name="account_does_not_accept">Il conto non accetta questo asset</string>
+    <string name="you_are_about_to_receive">Stai per ricevere un asset!</string>
+    <string name="you_are_about_to_receive_description"><![CDATA[Stai per ricevere un asset a <b>%1$s</b>. Desideri aggiungere questo asset a questo conto per riceverlo?]]></string>
     <string name="min_transaction_error">Errore transazione minima!</string>
-    <string name="you_need_at_least">È necessario almeno <annotation replacement="min_balance"> </annotation> Algo per aggiungere questo attivo</string>
-    <string name="your_accounts_do_not">I tuoi conti non contengono questo attivo</string>
-    <string name="please_add_this">Aggiungi questo attivo e riprova.</string>
-    <string name="the_qr_contains">Il QR contiene un attivo diverso da quello selezionato. L\'importo viene ignorato durante la decodifica.</string>
+    <string name="you_need_at_least">È necessario almeno <annotation replacement="min_balance"> </annotation> Algo per aggiungere questo asset</string>
+    <string name="your_accounts_do_not">I tuoi conti non contengono questo asset</string>
+    <string name="please_add_this">Aggiungi questo asset e riprova.</string>
+    <string name="the_qr_contains">Il QR contiene un asset diverso da quello selezionato. L\'importo viene ignorato durante la decodifica.</string>
     <string name="key_not_valid">Chiave non valida, assicurati di avere la chiave giusta.</string>
     <string name="you_just_scanned">Hai appena scansionato un codice QR di una richiesta di transazione. Esamina tutti i campi della transazione in quanto potrebbero essere stati modificati.</string>
     <string name="qr_scan">Scansione QR</string>
@@ -188,11 +188,11 @@
     <string name="bluetooth_is_enabled">Il Bluetooth è abilitato.</string>
     <string name="verified_with_icon">Verificato <annotation type="verified-icon"> </annotation></string>
     <string name="all">Tutti</string>
-    <string name="verified_assets">Attivi verificati</string>
-    <string name="what_does_asset">Cosa significa verifica degli attivi?</string>
-    <string name="verified_assets_first_paragraph">Per alcuni attivi per i quali Algorand Inc. ha una relazione con l\'emittente dell\'attivo, contrassegniamo tali risorse come \"Verificate\" (ossia contrassegnata da un segno di spunta blu).</string>
-    <string name="verified_assets_second_paragraph">Questo contribuisce a funzionare come difesa secondaria contro transazioni errate con un attivo non intenzionale.</string>
-    <string name="verified_assets_third_paragraph">Detto questo, dovresti <annotation type="color">ricontrollare sempre</annotation> che l\'ID dell\'attivo sia quello che intendevi scegliere prima di effettuare transazioni con quell\'attivo.</string>
+    <string name="verified_assets">Asset verificati</string>
+    <string name="what_does_asset">Cosa significa verifica degli asset?</string>
+    <string name="verified_assets_first_paragraph">Per alcuni asset per i quali Algorand Inc. ha una relazione con l\'emittente dell\'asset, contrassegniamo tali risorse come \"Verificate\" (ossia contrassegnata da un segno di spunta blu).</string>
+    <string name="verified_assets_second_paragraph">Questo contribuisce a funzionare come difesa secondaria contro transazioni errate con un asset non intenzionale.</string>
+    <string name="verified_assets_third_paragraph">Detto questo, dovresti <annotation type="color">ricontrollare sempre</annotation> che l\'ID dell\'asset sia quello che intendevi scegliere prima di effettuare transazioni con quell\'asset.</string>
     <string name="verified_assets_fourth_paragraph">In caso di domande sulla procedura di verifica o di feedback generali sull\'app, ti invitiamo a <annotation type="color">contattarci</annotation>.</string>
     <string name="advanced_troubleshooting">Risoluzione avanzata dei problemi</string>
     <string name="looking_for_other_ledger">Ricerca di altri dispositivi Ledger</string>
@@ -227,8 +227,8 @@
     <string name="unknown_error">Errore sconosciuto</string>
     <string name="show_qr">Mostra QR</string>
     <string name="do_not_use_face">Non utilizzare Face ID/Touch</string>
-    <string name="manage_all_assets">Gestisci tutti gli attivi da un\'unica app</string>
-    <string name="manage_all_assets_two_line">Gestisci tutti gli attivi\nda un\'unica app</string>
+    <string name="manage_all_assets">Gestisci tutti gli asset da un\'unica app</string>
+    <string name="manage_all_assets_two_line">Gestisci tutti gli asset\nda un\'unica app</string>
     <string name="account_details">Dettagli del conto</string>
     <string name="passphrase">Passphrase</string>
     <string name="scan_qr_code">Scansiona il codice QR</string>
@@ -236,9 +236,9 @@
     <string name="step_number">Passaggio %1$d</string>
     <string name="go_to_home">Vai alla Home</string>
     <string name="accept">Accetta</string>
-    <string name="add_new_asset">Aggiungi nuovo attivo</string>
+    <string name="add_new_asset">Aggiungi nuovo asset</string>
     <string name="add_new_account">Aggiungi nuovo conto</string>
-    <string name="try_different">Prova con un nome di risorsa o un ID di attivo diverso</string>
+    <string name="try_different">Prova con un nome di risorsa o un ID di asset diverso</string>
     <string name="share_qr">Condividi QR</string>
     <string name="copy_address">Copia indirizzo</string>
     <string name="account_address">Indirizzo del conto</string>
@@ -251,10 +251,10 @@
     <string name="edit">Modifica</string>
     <string name="transactions">Transazioni</string>
     <string name="no_transaction_yet">Ancora nessuna transazione</string>
-    <string name="no_transaction_have">Non sono state effettuate transazioni con questo attivo.</string>
+    <string name="no_transaction_have">Non sono state effettuate transazioni con questo asset.</string>
     <string name="rewards_since_last"><annotation custom="rewards_color"><annotation replacement="rewards_value"> </annotation> premi </annotation> dall\'ultima transazione</string>
-    <string name="choose_asset">Scegli attivo</string>
-    <string name="preview_send_asset">Anteprima invio attivo</string>
+    <string name="choose_asset">Scegli asset</string>
+    <string name="preview_send_asset">Anteprima invio asset</string>
     <string name="cancel_approval">Annulla approvazione</string>
     <string name="delete_all_data">Elimina tutti i dati</string>
     <string name="remove_contact">Rimuovi contatto</string>
@@ -278,10 +278,10 @@
     <string name="try_again">Riprova</string>
     <string name="couldnt_create">Impossibile creare il file CSV. Per favore riprova.</string>
     <string name="no_current_notifications">Nessuna notifica attuale</string>
-    <string name="your_recent_transactions">Le tue transazioni recenti, le richieste di attivi e altre notifiche verranno visualizzate qui</string>
-    <string name="removing_an_asset">Rimozione di un attivo</string>
-    <string name="to_remove_an_asset">Per rimuovere un attivo, è necessario prima trasferire il saldo di quell\'attivo su un altro conto.</string>
-    <string name="select_asset">Seleziona un attivo</string>
+    <string name="your_recent_transactions">Le tue transazioni recenti, le richieste di asset e altre notifiche verranno visualizzate qui</string>
+    <string name="removing_an_asset">Rimozione di un asset</string>
+    <string name="to_remove_an_asset">Per rimuovere un asset, è necessario prima trasferire il saldo di quell\'asset su un altro conto.</string>
+    <string name="select_asset">Seleziona un asset</string>
     <string name="connect_to_internet">Connettiti a Internet</string>
     <string name="we_couldn_t_reach">Impossibile raggiungere il server, assicurati di essere connesso a Internet</string>
     <string name="enter_note_here">Inserisci nota qui</string>
@@ -300,7 +300,7 @@
     <string name="confirm_rekeying">Conferma la ricodifica</string>
     <string name="rekeying_transaction">Transazione di ricodifica</string>
     <string name="total_rekeying_fee">Commissione di ricodifica totale di %1$s</string>
-    <string name="plus_more_assets">+%1$d più attivi</string>
+    <string name="plus_more_assets">+%1$d più asset</string>
     <string name="finalize_rekeying">Finalizza la ricodifica (rekeying)</string>
     <string name="new_ledger">Nuovo Ledger</string>
     <string name="old_ledger">Vecchio Ledger</string>
@@ -380,8 +380,8 @@
     <string name="a_network_error">Si è verificato un errore di rete durante il recupero dei dettagli del conto. Riavviare il processo.</string>
     <string name="it_appears_this">Sembra che questo dispositivo Ledger sia stato resettato e che il conto sul dispositivo non corrisponda più a questo conto. Si prega di abbinare nuovamente il Ledger dalla homepage.</string>
     <plurals name="asset_count">
-        <item quantity="one">+%1$d Attivo</item>
-        <item quantity="other">+%1$d Attivi</item>
+        <item quantity="one">+%1$d Asset</item>
+        <item quantity="other">+%1$d Asset</item>
     </plurals>
     <string name="continue_text">Continua</string>
     <string name="dont_show_this_again">Non visualizzare più questo messaggio</string>
@@ -440,7 +440,7 @@
     <string name="enable_biometric_authentication">Abilita l\'autenticazione biometrica</string>
     <string name="your_biometric_will">Il tuo identificativo biometrico sarà necessario per utilizzare l\'app. Ti consigliamo di abilitare l\'autenticazione biometrica per aumentare la sicurezza del tuo wallet in caso di furto del telefono.</string>
     <string name="create_an_account">Crea un conto</string>
-    <string name="you_need_to_create">È necessario creare un conto per avviare la transazione dei tuoi  attivi. </string>
+    <string name="you_need_to_create">È necessario creare un conto per avviare la transazione dei tuoi asset. </string>
     <string name="skip">Ignora</string>
     <string name="do_not_ask_again">Non chiedere di nuovo</string>
     <string name="selected_words_are">Le parole selezionate sono errate. Riprova.</string>
@@ -574,7 +574,7 @@
     <string name="approval_hash">Hash di approvazione</string>
     <string name="clear_state_hash">Hash di cancellazione stato</string>
     <string name="based_on_your_account">In base alla configurazione del tuo conto, il tuo saldo minimo è %1$s. Premendo su \"Continua\", l\'importo della tua transazione sarà aggiornato per mantenere il saldo minimo richiesto da Algorand Blockchain. Sarai in grado di vedere l\'anteprima di questa modifica nel passaggio successivo.</string>
-    <string name="asset_reconfiguration_request">Richiesta di riconfigurazione attivi</string>
+    <string name="asset_reconfiguration_request">Richiesta di riconfigurazione asset</string>
     <string name="manager_account">Conto gestore</string>
     <string name="reserve_account">Conto di riserva</string>
     <string name="clawback_account">Conto di recupero</string>
@@ -583,11 +583,11 @@
     <string name="default_frozen">Congelato predefinito</string>
     <string name="off">Off</string>
     <string name="on">On</string>
-    <string name="asset_creation_request">Richiesta di creazione di un attivo</string>
-    <string name="asset_deletion_request">Richiesta di eliminazione dell\'attivo</string>
-    <string name="asset_name">Nome dell\'attivo</string>
+    <string name="asset_creation_request">Richiesta di creazione di un asset</string>
+    <string name="asset_deletion_request">Richiesta di eliminazione dell\'asset</string>
+    <string name="asset_name">Nome dell\'asset</string>
     <string name="unit_name">Nome unità</string>
-    <string name="asset_deletion_warning_message">Questo attivo verrà eliminato.</string>
+    <string name="asset_deletion_warning_message">Questo asset verrà eliminato.</string>
     <string name="governance_banner_title">Il programma di governance di Algorand sta iniziando!</string>
     <string name="governance_banner_description">Diventa un governatore. Vota per il futuro di Algorand. Guadagna ricompense.</string>
     <string name="governance_banner_button_text">Iniziare</string>
@@ -605,7 +605,7 @@
     <string name="invalid_input_transaction_request">Inserimento non valido: la richiesta di transazione contiene più di %1$d transazioni</string>
     <string name="invalid_input_unable_to_parse">Inserimento non valido: impossibile analizzare la transazione</string>
     <string name="invalid_input_invalid_public_key">Inserimento non valido: chiave pubblica non valida</string>
-    <string name="invalid_input_invalid_asset">Inserimento non valido: attivo non valido</string>
+    <string name="invalid_input_invalid_asset">Inserimento non valido: asset non valido</string>
     <string name="invalid_input_unable_to_be">Inserimento non valido: impossibile firmare</string>
     <string name="invalid_input_group_transaction">Inserimento non valido: la transazione di gruppo non ha bisogno di essere firmata dall\'utente del wallet. </string>
     <string name="invalid_input_requested_signer">Inserimento non valido: il firmatario richiesto non è nel wallet utente</string>
