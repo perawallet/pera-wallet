@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/transactionRequestNavigation"
+    app:startDestination="@id/walletConnectSingleTransactionFragment">
+
+    <action
+        android:id="@+id/action_global_walletConnectMultipleTransactionFragment"
+        app:destination="@id/walletConnectMultipleTransactionFragment" />
+
+    <action
+        android:id="@+id/action_global_walletConnectSingleTransactionFragment"
+        app:destination="@id/walletConnectSingleTransactionFragment" />
+
+    <fragment
+        android:id="@+id/walletConnectSingleTransactionFragment"
+        android:name="com.algorand.android.ui.wctransactionrequest.singletransaction.WalletConnectSingleTransactionFragment"
+        android:label="fragment_wallet_connect_single_transaction"
+        tools:layout="@layout/fragment_wallet_connect_single_transaction">
+
+        <argument
+            android:name="transaction"
+            app:argType="com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionListItem$SingleTransactionItem" />
+        <action
+            android:id="@+id/action_walletConnectSingleTransactionFragment_to_transactionRequestDetailFragment"
+            app:destination="@id/transactionRequestDetailFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/walletConnectMultipleTransactionFragment"
+        android:name="com.algorand.android.ui.wctransactionrequest.multipletransaction.WalletConnectMultipleTransactionFragment"
+        android:label="fragment_wallet_connect_multiple_transaction"
+        tools:layout="@layout/fragment_wallet_connect_multiple_transaction">
+
+        <argument
+            android:name="transactions"
+            app:argType="com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionListItem[]" />
+        <action
+            android:id="@+id/action_walletConnectMultipleTransactionFragment_to_walletConnectAtomicTransactionsFragment"
+            app:destination="@id/walletConnectAtomicTransactionsFragment" />
+        <action
+            android:id="@+id/action_walletConnectMultipleTransactionFragment_to_transactionRequestDetailFragment"
+            app:destination="@id/transactionRequestDetailFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/walletConnectAtomicTransactionsFragment"
+        android:name="com.algorand.android.ui.wcatomictransactions.WalletConnectAtomicTransactionsFragment"
+        android:label="WalletConnectAtomicTransactionsFragment"
+        tools:layout="@layout/fragment_wallet_connect_atomic_transactions">
+
+        <argument
+            android:name="transactionList"
+            app:argType="com.algorand.android.models.BaseWalletConnectTransaction[]" />
+        <action
+            android:id="@+id/action_walletConnectAtomicTransactionsFragment_to_transactionRequestDetailFragment"
+            app:destination="@id/transactionRequestDetailFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/transactionRequestDetailFragment"
+        android:name="com.algorand.android.ui.wctransactiondetail.TransactionRequestDetailFragment"
+        android:label="TransactionRequestDetailFragment"
+        tools:layout="@layout/fragment_transaction_request_detail">
+        <argument
+            android:name="transaction"
+            app:argType="com.algorand.android.models.BaseWalletConnectTransaction" />
+        <action
+            android:id="@+id/action_transactionRequestDetailFragment_to_walletConnectRawTransactionBottomSheet"
+            app:destination="@id/walletConnectRawTransactionBottomSheet" />
+        <action
+            android:id="@+id/action_transactionRequestDetailFragment_to_walletConnectAssetMetadataBottomSheet"
+            app:destination="@id/walletConnectAssetMetadataBottomSheet" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/walletConnectRawTransactionBottomSheet"
+        android:name="com.algorand.android.ui.wcrawtransaction.WalletConnectRawTransactionBottomSheet"
+        android:label="WalletConnectRawTransactionBottomSheet"
+        tools:layout="@layout/bottom_sheet_wallet_connect_raw_message">
+        <argument
+            android:name="wcAlgoTxnRequest"
+            app:argType="com.algorand.android.models.WCAlgoTransactionRequest" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/walletConnectAssetMetadataBottomSheet"
+        android:name="com.algorand.android.ui.wcrawtransaction.WalletConnectAssetMetadataBottomSheet"
+        android:label="WalletConnectAssetMetadataBottomSheet"
+        tools:layout="@layout/bottom_sheet_wallet_connect_raw_message">
+        <argument
+            android:name="assetParams"
+            app:argType="com.algorand.android.models.AssetParams"
+            app:nullable="true" />
+    </dialog>
+</navigation>

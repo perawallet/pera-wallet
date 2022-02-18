@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  Copyright 2019 Algorand, Inc.
+<?xml version="1.0" encoding="utf-8"?><!--
+  Copyright 2022 Pera Wallet, LDA
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,19 +11,48 @@
   -->
 
 <resources>
-    <dimen name="keyline_1_plus_4_dp">20dp</dimen>
+
+    <!-- Spacings -->
+    <dimen name="spacing_zero">0dp</dimen>
+
+    <dimen name="spacing_xxxsmall">2dp</dimen>
+    <dimen name="spacing_xxsmall">4dp</dimen>
+    <dimen name="spacing_xsmall">8dp</dimen>
+    <dimen name="spacing_small">12dp</dimen>
+    <dimen name="spacing_normal">16dp</dimen>
+    <dimen name="spacing_large">20dp</dimen>
+    <dimen name="spacing_xlarge">24dp</dimen>
+    <dimen name="spacing_xxlarge">32dp</dimen>
+    <dimen name="spacing_xxxlarge">36dp</dimen>
+    <dimen name="spacing_xxxxlarge">40dp</dimen>
+
+    <!-- Text Sizes -->
+    <dimen name="text_size_11">11sp</dimen>
+    <dimen name="text_size_13">13sp</dimen>
+    <dimen name="text_size_15">15sp</dimen>
+    <dimen name="text_size_19">19sp</dimen>
+    <dimen name="text_size_24">24sp</dimen>
+    <dimen name="text_size_32">32sp</dimen>
+    <dimen name="text_size_36">36sp</dimen>
+
+    <dimen name="button_corner_radius">4dp</dimen>
+    <dimen name="button_min_height">52dp</dimen>
+    <dimen name="button_small_min_height">40dp</dimen>
+    <dimen name="button_small_corner_radius">32dp</dimen>
+
     <dimen name="keyline_1">16dp</dimen>
     <dimen name="keyline_1_minus_8dp">8dp</dimen>
     <dimen name="unelevated_button_min_height">50dp</dimen>
     <dimen name="unelevated_button_corner_radius">28dp</dimen>
-    <dimen name="guideline_title_start_percentage">0.08</dimen>
     <dimen name="page_horizontal_spacing">20dp</dimen>
     <dimen name="digit_size">24dp</dimen>
     <dimen name="qr_code_overlay_size">250dp</dimen>
     <dimen name="show_qr_size">230dp</dimen>
-    <dimen name="account_vertical_margin">20dp</dimen>
     <dimen name="minimum_keyboard_height">256dp</dimen>
     <dimen name="main_bottom_navigation_elevation">6dp</dimen>
+    <dimen name="main_bottom_navigation_height">64dp</dimen>
+
+    <dimen name="passphrase_background_radius">8dp</dimen>
 
     <!-- Input-->
     <dimen name="input_horizontal_20dp_margin">16dp</dimen>
@@ -32,42 +60,76 @@
     <dimen name="input_label_vertical_margin">@dimen/smallshadow_top_margin_8dp</dimen>
     <dimen name="input_label_horizontal_margin">@dimen/smallshadow_start_inset</dimen>
 
-    <dimen name="default_card_radius">12dp</dimen>
-    <dimen name="bottom_safe_area_margin">36dp</dimen>
+    <dimen name="bottom_safe_area_margin">32dp</dimen>
 
-    <dimen name="tab_toolbar_scanqr_elevation">3dp</dimen>
-    <dimen name="tab_toolbar_min_height">68dp</dimen>
-    <dimen name="default_toolbar_height">56dp</dimen>
+    <dimen name="default_toolbar_height">44dp</dimen>
     <dimen name="toolbar_navigation_item_width">56dp</dimen>
 
     <!-- Passphrase View  -->
-
-    <integer name="account_name_character_limit">50</integer>
+    <integer name="account_name_character_limit">60</integer>
     <integer name="account_public_key_character_limit">58</integer>
 
     <!-- Settings List Item-->
     <dimen name="settings_list_item_min_height">64dp</dimen>
-    <dimen name="settings_list_item_horizontal_padding">20dp</dimen>
 
     <!-- SendRequestBottomView -->
     <dimen name="send_request_bottom_view_min_height">96dp</dimen>
-    <dimen name="send_request_vertical_padding">8dp</dimen>
 
     <!-- Asset Detail Card View -->
-    <dimen name="card_margin">12dp</dimen>
-    <dimen name="asset_detail_card_height">250dp</dimen>
 
     <!-- Passphrase Validation View  -->
-    <dimen name="passphrase_validation_bottom_margin">40dp</dimen>
+    <dimen name="passphrase_validation_bottom_margin">32dp</dimen>
 
     <!-- Register Type Selection -->
-    <dimen name="register_type_selection_divider_start_margin">84dp</dimen>
+    <dimen name="register_type_selection_item_icon_size">40dp</dimen>
+    <dimen name="register_type_selection_policy_margin">42dp</dimen>
 
     <!-- Chart -->
-    <dimen name="chart_size_normal">100dp</dimen>
-    <dimen name="chart_size_large">140dp</dimen>
     <dimen name="chart_price_tag_offset">4dp</dimen>
     <dimen name="chart_vertical_padding">20dp</dimen>
 
     <dimen name="wallet_connect_card_divider_margin">20dp</dimen>
+
+    <!--    Custom Input Layout-->
+    <dimen name="custom_input_layout_end_icon_size">24dp</dimen>
+    <dimen name="custom_input_layout_input_text_end_padding">40dp</dimen>
+
+    <!-- Bottom Sheet Single Button -->
+    <dimen name="bottom_sheet_single_button_icon_size">72dp</dimen>
+    <dimen name="bottom_sheet_modality_line_icon_height">4dp</dimen>
+    <dimen name="bottom_sheet_modality_line_icon_width">36dp</dimen>
+
+    <!-- Custom Dialpad -->
+    <dimen name="passphrase_input_bottom_line_unfocused">1dp</dimen>
+    <dimen name="passphrase_input_bottom_line_focused">2dp</dimen>
+
+    <dimen name="passphrase_word_suggester_height">45dp</dimen>
+
+    <!--  Asset Avatar  -->
+    <dimen name="asset_avatar_image_size">40dp</dimen>
+
+    <!--  Asset Name Text View  -->
+
+    <!--  Transactions View  Button -->
+    <dimen name="transaction_view_button_size">40dp</dimen>
+
+    <!--  Transactions Recycler Viev -->
+    <dimen name="transaction_view_height_offset">72dp</dimen>
+
+    <!--  Contact Placeholder  -->
+    <dimen name="contact_placeholder_image_size">80dp</dimen>
+    <dimen name="half_of_contact_placeholder_image_size">40dp</dimen>
+
+    <!--  Add Contact View  -->
+    <dimen name="contact_name_input_layout_top_margin">72dp</dimen>
+
+    <!--  Asset Detail Buttons  -->
+    <dimen name="reward_info_button_size">24dp</dimen>
+    <dimen name="asset_id_copy_button_size">20dp</dimen>
+
+    <dimen name="toolbar_avatar_view_padding">5dp</dimen>
+
+    <!-- Divider -->
+    <dimen name="divider_height">1dp</dimen>
+    <dimen name="custom_date_range_divider_height">2dp</dimen>
 </resources>

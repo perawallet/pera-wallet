@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,56 +12,51 @@
 
 package com.algorand.android.ui.removeasset
 
+import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.algorand.android.core.AccountManager
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.models.Account
-import com.algorand.android.models.AccountCacheData
+import com.algorand.android.models.AccountDetailSummary
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.Result
 import com.algorand.android.repository.TransactionsRepository
-import com.algorand.android.ui.common.listhelper.BaseAccountListItem
-import com.algorand.android.ui.common.listhelper.viewholders.HeaderAccountListItem
-import com.algorand.android.ui.common.listhelper.viewholders.RemoveAssetListItem
-import com.algorand.android.utils.AccountCacheManager
+import com.algorand.android.usecase.AccountAssetDataUseCase
+import com.algorand.android.usecase.AccountAssetRemovalUseCase
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class RemoveAssetsViewModel @ViewModelInject constructor(
-    private val accountManager: AccountManager,
-    private val accountCacheManager: AccountCacheManager,
-    private val transactionsRepository: TransactionsRepository
+    private val transactionsRepository: TransactionsRepository,
+    private val accountAssetRemovalUseCase: AccountAssetRemovalUseCase,
+    private val accountAssetDataUseCase: AccountAssetDataUseCase,
+    @Assisted savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
     val removeAssetLiveData = MutableLiveData<Event<Resource<Unit>>>()
-    val removeAssetListLiveData = MutableLiveData<List<BaseAccountListItem>>()
+    val removeAssetListLiveData = MutableLiveData<List<RemoveAssetItem>>()
+
     private lateinit var networkErrorMessage: String
+
+    private val accountPublicKey by lazy { savedStateHandle.get<String>(ACCOUNT_PUBLIC_KEY).orEmpty() }
 
     fun start(networkErrorMessage: String) {
         this.networkErrorMessage = networkErrorMessage
     }
 
-    fun constructList(
-        accountCacheDataMap: Map<String, AccountCacheData>,
-        publicKey: String
-    ) {
+    init {
+        initializeAccountAssetList()
+    }
+
+    private fun initializeAccountAssetList() {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = mutableListOf<BaseAccountListItem>()
-            accountCacheDataMap[publicKey]?.let { accountBalanceInformation ->
-                with(accountBalanceInformation) {
-                    result.add(HeaderAccountListItem(this))
-                    assetsInformation.forEach {
-                        if (it.isAlgorand().not()) {
-                            result.add(RemoveAssetListItem(account.address, it))
-                        }
-                    }
-                }
-            }
-            removeAssetListLiveData.postValue(result)
+            val removeItemList = accountAssetDataUseCase.getAccountOwnedAssetData(accountPublicKey, includeAlgo = false)
+                .map { RemoveAssetItem(it) }
+            removeAssetListLiveData.postValue(removeItemList)
         }
     }
 
@@ -73,10 +68,18 @@ class RemoveAssetsViewModel @ViewModelInject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             when (transactionsRepository.sendSignedTransaction(signedTransactionData)) {
                 is Result.Success -> {
-                    accountCacheManager.changeAssetStatusToPendingRemoval(account.address, assetInformation.assetId)
+                    accountAssetRemovalUseCase.addAssetDeletionToAccountCache(account.address, assetInformation.assetId)
                     removeAssetLiveData.postValue(Event(Resource.Success((Unit))))
                 }
             }
         }
+    }
+
+    fun getAccountDetailSummary(): AccountDetailSummary? {
+        return accountAssetRemovalUseCase.getAccountSummary(accountPublicKey)
+    }
+
+    companion object {
+        private const val ACCOUNT_PUBLIC_KEY = "accountPublicKey"
     }
 }

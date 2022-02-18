@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -14,6 +14,7 @@ package com.algorand.android.ui.rekey
 
 import androidx.hilt.lifecycle.ViewModelInject
 import com.algorand.android.core.BaseViewModel
+import com.algorand.android.models.Account
 import com.algorand.android.models.AccountCacheData
 import com.algorand.android.utils.AccountCacheManager
 
@@ -21,7 +22,15 @@ class RekeyInstructionViewModel @ViewModelInject constructor(
     private val accountCacheManager: AccountCacheManager
 ) : BaseViewModel() {
 
-    fun getCacheData(publicKey: String): AccountCacheData? {
+    private fun getCacheData(publicKey: String): AccountCacheData? {
         return accountCacheManager.getCacheData(publicKey)
+    }
+
+    fun isStandardAccount(publicKey: String): Boolean {
+        return getCacheData(publicKey)?.account?.type == Account.Type.STANDARD
+    }
+
+    fun isAccountNotRekeyed(publicKey: String): Boolean {
+        return getCacheData(publicKey)?.authAddress.isNullOrBlank()
     }
 }

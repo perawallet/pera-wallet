@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -14,32 +14,29 @@ package com.algorand.android.ui.wctransactionrequest
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
+import com.algorand.android.models.BaseDiffUtil
 import com.algorand.android.models.BaseWalletConnectTransaction
-import com.algorand.android.models.WalletConnectPeerMeta
-import com.algorand.android.ui.common.walletconnect.WalletConnectAppPreviewCardView
-import com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionListItem.ItemType.APP_PREVIEW
+import com.algorand.android.ui.common.walletconnect.WalletConnectTransactionSummaryCardView
 import com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionListItem.ItemType.GROUP_ID
 import com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionListItem.ItemType.MULTIPLE_TXN
 import com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionListItem.ItemType.SINGLE_TXN
-import com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionListItem.ItemType.TITLE
-import com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionListItem.MultipleTransactionItem
-import com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionListItem.SingleTransactionItem
 import com.algorand.android.ui.wctransactionrequest.viewholder.BaseWalletConnectTransactionViewHolder
-import com.algorand.android.ui.wctransactionrequest.viewholder.WalletConnectAppPreviewViewHolder
 import com.algorand.android.ui.wctransactionrequest.viewholder.WalletConnectGroupIdViewHolder
 import com.algorand.android.ui.wctransactionrequest.viewholder.WalletConnectMultipleRequestViewHolder
-import com.algorand.android.ui.wctransactionrequest.viewholder.WalletConnectRequestTitleViewHolder
 import com.algorand.android.ui.wctransactionrequest.viewholder.WalletConnectSingleRequestViewHolder
 
 class WalletConnectTransactionAdapter(
     private val listener: Listener
 ) : ListAdapter<WalletConnectTransactionListItem, BaseWalletConnectTransactionViewHolder>(
-    WalletConnectTransactionListDiffUtil()
+    BaseDiffUtil<WalletConnectTransactionListItem>()
 ) {
 
-    private val onShowMoreClickListener = WalletConnectAppPreviewCardView.OnShowMoreClickListener { peerMeta, message ->
-        listener.onShowMoreMessageClick(peerMeta, message)
+    private val singleTransactionShowDetailClick = WalletConnectTransactionSummaryCardView.OnShowDetailClickListener {
+        listener.onSingleTransactionClick(it)
+    }
+
+    private val multipleTransactionShowDetailClick = WalletConnectMultipleRequestViewHolder.OnShowDetailClickListener {
+        listener.onMultipleTransactionClick(it)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -48,10 +45,8 @@ class WalletConnectTransactionAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseWalletConnectTransactionViewHolder {
         return when (viewType) {
-            APP_PREVIEW.ordinal -> WalletConnectAppPreviewViewHolder.create(parent, onShowMoreClickListener)
-            TITLE.ordinal -> WalletConnectRequestTitleViewHolder.create(parent)
-            MULTIPLE_TXN.ordinal -> createMultipleTransactionViewHolder(parent)
-            SINGLE_TXN.ordinal -> createSingleTransactionViewHolder(parent)
+            MULTIPLE_TXN.ordinal -> createMultipleTransactionViewHolder(parent, multipleTransactionShowDetailClick)
+            SINGLE_TXN.ordinal -> createSingleTransactionViewHolder(parent, singleTransactionShowDetailClick)
             GROUP_ID.ordinal -> WalletConnectGroupIdViewHolder.create(parent)
             else -> throw IllegalArgumentException("$logTag: Item View Type is Unknown.")
         }
@@ -61,32 +56,23 @@ class WalletConnectTransactionAdapter(
         holder.bind(getItem(position))
     }
 
-    private fun createMultipleTransactionViewHolder(parent: ViewGroup): BaseWalletConnectTransactionViewHolder {
-        return WalletConnectMultipleRequestViewHolder.create(parent).apply {
-            itemView.setOnClickListener {
-                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                    val transactionList = (getItem(bindingAdapterPosition) as MultipleTransactionItem).transactionList
-                    listener.onMultipleTransactionClick(transactionList)
-                }
-            }
-        }
+    private fun createMultipleTransactionViewHolder(
+        parent: ViewGroup,
+        multipleTransactionShowDetailClick: WalletConnectMultipleRequestViewHolder.OnShowDetailClickListener
+    ): BaseWalletConnectTransactionViewHolder {
+        return WalletConnectMultipleRequestViewHolder.create(parent, multipleTransactionShowDetailClick)
     }
 
-    private fun createSingleTransactionViewHolder(parent: ViewGroup): BaseWalletConnectTransactionViewHolder {
-        return WalletConnectSingleRequestViewHolder.create(parent).apply {
-            itemView.setOnClickListener {
-                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                    val transaction = (getItem(bindingAdapterPosition) as SingleTransactionItem).transaction
-                    listener.onSingleTransactionClick(transaction)
-                }
-            }
-        }
+    private fun createSingleTransactionViewHolder(
+        parent: ViewGroup,
+        onShowDetailClickListener: WalletConnectTransactionSummaryCardView.OnShowDetailClickListener
+    ): BaseWalletConnectTransactionViewHolder {
+        return WalletConnectSingleRequestViewHolder.create(parent, onShowDetailClickListener)
     }
 
     interface Listener {
         fun onMultipleTransactionClick(transactionList: List<BaseWalletConnectTransaction>) {}
-        fun onSingleTransactionClick(transaction: BaseWalletConnectTransaction)
-        fun onShowMoreMessageClick(peerMeta: WalletConnectPeerMeta, message: String) {}
+        fun onSingleTransactionClick(transaction: BaseWalletConnectTransaction) {}
     }
 
     companion object {

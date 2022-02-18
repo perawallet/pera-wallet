@@ -1,0 +1,68 @@
+<!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~  limitations under the License
+  ~
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="192dp"
+    android:height="192dp"
+    android:viewportWidth="192"
+    android:viewportHeight="192">
+  <group>
+    <clip-path
+        android:pathData="M0,0h192v192h-192z"/>
+    <path
+        android:pathData="M39.479,119.646C41.52,117.082 44.619,115.588 47.896,115.588H144.692C147.97,115.588 151.068,117.082 153.11,119.646L167.571,137.812H25.018L39.479,119.646Z"
+        android:strokeLineJoin="round"
+        android:strokeWidth="3"
+        android:fillColor="@color/nftPlaceholderBoxColor"
+        android:strokeColor="@color/nftPlaceholderStrokeColor"/>
+    <path
+        android:pathData="M23,143.864C23,137.922 27.817,133.105 33.759,133.105H158.829C164.771,133.105 169.588,137.922 169.588,143.864V256.831C169.588,268.715 159.955,278.349 148.071,278.349H44.518C32.634,278.349 23,268.715 23,256.831L23,143.864Z"
+        android:strokeWidth="3"
+        android:fillColor="@color/nftPlaceholderBoxColor"
+        android:strokeColor="@color/nftPlaceholderStrokeColor"/>
+    <path
+        android:pathData="M97.5,57.008L57,79L62.192,39.107L97.5,12V57.008Z"
+        android:fillColor="#2CB7BC"/>
+    <path
+        android:pathData="M97.5,57.008L138,79L132.808,39.107L97.5,12V57.008Z"
+        android:fillColor="#2CB7BC"/>
+    <path
+        android:pathData="M97.5,57.008L57,79L62.192,39.107L97.5,12M97.5,57.008V12M97.5,57.008L138,79L132.808,39.107L97.5,12"
+        android:strokeLineJoin="round"
+        android:strokeWidth="3"
+        android:fillColor="#00000000"
+        android:strokeColor="#1C1C1C"/>
+    <path
+        android:pathData="M57,79.296L97.5,57L138,79.296L97.5,99L57,79.296Z"
+        android:strokeLineJoin="round"
+        android:strokeWidth="3"
+        android:fillColor="#2CB7BC"
+        android:strokeColor="#1C1C1C"/>
+    <path
+        android:pathData="M69,124a27,2 0,1 0,54 0a27,2 0,1 0,-54 0z"
+        android:fillColor="@color/nftPlaceholderHoleColor"/>
+    <path
+        android:pathData="M122,18L125.241,26.394L134,29.5L125.241,32.606L122,41L118.759,32.606L110,29.5L118.759,26.394L122,18Z"
+        android:strokeLineJoin="round"
+        android:strokeWidth="3"
+        android:fillColor="@color/nftPlaceholderStarColor"
+        android:strokeColor="#1C1C1C"/>
+    <path
+        android:pathData="M8,190.5H184"
+        android:strokeLineJoin="round"
+        android:strokeWidth="3"
+        android:fillColor="#00000000"
+        android:strokeColor="@color/nftPlaceholderStrokeColor"
+        android:strokeLineCap="round"/>
+  </group>
+</vector>

@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright 2019 Algorand, Inc.
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -11,42 +10,61 @@
   ~ limitations under the License
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackground"
-    android:gravity="center_vertical"
-    android:paddingHorizontal="@dimen/page_horizontal_spacing">
+    android:paddingVertical="@dimen/spacing_normal">
 
-    <ImageView
+    <com.algorand.android.customviews.AccountIconImageView
         android:id="@+id/typeImageView"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        tools:srcCompat="@drawable/ic_ledger_real" />
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/ic_ledger_vectorized" />
 
     <TextView
         android:id="@+id/nameTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="@dimen/account_vertical_margin"
-        android:layout_marginEnd="@dimen/keyline_1"
-        android:layout_marginBottom="@dimen/account_vertical_margin"
-        android:layout_weight="1"
+        android:layout_marginStart="@dimen/spacing_normal"
         android:ellipsize="end"
-        android:fontFamily="@font/publicsans_medium"
         android:maxLines="1"
-        android:textSize="14sp"
-        tools:text="Spending Account test line long line test" />
+        android:textAppearance="@style/TextAppearance.Body.Sans"
+        app:layout_constraintEnd_toStartOf="@id/checkImageView"
+        app:layout_constraintStart_toEndOf="@id/typeImageView"
+        app:layout_constraintTop_toTopOf="@id/typeImageView"
+        tools:text="@tools:sample/lorem/random[10]" />
 
-    <com.algorand.android.customviews.AmountTextView
+    <TextView
         android:id="@+id/balanceTextView"
-        android:layout_width="wrap_content"
+        style="@style/TextAppearance.Footnote.Description"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:algoFontFamily="@font/publicsans_medium"
-        app:algoTextViewSize="15sp" />
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.Footnote.Description"
+        app:layout_constraintBottom_toBottomOf="@id/typeImageView"
+        app:layout_constraintEnd_toStartOf="@id/checkImageView"
+        app:layout_constraintStart_toEndOf="@id/typeImageView"
+        app:layout_constraintTop_toBottomOf="@id/nameTextView"
+        app:layout_constraintVertical_bias="0"
+        tools:text="$6.06 available balance" />
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/checkImageView"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/selected_checkbox"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 

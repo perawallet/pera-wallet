@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -24,7 +24,7 @@
         android:background="@color/tertiaryBackground"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="10"
-        tools:listitem="@layout/item_currency_selection" />
+        tools:listitem="@layout/item_selection" />
 
     <com.algorand.android.customviews.ErrorListView
         android:id="@+id/errorListView"
@@ -39,6 +39,6 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"/>
 
 </FrameLayout>

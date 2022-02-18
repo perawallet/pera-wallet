@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -16,6 +16,7 @@ import android.os.Build
 import com.algorand.android.BuildConfig
 import com.algorand.android.models.Node
 import javax.inject.Singleton
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -31,7 +32,8 @@ class MobileHeaderInterceptor(
 ) : Interceptor {
 
     private val defaultAppName = packageName.split('.')
-        .run { elementAtOrNull(THIRD_ITEM_INDEX) ?: elementAtOrNull(SECOND_ITEM_INDEX).orEmpty() }.capitalize()
+        .run { elementAtOrNull(THIRD_ITEM_INDEX) ?: elementAtOrNull(SECOND_ITEM_INDEX).orEmpty() }
+        .capitalize()
 
     var currentActiveNode: Node? = null
 
@@ -40,9 +42,19 @@ class MobileHeaderInterceptor(
 
         val requestBuilder = request.newBuilder()
 
-        currentActiveNode?.networkSlug?.let { networkSlug ->
-            requestBuilder
-                .addHeader(ALGORAND_NETWORK_KEY, networkSlug)
+        currentActiveNode?.let { currentActiveNode ->
+            requestBuilder.addHeader(ALGORAND_NETWORK_KEY, currentActiveNode.networkSlug)
+
+            val baseUrl = currentActiveNode.mobileAlgorandAddress.toHttpUrlOrNull()
+            if (baseUrl != null) {
+                val newUrl = chain.request().url.newBuilder()
+                    .scheme(baseUrl.scheme)
+                    .host(baseUrl.toUrl().toURI().host)
+                    .port(baseUrl.port)
+                    .build()
+
+                requestBuilder.url(newUrl)
+            }
         }
 
         requestBuilder.addHeader(KEY_APP_NAME, appName ?: defaultAppName)
@@ -56,7 +68,6 @@ class MobileHeaderInterceptor(
                     addHeader(header.first, header.second)
                 }
             }
-
         return chain.proceed(requestBuilder.build())
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -99,7 +99,7 @@ class WalletConnectSignManager @Inject constructor(
         ledgerBleResultEvent?.consume()?.run {
             if (transaction == null) return@run
             when (this) {
-                is LedgerBleResult.LedgerWaitingForApproval -> postResult(LedgerWaitingForApproval)
+                is LedgerBleResult.LedgerWaitingForApproval -> postResult(LedgerWaitingForApproval(bluetoothName))
                 is SignedTransactionResult -> signHelper.cacheSignedTransaction(transactionByteArray)
                 is LedgerErrorResult -> postResult(Api(errorMessage))
                 is AppErrorResult -> postResult(Defined(AnnotatedString(errorMessageId), titleResId))

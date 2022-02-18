@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,119 +12,47 @@
 
 package com.algorand.android.repository
 
-import com.algorand.android.core.AccountManager
-import com.algorand.android.models.Account
-import com.algorand.android.models.AccountInformation
-import com.algorand.android.models.AssetInformation
+import com.algorand.android.cache.AccountLocalCache
+import com.algorand.android.models.AccountDetail
+import com.algorand.android.models.AccountInformationResponsePayload
 import com.algorand.android.models.PendingTransactionsResponse
 import com.algorand.android.models.Result
-import com.algorand.android.models.TransactionsResponse
 import com.algorand.android.network.AlgodApi
 import com.algorand.android.network.IndexerApi
-import com.algorand.android.network.request
 import com.algorand.android.network.safeApiCall
-import com.algorand.android.utils.AccountCacheManager
+import com.algorand.android.usecase.SimpleAssetDetailUseCase
+import com.algorand.android.utils.CacheResult
+import java.math.BigInteger
+import java.net.HttpURLConnection
 import javax.inject.Inject
-import retrofit2.HttpException
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 
 class AccountRepository @Inject constructor(
-    private val accountManager: AccountManager,
-    private val accountCacheManager: AccountCacheManager,
     private val algodApi: AlgodApi,
-    private val indexerApi: IndexerApi
+    private val indexerApi: IndexerApi,
+    private val accountLocalCache: AccountLocalCache,
+    private val assetDetailUseCase: SimpleAssetDetailUseCase // TODO Change here after merging this branch
 ) {
 
-    suspend fun getAuthAccountInformation(account: Account): Result<AccountInformation> =
-        safeApiCall { requestGetAuthAccountInformation(account) }
-
-    private suspend fun requestGetAuthAccountInformation(account: Account): Result<AccountInformation> {
-        with(indexerApi.getAccountInformation(account.address)) {
-            val accountInformation = body()?.accountInformation
-            return if (isSuccessful && accountInformation != null) {
-                accountInformation.getAllAssetIds().forEach { assetId ->
-                    if (accountCacheManager.isThereDescriptionForAsset(assetId).not()) {
-                        fetchAssetParams(assetId)
-                    }
-                }
-
-                accountCacheManager.setAccountBalanceInformation(account, accountInformation)
-
-                Result.Success(accountInformation)
-            } else if (code() == ACCOUNT_NOT_FOUND_ERROR_CODE) {
-                val emptyAccountInformation = AccountInformation.emptyAccountInformation(account.address)
-                accountCacheManager.setAccountBalanceInformation(account, emptyAccountInformation)
-
-                Result.Success(emptyAccountInformation)
-            } else {
-                Result.Error(Exception())
-            }
-        }
-    }
-
-    private suspend fun fetchAssetParams(assetId: Long) {
-        safeApiCall {
-            with(indexerApi.getAssetDescription(assetId)) {
-                val assetParams = body()?.asset?.assetParams
-                return@safeApiCall if (isSuccessful && assetParams != null) {
-                    accountCacheManager.setAssetDescription(assetId, assetParams)
-                    Result.Success(Unit)
-                } else {
-                    Result.Error(Exception())
-                }
-            }
-        }
-    }
-
-    suspend fun getOtherAccountInformation(
+    suspend fun getAccountInformation(
         publicKey: String,
         includeClosedAccounts: Boolean = false
-    ): Result<AccountInformation> = safeApiCall { requestGetOtherAccountInformation(publicKey, includeClosedAccounts) }
+    ): Result<AccountInformationResponsePayload> = safeApiCall {
+        requestAccountInformation(publicKey, includeClosedAccounts)
+    }
 
-    private suspend fun requestGetOtherAccountInformation(
+    private suspend fun requestAccountInformation(
         publicKey: String,
         includeClosedAccounts: Boolean
-    ): Result<AccountInformation> {
+    ): Result<AccountInformationResponsePayload> {
         with(indexerApi.getAccountInformation(publicKey, includeClosedAccounts)) {
             val accountInformation = body()?.accountInformation
             return if (isSuccessful && accountInformation != null) {
-                accountInformation.getAllAssetIds().forEach { assetId ->
-                    if (accountCacheManager.isThereDescriptionForAsset(assetId).not()) {
-                        fetchAssetParams(assetId)
-                    }
-                }
                 Result.Success(accountInformation)
-            } else if (code() == ACCOUNT_NOT_FOUND_ERROR_CODE) {
-                Result.Success(AccountInformation.emptyAccountInformation(publicKey))
             } else {
-                Result.Error(Exception())
-            }
-        }
-    }
-
-    suspend fun getTransactions(
-        assetId: Long,
-        publicKey: String,
-        fromDate: String? = null,
-        toDate: String? = null,
-        nextToken: String? = null,
-        limit: Int? = DEFAULT_TRANSACTION_COUNT
-    ): Result<TransactionsResponse> =
-        safeApiCall { requestGetTransactions(assetId, publicKey, fromDate, toDate, nextToken, limit) }
-
-    private suspend fun requestGetTransactions(
-        assetId: Long,
-        publicKey: String,
-        fromDate: String? = null,
-        toDate: String? = null,
-        nextToken: String? = null,
-        limit: Int?
-    ): Result<TransactionsResponse> {
-        val safeAssetId = if (assetId == AssetInformation.ALGORAND_ID) null else assetId
-        with(indexerApi.getTransactions(publicKey, safeAssetId, fromDate, toDate, nextToken, limit)) {
-            return if (isSuccessful && body() != null) {
-                Result.Success(body() as TransactionsResponse)
-            } else {
-                Result.Error(HttpException(this))
+                Result.Error(Exception(), code())
             }
         }
     }
@@ -142,20 +70,13 @@ class AccountRepository @Inject constructor(
         }
     }
 
-    suspend fun getRekeyedAccounts(rekeyAdminAddress: String): Result<List<AccountInformation>> =
+    suspend fun getRekeyedAccounts(rekeyAdminAddress: String): Result<List<AccountInformationResponsePayload>> =
         safeApiCall { requestGetRekeyedAccounts(rekeyAdminAddress) }
 
-    private suspend fun requestGetRekeyedAccounts(rekeyAdminAddress: String): Result<List<AccountInformation>> {
+    private suspend fun requestGetRekeyedAccounts(rekeyAdminAddress: String): Result<List<AccountInformationResponsePayload>> {
         with(indexerApi.getRekeyedAccounts(rekeyAdminAddress)) {
             val accountInformationList = body()?.accountInformationList
             return if (isSuccessful && accountInformationList != null) {
-                accountInformationList.forEach { accountInformation ->
-                    accountInformation.getAllAssetIds()?.forEach { assetId ->
-                        if (accountCacheManager.isThereDescriptionForAsset(assetId).not()) {
-                            fetchAssetParams(assetId)
-                        }
-                    }
-                }
                 Result.Success(accountInformationList)
             } else {
                 Result.Error(Exception())
@@ -163,24 +84,50 @@ class AccountRepository @Inject constructor(
         }
     }
 
-    suspend fun fetchAndSetAssetDescription(assetId: Long): Result<Unit> {
-        return with(requestFetchAndSetAssetDescription(assetId)) {
-            if (this is Result.Success) {
-                val assetParam = data.asset?.assetParams ?: return Result.Error(Exception())
-                accountCacheManager.setAssetDescription(assetId, assetParam)
-                Result.Success(Unit)
-            } else {
-                Result.Error((this as Result.Error).exception)
-            }
-        }
+    fun getAccountDetailCacheFlow(): StateFlow<HashMap<String, CacheResult<AccountDetail>>> {
+        return accountLocalCache.cacheMapFlow
     }
 
-    private suspend fun requestFetchAndSetAssetDescription(assetId: Long) = request {
-        indexerApi.getAssetDescription(assetId)
+    suspend fun cacheAccountDetail(accountDetail: CacheResult.Success<AccountDetail>) {
+        accountLocalCache.put(accountDetail)
+    }
+
+    suspend fun cacheAccountDetail(mapKey: String, accountDetail: CacheResult.Error<AccountDetail>) {
+        accountLocalCache.put(mapKey, accountDetail)
+    }
+
+    suspend fun cacheAccountDetail(accountDetailList: List<CacheResult.Success<AccountDetail>>) {
+        accountLocalCache.put(accountDetailList)
+    }
+
+    suspend fun cacheAllAccountDetails(accountDetailKeyValuePairList: List<Pair<String, CacheResult<AccountDetail>>>) {
+        accountLocalCache.putAll(accountDetailKeyValuePairList)
+    }
+
+    fun getCachedAccountDetail(publicKey: String): CacheResult<AccountDetail>? {
+        return accountLocalCache.getOrNull(publicKey)
+    }
+
+    suspend fun clearAccountDetailCache() {
+        accountLocalCache.clear()
+    }
+
+    suspend fun removeCachedAccount(publicKey: String) {
+        accountLocalCache.remove(publicKey)
+    }
+
+    fun getAccountBalanceFlow(publicKey: String): Flow<BigInteger?> {
+        // TODO Move this logic into UseCase
+        return accountLocalCache.cacheMapFlow
+            .map {
+                val accountInformation = it[publicKey]?.data?.accountInformation
+                val algoAmount = accountInformation?.amount ?: BigInteger.ZERO
+                val otherAssetsAmount = accountInformation?.assetHoldingList?.sumOf { it.amount } ?: BigInteger.ZERO
+                algoAmount.add(otherAssetsAmount)
+            }
     }
 
     companion object {
-        private const val ACCOUNT_NOT_FOUND_ERROR_CODE = 404
-        const val DEFAULT_TRANSACTION_COUNT = 15
+        const val ACCOUNT_NOT_FOUND_ERROR_CODE = HttpURLConnection.HTTP_NOT_FOUND
     }
 }

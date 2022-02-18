@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -17,32 +17,25 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
-import com.algorand.android.MainNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.core.TransactionBaseFragment
 import com.algorand.android.customviews.LoadingDialogFragment
 import com.algorand.android.databinding.FragmentRekeyConfirmationBinding
 import com.algorand.android.models.Account
-import com.algorand.android.models.AccountCacheData
-import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.models.TransactionData
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
-import com.algorand.android.utils.SingleButtonBottomSheet
 import com.algorand.android.utils.formatAsAlgoString
-import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.toShortenedAddress
-import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class RekeyConfirmationFragment : TransactionBaseFragment(R.layout.fragment_rekey_confirmation) {
 
-    private var accountCacheData: AccountCacheData? = null
     private var loadingDialogFragment: LoadingDialogFragment? = null
 
     private val args: RekeyConfirmationFragmentArgs by navArgs()
@@ -52,8 +45,7 @@ class RekeyConfirmationFragment : TransactionBaseFragment(R.layout.fragment_reke
     private val binding by viewBinding(FragmentRekeyConfirmationBinding::bind)
 
     private val toolbarConfiguration = ToolbarConfiguration(
-        titleResId = R.string.confirm_rekeying,
-        startIconResId = R.drawable.ic_back_navigation,
+        startIconResId = R.drawable.ic_left_arrow,
         startIconClick = ::navBack
     )
 
@@ -80,16 +72,10 @@ class RekeyConfirmationFragment : TransactionBaseFragment(R.layout.fragment_reke
     private val transactionResultObserver = Observer<Event<Resource<Any>>> { transactionResourceEvent ->
         transactionResourceEvent.consume()?.use(
             onSuccess = {
+                val accountName = rekeyConfirmationViewModel.getCachedAccountName(args.rekeyAddress).orEmpty()
                 nav(
-                    MainNavigationDirections.actionGlobalSingleButtonBottomSheet(
-                        titleResId = R.string.account_rekeyed,
-                        drawableResId = R.drawable.ic_check_sign,
-                        descriptionAnnotatedString = AnnotatedString(
-                            stringResId = R.string.the_account_name,
-                            replacementList = listOf("account_name" to accountCacheData?.account?.name.orEmpty())
-                        ),
-                        buttonTextResId = R.string.close,
-                        isResultNeeded = true
+                    RekeyConfirmationFragmentDirections.actionRekeyConfirmationFragmentToVerifyRekeyInfoFragment(
+                        accountName
                     )
                 )
             },
@@ -106,58 +92,67 @@ class RekeyConfirmationFragment : TransactionBaseFragment(R.layout.fragment_reke
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        accountCacheData = rekeyConfirmationViewModel.getAccountCacheData(args.rekeyAddress)
-        initDialogSavedStateListener()
         initObservers()
         setupTransferView()
-        setupCollapsibleAccountView()
         binding.confirmButton.setOnClickListener { onConfirmClick() }
     }
 
-    private fun initDialogSavedStateListener() {
-        startSavedStateListener(R.id.rekeyConfirmationFragment) {
-            useSavedStateValue<Boolean>(SingleButtonBottomSheet.ACCEPT_KEY) {
-                nav(RekeyConfirmationFragmentDirections.actionRekeyConfirmationFragmentToHomeNavigation())
-            }
-        }
-    }
-
     private fun initObservers() {
-        rekeyConfirmationViewModel.feeLiveData.observe(viewLifecycleOwner, feeObserver)
-        rekeyConfirmationViewModel.transactionResourceLiveData.observe(viewLifecycleOwner, transactionResultObserver)
+        with(rekeyConfirmationViewModel) {
+            feeLiveData.observe(viewLifecycleOwner, feeObserver)
+            transactionResourceLiveData.observe(viewLifecycleOwner, transactionResultObserver)
+        }
     }
 
     private fun setupTransferView() {
-        val authAddress = accountCacheData?.authAddress
+        val authAddress = rekeyConfirmationViewModel.getCachedAccountAuthAddress(args.rekeyAddress)
+        val account = rekeyConfirmationViewModel.getCachedAccountData(args.rekeyAddress)
         if (authAddress.isNullOrEmpty()) {
-            when (val accountDetail = accountCacheData?.account?.detail) {
-                is Account.Detail.Standard -> {
-                    binding.oldAccountLabelTextView.setText(R.string.passphrase)
-                    binding.oldAccountNameTextView.setText(R.string.hidden_passphrase)
-                }
+            when (val accountDetail = account?.detail) {
+                is Account.Detail.Standard -> setupTransferViewForStandardAccount()
                 is Account.Detail.Ledger -> {
-                    binding.oldAccountLabelTextView.setText(R.string.old_ledger)
-                    binding.oldAccountNameTextView.text =
-                        accountDetail.bluetoothName ?: accountCacheData?.account?.name
+                    setupTransferViewForLedgerAccount(accountDetail.bluetoothName, account.name)
                 }
                 is Account.Detail.Rekeyed, is Account.Detail.RekeyedAuth -> {
-                    binding.oldAccountLabelTextView.setText(R.string.old_ledger)
-                    binding.oldAccountNameTextView.text = accountCacheData?.account?.name
+                    setupTransferViewForRekeyedAccount(account.name)
                 }
             }
         } else {
-            binding.oldAccountLabelTextView.setText(R.string.old_ledger)
-
-            val authAccount = accountCacheManager.getAuthAccount(accountCacheData?.account)
-            binding.oldAccountNameTextView.text = authAccount?.name ?: authAddress.toShortenedAddress()
+            val authAccount = accountCacheManager.getAuthAccount(account)
+            setupTransferViewForLedgerToLedger(authAccount, authAddress)
         }
-
         binding.newLedgerNameTextView.text = args.rekeyAdminAddress.toShortenedAddress()
     }
 
-    private fun setupCollapsibleAccountView() {
-        rekeyConfirmationViewModel.getAccountCacheData(args.rekeyAddress)?.let {
-            binding.collapsibleAccountView.setAccountBalanceInformation(it)
+    private fun setupTransferViewForStandardAccount() {
+        with(binding) {
+            oldAccountTypeImageView.setImageResource(R.drawable.ic_wallet)
+            oldAccountLabelTextView.setText(R.string.passphrase)
+            oldAccountNameTextView.setText(R.string.hidden_passphrase)
+        }
+    }
+
+    private fun setupTransferViewForLedgerAccount(bluetoothName: String?, accountName: String) {
+        with(binding) {
+            oldAccountTypeImageView.setImageResource(R.drawable.ic_ledger)
+            oldAccountLabelTextView.setText(R.string.old_ledger)
+            oldAccountNameTextView.text = bluetoothName ?: accountName
+        }
+    }
+
+    private fun setupTransferViewForRekeyedAccount(accountName: String) {
+        with(binding) {
+            oldAccountTypeImageView.setImageResource(R.drawable.ic_ledger)
+            oldAccountLabelTextView.setText(R.string.old_ledger)
+            oldAccountNameTextView.text = accountName
+        }
+    }
+
+    private fun setupTransferViewForLedgerToLedger(authAccount: Account?, authAddress: String) {
+        with(binding) {
+            oldAccountLabelTextView.setText(R.string.old_ledger)
+            oldAccountNameTextView.text = authAccount?.name ?: authAddress.toShortenedAddress()
+            oldAccountTypeImageView.setImageResource(R.drawable.ic_ledger)
         }
     }
 
@@ -167,7 +162,7 @@ class RekeyConfirmationFragment : TransactionBaseFragment(R.layout.fragment_reke
 
     private fun onConfirmClick() {
         loadingDialogFragment = LoadingDialogFragment.show(childFragmentManager, R.string.rekeying_account)
-        accountCacheData?.let { safeAccountCacheData ->
+        rekeyConfirmationViewModel.getAccountCacheData(args.rekeyAddress)?.let { safeAccountCacheData ->
             val rekeyTx = TransactionData.Rekey(safeAccountCacheData, args.rekeyAdminAddress, args.ledgerDetail)
             sendTransaction(rekeyTx)
         }

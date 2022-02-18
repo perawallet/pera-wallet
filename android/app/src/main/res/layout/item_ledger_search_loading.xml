@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,23 +12,40 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:paddingHorizontal="20dp"
-    android:paddingVertical="20dp">
+    android:layout_marginTop="56dp"
+    android:layout_marginBottom="52dp"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/loadingAnimationLottieView"
+        android:layout_width="164dp"
+        android:layout_height="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/modalityLineView"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/bluetooth_loading_animation" />
 
     <TextView
+        style="@style/TextAppearance.Body.Large.Sans.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/publicsans_regular"
-        android:text="@string/looking_for_other_ledger"
-        android:textSize="14sp" />
+        android:layout_marginTop="@dimen/spacing_xlarge"
+        android:gravity="center"
+        android:text="@string/looking_for_devices" />
 
-    <androidx.core.widget.ContentLoadingProgressBar
-        android:id="@+id/historyResultsLoadingBar"
-        style="?android:attr/progressBarStyleSmall"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="@dimen/keyline_1" />
+    <TextView
+        style="@style/TextAppearance.Description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="60dp"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:gravity="center"
+        android:text="@string/please_make_sure_your_ledger_is" />
+
 </LinearLayout>

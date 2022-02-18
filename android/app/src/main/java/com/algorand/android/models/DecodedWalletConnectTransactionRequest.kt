@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -26,7 +26,7 @@ data class DecodedWalletConnectTransactionRequest(
     @SerializedName("note") val note: String? = null,
     @SerializedName("rcv") val receiverAddress: String? = null,
     @SerializedName("snd") val senderAddress: String? = null,
-    @SerializedName("type") val transactionType: WalletConnectTransactionType,
+    @SerializedName("type") val transactionType: TransactionType,
     @SerializedName("close") val closeToAddress: String? = null,
     @SerializedName("rekey") val rekeyAddress: String? = null,
     @SerializedName("aclose") val assetCloseToAddress: String? = null,

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/modalityLineView"
+        style="@style/BottomSheetModalityLine"
+        android:layout_gravity="center"
+        android:layout_marginVertical="@dimen/spacing_small"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.algorand.android.customviews.CustomToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/default_toolbar_height"
+        android:layout_marginTop="@dimen/spacing_small"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/modalityLineView" />
+
+    <TextView
+        android:id="@+id/fromLabelTextView"
+        style="@style/TextAppearance.Footnote.Description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_xsmall"
+        android:text="@string/from"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+    <TextView
+        android:id="@+id/toLabelTextView"
+        style="@style/TextAppearance.Footnote.Description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_xsmall"
+        android:text="@string/to"
+        app:layout_constraintStart_toStartOf="@id/toTextView"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+    <TextView
+        android:id="@+id/fromTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_xxsmall"
+        android:layout_marginEnd="@dimen/spacing_xlarge"
+        android:drawablePadding="@dimen/spacing_xsmall"
+        android:gravity="center_vertical"
+        android:textAppearance="@style/TextAppearance.Body.Sans"
+        app:drawableStartCompat="@drawable/ic_calendar_from"
+        app:layout_constraintEnd_toStartOf="@id/toTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fromLabelTextView"
+        tools:text="19.08.2020" />
+
+    <View
+        android:id="@+id/fromDividerView"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/custom_date_range_divider_height"
+        android:layout_marginTop="@dimen/spacing_xxsmall"
+        android:background="@drawable/custom_date_range_divider_selector"
+        app:layout_constraintEnd_toEndOf="@id/fromTextView"
+        app:layout_constraintStart_toStartOf="@id/fromTextView"
+        app:layout_constraintTop_toBottomOf="@id/fromTextView" />
+
+    <TextView
+        android:id="@+id/toTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_xxsmall"
+        android:layout_marginEnd="@dimen/spacing_xlarge"
+        android:drawablePadding="@dimen/spacing_xsmall"
+        android:gravity="center_vertical"
+        android:textAppearance="@style/TextAppearance.Body.Sans"
+        app:drawableStartCompat="@drawable/ic_calendar_to"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/fromTextView"
+        app:layout_constraintTop_toBottomOf="@id/toLabelTextView"
+        tools:text="20.08.2020" />
+
+    <View
+        android:id="@+id/toDividerView"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/custom_date_range_divider_height"
+        android:layout_marginTop="@dimen/spacing_xxsmall"
+        android:background="@drawable/custom_date_range_divider_selector"
+        app:layout_constraintEnd_toEndOf="@id/toTextView"
+        app:layout_constraintStart_toStartOf="@id/toTextView"
+        app:layout_constraintTop_toBottomOf="@id/toTextView" />
+
+    <DatePicker
+        android:id="@+id/datePicker"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        android:descendantFocusability="blocksDescendants"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fromDividerView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

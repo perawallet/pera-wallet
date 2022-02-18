@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -11,123 +11,70 @@
   ~ limitations under the License
   -->
 
+<!-- TODO Missing Shadow -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/smallshadow_start_20dp_margin"
-    android:layout_marginTop="@dimen/smallshadow_top_padding_12dp"
-    android:layout_marginEnd="@dimen/smallshadow_end_20dp_margin"
-    android:layout_marginBottom="@dimen/smallshadow_bottom_margin_12dp"
-    android:background="@drawable/bg_smallshadow_with_ripple">
+    android:layout_marginHorizontal="@dimen/spacing_xlarge"
+    android:layout_marginVertical="@dimen/spacing_xsmall"
+    android:background="@drawable/bg_passphrase_group_background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/parentLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/spacing_xlarge">
 
         <ImageView
             android:id="@+id/headerIconView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            app:layout_constraintBottom_toBottomOf="@id/nameTextView"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/nameTextView" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@drawable/checkbox_selected" />
 
         <TextView
             android:id="@+id/nameTextView"
-            style="@style/TextAppearance.AccountHeader"
+            style="@style/TextAppearance.Body.Mono"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/keyline_1_minus_8dp"
-            android:drawablePadding="12dp"
-            android:paddingVertical="18dp"
-            android:paddingStart="16dp"
+            android:layout_marginHorizontal="@dimen/spacing_large"
+            android:layout_marginTop="@dimen/spacing_normal"
+            app:layout_constraintBottom_toTopOf="@id/assetCountTextView"
             app:layout_constraintEnd_toStartOf="@id/infoButton"
             app:layout_constraintStart_toEndOf="@id/headerIconView"
             app:layout_constraintTop_toTopOf="parent"
-            tools:drawableStart="@drawable/ic_rekeyed_ledger"
+            app:layout_goneMarginBottom="@dimen/spacing_normal"
             tools:text="YPIO7...IOCRH" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/infoButton"
-            style="@style/BaseIconButton.Transparent"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            app:icon="@drawable/ic_info"
-            app:layout_constraintBottom_toBottomOf="@id/nameTextView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/nameTextView" />
-
-        <View
-            android:id="@+id/headerDivider"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginHorizontal="20dp"
-            android:background="@color/dividerColor"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/nameTextView" />
-
-        <com.algorand.android.customviews.AssetNameTextView
-            android:id="@+id/algoAssetNameTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="@dimen/keyline_1_minus_8dp"
-            android:paddingVertical="16dp"
-            app:layout_constraintEnd_toStartOf="@id/algoBalanceTextView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/headerDivider"
-            app:showAlgoIcon="true" />
-
-        <TextView
-            android:id="@+id/algoBalanceTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:fontFamily="@font/publicsans_medium"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@id/algoAssetNameTextView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/algoAssetNameTextView"
-            tools:text="78,005.00"
-            tools:visibility="visible" />
-
-        <View
-            android:id="@+id/assetCountDividerView"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginHorizontal="20dp"
-            android:background="@color/dividerColor"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/algoAssetNameTextView" />
 
         <TextView
             android:id="@+id/assetCountTextView"
+            style="@style/TextAppearance.Footnote.Description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="4dp"
-            android:fontFamily="@font/publicsans_semibold"
-            android:paddingVertical="@dimen/keyline_1"
-            android:textColor="@color/secondaryTextColor"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/assetCountDividerView"
-            tools:text="+1 Asset" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/assetCountGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_large"
+            android:layout_marginBottom="@dimen/spacing_normal"
             android:visibility="gone"
-            app:constraint_referenced_ids="assetCountTextView,assetCountDividerView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/infoButton"
+            app:layout_constraintStart_toEndOf="@+id/headerIconView"
+            app:layout_constraintTop_toBottomOf="@id/nameTextView"
+            tools:text="+1 Asset"
             tools:visibility="visible" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/infoButton"
+            style="@style/IconButton.Transparent"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:icon="@drawable/ic_info"
+            app:iconTint="@color/gray_500"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

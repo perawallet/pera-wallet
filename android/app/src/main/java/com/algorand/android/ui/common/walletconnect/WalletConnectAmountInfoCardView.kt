@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -15,16 +15,18 @@ package com.algorand.android.ui.common.walletconnect
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
-import androidx.core.view.updatePadding
 import com.algorand.android.R
 import com.algorand.android.databinding.CustomWalletConnectAmountInfoCardBinding
-import com.algorand.android.models.WalletConnectAmountInfo
+import com.algorand.android.models.BaseWalletConnectDisplayedAddress
+import com.algorand.android.models.TransactionRequestAmountInfo
+import com.algorand.android.utils.ALGOS_SHORT_NAME
 import com.algorand.android.utils.ALGO_DECIMALS
-import com.algorand.android.utils.MIN_FEE
+import com.algorand.android.utils.extensions.show
+import com.algorand.android.utils.formatAmount
+import com.algorand.android.utils.getXmlStyledString
 import com.algorand.android.utils.viewbinding.viewBinding
 import java.math.BigInteger
 
@@ -39,46 +41,119 @@ class WalletConnectAmountInfoCardView(
         initRootLayout()
     }
 
-    fun initAmountInfo(amountInfo: WalletConnectAmountInfo) {
-        binding.root.visibility = View.VISIBLE
+    fun initAmountInfo(amountInfo: TransactionRequestAmountInfo?) {
+        if (amountInfo == null) return
         with(amountInfo) {
-            initAmount(amount, decimal, isAlgorand)
-            initToAddress(toAccountAddress)
-            initFee(fee)
+            initAmount(amount, assetDecimal, assetShortName)
+            initFee(fee, shouldShowFeeWarning)
+            initDecimalPlaces(decimalPlaces)
+            initDefaultFrozen(defaultFrozen)
+            initManagerAccount(managerAccount)
+            initReserveAccount(reserveAccount)
+            initFreezeAccount(freezeAccount)
+            initClawbackAccount(clawbackAccount)
         }
     }
 
-    private fun initAmount(amount: BigInteger?, decimal: Int, isAlgorand: Boolean) {
-        if (amount != null) {
+    private fun initAmount(amount: BigInteger?, decimal: Int?, assetShortName: String?) {
+        amount?.let {
             with(binding) {
-                amountBalanceGroup.visibility = View.VISIBLE
-                amountTextView.setAmount(amount, decimal, isAlgorand)
+                amountTextView.text = context?.getXmlStyledString(
+                    stringResId = R.string.amount_with_asset_short_name,
+                    replacementList = listOf(
+                        "amount" to amount.formatAmount(decimal ?: ALGO_DECIMALS),
+                        "asset_short_name" to assetShortName.orEmpty()
+                    )
+                )
+                amountGroup.show()
             }
         }
     }
 
-    private fun initToAddress(address: String?) {
-        if (!address.isNullOrBlank()) {
+    private fun initFee(fee: Long?, shouldShowFeeWarning: Boolean) {
+        fee?.let {
             with(binding) {
-                toAccountNameTextView.text = address
-                toAddressGroup.visibility = View.VISIBLE
+                feeTextView.text = context?.getXmlStyledString(
+                    stringResId = R.string.amount_with_asset_short_name,
+                    replacementList = listOf(
+                        "amount" to fee.formatAmount(ALGO_DECIMALS),
+                        "asset_short_name" to ALGOS_SHORT_NAME
+                    )
+                )
+                feeWarningTextView.isVisible = shouldShowFeeWarning
+                feeGroup.show()
             }
         }
     }
 
-    private fun initFee(fee: Long?) {
-        if (fee != null) {
+    private fun initDecimalPlaces(decimals: Long?) {
+        decimals?.let {
             with(binding) {
-                feeTextView.setAmount(fee, ALGO_DECIMALS, true)
-                feeWarningTextView.isVisible = fee > MIN_FEE
-                feeGroup.visibility = VISIBLE
+                decimalPlacesTextView.text = decimals.toString()
+                decimalPlacesGroup.show()
+            }
+        }
+    }
+
+    private fun initDefaultFrozen(frozen: Boolean?) {
+        frozen?.let {
+            with(binding) {
+                val frozenTextRes = if (frozen) R.string.on else R.string.off
+                defaultFrozenTextView.setText(frozenTextRes)
+                defaultFrozenGroup.show()
+            }
+        }
+    }
+
+    private fun initReserveAccount(reserveAddress: BaseWalletConnectDisplayedAddress?) {
+        if (!reserveAddress?.displayValue.isNullOrBlank()) {
+            with(binding) {
+                reserveAccountTextView.apply {
+                    text = reserveAddress?.displayValue
+                    isSingleLine = reserveAddress?.isSingleLine == true
+                }
+                reserveAccountGroup.show()
+            }
+        }
+    }
+
+    private fun initClawbackAccount(clawbackAddress: BaseWalletConnectDisplayedAddress?) {
+        if (!clawbackAddress?.displayValue.isNullOrBlank()) {
+            with(binding) {
+                clawbackAccountTextView.apply {
+                    text = clawbackAddress?.displayValue
+                    isSingleLine = clawbackAddress?.isSingleLine == true
+                }
+                clawbackAccountGroup.show()
+            }
+        }
+    }
+
+    private fun initFreezeAccount(frozenAddress: BaseWalletConnectDisplayedAddress?) {
+        if (!frozenAddress?.displayValue.isNullOrBlank()) {
+            with(binding) {
+                freezeAccountTextView.apply {
+                    text = frozenAddress?.displayValue
+                    isSingleLine = frozenAddress?.isSingleLine == true
+                }
+                freezeAccountGroup.show()
+            }
+        }
+    }
+
+    private fun initManagerAccount(managerAddress: BaseWalletConnectDisplayedAddress?) {
+        if (!managerAddress?.displayValue.isNullOrBlank()) {
+            with(binding) {
+                managerAccountNameTextView.apply {
+                    text = managerAddress?.displayValue
+                    isSingleLine = managerAddress?.isSingleLine == true
+                }
+                managerAccountGroup.show()
             }
         }
     }
 
     private fun initRootLayout() {
-        setBackgroundResource(R.drawable.bg_small_shadow)
-        setPadding(resources.getDimensionPixelSize(R.dimen.keyline_1_plus_4_dp))
-        updatePadding(bottom = resources.getDimensionPixelSize(R.dimen.smallshadow_bottom_padding_18dp))
+        setPadding(resources.getDimensionPixelSize(R.dimen.spacing_large))
     }
 }

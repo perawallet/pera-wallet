@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -43,21 +43,24 @@ class WalletConnectSessionViewHolder(
         }
     }
 
-    fun bind(session: WalletConnectSession) {
+    fun bind(session: WalletConnectSession, isShowingDetails: Boolean) {
         this.session = session
         with(binding) {
             with(session.peerMeta) {
                 iconImageView.loadPeerMetaIcon(peerIconUri?.toString())
                 appNameTextView.text = name
-                appDescriptionTextView.apply {
-                    isVisible = hasDescription
-                    text = description
+                moreButton.apply {
+                    setOnClickListener { showPopUpMenu(this, session) }
                 }
-            }
-            setConnectionIndicatorTextView(session)
-            dateTextView.text = getZonedDateTimeFromSec(session.dateTimeStamp)?.formatAsDateAndTime()
-            moreButton.apply {
-                setOnClickListener { showPopUpMenu(this, session) }
+                if (isShowingDetails) {
+                    appDescriptionTextView.text = description
+                    dateTextView.text = getZonedDateTimeFromSec(session.dateTimeStamp)?.formatAsDateAndTime()
+                    setConnectionIndicatorTextView(session)
+                }
+                connectedTextView.isVisible = !isShowingDetails
+                appDescriptionTextView.isVisible = isShowingDetails && hasDescription
+                dateTextView.isVisible = isShowingDetails
+                connectionIndicatorTextView.isVisible = isShowingDetails
             }
         }
     }
@@ -67,7 +70,7 @@ class WalletConnectSessionViewHolder(
             val shortenedAddress = session.connectedAccountPublicKey.toShortenedAddress()
             text = if (session.isConnected) {
                 setBackgroundResource(R.drawable.bg_connected_session_indicator)
-                setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.green_0D)))
+                setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.linkPrimary)))
                 context.getString(R.string.connected_with_formatted, shortenedAddress)
             } else {
                 background = null

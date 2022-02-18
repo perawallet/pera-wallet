@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright 2019 Algorand, Inc.
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -23,119 +22,138 @@
         style="@style/TextAppearance.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/page_horizontal_spacing"
-        android:layout_marginTop="@dimen/keyline_1"
+        android:layout_marginStart="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_xxxsmall"
         android:text="@string/rekey_account"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/descriptionTextView"
+        style="@style/TextAppearance.Description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/page_horizontal_spacing"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/publicsans_regular"
-        android:lineSpacingExtra="5sp"
-        android:textColor="@color/tertiaryTextColor"
-        android:textSize="16sp"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+        app:layout_constraintTop_toBottomOf="@id/titleTextView"
         tools:text="@string/replace_your_account" />
 
     <TextView
         android:id="@+id/subtitleTextView"
+        style="@style/TextAppearance.Body.Large.Sans.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/page_horizontal_spacing"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
         android:layout_marginTop="@dimen/keyline_1"
-        android:fontFamily="@font/publicsans_regular"
+        android:fontFamily="@font/dmsans_regular"
         android:text="@string/what_to_expect"
-        android:textColor="@color/tertiaryTextColor"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@id/instructionLayout"
+        app:layout_constraintBottom_toTopOf="@id/firstExpectationText"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionTextView"
+        app:layout_constraintTop_toBottomOf="@id/descriptionTextView"
         app:layout_constraintVertical_bias="0.2"
         app:layout_constraintVertical_chainStyle="packed" />
 
-    <LinearLayout
-        android:id="@+id/instructionLayout"
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/firstExpectationImage"
+        style="@style/InstructionStepIndicator"
+        android:layout_marginStart="@dimen/spacing_xlarge"
+        app:layout_constraintBottom_toBottomOf="@id/firstExpectationText"
+        app:layout_constraintEnd_toStartOf="@id/firstExpectationText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/firstExpectationText" />
+
+    <TextView
+        android:id="@+id/firstExpectationText"
+        style="@style/TextAppearance.Body.Sans"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/keyline_1"
-        android:orientation="vertical"
+        android:layout_marginStart="@dimen/spacing_large"
+        android:layout_marginTop="@dimen/spacing_xlarge"
+        android:layout_marginEnd="@dimen/spacing_xlarge"
+        android:text="@string/future_transactions_will_be"
+        app:layout_constraintBottom_toTopOf="@id/secondExpectationText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/firstExpectationImage"
+        app:layout_constraintTop_toBottomOf="@id/subtitleTextView" />
+
+    <ImageView
+        android:id="@+id/secondExpectationImage"
+        style="@style/InstructionStepIndicator"
+        android:layout_marginStart="@dimen/spacing_xlarge"
+        app:layout_constraintBottom_toBottomOf="@id/secondExpectationText"
+        app:layout_constraintEnd_toStartOf="@id/secondExpectationText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/secondExpectationText" />
+
+    <TextView
+        android:id="@+id/secondExpectationText"
+        style="@style/TextAppearance.Body.Sans"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_large"
+        android:layout_marginTop="@dimen/spacing_xlarge"
+        android:layout_marginEnd="@dimen/spacing_xlarge"
+        app:layout_constraintBottom_toTopOf="@id/thirdExpectationText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/secondExpectationImage"
+        app:layout_constraintTop_toBottomOf="@id/firstExpectationText"
+        tools:text="@string/your_old_ledger" />
+
+    <ImageView
+        android:id="@+id/thirdExpectationImage"
+        style="@style/InstructionStepIndicator"
+        android:layout_marginStart="@dimen/spacing_xlarge"
+        app:layout_constraintBottom_toBottomOf="@id/thirdExpectationText"
+        app:layout_constraintEnd_toStartOf="@id/thirdExpectationText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/thirdExpectationText" />
+
+    <TextView
+        android:id="@+id/thirdExpectationText"
+        style="@style/TextAppearance.Body.Sans"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_large"
+        android:layout_marginTop="@dimen/spacing_xlarge"
+        android:layout_marginEnd="@dimen/spacing_xlarge"
+        android:text="@string/your_account_s_public"
+        app:layout_constraintBottom_toTopOf="@id/fourthExpectationText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/thirdExpectationImage"
+        app:layout_constraintTop_toBottomOf="@id/secondExpectationText" />
+
+
+    <ImageView
+        android:id="@+id/fourthExpectationImage"
+        style="@style/InstructionStepIndicator"
+        android:layout_marginStart="@dimen/spacing_xlarge"
+        app:layout_constraintBottom_toBottomOf="@id/fourthExpectationText"
+        app:layout_constraintEnd_toStartOf="@id/fourthExpectationText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/fourthExpectationText" />
+
+    <TextView
+        android:id="@+id/fourthExpectationText"
+        style="@style/TextAppearance.Body.Sans"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_large"
+        android:layout_marginTop="@dimen/spacing_xlarge"
+        android:layout_marginEnd="@dimen/spacing_xlarge"
+        android:text="@string/make_sure_bluetooth"
         app:layout_constraintBottom_toTopOf="@id/processButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/subtitleTextView">
-
-        <LinearLayout
-            android:id="@+id/firstStepLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/smallshadow_start_20dp_margin"
-            android:layout_marginTop="@dimen/smallshadow_top_margin_16dp"
-            android:layout_marginEnd="@dimen/smallshadow_end_20dp_margin"
-            android:layout_marginBottom="@dimen/smallshadow_bottom_margin_10dp"
-            android:background="@drawable/bg_small_shadow"
-            android:gravity="center">
-
-            <ImageView style="@style/RekeyAccountInstructionIcon" />
-
-            <TextView
-                style="@style/TextAppearance.RekeyAccountInstructionDescription"
-                android:text="@string/future_transactions_will_be" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/secondStepLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/smallshadow_start_20dp_margin"
-            android:layout_marginTop="@dimen/smallshadow_top_margin_2dp"
-            android:layout_marginEnd="@dimen/smallshadow_end_20dp_margin"
-            android:layout_marginBottom="@dimen/smallshadow_bottom_margin_10dp"
-            android:background="@drawable/bg_small_shadow"
-            android:gravity="center">
-
-            <ImageView style="@style/RekeyAccountInstructionIcon" />
-
-            <TextView
-                android:id="@+id/rekeyInstructionSecondStepTextView"
-                style="@style/TextAppearance.RekeyAccountInstructionDescription"
-                tools:text="@string/your_old_ledger" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/thirdStepLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/smallshadow_start_20dp_margin"
-            android:layout_marginTop="@dimen/smallshadow_top_margin_2dp"
-            android:layout_marginEnd="@dimen/smallshadow_end_20dp_margin"
-            android:layout_marginBottom="@dimen/smallshadow_bottom_margin_10dp"
-            android:background="@drawable/bg_small_shadow"
-            android:gravity="center">
-
-            <ImageView style="@style/RekeyAccountInstructionIcon" />
-
-            <TextView
-                style="@style/TextAppearance.RekeyAccountInstructionDescription"
-                android:text="@string/your_account_s_public" />
-
-        </LinearLayout>
-
-    </LinearLayout>
+        app:layout_constraintStart_toEndOf="@id/fourthExpectationImage"
+        app:layout_constraintTop_toBottomOf="@id/thirdExpectationText" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/processButton"
-        style="@style/UnelevatedButton.General"
+        style="@style/Button.Primary"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
         android:layout_marginBottom="@dimen/bottom_safe_area_margin"
         android:text="@string/start_process"
         app:layout_constraintBottom_toBottomOf="parent"

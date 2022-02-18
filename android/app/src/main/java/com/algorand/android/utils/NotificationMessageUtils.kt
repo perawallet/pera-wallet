@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -31,7 +31,7 @@ private fun Context.getAssetNameCharSequence(
         val isFullNameNullOrBlank = asset?.fullName.isNullOrBlank()
         val isShortNameNullOrBlank = asset?.shortName.isNullOrBlank()
         if (!isFullNameNullOrBlank) {
-            inSpans(CustomTypefaceSpan(ResourcesCompat.getFont(context, R.font.publicsans_medium))) {
+            inSpans(CustomTypefaceSpan(ResourcesCompat.getFont(context, R.font.dmsans_medium))) {
                 append(asset?.fullName)
             }
         }

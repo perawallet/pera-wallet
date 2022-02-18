@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,60 +12,46 @@
 
 package com.algorand.android.ui.datepicker
 
-import android.content.res.ColorStateList
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.core.widget.ImageViewCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.algorand.android.R
 import com.algorand.android.databinding.ItemDateFilterPickerBinding
 import com.algorand.android.models.DateFilter
+import com.algorand.android.utils.extensions.hide
+import com.algorand.android.utils.extensions.show
 
 class DateFilterPickerViewHolder(
     private val binding: ItemDateFilterPickerBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(dateFilter: DateFilter, isSelected: Boolean) {
-        binding.iconImageView.setImageResource(dateFilter.iconResId)
-        binding.dateTextView.setText(dateFilter.titleResId)
-        val dateRange = dateFilter.getDateRange()
-        when (dateFilter) {
-            DateFilter.Today -> {
-                binding.dateInIconTextView.text = dateRange?.from?.dayOfMonth.toString()
-                binding.dateInIconTextView.visibility = View.VISIBLE
-            }
-            DateFilter.LastMonth -> {
-                binding.dateInIconTextView.text = dateRange?.to?.dayOfMonth.toString()
-                binding.dateInIconTextView.visibility = View.VISIBLE
-            }
-            else -> {
-                binding.dateInIconTextView.visibility = View.GONE
+    // TODO: 11.02.2022 Move these logics into domain layer 
+    fun bind(dateFilter: DateFilter) {
+        with(binding) {
+            with(dateFilter) {
+                selectedImageView.isVisible = isSelected
+                iconImageView.setImageResource(iconResId)
+                dateTextView.setText(titleResId)
+
+                val dateRange = getDateRange()
+                when (this) {
+                    DateFilter.Today -> {
+                        dateInIconTextView.text = dateRange?.from?.dayOfMonth.toString()
+                        dateInIconTextView.show()
+                    }
+                    DateFilter.LastMonth -> {
+                        dateInIconTextView.text = dateRange?.to?.dayOfMonth.toString()
+                        dateInIconTextView.show()
+                    }
+                    else -> dateInIconTextView.hide()
+                }
+                val rangeAsText = dateRange?.getRangeAsText(this)
+                dateRangeTextView.apply {
+                    isVisible = rangeAsText.isNullOrBlank().not()
+                    text = rangeAsText
+                }
             }
         }
-        val rangeAsText = dateRange?.getRangeAsText(dateFilter)
-        binding.dateRangeTextView.apply {
-            isVisible = rangeAsText.isNullOrBlank().not()
-            text = rangeAsText
-        }
-        bindSelected(isSelected)
-    }
-
-    fun bindSelected(isSelected: Boolean) {
-        binding.selectedImageView.isVisible = isSelected
-
-        val titleTextColor =
-            ContextCompat.getColor(itemView.context, if (isSelected) R.color.green_0D else R.color.primaryTextColor)
-
-        binding.dateTextView.setTextColor(titleTextColor)
-
-        val iconTintColor =
-            ContextCompat.getColor(itemView.context, if (isSelected) R.color.green_0D else R.color.gray_8A)
-
-        binding.dateInIconTextView.setTextColor(iconTintColor)
-        ImageViewCompat.setImageTintList(binding.iconImageView, ColorStateList.valueOf(iconTintColor))
     }
 
     companion object {

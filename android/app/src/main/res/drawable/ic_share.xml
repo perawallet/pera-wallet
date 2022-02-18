@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -15,25 +15,19 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
-    <path
-        android:fillColor="#00000000"
-        android:pathData="M5,15V18C5,19.1046 5.8954,20 7,20H17C18.1046,20 19,19.1046 19,18V15"
-        android:strokeWidth="2"
-        android:strokeColor="#ffffff"
-        android:strokeLineCap="round"
-        android:strokeLineJoin="round" />
-    <path
-        android:fillColor="#00000000"
-        android:pathData="M12,15L12,5"
-        android:strokeWidth="2"
-        android:strokeColor="#ffffff"
-        android:strokeLineCap="round"
-        android:strokeLineJoin="round" />
-    <path
-        android:fillColor="#00000000"
-        android:pathData="M8,8L12,4L16,8"
-        android:strokeWidth="2"
-        android:strokeColor="#ffffff"
-        android:strokeLineCap="round"
-        android:strokeLineJoin="round" />
+  <path
+      android:pathData="M3,15V20H21V15"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="@color/primaryIconTintColor"/>
+  <path
+      android:pathData="M6,9L12,3L18,9"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="@color/primaryIconTintColor"/>
+  <path
+      android:pathData="M12,15V3"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="@color/primaryIconTintColor"/>
 </vector>

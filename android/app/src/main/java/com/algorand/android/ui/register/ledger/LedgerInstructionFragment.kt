@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,23 +12,17 @@
 
 package com.algorand.android.ui.register.ledger
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageButton
 import com.algorand.android.MainNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentLedgerInstructionBinding
 import com.algorand.android.models.FragmentConfiguration
+import com.algorand.android.models.IconButton
 import com.algorand.android.models.ToolbarConfiguration
-import com.algorand.android.ui.ledgersearch.LedgerPairInfoBottomSheet
-import com.algorand.android.utils.BLE_OPEN_REQUEST_CODE
+import com.algorand.android.utils.LEDGER_HELP_WEB_URL
 import com.algorand.android.utils.openUrl
-import com.algorand.android.utils.showEnableBluetoothPopup
-import com.algorand.android.utils.showSnackbar
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,9 +30,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class LedgerInstructionFragment : DaggerBaseFragment(R.layout.fragment_ledger_instruction) {
 
     private val toolbarConfiguration = ToolbarConfiguration(
-        startIconResId = R.drawable.ic_back_navigation,
-        startIconClick = ::navBack,
-        backgroundColor = R.color.secondaryBackground
+        startIconResId = R.drawable.ic_left_arrow,
+        startIconClick = ::navBack
     )
 
     private val binding by viewBinding(FragmentLedgerInstructionBinding::bind)
@@ -48,55 +41,25 @@ class LedgerInstructionFragment : DaggerBaseFragment(R.layout.fragment_ledger_in
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         configureToolbar()
-        binding.searchButton.setOnClickListener {
-            nav(LedgerInstructionFragmentDirections.actionLedgerInstructionFragmentToRegisterLedgerSearchFragment())
+        with(binding) {
+            searchButton.setOnClickListener { onPairWithLedgerClick() }
+            howItWorkButton.setOnClickListener { onHowDoesItWorkClick() }
         }
-        binding.instructionsLayout.firstStepLayout.setOnClickListener {
-            navToInfoBottomSheet(LedgerPairInfoBottomSheet.InfoType.FIRST)
-        }
-        binding.instructionsLayout.secondStepLayout.setOnClickListener {
-            navToInfoBottomSheet(LedgerPairInfoBottomSheet.InfoType.SECOND)
-        }
-        binding.instructionsLayout.thirdStepLayout.setOnClickListener {
-            navToInfoBottomSheet(LedgerPairInfoBottomSheet.InfoType.THIRD)
-        }
-        binding.instructionsLayout.fourthStepLayout.setOnClickListener { showEnableBluetoothPopup() }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == BLE_OPEN_REQUEST_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
-                showSnackbar(getString(R.string.bluetooth_is_enabled), binding.root)
-            } else {
-                showGlobalError(getString(R.string.error_bluetooth_message), getString(R.string.error_bluetooth_title))
-            }
-        }
+    private fun onHowDoesItWorkClick() {
+        nav(MainNavigationDirections.actionGlobalHowDoesLedgerWorkFragment())
+    }
+
+    private fun onPairWithLedgerClick() {
+        nav(LedgerInstructionFragmentDirections.actionLedgerInstructionFragmentToRegisterLedgerSearchFragment())
     }
 
     private fun configureToolbar() {
-        getAppToolbar()?.apply {
-            val infoButton = LayoutInflater
-                .from(context)
-                .inflate(R.layout.custom_icon_tab_button, this, false) as ImageButton
-
-            infoButton.apply {
-                setImageResource(R.drawable.ic_info)
-                setOnClickListener { onInfoClick() }
-                addViewToEndSide(this)
-            }
-        }
-    }
-
-    private fun navToInfoBottomSheet(infoType: LedgerPairInfoBottomSheet.InfoType) {
-        nav(MainNavigationDirections.actionGlobalLedgerPairInfoBottomSheet(infoType))
+        getAppToolbar()?.addButtonToEnd(IconButton(R.drawable.ic_info, onClick = ::onInfoClick))
     }
 
     private fun onInfoClick() {
         context?.openUrl(LEDGER_HELP_WEB_URL)
-    }
-
-    companion object {
-        private const val LEDGER_HELP_WEB_URL = "https://algorandwallet.com/support/security/pairing-your-ledger-nano-x"
     }
 }

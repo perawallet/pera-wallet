@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -15,71 +15,59 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:background="@color/secondaryBackground">
+    android:layout_height="wrap_content">
 
-    <com.algorand.android.customviews.CustomToolbar
-        android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/default_toolbar_height"
+    <View
+        android:id="@+id/modalityLineView"
+        style="@style/BottomSheetModalityLine"
+        android:layout_marginTop="@dimen/spacing_small"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/leftImageView"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginEnd="6dp"
-        app:layout_constraintBottom_toBottomOf="@+id/loadingAnimationLottieView"
-        app:layout_constraintEnd_toStartOf="@+id/loadingAnimationLottieView"
-        app:layout_constraintTop_toTopOf="@+id/loadingAnimationLottieView"
-        app:srcCompat="@drawable/ic_ledger_real" />
-
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/loadingAnimationLottieView"
-        android:layout_width="95dp"
-        android:layout_height="24dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintBottom_toBottomOf="@+id/rightImageView"
+        android:layout_width="164dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintTop_toBottomOf="@id/modalityLineView"
         app:lottie_autoPlay="true"
-        app:lottie_fileName="bluetooth_animation.json"
+        app:lottie_rawRes="@raw/bluetooth_loading_animation"
         app:lottie_loop="true" />
 
-    <ImageView
-        android:id="@+id/rightImageView"
+    <TextView
+        android:id="@+id/titleTextView"
+        style="@style/TextAppearance.Body.Large.Sans.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="6dp"
-        android:layout_marginTop="36dp"
-        app:layout_constraintStart_toEndOf="@+id/loadingAnimationLottieView"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:srcCompat="@drawable/ledger_approval_device" />
+        android:layout_marginTop="@dimen/spacing_xlarge"
+        android:text="@string/ledger_approval"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/loadingAnimationLottieView" />
 
     <TextView
         android:id="@+id/descriptionTextView"
+        style="@style/TextAppearance.Description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
-        android:fontFamily="@font/publicsans_medium"
+        android:layout_marginHorizontal="60dp"
+        android:layout_marginTop="@dimen/spacing_small"
         android:gravity="center"
-        android:text="@string/please_make_sure"
-        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rightImageView"
-        app:layout_constraintWidth_percent="0.6" />
+        app:layout_constraintTop_toBottomOf="@id/titleTextView"
+        tools:text="@string/please_make_sure" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/cancelButton"
-        style="@style/UnelevatedButton.General.Secondary"
+        style="@style/Button.Secondary"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_xxxlarge"
         android:layout_marginBottom="@dimen/bottom_safe_area_margin"
         android:text="@string/cancel_approval"
         app:layout_constraintBottom_toBottomOf="parent"

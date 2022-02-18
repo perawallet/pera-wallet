@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -17,22 +17,14 @@ import com.algorand.android.models.AnnotatedString
 
 class LedgerConnectionIssueBottomSheet : BaseSingleButtonBottomSheet() {
 
-    override val titleResId: Int
-        get() = R.string.having_ledger_nano_x
+    override val title: AnnotatedString
+        get() = AnnotatedString(R.string.having_ledger_nano_x)
     override val iconDrawableResId: Int
-        get() = R.drawable.ic_error_warning
-    override val iconDrawableTintResId: Int?
-        get() = R.color.white
-    override val descriptionAnnotatedString: AnnotatedString
+        get() = R.drawable.ic_error
+    override val iconDrawableTintResId: Int
+        get() = R.color.errorTintColor
+    override val descriptionAnnotatedString: AnnotatedString?
         get() = AnnotatedString(R.string.make_sure_the_device_is)
-    override val imageBackgroundTintResId: Int
-        get() = R.color.orange_F0
-    override val buttonTextResId: Int
-        get() = R.string.ok
-    override val buttonTextColorResId: Int
-        get() = R.color.unelevatedbutton_text_color
-    override val buttonBackgroundTintResId: Int
-        get() = R.color.green_1D
 
     override fun onConfirmationButtonClick() {
         navBack()

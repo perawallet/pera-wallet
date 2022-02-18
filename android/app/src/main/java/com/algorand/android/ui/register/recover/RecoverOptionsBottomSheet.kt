@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -17,6 +17,7 @@ import android.view.View
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseBottomSheet
 import com.algorand.android.databinding.BottomSheetRecoverOptionsBinding
+import com.algorand.android.utils.RECOVER_INFO_URL
 import com.algorand.android.utils.openUrl
 import com.algorand.android.utils.setNavigationResult
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -33,7 +34,6 @@ class RecoverOptionsBottomSheet : DaggerBaseBottomSheet(
         super.onViewCreated(view, savedInstanceState)
         binding.scanQrButton.setOnClickListener { onOptionClick(OptionResult.SCAN_QR) }
         binding.pasteButton.setOnClickListener { onOptionClick(OptionResult.PASTE) }
-        binding.cancelButton.setOnClickListener { navBack() }
         binding.learnMoreButton.setOnClickListener { context?.openUrl(RECOVER_INFO_URL) }
     }
 
@@ -48,7 +48,6 @@ class RecoverOptionsBottomSheet : DaggerBaseBottomSheet(
     }
 
     companion object {
-        private const val RECOVER_INFO_URL = "https://algorandwallet.com/support/getting-started/recover-an-algorand-account"
         const val RESULT_KEY = "recover_options_result"
     }
 }

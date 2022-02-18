@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -24,13 +24,16 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ContactDao {
     @Query("SELECT * FROM user")
-    fun getAll(): List<User>
+    suspend fun getAll(): List<User>
 
     @Query("SELECT * FROM user")
     fun getAllAsFlow(): Flow<List<User>>
 
     @Query("SELECT * FROM user WHERE name LIKE '%' || :nameQuery || '%'")
     suspend fun getUsersWithNameFiltered(nameQuery: String): List<User>
+
+    @Query("SELECT * FROM user WHERE name LIKE '%' || :nameQuery || '%'")
+    fun getUsersWithNameFilteredAsFlow(nameQuery: String): Flow<List<User>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUsers(userList: List<User>)

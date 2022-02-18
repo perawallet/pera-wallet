@@ -1,0 +1,53 @@
+/*
+ * Copyright 2022 Pera Wallet, LDA
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ *  limitations under the License
+ *
+ */
+
+package com.algorand.android.utils.extensions
+
+import java.util.Locale
+
+/**
+ * @throws IndexOutOfBoundsException
+ */
+fun String.formatAsAvatarTextOrThrow(maxLength: Int): String {
+    val splitItem = trim().split(" ", "-").filter { it.isNotBlank() }
+    return if (splitItem.size == 1) {
+        splitItem.firstOrNull()
+    } else {
+        splitItem.joinToString("") { s -> s.substring(0, 1) }
+    }?.take(maxLength)?.uppercase(Locale.ENGLISH).orEmpty()
+}
+
+fun String.replaceAt(start: Int, element: String): String {
+    if (start > length || start < 0) return this
+    val end = if (start + 1 > length) start else start + 1
+    return replaceRange(start, end, element)
+}
+
+fun String.appendAt(start: Int, element: String): String {
+    if (start > length || start < 0) return this
+    return replaceRange(start, start, element)
+}
+
+fun String.removeAt(start: Int): String {
+    if (start > length || start < 0) return this
+    val end = if (start + 1 > length) start else start + 1
+    return removeRange(start, end)
+}
+
+fun String.wrapWithBrackets(): String {
+    return StringBuilder().apply {
+        append("(")
+        append(this@wrapWithBrackets)
+        append(")")
+    }.toString()
+}

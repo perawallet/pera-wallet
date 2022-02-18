@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -17,35 +17,42 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.models.AssetInformation
-import com.algorand.android.models.Result
-import com.algorand.android.network.getAsResourceError
-import com.algorand.android.repository.AssetRepository
+import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import com.algorand.android.utils.AccountCacheManager
+import com.algorand.android.utils.CacheResult
+import com.algorand.android.utils.DataResource
 import com.algorand.android.utils.Resource
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class AssetActionViewModel @ViewModelInject constructor(
     private val accountCacheManager: AccountCacheManager,
-    private val assetRepository: AssetRepository
+    private val assetDetailUseCase: SimpleAssetDetailUseCase
 ) : BaseViewModel() {
 
     val assetInformationLiveData = MutableLiveData<Resource<AssetInformation>>()
 
-    fun getAssetDescription(assetId: Long) {
+    fun fetchAssetDescription(assetId: Long) {
         assetInformationLiveData.value = Resource.Loading
         viewModelScope.launch(Dispatchers.IO) {
-            when (val result = assetRepository.getAssetDescription(assetId)) {
-                is Result.Success -> {
-                    accountCacheManager.setAssetDescription(assetId, result.data.assetParams)
-                    assetInformationLiveData.postValue(
-                        Resource.Success(result.data.assetParams.convertToAssetInformation(assetId))
-                    )
-                }
-                is Result.Error -> {
-                    assetInformationLiveData.postValue(result.getAsResourceError())
+            assetDetailUseCase.fetchAssetById(listOf(assetId)).collect {
+                when (it) {
+                    is DataResource.Success -> {
+                        val asset = it.data.firstOrNull() ?: return@collect
+                        assetDetailUseCase.cacheAsset(CacheResult.Success.create(asset))
+                        assetInformationLiveData.postValue(Resource.Success(asset.convertToAssetInformation()))
+                    }
+                    is DataResource.Error -> {
+                        // TODO Handle error case
+                        // assetInformationLiveData.postValue(Resource.Error.Api(it.exception))
+                    }
                 }
             }
         }
+    }
+
+    fun getAssetDescription(assetId: Long): AssetInformation? {
+        return accountCacheManager.getAssetDescription(assetId)?.convertToAssetInformation()
     }
 }

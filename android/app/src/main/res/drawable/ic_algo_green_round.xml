@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -20,5 +20,5 @@
       android:fillColor="#1DAD98"/>
   <path
       android:pathData="M7.908,17L9.5044,14.2451L11.1009,11.5L12.6876,8.7451L12.9504,8.3086L13.0673,8.7451L13.554,10.5591L13.0088,11.5L11.4124,14.2451L9.8257,17H11.7336L13.3301,14.2451L14.1575,12.8192L14.5469,14.2451L15.2867,17H17L16.2602,14.2451L15.5204,11.5L15.3257,10.7919L16.5133,8.7451H14.7805L14.7221,8.5414L14.1186,6.291L14.0407,6H12.3761L12.3372,6.0582L10.7796,8.7451L9.1832,11.5L7.5965,14.2451L6,17H7.908Z"
-      android:fillColor="#ffffff"/>
+      android:fillColor="@color/algoGreenRoundIconFillColor"/>
 </vector>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -23,15 +23,19 @@ import com.algorand.android.database.AlgorandDatabase.Companion.MIGRATION_3_4
 import com.algorand.android.database.AlgorandDatabase.Companion.MIGRATION_4_5
 import com.algorand.android.database.AlgorandDatabase.Companion.MIGRATION_5_6
 import com.algorand.android.database.AlgorandDatabase.Companion.MIGRATION_6_7
+import com.algorand.android.database.AlgorandDatabase.Companion.MIGRATION_7_8
 import com.algorand.android.database.ContactDao
 import com.algorand.android.database.NodeDao
 import com.algorand.android.database.NotificationFilterDao
 import com.algorand.android.database.WalletConnectDao
 import com.algorand.android.database.WalletConnectTypeConverters
 import com.algorand.android.ledger.LedgerBleConnectionManager
-import com.algorand.android.notification.AlgorandNotificationManager
+import com.algorand.android.notification.PeraNotificationManager
+import com.algorand.android.usecase.AccountDetailUseCase
+import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import com.algorand.android.utils.ALGORAND_KEYSTORE_URI
 import com.algorand.android.utils.AccountCacheManager
+import com.algorand.android.utils.AccountMigrationHelper
 import com.algorand.android.utils.AutoLockManager
 import com.algorand.android.utils.ENCRYPTED_SHARED_PREF_NAME
 import com.algorand.android.utils.KEYSET_HANDLE
@@ -65,7 +69,7 @@ object AppModule {
         return Room
             .databaseBuilder(appContext, AlgorandDatabase::class.java, AlgorandDatabase.DATABASE_NAME)
             .fallbackToDestructiveMigration()
-            .addMigrations(MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7)
+            .addMigrations(MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_7_8)
             .addTypeConverter(walletConnectTypeConverters)
             .build()
     }
@@ -117,20 +121,29 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideAlgorandNotificationManager(): AlgorandNotificationManager {
-        return AlgorandNotificationManager()
+    fun provideAlgorandNotificationManager(): PeraNotificationManager {
+        return PeraNotificationManager()
     }
 
     @Singleton
     @Provides
-    fun provideAccountCacheManager(accountManager: AccountManager): AccountCacheManager {
-        return AccountCacheManager(accountManager)
+    fun provideAccountCacheManager(
+        accountManager: AccountManager,
+        accountDetailUseCase: AccountDetailUseCase,
+        assetDetailUseCase: SimpleAssetDetailUseCase
+    ): AccountCacheManager {
+        return AccountCacheManager(accountManager, accountDetailUseCase, assetDetailUseCase)
     }
 
     @Singleton
     @Provides
-    fun provideAccountManager(aead: Aead, gson: Gson, sharedPref: SharedPreferences): AccountManager {
-        return AccountManager(aead, gson, sharedPref)
+    fun provideAccountManager(
+        aead: Aead,
+        gson: Gson,
+        sharedPref: SharedPreferences,
+        migrationHelper: AccountMigrationHelper
+    ): AccountManager {
+        return AccountManager(aead, gson, sharedPref, migrationHelper)
     }
 
     @Singleton

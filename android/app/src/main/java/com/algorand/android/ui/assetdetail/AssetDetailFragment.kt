@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,449 +12,317 @@
 
 package com.algorand.android.ui.assetdetail
 
-import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.isInvisible
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.navArgs
-import androidx.paging.LoadState
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.ConcatAdapter
-import androidx.viewpager2.widget.MarginPageTransformer
-import androidx.viewpager2.widget.ViewPager2.ORIENTATION_HORIZONTAL
-import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
-import com.algorand.android.MainActivity
+import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
-import com.algorand.android.customviews.ErrorListView
-import com.algorand.android.customviews.SendReceiveBottomView
-import com.algorand.android.customviews.Tooltip
+import com.algorand.android.customviews.AlgorandFloatingActionButton
 import com.algorand.android.databinding.FragmentAssetDetailBinding
-import com.algorand.android.models.Account
-import com.algorand.android.models.AccountCacheData
-import com.algorand.android.models.AccountCacheStatus
-import com.algorand.android.models.AssetInformation
-import com.algorand.android.models.BaseTransactionListItem
-import com.algorand.android.models.CurrencyValue
+import com.algorand.android.models.AssetTransaction
+import com.algorand.android.models.BaseTransactionItem
+import com.algorand.android.models.CsvStatusPreview
 import com.algorand.android.models.DateFilter
 import com.algorand.android.models.FragmentConfiguration
-import com.algorand.android.models.TransactionDiffCallback
-import com.algorand.android.models.TransactionListItem
-import com.algorand.android.ui.assetdetail.AssetDetailFragmentDirections.Companion.actionAccountsFragmentToSendInfoFragment
-import com.algorand.android.ui.assetdetail.AssetDetailFragmentDirections.Companion.actionAccountsFragmentToTransactionDetailFragment
-import com.algorand.android.ui.assetdetail.AssetDetailFragmentDirections.Companion.actionAssetDetailFragmentToAnalyticsDetailBottomSheet
-import com.algorand.android.ui.assetdetail.AssetDetailFragmentDirections.Companion.actionAssetDetailFragmentToDateFilterPickerBottomSheet
-import com.algorand.android.ui.assetdetail.AssetDetailFragmentDirections.Companion.actionAssetDetailFragmentToShowQrBottomSheet
-import com.algorand.android.ui.common.transactions.PendingAdapter
-import com.algorand.android.ui.common.transactions.TransactionsPagingAdapter
-import com.algorand.android.ui.datepicker.DateFilterListFragment.Companion.DATE_FILTER_RESULT
-import com.algorand.android.utils.AccountCacheManager
+import com.algorand.android.models.PendingReward
+import com.algorand.android.models.StatusBarConfiguration
+import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.models.ui.AssetDetailPreview
+import com.algorand.android.models.ui.DateFilterPreview
+import com.algorand.android.models.ui.TransactionLoadStatePreview
+import com.algorand.android.ui.accountdetail.AccountDetailFragmentDirections
+import com.algorand.android.ui.accountdetail.history.adapter.AccountHistoryAdapter
+import com.algorand.android.ui.accountdetail.history.adapter.PendingTransactionAdapter
+import com.algorand.android.ui.datepicker.DateFilterListBottomSheet
 import com.algorand.android.utils.CSV_FILE_MIME_TYPE
-import com.algorand.android.utils.Event
-import com.algorand.android.utils.Resource
-import com.algorand.android.utils.analytics.logAssetDetail
-import com.algorand.android.utils.analytics.logAssetDetailChange
-import com.algorand.android.utils.analytics.logTapAssetDetailReceive
-import com.algorand.android.utils.analytics.logTapAssetDetailSend
-import com.algorand.android.utils.formatAmount
+import com.algorand.android.utils.copyToClipboard
+import com.algorand.android.utils.extensions.hide
+import com.algorand.android.utils.setDrawable
 import com.algorand.android.utils.shareFile
-import com.algorand.android.utils.showSnackbar
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
-import com.google.android.material.tabs.TabLayoutMediator
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.AndroidEntryPoint
-import java.io.File
-import java.io.IOException
-import java.math.BigInteger
-import javax.inject.Inject
-import kotlin.properties.Delegates
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class AssetDetailFragment : DaggerBaseFragment(R.layout.fragment_asset_detail), AssetCardFragment.Listener {
+class AssetDetailFragment : DaggerBaseFragment(R.layout.fragment_asset_detail) {
 
-    @Inject
-    lateinit var accountCacheManager: AccountCacheManager
-
-    private var csvFile: File? = null
-    private lateinit var accountCacheData: AccountCacheData
-
-    private lateinit var assetCardPagerAdapter: AssetCardPagerAdapter
-
-    private val assetDetailViewModel: AssetDetailViewModel by viewModels()
-
-    private val args: AssetDetailFragmentArgs by navArgs()
-
-    private val binding by viewBinding(FragmentAssetDetailBinding::bind)
-
-    private lateinit var selectedAsset: AssetInformation
-
-    private var transactionsAdapter: ConcatAdapter? = null
-    private lateinit var transactionsPagingAdapter: TransactionsPagingAdapter
-    private lateinit var pendingAdapter: PendingAdapter
-
-    private val sendRequestButtonListener = object : SendReceiveBottomView.Listener {
-        override fun onSendClick() {
-            val address = accountCacheData.account.address
-            firebaseAnalytics.get().logTapAssetDetailSend(address)
-            nav(
-                actionAccountsFragmentToSendInfoFragment(assetInformation = selectedAsset, fromAccountAddress = address)
-            )
-        }
-
-        override fun onReceiveClick() {
-            with(accountCacheData.account) {
-                firebaseAnalytics.get().logTapAssetDetailReceive(address)
-                nav(actionAssetDetailFragmentToShowQrBottomSheet(title = name, qrText = address))
-            }
-        }
-    }
-
-    private val onCardPageChangeListener = object : OnPageChangeCallback() {
-        override fun onPageSelected(position: Int) {
-            super.onPageSelected(position)
-            selectedAsset = accountCacheData.assetsInformation[position]
-            assetDetailViewModel.start(args.address, selectedAsset)
-            initTransactionRecyclerView()
-            assetDetailViewModel.assetFilterLiveData.postValue(selectedAsset)
-            if (view != null) {
-                assetDetailViewModel.balanceLiveData?.observe(viewLifecycleOwner, balanceObserver)
-            }
-            firebaseAnalytics.get().logAssetDetailChange(selectedAsset.assetId)
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="Observers">
-
-    // <editor-fold defaultstate="collapsed" desc="BalanceObservers">
-
-    private val balanceObserver = Observer<BigInteger?> { newBalance ->
-        balance = newBalance
-    }
-
-    private var balance by Delegates.observable<BigInteger?>(null) { _, oldValue, newValue ->
-        if (oldValue != null && oldValue != newValue) {
-            refreshTransactionHistoryData()
-        }
-        if (newValue != null) {
-            setBalanceUI(newValue)
-        }
-    }
-
-    // </editor-fold>
-
-    // <editor-fold defaultstate="collapsed" desc="DateFilterObservers">
-
-    private val dateFilterObserver = Observer<DateFilter> { newDateFilter ->
-        dateFilter = newDateFilter
-    }
-
-    private var dateFilter by Delegates.observable<DateFilter?>(null) { _, oldValue, newValue ->
-        if (oldValue != null && oldValue != newValue) {
-            refreshTransactionHistoryData()
-        }
-        if (newValue != null) {
-            setDateFilterUI(newValue)
-        }
-    }
-
-    // </editor-fold>
-
-    private val csvFileObserver = Observer<Event<Resource<File>>> { csvFileResourceEvent ->
-        csvFileResourceEvent.consume()?.let { csvFileResource ->
-            csvFileResource.use(
-                onSuccess = { file -> onNewCSVFileCreated(file) },
-                onFailed = { showSnackbar(getString(R.string.couldnt_create), binding.assetDetailMotionLayout) },
-                onLoading = { binding.blockerLoading.visibility = View.VISIBLE },
-                onLoadingFinished = { binding.blockerLoading.visibility = View.GONE }
-            )
-        }
-    }
-
-    private val pendingHistoryObserver = Observer<List<BaseTransactionListItem>> { pendingHistory ->
-        pendingAdapter.submitList(pendingHistory)
-        checkEmptyListViewVisibility()
-    }
-
-    // </editor-fold>
+    private val toolbarConfiguration = ToolbarConfiguration(
+        startIconResId = R.drawable.ic_left_arrow,
+        startIconClick = ::navBack,
+    )
 
     override val fragmentConfiguration = FragmentConfiguration(
+        toolbarConfiguration = toolbarConfiguration,
         firebaseEventScreenId = FIREBASE_EVENT_SCREEN_ID
     )
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initSyncObserver()
+    private val assetDetailViewModel: AssetDetailViewModel by viewModels()
+
+    private val binding by viewBinding(FragmentAssetDetailBinding::bind)
+
+    private val assetId by lazy { assetDetailViewModel.getAssetId() }
+
+    private val transactionListener = object : AccountHistoryAdapter.Listener {
+        override fun onTransactionClick(transaction: BaseTransactionItem.TransactionItem) {
+            onTransactionItemClick(transaction)
+        }
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (this::accountCacheData.isInitialized) {
-            assetDetailViewModel.isPendingTransactionPollingActive = true
+    private val extendedStatusBarConfiguration by lazy {
+        StatusBarConfiguration(backgroundColor = R.color.black_A3, showNodeStatus = false)
+    }
+
+    private val defaultStatusBarConfiguration by lazy { StatusBarConfiguration() }
+
+    private val fabListener = object : AlgorandFloatingActionButton.Listener {
+        override fun onReceiveClick() {
+            nav(
+                AccountDetailFragmentDirections.actionAccountDetailFragmentToShowQrBottomSheet(
+                    title = getString(R.string.qr_code),
+                    qrText = assetDetailViewModel.getPublicKey()
+                )
+            )
         }
+
+        override fun onSendClick() {
+            nav(
+                HomeNavigationDirections.actionGlobalSendAlgoNavigation(
+                    assetTransaction = AssetTransaction(
+                        senderAddress = assetDetailViewModel.getPublicKey(),
+                        assetId = assetDetailViewModel.getAssetId()
+                    )
+                )
+            )
+        }
+
+        override fun onStateChange(isExtended: Boolean) {
+            val statusBarConfiguration = if (isExtended) {
+                extendedStatusBarConfiguration
+            } else {
+                defaultStatusBarConfiguration
+            }
+            changeStatusBarConfiguration(statusBarConfiguration)
+        }
+    }
+
+    private val sharingActivityResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            // Nothing to do
+        }
+
+    private val csvStatusPreviewCollector: suspend (CsvStatusPreview?) -> Unit = {
+        updateCsvStatusPreview(it)
+    }
+
+    private val pendingTransactionListener = object : PendingTransactionAdapter.Listener {
+        override fun onTransactionClick(transaction: BaseTransactionItem.TransactionItem) {
+            onTransactionItemClick(transaction)
+        }
+
+        override fun onNewPendingItemInserted() {
+            binding.screenStateView.hide()
+            binding.transactionList.scrollToPosition(0)
+        }
+    }
+
+    private val transactionAdapter = AccountHistoryAdapter(transactionListener)
+    private val pendingTransactionAdapter = PendingTransactionAdapter(pendingTransactionListener)
+    private val concatAdapter = ConcatAdapter(pendingTransactionAdapter, transactionAdapter)
+
+    private val assetDetailPreviewCollector: suspend (AssetDetailPreview?) -> Unit = {
+        updateUiWithAssetDetailPreview(it)
+    }
+
+    private val transactionCollector: suspend (PagingData<BaseTransactionItem>) -> Unit = {
+        transactionAdapter.submitData(it)
+    }
+
+    private val pendingTransactionCollector: suspend (List<BaseTransactionItem>?) -> Unit = {
+        pendingTransactionAdapter.submitList(it)
+    }
+
+    private val dateFilterPreviewCollector: suspend (DateFilterPreview) -> Unit = {
+        setTransactionToolbarUi(it)
+    }
+
+    private val pendingRewardCollector: suspend (PendingReward) -> Unit = {
+        // TODO: 10.02.2022 Implementing the loading state could be good cause calculating
+        //  reward is taking a bit of time at the first time
+        binding.rewardsTextView.text = it.formattedPendingRewardAmount
+    }
+
+    override fun onStart() {
+        super.onStart()
+        assetDetailViewModel.activatePendingTransaction()
     }
 
     override fun onPause() {
         super.onPause()
-        assetDetailViewModel.isPendingTransactionPollingActive = false
+        assetDetailViewModel.deactivatePendingTransaction()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == CSV_REQUEST_CODE) {
-            csvFile?.delete()
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initObservers()
+        initUi()
+        handleLoadState()
     }
 
-    private fun setupFragment() {
-        if (getData()) {
-            loadData()
-            initTransactionRecyclerView()
-            initObservers()
-            initUI()
-        } else {
-            // TODO refactor here.
-            // no data found in cache.
-            navBack()
-        }
+    override fun onResume() {
+        super.onResume()
+        initSavedStateListener()
     }
 
-    private val accountCacheObserver = Observer<AccountCacheStatus> {
-        if (it == AccountCacheStatus.DONE) {
-            deactivateSyncObserver()
-            setupFragment()
-            binding.blockerLoading.visibility = View.GONE
-        } else {
-            binding.blockerLoading.visibility = View.VISIBLE
-        }
-    }
-
-    private fun deactivateSyncObserver() {
-        (activity as MainActivity).mainViewModel.accountBalanceSyncStatus.removeObservers(viewLifecycleOwner)
-    }
-
-    private fun initSyncObserver() {
-        (activity as MainActivity).mainViewModel.accountBalanceSyncStatus.observe(
-            viewLifecycleOwner,
-            accountCacheObserver
-        )
-    }
-
-    private fun initUI() {
-        binding.backButton.setOnClickListener { navBack() }
-        binding.swipeRefresh.setOnRefreshListener { onSwipeToRefresh() }
-        binding.filterButton.setOnClickListener { onFilterClick() }
-        binding.shareButton.setOnClickListener { onShareClick() }
-        binding.sendReceiveBottom.apply {
-            isVisible = accountCacheData.account.type != Account.Type.WATCH
-            setListener(sendRequestButtonListener)
-        }
-        initDialogSavedStateListener()
-        initCardAdapter()
-        binding.errorListView.setTryAgainAction { transactionsPagingAdapter.retry() }
-        activateFilterTooltipIfNeeded()
-    }
-
-    @SuppressLint("WrongConstant")
-    private fun initCardAdapter() {
-        assetCardPagerAdapter =
-            AssetCardPagerAdapter(this, accountCacheData.assetsInformation, args.address)
-        binding.cardsViewPager.apply {
-            orientation = ORIENTATION_HORIZONTAL
-            offscreenPageLimit = OFFSCREEN_PAGE_LIMIT_DEFAULT
-            adapter = assetCardPagerAdapter
-            registerOnPageChangeCallback(onCardPageChangeListener)
-            setPageTransformer(MarginPageTransformer(resources.getDimensionPixelSize(R.dimen.card_margin)))
-            val selectedAssetIndex =
-                accountCacheData.assetsInformation.indexOfFirst { it.assetId == selectedAsset.assetId }
-            post { currentItem = selectedAssetIndex }
-        }
-        if (accountCacheData.assetsInformation.size > 1) {
-            binding.pageIndicator.visibility = View.VISIBLE
-            TabLayoutMediator(binding.pageIndicator, binding.cardsViewPager) { _, _ -> }.attach()
+    private fun initSavedStateListener() {
+        startSavedStateListener(R.id.assetDetailFragment) {
+            useSavedStateValue<DateFilter>(DateFilterListBottomSheet.DATE_FILTER_RESULT) { newDateFilter ->
+                assetDetailViewModel.setDateFilter(newDateFilter)
+            }
         }
     }
 
     private fun initObservers() {
-
-        assetDetailViewModel.balanceLiveData?.observe(viewLifecycleOwner, balanceObserver)
-
-        assetDetailViewModel.csvFileLiveData.observe(viewLifecycleOwner, csvFileObserver)
-
-        assetDetailViewModel.getPendingDateAwareList().observe(viewLifecycleOwner, pendingHistoryObserver)
-
-        assetDetailViewModel.dateFilterLiveData.observe(viewLifecycleOwner, dateFilterObserver)
-
-        lifecycleScope.launch {
-            assetDetailViewModel.transactionPaginationFlow?.collectLatest { transactionPagingData ->
-                transactionsPagingAdapter.submitData(transactionPagingData)
+        with(assetDetailViewModel) {
+            viewLifecycleOwner.lifecycleScope.launch {
+                assetDetailPreviewFlow.collectLatest(assetDetailPreviewCollector)
+            }
+            viewLifecycleOwner.lifecycleScope.launch {
+                transactionPaginationFlow?.collectLatest(transactionCollector)
+            }
+            viewLifecycleOwner.lifecycleScope.launch {
+                pendingTransactionsFlow.collectLatest(pendingTransactionCollector)
+            }
+            viewLifecycleOwner.lifecycleScope.launch {
+                dateFilterPreviewFlow.collectLatest(dateFilterPreviewCollector)
+            }
+            viewLifecycleOwner.lifecycleScope.launch {
+                pendingRewardFlow.collectLatest(pendingRewardCollector)
+            }
+            viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+                csvStatusPreview.collectLatest(csvStatusPreviewCollector)
             }
         }
     }
 
-    private fun initDialogSavedStateListener() {
-        startSavedStateListener(R.id.assetDetailFragment) {
-            useSavedStateValue<DateFilter>(DATE_FILTER_RESULT) { newDateFilter ->
-                assetDetailViewModel.dateFilterLiveData.value = newDateFilter
+    private fun initUi() {
+        with(binding) {
+            assetDetailSendReceiveFab.setListener(fabListener)
+            rewardsInfo.setOnClickListener { onRewardsInfoClicked() }
+            transactionList.adapter = concatAdapter
+            transactionHistoryToolbar.apply {
+                setOnFilterClickListener(::onFilterClick)
+                setOnExportClickListener(::onExportClick)
             }
+            screenStateView.setOnNeutralButtonClickListener { assetDetailViewModel.refreshTransactionHistory() }
+            assetIdCopyButton.setOnClickListener { onAssetIdClicked() }
         }
     }
 
-    private fun initTransactionRecyclerView() {
-        if (transactionsAdapter == null) {
-            val diffCallback = TransactionDiffCallback()
-            transactionsPagingAdapter = TransactionsPagingAdapter(::onTransactionClick, diffCallback)
-            pendingAdapter = PendingAdapter(::onTransactionClick, ::onNewPendingItemInserted, diffCallback)
-            transactionsAdapter = ConcatAdapter(pendingAdapter, transactionsPagingAdapter)
-        }
-
-        binding.historyList.apply {
-            adapter = transactionsAdapter
-            itemAnimator = null
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            transactionsPagingAdapter.loadStateFlow.collectLatest { combinedLoadStates ->
-                val isPreviousStateError = binding.errorListView.isVisible
-                val isCurrentStateError = combinedLoadStates.refresh is LoadState.Error
-                val isLoading = combinedLoadStates.refresh is LoadState.Loading
-                if (isCurrentStateError) {
-                    enableHistoryErrorState((combinedLoadStates.refresh as LoadState.Error).error)
+    private fun updateUiWithAssetDetailPreview(assetDetailPreview: AssetDetailPreview?) {
+        with(binding) {
+            assetDetailPreview?.run {
+                getAppToolbar()?.setAssetAvatarIfAlgorand(isAlgorand, shortName.getName(resources))
+                assetDetailSendReceiveFab.isVisible = canSignTransaction
+                algoAssetGroup.isVisible = isAlgorand
+                otherAssetGroup.isVisible = isAlgorand.not()
+                balanceTextView.text = formattedAssetBalance
+                balanceInCurrencyTextView.text = formattedAssetBalanceInCurrency
+                balanceInCurrencyTextView.isVisible = isAmountInSelectedCurrencyVisible
+                otherAssetIdTextView.text = getString(R.string.asset_id_formatted, formattedAssetId)
+                otherAssetFullNameTextView.apply {
+                    text = fullName.getName(resources)
+                    if (assetDetailPreview.isVerified) {
+                        setDrawable(end = AppCompatResources.getDrawable(context, R.drawable.ic_shield_check_small))
+                    }
                 }
-                checkEmptyListViewVisibility(isLoading)
-                binding.historyList.isInvisible = isPreviousStateError || isCurrentStateError
-                binding.errorListView.isVisible = isCurrentStateError
-                binding.emptyListView.isVisible = binding.emptyListView.isVisible && isCurrentStateError.not()
-                binding.swipeRefresh.isRefreshing = isLoading
             }
         }
     }
 
-    private fun checkEmptyListViewVisibility(isLoading: Boolean = false) {
-        binding.emptyListView.isVisible = isLoading.not() && transactionsAdapter?.itemCount == 0
-    }
-
-    private fun setBalanceUI(balance: BigInteger) {
-        val formattedValue = balance.formatAmount(selectedAsset.decimals)
-        val subtitleText = "$formattedValue ${selectedAsset.getTickerText(resources)}"
-        binding.subtitleTextView.text = subtitleText
-    }
-
-    private fun setDateFilterUI(dateFilter: DateFilter) {
-        val filterButtonIconResId = if (dateFilter == DateFilter.AllTime) {
-            R.drawable.ic_filter
-        } else {
-            R.drawable.ic_selected_filter
+    private fun updateCsvStatusPreview(csvStatusPreview: CsvStatusPreview?) {
+        if (csvStatusPreview == null) return
+        if (csvStatusPreview.isErrorShown) {
+            showGlobalError(getString(csvStatusPreview.errorResId))
         }
-
-        val title = when (dateFilter) {
-            DateFilter.AllTime -> getString(R.string.transactions)
-            is DateFilter.CustomRange -> dateFilter.getDateRange()?.getRangeAsText(dateFilter).orEmpty()
-            else -> getString(dateFilter.titleResId)
+        with(binding.csvProgressBar) {
+            descriptionTextView.setText(csvStatusPreview.descriptionResId)
+            root.isVisible = csvStatusPreview.isCsvProgressBarVisible
         }
-
-        binding.historyTitleTextView.text = title
-        binding.filterButton.setIconResource(filterButtonIconResId)
-    }
-
-    private fun getData(): Boolean {
-        if (this::selectedAsset.isInitialized.not()) {
-            selectedAsset = args.assetInformation
-            assetDetailViewModel.assetFilterLiveData.postValue(selectedAsset)
+        csvStatusPreview.csvFile?.consume()?.let { csvFile ->
+            shareFile(csvFile, CSV_FILE_MIME_TYPE, sharingActivityResultLauncher)
         }
+    }
 
-        // START TODO get this from livedata to fix problems.
-        val currentCacheData = accountCacheManager.getCacheData(args.address)
-        return if (currentCacheData != null) {
-            accountCacheData = currentCacheData
-            true
-        } else {
-            val exception = Exception("${args.address} cache data is null for AssetDetailFragment.")
-            FirebaseCrashlytics.getInstance().recordException(exception)
-            false
+    private fun updateUiWithTransactionLoadStatePreview(loadStatePreview: TransactionLoadStatePreview) {
+        with(binding) {
+            loadingProgressBar.isVisible = loadStatePreview.isLoading
+            screenStateView.isVisible = loadStatePreview.isScreenStateViewVisible
+            transactionList.isVisible = loadStatePreview.isTransactionListVisible
+            loadStatePreview.screenStateViewType?.let { screenStateView.setupUi(it) }
         }
-        // END TODO
     }
 
-    private fun loadData() {
-        assetDetailViewModel.start(args.address, selectedAsset)
-        binding.titleTextView.text = accountCacheData.account.name
-        firebaseAnalytics.get().logAssetDetail(selectedAsset.assetId)
-    }
-
-    private fun refreshTransactionHistoryData() {
-        assetDetailViewModel.transactionHistoryDataSource?.invalidate()
-    }
-
-    private fun activateFilterTooltipIfNeeded() {
-        val offsetX = resources.getDimensionPixelOffset(R.dimen.keyline_1_minus_8dp)
-        binding.filterButton.post {
-            if (assetDetailViewModel.isFilterTooltipShown().not()) {
-                val config = Tooltip.Config(binding.filterButton, offsetX, R.string.you_can_now_filter, false)
-                Tooltip(binding.filterButton.context).show(config, viewLifecycleOwner)
-                assetDetailViewModel.setFilterTooltipShown()
+    private fun handleLoadState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            transactionAdapter.loadStateFlow.collectLatest { combinedLoadStates ->
+                updateUiWithTransactionLoadStatePreview(
+                    assetDetailViewModel.createTransactionLoadStatePreview(
+                        combinedLoadStates,
+                        transactionAdapter.itemCount,
+                        binding.screenStateView.isVisible
+                    )
+                )
             }
         }
     }
 
-    private fun enableHistoryErrorState(throwable: Throwable) {
-        binding.errorListView.setupError(
-            if (throwable is IOException) {
-                ErrorListView.Type.CONNECTION_ERROR
-            } else {
-                ErrorListView.Type.DEFAULT_ERROR
-            }
-        )
+    private fun onAssetIdClicked() {
+        context?.copyToClipboard(assetId.toString(), ASSET_ID_COPY_LABEL)
+    }
+
+    private fun onTransactionItemClick(transaction: BaseTransactionItem) {
+        nav(AssetDetailFragmentDirections.actionAssetDetailFragmentToTransactionDetailFragment(transaction))
     }
 
     private fun onFilterClick() {
-        val currentDateFilter = assetDetailViewModel.dateFilterLiveData.value ?: DateFilter.AllTime
-        nav(actionAssetDetailFragmentToDateFilterPickerBottomSheet(currentDateFilter))
+        val currentFilter = assetDetailViewModel.getDateFilterValue()
+        nav(AssetDetailFragmentDirections.actionAssetDetailFragmentToDateFilterPickerBottomSheet(currentFilter))
     }
 
-    private fun onTransactionClick(transaction: TransactionListItem) {
-        nav(actionAccountsFragmentToTransactionDetailFragment(transaction))
+    private fun onRewardsInfoClicked() {
+        val publicKey = assetDetailViewModel.getPublicKey()
+        nav(AssetDetailFragmentDirections.actionAssetDetailFragmentToRewardsBottomSheet(publicKey))
     }
 
-    private fun onSwipeToRefresh() {
-        refreshTransactionHistoryData()
-    }
-
-    private fun onNewPendingItemInserted() {
-        if (view != null) {
-            binding.emptyListView.visibility = View.GONE
-            binding.historyList.scrollToPosition(0)
-        }
-    }
-
-    private fun onShareClick() {
+    private fun onExportClick() {
         context?.cacheDir?.let { cacheDirectory ->
-            assetDetailViewModel.createCSVForList(cacheDirectory, accountCacheData.account.name)
+            assetDetailViewModel.createCsvFile(cacheDirectory)
         }
     }
 
-    private fun onNewCSVFileCreated(file: File?) {
-        if (file != null) {
-            csvFile = shareFile(file, CSV_REQUEST_CODE, CSV_FILE_MIME_TYPE)
-        } else {
-            showSnackbar(getString(R.string.couldnt_create), binding.assetDetailMotionLayout)
+    private fun setTransactionToolbarUi(dateFilterPreview: DateFilterPreview) {
+        with(dateFilterPreview) {
+            with(binding) {
+                transactionHistoryToolbar.setFilterIcon(filterButtonIconResId)
+                transactionHistoryToolbar.apply {
+                    if (titleResId != null) setTitle(titleResId) else if (title != null) setTitle(title)
+                }
+            }
         }
     }
 
     companion object {
-        private const val CSV_REQUEST_CODE = 1015
-        private const val OFFSCREEN_PAGE_LIMIT_DEFAULT = 3
         private const val FIREBASE_EVENT_SCREEN_ID = "screen_asset_detail"
-    }
-
-    override fun onAssetCardSelected(algoAccountAddress: String, selectedCurrency: CurrencyValue) {
-        nav(actionAssetDetailFragmentToAnalyticsDetailBottomSheet(args.address, selectedCurrency))
+        private const val ASSET_ID_COPY_LABEL = "address"
     }
 }

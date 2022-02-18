@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,9 +12,7 @@
 
 package com.algorand.android.models
 
-import com.algorand.android.R
 import com.algorand.android.utils.ALGO_DECIMALS
-import com.algorand.android.utils.toShortenedAddress
 import java.math.BigInteger
 import kotlinx.parcelize.Parcelize
 
@@ -22,10 +20,6 @@ sealed class BasePaymentTransaction : BaseWalletConnectTransaction() {
 
     protected abstract val amount: BigInteger
     abstract val receiverAddress: WalletConnectAddress
-
-    override val summaryTitleResId: Int = R.string.payment_transfer_formatted
-    override val summarySecondaryParameter: String
-        get() = receiverAddress.decodedAddress.toShortenedAddress()
 
     override val assetDecimal: Int = ALGO_DECIMALS
 
@@ -51,6 +45,9 @@ sealed class BasePaymentTransaction : BaseWalletConnectTransaction() {
         override fun getAllAddressPublicKeysTxnIncludes(): List<WalletConnectAddress> {
             return listOf(senderAddress, receiverAddress) + signerAddressList.orEmpty()
         }
+
+        override val fee: Long
+            get() = walletConnectTransactionParams.fee
     }
 
     @Parcelize
@@ -70,8 +67,11 @@ sealed class BasePaymentTransaction : BaseWalletConnectTransaction() {
         val closeToAddress: WalletConnectAddress
     ) : BasePaymentTransaction() {
 
-        override val shouldShowWarningIndicator: Boolean
-            get() = true
+        override val warningCount: Int
+            get() = 1
+
+        override val fee: Long
+            get() = walletConnectTransactionParams.fee
 
         override fun getCloseToAccountAddress(): WalletConnectAddress = closeToAddress
 
@@ -94,11 +94,14 @@ sealed class BasePaymentTransaction : BaseWalletConnectTransaction() {
         override val assetInformation: WalletConnectAssetInformation?,
         override val account: WalletConnectAccount?,
         override val groupId: String?,
-        val rekeyToAddress: WalletConnectAddress,
+        val rekeyToAddress: WalletConnectAddress
     ) : BasePaymentTransaction() {
 
-        override val shouldShowWarningIndicator: Boolean
-            get() = true
+        override val warningCount: Int
+            get() = 1
+
+        override val fee: Long
+            get() = walletConnectTransactionParams.fee
 
         override fun getRekeyToAccountAddress(): WalletConnectAddress = rekeyToAddress
 
@@ -125,8 +128,11 @@ sealed class BasePaymentTransaction : BaseWalletConnectTransaction() {
         val rekeyToAddress: WalletConnectAddress
     ) : BasePaymentTransaction() {
 
-        override val shouldShowWarningIndicator: Boolean
-            get() = true
+        override val warningCount: Int
+            get() = 2
+
+        override val fee: Long
+            get() = walletConnectTransactionParams.fee
 
         override fun getRekeyToAccountAddress(): WalletConnectAddress = rekeyToAddress
 

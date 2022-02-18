@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -13,17 +13,22 @@
 package com.algorand.android.customviews
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.util.AttributeSet
-import android.view.View
+import androidx.annotation.StringRes
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.core.widget.TextViewCompat
 import com.algorand.android.R
 import com.algorand.android.databinding.CustomToolbarBinding
+import com.algorand.android.models.AccountIcon
+import com.algorand.android.models.BaseToolbarButton
 import com.algorand.android.models.Node
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.utils.ALGOS_SHORT_NAME
 import com.algorand.android.utils.TESTNET_NETWORK_SLUG
+import com.algorand.android.utils.extensions.hide
+import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.viewbinding.viewBinding
 import kotlin.properties.Delegates
 
@@ -32,31 +37,41 @@ class CustomToolbar @JvmOverloads constructor(
     attrs: AttributeSet? = null
 ) : ConstraintLayout(context, attrs) {
 
-    private val addedViewsList = mutableListOf<View>()
-
-    private var type by Delegates.observable<Type?>(null, { _, oldValue, newValue ->
-        if (oldValue != newValue && newValue != null) {
-            setupType(newValue)
-        }
-    })
-
     private val binding = viewBinding(CustomToolbarBinding::inflate)
 
+    private var isAvatarLayoutVisible by Delegates.observable(false) { _, _, newValue ->
+        binding.accountAndAssetAvatarLayout.isVisible = newValue
+    }
+
+    private var isAssetAvatarVisible by Delegates.observable(false) { _, _, newValue ->
+        binding.assetAvatarView.isVisible = newValue
+    }
+
+    private var isAccountImageVisible by Delegates.observable(false) { _, _, newValue ->
+        binding.accountImageView.isVisible = newValue
+    }
+
+    init {
+        initRootView()
+    }
+
     fun configure(toolbarConfiguration: ToolbarConfiguration?) {
-        visibility = if (toolbarConfiguration == null) {
-            View.GONE
-        } else {
-            removeAllAddedViews()
-            with(toolbarConfiguration) {
-                this@CustomToolbar.type = type
-                setupBackground(backgroundColor)
-                setupTitle(titleResId)
-                configureStartButton(startIconResId, startIconClick)
-                val isTestNetStatusActive = binding.nodeStatusTextView.text == TESTNET_NETWORK_SLUG
-                binding.nodeStatusTextView.isVisible = showNodeStatus && isTestNetStatusActive
-            }
-            View.VISIBLE
+        if (toolbarConfiguration == null) {
+            hide()
+            return
         }
+        binding.buttonContainerView.removeAllViews()
+        with(toolbarConfiguration) {
+            setupBackground(backgroundColor)
+            setupTitle(titleResId)
+            configureStartButton(startIconResId, startIconClick)
+            val isTestNetStatusActive = binding.nodeStatusTextView.text == TESTNET_NETWORK_SLUG
+            binding.nodeStatusTextView.isVisible = showNodeStatus && isTestNetStatusActive
+            isAssetAvatarVisible = showAvatarImage
+            isAccountImageVisible = showAccountImage
+            isAvatarLayoutVisible = showAvatarImage || showAccountImage
+        }
+        show()
     }
 
     private fun setupTitle(titleResId: Int?) {
@@ -75,95 +90,59 @@ class CustomToolbar @JvmOverloads constructor(
         }
     }
 
+    fun configureStartButton(resId: Int?, clickAction: (() -> Unit)?) {
+        binding.startImageButton.apply {
+            if (resId == null) {
+                hide()
+                return
+            }
+            setImageResource(resId)
+            setOnClickListener { clickAction?.invoke() }
+            show()
+        }
+    }
+
     fun changeTitle(title: String) {
         binding.toolbarTitleTextView.text = title
     }
 
-    fun configureStartButton(resId: Int?, clickAction: (() -> Unit)?) {
-        binding.startImageButton.apply {
-            visibility = if (resId == null) {
-                View.GONE
-            } else {
-                setImageResource(resId)
-                setOnClickListener { clickAction?.invoke() }
-                View.VISIBLE
-            }
-        }
+    fun changeTitle(@StringRes titleRes: Int) {
+        binding.toolbarTitleTextView.setText(titleRes)
     }
 
-    private fun setupType(type: Type) {
-        val titleAppearance: Int
-
-        when (type) {
-            Type.TAB_TOOLBAR -> {
-                layoutParams = layoutParams.apply {
-                    height = resources.getDimensionPixelSize(R.dimen.tab_toolbar_min_height)
-                }
-                ConstraintSet().apply {
-                    clone(this@CustomToolbar)
-                    setHorizontalBias(R.id.toolbarTitleTextView, 0f)
-                    val titleStartMargin = resources.getDimensionPixelSize(R.dimen.page_horizontal_spacing)
-                    setMargin(R.id.toolbarTitleTextView, ConstraintSet.START, titleStartMargin)
-                    applyTo(this@CustomToolbar)
-                }
-                titleAppearance = R.style.TextAppearance_TabToolbarTitle
-            }
-            Type.DEFAULT_TOOLBAR -> {
-                layoutParams = layoutParams.apply {
-                    height = resources.getDimensionPixelSize(R.dimen.default_toolbar_height)
-                }
-                ConstraintSet().apply {
-                    clone(this@CustomToolbar)
-                    setHorizontalBias(R.id.toolbarTitleTextView, CENTER_BIAS)
-                    val titleStartMargin = resources.getDimensionPixelSize(R.dimen.toolbar_navigation_item_width)
-                    setMargin(R.id.toolbarTitleTextView, ConstraintSet.START, titleStartMargin)
-                    applyTo(this@CustomToolbar)
-                }
-                titleAppearance = R.style.TextAppearance_ToolbarTitle
-            }
-        }
-
-        TextViewCompat.setTextAppearance(binding.toolbarTitleTextView, titleAppearance)
-    }
-
-    private fun removeAllAddedViews() {
-        addedViewsList.iterator().apply {
-            while (hasNext()) {
-                removeView(next())
-                remove()
-            }
-        }
+    fun changeTitle(title: CharSequence) {
+        binding.toolbarTitleTextView.text = title
     }
 
     fun setNodeStatus(activatedNode: Node?) {
         binding.nodeStatusTextView.text = activatedNode?.networkSlug
     }
 
-    fun addViewToEndSide(view: View, marginEnd: Int = 0): View {
-        addView(view.apply { id = generateViewId() })
+    fun addButtonToEnd(button: BaseToolbarButton) {
+        binding.buttonContainerView.addButton(button)
+    }
 
-        val anchoredViewId = addedViewsList.lastOrNull()?.id ?: id
-        val anchorSide: Int = if (addedViewsList.isEmpty()) ConstraintSet.END else ConstraintSet.START
+    fun setAssetAvatar(isAlgorand: Boolean, fullName: String?) {
+        val assetFullName = fullName ?: context.getString(R.string.unnamed)
+        changeTitle(if (isAlgorand) ALGOS_SHORT_NAME else assetFullName)
+        binding.assetAvatarView.setAssetAvatar(isAlgorand, assetFullName)
+    }
 
-        addedViewsList.add(view)
-
-        ConstraintSet().apply {
-            clone(this@CustomToolbar)
-            connect(view.id, ConstraintSet.END, anchoredViewId, anchorSide, marginEnd)
-            connect(view.id, ConstraintSet.TOP, id, ConstraintSet.TOP)
-            connect(view.id, ConstraintSet.BOTTOM, id, ConstraintSet.BOTTOM)
-
-            applyTo(this@CustomToolbar)
+    fun setAssetAvatarIfAlgorand(isAlgorand: Boolean, shortName: String?) {
+        val assetShortName = shortName ?: context.getString(R.string.unnamed)
+        changeTitle(if (isAlgorand) ALGOS_SHORT_NAME else assetShortName)
+        if (isAlgorand) {
+            isAssetAvatarVisible = isAlgorand
+            isAvatarLayoutVisible = isAlgorand
+            binding.assetAvatarView.setAssetAvatar(true, assetShortName)
         }
-        return view
     }
 
-    enum class Type {
-        TAB_TOOLBAR,
-        DEFAULT_TOOLBAR
+    fun setAccountImage(accountIcon: AccountIcon) {
+        binding.accountImageView.setAccountIcon(accountIcon, R.dimen.toolbar_avatar_view_padding)
     }
 
-    companion object {
-        private const val CENTER_BIAS = 0.5f
+    private fun initRootView() {
+        backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.primaryBackground))
     }
 }

@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -15,8 +15,9 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
-    <path
-        android:fillColor="@color/colorPrimary"
-        android:fillType="evenOdd"
-        android:pathData="M12,4C7.5817,4 4,7.5817 4,12C4,16.4183 7.5817,20 12,20C16.4183,20 20,16.4183 20,12C20,7.5817 16.4183,4 12,4ZM2,12C2,6.4771 6.4771,2 12,2C17.5228,2 22,6.4771 22,12C22,17.5228 17.5228,22 12,22C6.4771,22 2,17.5228 2,12ZM12,11C12.5523,11 13,11.4477 13,12V16C13,16.5523 12.5523,17 12,17C11.4477,17 11,16.5523 11,16V12C11,11.4477 11.4477,11 12,11ZM12,9C12.5523,9 13,8.5523 13,8C13,7.4477 12.5523,7 12,7C11.4477,7 11,7.4477 11,8C11,8.5523 11.4477,9 12,9Z" />
+  <path
+      android:pathData="M12,17L12,11M12,9V7M3,12C3,7.0294 7.0294,3 12,3C16.9706,3 21,7.0294 21,12C21,16.9706 16.9706,21 12,21C7.0294,21 3,16.9706 3,12Z"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="@color/secondaryIconTintColor"/>
 </vector>

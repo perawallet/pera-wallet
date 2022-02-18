@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -18,31 +18,30 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.viewModels
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
-import com.algorand.android.databinding.FragmentThemeSelectionBinding
+import com.algorand.android.databinding.FragmentSelectionListBinding
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.ui.settings.selection.SelectionAdapter
 import com.algorand.android.ui.settings.selection.ThemeListItem
-import com.algorand.android.utils.addDivider
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ThemeSelectionFragment : DaggerBaseFragment(R.layout.fragment_theme_selection) {
+class ThemeSelectionFragment : DaggerBaseFragment(R.layout.fragment_selection_list) {
 
     private val themeSelectionViewModel: ThemeSelectionViewModel by viewModels()
 
     private val themeSelectionAdapter = SelectionAdapter(::onDifferentThemeSelectionClick)
 
     private val toolbarConfiguration = ToolbarConfiguration(
-        titleResId = R.string.set_theme,
-        startIconResId = R.drawable.ic_back_navigation,
+        titleResId = R.string.theme,
+        startIconResId = R.drawable.ic_left_arrow,
         startIconClick = ::navBack
     )
 
     override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
 
-    private val binding by viewBinding(FragmentThemeSelectionBinding::bind)
+    private val binding by viewBinding(FragmentSelectionListBinding::bind)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,10 +49,7 @@ class ThemeSelectionFragment : DaggerBaseFragment(R.layout.fragment_theme_select
     }
 
     private fun setupRecyclerView() {
-        binding.root.apply {
-            adapter = themeSelectionAdapter
-            addDivider(R.drawable.horizontal_divider_20dp)
-        }
+        binding.selectionRecyclerView.adapter = themeSelectionAdapter
         themeSelectionAdapter.setItems(themeSelectionViewModel.getThemeList())
     }
 

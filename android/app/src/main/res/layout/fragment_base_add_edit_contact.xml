@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~  limitations under the License
+  -->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.algorand.android.customviews.AccountIconImageView
+            android:id="@+id/contactImageView"
+            android:layout_width="@dimen/contact_placeholder_image_size"
+            android:layout_height="@dimen/contact_placeholder_image_size"
+            android:layout_marginTop="@dimen/spacing_xxlarge"
+            android:contentDescription="@string/accessibility_user_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/editProfilePhotoButton"
+            style="@style/IconButton.Circle"
+            android:layout_width="@dimen/spacing_xxlarge"
+            android:layout_height="@dimen/spacing_xxlarge"
+            android:backgroundTint="@color/primaryButtonBackgroundColor"
+            android:elevation="1dp"
+            app:iconTint="@color/primaryBackground"
+            app:layout_constraintCircle="@id/contactImageView"
+            app:layout_constraintCircleAngle="45"
+            app:layout_constraintCircleRadius="@dimen/half_of_contact_placeholder_image_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/contactImageView"
+            tools:icon="@drawable/ic_plus" />
+
+        <TextView
+            android:id="@+id/addPhotoTextView"
+            style="@style/TextAppearance.Body.Large.Sans.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:text="@string/add_photo"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/contactImageView"
+            tools:visibility="visible" />
+
+        <com.algorand.android.customviews.AlgorandInputLayout
+            android:id="@+id/contactNameCustomInputLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/contact_name_input_layout_top_margin"
+            app:hint="@string/contact_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/addPhotoTextView"
+            app:singleLine="true" />
+
+        <com.algorand.android.customviews.AlgorandInputLayout
+            android:id="@+id/addressCustomInputLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_xlarge"
+            app:endIcon="@drawable/ic_scan_qr"
+            app:hint="@string/account_address"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/contactNameCustomInputLayout"
+            app:singleLine="true" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/deleteContactButton"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/button_small_min_height"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_xxlarge"
+            android:text="@string/delete_this_contact"
+            android:visibility="gone"
+            app:backgroundTint="@color/errorTintColor"
+            app:cornerRadius="@dimen/button_small_corner_radius"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/addressCustomInputLayout"
+            tools:visibility="visible" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/addContactButton"
+            style="@style/Button.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/bottom_safe_area_margin"
+            android:enabled="false"
+            android:text="@string/add_contact"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/addressCustomInputLayout"
+            app:layout_constraintVertical_bias="1"
+            tools:visibility="visible" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

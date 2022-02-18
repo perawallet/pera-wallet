@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -13,11 +13,9 @@
 package com.algorand.android.customviews
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.motion.widget.MotionLayout
-import androidx.core.content.ContextCompat
 import com.algorand.android.R
 import com.algorand.android.databinding.CustomSendReceiveTabbarBinding
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -34,7 +32,7 @@ class SendReceiveTabBarView @JvmOverloads constructor(
 
     init {
         binding.sendReceiveActionButton.setOnClickListener { handleButtonClick() }
-        binding.sendButtton.setOnClickListener { listener?.onSendClick() }
+        binding.sendButton.setOnClickListener { listener?.onSendClick() }
         binding.receiveButton.setOnClickListener { listener?.onRequestClick() }
     }
 
@@ -68,24 +66,12 @@ class SendReceiveTabBarView @JvmOverloads constructor(
     }
 
     private fun setButtonUI(showClosedState: Boolean) {
-        val iconResId: Int
-        val backgroundColorResId: Int
-        val iconTintResId: Int
-
-        if (showClosedState) {
-            iconResId = R.drawable.ic_close
-            backgroundColorResId = R.color.mainBottomCancelBackgroundColor
-            iconTintResId = R.color.gray_42
+        val iconResId: Int = if (showClosedState) {
+            R.drawable.ic_close
         } else {
-            iconResId = R.drawable.ic_send_request
-            backgroundColorResId = R.color.colorPrimary
-            iconTintResId = R.color.tertiaryBackground
+            R.drawable.ic_send_request
         }
-
         binding.sendReceiveActionButton.setIconResource(iconResId)
-        binding.sendReceiveActionButton.setBackgroundColor(ContextCompat.getColor(context, backgroundColorResId))
-        binding.sendReceiveActionButton.iconTint =
-            ColorStateList.valueOf(ContextCompat.getColor(context, iconTintResId))
     }
 
     interface Listener {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -30,10 +30,16 @@ data class ChartEntryData(
         get() = (entryList.lastOrNull()?.data as? CandleHistory)?.displayPrice?.formatAsDollar().orEmpty()
 
     val percentageChangeTextColorResId: Int
-        get() = if (priceChangePercentage isBiggerThan ZERO) R.color.green_0D else R.color.red_E9
+        get() = if (priceChangePercentage isBiggerThan ZERO) R.color.helperPositive else R.color.helperNegative
 
     val percentageChangeArrowResId: Int
-        get() = if (priceChangePercentage isBiggerThan ZERO) R.drawable.ic_arrow_up else R.drawable.ic_arrow_down
+        get() {
+            return if (priceChangePercentage isBiggerThan ZERO) {
+                R.drawable.ic_arrow_up_line_positive_small
+            } else {
+                R.drawable.ic_arrow_down_line_negative_small
+            }
+        }
 
     val lineChartTheme: LineChartTheme
         get() {

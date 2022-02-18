@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright 2019 Algorand, Inc.
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -16,55 +15,75 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:backgroundTint="@color/primaryBackground"
     android:paddingBottom="@dimen/bottom_safe_area_margin">
+
+    <View
+        android:id="@+id/modalityLineView"
+        style="@style/BottomSheetModalityLine"
+        android:layout_marginTop="@dimen/spacing_small"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/errorGroupLayout"
+        layout="@layout/layout_bottom_sheet_top_error"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_xlarge"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/modalityLineView" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iconImageView"
+        android:layout_width="@dimen/bottom_sheet_single_button_icon_size"
+        android:layout_height="@dimen/bottom_sheet_single_button_icon_size"
+        android:layout_marginTop="@dimen/spacing_xxxxlarge"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/errorGroupLayout"
+        tools:srcCompat="@drawable/ic_info" />
 
     <TextView
         android:id="@+id/titleTextView"
-        style="@style/TextAppearance.ToolbarTitle"
-        android:layout_width="wrap_content"
+        style="@style/TextAppearance.Body.Large.Sans.Medium"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/keyline_1"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_xxlarge"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Passphrase Verified" />
-
-    <ImageView
-        android:id="@+id/iconImageView"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="28dp"
-        android:background="@drawable/bg_green1d_oval"
-        android:padding="26dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
-        tools:srcCompat="@drawable/ic_check_sign" />
+        app:layout_constraintTop_toBottomOf="@id/iconImageView"
+        tools:text="Screenshot Detected" />
 
     <TextView
         android:id="@+id/descriptionTextView"
         style="@style/TextAppearance.Description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/page_horizontal_spacing"
-        android:layout_marginTop="28dp"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_small"
         android:gravity="center"
-        android:paddingHorizontal="12dp"
-        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iconImageView"
-        tools:text="Your passphrase has been verified. Make sure that you have backed it up as you will need it to recover your account." />
+        app:layout_constraintTop_toBottomOf="@id/titleTextView"
+        tools:text="Do not backup your recovery passphrase by taking a screenshot. Having an image containing your passphrase is a security risk." />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/confirmationButton"
-        style="@style/UnelevatedButton.General"
+        style="@style/Button.Secondary"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_xxlarge"
+        android:text="@string/close"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionTextView"
-        tools:text="@string/ok" />
+        app:layout_constraintTop_toBottomOf="@id/descriptionTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

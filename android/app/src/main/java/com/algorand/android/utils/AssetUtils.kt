@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -20,6 +20,7 @@ import java.util.Locale
 
 private const val MIN_DECIMAL_SHOW_FORMAT = 2
 const val DOLLAR_DECIMALS = 2
+const val ALGO_REWARD_DECIMALS = 2
 
 private fun getBaseNumberFormat(): NumberFormat {
     return NumberFormat.getInstance(Locale.US).apply {
@@ -66,4 +67,10 @@ fun Long?.formatAmount(decimals: Int, fullFormatNeeded: Boolean = false): String
 
 fun BigInteger?.formatAmount(decimals: Int, fullFormatNeeded: Boolean = false): String {
     return (this ?: BigInteger.ZERO).toBigDecimal(decimals).formatAmount(decimals, fullFormatNeeded)
+}
+
+fun BigDecimal.toFullAmountInBigInteger(decimal: Int): BigInteger {
+    return formatAmount(decimal, true)
+        .filter { it.isDigit() }
+        .toBigIntegerOrNull() ?: BigInteger.ZERO
 }

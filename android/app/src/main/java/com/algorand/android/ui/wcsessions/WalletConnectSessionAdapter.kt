@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -18,7 +18,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.models.WalletConnectSession
 
 class WalletConnectSessionAdapter(
-    private val listener: Listener
+    private val listener: Listener,
+    private val showDetails: Boolean
 ) : ListAdapter<WalletConnectSession, WalletConnectSessionViewHolder>(WalletConnectSessionDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WalletConnectSessionViewHolder {
@@ -35,7 +36,7 @@ class WalletConnectSessionAdapter(
     }
 
     override fun onBindViewHolder(holder: WalletConnectSessionViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), showDetails)
     }
 
     private fun onDisconnectClick(session: WalletConnectSession) {

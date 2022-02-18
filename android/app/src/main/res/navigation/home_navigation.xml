@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -16,7 +16,24 @@
     android:id="@+id/homeNavigation"
     app:startDestination="@id/accountsFragment">
 
-    <include app:graph="@navigation/wallet_connect_request_navigation" />
+    <include app:graph="@navigation/wallet_connect_navigation" />
+
+    <include app:graph="@navigation/single_button_bottom_sheet_navigation" />
+
+    <include app:graph="@navigation/send_algo_navigation" />
+
+    <include app:graph="@navigation/qr_scanner_navigation" />
+
+    <include app:graph="@navigation/warning_confirmation_navigation" />
+
+    <action
+        android:id="@+id/action_global_send_algo_navigation"
+        app:destination="@id/sendAlgoNavigation">
+        <argument
+            android:name="assetTransaction"
+            app:argType="com.algorand.android.models.AssetTransaction"
+            app:nullable="true" />
+    </action>
 
     <include app:graph="@navigation/single_button_bottom_sheet_navigation" />
 
@@ -25,26 +42,36 @@
         app:destination="@id/walletConnectConnectionBottomSheet" />
 
     <action
-        android:id="@+id/action_global_assetSelectionBottomSheet"
-        app:destination="@id/assetSelectionBottomSheet" />
+        android:id="@+id/action_global_unsupportedAssetNotificationRequestActionBottomSheet"
+        app:destination="@id/unsupportedAssetNotificationRequestActionBottomSheet" />
 
     <action
         android:id="@+id/action_global_ledgerConnectionIssueBottomSheet"
         app:destination="@id/ledgerConnectionIssueBottomSheet" />
 
     <action
-        android:id="@+id/action_global_sendInfoFragment"
-        app:destination="@id/sendInfoFragment"
-        app:popUpTo="@+id/mainQrScannerFragment"
-        app:popUpToInclusive="true" />
+        android:id="@+id/action_global_unsupportedAddAssetTryLaterBottomSheet"
+        app:destination="@id/unsupportedAddAssetTryLaterBottomSheet" />
+
+    <action
+        android:id="@+id/action_global_unsupportedAssetInfoActionBottomSheet"
+        app:destination="@id/unsupportedAssetInfoActionBottomSheet" />
 
     <action
         android:id="@+id/action_global_addContactFragment"
-        app:destination="@id/addEditContactFragment" />
+        app:destination="@id/addContactFragment" />
 
     <action
         android:id="@+id/action_global_assetDetailFragment"
         app:destination="@id/assetDetailFragment" />
+
+    <action
+        android:id="@+id/action_global_receiveAccountSelectionFragment"
+        app:destination="@id/receiveAccountSelectionFragment" />
+
+    <action
+        android:id="@+id/action_global_showQrBottomSheet"
+        app:destination="@id/showQrBottomSheet" />
 
     <action
         android:id="@+id/action_global_walletConnectRequestNavigation"
@@ -57,32 +84,18 @@
         android:id="@+id/action_global_singleButtonBottomSheet"
         app:destination="@id/singleButtonBottomSheetNavigation">
         <argument
-            android:name="titleResId"
-            app:argType="reference" />
+            android:name="titleAnnotatedString"
+            app:argType="com.algorand.android.models.AnnotatedString" />
         <argument
             android:name="descriptionAnnotatedString"
             app:argType="com.algorand.android.models.AnnotatedString" />
         <argument
             android:name="drawableResId"
+            android:defaultValue="0"
             app:argType="reference" />
         <argument
             android:name="drawableTintResId"
-            android:defaultValue="@color/white"
-            app:argType="reference" />
-        <argument
-            android:name="imageBackgroundTintResId"
-            android:defaultValue="@color/green_1D"
-            app:argType="reference" />
-        <argument
-            android:name="buttonTextResId"
-            app:argType="reference" />
-        <argument
-            android:name="buttonTextColorResId"
-            android:defaultValue="@color/unelevatedbutton_text_color"
-            app:argType="reference" />
-        <argument
-            android:name="buttonBackgroundTintResId"
-            android:defaultValue="@color/green_1D"
+            android:defaultValue="0"
             app:argType="reference" />
         <argument
             android:name="isResultNeeded"
@@ -96,28 +109,28 @@
         android:label="fragment_contacts"
         tools:layout="@layout/fragment_contacts">
         <action
-            android:id="@+id/action_contactsFragment_to_sendInfoFragment"
-            app:destination="@id/sendInfoFragment" />
-        <action
             android:id="@+id/action_contactsFragment_to_showQrBottomSheet"
             app:destination="@id/showQrBottomSheet" />
         <action
             android:id="@+id/action_contactsFragment_to_contactInfoFragment"
             app:destination="@id/contactInfoFragment" />
         <action
-            android:id="@+id/action_contactsFragment_to_addEditContactFragment"
-            app:destination="@id/addEditContactFragment" />
+            android:id="@+id/action_contactsFragment_to_addContactFragment"
+            app:destination="@id/addContactFragment" />
+        <action
+            android:id="@+id/action_contactsFragment_to_editContactFragment"
+            app:destination="@id/editContactFragment" />
     </fragment>
 
-    <fragment
-        android:id="@+id/viewPassphraseLockFragment"
-        android:name="com.algorand.android.ui.accounts.ViewPassphraseLockFragment"
-        android:label="ViewPassphraseLockFragment"
-        tools:layout="@layout/fragment_view_passphrase_lock">
+    <dialog
+        android:id="@+id/viewPassphraseLockBottomSheet"
+        android:name="com.algorand.android.ui.accounts.ViewPassphraseLockBottomSheet"
+        android:label="ViewPassphraseLockBottomSheet"
+        tools:layout="@layout/bottom_sheet_view_passphrase_lock">
         <argument
             android:name="publicKey"
             app:argType="string" />
-    </fragment>
+    </dialog>
 
     <fragment
         android:id="@+id/addAssetFragment"
@@ -136,6 +149,9 @@
         <action
             android:id="@+id/action_addAssetFragment_to_verifiedAssetInformationBottomSheet"
             app:destination="@id/verifiedAssetInformationBottomSheet" />
+        <action
+            android:id="@+id/action_addAssetFragment_to_addAssetActionBottomSheet"
+            app:destination="@id/addAssetActionBottomSheet" />
     </fragment>
 
     <fragment
@@ -147,35 +163,42 @@
             android:id="@+id/action_accountsFragment_to_showQrBottomSheet"
             app:destination="@id/showQrBottomSheet" />
         <action
-            android:id="@+id/action_accountsFragment_to_viewPassphraseLockFragment"
-            app:destination="@id/viewPassphraseLockFragment" />
+            android:id="@+id/action_accountsFragment_to_peraIntroductionFragment"
+            app:destination="@id/peraIntroductionFragment" />
         <action
             android:id="@+id/action_accountsFragment_to_addAssetFragment"
             app:destination="@id/addAssetFragment" />
         <action
-            android:id="@+id/action_accountsFragment_to_assetDetailFragment"
-            app:destination="@id/assetDetailFragment" />
-        <action
             android:id="@+id/action_accountsFragment_to_removeAssetsFragment"
             app:destination="@id/removeAssetsFragment" />
         <action
-            android:id="@+id/action_accountsFragment_to_mainQrScannerFragment"
-            app:destination="@id/mainQrScannerFragment" />
+            android:id="@+id/action_accountsFragment_to_qrCodeScannerNavigation"
+            app:destination="@id/qrCodeScannerNavigation">
+            <argument
+                android:name="qrScanner"
+                app:argType="com.algorand.android.models.QrScanner" />
+        </action>
+        <action
+            android:id="@+id/action_accountsFragment_to_accountErrorOptionsBottomSheet"
+            app:destination="@id/accountErrorOptionsBottomSheet" />
         <action
             android:id="@+id/action_accountsFragment_to_viewPassphraseBottomSheet"
             app:destination="@id/viewPassphraseBottomSheet" />
         <action
-            android:id="@+id/action_accountsFragment_to_editAccountNameBottomSheet"
-            app:destination="@id/editAccountNameBottomSheet" />
+            android:id="@+id/action_accountsFragment_to_homeAccountOptionsBottomSheet"
+            app:destination="@id/homeAccountOptionsBottomSheet" />
         <action
-            android:id="@+id/action_accountsFragment_to_removeAccountBottomSheet"
-            app:destination="@id/removeAccountBottomSheet" />
+            android:id="@+id/action_accountsFragment_to_accountDetailFragment"
+            app:destination="@id/accountDetailFragment" />
         <action
-            android:id="@+id/action_accountsFragment_to_accountOptionsBottomSheet"
-            app:destination="@id/accountOptionsBottomSheet" />
+            android:id="@+id/action_accountsFragment_to_standardAccountOrderFragment"
+            app:destination="@id/standardAccountOrderFragment" />
         <action
-            android:id="@+id/action_accountsFragment_to_registerInfoFragment"
-            app:destination="@id/registerInfoFragment" />
+            android:id="@+id/action_accountsFragment_to_watchAccountOrderFragment"
+            app:destination="@id/watchAccountOrderFragment" />
+        <action
+            android:id="@+id/action_accountsFragment_to_notificationCenterFragment"
+            app:destination="@id/notificationCenterFragment" />
     </fragment>
 
     <fragment
@@ -187,28 +210,31 @@
             android:name="accountPublicKey"
             app:argType="string" />
         <action
-            android:id="@+id/action_removeAssetsFragment_to_sendInfoFragment"
-            app:destination="@id/sendInfoFragment"
+            android:id="@+id/action_removeAssetsFragment_to_receiverAccountSelectionFragment"
+            app:destination="@id/receiverAccountSelectionFragment"
             app:popUpTo="@id/accountsFragment" />
+        <action
+            android:id="@+id/action_removeAssetsFragment_to_removeAssetActionBottomSheet"
+            app:destination="@id/removeAssetActionBottomSheet" />
+        <action
+            android:id="@+id/action_removeAssetsFragment_to_transferBalanceActionBottomSheet"
+            app:destination="@id/transferBalanceActionBottomSheet" />
     </fragment>
 
     <fragment
         android:id="@+id/contactInfoFragment"
         android:name="com.algorand.android.ui.contacts.ContactInfoFragment"
         android:label="ContactInfoFragment"
-        tools:layout="@layout/fragment_add_edit_contact">
+        tools:layout="@layout/fragment_contact_info">
         <action
-            android:id="@+id/action_addEditContactFragment_to_sendInfoFragment"
-            app:destination="@id/sendInfoFragment" />
-        <action
-            android:id="@+id/action_addEditContactFragment_to_showQrBottomSheet"
+            android:id="@+id/action_editContactFragment_to_showQrBottomSheet"
             app:destination="@id/showQrBottomSheet" />
         <argument
             android:name="contact"
             app:argType="com.algorand.android.models.User" />
         <action
-            android:id="@+id/action_contactInfoFragment_to_addEditContactFragment"
-            app:destination="@id/addEditContactFragment"
+            android:id="@+id/action_contactInfoFragment_to_editContactFragment"
+            app:destination="@id/editContactFragment"
             app:popUpTo="@id/contactInfoFragment"
             app:popUpToInclusive="true" />
         <action
@@ -217,79 +243,16 @@
         <action
             android:id="@+id/action_contactInfoFragment_to_accountSelectionBottomSheet"
             app:destination="@id/accountSelectionBottomSheet" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/mainQrScannerFragment"
-        android:name="com.algorand.android.ui.qr.QrCodeScannerFragment"
-        android:label="fragment_qr_code_scanner"
-        tools:layout="@layout/fragment_qr_code_scanner">
-        <argument
-            android:name="scanReturnType"
-            app:argType="com.algorand.android.ui.qr.QrCodeScannerFragment$ScanReturnType[]" />
         <action
-            android:id="@+id/action_mainQrScannerFragment_to_addEditContactFragment"
-            app:destination="@id/addEditContactFragment"
-            app:popUpTo="@id/mainQrScannerFragment"
-            app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_mainQrScannerFragment_to_sendInfoFragment"
-            app:destination="@id/sendInfoFragment"
-            app:popUpTo="@id/mainQrScannerFragment"
-            app:popUpToInclusive="true" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/sendActionFragment"
-        android:name="com.algorand.android.ui.send.SendActionFragment"
-        android:label="fragment_send_action"
-        tools:layout="@layout/fragment_send_action">
-        <argument
-            android:name="signedTransactionDetail"
-            app:argType="com.algorand.android.models.SignedTransactionDetail$Send" />
-        <action
-            android:id="@+id/action_sendActionFragment_to_accountsFragment"
-            app:destination="@id/accountsFragment"
-            app:popUpTo="@+id/mainNavigation"
-            app:popUpToInclusive="true" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/assetDetailFragment"
-        android:name="com.algorand.android.ui.assetdetail.AssetDetailFragment"
-        android:label="fragment_asset_detail"
-        tools:layout="@layout/fragment_asset_detail">
-        <action
-            android:id="@+id/action_accountsFragment_to_sendInfoFragment"
-            app:destination="@id/sendInfoFragment" />
-        <action
-            android:id="@+id/action_accountsFragment_to_transactionDetailFragment"
-            app:destination="@id/transactionDetailBottomSheet" />
-        <argument
-            android:name="assetInformation"
-            app:argType="com.algorand.android.models.AssetInformation" />
-        <argument
-            android:name="address"
-            app:argType="string" />
-        <action
-            android:id="@+id/action_assetDetailFragment_to_rewardsBottomSheet"
-            app:destination="@id/rewardsBottomSheet" />
-        <action
-            android:id="@+id/action_assetDetailFragment_to_dateFilterPickerBottomSheet"
-            app:destination="@id/dateFilterPickerBottomSheet" />
-        <action
-            android:id="@+id/action_assetDetailFragment_to_showQrBottomSheet"
-            app:destination="@id/showQrBottomSheet" />
-        <action
-            android:id="@+id/action_assetDetailFragment_to_analyticsDetailBottomSheet"
-            app:destination="@id/analyticsDetailBottomSheet" />
+            android:id="@+id/action_contactInfoFragment_to_assetTransferAmountFragment"
+            app:destination="@id/assetTransferAmountFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/changePasswordFragment"
         android:name="com.algorand.android.ui.settings.ChangePasswordFragment"
         android:label="fragment_settings_change_password"
-        tools:layout="@layout/fragment_change_password" />
+        tools:layout="@layout/fragment_base_password" />
 
     <dialog
         android:id="@+id/transactionDetailBottomSheet"
@@ -297,91 +260,15 @@
         android:label="TransactionDetailBottomSheet"
         tools:layout="@layout/bottom_sheet_transaction_detail">
         <argument
-            android:name="transactionListItem"
-            app:argType="com.algorand.android.models.TransactionListItem" />
+            android:name="transactionItem"
+            app:argType="com.algorand.android.models.BaseTransactionItem" />
         <action
-            android:id="@+id/action_transactionDetailBottomSheet_to_addEditContactFragment"
-            app:destination="@id/addEditContactFragment" />
+            android:id="@+id/action_transactionDetailBottomSheet_to_addContactFragment"
+            app:destination="@id/addContactFragment" />
         <action
             android:id="@+id/action_transactionDetailBottomSheet_to_showQrBottomSheet"
             app:destination="@id/showQrBottomSheet" />
     </dialog>
-
-    <fragment
-        android:id="@+id/sendInfoFragment"
-        android:name="com.algorand.android.ui.send.SendInfoFragment"
-        android:label="fragment_send_info"
-        tools:layout="@layout/fragment_send_info">
-        <action
-            android:id="@+id/action_sendInfoFragment_to_transactionTipsBottomSheet"
-            app:destination="@id/transactionTipsBottomSheet" />
-        <action
-            android:id="@+id/action_sendInfoFragment_to_publicKeyQrScannerFragment"
-            app:destination="@id/mainQrScannerFragment" />
-        <argument
-            android:name="assetInformation"
-            app:argType="com.algorand.android.models.AssetInformation" />
-        <argument
-            android:name="fromAccountAddress"
-            android:defaultValue="@null"
-            app:argType="string"
-            app:nullable="true" />
-        <argument
-            android:name="toAccountAddress"
-            android:defaultValue="@null"
-            app:argType="string"
-            app:nullable="true" />
-        <argument
-            android:name="amount"
-            android:defaultValue="@null"
-            app:argType="java.math.BigInteger"
-            app:nullable="true" />
-        <argument
-            android:name="account"
-            android:defaultValue="@null"
-            app:argType="com.algorand.android.models.Account"
-            app:nullable="true" />
-        <argument
-            android:name="contact"
-            android:defaultValue="@null"
-            app:argType="com.algorand.android.models.User"
-            app:nullable="true" />
-        <argument
-            android:name="note"
-            android:defaultValue="@null"
-            app:argType="string"
-            app:nullable="true" />
-        <argument
-            android:name="xnote"
-            android:defaultValue="@null"
-            app:argType="string"
-            app:nullable="true" />
-        <action
-            android:id="@+id/action_sendInfoFragment_to_contactsFragment"
-            app:destination="@id/contactsFragment" />
-        <action
-            android:id="@+id/action_sendInfoFragment_to_sendActionFragment"
-            app:destination="@id/sendActionFragment" />
-        <action
-            android:id="@+id/action_sendInfoFragment_to_contactSelectionBottomSheet"
-            app:destination="@id/contactSelectionBottomSheet" />
-        <action
-            android:id="@+id/action_sendInfoFragment_to_assetSelectionBottomSheet"
-            app:destination="@id/assetSelectionBottomSheet" />
-        <action
-            android:id="@+id/action_sendInfoFragment_to_accountSelectionBottomSheet"
-            app:destination="@id/accountSelectionBottomSheet" />
-        <argument
-            android:name="isLocked"
-            android:defaultValue="true"
-            app:argType="boolean" />
-        <action
-            android:id="@+id/action_sendInfoFragment_to_rekeyedMaximumBalanceWarningBottomSheet"
-            app:destination="@id/rekeyedMaximumBalanceWarningBottomSheet" />
-        <action
-            android:id="@+id/action_sendInfoFragment_to_transactionMaximumBalanceWarningBottomSheet"
-            app:destination="@id/transactionMaximumBalanceWarningBottomSheet" />
-    </fragment>
 
     <fragment
         android:id="@+id/settingsFragment"
@@ -389,29 +276,46 @@
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings">
         <action
-            android:id="@+id/action_settingsFragment_to_changePasswordFragment"
-            app:destination="@id/changePasswordFragment" />
+            android:id="@+id/action_settingsFragment_to_warningConfirmationNavigation"
+            app:destination="@id/warningConfirmationNavigation">
+            <argument
+                android:name="warningConfirmation"
+                app:argType="com.algorand.android.models.WarningConfirmation" />
+        </action>
         <action
-            android:id="@+id/action_settingsFragment_to_warningConfirmationBottomSheet"
-            app:destination="@id/warningConfirmationBottomSheet" />
+            android:id="@+id/action_settingsFragment_to_rateExperienceBottomSheet"
+            app:destination="@id/rateExperienceBottomSheet" />
         <action
             android:id="@+id/action_settingsFragment_to_developerSettingsFragment"
             app:destination="@id/developerSettingsFragment" />
         <action
             android:id="@+id/action_settingsFragment_to_currencySelectionFragment"
-            app:destination="@+id/currencySelectionFragment" />
+            app:destination="@id/currencySelectionFragment" />
         <action
             android:id="@+id/action_settingsFragment_to_languageSelectionFragment"
-            app:destination="@+id/languageSelectionFragment" />
+            app:destination="@id/languageSelectionFragment" />
         <action
             android:id="@+id/action_settingsFragment_to_themeSelectionFragment"
             app:destination="@+id/themeSelectionFragment" />
         <action
-            android:id="@+id/action_settingsFragment_to_notificationFilterFragment"
-            app:destination="@id/notificationFilterFragment" />
+            android:id="@+id/action_settingsFragment_to_notificationSettingsFragment"
+            app:destination="@id/notificationSettingsFragment" />
         <action
             android:id="@+id/action_settingsFragment_to_walletConnectSessionsFragment"
             app:destination="@id/walletConnectSessionsFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_securityFragment"
+            app:destination="@id/securityFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/securityFragment"
+        android:name="com.algorand.android.ui.settings.SecurityFragment"
+        android:label="SecurityFragment"
+        tools:layout="@layout/fragment_security">
+        <action
+            android:id="@+id/action_securityFragment_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment" />
     </fragment>
 
     <fragment
@@ -425,42 +329,6 @@
         <action
             android:id="@+id/action_notificationCenterFragment_to_notificationFilterFragment"
             app:destination="@id/notificationFilterFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/addEditContactFragment"
-        android:name="com.algorand.android.ui.contacts.addcontact.AddEditContactFragment"
-        android:label="AddEditContactFragment"
-        tools:layout="@layout/fragment_add_edit_contact">
-        <argument
-            android:name="contactName"
-            android:defaultValue="@null"
-            app:argType="string"
-            app:nullable="true" />
-        <argument
-            android:name="contactPublicKey"
-            android:defaultValue="@null"
-            app:argType="string"
-            app:nullable="true" />
-        <argument
-            android:name="contactProfileImageUri"
-            android:defaultValue="@null"
-            app:argType="string"
-            app:nullable="true" />
-        <argument
-            android:name="contactDatabaseId"
-            android:defaultValue="-1"
-            app:argType="integer" />
-        <argument
-            android:name="returnContactToBackStack"
-            android:defaultValue="false"
-            app:argType="boolean" />
-        <action
-            android:id="@+id/action_addContactFragment_to_addContactQrScannerFragment"
-            app:destination="@id/mainQrScannerFragment" />
-        <action
-            android:id="@+id/action_addEditContactFragment_to_warningConfirmationBottomSheet"
-            app:destination="@id/warningConfirmationBottomSheet" />
     </fragment>
 
     <fragment
@@ -511,6 +379,9 @@
         <argument
             android:name="ledgerDetail"
             app:argType="com.algorand.android.models.Account$Detail$Ledger" />
+        <action
+            android:id="@+id/action_rekeyConfirmationFragment_to_verifyRekeyInfoFragment"
+            app:destination="@id/verifyRekeyInfoFragment" />
     </fragment>
 
     <fragment
@@ -539,13 +410,13 @@
         android:id="@+id/languageSelectionFragment"
         android:name="com.algorand.android.ui.settings.selection.languageselection.LanguageSelectionFragment"
         android:label="LanguageSelectionFragment"
-        tools:layout="@layout/fragment_language_selection" />
+        tools:layout="@layout/fragment_selection_list" />
 
     <fragment
         android:id="@+id/themeSelectionFragment"
         android:name="com.algorand.android.ui.settings.selection.themeselection.ThemeSelectionFragment"
         android:label="ThemeSelectionFragment"
-        tools:layout="@layout/fragment_theme_selection" />
+        tools:layout="@layout/fragment_selection_list" />
 
     <fragment
         android:id="@+id/rekeyLedgerAccountSelectionFragment"
@@ -571,9 +442,32 @@
     </fragment>
 
     <fragment
+        android:id="@+id/verifyRekeyInfoFragment"
+        android:name="com.algorand.android.ui.rekey.VerifyRekeyInfoFragment"
+        android:label="VerifyRekeyInfoFragment">
+        <argument
+            android:name="publicKey"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_verifyRekeyInfoFragment_to_homeNavigation"
+            app:destination="@id/homeNavigation"
+            app:popUpTo="@id/verifyRekeyInfoFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
         android:id="@+id/notificationFilterFragment"
         android:name="com.algorand.android.ui.notificationfilter.NotificationFilterFragment"
         android:label="NotificationFilterFragment">
+        <argument
+            android:name="showDoneButton"
+            app:argType="boolean" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/notificationSettingsFragment"
+        android:name="com.algorand.android.ui.notificationfilter.NotificationSettingsFragment"
+        android:label="NotificationSettingsFragment">
         <argument
             android:name="showDoneButton"
             app:argType="boolean" />
@@ -585,8 +479,51 @@
         android:label="WalletConnectSessionsFragment"
         tools:layout="@layout/fragment_wallet_connect_sessions">
         <action
-            android:id="@+id/action_walletConnectSessionsFragment_to_mainQrScannerFragment"
-            app:destination="@id/mainQrScannerFragment" />
+            android:id="@+id/action_walletConnectSessionsFragment_to_qrCodeScannerNavigation"
+            app:destination="@id/qrCodeScannerNavigation">
+            <argument
+                android:name="qrScanner"
+                app:argType="com.algorand.android.models.QrScanner" />
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/accountDetailFragment"
+        android:name="com.algorand.android.ui.accountdetail.AccountDetailFragment"
+        android:label="AccountDetailFragment">
+        <argument
+            android:name="publicKey"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_accountDetailFragment_to_accountOptionsBottomSheet"
+            app:destination="@id/accountOptionsBottomSheet" />
+        <action
+            android:id="@+id/action_accountDetailFragment_to_viewPassphraseBottomSheet"
+            app:destination="@id/viewPassphraseBottomSheet" />
+        <action
+            android:id="@+id/action_accountDetailFragment_to_transactionDetailBottomSheet"
+            app:destination="@id/transactionDetailBottomSheet" />
+        <action
+            android:id="@+id/action_accountDetailFragment_to_addAssetFragment"
+            app:destination="@id/addAssetFragment" />
+        <action
+            android:id="@+id/action_accountDetailFragment_to_assetDetilFragment"
+            app:destination="@id/assetDetailFragment" />
+        <action
+            android:id="@+id/action_accountDetailFragment_to_assetSearchFragment"
+            app:destination="@id/assetSearchFragment"
+            app:enterAnim="@anim/slide_up"
+            app:popExitAnim="@anim/slide_down" />
+        <action
+            android:id="@+id/action_accountDetailFragment_to_dateFilterPickerBottomSheet"
+            app:destination="@id/dateFilterPickerBottomSheet" />
+        <action
+            android:id="@+id/action_accountDetailFragment_to_showQrBottomSheet"
+            app:destination="@id/showQrBottomSheet" />
+        <action
+            android:id="@+id/action_accountDetailFragment_to_assetSelectionFragment"
+            app:destination="@id/assetSelectionFragment" />
     </fragment>
 
     <dialog
@@ -595,33 +532,15 @@
         android:label="RewardsBottomSheet"
         tools:layout="@layout/bottom_sheet_rewards">
         <argument
-            android:name="pendingRewards"
-            app:argType="long" />
+            android:name="publicKey"
+            app:argType="string" />
     </dialog>
 
     <dialog
-        android:id="@+id/contactSelectionBottomSheet"
-        android:name="com.algorand.android.ui.contacts.selection.ContactSelectionBottomSheet"
-        android:label="ContactSelectionBottomSheet"
-        tools:layout="@layout/bottom_sheet_contact_selection" />
-
-    <dialog
-        android:id="@+id/assetSelectionBottomSheet"
-        android:name="com.algorand.android.ui.common.assetselector.AssetSelectionBottomSheet"
-        android:label="AssetSelectionBottomSheet"
-        tools:layout="@layout/bottom_sheet_asset_selection">
-        <argument
-            android:name="selectedAssetInformation"
-            android:defaultValue="@null"
-            app:argType="com.algorand.android.models.AssetInformation"
-            app:nullable="true" />
-        <argument
-            android:name="flowType"
-            app:argType="com.algorand.android.ui.common.assetselector.AssetSelectionBottomSheet$FlowType" />
-        <action
-            android:id="@+id/action_assetSelectionBottomSheet_to_showQrBottomSheet"
-            app:destination="@id/showQrBottomSheet" />
-    </dialog>
+        android:id="@+id/rateExperienceBottomSheet"
+        android:name="com.algorand.android.ui.settings.RateExperienceBottomSheet"
+        android:label="RateExperienceBottomSheet"
+        tools:layout="@layout/bottom_sheet_rate_experience" />
 
     <dialog
         android:id="@+id/accountSelectionBottomSheet"
@@ -638,38 +557,15 @@
             android:name="showBalance"
             android:defaultValue="true"
             app:argType="boolean" />
-    </dialog>
-
-    <dialog
-        android:id="@+id/warningConfirmationBottomSheet"
-        android:name="com.algorand.android.ui.common.warningconfirmation.WarningConfirmationBottomSheet"
-        android:label="RemoveConfirmationBottomSheet"
-        tools:layout="@layout/bottom_sheet_warning_confirmation">
         <argument
-            android:name="drawableResId"
-            app:argType="reference" />
+            android:name="selectedAccountAddress"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
         <argument
-            android:name="titleTextResId"
-            app:argType="reference" />
-        <argument
-            android:name="descriptionTextResId"
-            app:argType="reference" />
-        <argument
-            android:name="positiveButtonTextResId"
-            app:argType="reference" />
-        <argument
-            android:name="negativeButtonTextResId"
-            app:argType="reference" />
-    </dialog>
-
-    <dialog
-        android:id="@+id/removeAccountBottomSheet"
-        android:name="com.algorand.android.ui.accounts.RemoveAccountBottomSheet"
-        android:label="RemoveAccountBottomSheet"
-        tools:layout="@layout/bottom_sheet_remove_account">
-        <argument
-            android:name="publicKey"
-            app:argType="string" />
+            android:name="showBackButton"
+            android:defaultValue="false"
+            app:argType="boolean" />
     </dialog>
 
     <dialog
@@ -677,66 +573,65 @@
         android:name="com.algorand.android.ui.accountoptions.AccountOptionsBottomSheet"
         android:label="AccountOptionsBottomSheet"
         tools:layout="@layout/bottom_sheet_accounts_options">
+        <argument
+            android:name="publicKey"
+            app:argType="string" />
         <action
             android:id="@+id/action_accountOptionsBottomSheet_to_removeAssetsFragment"
             app:destination="@id/removeAssetsFragment" />
         <action
-            android:id="@+id/action_accountOptionsBottomSheet_to_editAccountNameBottomSheet"
-            app:destination="@id/editAccountNameBottomSheet"
+            android:id="@+id/action_accountOptionsBottomSheet_to_renameAccountBottomSheet"
+            app:destination="@id/renameAccountBottomSheet"
             app:popUpTo="@id/accountOptionsBottomSheet"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_accountOptionsBottomSheet_to_removeAccountBottomSheet"
-            app:destination="@id/removeAccountBottomSheet"
+            android:id="@+id/action_accountOptionsBottomSheet_to_viewPassphraseLockBottomSheet"
+            app:destination="@id/viewPassphraseLockBottomSheet"
             app:popUpTo="@id/accountOptionsBottomSheet"
             app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_accountOptionsBottomSheet_to_viewPassphraseLockFragment"
-            app:destination="@id/viewPassphraseLockFragment" />
-        <argument
-            android:name="name"
-            app:argType="string" />
-        <argument
-            android:name="publicKey"
-            app:argType="string" />
-        <argument
-            android:name="accountType"
-            app:argType="com.algorand.android.models.Account$Type" />
         <action
             android:id="@+id/action_accountOptionsBottomSheet_to_rekeyAccountFragment"
             app:destination="@id/rekeyInstructionFragment" />
         <action
             android:id="@+id/action_accountOptionsBottomSheet_to_showQrBottomSheet"
-            app:destination="@id/showQrBottomSheet" />
+            app:destination="@id/showQrBottomSheet"
+            app:popUpTo="@id/accountOptionsBottomSheet"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_accountOptionsBottomSheet_to_warningConfirmationNavigation"
+            app:destination="@id/warningConfirmationNavigation"
+            app:popUpTo="@id/accountOptionsBottomSheet"
+            app:popUpToInclusive="true">
+            <argument
+                android:name="warningConfirmation"
+                app:argType="com.algorand.android.models.WarningConfirmation" />
+        </action>
     </dialog>
 
     <dialog
         android:id="@+id/dateFilterPickerBottomSheet"
-        android:name="com.algorand.android.ui.datepicker.DateFilterListFragment"
+        android:name="com.algorand.android.ui.datepicker.DateFilterListBottomSheet"
         android:label="DateFilterPickerBottomSheet"
-        tools:layout="@layout/fragment_date_filter_list">
+        tools:layout="@layout/bottom_sheet_date_filter_list">
         <argument
             android:name="selectedDateFilter"
             app:argType="com.algorand.android.models.DateFilter" />
+        <action
+            android:id="@+id/action_dateFilterPickerBottomSheet_to_customDateRangeBottomSheet"
+            app:destination="@id/customDateRangeBottomSheet" />
     </dialog>
 
     <dialog
         android:id="@+id/showQrBottomSheet"
         android:name="com.algorand.android.utils.ShowQrBottomSheet"
         android:label="showQrBottomSheet"
-        tools:layout="@layout/fragment_show_qr">
+        tools:layout="@layout/bottom_sheet_show_qr">
         <argument
             android:name="title"
-            android:defaultValue="@null"
-            app:argType="string"
-            app:nullable="true" />
+            app:argType="string" />
         <argument
             android:name="qrText"
             app:argType="string" />
-        <argument
-            android:name="state"
-            android:defaultValue="ADDRESS_QR"
-            app:argType="com.algorand.android.utils.ShowQrBottomSheet$State" />
     </dialog>
 
     <dialog
@@ -759,10 +654,10 @@
     </dialog>
 
     <dialog
-        android:id="@+id/editAccountNameBottomSheet"
-        android:name="com.algorand.android.ui.accounts.EditAccountNameBottomSheet"
-        android:label="EditAccountNameBottomSheet"
-        tools:layout="@layout/bottom_sheet_edit_account_name">
+        android:id="@+id/renameAccountBottomSheet"
+        android:name="com.algorand.android.ui.accounts.RenameAccountBottomSheet"
+        android:label="RenameAccountBottomSheet"
+        tools:layout="@layout/bottom_sheet_rename_account">
         <argument
             android:name="name"
             app:argType="string" />
@@ -770,41 +665,19 @@
             android:name="publicKey"
             app:argType="string" />
     </dialog>
-    <dialog
-        android:id="@+id/rekeyedMaximumBalanceWarningBottomSheet"
-        android:name="com.algorand.android.ui.common.warningconfirmation.RekeyedMaximumBalanceWarningBottomSheet"
-        android:label="RekeyedMaximumBalanceWarningBottomSheet"
-        tools:layout="@layout/bottom_sheet_maximum_balance_warning">
-        <argument
-            android:name="publicKey"
-            app:argType="string" />
-    </dialog>
-    <dialog
-        android:id="@+id/transactionMaximumBalanceWarningBottomSheet"
-        android:name="com.algorand.android.ui.common.warningconfirmation.TransactionMaximumBalanceWarningBottomSheet"
-        android:label="TransactionMaximumBalanceWarningBottomSheet"
-        tools:layout="@layout/bottom_sheet_maximum_balance_warning">
-        <argument
-            android:name="publicKey"
-            app:argType="string" />
-    </dialog>
+
     <dialog
         android:id="@+id/transactionTipsBottomSheet"
         android:name="com.algorand.android.ui.common.transactiontips.TransactionTipsBottomSheet"
         android:label="TransactionTipsBottomSheet"
-        tools:layout="@layout/fragment_transaction_tips" />
-    <dialog
-        android:id="@+id/analyticsDetailBottomSheet"
-        android:name="com.algorand.android.ui.analyticsdetail.AnalyticsDetailBottomSheet"
+        tools:layout="@layout/bottom_sheet_transaction_tips" />
+
+    <fragment
+        android:id="@+id/algoPriceFragment"
+        android:name="com.algorand.android.ui.analyticsdetail.AlgoPriceFragment"
         android:label="AnalyticsDetailBottomSheet"
-        tools:layout="@layout/bottom_sheet_analytics_detail">
-        <argument
-            android:name="algoAccountAddress"
-            app:argType="string" />
-        <argument
-            android:name="selectedCurrency"
-            app:argType="com.algorand.android.models.CurrencyValue" />
-    </dialog>
+        tools:layout="@layout/fragment_algo_price" />
+
     <dialog
         android:id="@+id/walletConnectConnectionBottomSheet"
         android:name="com.algorand.android.ui.wcconnection.WalletConnectConnectionBottomSheet"
@@ -827,10 +700,226 @@
             android:name="bluetoothDevice"
             app:argType="android.bluetooth.BluetoothDevice" />
     </dialog>
+
     <dialog
         android:id="@+id/ledgerConnectionIssueBottomSheet"
         android:name="com.algorand.android.utils.LedgerConnectionIssueBottomSheet"
         android:label="LedgerConnectionIssueBottomSheet"
         tools:layout="@layout/bottom_sheet_single_button" />
+
+    <fragment
+        android:id="@+id/addContactFragment"
+        android:name="com.algorand.android.ui.contacts.addcontact.AddContactFragment"
+        android:label="AddContactFragment">
+        <argument
+            android:name="contactName"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="contactPublicKey"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="returnContactToBackStack"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_addContactFragment_to_qrCodeScannerNavigation"
+            app:destination="@id/qrCodeScannerNavigation">
+            <argument
+                android:name="qrScanner"
+                app:argType="com.algorand.android.models.QrScanner" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/editContactFragment"
+        android:name="com.algorand.android.ui.contacts.editcontact.EditContactFragment"
+        android:label="EditContactFragment">
+        <argument
+            android:name="contactName"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="contactPublicKey"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="contactProfileImageUri"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="contactDatabaseId"
+            android:defaultValue="-1"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_editContactFragment_to_qrCodeScannerNavigation"
+            app:destination="@id/qrCodeScannerNavigation">
+            <argument
+                android:name="qrScanner"
+                app:argType="com.algorand.android.models.QrScanner" />
+        </action>
+        <action
+            android:id="@+id/action_editContactFragment_to_warningConfirmationNavigation"
+            app:destination="@id/warningConfirmationNavigation">
+            <argument
+                android:name="warningConfirmation"
+                app:argType="com.algorand.android.models.WarningConfirmation" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/receiveAccountSelectionFragment"
+        android:name="com.algorand.android.ui.accountselection.receive.ReceiveAccountSelectionFragment"
+        android:label="ReceiveAccountSelectionFragment"
+        tools:layout="@layout/fragment_base_account_selection" />
+
+    <fragment
+        android:id="@+id/peraIntroductionFragment"
+        android:name="com.algorand.android.ui.peraintroduction.PeraIntroductionFragment"
+        android:label="PeraIntroductionFragment"
+        tools:layout="@layout/fragment_base_info" />
+
+    <dialog
+        android:id="@+id/removeAssetActionBottomSheet"
+        android:name="com.algorand.android.ui.assetaction.RemoveAssetActionBottomSheet"
+        android:label="RemoveAssetActionBottomSheet">
+        <argument
+            android:name="assetAction"
+            app:argType="com.algorand.android.models.AssetAction" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/addAssetActionBottomSheet"
+        android:name="com.algorand.android.ui.assetaction.AddAssetActionBottomSheet"
+        android:label="AddAssetActionBottomSheet">
+        <argument
+            android:name="assetAction"
+            app:argType="com.algorand.android.models.AssetAction" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/transferBalanceActionBottomSheet"
+        android:name="com.algorand.android.ui.assetaction.TransferBalanceActionBottomSheet"
+        android:label="TransferBalanceActionBottomSheet">
+        <argument
+            android:name="assetAction"
+            app:argType="com.algorand.android.models.AssetAction" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/unsupportedAssetInfoActionBottomSheet"
+        android:name="com.algorand.android.ui.assetaction.UnsupportedAssetInfoActionBottomSheet"
+        android:label="UnsupportedAssetInfoActionBottomSheet">
+        <argument
+            android:name="assetAction"
+            app:argType="com.algorand.android.models.AssetAction" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/unsupportedAssetNotificationRequestActionBottomSheet"
+        android:name="com.algorand.android.ui.assetaction.UnsupportedAssetNotificationRequestActionBottomSheet"
+        android:label="UnsupportedAssetNotificationRequestActionBottomSheet">
+        <argument
+            android:name="assetAction"
+            app:argType="com.algorand.android.models.AssetAction" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/unsupportedAddAssetTryLaterBottomSheet"
+        android:name="com.algorand.android.ui.assetaction.UnsupportedAddAssetTryLaterBottomSheet"
+        android:label="UnsupportedAddAssetTryLaterBottomSheet">
+        <argument
+            android:name="assetAction"
+            app:argType="com.algorand.android.models.AssetAction" />
+    </dialog>
+
+    <fragment
+        android:id="@+id/assetSearchFragment"
+        android:name="com.algorand.android.ui.accountdetail.assets.search.AssetSearchFragment"
+        android:label="AssetSearchFragment">
+        <argument
+            android:name="publicKey"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_assetSearchFragment_to_assetDetailFragment"
+            app:destination="@id/assetDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/standardAccountOrderFragment"
+        android:name="com.algorand.android.ui.accountorder.standardaccount.StandardAccountOrderFragment"
+        android:label="StandardAccountOrderFragment" />
+
+    <fragment
+        android:id="@+id/watchAccountOrderFragment"
+        android:name="com.algorand.android.ui.accountorder.watchaccount.WatchAccountOrderFragment"
+        android:label="WatchAccountOrderFragment" />
+
+    <dialog
+        android:id="@+id/homeAccountOptionsBottomSheet"
+        android:name="com.algorand.android.ui.accountoptions.HomeAccountOptionsBottomSheet"
+        android:label="HomeAccountOptionsBottomSheet"
+        tools:layout="@layout/bottom_sheet_home_account_options">
+        <argument
+            android:name="isWatchAccount"
+            app:argType="boolean" />
+    </dialog>
+
+    <fragment
+        android:id="@+id/assetDetailFragment"
+        android:name="com.algorand.android.ui.assetdetail.AssetDetailFragment"
+        android:label="AssetDetailFragment">
+        <argument
+            android:name="assetId"
+            app:argType="long" />
+        <argument
+            android:name="address"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_assetDetailFragment_to_rewardsBottomSheet"
+            app:destination="@id/rewardsBottomSheet" />
+        <action
+            android:id="@+id/action_assetDetailFragment_to_transactionDetailFragment"
+            app:destination="@id/transactionDetailBottomSheet" />
+        <action
+            android:id="@+id/action_assetDetailFragment_to_dateFilterPickerBottomSheet"
+            app:destination="@id/dateFilterPickerBottomSheet" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/customDateRangeBottomSheet"
+        android:name="com.algorand.android.ui.datepicker.CustomDateRangeBottomSheet"
+        android:label="CustomDateRangeBottomSheet">
+        <argument
+            android:name="customRange"
+            android:defaultValue="@null"
+            app:argType="com.algorand.android.models.DateFilter$CustomRange"
+            app:nullable="true" />
+    </dialog>
+    <dialog
+        android:id="@+id/accountErrorOptionsBottomSheet"
+        android:name="com.algorand.android.ui.accountoptions.AccountErrorOptionsBottomSheet"
+        android:label="AccountErrorOptionsBottomSheet"
+        tools:layout="@layout/bottom_sheet_accounts_options">
+        <argument
+            android:name="publicKey"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_accountErrorOptionsBottomSheet_to_viewPassphraseBottomSheet"
+            app:destination="@id/viewPassphraseBottomSheet"
+            app:popUpTo="@id/accountErrorOptionsBottomSheet"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_accountErrorOptionsBottomSheet_to_showQrBottomSheet"
+            app:destination="@id/showQrBottomSheet"
+            app:popUpTo="@id/accountErrorOptionsBottomSheet"
+            app:popUpToInclusive="true" />
+    </dialog>
 
 </navigation>

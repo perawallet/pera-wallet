@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -13,11 +13,13 @@
 package com.algorand.android.utils
 
 import android.content.Context
+import android.graphics.Typeface
 import android.graphics.Typeface.BOLD
 import android.text.Annotation
 import android.text.SpannableStringBuilder
 import android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 import android.text.SpannedString
+import android.text.style.AbsoluteSizeSpan
 import android.text.style.CharacterStyle
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
@@ -89,7 +91,7 @@ fun SpannableStringBuilder.addVerifiedIcon(
 
 fun SpannableStringBuilder.addUnnamedAssetName(context: Context) {
     color(ContextCompat.getColor(context, R.color.orange_E0)) {
-        inSpans(CustomTypefaceSpan(ResourcesCompat.getFont(context, R.font.publicsans_mediumitalic))) {
+        inSpans(CustomTypefaceSpan(ResourcesCompat.getFont(context, R.font.dmsans_medium_italic))) {
             append(context.getString(R.string.unnamed))
         }
     }
@@ -121,7 +123,7 @@ fun TextView.setXmlStyledString(
                     "bold" -> StyleSpan(BOLD)
                     "color" -> ForegroundColorSpan(ContextCompat.getColor(context, colorResId))
                     "underline" -> UnderlineSpan()
-                    "verified-icon" -> CenteredImageSpan(context, R.drawable.ic_verified_asset)
+                    "verified-icon" -> CenteredImageSpan(context, R.drawable.ic_shield_check_small)
                     else -> null
                 }
                 if (span != null) {
@@ -176,6 +178,9 @@ fun Context.getXmlStyledString(
             "font" -> {
                 spannableString.applyFontAnnotation(this, annotation)
             }
+            "default-font" -> {
+                spannableString.applyDefaultFontAnnotation(annotation)
+            }
             "replacement" -> {
                 replacementList.find { (key, _) ->
                     key == annotation.value
@@ -211,9 +216,35 @@ private fun SpannableStringBuilder.applySpan(span: Any, annotation: Annotation) 
 
 private fun SpannableStringBuilder.applyFontAnnotation(context: Context, annotation: Annotation) {
     val fontName = annotation.value
-    val typeface =
-        ResourcesCompat.getFont(context, context.resources.getIdentifier(fontName, "font", context.packageName))
+    val typeface = ResourcesCompat.getFont(
+        context,
+        context.resources.getIdentifier(fontName, "font", context.packageName)
+    )
     if (typeface != null) {
         applySpan(CustomTypefaceSpan(typeface), annotation)
     }
+}
+
+// TODO: 12.11.2021 Till we replace the font-family with correct ones, we should this function to change strings
+//  textAppearances which are annotated into strings.xml
+private fun SpannableStringBuilder.applyDefaultFontAnnotation(annotation: Annotation) {
+    val fontName = annotation.value
+    val typeFace = Typeface.create(fontName, Typeface.NORMAL)
+    if (fontName != null) {
+        applySpan(CustomTypefaceSpan(typeFace), annotation)
+    }
+}
+
+fun SpannableStringBuilder.setFont(fontTypeface: Typeface?) {
+    if (fontTypeface != null) {
+        setSpan(CustomTypefaceSpan(fontTypeface), 0, this.length, SPAN_EXCLUSIVE_EXCLUSIVE)
+    }
+}
+
+fun SpannableStringBuilder.setColor(textColor: Int) {
+    setSpan(ForegroundColorSpan(textColor), 0, this.length, SPAN_EXCLUSIVE_EXCLUSIVE)
+}
+
+fun SpannableStringBuilder.setTextSize(textSize: Int) {
+    setSpan(AbsoluteSizeSpan(textSize), 0, this.length, SPAN_EXCLUSIVE_EXCLUSIVE)
 }

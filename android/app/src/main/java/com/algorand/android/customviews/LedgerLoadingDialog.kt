@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -18,15 +18,14 @@ import android.view.View
 import com.algorand.android.R
 import com.algorand.android.core.BaseBottomSheet
 import com.algorand.android.databinding.DialogLedgerLoadingBinding
-import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.utils.extensions.wrapWithBrackets
+import com.algorand.android.utils.getXmlStyledString
 import com.algorand.android.utils.viewbinding.viewBinding
 
 // TODO find a way to put into home_navigation
 class LedgerLoadingDialog : BaseBottomSheet(R.layout.dialog_ledger_loading) {
 
     private var listener: Listener? = null
-
-    private val toolbarConfiguration = ToolbarConfiguration(titleResId = R.string.ledger_approval)
 
     private val binding by viewBinding(DialogLedgerLoadingBinding::bind)
 
@@ -38,8 +37,14 @@ class LedgerLoadingDialog : BaseBottomSheet(R.layout.dialog_ledger_loading) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.toolbar.configure(toolbarConfiguration)
-        binding.cancelButton.setOnClickListener { dismissAllowingStateLoss() }
+        with(binding) {
+            cancelButton.setOnClickListener { dismissAllowingStateLoss() }
+            val ledgerName = arguments?.getString(LEDGER_NAME_KEY)?.wrapWithBrackets().orEmpty()
+            descriptionTextView.text = context?.getXmlStyledString(
+                stringResId = R.string.please_make_sure,
+                replacementList = listOf("ledger_name" to ledgerName)
+            )
+        }
     }
 
     override fun onDismiss(dialog: DialogInterface) {
@@ -52,8 +57,10 @@ class LedgerLoadingDialog : BaseBottomSheet(R.layout.dialog_ledger_loading) {
     }
 
     companion object {
-        fun createLedgerLoadingDialog(): LedgerLoadingDialog {
-            return LedgerLoadingDialog()
+        private const val LEDGER_NAME_KEY = "ledger_name"
+
+        fun createLedgerLoadingDialog(ledgerName: String?): LedgerLoadingDialog {
+            return LedgerLoadingDialog().apply { arguments = Bundle().apply { putString(LEDGER_NAME_KEY, ledgerName) } }
         }
     }
 }

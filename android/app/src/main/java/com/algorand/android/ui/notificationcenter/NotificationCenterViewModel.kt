@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -24,7 +24,7 @@ import com.algorand.android.core.AccountManager
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.database.ContactDao
 import com.algorand.android.models.AssetInformation
-import com.algorand.android.notification.AlgorandNotificationManager
+import com.algorand.android.notification.PeraNotificationManager
 import com.algorand.android.repository.NotificationRepository
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.preference.getNotificationRefreshDateTime
@@ -32,7 +32,7 @@ import com.algorand.android.utils.preference.setNotificationRefreshDate
 import java.time.ZonedDateTime
 
 class NotificationCenterViewModel @ViewModelInject constructor(
-    private val algorandNotificationManager: AlgorandNotificationManager,
+    private val peraNotificationManager: PeraNotificationManager,
     private val sharedPref: SharedPreferences,
     private val contactDao: ContactDao,
     private val accountManager: AccountManager,
@@ -74,7 +74,7 @@ class NotificationCenterViewModel @ViewModelInject constructor(
 
     fun isRefreshNeededLiveData(): LiveData<Boolean> {
         var newNotificationCount = 0
-        return Transformations.map(algorandNotificationManager.newNotificationLiveData) {
+        return Transformations.map(peraNotificationManager.newNotificationLiveData) {
             newNotificationCount++
             return@map newNotificationCount > 1
         }

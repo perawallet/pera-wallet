@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,38 +12,43 @@
 
 package com.algorand.android.utils
 
+import android.os.Bundle
+import android.view.View
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.models.AnnotatedString
 
 class SingleButtonBottomSheet : BaseSingleButtonBottomSheet() {
 
     private val args: SingleButtonBottomSheetArgs by navArgs()
+
     // TODO: Use theme instead of passing all individually
-    override val titleResId: Int
-        get() = args.titleResId
+    override val title: AnnotatedString
+        get() = args.titleAnnotatedString
     override val iconDrawableResId: Int
         get() = args.drawableResId
     override val iconDrawableTintResId: Int
         get() = args.drawableTintResId
-    override val descriptionAnnotatedString: AnnotatedString
+    override val descriptionAnnotatedString: AnnotatedString?
         get() = args.descriptionAnnotatedString
-    override val imageBackgroundTintResId: Int
-        get() = args.imageBackgroundTintResId
-    override val buttonTextResId: Int
-        get() = args.buttonTextResId
-    override val buttonTextColorResId: Int
-        get() = args.buttonTextColorResId
-    override val buttonBackgroundTintResId: Int
-        get() = args.buttonBackgroundTintResId
+    override val errorAnnotatedString: AnnotatedString?
+        get() = args.errorAnnotatedString
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (args.isResultNeeded) {
+            isCancelable = false
+            setDraggableEnabled(false)
+        }
+    }
 
     override fun onConfirmationButtonClick() {
         if (args.isResultNeeded) {
-            setNavigationResult(ACCEPT_KEY, true)
+            setNavigationResult(CLOSE_KEY, true)
         }
         navBack()
     }
 
     companion object {
-        const val ACCEPT_KEY = "accept_key"
+        const val CLOSE_KEY = "close_key"
     }
 }

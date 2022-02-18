@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -23,6 +23,7 @@ import android.widget.FrameLayout
 import androidx.annotation.LayoutRes
 import androidx.navigation.NavDirections
 import com.algorand.android.CoreMainActivity
+import com.algorand.android.MainActivity
 import com.algorand.android.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -84,6 +85,10 @@ abstract class BaseBottomSheet(
 
     fun navBack() {
         (activity as? CoreMainActivity)?.navBack()
+    }
+
+    fun showGlobalError(errorMessage: CharSequence?, title: String? = null) {
+        (activity as? MainActivity)?.showGlobalError(errorMessage, title)
     }
 
     companion object {

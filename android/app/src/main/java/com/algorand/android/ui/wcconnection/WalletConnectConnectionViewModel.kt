@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -13,32 +13,35 @@
 package com.algorand.android.ui.wcconnection
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.models.Account
 import com.algorand.android.models.AccountCacheData
 import com.algorand.android.utils.AccountCacheManager
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class WalletConnectConnectionViewModel @ViewModelInject constructor(
     private val accountCacheManager: AccountCacheManager
 ) : BaseViewModel() {
 
-    val accountLiveData: LiveData<AccountCacheData?>
-        get() = _accountLiveData
-    private val _accountLiveData = MutableLiveData<AccountCacheData?>()
+    val selectedAccountFlow: Flow<AccountCacheData?>
+        get() = _selectedAccountFlow
+    private val _selectedAccountFlow = MutableStateFlow<AccountCacheData?>(null)
 
     init {
-        initDefaultAccount()
+        initDefaultSelectedAccount()
     }
 
-    private fun initDefaultAccount() {
-        _accountLiveData.value = getFilteredAccounts()
+    fun getSelectedAccount(): AccountCacheData? = _selectedAccountFlow.value
+
+    fun setSelectedAccount(selectedAccount: AccountCacheData) {
+        _selectedAccountFlow.value = selectedAccount
     }
 
-    private fun getFilteredAccounts(): AccountCacheData? {
-        return accountCacheManager.accountCacheMap.value.values.firstOrNull {
-            it.account.type != Account.Type.WATCH
+    private fun initDefaultSelectedAccount() {
+        val cachedAccounts = accountCacheManager.getCachedAccounts(listOf(Account.Type.WATCH))
+        if (cachedAccounts.size == 1) {
+            _selectedAccountFlow.value = cachedAccounts.first()
         }
     }
 }

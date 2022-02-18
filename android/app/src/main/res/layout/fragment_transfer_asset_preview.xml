@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~  limitations under the License
+  ~
+  -->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/previewLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:paddingTop="@dimen/spacing_xxxxlarge"
+        android:paddingBottom="@dimen/bottom_safe_area_margin">
+
+        <TextView
+            android:id="@+id/amountLabelTextView"
+            style="@style/TextAppearance.Description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/amount"
+            app:layout_constraintBottom_toBottomOf="@id/assetAmountTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/assetAmountTextView" />
+
+        <com.algorand.android.customviews.AlgorandAmountView
+            android:id="@+id/assetAmountTextView"
+            style="@style/TextAppearance.Body.Large"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_xlarge"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="@id/labelBarrier"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="2.00 ALGO" />
+
+        <TextView
+            android:id="@+id/algoCurrencyValueTextView"
+            style="@style/TextAppearance.Mono.Description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_xsmall"
+            android:maxLines="1"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/labelBarrier"
+            app:layout_constraintTop_toBottomOf="@id/assetAmountTextView"
+            tools:text="@tools:sample/lorem[10]"
+            tools:visibility="visible" />
+
+        <View
+            android:id="@+id/amountDivider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="28dp"
+            android:background="@color/layerGrayLighter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/algoCurrencyValueTextView" />
+
+        <TextView
+            android:id="@+id/accountLabelTextView"
+            style="@style/TextAppearance.Description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/account"
+            app:layout_constraintBottom_toBottomOf="@id/accountUserView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/accountUserView" />
+
+        <com.algorand.android.customviews.AlgorandUserView
+            android:id="@+id/accountUserView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_xlarge"
+            android:layout_marginTop="28dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="@id/labelBarrier"
+            app:layout_constraintTop_toBottomOf="@id/amountDivider" />
+
+        <TextView
+            android:id="@+id/toLabelTextView"
+            style="@style/TextAppearance.Description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/to"
+            app:layout_constraintBottom_toBottomOf="@id/toUserView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/toUserView" />
+
+        <com.algorand.android.customviews.AlgorandUserView
+            android:id="@+id/toUserView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="@id/labelBarrier"
+            app:layout_constraintTop_toBottomOf="@id/accountUserView" />
+
+        <TextView
+            android:id="@+id/feeLabelTextView"
+            style="@style/TextAppearance.Description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fee"
+            app:layout_constraintBottom_toBottomOf="@id/feeAmountView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/feeAmountView" />
+
+        <com.algorand.android.customviews.AlgorandAmountView
+            android:id="@+id/feeAmountView"
+            style="@style/TextAppearance.Body.Mono"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="@id/labelBarrier"
+            app:layout_constraintTop_toBottomOf="@id/toUserView"
+            tools:text="0.00001 ALGO" />
+
+        <View
+            android:id="@+id/feeDivider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="28dp"
+            android:background="@color/layerGrayLighter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/feeAmountView" />
+
+        <TextView
+            android:id="@+id/balanceLabelTextView"
+            style="@style/TextAppearance.Description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/current_balance"
+            app:layout_constraintBottom_toBottomOf="@id/assetBalanceTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/balanceCurrencyValueTextView"
+            app:layout_goneMarginTop="28dp" />
+
+        <TextView
+            android:id="@+id/balanceCurrencyValueTextView"
+            style="@style/TextAppearance.Body.Mono"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_xlarge"
+            android:layout_marginTop="28dp"
+            android:maxLines="1"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="@id/labelBarrier"
+            app:layout_constraintTop_toBottomOf="@id/feeDivider"
+            tools:text="$191.00"
+            tools:visibility="visible" />
+
+        <com.algorand.android.customviews.AlgorandAmountView
+            android:id="@+id/assetBalanceTextView"
+            style="@style/TextAppearance.Footnote.Mono"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_xsmall"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/labelBarrier"
+            app:layout_constraintTop_toBottomOf="@id/balanceCurrencyValueTextView"
+            app:layout_goneMarginTop="28dp"
+            tools:text="56.233333 ALGO" />
+
+        <View
+            android:id="@+id/balanceDivider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="28dp"
+            android:background="@color/layerGrayLighter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/assetBalanceTextView" />
+
+        <TextView
+            android:id="@+id/noteLabelTextView"
+            style="@style/TextAppearance.Description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/note"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/noteTextView" />
+
+        <TextView
+            android:id="@+id/noteTextView"
+            style="@style/TextAppearance.Body.Sans"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_xlarge"
+            android:layout_marginTop="28dp"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            app:layout_constraintBottom_toTopOf="@id/nextButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/labelBarrier"
+            app:layout_constraintTop_toBottomOf="@id/balanceDivider"
+            app:layout_constraintVertical_bias="0"
+            tools:text="@tools:sample/lorem[50]" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/nextButton"
+            style="@style/Button.Primary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="@string/next"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="1" />
+
+        <include
+            android:id="@+id/progressBar"
+            layout="@layout/layout_full_screen_progress" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/labelBarrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="end"
+            app:constraint_referenced_ids="amountLabelTextView, accountLabelTextView,
+            toLabelTextView, balanceLabelTextView, noteLabelTextView" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/noteGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="noteLabelTextView,noteTextView,balanceDivider"
+            tools:visibility="visible" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

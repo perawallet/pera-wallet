@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,8 +12,10 @@
 
 package com.algorand.android.ui.wcatomictransactions
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
@@ -21,31 +23,35 @@ import com.algorand.android.databinding.FragmentWalletConnectAtomicTransactionsB
 import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.models.TransactionRequestAction
 import com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionAdapter
-import com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionListItem
 import com.algorand.android.utils.viewbinding.viewBinding
-import com.algorand.android.utils.walletconnect.getWalletConnectTransactionRequestDirection
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
-class WalletConnectAtomicTransactionsFragment :
-    DaggerBaseFragment(R.layout.fragment_wallet_connect_atomic_transactions) {
+class WalletConnectAtomicTransactionsFragment : DaggerBaseFragment(
+    R.layout.fragment_wallet_connect_atomic_transactions
+) {
 
     private val toolbarConfiguration = ToolbarConfiguration(
-        startIconResId = R.drawable.ic_back_navigation,
-        startIconClick = ::navBack,
+        startIconResId = R.drawable.ic_left_arrow,
+        startIconClick = { listener?.onNavigateBack() },
         titleResId = R.string.multiple_transaction_request
     )
-    override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
+
+    override val fragmentConfiguration = FragmentConfiguration()
 
     private val binding by viewBinding(FragmentWalletConnectAtomicTransactionsBinding::bind)
     private val args by navArgs<WalletConnectAtomicTransactionsFragmentArgs>()
+    private val walletConnectAtomicTransactionViewModel: WalletConnectAtomicTransactionViewModel by viewModels()
 
     private val transactionAdapterListener = object : WalletConnectTransactionAdapter.Listener {
         override fun onSingleTransactionClick(transaction: BaseWalletConnectTransaction) {
-            val navDirection = getWalletConnectTransactionRequestDirection(transaction) ?: return
-            nav(navDirection)
+            listener?.onNavigate(
+                WalletConnectAtomicTransactionsFragmentDirections
+                    .actionWalletConnectAtomicTransactionsFragmentToTransactionRequestDetailFragment(transaction)
+            )
         }
     }
 
@@ -55,6 +61,13 @@ class WalletConnectAtomicTransactionsFragment :
 
     private val transactionAdapter = WalletConnectTransactionAdapter(transactionAdapterListener)
 
+    private var listener: TransactionRequestAction? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        listener = parentFragment?.parentFragment as? TransactionRequestAction
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUi()
@@ -62,12 +75,19 @@ class WalletConnectAtomicTransactionsFragment :
     }
 
     private fun initUi() {
-        binding.transactionRequestsRecyclerView.adapter = transactionAdapter
+        with(binding) {
+            listener?.hideButtons()
+            customToolbar.configure(toolbarConfiguration)
+            transactionRequestsRecyclerView.adapter = transactionAdapter
+        }
     }
 
     private fun setTransactionItems(transactionList: List<BaseWalletConnectTransaction>) {
         val groupId = transactionList.firstOrNull()?.groupId
-        val transactionItemList = WalletConnectTransactionListItem.create(transactionList, groupId)
+        val transactionItemList = walletConnectAtomicTransactionViewModel.createAtomicTransactionListItems(
+            transactionList,
+            groupId
+        )
         transactionAdapter.submitList(transactionItemList)
     }
 }

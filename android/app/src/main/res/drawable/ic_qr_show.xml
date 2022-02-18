@@ -1,0 +1,88 @@
+<!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~  limitations under the License
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <path
+      android:pathData="M4,4h6v6h-6z"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="@color/primaryIconTintColor"/>
+  <path
+      android:pathData="M4,14h6v6h-6z"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="@color/primaryIconTintColor"/>
+  <path
+      android:pathData="M14,4h6v6h-6z"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="@color/primaryIconTintColor"/>
+  <path
+      android:pathData="M13,14H16"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="@color/primaryIconTintColor"/>
+  <path
+      android:pathData="M19,18L21,18"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="@color/primaryIconTintColor"/>
+  <path
+      android:pathData="M19,20L21,20"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="@color/primaryIconTintColor"/>
+  <path
+      android:pathData="M17,20L19,20"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="@color/primaryIconTintColor"/>
+  <path
+      android:pathData="M18,14H21"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="@color/primaryIconTintColor"/>
+  <path
+      android:pathData="M13,15H18"
+      android:strokeWidth="1.5"
+      android:fillColor="#00000000"
+      android:strokeColor="@color/primaryIconTintColor"/>
+  <path
+      android:pathData="M15,17H17"
+      android:strokeWidth="1.5"
+      android:fillColor="#00000000"
+      android:strokeColor="@color/primaryIconTintColor"/>
+  <path
+      android:pathData="M15,18H17"
+      android:strokeWidth="1.5"
+      android:fillColor="#00000000"
+      android:strokeColor="@color/primaryIconTintColor"/>
+  <path
+      android:pathData="M13,19H15"
+      android:strokeWidth="1.5"
+      android:fillColor="#00000000"
+      android:strokeColor="@color/primaryIconTintColor"/>
+  <path
+      android:pathData="M13,20H15"
+      android:strokeWidth="1.5"
+      android:fillColor="#00000000"
+      android:strokeColor="@color/primaryIconTintColor"/>
+  <path
+      android:pathData="M15,16H18"
+      android:strokeWidth="1.5"
+      android:fillColor="#00000000"
+      android:strokeColor="@color/primaryIconTintColor"/>
+</vector>

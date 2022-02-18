@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -20,6 +20,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
+// TODO: 30.12.2021 We must create and use another class for UI layer instead of entity class
 @Parcelize
 @Entity(indices = [Index(value = ["public_key"], unique = true)])
 data class User(

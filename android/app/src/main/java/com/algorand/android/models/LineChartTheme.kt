@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -15,7 +15,7 @@ package com.algorand.android.models
 import com.algorand.android.R
 
 enum class LineChartTheme(val markerDrawableResId: Int, val lineColorResId: Int) {
-    GREEN(R.drawable.bg_chart_mark_green_oval, R.color.green_0D),
-    RED(R.drawable.bg_chart_mark_red_oval, R.color.red_E9),
+    GREEN(R.drawable.bg_chart_mark_green_oval, R.color.helperPositive),
+    RED(R.drawable.bg_chart_mark_red_oval, R.color.helperNegative),
     GRAY(R.drawable.bg_chart_mark_gray_oval, R.color.gray_A4)
 }

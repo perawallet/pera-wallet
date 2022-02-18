@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rootConstraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/infoImageView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/spacing_small"
+            android:layout_marginTop="28dp"
+            app:layout_constraintBottom_toTopOf="@id/titleTextView"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toStartOf="@id/verticalCenterGuideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:srcCompat="@drawable/ic_shield" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/topStartButton"
+            style="@style/IconButton.Transparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:visibility="gone"
+            app:icon="@drawable/ic_close"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/verticalCenterGuideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.54" />
+
+        <TextView
+            android:id="@+id/titleTextView"
+            style="@style/TextAppearance.Title.Sans.Medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_xxxxlarge"
+            app:layout_constraintBottom_toTopOf="@id/descriptionTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/infoImageView"
+            app:layout_constraintVertical_bias="0"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="@string/create_a_passphrase_backup" />
+
+        <TextView
+            android:id="@+id/descriptionTextView"
+            style="@style/TextAppearance.Description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_xlarge"
+            android:layout_marginBottom="@dimen/spacing_large"
+            app:layout_constraintBottom_toTopOf="@id/warningFrameView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/titleTextView"
+            app:layout_constraintVertical_bias="0"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="@tools:sample/lorem[120]" />
+
+        <com.algorand.android.customviews.WarningTextView
+            android:id="@+id/warningFrameView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginBottom="@dimen/spacing_large"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/firstButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/firstButton"
+            style="@style/Button.Primary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            app:layout_constraintBottom_toTopOf="@+id/secondButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_goneMarginBottom="@dimen/bottom_safe_area_margin"
+            tools:text="First" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/secondButton"
+            style="@style/Button.Secondary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginBottom="@dimen/bottom_safe_area_margin"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="@string/i_understand" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

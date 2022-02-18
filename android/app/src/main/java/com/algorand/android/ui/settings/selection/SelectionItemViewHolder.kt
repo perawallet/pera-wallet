@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -14,29 +14,18 @@ package com.algorand.android.ui.settings.selection
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
-import com.algorand.android.R
 import com.algorand.android.databinding.ItemSelectionBinding
-import com.algorand.android.utils.setDrawable
 
 class SelectionItemViewHolder(
     private val binding: ItemSelectionBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(selectionListItem: SelectionListItem) {
-        binding.root.text = selectionListItem.getVisibleName(itemView.context)
-        bindSelection(selectionListItem)
-    }
-
-    fun bindSelection(selectionListItem: SelectionListItem) {
-        binding.root.setDrawable(
-            end = if (selectionListItem.isSelected) {
-                AppCompatResources.getDrawable(itemView.context, R.drawable.ic_check_20dp)
-            } else {
-                null
-            }
-        )
+        with(binding.selectionItemView) {
+            text = selectionListItem.getVisibleName(itemView.context)
+            isSelected = selectionListItem.isSelected
+        }
     }
 
     companion object {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -19,7 +19,6 @@ import androidx.fragment.app.viewModels
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseBottomSheet
 import com.algorand.android.databinding.BottomSheetMaximumBalanceWarningBinding
-import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.utils.setNavigationResult
 import com.algorand.android.utils.viewbinding.viewBinding
 
@@ -35,8 +34,6 @@ abstract class BaseMaximumBalanceWarningBottomSheet : DaggerBaseBottomSheet(
 
     private val binding by viewBinding(BottomSheetMaximumBalanceWarningBinding::bind)
 
-    private val toolbarConfiguration = ToolbarConfiguration(R.string.minimum_balance_required)
-
     override fun onPause() {
         super.onPause()
         dismissAllowingStateLoss()
@@ -44,14 +41,9 @@ abstract class BaseMaximumBalanceWarningBottomSheet : DaggerBaseBottomSheet(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupToolbar()
         setDescriptionText(binding.descriptionTextView)
         binding.cancelButton.setOnClickListener { navBack() }
         binding.continueButton.setOnClickListener { onContinueClick() }
-    }
-
-    private fun setupToolbar() {
-        binding.toolbar.configure(toolbarConfiguration)
     }
 
     private fun onContinueClick() {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -51,7 +51,7 @@ sealed class WalletConnectSignResult {
     ) : WalletConnectSignResult()
 
     object Loading : WalletConnectSignResult()
-    object LedgerWaitingForApproval : WalletConnectSignResult()
+    data class LedgerWaitingForApproval(val ledgerName: String?) : WalletConnectSignResult()
     object LedgerScanFailed : WalletConnectSignResult()
     object CanBeSigned : WalletConnectSignResult()
 }

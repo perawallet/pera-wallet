@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -14,7 +14,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mainNavigation"
-    app:startDestination="@id/ledgerPairInfoBottomSheet">
+    app:startDestination="@id/enableLedgerBluetoothBottomSheet">
 
     <include app:graph="@navigation/home_navigation" />
 
@@ -24,6 +24,8 @@
 
     <include app:graph="@navigation/single_button_bottom_sheet_navigation" />
 
+    <include app:graph="@navigation/warning_confirmation_navigation" />
+
     <action
         android:id="@+id/action_to_mainNavigation"
         app:destination="@id/mainNavigation"
@@ -32,21 +34,24 @@
 
     <action
         android:id="@+id/action_newAccount"
-        app:destination="@id/loginNavigation" />
+        app:destination="@id/loginNavigation">
+        <argument
+            android:name="isShowingCloseButton"
+            android:defaultValue="true"
+            app:argType="boolean" />
+    </action>
 
     <action
         android:id="@+id/action_to_lockPreferenceNavigation"
         app:destination="@id/lockPreferenceNavigation" />
 
     <action
-        android:id="@+id/action_reset_to_loginNavigation"
-        app:destination="@id/loginNavigation"
-        app:popUpTo="@id/mainNavigation"
-        app:popUpToInclusive="true" />
+        android:id="@+id/action_global_howDoesLedgerWorkFragment"
+        app:destination="@id/howDoesLedgerWorkFragment" />
 
     <action
-        android:id="@+id/action_global_ledgerTroubleshootingFragment"
-        app:destination="@id/ledgerTroubleshootingFragment" />
+        android:id="@+id/action_global_ledgerTroubleshootFragment"
+        app:destination="@id/ledgerTroubleshootFragment" />
 
     <action
         android:id="@+id/action_global_lockFragment"
@@ -64,48 +69,31 @@
         android:id="@+id/action_global_singleButtonBottomSheet"
         app:destination="@id/singleButtonBottomSheetNavigation">
         <argument
-            android:name="titleResId"
-            app:argType="reference" />
-        <argument
-            android:name="descriptionAnnotatedString"
+            android:name="titleAnnotatedString"
             app:argType="com.algorand.android.models.AnnotatedString" />
         <argument
+            android:name="errorAnnotatedString"
+            android:defaultValue="@null"
+            app:argType="com.algorand.android.models.AnnotatedString"
+            app:nullable="true" />
+        <argument
+            android:name="descriptionAnnotatedString"
+            android:defaultValue="@null"
+            app:argType="com.algorand.android.models.AnnotatedString"
+            app:nullable="true" />
+        <argument
             android:name="drawableResId"
+            android:defaultValue="0"
             app:argType="reference" />
         <argument
             android:name="drawableTintResId"
-            android:defaultValue="@color/white"
-            app:argType="reference" />
-        <argument
-            android:name="imageBackgroundTintResId"
-            android:defaultValue="@color/green_1D"
-            app:argType="reference" />
-        <argument
-            android:name="buttonTextResId"
-            app:argType="reference" />
-        <argument
-            android:name="buttonTextColorResId"
-            android:defaultValue="@color/unelevatedbutton_text_color"
-            app:argType="reference" />
-        <argument
-            android:name="buttonBackgroundTintResId"
-            android:defaultValue="@color/green_1D"
+            android:defaultValue="0"
             app:argType="reference" />
         <argument
             android:name="isResultNeeded"
             android:defaultValue="false"
             app:argType="boolean" />
     </action>
-
-    <fragment
-        android:id="@+id/addAccountFragment"
-        android:name="com.algorand.android.ui.register.AddAccountFragment"
-        android:label="fragment_intro"
-        tools:layout="@layout/fragment_add_account">
-        <action
-            android:id="@+id/action_addAccountFragment_to_loginNavigation"
-            app:destination="@id/loginNavigation" />
-    </fragment>
 
     <fragment
         android:id="@+id/lockFragment"
@@ -118,16 +106,45 @@
             app:popUpTo="@id/lockFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_lockFragment_to_warningConfirmationBottomSheet"
-            app:destination="@id/warningConfirmationBottomSheet" />
+            android:id="@+id/action_lockFragment_to_warningConfirmationNavigation"
+            app:destination="@id/warningConfirmationNavigation">
+            <argument
+                android:name="warningConfirmation"
+                app:argType="com.algorand.android.models.WarningConfirmation" />
+        </action>
     </fragment>
 
     <fragment
-        android:id="@+id/ledgerTroubleshootingFragment"
-        android:name="com.algorand.android.ui.ledgersearch.LedgerTroubleshootingFragment"
-        android:label="LedgerTroubleshootingFragment"
-        tools:layout="@layout/layout_ledger_troubleshoot_instructions" />
+        android:id="@+id/howDoesLedgerWorkFragment"
+        android:name="com.algorand.android.ui.ledgersearch.instructions.HowDoesLedgerWorkFragment"
+        android:label="HowDoesLedgerWorkFragment"
+        tools:layout="@layout/layout_ledger_instructions">
+        <action
+            android:id="@+id/action_howDoesLedgerWorkFragment_to_enableLedgerBluetoothBottomSheet"
+            app:destination="@id/enableLedgerBluetoothBottomSheet" />
+        <action
+            android:id="@+id/action_howDoesLedgerWorkFragment_to_installAlgorandOntoLedgerBottomSheet"
+            app:destination="@id/installAlgorandOntoLedgerBottomSheet" />
+        <action
+            android:id="@+id/action_howDoesLedgerWorkFragment_to_openAppOnLedgerBottomSheet"
+            app:destination="@id/openAppOnLedgerBottomSheet" />
+    </fragment>
 
+    <fragment
+        android:id="@+id/ledgerTroubleshootFragment"
+        android:name="com.algorand.android.ui.ledgersearch.instructions.LedgerTroubleshootFragment"
+        android:label="LedgerTroubleshootFragment"
+        tools:layout="@layout/layout_ledger_instructions">
+        <action
+            android:id="@+id/action_ledgerTroubleshootFragment_to_enableLedgerBluetoothBottomSheet"
+            app:destination="@id/enableLedgerBluetoothBottomSheet" />
+        <action
+            android:id="@+id/action_ledgerTroubleshootFragment_to_openAppOnLedgerBottomSheet"
+            app:destination="@id/openAppOnLedgerBottomSheet" />
+        <action
+            android:id="@+id/action_ledgerTroubleshootFragment_to_installAlgorandOntoLedgerBottomSheet"
+            app:destination="@id/installAlgorandOntoLedgerBottomSheet" />
+    </fragment>
     <dialog
         android:id="@+id/warningConfirmationBottomSheet"
         android:name="com.algorand.android.ui.common.warningconfirmation.WarningConfirmationBottomSheet"
@@ -149,37 +166,41 @@
             android:name="negativeButtonTextResId"
             app:argType="reference" />
     </dialog>
-
     <dialog
         android:id="@+id/ledgerInformationBottomSheet"
-        android:name="com.algorand.android.ui.ledgersearch.LedgerInformationFragment"
+        android:name="com.algorand.android.ui.ledgersearch.ledgerinformation.LedgerInformationBottomSheet"
         android:label="LedgerInformationFragment"
         tools:layout="@layout/bottom_sheet_ledger_information">
         <argument
             android:name="selectedLedgerAccountSelectionListItem"
-            app:argType="com.algorand.android.models.AccountSelectionListItem" />
+            app:argType="com.algorand.android.models.AccountSelectionListItem$AccountItem" />
         <argument
             android:name="authLedgerAccountSelectionListItem"
-            app:argType="com.algorand.android.models.AccountSelectionListItem"
+            app:argType="com.algorand.android.models.AccountSelectionListItem$AccountItem"
             app:nullable="true" />
         <argument
             android:name="rekeyedAccountSelectionListItem"
-            app:argType="com.algorand.android.models.AccountSelectionListItem[]"
+            app:argType="com.algorand.android.models.AccountSelectionListItem$AccountItem[]"
             app:nullable="true" />
     </dialog>
-    <dialog
-        android:id="@+id/ledgerPairInfoBottomSheet"
-        android:name="com.algorand.android.ui.ledgersearch.LedgerPairInfoBottomSheet"
-        android:label="LedgerPairInfoBottomSheet"
-        tools:layout="@layout/bottom_sheet_ledger_pair_info">
 
-        <argument
-            android:name="infoType"
-            app:argType="com.algorand.android.ui.ledgersearch.LedgerPairInfoBottomSheet$InfoType" />
-    </dialog>
-    <action
-        android:id="@+id/action_global_ledgerPairInfoBottomSheet"
-        app:destination="@id/ledgerPairInfoBottomSheet" />
+    <dialog
+        android:id="@+id/enableLedgerBluetoothBottomSheet"
+        android:name="com.algorand.android.ui.ledgersearch.pairinginfo.EnableLedgerBluetoothBottomSheet"
+        android:label="EnableLedgerBluetoothInfoBottomSheet"
+        tools:layout="@layout/bottom_sheet_ledger_pair_info" />
+
+    <dialog
+        android:id="@+id/installAlgorandOntoLedgerBottomSheet"
+        android:name="com.algorand.android.ui.ledgersearch.pairinginfo.InstallAlgorandOntoLedgerBottomSheet"
+        android:label="InstallAlgorandOntoLedgerInfoBottomSheet"
+        tools:layout="@layout/bottom_sheet_ledger_pair_info" />
+
+    <dialog
+        android:id="@+id/openAppOnLedgerBottomSheet"
+        android:name="com.algorand.android.ui.ledgersearch.pairinginfo.OpenAppOnLedgerBottomSheet"
+        android:label="OpenAppOnLedgerInfoBottomSheet"
+        tools:layout="@layout/bottom_sheet_ledger_pair_info" />
     <dialog
         android:id="@+id/confirmationBottomSheet"
         android:name="com.algorand.android.ui.confirmation.ConfirmationBottomSheet"

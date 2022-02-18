@@ -8,18 +8,16 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/tertiaryBackground">
+        android:background="@color/primaryBackground">
 
         <TextView
             android:id="@+id/titleTextView"
+            style="@style/TextAppearance.Title.Sans.Medium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="24dp"
-            android:layout_marginTop="12dp"
-            android:gravity="center"
-            android:paddingHorizontal="24dp"
-            android:text="@string/add_account"
-            android:textAppearance="@style/TextAppearance.Title1Semibold"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_xxxsmall"
+            android:text="@string/add_new_account"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -28,76 +26,39 @@
             android:id="@+id/createNewAccountSelectionItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:layout_constraintBottom_toTopOf="@id/createNewAccountDivider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/titleTextView"
-            app:layout_constraintVertical_chainStyle="packed"
-            app:typeSelectionDescriptionText="@string/i_want_a_new"
-            app:typeSelectionIcon="@drawable/ic_create_account"
-            app:typeSelectionTitleText="@string/create_new_account" />
-
-        <View
-            android:id="@+id/createNewAccountDivider"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginStart="@dimen/register_type_selection_divider_start_margin"
-            android:layout_marginEnd="20dp"
-            android:background="@color/dividerColor"
             app:layout_constraintBottom_toTopOf="@id/watchAccountSelectionItem"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/createNewAccountSelectionItem" />
+            app:layout_constraintTop_toBottomOf="@id/titleTextView"
+            app:layout_constraintVertical_bias="0.4"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:typeSelectionDescriptionText="@string/i_want_a_new"
+            app:typeSelectionIcon="@drawable/ic_user_add"
+            app:typeSelectionTitleText="@string/create_new_account" />
 
         <com.algorand.android.customviews.RegisterTypeSelectionItem
             android:id="@+id/watchAccountSelectionItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/watchAccountDivider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/createNewAccountDivider"
-            app:typeSelectionDescriptionText="@string/i_want_to_monitor"
-            app:typeSelectionIcon="@drawable/ic_create_watch_account"
-            app:typeSelectionTitleText="@string/watch_account" />
-
-        <View
-            android:id="@+id/watchAccountDivider"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginStart="@dimen/register_type_selection_divider_start_margin"
-            android:layout_marginEnd="20dp"
-            android:background="@color/dividerColor"
             app:layout_constraintBottom_toTopOf="@id/pairLedgerSelectionItem"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/watchAccountSelectionItem" />
+            app:layout_constraintTop_toBottomOf="@id/createNewAccountSelectionItem"
+            app:typeSelectionDescriptionText="@string/i_want_to_monitor"
+            app:typeSelectionIcon="@drawable/ic_eye"
+            app:typeSelectionTitleText="@string/watch_account" />
 
         <com.algorand.android.customviews.RegisterTypeSelectionItem
             android:id="@+id/pairLedgerSelectionItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/pairLedgerDivider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/watchAccountDivider"
-            app:typeSelectionDescriptionText="@string/i_want_to_create_an"
-            app:typeSelectionIcon="@drawable/ic_pair_ledger_account"
-            app:typeSelectionTitleText="@string/pair_ledger_device" />
-
-        <View
-            android:id="@+id/pairLedgerDivider"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginStart="@dimen/register_type_selection_divider_start_margin"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
-            android:background="@color/dividerColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/pairLedgerSelectionItem" />
+            app:layout_constraintTop_toBottomOf="@id/watchAccountSelectionItem"
+            app:typeSelectionDescriptionText="@string/i_want_to_create_an"
+            app:typeSelectionIcon="@drawable/ic_ledger"
+            app:typeSelectionTitleText="@string/pair_ledger_device" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -10,7 +10,7 @@
   ~ limitations under the License
   -->
 
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -21,152 +21,123 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/contactsRoot"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/spacing_xlarge">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/contactImageCard"
-            android:layout_width="88dp"
-            android:layout_height="88dp"
-            android:layout_marginTop="42dp"
-            app:cardCornerRadius="44dp"
-            app:cardElevation="2dp"
+        <com.algorand.android.customviews.AccountIconImageView
+            android:id="@+id/contactImageView"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="@dimen/spacing_xxlarge"
+            android:contentDescription="@string/accessibility_user_image"
+            android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/contactImageView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/accessibility_user_image"
-                android:scaleType="centerCrop"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_profile_photo_placeholder"
-                tools:src="@tools:sample/avatars" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <TextView
-            android:id="@+id/nameLabelTextView"
-            style="@style/TextAppearance.Label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/input_label_horizontal_margin"
-            android:layout_marginTop="20dp"
-            android:text="@string/name"
-            android:visibility="visible"
-            app:layout_constraintStart_toStartOf="@+id/nameTextView"
-            app:layout_constraintTop_toBottomOf="@id/contactImageCard" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/nameTextView"
-            style="@style/TextAppearance.NonEditableInput"
-            android:layout_width="0dp"
+            style="@style/TextAppearance.Body.Large.Sans.Medium"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/smallshadow_start_20dp_margin"
-            android:layout_marginTop="@dimen/input_label_vertical_margin"
-            android:layout_marginEnd="@dimen/smallshadow_end_20dp_margin"
-            android:hint="@string/contact_name"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:text="@string/name"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/nameLabelTextView" />
+            app:layout_constraintTop_toBottomOf="@id/contactImageView" />
+
+        <TextView
+            android:id="@+id/addressBelowNameTextView"
+            style="@style/TextAppearance.Footnote.Description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xxsmall"
+            android:text="@string/name"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/nameTextView"
+            tools:text="S93K...NSK2" />
+
+        <View
+            android:id="@+id/upperLine"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/spacing_xxlarge"
+            android:background="@color/layerGrayLighter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/addressBelowNameTextView" />
 
         <TextView
             android:id="@+id/addressLabelTextView"
-            style="@style/TextAppearance.Label"
+            style="@style/TextAppearance.Body.Sans.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/input_label_horizontal_margin"
-            android:layout_marginTop="@dimen/smallshadow_bottom_margin_20dp"
+            android:layout_marginTop="@dimen/spacing_xxlarge"
             android:maxLength="@integer/account_name_character_limit"
-            android:text="@string/address"
+            android:text="@string/account_address"
             android:visibility="visible"
-            app:layout_constraintStart_toStartOf="@+id/addressLayout"
-            app:layout_constraintTop_toBottomOf="@id/nameTextView" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/upperLine" />
 
-        <LinearLayout
-            android:id="@+id/addressLayout"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/addressTextView"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/smallshadow_start_20dp_margin"
-            android:layout_marginTop="@dimen/input_label_vertical_margin"
-            android:layout_marginEnd="@dimen/smallshadow_end_20dp_margin"
-            android:background="@drawable/bg_small_shadow"
-            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/spacing_xsmall"
+            android:layout_marginEnd="@dimen/spacing_large"
+            app:layout_constraintEnd_toStartOf="@id/showQrButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/addressLabelTextView"
+            tools:text="@tools:sample/lorem[5]" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/showQrButton"
+            style="@style/IconButton.Transparent"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:icon="@drawable/ic_qr_show"
+            app:layout_constraintBottom_toBottomOf="@id/addressTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/addressLabelTextView" />
+
+        <View
+            android:id="@+id/lowerLine"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/spacing_xxlarge"
+            android:background="@color/layerGrayLighter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/addressLabelTextView">
-
-            <TextView
-                android:id="@+id/addressEditText"
-                style="@style/TextAppearance.NonEditableInput"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@null"
-                android:hint="@string/paste_hash_or_scan_qr"
-                android:maxLength="@integer/account_public_key_character_limit"
-                android:minLines="2"
-                android:paddingVertical="@dimen/keyline_1"
-                android:paddingStart="@dimen/keyline_1"
-                android:paddingTop="14dp"
-                android:paddingEnd="@dimen/keyline_1"
-                android:paddingBottom="14dp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/showQrButton"
-                style="@style/BaseIconButton.Circle"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="12dp"
-                app:icon="@drawable/ic_qr_code" />
-
-        </LinearLayout>
+            app:layout_constraintTop_toBottomOf="@id/addressTextView" />
 
         <TextView
             android:id="@+id/assetsLabel"
-            style="@style/TextAppearance.Label"
+            style="@style/TextAppearance.Body.Sans.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/input_label_horizontal_margin"
-            android:layout_marginTop="@dimen/smallshadow_bottom_margin_20dp"
+            android:layout_marginTop="40dp"
             android:text="@string/assets"
-            app:layout_constraintStart_toStartOf="@+id/addressLayout"
-            app:layout_constraintTop_toBottomOf="@id/addressLayout" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lowerLine" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/assetsList"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/input_label_vertical_margin"
+            android:layout_marginTop="@dimen/spacing_xsmall"
+            android:clipToPadding="false"
             android:overScrollMode="never"
+            android:paddingBottom="@dimen/bottom_safe_area_margin"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/assetsLabel"
-            tools:itemCount="1"
+            tools:itemCount="10"
             tools:listitem="@layout/item_contact_asset" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/shareButton"
-            style="@style/UnelevatedButton.General.Secondary"
-            android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/keyline_1"
-            android:layout_marginBottom="@dimen/bottom_safe_area_margin"
-            android:backgroundTint="@color/secondaryBackground"
-            android:elevation="2dp"
-            android:text="@string/share"
-            app:icon="@drawable/ic_share"
-            app:iconGravity="textStart"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/assetsList"
-            app:rippleColor="@color/gray_D9" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.core.widget.NestedScrollView>
+</ScrollView>

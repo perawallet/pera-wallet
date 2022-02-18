@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -20,7 +20,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.navGraphViewModels
-import com.algorand.android.LoginNavigationDirections
 import com.algorand.android.MainViewModel
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
@@ -49,7 +48,7 @@ class VerifyLedgerAddressFragment : DaggerBaseFragment(R.layout.fragment_verify_
     lateinit var ledgerBleOperationManager: LedgerBleOperationManager
 
     private val toolbarConfiguration = ToolbarConfiguration(
-        startIconResId = R.drawable.ic_back_navigation,
+        startIconResId = R.drawable.ic_left_arrow,
         startIconClick = ::navBack
     )
 
@@ -71,7 +70,7 @@ class VerifyLedgerAddressFragment : DaggerBaseFragment(R.layout.fragment_verify_
 
     // <editor-fold defaultstate="collapsed" desc="Observers">
 
-    private val listObserver = Observer<List<VerifiableLedgerAddressItem>> { list ->
+    private val listObserver = Observer<List<VerifyLedgerAddressListItem>> { list ->
         adapter.submitList(list)
     }
 
@@ -176,8 +175,9 @@ class VerifyLedgerAddressFragment : DaggerBaseFragment(R.layout.fragment_verify_
     }
 
     private fun onConfirmationClick() {
-        val selectedVerifiedAccounts =
-            verifyLedgerAddressViewModel.getSelectedVerifiedAccounts(pairLedgerNavigationViewModel.selectedAccounts)
+        val selectedVerifiedAccounts = verifyLedgerAddressViewModel.getSelectedVerifiedAccounts(
+            pairLedgerNavigationViewModel.selectedAccounts
+        )
         selectedVerifiedAccounts.forEach { selectedAccount ->
             val creationType = if (selectedAccount.type == Account.Type.REKEYED) {
                 CreationType.REKEYED
@@ -186,7 +186,7 @@ class VerifyLedgerAddressFragment : DaggerBaseFragment(R.layout.fragment_verify_
             }
             mainViewModel.addAccount(selectedAccount, creationType)
         }
-        nav(LoginNavigationDirections.actionGlobalToHomeNavigation())
+        nav(VerifyLedgerAddressFragmentDirections.actionVerifyLedgerAddressFragmentToVerifyLedgerInfoFragment())
     }
 
     companion object {

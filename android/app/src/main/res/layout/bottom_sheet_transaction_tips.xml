@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  Copyright 2022 Pera Wallet, LDA
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+  -->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:background="@color/secondaryBackground">
+
+        <View
+            android:id="@+id/modalityLineView"
+            style="@style/BottomSheetModalityLine"
+            android:layout_marginTop="@dimen/spacing_small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/infoImageView"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_marginTop="@dimen/spacing_xxlarge"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/modalityLineView"
+            app:srcCompat="@drawable/ic_info"
+            app:tint="@color/linkPrimary" />
+
+        <TextView
+            android:id="@+id/titleTextView"
+            style="@style/TextAppearance.Body.Large.Sans.Medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_xxlarge"
+            android:gravity="center"
+            android:text="@string/transacting_tips"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/infoImageView" />
+
+        <TextView
+            android:id="@+id/descriptionTextView"
+            style="@style/TextAppearance.Description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:gravity="center"
+            android:text="@string/we_notice_that_this"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/titleTextView" />
+
+        <!--     TODO Missing shadow   -->
+        <ImageView
+            android:id="@+id/firstDescriptionImageView"
+            style="@style/InstructionStepIndicator"
+            android:layout_marginStart="@dimen/spacing_xlarge"
+            app:layout_constraintBottom_toBottomOf="@id/firstDescriptionTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/firstDescriptionTextView" />
+
+        <TextView
+            android:id="@+id/firstDescriptionTextView"
+            style="@style/TextAppearance.Footnote.Sans"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_large"
+            android:layout_marginTop="@dimen/spacing_xxlarge"
+            android:layout_marginEnd="@dimen/spacing_xlarge"
+            android:text="@string/when_sending_to_an_address"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/firstDescriptionImageView"
+            app:layout_constraintTop_toBottomOf="@id/descriptionTextView" />
+
+        <!--     TODO Missing shadow   -->
+        <ImageView
+            android:id="@+id/secondDescriptionImageView"
+            style="@style/InstructionStepIndicator"
+            android:layout_marginStart="@dimen/spacing_xlarge"
+            app:layout_constraintBottom_toBottomOf="@id/secondDescriptionTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/secondDescriptionTextView" />
+
+        <TextView
+            android:id="@+id/secondDescriptionTextView"
+            style="@style/TextAppearance.Footnote.Sans"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_large"
+            android:layout_marginTop="@dimen/spacing_xxlarge"
+            android:layout_marginEnd="@dimen/spacing_xlarge"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/secondDescriptionImageView"
+            app:layout_constraintTop_toBottomOf="@id/firstDescriptionTextView"
+            tools:text="@string/exchanges_change_their" />
+
+        <View
+            android:id="@+id/descriptionDivider"
+            style="@style/Divider.Horizontal"
+            android:layout_marginTop="@dimen/spacing_xxlarge"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/secondDescriptionTextView" />
+
+        <TextView
+            android:id="@+id/moreInfoTextView"
+            style="@style/TextAppearance.Footnote.Sans.Medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginVertical="@dimen/spacing_xxlarge"
+            android:gravity="center"
+            app:layout_constraintBottom_toTopOf="@id/positiveButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionDivider"
+            tools:text="@string/for_more_information_on" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/positiveButton"
+            style="@style/Button.Secondary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginBottom="@dimen/bottom_safe_area_margin"
+            android:text="@string/i_understand"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/moreInfoTextView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

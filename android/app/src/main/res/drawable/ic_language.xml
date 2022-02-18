@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -15,8 +15,29 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
-    <path
-        android:fillColor="#1DAD98"
-        android:fillType="evenOdd"
-        android:pathData="M11.1324,4.4317C11.4816,4.0993 11.7731,4 12,4C12.2269,4 12.5184,4.0993 12.8676,4.4317C13.222,4.7689 13.5866,5.3042 13.9146,6.0422C14.5087,7.3788 14.9181,9.2357 14.989,11.3449C13.0007,11.5315 10.9993,11.5315 9.011,11.3449C9.0819,9.2357 9.4913,7.3788 10.0854,6.0422C10.4134,5.3042 10.778,4.7689 11.1324,4.4317ZM7.0191,11.0946C7.1139,8.8537 7.5581,6.8041 8.2578,5.2299C8.318,5.0943 8.3806,4.9612 8.4456,4.831C6.238,5.9276 4.6088,8.014 4.1386,10.5096C4.1732,10.5145 4.2079,10.5212 4.2425,10.5299C5.1613,10.7596 6.0877,10.9478 7.0191,11.0946ZM4.0175,12.5341C5.0143,12.7749 6.0192,12.97 7.0292,13.1194C7.1425,15.2767 7.5805,17.2461 8.2578,18.7701C8.318,18.9057 8.3806,19.0388 8.4456,19.169C5.9613,17.9349 4.2096,15.4476 4.0175,12.5341ZM9.0475,13.3564C11.0121,13.5277 12.9879,13.5277 14.9525,13.3564C14.8238,15.1751 14.4419,16.7714 13.9146,17.9578C13.5866,18.6958 13.222,19.2311 12.8676,19.5683C12.5184,19.9007 12.2269,20 12,20C11.7731,20 11.4816,19.9007 11.1324,19.5683C10.778,19.2311 10.4134,18.6958 10.0854,17.9578C9.5581,16.7714 9.1762,15.1751 9.0475,13.3564ZM16.9708,13.1194C16.8575,15.2767 16.4195,17.2461 15.7422,18.7701C15.682,18.9057 15.6194,19.0388 15.5544,19.169C18.0387,17.9349 19.7904,15.4476 19.9825,12.5341C18.9857,12.7749 17.9808,12.97 16.9708,13.1194ZM19.8614,10.5096C19.3912,8.014 17.762,5.9276 15.5544,4.831C15.6194,4.9612 15.682,5.0943 15.7422,5.2299C16.4419,6.8041 16.8861,8.8537 16.9809,11.0946C17.9123,10.9478 18.8387,10.7596 19.7575,10.5299C19.7921,10.5212 19.8268,10.5145 19.8614,10.5096ZM22,12C22,17.5228 17.5228,22 12,22C6.4771,22 2,17.5228 2,12C2,6.4771 6.4771,2 12,2C17.5228,2 22,6.4771 22,12Z" />
+  <path
+      android:fillColor="#00000000"
+      android:pathData="M7,3V6"
+      android:strokeWidth="2"
+      android:strokeColor="@color/primaryIconTintColor"/>
+  <path
+      android:fillColor="#00000000"
+      android:pathData="M22,21L17.5,11L13,21"
+      android:strokeWidth="2"
+      android:strokeColor="@color/primaryIconTintColor"/>
+  <path
+      android:fillColor="#00000000"
+      android:pathData="M14,19H21"
+      android:strokeWidth="2"
+      android:strokeColor="@color/primaryIconTintColor"/>
+  <path
+      android:fillColor="#00000000"
+      android:pathData="M2,16C6.6063,15.595 10.6344,11.1187 11,6H2.0011"
+      android:strokeWidth="2"
+      android:strokeColor="@color/primaryIconTintColor"/>
+  <path
+      android:fillColor="#00000000"
+      android:pathData="M11,16C8.441,15.7576 6.202,13.0708 6,10"
+      android:strokeWidth="2"
+      android:strokeColor="@color/primaryIconTintColor"/>
 </vector>

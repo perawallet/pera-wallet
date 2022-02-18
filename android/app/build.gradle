@@ -74,20 +74,20 @@ android {
             versionNameSuffix " (DEMO)"
 
             apiKeyProps.load(new FileInputStream(file('../app/src/staging/api-key.properties')))
-            buildConfigField "String", "ALGORAND_BASE_URL", '"https://node-testnet.aws.algodev.network/"'
+            buildConfigField "String", "ALGORAND_BASE_URL", '"https://node-testnet.chain.perawallet.app/"'
             buildConfigField "String", "ALGORAND_API_KEY", apiKeyProps["ALGORAND_API_KEY"]
             buildConfigField "String", "INDEXER_API_KEY", apiKeyProps["INDEXER_API_KEY"]
-            buildConfigField "String", "MOBILE_ALGORAND_BASE_URL", '"https://staging.mobile-api.algorand.com/api/"'
+            buildConfigField "String", "MOBILE_ALGORAND_BASE_URL", '"https://staging.api.perawallet.app/v1/"'
             buildConfigField "String", "ALGO_EXPLORER_BASE_URL", '"https://price.algoexplorerapi.io/price/"'
         }
         prod {
             applicationId application.applicationId
 
             apiKeyProps.load(new FileInputStream(file('../app/src/prod/api-key.properties')))
-            buildConfigField "String", "ALGORAND_BASE_URL", '"https://node-mainnet.aws.algodev.network/"'
+            buildConfigField "String", "ALGORAND_BASE_URL", '"https://node-mainnet.chain.perawallet.app/"'
             buildConfigField "String", "ALGORAND_API_KEY", apiKeyProps["ALGORAND_API_KEY"]
             buildConfigField "String", "INDEXER_API_KEY", apiKeyProps["INDEXER_API_KEY"]
-            buildConfigField "String", "MOBILE_ALGORAND_BASE_URL", '"https://mobile-api.algorand.com/api/"'
+            buildConfigField "String", "MOBILE_ALGORAND_BASE_URL", '"https://api.perawallet.app/v1/"'
             buildConfigField "String", "ALGO_EXPLORER_BASE_URL", '"https://price.algoexplorerapi.io/price/"'
         }
     }

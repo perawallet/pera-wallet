@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -15,33 +15,29 @@ package com.algorand.android.ui.transactiondetail
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.appcompat.widget.PopupMenu
-import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.BOTTOM
-import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.TOP
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.constraintlayout.widget.ConstraintSet.BOTTOM
+import androidx.constraintlayout.widget.ConstraintSet.TOP
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseBottomSheet
-import com.algorand.android.customviews.TargetUserView
 import com.algorand.android.customviews.Tooltip
 import com.algorand.android.databinding.BottomSheetTransactionDetailBinding
+import com.algorand.android.models.AssetInformation
+import com.algorand.android.models.BaseTransactionItem
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.models.TransactionItemType
 import com.algorand.android.models.TransactionSymbol
-import com.algorand.android.models.TransactionType
-import com.algorand.android.models.User
-import com.algorand.android.ui.transactiondetail.TransactionDetailBottomSheetDirections.Companion.actionTransactionDetailBottomSheetToAddEditContactFragment
-import com.algorand.android.ui.transactiondetail.TransactionDetailBottomSheetDirections.Companion.actionTransactionDetailBottomSheetToShowQrBottomSheet
+import com.algorand.android.models.TransactionTargetUser
+import com.algorand.android.ui.common.walletconnect.WalletConnectExtrasChipGroupView
 import com.algorand.android.utils.ALGO_DECIMALS
-import com.algorand.android.utils.copyToClipboard
 import com.algorand.android.utils.decodeBase64IfUTF8
 import com.algorand.android.utils.enableClickToCopy
-import com.algorand.android.utils.formatAsDateAndTime
+import com.algorand.android.utils.formatAsTxnDateAndTime
 import com.algorand.android.utils.openTransactionInAlgoExplorer
 import com.algorand.android.utils.openTransactionInGoalSeeker
-import com.algorand.android.utils.setDrawable
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.math.BigInteger
@@ -64,141 +60,83 @@ class TransactionDetailBottomSheet : DaggerBaseBottomSheet(
 
     private var tutorialShowHandler: Handler? = null
 
-    private val binding by viewBinding(BottomSheetTransactionDetailBinding::bind)
+    private val chipGroupListener = object : WalletConnectExtrasChipGroupView.Listener {
+        override fun onOpenInAlgoExplorerClick(url: String) {
+            val networkSlug = transactionDetailViewModel.getNetworkSlug()
+            context?.openTransactionInAlgoExplorer(url, networkSlug)
+        }
 
-    private val args: TransactionDetailBottomSheetArgs by navArgs()
+        override fun onOpenInGoalSeekerClick(url: String) {
+            val networkSlug = transactionDetailViewModel.getNetworkSlug()
+            context?.openTransactionInGoalSeeker(url, networkSlug)
+        }
+    }
+
+    private val binding by viewBinding(BottomSheetTransactionDetailBinding::bind)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.toolbar.configure(toolbarConfiguration)
         initUI()
-        binding.targetUserView.setListener(targetUserListener)
+        binding.toUserView.setOnAddButtonClickListener(::onAddButtonClicked)
         showCopyTutorialIfNeeded()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        tutorialShowHandler?.removeCallbacksAndMessages(null)
-    }
-
     private fun initUI() {
-        with(args.transactionListItem) {
-            setCloseTo(closeToAddress, closeToAmount)
+        val transaction = transactionDetailViewModel.getTransaction() ?: return
+        val assetInformation = transactionDetailViewModel.getTxnAssetInformation()
+        with(transaction) {
             setFromToFields(transactionSymbol)
-            setAccountAndAddress(contact, otherPublicKey, accountPublicKey)
-            binding.amountTextView.setAmount(
-                amount,
-                decimals,
-                isAlgorand,
-                transactionSymbol
-            )
-            fee?.let { fee ->
-                binding.feeTextView.setAmount(fee, ALGO_DECIMALS, true)
-            }
-            setTransactionId(id)
-            if (transactionType == TransactionType.PENDING) {
-                setStatusUI(isPending = true)
-            } else {
-                setRound(round)
-                setStatusUI(isPending = false)
-            }
-            setRewardAmount(rewardAmount)
+            setCloseTo(closeToAddress, closeToAmount, transactionSymbol, assetInformation)
+            setToAndFromAddress(transactionTargetUser, otherPublicKey, accountPublicKey)
+            setAmount(amount, decimals, transactionSymbol, assetInformation)
+            setFee(fee)
             setNote(noteInB64)
             setDate(zonedDateTime)
+            setTransactionId(id)
+            setChipButtons(id)
+            if (this is BaseTransactionItem.TransactionItem.Transaction) {
+                setStatusUI(transactionItemType == TransactionItemType.PENDING)
+            } else {
+                setRewardAmount(rewardAmount, assetInformation)
+            }
         }
     }
 
-    private fun setAccountAndAddress(otherContact: User?, otherAddress: String?, accountPublicKey: String) {
-        val address: String
-        if (otherContact != null) {
-            address = otherContact.publicKey
-            binding.targetUserView.setUser(otherContact, enableAddressCopy = true, shouldUsePlaceHolder = false)
-        } else {
-            address = otherAddress.toString()
-            binding.targetUserView.setAddress(
-                otherAddress.orEmpty(),
-                showShortened = false,
-                enableAddressCopy = true
-            )
-        }
-
-        binding.targetUserCopyImageView.enableClickToCopy(address)
-        binding.targetUserLabelTextView.enableClickToCopy(address)
-
-        binding.accountNameTextView.text = transactionDetailViewModel.getAccountName(accountPublicKey)
+    private fun setAmount(
+        amount: BigInteger?,
+        decimal: Int,
+        transactionSymbol: TransactionSymbol?,
+        assetInformation: AssetInformation?
+    ) {
+        binding.amountView.setAmount(amount, decimal, transactionSymbol, assetInformation?.shortName)
     }
 
-    private fun setFromToFields(transactionSymbol: TransactionSymbol?) {
-        if (transactionSymbol == TransactionSymbol.POSITIVE) {
-            ConstraintSet().apply {
-                clone(binding.fieldsLayout)
-                connect(R.id.targetUserView, TOP, R.id.rewardDividerView, BOTTOM)
-                connect(
-                    R.id.accountNameTextView,
-                    TOP,
-                    R.id.targetUserDividerView,
-                    BOTTOM
-                )
-                connect(
-                    R.id.closeToTextView,
-                    TOP,
-                    R.id.accountNameDividerView,
-                    BOTTOM
-                )
-            }.applyTo(binding.fieldsLayout)
-            binding.targetUserLabelTextView.setText(R.string.from)
-            binding.accountLabelTextView.setText(R.string.to)
-        } else {
-            binding.accountLabelTextView.setText(R.string.from)
-            binding.targetUserLabelTextView.setText(R.string.to)
-        }
-    }
-
-    private fun setRewardAmount(rewardAmount: Long?) {
-        if (rewardAmount != null && rewardAmount != 0L) {
-            binding.rewardTextView.setAmount(rewardAmount, ALGO_DECIMALS, true)
-            binding.rewardGroup.visibility = View.VISIBLE
-        }
-    }
-
-    private val targetUserListener = object : TargetUserView.Listener {
-        override fun onShowQrClick(user: User) {
-            nav(actionTransactionDetailBottomSheetToShowQrBottomSheet(user.name, user.publicKey))
-        }
-
-        override fun onAddContactClick(address: String) {
-            nav(actionTransactionDetailBottomSheetToAddEditContactFragment(contactPublicKey = address))
-        }
+    private fun setFee(fee: Long?) {
+        fee?.let { binding.feeAmountTextView.setAmountAsFee(it) }
     }
 
     private fun setStatusUI(isPending: Boolean) {
         if (isPending) {
             binding.statusTextView.apply {
-                setDrawable(start = AppCompatResources.getDrawable(context, R.drawable.ic_pending_20dp))
-                setBackgroundResource(R.drawable.bg_orangefb_30dp_radius)
-                setTextColor(ContextCompat.getColor(context, R.color.orange_D9))
+                setBackgroundResource(R.drawable.bg_transaction_pending)
+                setTextColor(ContextCompat.getColor(context, R.color.secondaryTextColor))
                 text = getString(R.string.pending)
             }
         } else {
             binding.statusTextView.apply {
-                setDrawable(start = AppCompatResources.getDrawable(context, R.drawable.ic_check_20dp))
-                setBackgroundResource(R.drawable.bg_greenec_30dp_radius)
-                setTextColor(ContextCompat.getColor(context, R.color.green_0D))
-                text = getString(R.string.confirmed)
+                setBackgroundResource(R.drawable.bg_turquoise_1a_24dp_radius)
+                setTextColor(ContextCompat.getColor(context, R.color.transaction_amount_positive_color))
+                text = getString(R.string.completed)
             }
         }
-    }
-
-    private fun setRound(round: Long? = null) {
-        if (round != null) {
-            binding.roundTextView.text = round.toString()
-            binding.roundGroup.visibility = View.VISIBLE
-        }
+        binding.statusGroup.visibility = View.VISIBLE
+        binding.transactionGroup.isVisible = isPending.not()
     }
 
     private fun setNote(noteInBase64: String?) {
-        if (noteInBase64 != null) {
-            val decodedNote = noteInBase64.decodeBase64IfUTF8()
+        noteInBase64?.let { note ->
+            val decodedNote = note.decodeBase64IfUTF8()
             binding.noteTextView.apply {
                 text = decodedNote
                 enableClickToCopy()
@@ -208,64 +146,114 @@ class TransactionDetailBottomSheet : DaggerBaseBottomSheet(
         }
     }
 
-    private fun setCloseTo(closeToAddress: String?, closeToAmount: BigInteger?) {
-        if (closeToAddress != null && closeToAmount != null) {
-            binding.closeToTextView.text = closeToAddress
-            binding.closeAmountTextView.setAmount(closeToAmount, ALGO_DECIMALS, true)
-            binding.closeToGroup.visibility = View.VISIBLE
-        }
-    }
-
     private fun setDate(zonedDateTime: ZonedDateTime?) {
-        if (zonedDateTime != null) {
-            binding.dateTextView.text = zonedDateTime.formatAsDateAndTime()
-            binding.dateGroup.visibility = View.VISIBLE
+        zonedDateTime?.let { date ->
+            binding.dateTextView.text = date.formatAsTxnDateAndTime()
         }
     }
 
     private fun setTransactionId(txId: String?) {
-        if (txId != null) {
-            val transactionIdWithoutPrefix = txId.removePrefix(TRANSACTION_ID_PREFIX)
-            binding.idTextView.apply {
-                text = transactionIdWithoutPrefix
-                setOnClickListener {
-                    openTransactionIdPopupMenu(it, transactionIdWithoutPrefix)
-                }
-            }
-            binding.idLabelTextView.setOnClickListener {
-                openTransactionIdPopupMenu(it, transactionIdWithoutPrefix)
-            }
-            binding.idGroup.visibility = View.VISIBLE
+        txId?.let { txnId ->
+            binding.transactionIdTextView.text = txnId.removePrefix(TRANSACTION_ID_PREFIX)
         }
     }
 
-    private fun openTransactionIdPopupMenu(anchorView: View, transactionIdWithoutPrefix: String) {
-        PopupMenu(anchorView.context, anchorView).apply {
-            menuInflater.inflate(R.menu.transaction_id_menu, menu)
-            setOnMenuItemClickListener {
-                when (it.itemId) {
-                    R.id.transactionIdMenuCopy -> {
-                        context?.copyToClipboard(transactionIdWithoutPrefix)
-                    }
-                    R.id.transactionIdMenuOpenInAlgoExplorer -> {
-                        val networkSlug = transactionDetailViewModel.getNetworkSlug()
-                        context?.openTransactionInAlgoExplorer(transactionIdWithoutPrefix, networkSlug)
-                    }
-                    R.id.transactionIdMenuOpenInGoalSeeker -> {
-                        val networkSlug = transactionDetailViewModel.getNetworkSlug()
-                        context?.openTransactionInGoalSeeker(transactionIdWithoutPrefix, networkSlug)
-                    }
-                }
-                return@setOnMenuItemClickListener true
+    private fun setChipButtons(transactionIdWithoutPrefix: String?) {
+        binding.extrasChipGroupView.apply {
+            initOpenInExplorerChips(transactionIdWithoutPrefix, R.dimen.spacing_zero)
+            setChipGroupListener(chipGroupListener)
+        }
+    }
+
+    private fun setRewardAmount(rewardAmount: Long?, assetInformation: AssetInformation?) {
+        if (rewardAmount != null && rewardAmount != 0L) {
+            binding.rewardAmountTextView.setAmountAsReward(rewardAmount, ALGO_DECIMALS, assetInformation)
+            binding.rewardGroup.visibility = View.VISIBLE
+        }
+    }
+
+    private fun onAddButtonClicked(address: String) {
+        nav(
+            TransactionDetailBottomSheetDirections.actionTransactionDetailBottomSheetToAddContactFragment(
+                contactPublicKey = address
+            )
+        )
+    }
+
+    private fun setFromToFields(transactionSymbol: TransactionSymbol?) {
+        if (transactionSymbol == TransactionSymbol.POSITIVE) {
+            ConstraintSet().apply {
+                clone(binding.containerLayout)
+                connect(R.id.toUserView, TOP, R.id.statusDivider, BOTTOM)
+                connect(R.id.fromUserView, TOP, R.id.toUserView, BOTTOM)
+                connect(R.id.feeAmountTextView, TOP, R.id.fromUserView, BOTTOM)
+            }.applyTo(binding.containerLayout)
+            binding.toLabelTextView.setText(R.string.from)
+            binding.fromLabelTextView.setText(R.string.to)
+        } else {
+            binding.fromLabelTextView.setText(R.string.from)
+            binding.toLabelTextView.setText(R.string.to)
+        }
+    }
+
+    private fun setCloseTo(
+        closeToAddress: String?,
+        closeToAmount: BigInteger?,
+        transactionSymbol: TransactionSymbol?,
+        assetInformation: AssetInformation?
+    ) {
+        if (closeToAddress != null && closeToAmount != null) {
+            if (transactionSymbol == TransactionSymbol.POSITIVE) {
+                ConstraintSet().apply {
+                    clone(binding.containerLayout)
+                    connect(R.id.closeToUserView, TOP, R.id.fromUserView, BOTTOM)
+                    connect(R.id.feeAmountTextView, TOP, R.id.closeToUserView, BOTTOM)
+                }.applyTo(binding.containerLayout)
             }
-        }.show()
+            binding.closeToUserView.setAddress(closeToAddress)
+            binding.closeAmountView.setAmount(
+                closeToAmount,
+                ALGO_DECIMALS,
+                transactionSymbol,
+                assetInformation?.shortName
+            )
+            binding.closeToGroup.visibility = View.VISIBLE
+        }
+    }
+
+    private fun setToAndFromAddress(
+        transactionTargetUser: TransactionTargetUser?,
+        otherAddress: String?,
+        accountPublicKey: String
+    ) {
+        val address: String
+        val accountCachedData = transactionDetailViewModel.getAccountCacheData(accountPublicKey)
+        with(binding) {
+            with(transactionTargetUser) {
+                if (this != null) {
+                    address = publicKey
+                    when {
+                        publicKey == accountPublicKey -> toUserView.setAccount(accountCachedData)
+                        accountName != null && accountIcon != null -> toUserView.setAccount(accountName, accountIcon)
+                        contact != null -> toUserView.setContact(contact)
+                        else -> toUserView.setAddress(publicKey)
+                    }
+                } else {
+                    address = otherAddress.toString()
+                    toUserView.setAddress(address)
+                }
+            }
+            toUserView.enableClickToCopy(address)
+            toLabelTextView.enableClickToCopy(address)
+            fromUserView.setAccount(accountCachedData)
+        }
     }
 
     private fun showCopyTutorialIfNeeded() {
         if (transactionDetailViewModel.isCopyTutorialNeeded()) {
             tutorialShowHandler = Handler()
             tutorialShowHandler?.postDelayed({
-                binding.targetUserCopyImageView.run {
+                binding.toUserView.run {
                     val margin = resources.getDimensionPixelOffset(R.dimen.page_horizontal_spacing)
                     val config = Tooltip.Config(this, margin, R.string.press_and_hold, true)
                     Tooltip(context).show(config, viewLifecycleOwner)
@@ -273,6 +261,11 @@ class TransactionDetailBottomSheet : DaggerBaseBottomSheet(
                 }
             }, TUTORIAL_SHOW_DELAY)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        tutorialShowHandler?.removeCallbacksAndMessages(null)
     }
 
     companion object {

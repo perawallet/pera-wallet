@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -15,40 +15,39 @@ package com.algorand.android.ui.settings.node
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.models.Node
+import com.algorand.android.utils.extensions.clearAndAddAll
 
 class NodeAdapter(
-    private val onNodeActivated: (Node, List<Node>) -> Unit
+    private val onDifferentNodeSelected: (Node) -> Unit
 ) : RecyclerView.Adapter<NodeViewHolder>() {
 
-    private var nodeList = mutableListOf<Node>()
-    private var activeNode: Node? = null
-
-    fun setNodeList(nodeList: List<Node>) {
-        this.nodeList.clear()
-        this.nodeList.addAll(nodeList)
-        activeNode = this.nodeList.find { it.isActive }
-        notifyDataSetChanged()
-    }
+    private val currentList = mutableListOf<Node>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NodeViewHolder {
+        return createNodeViewHolder(parent)
+    }
+
+    private fun createNodeViewHolder(parent: ViewGroup): NodeViewHolder {
         return NodeViewHolder.create(parent).apply {
             itemView.setOnClickListener {
                 if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                    if (binding.radioButton.isChecked.not()) {
-                        nodeList.forEach { it.isActive = false }
-                        val activatedNode = nodeList[bindingAdapterPosition].apply { isActive = true }
-                        activeNode = activatedNode
-                        onNodeActivated(activatedNode, nodeList)
-                        notifyDataSetChanged()
+                    val activatedNode = currentList[bindingAdapterPosition]
+                    if (!activatedNode.isActive) {
+                        onDifferentNodeSelected(activatedNode)
                     }
                 }
             }
         }
     }
 
-    override fun getItemCount() = nodeList.size
-
     override fun onBindViewHolder(holder: NodeViewHolder, position: Int) {
-        holder.bind(nodeList[position], activeNode)
+        holder.bind(currentList[position])
+    }
+
+    override fun getItemCount(): Int = currentList.size
+
+    fun setNewList(list: List<Node>) {
+        currentList.clearAndAddAll(list)
+        notifyDataSetChanged()
     }
 }

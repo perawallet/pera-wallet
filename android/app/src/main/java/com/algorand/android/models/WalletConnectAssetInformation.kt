@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -24,27 +24,30 @@ data class WalletConnectAssetInformation(
     val isVerified: Boolean = false,
     val shortName: String? = null,
     val fullName: String? = null,
-    val amount: BigInteger? = null
+    val decimal: Int,
+    val amount: BigInteger? = null,
+    val formattedSelectedCurrencyValue: String? = null,
 ) : Parcelable {
     val isAlgorand: Boolean
         get() = assetId == ALGORAND_ID
 
     companion object {
-        fun create(assetInformation: AssetInformation?): WalletConnectAssetInformation? {
+        fun create(
+            assetInformation: AssetInformation?,
+            formattedSelectedCurrencyValue: String? = null
+        ): WalletConnectAssetInformation? {
             with(assetInformation) {
                 if (this == null) return null
-                return WalletConnectAssetInformation(assetId, isVerified, shortName, fullName, amount)
+                return WalletConnectAssetInformation(
+                    assetId,
+                    isVerified,
+                    shortName,
+                    fullName,
+                    decimals,
+                    amount,
+                    formattedSelectedCurrencyValue = formattedSelectedCurrencyValue
+                )
             }
-        }
-
-        fun create(assetHolding: AssetHolding, assetParams: AssetParams): WalletConnectAssetInformation {
-            return WalletConnectAssetInformation(
-                assetId = assetHolding.assetId,
-                isVerified = assetParams.isVerified,
-                shortName = assetParams.shortName,
-                fullName = assetParams.fullName,
-                amount = assetHolding.amount
-            )
         }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,153 +12,49 @@
 
 package com.algorand.android.ui.common.listhelper
 
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
-import com.algorand.android.R
-import com.algorand.android.customviews.Tooltip
-import com.algorand.android.models.Account
-import com.algorand.android.models.AssetInformation
-import com.algorand.android.ui.common.listhelper.viewholders.AddAssetListItem
-import com.algorand.android.ui.common.listhelper.viewholders.AddAssetViewHolder
-import com.algorand.android.ui.common.listhelper.viewholders.AssetItemViewHolder
-import com.algorand.android.ui.common.listhelper.viewholders.AssetListItem
-import com.algorand.android.ui.common.listhelper.viewholders.BannerAccountListItem
-import com.algorand.android.ui.common.listhelper.viewholders.GovernanceViewHolder
-import com.algorand.android.ui.common.listhelper.viewholders.HeaderAccountListItem
-import com.algorand.android.ui.common.listhelper.viewholders.HeaderViewHolder
-import com.algorand.android.ui.common.listhelper.viewholders.RemoveAssetItemViewHolder
-import com.algorand.android.ui.common.listhelper.viewholders.RemoveAssetListItem
-import com.google.android.material.button.MaterialButton
+import com.algorand.android.models.BaseDiffUtil
+import com.algorand.android.models.BaseViewHolder
+import com.algorand.android.ui.accounts.AccountErrorItemViewHolder
+import com.algorand.android.ui.accounts.AccountItemViewHolder
+import com.algorand.android.ui.accounts.BasePortfolioValuesItemViewHolder.PortfolioInfoClickListener
+import com.algorand.android.ui.accounts.HeaderViewHolder
+import com.algorand.android.ui.accounts.PortfolioValuesErrorItemViewHolder
+import com.algorand.android.ui.accounts.PortfolioValuesItemViewHolder
+import com.algorand.android.ui.common.listhelper.BaseAccountListItem.ItemType.ACCOUNT_ERROR
+import com.algorand.android.ui.common.listhelper.BaseAccountListItem.ItemType.ACCOUNT_SUCCESS
+import com.algorand.android.ui.common.listhelper.BaseAccountListItem.ItemType.HEADER
+import com.algorand.android.ui.common.listhelper.BaseAccountListItem.ItemType.PORTFOLIO_ERROR
+import com.algorand.android.ui.common.listhelper.BaseAccountListItem.ItemType.PORTFOLIO_SUCCESS
 
-// TODO move this methods to listener
 class AccountAdapter(
-    private val onShowQrClick: ((String, String) -> Unit)? = null,
-    private val onAccountOptionsClick: ((String, String, Account.Type?) -> Unit)? = null,
-    private val onAssetClick: ((String, AssetInformation) -> Unit)? = null,
-    private val onAddAssetClick: ((String) -> Unit)? = null,
-    private val onRemoveAssetClick: ((String, AssetInformation) -> Unit)? = null,
-    private val onBannerCloseClick: (() -> Unit)? = null,
-    private val onBannerCheckOutClick: (() -> Unit)? = null,
-    private var showQRTutorial: Boolean = false
-) : ListAdapter<BaseAccountListItem, RecyclerView.ViewHolder>(BaseAccountListItem.BaseAccountListDiffUtil()) {
+    private val accountClickListener: AccountItemViewHolder.AccountClickListener,
+    private val accountErrorClickListener: AccountErrorItemViewHolder.AccountClickListener,
+    private val optionsClickListener: HeaderViewHolder.OptionsClickListener,
+    private val portfolioInfoClickListener: PortfolioInfoClickListener
+) : ListAdapter<BaseAccountListItem, BaseViewHolder<BaseAccountListItem>>(BaseDiffUtil<BaseAccountListItem>()) {
 
     override fun getItemViewType(position: Int): Int {
-        return when (getItem(position)) {
-            is HeaderAccountListItem -> BaseAccountListItem.ItemType.HEADER.ordinal
-            is AssetListItem -> BaseAccountListItem.ItemType.ASSET.ordinal
-            is AddAssetListItem -> BaseAccountListItem.ItemType.ADD_ASSET.ordinal
-            is RemoveAssetListItem -> BaseAccountListItem.ItemType.REMOVE_ASSET.ordinal
-            is BannerAccountListItem -> BaseAccountListItem.ItemType.BANNER.ordinal
-            else -> throw Exception("AccountAdapter: List Item is Unknown.")
-        }
+        return getItem(position).itemType.ordinal
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<BaseAccountListItem> {
         return when (viewType) {
-            BaseAccountListItem.ItemType.HEADER.ordinal -> {
-                HeaderViewHolder.create(parent).apply {
-                    if (onAccountOptionsClick != null) {
-                        binding.optionsButton.setOnClickListener {
-                            if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                                (getItem(bindingAdapterPosition) as HeaderAccountListItem).accountCacheData.run {
-                                    onAccountOptionsClick.invoke(account.name, account.address, account.type)
-                                }
-                            }
-                        }
-                        binding.optionsButton.visibility = View.VISIBLE
-                    }
-
-                    if (onShowQrClick != null) {
-                        binding.qrButton.apply {
-                            setOnClickListener {
-                                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                                    (getItem(bindingAdapterPosition) as HeaderAccountListItem).accountCacheData.run {
-                                        onShowQrClick.invoke(account.address, account.name)
-                                    }
-                                }
-                            }
-                            visibility = View.VISIBLE
-
-                            if (showQRTutorial) {
-                                showQrTutorialTooltip(binding.qrButton)
-                            }
-                        }
-                    }
-                }
-            }
-            BaseAccountListItem.ItemType.ADD_ASSET.ordinal -> {
-                AddAssetViewHolder.create(parent).apply {
-                    binding.addAssetButton.setOnClickListener {
-                        if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                            onAddAssetClick?.invoke((getItem(bindingAdapterPosition) as AddAssetListItem).publicKey)
-                        }
-                    }
-                }
-            }
-            BaseAccountListItem.ItemType.ASSET.ordinal -> {
-                AssetItemViewHolder.create(parent).apply {
-                    itemView.setOnClickListener {
-                        if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                            (getItem(bindingAdapterPosition) as AssetListItem).run {
-                                onAssetClick?.invoke(publicKey, assetInformation)
-                            }
-                        }
-                    }
-                }
-            }
-            BaseAccountListItem.ItemType.REMOVE_ASSET.ordinal -> {
-                RemoveAssetItemViewHolder.create(parent).apply {
-                    binding.removeAssetButton.setOnClickListener {
-                        if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                            (getItem(bindingAdapterPosition) as RemoveAssetListItem).run {
-                                onRemoveAssetClick?.invoke(publicKey, assetInformation)
-                            }
-                        }
-                    }
-                }
-            }
-            BaseAccountListItem.ItemType.BANNER.ordinal -> {
-                GovernanceViewHolder.create(parent).apply {
-                    binding.checkOutButton.setOnClickListener {
-                        if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                            onBannerCheckOutClick?.invoke()
-                        }
-                    }
-                    binding.closeButton.setOnClickListener {
-                        if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                            onBannerCloseClick?.invoke()
-                        }
-                    }
-                }
-            }
-            else -> throw Exception("Account Adapter: Item View Type is Unknown.")
+            PORTFOLIO_SUCCESS.ordinal -> PortfolioValuesItemViewHolder.create(parent, portfolioInfoClickListener)
+            PORTFOLIO_ERROR.ordinal -> PortfolioValuesErrorItemViewHolder.create(parent, portfolioInfoClickListener)
+            HEADER.ordinal -> HeaderViewHolder.create(parent, optionsClickListener)
+            ACCOUNT_SUCCESS.ordinal -> AccountItemViewHolder.create(parent, accountClickListener)
+            ACCOUNT_ERROR.ordinal -> AccountErrorItemViewHolder.create(parent, accountErrorClickListener)
+            else -> throw Exception("$logTag: Item View Type is Unknown.")
         }
     }
 
-    private fun showQrTutorialTooltip(showQrButton: MaterialButton) {
-        showQRTutorial = false
-        with(showQrButton) {
-            post {
-                val endMargin = resources.getDimensionPixelSize(R.dimen.page_horizontal_spacing)
-                val config = Tooltip.Config(this, endMargin, R.string.your_accounts_address, false)
-                Tooltip(context).show(config)
-            }
-        }
+    override fun onBindViewHolder(holder: BaseViewHolder<BaseAccountListItem>, position: Int) {
+        holder.bind(getItem(position))
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (holder) {
-            is HeaderViewHolder -> {
-                holder.bind(getItem(position) as HeaderAccountListItem)
-            }
-            is AssetItemViewHolder -> {
-                holder.bind(getItem(position) as AssetListItem)
-            }
-            is RemoveAssetItemViewHolder -> {
-                holder.bind(getItem(position) as RemoveAssetListItem, itemCount != position + 1)
-            }
-        }
+    companion object {
+        private val logTag = AccountAdapter::class.java.simpleName
     }
 }

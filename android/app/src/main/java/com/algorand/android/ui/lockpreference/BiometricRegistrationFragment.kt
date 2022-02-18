@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -9,45 +9,69 @@
  * See the License for the specific language governing permissions and
  * limitations under the License
  */
-
 package com.algorand.android.ui.lockpreference
 
 import android.content.SharedPreferences
-import android.os.Bundle
-import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.algorand.android.R
-import com.algorand.android.core.DaggerBaseFragment
-import com.algorand.android.databinding.FragmentBiometricRegistrationBinding
 import com.algorand.android.models.FragmentConfiguration
-import com.algorand.android.models.StatusBarConfiguration
-import com.algorand.android.ui.lockpreference.BiometricRegistrationFragmentDirections.Companion.actionBiometricRegistrationFragmentPopIncludingChoosePasswordNavigation
+import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.ui.common.BaseInfoFragment
+import com.algorand.android.ui.lockpreference.BiometricRegistrationFragmentDirections.Companion.actionBiometricRegistrationFragmentToBiometricAuthenticationEnabledFragment
+import com.algorand.android.ui.lockpreference.BiometricRegistrationFragmentDirections.Companion.actionBiometricRegistrationFragmentToHomeNavigation
 import com.algorand.android.utils.alertDialog
+import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.preference.setBiometricRegistrationPreference
 import com.algorand.android.utils.showBiometricAuthentication
-import com.algorand.android.utils.viewbinding.viewBinding
+import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class BiometricRegistrationFragment : DaggerBaseFragment(R.layout.fragment_biometric_registration) {
+class BiometricRegistrationFragment : BaseInfoFragment() {
 
     @Inject
     lateinit var sharedPref: SharedPreferences
 
-    override val fragmentConfiguration = FragmentConfiguration(
-        statusBarConfiguration = StatusBarConfiguration(backgroundColor = R.color.tertiaryBackground)
+    private val toolbarConfiguration = ToolbarConfiguration(
+        startIconResId = R.drawable.ic_left_arrow,
+        startIconClick = ::navBack
     )
 
-    private val binding by viewBinding(FragmentBiometricRegistrationBinding::bind)
+    override val fragmentConfiguration =
+        FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.positiveButton.setOnClickListener { onPositiveButtonClick() }
-        binding.cancelButton.setOnClickListener { onNegativeButtonClick() }
+    override fun setImageView(imageView: ImageView) {
+        val icon = R.drawable.ic_faceid
+        imageView.setImageResource(icon)
+        imageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.infoImageColor))
     }
 
-    private fun onPositiveButtonClick() {
-        checkBiometricAuthentication()
+    override fun setTitleText(textView: TextView) {
+        val title = R.string.enable_biometric_authentication
+        textView.setText(title)
+    }
+
+    override fun setDescriptionText(textView: TextView) {
+        val description = R.string.your_faceid_or_fingerprintid
+        textView.setText(description)
+    }
+
+    override fun setFirstButton(materialButton: MaterialButton) {
+        val buttonText = R.string.enable_biometric_authentication
+        materialButton.setText(buttonText)
+        materialButton.setOnClickListener { checkBiometricAuthentication() }
+    }
+
+    override fun setSecondButton(materialButton: MaterialButton) {
+        val buttonText = R.string.do_not_use
+        materialButton.apply {
+            setText(buttonText)
+            show()
+            setOnClickListener { navigateToHomeNavigation() }
+        }
     }
 
     private fun checkBiometricAuthentication() {
@@ -76,10 +100,10 @@ class BiometricRegistrationFragment : DaggerBaseFragment(R.layout.fragment_biome
     }
 
     private fun handleNextNavigation() {
-        nav(actionBiometricRegistrationFragmentPopIncludingChoosePasswordNavigation())
+        nav(actionBiometricRegistrationFragmentToBiometricAuthenticationEnabledFragment())
     }
 
-    private fun onNegativeButtonClick() {
-        handleNextNavigation()
+    private fun navigateToHomeNavigation() {
+        nav(actionBiometricRegistrationFragmentToHomeNavigation())
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,12 +12,12 @@
 
 package com.algorand.android.utils
 
-import com.algorand.android.models.AlgoBalanceInformation
 import com.algorand.android.models.BaseAlgoRewardWrapper
 import com.algorand.android.models.BaseAlgoRewardWrapper.BlockResult
 import com.algorand.android.models.BaseAlgoRewardWrapper.TotalAlgoSupplyResult
 import com.algorand.android.models.BlockResponse
 import com.algorand.android.models.TotalAlgoSupply
+import java.math.BigDecimal
 import java.math.BigInteger
 import javax.inject.Inject
 
@@ -26,53 +26,46 @@ class AlgoRewardResponseHandler @Inject constructor(
 ) {
 
     private var totalAlgoSupply: TotalAlgoSupply? = null
-
     private var blockResponse: BlockResponse? = null
 
     suspend fun handleRewardCallResponseList(
         balanceWithoutReward: BigInteger,
         earnedRewards: Long,
-        rewardCallResponseList: List<BaseAlgoRewardWrapper>,
-        onBalanceCalculated: (AlgoBalanceInformation) -> Unit
-    ) {
-        rewardCallResponseList.forEach { callResult ->
-            handleCallResponse(callResult)
-        }
-        handleEvents(balanceWithoutReward, earnedRewards, onBalanceCalculated)
+        rewardCallResponseList: List<BaseAlgoRewardWrapper>
+    ): BigDecimal? {
+        rewardCallResponseList.forEach { handleCallResponse(it) }
+        return handleEvents(balanceWithoutReward, earnedRewards)
     }
 
     private suspend fun handleCallResponse(wrapperResponse: BaseAlgoRewardWrapper) {
         with(wrapperResponse) {
-            when (wrapperResponse) {
+            when (this) {
                 is TotalAlgoSupplyResult -> totalAlgoSupply = parseResultData()
                 is BlockResult -> blockResponse = parseResultData()
             }
         }
     }
 
-    private fun handleEvents(
-        balanceWithoutReward: BigInteger,
-        earnedRewards: Long,
-        onBalanceCalculated: (AlgoBalanceInformation) -> Unit
-    ) {
-        if (totalAlgoSupply == null || blockResponse == null) {
+    private fun handleEvents(balanceWithoutReward: BigInteger, earnedRewards: Long): BigDecimal? {
+        return if (totalAlgoSupply == null || blockResponse == null) {
             clearValues()
+            null
         } else {
-            calculateReward(balanceWithoutReward, earnedRewards, onBalanceCalculated)
+            calculateReward(balanceWithoutReward, earnedRewards)
         }
     }
 
     private fun calculateReward(
         balanceWithoutReward: BigInteger,
-        earnedRewards: Long,
-        onBalanceCalculated: (AlgoBalanceInformation) -> Unit
-    ) {
-        val rewardRate = blockResponse?.block?.rewardRate ?: return
-        val rewardResidue = blockResponse?.block?.rewardResidue ?: return
-        val totalMoney = totalAlgoSupply?.totalMoney ?: return
-        val algoBalanceInformation = algoRewardCalculator
-            .calculateReward(totalMoney, rewardRate, rewardResidue, balanceWithoutReward, earnedRewards)
-        onBalanceCalculated(algoBalanceInformation)
+        earnedRewards: Long
+    ): BigDecimal? {
+        val rewardRate = blockResponse?.block?.rewardRate
+        val rewardResidue = blockResponse?.block?.rewardResidue ?: return null
+        val totalMoney = totalAlgoSupply?.totalMoney ?: return null
+
+        return algoRewardCalculator.calculateReward(
+            totalMoney, rewardRate, rewardResidue, balanceWithoutReward, earnedRewards
+        )
     }
 
     private fun clearValues() {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -17,6 +17,7 @@ import android.view.ViewGroup
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.annotation.StyleRes
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -26,12 +27,13 @@ import com.algorand.android.ui.register.ledger.verify.VerifiableLedgerAddressIte
 import com.algorand.android.ui.register.ledger.verify.VerifiableLedgerAddressItemStatus.AWAITING_VERIFICATION
 import com.algorand.android.ui.register.ledger.verify.VerifiableLedgerAddressItemStatus.PENDING
 import com.algorand.android.ui.register.ledger.verify.VerifiableLedgerAddressItemStatus.REJECTED
+import com.algorand.android.utils.extensions.changeTextAppearance
 
 class VerifiableLedgerAddressViewHolder(
     private val binding: ItemVerifiableLedgerAddressBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: VerifiableLedgerAddressItem) {
+    fun bind(item: VerifyLedgerAddressListItem.VerifiableLedgerAddressItem) {
         binding.authTextView.text = item.address
         when (item.status) {
             AWAITING_VERIFICATION -> showAwaitingVerificationUI()
@@ -42,31 +44,32 @@ class VerifiableLedgerAddressViewHolder(
     }
 
     private fun showAwaitingVerificationUI() {
-        setStatusText(R.string.awaiting_verification, R.color.orange_F8)
+        setStatusText(R.string.awaiting_verification, R.color.negativeColor, R.style.TextAppearance_Body_Sans)
         showLoading()
-        customizeCard(backgroundColor = R.color.secondaryBackground, newStrokeColor = R.color.orange_F8)
+        customizeCard(backgroundColor = R.color.transparent, newStrokeColor = R.color.negativeColor)
     }
 
     private fun showPendingUI() {
-        setStatusText(R.string.pending, R.color.tertiaryTextColor)
-        setStatusImageView(R.drawable.ic_ledger_verify_pending)
-        customizeCard(backgroundColor = R.color.transparent)
+        setStatusText(R.string.pending, R.color.secondaryTextColor, R.style.TextAppearance_Body_Sans)
+        setStatusImageView(R.drawable.ic_clock, R.color.pending_ledger_approve)
+        customizeCard(backgroundColor = R.color.transparent, newStrokeColor = R.color.secondaryTextColor)
     }
 
     private fun showApprovedUI() {
-        setStatusText(R.string.account_verified, R.color.colorPrimary)
-        setStatusImageView(R.drawable.ic_ledger_verified)
-        customizeCard(backgroundColor = R.color.secondaryBackground)
+        setStatusText(R.string.account_verified, R.color.positiveColor, R.style.TextAppearance_Body_Sans_Medium)
+        setStatusImageView(R.drawable.ic_check, R.color.positiveColor)
+        customizeCard(backgroundColor = R.color.transparent, newStrokeColor = R.color.secondaryTextColor)
     }
 
     private fun showRejectedUI() {
-        setStatusText(R.string.not_verified, R.color.red_E9)
-        setStatusImageView(R.drawable.ic_rejected_warning)
-        customizeCard(backgroundColor = R.color.red_E9_alpha_10)
+        setStatusText(R.string.not_verified, R.color.negativeColor, R.style.TextAppearance_Body_Sans_Medium)
+        setStatusImageView(R.drawable.ic_close, R.color.negativeColor)
+        customizeCard(backgroundColor = R.color.transparent, newStrokeColor = R.color.secondaryTextColor)
     }
 
-    private fun setStatusText(@StringRes textResId: Int, @ColorRes colorResId: Int) {
+    private fun setStatusText(@StringRes textResId: Int, @ColorRes colorResId: Int, @StyleRes styleResId: Int) {
         with(binding.statusTextView) {
+            changeTextAppearance(styleResId)
             setText(textResId)
             setTextColor(ContextCompat.getColor(context, colorResId))
         }
@@ -79,10 +82,15 @@ class VerifiableLedgerAddressViewHolder(
         }
     }
 
-    private fun setStatusImageView(@DrawableRes imageResId: Int) {
-        binding.loadingBar.isVisible = false
-        binding.statusImageView.setImageResource(imageResId)
-        binding.statusImageView.isVisible = true
+    private fun setStatusImageView(@DrawableRes imageResId: Int, @ColorRes colorResId: Int) {
+        with(binding) {
+            loadingBar.isVisible = false
+            with(statusImageView) {
+                setImageResource(imageResId)
+                imageTintList = ContextCompat.getColorStateList(context, colorResId)
+                isVisible = true
+            }
+        }
     }
 
     private fun showLoading() {
@@ -92,9 +100,8 @@ class VerifiableLedgerAddressViewHolder(
 
     companion object {
         fun create(parent: ViewGroup): VerifiableLedgerAddressViewHolder {
-            return VerifiableLedgerAddressViewHolder(
-                ItemVerifiableLedgerAddressBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            )
+            val binding = ItemVerifiableLedgerAddressBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            return VerifiableLedgerAddressViewHolder(binding)
         }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -14,18 +14,24 @@
 package com.algorand.android.ui.common.walletconnect
 
 import android.content.Context
+import android.text.SpannableStringBuilder
 import android.util.AttributeSet
-import android.view.View
-import androidx.annotation.StringRes
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
-import androidx.core.view.updatePadding
 import com.algorand.android.R
 import com.algorand.android.databinding.CustomWalletConnectTransactionInfoBinding
+import com.algorand.android.models.AccountIcon
 import com.algorand.android.models.BaseWalletConnectDisplayedAddress
-import com.algorand.android.models.WalletConnectAssetInformation
-import com.algorand.android.models.WalletConnectTransactionInfo
+import com.algorand.android.models.TransactionRequestAssetInformation
+import com.algorand.android.models.TransactionRequestTransactionInfo
+import com.algorand.android.utils.ALGO_DECIMALS
+import com.algorand.android.utils.addUnnamedAssetName
+import com.algorand.android.utils.extensions.show
+import com.algorand.android.utils.formatAmount
+import com.algorand.android.utils.getXmlStyledString
+import com.algorand.android.utils.setDrawable
 import com.algorand.android.utils.viewbinding.viewBinding
 import java.math.BigInteger
 
@@ -40,104 +46,153 @@ class WalletConnectTransactionInfoCardView(
         initRootLayout()
     }
 
-    fun initTransactionInfo(transactionInfo: WalletConnectTransactionInfo) {
-        binding.root.visibility = View.VISIBLE
-        binding.assetDeletionRequestWarningTextView.isVisible = transactionInfo.showAssetDeletionWarning
+    fun initTransactionInfo(transactionInfo: TransactionRequestTransactionInfo?) {
+        if (transactionInfo == null) return
         with(transactionInfo) {
-            initFromAddress(fromDisplayedAddress, accountTypeImageResId)
-            initAssetInformation(assetInformation, showAssetDeletionWarning)
-            initAccountBalance(accountBalance, assetDecimal, assetInformation?.isAlgorand)
-            initRekeyToAddress(rekeyToAccountAddress)
-            initCloseToAddress(closeToAccountAddress)
-            initAssetName(assetName)
-            initUnitName(unitName)
+            binding.assetDeletionRequestWarningTextView.isVisible = showDeletionWarning
+            initFromAddress(fromDisplayedAddress, fromAccountIcon)
+            initToAddress(toDisplayedAddress)
+            initAssetInformation(assetInformation)
+            initAccountBalance(accountBalance, assetInformation)
+            initRekeyToAddress(rekeyToAccountAddress, isLocalAccountSigner)
+            initCloseToAddress(closeToAccountAddress, isLocalAccountSigner)
+            initAssetCloseToAddress(assetCloseToAddress, assetInformation?.shortName)
+            initAssetName(assetName, isAssetUnnamed)
+            initUnitName(assetUnitName, isAssetUnnamed)
         }
     }
 
-    private fun initAssetName(assetName: String?) {
-        if (!assetName.isNullOrEmpty()) {
-            with(binding) {
-                assetTextView.text = assetName
-                assetNameGroup.visibility = VISIBLE
+    private fun initAssetName(assetName: String?, isAssetUnnamed: Boolean) {
+        when {
+            isAssetUnnamed -> {
+                with(binding) {
+                    assetTextView.text = SpannableStringBuilder().apply { addUnnamedAssetName(context) }
+                    assetNameGroup.show()
+                }
             }
-        }
-    }
-
-    private fun initUnitName(assetUnitName: String?) {
-        if (!assetUnitName.isNullOrEmpty()) {
-            with(binding) {
-                assetUnitNameTextView.text = assetUnitName
-                unitNameGroup.visibility = VISIBLE
-            }
-        }
-    }
-
-    fun setCloseToLabel(@StringRes textResId: Int) {
-        binding.reminderCloseToLabelTextView.setText(textResId)
-    }
-
-    fun setCloseToWarning(warningText: String) {
-        binding.reminderStatusTextView.text = warningText
-    }
-
-    private fun initFromAddress(displayedAddress: BaseWalletConnectDisplayedAddress, accountTypeImageResId: Int?) {
-        with(binding) {
-            accountNameTextView.apply {
-                text = displayedAddress.displayValue
-                isSingleLine = displayedAddress.isSingleLine
-            }
-            if (accountTypeImageResId != null) {
-                accountTypeImageView.apply {
-                    setImageResource(accountTypeImageResId)
-                    visibility = View.VISIBLE
+            !assetName.isNullOrBlank() -> {
+                with(binding) {
+                    assetTextView.text = assetName
+                    assetNameGroup.show()
                 }
             }
         }
     }
 
-    private fun initAssetInformation(
-        assetInformation: WalletConnectAssetInformation?,
-        showAssetDeletionMessage: Boolean
+    private fun initUnitName(assetUnitName: String?, isAssetUnnamed: Boolean) {
+        when {
+            isAssetUnnamed -> {
+                with(binding) {
+                    assetUnitNameTextView.text = SpannableStringBuilder().apply { addUnnamedAssetName(context) }
+                    unitNameGroup.show()
+                }
+            }
+            !assetUnitName.isNullOrBlank() -> {
+                with(binding) {
+                    assetUnitNameTextView.text = assetUnitName
+                    unitNameGroup.show()
+                }
+            }
+        }
+    }
+
+    private fun initFromAddress(
+        displayedAddress: BaseWalletConnectDisplayedAddress?,
+        accountIcon: AccountIcon?
     ) {
-        if (assetInformation != null) {
+        if (displayedAddress != null) {
             with(binding) {
-                assetNameTextView.setupUI(assetInformation, false)
-                assetDeletionRequestWarningTextView.isVisible = showAssetDeletionMessage
-                assetGroup.visibility = View.VISIBLE
+                fromAccountNameTextView.apply {
+                    text = displayedAddress.displayValue
+                    isSingleLine = displayedAddress.isSingleLine == true
+                }
+                if (accountIcon != null) {
+                    fromAccountTypeImageView.setAccountIcon(accountIcon, R.dimen.spacing_xxsmall)
+                }
+                fromGroup.show()
             }
         }
     }
 
-    private fun initAccountBalance(balance: BigInteger?, decimal: Int, isAlgorand: Boolean?) {
-        if (balance != null) {
+    private fun initToAddress(displayedAddress: String?) {
+        if (!displayedAddress.isNullOrBlank()) {
+            binding.toAccountNameTextView.text = displayedAddress
+            binding.toGroup.show()
+        }
+    }
+
+    private fun initAssetInformation(assetInformation: TransactionRequestAssetInformation?) {
+        assetInformation?.let {
             with(binding) {
-                accountBalanceTextView.setAmount(balance, decimal, isAlgorand ?: false)
-                accountBalanceGroup.visibility = View.VISIBLE
+                if (assetInformation.isVerified == true) {
+                    assetNameTextView.setDrawable(start = AppCompatResources.getDrawable(context, R.drawable.ic_shield))
+                }
+                assetNameTextView.text = assetInformation.shortName
+                assetIdTextView.text = assetInformation.assetId.toString()
+                assetGroup.show()
             }
         }
     }
 
-    private fun initRekeyToAddress(address: String?) {
-        if (!address.isNullOrBlank()) {
+    private fun initAccountBalance(balance: BigInteger?, assetInformation: TransactionRequestAssetInformation?) {
+        balance?.let {
             with(binding) {
-                rekeyToTextView.text = address
-                rekeyGroup.visibility = View.VISIBLE
+                val formattedBalance = context?.getXmlStyledString(
+                    stringResId = R.string.amount_with_asset_short_name,
+                    replacementList = listOf(
+                        "amount" to balance.formatAmount(assetInformation?.decimals ?: ALGO_DECIMALS),
+                        "asset_short_name" to assetInformation?.shortName.orEmpty()
+                    )
+                )
+                accountBalanceTextView.text = formattedBalance
+                accountBalanceGroup.show()
             }
         }
     }
 
-    private fun initCloseToAddress(address: String?) {
-        if (!address.isNullOrBlank()) {
+    private fun initRekeyToAddress(address: BaseWalletConnectDisplayedAddress?, isLocalAccountSigner: Boolean) {
+        if (!address?.displayValue.isNullOrBlank()) {
             with(binding) {
-                reminderCloseToTextView.text = address
-                reminderGroup.visibility = View.VISIBLE
+                rekeyToTextView.apply {
+                    text = address?.displayValue
+                    isSingleLine = address?.isSingleLine == true
+                }
+                rekeyGroup.show()
+                rekeyToWarningTextView.isVisible = isLocalAccountSigner
+            }
+        }
+    }
+
+    private fun initCloseToAddress(address: BaseWalletConnectDisplayedAddress?, isLocalAccountSigner: Boolean) {
+        if (!address?.displayValue.isNullOrBlank()) {
+            with(binding) {
+                remainderCloseToTextView.apply {
+                    text = address?.displayValue
+                    isSingleLine = address?.isSingleLine == true
+                }
+                remainderGroup.show()
+                remainderCloseToWarningTextView.isVisible = isLocalAccountSigner
+            }
+        }
+    }
+
+    private fun initAssetCloseToAddress(address: BaseWalletConnectDisplayedAddress?, assetShortName: String?) {
+        if (!address?.displayValue.isNullOrBlank()) {
+            with(binding) {
+                closeAssetToWarningTextView.text = root.context.getString(
+                    R.string.this_transaction_is_sending_asset,
+                    assetShortName
+                )
+                closeAssetToTextView.apply {
+                    text = address?.displayValue
+                    isSingleLine = address?.isSingleLine == true
+                }
+                closeAssetToGroup.show()
             }
         }
     }
 
     private fun initRootLayout() {
-        setBackgroundResource(R.drawable.bg_small_shadow)
-        setPadding(resources.getDimensionPixelSize(R.dimen.keyline_1_plus_4_dp))
-        updatePadding(bottom = resources.getDimensionPixelSize(R.dimen.smallshadow_bottom_padding_18dp))
+        setPadding(resources.getDimensionPixelSize(R.dimen.spacing_large))
     }
 }

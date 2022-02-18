@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright 2019 Algorand, Inc.
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -15,129 +14,147 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:background="@color/white"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/padView1Button"
-        style="@style/UnelevatedButton.DialPad"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Button.DialPad"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:text="1"
+        app:layout_constraintBottom_toTopOf="@id/padView4Button"
         app:layout_constraintEnd_toStartOf="@id/padView2Button"
-        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/padView2Button"
-        style="@style/UnelevatedButton.DialPad"
+        style="@style/Button.DialPad"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="12dp"
+        android:layout_height="0dp"
         android:text="2"
+        app:layout_constraintBottom_toTopOf="@id/padView5Button"
         app:layout_constraintEnd_toStartOf="@id/padView3Button"
         app:layout_constraintStart_toEndOf="@id/padView1Button"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/padView3Button"
-        style="@style/UnelevatedButton.DialPad"
+        style="@style/Button.DialPad"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:text="3"
+        app:layout_constraintBottom_toTopOf="@id/padView6Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/padView2Button"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/padView4Button"
-        style="@style/UnelevatedButton.DialPad"
+        style="@style/Button.DialPad"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_height="0dp"
         android:text="4"
-        app:layout_constraintEnd_toStartOf="@+id/padView5Button"
-        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintBottom_toTopOf="@id/padView7Button"
+        app:layout_constraintEnd_toStartOf="@id/padView5Button"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/padView1Button" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/padView5Button"
-        style="@style/UnelevatedButton.DialPad"
+        style="@style/Button.DialPad"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:text="5"
-        app:layout_constraintEnd_toStartOf="@+id/padView6Button"
-        app:layout_constraintStart_toEndOf="@+id/padView4Button"
-        app:layout_constraintTop_toTopOf="@+id/padView4Button" />
+        app:layout_constraintBottom_toTopOf="@id/padView8Button"
+        app:layout_constraintEnd_toStartOf="@id/padView6Button"
+        app:layout_constraintStart_toEndOf="@id/padView4Button"
+        app:layout_constraintTop_toBottomOf="@id/padView2Button" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/padView6Button"
-        style="@style/UnelevatedButton.DialPad"
+        style="@style/Button.DialPad"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:text="6"
+        app:layout_constraintBottom_toTopOf="@id/padView9Button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/padView5Button"
-        app:layout_constraintTop_toTopOf="@+id/padView5Button" />
+        app:layout_constraintStart_toEndOf="@id/padView5Button"
+        app:layout_constraintTop_toBottomOf="@id/padView3Button" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/padView7Button"
-        style="@style/UnelevatedButton.DialPad"
+        style="@style/Button.DialPad"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_height="0dp"
         android:text="7"
+        app:layout_constraintBottom_toTopOf="@id/padViewDotButton"
         app:layout_constraintEnd_toStartOf="@id/padView8Button"
-        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/padView4Button" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/padView8Button"
-        style="@style/UnelevatedButton.DialPad"
+        style="@style/Button.DialPad"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:text="8"
+        app:layout_constraintBottom_toTopOf="@id/padView0Button"
         app:layout_constraintEnd_toStartOf="@id/padView9Button"
         app:layout_constraintStart_toEndOf="@id/padView7Button"
-        app:layout_constraintTop_toTopOf="@+id/padView7Button" />
+        app:layout_constraintTop_toBottomOf="@id/padView5Button" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/padView9Button"
-        style="@style/UnelevatedButton.DialPad"
+        style="@style/Button.DialPad"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:text="9"
+        app:layout_constraintBottom_toTopOf="@id/padViewDeleteButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/padView8Button"
-        app:layout_constraintTop_toTopOf="@+id/padView7Button" />
+        app:layout_constraintTop_toBottomOf="@id/padView6Button" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/padViewDotButton"
+        style="@style/Button.DialPad"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="."
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/padView0Button"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/padView7Button" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/padView0Button"
-        style="@style/UnelevatedButton.DialPad"
+        style="@style/Button.DialPad"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="@dimen/bottom_safe_area_margin"
+        android:layout_height="0dp"
         android:text="0"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/padView8Button"
-        app:layout_constraintStart_toStartOf="@id/padView8Button"
+        app:layout_constraintEnd_toStartOf="@id/padViewDeleteButton"
+        app:layout_constraintStart_toEndOf="@id/padViewDotButton"
         app:layout_constraintTop_toBottomOf="@id/padView8Button" />
 
-    <ImageView
-        android:id="@+id/deleteImageView"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:scaleType="center"
-        app:layout_constraintBottom_toBottomOf="@id/padView0Button"
-        app:layout_constraintEnd_toEndOf="@id/padView9Button"
-        app:layout_constraintStart_toStartOf="@id/padView9Button"
-        app:layout_constraintTop_toTopOf="@id/padView0Button"
-        app:srcCompat="@drawable/ic_backspace" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/padViewDeleteButton"
+        style="@style/Button.DialPad"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:icon="@drawable/ic_delete"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconTint="@color/primaryTextColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/padView0Button"
+        app:layout_constraintTop_toBottomOf="@id/padView9Button" />
 
 </merge>

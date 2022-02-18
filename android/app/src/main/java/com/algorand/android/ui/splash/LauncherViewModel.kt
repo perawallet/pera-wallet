@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -21,6 +21,7 @@ import com.algorand.android.database.NodeDao
 import com.algorand.android.network.AlgodInterceptor
 import com.algorand.android.network.IndexerInterceptor
 import com.algorand.android.network.MobileHeaderInterceptor
+import com.algorand.android.usecase.PeraIntroductionUseCase
 import com.algorand.android.utils.findAllNodes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -30,13 +31,19 @@ class LauncherViewModel @ViewModelInject constructor(
     private val mobileHeaderInterceptor: MobileHeaderInterceptor,
     private val algodInterceptor: AlgodInterceptor,
     private val indexerInterceptor: IndexerInterceptor,
-    private val nodeDao: NodeDao
+    private val nodeDao: NodeDao,
+    private val peraIntroductionUseCase: PeraIntroductionUseCase
 ) : BaseViewModel() {
 
     val isNodeOperationFinished = MutableLiveData<Boolean>()
 
     init {
+        initializePeraIntroductionSharedPref()
         initializeNodeInterceptor()
+    }
+
+    private fun initializePeraIntroductionSharedPref() {
+        peraIntroductionUseCase.initializePeraIntroductionSharedPref()
     }
 
     private fun initializeNodeInterceptor() {

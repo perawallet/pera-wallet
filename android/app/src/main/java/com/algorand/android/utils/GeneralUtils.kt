@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -14,8 +14,6 @@ package com.algorand.android.utils
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.icu.text.MessageFormat
-import android.os.Build
 import android.text.InputFilter
 import android.util.Base64
 import android.view.View
@@ -42,20 +40,13 @@ const val MIN_FEE = 1000L
 const val DATA_SIZE_FOR_MAX = 270
 const val ROUND_THRESHOLD = 1000L
 const val ALGO_DECIMALS = 6
+const val DEFAULT_ASSET_DECIMAL = 0
 const val SHORTENED_ADDRESS_LETTER_COUNT = 6
 const val ALGOS_FULL_NAME = "Algos"
 const val ALGOS_SHORT_NAME = "ALGO"
 private const val ALGO_AMOUNT_FORMAT = "#,##0.00####"
 private const val ALGO_REWARD_AMOUNT_FORMAT = "#,##0.000000"
 private const val ALGO_DISPLAY_AMOUNT_DECIMAL = 2
-
-fun getOrdinalIndicatorForNumber(number: Int): String {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        MessageFormat("{0,ordinal}").format(arrayOf(number))
-    } else {
-        "$number."
-    }
-}
 
 fun Long?.formatAsAlgoString(): String {
     return DecimalFormat(ALGO_AMOUNT_FORMAT, DecimalFormatSymbols(Locale.US)).format(

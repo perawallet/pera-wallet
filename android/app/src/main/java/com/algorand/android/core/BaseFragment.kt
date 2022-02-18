@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,7 +12,6 @@
 
 package com.algorand.android.core
 
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
@@ -50,15 +49,17 @@ abstract class BaseFragment(
     }
 
     private fun setupStatusBar(statusBarConfiguration: StatusBarConfiguration) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            (activity as? CoreMainActivity)?.statusBarConfiguration = statusBarConfiguration
-        }
+        (activity as? CoreMainActivity)?.statusBarConfiguration = statusBarConfiguration
     }
 
     private fun handleBottomBarVisibility(isBottomBarVisible: Boolean?) {
         if (isBottomBarVisible != null) {
             (activity as? CoreMainActivity)?.isBottomBarNavigationVisible = isBottomBarVisible
         }
+    }
+
+    fun changeStatusBarConfiguration(statusBarConfiguration: StatusBarConfiguration) {
+        setupStatusBar(statusBarConfiguration)
     }
 
     fun navBack() {

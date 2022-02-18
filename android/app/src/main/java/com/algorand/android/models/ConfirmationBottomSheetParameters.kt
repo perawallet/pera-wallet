@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -21,8 +21,8 @@ data class ConfirmationBottomSheetParameters(
     val confirmationIdentifier: Long, // This field will be used as unique identifier for confirmation request
     val titleResId: Int,
     val descriptionText: String,
-    val iconDrawableResId: Int = R.drawable.ic_error_warning,
-    val imageBackgroundTintResId: Int = R.color.orange_F0,
+    val iconDrawableResId: Int = R.drawable.ic_info,
+    val imageTintResId: Int = R.color.negativeColor,
     val confirmButtonTextResId: Int = R.string.accept,
     val rejectButtonTextResId: Int = R.string.cancel
 ) : Parcelable

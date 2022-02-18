@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  Copyright 2019 Algorand, Inc.
+  Copyright 2022 Pera Wallet, LDA
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -20,7 +20,11 @@
         android:id="@+id/verifyLedgerAddressFragment"
         android:name="com.algorand.android.ui.register.ledger.verify.VerifyLedgerAddressFragment"
         android:label="VerifyLedgerAddressFragment"
-        tools:layout="@layout/fragment_verify_ledger_address" />
+        tools:layout="@layout/fragment_verify_ledger_address">
+        <action
+            android:id="@+id/action_verifyLedgerAddressFragment_to_verifyLedgerInfoFragment"
+            app:destination="@id/verifyLedgerInfoFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/registerLedgerSearchFragment"
@@ -73,5 +77,11 @@
             android:name="bluetoothDevice"
             app:argType="android.bluetooth.BluetoothDevice" />
     </dialog>
+
+    <fragment
+        android:id="@+id/verifyLedgerInfoFragment"
+        android:name="com.algorand.android.ui.register.ledger.verify.VerifyLedgerInfoFragment"
+        android:label="VerifyLedgerInfoFragment"
+        tools:layout="@layout/fragment_base_info" />
 
 </navigation>

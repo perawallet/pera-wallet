@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -16,44 +16,60 @@ import com.algorand.android.core.AccountManager
 import com.algorand.android.models.Account
 import com.algorand.android.models.AccountCacheData
 import com.algorand.android.models.AccountCacheStatus
-import com.algorand.android.models.AccountInformation
+import com.algorand.android.models.AccountDetail
 import com.algorand.android.models.AssetInformation
-import com.algorand.android.models.AssetParams
-import com.algorand.android.models.VerifiedAssetDetail
+import com.algorand.android.models.AssetQueryItem
+import com.algorand.android.usecase.AccountDetailUseCase
+import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import java.math.BigInteger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.withContext
 
-class AccountCacheManager(private val accountManager: AccountManager) {
+class AccountCacheManager(
+    private val accountManager: AccountManager,
+    private val accountDetailUseCase: AccountDetailUseCase,
+    private val assetDetailUseCase: SimpleAssetDetailUseCase
+) {
 
-    private val assetDescriptionMap = mutableMapOf<Long, AssetParams>()
-    private var verifiedAssetList: List<VerifiedAssetDetail> = listOf()
     val accountCacheMap = MutableStateFlow<Map<String, AccountCacheData>>(emptyMap())
 
-    suspend fun setAccountBalanceInformation(account: Account, accountInformation: AccountInformation) {
+    suspend fun initializeAccountCacheMap() {
+        accountDetailUseCase.getAccountDetailCacheFlow().collectLatest { accountDetailMap ->
+            accountDetailMap.values.forEach {
+                if (it is CacheResult.Success) {
+                    setAccountBalanceInformation(it.data)
+                }
+            }
+        }
+    }
+
+    private suspend fun setAccountBalanceInformation(accountDetail: AccountDetail) {
         withContext(Dispatchers.Default) {
-            if (accountManager.getAccount(account.address) != null) {
-                val previousCacheData = accountCacheMap.value[account.address]
-                val previousAssetList = previousCacheData?.assetsInformation
-                val accountCacheData = AccountCacheData.create(
-                    this@AccountCacheManager,
-                    account.copy(), // TODO find a way to use flow here.
-                    accountInformation
-                ).apply {
-                    addAssetsPendingForAddition(previousAssetList)
-                    addAssetsPendingForRemoval(previousAssetList)
+            with(accountDetail) {
+                if (accountManager.getAccount(account.address) != null) {
+                    val previousCacheData = accountCacheMap.value[account.address]
+                    val previousAssetList = previousCacheData?.assetsInformation
+                    val accountCacheData = AccountCacheData.create(
+                        this@AccountCacheManager,
+                        account.copy(), // TODO find a way to use flow here.
+                        accountInformation
+                    ).apply {
+                        addAssetsPendingForAddition(previousAssetList)
+                        addAssetsPendingForRemoval(previousAssetList)
+                    }
+                    if (accountCacheData != previousCacheData) {
+                        addCacheData(account.address, accountCacheData)
+                    }
+                } else {
+                    removeCacheData(account.address)
                 }
-                if (accountCacheData != previousCacheData) {
-                    addCacheData(account.address, accountCacheData)
-                }
-            } else {
-                removeCacheData(account.address)
             }
         }
     }
@@ -84,43 +100,14 @@ class AccountCacheManager(private val accountManager: AccountManager) {
             .distinctUntilChanged()
     }
 
-    fun removeAllData() {
-        accountCacheMap.value = mutableMapOf()
-    }
-
-    fun setAssetDescription(assetId: Long, assetParams: AssetParams) {
-        assetDescriptionMap[assetId] = assetParams.apply { isVerified = isAssetVerified(assetId) }
-    }
-
-    fun isThereDescriptionForAsset(assetId: Long): Boolean {
-        return assetDescriptionMap.contains(assetId)
-    }
-
-    fun getAssetDescription(assetId: Long): AssetParams? {
-        return assetDescriptionMap[assetId]
-    }
-
-    fun addAssetToAccount(accountPublicKey: String, assetInformation: AssetInformation) {
-        val newMap = accountCacheMap.value.toMutableMap()
-        if (newMap[accountPublicKey]?.addPendingAsset(assetInformation) != null) {
-            accountCacheMap.value = newMap
-        }
-    }
-
-    fun changeAssetStatusToPendingRemoval(accountPublicKey: String, assetId: Long) {
-        val newMap = accountCacheMap.value.toMutableMap()
-        newMap[accountPublicKey]?.changeAssetStatusToRemovalPending(assetId)
-        accountCacheMap.value = newMap
+    fun getAssetDescription(assetId: Long): AssetQueryItem? {
+        return assetDetailUseCase.getCachedAssetDetail(assetId)?.data
     }
 
     private fun addCacheData(accountPublicKey: String, cacheData: AccountCacheData) {
         val newMap = accountCacheMap.value.toMutableMap()
         newMap[accountPublicKey] = cacheData
         accountCacheMap.value = newMap
-    }
-
-    fun addAssetInformationToAccountCache(accountPublicKey: String, assetInformation: AssetInformation) {
-        accountCacheMap.value[accountPublicKey]?.assetsInformation?.add(assetInformation)
     }
 
     fun removeCacheData(accountPublicKey: String) {
@@ -161,14 +148,6 @@ class AccountCacheManager(private val accountManager: AccountManager) {
 
     fun getAccountAssetCount(publicKey: String) = accountCacheMap.value[publicKey]?.assetsInformation?.size
 
-    private fun isAssetVerified(assetId: Long): Boolean {
-        return verifiedAssetList.any { verifiedAsset -> verifiedAsset.assetId == assetId }
-    }
-
-    fun setVerifiedAssetList(verifiedAssetList: List<VerifiedAssetDetail>) {
-        this.verifiedAssetList = verifiedAssetList
-    }
-
     fun getAuthAccount(account: Account?): Account? {
         if (account == null) {
             return null
@@ -187,5 +166,13 @@ class AccountCacheManager(private val accountManager: AccountManager) {
 
     fun removeCachedData() {
         accountCacheMap.value = mutableMapOf()
+    }
+
+    fun getCachedAccounts(excludedAccountTypes: List<Account.Type> = emptyList()): List<AccountCacheData> {
+        return accountCacheMap.value
+            .filterNot { it.value.account.type in excludedAccountTypes }
+            .map { (_, accountCacheData) ->
+                accountCacheData
+            }
     }
 }

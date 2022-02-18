@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,68 +12,41 @@
 
 package com.algorand.android.models
 
-import android.content.Context
-import android.text.SpannableStringBuilder
-import com.algorand.android.R
-import com.algorand.android.utils.addUnnamedAssetName
 import com.algorand.android.utils.walletconnect.WalletConnectAssetDetail
 import java.math.BigInteger
 import kotlinx.parcelize.Parcelize
 
 sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() {
 
-    abstract override val summaryTitleResId: Int
-    abstract override val walletConnectTransactionParams: WalletConnectTransactionParams
-    abstract override val senderAddress: WalletConnectAddress
-    abstract override val note: String?
-    abstract override val peerMeta: WalletConnectPeerMeta
-    abstract override val rawTransactionPayload: WCAlgoTransactionRequest
-    abstract override val signer: WalletConnectSigner
-    abstract override val authAddress: String?
-    abstract override val account: WalletConnectAccount?
-    abstract val screenTitleResId: Int
-
-    override val summarySecondaryParameter: String
-        get() = ""
+    abstract val assetId: Long?
+    abstract val assetName: String?
+    abstract val isVerified: Boolean?
+    abstract val url: String?
 
     sealed class BaseAssetCreationTransaction : BaseAssetConfigurationTransaction() {
 
         abstract val totalAmount: BigInteger?
         abstract val decimals: Long?
         abstract val isFrozen: Boolean?
-        abstract val assetName: String?
         abstract val unitName: String?
-        abstract val url: String?
         abstract val metadataHash: String?
         abstract val managerAddress: WalletConnectAddress?
         abstract val reserveAddress: WalletConnectAddress?
         abstract val frozenAddress: WalletConnectAddress?
         abstract val clawbackAddress: WalletConnectAddress?
 
-        override val screenTitleResId: Int
-            get() = R.string.asset_creation_request
-
         override val transactionAmount: BigInteger?
             get() = totalAmount
-
-        override val summaryTitleResId: Int
-            get() = R.string.asset_creation_request
 
         override fun getAllAddressPublicKeysTxnIncludes(): List<WalletConnectAddress> {
             return listOf(senderAddress) + signerAddressList.orEmpty()
         }
 
-        fun getAssetName(context: Context): String {
-            return SpannableStringBuilder().apply {
-                if (!assetName.isNullOrBlank()) append(assetName) else addUnnamedAssetName(context)
-            }.toString()
-        }
+        override val isVerified: Boolean
+            get() = false
 
-        fun getUnitName(context: Context): String {
-            return SpannableStringBuilder().apply {
-                if (!unitName.isNullOrBlank()) append(unitName) else addUnnamedAssetName(context)
-            }.toString()
-        }
+        override val assetId: Long?
+            get() = null
 
         @Parcelize
         data class AssetCreationTransaction(
@@ -97,7 +70,11 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val frozenAddress: WalletConnectAddress? = null,
             override val clawbackAddress: WalletConnectAddress? = null,
             override val groupId: String?
-        ) : BaseAssetCreationTransaction()
+        ) : BaseAssetCreationTransaction() {
+
+            override val fee: Long
+                get() = walletConnectTransactionParams.fee
+        }
 
         @Parcelize
         data class AssetCreationTransactionWithCloseTo(
@@ -126,8 +103,11 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
 
             override fun getCloseToAccountAddress(): WalletConnectAddress = closeToAddress
 
-            override val shouldShowWarningIndicator: Boolean
-                get() = true
+            override val warningCount: Int
+                get() = 1
+
+            override val fee: Long
+                get() = walletConnectTransactionParams.fee
         }
 
         @Parcelize
@@ -157,8 +137,11 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
 
             override fun getRekeyToAccountAddress(): WalletConnectAddress = rekeyAddress
 
-            override val shouldShowWarningIndicator: Boolean
-                get() = true
+            override val warningCount: Int
+                get() = 1
+
+            override val fee: Long
+                get() = walletConnectTransactionParams.fee
         }
 
         @Parcelize
@@ -184,15 +167,18 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val clawbackAddress: WalletConnectAddress? = null,
             override val groupId: String?,
             val closeToAddress: WalletConnectAddress,
-            val rekeyAddress: WalletConnectAddress,
+            val rekeyAddress: WalletConnectAddress
         ) : BaseAssetCreationTransaction() {
 
             override fun getRekeyToAccountAddress(): WalletConnectAddress = rekeyAddress
 
             override fun getCloseToAccountAddress(): WalletConnectAddress = closeToAddress
 
-            override val shouldShowWarningIndicator: Boolean
-                get() = true
+            override val warningCount: Int
+                get() = 2
+
+            override val fee: Long
+                get() = walletConnectTransactionParams.fee
         }
 
         companion object {
@@ -212,21 +198,25 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
 
     sealed class BaseAssetReconfigurationTransaction : BaseAssetConfigurationTransaction(), WalletConnectAssetDetail {
 
-        abstract val url: String?
         abstract val managerAddress: WalletConnectAddress?
         abstract val reserveAddress: WalletConnectAddress?
         abstract val frozenAddress: WalletConnectAddress?
         abstract val clawbackAddress: WalletConnectAddress?
 
-        override val screenTitleResId: Int
-            get() = R.string.asset_reconfiguration_request
-
-        override val summaryTitleResId: Int
-            get() = R.string.asset_reconfiguration_request
+        override var assetParams: AssetParams? = null
 
         override fun getAllAddressPublicKeysTxnIncludes(): List<WalletConnectAddress> {
             return listOf(senderAddress) + signerAddressList.orEmpty()
         }
+
+        override val assetName: String?
+            get() = assetParams?.fullName
+
+        override val isVerified: Boolean?
+            get() = assetParams?.isVerified
+
+        val shortName: String?
+            get() = assetParams?.shortName
 
         @Parcelize
         data class AssetReconfigurationTransaction(
@@ -245,9 +235,12 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val reserveAddress: WalletConnectAddress? = null,
             override val frozenAddress: WalletConnectAddress? = null,
             override val clawbackAddress: WalletConnectAddress? = null,
-            override var assetParams: AssetParams? = null,
-            override val groupId: String?,
-        ) : BaseAssetReconfigurationTransaction()
+            override val groupId: String?
+        ) : BaseAssetReconfigurationTransaction() {
+
+            override val fee: Long
+                get() = walletConnectTransactionParams.fee
+        }
 
         @Parcelize
         data class AssetReconfigurationTransactionWithCloseTo(
@@ -266,13 +259,15 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val reserveAddress: WalletConnectAddress? = null,
             override val frozenAddress: WalletConnectAddress? = null,
             override val clawbackAddress: WalletConnectAddress? = null,
-            override var assetParams: AssetParams? = null,
             override val groupId: String?,
-            val closeToAddress: WalletConnectAddress,
+            val closeToAddress: WalletConnectAddress
         ) : BaseAssetReconfigurationTransaction() {
 
-            override val shouldShowWarningIndicator: Boolean
-                get() = true
+            override val warningCount: Int
+                get() = 1
+
+            override val fee: Long
+                get() = walletConnectTransactionParams.fee
 
             override fun getCloseToAccountAddress(): WalletConnectAddress = closeToAddress
         }
@@ -294,13 +289,15 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val reserveAddress: WalletConnectAddress? = null,
             override val frozenAddress: WalletConnectAddress? = null,
             override val clawbackAddress: WalletConnectAddress? = null,
-            override var assetParams: AssetParams? = null,
             override val groupId: String?,
-            val rekeyAddress: WalletConnectAddress,
+            val rekeyAddress: WalletConnectAddress
         ) : BaseAssetReconfigurationTransaction() {
 
-            override val shouldShowWarningIndicator: Boolean
-                get() = true
+            override val warningCount: Int
+                get() = 1
+
+            override val fee: Long
+                get() = walletConnectTransactionParams.fee
 
             override fun getRekeyToAccountAddress(): WalletConnectAddress = rekeyAddress
         }
@@ -322,14 +319,16 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val reserveAddress: WalletConnectAddress? = null,
             override val frozenAddress: WalletConnectAddress? = null,
             override val clawbackAddress: WalletConnectAddress? = null,
-            override var assetParams: AssetParams? = null,
             override val groupId: String?,
             val closeToAddress: WalletConnectAddress,
-            val rekeyAddress: WalletConnectAddress,
+            val rekeyAddress: WalletConnectAddress
         ) : BaseAssetReconfigurationTransaction() {
 
-            override val shouldShowWarningIndicator: Boolean
-                get() = true
+            override val warningCount: Int
+                get() = 2
+
+            override val fee: Long
+                get() = walletConnectTransactionParams.fee
 
             override fun getRekeyToAccountAddress(): WalletConnectAddress = rekeyAddress
 
@@ -353,20 +352,20 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
 
     sealed class BaseAssetDeletionTransaction : BaseAssetConfigurationTransaction(), WalletConnectAssetDetail {
 
-        abstract val url: String?
-
-        override val screenTitleResId: Int
-            get() = R.string.asset_deletion_request
-
-        override val summaryTitleResId: Int
-            get() = R.string.asset_deletion_request
-
-        override val shouldShowWarningIndicator: Boolean
-            get() = true
+        override var assetParams: AssetParams? = null
 
         override fun getAllAddressPublicKeysTxnIncludes(): List<WalletConnectAddress> {
             return listOf(senderAddress) + signerAddressList.orEmpty()
         }
+
+        override val assetName: String?
+            get() = assetParams?.fullName
+
+        override val isVerified: Boolean?
+            get() = assetParams?.isVerified
+
+        val shortName: String?
+            get() = assetParams?.shortName
 
         @Parcelize
         data class AssetDeletionTransaction(
@@ -381,9 +380,15 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val account: WalletConnectAccount?,
             override val assetId: Long,
             override val url: String? = null,
-            override var assetParams: AssetParams? = null,
             override val groupId: String?
-        ) : BaseAssetDeletionTransaction()
+        ) : BaseAssetDeletionTransaction() {
+
+            override val warningCount: Int
+                get() = 1
+
+            override val fee: Long
+                get() = walletConnectTransactionParams.fee
+        }
 
         @Parcelize
         data class AssetDeletionTransactionWithCloseTo(
@@ -398,10 +403,15 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val account: WalletConnectAccount?,
             override val assetId: Long,
             override val url: String? = null,
-            override var assetParams: AssetParams? = null,
             override val groupId: String?,
-            val closeToAddress: WalletConnectAddress,
+            val closeToAddress: WalletConnectAddress
         ) : BaseAssetDeletionTransaction() {
+
+            override val warningCount: Int
+                get() = 2
+
+            override val fee: Long
+                get() = walletConnectTransactionParams.fee
 
             override fun getCloseToAccountAddress(): WalletConnectAddress = closeToAddress
         }
@@ -419,10 +429,15 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val account: WalletConnectAccount?,
             override val assetId: Long,
             override val url: String? = null,
-            override var assetParams: AssetParams? = null,
             override val groupId: String?,
-            val rekeyAddress: WalletConnectAddress,
+            val rekeyAddress: WalletConnectAddress
         ) : BaseAssetDeletionTransaction() {
+
+            override val warningCount: Int
+                get() = 2
+
+            override val fee: Long
+                get() = walletConnectTransactionParams.fee
 
             override fun getRekeyToAccountAddress(): WalletConnectAddress = rekeyAddress
         }
@@ -440,11 +455,16 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val account: WalletConnectAccount?,
             override val assetId: Long,
             override val url: String? = null,
-            override var assetParams: AssetParams? = null,
             override val groupId: String?,
             val closeToAddress: WalletConnectAddress,
-            val rekeyAddress: WalletConnectAddress,
+            val rekeyAddress: WalletConnectAddress
         ) : BaseAssetDeletionTransaction() {
+            @Suppress("MagicNumber")
+            override val warningCount: Int
+                get() = 3
+
+            override val fee: Long
+                get() = walletConnectTransactionParams.fee
 
             override fun getCloseToAccountAddress(): WalletConnectAddress = closeToAddress
 

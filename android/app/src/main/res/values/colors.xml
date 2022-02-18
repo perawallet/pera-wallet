@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -11,90 +11,159 @@
   -->
 
 <resources>
-    <color name="ic_launcher_background">@color/gray_42</color>
-    <color name="colorPrimary">@color/green_1D</color>
+    <!--Post Design Refactor Colors-->
+    <color name="transparent">#00000000</color>
+
+    <color name="white">#FFFFFF</color>
+
+    <color name="black">#000000</color>
+    <color name="black_A3">#A3000000</color> <!-- black with 64% alpha -->
+
+    <color name="gray_900">#18181B</color>
+    <color name="gray_800">#27272A</color>
+    <color name="gray_700">#3F3F46</color>
+    <color name="gray_600">#525252</color>
+    <color name="gray_500">#71717A</color>
+    <color name="gray_400">#A1A1AA</color>
+    <color name="gray_300">#D4D4D8</color>
+    <color name="gray_200">#E4E4E7</color>
+    <color name="gray_100">#F1F1F2</color>
+    <color name="gray_50">#FAFAFA</color>
+
+    <color name="turquoise_900">#0B4D68</color>
+    <color name="turquoise_800">#136880</color>
+    <color name="turquoise_700">#1F8E9D</color>
+    <color name="turquoise_600">#2CB7BC</color>
+    <color name="turquoise_500">#3EDBD2</color>
+    <color name="turquoise_400">#6BE9D6</color>
+    <color name="turquoise_300">#8BF4DB</color>
+    <color name="turquoise_200">#B2FBE3</color>
+    <color name="turquoise_100">#D8FDEE</color>
+    <color name="turquoise_50">#EBFEF7</color>
+    <color name="turquoise_1A">#1A2CB7BC</color><!--  turquoise_600 with alpha10  -->
+    <color name="turquoise_4D">#4D2CB7BC</color><!--  turquoise_600 with alpha30  -->
+
+    <color name="yellow_600">#C77700</color>
+    <color name="yellow_500">#EDB21C</color>
+    <color name="yellow_400">#FFEE55</color>
+    <color name="yellow_300">#FFF387</color>
+    <color name="yellow_200">#FFF8BA</color>
+    <color name="yellow_100">#FFFBD4</color>
+
+    <color name="purple_900">#231566</color>
+    <color name="purple_800">#34207B</color>
+    <color name="purple_700">#4C2F99</color>
+    <color name="purple_600">#6841B7</color>
+    <color name="purple_500">#8755D5</color>
+    <color name="purple_400">#AB7CE5</color>
+    <color name="purple_300">#C499F1</color>
+    <color name="purple_200">#DDBCF9</color>
+    <color name="purple_100">#F0DDFC</color>
+    <color name="purple_50">#F7EEFD</color>
+
+    <color name="salmon_900">#7A1128</color>
+    <color name="salmon_800">#931D2D</color>
+    <color name="salmon_700">#B72D37</color>
+    <color name="salmon_600">#DB4645</color>
+    <color name="salmon_500">#FF6D5F</color>
+    <color name="salmon_500_alpha_12">#1FFF6D5F</color>
+    <color name="salmon_400">#FF9B86</color>
+    <color name="salmon_300">#FFB3BE</color>
+    <color name="salmon_200">#FFD3BE</color>
+    <color name="salmon_100">#FFECDF</color>
+    <color name="salmon_50">#FFF5EF</color>
+
+    <color name="blush_900">#772552</color>
+    <color name="blush_800">#8E3B63</color>
+    <color name="blush_700">#B15D7D</color>
+    <color name="blush_600">#D5859D</color>
+    <color name="blush_500">#F8B7C4</color>
+    <color name="blush_400">#FAC9CE</color>
+    <color name="blush_300">#FCD5D5</color>
+    <color name="blush_200">#FEE5E3</color>
+    <color name="blush_100">#FEF3F1</color>
+    <color name="blush_50">#FFF9F8</color>
+    <!--/Post Design Refactor Colors-->
+
+    <!--Override System Colors-->
+    <color name="ic_launcher_background">@color/yellow_400</color>
+    <color name="colorPrimary">@color/turquoise_700</color>
     <color name="colorPrimaryVariant">@color/green_0D</color>
     <color name="colorSecondary">@color/orange_F0</color>
     <color name="colorSecondaryVariant">@color/orange_E5</color>
     <color name="colorError">@color/red_E9</color>
+    <!--/Override System Colors-->
+
+    <!--Post Design Refactor Color Groups-->
+    <color name="helperNegative">@color/salmon_600</color>
+    <color name="helperNegativeLighter">@color/salmon_100</color>
+    <color name="helperPositive">@color/turquoise_700</color>
+    <color name="helperSuccess">@color/turquoise_600</color>
+    <color name="helperSuccessCheckmark">@color/white</color>
+
+    <color name="layerGray">@color/gray_200</color>
+    <color name="layerGrayLighter">@color/gray_100</color>
+
+    <color name="linkPrimary">@color/turquoise_700</color>
+    <color name="linkIcon">@color/turquoise_600</color>
+
+    <color name="bottomSheetLine">@color/gray_E6</color>
+
+    <color name="switchBg">@color/turquoise_600</color>
+    <color name="switchBgOff">@color/gray_400</color>
+    <!--/Post Design Refactor Color Groups-->
+
+
+    <!--!!! Do not add any new color to below this line. Try to use the ones at above.
+     When you have time try to remove the ones below.  -->
+
+
 
     <!--    Background Colors -->
-    <color name="primaryBackground">@color/gray_F3</color>
-    <color name="colorOnPrimary">@color/red_E9</color>
+    <!--    <color name="primaryBackground">@color/gray_F3</color>-->
     <color name="transparentPrimaryBackground">@color/gray_F3_alpha_100</color>
     <color name="secondaryBackground">@color/white</color>
     <color name="tertiaryBackground">@color/white</color>
     <color name="disabledBackground">@color/gray_E8</color>
-    <color name="splashBackgroundColor">@color/green_1D</color>
+    <color name="splashBackgroundColor">@color/yellow_400</color>
     <color name="surfaceOnBackground">@color/gray_21</color>
-    <color name="mainBottomCancelBackgroundColor">@color/gray_F3</color>
-    <color name="settingsDividerColor">@color/gray_F3</color>
-    <color name="dialpadBackgroundColor">@color/gray_F3</color>
-    <color name="dialpadRippleColor">@color/gray_D9</color>
     <color name="toolbarButtonColor">@color/white</color>
     <color name="primaryBackgroundRippleColor">@color/gray_F3</color>
-    <color name="secondaryButtonBackgroundColor">@color/gray_F3</color>
-    <color name="tertiaryButtonBackgroundColor">@color/gray_71</color>
-    <color name="photoPrimaryBackgroundColor">@color/gray_F3</color>
-    <color name="photoSecondaryBackgroundColor">@color/white</color>
-    <color name="passphraseBackgroundColor">@color/gray_F8</color>
+    <color name="passphraseBackgroundColor">@color/gray_50</color>
     <color name="unelevatedButtonDisabledBackgroundColor">@color/gray_BE</color>
     <color name="unelevatedButtonDisabledTextColor">@color/white</color>
 
     <color name="backgroundOnPrimary">@color/gray_F8</color>
     <color name="horizontalSwitchBackgroundColor">@color/gray_F3</color>
-    <color name="passphraseUnselectedBackgroundColor">@color/gray_F3</color>
-    <color name="passphraseSelectedBackgroundColor">@color/white</color>
     <color name="noteDisabledBackgroundColor">@color/gray_E8</color>
 
     <!--    Text Colors     -->
-    <color name="primaryTextColor">@color/gray_19</color>
-    <color name="secondaryTextColor">@color/gray_8A</color>
-    <color name="tertiaryTextColor">@color/gray_59</color>
     <color name="hintTextColor">@color/gray_A4</color>
-    <color name="primaryButtonTextColor">@color/white</color>
-    <color name="secondaryButtonTextColor">@color/gray_19</color>
-    <color name="textButtonTextColor">@color/gray_59</color>
-    <color name="linkTextColor">@color/green_0D</color>
 
     <!--   Icon Tint Color  -->
-    <color name="primaryIconTintColor">@color/gray_59</color>
-    <color name="secondaryIconTintColor">@color/gray_BE</color>
     <color name="algoDefaultIconTintColor">@color/gray_71</color>
     <color name="accountHeaderIconTintColor">@color/gray_A4</color>
-    <color name="pasteIconTintColor">@color/gray_19</color>
-    <color name="unfilledPasswordDigitIconTintColor">@color/gray_BE</color>
-    <color name="unselectedDotIconColor">@color/gray_E8</color>
     <color name="qrIconTintColor">@color/gray_01</color>
 
     <color name="maxButtonStrokeColor">@color/gray_E8</color>
 
-    <color name="dividerColor">@color/gray_F3</color>
+    <color name="dividerColor">@color/gray_100</color>
 
-    <color name="transparent">#00000000</color>
     <color name="qr_code_outside_rectangle_transparency">#E5191923</color>
 
-    <color name="bottomSheetIndicatorColor">#EBEDF0</color>
-    <color name="chartTimeFrameButtonColor">@color/gray_F3</color>
-    <color name="chartTimeFrameDefaultTextColor">@color/gray_8A</color>
+    <color name="chartTimeFrameButtonColor">@color/gray_100</color>
+    <color name="chartTimeFrameDefaultTextColor">@color/gray_400</color>
 
     <color name="walletConnectAccountSelectionBorderColor">@color/gray_F3</color>
     <color name="walletConnectDappIconBackgroundColor">@color/white</color>
-    <color name="walletConnectDappIconBorderColor">@color/gray_F1</color>
+    <color name="walletConnectDappIconBorderColor">@color/gray_100</color>
     <color name="walletConnectFeeAlgoIconColor">@color/gray_19</color>
 
     <color name="governance_banner_icon_color">@color/black</color>
 
     <color name="text_bullet_point_color">@color/gray_19</color>
 
-    <!-- Design Refactor  -->
-
-    <color name="white">#FFFFFF</color>
-    <color name="white_alpha_12">#1FFFFFFF</color>
-    <color name="white_alpha_80">#CCFFFFFF</color>
-
-    <color name="black">#000000</color>
-    <color name="black_60">#99000000</color>
+    <color name="white_alpha_16">#29FFFFFF</color>
 
     <color name="gray_01">#010101</color>
     <color name="gray_19">#191923</color>
@@ -104,10 +173,8 @@
     <color name="gray_2B">#2b2b33</color>
     <color name="gray_11">#111116</color>
     <color name="gray_55">#555561</color>
-    <color name="gray_2A">#2A2C30</color>
     <color name="gray_6B">#6b6b75</color>
     <color name="gray_42">#42424F</color>
-    <color name="gray_1D">#1D1E21</color>
     <color name="gray_59">#595965</color>
     <color name="gray_8D">#8d8d96</color>
     <color name="gray_71">#71717B</color>
@@ -117,33 +184,122 @@
     <color name="gray_D9">#D9D9DD</color>
     <color name="gray_E8">#E8E8EB</color>
     <color name="gray_DB">#DBDBE0</color>
-    <color name="gray_F1">#F1F1F2</color>
     <color name="gray_F3">#F3F3F5</color>
     <color name="gray_F3_alpha_100">#00F3F3F5</color>
     <color name="gray_F8">#F8F8FA</color>
-    <color name="gray_19_alpha_72">#B8191923</color>
     <color name="gray_A2">#A2A1A9</color>
 
-    <color name="blue_49">#496ADE</color>
-
-    <color name="green_1D">#1DAD98</color>
-    <color name="green_1D_alpha_10">#1A1DAD98</color>
     <color name="green_0D">#0D927E</color>
-    <color name="green_EC">#ECF7F5</color>  <!--  green_1D with alpha10  -->
 
     <color name="orange_E0">#E05E40</color>
     <color name="orange_F0">#F0694A</color>
     <color name="orange_E5">#E05E40</color>
-    <color name="orange_FB">#FBF2E9</color> <!--  orange_F8 with alpha10  -->
-    <color name="orange_D9">#D96416</color>
-    <color name="orange_F8">#F87E2C</color>
-    <color name="orange_14">#14F87E2C</color><!--  orange_F8 with alpha8  -->
 
     <color name="yellow_F8">#F8A62C</color>
 
     <color name="red_F0">#F0694A</color>
     <color name="red_E9">#E95050</color>
-    <color name="red_E9_alpha_10">#1AE95050</color>
     <color name="red_F9">#F9ECEC</color>
 
+    <color name="gray_E6">#E6E7E9</color>
+
+
+    <!-- Design Refactor  -->
+
+    <color name="pink_FF">#FFAEE3</color>
+
+    <color name="primaryBackground">@color/white</color>
+
+    <color name="primaryIconTintColor">@color/gray_900</color>
+    <color name="secondaryIconTintColor">@color/gray_500</color>
+
+    <color name="primaryTextColor">@color/gray_900</color>
+    <color name="secondaryTextColor">@color/gray_500</color>
+    <color name="tertiaryTextColor">@color/gray_400</color>
+    <color name="errorTextColor">@color/salmon_600</color>
+    <color name="errorTintColor">@color/salmon_600</color>
+    <color name="infoTintColor">@color/turquoise_700</color>
+
+    <color name="verifiedIconColor">@color/turquoise_700</color>
+
+    <color name="textButtonTextColor">@color/gray_900</color>
+    <color name="textButtonDisabledTextColor">@color/gray_500</color>
+    <color name="textButtonRippleColor">@color/gray_100</color>
+
+    <color name="primaryButtonBackgroundColor">@color/gray_800</color>
+    <color name="primaryButtonRippleColor">@color/gray_700</color>
+    <color name="primaryButtonDisabledBackgroundColor">@color/gray_100</color>
+    <color name="primaryButtonTextColor">@color/gray_100</color>
+    <color name="primaryButtonDisabledTextColor">@color/gray_500</color>
+
+    <color name="secondaryButtonBackgroundColor">@color/gray_100</color>
+    <color name="secondaryButtonRippleColor">@color/gray_800</color>
+    <color name="secondaryButtonDisabledBackgroundColor">@color/gray_100</color>
+    <color name="secondaryButtonTextColor">@color/gray_900</color>
+    <color name="secondaryButtonDisabledTextColor">@color/gray_500</color>
+
+    <color name="modalityBackgroundColor">@color/gray_900</color>
+
+    <color name="dialpadRippleColor">@color/gray_100</color>
+
+    <color name="unfilledPasswordDigitIconTintColor">@color/gray_200</color>
+
+    <color name="uncheckedSelectionItemIconTintColor">@color/gray_200</color>
+
+    <color name="pasteButtonBackgroundColor">@color/gray_800</color>
+    <color name="pasteButtonTextColor">@color/gray_100</color>
+
+    <color name="textFieldTypingColor">@color/gray_800</color>
+
+    <!--  Passphrase Input  -->
+    <color name="focusedLineColor">@color/gray_800</color>
+    <color name="unFocusedLineColor">@color/gray_200</color>
+
+
+    <color name="infoImageColor">@color/linkIcon</color>
+
+    <color name="transaction_confirmed_text_color">@color/turquoise_700</color>
+    <color name="transaction_amount_positive_color">@color/turquoise_700</color>
+    <color name="transaction_amount_negative_color">@color/salmon_600</color>
+    <color name="searchBarViewIconColor">@color/gray_400</color>
+
+    <color name="walletConnectSessionDateTextColor">@color/gray_400</color>
+    <color name="positiveColor">@color/turquoise_600</color>
+    <color name="negativeColor">@color/salmon_600</color>
+    <color name="negativeLighterColor">@color/salmon_100</color>
+
+    <color name="pending_ledger_approve">@color/gray_400</color>
+
+    <!-- Account Icon Colors -->
+    <color name="account_icon_background_color_blush">#F5B2C6</color>
+    <color name="account_icon_tint_color_blush">#9B1F69</color>
+    <color name="account_icon_background_color_orange">#FF6E5C</color>
+    <color name="account_icon_tint_color_orange">#FFEAC2</color>
+    <color name="account_icon_background_color_purple">#8755D5</color>
+    <color name="account_icon_tint_color_purple">#FFAEE3</color>
+    <color name="account_icon_background_color_turquoise">#8BF4DB</color>
+    <color name="account_icon_tint_color_turquoise">#136880</color>
+    <color name="account_icon_background_color_salmon">#FF9B86</color>
+    <color name="account_icon_tint_color_salmon">#424F76</color>
+
+    <color name="bottom_nav_icon_selected_color">@color/gray_900</color>
+    <color name="bottom_nav_icon_default_color">@color/gray_400</color>
+    <color name="send_receiver_tab_bar_icon_background_color">@color/gray_100</color>
+    <color name="send_receiver_tab_bar_icon_tint_color">@color/gray_900</color>
+
+    <color name="algoGreenRoundIconFillColor">@color/white</color>
+
+    <color name="progressBarTint">@color/helperSuccess</color>
+
+    <color name="assetIdCopyIconColor">@color/gray_400</color>
+
+    <color name="rekey_icon_color">@color/pink_FF</color>
+    <color name="rekey_icon_background_color">@color/purple_500</color>
+
+    <color name="reward_icon_color">@color/turquoise_700</color>
+
+    <color name="nftPlaceholderStrokeColor">@color/gray_900</color>
+    <color name="nftPlaceholderBoxColor">@color/white</color>
+    <color name="nftPlaceholderStarColor">@color/white</color>
+    <color name="nftPlaceholderHoleColor">@color/gray_900</color>
 </resources>

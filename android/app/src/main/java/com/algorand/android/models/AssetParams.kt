@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -13,6 +13,7 @@
 package com.algorand.android.models
 
 import android.os.Parcelable
+import com.algorand.android.utils.DEFAULT_ASSET_DECIMAL
 import com.google.gson.annotations.SerializedName
 import java.math.BigInteger
 import kotlinx.parcelize.Parcelize
@@ -64,6 +65,7 @@ data class AssetParams(
             isVerified = isVerified,
             shortName = shortName,
             fullName = fullName,
+            decimal = decimals ?: DEFAULT_ASSET_DECIMAL
         )
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -14,23 +14,23 @@ package com.algorand.android.ui.lockpreference
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
-import com.algorand.android.core.DaggerBaseFragment
-import com.algorand.android.databinding.FragmentChoosePasswordInfoBinding
 import com.algorand.android.models.FragmentConfiguration
+import com.algorand.android.models.TextButton
 import com.algorand.android.models.ToolbarConfiguration
-import com.algorand.android.ui.lockpreference.ChoosePasswordInfoFragmentDirections.Companion.actionChoosePasswordInfoFragmentToChoosePasswordFragment
+import com.algorand.android.ui.common.BaseInfoFragment
 import com.algorand.android.utils.preference.setLockDontAskAgain
-import com.algorand.android.utils.viewbinding.viewBinding
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ChoosePasswordInfoFragment : DaggerBaseFragment(R.layout.fragment_choose_password_info) {
+class ChoosePasswordInfoFragment : BaseInfoFragment() {
 
     @Inject
     lateinit var sharedPref: SharedPreferences
@@ -39,40 +39,66 @@ class ChoosePasswordInfoFragment : DaggerBaseFragment(R.layout.fragment_choose_p
 
     override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
 
-    private val binding by viewBinding(FragmentChoosePasswordInfoBinding::bind)
+    private val args by navArgs<ChoosePasswordInfoFragmentArgs>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        configureToolbar()
-        binding.positiveButton.setOnClickListener { onPositiveClick() }
-        binding.cancelButton.setOnClickListener { onCancelClick() }
+        setupToolbar()
     }
 
-    private fun configureToolbar() {
-        getAppToolbar()?.apply {
-            val skipButton = LayoutInflater
-                .from(context)
-                .inflate(R.layout.custom_text_tab_button, this, false) as MaterialButton
+    private fun setupToolbar() {
+        getAppToolbar()?.addButtonToEnd(TextButton(R.string.do_not_ask_again, onClick = ::onDontAskAgainClick))
+    }
 
-            skipButton.apply {
-                setTextColor(ContextCompat.getColor(context, R.color.colorPrimary))
-                setText(R.string.do_not_ask_again)
-                setOnClickListener { onDontAskAgainClick() }
-                addViewToEndSide(this)
-            }
+    override fun setImageView(imageView: ImageView) {
+        val icon = R.drawable.ic_locked
+        imageView.apply {
+            setImageResource(icon)
+            setColorFilter(ContextCompat.getColor(requireContext(), R.color.infoImageColor))
+        }
+    }
+
+    override fun setTitleText(textView: TextView) {
+        val title = R.string.increase_your_security
+        textView.setText(title)
+    }
+
+    override fun setDescriptionText(textView: TextView) {
+        val description = R.string.this_6_digit_pin
+        textView.setText(description)
+    }
+
+    override fun setFirstButton(materialButton: MaterialButton) {
+        val buttonText = R.string.set_pin_code
+        materialButton.apply {
+            setText(buttonText)
+            setOnClickListener { navigateToChoosePasswordFragment() }
+        }
+    }
+
+    override fun setSecondButton(materialButton: MaterialButton) {
+        val buttonText = R.string.not_now
+        materialButton.apply {
+            setText(buttonText)
+            visibility = MaterialButton.VISIBLE
+            setOnClickListener { onCancelClick() }
         }
     }
 
     private fun onDontAskAgainClick() {
         sharedPref.setLockDontAskAgain()
-        navBack()
+        onCancelClick()
     }
 
-    private fun onPositiveClick() {
-        nav(actionChoosePasswordInfoFragmentToChoosePasswordFragment())
+    private fun navigateToChoosePasswordFragment() {
+        nav(ChoosePasswordInfoFragmentDirections.actionChoosePasswordInfoFragmentToChoosePasswordFragment())
     }
 
     private fun onCancelClick() {
-        navBack()
+        if (args.shouldNavigateHome) {
+            nav(ChoosePasswordInfoFragmentDirections.actionChoosePasswordInfoFragmentToHomeNavigation())
+        } else {
+            navBack()
+        }
     }
 }

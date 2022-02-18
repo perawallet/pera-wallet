@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,30 +12,26 @@
 
 package com.algorand.android.ui.settings
 
+import android.app.NotificationManager
+import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.algorand.android.BuildConfig
+import com.algorand.android.MainNavigationDirections
 import com.algorand.android.R
-import com.algorand.android.core.BaseActivity
 import com.algorand.android.core.DaggerBaseFragment
-import com.algorand.android.customviews.CustomToolbar
 import com.algorand.android.databinding.FragmentSettingsBinding
+import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.FragmentConfiguration
-import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.models.WarningConfirmation
 import com.algorand.android.ui.common.warningconfirmation.WarningConfirmationBottomSheet.Companion.WARNING_CONFIRMATION_KEY
-import com.algorand.android.ui.settings.SettingsFragmentDirections.Companion.actionSettingsFragmentToChangePasswordFragment
-import com.algorand.android.ui.settings.SettingsFragmentDirections.Companion.actionSettingsFragmentToWarningConfirmationBottomSheet
-import com.algorand.android.utils.openApplicationPageOnStore
 import com.algorand.android.utils.openPrivacyPolicyUrl
 import com.algorand.android.utils.openSupportCenterUrl
 import com.algorand.android.utils.openTermsAndServicesUrl
-import com.algorand.android.utils.preference.isBiometricActive
 import com.algorand.android.utils.preference.isRewardsActivated
-import com.algorand.android.utils.preference.setBiometricRegistrationPreference
 import com.algorand.android.utils.preference.setRewardsPreference
-import com.algorand.android.utils.showBiometricAuthentication
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -60,69 +56,41 @@ class SettingsFragment : DaggerBaseFragment(R.layout.fragment_settings) {
 
     private val binding by viewBinding(FragmentSettingsBinding::bind)
 
-    private val toolbarConfiguration = ToolbarConfiguration(
-        titleResId = R.string.settings,
-        type = CustomToolbar.Type.TAB_TOOLBAR
-    )
-
     override val fragmentConfiguration = FragmentConfiguration(
-        isBottomBarNeeded = true, toolbarConfiguration = toolbarConfiguration
+        isBottomBarNeeded = true
     )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initDialogSavedStateListener()
         with(binding) {
-            biometricSwitch.isChecked = sharedPref.isBiometricActive()
+            securityListItem.setOnClickListener { onSecurityClick() }
+            notificationListItem.setOnClickListener { onNotificationClick() }
+            walletConnectListItem.setOnClickListener { onWalletConnectSessionsClick() }
             rewardsSwitch.isChecked = sharedPref.isRewardsActivated()
             initSwitchChangeListeners()
-            notificationListItem.setOnClickListener { onNotificationClick() }
-            themeListItem.setOnClickListener { onThemeClick() }
-            currencyListItem.setOnClickListener { onCurrencyClick() }
             languageListItem.setOnClickListener { onLanguageClick() }
-            developerListItem.setOnClickListener { onDeveloperSettingsClick() }
+            currencyListItem.setOnClickListener { onCurrencyClick() }
+            themeListItem.setOnClickListener { onThemeClick() }
             supportCenterListItem.setOnClickListener { onSupportCenterClick() }
-            changePasswordListItem.setOnClickListener { onChangePasswordClick() }
+            rateListItem.setOnClickListener { onRateClick() }
             termsAndServicesListItem.setOnClickListener { onTermsAndServicesClick() }
             privacyPolicyListItem.setOnClickListener { onPrivacyPolicyClick() }
-            walletConnectListItem.setOnClickListener { onWalletConnectSessionsClick() }
-            rateListItem.setOnClickListener { onRateClick() }
+            developerListItem.setOnClickListener { onDeveloperSettingsClick() }
             logoutButton.setOnClickListener { onLogoutClick() }
             versionCodeTextView.text = getString(R.string.version_format, BuildConfig.VERSION_NAME)
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        setLanguage()
-        setCurrency()
-        setTheme()
+    private fun onSupportCenterClick() {
+        context?.openSupportCenterUrl()
     }
 
-    private fun setLanguage() {
-        val currentLang = (activity as BaseActivity).getCurrentLanguage()
-        val displayLang = currentLang.getDisplayLanguage(currentLang).capitalize()
-        binding.languageListItem.setSecondaryTextView(displayLang)
-    }
-
-    private fun setCurrency() {
-        binding.currencyListItem.setSecondaryTextView(settingsViewModel.getCurrencyPreference())
-    }
-
-    private fun setTheme() {
-        binding.themeListItem.setSecondaryTextView(
-            resources.getString(settingsViewModel.getThemePreference().visibleNameResId)
-        )
+    private fun onSecurityClick() {
+        nav(SettingsFragmentDirections.actionSettingsFragmentToSecurityFragment())
     }
 
     private fun initSwitchChangeListeners() {
-        binding.biometricSwitch.setOnCheckedChangeListener { _, isChecked ->
-            if (!isChecked) {
-                sharedPref.setBiometricRegistrationPreference(isChecked)
-            } else {
-                checkBiometricAuthentication()
-            }
-        }
         binding.rewardsSwitch.setOnCheckedChangeListener { _, isChecked ->
             sharedPref.setRewardsPreference(isChecked)
         }
@@ -131,30 +99,25 @@ class SettingsFragment : DaggerBaseFragment(R.layout.fragment_settings) {
     private fun initDialogSavedStateListener() {
         startSavedStateListener(R.id.settingsFragment) {
             useSavedStateValue<Boolean>(WARNING_CONFIRMATION_KEY) {
-                settingsViewModel.resetAllData(context)
+                settingsViewModel.deleteAllData(
+                    context?.getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager,
+                    ::onDeleteAllDataCompleted
+                )
             }
         }
     }
 
-    private fun onSupportCenterClick() {
-        context?.openSupportCenterUrl()
-    }
-
-    private fun checkBiometricAuthentication() {
-        activity?.showBiometricAuthentication(
-            getString(R.string.app_name),
-            getString(R.string.please_scan_your_fingerprint_or),
-            getString(R.string.cancel),
-            successCallback = { sharedPref.setBiometricRegistrationPreference(true) }
+    private fun onDeleteAllDataCompleted() {
+        nav(
+            MainNavigationDirections.actionGlobalSingleButtonBottomSheet(
+                titleAnnotatedString = AnnotatedString(R.string.your_data_has_been),
+                drawableResId = R.drawable.ic_check_72dp
+            )
         )
     }
 
     private fun onDeveloperSettingsClick() {
         nav(SettingsFragmentDirections.actionSettingsFragmentToDeveloperSettingsFragment())
-    }
-
-    private fun onChangePasswordClick() {
-        nav(actionSettingsFragmentToChangePasswordFragment())
     }
 
     private fun onCurrencyClick() {
@@ -170,11 +133,11 @@ class SettingsFragment : DaggerBaseFragment(R.layout.fragment_settings) {
     }
 
     private fun onNotificationClick() {
-        nav(SettingsFragmentDirections.actionSettingsFragmentToNotificationFilterFragment(showDoneButton = false))
+        nav(SettingsFragmentDirections.actionSettingsFragmentToNotificationSettingsFragment(showDoneButton = false))
     }
 
     private fun onRateClick() {
-        context?.openApplicationPageOnStore()
+        nav(SettingsFragmentDirections.actionSettingsFragmentToRateExperienceBottomSheet())
     }
 
     private fun onWalletConnectSessionsClick() {
@@ -182,15 +145,14 @@ class SettingsFragment : DaggerBaseFragment(R.layout.fragment_settings) {
     }
 
     private fun onLogoutClick() {
-        nav(
-            actionSettingsFragmentToWarningConfirmationBottomSheet(
-                titleTextResId = R.string.delete_all_data,
-                descriptionTextResId = R.string.are_you_sure,
-                drawableResId = R.drawable.ic_trash,
-                positiveButtonTextResId = R.string.delete,
-                negativeButtonTextResId = R.string.keep_it
-            )
+        val warningConfirmation = WarningConfirmation(
+            titleRes = R.string.delete_all_data,
+            descriptionRes = R.string.you_are_about_to_delete,
+            drawableRes = R.drawable.ic_trash,
+            positiveButtonTextRes = R.string.yes_remove_all_accounts,
+            negativeButtonTextRes = R.string.keep_it
         )
+        nav(SettingsFragmentDirections.actionSettingsFragmentToWarningConfirmationNavigation(warningConfirmation))
     }
 
     private fun onTermsAndServicesClick() {

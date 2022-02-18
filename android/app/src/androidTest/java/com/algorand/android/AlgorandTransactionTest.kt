@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -21,6 +21,7 @@ import com.algorand.android.utils.makeRekeyTx
 import com.algorand.android.utils.makeRemoveAssetTx
 import com.algorand.android.utils.makeTx
 import com.algorand.android.utils.toSuggestedParams
+import java.math.BigInteger
 import org.junit.Test
 
 class AlgorandTransactionTest {
@@ -37,7 +38,7 @@ class AlgorandTransactionTest {
         val algoTransaction = transactionParams.makeTx(
             senderAddress = "53DDJWXPS6GV6QVTMVIQEZQSYSC2SV3XUAHFTFPGCTNJ77SHY7L3WSK5E4",
             receiverAddress = "5KYQMJHCDW6CJNLZPZCB6IBWO7FTEDYAH3U7DH3JWWPJP7NXH3BSGAGUUM",
-            amount = 1000000,
+            amount = BigInteger.valueOf(1000000),
             assetId = AssetInformation.ALGORAND_ID,
             isMax = false,
             note = null
@@ -61,7 +62,7 @@ class AlgorandTransactionTest {
         val hipoCoinTransaction = transactionParams.makeTx(
             senderAddress = "53DDJWXPS6GV6QVTMVIQEZQSYSC2SV3XUAHFTFPGCTNJ77SHY7L3WSK5E4",
             receiverAddress = "5KYQMJHCDW6CJNLZPZCB6IBWO7FTEDYAH3U7DH3JWWPJP7NXH3BSGAGUUM",
-            amount = 1,
+            amount = BigInteger.ONE,
             assetId = 11711, // HipoCoin Asset ID
             isMax = false,
             note = null

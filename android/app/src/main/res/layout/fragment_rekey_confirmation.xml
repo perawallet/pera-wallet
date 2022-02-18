@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright 2019 Algorand, Inc.
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -22,143 +21,135 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.algorand.android.customviews.CollapsibleAccountView
-            android:id="@+id/collapsibleAccountView"
+        <TextView
+            android:id="@+id/titleTextView"
+            style="@style/TextAppearance.Title.Sans.Medium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/smallshadow_start_20dp_margin"
-            android:layout_marginTop="@dimen/smallshadow_top_margin_20dp"
-            android:layout_marginEnd="@dimen/smallshadow_end_20dp_margin"
-            app:collapsedListSize="2"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_xxxsmall"
+            android:text="@string/confirm_rekeying"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/titleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/page_horizontal_spacing"
-            android:layout_marginTop="@dimen/smallshadow_bottom_margin_28dp"
-            android:fontFamily="@font/publicsans_medium"
-            android:text="@string/rekeying_transaction"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/collapsibleAccountView" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/transferLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/smallshadow_start_20dp_margin"
-            android:layout_marginTop="@dimen/smallshadow_top_margin_8dp"
-            android:layout_marginEnd="@dimen/smallshadow_end_20dp_margin"
-            android:background="@drawable/bg_small_shadow"
-            android:paddingStart="@dimen/smallshadow_start_padding_10dp"
-            android:paddingTop="@dimen/smallshadow_top_padding_24dp"
-            android:paddingEnd="@dimen/smallshadow_end_padding_10dp"
-            android:paddingBottom="@dimen/smallshadow_bottom_padding_24dp"
+        <ImageView
+            android:id="@+id/oldAccountTypeImageView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_layer_gray_lighter_oval"
+            android:padding="@dimen/spacing_xsmall"
+            app:layout_constraintBottom_toTopOf="@id/oldAccountLabelTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/titleTextView">
+            app:layout_constraintTop_toBottomOf="@id/titleTextView"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:tint="@color/secondaryTextColor"
+            tools:srcCompat="@drawable/ic_ledger" />
 
-            <TextView
-                android:id="@+id/oldAccountLabelTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/publicsans_regular"
-                android:gravity="center"
-                android:textColor="@color/secondaryTextColor"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toStartOf="@id/arrowImageView"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Old Ledger" />
+        <TextView
+            android:id="@+id/oldAccountLabelTextView"
+            style="@style/TextAppearance.Description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:text="@string/old_ledger"
+            app:layout_constraintBottom_toTopOf="@id/oldAccountNameTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/oldAccountTypeImageView" />
 
-            <TextView
-                android:id="@+id/oldAccountNameTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:ellipsize="end"
-                android:fontFamily="@font/publicsans_regular"
-                android:gravity="center"
-                android:maxLines="1"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/arrowImageView"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/oldAccountLabelTextView"
-                tools:text="X9543 Ledger" />
+        <TextView
+            android:id="@+id/oldAccountNameTextView"
+            style="@style/TextAppearance.Body.Large.Sans.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xxsmall"
+            app:layout_constraintBottom_toTopOf="@id/loadingAnimationView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/oldAccountLabelTextView"
+            tools:text="@tools:sample/lorem[1]" />
 
-            <ImageView
-                android:id="@+id/arrowImageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_right" />
 
-            <TextView
-                android:id="@+id/newLedgerLabelTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/publicsans_regular"
-                android:gravity="center"
-                android:paddingHorizontal="@dimen/keyline_1_minus_8dp"
-                android:text="@string/new_ledger"
-                android:textColor="@color/secondaryTextColor"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/arrowImageView"
-                app:layout_constraintTop_toTopOf="@id/oldAccountLabelTextView" />
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loadingAnimationView"
+            android:layout_width="2dp"
+            android:layout_height="44dp"
+            android:layout_marginVertical="28dp"
+            app:layout_constraintBottom_toTopOf="@id/newAccountTypeImageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/oldAccountNameTextView"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/rekey_vertical_loading" />
 
-            <TextView
-                android:id="@+id/newLedgerNameTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:ellipsize="end"
-                android:fontFamily="@font/publicsans_regular"
-                android:gravity="center"
-                android:maxLines="1"
-                android:paddingHorizontal="@dimen/keyline_1_minus_8dp"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/arrowImageView"
-                app:layout_constraintTop_toBottomOf="@id/newLedgerLabelTextView"
-                tools:text="X04K2 Ledger" />
+        <ImageView
+            android:id="@+id/newAccountTypeImageView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_layer_gray_lighter_oval"
+            android:backgroundTint="@color/rekey_icon_background_color"
+            android:padding="@dimen/spacing_xsmall"
+            app:layout_constraintBottom_toTopOf="@id/newLedgerLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/loadingAnimationView"
+            app:srcCompat="@drawable/ic_rekey"
+            app:tint="@color/rekey_icon_color" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/newLedgerLabel"
+            style="@style/TextAppearance.Description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:text="@string/new_ledger"
+            app:layout_constraintBottom_toTopOf="@id/newLedgerNameTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/newAccountTypeImageView" />
+
+        <TextView
+            android:id="@+id/newLedgerNameTextView"
+            style="@style/TextAppearance.Body.Large.Sans.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xxsmall"
+            app:layout_constraintBottom_toTopOf="@id/feeTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/newLedgerLabel"
+            tools:text="@tools:sample/lorem[1]" />
 
         <TextView
             android:id="@+id/feeTextView"
+            style="@style/TextAppearance.Footnote.Sans.Medium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/page_horizontal_spacing"
-            android:layout_marginTop="@dimen/smallshadow_bottom_margin_16dp"
-            android:fontFamily="@font/publicsans_regular"
-            android:textColor="@color/secondaryTextColor"
-            android:textSize="14sp"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginBottom="@dimen/spacing_large"
+            android:drawablePadding="@dimen/spacing_small"
+            android:gravity="center_vertical"
+            app:drawableStartCompat="@drawable/ic_info"
+            app:layout_constraintBottom_toTopOf="@id/confirmButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/transferLayout"
+            app:layout_constraintVertical_bias="1"
             tools:text="Total Rekeying fee of 0.001 Algos" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/confirmButton"
-            style="@style/UnelevatedButton.General"
+            style="@style/Button.Primary"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/bottom_safe_area_margin"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginBottom="@dimen/bottom_safe_area_margin"
             android:text="@string/finalize_rekeying"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/feeTextView"
-            app:layout_constraintVertical_bias="1" />
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

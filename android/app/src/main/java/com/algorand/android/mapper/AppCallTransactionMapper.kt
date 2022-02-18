@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -60,24 +60,28 @@ class AppCallTransactionMapper @Inject constructor(
         rawTransaction: WCAlgoTransactionRequest
     ): BaseAppCallTransaction.AppCallTransactionWithRekey? {
         return with(transactionRequest) {
-            val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
+            val senderWalletConnectAddress = createWalletConnectAddress(senderAddress) ?: return null
             val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
+            val signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider)
+            val isLocalAccountSigner =
+                accountCacheManager.accountCacheMap.value.keys.contains(signer.address?.decodedAddress)
             BaseAppCallTransaction.AppCallTransactionWithRekey(
                 rawTransactionPayload = rawTransaction,
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 note = decodedNote,
-                senderAddress = senderWalletConnectAddress ?: return null,
+                senderAddress = senderWalletConnectAddress,
                 appArgs = appArgs,
                 peerMeta = peerMeta,
                 rekeyToAddress = createWalletConnectAddress(rekeyAddress) ?: return null,
                 appId = appId ?: return null,
-                signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
+                signer = signer,
                 authAddress = accountCacheData?.authAddress,
                 account = WalletConnectAccount.create(accountCacheData?.account),
                 appOnComplete = BaseAppCallTransaction.AppOnComplete.getByAppNoOrDefault(appOnComplete),
                 approvalHash = generateAddressFromProgram(approvalHash),
                 stateHash = generateAddressFromProgram(stateHash),
-                groupId = groupId
+                groupId = groupId,
+                warningCount = if (isLocalAccountSigner) 1 else null
             )
         }
     }

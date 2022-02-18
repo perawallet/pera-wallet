@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -16,10 +16,10 @@ import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.SignTxnOptions
 import com.algorand.android.models.WCAlgoTransactionRequest
 import com.algorand.android.models.WalletConnectPeerMeta
-import com.algorand.android.models.WalletConnectTransactionType.APP_TRANSACTION
-import com.algorand.android.models.WalletConnectTransactionType.ASSET_CONFIGURATION
-import com.algorand.android.models.WalletConnectTransactionType.ASSET_TRANSACTION
-import com.algorand.android.models.WalletConnectTransactionType.PAY_TRANSACTION
+import com.algorand.android.models.TransactionType.APP_TRANSACTION
+import com.algorand.android.models.TransactionType.ASSET_CONFIGURATION
+import com.algorand.android.models.TransactionType.ASSET_TRANSACTION
+import com.algorand.android.models.TransactionType.PAY_TRANSACTION
 import com.algorand.android.utils.walletconnect.getTransactionRequest
 import com.google.gson.Gson
 import javax.inject.Inject

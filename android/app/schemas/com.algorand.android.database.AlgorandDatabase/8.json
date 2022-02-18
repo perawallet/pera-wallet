@@ -1,0 +1,249 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 8,
+    "identityHash": "9d0044ad0b55660c2cb10bf915a82629",
+    "entities": [
+      {
+        "tableName": "User",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `public_key` TEXT NOT NULL, `uri` TEXT, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "publicKey",
+            "columnName": "public_key",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "imageUriAsString",
+            "columnName": "uri",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "contactDatabaseId",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_User_public_key",
+            "unique": true,
+            "columnNames": [
+              "public_key"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_User_public_key` ON `${TABLE_NAME}` (`public_key`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Node",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `indexer_address` TEXT NOT NULL, `indexer_api_key` TEXT NOT NULL, `algod_address` TEXT NOT NULL, `algod_api_key` TEXT NOT NULL, `mobile_algorand_address` TEXT NOT NULL, `is_active` INTEGER NOT NULL, `is_added_default` INTEGER NOT NULL, `network_slug` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "indexerAddress",
+            "columnName": "indexer_address",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "indexerApiKey",
+            "columnName": "indexer_api_key",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "algodAddress",
+            "columnName": "algod_address",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "algodApiKey",
+            "columnName": "algod_api_key",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mobileAlgorandAddress",
+            "columnName": "mobile_algorand_address",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isActive",
+            "columnName": "is_active",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isAddedDefault",
+            "columnName": "is_added_default",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "networkSlug",
+            "columnName": "network_slug",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nodeDatabaseId",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "NotificationFilter",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`public_key` TEXT NOT NULL, PRIMARY KEY(`public_key`))",
+        "fields": [
+          {
+            "fieldPath": "publicKey",
+            "columnName": "public_key",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "public_key"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "WalletConnectSessionEntity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `peer_meta` TEXT NOT NULL, `wc_session` TEXT NOT NULL, `date_time_stamp` INTEGER NOT NULL, `connected_account_public_key` TEXT NOT NULL, `is_connected` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "peerMeta",
+            "columnName": "peer_meta",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "wcSession",
+            "columnName": "wc_session",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dateTimeStamp",
+            "columnName": "date_time_stamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "connectedAccountPublicKey",
+            "columnName": "connected_account_public_key",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isConnected",
+            "columnName": "is_connected",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "WalletConnectSessionHistoryEntity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `peer_meta` TEXT NOT NULL, `wc_session` TEXT NOT NULL, `creation_date_time_stamp` INTEGER NOT NULL, `connected_account_public_key` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "peerMeta",
+            "columnName": "peer_meta",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "wcSession",
+            "columnName": "wc_session",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "creationDateTimeStamp",
+            "columnName": "creation_date_time_stamp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "connectedAccountPublicKey",
+            "columnName": "connected_account_public_key",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9d0044ad0b55660c2cb10bf915a82629')"
+    ]
+  }
+}

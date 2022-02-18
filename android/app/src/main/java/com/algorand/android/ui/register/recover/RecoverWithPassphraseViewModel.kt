@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -16,6 +16,7 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.AccountManager
 import com.algorand.android.core.BaseViewModel
+import com.algorand.android.models.Account
 import com.algorand.android.utils.PassphraseKeywordUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -54,6 +55,10 @@ class RecoverWithPassphraseViewModel @ViewModelInject constructor(
 
     private suspend fun checkValidation(index: Int, word: String) {
         validationFlow.emit(Pair(index, passphraseKeywordUtils.isWordInKeywords(word)))
+    }
+
+    fun getAccountIfExist(publicKey: String): Account? {
+        return accountManager.getAccounts().find { account -> account.address == publicKey }
     }
 
     companion object {

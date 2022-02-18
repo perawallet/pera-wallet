@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,18 +12,10 @@
 
 package com.algorand.android.models
 
-import android.content.Context
-import android.content.res.Resources
 import android.os.Parcelable
-import android.text.SpannedString
-import androidx.core.text.buildSpannedString
-import com.algorand.android.R
 import com.algorand.android.utils.ALGOS_FULL_NAME
+import com.algorand.android.utils.ALGOS_SHORT_NAME
 import com.algorand.android.utils.ALGO_DECIMALS
-import com.algorand.android.utils.addAlgorandIcon
-import com.algorand.android.utils.addAssetId
-import com.algorand.android.utils.addAssetName
-import com.algorand.android.utils.addVerifiedIcon
 import com.algorand.android.utils.formatAmount
 import java.math.BigInteger
 import kotlinx.android.parcel.IgnoredOnParcel
@@ -48,42 +40,8 @@ data class AssetInformation(
     @IgnoredOnParcel
     val formattedAmount by lazy { amount.formatAmount(decimals) }
 
-    fun isAlgorand(): Boolean {
+    fun isAlgo(): Boolean {
         return assetId == ALGORAND_ID
-    }
-
-    fun getAssetText(
-        context: Context,
-        showId: Boolean = false,
-        idTextColor: Int? = null,
-        showAlgorandLogo: Boolean = false,
-        showTickerWithFullName: Boolean = true,
-        verifiedIconRes: Int = R.drawable.ic_verified_asset
-    ): SpannedString {
-        return buildSpannedString {
-            if (isVerified) {
-                addVerifiedIcon(context, verifiedIconRes)
-            }
-            if (showAlgorandLogo && isAlgorand()) {
-                addAlgorandIcon(context)
-            }
-            addAssetName(context, fullName, shortName, showTickerWithFullName)
-            if (showId) {
-                addAssetId(context, assetId, idTextColor)
-            }
-        }
-    }
-
-    fun getTickerText(resources: Resources): String {
-        return if (isAlgorand()) {
-            fullName.orEmpty()
-        } else {
-            shortName ?: resources.getString(R.string.unnamed)
-        }
-    }
-
-    fun isAssetPending(): Boolean {
-        return assetStatus != AssetStatus.OWNED_BY_ACCOUNT
     }
 
     companion object {
@@ -98,6 +56,7 @@ data class AssetInformation(
             return AssetInformation(
                 assetId = ALGORAND_ID,
                 fullName = ALGOS_FULL_NAME,
+                shortName = ALGOS_SHORT_NAME,
                 decimals = ALGO_DECIMALS,
                 amount = amount,
                 totalRewards = totalRewards,
@@ -107,16 +66,28 @@ data class AssetInformation(
             )
         }
 
-        fun createAssetInformation(assetHolding: AssetHolding, assetParams: AssetParams): AssetInformation {
+        fun createAssetInformation(assetHolding: AssetHolding, assetParams: AssetQueryItem): AssetInformation {
             return AssetInformation(
                 assetId = assetHolding.assetId,
                 isVerified = assetParams.isVerified,
-                creatorPublicKey = assetParams.creatorPublicKey,
+                creatorPublicKey = assetParams.assetCreator?.publicKey,
                 shortName = assetParams.shortName,
                 fullName = assetParams.fullName,
                 amount = assetHolding.amount,
-                decimals = assetParams.decimals ?: 0,
-                url = assetParams.url
+                decimals = assetParams.fractionDecimals ?: 0
+            )
+        }
+
+        // TODO Remove this function after changing RemoveAssetFlow
+        fun createAssetInformation(accountAssetData: BaseAccountAssetData.OwnedAssetData): AssetInformation {
+            return AssetInformation(
+                assetId = accountAssetData.id,
+                isVerified = accountAssetData.isVerified,
+                creatorPublicKey = accountAssetData.creatorPublicKey,
+                shortName = accountAssetData.shortName,
+                fullName = accountAssetData.name,
+                amount = accountAssetData.amount,
+                decimals = accountAssetData.decimals
             )
         }
     }

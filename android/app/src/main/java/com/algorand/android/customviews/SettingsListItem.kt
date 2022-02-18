@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -15,7 +15,6 @@ package com.algorand.android.customviews
 import android.content.Context
 import android.util.AttributeSet
 import android.view.Gravity.CENTER_VERTICAL
-import android.view.View
 import android.widget.LinearLayout
 import androidx.core.content.res.getResourceIdOrThrow
 import androidx.core.content.res.use
@@ -51,20 +50,5 @@ class SettingsListItem @JvmOverloads constructor(
         orientation = HORIZONTAL
         gravity = CENTER_VERTICAL
         minimumHeight = resources.getDimensionPixelOffset(R.dimen.settings_list_item_min_height)
-        setBackgroundResource(R.drawable.bg_settings_list_item)
-        setLayoutPadding()
-    }
-
-    private fun setLayoutPadding() {
-        val horizontalPadding = resources.getDimensionPixelOffset(R.dimen.settings_list_item_horizontal_padding)
-        val verticalPadding = resources.getDimensionPixelOffset(R.dimen.keyline_1_minus_8dp)
-        setPadding(horizontalPadding, verticalPadding, horizontalPadding, verticalPadding)
-    }
-
-    fun setSecondaryTextView(secondaryText: String) {
-        binding.secondaryTextView.apply {
-            text = secondaryText
-            visibility = View.VISIBLE
-        }
     }
 }

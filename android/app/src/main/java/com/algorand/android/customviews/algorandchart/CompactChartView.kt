@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -16,6 +16,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.res.use
 import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
 import com.algorand.android.R
@@ -65,7 +66,16 @@ class CompactChartView @JvmOverloads constructor(
 
     init {
         initRootLayout()
+        loadAttrs(attributeSet)
         initUi()
+    }
+
+    private fun loadAttrs(attributeSet: AttributeSet?) {
+        context?.obtainStyledAttributes(attributeSet, R.styleable.CompactChartView)?.use { attrs ->
+            attrs.getBoolean(R.styleable.CompactChartView_showTimeFrame, false).let { isShown ->
+                binding.timeFrameView.isVisible = isShown
+            }
+        }
     }
 
     fun setSelectedCurrencyId(currencyId: String) {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -25,7 +25,7 @@ import com.algorand.android.ledger.operations.TransactionOperation
 import com.algorand.android.ledger.operations.VerifyAddressOperation
 import com.algorand.android.ledger.operations.WalletConnectTransactionOperation
 import com.algorand.android.models.LedgerBleResult
-import com.algorand.android.repository.AccountRepository
+import com.algorand.android.usecase.AccountInformationUseCase
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.LifecycleScopedCoroutineOwner
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -37,7 +37,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class LedgerBleOperationManager @Inject constructor(
-    private val accountRepository: AccountRepository,
+    private val accountInformationUseCase: AccountInformationUseCase,
     private val ledgerBleConnectionManager: LedgerBleConnectionManager
 ) : LifecycleScopedCoroutineOwner(), LedgerBleConnectionManagerCallback {
 
@@ -91,7 +91,7 @@ class LedgerBleOperationManager @Inject constructor(
             if (currentTransactionData != null) {
                 if (connectToLedger(bluetoothDevice)) {
                     ledgerBleConnectionManager.sendSignTransactionRequest(currentTransactionData, nextIndex - 1)
-                    postResult(LedgerBleResult.LedgerWaitingForApproval)
+                    postResult(LedgerBleResult.LedgerWaitingForApproval(bluetoothDevice.name))
                 }
             }
         }
@@ -126,7 +126,7 @@ class LedgerBleOperationManager @Inject constructor(
                     sendTransactionRequest()
                     return@launch
                 } else {
-                    accountRepository.getOtherAccountInformation(publicKey, includeClosedAccounts = true).use(
+                    accountInformationUseCase.getAccountInformationAndFetchAssets(publicKey, true).use(
                         onSuccess = { fetchedAccountInformation ->
                             if (fetchedAccountInformation.isCreated() || nextIndex == 1) {
                                 if (this is AccountFetchAllOperation) {
@@ -150,7 +150,7 @@ class LedgerBleOperationManager @Inject constructor(
                                 )
                             }
                         },
-                        onFailed = {
+                        onFailed = { _, _ ->
                             postResult(
                                 LedgerBleResult.AppErrorResult(
                                     R.string.a_network_error,

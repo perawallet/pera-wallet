@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,9 +12,7 @@
 
 package com.algorand.android.utils
 
-import android.content.res.Resources
 import android.graphics.Bitmap
-import com.algorand.android.R
 import com.algorand.android.models.DecodedQrCode
 import com.algorand.android.ui.qr.QrCodeScannerFragment
 import com.algorand.android.utils.walletconnect.WALLET_CONNECT_URL_PREFIX
@@ -36,9 +34,9 @@ private const val QUERY_KEY_ASSIGNER_CHAR = "="
 private const val ADDRESS_INDEX = 0
 private const val QUERY_INDEX = 1
 
-fun getQrCodeBitmap(resources: Resources, qrContent: String): Bitmap? {
+fun getQrCodeBitmap(size: Int, qrContent: String): Bitmap? {
     return try {
-        val size = resources.getDimensionPixelSize(R.dimen.show_qr_size)
+        // The QR code has self padding about 28dp.
         BarcodeEncoder().encodeBitmap(qrContent, BarcodeFormat.QR_CODE, size, size)
     } catch (e: Exception) {
         null
@@ -130,6 +128,15 @@ private fun decodeWalletConnectQr(qrCode: String): DecodedQrCode {
     return DecodedQrCode(walletConnectUrl = qrCode)
 }
 
+fun decodeAccountPublicKeyFromQr(qrContent: String?): DecodedQrCode? {
+    // Removing prefix for Algo Explorer support because they return public key with a deeplink prefix.
+    val address = qrContent?.removePrefix(DEEPLINK_PREFIX)
+    if (address.isValidAddress().not()) {
+        return null
+    }
+    return DecodedQrCode(address = address)
+}
+
 fun getContentOfQR(
     deeplink: String,
     scanReturnTypeList: Array<QrCodeScannerFragment.ScanReturnType>
@@ -141,11 +148,12 @@ fun getContentOfQR(
         scanResult = scanType
         decodedQrCode = when (scanType) {
             QrCodeScannerFragment.ScanReturnType.MNEMONIC_NAVIGATE_BACK -> decodeMnemonicFromQr(deeplink)
-            QrCodeScannerFragment.ScanReturnType.WALLET_CONNECT_NAVIGATE_BACK -> decodeWalletConnectQr(deeplink)
+            QrCodeScannerFragment.ScanReturnType.WALLET_CONNECT -> decodeWalletConnectQr(deeplink)
+            QrCodeScannerFragment.ScanReturnType.ADDRESS_NAVIGATE_BACK -> decodeAccountPublicKeyFromQr(deeplink)
             else -> decodeDeeplink(deeplink)
         }
         // TODO: 13.08.2021 decodeDeepLink also handle Wallet Connect QR Code, so we should ignore this case for now.
-        if (scanResult != QrCodeScannerFragment.ScanReturnType.WALLET_CONNECT_NAVIGATE_BACK &&
+        if (scanResult != QrCodeScannerFragment.ScanReturnType.WALLET_CONNECT &&
             decodedQrCode?.walletConnectUrl != null
         ) {
             return@forEach

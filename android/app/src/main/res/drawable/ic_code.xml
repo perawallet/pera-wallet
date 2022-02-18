@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -15,32 +15,9 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
-    <path
-        android:fillColor="#00000000"
-        android:pathData="M8,4V4C6.6193,4 5.5,5.1193 5.5,6.5V9.5C5.5,10.8807 4.3807,12 3,12V12"
-        android:strokeWidth="2"
-        android:strokeColor="#1DAD98"
-        android:strokeLineCap="round"
-        android:strokeLineJoin="round" />
-    <path
-        android:fillColor="#00000000"
-        android:pathData="M16,4V4C17.3807,4 18.5,5.1193 18.5,6.5V9.5C18.5,10.8807 19.6193,12 21,12V12"
-        android:strokeWidth="2"
-        android:strokeColor="#1DAD98"
-        android:strokeLineCap="round"
-        android:strokeLineJoin="round" />
-    <path
-        android:fillColor="#00000000"
-        android:pathData="M8,20V20C6.6193,20 5.5,18.8807 5.5,17.5V14.5C5.5,13.1193 4.3807,12 3,12V12"
-        android:strokeWidth="2"
-        android:strokeColor="#1DAD98"
-        android:strokeLineCap="round"
-        android:strokeLineJoin="round" />
-    <path
-        android:fillColor="#00000000"
-        android:pathData="M16,20V20C17.3807,20 18.5,18.8807 18.5,17.5V14.5C18.5,13.1193 19.6193,12 21,12V12"
-        android:strokeWidth="2"
-        android:strokeColor="#1DAD98"
-        android:strokeLineCap="round"
-        android:strokeLineJoin="round" />
+  <path
+      android:fillColor="#00000000"
+      android:pathData="M9,4H7C5.8954,4 5,4.8954 5,6V10C5,11.1046 4.1046,12 3,12M3,12H2M3,12C4.1046,12 5,12.8954 5,14V18C5,19.1046 5.8954,20 7,20H9M15,20H17C18.1046,20 19,19.1046 19,18V14C19,12.8954 19.8954,12 21,12M21,12H22M21,12C19.8954,12 19,11.1046 19,10V6C19,4.8954 18.1046,4 17,4H15"
+      android:strokeWidth="2"
+      android:strokeColor="@color/primaryIconTintColor"/>
 </vector>

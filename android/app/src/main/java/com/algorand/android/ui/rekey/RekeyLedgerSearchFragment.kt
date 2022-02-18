@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -20,16 +20,13 @@ import com.algorand.android.ui.common.BaseLedgerSearchFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class RekeyLedgerSearchFragment : BaseLedgerSearchFragment(titleResId = R.string.pair_your_new_ledger) {
+class RekeyLedgerSearchFragment : BaseLedgerSearchFragment() {
 
     override val fragmentId: Int = R.id.rekeyLedgerSearchFragment
 
     private val args: RekeyLedgerSearchFragmentArgs by navArgs()
 
-    override fun onLedgerConnected(
-        accountList: List<AccountInformation>,
-        ledgerDevice: BluetoothDevice
-    ) {
+    override fun onLedgerConnected(accountList: List<AccountInformation>, ledgerDevice: BluetoothDevice) {
         setLoadingVisibility(isVisible = false)
         nav(
             RekeyLedgerSearchFragmentDirections.actionRekeyLedgerSearchFragmentToRekeyLedgerAccountSelectionFragment(
@@ -38,7 +35,7 @@ class RekeyLedgerSearchFragment : BaseLedgerSearchFragment(titleResId = R.string
         )
     }
 
-    override fun navigateToPairInstructionBottomSheet(bluetoothDevice: BluetoothDevice) {
+    override fun navToPairInstructionBottomSheet(bluetoothDevice: BluetoothDevice) {
         nav(
             RekeyLedgerSearchFragmentDirections
                 .actionRekeyLedgerSearchFragmentToLedgerPairInstructionsBottomSheet(bluetoothDevice)

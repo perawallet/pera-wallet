@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,6 +12,8 @@
 
 package com.algorand.android.models
 
+import com.algorand.android.models.Account.AccountIconColor
+import com.algorand.android.usecase.BaseAccountOrderUseCase.Companion.NOT_INITIALIZED_ACCOUNT_INDEX
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
@@ -48,8 +50,10 @@ class AccountDeserializer : JsonDeserializer<Account> {
 
         val name = jsonObject.get("accountName").asString
         val publicKey = jsonObject.get("publicKey").asString
+        val accountIconColor = AccountIconColor.getByName(jsonObject.get("accountIconColor")?.asString)
+        val accountIndex = jsonObject.get("index")?.asString?.toIntOrNull() ?: NOT_INITIALIZED_ACCOUNT_INDEX
 
-        return Account.create(publicKey, detail, name)
+        return Account.create(publicKey, detail, name, accountIconColor, accountIndex)
     }
 
     private fun JsonDeserializationContext.deserializeDetail(

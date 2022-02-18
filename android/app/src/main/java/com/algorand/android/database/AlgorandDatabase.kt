@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -24,7 +24,7 @@ import com.algorand.android.models.User
 import com.algorand.android.models.WalletConnectSessionEntity
 import com.algorand.android.models.WalletConnectSessionHistoryEntity
 
-@Suppress("MagicNumber")
+@Suppress("MagicNumber", "MaxLineLength")
 @Database(
     entities = [
         User::class,
@@ -45,7 +45,7 @@ abstract class AlgorandDatabase : RoomDatabase() {
     abstract fun walletConnectSessionHistoryDao(): WalletConnectSessionHistoryDao
 
     companion object {
-        const val LATEST_DB_VERSION = 7
+        const val LATEST_DB_VERSION = 8
 
         val MIGRATION_3_4 = object : Migration(3, 4) {
             override fun migrate(database: SupportSQLiteDatabase) {
@@ -103,6 +103,12 @@ abstract class AlgorandDatabase : RoomDatabase() {
                         )
                     """.trimIndent()
                 )
+            }
+        }
+
+        val MIGRATION_7_8 = object : Migration(7, 8) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE Node ADD COLUMN mobile_algorand_address TEXT NOT NULL DEFAULT ''")
             }
         }
 

@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -15,39 +15,32 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
-    <path
-        android:fillColor="#00000000"
-        android:pathData="M6,6H18V18C18,19.6569 16.6569,21 15,21H9C7.3432,21 6,19.6569 6,18V6Z"
-        android:strokeWidth="2"
-        android:strokeColor="#8A8993"
-        android:strokeLineCap="round"
-        android:strokeLineJoin="round" />
-    <path
-        android:fillColor="#00000000"
-        android:pathData="M4,6H20"
-        android:strokeWidth="2"
-        android:strokeColor="#8A8993"
-        android:strokeLineCap="round"
-        android:strokeLineJoin="round" />
-    <path
-        android:fillColor="#00000000"
-        android:pathData="M9,4C9,3.4477 9.4477,3 10,3H14C14.5523,3 15,3.4477 15,4V6H9V4Z"
-        android:strokeWidth="2"
-        android:strokeColor="#8A8993"
-        android:strokeLineCap="round"
-        android:strokeLineJoin="round" />
-    <path
-        android:fillColor="#00000000"
-        android:pathData="M10,11V16"
-        android:strokeWidth="2"
-        android:strokeColor="#8A8993"
-        android:strokeLineCap="round"
-        android:strokeLineJoin="round" />
-    <path
-        android:fillColor="#00000000"
-        android:pathData="M14,11V16"
-        android:strokeWidth="2"
-        android:strokeColor="#8A8993"
-        android:strokeLineCap="round"
-        android:strokeLineJoin="round" />
+  <path
+      android:fillColor="#000000"
+      android:pathData="M17,6H22V8H20V21C20,21.2652 19.8946,21.5196 19.7071,21.7071C19.5196,21.8946 19.2652,22 19,22H5C4.7348,22 4.4804,21.8946 4.2929,21.7071C4.1054,21.5196 4,21.2652 4,21V8H2V6H7V3C7,2.7348 7.1054,2.4804 7.2929,2.2929C7.4804,2.1054 7.7348,2 8,2H16C16.2652,2 16.5196,2.1054 16.7071,2.2929C16.8946,2.4804 17,2.7348 17,3V6ZM18,8H6V20H18V8ZM9,11H11V17H9V11ZM13,11H15V17H13V11ZM9,4V6H15V4H9Z"/>
+  <path
+      android:fillColor="#00000000"
+      android:pathData="M5,7h14v14h-14z"
+      android:strokeWidth="2"
+      android:strokeColor="@color/primaryIconTintColor"/>
+  <path
+      android:fillColor="#00000000"
+      android:pathData="M8,3h8v4h-8z"
+      android:strokeWidth="2"
+      android:strokeColor="@color/primaryIconTintColor"/>
+  <path
+      android:fillColor="#00000000"
+      android:pathData="M2,7L22,7"
+      android:strokeWidth="2"
+      android:strokeColor="@color/primaryIconTintColor"/>
+  <path
+      android:fillColor="#00000000"
+      android:pathData="M10,17L10,11"
+      android:strokeWidth="2"
+      android:strokeColor="@color/primaryIconTintColor"/>
+  <path
+      android:fillColor="#00000000"
+      android:pathData="M14,17L14,11"
+      android:strokeWidth="2"
+      android:strokeColor="@color/primaryIconTintColor"/>
 </vector>

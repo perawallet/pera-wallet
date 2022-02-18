@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright 2019 Algorand, Inc.
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -17,80 +16,96 @@
     android:id="@+id/sendRequestRootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:layoutDescription="@xml/scene_send_request_tabbar"
     tools:parentTag="androidx.constraintlayout.motion.widget.MotionLayout">
 
-    <!--  put FrameLayout here because of the shadow. -->
-    <FrameLayout
-        android:id="@+id/sendLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_send_with_shadow"
-        android:scaleX="0.2"
-        android:scaleY="0.2"
-        app:layout_constraintBottom_toBottomOf="@id/sendReceiveActionButton"
+    <View
+        android:id="@+id/backgroundColorView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="64dp"
+        android:background="@color/black_A3"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/sendReceiveActionButton">
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!--    Get bottom margin from bottomNavigationViewHeight-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottomSheetConstraintLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="64dp"
+        android:background="@drawable/bottom_sheet_dialog_fragment_primary_background"
+        android:paddingBottom="44dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <View
+            android:id="@+id/modalityLineView"
+            style="@style/BottomSheetModalityLine"
+            android:layout_marginTop="@dimen/spacing_small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/sendButtton"
-            style="@style/TextButton"
-            android:layout_width="116dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center"
-            android:fontFamily="@font/publicsans_semibold"
+            android:id="@+id/sendButton"
+            style="@style/IconButton.Transparent"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="44dp"
+            android:layout_marginEnd="52dp"
+            app:icon="@drawable/ic_send_with_background"
+            app:layout_constraintEnd_toStartOf="@id/receiveButton"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/modalityLineView" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
             android:text="@string/send"
-            android:textColor="@color/primaryButtonTextColor"
-            android:textSize="14dp"
-            app:icon="@drawable/ic_up"
-            app:iconGravity="textStart"
-            app:iconSize="20dp"
-            app:iconTint="@color/primaryButtonTextColor"
-            app:rippleColor="@color/primaryButtonTextColor" />
-
-    </FrameLayout>
-
-    <!--  put FrameLayout here because of the shadow.  -->
-    <FrameLayout
-        android:id="@+id/receiveLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_request_with_shadow"
-        android:scaleX="0.2"
-        android:scaleY="0.2"
-        app:layout_constraintBottom_toBottomOf="@id/sendReceiveActionButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/sendReceiveActionButton">
+            android:textAppearance="@style/TextAppearance.Body.Sans.Medium"
+            app:layout_constraintEnd_toEndOf="@id/sendButton"
+            app:layout_constraintStart_toStartOf="@id/sendButton"
+            app:layout_constraintTop_toBottomOf="@id/sendButton" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/receiveButton"
-            style="@style/TextButton"
-            android:layout_width="116dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center"
-            android:fontFamily="@font/publicsans_semibold"
-            android:gravity="center"
-            android:text="@string/receive"
-            android:textColor="@color/primaryButtonTextColor"
-            android:textSize="14dp"
-            app:icon="@drawable/ic_show_qr"
-            app:iconGravity="textStart"
-            app:iconSize="20dp"
-            app:iconTint="@color/primaryButtonTextColor"
-            app:rippleColor="@color/primaryButtonTextColor" />
+            style="@style/IconButton.Transparent"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="44dp"
+            app:icon="@drawable/ic_receive_with_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/sendButton"
+            app:layout_constraintTop_toBottomOf="@id/modalityLineView" />
 
-    </FrameLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:text="@string/receive"
+            android:textAppearance="@style/TextAppearance.Body.Sans.Medium"
+            app:layout_constraintEnd_toEndOf="@id/receiveButton"
+            app:layout_constraintStart_toStartOf="@id/receiveButton"
+            app:layout_constraintTop_toBottomOf="@id/receiveButton" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/sendReceiveActionButton"
-        style="@style/BaseIconButton.Circle"
+        style="@style/IconButton.Circle"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginBottom="12dp"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/primaryButtonBackgroundColor"
         app:icon="@drawable/ic_send_request"
-        app:iconTint="@color/tertiaryBackground"
+        app:iconTint="@color/primaryButtonTextColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

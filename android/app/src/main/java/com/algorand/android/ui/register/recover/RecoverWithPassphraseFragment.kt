@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,21 +12,13 @@
 
 package com.algorand.android.ui.register.recover
 
-import android.content.SharedPreferences
-import android.content.res.ColorStateList
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageButton
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.algorand.algosdk.mobile.Mobile
 import com.algorand.android.MainNavigationDirections
-import com.algorand.android.MainViewModel
 import com.algorand.android.R
-import com.algorand.android.core.AccountManager
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.customviews.PassphraseInput
 import com.algorand.android.customviews.PassphraseInputGroup
@@ -34,19 +26,17 @@ import com.algorand.android.customviews.PassphraseInputGroup.Companion.WORD_COUN
 import com.algorand.android.customviews.PassphraseWordSuggestor
 import com.algorand.android.databinding.FragmentRecoverWithPassphraseBinding
 import com.algorand.android.models.Account
+import com.algorand.android.models.AccountCreation
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.DecodedQrCode
 import com.algorand.android.models.FragmentConfiguration
+import com.algorand.android.models.IconButton
+import com.algorand.android.models.QrScanner
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.ui.qr.QrCodeScannerFragment
 import com.algorand.android.ui.qr.QrCodeScannerFragment.Companion.QR_SCAN_RESULT_KEY
-import com.algorand.android.models.AccountCreation
 import com.algorand.android.ui.register.recover.RecoverOptionsBottomSheet.Companion.RESULT_KEY
-import com.algorand.android.ui.register.recover.RecoverWithPassphraseFragmentDirections.Companion.actionGlobalToHomeNavigation
-import com.algorand.android.ui.register.recover.RecoverWithPassphraseFragmentDirections.Companion.actionRecoverWithPassphraseFragmentToQrCodeScannerFragment
-import com.algorand.android.ui.register.recover.RecoverWithPassphraseFragmentDirections.Companion.actionRecoverWithPassphraseFragmentToRecoverOptionsBottomSheet
 import com.algorand.android.utils.KeyboardToggleListener
-import com.algorand.android.utils.SingleButtonBottomSheet.Companion.ACCEPT_KEY
 import com.algorand.android.utils.addKeyboardToggleListener
 import com.algorand.android.utils.analytics.CreationType
 import com.algorand.android.utils.getTextFromClipboard
@@ -58,7 +48,6 @@ import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
-import javax.inject.Inject
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -66,21 +55,13 @@ import kotlinx.coroutines.launch
 class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recover_with_passphrase) {
 
     private val toolbarConfiguration = ToolbarConfiguration(
-        startIconResId = R.drawable.ic_back_navigation,
-        startIconClick = ::onBackClick
+        startIconResId = R.drawable.ic_left_arrow,
+        startIconClick = ::navBack
     )
 
     override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
 
-    @Inject
-    lateinit var sharedPref: SharedPreferences
-
-    @Inject
-    lateinit var accountManager: AccountManager
-
     private val recoverWithPassphraseViewModel: RecoverWithPassphraseViewModel by viewModels()
-
-    private val mainViewModel: MainViewModel by activityViewModels()
 
     private val binding by viewBinding(FragmentRecoverWithPassphraseBinding::bind)
 
@@ -89,6 +70,8 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
     private var passphraseInput: PassphraseInput? = null
 
     private lateinit var accountCreation: AccountCreation
+
+    private val recoverPassphraseTitleHeight: Int by lazy { binding.recoverPassphraseTitle.height }
 
     private val onKeyboardToggleAction: (shown: Boolean) -> Unit = { keyboardShown ->
         if (keyboardShown && passphraseInput != null) {
@@ -107,9 +90,6 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
 
     private fun initSavedStateListener() {
         startSavedStateListener(R.id.recoverWithPassphraseFragment) {
-            useSavedStateValue<Boolean>(ACCEPT_KEY) {
-                handleNextNavigation()
-            }
             useSavedStateValue<DecodedQrCode>(QR_SCAN_RESULT_KEY) { decodedQrCode ->
                 if (!decodedQrCode.mnemonic.isNullOrBlank()) {
                     binding.passphraseInputGroup.setMnemonic(decodedQrCode.mnemonic)
@@ -127,9 +107,10 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
     private fun navToScanQr() {
         recoverWithPassphraseViewModel.mnemonic = binding.passphraseInputGroup.getMnemonicResponse().mnemonic
         nav(
-            actionRecoverWithPassphraseFragmentToQrCodeScannerFragment(
-                listOf(QrCodeScannerFragment.ScanReturnType.MNEMONIC_NAVIGATE_BACK).toTypedArray()
-            )
+            RecoverWithPassphraseFragmentDirections
+                .actionRecoverWithPassphraseFragmentToQrCodeScannerNavigation(
+                    QrScanner(scanTypes = arrayOf(QrCodeScannerFragment.ScanReturnType.MNEMONIC_NAVIGATE_BACK))
+                )
         )
     }
 
@@ -172,30 +153,7 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
     }
 
     private fun customizeToolbar() {
-        getAppToolbar()?.apply {
-
-            val optionsButton = LayoutInflater
-                .from(context)
-                .inflate(R.layout.custom_icon_tab_button, this, false) as ImageButton
-
-            val optionsTintColor = ContextCompat.getColor(context, R.color.primaryTextColor)
-
-            optionsButton.apply {
-                setImageResource(R.drawable.ic_more)
-                imageTintList = ColorStateList.valueOf(optionsTintColor)
-                setOnClickListener { onOptionsClick() }
-                addViewToEndSide(this)
-            }
-        }
-    }
-
-    private fun handleNextNavigation() {
-        mainViewModel.addAccount(accountCreation.tempAccount, accountCreation.creationType)
-        nav(actionGlobalToHomeNavigation())
-    }
-
-    private fun onBackClick() {
-        navBack()
+        getAppToolbar()?.addButtonToEnd(IconButton(R.drawable.ic_more, onClick = ::onOptionsClick))
     }
 
     private fun initWordSuggestorListener() {
@@ -240,18 +198,8 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
     }
 
     private fun scrollToPassphraseInput(passphraseInput: PassphraseInput) {
-        binding.scrollView.smoothScrollTo(0, (passphraseInput.y - passphraseInput.height).toInt())
-    }
-
-    private fun navigateToSuccess() {
-        nav(
-            MainNavigationDirections.actionGlobalSingleButtonBottomSheet(
-                titleResId = R.string.account_verified,
-                drawableResId = R.drawable.ic_check_sign,
-                descriptionAnnotatedString = AnnotatedString(R.string.account_verified_message),
-                buttonTextResId = R.string.go_to_home,
-                isResultNeeded = true
-            )
+        binding.scrollView.smoothScrollTo(
+            0, (passphraseInput.y - passphraseInput.height + recoverPassphraseTitleHeight).toInt()
         )
     }
 
@@ -259,13 +207,13 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
         try {
             val mnemonicResponse = binding.passphraseInputGroup.getMnemonicResponse()
             if (mnemonicResponse is PassphraseInputGroup.MnemonicResponse.Error) {
-                showGlobalError(errorMessage = mnemonicResponse.error.toString())
+                showErrorBottomSheet(descriptionString = mnemonicResponse.error)
                 return
             }
             val privateKey = Mobile.mnemonicToPrivateKey(mnemonicResponse.mnemonic.toLowerCase(Locale.ENGLISH))
             if (privateKey != null) {
                 val publicKey = Mobile.generateAddressFromSK(privateKey)
-                val sameAccount = accountManager.getAccounts().find { account -> account.address == publicKey }
+                val sameAccount = recoverWithPassphraseViewModel.getAccountIfExist(publicKey)
                 if (sameAccount != null &&
                     sameAccount.type != Account.Type.REKEYED &&
                     sameAccount.type != Account.Type.WATCH
@@ -280,7 +228,7 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
                 navigateToSuccess()
             }
         } catch (exception: Exception) {
-            showGlobalError(errorMessage = getString(R.string.your_passphrase_is_invalid_please))
+            showErrorBottomSheet(descriptionString = AnnotatedString(R.string.account_not_found))
         }
     }
 
@@ -294,8 +242,30 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
         }
     }
 
+    private fun navigateToSuccess() {
+        nav(
+            RecoverWithPassphraseFragmentDirections
+                .actionRecoverWithPassphraseFragmentToAccountNameRegistrationFragment(accountCreation)
+        )
+    }
+
+    private fun showErrorBottomSheet(descriptionString: AnnotatedString) {
+        nav(
+            MainNavigationDirections.actionGlobalSingleButtonBottomSheet(
+                titleAnnotatedString = AnnotatedString(R.string.wrong_passphrase),
+                drawableResId = R.drawable.ic_error,
+                drawableTintResId = R.color.errorTintColor,
+                descriptionAnnotatedString = descriptionString,
+                isResultNeeded = false,
+            )
+        )
+    }
+
     private fun onOptionsClick() {
-        nav(actionRecoverWithPassphraseFragmentToRecoverOptionsBottomSheet())
+        nav(
+            RecoverWithPassphraseFragmentDirections
+                .actionRecoverWithPassphraseFragmentToRecoverOptionsBottomSheet()
+        )
     }
 
     private fun onRecoverClick() {

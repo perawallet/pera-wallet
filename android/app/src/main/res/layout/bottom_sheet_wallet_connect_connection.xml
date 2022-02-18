@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -15,14 +15,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp"
+    android:padding="@dimen/spacing_xlarge"
     tools:background="@color/backgroundOnPrimary">
 
     <ImageView
         android:id="@+id/appIconImageView"
         android:layout_width="72dp"
         android:layout_height="72dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/spacing_xsmall"
         android:background="@drawable/bg_wallet_connect_connection_icon_round"
         android:padding="1dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,76 +31,96 @@
 
     <TextView
         android:id="@+id/descriptionTextView"
+        android:textAppearance="@style/TextAppearance.Body.Large.Sans"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/spacing_large"
         android:gravity="center"
-        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appIconImageView"
-        tools:text="Algorand wants to \nconnect to your account" />
+        tools:text="Pera wants to \nconnect to your account" />
 
     <TextView
         android:id="@+id/appUrlTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:drawablePadding="8dp"
-        android:fontFamily="@font/publicsans_semibold"
-        android:textColor="@color/linkTextColor"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:drawablePadding="@dimen/spacing_xsmall"
+        android:fontFamily="@font/dmsans_bold"
+        android:textColor="@color/linkPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/descriptionTextView"
-        tools:text="algorand.com" />
+        tools:text="https://perawallet.app" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/accountContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="@dimen/spacing_normal"
         android:background="@drawable/bg_wallet_connect_connection_wallet_item"
-        android:padding="16dp"
+        android:padding="@dimen/spacing_normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appUrlTextView">
 
-        <ImageView
+        <com.algorand.android.customviews.AccountIconImageView
             android:id="@+id/accountIconImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@drawable/ic_wallet_curved"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@drawable/ic_wallet" />
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/selectAccountTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:gravity="center_vertical"
+            android:text="@string/select_account"
+            tools:visibility="gone"
+            android:textAppearance="@style/TextAppearance.Body.Sans"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/arrowImageView"
+            app:layout_constraintStart_toEndOf="@id/accountIconImageView"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/accountNameTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
+            android:layout_marginHorizontal="@dimen/spacing_normal"
             android:ellipsize="end"
-            android:fontFamily="@font/publicsans_medium"
             android:maxLines="1"
+            android:textAppearance="@style/TextAppearance.Body.Sans"
+            android:visibility="gone"
             app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toTopOf="@id/accountBalanceTextView"
             app:layout_constraintEnd_toStartOf="@id/arrowImageView"
             app:layout_constraintStart_toEndOf="@id/accountIconImageView"
             app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible"
             tools:text="@tools:sample/lorem[10]" />
 
         <TextView
             android:id="@+id/accountBalanceTextView"
             android:layout_width="0dp"
+            android:textAppearance="@style/TextAppearance.Footnote.Description"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_xxsmall"
             android:gravity="center_vertical"
             android:textColor="@color/tertiaryTextColor"
+            android:visibility="gone"
+            tools:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/accountIconImageView"
             app:layout_constraintTop_toBottomOf="@id/accountNameTextView"
             tools:text="13,020.00" />
+
 
         <ImageView
             android:id="@+id/arrowImageView"
@@ -110,17 +130,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_right_arrow"
-            app:tint="@color/gray_59" />
-
+            app:tint="@color/primaryIconTintColor" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/connectButton"
-        style="@style/UnelevatedButton.General"
+        style="@style/Button.Primary"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_xxlarge"
         android:text="@string/connect"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/cancelButton"
@@ -128,10 +148,10 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/cancelButton"
-        style="@style/UnelevatedButton.General.Secondary"
+        style="@style/Button.Secondary"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="@dimen/spacing_xxlarge"
         android:text="@string/cancel"
         app:layout_constraintEnd_toStartOf="@id/connectButton"
         app:layout_constraintStart_toStartOf="parent"

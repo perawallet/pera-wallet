@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -18,39 +18,26 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.algorand.android.MainActivity
 import com.algorand.android.R
-import com.algorand.android.core.AccountManager
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentNodeSettingsBinding
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.Node
 import com.algorand.android.models.ToolbarConfiguration
-import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class NodeSettingsFragment : DaggerBaseFragment(R.layout.fragment_node_settings) {
 
-    @Inject
-    lateinit var accountManager: AccountManager
-
-    @Inject
-    lateinit var accountCacheManager: AccountCacheManager
-
-    // <editor-fold defaultstate="collapsed" desc="Observers">
-
-    private val nodeListObserver = Observer<List<Node>> { nodeList ->
-        nodeAdapter?.setNodeList(nodeList)
-    }
-
-    // </editor-fold>
-
     private val toolbarConfiguration = ToolbarConfiguration(
         titleResId = R.string.node_settings,
-        startIconResId = R.drawable.ic_back_navigation,
+        startIconResId = R.drawable.ic_left_arrow,
         startIconClick = ::navBack
     )
+
+    private val nodeListObserver = Observer<List<Node>> {
+        nodeAdapter.setNewList(it)
+    }
 
     override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
 
@@ -58,13 +45,12 @@ class NodeSettingsFragment : DaggerBaseFragment(R.layout.fragment_node_settings)
 
     private val binding by viewBinding(FragmentNodeSettingsBinding::bind)
 
-    private var nodeAdapter: NodeAdapter? = null
+    private var nodeAdapter = NodeAdapter(::onDifferentNodeSelected)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
         initObserver()
-        nodeSettingsViewModel.getNodeList()
     }
 
     private fun initObserver() {
@@ -72,14 +58,13 @@ class NodeSettingsFragment : DaggerBaseFragment(R.layout.fragment_node_settings)
     }
 
     private fun setupRecyclerView() {
-        nodeAdapter = NodeAdapter(::onListChanged)
         binding.nodeRecyclerView.adapter = nodeAdapter
     }
 
-    private fun onListChanged(activatedNode: Node, newNodeList: List<Node>) {
-        accountCacheManager.removeCachedData()
-        nodeSettingsViewModel.activateNode(activatedNode)
-        nodeSettingsViewModel.setNodeListToDatabase(newNodeList)
-        (activity as? MainActivity)?.onNewNodeActivated(activatedNode)
+    private fun onDifferentNodeSelected(activatedNode: Node) {
+        nodeSettingsViewModel.onNodeChanged(
+            activatedNode = activatedNode,
+            onNodeSwitchingFinished = { (activity as? MainActivity)?.onNewNodeActivated(activatedNode) }
+        )
     }
 }

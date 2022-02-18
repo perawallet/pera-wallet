@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -19,14 +19,15 @@ import kotlinx.parcelize.Parcelize
 data class WalletConnectAccount constructor(
     val address: String,
     var name: String = "",
-    val type: Account.Type? = null
+    val type: Account.Type? = null,
+    val accountIconColor: Account.AccountIconColor
 ) : Parcelable {
 
     companion object {
         fun create(account: Account?): WalletConnectAccount? {
             with(account) {
                 if (this == null) return null
-                return WalletConnectAccount(address, name, type)
+                return WalletConnectAccount(address, name, type, accountIconColor)
             }
         }
     }

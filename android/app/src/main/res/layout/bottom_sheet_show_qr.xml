@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/showQRRootLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/bottom_safe_area_margin"
+        tools:background="@color/primaryBackground">
+
+        <com.algorand.android.customviews.CustomToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/default_toolbar_height"
+            android:layout_marginTop="@dimen/spacing_xxsmall"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/qrImageView"
+            android:layout_width="@dimen/show_qr_size"
+            android:layout_height="@dimen/show_qr_size"
+            android:layout_marginTop="@dimen/spacing_xxsmall"
+            app:layout_constraintBottom_toTopOf="@id/accountAddressLabelTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:srcCompat="@drawable/ic_qr_code"
+            tools:background="@color/white" />
+
+        <TextView
+            android:id="@+id/accountAddressLabelTextView"
+            style="@style/TextAppearance.Body.Large.Sans.Medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:gravity="center"
+            app:layout_constraintBottom_toTopOf="@id/accountAddressTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/qrImageView"
+            tools:text="@tools:sample/lorem[2]" />
+
+        <TextView
+            android:id="@+id/accountAddressTextView"
+            style="@style/TextAppearance.Description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:layout_marginBottom="@dimen/spacing_xxlarge"
+            android:gravity="center"
+            app:layout_constraintBottom_toTopOf="@id/copyButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/accountAddressLabelTextView"
+            tools:text="@tools:sample/lorem[25]" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/copyButton"
+            style="@style/Button.Primary.Icon"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:text="@string/copy_address"
+            app:icon="@drawable/ic_copy"
+            app:layout_constraintBottom_toTopOf="@id/shareButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/shareButton"
+            style="@style/Button.Secondary.Icon"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:text="@string/share_address"
+            app:icon="@drawable/ic_share"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

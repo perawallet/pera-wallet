@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -13,10 +13,27 @@
 package com.algorand.android.models
 
 import com.google.gson.annotations.SerializedName
+import java.math.BigDecimal
 
+// TODO Rename class as SimpleAssetDetail
 data class AssetQueryItem(
     @SerializedName("asset_id") val assetId: Long,
     @SerializedName("name") val fullName: String?,
     @SerializedName("unit_name") val shortName: String?,
-    @SerializedName("is_verified") val isVerified: Boolean?
-)
+    @SerializedName("is_verified") val isVerified: Boolean = false,
+    @SerializedName("fraction_decimals") val fractionDecimals: Int?,
+    @SerializedName("usd_value") val usdValue: BigDecimal?,
+    @SerializedName("creator") val assetCreator: AssetCreator?
+) {
+
+    // TODO remove this function after deleting AssetInformation
+    fun convertToAssetInformation(): AssetInformation {
+        return AssetInformation(
+            assetId = assetId,
+            isVerified = isVerified,
+            creatorPublicKey = assetCreator?.publicKey,
+            shortName = shortName,
+            fullName = fullName
+        )
+    }
+}

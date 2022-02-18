@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:background="@color/white"
+    tools:parentTag="android.widget.LinearLayout">
+
+    <ImageView
+        android:id="@+id/infoIconImageView"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:layout_marginTop="@dimen/spacing_xxsmall"
+        android:background="@drawable/bg_layer_gray_lighter_oval"
+        android:padding="@dimen/spacing_xlarge"
+        android:visibility="gone"
+        app:tint="@color/secondaryIconTintColor"
+        tools:srcCompat="@drawable/ic_menu_contacts"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/titleTextView"
+        style="@style/TextAppearance.Body.Large.Sans.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_xxlarge"
+        android:gravity="center"
+        android:visibility="gone"
+        tools:text="@tools:sample/lorem[5]"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/descriptionTextView"
+        style="@style/TextAppearance.Description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:gravity="center"
+        android:visibility="gone"
+        tools:text="@tools:sample/lorem[10]"
+        tools:visibility="visible" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/neutralButton"
+        style="@style/Button.Primary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_xxlarge"
+        android:layout_marginBottom="@dimen/spacing_xxsmall"
+        android:minWidth="160dp"
+        android:visibility="gone"
+        tools:text="@string/try_again"
+        tools:visibility="visible" />
+
+</merge>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -78,6 +78,8 @@ data class AccountCacheData(
     fun getAssetInfoById(assetId: Long): String? {
         return assetsInformation.find { it.assetId == assetId }?.fullName
     }
+
+    fun isThereAnyDifferentAsset() = assetsInformation.isNotEmpty()
 
     companion object {
         private const val ASSET_INSERTION_POSITION = 1

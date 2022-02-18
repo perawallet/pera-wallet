@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -16,7 +16,33 @@
     android:viewportWidth="24"
     android:viewportHeight="24">
     <path
-        android:fillColor="#8A8993"
-        android:fillType="evenOdd"
-        android:pathData="M6,2C3.7909,2 2,3.7909 2,6V18C2,20.2091 3.7909,22 6,22H18C20.2091,22 22,20.2091 22,18V6C22,3.7909 20.2091,2 18,2H6ZM4,6C4,4.8954 4.8954,4 6,4H18C19.1046,4 20,4.8954 20,6V18C20,19.1046 19.1046,20 18,20H6C4.8954,20 4,19.1046 4,18V6ZM10,11C10,10.4477 9.5523,10 9,10C8.4477,10 8,10.4477 8,11V13.2676C7.4022,13.6134 7,14.2597 7,15C7,15.7403 7.4022,16.3866 8,16.7324V17C8,17.5523 8.4477,18 9,18C9.5523,18 10,17.5523 10,17V16.7324C10.5978,16.3866 11,15.7403 11,15C11,14.2597 10.5978,13.6134 10,13.2676V11ZM15,10C15.5523,10 16,10.4477 16,11V11.2676C16.5978,11.6134 17,12.2597 17,13C17,13.7403 16.5978,14.3866 16,14.7324V17C16,17.5523 15.5523,18 15,18C14.4477,18 14,17.5523 14,17V14.7324C13.4022,14.3866 13,13.7403 13,13C13,12.2597 13.4022,11.6134 14,11.2676V11C14,10.4477 14.4477,10 15,10ZM8,6.25C7.5858,6.25 7.25,6.5858 7.25,7C7.25,7.4142 7.5858,7.75 8,7.75H16C16.4142,7.75 16.75,7.4142 16.75,7C16.75,6.5858 16.4142,6.25 16,6.25H8Z" />
+        android:fillColor="#00000000"
+        android:pathData="M3,3h18v18h-18z"
+        android:strokeWidth="2"
+        android:strokeColor="@color/primaryIconTintColor" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M9,17V11"
+        android:strokeWidth="2"
+        android:strokeColor="@color/primaryIconTintColor"
+        android:strokeLineCap="square"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M15,17V11"
+        android:strokeWidth="2"
+        android:strokeColor="@color/primaryIconTintColor"
+        android:strokeLineCap="square"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="@color/primaryIconTintColor"
+        android:pathData="M7,13h4v4h-4z" />
+    <path
+        android:fillColor="@color/primaryIconTintColor"
+        android:pathData="M13,11h4v4h-4z" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M8,7H16"
+        android:strokeWidth="2"
+        android:strokeColor="@color/primaryIconTintColor" />
 </vector>

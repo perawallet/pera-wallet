@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -22,7 +22,7 @@ class VerifyLedgerAddressViewModel @ViewModelInject constructor(
     private val verifyLedgerAddressQueueManager: VerifyLedgerAddressQueueManager
 ) : BaseViewModel() {
 
-    val currentLedgerAddressesListLiveData = MutableLiveData<List<VerifiableLedgerAddressItem>>()
+    val currentLedgerAddressesListLiveData = MutableLiveData<List<VerifyLedgerAddressListItem>>()
 
     val awaitingLedgerAccountLiveData = MutableLiveData<Account>()
 
@@ -31,7 +31,7 @@ class VerifyLedgerAddressViewModel @ViewModelInject constructor(
 
     val isVerifyOperationsDoneLiveData = MutableLiveData<Event<Boolean>>()
 
-    val listLock = Any()
+    private val listLock = Any()
 
     private val verifyLedgerAddressQueueManagerListener = object : VerifyLedgerAddressQueueManager.Listener {
         override fun onNextQueueItem(ledgerDetail: Account) {
@@ -50,9 +50,11 @@ class VerifyLedgerAddressViewModel @ViewModelInject constructor(
     }
 
     fun createListAuthLedgerAccounts(authLedgerAccounts: List<Account>) {
-        currentLedgerAddressesListLiveData.value = authLedgerAccounts.map { ledgerAccount ->
-            VerifiableLedgerAddressItem(ledgerAccount.address)
+        val verifiableLedgerAddress: List<VerifyLedgerAddressListItem> = authLedgerAccounts.map { ledgerAccount ->
+            VerifyLedgerAddressListItem.VerifiableLedgerAddressItem(ledgerAccount.address)
         }
+        verifiableLedgerAddress.toMutableList().add(0, VerifyLedgerAddressListItem.VerifyLedgerHeaderItem)
+        currentLedgerAddressesListLiveData.value = verifiableLedgerAddress
         verifyLedgerAddressQueueManager.fillQueue(authLedgerAccounts)
     }
 
@@ -76,19 +78,24 @@ class VerifyLedgerAddressViewModel @ViewModelInject constructor(
             val currentList = currentLedgerAddressesListLiveData.value
             val currentOperatedAddress = awaitingLedgerAccount?.address
             if (currentList != null && currentOperatedAddress != null) {
-                val newList = mutableListOf<VerifiableLedgerAddressItem>()
-                currentList.forEach {
-                    val changedStatus = if (it.address == currentOperatedAddress) newStatus else it.status
-                    val copyItem = it.copy(status = changedStatus)
-                    newList.add(copyItem)
+                val newList = mutableListOf<VerifyLedgerAddressListItem>().apply {
+                    add(VerifyLedgerAddressListItem.VerifyLedgerHeaderItem)
                 }
+                currentList
+                    .filterIsInstance<VerifyLedgerAddressListItem.VerifiableLedgerAddressItem>()
+                    .forEach {
+                        val changedStatus = if (it.address == currentOperatedAddress) newStatus else it.status
+                        val copyItem = it.copy(status = changedStatus)
+                        newList.add(copyItem)
+                    }
                 currentLedgerAddressesListLiveData.value = newList
             }
         }
     }
 
-    private fun getAllApprovedAuths(): List<VerifiableLedgerAddressItem> {
+    private fun getAllApprovedAuths(): List<VerifyLedgerAddressListItem.VerifiableLedgerAddressItem> {
         return currentLedgerAddressesListLiveData.value
+            ?.filterIsInstance<VerifyLedgerAddressListItem.VerifiableLedgerAddressItem>()
             ?.filter { it.status == VerifiableLedgerAddressItemStatus.APPROVED }
             .orEmpty()
     }

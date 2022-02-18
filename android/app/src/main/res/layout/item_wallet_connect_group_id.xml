@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -10,27 +10,15 @@
   ~ limitations under the License
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/groupIdTextView"
+    style="@style/TextAppearance.Body.Mono"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_small_shadow"
-    android:orientation="vertical"
-    android:paddingHorizontal="22dp"
-    android:paddingTop="20dp"
-    android:paddingBottom="30dp">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/group_id" />
-
-    <TextView
-        android:id="@+id/groupIdTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textColor="@color/secondaryTextColor"
-        tools:text="@tools:sample/lorem[10]" />
-
-</LinearLayout>
+    android:layout_marginHorizontal="@dimen/spacing_xxlarge"
+    android:layout_marginTop="@dimen/spacing_xsmall"
+    android:layout_marginBottom="@dimen/spacing_normal"
+    android:gravity="center"
+    android:textColor="@color/secondaryTextColor"
+    tools:text="@tools:sample/lorem[12]" />

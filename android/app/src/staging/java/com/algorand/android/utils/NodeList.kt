@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -15,27 +15,29 @@ package com.algorand.android.utils
 import com.algorand.android.BuildConfig
 import com.algorand.android.models.Node
 
-const val CURRENT_DEFAULT_NODE_LIST_VERSION = 21
+const val CURRENT_DEFAULT_NODE_LIST_VERSION = 23
 
 val defaultNodeList = listOf(
     Node(
         name = "TestNet",
-        algodAddress = "https://node-testnet.aws.algodev.network/",
+        algodAddress = "https://node-testnet.chain.perawallet.app/",
         algodApiKey = BuildConfig.ALGORAND_API_KEY,
-        indexerAddress = "https://indexer-testnet.aws.algodev.network/",
+        indexerAddress = "https://indexer-testnet.chain.perawallet.app/",
         indexerApiKey = BuildConfig.INDEXER_API_KEY,
         isActive = true,
         isAddedDefault = true,
-        networkSlug = TESTNET_NETWORK_SLUG
+        networkSlug = TESTNET_NETWORK_SLUG,
+        mobileAlgorandAddress = "https://staging.api.perawallet.app/v1/"
     ),
     Node(
         name = "MainNet",
-        algodAddress = "https://node-mainnet.aws.algodev.network/",
+        algodAddress = "https://node-mainnet.chain.perawallet.app/",
         algodApiKey = BuildConfig.ALGORAND_API_KEY,
-        indexerAddress = "https://indexer-mainnet.aws.algodev.network/",
+        indexerAddress = "https://indexer-mainnet.chain.perawallet.app/",
         indexerApiKey = BuildConfig.INDEXER_API_KEY,
         isActive = false,
         isAddedDefault = true,
-        networkSlug = MAINNET_NETWORK_SLUG
+        networkSlug = MAINNET_NETWORK_SLUG,
+        mobileAlgorandAddress = "https://staging.api.perawallet.app/v1/"
     )
 )

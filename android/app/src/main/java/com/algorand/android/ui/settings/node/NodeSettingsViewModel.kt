@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -13,43 +13,50 @@
 package com.algorand.android.ui.settings.node
 
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
-import com.algorand.android.database.NodeDao
 import com.algorand.android.models.Node
-import com.algorand.android.network.AlgodInterceptor
-import com.algorand.android.network.IndexerInterceptor
-import com.algorand.android.network.MobileHeaderInterceptor
-import kotlinx.coroutines.Dispatchers
+import com.algorand.android.usecase.CoreCacheUseCase
+import com.algorand.android.usecase.NodeSettingsUseCase
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class NodeSettingsViewModel @ViewModelInject constructor(
-    private val mobileHeaderInterceptor: MobileHeaderInterceptor,
-    private val indexerInterceptor: IndexerInterceptor,
-    private val algodInterceptor: AlgodInterceptor,
-    private val nodeDao: NodeDao
+    private val coreCacheUseCase: CoreCacheUseCase,
+    private val nodeSettingsUseCase: NodeSettingsUseCase
 ) : BaseViewModel() {
 
-    val nodeListLiveData = MutableLiveData<List<Node>>()
+    private val _nodeListLiveData = MutableLiveData<List<Node>>()
+    val nodeListLiveData: LiveData<List<Node>> = _nodeListLiveData
 
-    fun getNodeList() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val nodeList = nodeDao.getAll()
-            withContext(Dispatchers.Main) {
-                nodeListLiveData.value = nodeList
+    init {
+        viewModelScope.launch {
+            nodeSettingsUseCase.getAllNodeAsFlow().collectLatest {
+                _nodeListLiveData.postValue(it)
             }
         }
     }
 
-    fun setNodeListToDatabase(nodeList: List<Node>) {
-        viewModelScope.launch(Dispatchers.IO) {
-            nodeDao.updateNodes(nodeList)
+    private suspend fun setNodeListToDatabase(nodeList: List<Node>) {
+        viewModelScope.launch {
+            nodeSettingsUseCase.setNodeListToDatabase(nodeList)
         }
     }
 
-    fun activateNode(node: Node) {
-        node.activate(indexerInterceptor, mobileHeaderInterceptor, algodInterceptor)
+    private fun activateNode(node: Node) {
+        nodeSettingsUseCase.activateNewNode(node)
+    }
+
+    fun onNodeChanged(activatedNode: Node, onNodeSwitchingFinished: () -> Unit) {
+        viewModelScope.launch {
+            nodeSettingsUseCase.setSelectedNode(_nodeListLiveData.value, activatedNode).apply {
+                coreCacheUseCase.handleNodeChange()
+                activateNode(activatedNode)
+                setNodeListToDatabase(this)
+                onNodeSwitchingFinished.invoke()
+            }
+        }
     }
 }

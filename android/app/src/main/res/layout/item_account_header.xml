@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright 2019 Algorand, Inc.
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -15,67 +14,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/mediumshadow_start_20dp_margin"
-    android:layout_marginTop="@dimen/mediumshadow_top_margin_8dp"
-    android:layout_marginEnd="@dimen/mediumshadow_end_20dp_margin"
-    android:background="@drawable/bg_account_list_top_item"
-    android:paddingStart="@dimen/mediumshadow_start_padding_4dp"
-    android:paddingTop="@dimen/mediumshadow_top_padding_4dp"
-    android:paddingEnd="@dimen/mediumshadow_end_padding_4dp"
-    android:paddingBottom="2dp">
-
-    <View
-        android:id="@+id/backgroundView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/bg_on_primary_8dp_radius"
-        app:layout_constraintBottom_toBottomOf="@id/nameTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/nameTextView" />
+    android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/nameTextView"
-        android:layout_width="0dp"
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawablePadding="12dp"
-        android:ellipsize="end"
-        android:fontFamily="@font/publicsans_medium"
-        android:gravity="center_vertical"
-        android:maxLines="1"
-        android:paddingHorizontal="@dimen/keyline_1"
-        android:paddingVertical="12dp"
-        android:textColor="@color/tertiaryTextColor"
-        app:layout_constraintEnd_toStartOf="@id/qrButton"
+        android:textAppearance="@style/TextAppearance.Body.Sans.Medium"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:drawableStart="@drawable/ic_standard_account"
-        tools:text="@tools:sample/lorem[10]" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/qrButton"
-        style="@style/BaseIconButton.Transparent"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:visibility="gone"
-        app:icon="@drawable/ic_show_qr"
-        app:layout_constraintBottom_toBottomOf="@id/nameTextView"
-        app:layout_constraintEnd_toStartOf="@id/optionsButton"
-        app:layout_constraintTop_toTopOf="@id/nameTextView"
-        tools:visibility="visible" />
+        tools:text="@tools:sample/lorem[2]" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/optionsButton"
-        style="@style/BaseIconButton.Transparent"
+        style="@style/IconButton.Transparent"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:visibility="gone"
         app:icon="@drawable/ic_more"
-        app:layout_constraintBottom_toBottomOf="@id/nameTextView"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/nameTextView"
-        tools:visibility="visible" />
-
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

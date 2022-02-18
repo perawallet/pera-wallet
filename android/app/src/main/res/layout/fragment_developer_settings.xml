@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright 2019 Algorand, Inc.
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -11,60 +10,28 @@
   ~ limitations under the License
   -->
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/tertiaryBackground">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/spacing_xlarge">
 
     <com.algorand.android.customviews.SettingsListItem
-        android:id="@+id/nodeListItem"
-        android:layout_width="0dp"
+        android:id="@+id/nodeSettingsListItem"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:settingsIcon="@drawable/ic_node"
-        app:settingsShowArrow="true"
         app:settingsText="@string/node_settings" />
-
-    <View
-        android:id="@+id/nodeDivider"
-        style="@style/HorizontalDivider.Settings"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        app:layout_constraintBottom_toBottomOf="@id/nodeListItem"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nodeListItem" />
 
     <com.algorand.android.customviews.SettingsListItem
         android:id="@+id/dispenserListItem"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nodeDivider"
         app:settingsIcon="@drawable/ic_algo_sign"
-        app:settingsShowArrow="true"
-        app:settingsText="@string/algorand_dispenser" />
+        app:settingsText="@string/algorand_dispenser">
 
-    <View
-        android:id="@+id/dispenserDivider"
-        style="@style/HorizontalDivider.Settings"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dispenserListItem" />
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/dispenserGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="dispenserListItem, dispenserDivider"
-        tools:visibility="visible" />
+    </com.algorand.android.customviews.SettingsListItem>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

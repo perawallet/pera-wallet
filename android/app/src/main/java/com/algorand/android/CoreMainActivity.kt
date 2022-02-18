@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -28,10 +28,16 @@ import com.algorand.android.database.ContactDao
 import com.algorand.android.databinding.ActivityMainBinding
 import com.algorand.android.models.StatusBarConfiguration
 import com.algorand.android.network.IndexerInterceptor
-import com.algorand.android.notification.AlgorandNotificationManager
+import com.algorand.android.notification.PeraNotificationManager
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.BETANET_NETWORK_SLUG
 import com.algorand.android.utils.TESTNET_NETWORK_SLUG
+import com.algorand.android.utils.coremanager.AccountDetailCacheManager
+import com.algorand.android.utils.coremanager.AlgoPriceManager
+import com.algorand.android.utils.coremanager.AssetCacheManager
+import com.algorand.android.utils.coremanager.BlockPollingManager
+import com.algorand.android.utils.extensions.hide
+import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.navigateSafe
 import com.algorand.android.utils.preference.getRegisterSkip
 import com.algorand.android.utils.setupWithNavController
@@ -50,7 +56,7 @@ abstract class CoreMainActivity : BaseActivity() {
     lateinit var indexerInterceptor: IndexerInterceptor
 
     @Inject
-    lateinit var algorandNotificationManager: AlgorandNotificationManager
+    lateinit var peraNotificationManager: PeraNotificationManager
 
     @Inject
     lateinit var accountCacheManager: AccountCacheManager
@@ -65,29 +71,41 @@ abstract class CoreMainActivity : BaseActivity() {
 
     protected val binding by viewBinding(ActivityMainBinding::inflate)
 
-    var isBottomBarNavigationVisible by Delegates.observable(true, { _, oldValue, newValue ->
+    @Inject
+    lateinit var algoPriceManager: AlgoPriceManager
+
+    @Inject
+    lateinit var blockPollingManager: BlockPollingManager
+
+    @Inject
+    lateinit var accountDetailCacheManager: AccountDetailCacheManager
+
+    @Inject
+    lateinit var assetCacheManager: AssetCacheManager
+
+    var isBottomBarNavigationVisible by Delegates.observable(true) { _, oldValue, newValue ->
         if (newValue != oldValue) {
             binding.bottomNavigationView.isVisible = newValue
             binding.sendReceiveTabBarView.apply {
                 if (newValue) visibility = View.VISIBLE else hideWithoutAnimation()
             }
         }
-    })
+    }
 
     var statusBarConfiguration: StatusBarConfiguration by Delegates.observable(
-        StatusBarConfiguration(),
-        { _, oldValue, newValue ->
-            if (oldValue != newValue) {
-                handleStatusBarChanges(newValue)
-                handleStatusBarIconColorChanges(oldValue, newValue)
-            }
-        })
+        StatusBarConfiguration()
+    ) { _, oldValue, newValue ->
+        if (oldValue != newValue) {
+            handleStatusBarChanges(newValue)
+            handleStatusBarIconColorChanges(oldValue, newValue)
+        }
+    }
 
-    var isConnectedToTestNet: Boolean by Delegates.observable(false, { _, oldValue, newValue ->
+    private var isConnectedToTestNet: Boolean by Delegates.observable(false) { _, oldValue, newValue ->
         if (oldValue != newValue) {
             handleStatusBarChanges(statusBarConfiguration)
         }
-    })
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,6 +117,17 @@ abstract class CoreMainActivity : BaseActivity() {
             isBottomBarNavigationVisible = savedInstanceState.getBoolean(IS_BOTTOM_BAR_VISIBLE_KEY)
         }
         checkIfConnectedToTestNet()
+
+        initializeCoreManagers()
+    }
+
+    private fun initializeCoreManagers() {
+        with(lifecycle) {
+            addObserver(algoPriceManager)
+            addObserver(blockPollingManager)
+            addObserver(accountDetailCacheManager)
+            addObserver(assetCacheManager)
+        }
     }
 
     private fun startNavigation() {
@@ -114,7 +143,7 @@ abstract class CoreMainActivity : BaseActivity() {
         return if (accountManager.isThereAnyRegisteredAccount() || sharedPref.getRegisterSkip()) {
             R.id.lockFragment
         } else {
-            R.id.addAccountFragment
+            R.id.loginNavigation
         }
     }
 
@@ -155,22 +184,22 @@ abstract class CoreMainActivity : BaseActivity() {
         navController.navigateSafe(directions)
     }
 
-    fun getToolbar(): CustomToolbar? {
+    fun getToolbar(): CustomToolbar {
         return binding.toolbar
     }
 
     fun showGlobalError(errorMessage: CharSequence?, title: String? = null) {
         val safeTitle = title ?: getString(R.string.error_default_title)
         val safeErrorMessage = errorMessage ?: getString(R.string.unknown_error)
-        binding.slidingTopErrorView.addErrorMessage(safeTitle, safeErrorMessage)
+        binding.slidingTopErrorView?.addErrorMessage(safeTitle, safeErrorMessage)
     }
 
     fun showProgress() {
-        binding.progressBar.root.visibility = View.VISIBLE
+        binding.progressBar.root.show()
     }
 
     fun hideProgress() {
-        binding.progressBar.root.visibility = View.GONE
+        binding.progressBar.root.hide()
     }
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {

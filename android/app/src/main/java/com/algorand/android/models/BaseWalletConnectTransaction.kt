@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -13,8 +13,8 @@
 package com.algorand.android.models
 
 import android.os.Parcelable
+import com.algorand.android.utils.DEFAULT_ASSET_DECIMAL
 import com.algorand.android.utils.decodeBase64
-import com.algorand.android.utils.getAccountImageResource
 import com.algorand.android.utils.isRekeyedToAnotherAccount
 import com.algorand.android.utils.isValidAddress
 import java.math.BigInteger
@@ -28,13 +28,11 @@ abstract class BaseWalletConnectTransaction : Parcelable {
     abstract val rawTransactionPayload: WCAlgoTransactionRequest
     abstract val signer: WalletConnectSigner
     abstract val groupId: String?
-
-    abstract val summaryTitleResId: Int
-    abstract val summarySecondaryParameter: String
+    abstract val fee: Long
 
     var requestedBlockCurrentRound: Long = -1
 
-    open val shouldShowWarningIndicator: Boolean = false
+    open val warningCount: Int? = null
 
     open val authAddress: String? = null
     open val account: WalletConnectAccount? = null
@@ -44,8 +42,16 @@ abstract class BaseWalletConnectTransaction : Parcelable {
         return isRekeyedToAnotherAccount(authAddress, account?.address)
     }
 
+    fun createAccountIcon(): AccountIcon {
+        return AccountIcon.create(getAccountIconColor(), getAccountImageResource())
+    }
+
     fun getAccountImageResource(): Int {
-        return getAccountImageResource(account?.type, isRekeyedToAnotherAccount())
+        return account?.type?.iconResId ?: Account.defaultAccountType.iconResId
+    }
+
+    fun getAccountIconColor(): Account.AccountIconColor {
+        return account?.accountIconColor ?: Account.defaultAccountIconColor
     }
 
     open val assetDecimal: Int = DEFAULT_ASSET_DECIMAL
@@ -79,7 +85,7 @@ abstract class BaseWalletConnectTransaction : Parcelable {
     open fun getRekeyToAccountAddress(): WalletConnectAddress? = null
     open fun getCloseToAccountAddress(): WalletConnectAddress? = null
 
-    companion object {
-        const val DEFAULT_ASSET_DECIMAL = 0
+    fun getProvidedAddressAsDisplayAddress(address: String): BaseWalletConnectDisplayedAddress {
+        return BaseWalletConnectDisplayedAddress.create(address, account)
     }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -16,32 +16,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/secondaryBackground"
     android:gravity="center_vertical"
     android:paddingHorizontal="20dp"
     android:paddingVertical="14dp">
 
-    <ImageView
+    <com.algorand.android.customviews.AccountIconImageView
         android:id="@+id/typeImageView"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         tools:srcCompat="@drawable/ic_ledger_vectorized" />
 
     <TextView
         android:id="@+id/nameTextView"
+        style="@style/TextAppearance.Body"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/keyline_1"
+        android:layout_marginHorizontal="@dimen/spacing_normal"
         android:layout_weight="1"
-        android:fontFamily="@font/publicsans_medium"
         android:maxLines="1"
-        android:textSize="14sp"
         tools:text="Account Name" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/filterSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:useMaterialThemeColors="false" />
+        app:useMaterialThemeColors="false"
+        android:layout_marginEnd="@dimen/spacing_xxsmall"/>
 
 </LinearLayout>

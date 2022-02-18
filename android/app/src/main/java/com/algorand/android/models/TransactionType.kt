@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,8 +12,21 @@
 
 package com.algorand.android.models
 
-enum class TransactionType {
-    PENDING,
-    TRANSFER,
-    ASSET_CREATION
+import com.google.gson.annotations.SerializedName
+
+enum class TransactionType(val value: String) {
+
+    @SerializedName("pay")
+    PAY_TRANSACTION("pay"),
+
+    @SerializedName("axfer")
+    ASSET_TRANSACTION("axfer"),
+
+    @SerializedName("appl")
+    APP_TRANSACTION("appl"),
+
+    @SerializedName("acfg")
+    ASSET_CONFIGURATION("acfg"),
+
+    UNDEFINED("")
 }

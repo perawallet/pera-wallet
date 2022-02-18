@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright 2019 Algorand, Inc.
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -10,211 +9,263 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License
   -->
-
-<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/assetDetailMotionLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layoutDescription="@xml/asset_detail_motion_scene"
-    app:visibilityMode="ignore"
-    tools:context=".ui.assetdetail.AssetDetailFragment">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/titleTextView"
-        style="@style/TextAppearance.ToolbarTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/toolbar_navigation_item_width"
-        android:layout_marginEnd="@dimen/keyline_1_minus_8dp"
-        android:includeFontPadding="false"
-        android:maxLines="1"
-        tools:text="@tools:sample/lorem" />
-
-    <TextView
-        android:id="@+id/subtitleTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/publicsans_medium"
-        android:gravity="center"
-        android:textAllCaps="true"
-        android:textColor="@color/gray_8A"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageButton
-        android:id="@+id/backButton"
-        style="?attr/toolbarNavigationButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/default_toolbar_height"
-        android:layout_gravity="center"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_back_navigation" />
-
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/cardsViewPager"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/rootScrollView"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/asset_detail_card_height"
-        android:layout_marginTop="20dp"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:paddingHorizontal="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/backButton" />
+        android:layout_height="match_parent">
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/pageIndicator"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="10dp"
-        android:background="@color/transparent"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cardsViewPager"
-        app:tabBackground="@drawable/dot_selector"
-        app:tabGravity="center"
-        app:tabIndicatorHeight="0dp"
-        app:tabMaxWidth="18dp"
-        tools:visibility="visible" />
-
-    <View
-        android:id="@+id/transactionsBackgroundView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/bg_secondary_top_20dp_radius"
-        android:clickable="true"
-        android:elevation="3dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/historyTitleTextView" />
-
-    <TextView
-        android:id="@+id/historyTitleTextView"
-        android:layout_width="0dp"
-        android:layout_height="68dp"
-        android:elevation="3dp"
-        android:fontFamily="@font/publicsans_semibold"
-        android:gravity="center_vertical"
-        android:maxLines="2"
-        android:paddingHorizontal="20dp"
-        android:text="@string/transactions"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@id/filterButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pageIndicator" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/filterButton"
-        style="@style/BaseIconButton.Transparent"
-        android:layout_width="44dp"
-        android:layout_height="44dp"
-        android:layout_marginEnd="@dimen/keyline_1"
-        android:elevation="3dp"
-        app:icon="@drawable/ic_filter"
-        app:layout_constraintBottom_toBottomOf="@id/historyTitleTextView"
-        app:layout_constraintEnd_toStartOf="@id/shareButton"
-        app:layout_constraintTop_toTopOf="@id/historyTitleTextView"
-        app:rippleColor="@color/gray_D9" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/shareButton"
-        style="@style/BaseIconButton.Transparent"
-        android:layout_width="44dp"
-        android:layout_height="44dp"
-        android:layout_marginEnd="@dimen/keyline_1"
-        android:elevation="3dp"
-        app:icon="@drawable/ic_share"
-        app:iconTint="@color/gray_71"
-        app:layout_constraintBottom_toBottomOf="@id/historyTitleTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/historyTitleTextView"
-        app:rippleColor="@color/gray_D9" />
-
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefresh"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:elevation="3dp"
-        app:layout_constraintBottom_toTopOf="@id/sendReceiveBottom"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/historyTitleTextView">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/historyList"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:overScrollMode="never"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_transaction" />
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    <com.algorand.android.customviews.EmptyListView
-        android:id="@+id/emptyListView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:elevation="3dp"
-        android:visibility="gone"
-        app:emptyDescriptionText="@string/no_transaction_have"
-        app:emptyImageSrc="@drawable/ic_empty_transaction_list"
-        app:emptyTitleText="@string/no_transaction_yet"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/swipeRefresh" />
-
-    <com.algorand.android.customviews.ErrorListView
-        android:id="@+id/errorListView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/white"
-        android:elevation="3dp"
-        android:paddingTop="4dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/sendReceiveBottom"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/swipeRefresh" />
-
-    <com.algorand.android.customviews.SendReceiveBottomView
-        android:id="@+id/sendReceiveBottom"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/secondaryBackground"
-        android:elevation="4dp"
-        android:outlineProvider="none"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:visibilityMode="ignore"
-        tools:visibility="visible" />
-
-    <FrameLayout
-        android:id="@+id/blockerLoading"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:clickable="true"
-        android:elevation="5dp"
-        android:focusable="true"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ProgressBar
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            android:paddingHorizontal="@dimen/spacing_xlarge"
+            android:paddingTop="@dimen/spacing_xlarge">
 
-    </FrameLayout>
+            <TextView
+                android:id="@+id/yourBalanceTextView"
+                style="@style/TextAppearance.Description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/your_balance"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.motion.widget.MotionLayout>
+            <TextView
+                android:id="@+id/balanceTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xsmall"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.Title.Mono"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/yourBalanceTextView"
+                tools:text="4.21229722" />
+
+            <TextView
+                android:id="@+id/balanceInCurrencyTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xxsmall"
+                android:gravity="end|center_vertical"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.Body.Mono"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/balanceTextView"
+                tools:text="$6.06" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/algoRewardsView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xxlarge"
+                android:background="@drawable/bg_algo_rewards_border"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/balanceInCurrencyTextView">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/rewardIconImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_large"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_reward" />
+
+                <TextView
+                    android:id="@+id/rewardsLabelTextView"
+                    style="@style/TextAppearance.Footnote.Description"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:text="@string/rewards"
+                    app:layout_constraintStart_toEndOf="@id/rewardIconImageView"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/rewardsTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    android:layout_marginTop="@dimen/spacing_xxsmall"
+                    android:layout_marginBottom="@dimen/spacing_normal"
+                    android:textAppearance="@style/TextAppearance.Footnote.Mono"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/rewardIconImageView"
+                    app:layout_constraintTop_toBottomOf="@id/rewardsLabelTextView"
+                    tools:text="0.94028594 ALGO" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/rewardsInfo"
+                    style="@style/IconButton.Transparent"
+                    android:layout_width="@dimen/reward_info_button_size"
+                    android:layout_height="@dimen/reward_info_button_size"
+                    android:layout_marginEnd="@dimen/spacing_normal"
+                    app:icon="@drawable/ic_info"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/rewardsDividerLine"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/spacing_xxlarge"
+                android:background="@color/dividerColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/algoRewardsView" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/algoAssetGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="
+            algoRewardsView,
+            rewardsDividerLine"
+                tools:visibility="gone" />
+
+            <View
+                android:id="@+id/otherAssetBalanceDividerLine"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/spacing_xxlarge"
+                android:background="@color/dividerColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/balanceTextView" />
+
+            <TextView
+                android:id="@+id/otherAssetFullNameTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xxlarge"
+                android:drawablePadding="@dimen/spacing_small"
+                android:textAppearance="@style/TextAppearance.Body.Sans.Medium"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/otherAssetBalanceDividerLine"
+                tools:text="Micro-Netflix 1/10,000 Share " />
+
+            <TextView
+                android:id="@+id/otherAssetIdTextView"
+                style="@style/TextAppearance.Description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:drawablePadding="@dimen/spacing_xxsmall"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/otherAssetFullNameTextView"
+                tools:text="ID 312769" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/assetIdCopyButton"
+                style="@style/IconButton.Transparent"
+                android:layout_width="@dimen/asset_id_copy_button_size"
+                android:layout_height="@dimen/asset_id_copy_button_size"
+                android:layout_marginStart="@dimen/spacing_xsmall"
+                app:icon="@drawable/ic_copy_20dp"
+                app:layout_constraintBottom_toBottomOf="@id/otherAssetIdTextView"
+                app:layout_constraintStart_toEndOf="@id/otherAssetIdTextView"
+                app:layout_constraintTop_toTopOf="@id/otherAssetIdTextView" />
+
+            <View
+                android:id="@+id/otherAssetIdDividerLine"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/spacing_xxlarge"
+                android:background="@color/dividerColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/otherAssetIdTextView" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/otherAssetGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="
+            otherAssetBalanceDividerLine,
+            otherAssetFullNameTextView,
+            otherAssetIdTextView,
+            otherAssetIdDividerLine,
+            assetIdCopyButton"
+                tools:visibility="visible" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/dividerBarrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="rewardsDividerLine,otherAssetIdDividerLine" />
+
+            <com.algorand.android.customviews.TransactionHistoryToolbarView
+                android:id="@+id/transactionHistoryToolbar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xxxlarge"
+                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dividerBarrier" />
+
+            <com.algorand.android.customviews.ViewPortHeightRecyclerView
+                android:id="@+id/transactionList"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:nestedScrollingEnabled="true"
+                app:heightOffset="@dimen/transaction_view_height_offset"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/transactionHistoryToolbar"
+                tools:listitem="@layout/item_transaction" />
+
+            <com.algorand.android.customviews.ScreenStateView
+                android:id="@+id/screenStateView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xxlarge"
+                android:layout_marginBottom="@dimen/bottom_safe_area_margin"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/transactionHistoryToolbar"
+                tools:visibility="visible" />
+
+            <ProgressBar
+                android:id="@+id/loadingProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/transactionHistoryToolbar" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <com.algorand.android.customviews.AlgorandFloatingActionButton
+        android:id="@+id/assetDetailSendReceiveFab"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutDescription="@xml/algorand_fab_motion_scene" />
+
+    <include
+        android:id="@+id/csvProgressBar"
+        layout="@layout/layout_full_screen_progress_description" />
+
+</FrameLayout>

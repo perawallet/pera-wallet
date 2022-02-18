@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -14,97 +14,51 @@ package com.algorand.android.ui.accountoptions
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
-import com.algorand.android.core.DaggerBaseBottomSheet
-import com.algorand.android.databinding.BottomSheetAccountsOptionsBinding
 import com.algorand.android.models.Account
-import com.algorand.android.ui.accountoptions.AccountOptionsBottomSheetDirections.Companion.actionAccountOptionsBottomSheetToEditAccountNameBottomSheet
-import com.algorand.android.ui.accountoptions.AccountOptionsBottomSheetDirections.Companion.actionAccountOptionsBottomSheetToRekeyAccountFragment
-import com.algorand.android.ui.accountoptions.AccountOptionsBottomSheetDirections.Companion.actionAccountOptionsBottomSheetToRemoveAccountBottomSheet
-import com.algorand.android.ui.accountoptions.AccountOptionsBottomSheetDirections.Companion.actionAccountOptionsBottomSheetToRemoveAssetsFragment
-import com.algorand.android.ui.accountoptions.AccountOptionsBottomSheetDirections.Companion.actionAccountOptionsBottomSheetToShowQrBottomSheet
-import com.algorand.android.ui.accountoptions.AccountOptionsBottomSheetDirections.Companion.actionAccountOptionsBottomSheetToViewPassphraseLockFragment
-import com.algorand.android.utils.AccountCacheManager
+import com.algorand.android.models.WarningConfirmation
 import com.algorand.android.utils.Resource
-import com.algorand.android.utils.ShowQrBottomSheet
-import com.algorand.android.utils.viewbinding.viewBinding
+import com.algorand.android.utils.extensions.show
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class AccountOptionsBottomSheet : DaggerBaseBottomSheet(
-    layoutResId = R.layout.bottom_sheet_accounts_options,
-    fullPageNeeded = false,
-    firebaseEventScreenId = null
-) {
-
-    @Inject
-    lateinit var accountCacheManager: AccountCacheManager
-
-    private val accountOptionsViewModel: AccountOptionsViewModel by viewModels()
-
-    private val binding by viewBinding(BottomSheetAccountsOptionsBinding::bind)
+class AccountOptionsBottomSheet : BaseAccountOptionsBottomSheet() {
 
     private val args by navArgs<AccountOptionsBottomSheetArgs>()
 
+    override val publicKey: String
+        get() = args.publicKey
+
     private val notificationObserverCollector: suspend (Resource<Unit>?) -> Unit = {
-        it?.use(
-            onLoadingFinished = {
-                navBack()
-            }
-        )
+        it?.use(onLoadingFinished = ::navBack)
     }
 
     private val notificationFilterCheckCollector: suspend (Boolean?) -> Unit = { isMuted ->
-        if (isMuted != null) {
-            setupNotificationOption(isMuted)
-        }
+        isMuted?.let { setupNotificationOptionButton(it) }
+    }
+
+    private val disconnectAccountWarningConfirmation by lazy {
+        WarningConfirmation(
+            drawableRes = R.drawable.ic_trash,
+            titleRes = R.string.disconnect_account,
+            descriptionRes = R.string.you_are_about_to_remove_an_account,
+            positiveButtonTextRes = R.string.remove,
+            negativeButtonTextRes = R.string.keep_it
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        accountOptionsViewModel.checkIfNotificationFiltered(args.publicKey)
-        val accountCacheData = accountCacheManager.getCacheData(args.publicKey)
-        val isThereAnyAsset = accountCacheData?.assetsInformation?.filterNot { it.isAssetPending() }?.size ?: 0 > 1
-        if (isThereAnyAsset && args.accountType != Account.Type.WATCH) {
-            binding.removeAssetButton.apply {
-                visibility = View.VISIBLE
-                setOnClickListener {
-                    nav(actionAccountOptionsBottomSheetToRemoveAssetsFragment(args.publicKey))
-                }
-            }
-        }
-        if (accountCacheData?.isRekeyedToAnotherAccount() == true) {
-            binding.authAddressButton.apply {
-                visibility = View.VISIBLE
-                setOnClickListener {
-                    nav(
-                        actionAccountOptionsBottomSheetToShowQrBottomSheet(
-                            title = getString(R.string.auth_account_address),
-                            qrText = accountCacheData.authAddress.orEmpty(),
-                            state = ShowQrBottomSheet.State.ADDRESS_QR
-                        )
-                    )
-                }
-            }
-        }
-        binding.accountNameButton.setOnClickListener {
-            nav(actionAccountOptionsBottomSheetToEditAccountNameBottomSheet(args.name, args.publicKey))
-        }
-        binding.removeAccountButton.setOnClickListener {
-            nav(actionAccountOptionsBottomSheetToRemoveAccountBottomSheet(args.publicKey))
-        }
-        binding.cancelButton.setOnClickListener {
-            navBack()
-        }
-        setupViewPassphraseButton()
-        setupRekeyOption()
+        setupRemoveAssetButton()
+        setupAuthAddressButton()
+        setupRekeyOptionButton()
+        setupRenameAccountButton()
+        setupRemoveAccountButton()
         initObservers()
     }
 
@@ -117,36 +71,98 @@ class AccountOptionsBottomSheet : DaggerBaseBottomSheet(
         }
     }
 
-    private fun setupViewPassphraseButton() {
-        if (args.accountType == Account.Type.STANDARD) {
-            binding.viewPassphraseButton.apply {
-                visibility = View.VISIBLE
-                setOnClickListener {
-                    nav(actionAccountOptionsBottomSheetToViewPassphraseLockFragment(args.publicKey))
-                }
-            }
-        }
-    }
-
-    private fun setupRekeyOption() {
-        if (args.accountType != Account.Type.WATCH) {
+    private fun setupRekeyOptionButton() {
+        if (accountOptionsViewModel.getAccountType() != Account.Type.WATCH) {
             binding.rekeyButton.apply {
-                visibility = View.VISIBLE
-                setOnClickListener {
-                    nav(actionAccountOptionsBottomSheetToRekeyAccountFragment(args.publicKey))
+                show()
+                setOnClickListener { navToRekeyAccountFragment() }
+            }
+        }
+    }
+
+    private fun setupNotificationOptionButton(isMuted: Boolean) {
+        binding.notificationButton.apply {
+            val textRes = if (isMuted) R.string.unmute_notifications else R.string.mute_notifications
+            val iconRes = if (isMuted) R.drawable.ic_notification_unmute else R.drawable.ic_empty_notification
+            setText(textRes)
+            setIconResource(iconRes)
+            setOnClickListener { accountOptionsViewModel.startFilterOperation(isMuted.not()) }
+            show()
+        }
+    }
+
+    private fun setupRemoveAssetButton() {
+        with(accountOptionsViewModel) {
+            if (isThereAnyAsset() && getAccountType() != Account.Type.WATCH) {
+                binding.removeAssetButton.apply {
+                    show()
+                    setOnClickListener { navToRemoveAssetsBottomSheet() }
                 }
             }
         }
     }
 
-    private fun setupNotificationOption(isMuted: Boolean) {
-        binding.notificationButton.apply {
-            setText(if (isMuted) R.string.unmute_notifications else R.string.mute_notifications)
-            setIconResource(if (isMuted) R.drawable.ic_empty_notification else R.drawable.ic_empty_notification)
-            setOnClickListener {
-                accountOptionsViewModel.startFilterOperation(args.publicKey, isMuted.not())
+    private fun setupAuthAddressButton() {
+        if (accountOptionsViewModel.isRekeyedToAnotherAccount()) {
+            binding.authAddressButton.apply {
+                show()
+                setOnClickListener {
+                    navToShowQrBottomSheet(
+                        getString(R.string.auth_account_address),
+                        accountOptionsViewModel.getAuthAddress().orEmpty()
+                    )
+                }
             }
-            visibility = View.VISIBLE
         }
+    }
+
+    private fun setupRemoveAccountButton() {
+        binding.disconnectAccountButton.apply {
+            setOnClickListener { navToDisconnectAccountConfirmationBottomSheet() }
+            show()
+        }
+    }
+
+    private fun setupRenameAccountButton() {
+        binding.renameAccountButton.apply {
+            setOnClickListener { navToRenameAccountBottomSheet() }
+            show()
+        }
+    }
+
+    private fun navToRemoveAssetsBottomSheet() {
+        nav(AccountOptionsBottomSheetDirections.actionAccountOptionsBottomSheetToRemoveAssetsFragment(publicKey))
+    }
+
+    private fun navToRekeyAccountFragment() {
+        nav(AccountOptionsBottomSheetDirections.actionAccountOptionsBottomSheetToRekeyAccountFragment(publicKey))
+    }
+
+    private fun navToDisconnectAccountConfirmationBottomSheet() {
+        nav(
+            AccountOptionsBottomSheetDirections.actionAccountOptionsBottomSheetToWarningConfirmationNavigation(
+                disconnectAccountWarningConfirmation
+            )
+        )
+    }
+
+    private fun navToRenameAccountBottomSheet() {
+        nav(
+            AccountOptionsBottomSheetDirections.actionAccountOptionsBottomSheetToRenameAccountBottomSheet(
+                accountOptionsViewModel.getAccountName(),
+                publicKey
+            )
+        )
+    }
+
+    override fun navToShowQrBottomSheet(title: String, publicKey: String) {
+        nav(AccountOptionsBottomSheetDirections.actionAccountOptionsBottomSheetToShowQrBottomSheet(title, publicKey))
+    }
+
+    override fun navToViewPassphraseBottomSheet() {
+        nav(
+            AccountOptionsBottomSheetDirections
+                .actionAccountOptionsBottomSheetToViewPassphraseLockBottomSheet(publicKey)
+        )
     }
 }

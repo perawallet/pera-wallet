@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,11 +12,16 @@
 
 package com.algorand.android.ui.wctransactionrequest
 
+import android.os.Parcelable
+import androidx.annotation.Keep
 import com.algorand.android.models.BaseWalletConnectTransaction
+import com.algorand.android.models.RecyclerListItem
 import com.algorand.android.models.WalletConnectPeerMeta
-import com.algorand.android.models.WalletConnectTransaction
+import com.algorand.android.models.WalletConnectTransactionSummary
+import kotlinx.parcelize.Parcelize
 
-sealed class WalletConnectTransactionListItem {
+@Keep
+sealed class WalletConnectTransactionListItem : Parcelable, RecyclerListItem {
 
     enum class ItemType {
         APP_PREVIEW,
@@ -26,48 +31,9 @@ sealed class WalletConnectTransactionListItem {
         GROUP_ID
     }
 
-    abstract infix fun areItemsTheSame(other: WalletConnectTransactionListItem): Boolean
-    abstract infix fun areContentsTheSame(other: WalletConnectTransactionListItem): Boolean
-
     abstract val getItemType: ItemType
 
-    companion object {
-        fun create(transaction: WalletConnectTransaction): List<WalletConnectTransactionListItem> {
-            return with(transaction) {
-                mutableListOf<WalletConnectTransactionListItem>().apply {
-                    add(AppPreviewItem(session.peerMeta, message))
-                    add(TitleItem(transactionList.size))
-                    addAll(createTransactionItems(transactionList))
-                }
-            }
-        }
-
-        fun create(
-            transactionList: List<BaseWalletConnectTransaction>,
-            groupId: String?
-        ): List<WalletConnectTransactionListItem> {
-            return mutableListOf<WalletConnectTransactionListItem>().apply {
-                if (!groupId.isNullOrBlank()) add(GroupIdItem(groupId))
-                add(TitleItem(transactionList.size))
-                addAll(transactionList.map { SingleTransactionItem(it) })
-            }
-        }
-
-        private fun createTransactionItems(
-            transactionList: List<List<BaseWalletConnectTransaction>>
-        ): List<WalletConnectTransactionListItem> {
-            return mutableListOf<WalletConnectTransactionListItem>().apply {
-                transactionList.forEach { list ->
-                    if (list.size > 1) {
-                        add(MultipleTransactionItem(list))
-                    } else if (list.isNotEmpty()) {
-                        add(SingleTransactionItem(list.first()))
-                    }
-                }
-            }
-        }
-    }
-
+    @Parcelize
     data class AppPreviewItem(
         val peerMeta: WalletConnectPeerMeta,
         val message: String?
@@ -76,15 +42,16 @@ sealed class WalletConnectTransactionListItem {
         override val getItemType: ItemType
             get() = ItemType.APP_PREVIEW
 
-        override fun areItemsTheSame(other: WalletConnectTransactionListItem): Boolean {
+        override fun areItemsTheSame(other: RecyclerListItem): Boolean {
             return other is AppPreviewItem && peerMeta.url == other.peerMeta.url
         }
 
-        override fun areContentsTheSame(other: WalletConnectTransactionListItem): Boolean {
+        override fun areContentsTheSame(other: RecyclerListItem): Boolean {
             return other is AppPreviewItem && peerMeta == other.peerMeta && message == message
         }
     }
 
+    @Parcelize
     data class TitleItem(
         val transactionCount: Int
     ) : WalletConnectTransactionListItem() {
@@ -92,15 +59,16 @@ sealed class WalletConnectTransactionListItem {
         override val getItemType: ItemType
             get() = ItemType.TITLE
 
-        override fun areItemsTheSame(other: WalletConnectTransactionListItem): Boolean {
+        override fun areItemsTheSame(other: RecyclerListItem): Boolean {
             return other is TitleItem && transactionCount == other.transactionCount
         }
 
-        override fun areContentsTheSame(other: WalletConnectTransactionListItem): Boolean {
+        override fun areContentsTheSame(other: RecyclerListItem): Boolean {
             return other is TitleItem && transactionCount == other.transactionCount
         }
     }
 
+    @Parcelize
     data class MultipleTransactionItem(
         val transactionList: List<BaseWalletConnectTransaction>
     ) : WalletConnectTransactionListItem() {
@@ -111,34 +79,38 @@ sealed class WalletConnectTransactionListItem {
         val groupId: String?
             get() = transactionList.firstOrNull()?.groupId
 
-        override fun areItemsTheSame(other: WalletConnectTransactionListItem): Boolean {
+        override fun areItemsTheSame(other: RecyclerListItem): Boolean {
             return other is MultipleTransactionItem && transactionList.size == other.transactionList.size
         }
 
-        override fun areContentsTheSame(other: WalletConnectTransactionListItem): Boolean {
+        override fun areContentsTheSame(other: RecyclerListItem): Boolean {
             return other is MultipleTransactionItem && transactionList == other.transactionList
         }
     }
 
+    @Parcelize
+    @Keep
     data class SingleTransactionItem(
-        val transaction: BaseWalletConnectTransaction
+        val transaction: BaseWalletConnectTransaction,
+        val transactionSummary: WalletConnectTransactionSummary
     ) : WalletConnectTransactionListItem() {
 
         override val getItemType: ItemType
             get() = ItemType.SINGLE_TXN
 
-        override fun areItemsTheSame(other: WalletConnectTransactionListItem): Boolean {
+        override fun areItemsTheSame(other: RecyclerListItem): Boolean {
             if (other !is SingleTransactionItem) return false
             val transactionMsgPack = transaction.rawTransactionPayload.transactionMsgPack
             val otherTransactionMsgPack = other.transaction.rawTransactionPayload.transactionMsgPack
             return transactionMsgPack == otherTransactionMsgPack
         }
 
-        override fun areContentsTheSame(other: WalletConnectTransactionListItem): Boolean {
+        override fun areContentsTheSame(other: RecyclerListItem): Boolean {
             return other is SingleTransactionItem && transaction == other.transaction
         }
     }
 
+    @Parcelize
     data class GroupIdItem(
         val groupId: String
     ) : WalletConnectTransactionListItem() {
@@ -146,11 +118,11 @@ sealed class WalletConnectTransactionListItem {
         override val getItemType: ItemType
             get() = ItemType.GROUP_ID
 
-        override fun areItemsTheSame(other: WalletConnectTransactionListItem): Boolean {
+        override fun areItemsTheSame(other: RecyclerListItem): Boolean {
             return other is GroupIdItem && other.groupId == groupId
         }
 
-        override fun areContentsTheSame(other: WalletConnectTransactionListItem): Boolean {
+        override fun areContentsTheSame(other: RecyclerListItem): Boolean {
             return other is GroupIdItem && other.groupId == groupId
         }
     }

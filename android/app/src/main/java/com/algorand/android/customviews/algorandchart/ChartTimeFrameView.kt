@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -19,7 +19,6 @@ import com.algorand.android.databinding.CustomChartTimeFrameBinding
 import com.algorand.android.models.ChartTimeFrame
 import com.algorand.android.models.ChartTimeFrame.AllTimeFrame
 import com.algorand.android.models.ChartTimeFrame.DayTimeFrame
-import com.algorand.android.models.ChartTimeFrame.HourTimeFrame
 import com.algorand.android.models.ChartTimeFrame.MonthTimeFrame
 import com.algorand.android.models.ChartTimeFrame.WeekTimeFrame
 import com.algorand.android.models.ChartTimeFrame.YearTimeFrame
@@ -36,7 +35,9 @@ class ChartTimeFrameView @JvmOverloads constructor(
 
     private var listener: Listener? = null
 
-    private var selectedTimeFrame: ChartTimeFrame by Delegates.observable(DEFAULT_TIME_FRAME) { _, oldValue, newValue ->
+    private var selectedTimeFrame: ChartTimeFrame by Delegates.observable(
+        ChartTimeFrame.DEFAULT_TIME_FRAME
+    ) { _, oldValue, newValue ->
         if (oldValue != newValue) {
             onTimeFrameSelected(oldValue, newValue)
         }
@@ -53,7 +54,6 @@ class ChartTimeFrameView @JvmOverloads constructor(
 
     private fun initTimeFrameButtons() {
         with(binding) {
-            setOnTimeFrameClickListener(hourButton, HourTimeFrame)
             setOnTimeFrameClickListener(dayButton, DayTimeFrame)
             setOnTimeFrameClickListener(weekButton, WeekTimeFrame)
             setOnTimeFrameClickListener(monthButton, MonthTimeFrame)
@@ -81,7 +81,6 @@ class ChartTimeFrameView @JvmOverloads constructor(
     private fun setTimeFrameCheckedStatus(timeFrame: ChartTimeFrame, isChecked: Boolean) {
         with(binding) {
             when (timeFrame) {
-                HourTimeFrame -> hourButton.isChecked = isChecked
                 DayTimeFrame -> dayButton.isChecked = isChecked
                 WeekTimeFrame -> weekButton.isChecked = isChecked
                 MonthTimeFrame -> monthButton.isChecked = isChecked
@@ -93,9 +92,5 @@ class ChartTimeFrameView @JvmOverloads constructor(
 
     fun interface Listener {
         fun onTimeFrameSelected(selectedTimeFrame: ChartTimeFrame)
-    }
-
-    companion object {
-        val DEFAULT_TIME_FRAME = HourTimeFrame
     }
 }

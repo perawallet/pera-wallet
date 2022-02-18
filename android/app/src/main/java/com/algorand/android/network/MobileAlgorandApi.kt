@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -85,6 +85,11 @@ interface MobileAlgorandApi {
         @Query("status") status: String? = null,
         @Query("offset") offset: Long = 0,
         @Query("limit") limit: Int = SEARCH_RESULT_LIMIT
+    ): Response<Pagination<AssetQueryItem>>
+
+    @GET("assets/")
+    suspend fun getAssetsByIds(
+        @Query("asset_ids", encoded = true) assetIdsList: String
     ): Response<Pagination<AssetQueryItem>>
 
     @GET

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -18,7 +18,6 @@ import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.databinding.ItemUserBinding
 import com.algorand.android.models.User
-import com.algorand.android.utils.loadContactProfileImage
 import com.algorand.android.utils.toShortenedAddress
 
 class UserViewHolder(
@@ -26,7 +25,7 @@ class UserViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(user: User) {
-        binding.userImageView.loadContactProfileImage(user.imageUriAsString?.toUri())
+        binding.userImageView.loadAccountImage(user.imageUriAsString?.toUri())
         binding.nameTextView.text = user.name
         binding.addressTextView.text = user.publicKey.toShortenedAddress()
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -20,14 +20,23 @@ import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 
-private const val PRIVACY_POLICY_URL = "https://www.algorand.com/wallet-privacy-policy"
-private const val TERMS_AND_SERVICES_URL = "https://www.algorand.com/wallet-disclaimer"
+private const val PRIVACY_POLICY_URL = "https://perawallet.app/privacy-policy/"
+private const val TERMS_AND_SERVICES_URL = "https://perawallet.app/terms-and-services/"
 private const val GOAL_SEEKER_BASE_URL = "https://goalseeker.purestake.io/algorand"
 private const val ALGO_EXPLORER_URL = "algoexplorer.io"
 private const val MARKET_PAGE_URL = "https://play.google.com/store/apps/details?id=com.algorand.android"
-private const val SUPPORT_CENTER_URL = "https://algorandwallet.com/support"
-private const val TRANSACTION_INFO_URL = "https://algorandwallet.com/support/transacting"
+private const val SUPPORT_CENTER_URL = "https://perawallet.app/support/"
+private const val TRANSACTION_INFO_URL = "https://perawallet.app/support/transactions/"
 private const val GOVERNANCE_URL = "https://governance.algorand.foundation/"
+private const val RECOVERY_PASSPHRASE_SUPPORT_URL = "https://perawallet.app/support/passphrase/"
+private const val WATCH_ACCOUNT_SUPPORT_URL = "https://perawallet.app/support/watch-accounts/"
+const val RECOVER_INFO_URL = "https://perawallet.app/support/recover-account/"
+const val LEDGER_HELP_WEB_URL = "https://perawallet.app/support/ledger/"
+private const val PERA_INTRODUCTION_URL = "https://perawallet.app/blog/launch-announcement/"
+
+fun Context.openPeraIntroductionBlog() {
+    openUrl(PERA_INTRODUCTION_URL)
+}
 
 @SuppressWarnings("MaxLineLength")
 const val LEDGER_BLUETOOTH_SUPPORT_URL =
@@ -100,4 +109,12 @@ fun Context.openAlgorandGovernancePage() {
     } catch (activityNotFoundException: ActivityNotFoundException) {
         FirebaseCrashlytics.getInstance().recordException(activityNotFoundException)
     }
+}
+
+fun Context.openRecoveryPassphraseSupportUrl() {
+    openUrl(RECOVERY_PASSPHRASE_SUPPORT_URL)
+}
+
+fun Context.openWatchAccountSupportUrl() {
+    openUrl(WATCH_ACCOUNT_SUPPORT_URL)
 }

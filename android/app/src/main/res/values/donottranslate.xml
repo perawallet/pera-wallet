@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -11,26 +11,23 @@
   -->
 
 <resources>
+    <string name="app_name">Pera Algo</string>
+
+    <string name="version_format">Pera Wallet v%1$s</string>
     <string name="min_seconds_template" translatable="false">%1$02d:%2$02d</string>
-    <string name="hidden_passphrase" translatable="false">******</string>
+    <string name="hidden_passphrase" translatable="false">*************</string>
     <string name="plus" translatable="false">+</string>
     <string name="minus" translatable="false">-</string>
-    <string name="dollar_sign" translatable="false">$</string>
     <string name="ticker_asset_format" translatable="false">(%1$s)</string>
-    <string name="title_id" translatable="false">ID</string>
     <string name="title_and_value_format" translatable="false">%1$s %2$s</string>
-    <string name="dollar_sign_and_value_format" translatable="false">$%1$s</string>
-    <string name="algorand" translatable="false">Algorand</string>
-    <string name="algo_exchange_price_format" translatable="false">1 ALGO = %1$s</string>
+    <string name="algo" translatable="false">Algo</string>
 
     <!--Accessibility-->
-    <string name="accessibility_face_id_icon" translatable="false">Face ID Icon</string>
-    <string name="accessibility_touch_id_icon" translatable="false">Touch ID Icon</string>
     <string name="accessibility_user_image" translatable="false">User Image</string>
     <string name="accessibility_add_contact_icon" translatable="false">Add Contact Icon</string>
 
     <!-- Wallet Connect Application Calls -->
-    <string name="on_complete">OnComplete</string>
+    <string name="on_complete">On\nComplete</string>
     <string name="no_op">NoOp</string>
     <string name="opt_in">OptIn</string>
     <string name="close_out">CloseOut</string>
@@ -38,5 +35,9 @@
     <string name="app_call_update">Update</string>
     <string name="app_call_delete">Delete</string>
     <string name="byte_uint_formatted">%1$d Byte / %2$d Uint</string>
-    <string name="asset_id_with_hash_tag">#%1$d</string>
+    <string name="id_with_hash_tag">#%1$d</string>
+
+    <string name="position_with_dot"><annotation replacement="position">positionPlaceholder</annotation>.</string>
+
+    <string name="formatted_amount_with_asset_name"><annotation replacement="amount">amountPlaceholder</annotation> <annotation replacement="asset_name"><annotation custom="text_size"><annotation default-font="dmsans_medium">assetNamePlaceholder</annotation></annotation></annotation></string>
 </resources>

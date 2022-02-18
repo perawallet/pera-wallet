@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~  limitations under the License
+  ~
+  -->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:layoutDescription="@xml/algorand_fab_motion_scene"
+    tools:parentTag="androidx.constraintlayout.motion.widget.MotionLayout">
+
+    <!--  This view height and width value must be 1dp due to motion layout, so do not change here  -->
+    <View
+        android:id="@+id/actionBlockerView"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:background="@drawable/bg_algorand_fab_oval"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/sendActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/spacing_xlarge"
+        android:layout_marginBottom="@dimen/spacing_large"
+        app:backgroundTint="@color/white"
+        app:fabCustomSize="60dp"
+        app:layout_constraintBottom_toTopOf="@id/receiveActionButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_arrow_up_line"
+        app:tint="@color/gray_900" />
+
+    <TextView
+        android:id="@+id/sendButtonLabel"
+        style="@style/TextAppearance.Body.Sans.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/spacing_large"
+        android:text="@string/send"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/sendActionButton"
+        app:layout_constraintEnd_toStartOf="@id/sendActionButton"
+        app:layout_constraintTop_toTopOf="@id/sendActionButton" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/receiveActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/spacing_xlarge"
+        android:layout_marginBottom="@dimen/spacing_large"
+        app:backgroundTint="@color/white"
+        app:fabCustomSize="60dp"
+        app:layout_constraintBottom_toTopOf="@id/openCloseActionButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_arrow_down_line"
+        app:tint="@color/gray_900" />
+
+    <TextView
+        android:id="@+id/receiveButtonLabel"
+        style="@style/TextAppearance.Body.Sans.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/spacing_large"
+        android:text="@string/receive"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/receiveActionButton"
+        app:layout_constraintEnd_toStartOf="@id/receiveActionButton"
+        app:layout_constraintTop_toTopOf="@id/receiveActionButton" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/openCloseActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/spacing_xlarge"
+        android:layout_marginBottom="@dimen/bottom_safe_area_margin"
+        app:backgroundTint="@color/primaryButtonBackgroundColor"
+        app:fabCustomSize="64dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_arrow_swap"
+        app:tint="@color/primaryButtonTextColor" />
+
+    <TextView
+        android:id="@+id/openCloseButtonLabel"
+        style="@style/TextAppearance.Body.Sans.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/spacing_large"
+        android:text="@string/close"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/openCloseActionButton"
+        app:layout_constraintEnd_toStartOf="@id/openCloseActionButton"
+        app:layout_constraintTop_toTopOf="@id/openCloseActionButton" />
+
+</merge>

@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -11,12 +11,13 @@
   -->
 
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="17dp"
-    android:height="17dp"
-    android:viewportWidth="17"
-    android:viewportHeight="17">
-    <path
-        android:fillColor="#ffffff"
-        android:fillType="evenOdd"
-        android:pathData="M8.25,1.5C4.5221,1.5 1.5,4.5221 1.5,8.25C1.5,11.9779 4.5221,15 8.25,15C11.9779,15 15,11.9779 15,8.25C15,4.5221 11.9779,1.5 8.25,1.5ZM0,8.25C0,3.6937 3.6937,0 8.25,0C12.8063,0 16.5,3.6937 16.5,8.25C16.5,12.8063 12.8063,16.5 8.25,16.5C3.6937,16.5 0,12.8063 0,8.25ZM8.25,7.5C8.6642,7.5 9,7.8358 9,8.25V11.5833C9,11.9975 8.6642,12.3333 8.25,12.3333C7.8358,12.3333 7.5,11.9975 7.5,11.5833V8.25C7.5,7.8358 7.8358,7.5 8.25,7.5ZM8.25,5.75C8.7102,5.75 9.0833,5.3769 9.0833,4.9167C9.0833,4.4564 8.7102,4.0833 8.25,4.0833C7.7898,4.0833 7.4167,4.4564 7.4167,4.9167C7.4167,5.3769 7.7898,5.75 8.25,5.75Z" />
+    android:width="16dp"
+    android:height="16dp"
+    android:viewportWidth="16"
+    android:viewportHeight="16">
+  <path
+      android:pathData="M8,11.3333L8,7.3333M8,6V4.6667M2,8C2,4.6863 4.6863,2 8,2C11.3137,2 14,4.6863 14,8C14,11.3137 11.3137,14 8,14C4.6863,14 2,11.3137 2,8Z"
+      android:strokeWidth="1.33333"
+      android:fillColor="#00000000"
+      android:strokeColor="@color/secondaryIconTintColor"/>
 </vector>

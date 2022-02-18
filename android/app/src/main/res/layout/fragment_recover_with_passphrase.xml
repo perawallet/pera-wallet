@@ -18,22 +18,24 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xxxsmall"
             android:orientation="vertical"
-            android:paddingBottom="150dp">
+            android:paddingBottom="130dp">
 
             <TextView
-                style="@style/TextAppearance.Title"
+                android:id="@+id/recoverPassphraseTitle"
+                style="@style/TextAppearance.Title.Sans.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/keyline_1_minus_8dp"
-                android:layout_marginBottom="20dp"
-                android:paddingHorizontal="28dp"
-                android:text="@string/enter_your_passphrase" />
+                android:layout_marginHorizontal="@dimen/spacing_xlarge"
+                android:layout_marginBottom="@dimen/spacing_xxxlarge"
+                android:text="@string/enter_your_recovery_passphrase" />
 
             <com.algorand.android.customviews.PassphraseInputGroup
                 android:id="@+id/passphraseInputGroup"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_normal" />
 
         </LinearLayout>
 
@@ -41,10 +43,11 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/recoverButton"
-        style="@style/UnelevatedButton.General"
+        style="@style/Button.Primary"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginBottom="@dimen/spacing_normal"
         android:enabled="false"
         android:text="@string/recover"
         app:layout_constraintBottom_toTopOf="@id/passphraseWordSuggestor"
@@ -54,7 +57,7 @@
     <com.algorand.android.customviews.PassphraseWordSuggestor
         android:id="@+id/passphraseWordSuggestor"
         android:layout_width="0dp"
-        android:layout_height="45dp"
+        android:layout_height="@dimen/passphrase_word_suggester_height"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

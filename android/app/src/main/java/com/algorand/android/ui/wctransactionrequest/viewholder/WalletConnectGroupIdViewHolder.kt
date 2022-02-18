@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -14,8 +14,10 @@ package com.algorand.android.ui.wctransactionrequest.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.algorand.android.R
 import com.algorand.android.databinding.ItemWalletConnectGroupIdBinding
 import com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionListItem
+import com.algorand.android.utils.getXmlStyledString
 
 class WalletConnectGroupIdViewHolder(
     private val binding: ItemWalletConnectGroupIdBinding
@@ -23,7 +25,10 @@ class WalletConnectGroupIdViewHolder(
 
     override fun bind(item: WalletConnectTransactionListItem) {
         if (item !is WalletConnectTransactionListItem.GroupIdItem) return
-        binding.groupIdTextView.text = item.groupId
+        binding.groupIdTextView.text = binding.root.context?.getXmlStyledString(
+            stringResId = R.string.group_id_formatted,
+            replacementList = listOf("group_id" to item.groupId)
+        )
     }
 
     companion object {

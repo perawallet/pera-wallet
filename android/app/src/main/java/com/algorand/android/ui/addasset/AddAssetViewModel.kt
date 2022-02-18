@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -15,19 +15,22 @@ package com.algorand.android.ui.addasset
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.paging.CombinedLoadStates
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.models.Account
 import com.algorand.android.models.AssetInformation
+import com.algorand.android.models.AssetQueryItem
 import com.algorand.android.models.AssetQueryType
-import com.algorand.android.models.AssetStatus
 import com.algorand.android.models.Result
-import com.algorand.android.network.getAsResourceError
+import com.algorand.android.models.ui.AssetAdditionLoadStatePreview
 import com.algorand.android.repository.AssetRepository
 import com.algorand.android.repository.TransactionsRepository
-import com.algorand.android.utils.AccountCacheManager
+import com.algorand.android.usecase.AssetAdditionUseCase
+import com.algorand.android.usecase.SimpleAssetDetailUseCase
+import com.algorand.android.utils.CacheResult
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
 import kotlin.properties.Delegates
@@ -42,9 +45,10 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class AddAssetViewModel @ViewModelInject constructor(
-    private val accountCacheManager: AccountCacheManager,
     private val assetRepository: AssetRepository,
-    private val transactionsRepository: TransactionsRepository
+    private val transactionsRepository: TransactionsRepository,
+    private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase,
+    private val assetAdditionUseCase: AssetAdditionUseCase
 ) : BaseViewModel() {
 
     var queryText: String by Delegates.observable("", { _, _, newValue ->
@@ -90,9 +94,7 @@ class AddAssetViewModel @ViewModelInject constructor(
         sendTransactionJob = viewModelScope.launch(Dispatchers.IO) {
             when (val result = transactionsRepository.sendSignedTransaction(signedTransactionData)) {
                 is Result.Success -> {
-                    accountCacheManager.addAssetToAccount(account.address, assetInformation.apply {
-                        assetStatus = AssetStatus.PENDING_FOR_ADDITION
-                    })
+                    assetAdditionUseCase.addAssetAdditionToAccountCache(account.address, assetInformation)
                     sendTransactionResultLiveData.postValue(Event(Resource.Success(Unit)))
                 }
                 is Result.Error -> {
@@ -102,16 +104,37 @@ class AddAssetViewModel @ViewModelInject constructor(
         }
     }
 
+    // TODO: 11.02.2022 We can move this flow to use case level and get it from there
     val assetSearchPaginationFlow = Pager(
         PagingConfig(pageSize = SEARCH_RESULT_LIMIT, prefetchDistance = PREFETCH_DISTANCE, enablePlaceholders = false)
     ) {
         AssetSearchDataSource(
             assetRepository = assetRepository,
-            currentQuery = queryChannel.valueOrNull ?: Pair("", AssetQueryType.VERIFIED)
+            currentQuery = queryChannel.valueOrNull ?: Pair("", AssetQueryType.VERIFIED),
+            ::onAssetsLoaded
         ).also {
             assetSearchDataSource = it
         }
     }.flow.cachedIn(viewModelScope)
+
+    private suspend fun onAssetsLoaded(assetList: List<AssetQueryItem>) {
+        val assetCacheResultList = assetList.map {
+            CacheResult.Success.create(it)
+        }
+        simpleAssetDetailUseCase.cacheAssets(assetCacheResultList)
+    }
+
+    fun createAssetAdditionLoadStatePreview(
+        combinedLoadStates: CombinedLoadStates,
+        itemCount: Int,
+        isLastStateError: Boolean
+    ): AssetAdditionLoadStatePreview {
+        return assetAdditionUseCase.createAssetAdditionLoadStatePreview(combinedLoadStates, itemCount, isLastStateError)
+    }
+
+    fun refreshTransactionHistory() {
+        assetSearchDataSource?.invalidate()
+    }
 
     companion object {
         const val SEARCH_RESULT_LIMIT = 50

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,16 +12,15 @@
 
 package com.algorand.android.ui.lock
 
+import android.app.NotificationManager
+import android.content.Context
 import android.content.SharedPreferences
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.view.View
 import androidx.activity.OnBackPressedCallback
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.viewModels
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
@@ -30,8 +29,10 @@ import com.algorand.android.customviews.SixDigitPasswordView
 import com.algorand.android.databinding.FragmentLockBinding
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.StatusBarConfiguration
+import com.algorand.android.models.WarningConfirmation
 import com.algorand.android.ui.common.warningconfirmation.WarningConfirmationBottomSheet.Companion.WARNING_CONFIRMATION_KEY
-import com.algorand.android.ui.lock.LockFragmentDirections.Companion.actionLockFragmentToWarningConfirmationBottomSheet
+import com.algorand.android.ui.splash.LauncherActivity
+import com.algorand.android.utils.finishAffinityFromFragment
 import com.algorand.android.utils.getNavigationBackStackCount
 import com.algorand.android.utils.getTimeAsMinSecondPair
 import com.algorand.android.utils.preference.getLockAttemptCount
@@ -86,7 +87,7 @@ class LockFragment : DaggerBaseFragment(R.layout.fragment_lock) {
         handleBackPress()
         binding.dialPad.setDialPadListener(dialPadListener)
         initDialogSavedStateListener()
-        binding.resetAllButton.setOnClickListener { onResetAllDataClick() }
+        binding.deleteAllDataButton.setOnClickListener { onDeleteAllDataClick() }
     }
 
     private fun handleBackPress() {
@@ -133,6 +134,7 @@ class LockFragment : DaggerBaseFragment(R.layout.fragment_lock) {
         clearCountDownTimer()
         sharedPref.setLockAttemptCount(lockAttemptCount)
         sharedPref.setLockPenaltyRemainingTime(penaltyRemainingTime)
+        binding.passwordView.cancelAnimations()
         super.onPause()
     }
 
@@ -160,13 +162,9 @@ class LockFragment : DaggerBaseFragment(R.layout.fragment_lock) {
     }
 
     private fun setupLockUI(isEntryBlocked: Boolean) {
-        binding.penaltyGroup.isVisible = isEntryBlocked
-
-        val lockImageTintColor = if (isEntryBlocked) R.color.red_E9 else R.color.gray_A4
-        binding.lockImageView.apply {
-            ImageViewCompat.setImageTintList(
-                this, ColorStateList.valueOf(ContextCompat.getColor(context, lockImageTintColor))
-            )
+        with(binding) {
+            penaltyGroup.isVisible = isEntryBlocked
+            passwordGroup.isVisible = !isEntryBlocked
         }
     }
 
@@ -191,19 +189,20 @@ class LockFragment : DaggerBaseFragment(R.layout.fragment_lock) {
 
     private val dialPadListener = object : DialPadView.DialPadListener {
         override fun onNumberClick(number: Int) {
-            val isNewDigitAdded = binding.passwordView.onNewDigit(number)
-            if (!isNewDigitAdded) {
-                return
-            }
-            if (binding.passwordView.getPasswordSize() == SixDigitPasswordView.PASSWORD_LENGTH) {
-                val givenPassword = binding.passwordView.getPassword()
-                if (currentPassword == givenPassword) {
-                    onEnteredCorrectPassword()
-                } else {
-                    setLockAttemptCount(lockAttemptCount + 1)
-                    binding.passwordView.clear()
+            binding.passwordView.onNewDigit(number, onNewDigitAdded = { isNewDigitAdded ->
+                if (!isNewDigitAdded) {
+                    return@onNewDigit
                 }
-            }
+                if (binding.passwordView.getPasswordSize() == SixDigitPasswordView.PASSWORD_LENGTH) {
+                    val givenPassword = binding.passwordView.getPassword()
+                    if (currentPassword == givenPassword) {
+                        onEnteredCorrectPassword()
+                    } else {
+                        setLockAttemptCount(lockAttemptCount + 1)
+                        binding.passwordView.clearWithAnimation()
+                    }
+                }
+            })
         }
 
         override fun onBackspaceClick() {
@@ -211,16 +210,15 @@ class LockFragment : DaggerBaseFragment(R.layout.fragment_lock) {
         }
     }
 
-    private fun onResetAllDataClick() {
-        nav(
-            actionLockFragmentToWarningConfirmationBottomSheet(
-                titleTextResId = R.string.reset_all_data,
-                descriptionTextResId = R.string.are_you_sure,
-                drawableResId = R.drawable.ic_trash,
-                positiveButtonTextResId = R.string.delete,
-                negativeButtonTextResId = R.string.keep_it
-            )
+    private fun onDeleteAllDataClick() {
+        val warningConfirmation = WarningConfirmation(
+            titleRes = R.string.delete_all_data,
+            descriptionRes = R.string.you_are_about_to_delete,
+            drawableRes = R.drawable.ic_trash,
+            positiveButtonTextRes = R.string.yes_remove_all_accounts,
+            negativeButtonTextRes = R.string.keep_it
         )
+        nav(LockFragmentDirections.actionLockFragmentToWarningConfirmationNavigation(warningConfirmation))
     }
 
     private fun initDialogSavedStateListener() {
@@ -228,8 +226,18 @@ class LockFragment : DaggerBaseFragment(R.layout.fragment_lock) {
             useSavedStateValue<Boolean>(WARNING_CONFIRMATION_KEY) {
                 lockAttemptCount = 0
                 penaltyRemainingTime = 0L
-                lockViewModel.resetAllData(context)
+                lockViewModel.deleteAllData(
+                    context?.getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager,
+                    ::onDeleteAllDataCompleted
+                )
             }
+        }
+    }
+
+    private fun onDeleteAllDataCompleted() {
+        context?.let {
+            it.startActivity(LauncherActivity.newIntent(it))
+            it.finishAffinityFromFragment()
         }
     }
 

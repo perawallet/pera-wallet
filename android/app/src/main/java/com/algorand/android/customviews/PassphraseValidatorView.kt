@@ -2,7 +2,7 @@ package com.algorand.android.customviews
 
 import android.content.Context
 import android.util.AttributeSet
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.widget.LinearLayout
 import com.algorand.android.R
 import com.algorand.android.databinding.CustomPassphraseValidatorBinding
 import com.algorand.android.utils.getXmlStyledString
@@ -11,7 +11,7 @@ import com.algorand.android.utils.viewbinding.viewBinding
 class PassphraseValidatorView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
-) : ConstraintLayout(context, attrs) {
+) : LinearLayout(context, attrs) {
 
     private var selectedWord: String? = null
     private var correctWord: String? = null
@@ -21,9 +21,12 @@ class PassphraseValidatorView @JvmOverloads constructor(
     private val binding = viewBinding(CustomPassphraseValidatorBinding::inflate)
 
     init {
-        binding.firstWordTextView.setOnClickListener { onWordToggled(FIRST_WORD_POSITION) }
-        binding.secondWordTextView.setOnClickListener { onWordToggled(SECOND_WORD_POSITION) }
-        binding.thirdWordTextView.setOnClickListener { onWordToggled(THIRD_WORD_POSITION) }
+        orientation = VERTICAL
+        with(binding) {
+            firstWordTextView.setOnClickListener { onWordToggled(FIRST_WORD_POSITION) }
+            secondWordTextView.setOnClickListener { onWordToggled(SECOND_WORD_POSITION) }
+            thirdWordTextView.setOnClickListener { onWordToggled(THIRD_WORD_POSITION) }
+        }
     }
 
     fun setup(words: List<String>, correctWord: String, correctWordPosition: Int, listener: Listener) {
@@ -31,9 +34,11 @@ class PassphraseValidatorView @JvmOverloads constructor(
         this.listener = listener
         this.words = words
         setDescription(correctWordPosition)
-        binding.firstWordTextView.text = words.component1()
-        binding.secondWordTextView.text = words.component2()
-        binding.thirdWordTextView.text = words.component3()
+        with(binding) {
+            firstWordTextView.text = words.component1()
+            secondWordTextView.text = words.component2()
+            thirdWordTextView.text = words.component3()
+        }
     }
 
     private fun setDescription(correctWordPosition: Int) {
@@ -67,9 +72,11 @@ class PassphraseValidatorView @JvmOverloads constructor(
     }
 
     private fun unselectAllWords() {
-        binding.firstWordTextView.isSelected = false
-        binding.secondWordTextView.isSelected = false
-        binding.thirdWordTextView.isSelected = false
+        with(binding) {
+            firstWordTextView.isSelected = false
+            secondWordTextView.isSelected = false
+            thirdWordTextView.isSelected = false
+        }
     }
 
     fun isValidated(): Boolean {

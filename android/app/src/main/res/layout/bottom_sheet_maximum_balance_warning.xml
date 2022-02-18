@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright 2019 Algorand, Inc.
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -17,77 +16,58 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:background="@color/white">
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/spacing_xlarge">
 
-        <com.algorand.android.customviews.CustomToolbar
-            android:id="@+id/toolbar"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/default_toolbar_height"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <View
+            style="@style/BottomSheetModalityLine"
+            android:layout_marginTop="@dimen/spacing_small" />
 
         <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/bg_orangef0_oval"
-            android:padding="@dimen/keyline_1"
-            android:scaleType="fitCenter"
-            app:layout_constraintBottom_toTopOf="@id/descriptionTextView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar"
-            app:layout_constraintVertical_chainStyle="packed"
-            app:srcCompat="@drawable/ic_error_warning"
-            app:tint="@color/secondaryBackground" />
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_marginTop="@dimen/spacing_xxlarge"
+            app:srcCompat="@drawable/ic_error"
+            app:tint="@color/errorTintColor" />
+
+        <TextView
+            style="@style/TextAppearance.Body.Large.Sans.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:gravity="center"
+            android:text="@string/minimum_balance_required" />
 
         <TextView
             android:id="@+id/descriptionTextView"
             style="@style/TextAppearance.Description"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/page_horizontal_spacing"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="28dp"
+            android:layout_marginTop="@dimen/spacing_small"
             android:gravity="center"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@+id/continueButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
             tools:text="@string/rekeyed_maximum_error_message" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/continueButton"
-            style="@style/UnelevatedButton.General"
-            android:layout_width="0dp"
+            style="@style/Button.Primary"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
-            android:layout_marginBottom="12dp"
-            android:text="@string/continue_text"
-            app:layout_constraintBottom_toTopOf="@id/cancelButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintVertical_bias="1"
-            app:layout_constraintVertical_chainStyle="packed" />
+            android:layout_marginTop="@dimen/spacing_xxlarge"
+            android:text="@string/continue_text" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/cancelButton"
-            style="@style/TextButton"
-            android:layout_width="0dp"
+            style="@style/Button.Secondary"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/page_horizontal_spacing"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="@dimen/spacing_normal"
             android:layout_marginBottom="@dimen/bottom_safe_area_margin"
-            android:text="@string/cancel"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:text="@string/cancel" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
 </ScrollView>

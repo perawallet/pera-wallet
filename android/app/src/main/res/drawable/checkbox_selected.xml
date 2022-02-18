@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -7,7 +7,8 @@
   ~ distributed under the License is distributed on an "AS IS" BASIS,
   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~ See the License for the specific language governing permissions and
-  ~ limitations under the License
+  ~  limitations under the License
+  ~
   -->
 
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
@@ -16,7 +17,13 @@
     android:viewportWidth="24"
     android:viewportHeight="24">
     <path
-        android:fillColor="#1DAD98"
-        android:fillType="evenOdd"
-        android:pathData="M4,0C1.7909,0 0,1.7909 0,4V20C0,22.2091 1.7909,24 4,24H20C22.2091,24 24,22.2091 24,20V4C24,1.7909 22.2091,0 20,0H4ZM17.8147,7.5431C18.1147,7.0932 17.9931,6.4852 17.5431,6.1853C17.0932,5.8853 16.4853,6.0069 16.1853,6.4569L10.2614,15.3427L7.7646,12.2217C7.4268,11.7994 6.8106,11.7309 6.3883,12.0687C5.966,12.4066 5.8976,13.0227 6.2354,13.445L9.5687,17.6117C9.7639,17.8556 10.0637,17.9918 10.3758,17.9782C10.6879,17.9647 10.9748,17.8031 11.148,17.5431L17.8147,7.5431Z" />
+        android:fillColor="@color/helperSuccess"
+        android:pathData="M2,1L22,1A1,1 0,0 1,23 2L23,22A1,1 0,0 1,22 23L2,23A1,1 0,0 1,1 22L1,2A1,1 0,0 1,2 1z"
+        android:strokeWidth="2"
+        android:strokeColor="@color/helperSuccess" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M5.75,11.1663L10.3333,15.7497L18.25,7.833"
+        android:strokeWidth="2"
+        android:strokeColor="@color/helperSuccessCheckmark" />
 </vector>

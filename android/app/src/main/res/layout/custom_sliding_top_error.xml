@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -10,6 +10,7 @@
   ~ limitations under the License
   -->
 
+<!-- TODO Missing shadow -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -30,42 +31,39 @@
             android:id="@+id/slidingTopErrorImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            app:layout_constraintBottom_toBottomOf="@+id/slidingTopErrorTitleTextView"
+            android:layout_marginStart="@dimen/spacing_normal"
+            app:layout_constraintBottom_toBottomOf="@id/slidingTopErrorTitleTextView"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/slidingTopErrorTitleTextView"
-            app:srcCompat="@drawable/ic_error_warning"
-            app:tint="@color/primaryButtonTextColor" />
+            app:layout_constraintTop_toTopOf="@id/slidingTopErrorTitleTextView"
+            app:srcCompat="@drawable/ic_error"
+            app:tint="@color/primaryBackground" />
 
         <TextView
             android:id="@+id/slidingTopErrorTitleTextView"
+            style="@style/TextAppearance.Body.Sans.Medium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="@dimen/keyline_1"
-            android:layout_marginEnd="@dimen/keyline_1"
-            android:fontFamily="@font/publicsans_semibold"
-            android:textColor="@color/primaryButtonTextColor"
-            android:textSize="16sp"
+            android:layout_marginStart="@dimen/spacing_small"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:textColor="@color/primaryBackground"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/slidingTopErrorImageView"
+            app:layout_constraintStart_toEndOf="@id/slidingTopErrorImageView"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@tools:sample/lorem[10]" />
+            tools:text="@tools:sample/lorem[4]" />
 
         <TextView
             android:id="@+id/slidingTopErrorDescriptionTextView"
+            style="@style/TextAppearance.Footnote.Sans"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="@dimen/keyline_1"
-            android:ellipsize="end"
-            android:fontFamily="@font/publicsans_regular"
+            android:layout_marginTop="@dimen/spacing_xxsmall"
+            android:layout_marginBottom="@dimen/spacing_normal"
             android:maxLines="22"
-            android:textColor="@color/primaryButtonTextColor"
-            android:textSize="14sp"
+            android:textColor="@color/primaryBackground"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/slidingTopErrorTitleTextView"
-            app:layout_constraintStart_toStartOf="@+id/slidingTopErrorTitleTextView"
+            app:layout_constraintEnd_toEndOf="@id/slidingTopErrorTitleTextView"
+            app:layout_constraintStart_toStartOf="@id/slidingTopErrorTitleTextView"
             app:layout_constraintTop_toBottomOf="@id/slidingTopErrorTitleTextView"
             tools:text="@tools:sample/lorem[200]" />
 

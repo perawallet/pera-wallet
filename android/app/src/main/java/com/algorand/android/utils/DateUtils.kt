@@ -1,5 +1,6 @@
+@file:Suppress("TooManyFunctions")
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -27,14 +28,20 @@ import java.time.format.DateTimeFormatterBuilder
 import java.time.temporal.TemporalAdjusters
 
 const val MONTH_DAY_YEAR_PATTERN = "MMMM dd, yyyy"
+const val MONTH_DAY_YEAR_WITH_DOT_PATTERN = "MM.dd.yyyy"
 const val CSV_PATTERN = "MM-dd-yyyy"
 const val MONTH_DAY_PATTERN = "MMM dd"
 const val DATE_AND_TIME_PATTERN = "MMMM dd, yyyy - HH:mm"
+const val DATE_AND_TIME_SEC_PATTERN = "MMMM dd, yyyy - HH:mm:ss"
+const val TXN_DATE_AND_TIME_PATTERN = "MMMM dd, yyyy hh:mm a"
+const val TXN_DATE_PATTERN = "MMM dd, yyyy"
+const val UTC_ZONE_ID = "UTC"
 
 const val UNIX_TIME_STAMP_MULTIPLIER = 1000
 private const val WEEK_IN_DAYS = 7L
 private const val MINUTE_IN_SECONDS = 60
 private const val MIN_TO_SEC_MULTIPLIER = 60
+const val ONE_DAY_IN_MILLIS = (1000 * 60 * 60 * 24)
 
 fun ZonedDateTime.formatAsTxString(): String {
     return format(DateTimeFormatter.ofPattern(MONTH_DAY_YEAR_PATTERN))
@@ -42,6 +49,22 @@ fun ZonedDateTime.formatAsTxString(): String {
 
 fun ZonedDateTime.formatAsDateAndTime(): String {
     return format(DateTimeFormatter.ofPattern(DATE_AND_TIME_PATTERN))
+}
+
+fun ZonedDateTime.format(pattern: String): String {
+    return format(DateTimeFormatter.ofPattern(pattern))
+}
+
+fun ZonedDateTime.formatAsDate(): String {
+    return format(DateTimeFormatter.ofPattern(TXN_DATE_PATTERN))
+}
+
+fun ZonedDateTime.formatAsTxnDateAndTime(): String {
+    return format(DateTimeFormatter.ofPattern(TXN_DATE_AND_TIME_PATTERN))
+}
+
+fun ZonedDateTime.formatAsCustomDateString(): String {
+    return format(DateTimeFormatter.ofPattern(MONTH_DAY_YEAR_WITH_DOT_PATTERN))
 }
 
 fun Long.getZonedDateTimeFromTimeStamp(): ZonedDateTime {
@@ -125,4 +148,42 @@ fun getZonedDateTimeAsSec() = ZonedDateTime.now().toEpochSecond()
 
 fun getZonedDateTimeFromSec(sec: Long): ZonedDateTime? {
     return ZonedDateTime.ofInstant(Instant.ofEpochSecond(sec), ZoneId.systemDefault())
+}
+
+fun createBeginningOfDayZonedDateTime(year: Int, month: Int, day: Int): ZonedDateTime {
+    return ZonedDateTime.of(
+        year,
+        month,
+        day,
+        LocalTime.MIN.hour,
+        LocalTime.MIN.minute,
+        LocalTime.MIN.second,
+        LocalTime.MIN.nano,
+        ZoneId.of(UTC_ZONE_ID)
+    )
+}
+
+fun createEndOfDayZonedDateTime(year: Int, month: Int, day: Int): ZonedDateTime {
+    return ZonedDateTime.of(
+        year,
+        month,
+        day,
+        LocalTime.MAX.hour,
+        LocalTime.MAX.minute,
+        LocalTime.MAX.second,
+        LocalTime.MAX.nano,
+        ZoneId.of(UTC_ZONE_ID)
+    )
+}
+
+fun getCurrentTimeAsZonedDateTime(): ZonedDateTime {
+    return ZonedDateTime.now()
+}
+
+fun getPreviousDayZonedDateTime(differenceAsDay: Long): ZonedDateTime {
+    return ZonedDateTime.now().minusDays(differenceAsDay)
+}
+
+fun convertDateInMillisToStartOfDay(date: Long): Long {
+    return date - (date % ONE_DAY_IN_MILLIS)
 }

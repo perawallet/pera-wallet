@@ -28,7 +28,8 @@ class DatabaseMigrationUnitTest {
         AlgorandDatabase.MIGRATION_3_4,
         AlgorandDatabase.MIGRATION_4_5,
         AlgorandDatabase.MIGRATION_5_6,
-        AlgorandDatabase.MIGRATION_6_7
+        AlgorandDatabase.MIGRATION_6_7,
+        AlgorandDatabase.MIGRATION_7_8
     )
     private var migratedDb: SupportSQLiteDatabase? = null
     private lateinit var gson: Gson
@@ -177,10 +178,10 @@ class DatabaseMigrationUnitTest {
             with(it) {
                 execSQL(
                     """
-                INSERT INTO Node (name, indexer_address, indexer_api_key, algod_address, algod_api_key, is_active, 
-                is_added_default, network_slug)
-                VALUES ('$name', '$indexerAddress', '$indexerApiKey', '$algodAddress', '$algodApiKey', 
-                         ${if (isActive) 1 else 0}, ${if (isAddedDefault) 1 else 0}, '$networkSlug')
+                INSERT INTO Node (name, indexer_address, indexer_api_key, algod_address, algod_api_key,  
+                mobile_algorand_address, is_active, is_added_default, network_slug)
+                VALUES ('$name', '$indexerAddress', '$indexerApiKey', '$algodAddress', '$algodApiKey',
+                 '$mobileAlgorandAddress', ${if (isActive) 1 else 0}, ${if (isAddedDefault) 1 else 0}, '$networkSlug')
                 """.trimIndent()
                 )
             }

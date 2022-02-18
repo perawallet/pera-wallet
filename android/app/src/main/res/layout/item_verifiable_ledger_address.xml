@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  Copyright 2019 Algorand, Inc.
+  Copyright 2022 Pera Wallet, LDA
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -10,30 +10,31 @@
   limitations under the License
   -->
 
+<!-- TODO Missing Shadow -->
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_marginHorizontal="20dp"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/keyline_1"
-    app:strokeWidth="1dp"
-    app:strokeColor="@color/red_E9"
+    android:layout_marginHorizontal="@dimen/spacing_xlarge"
+    android:layout_marginTop="@dimen/spacing_normal"
     app:cardBackgroundColor="@color/primaryBackground"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="0dp">
+    app:cardCornerRadius="@dimen/spacing_small"
+    app:cardElevation="0dp"
+    app:strokeColor="@color/negativeColor"
+    app:strokeWidth="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="22dp"
-        android:paddingTop="18dp"
-        android:paddingBottom="24dp">
+        android:paddingHorizontal="@dimen/spacing_xlarge"
+        android:paddingVertical="@dimen/spacing_normal">
 
         <FrameLayout
             android:id="@+id/statusLayout"
             android:layout_width="24dp"
             android:layout_height="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -43,38 +44,36 @@
                 android:layout_height="match_parent" />
 
             <androidx.core.widget.ContentLoadingProgressBar
-                android:indeterminateTint="@color/orange_F8"
                 android:id="@+id/loadingBar"
                 style="?android:attr/progressBarStyleSmall"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:indeterminateTint="@color/negativeColor" />
 
         </FrameLayout>
 
         <TextView
             android:id="@+id/statusTextView"
+            style="@style/TextAppearance.Body.Sans"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/keyline_1"
-            android:fontFamily="@font/publicsans_regular"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@+id/statusLayout"
+            android:layout_marginStart="@dimen/spacing_large"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/statusLayout"
-            app:layout_constraintTop_toTopOf="@+id/statusLayout"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="Awaiting Verification" />
 
         <TextView
             android:id="@+id/authTextView"
+            style="@style/TextAppearance.Footnote.Mono"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/keyline_1_minus_8dp"
-            android:fontFamily="@font/publicsans_regular"
-            android:textSize="12sp"
+            android:layout_marginTop="@dimen/spacing_xxsmall"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/statusTextView"
             app:layout_constraintTop_toBottomOf="@id/statusTextView"
-            tools:text="@tools:sample/lorem[11]" />
+            tools:text="@tools:sample/lorem[8]" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

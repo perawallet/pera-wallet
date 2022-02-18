@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -82,7 +82,7 @@ class TransactionManager @Inject constructor(
         ledgerBleResultEvent?.consume()?.run {
             when (this) {
                 is LedgerBleResult.LedgerWaitingForApproval -> {
-                    postResult(TransactionManagerResult.LedgerWaitingForApproval)
+                    postResult(TransactionManagerResult.LedgerWaitingForApproval(bluetoothName))
                 }
                 is LedgerBleResult.SignedTransactionResult -> {
                     processSignedTransactionData(transactionByteArray)
@@ -343,7 +343,7 @@ class TransactionManager @Inject constructor(
 
     private fun TransactionData.isCloseToSameAccount(): Boolean {
         if (this is TransactionData.Send && isMax && accountCacheData.account.address == targetUser.publicKey) {
-            postResult(TransactionManagerResult.Error.Defined(AnnotatedString(R.string.you_cannot_send)))
+            postResult(TransactionManagerResult.Error.Defined(AnnotatedString(R.string.you_can_not_send_your)))
             return true
         }
         return false
@@ -373,7 +373,7 @@ class TransactionManager @Inject constructor(
 
         // fee only drops from the algos.
         val balanceAfterTransaction =
-            if (this is TransactionData.Send && assetInformation.isAlgorand().not()) {
+            if (this is TransactionData.Send && assetInformation.isAlgo().not()) {
                 balance - fee
             } else {
                 balance - fee - amount

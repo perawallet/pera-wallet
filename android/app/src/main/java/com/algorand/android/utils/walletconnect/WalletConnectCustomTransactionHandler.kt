@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -13,12 +13,13 @@
 package com.algorand.android.utils.walletconnect
 
 import com.algorand.android.mapper.WalletConnectTransactionMapper
+import com.algorand.android.models.AssetParams
 import com.algorand.android.models.BaseAssetTransferTransaction
 import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.models.WalletConnectSigner
 import com.algorand.android.models.WalletConnectTransaction
-import com.algorand.android.repository.AccountRepository
+import com.algorand.android.repository.AssetRepository
 import com.algorand.android.repository.TransactionsRepository
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.groupWalletConnectTransactions
@@ -31,8 +32,14 @@ class WalletConnectCustomTransactionHandler @Inject constructor(
     private val walletConnectTransactionMapper: WalletConnectTransactionMapper,
     private val errorProvider: WalletConnectTransactionErrorProvider,
     private val accountCacheManager: AccountCacheManager,
-    private val accountRepository: AccountRepository
+    private val assetRepository: AssetRepository
 ) {
+
+    /**
+     * Stores asset detail that wallet connect request contains
+     * to fasten the process for requests that contains same asset
+     */
+    private val assetCacheMap = mutableMapOf<Long, AssetParams>()
 
     @SuppressWarnings("ReturnCount")
     suspend fun handleCustomTransaction(
@@ -102,8 +109,10 @@ class WalletConnectCustomTransactionHandler @Inject constructor(
             val transactionMessage = walletConnectTransactionMapper.parseSignTxnOptions(payloadList)?.message
             val result = WalletConnectTransaction(requestId, groupedWalletConnectTxnList, session, transactionMessage)
             onResult(Success(result))
+            assetCacheMap.clear()
         } catch (exception: Exception) {
             onResult(Error(sessionId, requestId, errorProvider.invalidInput.unableToParse))
+            assetCacheMap.clear()
         }
     }
 
@@ -128,7 +137,7 @@ class WalletConnectCustomTransactionHandler @Inject constructor(
                     }
                 }
             },
-            onFailed = { isNodesMatches = false }
+            onFailed = { _, _ -> isNodesMatches = false }
         )
         return isNodesMatches
     }
@@ -153,12 +162,18 @@ class WalletConnectCustomTransactionHandler @Inject constructor(
     }
 
     private suspend fun getAssetParams(assetTransaction: WalletConnectAssetDetail) {
-        val assetParams = accountCacheManager.getAssetDescription(assetTransaction.assetId)
-        if (assetParams != null) {
-            assetTransaction.assetParams = assetParams
+        val cachedAsset = assetCacheMap.getOrDefault(assetTransaction.assetId, null)
+        if (cachedAsset != null) {
+            assetTransaction.assetParams = cachedAsset
         } else {
-            accountRepository.fetchAndSetAssetDescription(assetTransaction.assetId).use(
-                onSuccess = { getAssetParams(assetTransaction) }
+            assetRepository.getAssetDescription(assetTransaction.assetId).use(
+                onSuccess = {
+                    assetCacheMap[assetTransaction.assetId] = it.assetParams
+                    assetTransaction.assetParams = it.assetParams
+                },
+                onFailed = { _, _ ->
+                    // TODO Handle fail case
+                }
             )
         }
     }

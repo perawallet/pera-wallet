@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -15,9 +15,9 @@ package com.algorand.android.ui.rekey
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.models.Account
 import com.algorand.android.models.AccountInformation
-import com.algorand.android.ui.accountselection.BaseLedgerAccountSelectionFragment
-import com.algorand.android.ui.accountselection.SearchType
-import com.algorand.android.ui.rekey.RekeyLedgerAccountSelectionFragmentDirections.Companion.rekeyLedgerAccountSelectionFragmentToRekeyConfirmationFragment
+import com.algorand.android.models.AccountSelectionListItem
+import com.algorand.android.ui.ledgeraccountselection.BaseLedgerAccountSelectionFragment
+import com.algorand.android.ui.ledgeraccountselection.SearchType
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -39,13 +39,20 @@ class RekeyLedgerAccountSelectionFragment : BaseLedgerAccountSelectionFragment()
         return args.bluetoothName
     }
 
+    override fun onSelectionListFetched(selectionList: List<AccountSelectionListItem>): List<AccountSelectionListItem> {
+        return selectionList.filterNot {
+            (it is AccountSelectionListItem.AccountItem && it.account.type == Account.Type.REKEYED_AUTH)
+        }
+    }
+
     override fun onConfirmationClick(selectedAccounts: List<Account>, allAuthAccounts: List<Account>) {
         val selectedAccount = selectedAccounts.firstOrNull()
         if (selectedAccount != null && selectedAccount.detail is Account.Detail.Ledger) {
             nav(
-                rekeyLedgerAccountSelectionFragmentToRekeyConfirmationFragment(
-                    args.rekeyAddress, selectedAccount.address, selectedAccount.detail
-                )
+                RekeyLedgerAccountSelectionFragmentDirections
+                    .rekeyLedgerAccountSelectionFragmentToRekeyConfirmationFragment(
+                        args.rekeyAddress, selectedAccount.address, selectedAccount.detail
+                    )
             )
         }
     }

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~  limitations under the License
+  ~
+  -->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <com.algorand.android.customviews.AccountIconImageView
+        android:id="@+id/accountIconImageView"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/mainTextView"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/mainTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_small"
+        android:layout_marginEnd="@dimen/spacing_small"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/addButton"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@id/accountIconImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_goneMarginEnd="0dp"
+        app:layout_goneMarginStart="0dp"
+        tools:text="@tools:sample/lorem[2]"
+        tools:textAppearance="@style/TextAppearance.Body.Sans" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/addButton"
+        style="@style/TextAppearance.Description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="54dp"
+        android:minHeight="24dp"
+        android:paddingHorizontal="@dimen/spacing_small"
+        android:paddingVertical="@dimen/spacing_xxsmall"
+        android:text="@string/add"
+        android:visibility="gone"
+        app:backgroundTint="@color/layerGrayLighter"
+        app:cornerRadius="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@id/mainTextView"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
+</merge>

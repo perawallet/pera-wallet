@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  Copyright 2019 Algorand, Inc.
+  Copyright 2022 Pera Wallet, LDA
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -10,110 +10,40 @@
   limitations under the License
   -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/leftImageView"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginEnd="6dp"
-                app:layout_constraintBottom_toBottomOf="@+id/loadingAnimationLottieView"
-                app:layout_constraintEnd_toStartOf="@+id/loadingAnimationLottieView"
-                app:layout_constraintTop_toTopOf="@+id/loadingAnimationLottieView"
-                app:srcCompat="@drawable/ic_ledger_real" />
-
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/loadingAnimationLottieView"
-                android:layout_width="95dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="24dp"
-                app:layout_constraintBottom_toBottomOf="@+id/rightImageView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:lottie_autoPlay="true"
-                app:lottie_fileName="bluetooth_animation.json"
-                app:lottie_loop="true" />
-
-            <ImageView
-                android:id="@+id/rightImageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:layout_marginTop="36dp"
-                app:layout_constraintStart_toEndOf="@+id/loadingAnimationLottieView"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ledger_approval_device" />
-
-            <TextView
-                android:id="@+id/titleTextView"
-                style="@style/TextAppearance.Title1Semibold"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="36dp"
-                android:layout_marginTop="24dp"
-                android:gravity="center"
-                android:text="@string/verify_account_addresses"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rightImageView" />
-
-            <TextView
-                android:id="@+id/descriptionTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="24dp"
-                android:layout_marginTop="@dimen/keyline_1"
-                android:fontFamily="@font/publicsans_regular"
-                android:gravity="center"
-                android:lineSpacingExtra="5sp"
-                android:text="@string/the_following_account"
-                android:textColor="@color/tertiaryTextColor"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/titleTextView" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/ledgerAddressesRecyclerView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/keyline_1"
-                android:clipToPadding="false"
-                android:overScrollMode="never"
-                android:paddingBottom="100dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/descriptionTextView"
-                tools:itemCount="2"
-                tools:listitem="@layout/item_verifiable_ledger_address" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.core.widget.NestedScrollView>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/ledgerAddressesRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingBottom="100dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:itemCount="3"
+        tools:listitem="@layout/item_verifiable_ledger_address" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/confirmationButton"
-        style="@style/UnelevatedButton.General"
-        android:layout_width="match_parent"
+        style="@style/Button.Primary"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="20dp"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginBottom="@dimen/bottom_safe_area_margin"
+        android:text="@string/add_verified_accounts"
         android:visibility="gone"
-        android:text="@string/add_verified_accounts" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="visible" />
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

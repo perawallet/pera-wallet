@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -16,6 +16,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.provider.MediaStore
+import androidx.activity.result.ActivityResultLauncher
 import androidx.core.app.ShareCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
@@ -26,7 +27,6 @@ import java.io.FileOutputStream
 
 const val IMAGE_FILE_MIME_TYPE = "image/jpeg"
 const val CSV_FILE_MIME_TYPE = "text/csv"
-const val IMAGE_SHARE_REQUEST = 1009
 const val IMAGE_READ_REQUEST = 1010
 
 private const val IMAGE_QUALITY = 100
@@ -43,7 +43,7 @@ fun Fragment.startImagePickerIntent() {
     startActivityForResult(Intent.createChooser(intent, ""), IMAGE_READ_REQUEST)
 }
 
-fun Fragment.openImageShareBottomMenu(bitmap: Bitmap): File? {
+fun Fragment.openImageShareBottomMenu(bitmap: Bitmap, activityResultLauncher: ActivityResultLauncher<Intent>): File? {
     var tempFileDirectory: File? = null
     try {
         tempFileDirectory = File(requireContext().cacheDir, "/temp.jpg")
@@ -57,10 +57,10 @@ fun Fragment.openImageShareBottomMenu(bitmap: Bitmap): File? {
         return null
     }
 
-    return shareFile(tempFileDirectory, IMAGE_SHARE_REQUEST, IMAGE_FILE_MIME_TYPE)
+    return shareFile(tempFileDirectory, IMAGE_FILE_MIME_TYPE, activityResultLauncher)
 }
 
-fun Fragment.shareFile(file: File, requestCode: Int, type: String): File {
+fun Fragment.shareFile(file: File, type: String, activityResultLauncher: ActivityResultLauncher<Intent>): File {
     try {
         val uri = FileProvider.getUriForFile(
             requireContext(),
@@ -74,7 +74,7 @@ fun Fragment.shareFile(file: File, requestCode: Int, type: String): File {
             .createChooserIntent()
             .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
 
-        startActivityForResult(sharingIntent, requestCode)
+        activityResultLauncher.launch(sharingIntent)
     } catch (exception: Exception) {
         file.delete()
         FirebaseCrashlytics.getInstance().recordException(exception)

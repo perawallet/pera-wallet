@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -17,9 +17,9 @@ import androidx.navigation.navGraphViewModels
 import com.algorand.android.R
 import com.algorand.android.models.Account
 import com.algorand.android.models.AccountInformation
-import com.algorand.android.ui.accountselection.BaseLedgerAccountSelectionFragment
-import com.algorand.android.ui.accountselection.SearchType
-import com.algorand.android.ui.register.ledger.RegisterLedgerAccountSelectionFragmentDirections.Companion.actionRegisterLedgerAccountSelectionFragmentToVerifyLedgerAddressFragment
+import com.algorand.android.models.AccountSelectionListItem
+import com.algorand.android.ui.ledgeraccountselection.BaseLedgerAccountSelectionFragment
+import com.algorand.android.ui.ledgeraccountselection.SearchType
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -42,11 +42,18 @@ class RegisterLedgerAccountSelectionFragment : BaseLedgerAccountSelectionFragmen
     override fun onConfirmationClick(selectedAccounts: List<Account>, allAuthAccounts: List<Account>) {
         pairLedgerNavigationViewModel.selectedAccounts = selectedAccounts
         pairLedgerNavigationViewModel.allAuthAccounts = allAuthAccounts
-        nav(actionRegisterLedgerAccountSelectionFragmentToVerifyLedgerAddressFragment())
+        nav(
+            RegisterLedgerAccountSelectionFragmentDirections
+                .actionRegisterLedgerAccountSelectionFragmentToVerifyLedgerAddressFragment()
+        )
     }
 
     override fun getBluetoothName(): String? {
         return args.bluetoothName
+    }
+
+    override fun onSelectionListFetched(selectionList: List<AccountSelectionListItem>): List<AccountSelectionListItem> {
+        return selectionList
     }
 
     override fun getBluetoothAddress(): String {

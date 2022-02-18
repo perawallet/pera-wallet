@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,30 +12,36 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingVertical="12dp">
+    android:layout_marginVertical="60dp"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:srcCompat="@drawable/ic_wallet_curved" />
 
     <TextView
         android:id="@+id/titleTextView"
+        style="@style/TextAppearance.Body.Large.Sans.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:fontFamily="@font/publicsans_medium"
-        android:textSize="16sp"
+        android:layout_marginTop="@dimen/spacing_xlarge"
+        android:gravity="center_horizontal"
         tools:text="2 Accounts Found" />
 
     <TextView
         android:id="@+id/descriptionTextView"
+        style="@style/TextAppearance.Description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="@dimen/keyline_1_minus_8dp"
-        android:fontFamily="@font/publicsans_regular"
-        android:text="@string/this_ledger_device"
-        android:textColor="@color/secondaryTextColor"
-        android:textSize="14sp" />
+        android:layout_marginHorizontal="@dimen/spacing_xxlarge"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:gravity="center_horizontal"
+        android:text="@string/this_ledger_device" />
 
 </LinearLayout>

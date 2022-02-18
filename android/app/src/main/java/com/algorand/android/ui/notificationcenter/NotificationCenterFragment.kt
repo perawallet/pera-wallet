@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -13,9 +13,7 @@
 package com.algorand.android.ui.notificationcenter
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageButton
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -24,20 +22,18 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.algorand.android.HomeNavigationDirections.Companion.actionGlobalAssetDetailFragment
+import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
-import com.algorand.android.customviews.CustomToolbar
-import com.algorand.android.customviews.ErrorListView
 import com.algorand.android.databinding.FragmentNotificationCenterBinding
+import com.algorand.android.models.AssetAction
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.FragmentConfiguration
+import com.algorand.android.models.IconButton
 import com.algorand.android.models.NotificationListItem
 import com.algorand.android.models.NotificationType
+import com.algorand.android.models.ScreenState
 import com.algorand.android.models.ToolbarConfiguration
-import com.algorand.android.ui.common.AssetActionBottomSheet
-import com.algorand.android.ui.notificationcenter.NotificationCenterFragmentDirections.Companion.actionNotificationCenterFragmentToNotificationFilterFragment
-import com.algorand.android.utils.addDivider
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.IOException
@@ -52,11 +48,24 @@ class NotificationCenterFragment : DaggerBaseFragment(R.layout.fragment_notifica
 
     private val binding by viewBinding(FragmentNotificationCenterBinding::bind)
 
-    private val toolbarConfiguration =
-        ToolbarConfiguration(titleResId = R.string.notifications, type = CustomToolbar.Type.TAB_TOOLBAR)
+    private val toolbarConfiguration = ToolbarConfiguration(
+        titleResId = R.string.notifications,
+        startIconResId = R.drawable.ic_left_arrow,
+        startIconClick = ::navBack
+    )
 
-    override val fragmentConfiguration =
-        FragmentConfiguration(toolbarConfiguration = toolbarConfiguration, isBottomBarNeeded = true)
+    private val emptyState by lazy {
+        ScreenState.CustomState(
+            icon = R.drawable.ic_notification,
+            title = R.string.no_current_notifications,
+            description = R.string.your_recent_transactions
+        )
+    }
+
+    override val fragmentConfiguration = FragmentConfiguration(
+        toolbarConfiguration = toolbarConfiguration,
+        isBottomBarNeeded = false
+    )
 
     private var notificationAdapter = NotificationAdapter(::onNewItemAddedToTop, ::onNotificationClick)
 
@@ -65,22 +74,15 @@ class NotificationCenterFragment : DaggerBaseFragment(R.layout.fragment_notifica
         setupToolbar()
         setupRecyclerView()
         initObservers()
+        initUi()
+    }
+
+    private fun initUi() {
+        binding.screenStateView.setOnNeutralButtonClickListener(::handleErrorButtonClick)
     }
 
     private fun setupToolbar() {
-        getAppToolbar()?.apply {
-            val marginEnd = resources.getDimensionPixelSize(R.dimen.keyline_1_minus_8dp)
-
-            val filterButton = LayoutInflater
-                .from(context)
-                .inflate(R.layout.custom_icon_tab_button, this, false) as ImageButton
-
-            filterButton.apply {
-                setImageResource(R.drawable.ic_filter)
-                setOnClickListener { onFilterClick() }
-                addViewToEndSide(this, marginEnd)
-            }
-        }
+        getAppToolbar()?.addButtonToEnd(IconButton(R.drawable.ic_filter, onClick = ::onFilterClick))
     }
 
     private fun setupRecyclerView() {
@@ -90,7 +92,6 @@ class NotificationCenterFragment : DaggerBaseFragment(R.layout.fragment_notifica
             notificationAdapter.lastRefreshedDateTime = notificationCenterViewModel.getLastRefreshedDateTime()
             notificationCenterViewModel.setLastRefreshedDateTime(ZonedDateTime.now())
             adapter = notificationAdapter
-            addDivider(R.drawable.horizontal_divider_20dp)
         }
 
         notificationAdapter.registerDataObserver()
@@ -98,8 +99,6 @@ class NotificationCenterFragment : DaggerBaseFragment(R.layout.fragment_notifica
         handleLoadState()
 
         binding.swipeRefreshLayout.setOnRefreshListener { refreshList(changeRefreshTime = true) }
-
-        binding.errorListView.setTryAgainAction { refreshList(changeRefreshTime = false) }
     }
 
     private fun initObservers() {
@@ -124,30 +123,34 @@ class NotificationCenterFragment : DaggerBaseFragment(R.layout.fragment_notifica
     private fun handleLoadState() {
         viewLifecycleOwner.lifecycleScope.launch {
             notificationAdapter.loadStateFlow.collectLatest { combinedLoadStates ->
-                val isPreviousStateError = binding.errorListView.isVisible
+                val isNotificationListEmpty = notificationAdapter.itemCount == 0
                 val isCurrentStateError = combinedLoadStates.refresh is LoadState.Error
                 val isLoading = combinedLoadStates.refresh is LoadState.Loading
                 binding.swipeRefreshLayout.isRefreshing = isLoading
-                if (isCurrentStateError) {
-                    enableNotificationsErrorState((combinedLoadStates.refresh as LoadState.Error).error)
+                when {
+                    isCurrentStateError -> {
+                        enableNotificationsErrorState((combinedLoadStates.refresh as LoadState.Error).error)
+                    }
+                    isLoading.not() && isNotificationListEmpty -> {
+                        binding.screenStateView.setupUi(emptyState)
+                    }
                 }
-                binding.emptyListView.isVisible = isLoading.not() && notificationAdapter.itemCount == 0
-                binding.notificationsRecyclerView.isInvisible = isPreviousStateError || isCurrentStateError
-                binding.emptyListView.isVisible =
-                    binding.emptyListView.isVisible && isCurrentStateError.not()
-                binding.errorListView.isVisible = isCurrentStateError
+                binding.notificationsRecyclerView.isInvisible = isCurrentStateError || isNotificationListEmpty
+                binding.screenStateView.isVisible = (isCurrentStateError || isNotificationListEmpty) && isLoading.not()
             }
         }
     }
 
     private fun enableNotificationsErrorState(throwable: Throwable) {
-        binding.errorListView.setupError(
-            if (throwable is IOException) {
-                ErrorListView.Type.CONNECTION_ERROR
-            } else {
-                ErrorListView.Type.DEFAULT_ERROR
-            }
-        )
+        if (throwable is IOException) {
+            binding.screenStateView.setupUi(ScreenState.ConnectionError())
+        } else {
+            binding.screenStateView.setupUi(ScreenState.DefaultError())
+        }
+    }
+
+    private fun handleErrorButtonClick() {
+        refreshList()
     }
 
     private fun refreshList(changeRefreshTime: Boolean = false) {
@@ -170,12 +173,15 @@ class NotificationCenterFragment : DaggerBaseFragment(R.layout.fragment_notifica
                 navigateToAssetDetail(assetInformation, metadata.senderPublicKey.orEmpty())
             }
             NotificationType.ASSET_SUPPORT_REQUEST -> {
-                AssetActionBottomSheet.show(
-                    parentFragmentManager,
-                    assetInformation.assetId,
-                    AssetActionBottomSheet.Type.UNSUPPORTED_NOTIFICATION_REQUEST,
-                    accountPublicKey = metadata.receiverPublicKey,
+                val assetAction = AssetAction(
+                    assetId = assetInformation.assetId,
+                    publicKey = metadata.receiverPublicKey,
                     asset = assetInformation
+                )
+                nav(
+                    HomeNavigationDirections.actionGlobalUnsupportedAssetNotificationRequestActionBottomSheet(
+                        assetAction
+                    )
                 )
             }
             else -> {
@@ -197,11 +203,15 @@ class NotificationCenterFragment : DaggerBaseFragment(R.layout.fragment_notifica
 
     private fun navigateToAssetDetail(assetInformation: AssetInformation, publicKey: String) {
         if (notificationCenterViewModel.isAssetAvailableOnAccount(publicKey, assetInformation)) {
-            nav(actionGlobalAssetDetailFragment(assetInformation, publicKey))
+            nav(HomeNavigationDirections.actionGlobalAssetDetailFragment(assetInformation.assetId, publicKey))
         }
     }
 
     private fun onFilterClick() {
-        nav(actionNotificationCenterFragmentToNotificationFilterFragment(showDoneButton = true))
+        nav(
+            NotificationCenterFragmentDirections.actionNotificationCenterFragmentToNotificationFilterFragment(
+                showDoneButton = false
+            )
+        )
     }
 }

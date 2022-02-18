@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,17 +12,15 @@
 
 package com.algorand.android.ui.settings.selection.currencyselection
 
-import android.content.SharedPreferences
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.repository.PriceRepository
 import com.algorand.android.ui.settings.selection.CurrencyListItem
+import com.algorand.android.usecase.CurrencyUseCase
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.analytics.logCurrencyChange
-import com.algorand.android.utils.preference.getCurrencyPreference
-import com.algorand.android.utils.preference.setCurrencyPreference
 import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -31,7 +29,7 @@ import kotlinx.coroutines.launch
 class CurrencySelectionViewModel @ViewModelInject constructor(
     private val firebaseAnalytics: FirebaseAnalytics,
     private val priceRepository: PriceRepository,
-    private val sharedPref: SharedPreferences
+    private val currencyUseCase: CurrencyUseCase
 ) : BaseViewModel() {
 
     val currencyListLiveData = MutableLiveData<Resource<List<CurrencyListItem>>>()
@@ -54,17 +52,17 @@ class CurrencySelectionViewModel @ViewModelInject constructor(
                     }
                     currencyListLiveData.postValue(Resource.Success(currencyListItem))
                 },
-                onFailed = { exception ->
+                onFailed = { exception, _ ->
                     currencyListLiveData.postValue(Resource.Error.Api(exception))
                 }
             )
         }
     }
 
-    private fun getSelectedCurrencyId() = sharedPref.getCurrencyPreference()
+    private fun getSelectedCurrencyId() = currencyUseCase.getSelectedCurrency()
 
     fun setCurrencySelected(currencyListItem: CurrencyListItem) {
-        sharedPref.setCurrencyPreference(currencyListItem.currencyId)
+        currencyUseCase.setSelectedCurrency(currencyListItem.currencyId)
         logCurrencyChange(currencyListItem.currencyId)
     }
 

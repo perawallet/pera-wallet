@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -26,7 +26,7 @@ suspend fun findAllNodes(
     sharedPref: SharedPreferences,
     nodeDao: NodeDao
 ): List<Node> {
-    val allNodesAvailable = nodeDao.getAll()
+    val allNodesAvailable = nodeDao.getAllNode()
     val currentVersion = sharedPref.getDefaultNodeListVersion()
     return if (currentVersion < CURRENT_DEFAULT_NODE_LIST_VERSION || allNodesAvailable.isEmpty()) {
         initNewDefaultListWithCustomNodes(sharedPref, CURRENT_DEFAULT_NODE_LIST_VERSION, defaultNodeList, nodeDao)

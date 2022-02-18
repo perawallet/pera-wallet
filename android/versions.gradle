@@ -1,15 +1,15 @@
 ext {
     targets = [
             compileSdkVersion: 30,
-            minSdkVersion    : 21,
+            minSdkVersion    : 23,
             targetSdkVersion : 30
     ]
 
     application = [
             stagingApplicationId: 'staging.com.algorand.android',
             applicationId       : 'com.algorand.android',
-            versionCode         : 60,
-            versionName         : "4.10.12"
+            versionCode         : 62,
+            versionName         : "5.0.1"
     ]
 
     libVersions = [
@@ -43,7 +43,7 @@ ext {
             ble              : '2.1.1',
             lottie           : '3.7.0',
             desugar          : '1.0.9',
-            localization     : '1.2.6',
+            localization     : '1.2.10',
             hipoexceptions   : '1.0.0',
             mpAndroidChart   : 'v3.1.0',
             walletConnect    : '0.9.6',

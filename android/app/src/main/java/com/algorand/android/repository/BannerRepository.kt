@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -13,9 +13,9 @@
 package com.algorand.android.repository
 
 import android.content.SharedPreferences
-import com.algorand.android.utils.preference.hideGovernanceBanner
+import com.algorand.android.utils.preference.setBannerInvisible
 import com.algorand.android.utils.preference.isGovernanceBannerShown
-import com.algorand.android.utils.preference.showGovernanceBanner
+import com.algorand.android.utils.preference.setBannerVisible
 import javax.inject.Inject
 
 class BannerRepository @Inject constructor(
@@ -23,11 +23,11 @@ class BannerRepository @Inject constructor(
 ) {
 
     fun setBannerVisible() {
-        sharedPreferences.showGovernanceBanner()
+        sharedPreferences.setBannerVisible()
     }
 
     fun setBannerInvisible() {
-        sharedPreferences.hideGovernanceBanner()
+        sharedPreferences.setBannerInvisible()
     }
 
     fun getBannerVisibility() = sharedPreferences.isGovernanceBannerShown()

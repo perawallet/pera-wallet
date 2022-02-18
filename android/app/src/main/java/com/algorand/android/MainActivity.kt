@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -23,7 +23,8 @@ import com.algorand.android.customviews.ForegroundNotificationView
 import com.algorand.android.customviews.SendReceiveTabBarView
 import com.algorand.android.models.AccountCacheStatus
 import com.algorand.android.models.AnnotatedString
-import com.algorand.android.models.AssetInformation
+import com.algorand.android.models.AssetAction
+import com.algorand.android.models.AssetActionResult
 import com.algorand.android.models.Node
 import com.algorand.android.models.NotificationMetadata
 import com.algorand.android.models.NotificationType
@@ -33,9 +34,10 @@ import com.algorand.android.models.TransactionManagerResult
 import com.algorand.android.models.WCSessionRequestResult
 import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.models.WalletConnectTransaction
-import com.algorand.android.ui.common.AssetActionBottomSheet
-import com.algorand.android.ui.common.assetselector.AssetSelectionBottomSheet
+import com.algorand.android.ui.accountselection.receive.ReceiveAccountSelectionFragment
+import com.algorand.android.ui.assetaction.UnsupportedAssetNotificationRequestActionBottomSheet
 import com.algorand.android.ui.lockpreference.AutoLockSuggestionManager
+import com.algorand.android.ui.qr.QrCodeScannerViewModel
 import com.algorand.android.ui.wcconnection.WalletConnectConnectionBottomSheet
 import com.algorand.android.utils.DEEPLINK_AND_NAVIGATION_INTENT
 import com.algorand.android.utils.Event
@@ -62,11 +64,13 @@ import kotlin.properties.Delegates
 @AndroidEntryPoint
 class MainActivity : CoreMainActivity(),
     ForegroundNotificationView.ForegroundNotificationViewListener,
-    AssetActionBottomSheet.AddAssetConfirmationPopupListener,
-    WalletConnectConnectionBottomSheet.Callback {
+    UnsupportedAssetNotificationRequestActionBottomSheet.RequestAssetConfirmationListener,
+    WalletConnectConnectionBottomSheet.Callback,
+    ReceiveAccountSelectionFragment.ReceiveAccountSelectionFragmentListener {
 
     val mainViewModel: MainViewModel by viewModels()
     private val walletConnectViewModel: WalletConnectViewModel by viewModels()
+    private val qrCodeScannerViewModel: QrCodeScannerViewModel by viewModels()
 
     private var pendingIntent: Intent? = null
 
@@ -88,17 +92,17 @@ class MainActivity : CoreMainActivity(),
     @Inject
     lateinit var errorProvider: WalletConnectTransactionErrorProvider
 
-    var isAppUnlocked: Boolean by Delegates.observable(false, { _, oldValue, newValue ->
+    var isAppUnlocked: Boolean by Delegates.observable(false) { _, oldValue, newValue ->
         if (oldValue != newValue && newValue && isAssetSetupCompleted) {
             handleRedirection()
         }
-    })
+    }
 
-    private var isAssetSetupCompleted: Boolean by Delegates.observable(false, { _, oldValue, newValue ->
+    private var isAssetSetupCompleted: Boolean by Delegates.observable(false) { _, oldValue, newValue ->
         if (oldValue != newValue && newValue && isAppUnlocked) {
             handleRedirection()
         }
-    })
+    }
 
     private val assetSetupCompletedObserver = Observer<AccountCacheStatus> {
         isAssetSetupCompleted = it == AccountCacheStatus.DONE
@@ -135,13 +139,14 @@ class MainActivity : CoreMainActivity(),
         }
 
         override fun onInvalidWalletConnectUrl(errorResId: Int) {
+            qrCodeScannerViewModel.setQrCodeInProgress(false)
             showGlobalError(getString(errorResId))
         }
     }
 
     private fun onNewSessionEvent(sessionEvent: Event<Resource<WalletConnectSession>>) {
         sessionEvent.consume()?.use(
-            onSuccess = { onSessionConnected(it) },
+            onSuccess = ::onSessionConnected,
             onFailed = ::onSessionFailed,
             onLoading = ::showProgress,
             onLoadingFinished = ::hideProgress
@@ -153,19 +158,19 @@ class MainActivity : CoreMainActivity(),
     }
 
     private fun onSessionFailed(error: Resource.Error) {
+        qrCodeScannerViewModel.setQrCodeInProgress(false)
         val errorMessage = error.parse(this)
         showGlobalError(errorMessage)
     }
 
     private fun handleAssetSupportRequest(notificationMetadata: NotificationMetadata) {
         val assetInformation = notificationMetadata.getAssetDescription().convertToAssetInformation()
-        AssetActionBottomSheet.show(
-            supportFragmentManager,
-            assetInformation.assetId,
-            AssetActionBottomSheet.Type.UNSUPPORTED_NOTIFICATION_REQUEST,
-            accountPublicKey = notificationMetadata.receiverPublicKey,
+        val assetAction = AssetAction(
+            assetId = assetInformation.assetId,
+            publicKey = notificationMetadata.receiverPublicKey,
             asset = assetInformation
         )
+        nav(HomeNavigationDirections.actionGlobalUnsupportedAssetNotificationRequestActionBottomSheet(assetAction))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -188,30 +193,6 @@ class MainActivity : CoreMainActivity(),
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (accountManager.isThereAnyRegisteredAccount()) {
-            mainViewModel.activateBlockPolling()
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        mainViewModel.stopBlockPolling()
-    }
-
-    override fun onPopupConfirmation(
-        type: AssetActionBottomSheet.Type,
-        popupAsset: AssetInformation,
-        publicKey: String?
-    ) {
-        if (type == AssetActionBottomSheet.Type.UNSUPPORTED_NOTIFICATION_REQUEST && !publicKey.isNullOrBlank()) {
-            val accountCacheData = accountCacheManager.getCacheData(publicKey) ?: return
-            transactionManager.setup(lifecycle)
-            transactionManager.signTransaction(TransactionData.AddAsset(accountCacheData, popupAsset))
-        }
-    }
-
     override fun onNotificationClick(publicKeyToActivate: String?, assetIdToActivate: Long?) {
         if (publicKeyToActivate != null && assetIdToActivate != null) {
             val accountCacheData = accountCacheManager.getCacheData(publicKeyToActivate)
@@ -219,14 +200,19 @@ class MainActivity : CoreMainActivity(),
             if (accountCacheData != null && assetInformation != null) {
                 nav(
                     HomeNavigationDirections
-                        .actionGlobalAssetDetailFragment(assetInformation, accountCacheData.account.address)
+                        .actionGlobalAssetDetailFragment(assetInformation.assetId, accountCacheData.account.address)
                 )
             }
         }
     }
 
+    override fun onAccountSelected(publicKey: String) {
+        val qrCodeTitle = getString(R.string.qr_code)
+        nav(HomeNavigationDirections.actionGlobalShowQrBottomSheet(qrCodeTitle, publicKey))
+    }
+
     private fun initObservers() {
-        algorandNotificationManager.newNotificationLiveData.observe(this, newNotificationObserver)
+        peraNotificationManager.newNotificationLiveData.observe(this, newNotificationObserver)
 
         accountManager.isFirebaseTokenChanged.observe(this, Observer {
             if (it.consume() != null) {
@@ -237,7 +223,6 @@ class MainActivity : CoreMainActivity(),
         lifecycleScope.launch {
             // Drop 1 added to get any list changes.
             accountManager.accounts.drop(1).collect { accounts ->
-                mainViewModel.refreshAccountBalances()
                 mainViewModel.registerDevice()
                 binding.foregroundNotificationView.accounts = accounts
             }
@@ -337,18 +322,12 @@ class MainActivity : CoreMainActivity(),
         binding.sendReceiveTabBarView.setListener(object : SendReceiveTabBarView.Listener {
             override fun onSendClick() {
                 firebaseAnalytics.logTapSend()
-                nav(
-                    HomeNavigationDirections
-                        .actionGlobalAssetSelectionBottomSheet(flowType = AssetSelectionBottomSheet.FlowType.SEND)
-                )
+                nav(HomeNavigationDirections.actionGlobalSendAlgoNavigation(null))
             }
 
             override fun onRequestClick() {
                 firebaseAnalytics.logTapReceive()
-                nav(
-                    HomeNavigationDirections
-                        .actionGlobalAssetSelectionBottomSheet(flowType = AssetSelectionBottomSheet.FlowType.REQUEST)
-                )
+                nav(HomeNavigationDirections.actionGlobalReceiveAccountSelectionFragment())
             }
         })
     }
@@ -369,7 +348,6 @@ class MainActivity : CoreMainActivity(),
 
     fun onNewNodeActivated(activatedNode: Node) {
         mainViewModel.registerDevice()
-        mainViewModel.getVerifiedAssets()
         mainViewModel.resetBlockPolling()
         binding.toolbar.setNodeStatus(activatedNode)
         checkIfConnectedToTestNet()
@@ -388,21 +366,25 @@ class MainActivity : CoreMainActivity(),
         }
     }
 
+    override fun onUnsupportedAssetRequest(assetActionResult: AssetActionResult) {
+        if (!assetActionResult.publicKey.isNullOrBlank()) {
+            val accountCacheData = accountCacheManager.getCacheData(assetActionResult.publicKey) ?: return
+            transactionManager.setup(lifecycle)
+            transactionManager.signTransaction(TransactionData.AddAsset(accountCacheData, assetActionResult.asset))
+        }
+    }
+
     private fun onWalletConnectSessionTimedOut() {
         navToWalletConnectSessionTimeoutDialog()
     }
 
     private fun navToWalletConnectSessionTimeoutDialog() {
         nav(
-            HomeNavigationDirections.actionGlobalSingleButtonBottomSheet(
-                titleResId = R.string.connection_failed,
-                drawableResId = R.drawable.ic_close,
+            MainNavigationDirections.actionGlobalSingleButtonBottomSheet(
+                titleAnnotatedString = AnnotatedString(R.string.connection_failed),
+                drawableResId = R.drawable.ic_error,
+                drawableTintResId = R.color.errorTintColor,
                 descriptionAnnotatedString = AnnotatedString(R.string.we_are_sorry_but_the),
-                buttonTextResId = R.string.close,
-                buttonBackgroundTintResId = R.color.secondaryButtonBackgroundColor,
-                buttonTextColorResId = R.color.primaryTextColor,
-                imageBackgroundTintResId = R.color.red_E9_alpha_10,
-                drawableTintResId = R.color.colorError
             )
         )
     }

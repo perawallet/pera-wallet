@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -10,113 +10,157 @@
   ~ limitations under the License
   -->
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingBottom="@dimen/bottom_safe_area_margin">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/titleTextView"
-        style="@style/TextAppearance.ToolbarTitle"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/keyline_1"
-        android:text="@string/pairing_ledger_with_your"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:paddingBottom="@dimen/bottom_safe_area_margin">
 
-    <ImageView
-        android:id="@+id/iconImageView"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="28dp"
-        android:background="@drawable/bg_orangef0_oval"
-        android:padding="26dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
-        app:srcCompat="@drawable/ic_error_warning" />
+        <View
+            android:id="@+id/modalityLineView"
+            style="@style/BottomSheetModalityLine"
+            android:layout_marginTop="@dimen/spacing_small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/secondaryTitleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/publicsans_semibold"
-        android:text="@string/please_follow_these_steps"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iconImageView" />
+        <ImageView
+            android:id="@+id/warningImageView"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_marginTop="@dimen/spacing_xxlarge"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/modalityLineView"
+            app:srcCompat="@drawable/ic_info"
+            app:tint="@color/errorTintColor" />
 
-    <TextView
-        android:id="@+id/firstInstructionTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="28dp"
-        android:drawablePadding="12dp"
-        android:text="@string/open_your_ledger"
-        app:drawableStartCompat="@drawable/ic_bullet"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/secondaryTitleTextView" />
+        <TextView
+            android:id="@+id/titleTextView"
+            style="@style/TextAppearance.Body.Large.Sans.Medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_xxlarge"
+            android:gravity="center"
+            android:text="@string/pairing_ledger_with_your"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/warningImageView" />
 
-    <TextView
-        android:id="@+id/secondInstructionTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="8dp"
-        android:drawablePadding="12dp"
-        android:text="@string/close_the_algorand_app"
-        app:drawableStartCompat="@drawable/ic_bullet"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/firstInstructionTextView" />
+        <TextView
+            android:id="@+id/secondaryTitleTextView"
+            style="@style/TextAppearance.Description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:gravity="center"
+            android:text="@string/is_your_ledger_paired"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/titleTextView" />
 
-    <TextView
-        android:id="@+id/thirdInstructionTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="8dp"
-        android:drawablePadding="12dp"
-        android:text="@string/on_the_ledger_home_screen"
-        app:drawableStartCompat="@drawable/ic_bullet"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/secondInstructionTextView" />
+        <ImageView
+            android:id="@+id/firstInstructionImageView"
+            style="@style/InstructionStepIndicator"
+            android:layout_marginStart="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_xxxxlarge"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/secondaryTitleTextView" />
 
-    <TextView
-        android:id="@+id/forthInstructionTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="8dp"
-        android:drawablePadding="12dp"
-        android:text="@string/once_pairing_is_confirmed"
-        app:drawableStartCompat="@drawable/ic_bullet"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/thirdInstructionTextView" />
+        <TextView
+            android:id="@+id/firstInstructionTextView"
+            style="@style/TextAppearance.Body.Sans"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_large"
+            android:layout_marginEnd="@dimen/spacing_xlarge"
+            android:text="@string/open_your_ledger"
+            app:layout_constraintBottom_toBottomOf="@id/firstInstructionImageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/firstInstructionImageView"
+            app:layout_constraintTop_toTopOf="@id/firstInstructionImageView" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/confirmationButton"
-        style="@style/UnelevatedButton.General"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:text="@string/continue_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/forthInstructionTextView" />
+        <ImageView
+            android:id="@+id/secondInstructionImageView"
+            style="@style/InstructionStepIndicator"
+            android:layout_marginStart="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_xxlarge"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/firstInstructionImageView" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/secondInstructionTextView"
+            style="@style/TextAppearance.Body.Sans"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_large"
+            android:layout_marginEnd="@dimen/spacing_xlarge"
+            android:text="@string/close_the_algorand_app"
+            app:layout_constraintBottom_toBottomOf="@id/secondInstructionImageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/secondInstructionImageView"
+            app:layout_constraintTop_toTopOf="@id/secondInstructionImageView" />
+
+        <ImageView
+            android:id="@+id/thirdInstructionImageView"
+            style="@style/InstructionStepIndicator"
+            android:layout_marginStart="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_xxlarge"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/secondInstructionImageView" />
+
+        <TextView
+            android:id="@+id/thirdInstructionTextView"
+            style="@style/TextAppearance.Body.Sans"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_large"
+            android:layout_marginEnd="@dimen/spacing_xlarge"
+            android:text="@string/on_the_ledger_home_screen"
+            app:layout_constraintBottom_toBottomOf="@id/thirdInstructionImageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/thirdInstructionImageView"
+            app:layout_constraintTop_toTopOf="@id/thirdInstructionImageView" />
+
+        <ImageView
+            android:id="@+id/fourthInstructionImageView"
+            style="@style/InstructionStepIndicator"
+            android:layout_marginStart="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_xxlarge"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/thirdInstructionImageView" />
+
+        <TextView
+            android:id="@+id/forthInstructionTextView"
+            style="@style/TextAppearance.Body.Sans"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_large"
+            android:layout_marginEnd="@dimen/spacing_xlarge"
+            android:text="@string/once_pairing_is_confirmed"
+            app:layout_constraintBottom_toBottomOf="@id/fourthInstructionImageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/fourthInstructionImageView"
+            app:layout_constraintTop_toTopOf="@id/fourthInstructionImageView" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/confirmationButton"
+            style="@style/Button.Secondary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_xxlarge"
+            android:text="@string/close"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/forthInstructionTextView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

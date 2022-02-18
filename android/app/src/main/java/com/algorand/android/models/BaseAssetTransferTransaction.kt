@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,8 +12,7 @@
 
 package com.algorand.android.models
 
-import com.algorand.android.R
-import com.algorand.android.utils.toShortenedAddress
+import com.algorand.android.utils.DEFAULT_ASSET_DECIMAL
 import com.algorand.android.utils.walletconnect.WalletConnectAssetDetail
 import java.math.BigInteger
 import kotlinx.parcelize.Parcelize
@@ -23,12 +22,10 @@ sealed class BaseAssetTransferTransaction : BaseWalletConnectTransaction(), Wall
     abstract val assetReceiverAddress: WalletConnectAddress
     override var assetParams: AssetParams? = null
 
-    override val summaryTitleResId: Int = R.string.asset_transfer_formatted
-    override val summarySecondaryParameter: String
-        get() = assetReceiverAddress.decodedAddress.toShortenedAddress()
-
     override val assetDecimal: Int
         get() = assetParams?.decimals ?: DEFAULT_ASSET_DECIMAL
+
+    open val assetBalance: BigInteger? = null
 
     @Parcelize
     data class AssetTransferTransaction(
@@ -47,8 +44,14 @@ sealed class BaseAssetTransferTransaction : BaseWalletConnectTransaction(), Wall
         val assetAmount: BigInteger
     ) : BaseAssetTransferTransaction() {
 
+        override val fee: Long
+            get() = walletConnectTransactionParams.fee
+
         override val transactionAmount: BigInteger
             get() = assetAmount
+
+        override val assetBalance: BigInteger?
+            get() = assetInformation?.amount
 
         override fun getAllAddressPublicKeysTxnIncludes(): List<WalletConnectAddress> {
             return listOf(senderAddress, assetReceiverAddress) + signerAddressList.orEmpty()
@@ -73,11 +76,17 @@ sealed class BaseAssetTransferTransaction : BaseWalletConnectTransaction(), Wall
         val assetAmount: BigInteger
     ) : BaseAssetTransferTransaction() {
 
-        override val shouldShowWarningIndicator: Boolean
-            get() = true
+        override val warningCount: Int
+            get() = 1
+
+        override val fee: Long
+            get() = walletConnectTransactionParams.fee
 
         override val transactionAmount: BigInteger
             get() = assetAmount
+
+        override val assetBalance: BigInteger?
+            get() = assetInformation?.amount
 
         override fun getCloseToAccountAddress(): WalletConnectAddress = assetCloseToAddress
 
@@ -104,11 +113,17 @@ sealed class BaseAssetTransferTransaction : BaseWalletConnectTransaction(), Wall
         val assetAmount: BigInteger
     ) : BaseAssetTransferTransaction() {
 
-        override val shouldShowWarningIndicator: Boolean
-            get() = true
+        override val warningCount: Int
+            get() = 1
+
+        override val fee: Long
+            get() = walletConnectTransactionParams.fee
 
         override val transactionAmount: BigInteger
             get() = assetAmount
+
+        override val assetBalance: BigInteger?
+            get() = assetInformation?.amount
 
         override fun getRekeyToAccountAddress(): WalletConnectAddress = rekeyAddress
 
@@ -136,11 +151,17 @@ sealed class BaseAssetTransferTransaction : BaseWalletConnectTransaction(), Wall
         val closeAddress: WalletConnectAddress
     ) : BaseAssetTransferTransaction() {
 
-        override val shouldShowWarningIndicator: Boolean
-            get() = true
+        override val warningCount: Int
+            get() = 2
+
+        override val fee: Long
+            get() = walletConnectTransactionParams.fee
 
         override val transactionAmount: BigInteger
             get() = assetAmount
+
+        override val assetBalance: BigInteger?
+            get() = assetInformation?.amount
 
         override fun getCloseToAccountAddress(): WalletConnectAddress = closeAddress
 
@@ -167,14 +188,11 @@ sealed class BaseAssetTransferTransaction : BaseWalletConnectTransaction(), Wall
         override val groupId: String?
     ) : BaseAssetTransferTransaction() {
 
+        override val fee: Long
+            get() = walletConnectTransactionParams.fee
+
         override val transactionAmount: BigInteger?
-            get() = BigInteger.ZERO
-
-        override val summaryTitleResId: Int
-            get() = R.string.possible_opt_in_formatted
-
-        override val summarySecondaryParameter: String
-            get() = assetId.toString()
+            get() = null
 
         override fun getAllAddressPublicKeysTxnIncludes(): List<WalletConnectAddress> {
             return listOf(senderAddress, assetReceiverAddress) + signerAddressList.orEmpty()

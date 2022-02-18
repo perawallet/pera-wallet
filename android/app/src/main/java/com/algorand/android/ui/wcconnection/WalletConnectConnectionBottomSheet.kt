@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -16,27 +16,29 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
 import com.algorand.android.core.BaseBottomSheet
 import com.algorand.android.databinding.BottomSheetWalletConnectConnectionBinding
 import com.algorand.android.models.AccountCacheData
+import com.algorand.android.models.AccountSelection
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
 import com.algorand.android.models.WCSessionRequestResult
 import com.algorand.android.models.WCSessionRequestResult.ApproveRequest
-import com.algorand.android.ui.common.accountselector.AccountSelectionBottomSheet
 import com.algorand.android.ui.common.accountselector.AccountSelectionBottomSheet.Companion.ACCOUNT_SELECTION_KEY
-import com.algorand.android.ui.wcconnection.WalletConnectConnectionBottomSheetDirections.Companion.actionWalletConnectConnectionBottomSheetToAccountSelectionBottomSheet
+import com.algorand.android.utils.extensions.hide
+import com.algorand.android.utils.extensions.setTextAndVisibility
 import com.algorand.android.utils.getXmlStyledString
 import com.algorand.android.utils.loadPeerMetaIcon
 import com.algorand.android.utils.openUrl
+import com.algorand.android.utils.setNavigationResult
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.properties.Delegates
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class WalletConnectConnectionBottomSheet : BaseBottomSheet(
@@ -44,15 +46,13 @@ class WalletConnectConnectionBottomSheet : BaseBottomSheet(
     fullPageNeeded = false
 ) {
 
-    private val walletConnectConnectionViewModel: WalletConnectConnectionViewModel by viewModels()
     private val binding by viewBinding(BottomSheetWalletConnectConnectionBinding::bind)
     private val args: WalletConnectConnectionBottomSheetArgs by navArgs()
-    private var selectedAccount by Delegates.observable<AccountCacheData?>(null) { _, oldValue, newValue ->
-        if (newValue != oldValue && newValue != null) initSelectedAccountUi(newValue)
-    }
+    private val walletConnectConnectionViewModel by viewModels<WalletConnectConnectionViewModel>()
 
-    private val defaultAccountObserver = Observer<AccountCacheData?> { defaultAccount ->
-        selectedAccount = defaultAccount
+    // TODO Create screen related account model and don't use AccountCacheData
+    private val selectedAccountCollector: suspend (AccountCacheData?) -> Unit = { accountCacheData ->
+        if (accountCacheData != null) initSelectedAccountUi(accountCacheData)
     }
 
     private var listener: Callback? = null
@@ -79,17 +79,19 @@ class WalletConnectConnectionBottomSheet : BaseBottomSheet(
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        startSavedStateListener(R.id.walletConnectConnectionBottomSheet) {
-            useSavedStateValue<AccountSelectionBottomSheet.Result>(ACCOUNT_SELECTION_KEY) { result ->
-                selectedAccount = result.accountCacheData
-            }
+    private fun initObservers() {
+        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
+            walletConnectConnectionViewModel.selectedAccountFlow.collect(selectedAccountCollector)
         }
     }
 
-    private fun initObservers() {
-        walletConnectConnectionViewModel.accountLiveData.observe(viewLifecycleOwner, defaultAccountObserver)
+    override fun onResume() {
+        super.onResume()
+        startSavedStateListener(R.id.walletConnectConnectionBottomSheet) {
+            useSavedStateValue<AccountSelection>(ACCOUNT_SELECTION_KEY) { result ->
+                walletConnectConnectionViewModel.setSelectedAccount(result.accountCacheData)
+            }
+        }
     }
 
     private fun initSessionPeerMetaUi() {
@@ -114,29 +116,50 @@ class WalletConnectConnectionBottomSheet : BaseBottomSheet(
     }
 
     private fun onConnectClick() {
-        selectedAccount?.run {
+        walletConnectConnectionViewModel.getSelectedAccount()?.run {
             listener?.onSessionRequestResult(ApproveRequest(account.address, args.sessionRequest))
+            setNavigationResult(PEER_META_NAME_KEY, args.sessionRequest.peerMeta.name)
             navBack()
         }
     }
 
     private fun onAccountClick() {
-        nav(actionWalletConnectConnectionBottomSheetToAccountSelectionBottomSheet(ALGORAND_ID, R.string.accounts))
+        val selectedAccount = walletConnectConnectionViewModel.getSelectedAccount()
+        nav(
+            WalletConnectConnectionBottomSheetDirections
+                .actionWalletConnectConnectionBottomSheetToAccountSelectionBottomSheet(
+                    assetId = ALGORAND_ID,
+                    titleResId = R.string.accounts,
+                    selectedAccountAddress = selectedAccount?.account?.address,
+                    showBackButton = true,
+                    showBalance = false
+                )
+        )
     }
 
     private fun initSelectedAccountUi(accountCacheData: AccountCacheData) {
         with(binding) {
             with(accountCacheData) {
-                accountIconImageView.setImageResource(getImageResource())
-                accountNameTextView.text = account.name
-                accountCacheData.assetsInformation.first { it.isAlgorand() }.run {
-                    accountBalanceTextView.text = getString(R.string.algos_amount_formatted, formattedAmount)
-                }
+                accountIconImageView.setAccountIcon(accountCacheData.account.createAccountIcon())
+                accountNameTextView.setTextAndVisibility(account.name)
+                accountBalanceTextView.setTextAndVisibility(
+                    root.resources.getQuantityString(
+                        R.plurals.account_asset_count,
+                        assetsInformation.size,
+                        assetsInformation.size,
+                        assetsInformation.size
+                    )
+                )
+                selectAccountTextView.hide()
             }
         }
     }
 
     interface Callback {
         fun onSessionRequestResult(wCSessionRequestResult: WCSessionRequestResult)
+    }
+
+    companion object {
+        const val PEER_META_NAME_KEY = "peer_meta_name_key"
     }
 }

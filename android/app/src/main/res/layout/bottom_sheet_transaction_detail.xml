@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright 2019 Algorand, Inc.
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -17,458 +16,351 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:background="@color/secondaryBackground">
+    tools:background="@color/primaryBackground">
 
     <com.algorand.android.customviews.CustomToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/default_toolbar_height" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/dividerColor" />
+        android:layout_height="@dimen/default_toolbar_height"
+        android:layout_marginTop="@dimen/spacing_xxsmall" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/fieldsLayout"
+            android:id="@+id/containerLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/page_horizontal_spacing"
-            android:paddingBottom="24dp">
+            android:paddingHorizontal="@dimen/spacing_xlarge"
+            android:paddingTop="68dp"
+            android:paddingBottom="@dimen/bottom_safe_area_margin">
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/amountLabelTextView"
+                style="@style/TextView.TransactionLabelStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/amount"
+                app:layout_constraintBottom_toBottomOf="@id/amountView"
+                app:layout_constraintEnd_toEndOf="@id/labelGuideline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/amountView" />
+
+            <com.algorand.android.customviews.AlgorandAmountView
+                android:id="@+id/amountView"
+                style="@style/TextAppearance.Body.Large.Mono"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_xlarge"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@id/labelGuideline"
+                app:layout_constraintTop_toTopOf="parent"
+                app:showOperator="true"
+                tools:text="123.40000 ALGO" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/closeAmountLabelTextView"
+                style="@style/TextView.TransactionLabelStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/close_amount"
+                app:layout_constraintBottom_toBottomOf="@id/closeAmountView"
+                app:layout_constraintEnd_toEndOf="@id/labelGuideline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/closeAmountView" />
+
+            <com.algorand.android.customviews.AlgorandAmountView
+                android:id="@+id/closeAmountView"
+                style="@style/TextAppearance.Body.Mono"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_xlarge"
+                android:layout_marginTop="@dimen/spacing_xlarge"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@id/labelGuideline"
+                app:layout_constraintTop_toBottomOf="@id/amountView"
+                app:showOperator="true"
+                tools:text="123.40000 ALGO" />
+
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/statusLabelTextView"
-                style="@style/TextAppearance.Label"
-                android:layout_width="wrap_content"
+                style="@style/TextView.TransactionLabelStyle"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/status"
                 app:layout_constraintBottom_toBottomOf="@id/statusTextView"
+                app:layout_constraintEnd_toEndOf="@id/labelGuideline"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/statusTextView" />
 
             <TextView
                 android:id="@+id/statusTextView"
+                style="@style/TextAppearance.Footnote.Sans.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:drawablePadding="4dp"
-                android:fontFamily="@font/publicsans_bold"
-                android:gravity="center_vertical"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="4dp"
-                android:textAllCaps="true"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:background="@drawable/bg_greenec_30dp_radius"
-                tools:drawableLeft="@drawable/ic_check_20dp"
-                tools:text="Confirmed"
-                tools:textColor="@color/green_0D" />
+                android:layout_marginStart="@dimen/spacing_xlarge"
+                android:layout_marginTop="@dimen/spacing_xlarge"
+                android:gravity="center"
+                android:minWidth="72dp"
+                android:minHeight="28dp"
+                android:paddingHorizontal="@dimen/spacing_small"
+                android:paddingVertical="@dimen/spacing_xxsmall"
+                app:layout_constraintStart_toEndOf="@id/labelGuideline"
+                app:layout_constraintTop_toBottomOf="@id/closeAmountView"
+                tools:background="@drawable/bg_turquoise_1a_24dp_radius"
+                tools:text="Completed"
+                tools:textColor="@color/transaction_confirmed_text_color" />
 
-            <View
-                android:id="@+id/statusDividerView"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="20dp"
-                android:background="@color/dividerColor"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/statusTextView" />
-
-            <TextView
-                android:id="@+id/amountLabelTextView"
-                style="@style/TextAppearance.Label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/amount"
-                app:layout_constraintBottom_toBottomOf="@id/amountTextView"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/amountTextView" />
-
-            <com.algorand.android.customviews.AmountTextView
-                android:id="@+id/amountTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/keyline_1"
-                android:layout_marginTop="20dp"
-                app:algoFontFamily="@font/publicsans_medium"
-                app:algoLogoViewSize="10dp"
-                app:algoTextViewSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/labelBarrier"
-                app:layout_constraintTop_toBottomOf="@id/statusDividerView"
-                app:showOperator="true"
-                app:useMicroAlgos="false"
-                tools:algoFontFamily="@null" />
-
-            <View
-                android:id="@+id/amountDividerView"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="20dp"
-                android:background="@color/dividerColor"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/amountTextView" />
-
-            <TextView
-                android:id="@+id/closeAmountLabelTextView"
-                style="@style/TextAppearance.Label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/close_amount"
-                app:layout_constraintBottom_toBottomOf="@id/closeAmountTextView"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/closeAmountTextView" />
-
-            <com.algorand.android.customviews.AmountTextView
-                android:id="@+id/closeAmountTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/keyline_1"
-                android:layout_marginTop="20dp"
-                app:algoFontFamily="@font/publicsans_medium"
-                app:algoLogoViewSize="10dp"
-                app:algoTextViewSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/labelBarrier"
-                app:layout_constraintTop_toBottomOf="@id/amountDividerView"
-                app:useMicroAlgos="false"
-                tools:algoFontFamily="@null" />
-
-            <View
-                android:id="@+id/closeAmountDividerView"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="20dp"
-                android:background="@color/dividerColor"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/closeAmountTextView" />
-
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/rewardLabelTextView"
-                style="@style/TextAppearance.Label"
-                android:layout_width="wrap_content"
+                style="@style/TextView.TransactionLabelStyle"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/reward"
-                app:layout_constraintBottom_toBottomOf="@id/rewardTextView"
+                app:layout_constraintBottom_toBottomOf="@id/rewardAmountTextView"
+                app:layout_constraintEnd_toEndOf="@id/labelGuideline"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/rewardTextView" />
+                app:layout_constraintTop_toTopOf="@id/rewardAmountTextView" />
 
-            <com.algorand.android.customviews.AmountTextView
-                android:id="@+id/rewardTextView"
+            <com.algorand.android.customviews.AlgorandAmountView
+                android:id="@+id/rewardAmountTextView"
+                style="@style/TextAppearance.Body.Mono"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/keyline_1"
-                android:layout_marginTop="20dp"
-                app:algoFontFamily="@font/publicsans_medium"
-                app:algoLogoViewSize="10dp"
-                app:algoTextViewSize="14sp"
+                android:layout_marginStart="@dimen/spacing_xlarge"
+                android:layout_marginTop="@dimen/spacing_xlarge"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/labelBarrier"
-                app:layout_constraintTop_toBottomOf="@id/closeAmountDividerView"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@id/labelGuideline"
+                app:layout_constraintTop_toBottomOf="@id/statusTextView"
                 app:showOperator="true"
-                app:useMicroAlgos="false"
-                tools:algoFontFamily="@null" />
+                tools:text="123.40000 ALGO" />
 
             <View
-                android:id="@+id/rewardDividerView"
+                android:id="@+id/statusDivider"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_marginTop="20dp"
-                android:background="@color/dividerColor"
+                android:layout_marginTop="@dimen/spacing_xxlarge"
+                android:background="@color/layerGrayLighter"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rewardTextView" />
+                app:layout_constraintTop_toBottomOf="@id/rewardAmountTextView" />
 
-            <TextView
-                android:id="@+id/accountLabelTextView"
-                style="@style/TextAppearance.Label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@id/accountNameTextView"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/accountNameTextView" />
-
-            <TextView
-                android:id="@+id/accountNameTextView"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/fromLabelTextView"
+                style="@style/TextView.TransactionLabelStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/keyline_1"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/publicsans_medium"
-                android:gravity="end"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/labelBarrier"
-                app:layout_constraintTop_toBottomOf="@id/rewardDividerView"
-                tools:text="@tools:sample/lorem[1]" />
-
-            <View
-                android:id="@+id/accountNameDividerView"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="20dp"
-                android:background="@color/dividerColor"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:text="@string/from"
+                app:layout_constraintBottom_toBottomOf="@id/fromUserView"
+                app:layout_constraintEnd_toEndOf="@id/labelGuideline"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/accountNameTextView" />
+                app:layout_constraintTop_toTopOf="@id/fromUserView" />
 
-            <TextView
-                android:id="@+id/targetUserLabelTextView"
-                style="@style/TextAppearance.Label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@id/targetUserView"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/targetUserView" />
-
-            <ImageView
-                android:id="@+id/targetUserCopyImageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/keyline_1_minus_8dp"
-                app:layout_constraintBottom_toBottomOf="@id/targetUserLabelTextView"
-                app:layout_constraintStart_toEndOf="@id/targetUserLabelTextView"
-                app:layout_constraintTop_toTopOf="@id/targetUserLabelTextView"
-                app:srcCompat="@drawable/ic_copy" />
-
-            <com.algorand.android.customviews.TargetUserView
-                android:id="@+id/targetUserView"
+            <com.algorand.android.customviews.AlgorandUserView
+                android:id="@+id/fromUserView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/keyline_1"
-                android:layout_marginTop="20dp"
+                android:layout_marginStart="@dimen/spacing_xlarge"
+                android:layout_marginTop="@dimen/spacing_xxlarge"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/labelBarrier"
-                app:layout_constraintTop_toBottomOf="@+id/accountNameDividerView" />
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@id/labelGuideline"
+                app:layout_constraintTop_toBottomOf="@id/statusDivider" />
 
-            <View
-                android:id="@+id/targetUserDividerView"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/toLabelTextView"
+                style="@style/TextView.TransactionLabelStyle"
                 android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="20dp"
-                android:background="@color/dividerColor"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_height="wrap_content"
+                android:text="@string/to"
+                app:layout_constraintBottom_toBottomOf="@id/toUserView"
+                app:layout_constraintEnd_toEndOf="@id/labelGuideline"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/targetUserView" />
+                app:layout_constraintTop_toTopOf="@id/toUserView" />
 
-            <TextView
+            <com.algorand.android.customviews.AlgorandUserView
+                android:id="@+id/toUserView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_xlarge"
+                android:layout_marginTop="@dimen/spacing_xlarge"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@id/labelGuideline"
+                app:layout_constraintTop_toBottomOf="@id/fromUserView" />
+
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/closeToLabelTextView"
-                style="@style/TextAppearance.Label"
-                android:layout_width="wrap_content"
+                style="@style/TextView.TransactionLabelStyle"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/close_to"
-                app:layout_constraintBottom_toBottomOf="@id/closeToTextView"
+                app:layout_constraintBottom_toBottomOf="@id/closeToUserView"
+                app:layout_constraintEnd_toEndOf="@id/labelGuideline"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/closeToTextView" />
+                app:layout_constraintTop_toTopOf="@id/closeToUserView" />
 
-            <TextView
-                android:id="@+id/closeToTextView"
+            <com.algorand.android.customviews.AlgorandUserView
+                android:id="@+id/closeToUserView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/keyline_1"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/publicsans_medium"
-                android:gravity="end"
-                android:textSize="14sp"
+                android:layout_marginStart="@dimen/spacing_xlarge"
+                android:layout_marginTop="@dimen/spacing_xlarge"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/labelBarrier"
-                app:layout_constraintTop_toBottomOf="@+id/targetUserDividerView"
-                tools:text="@tools:sample/lorem[3]" />
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@id/labelGuideline"
+                app:layout_constraintTop_toBottomOf="@id/toUserView" />
 
-            <View
-                android:id="@+id/closeToDividerView"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="20dp"
-                android:background="@color/dividerColor"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/closeToTextView" />
-
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/feeLabelTextView"
-                style="@style/TextAppearance.Label"
-                android:layout_width="wrap_content"
+                style="@style/TextView.TransactionLabelStyle"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/fee"
-                app:layout_constraintBottom_toBottomOf="@id/feeTextView"
+                app:layout_constraintBottom_toBottomOf="@id/feeAmountTextView"
+                app:layout_constraintEnd_toEndOf="@id/labelGuideline"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/feeTextView" />
+                app:layout_constraintTop_toTopOf="@id/feeAmountTextView" />
 
-            <com.algorand.android.customviews.AmountTextView
-                android:id="@+id/feeTextView"
+            <com.algorand.android.customviews.AlgorandAmountView
+                android:id="@+id/feeAmountTextView"
+                style="@style/TextAppearance.Body.Mono"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/keyline_1"
-                android:layout_marginTop="20dp"
-                app:algoFontFamily="@font/publicsans_medium"
-                app:algoLogoViewSize="10dp"
-                app:algoTextViewSize="14sp"
+                android:layout_marginStart="@dimen/spacing_xlarge"
+                android:layout_marginTop="@dimen/spacing_xlarge"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/labelBarrier"
-                app:layout_constraintTop_toBottomOf="@id/closeToDividerView"
-                tools:algoFontFamily="@null" />
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@id/labelGuideline"
+                app:layout_constraintTop_toBottomOf="@id/closeToUserView"
+                tools:text="0.00001 ALGO" />
 
-            <View
-                android:id="@+id/feeDividerView"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="20dp"
-                android:background="@color/dividerColor"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/feeTextView" />
-
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/dateLabelTextView"
-                style="@style/TextAppearance.Label"
-                android:layout_width="wrap_content"
+                style="@style/TextView.TransactionLabelStyle"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/date"
                 app:layout_constraintBottom_toBottomOf="@id/dateTextView"
+                app:layout_constraintEnd_toEndOf="@id/labelGuideline"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/dateTextView" />
 
             <TextView
                 android:id="@+id/dateTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/keyline_1"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/publicsans_medium"
-                android:textSize="14sp"
-                app:layout_constrainedWidth="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1"
-                app:layout_constraintStart_toEndOf="@id/dateLabelTextView"
-                app:layout_constraintTop_toBottomOf="@id/feeDividerView"
-                tools:text="August 10, 2020 - 14:55" />
-
-            <View
-                android:id="@+id/dateDividerView"
+                style="@style/TextAppearance.Body.Sans"
                 android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="20dp"
-                android:background="@color/dividerColor"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dateTextView" />
-
-            <TextView
-                android:id="@+id/roundLabelTextView"
-                style="@style/TextAppearance.Label"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/round"
-                app:layout_constraintBottom_toBottomOf="@id/roundTextView"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/roundTextView" />
-
-            <TextView
-                android:id="@+id/roundTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/keyline_1"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/publicsans_medium"
-                android:textSize="14sp"
-                app:layout_constrainedWidth="true"
+                android:layout_marginStart="@dimen/spacing_xlarge"
+                android:layout_marginTop="@dimen/spacing_xlarge"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1"
-                app:layout_constraintStart_toEndOf="@id/labelBarrier"
-                app:layout_constraintTop_toBottomOf="@id/dateDividerView"
-                tools:text="3217" />
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@id/labelGuideline"
+                app:layout_constraintTop_toBottomOf="@id/feeAmountTextView"
+                tools:text="July 20, 2018 07:29 AM" />
 
-            <View
-                android:id="@+id/roundDividerView"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/transactionIdLabelTextView"
+                style="@style/TextView.TransactionLabelStyle"
                 android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="20dp"
-                android:background="@color/dividerColor"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/roundTextView" />
-
-            <TextView
-                android:id="@+id/idLabelTextView"
-                style="@style/TextAppearance.Label"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:drawableEnd="@drawable/ic_copy"
-                android:drawablePadding="@dimen/keyline_1_minus_8dp"
-                android:gravity="center_vertical"
                 android:text="@string/transaction_id"
+                app:layout_constraintEnd_toEndOf="@id/labelGuideline"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/roundDividerView" />
+                app:layout_constraintTop_toTopOf="@id/transactionIdTextView" />
 
             <TextView
-                android:id="@+id/idTextView"
+                android:id="@+id/transactionIdTextView"
+                style="@style/TextAppearance.Body.Mono"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/keyline_1_minus_8dp"
-                android:fontFamily="@font/publicsans_medium"
-                android:textSize="14sp"
+                android:layout_marginStart="@dimen/spacing_xlarge"
+                android:layout_marginTop="@dimen/spacing_xlarge"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/idLabelTextView"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@id/labelGuideline"
+                app:layout_constraintTop_toBottomOf="@id/dateTextView"
                 tools:text="PT4MUMAFIOCRHYPIO7E6T4MGQYQ7GQ5LHXFPWIUDD74M45CZZQBQ" />
 
             <View
-                android:id="@+id/idDividerView"
+                android:id="@+id/transactionIdDivider"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_marginTop="20dp"
-                android:background="@color/dividerColor"
+                android:layout_marginTop="@dimen/spacing_xxlarge"
+                android:background="@color/layerGrayLighter"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/idTextView" />
+                app:layout_constraintTop_toBottomOf="@id/transactionIdTextView" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/noteLabelTextView"
-                style="@style/TextAppearance.Label"
-                android:layout_width="wrap_content"
+                style="@style/TextView.TransactionLabelStyle"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:drawableEnd="@drawable/ic_copy"
-                android:drawablePadding="@dimen/keyline_1_minus_8dp"
-                android:gravity="center_vertical"
                 android:text="@string/note"
+                app:layout_constraintBottom_toBottomOf="@id/noteTextView"
+                app:layout_constraintEnd_toEndOf="@id/labelGuideline"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/idDividerView" />
+                app:layout_constraintTop_toTopOf="@id/noteTextView" />
 
             <TextView
                 android:id="@+id/noteTextView"
+                style="@style/TextAppearance.Body.Sans"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/keyline_1_minus_8dp"
-                android:fontFamily="@font/publicsans_medium"
-                android:textSize="14sp"
+                android:layout_marginStart="@dimen/spacing_xlarge"
+                android:layout_marginTop="@dimen/spacing_xxlarge"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@id/labelGuideline"
+                app:layout_constraintTop_toBottomOf="@id/transactionIdDivider"
+                tools:text="@tools:sample/lorem[5]" />
+
+            <View
+                android:id="@+id/noteDivider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/spacing_xxlarge"
+                android:background="@color/layerGrayLighter"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/noteLabelTextView" />
+                app:layout_constraintTop_toBottomOf="@id/noteTextView" />
+
+            <com.algorand.android.ui.common.walletconnect.WalletConnectExtrasChipGroupView
+                android:id="@+id/extrasChipGroupView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xxlarge"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/noteDivider" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/labelGuideline"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="@integer/label_percentage" />
 
             <androidx.constraintlayout.widget.Group
-                android:id="@+id/idGroup"
+                android:id="@+id/rewardGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                app:constraint_referenced_ids="idLabelTextView, idTextView, idDividerView"
+                app:constraint_referenced_ids="rewardAmountTextView,rewardLabelTextView"
                 tools:visibility="visible" />
 
             <androidx.constraintlayout.widget.Group
-                android:id="@+id/dateGroup"
+                android:id="@+id/statusGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                app:constraint_referenced_ids="dateLabelTextView, dateTextView, dateDividerView"
+                app:constraint_referenced_ids="statusLabelTextView,statusTextView"
                 tools:visibility="visible" />
 
             <androidx.constraintlayout.widget.Group
@@ -476,7 +368,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                app:constraint_referenced_ids="closeAmountLabelTextView,closeAmountTextView, closeAmountDividerView, closeToDividerView, closeToLabelTextView, closeToTextView"
+                app:constraint_referenced_ids="closeToLabelTextView,closeToUserView,
+                closeAmountLabelTextView,closeAmountView"
                 tools:visibility="visible" />
 
             <androidx.constraintlayout.widget.Group
@@ -484,32 +377,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                app:constraint_referenced_ids="idDividerView,noteLabelTextView,noteTextView" />
+                app:constraint_referenced_ids="noteLabelTextView,noteTextView,noteDivider"
+                tools:visibility="visible" />
 
             <androidx.constraintlayout.widget.Group
-                android:id="@+id/rewardGroup"
+                android:id="@+id/transactionGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                app:constraint_referenced_ids="rewardDividerView,rewardLabelTextView,rewardTextView" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/roundGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:constraint_referenced_ids="roundLabelTextView,roundDividerView,roundTextView" />
-
-            <androidx.constraintlayout.widget.Barrier
-                android:id="@+id/labelBarrier"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:barrierDirection="end"
-                app:constraint_referenced_ids="
-                    roundLabelTextView,rewardLabelTextView,
-                    accountLabelTextView,amountLabelTextView,
-                    statusLabelTextView,targetUserLabelTextView,
-                    closeToLabelTextView, closeAmountLabelTextView" />
+                app:constraint_referenced_ids="transactionIdLabelTextView,transactionIdTextView"
+                tools:visibility="visible" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

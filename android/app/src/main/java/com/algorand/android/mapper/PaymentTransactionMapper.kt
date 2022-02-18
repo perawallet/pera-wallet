@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,6 +12,7 @@
 
 package com.algorand.android.mapper
 
+import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
 import com.algorand.android.models.BasePaymentTransaction
 import com.algorand.android.models.BaseWalletConnectTransaction
@@ -21,15 +22,21 @@ import com.algorand.android.models.WalletConnectAssetInformation
 import com.algorand.android.models.WalletConnectPeerMeta
 import com.algorand.android.models.WalletConnectSigner
 import com.algorand.android.models.WalletConnectTransactionRequest
+import com.algorand.android.usecase.AlgoPriceUseCase
 import com.algorand.android.utils.AccountCacheManager
+import com.algorand.android.utils.toAlgoDisplayValue
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionErrorProvider
+import java.math.BigDecimal
 import java.math.BigInteger
 import javax.inject.Inject
 
+// TODO: 19.01.2022 Mappers shouldn't inject use case
 @SuppressWarnings("ReturnCount")
 class PaymentTransactionMapper @Inject constructor(
     private val accountCacheManager: AccountCacheManager,
-    private val errorProvider: WalletConnectTransactionErrorProvider
+    private val errorProvider: WalletConnectTransactionErrorProvider,
+    private val algoPriceUseCase: AlgoPriceUseCase,
+    private val walletConnectAssetInformationMapper: WalletConnectAssetInformationMapper
 ) : BaseWalletConnectTransactionMapper() {
 
     override fun createTransaction(
@@ -61,11 +68,17 @@ class PaymentTransactionMapper @Inject constructor(
         return with(transactionRequest) {
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
             val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
+            val amount = amount ?: BigInteger.ZERO
+            val assetInformation = accountCacheData?.assetsInformation?.firstOrNull {
+                it.assetId == ALGORAND_ID
+            }
+            val walletConnectAssetInformation = createWalletConnectAssetInformation(assetInformation, amount)
+
             BasePaymentTransaction.PaymentTransactionWithRekeyAndClose(
                 rawTransactionPayload = rawTransaction,
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 note = decodedNote,
-                amount = amount ?: BigInteger.ZERO,
+                amount = amount,
                 senderAddress = senderWalletConnectAddress ?: return null,
                 receiverAddress = createWalletConnectAddress(receiverAddress) ?: return null,
                 peerMeta = peerMeta,
@@ -74,9 +87,7 @@ class PaymentTransactionMapper @Inject constructor(
                 signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
                 authAddress = accountCacheData?.authAddress,
                 account = WalletConnectAccount.create(accountCacheData?.account),
-                assetInformation = WalletConnectAssetInformation.create(
-                    accountCacheData?.assetsInformation?.find { it.assetId == ALGORAND_ID }
-                ),
+                assetInformation = walletConnectAssetInformation,
                 groupId = groupId
             )
         }
@@ -90,11 +101,17 @@ class PaymentTransactionMapper @Inject constructor(
         return with(transactionRequest) {
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
             val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
+            val amount = amount ?: BigInteger.ZERO
+            val assetInformation = accountCacheData?.assetsInformation?.firstOrNull {
+                it.assetId == ALGORAND_ID
+            }
+            val walletConnectAssetInformation = createWalletConnectAssetInformation(assetInformation, amount)
+
             BasePaymentTransaction.PaymentTransactionWithRekey(
                 rawTransactionPayload = rawTransaction,
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 note = decodedNote,
-                amount = amount ?: BigInteger.ZERO,
+                amount = amount,
                 senderAddress = senderWalletConnectAddress ?: return null,
                 receiverAddress = createWalletConnectAddress(receiverAddress) ?: return null,
                 peerMeta = peerMeta,
@@ -102,9 +119,7 @@ class PaymentTransactionMapper @Inject constructor(
                 signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
                 authAddress = accountCacheData?.authAddress,
                 account = WalletConnectAccount.create(accountCacheData?.account),
-                assetInformation = WalletConnectAssetInformation.create(
-                    accountCacheData?.assetsInformation?.find { it.assetId == ALGORAND_ID }
-                ),
+                assetInformation = walletConnectAssetInformation,
                 groupId = groupId
             )
         }
@@ -118,11 +133,17 @@ class PaymentTransactionMapper @Inject constructor(
         return with(transactionRequest) {
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
             val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
+            val amount = amount ?: BigInteger.ZERO
+            val assetInformation = accountCacheData?.assetsInformation?.firstOrNull {
+                it.assetId == ALGORAND_ID
+            }
+            val walletConnectAssetInformation = createWalletConnectAssetInformation(assetInformation, amount)
+
             BasePaymentTransaction.PaymentTransactionWithClose(
                 rawTransactionPayload = rawTransaction,
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 note = decodedNote,
-                amount = amount ?: BigInteger.ZERO,
+                amount = amount,
                 senderAddress = senderWalletConnectAddress ?: return null,
                 receiverAddress = createWalletConnectAddress(receiverAddress) ?: return null,
                 peerMeta = peerMeta,
@@ -130,9 +151,7 @@ class PaymentTransactionMapper @Inject constructor(
                 signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
                 authAddress = accountCacheData?.authAddress,
                 account = WalletConnectAccount.create(accountCacheData?.account),
-                assetInformation = WalletConnectAssetInformation.create(
-                    accountCacheData?.assetsInformation?.find { it.assetId == ALGORAND_ID }
-                ),
+                assetInformation = walletConnectAssetInformation,
                 groupId = groupId
             )
         }
@@ -146,22 +165,42 @@ class PaymentTransactionMapper @Inject constructor(
         return with(transactionRequest) {
             val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
             val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
+            val amount = amount ?: BigInteger.ZERO
+            val assetInformation = accountCacheData?.assetsInformation?.firstOrNull {
+                it.assetId == ALGORAND_ID
+            }
+            val walletConnectAssetInformation = createWalletConnectAssetInformation(assetInformation, amount)
+
             BasePaymentTransaction.PaymentTransaction(
                 rawTransactionPayload = rawTransaction,
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 note = decodedNote,
-                amount = amount ?: BigInteger.ZERO,
+                amount = amount,
                 senderAddress = senderWalletConnectAddress ?: return null,
                 receiverAddress = createWalletConnectAddress(receiverAddress) ?: return null,
                 peerMeta = peerMeta,
                 signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
                 authAddress = accountCacheData?.authAddress,
                 account = WalletConnectAccount.create(accountCacheData?.account),
-                assetInformation = WalletConnectAssetInformation.create(
-                    accountCacheData?.assetsInformation?.find { it.assetId == ALGORAND_ID }
-                ),
+                assetInformation = walletConnectAssetInformation,
                 groupId = groupId
             )
         }
+    }
+
+    private fun createWalletConnectAssetInformation(
+        assetInformation: AssetInformation?,
+        amount: BigInteger
+    ): WalletConnectAssetInformation? {
+
+        val algoPrice = algoPriceUseCase.getCachedAlgoPrice()?.data?.exchangePrice?.toBigDecimalOrNull()
+            ?: BigDecimal.ZERO
+        val currencySymbol = algoPriceUseCase.getSelectedCurrencySymbol()
+
+        return walletConnectAssetInformationMapper.algorandMapToWalletConnectAssetInformation(
+            assetInformation,
+            amount.toAlgoDisplayValue().multiply(algoPrice),
+            currencySymbol
+        )
     }
 }

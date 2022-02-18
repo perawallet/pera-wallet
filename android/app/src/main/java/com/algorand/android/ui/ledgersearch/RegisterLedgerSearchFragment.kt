@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -21,18 +21,15 @@ import com.algorand.android.ui.register.ledger.PairLedgerNavigationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class RegisterLedgerSearchFragment : BaseLedgerSearchFragment(titleResId = R.string.pair_ledger_device) {
+class RegisterLedgerSearchFragment : BaseLedgerSearchFragment() {
 
     override val fragmentId: Int = R.id.registerLedgerSearchFragment
 
-    private val pairLedgerNavigationViewModel: PairLedgerNavigationViewModel by navGraphViewModels(R.id.pairLedgerNavigation) {
-        defaultViewModelProviderFactory
-    }
+    private val pairLedgerNavigationViewModel: PairLedgerNavigationViewModel by navGraphViewModels(
+        R.id.pairLedgerNavigation
+    ) { defaultViewModelProviderFactory }
 
-    override fun onLedgerConnected(
-        accountList: List<AccountInformation>,
-        ledgerDevice: BluetoothDevice
-    ) {
+    override fun onLedgerConnected(accountList: List<AccountInformation>, ledgerDevice: BluetoothDevice) {
         setLoadingVisibility(isVisible = false)
         pairLedgerNavigationViewModel.pairedLedger = ledgerDevice
         nav(
@@ -44,7 +41,7 @@ class RegisterLedgerSearchFragment : BaseLedgerSearchFragment(titleResId = R.str
         )
     }
 
-    override fun navigateToPairInstructionBottomSheet(bluetoothDevice: BluetoothDevice) {
+    override fun navToPairInstructionBottomSheet(bluetoothDevice: BluetoothDevice) {
         nav(
             RegisterLedgerSearchFragmentDirections
                 .actionRegisterLedgerSearchFragmentToLedgerPairInstructionsBottomSheet(bluetoothDevice)

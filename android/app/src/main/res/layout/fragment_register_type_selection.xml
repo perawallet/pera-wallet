@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -19,19 +19,15 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/tertiaryBackground">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/titleTextView"
+            style="@style/TextAppearance.Title.Sans.Medium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="24dp"
-            android:layout_marginTop="12dp"
-            android:gravity="center"
-            android:paddingHorizontal="24dp"
-            android:text="@string/welcome_to_algorand"
-            android:textAppearance="@style/TextAppearance.Title1Semibold"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:text="@string/welcome_to_pera"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -40,67 +36,54 @@
             android:id="@+id/addAccountSelectionItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:layout_constraintBottom_toTopOf="@id/addAccountDivider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/titleTextView"
-            app:layout_constraintVertical_chainStyle="packed"
-            app:typeSelectionDescriptionText="@string/i_want_to_create"
-            app:typeSelectionIcon="@drawable/ic_user_create"
-            app:typeSelectionTitleText="@string/add_account" />
-
-        <View
-            android:id="@+id/addAccountDivider"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginStart="@dimen/register_type_selection_divider_start_margin"
-            android:layout_marginEnd="20dp"
-            android:background="@color/dividerColor"
             app:layout_constraintBottom_toTopOf="@id/recoverSelectionItem"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/addAccountSelectionItem" />
+            app:layout_constraintTop_toBottomOf="@id/titleTextView"
+            app:layout_constraintVertical_bias="0.4"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:typeSelectionDescriptionText="@string/create_a_new_algorand_account"
+            app:typeSelectionIcon="@drawable/ic_user_add"
+            app:typeSelectionTitleText="@string/add_new_account" />
 
         <com.algorand.android.customviews.RegisterTypeSelectionItem
             android:id="@+id/recoverSelectionItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/recoverDivider"
+            app:layout_constraintBottom_toTopOf="@id/transferSelectionItem"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/addAccountDivider"
-            app:typeSelectionDescriptionText="@string/i_already_have"
-            app:typeSelectionIcon="@drawable/ic_recover"
+            app:layout_constraintTop_toBottomOf="@id/addAccountSelectionItem"
+            app:typeSelectionDescriptionText="@string/i_want_to_recover"
+            app:typeSelectionIcon="@drawable/ic_key"
             app:typeSelectionTitleText="@string/recover_with_passphrase" />
 
-        <View
-            android:id="@+id/recoverDivider"
+        <com.algorand.android.customviews.RegisterTypeSelectionItem
+            android:id="@+id/transferSelectionItem"
             android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginStart="@dimen/register_type_selection_divider_start_margin"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
-            android:background="@color/dividerColor"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/policyTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/recoverSelectionItem" />
+            app:layout_constraintTop_toBottomOf="@id/recoverSelectionItem"
+            app:typeSelectionDescriptionText="@string/i_already_have_an"
+            app:typeSelectionIcon="@drawable/ic_phone"
+            app:typeSelectionTitleText="@string/transfer_from_another_phone"
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/policyTextView"
+            style="@style/TextAppearance.Footnote.Description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="32dp"
-            android:layout_marginBottom="24dp"
-            android:fontFamily="@font/publicsans_regular"
+            android:layout_marginHorizontal="@dimen/register_type_selection_policy_margin"
+            android:layout_marginBottom="@dimen/spacing_xlarge"
             android:gravity="center"
-            android:textColor="@color/tertiaryTextColor"
-            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:text="By create account on Algorand, you agree to our Terms and Conditions and Privacy Policy" />
+            tools:text="By create account on Pera, you agree to our Terms and Conditions and Privacy Policy" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

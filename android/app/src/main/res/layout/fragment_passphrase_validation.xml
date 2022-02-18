@@ -8,16 +8,16 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/spacing_xlarge">
 
         <TextView
-            android:gravity="center"
             android:id="@+id/titleTextView"
-            style="@style/TextAppearance.Title1Semibold"
+            style="@style/TextAppearance.Title.Sans.Medium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="36dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="@dimen/spacing_xxxsmall"
+            android:gravity="start"
             android:text="@string/verify_recovery_passphrase"
             app:layout_constraintBottom_toTopOf="@id/passphraseValidationGroupView"
             app:layout_constraintEnd_toEndOf="parent"
@@ -29,8 +29,8 @@
             android:id="@+id/passphraseValidationGroupView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginVertical="24dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="@dimen/spacing_xlarge"
             app:layout_constraintBottom_toTopOf="@id/nextButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +38,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/nextButton"
-            style="@style/UnelevatedButton.General"
+            style="@style/Button.Primary"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/bottom_safe_area_margin"

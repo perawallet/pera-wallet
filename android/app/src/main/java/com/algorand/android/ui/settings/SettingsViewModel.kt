@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,44 +12,20 @@
 
 package com.algorand.android.ui.settings
 
-import android.content.Context
-import android.content.SharedPreferences
+import android.app.NotificationManager
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
-import com.algorand.android.core.AccountManager
 import com.algorand.android.core.BaseViewModel
-import com.algorand.android.database.ContactDao
-import com.algorand.android.utils.AccountCacheManager
-import com.algorand.android.utils.preference.getCurrencyPreference
-import com.algorand.android.utils.preference.getSavedThemePreference
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import com.algorand.android.usecase.DeleteAllDataUseCase
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class SettingsViewModel @ViewModelInject constructor(
-    private val sharedPref: SharedPreferences,
-    private val contactDao: ContactDao,
-    private val accountManager: AccountManager,
-    private val accountCacheManager: AccountCacheManager
+    private val deleteAllDataUseCase: DeleteAllDataUseCase
 ) : BaseViewModel() {
 
-    private var resetJob: Job? = null
-
-    fun resetAllData(context: Context?) {
-        if (resetJob != null) {
-            return
-        }
-
-        resetJob = viewModelScope.launch(Dispatchers.IO) {
-            contactDao.deleteAllContacts()
-            withContext(Dispatchers.Main) {
-                accountManager.removeAllDataAndStartFromLogin(context, accountCacheManager)
-            }
+    fun deleteAllData(notificationManager: NotificationManager?, onDeletionCompleted: () -> Unit) {
+        viewModelScope.launch {
+            deleteAllDataUseCase.deleteAllData(notificationManager, onDeletionCompleted)
         }
     }
-
-    fun getCurrencyPreference() = sharedPref.getCurrencyPreference()
-
-    fun getThemePreference() = sharedPref.getSavedThemePreference()
 }

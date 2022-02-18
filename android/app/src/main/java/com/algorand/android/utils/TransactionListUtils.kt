@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -13,38 +13,7 @@
 package com.algorand.android.utils
 
 import com.algorand.android.models.Account
-import com.algorand.android.models.AssetInformation
-import com.algorand.android.models.BaseTransactionListItem
-import com.algorand.android.models.TransactionImpl
 import com.algorand.android.models.User
-
-fun List<TransactionImpl>.toListItems(
-    assetId: Long,
-    decimals: Int,
-    accountPublicKey: String,
-    accountList: List<Account>,
-    contactList: List<User>,
-    isRewardsIncluded: Boolean = false
-): MutableList<BaseTransactionListItem> {
-    val result = mutableListOf<BaseTransactionListItem>()
-    if (isEmpty()) {
-        return result
-    }
-    forEach { transaction ->
-        if (transaction.includeInHistory(assetId)) {
-            result.add(transaction.toTransactionListItem(assetId, accountPublicKey, contactList, accountList, decimals))
-
-            if (isRewardsIncluded && assetId == AssetInformation.ALGORAND_ID) {
-                val rewardOfTransaction = transaction.getRewardOfTransaction(accountPublicKey)
-                if (rewardOfTransaction != null) {
-                    result.add(rewardOfTransaction)
-                }
-            }
-        }
-    }
-
-    return result
-}
 
 fun getUserIfSavedLocally(
     contactList: List<User>,

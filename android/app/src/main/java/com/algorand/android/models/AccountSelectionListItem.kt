@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -13,36 +13,34 @@
 package com.algorand.android.models
 
 import android.os.Parcelable
-import androidx.annotation.DrawableRes
-import com.algorand.android.utils.AccountCacheManager
-import com.algorand.android.utils.toShortenedAddress
 import kotlinx.parcelize.Parcelize
 
-@Parcelize
-data class AccountSelectionListItem(
-    val account: Account,
-    @DrawableRes
-    val accountImageResource: Int,
-    val accountInformation: AccountInformation,
-    val assetInformationList: List<AssetInformation>,
-    var isSelected: Boolean = false
-) : Parcelable {
-    companion object {
-        fun create(
-            accountInformation: AccountInformation,
-            accountDetail: Account.Detail,
-            accountCacheManager: AccountCacheManager,
-            @DrawableRes
-            accountImageResource: Int
-        ): AccountSelectionListItem {
-            with(accountInformation) {
-                return AccountSelectionListItem(
-                    assetInformationList = getAssetInformationList(accountCacheManager),
-                    account = Account.create(address, accountDetail, address.toShortenedAddress()),
-                    accountInformation = accountInformation,
-                    accountImageResource = accountImageResource,
-                )
-            }
+sealed class AccountSelectionListItem : RecyclerListItem, Parcelable {
+
+    @Parcelize
+    data class InstructionItem(val accountCount: Int) : AccountSelectionListItem() {
+        override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+            return other is InstructionItem && accountCount == other.accountCount
+        }
+
+        override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+            return other is InstructionItem && this == other
+        }
+    }
+
+    @Parcelize
+    data class AccountItem(
+        val account: Account,
+        val accountInformation: AccountInformation,
+        val assetInformationList: List<AssetInformation>,
+        var isSelected: Boolean = false
+    ) : AccountSelectionListItem() {
+        override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+            return other is AccountItem && account.address == other.account.address && isSelected == other.isSelected
+        }
+
+        override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+            return other is AccountItem && this == other
         }
     }
 }

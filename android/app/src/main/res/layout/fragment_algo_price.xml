@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~  limitations under the License
+  ~
+  -->
+<com.algorand.android.customviews.NonScrollableNestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootScrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rootConstraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/algoPriceTitleTextView"
+            style="@style/TextAppearance.Title.Sans.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_xxxsmall"
+            android:text="@string/algo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/assetPriceTextView"
+            style="@style/TextAppearance.Title.Large.Mono.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_large"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/algoPriceTitleTextView"
+            tools:text="$10.27" />
+
+        <TextView
+            android:id="@+id/changeTextView"
+            style="@style/TextAppearance.Footnote.Mono.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_xsmall"
+            android:drawablePadding="@dimen/spacing_xxsmall"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/assetPriceTextView"
+            tools:drawableStart="@drawable/ic_arrow_up_line_positive_small"
+            tools:text="2.58%" />
+
+        <TextView
+            android:id="@+id/selectedTimeFrameTextView"
+            style="@style/TextAppearance.Body.Sans"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_small"
+            android:layout_marginTop="@dimen/spacing_xsmall"
+            android:drawablePadding="@dimen/spacing_xxsmall"
+            app:layout_constraintStart_toEndOf="@+id/changeTextView"
+            app:layout_constraintTop_toBottomOf="@id/assetPriceTextView"
+            app:layout_goneMarginStart="@dimen/spacing_xlarge"
+            tools:text="May 10, 08:30 AM" />
+
+        <com.algorand.android.customviews.algorandchart.CompactChartView
+            android:id="@+id/assetPriceChartView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xxxxlarge"
+            app:layout_constraintDimensionRatio="415:130"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/selectedTimeFrameTextView"
+            app:showTimeFrame="true" />
+
+        <TextView
+            android:id="@+id/statisticsTextView"
+            style="@style/TextAppearance.Body.Sans.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_large"
+            android:layout_marginTop="@dimen/spacing_xxxxlarge"
+            android:text="@string/statistics"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/assetPriceChartView" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/verticalCenterGuideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <TextView
+            android:id="@+id/volumeTitleTextView"
+            style="@style/TextAppearance.Footnote.Description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_xlarge"
+            android:text="@string/_24h_volume"
+            app:layout_constraintEnd_toStartOf="@id/verticalCenterGuideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/statisticsTextView" />
+
+        <TextView
+            android:id="@+id/volumeValueTextView"
+            style="@style/TextAppearance.Body.Mono"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_xlarge"
+            android:gravity="end"
+            android:text="-"
+            app:layout_constraintBottom_toBottomOf="@id/volumeTitleTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/verticalCenterGuideline"
+            tools:text="64,031.657" />
+
+        <View
+            android:id="@+id/volumeDivider"
+            style="@style/Divider.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/divider_height"
+            android:layout_marginTop="@dimen/spacing_normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/volumeTitleTextView" />
+
+        <TextView
+            android:id="@+id/marketCapTitleTextView"
+            style="@style/TextAppearance.Footnote.Description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:gravity="start"
+            android:text="@string/market_cap"
+            app:layout_constraintEnd_toEndOf="@id/volumeTitleTextView"
+            app:layout_constraintStart_toStartOf="@id/volumeTitleTextView"
+            app:layout_constraintTop_toBottomOf="@id/volumeDivider" />
+
+        <TextView
+            android:id="@+id/marketCapValueTextView"
+            style="@style/TextAppearance.Body.Mono"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:gravity="end"
+            android:text="-"
+            app:layout_constraintBottom_toBottomOf="@id/marketCapTitleTextView"
+            app:layout_constraintEnd_toEndOf="@id/volumeValueTextView"
+            app:layout_constraintStart_toStartOf="@id/volumeValueTextView"
+            tools:text="2.312B" />
+
+        <View
+            android:id="@+id/marketCapDivider"
+            style="@style/Divider.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/divider_height"
+            android:layout_marginTop="@dimen/spacing_normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/marketCapTitleTextView" />
+
+        <TextView
+            android:id="@+id/allTimeHighTitleTextView"
+            style="@style/TextAppearance.Footnote.Description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:layout_marginBottom="@dimen/bottom_safe_area_margin"
+            android:text="@string/all_time_high"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/volumeTitleTextView"
+            app:layout_constraintStart_toStartOf="@id/volumeTitleTextView"
+            app:layout_constraintTop_toBottomOf="@id/marketCapDivider" />
+
+        <TextView
+            android:id="@+id/allTimeHighValueTextView"
+            style="@style/TextAppearance.Body.Mono"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:text="-"
+            app:layout_constraintBottom_toBottomOf="@id/allTimeHighTitleTextView"
+            app:layout_constraintEnd_toEndOf="@id/volumeValueTextView"
+            app:layout_constraintStart_toStartOf="@id/volumeValueTextView"
+            tools:text="0.424231" />
+
+        <androidx.constraintlayout.widget.Group
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="statisticsTextView, volumeTitleTextView,
+            volumeValueTextView, volumeDivider, marketCapTitleTextView, marketCapValueTextView,
+            marketCapDivider, allTimeHighTitleTextView, allTimeHighValueTextView"
+            tools:visibility="visible" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.algorand.android.customviews.NonScrollableNestedScrollView>

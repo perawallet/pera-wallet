@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -22,6 +22,7 @@ import com.algorand.android.mapper.WalletConnectMapper
 import com.algorand.android.models.AccountCacheStatus
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.WalletConnectSession
+import com.algorand.android.models.WalletConnectSessionEntity
 import com.algorand.android.models.WalletConnectSignResult
 import com.algorand.android.models.WalletConnectTransaction
 import com.algorand.android.models.WalletConnectTransactionErrorResponse
@@ -207,6 +208,24 @@ class WalletConnectManager @Inject constructor(
                     _sessionResultFlow.emit(Event(Resource.Success(cachedSession)))
                 }
             }
+        }
+    }
+
+    fun killAllSessions() {
+        coroutineScope?.launch(Dispatchers.IO) {
+            killAllSessions(walletConnectRepository.getWCSessionList())
+        }
+    }
+
+    fun killAllSessionsByPublicKey(publicKey: String) {
+        coroutineScope?.launch(Dispatchers.IO) {
+            killAllSessions(walletConnectRepository.getWCSessionListByPublicKey(publicKey))
+        }
+    }
+
+    private fun killAllSessions(wcSessionEntities: List<WalletConnectSessionEntity>) {
+        wcSessionEntities.map { walletConnectMapper.createWalletConnectSession(it) }.forEach {
+            killSession(it)
         }
     }
 

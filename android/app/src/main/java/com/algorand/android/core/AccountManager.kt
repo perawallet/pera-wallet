@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,26 +12,31 @@
 
 package com.algorand.android.core
 
-import android.app.NotificationManager
-import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
 import com.algorand.android.models.Account
-import com.algorand.android.ui.splash.LauncherActivity
-import com.algorand.android.utils.AccountCacheManager
+import com.algorand.android.usecase.StandardAccountOrderUseCase.Companion.STANDARD_ACCOUNT_START_INDEX
+import com.algorand.android.usecase.WatchAccountOrderUseCase.Companion.WATCH_ACCOUNT_START_INDEX
+import com.algorand.android.utils.AccountMigrationHelper
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.decrpytString
-import com.algorand.android.utils.finishAffinityFromFragment
+import com.algorand.android.utils.fromJson
 import com.algorand.android.utils.preference.getEncryptedAlgorandAccounts
 import com.algorand.android.utils.preference.removeAll
 import com.algorand.android.utils.preference.saveAlgorandAccounts
 import com.google.crypto.tink.Aead
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 // DAGGER
-class AccountManager(private val aead: Aead, private val gson: Gson, private val sharedPref: SharedPreferences) {
+class AccountManager(
+    private val aead: Aead,
+    private val gson: Gson,
+    private val sharedPref: SharedPreferences,
+    private val accountMigrationHelper: AccountMigrationHelper
+) {
 
     val accounts = MutableStateFlow<List<Account>>(listOf())
 
@@ -39,23 +44,32 @@ class AccountManager(private val aead: Aead, private val gson: Gson, private val
 
     private var firebaseMessagingToken: String? = null
 
+    private val accountTypeChangeMutex = Mutex()
+
     fun initAccounts() {
-        val accountJson = aead.decrpytString(sharedPref.getEncryptedAlgorandAccounts())
-        accountJson?.let {
-            val listType = object : TypeToken<List<Account>>() {}.type
-            accounts.value = gson.fromJson<List<Account>>(accountJson, listType)
+        checkForMigrations()
+
+        val localAccounts = getLocalAccounts()
+        if (localAccounts != null) {
+            accounts.value = localAccounts
         }
     }
 
     fun addNewAccount(newAccount: Account) {
         val sameSavedAccount = getAccounts().find { account -> account.address == newAccount.address }
+        val indexedNewAccount = getIndexedAccount(newAccount)
         if (sameSavedAccount == null) {
-            accounts.value = getAccounts() + newAccount
+            accounts.value = getAccounts() + indexedNewAccount
             sharedPref.saveAlgorandAccounts(gson, getAccounts(), aead)
         } else {
-            accounts.value = (getAccounts() - sameSavedAccount) + newAccount
+            accounts.value = (getAccounts() - sameSavedAccount) + indexedNewAccount
             sharedPref.saveAlgorandAccounts(gson, getAccounts(), aead)
         }
+    }
+
+    fun saveAccounts(accountList: List<Account>) {
+        sharedPref.saveAlgorandAccounts(gson, accountList, aead)
+        accounts.value = accountList
     }
 
     fun getAccount(publicKey: String): Account? {
@@ -67,7 +81,7 @@ class AccountManager(private val aead: Aead, private val gson: Gson, private val
         return null
     }
 
-    fun removeAccount(publicKey: String?, accountCacheManager: AccountCacheManager) {
+    fun removeAccount(publicKey: String?) {
         if (publicKey.isNullOrBlank()) {
             return
         }
@@ -75,7 +89,6 @@ class AccountManager(private val aead: Aead, private val gson: Gson, private val
         getAccounts().forEach { accountFromList ->
             if (publicKey == accountFromList.address) {
                 accounts.value = getAccounts().filterNot { account -> account.address == publicKey }
-                accountCacheManager.removeCacheData(publicKey)
                 sharedPref.saveAlgorandAccounts(gson, getAccounts(), aead)
             }
         }
@@ -95,17 +108,22 @@ class AccountManager(private val aead: Aead, private val gson: Gson, private val
         }
     }
 
-    fun removeAllDataAndStartFromLogin(context: Context?, accountCacheManager: AccountCacheManager) {
-        if (context == null) {
-            return
+    suspend fun changeAccountType(accountPublicKey: String, newType: Account.Type) {
+        accountTypeChangeMutex.withLock {
+            val updatedAccountList = getAccounts().map { accountFromList ->
+                if (accountFromList.address == accountPublicKey) {
+                    accountFromList.copy(type = newType)
+                } else {
+                    accountFromList
+                }
+            }
+            sharedPref.saveAlgorandAccounts(gson, updatedAccountList, aead)
         }
-        // Cancel all notifications pending.
-        (context.getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager)?.cancelAll()
+    }
+
+    fun removeAllData() {
         accounts.value = listOf()
         sharedPref.removeAll()
-        accountCacheManager.removeAllData()
-        context.startActivity(LauncherActivity.newIntent(context))
-        context.finishAffinityFromFragment()
     }
 
     fun isThereAnyAccountWithPublicKey(publicKey: String?): Boolean {
@@ -126,6 +144,31 @@ class AccountManager(private val aead: Aead, private val gson: Gson, private val
             if (isRegisterNeeded) {
                 isFirebaseTokenChanged.postValue(Event(Unit))
             }
+        }
+    }
+
+    private fun getIndexedAccount(account: Account): Account {
+        return account.copy(
+            index = if (account.type == Account.Type.WATCH) {
+                getAccounts().filter { it.type == Account.Type.WATCH }.size + WATCH_ACCOUNT_START_INDEX
+            } else {
+                getAccounts().filterNot { it.type == Account.Type.WATCH }.size + STANDARD_ACCOUNT_START_INDEX
+            }
+        )
+    }
+
+    private fun checkForMigrations() {
+        val localAccounts = getLocalAccounts() ?: return
+        if (accountMigrationHelper.isMigrationNeed(localAccounts)) {
+            val migratedAccountList = accountMigrationHelper.migrateAccounts(localAccounts)
+            sharedPref.saveAlgorandAccounts(gson, migratedAccountList, aead)
+        }
+    }
+
+    private fun getLocalAccounts(): List<Account>? {
+        val accountJson = aead.decrpytString(sharedPref.getEncryptedAlgorandAccounts())
+        return accountJson?.let {
+            gson.fromJson(accountJson)
         }
     }
 }

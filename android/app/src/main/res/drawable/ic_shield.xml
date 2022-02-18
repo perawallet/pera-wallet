@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -15,15 +15,19 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
-    <path
-        android:fillColor="#1DAD98"
-        android:fillType="evenOdd"
-        android:pathData="M7,2C6.4477,2 6,2.4477 6,3C6,4.1046 5.1046,5 4,5H3C2.4477,5 2,5.4477 2,6C2,10.1165 2.7708,13.5616 4.3925,16.2645C6.0244,18.9843 8.4729,20.8762 11.6739,21.9454C11.7777,21.9813 11.8878,22.0003 12,22.0003C12.1122,22.0003 12.2223,21.9813 12.3261,21.9454C15.5271,20.8762 17.9756,18.9843 19.6075,16.2645C21.2292,13.5616 22,10.1165 22,6C22,5.4477 21.5523,5 21,5H20C18.8954,5 18,4.1046 18,3C18,2.4477 17.5523,2 17,2H12H7ZM12,4H7.874C7.4313,5.7201 5.8732,6.9924 4.0167,7C4.1325,10.4121 4.8498,13.1393 6.1075,15.2355C7.4218,17.4261 9.3669,18.9964 12,19.9419C14.6331,18.9964 16.5782,17.4261 17.8925,15.2355C19.1502,13.1393 19.8675,10.4121 19.9833,7C18.1268,6.9924 16.5687,5.7201 16.126,4H12Z" />
-    <path
-        android:fillColor="#00000000"
-        android:pathData="M9.5,12L11.5,14L15.5,9"
-        android:strokeWidth="2"
-        android:strokeColor="#1DAD98"
-        android:strokeLineCap="round"
-        android:strokeLineJoin="round" />
+  <path
+      android:fillColor="#00000000"
+      android:pathData="M4,4.5L12,2.5L20,4.5V16.5L12,21.5L4,16.5V4.5Z"
+      android:strokeWidth="2"
+      android:strokeColor="@color/primaryIconTintColor"/>
+  <path
+      android:fillColor="#00000000"
+      android:pathData="M12,6V12"
+      android:strokeWidth="2"
+      android:strokeColor="@color/primaryIconTintColor"/>
+  <path
+      android:fillColor="#00000000"
+      android:pathData="M12,14V16"
+      android:strokeWidth="2"
+      android:strokeColor="@color/primaryIconTintColor"/>
 </vector>

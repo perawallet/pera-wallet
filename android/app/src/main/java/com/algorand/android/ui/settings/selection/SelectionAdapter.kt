@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -39,16 +39,6 @@ class SelectionAdapter<T : SelectionListItem>(
 
     override fun onBindViewHolder(holder: SelectionItemViewHolder, position: Int) {
         holder.bind(list[position])
-    }
-
-    override fun onBindViewHolder(holder: SelectionItemViewHolder, position: Int, payloads: MutableList<Any>) {
-        if (payloads.isNotEmpty()) {
-            val firstPayloadItem = payloads.firstOrNull()
-            if (firstPayloadItem == SELECTION_CHANGED_PAYLOAD) {
-                holder.bindSelection(list[position])
-            }
-        }
-        super.onBindViewHolder(holder, position, payloads)
     }
 
     fun setItems(newList: List<T>) {

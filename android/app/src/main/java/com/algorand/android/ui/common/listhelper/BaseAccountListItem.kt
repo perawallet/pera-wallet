@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,67 +12,114 @@
 
 package com.algorand.android.ui.common.listhelper
 
-import androidx.recyclerview.widget.DiffUtil
-import com.algorand.android.ui.common.listhelper.viewholders.AddAssetListItem
-import com.algorand.android.ui.common.listhelper.viewholders.AssetListItem
-import com.algorand.android.ui.common.listhelper.viewholders.HeaderAccountListItem
-import com.algorand.android.ui.common.listhelper.viewholders.RemoveAssetListItem
+import androidx.annotation.ColorRes
+import androidx.annotation.StringRes
+import com.algorand.android.R
+import com.algorand.android.models.AccountIcon
+import com.algorand.android.models.RecyclerListItem
 
-open class BaseAccountListItem {
+sealed class BaseAccountListItem : RecyclerListItem {
+
+    abstract val itemType: ItemType
+
     enum class ItemType {
-        HEADER,
-        ASSET,
-        REMOVE_ASSET,
-        ADD_ASSET,
-        BANNER
+        PORTFOLIO_SUCCESS,
+        PORTFOLIO_ERROR,
+        ACCOUNT_SUCCESS,
+        ACCOUNT_ERROR,
+        HEADER
     }
 
-    class BaseAccountListDiffUtil : DiffUtil.ItemCallback<BaseAccountListItem>() {
-        override fun areItemsTheSame(oldItem: BaseAccountListItem, newItem: BaseAccountListItem): Boolean {
-            if (oldItem is AssetListItem && newItem is AssetListItem) {
-                return oldItem.publicKey == newItem.publicKey &&
-                    oldItem.assetInformation.assetId == newItem.assetInformation.assetId
+    sealed class BasePortfolioValueItem : BaseAccountListItem() {
+
+        open val errorStringResId: Int? = null
+
+        data class PortfolioValuesItem(
+            val formattedPortfolioValue: String,
+            val formattedAlgoHoldings: String,
+            val formattedAssetHoldings: String
+        ) : BasePortfolioValueItem() {
+
+            override val itemType: ItemType = ItemType.PORTFOLIO_SUCCESS
+
+            override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+                return other is PortfolioValuesItem && this.formattedPortfolioValue == other.formattedPortfolioValue
             }
 
-            if (oldItem is AddAssetListItem && newItem is AddAssetListItem) {
-                return true
+            override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+                return other is PortfolioValuesItem && this == other
             }
-
-            if (oldItem is HeaderAccountListItem && newItem is HeaderAccountListItem) {
-                return oldItem.accountCacheData.account.address == newItem.accountCacheData.account.address
-            }
-
-            if (oldItem is RemoveAssetListItem && newItem is RemoveAssetListItem) {
-                return oldItem.assetInformation.assetId == newItem.assetInformation.assetId
-            }
-
-            return false
         }
 
-        override fun areContentsTheSame(oldItem: BaseAccountListItem, newItem: BaseAccountListItem): Boolean {
-            if (oldItem is AssetListItem && newItem is AssetListItem) {
-                return oldItem.assetInformation.shortName == newItem.assetInformation.shortName &&
-                    oldItem.assetInformation.fullName == newItem.assetInformation.fullName &&
-                    oldItem.assetInformation.amount == newItem.assetInformation.amount &&
-                    oldItem.roundedCornerNeeded == newItem.roundedCornerNeeded
+        data class PortfolioValuesErrorItem(
+            @ColorRes val titleColorResId: Int
+        ) : BasePortfolioValueItem() {
+
+            override val itemType: ItemType = ItemType.PORTFOLIO_ERROR
+
+            override val errorStringResId: Int
+                get() = R.string.sorry_we_cant_show_portfolio
+
+            override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+                return other is PortfolioValuesErrorItem && titleColorResId == other.titleColorResId
             }
 
-            if (oldItem is AddAssetListItem && newItem is AddAssetListItem) {
-                return true
+            override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+                return other is PortfolioValuesErrorItem && this == other
+            }
+        }
+    }
+
+    data class HeaderItem(@StringRes val titleResId: Int, val isWatchAccount: Boolean) : BaseAccountListItem() {
+
+        override val itemType: ItemType = ItemType.HEADER
+
+        override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+            return other is HeaderItem && titleResId == other.titleResId
+        }
+
+        override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+            return other is HeaderItem && titleResId == other.titleResId
+        }
+    }
+
+    sealed class BaseAccountItem : BaseAccountListItem() {
+
+        data class AccountItem(
+            val displayName: String,
+            val publicKey: String,
+            val formattedHoldings: String,
+            val assetCount: Int,
+            val accountIcon: AccountIcon
+        ) : BaseAccountItem() {
+
+            override val itemType: ItemType = ItemType.ACCOUNT_SUCCESS
+
+            override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+                return other is AccountItem && other.publicKey == publicKey
             }
 
-            if (oldItem is HeaderAccountListItem && newItem is HeaderAccountListItem) {
-                return oldItem.accountCacheData.account.name == newItem.accountCacheData.account.name &&
-                    oldItem.accountCacheData.authAddress == newItem.accountCacheData.authAddress &&
-                    oldItem.accountCacheData.account.type == newItem.accountCacheData.account.type
+            override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+                return other is AccountItem && this == other
+            }
+        }
+
+        data class AccountErrorItem(
+            val displayName: String,
+            val publicKey: String,
+            val accountIcon: AccountIcon,
+            val isErrorIconVisible: Boolean
+        ) : BaseAccountItem() {
+
+            override val itemType: ItemType = ItemType.ACCOUNT_ERROR
+
+            override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+                return other is AccountErrorItem && other.publicKey == publicKey
             }
 
-            if (oldItem is RemoveAssetListItem && newItem is RemoveAssetListItem) {
-                return oldItem.assetInformation.shortName == newItem.assetInformation.shortName &&
-                    oldItem.assetInformation.fullName == newItem.assetInformation.fullName
+            override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+                return other is AccountErrorItem && this == other
             }
-
-            return false
         }
     }
 }

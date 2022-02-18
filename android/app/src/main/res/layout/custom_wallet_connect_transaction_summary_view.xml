@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -10,134 +10,125 @@
   ~  limitations under the License
   ~
   -->
-
+<!-- TODO Missing Shadow -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_small_shadow"
+    android:background="@drawable/bg_passphrase_group_background"
+    android:padding="@dimen/spacing_large"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
-    <ImageView
-        android:id="@+id/transactionInfoImageView"
+    <com.algorand.android.customviews.AccountIconImageView
+        android:id="@+id/transactionAccountTypeImageView"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/ic_warning"
         android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/transactionAccountNameTextView"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
 
     <TextView
-        android:id="@+id/transactionAccountTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="16dp"
-        android:maxLines="2"
-        app:layout_constraintBottom_toTopOf="@id/transactionsAmountTextView"
-        app:layout_constraintEnd_toStartOf="@+id/transactionNextButton"
-        app:layout_constraintStart_toEndOf="@+id/transactionInfoImageView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_goneMarginBottom="20dp"
-        app:layout_goneMarginStart="20dp"
-        tools:text="@string/payment_transfer_formatted" />
-
-    <com.algorand.android.customviews.TransactionAmountTextView
-        android:id="@+id/transactionsAmountTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        app:algoLogoViewSize="12dp"
-        app:amountFontFamily="@font/publicsans_semibold"
-        app:amountTextViewSize="16sp"
-        app:iconTint="@color/walletConnectFeeAlgoIconColor"
-        app:layout_constraintBottom_toTopOf="@id/accountSummaryContainer"
-        app:layout_constraintEnd_toStartOf="@+id/transactionNextButton"
-        app:layout_constraintStart_toStartOf="@+id/transactionAccountTextView"
-        app:layout_constraintTop_toBottomOf="@+id/transactionAccountTextView"
-        app:layout_goneMarginBottom="20dp"
-        app:otherAssetFontFamily="@font/publicsans_regular"
-        app:otherAssetTextViewSize="14sp"
-        app:showOperator="true"
-        tools:amountFontFamily="@null"
-        tools:otherAssetFontFamily="@null" />
-
-    <ImageView
-        android:id="@+id/transactionNextButton"
+        android:id="@+id/transactionAccountNameTextView"
+        style="@style/TextAppearance.Footnote.Description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:src="@drawable/ic_right_arrow"
-        app:layout_constraintBottom_toTopOf="@id/accountSummaryContainer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginStart="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:visibility="gone"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toStartOf="@+id/dotImageView"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@+id/transactionAccountTypeImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@tools:sample/lorem[3]"
+        tools:visibility="visible" />
 
-    <LinearLayout
-        android:id="@+id/accountSummaryContainer"
+    <ImageView
+        android:id="@+id/dotImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_xsmall"
+        android:src="@drawable/ic_dot"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/transactionAccountNameTextView"
+        app:layout_constraintEnd_toStartOf="@+id/accountBalanceTextView"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@id/transactionAccountNameTextView"
+        app:layout_constraintTop_toTopOf="@id/transactionAccountNameTextView"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/accountBalanceTextView"
+        style="@style/TextAppearance.Footnote.Description.Mono"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_xsmall"
+        android:visibility="gone"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@+id/dotImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="132,213,213.90 ALGO"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/warningImageView"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_info"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/transactionsAmountTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/transactionsAmountTextView"
+        app:tint="@color/negativeColor"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/transactionsAmountTextView"
+        style="@style/TextAppearance.Body.Large.Mono"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
-        android:layout_marginTop="14dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/bg_on_primary_8dp_radius"
-        android:orientation="horizontal"
-        android:paddingHorizontal="12dp"
-        android:paddingVertical="10dp"
+        android:layout_marginStart="@dimen/spacing_xsmall"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:maxLines="2"
+        app:layout_constraintBottom_toTopOf="@id/transactionsAmountTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/warningImageView"
+        app:layout_constraintTop_toBottomOf="@id/transactionAccountNameTextView"
+        app:layout_goneMarginStart="0dp"
+        app:layout_goneMarginTop="0dp"
+        tools:text="-91,113,123.3245 ALGO" />
+
+    <TextView
+        android:id="@+id/transactionAmountCurrencyValue"
+        style="@style/TextAppearance.Footnote.Description.Mono"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_xxsmall"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:gravity="center_vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/transactionsAmountTextView"
-        app:layout_goneMarginTop="0dp"
-        tools:visibility="visible">
+        app:layout_constraintTop_toBottomOf="@id/transactionsAmountTextView"
+        tools:text="$123.00"
+        tools:visibility="visible" />
 
-        <ImageView
-            android:id="@+id/transactionAccountTypeImageView"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            tools:src="@drawable/ic_wallet" />
-
-        <TextView
-            android:id="@+id/transactionAccountNameTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:ellipsize="end"
-            android:fontFamily="@font/publicsans_regular"
-            android:maxLines="1"
-            android:textColor="@color/gray_59"
-            android:textSize="12sp"
-            tools:text="@tools:sample/lorem[3]" />
-
-        <ImageView
-            android:id="@+id/dotImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:src="@drawable/ic_dot" />
-
-        <com.algorand.android.customviews.TransactionAmountTextView
-            android:id="@+id/accountBalanceTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            app:algoLogoViewSize="10dp"
-            app:amountFontFamily="@font/publicsans_regular"
-            app:amountTextViewSize="12sp"
-            app:defaultTintColor="@color/gray_59"
-            app:otherAssetFontFamily="@font/publicsans_regular"
-            app:otherAssetTextViewSize="12sp"
-            app:showOperator="false"
-            tools:amountFontFamily="@null"
-            tools:otherAssetFontFamily="@null" />
-
-    </LinearLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/showTransactionDetailButton"
+        style="@style/Button.Text.Link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:gravity="start"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/transactionAmountCurrencyValue"
+        tools:text="@string/show_transaction_details" />
 
 </merge>

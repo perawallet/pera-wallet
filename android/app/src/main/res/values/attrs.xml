@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -14,6 +14,7 @@
     <attr name="showOperator" format="boolean" />
     <attr name="algoLogoViewSize" format="dimension" />
     <attr name="defaultTintColor" format="color" />
+    <attr name="useMicroAlgos" format="boolean" />
 
     <declare-styleable name="PadView">
         <attr name="number" format="integer" />
@@ -35,7 +36,7 @@
 
     <declare-styleable name="AmountTextView">
         <attr name="showOperator" />
-        <attr name="useMicroAlgos" format="boolean" />
+        <attr name="useMicroAlgos" />
         <attr name="algoTextViewSize" format="dimension" />
         <attr name="algoLogoViewSize" />
         <attr name="defaultTintColor" />
@@ -97,6 +98,64 @@
         <attr name="otherAssetTextViewSize" format="dimension" />
         <attr name="otherAssetFontFamily" format="reference" />
         <attr name="iconTint" />
+    </declare-styleable>
+
+    <declare-styleable name="WarningTextView">
+        <attr name="warningText" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="CustomInputLayout">
+        <attr name="endIcon" format="reference" />
+        <attr name="hint" format="string" />
+        <attr name="text" format="string" />
+        <attr name="error" format="string" />
+        <attr name="helper" format="string" />
+        <attr name="singleLine" format="boolean" />
+        <attr name="maxCharacter" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="AlgorandAssetAvatarView">
+        <attr name="assetName" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="ScreenStateView">
+        <attr name="iconRes" format="reference" />
+        <attr name="titleRes" format="reference" />
+        <attr name="descriptionRes" format="reference" />
+        <attr name="buttonTextRes" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="CustomAmountView">
+        <attr name="showOperator" />
+        <attr name="useMicroAlgos" />
+    </declare-styleable>
+
+    <declare-styleable name="AlgorandTabLayout">
+        <attr name="leftTabText" format="reference" />
+        <attr name="rightTabText" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="DialPadView">
+        <attr name="buttonVerticalMargin" format="dimension" />
+        <attr name="buttonHorizontalMargin" format="dimension" />
+        <attr name="padButtonSize" format="dimension" />
+        <attr name="showDotButton" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="AlgorandSearchBarView">
+        <attr name="startIconTintColor" format="color" />
+        <attr name="endIconTintColor" format="color" />
+        <attr name="android:hint" format="reference"/>
+        <attr name="customButtonIconRes" format="reference" />
+        <attr name="customButtonIconColor" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="CompactChartView">
+        <attr name="showTimeFrame" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="ViewPortHeightRecyclerView">
+        <attr name="heightOffset" format="dimension" />
     </declare-styleable>
 
 </resources>

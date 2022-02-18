@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~  limitations under the License
+  ~
+  -->
+
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <Transition
+        android:id="@+id/transactionRequestMotionScene"
+        app:constraintSetEnd="@id/end"
+        app:constraintSetStart="@id/start">
+
+        <OnSwipe
+            app:dragDirection="dragUp"
+            app:moveWhenScrollAtTop="true"
+            app:onTouchUp="autoComplete"
+            app:touchAnchorId="@id/walletConnectNavigationHostFragment"
+            app:touchAnchorSide="top" />
+
+    </Transition>
+
+    <ConstraintSet android:id="@+id/start">
+
+        <Constraint android:id="@id/walletConnectNavigationHostFragment">
+
+            <Layout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent=".8"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </Constraint>
+
+        <Constraint
+            android:id="@id/confirmButton"
+            app:visibilityMode="ignore">
+
+            <Layout
+                style="@style/Button.Primary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_xlarge"
+                android:layout_marginBottom="@dimen/bottom_safe_area_margin"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toEndOf="@id/declineButton"
+                app:layout_constraintWidth_percent=".49"
+                app:layout_goneMarginBottom="@dimen/bottom_safe_area_margin"
+                tools:text="Confirm" />
+
+        </Constraint>
+
+        <Constraint
+            android:id="@id/declineButton"
+            app:visibilityMode="ignore">
+
+            <Layout
+                style="@style/Button.Secondary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_xlarge"
+                android:layout_marginBottom="@dimen/bottom_safe_area_margin"
+                android:text="@string/cancel"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/confirmButton"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintWidth_percent=".33" />
+
+        </Constraint>
+
+        <Constraint
+            android:id="@id/progressBar"
+            app:visibilityMode="ignore">
+
+            <Layout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </Constraint>
+
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+
+        <Constraint android:id="@id/walletConnectNavigationHostFragment">
+
+            <Layout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </Constraint>
+
+        <Constraint
+            android:id="@id/confirmButton"
+            app:visibilityMode="ignore">
+
+            <Layout
+                style="@style/Button.Primary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_xlarge"
+                android:layout_marginBottom="@dimen/bottom_safe_area_margin"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toEndOf="@id/declineButton"
+                app:layout_constraintWidth_percent=".49"
+                app:layout_goneMarginBottom="@dimen/bottom_safe_area_margin"
+                tools:text="Confirm" />
+
+        </Constraint>
+
+        <Constraint
+            android:id="@id/declineButton"
+            app:visibilityMode="ignore">
+
+            <Layout
+                style="@style/Button.Secondary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_xlarge"
+                android:layout_marginBottom="@dimen/bottom_safe_area_margin"
+                android:text="@string/cancel"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/confirmButton"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintWidth_percent=".33" />
+
+        </Constraint>
+
+        <Constraint
+            android:id="@id/progressBar"
+            app:visibilityMode="ignore">
+
+            <Layout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </Constraint>
+
+    </ConstraintSet>
+
+</MotionScene>

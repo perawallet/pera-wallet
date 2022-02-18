@@ -1,0 +1,23 @@
+<!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="@color/transparent"
+        android:pathData="M21,12.79C20.8427,14.4922 20.2039,16.1144 19.1582,17.4668C18.1126,18.8192 16.7035,19.8458 15.0957,20.4265C13.4879,21.0073 11.748,21.1181 10.0795,20.7461C8.411,20.3741 6.883,19.5345 5.6742,18.3258C4.4654,17.117 3.6259,15.589 3.2539,13.9205C2.8819,12.252 2.9927,10.5121 3.5735,8.9043C4.1542,7.2965 5.1808,5.8874 6.5332,4.8418C7.8856,3.7961 9.5078,3.1573 11.21,3C10.2134,4.3483 9.7338,6.0094 9.8585,7.6814C9.9832,9.3534 10.7039,10.9251 11.8894,12.1106C13.0749,13.2961 14.6466,14.0168 16.3186,14.1415C17.9905,14.2662 19.6517,13.7866 21,12.79Z"
+        android:strokeWidth="2"
+        android:strokeColor="@color/primaryIconTintColor" />
+</vector>

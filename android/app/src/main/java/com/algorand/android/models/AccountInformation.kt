@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -13,36 +13,45 @@
 package com.algorand.android.models
 
 import android.os.Parcelable
+import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
 import com.algorand.android.models.Participation.Companion.DEFAULT_PARTICIPATION_KEY
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.calculateMinBalance
-import com.google.gson.annotations.SerializedName
 import java.math.BigInteger
 import java.math.BigInteger.ZERO
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class AccountInformation(
-    @SerializedName("address") val address: String,
-    @SerializedName("amount") val amount: BigInteger,
-    @SerializedName("rewards") val rewards: Long,
-    @SerializedName("pending-rewards") val pendingRewards: Long,
-    @SerializedName("participation") val participation: Participation?,
-    @SerializedName("auth-addr") val rekeyAdminAddress: String?,
-    @SerializedName("assets") private val allAssetHoldingList: List<AssetHolding>?,
-    @SerializedName("created-at-round") val createdAtRound: Long?,
-    @SerializedName("amount-without-pending-rewards") val amountWithoutPendingRewards: BigInteger,
-    @SerializedName("created-apps") val createdApps: List<CreatedApps>? = null,
-    @SerializedName("apps-local-state") val appsLocalState: List<CreatedAppLocalState>? = null,
-    @SerializedName("apps-total-schema") val appsTotalSchema: CreatedAppStateScheme? = null,
-    @SerializedName("apps-total-extra-pages") val appsTotalExtraPages: Int? = null
+    val address: String,
+    val amount: BigInteger,
+    val rewards: Long,
+    val pendingRewards: Long,
+    val participation: Participation?,
+    val rekeyAdminAddress: String?,
+    private val allAssetHoldingList: MutableSet<AssetHolding>?,
+    val createdAtRound: Long?,
+    val amountWithoutPendingRewards: BigInteger,
+    val createdApps: List<CreatedApps>? = null,
+    val appsLocalState: List<CreatedAppLocalState>? = null,
+    val appsTotalSchema: CreatedAppStateScheme? = null,
+    val appsTotalExtraPages: Int? = null
 ) : Parcelable {
 
-    private val assetHoldingList: List<AssetHolding>
+    val assetHoldingList: List<AssetHolding>
         get() = allAssetHoldingList?.filterNot { it.isDeleted } ?: listOf()
 
     fun isCreated(): Boolean {
         return createdAtRound != null
+    }
+
+    fun setAssetHoldingStatus(assetId: Long, status: AssetStatus) {
+        allAssetHoldingList?.firstOrNull { it.assetId == assetId }?.status = status
+    }
+
+    fun addPendingAssetHolding(assetHolding: AssetHolding) {
+        if (!AssetStatus.isPending(assetHolding.status)) return
+        allAssetHoldingList?.add(assetHolding)
     }
 
     fun isRekeyed(): Boolean {
@@ -69,6 +78,10 @@ data class AccountInformation(
 
     fun getAllAssetIds(): List<Long> {
         return assetHoldingList.map { it.assetId }
+    }
+
+    fun getAllAssetIdsIncludeAlgorand(): List<Long> {
+        return assetHoldingList.map { it.assetId }.toMutableList().apply { add(0, ALGORAND_ID) }
     }
 
     fun getOptedInAssetsCount() = allAssetHoldingList?.size ?: 0
@@ -98,10 +111,4 @@ data class AccountInformation(
     fun isThereAnyDifferentAsset() = assetHoldingList.isNotEmpty()
 
     fun isThereAnOptedInApp() = appsLocalState?.isNotEmpty() == true || createdApps?.isNotEmpty() == true
-
-    companion object {
-        fun emptyAccountInformation(accountPublicKey: String): AccountInformation {
-            return AccountInformation(accountPublicKey, ZERO, 0, 0, Participation(), null, listOf(), null, ZERO)
-        }
-    }
 }

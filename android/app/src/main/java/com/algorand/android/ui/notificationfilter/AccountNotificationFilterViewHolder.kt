@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -24,10 +24,12 @@ class AccountNotificationFilterViewHolder(
 
     fun bind(accountNotificationOption: AccountNotificationOption) {
         with(accountNotificationOption) {
-            binding.nameTextView.text = accountName
-            binding.typeImageView.setImageResource(accountImageRes)
-            binding.filterSwitch.setOnCheckedChangeListener(null)
-            binding.filterSwitch.isChecked = isFiltered.not()
+            with(binding) {
+                nameTextView.text = accountName
+                typeImageView.setAccountIcon(accountIcon)
+                filterSwitch.setOnCheckedChangeListener(null)
+                filterSwitch.isChecked = isFiltered.not()
+            }
             enableSwitchCheckedChangeListener(this)
         }
     }

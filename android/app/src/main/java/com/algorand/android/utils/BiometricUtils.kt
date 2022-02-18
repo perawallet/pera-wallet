@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -17,8 +17,10 @@ import androidx.biometric.BiometricConstants.ERROR_CANCELED
 import androidx.biometric.BiometricConstants.ERROR_HW_NOT_PRESENT
 import androidx.biometric.BiometricConstants.ERROR_HW_UNAVAILABLE
 import androidx.biometric.BiometricConstants.ERROR_LOCKOUT_PERMANENT
+import androidx.biometric.BiometricConstants.ERROR_NEGATIVE_BUTTON
 import androidx.biometric.BiometricConstants.ERROR_NO_BIOMETRICS
 import androidx.biometric.BiometricConstants.ERROR_UNABLE_TO_PROCESS
+import androidx.biometric.BiometricConstants.ERROR_USER_CANCELED
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.BIOMETRIC_SUCCESS
 import androidx.biometric.BiometricPrompt
@@ -59,7 +61,9 @@ fun FragmentActivity.showBiometricAuthentication(
                 errorCode == ERROR_LOCKOUT_PERMANENT ||
                 errorCode == ERROR_CANCELED ||
                 errorCode == ERROR_UNABLE_TO_PROCESS ||
-                errorCode == ERROR_NO_BIOMETRICS
+                errorCode == ERROR_NO_BIOMETRICS ||
+                errorCode == ERROR_NEGATIVE_BUTTON ||
+                errorCode == ERROR_USER_CANCELED
             ) {
                 hardwareErrorCallback?.invoke()
             }
@@ -85,8 +89,7 @@ fun FragmentActivity.showBiometricAuthentication(
     }
 
     try {
-        BiometricPrompt(this, biometricExecutor, biometricAuthenticationCallback)
-            .authenticate(biometricPromptInfo)
+        BiometricPrompt(this, biometricExecutor, biometricAuthenticationCallback).authenticate(biometricPromptInfo)
     } catch (exception: Exception) {
         FirebaseCrashlytics.getInstance().recordException(exception)
         exception.printStackTrace()

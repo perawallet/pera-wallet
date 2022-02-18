@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -22,7 +22,8 @@ import kotlinx.coroutines.withContext
 
 class AssetSearchDataSource(
     private val assetRepository: AssetRepository,
-    private val currentQuery: Pair<String, AssetQueryType>
+    private val currentQuery: Pair<String, AssetQueryType>,
+    private val onAssetsLoaded: suspend (List<AssetQueryItem>) -> Unit
 ) : PagingSource<String, AssetQueryItem>() {
 
     override suspend fun load(params: LoadParams<String>): LoadResult<String, AssetQueryItem> {
@@ -37,6 +38,7 @@ class AssetSearchDataSource(
                 }
                 when (response) {
                     is Result.Success -> {
+                        onAssetsLoaded(response.data.results)
                         LoadResult.Page(data = response.data.results, prevKey = null, nextKey = response.data.next)
                     }
                     is Result.Error -> {

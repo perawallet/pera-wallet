@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -15,18 +15,23 @@ package com.algorand.android.ui.common.walletconnect
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
+import androidx.core.view.setPadding
 import com.algorand.android.R
 import com.algorand.android.databinding.CustomWalletConnectTransactionSummaryViewBinding
-import com.algorand.android.models.BaseAppCallTransaction
-import com.algorand.android.models.BaseAssetConfigurationTransaction
-import com.algorand.android.models.BaseAssetTransferTransaction
-import com.algorand.android.models.BasePaymentTransaction
+import com.algorand.android.models.AccountIcon
+import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.BaseWalletConnectTransaction
-import com.algorand.android.utils.toShortenedAddress
+import com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionListItem
+import com.algorand.android.utils.ALGO_DECIMALS
+import com.algorand.android.utils.extensions.changeTextAppearance
+import com.algorand.android.utils.extensions.setTextAndVisibility
+import com.algorand.android.utils.extensions.show
+import com.algorand.android.utils.formatAmount
+import com.algorand.android.utils.getXmlStyledString
 import com.algorand.android.utils.viewbinding.viewBinding
+import java.math.BigInteger
 
 class WalletConnectTransactionSummaryCardView(
     context: Context,
@@ -39,114 +44,110 @@ class WalletConnectTransactionSummaryCardView(
         initRootLayout()
     }
 
-    fun initTransaction(transaction: BaseWalletConnectTransaction) {
-        binding.root.visibility = View.VISIBLE
-        setTitle(transaction)
-        binding.transactionInfoImageView.isVisible = transaction.shouldShowWarningIndicator
-        if (transaction is BaseAssetConfigurationTransaction) {
-            // TODO: 28.09.2021  
-            setAssetConfigurationTransaction(transaction)
-        } else {
-            setAmount(transaction)
-            setAccountBalance(transaction)
-        }
-    }
-
-    private fun setTitle(transaction: BaseWalletConnectTransaction) {
-        with(transaction) {
-            binding.transactionAccountTextView.text = resources.getString(summaryTitleResId, summarySecondaryParameter)
-        }
-    }
-
-    private fun setAmount(transaction: BaseWalletConnectTransaction) {
-        val amount = transaction.transactionAmount ?: run {
-            binding.transactionsAmountTextView.visibility = View.GONE
-            binding.dotImageView.visibility = View.GONE
-            return
-        }
-        val isAlgoTransaction = transaction is BasePaymentTransaction
-        val otherAssetName = (transaction as? BaseAssetTransferTransaction)?.assetParams?.shortName
-        binding.transactionsAmountTextView.setAmount(
-            amount,
-            transaction.assetDecimal,
-            isAlgoTransaction,
-            otherAssetName
-        )
-    }
-
-    private fun setAccountBalance(transaction: BaseWalletConnectTransaction) {
-        if (transaction.account == null || transaction is BaseAppCallTransaction) return
-        with(binding) {
-            with(transaction) {
-                val accountName = account?.name.takeIf { it?.isNotBlank() == true }
-                    ?: account?.address.toShortenedAddress()
-                transactionAccountNameTextView.text = accountName
-                transactionAccountTypeImageView.setImageResource(getAccountImageResource())
-                assetInformation?.run {
-                    accountBalanceTextView.setAmount(amount, assetDecimal, isAlgorand, shortName)
-                } ?: run {
-                    if (transaction is BaseAssetTransferTransaction) {
-                        accountBalanceTextView.setAssetName(transaction.assetParams?.shortName.orEmpty(), false)
-                    }
-                }
-            }
-            accountSummaryContainer.visibility = View.VISIBLE
-        }
-    }
-
-    private fun setAssetConfigurationTransaction(transaction: BaseAssetConfigurationTransaction) {
-        with(binding) {
-            with(transaction) {
-                when (this) {
-                    is BaseAssetConfigurationTransaction.BaseAssetCreationTransaction -> {
-                        account?.let {
-                            val accountName = it.name.takeIf { it?.isNotBlank() == true }
-                                ?: it.address.toShortenedAddress()
-                            transactionAccountNameTextView.text = accountName
-                            transactionAccountTypeImageView.setImageResource(getAccountImageResource())
-                            transactionsAmountTextView.setAssetName(getAssetName(context))
-                            accountSummaryContainer.visibility = View.VISIBLE
-                            dotImageView.visibility = View.GONE
-                        } ?: run {
-                            transactionsAmountTextView.setAmount(
-                                amount = totalAmount,
-                                decimal = decimals?.toInt() ?: 0,
-                                isAlgorand = false,
-                                otherAssetName = getUnitName(context)
-                            )
-                        }
-                    }
-                    is BaseAssetConfigurationTransaction.BaseAssetDeletionTransaction -> {
-                        account?.let {
-                            val accountName = it.name.takeIf { it?.isNotBlank() == true }
-                                ?: it.address.toShortenedAddress()
-                            transactionAccountNameTextView.text = accountName
-                            transactionAccountTypeImageView.setImageResource(getAccountImageResource())
-                            accountSummaryContainer.visibility = View.VISIBLE
-                            dotImageView.visibility = View.GONE
-                        }
-                        val formattedAssetId = resources.getString(R.string.asset_id_with_hash_tag, assetId)
-                        transactionsAmountTextView.setAssetName(formattedAssetId)
-                    }
-                    is BaseAssetConfigurationTransaction.BaseAssetReconfigurationTransaction -> {
-                        account?.let {
-                            val accountName = it.name.takeIf { it?.isNotBlank() == true }
-                                ?: it.address.toShortenedAddress()
-                            transactionAccountNameTextView.text = accountName
-                            transactionAccountTypeImageView.setImageResource(getAccountImageResource())
-                            accountSummaryContainer.visibility = View.VISIBLE
-                            dotImageView.visibility = View.GONE
-                        }
-                        val assetName = assetInformation?.fullName.takeIf { !it.isNullOrBlank() }
-                            ?: assetParams?.fullName ?: return
-                        transactionsAmountTextView.setAssetName(assetName)
-                    }
-                }
+    fun initTransaction(
+        singleTransaction: WalletConnectTransactionListItem.SingleTransactionItem,
+        listener: OnShowDetailClickListener
+    ) {
+        with(singleTransaction.transactionSummary) {
+            setAccountInformationText(
+                accountName,
+                accountBalance,
+                assetDecimal,
+                assetShortName,
+                accountIcon
+            )
+            setTitleText(transactionAmount, assetDecimal, assetShortName, summaryTitle)
+            setCurrencyText(formattedSelectedCurrencyValue)
+            setWarningInfo(showWarning)
+            with(binding.showTransactionDetailButton) {
+                setText(showMoreButtonText)
+                setOnClickListener { listener.onShowDetailClick(singleTransaction.transaction) }
             }
         }
+    }
+
+    private fun setWarningInfo(showWarning: Boolean) {
+        binding.warningImageView.isVisible = showWarning
+    }
+
+    fun setTitleText(
+        transactionAmount: BigInteger?,
+        assetDecimal: Int?,
+        shortName: String?,
+        summaryTitle: AnnotatedString?
+    ) {
+        when {
+            transactionAmount != null -> setTransactionAmountGroup(transactionAmount, assetDecimal, shortName)
+            summaryTitle != null -> setSummaryTitleGroup(summaryTitle)
+        }
+    }
+
+    private fun setTransactionAmountGroup(
+        transactionAmount: BigInteger,
+        assetDecimal: Int?,
+        shortName: String?
+    ) {
+        with(binding.transactionsAmountTextView) {
+            val formattedBalance = transactionAmount.formatAmount(assetDecimal ?: ALGO_DECIMALS)
+            text = context?.getXmlStyledString(
+                stringResId = R.string.amount_with_asset_short_name,
+                replacementList = listOf(
+                    "amount" to formattedBalance,
+                    "asset_short_name" to shortName.orEmpty()
+                )
+            )
+            changeTextAppearance(R.style.TextAppearance_Body_Large_Mono)
+        }
+    }
+
+    private fun setSummaryTitleGroup(summaryTitle: AnnotatedString) {
+        with(binding.transactionsAmountTextView) {
+            text = context?.getXmlStyledString(summaryTitle)
+            changeTextAppearance(R.style.TextAppearance_Body_Large_Sans)
+        }
+    }
+
+    private fun setAccountInformationText(
+        accountName: String?,
+        accountBalance: BigInteger?,
+        assetDecimal: Int?,
+        shortName: String?,
+        accountIcon: AccountIcon?
+    ) {
+        with(binding) {
+            if (accountIcon != null) {
+                transactionAccountTypeImageView.apply {
+                    setAccountIcon(accountIcon, R.dimen.spacing_xxsmall)
+                    show()
+                }
+            }
+            transactionAccountNameTextView.setTextAndVisibility(accountName)
+            if (accountBalance != null) {
+                val formattedBalance = accountBalance.formatAmount(assetDecimal ?: ALGO_DECIMALS)
+                accountBalanceTextView.setTextAndVisibility(
+                    context?.getXmlStyledString(
+                        stringResId = R.string.amount_with_asset_short_name,
+                        replacementList = listOf(
+                            "amount" to formattedBalance,
+                            "asset_short_name" to shortName.orEmpty()
+                        )
+                    ).toString()
+                )
+                dotImageView.show()
+            }
+        }
+    }
+
+    private fun setCurrencyText(formattedSelectedCurrencyValue: String?) {
+        binding.transactionAmountCurrencyValue.setTextAndVisibility(formattedSelectedCurrencyValue)
     }
 
     private fun initRootLayout() {
-        setBackgroundResource(R.drawable.bg_small_shadow)
+        setBackgroundResource(R.drawable.bg_passphrase_group_background)
+        setPadding(resources.getDimensionPixelSize(R.dimen.spacing_large))
+    }
+
+    fun interface OnShowDetailClickListener {
+        fun onShowDetailClick(transaction: BaseWalletConnectTransaction)
     }
 }

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/modalityLineView"
+        style="@style/BottomSheetModalityLine"
+        android:layout_marginTop="@dimen/spacing_small"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/likeButton"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="48dp"
+        android:background="@drawable/bg_layer_gray_lighter_oval"
+        android:src="@drawable/ic_like"
+        app:layout_constraintEnd_toStartOf="@id/dislikeButton"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/modalityLineView" />
+
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/dislikeButton"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_marginTop="52dp"
+        android:background="@drawable/bg_layer_gray_lighter_oval"
+        android:src="@drawable/ic_disslike"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/likeButton"
+        app:layout_constraintTop_toTopOf="@id/modalityLineView" />
+
+    <TextView
+        android:id="@+id/titleTextView"
+        style="@style/TextAppearance.Body.Large.Sans.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_xxxlarge"
+        android:text="@string/rate_your_experience"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/likeButton" />
+
+    <TextView
+        android:id="@+id/descriptionTextView"
+        style="@style/TextAppearance.Description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:layout_marginBottom="@dimen/bottom_safe_area_margin"
+        android:gravity="center"
+        android:text="@string/tell_us_how_was_your_experience"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleTextView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

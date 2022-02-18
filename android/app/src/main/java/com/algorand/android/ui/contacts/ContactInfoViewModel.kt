@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,30 +12,58 @@
 
 package com.algorand.android.ui.contacts
 
+import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.algorand.android.core.BaseViewModel
+import com.algorand.android.models.Account
+import com.algorand.android.models.AccountCacheData
 import com.algorand.android.models.AccountInformation
+import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.Result
-import com.algorand.android.repository.AccountRepository
-import kotlinx.coroutines.Dispatchers
+import com.algorand.android.models.User
+import com.algorand.android.usecase.AccountInformationUseCase
+import com.algorand.android.utils.AccountCacheManager
+import com.algorand.android.utils.Resource
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class ContactInfoViewModel @ViewModelInject constructor(
-    private val accountRepository: AccountRepository
-) : BaseViewModel() {
+    private val accountInformationUseCase: AccountInformationUseCase,
+    private val accountCacheManager: AccountCacheManager,
+    @Assisted private val savedStateHandle: SavedStateHandle
+) : ViewModel() {
 
-    val accountInformationLiveData = MutableLiveData<AccountInformation>()
+    private val contactInfo = savedStateHandle.get<User>(CONTACT_KEY)
 
-    fun getAccountInformation(publicKey: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = accountRepository.getOtherAccountInformation(publicKey)
-            when (result) {
-                is Result.Success -> {
-                    accountInformationLiveData.postValue(result.data)
-                }
+    private val _accountInformationFlow = MutableStateFlow<Resource<AccountInformation>?>(null)
+    val accountInformationFlow: StateFlow<Resource<AccountInformation>?> get() = _accountInformationFlow
+
+    init {
+        getAccountInformation()
+    }
+
+    private fun getAccountInformation() {
+        viewModelScope.launch {
+            val contactPublicKey = contactInfo?.publicKey ?: return@launch
+            when (val result = accountInformationUseCase.getAccountInformationAndFetchAssets(contactPublicKey)) {
+                is Result.Success -> _accountInformationFlow.emit(Resource.Success(result.data))
+                is Result.Error -> _accountInformationFlow.emit(result.getAsResourceError())
             }
         }
+    }
+
+    fun filterCachedAccountByAssetId(assetId: Long): List<Pair<AccountCacheData, AssetInformation>> {
+        return accountCacheManager.getAccountCacheWithSpecificAsset(assetId, listOf(Account.Type.WATCH))
+    }
+
+    fun getAccountAssets(accountInformation: AccountInformation): List<AssetInformation> {
+        return accountInformation.getAssetInformationList(accountCacheManager)
+    }
+
+    companion object {
+        private const val CONTACT_KEY = "contact"
     }
 }

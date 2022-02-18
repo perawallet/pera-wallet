@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,14 +12,13 @@
 
 package com.algorand.android.utils
 
-import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseBottomSheet
-import com.algorand.android.databinding.FragmentShowQrBinding
+import com.algorand.android.databinding.BottomSheetShowQrBinding
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.utils.analytics.logTapShowQrCopy
 import com.algorand.android.utils.analytics.logTapShowQrShare
@@ -30,76 +29,56 @@ import java.io.File
 
 @AndroidEntryPoint
 class ShowQrBottomSheet : DaggerBaseBottomSheet(
-    R.layout.fragment_show_qr,
+    R.layout.bottom_sheet_show_qr,
     fullPageNeeded = true,
     firebaseEventScreenId = FIREBASE_EVENT_SCREEN_ID
 ) {
 
-    private var qrCodeBitmap: Bitmap? = null
-    private var qrCodeFile: File? = null
-    private var address: String? = null
+    private val toolbarConfiguration = ToolbarConfiguration(
+        startIconResId = R.drawable.ic_close,
+        startIconClick = ::navBack
+    )
 
-    private val binding by viewBinding(FragmentShowQrBinding::bind)
+    private var qrCodeFile: File? = null
+
+    private val qrCodeBitmap by lazy {
+        getQrCodeBitmap(resources.getDimensionPixelSize(R.dimen.show_qr_size), args.qrText)
+    }
+
+    private val binding by viewBinding(BottomSheetShowQrBinding::bind)
 
     private val args: ShowQrBottomSheetArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val toolbarConfiguration = ToolbarConfiguration(
-            startIconResId = R.drawable.ic_close,
-            startIconClick = ::dismissAllowingStateLoss
-        )
-        binding.toolbar.configure(toolbarConfiguration)
-
-        when (args.state) {
-            State.MNEMONIC_QR -> {
-                qrCodeBitmap = getQrCodeBitmap(resources, getMnemonicQrContent(args.qrText))
-                binding.toolbar.changeTitle(getString(R.string.passphrase_qr))
-            }
-            State.ADDRESS_QR -> {
-                address = args.qrText
-                binding.copiedTextView.text = args.qrText
-                binding.copyButton.setOnClickListener { onCopyClick() }
-                binding.copiedTextView.setOnClickListener { onCopyClick() }
-                binding.addressCardView.visibility = View.VISIBLE
-                qrCodeBitmap = getQrCodeBitmap(resources, args.qrText)
-                binding.toolbar.changeTitle(args.title.orEmpty())
-            }
+        with(binding) {
+            toolbar.configure(toolbarConfiguration)
+            toolbar.changeTitle(args.title)
+            accountAddressLabelTextView.text = args.qrText.toShortenedAddress()
+            accountAddressTextView.text = args.qrText
+            accountAddressTextView.enableClickToCopy()
+            qrImageView.setImageBitmap(qrCodeBitmap)
+            copyButton.setOnClickListener { onCopyClick() }
+            shareButton.setOnClickListener { onShareButtonClick() }
         }
-        binding.qrImageView.setImageBitmap(qrCodeBitmap)
-
-        binding.shareButton.setOnClickListener { onShareButtonClick() }
     }
 
     private fun onCopyClick() {
-        address?.let {
-            firebaseAnalytics.logTapShowQrCopy(it)
-        }
-        context?.copyToClipboard(binding.copiedTextView.text, ADDRESS_COPY_LABEL)
+        firebaseAnalytics.logTapShowQrCopy(args.qrText)
+        context?.copyToClipboard(args.qrText, ADDRESS_COPY_LABEL)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == IMAGE_SHARE_REQUEST) {
+    private val sharingActivityResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             qrCodeFile?.delete()
-            address?.let {
-                firebaseAnalytics.logTapShowQrShareComplete(it)
-            }
+            firebaseAnalytics.logTapShowQrShareComplete(args.qrText)
         }
-    }
 
     private fun onShareButtonClick() {
-        address?.let {
-            firebaseAnalytics.logTapShowQrShare(it)
+        firebaseAnalytics.logTapShowQrShare(args.qrText)
+        qrCodeBitmap?.let { bitmap ->
+            qrCodeFile = openImageShareBottomMenu(bitmap, sharingActivityResultLauncher)
         }
-        qrCodeBitmap?.let {
-            qrCodeFile = openImageShareBottomMenu(it)
-        }
-    }
-
-    enum class State {
-        MNEMONIC_QR,
-        ADDRESS_QR
     }
 
     companion object {

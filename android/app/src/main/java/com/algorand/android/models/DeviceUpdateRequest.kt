@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -13,10 +13,12 @@
 package com.algorand.android.models
 
 import com.google.gson.annotations.SerializedName
+import java.util.Locale
 
 data class DeviceUpdateRequest(
     @SerializedName("id") val id: String? = null,
     @SerializedName("push_token") val pushToken: String,
     @SerializedName("accounts") val accountPublicKeys: List<String>,
-    @SerializedName("platform") val platform: String = "android"
+    @SerializedName("platform") val platform: String = "android",
+    @SerializedName("locale") val locale: String = Locale.getDefault().language ?: Locale.ENGLISH.language
 )

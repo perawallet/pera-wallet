@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -27,7 +27,10 @@ class PassphraseInputGroup @JvmOverloads constructor(
     attrs: AttributeSet? = null
 ) : FlexboxLayout(context, attrs) {
 
+    private val horizontalMargins = 2 * context.resources.getDimensionPixelOffset(R.dimen.spacing_xlarge)
+
     private val passphraseInputArray = Array(WORD_COUNT) { index -> createPassphraseInput(index) }
+
     var listener: Listener? = null
 
     init {
@@ -86,7 +89,7 @@ class PassphraseInputGroup @JvmOverloads constructor(
     private fun createPassphraseInput(index: Int): PassphraseInput {
         return PassphraseInput.create(context, index, createPassphraseInputListener()).apply {
             layoutParams = LayoutParams(
-                resources.displayMetrics.widthPixels / 2,
+                (resources.displayMetrics.widthPixels - horizontalMargins) / 2,
                 LayoutParams.WRAP_CONTENT
             )
         }
@@ -112,7 +115,7 @@ class PassphraseInputGroup @JvmOverloads constructor(
         val mnemonicStringBuilder = StringBuilder()
         passphraseInputArray.forEachIndexed { index, passphraseInput ->
             if (!passphraseInput.isValidated()) {
-                val errorString = AnnotatedString(R.string.your_passphrase_is_invalid_please)
+                val errorString = AnnotatedString(R.string.account_not_found)
                 val mnemonic = mnemonicStringBuilder.toString().trim()
                 return MnemonicResponse.Error(mnemonic, errorString)
             }

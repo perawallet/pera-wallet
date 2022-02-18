@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -14,112 +14,58 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:background="@drawable/bg_small_shadow"
     tools:layout_height="wrap_content"
     tools:layout_width="match_parent"
-    tools:padding="20dp"
+    tools:padding="@dimen/spacing_large"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
-    <TextView
-        android:id="@+id/toLabelTextView"
-        style="@style/TextAppearance.Label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/to"
-        app:layout_constraintBottom_toBottomOf="@id/toAccountNameTextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/toAccountNameTextView" />
-
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/toAccountNameTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="10dp"
-        android:fontFamily="@font/publicsans_medium"
-        android:gravity="end"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@id/amountDividerView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/labelBarrier"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_goneMarginBottom="@dimen/smallshadow_bottom_margin_20dp"
-        tools:text="@tools:sample/lorem[4]" />
-
-    <View
-        android:id="@+id/amountDividerView"
-        style="@style/HorizontalDivider.WalletConnectCards"
-        app:layout_constraintBottom_toTopOf="@id/reminderCloseToTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toAccountNameTextView"
-        app:layout_goneMarginTop="0dp" />
-
-
-    <TextView
         android:id="@+id/amountLabelTextView"
-        style="@style/TextAppearance.Label"
-        android:layout_width="wrap_content"
+        style="@style/TextView.TransactionLabelStyle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/amount"
-        app:layout_constraintBottom_toBottomOf="@id/amountTextView"
+        app:layout_constraintBottom_toTopOf="@id/feeLabelView"
+        app:layout_constraintEnd_toEndOf="@id/labelGuideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/amountTextView" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <com.algorand.android.customviews.AmountTextView
+    <TextView
         android:id="@+id/amountTextView"
+        style="@style/TextAppearance.Body.Mono"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
-        app:algoFontFamily="@font/publicsans_medium"
-        app:algoLogoViewSize="10dp"
-        app:algoTextViewSize="14sp"
-        app:iconTint="@color/walletConnectFeeAlgoIconColor"
-        app:layout_constraintBottom_toTopOf="@id/feeDividerView"
+        android:layout_marginStart="@dimen/spacing_normal"
+        app:layout_constraintBottom_toBottomOf="@id/amountLabelTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/amountLabelTextView"
-        app:layout_constraintTop_toBottomOf="@id/amountDividerView"
-        app:showOperator="true"
-        app:useMicroAlgos="false"
-        tools:algoFontFamily="@null" />
+        app:layout_constraintStart_toEndOf="@id/labelGuideline"
+        app:layout_constraintTop_toTopOf="@id/amountLabelTextView"
+        tools:text="@tools:sample/lorem" />
 
-    <View
-        android:id="@+id/feeDividerView"
-        style="@style/HorizontalDivider.WalletConnectCards"
-        app:layout_constraintBottom_toTopOf="@id/feeTextView"
-        app:layout_constraintEnd_toEndOf="parent"
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/feeLabelView"
+        style="@style/TextView.TransactionLabelStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:text="@string/fee"
+        app:layout_constraintBottom_toTopOf="@id/feeWarningTextView"
+        app:layout_constraintEnd_toEndOf="@id/labelGuideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/amountTextView"
+        app:layout_constraintTop_toBottomOf="@id/amountLabelTextView"
         app:layout_goneMarginTop="0dp" />
 
     <TextView
-        android:id="@+id/feeLabelTextView"
-        style="@style/TextAppearance.Label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/fee"
-        app:layout_constraintBottom_toBottomOf="@id/feeTextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/feeTextView" />
-
-    <com.algorand.android.customviews.AmountTextView
         android:id="@+id/feeTextView"
+        style="@style/TextAppearance.Body.Mono"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
-        app:algoFontFamily="@font/publicsans_medium"
-        app:algoLogoViewSize="10dp"
-        app:algoTextViewSize="14sp"
-        app:iconTint="@color/walletConnectFeeAlgoIconColor"
-        app:layout_constraintBottom_toTopOf="@id/feeWarningTextView"
+        android:layout_marginStart="@dimen/spacing_normal"
+        app:layout_constraintBottom_toBottomOf="@id/feeLabelView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/labelBarrier"
-        app:layout_constraintTop_toBottomOf="@id/feeDividerView"
-        app:layout_goneMarginTop="0dp"
-        app:showOperator="false"
-        tools:algoFontFamily="@null" />
+        app:layout_constraintStart_toEndOf="@id/labelGuideline"
+        app:layout_constraintTop_toTopOf="@id/feeLabelView"
+        tools:text="@tools:sample/lorem" />
 
     <TextView
         android:id="@+id/feeWarningTextView"
@@ -128,10 +74,225 @@
         android:layout_height="wrap_content"
         android:text="@string/this_transaction_fee_is_higher"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/decimalPlacesLabelTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/feeTextView"
+        app:layout_constraintTop_toBottomOf="@id/feeLabelView"
+        tools:visibility="visible" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/decimalPlacesLabelTextView"
+        style="@style/TextView.TransactionLabelStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:text="@string/decimal_places"
+        app:layout_constraintBottom_toTopOf="@id/defaultFrozenLabelTextView"
+        app:layout_constraintEnd_toEndOf="@id/labelGuideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/feeWarningTextView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/decimalPlacesTextView"
+        style="@style/TextAppearance.Body.Mono"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_normal"
+        app:layout_constraintBottom_toBottomOf="@id/decimalPlacesLabelTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/labelGuideline"
+        app:layout_constraintTop_toTopOf="@id/decimalPlacesLabelTextView"
+        tools:text="@tools:sample/lorem[4]" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/defaultFrozenLabelTextView"
+        style="@style/TextView.TransactionLabelStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:text="@string/default_frozen"
+        app:layout_constraintBottom_toTopOf="@id/managerAccountNameTextView"
+        app:layout_constraintEnd_toEndOf="@id/labelGuideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/decimalPlacesLabelTextView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/defaultFrozenTextView"
+        style="@style/TextAppearance.Body.Sans"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_normal"
+        app:layout_constraintBottom_toBottomOf="@id/defaultFrozenLabelTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/labelGuideline"
+        app:layout_constraintTop_toTopOf="@id/defaultFrozenLabelTextView"
+        tools:text="@tools:sample/lorem[4]" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/managerAccountLabelTextView"
+        style="@style/TextView.TransactionLabelStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/manager_account"
+        app:layout_constraintBottom_toBottomOf="@id/managerAccountNameTextView"
+        app:layout_constraintEnd_toEndOf="@id/labelGuideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/managerAccountNameTextView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/managerAccountNameTextView"
+        style="@style/TextAppearance.Body.Mono"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_large"
+        app:layout_constraintBottom_toTopOf="@id/reserveAccountTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/labelGuideline"
+        app:layout_constraintTop_toBottomOf="@id/defaultFrozenLabelTextView"
+        tools:text="@tools:sample/lorem[6]" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/reserveAccountLabelTextView"
+        style="@style/TextView.TransactionLabelStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/reserve_account"
+        app:layout_constraintBottom_toBottomOf="@id/reserveAccountTextView"
+        app:layout_constraintEnd_toEndOf="@id/labelGuideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/reserveAccountTextView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/reserveAccountTextView"
+        style="@style/TextAppearance.Body.Mono"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_large"
+        app:layout_constraintBottom_toTopOf="@id/freezeAccountTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/labelGuideline"
+        app:layout_constraintTop_toBottomOf="@id/managerAccountNameTextView"
+        tools:text="@tools:sample/lorem[6]" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/freezeAccountLabelTextView"
+        style="@style/TextView.TransactionLabelStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/freeze_account"
+        app:layout_constraintBottom_toBottomOf="@id/freezeAccountTextView"
+        app:layout_constraintEnd_toEndOf="@id/labelGuideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/freezeAccountTextView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/freezeAccountTextView"
+        style="@style/TextAppearance.Body.Mono"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_large"
+        app:layout_constraintBottom_toTopOf="@id/clawbackAccountTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/labelGuideline"
+        app:layout_constraintTop_toBottomOf="@id/reserveAccountTextView"
+        tools:text="@tools:sample/lorem[6]" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/clawbackAccountLabelTextView"
+        style="@style/TextView.TransactionLabelStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/clawback_account"
+        app:layout_constraintBottom_toBottomOf="@id/clawbackAccountTextView"
+        app:layout_constraintEnd_toEndOf="@id/labelGuideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/clawbackAccountTextView" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/clawbackAccountTextView"
+        style="@style/TextAppearance.Body.Mono"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_large"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/labelGuideline"
+        app:layout_constraintTop_toBottomOf="@id/freezeAccountTextView"
+        tools:text="@tools:sample/lorem[6]" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/amountGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="
+		amountLabelTextView,
+		amountTextView"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/decimalPlacesGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="
+		decimalPlacesLabelTextView,
+		decimalPlacesTextView"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/defaultFrozenGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="
+		defaultFrozenLabelTextView,
+		defaultFrozenTextView"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/managerAccountGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="
+		managerAccountLabelTextView,
+		managerAccountNameTextView"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/reserveAccountGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="
+		reserveAccountLabelTextView,
+		reserveAccountTextView"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/freezeAccountGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="
+		freezeAccountLabelTextView,
+		freezeAccountTextView"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/clawbackAccountGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="
+		clawbackAccountLabelTextView,
+		clawbackAccountTextView"
         tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.Group
@@ -140,40 +301,15 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         app:constraint_referenced_ids="
-        feeLabelTextView,
+        feeLabelView,
         feeTextView"
         tools:visibility="visible" />
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/toAddressGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="
-        toLabelTextView,
-        toAccountNameTextView,
-        amountDividerView"
-        tools:visibility="visible" />
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/amountBalanceGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="
-        amountLabelTextView,
-        amountTextView,
-        feeDividerView"
-        tools:visibility="visible" />
-
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/labelBarrier"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="end"
-        app:constraint_referenced_ids="
-        accountBalanceLabelTextView
-        ,amountLabelTextView
-        ,feeLabelTextView" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/labelGuideline"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="@integer/label_percentage" />
 
 </merge>

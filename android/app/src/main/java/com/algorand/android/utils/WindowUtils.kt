@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -16,7 +16,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Point
-import android.os.Build
 import android.view.View
 import android.view.WindowManager
 
@@ -35,19 +34,15 @@ fun Activity.switchToNonFullscreen() {
 }
 
 fun Activity.showDarkStatusBarIcons() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        var flags: Int = window.decorView.systemUiVisibility // get current flag
-        flags = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR // add LIGHT_STATUS_BAR to flag
-        window.decorView.systemUiVisibility = flags
-    }
+    var flags: Int = window.decorView.systemUiVisibility // get current flag
+    flags = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR // add LIGHT_STATUS_BAR to flag
+    window.decorView.systemUiVisibility = flags
 }
 
 fun Activity.showLightStatusBarIcons() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        var flags: Int = window.decorView.systemUiVisibility // get current flag
-        flags = flags xor View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR // use XOR here for remove LIGHT_STATUS_BAR from flags
-        window.decorView.systemUiVisibility = flags
-    }
+    var flags: Int = window.decorView.systemUiVisibility // get current flag
+    flags = flags xor View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR // use XOR here for remove LIGHT_STATUS_BAR from flags
+    window.decorView.systemUiVisibility = flags
 }
 
 fun Context.getDisplaySize(): Point {
@@ -57,6 +52,8 @@ fun Context.getDisplaySize(): Point {
     return displaySize
 }
 
+// TODO: 20.01.2022 There is an issue on Android 12 to making app blurry when putting the app into background
+//  https://github.com/Hipo/algorand-android/pull/781#discussion_r787853240
 fun Activity.disableScreenCapture() {
     window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
 }

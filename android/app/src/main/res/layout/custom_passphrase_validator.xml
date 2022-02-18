@@ -1,53 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     tools:layout_height="wrap_content"
     tools:layout_width="match_parent"
-    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+    tools:parentTag="android.widget.LinearLayout">
 
     <TextView
         android:id="@+id/selectTextView"
-        android:layout_width="wrap_content"
+        style="@style/TextAppearance.Description"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/publicsans_regular"
-        android:textColor="@color/tertiaryTextColor"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"
         tools:text="Select word #5" />
 
-    <com.google.android.material.button.MaterialButton
-        style="@style/UnelevatedButton.PassphraseValidation"
-        android:id="@+id/firstWordTextView"
-        android:layout_width="0dp"
+    <!--
+    ~TODO Implement shadow at the background of this layout
+    ~Currently we are using just a background with line
+    -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        app:layout_constraintEnd_toStartOf="@+id/secondWordTextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/selectTextView"
-        tools:text="lion" />
+        android:layout_marginTop="@dimen/spacing_small"
+        android:background="@drawable/bg_passphrase_group_background"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_xsmall">
 
-    <com.google.android.material.button.MaterialButton
-        style="@style/UnelevatedButton.PassphraseValidation"
-        android:id="@+id/secondWordTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/keyline_1"
-        android:layout_marginEnd="@dimen/keyline_1"
-        android:gravity="center"
-        app:layout_constraintEnd_toStartOf="@+id/thirdWordTextView"
-        app:layout_constraintStart_toEndOf="@+id/firstWordTextView"
-        app:layout_constraintTop_toTopOf="@id/firstWordTextView"
-        tools:text="brother" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/firstWordTextView"
+            style="@style/Button.PassphraseValidation"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            tools:text="crawl" />
 
-    <com.google.android.material.button.MaterialButton
-        style="@style/UnelevatedButton.PassphraseValidation"
-        android:id="@+id/thirdWordTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/secondWordTextView"
-        app:layout_constraintTop_toTopOf="@id/firstWordTextView"
-        tools:text="crawl" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/secondWordTextView"
+            style="@style/Button.PassphraseValidation"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginVertical="@dimen/spacing_xsmall"
+            tools:text="brother" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/thirdWordTextView"
+            style="@style/Button.PassphraseValidation"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            tools:text="crawl" />
+
+    </LinearLayout>
+
 </merge>

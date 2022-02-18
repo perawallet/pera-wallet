@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -15,5 +15,11 @@ package com.algorand.android.models
 enum class AssetStatus {
     PENDING_FOR_REMOVAL,
     PENDING_FOR_ADDITION,
-    OWNED_BY_ACCOUNT
+    OWNED_BY_ACCOUNT;
+
+    companion object {
+        fun isPending(status: AssetStatus): Boolean {
+            return status != OWNED_BY_ACCOUNT
+        }
+    }
 }

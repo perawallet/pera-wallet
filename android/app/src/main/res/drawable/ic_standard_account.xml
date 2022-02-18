@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -11,12 +11,26 @@
   -->
 
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="24dp"
-    android:height="24dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
-    <path
-        android:fillColor="#1DAD98"
-        android:fillType="evenOdd"
-        android:pathData="M16.0001,5.6512C16.0001,4.9869 15.3642,4.5072 14.7254,4.6897L10.1401,5.9998H16.0001V5.6512ZM14.1759,2.7667L2.7466,6.0322C2.6535,6.0565 2.5656,6.0939 2.4851,6.1424C2.3869,6.2014 2.3007,6.2762 2.2292,6.3627C2.1193,6.4955 2.0431,6.6572 2.0136,6.8347C2.004,6.8926 1.9993,6.9518 2.0001,7.0117V18.9998C2.0001,20.6566 3.3432,21.9998 5.0001,21.9998H19.0001C20.6569,21.9998 22.0001,20.6566 22.0001,18.9998V8.9998C22.0001,7.3429 20.6569,5.9998 19.0001,5.9998H18.0001V5.6512C18.0001,3.6581 16.0924,2.2191 14.1759,2.7667ZM4.0001,18.9998V7.9998H17.0001H19.0001C19.5524,7.9998 20.0001,8.4475 20.0001,8.9998V18.9998C20.0001,19.5521 19.5524,19.9998 19.0001,19.9998H5.0001C4.4478,19.9998 4.0001,19.5521 4.0001,18.9998ZM16.0001,15.9998C17.1047,15.9998 18.0001,15.1043 18.0001,13.9998C18.0001,12.8952 17.1047,11.9998 16.0001,11.9998C14.8955,11.9998 14.0001,12.8952 14.0001,13.9998C14.0001,15.1043 14.8955,15.9998 16.0001,15.9998Z" />
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+  <path
+      android:pathData="M20,0L20,0A20,20 0,0 1,40 20L40,20A20,20 0,0 1,20 40L20,40A20,20 0,0 1,0 20L0,20A20,20 0,0 1,20 0z"
+      android:fillColor="#FF6E5C"/>
+  <path
+      android:pathData="M11,13V29H29V15H21"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="#FFEAC2"/>
+  <path
+      android:pathData="M25,11H13C11.8954,11 11,11.8954 11,13V13C11,14.1046 11.8954,15 13,15H24"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="#FFEAC2"/>
+  <path
+      android:pathData="M22,22H26"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="#FFEAC2"/>
 </vector>

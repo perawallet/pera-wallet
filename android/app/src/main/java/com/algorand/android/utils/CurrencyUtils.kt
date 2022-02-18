@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -15,8 +15,20 @@ package com.algorand.android.utils
 import com.algorand.android.models.CurrencyValue
 import java.math.BigDecimal
 import java.math.BigInteger
+import java.math.RoundingMode
 
 fun getAlgoBalanceAsCurrencyValue(balance: BigInteger?, currencyValue: CurrencyValue): BigDecimal? {
     val algoValue = balance?.toBigDecimal()?.movePointLeft(ALGO_DECIMALS) ?: return null
     return currencyValue.getAlgorandCurrencyValue()?.multiply(algoValue)
+}
+
+fun BigDecimal.formatAsCurrency(symbol: String): String {
+    val formattedAmount = getFullStringFormat(DOLLAR_DECIMALS).apply {
+        roundingMode = RoundingMode.FLOOR
+    }.format(this)
+    return StringBuilder(symbol).append(formattedAmount).toString()
+}
+
+fun BigInteger.toAlgoDisplayValue(): BigDecimal {
+    return toBigDecimal().movePointLeft(ALGO_DECIMALS)
 }

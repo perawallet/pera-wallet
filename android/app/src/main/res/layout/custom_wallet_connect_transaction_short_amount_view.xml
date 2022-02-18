@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~  limitations under the License
+  ~
+  -->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/assetAmountTextView"
+        style="@style/TextAppearance.Title.Mono"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_small"
+        android:gravity="center_horizontal"
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_36"
+        app:autoSizeMinTextSize="@dimen/text_size_19"
+        app:autoSizeTextType="uniform"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="18,446,744,073,709,551,615 ALGO" />
+
+    <TextView
+        android:id="@+id/assetCurrencyAmountTextView"
+        style="@style/TextAppearance.Body.Mono"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/assetAmountTextView"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="$12.232.00" />
+
+    <TextView
+        android:id="@+id/assetNameTextView"
+        style="@style/TextAppearance.Title.Large.Sans"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="@dimen/spacing_small"
+        android:gravity="center"
+        app:drawableTint="@color/verifiedIconColor"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:drawableStartCompat="@drawable/ic_shield"
+        tools:text="MOSAIC" />
+
+    <TextView
+        android:id="@+id/assetIdTextView"
+        style="@style/TextAppearance.Description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_xsmall"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/assetNameTextView"
+        tools:text="13141" />
+
+    <TextView
+        android:id="@+id/appIdTextView"
+        style="@style/TextAppearance.Title.Large.Sans"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="@dimen/spacing_small"
+        app:drawableTint="@color/verifiedIconColor"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="# 3492381" />
+
+    <TextView
+        android:id="@+id/applicationIdLabelTextView"
+        style="@style/TextAppearance.Description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_xsmall"
+        android:text="@string/application_id"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appIdTextView" />
+
+    <TextView
+        android:id="@+id/appOnCompleteTextView"
+        style="@style/TextAppearance.Title.Large.Sans"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="@dimen/spacing_small"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Opt-in" />
+
+    <TextView
+        android:id="@+id/appOnCompleteLabelTextView"
+        style="@style/TextAppearance.Description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_xsmall"
+        android:text="@string/on_completion"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appOnCompleteTextView" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/assetAmountAndCurrencyValueGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="assetShortNameTextView,assetCurrencyAmountTextView,assetAmountTextView"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/assetNameAndIdGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="assetIdTextView,assetNameTextView" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/appIdGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="appIdTextView,applicationIdLabelTextView" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/appOnCompleteGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="appOnCompleteLabelTextView,appOnCompleteTextView" />
+
+</merge>

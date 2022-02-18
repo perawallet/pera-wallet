@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -14,74 +14,68 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:background="@drawable/bg_small_shadow"
+    tools:background="@color/modalityBackgroundColor"
     tools:layout_height="wrap_content"
     tools:layout_width="match_parent"
-    tools:padding="20dp"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
     <ImageView
-        android:id="@+id/appIconImageView"
-        android:layout_width="44dp"
-        android:layout_height="44dp"
-        android:background="@drawable/bg_wallet_connect_connection_icon_round"
-        android:padding="1dp"
-        android:src="@drawable/ic_algo_green_round"
+        android:id="@+id/dAppIconImageView"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/appNameTextView"
+        android:id="@+id/dAppNameTextView"
+        style="@style/TextAppearance.Body.Large.Sans.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:drawablePadding="6dp"
-        android:fontFamily="@font/publicsans_medium"
+        android:layout_marginHorizontal="@dimen/spacing_large"
+        android:drawablePadding="@dimen/spacing_xxsmall"
+        android:ellipsize="end"
         android:maxLines="1"
-        android:textSize="14sp"
+        android:textColor="@color/white"
+        app:drawableEndCompat="@drawable/ic_shield_check_small"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintBottom_toTopOf="@id/dAppMessagePreviewTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toEndOf="@+id/appIconImageView"
-        app:layout_constraintTop_toTopOf="@+id/appIconImageView"
-        tools:drawableEnd="@drawable/ic_verified_asset"
-        tools:text="Algorand" />
+        app:layout_constraintStart_toEndOf="@+id/dAppIconImageView"
+        app:layout_constraintTop_toTopOf="@id/dAppIconImageView"
+        tools:text="@tools:sample/lorem[10]" />
 
     <TextView
-        android:id="@+id/appMessagePreviewTextView"
+        android:id="@+id/dAppMessagePreviewTextView"
+        style="@style/TextAppearance.Body.Sans"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        android:fontFamily="@font/publicsans_regular"
-        android:maxLines="2"
-        android:textColor="@color/gray_8A"
-        android:textSize="14sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/showMoreInfoTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toEndOf="@+id/appIconImageView"
-        app:layout_constraintTop_toBottomOf="@+id/appNameTextView"
-        app:layout_goneMarginBottom="4dp"
-        tools:text="@tools:sample/lorem[12]"
-        tools:visibility="visible" />
+        android:layout_marginTop="@dimen/spacing_xxsmall"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/tertiaryTextColor"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@id/dAppIconImageView"
+        app:layout_constraintEnd_toStartOf="@id/showMoreInfoTextView"
+        app:layout_constraintStart_toStartOf="@id/dAppNameTextView"
+        app:layout_constraintTop_toBottomOf="@id/dAppNameTextView"
+        app:layout_goneMarginEnd="@dimen/spacing_xlarge"
+        tools:text="dApp message for payment preview" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/showMoreInfoTextView"
-        style="@style/TextButton"
+        style="@style/Button.Text.Link"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:fontFamily="@font/publicsans_medium"
-        android:minHeight="0dp"
-        android:paddingHorizontal="0dp"
-        android:text="@string/show_more_info"
-        android:textColor="@color/green_0D"
-        android:textSize="14sp"
+        android:layout_marginEnd="@dimen/spacing_xlarge"
+        android:text="@string/read_more"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/appNameTextView"
-        app:layout_constraintTop_toBottomOf="@+id/appMessagePreviewTextView"
+        app:layout_constraintBottom_toBottomOf="@id/dAppMessagePreviewTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/dAppMessagePreviewTextView"
+        app:layout_constraintTop_toTopOf="@id/dAppMessagePreviewTextView"
         tools:visibility="visible" />
 
 </merge>

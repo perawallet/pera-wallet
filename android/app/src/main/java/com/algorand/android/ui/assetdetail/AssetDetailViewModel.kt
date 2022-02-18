@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,240 +12,168 @@
 
 package com.algorand.android.ui.assetdetail
 
-import android.content.SharedPreferences
+import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
+import androidx.paging.CombinedLoadStates
 import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import com.algorand.android.core.AccountManager
 import com.algorand.android.core.BaseViewModel
-import com.algorand.android.database.ContactDao
-import com.algorand.android.models.AssetInformation
-import com.algorand.android.models.BaseTransactionListItem
+import com.algorand.android.models.BaseTransactionItem
+import com.algorand.android.models.CsvStatusPreview
 import com.algorand.android.models.DateFilter
-import com.algorand.android.models.DateRange
-import com.algorand.android.models.Result
-import com.algorand.android.models.Transaction
-import com.algorand.android.models.TransactionListItem
-import com.algorand.android.models.TransactionsResponse
-import com.algorand.android.models.User
-import com.algorand.android.repository.AccountRepository
-import com.algorand.android.repository.AccountRepository.Companion.DEFAULT_TRANSACTION_COUNT
-import com.algorand.android.utils.AccountCacheManager
-import com.algorand.android.utils.Event
-import com.algorand.android.utils.Resource
-import com.algorand.android.utils.createCSVFile
-import com.algorand.android.utils.formatAsRFC3339Version
-import com.algorand.android.utils.preference.isFilterTutorialShown
-import com.algorand.android.utils.preference.isRewardsActivated
-import com.algorand.android.utils.preference.setFilterTutorialShown
-import com.algorand.android.utils.toListItems
+import com.algorand.android.models.PendingReward
+import com.algorand.android.models.ui.AssetDetailPreview
+import com.algorand.android.models.ui.DateFilterPreview
+import com.algorand.android.models.ui.TransactionLoadStatePreview
+import com.algorand.android.usecase.AssetDetailUseCase
+import com.algorand.android.usecase.PendingRewardUseCase
+import com.algorand.android.utils.getOrThrow
 import java.io.File
-import java.math.BigInteger
-import java.time.ZonedDateTime
-import kotlin.properties.Delegates
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.isActive
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class AssetDetailViewModel @ViewModelInject constructor(
-    private val accountCacheManager: AccountCacheManager,
-    private val accountManager: AccountManager,
-    private val sharedPref: SharedPreferences,
-    private val accountRepository: AccountRepository,
-    private val contactDao: ContactDao
+    @Assisted savedStateHandle: SavedStateHandle,
+    private val assetDetailUseCase: AssetDetailUseCase,
+    private val pendingRewardUseCase: PendingRewardUseCase
 ) : BaseViewModel() {
 
-    val csvFileLiveData = MutableLiveData<Event<Resource<File>>>()
+    private val accountPublicKey = savedStateHandle.getOrThrow<String>(ADDRESS_KEY)
+    private val assetId = savedStateHandle.getOrThrow<Long>(ASSET_INFORMATION_KEY)
 
-    val dateFilterLiveData = MutableLiveData<DateFilter>(DateFilter.AllTime)
-
-    var balanceLiveData: LiveData<BigInteger?>? = null
-
-    val assetFilterLiveData = MutableLiveData<AssetInformation>()
-
-    private val pendingListLiveData = MutableLiveData<List<BaseTransactionListItem>>()
-
-    private var contactListFlow = MutableStateFlow<List<User>?>(null)
-
-    init {
-        viewModelScope.launch {
-            contactDao.getAllAsFlow().collectLatest { contactList ->
-                contactListFlow.value = contactList
-            }
-        }
-    }
-
-    fun getPendingDateAwareList() = MediatorLiveData<List<BaseTransactionListItem>>().apply {
-        fun update() {
-            val pendingHistory = pendingListLiveData.value.orEmpty()
-            val assetInformation = assetFilterLiveData.value
-            value = when (val dateFilter = dateFilterLiveData.value) {
-                DateFilter.Today, DateFilter.AllTime -> {
-                    pendingHistory.filter { (it as TransactionListItem).assetId == assetInformation?.assetId }
-                }
-                DateFilter.Yesterday,
-                DateFilter.LastMonth,
-                DateFilter.LastWeek,
-                null -> {
-                    emptyList()
-                }
-                is DateFilter.CustomRange -> {
-                    if (dateFilter.customDateRange?.to?.isAfter(ZonedDateTime.now()) == true) {
-                        pendingHistory.filter { (it as TransactionListItem).assetId == assetInformation?.assetId }
-                    } else {
-                        emptyList()
-                    }
-                }
-            }
-        }
-        addSource(pendingListLiveData) { update() }
-        addSource(assetFilterLiveData) { update() }
-        addSource(dateFilterLiveData) { update() }
-    }
-
-    var transactionPaginationFlow: Flow<PagingData<BaseTransactionListItem>>? = null
-
-    var isPendingTransactionPollingActive by Delegates.observable(false, { _, _, newValue ->
-        if (newValue) {
-            activatePendingTransactionsPolling()
-        } else {
-            pendingTransactionPolling?.cancel()
-        }
-    })
-
-    private lateinit var assetInformation: AssetInformation
-    private lateinit var address: String
+    private val dateFilterFlow = MutableStateFlow<DateFilter>(DateFilter.AllTime)
+    private val _dateFilterPreviewFlow = MutableStateFlow(getDefaultDateFilterPreview())
+    val dateFilterPreviewFlow: Flow<DateFilterPreview>
+        get() = _dateFilterPreviewFlow
 
     private var pendingTransactionPolling: Job? = null
 
-    var transactionHistoryDataSource: TransactionsDataSource? = null
+    private val _pendingTransactionsFlow = MutableStateFlow<List<BaseTransactionItem>?>(null)
+    val pendingTransactionsFlow: Flow<List<BaseTransactionItem>?>
+        get() = _pendingTransactionsFlow
+            .distinctUntilChanged(assetDetailUseCase.pendingTransactionDistinctUntilChangedListener)
 
-    fun start(address: String, assetInformation: AssetInformation) {
-        this.address = address
-        this.assetInformation = assetInformation
-        setupBalanceLiveData(address)
-        setupTransactionPaginationFlow(address)
+    val transactionPaginationFlow: Flow<PagingData<BaseTransactionItem>>?
+        get() = assetDetailUseCase.getTransactionFlow(accountPublicKey, assetId)
+
+    val assetDetailPreviewFlow: Flow<AssetDetailPreview?>
+        get() = _assetDetailViewFlow
+    private val _assetDetailViewFlow = MutableStateFlow<AssetDetailPreview?>(null)
+
+    val csvStatusPreview: Flow<CsvStatusPreview?>
+        get() = _csvStatusPreviewFlow
+    private val _csvStatusPreviewFlow = MutableStateFlow<CsvStatusPreview?>(null)
+
+    private val _pendingRewardFlow = MutableStateFlow<PendingReward>(pendingRewardUseCase.getInitialPendingReward())
+    val pendingRewardFlow: StateFlow<PendingReward> = _pendingRewardFlow
+
+    init {
+        initPreviewFlow()
+        initPendingRewardFlow()
+        fetchAssetTransactionHistory()
+        initRefreshTransactionsFlow()
+        initDateFilterFlow()
     }
 
-    private fun setupTransactionPaginationFlow(address: String) {
-        if (transactionHistoryDataSource == null) {
-            transactionPaginationFlow = Pager(PagingConfig(pageSize = DEFAULT_TRANSACTION_COUNT)) {
-                TransactionsDataSource(
-                    pendingListLiveData,
-                    accountRepository,
-                    address,
-                    assetInformation.assetId,
-                    assetInformation.decimals,
-                    accountManager.getAccounts(),
-                    contactListFlow.value.orEmpty(),
-                    sharedPref.isRewardsActivated(),
-                    dateFilterLiveData.value?.getDateRange()
-                ).also {
-                    transactionHistoryDataSource = it
+    fun getDateFilterValue(): DateFilter {
+        return dateFilterFlow.value
+    }
+
+    fun getPendingRewards(): PendingReward {
+        return _pendingRewardFlow.value
+    }
+
+    private fun fetchAssetTransactionHistory() {
+        assetDetailUseCase.fetchAssetTransactionHistory(accountPublicKey, viewModelScope, assetId)
+    }
+
+    fun setDateFilter(dateFilter: DateFilter) {
+        viewModelScope.launch {
+            dateFilterFlow.emit(dateFilter)
+            _dateFilterPreviewFlow.emit(assetDetailUseCase.createDateFilterPreview(dateFilter))
+        }
+    }
+
+    fun activatePendingTransaction() {
+        activatePendingTransactionsPolling(accountPublicKey)
+    }
+
+    fun deactivatePendingTransaction() {
+        pendingTransactionPolling?.cancel()
+    }
+
+    fun createTransactionLoadStatePreview(
+        combinedLoadStates: CombinedLoadStates,
+        itemCount: Int,
+        isLastStateError: Boolean
+    ): TransactionLoadStatePreview {
+        return assetDetailUseCase.createTransactionLoadStatePreview(combinedLoadStates, itemCount, isLastStateError)
+    }
+
+    fun getAssetId(): Long {
+        return assetId
+    }
+
+    fun getPublicKey(): String {
+        return accountPublicKey
+    }
+
+    fun refreshTransactionHistory() {
+        assetDetailUseCase.refreshTransactionHistory()
+    }
+
+    fun createCsvFile(cacheDirectory: File) {
+        viewModelScope.launch {
+            val dateRange = getDateFilterValue().getDateRange()
+            assetDetailUseCase.createCsvFile(assetId, cacheDirectory, dateRange, accountPublicKey, this)
+                .collectLatest {
+                    _csvStatusPreviewFlow.emit(it)
                 }
-            }.flow.cachedIn(viewModelScope)
-        } else {
-            transactionHistoryDataSource?.invalidate()
         }
     }
 
-    fun createCSVForList(cacheDirectory: File, accountName: String) {
-        csvFileLiveData.postValue(Event(Resource.Loading))
-        viewModelScope.launch(Dispatchers.IO) {
-            var nextToken: String? = null
-            var exception: Exception? = null
-            val transactionList = mutableListOf<Transaction>()
-            val currentDataRange = dateFilterLiveData.value?.getDateRange()
-            while (isActive) {
-                getTransactions(nextToken, currentDataRange).use(
-                    onSuccess = {
-                        transactionList.addAll(it.transactionList)
-                        nextToken = it.nextToken
-                    }, onFailed = {
-                        exception = it
-                        nextToken = null
-                    }
-                )
-                if (nextToken == null) break
-            }
-            if (transactionList.isEmpty() && exception != null) {
-                csvFileLiveData.postValue(Event(Resource.Error.Api(exception!!)))
-            } else {
-                val csvFile = transactionList.createCSVFile(
-                    cacheDir = cacheDirectory,
-                    assetId = assetInformation.assetId,
-                    decimal = assetInformation.decimals,
-                    accountName = accountName,
-                    userAddress = address,
-                    dateRange = currentDataRange
-                )
-                csvFileLiveData.postValue(Event(Resource.Success(csvFile)))
+    private fun initPreviewFlow() {
+        viewModelScope.launch {
+            assetDetailUseCase.getAssetDetailPreviewFlow(accountPublicKey, assetId).collectLatest {
+                _assetDetailViewFlow.value = it
             }
         }
     }
 
-    private suspend fun getTransactions(
-        nextToken: String? = null,
-        dateRange: DateRange?
-    ): Result<TransactionsResponse> {
-        return accountRepository.getTransactions(
-            assetInformation.assetId,
-            address,
-            fromDate = dateRange?.from.formatAsRFC3339Version(),
-            toDate = dateRange?.to.formatAsRFC3339Version(),
-            nextToken = nextToken,
-            limit = null
-        )
+    private fun initPendingRewardFlow() {
+        viewModelScope.launch {
+            pendingRewardUseCase.getPendingRewardFlow(accountPublicKey, assetId, viewModelScope).collectLatest {
+                _pendingRewardFlow.emit(it)
+            }
+        }
     }
 
-    fun isFilterTooltipShown() = sharedPref.isFilterTutorialShown()
-
-    fun setFilterTooltipShown() = sharedPref.setFilterTutorialShown()
-
-    private fun setupBalanceLiveData(address: String) {
-        balanceLiveData = accountCacheManager.getBalanceFlow(address, assetInformation.assetId).asLiveData()
+    private fun initRefreshTransactionsFlow() {
+        viewModelScope.launch {
+            assetDetailUseCase.getAccountBalanceFlow(accountPublicKey).distinctUntilChanged().collectLatest {
+                assetDetailUseCase.refreshTransactionHistory()
+            }
+        }
     }
 
-    private fun activatePendingTransactionsPolling() {
+    private fun activatePendingTransactionsPolling(publicKey: String) {
         pendingTransactionPolling = viewModelScope.launch(Dispatchers.IO) {
             while (true) {
-                accountRepository.getPendingTransactions(address).use(
-                    onSuccess = { pendingTransactionsResponse ->
-                        pendingTransactionsResponse.pendingTransactions?.let { pendingTransactionList ->
-                            pendingTransactionList.ifEmpty {
-                                pendingListLiveData.postValue(emptyList())
-                                return@use
-                            }
-
-                            val wrappedPendingListItems =
-                                pendingTransactionList.toListItems(
-                                    assetInformation.assetId,
-                                    assetInformation.decimals,
-                                    address,
-                                    accountManager.getAccounts(),
-                                    contactListFlow.value.orEmpty(),
-                                    sharedPref.isRewardsActivated()
-                                )
-
-                            synchronized(pendingListLiveData) {
-                                val (isListChanged, newRefreshedList) = mergePendingToList(wrappedPendingListItems)
-
-                                if (isListChanged) {
-                                    pendingListLiveData.postValue(newRefreshedList)
-                                }
-                            }
+                assetDetailUseCase.fetchPendingTransactions(publicKey, assetId).use(
+                    onSuccess = { pendingList ->
+                        synchronized(_pendingTransactionsFlow) {
+                            _pendingTransactionsFlow.value = pendingList
                         }
                     }
                 )
@@ -254,27 +182,21 @@ class AssetDetailViewModel @ViewModelInject constructor(
         }
     }
 
-    private fun mergePendingToList(
-        newPendingList: MutableList<BaseTransactionListItem>
-    ): Pair<Boolean, MutableList<BaseTransactionListItem>> {
-        val currentPendingTransactionList = pendingListLiveData.value ?: mutableListOf()
-        var isListChanged = false
-        val result = currentPendingTransactionList.toMutableList()
+    private fun initDateFilterFlow() {
+        dateFilterFlow
+            .onEach { assetDetailUseCase.setDateFilter(it) }
+            .distinctUntilChanged()
+            .flowOn(Dispatchers.Default)
+            .launchIn(viewModelScope)
+    }
 
-        newPendingList.forEach { newPendingItem ->
-            // Check if transaction with same id is in the list before.
-            val isThereAnyTransactionWithSameId = currentPendingTransactionList.any { transactionItem ->
-                transactionItem.isSame(newPendingItem)
-            }
-            if (isThereAnyTransactionWithSameId.not()) {
-                result.add(0, newPendingItem)
-                isListChanged = true
-            }
-        }
-        return Pair(isListChanged, result)
+    private fun getDefaultDateFilterPreview(): DateFilterPreview {
+        return assetDetailUseCase.createDateFilterPreview(DateFilter.DEFAULT_DATE_FILTER)
     }
 
     companion object {
+        private const val ADDRESS_KEY = "address"
+        private const val ASSET_INFORMATION_KEY = "assetId"
         private const val PENDING_TRANSACTION_DELAY = 800L
     }
 }

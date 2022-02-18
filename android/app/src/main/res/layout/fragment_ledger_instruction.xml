@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -20,57 +20,81 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ledgerInstructionRootLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/secondaryBackground">
+        android:layout_height="wrap_content">
 
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/ledgerAnimationView"
-            android:layout_width="192dp"
-            android:layout_height="192dp"
-            android:layout_marginVertical="20dp"
-            app:layout_constraintBottom_toTopOf="@+id/subtitleTextView"
-            app:layout_constraintEnd_toEndOf="parent"
+        <ImageView
+            android:id="@+id/ledgerIconImageView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/spacing_small"
+            android:layout_marginTop="28dp"
+            app:layout_constraintBottom_toTopOf="@id/subtitleTextView"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toStartOf="@id/verticalGuideline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="false"
-            app:lottie_rawRes="@raw/pair_ledger_animation" />
+            app:layout_constraintVertical_bias="0"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:srcCompat="@drawable/ic_ledger"
+            app:tint="@color/infoImageColor" />
 
         <TextView
             android:id="@+id/subtitleTextView"
+            style="@style/TextAppearance.Title.Large.Sans.Medium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="@dimen/keyline_1"
-            android:layout_marginBottom="24dp"
-            android:fontFamily="@font/publicsans_semibold"
-            android:gravity="center"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_xxxxlarge"
             android:text="@string/pair_with_ledger"
-            android:textSize="28sp"
-            app:layout_constraintBottom_toTopOf="@id/instructionsLayout"
+            app:layout_constraintBottom_toTopOf="@id/descriptionTextView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ledgerIconImageView" />
 
-        <include
-            android:id="@+id/instructionsLayout"
-            layout="@layout/layout_ledger_troubleshoot_instructions"
+        <TextView
+            android:id="@+id/descriptionTextView"
+            style="@style/TextAppearance.Description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/keyline_1"
-            app:layout_constraintBottom_toTopOf="@+id/searchButton"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginVertical="@dimen/spacing_xlarge"
+            android:text="@string/please_make_sure_your_ledger_is"
+            app:layout_constraintBottom_toTopOf="@id/searchButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/subtitleTextView" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/searchButton"
+            style="@style/Button.Primary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginVertical="@dimen/spacing_normal"
+            android:text="@string/pair_with_ledger"
+            app:layout_constraintBottom_toTopOf="@id/howItWorkButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/searchButton"
-            style="@style/UnelevatedButton.General"
+            android:id="@+id/howItWorkButton"
+            style="@style/Button.Secondary"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
             android:layout_marginBottom="@dimen/bottom_safe_area_margin"
-            android:text="@string/search_for_ledger"
+            android:text="@string/how_does_it_work"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/verticalGuideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.54" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </ScrollView>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -16,6 +16,7 @@ import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.Intent
 import android.location.LocationManager
+import androidx.activity.result.ActivityResultLauncher
 import androidx.core.location.LocationManagerCompat
 import androidx.fragment.app.Fragment
 import com.algorand.android.R
@@ -61,4 +62,12 @@ fun Fragment.showEnableBluetoothPopup() {
 fun Context.isLocationEnabled(): Boolean {
     val locationManager = getSystemService(Context.LOCATION_SERVICE) as? LocationManager ?: return false
     return LocationManagerCompat.isLocationEnabled(locationManager)
+}
+
+fun showEnableBluetoothPopup(resultLauncher: ActivityResultLauncher<Intent>) {
+    Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE).apply { resultLauncher.launch(this) }
+}
+
+fun requestLocationRequestFromUser(resultLauncher: ActivityResultLauncher<String>) {
+    resultLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -33,7 +33,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class BackupPassphraseFragment : DaggerBaseFragment(R.layout.fragment_backup_passphrase) {
 
     private val toolbarConfiguration = ToolbarConfiguration(
-        startIconResId = R.drawable.ic_back_navigation,
+        startIconResId = R.drawable.ic_left_arrow,
         startIconClick = ::navBack,
         backgroundColor = R.color.tertiaryBackground
     )
@@ -58,18 +58,18 @@ class BackupPassphraseFragment : DaggerBaseFragment(R.layout.fragment_backup_pas
         activity?.disableScreenCapture()
     }
 
-    override fun onPause() {
-        super.onPause()
-        activity?.enableScreenCapture()
+    override fun onStop() {
+        super.onStop()
+        if (view?.hasWindowFocus() == true) {
+            activity?.enableScreenCapture()
+        }
     }
 
+    // TODO move this into util class
     private fun getMnemonicString(): String? {
         try {
             val secretKeyByteArray: ByteArray?
-            if (accountCreation == null ||
-                accountCreation?.tempAccount == null ||
-                accountCreation?.tempAccount?.getSecretKey() == null
-            ) {
+            if (accountCreation?.tempAccount?.getSecretKey() == null) {
                 secretKeyByteArray = Mobile.generateSK()
                 val publicKey = Mobile.generateAddressFromSK(secretKeyByteArray)
                 val tempAccount = Account.create(publicKey, Account.Detail.Standard(secretKeyByteArray))

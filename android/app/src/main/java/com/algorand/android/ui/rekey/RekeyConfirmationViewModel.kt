@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -86,7 +86,7 @@ class RekeyConfirmationViewModel @ViewModelInject constructor(
                     firebaseAnalytics.logRekeyEvent()
                     transactionResourceLiveData.postValue(Event(Resource.Success(Any())))
                 },
-                onFailed = { exception ->
+                onFailed = { exception, _ ->
                     transactionResourceLiveData.postValue(Event(Resource.Error.Api(exception)))
                 }
             )
@@ -95,6 +95,18 @@ class RekeyConfirmationViewModel @ViewModelInject constructor(
 
     fun getAccountCacheData(address: String): AccountCacheData? {
         return accountCacheManager.accountCacheMap.value[address]
+    }
+
+    fun getCachedAccountName(address: String): String? {
+        return accountCacheManager.accountCacheMap.value[address]?.account?.name
+    }
+
+    fun getCachedAccountAuthAddress(address: String): String? {
+        return accountCacheManager.accountCacheMap.value[address]?.authAddress
+    }
+
+    fun getCachedAccountData(address: String): Account? {
+        return accountCacheManager.accountCacheMap.value[address]?.account
     }
 
     companion object {

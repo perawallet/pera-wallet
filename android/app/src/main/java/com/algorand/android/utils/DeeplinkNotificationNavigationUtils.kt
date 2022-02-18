@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -15,14 +15,14 @@ package com.algorand.android.utils
 import android.content.Intent
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
-import com.algorand.android.HomeNavigationDirections.Companion.actionGlobalAddContactFragment
-import com.algorand.android.HomeNavigationDirections.Companion.actionGlobalSendInfoFragment
+import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.models.Account
+import com.algorand.android.models.AssetAction
 import com.algorand.android.models.AssetInformation
+import com.algorand.android.models.AssetTransaction
 import com.algorand.android.models.DecodedQrCode
 import com.algorand.android.models.NotificationType
-import com.algorand.android.ui.accounts.AccountsFragmentDirections
-import com.algorand.android.ui.common.AssetActionBottomSheet
+import com.algorand.android.models.User
 
 const val SELECTED_ACCOUNT_KEY = "selectedAccountKey"
 const val SELECTED_ASSET_ID_KEY = "selectedAssetIdKey"
@@ -39,18 +39,17 @@ private fun NavController.handleSelectedAssetNavigation(
     val selectedAccountCacheData = accountCacheManager.getCacheData(selectedAccountKey)
     val selectedAssetInformation = accountCacheManager.getAssetInformation(selectedAccountKey, selectedAssetId)
     if (selectedAccountCacheData != null && selectedAssetInformation != null) {
-        navigateSafe(
-            AccountsFragmentDirections.actionAccountsFragmentToAssetDetailFragment(
-                selectedAssetInformation, selectedAccountCacheData.account.address
-            )
-        )
+//        navigateSafe( TODO Check here before merging
+//            AccountsFragmentDirections.actionAccountsFragmentToAssetDetailFragment(
+//                selectedAssetInformation, selectedAccountCacheData.account.address
+//            )
+//        )
     }
 }
 
 fun NavController.handleDeeplink(
     decodedQrCode: DecodedQrCode,
     accountCacheManager: AccountCacheManager,
-    fragmentManager: FragmentManager,
     onWalletConnectResult: ((String) -> Unit?)? = null
 ): Boolean {
 
@@ -64,32 +63,36 @@ fun NavController.handleDeeplink(
     }
 
     if (decodedQrCode.amount != null) {
+        // If deeplink does not contain assetId then it should be Algo
         val assetId = decodedQrCode.getDecodedAssetID()
+
         val accountAssetPairList = accountCacheManager.getAccountCacheWithSpecificAsset(
             assetId, listOf(Account.Type.WATCH)
         )
 
         if (accountAssetPairList.isEmpty()) {
-            AssetActionBottomSheet.show(
-                fragmentManager,
-                assetId,
-                AssetActionBottomSheet.Type.UNSUPPORTED_ADD_TRY_LATER
-            )
+            val assetAction = AssetAction(assetId = assetId)
+            // No account owns this asset
+            navigateSafe(HomeNavigationDirections.actionGlobalUnsupportedAddAssetTryLaterBottomSheet(assetAction))
             return false
         }
 
-        navigateSafe(
-            actionGlobalSendInfoFragment(
-                assetInformation = accountAssetPairList.first().second,
-                amount = decodedQrCode.amount,
-                note = decodedQrCode.note,
-                xnote = decodedQrCode.xnote,
-                toAccountAddress = decodedQrCode.address
+        val assetTransaction = AssetTransaction(
+            assetId = assetId,
+            note = decodedQrCode.note, // normal note
+            xnote = decodedQrCode.xnote, // locked note
+            amount = decodedQrCode.amount,
+            receiverUser = User(
+                publicKey = decodedQrCode.address,
+                name = decodedQrCode.label ?: decodedQrCode.address,
+                imageUriAsString = null
             )
         )
+        navigateSafe(HomeNavigationDirections.actionGlobalSendAlgoNavigation(assetTransaction))
     } else {
+        // If deeplink does not contain amount information then it should be navigate to account addition flow
         navigateSafe(
-            actionGlobalAddContactFragment(
+            HomeNavigationDirections.actionGlobalAddContactFragment(
                 contactName = decodedQrCode.label,
                 contactPublicKey = decodedQrCode.address
             )
@@ -108,17 +111,16 @@ fun NavController.handleIntent(
         return when {
             dataString != null -> {
                 val decodedDeeplink = decodeDeeplink(dataString) ?: return false
-                handleDeeplink(decodedDeeplink, accountCacheManager, fragmentManager, onWalletConnectResult)
+                handleDeeplink(decodedDeeplink, accountCacheManager, onWalletConnectResult)
             }
-            else -> handleIntentWithBundle(this, accountCacheManager, fragmentManager)
+            else -> handleIntentWithBundle(this, accountCacheManager)
         }
     }
 }
 
 private fun NavController.handleIntentWithBundle(
     intentToHandle: Intent,
-    accountCacheManager: AccountCacheManager,
-    fragmentManager: FragmentManager
+    accountCacheManager: AccountCacheManager
 ): Boolean {
     with(intentToHandle) {
         // TODO change your architecture for the bug here. https://issuetracker.google.com/issues/37053389
@@ -138,12 +140,13 @@ private fun NavController.handleIntentWithBundle(
             getParcelableExtra<AssetInformation>(ASSET_SUPPORT_REQUESTED_ASSET_KEY)
 
         if (!assetSupportRequestedPublicKey.isNullOrBlank() && assetSupportRequestedAsset != null) {
-            AssetActionBottomSheet.show(
-                fragmentManager,
-                assetSupportRequestedAsset.assetId,
-                AssetActionBottomSheet.Type.UNSUPPORTED_NOTIFICATION_REQUEST,
-                assetSupportRequestedPublicKey,
-                assetSupportRequestedAsset
+            val assetAction = AssetAction(
+                assetId = assetSupportRequestedAsset.assetId,
+                publicKey = assetSupportRequestedPublicKey,
+                asset = assetSupportRequestedAsset
+            )
+            navigateSafe(
+                HomeNavigationDirections.actionGlobalUnsupportedAssetNotificationRequestActionBottomSheet(assetAction)
             )
             return true
         }

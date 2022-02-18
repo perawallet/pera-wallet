@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        app:constraintSetEnd="@id/end"
+        app:constraintSetStart="@id/start"
+        app:duration="@integer/navigation_duration" />
+
+    <ConstraintSet android:id="@+id/start">
+
+        <Constraint android:id="@id/actionBlockerView">
+            <CustomAttribute
+                app:attributeName="clickable"
+                app:customBoolean="false" />
+            <CustomAttribute
+                app:attributeName="focusable"
+                app:customBoolean="false" />
+            <Transform android:translationZ="-10dp" />
+            <Motion app:transitionEasing="accelerate" />
+            <PropertySet android:visibility="invisible" />
+        </Constraint>
+
+        <Constraint android:id="@id/sendActionButton">
+            <PropertySet
+                android:alpha="0"
+                android:visibility="invisible" />
+        </Constraint>
+
+        <Constraint android:id="@id/sendButtonLabel">
+            <PropertySet
+                android:alpha="0"
+                android:visibility="invisible" />
+        </Constraint>
+
+        <Constraint android:id="@id/receiveActionButton">
+            <PropertySet
+                android:alpha="0"
+                android:visibility="invisible" />
+        </Constraint>
+
+        <Constraint android:id="@id/receiveButtonLabel">
+            <PropertySet
+                android:alpha="0"
+                android:visibility="invisible" />
+        </Constraint>
+
+        <Constraint android:id="@id/openCloseActionButton">
+
+        </Constraint>
+
+        <Constraint android:id="@id/openCloseButtonLabel">
+            <PropertySet
+                android:alpha="0"
+                android:visibility="invisible" />
+        </Constraint>
+
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+
+        <Constraint android:id="@id/actionBlockerView">
+            <Layout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <CustomAttribute
+                app:attributeName="clickable"
+                app:customBoolean="true" />
+            <CustomAttribute
+                app:attributeName="focusable"
+                app:customBoolean="true" />
+            <Transform
+                android:scaleX="4"
+                android:scaleY="4"
+                android:translationZ="0dp" />
+            <Motion app:transitionEasing="accelerate" />
+            <PropertySet android:visibility="visible" />
+        </Constraint>
+
+        <Constraint android:id="@id/sendActionButton">
+            <PropertySet
+                android:alpha="1"
+                android:visibility="visible" />
+        </Constraint>
+
+        <Constraint android:id="@id/sendButtonLabel">
+            <PropertySet
+                android:alpha="1"
+                android:visibility="visible" />
+        </Constraint>
+
+        <Constraint android:id="@id/receiveActionButton">
+            <PropertySet
+                android:alpha="1"
+                android:visibility="visible" />
+        </Constraint>
+
+        <Constraint android:id="@id/receiveButtonLabel">
+            <PropertySet
+                android:alpha="1"
+                android:visibility="visible" />
+        </Constraint>
+
+        <Constraint android:id="@id/openCloseActionButton" />
+
+        <Constraint android:id="@id/openCloseButtonLabel">
+            <PropertySet
+                android:alpha="1"
+                android:visibility="visible" />
+        </Constraint>
+
+    </ConstraintSet>
+
+</MotionScene>

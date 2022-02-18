@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright 2019 Algorand, Inc.
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -10,17 +9,18 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License
   -->
-
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.appcompat.widget.AppCompatTextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/selectionItemView"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
-    android:layout_weight="1"
-    android:background="@drawable/bg_standard_ripple"
-    android:fontFamily="@font/publicsans_medium"
+    android:layout_height="@dimen/settings_list_item_min_height"
+    android:layout_centerVertical="true"
+    android:background="@null"
+    android:drawableEnd="@drawable/settings_item_selector"
     android:gravity="center_vertical"
-    android:paddingHorizontal="20dp"
-    android:textSize="14sp"
-    app:drawableEndCompat="@drawable/ic_check_20dp"
+    android:paddingHorizontal="@dimen/spacing_xlarge"
+    android:textAppearance="@style/TextAppearance.Body.Sans"
     tools:text="English" />
+
+
+

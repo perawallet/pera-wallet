@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright 2019 Algorand, Inc.
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -15,138 +14,148 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/tertiaryBackground">
-
-    <ImageView
-        android:id="@+id/lockImageView"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/descriptionTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.40"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:srcCompat="@drawable/ic_lock" />
+    android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/descriptionTextView"
-        style="@style/TextAppearance.Description"
-        android:layout_width="wrap_content"
+        android:id="@+id/headlineTextView"
+        style="@style/TextAppearance.Title.Sans.Medium"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="46dp"
         android:text="@string/enter_six_digit_pin"
-        app:layout_constraintBottom_toTopOf="@+id/passwordView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lockImageView" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.algorand.android.customviews.DialPadView
+        android:id="@+id/dialPad"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_large"
+        android:layout_marginBottom="@dimen/bottom_safe_area_margin"
+        app:buttonHorizontalMargin="20dp"
+        app:buttonVerticalMargin="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.algorand.android.customviews.SixDigitPasswordView
         android:id="@+id/passwordView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/dialPad"
+        app:layout_constraintBottom_toTopOf="@id/dialPad"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
+        app:layout_constraintTop_toBottomOf="@id/headlineTextView"
+        app:layout_constraintVertical_bias="0.6" />
 
-    <com.algorand.android.customviews.DialPadView
-        android:id="@+id/dialPad"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-    <View
-        android:id="@+id/penaltyBackground"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/tertiaryBackground"
-        android:clickable="true"
-        android:focusable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <ImageView
+        android:id="@+id/lockImageView"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@drawable/bg_lock_rounded_12"
+        android:padding="@dimen/spacing_normal"
+        app:layout_constraintBottom_toTopOf="@id/deleteAllDataButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/lockImageView" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.15"
+        app:srcCompat="@drawable/ic_locked"
+        app:tint="@color/white" />
 
     <TextView
         android:id="@+id/penaltyTitleTextView"
-        android:layout_width="wrap_content"
+        style="@style/TextAppearance.Body.Large.Sans.Medium"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/publicsans_medium"
-        android:text="@string/algorand_app_is_locked"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@id/penaltySubtitleTextView"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:gravity="center"
+        android:text="@string/pera_app_is_locked"
+        app:layout_constraintBottom_toTopOf="@id/deleteAllDataButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/penaltyBackground"
-        app:layout_constraintVertical_bias="0.4"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintTop_toBottomOf="@id/lockImageView"
+        app:layout_constraintVertical_bias="0.2" />
 
     <TextView
         android:id="@+id/penaltySubtitleTextView"
+        style="@style/TextAppearance.Description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/publicsans_regular"
+        android:layout_marginTop="@dimen/spacing_small"
         android:text="@string/too_many_pin_attempts"
-        android:textColor="@color/gray_71"
-        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@id/penaltyGroupDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/penaltyTitleTextView" />
+
+    <View
+        android:id="@+id/penaltyGroupDivider"
+        style="@style/Divider.Horizontal"
+        android:layout_marginTop="@dimen/spacing_xxlarge"
         app:layout_constraintBottom_toTopOf="@id/tryAgainTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/penaltyTitleTextView"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintTop_toBottomOf="@id/penaltySubtitleTextView" />
 
     <TextView
         android:id="@+id/tryAgainTextView"
-        android:layout_width="wrap_content"
+        style="@style/TextAppearance.Description"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="34dp"
-        android:fontFamily="@font/publicsans_regular"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_xxlarge"
+        android:gravity="center"
         android:text="@string/try_again_in"
-        android:textColor="@color/gray_71"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@id/remainingTimeTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/penaltySubtitleTextView" />
+        app:layout_constraintTop_toBottomOf="@id/penaltyGroupDivider" />
 
     <TextView
         android:id="@+id/remainingTimeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:fontFamily="@font/publicsans_medium"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/resetAllButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tryAgainTextView"
-        tools:text="1:42 min" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/resetAllButton"
-        style="@style/UnelevatedButton.General"
+        style="@style/TextAppearance.Title.Mono"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="64dp"
-        android:backgroundTint="@color/red_E9"
-        android:fontFamily="@font/publicsans_semibold"
-        android:text="@string/reset_all_data"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:layout_marginBottom="@dimen/spacing_xlarge"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/deleteAllDataButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tryAgainTextView"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        tools:text="01:42" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/deleteAllDataButton"
+        style="@style/Button.Secondary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginBottom="@dimen/bottom_safe_area_margin"
+        android:text="@string/remove_all_accounts_and_logout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/remainingTimeTextView" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/penaltyGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="penaltyBackground,penaltyTitleTextView,
+        app:constraint_referenced_ids="penaltyTitleTextView,
         penaltySubtitleTextView,tryAgainTextView,remainingTimeTextView,
-        resetAllButton"
+        deleteAllDataButton, lockImageView,penaltyGroupDivider"
         tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/passwordGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="headlineTextView,passwordView, dialPad"
+        tools:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

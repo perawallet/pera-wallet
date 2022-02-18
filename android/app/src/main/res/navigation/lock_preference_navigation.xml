@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  Copyright 2019 Algorand, Inc.
+  Copyright 2022 Pera Wallet, LDA
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -20,17 +20,27 @@
         android:id="@+id/choosePasswordInfoFragment"
         android:name="com.algorand.android.ui.lockpreference.ChoosePasswordInfoFragment"
         android:label="ChoosePasswordInfoFragment"
-        tools:layout="@layout/fragment_choose_password_info" >
+        tools:layout="@layout/fragment_base_info">
+        <argument
+            android:name="shouldNavigateHome"
+            android:defaultValue="false"
+            app:argType="boolean" />
         <action
             android:id="@+id/action_choosePasswordInfoFragment_to_choosePasswordFragment"
             app:destination="@id/choosePasswordFragment" />
+        <action
+            android:id="@+id/action_choosePasswordInfoFragment_to_homeNavigation"
+            app:destination="@id/homeNavigation"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/choosePasswordInfoFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
         android:id="@+id/choosePasswordFragment"
         android:name="com.algorand.android.ui.lockpreference.ChoosePasswordFragment"
         android:label="ChoosePasswordFragment"
-        tools:layout="@layout/fragment_choose_password" >
+        tools:layout="@layout/fragment_base_password">
         <action
             android:id="@+id/action_choosePasswordFragment_to_biometricRegistrationFragment"
             app:destination="@id/biometricRegistrationFragment" />
@@ -41,15 +51,30 @@
     </fragment>
 
     <fragment
-        tools:layout="@layout/fragment_biometric_registration"
         android:id="@+id/biometricRegistrationFragment"
         android:name="com.algorand.android.ui.lockpreference.BiometricRegistrationFragment"
-        android:label="BiometricRegistrationFragment" >
+        android:label="BiometricRegistrationFragment"
+        tools:layout="@layout/fragment_base_info">
         <action
-            android:id="@+id/action_biometricRegistrationFragment_pop_including_choose_password_navigation"
-            app:popUpTo="@id/lockPreferenceNavigation"
+            android:id="@+id/action_biometricRegistrationFragment_to_homeNavigation"
+            app:destination="@id/homeNavigation"
+            app:popUpTo="@id/homeNavigation"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_biometricRegistrationFragment_to_biometricAuthenticationEnabledFragment"
+            app:destination="@id/biometricAuthenticationEnabledFragment" />
     </fragment>
 
+    <fragment
+        android:id="@+id/biometricAuthenticationEnabledFragment"
+        android:name="com.algorand.android.ui.lockpreference.BiometricAuthenticationEnabledFragment"
+        android:label="fragment_biometric_authentication_enabled"
+        tools:layout="@layout/fragment_base_info">
+        <action
+            android:id="@+id/action_biometricAuthenticationEnabledFragment_to_homeNavigation"
+            app:destination="@id/homeNavigation"
+            app:popUpTo="@id/homeNavigation"
+            app:popUpToInclusive="true" />
+    </fragment>
 
 </navigation>

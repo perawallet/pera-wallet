@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -13,14 +13,13 @@
 package com.algorand.android.models
 
 import android.os.Parcelable
-import com.algorand.android.utils.formatAmount
 import com.algorand.android.utils.formatAsTxString
-import com.algorand.android.utils.getUserIfSavedLocally
 import com.algorand.android.utils.getZonedDateTimeFromTimeStamp
 import com.google.gson.annotations.SerializedName
 import java.math.BigInteger
 import kotlinx.parcelize.Parcelize
 
+// TODO Create another model to separate data/ui models
 @Parcelize
 data class Transaction(
     @SerializedName("asset-transfer-transaction") val assetTransfer: AssetTransfer?,
@@ -34,19 +33,11 @@ data class Transaction(
     @SerializedName("sender-rewards") val senderRewards: Long?,
     @SerializedName("receiver-rewards") val receiverRewards: Long?,
     @SerializedName("note") val noteInBase64: String?,
-    @SerializedName("round-time") val roundTimeAsTimestamp: Long?
-) : Parcelable, TransactionImpl {
-
-    private fun isInPending() = confirmedRound == null || confirmedRound == 0L
+    @SerializedName("round-time") val roundTimeAsTimestamp: Long?,
+    @SerializedName("rekey-to") val rekeyTo: String?
+) : Parcelable {
 
     fun isAlgorand() = payment != null
-
-    private fun isAssetCreationTransaction(): Boolean {
-        return assetTransfer != null && senderAddress == assetTransfer.receiverAddress &&
-            assetTransfer.amount == BigInteger.ZERO
-    }
-
-    private fun includeInAlgorandHistory() = payment != null || isAssetCreationTransaction()
 
     fun getReceiverAddress(): String {
         return if (isAlgorand()) {
@@ -66,7 +57,7 @@ data class Transaction(
         } ?: assetTransfer?.amount
     }
 
-    private fun getAssetId(): Long? = if (isAlgorand()) {
+    fun getAssetId(): Long? = if (isAlgorand()) {
         AssetInformation.ALGORAND_ID
     } else {
         assetTransfer?.assetId
@@ -87,92 +78,7 @@ data class Transaction(
         return roundTimeAsTimestamp?.getZonedDateTimeFromTimeStamp()?.formatAsTxString().orEmpty()
     }
 
-    private fun getCloseToAddress(): String? {
+    fun getCloseToAddress(): String? {
         return payment?.closeToAddress
-    }
-
-    private fun getTransactionType(): TransactionType {
-        return when {
-            isAssetCreationTransaction() -> {
-                TransactionType.ASSET_CREATION
-            }
-            isInPending() -> {
-                TransactionType.PENDING
-            }
-            else -> {
-                TransactionType.TRANSFER
-            }
-        }
-    }
-
-    override fun toTransactionListItem(
-        assetId: Long,
-        accountPublicKey: String,
-        contactList: List<User>,
-        accountList: List<Account>,
-        decimals: Int
-    ): TransactionListItem {
-        val receiverAddress = getReceiverAddress()
-
-        val transactionSymbol = when {
-            senderAddress == accountPublicKey && receiverAddress == accountPublicKey -> {
-                null
-            }
-            receiverAddress == accountPublicKey || getCloseToAddress() == accountPublicKey -> {
-                TransactionSymbol.POSITIVE
-            }
-            else -> {
-                TransactionSymbol.NEGATIVE
-            }
-        }
-
-        val otherPublicKey = if (receiverAddress == accountPublicKey) {
-            senderAddress.orEmpty()
-        } else {
-            receiverAddress
-        }
-
-        val zonedDateTime = roundTimeAsTimestamp?.getZonedDateTimeFromTimeStamp()
-
-        return TransactionListItem(
-            assetId = assetId,
-            id = id,
-            signature = signature?.signatureKey,
-            accountPublicKey = accountPublicKey,
-            otherPublicKey = otherPublicKey,
-            transactionSymbol = transactionSymbol,
-            transactionType = getTransactionType(),
-            isAlgorand = isAlgorand(),
-            contact = getUserIfSavedLocally(contactList, accountList, otherPublicKey),
-            zonedDateTime = zonedDateTime,
-            date = zonedDateTime?.formatAsTxString().orEmpty(),
-            amount = getAmount(includeCloseAmount = false),
-            fee = fee,
-            noteInB64 = noteInBase64,
-            round = confirmedRound,
-            decimals = decimals,
-            formattedFullAmount = getAmount(includeCloseAmount = true).formatAmount(decimals),
-            closeToAddress = getCloseToAddress(),
-            closeToAmount = closeAmount,
-            rewardAmount = getReward(accountPublicKey)
-        )
-    }
-
-    override fun getRewardOfTransaction(accountPublicKey: String): ClaimedRewardListItem? {
-        val reward = getReward(accountPublicKey)
-        return if (reward != null && reward != 0L) {
-            ClaimedRewardListItem(reward, id, getDateAsString())
-        } else {
-            null
-        }
-    }
-
-    override fun includeInHistory(assetId: Long): Boolean {
-        return if (assetId == AssetInformation.ALGORAND_ID) {
-            includeInAlgorandHistory()
-        } else {
-            val assetIdOfTransaction = getAssetId()
-            assetIdOfTransaction != null && !isAssetCreationTransaction() && assetIdOfTransaction == assetId
-        }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,10 +12,7 @@
 
 package com.algorand.android.network
 
-import com.algorand.android.R
-import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.Result
-import com.algorand.android.utils.Resource
 import com.hipo.hipoexceptionsandroid.RetrofitErrorHandler
 import java.io.IOException
 import retrofit2.Response
@@ -42,7 +39,7 @@ suspend fun <T : Any> request(
             if (isSuccessful && body() != null) {
                 Result.Success(body() as T)
             } else {
-                onFailed?.invoke(this) ?: Result.Error(Exception(errorBody().toString()))
+                onFailed?.invoke(this) ?: Result.Error(Exception(errorBody().toString()), code())
             }
         }
     }
@@ -59,16 +56,5 @@ suspend fun <T : Any> requestWithHipoErrorHandler(
 }
 
 fun <T> RetrofitErrorHandler.getMessageAsResultError(response: Response<T>): Result.Error {
-    return Result.Error(Exception(parse(response).message))
-}
-
-fun Result.Error.getAsResourceError(): Resource.Error {
-    return when (this.exception) {
-        is IOException -> {
-            Resource.Error.Annotated(AnnotatedString(R.string.the_internet_connection))
-        }
-        else -> {
-            Resource.Error.Api(this.exception)
-        }
-    }
+    return Result.Error(Exception(parse(response).message), response.code())
 }

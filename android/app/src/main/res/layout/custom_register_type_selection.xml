@@ -8,53 +8,42 @@
 
     <ImageView
         android:id="@+id/typeImageView"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="@dimen/register_type_selection_item_icon_size"
+        android:layout_height="@dimen/register_type_selection_item_icon_size"
+        android:layout_marginStart="@dimen/spacing_xlarge"
+        android:background="@drawable/bg_layer_gray_lighter_oval"
+        android:padding="@dimen/spacing_xsmall"
+        app:layout_constraintBottom_toBottomOf="@id/descriptionTextView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/ic_create_watch_account" />
+        app:layout_constraintTop_toTopOf="@id/titleTextView"
+        tools:srcCompat="@drawable/ic_user_add" />
 
     <TextView
         android:id="@+id/titleTextView"
+        style="@style/TextAppearance.Body.Sans.Medium"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="24dp"
-        android:fontFamily="@font/publicsans_medium"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@id/chevronImageView"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_large"
+        app:layout_constraintBottom_toTopOf="@id/descriptionTextView"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toEndOf="@id/typeImageView"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Create New Account" />
+        tools:text="@tools:sample/lorem[2]" />
 
     <TextView
         android:id="@+id/descriptionTextView"
+        style="@style/TextAppearance.Footnote.Description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="24dp"
-        android:fontFamily="@font/publicsans_regular"
-        android:textColor="@color/secondaryTextColor"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/chevronImageView"
-        app:layout_constraintStart_toEndOf="@id/typeImageView"
-        app:layout_constraintTop_toBottomOf="@id/titleTextView"
-        app:layout_constraintVertical_bias="0"
-        tools:text="Create a new Algorand Account with new feat" />
-
-    <ImageView
-        android:id="@+id/chevronImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="28dp"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_xxxsmall"
+        android:layout_marginBottom="@dimen/spacing_large"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_right_arrow" />
+        app:layout_constraintStart_toEndOf="@id/typeImageView"
+        app:layout_constraintTop_toBottomOf="@id/titleTextView"
+        tools:text="@tools:sample/lorem[10]" />
 
 </merge>

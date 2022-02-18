@@ -1,0 +1,53 @@
+<!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <group>
+    <clip-path
+        android:pathData="M0,0h24v24h-24z"/>
+    <path
+        android:fillColor="#18181B"
+        android:pathData="M12.5,0H2.5V12.101C3.0741,11.5151 3.7504,11.0297 4.5,10.6736V2H10.5V10.6736C11.2496,11.0297 11.9259,11.5151 12.5,12.101V0Z"/>
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M3.5,17C3.5,14.7909 5.2909,13 7.5,13V13C9.7091,13 11.5,14.7909 11.5,17V23H3.5V17Z"
+        android:strokeWidth="2"
+        android:strokeColor="#18181B"/>
+    <path
+        android:fillColor="#18181B"
+        android:pathData="M7.5,17m-1,0a1,1 0,1 1,2 0a1,1 0,1 1,-2 0"/>
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M21.8818,16L20.3818,14L18.8818,16"
+        android:strokeWidth="2"
+        android:strokeColor="#000000"/>
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M20.5399,15.2955L20.5399,20.3289C20.5399,20.6995 20.2394,21 19.8688,21L14.4998,21"
+        android:strokeWidth="2"
+        android:strokeColor="#000000"/>
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M16.8818,8L18.3818,10L19.8818,8"
+        android:strokeWidth="2"
+        android:strokeColor="#000000"/>
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M18.1444,8.7045V3.6711C18.1444,3.3005 18.4449,3 18.8155,3H24.1845"
+        android:strokeWidth="2"
+        android:strokeColor="#000000"/>
+  </group>
+</vector>

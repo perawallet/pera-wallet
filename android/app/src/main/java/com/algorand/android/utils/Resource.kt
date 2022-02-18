@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -13,6 +13,8 @@
 package com.algorand.android.utils
 
 import android.content.Context
+import androidx.annotation.StringRes
+import androidx.navigation.NavDirections
 import com.algorand.android.models.AnnotatedString
 
 /**
@@ -24,17 +26,18 @@ sealed class Resource<out T> {
     sealed class Error : Resource<Nothing>() {
         data class Annotated(val annotatedString: AnnotatedString) : Error()
         data class Api(val exception: Throwable) : Error()
+        data class Warning(@StringRes val titleRes: Int, val annotatedString: AnnotatedString) : Error()
+        data class Navigation(val navDirections: NavDirections) : Error()
         data class Local(val message: String) : Error()
+        data class GlobalWarning(@StringRes val titleRes: Int? = null, val annotatedString: AnnotatedString) : Error()
 
-        fun parse(context: Context): CharSequence {
+        fun parse(context: Context): CharSequence? {
             return when (this) {
-                is Annotated -> {
-                    context.getXmlStyledString(annotatedString)
-                }
-                is Api -> {
-                    return exception.message.orEmpty()
-                }
+                is Annotated -> context.getXmlStyledString(annotatedString)
+                is Api -> exception.message.orEmpty()
                 is Local -> message
+                is GlobalWarning -> context.getXmlStyledString(annotatedString)
+                else -> null
             }
         }
     }

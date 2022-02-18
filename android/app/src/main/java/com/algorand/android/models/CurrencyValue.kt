@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -27,7 +27,19 @@ data class CurrencyValue(
     val name: String?,
 
     @SerializedName("exchange_price")
-    val exchangePrice: String?
+    val exchangePrice: String?,
+
+    @SerializedName("symbol")
+    val symbol: String?,
+
+    @SerializedName("usd_value")
+    val usdValue: BigDecimal?,
+
+    @SerializedName("last_updated_at")
+    val lastUpdateTimestamp: String?, // "2021-12-15 11:21:31"
+
+    @SerializedName("s")
+    val source: String?
 ) : Parcelable {
 
     fun getAlgorandCurrencyValue(): BigDecimal? = exchangePrice?.toBigDecimalOrNull()
@@ -35,5 +47,10 @@ data class CurrencyValue(
     fun getFormattedSignedCurrencyValue(price: BigDecimal? = null): String {
         val formattedCurrencyValue = (price ?: getAlgorandCurrencyValue())?.formatAsDollar()
         return if (formattedCurrencyValue.isNullOrBlank()) "" else "$formattedCurrencyValue $id"
+    }
+
+    fun calculateFormattedAssetValueWithAmount(amount: BigDecimal?, price: BigDecimal? = null): String {
+        val currencyPrice = price ?: getAlgorandCurrencyValue()
+        return getFormattedSignedCurrencyValue(currencyPrice?.multiply(amount))
     }
 }

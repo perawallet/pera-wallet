@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -20,8 +20,6 @@ import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentRekeyInstructionBinding
-import com.algorand.android.models.Account
-import com.algorand.android.models.AccountCacheData
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.ui.rekey.RekeyInstructionFragmentDirections.Companion.actionRekeyInstructionFragmentToRekeyLedgerSearchFragment
@@ -46,16 +44,17 @@ class RekeyInstructionFragment : DaggerBaseFragment(R.layout.fragment_rekey_inst
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val accountCacheData = rekeyInstructionViewModel.getCacheData(args.rekeyAddress)
-        setupAccountSpecificTextViews(accountCacheData)
+        setupAccountSpecificTextViews()
         binding.processButton.setOnClickListener { onStartProcessClick() }
     }
 
-    private fun setupAccountSpecificTextViews(accountCacheData: AccountCacheData?) {
-        val isStandardAccount = accountCacheData?.account?.type == Account.Type.STANDARD
-        val isNotRekeyed = accountCacheData?.authAddress.isNullOrBlank()
+    private fun setupAccountSpecificTextViews() {
+        val isStandardAccount = rekeyInstructionViewModel.isStandardAccount(args.rekeyAddress)
+        val isNotRekeyed = rekeyInstructionViewModel.isAccountNotRekeyed(args.rekeyAddress)
+
         @StringRes val secondStepTextResId: Int
         @StringRes val descriptionTextResId: Int
+
         if (isStandardAccount && isNotRekeyed) {
             secondStepTextResId = R.string.this_account
             descriptionTextResId = R.string.replace_your_accounts
@@ -63,8 +62,11 @@ class RekeyInstructionFragment : DaggerBaseFragment(R.layout.fragment_rekey_inst
             secondStepTextResId = R.string.your_old_ledger
             descriptionTextResId = R.string.replace_your_account
         }
-        binding.rekeyInstructionSecondStepTextView.setText(secondStepTextResId)
-        binding.descriptionTextView.setText(descriptionTextResId)
+
+        with(binding) {
+            secondExpectationText.setText(secondStepTextResId)
+            descriptionTextView.setText(descriptionTextResId)
+        }
     }
 
     private fun onStartProcessClick() {

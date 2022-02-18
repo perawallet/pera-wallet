@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright 2019 Algorand, Inc.
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -11,106 +10,61 @@
   ~ limitations under the License
   -->
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/bottom_safe_area_margin">
+
+    <View
+        style="@style/BottomSheetModalityLine"
+        android:layout_gravity="center"
+        android:layout_marginVertical="@dimen/spacing_small" />
 
     <com.algorand.android.customviews.CustomToolbar
         android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/default_toolbar_height"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_toolbar_height" />
 
     <TextView
-        android:id="@+id/descriptionTextView"
-        android:layout_width="0dp"
+        style="@style/TextAppearance.Footnote.Description"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:fontFamily="@font/publicsans_regular"
-        android:gravity="center"
-        android:paddingHorizontal="32dp"
-        android:text="@string/you_earn_rewards_just"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_xlarge"
+        android:text="@string/rewards" />
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/valueCardView"
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/rewardsAmountTextView"
+        style="@style/TextAppearance.Body.Large.Mono"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="28dp"
-        app:cardBackgroundColor="@color/primaryBackground"
-        app:cardCornerRadius="@dimen/default_card_radius"
-        app:cardElevation="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/descriptionTextView">
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_xsmall"
+        android:drawablePadding="@dimen/spacing_small"
+        app:drawableStartCompat="@drawable/ic_algo_green_round"
+        tools:text="0.94028594 ALGO" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:padding="20dp">
+    <View
+        style="@style/Divider.Horizontal"
+        android:layout_marginVertical="@dimen/spacing_xxlarge" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/publicsans_medium"
-                android:text="@string/since_last_transaction"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/descriptionTextView" />
-
-            <com.algorand.android.customviews.AmountTextView
-                android:id="@+id/valueTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/keyline_1_minus_8dp"
-                app:algoFontFamily="@font/publicsans_semibold"
-                app:algoLogoViewSize="16dp"
-                app:algoTextViewSize="28sp"
-                app:defaultTintColor="@color/green_0D"
-                tools:algoFontFamily="@null" />
-
-        </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
+    <TextView
+        style="@style/TextAppearance.Body.Sans"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:text="@string/you_earn_rewards_just" />
 
     <TextView
         android:id="@+id/moreInfoTextView"
-        android:layout_width="0dp"
+        style="@style/TextAppearance.Body.Sans"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="28dp"
-        android:fontFamily="@font/publicsans_medium"
-        android:gravity="center"
-        android:lineSpacingMultiplier="1.3"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/valueCardView"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_small"
         tools:text="@string/for_more_information" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/confirmationButton"
-        style="@style/UnelevatedButton.General"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="@dimen/bottom_safe_area_margin"
-        android:text="@string/ok"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/moreInfoTextView" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

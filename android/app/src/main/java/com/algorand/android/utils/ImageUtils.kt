@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -25,23 +25,12 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 
-fun ImageView.loadContactProfileImage(
-    uri: Uri?,
-    useSecondaryBackground: Boolean = false,
-    shouldUsePlaceHolder: Boolean = true
-) {
+fun ImageView.loadContactProfileImage(uri: Uri?, shouldUsePlaceHolder: Boolean = true) {
     if (uri == null) {
         if (shouldUsePlaceHolder.not()) return
-
-        setBackgroundResource(
-            if (useSecondaryBackground) {
-                R.drawable.bg_photo_secondary
-            } else {
-                R.drawable.bg_photo_primary
-            }
-        )
+        setBackgroundResource(R.drawable.bg_layer_gray_lighter_oval)
         Glide.with(this)
-            .load(R.drawable.ic_profile_photo_placeholder)
+            .load(R.drawable.ic_user_placeholder)
             .into(this)
     } else {
         Glide.with(this)
@@ -82,6 +71,13 @@ fun ImageView.loadPeerMetaIcon(url: String?) {
                 return false
             }
         })
+        .circleCrop()
+        .into(this)
+}
+
+fun ImageView.loadCircularImage(uri: Uri) {
+    Glide.with(this)
+        .load(uri)
         .circleCrop()
         .into(this)
 }

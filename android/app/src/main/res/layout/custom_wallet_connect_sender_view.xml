@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -14,331 +14,317 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:background="@drawable/bg_small_shadow"
     tools:layout_height="wrap_content"
     tools:layout_width="match_parent"
-    tools:padding="20dp"
+    tools:padding="@dimen/spacing_xlarge"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/senderLabelTextView"
-        style="@style/TextAppearance.Label"
-        android:layout_width="wrap_content"
+        style="@style/TextView.TransactionLabelStyle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/sender"
         app:layout_constraintBottom_toBottomOf="@id/senderNameTextView"
+        app:layout_constraintEnd_toEndOf="@id/labelGuideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/senderNameTextView" />
-
-    <ImageView
-        android:id="@+id/senderTypeImageView"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="16dp"
-        android:src="@drawable/ic_wallet"
-        app:layout_constraintBottom_toBottomOf="@id/senderNameTextView"
-        app:layout_constraintEnd_toStartOf="@id/senderNameTextView"
-        app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toEndOf="@id/senderLabelTextView"
-        app:layout_constraintTop_toTopOf="@id/senderNameTextView" />
+        app:layout_constraintTop_toTopOf="@id/senderNameTextView"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
         android:id="@+id/senderNameTextView"
-        android:layout_width="wrap_content"
+        style="@style/TextAppearance.Body.Mono"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="@dimen/spacing_normal"
         android:ellipsize="end"
-        android:fontFamily="@font/publicsans_medium"
-        android:gravity="end"
-        android:textSize="14sp"
         app:layout_constrainedWidth="true"
-        app:layout_constraintBottom_toTopOf="@id/applicationIdDividerView"
+        app:layout_constraintBottom_toTopOf="@id/toNameTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/senderTypeImageView"
+        app:layout_constraintStart_toEndOf="@id/labelGuideline"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_goneMarginBottom="10dp"
-        tools:text="@tools:sample/lorem[10]" />
+        tools:text="@tools:sample/lorem[6]" />
 
-    <View
-        android:id="@+id/applicationIdDividerView"
-        style="@style/HorizontalDivider.WalletConnectCards"
-        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
-        app:layout_constraintBottom_toTopOf="@id/applicationIdTextView"
-        app:layout_constraintEnd_toEndOf="parent"
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/toLabelTextView"
+        style="@style/TextView.TransactionLabelStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/to"
+        app:layout_constraintBottom_toBottomOf="@id/toNameTextView"
+        app:layout_constraintEnd_toEndOf="@id/labelGuideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/senderNameTextView" />
+        app:layout_constraintTop_toTopOf="@id/toNameTextView"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
-        android:id="@+id/applicationIdLabelTextView"
-        style="@style/TextAppearance.Label"
+        android:id="@+id/toNameTextView"
+        style="@style/TextAppearance.Body.Mono"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:ellipsize="end"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@id/assetNameTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/labelGuideline"
+        app:layout_constraintTop_toBottomOf="@id/senderNameTextView"
+        tools:text="@tools:sample/lorem[6]" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/assetLabelTextView"
+        style="@style/TextView.TransactionLabelStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/asset"
+        app:layout_constraintBottom_toBottomOf="@id/assetNameTextView"
+        app:layout_constraintEnd_toEndOf="@id/labelGuideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/assetNameTextView" />
+
+    <TextView
+        android:id="@+id/assetNameTextView"
+        style="@style/TextAppearance.Body.Mono"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/application_id"
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:drawablePadding="@dimen/spacing_small"
+        android:gravity="center_vertical"
+        app:drawableTint="@color/verifiedIconColor"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@id/applicationIdTextView"
+        app:layout_constraintEnd_toStartOf="@id/assetDotView"
+        app:layout_constraintStart_toEndOf="@id/labelGuideline"
+        app:layout_constraintTop_toBottomOf="@id/toNameTextView"
+        tools:drawableStart="@drawable/ic_shield"
+        tools:text="ALGO" />
+
+    <ImageView
+        android:id="@+id/assetDotView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xsmall"
+        android:src="@drawable/ic_dot"
+        app:layout_constraintBottom_toBottomOf="@id/assetNameTextView"
+        app:layout_constraintEnd_toStartOf="@id/assetIdTextView"
+        app:layout_constraintStart_toEndOf="@id/assetNameTextView"
+        app:layout_constraintTop_toTopOf="@id/assetNameTextView" />
+
+    <TextView
+        android:id="@+id/assetIdTextView"
+        style="@style/TextAppearance.Body.Mono"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:drawablePadding="@dimen/spacing_small"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@id/assetNameTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/assetDotView"
+        app:layout_constraintTop_toTopOf="@id/assetNameTextView"
+        tools:text="@tools:sample/lorem" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/applicationIdLabelTextView"
+        style="@style/TextView.TransactionLabelStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/app_id"
         app:layout_constraintBottom_toBottomOf="@id/applicationIdTextView"
+        app:layout_constraintEnd_toEndOf="@id/labelGuideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/applicationIdTextView" />
+        app:layout_constraintTop_toTopOf="@id/applicationIdTextView"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
         android:id="@+id/applicationIdTextView"
+        style="@style/TextAppearance.Body.Mono"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_large"
         android:ellipsize="end"
-        android:fontFamily="@font/publicsans_medium"
-        android:gravity="end"
         android:maxLines="1"
-        android:textSize="14sp"
         app:layout_constrainedWidth="true"
-        app:layout_constraintBottom_toTopOf="@id/onCompleteDividerView"
+        app:layout_constraintBottom_toTopOf="@id/onCompleteLabelTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/labelBarrier"
-        app:layout_constraintTop_toBottomOf="@id/applicationIdDividerView"
-        tools:text="@tools:sample/lorem[2]" />
+        app:layout_constraintStart_toEndOf="@id/labelGuideline"
+        app:layout_constraintTop_toBottomOf="@id/assetNameTextView"
+        tools:text="#234231" />
 
-    <View
-        android:id="@+id/onCompleteDividerView"
-        style="@style/HorizontalDivider.WalletConnectCards"
-        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
-        app:layout_constraintBottom_toTopOf="@id/onCompleteTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/applicationIdTextView" />
-
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/onCompleteLabelTextView"
-        style="@style/TextAppearance.Label"
-        android:layout_width="wrap_content"
+        style="@style/TextView.TransactionLabelStyle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_large"
         android:text="@string/on_complete"
-        app:layout_constraintBottom_toBottomOf="@id/onCompleteTextView"
+        app:layout_constraintBottom_toTopOf="@id/appGlobalSchemaLabelTextView"
+        app:layout_constraintEnd_toEndOf="@id/labelGuideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/onCompleteTextView" />
+        app:layout_constraintTop_toBottomOf="@id/applicationIdTextView"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
         android:id="@+id/onCompleteTextView"
+        style="@style/TextAppearance.Body.Mono"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
+        android:layout_marginStart="@dimen/spacing_normal"
         android:ellipsize="end"
-        android:fontFamily="@font/publicsans_medium"
-        android:gravity="end"
         android:maxLines="1"
-        android:textSize="14sp"
         app:layout_constrainedWidth="true"
-        app:layout_constraintBottom_toTopOf="@id/appGlobalSchemaDividerView"
+        app:layout_constraintBottom_toBottomOf="@id/onCompleteLabelTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/labelBarrier"
-        app:layout_constraintTop_toBottomOf="@id/onCompleteDividerView"
-        app:layout_goneMarginBottom="10dp"
+        app:layout_constraintStart_toEndOf="@id/labelGuideline"
+        app:layout_constraintTop_toTopOf="@id/onCompleteLabelTextView"
         tools:text="@tools:sample/lorem[2]" />
 
-    <View
-        android:id="@+id/appGlobalSchemaDividerView"
-        style="@style/HorizontalDivider.WalletConnectCards"
-        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
-        app:layout_constraintBottom_toTopOf="@id/appGlobalSchemaTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/onCompleteTextView" />
-
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/appGlobalSchemaLabelTextView"
-        style="@style/TextAppearance.Label"
-        android:layout_width="wrap_content"
+        style="@style/TextView.TransactionLabelStyle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_large"
         android:text="@string/app_global_schema"
-        app:layout_constraintBottom_toBottomOf="@id/appGlobalSchemaTextView"
+        app:layout_constraintBottom_toTopOf="@id/appLocalSchemaLabelTextView"
+        app:layout_constraintEnd_toEndOf="@id/labelGuideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/appGlobalSchemaTextView" />
+        app:layout_constraintTop_toBottomOf="@id/onCompleteLabelTextView" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/appGlobalSchemaTextView"
+        style="@style/TextAppearance.Body.Sans"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/publicsans_medium"
-        android:gravity="end"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@id/appLocalSchemaDividerView"
+        android:layout_marginStart="@dimen/spacing_normal"
+        app:layout_constraintBottom_toBottomOf="@id/appGlobalSchemaLabelTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/labelBarrier"
-        app:layout_constraintTop_toBottomOf="@id/appGlobalSchemaDividerView"
+        app:layout_constraintStart_toEndOf="@id/labelGuideline"
+        app:layout_constraintTop_toTopOf="@id/appGlobalSchemaLabelTextView"
         tools:text="@tools:sample/lorem[4]" />
 
-    <View
-        android:id="@+id/appLocalSchemaDividerView"
-        style="@style/HorizontalDivider.WalletConnectCards"
-        android:layout_marginTop="20dp"
-        app:layout_constraintBottom_toTopOf="@id/appLocalSchemaTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/appGlobalSchemaTextView" />
-
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/appLocalSchemaLabelTextView"
-        style="@style/TextAppearance.Label"
-        android:layout_width="wrap_content"
+        style="@style/TextView.TransactionLabelStyle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_large"
         android:text="@string/app_local_schema"
-        app:layout_constraintBottom_toBottomOf="@id/appLocalSchemaTextView"
+        app:layout_constraintBottom_toTopOf="@id/appExtraPagesLabelTextView"
+        app:layout_constraintEnd_toEndOf="@id/labelGuideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/appLocalSchemaTextView" />
+        app:layout_constraintTop_toBottomOf="@id/appGlobalSchemaLabelTextView" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/appLocalSchemaTextView"
+        style="@style/TextAppearance.Body.Sans"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
-        android:fontFamily="@font/publicsans_medium"
-        android:gravity="end"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@id/appExtraPagesDividerView"
+        android:layout_marginStart="@dimen/spacing_normal"
+        app:layout_constraintBottom_toBottomOf="@id/appLocalSchemaLabelTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/labelBarrier"
-        app:layout_constraintTop_toBottomOf="@id/appLocalSchemaDividerView"
+        app:layout_constraintStart_toEndOf="@id/labelGuideline"
+        app:layout_constraintTop_toTopOf="@id/appLocalSchemaLabelTextView"
         tools:text="@tools:sample/lorem[4]" />
 
-    <View
-        android:id="@+id/appExtraPagesDividerView"
-        style="@style/HorizontalDivider.WalletConnectCards"
-        android:layout_marginTop="20dp"
-        app:layout_constraintBottom_toTopOf="@id/appExtraPagesTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/appLocalSchemaTextView" />
-
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/appExtraPagesLabelTextView"
-        style="@style/TextAppearance.Label"
-        android:layout_width="wrap_content"
+        style="@style/TextView.TransactionLabelStyle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_large"
         android:text="@string/app_extra_pages"
-        app:layout_constraintBottom_toBottomOf="@id/appExtraPagesTextView"
+        app:layout_constraintBottom_toTopOf="@id/approvalHashTextView"
+        app:layout_constraintEnd_toEndOf="@id/labelGuideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/appExtraPagesTextView" />
+        app:layout_constraintTop_toBottomOf="@id/appLocalSchemaLabelTextView" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/appExtraPagesTextView"
+        style="@style/TextAppearance.Body.Sans"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/publicsans_medium"
-        android:gravity="end"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@id/approvalHashDividerView"
+        android:layout_marginStart="@dimen/spacing_normal"
+        app:layout_constraintBottom_toBottomOf="@id/appExtraPagesLabelTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/labelBarrier"
-        app:layout_constraintTop_toBottomOf="@id/appExtraPagesDividerView"
+        app:layout_constraintStart_toEndOf="@id/labelGuideline"
+        app:layout_constraintTop_toTopOf="@id/appExtraPagesLabelTextView"
         tools:text="@tools:sample/lorem[4]" />
 
-    <View
-        android:id="@+id/approvalHashDividerView"
-        style="@style/HorizontalDivider.WalletConnectCards"
-        android:layout_marginTop="20dp"
-        app:layout_constraintBottom_toTopOf="@id/approvalHashTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/appExtraPagesTextView" />
-
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/approvalHashLabelTextView"
-        style="@style/TextAppearance.Label"
-        android:layout_width="wrap_content"
+        style="@style/TextView.TransactionLabelStyle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/approval_hash"
         app:layout_constraintBottom_toBottomOf="@id/approvalHashTextView"
+        app:layout_constraintEnd_toEndOf="@id/labelGuideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/approvalHashTextView" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/approvalHashTextView"
+        style="@style/TextAppearance.Body.Mono"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
-        android:fontFamily="@font/publicsans_medium"
-        android:gravity="end"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@id/clearStateHashDividerView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/labelBarrier"
-        app:layout_constraintTop_toBottomOf="@id/approvalHashDividerView"
-        tools:text="@tools:sample/lorem[4]" />
-
-    <View
-        android:id="@+id/clearStateHashDividerView"
-        style="@style/HorizontalDivider.WalletConnectCards"
-        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_large"
         app:layout_constraintBottom_toTopOf="@id/clearStateHashTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/approvalHashTextView" />
+        app:layout_constraintStart_toEndOf="@id/labelGuideline"
+        app:layout_constraintTop_toBottomOf="@id/appExtraPagesTextView"
+        tools:text="@tools:sample/lorem[7]" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/clearStateHashLabelTextView"
-        style="@style/TextAppearance.Label"
-        android:layout_width="wrap_content"
+        style="@style/TextView.TransactionLabelStyle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/clear_state_hash"
         app:layout_constraintBottom_toBottomOf="@id/clearStateHashTextView"
+        app:layout_constraintEnd_toEndOf="@id/labelGuideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/clearStateHashTextView" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/clearStateHashTextView"
+        style="@style/TextAppearance.Body.Mono"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
-        android:fontFamily="@font/publicsans_medium"
-        android:gravity="end"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@id/rekeyToDividerView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/labelBarrier"
-        app:layout_constraintTop_toBottomOf="@id/clearStateHashDividerView"
-        app:layout_goneMarginBottom="10dp"
-        tools:text="@tools:sample/lorem[4]" />
-
-    <View
-        android:id="@+id/rekeyToDividerView"
-        style="@style/HorizontalDivider.WalletConnectCards"
-        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_large"
         app:layout_constraintBottom_toTopOf="@id/rekeyToTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/clearStateHashTextView" />
+        app:layout_constraintStart_toEndOf="@id/labelGuideline"
+        app:layout_constraintTop_toBottomOf="@id/approvalHashLabelTextView"
+        app:layout_goneMarginBottom="10dp"
+        tools:text="@tools:sample/lorem[7]" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/rekeyToLabelTextView"
-        style="@style/TextAppearance.Label"
-        android:layout_width="wrap_content"
+        style="@style/TextView.TransactionLabelStyle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/rekey_to"
         app:layout_constraintBottom_toBottomOf="@id/rekeyToTextView"
+        app:layout_constraintEnd_toEndOf="@id/labelGuideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/rekeyToTextView" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/rekeyToTextView"
+        style="@style/TextAppearance.Body.Mono"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="@dimen/wallet_connect_card_divider_margin"
-        android:fontFamily="@font/publicsans_medium"
-        android:gravity="end"
-        android:textSize="14sp"
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_large"
         app:layout_constraintBottom_toTopOf="@id/rekeyToWarningTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/labelBarrier"
-        app:layout_constraintTop_toBottomOf="@id/rekeyToDividerView"
-        tools:text="@tools:sample/lorem[4]" />
+        app:layout_constraintStart_toEndOf="@id/labelGuideline"
+        app:layout_constraintTop_toBottomOf="@id/clearStateHashTextView"
+        tools:text="@tools:sample/lorem[6]" />
 
     <TextView
         android:id="@+id/rekeyToWarningTextView"
@@ -351,20 +337,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rekeyToTextView" />
 
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/labelBarrier"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="end"
-        app:constraint_referenced_ids="
-        senderLabelTextView,
-        rekeyToLabelTextView,
-        applicationIdLabelTextView,
-        appGlobalSchemaLabelTextView,
-        appLocalSchemaLabelTextView,
-        appExtraPagesLabelTextView,
-        approvalHashLabelTextView,
-        clearStateHashLabelTextView" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/labelGuideline"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="@integer/label_percentage" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/applicationIdGroup"
@@ -373,8 +351,17 @@
         android:visibility="gone"
         app:constraint_referenced_ids="
         applicationIdTextView,
-        applicationIdLabelTextView,
-        applicationIdDividerView"
+        applicationIdLabelTextView"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/onCompleteGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="
+        onCompleteLabelTextView,
+        onCompleteTextView"
         tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.Group
@@ -385,8 +372,7 @@
         app:constraint_referenced_ids="
         rekeyToWarningTextView,
         rekeyToTextView,
-        rekeyToLabelTextView,
-        rekeyToDividerView"
+        rekeyToLabelTextView"
         tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.Group
@@ -396,7 +382,6 @@
         android:visibility="gone"
         app:constraint_referenced_ids="
         appGlobalSchemaLabelTextView,
-        appGlobalSchemaDividerView,
         appGlobalSchemaTextView"
         tools:visibility="visible" />
 
@@ -407,7 +392,6 @@
         android:visibility="gone"
         app:constraint_referenced_ids="
         appLocalSchemaLabelTextView,
-        appLocalSchemaDividerView,
         appLocalSchemaTextView"
         tools:visibility="visible" />
 
@@ -418,7 +402,6 @@
         android:visibility="gone"
         app:constraint_referenced_ids="
         appExtraPagesLabelTextView,
-        appExtraPagesDividerView,
         appExtraPagesTextView"
         tools:visibility="visible" />
 
@@ -429,7 +412,6 @@
         android:visibility="gone"
         app:constraint_referenced_ids="
         approvalHashLabelTextView,
-        approvalHashDividerView,
         approvalHashTextView"
         tools:visibility="visible" />
 
@@ -440,8 +422,29 @@
         android:visibility="gone"
         app:constraint_referenced_ids="
         clearStateHashLabelTextView,
-        clearStateHashDividerView,
         clearStateHashTextView"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/toGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="
+        toLabelTextView,
+        toNameTextView"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/assetGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="
+        assetNameTextView,
+        assetIdTextView,
+        assetDotView,
+        assetLabelTextView"
         tools:visibility="visible" />
 
 </merge>

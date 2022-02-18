@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -36,7 +36,8 @@ interface IndexerApi {
         @Query("after-time") afterTime: String?,
         @Query("before-time") beforeTime: String?,
         @Query("next") nextToken: String?,
-        @Query("limit") limit: Int?
+        @Query("limit") limit: Int?,
+        @Query("tx-type") transactionType: String?
     ): Response<TransactionsResponse>
 
     @GET("v2/accounts")

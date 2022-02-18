@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -17,4 +17,13 @@ inline fun FloatArray.partitionIndexed(predicate: (Int, Float) -> Boolean): Pair
     return partition {
         predicate(index++, it)
     }
+}
+
+/**
+ * Takes number list and returns Retrofit Query compatible string for array queries
+ * @param [1, 12, 123]
+ * @return 1,12,123
+ */
+fun List<Number>.toQueryString(): String {
+    return toString().replace(Regex("([^0-9,])"), "")
 }

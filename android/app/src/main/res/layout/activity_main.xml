@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright 2019 Algorand, Inc.
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -19,12 +18,13 @@
 
     <com.algorand.android.customviews.CustomToolbar
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/default_toolbar_height"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/navigationHostFragment"
@@ -40,13 +40,13 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="0dp"
-        android:layout_height="64dp"
+        android:layout_height="@dimen/main_bottom_navigation_height"
         android:visibility="gone"
         app:backgroundTint="@color/tertiaryBackground"
         app:elevation="@dimen/main_bottom_navigation_elevation"
         app:itemIconSize="24dp"
         app:itemIconTint="@color/navigation_icon_color"
-        app:itemRippleColor="@color/colorPrimary"
+        app:itemRippleColor="@color/bottom_nav_icon_selected_color"
         app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,11 +60,12 @@
         android:layout_height="0dp"
         android:elevation="8dp"
         android:visibility="gone"
-        app:layoutDescription="@xml/send_request_tabbar_scene"
+        app:layoutDescription="@xml/scene_send_request_tabbar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
     <com.algorand.android.customviews.SlidingTopErrorView
         android:id="@+id/slidingTopErrorView"
@@ -82,8 +83,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <include android:id="@+id/progressBar"
-        layout="@layout/layout_full_screen_progress"/>
+    <include
+        android:id="@+id/progressBar"
+        layout="@layout/layout_full_screen_progress" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

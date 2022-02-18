@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -15,57 +15,63 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="20dp"
-    tools:background="@color/white">
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/modalityLineView"
+        style="@style/BottomSheetModalityLine"
+        android:layout_marginTop="@dimen/spacing_small"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/appIconImageView"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_xxlarge"
         android:background="@drawable/bg_wallet_connect_connection_icon_round"
         android:padding="1dp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/modalityLineView"
         tools:srcCompat="@drawable/ic_algo_green_round" />
 
     <TextView
         android:id="@+id/appNameTextView"
-        android:layout_width="wrap_content"
+        style="@style/TextAppearance.Body.Large.Sans.Medium"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/publicsans_medium"
-        android:textSize="16sp"
+        android:layout_marginStart="@dimen/spacing_large"
+        android:layout_marginEnd="@dimen/spacing_xlarge"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appIconImageView"
-        tools:text="Algorand" />
-
+        app:layout_constraintStart_toEndOf="@id/appIconImageView"
+        app:layout_constraintTop_toTopOf="@id/appIconImageView"
+        tools:text="Pera Wallet" />
 
     <TextView
         android:id="@+id/descriptionTextView"
+        style="@style/TextAppearance.Body.Sans"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/publicsans_regular"
-        android:gravity="center"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appNameTextView"
-        tools:text="@tools:sample/lorem[20]" />
+        android:layout_marginTop="@dimen/spacing_small"
+        app:layout_constraintEnd_toEndOf="@id/appNameTextView"
+        app:layout_constraintStart_toStartOf="@id/appNameTextView"
+        app:layout_constraintTop_toBottomOf="@id/appNameTextView"
+        tools:text="@tools:sample/lorem[50]" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/closeButton"
-        style="@style/UnelevatedButton.General.Secondary"
+        style="@style/Button.Secondary"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_xxlarge"
+        android:layout_marginBottom="@dimen/bottom_safe_area_margin"
         android:text="@string/close"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
+        app:layout_constraintTop_toBottomOf="@id/descriptionTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

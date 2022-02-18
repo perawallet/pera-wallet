@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -24,7 +24,6 @@ import com.algorand.android.models.NotificationMetadata
 import com.algorand.android.models.NotificationType
 import com.algorand.android.models.User
 import com.algorand.android.utils.getRelativeTimeDifference
-import com.algorand.android.utils.loadContactProfileImage
 import com.algorand.android.utils.loadImage
 import com.algorand.android.utils.setupAlgoReceivedMessage
 import com.algorand.android.utils.setupAlgoSentMessage
@@ -68,7 +67,7 @@ class NotificationItemViewHolder(
             else -> null
         }
         if (avatarUser != null) {
-            binding.avatarImageView.loadContactProfileImage(avatarUser.imageUriAsString?.toUri())
+            binding.avatarImageView.loadAccountImage(avatarUser.imageUriAsString?.toUri())
         } else {
             binding.avatarImageView.loadImage(R.drawable.ic_default_successful_notification)
         }

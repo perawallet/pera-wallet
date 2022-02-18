@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -15,15 +15,20 @@ package com.algorand.android.ui.common.walletconnect
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import com.algorand.android.R
 import com.algorand.android.databinding.CustomWalletConnectSenderViewBinding
 import com.algorand.android.models.ApplicationCallStateSchema
 import com.algorand.android.models.BaseAppCallTransaction
 import com.algorand.android.models.BaseWalletConnectDisplayedAddress
-import com.algorand.android.models.WalletConnectSenderInfo
+import com.algorand.android.models.TransactionRequestAssetInformation
+import com.algorand.android.models.TransactionRequestSenderInfo
+import com.algorand.android.utils.extensions.show
+import com.algorand.android.utils.setDrawable
+import com.algorand.android.utils.toShortenedAddress
 import com.algorand.android.utils.viewbinding.viewBinding
 
 class WalletConnectSenderCardView(
@@ -37,33 +42,25 @@ class WalletConnectSenderCardView(
         initRootLayout()
     }
 
-    fun initSender(senderInfo: WalletConnectSenderInfo) {
-        with(binding) {
-            root.visibility = View.VISIBLE
-            with(senderInfo) {
-                initSenderAddress(senderDisplayedAddress, senderTypeImageResId)
-                initOnComplete(onComplete)
-                initRekeyToAddress(rekeyToAccountAddress)
-                initApplicationId(applicationId)
-                initAppGlobalSchema(appGlobalSchema)
-                initAppLocalSchema(appLocalSchema)
-                initAppExtraPages(appExtraPages)
-                initApprovalHash(approvalHash)
-                initClearStateHash(clearStateHash)
-            }
+    fun initSender(senderInfo: TransactionRequestSenderInfo?) {
+        if (senderInfo == null) return
+        with(senderInfo) {
+            initSenderAddress(senderDisplayedAddress.toShortenedAddress())
+            initOnComplete(onCompletion)
+            initRekeyToAddress(rekeyToAccountAddress, warningCount)
+            initApplicationId(appId)
+            initAppGlobalSchema(appGlobalScheme)
+            initAppLocalSchema(appLocalScheme)
+            initAppExtraPages(appExtraPages)
+            initApprovalHash(approvalHash)
+            initClearStateHash(clearStateHash)
+            initAssetInformation(assetInformation)
+            initToAccount(toDisplayedAddress)
         }
     }
 
-    private fun initSenderAddress(displayedAddress: BaseWalletConnectDisplayedAddress, senderTypeImageResId: Int?) {
-        with(binding) {
-            senderNameTextView.apply {
-                text = displayedAddress.displayValue
-                isSingleLine = displayedAddress.isSingleLine
-            }
-            if (senderTypeImageResId != null) {
-                senderTypeImageView.setImageResource(senderTypeImageResId)
-            }
-        }
+    private fun initSenderAddress(address: String?) {
+        binding.senderNameTextView.text = address
     }
 
     private fun initAppGlobalSchema(appGlobalSchema: ApplicationCallStateSchema?) {
@@ -75,7 +72,7 @@ class WalletConnectSenderCardView(
                     schema.numberOfBytes,
                     schema.numberOfInts
                 )
-                appGlobalSchemaGroup.visibility = View.VISIBLE
+                appGlobalSchemaGroup.show()
             }
         }
     }
@@ -89,7 +86,7 @@ class WalletConnectSenderCardView(
                     schema.numberOfBytes,
                     schema.numberOfInts
                 )
-                appLocalSchemaGroup.visibility = View.VISIBLE
+                appLocalSchemaGroup.show()
             }
         }
     }
@@ -98,7 +95,7 @@ class WalletConnectSenderCardView(
         appExtraPages?.let { extraPages ->
             with(binding) {
                 appExtraPagesTextView.text = extraPages.toString()
-                appExtraPagesGroup.visibility = View.VISIBLE
+                appExtraPagesGroup.show()
             }
         }
     }
@@ -108,7 +105,7 @@ class WalletConnectSenderCardView(
             if (hash.isBlank()) return
             with(binding) {
                 approvalHashTextView.text = hash
-                approvalHashGroup.visibility = View.VISIBLE
+                approvalHashGroup.show()
             }
         }
     }
@@ -118,13 +115,18 @@ class WalletConnectSenderCardView(
             if (hash.isBlank()) return
             with(binding) {
                 clearStateHashTextView.text = hash
-                clearStateHashGroup.visibility = View.VISIBLE
+                clearStateHashGroup.show()
             }
         }
     }
 
-    private fun initOnComplete(onComplete: BaseAppCallTransaction.AppOnComplete) {
-        binding.onCompleteTextView.setText(onComplete.displayTextResId)
+    private fun initOnComplete(onComplete: BaseAppCallTransaction.AppOnComplete?) {
+        onComplete?.let {
+            with(binding) {
+                onCompleteTextView.text = root.context.getText(onComplete.displayTextResId)
+                onCompleteGroup.show()
+            }
+        }
     }
 
     private fun initApplicationId(appId: Long?) {
@@ -132,21 +134,44 @@ class WalletConnectSenderCardView(
         with(binding) {
             val appIdWithHashTag = "#$appId"
             applicationIdTextView.text = appIdWithHashTag
-            applicationIdGroup.visibility = View.VISIBLE
+            applicationIdGroup.show()
         }
     }
 
-    private fun initRekeyToAddress(address: String?) {
+    private fun initRekeyToAddress(address: String?, warningCount: Int?) {
         if (!address.isNullOrBlank()) {
             with(binding) {
                 rekeyToTextView.text = address
-                rekeyGroup.visibility = View.VISIBLE
+                rekeyGroup.show()
+                rekeyToWarningTextView.isVisible = warningCount != null
+            }
+        }
+    }
+
+    private fun initAssetInformation(assetInformation: TransactionRequestAssetInformation?) {
+        assetInformation?.let {
+            with(binding) {
+                if (assetInformation.isVerified == true) {
+                    assetNameTextView.setDrawable(start = AppCompatResources.getDrawable(context, R.drawable.ic_shield))
+                }
+                assetNameTextView.text = assetInformation.shortName
+                assetIdTextView.text = assetInformation.assetId.toString()
+                assetGroup.show()
+            }
+        }
+    }
+
+    private fun initToAccount(toDisplayedAddress: BaseWalletConnectDisplayedAddress?) {
+        toDisplayedAddress?.let {
+            with(binding) {
+                toNameTextView.text = toDisplayedAddress.displayValue
+                toNameTextView.isSingleLine = toDisplayedAddress.isSingleLine
+                toGroup.show()
             }
         }
     }
 
     private fun initRootLayout() {
-        setBackgroundResource(R.drawable.bg_small_shadow)
-        setPadding(resources.getDimensionPixelSize(R.dimen.keyline_1_plus_4_dp))
+        setPadding(resources.getDimensionPixelSize(R.dimen.spacing_xlarge))
     }
 }

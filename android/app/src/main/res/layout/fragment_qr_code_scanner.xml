@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright 2019 Algorand, Inc.
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -13,6 +12,7 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -33,17 +33,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/leftArrowButton"
+        style="@style/IconButton.Transparent"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="@dimen/spacing_large"
+        android:layout_marginTop="@dimen/spacing_small"
+        app:icon="@drawable/ic_left_arrow"
+        app:iconTint="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_goneMarginStart="@dimen/spacing_xlarge" />
+
     <TextView
         android:id="@+id/titleTextView"
-        style="@style/TextAppearance.ToolbarTitle"
-        android:layout_width="wrap_content"
+        style="@style/TextAppearance.Title.Small.Sans.Medium"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/keyline_1_minus_8dp"
-        android:text="@string/scan_qr_code"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_xlarge"
+        android:gravity="center"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/leftArrowButton"
+        tools:text="@string/find_a_code_to_scan" />
 
     <FrameLayout
         android:id="@+id/overlayLayout"
@@ -82,34 +97,21 @@
 
     </FrameLayout>
 
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginHorizontal="56dp"
-        android:layout_marginVertical="@dimen/keyline_1_minus_8dp"
-        android:fontFamily="@font/publicsans_regular"
-        android:gravity="center"
-        android:text="@string/you_can_only"
-        android:textColor="@color/white_alpha_80"
-        android:textSize="14sp"
-        app:autoSizeMaxTextSize="14sp"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toTopOf="@+id/closeButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/overlayLayout" />
-
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/closeButton"
-        style="@style/UnelevatedButton.General"
-        android:layout_width="0dp"
+        android:id="@+id/appConnectedButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/bottom_safe_area_margin"
-        android:text="@string/cancel"
+        android:backgroundTint="@color/white_alpha_16"
         android:textColor="@color/white"
-        app:backgroundTint="@color/white_alpha_12"
+        android:visibility="gone"
+        app:icon="@drawable/ic_right_arrow"
+        app:iconGravity="end"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/overlayLayout"
+        app:layout_constraintVertical_bias="0.67"
+        tools:text="1 app connected"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

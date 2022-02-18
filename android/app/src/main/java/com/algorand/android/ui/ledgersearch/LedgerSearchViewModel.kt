@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -23,7 +23,7 @@ class LedgerSearchViewModel @ViewModelInject constructor(
     private val ledgerBleSearchManager: LedgerBleSearchManager
 ) : BaseViewModel() {
 
-    val ledgerDevicesLiveData = MutableLiveData<Set<BluetoothDevice>>()
+    val ledgerDevicesLiveData = MutableLiveData<List<LedgerBaseItem>>()
 
     private val addressLedgerDeviceMap = HashMap<String, BluetoothDevice>()
 
@@ -31,13 +31,22 @@ class LedgerSearchViewModel @ViewModelInject constructor(
         override fun onLedgerScanned(device: BluetoothDevice) {
             if (!addressLedgerDeviceMap.containsKey(device.address)) {
                 addressLedgerDeviceMap[device.address] = device
-                ledgerDevicesLiveData.postValue(addressLedgerDeviceMap.values.toSet())
+                val ledgerDeviceSet = addressLedgerDeviceMap.values.toSet()
+                mutableListOf<LedgerBaseItem>().apply {
+                    add(LedgerBaseItem.LedgerLoadingItem)
+                    addAll(ledgerDeviceSet.map { LedgerBaseItem.LedgerItem(it) })
+                    ledgerDevicesLiveData.postValue(this)
+                }
             }
         }
 
         override fun onScanError(errorMessageResId: Int, titleResId: Int) {
             // NOT NEEDED
         }
+    }
+
+    init {
+        ledgerDevicesLiveData.postValue(listOf(LedgerBaseItem.LedgerLoadingItem))
     }
 
     fun startBluetoothSearch() {

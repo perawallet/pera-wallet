@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -13,24 +13,20 @@
 package com.algorand.android.ui.common.accountselector
 
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.View
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
-import com.algorand.android.core.AccountManager
 import com.algorand.android.core.DaggerBaseBottomSheet
 import com.algorand.android.databinding.BottomSheetAccountSelectionBinding
-import com.algorand.android.models.Account
-import com.algorand.android.models.AccountCacheData
-import com.algorand.android.models.AssetInformation
+import com.algorand.android.models.AccountSelection
 import com.algorand.android.models.ToolbarConfiguration
-import com.algorand.android.utils.AccountCacheManager
-import com.algorand.android.utils.addDivider
 import com.algorand.android.utils.setNavigationResult
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
-import kotlinx.parcelize.Parcelize
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AccountSelectionBottomSheet : DaggerBaseBottomSheet(
@@ -38,47 +34,57 @@ class AccountSelectionBottomSheet : DaggerBaseBottomSheet(
     fullPageNeeded = false,
     firebaseEventScreenId = null
 ) {
-
-    @Inject
-    lateinit var accountCacheManager: AccountCacheManager
-
-    @Inject
-    lateinit var accountManager: AccountManager
-
     private val args: AccountSelectionBottomSheetArgs by navArgs()
 
     private val binding by viewBinding(BottomSheetAccountSelectionBinding::bind)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private val accountSelectionViewModel: AccountSelectionViewModel by viewModels()
 
-        binding.toolbar.configure(ToolbarConfiguration(titleResId = args.titleResId))
-        setupRecyclerView(
-            accountCacheManager.getAccountCacheWithSpecificAsset(args.assetId, listOf(Account.Type.WATCH))
-        )
-        binding.cancelButton.setOnClickListener { navBack() }
+    private var accountsSelectorAdapter: AccountsSelectorAdapter? = null
+
+    // TODO: 1.09.2021 onFailed case did not handle before and loading cases will be updated when shimmer implement
+    private val cachedAccountCollector: suspend (value: List<AccountSelection>?) -> Unit = {
+        accountsSelectorAdapter?.submitList(it)
     }
 
-    private fun setupRecyclerView(accountList: List<Pair<AccountCacheData, AssetInformation>>) {
-        binding.accountRecyclerView.apply {
-            val accountsSelectorAdapter = AccountsSelectorAdapter(::onAccountSelect, args.showBalance).apply {
-                setData(accountList)
-            }
-            adapter = accountsSelectorAdapter
-            addDivider(R.drawable.horizontal_divider_16dp)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initUi()
+        initObservers()
+    }
+
+    private fun initUi() {
+        if (args.showBackButton) {
+            ToolbarConfiguration(
+                startIconResId = R.drawable.ic_left_arrow,
+                startIconClick = ::navBack,
+                titleResId = args.titleResId
+            ).apply { binding.customToolbar.configure(this) }
+        } else {
+            binding.customToolbar.changeTitle(args.titleResId)
+        }
+        setupRecyclerView()
+    }
+
+    private fun initObservers() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            accountSelectionViewModel.cachedAccountFlow.collectLatest(cachedAccountCollector)
         }
     }
 
-    private fun onAccountSelect(accountCacheData: AccountCacheData, assetInformation: AssetInformation) {
-        setNavigationResult(ACCOUNT_SELECTION_KEY, Result(accountCacheData, assetInformation))
-        navBack()
+    private fun setupRecyclerView() {
+        accountsSelectorAdapter = AccountsSelectorAdapter(
+            ::onAccountSelect,
+            args.showBalance,
+            args.selectedAccountAddress
+        )
+        binding.accountRecyclerView.adapter = accountsSelectorAdapter
     }
 
-    @Parcelize
-    data class Result(
-        val accountCacheData: AccountCacheData,
-        val assetInformation: AssetInformation
-    ) : Parcelable
+    private fun onAccountSelect(accountSelection: AccountSelection) {
+        setNavigationResult(ACCOUNT_SELECTION_KEY, accountSelection)
+        navBack()
+    }
 
     companion object {
         const val ACCOUNT_SELECTION_KEY = "account_selection_key"

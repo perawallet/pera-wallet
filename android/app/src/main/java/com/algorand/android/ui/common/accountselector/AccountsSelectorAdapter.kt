@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,66 +12,29 @@
 
 package com.algorand.android.ui.common.accountselector
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.algorand.android.databinding.ItemAccountOptionBinding
-import com.algorand.android.models.AccountCacheData
-import com.algorand.android.models.AssetInformation
-import java.math.BigInteger
+import com.algorand.android.models.AccountSelection
+import com.algorand.android.models.BaseDiffUtil
 
 class AccountsSelectorAdapter(
-    private val onAccountSelect: (AccountCacheData, AssetInformation) -> Unit,
-    private val showBalance: Boolean
-) : RecyclerView.Adapter<AccountsSelectorAdapter.AccountViewHolder>() {
+    private val onAccountSelect: (AccountSelection) -> Unit,
+    private val showBalance: Boolean,
+    private val defaultSelectedAccountAddress: String?
+) : ListAdapter<AccountSelection, AccountSelectionViewHolder>(BaseDiffUtil()) {
 
-    private var accountCountsList = mutableListOf<Pair<AccountCacheData, AssetInformation>>()
-
-    fun setData(list: List<Pair<AccountCacheData, AssetInformation>>) {
-        accountCountsList.clear()
-        accountCountsList.addAll(list)
-        notifyDataSetChanged()
-    }
-
-    override fun getItemCount(): Int {
-        return accountCountsList.size
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AccountViewHolder {
-        return AccountViewHolder.create(parent).apply {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AccountSelectionViewHolder {
+        return AccountSelectionViewHolder.create(parent).apply {
             itemView.setOnClickListener {
                 if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                    val (account, asset) = accountCountsList[bindingAdapterPosition]
-                    onAccountSelect(account, asset)
+                    getItem(bindingAdapterPosition)?.let(onAccountSelect)
                 }
             }
         }
     }
 
-    override fun onBindViewHolder(holder: AccountViewHolder, position: Int) {
-        holder.bind(accountCountsList[position], showBalance)
-    }
-
-    class AccountViewHolder(
-        private val binding: ItemAccountOptionBinding
-    ) : RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(accountAssetPair: Pair<AccountCacheData, AssetInformation>, showBalance: Boolean) {
-            val (accountCacheData, asset) = accountAssetPair
-            binding.nameTextView.text = accountCacheData.account.name
-            binding.typeImageView.setImageResource(accountCacheData.getImageResource())
-            if (showBalance) {
-                with(asset) {
-                    binding.balanceTextView.setAmount(amount ?: BigInteger.ZERO, decimals, isAlgorand())
-                }
-            }
-        }
-
-        companion object {
-            fun create(parent: ViewGroup): AccountViewHolder {
-                val binding = ItemAccountOptionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                return AccountViewHolder(binding)
-            }
-        }
+    override fun onBindViewHolder(holder: AccountSelectionViewHolder, position: Int) {
+        holder.bind(getItem(position), showBalance, defaultSelectedAccountAddress)
     }
 }

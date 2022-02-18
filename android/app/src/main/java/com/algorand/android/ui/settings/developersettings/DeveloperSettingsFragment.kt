@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -32,7 +32,7 @@ class DeveloperSettingsFragment : DaggerBaseFragment(R.layout.fragment_developer
 
     private val toolbarConfiguration = ToolbarConfiguration(
         titleResId = R.string.developer_settings,
-        startIconResId = R.drawable.ic_back_navigation,
+        startIconResId = R.drawable.ic_left_arrow,
         startIconClick = ::navBack
     )
 
@@ -42,13 +42,13 @@ class DeveloperSettingsFragment : DaggerBaseFragment(R.layout.fragment_developer
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.nodeListItem.setOnClickListener { onNodeSettingsClick() }
+        binding.nodeSettingsListItem.setOnClickListener { onNodeSettingsClick() }
         binding.dispenserListItem.setOnClickListener { onDispenserClick() }
     }
 
     override fun onResume() {
         super.onResume()
-        binding.dispenserGroup.isVisible = developerSettingsViewModel.isConnectedToTestnet()
+        binding.dispenserListItem.isVisible = developerSettingsViewModel.isConnectedToTestnet()
     }
 
     private fun onNodeSettingsClick() {

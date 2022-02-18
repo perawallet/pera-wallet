@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,21 +12,15 @@
 
 package com.algorand.android.ui.common.transactiontips
 
-import android.content.SharedPreferences
 import androidx.hilt.lifecycle.ViewModelInject
 import com.algorand.android.core.BaseViewModel
-import com.algorand.android.utils.preference.getFirstTransactionWarningPreference
-import com.algorand.android.utils.preference.setFirstTransactionWarningPreference
+import com.algorand.android.usecase.TransactionTipsUseCase
 
 class TransactionTipsViewModel @ViewModelInject constructor(
-    private val sharedPref: SharedPreferences
+    private val transactionTipsUseCase: TransactionTipsUseCase
 ) : BaseViewModel() {
 
-    fun getFirstTransactionPreference(): Boolean {
-        return sharedPref.getFirstTransactionWarningPreference()
-    }
-
-    fun setFirstTransactionPreference() {
-        sharedPref.setFirstTransactionWarningPreference()
+    fun setTransactionTipsAsShowed() {
+        transactionTipsUseCase.setTransactionTipsAsShowed()
     }
 }

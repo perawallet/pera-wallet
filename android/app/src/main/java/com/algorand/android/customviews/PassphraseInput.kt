@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -131,22 +131,42 @@ class PassphraseInput @JvmOverloads constructor(
         if (isFocused) {
             listener?.onInputFocused(index)
             listener?.onInputChanged(index, binding.passphraseInputEditText.text.toString())
-            setBackgroundResource(R.drawable.bg_small_shadow)
-        } else {
-            setBackgroundResource(R.drawable.bg_shadow_inset_no_background)
         }
+        handleIndexTextColor(isFocused)
+        changeBottomLineHeight(isFocused)
     }
 
     private fun onValidationChanged(isValidated: Boolean) {
-        val newTextColor = if (isValidated) R.color.primaryTextColor else R.color.red_E9
+        val newTextColor = if (isValidated) R.color.primaryTextColor else R.color.errorTextColor
         binding.passphraseInputEditText.setTextColor(ContextCompat.getColor(context, newTextColor))
         handleIndexTextColor()
     }
 
-    private fun handleIndexTextColor() {
+    private fun handleIndexTextColor(isFocused: Boolean = true) {
         val isEditableAreaClear = binding.passphraseInputEditText.text.isNullOrEmpty()
-        val indexTextColor = if (validated || isEditableAreaClear) R.color.secondaryTextColor else R.color.red_E9
+        val indexTextColor = when {
+            isFocused.not() && isEditableAreaClear -> R.color.secondaryTextColor
+            validated || isEditableAreaClear -> R.color.primaryTextColor
+            else -> R.color.errorTextColor
+        }
+        val lineViewColor = when {
+            isFocused.not() && isEditableAreaClear -> R.color.unFocusedLineColor
+            validated || isEditableAreaClear -> R.color.secondaryTextColor
+            else -> R.color.errorTextColor
+        }
         binding.passphraseIndexTextView.setTextColor(ContextCompat.getColor(context, indexTextColor))
+        binding.passphraseInputLine.setBackgroundColor(ContextCompat.getColor(context, lineViewColor))
+    }
+
+    private fun changeBottomLineHeight(isFocused: Boolean) {
+        val params = binding.passphraseInputLine.layoutParams
+        val heightRes = if (isFocused) {
+            R.dimen.passphrase_input_bottom_line_focused
+        } else {
+            R.dimen.passphrase_input_bottom_line_unfocused
+        }
+        params.height = resources.getDimensionPixelOffset(heightRes)
+        binding.passphraseInputLine.layoutParams = params
     }
 
     fun getPassphraseWord(): String {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -13,25 +13,43 @@
 package com.algorand.android.ui.transactiondetail
 
 import android.content.SharedPreferences
+import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
-import com.algorand.android.core.AccountManager
+import androidx.lifecycle.SavedStateHandle
 import com.algorand.android.core.BaseViewModel
+import com.algorand.android.models.AccountCacheData
+import com.algorand.android.models.AssetInformation
+import com.algorand.android.models.BaseTransactionItem
 import com.algorand.android.network.AlgodInterceptor
+import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.preference.isTransactionDetailCopyTutorialShown
 import com.algorand.android.utils.preference.setTransactionDetailCopyShown
 
 class TransactionDetailViewModel @ViewModelInject constructor(
     private val algodInterceptor: AlgodInterceptor,
-    private val accountManager: AccountManager,
-    private val sharedPref: SharedPreferences
+    private val sharedPref: SharedPreferences,
+    private val accountCacheManager: AccountCacheManager,
+    @Assisted savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
+
+    private val transaction = savedStateHandle.get<BaseTransactionItem.TransactionItem>(TRANSACTION_ITEM_KEY)
+
+    fun getTransaction(): BaseTransactionItem.TransactionItem? {
+        return transaction
+    }
+
+    fun getTxnAssetInformation(): AssetInformation? {
+        return transaction?.assetId?.let {
+            accountCacheManager.getAssetInformation(transaction.accountPublicKey, it)
+        }
+    }
 
     fun getNetworkSlug(): String? {
         return algodInterceptor.currentActiveNode?.networkSlug
     }
 
-    fun getAccountName(address: String): String {
-        return accountManager.getAccount(address)?.name.orEmpty()
+    fun getAccountCacheData(address: String): AccountCacheData? {
+        return accountCacheManager.getCacheData(address)
     }
 
     fun isCopyTutorialNeeded(): Boolean {
@@ -40,5 +58,9 @@ class TransactionDetailViewModel @ViewModelInject constructor(
 
     fun toggleCopyTutorialShownFlag() {
         sharedPref.setTransactionDetailCopyShown()
+    }
+
+    companion object {
+        private const val TRANSACTION_ITEM_KEY = "transactionItem"
     }
 }

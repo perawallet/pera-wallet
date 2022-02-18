@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -32,7 +32,11 @@ import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.BLE_OPEN_REQUEST_CODE
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.LOCATION_PERMISSION_REQUEST_CODE
+import com.algorand.android.utils.Resource
+import com.algorand.android.utils.getXmlStyledString
 import com.algorand.android.utils.isBluetoothEnabled
+import com.algorand.android.utils.showAlertDialog
+import com.algorand.android.utils.showSnackbar
 import com.algorand.android.utils.showWithStateCheck
 import javax.inject.Inject
 
@@ -64,8 +68,12 @@ abstract class TransactionBaseFragment(
                 TransactionManagerResult.Loading -> {
                     transactionFragmentListener.onSignTransactionLoading()
                 }
-                TransactionManagerResult.LedgerWaitingForApproval -> {
-                    showLedgerLoading()
+                is TransactionManagerResult.LedgerWaitingForApproval -> {
+                    showLedgerLoading(bluetoothName)
+                }
+                TransactionManagerResult.LedgerScanFailed -> {
+                    hideLoading()
+                    navigateToConnectionIssueBottomSheet()
                 }
                 TransactionManagerResult.LedgerScanFailed -> {
                     hideLoading()
@@ -122,8 +130,8 @@ abstract class TransactionBaseFragment(
         ledgerLoadingDialog?.dismissAllowingStateLoss()
     }
 
-    private fun showLedgerLoading() {
-        ledgerLoadingDialog = LedgerLoadingDialog.createLedgerLoadingDialog()
+    private fun showLedgerLoading(ledgerName: String?) {
+        ledgerLoadingDialog = LedgerLoadingDialog.createLedgerLoadingDialog(ledgerName)
         ledgerLoadingDialog?.showWithStateCheck(childFragmentManager)
     }
 
@@ -150,6 +158,30 @@ abstract class TransactionBaseFragment(
         val (title, errorMessage) = error.getMessage(requireContext())
         showGlobalError(errorMessage, title)
         transactionManager.manualStopAllResources()
+    }
+
+    protected fun handleError(error: Resource.Error, view: View) {
+        when (error) {
+            is Resource.Error.Annotated -> {
+                showSnackbar(context?.getXmlStyledString(error.annotatedString).toString(), view)
+            }
+            is Resource.Error.Warning -> {
+                context?.showAlertDialog(
+                    getString(error.titleRes),
+                    context?.getXmlStyledString(error.annotatedString).toString()
+                )
+            }
+            is Resource.Error.Navigation -> {
+                nav(error.navDirections)
+            }
+            is Resource.Error.GlobalWarning -> {
+                val titleString = error.titleRes?.let { getString(it) }
+                context?.run { showGlobalError(error.parse(this), titleString) }
+            }
+            else -> {
+                context?.run { showGlobalError(error.parse(this)) }
+            }
+        }
     }
 
     override fun onLedgerLoadingCancelled() {

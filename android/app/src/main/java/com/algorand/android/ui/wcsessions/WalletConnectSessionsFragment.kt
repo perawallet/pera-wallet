@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -13,9 +13,7 @@
 package com.algorand.android.ui.wcsessions
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageButton
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -24,11 +22,12 @@ import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentWalletConnectSessionsBinding
 import com.algorand.android.models.DecodedQrCode
 import com.algorand.android.models.FragmentConfiguration
+import com.algorand.android.models.IconButton
+import com.algorand.android.models.QrScanner
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.ui.qr.QrCodeScannerFragment.Companion.QR_SCAN_RESULT_KEY
-import com.algorand.android.ui.qr.QrCodeScannerFragment.ScanReturnType.WALLET_CONNECT_NAVIGATE_BACK
-import com.algorand.android.ui.wcsessions.WalletConnectSessionsFragmentDirections.Companion.actionWalletConnectSessionsFragmentToMainQrScannerFragment
+import com.algorand.android.ui.qr.QrCodeScannerFragment.ScanReturnType.WALLET_CONNECT
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -44,7 +43,7 @@ class WalletConnectSessionsFragment : DaggerBaseFragment(R.layout.fragment_walle
 
     private val toolbarConfiguration = ToolbarConfiguration(
         titleResId = R.string.wallet_connect_sessions,
-        startIconResId = R.drawable.ic_back_navigation,
+        startIconResId = R.drawable.ic_left_arrow,
         startIconClick = ::navBack
     )
 
@@ -60,7 +59,8 @@ class WalletConnectSessionsFragment : DaggerBaseFragment(R.layout.fragment_walle
         }
     }
 
-    private val walletConnectSessionAdapter = WalletConnectSessionAdapter(walletConnectSessionAdapterListener)
+    private val walletConnectSessionAdapter =
+        WalletConnectSessionAdapter(walletConnectSessionAdapterListener, showDetails = true)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -98,19 +98,13 @@ class WalletConnectSessionsFragment : DaggerBaseFragment(R.layout.fragment_walle
 
     private fun onScanQrClick() {
         nav(
-            actionWalletConnectSessionsFragmentToMainQrScannerFragment(
-                scanReturnType = listOf(WALLET_CONNECT_NAVIGATE_BACK).toTypedArray()
+            WalletConnectSessionsFragmentDirections.actionWalletConnectSessionsFragmentToQrCodeScannerNavigation(
+                QrScanner(scanTypes = arrayOf(WALLET_CONNECT), isShowingWCSessionsButton = true)
             )
         )
     }
 
     private fun initAddMoreSessionsButton() {
-        getAppToolbar()?.apply {
-            (LayoutInflater.from(context).inflate(R.layout.custom_icon_tab_button, this, false) as ImageButton).apply {
-                setOnClickListener { onScanQrClick() }
-                setImageResource(R.drawable.ic_qr_scan)
-                addViewToEndSide(this)
-            }
-        }
+        getAppToolbar()?.addButtonToEnd(IconButton(R.drawable.ic_qr_scan, onClick = ::onScanQrClick))
     }
 }

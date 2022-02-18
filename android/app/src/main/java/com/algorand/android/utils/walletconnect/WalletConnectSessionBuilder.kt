@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -13,7 +13,7 @@
 package com.algorand.android.utils.walletconnect
 
 import com.algorand.android.models.WalletConnectSessionMeta
-import com.algorand.android.utils.walletconnect.peermeta.WalletConnectAlgorandPeerMeta
+import com.algorand.android.utils.walletconnect.peermeta.WalletConnectPeraPeerMeta
 import com.algorand.android.utils.walletconnect.peermeta.WalletConnectPeerMetaBuilder
 import com.squareup.moshi.Moshi
 import javax.inject.Inject
@@ -48,7 +48,7 @@ class WalletConnectSessionBuilder @Inject constructor(
             MoshiPayloadAdapter(moshi),
             storage,
             OkHttpTransport.Builder(okHttpClient, moshi),
-            WalletConnectPeerMetaBuilder.createPeerMeta(WalletConnectAlgorandPeerMeta)
+            WalletConnectPeerMetaBuilder.createPeerMeta(WalletConnectPeraPeerMeta)
         ).apply {
             init()
         }

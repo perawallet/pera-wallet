@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Algorand, Inc.
+ * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -13,6 +13,7 @@
 package com.algorand.android.utils
 
 import android.content.ClipData
+import android.content.ClipDescription
 import android.content.ClipDescription.MIMETYPE_TEXT_HTML
 import android.content.ClipDescription.MIMETYPE_TEXT_PLAIN
 import android.content.ClipboardManager
@@ -32,16 +33,23 @@ fun Context.copyToClipboard(textToCopy: CharSequence, label: String = "") {
 }
 
 fun Context.getTextFromClipboard(): CharSequence {
-    val clipboard = ContextCompat.getSystemService(this, ClipboardManager::class.java) ?: return ""
-    if (clipboard.hasPrimaryClip().not()) {
-        return ""
+    val clipboard = ContextCompat.getSystemService(this, ClipboardManager::class.java)
+    return clipboard.getTextFromClipboard()
+}
+
+fun ClipboardManager?.getTextFromClipboard(): CharSequence {
+    return when {
+        this == null -> ""
+        hasPrimaryClip().not() -> ""
+        isClipDescriptionMimeTypeValid(primaryClipDescription) -> primaryClip?.getItemAt(0)?.text ?: ""
+        else -> ""
     }
-    if (clipboard.primaryClipDescription?.hasMimeType(MIMETYPE_TEXT_PLAIN) == true ||
-        clipboard.primaryClipDescription?.hasMimeType(MIMETYPE_TEXT_HTML) == true
-    ) {
-        return clipboard.primaryClip?.getItemAt(0)?.text ?: ""
-    }
-    return ""
+}
+
+private fun isClipDescriptionMimeTypeValid(clipDescription: ClipDescription?): Boolean {
+    return clipDescription?.let {
+        it.hasMimeType(MIMETYPE_TEXT_PLAIN) || it.hasMimeType(MIMETYPE_TEXT_HTML)
+    } ?: false
 }
 
 fun TextView.enableClickToCopy() {

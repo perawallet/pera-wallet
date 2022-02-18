@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2019 Algorand, Inc.
+  ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -24,22 +24,16 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/default_toolbar_height" />
 
-    <View
-        style="@style/HorizontalDivider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp" />
-
     <TextView
         android:id="@+id/titleTextView"
+        style="@style/TextAppearance.Body.Large.Sans.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/page_horizontal_spacing"
-        android:layout_marginTop="28dp"
-        android:fontFamily="@font/publicsans_semibold"
-        android:textSize="16sp"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_xxlarge"
+        android:text="@string/what_does_asset"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/what_does_asset" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/firstParagraphTextView"
@@ -59,14 +53,13 @@
         style="@style/TextAppearance.VerifiedAssetsParagraph"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="@string/verified_assets_third_paragraph" />
+        android:text="@string/verified_assets_third_paragraph" />
 
     <TextView
         android:id="@+id/fourthParagraphTextView"
         style="@style/TextAppearance.VerifiedAssetsParagraph"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="@string/verified_assets_fourth_paragraph" />
-
+        android:text="@string/verified_assets_fourth_paragraph" />
 
 </LinearLayout>
