@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,7 +19,9 @@ import Foundation
 
 struct TransactionViewModelDependencies {
     let account: Account
-    let assetDetail: AssetDetail?
+    let assetDetail: AssetInformation?
     let transaction: TransactionItem
     var contact: Contact?
+    let currency: Currency?
+    let localAccounts: [Account]
 }

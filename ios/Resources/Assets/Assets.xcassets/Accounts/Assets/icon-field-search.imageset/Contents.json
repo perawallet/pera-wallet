@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "icon-field-search.pdf",
+      "filename" : "search.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "icon-field-search-1.pdf",
+      "filename" : "search-1.pdf",
       "idiom" : "universal"
     }
   ],

@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,9 +15,13 @@
 //
 //  PendingTransactions.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class PendingTransaction: Model, TransactionItem {
+final class PendingTransaction:
+    ALGEntityModel,
+    TransactionItem {
     let signature: String?
     private let algosAmount: UInt64?
     private let assetAmount: UInt64?
@@ -39,58 +43,85 @@ class PendingTransaction: Model, TransactionItem {
     }
     
     var contact: Contact?
-    
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        signature = try container.decodeIfPresent(String.self, forKey: .signature)
-        let transactionContainer = try container.nestedContainer(keyedBy: TransactionCodingKeys.self, forKey: .transaction)
-        
-        algosAmount = try transactionContainer.decodeIfPresent(UInt64.self, forKey: .algosAmount)
-        assetAmount = try transactionContainer.decodeIfPresent(UInt64.self, forKey: .assetAmount)
-        fee = try transactionContainer.decodeIfPresent(UInt64.self, forKey: .fee)
-        fv = try transactionContainer.decodeIfPresent(UInt64.self, forKey: .fv)
-        gh = try transactionContainer.decodeIfPresent(String.self, forKey: .gh)
-        lv = try transactionContainer.decodeIfPresent(UInt64.self, forKey: .lv)
-        algosReceiver = try transactionContainer.decodeIfPresent(String.self, forKey: .algosReceiver)
-        assetReceiver = try transactionContainer.decodeIfPresent(String.self, forKey: .assetReceiver)
-        sender = try transactionContainer.decodeIfPresent(String.self, forKey: .sender)
-        type = try transactionContainer.decodeIfPresent(Transaction.TransferType.self, forKey: .type)
+
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.signature = apiModel.sig
+        self.algosAmount = apiModel.txn?.amt
+        self.assetAmount = apiModel.txn?.aamt
+        self.fee = apiModel.txn?.fee
+        self.fv = apiModel.txn?.fv
+        self.gh = apiModel.txn?.gh
+        self.lv = apiModel.txn?.lv
+        self.assetReceiver = apiModel.txn?.arcv
+        self.algosReceiver = apiModel.txn?.rcv
+        self.sender = apiModel.txn?.snd
+        self.type = apiModel.txn?.type
     }
-    
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(signature, forKey: .signature)
-        
-        var transactionContainer = container.nestedContainer(keyedBy: TransactionCodingKeys.self, forKey: .transaction)
-        try transactionContainer.encodeIfPresent(algosAmount, forKey: .algosAmount)
-        try transactionContainer.encodeIfPresent(assetAmount, forKey: .assetAmount)
-        try transactionContainer.encodeIfPresent(fee, forKey: .fee)
-        try transactionContainer.encodeIfPresent(fv, forKey: .fv)
-        try transactionContainer.encodeIfPresent(gh, forKey: .gh)
-        try transactionContainer.encodeIfPresent(lv, forKey: .lv)
-        try transactionContainer.encodeIfPresent(algosReceiver, forKey: .algosReceiver)
-        try transactionContainer.encodeIfPresent(assetReceiver, forKey: .assetReceiver)
-        try transactionContainer.encodeIfPresent(sender, forKey: .sender)
-        try transactionContainer.encodeIfPresent(type, forKey: .type)
+
+    func encode() -> APIModel {
+        var transaction = APIModel.TransactionDetail()
+        transaction.amt = algosAmount
+        transaction.aamt = assetAmount
+        transaction.fee = fee
+        transaction.fv = fv
+        transaction.gh = gh
+        transaction.lv = lv
+        transaction.arcv = assetReceiver
+        transaction.rcv = algosReceiver
+        transaction.snd = sender
+        transaction.type = type
+
+        var apiModel = APIModel()
+        apiModel.sig = signature
+        apiModel.txn = transaction
+        return apiModel
     }
 }
 
 extension PendingTransaction {
-    private enum CodingKeys: String, CodingKey {
-        case signature = "sig"
-        case transaction = "txn"
+    func isAssetAdditionTransaction(for address: String) -> Bool {
+        return assetReceiver == address && assetAmount == 0 && type == .assetTransfer
     }
-    
-    private enum TransactionCodingKeys: String, CodingKey {
-        case assetAmount = "amt"
-        case algosAmount = "aamt"
-        case fee = "fee"
-        case fv = "fv"
-        case gh = "gh"
-        case lv = "lv"
-        case algosReceiver = "rcv"
-        case assetReceiver = "arcv"
-        case sender = "snd"
-        case type = "type"
+}
+
+extension PendingTransaction {
+    struct APIModel: ALGAPIModel {
+        var sig: String?
+        var txn: TransactionDetail?
+
+        init() {
+            self.sig = nil
+            self.txn = nil
+        }
+    }
+}
+
+extension PendingTransaction.APIModel {
+    struct TransactionDetail: ALGAPIModel {
+        var amt: UInt64?
+        var aamt: UInt64?
+        var fee: UInt64?
+        var fv: UInt64?
+        var gh: String?
+        var lv: UInt64?
+        var rcv: String?
+        var arcv: String?
+        var snd: String?
+        var type: Transaction.TransferType?
+
+        init() {
+            self.amt = nil
+            self.aamt = nil
+            self.fee = nil
+            self.fv = nil
+            self.gh = nil
+            self.lv = nil
+            self.rcv = nil
+            self.arcv = nil
+            self.snd = nil
+            self.type = nil
+        }
     }
 }

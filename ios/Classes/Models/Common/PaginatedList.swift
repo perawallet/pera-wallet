@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,39 +15,39 @@
 //
 //  PaginatedList.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class PaginatedList<T: Model>: Model {
+class PaginatedList<Item> {
+    var nextCursor: String? {
+        return next?.queryParameters?[APIParamKey.cursor.rawValue]
+    }
+
     let count: Int
     let next: URL?
     let previous: String?
-    let results: [T]
+    let results: [Item]
 
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        count = try container.decodeIfPresent(Int.self, forKey: .count) ?? 0
-        next = try container.decodeIfPresent(URL.self, forKey: .next)
-        previous = try container.decodeIfPresent(String.self, forKey: .previous)
-        results = try container.decode([T].self, forKey: .results)
+    init(
+        pagination: PaginationComponents,
+        results: [Item]
+    ) {
+        self.count = pagination.count ?? 0
+        self.next = pagination.next
+        self.previous = pagination.previous
+        self.results = results
     }
 }
 
-extension PaginatedList {
-    func parsePaginationCursor() -> String? {
-        guard let next = next,
-              let cursor = next.queryParameters?[RequestParameter.cursor.rawValue] else {
-            return nil
-        }
-
-        return cursor
-    }
+struct Pagination: PaginationComponents {
+    var count: Int?
+    var next: URL?
+    var previous: String?
 }
 
-extension PaginatedList {
-    enum CodingKeys: String, CodingKey {
-        case count = "count"
-        case next = "next"
-        case previous = "previous"
-        case results = "results"
-    }
+protocol PaginationComponents {
+    var count: Int? { get }
+    var next: URL? { get }
+    var previous: String? { get }
 }

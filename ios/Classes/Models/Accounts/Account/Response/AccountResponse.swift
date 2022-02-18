@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,16 +15,42 @@
 //
 //  AccountResponse.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class AccountResponse: Model {
+final class AccountResponse: ALGEntityModel {
     let account: Account
     let currentRound: UInt64
+
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.account = Account(apiModel.account)
+        self.currentRound = apiModel.currentRound
+    }
+
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.account = account.encode()
+        apiModel.currentRound = currentRound
+        return apiModel
+    }
 }
 
 extension AccountResponse {
-    enum CodingKeys: String, CodingKey {
-        case account = "account"
-        case currentRound = "current-round"
+    struct APIModel: ALGAPIModel {
+        var account: Account.APIModel
+        var currentRound: UInt64
+
+        init() {
+            self.account = Account.APIModel()
+            self.currentRound = 1
+        }
+
+        private enum CodingKeys: String, CodingKey {
+            case account
+            case currentRound = "current-round"
+        }
     }
 }

@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "icon-calendar-custom-pick.pdf",
+      "filename" : "to-1.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "to.pdf",
       "idiom" : "universal"
     }
   ],

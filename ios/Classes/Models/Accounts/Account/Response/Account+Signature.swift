@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,14 +15,20 @@
 //
 //  Acount+Signature.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
 extension Account {
-    enum SignatureType: String, Model {
-        case sig = "sig"
+    enum SignatureType:
+        String,
+        ALGAPIModel {
+        case sig
         case multiSig = "msig"
         case logicSig = "lsig"
+
+        init() {
+            self = .sig
+        }
     }
 }
-
-extension Account.SignatureType: Encodable { }

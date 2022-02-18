@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,16 +19,19 @@ import Foundation
 
 struct RekeyTransactionSendDraft: TransactionSendDraft {
     var from: Account
-    var toAccount: String?
+    var toAccount: Account?
     var amount: Decimal?
     var fee: UInt64?
     var isMaxTransaction = false
     var identifier: String?
     var note: String?
+    var lockedNote: String?
+
+    var toContact: Contact?
     
     init(account: Account, rekeyedTo: String) {
         self.from = account
-        toAccount = rekeyedTo
+        toAccount = Account(address: rekeyedTo, type: .rekeyed)
         amount = nil
         fee = nil
         isMaxTransaction = false

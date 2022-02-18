@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "icon-warning-error.pdf",
+      "filename" : "warning-error.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "icon-warning-error-1.pdf",
+      "filename" : "warning-dark.pdf",
       "idiom" : "universal"
     }
   ],

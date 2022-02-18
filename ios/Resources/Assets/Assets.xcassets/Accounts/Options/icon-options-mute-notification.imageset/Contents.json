@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "icon-options-mute-notification.pdf",
+      "filename" : "notification-1.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "notification.pdf",
       "idiom" : "universal"
     }
   ],

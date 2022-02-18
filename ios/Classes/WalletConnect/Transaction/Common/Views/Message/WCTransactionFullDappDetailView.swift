@@ -1,0 +1,128 @@
+// Copyright 2022 Pera Wallet, LDA
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//
+//   WCTransactionFullDappDetailView.swift
+
+import UIKit
+import MacaroonUIKit
+
+final class WCTransactionFullDappDetailView: View {
+    weak var delegate: WCTransactionFullDappDetailViewDelegate?
+
+    private lazy var titleLabel = UILabel()
+    private lazy var imageView = UIImageView()
+    private lazy var descriptionLabel = UILabel()
+    private lazy var verticalStackView = UIStackView()
+    private lazy var primaryActionButton = Button()
+    private lazy var secondaryActionButton = Button()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        setListeners()
+    }
+
+    func customize(_ theme: WCTransactionFullDappDetailViewTheme) {
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+
+        addImageView(theme)
+        addTitleLabel(theme)
+        addDescriptionLabel(theme)
+        addVerticalStackView(theme)
+    }
+
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+
+    func setListeners() {
+        primaryActionButton.addTarget(self, action: #selector(notifyDelegateToHandlePrimaryActionButton), for: .touchUpInside)
+    }
+}
+
+extension WCTransactionFullDappDetailView {
+    private func addImageView(_ theme: WCTransactionFullDappDetailViewTheme) {
+        addSubview(imageView)
+        imageView.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(theme.horizontalInset)
+            $0.top.equalToSuperview().inset(theme.topInset)
+            $0.size.equalTo(CGSize(width: 48, height: 48))
+        }
+    }
+
+    private func addTitleLabel(_ theme: WCTransactionFullDappDetailViewTheme) {
+        titleLabel.customizeAppearance(theme.title)
+
+        addSubview(titleLabel)
+        titleLabel.snp.makeConstraints {
+            $0.leading.equalTo(imageView.snp.trailing).offset(theme.titleLeadingInset)
+            $0.top.equalTo(imageView.snp.top).offset(theme.titleTopInset)
+            $0.trailing.equalToSuperview().inset(theme.horizontalInset)
+        }
+    }
+
+    private func addDescriptionLabel(_ theme: WCTransactionFullDappDetailViewTheme) {
+        descriptionLabel.customizeAppearance(theme.description)
+
+        addSubview(descriptionLabel)
+        descriptionLabel.snp.makeConstraints {
+            $0.leading.equalTo(titleLabel)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(theme.descriptionTopInset)
+            $0.trailing.equalToSuperview().inset(theme.horizontalInset)
+        }
+    }
+
+    private func addVerticalStackView(_ theme: WCTransactionFullDappDetailViewTheme) {
+        addSubview(verticalStackView)
+        verticalStackView.spacing = theme.buttonInset
+        verticalStackView.axis = .vertical
+
+        verticalStackView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+            $0.top.equalTo(descriptionLabel.snp.bottom).offset(theme.verticalInset)
+            $0.bottom.equalToSuperview().inset(safeAreaBottom + theme.bottomInset)
+        }
+
+        addPrimaryActionButton(theme)
+    }
+
+    private func addPrimaryActionButton(_ theme: WCTransactionFullDappDetailViewTheme) {
+        primaryActionButton.customize(theme.mainButtonTheme)
+
+        primaryActionButton.fitToVerticalIntrinsicSize()
+        verticalStackView.addArrangedSubview(primaryActionButton)
+    }
+}
+
+extension WCTransactionFullDappDetailView {
+    func bindData(_ configurator: WCTransactionFullDappDetailConfigurator?) {
+        titleLabel.text = configurator?.title
+        descriptionLabel.text = configurator?.description
+        imageView.load(from: configurator?.image)
+        primaryActionButton.bindData(ButtonCommonViewModel(title: configurator?.primaryActionButtonTitle))
+    }
+}
+
+extension WCTransactionFullDappDetailView {
+    @objc
+    private func notifyDelegateToHandlePrimaryActionButton() {
+        delegate?.wcTransactionFullDappDetailViewDidTapPrimaryActionButton(self)
+    }
+
+}
+
+protocol WCTransactionFullDappDetailViewDelegate: AnyObject {
+    func wcTransactionFullDappDetailViewDidTapPrimaryActionButton(_ view: WCTransactionFullDappDetailView)
+}

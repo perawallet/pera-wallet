@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Algorand Wallet</string>
+	<string>Pera Algo</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -61,35 +61,33 @@
 		<true/>
 	</dict>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>Algorand will use Bluetooth to communicate with Ledger X.</string>
+	<string>Pera will use Bluetooth to communicate with Ledger X.</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>Algorand will use Bluetooth to communicate with Ledger X.</string>
+	<string>Pera will use Bluetooth to communicate with Ledger X.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Algorand will use your camera to scan QR codes.</string>
+	<string>Pera will use your camera to scan QR codes.</string>
 	<key>NSFaceIDUsageDescription</key>
-	<string>Algorand will use Face ID to log you in securely.</string>
+	<string>Pera will use Face ID to log you in securely.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Algorand will save QR codes to your photo library.</string>
+	<string>Pera will save QR codes to your photo library.</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>PublicSans-Black.ttf</string>
-		<string>PublicSans-BlackItalic.ttf</string>
 		<string>PublicSans-Bold.ttf</string>
-		<string>PublicSans-BoldItalic.ttf</string>
-		<string>PublicSans-ExtraBold.ttf</string>
-		<string>PublicSans-ExtraBoldItalic.ttf</string>
-		<string>PublicSans-ExtraLight.ttf</string>
-		<string>PublicSans-ExtraLightItalic.ttf</string>
-		<string>PublicSans-Italic.ttf</string>
-		<string>PublicSans-Light.ttf</string>
-		<string>PublicSans-LightItalic.ttf</string>
 		<string>PublicSans-Medium.ttf</string>
-		<string>PublicSans-MediumItalic.ttf</string>
 		<string>PublicSans-Regular.ttf</string>
 		<string>PublicSans-SemiBold.ttf</string>
-		<string>PublicSans-SemiBoldItalic.ttf</string>
-		<string>PublicSans-Thin.ttf</string>
-		<string>PublicSans-ThinItalic.ttf</string>
+		<string>DMMono-Italic.ttf</string>
+		<string>DMMono-Light.ttf</string>
+		<string>DMMono-LightItalic.ttf</string>
+		<string>DMMono-Medium.ttf</string>
+		<string>DMMono-MediumItalic.ttf</string>
+		<string>DMMono-Regular.ttf</string>
+		<string>DMSans-Bold.ttf</string>
+		<string>DMSans-BoldItalic.ttf</string>
+		<string>DMSans-Italic.ttf</string>
+		<string>DMSans-Medium.ttf</string>
+		<string>DMSans-MediumItalic.ttf</string>
+		<string>DMSans-Regular.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
@@ -97,6 +95,8 @@
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleDarkContent</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

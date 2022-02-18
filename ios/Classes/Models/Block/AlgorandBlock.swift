@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,34 +15,50 @@
 //
 //   AlgorandBlock.swift
 
-import Magpie
+import Foundation
+import MacaroonUtils
+import MagpieCore
 
-class AlgorandBlock: Model {
+final class AlgorandBlock: ALGEntityModel {
     let rewardsRate: UInt64
     let rewardsResidue: UInt64
 
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let rewardsContainer = try container.nestedContainer(keyedBy: RewardsCodingKeys.self, forKey: .block)
-        rewardsRate = try rewardsContainer.decode(UInt64.self, forKey: .rewardsRate)
-        rewardsResidue = try rewardsContainer.decode(UInt64.self, forKey: .rewardsResidue)
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.rewardsRate = apiModel.block?.rate ?? 0
+        self.rewardsResidue = apiModel.block?.frac ?? 0
     }
 
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        var rewardsContainer = container.nestedContainer(keyedBy: RewardsCodingKeys.self, forKey: .block)
-        try rewardsContainer.encode(rewardsRate, forKey: .rewardsRate)
-        try rewardsContainer.encode(rewardsResidue, forKey: .rewardsResidue)
+    func encode() -> APIModel {
+        var rewards = APIModel.Rewards()
+        rewards.rate = rewardsRate
+        rewards.frac = rewardsResidue
+
+        var apiModel = APIModel()
+        apiModel.block = rewards
+        return apiModel
     }
 }
 
 extension AlgorandBlock {
-    private enum CodingKeys: String, CodingKey {
-        case block = "block"
-    }
+    struct APIModel: ALGAPIModel {
+        var block: Rewards?
 
-    private enum RewardsCodingKeys: String, CodingKey {
-        case rewardsRate = "rate"
-        case rewardsResidue = "frac"
+        init() {
+            self.block = nil
+        }
+    }
+}
+
+extension AlgorandBlock.APIModel {
+    struct Rewards: ALGAPIModel {
+        var rate: UInt64?
+        var frac: UInt64?
+
+        init() {
+            self.rate = nil
+            self.frac = nil
+        }
     }
 }

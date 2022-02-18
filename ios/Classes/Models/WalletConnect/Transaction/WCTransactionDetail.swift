@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@
 //
 //   WCTransactionDetail.swift
 
-import Magpie
+import Foundation
 
-class WCTransactionDetail: Model {
+final class WCTransactionDetail: Codable {
     let fee: UInt64?
     let firstValidRound: UInt64?
     let lastValidRound: UInt64?
@@ -283,6 +283,24 @@ extension WCTransactionDetail {
     var currentAssetId: Int64? {
         return assetId ?? assetIdBeingConfigured
     }
+
+    var warningCount: Int {
+        var count = 0
+
+        if hasHighFee {
+            count += 1
+        }
+
+        if rekeyAddress != nil {
+            count += 1
+        }
+
+        if closeAddress != nil {
+            count += 1
+        }
+        
+        return count
+    }
 }
 
 extension WCTransactionDetail {
@@ -357,7 +375,7 @@ extension WCTransactionDetail: Equatable {
     }
 }
 
-class WCTransactionAppSchema: Model {
+class WCTransactionAppSchema: Codable {
     let numberOfBytes: Int?
     let numberofInts: Int?
 

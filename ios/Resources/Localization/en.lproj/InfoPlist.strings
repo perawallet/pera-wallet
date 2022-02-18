@@ -1,6 +1,6 @@
 
-"NSPhotoLibraryAddUsageDescription" = "Algorand will save QR codes to your photo library.";
-"NSFaceIDUsageDescription" = "Algorand will use Face ID to log you in securely.";
-"NSCameraUsageDescription" = "Algorand will use your camera to scan QR codes.";
-"NSBluetoothAlwaysUsageDescription" = "Algorand will use Bluetooth to communicate with Ledger X.";
-"NSBluetoothPeripheralUsageDescription" = "Algorand will use Bluetooth to communicate with Ledger X.";
+"NSPhotoLibraryAddUsageDescription" = "Pera will save QR codes to your photo library.";
+"NSFaceIDUsageDescription" = "Pera will use Face ID to log you in securely.";
+"NSCameraUsageDescription" = "Pera will use your camera to scan QR codes.";
+"NSBluetoothAlwaysUsageDescription" = "Pera will use Bluetooth to communicate with Ledger X.";
+"NSBluetoothPeripheralUsageDescription" = "Pera will use Bluetooth to communicate with Ledger X.";

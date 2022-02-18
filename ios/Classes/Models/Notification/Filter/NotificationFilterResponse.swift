@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,14 +15,36 @@
 //
 //  NotificationFilterResponse.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class NotificationFilterResponse: Model {
+final class NotificationFilterResponse: ALGEntityModel {
     let receivesNotification: Bool
+
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.receivesNotification = apiModel.receiveNotifications ?? true
+    }
+
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.receiveNotifications = receivesNotification
+        return apiModel
+    }
 }
 
 extension NotificationFilterResponse {
-    enum CodingKeys: String, CodingKey {
-        case receivesNotification = "receive_notifications"
+    struct APIModel: ALGAPIModel {
+        var receiveNotifications: Bool?
+
+        init() {
+            self.receiveNotifications = nil
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case receiveNotifications = "receive_notifications"
+        }
     }
 }

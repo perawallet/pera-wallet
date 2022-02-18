@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "icon-field-close.pdf",
+      "filename" : "close.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "close-1.pdf",
       "idiom" : "universal"
     }
   ],

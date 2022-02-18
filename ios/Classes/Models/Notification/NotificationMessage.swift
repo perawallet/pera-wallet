@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,39 +15,116 @@
 //
 //  Notification.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class NotificationMessage: Model {
+final class NotificationMessage: ALGEntityModel {
     let id: Int
     let account: Int?
     let notificationType: NotificationType?
     let date: Date?
     let message: String?
     let detail: NotificationDetail?
-    
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        id = try container.decode(Int.self, forKey: .id)
-        account = try container.decodeIfPresent(Int.self, forKey: .account)
-        notificationType = try container.decodeIfPresent(NotificationType.self, forKey: .notificationType)
-        if let stringDate = try container.decodeIfPresent(String.self, forKey: .date) {
-            date = stringDate.toDate()?.date
-        } else {
-            date = nil
-        }
-        message = try container.decodeIfPresent(String.self, forKey: .message)
-        detail = try container.decodeIfPresent(NotificationDetail.self, forKey: .detail)
+
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.id = apiModel.id ?? 0
+        self.account = apiModel.account
+        self.notificationType = apiModel.type
+        /// <todo>
+        /// Without format string ???
+        self.date = apiModel.creationDatetime?.toDate()?.date
+        self.message = apiModel.message
+        self.detail = apiModel.metadata
+    }
+
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.id = id
+        apiModel.account = account
+        apiModel.type = notificationType
+        apiModel.creationDatetime = date?.toString(.standard)
+        apiModel.message = message
+        apiModel.metadata = detail
+        return apiModel
     }
 }
 
 extension NotificationMessage {
-    enum CodingKeys: String, CodingKey {
-        case id = "id"
-        case account = "account"
-        case notificationType = "type"
-        case date = "creation_datetime"
-        case message = "message"
-        case detail = "metadata"
+    struct APIModel: ALGAPIModel {
+        var id: Int?
+        var account: Int?
+        var type: NotificationType?
+        var creationDatetime: String?
+        var message: String?
+        var metadata: NotificationDetail?
+
+        init() {
+            self.id = nil
+            self.account = nil
+            self.type = nil
+            self.creationDatetime = nil
+            self.message = nil
+            self.metadata = nil
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case id = "id"
+            case account = "account"
+            case type = "type"
+            case creationDatetime = "creation_datetime"
+            case message = "message"
+            case metadata = "metadata"
+        }
+    }
+}
+
+final class NotificationMessageList:
+    PaginatedList<NotificationMessage>,
+    ALGEntityModel {
+    convenience init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.init(
+            pagination: apiModel,
+            results: apiModel.results.unwrapMap(NotificationMessage.init)
+        )
+    }
+
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.count = count
+        apiModel.next = next
+        apiModel.previous = previous
+        apiModel.results = results.map { $0.encode() }
+        return apiModel
+    }
+}
+
+extension NotificationMessageList {
+    struct APIModel: ALGAPIModel, PaginationComponents {
+        var count: Int?
+        var next: URL?
+        var previous: String?
+        var results: [NotificationMessage.APIModel]?
+
+        init() {
+            self.count = nil
+            self.next = nil
+            self.previous = nil
+            self.results = []
+        }
+    }
+}
+
+extension NotificationMessage: Hashable {
+    static func == (lhs: NotificationMessage, rhs: NotificationMessage) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }

@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,15 +15,24 @@
 //
 //   ApplicationStateSchema.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class ApplicationStateSchema: Model {
+final class ApplicationStateSchema: ALGAPIModel {
     let intValue: Int?
     let byteSliceCount: Int?
+
+    init() {
+        self.intValue = nil
+        self.byteSliceCount = nil
+    }
 }
 
 extension ApplicationStateSchema {
-    enum CodingKeys: String, CodingKey {
+    enum CodingKeys:
+        String,
+        CodingKey {
         case intValue = "num-uint"
         case byteSliceCount = "num-byte-slice"
     }

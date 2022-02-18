@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "icon-terms-and-services.pdf",
+      "filename" : "text-document.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "text-document-1.pdf",
       "idiom" : "universal"
     }
   ],

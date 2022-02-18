@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "icon-checkbox-selected.pdf",
+      "filename" : "checkbox.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "icon-checkbox-selected-1.pdf",
+      "filename" : "icon-checkbox-selected.pdf",
       "idiom" : "universal"
     }
   ],

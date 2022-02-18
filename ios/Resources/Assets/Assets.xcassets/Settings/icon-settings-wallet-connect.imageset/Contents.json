@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "icon-settings-wallet-connect.pdf",
+      "filename" : "walletconnect.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "walletconnect-1.pdf",
       "idiom" : "universal"
     }
   ],

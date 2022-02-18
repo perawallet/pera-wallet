@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,9 +21,9 @@ class WarningAlert {
     let title: String
     let image: UIImage?
     let description: String
-    let actionTitle: String
+    let actionTitle: String?
 
-    init(title: String, image: UIImage?, description: String, actionTitle: String) {
+    init(title: String, image: UIImage?, description: String, actionTitle: String? = nil) {
         self.title = title
         self.image = image
         self.description = description

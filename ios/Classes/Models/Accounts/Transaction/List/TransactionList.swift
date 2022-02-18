@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,18 +15,48 @@
 //
 //  TransactionList.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class TransactionList: Model {
+final class TransactionList: ALGEntityModel {
     let currentRound: UInt64
     let nextToken: String?
     let transactions: [Transaction]
+
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.currentRound = apiModel.currentRound ?? 0
+        self.nextToken = apiModel.nextToken
+        self.transactions = apiModel.transactions.unwrapMap(Transaction.init)
+    }
+
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.currentRound = currentRound
+        apiModel.nextToken = nextToken
+        apiModel.transactions = transactions.map { $0.encode() }
+        return apiModel
+    }
 }
 
 extension TransactionList {
-    enum CodingKeys: String, CodingKey {
-        case currentRound = "current-round"
-        case nextToken = "next-token"
-        case transactions = "transactions"
+    struct APIModel: ALGAPIModel {
+        var currentRound: UInt64?
+        var nextToken: String?
+        var transactions: [Transaction.APIModel]?
+
+        init() {
+            self.currentRound = nil
+            self.nextToken = nil
+            self.transactions = nil
+        }
+
+        private enum CodingKeys: String, CodingKey {
+            case currentRound = "current-round"
+            case nextToken = "next-token"
+            case transactions
+        }
     }
 }

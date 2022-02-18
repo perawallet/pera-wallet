@@ -1,15 +1,15 @@
 /* Privacy - Bluetooth Always Usage Description */
-"NSBluetoothAlwaysUsageDescription" = "AlgorandはBluetoothを使用してLedgerXと通信します。";
+"NSBluetoothAlwaysUsageDescription" = "PeraはBluetoothを使用してLedgerXと通信します。";
 
 /* Privacy - Bluetooth Peripheral Usage Description */
-"NSBluetoothPeripheralUsageDescription" = "AlgorandはBluetoothを使用してLedgerXと通信します。";
+"NSBluetoothPeripheralUsageDescription" = "PeraはBluetoothを使用してLedgerXと通信します。";
 
 /* Privacy - Camera Usage Description */
-"NSCameraUsageDescription" = "Algorandはカメラを使用してQRコードをスキャンします。";
+"NSCameraUsageDescription" = "Peraはカメラを使用してQRコードをスキャンします。";
 
 /* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "AlgorandはFace IDを使用して安全にログインします。";
+"NSFaceIDUsageDescription" = "PeraはFace IDを使用して安全にログインします。";
 
 /* Privacy - Photo Library Additions Usage Description */
-"NSPhotoLibraryAddUsageDescription" = "AlgorandはQRコードをフォトライブラリに保存します。";
+"NSPhotoLibraryAddUsageDescription" = "PeraはQRコードをフォトライブラリに保存します。";
 

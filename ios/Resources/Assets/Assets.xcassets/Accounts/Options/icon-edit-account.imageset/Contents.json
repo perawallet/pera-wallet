@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "icon-edit-account.pdf",
+      "filename" : "Group.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "icon-edit-account-1.pdf",
+      "filename" : "pen.pdf",
       "idiom" : "universal"
     }
   ],

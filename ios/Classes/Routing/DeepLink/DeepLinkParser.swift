@@ -1,0 +1,273 @@
+// Copyright 2022 Pera Wallet, LDA
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//
+//  DeepLinkParser.swift
+
+import Foundation
+import MacaroonUtils
+import UIKit
+
+final class DeepLinkParser {
+    private let sharedDataController: SharedDataController
+    
+    init(
+        sharedDataController: SharedDataController
+    ) {
+        self.sharedDataController = sharedDataController
+    }
+}
+
+extension DeepLinkParser {
+    func discover(
+        notification: AlgorandNotification
+    ) -> Result? {
+        switch notification.detail?.type {
+        case .transactionSent,
+             .transactionReceived:
+            return makeTransactionDetailScreen(for: notification)
+        case .assetTransactionSent,
+             .assetTransactionReceived,
+             .assetSupportSuccess:
+            return makeAssetTransactionDetailScreen(for: notification)
+        case .assetSupportRequest:
+            return makeAssetTransactionRequestScreen(for: notification)
+        default:
+            return nil
+        }
+    }
+    
+    private func makeTransactionDetailScreen(
+        for notification: AlgorandNotification
+    ) -> Result? {
+        guard let accountAddress = notification.accountAddress else {
+            return nil
+        }
+        
+        guard
+            let account = sharedDataController.accountCollection[accountAddress],
+            account.isAvailable,
+            sharedDataController.isAvailable
+        else {
+            return .failure(.waitingForAccountsToBeAvailable)
+        }
+        
+        let draft = AlgoTransactionListing(accountHandle: account)
+        return .success(.algosDetail(draft: draft))
+    }
+    
+    private func makeAssetTransactionDetailScreen(
+        for notification: AlgorandNotification
+    ) -> Result? {
+        guard
+            let accountAddress = notification.accountAddress,
+            let assetId = notification.detail?.asset?.id
+        else {
+            return nil
+        }
+        
+        guard
+            let account = sharedDataController.accountCollection[accountAddress],
+            account.isAvailable,
+            sharedDataController.isAvailable
+        else {
+            return .failure(.waitingForAccountsToBeAvailable)
+        }
+        
+        guard let asset = account.value[assetId] else {
+            return .failure(.waitingForAssetsToBeAvailable)
+        }
+        
+        let draft = AssetTransactionListing(accountHandle: account, compoundAsset: asset)
+        return .success(.assetDetail(draft: draft))
+    }
+    
+    private func makeAssetTransactionRequestScreen(
+        for notification: AlgorandNotification
+    ) -> Result? {
+        guard
+            let accountAddress = notification.accountAddress,
+            let assetId = notification.detail?.asset?.id
+        else {
+            return nil
+        }
+        
+        guard
+            let account = sharedDataController.accountCollection[accountAddress],
+            account.isAvailable,
+            sharedDataController.isAvailable
+        else {
+            return .failure(.waitingForAccountsToBeAvailable)
+        }
+        
+        let accountName = account.value.name.someString
+        let draft = AssetAlertDraft(
+            account: account.value,
+            assetIndex: assetId,
+            assetDetail: nil,
+            title: "asset-support-add-title".localized,
+            detail: String(format: "asset-support-add-message".localized, "\(accountName)"),
+            actionTitle: "title-approve".localized,
+            cancelTitle: "title-cancel".localized
+        )
+        return .success(.assetActionConfirmation(draft: draft))
+    }
+}
+
+extension DeepLinkParser {
+    func discover(
+        url: URL
+    ) -> Result? {
+        guard let qr = url.buildQRText() else {
+            return nil
+        }
+        
+        switch qr.mode {
+        case .address:
+            return makeAccountAdditionScreen(
+                qr,
+                for: url
+            )
+        case .algosRequest:
+            return makeTransactionRequestScreen(
+                qr,
+                for: url
+            )
+        case .assetRequest:
+            return makeAssetTransactionRequestScreen(
+                qr,
+                for: url
+            )
+        case .mnemonic:
+            return nil
+        }
+    }
+    
+    private func makeAccountAdditionScreen(
+        _ qr: QRText,
+        for url: URL
+    ) -> Result? {
+        let address = extractAccountAddress(from: url)
+        return address.unwrap {
+            .success(.addContact(address: $0, name: qr.label))
+        }
+    }
+    
+    private func makeTransactionRequestScreen(
+        _ qr: QRText,
+        for url: URL
+    ) -> Result? {
+        guard let amount = qr.amount else {
+            return nil
+        }
+
+        guard
+            let accountAddress = extractAccountAddress(from: url),
+            sharedDataController.isAvailable
+        else {
+            return .failure(.waitingForAssetsToBeAvailable)
+        }
+
+        let qrDraft = QRSendTransactionDraft(
+            toAccount: accountAddress,
+            amount: amount.toAlgos,
+            lockedNote: qr.lockedNote,
+            transactionMode: .algo
+        )
+
+        return .success(.sendTransaction(draft: qrDraft))
+    }
+    
+    private func makeAssetTransactionRequestScreen(
+        _ qr: QRText,
+        for url: URL
+    ) -> Result? {
+        guard let assetId = qr.asset, let amount = qr.amount else {
+            return nil
+        }
+
+        guard
+            let accountAddress = extractAccountAddress(from: url),
+            sharedDataController.isAvailable
+        else {
+            return .failure(.waitingForAssetsToBeAvailable)
+        }
+
+        guard
+            let assetInformation = sharedDataController.assetDetailCollection[assetId]
+        else {
+            let draft = AssetAlertDraft(
+                account: nil,
+                assetIndex: assetId,
+                assetDetail: nil,
+                title: "asset-support-title".localized,
+                detail: "asset-support-error".localized,
+                actionTitle: "title-approve".localized,
+                cancelTitle: "title-cancel".localized
+            )
+            return .success(.assetActionConfirmation(draft: draft))
+        }
+
+        let qrDraft = QRSendTransactionDraft(
+            toAccount: accountAddress,
+            amount: Decimal(amount),
+            lockedNote: qr.lockedNote,
+            transactionMode: .assetDetail(assetInformation)
+        )
+        return .success(.sendTransaction(draft: qrDraft))
+    }
+    
+    private func extractAccountAddress(
+        from url: URL
+    ) -> String? {
+        let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true)
+        let accountAddress = urlComponents?.host
+        return accountAddress.unwrap { $0.isValidatedAddress() }
+    }
+}
+
+extension DeepLinkParser {
+    func discover(
+        walletConnectSessionRequest: URL
+    ) -> Swift.Result<String, Error>? {
+        if !sharedDataController.isAvailable {
+            return .failure(.waitingForAccountsToBeAvailable)
+        }
+        
+        let urlComponents =
+            URLComponents(url: walletConnectSessionRequest, resolvingAgainstBaseURL: true)
+        let queryItems = urlComponents?.queryItems
+        let maybeWalletConnectSessionKey = queryItems?.first(matching: (\.name, "uri"))?.value
+        return maybeWalletConnectSessionKey
+            .unwrap(where: \.isWalletConnectConnection)
+            .unwrap({ .success($0) })
+    }
+}
+
+extension DeepLinkParser {
+    typealias Result = Swift.Result<Screen, Error>
+    
+    enum Screen {
+        case addContact(address: String, name: String?)
+        case algosDetail(draft: TransactionListing)
+        case assetActionConfirmation(draft: AssetAlertDraft)
+        case assetDetail(draft: TransactionListing)
+        case sendTransaction(draft: QRSendTransactionDraft)
+    }
+    
+    enum Error: Swift.Error {
+        case waitingForAccountsToBeAvailable
+        case waitingForAssetsToBeAvailable
+    }
+}

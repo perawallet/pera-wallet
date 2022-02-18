@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,13 +20,15 @@ import Foundation
 struct QRCreationDraft {
     let address: String
     let mnemonic: String?
+    let title: String?
     let mode: QRMode
     let isSelectable: Bool
     
-    init(address: String, mode: QRMode, mnemonic: String? = nil) {
+    init(address: String, mode: QRMode, mnemonic: String? = nil, title: String?) {
         self.address = address
         self.mode = mode
         self.mnemonic = mnemonic
         self.isSelectable = mode == .address
+        self.title = title
     }
 }

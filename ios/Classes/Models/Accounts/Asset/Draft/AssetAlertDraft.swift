@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,18 +20,20 @@ import Foundation
 struct AssetAlertDraft {
     let account: Account?
     let assetIndex: Int64
-    var assetDetail: AssetDetail?
+    var assetDetail: AssetInformation?
     let title: String?
     let detail: String?
     let actionTitle: String?
+    let cancelTitle: String?
     
     init(
         account: Account?,
         assetIndex: Int64,
-        assetDetail: AssetDetail?,
+        assetDetail: AssetInformation?,
         title: String? = nil,
         detail: String? = nil,
-        actionTitle: String? = nil
+        actionTitle: String? = nil,
+        cancelTitle: String? = nil
     ) {
         self.account = account
         self.assetIndex = assetIndex
@@ -39,6 +41,7 @@ struct AssetAlertDraft {
         self.title = title
         self.detail = detail
         self.actionTitle = actionTitle
+        self.cancelTitle = cancelTitle
     }
     
     func isValid() -> Bool {

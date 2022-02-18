@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,20 +15,24 @@
 //
 //   AlgorandApplication.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class AlgorandApplication: Model {
+final class AlgorandApplication: ALGAPIModel {
     var createdAtRound: UInt64?
     var isDeleted: Bool?
     var id: Int64?
-    var deletedInAtRound: UInt64?
+    var deletedAtRound: UInt64?
 }
 
 extension AlgorandApplication {
-    enum CodingKeys: String, CodingKey {
+    enum CodingKeys:
+        String,
+        CodingKey {
         case createdAtRound = "created-at-round"
         case isDeleted = "deleted"
-        case id = "id"
-        case deletedInAtRound = "deleted-at-round"
+        case id
+        case deletedAtRound = "deleted-at-round"
     }
 }

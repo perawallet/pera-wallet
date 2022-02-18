@@ -3,6 +3,16 @@
     {
       "filename" : "icon-pair-ledger-account.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "icon-pair-ledger-account-1.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

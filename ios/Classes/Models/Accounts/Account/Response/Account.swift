@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,9 +15,13 @@
 //
 //  Account.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class Account: Model {
+final class Account: ALGEntityModel {
+    typealias CompoundAssetIndexer = [Int64: Int] /// asset id -> compound asset index
+    
     let address: String
     var amount: UInt64
     var amountWithoutRewards: UInt64
@@ -39,113 +43,210 @@ class Account: Model {
     var appsTotalExtraPages: Int?
     var appsTotalSchema: ApplicationStateSchema?
     var createdApps: [AlgorandApplication]?
-    
-    var assetDetails: [AssetDetail] = []
     var name: String?
     var type: AccountType = .standard
     var ledgerDetail: LedgerDetail?
     var receivesNotification: Bool
     var rekeyDetail: RekeyDetail?
+    var preferredOrder: Int
+    var accountImage: String?
     
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        address = try container.decode(String.self, forKey: .address) //
-        amount = try container.decode(UInt64.self, forKey: .amount) //
-        amountWithoutRewards = try container.decodeIfPresent(UInt64.self, forKey: .amountWithoutRewards) ?? 0 //
-        rewardsBase = try container.decodeIfPresent(UInt64.self, forKey: .rewardsBase) //
-        round = try container.decodeIfPresent(UInt64.self, forKey: .round) //
-        signatureType = try container.decodeIfPresent(SignatureType.self, forKey: .signatureType) //
-        status = try container.decode(AccountStatus.self, forKey: .status) //
-        rewards = try container.decodeIfPresent(UInt64.self, forKey: .rewards) //
-        pendingRewards = try container.decodeIfPresent(UInt64.self, forKey: .pendingRewards) ?? 0 //
-        participation = try container.decodeIfPresent(Participation.self, forKey: .participation) //
-        name = try container.decodeIfPresent(String.self, forKey: .name) //
-        createdAssets = try? container.decodeIfPresent([AssetDetail].self, forKey: .createdAssets) //
-        assets = try? container.decodeIfPresent([Asset].self, forKey: .assets) ?? nil //
-        assetDetails = try container.decodeIfPresent([AssetDetail].self, forKey: .assetDetails) ?? [] //
-        type = try container.decodeIfPresent(AccountType.self, forKey: .type) ?? .standard //
-        authAddress = try container.decodeIfPresent(String.self, forKey: .authAddress) //
-        ledgerDetail = try container.decodeIfPresent(LedgerDetail.self, forKey: .ledgerDetail) //
-        receivesNotification = try container.decodeIfPresent(Bool.self, forKey: .receivesNotification) ?? true
-        rekeyDetail = try container.decodeIfPresent(RekeyDetail.self, forKey: .rekeyDetail) //
-        createdRound = try container.decodeIfPresent(UInt64.self, forKey: .createdRound)
-        closedRound = try container.decodeIfPresent(UInt64.self, forKey: .closedRound)
-        isDeleted = try container.decodeIfPresent(Bool.self, forKey: .isDeleted)
-        appsLocalState = try container.decodeIfPresent([ApplicationLocalState].self, forKey: .appsLocalState)
-        appsTotalExtraPages = try container.decodeIfPresent(Int.self, forKey: .appsTotalExtraPages)
-        appsTotalSchema = try container.decodeIfPresent(ApplicationStateSchema.self, forKey: .appsTotalSchema)
-        createdApps = try container.decodeIfPresent([AlgorandApplication].self, forKey: .createdApps)
+    var compoundAssets: [CompoundAsset] = []
+    private(set) var compoundAssetsIndexer: CompoundAssetIndexer = [:]
+
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        address = apiModel.address
+        amount = apiModel.amount
+        amountWithoutRewards = apiModel.amountWithoutPendingRewards
+        rewardsBase = apiModel.rewardBase
+        round = apiModel.round
+        signatureType = apiModel.sigType
+        status = apiModel.status
+        rewards = apiModel.rewards
+        pendingRewards = apiModel.pendingRewards
+        participation = apiModel.participation
+        createdAssets = apiModel.createdAssets.unwrapMap(AssetDetail.init)
+        assets = apiModel.assets
+        authAddress = apiModel.authAddr
+        createdRound = apiModel.createdAtRound
+        closedRound = apiModel.closedAtRound
+        isDeleted = apiModel.deleted
+        appsLocalState = apiModel.appsLocalState
+        appsTotalExtraPages = apiModel.appsTotalExtraPages
+        appsTotalSchema = apiModel.appsTotalSchema
+        createdApps = apiModel.createdApps
+        receivesNotification = true
+        preferredOrder = AccountInformation.invalidOrder
+        accountImage = AccountImageType.getRandomImage(for: type).rawValue
     }
-    
+
     init(
         address: String,
         type: AccountType,
         ledgerDetail: LedgerDetail? = nil,
         name: String? = nil,
         rekeyDetail: RekeyDetail? = nil,
-        receivesNotification: Bool = true
+        receivesNotification: Bool = true,
+        preferredOrder: Int = -1,
+        accountImage: String? = nil
     ) {
         self.address = address
-        amount = 0
-        amountWithoutRewards = 0
-        pendingRewards = 0
-        status = .offline
+        self.amount = 0
+        self.amountWithoutRewards = 0
+        self.pendingRewards = 0
+        self.status = .offline
         self.name = name
         self.type = type
         self.ledgerDetail = ledgerDetail
         self.receivesNotification = receivesNotification
         self.rekeyDetail = rekeyDetail
+        self.preferredOrder = preferredOrder
+        self.accountImage = accountImage ?? AccountImageType.getRandomImage(for: type).rawValue
     }
     
-    init(accountInformation: AccountInformation) {
-        self.address = accountInformation.address
+    init(
+        localAccount: AccountInformation
+    ) {
+        self.address = localAccount.address
         self.amount = 0
         self.amountWithoutRewards = 0
         self.pendingRewards = 0
         self.status = .offline
-        self.name = accountInformation.name
-        self.type = accountInformation.type
-        self.ledgerDetail = accountInformation.ledgerDetail
-        self.receivesNotification = accountInformation.receivesNotification
-        self.rekeyDetail = accountInformation.rekeyDetail
+        self.name = localAccount.name
+        self.type = localAccount.type
+        self.ledgerDetail = localAccount.ledgerDetail
+        self.receivesNotification = localAccount.receivesNotification
+        self.rekeyDetail = localAccount.rekeyDetail
+        self.preferredOrder = localAccount.preferredOrder
+        self.accountImage = localAccount.accountImage
+    }
+
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.address = address
+        apiModel.amount = amount
+        apiModel.amountWithoutPendingRewards = amountWithoutRewards
+        apiModel.createdAtRound = rewardsBase
+        apiModel.sigType = signatureType
+        apiModel.status = status
+        apiModel.pendingRewards = pendingRewards
+        apiModel.participation = participation
+        apiModel.createdAssets = createdAssets?.encode()
+        apiModel.assets = assets
+        apiModel.authAddr = authAddress
+        apiModel.closedAtRound = closedRound
+        apiModel.deleted = isDeleted
+        apiModel.appsLocalState = appsLocalState
+        apiModel.appsTotalExtraPages = appsTotalExtraPages
+        apiModel.appsTotalSchema = appsTotalSchema
+        apiModel.createdApps = createdApps
+        return apiModel
+    }
+    
+    subscript (assetId: Int64) -> CompoundAsset? {
+        let index = compoundAssetsIndexer[assetId]
+        return index.unwrap { compoundAssets[safe: $0] }
     }
 }
 
 extension Account {
-    enum CodingKeys: String, CodingKey {
-        case address = "address"
-        case amount = "amount"
-        case status = "status"
-        case rewards = "rewards"
-        case amountWithoutRewards = "amount-without-pending-rewards"
-        case pendingRewards = "pending-rewards"
-        case rewardsBase = "reward-base"
-        case name = "name"
-        case participation = "participation"
-        case createdAssets = "created-assets"
-        case assets = "assets"
-        case assetDetails = "assetDetails"
-        case type = "type"
-        case ledgerDetail = "ledgerDetail"
-        case signatureType = "sig-type"
-        case round = "round"
-        case authAddress = "auth-addr"
-        case receivesNotification = "receivesNotification"
-        case rekeyDetail = "rekeyDetail"
-        case createdRound = "created-at-round"
-        case closedRound = "closed-at-round"
-        case isDeleted = "deleted"
-        case appsLocalState = "apps-local-state"
-        case appsTotalExtraPages = "apps-total-extra-pages"
-        case appsTotalSchema = "apps-total-schema"
-        case createdApps = "created-apps"
+    func setCompoundAssets(
+        _ assets: [CompoundAsset],
+        _ indexer: CompoundAssetIndexer
+    ) {
+        compoundAssets = assets
+        compoundAssetsIndexer = indexer
+    }
+    
+    func append(
+        _ compoundAsset: CompoundAsset
+    ) {
+        compoundAssets.append(compoundAsset)
+        compoundAssetsIndexer[compoundAsset.id] = compoundAssets.lastIndex!
+    }
+    
+    func removeAllCompoundAssets() {
+        compoundAssets = []
+        compoundAssetsIndexer = [:]
+    }
+    
+    func contains(
+        _ assetDetail: AssetInformation
+    ) -> Bool {
+        return self[assetDetail.id] != nil
     }
 }
 
-extension Account: Encodable {
-    func encoded() -> Data? {
-        return try? JSONEncoder().encode(self)
+extension Account {
+    struct APIModel: ALGAPIModel {
+        var address: String
+        var amount: UInt64
+        var status: AccountStatus
+        var rewards:  UInt64?
+        var amountWithoutPendingRewards: UInt64
+        var pendingRewards: UInt64
+        var rewardBase: UInt64?
+        var participation: Participation?
+        var createdAssets: [AssetDetail.APIModel]?
+        var assets: [Asset]?
+        var sigType: SignatureType?
+        var round: UInt64?
+        var authAddr: String?
+        var createdAtRound: UInt64?
+        var closedAtRound: UInt64?
+        var deleted: Bool?
+        var appsLocalState: [ApplicationLocalState]?
+        var appsTotalExtraPages: Int?
+        var appsTotalSchema: ApplicationStateSchema?
+        var createdApps: [AlgorandApplication]?
+
+        init() {
+            self.address = ""
+            self.amount = 0
+            self.status = .offline
+            self.rewards = nil
+            self.amountWithoutPendingRewards = 0
+            self.pendingRewards = 0
+            self.rewardBase = nil
+            self.participation = nil
+            self.createdAssets = nil
+            self.assets = nil
+            self.sigType = nil
+            self.round = nil
+            self.authAddr = nil
+            self.createdAtRound = nil
+            self.closedAtRound = nil
+            self.deleted = nil
+            self.appsLocalState = nil
+            self.appsTotalExtraPages = nil
+            self.appsTotalSchema = nil
+            self.createdApps = nil
+        }
+
+        private enum CodingKeys: String, CodingKey {
+            case address
+            case amount
+            case status
+            case rewards
+            case amountWithoutPendingRewards = "amount-without-pending-rewards"
+            case pendingRewards = "pending-rewards"
+            case rewardBase = "reward-base"
+            case participation
+            case createdAssets = "created-assets"
+            case assets
+            case sigType = "sig-type"
+            case round
+            case authAddr = "auth-addr"
+            case createdAtRound = "created-at-round"
+            case closedAtRound = "closed-at-round"
+            case deleted
+            case appsLocalState = "apps-local-state"
+            case appsTotalExtraPages = "apps-total-extra-pages"
+            case appsTotalSchema = "apps-total-schema"
+            case createdApps = "created-apps"
+        }
     }
 }
 

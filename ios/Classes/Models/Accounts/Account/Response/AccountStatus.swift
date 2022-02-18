@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,12 +15,18 @@
 //
 //  AccountStatus.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-enum AccountStatus: String, Model {
+enum AccountStatus:
+    String,
+    ALGAPIModel {
     case offline = "Offline"
     case online = "Online"
     case notParticipating = "NotParticipating"
-}
 
-extension AccountStatus: Encodable { }
+    init() {
+        self = .offline
+    }
+}

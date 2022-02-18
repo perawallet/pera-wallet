@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "icon-options-unmute-notification.pdf",
+      "filename" : "notification-unmute.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "notification-unmute-1.pdf",
       "idiom" : "universal"
     }
   ],

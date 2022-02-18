@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import Foundation
 
 struct AssetTransactionSendDraft: TransactionSendDraft {
     var from: Account
-    var toAccount: String?
+    var toAccount: Account?
     var amount: Decimal?
     var fee: UInt64?
     var isMaxTransaction = false
@@ -30,4 +30,8 @@ struct AssetTransactionSendDraft: TransactionSendDraft {
     var assetDecimalFraction = 0
     var isVerifiedAsset = false
     var note: String?
+    var lockedNote: String?
+
+    var toContact: Contact?
+    var assetDetail: AssetInformation?
 }

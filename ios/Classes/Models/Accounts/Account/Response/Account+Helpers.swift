@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,10 @@
 //
 //  Account+Helpers.swift
 
-import Magpie
+import Foundation
+import UIKit
+import MagpieCore
+import MacaroonUtils
 
 extension Account {
     func mnemonics() -> [String] {
@@ -31,6 +34,13 @@ extension Account {
         return asset.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
     }
 
+    func amount(for assetInformation: AssetInformation) -> Decimal? {
+        guard let asset = assets?.first(where: { $0.id == assetInformation.id }) else {
+            return nil
+        }
+        return asset.amount.assetAmount(fromFraction: assetInformation.decimals)
+    }
+
     func amountWithoutFraction(for assetDetail: AssetDetail) -> UInt64? {
         guard let asset = assets?.first(where: { $0.id == assetDetail.id }) else {
             return nil
@@ -40,6 +50,14 @@ extension Account {
     
     func amountDisplayWithFraction(for assetDetail: AssetDetail) -> String? {
         return amount(for: assetDetail)?.toExactFractionLabel(fraction: assetDetail.fractionDecimals)
+    }
+
+    func amountDisplayWithFraction(for assetInformation: AssetInformation) -> String? {
+        return amount(for: assetInformation)?.toExactFractionLabel(fraction: assetInformation.decimals)
+    }
+
+    func amountNumberWithAutoFraction(for assetDetail: AssetInformation) -> String? {
+        return amount(for: assetDetail)?.toNumberStringWithSeparatorForLabel(fraction: assetDetail.decimals)
     }
 
     func isSameAccount(with address: String) -> Bool {
@@ -52,12 +70,26 @@ extension Account {
         return !(participation == nil || participation?.voteParticipationKey == defaultParticipationKey)
     }
 
+    func containsDifferentAssets(than account: Account) -> Bool {
+        return assets != account.assets
+    }
+
+    func hasDifference(with account: Account) -> Bool {
+        return !(
+            address == account.address &&
+            amount == account.amount &&
+            rewards == account.rewards &&
+            !hasDifferentAssets(than: account) &&
+            !hasDifferentApps(than: account)
+        )
+    }
+
     var isThereAnyDifferentAsset: Bool {
         return !assets.isNilOrEmpty
     }
     
     func hasDifferentAssets(than account: Account) -> Bool {
-        return assets != account.assets || !assetDetails.containsSameElements(as: account.assetDetails)
+        return assets != account.assets || !compoundAssets.map { $0.detail }.containsSameElements(as: account.compoundAssets.map { $0.detail })
     }
 
     func hasDifferentApps(than account: Account) -> Bool {
@@ -88,16 +120,31 @@ extension Account {
         return appsTotalExtraPages.unwrap(or: 0) > 0
     }
 
-    func removeAsset(_ id: Int64?) {
-        assetDetails.removeAll { assetDetail -> Bool in
-            assetDetail.id == id
+    @discardableResult
+    func removeAsset(_ id: Int64?) -> [CompoundAsset] {
+        return compoundAssets.removeAll { compoundAsset  in
+            compoundAsset.id == id
         }
     }
     
     func containsAsset(_ id: Int64) -> Bool {
-        return assetDetails.contains { assetDetail -> Bool in
-            assetDetail.id == id
+        return compoundAssets.contains { compoundAsset -> Bool in
+            compoundAsset.id == id
         }
+    }
+
+    func update(from localAccount: AccountInformation) {
+        name = localAccount.name
+        type = localAccount.type
+        ledgerDetail = localAccount.ledgerDetail
+        receivesNotification = localAccount.receivesNotification
+        rekeyDetail = localAccount.rekeyDetail
+        preferredOrder = localAccount.preferredOrder
+        accountImage = localAccount.accountImage
+    }
+    
+    func removeDeletedAssets() {
+        assets = nonDeletedAssets()
     }
 }
 
@@ -171,7 +218,6 @@ extension Account {
         participation = account.participation
         createdAssets = account.createdAssets
         assets = account.assets
-        assetDetails = account.assetDetails
         type = account.type
         ledgerDetail = account.ledgerDetail
         amountWithoutRewards = account.amountWithoutRewards
@@ -188,13 +234,15 @@ extension Account {
         appsTotalExtraPages = account.appsTotalExtraPages
         appsTotalSchema = account.appsTotalSchema
         createdApps = account.createdApps
+        preferredOrder = account.preferredOrder
+        accountImage = account.accountImage
 
         if let updatedName = account.name {
             name = updatedName
         }
     }
     
-    func accountImage() -> UIImage? {
+    func accountTypeImage() -> UIImage? {
         if isWatchAccount() {
             return img("icon-account-type-watch")
         } else if isRekeyed() {
@@ -204,5 +252,13 @@ extension Account {
         } else {
             return img("icon-account-type-standard")
         }
+    }
+
+    var image: UIImage? {
+        guard let accountImage = accountImage else {
+            return nil
+        }
+
+        return img("\(type.rawValue)-\(accountImage)")
     }
 }

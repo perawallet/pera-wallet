@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -162,6 +162,31 @@ extension DBStorable where Self: NSManagedObject {
         do {
             let object = try context.existingObject(with: objectID)
             object.setValuesForKeys(keyedValues)
+            
+            do {
+                try context.save()
+                handler?(.result(object: object))
+            } catch {
+                handler?(.error(error: .writeFailed))
+            }
+        } catch {
+            handler?(.error(error: .readFailed))
+        }
+    }
+    
+    func removeValue(
+        entity: String,
+        with key: String,
+        then handler: DBOperationHandler? = nil,
+        in persistentContainer: NSPersistentContainer? = UIApplication.shared.appDelegate?.persistentContainer
+    ) {
+        guard let context = persistentContainer?.viewContext else {
+            return
+        }
+        
+        do {
+            let object = try context.existingObject(with: objectID)
+            object.setValue(nil, forKey: key)
             
             do {
                 try context.save()

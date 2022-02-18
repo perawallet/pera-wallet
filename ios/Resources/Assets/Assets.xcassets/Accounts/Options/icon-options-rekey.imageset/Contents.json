@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "icon-options-rekey.pdf",
+      "filename" : "rekey.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "icon-options-rekey-1.pdf",
+      "filename" : "rekey-1.pdf",
       "idiom" : "universal"
     }
   ],

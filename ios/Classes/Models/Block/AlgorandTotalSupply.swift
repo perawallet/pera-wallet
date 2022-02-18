@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,12 +15,20 @@
 //
 //   AlgorandTotalSupply.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class AlgorandTotalSupply: Model {
+final class AlgorandTotalSupply: ALGAPIModel {
     let currentRound: UInt64
     let onlineMoney: UInt64
     let totalMoney: UInt64
+
+    init() {
+        self.currentRound = 0
+        self.onlineMoney = 0
+        self.totalMoney = 0
+    }
 }
 
 extension AlgorandTotalSupply {

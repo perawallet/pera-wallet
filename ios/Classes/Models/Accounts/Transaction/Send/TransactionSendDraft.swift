@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,10 +19,12 @@ import Foundation
 
 protocol TransactionSendDraft {
     var from: Account { get set }
-    var toAccount: String? { get set }
+    var toAccount: Account? { get set }
     var amount: Decimal? { get set }
     var fee: UInt64? { get set }
     var isMaxTransaction: Bool { get set }
     var identifier: String? { get set }
     var note: String? { get set }
+    var lockedNote: String? { get set }
+    var toContact: Contact? { get set }
 }

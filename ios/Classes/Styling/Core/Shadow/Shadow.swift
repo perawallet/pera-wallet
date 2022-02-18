@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,4 +29,3 @@ let smallBottomShadow = Shadow(color: Colors.Shadow.smallBottom, offset: CGSize(
 let mediumTopShadow = Shadow(color: Colors.Shadow.mediumTop, offset: CGSize(width: 0.0, height: 4.0), radius: 12.0, opacity: 1.0)
 let mediumBottomShadow = Shadow(color: Colors.Shadow.mediumBottom, offset: CGSize(width: 0.0, height: 2.0), radius: 6.0, opacity: 1.0)
 let errorShadow = Shadow(color: Colors.Shadow.error, offset: CGSize(width: 0.0, height: 8.0), radius: 20.0, opacity: 1.0)
-let tabBarShadow = Shadow(color: UIColor.black.withAlphaComponent(0.1), offset: CGSize(width: 0.0, height: 4.0), radius: 32.0, opacity: 1.0)

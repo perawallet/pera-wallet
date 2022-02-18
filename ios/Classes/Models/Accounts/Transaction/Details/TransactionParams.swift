@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,38 +15,39 @@
 //
 //  TransactionParams.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class TransactionParams: Model {
+final class TransactionParams: ALGEntityModel {
     let fee: UInt64
     let minFee: UInt64
     let lastRound: UInt64
     let genesisHashData: Data?
     let genesisId: String?
-    
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        fee = try container.decode(UInt64.self, forKey: .fee)
-        minFee = try container.decode(UInt64.self, forKey: .minFee)
-        lastRound = try container.decode(UInt64.self, forKey: .lastRound)
-        if let genesisHashBase64String = try container.decodeIfPresent(String.self, forKey: .genesisHash) {
-            genesisHashData = Data(base64Encoded: genesisHashBase64String)
-        } else {
-            genesisHashData = nil
-        }
-        genesisId = try container.decode(String.self, forKey: .genesisId)
+
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.fee = apiModel.fee ?? 0
+        self.minFee = apiModel.minFee ?? 0
+        self.lastRound = apiModel.lastRound ?? 0
+        self.genesisHashData = apiModel.genesisHash.unwrap { Data(base64Encoded: $0) }
+        self.genesisId = apiModel.genesisId
     }
-    
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(fee, forKey: .fee)
-        try container.encode(minFee, forKey: .minFee)
-        try container.encode(lastRound, forKey: .lastRound)
-        try container.encodeIfPresent(genesisHashData, forKey: .genesisHash)
-        try container.encodeIfPresent(genesisId, forKey: .genesisId)
+
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.fee = fee
+        apiModel.minFee = minFee
+        apiModel.lastRound = lastRound
+        apiModel.genesisHash = genesisHashData?.base64EncodedString()
+        apiModel.genesisId = genesisId
+        return apiModel
     }
-    
+}
+
+extension TransactionParams {
     func getProjectedTransactionFee(from dataSize: Int? = nil) -> UInt64 {
         if let dataSize = dataSize {
             return max(UInt64(dataSize) * fee, Transaction.Constant.minimumFee)
@@ -56,11 +57,27 @@ class TransactionParams: Model {
 }
 
 extension TransactionParams {
-    private enum CodingKeys: String, CodingKey {
-        case lastRound = "last-round"
-        case fee = "fee"
-        case minFee = "min-fee"
-        case genesisHash = "genesis-hash"
-        case genesisId = "genesis-id"
+    struct APIModel: ALGAPIModel {
+        var lastRound: UInt64?
+        var fee: UInt64?
+        var minFee: UInt64?
+        var genesisHash: String?
+        var genesisId: String?
+
+        init() {
+            self.lastRound = nil
+            self.fee = nil
+            self.minFee = nil
+            self.genesisHash = nil
+            self.genesisId = nil
+        }
+
+        private enum CodingKeys: String, CodingKey {
+            case lastRound = "last-round"
+            case fee = "fee"
+            case minFee = "min-fee"
+            case genesisHash = "genesis-hash"
+            case genesisId = "genesis-id"
+        }
     }
 }

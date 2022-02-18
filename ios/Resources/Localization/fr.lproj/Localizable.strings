@@ -1,5 +1,14 @@
+/* (No Comment) */
+"account-detail-assets-search" = "Rechercher mes actifs";
+
+/* (No Comment) */
+"account-detail-portfolio-title" = "Valeur du compte";
+
 /* MARK: Account Name Setup */
 "account-details-title" = "Nommez votre compte";
+
+/* (No Comment) */
+"account-listing-error-message" = "Désolé, nous ne pouvons pas afficher les détails de ce portefeuille. Il semble que nous ayons des problèmes pour le calcul. \n\n Veuillez noter que certaines valeurs d'actifs peuvent ne pas être disponibles, par conséquent la valeur totale du portefeuille doit être considérée comme une estimation.";
 
 /* (No Comment) */
 "account-name-setup-description" = "Nommez votre compte pour l'identifier facilement lorsque vous utilisez le Portefeuille Algorand. Ces noms sont stockés localement et ne peuvent être vus que par vous.";
@@ -13,10 +22,31 @@
 /* (No Comment) */
 "account-name-setup-placeholder" = "Nom du compte";
 
-/* MARK: Account Type Selection */
-"account-type-choose-title" = "Choisissez le type de compte";
+/* (No Comment) */
+"account-options-add-account-title" = "Ajouter un compte";
 
 /* (No Comment) */
+"account-options-arrange-list-title" = "Organiser la liste";
+
+/* (No Comment) */
+"account-select-clipboard-title" = "Coller depuis le presse-papiers";
+
+/* MARK: AccountSelect */
+"account-select-header-accounts-title" = "Mes comptes";
+
+/* (No Comment) */
+"account-select-header-contacts-title" = "Contacts";
+
+/* (No Comment) */
+"account-select-header-search-title" = "Rechercher ou saisir l'adresse";
+
+/* (No Comment) */
+"account-select-search-empty-detail" = "Essayez un nom de compte différent";
+
+/* (No Comment) */
+"account-select-search-empty-title" = "Aucun compte trouvé";
+
+/* MARK: Account Type Selection */
 "account-type-selection-add" = "Ajouter un compte";
 
 /* (No Comment) */
@@ -68,6 +98,12 @@
 "accounts-title-assets" = "Actifs";
 
 /* (No Comment) */
+"accounts-title-history" = "Historique";
+
+/* (No Comment) */
+"accounts-title-nfts" = "NFT";
+
+/* (No Comment) */
 "accounts-tranaction-empty-detail" = "Aucune transaction n'a été effectuée avec cet actif.";
 
 /* MARK: Accounts */
@@ -77,7 +113,31 @@
 "accounts-transaction-history-title" = "Historique des transactions";
 
 /* (No Comment) */
+"accounts-transaction-value" = "Valeur";
+
+/* (No Comment) */
+"accounts-transaction-your-balance" = "Votre solde";
+
+/* (No Comment) */
 "add-node-title" = "Ajouter un nœud";
+
+/* (No Comment) */
+"algo-statistics-24h-volume" = "Volume 24h";
+
+/* (No Comment) */
+"algo-statistics-all-time" = "Record absolu";
+
+/* (No Comment) */
+"algo-statistics-market-cap" = "Capitalisation";
+
+/* (No Comment) */
+"algo-statistics-open" = "Ouvrir";
+
+/* (No Comment) */
+"algo-statistics-previous-close" = "Précédent Fermer";
+
+/* MARK: Algo Statistics Footer */
+"algo-statistics-title" = "Statistiques";
 
 /* (No Comment) */
 "asset-add-confirmation-title" = "Ajout d'un actif";
@@ -90,6 +150,9 @@
 
 /* (No Comment) */
 "asset-all-title" = "Tout";
+
+/* (No Comment) */
+"asset-copy-id" = "Copier l'ID";
 
 /* (No Comment) */
 "asset-creation-fee-title" = "Ajouter des frais d'actif";
@@ -126,6 +189,9 @@
 
 /* (No Comment) */
 "asset-remove-warning" = "Pour supprimer %@ , le solde doit être égal à 0. Veuillez transférer le solde vers un autre compte et réessayer.";
+
+/* (No Comment) */
+"asset-removing-status" = "Suppression de l'actif";
 
 /* (No Comment) */
 "asset-search-placeholder" = "Rechercher l'ID ou le nom des actifs";
@@ -262,9 +328,6 @@
 /* (No Comment) */
 "chart-time-selection-yearly" = "1A";
 
-/* MARK: Password Setting */
-"choose-password-title" = "Choisir le PIN";
-
 /* (No Comment) */
 "contact-search-empty-detail" = "Veuillez essayer un autre nom de contact";
 
@@ -275,7 +338,13 @@
 "contacts-add" = "Ajouter le contact";
 
 /* (No Comment) */
+"contacts-add-photo" = "Ajouter une photo";
+
+/* (No Comment) */
 "contacts-address-validation-error" = "L'adresse est fausse. Veuillez vous assurer que vous avez entré la bonne.";
+
+/* (No Comment) */
+"contacts-approve-delete-contact" = "Oui, supprimer le contact";
 
 /* (No Comment) */
 "contacts-close-warning-subtitle" = "Votre progression non enregistrée sera perdue. Êtes-vous sûr?";
@@ -288,6 +357,9 @@
 
 /* (No Comment) */
 "contacts-delete-contact-alert-explanation" = "Êtes-vous sûr de vouloir supprimer ce contact?";
+
+/* (No Comment) */
+"contacts-delete-contact-button" = "Supprimer ce contact";
 
 /* (No Comment) */
 "contacts-empty-detail-text" = "Vous pouvez accélérer le processus d'envoi d'actifs en ajoutant de nouveaux contacts.";
@@ -335,10 +407,19 @@
 "csv-download-title" = "Création d'un fichier CSV";
 
 /* (No Comment) */
+"csv-loading-message" = "We are fetching your data. Please wait until your CSV is ready.";
+
+/* (No Comment) */
 "default-error-message" = "Une erreur s'est produite.";
 
 /* (No Comment) */
 "edit-node-title" = "Modifier le nœud";
+
+/* (No Comment) */
+"edit-note-note-explanation" = "Entrez votre note";
+
+/* MARK: EditNote */
+"edit-note-title" = "Ajouter une note";
 
 /* (No Comment) */
 "empty-accounts-action" = "Créer un nouveau compte";
@@ -409,17 +490,14 @@
 /* (No Comment) */
 "internet-connection-error-title" = "Connecter à Internet";
 
-/* (No Comment) */
+/* MARK: Introduction */
 "introduction-add-account-text" = "Ajouter un compte";
 
 /* (No Comment) */
-"introduction-title-add-text" = "Ajouter un nouveau compte";
+"introduction-title-terms-and-services" = "En créant un compte, vous acceptez les <a href=\"https://perawallet.app/terms-and-services/\">Terms and Conditions</a> et la <a href=\"https://www.perawallet.app/privacy-policy/\">Privacy Policy</a>";
 
 /* (No Comment) */
-"introduction-title-terms-and-services" = "En créant un compte, vous acceptez les <a href=\"https://www.algorand.com/wallet-disclaimer\">Terms and Conditions</a> et la <a href=\"https://www.algorand.com/wallet-privacy-policy\">Privacy Policy</a>";
-
-/* MARK: Introduction */
-"introduction-title-text" = "Gérer tous les actifs\ndepuis une application";
+"ledger-account-detail-assets" = "Actifs";
 
 /* (No Comment) */
 "ledger-account-detail-can-sign" = "Peut signer pour ces comptes";
@@ -428,7 +506,10 @@
 "ledger-account-detail-can-signed" = "Peut être signé par";
 
 /* (No Comment) */
-"ledger-account-details-title" = "Détails Ledger";
+"ledger-account-detail-name" = "Ledger # %@";
+
+/* (No Comment) */
+"ledger-account-detail-title" = "Compte Ledger";
 
 /* (No Comment) */
 "ledger-account-fetct-error" = "Une erreur réseau s'est produite lors de la récupération des détails du compte. Redémarrez le processus.";
@@ -464,6 +545,9 @@
 "ledger-account-verification-status-verified" = "Compte vérifié";
 
 /* (No Comment) */
+"ledger-approval-cancel-title" = "Annuler l'approbation";
+
+/* (No Comment) */
 "ledger-approval-connection-message" = "En attente de la connexion du Ledger";
 
 /* (No Comment) */
@@ -491,16 +575,25 @@
 "ledger-pair-title" = "Créer un compte Ledger";
 
 /* (No Comment) */
-"ledger-pairing-first-warning-message-description" = "· Ouvrez votre appareil Ledger.\n · Fermez l'application Algorand sur l'appareil Ledger.\n · Sur l'écran d'accueil de Ledger, confirmez le jumelage.\n · Une fois le jumelage confirmé, ouvrez l'application Algorand Ledger.";
+"ledger-pairing-first-warning-description" = "Votre Ledger est-il associé à cet appareil ?\n Si ce n'est pas le cas, veuillez suivre ces étapes :";
 
 /* (No Comment) */
-"ledger-pairing-first-warning-message-first" = "Votre Ledger est-il associé à cet appareil ?";
+"ledger-pairing-first-warning-message-first-instruction" = "Ouvrez votre appareil Ledger.";
 
 /* (No Comment) */
-"ledger-pairing-first-warning-message-second" = "Si non, veuillez suivre ces étapes :";
+"ledger-pairing-first-warning-message-fourth-instruction" = "Une fois l'association confirmée, ouvrez l'application Algorand sur le Ledger.";
+
+/* (No Comment) */
+"ledger-pairing-first-warning-message-second-instruction" = "Fermez l'application Algorand sur l'appareil Ledger.";
+
+/* (No Comment) */
+"ledger-pairing-first-warning-message-third-instruction" = "Sur l'écran d'accueil Ledger, confirmez l'association.";
 
 /* (No Comment) */
 "ledger-pairing-first-warning-title" = "Jumelage de Ledger avec votre appareil";
+
+/* (No Comment) */
+"ledger-pairing-issue-error-message" = "Vous avez des problèmes de connexion au Ledger Nano X ? \n\nSi tel est le cas, veuillez supprimer l'appareil des paramètres Bluetooth de votre téléphone, supprimez le compte du grand livre, puis réassociez votre Ledger en suivant les instructions d'Algorand Wallet.";
 
 /* (No Comment) */
 "ledger-pairing-issue-error-title" = "Vous avez des problèmes de connexion au Ledger Nano X ?";
@@ -659,6 +752,12 @@
 "min-balance-title" = "Solde minimum requis";
 
 /* (No Comment) */
+"nft-list-empty-detail" = "Vous pourrez bientôt voir vos collections NFT dans le portefeuille Algorand.\nNotre équipe travaille dur pour rendre cette fonctionnalité disponible. Restez à l'écoute !";
+
+/* MARK: NFTs */
+"nft-list-empty-title" = "NFT - Bientôt disponible !";
+
+/* (No Comment) */
 "node-settings-action-delete-title" = "Supprimer";
 
 /* (No Comment) */
@@ -705,9 +804,6 @@
 
 /* (No Comment) */
 "node-settings-test-button-title" = "TEST";
-
-/* (No Comment) */
-"node-settings-test-error-title" = "La connexion a échoué";
 
 /* (No Comment) */
 "node-settings-test-success-title" = "Connexion réussie!";
@@ -761,10 +857,19 @@
 "options-auth-account" = "Adresse d'authentification du compte";
 
 /* (No Comment) */
+"options-copy-address" = "Copier l'adresse";
+
+/* (No Comment) */
 "options-edit-account-name" = "Modifier le nom du compte";
 
 /* (No Comment) */
+"options-manage-assets" = "Gérer les actifs";
+
+/* (No Comment) */
 "options-mute-notification" = "Désactiver les notifications";
+
+/* (No Comment) */
+"options-passphrase" = "Phrase secrète";
 
 /* (No Comment) */
 "options-rekey" = "Rétablir le compte";
@@ -851,12 +956,18 @@
 "passphrase-verify-wrong-message" = "Les mots sélectionnés sont faux. Veuillez réessayer.";
 
 /* (No Comment) */
+"password-change-new-subtitle" = "Enter your new\n6-digit PIN";
+
+/* (No Comment) */
+"password-change-old-subtitle" = "Enter your old\n6-digit PIN";
+
+/* (No Comment) */
 "password-change-subtitle" = "Entrez le code PIN à 6 chiffres";
 
 /* (No Comment) */
 "password-change-title" = "Changer le code PIN";
 
-/* (No Comment) */
+/* MARK: Password Setting */
 "password-set-subtitle" = "Choisissez votre PIN à 6 chiffres";
 
 /* (No Comment) */
@@ -866,10 +977,28 @@
 "password-verify-fail-title" = "Mauvais code PIN";
 
 /* (No Comment) */
+"password-verify-new-subtitle" = "Re-enter your new\n6-digit PIN";
+
+/* (No Comment) */
 "password-verify-subtitle" = "Entrez à nouveau votre PIN à 6 chiffres";
 
 /* (No Comment) */
 "password-verify-title" = "Vérifier le code PIN";
+
+/* (No Comment) */
+"pera-announcement-action-title" = "Start Using Pera Wallet";
+
+/* (No Comment) */
+"pera-announcement-description" = "We are very excited to announce that Algorand Wallet is now called Pera Wallet. This is much more than a new name and logo. We are relaunching the most popular wallet in the Algorand ecosystem with a renewed focus on our roadmap, partner integrations, and community.\n\nDon't worry, Pera Wallet is built and maintained by the same team and all the features you know and love are still here as usual – With many more to come in the upcoming months.\n\nTo read more about the relaunch and our roadmap, head over to the Pera Wallet blog";
+
+/* (No Comment) */
+"pera-announcement-description-blog" = "Pera Wallet blog";
+
+/* (No Comment) */
+"pera-announcement-subtitle" = "Algorand Wallet is\nnow Pera Wallet.";
+
+/* MARK: PeraAnnouncement */
+"pera-announcement-title" = "It's Official!";
 
 /* (No Comment) */
 "pin-limit-reset-all" = "Réinitialiser toutes les données";
@@ -882,6 +1011,27 @@
 
 /* (No Comment) */
 "pin-limit-try-again" = "Réessayez dans";
+
+/* (No Comment) */
+"portfolio-algo-holdings-title" = "Positions Algo";
+
+/* (No Comment) */
+"portfolio-asset-holdings-title" = "Positions Actifs";
+
+/* (No Comment) */
+"portfolio-calculation-description" = "La valeur totale du portefeuille est calculée en additionnant tous les actifs et Algo disponibles dans vos comptes. Si vous détenez plusieurs portefeuilles, la valeur totale du portefeuille est la somme de tous les comptes. \n\n Les prix des actifs sont estimés sur la base des valeurs quotidiennes extraites de Tinyman. Veuillez noter que certaines valeurs d'actifs peuvent ne pas être disponibles, par conséquent la valeur totale du portefeuille doit être considérée comme une estimation. \n\n Les comptes surveillés ne sont pas considérés comme faisant partie de votre portefeuille et ne sont pas inclus dans le calcul du portefeuille total.";
+
+/* MARK: PortfolioDescription */
+"portfolio-calculation-title" = "Comment nous calculons la valeur du portefeuille";
+
+/* (No Comment) */
+"portfolio-title" = "Valeur du portefeuille";
+
+/* (No Comment) */
+"portfolio-title-accounts" = "Comptes";
+
+/* (No Comment) */
+"portfolio-title-watchlist" = "Liste de surveillance";
 
 /* (No Comment) */
 "privacy-policy-title" = "Politique de confidentialité";
@@ -902,6 +1052,12 @@
 "qr-creation-title" = "QR Phrase secrète";
 
 /* (No Comment) */
+"qr-scan-connected-app-count" = "%@ applications connectées";
+
+/* (No Comment) */
+"qr-scan-connected-app-singular-count" = "%@ application connectée";
+
+/* (No Comment) */
 "qr-scan-error-message" = "Votre appareil ne prend pas en charge la numérisation d'un code QR.";
 
 /* (No Comment) */
@@ -919,6 +1075,9 @@
 /* (No Comment) */
 "qr-scan-message-text" = "Vous ne pouvez scanner votre QR qu'à partir de cette page. Pour afficher votre QR, veuillez sélectionner l'icône de votre compte";
 
+/* MARK: QR Scanning */
+"qr-scan-overlay-title" = "Trouver un code à scanner";
+
 /* (No Comment) */
 "qr-scan-should-scan-address-message" = "Vous devez scanner une adresse de compte valide";
 
@@ -928,7 +1087,7 @@
 /* (No Comment) */
 "qr-scan-should-scan-valid-qr" = "Le QR n'est pas valide.";
 
-/* MARK: QR Scanning */
+/* (No Comment) */
 "qr-scan-title" = "Scanner le code QR";
 
 /* (No Comment) */
@@ -1004,6 +1163,9 @@
 "rewards-detail-subtitle" = "Vous gagnez des récompenses simplement en possédant des ALGO! Voici un résumé de votre activité de récompenses depuis votre dernière transaction. Ces récompenses sont toujours incluses dans votre solde.";
 
 /* (No Comment) */
+"rewards-rate" = "Taux de récompenses";
+
+/* (No Comment) */
 "rewards-show-title" = "Afficher les récompenses";
 
 /* (No Comment) */
@@ -1017,6 +1179,21 @@
 
 /* (No Comment) */
 "screenshot-title" = "Capture d'écran détectée";
+
+/* (No Comment) */
+"security-settings-localAuthentication" = "Activer Face ID / Touch ID";
+
+/* (No Comment) */
+"security-settings-pinCode-activation" = "Activer le code PIN";
+
+/* (No Comment) */
+"security-settings-pinCode-change" = "Définir / Modifier le code PIN";
+
+/* (No Comment) */
+"security-settings-section" = "Préférences de sécurité";
+
+/* MARK: Security Settings */
+"security-settings-title" = "Sécurité";
 
 /* (No Comment) */
 "send-algos-account-delete-body" = "Pour garder un compte ouvert, le compte doit avoir au moins 0,01 ALGO. Si vous envoyez le montant maximum, le compte sera supprimé et vos clés de participation actives seront également supprimées.";
@@ -1112,7 +1289,28 @@
 "send-sending-algos-select" = "Sélectionnez le compte d'envoi";
 
 /* (No Comment) */
+"send-transaction-add-note-title" = "+ Ajouter une note";
+
+/* (No Comment) */
+"send-transaction-edit-note-title" = "Modifier la note";
+
+/* (No Comment) */
+"send-transaction-max-button-title" = "MAX";
+
+/* (No Comment) */
 "send-transaction-max-same-account-error" = "Vous ne pouvez pas vous envoyer votre solde maximum. Veuillez sélectionner un montant ou un destinataire différent et réessayer.";
+
+/* (No Comment) */
+"send-transaction-preview-current-balance" = "Current\nBalance";
+
+/* MARK: SendTransactionPreview */
+"send-transaction-preview-title" = "Confirmer l'ordre";
+
+/* (No Comment) */
+"send-transaction-show-note-title" = "Show Note";
+
+/* MARK: SendTransaction */
+"send-transaction-title" = "Envoyer %@";
 
 /* (No Comment) */
 "send-trasaction-address-placeholder" = "Coller #";
@@ -1121,13 +1319,13 @@
 "settings-app-version" = "Version %@";
 
 /* (No Comment) */
-"settings-change-password" = "Définir / modifier le mot de passe";
+"settings-backup-title" = "Sauvegarde";
 
 /* (No Comment) */
 "settings-currency" = "Devise";
 
 /* (No Comment) */
-"settings-currency-usd" = "USD";
+"settings-delete-data-title" = "Delete All Data";
 
 /* (No Comment) */
 "settings-developer" = "Paramètres Développeurs";
@@ -1145,13 +1343,16 @@
 "settings-language-change-title" = "Définir la langue de l'application";
 
 /* (No Comment) */
-"settings-language-english" = "Anglais";
+"settings-logout-button-cancel" = "Conserver";
 
 /* (No Comment) */
-"settings-local-authentication" = "Activer FaceID/Touch ID";
+"settings-logout-button-delete" = "Oui, supprimer toutes les données";
 
 /* (No Comment) */
 "settings-logout-detail" = "Êtes-vous sûr de vouloir supprimer toutes les données?";
+
+/* (No Comment) */
+"settings-logout-success-message" = "Vos données ont été supprimées avec succès";
 
 /* (No Comment) */
 "settings-logout-title" = "Supprimer toutes les données";
@@ -1166,7 +1367,25 @@
 "settings-notification-go-settings-title" = "Notifications";
 
 /* (No Comment) */
+"settings-rate-modal-description" = "Dites-nous comment a été votre expérience ?";
+
+/* (No Comment) */
+"settings-rate-modal-title" = "Évaluez votre expérience";
+
+/* (No Comment) */
 "settings-rate-title" = "Évaluer le Portefeuille Algorand";
+
+/* MARK: Settings */
+"settings-sections-account" = "Compte";
+
+/* (No Comment) */
+"settings-sections-appPreferences" = "Préférences de l'application";
+
+/* (No Comment) */
+"settings-sections-support" = "Support";
+
+/* (No Comment) */
+"settings-security-title" = "Sécurité";
 
 /* (No Comment) */
 "settings-server-node-settings" = "Paramètres du nœud";
@@ -1186,11 +1405,23 @@
 /* (No Comment) */
 "settings-theme-system" = "Système par défaut";
 
-/* MARK: Settings */
+/* (No Comment) */
 "settings-title" = "Paramètres";
 
 /* (No Comment) */
 "settings-wallet-connect-title" = "Sessions WalletConnect";
+
+/* (No Comment) */
+"single-transaction-request-network-fee-title" = "Frais de réseau";
+
+/* (No Comment) */
+"single-transaction-request-opt-in-subtitle" = "OnCompletion";
+
+/* (No Comment) */
+"single-transaction-request-opt-in-title" = "Inscription";
+
+/* MARK: SingleTransactionRequestMARK: SingleTransactionRequest */
+"single-transaction-request-show-detail-title" = "Afficher les détails de la transaction";
 
 /* MARK: Terms and Services */
 "terms-and-services-title" = "Conditions de Service";
@@ -1217,10 +1448,10 @@
 "title-algorand-value" = "Valeur";
 
 /* (No Comment) */
-"title-analytics" = "Analyse";
+"title-approve" = "Approuver";
 
 /* (No Comment) */
-"title-approve" = "Approuver";
+"title-asset-id" = "Asset ID";
 
 /* (No Comment) */
 "title-cancel" = "Annuler";
@@ -1271,7 +1502,10 @@
 "title-error" = "Erreur";
 
 /* (No Comment) */
-"title-go-home" = "Aller à l'accueil";
+"title-failed-connection" = "Échec de la connexion";
+
+/* (No Comment) */
+"title-start-using-pera-wallet" = "Start Using Pera Wallet";
 
 /* (No Comment) */
 "title-go-to-accounts" = "Accéder aux Comptes";
@@ -1328,6 +1562,9 @@
 "title-plus-asset-count" = "+%@ Actifs";
 
 /* (No Comment) */
+"title-plus-asset-singular-count" = "%@ Actif";
+
+/* (No Comment) */
 "title-preview" = "Aperçu";
 
 /* (No Comment) */
@@ -1346,6 +1583,9 @@
 "title-remove-assets" = "Supprimer les actifs";
 
 /* (No Comment) */
+"title-retry" = "Réessayer";
+
+/* (No Comment) */
 "title-save" = "Sauvegarder";
 
 /* (No Comment) */
@@ -1356,6 +1596,12 @@
 
 /* (No Comment) */
 "title-share-qr" = "Partager QR";
+
+/* (No Comment) */
+"title-show-all-detail" = "Afficher tous les détails";
+
+/* (No Comment) */
+"title-show-transaction-detail" = "Afficher les détails de la transaction";
 
 /* (No Comment) */
 "title-skip" = "Ignorer";
@@ -1400,6 +1646,9 @@
 "tranaction-empty-text" = "Aucune transaction trouvée";
 
 /* (No Comment) */
+"transaction-detail-add" = "Ajouter";
+
+/* (No Comment) */
 "transaction-detail-amount" = "Montant";
 
 /* (No Comment) */
@@ -1412,10 +1661,16 @@
 "transaction-detail-close-to" = "Près de";
 
 /* (No Comment) */
+"transaction-detail-completed" = "Terminé";
+
+/* (No Comment) */
 "transaction-detail-copy-tooltip" = "Appuyez et maintenez pour copier dans le presse-papiers";
 
 /* (No Comment) */
 "transaction-detail-date" = "Date";
+
+/* (No Comment) */
+"transaction-detail-failed" = "Échec";
 
 /* (No Comment) */
 "transaction-detail-fee" = "Frais";
@@ -1430,16 +1685,31 @@
 "transaction-detail-id-copied" = "ID de transaction copié dans le presse-papiers";
 
 /* (No Comment) */
+"transaction-detail-id-copied-title" = "ID copié dans le presse-papiers";
+
+/* (No Comment) */
 "transaction-detail-note" = "Note";
 
 /* (No Comment) */
 "transaction-detail-note-copied" = "Note de transaction copiée dans le presse-papiers";
 
 /* (No Comment) */
+"transaction-detail-pending" = "En attente";
+
+/* (No Comment) */
+"transaction-detail-pending-transactions" = "Transactions en attente";
+
+/* (No Comment) */
+"transaction-detail-receive" = "Recevoir";
+
+/* (No Comment) */
 "transaction-detail-reward" = "Récompense";
 
 /* (No Comment) */
 "transaction-detail-round" = "Rond";
+
+/* (No Comment) */
+"transaction-detail-send" = "Envoyer";
 
 /* (No Comment) */
 "transaction-detail-sender" = "Expéditeur";
@@ -1502,6 +1772,21 @@
 "transaction-id-open-goalseeker" = "Ouvrir dans GoalSeeker";
 
 /* (No Comment) */
+"transaction-request-signing-alert-title" = "Êtes-vous sûr ?";
+
+/* (No Comment) */
+"transaction-result-completed-subtitle" = "Votre ordre a bien été reçu";
+
+/* (No Comment) */
+"transaction-result-completed-title" = "Ordre reçu";
+
+/* (No Comment) */
+"transaction-result-started-subtitle" = "Votre ordre a bien été reçu";
+
+/* MARK: TransactionResult */
+"transaction-result-started-title" = "Ordre placé";
+
+/* (No Comment) */
 "transaction-tutorial-subtitle" = "Nous avons remarqué qu'il s'agit de votre première transaction. Avant de la finaliser, gardez à l'esprit quelques conseils:";
 
 /* (No Comment) */
@@ -1526,10 +1811,19 @@
 "transaction-tutorial-title" = "Conseils pour les transactions";
 
 /* (No Comment) */
+"tutorial-action-title-ledger" = "Comment cela fonctionne-t-il ?";
+
+/* (No Comment) */
 "tutorial-action-title-passcode" = "Pas maintenant";
 
 /* (No Comment) */
 "tutorial-description-back-up" = "Sans votre phrase secrète de récupération, si vous perdez votre appareil ou supprimez l'application, vous perdrez définitivement l'accès à votre compte Algorand.";
+
+/* (No Comment) */
+"tutorial-description-ledger" = "Veuillez vous assurer que votre Ledger est déverrouillé avec Bluetooth activé";
+
+/* (No Comment) */
+"tutorial-description-ledger-connected" = "Bienvenue à Algorand ! Votre compte est\n prêt à l'emploi";
 
 /* (No Comment) */
 "tutorial-description-local" = "Votre autorisation FaceID ou TouchID sera nécessaire pour utiliser l'application. Nous vous recommandons d'activer l'authentification biométrique pour améliorer la sécurité du portefeuille en cas de vol de votre téléphone.";
@@ -1547,16 +1841,19 @@
 "tutorial-description-watch" = "Surveillez l'activité d'un compte sans avoir besoin d'une phrase secrète de récupération. Ceci est utile pour surveiller les actifs conservés hors ligne.\n\n Avertissement: si vous ne disposez pas de la phrase secrète de récupération correspondante, n'envoyez pas d'actifs vers ce compte.";
 
 /* (No Comment) */
-"tutorial-description-watch-italic" = "Avertissement: si vous ne disposez pas de la phrase secrète de récupération correspondante, n'envoyez pas d'actifs vers ce compte.";
+"tutorial-description-watch-warning" = "Si vous ne disposez pas de la phrase secrète de récupération correspondante, n'envoyez pas d'actifs à ce compte.";
 
 /* (No Comment) */
 "tutorial-description-write" = "La seule façon de récupérer un compte Algorand est d'utiliser cette phrase secrète de récupération. \n\n Avertissement: ne partagez cette phrase secrète avec personne, car elle donne un accès complet à votre compte.";
 
 /* (No Comment) */
-"tutorial-description-write-italic" = "Avertissement: ne partagez cette phrase secrète avec personne, car elle donne un accès complet à votre compte.";
+"tutorial-description-write-warning" = "Ne partagez cette phrase secrète avec personne, car elle vous donne un accès complet à votre compte.";
 
 /* (No Comment) */
 "tutorial-main-title-back-up" = "Je comprends";
+
+/* (No Comment) */
+"tutorial-main-title-ledger-connected" = "Commencez à utiliser Algorand";
 
 /* (No Comment) */
 "tutorial-main-title-passcode" = "Définir le code d'accès";
@@ -1571,6 +1868,9 @@
 "tutorial-title-back-up" = "Sauvegardez votre compte à l'aide d'une phrase secrète de récupération";
 
 /* (No Comment) */
+"tutorial-title-ledger-connected" = "Ledger connecté avec succès";
+
+/* (No Comment) */
 "tutorial-title-passcode" = "Augmentez votre sécurité avec un code PIN";
 
 /* (No Comment) */
@@ -1578,9 +1878,6 @@
 
 /* (No Comment) */
 "tutorial-title-write" = "Préparez-vous à noter votre phrase secrète de récupération";
-
-/* (No Comment) */
-"value-one-algo" = "1 ALGO = %@";
 
 /* (No Comment) */
 "verified-asset-double-check" = "toujours vérifier deux fois";
@@ -1634,6 +1931,9 @@
 "wallet-connect-asset-unit-title" = "Nom de l'unité";
 
 /* (No Comment) */
+"wallet-connect-group-transaction-header-title" = "ID de groupe : %@";
+
+/* (No Comment) */
 "wallet-connect-raw-transaction-title" = "Transaction Brute";
 
 /* (No Comment) */
@@ -1641,6 +1941,12 @@
 
 /* (No Comment) */
 "wallet-connect-session-connected-with-account" = "Connecté avec %@";
+
+/* (No Comment) */
+"wallet-connect-session-connection-approved-description" = "Retournez à %@ pour finaliser la connexion et initier les transactions !";
+
+/* (No Comment) */
+"wallet-connect-session-connection-approved-title" = "Session WalletConnect avec\n %@ est approuvé";
 
 /* MARK: Wallet Connect Session */
 "wallet-connect-session-connection-description" = "%@ veut se connecter à votre compte";
@@ -1662,6 +1968,12 @@
 
 /* (No Comment) */
 "wallet-connect-session-list-empty" = "Vous n'avez encore connecté aucune application.";
+
+/* (No Comment) */
+"wallet-connect-session-select-account" = "Sélectionner un compte";
+
+/* (No Comment) */
+"wallet-connect-session-timeout-message" = "Nous sommes désolés, mais la dApp ne répond pas. Veuillez actualiser la page et essayer de scanner un nouveau code QR. Si l'erreur persiste, veuillez contacter la dApp.";
 
 /* (No Comment) */
 "wallet-connect-transaction-all-count" = "Toutes les transactions ( %d )";
@@ -1805,10 +2117,19 @@
 "wallet-connect-transaction-title-app-call-on-complete" = "OnComplete";
 
 /* (No Comment) */
+"wallet-connect-transaction-title-app-create" = "Création de l'application";
+
+/* (No Comment) */
 "wallet-connect-transaction-title-app-creation" = "Création de l'application";
 
 /* (No Comment) */
+"wallet-connect-transaction-title-app-delete" = "Suppression de l'appel de l'application";
+
+/* (No Comment) */
 "wallet-connect-transaction-title-app-id" = "ID d'application";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-update" = "Mise à jour de l'appel d'application";
 
 /* (No Comment) */
 "wallet-connect-transaction-title-asset" = "Demande de transfert d'actif";
@@ -1833,6 +2154,9 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-title-opt-in" = "Demande d’inscription des actifs";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-possible-opt-in" = "Demande d'activation d'actifs possibles";
 
 /* (No Comment) */
 "wallet-connect-transaction-title-raw" = "Transactions brutes";
@@ -1865,13 +2189,17 @@
 "wallet-connect-transaction-warning-high-fee" = "Ces frais de transaction sont supérieurs aux frais habituels de 0,01 Algos.";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-initial" = "Les demandes de transaction suivantes proviennent d'applications externes que le portefeuille Algorand ne contrôle pas. Veuillez vous assurer d'examiner attentivement ces transactions avant de signer, car les transactions sont irréversibles.";
+"wallet-connect-transaction-warning-initial-title" = "Transaction Request FAQ";
+"wallet-connect-transaction-warning-initial-description" = "External applications also called as dApps can make transaction requests that the Pera Wallet does not control. Please ensure you review these transactions carefully before approving and signing them.\n\nAll transactions are irreversible. Never approve transaction from dApp that you don’t know.";
 
 /* MARK: Wallet Connect Transaction Warning */
 "wallet-connect-transaction-warning-rekey" = "Cette transaction transférera la propriété de ce compte. Votre mot de passe de récupération actuel n'autorisera plus l'accès à ces actifs.";
 
 /* (No Comment) */
 "wallet-connect-transaction-warning-rekey-title" = "Rétablir pour";
+
+/* (No Comment) */
+"watch-account-button" = "Créer un compte de consultation";
 
 /* (No Comment) */
 "watch-account-create" = "Créer un Compte de Consultation";
@@ -1887,4 +2215,13 @@
 
 /* (No Comment) */
 "watch-account-input-placeholder" = "Coller l'adresse ou scanner le QR";
+
+/* (No Comment) */
+"watch-account-paste" = "Coller";
+
+/* (No Comment) */
+"wc-transaction-request-signed-warning-message" = "La transaction a été signée et envoyée à %@. Veuillez visiter %@ pour le reste du processus.";
+
+/* (No Comment) */
+"wc-transaction-request-signed-warning-title" = "Votre transaction est en cours de traitement !";
 

@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 
 import Foundation
 
-class QRText: Codable {
+final class QRText: Codable {
     let mode: QRMode
     let version = "1.0"
     let address: String?

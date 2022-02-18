@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@
 //
 //   WCMultisigMetadata.swift
 
-import Magpie
+import Foundation
 
-class WCMultisigMetadata: Model {
+final class WCMultisigMetadata: Codable {
     let version: Int?
     let threshold: UInt64?
     let address: String?

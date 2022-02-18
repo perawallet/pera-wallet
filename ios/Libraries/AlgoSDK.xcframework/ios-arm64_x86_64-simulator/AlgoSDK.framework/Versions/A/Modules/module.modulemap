@@ -1,0 +1,8 @@
+framework module "AlgoSDK" {
+	header "ref.h"
+    header "AlgoMobile.objc.h"
+    header "Universe.objc.h"
+    header "AlgoSDK.h"
+
+    export *
+}

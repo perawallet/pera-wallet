@@ -3,6 +3,16 @@
     {
       "filename" : "icon-rekey-info.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "icon-rekey-info-1.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,44 +15,75 @@
 //
 //  NotificationDetail.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class NotificationDetail: Model {
+final class NotificationDetail: ALGAPIModel {
+    let type: NotificationType
     let senderAddress: String?
     let receiverAddress: String?
-    private let amount: UInt64?
-    private let amountStr: String?
     let asset: NotificationAsset?
-    let notificationType: NotificationType?
-}
-
-extension NotificationDetail {
-    func getAmountValue() -> UInt64 {
-        if let amount = amount {
-            return amount
-        }
-
-        if let amountStr = amountStr,
-            let amount = UInt64(amountStr) {
-            return amount
-        }
-
-        return 0
+    let amount: UInt64
+    
+    init() {
+        self.type = .broadcast
+        self.senderAddress = nil
+        self.receiverAddress = nil
+        self.asset = nil
+        self.amount = 0
     }
-}
-
-extension NotificationDetail {
-    enum CodingKeys: String, CodingKey {
+    
+    init(
+        from decoder: Decoder
+    ) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        let type = try container.decodeIfPresent(NotificationType.self, forKey: .notificationType)
+        
+        let amount: UInt64
+        if let anAmount = try container.decodeIfPresent(UInt64.self, forKey: .amount) {
+            amount = anAmount
+        } else if let amountString = try container.decodeIfPresent(String.self, forKey: .amountStr),
+                  let anAmount = UInt64(amountString) {
+            amount = anAmount
+        } else {
+            amount = 0
+        }
+        
+        self.type = type ?? .broadcast
+        self.senderAddress = try container.decodeIfPresent(String.self, forKey: .senderAddress)
+        self.receiverAddress = try container.decodeIfPresent(String.self, forKey: .receiverAddress)
+        self.asset = try container.decodeIfPresent(NotificationAsset.self, forKey: .asset)
+        self.amount = amount
+    }
+    
+    func encode(
+        to encoder: Encoder
+    ) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(type, forKey: .notificationType)
+        try container.encodeIfPresent(senderAddress, forKey: .senderAddress)
+        try container.encodeIfPresent(receiverAddress, forKey: .receiverAddress)
+        try container.encodeIfPresent(asset, forKey: .asset)
+        try container.encode(amount, forKey: .amount)
+    }
+    
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case notificationType = "notification_type"
         case senderAddress = "sender_public_key"
         case receiverAddress = "receiver_public_key"
-        case amount = "amount"
+        case asset
+        case amount
         case amountStr = "amount_str"
-        case asset = "asset"
-        case notificationType = "notification_type"
     }
 }
 
-enum NotificationType: String, Model {
+enum NotificationType:
+    String,
+    JSONModel {
     case transactionSent = "transaction-sent"
     case transactionReceived = "transaction-received"
     case transactionFailed = "transaction-failed"
@@ -62,4 +93,8 @@ enum NotificationType: String, Model {
     case assetSupportRequest = "asset-support-request"
     case assetSupportSuccess = "asset-support-success"
     case broadcast = "broadcast"
+
+    init() {
+        self = .broadcast
+    }
 }

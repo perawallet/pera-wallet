@@ -1,15 +1,15 @@
 /* Privacy - Bluetooth Always Usage Description */
-"NSBluetoothAlwaysUsageDescription" = "Algorand将使用蓝牙与Ledger X通信。";
+"NSBluetoothAlwaysUsageDescription" = "Pera将使用蓝牙与Ledger X通信。";
 
 /* Privacy - Bluetooth Peripheral Usage Description */
-"NSBluetoothPeripheralUsageDescription" = "Algorand将使用蓝牙与Ledger X通信。";
+"NSBluetoothPeripheralUsageDescription" = "Pera将使用蓝牙与Ledger X通信。";
 
 /* Privacy - Camera Usage Description */
-"NSCameraUsageDescription" = "Algorand将使用您的摄像头扫描二维码。";
+"NSCameraUsageDescription" = "Pera将使用您的摄像头扫描二维码。";
 
 /* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "Algorand将使用人脸识别让您安全登录。";
+"NSFaceIDUsageDescription" = "Pera将使用人脸识别让您安全登录。";
 
 /* Privacy - Photo Library Additions Usage Description */
-"NSPhotoLibraryAddUsageDescription" = "Algorand会将二维码保存到您的相册中。";
+"NSPhotoLibraryAddUsageDescription" = "Pera会将二维码保存到您的相册中。";
 

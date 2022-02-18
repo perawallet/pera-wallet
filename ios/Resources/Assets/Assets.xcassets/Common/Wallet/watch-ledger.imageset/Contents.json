@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "watch-ledger.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

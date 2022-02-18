@@ -1,15 +1,15 @@
 /* Privacy - Bluetooth Always Usage Description */
-"NSBluetoothAlwaysUsageDescription" = "Algorand utilizzerà il Bluetooth per comunicare con Ledger X.";
+"NSBluetoothAlwaysUsageDescription" = "Pera utilizzerà il Bluetooth per comunicare con Ledger X.";
 
 /* Privacy - Bluetooth Peripheral Usage Description */
-"NSBluetoothPeripheralUsageDescription" = "Algorand utilizzerà il Bluetooth per comunicare con Ledger X.";
+"NSBluetoothPeripheralUsageDescription" = "Pera utilizzerà il Bluetooth per comunicare con Ledger X.";
 
 /* Privacy - Camera Usage Description */
-"NSCameraUsageDescription" = "Algorand utilizzerà la tua videocamera per scansionare i codici QR.";
+"NSCameraUsageDescription" = "Pera utilizzerà la tua videocamera per scansionare i codici QR.";
 
 /* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "Algorand utilizzerà Face ID per farti accedere in modo sicuro.";
+"NSFaceIDUsageDescription" = "Pera utilizzerà Face ID per farti accedere in modo sicuro.";
 
 /* Privacy - Photo Library Additions Usage Description */
-"NSPhotoLibraryAddUsageDescription" = "Algorand salverà i codici QR nella tua libreria fotografica.";
+"NSPhotoLibraryAddUsageDescription" = "Pera salverà i codici QR nella tua libreria fotografica.";
 

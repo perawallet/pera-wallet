@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,24 +15,66 @@
 //
 //  AssetTransferTransaction.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class AssetTransferTransaction: Model {
+final class AssetTransferTransaction: ALGEntityModel {
     let amount: UInt64
     let closeAmount: UInt64?
     let closeToAddress: String?
     let assetId: Int64
     let receiverAddress: String?
     let senderAddress: String?
+
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.amount = apiModel.amount ?? 10
+        self.closeAmount = apiModel.closeAmount
+        self.closeToAddress = apiModel.closeTo
+        self.assetId = apiModel.assetId ?? 1
+        self.receiverAddress = apiModel.receiver
+        self.senderAddress = apiModel.sender
+    }
+
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.amount = amount
+        apiModel.closeAmount = closeAmount
+        apiModel.closeTo = closeToAddress
+        apiModel.assetId = assetId
+        apiModel.receiver = receiverAddress
+        apiModel.sender = senderAddress
+        return apiModel
+    }
 }
 
 extension AssetTransferTransaction {
-    private enum CodingKeys: String, CodingKey {
-        case amount = "amount"
-        case closeAmount = "close-amount"
-        case closeToAddress = "close-to"
-        case assetId = "asset-id"
-        case receiverAddress = "receiver"
-        case senderAddress = "sender"
+    struct APIModel: ALGAPIModel {
+        var amount: UInt64?
+        var closeAmount: UInt64?
+        var closeTo: String?
+        var assetId: Int64?
+        var receiver: String?
+        var sender: String?
+
+        init() {
+            self.amount = nil
+            self.closeAmount = nil
+            self.closeTo = nil
+            self.assetId = nil
+            self.receiver = nil
+            self.sender = nil
+        }
+
+        private enum CodingKeys: String, CodingKey {
+            case amount
+            case closeAmount = "close-amount"
+            case closeTo = "close-to"
+            case assetId = "asset-id"
+            case receiver
+            case sender
+        }
     }
 }

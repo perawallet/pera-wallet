@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,17 +15,27 @@
 //
 //  AssetFreezeTransaction.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class AssetFreezeTransaction: Model {
+final class AssetFreezeTransaction: ALGAPIModel {
     let address: String?
     let isFreeze: Bool?
     let assetId: Int64?
+
+    init() {
+        self.address = nil
+        self.isFreeze = nil
+        self.assetId = nil
+    }
 }
 
 extension AssetFreezeTransaction {
-    private enum CodingKeys: String, CodingKey {
-        case address = "address"
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case address
         case isFreeze = "new-freeze-status"
         case assetId = "asset-id"
     }

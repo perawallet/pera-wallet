@@ -1,12 +1,16 @@
-# OS X temporary files that should never be committed
+### OS X temporary files ###
 
 .DS_Store
 .Trashes
 *.swp
 
-# Xcode
-#
-# gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
+### Swift ###
+
+## Obj-C/Swift specific
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
 
 ## Build generated
 build/
@@ -21,34 +25,28 @@ DerivedData/
 !default.mode2v3
 *.perspectivev3
 !default.perspectivev3
-!default.xcworkspace
-xcuserdata
-compile_commands.json
+xcuserdata/
 
-## Other
+## Other settings
 *.moved-aside
 *.xccheckout
 *.xcscmblueprint
-
-## Obj-C/Swift specific
-*.hmap
-*.ipa
-*.dSYM.zip
-*.dSYM
 
 ## Playgrounds
 timeline.xctimeline
 playground.xcworkspace
 
-# CocoaPods
+## Swift Package Manager
+Packages/
+Package.pins
+Package.resolved
+.swiftpm
+.build/
+
+## CocoaPods
 Pods/
 
-# fastlane
-# It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
-# screenshots whenever they are needed.
-# For more information about the recommended setup visit:
-# https://docs.fastlane.tools/best-practices/source-control/#source-control
-
+## fastlane
 fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
@@ -56,3 +54,15 @@ fastlane/test_output
 fastlane/.env
 fastlane/.env.*
 ./archieve
+
+### Xcode ###
+
+## Xcode Patch
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcworkspace/contents.xcworkspacedata
+/*.gcno
+
+### Xcode Patch ###
+**/xcshareddata/WorkspaceSettings.xcsettings

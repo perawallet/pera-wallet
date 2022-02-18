@@ -1,15 +1,15 @@
 /* Privacy - Bluetooth Always Usage Description */
-"NSBluetoothAlwaysUsageDescription" = "Algorand verwendet Bluetooth zur Kommunikation mit dem Ledger X.";
+"NSBluetoothAlwaysUsageDescription" = "Pera verwendet Bluetooth zur Kommunikation mit dem Ledger X.";
 
 /* Privacy - Bluetooth Peripheral Usage Description */
-"NSBluetoothPeripheralUsageDescription" = "Algorand verwendet Bluetooth zur Kommunikation mit dem Ledger X.";
+"NSBluetoothPeripheralUsageDescription" = "Pera verwendet Bluetooth zur Kommunikation mit dem Ledger X.";
 
 /* Privacy - Camera Usage Description */
-"NSCameraUsageDescription" = "Algorand verwendet Ihre Kamera zum Scannen von QR-Codes.";
+"NSCameraUsageDescription" = "Pera verwendet Ihre Kamera zum Scannen von QR-Codes.";
 
 /* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "Algorand verwendet Ihre Gesichtsprüfung, damit Sie sich sicher anmelden können.";
+"NSFaceIDUsageDescription" = "Pera verwendet Ihre Gesichtsprüfung, damit Sie sich sicher anmelden können.";
 
 /* Privacy - Photo Library Additions Usage Description */
-"NSPhotoLibraryAddUsageDescription" = "Algorand speichert QR-Codes in Ihrer Fotobibliothek.";
+"NSPhotoLibraryAddUsageDescription" = "Pera speichert QR-Codes in Ihrer Fotobibliothek.";
 

@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,9 +15,11 @@
 //
 //   ApplicationLocalState.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class ApplicationLocalState: Model {
+final class ApplicationLocalState: ALGAPIModel {
     var closedAtRound: UInt64?
     var isDeleted: Bool?
     var id: Int64?
@@ -26,11 +28,13 @@ class ApplicationLocalState: Model {
 }
 
 extension ApplicationLocalState {
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys:
+        String,
+        CodingKey {
         case closedAtRound = "closed-out-at-round"
         case isDeleted = "deleted"
-        case id = "id"
+        case id
         case optedInAtRound = "opted-in-at-round"
-        case schema = "schema"
+        case schema
     }
 }

@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,46 +15,47 @@
 //
 //  AlgorandNotification.swift
 
-import Magpie
+import Foundation
+import MacaroonUtils
 
-class AlgorandNotification: Model {
+final class AlgorandNotification: JSONModel {
+    var accountAddress: String? {
+        return detail.unwrap {
+            switch $0.type {
+            case .transactionSent,
+                 .assetTransactionSent:
+                return $0.senderAddress
+            case .transactionReceived,
+                 .assetTransactionReceived,
+                 .assetSupportRequest,
+                 .assetSupportSuccess:
+                return $0.receiverAddress
+            default:
+                return nil
+            }
+        }
+    }
+    
     let badge: Int?
     let alert: String?
-    let details: NotificationDetail?
+    let detail: NotificationDetail?
     let sound: String?
-}
 
-extension AlgorandNotification {
-    func getAccountId() -> String? {
-        guard let notificationDetails = details,
-              let notificationType = notificationDetails.notificationType else {
-                return nil
-        }
-
-        switch notificationType {
-        case .transactionReceived,
-             .assetTransactionReceived:
-            return notificationDetails.receiverAddress
-        case .transactionSent,
-             .assetTransactionSent:
-            return notificationDetails.senderAddress
-        case .assetSupportRequest:
-            return notificationDetails.receiverAddress
-        case .assetSupportSuccess:
-            return notificationDetails.receiverAddress
-        case .broadcast:
-            return nil
-        default:
-            return nil
-        }
+    init() {
+        self.badge = nil
+        self.alert = nil
+        self.detail = nil
+        self.sound = nil
     }
 }
 
 extension AlgorandNotification {
-    enum CodingKeys: String, CodingKey {
-        case badge = "badge"
-        case alert = "alert"
-        case details = "custom"
-        case sound = "sound"
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case badge
+        case alert
+        case detail = "custom"
+        case sound
     }
 }

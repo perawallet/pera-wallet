@@ -1,5 +1,14 @@
+/* (No Comment) */
+"account-detail-assets-search" = "Varlıklarımı ara";
+
+/* (No Comment) */
+"account-detail-portfolio-title" = "Hesap Değeri";
+
 /* MARK: Account Name Setup */
 "account-details-title" = "Hesabınızı adlandırın";
+
+/* (No Comment) */
+"account-listing-error-message" = "Üzgünüz, bu portföyün ayrıntılarını gösteremiyoruz. Hesaplama konusunda bazı sorunlar var gibi görünüyor.\n\nBazı varlıkların fiyat bilgisinin bulunmayabileceğini lütfen dikkate alın. Bu nedenle, toplam portföy değerinin bir tahmin olarak düşünülmesi gerekmektedir.";
 
 /* (No Comment) */
 "account-name-setup-description" = "Algorand Wallet'ı kullanırken kolayca ayırt edebilmek için hesabınızı adlandırın. Bu adlar yerel olarak saklanır ve yalnızca sizin tarafınızdan görülebilir.";
@@ -13,10 +22,31 @@
 /* (No Comment) */
 "account-name-setup-placeholder" = "Hesap Adı";
 
-/* MARK: Account Type Selection */
-"account-type-choose-title" = "Hesap Türünü Seçin";
+/* (No Comment) */
+"account-options-add-account-title" = "Hesap Ekle";
 
 /* (No Comment) */
+"account-options-arrange-list-title" = "Listeyi Düzenle";
+
+/* (No Comment) */
+"account-select-clipboard-title" = "Panodan Yapıştır";
+
+/* MARK: AccountSelect */
+"account-select-header-accounts-title" = "Hesaplarım";
+
+/* (No Comment) */
+"account-select-header-contacts-title" = "Kişiler";
+
+/* (No Comment) */
+"account-select-header-search-title" = "Adresi arayın veya girin";
+
+/* (No Comment) */
+"account-select-search-empty-detail" = "Farklı bir hesap adı ile deneyin";
+
+/* (No Comment) */
+"account-select-search-empty-title" = "Hesap bulunamadı";
+
+/* MARK: Account Type Selection */
 "account-type-selection-add" = "Hesap Ekle";
 
 /* (No Comment) */
@@ -68,6 +98,12 @@
 "accounts-title-assets" = "Varlıklar";
 
 /* (No Comment) */
+"accounts-title-history" = "Geçmiş";
+
+/* (No Comment) */
+"accounts-title-nfts" = "NFT'ler";
+
+/* (No Comment) */
 "accounts-tranaction-empty-detail" = "Bu varlık ile işlem yapılmadı.";
 
 /* MARK: Accounts */
@@ -77,7 +113,31 @@
 "accounts-transaction-history-title" = "İşlem Geçmişi";
 
 /* (No Comment) */
+"accounts-transaction-value" = "Değeri";
+
+/* (No Comment) */
+"accounts-transaction-your-balance" = "Bakiyeniz";
+
+/* (No Comment) */
 "add-node-title" = "Düğüm Ekle";
+
+/* (No Comment) */
+"algo-statistics-24h-volume" = "24 sa Hacim";
+
+/* (No Comment) */
+"algo-statistics-all-time" = "Tüm Zamanların En Yüksek Değeri";
+
+/* (No Comment) */
+"algo-statistics-market-cap" = "Piyasa Değeri";
+
+/* (No Comment) */
+"algo-statistics-open" = "Açık";
+
+/* (No Comment) */
+"algo-statistics-previous-close" = "Önceki Kapanış";
+
+/* MARK: Algo Statistics Footer */
+"algo-statistics-title" = "İstatistikler";
 
 /* (No Comment) */
 "asset-add-confirmation-title" = "Varlık Ekleme";
@@ -90,6 +150,9 @@
 
 /* (No Comment) */
 "asset-all-title" = "Tümü";
+
+/* (No Comment) */
+"asset-copy-id" = "Kimliği Kopyala";
 
 /* (No Comment) */
 "asset-creation-fee-title" = "Varlık Komisyonu Ekle";
@@ -126,6 +189,9 @@
 
 /* (No Comment) */
 "asset-remove-warning" = "%@ varlığını kaldırmak için bakiyenin 0 olması gerekir. Lütfen bakiyeyi başka bir hesaba transfer edin ve tekrar deneyin.";
+
+/* (No Comment) */
+"asset-removing-status" = "Varlık Kaldırılıyor";
 
 /* (No Comment) */
 "asset-search-placeholder" = "Varlık Kimliğini veya Adını Ara";
@@ -262,9 +328,6 @@
 /* (No Comment) */
 "chart-time-selection-yearly" = "1Y";
 
-/* MARK: Password Setting */
-"choose-password-title" = "PIN Seç";
-
 /* (No Comment) */
 "contact-search-empty-detail" = "Lütfen farklı bir kişi adı deneyin";
 
@@ -275,7 +338,13 @@
 "contacts-add" = "Kişi Ekle";
 
 /* (No Comment) */
+"contacts-add-photo" = "Fotoğraf Ekle";
+
+/* (No Comment) */
 "contacts-address-validation-error" = "Adres yanlış. Lütfen adresi doğru girdiğinizden emin olun.";
+
+/* (No Comment) */
+"contacts-approve-delete-contact" = "Evet, kişiyi sil";
 
 /* (No Comment) */
 "contacts-close-warning-subtitle" = "Kaydedilmeyen ilerlemeniz kaybedilecek. Emin misiniz?";
@@ -288,6 +357,9 @@
 
 /* (No Comment) */
 "contacts-delete-contact-alert-explanation" = "Bu kişiyi silmek istediğinizden emin misiniz?";
+
+/* (No Comment) */
+"contacts-delete-contact-button" = "Bu kişiyi sil";
 
 /* (No Comment) */
 "contacts-empty-detail-text" = "Yeni kişiler ekleyerek, varlık gönderim sürecini daha hızlı bir hale getirebilirsiniz.";
@@ -335,10 +407,19 @@
 "csv-download-title" = "CSV Dosyası Oluşturuluyor";
 
 /* (No Comment) */
+"csv-loading-message" = "We are fetching your data. Please wait until your CSV is ready.";
+
+/* (No Comment) */
 "default-error-message" = "Bir hata meydana geldi.";
 
 /* (No Comment) */
 "edit-node-title" = "Düğümü Düzenle";
+
+/* (No Comment) */
+"edit-note-note-explanation" = "Notunuzu girin";
+
+/* MARK: EditNote */
+"edit-note-title" = "Not Ekle";
 
 /* (No Comment) */
 "empty-accounts-action" = "Yeni Hesap Oluştur";
@@ -409,17 +490,14 @@
 /* (No Comment) */
 "internet-connection-error-title" = "İnternete Bağlan";
 
-/* (No Comment) */
+/* MARK: Introduction */
 "introduction-add-account-text" = "Hesap Ekle";
 
 /* (No Comment) */
-"introduction-title-add-text" = "Yeni Hesap Ekle";
+"introduction-title-terms-and-services" = "Hesap oluşturarak Algorand’ın <a href=\"https://perawallet.app/terms-and-services/\">Hüküm ve Koşulları</a> ile <a href=\"https://www.perawallet.app/privacy-policy/\">Gizlilik Politikasını</a> kabul ediyorsunuz.";
 
 /* (No Comment) */
-"introduction-title-terms-and-services" = "Hesap oluşturarak Algorand’ın <a href=\"https://www.algorand.com/wallet-disclaimer\">Hüküm ve Koşulları</a> ile <a href=\"https://www.algorand.com/wallet-privacy-policy\">Gizlilik Politikasını</a> kabul ediyorsunuz.";
-
-/* MARK: Introduction */
-"introduction-title-text" = "Tüm varlıkları tek uygulamadan yönetin";
+"ledger-account-detail-assets" = "Varlıklar";
 
 /* (No Comment) */
 "ledger-account-detail-can-sign" = "Bu hesaplar için imzalayabilir";
@@ -428,7 +506,10 @@
 "ledger-account-detail-can-signed" = "Şunun tarafından imzalanabilir:";
 
 /* (No Comment) */
-"ledger-account-details-title" = "Ledger Ayrıntıları";
+"ledger-account-detail-name" = "Ledger #%@";
+
+/* (No Comment) */
+"ledger-account-detail-title" = "Ledger Hesabı";
 
 /* (No Comment) */
 "ledger-account-fetct-error" = "Hesap ayrıntıları alınırken bir ağ hatası oluştu. Lütfen işlemi yeniden başlatın.";
@@ -464,6 +545,9 @@
 "ledger-account-verification-status-verified" = "Hesap Doğrulandı";
 
 /* (No Comment) */
+"ledger-approval-cancel-title" = "Onayı İptal Et";
+
+/* (No Comment) */
 "ledger-approval-connection-message" = "Ledger'ın bağlanması bekleniyor.";
 
 /* (No Comment) */
@@ -491,16 +575,25 @@
 "ledger-pair-title" = "Ledger Hesabı Oluştur";
 
 /* (No Comment) */
-"ledger-pairing-first-warning-message-description" = "· Ledger cihazınızı açın.\n· Algorand uygulamasını Ledger cihazında kapatın.\n· Ledger ana sayfasında eşleştirmeyi onaylayın.\n· Eşleştirme onaylandıktan sonra Algorand Ledger uygulamasını açın.";
+"ledger-pairing-first-warning-description" = "Ledger'ınız bu cihazla eşleşti mi?\nEşleşmediyse lütfen şu adımları izleyin:";
 
 /* (No Comment) */
-"ledger-pairing-first-warning-message-first" = "Ledger'ınız bu cihazla eşleşti mi?";
+"ledger-pairing-first-warning-message-first-instruction" = "Ledger cihazınızı açın.";
 
 /* (No Comment) */
-"ledger-pairing-first-warning-message-second" = "Eşleşmediyse, lütfen şu adımları izleyin:";
+"ledger-pairing-first-warning-message-fourth-instruction" = "Eşleştirmenin onaylanmasının ardından Algorand Ledger uygulamasını açın.";
+
+/* (No Comment) */
+"ledger-pairing-first-warning-message-second-instruction" = "Algorand uygulamasını Ledger cihazında kapatın.";
+
+/* (No Comment) */
+"ledger-pairing-first-warning-message-third-instruction" = "Ledger ana sayfasında eşleştirmeyi onaylayın.";
 
 /* (No Comment) */
 "ledger-pairing-first-warning-title" = "Cihazınızla Ledger'ı Eşleştirme";
+
+/* (No Comment) */
+"ledger-pairing-issue-error-message" = "Ledger Nano X bağlantı sorunları mı yaşıyorsunuz?\n\nBağlantı sorunları yaşıyorsanız, lütfen cihazı telefonunuzun Bluetooth ayarlarından kaldırın, Ledger hesabını da kaldırın. Ardından, Algorand Wallet talimatlarını izleyerek Ledger'ınızı yeniden eşleştirin.";
 
 /* (No Comment) */
 "ledger-pairing-issue-error-title" = "Ledger Nano X bağlantı sorunları mı yaşıyorsunuz?";
@@ -659,6 +752,12 @@
 "min-balance-title" = "Gereken Minimum Bakiye";
 
 /* (No Comment) */
+"nft-list-empty-detail" = "Çok yakında NFT koleksiyonlarınızı Algorand Wallet'ta görebileceksiniz.\nEkibimiz bu özelliği kullanıma sunmak için çok çalışıyor. Takipte kalın!";
+
+/* MARK: NFTs */
+"nft-list-empty-title" = "NFT'ler Çok Yakında!";
+
+/* (No Comment) */
 "node-settings-action-delete-title" = "Sil";
 
 /* (No Comment) */
@@ -705,9 +804,6 @@
 
 /* (No Comment) */
 "node-settings-test-button-title" = "TEST ET";
-
-/* (No Comment) */
-"node-settings-test-error-title" = "Bağlanamadı";
 
 /* (No Comment) */
 "node-settings-test-success-title" = "Bağlantı başarılı!";
@@ -761,10 +857,19 @@
 "options-auth-account" = "Hesap Adresini Doğrula";
 
 /* (No Comment) */
+"options-copy-address" = "Adresi Kopyala";
+
+/* (No Comment) */
 "options-edit-account-name" = "Hesap Adını Düzenle";
 
 /* (No Comment) */
+"options-manage-assets" = "Varlıkları Yönet";
+
+/* (No Comment) */
 "options-mute-notification" = "Bildirimleri Sessize Al";
+
+/* (No Comment) */
+"options-passphrase" = "Parola";
 
 /* (No Comment) */
 "options-rekey" = "Hesabı Yeniden Anahtarla";
@@ -851,12 +956,18 @@
 "passphrase-verify-wrong-message" = "Seçilen kelimeler yanlış. Lütfen daha sonra tekrar deneyin.";
 
 /* (No Comment) */
+"password-change-new-subtitle" = "Enter your new\n6-digit PIN";
+
+/* (No Comment) */
+"password-change-old-subtitle" = "Enter your old\n6-digit PIN";
+
+/* (No Comment) */
 "password-change-subtitle" = "6 haneli PIN'i girin";
 
 /* (No Comment) */
 "password-change-title" = "PIN'i Değiştir";
 
-/* (No Comment) */
+/* MARK: Password Setting */
 "password-set-subtitle" = "6 haneli PIN'inizi seçin";
 
 /* (No Comment) */
@@ -866,10 +977,28 @@
 "password-verify-fail-title" = "Hatalı PIN";
 
 /* (No Comment) */
+"password-verify-new-subtitle" = "Re-enter your new\n6-digit PIN";
+
+/* (No Comment) */
 "password-verify-subtitle" = "6 haneli şifrenizi yeniden girin";
 
 /* (No Comment) */
 "password-verify-title" = "PIN'i Doğrula";
+
+/* (No Comment) */
+"pera-announcement-action-title" = "Start Using Pera Wallet";
+
+/* (No Comment) */
+"pera-announcement-description" = "We are very excited to announce that Algorand Wallet is now called Pera Wallet. This is much more than a new name and logo. We are relaunching the most popular wallet in the Algorand ecosystem with a renewed focus on our roadmap, partner integrations, and community.\n\nDon't worry, Pera Wallet is built and maintained by the same team and all the features you know and love are still here as usual – With many more to come in the upcoming months.\n\nTo read more about the relaunch and our roadmap, head over to the Pera Wallet blog";
+
+/* (No Comment) */
+"pera-announcement-description-blog" = "Pera Wallet blog";
+
+/* (No Comment) */
+"pera-announcement-subtitle" = "Algorand Wallet is\nnow Pera Wallet.";
+
+/* MARK: PeraAnnouncement */
+"pera-announcement-title" = "It's Official!";
 
 /* (No Comment) */
 "pin-limit-reset-all" = "Tüm Verileri Sıfırla";
@@ -882,6 +1011,27 @@
 
 /* (No Comment) */
 "pin-limit-try-again" = "Tekrar deneyin:";
+
+/* (No Comment) */
+"portfolio-algo-holdings-title" = "Tutulan Algo'lar";
+
+/* (No Comment) */
+"portfolio-asset-holdings-title" = "Tutulan Varlıklar";
+
+/* (No Comment) */
+"portfolio-calculation-description" = "Portföyünüzün toplam değeri, hesaplarınızda bulunan tüm varlıklara kullanılabilir durumdaki Algo'ların eklenmesiyle hesaplanır. Birden fazla cüzdanınız varsa, Toplam Portföy değeri tüm hesaplardaki değerlerin toplamına eşittir.\n\nVarlık fiyatları, Tinyman'den alınan günlük değerlere göre olup tahminidir. Bazı varlıkların fiyat bilgisinin bulunmayabileceğini lütfen dikkate alın. Bu nedenle, toplam portföy değerinin bir tahmin olarak düşünülmesi gerekmektedir.\n\nİzleme hesapları portföyünüzün bir parçası olarak değerlendirmeye alınmaz ve Toplam Portföy hesaplamasına dahil edilmez.";
+
+/* MARK: PortfolioDescription */
+"portfolio-calculation-title" = "Portföyünüzün değerini nasıl hesaplarız?";
+
+/* (No Comment) */
+"portfolio-title" = "Portföy Değeri";
+
+/* (No Comment) */
+"portfolio-title-accounts" = "Hesaplar";
+
+/* (No Comment) */
+"portfolio-title-watchlist" = "İzleme Listesi";
 
 /* (No Comment) */
 "privacy-policy-title" = "Gizlilik Politikası";
@@ -902,6 +1052,12 @@
 "qr-creation-title" = "Parola QR Kodu";
 
 /* (No Comment) */
+"qr-scan-connected-app-count" = "%@ uygulama bağlandı";
+
+/* (No Comment) */
+"qr-scan-connected-app-singular-count" = "%@ uygulama bağlandı";
+
+/* (No Comment) */
 "qr-scan-error-message" = "Cihazınız QR Kodunun taranmasını desteklemiyor";
 
 /* (No Comment) */
@@ -919,6 +1075,9 @@
 /* (No Comment) */
 "qr-scan-message-text" = "Bu sayfada yalnızca QR Kodunuzu tarayabilirsiniz. QR Kodunuzu görüntülemek için lütfen hesabınızdaki simgeyi seçin";
 
+/* MARK: QR Scanning */
+"qr-scan-overlay-title" = "Taranacak bir kod bulun";
+
 /* (No Comment) */
 "qr-scan-should-scan-address-message" = "Geçerli bir hesap adresi taramanız gerekli";
 
@@ -928,7 +1087,7 @@
 /* (No Comment) */
 "qr-scan-should-scan-valid-qr" = "QR Kodu geçersiz.";
 
-/* MARK: QR Scanning */
+/* (No Comment) */
 "qr-scan-title" = "QR Kodunu Tara";
 
 /* (No Comment) */
@@ -1004,6 +1163,9 @@
 "rewards-detail-subtitle" = "Algo sahibi olarak ödül kazanabilirsiniz! İşte son işleminizden bu yana ödül etkinliğinizin bir özeti. Bu ödüller her zaman bakiyenize dahil edilir.";
 
 /* (No Comment) */
+"rewards-rate" = "Ödül Oranı";
+
+/* (No Comment) */
 "rewards-show-title" = "Ödülleri Göster";
 
 /* (No Comment) */
@@ -1017,6 +1179,21 @@
 
 /* (No Comment) */
 "screenshot-title" = "Ekran Görüntüsü Algılandı";
+
+/* (No Comment) */
+"security-settings-localAuthentication" = "Face ID/Touch ID'yi Etkinleştir";
+
+/* (No Comment) */
+"security-settings-pinCode-activation" = "PIN Kodunu Etkinleştir";
+
+/* (No Comment) */
+"security-settings-pinCode-change" = "PIN Kodunu Belirle/Değiştir";
+
+/* (No Comment) */
+"security-settings-section" = "Güvenlik Tercihleri";
+
+/* MARK: Security Settings */
+"security-settings-title" = "Güvenlik";
 
 /* (No Comment) */
 "send-algos-account-delete-body" = "Hesabınızı açık tutmak için, hesabınızda en az 0,01 ALGO bulunması gerekir. Maksimum tutarda gönderim yaparsanız, hesabınız ile etkin katılım anahtarlarınız silinir.";
@@ -1112,7 +1289,28 @@
 "send-sending-algos-select" = "Gönderme Hesabını Seç";
 
 /* (No Comment) */
+"send-transaction-add-note-title" = "+ Not Ekle";
+
+/* (No Comment) */
+"send-transaction-edit-note-title" = "Notu Düzenle";
+
+/* (No Comment) */
+"send-transaction-max-button-title" = "MAKS";
+
+/* (No Comment) */
 "send-transaction-max-same-account-error" = "Bakiyenizin tümünü kendinize gönderemezsiniz. Lütfen farklı bir miktar veya alıcı seçerek tekrar deneyin.";
+
+/* (No Comment) */
+"send-transaction-preview-current-balance" = "Current\nBalance";
+
+/* MARK: SendTransactionPreview */
+"send-transaction-preview-title" = "Emri Onayla";
+
+/* (No Comment) */
+"send-transaction-show-note-title" = "Show Note";
+
+/* MARK: SendTransaction */
+"send-transaction-title" = "%@ Gönder";
 
 /* (No Comment) */
 "send-trasaction-address-placeholder" = "Yapıştır: #";
@@ -1121,13 +1319,13 @@
 "settings-app-version" = "Sürüm: %@";
 
 /* (No Comment) */
-"settings-change-password" = "Şifre Belirle/Şifreyi Değiştir";
+"settings-backup-title" = "Yedekle";
 
 /* (No Comment) */
 "settings-currency" = "Para Birimi";
 
 /* (No Comment) */
-"settings-currency-usd" = "USD";
+"settings-delete-data-title" = "Delete All Data";
 
 /* (No Comment) */
 "settings-developer" = "Geliştirici Ayarları";
@@ -1145,13 +1343,16 @@
 "settings-language-change-title" = "Uygulama Dilini Ayarla";
 
 /* (No Comment) */
-"settings-language-english" = "İngilizce";
+"settings-logout-button-cancel" = "Koru";
 
 /* (No Comment) */
-"settings-local-authentication" = "Face ID/Touch ID'yi Etkinleştir";
+"settings-logout-button-delete" = "Evet, tüm verileri sil";
 
 /* (No Comment) */
 "settings-logout-detail" = "Tüm verileri silmek istediğinizden emin misiniz?";
+
+/* (No Comment) */
+"settings-logout-success-message" = "Verileriniz başarıyla silindi";
 
 /* (No Comment) */
 "settings-logout-title" = "Tüm Verileri Sil";
@@ -1166,7 +1367,25 @@
 "settings-notification-go-settings-title" = "Bildirimler";
 
 /* (No Comment) */
+"settings-rate-modal-description" = "Deneyiminizin nasıl olduğundan bahseder misiniz?";
+
+/* (No Comment) */
+"settings-rate-modal-title" = "Deneyiminizi değerlendirin";
+
+/* (No Comment) */
 "settings-rate-title" = "Algorand Wallet\\'ı Değerlendir";
+
+/* MARK: Settings */
+"settings-sections-account" = "Hesap";
+
+/* (No Comment) */
+"settings-sections-appPreferences" = "Uygulama Tercihleri";
+
+/* (No Comment) */
+"settings-sections-support" = "Destek";
+
+/* (No Comment) */
+"settings-security-title" = "Güvenlik";
 
 /* (No Comment) */
 "settings-server-node-settings" = "Düğüm Ayarları";
@@ -1186,11 +1405,23 @@
 /* (No Comment) */
 "settings-theme-system" = "Sistem Varsayılanı";
 
-/* MARK: Settings */
+/* (No Comment) */
 "settings-title" = "Ayarlar";
 
 /* (No Comment) */
 "settings-wallet-connect-title" = "WalletConnect Oturumları";
+
+/* (No Comment) */
+"single-transaction-request-network-fee-title" = "Ağ Ücreti";
+
+/* (No Comment) */
+"single-transaction-request-opt-in-subtitle" = "OnCompletion";
+
+/* (No Comment) */
+"single-transaction-request-opt-in-title" = "Katılım";
+
+/* MARK: SingleTransactionRequestMARK: SingleTransactionRequest */
+"single-transaction-request-show-detail-title" = "İşlem Ayrıntılarını Göster";
 
 /* MARK: Terms and Services */
 "terms-and-services-title" = "Koşullar ve Hizmetler";
@@ -1217,10 +1448,10 @@
 "title-algorand-value" = "Değeri";
 
 /* (No Comment) */
-"title-analytics" = "Analizler";
+"title-approve" = "Onayla";
 
 /* (No Comment) */
-"title-approve" = "Onayla";
+"title-asset-id" = "Asset ID";
 
 /* (No Comment) */
 "title-cancel" = "İptal";
@@ -1271,7 +1502,10 @@
 "title-error" = "Hata";
 
 /* (No Comment) */
-"title-go-home" = "Ana Sayfaya Git";
+"title-failed-connection" = "Bağlantı Başarısız";
+
+/* (No Comment) */
+"title-start-using-pera-wallet" = "Start Using Pera Wallet";
 
 /* (No Comment) */
 "title-go-to-accounts" = "Hesaplara Git";
@@ -1328,6 +1562,9 @@
 "title-plus-asset-count" = "+%@ Varlık";
 
 /* (No Comment) */
+"title-plus-asset-singular-count" = "%@ Varlık";
+
+/* (No Comment) */
 "title-preview" = "Önizleme";
 
 /* (No Comment) */
@@ -1346,6 +1583,9 @@
 "title-remove-assets" = "Varlıkları Kaldır";
 
 /* (No Comment) */
+"title-retry" = "Yeniden Dene";
+
+/* (No Comment) */
 "title-save" = "Kaydet";
 
 /* (No Comment) */
@@ -1356,6 +1596,12 @@
 
 /* (No Comment) */
 "title-share-qr" = "QR Kodunu Paylaş";
+
+/* (No Comment) */
+"title-show-all-detail" = "Tüm Ayrıntıları Göster";
+
+/* (No Comment) */
+"title-show-transaction-detail" = "İşlem Ayrıntılarını Göster";
 
 /* (No Comment) */
 "title-skip" = "Atla";
@@ -1400,6 +1646,9 @@
 "tranaction-empty-text" = "İşlem Bulunamadı";
 
 /* (No Comment) */
+"transaction-detail-add" = "Ekle";
+
+/* (No Comment) */
 "transaction-detail-amount" = "Miktar";
 
 /* (No Comment) */
@@ -1412,10 +1661,16 @@
 "transaction-detail-close-to" = "Kapanış Hesabı";
 
 /* (No Comment) */
+"transaction-detail-completed" = "Tamamlandı";
+
+/* (No Comment) */
 "transaction-detail-copy-tooltip" = "Panoya kopyalamak için basılı tutun";
 
 /* (No Comment) */
 "transaction-detail-date" = "Tarih";
+
+/* (No Comment) */
+"transaction-detail-failed" = "Başarısız";
 
 /* (No Comment) */
 "transaction-detail-fee" = "Komisyon";
@@ -1430,16 +1685,31 @@
 "transaction-detail-id-copied" = "İşlem kimliği panoya kopyalandı";
 
 /* (No Comment) */
+"transaction-detail-id-copied-title" = "Kimlik panoya kopyalandı";
+
+/* (No Comment) */
 "transaction-detail-note" = "Not";
 
 /* (No Comment) */
 "transaction-detail-note-copied" = "İşlem notu panoya kopyalandı";
 
 /* (No Comment) */
+"transaction-detail-pending" = "Bekliyor";
+
+/* (No Comment) */
+"transaction-detail-pending-transactions" = "Bekleyen İşlemler";
+
+/* (No Comment) */
+"transaction-detail-receive" = "Al";
+
+/* (No Comment) */
 "transaction-detail-reward" = "Ödül";
 
 /* (No Comment) */
 "transaction-detail-round" = "Tur";
+
+/* (No Comment) */
+"transaction-detail-send" = "Gönder";
 
 /* (No Comment) */
 "transaction-detail-sender" = "Gönderen";
@@ -1502,6 +1772,21 @@
 "transaction-id-open-goalseeker" = "GoalSeeker'da Aç";
 
 /* (No Comment) */
+"transaction-request-signing-alert-title" = "Emin misiniz?";
+
+/* (No Comment) */
+"transaction-result-completed-subtitle" = "Emriniz başarıyla alındı";
+
+/* (No Comment) */
+"transaction-result-completed-title" = "Emir Alındı";
+
+/* (No Comment) */
+"transaction-result-started-subtitle" = "Emriniz başarıyla alındı";
+
+/* MARK: TransactionResult */
+"transaction-result-started-title" = "Emir Verildi";
+
+/* (No Comment) */
 "transaction-tutorial-subtitle" = "Bu işlemin ilk işleminiz olduğunu fark ettik. İşlemi sonuçlandırmadan önce birkaç ipucunu aklınızda bulundurmanızı öneririz:";
 
 /* (No Comment) */
@@ -1526,10 +1811,19 @@
 "transaction-tutorial-title" = "İşlemlere Yönelik İpuçları";
 
 /* (No Comment) */
+"tutorial-action-title-ledger" = "Nasıl çalışır?";
+
+/* (No Comment) */
 "tutorial-action-title-passcode" = "Şimdi değil";
 
 /* (No Comment) */
 "tutorial-description-back-up" = "Kurtarma parolanız olmadan cihazınızı kaybetmeniz veya uygulamayı silmeniz durumunda Algorand hesabınıza erişimi kalıcı olarak kaybedersiniz.";
+
+/* (No Comment) */
+"tutorial-description-ledger" = "Ledger'ınızın kilidinin açık ve Bluetooth özelliğinin etkin olduğundan lütfen emin olun";
+
+/* (No Comment) */
+"tutorial-description-ledger-connected" = "Algorand'a Hoş Geldiniz!\nHesabınız kullanıma hazır";
 
 /* (No Comment) */
 "tutorial-description-local" = "Uygulamayı kullanmak için FaceID veya TouchID gerekli olacak. Telefonunuzun çalınma ihtimaline karşılık cüzdan güvenliğini artırmaya yardımcı olması için biyometrik kimlik doğrulamasının etkinleştirilmesini öneririz.";
@@ -1547,16 +1841,19 @@
 "tutorial-description-watch" = "Bir kurtarma parolasına gerek kalmadan bir hesabın etkinliğini izleyin. Soğuk depolamada tutulan varlıkların izlenmesi için yararlıdır.\nUyarı: İlgili hesabın kurtarma parolasına sahip değilseniz, bu hesaba varlık göndermeyin.";
 
 /* (No Comment) */
-"tutorial-description-watch-italic" = "Uyarı: İlgili hesabın kurtarma parolasına sahip değilseniz, bu hesaba varlık göndermeyin.";
+"tutorial-description-watch-warning" = "İlgili hesabın kurtarma parolasına sahip değilseniz, bu hesaba varlık göndermeyin.";
 
 /* (No Comment) */
 "tutorial-description-write" = "Bir Algorand hesabını kurtarmanın tek yolu bu kurtarma parolasıdır.\n\nUyarı: Hesabınıza tam erişim sağladığından, bu parolayı kimseyle paylaşmayın.";
 
 /* (No Comment) */
-"tutorial-description-write-italic" = "Uyarı: Hesabınıza tam erişim sağladığından bu parolayı kimseyle paylaşmayın.";
+"tutorial-description-write-warning" = "Hesabınıza tam erişim sağladığından bu parolayı kimseyle paylaşmayın.";
 
 /* (No Comment) */
 "tutorial-main-title-back-up" = "Anladım";
+
+/* (No Comment) */
+"tutorial-main-title-ledger-connected" = "Algorand'ı Kullanmaya Başlayın";
 
 /* (No Comment) */
 "tutorial-main-title-passcode" = "Parola Belirle";
@@ -1571,6 +1868,9 @@
 "tutorial-title-back-up" = "Bir kurtarma parolası kullanarak hesabınızı yedekleyin";
 
 /* (No Comment) */
+"tutorial-title-ledger-connected" = "Ledger başarıyla bağlandı";
+
+/* (No Comment) */
 "tutorial-title-passcode" = "PIN ile güvenliğinizi artırın";
 
 /* (No Comment) */
@@ -1578,9 +1878,6 @@
 
 /* (No Comment) */
 "tutorial-title-write" = "Kurtarma parolanızı yazmaya hazırlanın";
-
-/* (No Comment) */
-"value-one-algo" = "1 ALGO = %@";
 
 /* (No Comment) */
 "verified-asset-double-check" = "her zaman tekrar kontrol edin";
@@ -1634,6 +1931,9 @@
 "wallet-connect-asset-unit-title" = "Birim Adı";
 
 /* (No Comment) */
+"wallet-connect-group-transaction-header-title" = "GroupID: %@";
+
+/* (No Comment) */
 "wallet-connect-raw-transaction-title" = "Ham İşlem";
 
 /* (No Comment) */
@@ -1641,6 +1941,12 @@
 
 /* (No Comment) */
 "wallet-connect-session-connected-with-account" = "%@ ile Bağlandı";
+
+/* (No Comment) */
+"wallet-connect-session-connection-approved-description" = "Bağlantıyı sonlandırmak ve işlemleri başlatmak için %@ bölümüne geri dönün!";
+
+/* (No Comment) */
+"wallet-connect-session-connection-approved-title" = "%@ ile gerçekleştirilen\nWalletConnect Oturumu onaylandı";
 
 /* MARK: Wallet Connect Session */
 "wallet-connect-session-connection-description" = "%@, hesabınıza bağlanmak istiyor";
@@ -1664,6 +1970,12 @@
 "wallet-connect-session-list-empty" = "Henüz herhangi bir uygulama bağlamadınız.";
 
 /* (No Comment) */
+"wallet-connect-session-select-account" = "Hesap Seç";
+
+/* (No Comment) */
+"wallet-connect-session-timeout-message" = "Üzgünüz ama dApp yanıt vermiyor. Lütfen sayfayı yenileyin ve yeni QR Kodunu taramayı deneyin. Sorun devam ederse, lütfen dApp ile iletişime geçin.";
+
+/* (No Comment) */
 "wallet-connect-transaction-all-count" = "Tüm işlemler (%d)";
 
 /* (No Comment) */
@@ -1676,7 +1988,7 @@
 "wallet-connect-transaction-count-singular" = "1 İşlem  ·  Grup Kimliği: %@";
 
 /* MARK: Wallet Connect Transaction Dapp Message */
-"wallet-connect-transaction-dapp-show-more" = "Diğer Bilgileri Göster";
+"wallet-connect-transaction-dapp-show-more" = "Daha Fazlasını Oku";
 
 /* (No Comment) */
 "wallet-connect-transaction-detail-asset-url" = "Varlık URL'sini Göster";
@@ -1805,10 +2117,19 @@
 "wallet-connect-transaction-title-app-call-on-complete" = "OnComplete";
 
 /* (No Comment) */
+"wallet-connect-transaction-title-app-create" = "Uygulama Oluşturma";
+
+/* (No Comment) */
 "wallet-connect-transaction-title-app-creation" = "Uygulama Oluşturma";
 
 /* (No Comment) */
+"wallet-connect-transaction-title-app-delete" = "Uygulama Çağrısının Silinmesi";
+
+/* (No Comment) */
 "wallet-connect-transaction-title-app-id" = "Uygulama Kimliği";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-update" = "Uygulama Çağrısı Güncellemesi";
 
 /* (No Comment) */
 "wallet-connect-transaction-title-asset" = "Varlık Transfer İsteği";
@@ -1833,6 +2154,9 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-title-opt-in" = "Varlık Katılım İsteği";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-possible-opt-in" = "Olası Varlık Katılım İsteği";
 
 /* (No Comment) */
 "wallet-connect-transaction-title-raw" = "Ham İşlemler";
@@ -1865,13 +2189,17 @@
 "wallet-connect-transaction-warning-high-fee" = "Bu işlem ücreti, normalde 0,001 Algo olan ücretten daha yüksek.";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-initial" = "Aşağıdaki işlem istekleri, Algorand Wallet'ın kontrol etmediği harici uygulamalardan gelmektedir. İşlemler geri alınamaz olduğundan imzalamadan önce bu işlemleri gözden geçirdiğinizden lütfen emin olun.";
+"wallet-connect-transaction-warning-initial-title" = "Transaction Request FAQ";
+"wallet-connect-transaction-warning-initial-description" = "External applications also called as dApps can make transaction requests that the Pera Wallet does not control. Please ensure you review these transactions carefully before approving and signing them.\n\nAll transactions are irreversible. Never approve transaction from dApp that you don’t know.";
 
 /* MARK: Wallet Connect Transaction Warning */
 "wallet-connect-transaction-warning-rekey" = "Bu işlem, bu hesabın sahipliğini devredecek. Mevcut kurtarma parolanızla bu varlıklara erişim sağlamanıza artık izin verilmeyecek.";
 
 /* (No Comment) */
 "wallet-connect-transaction-warning-rekey-title" = "Yeniden Anahtarla:";
+
+/* (No Comment) */
+"watch-account-button" = "Bir İzleme Hesabı Oluştur";
 
 /* (No Comment) */
 "watch-account-create" = "Bir İzleme Hesabı Oluştur";
@@ -1887,4 +2215,13 @@
 
 /* (No Comment) */
 "watch-account-input-placeholder" = "Adresi Yapıştır veya QR Kodunu Tara";
+
+/* (No Comment) */
+"watch-account-paste" = "Yapıştır";
+
+/* (No Comment) */
+"wc-transaction-request-signed-warning-message" = "İşleminiz imzalandı ve %@ adresine gönderildi. Lütfen işlemin geri kalan kısmı için %@ bölümünü ziyaret edin.";
+
+/* (No Comment) */
+"wc-transaction-request-signed-warning-title" = "İşleminiz gerçekleştiriliyor!";
 

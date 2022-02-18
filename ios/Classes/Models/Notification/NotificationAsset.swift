@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,22 +15,34 @@
 //
 //  NotificationAsset.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class NotificationAsset: Model {
+final class NotificationAsset: ALGAPIModel {
     let id: Int64?
     let name: String?
     let code: String?
     let url: String?
     let fractionDecimals: Int?
+
+    init() {
+        self.id = nil
+        self.name = nil
+        self.code = nil
+        self.url = nil
+        self.fractionDecimals = nil
+    }
 }
 
 extension NotificationAsset {
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys:
+        String,
+        CodingKey {
         case id = "asset_id"
         case name = "asset_name"
         case code = "unit_name"
-        case url = "url"
+        case url
         case fractionDecimals = "fraction_decimals"
     }
 }

@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,14 +15,22 @@
 //
 //  AssetConfigTransaction.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class AssetConfigTransaction: Model {
+final class AssetConfigTransaction: ALGAPIModel {
     let id: Int64?
+
+    init() {
+        self.id = nil
+    }
 }
 
 extension AssetConfigTransaction {
-    private enum CodingKeys: String, CodingKey {
+    private enum CodingKeys:
+        String,
+        CodingKey {
         case id = "asset-id"
     }
 }

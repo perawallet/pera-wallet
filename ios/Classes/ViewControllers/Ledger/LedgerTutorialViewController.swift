@@ -56,7 +56,7 @@ class LedgerTutorialViewController: BaseScrollViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        setTertiaryBackgroundColor()
+        setNavigationBarTertiaryBackgroundColor()
         view.backgroundColor = Colors.Background.tertiary
     }
     

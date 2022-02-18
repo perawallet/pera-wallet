@@ -44,7 +44,7 @@ class LedgerTroubleshootInstallAppViewController: BaseScrollViewController {
         view.backgroundColor = Colors.Background.tertiary
         contentView.backgroundColor = Colors.Background.tertiary
         scrollView.backgroundColor = Colors.Background.tertiary
-        setTertiaryBackgroundColor()
+        setNavigationBarTertiaryBackgroundColor()
     }
     
     override func linkInteractors() {

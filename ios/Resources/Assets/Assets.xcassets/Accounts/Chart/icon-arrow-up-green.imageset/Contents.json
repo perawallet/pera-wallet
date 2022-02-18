@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "icon-arrow-up-green.pdf",
+      "filename" : "arrow-up-line.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "arrow-up-line-1.pdf",
       "idiom" : "universal"
     }
   ],

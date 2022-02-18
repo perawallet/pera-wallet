@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@
 //
 //  User.swift
 
-import Magpie
+import UIKit
 
-class User: Model {
+final class User: Codable {
     private(set) var accounts: [AccountInformation] = []
     private(set) var defaultNode: String?
     private(set) var deviceId: String?
@@ -72,10 +72,27 @@ extension User {
         accounts[index].ledgerDetail = account.ledgerDetail
         accounts[index].receivesNotification = account.receivesNotification
         accounts[index].rekeyDetail = account.rekeyDetail
+        accounts[index].preferredOrder = account.preferredOrder
+        accounts[index].accountImage = account.accountImage
         syncronize()
     }
-    
-    private func syncronize() {
+
+    func updateLocalAccount(_ updatedAccount: Account) {
+        guard let localAccountIndex = indexOfAccount(updatedAccount.address) else {
+            return
+        }
+
+        accounts[localAccountIndex].updateName(updatedAccount.name ?? "")
+        accounts[localAccountIndex].type = updatedAccount.type
+        accounts[localAccountIndex].ledgerDetail = updatedAccount.ledgerDetail
+        accounts[localAccountIndex].receivesNotification = updatedAccount.receivesNotification
+        accounts[localAccountIndex].rekeyDetail = updatedAccount.rekeyDetail
+        accounts[localAccountIndex].preferredOrder = updatedAccount.preferredOrder
+        accounts[localAccountIndex].accountImage = updatedAccount.accountImage
+        syncronize()
+    }
+
+    func syncronize() {
         guard UIApplication.shared.appConfiguration?.session.authenticatedUser != nil else {
             return
         }
@@ -96,14 +113,14 @@ extension User {
         self.defaultNode = selectedNode.network.rawValue
     }
     
-    func preferredAlgorandNetwork() -> AlgorandAPI.BaseNetwork? {
+    func preferredAlgorandNetwork() -> ALGAPI.Network? {
         guard let defaultNode = defaultNode else {
             return nil
         }
         
-        if defaultNode == AlgorandAPI.BaseNetwork.mainnet.rawValue {
+        if defaultNode == ALGAPI.Network.mainnet.rawValue {
             return .mainnet
-        } else if defaultNode == AlgorandAPI.BaseNetwork.testnet.rawValue {
+        } else if defaultNode == ALGAPI.Network.testnet.rawValue {
             return .testnet
         } else {
             return nil
@@ -119,6 +136,10 @@ extension User {
     func account(address: String) -> AccountInformation? {
         return accountFrom(address: address)
     }
+
+    func indexOfAccount(_ address: String) -> Int? {
+        return accounts.firstIndex(where: { $0.address == address })
+    }
 }
 
 extension User {
@@ -126,5 +147,3 @@ extension User {
         return accounts.first { $0.address == address }
     }
 }
-
-extension User: Encodable { }

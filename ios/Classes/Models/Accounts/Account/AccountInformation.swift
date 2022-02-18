@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,18 +15,27 @@
 //
 //  AccountInformation.swift
 
-import Magpie
+import Foundation
+import UIKit
 
 typealias PublicKey = String
 typealias RekeyDetail = [PublicKey: LedgerDetail]
 
-class AccountInformation: Model {
+final class AccountInformation: Codable {
     let address: String
     var name: String
     var type: AccountType = .standard
     var ledgerDetail: LedgerDetail?
     var receivesNotification: Bool
     var rekeyDetail: RekeyDetail?
+    var preferredOrder: Int
+    var accountImage: String?
+    
+    var isOrderred: Bool {
+        return preferredOrder != Self.invalidOrder
+    }
+    
+    static let invalidOrder = -1
     
     init(
         address: String,
@@ -34,7 +43,9 @@ class AccountInformation: Model {
         type: AccountType,
         ledgerDetail: LedgerDetail? = nil,
         rekeyDetail: RekeyDetail? = nil,
-        receivesNotification: Bool = true
+        receivesNotification: Bool = true,
+        preferredOrder: Int? = nil,
+        accountImage: String? = nil
     ) {
         self.address = address
         self.name = name
@@ -42,6 +53,8 @@ class AccountInformation: Model {
         self.ledgerDetail = ledgerDetail
         self.receivesNotification = receivesNotification
         self.rekeyDetail = rekeyDetail
+        self.preferredOrder = preferredOrder ?? Self.invalidOrder
+        self.accountImage = accountImage ?? AccountImageType.getRandomImage(for: type).rawValue
     }
     
     required init(from decoder: Decoder) throws {
@@ -52,6 +65,8 @@ class AccountInformation: Model {
         ledgerDetail = try container.decodeIfPresent(LedgerDetail.self, forKey: .ledgerDetail)
         receivesNotification = try container.decodeIfPresent(Bool.self, forKey: .receivesNotification) ?? true
         rekeyDetail = try container.decodeIfPresent(RekeyDetail.self, forKey: .rekeyDetail)
+        preferredOrder = try container.decodeIfPresent(Int.self, forKey: .preferredOrder) ?? Self.invalidOrder
+        accountImage = try container.decodeIfPresent(String.self, forKey: .accountImage) ?? AccountImageType.getRandomImage(for: type).rawValue
     }
 }
 
@@ -96,10 +111,10 @@ extension AccountInformation {
         case ledgerDetail = "ledgerDetail"
         case receivesNotification = "receivesNotification"
         case rekeyDetail = "rekeyDetail"
+        case preferredOrder = "preferredOrder"
+        case accountImage = "accountImage"
     }
 }
-
-extension AccountInformation: Encodable { }
 
 extension AccountInformation: Equatable {
     static func == (lhs: AccountInformation, rhs: AccountInformation) -> Bool {
@@ -107,12 +122,26 @@ extension AccountInformation: Equatable {
     }
 }
 
-enum AccountType: String, Model {
+enum AccountType: String, Codable {
     case standard = "standard"
     case watch = "watch"
     case ledger = "ledger"
     case multiSig = "multiSig"
     case rekeyed = "rekeyed"
+
+    func image(for accountImageType: AccountImageType) -> UIImage? {
+        return img("\(rawValue)-\(accountImageType.rawValue)")
+    }
 }
 
-extension AccountType: Encodable { }
+enum AccountImageType: String, CaseIterable {
+    case blush = "blush"
+    case orange = "orange"
+    case purple = "purple"
+    case turquoise = "turquoise"
+    case salmon = "salmon"
+
+    static func getRandomImage(for accountType: AccountType) -> AccountImageType {
+        return AccountImageType.allCases.randomElement()!
+    }
+}

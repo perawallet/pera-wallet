@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,16 +15,23 @@
 //
 //  Participation.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class Participation: Model {
+final class Participation: ALGAPIModel {
     var selectionParticipationKey: String?
     var voteParticipationKey: String?
-    
+
+    init() {
+        self.selectionParticipationKey = nil
+        self.voteParticipationKey = nil
+    }
+}
+
+extension Participation {
     enum CodingKeys: String, CodingKey {
         case selectionParticipationKey = "selection-participation-key"
         case voteParticipationKey = "vote-participation-key"
     }
 }
-
-extension Participation: Encodable { }

@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "icon-arrow-down-red.pdf",
+      "filename" : "arrow-down-line.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "arrow-down-line-1.pdf",
       "idiom" : "universal"
     }
   ],

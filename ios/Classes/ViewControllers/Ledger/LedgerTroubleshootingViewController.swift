@@ -37,7 +37,7 @@ class LedgerTroubleshootingViewController: BaseScrollViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        setTertiaryBackgroundColor()
+        setNavigationBarTertiaryBackgroundColor()
         view.backgroundColor = Colors.Background.tertiary
         title = "ledger-troubleshooting-title".localized
     }

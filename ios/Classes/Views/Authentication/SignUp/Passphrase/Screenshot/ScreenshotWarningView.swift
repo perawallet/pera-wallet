@@ -16,90 +16,80 @@
 //  ScreenshotWarningView.swift
 
 import UIKit
+import MacaroonUIKit
+import Foundation
 
-class ScreenshotWarningView: BaseView {
-
-    private let layout = Layout<LayoutConstants>()
-
+final class ScreenshotWarningView: View {
     weak var delegate: ScreenshotWarningViewDelegate?
 
-    private lazy var titleLabel: UILabel = {
-        UILabel()
-            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-            .withTextColor(Colors.Text.primary)
-            .withLine(.single)
-            .withAlignment(.center)
-            .withText("screenshot-title".localized)
-    }()
+    private lazy var titleLabel = UILabel()
+    private lazy var imageView = UIImageView()
+    private lazy var descriptionLabel = UILabel()
+    private lazy var closeButton = Button()
 
-    private lazy var imageView = UIImageView(image: img("img-warning-circle"))
+    func customize(_ theme: ScreenShotWarningViewTheme) {
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
-    private lazy var descriptionLabel: UILabel = {
-        UILabel()
-            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(Colors.Text.primary)
-            .withLine(.contained)
-            .withAlignment(.center)
-            .withText("screenshot-description".localized)
-    }()
-
-    private lazy var closeButton = MainButton(title: "title-accept".localized)
-
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.secondary
+        addImageView(theme)
+        addTitleLabel(theme)
+        addDescriptionLabel(theme)
+        addCloseButton(theme)
     }
 
-    override func setListeners() {
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+
+    func setListeners() {
         closeButton.addTarget(self, action: #selector(notifyDelegateToCloseScreen), for: .touchUpInside)
-    }
-
-    override func prepareLayout() {
-        setupTitleLabelLayout()
-        setupImageViewLayout()
-        setupDescriptionLabelLayout()
-        setupCloseButtonLayout()
     }
 }
 
 extension ScreenshotWarningView {
-    private func setupTitleLabelLayout() {
-        addSubview(titleLabel)
+    private func addImageView(_ theme: ScreenShotWarningViewTheme) {
+        imageView.customizeAppearance(theme.image)
 
-        titleLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.topInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-        }
-    }
-
-    private func setupImageViewLayout() {
         addSubview(imageView)
-
-        imageView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.verticalInset)
-            make.size.equalTo(layout.current.imageSize)
+        imageView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview().inset(theme.topInset)
+            $0.fitToSize(theme.imageSize)
         }
     }
 
-    private func setupDescriptionLabelLayout() {
+    private func addTitleLabel(_ theme: ScreenShotWarningViewTheme) {
+        titleLabel.customizeAppearance(theme.title)
+
+        addSubview(titleLabel)
+        titleLabel.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(imageView.snp.bottom).offset(theme.titleTopInset)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+        }
+    }
+
+    private func addDescriptionLabel(_ theme: ScreenShotWarningViewTheme) {
+        descriptionLabel.customizeAppearance(theme.description)
+
         addSubview(descriptionLabel)
-
-        descriptionLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(imageView.snp.bottom).offset(layout.current.descriptionTopInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+        descriptionLabel.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(titleLabel.snp.bottom).offset(theme.descriptionTopInset)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
         }
     }
 
-    private func setupCloseButtonLayout() {
-        addSubview(closeButton)
+    private func addCloseButton(_ theme: ScreenShotWarningViewTheme) {
+        closeButton.customize(theme.closeButtonTheme)
+        closeButton.bindData(ButtonCommonViewModel(title: "title-close".localized))
 
-        closeButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().inset(layout.current.topInset + safeAreaBottom)
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalTo(descriptionLabel.snp.bottom).offset(layout.current.verticalInset)
+        addSubview(closeButton)
+        closeButton.fitToVerticalIntrinsicSize()
+        closeButton.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(theme.bottomInset + safeAreaBottom)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+            $0.top.greaterThanOrEqualTo(descriptionLabel.snp.bottom).offset(theme.verticalInset)
         }
     }
 }
@@ -108,16 +98,6 @@ extension ScreenshotWarningView {
     @objc
     private func notifyDelegateToCloseScreen() {
         delegate?.screenshotWarningViewDidCloseScreen(self)
-    }
-}
-
-extension ScreenshotWarningView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let verticalInset: CGFloat = 28.0
-        let horizontalInset: CGFloat = 20.0
-        let topInset: CGFloat = 16.0
-        let descriptionTopInset: CGFloat = 20.0
-        let imageSize = CGSize(width: 80.0, height: 80.0)
     }
 }
 

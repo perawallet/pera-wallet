@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,16 +15,42 @@
 //
 //  PendingTransactionList.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class PendingTransactionList: Model {
+final class PendingTransactionList: ALGEntityModel {
     var pendingTransactions: [PendingTransaction]
     var count: Int
+
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.pendingTransactions = apiModel.topTransactions.unwrapMap(PendingTransaction.init)
+        self.count = apiModel.totalTransactions ?? 0
+    }
+
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.topTransactions = pendingTransactions.map { $0.encode() }
+        apiModel.totalTransactions = count
+        return apiModel
+    }
 }
 
 extension PendingTransactionList {
-    private enum CodingKeys: String, CodingKey {
-        case pendingTransactions = "top-transactions"
-        case count = "total-transactions"
+    struct APIModel: ALGAPIModel {
+        var topTransactions: [PendingTransaction.APIModel]?
+        var totalTransactions: Int?
+
+        init() {
+            self.topTransactions = []
+            self.totalTransactions = nil
+        }
+
+        private enum CodingKeys: String, CodingKey {
+            case topTransactions = "top-transactions"
+            case totalTransactions = "total-transactions"
+        }
     }
 }

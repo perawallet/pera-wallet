@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,9 +15,10 @@
 //
 //   WCAssetConfigParameters.swift
 
-import Magpie
+import Foundation
+import MagpieCore
 
-final class WCAssetConfigParameters: Model {
+final class WCAssetConfigParameters: Codable {
     let totalSupply: UInt64?
     let decimal: Int?
     let isFrozen: Bool?

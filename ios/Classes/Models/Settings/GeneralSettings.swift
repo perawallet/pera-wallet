@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,33 +17,48 @@
 
 import UIKit
 
-enum GeneralSettings: Settings {
-    case developer
-    case password
-    case localAuthentication
-    case walletConnect
+enum GeneralSettings {
+    case account
+    case appPreferences
+    case support
+}
+
+enum AccountSettings: Settings {
+    case security
     case notifications
+    case walletConnect
+    
+    var image: UIImage? {
+        switch self {
+        case .security:
+            return img("icon-settings-security")
+        case .notifications:
+            return img("icon-settings-notification")
+        case .walletConnect:
+            return img("icon-settings-wallet-connect")
+        }
+    }
+    
+    var name: String {
+        switch self {
+        case .security:
+            return "settings-security-title".localized
+        case .notifications:
+            return "notifications-title".localized
+        case .walletConnect:
+            return "settings-wallet-connect-title".localized
+        }
+    }
+}
+
+enum AppPreferenceSettings: Settings {
     case rewards
     case language
     case currency
-    case support
-    case appReview
-    case termsAndServices
-    case privacyPolicy
     case appearance
     
     var image: UIImage? {
         switch self {
-        case .developer:
-            return img("icon-settings-developer")
-        case .password:
-            return img("icon-settings-password")
-        case .localAuthentication:
-            return img("icon-settings-faceid")
-        case .walletConnect:
-            return img("icon-settings-wallet-connect")
-        case .notifications:
-            return img("icon-settings-notification")
         case .rewards:
             return img("icon-settings-reward")
         case .language:
@@ -52,29 +67,11 @@ enum GeneralSettings: Settings {
             return img("icon-settings-currency")
         case .appearance:
             return img("icon-settings-theme")
-        case .support:
-            return img("icon-feedback")
-        case .appReview:
-            return img("icon-settings-rate")
-        case .termsAndServices:
-            return img("icon-terms-and-services")
-        case .privacyPolicy:
-            return img("icon-terms-and-services")
         }
     }
     
     var name: String {
         switch self {
-        case .developer:
-            return "settings-developer".localized
-        case .password:
-            return "settings-change-password".localized
-        case .localAuthentication:
-            return "settings-local-authentication".localized
-        case .walletConnect:
-            return "settings-wallet-connect-title".localized
-        case .notifications:
-            return "notifications-title".localized
         case .rewards:
             return "rewards-show-title".localized
         case .language:
@@ -83,7 +80,36 @@ enum GeneralSettings: Settings {
             return "settings-currency".localized
         case .appearance:
             return "settings-theme-set".localized
-        case .support:
+        }
+    }
+}
+
+
+enum SupportSettings: Settings {
+    case feedback
+    case appReview
+    case termsAndServices
+    case privacyPolicy
+    case developer
+    
+    var image: UIImage? {
+        switch self {
+        case .feedback:
+            return img("icon-feedback")
+        case .appReview:
+            return img("icon-settings-rate")
+        case .termsAndServices:
+            return img("icon-terms-and-services")
+        case .privacyPolicy:
+            return img("icon-terms-and-services")
+        case .developer:
+            return img("icon-settings-developer")
+        }
+    }
+    
+    var name: String {
+        switch self {
+        case .feedback:
             return "settings-support-title".localized
         case .appReview:
             return "settings-rate-title".localized
@@ -91,6 +117,8 @@ enum GeneralSettings: Settings {
             return "terms-and-services-title".localized
         case .privacyPolicy:
             return "privacy-policy-title".localized
+        case .developer:
+            return "settings-developer".localized
         }
     }
 }

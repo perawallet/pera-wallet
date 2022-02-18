@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,30 +15,54 @@
 //
 //  Asset.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class Asset: Model {
+final class Asset:
+    ALGAPIModel,
+    Hashable {
     let creator: String?
     let amount: UInt64
     let isFrozen: Bool?
     let id: Int64
     let isDeleted: Bool?
-}
 
-extension Asset {
-    enum CodingKeys: String, CodingKey {
-        case creator = "creator"
-        case amount = "amount"
-        case isFrozen = "is-frozen"
-        case id = "asset-id"
-        case isDeleted = "deleted"
+    init() {
+        self.creator = nil
+        self.amount = 10
+        self.isFrozen = nil
+        self.id = 1
+        self.isDeleted = nil
     }
 }
 
-extension Asset: Encodable { }
+extension Asset {
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(id)
+        hasher.combine(amount)
+    }
+    
+    static func == (
+        lhs: Asset,
+        rhs: Asset
+    ) -> Bool {
+        return
+            lhs.id == rhs.id &&
+            lhs.amount == rhs.amount
+    }
+}
 
-extension Asset: Equatable {
-    static func == (lhs: Asset, rhs: Asset) -> Bool {
-        return lhs.id == rhs.id && lhs.amount == rhs.amount
+extension Asset {
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case creator
+        case amount
+        case isFrozen = "is-frozen"
+        case id = "asset-id"
+        case isDeleted = "deleted"
     }
 }

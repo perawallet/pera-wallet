@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,22 +15,22 @@
 //
 //  Device.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class Device: Model {
+final class Device: ALGAPIModel {
     let id: String?
     let pushToken: String?
     let platform: String?
     let model: String?
     let locale: String?
-}
 
-extension Device {
-    enum CodingKeys: String, CodingKey {
-        case id = "id"
-        case pushToken = "push_token"
-        case platform = "platform"
-        case model = "model"
-        case locale = "locale"
+    init() {
+        self.id = nil
+        self.pushToken = nil
+        self.platform = nil
+        self.model = nil
+        self.locale = nil
     }
 }
