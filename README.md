@@ -1,4 +1,4 @@
-# The Official Algorand Wallet
+# Pera Wallet
 
 ## Overview
 Welcome to the code that powers Pera Wallet! This repo will always contain the source code for the latest publicly available Pera Wallet version (official download links can be found at [perawallet.app](https://perawallet.app)). We want to make sure that we focus not only on great features and experiences but also security, transparency, and community involvement.
