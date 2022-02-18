@@ -1,5 +1,5 @@
 
-# Building the Algorand Wallet Apps
+# Building the Pera Wallet Apps
 
 Some modifications are needed in order to build the applications from this repo. This document
 explains all of the steps needed to build the applications and run them in a simulator.
