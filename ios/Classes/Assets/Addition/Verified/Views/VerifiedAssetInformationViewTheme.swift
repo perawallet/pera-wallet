@@ -42,9 +42,9 @@ struct VerifiedAssetInformationViewTheme: StyleSheet, LayoutSheet {
             .font(Fonts.DMSans.medium.make(15))
         ]
         
-        let fullText = "verified-asset-information-text".localized
+        let fullText = "verified-asset-information-text".localized(AlgorandWeb.support.presentation)
         let doubleCheckText = "verified-asset-double-check".localized
-        let contactText = "verified-asset-information-visit-site".localized
+        let contactText = AlgorandWeb.support.presentation
         
         let fullAttributedText = NSMutableAttributedString(string: fullText)
         

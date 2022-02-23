@@ -19,20 +19,13 @@ import Foundation
 import MacaroonUIKit
 
 struct RewardDetailViewModel:
-    PairedViewModel,
+    ViewModel,
     Hashable {
     private(set) var title: EditText?
     private(set) var amount: EditText?
     private(set) var description: EditText?
     private(set) var FAQLabel: EditText?
-
-    init(_ account: Account) {
-        bindTitle()
-        bindAmount(from: account)
-        bindDescription()
-        bindFAQLabel()
-    }
-
+    
     init(account: Account, calculatedRewards: Decimal) {
         bindTitle()
         bindRewardAmount(from: account, and: calculatedRewards)
@@ -49,28 +42,6 @@ extension RewardDetailViewModel {
         title = .attributedString(
             "rewards-title"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.left)
-                    ])
-                ])
-        )
-    }
-
-    private mutating func bindAmount(from account: Account) {
-        guard let amount =
-                account.pendingRewards.toAlgos.toExactFractionLabel(fraction: 6) else {
-                    return
-                }
-        
-        let font = Fonts.DMMono.regular.make(19)
-        let lineHeightMultiplier = 1.13
-
-        self.amount = .attributedString(
-            (amount + " ALGO")
                 .attributed([
                     .font(font),
                     .lineHeightMultiplier(lineHeightMultiplier, font),

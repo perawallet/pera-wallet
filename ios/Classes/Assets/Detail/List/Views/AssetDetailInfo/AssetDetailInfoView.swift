@@ -133,7 +133,7 @@ final class AssetDetailInfoView:
 extension AssetDetailInfoView {
     @objc
     private func notifyDelegateToCopyAssetID() {
-        delegate?.assetDetailInfoViewDidTapAssetID(self, assetID: assetIDButton.title(for: .normal))
+        delegate?.assetDetailInfoViewDidTapAssetID(self)
     }
 }
 
@@ -243,5 +243,5 @@ extension AssetDetailInfoView {
 }
 
 protocol AssetDetailInfoViewDelegate: AnyObject {
-    func assetDetailInfoViewDidTapAssetID(_ assetDetailInfoView: AssetDetailInfoView, assetID: String?)
+    func assetDetailInfoViewDidTapAssetID(_ assetDetailInfoView: AssetDetailInfoView)
 }

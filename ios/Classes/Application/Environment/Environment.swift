@@ -112,6 +112,15 @@ enum AlgorandWeb: String {
     case rewardsFAQ = "https://algorand.foundation/faq#participation-rewards"
     case governence = "https://governance.algorand.foundation/"
     case peraBlogLaunchAnnouncement = "https://perawallet.app/blog/launch-announcement/"
+
+    var presentation: String {
+        switch self {
+        case .support:
+            return "www.perawallet.app/support/"
+        default:
+            return self.rawValue
+        }
+    }
 }
 
 extension AlgorandWeb {

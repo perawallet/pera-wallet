@@ -44,7 +44,7 @@ indirect enum Screen {
     case addAsset(account: Account)
     case removeAsset(account: Account)
     case assetActionConfirmation(assetAlertDraft: AssetAlertDraft, delegate: AssetActionConfirmationViewControllerDelegate?)
-    case rewardDetail(account: Account)
+    case rewardDetail(account: Account, calculatedRewards: Decimal)
     case verifiedAssetInformation
     case ledgerTutorial(flow: AccountSetupFlow)
     case ledgerDeviceList(flow: AccountSetupFlow)
@@ -104,11 +104,7 @@ indirect enum Screen {
     case transactionResult
     case transactionAccountSelect(draft: SendTransactionDraft)
     case sendTransactionPreview(draft: TransactionSendDraft, transactionController: TransactionController)
-    case wcMainTransactionScreen(
-        transactions: [WCTransaction],
-        transactionRequest: WalletConnectRequest,
-        transactionOption: WCTransactionOption?
-     )
+    case wcMainTransactionScreen(draft: WalletConnectRequestDraft, delegate: WCMainTransactionScreenDelegate)
     case transactionFloatingActionButton
     case wcSingleTransactionScreen(
         transactions: [WCTransaction],

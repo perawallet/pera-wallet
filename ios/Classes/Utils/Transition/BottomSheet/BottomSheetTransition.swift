@@ -25,14 +25,20 @@ final class BottomSheetTransition {
 
     unowned let presentingViewController: UIViewController
 
-    init(presentingViewController: UIViewController) {
+    init(
+        presentingViewController: UIViewController
+    ) {
         self.presentingViewController = presentingViewController
     }
 }
 
 extension BottomSheetTransition {
     @discardableResult
-    func perform<T: UIViewController>(_ screen: Screen, by style: Transition, completion: (() -> Void)? = nil) -> T? {
+    func perform<T: UIViewController>(
+        _ screen: Screen,
+        by style: Transition,
+        completion: (() -> Void)? = nil
+    ) -> T? {
         let transitionController =
             BottomSheetTransitionController(
                 presentingViewController: presentingViewController
@@ -85,6 +91,7 @@ extension BottomSheetPresentable where Self: ScrollScreen {
     var presentedScrollView: UIScrollView? {
         return scrollView
     }
+
     var presentedScrollContentView: UIView? {
         return contentView
     }

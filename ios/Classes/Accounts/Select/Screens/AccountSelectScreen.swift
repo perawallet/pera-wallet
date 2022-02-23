@@ -158,12 +158,22 @@ final class AccountSelectScreen: BaseViewController {
                 switch accountResponse {
                 case let .failure(error, _):
                     if error.isHttpNotFound {
-                        self.displaySimpleAlertWith(
-                            title: "title-error".localized,
-                            message: "send-algos-minimum-amount-error-new-account".localized
+                        let configurator = BottomWarningViewConfigurator(
+                            image: "icon-info-red".uiImage,
+                            title: "send-algos-minimum-amount-error-new-account-title".localized,
+                            description: "send-algos-minimum-amount-error-new-account-description".localized,
+                            secondaryActionButtonTitle: "title-i-understand".localized
+                        )
+
+                        self.modalTransition.perform(
+                            .bottomWarning(configurator: configurator),
+                            by: .presentWithoutNavigationController
                         )
                     } else {
-                        self.displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
+                        self.displaySimpleAlertWith(
+                            title: "title-error".localized,
+                            message: "title-internet-connection".localized
+                        )
                     }
                 case let .success(accountWrapper):
                     if !accountWrapper.account.isSameAccount(with: receiverAddress) {

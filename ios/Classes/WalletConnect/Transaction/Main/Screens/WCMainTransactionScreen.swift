@@ -82,14 +82,12 @@ final class WCMainTransactionScreen: BaseViewController, Container {
     let dataSource: WCMainTransactionDataSource
 
     init(
-        transactions: [WCTransaction],
-        transactionRequest: WalletConnectRequest,
-        transactionOption: WCTransactionOption?,
+        draft: WalletConnectRequestDraft,
         configuration: ViewControllerConfiguration
     ) {
-        self.transactions = transactions
-        self.transactionRequest = transactionRequest
-        self.transactionOption = transactionOption
+        self.transactions = draft.transactions
+        self.transactionRequest = draft.request
+        self.transactionOption = draft.option
         self.wcSession = configuration.walletConnector.getWalletConnectSession(with: WCURLMeta(wcURL: transactionRequest.url))
         self.dataSource = WCMainTransactionDataSource(
             sharedDataController: configuration.sharedDataController,

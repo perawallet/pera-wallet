@@ -89,8 +89,8 @@ extension VerifiedAssetInformationView {
 extension VerifiedAssetInformationView {
     @objc
     private func notifyDelegateToOpenFeedback(_ gestureRecognizer: UITapGestureRecognizer) {
-        let fullText = "verified-asset-information-text".localized as NSString
-        let contactTextRange = fullText.range(of: "verified-asset-information-visit-site".localized)
+        let fullText = "verified-asset-information-text".localized(AlgorandWeb.support.presentation) as NSString
+        let contactTextRange = fullText.range(of: AlgorandWeb.support.presentation)
 
         if gestureRecognizer.detectTouchForLabel(informationLabel, in: contactTextRange) {
             delegate?.verifiedAssetInformationViewDidVisitSite(self)

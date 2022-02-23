@@ -22,19 +22,17 @@ import MacaroonUIKit
 
 final class RewardDetailViewController: BaseViewController {
     private lazy var rewardDetailView = RewardDetailView()
-    
-    private lazy var rewardCalculator: RewardCalculator = {
-        guard let api = api else {
-            fatalError("Api must be set before accessing reward calculator.")
-        }
-
-        return RewardCalculator(api: api, account: account, sharedDataController: sharedDataController)
-    }()
 
     private let account: Account
+    private let calculatedRewards: Decimal
     
-    init(account: Account, configuration: ViewControllerConfiguration) {
+    init(
+        account: Account,
+        calculatedRewards: Decimal,
+        configuration: ViewControllerConfiguration
+    ) {
         self.account = account
+        self.calculatedRewards = calculatedRewards
         super.init(configuration: configuration)
     }
 
@@ -47,17 +45,29 @@ final class RewardDetailViewController: BaseViewController {
     }
 
     override func bindData() {
-        rewardDetailView.bindData(RewardDetailViewModel(account))
+        bindData(
+            RewardDetailViewModel(
+                account: account,
+                calculatedRewards: calculatedRewards
+            )
+        )
     }
     
     override func linkInteractors() {
         rewardDetailView.setListeners()
         rewardDetailView.delegate = self
-        rewardCalculator.delegate = self
     }
     
     override func prepareLayout() {
         addRewardDetailView()
+    }
+
+    func bindData(
+        _ viewModel: RewardDetailViewModel
+    ) {
+        rewardDetailView.bindData(
+            viewModel
+        )
     }
 }
 
@@ -84,12 +94,6 @@ extension RewardDetailViewController {
         rewardDetailView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-    }
-}
-
-extension RewardDetailViewController: RewardCalculatorDelegate {
-    func rewardCalculator(_ rewardCalculator: RewardCalculator, didCalculate rewards: Decimal) {
-        rewardDetailView.bindData(RewardDetailViewModel(account: account, calculatedRewards: rewards))
     }
 }
 

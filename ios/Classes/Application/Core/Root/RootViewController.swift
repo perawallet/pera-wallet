@@ -54,11 +54,15 @@ class RootViewController: UIViewController {
     private var wcTransactionSuccessTransition: BottomSheetTransition?
     
     let appConfiguration: AppConfiguration
+    let launchController: AppLaunchController
 
     init(
-        appConfiguration: AppConfiguration
+        appConfiguration: AppConfiguration,
+        launchController: AppLaunchController
     ) {
         self.appConfiguration = appConfiguration
+        self.launchController = launchController
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -155,19 +159,21 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
         for request: WalletConnectRequest,
         with transactionOption: WCTransactionOption?
     ) {
-        if let currentWCTransactionRequest = currentWCTransactionRequest {
-            if currentWCTransactionRequest.isSameTransactionRequest(with: request) {
-                return
-            }
+        openMainViewController(animated: true, for: transactions, with: request, and: transactionOption)
 
-            appConfiguration.walletConnector.rejectTransactionRequest(currentWCTransactionRequest, with: .rejected(.alreadyDisplayed))
-
-            wcRequestScreen?.closeScreen(by: .dismiss, animated: false) {
-                self.openMainViewController(animated: false, for: transactions, with: request, and: transactionOption)
-            }
-        } else {
-            openMainViewController(animated: true, for: transactions, with: request, and: transactionOption)
-        }
+//        if let currentWCTransactionRequest = currentWCTransactionRequest {
+//            if currentWCTransactionRequest.isSameTransactionRequest(with: request) {
+//                return
+//            }
+//
+//            appConfiguration.walletConnector.rejectTransactionRequest(currentWCTransactionRequest, with: .rejected(.alreadyDisplayed))
+//
+//            wcRequestScreen?.closeScreen(by: .dismiss, animated: false) {
+//                self.openMainViewController(animated: false, for: transactions, with: request, and: transactionOption)
+//            }
+//        } else {
+//            openMainViewController(animated: true, for: transactions, with: request, and: transactionOption)
+//        }
     }
 
     private func openMainViewController(
@@ -176,27 +182,14 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
         with request: WalletConnectRequest,
         and transactionOption: WCTransactionOption?
     ) {
-        let fullScreenPresentation = Screen.Transition.Open.customPresent(
-            presentationStyle: .fullScreen,
-            transitionStyle: nil,
-            transitioningDelegate: nil
-        )
-
         currentWCTransactionRequest = request
         
-        let visibleScreen = findVisibleScreen()
-
-        wcRequestScreen = visibleScreen.open(
-             .wcMainTransactionScreen(
-                 transactions: transactions,
-                 transactionRequest: request,
-                 transactionOption: transactionOption
-             ),
-             by: fullScreenPresentation,
-             animated: animated
-         ) as? WCMainTransactionScreen
-
-        wcRequestScreen?.delegate = self
+        let draft = WalletConnectRequestDraft(
+            request: request,
+            transactions: transactions,
+            option: transactionOption
+        )
+        launchController.receive(deeplinkWithSource: .walletConnectRequest(draft))
     }
 }
 

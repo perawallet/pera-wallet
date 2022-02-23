@@ -18,19 +18,14 @@
 import Foundation
 import MacaroonApplication
 import MacaroonUtils
-import SwiftDate
 import UIKit
 
 final class ALGAppLaunchController:
     AppLaunchController,
     SharedDataControllerObserver {
-    var isFirstLaunch: Bool {
-        return lastActiveDate == nil
-    }
-    
     unowned let uiHandler: AppLaunchUIHandler
-
-    private var lastActiveDate: Date?
+    
+    private var isFirstLaunch = true
     
     @Atomic(identifier: "appLaunchController.deeplinkSource")
     private var pendingDeeplinkSource: DeeplinkSource? = nil
@@ -38,18 +33,21 @@ final class ALGAppLaunchController:
     private let session: Session
     private let api: ALGAPI
     private let sharedDataController: SharedDataController
+    private let authChecker: AppAuthChecker
     private let deeplinkParser: DeepLinkParser
     
     init(
         session: Session,
         api: ALGAPI,
         sharedDataController: SharedDataController,
+        authChecker: AppAuthChecker,
         uiHandler: AppLaunchUIHandler
     ) {
         self.session = session
         self.api = api
         self.sharedDataController = sharedDataController
         self.deeplinkParser = DeepLinkParser(sharedDataController: sharedDataController)
+        self.authChecker = authChecker
         self.uiHandler = uiHandler
         
         sharedDataController.add(self)
@@ -71,9 +69,11 @@ final class ALGAppLaunchController:
     func launch(
         deeplinkWithSource src: DeeplinkSource?
     ) {
+        authChecker.launch()
+        
         var appLaunchStore = ALGAppLaunchStore()
         
-        if !session.hasAuthentication() {
+        if authChecker.status == .requiresAuthentication {
             /// <note>
             /// App is deleted, but the keychain has the private keys.
             /// This should be the first operation since it cleans out the application data.
@@ -92,12 +92,12 @@ final class ALGAppLaunchController:
             suspend(deeplinkWithSource: deeplinkSource)
         }
         
-        if !session.hasPassword() {
-            launchMain()
+        if authChecker.status == .requiresAuthorization {
+            firstLaunchUI(.authorization)
             return
         }
         
-        firstLaunchUI(.authorization)
+        launchMain()
     }
     
     func launchOnboarding() {
@@ -113,6 +113,8 @@ final class ALGAppLaunchController:
     func launchMainAfterAuthorization(
         presented viewController: UIViewController
     ) {
+        authChecker.authorize()
+        
         let completion: () -> Void = {
             [weak self] in
             guard let self = self else { return }
@@ -138,46 +140,40 @@ final class ALGAppLaunchController:
     /// they are dismissed, the application becomes active and this method will be called. Think
     /// twice when the `inactiveSessionExpirationDuration` is reduced.
     func becomeActive() {
-        defer {
-            lastActiveDate = nil
-        }
-        
         if isFirstLaunch {
             return
         }
         
-        if !session.hasAuthentication() {
+        authChecker.becomeActive()
+        
+        switch authChecker.status {
+        case .requiresAuthentication:
             cancelPendingDeeplink()
-            return
-        }
-
-        if !session.hasPassword() {
+        case .requiresAuthorization:
+            uiHandler.launchUI(.authorization)
+        case .ready:
             resumePendingDeeplink()
             sharedDataController.startPolling()
-
-            return
         }
-        
-        if !hasSessionExpired() {
-            resumePendingDeeplink()
-            sharedDataController.startPolling()
-
-            return
-        }
-        
-        uiHandler.launchUI(.authorization)
     }
     
     func resignActive() {
         sharedDataController.stopPolling()
-        lastActiveDate = Date()
+        authChecker.resignActive()
+    }
+    
+    func enterBackground() {
+        isFirstLaunch = false
     }
     
     func receive(
         deeplinkWithSource src: DeeplinkSource
     ) {
         if UIApplication.shared.isActive {
-            resumeOrSuspend(deeplinkWithSource: src)
+            switch authChecker.status {
+            case .ready: resumeOrSuspend(deeplinkWithSource: src)
+            default: suspend(deeplinkWithSource: src)
+            }
         } else {
             suspend(deeplinkWithSource: src)
         }
@@ -254,20 +250,6 @@ extension ALGAppLaunchController {
 }
 
 extension ALGAppLaunchController {
-    private func hasSessionExpired() -> Bool {
-        guard let lastActiveDate = lastActiveDate else {
-            return false
-        }
-        
-        let expireDate = lastActiveDate + inactiveSessionExpirationDuration
-        return Date.now().isAfterDate(
-            expireDate,
-            granularity: .second
-        )
-    }
-}
-
-extension ALGAppLaunchController {
     private typealias DeeplinkResult = Result<AppLaunchUIState, DeepLinkParser.Error>?
     
     private func resumeOrSuspend(
@@ -285,6 +267,8 @@ extension ALGAppLaunchController {
             result = determineUIStateIfPossible(forURL: url)
         case .walletConnectSessionRequest(let url):
             result = determineUIStateIfPossible(forWalletConnectSessionRequest: url)
+        case .walletConnectRequest(let draft):
+            result = determineUIStateIfPossible(forWalletConnectRequest: draft)
         }
         
         switch result {
@@ -346,6 +330,18 @@ extension ALGAppLaunchController {
         switch parserResult {
         case .none: return nil
         case .success(let key): return .success(.walletConnectSessionRequest(key))
+        case .failure(let error): return .failure(error)
+        }
+    }
+    
+    private func determineUIStateIfPossible(
+        forWalletConnectRequest draft: WalletConnectRequestDraft
+    ) -> DeeplinkResult {
+        let parserResult = deeplinkParser.discover(walletConnectRequest: draft)
+        
+        switch parserResult {
+        case .none: return nil
+        case .success(let screen): return .success(.deeplink(screen))
         case .failure(let error): return .failure(error)
         }
     }

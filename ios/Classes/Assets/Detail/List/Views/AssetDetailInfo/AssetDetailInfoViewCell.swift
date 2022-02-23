@@ -37,11 +37,11 @@ final class AssetDetailInfoViewCell:
 }
 
 extension AssetDetailInfoViewCell: AssetDetailInfoViewDelegate {
-    func assetDetailInfoViewDidTapAssetID(_ assetDetailInfoView: AssetDetailInfoView, assetID: String?) {
-        delegate?.assetDetailInfoViewCellDidTapAssetID(self, assetID: assetID)
+    func assetDetailInfoViewDidTapAssetID(_ assetDetailInfoView: AssetDetailInfoView) {
+        delegate?.assetDetailInfoViewCellDidTapAssetID(self)
     }
 }
 
 protocol AssetDetailInfoViewCellDelegate: AnyObject {
-    func assetDetailInfoViewCellDidTapAssetID(_ assetDetailInfoViewCell: AssetDetailInfoViewCell, assetID: String?)
+    func assetDetailInfoViewCellDidTapAssetID(_ assetDetailInfoViewCell: AssetDetailInfoViewCell)
 }

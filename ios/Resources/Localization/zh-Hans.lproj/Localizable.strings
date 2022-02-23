@@ -407,7 +407,7 @@
 "csv-download-title" = "创建CSV文件";
 
 /* (No Comment) */
-"csv-loading-message" = "We are fetching your data. Please wait until your CSV is ready.";
+"csv-loading-message" = "我们正在获取您的数据。请等待您的CSV准备就绪。";
 
 /* (No Comment) */
 "default-error-message" = "出现错误";
@@ -494,7 +494,7 @@
 "introduction-add-account-text" = "添加账户";
 
 /* (No Comment) */
-"introduction-title-terms-and-services" = "创建账户表面您同意Algorand的 <a href=\"https://perawallet.app/terms-and-services/\">条款和条件</a> 与<a href=\"https://www.perawallet.app/privacy-policy/\">隐私政策</a>";
+"introduction-title-terms-and-services" = "创建账户表面您同意Algorand的 <a href=\"%@\">条款和条件</a> 与<a href=\"%@\">隐私政策</a>";
 
 /* (No Comment) */
 "ledger-account-detail-assets" = "资产";
@@ -740,7 +740,7 @@
 "login-title" = "解锁";
 
 /* (No Comment) */
-"maximum-balance-standard-account-warning-description" = "由于您在此账户中还有其余资产，Algorand区块链要求您维持%@ALGO的最低余额。\n\n\n\n点击继续，您的交易金额将自动更新以反映此更改。您将可以在下一步中预览此更改。";
+"maximum-balance-standard-account-warning-description" = "由于您在此账户%@中还有%@其余资产，Algorand区块链要求您维持%@ALGO的最低余额。\n\n\n\n点击继续，您的交易金额将自动更新以反映此更改。您将可以在下一步中预览此更改。";
 
 /* (No Comment) */
 "maximum-balance-warning-description" = "如果您要将最高余额发送到重置密钥的账户上，请您保持%@ ALGO的最低余额。此举能够确保您重置密钥的账户没有任何变化。\n\n\n您的交易金额将自动更新以反映这一变化。您可以在下一步中预览交易。";
@@ -956,10 +956,10 @@
 "passphrase-verify-wrong-message" = "所选字词有误，请重试。";
 
 /* (No Comment) */
-"password-change-new-subtitle" = "Enter your new\n6-digit PIN";
+"password-change-new-subtitle" = "请输入您新的\n6位数PIN码";
 
 /* (No Comment) */
-"password-change-old-subtitle" = "Enter your old\n6-digit PIN";
+"password-change-old-subtitle" = "请输入您旧的\n6位数PIN码";
 
 /* (No Comment) */
 "password-change-subtitle" = "输入6位数密码";
@@ -977,7 +977,7 @@
 "password-verify-fail-title" = "密码错误";
 
 /* (No Comment) */
-"password-verify-new-subtitle" = "Re-enter your new\n6-digit PIN";
+"password-verify-new-subtitle" = "再次输入您新的\n6位数PIN码";
 
 /* (No Comment) */
 "password-verify-subtitle" = "输入相同的6位数密码";
@@ -986,19 +986,19 @@
 "password-verify-title" = "密码验证";
 
 /* (No Comment) */
-"pera-announcement-action-title" = "Start Using Pera Wallet";
+"pera-announcement-action-title" = "开始使用Pera钱包";
 
 /* (No Comment) */
-"pera-announcement-description" = "We are very excited to announce that Algorand Wallet is now called Pera Wallet. This is much more than a new name and logo. We are relaunching the most popular wallet in the Algorand ecosystem with a renewed focus on our roadmap, partner integrations, and community.\n\nDon't worry, Pera Wallet is built and maintained by the same team and all the features you know and love are still here as usual – With many more to come in the upcoming months.\n\nTo read more about the relaunch and our roadmap, head over to the Pera Wallet blog";
+"pera-announcement-description" = "我们很高兴宣布，Algorand Wallet现更名为Pera钱包。这不仅是新名称和新徽标。我们正在重新推出Algorand生态系统中最受欢迎的钱包，并重新关注我们的路线图、合作伙伴融合和社区。\n\n放心，Pera钱包将由相同团队构建和维护，您熟悉和喜爱的全部功能都能照常使用——在接下来的几个月里，还会推出更多新功能。\n\n阅读关于重新发布和路线图的更多信息，请查看Pera钱包的博客。";
 
 /* (No Comment) */
-"pera-announcement-description-blog" = "Pera Wallet blog";
+"pera-announcement-description-blog" = "Pera钱包博客";
 
 /* (No Comment) */
-"pera-announcement-subtitle" = "Algorand Wallet is\nnow Pera Wallet.";
+"pera-announcement-subtitle" = "Algorand钱包现\n更名为Pera钱包。";
 
 /* MARK: PeraAnnouncement */
-"pera-announcement-title" = "It's Official!";
+"pera-announcement-title" = "官方发布！";
 
 /* (No Comment) */
 "pin-limit-reset-all" = "重置所有数据";
@@ -1238,7 +1238,10 @@
 "send-algos-minimum-amount-error" = "交易后的账户余额低于最小账户余额0.1个ALGO。";
 
 /* (No Comment) */
-"send-algos-minimum-amount-error-new-account" = "您正在向一个新账户发送ALGO，该账户必须持有至少0.1个ALGO。";
+"send-algos-minimum-amount-error-new-account-description" = "This is the first transaction for the selected account. The first transactions require a minimum amount of at least 0.1 Algo. Please enter a valid amount and try again.";
+
+/* (No Comment) */
+"send-algos-minimum-amount-error-new-account-title" = "Minimum Amount Required.";
 
 /* (No Comment) */
 "send-algos-receiver-address-validation" = "收件人地址不是有效的Algorand地址，请重试。";
@@ -1301,13 +1304,13 @@
 "send-transaction-max-same-account-error" = "无法向自己发送所有余额。请在选择其他账户或收款人后，再次尝试。";
 
 /* (No Comment) */
-"send-transaction-preview-current-balance" = "Current\nBalance";
+"send-transaction-preview-current-balance" = "现有\n余额";
 
 /* MARK: SendTransactionPreview */
 "send-transaction-preview-title" = "确认订单";
 
 /* (No Comment) */
-"send-transaction-show-note-title" = "Show Note";
+"send-transaction-show-note-title" = "显示备注";
 
 /* MARK: SendTransaction */
 "send-transaction-title" = "发送%@";
@@ -1325,7 +1328,7 @@
 "settings-currency" = "币种";
 
 /* (No Comment) */
-"settings-delete-data-title" = "Delete All Data";
+"settings-delete-data-title" = "删除所有数据";
 
 /* (No Comment) */
 "settings-developer" = "开发者设置";
@@ -1415,7 +1418,7 @@
 "single-transaction-request-network-fee-title" = "网络费用";
 
 /* (No Comment) */
-"single-transaction-request-opt-in-subtitle" = "OnCompletion";
+"single-transaction-request-opt-in-subtitle" = "完成时";
 
 /* (No Comment) */
 "single-transaction-request-opt-in-title" = "选择加入";
@@ -1451,7 +1454,7 @@
 "title-approve" = "同意";
 
 /* (No Comment) */
-"title-asset-id" = "Asset ID";
+"title-asset-id" = "资产ID";
 
 /* (No Comment) */
 "title-cancel" = "取消";
@@ -1503,9 +1506,6 @@
 
 /* (No Comment) */
 "title-failed-connection" = "连接失败";
-
-/* (No Comment) */
-"title-start-using-pera-wallet" = "Start Using Pera Wallet";
 
 /* (No Comment) */
 "title-go-to-accounts" = "回到账户";
@@ -1605,6 +1605,9 @@
 
 /* (No Comment) */
 "title-skip" = "跳过";
+
+/* (No Comment) */
+"title-start-using-pera-wallet" = "Start Using Pera Wallet";
 
 /* MARK: Ledger Troubleshooting */
 "title-step-1" = "第一步";
@@ -1887,9 +1890,6 @@
 
 /* (No Comment) */
 "verified-asset-information-title" = "资产验证是什么意思？";
-
-/* (No Comment) */
-"verified-asset-information-visit-site" = "访问：www.algorandwallet.com/support";
 
 /* MARK: Verified Asset Information */
 "verified-assets-title" = "已验证的资产";
@@ -2189,8 +2189,10 @@
 "wallet-connect-transaction-warning-high-fee" = "此交易费用高于平时的 0.01 ALGO。";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-initial-title" = "Transaction Request FAQ";
 "wallet-connect-transaction-warning-initial-description" = "External applications also called as dApps can make transaction requests that the Pera Wallet does not control. Please ensure you review these transactions carefully before approving and signing them.\n\nAll transactions are irreversible. Never approve transaction from dApp that you don’t know.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-initial-title" = "Transaction Request FAQ";
 
 /* MARK: Wallet Connect Transaction Warning */
 "wallet-connect-transaction-warning-rekey" = "这项交易将转移该账户的所有权。您当前的恢复密码将不再可以访问这些资产。";

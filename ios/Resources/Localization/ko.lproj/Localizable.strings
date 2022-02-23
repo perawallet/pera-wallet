@@ -407,7 +407,7 @@
 "csv-download-title" = "CSV 파일 생성 중";
 
 /* (No Comment) */
-"csv-loading-message" = "We are fetching your data. Please wait until your CSV is ready.";
+"csv-loading-message" = "데이터를 가져오는 중입니다. CSV가 준비될 때까지 기다려주세요.";
 
 /* (No Comment) */
 "default-error-message" = "오류가 발생했습니다.";
@@ -494,7 +494,7 @@
 "introduction-add-account-text" = "계정 추가";
 
 /* (No Comment) */
-"introduction-title-terms-and-services" = "계정을 만드시면 알고랜드의 <a href=\"https://perawallet.app/terms-and-services/\">이용약관</a>과 <a href=\"https://www.perawallet.app/privacy-policy/\">개인정보 보호 정책</a>에 동의하신 것으로 간주합니다";
+"introduction-title-terms-and-services" = "계정을 만드시면 알고랜드의 <a href=\"%@\">이용약관</a>과 <a href=\"%@\">개인정보 보호 정책</a>에 동의하신 것으로 간주합니다";
 
 /* (No Comment) */
 "ledger-account-detail-assets" = "자산";
@@ -956,10 +956,10 @@
 "passphrase-verify-wrong-message" = "잘못된 단어를 선택하셨습니다. 다시 시도해 주세요.";
 
 /* (No Comment) */
-"password-change-new-subtitle" = "Enter your new\n6-digit PIN";
+"password-change-new-subtitle" = "새 6자리 PIN 번호를\n입력하세요";
 
 /* (No Comment) */
-"password-change-old-subtitle" = "Enter your old\n6-digit PIN";
+"password-change-old-subtitle" = "기존 6자리 PIN 번호를\n입력하세요";
 
 /* (No Comment) */
 "password-change-subtitle" = "6자리 PIN 번호를 입력하세요";
@@ -977,7 +977,7 @@
 "password-verify-fail-title" = "잘못된 PIN 번호입니다";
 
 /* (No Comment) */
-"password-verify-new-subtitle" = "Re-enter your new\n6-digit PIN";
+"password-verify-new-subtitle" = "새 6자리 PIN 번호를\n다시 입력하세요";
 
 /* (No Comment) */
 "password-verify-subtitle" = "6자리 PIN 번호를 다시 입력하세요";
@@ -986,19 +986,19 @@
 "password-verify-title" = "PIN 확인";
 
 /* (No Comment) */
-"pera-announcement-action-title" = "Start Using Pera Wallet";
+"pera-announcement-action-title" = "Pera Wallet 사용 시작";
 
 /* (No Comment) */
-"pera-announcement-description" = "We are very excited to announce that Algorand Wallet is now called Pera Wallet. This is much more than a new name and logo. We are relaunching the most popular wallet in the Algorand ecosystem with a renewed focus on our roadmap, partner integrations, and community.\n\nDon't worry, Pera Wallet is built and maintained by the same team and all the features you know and love are still here as usual – With many more to come in the upcoming months.\n\nTo read more about the relaunch and our roadmap, head over to the Pera Wallet blog";
+"pera-announcement-description" = "알고랜드 지갑이 Pera Wallet으로 변경되었다는 소식을 알려드리게 되어 매우 기쁩니다. 이번 업데이트는 단순히 이름과 로고의 변화에서 그치지 않습니다. 로드맵, 파트너 통합, 커뮤니티에 다시 초점을 맞추어 알고랜드 생태계에서 가장 인기 있는 지갑을 새롭게 출시합니다.\n\n걱정하지 마세요. Pera Wallet은 같은 팀에서 만들고 관리하며 여러분이 알고 사랑하는 모든 기능은 여느 때와 같이 유지됩니다. 앞으로 더 많은 기능이 추가될 예정입니다.\n\n재출시 및 로드맵에 대해 자세히 알아보려면 Pera Wallet 블로그를 살펴보시기 바랍니다.";
 
 /* (No Comment) */
-"pera-announcement-description-blog" = "Pera Wallet blog";
+"pera-announcement-description-blog" = "Pera Wallet 블로그";
 
 /* (No Comment) */
-"pera-announcement-subtitle" = "Algorand Wallet is\nnow Pera Wallet.";
+"pera-announcement-subtitle" = "알고랜드 지갑이 Pera Wallet으로\n바뀌었습니다.";
 
 /* MARK: PeraAnnouncement */
-"pera-announcement-title" = "It's Official!";
+"pera-announcement-title" = "공식 발표!";
 
 /* (No Comment) */
 "pin-limit-reset-all" = "전체 데이터 초기화";
@@ -1238,7 +1238,10 @@
 "send-algos-minimum-amount-error" = "트랜잭션 진행 시 계정의 잔액이 최소 잔액 수준(0.1알고) 이하로 떨어집니다.";
 
 /* (No Comment) */
-"send-algos-minimum-amount-error-new-account" = "새 계정에 자금을 이체하려고 하십니다. 금액은 0.1알고 이상이어야 합니다.";
+"send-algos-minimum-amount-error-new-account-description" = "This is the first transaction for the selected account. The first transactions require a minimum amount of at least 0.1 Algo. Please enter a valid amount and try again.";
+
+/* (No Comment) */
+"send-algos-minimum-amount-error-new-account-title" = "Minimum Amount Required.";
 
 /* (No Comment) */
 "send-algos-receiver-address-validation" = "받으시는 분 주소가 유효한 알고랜드 주소가 아닙니다. 다시 시도해 주세요.";
@@ -1301,13 +1304,13 @@
 "send-transaction-max-same-account-error" = "나 자신에게 최대 잔액을 전송할 수 없습니다. 다른 금액을 선택하거나 받으시는 분을 변경한 다음 다시 시도해 주세요.";
 
 /* (No Comment) */
-"send-transaction-preview-current-balance" = "Current\nBalance";
+"send-transaction-preview-current-balance" = "현재\n잔액";
 
 /* MARK: SendTransactionPreview */
 "send-transaction-preview-title" = "주문 확인";
 
 /* (No Comment) */
-"send-transaction-show-note-title" = "Show Note";
+"send-transaction-show-note-title" = "참조 보기";
 
 /* MARK: SendTransaction */
 "send-transaction-title" = "%@ 전송";
@@ -1325,7 +1328,7 @@
 "settings-currency" = "통화";
 
 /* (No Comment) */
-"settings-delete-data-title" = "Delete All Data";
+"settings-delete-data-title" = "전체 데이터 삭제";
 
 /* (No Comment) */
 "settings-developer" = "개발자 설정";
@@ -1451,7 +1454,7 @@
 "title-approve" = "승인";
 
 /* (No Comment) */
-"title-asset-id" = "Asset ID";
+"title-asset-id" = "자산 ID";
 
 /* (No Comment) */
 "title-cancel" = "취소";
@@ -1503,9 +1506,6 @@
 
 /* (No Comment) */
 "title-failed-connection" = "연결 실패";
-
-/* (No Comment) */
-"title-start-using-pera-wallet" = "Start Using Pera Wallet";
 
 /* (No Comment) */
 "title-go-to-accounts" = "계정으로 이동";
@@ -1605,6 +1605,9 @@
 
 /* (No Comment) */
 "title-skip" = "건너뛰기";
+
+/* (No Comment) */
+"title-start-using-pera-wallet" = "Start Using Pera Wallet";
 
 /* MARK: Ledger Troubleshooting */
 "title-step-1" = "1단계";
@@ -1883,13 +1886,10 @@
 "verified-asset-double-check" = "확인하신 다음";
 
 /* (No Comment) */
-"verified-asset-information-text" = "알고랜드(Algorand Inc.)가 자산 발행사와 관계를 맺고 있는 특정 자산의 경우, 해당 자산을 “인증 완료”로 표시합니다(파란색 체크 기호로 알아보실 수 있습니다).\n\n이는 의도하지 않은 자산을 실수로 전송하지 않도록 한 번 더 막아주는 역할을 합니다.\n\n즉, 항상 선택하고자 하는 자산의 ID를 정확하게 선택했는지 확인하신 다음 자산을 전송하셔야 합니다.\n\n인증 절차나 앱과 관련하여 일반적인 피드백이 있는 경우, www.algorandwallet.com/support 페이지를 방문해 주시기 바랍니다.";
+"verified-asset-information-text" = "알고랜드(Algorand Inc.)가 자산 발행사와 관계를 맺고 있는 특정 자산의 경우, 해당 자산을 “인증 완료”로 표시합니다(파란색 체크 기호로 알아보실 수 있습니다).\n\n이는 의도하지 않은 자산을 실수로 전송하지 않도록 한 번 더 막아주는 역할을 합니다.\n\n즉, 항상 선택하고자 하는 자산의 ID를 정확하게 선택했는지 확인하신 다음 자산을 전송하셔야 합니다.\n\n인증 절차나 앱과 관련하여 일반적인 피드백이 있는 경우, %@ 페이지를 방문해 주시기 바랍니다.";
 
 /* (No Comment) */
 "verified-asset-information-title" = "자산 인증은 무엇인가요?";
-
-/* (No Comment) */
-"verified-asset-information-visit-site" = "www.algorandwallet.com/support 페이지를 방문하세요";
 
 /* MARK: Verified Asset Information */
 "verified-assets-title" = "인증된 자산";
@@ -2189,8 +2189,10 @@
 "wallet-connect-transaction-warning-high-fee" = "이 트랜잭션 수수료는 일반적인 수수료(0.001알고)보다 높습니다.";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-initial-title" = "Transaction Request FAQ";
 "wallet-connect-transaction-warning-initial-description" = "External applications also called as dApps can make transaction requests that the Pera Wallet does not control. Please ensure you review these transactions carefully before approving and signing them.\n\nAll transactions are irreversible. Never approve transaction from dApp that you don’t know.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-initial-title" = "Transaction Request FAQ";
 
 /* MARK: Wallet Connect Transaction Warning */
 "wallet-connect-transaction-warning-rekey" = "이번 트랜잭션으로 계정의 소유권을 이전합니다. 현재의 복원 비밀문구는 이러한 자산에 대한 접근 권한을 상실하게 됩니다.";

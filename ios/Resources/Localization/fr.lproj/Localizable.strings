@@ -407,7 +407,7 @@
 "csv-download-title" = "Création d'un fichier CSV";
 
 /* (No Comment) */
-"csv-loading-message" = "We are fetching your data. Please wait until your CSV is ready.";
+"csv-loading-message" = "Nous récupérons vos données. Veuillez attendre que votre fichier CSV soit prêt.";
 
 /* (No Comment) */
 "default-error-message" = "Une erreur s'est produite.";
@@ -494,7 +494,7 @@
 "introduction-add-account-text" = "Ajouter un compte";
 
 /* (No Comment) */
-"introduction-title-terms-and-services" = "En créant un compte, vous acceptez les <a href=\"https://perawallet.app/terms-and-services/\">Terms and Conditions</a> et la <a href=\"https://www.perawallet.app/privacy-policy/\">Privacy Policy</a>";
+"introduction-title-terms-and-services" = "En créant un compte, vous acceptez les <a href=\"%@\">Terms and Conditions</a> et la <a href=\"%@\">Privacy Policy</a>";
 
 /* (No Comment) */
 "ledger-account-detail-assets" = "Actifs";
@@ -740,7 +740,7 @@
 "login-title" = "Déverrouiller";
 
 /* (No Comment) */
-"maximum-balance-standard-account-warning-description" = "Parce que vous avez autres actifs dans ce compte, la chaîne de blocs Algorand vous oblige à maintenir un solde minimum de %@ ALGO. \n\n\nEn appuyant sur Continuer, le montant de votre transaction sera automatiquement mis à jour pour refléter ce changement. Vous pourrez prévisualiser ce changement à l'étape suivante.";
+"maximum-balance-standard-account-warning-description" = "Parce que vous avez %@ autres actifs dans ce compte %@ , la chaîne de blocs Algorand vous oblige à maintenir un solde minimum de %@ ALGO. \n\n\nEn appuyant sur Continuer, le montant de votre transaction sera automatiquement mis à jour pour refléter ce changement. Vous pourrez prévisualiser ce changement à l'étape suivante.";
 
 /* (No Comment) */
 "maximum-balance-warning-description" = "L'envoi de votre solde maximum sur ce compte renouvelé vous oblige à maintenir un solde minimum de %@ ALGO. Cela permet de garantir que rien ne change avec votre compte renouvelé. \n\n\nLe montant de votre transaction sera automatiquement mis à jour pour refléter ce changement. Vous pourrez prévisualiser la transaction à l'étape suivante.";
@@ -956,10 +956,10 @@
 "passphrase-verify-wrong-message" = "Les mots sélectionnés sont faux. Veuillez réessayer.";
 
 /* (No Comment) */
-"password-change-new-subtitle" = "Enter your new\n6-digit PIN";
+"password-change-new-subtitle" = "Entrez votre nouveau\ncode PIN à 6 chiffres";
 
 /* (No Comment) */
-"password-change-old-subtitle" = "Enter your old\n6-digit PIN";
+"password-change-old-subtitle" = "Entrez votre ancien\ncode PIN à 6 chiffres";
 
 /* (No Comment) */
 "password-change-subtitle" = "Entrez le code PIN à 6 chiffres";
@@ -977,7 +977,7 @@
 "password-verify-fail-title" = "Mauvais code PIN";
 
 /* (No Comment) */
-"password-verify-new-subtitle" = "Re-enter your new\n6-digit PIN";
+"password-verify-new-subtitle" = "Entrez encore votre nouveau\ncode PIN 6 chiffres";
 
 /* (No Comment) */
 "password-verify-subtitle" = "Entrez à nouveau votre PIN à 6 chiffres";
@@ -986,19 +986,19 @@
 "password-verify-title" = "Vérifier le code PIN";
 
 /* (No Comment) */
-"pera-announcement-action-title" = "Start Using Pera Wallet";
+"pera-announcement-action-title" = "Commencez à utiliser le portefeuille Pera";
 
 /* (No Comment) */
-"pera-announcement-description" = "We are very excited to announce that Algorand Wallet is now called Pera Wallet. This is much more than a new name and logo. We are relaunching the most popular wallet in the Algorand ecosystem with a renewed focus on our roadmap, partner integrations, and community.\n\nDon't worry, Pera Wallet is built and maintained by the same team and all the features you know and love are still here as usual – With many more to come in the upcoming months.\n\nTo read more about the relaunch and our roadmap, head over to the Pera Wallet blog";
+"pera-announcement-description" = "Nous sommes ravis d'annoncer que le Portefeuille Algorand s'appelle désormais Pera Wallet. Ce changement symbolise bien plus qu'un nouveau nom et un nouveau logo. C'est un nouveau départ pour le portefeuille le plus populaire de l'écosystème Algorand, et nous mettons l'accent sur notre feuille de route, les intégrations de partenaires et notre communauté. \n\nNe vous inquiétez pas, Pera Wallet est conçu et maintenu par la même équipe et toutes les fonctionnalités que vous connaissez et aimez seront conservées - et aussi beaucoup d'autres à venir dans les prochains mois. \n\nPour en savoir plus sur ce nouveau lancement et sur notre feuille de route, rendez-vous sur le blog Pera Wallet";
 
 /* (No Comment) */
-"pera-announcement-description-blog" = "Pera Wallet blog";
+"pera-announcement-description-blog" = "Blog Pera Wallet";
 
 /* (No Comment) */
-"pera-announcement-subtitle" = "Algorand Wallet is\nnow Pera Wallet.";
+"pera-announcement-subtitle" = "Le portefeuille Algorand devient Pera Wallet.";
 
 /* MARK: PeraAnnouncement */
-"pera-announcement-title" = "It's Official!";
+"pera-announcement-title" = "C'est officiel!";
 
 /* (No Comment) */
 "pin-limit-reset-all" = "Réinitialiser toutes les données";
@@ -1238,7 +1238,10 @@
 "send-algos-minimum-amount-error" = "Le montant de la transaction se traduit par un solde inférieur au solde minimum du compte de 0,1 ALGO.";
 
 /* (No Comment) */
-"send-algos-minimum-amount-error-new-account" = "Vous essayez d'envoyer de l'argent sur un nouveau compte. Le montant doit être d'au moins 0,1 ALGO.";
+"send-algos-minimum-amount-error-new-account-description" = "This is the first transaction for the selected account. The first transactions require a minimum amount of at least 0.1 Algo. Please enter a valid amount and try again.";
+
+/* (No Comment) */
+"send-algos-minimum-amount-error-new-account-title" = "Minimum Amount Required.";
 
 /* (No Comment) */
 "send-algos-receiver-address-validation" = "Clé non valide, veuillez vous assurer que vous avez la bonne clé.";
@@ -1301,13 +1304,13 @@
 "send-transaction-max-same-account-error" = "Vous ne pouvez pas vous envoyer votre solde maximum. Veuillez sélectionner un montant ou un destinataire différent et réessayer.";
 
 /* (No Comment) */
-"send-transaction-preview-current-balance" = "Current\nBalance";
+"send-transaction-preview-current-balance" = "Solde actuel";
 
 /* MARK: SendTransactionPreview */
 "send-transaction-preview-title" = "Confirmer l'ordre";
 
 /* (No Comment) */
-"send-transaction-show-note-title" = "Show Note";
+"send-transaction-show-note-title" = "Afficher la note";
 
 /* MARK: SendTransaction */
 "send-transaction-title" = "Envoyer %@";
@@ -1325,7 +1328,7 @@
 "settings-currency" = "Devise";
 
 /* (No Comment) */
-"settings-delete-data-title" = "Delete All Data";
+"settings-delete-data-title" = "Supprimer toutes les données";
 
 /* (No Comment) */
 "settings-developer" = "Paramètres Développeurs";
@@ -1451,7 +1454,7 @@
 "title-approve" = "Approuver";
 
 /* (No Comment) */
-"title-asset-id" = "Asset ID";
+"title-asset-id" = "ID de l'actif";
 
 /* (No Comment) */
 "title-cancel" = "Annuler";
@@ -1503,9 +1506,6 @@
 
 /* (No Comment) */
 "title-failed-connection" = "Échec de la connexion";
-
-/* (No Comment) */
-"title-start-using-pera-wallet" = "Start Using Pera Wallet";
 
 /* (No Comment) */
 "title-go-to-accounts" = "Accéder aux Comptes";
@@ -1605,6 +1605,9 @@
 
 /* (No Comment) */
 "title-skip" = "Ignorer";
+
+/* (No Comment) */
+"title-start-using-pera-wallet" = "Start Using Pera Wallet";
 
 /* MARK: Ledger Troubleshooting */
 "title-step-1" = "Étape 1";
@@ -1883,13 +1886,10 @@
 "verified-asset-double-check" = "toujours vérifier deux fois";
 
 /* (No Comment) */
-"verified-asset-information-text" = "Pour certains actifs pour lesquels Algorand Inc. a une relation avec l'émetteur de l'actif, nous marquons ces actifs comme «Vérifiés» (ce qui est indiqué par une coche bleue). \n\nCela aide à éviter les transactions involontaires avec un actif non désiré.\n\nCela dit, vous devez toujours vérifier que l'ID de l'actif est celui que vous aviez l'intention de choisir avant d'effectuer des transactions avec cet actif. \n\nSi vous avez des questions sur le processus de vérification ou des commentaires généraux sur l'application, nous vous encourageons à visiter www.algorandwallet.com/support";
+"verified-asset-information-text" = "Pour certains actifs pour lesquels Algorand Inc. a une relation avec l'émetteur de l'actif, nous marquons ces actifs comme «Vérifiés» (ce qui est indiqué par une coche bleue). \n\nCela aide à éviter les transactions involontaires avec un actif non désiré.\n\nCela dit, vous devez toujours vérifier que l'ID de l'actif est celui que vous aviez l'intention de choisir avant d'effectuer des transactions avec cet actif. \n\nSi vous avez des questions sur le processus de vérification ou des commentaires généraux sur l'application, nous vous encourageons à visiter %@";
 
 /* (No Comment) */
 "verified-asset-information-title" = "Que signifie la vérification des actifs?";
-
-/* (No Comment) */
-"verified-asset-information-visit-site" = "visitez www.algorandwallet.com/support";
 
 /* MARK: Verified Asset Information */
 "verified-assets-title" = "Actifs vérifiés";
@@ -2189,8 +2189,10 @@
 "wallet-connect-transaction-warning-high-fee" = "Ces frais de transaction sont supérieurs aux frais habituels de 0,01 Algos.";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-initial-title" = "Transaction Request FAQ";
 "wallet-connect-transaction-warning-initial-description" = "External applications also called as dApps can make transaction requests that the Pera Wallet does not control. Please ensure you review these transactions carefully before approving and signing them.\n\nAll transactions are irreversible. Never approve transaction from dApp that you don’t know.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-initial-title" = "Transaction Request FAQ";
 
 /* MARK: Wallet Connect Transaction Warning */
 "wallet-connect-transaction-warning-rekey" = "Cette transaction transférera la propriété de ce compte. Votre mot de passe de récupération actuel n'autorisera plus l'accès à ces actifs.";

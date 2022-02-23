@@ -407,7 +407,7 @@
 "csv-download-title" = "CSV Dosyası Oluşturuluyor";
 
 /* (No Comment) */
-"csv-loading-message" = "We are fetching your data. Please wait until your CSV is ready.";
+"csv-loading-message" = "Verilerinizi alıyoruz. Lütfen CSV'niz hazır olana kadar bekleyin.";
 
 /* (No Comment) */
 "default-error-message" = "Bir hata meydana geldi.";
@@ -494,7 +494,7 @@
 "introduction-add-account-text" = "Hesap Ekle";
 
 /* (No Comment) */
-"introduction-title-terms-and-services" = "Hesap oluşturarak Algorand’ın <a href=\"https://perawallet.app/terms-and-services/\">Hüküm ve Koşulları</a> ile <a href=\"https://www.perawallet.app/privacy-policy/\">Gizlilik Politikasını</a> kabul ediyorsunuz.";
+"introduction-title-terms-and-services" = "Hesap oluşturarak Algorand’ın <a href=\"%@\">Hüküm ve Koşulları</a> ile <a href=\"%@\">Gizlilik Politikasını</a> kabul ediyorsunuz.";
 
 /* (No Comment) */
 "ledger-account-detail-assets" = "Varlıklar";
@@ -956,10 +956,10 @@
 "passphrase-verify-wrong-message" = "Seçilen kelimeler yanlış. Lütfen daha sonra tekrar deneyin.";
 
 /* (No Comment) */
-"password-change-new-subtitle" = "Enter your new\n6-digit PIN";
+"password-change-new-subtitle" = "6 haneli yeni \nPIN'inizi girin";
 
 /* (No Comment) */
-"password-change-old-subtitle" = "Enter your old\n6-digit PIN";
+"password-change-old-subtitle" = "6 haneli eski \nPIN'inizi girin";
 
 /* (No Comment) */
 "password-change-subtitle" = "6 haneli PIN'i girin";
@@ -977,7 +977,7 @@
 "password-verify-fail-title" = "Hatalı PIN";
 
 /* (No Comment) */
-"password-verify-new-subtitle" = "Re-enter your new\n6-digit PIN";
+"password-verify-new-subtitle" = "6 haneli yeni PIN'inizi\nyeniden girin";
 
 /* (No Comment) */
 "password-verify-subtitle" = "6 haneli şifrenizi yeniden girin";
@@ -986,19 +986,19 @@
 "password-verify-title" = "PIN'i Doğrula";
 
 /* (No Comment) */
-"pera-announcement-action-title" = "Start Using Pera Wallet";
+"pera-announcement-action-title" = "Pera Wallet'ı Kullanmaya Başlayın";
 
 /* (No Comment) */
-"pera-announcement-description" = "We are very excited to announce that Algorand Wallet is now called Pera Wallet. This is much more than a new name and logo. We are relaunching the most popular wallet in the Algorand ecosystem with a renewed focus on our roadmap, partner integrations, and community.\n\nDon't worry, Pera Wallet is built and maintained by the same team and all the features you know and love are still here as usual – With many more to come in the upcoming months.\n\nTo read more about the relaunch and our roadmap, head over to the Pera Wallet blog";
+"pera-announcement-description" = "Algorand Wallet'ın artık Pera Wallet olarak adlandıracağını duyurmaktan mutluyuz. Bu değişiklik sadece yeni bir isim ve logodan ibaret değil. Yol haritamızı, ortaklık entegrasyonlarımızı ve topluluğumuzu yeniden merkeze alıyor, Algorand ekosistemindeki en popüler cüzdanı yeniden sizinle buluşturuyoruz.\n\nEndişelenmenizi gerektirecek bir durum yok. Pera Wallet aynı ekip tarafından geliştirilmeye devam ediyor, bildiğiniz ve bayıldığınız tüm özellikler hâlâ elinizin altında. Önümüzdeki aylarda birçok yeni özelliği sizinle buluşturmayı planlıyoruz.\n\nYeniden lansman ve yol haritamız hakkında daha fazla bilgi almak için Pera Wallet blogunu ziyaret edin";
 
 /* (No Comment) */
-"pera-announcement-description-blog" = "Pera Wallet blog";
+"pera-announcement-description-blog" = "Pera Wallet blogu";
 
 /* (No Comment) */
-"pera-announcement-subtitle" = "Algorand Wallet is\nnow Pera Wallet.";
+"pera-announcement-subtitle" = "Algorand Wallet\nartık Pera Wallet.";
 
 /* MARK: PeraAnnouncement */
-"pera-announcement-title" = "It's Official!";
+"pera-announcement-title" = "Resmen değişti!";
 
 /* (No Comment) */
 "pin-limit-reset-all" = "Tüm Verileri Sıfırla";
@@ -1238,7 +1238,10 @@
 "send-algos-minimum-amount-error" = "İşlem miktarı, 0,1 Algo tutarındaki minimum hesap bakiyesinden düşük bir bakiye ile sonuçlanıyor.";
 
 /* (No Comment) */
-"send-algos-minimum-amount-error-new-account" = "Yeni bir hesaba para göndermeye çalışıyorsunuz. Miktarın en az 0,1 Algo olması gerekir.";
+"send-algos-minimum-amount-error-new-account-description" = "This is the first transaction for the selected account. The first transactions require a minimum amount of at least 0.1 Algo. Please enter a valid amount and try again.";
+
+/* (No Comment) */
+"send-algos-minimum-amount-error-new-account-title" = "Minimum Amount Required.";
 
 /* (No Comment) */
 "send-algos-receiver-address-validation" = "Alıcı adresi, geçerli bir Algorand adresi değil. Lütfen tekrar deneyin.";
@@ -1301,13 +1304,13 @@
 "send-transaction-max-same-account-error" = "Bakiyenizin tümünü kendinize gönderemezsiniz. Lütfen farklı bir miktar veya alıcı seçerek tekrar deneyin.";
 
 /* (No Comment) */
-"send-transaction-preview-current-balance" = "Current\nBalance";
+"send-transaction-preview-current-balance" = "Mevcut\nBakiye";
 
 /* MARK: SendTransactionPreview */
 "send-transaction-preview-title" = "Emri Onayla";
 
 /* (No Comment) */
-"send-transaction-show-note-title" = "Show Note";
+"send-transaction-show-note-title" = "Notu Göster";
 
 /* MARK: SendTransaction */
 "send-transaction-title" = "%@ Gönder";
@@ -1325,7 +1328,7 @@
 "settings-currency" = "Para Birimi";
 
 /* (No Comment) */
-"settings-delete-data-title" = "Delete All Data";
+"settings-delete-data-title" = "Tüm Verileri Sil";
 
 /* (No Comment) */
 "settings-developer" = "Geliştirici Ayarları";
@@ -1415,7 +1418,7 @@
 "single-transaction-request-network-fee-title" = "Ağ Ücreti";
 
 /* (No Comment) */
-"single-transaction-request-opt-in-subtitle" = "OnCompletion";
+"single-transaction-request-opt-in-subtitle" = "Tamamlandığında";
 
 /* (No Comment) */
 "single-transaction-request-opt-in-title" = "Katılım";
@@ -1451,7 +1454,7 @@
 "title-approve" = "Onayla";
 
 /* (No Comment) */
-"title-asset-id" = "Asset ID";
+"title-asset-id" = "Varlık Kimliği";
 
 /* (No Comment) */
 "title-cancel" = "İptal";
@@ -1503,9 +1506,6 @@
 
 /* (No Comment) */
 "title-failed-connection" = "Bağlantı Başarısız";
-
-/* (No Comment) */
-"title-start-using-pera-wallet" = "Start Using Pera Wallet";
 
 /* (No Comment) */
 "title-go-to-accounts" = "Hesaplara Git";
@@ -1605,6 +1605,9 @@
 
 /* (No Comment) */
 "title-skip" = "Atla";
+
+/* (No Comment) */
+"title-start-using-pera-wallet" = "Start Using Pera Wallet";
 
 /* MARK: Ledger Troubleshooting */
 "title-step-1" = "1. Adım";
@@ -1883,13 +1886,10 @@
 "verified-asset-double-check" = "her zaman tekrar kontrol edin";
 
 /* (No Comment) */
-"verified-asset-information-text" = "Algorand Inc.'nin varlığın düzenleyicisi ile ilişkisi bulunması durumunda, bazı varlıkları “Doğrulandı” (mavi onay sembolü ile gösterilir) olarak işaretliyoruz.\n\nBu, işlem yapılması istenmeyen varlıkların yanlışlıkla işlem görmemesi için ikinci bir savunma mekanizması görevi görmesine yardımcı oluyor.\n\nBununla birlikte, söz konusu varlıkla işlem yapmadan önce varlık kimliğinin seçmek istediğiniz varlığa ait olduğunu her zaman tekrar kontrol etmeniz gerekir.\n\nDoğrulama süreci ile ilgili herhangi bir sorunuz veya uygulama ile ilgili genel bir geri bildiriminiz varsa, www.algorandwallet.com/support adresini ziyaret etmenizi öneririz.";
+"verified-asset-information-text" = "Algorand Inc.'nin varlığın düzenleyicisi ile ilişkisi bulunması durumunda, bazı varlıkları “Doğrulandı” (mavi onay sembolü ile gösterilir) olarak işaretliyoruz.\n\nBu, işlem yapılması istenmeyen varlıkların yanlışlıkla işlem görmemesi için ikinci bir savunma mekanizması görevi görmesine yardımcı oluyor.\n\nBununla birlikte, söz konusu varlıkla işlem yapmadan önce varlık kimliğinin seçmek istediğiniz varlığa ait olduğunu her zaman tekrar kontrol etmeniz gerekir.\n\nDoğrulama süreci ile ilgili herhangi bir sorunuz veya uygulama ile ilgili genel bir geri bildiriminiz varsa, %@ adresini ziyaret etmenizi öneririz.";
 
 /* (No Comment) */
 "verified-asset-information-title" = "Varlık doğrulama nedir?";
-
-/* (No Comment) */
-"verified-asset-information-visit-site" = "www.algorandwallet.com/support adresini ziyaret edin";
 
 /* MARK: Verified Asset Information */
 "verified-assets-title" = "Doğrulanan Varlıklar";
@@ -2189,8 +2189,10 @@
 "wallet-connect-transaction-warning-high-fee" = "Bu işlem ücreti, normalde 0,001 Algo olan ücretten daha yüksek.";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-initial-title" = "Transaction Request FAQ";
 "wallet-connect-transaction-warning-initial-description" = "External applications also called as dApps can make transaction requests that the Pera Wallet does not control. Please ensure you review these transactions carefully before approving and signing them.\n\nAll transactions are irreversible. Never approve transaction from dApp that you don’t know.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-initial-title" = "Transaction Request FAQ";
 
 /* MARK: Wallet Connect Transaction Warning */
 "wallet-connect-transaction-warning-rekey" = "Bu işlem, bu hesabın sahipliğini devredecek. Mevcut kurtarma parolanızla bu varlıklara erişim sağlamanıza artık izin verilmeyecek.";

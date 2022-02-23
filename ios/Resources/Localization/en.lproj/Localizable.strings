@@ -65,7 +65,7 @@
 // MARK: Introduction
 
 "introduction-add-account-text" = "Add New Account";
-"introduction-title-terms-and-services" = "By creating an account, you agree to Pera Wallet's<br><a href=\"https://perawallet.app/terms-and-services/\">Terms and Conditions</a> and <a href=\"https://www.perawallet.app/privacy-policy/\">Privacy Policy</a>";
+"introduction-title-terms-and-services" = "By creating an account, you agree to Pera Wallet's<br><a href=\"%@\">Terms and Conditions</a> and <a href=\"%@\">Privacy Policy</a>";
 
 // MARK: Password Setting
 "password-set-subtitle" = "Choose your\n6-digit PIN";
@@ -230,7 +230,8 @@
 "send-algos-alert-incomplete-title" = "Incomplete Transaction";
 "send-algos-alert-message-address" = "Please enter a destination address.";
 "send-algos-alert-message" = "Please fill the fields.";
-"send-algos-minimum-amount-error-new-account" = "You're trying to send money to a new account. The amount must be at least 0.1 Algo.";
+"send-algos-minimum-amount-error-new-account-title" = "Minimum Amount Required.";
+"send-algos-minimum-amount-error-new-account-description" = "This is the first transaction for the selected account. The first transactions require a minimum amount of at least 0.1 Algo. Please enter a valid amount and try again.";
 "send-algos-minimum-amount-error" = "Transaction amount results in a balance below the minimum account balance of 0.1 Algo.";
 "send-algos-minimum-amount-custom-error" = "The transaction cannot be completed because the amount will put your account below minimum required balance of %@ Algo.";
 "send-algos-amount-error" = "Transaction amount cannot be more than your available algo";
@@ -416,7 +417,7 @@
 "rewards-title" = "Rewards";
 "rewards-show-title" = "Show Rewards";
 "rewards-rate" = "Rewards Rate";
-"rewards-detail-subtitle" = "You earn rewards just by owning Algos! Here's a summary of your rewards activity since your last transaction. These rewards are always included in your balance.";
+"rewards-detail-subtitle" = "You earn rewards just by owning Algo! Here's a summary of your earned rewards since your last transaction. These rewards are always included in your balance.";
 "total-rewards-faq-title" = "For more information on Algorand Rewards, visit our FAQ";
 "total-rewards-faq" = "FAQ";
 "reward-list-title" = "Reward";
@@ -433,9 +434,8 @@
 // MARK: Verified Asset Information
 "verified-assets-title" = "Verified Assets";
 "verified-asset-information-title" = "What does Asset Verification mean?";
-"verified-asset-information-text" = "Assets that go through our verification process are known projects that have their website and public information verified against this specific ASA. Verification status is not an endorsement of the asset.\n\nPera Wallet does not have any relationship with verified ASA owners. This badge is for informational purposes only.\n\nThat being said, you should always double check that the asset’s ID is the one that you intended to choose before transacting with that asset.\n\nIf you have questions about the verification process or general feedback about the app, we encourage you to visit;\n\nwww.perawallet.app/support";
+"verified-asset-information-text" = "Assets that go through our verification process are known projects that have their website and public information verified against this specific ASA. Verification status is not an endorsement of the asset.\n\nPera Wallet does not have any relationship with verified ASA owners. This badge is for informational purposes only.\n\nThat being said, you should always double check that the asset’s ID is the one that you intended to choose before transacting with that asset.\n\nIf you have questions about the verification process or general feedback about the app, we encourage you to visit;\n\n%@";
 "verified-asset-double-check" = "always double check";
-"verified-asset-information-visit-site" = "www.perawallet.app/support";
 
 // MARK: Ledger Tutorial
 "ledger-pair-title" = "Create Ledger Account";

@@ -407,7 +407,7 @@
 "csv-download-title" = "CSVファイルの作成";
 
 /* (No Comment) */
-"csv-loading-message" = "We are fetching your data. Please wait until your CSV is ready.";
+"csv-loading-message" = "データを取得しています。CSVの準備が整うまでお待ちください。";
 
 /* (No Comment) */
 "default-error-message" = "エラーが発生しました。";
@@ -494,7 +494,7 @@
 "introduction-add-account-text" = "アカウントの追加";
 
 /* (No Comment) */
-"introduction-title-terms-and-services" = "アカウントを作成することで、お客様はAlgorandの <a href=\"https://perawallet.app/terms-and-services/\">Terms and Conditions</a> および <a href=\"https://www.perawallet.app/privacy-policy/\">Privacy Policy</a>に同意したとみなされます。";
+"introduction-title-terms-and-services" = "アカウントを作成することで、お客様はAlgorandの <a href=\"%@\">Terms and Conditions</a> および <a href=\"%@\">Privacy Policy</a>に同意したとみなされます。";
 
 /* (No Comment) */
 "ledger-account-detail-assets" = "資産";
@@ -740,7 +740,7 @@
 "login-title" = "ロック解除";
 
 /* (No Comment) */
-"maximum-balance-standard-account-warning-description" = "お客様のアカウントに他の資産が存在するため、Algorandブロックチェーンでは最小残高%@ Algosを維持する必要があります。\n\n\n続行をクリックすることで、お客様の取引額が自動的に更新され、変更が反映されます。次のステップでこの変更をプレビューできます。";
+"maximum-balance-standard-account-warning-description" = "お客様のアカウント%@に他の資産%@が存在するため、Algorandブロックチェーンでは最小残高%@ Algosを維持する必要があります。\n\n\n続行をクリックすることで、お客様の取引額が自動的に更新され、変更が反映されます。次のステップでこの変更をプレビューできます。";
 
 /* (No Comment) */
 "maximum-balance-warning-description" = "この再キー化アカウントで最大残高を送信するには、%@ Algosの最低残高を維持する必要があります。これは、再キー化されたアカウントに何も変化がないことを確認するためです。\n\n\nこの変更を反映して、お客様の取引額が自動的に更新されます。次のステップでトランザクションをプレビューできます。";
@@ -956,10 +956,10 @@
 "passphrase-verify-wrong-message" = "選択された単語が間違っています。もう一度お試しください。";
 
 /* (No Comment) */
-"password-change-new-subtitle" = "Enter your new\n6-digit PIN";
+"password-change-new-subtitle" = "新しい6桁のPINを\n入力してください";
 
 /* (No Comment) */
-"password-change-old-subtitle" = "Enter your old\n6-digit PIN";
+"password-change-old-subtitle" = "古い6桁のPINを\n入力してください";
 
 /* (No Comment) */
 "password-change-subtitle" = "6桁のPINを入力してください";
@@ -977,7 +977,7 @@
 "password-verify-fail-title" = "間違ったPIN";
 
 /* (No Comment) */
-"password-verify-new-subtitle" = "Re-enter your new\n6-digit PIN";
+"password-verify-new-subtitle" = "6桁のPINを\n再入力してください";
 
 /* (No Comment) */
 "password-verify-subtitle" = "6桁のPINを再入力してください";
@@ -986,19 +986,19 @@
 "password-verify-title" = "PINの確認";
 
 /* (No Comment) */
-"pera-announcement-action-title" = "Start Using Pera Wallet";
+"pera-announcement-action-title" = "Pera Walletの使用を開始する";
 
 /* (No Comment) */
-"pera-announcement-description" = "We are very excited to announce that Algorand Wallet is now called Pera Wallet. This is much more than a new name and logo. We are relaunching the most popular wallet in the Algorand ecosystem with a renewed focus on our roadmap, partner integrations, and community.\n\nDon't worry, Pera Wallet is built and maintained by the same team and all the features you know and love are still here as usual – With many more to come in the upcoming months.\n\nTo read more about the relaunch and our roadmap, head over to the Pera Wallet blog";
+"pera-announcement-description" = "このたび、Algorand WalletがPera Walletという名称になりました。その変化は、新名称とロゴに留まりません。Algorandのエコシステムで最も人気の高いウォレットを、ロードマップ、パートナーとの統合、コミュニティに焦点を当て、新たに立ち上げました。\n\nご心配はいりません。Pera Walletは同じチームによって構築、維持されており、お客様がご存知のすべての機能はこれまで通りご利用いただけます。\n\nリニューアルとロードマップについての詳細は、Pera Wallet ブログをご覧ください。";
 
 /* (No Comment) */
-"pera-announcement-description-blog" = "Pera Wallet blog";
+"pera-announcement-description-blog" = "Pera Walletブログ";
 
 /* (No Comment) */
-"pera-announcement-subtitle" = "Algorand Wallet is\nnow Pera Wallet.";
+"pera-announcement-subtitle" = "Algorand Walletは\nPera Walletになりました。";
 
 /* MARK: PeraAnnouncement */
-"pera-announcement-title" = "It's Official!";
+"pera-announcement-title" = "公式発表です！";
 
 /* (No Comment) */
 "pin-limit-reset-all" = "全データのリセット";
@@ -1238,7 +1238,10 @@
 "send-algos-minimum-amount-error" = "取引金額は、最小口座残高の0.1 algosを下回る結果になります。";
 
 /* (No Comment) */
-"send-algos-minimum-amount-error-new-account" = "新しいアカウントに送金しようとしています。金額は0.1 algos以上である必要があります。";
+"send-algos-minimum-amount-error-new-account-description" = "This is the first transaction for the selected account. The first transactions require a minimum amount of at least 0.1 Algo. Please enter a valid amount and try again.";
+
+/* (No Comment) */
+"send-algos-minimum-amount-error-new-account-title" = "Minimum Amount Required.";
 
 /* (No Comment) */
 "send-algos-receiver-address-validation" = "キーが無効です。正しいキーをお持ちかどうかご確認ください。";
@@ -1301,13 +1304,13 @@
 "send-transaction-max-same-account-error" = "最大残高を自分自身に送ることはできません。別の金額または受取人を選択して、やり直してください。";
 
 /* (No Comment) */
-"send-transaction-preview-current-balance" = "Current\nBalance";
+"send-transaction-preview-current-balance" = "現在の残高";
 
 /* MARK: SendTransactionPreview */
 "send-transaction-preview-title" = "注文の確認";
 
 /* (No Comment) */
-"send-transaction-show-note-title" = "Show Note";
+"send-transaction-show-note-title" = "メモを表示";
 
 /* MARK: SendTransaction */
 "send-transaction-title" = "%@を送信する";
@@ -1325,7 +1328,7 @@
 "settings-currency" = "通貨";
 
 /* (No Comment) */
-"settings-delete-data-title" = "Delete All Data";
+"settings-delete-data-title" = "全データの削除";
 
 /* (No Comment) */
 "settings-developer" = "開発者設定";
@@ -1415,7 +1418,7 @@
 "single-transaction-request-network-fee-title" = "ネットワーク手数料";
 
 /* (No Comment) */
-"single-transaction-request-opt-in-subtitle" = "OnCompletion";
+"single-transaction-request-opt-in-subtitle" = "完了時に";
 
 /* (No Comment) */
 "single-transaction-request-opt-in-title" = "オプトイン";
@@ -1451,7 +1454,7 @@
 "title-approve" = "承認する";
 
 /* (No Comment) */
-"title-asset-id" = "Asset ID";
+"title-asset-id" = "資産ID";
 
 /* (No Comment) */
 "title-cancel" = "キャンセル";
@@ -1503,9 +1506,6 @@
 
 /* (No Comment) */
 "title-failed-connection" = "接続に失敗しました";
-
-/* (No Comment) */
-"title-start-using-pera-wallet" = "Start Using Pera Wallet";
 
 /* (No Comment) */
 "title-go-to-accounts" = "アカウントに移動";
@@ -1605,6 +1605,9 @@
 
 /* (No Comment) */
 "title-skip" = "スキップ";
+
+/* (No Comment) */
+"title-start-using-pera-wallet" = "Start Using Pera Wallet";
 
 /* MARK: Ledger Troubleshooting */
 "title-step-1" = "ステップ1";
@@ -1883,13 +1886,10 @@
 "verified-asset-double-check" = "常に再確認してください";
 
 /* (No Comment) */
-"verified-asset-information-text" = "Algorand Inc.が資産の発行者と関係を持っている特定の資産については、それらの資産を「検証済み」としてマークしています（青いチェックマーク記号で示されます）。 \n\nこれは、誤って意図しない資産と取引しないための二次的な防御策として機能します。 \n\nただし、その資産を取引する前に、資産のIDが意図したものかどうかを常に再確認する必要があります。 \n\n検証プロセスに関するご質問や、アプリについての一般的なご意見については、www.algorandwallet.com/support をご覧ください。";
+"verified-asset-information-text" = "Algorand Inc.が資産の発行者と関係を持っている特定の資産については、それらの資産を「検証済み」としてマークしています（青いチェックマーク記号で示されます）。 \n\nこれは、誤って意図しない資産と取引しないための二次的な防御策として機能します。 \n\nただし、その資産を取引する前に、資産のIDが意図したものかどうかを常に再確認する必要があります。 \n\n検証プロセスに関するご質問や、アプリについての一般的なご意見については、%@ をご覧ください。";
 
 /* (No Comment) */
 "verified-asset-information-title" = "資産の検証とはどういう意味ですか？";
-
-/* (No Comment) */
-"verified-asset-information-visit-site" = "www.algorandwallet.com/support にアクセス";
 
 /* MARK: Verified Asset Information */
 "verified-assets-title" = "検証済み資産";
@@ -2189,8 +2189,10 @@
 "wallet-connect-transaction-warning-high-fee" = "このトランザクション手数料は、通常の手数料（0.01 Algos）よりも高くなっています。";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-initial-title" = "Transaction Request FAQ";
 "wallet-connect-transaction-warning-initial-description" = "External applications also called as dApps can make transaction requests that the Pera Wallet does not control. Please ensure you review these transactions carefully before approving and signing them.\n\nAll transactions are irreversible. Never approve transaction from dApp that you don’t know.";
+
+/* (No Comment) */
+"wallet-connect-transaction-warning-initial-title" = "Transaction Request FAQ";
 
 /* MARK: Wallet Connect Transaction Warning */
 "wallet-connect-transaction-warning-rekey" = "このトランザクションにより、このアカウントの所有権が移転します。あなたの現在の復旧用パスフレーズでは、これらの資産へのアクセスができなくなります。";

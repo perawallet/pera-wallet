@@ -12,30 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AppLaunchController.swift
+//   AppAuthChecker.swift
 
 import Foundation
-import MacaroonApplication
-import MacaroonUIKit
-import UIKit
+import SwiftDate
 
-protocol AppLaunchController: AnyObject {
-    func prepareForLaunch()
-    func launch(
-        deeplinkWithSource src: DeeplinkSource?
-    )
+protocol AppAuthChecker {
+    var status: AppAuthStatus { get }
+    
+    func launch()
+    func authorize()
     func becomeActive()
     func resignActive()
-    func enterBackground()
+}
 
-    func launchOnboarding()
-    func launchMain()
-    func launchMainAfterAuthorization(
-        presented viewController: UIViewController
-    )
-    
-    func receive(
-        deeplinkWithSource src: DeeplinkSource
-    )
+extension AppAuthChecker {
+    var inactiveSessionExpirationDuration: DateComponents {
+        return 60.seconds
+    }
+}
+
+enum AppAuthStatus {
+    case requiresAuthentication /// No authenticated user
+    case requiresAuthorization /// Passcode
+    case ready
 }

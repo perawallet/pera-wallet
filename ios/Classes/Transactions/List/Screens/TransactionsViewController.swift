@@ -42,6 +42,8 @@ class TransactionsViewController: BaseViewController {
         sharedDataController
     )
 
+    private var rewardDetailViewController: RewardDetailViewController?
+
     private lazy var transactionsDataSource = TransactionsDataSource(listView)
 
     private(set) lazy var listView: UICollectionView = {
@@ -75,12 +77,22 @@ class TransactionsViewController: BaseViewController {
             guard let self = self else { return }
 
             switch event {
-            case .didUpdate(let snapshot):
+            case .didUpdateSnapshot(let snapshot):
                 if let accountHandle = self.sharedDataController.accountCollection[self.accountHandle.value.address] {
                     self.accountHandle = accountHandle
                 }
 
-                self.transactionsDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+                self.transactionsDataSource.apply(
+                    snapshot,
+                    animatingDifferences: self.isViewAppeared
+                )
+            case .didUpdateReward(let reward):
+                self.rewardDetailViewController?.bindData(
+                    RewardDetailViewModel(
+                        account: self.accountHandle.value,
+                        calculatedRewards: reward
+                    )
+                )
             }
         }
 
@@ -222,17 +234,30 @@ extension TransactionsViewController {
 
 extension TransactionsViewController: AlgosDetailInfoViewCellDelegate {
     func algosDetailInfoViewCellDidTapInfoButton(_ algosDetailInfoViewCell: AlgosDetailInfoViewCell) {
-        bottomSheetTransition.perform(
-            .rewardDetail(account: accountHandle.value),
-            by: .presentWithoutNavigationController
-        )
+        let rewardDetailViewController = bottomSheetTransition.perform(
+            .rewardDetail(
+                account: accountHandle.value,
+                calculatedRewards: dataController.reward
+            ),
+            by: .presentWithoutNavigationController,
+            completion: {
+                [weak self] in
+                self?.rewardDetailViewController = nil
+            }
+        ) as? RewardDetailViewController
+
+        self.rewardDetailViewController = rewardDetailViewController
     }
 }
 
 extension TransactionsViewController: AssetDetailInfoViewCellDelegate {
-    func assetDetailInfoViewCellDidTapAssetID(_ assetDetailInfoViewCell: AssetDetailInfoViewCell, assetID: String?) {
+    func assetDetailInfoViewCellDidTapAssetID(_ assetDetailInfoViewCell: AssetDetailInfoViewCell) {
+        guard let assetID = draft.compoundAsset?.id else {
+            return
+        }
+
         bannerController?.presentInfoBanner("asset-id-copied-title".localized)
-        UIPasteboard.general.string = assetID
+        UIPasteboard.general.string = "\(assetID)"
     }
 }
 

@@ -27,6 +27,7 @@ enum DeeplinkSource {
     case remoteNotification(UserInfo, waitForUserConfirmation: Bool)
     case url(URL)
     case walletConnectSessionRequest(URL)
+    case walletConnectRequest(WalletConnectRequestDraft)
 }
 
 extension DeeplinkSource {
@@ -43,4 +44,13 @@ extension DeeplinkSource {
 
         return try? AlgorandNotification.decoded(apsData)
     }
+}
+
+/// <todo>
+/// I think we should move it elsewhere, but let's think about it later when refactoring Wallet
+/// Connect infrastructure.
+struct WalletConnectRequestDraft {
+    let request: WalletConnectRequest
+    let transactions: [WCTransaction]
+    let option: WCTransactionOption?
 }

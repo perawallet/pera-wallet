@@ -83,7 +83,8 @@ class AppDelegate:
     private lazy var router =
         Router(rootViewController: rootViewController, appConfiguration: appConfiguration)
     
-    private lazy var rootViewController = RootViewController(appConfiguration: appConfiguration)
+    private lazy var rootViewController =
+        RootViewController(appConfiguration: appConfiguration, launchController: appLaunchController)
 
     private lazy var pushNotificationController =
         PushNotificationController(session: session, api: api, bannerController: bannerController)
@@ -136,6 +137,7 @@ class AppDelegate:
     func applicationDidEnterBackground(
         _ application: UIApplication
     ) {
+        appLaunchController.enterBackground()
         showBlurOnWindow()
     }
 
@@ -402,6 +404,7 @@ extension AppDelegate {
             session: session,
             api: api,
             sharedDataController: sharedDataController,
+            authChecker: ALGAppAuthChecker(session: session),
             uiHandler: self
         )
     }
