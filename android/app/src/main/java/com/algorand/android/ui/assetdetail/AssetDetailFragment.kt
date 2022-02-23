@@ -37,7 +37,6 @@ import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.models.ui.AssetDetailPreview
 import com.algorand.android.models.ui.DateFilterPreview
 import com.algorand.android.models.ui.TransactionLoadStatePreview
-import com.algorand.android.ui.accountdetail.AccountDetailFragmentDirections
 import com.algorand.android.ui.accountdetail.history.adapter.AccountHistoryAdapter
 import com.algorand.android.ui.accountdetail.history.adapter.PendingTransactionAdapter
 import com.algorand.android.ui.datepicker.DateFilterListBottomSheet
@@ -88,7 +87,7 @@ class AssetDetailFragment : DaggerBaseFragment(R.layout.fragment_asset_detail) {
     private val fabListener = object : AlgorandFloatingActionButton.Listener {
         override fun onReceiveClick() {
             nav(
-                AccountDetailFragmentDirections.actionAccountDetailFragmentToShowQrBottomSheet(
+                AssetDetailFragmentDirections.actionGlobalShowQrBottomSheet(
                     title = getString(R.string.qr_code),
                     qrText = assetDetailViewModel.getPublicKey()
                 )
