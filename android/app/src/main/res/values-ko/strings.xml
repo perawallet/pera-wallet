@@ -120,7 +120,6 @@
     <string name="scanned_qr_is_not_valid">잘못된 QR 코드를 스캔하셨습니다.</string>
     <string name="connect">연결</string>
     <string name="error_default_title">오류!</string>
-    <string name="pair_ledger_device">Ledger 기기 페어링</string>
     <string name="make_sure_your_ledger">Ledger 기기 전원을 켜고 Bluetooth를 활성화했는지 확인하세요.</string>
     <string name="open_the_algorand_app">Ledger에서 알고랜드 앱을 엽니다. </string>
     <string name="make_sure_bluetooth">내 스마트폰에서 Bluetooth가 켜졌는지 확인합니다.</string>
@@ -128,11 +127,6 @@
     <string name="verified_with_icon">인증 완료 <annotation type="verified-icon"> </annotation></string>
     <string name="all">전체</string>
     <string name="verified_assets">인증된 자산</string>
-    <string name="what_does_asset">자산 인증은 무엇인가요?</string>
-    <string name="verified_assets_first_paragraph">인증 프로세스를 거치는 자산은 본 특정 ASA에 대해 검증된 웹사이트 및 공개 정보가 있다고 명시된 프로젝트입니다. 인증 상태는 자산의 보증을 의미하지 않습니다. Pera Wallet은 인증된 ASA의 소유자와 아무런 관계가 없습니다. 이 배지(<annotation type="verified-icon"> </annotation>)는 정보 제공용으로만 참조하시기 바랍니다.</string>
-    <string name="verified_assets_second_paragraph">이는 의도하지 않은 자산을 실수로 전송하지 않도록 한 번 더 막아주는 역할을 합니다.</string>
-    <string name="verified_assets_third_paragraph">즉, 항상 선택하고자 하는 자산의 ID를 정확하게 선택했는지 <annotation type="color">확인하신 다음</annotation> 자산을 전송하셔야 합니다.</string>
-    <string name="verified_assets_fourth_paragraph">인증 절차나 앱과 관련하여 일반적인 피드백이 있는 경우, <annotation type="color">알고랜드로 문의해 주세요</annotation>.</string>
     <string name="advanced_troubleshooting">고급 문제 해결</string>
     <string name="connecting_to_ledger">Ledger에 연결 중…</string>
     <string name="ledger_approval">Ledger 승인</string>
@@ -168,7 +162,6 @@
     <string name="go_to_home">홈으로 이동</string>
     <string name="accept">동의</string>
     <string name="add_new_asset">새 자산 추가</string>
-    <string name="add_new_account">새 계정 추가</string>
     <string name="try_different">다른 자산명이나 자산 ID를 사용해보세요</string>
     <string name="copy_address">주소 복사</string>
     <string name="account_address">계정 주소</string>
@@ -216,7 +209,7 @@
     <string name="your_account_s_public">계정의 공개 키, 잔액, 설정은 그대로 유지됩니다.</string>
     <string name="add_account">계정 추가</string>
     <string name="confirm_rekeying">키 재지정 확인</string>
-    <string name="total_rekeying_fee">총 %1$s의 키 재지정 수수료</string>
+    <string name="total_rekeying_fee">총 %1$s 알고의 키 재지정 수수료</string>
     <string name="plus_more_assets">+%1$d 추가 자산</string>
     <string name="finalize_rekeying">키 재지정 확정</string>
     <string name="new_ledger">새 Ledger</string>
@@ -227,7 +220,7 @@
     <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>에서 <annotation replacement="asset">assetPlaceholder</annotation> 자산을 전송하려 했으나, 내 계정에서 지원되지 않습니다. 여기를 눌러 계정에 이 자산을 추가하세요.</string>
     <string name="transaction_send_successful">내 <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> 트랜잭션이(보내는 주소: <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>, 받으시는 주소: <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>) 완료되었습니다.</string>
     <string name="transaction_send_failed">내 <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> 트랜잭션이(보내는 주소: <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>, 받으시는 주소: <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>) 실패했습니다.</string>
-    <string name="transaction_received"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> 자산이 <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> 주소로 전송되었습니다(보내는 주소: <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>).</string>
+    <string name="notification_algo_received_message"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> 자산이 <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> 주소로 전송되었습니다(보내는 주소: <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>).</string>
     <string name="too_many_pin_attempts">PIN 입력을 너무 많이 시도하셨습니다</string>
     <string name="reset_all_data">전체 데이터 초기화</string>
     <string name="this_ledger_device">이 Ledger 기기는 다음 계정의 트랜잭션에 서명 가능합니다. Pera Wallet에 추가할 계정을 선택하세요.</string>
@@ -275,9 +268,12 @@
         <item quantity="other">자산 +%1$d</item>
     </plurals>
     <string name="continue_text">계속 진행</string>
+    <string name="rekeyed_maximum_error_message">키 재지정(rekey) 계정에서 최대 잔액을 보내려면 최소 잔액(<annotation replacement="min_balance">min_balance_placeholder</annotation> 알고)을 유지하셔야 합니다. 키를 재지정한 계정에 변동 사항이 없도록 하기 위한 조치이니 양해 부탁드립니다. \n \n 본 변동 사항을 반영하여 트랜잭션 금액을 자동으로 업데이트합니다. 다음 단계에서 트랜잭션 내용을 미리 볼 수 있습니다.</string>
     <string name="we_notice_that_this">첫 번째 트랜잭션을 진행하고 계십니다. 거래를 마무리하기 전에 몇 가지 팁을 고려해보세요.</string>
     <string name="when_sending_to_an_address">해당 주소로 처음 송금하는 경우, 큰 금액을 보내기 전에 소규모로 테스트 트랜잭션을 보내보시기를 권장합니다.</string>
     <string name="exchanges_change_their">거래소는 입금 주소를 자주 변경하며, 저장된 거래소 주소가 더 이상 사용되지 않을 수 있습니다. <annotation custom="highlight_color">올바른 주소로 송금하고 있는지 확인해주세요.</annotation></string>
+    <string name="for_more_information_on">트랜잭션을 자세히 알아보려면 <annotation font="dmsans_medium"><annotation custom="tap_here_color">여기를 눌러주세요</annotation></annotation></string>
+    <string name="i_understand">알겠습니다</string>
     <string name="before_you_finalize">마무리하기 전에 몇 가지 팁을 고려해보세요.</string>
     <string name="the_transaction_cannot_be">트랜잭션 진행 시 계정의 잔액이 최소 잔액 수준(<annotation replacement="min_balance">min_balance_placeholder</annotation> 알고) 이하로 떨어지므로, 본 트랜잭션을 완료할 수 없습니다.</string>
     <string name="recovery_passphrase">복구 비밀문구</string>
@@ -291,6 +287,7 @@
     <string name="recover">복원</string>
     <string name="the_last_copied_text">마지막으로 복사된 텍스트가 25단어의 유효한 비밀문구가 아닙니다. 정확한 비밀문구를 복사하고 다시 시도해 주세요.</string>
     <string name="make_sure_to_record">번호를 붙여서 단어들을 올바른 순서로 기록하시기 바랍니다.</string>
+    <string name="this_6_digit_pin">6자리 PIN 번호를 입력해야 Pera Wallet을 사용할 수 있게 됩니다. 휴대폰 도난에 대비해 지갑의 보안을 강화하려면 PIN을 설정하시길 권장합니다.</string>
     <string name="increase_your_security">PIN으로 보안을 강화하세요</string>
     <string name="name_your_account">계정 이름을 정해 주세요</string>
     <string name="please_use_biometric">생체 인증 후 진행해 주세요.</string>
@@ -309,10 +306,9 @@
     <string name="transacting_tips">트랜잭션 팁</string>
     <string name="the_only_way_to">알고랜드 계정을 복원하는 유일한 방법은 이 복구 비밀문구를 사용하는 것뿐입니다.\n\n<annotation font="dmsans_italic"><annotation custom="warning_color"><annotation type="bold">경고</annotation>: 비밀문구가 있으면 계정의 모든 기능을 이용 가능하므로, 다른 사람과 비밀문구를 공유하지 마세요.</annotation></annotation></string>
     <string name="monitor_activity_of">읽기 전용 계정을 사용하면 비밀문구가 없어도 계정 활동을 모니터링할 수 있습니다. 콜드 스토리지에 보관된 자산을 모니터링하는 데 유용한 기능입니다.\n\n<annotation font="dmsans_italic"><annotation custom="warning_color"><annotation type="bold">경고</annotation>: 계정에 설정된 복구 비밀문구를 모르는 경우, 이 계정으로 자산을 보내지 마세요.</annotation></annotation></string>
-    <string name="i_want_a_new">새로운 주소와 복구 비밀문구로 새 계정을 생성합니다</string>
     <string name="i_want_to_monitor">콜드 스토리지에 보관된 계정을 모니터링하고 싶습니다</string>
-    <string name="i_want_to_create_an">Ledger 하드웨어 지갑을 사용하는 계정을 만들고 싶습니다</string>
     <string name="you_are_creating">주의: 알고랜드 계정의 읽기 전용 조회 화면을 생성하고 있습니다. 이 계정으로 자산을 보냈으나 계정에 상응하는 복구 비밀문구가 없는 경우, 보내신 자산은 손실됩니다.</string>
+    <string name="name_your_account_to">Pera Wallet을 사용하는 동안 쉽게 알아볼 수 있도록 계정 이름을 지정하세요. 계정 이름은 로컬에 저장되며, 사용자만 볼 수 있습니다.</string>
     <string name="keep_this_recovery_passphrase">복구 비밀문구는 나만 볼 수 있는 안전한 위치에 보관하세요. 복구 비밀문구를 분실하지 않도록 주의하시기 바랍니다.</string>
     <string name="learn_more">더 알아보기</string>
     <string name="no_contact_found">연락처 찾을 수 없음</string>
@@ -349,6 +345,7 @@
     <string name="wallet_wants_to_connect"><annotation type="bold"><annotation replacement="app_name">1A1Bapp_name_placeholder1B1A</annotation></annotation> 앱을\n계정에 연동하려고 합니다.</string>
     <string name="you_do_not_have_any">WalletConnect에 연결할 수 있는 계정이 없습니다.</string>
     <string name="disconnect">연결 해제</string>
+    <string name="remainder_close_to">계정 삭제\n잔액을 받으시는 분</string>
     <string name="show_asset_url">자산 URL 보기</string>
     <string name="asset_metadata">자산 메타데이터</string>
     <string name="show_asset_metadata">자산 메타데이터 보기</string>
@@ -420,13 +417,19 @@
     <string name="on_the_ledger_home_screen">Ledger 홈 화면에서 페어링을 확인하세요.</string>
     <string name="once_pairing_is_confirmed">페어링이 확인되면 알고랜드 Ledger 앱을 실행하세요.</string>
     <string name="pairing_failed">페어링 실패!</string>
+    <string name="after_confirming_pairing_on">Ledger 장치에서 페어링을 확인한 후 알고랜드 앱을 실행하세요.</string>
+    <string name="ledger_not_found">Ledger를 찾을 수 없습니다!</string>
+    <string name="if_you_are_having_ledger">Ledger Nano X 연결 문제가 발생하는 경우 휴대폰의 블루투스 설정에서 기기를 제거하고 Ledger 계정을 삭제한 다음 Pera Wallet의 안내에 따라 Ledger을 다시 페어링하세요.</string>
+    <string name="open_ledger_support">Ledger 지원 열기</string>
     <string name="please_follow_these_steps">다음 단계를 따라주세요.</string>
     <string name="having_ledger_nano_x">Ledger Nano X 연결 문제가 있나요?</string>
+    <string name="make_sure_the_device_is">기기가 잠금 해제되어 있고 근처에 있으며 블루투스가 활성화되었는지 확인해 주시기 바랍니다. 문제가 지속되는 경우 휴대폰의 블루투스 설정에서 기기를 제거하고 Ledger 계정을 삭제한 다음 알고랜드 지갑의 안내에 따라 Ledger을 다시 페어링하세요.</string>
     <string name="you_are_creating_a_read_only">알고랜드 계정의 읽기 전용 보기 화면을 생성하고 있습니다.</string>
     <string name="enter_your_recovery_passphrase">비밀문구를 입력하세요</string>
     <string name="create_a_watch_account">읽기 전용 계정\n만들기</string>
     <string name="paste_with_account">붙여넣기 (<annotation custom="account_text_size"><annotation custom="account_color"><annotation font="dmmono_regular"><annotation replacement="account">accountPlaceholder</annotation></annotation></annotation></annotation>)</string>
     <string name="transfer_from_another_phone">다른 휴대폰에서 전송</string>
+    <string name="i_already_have_an">이미 Pera Wallet을 보유 중이나, 다른 휴대폰에 있습니다.</string>
     <string name="set_pin_code">PIN 코드 설정</string>
     <string name="your_faceid_or_fingerprintid">FaceID 또는 FingerprintID 인증을 통과해야 앱을 사용할 수 있게 됩니다. 휴대폰 도난에 대비해 지갑의 보안을 강화하려면 생체 인증을 활성화하시길 권장합니다.</string>
     <string name="do_not_use">사용하지 않음</string>
@@ -439,6 +442,7 @@
     <string name="re_enter_your_new_six_digit_pin">새 6자리 PIN 번호를\n다시 입력하세요</string>
     <string name="wrong_passphrase">잘못된 비밀문구</string>
     <string name="account_not_found">계정을 찾을 수 없습니다. 올바른 비밀문구를 입력하여 다시 시도해주세요.</string>
+    <string name="account_is_verified">계정 인증 완료!</string>
     <string name="verified">인증 완료</string>
     <string name="copy_id">ID 복사</string>
     <string name="enter_a_passcode">비밀문구를 입력하세요</string>
@@ -478,7 +482,6 @@
     <string name="no_account_found">계정 찾을 수 없음</string>
     <string name="try_different_account_name">다른 계정 이름을 사용해보세요</string>
     <string name="add_note_with_plus">+ 참조 추가</string>
-    <string name="confirm_order">주문 확인</string>
     <string name="approximate_currency_value">≈ %1$s</string>
     <string name="enter_your_note">참조할 내용을 입력하세요</string>
     <string name="do_not_share">비밀문구가 있으면 계정의 모든 기능을 이용 가능하므로, 다른 사람과 비밀문구를 공유하지 마세요.</string>
@@ -538,6 +541,7 @@
     <string name="account_successfully_rekeyed">계정의 키가 재지정되었습니다</string>
     <string name="nfts">NFT</string>
     <string name="nfts_coming_soon">NFT 곧 출시 예정!</string>
+    <string name="you_will_be_able_to">곧 Pera Wallet에도 NFT 컬렉션 조최 기능이 추가됩니다.\n\n신기능을 추가하고자 최선을 다하고 있습니다. 계속 지켜봐주세요!</string>
     <string name="rekey_fee">재지정 수수료</string>
     <string name="remove_asset_fee">자산 수수료 삭제</string>
     <string name="edit_note">참조 수정</string>
@@ -557,11 +561,19 @@
     <string name="please_return_to"><annotation replacement="peer_name">peerNamePlaceholder</annotation>(으)로 돌아가셔서 작업을 계속하고 완료하십시오. 전용 설정 페이지에서 연결된 모든 세션을 찾아볼 수 있습니다.</string>
     <string name="scan_an_algorand">알고랜드 주소\nQR 코드 스캔</string>
     <string name="current_balance">현재\n잔액</string>
-    <string name="order_received">주문 접수 완료</string>
-    <string name="your_order_was">주문을 받았습니다</string>
     <string name="show_note">참조 보기</string>
-    <string name="after_confirming_pairing_on">Ledger 장치에서 페어링을 확인한 후 알고랜드 앱을 실행하세요.</string>
-    <string name="ledger_not_found">Ledger를 찾을 수 없습니다!</string>
-    <string name="if_you_are_having_ledger">Ledger Nano X 연결 문제가 발생하는 경우 휴대폰의 블루투스 설정에서 기기를 제거하고 Ledger 계정을 삭제한 다음 알고랜드 지갑의 안내에 따라 Ledger을 다시 페어링하세요.</string>
-    <string name="open_ledger_support">Ledger 지원 열기</string>
+    <string name="create_a_passphrase_backup">계정에서 사용할 비밀문구 백업 생성</string>
+    <string name="creating_a_passphrase_backup">비밀문구 백업을 생성하면 계정을 복구할 수 있습니다. 기기 분실, 계정 또는 앱 삭제, 휴대폰 분실 시 복구 비밀문구가 없는 경우, 알고랜드 계정에 영구적으로 접속할 수 없습니다.</string>
+    <string name="congratulations_your_account">축하합니다, 이제 계정을 사용하실 수 있습니다.</string>
+    <string name="welcome_to_pera_your_account">Pera Wallet에 오신 것을 환영합니다! 계정을 사용하실 수 있습니다.</string>
+    <string name="loading">불러오는 중</string>
+    <string name="algorand_wallet_is_now">공식 발표!\n알고랜드 지갑이 Pera Wallet으로 바뀌었습니다.</string>
+    <string name="we_are_very_excited">알고랜드 지갑이 Pera Wallet으로 변경되었다는 소식을 알려드리게 되어 매우 기쁩니다. 이번 업데이트는 단순히 이름과 로고의 변화에서 그치지 않습니다. 로드맵, 파트너 통합, 커뮤니티에 다시 초점을 맞추어 알고랜드 생태계에서 가장 인기 있는 지갑을 새롭게 출시합니다.\n\n걱정하지 마세요. Pera Wallet은 같은 팀에서 만들고 관리하며 여러분이 알고 사랑하는 모든 기능은 여느 때와 같이 유지됩니다. 앞으로 더 많은 기능이 추가될 예정입니다.\n\n재출시 및 로드맵에 대해 자세히 알아보려면 <annotation type="color"><annotation url="peraBlogUrl">Pera Wallet 블로그</annotation></annotation>를 살펴보시기 바랍니다.</string>
+    <string name="remove_all_accounts_and_logout">모든 계정을 삭제하고 로그아웃합니다</string>
+    <string name="yes_remove_all_accounts">예, 모든 계정을 삭제하고 로그아웃합니다</string>
+    <string name="i_want_to_recover">25자 비밀문구로 알고랜드 계정을 복구하려고 합니다</string>
+    <string name="sorry_we_cant_show_account">죄송합니다. 계정의 세부정보를 표시할 수 없습니다. 계산에 문제가 있는 것 같습니다.\n\n일부 자산 가치는 사용이 불가능할 수 있습니다. 따라서 총 포트폴리오 가치는 추정치로만 간주하시기 바랍니다.</string>
+    <string name="sorry_we_cant_show_portfolio">죄송합니다. 포트폴리오의 세부정보를 표시할 수 없습니다. 계산에 문제가 있는 것 같습니다.\n\n일부 자산 가치는 사용이 불가능할 수 있습니다. 따라서 총 포트폴리오 가치는 추정치로만 간주하시기 바랍니다.</string>
+    <string name="transaction_request_faq">트랜잭션 요청 FAQ</string>
+    <string name="external_applications_also">Pera Wallet이 관리하지 않는 외부 애플리케이션(\"디앱\"이라고도 합니다)에서 트랜잭션 요청을 전송할 수 있습니다. 트랜잭션을 실행한 후에는 되돌릴 수 없으므로, 서명하기 전에 트랜잭션의 상세 정보를 신중히 검토하시기 바랍니다.\n\n모든 트랜잭션은 실행 취소가 불가능합니다. 모르는 디앱에서 요청한 트랜잭션은 승인하지 마세요.</string>
 </resources>

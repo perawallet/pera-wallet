@@ -33,30 +33,30 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.algorand.android.customviews.RegisterTypeSelectionItem
-            android:id="@+id/addAccountSelectionItem"
+            android:id="@+id/createAccountSelectionItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/recoverSelectionItem"
+            app:layout_constraintBottom_toTopOf="@id/recoveryAccountSelectionItem"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/titleTextView"
             app:layout_constraintVertical_bias="0.4"
             app:layout_constraintVertical_chainStyle="packed"
-            app:typeSelectionDescriptionText="@string/create_a_new_algorand_account"
-            app:typeSelectionIcon="@drawable/ic_user_add"
-            app:typeSelectionTitleText="@string/add_new_account" />
+            app:typeSelectionDescriptionText="@string/create_a_new_algorand"
+            app:typeSelectionIcon="@drawable/ic_wallet_curve"
+            app:typeSelectionTitleText="@string/i_want_to_create" />
 
         <com.algorand.android.customviews.RegisterTypeSelectionItem
-            android:id="@+id/recoverSelectionItem"
+            android:id="@+id/recoveryAccountSelectionItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@id/transferSelectionItem"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/addAccountSelectionItem"
-            app:typeSelectionDescriptionText="@string/i_want_to_recover"
+            app:layout_constraintTop_toBottomOf="@id/createAccountSelectionItem"
+            app:typeSelectionDescriptionText="@string/import_an_existing"
             app:typeSelectionIcon="@drawable/ic_key"
-            app:typeSelectionTitleText="@string/recover_with_passphrase" />
+            app:typeSelectionTitleText="@string/i_already_have" />
 
         <com.algorand.android.customviews.RegisterTypeSelectionItem
             android:id="@+id/transferSelectionItem"
@@ -66,7 +66,7 @@
             app:layout_constraintBottom_toTopOf="@id/policyTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/recoverSelectionItem"
+            app:layout_constraintTop_toBottomOf="@id/recoveryAccountSelectionItem"
             app:typeSelectionDescriptionText="@string/i_already_have_an"
             app:typeSelectionIcon="@drawable/ic_phone"
             app:typeSelectionTitleText="@string/transfer_from_another_phone"

@@ -93,9 +93,26 @@ class SimpleAssetDetailUseCase @Inject constructor(
         assetFetchAndCacheUseCase.processFilteredAssetIdList(filteredAssetIdLists, coroutineScope)
     }
 
+    /**
+     * Takes asset id list and filters them if
+     *  - Asset is not cached
+     *  OR
+     *  - Asset is cached but expired
+     * @return List that contains lists which have max "MAX_ASSET_FETCH_COUNT" items.
+     */
     fun getChunkedAndFilteredAssetList(assetIdList: Set<Long>): List<List<Long>> {
-        val cachedAssetIdList = getCachedAssetList().map { it.key }
-        val notCachedAssetIdList = assetIdList.filterNot { assetId -> cachedAssetIdList.contains(assetId) }
-        return notCachedAssetIdList.chunked(MAX_ASSET_FETCH_COUNT)
+        val cachedAssets = getCachedAssetList()
+        val currentTime = CacheResult.createCreationTimestamp()
+        val assetsNeedsToBeCached = assetIdList.filter {
+            // is asset cached
+            val cachedAsset = cachedAssets.getOrDefault(it, null) ?: return@filter true
+            // is asset cache expired
+            currentTime - (cachedAsset.creationTimestamp ?: 0) >= CACHED_ASSET_EXPIRATION_THRESHOLD
+        }
+        return assetsNeedsToBeCached.chunked(MAX_ASSET_FETCH_COUNT)
+    }
+
+    companion object {
+        private const val CACHED_ASSET_EXPIRATION_THRESHOLD = 600_000 // 10 min
     }
 }

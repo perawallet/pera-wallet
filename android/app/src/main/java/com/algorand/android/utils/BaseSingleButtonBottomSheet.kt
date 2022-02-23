@@ -31,6 +31,7 @@ abstract class BaseSingleButtonBottomSheet : BaseBottomSheet(R.layout.bottom_she
     protected abstract val iconDrawableResId: Int
     protected abstract val iconDrawableTintResId: Int
     protected abstract val descriptionAnnotatedString: AnnotatedString?
+    protected open val buttonStringResId: Int = R.string.close
     protected open val errorAnnotatedString: AnnotatedString? = null
 
     abstract fun onConfirmationButtonClick()
@@ -70,7 +71,10 @@ abstract class BaseSingleButtonBottomSheet : BaseBottomSheet(R.layout.bottom_she
     }
 
     private fun initConfirmationButton() {
-        binding.confirmationButton.setOnClickListener { onConfirmationButtonClick() }
+        binding.confirmationButton.apply {
+            setText(buttonStringResId)
+            setOnClickListener { onConfirmationButtonClick() }
+        }
     }
 
     private fun initErrorText() {

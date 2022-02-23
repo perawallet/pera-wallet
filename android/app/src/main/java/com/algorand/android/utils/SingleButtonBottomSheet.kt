@@ -32,6 +32,8 @@ class SingleButtonBottomSheet : BaseSingleButtonBottomSheet() {
         get() = args.descriptionAnnotatedString
     override val errorAnnotatedString: AnnotatedString?
         get() = args.errorAnnotatedString
+    override val buttonStringResId: Int
+        get() = args.buttonStringResId
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

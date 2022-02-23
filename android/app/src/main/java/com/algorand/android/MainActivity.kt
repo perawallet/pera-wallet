@@ -42,6 +42,7 @@ import com.algorand.android.ui.wcconnection.WalletConnectConnectionBottomSheet
 import com.algorand.android.utils.DEEPLINK_AND_NAVIGATION_INTENT
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
+import com.algorand.android.utils.WC_TRANSACTION_ID_INTENT_KEY
 import com.algorand.android.utils.analytics.logTapReceive
 import com.algorand.android.utils.analytics.logTapSend
 import com.algorand.android.utils.handleIntent
@@ -54,12 +55,12 @@ import com.algorand.android.utils.walletconnect.WalletConnectUrlHandler
 import com.algorand.android.utils.walletconnect.WalletConnectViewModel
 import com.google.firebase.analytics.FirebaseAnalytics
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+import kotlin.properties.Delegates
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
-import javax.inject.Inject
-import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class MainActivity : CoreMainActivity(),
@@ -282,7 +283,11 @@ class MainActivity : CoreMainActivity(),
     }
 
     private fun onNewWalletConnectTransactionRequest(transaction: WalletConnectTransaction) {
-        nav(HomeNavigationDirections.actionGlobalWalletConnectRequestNavigation())
+        nav(HomeNavigationDirections.actionGlobalWalletConnectRequestNavigation()) {
+            pendingIntent = Intent().apply {
+                putExtra(WC_TRANSACTION_ID_INTENT_KEY, transaction.requestId)
+            }
+        }
     }
 
     private fun handleDeeplinkAndNotificationNavigation() {

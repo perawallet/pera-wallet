@@ -120,7 +120,6 @@
     <string name="scanned_qr_is_not_valid">El QR escaneado es inválido.</string>
     <string name="connect">Conectar</string>
     <string name="error_default_title">¡Error!</string>
-    <string name="pair_ledger_device">Emparejar dispositivo Ledger</string>
     <string name="make_sure_your_ledger">Asegúrate de que el dispositivo Ledger esté encendido y de que tenga Bluetooth activado.</string>
     <string name="open_the_algorand_app">Inicia la aplicación Algorand en tu dispositivo Ledger.</string>
     <string name="make_sure_bluetooth">Asegúrate de que Bluetooth esté activado en tu teléfono.</string>
@@ -128,11 +127,6 @@
     <string name="verified_with_icon"><annotation type="verified-icon"> </annotation> verificado</string>
     <string name="all">Todos</string>
     <string name="verified_assets">Activos verificados</string>
-    <string name="what_does_asset">¿Que significa la verificación de activos?</string>
-    <string name="verified_assets_first_paragraph">Los activos que pasan por nuestro proceso de verificación son proyectos conocidos que tienen un sitio web y su información pública está constatada con un ASA específico. El estado de verificación no implica que se respalde al activo. El monedero Pera no tiene ningún tipo de relación con los propietarios de ASA verificados. La insignia <annotation type="verified-icon"> </annotation> se usa solo con fines informativos.</string>
-    <string name="verified_assets_second_paragraph">Esto sirve como una protección adicional para no operar accidentalmente con un activo incorrecto.</string>
-    <string name="verified_assets_third_paragraph">Dicho esto, <annotation type="color">siempre debes comprobar dos veces</annotation> que el ID del activo es el que quieres elegir antes de operar con ese activo.</string>
-    <string name="verified_assets_fourth_paragraph">Si tienes alguna pregunta sobre el proceso de verificación o comentarios generales sobre la aplicación, te pedimos que <annotation type="color">nos contactes</annotation>.</string>
     <string name="advanced_troubleshooting">Resolución de problemas avanzada</string>
     <string name="connecting_to_ledger">Conectando a un Ledger…</string>
     <string name="ledger_approval">Aprobación de Ledger</string>
@@ -168,7 +162,6 @@
     <string name="go_to_home">Volver al Inicio</string>
     <string name="accept">Aceptar</string>
     <string name="add_new_asset">Agregar nuevo activo</string>
-    <string name="add_new_account">Agregar nueva cuenta</string>
     <string name="try_different">Intentar con un nombre o ID de activo diferentes</string>
     <string name="copy_address">Copiar dirección</string>
     <string name="account_address">Dirección de la cuenta</string>
@@ -216,7 +209,7 @@
     <string name="your_account_s_public">La clave pública, los saldos y la configuración no cambiarán.</string>
     <string name="add_account">Agregar cuenta</string>
     <string name="confirm_rekeying">Confirmar el cambio de clave</string>
-    <string name="total_rekeying_fee">Tarifa total de %1$s por cambio de clave</string>
+    <string name="total_rekeying_fee">Tarifa total de cambio de clave de %1$s Algos</string>
     <string name="plus_more_assets">+%1$d más activos</string>
     <string name="finalize_rekeying">Finalizar cambio de clave</string>
     <string name="new_ledger">Nuevo Ledger</string>
@@ -227,7 +220,7 @@
     <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> está intentando enviarte <annotation replacement="asset">assetPlaceholder</annotation>, pero no tienes ese activo habilitado. Pulsa aquí para agregar este activo a tu cuenta.</string>
     <string name="transaction_send_successful">Se completó la transacción de <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> de <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> para <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>.</string>
     <string name="transaction_send_failed">Falló la transacción <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> de <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> para <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>.</string>
-    <string name="transaction_received"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> se enviaron a <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> de <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>.</string>
+    <string name="notification_algo_received_message"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> se enviaron a <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> de <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>.</string>
     <string name="too_many_pin_attempts">Demasiados intentos para cargar el PIN</string>
     <string name="reset_all_data">Restaurar toda la información</string>
     <string name="this_ledger_device">Este dispositivo Ledger puede firmar transacciones para las siguientes cuentas. Selecciona las cuentas que quieres agregar al monedero Pera.</string>
@@ -280,9 +273,11 @@
         <item quantity="other">+%1$d activos</item>
     </plurals>
     <string name="continue_text">Continuar</string>
+    <string name="rekeyed_maximum_error_message">Para enviar el saldo máximo desde una cuenta a la que se le cambió la clave, debes mantener un saldo mínimo de <annotation replacement="min_balance">min_balance_placeholder</annotation> Algos. Esto sirve para asegurarte de que nada cambie en tu cuenta con clave nueva. \n \n El monto de tu transacción se actualizará automáticamente para reflejar este cambio. Obtendrás una vista previa de la transacción en el siguiente paso.</string>
     <string name="we_notice_that_this">Notamos que esta es tu primera transacción. Antes de finalizar, ten en cuenta los siguientes consejos:</string>
     <string name="when_sending_to_an_address">Al enviar a una dirección por primera vez, resulta útil enviar una pequeña transacción de prueba antes de enviar una suma importante.</string>
     <string name="exchanges_change_their">Las plataformas de intercambio cambian sus direcciones de depósito con frecuencia y es posible que las direcciones de intercambio guardadas ya no estén en uso. <annotation custom="highlight_color"> Asegúrate de enviar a la dirección correcta. </annotation></string>
+    <string name="for_more_information_on">Para obtener más información sobre las transacciones, <annotation font="dmsans_medium"><annotation custom="tap_here_color"> pulsa aquí </annotation></annotation></string>
     <string name="i_understand">Entiendo</string>
     <string name="before_you_finalize">Antes de finalizar, ten en cuenta algunos consejos:</string>
     <string name="the_transaction_cannot_be">La transacción no se puede completar porque el monto dejaría a tu cuenta por debajo del saldo mínimo requerido de <annotation replacement="min_balance"> min_balance_placeholder </annotation> Algos.</string>
@@ -297,6 +292,7 @@
     <string name="recover">Recuperar</string>
     <string name="the_last_copied_text">El último texto copiado no es una frase secreta válida de 25 palabras. Copia una frase secreta válida y vuelve a intentarlo.</string>
     <string name="make_sure_to_record">Asegúrate de anotar estas palabras en el orden correcto, utilizando los números correspondientes.</string>
+    <string name="this_6_digit_pin">Necesitarás este PIN de 6 dígitos para utilizar el monedero de Pera. Recomendamos encarecidamente crear un PIN para aumentar la seguridad del monedero en caso de que te roben el teléfono.</string>
     <string name="increase_your_security">Aumenta la seguridad con un PIN</string>
     <string name="name_your_account">Ingresa un nombre para tu cuenta</string>
     <string name="please_use_biometric">Usa el sistema biométrico para continuar.</string>
@@ -315,10 +311,9 @@
     <string name="transacting_tips">Sugerencias para transacciones</string>
     <string name="the_only_way_to">La única manera de recuperar una cuenta de Algorand es con esta frase de recuperación.\n\n<annotation font="dmsans_italic"><annotation custom="warning_color"><annotation type="bold">Advertencia</annotation>: No compartas esta frase de recuperación con nadie, ya que concede acceso completo a tu cuenta.</annotation></annotation></string>
     <string name="monitor_activity_of">Supervisa la actividad de una cuenta sin necesidad de tener la frase secreta. Esto es útil para monitorear activos en almacenamiento en frío\n\n<annotation font="dmsans_italic"><annotation custom="warning_color"><annotation type="bold">Advertencia</annotation>: Si no tienes la frase de recuperación correspondiente, no envíes activos a esta cuenta.</annotation></annotation></string>
-    <string name="i_want_a_new">Quiero una nueva cuenta con una nueva dirección y nueva frase de recuperación.</string>
     <string name="i_want_to_monitor">Quiero observar una cuenta en almacenamiento en frío.</string>
-    <string name="i_want_to_create_an">Quiero crear una cuenta respaldada por mi monedero físico Ledger.</string>
     <string name="you_are_creating">Estás creando una vista de solo lectura de una cuenta de Algorand. Si envías activos a esta cuenta y no tienes la frase de recuperación correspondiente, esos activos se perderán.</string>
+    <string name="name_your_account_to">Dale un nombre a tu cuenta para poder identificarla fácilmente al usar el monedero de Pera. Estos nombres se almacenan de manera local y solo tú puedes verlos.</string>
     <string name="keep_this_recovery_passphrase">Guarda esta frase de recuperación en un lugar seguro al que solo tú puedas acceder. No pierdas esta frase de recuperación.</string>
     <string name="learn_more">Más información</string>
     <string name="no_contact_found">No se encontraron contactos</string>
@@ -356,6 +351,7 @@
     <string name="wallet_wants_to_connect"><annotation type="bold"><annotation replacement="app_name">app_name_placeholder</annotation></annotation> quiere conectarse a tu cuenta</string>
     <string name="you_do_not_have_any">No tienes ninguna cuenta que WalletConnect pueda conectar.</string>
     <string name="disconnect">Desconectar</string>
+    <string name="remainder_close_to">Cerrar\ny enviar el saldo a</string>
     <string name="show_asset_url">Mostrar URL del activo</string>
     <string name="asset_metadata">Metadatos del activo</string>
     <string name="show_asset_metadata">Mostrar metadatos del activo</string>
@@ -428,6 +424,10 @@
     <string name="on_the_ledger_home_screen">Confirma el emparejamiento en la pantalla de inicio del Ledger.</string>
     <string name="once_pairing_is_confirmed">Una vez confirmado el emparejamiento, abre la aplicación Ledger de Algorand.</string>
     <string name="pairing_failed">Error de emparejamiento.</string>
+    <string name="after_confirming_pairing_on">Después de confirmar el emparejamiento en tu dispositivo Ledger, abre la aplicación Algorand.</string>
+    <string name="ledger_not_found">No se encontró el Ledger</string>
+    <string name="if_you_are_having_ledger">Si tienes problemas de conexión con el Ledger Nano X, por favor, elimina el dispositivo de la configuración de bluetooth de tu teléfono, elimina la cuenta de Ledger y luego vuelve a emparejar tu Ledger siguiendo las instrucciones de Pera Wallet.</string>
+    <string name="open_ledger_support">Abrir el soporte de Ledger</string>
     <string name="please_follow_these_steps">Sigue estos pasos:</string>
     <string name="having_ledger_nano_x">¿Tienes problemas de conexión con el Ledger Nano X?</string>
     <string name="make_sure_the_device_is">Asegúrate de que el dispositivo esté desbloqueado, cerca y de que tenga el Bluetooth activado. Si sigues teniendo problemas, elimina el dispositivo desde la configuración de Bluetooth de tu teléfono, elimina la cuenta de Ledger y vuelve a emparejar tu Ledger siguiendo las instrucciones del monedero Pera.</string>
@@ -449,6 +449,7 @@
     <string name="re_enter_your_new_six_digit_pin">Vuelve a ingresar tu nuevo\nPIN de 6 dígitos</string>
     <string name="wrong_passphrase">Frase secreta incorrecta</string>
     <string name="account_not_found">No se encontró la cuenta. Inténtalo nuevamente ingresando la frase secreta correcta.</string>
+    <string name="account_is_verified">La cuenta está verificada</string>
     <string name="verified">Verificado</string>
     <string name="copy_id">Copiar ID</string>
     <string name="enter_a_passcode">Ingresar una contraseña</string>
@@ -488,7 +489,6 @@
     <string name="no_account_found">No se encontró ninguna cuenta</string>
     <string name="try_different_account_name">Intenta con un nombre de cuenta diferente</string>
     <string name="add_note_with_plus">+ Agregar nota</string>
-    <string name="confirm_order">Confirmar orden</string>
     <string name="approximate_currency_value">≈ %1$s</string>
     <string name="enter_your_note">Ingresar nota</string>
     <string name="do_not_share">No compartas esta frase de recuperación con nadie, ya que concede acceso completo a tu cuenta.</string>
@@ -568,11 +568,19 @@
     <string name="please_return_to">Regresa a <annotation replacement="peer_name">peerNamePlaceholder</annotation> para continuar y finalizar la operación. Puedes encontrar todas las sesiones conectadas en la página Configuración.</string>
     <string name="scan_an_algorand">Escanea el código QR de una\ndirección de Algorand</string>
     <string name="current_balance">Saldo\nactual</string>
-    <string name="order_received">Orden recibida</string>
-    <string name="your_order_was">Tu orden fue recibida con éxito</string>
     <string name="show_note">Ver nota</string>
-    <string name="after_confirming_pairing_on">Después de confirmar el emparejamiento en tu dispositivo Ledger, abre la aplicación Algorand.</string>
-    <string name="ledger_not_found">No se encontró el Ledger</string>
-    <string name="if_you_are_having_ledger">Si tienes problemas de conexión con tu dispositivo Ledger Nano X, elimina el dispositivo de la configuración de Bluetooth de tu teléfono, elimina la cuenta de Ledger y vuelve a emparejar tu Ledger siguiendo las instrucciones del monedero Pera.</string>
-    <string name="open_ledger_support">Abrir el soporte de Ledger</string>
+    <string name="create_a_passphrase_backup">Crea una copia de seguridad de la frase secreta para tu cuenta</string>
+    <string name="creating_a_passphrase_backup">La creación de una frase secreta te permite recuperar tu cuenta. Si no tienes tu frase secreta de recuperación y pierdes tu dispositivo o eliminas la aplicación perderás permanentemente el acceso a tu cuenta de Algorand.</string>
+    <string name="congratulations_your_account">Felicitaciones, tu cuenta está lista.</string>
+    <string name="welcome_to_pera_your_account">¡Bienvenido a Pera Wallet! Tu cuenta está lista para usarse</string>
+    <string name="loading">Cargando</string>
+    <string name="algorand_wallet_is_now">¡Es oficial!\nAlgorand Wallet ahora se llama Pera Wallet.</string>
+    <string name="we_are_very_excited">Estamos muy emocionados de anunciar que Algorand Wallet ahora se llama Pera Wallet. Esto es mucho más que un nuevo nombre y logotipo. Se trata de un relanzamiento del monedero más popular en el ecosistema Algorand con un renovado enfoque en nuestra hoja de ruta, las integraciones de socios y la comunidad.\n\nNo te preocupes, Pera Wallet fue creado y es mantenido por el mismo equipo y todas las funciones que ya conoces y amas siguen disponibles, y vendrán muchas más en los próximos meses.\n\nPara leer más sobre este relanzamiento y nuestra hoja de ruta, consulta el <annotation type="color"><annotation url="peraBlogUrl">blog de Pera Wallet</annotation></annotation></string>
+    <string name="remove_all_accounts_and_logout">Eliminar todas las cuentas y cerrar sesión</string>
+    <string name="yes_remove_all_accounts">Si, eliminar todas las cuentas y cerrar sesión</string>
+    <string name="i_want_to_recover">Quiero recuperar una cuenta de Algorand usando mi frase secreta de 25 palabras</string>
+    <string name="sorry_we_cant_show_account">Lo sentimos, no podemos mostrar los detalles de esta cuenta. Parece que tenemos problemas para hacer el cálculo.\n\nTen en cuenta que es posible que algunos valores de activos no estén disponibles, por lo que el valor total de la cartera debe considerarse una estimación.  </string>
+    <string name="sorry_we_cant_show_portfolio">Lo sentimos, no podemos mostrar los detalles de esta cartera. Parece que tenemos problemas para hacer el cálculo.\n\nTen en cuenta que es posible que algunos valores de activos no estén disponibles, por lo que el valor total de la cartera debe considerarse una estimación.  </string>
+    <string name="transaction_request_faq">Preguntas frecuentes sobre solicitudes de transacciones</string>
+    <string name="external_applications_also">Las aplicaciones externas, también denominadas dApps, pueden realizar solicitudes de transacciones que Pera Wallet no controla. Asegúrate de revisar estas transacciones detenidamente antes de aprobarlas y firmarlas. \n\nTodas las transacciones son irreversibles. Nunca apruebes transacciones de una dApp que no conozcas.</string>
 </resources>

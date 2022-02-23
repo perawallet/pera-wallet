@@ -120,7 +120,6 @@
     <string name="scanned_qr_is_not_valid">Gescannter QR-Code ist ungültig.</string>
     <string name="connect">Verbinden</string>
     <string name="error_default_title">Fehler!</string>
-    <string name="pair_ledger_device">Ledger-Gerät koppeln</string>
     <string name="make_sure_your_ledger">Stellen Sie sicher, dass Ihr Ledger-Gerät eingeschaltet und Bluetooth aktiviert ist.</string>
     <string name="open_the_algorand_app">Öffnen Sie auf Ihrem Ledger-Gerät die Algorand-App.</string>
     <string name="make_sure_bluetooth">Stellen Sie sicher, dass bei Ihrem Smartphone Bluetooth aktiviert ist.</string>
@@ -168,7 +167,6 @@
     <string name="go_to_home">Zu Startseite gehen</string>
     <string name="accept">Akzeptieren</string>
     <string name="add_new_asset">Neues Asset hinzufügen</string>
-    <string name="add_new_account">Neues Konto hinzufügen</string>
     <string name="try_different">Versuchen Sie es mit einem anderen Asset-Namen oder einer anderen Asset-ID</string>
     <string name="copy_address">Adresse kopieren</string>
     <string name="account_address">Kontoadresse</string>
@@ -216,7 +214,7 @@
     <string name="your_account_s_public">Der öffentliche Schlüssel, das Kontoguthaben und die Konfiguration Ihres Kontos sind vom Rekeying nicht betroffen.</string>
     <string name="add_account">Konto hinzufügen</string>
     <string name="confirm_rekeying">Rekeying bestätigen</string>
-    <string name="total_rekeying_fee">Gesamte Rekeying-Gebühr von %1$s</string>
+    <string name="total_rekeying_fee">Gesamte Rekeying-Gebühr von %1$s Algos</string>
     <string name="plus_more_assets">+%1$d zusätzliche Assets</string>
     <string name="finalize_rekeying">Rekeying abschließen</string>
     <string name="new_ledger">Neues Ledger-Gerät</string>
@@ -228,7 +226,6 @@
     <string name="transaction_send_successful">Ihre Transaktion in Höhe von <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> von <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> an <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> wurde erfolgreich ausgeführt.</string>
     <string name="transaction_send_failed">Ihre Transaktion in Höhe von <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> von <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> an <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> ist fehlgeschlagen.</string>
     <string name="transaction_received"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> wurden von <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> an <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> gesendet.</string>
-    <string name="pera_app_is_locked">Die Algorand-App ist gesperrt</string>
     <string name="too_many_pin_attempts">Zu viele Versuche</string>
     <string name="reset_all_data">Alle Daten zurücksetzen</string>
     <string name="this_ledger_device">Dieses Ledger-Gerät kann für folgende Konten Transaktionen signieren. Wählen Sie die Konten, die Sie Ihrer Pera-Wallet hinzufügen möchten.</string>
@@ -285,7 +282,7 @@
     <string name="we_notice_that_this">Wir haben festgestellt, dass dies Ihre erste Transaktion ist. Bevor Sie sie abschließen, sollten Sie ein paar Tipps beachten:</string>
     <string name="when_sending_to_an_address">Wenn Sie zum ersten Mal an eine Adresse senden, ist es sinnvoll, eine kleine Testtransaktion zu senden, bevor Sie einen größeren Betrag senden.</string>
     <string name="exchanges_change_their">Börsen ändern häufig ihre Einzahlungsadressen und gespeicherte Börsenadressen sind ggf. nicht mehr gültig. <annotation custom="highlight_color">Stellen Sie sicher, dass Sie an die richtige Adresse senden.</annotation></string>
-    <string name="for_more_information_on">Weitere Informationen zu Transaktionen finden Sie <annotation font="dmsans_medium"><annotation custom="tap_here_color">hier</annotation></annotation></string>
+    <string name="for_more_information_on">Weitere Informationen zu Transaktionen finden Sie <annotation font="dmsans_medium"><annotation custom="tap_here_color">hier</annotation></annotation>.</string>
     <string name="i_understand">Ich verstehe</string>
     <string name="before_you_finalize">Vor dem Abschluss sollten Sie ein paar Tipps beachten:</string>
     <string name="the_transaction_cannot_be">Die Transaktion kann nicht abgeschlossen werden, da der Betrag Ihr Konto unter den erforderlichen Mindestkontostand von <annotation replacement="min_balance">min_balance_placeholder</annotation> Algos bringen würde.</string>
@@ -297,8 +294,6 @@
     <string name="recover_an_algorand">Ein  Algorand-Konto wiederherstellen</string>
     <string name="in_the_following">In den folgenden Schritten geben Sie Ihre 25 Worte umfassende Wiederherstellungs-Passphrase ein, um ein Algorand-Konto wiederherzustellen. Halten Sie Ihre Wiederherstellungsphrase bereit, bevor Sie beginnen.</string>
     <string name="finish_account_creation">Kontoerstellung abschließen</string>
-    <string name="welcome_to_pera">Willkommen bei der Algorand-Wallet</string>
-    <string name="recover_with_passphrase">Mit Passphrase wiederherstellen</string>
     <string name="recover">Wiederherstellen</string>
     <string name="the_last_copied_text">Der zuletzt kopierte Text ist keine gültige Passphrase mit 25 Wörtern. Bitte kopieren Sie eine gültige Passphrase und versuchen Sie es erneut.</string>
     <string name="make_sure_to_record">Achten Sie darauf, dass Sie diese Wörter in der richtigen Reihenfolge mit den entsprechenden Nummern aufzeichnen.</string>
@@ -321,9 +316,7 @@
     <string name="transacting_tips">Transaktionstipps</string>
     <string name="the_only_way_to">Die einzige Möglichkeit, ein Algorand-Konto wiederherzustellen, ist diese Wiederherstellungs-Passphrase.\n\n<annotation font="dmsans_italic"><annotation custom="warning_color"><annotation type="bold">Warnung</annotation>: Teilen Sie diese Passphrase mit niemandem, da sie vollen Zugriff auf Ihr Konto gewährt.</annotation></annotation></string>
     <string name="monitor_activity_of">Mit einem Überwachungskonto können Sie die Aktivität eines Kontos überwachen, ohne dass Sie die Passphrase haben müssen. Dies ist nützlich für die Überwachung von Assets, die in einem Cold-Storage aufbewahrt werden\n<annotation font="dmsans_italic"><annotation custom="warning_color"><annotation type="bold">Warnung</annotation>: Wenn Sie nicht über die entsprechende Wiederherstellungs-Passphrase verfügen, dürfen Sie keine Assets an dieses Konto senden.</annotation></annotation></string>
-    <string name="i_want_a_new">Ich möchte ein neues Konto mit einer neuen Adresse und einer neuen Wiederherstellungs-Passphrase.</string>
     <string name="i_want_to_monitor">Ich möchte ein Konto überwachen, das im Cold Storage gehalten wird.</string>
-    <string name="i_want_to_create_an">Ich möchte ein Konto erstellen, das durch meine Ledger-Hardware-Wallet gesichert ist.</string>
     <string name="you_are_creating">Sie erstellen eine schreibgeschützte Ansicht eines Algorand-Kontos. Wenn Sie Assets an dieses Konto senden und Sie nicht über die entsprechende Wiederherstellungs-Passphrase verfügen, gehen diese Assets verloren.</string>
     <string name="name_your_account_to">Benennen Sie Ihr Konto, um es bei der Verwendung der Pera-Wallet leicht zu identifizieren. Diese Namen werden lokal gespeichert und können nur von Ihnen gesehen werden.</string>
     <string name="keep_this_recovery_passphrase">Bewahren Sie diese Wiederherstellungs-Passphrase an einem sicheren Ort auf, auf den nur Sie Zugriff haben. Verlieren Sie diese Wiederherstellungs-Passphrase nicht.</string>
@@ -363,6 +356,7 @@
     <string name="wallet_wants_to_connect"><annotation type="bold"><annotation replacement="app_name">app_name_platzhalter</annotation></annotation> möchte eine Verbindung zu Ihrem Konto herstellen</string>
     <string name="you_do_not_have_any">Sie haben kein Konto, mit dem WalletConnect eine Verbindung herstellen kann.</string>
     <string name="disconnect">Trennen</string>
+    <string name="remainder_close_to">Schließen\nRestbetrag senden an</string>
     <string name="show_asset_url">Asset-URL anzeigen</string>
     <string name="asset_metadata">Asset-Metadaten</string>
     <string name="show_asset_metadata">Asset-Metadaten anzeigen</string>
@@ -439,6 +433,10 @@
     <string name="on_the_ledger_home_screen">Bestätigen Sie auf dem Ledger-Startbildschirm die Kopplung.</string>
     <string name="once_pairing_is_confirmed">Sobald die Kopplung bestätigt ist, öffnen Sie die Algorand Ledger-App.</string>
     <string name="pairing_failed">Kopplung fehlgeschlagen!</string>
+    <string name="after_confirming_pairing_on">Nachdem Sie die Kopplung auf Ihrem Ledger-Gerät bestätigt haben, öffnen Sie die Algorand-App.</string>
+    <string name="ledger_not_found">Ledger nicht gefunden!</string>
+    <string name="if_you_are_having_ledger">Wenn Sie Verbindungsprobleme mit dem Ledger Nano X haben, entfernen Sie bitte das Gerät aus den Bluetooth-Einstellungen Ihres Telefons, löschen Sie das Ledger-Konto und koppeln Sie Ihren Ledger erneut, indem Sie den Anweisungen der Pera Wallet folgen.</string>
+    <string name="open_ledger_support">Ledger-Support öffnen</string>
     <string name="please_follow_these_steps">Bitte befolgen Sie diese Schritte:</string>
     <string name="having_ledger_nano_x">Haben Sie Verbindungsprobleme mit dem Ledger Nano X?</string>
     <string name="make_sure_the_device_is">Stellen Sie sicher, dass das Gerät entsperrt ist, sich in der Nähe befindet und Bluetooth aktiviert ist. Sollten die Probleme weiterhin bestehen, entfernen Sie bitte das Gerät aus den Bluetooth-Einstellungen Ihres Telefons, löschen Sie das Ledger-Konto und koppeln Sie Ihren Ledger erneut, indem Sie den Anweisungen der Pera-Wallet folgen.</string>
@@ -460,6 +458,7 @@
     <string name="re_enter_your_new_six_digit_pin">Gebn Sie Ihren neuen \nsechsstelligen Zugangscode erneut ein</string>
     <string name="wrong_passphrase">Falsche Passphrase</string>
     <string name="account_not_found">Konto nicht gefunden. Bitte versuchen Sie es erneut, indem Sie die richtige Passphrase eingeben.</string>
+    <string name="account_is_verified">Konto ist verifiziert!</string>
     <string name="verified">Verifiziert</string>
     <string name="copy_id">ID kopieren</string>
     <string name="enter_a_passcode">Zugangscode eingeben</string>
@@ -499,7 +498,6 @@
     <string name="no_account_found">Kein Konto gefunden</string>
     <string name="try_different_account_name">Anderen Kontonamen versuchen</string>
     <string name="add_note_with_plus">+ Bemerkung hinzufügen</string>
-    <string name="confirm_order">Order bestätigen</string>
     <string name="approximate_currency_value">≈ %1$s</string>
     <string name="enter_your_note">Bemerkung eingeben</string>
     <string name="do_not_share">Geben Sie diese Passphrase an niemanden weiter, da sie vollen Zugriff auf Ihr Konto gewährt.</string>
@@ -568,7 +566,10 @@
     <string name="how_we_calculate_portfolio">Wie wir den Portfoliowert berechnen</string>
     <string name="the_total_portfolio_value">Der Gesamtportfoliowert wird berechnet, indem alle auf Ihren Konten verfügbaren Assets und Algo addiert werden. Wenn Sie mehrere Wallets besitzen, ist der Gesamtportfoliowert die Summe aller Konten.\n\nDie Kurse der Assets werden auf der Grundlage der täglich von Tinyman abgerufenen Werte geschätzt. Bitte beachten Sie, dass einige Werte möglicherweise nicht verfügbar sind, daher sollte der Gesamtportfoliowert als Schätzung betrachtet werden.\n\nÜberwachungskonten werden nicht als Teil Ihres Portfolios betrachtet und sind in der Berechnung des Gesamtportfolios nicht enthalten.</string>
     <string name="undefined">Nicht definiert</string>
+    <string name="pera_app_is_locked">Die Pera Wallet-App ist gesperrt</string>
     <string name="rate_pera_wallet">Pera-Wallet bewerten</string>
+    <string name="welcome_to_pera">Willkommen bei\nPera Wallet</string>
+    <string name="start_using_pera">Pera Wallet jetzt verwenden</string>
     <string name="is_your_ledger_paired">Ist Ihr Ledger mit diesem Gerät gekoppelt?\nFalls nicht, befolgen Sie bitte diese Schritte:</string>
     <string name="you_are_about_to_delete">Sie sind im Begriff, alle Daten in der Wallet zu löschen, einschließlich Ihrer gespeicherten Konten. Stellen Sie sicher, dass Sie Ihre Kontopasswörter an einem anderen Ort gespeichert haben, bevor Sie den Vorgang bestätigen. Andernfalls können Sie Ihre Konten nicht wiederherstellen. Sind Sie sicher, dass Sie fortfahren möchten?</string>
     <string name="your_data_has_been">Ihre Daten wurden erfolgreich gelöscht</string>
@@ -576,11 +577,20 @@
     <string name="please_return_to">Bitte kehren Sie zu <annotation replacement="peer_name">peerNamePlaceholder</annotation> zurück, um Ihren Vorgang fortzusetzen und abzuschließen. Sie können alle verbundenen Sitzungen auf der Seite \"Einstellungen\" finden.</string>
     <string name="scan_an_algorand">Scannen Sie einen QR-Code\nmit einer Algorand-Adresse</string>
     <string name="current_balance">Aktueller\nKontostand</string>
-    <string name="order_received">Order empfangen</string>
     <string name="your_order_was">Ihre Order wurde erfolgreich empfangen</string>
     <string name="show_note">Notiz anzeigen</string>
-    <string name="after_confirming_pairing_on">Nachdem Sie die Kopplung auf Ihrem Ledger-Gerät bestätigt haben, öffnen Sie die Algorand-App.</string>
-    <string name="ledger_not_found">Ledger nicht gefunden!</string>
-    <string name="if_you_are_having_ledger">Wenn Sie Verbindungsprobleme mit dem Ledger Nano X haben, entfernen Sie bitte das Gerät aus den Bluetooth-Einstellungen Ihres Telefons, löschen Sie das Ledger-Konto und koppeln Sie Ihren Ledger erneut, indem Sie den Anweisungen der Pera Wallet folgen.</string>
-    <string name="open_ledger_support">Ledger-Support öffnen</string>
+    <string name="create_a_passphrase_backup">Erstellen Sie einen Passphrase-Backup für Ihr Konto</string>
+    <string name="creating_a_passphrase_backup">Durch die Erstellung eines Passphrase-Backups können Sie Ihr Konto wiederherstellen. Wenn Sie Ihr Gerät verlieren, das Konto entfernen oder die App löschen, können Sie den Zugang zu Ihrem Algorand-Konto ohne die Passphrase dauerhaft verlieren!</string>
+    <string name="congratulations_your_account">Herzlichen Glückwunsch, Ihr Konto ist jetzt einsatzbereit.</string>
+    <string name="welcome_to_pera_your_account">Welcome bei Pera Wallet! Ihr Konto kann jetzt verwendet werden.</string>
+    <string name="loading">Wird geladen</string>
+    <string name="algorand_wallet_is_now">Es ist offiziell! \nAlgorand Wallet ist jetzt Pera Wallet.</string>
+    <string name="we_are_very_excited">Wir freuen uns sehr, Ihnen mitteilen zu können, dass Algorand Wallet jetzt Pera Wallet heißt. Dies ist viel mehr als nur ein neuer Name und ein neues Logo. Wir relaunchen die beliebteste Wallet im Algorand-Ökosystem mit einem neuen Fokus auf unsere Roadmap, Partnerintegrationen und Community.\n\nKeine Sorge, Pera Wallet wird von demselben Team entwickelt und gewartet und alle Funktionen, die Sie kennen und lieben, sind wie gewohnt vorhanden - mit vielen weiteren, die in den kommenden Monaten hinzukommen werden.\n\nUm mehr über den Relaunch und unsere Roadmap zu erfahren, besuchen Sie bitte den <annotation type="color"><annotation url="peraBlogUrl">Pera Wallet Blog</annotation></annotation>.</string>
+    <string name="remove_all_accounts_and_logout">Alle Konten entfernen und abmelden</string>
+    <string name="yes_remove_all_accounts">Ja, alle Konten entfernen und abmelden</string>
+    <string name="i_want_to_recover">Ich möchte ein Algorand-Konto mit meiner aus 25 Wörtern bestehenden Passphrase wiederherstellen</string>
+    <string name="sorry_we_cant_show_account">Leider können wir die Details zu diesem Konto nicht anzeigen. Es sieht so aus, als ob wir Probleme mit der Berechnung haben.\n\nBitte beachten Sie, dass einige Assets möglicherweise nicht verfügbar sind. Der Gesamtwert des Portfolios sollte daher als Schätzung betrachtet werden.</string>
+    <string name="sorry_we_cant_show_portfolio">Leider können wir die Details zu diesem Portfolio nicht anzeigen. Es sieht so aus, als ob wir Probleme mit der Berechnung haben.\n\nBitte beachten Sie, dass einige Assets möglicherweise nicht verfügbar sind. Der Gesamtwert des Portfolios sollte daher als Schätzung betrachtet werden.</string>
+    <string name="transaction_request_faq">Transaktionsanfrage FAQ</string>
+    <string name="external_applications_also">Externe Anwendungen, auch dApps genannt, können Transaktionsanfragen stellen, die von der Pera Wallet nicht kontrolliert werden. Bitte stellen Sie sicher, dass Sie diese Transaktionen sorgfältig prüfen, bevor Sie sie genehmigen und signieren.\n\nAlle Transaktionen sind irreversibel. Genehmigen Sie niemals Transaktionen von dApps, die Sie nicht kennen.</string>
 </resources>

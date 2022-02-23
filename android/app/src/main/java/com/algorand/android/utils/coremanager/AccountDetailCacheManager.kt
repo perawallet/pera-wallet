@@ -32,7 +32,7 @@ class AccountDetailCacheManager(
     private val accountDetailUseCase: AccountDetailUseCase,
     private val accountManager: AccountManager,
     private val accountDetailUpdateHelper: AccountDetailUpdateHelper
-) : BaseManager() {
+) : BaseCacheManager() {
 
     private var accountBlockCollector: suspend (CacheResult<Long>?, List<Account>) -> Unit = { blockCache, accounts ->
         onAccountAndBlockCacheUpdate(blockCache, accounts)

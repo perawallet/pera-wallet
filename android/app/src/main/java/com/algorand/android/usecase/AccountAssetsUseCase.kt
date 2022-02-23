@@ -40,15 +40,15 @@ class AccountAssetsUseCase @Inject constructor(
             mutableListOf<AccountDetailAssetsItem>().apply {
                 add(AccountDetailAssetsItem.TitleItem(R.string.assets))
                 add(AccountDetailAssetsItem.SearchViewItem)
+                if (accountDetailUseCase.canAccountSignTransaction(publicKey)) {
+                    add(AccountDetailAssetsItem.AssetAdditionItem)
+                }
                 accountAssetData.forEach { accountAssetData ->
                     accountValue += (accountAssetData as? OwnedAssetData)?.amountInSelectedCurrency ?: BigDecimal.ZERO
                     add(createAssetListItem(accountAssetData))
                 }
                 val selectedCurrencySymbol = algoPriceUseCase.getSelectedCurrencySymbol()
                 add(0, AccountDetailAssetsItem.AccountValueItem(accountValue.formatAsCurrency(selectedCurrencySymbol)))
-                if (accountDetailUseCase.canAccountSignTransaction(publicKey)) {
-                    add(AccountDetailAssetsItem.AssetAdditionItem)
-                }
             }
         }
     }

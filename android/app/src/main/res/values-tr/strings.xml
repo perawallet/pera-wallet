@@ -120,7 +120,6 @@
     <string name="scanned_qr_is_not_valid">Taranan QR Kodu geçersiz.</string>
     <string name="connect">Bağlan</string>
     <string name="error_default_title">Hata!</string>
-    <string name="pair_ledger_device">Ledger Cihazını Eşleştir</string>
     <string name="make_sure_your_ledger">Ledger cihazınızın açık ve Bluetooth özelliğinin etkin olduğundan emin olun.</string>
     <string name="open_the_algorand_app">Algorand uygulamasını Ledger\'ınızda açın. </string>
     <string name="make_sure_bluetooth">Akıllı telefonunuzda Bluetooth\'un etkin olduğundan emin olun.</string>
@@ -128,11 +127,6 @@
     <string name="verified_with_icon">Doğrulandı <annotation type="verified-icon"> </annotation></string>
     <string name="all">Tümü</string>
     <string name="verified_assets">Doğrulanan Varlıklar</string>
-    <string name="what_does_asset">Varlık doğrulama nedir?</string>
-    <string name="verified_assets_first_paragraph">Doğrulama sürecimizden geçen varlıklar, belirli durumdaki bu ASA uyarınca doğrulanmış web sitelerine ve herkese açık bilgilere sahip olan bilinen projelerdir. Doğrulanma durumu, varlık için bir onay teşkil etmemektedir. Pera Wallet, doğrulanmış ASA sahipleri ile herhangi bir ilişki içerisinde bulunmamaktadır. Bu rozet <annotation type="verified-icon"> </annotation> yalnızca bilgilendirme amacı taşımaktadır.</string>
-    <string name="verified_assets_second_paragraph">Bu, işlem yapılması istenmeyen varlıkların yanlışlıkla işlem görmemesi için ikinci bir savunma mekanizması görevi görmesine yardımcı oluyor.</string>
-    <string name="verified_assets_third_paragraph">Bununla birlikte, söz konusu varlıkla işlem yapmadan önce varlık kimliğinin seçmek istediğiniz varlığa ait olduğunu her zaman tekrar kontrol etmeniz gerekir.</string>
-    <string name="verified_assets_fourth_paragraph">Doğrulama süreci ile ilgili herhangi bir sorunuz veya uygulama ile ilgili genel bir geri bildiriminiz varsa, bizimle iletişime geçmenizi öneririz.</string>
     <string name="advanced_troubleshooting">Gelişmiş Sorun Giderme</string>
     <string name="connecting_to_ledger">Ledger\'a bağlanıyor…</string>
     <string name="ledger_approval">Ledger Onayı</string>
@@ -168,7 +162,6 @@
     <string name="go_to_home">Ana Sayfaya Git</string>
     <string name="accept">Kabul et</string>
     <string name="add_new_asset">Yeni Varlık Ekle</string>
-    <string name="add_new_account">Yeni Hesap Ekle</string>
     <string name="try_different">Farklı bir varlık adı veya varlık kimliği dene</string>
     <string name="copy_address">Adresi kopyala</string>
     <string name="account_address">Hesap adresi</string>
@@ -216,7 +209,6 @@
     <string name="your_account_s_public">Hesabınızın ortak anahtarı, bakiyeleri ve yapılandırması değişmeyecek.</string>
     <string name="add_account">Hesap Ekle</string>
     <string name="confirm_rekeying">Yeniden Anahtarlamayı Onayla</string>
-    <string name="total_rekeying_fee">Toplam Yeniden Anahtarlama Komisyonu %1$s</string>
     <string name="plus_more_assets">+%1$d varlık daha</string>
     <string name="finalize_rekeying">Yeniden Anahtarlamayı Bitir</string>
     <string name="new_ledger">Yeni Ledger</string>
@@ -227,7 +219,7 @@
     <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation>, size <annotation replacement="asset">assetPlaceholder</annotation> göndermek istiyor. Ancak, siz bu varlığı desteklemiyorsunuz. Bu varlığı hesabınıza eklemek için buraya dokunun.</annotation></string>
     <string name="transaction_send_successful"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> işleminiz, <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> adresinden <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> adresine gönderilerek tamamlandı.</string>
     <string name="transaction_send_failed"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> işleminiz, <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> adresinden <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> adresine gönderilemeyerek başarısız oldu.</string>
-    <string name="transaction_received"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation>, <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> adresine <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> tarafından gönderildi.</string>
+    <string name="notification_algo_received_message"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation>, <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> adresine <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> tarafından gönderildi.</string>
     <string name="too_many_pin_attempts">Çok fazla PIN denemesi</string>
     <string name="reset_all_data">Tüm Verileri Sıfırla</string>
     <string name="this_ledger_device">Bu Ledger cihazı aşağıdaki hesapların işlemlerini imzalayabilir. Pera Wallet\'a eklemek istediğiniz hesapları seçin.</string>
@@ -314,9 +306,7 @@
     <string name="transacting_tips">İşlemlere Yönelik İpuçları</string>
     <string name="the_only_way_to">Bir Algorand hesabını kurtarmanın tek yolu bu kurtarma parolasıdır.\n\n<annotation font="dmsans_italic"><annotation custom="warning_color"><annotation type="bold">Uyarı</annotation>: Hesabınıza tam erişim sağladığından, bu parolayı kimseyle paylaşmayın.</annotation></annotation></string>
     <string name="monitor_activity_of">Bir kurtarma parolasına gerek kalmadan bir hesabın etkinliğini izleyin. Soğuk depolamada tutulan varlıkların izlenmesi için yararlıdır.\n\n<annotation font="dmsans_italic"><annotation custom="warning_color"><annotation type="bold">Uyarı</annotation>: İlgili hesabın kurtarma parolasına sahip değilseniz, bu hesaba varlık göndermeyin.</annotation></annotation></string>
-    <string name="i_want_a_new">Yeni bir adres ile kurtarma parolasına sahip yeni bir hesap istiyorum</string>
     <string name="i_want_to_monitor">Soğuk depolamada tutulan bir hesabı izlemek istiyorum</string>
-    <string name="i_want_to_create_an">Ledger donanım cüzdanım ile desteklenen bir hesap ile oluşturmak istiyorum</string>
     <string name="you_are_creating">Algorand Hesabının salt okunur bir görünümünü oluşturuyorsunuz. Bu hesaba varlık göndermeniz ve ilgili hesabın kurtarma parolasına sahip olmamanız durumunda gönderilen varlıklar kaybolacaktır.</string>
     <string name="keep_this_recovery_passphrase">Bu kurtarma parolasını yalnızca sizin ulaşabileceğiniz güvenli bir yerde saklayın. Bu kurtarma parolasını kaybetmeyin.</string>
     <string name="learn_more">Daha Fazla Bilgi</string>
@@ -427,6 +417,9 @@
     <string name="on_the_ledger_home_screen">Ledger ana sayfasında eşleştirmeyi onaylayın.</string>
     <string name="once_pairing_is_confirmed">Eşleştirmenin onaylanmasının ardından Algorand Ledger uygulamasını açın.</string>
     <string name="pairing_failed">Eşleştirilemedi!</string>
+    <string name="after_confirming_pairing_on">Eşleşmeyi Ledger cihazınızda onayladıktan sonra Algorand uygulamasını açın.</string>
+    <string name="ledger_not_found">Ledger bulunamadı!</string>
+    <string name="open_ledger_support">Ledger Support\'u Aç</string>
     <string name="please_follow_these_steps">Lütfen şu adımları izleyin:</string>
     <string name="having_ledger_nano_x">Ledger Nano X bağlantı sorunları mı yaşıyorsunuz?</string>
     <string name="make_sure_the_device_is">Cihazın kilidinin açıldığından, yakında bulunduğundan ve Bluetooth\'unun etkin olduğundan emin olun. Sorun devam ederse, lütfen cihazı telefonunuzun Bluetooth ayarlarından kaldırın, Ledger hesabını da kaldırın. Ardından, Pera Wallet talimatlarını izleyerek Ledger\'ınızı yeniden eşleştirin.</string>
@@ -492,7 +485,6 @@
     <string name="no_account_found">Hesap bulunamadı</string>
     <string name="try_different_account_name">Farklı bir hesap adı ile deneyin</string>
     <string name="add_note_with_plus">+ Not Ekle</string>
-    <string name="confirm_order">Emri Onayla</string>
     <string name="approximate_currency_value">≈ %1$s</string>
     <string name="enter_your_note">Notunuzu girin</string>
     <string name="do_not_share">Hesabınıza tam erişim sağladığından bu parolayı kimseyle paylaşmayın.</string>
@@ -580,11 +572,17 @@
     <string name="please_return_to">İşleminize devam etmek ve işleminizi tamamlamak için lütfen <annotation replacement="peer_name">peerNamePlaceholder</annotation> öğesine dönün. Tüm bağlanan Oturumları özel Ayarlar sayfasında bulabilirsiniz.</string>
     <string name="scan_an_algorand">Algorand Adresi\nQR Kodu Tarayın</string>
     <string name="current_balance">Mevcut\nBakiye</string>
-    <string name="order_received">Emir Alındı</string>
-    <string name="your_order_was">Emriniz başarıyla alındı</string>
     <string name="show_note">Notu Göster</string>
-    <string name="after_confirming_pairing_on">Eşleşmeyi Ledger cihazınızda onayladıktan sonra Algorand uygulamasını açın.</string>
-    <string name="ledger_not_found">Ledger bulunamadı!</string>
-    <string name="if_you_are_having_ledger">Ledger Nano X bağlantı sorunları yaşıyorsanız, lütfen cihazı telefonunuzun Bluetooth ayarlarından kaldırın, Ledger hesabını da kaldırın. Ardından, Pera Wallet talimatlarını izleyerek Ledger\'ınızı yeniden eşleştirin.</string>
-    <string name="open_ledger_support">Ledger Support\'u Aç</string>
+    <string name="create_a_passphrase_backup">Hesabınız için bir parola yedeği oluşturun</string>
+    <string name="creating_a_passphrase_backup">Bir parola yedeği oluşturmanız hesabınızı kurtarmanızı sağlayacak. Parolaya sahip olmadığınızda cihazınızı kaybeder, hesabı kaldırır veya uygulamayı silerseniz, Algorand hesabınıza erişiminizi kalıcı olarak kaybedebilirsiniz.</string>
+    <string name="congratulations_your_account">Tebrikler, hesabınız kullanıma hazır.</string>
+    <string name="welcome_to_pera_your_account">Pera Wallet\'a hoş geldiniz! Hesabınız kullanıma hazır.</string>
+    <string name="loading">Yükleniyor</string>
+    <string name="algorand_wallet_is_now">Resmen değişti!\nAlgorand Wallet artık Pera Wallet.</string>
+    <string name="we_are_very_excited">Algorand Wallet\'ın artık Pera Wallet olarak adlandıracağını duyurmaktan mutluyuz. Bu değişiklik sadece yeni bir isim ve logodan ibaret değil. Yol haritamızı, ortaklık entegrasyonlarımızı ve topluluğumuzu yeniden merkeze alıyor, Algorand ekosistemindeki en popüler cüzdanı yeniden sizinle buluşturuyoruz.\n\nEndişelenmenizi gerektirecek bir durum yok. Pera Wallet aynı ekip tarafından geliştirilmeye devam ediyor, bildiğiniz ve bayıldığınız tüm özellikler hâlâ elinizin altında. Önümüzdeki aylarda birçok yeni özelliği sizinle buluşturmayı planlıyoruz.\n\nYeniden lansman ve yol haritamız hakkında daha fazla bilgi almak için <annotation type="color"><annotation url="peraBlogUrl">Pera Wallet blogunu</annotation></annotation> ziyaret edin</string>
+    <string name="remove_all_accounts_and_logout">Tüm Hesapları Kaldır ve Çıkış Yap</string>
+    <string name="yes_remove_all_accounts">Evet, Tüm Hesapları Kaldır ve Çıkış Yap</string>
+    <string name="i_want_to_recover">25 kelimelik parolamı kullanarak bir Algorand hesabını kurtarmak istiyorum</string>
+    <string name="sorry_we_cant_show_account">Üzgünüz, bu hesabın ayrıntılarını gösteremiyoruz. Hesaplama konusunda bazı sorunlar var gibi görünüyor.\n\nBazı varlıkların fiyat bilgisinin bulunmayabileceğini lütfen dikkate alın. Bu nedenle, toplam portföy değerinin bir tahmin olarak düşünülmesi gerekmektedir.</string>
+    <string name="sorry_we_cant_show_portfolio">Üzgünüz, bu portföyün ayrıntılarını gösteremiyoruz. Hesaplama konusunda bazı sorunlar var gibi görünüyor.\n\nBazı varlıkların fiyat bilgisinin bulunmayabileceğini lütfen dikkate alın. Bu nedenle, toplam portföy değerinin bir tahmin olarak düşünülmesi gerekmektedir.</string>
 </resources>

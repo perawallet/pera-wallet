@@ -169,21 +169,34 @@
         android:name="com.algorand.android.ui.register.registerintro.RegisterIntroFragment"
         android:label="RegisterIntroFragment"
         tools:layout="@layout/fragment_register_type_selection">
+        <argument
+            android:name="isShowingCloseButton"
+            app:argType="boolean" />
+        <argument
+            android:name="shouldNavToRegisterWatchAccount"
+            android:defaultValue="false"
+            app:argType="boolean" />
         <action
             android:id="@+id/action_registerIntroFragment_to_addAccountTypeSelectionFragment"
             app:destination="@id/addAccountTypeSelectionFragment" />
         <action
+            android:id="@+id/action_registerIntroFragment_to_accountRecoveryTypeSelectionFragment"
+            app:destination="@id/accountRecoveryTypeSelectionFragment" />
+        <action
+            android:id="@+id/action_registerIntroFragment_to_registerWatchAccountFragment"
+            app:destination="@id/registerWatchAccountFragment"
+            app:popUpTo="@id/registerIntroFragment"
+            app:popUpToInclusive="true" />
+        <action
             android:id="@+id/action_registerIntroFragment_to_recoverAccountInfoFragment"
             app:destination="@id/recoverAccountInfoFragment" />
-        <argument
-            android:name="isShowingCloseButton"
-            app:argType="boolean" />
     </fragment>
 
     <fragment
         android:id="@+id/addAccountTypeSelectionFragment"
         android:name="com.algorand.android.ui.register.addaccounttypeselection.AddAccountTypeSelectionFragment"
-        android:label="AddAccountTypeSelectionFragment">
+        android:label="AddAccountTypeSelectionFragment"
+        tools:layout="@layout/fragment_register_type_selection">
         <action
             android:id="@+id/action_addAccountTypeSelectionFragment_to_pairLedgerNavigation"
             app:destination="@id/pairLedgerNavigation" />
@@ -200,6 +213,19 @@
         android:name="com.algorand.android.ui.register.recover.RecoverPassphraseVerifiedFragment"
         android:label="RecoverPassphraseVerifiedFragment"
         tools:layout="@layout/fragment_base_info" />
+
+    <fragment
+        android:id="@+id/accountRecoveryTypeSelectionFragment"
+        android:name="com.algorand.android.ui.register.recoveraccounttypeselection.AccountRecoveryTypeSelectionFragment"
+        android:label="RecoverAccountTypeSelectionFragment"
+        tools:layout="@layout/fragment_account_recovery_type_selection">
+        <action
+            android:id="@+id/action_accountRecoveryTypeSelectionFragment_to_recoverAccountInfoFragment"
+            app:destination="@id/recoverAccountInfoFragment" />
+        <action
+            android:id="@+id/action_accountRecoveryTypeSelectionFragment_to_pairLedgerNavigation"
+            app:destination="@id/pairLedgerNavigation" />
+    </fragment>
 
     <dialog
         android:id="@+id/recoverOptionsBottomSheet"

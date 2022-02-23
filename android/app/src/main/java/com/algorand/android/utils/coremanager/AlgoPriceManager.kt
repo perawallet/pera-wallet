@@ -30,7 +30,7 @@ import kotlinx.coroutines.flow.collectLatest
 class AlgoPriceManager constructor(
     private val algoPriceUseCase: AlgoPriceUseCase,
     private val currencyUseCase: CurrencyUseCase
-) : BaseManager() {
+) : BaseCacheManager() {
 
     private val currencyChangeListener = SharedPrefLocalSource.OnChangeListener<String> {
         handleCurrencyChange()
@@ -54,6 +54,12 @@ class AlgoPriceManager constructor(
                 is CacheResult.Error -> waitAndFetchAlgoPrice(NEXT_FETCH_DELAY_AFTER_ERROR)
             }
         }
+    }
+
+    suspend fun refreshAlgoPriceCache() {
+        stopCurrentJob()
+        fetchAlgoPrice()
+        startJob()
     }
 
     private suspend fun waitAndFetchAlgoPrice(delayAsMillis: Long) {
@@ -87,6 +93,6 @@ class AlgoPriceManager constructor(
 
     companion object {
         private const val NEXT_FETCH_DELAY_AFTER_ERROR = 2500L
-        private const val NEXT_FETCH_DELAY_AFTER_SUCCESS = 10_000L
+        private const val NEXT_FETCH_DELAY_AFTER_SUCCESS = 60_000L
     }
 }

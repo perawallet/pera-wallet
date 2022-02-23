@@ -49,11 +49,6 @@ import kotlinx.coroutines.flow.map
 @AndroidEntryPoint
 class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts) {
 
-    /**
-     * TODO
-     * - init error state
-     */
-
     @Inject
     lateinit var sharedPref: SharedPreferences
 
@@ -122,6 +117,7 @@ class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts) {
     override fun onResume() {
         super.onResume()
         navigateToPeraIntroductionFragmentIfNeed()
+        accountsViewModel.refreshCachedAlgoPrice()
     }
 
     private fun configureToolbar() {
@@ -202,11 +198,15 @@ class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts) {
     }
 
     private fun handleAccountOptionsResult(result: HomeAccountOptionsBottomSheet.HomeAccountOptionsResult) {
-        if (result is AddAccount) onAddAccountClick() else onArrangeListClick(result.isWatchAccount)
+        if (result is AddAccount) {
+            onAddAccountClick(result.isWatchAccount)
+        } else {
+            onArrangeListClick(result.isWatchAccount)
+        }
     }
 
-    private fun onAddAccountClick() {
-        nav(MainNavigationDirections.actionNewAccount())
+    private fun onAddAccountClick(isWatchAccount: Boolean = false) {
+        nav(MainNavigationDirections.actionNewAccount(shouldNavToRegisterWatchAccount = isWatchAccount))
     }
 
     private fun onArrangeListClick(isWatchAccount: Boolean) {

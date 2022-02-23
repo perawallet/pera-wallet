@@ -18,6 +18,8 @@ import com.algorand.android.R
 import com.algorand.android.core.BaseBottomSheet
 import com.algorand.android.databinding.BottomSheetVerifiedAssetInformationBinding
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.utils.PERA_SUPPORT_URL
+import com.algorand.android.utils.openPeraSupportUrl
 import com.algorand.android.utils.setXmlStyledString
 import com.algorand.android.utils.viewbinding.viewBinding
 
@@ -33,7 +35,17 @@ class VerifiedAssetInformationBottomSheet : BaseBottomSheet(R.layout.bottom_shee
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.toolbar.configure(toolbarConfiguration)
-        binding.firstParagraphTextView.setXmlStyledString(R.string.verified_assets_first_paragraph)
+        with(binding) {
+            toolbar.configure(toolbarConfiguration)
+            titleTextView.setXmlStyledString(R.string.what_does_asset)
+            thirdParagraphTextView.setXmlStyledString(
+                stringResId = R.string.verified_assets_third_paragraph,
+                colorResId = R.color.errorTextColor
+            )
+            supportUrlTextView.apply {
+                text = PERA_SUPPORT_URL
+                setOnClickListener { context?.openPeraSupportUrl() }
+            }
+        }
     }
 }

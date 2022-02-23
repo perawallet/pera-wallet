@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -61,5 +60,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/verified_assets_fourth_paragraph" />
+
+    <TextView
+        android:id="@+id/supportUrlTextView"
+        style="@style/TextAppearance.Body.Sans.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:textColor="@color/linkPrimary"
+        tools:text="www.perawallet.app/support" />
 
 </LinearLayout>

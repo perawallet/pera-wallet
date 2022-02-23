@@ -21,19 +21,22 @@ import com.algorand.android.models.ChartTimeFrame
 import com.algorand.android.usecase.AnalyticsDetailUseCase
 import com.algorand.android.usecase.CurrencyUseCase
 import com.algorand.android.utils.Resource
+import com.algorand.android.utils.coremanager.AlgoPriceManager
 import java.math.BigDecimal
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 
 // TODO Refactor AnalyticsDetailViewModel line by line and update it based on new architecture
 class AnalyticsDetailViewModel @ViewModelInject constructor(
     private val currencyUseCase: CurrencyUseCase,
-    private val analyticsDetailUseCase: AnalyticsDetailUseCase
+    private val analyticsDetailUseCase: AnalyticsDetailUseCase,
+    private val algoPriceManager: AlgoPriceManager
 ) : BaseViewModel() {
 
     private val algoPriceHistoryCollector: suspend (value: Resource<ChartEntryData>) -> Unit = {
@@ -50,7 +53,10 @@ class AnalyticsDetailViewModel @ViewModelInject constructor(
 
     init {
         selectedTimeFrameFlow
-            .combine(analyticsDetailUseCase.getAlgoExchangeValueFlow(), currencyTimeFrameCollector)
+            .combine(
+                analyticsDetailUseCase.getAlgoExchangeValueFlow().distinctUntilChanged(),
+                currencyTimeFrameCollector
+            )
             .launchIn(viewModelScope)
     }
 
@@ -62,6 +68,12 @@ class AnalyticsDetailViewModel @ViewModelInject constructor(
 
     fun getCurrencyFormattedPrice(price: String): String {
         return "$price ${currencyUseCase.getSelectedCurrency()}"
+    }
+
+    fun refreshCachedAlgoPrice() {
+        viewModelScope.launch {
+            algoPriceManager.refreshAlgoPriceCache()
+        }
     }
 
     private fun getAlgoPriceHistory(selectedInterval: ChartInterval, currentAlgoPrice: BigDecimal) {

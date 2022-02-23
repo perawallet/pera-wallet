@@ -18,6 +18,7 @@ import com.algorand.android.core.BaseViewModel
 import com.algorand.android.models.ui.AccountPreview
 import com.algorand.android.usecase.AccountsPreviewUseCase
 import com.algorand.android.usecase.PeraIntroductionUseCase
+import com.algorand.android.utils.coremanager.AlgoPriceManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -25,7 +26,8 @@ import kotlinx.coroutines.launch
 
 class AccountsViewModel @ViewModelInject constructor(
     private val accountsPreviewUseCase: AccountsPreviewUseCase,
-    private val peraIntroductionUseCase: PeraIntroductionUseCase
+    private val peraIntroductionUseCase: PeraIntroductionUseCase,
+    private val algoPriceManager: AlgoPriceManager
 ) : BaseViewModel() {
 
     private val _accountPreviewFlow = MutableStateFlow(accountsPreviewUseCase.getInitialAccountPreview())
@@ -36,15 +38,21 @@ class AccountsViewModel @ViewModelInject constructor(
         initializeAccountPreviewFlow()
     }
 
+    fun shouldShowPeraIntroductionFragment(): Boolean {
+        return peraIntroductionUseCase.shouldShowPeraIntroduction()
+    }
+
+    fun refreshCachedAlgoPrice() {
+        viewModelScope.launch {
+            algoPriceManager.refreshAlgoPriceCache()
+        }
+    }
+
     private fun initializeAccountPreviewFlow() {
         viewModelScope.launch {
             accountsPreviewUseCase.getAccountsPreview(_accountPreviewFlow.value).collectLatest {
                 _accountPreviewFlow.emit(it)
             }
         }
-    }
-
-    fun shouldShowPeraIntroductionFragment(): Boolean {
-        return peraIntroductionUseCase.shouldShowPeraIntroduction()
     }
 }

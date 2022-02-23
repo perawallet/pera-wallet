@@ -29,7 +29,7 @@ import kotlinx.coroutines.flow.collectLatest
 class BlockPollingManager(
     private val blockPollingUseCase: BlockPollingUseCase,
     private val accountManager: AccountManager
-) : BaseManager() {
+) : BaseCacheManager() {
 
     override suspend fun initialize(coroutineScope: CoroutineScope) {
         accountManager.accounts.collectLatest {

@@ -15,6 +15,7 @@ package com.algorand.android.usecase
 
 import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.R
+import com.algorand.android.SendAlgoNavigationDirections
 import com.algorand.android.core.AccountManager
 import com.algorand.android.mapper.BaseReceiverAccountSelectionMapper
 import com.algorand.android.models.AccountInformation
@@ -93,6 +94,7 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
         return accountTransactionValidator.isAccountAddressValid(toAccountPublicKey)
     }
 
+    @SuppressWarnings("ReturnCount", "LongMethod")
     suspend fun checkToAccountTransactionRequirements(
         accountInformation: AccountInformation,
         assetId: Long,
@@ -155,6 +157,26 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
 
         if (isCloseTransactionToSameAccount) {
             return Result.Error(GlobalException(descriptionRes = R.string.you_can_not_send_your))
+        }
+
+        val isAccountNewlyOpenedAndBalanceInvalid = accountTransactionValidator.isAccountNewlyOpenedAndBalanceInvalid(
+            accountInformation,
+            amount,
+            assetId
+        )
+        if (isAccountNewlyOpenedAndBalanceInvalid) {
+            // TODO: 18.02.2022 Move all navigation logic into the presentation layer
+            return Result.Error(
+                NavigationException(
+                    SendAlgoNavigationDirections.actionGlobalSingleButtonBottomSheet(
+                        titleAnnotatedString = AnnotatedString(R.string.minimum_amount_required),
+                        descriptionAnnotatedString = AnnotatedString(R.string.this_is_the_first_transaction),
+                        buttonStringResId = R.string.i_understand,
+                        drawableResId = R.drawable.ic_info,
+                        drawableTintResId = R.color.errorTintColor
+                    )
+                )
+            )
         }
 
         val toAccountPublicKey = accountInformation.address

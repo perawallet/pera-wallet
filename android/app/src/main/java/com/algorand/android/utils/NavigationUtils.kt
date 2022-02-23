@@ -97,10 +97,11 @@ fun FragmentActivity?.getNavigationBackStackCount(): Int {
     return this?.supportFragmentManager?.primaryNavigationFragment?.childFragmentManager?.backStackEntryCount ?: 0
 }
 
-fun NavController.navigateSafe(@NonNull directions: NavDirections) {
+fun NavController.navigateSafe(@NonNull directions: NavDirections, onError: (() -> Unit)? = null) {
     try {
         navigate(directions)
     } catch (exception: IllegalArgumentException) {
+        onError?.invoke()
         FirebaseCrashlytics.getInstance().recordException(exception)
     }
 }

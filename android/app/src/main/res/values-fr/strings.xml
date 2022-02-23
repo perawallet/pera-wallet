@@ -120,7 +120,6 @@
     <string name="scanned_qr_is_not_valid">Le QR scanné n\'est pas valide.</string>
     <string name="connect">Connecter</string>
     <string name="error_default_title">Erreur!</string>
-    <string name="pair_ledger_device">Associer avec Ledger</string>
     <string name="make_sure_your_ledger">Assurez-vous que votre appareil Ledger est allumé et que Bluetooth est activé.</string>
     <string name="open_the_algorand_app">Ouvrez l\'application Algorand sur votre Ledger.</string>
     <string name="make_sure_bluetooth">Assurez-vous que Bluetooth est activé sur votre smartphone.</string>
@@ -128,10 +127,6 @@
     <string name="verified_with_icon">Vérifié <annotation type="verified-icon"> </annotation></string>
     <string name="all">Tout</string>
     <string name="verified_assets">Actifs vérifiés</string>
-    <string name="what_does_asset">Que signifie la vérification des actifs?</string>
-    <string name="verified_assets_second_paragraph">Cela aide à éviter les transactions par erreur avec un actif involontaire.</string>
-    <string name="verified_assets_third_paragraph">Cela étant dit, vous devez <annotation type="color">toujours vérifier</annotation> que l\'ID de l\'actif est celui que vous aviez l\'intention de choisir avant d\'effectuer des transactions avec cet actif.</string>
-    <string name="verified_assets_fourth_paragraph">Si vous avez des questions sur le processus de vérification ou des commentaires généraux sur l\'application, nous vous encourageons à <annotation type="color">nous contacter</annotation>.</string>
     <string name="advanced_troubleshooting">Dépannage avancé</string>
     <string name="connecting_to_ledger">Connexion au Ledger…</string>
     <string name="ledger_approval">Approbation Ledger</string>
@@ -140,6 +135,7 @@
     <string name="ledger_info_power_second_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">Pour un dépannage plus avancé, veuillez consulter le <annotation type="bold"><annotation type="color">Guide de dépannage Bluetooth.</annotation></annotation></annotation></string>
     <string name="ledger_info_ledger_first_paragraph"><annotation url="https://www.ledger.com/start">Commencez par suivre le didacticiel complet <annotation type="bold"><annotation type="color">Getting Started</annotation></annotation> de Ledger. </annotation></string>
     <string name="ledger_info_ledger_second_paragraph">Lorsque le didacticiel arrive au point où il vous demande de «sélectionner la ou les applications que vous souhaitez installer sur votre appareil», tapez Algorand dans la barre de recherche et installez l\'application.</string>
+    <string name="ledger_info_algorand_first_paragraph"><annotation url="https://www.ledger.com/start">Commencez par suivre le tutoriel <annotation type="bold"><annotation type="color">Getting Started</annotation></annotation> de Ledger, qui vous expliquera comment installer et ouvrir des applications sur votre appareil Ledger.</annotation></string>
     <string name="ledger_info_algorand_second_paragraph">Si vous n\'avez pas encore installé l\'application <annotation type="bold"> Algorand </annotation> sur votre appareil Ledger, lorsque le didacticiel arrive au point où il vous dirige vers «sélectionnez la ou les applications que vous souhaitez installer sur votre appareil», tapez Algorand dans la barre de recherche et installez l\'application.</string>
     <string name="error_connection_title">Erreur de connexion</string>
     <string name="error_connection_message">Impossible de se connecter au périphérique Ledger. Assurez-vous que l\'appareil est déverrouillé, à proximité et que le Bluetooth est activé.</string>
@@ -155,6 +151,7 @@
     <string name="error_cancelled_title">Transaction annulée</string>
     <string name="error_cancelled_message">Le dispositif Ledger associé a annulé la demande de transaction.</string>
     <string name="error_unsupported_title">Appareil non pris en charge</string>
+    <string name="error_unsupported_message">L\'appareil auquel vous essayez de vous connecter n\'est pas pris en charge par Pera Wallet.</string>
     <string name="bluetooth_location_services">Erreur des services de localisation Bluetooth</string>
     <string name="please_ensure">Veuillez vous assurer que les services de localisation sont activés.</string>
     <string name="terms_and_services">Conditions de Service</string>
@@ -165,7 +162,6 @@
     <string name="go_to_home">Aller à l\'accueil</string>
     <string name="accept">Accepter</string>
     <string name="add_new_asset">Ajouter un nouvel actif</string>
-    <string name="add_new_account">Ajouter un nouveau compte</string>
     <string name="try_different">Essayez un autre nom d\'actif ou un autre identifiant d\'actif</string>
     <string name="copy_address">Copier l\'adresse</string>
     <string name="account_address">Adresse du compte</string>
@@ -213,7 +209,6 @@
     <string name="your_account_s_public">La clé publique, les soldes et la configuration de votre compte ne changeront pas.</string>
     <string name="add_account">Ajouter un compte</string>
     <string name="confirm_rekeying">Finaliser Récupération</string>
-    <string name="total_rekeying_fee">Frais de recodage totaux de %1$s</string>
     <string name="plus_more_assets">+%1$d actifs en plus</string>
     <string name="finalize_rekeying">Finaliser Récupération</string>
     <string name="new_ledger">Nouveau Ledger</string>
@@ -224,7 +219,7 @@
     <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> essaie de vous envoyer <annotation replacement="asset">assetPlaceholder</annotation> mais vous ne le prenez pas en charge. Appuyez ici pour ajouter cet actif à votre compte.</string>
     <string name="transaction_send_successful">Votre transaction de <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> de <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> vers <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> est terminée.</string>
     <string name="transaction_send_failed">Votre transaction de <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> depuis <annotation font="dmsans_medium"><annotation replacement="sender">addressplaceholder</annotation></annotation> vers <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> a échoué.</string>
-    <string name="transaction_received"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> ont été envoyés à <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> par <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>.</string>
+    <string name="notification_algo_received_message"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> ont été envoyés à <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> par <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>.</string>
     <string name="too_many_pin_attempts">Trop de tentatives de code PIN</string>
     <string name="reset_all_data">Réinitialiser toutes les données</string>
     <string name="this_account_has">Ce compte a été recréé. Afin de signer des transactions, veuillez récupérer ce compte avec une phrase secrète ou un appareil Ledger.</string>
@@ -255,7 +250,7 @@
         <item quantity="other">%1$s jours</item>
     </plurals>
     <plurals name="account_found">
-        <item quantity="one">1 Compte Trouvé</item>
+        <item quantity="one">%1$s Compte Trouvé</item>
         <item quantity="other">%1$s Comptes Trouvés</item>
     </plurals>
     <string name="push_notifications">Notifications push</string>
@@ -308,9 +303,7 @@
     <string name="transacting_tips">Conseils pour les transactions</string>
     <string name="the_only_way_to">La seule façon de récupérer un compte Algorand est d\'utiliser cette phrase secrète de récupération. \n \n <annotation font="dmsans_italic"> <annotation custom="warning_color"> <annotation type="bold"> Avertissement </annotation> : ne partagez pas cette phrase de passe avec qui que ce soit, car elle accorde un accès complet à votre compte . </annotation> </annotation></string>
     <string name="monitor_activity_of">Surveillez l\'activité d\'un compte sans avoir besoin d\'une phrase secrète de récupération. Ceci est utile pour surveiller les actifs conservés hors ligne. \n \n <annotation font="dmsans_italic"> <annotation custom="warning_color"> <annotation type="bold"> Avertissement </annotation> : Si vous ne disposez pas de la phrase secrète de récupération correspondante, n\'envoyez pas d\'actifs vers ce compte. </annotation> </annotation></string>
-    <string name="i_want_a_new">Je veux un nouveau compte avec une nouvelle adresse et une nouvelle phrase secrète de récupération.</string>
     <string name="i_want_to_monitor">Je souhaite surveiller un compte conservé hors ligne.</string>
-    <string name="i_want_to_create_an">Je souhaite créer un compte utilisant mon portefeuille physique Ledger.</string>
     <string name="you_are_creating">Vous créez une vue en lecture seule d\'un compte Algorand. Si vous envoyez des actifs vers ce compte et que vous ne disposez pas de la phrase secrète de récupération correspondante, ces actifs seront perdus.</string>
     <string name="keep_this_recovery_passphrase">Conservez cette phrase secrète de récupération dans un emplacement sécurisé accessible uniquement par vous. Ne perdez pas cette phrase secrète de récupération.</string>
     <string name="learn_more">En Savoir Plus</string>
@@ -425,6 +418,9 @@
     <string name="on_the_ledger_home_screen">Sur l\'écran d\'accueil du Ledger, confirmez le jumelage.</string>
     <string name="once_pairing_is_confirmed">Une fois le jumelage confirmé, ouvrez l\'application Algorand sur le Ledger.</string>
     <string name="pairing_failed">Le jumelage a échoué !</string>
+    <string name="after_confirming_pairing_on">Après avoir confirmé le jumelage sur votre appareil Ledger, ouvrez l\'application Algorand.</string>
+    <string name="ledger_not_found">Ledger non trouvé !</string>
+    <string name="open_ledger_support">Ouvrir le support Ledger</string>
     <string name="please_follow_these_steps">Veuillez suivre ces étapes :</string>
     <string name="having_ledger_nano_x">Vous avez des problèmes de connexion au Ledger Nano X ?</string>
     <string name="make_sure_the_device_is">Assurez-vous que l\'appareil est déverrouillé, à proximité et que le Bluetooth est activé. Si les problèmes persistent, veuillez supprimer l\'appareil des paramètres Bluetooth de votre téléphone, supprimez le compte Ledger, puis associez à nouveau votre Ledger en suivant les instructions d\'Pera Wallet.</string>
@@ -446,6 +442,7 @@
     <string name="re_enter_your_new_six_digit_pin">Entrez à nouveau votre nouveau code PIN\n6 chiffres</string>
     <string name="wrong_passphrase">Mauvaise phrase secrète</string>
     <string name="account_not_found">Compte introuvable. Veuillez réessayer en entrant la phrase secrète correcte.</string>
+    <string name="account_is_verified">Le compte est vérifié!</string>
     <string name="verified">Vérifié</string>
     <string name="copy_id">Copier l\'ID</string>
     <string name="enter_a_passcode">Entrez un code d\'accès</string>
@@ -485,7 +482,6 @@
     <string name="no_account_found">Aucun compte trouvé</string>
     <string name="try_different_account_name">Essayez un nom de compte différent</string>
     <string name="add_note_with_plus">+ Ajouter une note</string>
-    <string name="confirm_order">Confirmer l\'ordre</string>
     <string name="approximate_currency_value">≈ %1$s</string>
     <string name="enter_your_note">Entrez votre note</string>
     <string name="do_not_share">Ne partagez cette phrase secrète avec personne, car elle vous donne un accès complet à votre compte.</string>
@@ -565,11 +561,17 @@
     <string name="please_return_to">Veuillez revenir à <annotation replacement="peer_name">peerNamePlaceholder</annotation> pour continuer et terminer votre opération. Vous pouvez trouver toutes les sessions connectées dans la page Paramètres dédiée.</string>
     <string name="scan_an_algorand">Scannez un code QR\nd\'adresseAlgorand</string>
     <string name="current_balance">Solde\nactuel</string>
-    <string name="order_received">Ordre reçu</string>
-    <string name="your_order_was">Votre ordre a bien été reçu</string>
     <string name="show_note">Afficher la note</string>
-    <string name="after_confirming_pairing_on">Après avoir confirmé le jumelage sur votre appareil Ledger, ouvrez l\'application Algorand.</string>
-    <string name="ledger_not_found">Ledger non trouvé !</string>
-    <string name="if_you_are_having_ledger">Si vous rencontrez des problèmes de connexion avec le Ledger Nano X, veuillez supprimer l\'appareil des paramètres Bluetooth de votre téléphone, supprimer le compte Ledger, puis jumeler de nouveau votre Ledger en suivant les instructions d\'Pera Wallet.</string>
-    <string name="open_ledger_support">Ouvrir le support Ledger</string>
+    <string name="create_a_passphrase_backup">Créer une sauvegarde de la phrase secrète pour votre compte</string>
+    <string name="creating_a_passphrase_backup">Créer une sauvegarde de la phrase secrète vous permettra de récupérer votre compte. Sans la phrase secrète, si vous perdez votre appareil, supprimez le compte ou supprimez l\'application, vous pouvez perdre définitivement l\'accès à votre compte Algorand!</string>
+    <string name="congratulations_your_account">Félicitations! Votre compte est prêt à être utilisé.</string>
+    <string name="welcome_to_pera_your_account">Bienvenue sur Pera Wallet! Votre compte est prêt à être utilisé.</string>
+    <string name="loading">Chargement</string>
+    <string name="algorand_wallet_is_now">C\'est officiel!\nLe Portefeuille Algorand s\'appelle désormais Pera Wallet.</string>
+    <string name="we_are_very_excited">Nous sommes ravis d\'annoncer que le Portefeuille Algorand s\'appelle désormais Pera Wallet. Ce changement symbolise bien plus qu\'un nouveau nom et un nouveau logo. C\'est un nouveau départ pour le portefeuille le plus populaire de l\'écosystème Algorand, et nous mettons l\'accent sur notre feuille de route, les intégrations de partenaires et notre communauté.\n\nNe vous inquiétez pas, Pera Wallet est conçu et maintenu par la même équipe et toutes les fonctionnalités que vous connaissez et aimez seront conservées - et aussi beaucoup d\'autres à venir dans les prochains mois.\n\nPour en savoir plus sur ce nouveau lancement et sur notre feuille de route, rendez-vous sur le <annotation type="color"><annotation url="peraBlogUrl">blog Pera Wallet</annotation></annotation></string>
+    <string name="remove_all_accounts_and_logout">Supprimer tous les comptes et se déconnecter</string>
+    <string name="yes_remove_all_accounts">Oui, supprimer tous les comptes et se déconnecter</string>
+    <string name="i_want_to_recover">Je souhaite récupérer un compte avec une phrase secrète à 25 mots</string>
+    <string name="sorry_we_cant_show_account">Nous sommes désolés, nous ne pouvons pas afficher les détails de ce compte. Il semble que nous ayons des problèmes pour le calcul.\n\nVeuillez noter que certaines valeurs d\'actifs peuvent ne pas être disponibles, par conséquent la valeur totale du portefeuille doit être considérée comme une estimation.</string>
+    <string name="sorry_we_cant_show_portfolio">Nous sommes désolés, nous ne pouvons pas afficher les détails de ce portefeuille. Il semble que nous ayons des problèmes pour le calcul.\n\nVeuillez noter que certaines valeurs d\'actifs peuvent ne pas être disponibles, par conséquent la valeur totale du portefeuille doit être considérée comme une estimation.</string>
 </resources>

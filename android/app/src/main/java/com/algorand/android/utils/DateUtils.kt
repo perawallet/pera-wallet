@@ -142,6 +142,8 @@ fun getRelativeTimeDifference(resources: Resources, time: ZonedDateTime, timeDif
 
 fun getCurrentTimeAsSec() = System.currentTimeMillis() / UNIX_TIME_STAMP_MULTIPLIER
 
+fun getCurrentSystemTimeAsMillis() = System.currentTimeMillis()
+
 fun convertMinToSec(min: Long) = min * MIN_TO_SEC_MULTIPLIER
 
 fun getZonedDateTimeAsSec() = ZonedDateTime.now().toEpochSecond()

@@ -23,7 +23,7 @@ sealed class CacheResult<T> {
 
         companion object {
             fun <T> create(data: T): Success<T> {
-                return Success(data, System.currentTimeMillis())
+                return Success(data, createCreationTimestamp())
             }
         }
     }
@@ -50,5 +50,9 @@ sealed class CacheResult<T> {
             is Success -> onSuccess?.invoke(this)
             is Error -> onFailed?.invoke(this)
         }
+    }
+
+    companion object {
+        fun createCreationTimestamp() = getCurrentSystemTimeAsMillis()
     }
 }

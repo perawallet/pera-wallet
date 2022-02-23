@@ -31,14 +31,17 @@
         style="@style/TextAppearance.Body.Large"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
         android:layout_marginTop="@dimen/spacing_xxlarge"
-        android:text="@string/order_received" />
+        android:text="@string/transaction_received" />
 
     <TextView
         style="@style/TextAppearance.Description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
         android:layout_marginTop="@dimen/spacing_small"
+        android:gravity="center"
         android:text="@string/your_order_was" />
 
 </LinearLayout>

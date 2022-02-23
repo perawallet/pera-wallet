@@ -22,6 +22,40 @@
         app:popUpTo="@id/sendAlgoNavigation"
         app:popUpToInclusive="true" />
 
+    <action
+        android:id="@+id/action_global_singleButtonBottomSheet"
+        app:destination="@id/singleButtonBottomSheetNavigation">
+        <argument
+            android:name="titleAnnotatedString"
+            app:argType="com.algorand.android.models.AnnotatedString" />
+        <argument
+            android:name="descriptionAnnotatedString"
+            android:defaultValue="@null"
+            app:argType="com.algorand.android.models.AnnotatedString"
+            app:nullable="true" />
+        <argument
+            android:name="errorAnnotatedString"
+            android:defaultValue="@null"
+            app:argType="com.algorand.android.models.AnnotatedString"
+            app:nullable="true" />
+        <argument
+            android:name="buttonStringResId"
+            android:defaultValue="@string/close"
+            app:argType="reference" />
+        <argument
+            android:name="drawableResId"
+            android:defaultValue="0"
+            app:argType="reference" />
+        <argument
+            android:name="drawableTintResId"
+            android:defaultValue="0"
+            app:argType="reference" />
+        <argument
+            android:name="isResultNeeded"
+            android:defaultValue="false"
+            app:argType="boolean" />
+    </action>
+
     <fragment
         android:id="@+id/sendAlgoFragment"
         android:name="com.algorand.android.ui.send.SendAlgoFragment"

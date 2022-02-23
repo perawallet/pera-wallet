@@ -19,7 +19,6 @@ import com.algorand.android.R
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.ui.common.BaseInfoFragment
-import com.algorand.android.ui.register.recover.RecoverAccountInfoFragmentDirections.Companion.actionRecoverAccountInfoFragmentToRecoverWithPassphraseFragment
 import com.google.android.material.button.MaterialButton
 
 class RecoverAccountInfoFragment : BaseInfoFragment() {
@@ -54,6 +53,6 @@ class RecoverAccountInfoFragment : BaseInfoFragment() {
     }
 
     private fun navigateToRecoverWithPassphraseFragment() {
-        nav(actionRecoverAccountInfoFragmentToRecoverWithPassphraseFragment())
+        nav(RecoverAccountInfoFragmentDirections.actionRecoverAccountInfoFragmentToRecoverWithPassphraseFragment())
     }
 }

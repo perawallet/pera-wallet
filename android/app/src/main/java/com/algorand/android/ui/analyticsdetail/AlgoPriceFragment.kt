@@ -106,6 +106,7 @@ class AlgoPriceFragment : DaggerBaseFragment(R.layout.fragment_algo_price) {
     override fun onResume() {
         super.onResume()
         initSavedStateListener()
+        analyticsDetailViewModel.refreshCachedAlgoPrice()
     }
 
     private fun initSavedStateListener() {

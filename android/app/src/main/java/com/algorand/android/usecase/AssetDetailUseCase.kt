@@ -58,7 +58,7 @@ class AssetDetailUseCase @Inject constructor(
     val pendingTransactionDistinctUntilChangedListener
         get() = pendingTransactionUseCase.pendingFlowDistinctUntilChangedListener
 
-    fun getAssetDetailPreviewFlow(publicKey: String, assetId: Long): Flow<AssetDetailPreview> {
+    fun getAssetDetailPreviewFlow(publicKey: String, assetId: Long): Flow<AssetDetailPreview?> {
         return combine(
             algoPriceUseCase.getAlgoPriceCacheFlow(),
             accountDetailUseCase.getAccountDetailCacheFlow(publicKey),
@@ -126,9 +126,11 @@ class AssetDetailUseCase @Inject constructor(
         return pendingTransactionUseCase.fetchPendingTransactions(publicKey, assetId)
     }
 
-    private fun createAssetDetailPreviewForAlgo(accountDetail: AccountDetail?): AssetDetailPreview {
-        // TODO Handle null case
-        val algoAmountData = accountAlgoAmountUseCase.getAccountAlgoAmount(accountDetail!!.account.address)
+    private fun createAssetDetailPreviewForAlgo(accountDetail: AccountDetail?): AssetDetailPreview? {
+        // TODO Find a better way to handling null & error cases
+        if (accountDetail == null) return null
+
+        val algoAmountData = accountAlgoAmountUseCase.getAccountAlgoAmount(accountDetail.account.address)
         val canAccountSignTransaction = accountDetailUseCase.canAccountSignTransaction(accountDetail.account.address)
         return assetDetailPreviewMapper.mapToAssetDetailPreview(
             algoAmountData,
@@ -139,14 +141,19 @@ class AssetDetailUseCase @Inject constructor(
     private fun createAssetDetailPreviewForOtherAssets(
         accountDetail: AccountDetail?,
         assetId: Long
-    ): AssetDetailPreview {
-        val assetHolding = accountDetail?.accountInformation?.assetHoldingList?.firstOrNull { it.assetId == assetId }
+    ): AssetDetailPreview? {
+        // TODO Find a better way to handling null & error cases
+        if (accountDetail == null) return null
+
+        val assetHolding = accountDetail.accountInformation.assetHoldingList.firstOrNull { it.assetId == assetId }
+            ?: return null
         val assetQueryItem = simpleAssetDetailUseCase.getCachedAssetDetail(assetId)?.data
-        // TODO Handle null case
+            ?: return null
+
         val canAccountSignTransaction = accountDetailUseCase.canAccountSignTransaction(
-            accountDetail?.account?.address.orEmpty()
+            accountDetail.account.address
         )
-        val assetData = accountAssetAmountUseCase.getAssetAmount(assetHolding!!, assetQueryItem!!)
+        val assetData = accountAssetAmountUseCase.getAssetAmount(assetHolding, assetQueryItem)
         return assetDetailPreviewMapper.mapToAssetDetailPreview(assetData, canAccountSignTransaction)
     }
 }

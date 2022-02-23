@@ -11,7 +11,6 @@ import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentRegisterTypeSelectionBinding
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.FragmentConfiguration
-import com.algorand.android.models.RegisterFlowType
 import com.algorand.android.models.StatusBarConfiguration
 import com.algorand.android.models.TextButton
 import com.algorand.android.models.ToolbarConfiguration
@@ -22,6 +21,7 @@ import com.algorand.android.utils.openTermsAndServicesUrl
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
+// TODO: 16.02.2022 login_navigation graph should be separated into multiple graphs
 @AndroidEntryPoint
 class RegisterIntroFragment : DaggerBaseFragment(R.layout.fragment_register_type_selection) {
 
@@ -42,27 +42,31 @@ class RegisterIntroFragment : DaggerBaseFragment(R.layout.fragment_register_type
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        checkIfNavigateToRegisterWatchAccount()
         configureToolbar()
         initUi()
     }
 
+    private fun checkIfNavigateToRegisterWatchAccount() {
+        if (registerIntroViewModel.getShouldNavToRegisterWatchAccount()) {
+            nav(RegisterIntroFragmentDirections.actionRegisterIntroFragmentToRegisterWatchAccountFragment())
+        }
+    }
+
     private fun initUi() {
         with(binding) {
-            addAccountSelectionItem.setOnClickListener { onRegisterTypeSelected(RegisterFlowType.ADD_ACCOUNT) }
-            recoverSelectionItem.setOnClickListener { onRegisterTypeSelected(RegisterFlowType.RECOVER) }
+            createAccountSelectionItem.setOnClickListener { navToAddAccountTypeSelectionFragment() }
+            recoveryAccountSelectionItem.setOnClickListener { navToAccountRecoveryTypeSelectionFragment() }
         }
         setupPolicyText()
     }
 
-    private fun onRegisterTypeSelected(registerFlowType: RegisterFlowType) {
-        when (registerFlowType) {
-            RegisterFlowType.ADD_ACCOUNT -> {
-                nav(RegisterIntroFragmentDirections.actionRegisterIntroFragmentToAddAccountTypeSelectionFragment())
-            }
-            RegisterFlowType.RECOVER -> {
-                nav(RegisterIntroFragmentDirections.actionRegisterIntroFragmentToRecoverAccountInfoFragment())
-            }
-        }
+    private fun navToAddAccountTypeSelectionFragment() {
+        nav(RegisterIntroFragmentDirections.actionRegisterIntroFragmentToAddAccountTypeSelectionFragment())
+    }
+
+    private fun navToAccountRecoveryTypeSelectionFragment() {
+        nav(RegisterIntroFragmentDirections.actionRegisterIntroFragmentToAccountRecoveryTypeSelectionFragment())
     }
 
     private fun configureToolbar() {

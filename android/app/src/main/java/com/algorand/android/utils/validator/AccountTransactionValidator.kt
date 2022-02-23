@@ -19,10 +19,12 @@ import com.algorand.android.models.AccountCacheData
 import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.AssetInformation
+import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
 import com.algorand.android.models.Result
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.exceptions.WarningException
 import com.algorand.android.utils.isValidAddress
+import com.algorand.android.utils.minBalancePerAssetAsBigInteger
 import java.math.BigInteger
 import javax.inject.Inject
 
@@ -69,5 +71,15 @@ class AccountTransactionValidator @Inject constructor(
             !isThereAnOptedInApp() || !isThereAnyDifferentAsset()
         } ?: false
         return fromAccount?.account?.address == toAccount && selectedAsset?.isAlgo() == true && isMax && hasOnlyAlgo
+    }
+
+    fun isAccountNewlyOpenedAndBalanceInvalid(
+        receiverAccountInformation: AccountInformation,
+        amount: BigInteger,
+        assetId: Long
+    ): Boolean {
+        return assetId == ALGORAND_ID &&
+            receiverAccountInformation.amount == BigInteger.ZERO &&
+            amount < minBalancePerAssetAsBigInteger
     }
 }

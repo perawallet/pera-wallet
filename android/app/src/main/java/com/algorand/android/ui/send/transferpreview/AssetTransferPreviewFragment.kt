@@ -51,7 +51,7 @@ class AssetTransferPreviewFragment : BaseFragment(R.layout.fragment_transfer_ass
 
     private val toolbarConfiguration = ToolbarConfiguration(
         startIconResId = R.drawable.ic_left_arrow,
-        titleResId = R.string.confirm_order,
+        titleResId = R.string.confirm_transaction,
         startIconClick = ::navBack
     )
 

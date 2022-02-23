@@ -27,6 +27,9 @@ class RegisterIntroViewModel @ViewModelInject constructor(
 ) : ViewModel() {
 
     private val isShowingCloseButton = savedStateHandle.getOrElse(IS_SHOWING_CLOSE_BUTTON_KEY, false)
+    private val shouldNavToRegisterWatchAccount = savedStateHandle.getOrElse(
+        SHOULD_NAV_TO_REGISTER_WATCH_ACCOUNT, false
+    )
 
     fun setRegisterSkip() {
         sharedPref.setRegisterSkip()
@@ -41,7 +44,12 @@ class RegisterIntroViewModel @ViewModelInject constructor(
         return if (isShowingCloseButton) R.drawable.ic_close else null
     }
 
+    fun getShouldNavToRegisterWatchAccount(): Boolean {
+        return shouldNavToRegisterWatchAccount
+    }
+
     companion object {
         private const val IS_SHOWING_CLOSE_BUTTON_KEY = "isShowingCloseButton"
+        private const val SHOULD_NAV_TO_REGISTER_WATCH_ACCOUNT = "shouldNavToRegisterWatchAccount"
     }
 }

@@ -120,7 +120,6 @@
     <string name="scanned_qr_is_not_valid">所扫二维码无效。</string>
     <string name="connect">连接</string>
     <string name="error_default_title">出错！</string>
-    <string name="pair_ledger_device">Ledger设备配对</string>
     <string name="make_sure_your_ledger">确保您的Ledger设备已开启，并启用了蓝牙功能。</string>
     <string name="open_the_algorand_app">在Ledger上打开Algorand应用。</string>
     <string name="make_sure_bluetooth">确认开启手机上的蓝牙功能。</string>
@@ -128,11 +127,6 @@
     <string name="verified_with_icon">已认证 <annotation type="verified-icon"> </annotation></string>
     <string name="all">全部</string>
     <string name="verified_assets">已验证的资产</string>
-    <string name="what_does_asset">资产验证是什么意思？</string>
-    <string name="verified_assets_first_paragraph">通过我们验证过程的资产是已知的项目，其网站和公开信息已对这个特定的ASA进行了验证。验证状态并不是对该资产的背书。Pera钱包与经验证的ASA持有者没有任何关系。这个徽章<annotation type="verified-icon"> </annotation> 仅供参考。</string>
-    <string name="verified_assets_second_paragraph">这有助于防止错误地使用其他资产进行交易。</string>
-    <string name="verified_assets_third_paragraph">也就是说，在进行交易资产之前，您应当<annotation type="color">反复核实</annotation> 该资产编号是否是您想要选择的。</string>
-    <string name="verified_assets_fourth_paragraph">若您对验证过程有疑问，或对本应用有任何反馈，欢迎<annotation type="color"> 联系我们</annotation>。</string>
     <string name="advanced_troubleshooting">高级故障排除</string>
     <string name="connecting_to_ledger">正在连接Ledger…</string>
     <string name="ledger_approval">Ledger批准</string>
@@ -168,7 +162,6 @@
     <string name="go_to_home">返回主页</string>
     <string name="accept">接受</string>
     <string name="add_new_asset">添加新资产</string>
-    <string name="add_new_account">添加新账户</string>
     <string name="try_different">请尝试不同的资产名称或资产编号。</string>
     <string name="copy_address">复制地址</string>
     <string name="account_address">账户地址</string>
@@ -216,7 +209,7 @@
     <string name="your_account_s_public">您账户的公钥、余额以及配置不会改变。</string>
     <string name="add_account">添加账户</string>
     <string name="confirm_rekeying">确认密钥更新</string>
-    <string name="total_rekeying_fee">%1$s的密钥更新总费用</string>
+    <string name="total_rekeying_fee">密钥更新总费用为%1$sALGO</string>
     <string name="plus_more_assets">+%1$d 更多资产</string>
     <string name="finalize_rekeying">最终确认密钥更新</string>
     <string name="new_ledger">新的Ledger</string>
@@ -227,7 +220,7 @@
     <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>试图向您发送<annotation replacement="asset">assetPlaceholder</annotation>，但并不受到您的支持。点此此处将该资产添加到您的账户中。</string>
     <string name="transaction_send_successful">您从 <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> 发送至 <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>的交易 <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> 已经完成。</string>
     <string name="transaction_send_failed">您从 <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> 发送至 <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>的交易 <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation>  没有成功。</string>
-    <string name="transaction_received"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> 已发送至 <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> ，发送人是 <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>。</string>
+    <string name="notification_algo_received_message"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> 已发送至 <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> ，发送人是 <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>。</string>
     <string name="too_many_pin_attempts">密码输入次数过于频繁</string>
     <string name="reset_all_data">重置所有数据</string>
     <string name="this_ledger_device">该Ledger设备可为下列账户签署交易。请选择要添加到您Pera钱包的账户。</string>
@@ -275,9 +268,12 @@
         <item quantity="other">+%1$d资产</item>
     </plurals>
     <string name="continue_text">继续</string>
+    <string name="rekeyed_maximum_error_message">如需在重置密钥的账户上发送最高余额，请维持<annotation replacement="min_balance">min_balance_placeholder</annotation>ALGO的最低余额。该举措是为了确保重置密钥的账户不会发生改变。\n \n您的交易金额将自动更新，显示这一变化。您将可以在下一步中预览交易。</string>
     <string name="we_notice_that_this">我们注意到这是您的第一笔交易。在完成交易之前，请记住以下几点提示：</string>
     <string name="when_sending_to_an_address">如果是首次向该地址发送交易时，可以尝试在发送大笔交易之前，先发送一笔小额的交易测试。</string>
     <string name="exchanges_change_their">交易所经常改变存款地址，所保存的交易所地址可能失效。<annotation custom="highlight_color">请确保您的汇款地址是正确的。</annotation></string>
+    <string name="for_more_information_on">有关交易的更多信息，请<annotation font="dmsans_medium"><annotation custom="tap_here_color">点击这里</annotation></annotation></string>
+    <string name="i_understand">我明白</string>
     <string name="before_you_finalize">在最终确认前，请记住几个小技巧：</string>
     <string name="the_transaction_cannot_be">交易无法完成，因为该交易会使您的帐户余额低于<annotation replacement="min_balance">最低要求余额</annotation>ALGO。</string>
     <string name="recovery_passphrase">恢复助记词</string>
@@ -291,6 +287,7 @@
     <string name="recover">恢复</string>
     <string name="the_last_copied_text">最后复制的文字不是有效的25个字节密码短语。请复制有效的助记词后，再重试一次。</string>
     <string name="make_sure_to_record">请务必使用相应的数字以正确的顺序记录这些单词。</string>
+    <string name="this_6_digit_pin">要有6位数的PIN码，才能使用Pera钱包。我们强烈创建您创建PIN码，即便手机被盗，也能够维护钱包的安全性。</string>
     <string name="increase_your_security">使用PIN码提升账户安全</string>
     <string name="name_your_account">账户命名</string>
     <string name="please_use_biometric">请使用生物识别技术进行操作。</string>
@@ -309,10 +306,9 @@
     <string name="transacting_tips">交易技巧</string>
     <string name="the_only_way_to">恢复Algorand账户的唯一途径是使用恢复助记词。<annotation font="dmsans_italic"><annotation custom="warning_color"><annotation type="bold">警告</annotation>：请勿与任何人分享恢复助记词，因为助记词拥有完整的账户访问权限。</annotation></annotation></string>
     <string name="monitor_activity_of">无需恢复助记词也可监控账户活动。这对有助于监控冷存储中的资产。<annotation font="dmsans_italic"><annotation custom="warning_color"><annotation type="bold">警告：</annotation>若您没有相应的恢复助记词，请勿向该账户发送资产。</annotation></annotation></string>
-    <string name="i_want_a_new">用新地址与助记词创建账户</string>
     <string name="i_want_to_monitor">监控冷储存中的账户。</string>
-    <string name="i_want_to_create_an">创建由Ledger硬件钱包支持的账户。</string>
     <string name="you_are_creating">您正在创建Algorand 账户的只读视图。如果您向该账户发送资产，但没有相应的恢复助记词，所发送的资产将会丢失。</string>
+    <string name="name_your_account_to">在使用Pera钱包时，请为账户取一个容易识别的名称。将名称储存在本地，仅个人可见。</string>
     <string name="keep_this_recovery_passphrase">请将恢复助记词保存在仅您能访问的安全位置，请勿丢失恢复助记词。</string>
     <string name="learn_more">了解更多</string>
     <string name="no_contact_found">未找到联系人</string>
@@ -349,6 +345,7 @@
     <string name="wallet_wants_to_connect"><annotation type="bold"><annotation replacement="app_name">APP名称</annotation>想要连接到您的账户</annotation></string>
     <string name="you_do_not_have_any">您没有 WalletConnect 可以连接的帐户。</string>
     <string name="disconnect">断开</string>
+    <string name="remainder_close_to">剩余部分\n接近于</string>
     <string name="show_asset_url">显示资产URL</string>
     <string name="asset_metadata">资产元数据</string>
     <string name="show_asset_metadata">显示资产元数据</string>
@@ -420,6 +417,10 @@
     <string name="on_the_ledger_home_screen">在Ledger主屏幕上确认配对。</string>
     <string name="once_pairing_is_confirmed">一旦确认配对，请打开Algorand Ledger的APP。</string>
     <string name="pairing_failed">配对失败！</string>
+    <string name="after_confirming_pairing_on">在您的Ledger设备上确认配对后，请打开Algorand Ledger的APP。</string>
+    <string name="ledger_not_found">未找到Ledger！</string>
+    <string name="if_you_are_having_ledger">如果出现Ledger Nano X的连接问题，请从手机的蓝牙设置中删除该设备和Ledger账户，再按照Pera钱包的说明重新配对您的Ledger设备与账户。</string>
+    <string name="open_ledger_support">开放的Ledger支持</string>
     <string name="please_follow_these_steps">请按照以下步骤操作：</string>
     <string name="having_ledger_nano_x">出现Ledger Nano X的连接问题？</string>
     <string name="make_sure_the_device_is">请确保已解锁设备，开启蓝牙，且设备就在附近。如果还有问题，请从手机的蓝牙设置中删除该设备和Ledger账户，再按照Pera Wallet的说明重新配对您的Ledger设备与账户。</string>
@@ -444,6 +445,7 @@
     <string name="re_enter_your_new_six_digit_pin">重新输入新的\n6位数PIN码</string>
     <string name="wrong_passphrase">助记词错误</string>
     <string name="account_not_found">没有找到账户。请输入正确的助记词再次尝试。</string>
+    <string name="account_is_verified">账户已经认证！</string>
     <string name="verified">已认证</string>
     <string name="copy_id">复制ID</string>
     <string name="enter_a_passcode">输入密码</string>
@@ -483,7 +485,6 @@
     <string name="no_account_found">未找到账户</string>
     <string name="try_different_account_name">试用不同的账户名</string>
     <string name="add_note_with_plus">+ 添加备注</string>
-    <string name="confirm_order">确认订单</string>
     <string name="approximate_currency_value">≈ %1$s</string>
     <string name="enter_your_note">输入您的备注</string>
     <string name="do_not_share">请勿与任何人分享恢复助记词，因为助记词拥有完整的账户访问权限。</string>
@@ -569,11 +570,19 @@
     <string name="please_return_to">请返回<annotation replacement="peer_name">peerNamePlaceholder</annotation>继续完成您的操作。您可以在专门的设置页面中找到所有连接的会话。</string>
     <string name="scan_an_algorand">扫描Algorand\n地址二维码</string>
     <string name="current_balance">当前\n余额</string>
-    <string name="order_received">已收到订单</string>
-    <string name="your_order_was">成功收到您的订单</string>
     <string name="show_note">显示更多</string>
-    <string name="after_confirming_pairing_on">在您的Ledger设备上确认配对后，请打开Algorand Ledger的APP。</string>
-    <string name="ledger_not_found">未找到Ledger！</string>
-    <string name="if_you_are_having_ledger">如果出现Ledger Nano X的连接问题，请从手机的蓝牙设置中删除该设备和Ledger账户，再按照Pera Wallet的说明重新配对您的Ledger设备与账户。</string>
-    <string name="open_ledger_support">开放的Ledger支持</string>
+    <string name="create_a_passphrase_backup">为账户创建助记词备份</string>
+    <string name="creating_a_passphrase_backup">创建助记词备份能够帮助您恢复账号。若无助记词，在设备丢失或删除APP后，您会永久无法访问您的Algorand账户。</string>
+    <string name="congratulations_your_account">恭喜，您的账户已准备就绪。</string>
+    <string name="welcome_to_pera_your_account">欢迎使用Pera钱包！您的账户已准备就绪。</string>
+    <string name="loading">正在加载</string>
+    <string name="algorand_wallet_is_now">这是官方信息！Algorand钱包现在更名为Pera钱包。</string>
+    <string name="we_are_very_excited">我们很高兴宣布，Algorand Wallet现更名为Pera钱包。这不仅是新名称和新徽标。我们正在重新推出Algorand生态系统中最受欢迎的钱包，并重新关注我们的路线图、合作伙伴融合和社区。\n\n放心，Pera钱包将由相同团队构建和维护，您熟悉和喜爱的全部功能都能照常使用——在接下来的几个月里，还会推出更多新功能。\n\n阅读关于重新发布和路线图的更多信息，请查看<annotation type="color"><annotation url="peraBlogUrl">Pera钱包的博客</annotation></annotation></string>
+    <string name="remove_all_accounts_and_logout">删除所有账户并注销</string>
+    <string name="yes_remove_all_accounts">是的，删除所有账户并注销</string>
+    <string name="i_want_to_recover">我想使用25个助记词恢复账户</string>
+    <string name="sorry_we_cant_show_account">抱歉，我们无法显示该账户的详细信息。我们似乎遇到了计算方面的问题。\n\n 请注意，部分资产价值可能不可用，因此，投资组合总价值应当做估值。</string>
+    <string name="sorry_we_cant_show_portfolio">抱歉，我们无法显示该投资组合的详细信息。我们似乎遇到了计算方面的问题。\n\n 请注意，部分资产价值可能不可用，因此，投资组合总价值应当做估值。</string>
+    <string name="transaction_request_faq">交易请求常见问题</string>
+    <string name="external_applications_also">外部应用程序又称为dApps，可以提出Pera钱包并不能控制的交易请求。在批准和签署这些交易之前，请确保您有仔细审查这些交易。\n\n 所有交易都是不可逆的。请不要批准来自任何您不认识的dApp的交易。</string>
 </resources>

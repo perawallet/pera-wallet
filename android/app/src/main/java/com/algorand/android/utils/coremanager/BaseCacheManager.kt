@@ -23,7 +23,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 
-abstract class BaseManager : LifecycleObserver {
+abstract class BaseCacheManager : LifecycleObserver {
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private var currentJob: Job? = null

@@ -56,8 +56,8 @@ class VerifiableLedgerAddressViewHolder(
     }
 
     private fun showApprovedUI() {
-        setStatusText(R.string.account_verified, R.color.positiveColor, R.style.TextAppearance_Body_Sans_Medium)
-        setStatusImageView(R.drawable.ic_check, R.color.positiveColor)
+        setStatusText(R.string.account_verified, R.color.linkPrimary, R.style.TextAppearance_Body_Sans_Medium)
+        setStatusImageView(R.drawable.ic_check, R.color.linkIcon)
         customizeCard(backgroundColor = R.color.transparent, newStrokeColor = R.color.secondaryTextColor)
     }
 

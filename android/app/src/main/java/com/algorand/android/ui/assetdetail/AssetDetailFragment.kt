@@ -44,6 +44,7 @@ import com.algorand.android.ui.datepicker.DateFilterListBottomSheet
 import com.algorand.android.utils.CSV_FILE_MIME_TYPE
 import com.algorand.android.utils.copyToClipboard
 import com.algorand.android.utils.extensions.hide
+import com.algorand.android.utils.sendErrorLog
 import com.algorand.android.utils.setDrawable
 import com.algorand.android.utils.shareFile
 import com.algorand.android.utils.startSavedStateListener
@@ -230,6 +231,7 @@ class AssetDetailFragment : DaggerBaseFragment(R.layout.fragment_asset_detail) {
 
     private fun updateUiWithAssetDetailPreview(assetDetailPreview: AssetDetailPreview?) {
         with(binding) {
+            // TODO Find a better way to handling null & error & loading cases
             assetDetailPreview?.run {
                 getAppToolbar()?.setAssetAvatarIfAlgorand(isAlgorand, shortName.getName(resources))
                 assetDetailSendReceiveFab.isVisible = canSignTransaction
@@ -245,6 +247,8 @@ class AssetDetailFragment : DaggerBaseFragment(R.layout.fragment_asset_detail) {
                         setDrawable(end = AppCompatResources.getDrawable(context, R.drawable.ic_shield_check_small))
                     }
                 }
+            } ?: kotlin.run {
+                sendErrorLog("updateUiWithAssetDetailPreview: assetDetailPreview is null and assetId is $assetId")
             }
         }
     }

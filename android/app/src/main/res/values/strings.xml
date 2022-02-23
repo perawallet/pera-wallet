@@ -118,7 +118,6 @@
     <string name="scanned_qr_is_not_valid">Scanned QR is not valid.</string>
     <string name="connect">Connect</string>
     <string name="error_default_title">Error!</string>
-    <string name="pair_ledger_device">Pair Ledger Device</string>
     <string name="make_sure_your_ledger">Make sure that your ledger device is on and has Bluetooth enabled.</string>
     <string name="open_the_algorand_app">Open the Algorand app on your Ledger. </string>
     <string name="make_sure_bluetooth">Make sure Bluetooth is enabled on your smartphone.</string>
@@ -126,11 +125,12 @@
     <string name="verified_with_icon">Verified <annotation type="verified-icon"> </annotation></string>
     <string name="all">All</string>
     <string name="verified_assets">Verified Assets</string>
-    <string name="what_does_asset">What does asset verification mean?</string>
-    <string name="verified_assets_first_paragraph">Assets that go through our verification process are known projects that have their website and public information verified against this specific ASA. Verification status is not an endorsement of the asset. Pera Wallet does not have any relationship with verified ASA owners. This badge <annotation type="verified-icon"> </annotation> is for informational purposes only.</string>
-    <string name="verified_assets_second_paragraph">This helps to serve as a secondary defense against mistakenly transacting with an unintended asset.</string>
-    <string name="verified_assets_third_paragraph">That being said, you should always double check that the asset’s ID is the one that you intended to choose before transacting with that asset.</string>
-    <string name="verified_assets_fourth_paragraph">If you have questions about the verification process or general feedback about the app, we encourage you to contact us.</string>
+
+    <string name="what_does_asset">What does Asset Verification mean? <annotation type="verified-icon"> </annotation> </string>
+    <string name="verified_assets_first_paragraph">Assets that go through our verification process are known projects that have their website and public information verified against this specific ASA. Verification status is not an endorsement of the asset.</string>
+    <string name="verified_assets_second_paragraph">Pera Wallet does not have any relationship with verified ASA owners. This badge is for informational purposes only.</string>
+    <string name="verified_assets_third_paragraph">That being said, you should <annotation type="color">always double check</annotation> that the asset\'s ID is the one that you intended to choose before transacting with that asset.</string>
+    <string name="verified_assets_fourth_paragraph">If you have questions about the verification process or general feedback about the app, we encourage you to visit;</string>
     <string name="advanced_troubleshooting">Advanced Troubleshooting</string>
     <string name="connecting_to_ledger">Connecting to Ledger…</string>
     <string name="ledger_approval">Ledger Approval</string>
@@ -172,7 +172,6 @@
     <string name="go_to_home">Go to Home</string>
     <string name="accept">Accept</string>
     <string name="add_new_asset">Add New Asset</string>
-    <string name="add_new_account">Add New Account</string>
     <string name="try_different">Try different asset name or asset id</string>
     <string name="copy_address">Copy Address</string>
     <string name="account_address">Account Address</string>
@@ -233,7 +232,7 @@
     <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> is trying to send you <annotation replacement="asset">assetPlaceholder</annotation> however, you do not support this. Tap here to add this asset to your account.</string>
     <string name="transaction_send_successful">Your transaction of <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> from <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> to <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> is complete.</string>
     <string name="transaction_send_failed">Your transaction of <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> from <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> to <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> has failed.</string>
-    <string name="transaction_received"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> were sent to <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> by <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>.</string>
+    <string name="notification_algo_received_message"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> were sent to <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> by <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>.</string>
     <string name="pera_app_is_locked">Pera Wallet app is locked</string>
     <string name="too_many_pin_attempts">Too many PIN attempts</string>
     <string name="reset_all_data">Reset All Data</string>
@@ -307,12 +306,7 @@
     <string name="in_the_following">In the following steps, you\'ll enter your 25-word recovery passphrase to recover an Algorand account. Have your recovery phrase handy before you begin.</string>
     <string name="finish_account_creation">Finish Account Creation</string>
     <string name="welcome_to_pera">Welcome to\nPera Wallet</string>
-    <string name="create_a_new_algorand_account">Create a new Algorand account, pair a Ledger device or add a watch account</string>
-    <string name="recover_with_passphrase">Recover with Passphrase</string>
-    <string name="i_want_to_recover">I want to recover an Algorand account using my 25-word passphrase</string>
-    <string name="i_want_a_new">I want a new account with a new address and recovery passphrase.</string>
     <string name="i_want_to_monitor">I want to monitor an account that\'s held in cold storage.</string>
-    <string name="i_want_to_create_an">I want to create an account that is backed by my Ledger hardware wallet.</string>
     <string name="recover">Recover</string>
     <string name="the_last_copied_text">The last copied text is not valid passphrase with 25 words. Please copy valid passphrase and try again.</string>
     <string name="make_sure_to_record">Make sure to record these words in the correct order, using the corresponding numbers.</string>
@@ -512,7 +506,6 @@
     <string name="no_account_found">No account found</string>
     <string name="try_different_account_name">Try different account name</string>
     <string name="add_note_with_plus">+ Add Note</string>
-    <string name="confirm_order">Confirm Order</string>
     <string name="approximate_currency_value">≈ %1$s</string>
     <string name="enter_your_note">Enter your note</string>
 
@@ -633,8 +626,6 @@
     <string name="current_balance">Current\nBalance</string>
     <string name="based_on_your_account">Based on your account configuration, your minimum balance is %1$s. By hitting continue, your transaction amount will be updated to maintain the Algorand Blockchain\'s minimum required balance. You\'ll be able to preview this change in the next steps.</string>
     <string name="rekeyed_maximum_error_message">Sending your maximum balance on this rekeyed account requires you to maintain a minimum balance of <annotation replacement="min_balance">min_balance_placeholder</annotation> Algos. This is to ensure that nothing changes with your rekeyed account. \n \n Your transaction amount will be automatically updated to reflect this change. You will be able to preview the transaction in the next steps.</string>
-    <string name="order_received">Order Received</string>
-    <string name="your_order_was">Your order was successfully received</string>
     <string name="show_note">Show Note</string>
     <string name="loading">Loading</string>
 
@@ -650,4 +641,22 @@
 
     <string name="transaction_request_faq">Transaction Request FAQ</string>
     <string name="external_applications_also">External applications also called as dApps can make transaction requests that the Pera Wallet does not control. Please ensure you review these transactions carefully before approving and signing them.\n\nAll transactions are irreversible. Never approve transaction from dApp that you don\'t know.</string>
+    <string name="minimum_amount_required">Minimum Amount Required</string>
+    <string name="this_is_the_first_transaction">This is the first transaction for the selected account. The first transactions require a minimum amount of at least 0.1 Algo. Please enter a valid amount and try again.</string>
+    <string name="i_want_to_create">I want to create an account</string>
+    <string name="create_a_new_algorand">Create a new Algorand account or add a watch account</string>
+    <string name="i_already_have">I already have an account</string>
+    <string name="import_an_existing">Import an existing Algorand account via recovery passphrase or pair your Ledger</string>
+    <string name="i_want_to_create_an_algorand_account">I want to create\nan Algorand account</string>
+    <string name="create_a_new_account">Create a new account</string>
+    <string name="create_a_new_algorand_account_with">Create a new Algorand account with a new address and recovery passphrase</string>
+    <string name="add_watch_account">Add watch account</string>
+    <string name="i_already_have_nan_account">I already have\nan account</string>
+    <string name="recover_an_account">Recover an account</string>
+    <string name="i_want_to_recover">I want to recover an Algorand account using my 25-word passphrase</string>
+    <string name="pair_Ledger_device">Pair Ledger device</string>
+    <string name="i_want_to_create_algorand">I want to create an Algorand account that is backed by my Ledger hardware wallet</string>
+    <string name="transaction_received">Transaction Received</string>
+    <string name="your_order_was">Your order was successfully received by the Algorand network.</string>
+    <string name="confirm_transaction">Confirm Transaction</string>
 </resources>

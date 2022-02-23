@@ -180,8 +180,8 @@ abstract class CoreMainActivity : BaseActivity() {
         navController.navigateUp()
     }
 
-    fun nav(directions: NavDirections) {
-        navController.navigateSafe(directions)
+    fun nav(directions: NavDirections, onError: (() -> Unit)? = null) {
+        navController.navigateSafe(directions, onError)
     }
 
     fun getToolbar(): CustomToolbar {

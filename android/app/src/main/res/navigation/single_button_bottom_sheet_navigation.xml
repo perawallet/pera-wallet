@@ -35,6 +35,10 @@
             app:argType="com.algorand.android.models.AnnotatedString"
             app:nullable="true" />
         <argument
+            android:name="buttonStringResId"
+            android:defaultValue="@string/close"
+            app:argType="reference" />
+        <argument
             android:name="drawableResId"
             android:defaultValue="0"
             app:argType="reference" />

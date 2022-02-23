@@ -97,6 +97,7 @@ class SixDigitPasswordView @JvmOverloads constructor(
 
     fun clear() {
         password.clear()
+        pinAnimators.clear()
         digitViewList.forEach { it.setImageResource(R.drawable.unfilled_password_digit) }
     }
 
@@ -124,7 +125,6 @@ class SixDigitPasswordView @JvmOverloads constructor(
             doOnStart { pinAnimators.add(it) }
             doOnCancel { it.end() }
             doOnEnd {
-                pinAnimators.remove(it)
                 onAnimationFinish.invoke()
             }
         }.start()

@@ -33,6 +33,7 @@ private const val WATCH_ACCOUNT_SUPPORT_URL = "https://perawallet.app/support/wa
 const val RECOVER_INFO_URL = "https://perawallet.app/support/recover-account/"
 const val LEDGER_HELP_WEB_URL = "https://perawallet.app/support/ledger/"
 private const val PERA_INTRODUCTION_URL = "https://perawallet.app/blog/launch-announcement/"
+const val PERA_SUPPORT_URL = "https://perawallet.app/support/"
 
 fun Context.openPeraIntroductionBlog() {
     openUrl(PERA_INTRODUCTION_URL)
@@ -117,4 +118,8 @@ fun Context.openRecoveryPassphraseSupportUrl() {
 
 fun Context.openWatchAccountSupportUrl() {
     openUrl(WATCH_ACCOUNT_SUPPORT_URL)
+}
+
+fun Context.openPeraSupportUrl() {
+    openUrl(PERA_SUPPORT_URL)
 }

@@ -63,7 +63,7 @@ class BalanceInputFormatter {
             formattedBalanceString = formattedBalanceString,
             formattedBalanceInBigDecimal = amountAsBigDecimal,
             decimal = maxDecimalLimit,
-            isAmountValid = formattedBalanceString != amountInitialPlaceholder
+            isAmountValid = formattedBalanceString != amountInitialPlaceholder || formattedText.isNotEmpty()
         )
 
         listener?.onBalanceFormatted(balanceInput)
@@ -80,7 +80,7 @@ class BalanceInputFormatter {
 
     private fun shouldRemoveZeroPrefix(upComingNumber: Int): Boolean {
         return with(formattedText) {
-            this == ZERO_CHAR.toString() || (this == amountInitialPlaceholder && upComingNumber != 0)
+            this == ZERO_CHAR.toString() || (this == amountInitialPlaceholder && formattedText.isBlank())
         }
     }
 

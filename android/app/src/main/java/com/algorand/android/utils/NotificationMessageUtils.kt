@@ -90,7 +90,7 @@ fun Context.setupAlgoReceivedMessage(
     asset: AssetNotificationDescription?
 ): CharSequence {
     return getXmlStyledString(
-        stringResId = R.string.transaction_received,
+        stringResId = R.string.notification_algo_received_message,
         replacementList = listOf(
             "amount" to formattedAmount.orEmpty(),
             "receiver" to receiverName.orEmpty(),

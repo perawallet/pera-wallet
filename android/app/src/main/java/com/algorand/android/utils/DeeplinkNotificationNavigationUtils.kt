@@ -29,6 +29,7 @@ const val SELECTED_ASSET_ID_KEY = "selectedAssetIdKey"
 const val ASSET_SUPPORT_REQUESTED_PUBLIC_KEY = "supportRequestedPublicKey"
 const val ASSET_SUPPORT_REQUESTED_ASSET_KEY = "supportRequestedAsset"
 const val DEEPLINK_AND_NAVIGATION_INTENT = "deeplinknavIntent"
+const val WC_TRANSACTION_ID_INTENT_KEY = "wcTransactionId"
 private const val NO_VALUE = -1L
 
 private fun NavController.handleSelectedAssetNavigation(
@@ -129,6 +130,11 @@ private fun NavController.handleIntentWithBundle(
 
         val selectedAssetToOpen = getLongExtra(SELECTED_ASSET_ID_KEY, NO_VALUE)
         val selectedPublicKeyToOpen = getStringExtra(SELECTED_ACCOUNT_KEY)
+
+        if (getLongExtra(WC_TRANSACTION_ID_INTENT_KEY, -1L) != -1L) {
+            navigateSafe(HomeNavigationDirections.actionGlobalWalletConnectRequestNavigation())
+            return true
+        }
 
         if (!selectedPublicKeyToOpen.isNullOrBlank() && selectedAssetToOpen != NO_VALUE) {
             handleSelectedAssetNavigation(accountCacheManager, selectedPublicKeyToOpen, selectedAssetToOpen)

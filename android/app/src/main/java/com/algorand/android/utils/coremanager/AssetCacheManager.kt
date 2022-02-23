@@ -28,7 +28,7 @@ class AssetCacheManager(
     private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase,
     private val accountDetailUseCase: AccountDetailUseCase,
     private val assetFetchAndCacheUseCase: AssetFetchAndCacheUseCase
-) : BaseManager() {
+) : BaseCacheManager() {
 
     private val accountCacheAndAccountCollector: suspend (
         AccountCacheStatus,
