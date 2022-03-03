@@ -37,9 +37,7 @@ final class AddAccountViewController: BaseViewController {
     }
 
     override func bindData() {
-        addAccountView.bindCreateNewAccountView(AccountTypeViewModel(.add(type: .create)))
-        addAccountView.bindWatchAccountView(AccountTypeViewModel(.add(type: .watch)))
-        addAccountView.bindPairAccountView(AccountTypeViewModel(.add(type: .pair)))
+        addAccountView.bindData(AddAccountViewModel())
     }
     
     override func linkInteractors() {
@@ -84,8 +82,6 @@ extension AddAccountViewController: AddAccountViewDelegate {
             open(.tutorial(flow: flow, tutorial: .backUp), by: .push)
         case .watch:
             open(.tutorial(flow: flow, tutorial: .watchAccount), by: .push)
-        case .pair:
-            open(.tutorial(flow: flow, tutorial: .ledger), by: .push)
         default:
             break
         }

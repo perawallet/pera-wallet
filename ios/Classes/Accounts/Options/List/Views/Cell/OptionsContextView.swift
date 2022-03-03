@@ -85,9 +85,4 @@ extension OptionsContextView {
             optionSubtitleLabel.isHidden = true
         }
     }
-
-    func bind(_ viewModel: AccountRecoverOptionsViewModel) {
-        iconImageView.image = viewModel.image
-        optionTitleLabel.text = viewModel.title
-    }
 }

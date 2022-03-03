@@ -88,10 +88,10 @@ final class TutorialViewController: BaseScrollViewController {
 extension TutorialViewController {
     private func addBarButtons() {
         switch tutorial {
-        case .recover,
+        case .recoverWithPassphrase,
              .backUp,
              .watchAccount,
-             .ledger:
+             .recoverWithLedger:
             addInfoBarButton()
         case .passcode:
             addDontAskAgainBarButton()
@@ -124,11 +124,11 @@ extension TutorialViewController {
         switch tutorial {
         case .backUp:
             open(AlgorandWeb.backUpSupport.link)
-        case .recover:
+        case .recoverWithPassphrase:
             open(AlgorandWeb.recoverSupport.link)
         case .watchAccount:
             open(AlgorandWeb.watchAccountSupport.link)
-        case .ledger:
+        case .recoverWithLedger:
             open(AlgorandWeb.ledgerSupport.link)
         default:
             break
@@ -145,7 +145,7 @@ extension TutorialViewController: TutorialViewDelegate {
             open(.passphraseView(flow: flow, address: "temp"), by: .push)
         case .watchAccount:
             open(.watchAccountAddition(flow: flow), by: .push)
-        case .recover:
+        case .recoverWithPassphrase:
             open(.accountRecover(flow: flow), by: .push)
         case .passcode:
             open(.choosePassword(mode: .setup, flow: flow), by: .push)
@@ -159,7 +159,7 @@ extension TutorialViewController: TutorialViewDelegate {
             launchMain()
         case .ledgerSuccessfullyConnected:
             uiHandlers.didTapButtonPrimaryActionButton?(self)
-        case .ledger:
+        case .recoverWithLedger:
             open(.ledgerDeviceList(flow: flow), by: .push)
         case .accountSuccessfullyRekeyed:
             uiHandlers.didTapButtonPrimaryActionButton?(self)
@@ -172,8 +172,13 @@ extension TutorialViewController: TutorialViewDelegate {
             uiHandlers.didTapSecondaryActionButton?(self)
         case .localAuthentication:
             uiHandlers.didTapSecondaryActionButton?(self)
-        case .ledger:
-            open(.ledgerTutorial(flow: .addNewAccount(mode: .add(type: .pair))), by: .present)
+        case .recoverWithLedger:
+            open(
+                .ledgerTutorial(
+                    flow: .addNewAccount(mode: .recover(type: .ledger))
+                ),
+                by: .present
+            )
         default:
             break
         }
@@ -262,13 +267,13 @@ enum Tutorial: Equatable {
     case backUp
     case writePassphrase
     case watchAccount
-    case recover
+    case recoverWithPassphrase
     case passcode
     case localAuthentication
     case biometricAuthenticationEnabled
     case passphraseVerified(account: AccountInformation)
     case accountVerified
-    case ledger
+    case recoverWithLedger
     case ledgerSuccessfullyConnected
     case accountSuccessfullyRekeyed(accountName: String)
 }

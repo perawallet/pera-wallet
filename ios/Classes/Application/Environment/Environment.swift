@@ -49,13 +49,13 @@ class Environment {
         return token
     }()
     
-    lazy var testNetAlgodHost = "node-testnet.aws.algodev.network"
-    lazy var testNetIndexerHost = "indexer-testnet.aws.algodev.network"
+    lazy var testNetAlgodHost = "node-testnet.chain.perawallet.app"
+    lazy var testNetIndexerHost = "indexer-testnet.chain.perawallet.app"
     lazy var testNetAlgodApi = "\(schema)://\(testNetAlgodHost)/v2"
     lazy var testNetIndexerApi = "\(schema)://\(testNetIndexerHost)/v2"
     
-    lazy var mainNetAlgodHost = "node-mainnet.aws.algodev.network"
-    lazy var mainNetIndexerHost = "indexer-mainnet.aws.algodev.network"
+    lazy var mainNetAlgodHost = "node-mainnet.chain.perawallet.app"
+    lazy var mainNetIndexerHost = "indexer-mainnet.chain.perawallet.app"
     lazy var mainNetAlgodApi = "\(schema)://\(mainNetAlgodHost)/v2"
     lazy var mainNetIndexerApi = "\(schema)://\(mainNetIndexerHost)/v2"
     
@@ -68,7 +68,7 @@ class Environment {
         }
     }()
     
-    lazy var mobileHost = "mobile-api.algorand.com"
+    lazy var mobileHost = "api.perawallet.app"
 
     lazy var algoExplorerApiHost = "price.algoexplorerapi.io"
     
@@ -80,9 +80,9 @@ class Environment {
     lazy var mobileApi: String = {
         switch target {
         case .staging:
-            return "https://staging.\(mobileHost)/api/"
+            return "https://staging.\(mobileHost)/v1/"
         case .prod:
-            return "https://\(mobileHost)/api/"
+            return "https://\(mobileHost)/v1/"
         }
     }()
 

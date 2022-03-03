@@ -17,18 +17,12 @@
 
 import UIKit
 
-enum Colors {
-    enum Main {
-        static let primary600 = color("primary600")
-        static let white = color("white")
-    }
-}
+enum Colors {}
 
 extension Colors {
     enum Background {
         static let primary = color("primaryBackground")
         static let secondary = color("secondaryBackground")
-        static let tertiary = color("tertiaryBackground")
         static let disabled = color("disabledBackground")
     }
 }
@@ -47,14 +41,12 @@ extension Colors {
         static let testNetBanner = color("testNetBanner")
         static let error = color("errorColor")
         static let selected = color("selectedColor")
-        static let unknown = color("unknownColor")
     }
 }
 
 extension Colors {
     enum ButtonText {
         static let primary = color("primaryButtonTitle")
-        static let secondary = color("secondaryButtonTitle")
         static let tertiary = color("tertiaryButtonTitle")
         static let actionButton = color("actionButtonTitle")
     }
@@ -65,7 +57,6 @@ extension Colors {
         static let primary = color("primaryText")
         static let secondary = color("secondaryText")
         static let tertiary = color("tertiaryText")
-        static let hint = color("hintText")
         static let link = color("linkText")
     }
 }

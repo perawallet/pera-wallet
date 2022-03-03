@@ -101,7 +101,12 @@ extension LedgerDeviceListViewController {
 
     private func addTroubleshootBarButton() {
         let troubleshootBarButtonItem = ALGBarButtonItem(kind: .troubleshoot) { [weak self] in
-            self?.open(.ledgerTutorial(flow: .addNewAccount(mode: .add(type: .pair))), by: .present)
+            self?.open(
+                .ledgerTutorial(
+                    flow: .addNewAccount(mode: .recover(type: .ledger))
+                ),
+                by: .present
+            )
         }
 
         rightBarButtonItems = [troubleshootBarButtonItem]
@@ -164,17 +169,17 @@ extension LedgerDeviceListViewController: LedgerPairWarningViewControllerDelegat
 
 extension LedgerDeviceListViewController {
     private func presentConnectionSupportWarningAlert() {
-        let warningModalTransition = BottomSheetTransition(presentingViewController: self)
+        let bottomTransition = BottomSheetTransition(presentingViewController: self)
 
-        let warningAlert = WarningAlert(
-            title: "ledger-pairing-issue-error-title".localized,
-            image: img("img-warning-circle"),
-            description: "ble-error-fail-ble-connection-repairing".localized,
-            actionTitle: "title-ok".localized
-        )
-
-        warningModalTransition.perform(
-            .warningAlert(warningAlert: warningAlert),
+        bottomTransition.perform(
+            .bottomWarning(
+                configurator: BottomWarningViewConfigurator(
+                    image: "icon-info-green".uiImage,
+                    title: "ledger-pairing-issue-error-title".localized,
+                    description: "ble-error-fail-ble-connection-repairing".localized,
+                    secondaryActionButtonTitle: "title-ok".localized
+                )
+            ),
             by: .presentWithoutNavigationController
         )
     }

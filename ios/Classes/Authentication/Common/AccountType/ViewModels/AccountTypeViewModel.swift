@@ -38,13 +38,16 @@ extension AccountTypeViewModel {
             switch type {
             case .watch:
                 image = img("icon-add-watch-account")
-            case .pair:
-                image = img("icon-pair-ledger-account")
             case .none, .create:
                 image = img("icon-add-account")
             }
-        case .recover:
-            image = img("icon-recover-passphrase")
+        case let .recover(type):
+            switch type {
+            case .none, .passphrase:
+                image = img("icon-recover-passphrase")
+            case .ledger:
+                image = img("icon-pair-ledger-account")
+            }
         case .rekey,
              .none:
             break
@@ -58,14 +61,19 @@ extension AccountTypeViewModel {
             case .create:
                 title = "account-type-selection-create".localized
             case .watch:
-                title = "title-watch-account".localized
-            case .pair:
-                title = "account-type-selection-ledger".localized
+                title = "account-type-selection-watch".localized
             case .none:
                 title = "account-type-selection-add".localized
             }
-        case .recover:
-            title = "account-type-selection-recover".localized
+        case let .recover(type):
+            switch type {
+            case .passphrase:
+                title = "account-type-selection-passphrase".localized
+            case .ledger:
+                title = "account-type-selection-ledger".localized
+            case .none:
+                title = "account-type-selection-recover".localized
+            }
         case .rekey,
              .none:
             break
@@ -80,13 +88,18 @@ extension AccountTypeViewModel {
                 detail = "account-type-selection-add-detail".localized
             case .watch:
                 detail = "account-type-selection-watch-detail".localized
-            case .pair:
-                detail = "account-type-selection-ledger-detail".localized
             case .none:
                 detail = "account-type-selection-create-detail".localized
             }
-        case .recover:
-            detail = "account-type-selection-recover-detail".localized
+        case let .recover(type):
+            switch type {
+            case .passphrase:
+                detail = "account-type-selection-passphrase-detail".localized
+            case .ledger:
+                detail = "account-type-selection-ledger-detail".localized
+            case .none:
+                detail = "account-type-selection-recover-detail".localized
+            }
         case .rekey,
              .none:
             break

@@ -20,17 +20,26 @@ import UIKit
 import MacaroonUIKit
 
 final class AccountAssetListViewController: BaseViewController {
+    typealias EventHandler = (Event) -> Void
+
+    var eventHandler: EventHandler?
+
     private lazy var theme = Theme()
-    private lazy var listLayout = AccountAssetListLayout(accountHandle: accountHandle, listDataSource: listDataSource)
+
+    private lazy var listLayout = AccountAssetListLayout(
+        isWatchAccount: accountHandle.value.isWatchAccount(),
+        listDataSource: listDataSource
+    )
+
     private lazy var listDataSource = AccountAssetListDataSource(listView)
     private lazy var dataController = AccountAssetListAPIDataController(accountHandle, sharedDataController)
 
-    typealias DataSource = UICollectionViewDiffableDataSource<AccountAssetsSection, AccountAssetsItem>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<AccountAssetsSection, AccountAssetsItem>
-
     private lazy var listView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        let collectionViewLayout = AccountAssetListLayout.build()
+        let collectionView = UICollectionView(
+            frame: .zero,
+            collectionViewLayout: collectionViewLayout
+        )
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.alwaysBounceVertical = true
@@ -42,7 +51,10 @@ final class AccountAssetListViewController: BaseViewController {
     
     private var accountHandle: AccountHandle
 
-    init(accountHandle: AccountHandle, configuration: ViewControllerConfiguration) {
+    init(
+        accountHandle: AccountHandle,
+        configuration: ViewControllerConfiguration
+    ) {
         self.accountHandle = accountHandle
         super.init(configuration: configuration)
     }
@@ -58,6 +70,7 @@ final class AccountAssetListViewController: BaseViewController {
             case .didUpdate(let snapshot):
                 if let accountHandle = self.sharedDataController.accountCollection[self.accountHandle.value.address] {
                     self.accountHandle = accountHandle
+                    self.eventHandler?(.didUpdate(accountHandle))
                 }
                 self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
             }
@@ -78,8 +91,7 @@ final class AccountAssetListViewController: BaseViewController {
 
     override func linkInteractors() {
         super.linkInteractors()
-        listView.dataSource = listDataSource
-        listView.delegate = listLayout
+        listView.delegate = self
 
         listDataSource.handlers.didAddAsset = { [weak self] in
             guard let self = self else { return }
@@ -90,7 +102,6 @@ final class AccountAssetListViewController: BaseViewController {
 
     override func setListeners() {
         super.setListeners()
-        setListActions()
         setTransactionActionButtonAction()
     }
 }
@@ -113,61 +124,123 @@ extension AccountAssetListViewController {
     }
 }
 
-extension AccountAssetListViewController {
-    private func setListActions() {
-        listLayout.handlers.didSelectSearch = { [weak self] in
-            guard let self = self else {
+extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        return listLayout.collectionView(
+            collectionView,
+            layout: collectionViewLayout,
+            sizeForItemAt: indexPath
+        )
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForHeaderInSection section: Int
+    ) -> CGSize {
+        return listLayout.collectionView(
+            collectionView,
+            layout: collectionViewLayout,
+            referenceSizeForHeaderInSection: section
+        )
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForFooterInSection section: Int
+    ) -> CGSize {
+        return listLayout.collectionView(
+            collectionView,
+            layout: collectionViewLayout,
+            referenceSizeForFooterInSection: section
+        )
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let sectionIdentifiers = listDataSource.snapshot().sectionIdentifiers
+
+        guard let listSection = sectionIdentifiers[safe: indexPath.section] else {
+            return
+        }
+
+        switch listSection {
+        case .assets:
+            guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
                 return
             }
 
-            let searchScreen = self.open(
-                .assetSearch(accountHandle: self.accountHandle),
-                by: .present
-            ) as? AssetSearchViewController
-            
-            searchScreen?.handlers.didSelectAsset = { [weak self] compoundAsset in
-                guard let self = self else {
+            switch itemIdentifier {
+            case .search:
+                let searchScreen = open(
+                    .assetSearch(accountHandle: accountHandle),
+                    by: .present
+                ) as? AssetSearchViewController
+
+                searchScreen?.handlers.didSelectAsset = { [weak self] compoundAsset in
+                    guard let self = self else {
+                        return
+                    }
+
+                    self.openAssetDetail(compoundAsset)
+                }
+            case .asset:
+                if indexPath.item == 1 {
+                    openAlgoDetail()
                     return
                 }
 
-                self.openAssetDetail(compoundAsset)
+                /// Reduce search and algos cells from index
+                if let assetDetail = accountHandle.value.compoundAssets[safe: indexPath.item - 2] {
+                    self.openAssetDetail(assetDetail)
+                }
+            default:
+                break
             }
+        default:
+            break
         }
+    }
+}
 
-        listLayout.handlers.didSelectAlgoDetail = { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.openAssetDetail(nil)
-        }
-
-        listLayout.handlers.didSelectAsset = { [weak self] compoundAsset in
-            guard let self = self else {
-                return
-            }
-
-            self.openAssetDetail(compoundAsset)
-        }
+extension AccountAssetListViewController {
+    private func openAlgoDetail() {
+        open(
+            .algosDetail(
+                draft: AlgoTransactionListing(
+                    accountHandle: accountHandle
+                )
+            ),
+            by: .push
+        )
     }
 
     private func openAssetDetail(
-        _ compoundAsset: CompoundAsset?
+        _ compoundAsset: CompoundAsset
     ) {
-        let screen: Screen
-        if let compoundAsset = compoundAsset {
-            screen = .assetDetail(draft: AssetTransactionListing(accountHandle: accountHandle, compoundAsset: compoundAsset))
-        } else {
-            screen = .algosDetail(draft: AlgoTransactionListing(accountHandle: accountHandle))
-        }
-
-        open(screen, by: .push)
+        open(
+            .assetDetail(
+                draft: AssetTransactionListing(
+                    accountHandle: accountHandle,
+                    compoundAsset: compoundAsset
+                )
+            ),
+            by: .push
+        )
     }
 }
 
 extension AccountAssetListViewController {
     private func setTransactionActionButtonAction() {
-        transactionActionButton.addTarget(self, action: #selector(didTapTransactionActionButton), for: .touchUpInside)
+        transactionActionButton.addTarget(
+            self,
+            action: #selector(didTapTransactionActionButton),
+            for: .touchUpInside
+        )
     }
 
     @objc
@@ -221,5 +294,11 @@ extension AccountAssetListViewController: AssetAdditionViewControllerDelegate {
     ) {
         assetSearchResult.isRecentlyAdded = true
         addAsset(assetSearchResult)
+    }
+}
+
+extension AccountAssetListViewController {
+    enum Event {
+        case didUpdate(AccountHandle)
     }
 }

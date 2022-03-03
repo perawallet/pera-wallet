@@ -22,26 +22,30 @@ import UIKit
 /// <todo>
 /// Refactor. See `HomeListLayout`
 final class AccountAssetListLayout: NSObject {
-    private lazy var theme = Theme()
-    lazy var handlers = Handlers()
-    
     private var sizeCache: [String: CGSize] = [:]
 
+    private lazy var theme = Theme()
+
+    private let isWatchAccount: Bool
     private let listDataSource: AccountAssetListDataSource
-    private let accountHandle: AccountHandle
 
     init(
-        accountHandle: AccountHandle,
+        isWatchAccount: Bool,
         listDataSource: AccountAssetListDataSource
     ) {
-        self.accountHandle = accountHandle
+        self.isWatchAccount = isWatchAccount
         self.listDataSource = listDataSource
-
         super.init()
+    }
+
+    class func build() -> UICollectionViewLayout {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.minimumLineSpacing = 0
+        return flowLayout
     }
 }
 
-extension AccountAssetListLayout: UICollectionViewDelegateFlowLayout {
+extension AccountAssetListLayout {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -71,11 +75,13 @@ extension AccountAssetListLayout: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
-        guard let section = AccountAssetsSection(rawValue: section) else {
+        let sectionIdentifiers = listDataSource.snapshot().sectionIdentifiers
+
+        guard let listSection = sectionIdentifiers[safe: section] else {
             return .zero
         }
 
-        switch section {
+        switch listSection {
         case .portfolio:
             return .zero
         case .assets:
@@ -88,41 +94,21 @@ extension AccountAssetListLayout: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForFooterInSection section: Int
     ) -> CGSize {
-        guard let section = AccountAssetsSection(rawValue: section) else {
+        let sectionIdentifiers = listDataSource.snapshot().sectionIdentifiers
+
+        guard let listSection = sectionIdentifiers[safe: section] else {
             return .zero
         }
 
-        switch section {
+        switch listSection {
         case .portfolio:
             return .zero
         case .assets:
-            if accountHandle.value.isWatchAccount() {
+            if isWatchAccount {
                 return .zero
             }
 
             return CGSize(theme.listFooterSize)
-        }
-    }
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let section = AccountAssetsSection(rawValue: indexPath.section),
-              section == .assets else {
-            return
-        }
-
-        if indexPath.item == 0 {
-            handlers.didSelectSearch?()
-            return
-        }
-
-        if indexPath.item == 1 {
-            handlers.didSelectAlgoDetail?()
-            return
-        }
-
-        /// Reduce search and algos cells from index
-        if let assetDetail = accountHandle.value.compoundAssets[safe: indexPath.item - 2] {
-            handlers.didSelectAsset?(assetDetail)
         }
     }
 }
@@ -156,13 +142,5 @@ extension AccountAssetListLayout {
         for listView: UICollectionView
     ) -> LayoutMetric {
         return listView.bounds.width - listView.contentInset.horizontal
-    }
-}
-
-extension AccountAssetListLayout {
-    struct Handlers {
-        var didSelectSearch: EmptyHandler?
-        var didSelectAlgoDetail: EmptyHandler?
-        var didSelectAsset: ((CompoundAsset) -> Void)?
     }
 }

@@ -175,19 +175,19 @@ extension RekeyConfirmationViewController {
                 title: "title-error".localized, message: error.debugDescription
             )
         case .ledgerConnection:
-            let warningModalTransition = BottomSheetTransition(presentingViewController: self)
+            let bottomTransition = BottomSheetTransition(presentingViewController: self)
 
-             let warningAlert = WarningAlert(
-                 title: "ledger-pairing-issue-error-title".localized,
-                 image: img("img-warning-circle"),
-                 description: "ble-error-fail-ble-connection-repairing".localized,
-                 actionTitle: "title-ok".localized
-             )
-
-             warningModalTransition.perform(
-                 .warningAlert(warningAlert: warningAlert),
-                 by: .presentWithoutNavigationController
-             )
+            bottomTransition.perform(
+                .bottomWarning(
+                    configurator: BottomWarningViewConfigurator(
+                        image: "icon-info-green".uiImage,
+                        title: "ledger-pairing-issue-error-title".localized,
+                        description: "ble-error-fail-ble-connection-repairing".localized,
+                        secondaryActionButtonTitle: "title-ok".localized
+                    )
+                ),
+                by: .presentWithoutNavigationController
+            )
         default:
             break
         }

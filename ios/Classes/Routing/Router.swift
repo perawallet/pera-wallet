@@ -325,6 +325,8 @@ class Router:
             viewController = WelcomeViewController(flow: flow, configuration: configuration)
         case let .addAccount(flow):
             viewController = AddAccountViewController(flow: flow, configuration: configuration)
+        case let .recoverAccount(flow):
+            viewController = RecoverAccountViewController(flow: flow, configuration: configuration)
         case let .choosePassword(mode, flow):
             viewController = ChoosePasswordViewController(
                 mode: mode,
@@ -353,8 +355,10 @@ class Router:
             let optionsViewController = OptionsViewController(account: account, configuration: configuration)
             optionsViewController.delegate = delegate
             viewController = optionsViewController
-        case let .editAccount(account):
-            viewController = EditAccountViewController(account: account, configuration: configuration)
+        case let .editAccount(account, delegate):
+            let aViewController = EditAccountViewController(account: account, configuration: configuration)
+            aViewController.delegate = delegate
+            viewController = aViewController
         case .contactSelection:
             viewController = ContactSelectionViewController(configuration: configuration)
         case let .addContact(address, name):
@@ -463,8 +467,6 @@ class Router:
             viewController = NotificationFilterViewController(flow: flow, configuration: configuration)
         case let .bottomWarning(viewModel):
             viewController = BottomWarningViewController(viewModel, configuration: configuration)
-        case let .warningAlert(warningAlert):
-            viewController = WarningAlertViewController(warningAlert: warningAlert, configuration: configuration)
         case let .tutorial(flow, tutorial):
             viewController = TutorialViewController(
                 flow: flow,

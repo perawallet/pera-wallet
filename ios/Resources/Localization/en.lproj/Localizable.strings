@@ -22,7 +22,6 @@
 "title-done" = "Done";
 "title-loading" = "Loading";
 "default-error-message" = "An error occured.";
-"title-max" = "MAX";
 "title-internet-connection" = "The internet connection appears to be offline.";
 "title-unknown" = "Unnamed";
 "title-preview-and-sign-with-ledger-title" = "Preview and Sign With Ledger";
@@ -51,21 +50,27 @@
 "title-show-all-detail" = "Show All Details";
 
 // MARK: Account Type Selection
-"account-type-selection-add" = "Add New Account";
-"account-type-selection-add-detail" = "I want a new account with a new address and recovery passphrase.";
-"account-type-selection-create" = "Create New Account";
-"account-type-selection-create-detail" = "Create a new Algorand account, pair a Ledger device or add a watch account.";
-"account-type-selection-watch-detail" = "I want to monitor an account that's\nheld in cold storage.";
-"account-type-selection-recover" = "Recover With Passphrase";
-"account-type-selection-recover-detail" = "I want to recover an Algorand account using my 25-word passphrase.";
+"account-type-selection-add" = "I want to create an account";
+"account-type-selection-add-detail" = "I want to create a new Algorand account with a new address and recovery passphrase";
+"account-type-selection-create" = "Create a new account";
+"account-type-selection-create-detail" = "Create a new Algorand account or add a watch account";
+"account-type-selection-watch" = "Add watch account";
+"account-type-selection-watch-detail" = "I want to monitor an Algorand account that's held in cold storage";
+"account-type-selection-recover" = "I already have an account";
+"account-type-selection-recover-detail" = "Import an existing Algorand account\nvia recovery passphrase or pair your Ledger";
 "account-type-selection-ledger" = "Pair Ledger Device";
-"account-type-selection-ledger-detail" = "I want to create an account that is\nbacked by my Ledger hardware wallet.";
+"account-type-selection-ledger-detail" = "I want to create an Algorand account\nthat is backed by my Ledger hardware wallet";
 "account-welcome-wallet-title" = "Welcome to\nPera Wallet";
+"account-type-selection-passphrase" = "Recover an account";
+"account-type-selection-passphrase-detail" = "I want to recover an Algorand account using my 25-word passphrase";
+"account-welcome-wallet-title" = "Welcome to\nPera Wallet";
+"account-welcome-add-account-title" = "Add an account";
 
 // MARK: Introduction
 
-"introduction-add-account-text" = "Add New Account";
-"introduction-title-terms-and-services" = "By creating an account, you agree to Pera Wallet's<br><a href=\"%@\">Terms and Conditions</a> and <a href=\"%@\">Privacy Policy</a>";
+"introduction-add-account-text" = "I want to create\nan Algorand account";
+"introduction-recover-account-text" = "I already have an account";
+"introduction-title-terms-and-services" = "By creating an account, you agree to Pera Wallet's<br><a href=\"https://perawallet.app/terms-and-services/\">Terms and Conditions</a> and <a href=\"https://www.perawallet.app/privacy-policy/\">Privacy Policy</a>";
 
 // MARK: Password Setting
 "password-set-subtitle" = "Choose your\n6-digit PIN";
@@ -173,7 +178,6 @@
 "accounts-transaction-history-title" = "Transaction History";
 "accounts-add-account" = "+ ADD ACCOUNT";
 "accounts-title" = "Accounts";
-"accounts-add-new" = "Add new asset";
 "accounts-qr-tooltip" = "Your account's address QR can be found here";
 "accounts-transaction-your-balance" = "Your balance";
 "accounts-transaction-value" = "Value";
@@ -221,11 +225,9 @@
 "send-sending-algos-select" = "Select Sending Account";
 "send-receiving-algos-select" = "Select Receiving Account";
 "send-select-asset" = "Select Asset";
-"send-choose-asset" = "Choose asset";
 "send-algos-address" = "Address";
 "send-algos-to" = "To";
 "send-algos-balance-title" = "Balance:";
-"send-algos-amount" = "Amount";
 "send-algos-sent-title" = "Algos Sent!";
 "send-algos-alert-incomplete-title" = "Incomplete Transaction";
 "send-algos-alert-message-address" = "Please enter a destination address.";
@@ -279,10 +281,7 @@
 "contacts-add-photo" = "Add Photo";
 "contacts-info" = "Contact Info";
 "contacts-info-edit" = "Edit Contact";
-"contacts-input-name-explanation" = "Name";
 "contacts-input-name-placeholder" = "Contact name";
-"contacts-input-address-explanation" = "Address";
-"contacts-input-address-placeholder" = "Paste # or Scan QR";
 "contacts-transactions-title" = "Transaction History";
 "contacts-empty-text" = "You haven't added any contacts yet";
 "contacts-empty-detail-text" = "You can make the process of sending assets faster by adding new contacts.";

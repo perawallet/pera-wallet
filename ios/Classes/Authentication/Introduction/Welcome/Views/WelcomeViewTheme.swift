@@ -34,7 +34,6 @@ struct WelcomeViewTheme: StyleSheet, LayoutSheet {
         self.backgroundColor = AppColors.Shared.System.background
         self.title = [
             .textAlignment(.left),
-            .text("account-welcome-wallet-title".localized),
             .textOverflow(FittingText()),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(32))

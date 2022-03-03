@@ -18,18 +18,20 @@
 import MacaroonUIKit
 import UIKit
 
-extension OptionsViewController {
-    struct Theme: LayoutSheet, StyleSheet {
-        let backgroundColor: Color
-        let copyAddressCellSize: LayoutSize
-        let defaultCellSize: LayoutSize
-        let modalHeight: LayoutMetric
+struct OptionsViewControllerTheme:
+    StyleSheet,
+    LayoutSheet {
+    var background: ViewStyle
+    var contentPaddings: LayoutPaddings
+    var action: ListActionViewTheme
 
-        init(_ family: LayoutFamily) {
-            backgroundColor = AppColors.Shared.System.background
-            defaultCellSize = (UIScreen.main.bounds.width, 60)
-            copyAddressCellSize = (UIScreen.main.bounds.width, 68)
-            modalHeight = 462
-        }
+    init(
+        _ family: LayoutFamily
+) {
+        self.background = [
+            .backgroundColor(AppColors.Shared.System.background)
+        ]
+        self.contentPaddings = (12, 24, 12, 24)
+        self.action = ListActionViewTheme(family)
     }
 }

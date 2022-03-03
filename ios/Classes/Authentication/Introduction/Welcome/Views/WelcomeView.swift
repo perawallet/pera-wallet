@@ -19,7 +19,9 @@ import UIKit
 import MacaroonUIKit
 import Foundation
 
-final class WelcomeView: View {
+final class WelcomeView:
+    View,
+    ViewModelBindable {
     weak var delegate: WelcomeViewDelegate?
 
     private lazy var titleLabel = UILabel()
@@ -41,12 +43,27 @@ final class WelcomeView: View {
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
     func setListeners() {
-        addAccountView.addTarget(self, action: #selector(notifyDelegateToAddAccount), for: .touchUpInside)
-        recoverAccountView.addTarget(self, action: #selector(notifyDelegateToRecoverAccount), for: .touchUpInside)
+        addAccountView.addTarget(
+            self,
+            action: #selector(notifyDelegateToAddAccount),
+            for: .touchUpInside
+        )
+
+        recoverAccountView.addTarget(
+            self,
+            action: #selector(notifyDelegateToRecoverAccount),
+            for: .touchUpInside
+        )
     }
 
     func linkInteractors() {
         termsAndConditionsTextView.delegate = self
+    }
+
+    func bindData(_ viewModel: WelcomeViewModel?) {
+        titleLabel.text = viewModel?.title
+        addAccountView.bindData(viewModel?.addAccountViewModel)
+        recoverAccountView.bindData(viewModel?.recoverAccountViewModel)
     }
 }
 
@@ -119,16 +136,6 @@ extension WelcomeView: UITextViewDelegate {
     ) -> Bool {
         delegate?.welcomeView(self, didOpen: URL)
         return false
-    }
-}
-
-extension WelcomeView {
-    func bindAddAccountView(_ viewModel: AccountTypeViewModel) {
-        addAccountView.bindData(viewModel)
-    }
-
-    func bindRecoverAccountView(_ viewModel: AccountTypeViewModel) {
-        recoverAccountView.bindData(viewModel)
     }
 }
 

@@ -33,8 +33,7 @@ final class WelcomeViewController: BaseViewController {
     }
 
     override func bindData() {
-        welcomeView.bindAddAccountView(AccountTypeViewModel(.add(type: .none)))
-        welcomeView.bindRecoverAccountView(AccountTypeViewModel(.recover))
+        welcomeView.bindData(WelcomeViewModel(with : flow))
     }
 
     override func linkInteractors() {
@@ -93,7 +92,7 @@ extension WelcomeViewController: WelcomeViewDelegate {
     }
 
     func welcomeViewDidSelectRecover(_ welcomeView: WelcomeView) {
-        open(.tutorial(flow: flow, tutorial: .recover), by: .push)
+        open(.recoverAccount(flow: flow), by: .push)
     }
 
     func welcomeView(_ welcomeView: WelcomeView, didOpen url: URL) {

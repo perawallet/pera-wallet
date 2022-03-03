@@ -20,6 +20,7 @@ import UIKit
 indirect enum Screen {
     case welcome(flow: AccountSetupFlow)
     case addAccount(flow: AccountSetupFlow)
+    case recoverAccount(flow: AccountSetupFlow)
     case choosePassword(mode: ChoosePasswordViewController.Mode, flow: AccountSetupFlow?)
     case passphraseView(flow: AccountSetupFlow, address: String)
     case passphraseVerify(flow: AccountSetupFlow)
@@ -33,7 +34,7 @@ indirect enum Screen {
     case algosDetail(draft: TransactionListing)
     case options(account: Account, delegate: OptionsViewControllerDelegate)
     case accountList(mode: AccountListViewController.Mode, delegate: AccountListViewControllerDelegate)
-    case editAccount(account: Account)
+    case editAccount(account: Account, delegate: EditAccountViewControllerDelegate)
     case contactSelection
     case notifications
     case addContact(address: String? = nil, name: String? = nil)
@@ -67,7 +68,6 @@ indirect enum Screen {
     case ledgerAccountDetail(account: Account, ledgerIndex: Int?, rekeyedAccounts: [Account]?)
     case notificationFilter(flow: NotificationFilterViewController.Flow)
     case bottomWarning(configurator: BottomWarningViewConfigurator)
-    case warningAlert(warningAlert: WarningAlert)
     case tutorial(flow: AccountSetupFlow, tutorial: Tutorial)
     case tutorialSteps(step: Troubleshoot.Step)
     case transactionTutorial(isInitialDisplay: Bool)

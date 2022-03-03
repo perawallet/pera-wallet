@@ -64,6 +64,8 @@ extension TransactionsViewController: CSVExportable {
 
     private func shareCSVFile() {
         let keys: [String] = [
+            "wallet-connect-asset-name-title".localized,
+            "title-asset-id".localized,
             "transaction-detail-amount".localized,
             "transaction-detail-reward".localized,
             "transaction-detail-close-amount".localized,
@@ -75,8 +77,6 @@ extension TransactionsViewController: CSVExportable {
             "transaction-detail-date".localized,
             "title-id".localized,
             "transaction-detail-note".localized,
-            "wallet-connect-asset-name-title".localized,
-            "title-asset-id".localized
         ]
         let config = CSVConfig(fileName: formCSVFileName(), keys: NSOrderedSet(array: keys))
 

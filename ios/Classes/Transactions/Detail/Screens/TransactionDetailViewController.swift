@@ -116,16 +116,9 @@ extension TransactionDetailViewController {
     }
 }
 
-extension TransactionDetailViewController: TooltipPresenter {
+extension TransactionDetailViewController {
     private func configureTransactionDetail() {
         transactionDetailView.bindData(transactionDetailViewModel)
-    }
-    
-    func adaptivePresentationStyle(
-        for controller: UIPresentationController,
-        traitCollection: UITraitCollection
-    ) -> UIModalPresentationStyle {
-        return .none
     }
 }
 

@@ -222,15 +222,14 @@ extension TransactionHistoryContextViewModel {
 
         if let transaction = transactionDependency.transaction as? Transaction {
             if let assetTransaction = transaction.assetTransfer,
-               let assetId = transaction.assetTransfer?.assetId,
-               let assetDetail = account[assetId]?.detail {
+               let assetDetail = transactionDependency.assetDetail {
                 if assetTransaction.receiverAddress == assetTransaction.senderAddress {
                     transactionAmountViewModel = TransactionAmountViewModel(
                         .normal(
                             amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.decimals),
                             isAlgos: false,
                             fraction: assetDetail.decimals,
-                            assetSymbol: assetDetail.unitName ?? assetDetail.name
+                            assetSymbol: getAssetSymbol(from: assetDetail)
                         )
                     )
                 } else if transaction.isAssetAdditionTransaction(for: account.address) {
@@ -243,7 +242,7 @@ extension TransactionHistoryContextViewModel {
                             amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.decimals),
                             isAlgos: false,
                             fraction: assetDetail.decimals,
-                            assetSymbol: assetDetail.unitName ?? assetDetail.name
+                            assetSymbol: getAssetSymbol(from: assetDetail)
                         )
                     )
                 } else {
@@ -252,7 +251,7 @@ extension TransactionHistoryContextViewModel {
                             amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.decimals),
                             isAlgos: false,
                             fraction: assetDetail.decimals,
-                            assetSymbol: assetDetail.unitName ?? assetDetail.name
+                            assetSymbol: getAssetSymbol(from: assetDetail)
                         )
                     )
                 }
@@ -291,7 +290,7 @@ extension TransactionHistoryContextViewModel {
                             amount: transaction.amount.assetAmount(fromFraction: assetDetail.decimals),
                             isAlgos: false,
                             fraction: assetDetail.decimals,
-                            assetSymbol: assetDetail.unitName ?? assetDetail.name
+                            assetSymbol: getAssetSymbol(from: assetDetail)
                         )
                     )
                 } else if transaction.isAssetAdditionTransaction(for: account.address) {
@@ -304,7 +303,7 @@ extension TransactionHistoryContextViewModel {
                             amount: transaction.amount.assetAmount(fromFraction: assetDetail.decimals),
                             isAlgos: false,
                             fraction: assetDetail.decimals,
-                            assetSymbol: assetDetail.unitName ?? assetDetail.name
+                            assetSymbol: getAssetSymbol(from: assetDetail)
                         )
                     )
                 } else {
@@ -313,7 +312,7 @@ extension TransactionHistoryContextViewModel {
                             amount: transaction.amount.assetAmount(fromFraction: assetDetail.decimals),
                             isAlgos: false,
                             fraction: assetDetail.decimals,
-                            assetSymbol: assetDetail.unitName ?? assetDetail.name
+                            assetSymbol: getAssetSymbol(from: assetDetail)
                         )
                     )
                 }
@@ -335,8 +334,7 @@ extension TransactionHistoryContextViewModel {
         let account = transactionDependency.account
 
         if let transaction = transactionDependency.transaction as? Transaction {
-            if let assetTransaction = transaction.assetTransfer,
-               let assetDetail = account[assetTransaction.assetId]?.detail {
+            if let assetDetail = transactionDependency.assetDetail {
                 bindSecondaryAmount(
                     getAssetCurrencyValue(
                         from: transactionDependency,
@@ -420,6 +418,22 @@ extension TransactionHistoryContextViewModel {
         }
 
         return account.shortAddressDisplay()
+    }
+
+    private func getAssetSymbol(
+        from assetDetail: AssetInformation
+    ) -> String {
+        if let unitName = assetDetail.unitName,
+           !unitName.isEmptyOrBlank {
+            return unitName
+        }
+
+        if let name = assetDetail.name,
+           !name.isEmptyOrBlank {
+            return name
+        }
+
+        return "title-unknown".localized.uppercased()
     }
 }
 

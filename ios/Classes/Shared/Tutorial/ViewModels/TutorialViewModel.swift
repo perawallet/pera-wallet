@@ -42,7 +42,7 @@ extension TutorialViewModel {
         switch tutorial {
         case .backUp:
             image = img("shield")
-        case .recover:
+        case .recoverWithPassphrase:
             image = img("key")
         case .watchAccount:
             image = img("eye")
@@ -56,7 +56,7 @@ extension TutorialViewModel {
             image = img("check")
         case .passphraseVerified:
             image = img("shield-check")
-        case .ledger:
+        case .recoverWithLedger:
             image = img("ledger")
         }
     }
@@ -65,7 +65,7 @@ extension TutorialViewModel {
         switch tutorial {
         case .backUp:
             title = "tutorial-title-back-up".localized
-        case .recover:
+        case .recoverWithPassphrase:
             title = "tutorial-title-recover".localized
         case .watchAccount:
             title = "title-watch-account".localized
@@ -81,7 +81,7 @@ extension TutorialViewModel {
             title = "pass-phrase-verify-pop-up-title".localized
         case .accountVerified:
             title = "recover-from-seed-verify-pop-up-title".localized
-        case .ledger:
+        case .recoverWithLedger:
             title = "ledger-tutorial-title-text".localized
         case .ledgerSuccessfullyConnected:
             title = "tutorial-title-ledger-connected".localized
@@ -94,7 +94,7 @@ extension TutorialViewModel {
         switch tutorial {
         case .backUp:
             description = "tutorial-description-back-up".localized
-        case .recover:
+        case .recoverWithPassphrase:
             description = "tutorial-description-recover".localized
         case .watchAccount:
             description = "tutorial-description-watch".localized
@@ -110,7 +110,7 @@ extension TutorialViewModel {
             description = "pass-phrase-verify-pop-up-explanation".localized
         case .accountVerified:
             description = "recover-from-seed-verify-pop-up-explanation".localized
-        case .ledger:
+        case .recoverWithLedger:
             description = "tutorial-description-ledger".localized
         case .ledgerSuccessfullyConnected:
             description = "tutorial-description-ledger-connected".localized
@@ -123,7 +123,7 @@ extension TutorialViewModel {
         switch tutorial {
         case .backUp:
             primaryActionButtonTitle = "tutorial-main-title-back-up".localized
-        case .recover:
+        case .recoverWithPassphrase:
             primaryActionButtonTitle = "tutorial-main-title-recover".localized
         case .watchAccount:
             primaryActionButtonTitle = "watch-account-button".localized
@@ -139,7 +139,7 @@ extension TutorialViewModel {
             primaryActionButtonTitle = "title-next".localized
         case .accountVerified:
             primaryActionButtonTitle = "title-start-using-pera-wallet".localized
-        case .ledger:
+        case .recoverWithLedger:
             primaryActionButtonTitle = "ledger-tutorial-title-text".localized
         case .ledgerSuccessfullyConnected:
             primaryActionButtonTitle = "tutorial-main-title-ledger-connected".localized
@@ -165,7 +165,7 @@ extension TutorialViewModel {
             secondaryActionButtonTitle = "tutorial-action-title-passcode".localized
         case .localAuthentication:
             secondaryActionButtonTitle = "local-authentication-no".localized
-        case .ledger:
+        case .recoverWithLedger:
             secondaryActionButtonTitle = "tutorial-action-title-ledger".localized
         default:
             break

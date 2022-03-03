@@ -23,7 +23,7 @@ final class OptionsViewModel {
     private(set) var subtitle: String?
     private(set) var titleColor: UIColor?
 
-    init(option: OptionsViewController.Options, account: Account) {
+    init(option: OptionsViewController.Option, account: Account) {
         bindImage(for: option, with: account)
         bindTitle(for: option, with: account)
         bindSubtitle(for: option, with: account)
@@ -32,7 +32,7 @@ final class OptionsViewModel {
 }
 
 extension OptionsViewModel {
-    private func bindImage(for option: OptionsViewController.Options, with account: Account) {
+    private func bindImage(for option: OptionsViewController.Option, with account: Account) {
         switch option {
         case .copyAddress:
             image = img("icon-copy")
@@ -53,7 +53,7 @@ extension OptionsViewModel {
         }
     }
 
-    private func bindTitle(for option: OptionsViewController.Options, with account: Account) {
+    private func bindTitle(for option: OptionsViewController.Option, with account: Account) {
         switch option {
         case .copyAddress:
             title = "options-copy-address".localized
@@ -74,7 +74,7 @@ extension OptionsViewModel {
         }
     }
 
-    private func bindTitleColor(for option: OptionsViewController.Options) {
+    private func bindTitleColor(for option: OptionsViewController.Option) {
         switch option {
         case .removeAccount:
             titleColor = AppColors.Shared.Helpers.negative.uiColor
@@ -83,7 +83,7 @@ extension OptionsViewModel {
         }
     }
 
-    private func bindSubtitle(for option: OptionsViewController.Options, with account: Account) {
+    private func bindSubtitle(for option: OptionsViewController.Option, with account: Account) {
         switch option {
         case .copyAddress:
             subtitle = account.address

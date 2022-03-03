@@ -390,24 +390,23 @@ extension QRScannerViewController: WalletConnectorDelegate {
     }
 
     private func openWCConnectionError() {
-        let warningAlert = WarningAlert(
-            title: "title-failed-connection".localized,
-            image: img("img-error-circle"),
-            description: "wallet-connect-session-timeout-message".localized,
-            actionTitle: "title-close".localized
+        let bottomTransition = BottomSheetTransition(presentingViewController: self)
+
+        bottomTransition.perform(
+            .bottomWarning(
+                configurator: BottomWarningViewConfigurator(
+                    image: "icon-info-red".uiImage,
+                    title: "title-failed-connection".localized,
+                    description: "wallet-connect-session-timeout-message".localized,
+                    secondaryActionButtonTitle: "title-close".localized
+                )
+            ),
+            by: .presentWithoutNavigationController,
+            completion: {
+                [weak self] in
+                self?.resetUIForScanning()
+            }
         )
-
-        let controller = wcConnectionModalTransition.perform(
-            .warningAlert(warningAlert: warningAlert),
-            by: .presentWithoutNavigationController
-        ) as? WarningAlertViewController
-        controller?.delegate = self
-    }
-}
-
-extension QRScannerViewController: WarningAlertViewControllerDelegate {
-    func warningAlertViewControllerDidTakeAction(_ warningAlertViewController: WarningAlertViewController) {
-        resetUIForScanning()
     }
 }
 

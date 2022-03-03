@@ -125,7 +125,7 @@ extension ContactDetailViewController {
                 let assetPreviewModel = AssetPreviewModelAdapter.adapt((account, currency))
                 self.assetPreviews.append(assetPreviewModel)
                 
-                if account.isThereAnyDifferentAsset {
+                if account.hasAnyAssets() {
                     if let assets = account.assets {
                         var assetsToBeFetched: [AssetID] = []
 

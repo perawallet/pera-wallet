@@ -26,7 +26,8 @@ protocol ListActionViewModel: ViewModel {
 
 extension ListActionViewModel {
     static func getTitle(
-        _ aTitle: String?
+        _ aTitle: String?,
+        _ aTitleColor: Color? = nil
     ) -> EditText? {
         guard let aTitle = aTitle else {
             return nil
@@ -35,16 +36,20 @@ extension ListActionViewModel {
         let font = Fonts.DMSans.medium.make(15)
         let lineHeightMultiplier = 1.23
         
-        return .attributedString(
-            aTitle.attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineBreakMode(.byWordWrapping),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
+        var attributes: TextAttributeGroup = [
+            .font(font),
+            .lineHeightMultiplier(lineHeightMultiplier, font),
+            .paragraph([
+                .lineBreakMode(.byWordWrapping),
+                .lineHeightMultiple(lineHeightMultiplier)
             ])
-        )
+        ]
+        
+        if let textColor = aTitleColor {
+            attributes.insert(.textColor(textColor))
+        }
+        
+        return .attributedString(aTitle.attributed(attributes))
     }
     
     static func getSubtitle(

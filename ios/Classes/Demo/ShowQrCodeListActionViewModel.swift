@@ -24,8 +24,8 @@ struct ShowQrCodeListActionViewModel: ListActionViewModel {
     let subtitle: EditText?
     
     init() {
-        icon = "icon-qr"
-        title = Self.getTitle("options-show-qr".localized)
-        subtitle = nil
+        self.icon = "icon-qr"
+        self.title = Self.getTitle("options-show-qr".localized)
+        self.subtitle = nil
     }
 }

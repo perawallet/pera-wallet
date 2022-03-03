@@ -19,14 +19,15 @@ import UIKit
 import MacaroonUIKit
 import Foundation
 
-final class AddAccountView: View {
+final class AddAccountView:
+    View,
+    ViewModelBindable {
     weak var delegate: AddAccountViewDelegate?
 
     private lazy var titleLabel = UILabel()
     private lazy var stackView = UIStackView()
     private lazy var createNewAccountView = AccountTypeView()
-    private lazy var watchAccountView = AccountTypeView()
-    private lazy var pairAccountView = AccountTypeView()
+    private lazy var addWatchAccountView = AccountTypeView()
 
     func customize(_ theme: AddAccountViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
@@ -40,9 +41,22 @@ final class AddAccountView: View {
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
     func setListeners() {
-        createNewAccountView.addTarget(self, action: #selector(notifyDelegateToSelectCreateNewAccount), for: .touchUpInside)
-        watchAccountView.addTarget(self, action: #selector(notifyDelegateToSelectWatchAccount), for: .touchUpInside)
-        pairAccountView.addTarget(self, action: #selector(notifyDelegateToSelectPairAccount), for: .touchUpInside)
+        createNewAccountView.addTarget(
+            self,
+            action: #selector(notifyDelegateToSelectCreateNewAccount),
+            for: .touchUpInside
+        )
+
+        addWatchAccountView.addTarget(
+            self,
+            action: #selector(notifyDelegateToSelectAddWatchAccount),
+            for: .touchUpInside
+        )
+    }
+
+    func bindData(_ viewModel: AddAccountViewModel?) {
+        createNewAccountView.bindData(viewModel?.createNewAccountViewModel)
+        addWatchAccountView.bindData(viewModel?.addWatchAccountViewModel)
     }
 }
 
@@ -53,13 +67,8 @@ extension AddAccountView {
     }
 
     @objc
-    private func notifyDelegateToSelectWatchAccount() {
+    private func notifyDelegateToSelectAddWatchAccount() {
         delegate?.addAccountView(self, didSelect: .watch)
-    }
-
-    @objc
-    private func notifyDelegateToSelectPairAccount() {
-        delegate?.addAccountView(self, didSelect: .pair)
     }
 }
 
@@ -88,24 +97,8 @@ extension AddAccountView {
 
         createNewAccountView.customize(theme.accountTypeViewTheme)
         stackView.addArrangedSubview(createNewAccountView)
-        watchAccountView.customize(theme.accountTypeViewTheme)
-        stackView.addArrangedSubview(watchAccountView)
-        pairAccountView.customize(theme.accountTypeViewTheme)
-        stackView.addArrangedSubview(pairAccountView)
-    }
-}
-
-extension AddAccountView {
-    func bindCreateNewAccountView(_ viewModel: AccountTypeViewModel) {
-        createNewAccountView.bindData(viewModel)
-    }
-
-    func bindWatchAccountView(_ viewModel: AccountTypeViewModel) {
-        watchAccountView.bindData(viewModel)
-    }
-
-    func bindPairAccountView(_ viewModel: AccountTypeViewModel) {
-        pairAccountView.bindData(viewModel)
+        addWatchAccountView.customize(theme.accountTypeViewTheme)
+        stackView.addArrangedSubview(addWatchAccountView)
     }
 }
 

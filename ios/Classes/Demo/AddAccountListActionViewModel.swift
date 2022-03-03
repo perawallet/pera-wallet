@@ -24,8 +24,8 @@ struct AddAccountListActionViewModel: ListActionViewModel {
     let subtitle: EditText?
     
     init() {
-        icon = "icon-plus-24"
-        title = Self.getTitle("account-options-add-account-title".localized)
-        subtitle = nil
+        self.icon = "icon-plus-24"
+        self.title = Self.getTitle("account-options-add-account-title".localized)
+        self.subtitle = nil
     }
 }

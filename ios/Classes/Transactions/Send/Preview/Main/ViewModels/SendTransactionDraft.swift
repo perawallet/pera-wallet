@@ -59,6 +59,10 @@ struct SendTransactionDraft: TransactionSendDraft {
             return assetDetail
         }
     }
+
+    var hasReceiver: Bool {
+        toAccount != nil || toContact != nil
+    }
 }
 
 enum TransactionMode {
