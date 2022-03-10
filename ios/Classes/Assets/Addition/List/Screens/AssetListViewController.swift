@@ -66,6 +66,28 @@ final class AssetListViewController: BaseViewController {
         dataController.load()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        assetListView
+            .collectionView
+            .visibleCells
+            .forEach {
+                let loadingCell = $0 as? AssetPreviewLoadingCell
+                loadingCell?.startAnimating()
+            }
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        assetListView
+            .collectionView
+            .visibleCells
+            .forEach {
+                let loadingCell = $0 as? AssetPreviewLoadingCell
+                loadingCell?.stopAnimating()
+            }
+    }
+
     override func setListeners() {
         super.setListeners()
 

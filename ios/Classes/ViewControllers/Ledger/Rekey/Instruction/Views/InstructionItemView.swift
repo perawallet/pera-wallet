@@ -26,8 +26,10 @@ final class InstructionItemView: View {
         addInformationImageView(theme)
         addTitleLabel(theme)
     }
+    
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
-    func prepareLayout(_ layoutSheet: LayoutSheet) {}
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 }
 
 extension InstructionItemView {

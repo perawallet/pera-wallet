@@ -106,6 +106,7 @@ final class ALGAppLaunchController:
     }
     
     func launchMain() {
+        authChecker.authorize()
         uiHandler.launchUI(.main)
         sharedDataController.startPolling()
     }
@@ -158,11 +159,22 @@ final class ALGAppLaunchController:
     }
     
     func resignActive() {
+        if isFirstLaunch {
+            return
+        }
+
         sharedDataController.stopPolling()
         authChecker.resignActive()
     }
     
     func enterBackground() {
+        if !isFirstLaunch {
+            return
+        }
+
+        sharedDataController.stopPolling()
+        authChecker.resignActive()
+        
         isFirstLaunch = false
     }
     

@@ -21,6 +21,8 @@ import MacaroonUIKit
 
 final class WCConnectionApprovalViewController: BaseViewController {
     weak var delegate: WCConnectionApprovalViewControllerDelegate?
+    
+    let walletConnectSession: WalletConnectSession
 
     override var shouldShowNavigationBar: Bool {
         return false
@@ -33,7 +35,6 @@ final class WCConnectionApprovalViewController: BaseViewController {
 
     private lazy var connectionApprovalView = WCConnectionApprovalView(hasMultipleAccounts: hasMultipleAccounts)
 
-    private let walletConnectSession: WalletConnectSession
     private let walletConnectSessionConnectionCompletionHandler: WalletConnectSessionConnectionCompletionHandler
 
     private var selectedAccount: AccountHandle?

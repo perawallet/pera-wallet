@@ -43,6 +43,8 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
                 let cell = collectionView.dequeue(PendingAssetPreviewCell.self, at: indexPath)
                 cell.bindData(item)
                 return cell
+            case .addAsset:
+                return collectionView.dequeue(AddAssetItemCell.self, at: indexPath)
             }
         }
 
@@ -65,27 +67,25 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
                 return view
             }
 
-            let view = collectionView.dequeueFooter(AddAssetItemFooterView.self, at: indexPath)
-            view.delegate = self
-            return view
+            return nil
         }
 
         [
             AccountPortfolioCell.self,
             SearchBarItemCell.self,
             AssetPreviewCell.self,
-            PendingAssetPreviewCell.self
+            PendingAssetPreviewCell.self,
+            AddAssetItemCell.self
         ].forEach {
             collectionView.register($0)
         }
 
         collectionView.register(header: SingleLineTitleActionHeaderView.self)
-        collectionView.register(footer: AddAssetItemFooterView.self)
     }
 }
 
-extension AccountAssetListDataSource: AddAssetItemFooterViewDelegate {
-    func addAssetItemFooterViewDidTapAddAsset(_ addAssetItemFooterView: AddAssetItemFooterView) {
+extension AccountAssetListDataSource: AddAssetItemViewDelegate {
+    func addAssetItemViewDidTapAddAsset(_ addAssetItemView: AddAssetItemView) {
         handlers.didAddAsset?()
     }
 }

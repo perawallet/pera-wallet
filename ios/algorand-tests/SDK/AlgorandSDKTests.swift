@@ -17,14 +17,14 @@
 
 import XCTest
 
-@testable import algorand_staging
+@testable import pera_staging
 
 class AlgorandSDKTests: XCTestCase {
 
     private let algorandSDK = AlgorandSDK()
-    private let account = Bundle.main.decode(Account.self, from: "AccountA.json")
+    private let account = Bundle.main.decode(response: Account.self, from: "AccountA.json")
     private let accountAddress = "X2YHQU7W6OJG66TMLL3PZ7JQS2D42YEGATBBNDXH22Q6JSNOFR6LVZYXXM"
-    private let transactionParams = Bundle.main.decode(TransactionParams.self, from: "TransactionParams.json")
+    private let transactionParams = Bundle.main.decode(response: TransactionParams.self, from: "TransactionParams.json")
 
     func testPrivateKeys() {
         guard let privateKey = algorandSDK.generatePrivateKey() else {

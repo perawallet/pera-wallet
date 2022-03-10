@@ -17,11 +17,11 @@
 
 import XCTest
 
-@testable import algorand_staging
+@testable import pera_staging
 
 class TransactionParamsTests: XCTestCase {
 
-    private let params = Bundle.main.decode(TransactionParams.self, from: "TransactionParams.json")
+    private let params = Bundle.main.decode(response: TransactionParams.self, from: "TransactionParams.json")
 
     func testGetProjectedTransactionFee() {
         let projectedFee = params.getProjectedTransactionFee()

@@ -37,7 +37,7 @@ extension TransactionsViewController: CSVExportable {
             assetId = String(id)
         }
 
-        let draft = TransactionFetchDraft(account: draft.accountHandle.value, dates: dates, nextToken: token, assetId: assetId, limit: nil)
+        let draft = TransactionFetchDraft(account: draft.accountHandle.value, dates: dates, nextToken: token, assetId: assetId, limit: nil, transactionType: nil)
 
         api?.fetchTransactions(draft) { [weak self] response in
             guard let self = self else {

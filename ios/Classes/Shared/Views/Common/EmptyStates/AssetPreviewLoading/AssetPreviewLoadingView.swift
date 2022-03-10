@@ -21,23 +21,12 @@ import UIKit
 
 final class AssetPreviewLoadingView:
     View,
-    ListReusable {
-    private lazy var imageView = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
-    private lazy var titleView = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
-    private lazy var subtitleView = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
-    private lazy var supplementaryView = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
+    ListReusable,
+    ShimmerAnimationDisplaying {
+    private lazy var imageView = ShimmerView()
+    private lazy var titleView = ShimmerView()
+    private lazy var subtitleView = ShimmerView()
+    private lazy var supplementaryView = ShimmerView()
 
     override init(
         frame: CGRect

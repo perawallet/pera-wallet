@@ -26,8 +26,10 @@ final class TitleHeaderView: View {
     func customize(_ theme: TitleHeaderViewTheme) {
         addTitleLabel(theme)
     }
+    
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
-    func prepareLayout(_ layoutSheet: LayoutSheet) {}
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
     func bind(_ viewModel: SelectAccountHeaderViewModel) {
         titleLabel.text = viewModel.title

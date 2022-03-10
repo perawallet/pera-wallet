@@ -105,8 +105,47 @@ class TransactionsViewController: BaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        let loadingCell = listView.visibleCells.first { $0 is LoadingCell } as? LoadingCell
-        loadingCell?.startAnimating()
+        listView.visibleCells.forEach { cell in
+            switch cell {
+            case is LoadingCell:
+                let loadingCell = cell as! LoadingCell
+                loadingCell.startAnimating()
+            case is AlgoTransactionHistoryLoadingCell:
+                let loadingCell = cell as! AlgoTransactionHistoryLoadingCell
+                loadingCell.startAnimating()
+            case is AssetTransactionHistoryLoadingCell:
+                let loadingCell = cell as! AssetTransactionHistoryLoadingCell
+                loadingCell.startAnimating()
+            case is TransactionHistoryLoadingCell:
+                let loadingCell = cell as! TransactionHistoryLoadingCell
+                loadingCell.startAnimating()
+            default:
+                break
+            }
+        }
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        listView.visibleCells.forEach { cell in
+            switch cell {
+            case is LoadingCell:
+                let loadingCell = cell as! LoadingCell
+                loadingCell.stopAnimating()
+            case is AlgoTransactionHistoryLoadingCell:
+                let loadingCell = cell as! AlgoTransactionHistoryLoadingCell
+                loadingCell.stopAnimating()
+            case is AssetTransactionHistoryLoadingCell:
+                let loadingCell = cell as! AssetTransactionHistoryLoadingCell
+                loadingCell.stopAnimating()
+            case is TransactionHistoryLoadingCell:
+                let loadingCell = cell as! TransactionHistoryLoadingCell
+                loadingCell.stopAnimating()
+            default:
+                break
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -221,10 +260,21 @@ extension TransactionsViewController {
                 case .loading:
                     let loadingCell = cell as! LoadingCell
                     loadingCell.startAnimating()
+                case .algoTransactionHistoryLoading:
+                    let loadingCell = cell as! AlgoTransactionHistoryLoadingCell
+                    loadingCell.startAnimating()
+                case .assetTransactionHistoryLoading:
+                    let loadingCell = cell as! AssetTransactionHistoryLoadingCell
+                    loadingCell.startAnimating()
+                case .transactionHistoryLoading:
+                    let loadingCell = cell as! TransactionHistoryLoadingCell
+                    loadingCell.startAnimating()
                 default:
                     break
                 }
-
+            case .pending:
+                let pendingCell = cell as! PendingTransactionCell
+                pendingCell.startAnimating()
             default:
                 break
             }

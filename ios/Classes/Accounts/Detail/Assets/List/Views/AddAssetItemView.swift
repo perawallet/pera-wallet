@@ -66,20 +66,12 @@ protocol AddAssetItemViewDelegate: AnyObject {
     func addAssetItemViewDidTapAddAsset(_ addAssetItemView: AddAssetItemView)
 }
 
-final class AddAssetItemFooterView: BaseSupplementaryView<AddAssetItemView> {
-    weak var delegate: AddAssetItemFooterViewDelegate?
+final class AddAssetItemCell: BaseCollectionViewCell<AddAssetItemView> {
 
-    override func linkInteractors() {
-        contextView.delegate = self
+    override func configureAppearance() {
+        super.configureAppearance()
+
+        contextView.isUserInteractionEnabled = false
     }
-}
-
-extension AddAssetItemFooterView: AddAssetItemViewDelegate {
-    func addAssetItemViewDidTapAddAsset(_ addAssetItemView: AddAssetItemView) {
-        delegate?.addAssetItemFooterViewDidTapAddAsset(self)
-    }
-}
-
-protocol AddAssetItemFooterViewDelegate: AnyObject {
-    func addAssetItemFooterViewDidTapAddAsset(_ addAssetItemFooterView: AddAssetItemFooterView)
+    
 }

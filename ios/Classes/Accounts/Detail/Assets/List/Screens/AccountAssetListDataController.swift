@@ -38,6 +38,7 @@ enum AccountAssetsItem: Hashable {
     case search
     case asset(AssetPreviewViewModel)
     case pendingAsset(PendingAssetPreviewViewModel)
+    case addAsset
 }
 
 enum AccountAssetListDataControllerEvent {

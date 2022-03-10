@@ -80,6 +80,8 @@ extension TransactionHistoryContextViewModel {
     ) {
         if let transaction = transactionDependency.transaction as? Transaction {
             id = transaction.id
+        } else if let pendingTransaction = transactionDependency.transaction as? PendingTransaction {
+            id = "\(pendingTransaction.hashValue)"
         }
     }
 

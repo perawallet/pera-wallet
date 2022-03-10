@@ -112,6 +112,7 @@ extension NodeSettingsViewController {
         if pushNotificationController.token == nil {
             session?.authenticatedUser?.setDefaultNode(selectedNode)
             didChangeNetwork(selectedNetwork)
+            sharedDataController.resetPolling()
         } else {
             loadingController?.startLoadingWithMessage("title-loading".localized)
             

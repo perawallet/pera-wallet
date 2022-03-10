@@ -28,8 +28,10 @@ final class SelectContactView: View {
         addUserImageView(theme)
         addNameLabel(theme)
     }
+    
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
-    func prepareLayout(_ layoutSheet: LayoutSheet) {}
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
 }
 

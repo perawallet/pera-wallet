@@ -199,6 +199,7 @@ extension RootViewController: WCMainTransactionScreenDelegate {
         didRejected request: WalletConnectRequest
     ) {
         resetCurrentWCTransaction()
+        wcMainTransactionScreen.dismissScreen()
     }
 
     func wcMainTransactionScreen(
@@ -212,33 +213,31 @@ extension RootViewController: WCMainTransactionScreenDelegate {
             return
         }
 
-        presentWCTransactionSuccessMessage(for: wcSession)
+        wcMainTransactionScreen.dismissScreen {
+            [weak self] in
+            guard let self = self else { return }
+            
+            self.presentWCTransactionSuccessMessage(for: wcSession)
+        }
     }
 
     private func presentWCTransactionSuccessMessage(for session: WCSession) {
         let dappName = session.peerMeta.name
-
-        asyncMain(afterDuration: 0.3) {
-            [weak self] in
-            guard let self = self else { return }
-
-            let visibleScreen = self.findVisibleScreen()
-            let transition = BottomSheetTransition(presentingViewController: visibleScreen)
-            let configurator = BottomWarningViewConfigurator(
-                image: "icon-approval-check".uiImage,
-                title: "wc-transaction-request-signed-warning-title".localized,
-                description: "wc-transaction-request-signed-warning-message".localized(dappName, dappName),
-                primaryActionButtonTitle: nil,
-                secondaryActionButtonTitle: "title-close".localized
-            )
-            
-            transition.perform(
-                .bottomWarning(configurator: configurator),
-                by: .presentWithoutNavigationController
-            )
-            
-            self.wcTransactionSuccessTransition = transition
-        }
+        let configurator = BottomWarningViewConfigurator(
+            image: "icon-approval-check".uiImage,
+            title: "wc-transaction-request-signed-warning-title".localized,
+            description: "wc-transaction-request-signed-warning-message".localized(dappName, dappName),
+            primaryActionButtonTitle: nil,
+            secondaryActionButtonTitle: "title-close".localized
+        )
+        let transition = BottomSheetTransition(presentingViewController: findVisibleScreen())
+        
+        transition.perform(
+            .bottomWarning(configurator: configurator),
+            by: .presentWithoutNavigationController
+        )
+        
+        self.wcTransactionSuccessTransition = transition
     }
 
     private func resetCurrentWCTransaction() {

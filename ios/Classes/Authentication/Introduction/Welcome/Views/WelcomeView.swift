@@ -85,7 +85,7 @@ extension WelcomeView {
 
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(theme.horizontalInset)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
             $0.top.equalToSuperview().inset(theme.topInset)
         }
     }

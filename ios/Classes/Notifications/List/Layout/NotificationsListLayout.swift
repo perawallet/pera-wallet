@@ -68,8 +68,25 @@ extension NotificationsListLayout: UICollectionViewDelegateFlowLayout {
     ) {
         handlers.willDisplay?(cell, indexPath)
     }
-}
 
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didEndDisplaying cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+            return
+        }
+
+        switch itemIdentifier {
+        case .loading:
+            let loadingCell = cell as? NotificationLoadingCell
+            loadingCell?.stopAnimating()
+        default:
+            break
+        }
+    }
+}
 
 extension NotificationsListLayout {
     struct Handlers {

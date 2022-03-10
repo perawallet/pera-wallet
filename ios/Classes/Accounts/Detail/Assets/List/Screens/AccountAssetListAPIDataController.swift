@@ -102,21 +102,29 @@ extension AccountAssetListAPIDataController {
             var assetItems: [AccountAssetsItem] = []
 
             assetItems.append(.search)
+            
+            if !self.accountHandle.value.isWatchAccount() {
+                assetItems.append(.addAsset)
+            }
 
             let currency = self.sharedDataController.currency.value
 
             assetItems.append(.asset(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt((self.accountHandle.value, currency)))))
 
+            self.clearAddedAssetDetailsIfNeeded(for: self.accountHandle.value)
+            self.clearRemovedAssetDetailsIfNeeded(for: self.accountHandle.value)
+
             self.accountHandle.value.compoundAssets.forEach {
+                if self.removedAssetDetails.contains($0.detail) {
+                    return
+                }
+
                 assets.append($0.detail)
                 
                 let assetPreview = AssetPreviewModelAdapter.adaptAssetSelection(($0.detail, $0.base, currency))
                 let assetItem: AccountAssetsItem = .asset(AssetPreviewViewModel(assetPreview))
                 assetItems.append(assetItem)
             }
-
-            self.clearAddedAssetDetailsIfNeeded(for: self.accountHandle.value)
-            self.clearRemovedAssetDetailsIfNeeded(for: self.accountHandle.value)
 
             self.addedAssetDetails.forEach {
                 let assetItem: AccountAssetsItem = .pendingAsset(PendingAssetPreviewViewModel(AssetPreviewModelAdapter.adaptPendingAsset($0)))
@@ -167,10 +175,10 @@ extension AccountAssetListAPIDataController {
     }
 
     private func clearAddedAssetDetailsIfNeeded(for account: Account) {
-        addedAssetDetails = addedAssetDetails.filter { !account.contains($0) }
+        addedAssetDetails = addedAssetDetails.filter { !account.contains($0) }.uniqueElements()
     }
 
     private func clearRemovedAssetDetailsIfNeeded(for account: Account) {
-        removedAssetDetails = removedAssetDetails.filter { account.contains($0) }
+        removedAssetDetails = removedAssetDetails.filter { account.contains($0) }.uniqueElements()
     }
 }

@@ -33,12 +33,14 @@ extension ALGAPI {
             from = "\(fromDate.toFormat("yyyy-MM-dd"))T00:00:00.000Z"
             to = "\(toDate.toFormat("yyyy-MM-dd"))T23:59:59.000Z"
         }
+
+        let transactionType = draft.transactionType?.rawValue
         
         return EndpointBuilder(api: self)
             .base(.indexer(network))
             .path(.accountTransaction, args: draft.account.address)
             .method(.get)
-            .query(TransactionsQuery(limit: draft.limit, from: from, to: to, next: draft.nextToken, assetId: draft.assetId))
+            .query(TransactionsQuery(limit: draft.limit, from: from, to: to, next: draft.nextToken, assetId: draft.assetId, transactionType: transactionType))
             .completionHandler(handler)
             .execute()
     }

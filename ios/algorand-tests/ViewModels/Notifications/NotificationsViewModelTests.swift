@@ -15,24 +15,26 @@
 //
 //  NotificationsViewModelTests.swift
 
+import Foundation
+import MacaroonUtils
 import XCTest
 
-@testable import algorand_staging
+@testable import pera_staging
 
 class NotificationsViewModelTests: XCTestCase {
 
-    private let notification = Bundle.main.decode(NotificationMessage.self, from: "NotificationMessage.json")
-    private let account = Bundle.main.decode(Account.self, from: "AccountA.json")
+    private let notification = Bundle.main.decode(response: NotificationMessage.self, from: "NotificationMessage.json")
+    private let account = Bundle.main.decode(response: Account.self, from: "AccountA.json")
 
-    func testNotificationMessageSenderAccount() {
-        let viewModel = NotificationsViewModel(notification: notification, senderAccount: account, latestReadTimestamp: 3000)
-        XCTAssertEqual(viewModel.title?.string, "Your transaction of 55.555555 Algos from Chase to MF5KP5...RGQRHI is complete.")
-    }
-
-    func testNotificationMessageReceiverAccount() {
-        let viewModel = NotificationsViewModel(notification: notification, receiverAccount: account, latestReadTimestamp: 3000)
-        XCTAssertEqual(viewModel.title?.string, "Your transaction of 55.555555 Algos from T4EWBD...UU6QRM to MF5KP5...RGQRHI is complete.")
-    }
+//    func testNotificationMessageSenderAccount() {
+//        let viewModel = NotificationsViewModel(notification: notification, senderAccount: account, latestReadTimestamp: 3000)
+//        XCTAssertEqual(viewModel.title?.string, "Your transaction of 55.555555 Algos from Chase to MF5KP5...RGQRHI is complete.")
+//    }
+//
+//    func testNotificationMessageReceiverAccount() {
+//        let viewModel = NotificationsViewModel(notification: notification, receiverAccount: account, latestReadTimestamp: 3000)
+//        XCTAssertEqual(viewModel.title?.string, "Your transaction of 55.555555 Algos from T4EWBD...UU6QRM to MF5KP5...RGQRHI is complete.")
+//    }
 
     func testIsRead() {
         let viewModel = NotificationsViewModel(notification: notification, senderAccount: account, latestReadTimestamp: 3000)

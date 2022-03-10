@@ -18,7 +18,7 @@
 import XCTest
 import CoreData
 
-@testable import algorand_staging
+@testable import pera_staging
 
 class DBDecodeTests: XCTestCase {
 

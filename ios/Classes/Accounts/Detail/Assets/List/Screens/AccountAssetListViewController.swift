@@ -92,12 +92,6 @@ final class AccountAssetListViewController: BaseViewController {
     override func linkInteractors() {
         super.linkInteractors()
         listView.delegate = self
-
-        listDataSource.handlers.didAddAsset = { [weak self] in
-            guard let self = self else { return }
-            let controller = self.open(.addAsset(account: self.accountHandle.value), by: .push)
-            (controller as? AssetAdditionViewController)?.delegate = self
-        }
     }
 
     override func setListeners() {
@@ -149,18 +143,6 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
         )
     }
 
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForFooterInSection section: Int
-    ) -> CGSize {
-        return listLayout.collectionView(
-            collectionView,
-            layout: collectionViewLayout,
-            referenceSizeForFooterInSection: section
-        )
-    }
-
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let sectionIdentifiers = listDataSource.snapshot().sectionIdentifiers
 
@@ -189,15 +171,25 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                     self.openAssetDetail(compoundAsset)
                 }
             case .asset:
-                if indexPath.item == 1 {
+                var algoIndex = 2
+                
+                if accountHandle.value.isWatchAccount() {
+                    algoIndex -= 1
+                }
+                
+                if indexPath.item == algoIndex {
                     openAlgoDetail()
                     return
                 }
 
                 /// Reduce search and algos cells from index
-                if let assetDetail = accountHandle.value.compoundAssets[safe: indexPath.item - 2] {
+                if let assetDetail = accountHandle.value.compoundAssets[safe: indexPath.item - algoIndex.advanced(by: 1)] {
                     self.openAssetDetail(assetDetail)
                 }
+
+            case .addAsset:
+                let controller = self.open(.addAsset(account: self.accountHandle.value), by: .push)
+                (controller as? AssetAdditionViewController)?.delegate = self
             default:
                 break
             }

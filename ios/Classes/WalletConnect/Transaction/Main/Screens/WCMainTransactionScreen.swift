@@ -299,7 +299,6 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
         dataSource.signTransactionRequest(signature: signedTransactions)
         logAllTransactions()
         delegate?.wcMainTransactionScreen(self, didSigned: transactionRequest, in: wcSession)
-        dismissScreen()
     }
 
     private func logAllTransactions() {
@@ -462,7 +461,6 @@ extension WCMainTransactionScreen: WCTransactionValidator {
     func rejectTransactionRequest(with error: WCTransactionErrorResponse) {
         dataSource.rejectTransaction(reason: error)
         delegate?.wcMainTransactionScreen(self, didRejected: transactionRequest)
-        dismissScreen()
     }
 }
 

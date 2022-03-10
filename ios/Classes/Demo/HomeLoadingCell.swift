@@ -20,6 +20,10 @@ import MacaroonUIKit
 import UIKit
 
 final class HomeLoadingCell: CollectionCell<HomeLoadingView> {
+    func restartAnimating() {
+        contextView.restartAnimating()
+    }
+
     func startAnimating() {
         contextView.startAnimating()
     }

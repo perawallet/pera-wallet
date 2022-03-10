@@ -21,30 +21,20 @@ import UIKit
 
 final class HomeLoadingView:
     View,
-    ListReusable {
+    ListReusable,
+    ShimmerAnimationDisplaying {
     private lazy var theme = HomeLoadingViewTheme()
 
-    private lazy var portfolioLabel = Label()
-    private lazy var portfoliloLoading = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
+    private lazy var portfolioLabel = UILabel()
+    private lazy var portfolioLoading = ShimmerView()
     private lazy var holdingsContainer = UIView()
     private lazy var algoHoldingsContainer = UIView()
     private lazy var algoHoldingsLabel = Label()
     private lazy var algoImageView = UIView()
-    private lazy var algoHoldingLoading = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
-
+    private lazy var algoHoldingLoading = ShimmerView()
     private lazy var assetHoldingsContainer = UIView()
     private lazy var assetHoldingsLabel = Label()
-    private lazy var assetHoldingLoading = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
-
+    private lazy var assetHoldingLoading = ShimmerView()
     private lazy var accountsLabel = Label()
     private lazy var firstAccountPreviewLoading = AssetPreviewLoadingView()
     private lazy var secondAccountPreviewLoading = AssetPreviewLoadingView()
@@ -56,7 +46,7 @@ final class HomeLoadingView:
         addPortfolioView()
         addAccountCells()
     }
-    
+
     func customizeAppearance(
         _ styleSheet: NoStyleSheet
     ) {}
@@ -67,35 +57,24 @@ final class HomeLoadingView:
 }
 
 extension HomeLoadingView {
-    func startAnimating() {
-    }
-    
-    func stopAnimating() {
-    }
-}
-
-extension HomeLoadingView {
     private func addPortfolioView() {
         portfolioLabel.editText = theme.portfolioText
         algoHoldingsLabel.editText = theme.algoHoldingText
         assetHoldingsLabel.editText = theme.assetHoldingText
 
         addSubview(portfolioLabel)
-        portfolioLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(theme.portfolioMargin.top)
-            make.leading.equalToSuperview()
+        portfolioLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(theme.portfolioMargin.top)
+            $0.leading.equalToSuperview()
         }
 
-        portfoliloLoading.draw(corner: theme.loadingCorner)
+        portfolioLoading.draw(corner: theme.loadingCorner)
 
-        addSubview(portfoliloLoading)
-        portfoliloLoading.snp.makeConstraints { make in
-            make.top.equalTo(portfolioLabel.snp.bottom).offset(theme.portfolioLoadingMargin.top)
-            make.leading.equalTo(portfolioLabel)
-            make.size.equalTo(
-                CGSize(width: theme.portfolioLoadingSize.w,
-                       height: theme.portfolioLoadingSize.h)
-            )
+        addSubview(portfolioLoading)
+        portfolioLoading.snp.makeConstraints {
+            $0.top.equalTo(portfolioLabel.snp.bottom).offset(theme.portfolioLoadingMargin.top)
+            $0.leading.equalTo(portfolioLabel)
+            $0.fitToSize(theme.portfolioLoadingSize)
         }
 
         addSubview(holdingsContainer)
@@ -129,9 +108,7 @@ extension HomeLoadingView {
         algoImageView.snp.makeConstraints {
             $0.top.equalTo(algoHoldingsLabel.snp.bottom).offset(theme.algoImageTopInset)
             $0.leading.equalToSuperview()
-            $0.size.equalTo(
-                CGSize(width: theme.algoImageSize.w, height: theme.algoImageSize.h)
-            )
+            $0.fitToSize(theme.algoImageSize)
         }
 
         algoHoldingLoading.draw(corner: theme.loadingCorner)
@@ -140,9 +117,7 @@ extension HomeLoadingView {
         algoHoldingLoading.snp.makeConstraints {
             $0.centerY.equalTo(algoImageView)
             $0.leading.equalTo(algoImageView.snp.trailing).offset(theme.algoHoldingLoadingLeadingInset)
-            $0.size.equalTo(
-                CGSize(width: theme.algoHoldingLoadingSize.w, height: theme.algoHoldingLoadingSize.h)
-            )
+            $0.fitToSize(theme.algoHoldingLoadingSize)
         }
     }
 
@@ -167,9 +142,7 @@ extension HomeLoadingView {
         assetHoldingLoading.snp.makeConstraints {
             $0.centerY.equalTo(algoHoldingLoading)
             $0.leading.equalTo(assetHoldingsLabel.snp.leading)
-            $0.size.equalTo(
-                CGSize(width: theme.algoHoldingLoadingSize.w, height: theme.algoHoldingLoadingSize.h)
-            )
+            $0.fitToSize(theme.algoHoldingLoadingSize)
         }
     }
 

@@ -113,8 +113,36 @@ extension TransactionsListLayout: UICollectionViewDelegateFlowLayout {
         didEndDisplaying cell: UICollectionViewCell,
         forItemAt indexPath: IndexPath
     ) {
-        if let loadingCell = cell as? LoadingCell {
+        guard let itemIdentifier = transactionsDataSource?.itemIdentifier(for: indexPath) else {
+            return
+        }
+
+        switch itemIdentifier {
+        case .nextList:
+            let loadingCell = cell as! LoadingCell
             loadingCell.stopAnimating()
+        case .empty(let emptyState):
+            switch emptyState {
+            case .loading:
+                let loadingCell = cell as! LoadingCell
+                loadingCell.stopAnimating()
+            case .algoTransactionHistoryLoading:
+                let loadingCell = cell as! AlgoTransactionHistoryLoadingCell
+                loadingCell.stopAnimating()
+            case .assetTransactionHistoryLoading:
+                let loadingCell = cell as! AssetTransactionHistoryLoadingCell
+                loadingCell.stopAnimating()
+            case .transactionHistoryLoading:
+                let loadingCell = cell as! TransactionHistoryLoadingCell
+                loadingCell.stopAnimating()
+            default:
+                break
+            }
+        case .pending:
+            let pendingTransactionCell = cell as! PendingTransactionCell
+            pendingTransactionCell.stopAnimating()
+        default:
+            break
         }
     }
 

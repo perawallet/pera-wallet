@@ -21,7 +21,9 @@ import MacaroonUtils
 
 final class PendingTransaction:
     ALGEntityModel,
-    TransactionItem {
+    TransactionItem,
+    Hashable {
+    
     let signature: String?
     private let algosAmount: UInt64?
     private let assetAmount: UInt64?
@@ -78,11 +80,31 @@ final class PendingTransaction:
         apiModel.txn = transaction
         return apiModel
     }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(signature)
+        hasher.combine(sender)
+        hasher.combine(receiver)
+        hasher.combine(amount)
+        hasher.combine(type)
+    }
+    
+    static func == (lhs: PendingTransaction, rhs: PendingTransaction) -> Bool {
+        return lhs.signature == rhs.signature &&
+        lhs.sender == rhs.sender &&
+        lhs.receiver == rhs.receiver &&
+        lhs.amount == rhs.amount &&
+        lhs.type == rhs.type
+    }
 }
 
 extension PendingTransaction {
+    ///TODO: Code duplication should be handled
     func isAssetAdditionTransaction(for address: String) -> Bool {
-        return assetReceiver == address && assetAmount == 0 && type == .assetTransfer
+        return assetReceiver == address &&
+        assetAmount == 0 &&
+        type == .assetTransfer &&
+        sender == address
     }
 }
 

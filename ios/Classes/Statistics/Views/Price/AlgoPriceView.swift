@@ -29,10 +29,7 @@ final class AlgoPriceView:
     
     private lazy var priceCanvasView = UIView()
     private lazy var priceView = Label()
-    private lazy var priceLoadingView = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
+    private lazy var priceLoadingView = ShimmerView()
     private lazy var priceAttributeView = AlgoPriceAttributeView()
     private lazy var chartView = AlgorandChartView(chartCustomizer: AlgoUSDValueChartCustomizer())
     
@@ -76,7 +73,7 @@ final class AlgoPriceView:
         let price = viewModel?.price
         priceView.editText = price
         priceLoadingView.isHidden = price != nil
-        
+
         priceAttributeView.bindData(viewModel?.priceAttribute)
     }
 }

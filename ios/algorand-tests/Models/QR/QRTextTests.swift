@@ -17,7 +17,7 @@
 
 import XCTest
 
-@testable import algorand_staging
+@testable import pera_staging
 
 class QRTextTests: XCTestCase {
 

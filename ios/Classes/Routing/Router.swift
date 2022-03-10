@@ -772,13 +772,42 @@ extension Router {
     func wcConnectionApprovalViewControllerDidApproveConnection(
         _ wcConnectionApprovalViewController: WCConnectionApprovalViewController
     ) {
-        wcConnectionApprovalViewController.dismissScreen()
+        let dAppName = wcConnectionApprovalViewController.walletConnectSession.dAppInfo.peerMeta.name
+        
+        wcConnectionApprovalViewController.dismissScreen {
+            [weak self] in
+            guard let self = self else { return }
+            
+            self.presentWCSessionsApprovedModal(dAppName: dAppName)
+        }
     }
 
     func wcConnectionApprovalViewControllerDidRejectConnection(
         _ wcConnectionApprovalViewController: WCConnectionApprovalViewController
     ) {
         wcConnectionApprovalViewController.dismissScreen()
+    }
+    
+    private func presentWCSessionsApprovedModal(
+        dAppName: String
+    ) {
+        let visibleScreen = self.findVisibleScreen(over: self.rootViewController)
+        let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+
+        transition.perform(
+            .bottomWarning(
+                configurator:
+                    BottomWarningViewConfigurator(
+                        image: "icon-approval-check".uiImage,
+                        title: "wallet-connect-session-connection-approved-title".localized(dAppName),
+                        description: "wallet-connect-session-connection-approved-description".localized(dAppName),
+                        secondaryActionButtonTitle: "title-close".localized
+                    )
+            ),
+            by: .presentWithoutNavigationController
+        )
+        
+        ongoingTransitions.append(transition)
     }
 }
 

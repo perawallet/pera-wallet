@@ -26,7 +26,7 @@ final class PendingTransactionCell: BaseCollectionViewCell<PendingTransactionVie
     override func prepareForReuse() {
         super.prepareForReuse()
         contextView.prepareForReuse()
-        stopAnimatingIndicator()
+        stopAnimating()
     }
 
     func bindData(_ viewModel: TransactionHistoryContextViewModel) {
@@ -35,11 +35,11 @@ final class PendingTransactionCell: BaseCollectionViewCell<PendingTransactionVie
 }
 
 extension PendingTransactionCell {
-    func startAnimatingIndicator() {
+    func startAnimating() {
         contextView.startAnimatingIndicator()
     }
 
-    func stopAnimatingIndicator() {
+    func stopAnimating() {
         contextView.stopAnimatingIndicator()
     }
 }

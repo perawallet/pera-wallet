@@ -20,34 +20,14 @@ import UIKit
 
 final class AssetTransactionHistoryLoadingView:
     View,
-    ListReusable {
-    private lazy var titleView = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
-
-    private lazy var balanceView = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
-
-    private lazy var currencyView = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
-
+    ListReusable,
+    ShimmerAnimationDisplaying {
+    private lazy var titleView = ShimmerView()
+    private lazy var balanceView = ShimmerView()
+    private lazy var currencyView = ShimmerView()
     private lazy var topSeparator = UIView()
-
-    private lazy var assetNameLabel = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
-
-    private lazy var assetIDButton = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
-
+    private lazy var assetNameLabel = ShimmerView()
+    private lazy var assetIDButton = ShimmerView()
     private lazy var bottomSeparator = UIView()
 
     override init(

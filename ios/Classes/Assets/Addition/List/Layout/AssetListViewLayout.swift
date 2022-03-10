@@ -67,8 +67,9 @@ extension AssetListViewLayout: UICollectionViewDelegateFlowLayout {
         willDisplay cell: UICollectionViewCell,
         forItemAt indexPath: IndexPath
     ) {
-        if let loadingCell = cell as? LoadingCell {
+        if let loadingCell = cell as? AssetPreviewLoadingCell {
             loadingCell.startAnimating()
+            return
         }
 
         handlers.willDisplay?(cell, indexPath)
@@ -79,7 +80,7 @@ extension AssetListViewLayout: UICollectionViewDelegateFlowLayout {
         didEndDisplaying cell: UICollectionViewCell,
         forItemAt indexPath: IndexPath
     ) {
-        if let loadingCell = cell as? LoadingCell {
+        if let loadingCell = cell as? AssetPreviewLoadingCell {
             loadingCell.stopAnimating()
         }
     }

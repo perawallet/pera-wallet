@@ -24,10 +24,7 @@ final class AlgoPriceAttributeView:
     ViewModelBindable {
     private lazy var iconView = ImageView()
     private lazy var titleView = Label()
-    private lazy var loadingView = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
+    private lazy var loadingView = ShimmerView()
     
     func customize(
         _ theme: AlgoPriceAttributeViewTheme

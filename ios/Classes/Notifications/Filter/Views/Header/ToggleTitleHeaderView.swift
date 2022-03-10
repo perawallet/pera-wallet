@@ -25,8 +25,10 @@ final class ToggleTitleHeaderView: View {
     func customize(_ theme: ToggleTitleHeaderViewTheme) {
         addTitleLabel(theme)
     }
+    
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
-    func prepareLayout(_ layoutSheet: LayoutSheet) { }
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) { }
 }
 
 extension ToggleTitleHeaderView {

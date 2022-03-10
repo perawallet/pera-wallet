@@ -91,6 +91,52 @@ extension SelectAccountListLayout: UICollectionViewDelegateFlowLayout {
 
         handlers.didSelectAccount?(accountHandle)
     }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+            return
+        }
+
+        switch itemIdentifier {
+        case .empty(let item):
+            switch item {
+            case .loading:
+                let loadingCell = cell as? AssetPreviewLoadingCell
+                loadingCell?.startAnimating()
+            default:
+                break
+            }
+        default:
+            break
+        }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didEndDisplaying cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+            return
+        }
+
+        switch itemIdentifier {
+        case .empty(let item):
+            switch item {
+            case .loading:
+                let loadingCell = cell as? AssetPreviewLoadingCell
+                loadingCell?.stopAnimating()
+            default:
+                break
+            }
+        default:
+            break
+        }
+    }
 }
 
 extension SelectAccountListLayout {

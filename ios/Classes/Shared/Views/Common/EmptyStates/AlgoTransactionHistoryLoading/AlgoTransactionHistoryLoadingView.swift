@@ -21,34 +21,15 @@ import UIKit
 
 final class AlgoTransactionHistoryLoadingView:
     View,
-    ListReusable {
-
-    private lazy var titleView = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
-
-    private lazy var balanceView = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
-
-    private lazy var currencyView = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
-
+    ListReusable,
+    ShimmerAnimationDisplaying {
+    private lazy var titleView = ShimmerView()
+    private lazy var balanceView = ShimmerView()
+    private lazy var currencyView = ShimmerView()
     private lazy var rewardsContainer = TripleShadowView()
-
     private lazy var rewardsImage = ImageView()
-    private lazy var rewardsTitle = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
-    private lazy var rewardsSubtitle = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
+    private lazy var rewardsTitle = ShimmerView()
+    private lazy var rewardsSubtitle = ShimmerView()
     private lazy var rewardsSupplementaryImage = UIImageView()
 
     override init(

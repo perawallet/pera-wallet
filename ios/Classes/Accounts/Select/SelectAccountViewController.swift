@@ -98,6 +98,28 @@ final class SelectAccountViewController: BaseViewController {
         }
         dataController.load()
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        listView
+            .visibleCells
+            .forEach {
+                let loadingCell = $0 as? AssetPreviewLoadingCell
+                loadingCell?.startAnimating()
+            }
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        listView
+            .visibleCells
+            .forEach {
+                let loadingCell = $0 as? AssetPreviewLoadingCell
+                loadingCell?.stopAnimating()
+            }
+    }
 }
 
 extension SelectAccountViewController {
@@ -115,16 +137,6 @@ extension SelectAccountViewController {
             $0.trailing.leading.equalToSuperview().inset(theme.horizontalPadding)
             $0.top.bottom.equalToSuperview()
         }
-    }
-}
-
-extension SelectAccountViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: theme.listItemHeight)
     }
 }
 

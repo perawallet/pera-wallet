@@ -713,8 +713,8 @@
 "wallet-connect-session-disconnect-fail-message" = "Failed to disconnect from Session %@.";
 "wallet-connect-session-invalid-qr-message" = "Couldn't create a session on WalletConnect. Please try with a valid QR.";
 "wallet-connect-session-error-not-reachable" = "WalletConnect is not reachable at the moment. Please try again later.";
-"wallet-connect-session-connection-approved-title" = "WalletConnect Session with\n%@ is approved";
-"wallet-connect-session-connection-approved-description" = "Head back to %@ to finalize the connection and to initiate transactions!";
+"wallet-connect-session-connection-approved-title" = "You are Connected to %@";
+"wallet-connect-session-connection-approved-description" = "Please return to %@ to continue and finish your operation. You can find all connected Sessions in the dedicated Settings page.";
 
 // MARK: Wallet Connect Transaction Warning
 "wallet-connect-transaction-warning-rekey" = "This transaction will transfer ownership of this account. Your current recovery passphrase will no longer grant access to these assets.";

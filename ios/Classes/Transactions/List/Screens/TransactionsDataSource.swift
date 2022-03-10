@@ -53,7 +53,6 @@ final class TransactionsDataSource: UICollectionViewDiffableDataSource<Transacti
             case let .pending(item):
                 let cell = collectionView.dequeue(PendingTransactionCell.self, at: indexPath)
                 cell.bindData(item)
-                cell.startAnimatingIndicator()
                 return cell
             case let .empty(state):
                 switch state {

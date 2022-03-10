@@ -38,8 +38,10 @@ final class ContactContextView: View {
         addAddressLabel(theme)
         addQRDisplayButton(theme)
     }
+    
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
-    func prepareLayout(_ layoutSheet: LayoutSheet) {}
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
     func setListeners() {
         qrDisplayButton.addTarget(self, action: #selector(notifyDelegateToQRDisplayButtonTapped), for: .touchUpInside)
