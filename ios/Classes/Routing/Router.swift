@@ -83,9 +83,9 @@ class Router:
         }
     }
     
-    func launchMain() {
+    func launchMain(completion: (() -> Void)? = nil) {
         rootViewController.launchTabsIfNeeded()
-        rootViewController.dismissIfNeeded()
+        rootViewController.dismissIfNeeded(animated: true, completion: completion)
     }
     
     func launcMainAfterAuthorization(
@@ -154,6 +154,7 @@ class Router:
                 from: findVisibleScreen(over: rootViewController),
                 by: .present
             )
+
         case .wcMainTransactionScreen(let draft):
             route(
                 to: .wcMainTransactionScreen(draft: draft, delegate: rootViewController),
@@ -164,6 +165,13 @@ class Router:
                     transitioningDelegate: nil
                 ),
                 animated: true
+            )
+            
+        case .buyAlgo(let draft):
+            self.route(
+                to: .buyAlgoHome(transactionDraft: draft, delegate: self),
+                from: self.findVisibleScreen(over: self.rootViewController),
+                by: .present
             )
         }
     }
@@ -566,7 +574,7 @@ class Router:
             viewController = aViewController
         case let .accountSelection(transactionAction, delegate):
             let selectAccountViewController = SelectAccountViewController(
-                dataController: SelectAccountAPIDataController(configuration.sharedDataController),
+                dataController: SelectAccountAPIDataController(configuration.sharedDataController, transactionAction: transactionAction),
                 transactionAction: transactionAction,
                 configuration: configuration
             )
@@ -622,6 +630,15 @@ class Router:
             )
         case .peraIntroduction:
             viewController = PeraIntroductionViewController(configuration: configuration)
+        case .buyAlgoHome(let draft, let delegate):
+            let buyAlgoHomeScreen = BuyAlgoHomeScreen(
+                draft: draft,
+                configuration: configuration
+            )
+            buyAlgoHomeScreen.delegate = delegate
+            viewController = buyAlgoHomeScreen
+        case let .buyAlgoTransaction(buyAlgoParams):
+            viewController = BuyAlgoTransactionViewController(buyAlgoParams: buyAlgoParams, configuration: configuration)
         }
 
         return viewController as? T
@@ -800,7 +817,9 @@ extension Router {
                     BottomWarningViewConfigurator(
                         image: "icon-approval-check".uiImage,
                         title: "wallet-connect-session-connection-approved-title".localized(dAppName),
-                        description: "wallet-connect-session-connection-approved-description".localized(dAppName),
+                        description: .plain(
+                            "wallet-connect-session-connection-approved-description".localized(dAppName)
+                        ),
                         secondaryActionButtonTitle: "title-close".localized
                     )
             ),
@@ -854,5 +873,29 @@ extension Router: SelectAccountViewControllerDelegate {
         selectAccountViewController.open(.sendTransaction(draft: draft), by: .push)
 
         self.qrSendDraft = nil
+    }
+}
+
+extension Router: BuyAlgoHomeScreenDelegate {
+    func buyAlgoHomeScreenDidFailedTransaction(_ screen: BuyAlgoHomeScreen) {
+        screen.dismissScreen()
+    }
+
+    func buyAlgoHomeScreen(_ screen: BuyAlgoHomeScreen, didCompletedTransaction params: BuyAlgoParams) {
+        screen.dismissScreen(animated: true) {
+            self.displayAlgoTransactionScreen(for: params)
+        }
+    }
+    
+    private func displayAlgoTransactionScreen(for params: BuyAlgoParams) {
+        let visibleScreen = findVisibleScreen(over: rootViewController)
+        let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+        
+        ongoingTransitions.append(transition)
+        
+        transition.perform(
+            .buyAlgoTransaction(buyAlgoParams: params),
+            by: .presentWithoutNavigationController
+        )
     }
 }

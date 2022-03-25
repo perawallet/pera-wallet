@@ -138,7 +138,7 @@ class Session: Storable {
     
     var preferredCurrency: String {
         get {
-            return string(with: currencyPreferenceKey, to: .defaults) ?? "USD"
+            return string(with: currencyPreferenceKey, to: .defaults) ?? "ALGO"
         }
         set {
             save(newValue, for: currencyPreferenceKey, to: .defaults)

@@ -11,13 +11,13 @@
 "account-listing-error-message" = "很抱歉，我们无法显示该投资组合的细节信息。我们似乎出现了一些计算方面的问题。\n\n请注意，一些资产价值可能不可用，因此，投资组合的总价值应被视为一种估计。";
 
 /* (No Comment) */
-"account-name-setup-description" = "在使用Algorand钱包时，请为账户取一个容易识别的名称。名称储存在本地，仅个人可见。";
+"account-name-setup-description" = "Name your account to easily identify it while using the Pera Wallet. These names are stored locally, and can only be seen by you.";
 
 /* (No Comment) */
-"account-name-setup-explanation" = "账户名称";
+"account-name-setup-explanation" = "Account Name";
 
 /* (No Comment) */
-"account-name-setup-finish" = "完成帐户创建";
+"account-name-setup-finish" = "Finish Account Creation";
 
 /* (No Comment) */
 "account-name-setup-placeholder" = "储蓄账户";
@@ -47,43 +47,52 @@
 "account-select-search-empty-title" = "未找到账户";
 
 /* MARK: Account Type Selection */
-"account-type-selection-add" = "添加账户";
+"account-type-selection-add" = "I want to create an account";
 
 /* (No Comment) */
-"account-type-selection-add-detail" = "我需要有新地址与恢复助记词的新账户。";
+"account-type-selection-add-detail" = "I want to create a new Algorand account with a new address and recovery passphrase";
 
 /* (No Comment) */
-"account-type-selection-create" = "创建新的账户";
+"account-type-selection-create" = "Create a new account";
 
 /* (No Comment) */
-"account-type-selection-create-detail" = "创建账户、新地址与新助记词";
+"account-type-selection-create-detail" = "Create a new Algorand account or add a watch account";
 
 /* (No Comment) */
 "account-type-selection-ledger" = "配对Ledger账户";
 
 /* (No Comment) */
-"account-type-selection-ledger-detail" = "与Ledger硬件钱包支持的账户配对";
+"account-type-selection-ledger-detail" = "I want to create an Algorand account\nthat is backed by my Ledger hardware wallet";
 
 /* (No Comment) */
-"account-type-selection-recover" = "通过助记词恢复账户";
+"account-type-selection-passphrase" = "Recover an account";
 
 /* (No Comment) */
-"account-type-selection-recover-detail" = "利用25个助记词恢复账户";
+"account-type-selection-passphrase-detail" = "I want to recover an Algorand account using my 25-word passphrase";
 
 /* (No Comment) */
-"account-type-selection-watch-detail" = "仅使用账户地址监控账户交易";
+"account-type-selection-recover" = "I already have an account";
 
 /* (No Comment) */
-"account-welcome-wallet-title" = "欢迎使用\nAlgorand钱包";
+"account-type-selection-recover-detail" = "Import an existing Algorand account\nvia recovery passphrase or pair your Ledger";
+
+/* (No Comment) */
+"account-type-selection-watch" = "Add watch account";
+
+/* (No Comment) */
+"account-type-selection-watch-detail" = "I want to monitor an Algorand account that's held in cold storage";
+
+/* (No Comment) */
+"account-welcome-add-account-title" = "Add an account";
+
+/* (No Comment) */
+"account-welcome-wallet-title" = "Welcome to\nPera Wallet";
 
 /* (No Comment) */
 "accounts-add-account" = "+ 添加账户";
 
 /* (No Comment) */
-"accounts-add-new" = "添加新的资产";
-
-/* (No Comment) */
-"accounts-algos-available-title" = "ALGO";
+"accounts-algos-available-title" = "Algo";
 
 /* (No Comment) */
 "accounts-dollar-value-title" = "美元价值";
@@ -116,7 +125,7 @@
 "accounts-transaction-value" = "价值";
 
 /* (No Comment) */
-"accounts-transaction-your-balance" = "您的余额";
+"accounts-transaction-your-balance" = "Balance";
 
 /* (No Comment) */
 "add-node-title" = "添加备注";
@@ -146,7 +155,7 @@
 "asset-add-warning" = "添加资产前，需要发送一笔产生最低交易费用的交易。交易记录中将会显示该笔交易。";
 
 /* (No Comment) */
-"asset-algos-title" = "ALGO";
+"asset-algos-title" = "Algo";
 
 /* (No Comment) */
 "asset-all-title" = "全部";
@@ -170,19 +179,22 @@
 "asset-min-transaction-error-title" = "最小交易错误！";
 
 /* (No Comment) */
-"asset-not-found-detail" = "请尝试不同的资产名称或资产编号";
+"asset-no-value" = "N/A";
+
+/* (No Comment) */
+"asset-not-found-detail" = "Try different asset name or asset id";
 
 /* (No Comment) */
 "asset-not-found-title" = "未找到资产";
 
 /* (No Comment) */
-"asset-remove-confirmation-title" = "移除资产";
+"asset-remove-confirmation-title" = "Manage asset";
 
 /* (No Comment) */
 "asset-remove-subtitle" = "您必须先将资产余额转移到另一个账户，才能移除该项资产";
 
 /* (No Comment) */
-"asset-remove-title" = "移除资产";
+"asset-remove-title" = "Manage Assets";
 
 /* (No Comment) */
 "asset-remove-transaction-warning" = "您将要从%@ 移除 %@。 除非重新添加该资产，您无法使用本账号与该资产进行交易。";
@@ -251,7 +263,7 @@
 "ble-error-fail-ble-connection-power" = "想要搜索附近的Ledger设备，请确保您已开启蓝牙功能";
 
 /* (No Comment) */
-"ble-error-fail-ble-connection-repairing" = "如出现Ledger Nano X连接问题，请从手机的蓝牙设置中删除该设备和Ledger账户，再按照Algorand Wallet的说明重新配对您的Ledger设备与账户。";
+"ble-error-fail-ble-connection-repairing" = "If you’re having Ledger Nano X connection issues, please remove the device from your phone’s bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Pera Wallet instructions.";
 
 /* (No Comment) */
 "ble-error-fail-ble-connection-resetting" = "重新设置的BLE连接失败";
@@ -260,7 +272,7 @@
 "ble-error-fail-ble-connection-unauthorized" = "搜索附近的Ledger之前，需要确保启用蓝牙功能。";
 
 /* (No Comment) */
-"ble-error-fail-ble-connection-unsupported" = "Algorand钱包尚不支持您尝试连接的设备。";
+"ble-error-fail-ble-connection-unsupported" = "The device you are trying to connect to is not supported with the Pera Wallet.";
 
 /* (No Comment) */
 "ble-error-fail-connect-peripheral" = "无法连接Ledger设备。请确认该设备在附近并已解锁，而且蓝牙功能已开启。";
@@ -329,7 +341,7 @@
 "chart-time-selection-yearly" = "1年";
 
 /* (No Comment) */
-"contact-search-empty-detail" = "请尝试其他联系人名字";
+"contact-search-empty-detail" = "Try different contact name";
 
 /* (No Comment) */
 "contact-search-empty-title" = "未找到联系人";
@@ -353,7 +365,7 @@
 "contacts-close-warning-title" = "确定吗？";
 
 /* (No Comment) */
-"contacts-delete-contact" = "删除联系人";
+"contacts-delete-contact" = "Delete contact";
 
 /* (No Comment) */
 "contacts-delete-contact-alert-explanation" = "确定要删除该联系人吗？";
@@ -371,16 +383,7 @@
 "contacts-info" = "联系人信息";
 
 /* (No Comment) */
-"contacts-info-edit" = "编辑联系人信息";
-
-/* (No Comment) */
-"contacts-input-address-explanation" = "地址";
-
-/* (No Comment) */
-"contacts-input-address-placeholder" = "复制 # 或扫描二维码";
-
-/* (No Comment) */
-"contacts-input-name-explanation" = "姓名";
+"contacts-info-edit" = "Edit Contact";
 
 /* (No Comment) */
 "contacts-input-name-placeholder" = "联系人姓名";
@@ -389,16 +392,16 @@
 "contacts-name-validation-error" = "姓名栏空白。";
 
 /* (No Comment) */
-"contacts-search" = "选择联系人";
+"contacts-search" = "Search contacts or name";
 
 /* MARK: Contacts */
 "contacts-title" = "联系人";
 
 /* (No Comment) */
-"contacts-title-assets" = "资产：";
+"contacts-title-assets" = "Assets";
 
 /* (No Comment) */
-"contacts-transactions-title" = "交易";
+"contacts-transactions-title" = "Transaction History";
 
 /* (No Comment) */
 "csv-download-error" = "无法为交易记录创建CSV文件。";
@@ -482,7 +485,7 @@
 "governance-banner-detail" = "成为治理者，为Algorand的未来投票，获取奖励。";
 
 /* (No Comment) */
-"governance-banner-title" = "Algorand 治理计划已经启动了！";
+"governance-banner-title" = "Algorand Governance Program is starting!";
 
 /* (No Comment) */
 "internet-connection-error-detail" = "无法连接到服务器，请确认已连接到网络";
@@ -491,10 +494,13 @@
 "internet-connection-error-title" = "连接网络";
 
 /* MARK: Introduction */
-"introduction-add-account-text" = "添加账户";
+"introduction-add-account-text" = "I want to create\nan Algorand account";
 
 /* (No Comment) */
-"introduction-title-terms-and-services" = "创建账户表面您同意Algorand的 <a href=\"%@\">条款和条件</a> 与<a href=\"%@\">隐私政策</a>";
+"introduction-recover-account-text" = "I already have an account";
+
+/* (No Comment) */
+"introduction-title-terms-and-services" = "By creating an account, you agree to Pera Wallet's<br><a href=\"https://perawallet.app/terms-and-services/\">Terms and Conditions</a> and <a href=\"https://www.perawallet.app/privacy-policy/\">Privacy Policy</a>";
 
 /* (No Comment) */
 "ledger-account-detail-assets" = "资产";
@@ -515,7 +521,7 @@
 "ledger-account-fetct-error" = "获取账户详细信息时出现网络错误。请稍后重试。";
 
 /* (No Comment) */
-"ledger-account-selection-detail" = "该Ledger设备可为下列账户签署交易。请选择要添加到您Algorand钱包的账户。";
+"ledger-account-selection-detail" = "This ledger device can sign transactions for the following accounts. Select the accounts to add to your Pera Wallet.";
 
 /* (No Comment) */
 "ledger-account-selection-detail-rekey" = "选择来签署该账户的账户。";
@@ -554,16 +560,16 @@
 "ledger-approval-connection-title" = "Ledger连接";
 
 /* (No Comment) */
-"ledger-approval-message" = "请在Ledger设备上，检查和签署交易。";
+"ledger-approval-message" = "Please verify the account address on your Ledger device (%@)";
 
 /* MARK: Ledger Approval */
-"ledger-approval-title" = "预览与签署";
+"ledger-approval-title" = "Ledger Approval";
 
 /* (No Comment) */
 "ledger-device-list-connect" = "连接";
 
 /* (No Comment) */
-"ledger-device-list-looking" = "寻找其他Ledger设备";
+"ledger-device-list-looking" = "Looking for devices";
 
 /* MARK: Ledger Device List */
 "ledger-device-list-title" = "Ledger设备配对";
@@ -593,7 +599,7 @@
 "ledger-pairing-first-warning-title" = "将您的设备与Ledger配对";
 
 /* (No Comment) */
-"ledger-pairing-issue-error-message" = "出现Ledger Nano X的连接问题？\n\n如出现连接问题，请从手机的蓝牙设置中删除该设备和Ledger账户，再按照Algorand Wallet的说明重新配对您的Ledger设备与账户。";
+"ledger-pairing-issue-error-message" = "Make sure the device is unlocked, nearby and has bluetooth enabled. If problems persist, please remove the device from your phone’s bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Pera Wallet instructions.";
 
 /* (No Comment) */
 "ledger-pairing-issue-error-title" = "出现Ledger Nano X的连接问题？";
@@ -623,13 +629,13 @@
 "ledger-rekey-more-assets" = "+%@ 更多的资产";
 
 /* (No Comment) */
-"ledger-rekey-success-message" = "账户 %@ 已成功更新密钥";
+"ledger-rekey-success-message" = "The account \"%@\" has been successfully rekeyed";
 
 /* (No Comment) */
-"ledger-rekey-success-title" = "账户密钥更新";
+"ledger-rekey-success-title" = "Account successfully\nrekeyed";
 
 /* (No Comment) */
-"ledger-rekey-total-fee" = "%@ ALGO的密钥更新总费用";
+"ledger-rekey-total-fee" = "Total Rekeying fee of %@ Algo";
 
 /* (No Comment) */
 "ledger-rekey-transaction-title" = "密钥更新交易";
@@ -644,22 +650,22 @@
 "ledger-troubleshooting-app-support" = "在设备上安装Algorand Ledger应用时，若需要任何帮助，请访问 %@";
 
 /* (No Comment) */
-"ledger-troubleshooting-bluetooth-connection-html" = "关闭或开启苹果手机上的蓝牙。 <br /> <br />\n<ul>\n<li>点击 <b>设置</b></li>\n<li>选择 <b>“通用”</b></li>\n<li>点击 <b>“蓝牙”</b></li>\n<li>翻转 <b>开启/关闭 按钮</b> 来切换</li>\n<li>蓝牙 <b>开启或关闭</b></li>\n</ul>";
+"ledger-troubleshooting-bluetooth-connection-html" = "Disable or Enable Bluetooth for an iOS device. <br /> <br />\n<ul>\n<li>Tap on <b>Settings</b></li>\n<li>Select <b>“General”</b></li>\n<li>Tap on <b>“Bluetooth”</b></li>\n<li>Flip the <b>On/Off button</b> to toggle</li>\n<li>Bluetooth <b>On or Off</b></li>\n</ul>";
 
 /* (No Comment) */
 "ledger-troubleshooting-close-others" = "关闭其他应用（Ledger、加密钱包或其他尝试与Ledger配对的应用。）";
 
 /* (No Comment) */
-"ledger-troubleshooting-install-app-first-html" = "开始遵循Ledger的完整 <a href=\"https://www.ledger.com/start\">开始使用</a> 教程。";
+"ledger-troubleshooting-install-app-first-html" = "Begin by following Ledger’s comprehensive <a href=\"https://www.ledger.com/start\">Getting Started</a> tutorial.";
 
 /* (No Comment) */
-"ledger-troubleshooting-install-app-second-html" = "当教程指导您“选择想在设备上安装的应用”，请在搜索栏输入<b>Algorand</b>并进行安装。";
+"ledger-troubleshooting-install-app-second-html" = "When the tutorial gets to the point where it directs you to “Select the application(s) you want to install on your device,” type <b>Algorand</b> in the search bar and install.";
 
 /* (No Comment) */
-"ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "关于更多高级故障排除功能，请查阅Ledger的官方 <a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">蓝牙故障排除指南</a>.";
+"ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "For more advanced troubleshooting, please refer to Ledger’s official <a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">Bluetooth Troubleshooting Guide</a>.";
 
 /* (No Comment) */
-"ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "关于Ledger的蓝牙功能，请查阅Ledger的官方 <a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">蓝牙连接指南</a>.";
+"ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "For general usage of your Ledger’s Bluetooth feature, please refer to Ledger’s official <a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">Bluetooth Connection Guide</a>.";
 
 /* (No Comment) */
 "ledger-troubleshooting-ledger-support" = "更多关于Ledger设备的故障排除，请访问";
@@ -668,10 +674,10 @@
 "ledger-troubleshooting-ledger-support-title" = "Ledger支持";
 
 /* (No Comment) */
-"ledger-troubleshooting-open-app-first-html" = "Ledger的完整教程<a href=\"https://www.ledger.com/start\">开始使用</a> 将指导您在账户设备上安装和打开应用。";
+"ledger-troubleshooting-open-app-first-html" = "Continue with Ledger’s comprehensive <a href=\"https://www.ledger.com/start\">Getting Started</a> tutorial, which will direct you how to install and open apps on your ledger device.";
 
 /* (No Comment) */
-"ledger-troubleshooting-open-app-second-html" = "若您尚未在Ledger设备上安装 <b>Algorand</b> 应用，当教程指导您“选择想在设备上安装的应用”，请在搜索栏输入<b>Algorand</b> 并进行安装。";
+"ledger-troubleshooting-open-app-second-html" = "If you haven’t already installed the <b>Algorand</b> app on your Ledger device, when the tutorial gets to the point where it directs you to “Select the application(s) you want to install on your device,” type <b>Algorand</b> in the search bar and install.";
 
 /* (No Comment) */
 "ledger-troubleshooting-restart" = "重启Algorand钱包以及/或您的设备。";
@@ -692,7 +698,7 @@
 "ledger-tutorial-title-text" = "请按照以下指示，创建新的Ledger账户";
 
 /* (No Comment) */
-"ledger-tutorial-turned-on" = "确认您的Ledger设备已开启，并启用了蓝牙功能。";
+"ledger-tutorial-turned-on" = "Make sure that your ledger device is on\nand has Bluetooth enabled.";
 
 /* (No Comment) */
 "ledger-verified-add" = "添加验证过的账户";
@@ -701,7 +707,7 @@
 "ledger-verify-header-subtitle" = "以下账户地址会显示在您的Ledger设备上。请仔细比较和验证每个地址，完成最终的设备配对。";
 
 /* (No Comment) */
-"ledger-verify-header-title" = "通过Ledger来验证账户地址";
+"ledger-verify-header-title" = "Verify Account Addresses\nvia Ledger";
 
 /* (No Comment) */
 "local-authentication-enable" = "使用人脸识别/触控";
@@ -710,7 +716,7 @@
 "local-authentication-enabled-subtitle" = "您的密码验证完成。您的Algorand账户现在更加安全了。";
 
 /* (No Comment) */
-"local-authentication-enabled-title" = "启用生物识别认证";
+"local-authentication-enabled-title" = "Biometric\nAuthentication\nEnabled";
 
 /* (No Comment) */
 "local-authentication-go-settings-text" = "您已关闭生物特征验证。请到“设置”中开启该配置。";
@@ -734,22 +740,67 @@
 "local-authentication-reason-touch-id-title" = "使用触控解锁";
 
 /* (No Comment) */
-"login-subtitle" = "输入6位数密码";
+"login-subtitle" = "Enter your\n6-digit pin";
 
 /* MARK: Login */
 "login-title" = "解锁";
 
 /* (No Comment) */
-"maximum-balance-standard-account-warning-description" = "由于您在此账户%@中还有%@其余资产，Algorand区块链要求您维持%@ALGO的最低余额。\n\n\n\n点击继续，您的交易金额将自动更新以反映此更改。您将可以在下一步中预览此更改。";
+"maximum-balance-standard-account-warning-description" = "Based on your account configuration, your minimum balance is %@.\n\nBy hitting continue, your transaction amount will be updated to maintain the Algorand Blockchain’s minimum required balance. You’ll be able to preview this change in the next step.";
 
 /* (No Comment) */
-"maximum-balance-warning-description" = "如果您要将最高余额发送到重置密钥的账户上，请您保持%@ ALGO的最低余额。此举能够确保您重置密钥的账户没有任何变化。\n\n\n您的交易金额将自动更新以反映这一变化。您可以在下一步中预览交易。";
+"maximum-balance-warning-description" = "Sending your maximum balance on this rekeyed account requires you to maintain a minimum balance of %@ Algos. This is to ensure that nothing changes with your rekeyed account.\n\nYour transaction amount will be automatically updated to reflect this change. You will be able to preview the transaction in the next step.";
 
 /* (No Comment) */
 "maximum-balance-warning-title" = "最高余额";
 
 /* (No Comment) */
 "min-balance-title" = "最低余额要求";
+
+/* MARK: MoonPay */
+"moonpay-buy-button-title" = "Buy ALGO";
+
+/* (No Comment) */
+"moonpay-introduction-description" = "MoonPay offers the fastest way to buy ALGO with your local currency. Buy crypto with credit card or bank transfers. It's fast, simple, and secure.";
+
+/* (No Comment) */
+"moonpay-introduction-security" = "Secured by";
+
+/* (No Comment) */
+"moonpay-introduction-title" = "Buy ALGO with Moonpay";
+
+/* (No Comment) */
+"moonpay-transaction-completed-description" = "Your purchase is completed and is being processed by the network. You will receive a notification when they are in your account.";
+
+/* (No Comment) */
+"moonpay-transaction-completed-title" = "Your Algos are on their way!";
+
+/* (No Comment) */
+"moonpay-transaction-failed-description" = "Looks like your purchase failed. You will need to try again.";
+
+/* (No Comment) */
+"moonpay-transaction-failed-title" = "Uh oh, something went wrong.";
+
+/* (No Comment) */
+"moonpay-transaction-pending-description" = "Your purchase is being processed. It can take a few minutes to be completed. You will receive a notification when it’s done.";
+
+/* (No Comment) */
+"moonpay-transaction-pending-title" = "Your Algos are on their way!";
+
+/* (No Comment) */
+"moonpay-transaction-testnet-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use MoonPay.";
+
+/* (No Comment) */
+"moonpay-transaction-waitingAuthorization-description" = "Your purchase is waiting for authorization. Once payment is processed, you will receive a notification.";
+
+/* (No Comment) */
+"moonpay-transaction-waitingAuthorization-title" = "Almost there!";
+
+/* (No Comment) */
+"moonpay-transaction-waitingPayment-description" = "Your purchase request is pending payment. Once payment is processed, you will receive a notification.";
+
+/* (No Comment) */
+"moonpay-transaction-waitingPayment-title" = "Almost there!";
 
 /* (No Comment) */
 "nft-list-empty-detail" = "您很快就能在Algorand钱包中查看您的NFT收藏。 \n我们的团队正在努力实现该功能。敬请关注！";
@@ -854,13 +905,25 @@
 "notifications-title" = "通知";
 
 /* (No Comment) */
+"number-abbreviation-billion" = "B";
+
+/* (No Comment) */
+"number-abbreviation-million" = "M";
+
+/* MARK: Number Abbreviation */
+"number-abbreviation-thousand" = "K";
+
+/* (No Comment) */
+"number-abbreviation-trillion" = "T";
+
+/* (No Comment) */
 "options-auth-account" = "授权账户地址";
 
 /* (No Comment) */
 "options-copy-address" = "复制地址";
 
 /* (No Comment) */
-"options-edit-account-name" = "编辑账户名称";
+"options-edit-account-name" = "Rename Account";
 
 /* (No Comment) */
 "options-manage-assets" = "管理资产";
@@ -878,13 +941,16 @@
 "options-remove-account" = "移除账户";
 
 /* (No Comment) */
-"options-remove-alert-explanation" = "您将移除账户。您确定要这样做吗？";
-
-/* (No Comment) */
 "options-remove-assets" = "移除资产";
 
 /* (No Comment) */
-"options-show-qr" = "显示二维码与地址";
+"options-remove-main-account-explanation" = "You are about to remove your main account, are you sure you want to proceed with this choice?";
+
+/* (No Comment) */
+"options-remove-watch-account-explanation" = "You are about to remove a watch account. Are you sure you want to proceed with this choice?";
+
+/* (No Comment) */
+"options-show-qr" = "Show QR Code";
 
 /* MARK: Options */
 "options-title" = "账户设置";
@@ -950,7 +1016,7 @@
 "passphrase-verify-select-word" = "选择单词#%@";
 
 /* (No Comment) */
-"passphrase-verify-title" = "验证恢复助记词";
+"passphrase-verify-title" = "Verify recovery\npassphrase backup";
 
 /* (No Comment) */
 "passphrase-verify-wrong-message" = "所选字词有误，请重试。";
@@ -962,13 +1028,13 @@
 "password-change-old-subtitle" = "请输入您旧的\n6位数PIN码";
 
 /* (No Comment) */
-"password-change-subtitle" = "输入6位数密码";
+"password-change-subtitle" = "Choose your\n6-digit PIN";
 
 /* (No Comment) */
 "password-change-title" = "更改密码";
 
 /* MARK: Password Setting */
-"password-set-subtitle" = "请选择6位数密码";
+"password-set-subtitle" = "Choose your\n6-digit PIN";
 
 /* (No Comment) */
 "password-verify-fail-message" = "与前面输入的密码不匹配";
@@ -980,7 +1046,7 @@
 "password-verify-new-subtitle" = "再次输入您新的\n6位数PIN码";
 
 /* (No Comment) */
-"password-verify-subtitle" = "输入相同的6位数密码";
+"password-verify-subtitle" = "Re-enter your\n6-digit PIN";
 
 /* (No Comment) */
 "password-verify-title" = "密码验证";
@@ -1004,7 +1070,7 @@
 "pin-limit-reset-all" = "重置所有数据";
 
 /* MARK: Pin Limit */
-"pin-limit-title" = "Algorand钱包已被锁定";
+"pin-limit-title" = "Pera Wallet app is locked";
 
 /* (No Comment) */
 "pin-limit-too-many" = "密码输入次数过于频繁";
@@ -1043,10 +1109,10 @@
 "qr-creation-copied" = "地址已复制到剪切板";
 
 /* (No Comment) */
-"qr-creation-copy-address" = "复制地址";
+"qr-creation-copy-address" = "Copy Address";
 
 /* (No Comment) */
-"qr-creation-sharing-title" = "分享二维码与地址";
+"qr-creation-sharing-title" = "QR Code";
 
 /* MARK: QR Creation */
 "qr-creation-title" = "助记词二维码";
@@ -1106,19 +1172,28 @@
 "recover-from-seed-passphrase-title" = "助记词";
 
 /* MARK: Recover From Seed */
-"recover-from-seed-title" = "通过助记词恢复账户";
+"recover-from-seed-title" = "Enter Your Recovery\nPassphrase";
 
 /* (No Comment) */
 "recover-from-seed-verify-exist-error" = "该账户已存在";
 
 /* (No Comment) */
-"recover-from-seed-verify-pop-up-explanation" = "欢迎来到Algorand！\n您的账户已准备就绪。";
+"recover-from-seed-verify-pop-up-description-watch-account" = "The Watch Account has been added successfully.";
 
 /* (No Comment) */
-"recover-from-seed-verify-pop-up-title" = "账户验证";
+"recover-from-seed-verify-pop-up-explanation" = "Welcome to Pera Wallet!\nYour account is ready to use.";
+
+/* (No Comment) */
+"recover-from-seed-verify-pop-up-explanation-already-added" = "Congratulations, your account is ready to go.";
+
+/* (No Comment) */
+"recover-from-seed-verify-pop-up-title" = "Account is verified!";
+
+/* (No Comment) */
+"recover-from-seed-verify-pop-up-title-watch-account" = "Watch account added successfully";
 
 /* MARK: Passphrase Back Up */
-"recover-passphrase-title" = "恢复助记词";
+"recover-passphrase-title" = "Recovery Passphrase";
 
 /* (No Comment) */
 "recover-title" = "恢复";
@@ -1127,7 +1202,7 @@
 "rekey-instruction-first" = "使用新的Ledger设备签署未来的交易。";
 
 /* (No Comment) */
-"rekey-instruction-header" = "值得期待：";
+"rekey-instruction-header" = "What to expect";
 
 /* (No Comment) */
 "rekey-instruction-second-ledger" = "该账户将不再支持您旧的Ledger设备。";
@@ -1151,7 +1226,7 @@
 "rekey-instruction-title" = "密钥更新账户";
 
 /* MARK: Algos Request */
-"request-algos-title" = "ALGO请求";
+"request-algos-title" = "Request Algo";
 
 /* (No Comment) */
 "request-title" = "请求";
@@ -1160,7 +1235,7 @@
 "reward-list-title" = "奖励";
 
 /* (No Comment) */
-"rewards-detail-subtitle" = "持有ALGO即可获得奖励！以下是自从您上笔交易后的奖励汇总。您的余额中将始终包括这些奖励。";
+"rewards-detail-subtitle" = "You earn rewards just by owning Algo! Here's a summary of your earned rewards since your last transaction. These rewards are always included in your balance.";
 
 /* (No Comment) */
 "rewards-rate" = "奖励率";
@@ -1217,10 +1292,7 @@
 "send-algos-alert-message-address" = "请输入目标地址。";
 
 /* (No Comment) */
-"send-algos-amount" = "金额";
-
-/* (No Comment) */
-"send-algos-amount-error" = "交易金额不可超过所持有的ALGO数额。";
+"send-algos-amount-error" = "Transaction amount cannot be more than your available algo";
 
 /* (No Comment) */
 "send-algos-balance-title" = "余额：";
@@ -1232,16 +1304,16 @@
 "send-algos-contacts" = "联系人";
 
 /* (No Comment) */
-"send-algos-minimum-amount-custom-error" = "交易后的账户余额低于最小账户余额%@ 个ALGO。";
+"send-algos-minimum-amount-custom-error" = "The transaction cannot be completed because the amount will put your account below minimum required balance of %@ Algo.";
 
 /* (No Comment) */
-"send-algos-minimum-amount-error" = "交易后的账户余额低于最小账户余额0.1个ALGO。";
+"send-algos-minimum-amount-error" = "Transaction amount results in a balance below the minimum account balance of 0.1 Algo.";
 
 /* (No Comment) */
-"send-algos-minimum-amount-error-new-account-description" = "This is the first transaction for the selected account. The first transactions require a minimum amount of at least 0.1 Algo. Please enter a valid amount and try again.";
+"send-algos-minimum-amount-error-new-account-description" = "这是所选账户的首笔交易。首笔交易最低费用要求为0.1ALGO。请输入有效金额，并再重试。";
 
 /* (No Comment) */
-"send-algos-minimum-amount-error-new-account-title" = "Minimum Amount Required.";
+"send-algos-minimum-amount-error-new-account-title" = "所需的最低余额";
 
 /* (No Comment) */
 "send-algos-receiver-address-validation" = "收件人地址不是有效的Algorand地址，请重试。";
@@ -1256,16 +1328,13 @@
 "send-algos-sent-title" = "ALGO发送成功！";
 
 /* MARK: Algos Send */
-"send-algos-title" = "发送ALGO";
+"send-algos-title" = "Send Algo";
 
 /* (No Comment) */
 "send-algos-to" = "发送至";
 
 /* (No Comment) */
 "send-asset-amount-error" = "交易金额不可超过所持有的金额。";
-
-/* (No Comment) */
-"send-choose-asset" = "选择资产";
 
 /* (No Comment) */
 "send-enter-note-placeholder" = "在此输入备注";
@@ -1319,13 +1388,16 @@
 "send-trasaction-address-placeholder" = "粘贴#";
 
 /* (No Comment) */
-"settings-app-version" = "%@版本";
+"settings-app-version" = "Pera Wallet Version %@";
 
 /* (No Comment) */
 "settings-backup-title" = "备份";
 
 /* (No Comment) */
 "settings-currency" = "币种";
+
+/* (No Comment) */
+"settings-currency-header-title" = "Currency Preferences";
 
 /* (No Comment) */
 "settings-delete-data-title" = "删除所有数据";
@@ -1352,13 +1424,13 @@
 "settings-logout-button-delete" = "是的，删除全部数据";
 
 /* (No Comment) */
-"settings-logout-detail" = "您确定要删除全部数据吗？";
+"settings-logout-detail" = "You are about to delete all data in the wallet, including your stored accounts. Make sure to have your account passphrases stored elsewhere before confirming. You will not be able to restore your accounts otherwise. Are you sure you would like to proceed?";
 
 /* (No Comment) */
 "settings-logout-success-message" = "您的数据已成功删除";
 
 /* (No Comment) */
-"settings-logout-title" = "删除全部数据";
+"settings-logout-title" = "Remove All Accounts and Logout";
 
 /* (No Comment) */
 "settings-notification-disabled-go-settings-text" = "您已关闭通知提示。请到“设置”中开启通知提示。";
@@ -1376,7 +1448,7 @@
 "settings-rate-modal-title" = "评价您的体验";
 
 /* (No Comment) */
-"settings-rate-title" = "为Algorand钱包评分";
+"settings-rate-title" = "Rate Pera Wallet";
 
 /* MARK: Settings */
 "settings-sections-account" = "账户";
@@ -1394,7 +1466,7 @@
 "settings-server-node-settings" = "节点设置";
 
 /* (No Comment) */
-"settings-support-title" = "支持中心";
+"settings-support-title" = "Send Feedback";
 
 /* (No Comment) */
 "settings-theme-dark" = "深色模式";
@@ -1403,7 +1475,7 @@
 "settings-theme-light" = "浅色模式";
 
 /* (No Comment) */
-"settings-theme-set" = "设定主题";
+"settings-theme-set" = "Theme";
 
 /* (No Comment) */
 "settings-theme-system" = "系统默认";
@@ -1445,7 +1517,7 @@
 "title-algo-rewards" = "ALGO奖励";
 
 /* (No Comment) */
-"title-algorand" = "Algorand";
+"title-algorand" = "Algo";
 
 /* (No Comment) */
 "title-algorand-value" = "价值";
@@ -1466,7 +1538,7 @@
 "title-confirm" = "确认";
 
 /* (No Comment) */
-"title-confirm-all" = "确认所有交易";
+"title-confirm-all" = "Confirm All";
 
 /* (No Comment) */
 "title-connect" = "连接";
@@ -1499,7 +1571,7 @@
 "title-edit" = "编辑";
 
 /* (No Comment) */
-"title-enter-pin-for-passphrase" = "请输入PIN码查看助记词";
+"title-enter-pin-for-passphrase" = "Enter a Passcode";
 
 /* (No Comment) */
 "title-error" = "错误";
@@ -1535,9 +1607,6 @@
 "title-loading" = "加载中";
 
 /* (No Comment) */
-"title-max" = "最大值";
-
-/* (No Comment) */
 "title-new-uppercased" = "全新";
 
 /* (No Comment) */
@@ -1545,6 +1614,9 @@
 
 /* (No Comment) */
 "title-no" = "不是";
+
+/* (No Comment) */
+"title-not-available" = "Not available";
 
 /* (No Comment) */
 "title-off" = "关闭";
@@ -1559,7 +1631,7 @@
 "title-paste-passphrase" = "粘贴完整的助记词";
 
 /* (No Comment) */
-"title-plus-asset-count" = "+%@ 资产";
+"title-plus-asset-count" = "%@ Assets";
 
 /* (No Comment) */
 "title-plus-asset-singular-count" = "%@资产";
@@ -1595,7 +1667,7 @@
 "title-send" = "发送";
 
 /* (No Comment) */
-"title-share-qr" = "分享二维码";
+"title-share-qr" = "Share Address";
 
 /* (No Comment) */
 "title-show-all-detail" = "显示全部细节";
@@ -1607,7 +1679,7 @@
 "title-skip" = "跳过";
 
 /* (No Comment) */
-"title-start-using-pera-wallet" = "Start Using Pera Wallet";
+"title-start-using-pera-wallet" = "开始使用Pera钱包";
 
 /* MARK: Ledger Troubleshooting */
 "title-step-1" = "第一步";
@@ -1637,10 +1709,10 @@
 "title-yes" = "是";
 
 /* (No Comment) */
-"total-rewards-faq" = "常见问题解答";
+"total-rewards-faq" = "FAQ";
 
 /* (No Comment) */
-"total-rewards-faq-title" = "更多关于Algorand奖励的信息，请访问我们的常见问题解答页面。";
+"total-rewards-faq-title" = "For more information on Algorand Rewards, visit our FAQ";
 
 /* (No Comment) */
 "total-rewards-title" = "%@ 奖励";
@@ -1820,7 +1892,7 @@
 "tutorial-action-title-passcode" = "暂不需要";
 
 /* (No Comment) */
-"tutorial-description-back-up" = "若无恢复用的助记词，设备丢失或删除APP后，您会永久无法访问该Algorand账户。";
+"tutorial-description-back-up" = "Creating a passphrase backup will allow you to recover your account. Without the passphrase, if you lose your device, remove the account or delete the app, you can permanently lose access to your Algorand account!";
 
 /* (No Comment) */
 "tutorial-description-ledger" = "请确认您的Ledger设备已开启，并启用了蓝牙功能。";
@@ -1832,7 +1904,7 @@
 "tutorial-description-local" = "需要面容ID或指纹ID才能使用该APP。我们推荐开启生物特征认证功能，即便手机丢失，也能保护钱包的安全性。";
 
 /* (No Comment) */
-"tutorial-description-passcode" = "要有6位数的PIN码，才能使用Algorand钱包。我们强烈创建您创建PIN码，即便手机被盗，也能够维护钱包的安全性。";
+"tutorial-description-passcode" = "This 6-digit PIN will be required to use the Pera Wallet. We highly recommend creating a PIN to help increase wallet security in the event your phone is stolen.";
 
 /* (No Comment) */
 "tutorial-description-recover" = "接下来，您将输入25字节的恢复助记词来恢复Algorand账户。开始之前，请您准备好恢复用的助记词。";
@@ -1841,34 +1913,34 @@
 "tutorial-description-warning-title" = "警告:";
 
 /* (No Comment) */
-"tutorial-description-watch" = "Watch账户能够让你监控账户活动，且无需输入助记词。该功能有助于监控冷储藏的资产。\n\n警告：若无相应的恢复助记词，请勿将资产发送到该帐户上。";
+"tutorial-description-watch" = "Monitor activity of an account without needing a recovery passphrase. This is useful for monitoring assets that are kept in cold storage.";
 
 /* (No Comment) */
 "tutorial-description-watch-warning" = "若无相应的恢复助记词，请勿将资产发送到该帐户上。";
 
 /* (No Comment) */
-"tutorial-description-write" = "恢复Algorand账户的唯一途径是使用恢复助记词。请勿与任何人分享恢复助记词，因为助记词拥有完整的账户访问权限。\n\nAlgorand的工作人员绝对不会询问您的助记词。";
+"tutorial-description-write" = "The only way to recover an Algorand account is with this recovery passphrase.";
 
 /* (No Comment) */
 "tutorial-description-write-warning" = "请勿与任何人分享恢复助记词，因为助记词拥有完整的账户访问权限。";
 
 /* (No Comment) */
-"tutorial-main-title-back-up" = "我明白";
+"tutorial-main-title-back-up" = "I Understand";
 
 /* (No Comment) */
 "tutorial-main-title-ledger-connected" = "开始使用Algorand";
 
 /* (No Comment) */
-"tutorial-main-title-passcode" = "设置密码";
+"tutorial-main-title-passcode" = "Set PIN Code";
 
 /* (No Comment) */
 "tutorial-main-title-recover" = "恢复Algorand账户";
 
 /* (No Comment) */
-"tutorial-main-title-write" = "我已经准备好开始了";
+"tutorial-main-title-write" = "I'm Ready to Begin";
 
 /* (No Comment) */
-"tutorial-title-back-up" = "使用恢复助记词来备份您的账户";
+"tutorial-title-back-up" = "Create a passphrase backup for your account";
 
 /* (No Comment) */
 "tutorial-title-ledger-connected" = "成功连接Ledger";
@@ -1880,16 +1952,16 @@
 "tutorial-title-recover" = "恢复Algorand账户";
 
 /* (No Comment) */
-"tutorial-title-write" = "请准备写下您的恢复助记词";
+"tutorial-title-write" = "Prepare to write\ndown your recovery passphrase";
 
 /* (No Comment) */
 "verified-asset-double-check" = "请再次确认";
 
 /* (No Comment) */
-"verified-asset-information-text" = "对于与Algorand Inc.有合作关系的资产发行者，我们会将这些资产标注为“已认证”（蓝V标记）。\n\n这有助于防止错误地使用其他资产进行交易。\n\n也就是说，在进行交易资产之前，您应当反复核实该资产账号是否是您想要选择的。\n\n若您对验证过程有疑问，或对本应用有任何反馈，欢迎联系我们。";
+"verified-asset-information-text" = "Assets that go through our verification process are known projects that have their website and public information verified against this specific ASA. Verification status is not an endorsement of the asset.\n\nPera Wallet does not have any relationship with verified ASA owners. This badge is for informational purposes only.\n\nThat being said, you should always double check that the asset’s ID is the one that you intended to choose before transacting with that asset.\n\nIf you have questions about the verification process or general feedback about the app, we encourage you to visit;\n\n%@";
 
 /* (No Comment) */
-"verified-asset-information-title" = "资产验证是什么意思？";
+"verified-asset-information-title" = "What does Asset Verification mean?";
 
 /* MARK: Verified Asset Information */
 "verified-assets-title" = "已验证的资产";
@@ -1943,13 +2015,13 @@
 "wallet-connect-session-connected-with-account" = "已连接%@";
 
 /* (No Comment) */
-"wallet-connect-session-connection-approved-description" = "返回%@以完成连接并启动交易！";
+"wallet-connect-session-connection-approved-description" = "Please return to %@ to continue and finish your operation. You can find all connected Sessions in the dedicated Settings page.";
 
 /* (No Comment) */
-"wallet-connect-session-connection-approved-title" = "WalletConnect与%@的会话已获批准";
+"wallet-connect-session-connection-approved-title" = "You are Connected to %@";
 
 /* MARK: Wallet Connect Session */
-"wallet-connect-session-connection-description" = "%@想连接您的账户";
+"wallet-connect-session-connection-description" = "%@ wants to\nconnect to your account";
 
 /* (No Comment) */
 "wallet-connect-session-disconnect-fail-message" = "与会话%@断开连接失败。";
@@ -1982,13 +2054,13 @@
 "wallet-connect-transaction-all-count-singular" = "全部交易（1）";
 
 /* (No Comment) */
-"wallet-connect-transaction-count" = "%d笔交易";
+"wallet-connect-transaction-count" = "%d Transactions  ·  Group ID: %@";
 
 /* (No Comment) */
-"wallet-connect-transaction-count-singular" = "1笔交易";
+"wallet-connect-transaction-count-singular" = "1 Transaction  ·  Group ID: %@";
 
 /* MARK: Wallet Connect Transaction Dapp Message */
-"wallet-connect-transaction-dapp-show-more" = "显示更多信息";
+"wallet-connect-transaction-dapp-show-more" = "Read More";
 
 /* (No Comment) */
 "wallet-connect-transaction-detail-asset-url" = "显示资产URL";
@@ -2096,7 +2168,7 @@
 "wallet-connect-transaction-request-count-singular" = "交易请求（1）";
 
 /* (No Comment) */
-"wallet-connect-transaction-title-app-call" = "应用程序调用请求";
+"wallet-connect-transaction-title-app-call" = "Application Call";
 
 /* (No Comment) */
 "wallet-connect-transaction-title-app-call-approval-hash" = "批准哈希";
@@ -2186,13 +2258,13 @@
 "wallet-connect-transaction-warning-future" = "交易会在未来提交。";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-high-fee" = "此交易费用高于平时的 0.01 ALGO。";
+"wallet-connect-transaction-warning-high-fee" = "This transaction fee is higher than the usual fee of 0.001 Algo.";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-initial-description" = "External applications also called as dApps can make transaction requests that the Pera Wallet does not control. Please ensure you review these transactions carefully before approving and signing them.\n\nAll transactions are irreversible. Never approve transaction from dApp that you don’t know.";
+"wallet-connect-transaction-warning-initial-description" = "以下交易请求来自Pera钱包无法控制的外部应用程序。请在签署交易前仔细检查。\n\n所有交易都是不可逆转的。请勿同意签署任何来自您不认识的dApp的交易。";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-initial-title" = "Transaction Request FAQ";
+"wallet-connect-transaction-warning-initial-title" = "交易请求常见问题解答";
 
 /* MARK: Wallet Connect Transaction Warning */
 "wallet-connect-transaction-warning-rekey" = "这项交易将转移该账户的所有权。您当前的恢复密码将不再可以访问这些资产。";
@@ -2204,16 +2276,16 @@
 "watch-account-button" = "创建Watch账户";
 
 /* (No Comment) */
-"watch-account-create" = "创建Watch账户";
+"watch-account-create" = "Create a watch\naccount";
 
 /* (No Comment) */
 "watch-account-error-address" = "请输入有效的地址。";
 
 /* (No Comment) */
-"watch-account-explanation-title" = "您正在创建Algorand 账户的只读视图。如果您向该账户发送资产，但没有相应的恢复助记词，所发送的资产将会丢失。";
+"watch-account-explanation-title" = "You are creating a read-only view of an Algorand account.";
 
 /* (No Comment) */
-"watch-account-input-explanation" = "Watch的账户地址";
+"watch-account-input-explanation" = "Account Address";
 
 /* (No Comment) */
 "watch-account-input-placeholder" = "粘贴钱包地址或扫描二维码";

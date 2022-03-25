@@ -169,6 +169,7 @@ extension AccountPreviewView {
             $0.leading == contentView.snp.trailing + theme.minSpacingBetweenContentAndAccessory
             $0.bottom == 0
             $0.trailing == 0
+            $0.width >= self * theme.accessoryMinWidthRatio
         }
         
         addPrimaryAccessory(theme)
@@ -192,6 +193,7 @@ extension AccountPreviewView {
         )
         primaryAccessoryView.snp.makeConstraints {
             $0.top == 0
+            $0.trailing == 0
             $0.leading == 0
         }
     }

@@ -22,7 +22,6 @@ import UIKit
 struct RewardDetailViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
     let rewardsLabel: TextStyle
-    let algoImageView: ImageStyle
     let rewardsValueLabel: TextStyle
     let descriptionLabel: TextStyle
     let FAQLabel: TextStyle
@@ -31,7 +30,7 @@ struct RewardDetailViewTheme: StyleSheet, LayoutSheet {
     let separatorTopPadding: LayoutMetric
     let horizontalPadding: LayoutMetric
     let rewardsRateTitleLabelTopPadding: LayoutMetric
-    let algoImageViewTopPadding: LayoutMetric
+    let rewardsLabelTopPadding: LayoutMetric
     let rewardsLabelLeadingPadding: LayoutMetric
     let algoImageViewSize: LayoutSize
     let descriptionLabelTopPadding: LayoutMetric
@@ -44,10 +43,6 @@ struct RewardDetailViewTheme: StyleSheet, LayoutSheet {
         self.rewardsLabel = [
             .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.gray),
-        ]
-        self.algoImageView = [
-            .image("icon-algo-circle-green"),
-            .contentMode(.scaleAspectFit)
         ]
         self.rewardsValueLabel = [
             .textOverflow(SingleLineFittingText()),
@@ -69,7 +64,7 @@ struct RewardDetailViewTheme: StyleSheet, LayoutSheet {
         self.horizontalPadding = 24
         self.rewardsRateTitleLabelTopPadding = 28
         self.rewardsLabelLeadingPadding = 12
-        self.algoImageViewTopPadding = 10
+        self.rewardsLabelTopPadding = 10
         self.algoImageViewSize = (24, 24)
         self.descriptionLabelTopPadding = 65
         self.FAQLabelTopPadding = 12

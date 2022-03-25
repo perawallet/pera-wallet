@@ -25,11 +25,49 @@ protocol BannerViewModel: ViewModel {
 }
 
 extension BannerViewModel {
-    var icon: Image? {
-        return nil
+    func getTitle(
+        _ aTitle: String?
+    ) -> EditText? {
+        guard let aTitle = aTitle else {
+            return nil
+        }
+
+        let font = Fonts.DMSans.medium.make(15)
+        let lineHeightMultiplier = 1.23
+
+        return .attributedString(
+            aTitle.attributed([
+                .font(font),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .textAlignment(.left),
+                    .lineBreakMode(.byWordWrapping),
+                    .lineHeightMultiple(lineHeightMultiplier)
+                ])
+            ])
+        )
     }
 
-    var message: EditText? {
-        return nil
+    func getMessage(
+        _ aMessage: String?
+    ) -> EditText? {
+        guard let aMessage = aMessage else {
+            return nil
+        }
+
+        let font = Fonts.DMSans.regular.make(13)
+        let lineHeightMultiplier = 1.18
+
+        return .attributedString(
+            aMessage.attributed([
+                .font(font),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .textAlignment(.left),
+                    .lineBreakMode(.byWordWrapping),
+                    .lineHeightMultiple(lineHeightMultiplier)
+                ])
+            ])
+        )
     }
 }

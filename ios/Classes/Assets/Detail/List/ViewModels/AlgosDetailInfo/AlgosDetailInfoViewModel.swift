@@ -25,6 +25,7 @@ struct AlgosDetailInfoViewModel:
     private(set) var totalAmount: EditText?
     private(set) var secondaryValue: EditText?
     private(set) var rewardsInfoViewModel: RewardInfoViewModel?
+    private(set) var hasBuyAlgoButton: Bool = false
 
     init(
         _ account: Account,
@@ -35,6 +36,7 @@ struct AlgosDetailInfoViewModel:
         bindTotalAmount(from: account, calculatedRewards: calculatedRewards ?? 0)
         bindSecondaryValue(from: account, with: currency, calculatedRewards: calculatedRewards ?? 0)
         bindRewardsInfoViewModel(from: account, rewards: calculatedRewards ?? 0)
+        hasBuyAlgoButton = !account.isWatchAccount()
     }
 }
 
@@ -83,7 +85,8 @@ extension AlgosDetailInfoViewModel {
 
     private mutating func bindSecondaryValue(from account: Account, with currency: Currency?, calculatedRewards: Decimal) {
         guard let currency = currency,
-              let currencyPriceValue = currency.priceValue else {
+              let currencyPriceValue = currency.priceValue,
+              !(currency is AlgoCurrency) else {
             return
         }
 

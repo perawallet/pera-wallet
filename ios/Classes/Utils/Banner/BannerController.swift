@@ -21,16 +21,22 @@ import MacaroonUIKit
 import UIKit
 
 final class BannerController: MacaroonBanner.BannerController {
-    init(window: UIWindow) {
-        super.init(presentingView: window)
+    init(
+        presentingView: UIView
+    ) {
+        super.init(presentingView: presentingView)
 
         configuration.contentHorizontalPaddings = (24, 24)
-        configuration.contentTopPadding = window.safeAreaInsets.top + 12
+        configuration.contentTopPadding = presentingView.safeAreaInsets.top + 12
 
         activate()
     }
 
-    func presentErrorBanner(title: String, message: String, icon: UIImage? = img("icon-warning-circle")) {
+    func presentErrorBanner(
+        title: String,
+        message: String,
+        icon: UIImage? = "icon-info-24".uiImage
+    ) {
         let bannerView = makeErrorBanner()
         let draft = BannerDraft(
             title: title,
@@ -45,28 +51,33 @@ final class BannerController: MacaroonBanner.BannerController {
         enqueue(bannerView)
     }
 
-    func presentInfoBanner(_ title: String, _ completion: (() -> Void)? = nil) {
-        let bannerView = makeInfoBanner()
-        bannerView.bindData(BannerInfoViewModel(title))
+    func presentInfoBanner(
+        _ title: String,
+        _ completion: (() -> Void)? = nil
+    ) {
+        let view = makeInfoBanner()
+        view.bindData(BannerInfoViewModel(title))
 
-        if completion != nil {
-            bannerView.completion = completion
+        view.observe(event: .performAction) {
+            completion?()
         }
 
-        enqueue(bannerView)
+        enqueue(view)
     }
 }
 
 extension BannerController {
     private func makeErrorBanner() -> BannerView {
         let view = BannerView()
-        view.customize(BannerViewErrorTheme())
+        view.customize(BannerViewTheme())
         return view
     }
 
     private func makeInfoBanner() -> BannerView {
         let view = BannerView()
-        view.customize(BannerViewInfoTheme())
+        var theme = BannerViewTheme()
+        theme.configureForInfo()
+        view.customize(theme)
         return view
     }
 }

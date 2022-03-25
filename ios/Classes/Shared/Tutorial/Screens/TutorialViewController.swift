@@ -67,7 +67,9 @@ final class TutorialViewController: BaseScrollViewController {
     }
 
     override func bindData() {
-        tutorialView.bindData(TutorialViewModel(tutorial))
+        tutorialView.bindData(
+            TutorialViewModel(tutorial, theme: theme.tutorialViewTheme)
+        )
     }
 
     override func setListeners() {
@@ -155,8 +157,8 @@ extension TutorialViewController: TutorialViewDelegate {
             uiHandlers.didTapButtonPrimaryActionButton?(self)
         case let .passphraseVerified(account):
             open(.accountNameSetup(flow: flow, mode: .add(type: .create), accountAddress: account.address), by: .push)
-        case .accountVerified:
-            launchMain()
+        case .accountVerified(let flow):
+            routeBuyAlgo(for: flow)
         case .ledgerSuccessfullyConnected:
             uiHandlers.didTapButtonPrimaryActionButton?(self)
         case .recoverWithLedger:
@@ -179,6 +181,8 @@ extension TutorialViewController: TutorialViewDelegate {
                 ),
                 by: .present
             )
+        case .accountVerified:
+            launchMain()
         default:
             break
         }
@@ -255,6 +259,22 @@ extension TutorialViewController {
             }
         }
     }
+    
+    private func routeBuyAlgo(for flow: AccountSetupFlow) {
+        if case .initializeAccount(mode: .add(type: .watch)) = flow {
+            launchMain()
+            return
+        } else if case .addNewAccount(mode: .add(type: .watch)) = flow {
+            launchMain()
+            return
+        }
+        
+        launchMain {
+            [weak self] in
+            guard let self = self else { return }
+            self.launchBuyAlgo()
+        }
+    }
 }
 
 struct TutorialViewControllerUIHandlers {
@@ -272,7 +292,7 @@ enum Tutorial: Equatable {
     case localAuthentication
     case biometricAuthenticationEnabled
     case passphraseVerified(account: AccountInformation)
-    case accountVerified
+    case accountVerified(flow: AccountSetupFlow)
     case recoverWithLedger
     case ledgerSuccessfullyConnected
     case accountSuccessfullyRekeyed(accountName: String)

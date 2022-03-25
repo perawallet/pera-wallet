@@ -19,7 +19,9 @@ import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class AssetImageViewModel: ViewModel {
+struct AssetImageViewModel:
+    ViewModel,
+    Hashable {
     private(set) var image: UIImage?
     private(set) var assetAbbreviationForImage: String?
 

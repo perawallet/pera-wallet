@@ -68,7 +68,7 @@ extension TransactionAmountViewModel {
         }
 
         if isAlgos {
-            amountLabelText = .string("\(amountLabelText?.string ?? "") ALGO")
+            amountLabelText = .string("\(amountLabelText?.string ?? "")")
         } else {
             if let assetSymbol = assetSymbol {
                 amountLabelText = .string("\(amountLabelText?.string ?? "") \(assetSymbol)")

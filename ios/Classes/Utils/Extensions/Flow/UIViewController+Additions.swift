@@ -103,13 +103,16 @@ extension UIViewController {
 }
 
 extension UIViewController {
-    func open(_ url: URL?) {
+    @discardableResult
+    func open(_ url: URL?) -> SFSafariViewController? {
         guard let url = url else {
-            return
+            return nil
         }
         
         let safariViewController = SFSafariViewController(url: url)
         present(safariViewController, animated: true)
+
+        return safariViewController
     }
 }
 

@@ -101,6 +101,7 @@ extension AssetPreviewView {
             $0.trailing.equalToSuperview()
             $0.leading.equalTo(assetTitleVerticalStackView.snp.trailing).offset(theme.horizontalPadding)
             $0.centerY.equalTo(assetTitleVerticalStackView.snp.centerY)
+            $0.width.greaterThanOrEqualToSuperview().multipliedBy(theme.assetValueMinRatio)
         }
 
         addPrimaryAssetValueLabel(theme)
@@ -122,12 +123,7 @@ extension AssetPreviewView {
 
 extension AssetPreviewView: ViewModelBindable {
     func bindData(_ viewModel: AssetPreviewViewModel?) {
-        imageView.bindData(
-            AssetImageViewModel(
-                image: viewModel?.image,
-                assetAbbreviationForImage: viewModel?.assetAbbreviationForImage?.string
-            )
-        )
+        imageView.bindData(viewModel?.assetImageViewModel)
         primaryAssetTitleLabel.editText = viewModel?.assetPrimaryTitle
         secondaryImageView.image = viewModel?.secondaryImage
         secondaryAssetTitleLabel.editText = viewModel?.assetSecondaryTitle

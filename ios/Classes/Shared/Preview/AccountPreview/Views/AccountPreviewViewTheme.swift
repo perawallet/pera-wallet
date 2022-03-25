@@ -32,6 +32,7 @@ struct AccountPreviewViewTheme:
     var accessoryIcon: ImageStyle
     var accessoryIconContentEdgeInsets: LayoutOffset
     var minSpacingBetweenContentAndAccessory: LayoutMetric
+    var accessoryMinWidthRatio: LayoutMetric
 
     init(
         _ family: LayoutFamily
@@ -41,6 +42,7 @@ struct AccountPreviewViewTheme:
         ]
         self.iconContentEdgeInsets = (16, 0)
         self.contentMinWidthRatio = 0.25
+        self.accessoryMinWidthRatio = 0.35
         self.title = [
             .textColor(AppColors.Components.Text.main)
         ]

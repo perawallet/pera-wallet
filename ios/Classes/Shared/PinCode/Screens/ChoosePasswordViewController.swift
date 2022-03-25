@@ -207,13 +207,19 @@ extension ChoosePasswordViewController {
                 by: .push
             ) as? TutorialViewController
             controller?.uiHandlers.didTapSecondaryActionButton = { tutorialViewController in
-                if case .none = flow {
-                    tutorialViewController.dismissScreen()
-                } else if case .initializeAccount(mode: .add(type: .watch)) = flow {
+                switch flow {
+                case .initializeAccount:
                     tutorialViewController.open(
-                        .tutorial(flow: .none, tutorial: .accountVerified),
+                        .tutorial(flow: .none, tutorial: .accountVerified(flow: flow)),
                         by: .push
                     )
+                    return
+                default:
+                    break
+                }
+                
+                if case .none = flow {
+                    tutorialViewController.dismissScreen()
                 } else {
                     tutorialViewController.launchMain()
                 }

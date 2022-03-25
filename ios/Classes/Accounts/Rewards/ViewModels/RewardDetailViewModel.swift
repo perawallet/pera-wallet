@@ -55,14 +55,14 @@ extension RewardDetailViewModel {
 
     private mutating func bindRewardAmount(from account: Account, and calculatedRewards: Decimal) {
         guard let rewardAmount =
-                (account.pendingRewards.toAlgos + calculatedRewards).toExactFractionLabel(fraction: 6) else {
+                (account.pendingRewards.toAlgos + calculatedRewards).toFullAlgosStringForLabel else {
                     return
                 }
         let font = Fonts.DMMono.regular.make(19)
         let lineHeightMultiplier = 1.13
 
         self.amount = .attributedString(
-            (rewardAmount + " ALGO")
+            (rewardAmount)
                 .attributed([
                     .font(font),
                     .lineHeightMultiplier(lineHeightMultiplier, font),

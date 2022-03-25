@@ -34,12 +34,13 @@ struct HomeLoadingViewTheme:
     var holdingsContainerMargin: LayoutMargins
     var holdingsContainerHeight: LayoutMetric
 
-    var algoImageBackground: UIColor
-    var algoImageCornerRadius: LayoutMetric
-    var algoImageTopInset: LayoutMetric
-    var algoImageSize: LayoutSize
     var algoHoldingLoadingLeadingInset: LayoutMetric
     var algoHoldingLoadingSize: LayoutSize
+    var algoHoldingLoadingTopInset: LayoutMetric
+
+    var buyAlgoButtonTheme: ButtonTheme
+    var buyAlgoButtonMargin: LayoutMargins
+    var buyAlgoButtonHeight: LayoutMetric
 
     var accountsLabelStyle: TextStyle
     var accountsLabelMargin: LayoutMargins
@@ -99,14 +100,15 @@ struct HomeLoadingViewTheme:
         self.loadingCorner = Corner(radius: 4)
 
         self.holdingsContainerMargin = (80, 24, .noMetric, 24)
-        self.holdingsContainerHeight = 60
+        self.holdingsContainerHeight = 63
 
-        self.algoImageBackground = AppColors.Shared.Global.turquoise600.uiColor
-        self.algoImageCornerRadius = 12
-        self.algoImageTopInset = 13
-        self.algoImageSize = (24, 24)
         self.algoHoldingLoadingLeadingInset = 12
         self.algoHoldingLoadingSize = (57, 20)
+        self.algoHoldingLoadingTopInset = 13
+
+        self.buyAlgoButtonTheme = ButtonPrimaryTheme(family)
+        self.buyAlgoButtonMargin = (44, 24, .noMetric, 24)
+        self.buyAlgoButtonHeight = 52
 
         self.accountsLabelStyle = [
             .font(Fonts.DMSans.medium.make(15)),
@@ -114,7 +116,7 @@ struct HomeLoadingViewTheme:
             .textOverflow(FittingText()),
             .text("accounts-title".localized)
         ]
-        self.accountsLabelMargin = (92, 24, .noMetric, 24)
+        self.accountsLabelMargin = (44, 24, .noMetric, 24)
         self.accountLoadingMargin = (4, 24, .noMetric, 24)
         self.accountLoadingHeight = 72
     }

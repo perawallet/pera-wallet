@@ -301,6 +301,7 @@ extension OptionsViewController {
             forWatchAccount account: Account
         ) -> [Option] {
             return [
+                .copyAddress,
                 .muteNotifications,
                 .renameAccount,
                 .removeAccount

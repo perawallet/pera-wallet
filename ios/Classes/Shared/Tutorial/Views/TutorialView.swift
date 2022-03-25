@@ -135,6 +135,15 @@ extension TutorialView: ViewModelBindable {
         titleLabel.text = viewModel?.title
         descriptionLabel.text = viewModel?.description
         imageView.image = viewModel?.image
+        
+        if let primaryActionTheme = viewModel?.primaryActionButtonTheme {
+            primaryActionButton.customize(primaryActionTheme)
+        }
+        
+        if let secondaryActionTheme = viewModel?.secondaryActionButtonTheme {
+            secondaryActionButton.customize(secondaryActionTheme)
+        }
+        
         primaryActionButton.bindData(ButtonCommonViewModel(title: viewModel?.primaryActionButtonTitle))
 
         if let secondaryActionButtonTitle = viewModel?.secondaryActionButtonTitle {

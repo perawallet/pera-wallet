@@ -88,6 +88,7 @@ final class TransactionOptionsView:
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
         .send: UIControlInteraction(),
         .receive: UIControlInteraction(),
+        .buyAlgo: UIControlInteraction(),
         .close: UIViewTapInteraction()
     ]
     
@@ -96,6 +97,8 @@ final class TransactionOptionsView:
     private lazy var sendActionView =
         MacaroonUIKit.Button(.imageAtTop(spacing: spacingBetweenActionIconAndTitle))
     private lazy var receiveActionView =
+        MacaroonUIKit.Button(.imageAtTop(spacing: spacingBetweenActionIconAndTitle))
+    private lazy var buyAlgoActionView =
         MacaroonUIKit.Button(.imageAtTop(spacing: spacingBetweenActionIconAndTitle))
     
     private var backgroundStartStyle: ViewStyle = []
@@ -234,6 +237,7 @@ extension TransactionOptionsView {
         
         addSendAction(theme)
         addReceiveAction(theme)
+        addBuyAction(theme)
     }
     
     private func addSendAction(
@@ -259,6 +263,18 @@ extension TransactionOptionsView {
             for: receiveActionView
         )
     }
+
+    private func addBuyAction(
+        _ theme: TransactionOptionsViewTheme
+    ) {
+        buyAlgoActionView.customizeAppearance(theme.buyAlgoAction)
+        actionsView.addArrangedSubview(buyAlgoActionView)
+
+        startPublishing(
+            event: .buyAlgo,
+            for: buyAlgoActionView
+        )
+    }
 }
 
 extension TransactionOptionsView {
@@ -271,5 +287,6 @@ extension TransactionOptionsView {
         case send
         case receive
         case close
+        case buyAlgo
     }
 }

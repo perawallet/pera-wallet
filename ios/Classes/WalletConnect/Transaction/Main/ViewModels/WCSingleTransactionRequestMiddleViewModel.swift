@@ -56,7 +56,7 @@ final class WCSingleTransactionRequestMiddleViewModel {
 
         switch type {
         case .algos:
-            self.title = "\(transaction.transactionDetail?.amount.toAlgos.toAlgosStringForLabel ?? "") ALGO"
+            self.title = "\(transaction.transactionDetail?.amount.toAlgos.toAlgosStringForLabel ?? "")"
             self.isAssetIconHidden = true
             self.setUsdValue(transaction: transaction, assetInformation: nil, currency: currency)
         case .asset:

@@ -30,11 +30,13 @@ final class HomeLoadingView:
     private lazy var holdingsContainer = UIView()
     private lazy var algoHoldingsContainer = UIView()
     private lazy var algoHoldingsLabel = Label()
-    private lazy var algoImageView = UIView()
     private lazy var algoHoldingLoading = ShimmerView()
     private lazy var assetHoldingsContainer = UIView()
     private lazy var assetHoldingsLabel = Label()
     private lazy var assetHoldingLoading = ShimmerView()
+    
+    private lazy var buyAlgoButton = Button()
+    
     private lazy var accountsLabel = Label()
     private lazy var firstAccountPreviewLoading = AssetPreviewLoadingView()
     private lazy var secondAccountPreviewLoading = AssetPreviewLoadingView()
@@ -44,6 +46,7 @@ final class HomeLoadingView:
     ) {
         super.init(frame: frame)
         addPortfolioView()
+        addBuyAlgoButton()
         addAccountCells()
     }
 
@@ -101,22 +104,12 @@ extension HomeLoadingView {
             $0.leading.equalToSuperview()
         }
 
-        algoImageView.backgroundColor = theme.algoImageBackground
-        algoImageView.layer.cornerRadius = theme.algoImageCornerRadius
-
-        algoHoldingsContainer.addSubview(algoImageView)
-        algoImageView.snp.makeConstraints {
-            $0.top.equalTo(algoHoldingsLabel.snp.bottom).offset(theme.algoImageTopInset)
-            $0.leading.equalToSuperview()
-            $0.fitToSize(theme.algoImageSize)
-        }
-
         algoHoldingLoading.draw(corner: theme.loadingCorner)
 
         algoHoldingsContainer.addSubview(algoHoldingLoading)
         algoHoldingLoading.snp.makeConstraints {
-            $0.centerY.equalTo(algoImageView)
-            $0.leading.equalTo(algoImageView.snp.trailing).offset(theme.algoHoldingLoadingLeadingInset)
+            $0.top.equalTo(algoHoldingsLabel.snp.bottom).offset(theme.algoHoldingLoadingTopInset)
+            $0.leading.equalToSuperview()
             $0.fitToSize(theme.algoHoldingLoadingSize)
         }
     }
@@ -146,12 +139,24 @@ extension HomeLoadingView {
         }
     }
 
+    private func addBuyAlgoButton() {
+        buyAlgoButton.customize(theme.buyAlgoButtonTheme)
+
+        addSubview(buyAlgoButton)
+        buyAlgoButton.snp.makeConstraints {
+            $0.top.equalTo(holdingsContainer.snp.bottom).offset(theme.buyAlgoButtonMargin.top)
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
+            $0.height.equalTo(theme.buyAlgoButtonHeight)
+        }
+    }
+
     private func addAccountCells() {
         accountsLabel.customizeAppearance(theme.accountsLabelStyle)
 
         addSubview(accountsLabel)
         accountsLabel.snp.makeConstraints {
-            $0.top.equalTo(holdingsContainer.snp.bottom).offset(theme.accountsLabelMargin.top)
+            $0.top.equalTo(buyAlgoButton.snp.bottom).offset(theme.accountsLabelMargin.top)
             $0.leading.equalToSuperview()
             $0.trailing.equalToSuperview()
         }

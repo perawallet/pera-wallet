@@ -154,10 +154,7 @@ struct ALGBarButtonItem: BarButtonItem {
                 BarButtonCompressedSizeInsets(contentInsets: UIEdgeInsets(top: 4.0, left: 4.0, bottom: 4.0, right: 4.0))
             )
         case .options:
-            return .expanded(
-                width: .dynamicWidth(BarButtonExpandedSizeHorizontalInsets(contentInsets: (left: 4.0, right: 4.0))),
-                height: .equal(44.0)
-            )
+            return .explicit(CGSize(width: 40, height: 40))
         case .circleAdd:
             return .explicit(CGSize(width: 40, height: 40))
         case .add:

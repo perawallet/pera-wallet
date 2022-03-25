@@ -26,10 +26,12 @@ final class TransactionFloatingActionButtonViewController: BaseViewController {
     private lazy var closeButton = FloatingActionItemButton()
     private lazy var receiveButton = FloatingActionItemButton()
     private lazy var sendButton = FloatingActionItemButton()
+    private lazy var buyAlgoButton = FloatingActionItemButton()
     private lazy var theme = Theme()
 
     override func setListeners() {
         sendButton.addTarget(self, action: #selector(didTapSendButton), for: .touchUpInside)
+        buyAlgoButton.addTarget(self, action: #selector(didTapBuyButton), for: .touchUpInside)
         receiveButton.addTarget(self, action: #selector(didTapReceiveButton), for: .touchUpInside)
         closeButton.addTarget(self, action: #selector(didTapChromeView), for: .touchUpInside)
         chromeView.addTarget(self, action: #selector(didTapChromeView), for: .touchUpInside)
@@ -38,6 +40,7 @@ final class TransactionFloatingActionButtonViewController: BaseViewController {
     override func prepareLayout() {
         addChrome(theme)
         addCloseButton(theme)
+        addBuyAlgoButton(theme)
         addReceiveButton(theme)
         addSendButton(theme)
     }
@@ -77,7 +80,7 @@ extension TransactionFloatingActionButtonViewController {
         view.addSubview(receiveButton)
         receiveButton.snp.makeConstraints {
             $0.trailing.equalTo(closeButton)
-            $0.bottom.equalTo(closeButton.snp.top)
+            $0.bottom.equalTo(buyAlgoButton.snp.top).inset(-theme.buttonVerticalSpacing)
         }
 
         receiveButton.alpha = .zero
@@ -91,6 +94,19 @@ extension TransactionFloatingActionButtonViewController {
         sendButton.snp.makeConstraints {
             $0.trailing.equalTo(closeButton)
             $0.bottom.equalTo(receiveButton.snp.top).inset(-theme.buttonVerticalSpacing)
+        }
+
+        sendButton.alpha = .zero
+    }
+
+    private func addBuyAlgoButton(_ theme: Theme) {
+        buyAlgoButton.image = "fab-buy".uiImage
+        buyAlgoButton.title = "moonpay-buy-button-title".localized
+
+        view.addSubview(buyAlgoButton)
+        buyAlgoButton.snp.makeConstraints {
+            $0.trailing.equalTo(closeButton)
+            $0.bottom.equalTo(closeButton.snp.top)
         }
 
         sendButton.alpha = .zero
@@ -115,14 +131,14 @@ extension TransactionFloatingActionButtonViewController {
     }
 
     private func showButtonsWithAnimation() {
-        receiveButton.snp.updateConstraints {
+        buyAlgoButton.snp.updateConstraints {
             $0.bottom.equalTo(closeButton.snp.top).offset(-theme.buttonVerticalSpacing)
         }
 
         var delay = 0.0
         let animationSpeed = 0.05
 
-        [receiveButton, sendButton].forEach { button in
+        [buyAlgoButton, receiveButton, sendButton].forEach { button in
             UIView.animate(withDuration: 0.2,
                            delay: delay,
                            animations: {
@@ -149,7 +165,7 @@ extension TransactionFloatingActionButtonViewController {
     }
 
     private func hideButtonsWithAnimation() {
-        [sendButton, receiveButton, closeButton].forEach { button in
+        [sendButton, receiveButton, buyAlgoButton, closeButton].forEach { button in
             UIView.animate(withDuration: 0.2) {
                 button.alpha = 0
             }
@@ -169,9 +185,16 @@ extension TransactionFloatingActionButtonViewController {
         delegate?.transactionFloatingActionButtonViewControllerDidReceive(self)
         dismissScreen(animated: false)
     }
+
+    @objc
+    private func didTapBuyButton() {
+        delegate?.transactionFloatingActionButtonViewControllerDidBuy(self)
+        dismissScreen(animated: false)
+    }
 }
 
 protocol TransactionFloatingActionButtonViewControllerDelegate: AnyObject {
     func transactionFloatingActionButtonViewControllerDidSend(_ viewController: TransactionFloatingActionButtonViewController)
     func transactionFloatingActionButtonViewControllerDidReceive(_ viewController: TransactionFloatingActionButtonViewController)
+    func transactionFloatingActionButtonViewControllerDidBuy(_ viewController: TransactionFloatingActionButtonViewController)
 }

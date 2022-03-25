@@ -397,7 +397,7 @@ extension QRScannerViewController: WalletConnectorDelegate {
                 configurator: BottomWarningViewConfigurator(
                     image: "icon-info-red".uiImage,
                     title: "title-failed-connection".localized,
-                    description: "wallet-connect-session-timeout-message".localized,
+                    description: .plain("wallet-connect-session-timeout-message".localized),
                     secondaryActionButtonTitle: "title-close".localized
                 )
             ),
@@ -437,7 +437,9 @@ extension QRScannerViewController: WCConnectionApprovalViewControllerDelegate {
                     BottomWarningViewConfigurator(
                         image: "icon-approval-check".uiImage,
                         title: "wallet-connect-session-connection-approved-title".localized(dAppName),
-                        description: "wallet-connect-session-connection-approved-description".localized(dAppName),
+                        description: .plain(
+                            "wallet-connect-session-connection-approved-description".localized(dAppName)
+                        ),
                         secondaryActionButtonTitle: "title-close".localized,
                         secondaryAction: { [weak self] in
                             self?.popScreen()

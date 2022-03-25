@@ -77,13 +77,23 @@ extension AddAccountViewController {
 
 extension AddAccountViewController: AddAccountViewDelegate {
     func addAccountView(_ addAccountView: AddAccountView, didSelect type: AccountAdditionType) {
+        let routingScreen: Screen
+        let tutorial: Tutorial
+        
         switch type {
         case .create:
-            open(.tutorial(flow: flow, tutorial: .backUp), by: .push)
-        case .watch:
-            open(.tutorial(flow: flow, tutorial: .watchAccount), by: .push)
+            tutorial = .backUp
         default:
-            break
+            tutorial = .watchAccount
         }
+        
+        switch flow {
+        case .initializeAccount:
+            routingScreen = .tutorial(flow: .initializeAccount(mode: .add(type: type)), tutorial: tutorial)
+        default:
+            routingScreen = .tutorial(flow: .addNewAccount(mode: .add(type: type)), tutorial: tutorial)
+        }
+        
+        open(routingScreen, by: .push)
     }
 }

@@ -48,7 +48,7 @@ final class CurrencyFetchOperation: MacaroonUtils.AsyncOperation {
         
         ongoingEndpoint =
             api.getCurrencyValue(
-                input.currencyId,
+                input.currencyFetchId,
                 queue: completionQueue
             ) { [weak self] result in
                 guard let self = self else { return }
@@ -57,7 +57,15 @@ final class CurrencyFetchOperation: MacaroonUtils.AsyncOperation {
                 
                 switch result {
                 case .success(let currency):
-                    let output = Output(currency: currency)
+                    let outputCurrency: Currency
+                    
+                    if self.input.isAlgo {
+                        outputCurrency = AlgoCurrency(currency: currency)
+                    } else {
+                        outputCurrency = currency
+                    }
+                    
+                    let output = Output(currency: outputCurrency)
                     self.completionHandler?(.success(output))
                 case .failure(let apiError, let apiErrorDetail):
                     let error = HIPNetworkError(apiError: apiError, apiErrorDetail: apiErrorDetail)
@@ -95,6 +103,14 @@ extension CurrencyFetchOperation {
 extension CurrencyFetchOperation {
     struct Input {
         let currencyId: String
+        
+        var currencyFetchId: String {
+            isAlgo ? "USD" : currencyId
+        }
+        
+        var isAlgo: Bool {
+            currencyId == "ALGO"
+        }
     }
     
     struct Output {

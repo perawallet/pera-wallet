@@ -18,6 +18,8 @@
 import Foundation
 
 extension Decimal {
+    typealias Abbreviation = (threshold:Double, divisor:Double, suffix:String)
+    
     var uint64Value: UInt64 {
         return NSDecimalNumber(decimal: self).uint64Value
     }
@@ -40,6 +42,15 @@ extension Decimal {
 
     var toAlgosStringForLabel: String? {
         return Formatter.separatorForAlgosLabel.string(from: NSDecimalNumber(decimal: self))
+    }
+    
+    var toFullAlgosStringForLabel: String? {
+        let number = NSDecimalNumber(decimal: self)
+        let abbreviation = getAbbreviation(for: number)
+        
+        let finalNumber = NSDecimalNumber(value: number.doubleValue / abbreviation.divisor)
+        
+        return Formatter.fullAlgosLabel(with: abbreviation.suffix).string(from: finalNumber)
     }
 
     var toNumberStringWithSeparatorForLabel: String? {
@@ -69,9 +80,55 @@ extension Decimal {
     func toCurrencyStringForLabel(with symbol: String?) -> String? {
         return Formatter.currencyFormatter(with: symbol).string(from: NSDecimalNumber(decimal: self))
     }
+    
+    func abbreviatedFractionStringForLabel(fraction: Int) -> String? {
+        let number = NSDecimalNumber(decimal: self)
+        let abbreviation = getAbbreviation(for: number)
+        
+        let finalNumber = NSDecimalNumber(value: number.doubleValue / abbreviation.divisor)
+        
+        return Formatter.separatorWith(fraction: fraction, suffix: abbreviation.suffix).string(from: finalNumber)
+    }
+    
+    func abbreviatedCurrencyStringForLabel(with symbol: String?) -> String? {
+        let number = NSDecimalNumber(decimal: self)
+        let abbreviation = getAbbreviation(for: number)
+        
+        let finalNumber = NSDecimalNumber(value: number.doubleValue / abbreviation.divisor)
+        
+        return Formatter.currencyFormatter(with: symbol, suffix: abbreviation.suffix).string(from: finalNumber)
+    }
 
     var toPercentage: String? {
         return Formatter.percentageFormatter.string(from: NSDecimalNumber(decimal: self))
+    }
+    
+    private func getAbbreviation(for number: NSDecimalNumber) -> Abbreviation {
+        let abbreviations: [Abbreviation] = [
+            (0, 1, ""),
+            (1_000, 1_000, "K"),
+            (1_000_000.0, 1_000_000.0, "M"),
+            (1_000_000_000.0, 1_000_000_000.0, "B"),
+            (1_000_000_000_000.0, 1_000_000_000_000.0, "T")
+        ]
+
+        let startValue = number
+        
+        var abbreviationIndex = 0
+        
+        while abbreviationIndex < abbreviations.count {
+            let abbreviation = abbreviations[abbreviationIndex]
+            
+            if startValue.doubleValue < abbreviation.threshold {
+                break
+            }
+            
+            abbreviationIndex = abbreviationIndex.advanced(by: 1)
+        }
+        
+        abbreviationIndex = max(0, abbreviationIndex.advanced(by: -1))
+        
+        return abbreviations[abbreviationIndex]
     }
 }
 

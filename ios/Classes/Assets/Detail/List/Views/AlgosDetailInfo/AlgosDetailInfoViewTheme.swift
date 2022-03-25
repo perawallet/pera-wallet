@@ -37,6 +37,10 @@ struct AlgosDetailInfoViewTheme: StyleSheet, LayoutSheet {
     let bottomPadding: LayoutMetric
     let separatorPadding: LayoutMetric
 
+    let buyAlgoButton: ButtonTheme
+    let buyAlgoButtonHeight: LayoutMetric
+    let buyAlgoButtonMargin: LayoutMargins
+
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
         self.separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
@@ -68,5 +72,9 @@ struct AlgosDetailInfoViewTheme: StyleSheet, LayoutSheet {
         self.separatorPadding = 32
         self.bottomPadding = 32
         self.secondaryValueLabelTopPadding = 4
+
+        self.buyAlgoButton = ButtonPrimaryTheme(family)
+        self.buyAlgoButtonHeight = 52
+        self.buyAlgoButtonMargin = (28, .noMetric, .noMetric, .noMetric)
     }
 }

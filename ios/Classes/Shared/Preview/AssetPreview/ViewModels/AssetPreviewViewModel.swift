@@ -30,28 +30,31 @@ struct AssetPreviewModel: Hashable {
 struct AssetPreviewViewModel:
     PairedViewModel,
     Hashable {
-    private(set) var image: UIImage?
+    private(set) var assetImageViewModel: AssetImageViewModel?
     private(set) var secondaryImage: UIImage?
     private(set) var assetPrimaryTitle: EditText?
     private(set) var assetSecondaryTitle: EditText?
     private(set) var assetPrimaryValue: EditText?
     private(set) var assetSecondaryAssetValue: EditText?
-    private(set) var assetAbbreviationForImage: EditText?
     
     init(_ model: AssetPreviewModel) {
-        bindImage(model.image)
         bindSecondaryImage(model.secondaryImage)
         bindAssetPrimaryTitle(model.assetPrimaryTitle)
         bindAssetSecondaryTitle(model.assetSecondaryTitle)
         bindAssetPrimaryValue(model.assetPrimaryValue)
         bindAssetSecondaryValue(model.assetSecondaryValue)
-        bindAssetAbbreviationForImage()
+        bindAssetImageView(model.image)
     }
 }
 
 extension AssetPreviewViewModel {
-    private mutating func bindImage(_ image: UIImage?) {
-        self.image = image
+    private mutating func bindAssetImageView(_ image: UIImage?) {
+        let assetAbbreviationForImage = TextFormatter.assetShortName.format(assetPrimaryTitle?.string)
+        
+        assetImageViewModel = AssetImageViewModel(
+            image: image,
+            assetAbbreviationForImage: assetAbbreviationForImage
+        )
     }
     
     private mutating func bindSecondaryImage(_ image: UIImage?) {
@@ -71,10 +74,6 @@ extension AssetPreviewViewModel {
     }
     
     private mutating func bindAssetSecondaryValue(_ value: String?) {
-        self.assetSecondaryAssetValue = .string(value)
-    }
-
-    private mutating func bindAssetAbbreviationForImage() {
-        self.assetAbbreviationForImage = .string(TextFormatter.assetShortName.format(assetPrimaryTitle?.string))
+        self.assetSecondaryAssetValue = .string(value.isNilOrEmpty ? "asset-no-value".localized : value)
     }
 }

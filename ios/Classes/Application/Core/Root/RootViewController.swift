@@ -226,7 +226,9 @@ extension RootViewController: WCMainTransactionScreenDelegate {
         let configurator = BottomWarningViewConfigurator(
             image: "icon-approval-check".uiImage,
             title: "wc-transaction-request-signed-warning-title".localized,
-            description: "wc-transaction-request-signed-warning-message".localized(dappName, dappName),
+            description: .plain(
+                "wc-transaction-request-signed-warning-message".localized(dappName, dappName)
+            ),
             primaryActionButtonTitle: nil,
             secondaryActionButtonTitle: "title-close".localized
         )

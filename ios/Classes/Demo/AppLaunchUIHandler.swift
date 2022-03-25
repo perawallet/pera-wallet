@@ -27,7 +27,9 @@ protocol AppLaunchUIHandler: AnyObject {
 enum AppLaunchUIState {
     case authorization /// pin
     case onboarding
-    case main
+    case main(
+        completion: (() -> Void)? = nil
+    )
     case mainAfterAuthorization(
         presented: UIViewController,
         completion: () -> Void

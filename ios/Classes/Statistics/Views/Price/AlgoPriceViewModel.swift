@@ -78,8 +78,19 @@ extension AlgoPriceViewModel {
     mutating func bindPrice(
         _ algoPrice: AlgoPrice
     ) {
+        let currencyId: String
+        
+        if let algoCurrency = algoPrice.currency as? AlgoCurrency {
+            /// In order to get USD currency id, we should cast to AlgoCurrency and get the ID from currency parameter
+            /// AlgoCurrency has currency parameter that includes USD currency to handle Algo Conversion easiliy
+            /// When API supports Algo Currency, these checks should be deleted
+            currencyId = algoCurrency.currency.id
+        } else {
+            currencyId = algoPrice.currency.id
+        }
+        
         let price = algoPrice.amount.toCurrencyStringForLabel.unwrap {
-            "\($0) \(algoPrice.currency.id)"
+            "\($0) \(currencyId)"
         } ?? "N/A"
         
         bindPrice(price)

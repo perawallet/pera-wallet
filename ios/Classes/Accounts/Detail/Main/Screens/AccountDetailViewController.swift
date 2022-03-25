@@ -201,10 +201,15 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     }
 
     private func displayRemoveAccountAlert() {
+        let account = accountHandle.value
         let configurator = BottomWarningViewConfigurator(
             image: "icon-trash-red".uiImage,
             title: "options-remove-account".localized,
-            description: "options-remove-alert-explanation".localized,
+            description: .plain(
+                account.isWatchAccount()
+                ? "options-remove-watch-account-explanation".localized
+                : "options-remove-main-account-explanation".localized
+            ),
             primaryActionButtonTitle: "title-remove".localized,
             secondaryActionButtonTitle: "title-keep".localized,
             primaryAction: { [weak self] in

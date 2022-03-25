@@ -26,7 +26,8 @@ final class HomePortfolioView:
     UIControlInteractionPublisher,
     ListReusable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .showInfo: UIControlInteraction()
+        .showInfo: UIControlInteraction(),
+        .buyAlgo: UIControlInteraction()
     ]
 
     private lazy var titleView = Label()
@@ -37,6 +38,7 @@ final class HomePortfolioView:
     private lazy var algoHoldingsView = HomePortfolioItemView()
     private lazy var assetHoldingsCanvasView = UIView()
     private lazy var assetHoldingsView = HomePortfolioItemView()
+    private lazy var buyAlgoButton = Button()
     
     func customize(
         _ theme: HomePortfolioViewTheme
@@ -45,6 +47,7 @@ final class HomePortfolioView:
         addInfoAction(theme)
         addValue(theme)
         addHoldings(theme)
+        addBuyAlgoButton(theme)
     }
     
     func customizeAppearance(
@@ -102,7 +105,9 @@ final class HomePortfolioView:
             theme.spacingBetweenTitleAndValue +
             valueSize.height +
             theme.spacingBetweenValueAndHoldings +
-            max(algoHoldingsSize.height, assetHoldingsSize.height)
+            max(algoHoldingsSize.height, assetHoldingsSize.height) +
+            theme.buyAlgoButtonHeight +
+            theme.buyAlgoButtonMargin.top
         return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
     }
 }
@@ -159,7 +164,6 @@ extension HomePortfolioView {
         holdingsView.snp.makeConstraints {
             $0.top == valueView.snp.bottom + theme.spacingBetweenValueAndHoldings
             $0.leading == 0
-            $0.bottom == 0
             $0.trailing == 0
         }
         
@@ -212,10 +216,31 @@ extension HomePortfolioView {
             $0.bottom == 0
         }
     }
+
+    private func addBuyAlgoButton(
+        _ theme: HomePortfolioViewTheme
+    ) {
+        buyAlgoButton.customize(theme.buyAlgoButton)
+        buyAlgoButton.setTitle("moonpay-buy-button-title".localized, for: .normal)
+
+        addSubview(buyAlgoButton)
+        buyAlgoButton.snp.makeConstraints {
+            $0.top == holdingsView.snp.bottom + theme.buyAlgoButtonMargin.top
+            $0.leading == 0
+            $0.trailing == 0
+            $0.height.equalTo(theme.buyAlgoButtonHeight)
+        }
+
+        startPublishing(
+            event: .buyAlgo,
+            for: buyAlgoButton
+        )
+    }
 }
 
 extension HomePortfolioView {
     enum Event {
         case showInfo
+        case buyAlgo
     }
 }

@@ -24,7 +24,6 @@ final class RewardDetailView:
     weak var delegate: RewardDetailViewDelegate?
 
     private lazy var rewardsLabel = UILabel()
-    private lazy var algoImageView = UIImageView()
     private lazy var rewardsValueLabel = UILabel()
     private lazy var descriptionLabel = UILabel()
     private lazy var FAQLabel = UILabel()
@@ -41,7 +40,6 @@ final class RewardDetailView:
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
         addRewardsLabel(theme)
-        addAlgoImageView(theme)
         addRewardsValueLabel(theme)
         addDescriptionLabel(theme)
         addFAQLabel(theme)
@@ -85,31 +83,18 @@ extension RewardDetailView {
         }
     }
 
-    private func addAlgoImageView(
-        _ theme: RewardDetailViewTheme
-    ) {
-        algoImageView.customizeAppearance(theme.algoImageView)
-
-        addSubview(algoImageView)
-        algoImageView.snp.makeConstraints {
-            $0.top.equalTo(rewardsLabel.snp.bottom).offset(theme.algoImageViewTopPadding)
-            $0.leading.equalTo(rewardsLabel)
-            $0.fitToSize(theme.algoImageViewSize)
-        }
-
-        rewardsLabel.addSeparator(theme.separator, padding: theme.separatorTopPadding)
-    }
-
     private func addRewardsValueLabel(
         _ theme: RewardDetailViewTheme
     ) {
         rewardsValueLabel.customizeAppearance(theme.rewardsValueLabel)
         addSubview(rewardsValueLabel)
         rewardsValueLabel.snp.makeConstraints {
-            $0.leading.equalTo(algoImageView.snp.trailing).offset(theme.rewardsLabelLeadingPadding)
-            $0.centerY.equalTo(algoImageView)
+            $0.top.equalTo(rewardsLabel.snp.bottom).offset(theme.rewardsLabelTopPadding)
+            $0.leading.equalTo(rewardsLabel)
             $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
+        
+        rewardsLabel.addSeparator(theme.separator, padding: theme.separatorTopPadding)
     }
 
     private func addDescriptionLabel(

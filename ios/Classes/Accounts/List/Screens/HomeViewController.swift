@@ -25,6 +25,8 @@ final class HomeViewController:
     UICollectionViewDelegateFlowLayout {
 
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
+
     private lazy var pushNotificationController =
         PushNotificationController(session: session!, api: api!, bannerController: bannerController)
     
@@ -213,6 +215,13 @@ extension HomeViewController {
                 ),
                 by: .presentWithoutNavigationController
             )
+        }
+
+        cell.observe(event: .buyAlgo) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.launchBuyAlgo()
         }
     }
     

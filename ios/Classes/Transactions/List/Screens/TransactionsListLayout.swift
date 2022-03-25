@@ -66,8 +66,11 @@ extension TransactionsListLayout: UICollectionViewDelegateFlowLayout {
         case .empty(let emptyState):
             switch emptyState {
             case .algoTransactionHistoryLoading:
+                var theme = AlgoTransactionHistoryLoadingViewCommonTheme()
+                theme.buyAlgoVisible = !draft.accountHandle.value.isWatchAccount()
+                
                 let cellHeight = AlgoTransactionHistoryLoadingCell.height(
-                    for: AlgoTransactionHistoryLoadingViewCommonTheme()
+                    for: theme
                 )
                 return CGSize(width: collectionView.bounds.width - 48, height: cellHeight)
             case .assetTransactionHistoryLoading:

@@ -19,123 +19,139 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class BannerView: View, ViewModelBindable {
-    var completion: (() -> Void)? {
-        didSet {
-            addBannerTapGesture()
-        }
+final class BannerView:
+    View,
+    ViewModelBindable,
+    UIInteractionObservable {
+    private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
+        .performAction: UIBlockInteraction()
+    ]
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        linkInteractors()
     }
 
-    private lazy var horizontalStackView = UIStackView()
-    private lazy var verticalStackView = VStackView()
-    private lazy var titleLabel = Label()
-    private lazy var messageLabel = Label()
-    private lazy var iconView = UIImageView()
+    private lazy var contentView = UIView()
+    private lazy var iconView = ImageView()
+    private lazy var titleView = Label()
+    private lazy var messageView = Label()
 
-    func customize(_ theme: BannerViewTheme) {
-        addHorizontalStackView(theme)
-        addIcon(theme)
-        addVerticalStackView(theme)
-        addTitle(theme)
-        addMessage(theme)
-        
-        drawAppearance(shadow: theme.backgroundShadow)
-        
-        guard let background = theme.background,
-              let corner = theme.corner else {
-            return
-        }
-        customizeAppearance(background)
-        draw(corner: corner)
+    func customize(
+        _ theme: BannerViewTheme
+    ) {
+        addBackground(theme)
+        addContent(theme)
     }
 
-    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+    func prepareLayout(
+        _ layoutSheet: NoLayoutSheet
+    ) {}
 
-    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+    func customizeAppearance(
+        _ styleSheet: NoStyleSheet
+    ) {}
 
-    func bindData(_ viewModel: BannerViewModel?) {
-        bindTitle(viewModel)
-        bindMessage(viewModel)
-        bindIcon(viewModel)
+    func linkInteractors() {
+        addGestureRecognizer(
+            UITapGestureRecognizer(target: self, action: #selector(didTapBanner))
+        )
+    }
+
+    func bindData(
+        _ viewModel: BannerViewModel?
+    ) {
+        titleView.editText = viewModel?.title
+        messageView.editText = viewModel?.message
+        iconView.image = viewModel?.icon?.uiImage
     }
 }
 
 extension BannerView {
     private func addBannerTapGesture() {
-        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapBanner)))
+        addGestureRecognizer(
+            UITapGestureRecognizer(target: self, action: #selector(didTapBanner))
+        )
     }
 
     @objc
     private func didTapBanner() {
-        completion?()
+        let interaction = uiInteractions[.performAction] as? UIBlockInteraction
+        interaction?.notify()
     }
 }
 
 extension BannerView {
-    private func addHorizontalStackView(_ theme: BannerViewTheme) {
-        addSubview(horizontalStackView)
+    private func addBackground(
+        _ theme: BannerViewTheme
+    ) {
+        drawAppearance(shadow: theme.backgroundShadow)
+    }
 
-        horizontalStackView.spacing = theme.horizontalStackViewSpacing
-        horizontalStackView.distribution = .fillProportionally
-        horizontalStackView.alignment = .top
+    private func addContent(
+        _ theme: BannerViewTheme
+    ) {
+        addSubview(contentView)
 
-        horizontalStackView.snp.makeConstraints {
+        contentView.snp.makeConstraints {
             $0.setPaddings(
-                theme.horizontalStackViewPaddings
+                theme.contentPaddings
             )
         }
+
+        addIcon(theme)
+        addTitle(theme)
+        addMessage(theme)
     }
 
-    private func addVerticalStackView(_ theme: BannerViewTheme) {
-        horizontalStackView.addArrangedSubview(verticalStackView)
+    private func addIcon(
+        _ theme: BannerViewTheme
+    ) {
+        iconView.customizeAppearance(theme.icon)
 
-        verticalStackView.spacing = theme.verticalStackViewSpacing
-    }
-
-    private func addTitle(_ theme: BannerViewTheme) {
-        guard let titleTextStyle = theme.title else {
-            return
-        }
-        
-        titleLabel.customizeAppearance(titleTextStyle)
-
-        verticalStackView.addArrangedSubview(titleLabel)
-    }
-
-    private func addMessage(_ theme: BannerViewTheme) {
-        guard let messageTextStyle = theme.message else {
-            return
-        }
-        
-        messageLabel.customizeAppearance(messageTextStyle)
-
-        verticalStackView.addArrangedSubview(messageLabel)
-    }
-
-    private func addIcon(_ theme: BannerViewTheme) {
-        guard let iconImageStyle = theme.icon else {
-            return
-        }
-        iconView.customizeAppearance(iconImageStyle)
-
-        horizontalStackView.addArrangedSubview(iconView)
-        
+        contentView.addSubview(iconView)
+        iconView.contentEdgeInsets = theme.iconContentEdgeInsets
+        iconView.fitToIntrinsicSize()
         iconView.snp.makeConstraints {
-            $0.fitToSize(theme.iconSize)
+            $0.top == 0
+            $0.leading == 0
+        }
+    }
+
+    private func addTitle(
+        _ theme: BannerViewTheme
+    ) {
+        titleView.customizeAppearance(theme.title)
+
+        contentView.addSubview(titleView)
+        titleView.fitToVerticalIntrinsicSize()
+        titleView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == iconView.snp.trailing
+            $0.trailing == 0
+        }
+    }
+
+    private func addMessage(
+        _ theme: BannerViewTheme
+    ) {
+        messageView.customizeAppearance(theme.message)
+
+        contentView.addSubview(messageView)
+        messageView.contentEdgeInsets = theme.messageContentEdgeInsets
+        messageView.fitToVerticalIntrinsicSize()
+        messageView.snp.makeConstraints {
+            $0.top == titleView.snp.bottom
+            $0.leading == titleView.snp.leading
+            $0.bottom == 0
+            $0.trailing == 0
         }
     }
 }
 
 extension BannerView {
-    private func bindTitle(_ viewModel: BannerViewModel?) {
-        titleLabel.editText = viewModel?.title
-    }
-    
-    private func bindMessage(_ viewModel: BannerViewModel?) {
-        messageLabel.editText = viewModel?.message
-    }
-
-    private func bindIcon(_ viewModel: BannerViewModel?) {
-        iconView.image = viewModel?.icon?.uiImage
+    enum Event {
+        case performAction
     }
 }

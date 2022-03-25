@@ -112,6 +112,11 @@ indirect enum Screen {
         transactionOption: WCTransactionOption?
     )
     case peraIntroduction
+    case buyAlgoHome(
+        transactionDraft: BuyAlgoDraft,
+        delegate: BuyAlgoHomeScreenDelegate?
+    )
+    case buyAlgoTransaction(buyAlgoParams: BuyAlgoParams)
 }
 
 extension Screen {

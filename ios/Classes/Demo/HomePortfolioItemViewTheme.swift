@@ -23,8 +23,6 @@ struct HomePortfolioItemViewTheme:
     StyleSheet,
     LayoutSheet {
     var title: TextStyle
-    var icon: ImageStyle
-    var iconContentEdgeInsets: LayoutOffset
     var value: TextStyle
     var valueMinHeight: LayoutMetric
     var spacingBetweenTitleAndValue: LayoutMetric
@@ -35,10 +33,6 @@ struct HomePortfolioItemViewTheme:
         self.title = [
             .textColor(AppColors.Components.Text.gray.uiColor)
         ]
-        self.icon = [
-            .contentMode(.left)
-        ]
-        self.iconContentEdgeInsets = (12, 0)
         self.value = [
             .textColor(AppColors.Components.Text.main.uiColor)
         ]

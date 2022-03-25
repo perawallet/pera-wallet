@@ -50,6 +50,7 @@ enum AnalyticsEventKey: String {
     case wcSessionDisconnected = "wc_session_disconnected"
     case wcTransactionConfirmed = "wc_transaction_confirmed"
     case wcTransactionDeclined = "wc_transaction_declined"
+    case tabBuyAlgo = "tap_tab_buy_algo"
 }
 
 enum AnalyticsParameter: String {

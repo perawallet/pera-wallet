@@ -28,6 +28,6 @@ final class AccountTransactionListViewController: TransactionsViewController {
 
     override func prepareLayout() {
         super.prepareLayout()
-        listView.contentInset = UIEdgeInsets(theme.contentEdgePaddings)
+        listView.contentInset = UIEdgeInsets(theme.contentInset)
     }
 }

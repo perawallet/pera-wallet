@@ -11,13 +11,13 @@
 "account-listing-error-message" = "죄송합니다. 포트폴리오의 세부정보를 표시할 수 없습니다. 계산에 문제가 있는 것 같습니다. \n\n일부 자산 가치는 사용이 불가능할 수 있습니다. 따라서 총 포트폴리오 가치는 추정치로만 간주하시기 바랍니다.";
 
 /* (No Comment) */
-"account-name-setup-description" = "알고랜드 지갑을 사용하는 동안 쉽게 알아볼 수 있도록 계정 이름을 지정하세요. 계정 이름은 로컬에 저장되며, 사용자만 볼 수 있습니다.";
+"account-name-setup-description" = "Name your account to easily identify it while using the Pera Wallet. These names are stored locally, and can only be seen by you.";
 
 /* (No Comment) */
-"account-name-setup-explanation" = "계정명(선택 사항)";
+"account-name-setup-explanation" = "Account Name";
 
 /* (No Comment) */
-"account-name-setup-finish" = "계정 생성 완료";
+"account-name-setup-finish" = "Finish Account Creation";
 
 /* (No Comment) */
 "account-name-setup-placeholder" = "계정명";
@@ -47,43 +47,52 @@
 "account-select-search-empty-title" = "계정 찾을 수 없음";
 
 /* MARK: Account Type Selection */
-"account-type-selection-add" = "계정 추가";
+"account-type-selection-add" = "I want to create an account";
 
 /* (No Comment) */
-"account-type-selection-add-detail" = "새로운 주소와 복구 비밀문구로 새 계정을 생성합니다";
+"account-type-selection-add-detail" = "I want to create a new Algorand account with a new address and recovery passphrase";
 
 /* (No Comment) */
-"account-type-selection-create" = "새 계정 만들기";
+"account-type-selection-create" = "Create a new account";
 
 /* (No Comment) */
-"account-type-selection-create-detail" = "새 알고랜드 계정을 만들겠습니다";
+"account-type-selection-create-detail" = "Create a new Algorand account or add a watch account";
 
 /* (No Comment) */
 "account-type-selection-ledger" = "Ledger 계정 페어링";
 
 /* (No Comment) */
-"account-type-selection-ledger-detail" = "Ledger 하드웨어 지갑을 사용하는 계정을 페어링합니다";
+"account-type-selection-ledger-detail" = "I want to create an Algorand account\nthat is backed by my Ledger hardware wallet";
 
 /* (No Comment) */
-"account-type-selection-recover" = "비밀문구로 복구";
+"account-type-selection-passphrase" = "Recover an account";
 
 /* (No Comment) */
-"account-type-selection-recover-detail" = "이미 계정이 있습니다";
+"account-type-selection-passphrase-detail" = "I want to recover an Algorand account using my 25-word passphrase";
 
 /* (No Comment) */
-"account-type-selection-watch-detail" = "계정 주소만 있으면 계정의 트랜잭션을 조회할 수 있습니다";
+"account-type-selection-recover" = "I already have an account";
 
 /* (No Comment) */
-"account-welcome-wallet-title" = "알고랜드 지갑에\n오신 것을 환영합니다";
+"account-type-selection-recover-detail" = "Import an existing Algorand account\nvia recovery passphrase or pair your Ledger";
+
+/* (No Comment) */
+"account-type-selection-watch" = "Add watch account";
+
+/* (No Comment) */
+"account-type-selection-watch-detail" = "I want to monitor an Algorand account that's held in cold storage";
+
+/* (No Comment) */
+"account-welcome-add-account-title" = "Add an account";
+
+/* (No Comment) */
+"account-welcome-wallet-title" = "Welcome to\nPera Wallet";
 
 /* (No Comment) */
 "accounts-add-account" = "+계정 추가";
 
 /* (No Comment) */
-"accounts-add-new" = "새 자산 추가";
-
-/* (No Comment) */
-"accounts-algos-available-title" = "알고";
+"accounts-algos-available-title" = "Algo";
 
 /* (No Comment) */
 "accounts-dollar-value-title" = "달러로 환산한 가치";
@@ -116,7 +125,7 @@
 "accounts-transaction-value" = "가치";
 
 /* (No Comment) */
-"accounts-transaction-your-balance" = "내 잔액";
+"accounts-transaction-your-balance" = "Balance";
 
 /* (No Comment) */
 "add-node-title" = "노드 추가";
@@ -146,7 +155,7 @@
 "asset-add-warning" = "자산 추가 시 최소 트랜잭션 수수료의 트랜잭션을 전송해야 합니다. 해당 정보는 트랜잭션 내역에 표시됩니다.";
 
 /* (No Comment) */
-"asset-algos-title" = "알고";
+"asset-algos-title" = "Algo";
 
 /* (No Comment) */
 "asset-all-title" = "전체";
@@ -170,19 +179,22 @@
 "asset-min-transaction-error-title" = "최소 트랜잭션 오류!";
 
 /* (No Comment) */
-"asset-not-found-detail" = "다른 자산명이나 자산 ID를 사용해보세요";
+"asset-no-value" = "N/A";
+
+/* (No Comment) */
+"asset-not-found-detail" = "Try different asset name or asset id";
 
 /* (No Comment) */
 "asset-not-found-title" = "자산을 찾을 수 없습니다";
 
 /* (No Comment) */
-"asset-remove-confirmation-title" = "자산 삭제 중";
+"asset-remove-confirmation-title" = "Manage asset";
 
 /* (No Comment) */
 "asset-remove-subtitle" = "자산을 삭제하려면 먼저 자산 잔액을 다른 계정으로 전송하셔야 합니다";
 
 /* (No Comment) */
-"asset-remove-title" = "자산 삭제";
+"asset-remove-title" = "Manage Assets";
 
 /* (No Comment) */
 "asset-remove-transaction-warning" = "%@을(를) %@에서 삭제하려고 하십니다. 다시 추가하기 전까지는 이 계정에서 해당 자산을 거래하실 수 없습니다.";
@@ -251,7 +263,7 @@
 "ble-error-fail-ble-connection-power" = "근처 Ledger 기기를 찾으려면 기기에서 Bluetooth 기능을 활성화해야 합니다.";
 
 /* (No Comment) */
-"ble-error-fail-ble-connection-repairing" = "Ledger Nano X 연결 문제가 발생하는 경우 휴대폰의 블루투스 설정에서 기기를 제거하고 Ledger 계정을 삭제한 다음 알고랜드 지갑의 안내에 따라 Ledger을 다시 페어링하세요.";
+"ble-error-fail-ble-connection-repairing" = "If you’re having Ledger Nano X connection issues, please remove the device from your phone’s bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Pera Wallet instructions.";
 
 /* (No Comment) */
 "ble-error-fail-ble-connection-resetting" = "키 재지정을 위한 BLE 연결 실패";
@@ -260,7 +272,7 @@
 "ble-error-fail-ble-connection-unauthorized" = "근처 Ledger 기기를 찾으려면 Bluetooth를 허용해 주셔야 합니다.";
 
 /* (No Comment) */
-"ble-error-fail-ble-connection-unsupported" = "알고랜드 지갑에서 연결하고자 하는 기기를 지원하지 않습니다.";
+"ble-error-fail-ble-connection-unsupported" = "The device you are trying to connect to is not supported with the Pera Wallet.";
 
 /* (No Comment) */
 "ble-error-fail-connect-peripheral" = "Ledger 기기에 연결할 수 없습니다. 기기의 잠금을 해제하고 스마트폰 가까이에 두었는지, Bluetooth를 켰는지 확인해 주세요.";
@@ -329,7 +341,7 @@
 "chart-time-selection-yearly" = "1년";
 
 /* (No Comment) */
-"contact-search-empty-detail" = "다른 연락처 이름을 사용해보세요";
+"contact-search-empty-detail" = "Try different contact name";
 
 /* (No Comment) */
 "contact-search-empty-title" = "연락처 찾을 수 없음";
@@ -353,7 +365,7 @@
 "contacts-close-warning-title" = "계속 진행하시겠습니까?";
 
 /* (No Comment) */
-"contacts-delete-contact" = "연락처 삭제";
+"contacts-delete-contact" = "Delete contact";
 
 /* (No Comment) */
 "contacts-delete-contact-alert-explanation" = "정말로 연락처를 삭제하시겠습니까?";
@@ -371,16 +383,7 @@
 "contacts-info" = "연락처 정보";
 
 /* (No Comment) */
-"contacts-info-edit" = "연락처 정보 수정";
-
-/* (No Comment) */
-"contacts-input-address-explanation" = "주소";
-
-/* (No Comment) */
-"contacts-input-address-placeholder" = "# 붙여넣기 또는 QR 스캔하기";
-
-/* (No Comment) */
-"contacts-input-name-explanation" = "이름";
+"contacts-info-edit" = "Edit Contact";
 
 /* (No Comment) */
 "contacts-input-name-placeholder" = "연락처 이름";
@@ -389,16 +392,16 @@
 "contacts-name-validation-error" = "이름은 필수 입력 항목입니다.";
 
 /* (No Comment) */
-"contacts-search" = "연락처 검색";
+"contacts-search" = "Search contacts or name";
 
 /* MARK: Contacts */
 "contacts-title" = "연락처";
 
 /* (No Comment) */
-"contacts-title-assets" = "자산:";
+"contacts-title-assets" = "Assets";
 
 /* (No Comment) */
-"contacts-transactions-title" = "트랜잭션";
+"contacts-transactions-title" = "Transaction History";
 
 /* (No Comment) */
 "csv-download-error" = "트랜잭션 내역 CSV 파일을 생성할 수 없습니다.";
@@ -482,7 +485,7 @@
 "governance-banner-detail" = "거버너가 되어 알고랜드의 미래에 투표하고 보상을 받으세요.";
 
 /* (No Comment) */
-"governance-banner-title" = "알고랜드 거버넌스 프로그램이 시작됩니다!";
+"governance-banner-title" = "Algorand Governance Program is starting!";
 
 /* (No Comment) */
 "internet-connection-error-detail" = "서버에 접속할 수 없습니다, 인터넷에 연결되어 있는지 확인해 주세요.";
@@ -491,10 +494,13 @@
 "internet-connection-error-title" = "인터넷 연결";
 
 /* MARK: Introduction */
-"introduction-add-account-text" = "계정 추가";
+"introduction-add-account-text" = "I want to create\nan Algorand account";
 
 /* (No Comment) */
-"introduction-title-terms-and-services" = "계정을 만드시면 알고랜드의 <a href=\"%@\">이용약관</a>과 <a href=\"%@\">개인정보 보호 정책</a>에 동의하신 것으로 간주합니다";
+"introduction-recover-account-text" = "I already have an account";
+
+/* (No Comment) */
+"introduction-title-terms-and-services" = "By creating an account, you agree to Pera Wallet's<br><a href=\"https://perawallet.app/terms-and-services/\">Terms and Conditions</a> and <a href=\"https://www.perawallet.app/privacy-policy/\">Privacy Policy</a>";
 
 /* (No Comment) */
 "ledger-account-detail-assets" = "자산";
@@ -515,7 +521,7 @@
 "ledger-account-fetct-error" = "계정 정보를 불러오던 중 네트워크 오류가 발생했습니다. 절차를 다시 시작하십시오.";
 
 /* (No Comment) */
-"ledger-account-selection-detail" = "이 Ledger 기기는 다음 계정의 트랜잭션에 서명 가능합니다. 알고랜드 지갑에 추가할 계정을 선택하세요.";
+"ledger-account-selection-detail" = "This ledger device can sign transactions for the following accounts. Select the accounts to add to your Pera Wallet.";
 
 /* (No Comment) */
 "ledger-account-selection-detail-rekey" = "본 계정에 서명 시 사용할 계정을 선택하십시오.";
@@ -554,16 +560,16 @@
 "ledger-approval-connection-title" = "Ledger 연결";
 
 /* (No Comment) */
-"ledger-approval-message" = "Ledger 기기에서 트랜잭션을 검토하고 서명해 주세요.";
+"ledger-approval-message" = "Please verify the account address on your Ledger device (%@)";
 
 /* MARK: Ledger Approval */
-"ledger-approval-title" = "미리보기 & 서명";
+"ledger-approval-title" = "Ledger Approval";
 
 /* (No Comment) */
 "ledger-device-list-connect" = "연결";
 
 /* (No Comment) */
-"ledger-device-list-looking" = "다른 Ledger 기기를 찾는 중";
+"ledger-device-list-looking" = "Looking for devices";
 
 /* MARK: Ledger Device List */
 "ledger-device-list-title" = "Ledger 기기 페어링";
@@ -593,7 +599,7 @@
 "ledger-pairing-first-warning-title" = "Ledger와 기기의 페어링";
 
 /* (No Comment) */
-"ledger-pairing-issue-error-message" = "Ledger Nano X 연결 문제가 있나요?\n\nLedger Nano X 연결 문제가 발생하는 경우 휴대폰의 블루투스 설정에서 기기를 제거하고 Ledger 계정을 삭제한 다음 알고랜드 지갑의 안내에 따라 Ledger을 다시 페어링하세요.";
+"ledger-pairing-issue-error-message" = "Make sure the device is unlocked, nearby and has bluetooth enabled. If problems persist, please remove the device from your phone’s bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Pera Wallet instructions.";
 
 /* (No Comment) */
 "ledger-pairing-issue-error-title" = "Ledger Nano X 연결 문제가 있나요?";
@@ -623,13 +629,13 @@
 "ledger-rekey-more-assets" = "+%@ 추가 자산";
 
 /* (No Comment) */
-"ledger-rekey-success-message" = "%@ 계정의 키가 재지정되었습니다";
+"ledger-rekey-success-message" = "The account \"%@\" has been successfully rekeyed";
 
 /* (No Comment) */
-"ledger-rekey-success-title" = "계정 키 재지정 완료";
+"ledger-rekey-success-title" = "Account successfully\nrekeyed";
 
 /* (No Comment) */
-"ledger-rekey-total-fee" = "총 %@의 키 재지정 수수료";
+"ledger-rekey-total-fee" = "Total Rekeying fee of %@ Algo";
 
 /* (No Comment) */
 "ledger-rekey-transaction-title" = "트랜잭션 키 재지정";
@@ -644,22 +650,22 @@
 "ledger-troubleshooting-app-support" = "알고랜드 Ledger 앱의 기기 설치와 관련해 도움이 필요하신 경우 %@를 참조하세요.";
 
 /* (No Comment) */
-"ledger-troubleshooting-bluetooth-connection-html" = "iOS 기기의 Bluetooth 켜기/끄기 <br /> <br />\n<ul>\n<li><b>설정</b>을 누릅니다</li>\n<li><b>“일반”</b>을 선택합니다</li>\n<li> <b>“Bluetooth”</b>를 누릅니다</li>\n<li><b>켬/끔 버튼</b>을 토글 전환합니다</li>\n<li>Bluetooth가<b>켜지거나 꺼집니다</b></li>\n</ul>";
+"ledger-troubleshooting-bluetooth-connection-html" = "Disable or Enable Bluetooth for an iOS device. <br /> <br />\n<ul>\n<li>Tap on <b>Settings</b></li>\n<li>Select <b>“General”</b></li>\n<li>Tap on <b>“Bluetooth”</b></li>\n<li>Flip the <b>On/Off button</b> to toggle</li>\n<li>Bluetooth <b>On or Off</b></li>\n</ul>";
 
 /* (No Comment) */
 "ledger-troubleshooting-close-others" = "다른 애플리케이션(Ledger 앱, 암호화폐 지갑 또는 기타 Ledger에 페어링을 시도할 수 있는 모든 앱)을 종료합니다.";
 
 /* (No Comment) */
-"ledger-troubleshooting-install-app-first-html" = "Ledger의 종합적인 <a href=\"https://www.ledger.com/start\">Getting Started</a> (시작하기) 튜토리얼부터 따라서 시작해보세요.";
+"ledger-troubleshooting-install-app-first-html" = "Begin by following Ledger’s comprehensive <a href=\"https://www.ledger.com/start\">Getting Started</a> tutorial.";
 
 /* (No Comment) */
-"ledger-troubleshooting-install-app-second-html" = "튜토리얼에서 “기기에 설치하고자 하는 애플리케이션 선택(Select the application(s) you want to install on your device)” 단계까지 진행하셨다면 검색창에 <b>알고랜드(Algorand)</b>를 입력하고 설치해 주세요.";
+"ledger-troubleshooting-install-app-second-html" = "When the tutorial gets to the point where it directs you to “Select the application(s) you want to install on your device,” type <b>Algorand</b> in the search bar and install.";
 
 /* (No Comment) */
-"ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "고급 문제 해결 안내가 필요하신 경우 Ledger의 공식 <a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">Bluetooth Troubleshooting Guide</a> (Bluetooth 문제 해결 가이드) 페이지를 참조하세요.";
+"ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "For more advanced troubleshooting, please refer to Ledger’s official <a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">Bluetooth Troubleshooting Guide</a>.";
 
 /* (No Comment) */
-"ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "Ledger의 Bluetooth 기능 사용법은 Ledger의 공식 <a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">Bluetooth Connection Guide</a> (Bluetooth 연결 가이드) 페이지에서 찾아보실 수 있습니다.";
+"ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "For general usage of your Ledger’s Bluetooth feature, please refer to Ledger’s official <a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">Bluetooth Connection Guide</a>.";
 
 /* (No Comment) */
 "ledger-troubleshooting-ledger-support" = "Ledger 기기의 일반적인 문제 해결에 도움이 필요한 경우에는 ";
@@ -668,10 +674,10 @@
 "ledger-troubleshooting-ledger-support-title" = "Ledger 지원을 방문해 주세요.";
 
 /* (No Comment) */
-"ledger-troubleshooting-open-app-first-html" = "Ledger의 종합적인 <a href=\"https://www.ledger.com/start\">Getting Started</a> (시작하기) 튜토리얼부터 따라서 시작해보세요. Ledger 기기에서 앱을 설치하고 실행하는 방법을 안내해 드립니다.";
+"ledger-troubleshooting-open-app-first-html" = "Continue with Ledger’s comprehensive <a href=\"https://www.ledger.com/start\">Getting Started</a> tutorial, which will direct you how to install and open apps on your ledger device.";
 
 /* (No Comment) */
-"ledger-troubleshooting-open-app-second-html" = "아직 Ledger 기기에 <b>알고랜드</b> 앱을 설치하지 않으신 경우, 튜토리얼에서 “기기에 설치하고자 하는 애플리케이션 선택(Select the application(s) you want to install on your device)” 단계까지 진행하시고 검색창에 <b>알고랜드(Algorand)</b>를 입력해 설치해 주세요.";
+"ledger-troubleshooting-open-app-second-html" = "If you haven’t already installed the <b>Algorand</b> app on your Ledger device, when the tutorial gets to the point where it directs you to “Select the application(s) you want to install on your device,” type <b>Algorand</b> in the search bar and install.";
 
 /* (No Comment) */
 "ledger-troubleshooting-restart" = "알고랜드 지갑 및/또는 내 기기를 재시작합니다.";
@@ -692,7 +698,7 @@
 "ledger-tutorial-title-text" = "Ledger 페어링";
 
 /* (No Comment) */
-"ledger-tutorial-turned-on" = "Ledger 기기 전원을 켜고 Bluetooth를 활성화했는지 확인하세요.";
+"ledger-tutorial-turned-on" = "Make sure that your ledger device is on\nand has Bluetooth enabled.";
 
 /* (No Comment) */
 "ledger-verified-add" = "인증된 계정 추가";
@@ -701,7 +707,7 @@
 "ledger-verify-header-subtitle" = "다음의 계정 주소가 Ledger 기기에 표시됩니다. 각 주소를 신중하게 비교하고 확인하신 다음 기기 페어링을 완료해주세요.";
 
 /* (No Comment) */
-"ledger-verify-header-title" = "Ledger를 통해 계정 주소 인증";
+"ledger-verify-header-title" = "Verify Account Addresses\nvia Ledger";
 
 /* (No Comment) */
 "local-authentication-enable" = "Face ID/Touch ID 활성화";
@@ -710,7 +716,7 @@
 "local-authentication-enabled-subtitle" = "비밀문구가 확인되었습니다. 알고랜드 계정이 더욱 안전해졌습니다.";
 
 /* (No Comment) */
-"local-authentication-enabled-title" = "생체 인증 활성화 완료";
+"local-authentication-enabled-title" = "Biometric\nAuthentication\nEnabled";
 
 /* (No Comment) */
 "local-authentication-go-settings-text" = "생체 인증을 비활성화하셨습니다. 설정으로 이동해 옵션을 켜실 수 있습니다.";
@@ -734,22 +740,67 @@
 "local-authentication-reason-touch-id-title" = "Touch ID로 잠금 해제";
 
 /* (No Comment) */
-"login-subtitle" = "6자리 PIN 번호를 입력하세요";
+"login-subtitle" = "Enter your\n6-digit pin";
 
 /* MARK: Login */
 "login-title" = "잠금 해제";
 
 /* (No Comment) */
-"maximum-balance-standard-account-warning-description" = "계정 설정에 따라, 최소 잔액 기준은 %@알고입니다.\n\n계속을 누르시면 알고랜드 블록체인의 필수 잔액을 유지하기 위해 트랜잭션 금액이 업데이트됩니다. 다음 단계에서 변경 내용을 미리 볼 수 있습니다.";
+"maximum-balance-standard-account-warning-description" = "Based on your account configuration, your minimum balance is %@.\n\nBy hitting continue, your transaction amount will be updated to maintain the Algorand Blockchain’s minimum required balance. You’ll be able to preview this change in the next step.";
 
 /* (No Comment) */
-"maximum-balance-warning-description" = "키 재지정(rekey) 계정에서 최대 잔액을 보내려면 최소 잔액(%@알고)을 유지하셔야 합니다. 키를 재지정한 계정에 변동 사항이 없도록 하기 위한 조치이니 양해 부탁드립니다.\n\n본 변동 사항을 반영하여 트랜잭션 금액을 자동으로 업데이트합니다. 다음 단계에서 트랜잭션 내용을 미리 볼 수 있습니다.";
+"maximum-balance-warning-description" = "Sending your maximum balance on this rekeyed account requires you to maintain a minimum balance of %@ Algos. This is to ensure that nothing changes with your rekeyed account.\n\nYour transaction amount will be automatically updated to reflect this change. You will be able to preview the transaction in the next step.";
 
 /* (No Comment) */
 "maximum-balance-warning-title" = "최대 잔액";
 
 /* (No Comment) */
 "min-balance-title" = "최소 잔액 필요";
+
+/* MARK: MoonPay */
+"moonpay-buy-button-title" = "Buy ALGO";
+
+/* (No Comment) */
+"moonpay-introduction-description" = "MoonPay offers the fastest way to buy ALGO with your local currency. Buy crypto with credit card or bank transfers. It's fast, simple, and secure.";
+
+/* (No Comment) */
+"moonpay-introduction-security" = "Secured by";
+
+/* (No Comment) */
+"moonpay-introduction-title" = "Buy ALGO with Moonpay";
+
+/* (No Comment) */
+"moonpay-transaction-completed-description" = "Your purchase is completed and is being processed by the network. You will receive a notification when they are in your account.";
+
+/* (No Comment) */
+"moonpay-transaction-completed-title" = "Your Algos are on their way!";
+
+/* (No Comment) */
+"moonpay-transaction-failed-description" = "Looks like your purchase failed. You will need to try again.";
+
+/* (No Comment) */
+"moonpay-transaction-failed-title" = "Uh oh, something went wrong.";
+
+/* (No Comment) */
+"moonpay-transaction-pending-description" = "Your purchase is being processed. It can take a few minutes to be completed. You will receive a notification when it’s done.";
+
+/* (No Comment) */
+"moonpay-transaction-pending-title" = "Your Algos are on their way!";
+
+/* (No Comment) */
+"moonpay-transaction-testnet-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use MoonPay.";
+
+/* (No Comment) */
+"moonpay-transaction-waitingAuthorization-description" = "Your purchase is waiting for authorization. Once payment is processed, you will receive a notification.";
+
+/* (No Comment) */
+"moonpay-transaction-waitingAuthorization-title" = "Almost there!";
+
+/* (No Comment) */
+"moonpay-transaction-waitingPayment-description" = "Your purchase request is pending payment. Once payment is processed, you will receive a notification.";
+
+/* (No Comment) */
+"moonpay-transaction-waitingPayment-title" = "Almost there!";
 
 /* (No Comment) */
 "nft-list-empty-detail" = "곧 알고랜드 지갑에도 NFT 컬렉션 조최 기능이 추가됩니다.\n신기능을 추가하고자 최선을 다하고 있습니다. 계속 지켜봐주세요!";
@@ -854,13 +905,25 @@
 "notifications-title" = "알림";
 
 /* (No Comment) */
+"number-abbreviation-billion" = "B";
+
+/* (No Comment) */
+"number-abbreviation-million" = "M";
+
+/* MARK: Number Abbreviation */
+"number-abbreviation-thousand" = "K";
+
+/* (No Comment) */
+"number-abbreviation-trillion" = "T";
+
+/* (No Comment) */
 "options-auth-account" = "계정 주소 인증";
 
 /* (No Comment) */
 "options-copy-address" = "주소 복사";
 
 /* (No Comment) */
-"options-edit-account-name" = "계정명 수정";
+"options-edit-account-name" = "Rename Account";
 
 /* (No Comment) */
 "options-manage-assets" = "자산 관리";
@@ -878,13 +941,16 @@
 "options-remove-account" = "계정 삭제";
 
 /* (No Comment) */
-"options-remove-alert-explanation" = "계정을 삭제하려고 하십니다. 정말로 계정을 삭제하시겠습니까?";
-
-/* (No Comment) */
 "options-remove-assets" = "자산 삭제";
 
 /* (No Comment) */
-"options-show-qr" = "QR 및 주소 표시";
+"options-remove-main-account-explanation" = "You are about to remove your main account, are you sure you want to proceed with this choice?";
+
+/* (No Comment) */
+"options-remove-watch-account-explanation" = "You are about to remove a watch account. Are you sure you want to proceed with this choice?";
+
+/* (No Comment) */
+"options-show-qr" = "Show QR Code";
 
 /* MARK: Options */
 "options-title" = "자산 설정";
@@ -950,7 +1016,7 @@
 "passphrase-verify-select-word" = "단어 #%@개 선택";
 
 /* (No Comment) */
-"passphrase-verify-title" = "복구 비밀문구 백업 확인";
+"passphrase-verify-title" = "Verify recovery\npassphrase backup";
 
 /* (No Comment) */
 "passphrase-verify-wrong-message" = "잘못된 단어를 선택하셨습니다. 다시 시도해 주세요.";
@@ -962,13 +1028,13 @@
 "password-change-old-subtitle" = "기존 6자리 PIN 번호를\n입력하세요";
 
 /* (No Comment) */
-"password-change-subtitle" = "6자리 PIN 번호를 입력하세요";
+"password-change-subtitle" = "Choose your\n6-digit PIN";
 
 /* (No Comment) */
 "password-change-title" = "PIN 변경";
 
 /* MARK: Password Setting */
-"password-set-subtitle" = "6자리 PIN 번호를 선택하세요";
+"password-set-subtitle" = "Choose your\n6-digit PIN";
 
 /* (No Comment) */
 "password-verify-fail-message" = "PIN 번호가 이전 PIN과 일치하지 않습니다.";
@@ -980,7 +1046,7 @@
 "password-verify-new-subtitle" = "새 6자리 PIN 번호를\n다시 입력하세요";
 
 /* (No Comment) */
-"password-verify-subtitle" = "6자리 PIN 번호를 다시 입력하세요";
+"password-verify-subtitle" = "Re-enter your\n6-digit PIN";
 
 /* (No Comment) */
 "password-verify-title" = "PIN 확인";
@@ -1004,7 +1070,7 @@
 "pin-limit-reset-all" = "전체 데이터 초기화";
 
 /* MARK: Pin Limit */
-"pin-limit-title" = "알고랜드 앱이 잠겼습니다";
+"pin-limit-title" = "Pera Wallet app is locked";
 
 /* (No Comment) */
 "pin-limit-too-many" = "PIN 입력을 너무 많이 시도하셨습니다";
@@ -1043,10 +1109,10 @@
 "qr-creation-copied" = "주소를 클립보드로 복사 완료";
 
 /* (No Comment) */
-"qr-creation-copy-address" = "주소 복사";
+"qr-creation-copy-address" = "Copy Address";
 
 /* (No Comment) */
-"qr-creation-sharing-title" = "QR 및 주소 공유";
+"qr-creation-sharing-title" = "QR Code";
 
 /* MARK: QR Creation */
 "qr-creation-title" = "비밀문구 QR";
@@ -1106,19 +1172,28 @@
 "recover-from-seed-passphrase-title" = "비밀문구";
 
 /* MARK: Recover From Seed */
-"recover-from-seed-title" = "비밀문구를 입력하세요";
+"recover-from-seed-title" = "Enter Your Recovery\nPassphrase";
 
 /* (No Comment) */
 "recover-from-seed-verify-exist-error" = "이미 존재하는 계정입니다";
 
 /* (No Comment) */
-"recover-from-seed-verify-pop-up-explanation" = "알고랜드에 오신 것을 환영합니다!\n계정을 사용하실 수 있습니다.";
+"recover-from-seed-verify-pop-up-description-watch-account" = "The Watch Account has been added successfully.";
 
 /* (No Comment) */
-"recover-from-seed-verify-pop-up-title" = "계정 인증 완료";
+"recover-from-seed-verify-pop-up-explanation" = "Welcome to Pera Wallet!\nYour account is ready to use.";
+
+/* (No Comment) */
+"recover-from-seed-verify-pop-up-explanation-already-added" = "Congratulations, your account is ready to go.";
+
+/* (No Comment) */
+"recover-from-seed-verify-pop-up-title" = "Account is verified!";
+
+/* (No Comment) */
+"recover-from-seed-verify-pop-up-title-watch-account" = "Watch account added successfully";
 
 /* MARK: Passphrase Back Up */
-"recover-passphrase-title" = "복구 비밀문구";
+"recover-passphrase-title" = "Recovery Passphrase";
 
 /* (No Comment) */
 "recover-title" = "복원";
@@ -1127,7 +1202,7 @@
 "rekey-instruction-first" = "앞으로 새 Ledger 기기로 트랜잭션에 서명하게 됩니다.";
 
 /* (No Comment) */
-"rekey-instruction-header" = "예상되는 결과:";
+"rekey-instruction-header" = "What to expect";
 
 /* (No Comment) */
 "rekey-instruction-second-ledger" = "기존의 Ledger는 더 이상 이 계정에서 사용할 수 없습니다.";
@@ -1151,7 +1226,7 @@
 "rekey-instruction-title" = "계정 키 재지정";
 
 /* MARK: Algos Request */
-"request-algos-title" = "알고 요청";
+"request-algos-title" = "Request Algo";
 
 /* (No Comment) */
 "request-title" = "요청";
@@ -1160,7 +1235,7 @@
 "reward-list-title" = "보상";
 
 /* (No Comment) */
-"rewards-detail-subtitle" = "알고를 보유하시면 보상을 드립니다! 여기에서 최종 트랜잭션 이후 발생한 보상 활동의 요약을 확인해보세요. 보상은 이미 계정 잔액에 포함되어 있습니다.";
+"rewards-detail-subtitle" = "You earn rewards just by owning Algo! Here's a summary of your earned rewards since your last transaction. These rewards are always included in your balance.";
 
 /* (No Comment) */
 "rewards-rate" = "보상 비율";
@@ -1217,10 +1292,7 @@
 "send-algos-alert-message-address" = "전송 대상의 주소를 정확하게 입력하세요.";
 
 /* (No Comment) */
-"send-algos-amount" = "총액";
-
-/* (No Comment) */
-"send-algos-amount-error" = "트랜잭션 금액을 사용 가능한 알고 금액 이상으로 설정할 수 없습니다";
+"send-algos-amount-error" = "Transaction amount cannot be more than your available algo";
 
 /* (No Comment) */
 "send-algos-balance-title" = "잔액:";
@@ -1232,16 +1304,16 @@
 "send-algos-contacts" = "연락처";
 
 /* (No Comment) */
-"send-algos-minimum-amount-custom-error" = "트랜잭션 진행 시 계정의 잔액이 최소 잔액 수준(%@ 알고) 이하로 떨어지므로, 본 트랜잭션을 완료할 수 없습니다.";
+"send-algos-minimum-amount-custom-error" = "The transaction cannot be completed because the amount will put your account below minimum required balance of %@ Algo.";
 
 /* (No Comment) */
-"send-algos-minimum-amount-error" = "트랜잭션 진행 시 계정의 잔액이 최소 잔액 수준(0.1알고) 이하로 떨어집니다.";
+"send-algos-minimum-amount-error" = "Transaction amount results in a balance below the minimum account balance of 0.1 Algo.";
 
 /* (No Comment) */
-"send-algos-minimum-amount-error-new-account-description" = "This is the first transaction for the selected account. The first transactions require a minimum amount of at least 0.1 Algo. Please enter a valid amount and try again.";
+"send-algos-minimum-amount-error-new-account-description" = "선택한 계정의 첫 번째 거래입니다. 첫 번째 거래의 최소 금액은 0.1알고 이상입니다. 유효한 금액을 입력하고 다시 시도해 주세요.";
 
 /* (No Comment) */
-"send-algos-minimum-amount-error-new-account-title" = "Minimum Amount Required.";
+"send-algos-minimum-amount-error-new-account-title" = "최소 금액 필요";
 
 /* (No Comment) */
 "send-algos-receiver-address-validation" = "받으시는 분 주소가 유효한 알고랜드 주소가 아닙니다. 다시 시도해 주세요.";
@@ -1256,16 +1328,13 @@
 "send-algos-sent-title" = "알고 전송 완료!";
 
 /* MARK: Algos Send */
-"send-algos-title" = "알고 전송";
+"send-algos-title" = "Send Algo";
 
 /* (No Comment) */
 "send-algos-to" = "받으시는 분";
 
 /* (No Comment) */
 "send-asset-amount-error" = "트랜잭션 금액을 사용 가능한 금액 이상으로 설정할 수 없습니다.";
-
-/* (No Comment) */
-"send-choose-asset" = "자산 선택";
 
 /* (No Comment) */
 "send-enter-note-placeholder" = "참조할 내용을 입력하세요";
@@ -1319,13 +1388,16 @@
 "send-trasaction-address-placeholder" = "# 붙여넣기";
 
 /* (No Comment) */
-"settings-app-version" = "버전 %@";
+"settings-app-version" = "Pera Wallet Version %@";
 
 /* (No Comment) */
 "settings-backup-title" = "백업";
 
 /* (No Comment) */
 "settings-currency" = "통화";
+
+/* (No Comment) */
+"settings-currency-header-title" = "Currency Preferences";
 
 /* (No Comment) */
 "settings-delete-data-title" = "전체 데이터 삭제";
@@ -1352,13 +1424,13 @@
 "settings-logout-button-delete" = "네, 전체 데이터를 삭제합니다";
 
 /* (No Comment) */
-"settings-logout-detail" = "정말로 모든 데이터를 삭제하시겠습니까?";
+"settings-logout-detail" = "You are about to delete all data in the wallet, including your stored accounts. Make sure to have your account passphrases stored elsewhere before confirming. You will not be able to restore your accounts otherwise. Are you sure you would like to proceed?";
 
 /* (No Comment) */
 "settings-logout-success-message" = "데이터가 삭제되었습니다";
 
 /* (No Comment) */
-"settings-logout-title" = "전체 데이터 삭제";
+"settings-logout-title" = "Remove All Accounts and Logout";
 
 /* (No Comment) */
 "settings-notification-disabled-go-settings-text" = "알림을 비활성화하셨습니다. 설정으로 이동해 옵션을 켜실 수 있습니다.";
@@ -1376,7 +1448,7 @@
 "settings-rate-modal-title" = "사용 경험을 평가해주세요";
 
 /* (No Comment) */
-"settings-rate-title" = "알고랜드 지갑 평가하기";
+"settings-rate-title" = "Rate Pera Wallet";
 
 /* MARK: Settings */
 "settings-sections-account" = "계정";
@@ -1394,7 +1466,7 @@
 "settings-server-node-settings" = "노드 설정";
 
 /* (No Comment) */
-"settings-support-title" = "지원 센터";
+"settings-support-title" = "Send Feedback";
 
 /* (No Comment) */
 "settings-theme-dark" = "어두운 테마";
@@ -1403,7 +1475,7 @@
 "settings-theme-light" = "밝은 테마";
 
 /* (No Comment) */
-"settings-theme-set" = "테마 설정";
+"settings-theme-set" = "Theme";
 
 /* (No Comment) */
 "settings-theme-system" = "시스템 기본값";
@@ -1445,7 +1517,7 @@
 "title-algo-rewards" = "보상";
 
 /* (No Comment) */
-"title-algorand" = "알고랜드";
+"title-algorand" = "Algo";
 
 /* (No Comment) */
 "title-algorand-value" = "가치";
@@ -1466,7 +1538,7 @@
 "title-confirm" = "확정";
 
 /* (No Comment) */
-"title-confirm-all" = "모든 트랜잭션 확정";
+"title-confirm-all" = "Confirm All";
 
 /* (No Comment) */
 "title-connect" = "연결";
@@ -1499,7 +1571,7 @@
 "title-edit" = "수정";
 
 /* (No Comment) */
-"title-enter-pin-for-passphrase" = "비밀문구를 확인하려면 PIN 번호를 입력해 주세요";
+"title-enter-pin-for-passphrase" = "Enter a Passcode";
 
 /* (No Comment) */
 "title-error" = "오류";
@@ -1535,9 +1607,6 @@
 "title-loading" = "불러오는 중";
 
 /* (No Comment) */
-"title-max" = "최대";
-
-/* (No Comment) */
 "title-new-uppercased" = "NEW";
 
 /* (No Comment) */
@@ -1545,6 +1614,9 @@
 
 /* (No Comment) */
 "title-no" = "아니요";
+
+/* (No Comment) */
+"title-not-available" = "Not available";
 
 /* (No Comment) */
 "title-off" = "끄기";
@@ -1559,7 +1631,7 @@
 "title-paste-passphrase" = "비밀문구 전체 붙여넣기";
 
 /* (No Comment) */
-"title-plus-asset-count" = "자산 +%@";
+"title-plus-asset-count" = "%@ Assets";
 
 /* (No Comment) */
 "title-plus-asset-singular-count" = "%@ 자산";
@@ -1595,7 +1667,7 @@
 "title-send" = "전송";
 
 /* (No Comment) */
-"title-share-qr" = "QR 공유";
+"title-share-qr" = "Share Address";
 
 /* (No Comment) */
 "title-show-all-detail" = "정보 전체 보기";
@@ -1607,7 +1679,7 @@
 "title-skip" = "건너뛰기";
 
 /* (No Comment) */
-"title-start-using-pera-wallet" = "Start Using Pera Wallet";
+"title-start-using-pera-wallet" = "Pera Wallet 사용 시작";
 
 /* MARK: Ledger Troubleshooting */
 "title-step-1" = "1단계";
@@ -1631,16 +1703,16 @@
 "title-verify" = "확인";
 
 /* MARK: Watch Account */
-"title-watch-account" = "계정 조회";
+"title-watch-account" = "읽기 전용 계정";
 
 /* MARK: Common */
 "title-yes" = "네";
 
 /* (No Comment) */
-"total-rewards-faq" = "FAQ.";
+"total-rewards-faq" = "FAQ";
 
 /* (No Comment) */
-"total-rewards-faq-title" = "알고랜드 보상을 자세히 알아보려면 FAQ 페이지를 참조하세요.";
+"total-rewards-faq-title" = "For more information on Algorand Rewards, visit our FAQ";
 
 /* (No Comment) */
 "total-rewards-title" = "보상: %@";
@@ -1820,7 +1892,7 @@
 "tutorial-action-title-passcode" = "나중에";
 
 /* (No Comment) */
-"tutorial-description-back-up" = "기기 분실, 앱 삭제 시 복구 비밀문구가 없는 경우, 알고랜드 계정에 영구적으로 접속할 수 없습니다.";
+"tutorial-description-back-up" = "Creating a passphrase backup will allow you to recover your account. Without the passphrase, if you lose your device, remove the account or delete the app, you can permanently lose access to your Algorand account!";
 
 /* (No Comment) */
 "tutorial-description-ledger" = "Ledger 기기의 잠금을 해제하고 Bluetooth를 활성화했는지 확인하세요";
@@ -1832,7 +1904,7 @@
 "tutorial-description-local" = "FaceID 또는 TouchID 인증을 통과해야 앱을 사용할 수 있게 됩니다. 휴대폰 도난에 대비해 지갑의 보안을 강화하려면 생체 인증을 활성화하시길 권장합니다.";
 
 /* (No Comment) */
-"tutorial-description-passcode" = "6자리 PIN 번호를 입력해야 알고랜드 지갑을 사용할 수 있게 됩니다. 휴대폰 도난에 대비해 지갑의 보안을 강화하려면 PIN을 설정하시길 권장합니다.";
+"tutorial-description-passcode" = "This 6-digit PIN will be required to use the Pera Wallet. We highly recommend creating a PIN to help increase wallet security in the event your phone is stolen.";
 
 /* (No Comment) */
 "tutorial-description-recover" = "다음 단계에서는 알고랜드 계정을 복원하기 위해 25단어로 구성된 복구 비밀문구를 입력하셔야 합니다. 시작하기 전에 복구 비밀문구를 준비하시기 바랍니다.";
@@ -1841,34 +1913,34 @@
 "tutorial-description-warning-title" = "주의:";
 
 /* (No Comment) */
-"tutorial-description-watch" = "읽기 전용 계정을 사용하면 비밀문구가 없어도 계정 활동을 모니터링할 수 있습니다. 콜드 스토리지에 보관된 자산을 모니터링하는 데 유용한 기능입니다.\n\n경고: 계정에 설정된 복구 비밀문구를 모르는 경우, 이 계정으로 자산을 보내지 마세요.";
+"tutorial-description-watch" = "Monitor activity of an account without needing a recovery passphrase. This is useful for monitoring assets that are kept in cold storage.";
 
 /* (No Comment) */
 "tutorial-description-watch-warning" = "계정에 설정된 복구 비밀문구를 모르는 경우 이 계정으로 자산을 보내지 마세요.";
 
 /* (No Comment) */
-"tutorial-description-write" = "주의: 알고랜드 계정을 복원하는 유일한 방법은 이 복구 비밀문구를 사용하는 것뿐입니다. 비밀문구가 있으면 계정의 모든 기능을 이용 가능하므로, 다른 사람과 비밀문구를 공유하지 마세요.\n\n알고랜드 직원은 계정의 비밀문구를 묻지 않습니다.";
+"tutorial-description-write" = "The only way to recover an Algorand account is with this recovery passphrase.";
 
 /* (No Comment) */
 "tutorial-description-write-warning" = "비밀문구가 있으면 계정의 모든 기능을 이용 가능하므로, 다른 사람과 비밀문구를 공유하지 마세요.";
 
 /* (No Comment) */
-"tutorial-main-title-back-up" = "알겠습니다";
+"tutorial-main-title-back-up" = "I Understand";
 
 /* (No Comment) */
 "tutorial-main-title-ledger-connected" = "알고랜드 사용 시작";
 
 /* (No Comment) */
-"tutorial-main-title-passcode" = "비밀문구 설정";
+"tutorial-main-title-passcode" = "Set PIN Code";
 
 /* (No Comment) */
 "tutorial-main-title-recover" = "알고랜드 계정 복구";
 
 /* (No Comment) */
-"tutorial-main-title-write" = "시작할 준비가 되었습니다";
+"tutorial-main-title-write" = "I'm Ready to Begin";
 
 /* (No Comment) */
-"tutorial-title-back-up" = "복구 비밀문구를 사용해 계정을 백업하세요";
+"tutorial-title-back-up" = "Create a passphrase backup for your account";
 
 /* (No Comment) */
 "tutorial-title-ledger-connected" = "Ledger 연결 완료";
@@ -1880,16 +1952,16 @@
 "tutorial-title-recover" = "알고랜드 계정 복구";
 
 /* (No Comment) */
-"tutorial-title-write" = "복구 비밀문구를 받아적을 준비를 해주세요";
+"tutorial-title-write" = "Prepare to write\ndown your recovery passphrase";
 
 /* (No Comment) */
 "verified-asset-double-check" = "확인하신 다음";
 
 /* (No Comment) */
-"verified-asset-information-text" = "알고랜드(Algorand Inc.)가 자산 발행사와 관계를 맺고 있는 특정 자산의 경우, 해당 자산을 “인증 완료”로 표시합니다(파란색 체크 기호로 알아보실 수 있습니다).\n\n이는 의도하지 않은 자산을 실수로 전송하지 않도록 한 번 더 막아주는 역할을 합니다.\n\n즉, 항상 선택하고자 하는 자산의 ID를 정확하게 선택했는지 확인하신 다음 자산을 전송하셔야 합니다.\n\n인증 절차나 앱과 관련하여 일반적인 피드백이 있는 경우, %@ 페이지를 방문해 주시기 바랍니다.";
+"verified-asset-information-text" = "Assets that go through our verification process are known projects that have their website and public information verified against this specific ASA. Verification status is not an endorsement of the asset.\n\nPera Wallet does not have any relationship with verified ASA owners. This badge is for informational purposes only.\n\nThat being said, you should always double check that the asset’s ID is the one that you intended to choose before transacting with that asset.\n\nIf you have questions about the verification process or general feedback about the app, we encourage you to visit;\n\n%@";
 
 /* (No Comment) */
-"verified-asset-information-title" = "자산 인증은 무엇인가요?";
+"verified-asset-information-title" = "What does Asset Verification mean?";
 
 /* MARK: Verified Asset Information */
 "verified-assets-title" = "인증된 자산";
@@ -1943,13 +2015,13 @@
 "wallet-connect-session-connected-with-account" = "%@ 연결";
 
 /* (No Comment) */
-"wallet-connect-session-connection-approved-description" = "%@(으)로 돌아가서 연결을 완료하고 트랜잭션을 시작하세요!";
+"wallet-connect-session-connection-approved-description" = "Please return to %@ to continue and finish your operation. You can find all connected Sessions in the dedicated Settings page.";
 
 /* (No Comment) */
-"wallet-connect-session-connection-approved-title" = "%@의 WalletConnect\n세션이 승인되었습니다";
+"wallet-connect-session-connection-approved-title" = "You are Connected to %@";
 
 /* MARK: Wallet Connect Session */
-"wallet-connect-session-connection-description" = "%@에서 계정 연결을 요청합니다.";
+"wallet-connect-session-connection-description" = "%@ wants to\nconnect to your account";
 
 /* (No Comment) */
 "wallet-connect-session-disconnect-fail-message" = "%@ 세션에서 연결을 끊지 못했습니다.";
@@ -1982,13 +2054,13 @@
 "wallet-connect-transaction-all-count-singular" = "모든 트랜잭션(1건)";
 
 /* (No Comment) */
-"wallet-connect-transaction-count" = "트랜잭션 %d건";
+"wallet-connect-transaction-count" = "%d Transactions  ·  Group ID: %@";
 
 /* (No Comment) */
-"wallet-connect-transaction-count-singular" = "트랜잭션 1건";
+"wallet-connect-transaction-count-singular" = "1 Transaction  ·  Group ID: %@";
 
 /* MARK: Wallet Connect Transaction Dapp Message */
-"wallet-connect-transaction-dapp-show-more" = "추가 정보 보기";
+"wallet-connect-transaction-dapp-show-more" = "Read More";
 
 /* (No Comment) */
 "wallet-connect-transaction-detail-asset-url" = "자산 URL 보기";
@@ -2096,7 +2168,7 @@
 "wallet-connect-transaction-request-count-singular" = "트랜잭션 요청(1건)";
 
 /* (No Comment) */
-"wallet-connect-transaction-title-app-call" = "앱 호출";
+"wallet-connect-transaction-title-app-call" = "Application Call";
 
 /* (No Comment) */
 "wallet-connect-transaction-title-app-call-approval-hash" = "승인 해시";
@@ -2186,13 +2258,13 @@
 "wallet-connect-transaction-warning-future" = "이 트랜잭션은 추후 제출됩니다.";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-high-fee" = "이 트랜잭션 수수료는 일반적인 수수료(0.001알고)보다 높습니다.";
+"wallet-connect-transaction-warning-high-fee" = "This transaction fee is higher than the usual fee of 0.001 Algo.";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-initial-description" = "External applications also called as dApps can make transaction requests that the Pera Wallet does not control. Please ensure you review these transactions carefully before approving and signing them.\n\nAll transactions are irreversible. Never approve transaction from dApp that you don’t know.";
+"wallet-connect-transaction-warning-initial-description" = "Pera Wallet이 관리하지 않는 외부 애플리케이션(\"디앱\"이라고도 합니다)에서 트랜잭션 요청을 전송할 수 있습니다. 트랜잭션을 실행한 후에는 되돌릴 수 없으므로, 서명하기 전에 트랜잭션의 상세 정보를 신중히 검토하시기 바랍니다.\n\n모든 트랜잭션은 실행 취소가 불가능합니다. 모르는 디앱에서 요청한 트랜잭션은 승인하지 마세요.";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-initial-title" = "Transaction Request FAQ";
+"wallet-connect-transaction-warning-initial-title" = "트랜잭션 요청 FAQ";
 
 /* MARK: Wallet Connect Transaction Warning */
 "wallet-connect-transaction-warning-rekey" = "이번 트랜잭션으로 계정의 소유권을 이전합니다. 현재의 복원 비밀문구는 이러한 자산에 대한 접근 권한을 상실하게 됩니다.";
@@ -2204,16 +2276,16 @@
 "watch-account-button" = "읽기 전용 계정 만들기";
 
 /* (No Comment) */
-"watch-account-create" = "읽기 전용 계정 만들기";
+"watch-account-create" = "Create a watch\naccount";
 
 /* (No Comment) */
 "watch-account-error-address" = "정확한 주소를 입력하세요.";
 
 /* (No Comment) */
-"watch-account-explanation-title" = "주의: 알고랜드 계정의 읽기 전용 조회 화면을 생성하고 있습니다. 이 계정으로 자산을 보냈으나 계정에 상응하는 복구 비밀문구가 없는 경우, 보내신 자산은 손실됩니다.";
+"watch-account-explanation-title" = "You are creating a read-only view of an Algorand account.";
 
 /* (No Comment) */
-"watch-account-input-explanation" = "조회할 계정 주소";
+"watch-account-input-explanation" = "Account Address";
 
 /* (No Comment) */
 "watch-account-input-placeholder" = "주소를 붙여넣거나 QR 코드를 스캔하세요";

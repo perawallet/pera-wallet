@@ -24,12 +24,14 @@ extension CurrencySelectionViewController {
         
         let cellWidth: LayoutMetric
         let cellHeight: LayoutMetric
+        let headerSize: LayoutSize
         
         init(_ family: LayoutFamily) {
             backgroundColor = AppColors.Shared.System.background
             
             cellWidth = UIScreen.main.bounds.width - 48
             cellHeight = 64
+            headerSize = (UIScreen.main.bounds.width, 28.0)
         }
     }
 }

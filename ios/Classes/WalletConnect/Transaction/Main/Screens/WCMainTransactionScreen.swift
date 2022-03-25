@@ -391,7 +391,7 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
         let configurator = BottomWarningViewConfigurator(
             image: "icon-info-red".uiImage,
             title: "transaction-request-signing-alert-title".localized,
-            description: description,
+            description: .plain(description),
             primaryActionButtonTitle: "title-accept".localized,
             secondaryActionButtonTitle: "title-cancel".localized,
             primaryAction: { [weak self] in
@@ -415,7 +415,7 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
         let configurator = BottomWarningViewConfigurator(
             image: "icon-info-green-large".uiImage,
             title: "wallet-connect-transaction-warning-initial-title".localized,
-            description: "wallet-connect-transaction-warning-initial-description".localized,
+            description: .plain("wallet-connect-transaction-warning-initial-description".localized),
             secondaryActionButtonTitle: "title-close".localized
         )
 

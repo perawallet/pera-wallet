@@ -49,6 +49,15 @@ struct AccountNameViewLargeTheme: ImageWithTitleViewTheme {
 struct AccountNameViewSmallTheme: ImageWithTitleViewTheme {
     let horizontalPadding: LayoutMetric
     let imageSize: LayoutSize
+    
+    var titleLabel: TextStyle {
+        return [
+            .textOverflow(SingleLineText()),
+            .textAlignment(.left),
+            .textColor(AppColors.Components.Text.main),
+            .font(Fonts.DMSans.regular.make(15))
+        ]
+    }
 
     init(_ family: LayoutFamily) {
         self.imageSize = (24, 24)

@@ -55,10 +55,15 @@ struct AlgoTransactionHistoryLoadingViewCommonTheme: AlgoTransactionHistoryLoadi
     var rewardsSupplementaryViewImage: ImageStyle
     var rewardsSupplementaryViewMargin: LayoutMargins
 
+    var buyAlgoButtonTheme: ButtonTheme
+    var buyAlgoButtonMargin: LayoutMargins
+    var buyAlgoButtonHeight: LayoutMetric
+    
+    var buyAlgoVisible: Bool = false
+
     init(
         _ family: LayoutFamily
     ) {
-
         self.titleViewCorner = 4
         self.titleMargin = (24, .noMetric, .noMetric, .noMetric)
         self.titleViewSize = (100, 20)
@@ -122,5 +127,8 @@ struct AlgoTransactionHistoryLoadingViewCommonTheme: AlgoTransactionHistoryLoadi
             .image("icon-info-gray")
         ]
         self.rewardsSupplementaryViewMargin = (.noMetric, .noMetric, .noMetric, 20)
+        self.buyAlgoButtonTheme = ButtonPrimaryTheme(family)
+        self.buyAlgoButtonHeight = 52
+        self.buyAlgoButtonMargin = (28, .noMetric, .noMetric, .noMetric)
     }
 }

@@ -107,6 +107,14 @@ extension CurrencySelectionViewController: UICollectionViewDelegateFlowLayout {
     ) -> CGSize {
         return CGSize(width: theme.cellWidth, height: theme.cellHeight)
     }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForHeaderInSection section: Int
+    ) -> CGSize {
+        return CGSize(theme.headerSize)
+    }
 }
 
 extension CurrencySelectionViewController: SingleSelectionListViewDelegate {

@@ -42,6 +42,12 @@ extension Optional where Wrapped: Collection {
     }
 }
 
+extension Optional where Wrapped == ALGAPI {
+    var isTestNet: Bool {
+        return self?.isTestNet ?? false
+    }
+}
+
 extension Optional {
     func unwrap(or someValue: Wrapped) -> Wrapped {
         return self ?? someValue

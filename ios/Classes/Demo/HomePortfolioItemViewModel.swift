@@ -23,7 +23,6 @@ struct HomePortfolioItemViewModel:
     Hashable {
     private(set) var title: EditText?
     private(set) var value: EditText?
-    private(set) var icon: Image?
     
     init(
         _ model: PortfolioItem
@@ -38,7 +37,6 @@ extension HomePortfolioItemViewModel {
     ) {
         bindTitle(item)
         bindValue(item)
-        bindIcon(item)
     }
     
     mutating func bindTitle(
@@ -77,12 +75,6 @@ extension HomePortfolioItemViewModel {
                 .textColor(AppColors.Components.Text.main)
             ])
         )
-    }
-    
-    mutating func bindIcon(
-        _ item: PortfolioItem
-    ) {
-        icon = item.icon
     }
 }
 

@@ -78,7 +78,7 @@ class AppDelegate:
     private lazy var sharedDataController = SharedAPIDataController(session: session, api: api)
     private lazy var walletConnector = WalletConnector()
     private lazy var loadingController: LoadingController = BlockingLoadingController(presentingView: window!)
-    private lazy var bannerController = BannerController(window: window!)
+    private lazy var bannerController = BannerController(presentingView: window!)
     
     private lazy var router =
         Router(rootViewController: rootViewController, appConfiguration: appConfiguration)
@@ -186,10 +186,10 @@ class AppDelegate:
         /// Schemes should be controlled from a single point.
         switch scheme {
         case "algorand":
-            appLaunchController.receive(deeplinkWithSource: .url(url))
+            receive(deeplinkWithSource: .url(url))
             return true
         case "algorand-wc":
-            appLaunchController.receive(deeplinkWithSource: .walletConnectSessionRequest(url))
+            receive(deeplinkWithSource: .walletConnectSessionRequest(url))
             return true
         default:
             return false
@@ -221,8 +221,10 @@ extension AppDelegate {
         appLaunchController.launchOnboarding()
     }
     
-    func launchMain() {
-        appLaunchController.launchMain()
+    func launchMain(
+        completion: (() -> Void)? = nil
+    ) {
+        appLaunchController.launchMain(completion: completion)
     }
     
     func launchMainAfterAuthorization(
@@ -262,8 +264,8 @@ extension AppDelegate {
             router.launchAuthorization()
         case .onboarding:
             router.launchOnboarding()
-        case .main:
-            router.launchMain()
+        case .main(let completion):
+            router.launchMain(completion: completion)
         case .mainAfterAuthorization(let presentedViewController, let completion):
             router.launcMainAfterAuthorization(
                 presented: presentedViewController,
@@ -290,6 +292,14 @@ extension AppDelegate {
                 ]
             )
         }
+    }
+}
+
+extension AppDelegate {
+    func receive(
+        deeplinkWithSource src: DeeplinkSource
+    ) {
+        appLaunchController.receive(deeplinkWithSource: src)
     }
 }
 

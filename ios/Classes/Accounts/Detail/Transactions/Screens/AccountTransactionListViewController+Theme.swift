@@ -20,10 +20,10 @@ import UIKit
 
 extension AccountTransactionListViewController {
     struct Theme: LayoutSheet {
-        let contentEdgePaddings: LayoutPaddings
+        let contentInset: LayoutPaddings
 
         init(_ family: LayoutFamily) {
-            self.contentEdgePaddings = (24, 0, 0, 0)
+            self.contentInset = (24, 0, 88, 0)
         }
     }
 }

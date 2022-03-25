@@ -19,16 +19,49 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class Currency: ALGEntityModel {
-    let id: String
+class AlgoCurrency: Currency {
+    let currency: Currency
+    
+    init(currency: Currency) {
+        self.currency = currency
+        super.init(currency.encode())
+    }
+    
+    @available(*, unavailable)
+    required init(_ apiModel: APIModel = APIModel()) {
+        fatalError()
+    }
+    
+    override var id: String {
+        return "ALGO"
+    }
+    
+    override var symbol: String? {
+        "\u{00A6}"
+    }
+    
+    override var priceValue: Decimal? {
+        Decimal(1)
+    }
+    
+    override var usdValue: Decimal? {
+        guard let priceValue = super.priceValue else {
+            return nil
+        }
+        return Decimal(1) / priceValue
+    }
+}
+
+class Currency: ALGEntityModel {
+    private(set) var id: String
     let name: String?
-    let symbol: String?
-    let usdValue: Decimal? // usd to currecy
+    private(set) var symbol: String?
+    private(set) var usdValue: Decimal? // usd to currecy
     let price: String?
-    let priceValue: Decimal? // algo to currency
+    private(set) var priceValue: Decimal? // algo to currency
     let lastUpdateDate: String?
 
-    init(
+    required init(
         _ apiModel: APIModel = APIModel()
     ) {
         self.id = apiModel.currencyId ?? "USD"

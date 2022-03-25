@@ -23,14 +23,22 @@ extension UIViewController {
         AppDelegate.shared?.launchOnboarding()
     }
     
-    func launchMain() {
-        AppDelegate.shared?.launchMain()
+    func launchMain(
+        completion: (() -> Void)? = nil
+    ) {
+        AppDelegate.shared?.launchMain(completion: completion)
     }
     
     func launchMainAfterAuthorization(
         presented viewController: UIViewController
     ) {
         AppDelegate.shared?.launchMainAfterAuthorization(presented: viewController)
+    }
+    
+    func launchBuyAlgo(
+        draft: BuyAlgoDraft = BuyAlgoDraft()
+    ) {
+        AppDelegate.shared?.receive(deeplinkWithSource: .buyAlgo(draft))
     }
 }
 

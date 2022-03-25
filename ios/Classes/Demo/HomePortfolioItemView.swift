@@ -24,14 +24,12 @@ final class HomePortfolioItemView:
     ViewModelBindable {
     private lazy var titleView = Label()
     private lazy var valueView = Label()
-    private lazy var iconView = ImageView()
     
     func customize(
         _ theme: HomePortfolioItemViewTheme
     ) {
         addTitle(theme)
         addValue(theme)
-        addIcon(theme)
     }
     
     func customizeAppearance(
@@ -47,7 +45,6 @@ final class HomePortfolioItemView:
     ) {
         titleView.editText = viewModel?.title
         valueView.editText = viewModel?.value
-        iconView.image = viewModel?.icon?.uiImage
     }
     
     class func calculatePreferredSize(
@@ -105,24 +102,9 @@ extension HomePortfolioItemView {
         valueView.snp.makeConstraints {
             $0.top == titleView.snp.bottom + theme.spacingBetweenTitleAndValue
             $0.bottom == 0
-            $0.trailing <= 0
+            $0.leading == 0
             
             $0.greaterThanHeight(theme.valueMinHeight)
-        }
-    }
-    
-    private func addIcon(
-        _ theme: HomePortfolioItemViewTheme
-    ) {
-        iconView.customizeAppearance(theme.icon)
-        
-        addSubview(iconView)
-        iconView.contentEdgeInsets = theme.iconContentEdgeInsets
-        iconView.fitToIntrinsicSize()
-        iconView.snp.makeConstraints {
-            $0.centerY == valueView
-            $0.leading == 0
-            $0.trailing == valueView.snp.leading
         }
     }
 }

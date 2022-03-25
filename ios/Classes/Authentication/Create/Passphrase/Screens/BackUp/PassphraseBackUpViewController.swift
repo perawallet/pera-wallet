@@ -168,7 +168,7 @@ extension PassphraseBackUpViewController {
                     BottomWarningViewConfigurator(
                         image: "icon-info-red".uiImage,
                         title: "screenshot-title".localized,
-                        description: "screenshot-description".localized,
+                        description: .plain("screenshot-description".localized),
                         secondaryActionButtonTitle: "title-close".localized
                     )
             ),

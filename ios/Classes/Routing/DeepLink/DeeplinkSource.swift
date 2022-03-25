@@ -28,6 +28,7 @@ enum DeeplinkSource {
     case url(URL)
     case walletConnectSessionRequest(URL)
     case walletConnectRequest(WalletConnectRequestDraft)
+    case buyAlgo(BuyAlgoDraft)
 }
 
 extension DeeplinkSource {

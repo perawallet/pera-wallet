@@ -28,29 +28,31 @@ struct TransactionHistoryContextViewTheme: StyleSheet, LayoutSheet {
     let horizontalInset: LayoutMetric
     let verticalInset: LayoutMetric
     let subtitleTopInset: LayoutMetric
+    let titleMaximumWidthRatio: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
         self.titleLabel = [
             .textAlignment(.left),
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.regular.make(15)),
         ]
         self.subtitleLabel = [
             .textAlignment(.left),
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .textColor(AppColors.Components.Text.grayLighter),
             .font(Fonts.DMSans.regular.make(13)),
         ]
         self.secondaryAmountLabel = [
             .textAlignment(.left),
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .textColor(AppColors.Components.Text.grayLighter),
             .font(Fonts.DMSans.regular.make(13)),
         ]
         self.horizontalInset = 24
         self.verticalInset = 14
         self.subtitleTopInset = 7
+        self.titleMaximumWidthRatio = 0.4
     }
 }

@@ -35,6 +35,8 @@ final class TabBarController: TabBarContainer {
 
     private lazy var toggleTransactionOptionsActionView = Button()
     private lazy var transactionOptionsView = createTransactionOptions()
+
+    private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
     
     private var isTransactionOptionsVisible: Bool = false
     private var currentTransactionOptionsAnimator: UIViewPropertyAnimator?
@@ -131,6 +133,11 @@ extension TabBarController {
             [weak self] in
             guard let self = self else { return }
             self.navigateToAccountSelection(.receive)
+        }
+        aView.observe(event: .buyAlgo) {
+            [weak self] in
+            guard let self = self else { return }
+            self.navigateToBuyAlgo()
         }
         aView.observe(event: .close) {
             [weak self] in
@@ -247,7 +254,15 @@ extension TabBarController {
         switch action {
         case .send: log(SendTabEvent())
         case .receive: log(ReceiveTabEvent())
+        case .buyAlgo:
+            break
         }
+    }
+
+    private func navigateToBuyAlgo() {
+        toggleTransactionOptions()
+
+        launchBuyAlgo()
     }
 }
 

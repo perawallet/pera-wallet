@@ -27,6 +27,7 @@ struct AssetPreviewViewCommonTheme: AssetPreviewViewTheme {
     let horizontalPadding: LayoutMetric
     let verticalPadding: LayoutMetric
     let secondaryImageLeadingPadding: LayoutMetric
+    let assetValueMinRatio: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.primaryAssetTitle = [
@@ -58,5 +59,6 @@ struct AssetPreviewViewCommonTheme: AssetPreviewViewTheme {
         self.horizontalPadding = 16
         self.secondaryImageLeadingPadding = 8
         self.verticalPadding = 16
+        self.assetValueMinRatio = 0.35
     }
 }

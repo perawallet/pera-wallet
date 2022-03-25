@@ -60,4 +60,10 @@ protocol AlgoTransactionHistoryLoadingViewTheme:
     var rewardsSupplementaryViewImage: ImageStyle { get }
     var rewardsSupplementaryViewMargin: LayoutMargins { get }
 
+    var buyAlgoButtonTheme: ButtonTheme { get }
+    var buyAlgoButtonMargin: LayoutMargins { get }
+    var buyAlgoButtonHeight: LayoutMetric { get }
+    
+    var buyAlgoVisible: Bool { get }
+
 }

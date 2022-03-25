@@ -26,8 +26,6 @@ final class AlgoTransactionHistoryLoadingCell: BaseCollectionViewCell<AlgoTransa
         super.init(
             frame: frame
         )
-
-        contextView.customize(AlgoTransactionHistoryLoadingViewCommonTheme())
     }
 
     static func height(for theme: AlgoTransactionHistoryLoadingViewTheme) -> LayoutMetric {

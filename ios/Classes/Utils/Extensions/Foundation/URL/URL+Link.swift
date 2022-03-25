@@ -67,4 +67,27 @@ extension URL {
         
         return nil
     }
+
+    func extractBuyAlgoParamsFromMoonPay() -> BuyAlgoParams? {
+        guard let address = host else {
+            return nil
+        }
+
+        guard
+            let transactionStatusRaw = queryParameters?[BuyAlgoParams.Keys.transactionStatus.rawValue],
+            let transactionStatus = BuyAlgoParams.TransactionStatus(rawValue: transactionStatusRaw),
+            let transactionId = queryParameters?[BuyAlgoParams.Keys.transactionId.rawValue]
+        else {
+            return nil
+        }
+
+        let amount = queryParameters?[BuyAlgoParams.Keys.amount.rawValue]
+
+        return BuyAlgoParams(
+            address: address,
+            amount: amount,
+            transactionStatus: transactionStatus,
+            transactionId: transactionId
+        )
+    }
 }

@@ -30,7 +30,7 @@ protocol AppLaunchController: AnyObject {
     func enterBackground()
 
     func launchOnboarding()
-    func launchMain()
+    func launchMain(completion: (() -> Void)?)
     func launchMainAfterAuthorization(
         presented viewController: UIViewController
     )

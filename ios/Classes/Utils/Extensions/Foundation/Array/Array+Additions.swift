@@ -35,19 +35,25 @@ extension Array {
         return nil
     }
 
-    func sorted<T: Comparable>(by keyPath: KeyPath<Element, T>) -> [Element] {
+    func sorted<T: Comparable>(
+        by keyPath: KeyPath<Element, T>,
+        using comparator: (T, T) -> Bool = (>)
+    ) -> [Element] {
         return sorted { first, second in
-            first[keyPath: keyPath] > second[keyPath: keyPath]
+            comparator(first[keyPath: keyPath], second[keyPath: keyPath])
         }
     }
 
-    func sorted<T: Comparable>(by keyPath: KeyPath<Element, T?>) -> [Element] {
+    func sorted<T: Comparable>(
+        by keyPath: KeyPath<Element, T?>,
+        using comparator: (T, T) -> Bool = (>)
+    ) -> [Element] {
         return sorted { first, second in
             guard let firstValue = first[keyPath: keyPath], let secondValue = second[keyPath: keyPath] else {
                 return false
             }
 
-            return firstValue > secondValue
+            return comparator(firstValue, secondValue)
         }
     }
 }

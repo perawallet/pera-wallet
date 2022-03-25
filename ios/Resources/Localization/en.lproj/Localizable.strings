@@ -45,6 +45,7 @@
 "title-off" = "Off";
 "title-on" = "On";
 "title-retry" = "Retry";
+"title-not-available" = "Not available";
 
 "title-show-transaction-detail" = "Show Transaction Details";
 "title-show-all-detail" = "Show All Details";
@@ -137,6 +138,9 @@
 "recover-from-seed-passphrase-title" = "Passphrase";
 "pass-pharase-enter-placeholder" = "Enter Passphrase or Scan QR";
 "recover-from-seed-verify-pop-up-explanation" = "Welcome to Pera Wallet!\nYour account is ready to use.";
+"recover-from-seed-verify-pop-up-explanation-already-added" = "Congratulations, your account is ready to go.";
+"recover-from-seed-verify-pop-up-title-watch-account" = "Watch account added successfully";
+"recover-from-seed-verify-pop-up-description-watch-account" = "The Watch Account has been added successfully.";
 "recover-from-seed-verify-pop-up-title" = "Account is verified!";
 "recover-from-seed-verify-exist-error" = "This account already exists";
 "recover-title" = "Recover";
@@ -179,7 +183,7 @@
 "accounts-add-account" = "+ ADD ACCOUNT";
 "accounts-title" = "Accounts";
 "accounts-qr-tooltip" = "Your account's address QR can be found here";
-"accounts-transaction-your-balance" = "Your balance";
+"accounts-transaction-your-balance" = "Balance";
 "accounts-transaction-value" = "Value";
 
 // MARK: Asset
@@ -218,6 +222,7 @@
 "asset-support-your-add-message" = "Please add this asset and try again.";
 "asset-all-title" = "All";
 "asset-detail-id-title" = "ID %@";
+"asset-no-value" = "N/A";
 
 // MARK: Algos Send
 "send-algos-title" = "Send Algo";
@@ -266,7 +271,8 @@
 "options-passphrase" = "Passphrase";
 "options-edit-account-name" = "Rename Account";
 "options-remove-account" = "Remove Account";
-"options-remove-alert-explanation" = "You are about to remove your main account, are you sure you want to proceed with this choice?";
+"options-remove-main-account-explanation" = "You are about to remove your main account, are you sure you want to proceed with this choice?";
+"options-remove-watch-account-explanation" = "You are about to remove a watch account. Are you sure you want to proceed with this choice?";
 "options-view-passphrase-password-alert-message" = "You should enter your correct password to display your passphrase.";
 "options-auth-account" = "Auth Account Address";
 "options-mute-notification" = "Mute Notifications";
@@ -320,6 +326,7 @@
 "settings-logout-success-message" = "Your data has been deleted successfully";
 "settings-developer" = "Developer Settings";
 "settings-currency" = "Currency";
+"settings-currency-header-title" = "Currency Preferences";
 "settings-developer-dispenser" = "Algorand Dispenser";
 "settings-rate-title" = "Rate Pera Wallet";
 "settings-rate-modal-title" = "Rate your experience";
@@ -908,3 +915,26 @@
 "pera-announcement-description" = "We are very excited to announce that Algorand Wallet is now called Pera Wallet. This is much more than a new name and logo. We are relaunching the most popular wallet in the Algorand ecosystem with a renewed focus on our roadmap, partner integrations, and community.\n\nDon't worry, Pera Wallet is built and maintained by the same team and all the features you know and love are still here as usual – With many more to come in the upcoming months.\n\nTo read more about the relaunch and our roadmap, head over to the Pera Wallet blog";
 "pera-announcement-description-blog" = "Pera Wallet blog";
 "pera-announcement-action-title" = "Start Using Pera Wallet";
+
+// MARK: Number Abbreviation
+"number-abbreviation-thousand" = "K";
+"number-abbreviation-million" = "M";
+"number-abbreviation-billion" = "B";
+"number-abbreviation-trillion" = "T";
+
+//MARK: MoonPay
+"moonpay-buy-button-title" = "Buy ALGO";
+"moonpay-introduction-title"="Buy ALGO with Moonpay";
+"moonpay-introduction-description"="MoonPay offers the fastest way to buy ALGO with your local currency. Buy crypto with credit card or bank transfers. It's fast, simple, and secure.";
+"moonpay-introduction-security"="Secured by";
+"moonpay-transaction-completed-title" = "Your Algos are on their way!";
+"moonpay-transaction-completed-description" = "Your purchase is completed and is being processed by the network. You will receive a notification when they are in your account.";
+"moonpay-transaction-pending-title" = "Your Algos are on their way!";
+"moonpay-transaction-pending-description" = "Your purchase is being processed. It can take a few minutes to be completed. You will receive a notification when it’s done.";
+"moonpay-transaction-failed-title" = "Uh oh, something went wrong.";
+"moonpay-transaction-failed-description" = "Looks like your purchase failed. You will need to try again.";
+"moonpay-transaction-waitingAuthorization-title" = "Almost there!";
+"moonpay-transaction-waitingAuthorization-description" = "Your purchase is waiting for authorization. Once payment is processed, you will receive a notification.";
+"moonpay-transaction-waitingPayment-title" = "Almost there!";
+"moonpay-transaction-waitingPayment-description" = "Your purchase request is pending payment. Once payment is processed, you will receive a notification.";
+"moonpay-transaction-testnet-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use MoonPay.";

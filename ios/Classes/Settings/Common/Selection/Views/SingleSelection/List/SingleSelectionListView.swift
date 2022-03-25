@@ -34,6 +34,7 @@ final class SingleSelectionListView: View {
         collectionView.backgroundColor = theme.backgroundColor.uiColor
         collectionView.contentInset = UIEdgeInsets(theme.collectionViewEdgeInsets)
         collectionView.register(SingleSelectionCell.self)
+        collectionView.register(header: SingleGrayTitleHeaderSuplementaryView.self)
         return collectionView
     }()
     

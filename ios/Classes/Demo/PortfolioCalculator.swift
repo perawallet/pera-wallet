@@ -76,6 +76,10 @@ struct PortfolioValue {
         return amount.toCurrencyStringForLabel(with: currency.symbol) ?? "N/A"
     }
     
+    var abbreviatedFormattedAmount: String {
+        return amount.abbreviatedCurrencyStringForLabel(with: currency.symbol) ?? "N/A"
+    }
+    
     let amount: Decimal
     let currency: Currency
 }
@@ -104,6 +108,13 @@ extension Result where Success == PortfolioValue {
     var uiDescription: String {
         switch self {
         case .success(let value): return value.formattedAmount
+        case .failure: return "N/A"
+        }
+    }
+    
+    var abbreviatedUiDescription: String {
+        switch self {
+        case .success(let value): return value.abbreviatedFormattedAmount
         case .failure: return "N/A"
         }
     }

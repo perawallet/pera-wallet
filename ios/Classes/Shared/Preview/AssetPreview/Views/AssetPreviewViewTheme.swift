@@ -26,4 +26,5 @@ protocol AssetPreviewViewTheme: StyleSheet, LayoutSheet {
     var horizontalPadding: LayoutMetric { get }
     var verticalPadding: LayoutMetric { get }
     var secondaryImageLeadingPadding: LayoutMetric { get }
+    var assetValueMinRatio: LayoutMetric { get }
 }

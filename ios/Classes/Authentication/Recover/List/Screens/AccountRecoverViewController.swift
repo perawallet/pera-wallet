@@ -432,7 +432,7 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
         let configurator = BottomWarningViewConfigurator(
             image: "icon-info-red".uiImage,
             title: errorTitle.localized,
-            description: errorDescription.localized,
+            description: .plain(errorDescription.localized),
             secondaryActionButtonTitle: "title-close".localized
         )
 

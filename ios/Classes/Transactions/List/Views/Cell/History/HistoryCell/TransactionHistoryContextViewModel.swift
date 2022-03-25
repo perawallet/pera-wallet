@@ -378,7 +378,9 @@ extension TransactionHistoryContextViewModel {
     ) -> String? {
         guard let amount = amount,
               let currency = transactionDependency.currency,
-              let currencyPriceValue = currency.priceValue else {
+              let currencyPriceValue = currency.priceValue,
+              !(currency is AlgoCurrency)
+        else {
             return nil
         }
 

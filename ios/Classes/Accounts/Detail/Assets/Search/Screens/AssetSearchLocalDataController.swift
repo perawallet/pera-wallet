@@ -61,8 +61,8 @@ extension AssetSearchLocalDataController {
     func search(for query: String) {
         searchResults = accountHandle.value.compoundAssets.filter {
             String($0.id).contains(query) ||
-            $0.detail.name.unwrap(or: "").contains(query) ||
-            $0.detail.unitName.unwrap(or: "").contains(query)
+            $0.detail.name.unwrap(or: "").containsCaseInsensitive(query) ||
+            $0.detail.unitName.unwrap(or: "").containsCaseInsensitive(query)
         }
 
         deliverContentSnapshot()

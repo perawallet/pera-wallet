@@ -23,9 +23,10 @@ struct BottomWarningViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
     let title: TextStyle
     let description: TextStyle
-    let mainButtonTheme: ButtonTheme
-    let secondaryButtonTheme: ButtonTheme
-
+    let actionContentEdgeInsets: LayoutPaddings
+    let actionCorner: Corner
+    let primaryAction: ButtonStyle
+    let secondaryAction: ButtonStyle
     let verticalInset: LayoutMetric
     let buttonInset: LayoutMetric
     let horizontalInset: LayoutMetric
@@ -44,10 +45,22 @@ struct BottomWarningViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.gray),
             .textOverflow(FittingText()),
         ]
-
-        self.mainButtonTheme = ButtonPrimaryTheme()
-        self.secondaryButtonTheme = ButtonSecondaryTheme()
-
+        self.actionContentEdgeInsets = (14, 24, 14, 24)
+        self.actionCorner = Corner(radius: 4)
+        self.primaryAction = [
+            .titleColor(
+                [.normal(AppColors.Components.Button.Primary.text)]
+            ),
+            .font(Fonts.DMSans.medium.make(15)),
+            .backgroundColor(AppColors.Components.Button.Primary.background)
+        ]
+        self.secondaryAction = [
+            .titleColor(
+                [.normal(AppColors.Components.Button.Secondary.text)]
+            ),
+            .font(Fonts.DMSans.medium.make(15)),
+            .backgroundColor(AppColors.Components.Button.Secondary.background)
+        ]
         self.buttonInset = 16
         self.verticalInset = 32
         self.horizontalInset = 24

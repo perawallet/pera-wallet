@@ -20,7 +20,9 @@ import MacaroonUIKit
 import UIKit
 
 struct BannerInfoViewModel: BannerViewModel, BindableViewModel {
+    private(set) var icon: Image?
     private(set) var title: EditText?
+    private(set) var message: EditText?
 
     init<T>(_ model: T) {
         bind(model)
@@ -35,6 +37,6 @@ struct BannerInfoViewModel: BannerViewModel, BindableViewModel {
 
 extension BannerInfoViewModel {
     private mutating func bindTitle(_ someTitle: String) {
-        title = someTitle.text
+        title = getTitle(someTitle)
     }
 }

@@ -115,7 +115,7 @@ extension AccountPreviewViewModel {
             return
         }
         
-        bindPrimaryAccessory(accountPortfolio.valueResult.uiDescription)
+        bindPrimaryAccessory(accountPortfolio.valueResult.abbreviatedUiDescription)
     }
     
     mutating func bindSecondaryAccessory(
@@ -191,7 +191,7 @@ extension AccountPreviewViewModel {
     mutating func bindPrimaryAccessory(
         _ customAccountPreview: CustomAccountPreview
     ) {
-        primaryAccessory = nil
+        bindPrimaryAccessory(customAccountPreview.accessory)
     }
     
     mutating func bindSecondaryAccessory(
@@ -327,6 +327,7 @@ struct CustomAccountPreview {
     var icon: UIImage?
     var title: String?
     var subtitle: String?
+    var accessory: String?
     
     init(
         icon: UIImage?,
@@ -346,6 +347,7 @@ struct CustomAccountPreview {
         icon = viewModel.image
         title = viewModel.name
         subtitle = nil
+        accessory = nil
     }
     
     init(
@@ -354,5 +356,15 @@ struct CustomAccountPreview {
         icon = viewModel.image
         title = viewModel.address
         subtitle = nil
+        accessory = nil
+    }
+
+    init(
+        _ viewModel: AlgoAccountViewModel
+    ) {
+        icon = viewModel.image
+        title = viewModel.address
+        subtitle = nil
+        accessory = viewModel.amount
     }
 }

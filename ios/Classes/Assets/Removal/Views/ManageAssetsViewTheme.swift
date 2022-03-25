@@ -21,34 +21,80 @@ import UIKit
 
 struct ManageAssetsViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
+    
+    let noContentViewTheme: NoContentViewTheme
+    
     let title: TextStyle
-    let subtitle: TextStyle
-    let collectionViewTopPadding: LayoutMetric
-    let horizontalPadding: LayoutMetric
+    let titleText: EditText
     let titleTopPadding: LayoutMetric
+    
+    let subtitle: TextStyle
+    let subtitleText: EditText
     let subtitleTopPadding: LayoutMetric
+    
+    let searchInputViewTheme: SearchInputViewTheme
+    let searchInputViewTopPadding: LayoutMetric
+    
+    let collectionViewTopPadding: LayoutMetric
     let cellSpacing: LayoutMetric
+    
+    let horizontalPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
+        
+        self.noContentViewTheme = NoContentViewCommonTheme()
+        
         self.title = [
-            .textOverflow(FittingText()),
-            .textAlignment(.left),
-            .font(Fonts.DMSans.medium.make(32)),
-            .textColor(AppColors.Components.Text.main),
-            .text("asset-remove-title".localized)
+            .textOverflow(SingleLineFittingText()),
         ]
+        let titleFont = Fonts.DMSans.medium.make(32)
+        let titleLineHeightMultiplier = 0.96
+        self.titleText = .attributedString(
+            "asset-remove-title"
+                .localized
+                .attributed([
+                    .font(titleFont),
+                    .letterSpacing(-0.32),
+                    .lineHeightMultiplier(titleLineHeightMultiplier, titleFont),
+                    .paragraph([
+                        .lineHeightMultiple(titleLineHeightMultiplier),
+                        .textAlignment(.left)
+                    ]),
+                    .textColor(AppColors.Components.Text.main)
+                ])
+        )
+        self.titleTopPadding = 32
+        
         self.subtitle = [
             .textOverflow(FittingText()),
-            .textAlignment(.left),
-            .font(Fonts.DMSans.regular.make(15)),
-            .textColor(AppColors.Components.Text.gray),
-            .text("asset-remove-subtitle".localized)
         ]
-        self.collectionViewTopPadding = 40
-        self.titleTopPadding = 2
+        let subtitleFont = Fonts.DMSans.regular.make(15)
+        let subtitleLineHeightMultiplier = 1.23
+        self.subtitleText = .attributedString(
+            "asset-remove-subtitle"
+                .localized
+                .attributed([
+                    .font(subtitleFont),
+                    .lineHeightMultiplier(subtitleLineHeightMultiplier, subtitleFont),
+                    .paragraph([
+                        .lineHeightMultiple(subtitleLineHeightMultiplier),
+                        .textAlignment(.left)
+                    ]),
+                    .textColor(AppColors.Components.Text.gray)
+                ])
+        )
         self.subtitleTopPadding = 16
-        self.horizontalPadding = 24
+        
+        self.searchInputViewTheme = SearchInputViewCommonTheme(
+            placeholder: "account-detail-assets-search".localized,
+            family: family
+        )
+        self.searchInputViewTopPadding = 40
+        
+        self.collectionViewTopPadding = 20
         self.cellSpacing = 0
+        
+        self.horizontalPadding = 24
     }
 }

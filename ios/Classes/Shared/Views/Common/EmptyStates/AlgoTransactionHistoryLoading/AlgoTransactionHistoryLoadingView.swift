@@ -32,6 +32,8 @@ final class AlgoTransactionHistoryLoadingView:
     private lazy var rewardsSubtitle = ShimmerView()
     private lazy var rewardsSupplementaryImage = UIImageView()
 
+    private lazy var buyAlgoButton = Button()
+
     override init(
         frame: CGRect
     ) {
@@ -46,6 +48,10 @@ final class AlgoTransactionHistoryLoadingView:
         addBalanceView(theme)
         addCurrencyView(theme)
         addRewardsView(theme)
+        
+        if theme.buyAlgoVisible {
+            addBuyAlgoButton(theme)
+        }
     }
 
     func customizeAppearance(
@@ -117,7 +123,6 @@ extension AlgoTransactionHistoryLoadingView {
             $0.top.equalTo(currencyView.snp.bottom).offset(theme.rewardsContainerMargin.top)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(theme.rewardsContainerSize.h)
-            $0.bottom.equalToSuperview().inset(theme.rewardsContainerMargin.bottom)
         }
 
         addRewardsItemsView(theme)
@@ -182,11 +187,23 @@ extension AlgoTransactionHistoryLoadingView {
             $0.centerY.equalToSuperview()
         }
     }
+
+    private func addBuyAlgoButton(_ theme: AlgoTransactionHistoryLoadingViewTheme) {
+        buyAlgoButton.customize(theme.buyAlgoButtonTheme)
+
+        addSubview(buyAlgoButton)
+        buyAlgoButton.snp.makeConstraints {
+            $0.top.equalTo(rewardsContainer.snp.bottom).offset(theme.buyAlgoButtonMargin.top)
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
+            $0.height.equalTo(theme.buyAlgoButtonHeight)
+        }
+    }
 }
 
 extension AlgoTransactionHistoryLoadingView {
     static func height(for theme: AlgoTransactionHistoryLoadingViewTheme) -> LayoutMetric {
-        theme.titleViewSize.h +
+        var calculatedHeight = theme.titleViewSize.h +
         theme.titleMargin.top +
         theme.balanceViewSize.h +
         theme.balanceViewMargin.top +
@@ -195,5 +212,12 @@ extension AlgoTransactionHistoryLoadingView {
         theme.rewardsContainerSize.h +
         theme.rewardsContainerMargin.top +
         theme.rewardsContainerMargin.bottom
+        
+        if theme.buyAlgoVisible {
+            calculatedHeight += theme.buyAlgoButtonHeight
+            calculatedHeight += theme.buyAlgoButtonMargin.top
+        }
+        
+        return calculatedHeight
     }
 }

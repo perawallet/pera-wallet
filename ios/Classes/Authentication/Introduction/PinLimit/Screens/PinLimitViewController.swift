@@ -130,7 +130,7 @@ extension PinLimitViewController {
         let bottomWarningViewConfigurator = BottomWarningViewConfigurator(
             image: "icon-settings-logout".uiImage,
             title: "settings-logout-title".localized,
-            description: "settings-logout-detail".localized,
+            description: .plain("settings-logout-detail".localized),
             primaryActionButtonTitle: "node-settings-action-delete-title".localized,
             secondaryActionButtonTitle: "title-cancel".localized,
             primaryAction: { [weak self] in

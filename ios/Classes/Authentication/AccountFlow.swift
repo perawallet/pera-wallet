@@ -17,13 +17,13 @@
 
 import UIKit
 
-enum AccountSetupFlow {
+enum AccountSetupFlow: Equatable {
     case initializeAccount(mode: AccountSetupMode)
     case addNewAccount(mode: AccountSetupMode)
     case none
 }
 
-enum AccountSetupMode {
+enum AccountSetupMode: Equatable {
     case add(type: AccountAdditionType)
     case recover(type: RecoverType)
     case rekey(account: Account)

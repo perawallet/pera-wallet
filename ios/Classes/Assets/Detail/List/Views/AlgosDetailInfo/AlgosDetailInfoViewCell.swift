@@ -40,8 +40,13 @@ extension AlgosDetailInfoViewCell: AlgosDetailInfoViewDelegate {
     func algosDetailInfoViewDidTapInfoButton(_ algosDetailInfoView: AlgosDetailInfoView) {
         delegate?.algosDetailInfoViewCellDidTapInfoButton(self)
     }
+
+    func algosDetailInfoViewDidTapBuyButton(_ algosDetailInfoView: AlgosDetailInfoView) {
+        delegate?.algosDetailInfoViewCellDidTapBuyButton(self)
+    }
 }
 
 protocol AlgosDetailInfoViewCellDelegate: AnyObject {
     func algosDetailInfoViewCellDidTapInfoButton(_ algosDetailInfoViewCell: AlgosDetailInfoViewCell)
+    func algosDetailInfoViewCellDidTapBuyButton(_ algosDetailInfoViewCell: AlgosDetailInfoViewCell)
 }

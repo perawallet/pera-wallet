@@ -19,22 +19,28 @@ import UIKit
 import MacaroonUIKit
 
 final class BottomWarningView: View {
-    weak var delegate: BottomWarningViewDelegate?
+    lazy var handlers = Handlers()
 
-    private lazy var titleLabel = UILabel()
-    private lazy var imageView = UIImageView()
-    private lazy var descriptionLabel = UILabel()
-    private lazy var verticalStackView = UIStackView()
-    private lazy var primaryActionButton = Button()
-    private lazy var secondaryActionButton = Button()
+    private lazy var titleLabel = Label()
+    private lazy var imageView = ImageView()
+    private lazy var descriptionLabel = ALGActiveLabel()
+    private lazy var verticalStackView = MacaroonUIKit.VStackView()
+    private lazy var primaryActionButton = MacaroonUIKit.Button()
+    private lazy var secondaryActionButton = MacaroonUIKit.Button()
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override init(
+        frame: CGRect
+    ) {
+        super.init(
+            frame: frame
+        )
 
         setListeners()
     }
 
-    func customize(_ theme: BottomWarningViewTheme) {
+    func customize(
+        _ theme: BottomWarningViewTheme
+    ) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
         addImageView(theme)
@@ -43,18 +49,24 @@ final class BottomWarningView: View {
         addVerticalStackView(theme)
     }
 
-    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+    func prepareLayout(
+        _ layoutSheet: NoLayoutSheet
+    ) {}
 
-    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+    func customizeAppearance(
+        _ styleSheet: NoStyleSheet
+    ) {}
 
     func setListeners() {
-        primaryActionButton.addTarget(self, action: #selector(notifyDelegateToHandlePrimaryActionButton), for: .touchUpInside)
-        secondaryActionButton.addTarget(self, action: #selector(notifyDelegateToHandleSecondaryActionButton), for: .touchUpInside)
+        primaryActionButton.addTouch(target: self, action: #selector(didTapPrimaryAction))
+        secondaryActionButton.addTouch(target: self, action: #selector(didTapSecondaryAction))
     }
 }
 
 extension BottomWarningView {
-    private func addImageView(_ theme: BottomWarningViewTheme) {
+    private func addImageView(
+        _ theme: BottomWarningViewTheme
+    ) {
         addSubview(imageView)
         imageView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
@@ -62,7 +74,9 @@ extension BottomWarningView {
         }
     }
 
-    private func addTitleLabel(_ theme: BottomWarningViewTheme) {
+    private func addTitleLabel(
+        _ theme: BottomWarningViewTheme
+    ) {
         titleLabel.customizeAppearance(theme.title)
 
         addSubview(titleLabel)
@@ -73,7 +87,9 @@ extension BottomWarningView {
         }
     }
 
-    private func addDescriptionLabel(_ theme: BottomWarningViewTheme) {
+    private func addDescriptionLabel(
+        _ theme: BottomWarningViewTheme
+    ) {
         descriptionLabel.customizeAppearance(theme.description)
 
         addSubview(descriptionLabel)
@@ -84,10 +100,11 @@ extension BottomWarningView {
         }
     }
 
-    private func addVerticalStackView(_ theme: BottomWarningViewTheme) {
+    private func addVerticalStackView(
+        _ theme: BottomWarningViewTheme
+    ) {
         addSubview(verticalStackView)
         verticalStackView.spacing = theme.buttonInset
-        verticalStackView.axis = .vertical
 
         verticalStackView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
@@ -100,15 +117,23 @@ extension BottomWarningView {
         addSecondaryActionButton(theme)
     }
 
-    private func addPrimaryActionButton(_ theme: BottomWarningViewTheme) {
-        primaryActionButton.customize(theme.mainButtonTheme)
+    private func addPrimaryActionButton(
+        _ theme: BottomWarningViewTheme
+    ) {
+        primaryActionButton.contentEdgeInsets = UIEdgeInsets(theme.actionContentEdgeInsets)
+        primaryActionButton.draw(corner: theme.actionCorner)
+        primaryActionButton.customizeAppearance(theme.primaryAction)
 
         primaryActionButton.fitToVerticalIntrinsicSize()
         verticalStackView.addArrangedSubview(primaryActionButton)
     }
 
-    private func addSecondaryActionButton(_ theme: BottomWarningViewTheme) {
-        secondaryActionButton.customize(theme.secondaryButtonTheme)
+    private func addSecondaryActionButton(
+        _ theme: BottomWarningViewTheme
+    ) {
+        secondaryActionButton.contentEdgeInsets = UIEdgeInsets(theme.actionContentEdgeInsets)
+        secondaryActionButton.draw(corner: theme.actionCorner)
+        secondaryActionButton.customizeAppearance(theme.secondaryAction)
 
         secondaryActionButton.fitToVerticalIntrinsicSize()
         verticalStackView.addArrangedSubview(secondaryActionButton)
@@ -116,39 +141,89 @@ extension BottomWarningView {
 }
 
 extension BottomWarningView {
-    func bindData(_ configurator: BottomWarningViewConfigurator?) {
-        titleLabel.editText = configurator?.title
+    func bindData(
+        _ configurator: BottomWarningViewConfigurator?
+    ) {
+        guard let configurator = configurator else {
+            return
+        }
 
-        if let description = configurator?.description {
-            descriptionLabel.editText = description
+        imageView.image = configurator.image
+        titleLabel.editText = configurator.getTitle()
+
+        if let description = configurator.description {
+            switch description {
+            case .plain:
+                descriptionLabel.editText = configurator.getDescription()
+            case .customURL(_, let hyperlink):
+                descriptionLabel.editText = configurator.getDescription()
+
+                customizeDescriptionLabel(
+                    configurator,
+                    forHyperlink: hyperlink
+                )
+            }
         } else {
             descriptionLabel.removeFromSuperview()
         }
 
-        imageView.image = configurator?.image
-        primaryActionButton.bindData(ButtonCommonViewModel(title: configurator?.primaryActionButtonTitle))
+        primaryActionButton.isHidden = configurator.primaryActionButtonTitle == nil
+        primaryActionButton.setEditTitle(
+            configurator.getPrimaryActionTitle(),
+            for: .normal
+        )
 
-        if let secondaryActionButtonTitle = configurator?.secondaryActionButtonTitle {
-            secondaryActionButton.bindData(ButtonCommonViewModel(title: secondaryActionButtonTitle))
-        } else {
-            secondaryActionButton.isHidden = true
+        secondaryActionButton.setEditTitle(
+            configurator.getSecondaryActionTitle(),
+            for: .normal
+        )
+    }
+
+    private func customizeDescriptionLabel(
+        _ configurator: BottomWarningViewConfigurator,
+        forHyperlink hyperlink: BottomWarningViewConfigurator.BottomWarningDescription.Hyperlink
+    ) {
+        /// <ref>
+        ///  https://github.com/optonaut/ActiveLabel.swift#batched-customization
+        /// <note>
+        /// It is recommended to use the customize(block:) method to customize it. The reason is that ActiveLabel is reacting to each property that you set. So if you set 3 properties, the textContainer is refreshed 3 times.
+        descriptionLabel.customize { label in
+            /// <note>
+            /// Regex that looks for `hyperlink.word`
+            let customPatternType = ALGActiveType.custom(
+                pattern: "\\s\(hyperlink.word)\\b"
+            ).mapped
+
+            label.enabledTypes.append(customPatternType)
+
+            label.configureLinkAttribute = { (_, _, _) in
+                return configurator.getLinkAttributes()
+            }
+
+            label.handleCustomTap(for: customPatternType) {
+                [weak self] _ in
+                self?.handlers.didTapURL?(hyperlink.url)
+            }
         }
     }
 }
 
 extension BottomWarningView {
     @objc
-    private func notifyDelegateToHandlePrimaryActionButton() {
-        delegate?.bottomWarningViewDidTapPrimaryActionButton(self)
+    private func didTapPrimaryAction() {
+        handlers.didTapPrimaryActionButton?()
     }
 
     @objc
-    private func notifyDelegateToHandleSecondaryActionButton() {
-        delegate?.bottomWarningViewDidTapSecondaryActionButton(self)
+    private func didTapSecondaryAction() {
+        handlers.didTapSecondaryActionButton?()
     }
 }
 
-protocol BottomWarningViewDelegate: AnyObject {
-    func bottomWarningViewDidTapPrimaryActionButton(_ bottomWarningView: BottomWarningView)
-    func bottomWarningViewDidTapSecondaryActionButton(_ bottomWarningView: BottomWarningView)
+extension BottomWarningView {
+    struct Handlers {
+        var didTapPrimaryActionButton: EmptyHandler?
+        var didTapSecondaryActionButton: EmptyHandler?
+        var didTapURL: ((URL) -> Void)?
+    }
 }

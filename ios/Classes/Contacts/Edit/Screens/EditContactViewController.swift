@@ -204,7 +204,7 @@ extension EditContactViewController: EditContactViewDelegate {
         let bottomWarningViewConfigurator = BottomWarningViewConfigurator(
             image: "icon-trash-red".uiImage,
             title: "contacts-delete-contact".localized,
-            description: "contacts-delete-contact-alert-explanation".localized,
+            description: .plain("contacts-delete-contact-alert-explanation".localized),
             primaryActionButtonTitle: "contacts-approve-delete-contact".localized,
             secondaryActionButtonTitle: "title-keep".localized,
             primaryAction: { [weak self] in

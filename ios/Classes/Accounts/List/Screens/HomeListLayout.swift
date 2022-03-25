@@ -65,12 +65,11 @@ extension HomeListLayout {
             return insets
         case .portfolio:
             insets.top = sectionIdentifiers.contains(.announcement) ? 24 : 72
-            insets.bottom = 40
             return insets
         case .announcement:
             return insets
         case .accounts:
-            insets.top = 40
+            insets.top = 36
             insets.bottom = 8
             return insets
         case .watchAccounts:
