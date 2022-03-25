@@ -23,7 +23,6 @@ import com.algorand.android.models.Account
 import com.algorand.android.models.AccountBalance
 import com.algorand.android.models.AccountDetail
 import com.algorand.android.models.AccountSelectionListItem
-import com.algorand.android.models.CurrencyValue
 import com.algorand.android.models.LedgerInformationListItem
 import com.algorand.android.utils.formatAsCurrency
 import javax.inject.Inject
@@ -47,10 +46,8 @@ class LedgerInformationUseCase @Inject constructor(
         rekeyedAccountSelectionListItem: List<AccountSelectionListItem.AccountItem>?,
         authLedgerAccount: AccountSelectionListItem.AccountItem?
     ): List<LedgerInformationListItem> {
-        val algoPriceCache = algoPriceUseCase.getCachedAlgoPrice()?.data
         val accountDetail = AccountDetail(selectedLedgerAccount.account, selectedLedgerAccount.accountInformation)
         return prepareLedgerInformationListItem(
-            algoPriceCache,
             accountDetail,
             selectedLedgerAccount,
             rekeyedAccountSelectionListItem,
@@ -59,7 +56,6 @@ class LedgerInformationUseCase @Inject constructor(
     }
 
     private suspend fun prepareLedgerInformationListItem(
-        algoPriceCache: CurrencyValue?,
         accountDetail: AccountDetail,
         selectedLedgerAccount: AccountSelectionListItem.AccountItem,
         rekeyedAccountSelectionListItem: List<AccountSelectionListItem.AccountItem>?,
@@ -67,7 +63,7 @@ class LedgerInformationUseCase @Inject constructor(
     ): List<LedgerInformationListItem> {
         return withContext(Dispatchers.Default) {
             return@withContext mutableListOf<LedgerInformationListItem>().apply {
-                val selectedCurrencySymbol = algoPriceCache?.symbol ?: algoPriceUseCase.getSelectedCurrencySymbol()
+                val selectedCurrencySymbol = algoPriceUseCase.getSelectedCurrencySymbolOrCurrencyName()
                 val accountBalance = accountTotalBalanceUseCase.getAccountBalance(accountDetail)
                 val portfolioValue = getPortfolioValue(accountBalance, selectedCurrencySymbol)
                 addAll(createLedgerAccountItem(accountDetail, portfolioValue))

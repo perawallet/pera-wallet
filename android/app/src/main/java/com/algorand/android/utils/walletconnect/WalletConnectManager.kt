@@ -32,9 +32,14 @@ import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.Resource.Error.Annotated
 import com.algorand.android.utils.exception.InvalidWalletConnectUrlException
+import com.algorand.android.utils.recordException
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionResult.Error
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionResult.Success
-import com.google.firebase.crashlytics.FirebaseCrashlytics
+import java.io.EOFException
+import java.net.ProtocolException
+import javax.inject.Inject
+import javax.inject.Named
+import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -46,11 +51,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.walletconnect.Session
-import java.io.EOFException
-import java.net.ProtocolException
-import javax.inject.Inject
-import javax.inject.Named
-import javax.inject.Singleton
 
 @Singleton
 class WalletConnectManager @Inject constructor(
@@ -74,6 +74,9 @@ class WalletConnectManager @Inject constructor(
     val requestResultLiveData: LiveData<Event<Resource<AnnotatedString>>>
         get() = _requestResultLiveData
     private val _requestResultLiveData = MutableLiveData<Event<Resource<AnnotatedString>>>()
+
+    private val _invalidTransactionCauseLiveData = MutableLiveData<Event<Resource.Error.Local>>()
+    val invalidTransactionCauseLiveData: LiveData<Event<Resource.Error.Local>> = _invalidTransactionCauseLiveData
 
     val localSessionsFlow: Flow<List<WalletConnectSession>>
         get() = walletConnectRepository.getAllWCSession().map { entityList ->
@@ -195,7 +198,7 @@ class WalletConnectManager @Inject constructor(
             } else {
                 _requestResultLiveData.postValue(Event(Annotated(AnnotatedString(R.string.an_error_occured))))
                 val exception = Exception("Wallet connect sign result is not Success: $walletConnectSignResult")
-                FirebaseCrashlytics.getInstance().recordException(exception)
+                recordException(exception)
             }
         }
     }
@@ -271,7 +274,10 @@ class WalletConnectManager @Inject constructor(
     private fun onCustomTransactionParsed(result: WalletConnectTransactionResult) {
         when (result) {
             is Success -> _requestLiveData.postValue(Event(Resource.Success(result.walletConnectTransaction)))
-            is Error -> walletConnectClient.rejectRequest(result.sessionId, result.requestId, result.errorResponse)
+            is Error -> {
+                walletConnectClient.rejectRequest(result.sessionId, result.requestId, result.errorResponse)
+                _invalidTransactionCauseLiveData.postValue(Event(Resource.Error.Local(result.errorResponse.message)))
+            }
         }
     }
 

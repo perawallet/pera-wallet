@@ -79,16 +79,18 @@ data class AssetInformation(
         }
 
         // TODO Remove this function after changing RemoveAssetFlow
-        fun createAssetInformation(accountAssetData: BaseAccountAssetData.OwnedAssetData): AssetInformation {
-            return AssetInformation(
-                assetId = accountAssetData.id,
-                isVerified = accountAssetData.isVerified,
-                creatorPublicKey = accountAssetData.creatorPublicKey,
-                shortName = accountAssetData.shortName,
-                fullName = accountAssetData.name,
-                amount = accountAssetData.amount,
-                decimals = accountAssetData.decimals
-            )
+        fun createAssetInformation(removeAssetItem: RemoveAssetItem): AssetInformation {
+            return with(removeAssetItem) {
+                AssetInformation(
+                    assetId = id,
+                    isVerified = isVerified,
+                    creatorPublicKey = creatorPublicKey,
+                    shortName = shortName,
+                    fullName = name,
+                    amount = amount,
+                    decimals = decimals
+                )
+            }
         }
     }
 }

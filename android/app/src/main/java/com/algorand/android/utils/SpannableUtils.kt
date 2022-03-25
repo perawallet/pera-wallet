@@ -36,7 +36,6 @@ import com.algorand.android.customviews.CenteredImageSpan
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.utils.exceptions.InvalidAnnotationException
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import java.util.Locale
 
 fun SpannableStringBuilder.addSpace() {
@@ -62,7 +61,7 @@ fun SpannableStringBuilder.addAssetName(
             addSpace()
         }
         color(ContextCompat.getColor(context, R.color.gray_71)) {
-            append(context.getString(R.string.ticker_asset_format, shortName?.toUpperCase(Locale.ENGLISH)))
+            append(context.getString(R.string.ticker_asset_format, shortName?.uppercase(Locale.ENGLISH)))
         }
     }
     if (isFullNameNullOrBlank && isShortNameNullOrBlank) {
@@ -133,9 +132,7 @@ fun TextView.setXmlStyledString(
                     if (spanStartIndex in 0..spannableString.length && spanEndIndex in 0..spannableString.length) {
                         spannableString.setSpan(span, spanStartIndex, spanEndIndex, SPAN_EXCLUSIVE_EXCLUSIVE)
                     } else {
-                        FirebaseCrashlytics.getInstance().recordException(
-                            InvalidAnnotationException(xmlText.toString(), annotation.value)
-                        )
+                        recordException(InvalidAnnotationException(xmlText.toString(), annotation.value))
                     }
                 }
             }
@@ -178,9 +175,6 @@ fun Context.getXmlStyledString(
             "font" -> {
                 spannableString.applyFontAnnotation(this, annotation)
             }
-            "default-font" -> {
-                spannableString.applyDefaultFontAnnotation(annotation)
-            }
             "replacement" -> {
                 replacementList.find { (key, _) ->
                     key == annotation.value
@@ -222,16 +216,6 @@ private fun SpannableStringBuilder.applyFontAnnotation(context: Context, annotat
     )
     if (typeface != null) {
         applySpan(CustomTypefaceSpan(typeface), annotation)
-    }
-}
-
-// TODO: 12.11.2021 Till we replace the font-family with correct ones, we should this function to change strings
-//  textAppearances which are annotated into strings.xml
-private fun SpannableStringBuilder.applyDefaultFontAnnotation(annotation: Annotation) {
-    val fontName = annotation.value
-    val typeFace = Typeface.create(fontName, Typeface.NORMAL)
-    if (fontName != null) {
-        applySpan(CustomTypefaceSpan(typeFace), annotation)
     }
 }
 

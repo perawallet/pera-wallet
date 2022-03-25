@@ -1,0 +1,41 @@
+<!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="42dp"
+    android:height="24dp"
+    android:viewportWidth="42"
+    android:viewportHeight="24">
+  <group>
+    <clip-path
+        android:pathData="M0,0h42v24h-42z"/>
+    <group>
+      <clip-path
+          android:pathData="M0,5.25h42.193v13.6553h-42.193z"/>
+      <path
+          android:pathData="M18.2834,18.7091H14.8655L17.0033,5.4905H20.421L18.2834,18.7091Z"
+          android:fillColor="#00579F"/>
+      <path
+          android:pathData="M30.6737,5.8137C29.9996,5.5463 28.9303,5.251 27.6081,5.251C24.2328,5.251 21.856,7.0509 21.8414,9.6242C21.8133,11.5228 23.5431,12.5773 24.8369,13.2103C26.1592,13.8572 26.6088,14.2794 26.6088,14.856C26.5953,15.7416 25.5402,16.1498 24.5562,16.1498C23.1916,16.1498 22.4604,15.9393 21.3493,15.4466L20.8992,15.2354L20.4209,18.2027C21.2225,18.568 22.6995,18.892 24.2328,18.9062C27.8192,18.9062 30.154,17.1342 30.1816,14.3919C30.1953,12.8872 29.2819,11.7341 27.3126,10.792C26.1172,10.1871 25.3851,9.7793 25.3851,9.1605C25.3991,8.5979 26.0043,8.0217 27.3538,8.0217C28.4649,7.9934 29.2813,8.2605 29.8998,8.5278L30.2089,8.6682L30.6737,5.8137V5.8137Z"
+          android:fillColor="#00579F"/>
+      <path
+          android:pathData="M35.2164,14.0262C35.4979,13.2668 36.581,10.3278 36.581,10.3278C36.5668,10.356 36.8619,9.5543 37.0307,9.0622L37.2695,10.2012C37.2695,10.2012 37.9168,13.3653 38.0573,14.0262C37.5232,14.0262 35.8915,14.0262 35.2164,14.0262ZM39.4354,5.4905H36.7916C35.9763,5.4905 35.3569,5.7293 35.0052,6.5872L29.9283,18.709H33.5146C33.5146,18.709 34.105,17.0775 34.232,16.7261C34.6254,16.7261 38.1142,16.7261 38.6203,16.7261C38.7184,17.1902 39.0281,18.709 39.0281,18.709H42.1928L39.4354,5.4905V5.4905Z"
+          android:fillColor="#00579F"/>
+      <path
+          android:pathData="M12.0108,5.4905L8.6636,14.5043L8.2978,12.6762C7.6789,10.5668 5.7381,8.275 3.5723,7.1354L6.6382,18.6951H10.2526L15.625,5.4905H12.0108V5.4905Z"
+          android:fillColor="#00579F"/>
+      <path
+          android:pathData="M5.5553,5.4905H0.0561L-0.0001,5.7576C4.2895,6.8545 7.1305,9.4986 8.2977,12.6768L7.1023,6.6016C6.9054,5.7574 6.3006,5.5183 5.5553,5.4905Z"
+          android:fillColor="#FAA61A"/>
+    </group>
+  </group>
+</vector>

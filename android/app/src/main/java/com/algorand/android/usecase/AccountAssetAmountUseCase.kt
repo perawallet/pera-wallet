@@ -28,8 +28,8 @@ class AccountAssetAmountUseCase @Inject constructor(
 ) {
 
     fun getAssetAmount(assetHolding: AssetHolding, assetItem: AssetQueryItem): BaseAccountAssetData.OwnedAssetData {
-        val selectedCurrencyUsdConversionRate = algoPriceUseCase.getConversionRateOfCachedCurrency()
-        val selectedCurrencySymbol = algoPriceUseCase.getCachedAlgoPrice()?.data?.symbol.orEmpty()
+        val selectedCurrencyUsdConversionRate = algoPriceUseCase.getUsdToSelectedCurrencyConversionRate()
+        val selectedCurrencySymbol = algoPriceUseCase.getSelectedCurrencySymbolOrEmpty()
         val safeAssetUsdValue = assetItem.usdValue ?: ZERO
         val safeDecimal = assetItem.fractionDecimals ?: DEFAULT_ASSET_DECIMAL
         val assetAmountInSelectedCurrency = assetHolding.amount.toBigDecimal().movePointLeft(safeDecimal)

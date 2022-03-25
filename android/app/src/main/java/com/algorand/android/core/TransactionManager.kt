@@ -41,8 +41,8 @@ import com.algorand.android.utils.makeRekeyTx
 import com.algorand.android.utils.makeRemoveAssetTx
 import com.algorand.android.utils.makeTx
 import com.algorand.android.utils.minBalancePerAssetAsBigInteger
+import com.algorand.android.utils.recordException
 import com.algorand.android.utils.signTx
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import java.math.BigInteger
 import java.net.ConnectException
 import java.net.SocketException
@@ -170,7 +170,7 @@ class TransactionManager @Inject constructor(
                 }
                 else -> {
                     val exceptionMessage = "${accountCacheData.account.type} cannot sign by itself."
-                    FirebaseCrashlytics.getInstance().recordException(Exception(exceptionMessage))
+                    recordException(Exception(exceptionMessage))
                     postResult(
                         TransactionManagerResult.Error.Defined(AnnotatedString(stringResId = R.string.an_error_occured))
                     )

@@ -15,7 +15,6 @@ package com.algorand.android.utils
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.DateRange
 import com.algorand.android.models.TransactionCsvDetail
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import java.io.File
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -86,7 +85,7 @@ class TransactionCsvFileCreator @Inject constructor() {
             return tempCSVFile
         } catch (exception: Exception) {
             tempCSVFile?.delete()
-            FirebaseCrashlytics.getInstance().recordException(exception)
+            recordException(exception)
             return null
         }
     }

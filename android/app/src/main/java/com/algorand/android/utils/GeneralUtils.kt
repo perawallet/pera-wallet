@@ -23,7 +23,6 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.internal.managers.ViewComponentManager
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -174,7 +173,7 @@ fun String.decodeUrl(charset: String = StandardCharsets.UTF_8.name()): String? {
     return try {
         URLDecoder.decode(this, charset)
     } catch (exception: Exception) {
-        FirebaseCrashlytics.getInstance().recordException(exception)
+        recordException(exception)
         null
     }
 }

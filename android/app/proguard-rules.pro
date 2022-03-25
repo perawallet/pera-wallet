@@ -26,6 +26,7 @@
     *;
 }
 -keep class com.algorand.android.models.** { *; }
+-keep class com.algorand.android.**.model.** { *; }
 
 -keep class com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionListItem
 

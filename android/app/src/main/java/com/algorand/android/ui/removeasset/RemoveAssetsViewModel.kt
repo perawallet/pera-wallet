@@ -21,42 +21,48 @@ import com.algorand.android.core.BaseViewModel
 import com.algorand.android.models.Account
 import com.algorand.android.models.AccountDetailSummary
 import com.algorand.android.models.AssetInformation
+import com.algorand.android.models.RemoveAssetItem
 import com.algorand.android.models.Result
 import com.algorand.android.repository.TransactionsRepository
-import com.algorand.android.usecase.AccountAssetDataUseCase
 import com.algorand.android.usecase.AccountAssetRemovalUseCase
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
+import com.algorand.android.utils.getOrThrow
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 
 class RemoveAssetsViewModel @ViewModelInject constructor(
     private val transactionsRepository: TransactionsRepository,
     private val accountAssetRemovalUseCase: AccountAssetRemovalUseCase,
-    private val accountAssetDataUseCase: AccountAssetDataUseCase,
     @Assisted savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
+    private val accountPublicKey = savedStateHandle.getOrThrow<String>(ACCOUNT_PUBLIC_KEY)
+
     val removeAssetLiveData = MutableLiveData<Event<Resource<Unit>>>()
-    val removeAssetListLiveData = MutableLiveData<List<RemoveAssetItem>>()
 
-    private lateinit var networkErrorMessage: String
+    private val _accountAssetListFlow = MutableStateFlow<List<RemoveAssetItem>?>(null)
+    val accountAssetListFlow: StateFlow<List<RemoveAssetItem>?> = _accountAssetListFlow
 
-    private val accountPublicKey by lazy { savedStateHandle.get<String>(ACCOUNT_PUBLIC_KEY).orEmpty() }
+    private val _accountDetailSummaryFlow = MutableStateFlow<AccountDetailSummary?>(null)
+    val accountDetailSummaryFlow: StateFlow<AccountDetailSummary?> = _accountDetailSummaryFlow
 
-    fun start(networkErrorMessage: String) {
-        this.networkErrorMessage = networkErrorMessage
-    }
+    private val assetQueryFlow = MutableStateFlow("")
 
     init {
-        initializeAccountAssetList()
+        getAccountDetailSummary()
+        initAssetQueryFlow()
     }
 
-    private fun initializeAccountAssetList() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val removeItemList = accountAssetDataUseCase.getAccountOwnedAssetData(accountPublicKey, includeAlgo = false)
-                .map { RemoveAssetItem(it) }
-            removeAssetListLiveData.postValue(removeItemList)
+    fun updateSearchingQuery(query: String) {
+        viewModelScope.launch {
+            assetQueryFlow.emit(query)
         }
     }
 
@@ -75,11 +81,23 @@ class RemoveAssetsViewModel @ViewModelInject constructor(
         }
     }
 
-    fun getAccountDetailSummary(): AccountDetailSummary? {
-        return accountAssetRemovalUseCase.getAccountSummary(accountPublicKey)
+    private fun initAssetQueryFlow() {
+        viewModelScope.launch {
+            assetQueryFlow.debounce(QUERY_DEBOUNCE)
+                .distinctUntilChanged()
+                .flatMapLatest { accountAssetRemovalUseCase.getRemovalAccountAssetsByQuery(accountPublicKey, it) }
+                .collectLatest { _accountAssetListFlow.emit(it) }
+        }
+    }
+
+    private fun getAccountDetailSummary() {
+        viewModelScope.launch {
+            _accountDetailSummaryFlow.emit(accountAssetRemovalUseCase.getAccountSummary(accountPublicKey))
+        }
     }
 
     companion object {
         private const val ACCOUNT_PUBLIC_KEY = "accountPublicKey"
+        private const val QUERY_DEBOUNCE = 300L
     }
 }

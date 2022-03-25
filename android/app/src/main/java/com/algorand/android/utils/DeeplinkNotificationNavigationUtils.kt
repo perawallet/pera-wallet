@@ -23,6 +23,8 @@ import com.algorand.android.models.AssetTransaction
 import com.algorand.android.models.DecodedQrCode
 import com.algorand.android.models.NotificationType
 import com.algorand.android.models.User
+import com.algorand.android.modules.dapp.moonpay.domain.model.MoonpayTransactionStatus
+import com.algorand.android.ui.accounts.AccountsFragmentDirections
 
 const val SELECTED_ACCOUNT_KEY = "selectedAccountKey"
 const val SELECTED_ASSET_ID_KEY = "selectedAssetIdKey"
@@ -38,13 +40,12 @@ private fun NavController.handleSelectedAssetNavigation(
     selectedAssetId: Long
 ) {
     val selectedAccountCacheData = accountCacheManager.getCacheData(selectedAccountKey)
-    val selectedAssetInformation = accountCacheManager.getAssetInformation(selectedAccountKey, selectedAssetId)
-    if (selectedAccountCacheData != null && selectedAssetInformation != null) {
-//        navigateSafe( TODO Check here before merging
-//            AccountsFragmentDirections.actionAccountsFragmentToAssetDetailFragment(
-//                selectedAssetInformation, selectedAccountCacheData.account.address
-//            )
-//        )
+    if (selectedAccountCacheData != null) {
+        navigateSafe(
+            AccountsFragmentDirections.actionAccountsFragmentToAssetDetailFragment(
+                selectedAssetId, selectedAccountCacheData.account.address
+            )
+        )
     }
 }
 
@@ -90,6 +91,16 @@ fun NavController.handleDeeplink(
             )
         )
         navigateSafe(HomeNavigationDirections.actionGlobalSendAlgoNavigation(assetTransaction))
+    } else if (decodedQrCode.transactionStatus != null) {
+        // If deeplink contains transaction status then it should navigate to moonpay result fragment
+        navigateSafe(
+            HomeNavigationDirections.actionGlobalMoonpayResultNavigation(
+                walletAddress = decodedQrCode.address,
+                transactionStatus = MoonpayTransactionStatus.getByValueOrDefault(
+                    decodedQrCode.transactionStatus.orEmpty()
+                )
+            )
+        )
     } else {
         // If deeplink does not contain amount information then it should be navigate to account addition flow
         navigateSafe(

@@ -16,12 +16,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.navArgs
-import com.algorand.android.LoginNavigationDirections
 import com.algorand.android.MainViewModel
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentNameRegistrationBinding
+import com.algorand.android.models.AccountCreation
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.utils.KeyboardToggleListener
@@ -32,10 +31,8 @@ import com.algorand.android.utils.showAlertDialog
 import com.algorand.android.utils.showKeyboard
 import com.algorand.android.utils.toShortenedAddress
 import com.algorand.android.utils.viewbinding.viewBinding
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
-class NameRegistrationFragment : DaggerBaseFragment(R.layout.fragment_name_registration) {
+abstract class BaseNameRegistrationFragment : DaggerBaseFragment(R.layout.fragment_name_registration) {
 
     private val mainViewModel: MainViewModel by activityViewModels()
     private val nameRegistrationViewModel: NameRegistrationViewModel by viewModels()
@@ -51,8 +48,6 @@ class NameRegistrationFragment : DaggerBaseFragment(R.layout.fragment_name_regis
 
     override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
 
-    private val args: NameRegistrationFragmentArgs by navArgs()
-
     private val onKeyboardToggleAction: (shown: Boolean) -> Unit = { keyboardShown ->
         if (keyboardShown) {
             with(binding) {
@@ -60,6 +55,9 @@ class NameRegistrationFragment : DaggerBaseFragment(R.layout.fragment_name_regis
             }
         }
     }
+
+    abstract val accountCreation: AccountCreation?
+    abstract fun navToNextFragment()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -93,17 +91,13 @@ class NameRegistrationFragment : DaggerBaseFragment(R.layout.fragment_name_regis
 
     private fun onNextButtonClick() {
         binding.nextButton.setOnClickListener(null)
-        args.accountCreation.tempAccount.let { registeredAccount ->
+        accountCreation?.tempAccount?.let { registeredAccount ->
             if (nameRegistrationViewModel.isThereAnyAccountWithThisPublicKey(registeredAccount.address).not()) {
                 registeredAccount.name = binding.nameInputLayout.text.ifBlank {
                     registeredAccount.address.toShortenedAddress()
                 }
-                mainViewModel.addAccount(registeredAccount, args.accountCreation.creationType)
-                if (nameRegistrationViewModel.shouldForceLockNavigation()) {
-                    nav(LoginNavigationDirections.actionToLockPreferenceNavigation(shouldNavigateHome = true))
-                } else {
-                    nav(LoginNavigationDirections.actionGlobalToHomeNavigation())
-                }
+                mainViewModel.addAccount(registeredAccount, accountCreation?.creationType)
+                navToNextFragment()
             } else {
                 context?.showAlertDialog(getString(R.string.error), getString(R.string.this_account_already_exists))
             }

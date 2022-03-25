@@ -41,7 +41,7 @@ class AlgorandSearchView @JvmOverloads constructor(
         set(value) {
             binding.searchEditText.apply {
                 setText(value)
-                setSelection(value.length)
+                setSelection(length())
             }
         }
         get() = binding.searchEditText.text.toString()

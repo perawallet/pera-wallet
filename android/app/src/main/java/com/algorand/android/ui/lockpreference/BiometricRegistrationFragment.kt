@@ -11,37 +11,31 @@
  */
 package com.algorand.android.ui.lockpreference
 
-import android.content.SharedPreferences
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import com.algorand.android.R
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.ui.common.BaseInfoFragment
-import com.algorand.android.ui.lockpreference.BiometricRegistrationFragmentDirections.Companion.actionBiometricRegistrationFragmentToBiometricAuthenticationEnabledFragment
-import com.algorand.android.ui.lockpreference.BiometricRegistrationFragmentDirections.Companion.actionBiometricRegistrationFragmentToHomeNavigation
 import com.algorand.android.utils.alertDialog
 import com.algorand.android.utils.extensions.show
-import com.algorand.android.utils.preference.setBiometricRegistrationPreference
 import com.algorand.android.utils.showBiometricAuthentication
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class BiometricRegistrationFragment : BaseInfoFragment() {
-
-    @Inject
-    lateinit var sharedPref: SharedPreferences
 
     private val toolbarConfiguration = ToolbarConfiguration(
         startIconResId = R.drawable.ic_left_arrow,
         startIconClick = ::navBack
     )
 
-    override val fragmentConfiguration =
-        FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
+    override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
+
+    private val biometricRegistrationViewModel: BiometricRegistrationViewModel by viewModels()
 
     override fun setImageView(imageView: ImageView) {
         val icon = R.drawable.ic_faceid
@@ -80,7 +74,7 @@ class BiometricRegistrationFragment : BaseInfoFragment() {
             getString(R.string.please_use_biometric),
             getString(R.string.cancel),
             successCallback = {
-                sharedPref.setBiometricRegistrationPreference(true)
+                biometricRegistrationViewModel.setBiometricRegistrationPreference(true)
                 handleNextNavigation()
             },
             failCallBack = null,
@@ -100,10 +94,13 @@ class BiometricRegistrationFragment : BaseInfoFragment() {
     }
 
     private fun handleNextNavigation() {
-        nav(actionBiometricRegistrationFragmentToBiometricAuthenticationEnabledFragment())
+        nav(
+            BiometricRegistrationFragmentDirections
+                .actionBiometricRegistrationFragmentToBiometricAuthenticationEnabledFragment()
+        )
     }
 
     private fun navigateToHomeNavigation() {
-        nav(actionBiometricRegistrationFragmentToHomeNavigation())
+        nav(BiometricRegistrationFragmentDirections.actionBiometricRegistrationFragmentToHomeNavigation())
     }
 }

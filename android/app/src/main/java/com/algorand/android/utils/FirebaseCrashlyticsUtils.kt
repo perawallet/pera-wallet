@@ -17,3 +17,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 fun sendErrorLog(errorMessage: String) {
     FirebaseCrashlytics.getInstance().recordException(Exception(errorMessage))
 }
+
+fun recordException(exception: Exception) {
+    FirebaseCrashlytics.getInstance().recordException(exception)
+}

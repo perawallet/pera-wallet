@@ -20,7 +20,7 @@ import com.algorand.android.ui.common.listhelper.BaseAccountListItem
 
 class PortfolioValuesItemViewHolder(
     override val binding: ItemPortfolioValuesBinding,
-    private val portfolioInfoClickListener: PortfolioInfoClickListener
+    private val portfolioValuesListener: PortfolioValuesListener
 ) : BasePortfolioValuesItemViewHolder(binding) {
 
     override fun bindPortfolioItem(item: BaseAccountListItem.BasePortfolioValueItem) {
@@ -29,17 +29,18 @@ class PortfolioValuesItemViewHolder(
             algoHoldingsTextView.text = item.formattedAlgoHoldings
             assetHoldingsTextView.text = item.formattedAssetHoldings
             portfolioValueTextView.text = item.formattedPortfolioValue
-            portfolioValueTitleTextView.setOnClickListener { portfolioInfoClickListener.onPortfolioInfoClick(item) }
+            buyAlgoButton.setOnClickListener { portfolioValuesListener.onBuyAlgoClick() }
+            portfolioValueTitleTextView.setOnClickListener { portfolioValuesListener.onPortfolioInfoClick(item) }
         }
     }
 
     companion object {
         fun create(
             parent: ViewGroup,
-            portfolioInfoClickListener: PortfolioInfoClickListener
+            portfolioValuesListener: PortfolioValuesListener
         ): BaseViewHolder<BaseAccountListItem> {
             val binding = ItemPortfolioValuesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            return PortfolioValuesItemViewHolder(binding, portfolioInfoClickListener)
+            return PortfolioValuesItemViewHolder(binding, portfolioValuesListener)
         }
     }
 }

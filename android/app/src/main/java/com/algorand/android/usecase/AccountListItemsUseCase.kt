@@ -16,7 +16,6 @@ import com.algorand.android.mapper.AccountListItemMapper
 import com.algorand.android.models.Account
 import com.algorand.android.models.AccountBalance
 import com.algorand.android.models.AccountDetail
-import com.algorand.android.models.CurrencyValue
 import com.algorand.android.ui.common.listhelper.BaseAccountListItem
 import com.algorand.android.utils.CacheResult
 import com.algorand.android.utils.formatAsCurrency
@@ -24,16 +23,16 @@ import javax.inject.Inject
 
 class AccountListItemsUseCase @Inject constructor(
     private val accountListItemMapper: AccountListItemMapper,
-    private val accountTotalBalanceUseCase: AccountTotalBalanceUseCase
+    private val accountTotalBalanceUseCase: AccountTotalBalanceUseCase,
+    private val algoPriceUseCase: AlgoPriceUseCase
 ) {
 
     fun createAccountListItems(
-        algoPriceCache: CacheResult<CurrencyValue>?,
         accountList: List<CacheResult<AccountDetail>>,
         sortedLocalAccounts: List<Account>,
         onAccountBalanceCalculated: ((AccountBalance) -> Unit)? = null
     ): List<BaseAccountListItem.BaseAccountItem> {
-        val selectedCurrencySymbol = algoPriceCache?.data?.symbol.orEmpty()
+        val selectedCurrencySymbol = algoPriceUseCase.getSelectedCurrencySymbolOrEmpty()
         return sortedLocalAccounts.map { localAccount ->
             accountList.firstOrNull { cachedAccount ->
                 cachedAccount.data?.account?.address == localAccount.address

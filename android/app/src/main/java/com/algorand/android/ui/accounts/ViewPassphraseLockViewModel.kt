@@ -13,26 +13,23 @@
 
 package com.algorand.android.ui.accounts
 
-import android.content.SharedPreferences
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
-import com.algorand.android.utils.preference.getPassword
-import com.algorand.android.utils.preference.isBiometricActive
-import com.algorand.android.utils.preference.isPasswordChosen
+import com.algorand.android.usecase.ViewPassphrasesUseCase
 
 class ViewPassphraseLockViewModel @ViewModelInject constructor(
-    private val sharedPreferences: SharedPreferences
+    private val viewPassphrasesUseCase: ViewPassphrasesUseCase
 ) : ViewModel() {
 
     fun isBiometricActive(): Boolean {
-        return sharedPreferences.isBiometricActive()
+        return viewPassphrasesUseCase.isBiometricActive()
     }
 
     fun getPassword(): String? {
-        return sharedPreferences.getPassword()
+        return viewPassphrasesUseCase.getPassword()
     }
 
     fun isNotPasswordChosen(): Boolean {
-        return sharedPreferences.isPasswordChosen().not()
+        return viewPassphrasesUseCase.isNotPasswordChosen()
     }
 }

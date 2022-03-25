@@ -42,6 +42,7 @@ sealed class BaseAccountAssetData : Parcelable {
         val formattedAmount: String,
         val amountInSelectedCurrency: BigDecimal,
         val formattedSelectedCurrencyValue: String,
+        val isAmountInSelectedCurrencyVisible: Boolean
     ) : BaseAccountAssetData()
 
     sealed class PendingAssetData : BaseAccountAssetData() {

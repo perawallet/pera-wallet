@@ -34,15 +34,16 @@ import kotlinx.coroutines.flow.map
 
 class AnalyticsDetailUseCase @Inject constructor(
     private val priceRepository: PriceRepository,
-    private val algoPriceUseCase: AlgoPriceUseCase
+    private val algoPriceUseCase: AlgoPriceUseCase,
 ) : BaseUseCase() {
 
     fun getAlgoExchangeValueFlow(): Flow<BigDecimal> {
-        return algoPriceUseCase.getAlgoPriceCacheFlow().map { it?.data?.exchangePrice?.toBigDecimalOrNull() ?: ZERO }
+        return algoPriceUseCase.getAlgoPriceCacheFlow()
+            .map { algoPriceUseCase.getAlgoToCachedCurrencyConversionRate() ?: ZERO }
     }
 
     suspend fun getAlgoPriceHistory(
-        selectedCurrencyValueOfPerAlgo: BigDecimal,
+        cachedCurrencyValueOfPerAlgo: BigDecimal,
         selectedInterval: ChartInterval,
         coroutineScope: CoroutineScope
     ) = flow {
@@ -53,11 +54,11 @@ class AnalyticsDetailUseCase @Inject constructor(
                 priceRepository.getAlgoPriceHistoryByTimeFrame(ChartInterval.FiveMinInterval.getDefaultInstance())
             }
         )
-        emit(getAlgoPriceHistoryResource(selectedCurrencyValueOfPerAlgo, resultList))
+        emit(getAlgoPriceHistoryResource(cachedCurrencyValueOfPerAlgo, resultList))
     }
 
     private suspend fun getAlgoPriceHistoryResource(
-        selectedCurrencyValueOfPerAlgo: BigDecimal,
+        cachedCurrencyValueOfPerAlgo: BigDecimal,
         resultList: List<Result<AssetPriceHistory>>
     ): Resource<ChartEntryData> {
         val usdSelectedIntervalHistory = (resultList.firstOrNull() as? Result.Success)?.data?.candleHistory
@@ -67,11 +68,15 @@ class AnalyticsDetailUseCase @Inject constructor(
         }
 
         val currencyConvertedHistoryList = getCurrencyConvertedHistoryList(
-            selectedCurrencyValueOfPerAlgo,
+            cachedCurrencyValueOfPerAlgo,
             usdSelectedIntervalHistory,
             usdLastFiveMinInterval
         )
         val chartEntryData = ChartEntryData.create(createChartEntryList(currencyConvertedHistoryList))
         return Resource.Success(chartEntryData)
+    }
+
+    fun getSelectedCurrencyId(): String {
+        return algoPriceUseCase.getCachedCurrencyId()
     }
 }

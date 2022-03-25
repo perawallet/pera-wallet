@@ -91,7 +91,7 @@ class TransactionUseCase @Inject constructor(
             val amountInSelectedCurrency = transactionAmountUseCase.getAlgoAmount(
                 firstTxnItem?.rewardAmount?.toBigInteger() ?: BigInteger.ZERO
             )
-            val selectedCurrencySymbol = algoPriceUseCase.getSelectedCurrencySymbol()
+            val selectedCurrencySymbol = algoPriceUseCase.getSelectedCurrencySymbolOrCurrencyName()
             accountHistoryRewardItemMapper.mapTo(
                 transaction = firstTxnItem,
                 assetQueryItem = getAssetDetail(assetId),
@@ -183,7 +183,7 @@ class TransactionUseCase @Inject constructor(
                         }
                         else -> null
                     }
-                    val selectedCurrencySymbol = algoPriceUseCase.getSelectedCurrencySymbol()
+                    val selectedCurrencySymbol = algoPriceUseCase.getSelectedCurrencySymbolOrCurrencyName()
                     accountHistoryTransferItemMapper.mapTo(
                         transaction,
                         asset,

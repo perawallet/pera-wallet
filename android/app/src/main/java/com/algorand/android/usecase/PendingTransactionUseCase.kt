@@ -85,7 +85,7 @@ class PendingTransactionUseCase @Inject constructor(
                 }
                 else -> null
             }
-            val selectedCurrencySymbol = algoPriceUseCase.getSelectedCurrencySymbol()
+            val selectedCurrencySymbol = algoPriceUseCase.getSelectedCurrencySymbolOrCurrencyName()
 
             accountHistoryPendingItemMapper.mapTo(
                 transaction = pendingTransaction,

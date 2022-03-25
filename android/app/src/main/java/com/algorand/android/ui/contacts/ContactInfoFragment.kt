@@ -15,37 +15,23 @@ package com.algorand.android.ui.contacts
 import android.os.Bundle
 import android.view.View
 import androidx.core.net.toUri
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentContactInfoBinding
-import com.algorand.android.models.AccountInformation
-import com.algorand.android.models.AccountSelection
-import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.AssetTransaction
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.IconButton
 import com.algorand.android.models.ToolbarConfiguration
-import com.algorand.android.ui.common.accountselector.AccountSelectionBottomSheet.Companion.ACCOUNT_SELECTION_KEY
-import com.algorand.android.utils.Resource
 import com.algorand.android.utils.hideKeyboard
 import com.algorand.android.utils.openTextShareBottomMenuChooser
-import com.algorand.android.utils.showSnackbar
-import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.toShortenedAddress
-import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ContactInfoFragment : DaggerBaseFragment(R.layout.fragment_contact_info) {
-
-    private val contactInfoViewModel: ContactInfoViewModel by viewModels()
 
     private val args: ContactInfoFragmentArgs by navArgs()
 
@@ -61,26 +47,10 @@ class ContactInfoFragment : DaggerBaseFragment(R.layout.fragment_contact_info) {
         firebaseEventScreenId = FIREBASE_EVENT_SCREEN_ID
     )
 
-    // TODO: 31.08.2021 onFailed case did not handle before and loading cases will be updated when shimmer implement
-    private val accountInformationCollector: suspend (Resource<AccountInformation>?) -> Unit = {
-        it?.use(
-            onSuccess = { contactAssetsAdapter.setAssets(contactInfoViewModel.getAccountAssets(it)) },
-            onLoadingFinished = null,
-            onLoading = null,
-            onFailed = { showSnackbar(it.parse(binding.contactsRoot.context).toString(), binding.contactsRoot) }
-        )
-    }
-
-    private val contactAssetsAdapter = ContactAssetsAdapter(::onSendButtonClick)
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         customizeToolbar()
-        initObservers()
-        setupAssetsRecyclerView()
-        setupInputs()
-        setupButtons()
-        initDialogSavedStateListener()
+        initUi()
     }
 
     private fun customizeToolbar() {
@@ -90,7 +60,7 @@ class ContactInfoFragment : DaggerBaseFragment(R.layout.fragment_contact_info) {
         }
     }
 
-    private fun setupInputs() {
+    private fun initUi() {
         with(args.contact) {
             with(binding) {
                 contactImageView.loadAccountImage(
@@ -102,25 +72,8 @@ class ContactInfoFragment : DaggerBaseFragment(R.layout.fragment_contact_info) {
                 addressTextView.text = publicKey
             }
         }
-    }
-
-    private fun initDialogSavedStateListener() {
-        startSavedStateListener(R.id.contactInfoFragment) {
-            useSavedStateValue<AccountSelection>(ACCOUNT_SELECTION_KEY) { accountSelection ->
-                val assetTransaction = AssetTransaction(
-                    assetId = accountSelection.assetInformation.assetId,
-                    receiverUser = args.contact,
-                    senderAddress = accountSelection.accountCacheData.account.address
-                )
-                nav(
-                    HomeNavigationDirections.actionGlobalSendAlgoNavigation(assetTransaction)
-                )
-            }
-        }
-    }
-
-    private fun setupButtons() {
         binding.showQrButton.setOnClickListener { onShowQrClick() }
+        binding.sendAssetButton.setOnClickListener { onSendAssetClick() }
     }
 
     private fun onShowQrClick() {
@@ -148,28 +101,11 @@ class ContactInfoFragment : DaggerBaseFragment(R.layout.fragment_contact_info) {
         )
     }
 
-    private fun onSendButtonClick(assetInformation: AssetInformation) {
-        val filteredAccountCache = contactInfoViewModel.filterCachedAccountByAssetId(assetInformation.assetId)
-        if (filteredAccountCache.isEmpty()) {
-            showSnackbar(getString(R.string.you_dont_have_any), binding.contactsRoot)
-            return
-        }
-        nav(
-            ContactInfoFragmentDirections.actionContactInfoFragmentToAccountSelectionBottomSheet(
-                assetId = assetInformation.assetId,
-                titleResId = R.string.select_sending_account
-            )
+    private fun onSendAssetClick() {
+        val assetTransaction = AssetTransaction(
+            receiverUser = args.contact
         )
-    }
-
-    private fun setupAssetsRecyclerView() {
-        binding.assetsList.adapter = contactAssetsAdapter
-    }
-
-    private fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            contactInfoViewModel.accountInformationFlow.collectLatest(accountInformationCollector)
-        }
+        nav(HomeNavigationDirections.actionGlobalSendAlgoNavigation(assetTransaction))
     }
 
     companion object {

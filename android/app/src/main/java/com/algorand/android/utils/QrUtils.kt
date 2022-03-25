@@ -27,6 +27,8 @@ private const val LABEL_KEY = "label"
 private const val ASSET_ID_KEY = "asset"
 private const val NOTE_KEY = "note"
 private const val XNOTE_KEY = "xnote"
+private const val TRANSACTION_ID_KEY = "transactionId"
+private const val TRANSACTION_STATUS_KEY = "transactionStatus"
 private const val DEEPLINK_PREFIX = "algorand://"
 private const val QUERY_START_CHAR = "?"
 private const val QUERY_NEXT_CHAR = "&"
@@ -85,6 +87,8 @@ fun decodeDeeplink(qrContent: String?): DecodedQrCode? {
     var assetId: Long? = null
     var note: String? = null
     var xnote: String? = null
+    var transactionId: String? = null
+    var transactionStatus: String? = null
     val address: String
 
     if (qrContent.startsWith(DEEPLINK_PREFIX)) {
@@ -103,6 +107,8 @@ fun decodeDeeplink(qrContent: String?): DecodedQrCode? {
                     ASSET_ID_KEY -> assetId = queryValue?.decodeUrl()?.toLongOrNull()
                     NOTE_KEY -> note = queryValue?.decodeUrl()
                     XNOTE_KEY -> xnote = queryValue?.decodeUrl()
+                    TRANSACTION_ID_KEY -> transactionId = queryValue?.decodeUrl()
+                    TRANSACTION_STATUS_KEY -> transactionStatus = queryValue?.decodeUrl()
                 }
             }
     } else if (qrContent.startsWith(WALLET_CONNECT_URL_PREFIX)) {
@@ -117,7 +123,9 @@ fun decodeDeeplink(qrContent: String?): DecodedQrCode? {
             amount = amount,
             note = note,
             xnote = xnote,
-            assetId = assetId
+            assetId = assetId,
+            transactionId = transactionId,
+            transactionStatus = transactionStatus
         )
     } else {
         null

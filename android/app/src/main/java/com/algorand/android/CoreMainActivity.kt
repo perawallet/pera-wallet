@@ -16,6 +16,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.View
+import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
@@ -182,6 +183,10 @@ abstract class CoreMainActivity : BaseActivity() {
 
     fun nav(directions: NavDirections, onError: (() -> Unit)? = null) {
         navController.navigateSafe(directions, onError)
+    }
+
+    fun setBottomNavigationBarSelectedItem(@IdRes itemRes: Int) {
+        binding.bottomNavigationView.selectedItemId = itemRes
     }
 
     fun getToolbar(): CustomToolbar {

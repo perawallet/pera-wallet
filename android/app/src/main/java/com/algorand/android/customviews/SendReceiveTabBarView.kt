@@ -33,7 +33,8 @@ class SendReceiveTabBarView @JvmOverloads constructor(
     init {
         binding.sendReceiveActionButton.setOnClickListener { handleButtonClick() }
         binding.sendButton.setOnClickListener { listener?.onSendClick() }
-        binding.receiveButton.setOnClickListener { listener?.onRequestClick() }
+        binding.receiveButton.setOnClickListener { listener?.onReceiveClick() }
+        binding.buyAlgoButton.setOnClickListener { listener?.onBuyAlgoClick() }
     }
 
     fun hideWithoutAnimation() {
@@ -76,6 +77,7 @@ class SendReceiveTabBarView @JvmOverloads constructor(
 
     interface Listener {
         fun onSendClick()
-        fun onRequestClick()
+        fun onReceiveClick()
+        fun onBuyAlgoClick()
     }
 }

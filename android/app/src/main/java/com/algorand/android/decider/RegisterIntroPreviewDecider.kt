@@ -8,13 +8,16 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  *  limitations under the License
- *
  */
 
-package com.algorand.android.ui.removeasset
+package com.algorand.android.decider
 
-import com.algorand.android.models.BaseAccountAssetData
+import com.algorand.android.R
+import javax.inject.Inject
 
-data class RemoveAssetItem(
-    val accountAssetData: BaseAccountAssetData.OwnedAssetData
-)
+class RegisterIntroPreviewDecider @Inject constructor() {
+
+    fun decideTitleRes(hasAccount: Boolean): Int {
+        return if (hasAccount) R.string.add_an_account else R.string.welcome_to_pera
+    }
+}

@@ -20,9 +20,9 @@ import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.models.WalletConnectTransaction
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
+import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharedFlow
-import javax.inject.Singleton
 
 @Singleton
 class WalletConnectViewModel @ViewModelInject constructor(
@@ -35,6 +35,9 @@ class WalletConnectViewModel @ViewModelInject constructor(
 
     val requestLiveData: LiveData<Event<Resource<WalletConnectTransaction>>?>
         get() = walletConnectManager.requestLiveData
+
+    val invalidTransactionCauseLiveData
+        get() = walletConnectManager.invalidTransactionCauseLiveData
 
     val localSessionsFlow: Flow<List<WalletConnectSession>>
         get() = walletConnectManager.localSessionsFlow

@@ -483,7 +483,6 @@
     <string name="support">Support</string>
     <string name="rate_your_experience">Bewerten Sie Ihre Erfahrung</string>
     <string name="tell_us_how_was_your_experience">Erzählen Sie uns, wie Ihre Erfahrung war.</string>
-    <string name="the_scanned_qr_is_not">Der gescannte QR-Code ist keine gültige öffentliche Adresse von Algorand. Für andere QR-Typen (z. B. WalletConnect-Transaktionen) verwenden Sie bitte die QR-Scan-Schaltfläche auf der Homepage.</string>
     <string name="become_a_governor">Governor werden.\nÜber die Zukunft von Algorand abstimmen.\nBelohnungen verdienen.</string>
     <string name="the_registration_window_for">Das Anmeldefenster für Governance-Periode Nr. 2 ist vom 25. Dezember bis zum 7. Januar, 16:00 UTC</string>
     <string name="connection_failed">Verbindung fehlgeschlagen</string>
@@ -577,7 +576,6 @@
     <string name="please_return_to">Bitte kehren Sie zu <annotation replacement="peer_name">peerNamePlaceholder</annotation> zurück, um Ihren Vorgang fortzusetzen und abzuschließen. Sie können alle verbundenen Sitzungen auf der Seite \"Einstellungen\" finden.</string>
     <string name="scan_an_algorand">Scannen Sie einen QR-Code\nmit einer Algorand-Adresse</string>
     <string name="current_balance">Aktueller\nKontostand</string>
-    <string name="your_order_was">Ihre Order wurde erfolgreich empfangen</string>
     <string name="show_note">Notiz anzeigen</string>
     <string name="create_a_passphrase_backup">Erstellen Sie einen Passphrase-Backup für Ihr Konto</string>
     <string name="creating_a_passphrase_backup">Durch die Erstellung eines Passphrase-Backups können Sie Ihr Konto wiederherstellen. Wenn Sie Ihr Gerät verlieren, das Konto entfernen oder die App löschen, können Sie den Zugang zu Ihrem Algorand-Konto ohne die Passphrase dauerhaft verlieren!</string>

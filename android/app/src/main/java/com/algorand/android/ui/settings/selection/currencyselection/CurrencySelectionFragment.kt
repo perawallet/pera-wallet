@@ -14,19 +14,21 @@ package com.algorand.android.ui.settings.selection.currencyselection
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
-import com.algorand.android.customviews.ErrorListView
 import com.algorand.android.databinding.FragmentCurrencySelectionBinding
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.models.ui.CurrencySelectionPreview
 import com.algorand.android.ui.settings.selection.CurrencyListItem
 import com.algorand.android.ui.settings.selection.SelectionAdapter
-import com.algorand.android.utils.Resource
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CurrencySelectionFragment : DaggerBaseFragment(R.layout.fragment_currency_selection) {
@@ -45,29 +47,35 @@ class CurrencySelectionFragment : DaggerBaseFragment(R.layout.fragment_currency_
 
     private val binding by viewBinding(FragmentCurrencySelectionBinding::bind)
 
-    private val currencyListObserver = Observer<Resource<List<CurrencyListItem>>> { resource ->
-        resource.use(
-            onSuccess = { list ->
-                binding.errorListView.visibility = View.GONE
-                currencySelectionAdapter.setItems(list)
-            },
-            onFailed = { errorMessage ->
-                enableCurrencySelectionErrorState()
-            },
-            onLoadingFinished = {
-                binding.loadingProgressBar.visibility = View.GONE
-            },
-            onLoading = {
-                binding.loadingProgressBar.visibility = View.VISIBLE
+    private val currencySelectionPreviewCollector: suspend (CurrencySelectionPreview?) -> Unit = {
+        updateUiWithCurrencySelectionPreview(it)
+    }
+
+    private fun updateUiWithCurrencySelectionPreview(currencySelectionPreview: CurrencySelectionPreview?) {
+        currencySelectionPreview?.let { preview ->
+            with(binding) {
+                preview.currencyList?.let { currencySelectionAdapter.setItems(it) }
+                successContentGroup.isVisible = preview.isContentVisible
+                loadingProgressBar.isVisible = preview.isLoading
+                screenStateView.isVisible = preview.isScreenStateViewVisible
+                preview.screenStateViewType?.let { screenStateView.setupUi(it) }
             }
-        )
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initUi()
         setupRecyclerView()
-        setupErrorListView()
         initObservers()
+    }
+
+    private fun initUi() {
+        with(binding) {
+            screenStateView.setOnNeutralButtonClickListener {
+                currencySelectionViewModel.refreshPreview()
+            }
+        }
     }
 
     private fun setupRecyclerView() {
@@ -75,21 +83,12 @@ class CurrencySelectionFragment : DaggerBaseFragment(R.layout.fragment_currency_
     }
 
     private fun initObservers() {
-        currencySelectionViewModel.currencyListLiveData.observe(viewLifecycleOwner, currencyListObserver)
+        viewLifecycleOwner.lifecycleScope.launch {
+            currencySelectionViewModel.currencySelectionPreviewFlow.collectLatest(currencySelectionPreviewCollector)
+        }
     }
 
     private fun onDifferentCurrencyListItemClick(currencyListItem: CurrencyListItem) {
         currencySelectionViewModel.setCurrencySelected(currencyListItem)
-    }
-
-    private fun setupErrorListView() {
-        binding.errorListView.setTryAgainAction {
-            currencySelectionViewModel.getCurrencyList()
-        }
-    }
-
-    private fun enableCurrencySelectionErrorState() {
-        binding.errorListView.setupError(ErrorListView.Type.DEFAULT_ERROR)
-        binding.errorListView.visibility = View.VISIBLE
     }
 }

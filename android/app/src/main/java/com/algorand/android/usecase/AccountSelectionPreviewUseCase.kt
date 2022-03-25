@@ -25,9 +25,7 @@ class AccountSelectionPreviewUseCase @Inject constructor(
     fun getBaseNormalAccountListItems(): List<BaseAccountListItem.BaseAccountItem> {
         val (normalAccounts, watchAccounts) = splittedAccountsUseCase.getWatchAccountSplittedAccountDetails()
         val (sortedNormalLocalAccounts, sortedWatchLocalAccounts) = sortedAccountsUseCase.getSortedLocalAccounts()
-        val algoPriceCache = algoPriceUseCase.getCachedAlgoPrice()
         return accountListItemsUseCase.createAccountListItems(
-            algoPriceCache,
             normalAccounts,
             sortedNormalLocalAccounts
         )
@@ -38,14 +36,12 @@ class AccountSelectionPreviewUseCase @Inject constructor(
     ): List<BaseAccountListItem.BaseAccountItem> {
         val (normalAccounts, watchAccounts) = splittedAccountsUseCase.getWatchAccountSplittedAccountDetails()
         val (sortedNormalLocalAccounts, sortedWatchLocalAccounts) = sortedAccountsUseCase.getSortedLocalAccounts()
-        val algoPriceCache = algoPriceUseCase.getCachedAlgoPrice()
         val filteredAccountList = normalAccounts.filter { accountDetail ->
             accountDetail.data?.accountInformation?.assetHoldingList?.any { assetHolding ->
                 assetHolding.assetId == assetId
             } == true
         }
         return accountListItemsUseCase.createAccountListItems(
-            algoPriceCache,
             filteredAccountList,
             sortedNormalLocalAccounts
         )

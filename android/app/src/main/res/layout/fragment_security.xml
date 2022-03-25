@@ -12,10 +12,38 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingHorizontal="@dimen/spacing_xlarge">
+
+    <com.algorand.android.customviews.SettingsListItem
+        android:id="@+id/enablePinCodeListItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:settingsIcon="@drawable/ic_shield_check"
+        app:settingsShowArrow="false"
+        app:settingsText="@string/enable_pin_code">
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/pinCodeSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:useMaterialThemeColors="false" />
+
+    </com.algorand.android.customviews.SettingsListItem>
+
+    <TextView
+        android:id="@+id/securityPreferencesTextView"
+        style="@style/TextAppearance.Footnote.Description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_xxxlarge"
+        android:layout_marginBottom="@dimen/spacing_xsmall"
+        android:text="@string/security_preferences"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
     <com.algorand.android.customviews.SettingsListItem
         android:id="@+id/setChangePasswordListItem"
@@ -23,7 +51,7 @@
         android:layout_height="wrap_content"
         app:settingsIcon="@drawable/ic_locked"
         app:settingsShowArrow="true"
-        app:settingsText="@string/set_change_password" />
+        app:settingsText="@string/change_pin_code" />
 
     <com.algorand.android.customviews.SettingsListItem
         android:id="@+id/enableFaceIDTouchIDListItem"

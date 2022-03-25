@@ -23,25 +23,26 @@
         android:id="@+id/backgroundColorView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="64dp"
+        android:layout_marginBottom="@dimen/main_bottom_navigation_height"
         android:background="@color/black_A3"
-        android:clickable="true"
-        android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!--    Get bottom margin from bottomNavigationViewHeight-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bottomSheetConstraintLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="64dp"
+        android:layout_marginBottom="@dimen/main_bottom_navigation_height"
         android:background="@drawable/bottom_sheet_dialog_fragment_primary_background"
+        android:clickable="true"
+        android:focusable="true"
         android:paddingBottom="44dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_height="200dp">
 
         <View
             android:id="@+id/modalityLineView"
@@ -80,8 +81,9 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginTop="44dp"
+            android:layout_marginEnd="52dp"
             app:icon="@drawable/ic_receive_with_background"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/buyAlgoButton"
             app:layout_constraintStart_toEndOf="@id/sendButton"
             app:layout_constraintTop_toBottomOf="@id/modalityLineView" />
 
@@ -94,6 +96,27 @@
             app:layout_constraintEnd_toEndOf="@id/receiveButton"
             app:layout_constraintStart_toStartOf="@id/receiveButton"
             app:layout_constraintTop_toBottomOf="@id/receiveButton" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buyAlgoButton"
+            style="@style/IconButton.Transparent"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="44dp"
+            app:icon="@drawable/ic_buy_algo_with_bg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/receiveButton"
+            app:layout_constraintTop_toBottomOf="@id/modalityLineView" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:text="@string/buy_algo"
+            android:textAppearance="@style/TextAppearance.Body.Sans.Medium"
+            app:layout_constraintEnd_toEndOf="@id/buyAlgoButton"
+            app:layout_constraintStart_toStartOf="@id/buyAlgoButton"
+            app:layout_constraintTop_toBottomOf="@id/buyAlgoButton" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

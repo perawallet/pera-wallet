@@ -47,7 +47,7 @@ class AccountAssetsUseCase @Inject constructor(
                     accountValue += (accountAssetData as? OwnedAssetData)?.amountInSelectedCurrency ?: BigDecimal.ZERO
                     add(createAssetListItem(accountAssetData))
                 }
-                val selectedCurrencySymbol = algoPriceUseCase.getSelectedCurrencySymbol()
+                val selectedCurrencySymbol = algoPriceUseCase.getSelectedCurrencySymbolOrCurrencyName()
                 add(0, AccountDetailAssetsItem.AccountValueItem(accountValue.formatAsCurrency(selectedCurrencySymbol)))
             }
         }

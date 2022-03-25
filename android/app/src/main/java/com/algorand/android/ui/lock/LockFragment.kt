@@ -14,7 +14,6 @@ package com.algorand.android.ui.lock
 
 import android.app.NotificationManager
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
@@ -35,39 +34,22 @@ import com.algorand.android.ui.splash.LauncherActivity
 import com.algorand.android.utils.finishAffinityFromFragment
 import com.algorand.android.utils.getNavigationBackStackCount
 import com.algorand.android.utils.getTimeAsMinSecondPair
-import com.algorand.android.utils.preference.getLockAttemptCount
-import com.algorand.android.utils.preference.getLockPenaltyRemainingTime
-import com.algorand.android.utils.preference.getPassword
-import com.algorand.android.utils.preference.isBiometricActive
-import com.algorand.android.utils.preference.isPasswordChosen
-import com.algorand.android.utils.preference.setLockAttemptCount
-import com.algorand.android.utils.preference.setLockPenaltyRemainingTime
 import com.algorand.android.utils.showBiometricAuthentication
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class LockFragment : DaggerBaseFragment(R.layout.fragment_lock) {
 
-    @Inject
-    lateinit var sharedPref: SharedPreferences
-
-    private val useBiometric by lazy { sharedPref.isBiometricActive() }
-
-    private val currentPassword by lazy { sharedPref.getPassword() }
-
-    private var biometricHandler: Handler? = null
-
     private val statusBarConfiguration = StatusBarConfiguration(backgroundColor = R.color.tertiaryBackground)
+
+    override val fragmentConfiguration = FragmentConfiguration(statusBarConfiguration = statusBarConfiguration)
 
     private val lockViewModel: LockViewModel by viewModels()
 
     private val binding by viewBinding(FragmentLockBinding::bind)
-
-    override val fragmentConfiguration = FragmentConfiguration(statusBarConfiguration = statusBarConfiguration)
 
     private var countDownTimer: CountDownTimer? = null
 
@@ -75,34 +57,86 @@ class LockFragment : DaggerBaseFragment(R.layout.fragment_lock) {
 
     private var penaltyRemainingTime: Long = 0L
 
-    override fun onStart() {
-        super.onStart()
-        if (sharedPref.isPasswordChosen().not()) {
-            handleNextNavigation()
+    private var biometricHandler: Handler? = null
+
+    private val dialPadListener = object : DialPadView.DialPadListener {
+        override fun onNumberClick(number: Int) {
+            binding.passwordView.onNewDigit(number, onNewDigitAdded = { isNewDigitAdded ->
+                if (!isNewDigitAdded) return@onNewDigit
+                if (binding.passwordView.getPasswordSize() == SixDigitPasswordView.PASSWORD_LENGTH) {
+                    val givenPassword = binding.passwordView.getPassword()
+                    if (lockViewModel.getCurrentPassword() == givenPassword) {
+                        onEnteredCorrectPassword()
+                    } else {
+                        setLockAttemptCount(lockAttemptCount + 1)
+                        binding.passwordView.clearWithAnimation()
+                    }
+                }
+            })
+        }
+
+        override fun onBackspaceClick() {
+            binding.passwordView.removeLastDigit()
+        }
+    }
+
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            activity?.finish()
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        handleBackPress()
-        binding.dialPad.setDialPadListener(dialPadListener)
-        initDialogSavedStateListener()
-        binding.deleteAllDataButton.setOnClickListener { onDeleteAllDataClick() }
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, onBackPressedCallback)
+        initUi()
     }
 
-    private fun handleBackPress() {
-        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                activity?.finish()
-            }
-        })
+    private fun initUi() {
+        with(binding) {
+            dialPad.setDialPadListener(dialPadListener)
+            deleteAllDataButton.setOnClickListener { onDeleteAllDataClick() }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (lockViewModel.isPinCodeEnabled().not()) {
+            handleNextNavigation()
+        }
+    }
+
+    private fun handleNextNavigation() {
+        if (activity?.getNavigationBackStackCount() == 0) {
+            nav(LockFragmentDirections.actionLockFragmentToHomeNavigation())
+        } else {
+            navBack()
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        setRemainingTime(sharedPref.getLockPenaltyRemainingTime())
-        setLockAttemptCount(sharedPref.getLockAttemptCount())
-        if (useBiometric) {
+        initDialogSavedStateListener()
+        setRemainingTime(lockViewModel.getLockPenaltyRemainingTime())
+        setLockAttemptCount(lockViewModel.getLockAttemptCount())
+        showShowBiometricAuthenticationIfNeed()
+    }
+
+    private fun initDialogSavedStateListener() {
+        startSavedStateListener(R.id.lockFragment) {
+            useSavedStateValue<Boolean>(WARNING_CONFIRMATION_KEY) {
+                lockAttemptCount = 0
+                penaltyRemainingTime = 0L
+                lockViewModel.deleteAllData(
+                    context?.getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager,
+                    ::onDeleteAllDataCompleted
+                )
+            }
+        }
+    }
+
+    private fun showShowBiometricAuthenticationIfNeed() {
+        if (lockViewModel.shouldShowBiometricDialog()) {
             biometricHandler = Handler()
             biometricHandler?.post {
                 activity?.showBiometricAuthentication(
@@ -129,21 +163,32 @@ class LockFragment : DaggerBaseFragment(R.layout.fragment_lock) {
         penaltyRemainingTime = newRemainingTime
     }
 
+    private fun handleRemainingTime(previousRemainingTime: Long, remainingTime: Long) {
+        val isPenaltyTimeStartedNow = previousRemainingTime == 0L && remainingTime != 0L
+
+        if (previousRemainingTime != remainingTime) {
+            val (minutes, seconds) = remainingTime.getTimeAsMinSecondPair()
+            binding.remainingTimeTextView.text = getString(R.string.min_seconds_template, minutes, seconds)
+        }
+
+        val isUserComePenaltyFromBackground = remainingTime != 0L && countDownTimer == null
+        if (isPenaltyTimeStartedNow || isUserComePenaltyFromBackground) {
+            startCountdownTimer(remainingTime)
+        }
+    }
+
     override fun onPause() {
         biometricHandler?.removeCallbacksAndMessages(null)
         clearCountDownTimer()
-        sharedPref.setLockAttemptCount(lockAttemptCount)
-        sharedPref.setLockPenaltyRemainingTime(penaltyRemainingTime)
+        lockViewModel.setLockAttemptCount(lockAttemptCount)
+        lockViewModel.setLockPenaltyRemainingTime(penaltyRemainingTime)
         binding.passwordView.cancelAnimations()
         super.onPause()
     }
 
-    private fun handleNextNavigation() {
-        if (activity?.getNavigationBackStackCount() == 0) {
-            nav(LockFragmentDirections.actionLockFragmentToHomeNavigation())
-        } else {
-            navBack()
-        }
+    private fun clearCountDownTimer() {
+        countDownTimer?.cancel()
+        countDownTimer = null
     }
 
     private fun startCountdownTimer(timeRemaining: Long) {
@@ -168,48 +213,6 @@ class LockFragment : DaggerBaseFragment(R.layout.fragment_lock) {
         }
     }
 
-    private fun clearCountDownTimer() {
-        countDownTimer?.cancel()
-        countDownTimer = null
-    }
-
-    private fun handleRemainingTime(previousRemainingTime: Long, remainingTime: Long) {
-        val isPenaltyTimeStartedNow = previousRemainingTime == 0L && remainingTime != 0L
-
-        if (previousRemainingTime != remainingTime) {
-            val (minutes, seconds) = remainingTime.getTimeAsMinSecondPair()
-            binding.remainingTimeTextView.text = getString(R.string.min_seconds_template, minutes, seconds)
-        }
-
-        val isUserComePenaltyFromBackground = remainingTime != 0L && countDownTimer == null
-        if (isPenaltyTimeStartedNow || isUserComePenaltyFromBackground) {
-            startCountdownTimer(remainingTime)
-        }
-    }
-
-    private val dialPadListener = object : DialPadView.DialPadListener {
-        override fun onNumberClick(number: Int) {
-            binding.passwordView.onNewDigit(number, onNewDigitAdded = { isNewDigitAdded ->
-                if (!isNewDigitAdded) {
-                    return@onNewDigit
-                }
-                if (binding.passwordView.getPasswordSize() == SixDigitPasswordView.PASSWORD_LENGTH) {
-                    val givenPassword = binding.passwordView.getPassword()
-                    if (currentPassword == givenPassword) {
-                        onEnteredCorrectPassword()
-                    } else {
-                        setLockAttemptCount(lockAttemptCount + 1)
-                        binding.passwordView.clearWithAnimation()
-                    }
-                }
-            })
-        }
-
-        override fun onBackspaceClick() {
-            binding.passwordView.removeLastDigit()
-        }
-    }
-
     private fun onDeleteAllDataClick() {
         val warningConfirmation = WarningConfirmation(
             titleRes = R.string.delete_all_data,
@@ -219,19 +222,6 @@ class LockFragment : DaggerBaseFragment(R.layout.fragment_lock) {
             negativeButtonTextRes = R.string.keep_it
         )
         nav(LockFragmentDirections.actionLockFragmentToWarningConfirmationNavigation(warningConfirmation))
-    }
-
-    private fun initDialogSavedStateListener() {
-        startSavedStateListener(R.id.lockFragment) {
-            useSavedStateValue<Boolean>(WARNING_CONFIRMATION_KEY) {
-                lockAttemptCount = 0
-                penaltyRemainingTime = 0L
-                lockViewModel.deleteAllData(
-                    context?.getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager,
-                    ::onDeleteAllDataCompleted
-                )
-            }
-        }
     }
 
     private fun onDeleteAllDataCompleted() {

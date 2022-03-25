@@ -17,6 +17,8 @@ import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.RoundingMode
 
+const val ALGO_CURRENCY_SYMBOL = "\u00A6"
+
 fun getAlgoBalanceAsCurrencyValue(balance: BigInteger?, currencyValue: CurrencyValue): BigDecimal? {
     val algoValue = balance?.toBigDecimal()?.movePointLeft(ALGO_DECIMALS) ?: return null
     return currencyValue.getAlgorandCurrencyValue()?.multiply(algoValue)

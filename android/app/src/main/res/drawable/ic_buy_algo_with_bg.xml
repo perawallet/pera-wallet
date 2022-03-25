@@ -1,0 +1,13 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="60dp"
+    android:height="60dp"
+    android:viewportWidth="60"
+    android:viewportHeight="60">
+    <path
+        android:fillColor="@color/send_receiver_tab_bar_icon_background_color"
+        android:pathData="M30,0L30,0A30,30 0,0 1,60 30L60,30A30,30 0,0 1,30 60L30,60A30,30 0,0 1,0 30L0,30A30,30 0,0 1,30 0z" />
+    <path
+        android:fillColor="@color/send_receiver_tab_bar_icon_tint_color"
+        android:fillType="evenOdd"
+        android:pathData="M31.4085,22L22,38H24.3356L32.2404,24.5613L33.3449,28.6236L27.8359,37.9983H30.1699L34.0865,31.3418L35.9092,37.9983H38L35.5201,28.9068L37.1626,26.1043H34.7588L33.6302,22H31.4085Z" />
+</vector>

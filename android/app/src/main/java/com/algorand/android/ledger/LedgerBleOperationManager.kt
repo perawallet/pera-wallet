@@ -28,7 +28,7 @@ import com.algorand.android.models.LedgerBleResult
 import com.algorand.android.usecase.AccountInformationUseCase
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.LifecycleScopedCoroutineOwner
-import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.algorand.android.utils.recordException
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancelChildren
@@ -176,7 +176,7 @@ class LedgerBleOperationManager @Inject constructor(
                     postResult(LedgerBleResult.SignedTransactionResult(signedTransactionData))
                 }
             } catch (exception: Exception) {
-                FirebaseCrashlytics.getInstance().recordException(exception)
+                recordException(exception)
                 postResult(LedgerBleResult.LedgerErrorResult(exception.message.toString()))
             }
         }

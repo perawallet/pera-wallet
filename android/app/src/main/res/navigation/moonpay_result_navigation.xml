@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/moonpayResultNavigation"
+    app:startDestination="@id/moonpayResultBottomSheet">
+
+    <dialog
+        android:id="@+id/moonpayResultBottomSheet"
+        android:name="com.algorand.android.modules.dapp.moonpay.ui.result.MoonpayResultBottomSheet"
+        android:label="MoonpayResultBottomSheet"
+        tools:layout="@layout/bottom_sheet_moonpay_result">
+        <argument
+            android:name="walletAddress"
+            app:argType="string" />
+        <argument
+            android:name="transactionStatus"
+            app:argType="com.algorand.android.modules.dapp.moonpay.domain.model.MoonpayTransactionStatus" />
+    </dialog>
+
+</navigation>

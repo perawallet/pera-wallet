@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -24,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spacing_xlarge"
         android:layout_marginTop="@dimen/spacing_xxlarge"
-        android:text="@string/remove_assets"
+        android:text="@string/manage_assets"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,16 +39,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/titleTextView" />
 
+    <com.algorand.android.customviews.AlgorandSearchView
+        android:id="@+id/assetSearchView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_xxxxlarge"
+        android:hint="@string/search_my_assets"
+        android:inputType="text"
+        app:endIconTintColor="@color/secondaryIconTintColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/descriptionTextView"
+        app:startIconTintColor="@color/searchBarViewIconColor" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/assetsRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/spacing_xxxxlarge"
+        android:layout_marginTop="@dimen/spacing_large"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/descriptionTextView"
+        app:layout_constraintTop_toBottomOf="@id/assetSearchView"
         tools:listitem="@layout/item_remove_asset" />
 
     <include

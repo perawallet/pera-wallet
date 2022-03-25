@@ -474,7 +474,6 @@
     <string name="support">Soporte</string>
     <string name="rate_your_experience">Califica tu experiencia</string>
     <string name="tell_us_how_was_your_experience">Dinos cómo fue tu experiencia.</string>
-    <string name="the_scanned_qr_is_not">El QR escaneado no es una dirección pública válida de Algorand. Para otros tipos de QR (como las transacciones de WalletConnect), usa el botón para escanear QR que está en la página de inicio.</string>
     <string name="become_a_governor">Conviértete en gobernador.\nVota por el futuro de Algorand.\nGana recompensas.</string>
     <string name="the_registration_window_for">El plazo de inscripción para el periodo de gobernanza nro. 2 es desde el 25 de diciembre hasta el 7 de enero, a las 16:00 UTC</string>
     <string name="connection_failed">Error de conexión</string>

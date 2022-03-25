@@ -18,7 +18,7 @@ import com.algorand.android.models.BaseDiffUtil
 import com.algorand.android.models.BaseViewHolder
 import com.algorand.android.ui.accounts.AccountErrorItemViewHolder
 import com.algorand.android.ui.accounts.AccountItemViewHolder
-import com.algorand.android.ui.accounts.BasePortfolioValuesItemViewHolder.PortfolioInfoClickListener
+import com.algorand.android.ui.accounts.BasePortfolioValuesItemViewHolder.PortfolioValuesListener
 import com.algorand.android.ui.accounts.HeaderViewHolder
 import com.algorand.android.ui.accounts.PortfolioValuesErrorItemViewHolder
 import com.algorand.android.ui.accounts.PortfolioValuesItemViewHolder
@@ -32,7 +32,7 @@ class AccountAdapter(
     private val accountClickListener: AccountItemViewHolder.AccountClickListener,
     private val accountErrorClickListener: AccountErrorItemViewHolder.AccountClickListener,
     private val optionsClickListener: HeaderViewHolder.OptionsClickListener,
-    private val portfolioInfoClickListener: PortfolioInfoClickListener
+    private val portfolioValuesListener: PortfolioValuesListener
 ) : ListAdapter<BaseAccountListItem, BaseViewHolder<BaseAccountListItem>>(BaseDiffUtil<BaseAccountListItem>()) {
 
     override fun getItemViewType(position: Int): Int {
@@ -41,8 +41,8 @@ class AccountAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<BaseAccountListItem> {
         return when (viewType) {
-            PORTFOLIO_SUCCESS.ordinal -> PortfolioValuesItemViewHolder.create(parent, portfolioInfoClickListener)
-            PORTFOLIO_ERROR.ordinal -> PortfolioValuesErrorItemViewHolder.create(parent, portfolioInfoClickListener)
+            PORTFOLIO_SUCCESS.ordinal -> PortfolioValuesItemViewHolder.create(parent, portfolioValuesListener)
+            PORTFOLIO_ERROR.ordinal -> PortfolioValuesErrorItemViewHolder.create(parent, portfolioValuesListener)
             HEADER.ordinal -> HeaderViewHolder.create(parent, optionsClickListener)
             ACCOUNT_SUCCESS.ordinal -> AccountItemViewHolder.create(parent, accountClickListener)
             ACCOUNT_ERROR.ordinal -> AccountErrorItemViewHolder.create(parent, accountErrorClickListener)

@@ -13,7 +13,6 @@
 package com.algorand.android.models
 
 import android.os.Parcelable
-import com.algorand.android.utils.formatAsDollar
 import com.google.gson.annotations.SerializedName
 import java.math.BigDecimal
 import kotlinx.parcelize.Parcelize
@@ -43,14 +42,4 @@ data class CurrencyValue(
 ) : Parcelable {
 
     fun getAlgorandCurrencyValue(): BigDecimal? = exchangePrice?.toBigDecimalOrNull()
-
-    fun getFormattedSignedCurrencyValue(price: BigDecimal? = null): String {
-        val formattedCurrencyValue = (price ?: getAlgorandCurrencyValue())?.formatAsDollar()
-        return if (formattedCurrencyValue.isNullOrBlank()) "" else "$formattedCurrencyValue $id"
-    }
-
-    fun calculateFormattedAssetValueWithAmount(amount: BigDecimal?, price: BigDecimal? = null): String {
-        val currencyPrice = price ?: getAlgorandCurrencyValue()
-        return getFormattedSignedCurrencyValue(currencyPrice?.multiply(amount))
-    }
 }

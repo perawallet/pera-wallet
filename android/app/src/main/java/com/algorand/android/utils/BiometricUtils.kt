@@ -16,16 +16,17 @@ import android.content.Context
 import androidx.biometric.BiometricConstants.ERROR_CANCELED
 import androidx.biometric.BiometricConstants.ERROR_HW_NOT_PRESENT
 import androidx.biometric.BiometricConstants.ERROR_HW_UNAVAILABLE
+import androidx.biometric.BiometricConstants.ERROR_LOCKOUT
 import androidx.biometric.BiometricConstants.ERROR_LOCKOUT_PERMANENT
 import androidx.biometric.BiometricConstants.ERROR_NEGATIVE_BUTTON
 import androidx.biometric.BiometricConstants.ERROR_NO_BIOMETRICS
+import androidx.biometric.BiometricConstants.ERROR_TIMEOUT
 import androidx.biometric.BiometricConstants.ERROR_UNABLE_TO_PROCESS
 import androidx.biometric.BiometricConstants.ERROR_USER_CANCELED
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.BIOMETRIC_SUCCESS
 import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.FragmentActivity
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 fun Context.isBiometricAvailable(): Boolean {
     return BiometricManager.from(this).canAuthenticate() == BIOMETRIC_SUCCESS
@@ -37,7 +38,11 @@ fun FragmentActivity.showBiometricAuthentication(
     negativeButtonText: String,
     successCallback: () -> Unit,
     failCallBack: (() -> Unit)? = null,
-    hardwareErrorCallback: (() -> Unit)? = null
+    hardwareErrorCallback: (() -> Unit)? = null,
+    lockedOutErrorCallback: (() -> Unit)? = null,
+    timeOutErrorCallback: (() -> Unit)? = null,
+    userCancelledErrorCallback: (() -> Unit)? = null
+
 ) {
     if (BiometricManager.from(this).canAuthenticate() == BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE) {
         hardwareErrorCallback?.invoke()
@@ -48,7 +53,7 @@ fun FragmentActivity.showBiometricAuthentication(
         try {
             command.run()
         } catch (exception: Exception) {
-            FirebaseCrashlytics.getInstance().recordException(exception)
+            recordException(exception)
             exception.printStackTrace()
         }
     }
@@ -56,16 +61,12 @@ fun FragmentActivity.showBiometricAuthentication(
     val biometricAuthenticationCallback = object : BiometricPrompt.AuthenticationCallback() {
         @Suppress("ComplexCondition")
         override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
-            if (errorCode == ERROR_HW_NOT_PRESENT ||
-                errorCode == ERROR_HW_UNAVAILABLE ||
-                errorCode == ERROR_LOCKOUT_PERMANENT ||
-                errorCode == ERROR_CANCELED ||
-                errorCode == ERROR_UNABLE_TO_PROCESS ||
-                errorCode == ERROR_NO_BIOMETRICS ||
-                errorCode == ERROR_NEGATIVE_BUTTON ||
-                errorCode == ERROR_USER_CANCELED
-            ) {
-                hardwareErrorCallback?.invoke()
+            when (errorCode) {
+                ERROR_HW_NOT_PRESENT, ERROR_HW_UNAVAILABLE,
+                ERROR_LOCKOUT_PERMANENT, ERROR_UNABLE_TO_PROCESS, ERROR_NO_BIOMETRICS -> hardwareErrorCallback?.invoke()
+                ERROR_CANCELED, ERROR_USER_CANCELED, ERROR_NEGATIVE_BUTTON -> userCancelledErrorCallback?.invoke()
+                ERROR_LOCKOUT -> lockedOutErrorCallback?.invoke()
+                ERROR_TIMEOUT -> timeOutErrorCallback?.invoke()
             }
         }
 
@@ -80,18 +81,16 @@ fun FragmentActivity.showBiometricAuthentication(
         }
     }
 
-    val biometricPromptInfo by lazy {
-        BiometricPrompt.PromptInfo.Builder()
-            .setTitle(titleText)
-            .setDescription(descriptionText)
-            .setNegativeButtonText(negativeButtonText)
-            .build()
-    }
+    val biometricPromptInfo = BiometricPrompt.PromptInfo.Builder()
+        .setTitle(titleText)
+        .setDescription(descriptionText)
+        .setNegativeButtonText(negativeButtonText)
+        .build()
 
     try {
         BiometricPrompt(this, biometricExecutor, biometricAuthenticationCallback).authenticate(biometricPromptInfo)
     } catch (exception: Exception) {
-        FirebaseCrashlytics.getInstance().recordException(exception)
+        recordException(exception)
         exception.printStackTrace()
     }
 }

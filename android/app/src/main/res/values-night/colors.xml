@@ -153,4 +153,5 @@
     <color name="nftPlaceholderBoxColor">@color/gray_900</color>
     <color name="nftPlaceholderStarColor">@color/turquoise_600</color>
     <color name="nftPlaceholderHoleColor">@color/turquoise_4D</color>
+
 </resources>

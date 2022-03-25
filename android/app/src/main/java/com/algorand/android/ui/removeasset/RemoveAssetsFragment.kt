@@ -17,17 +17,20 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.core.TransactionBaseFragment
 import com.algorand.android.databinding.FragmentRemoveAssetsBinding
+import com.algorand.android.models.AccountDetailSummary
+import com.algorand.android.models.AccountIcon
 import com.algorand.android.models.AssetAction
 import com.algorand.android.models.AssetActionResult
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.AssetTransaction
-import com.algorand.android.models.BaseAccountAssetData
 import com.algorand.android.models.FragmentConfiguration
+import com.algorand.android.models.RemoveAssetItem
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.models.TransactionData
@@ -36,11 +39,15 @@ import com.algorand.android.ui.assetaction.TransferBalanceActionBottomSheet
 import com.algorand.android.ui.removeasset.adapter.RemoveAssetAdapter
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
+import com.algorand.android.utils.extensions.hide
+import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.math.BigInteger
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class RemoveAssetsFragment : TransactionBaseFragment(R.layout.fragment_remove_assets) {
@@ -53,6 +60,14 @@ class RemoveAssetsFragment : TransactionBaseFragment(R.layout.fragment_remove_as
 
     override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
 
+    private val removeAssetsViewModel: RemoveAssetsViewModel by viewModels()
+
+    private val binding by viewBinding(FragmentRemoveAssetsBinding::bind)
+
+    private val args: RemoveAssetsFragmentArgs by navArgs()
+
+    private val removeAssetAdapter = RemoveAssetAdapter(onRemoveAssetClick = ::onRemoveAssetClick)
+
     private val isAssetRemovedObserver = Observer<Event<Resource<Unit>>> { event ->
         event.consume()?.use(
             onSuccess = { navBack() },
@@ -61,24 +76,21 @@ class RemoveAssetsFragment : TransactionBaseFragment(R.layout.fragment_remove_as
         )
     }
 
-    private val assetListObserver = Observer<List<RemoveAssetItem>> { list ->
-        removeAssetAdapter?.submitList(list)
+    private val accountAssetListCollector: suspend (value: List<RemoveAssetItem>?) -> Unit = {
+        removeAssetAdapter.submitList(it)
     }
 
-    private var removeAssetAdapter: RemoveAssetAdapter? = null
-    private val removeAssetsViewModel: RemoveAssetsViewModel by viewModels()
-
-    private val binding by viewBinding(FragmentRemoveAssetsBinding::bind)
-
-    private val args: RemoveAssetsFragmentArgs by navArgs()
+    private val accountDetailSummaryCollector: suspend (value: AccountDetailSummary?) -> Unit = {
+        if (it != null) updateToolbar(it.name, it.accountIcon)
+    }
 
     override val transactionFragmentListener = object : TransactionFragmentListener {
         override fun onSignTransactionLoadingFinished() {
-            binding.removeAssetsLoadingLayout.root.isVisible = false
+            binding.removeAssetsLoadingLayout.root.hide()
         }
 
         override fun onSignTransactionLoading() {
-            binding.removeAssetsLoadingLayout.root.isVisible = true
+            binding.removeAssetsLoadingLayout.root.show()
         }
 
         override fun onSignTransactionFinished(signedTransactionDetail: SignedTransactionDetail) {
@@ -97,60 +109,68 @@ class RemoveAssetsFragment : TransactionBaseFragment(R.layout.fragment_remove_as
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar()
+        setupSearchView()
         setupRecyclerView()
-        removeAssetsViewModel.start(getString(R.string.the_internet_connection))
         initObservers()
     }
 
+    private fun setupSearchView() {
+        binding.assetSearchView.setOnTextChanged { removeAssetsViewModel.updateSearchingQuery(it) }
+    }
+
     private fun setupToolbar() {
+        getAppToolbar()?.configure(toolbarConfiguration)
+    }
+
+    private fun updateToolbar(title: String, accountIcon: AccountIcon) {
         getAppToolbar()?.apply {
-            configure(toolbarConfiguration)
-            removeAssetsViewModel.getAccountDetailSummary()?.let {
-                changeTitle(it.name)
-                setAccountImage(it.accountIcon)
-            }
+            changeTitle(title)
+            setAccountImage(accountIcon)
         }
     }
 
     private fun setupRecyclerView() {
-        if (removeAssetAdapter == null) {
-            removeAssetAdapter = RemoveAssetAdapter(onRemoveAssetClick = ::onRemoveAssetClick)
-        }
         binding.assetsRecyclerView.adapter = removeAssetAdapter
     }
 
     private fun initObservers() {
-        removeAssetsViewModel.removeAssetListLiveData.observe(viewLifecycleOwner, assetListObserver)
+        viewLifecycleOwner.lifecycleScope.launch {
+            removeAssetsViewModel.accountAssetListFlow.collectLatest(accountAssetListCollector)
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            removeAssetsViewModel.accountDetailSummaryFlow.collectLatest(accountDetailSummaryCollector)
+        }
+
         removeAssetsViewModel.removeAssetLiveData.observe(viewLifecycleOwner, isAssetRemovedObserver)
     }
 
-    private fun onRemoveAssetClick(accountAssetData: BaseAccountAssetData.OwnedAssetData) {
-        val hasBalanceInAccount = accountAssetData.amount > BigInteger.ZERO
+    private fun onRemoveAssetClick(removeAssetItem: RemoveAssetItem) {
+        val hasBalanceInAccount = removeAssetItem.amount > BigInteger.ZERO
         if (hasBalanceInAccount) {
-            navToTransferBalanceActionBottomSheet(accountAssetData)
+            navToTransferBalanceActionBottomSheet(removeAssetItem)
         } else {
-            navToRemoveAssetActionBottomSheet(accountAssetData)
+            navToRemoveAssetActionBottomSheet(removeAssetItem)
         }
     }
 
-    private fun navToTransferBalanceActionBottomSheet(accountAssetData: BaseAccountAssetData.OwnedAssetData) {
+    private fun navToTransferBalanceActionBottomSheet(removeAssetItem: RemoveAssetItem) {
         nav(
             RemoveAssetsFragmentDirections.actionRemoveAssetsFragmentToTransferBalanceActionBottomSheet(
                 AssetAction(
-                    assetId = accountAssetData.id,
-                    asset = AssetInformation.createAssetInformation(accountAssetData)
+                    assetId = removeAssetItem.id,
+                    asset = AssetInformation.createAssetInformation(removeAssetItem)
                 )
             )
         )
     }
 
-    private fun navToRemoveAssetActionBottomSheet(accountAssetData: BaseAccountAssetData.OwnedAssetData) {
+    private fun navToRemoveAssetActionBottomSheet(removeAssetItem: RemoveAssetItem) {
         nav(
             RemoveAssetsFragmentDirections.actionRemoveAssetsFragmentToRemoveAssetActionBottomSheet(
                 AssetAction(
-                    assetId = accountAssetData.id,
+                    assetId = removeAssetItem.id,
                     publicKey = args.accountPublicKey,
-                    asset = AssetInformation.createAssetInformation(accountAssetData)
+                    asset = AssetInformation.createAssetInformation(removeAssetItem)
                 )
             )
         )

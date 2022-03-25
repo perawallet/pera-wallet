@@ -12,17 +12,21 @@
 
 package com.algorand.android.ui.register.registerintro
 
-import android.content.SharedPreferences
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.algorand.android.R
+import androidx.lifecycle.viewModelScope
+import com.algorand.android.models.RegisterIntroPreview
+import com.algorand.android.usecase.RegisterIntroPreviewUseCase
 import com.algorand.android.utils.getOrElse
-import com.algorand.android.utils.preference.setRegisterSkip
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class RegisterIntroViewModel @ViewModelInject constructor(
-    private val sharedPref: SharedPreferences,
+    private val registerIntroPreviewUseCase: RegisterIntroPreviewUseCase,
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -31,21 +35,27 @@ class RegisterIntroViewModel @ViewModelInject constructor(
         SHOULD_NAV_TO_REGISTER_WATCH_ACCOUNT, false
     )
 
+    private val _registerIntroPreviewFlow = MutableStateFlow<RegisterIntroPreview?>(null)
+    val registerIntroPreviewFlow: StateFlow<RegisterIntroPreview?> = _registerIntroPreviewFlow
+
+    init {
+        getRegisterIntroPreview()
+    }
+
     fun setRegisterSkip() {
-        sharedPref.setRegisterSkip()
-    }
-
-    fun getIsShowingCloseButton(): Boolean {
-        return isShowingCloseButton
-    }
-
-    // TODO: 1/24/22 Return all UI related fields in a preview object with a use case
-    fun getStartIconResId(): Int? {
-        return if (isShowingCloseButton) R.drawable.ic_close else null
+        registerIntroPreviewUseCase.setRegistrationSkipPreferenceAsSkipped()
     }
 
     fun getShouldNavToRegisterWatchAccount(): Boolean {
         return shouldNavToRegisterWatchAccount
+    }
+
+    private fun getRegisterIntroPreview() {
+        viewModelScope.launch {
+            registerIntroPreviewUseCase.getRegisterIntroPreview(isShowingCloseButton).collectLatest {
+                _registerIntroPreviewFlow.emit(it)
+            }
+        }
     }
 
     companion object {

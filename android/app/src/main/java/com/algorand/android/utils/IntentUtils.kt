@@ -21,7 +21,6 @@ import androidx.core.app.ShareCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.algorand.android.BuildConfig
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import java.io.File
 import java.io.FileOutputStream
 
@@ -53,7 +52,7 @@ fun Fragment.openImageShareBottomMenu(bitmap: Bitmap, activityResultLauncher: Ac
         outStream.close()
     } catch (exception: Exception) {
         tempFileDirectory?.delete()
-        FirebaseCrashlytics.getInstance().recordException(exception)
+        recordException(exception)
         return null
     }
 
@@ -77,7 +76,7 @@ fun Fragment.shareFile(file: File, type: String, activityResultLauncher: Activit
         activityResultLauncher.launch(sharingIntent)
     } catch (exception: Exception) {
         file.delete()
-        FirebaseCrashlytics.getInstance().recordException(exception)
+        recordException(exception)
     }
 
     return file

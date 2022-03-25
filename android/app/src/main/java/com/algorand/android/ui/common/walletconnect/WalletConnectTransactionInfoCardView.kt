@@ -28,6 +28,7 @@ import com.algorand.android.models.TransactionRequestAssetInformation
 import com.algorand.android.models.TransactionRequestTransactionInfo
 import com.algorand.android.utils.ALGO_DECIMALS
 import com.algorand.android.utils.addUnnamedAssetName
+import com.algorand.android.utils.enableClickToCopy
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.formatAmount
 import com.algorand.android.utils.getXmlStyledString
@@ -117,6 +118,7 @@ class WalletConnectTransactionInfoCardView(
     private fun initToAddress(displayedAddress: String?) {
         if (!displayedAddress.isNullOrBlank()) {
             binding.toAccountNameTextView.text = displayedAddress
+            binding.toAccountNameTextView.enableClickToCopy(displayedAddress)
             binding.toGroup.show()
         }
     }

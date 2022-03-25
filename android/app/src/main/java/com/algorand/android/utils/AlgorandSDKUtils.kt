@@ -20,7 +20,6 @@ import com.algorand.algosdk.mobile.Uint64
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.TransactionParams
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import java.math.BigInteger
 
 fun ByteArray.signTx(secretKey: ByteArray): ByteArray {
@@ -124,7 +123,7 @@ fun String?.isValidAddress(): Boolean {
     return try {
         Mobile.isValidAddress(this)
     } catch (exception: Exception) {
-        FirebaseCrashlytics.getInstance().recordException(exception)
+        recordException(exception)
         false
     }
 }
@@ -145,7 +144,7 @@ fun getPublicKey(addressAsByteArray: ByteArray): String? {
     return try {
         Mobile.generateAddressFromPublicKey(addressAsByteArray)
     } catch (exception: Exception) {
-        FirebaseCrashlytics.getInstance().recordException(exception)
+        recordException(exception)
         null
     }
 }
@@ -174,7 +173,7 @@ fun decodeBase64DecodedMsgPackToJsonString(msgPack: String): String {
         val decodedByteArray = Base64.decode(msgPack, Base64.DEFAULT)
         Mobile.transactionMsgpackToJson(decodedByteArray)
     } catch (exception: Exception) {
-        FirebaseCrashlytics.getInstance().recordException(exception)
+        recordException(exception)
         ""
     }
 }
@@ -184,6 +183,7 @@ fun generateAddressFromProgram(hashValue: String?): String {
         val decodedByteArray = Base64.decode(hashValue, Base64.DEFAULT)
         Mobile.addressFromProgram(decodedByteArray)
     } catch (exception: Exception) {
+        recordException(exception)
         ""
     }
 }
@@ -224,7 +224,7 @@ fun getTransactionId(txnByteArray: ByteArray?): String {
     return try {
         Mobile.getTxID(txnByteArray)
     } catch (exception: Exception) {
-        FirebaseCrashlytics.getInstance().recordException(exception)
+        recordException(exception)
         ""
     }
 }

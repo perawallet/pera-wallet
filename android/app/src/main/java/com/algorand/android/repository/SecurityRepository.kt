@@ -13,13 +13,22 @@
 
 package com.algorand.android.repository
 
+import com.algorand.android.sharedpref.BiometricRegistrationLocalSource
+import com.algorand.android.sharedpref.BiometricRegistrationLocalSource.Companion.defaultBiometricRegistrationPreference
+import com.algorand.android.sharedpref.LockAttemptCountLocalSource
+import com.algorand.android.sharedpref.LockAttemptCountLocalSource.Companion.defaultLockAttemptCountPreference
+import com.algorand.android.sharedpref.LockPenaltyRemainingTimeLocalSource
+import com.algorand.android.sharedpref.LockPenaltyRemainingTimeLocalSource.Companion.defaultLockPenaltyRemainingTimePreference
 import com.algorand.android.sharedpref.LockPreferencesLocalSource
-import com.algorand.android.sharedpref.PinLocalSource
+import com.algorand.android.sharedpref.PinRegistrationLocalSource
 import javax.inject.Inject
 
 class SecurityRepository @Inject constructor(
-    private val pinLocalSource: PinLocalSource,
-    private val lockPreferencesLocalSource: LockPreferencesLocalSource
+    private val lockPreferencesLocalSource: LockPreferencesLocalSource,
+    private val pinRegistrationLocalSource: PinRegistrationLocalSource,
+    private val biometricRegistrationLocalSource: BiometricRegistrationLocalSource,
+    private val lockPenaltyRemainingTimeLocalSource: LockPenaltyRemainingTimeLocalSource,
+    private val lockAttemptCountLocalSource: LockAttemptCountLocalSource
 ) {
 
     fun canAskLockPreferences(): Boolean {
@@ -28,7 +37,39 @@ class SecurityRepository @Inject constructor(
         ) != LockPreferencesLocalSource.DONT_SHOW_AGAIN_COUNT
     }
 
-    fun isPinCodeChosenBefore(): Boolean {
-        return pinLocalSource.getData(PinLocalSource.defaultPinPreferences).isNullOrEmpty()
+    fun isPinCodeEnabled(): Boolean {
+        return pinRegistrationLocalSource.isPinCodeEnabled()
+    }
+
+    fun setBiometricRegistrationPreference(isEnabled: Boolean) {
+        biometricRegistrationLocalSource.saveData(isEnabled)
+    }
+
+    fun setPinCodePreferencesAsDisabled() {
+        pinRegistrationLocalSource.saveData(null)
+    }
+
+    fun isBiometricActive(): Boolean {
+        return biometricRegistrationLocalSource.getData(defaultBiometricRegistrationPreference)
+    }
+
+    fun getCurrentPassword(): String? {
+        return pinRegistrationLocalSource.getDataOrNull()
+    }
+
+    fun setLockPenaltyRemainingTime(penaltyRemainingTime: Long) {
+        lockPenaltyRemainingTimeLocalSource.saveData(penaltyRemainingTime)
+    }
+
+    fun getLockPenaltyRemainingTime(): Long {
+        return lockPenaltyRemainingTimeLocalSource.getData(defaultLockPenaltyRemainingTimePreference)
+    }
+
+    fun setLockAttemptCount(lockAttemptCount: Int) {
+        lockAttemptCountLocalSource.saveData(lockAttemptCount)
+    }
+
+    fun getLockAttemptCount(): Int {
+        return lockAttemptCountLocalSource.getData(defaultLockAttemptCountPreference)
     }
 }

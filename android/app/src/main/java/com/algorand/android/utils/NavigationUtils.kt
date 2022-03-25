@@ -30,7 +30,6 @@ import com.algorand.android.CoreMainActivity
 import com.algorand.android.MainActivity
 import com.algorand.android.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 fun BottomNavigationView.setupWithNavController(navController: NavController) {
     setOnNavigationItemSelectedListener { item ->
@@ -63,7 +62,7 @@ fun Fragment.startSavedStateListener(fragmentId: Int, savedStateListener: NavBac
     try {
         navBackStackEntry = (activity as? CoreMainActivity)?.navController?.getBackStackEntry(fragmentId)
     } catch (exception: Exception) {
-        FirebaseCrashlytics.getInstance().recordException(exception)
+        recordException(exception)
         return
     }
 
@@ -102,7 +101,7 @@ fun NavController.navigateSafe(@NonNull directions: NavDirections, onError: (() 
         navigate(directions)
     } catch (exception: IllegalArgumentException) {
         onError?.invoke()
-        FirebaseCrashlytics.getInstance().recordException(exception)
+        recordException(exception)
     }
 }
 
@@ -110,6 +109,6 @@ fun NavController.navigateSafe(@IdRes resId: Int, args: Bundle?, navOptions: Nav
     try {
         navigate(resId, args, navOptions)
     } catch (exception: IllegalArgumentException) {
-        FirebaseCrashlytics.getInstance().recordException(exception)
+        recordException(exception)
     }
 }

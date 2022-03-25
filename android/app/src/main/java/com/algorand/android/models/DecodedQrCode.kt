@@ -13,8 +13,8 @@
 package com.algorand.android.models
 
 import android.os.Parcelable
-import java.math.BigInteger
 import kotlinx.parcelize.Parcelize
+import java.math.BigInteger
 
 @Parcelize
 data class DecodedQrCode(
@@ -26,7 +26,9 @@ data class DecodedQrCode(
     val xnote: String? = null, // locked note
     val label: String? = null,
     private val assetId: Long? = null,
-    val walletConnectUrl: String? = null
+    val walletConnectUrl: String? = null,
+    val transactionId: String? = null,
+    val transactionStatus: String? = null
 ) : Parcelable {
 
     fun getDecodedAssetID(): Long {

@@ -37,6 +37,7 @@
         <item name="materialButtonStyle">@style/Button.Primary</item>
         <item name="android:progressBarStyle">@style/ProgressBarStyle</item>
         <item name="switchStyle">@style/SwitchStyle</item>
+        <item name="checkboxStyle">@style/CheckBoxStyle</item>
     </style>
 
     <style name="AppTheme" parent="BaseTheme" />
@@ -93,34 +94,6 @@
     <style name="SnackbarTextStyle" parent="Widget.MaterialComponents.Snackbar.TextView">
         <item name="android:textColor">@color/primaryTextColor</item>
         <item name="android:fontFamily">@font/dmsans_regular</item>
-    </style>
-
-    <!--  TODO Remove after removing UnelevatedButton.General and UnelevatedButton.General.Secondary -->
-    <style name="UnelevatedButton" parent="@style/Widget.MaterialComponents.Button.UnelevatedButton">
-        <item name="backgroundTint">@color/unelevatedbutton_background_color</item>
-        <item name="rippleColor">@color/tertiaryBackground</item>
-        <item name="iconTint">@color/primaryButtonTextColor</item>
-        <item name="android:textColor">@color/unelevatedbutton_text_color</item>
-        <item name="android:fontFamily">@font/dmsans_medium</item>
-        <item name="android:letterSpacing">0</item>
-        <item name="cornerRadius">@dimen/unelevated_button_corner_radius</item>
-        <item name="android:insetBottom">0dp</item>
-        <item name="android:insetTop">0dp</item>
-        <item name="android:textSize">16sp</item>
-    </style>
-
-    <!--  TODO Remove after implementing new ledger pair instruction, dapp message, maximum and minimum transaction bottom sheet, lock fragment,transaction tips bottoms sheet designs -->
-    <style name="UnelevatedButton.General">
-        <item name="android:layout_marginEnd">@dimen/page_horizontal_spacing</item>
-        <item name="android:layout_marginStart">@dimen/page_horizontal_spacing</item>
-        <item name="android:minHeight">@dimen/unelevated_button_min_height</item>
-    </style>
-
-    <!--  TODO Remove after implementing new dapp message, custom error view, date filter bottom sheet designs -->
-    <style name="UnelevatedButton.General.Secondary">
-        <item name="backgroundTint">@color/secondaryButtonBackgroundColor</item>
-        <item name="iconTint">@color/secondaryTextColor</item>
-        <item name="android:textColor">@color/secondaryButtonTextColor</item>
     </style>
 
     <style name="TextButton" parent="@style/Widget.MaterialComponents.Button.TextButton">
@@ -196,6 +169,11 @@
     <style name="SwitchStyle" parent="Widget.AppCompat.CompoundButton.Switch">
         <item name="thumbTint">@color/white</item>
         <item name="trackTint">@color/switch_track_color</item>
+    </style>
+
+    <style name="CheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/checkbox_selector</item>
+        <item name="android:paddingStart">@dimen/spacing_normal</item>
     </style>
 
     <style name="LoadingDialogStyle" parent="Base.Theme.AppCompat.Dialog">

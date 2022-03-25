@@ -53,7 +53,7 @@ class AssetTransferAmountUseCase @Inject constructor(
         val assetInformation = accountCacheManager.getAssetInformation(fromAccountPublicKey, assetId)
 
         val formattedCurrencyValue = if (accountAssetData.usdValue != null) {
-            val currencySymbol = algoPriceUseCase.getSelectedCurrencySymbol()
+            val currencySymbol = algoPriceUseCase.getSelectedCurrencySymbolOrCurrencyName()
             amount.multiply(accountAssetData.usdValue)?.formatAsCurrency(currencySymbol)
         } else {
             null

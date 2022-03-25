@@ -13,5 +13,6 @@
 package com.algorand.android.models
 
 enum class Currency(val id: String) {
-    USD("USD")
+    USD("USD"),
+    ALGO("ALGO")
 }

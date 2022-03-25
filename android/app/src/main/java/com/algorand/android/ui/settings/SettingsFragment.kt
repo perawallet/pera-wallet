@@ -21,7 +21,7 @@ import androidx.fragment.app.viewModels
 import com.algorand.android.BuildConfig
 import com.algorand.android.MainNavigationDirections
 import com.algorand.android.R
-import com.algorand.android.core.DaggerBaseFragment
+import com.algorand.android.core.BaseBottomBarFragment
 import com.algorand.android.databinding.FragmentSettingsBinding
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.FragmentConfiguration
@@ -41,7 +41,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SettingsFragment : DaggerBaseFragment(R.layout.fragment_settings) {
+class SettingsFragment : BaseBottomBarFragment(R.layout.fragment_settings) {
 
     @Inject
     lateinit var aead: Aead

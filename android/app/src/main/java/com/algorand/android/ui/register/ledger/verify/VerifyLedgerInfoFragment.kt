@@ -21,6 +21,7 @@ import com.algorand.android.LoginNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.ui.common.BaseInfoFragment
+import com.algorand.android.utils.extensions.show
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -43,7 +44,7 @@ class VerifyLedgerInfoFragment : BaseInfoFragment() {
     }
 
     override fun setDescriptionText(textView: TextView) {
-        textView.text = getString(R.string.welcome_to_pera_your_account)
+        textView.text = getString(R.string.congratulations_your_account)
     }
 
     override fun setFirstButton(materialButton: MaterialButton) {
@@ -56,5 +57,17 @@ class VerifyLedgerInfoFragment : BaseInfoFragment() {
             }
             setOnClickListener { nav(action) }
         }
+    }
+
+    override fun setSecondButton(materialButton: MaterialButton) {
+        with(materialButton) {
+            text = getString(R.string.buy_algo)
+            show()
+            setOnClickListener { navToMoonpayNavigation() }
+        }
+    }
+
+    private fun navToMoonpayNavigation() {
+        nav(VerifyLedgerInfoFragmentDirections.actionVerifyLedgerInfoFragmentToMoonpayNavigation())
     }
 }

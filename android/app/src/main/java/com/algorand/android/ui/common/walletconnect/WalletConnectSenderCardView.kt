@@ -26,6 +26,7 @@ import com.algorand.android.models.BaseAppCallTransaction
 import com.algorand.android.models.BaseWalletConnectDisplayedAddress
 import com.algorand.android.models.TransactionRequestAssetInformation
 import com.algorand.android.models.TransactionRequestSenderInfo
+import com.algorand.android.utils.enableClickToCopy
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.setDrawable
 import com.algorand.android.utils.toShortenedAddress
@@ -166,6 +167,7 @@ class WalletConnectSenderCardView(
             with(binding) {
                 toNameTextView.text = toDisplayedAddress.displayValue
                 toNameTextView.isSingleLine = toDisplayedAddress.isSingleLine
+                toNameTextView.enableClickToCopy(toDisplayedAddress.fullAddress)
                 toGroup.show()
             }
         }

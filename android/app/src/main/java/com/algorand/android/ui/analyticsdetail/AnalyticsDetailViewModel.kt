@@ -19,7 +19,6 @@ import com.algorand.android.models.ChartEntryData
 import com.algorand.android.models.ChartInterval
 import com.algorand.android.models.ChartTimeFrame
 import com.algorand.android.usecase.AnalyticsDetailUseCase
-import com.algorand.android.usecase.CurrencyUseCase
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.coremanager.AlgoPriceManager
 import java.math.BigDecimal
@@ -34,7 +33,6 @@ import kotlinx.coroutines.launch
 
 // TODO Refactor AnalyticsDetailViewModel line by line and update it based on new architecture
 class AnalyticsDetailViewModel @ViewModelInject constructor(
-    private val currencyUseCase: CurrencyUseCase,
     private val analyticsDetailUseCase: AnalyticsDetailUseCase,
     private val algoPriceManager: AlgoPriceManager
 ) : BaseViewModel() {
@@ -67,7 +65,7 @@ class AnalyticsDetailViewModel @ViewModelInject constructor(
     }
 
     fun getCurrencyFormattedPrice(price: String): String {
-        return "$price ${currencyUseCase.getSelectedCurrency()}"
+        return "$price ${analyticsDetailUseCase.getSelectedCurrencyId()}"
     }
 
     fun refreshCachedAlgoPrice() {
@@ -76,10 +74,10 @@ class AnalyticsDetailViewModel @ViewModelInject constructor(
         }
     }
 
-    private fun getAlgoPriceHistory(selectedInterval: ChartInterval, currentAlgoPrice: BigDecimal) {
+    private fun getAlgoPriceHistory(selectedInterval: ChartInterval, cachedCurrencyValueOfPerAlgo: BigDecimal) {
         viewModelScope.launch(Dispatchers.IO) {
             analyticsDetailUseCase.getAlgoPriceHistory(
-                currentAlgoPrice,
+                cachedCurrencyValueOfPerAlgo,
                 selectedInterval,
                 this
             ).collectLatest(algoPriceHistoryCollector)

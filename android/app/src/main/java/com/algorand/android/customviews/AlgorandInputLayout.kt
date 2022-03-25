@@ -48,7 +48,7 @@ class AlgorandInputLayout @JvmOverloads constructor(
         set(value) {
             binding.textInputEditText.apply {
                 setText(value)
-                setSelection(value.length)
+                setSelection(length())
             }
         }
 

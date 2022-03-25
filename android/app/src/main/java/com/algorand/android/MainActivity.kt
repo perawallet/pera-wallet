@@ -133,6 +133,10 @@ class MainActivity : CoreMainActivity(),
         }
     }
 
+    private val invalidTransactionCauseObserver = Observer<Event<Resource.Error.Local>> { cause ->
+        cause.consume()?.let { onInvalidWalletConnectTransacitonReceived(it) }
+    }
+
     private val walletConnectUrlHandlerListener = object : WalletConnectUrlHandler.Listener {
         override fun onValidWalletConnectUrl(url: String) {
             showProgress()
@@ -261,6 +265,8 @@ class MainActivity : CoreMainActivity(),
 
         walletConnectViewModel.requestLiveData.observe(this, ::handleWalletConnectTransactionRequest)
 
+        walletConnectViewModel.invalidTransactionCauseLiveData.observe(this, invalidTransactionCauseObserver)
+
         lifecycleScope.launch {
             walletConnectViewModel.sessionResultFlow.collectLatest(::onNewSessionEvent)
         }
@@ -272,14 +278,27 @@ class MainActivity : CoreMainActivity(),
         nav(HomeNavigationDirections.actionGlobalLedgerConnectionIssueBottomSheet())
     }
 
+    private fun onInvalidWalletConnectTransacitonReceived(error: Resource.Error) {
+        val annotatedDescriptionErrorString = AnnotatedString(
+            stringResId = R.string.your_walletconnect_request_failed,
+            replacementList = listOf("error_message" to error.parse(this).toString())
+        )
+        nav(
+            MainNavigationDirections.actionGlobalSingleButtonBottomSheet(
+                titleAnnotatedString = AnnotatedString(R.string.uh_oh_something),
+                drawableResId = R.drawable.ic_error,
+                drawableTintResId = R.color.errorTintColor,
+                descriptionAnnotatedString = annotatedDescriptionErrorString
+            )
+        )
+    }
+
     private fun setupWalletConnectManager() {
         lifecycle.addObserver(walletConnectManager)
     }
 
     private fun handleWalletConnectTransactionRequest(requestEvent: Event<Resource<WalletConnectTransaction>>?) {
-        requestEvent?.consume()?.use(
-            onSuccess = ::onNewWalletConnectTransactionRequest
-        )
+        requestEvent?.consume()?.use(onSuccess = ::onNewWalletConnectTransactionRequest)
     }
 
     private fun onNewWalletConnectTransactionRequest(transaction: WalletConnectTransaction) {
@@ -299,6 +318,7 @@ class MainActivity : CoreMainActivity(),
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
+        mainViewModel.checkLockState()
         pendingIntent = intent?.getParcelableExtra(DEEPLINK_AND_NAVIGATION_INTENT)
         handlePendingIntent()
     }
@@ -330,9 +350,13 @@ class MainActivity : CoreMainActivity(),
                 nav(HomeNavigationDirections.actionGlobalSendAlgoNavigation(null))
             }
 
-            override fun onRequestClick() {
+            override fun onReceiveClick() {
                 firebaseAnalytics.logTapReceive()
                 nav(HomeNavigationDirections.actionGlobalReceiveAccountSelectionFragment())
+            }
+
+            override fun onBuyAlgoClick() {
+                navToMoonpayIntroFragment()
             }
         })
     }
@@ -384,6 +408,7 @@ class MainActivity : CoreMainActivity(),
     }
 
     private fun navToWalletConnectSessionTimeoutDialog() {
+        hideProgress()
         nav(
             MainNavigationDirections.actionGlobalSingleButtonBottomSheet(
                 titleAnnotatedString = AnnotatedString(R.string.connection_failed),
@@ -392,6 +417,10 @@ class MainActivity : CoreMainActivity(),
                 descriptionAnnotatedString = AnnotatedString(R.string.we_are_sorry_but_the),
             )
         )
+    }
+
+    private fun navToMoonpayIntroFragment() {
+        nav(HomeNavigationDirections.actionGlobalMoonpayNavigation())
     }
 
     companion object {

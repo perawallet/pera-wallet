@@ -17,6 +17,7 @@ import com.algorand.android.models.AssetQueryItem
 import com.algorand.android.models.BaseAccountAssetData
 import com.algorand.android.utils.ALGO_DECIMALS
 import com.algorand.android.utils.DEFAULT_ASSET_DECIMAL
+import com.algorand.android.utils.extensions.hasUsdValue
 import com.algorand.android.utils.formatAmount
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -43,7 +44,8 @@ class AccountAssetDataMapper @Inject constructor() {
             isAlgo = false,
             decimals = assetQueryItem.fractionDecimals ?: DEFAULT_ASSET_DECIMAL,
             creatorPublicKey = assetQueryItem.assetCreator?.publicKey,
-            usdValue = assetQueryItem.usdValue
+            usdValue = assetQueryItem.usdValue,
+            isAmountInSelectedCurrencyVisible = assetQueryItem.hasUsdValue()
         )
     }
 
@@ -91,7 +93,8 @@ class AccountAssetDataMapper @Inject constructor() {
             isAlgo = true,
             decimals = ALGO_DECIMALS,
             creatorPublicKey = "", // TODO set creator public key
-            usdValue = usdValue
+            usdValue = usdValue,
+            isAmountInSelectedCurrencyVisible = true // Algo always has a currency value
         )
     }
 }

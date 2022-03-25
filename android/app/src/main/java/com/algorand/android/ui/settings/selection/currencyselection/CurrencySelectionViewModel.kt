@@ -13,53 +13,52 @@
 package com.algorand.android.ui.settings.selection.currencyselection
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
-import com.algorand.android.repository.PriceRepository
+import com.algorand.android.models.ui.CurrencySelectionPreview
 import com.algorand.android.ui.settings.selection.CurrencyListItem
+import com.algorand.android.usecase.CurrencySelectionPreviewUseCase
 import com.algorand.android.usecase.CurrencyUseCase
-import com.algorand.android.utils.Resource
 import com.algorand.android.utils.analytics.logCurrencyChange
 import com.google.firebase.analytics.FirebaseAnalytics
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class CurrencySelectionViewModel @ViewModelInject constructor(
     private val firebaseAnalytics: FirebaseAnalytics,
-    private val priceRepository: PriceRepository,
-    private val currencyUseCase: CurrencyUseCase
+    private val currencyUseCase: CurrencyUseCase,
+    private val currencySelectionPreviewUseCase: CurrencySelectionPreviewUseCase
 ) : BaseViewModel() {
 
-    val currencyListLiveData = MutableLiveData<Resource<List<CurrencyListItem>>>()
+    val currencySelectionPreviewFlow: Flow<CurrencySelectionPreview?>
+        get() = _currencySelectionPreviewFlow
+    private val _currencySelectionPreviewFlow = MutableStateFlow<CurrencySelectionPreview?>(null)
 
-    private var getCurrenciesJob: Job? = null
+    private var previewJob: Job? = null
 
     init {
-        getCurrencyList()
+        initPreviewFlow()
     }
 
-    fun getCurrencyList() {
-        if (getCurrenciesJob?.isActive == true) {
-            return
-        }
-        getCurrenciesJob = viewModelScope.launch(Dispatchers.IO) {
-            priceRepository.getCurrencies().use(
-                onSuccess = { fetchedList ->
-                    val currencyListItem = fetchedList.map { fetchedCurrencyItem ->
-                        fetchedCurrencyItem.toCurrentListItem(selectedCurrencyId = getSelectedCurrencyId())
-                    }
-                    currencyListLiveData.postValue(Resource.Success(currencyListItem))
-                },
-                onFailed = { exception, _ ->
-                    currencyListLiveData.postValue(Resource.Error.Api(exception))
-                }
-            )
-        }
+    private fun initPreviewFlow() {
+        previewJob = getPreviewJob()
     }
 
-    private fun getSelectedCurrencyId() = currencyUseCase.getSelectedCurrency()
+    fun refreshPreview() {
+        previewJob?.cancel()
+        previewJob = getPreviewJob()
+    }
+
+    private fun getPreviewJob(): Job {
+        return viewModelScope.launch {
+            currencySelectionPreviewUseCase.getCurrencySelectionPreviewFlow().collectLatest {
+                _currencySelectionPreviewFlow.value = it
+            }
+        }
+    }
 
     fun setCurrencySelected(currencyListItem: CurrencyListItem) {
         currencyUseCase.setSelectedCurrency(currencyListItem.currencyId)

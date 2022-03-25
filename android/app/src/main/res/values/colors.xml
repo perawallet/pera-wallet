@@ -118,7 +118,6 @@
      When you have time try to remove the ones below.  -->
 
 
-
     <!--    Background Colors -->
     <!--    <color name="primaryBackground">@color/gray_F3</color>-->
     <color name="transparentPrimaryBackground">@color/gray_F3_alpha_100</color>
@@ -302,4 +301,8 @@
     <color name="nftPlaceholderBoxColor">@color/white</color>
     <color name="nftPlaceholderStarColor">@color/white</color>
     <color name="nftPlaceholderHoleColor">@color/gray_900</color>
+
+    <!--Moonpay-->
+    <color name="moonpaySecureColor">@color/helperPositive</color>
+    <color name="moonpayBgColor">#7D01FF</color>
 </resources>

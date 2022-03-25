@@ -60,7 +60,7 @@ class AccountsPreviewUseCase @Inject constructor(
             }
             when (algoPriceCache) {
                 is CacheResult.Success -> {
-                    processAccountsAndAssets(algoPriceCache, accountDetailCache, localAccounts)
+                    processAccountsAndAssets(accountDetailCache, localAccounts)
                 }
                 is CacheResult.Error -> getAlgoPriceErrorState(algoPriceCache, previousState)
                 else -> accountPreviewMapper.getFullScreenLoadingState()
@@ -79,20 +79,18 @@ class AccountsPreviewUseCase @Inject constructor(
     }
 
     private suspend fun processAccountsAndAssets(
-        algoPriceCache: CacheResult.Success<CurrencyValue>,
         accountDetailCache: HashMap<String, CacheResult<AccountDetail>>,
         localAccounts: List<Account>
     ): AccountPreview {
         val areAllAccountsAreCached = accountDetailUseCase.areAllAccountsCached()
         return if (areAllAccountsAreCached) {
-            processSuccessAccountCacheAndOthers(algoPriceCache, accountDetailCache, localAccounts)
+            processSuccessAccountCacheAndOthers(accountDetailCache, localAccounts)
         } else {
             accountPreviewMapper.getFullScreenLoadingState()
         }
     }
 
     private suspend fun processSuccessAccountCacheAndOthers(
-        algoPriceCache: CacheResult.Success<CurrencyValue>,
         accountDetailCache: HashMap<String, CacheResult<AccountDetail>>,
         localAccounts: List<Account>
     ): AccountPreview {
@@ -102,12 +100,11 @@ class AccountsPreviewUseCase @Inject constructor(
         return if (assetDetailUseCase.getCachedAssetList().isEmpty() && isThereAnyAssetNeedsToBeCached) {
             accountPreviewMapper.getFullScreenLoadingState()
         } else {
-            prepareAccountPreview(algoPriceCache, accountDetailCache, localAccounts)
+            prepareAccountPreview(accountDetailCache, localAccounts)
         }
     }
 
     private suspend fun prepareAccountPreview(
-        algoPriceCache: CacheResult.Success<CurrencyValue>,
         accountDetailCache: HashMap<String, CacheResult<AccountDetail>>,
         localAccounts: List<Account>
     ): AccountPreview {
@@ -115,9 +112,9 @@ class AccountsPreviewUseCase @Inject constructor(
             var algoHoldings = BigDecimal.ZERO
             var assetHoldings = BigDecimal.ZERO
 
-            val selectedCurrencySymbol = algoPriceCache.data.symbol.orEmpty()
+            val selectedCurrencySymbol = algoPriceUseCase.getSelectedCurrencySymbolOrEmpty()
 
-            val baseAccountListItems = getBaseAccountListItems(algoPriceCache, accountDetailCache, localAccounts) {
+            val baseAccountListItems = getBaseAccountListItems(accountDetailCache, localAccounts) {
                 algoHoldings += it.algoHoldingsInSelectedCurrency
                 assetHoldings += it.assetHoldingsInSelectedCurrency
             }.apply {
@@ -136,7 +133,6 @@ class AccountsPreviewUseCase @Inject constructor(
     }
 
     private fun getBaseAccountListItems(
-        algoPriceCache: CacheResult.Success<CurrencyValue>,
         accountDetailCache: HashMap<String, CacheResult<AccountDetail>>,
         localAccounts: List<Account>,
         onAccountBalanceCalculated: (AccountBalance) -> Unit
@@ -149,13 +145,11 @@ class AccountsPreviewUseCase @Inject constructor(
             .getSortedLocalAccounts(localAccounts)
 
         val normalAccountListItems = accountListItemsUseCase.createAccountListItems(
-            algoPriceCache,
             normalAccounts,
             sortedNormalLocalAccounts,
             onAccountBalanceCalculated
         )
         val watchAccountListItems = accountListItemsUseCase.createAccountListItems(
-            algoPriceCache,
             watchAccounts,
             sortedWatchLocalAccounts
         )

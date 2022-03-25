@@ -93,6 +93,10 @@ class AccountDetailFragment : BaseFragment(R.layout.fragment_account_detail), Ac
             )
         }
 
+        override fun onBuyAlgoClick() {
+            navToMoonpayIntroFragment()
+        }
+
         override fun onStateChange(isExtended: Boolean) {
             val statusBarConfiguration = if (isExtended) {
                 extendedStatusBarConfiguration
@@ -206,5 +210,9 @@ class AccountDetailFragment : BaseFragment(R.layout.fragment_account_detail), Ac
     private fun initAccountDetailPager() {
         accountDetailPagerAdapter = AccountDetailPagerAdapter(this, args.publicKey)
         binding.accountDetailViewPager.adapter = accountDetailPagerAdapter
+    }
+
+    private fun navToMoonpayIntroFragment() {
+        nav(AccountDetailFragmentDirections.actionAccountDetailFragmentToMoonpayNavigation(args.publicKey))
     }
 }

@@ -140,7 +140,7 @@ class RegisterWatchAccountFragment : DaggerBaseFragment(R.layout.fragment_regist
     private fun navToNameRegistrationFragment(createdAccount: AccountCreation) {
         nav(
             RegisterWatchAccountFragmentDirections
-                .actionRegisterWatchAccountFragmentToAccountNameRegistrationFragment(createdAccount)
+                .actionRegisterWatchAccountFragmentToWatchAccountNameRegistrationFragment(createdAccount)
         )
     }
 

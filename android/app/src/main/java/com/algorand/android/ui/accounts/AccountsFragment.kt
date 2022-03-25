@@ -21,7 +21,7 @@ import androidx.lifecycle.lifecycleScope
 import com.algorand.android.MainActivity
 import com.algorand.android.MainNavigationDirections
 import com.algorand.android.R
-import com.algorand.android.core.DaggerBaseFragment
+import com.algorand.android.core.BaseBottomBarFragment
 import com.algorand.android.databinding.FragmentAccountsBinding
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.DecodedQrCode
@@ -41,13 +41,13 @@ import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts) {
+class AccountsFragment : BaseBottomBarFragment(R.layout.fragment_accounts) {
 
     @Inject
     lateinit var sharedPref: SharedPreferences
@@ -77,8 +77,23 @@ class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts) {
         )
     }
 
+    private val portfolioInfoClickListener = object : BasePortfolioValuesItemViewHolder.PortfolioValuesListener {
+        override fun onPortfolioInfoClick(portfolioItem: BaseAccountListItem.BasePortfolioValueItem) {
+            navToPortfolioInfoBottomSheet(portfolioItem)
+        }
+
+        override fun onBuyAlgoClick() {
+            navToMoonpayIntroFragment()
+        }
+    }
+
     private var accountAdapter: AccountAdapter =
-        AccountAdapter(::onLoadedAccountClick, ::onErrorAccountClick, ::onAccountOptionsClick, ::onPortfolioInfoClick)
+        AccountAdapter(
+            ::onLoadedAccountClick,
+            ::onErrorAccountClick,
+            ::onAccountOptionsClick,
+            portfolioInfoClickListener
+        )
 
     private val accountListCollector: suspend (List<BaseAccountListItem>) -> Unit = {
         loadAccountsAndBalancePreview(it)
@@ -189,10 +204,6 @@ class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts) {
         nav(AccountsFragmentDirections.actionAccountsFragmentToHomeAccountOptionsBottomSheet(isWatchAccount))
     }
 
-    private fun onPortfolioInfoClick(portfolioItem: BaseAccountListItem.BasePortfolioValueItem) {
-        navToPortfolioInfoBottomSheet(portfolioItem)
-    }
-
     private fun navigateToNotifications() {
         nav(AccountsFragmentDirections.actionAccountsFragmentToNotificationCenterFragment())
     }
@@ -225,6 +236,10 @@ class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts) {
                 errorAnnotatedString = portfolioItem.errorStringResId?.run { AnnotatedString(this) }
             )
         )
+    }
+
+    private fun navToMoonpayIntroFragment() {
+        nav(AccountsFragmentDirections.actionAccountsFragmentToMoonpayNavigation())
     }
 
     companion object {

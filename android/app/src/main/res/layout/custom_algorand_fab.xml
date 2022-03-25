@@ -62,7 +62,7 @@
         android:layout_marginBottom="@dimen/spacing_large"
         app:backgroundTint="@color/white"
         app:fabCustomSize="60dp"
-        app:layout_constraintBottom_toTopOf="@id/openCloseActionButton"
+        app:layout_constraintBottom_toTopOf="@id/buyAlgoActionButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_arrow_down_line"
         app:tint="@color/gray_900" />
@@ -78,6 +78,31 @@
         app:layout_constraintBottom_toBottomOf="@id/receiveActionButton"
         app:layout_constraintEnd_toStartOf="@id/receiveActionButton"
         app:layout_constraintTop_toTopOf="@id/receiveActionButton" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/buyAlgoActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/spacing_xlarge"
+        android:layout_marginBottom="@dimen/spacing_large"
+        app:backgroundTint="@color/white"
+        app:fabCustomSize="60dp"
+        app:layout_constraintBottom_toTopOf="@id/openCloseActionButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_algo_sign"
+        app:tint="@color/gray_900" />
+
+    <TextView
+        android:id="@+id/buyAlgoButtonLabel"
+        style="@style/TextAppearance.Body.Sans.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/spacing_large"
+        android:text="@string/buy_algo"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/buyAlgoActionButton"
+        app:layout_constraintEnd_toStartOf="@id/buyAlgoActionButton"
+        app:layout_constraintTop_toTopOf="@id/buyAlgoActionButton" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/openCloseActionButton"

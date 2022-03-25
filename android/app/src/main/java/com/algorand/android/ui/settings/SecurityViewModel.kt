@@ -12,21 +12,37 @@
 
 package com.algorand.android.ui.settings
 
-import android.content.SharedPreferences
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.algorand.android.utils.preference.isBiometricActive
-import com.algorand.android.utils.preference.setBiometricRegistrationPreference
+import com.algorand.android.usecase.SecurityUseCase
 
 class SecurityViewModel @ViewModelInject constructor(
-    private val sharedPref: SharedPreferences
+    private val securityUseCase: SecurityUseCase
 ) : ViewModel() {
 
-    fun isBiometricActive(): Boolean {
-        return sharedPref.isBiometricActive()
+    private val _isPasswordChosenLiveData = MutableLiveData(securityUseCase.isPinCodeEnabled())
+    val isPasswordChosenLiveData: LiveData<Boolean> = _isPasswordChosenLiveData
+
+    private val _isBiometricEnabledLiveData = MutableLiveData(securityUseCase.isBiometricActive())
+    val isBiometricEnabledLiveData: LiveData<Boolean> = _isBiometricEnabledLiveData
+
+    fun setBiometricRegistrationPreference(isEnabled: Boolean) {
+        securityUseCase.setBiometricRegistrationPreference(isEnabled)
     }
 
-    fun setBiometricRegistrationPreference(isChecked: Boolean) {
-        sharedPref.setBiometricRegistrationPreference(isChecked)
+    fun setPasswordPreferencesAsDisabled() {
+        securityUseCase.setPasswordPreferencesAsDisabled()
     }
+
+    fun updatePinCodeEnabledFlow(isChecked: Boolean) {
+        _isPasswordChosenLiveData.postValue(isChecked)
+    }
+
+    fun updateBiometricEnabledFlow(isEnabled: Boolean) {
+        _isBiometricEnabledLiveData.postValue(isEnabled)
+    }
+
+    fun isPasscodeSet() = _isPasswordChosenLiveData.value ?: false
 }

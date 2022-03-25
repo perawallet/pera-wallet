@@ -17,18 +17,22 @@ import com.algorand.android.utils.toShortenedAddress
 sealed class BaseWalletConnectDisplayedAddress {
 
     abstract val displayValue: String
+    abstract val fullAddress: String
     abstract val isSingleLine: Boolean
 
-    data class ShortenedAddress(override val displayValue: String) : BaseWalletConnectDisplayedAddress() {
+    data class ShortenedAddress(override val displayValue: String, override val fullAddress: String) :
+        BaseWalletConnectDisplayedAddress() {
         override val isSingleLine: Boolean = true
     }
 
-    data class CustomName(override val displayValue: String) : BaseWalletConnectDisplayedAddress() {
+    data class CustomName(override val displayValue: String, override val fullAddress: String) :
+        BaseWalletConnectDisplayedAddress() {
         override val isSingleLine: Boolean = true
     }
 
     data class FullAddress(override val displayValue: String) : BaseWalletConnectDisplayedAddress() {
         override val isSingleLine: Boolean = false
+        override val fullAddress = displayValue
     }
 
     companion object {
@@ -39,8 +43,8 @@ sealed class BaseWalletConnectDisplayedAddress {
             val isDecodedAddressUsersAddress = account?.address == decodedAddress
             return when {
                 account == null || !isDecodedAddressUsersAddress -> FullAddress(decodedAddress)
-                account.name.isNullOrBlank().not() -> CustomName(account.name.orEmpty())
-                else -> ShortenedAddress(decodedAddress.toShortenedAddress())
+                account.name.isNullOrBlank().not() -> CustomName(account.name, decodedAddress)
+                else -> ShortenedAddress(decodedAddress.toShortenedAddress(), decodedAddress)
             }
         }
     }

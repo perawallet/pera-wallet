@@ -16,6 +16,7 @@ package com.algorand.android.customviews
 import android.content.Context
 import android.util.AttributeSet
 import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.core.view.isVisible
 import com.algorand.android.R
 import com.algorand.android.databinding.CustomAlgorandFabBinding
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -30,18 +31,23 @@ class AlgorandFloatingActionButton @JvmOverloads constructor(
 
     private var listener: Listener? = null
 
-    private var isExpanded by Delegates.observable(false, { _, _, newValue ->
+    private var isExpanded by Delegates.observable(false) { _, _, newValue ->
         listener?.onStateChange(newValue)
-    })
+    }
 
     init {
         initUi()
+    }
+
+    fun setBuyAlgoActionButtonVisibility(isVisible: Boolean) {
+        binding.buyAlgoActionButton.isVisible = isVisible
     }
 
     private fun initUi() {
         with(binding) {
             receiveActionButton.setOnClickListener { listener?.onReceiveClick() }
             sendActionButton.setOnClickListener { listener?.onSendClick() }
+            buyAlgoActionButton.setOnClickListener { listener?.onBuyAlgoClick() }
             openCloseActionButton.setOnClickListener { handleButtonClick() }
         }
     }
@@ -68,6 +74,7 @@ class AlgorandFloatingActionButton @JvmOverloads constructor(
     interface Listener {
         fun onReceiveClick()
         fun onSendClick()
+        fun onBuyAlgoClick()
         fun onStateChange(isExtended: Boolean)
     }
 }

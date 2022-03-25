@@ -12,7 +12,6 @@
 
 package com.algorand.android.utils
 
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.json.JSONObject
@@ -23,7 +22,7 @@ fun getFormattedJsonArrayString(json: String): String {
     return try {
         JSONObject(json).toString(JSON_INDENT)
     } catch (exception: Exception) {
-        FirebaseCrashlytics.getInstance().recordException(exception)
+        recordException(exception)
         "{}"
     }
 }

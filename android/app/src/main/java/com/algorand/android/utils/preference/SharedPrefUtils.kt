@@ -16,7 +16,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.algorand.android.models.Account
-import com.algorand.android.models.Currency
 import com.algorand.android.utils.encryptString
 import com.algorand.android.utils.parseFormattedDate
 import com.google.crypto.tink.Aead
@@ -26,11 +25,8 @@ import java.time.format.DateTimeFormatter
 
 // <editor-fold defaultstate="collapsed" desc="Constants">
 
-private const val USE_BIOMETRIC_KEY = "use_biometric"
 private const val ALGORAND_ACCOUNTS_KEY = "algorand_accounts"
-private const val LOCK_PASSWORD = "lock_password"
-private const val LOCK_ATTEMPT_COUNT_KEY = "lock_attempt_count"
-private const val LOCK_PENALTY_REMAINING_KEY = "lock_penalty_remaining"
+const val LOCK_PASSWORD = "lock_password"
 private const val NOTIFICATION_USER_ID_KEY = "notification_user_id"
 private const val DEFAULT_NODE_LIST_VERSION = "default_node_list_version"
 private const val REWARDS_ACTIVATED_KEY = "rewards_activated"
@@ -72,7 +68,7 @@ fun SharedPreferences.getEncryptedAlgorandAccounts() = getString(ALGORAND_ACCOUN
 
 // <editor-fold defaultstate="collapsed" desc="Password">
 
-fun SharedPreferences.savePassword(newPassword: String) = edit().putString(LOCK_PASSWORD, newPassword).apply()
+fun SharedPreferences.savePassword(newPassword: String?) = edit().putString(LOCK_PASSWORD, newPassword).apply()
 
 fun SharedPreferences.getPassword() = getString(LOCK_PASSWORD, null)
 
@@ -117,32 +113,6 @@ fun SharedPreferences.setNodeListVersion(newVersion: Int) {
 
 // </editor-fold>
 
-// <editor-fold defaultstate="collapsed" desc="Biometric">
-
-fun SharedPreferences.setBiometricRegistrationPreference(enableBiometric: Boolean) {
-    edit().putBoolean(USE_BIOMETRIC_KEY, enableBiometric).apply()
-}
-
-fun SharedPreferences.isBiometricActive() = getBoolean(USE_BIOMETRIC_KEY, false)
-
-// </editor-fold>
-
-// <editor-fold defaultstate="collapsed" desc="LockPinAttempt">
-
-fun SharedPreferences.setLockAttemptCount(lockAttemptCount: Int) {
-    edit().putInt(LOCK_ATTEMPT_COUNT_KEY, lockAttemptCount).apply()
-}
-
-fun SharedPreferences.getLockAttemptCount() = getInt(LOCK_ATTEMPT_COUNT_KEY, 0)
-
-fun SharedPreferences.setLockPenaltyRemainingTime(penaltyRemainingTime: Long) {
-    edit().putLong(LOCK_PENALTY_REMAINING_KEY, penaltyRemainingTime).apply()
-}
-
-fun SharedPreferences.getLockPenaltyRemainingTime() = getLong(LOCK_PENALTY_REMAINING_KEY, 0)
-
-// </editor-fold>
-
 // <editor-fold defaultstate="collapsed" desc="QRTutorialShown">
 
 fun SharedPreferences.setQrTutorialShown() {
@@ -170,20 +140,6 @@ fun SharedPreferences.setFilterTutorialShown() {
 }
 
 fun SharedPreferences.isFilterTutorialShown() = getBoolean(FILTER_TUTORIAL_SHOWN_KEY, false)
-
-// </editor-fold>
-
-// <editor-fold defaultstate="collapsed" desc="CurrencyPreference">
-
-private val defaultCurrencyPreference = Currency.USD.id
-
-fun SharedPreferences.setCurrencyPreference(currencyId: String) {
-    edit().putString(CURRENCY_PREFERENCE_KEY, currencyId).apply()
-}
-
-fun SharedPreferences.getCurrencyPreference(): String {
-    return getString(CURRENCY_PREFERENCE_KEY, defaultCurrencyPreference) ?: defaultCurrencyPreference
-}
 
 // </editor-fold>
 

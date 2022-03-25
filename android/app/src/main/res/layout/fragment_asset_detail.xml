@@ -31,7 +31,7 @@
                 style="@style/TextAppearance.Description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/your_balance"
+                android:text="@string/balance"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -118,15 +118,27 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buyAlgoButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xxlarge"
+                android:text="@string/buy_algo"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/algoRewardsView"
+                tools:visibility="visible" />
+
             <View
-                android:id="@+id/rewardsDividerLine"
+                android:id="@+id/assetInfoDividerLine"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_marginTop="@dimen/spacing_xxlarge"
+                android:layout_marginTop="@dimen/spacing_xxxlarge"
                 android:background="@color/dividerColor"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/algoRewardsView" />
+                app:layout_constraintTop_toBottomOf="@id/buyAlgoButton" />
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/algoAssetGroup"
@@ -134,8 +146,7 @@
                 android:layout_height="wrap_content"
                 app:constraint_referenced_ids="
             algoRewardsView,
-            rewardsDividerLine"
-                tools:visibility="gone" />
+            assetInfoDividerLine" />
 
             <View
                 android:id="@+id/otherAssetBalanceDividerLine"
@@ -207,7 +218,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:barrierDirection="bottom"
-                app:constraint_referenced_ids="rewardsDividerLine,otherAssetIdDividerLine" />
+                app:constraint_referenced_ids="assetInfoDividerLine,otherAssetIdDividerLine" />
 
             <com.algorand.android.customviews.TransactionHistoryToolbarView
                 android:id="@+id/transactionHistoryToolbar"
@@ -220,17 +231,20 @@
                 app:layout_constraintTop_toBottomOf="@id/dividerBarrier" />
 
             <com.algorand.android.customviews.ViewPortHeightRecyclerView
-                android:id="@+id/transactionList"
+                android:id="@+id/transactionListRecyclerView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_normal"
+                android:clipToPadding="false"
                 android:nestedScrollingEnabled="true"
+                android:paddingBottom="100dp"
                 app:heightOffset="@dimen/transaction_view_height_offset"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/transactionHistoryToolbar"
-                tools:listitem="@layout/item_transaction" />
+                tools:listitem="@layout/item_transaction"
+                tools:visibility="gone" />
 
             <com.algorand.android.customviews.ScreenStateView
                 android:id="@+id/screenStateView"

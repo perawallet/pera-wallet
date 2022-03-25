@@ -22,7 +22,7 @@ class LockPreferencesUseCase @Inject constructor(
 
     fun shouldNavigateLockNavigation(): Boolean {
         val canAskLockPreferences = securityRepository.canAskLockPreferences()
-        val isPinCodeChosenBefore = securityRepository.isPinCodeChosenBefore()
-        return canAskLockPreferences && isPinCodeChosenBefore
+        val isPinCodeChosenBefore = securityRepository.isPinCodeEnabled()
+        return canAskLockPreferences && !isPinCodeChosenBefore
     }
 }

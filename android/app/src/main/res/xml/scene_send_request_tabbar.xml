@@ -13,33 +13,53 @@
 <MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ConstraintSet android:id="@+id/start" />
+    <ConstraintSet android:id="@+id/start">
+
+        <Constraint android:id="@id/backgroundColorView">
+            <PropertySet
+                android:alpha="0"
+                android:visibility="invisible" />
+            <CustomAttribute
+                app:attributeName="clickable"
+                app:customBoolean="false" />
+            <CustomAttribute
+                app:attributeName="focusable"
+                app:customBoolean="false" />
+            <Motion app:transitionEasing="accelerate" />
+        </Constraint>
+
+    </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">
+
         <Constraint android:id="@id/backgroundColorView">
-            <Layout
-                android:layout_marginBottom="@dimen/main_bottom_navigation_height"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <PropertySet
+                android:alpha="1"
+                android:visibility="visible" />
+            <CustomAttribute
+                app:attributeName="clickable"
+                app:customBoolean="true" />
+            <CustomAttribute
+                app:attributeName="focusable"
+                app:customBoolean="true" />
+            <Motion app:transitionEasing="accelerate" />
         </Constraint>
 
         <Constraint android:id="@id/bottomSheetConstraintLayout">
             <Layout
                 android:layout_width="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/main_bottom_navigation_height"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
         </Constraint>
 
     </ConstraintSet>
 
     <Transition
         app:constraintSetEnd="@id/end"
-        app:constraintSetStart="@+id/start"
+        app:constraintSetStart="@id/start"
         app:duration="180"
         app:motionInterpolator="easeInOut">
         <KeyFrameSet>

@@ -235,8 +235,8 @@ class AssetTransferTransactionMapper @Inject constructor(
         val assetHolding = accountDetail?.accountInformation?.assetHoldingList?.firstOrNull {
             it.assetId == assetId
         }
-        val selectedCurrencyUsdConversionRate = algoPriceUseCase.getConversionRateOfCachedCurrency()
-        val currencySymbol = algoPriceUseCase.getSelectedCurrencySymbol()
+        val selectedCurrencyUsdConversionRate = algoPriceUseCase.getUsdToSelectedCurrencyConversionRate()
+        val currencySymbol = algoPriceUseCase.getSelectedCurrencySymbolOrCurrencyName()
         return walletConnectAssetInformationMapper.otherAssetMapToWalletConnectAssetInformation(
             assetQueryItem = assetQueryItem,
             assetHolding = assetHolding,

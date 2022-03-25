@@ -10,65 +10,73 @@
   ~ limitations under the License
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:background="@color/white">
+    android:fillViewport="true">
 
-    <com.algorand.android.customviews.CustomToolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/default_toolbar_height" />
-
-    <TextView
-        android:id="@+id/titleTextView"
-        style="@style/TextAppearance.Body.Large.Sans.Medium"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_xlarge"
-        android:layout_marginTop="@dimen/spacing_xxlarge"
-        android:text="@string/what_does_asset"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/bottom_safe_area_margin"
+        tools:background="@color/white">
 
-    <TextView
-        android:id="@+id/firstParagraphTextView"
-        style="@style/TextAppearance.VerifiedAssetsParagraph"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/verified_assets_first_paragraph" />
+        <com.algorand.android.customviews.CustomToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_toolbar_height" />
 
-    <TextView
-        style="@style/TextAppearance.VerifiedAssetsParagraph"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/verified_assets_second_paragraph" />
+        <TextView
+            android:id="@+id/titleTextView"
+            style="@style/TextAppearance.Body.Large.Sans.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_xxlarge"
+            android:text="@string/what_does_asset"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/thirdParagraphTextView"
-        style="@style/TextAppearance.VerifiedAssetsParagraph"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/verified_assets_third_paragraph" />
+        <TextView
+            android:id="@+id/firstParagraphTextView"
+            style="@style/TextAppearance.VerifiedAssetsParagraph"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/verified_assets_first_paragraph" />
 
-    <TextView
-        android:id="@+id/fourthParagraphTextView"
-        style="@style/TextAppearance.VerifiedAssetsParagraph"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/verified_assets_fourth_paragraph" />
+        <TextView
+            style="@style/TextAppearance.VerifiedAssetsParagraph"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/verified_assets_second_paragraph" />
 
-    <TextView
-        android:id="@+id/supportUrlTextView"
-        style="@style/TextAppearance.Body.Sans.Medium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_xlarge"
-        android:layout_marginTop="@dimen/spacing_large"
-        android:textColor="@color/linkPrimary"
-        tools:text="www.perawallet.app/support" />
+        <TextView
+            android:id="@+id/thirdParagraphTextView"
+            style="@style/TextAppearance.VerifiedAssetsParagraph"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/verified_assets_third_paragraph" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/fourthParagraphTextView"
+            style="@style/TextAppearance.VerifiedAssetsParagraph"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/verified_assets_fourth_paragraph" />
+
+        <TextView
+            android:id="@+id/supportUrlTextView"
+            style="@style/TextAppearance.Body.Sans.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:textColor="@color/linkPrimary"
+            tools:text="www.perawallet.app/support" />
+
+    </LinearLayout>
+
+</ScrollView>

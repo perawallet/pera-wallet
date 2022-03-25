@@ -22,6 +22,7 @@
         android:id="@+id/contactsRoot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/bottom_safe_area_margin"
         android:paddingHorizontal="@dimen/spacing_xlarge">
 
         <com.algorand.android.customviews.AccountIconImageView
@@ -113,30 +114,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/addressTextView" />
 
-        <TextView
-            android:id="@+id/assetsLabel"
-            style="@style/TextAppearance.Body.Sans.Medium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:text="@string/assets"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/lowerLine" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/assetsList"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/sendAssetButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_xsmall"
-            android:clipToPadding="false"
-            android:overScrollMode="never"
-            android:paddingBottom="@dimen/bottom_safe_area_margin"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/assetsLabel"
-            tools:itemCount="10"
-            tools:listitem="@layout/item_contact_asset" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            style="@style/Button.Primary"
+            android:text="@string/send_asset" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

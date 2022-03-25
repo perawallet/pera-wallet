@@ -16,7 +16,7 @@ import com.algorand.android.utils.AssetName
 
 data class AssetDetailPreview(
     val assetId: Long,
-    val isAlgorand: Boolean,
+    val isAlgo: Boolean,
     val fullName: AssetName,
     val shortName: AssetName,
     val isVerified: Boolean,

@@ -26,6 +26,10 @@
 
     <include app:graph="@navigation/warning_confirmation_navigation" />
 
+    <include app:graph="@navigation/moonpay_navigation" />
+
+    <include app:graph="@navigation/moonpay_result_navigation" />
+
     <action
         android:id="@+id/action_global_send_algo_navigation"
         app:destination="@id/sendAlgoNavigation">
@@ -70,8 +74,23 @@
         app:destination="@id/receiveAccountSelectionFragment" />
 
     <action
+        android:id="@+id/action_global_moonpayNavigation"
+        app:destination="@id/moonpayNavigation" />
+
+    <action
         android:id="@+id/action_global_showQrBottomSheet"
         app:destination="@id/showQrBottomSheet" />
+
+    <action
+        android:id="@+id/action_global_moonpayResultNavigation"
+        app:destination="@id/moonpayResultNavigation">
+        <argument
+            android:name="walletAddress"
+            app:argType="string" />
+        <argument
+            android:name="transactionStatus"
+            app:argType="com.algorand.android.modules.dapp.moonpay.domain.model.MoonpayTransactionStatus" />
+    </action>
 
     <action
         android:id="@+id/action_global_walletConnectRequestNavigation"
@@ -199,6 +218,12 @@
         <action
             android:id="@+id/action_accountsFragment_to_notificationCenterFragment"
             app:destination="@id/notificationCenterFragment" />
+        <action
+            android:id="@+id/action_accountsFragment_to_moonpayNavigation"
+            app:destination="@id/moonpayNavigation" />
+        <action
+            android:id="@+id/action_accountsFragment_to_assetDetailFragment"
+            app:destination="@id/assetDetailFragment" />
     </fragment>
 
     <fragment
@@ -316,6 +341,12 @@
         <action
             android:id="@+id/action_securityFragment_to_changePasswordFragment"
             app:destination="@id/changePasswordFragment" />
+        <action
+            android:id="@+id/action_securityFragment_to_disablePasscodeVerificationBottomSheet"
+            app:destination="@id/disablePasscodeVerificationBottomSheet" />
+        <action
+            android:id="@+id/action_securityFragment_to_changePasscodeVerificationBottomSheet"
+            app:destination="@id/changePasscodeVerificationBottomSheet" />
     </fragment>
 
     <fragment
@@ -524,6 +555,13 @@
         <action
             android:id="@+id/action_accountDetailFragment_to_assetSelectionFragment"
             app:destination="@id/assetSelectionFragment" />
+        <action
+            android:id="@+id/action_accountDetailFragment_to_moonpayNavigation"
+            app:destination="@id/moonpayNavigation">
+            <argument
+                android:name="walletAddress"
+                app:argType="string" />
+        </action>
     </fragment>
 
     <dialog
@@ -890,6 +928,13 @@
         <action
             android:id="@+id/action_assetDetailFragment_to_dateFilterPickerBottomSheet"
             app:destination="@id/dateFilterPickerBottomSheet" />
+        <action
+            android:id="@+id/action_assetDetailFragment_to_moonpayNavigation"
+            app:destination="@id/moonpayNavigation">
+            <argument
+                android:name="walletAddress"
+                app:argType="string" />
+        </action>
     </fragment>
 
     <dialog
@@ -921,5 +966,13 @@
             app:popUpTo="@id/accountErrorOptionsBottomSheet"
             app:popUpToInclusive="true" />
     </dialog>
+    <dialog
+        android:id="@+id/disablePasscodeVerificationBottomSheet"
+        android:name="com.algorand.android.ui.lock.DisablePasscodeVerificationBottomSheet"
+        android:label="DisablePasscodeVerificationBottomSheet" />
+    <dialog
+        android:id="@+id/changePasscodeVerificationBottomSheet"
+        android:name="com.algorand.android.ui.lock.ChangePasscodeVerificationBottomSheet"
+        android:label="ChangePasscodeVerificationBottomSheet" />
 
 </navigation>

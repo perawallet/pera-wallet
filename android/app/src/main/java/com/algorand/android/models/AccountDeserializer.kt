@@ -14,7 +14,7 @@ package com.algorand.android.models
 
 import com.algorand.android.models.Account.AccountIconColor
 import com.algorand.android.usecase.BaseAccountOrderUseCase.Companion.NOT_INITIALIZED_ACCOUNT_INDEX
-import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.algorand.android.utils.recordException
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
@@ -40,7 +40,7 @@ class AccountDeserializer : JsonDeserializer<Account> {
                 Account.Detail.Standard(secretKey)
             } else {
                 val exception = Exception("secretKey is unknown. $jsonObject")
-                FirebaseCrashlytics.getInstance().recordException(exception)
+                recordException(exception)
                 throw exception
             }
         } else {

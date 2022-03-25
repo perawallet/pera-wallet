@@ -16,6 +16,8 @@
     android:id="@+id/pairLedgerNavigation"
     app:startDestination="@id/ledgerInstructionFragment">
 
+    <include app:graph="@navigation/moonpay_navigation" />
+
     <fragment
         android:id="@+id/verifyLedgerAddressFragment"
         android:name="com.algorand.android.ui.register.ledger.verify.VerifyLedgerAddressFragment"
@@ -68,6 +70,19 @@
             android:id="@+id/action_ledgerInstructionFragment_to_registerLedgerSearchFragment"
             app:destination="@id/registerLedgerSearchFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/verifyLedgerInfoFragment"
+        android:name="com.algorand.android.ui.register.ledger.verify.VerifyLedgerInfoFragment"
+        android:label="VerifyLedgerInfoFragment"
+        tools:layout="@layout/fragment_base_info">
+        <action
+            android:id="@+id/action_verifyLedgerInfoFragment_to_moonpayNavigation"
+            app:destination="@id/moonpayNavigation"
+            app:popUpTo="@id/pairLedgerNavigation"
+            app:popUpToInclusive="true" />
+    </fragment>
+
     <dialog
         android:id="@+id/ledgerPairInstructionsBottomSheet"
         android:name="com.algorand.android.ui.ledgersearch.LedgerPairInstructionsBottomSheet"
@@ -77,11 +92,5 @@
             android:name="bluetoothDevice"
             app:argType="android.bluetooth.BluetoothDevice" />
     </dialog>
-
-    <fragment
-        android:id="@+id/verifyLedgerInfoFragment"
-        android:name="com.algorand.android.ui.register.ledger.verify.VerifyLedgerInfoFragment"
-        android:label="VerifyLedgerInfoFragment"
-        tools:layout="@layout/fragment_base_info" />
 
 </navigation>

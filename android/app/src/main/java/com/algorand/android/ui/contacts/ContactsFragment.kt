@@ -20,7 +20,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.algorand.android.MainActivity
 import com.algorand.android.R
-import com.algorand.android.core.DaggerBaseFragment
+import com.algorand.android.core.BaseBottomBarFragment
 import com.algorand.android.databinding.FragmentContactsBinding
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.IconButton
@@ -36,7 +36,7 @@ import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ContactsFragment : DaggerBaseFragment(R.layout.fragment_contacts) {
+class ContactsFragment : BaseBottomBarFragment(R.layout.fragment_contacts) {
 
     private val toolbarConfiguration = ToolbarConfiguration(backgroundColor = R.color.primaryBackground)
 
@@ -104,6 +104,7 @@ class ContactsFragment : DaggerBaseFragment(R.layout.fragment_contacts) {
         setupSearchQueryEditTextWatcher()
         initObservers()
         setupToolbar()
+        binding.titleTextView.requestFocus()
     }
 
     private fun setupToolbar() {

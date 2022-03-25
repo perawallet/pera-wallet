@@ -27,7 +27,8 @@ abstract class BasePortfolioValuesItemViewHolder(
         bindPortfolioItem(item)
     }
 
-    fun interface PortfolioInfoClickListener {
+    interface PortfolioValuesListener {
         fun onPortfolioInfoClick(portfolioItem: BaseAccountListItem.BasePortfolioValueItem)
+        fun onBuyAlgoClick()
     }
 }

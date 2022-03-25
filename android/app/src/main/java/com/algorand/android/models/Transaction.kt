@@ -30,6 +30,7 @@ data class Transaction(
     @SerializedName("id") val id: String?,
     @SerializedName("sender") val senderAddress: String?,
     @SerializedName("payment-transaction") val payment: Payment?,
+    @SerializedName("asset-freeze-transaction") val assetFreezeTransaction: AssetFreeze?,
     @SerializedName("sender-rewards") val senderRewards: Long?,
     @SerializedName("receiver-rewards") val receiverRewards: Long?,
     @SerializedName("note") val noteInBase64: String?,
@@ -43,7 +44,9 @@ data class Transaction(
         return if (isAlgorand()) {
             payment?.receiverAddress.orEmpty()
         } else {
-            assetTransfer?.receiverAddress.orEmpty()
+            // TODO: 24.02.2022 We have to determine which transaction types should we support,
+            //  then we should find a better solution for here
+            assetTransfer?.receiverAddress ?: assetFreezeTransaction?.receiverAddress.orEmpty()
         }
     }
 
@@ -60,7 +63,7 @@ data class Transaction(
     fun getAssetId(): Long? = if (isAlgorand()) {
         AssetInformation.ALGORAND_ID
     } else {
-        assetTransfer?.assetId
+        assetTransfer?.assetId ?: assetFreezeTransaction?.assetId
     }
 
     fun getReward(userPublicKey: String?): Long? {

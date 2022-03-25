@@ -467,7 +467,6 @@
     <string name="support">지원</string>
     <string name="rate_your_experience">사용 경험을 평가해주세요</string>
     <string name="tell_us_how_was_your_experience">사용 경험이 어땠는지 알려주세요</string>
-    <string name="the_scanned_qr_is_not">스캔한 QR은 유효한 알고랜드 공개 주소가 아닙니다. 다른 형태의 QR 코드를(WalletConnect 트랜잭션 등) 이용하려는 경우 홈페이지의 QR 스캔 버튼을 이용해주세요.</string>
     <string name="become_a_governor">거버너가 되어\n알고랜드의 미래에 투표하고\n보상을 받으세요.</string>
     <string name="the_registration_window_for">거버넌스 기간 #2의 등록 기간은 12월 25일 ~ 1월 7일 16:00 UTC입니다.</string>
     <string name="connection_failed">연결 실패</string>

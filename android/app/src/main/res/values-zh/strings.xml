@@ -470,7 +470,6 @@
     <string name="support">支持</string>
     <string name="rate_your_experience">评价您的体验</string>
     <string name="tell_us_how_was_your_experience">请告诉我们您的体验如何？</string>
-    <string name="the_scanned_qr_is_not">所扫二维码不是有效的Algorand公共地址。对于其他类型的QR（如WalletConnect交易），请使用主页上的扫描二维码按钮。</string>
     <string name="become_a_governor">成为治理者，\n为Algorand的未来投票，\n赚取奖励。</string>
     <string name="the_registration_window_for">治理期#2的注册窗口是12月25日至1月7日，16:00 UTC。</string>
     <string name="connection_failed">连接失败</string>

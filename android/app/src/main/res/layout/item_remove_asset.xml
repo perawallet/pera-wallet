@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -11,7 +10,9 @@
   ~ limitations under the License
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/spacing_xlarge"
@@ -22,14 +23,53 @@
         android:id="@+id/assetNameTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/assetBalanceTextView"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/removeAssetButton"
-        style="@style/Button.Text"
+    <TextView
+        android:id="@+id/assetBalanceTextView"
+        style="@style/TextAppearance.Body.Mono"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/remove"
-        android:textColor="@color/errorTextColor" />
+        android:layout_marginHorizontal="@dimen/spacing_large"
+        android:gravity="end"
+        app:layout_constraintBottom_toTopOf="@id/assetBalanceInCurrencyTextView"
+        app:layout_constraintEnd_toStartOf="@id/removeAssetButton"
+        app:layout_constraintStart_toEndOf="@id/assetNameTextView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="3,123,123.1232" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/assetBalanceInCurrencyTextView"
+        style="@style/TextAppearance.Footnote.Description.Mono"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_large"
+        android:gravity="end"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/removeAssetButton"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toEndOf="@id/assetNameTextView"
+        app:layout_constraintTop_toBottomOf="@id/assetBalanceTextView"
+        tools:text="$23,123.99" />
+
+    <!--  TODO Missing shadow  -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/removeAssetButton"
+        style="@style/IconButton"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:minWidth="0dp"
+        android:textColor="@color/errorTextColor"
+        app:icon="@drawable/ic_trash"
+        app:iconSize="20dp"
+        app:iconTint="@color/negativeColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

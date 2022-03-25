@@ -14,17 +14,28 @@
 package com.algorand.android.usecase
 
 import com.algorand.android.core.BaseUseCase
+import com.algorand.android.mapper.RemoveAssetItemMapper
 import com.algorand.android.models.AccountDetailSummary
 import com.algorand.android.models.AssetStatus
 import com.algorand.android.utils.CacheResult
 import javax.inject.Inject
+import kotlinx.coroutines.flow.flow
 
 class AccountAssetRemovalUseCase @Inject constructor(
-    private val accountDetailUseCase: AccountDetailUseCase
+    private val accountDetailUseCase: AccountDetailUseCase,
+    private val accountAssetDataUseCase: AccountAssetDataUseCase,
+    private val removeAssetItemMapper: RemoveAssetItemMapper
 ) : BaseUseCase() {
 
     fun getAccountSummary(publicKey: String): AccountDetailSummary? {
         return accountDetailUseCase.getAccountSummary(publicKey)
+    }
+
+    fun getRemovalAccountAssetsByQuery(publicKey: String, query: String) = flow {
+        val removalAccountAssets = accountAssetDataUseCase.getAccountOwnedAssetData(publicKey, false)
+            .filter { it.name?.contains(query, true) == true }
+            .map { removeAssetItemMapper.mapTo(it) }
+        emit(removalAccountAssets)
     }
 
     suspend fun addAssetDeletionToAccountCache(publicKey: String, assetId: Long) {

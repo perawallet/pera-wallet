@@ -32,10 +32,6 @@ class NameRegistrationViewModel @ViewModelInject constructor(
         return nameRegistrationUseCase.isThereAnyAccountWithThisPublicKey(publicKey)
     }
 
-    fun shouldForceLockNavigation(): Boolean {
-        return nameRegistrationUseCase.shouldNavigateLockNavigation()
-    }
-
     companion object {
         private const val ACCOUNT_CREATION_KEY = "accountCreation"
     }

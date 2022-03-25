@@ -16,18 +16,18 @@ package com.algorand.android.ui.removeasset.adapter
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.algorand.android.models.BaseAccountAssetData
-import com.algorand.android.ui.removeasset.RemoveAssetItem
+import com.algorand.android.models.BaseDiffUtil
+import com.algorand.android.models.RemoveAssetItem
 
 class RemoveAssetAdapter(
-    private val onRemoveAssetClick: (BaseAccountAssetData.OwnedAssetData) -> Unit
-) : ListAdapter<RemoveAssetItem, RemoveAssetItemViewHolder>(RemoveAssetDiffUtil()) {
+    private val onRemoveAssetClick: (RemoveAssetItem) -> Unit
+) : ListAdapter<RemoveAssetItem, RemoveAssetItemViewHolder>(BaseDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RemoveAssetItemViewHolder {
         return RemoveAssetItemViewHolder.create(parent).apply {
             binding.removeAssetButton.setOnClickListener {
                 if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                    onRemoveAssetClick(getItem(bindingAdapterPosition).accountAssetData)
+                    onRemoveAssetClick(getItem(bindingAdapterPosition))
                 }
             }
         }

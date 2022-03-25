@@ -17,15 +17,45 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.usecase.DeleteAllDataUseCase
+import com.algorand.android.usecase.LockUseCase
 import kotlinx.coroutines.launch
 
 class LockViewModel @ViewModelInject constructor(
-    private val deleteAllDataUseCase: DeleteAllDataUseCase
+    private val deleteAllDataUseCase: DeleteAllDataUseCase,
+    private val lockUseCase: LockUseCase
 ) : BaseViewModel() {
 
     fun deleteAllData(notificationManager: NotificationManager?, onDeletionCompleted: () -> Unit) {
         viewModelScope.launch {
             deleteAllDataUseCase.deleteAllData(notificationManager, onDeletionCompleted)
         }
+    }
+
+    fun shouldShowBiometricDialog(): Boolean {
+        return lockUseCase.shouldShowBiometricDialog()
+    }
+
+    fun isPinCodeEnabled(): Boolean {
+        return lockUseCase.isPinCodeEnabled()
+    }
+
+    fun getCurrentPassword(): String? {
+        return lockUseCase.getCurrentPassword()
+    }
+
+    fun getLockPenaltyRemainingTime(): Long {
+        return lockUseCase.getLockPenaltyRemainingTime()
+    }
+
+    fun getLockAttemptCount(): Int {
+        return lockUseCase.getLockAttemptCount()
+    }
+
+    fun setLockAttemptCount(lockAttemptCount: Int) {
+        lockUseCase.setLockAttemptCount(lockAttemptCount)
+    }
+
+    fun setLockPenaltyRemainingTime(penaltyRemainingTime: Long) {
+        lockUseCase.setLockPenaltyRemainingTime(penaltyRemainingTime)
     }
 }

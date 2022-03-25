@@ -39,7 +39,7 @@ class AccountAlgoAmountUseCase @Inject constructor(
     }
 
     private fun createAccountAlgoAmount(accountAlgoAmount: BigInteger): BaseAccountAssetData.OwnedAssetData {
-        val algoPrice = algoPriceUseCase.getCachedAlgoPrice()?.data?.exchangePrice?.toBigDecimalOrNull() ?: ZERO
+        val algoPrice = algoPriceUseCase.getAlgoToSelectedCurrencyConversionRate() ?: ZERO
         val amountInSelectedCurrency = accountAlgoAmount.toAlgoDisplayValue().multiply(algoPrice) ?: ZERO
         val formattedAlgoAmountInSelectedCurrency = formatAlgoAmountToSelectedCurrency(amountInSelectedCurrency)
         return accountAssetDataMapper.mapToAlgoAssetData(
@@ -51,7 +51,7 @@ class AccountAlgoAmountUseCase @Inject constructor(
     }
 
     private fun formatAlgoAmountToSelectedCurrency(algoAmountInSelectedCurrency: BigDecimal): String {
-        val selectedCurrencySymbol = algoPriceUseCase.getSelectedCurrencySymbol()
+        val selectedCurrencySymbol = algoPriceUseCase.getSelectedCurrencySymbolOrCurrencyName()
         return algoAmountInSelectedCurrency.formatAsCurrency(selectedCurrencySymbol)
     }
 }

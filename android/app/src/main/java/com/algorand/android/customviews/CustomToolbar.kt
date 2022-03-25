@@ -13,7 +13,6 @@
 package com.algorand.android.customviews
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.util.AttributeSet
 import androidx.annotation.StringRes
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -63,8 +62,8 @@ class CustomToolbar @JvmOverloads constructor(
         binding.buttonContainerView.removeAllViews()
         with(toolbarConfiguration) {
             setupBackground(backgroundColor)
-            setupTitle(titleResId)
-            configureStartButton(startIconResId, startIconClick)
+            setupTitle(titleResId, titleColor)
+            configureStartButton(startIconResId, startIconClick, startIconColor)
             val isTestNetStatusActive = binding.nodeStatusTextView.text == TESTNET_NETWORK_SLUG
             binding.nodeStatusTextView.isVisible = showNodeStatus && isTestNetStatusActive
             isAssetAvatarVisible = showAvatarImage
@@ -74,11 +73,14 @@ class CustomToolbar @JvmOverloads constructor(
         show()
     }
 
-    private fun setupTitle(titleResId: Int?) {
+    private fun setupTitle(titleResId: Int?, titleColor: Int? = null) {
         if (titleResId != null) {
             binding.toolbarTitleTextView.setText(titleResId)
         } else {
             binding.toolbarTitleTextView.text = ""
+        }
+        if (titleColor != null) {
+            binding.toolbarTitleTextView.setTextColor(ContextCompat.getColor(context, titleColor))
         }
     }
 
@@ -90,11 +92,14 @@ class CustomToolbar @JvmOverloads constructor(
         }
     }
 
-    fun configureStartButton(resId: Int?, clickAction: (() -> Unit)?) {
+    fun configureStartButton(resId: Int?, clickAction: (() -> Unit)?, iconColor: Int? = null) {
         binding.startImageButton.apply {
             if (resId == null) {
                 hide()
                 return
+            }
+            if (iconColor != null) {
+                imageTintList = ContextCompat.getColorStateList(context, iconColor)
             }
             setImageResource(resId)
             setOnClickListener { clickAction?.invoke() }
@@ -128,12 +133,12 @@ class CustomToolbar @JvmOverloads constructor(
         binding.assetAvatarView.setAssetAvatar(isAlgorand, assetFullName)
     }
 
-    fun setAssetAvatarIfAlgorand(isAlgorand: Boolean, shortName: String?) {
+    fun setAssetAvatarIfAlgo(isAlgo: Boolean, shortName: String?) {
         val assetShortName = shortName ?: context.getString(R.string.unnamed)
-        changeTitle(if (isAlgorand) ALGOS_SHORT_NAME else assetShortName)
-        if (isAlgorand) {
-            isAssetAvatarVisible = isAlgorand
-            isAvatarLayoutVisible = isAlgorand
+        changeTitle(if (isAlgo) ALGOS_SHORT_NAME else assetShortName)
+        if (isAlgo) {
+            isAssetAvatarVisible = isAlgo
+            isAvatarLayoutVisible = isAlgo
             binding.assetAvatarView.setAssetAvatar(true, assetShortName)
         }
     }
@@ -143,6 +148,6 @@ class CustomToolbar @JvmOverloads constructor(
     }
 
     private fun initRootView() {
-        backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.primaryBackground))
+        setBackgroundColor(ContextCompat.getColor(context, R.color.primaryBackground))
     }
 }

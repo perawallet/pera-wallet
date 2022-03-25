@@ -11,7 +11,7 @@
   -->
 
 <resources>
-    <string name="app_name">Pera Algo</string>
+    <string name="app_name">Pera Algo Wallet</string>
 
     <string name="version_format">Pera Wallet v%1$s</string>
     <string name="min_seconds_template" translatable="false">%1$02d:%2$02d</string>
@@ -39,5 +39,5 @@
 
     <string name="position_with_dot"><annotation replacement="position">positionPlaceholder</annotation>.</string>
 
-    <string name="formatted_amount_with_asset_name"><annotation replacement="amount">amountPlaceholder</annotation> <annotation replacement="asset_name"><annotation custom="text_size"><annotation default-font="dmsans_medium">assetNamePlaceholder</annotation></annotation></annotation></string>
+    <string name="formatted_amount_with_asset_name"><annotation replacement="amount">amountPlaceholder</annotation> <annotation replacement="asset_name"><annotation custom="text_size"><annotation font="dmsans_medium">assetNamePlaceholder</annotation></annotation></annotation></string>
 </resources>

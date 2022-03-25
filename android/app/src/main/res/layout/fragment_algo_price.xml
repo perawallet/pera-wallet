@@ -204,7 +204,6 @@
             marketCapDivider, allTimeHighTitleTextView, allTimeHighValueTextView"
             tools:visibility="visible" />
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.algorand.android.customviews.NonScrollableNestedScrollView>

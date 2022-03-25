@@ -105,4 +105,14 @@
         app:layout_constraintTop_toTopOf="@id/algoHoldingsTextView"
         tools:text="$33,664.21421" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buyAlgoButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_xxxxlarge"
+        android:text="@string/buy_algo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/assetHoldingsTextView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

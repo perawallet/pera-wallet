@@ -27,13 +27,13 @@ class TransactionAmountUseCase @Inject constructor(
 ) : BaseUseCase() {
 
     fun getAlgoAmount(algoAmount: BigInteger?): BigDecimal {
-        val algoPrice = algoPriceUseCase.getCachedAlgoPrice()?.data?.exchangePrice?.toBigDecimalOrNull() ?: ZERO
+        val algoPrice = algoPriceUseCase.getAlgoToSelectedCurrencyConversionRate() ?: ZERO
         val safeAlgoAmount = algoAmount ?: BigInteger.ZERO
         return safeAlgoAmount.toAlgoDisplayValue().multiply(algoPrice)
     }
 
     fun getAssetAmount(assetUsdValue: BigDecimal, amount: BigInteger?, decimal: Int?): BigDecimal {
-        val selectedCurrencyUsdConversionRate = algoPriceUseCase.getConversionRateOfCachedCurrency()
+        val selectedCurrencyUsdConversionRate = algoPriceUseCase.getUsdToSelectedCurrencyConversionRate()
         val safeDecimal = decimal ?: DEFAULT_ASSET_DECIMAL
         val safeAmount = amount ?: BigInteger.ZERO
         return safeAmount.toBigDecimal().movePointLeft(safeDecimal)

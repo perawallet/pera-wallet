@@ -21,6 +21,11 @@
 	<include app:graph="@navigation/transaction_request_navigation" />
 
 	<action
+		android:id="@+id/action_walletConnectRequestNavigation_pop"
+		app:popUpTo="@id/walletConnectRequestNavigation"
+		app:popUpToInclusive="true" />
+
+	<action
 		android:id="@+id/action_global_to_requestNavigation"
 		app:destination="@id/transactionRequestNavigation" />
 

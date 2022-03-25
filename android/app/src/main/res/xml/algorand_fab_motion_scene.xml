@@ -56,6 +56,18 @@
                 android:visibility="invisible" />
         </Constraint>
 
+        <Constraint android:id="@id/buyAlgoActionButton">
+            <PropertySet
+                android:alpha="0"
+                android:visibility="invisible" />
+        </Constraint>
+
+        <Constraint android:id="@id/buyAlgoButtonLabel">
+            <PropertySet
+                android:alpha="0"
+                android:visibility="invisible" />
+        </Constraint>
+
         <Constraint android:id="@id/openCloseActionButton">
 
         </Constraint>
@@ -111,6 +123,18 @@
         </Constraint>
 
         <Constraint android:id="@id/receiveButtonLabel">
+            <PropertySet
+                android:alpha="1"
+                android:visibility="visible" />
+        </Constraint>
+
+        <Constraint android:id="@id/buyAlgoActionButton">
+            <PropertySet
+                android:alpha="1"
+                android:visibility="visible" />
+        </Constraint>
+
+        <Constraint android:id="@id/buyAlgoButtonLabel">
             <PropertySet
                 android:alpha="1"
                 android:visibility="visible" />

@@ -15,7 +15,7 @@ package com.algorand.android.ui.settings.selection
 import android.content.Context
 import androidx.annotation.StringRes
 import com.algorand.android.utils.preference.ThemePreference
-import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.algorand.android.utils.recordException
 
 sealed class SelectionListItem {
     abstract var isSelected: Boolean
@@ -36,7 +36,7 @@ data class CurrencyListItem(
     val currencyName: String,
     override var isSelected: Boolean
 ) : SelectionListItem() {
-    override fun getVisibleName(context: Context): String = currencyName
+    override fun getVisibleName(context: Context): String = currencyId
 }
 
 data class ThemeListItem(
@@ -52,7 +52,7 @@ data class ThemeListItem(
         val themePreference = ThemePreference.values().firstOrNull { it.name == themeId }
         if (themePreference == null) {
             val exception = Exception("theme preference not found for theme id: $themeId")
-            FirebaseCrashlytics.getInstance().recordException(exception)
+            recordException(exception)
         }
         return themePreference
     }

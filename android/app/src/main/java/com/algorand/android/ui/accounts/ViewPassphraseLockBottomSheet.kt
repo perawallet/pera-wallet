@@ -12,110 +12,41 @@
 
 package com.algorand.android.ui.accounts
 
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
-import com.algorand.android.core.BaseBottomSheet
-import com.algorand.android.customviews.DialPadView
-import com.algorand.android.customviews.SixDigitPasswordView
-import com.algorand.android.databinding.BottomSheetViewPassphraseLockBinding
-import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.ui.lock.BasePasscodeVerificationBottomSheet
 import com.algorand.android.utils.setNavigationResult
 import com.algorand.android.utils.showAlertDialog
-import com.algorand.android.utils.showBiometricAuthentication
-import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ViewPassphraseLockBottomSheet : BaseBottomSheet(R.layout.bottom_sheet_view_passphrase_lock, false) {
+class ViewPassphraseLockBottomSheet : BasePasscodeVerificationBottomSheet() {
 
-    private var lockHandler: Handler? = null
-
-    private val useBiometric by lazy { viewPassphraseLockViewModel.isBiometricActive() }
-
-    private val currentPassword by lazy { viewPassphraseLockViewModel.getPassword() }
-
-    private val toolbarConfiguration = ToolbarConfiguration(
-        backgroundColor = R.color.primaryBackground,
-        startIconResId = R.drawable.ic_left_arrow,
-        titleResId = R.string.enter_a_passcode,
-        startIconClick = ::navBack
-    )
+    override val titleResId: Int = R.string.enter_a_passcode
 
     private val args: ViewPassphraseLockBottomSheetArgs by navArgs()
 
-    private val binding by viewBinding(BottomSheetViewPassphraseLockBinding::bind)
-
     private val viewPassphraseLockViewModel: ViewPassphraseLockViewModel by viewModels()
 
-    private val dialPadListener = object : DialPadView.DialPadListener {
-        override fun onNumberClick(number: Int) {
-            binding.viewPassphraseLockSixDigitPasswordView.onNewDigit(number, onNewDigitAdded = { isNewDigitAdded ->
-                if (!isNewDigitAdded) {
-                    return@onNewDigit
-                }
-                val passwordSize = binding.viewPassphraseLockSixDigitPasswordView.getPasswordSize()
-                if (passwordSize == SixDigitPasswordView.PASSWORD_LENGTH) {
-                    val givenPassword = binding.viewPassphraseLockSixDigitPasswordView.getPassword()
-                    if (currentPassword == givenPassword) {
-                        navigateBackAndShowPassphrase()
-                    } else {
-                        binding.viewPassphraseLockSixDigitPasswordView.clearWithAnimation()
-                        context?.showAlertDialog(
-                            getString(R.string.wrong_password),
-                            getString(R.string.you_should_enter_your_correct_password)
-                        )
-                    }
-                }
-            })
-        }
-
-        override fun onBackspaceClick() {
-            binding.viewPassphraseLockSixDigitPasswordView.removeLastDigit()
-        }
+    override fun onPasscodeError() {
+        super.onPasscodeError()
+        context?.showAlertDialog(
+            getString(R.string.wrong_password),
+            getString(R.string.you_should_enter_your_correct_password)
+        )
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.customToolbar.configure(toolbarConfiguration)
-        binding.viewPassphraseLockDialPadView.setDialPadListener(dialPadListener)
+    override fun onPasscodeSuccess() {
+        setNavigationResult(VIEW_PASSPHRASE_ADDRESS_KEY, args.publicKey)
+        navBack()
     }
 
     override fun onStart() {
         super.onStart()
         if (viewPassphraseLockViewModel.isNotPasswordChosen()) {
-            navigateBackAndShowPassphrase()
+            onPasscodeSuccess()
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (useBiometric) {
-            lockHandler = Handler(Looper.myLooper() ?: Looper.getMainLooper())
-            lockHandler?.post {
-                activity?.showBiometricAuthentication(
-                    getString(R.string.app_name),
-                    getString(R.string.please_scan_your_fingerprint_or),
-                    getString(R.string.cancel),
-                    successCallback = { navigateBackAndShowPassphrase() }
-                )
-            }
-        }
-    }
-
-    override fun onPause() {
-        binding.viewPassphraseLockSixDigitPasswordView.cancelAnimations()
-        super.onPause()
-        lockHandler?.removeCallbacksAndMessages(null)
-    }
-
-    private fun navigateBackAndShowPassphrase() {
-        setNavigationResult(VIEW_PASSPHRASE_ADDRESS_KEY, args.publicKey)
-        navBack()
     }
 
     companion object {

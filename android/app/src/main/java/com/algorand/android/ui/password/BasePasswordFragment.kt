@@ -54,24 +54,9 @@ abstract class BasePasswordFragment : DaggerBaseFragment(R.layout.fragment_base_
         startIconClick = ::onBackPressed
     )
 
-    override val fragmentConfiguration = FragmentConfiguration(
-        toolbarConfiguration = toolbarConfiguration
-    )
+    override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
 
     private val binding by viewBinding(FragmentBasePasswordBinding::bind)
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        chosenPassword = null
-        binding.dialpadView.setDialPadListener(dialPadListener)
-        activity?.onBackPressedDispatcher?.addCallback(
-            viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    onBackPressed()
-                }
-            })
-    }
 
     private val dialPadListener = object : DialPadView.DialPadListener {
         override fun onNumberClick(number: Int) {
@@ -81,6 +66,19 @@ abstract class BasePasswordFragment : DaggerBaseFragment(R.layout.fragment_base_
         override fun onBackspaceClick() {
             binding.passwordView.removeLastDigit()
         }
+    }
+
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            onBackPressed()
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        chosenPassword = null
+        binding.dialpadView.setDialPadListener(dialPadListener)
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, onBackPressedCallback)
     }
 
     private fun onNewDigitAdded(isNewDigitAdded: Boolean) {

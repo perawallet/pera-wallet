@@ -28,7 +28,7 @@ import com.algorand.android.models.NotificationType
 import com.algorand.android.ui.splash.LauncherActivity
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.preference.isNotificationActivated
-import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.algorand.android.utils.recordException
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
@@ -131,7 +131,7 @@ class PeraFirebaseMessagingService : FirebaseMessagingService() {
         return try {
             Gson().fromJson(remoteMessage.data[CUSTOM], NotificationMetadata::class.java)
         } catch (exception: IllegalStateException) {
-            FirebaseCrashlytics.getInstance().recordException(exception)
+            recordException(exception)
             NotificationMetadata()
         }
     }

@@ -27,10 +27,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/spacing_xlarge"
-            android:text="@string/welcome_to_pera"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/welcome_to_pera" />
 
         <com.algorand.android.customviews.RegisterTypeSelectionItem
             android:id="@+id/createAccountSelectionItem"

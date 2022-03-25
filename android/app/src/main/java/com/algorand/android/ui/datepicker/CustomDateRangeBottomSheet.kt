@@ -51,6 +51,8 @@ class CustomDateRangeBottomSheet : BaseBottomSheet(R.layout.bottom_sheet_custom_
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        isCancelable = false
+        setDraggableEnabled(isEnabled = false)
         initUi()
         initObservers()
     }

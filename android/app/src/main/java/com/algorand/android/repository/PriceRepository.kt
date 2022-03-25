@@ -12,23 +12,22 @@
 
 package com.algorand.android.repository
 
-import android.content.SharedPreferences
 import com.algorand.android.cache.AlgoPriceSingleLocalCache
 import com.algorand.android.models.ChartInterval
+import com.algorand.android.models.Currency
 import com.algorand.android.models.CurrencyValue
 import com.algorand.android.network.AlgodExplorerPriceApi
 import com.algorand.android.network.MobileAlgorandApi
 import com.algorand.android.network.requestWithHipoErrorHandler
 import com.algorand.android.utils.CacheResult
-import com.algorand.android.utils.preference.getCurrencyPreference
 import com.hipo.hipoexceptionsandroid.RetrofitErrorHandler
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.withContext
+import java.net.HttpURLConnection
+import javax.inject.Inject
 
 class PriceRepository @Inject constructor(
-    private val sharedPref: SharedPreferences,
     private val mobileAlgorandApi: MobileAlgorandApi,
     private val hipoApiErrorHandler: RetrofitErrorHandler,
     private val algodExplorerPriceApi: AlgodExplorerPriceApi,
@@ -53,9 +52,9 @@ class PriceRepository @Inject constructor(
         mobileAlgorandApi.getCurrencies()
     }
 
-    suspend fun getAlgorandCurrencyValue(currencyPreference: String? = null) =
+    suspend fun getAlgorandCurrencyValue(currencyPreference: String) =
         requestWithHipoErrorHandler(hipoApiErrorHandler) {
-            mobileAlgorandApi.getAlgorandCurrenyValue(currencyPreference ?: sharedPref.getCurrencyPreference())
+            mobileAlgorandApi.getAlgorandCurrenyValue(currencyPreference)
         }
 
     suspend fun getAlgoPriceHistoryByTimeFrame(chartInterval: ChartInterval) = withContext(Dispatchers.IO) {
@@ -64,5 +63,10 @@ class PriceRepository @Inject constructor(
                 algodExplorerPriceApi.getAlgoUsdPriceHistoryByTimeFrame(sinceAsSec, untilAsSec, intervalQueryParam)
             }
         }
+    }
+
+    companion object {
+        const val CURRENCY_NOT_FOUND_ERROR_CODE = HttpURLConnection.HTTP_NOT_FOUND
+        val CURRENCY_TO_CACHE_WHEN_ALGO_IS_SELECTED = Currency.USD.id
     }
 }

@@ -467,7 +467,6 @@
     <string name="support">サポート</string>
     <string name="rate_your_experience">体験を評価する</string>
     <string name="tell_us_how_was_your_experience">ご利用体験はいかがでしたか？</string>
-    <string name="the_scanned_qr_is_not">スキャンされたQRは、有効なAlgorandのパブリックアドレスではありません。その他のタイプのQR（WalletConnectトランザクションなど）については、ホームページのスキャンQRボタンをご利用ください。</string>
     <string name="become_a_governor">理事になりましょう。\nアルゴランドの将来に投票しましょう。\n報酬を獲得しましょう。</string>
     <string name="the_registration_window_for">Governance Period #2の登録期間は、12月25日から1月7日 16:00 UTCです</string>
     <string name="connection_failed">接続に失敗しました</string>

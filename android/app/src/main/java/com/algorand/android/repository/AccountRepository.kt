@@ -20,20 +20,15 @@ import com.algorand.android.models.Result
 import com.algorand.android.network.AlgodApi
 import com.algorand.android.network.IndexerApi
 import com.algorand.android.network.safeApiCall
-import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import com.algorand.android.utils.CacheResult
-import java.math.BigInteger
 import java.net.HttpURLConnection
 import javax.inject.Inject
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
 
 class AccountRepository @Inject constructor(
     private val algodApi: AlgodApi,
     private val indexerApi: IndexerApi,
-    private val accountLocalCache: AccountLocalCache,
-    private val assetDetailUseCase: SimpleAssetDetailUseCase // TODO Change here after merging this branch
+    private val accountLocalCache: AccountLocalCache
 ) {
 
     suspend fun getAccountInformation(
@@ -114,17 +109,6 @@ class AccountRepository @Inject constructor(
 
     suspend fun removeCachedAccount(publicKey: String) {
         accountLocalCache.remove(publicKey)
-    }
-
-    fun getAccountBalanceFlow(publicKey: String): Flow<BigInteger?> {
-        // TODO Move this logic into UseCase
-        return accountLocalCache.cacheMapFlow
-            .map {
-                val accountInformation = it[publicKey]?.data?.accountInformation
-                val algoAmount = accountInformation?.amount ?: BigInteger.ZERO
-                val otherAssetsAmount = accountInformation?.assetHoldingList?.sumOf { it.amount } ?: BigInteger.ZERO
-                algoAmount.add(otherAssetsAmount)
-            }
     }
 
     companion object {

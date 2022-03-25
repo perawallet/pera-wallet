@@ -23,7 +23,7 @@ import com.algorand.android.utils.extensions.setDrawableTintColor
 
 class PortfolioValuesErrorItemViewHolder(
     override val binding: ItemPortfolioValuesBinding,
-    private val portfolioInfoClickListener: PortfolioInfoClickListener
+    private val portfolioValuesListener: PortfolioValuesListener
 ) : BasePortfolioValuesItemViewHolder(binding) {
 
     override fun bindPortfolioItem(item: BaseAccountListItem.BasePortfolioValueItem) {
@@ -33,10 +33,11 @@ class PortfolioValuesErrorItemViewHolder(
             algoHoldingsTextView.text = notAvailableText
             assetHoldingsTextView.text = notAvailableText
             portfolioValueTextView.text = notAvailableText
+            buyAlgoButton.setOnClickListener { portfolioValuesListener.onBuyAlgoClick() }
             portfolioValueTitleTextView.apply {
                 setTextColor(ContextCompat.getColor(root.context, item.titleColorResId))
                 setDrawableTintColor(item.titleColorResId)
-                setOnClickListener { portfolioInfoClickListener.onPortfolioInfoClick(item) }
+                setOnClickListener { portfolioValuesListener.onPortfolioInfoClick(item) }
             }
         }
     }
@@ -44,10 +45,10 @@ class PortfolioValuesErrorItemViewHolder(
     companion object {
         fun create(
             parent: ViewGroup,
-            portfolioInfoClickListener: PortfolioInfoClickListener
+            portfolioValuesListener: PortfolioValuesListener
         ): BaseViewHolder<BaseAccountListItem> {
             val binding = ItemPortfolioValuesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            return PortfolioValuesErrorItemViewHolder(binding, portfolioInfoClickListener)
+            return PortfolioValuesErrorItemViewHolder(binding, portfolioValuesListener)
         }
     }
 }

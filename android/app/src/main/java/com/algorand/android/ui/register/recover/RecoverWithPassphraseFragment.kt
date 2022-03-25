@@ -47,9 +47,9 @@ import com.algorand.android.utils.toShortenedAddress
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Locale
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 @AndroidEntryPoint
 class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recover_with_passphrase) {
@@ -210,7 +210,7 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
                 showErrorBottomSheet(descriptionString = mnemonicResponse.error)
                 return
             }
-            val privateKey = Mobile.mnemonicToPrivateKey(mnemonicResponse.mnemonic.toLowerCase(Locale.ENGLISH))
+            val privateKey = Mobile.mnemonicToPrivateKey(mnemonicResponse.mnemonic.lowercase(Locale.ENGLISH))
             if (privateKey != null) {
                 val publicKey = Mobile.generateAddressFromSK(privateKey)
                 val sameAccount = recoverWithPassphraseViewModel.getAccountIfExist(publicKey)
@@ -245,7 +245,7 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
     private fun navigateToSuccess() {
         nav(
             RecoverWithPassphraseFragmentDirections
-                .actionRecoverWithPassphraseFragmentToAccountNameRegistrationFragment(accountCreation)
+                .actionRecoverWithPassphraseFragmentToRecoverAccountNameRegistrationFragment(accountCreation)
         )
     }
 
@@ -262,10 +262,7 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
     }
 
     private fun onOptionsClick() {
-        nav(
-            RecoverWithPassphraseFragmentDirections
-                .actionRecoverWithPassphraseFragmentToRecoverOptionsBottomSheet()
-        )
+        nav(RecoverWithPassphraseFragmentDirections.actionRecoverWithPassphraseFragmentToRecoverOptionsBottomSheet())
     }
 
     private fun onRecoverClick() {

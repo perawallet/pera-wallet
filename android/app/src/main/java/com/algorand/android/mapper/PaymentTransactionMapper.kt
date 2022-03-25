@@ -193,9 +193,9 @@ class PaymentTransactionMapper @Inject constructor(
         amount: BigInteger
     ): WalletConnectAssetInformation? {
 
-        val algoPrice = algoPriceUseCase.getCachedAlgoPrice()?.data?.exchangePrice?.toBigDecimalOrNull()
+        val algoPrice = algoPriceUseCase.getAlgoToSelectedCurrencyConversionRate()
             ?: BigDecimal.ZERO
-        val currencySymbol = algoPriceUseCase.getSelectedCurrencySymbol()
+        val currencySymbol = algoPriceUseCase.getSelectedCurrencySymbolOrCurrencyName()
 
         return walletConnectAssetInformationMapper.algorandMapToWalletConnectAssetInformation(
             assetInformation,

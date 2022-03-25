@@ -105,6 +105,10 @@ class AssetDetailFragment : DaggerBaseFragment(R.layout.fragment_asset_detail) {
             )
         }
 
+        override fun onBuyAlgoClick() {
+            navToMoonpayIntroFragment()
+        }
+
         override fun onStateChange(isExtended: Boolean) {
             val statusBarConfiguration = if (isExtended) {
                 extendedStatusBarConfiguration
@@ -131,7 +135,7 @@ class AssetDetailFragment : DaggerBaseFragment(R.layout.fragment_asset_detail) {
 
         override fun onNewPendingItemInserted() {
             binding.screenStateView.hide()
-            binding.transactionList.scrollToPosition(0)
+            binding.transactionListRecyclerView.scrollToPosition(0)
         }
     }
 
@@ -218,13 +222,14 @@ class AssetDetailFragment : DaggerBaseFragment(R.layout.fragment_asset_detail) {
         with(binding) {
             assetDetailSendReceiveFab.setListener(fabListener)
             rewardsInfo.setOnClickListener { onRewardsInfoClicked() }
-            transactionList.adapter = concatAdapter
+            transactionListRecyclerView.adapter = concatAdapter
             transactionHistoryToolbar.apply {
                 setOnFilterClickListener(::onFilterClick)
                 setOnExportClickListener(::onExportClick)
             }
             screenStateView.setOnNeutralButtonClickListener { assetDetailViewModel.refreshTransactionHistory() }
             assetIdCopyButton.setOnClickListener { onAssetIdClicked() }
+            buyAlgoButton.setOnClickListener { navToMoonpayIntroFragment() }
         }
     }
 
@@ -232,10 +237,12 @@ class AssetDetailFragment : DaggerBaseFragment(R.layout.fragment_asset_detail) {
         with(binding) {
             // TODO Find a better way to handling null & error & loading cases
             assetDetailPreview?.run {
-                getAppToolbar()?.setAssetAvatarIfAlgorand(isAlgorand, shortName.getName(resources))
+                getAppToolbar()?.setAssetAvatarIfAlgo(isAlgo, shortName.getName(resources))
                 assetDetailSendReceiveFab.isVisible = canSignTransaction
-                algoAssetGroup.isVisible = isAlgorand
-                otherAssetGroup.isVisible = isAlgorand.not()
+                algoAssetGroup.isVisible = isAlgo
+                otherAssetGroup.isVisible = isAlgo.not()
+                buyAlgoButton.isVisible = isAlgo && canSignTransaction
+                assetDetailSendReceiveFab.setBuyAlgoActionButtonVisibility(isAlgo)
                 balanceTextView.text = formattedAssetBalance
                 balanceInCurrencyTextView.text = formattedAssetBalanceInCurrency
                 balanceInCurrencyTextView.isVisible = isAmountInSelectedCurrencyVisible
@@ -270,7 +277,7 @@ class AssetDetailFragment : DaggerBaseFragment(R.layout.fragment_asset_detail) {
         with(binding) {
             loadingProgressBar.isVisible = loadStatePreview.isLoading
             screenStateView.isVisible = loadStatePreview.isScreenStateViewVisible
-            transactionList.isVisible = loadStatePreview.isTransactionListVisible
+            transactionListRecyclerView.isVisible = loadStatePreview.isTransactionListVisible
             loadStatePreview.screenStateViewType?.let { screenStateView.setupUi(it) }
         }
     }
@@ -322,6 +329,14 @@ class AssetDetailFragment : DaggerBaseFragment(R.layout.fragment_asset_detail) {
                 }
             }
         }
+    }
+
+    private fun navToMoonpayIntroFragment() {
+        nav(
+            AssetDetailFragmentDirections.actionAssetDetailFragmentToMoonpayNavigation(
+                assetDetailViewModel.getPublicKey()
+            )
+        )
     }
 
     companion object {

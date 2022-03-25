@@ -39,13 +39,11 @@ class AssetTransferPreviewUseCase @Inject constructor(
     fun getAssetTransferPreview(
         signedTransactionDetail: SignedTransactionDetail.Send
     ): AssetTransferPreview {
-        val currencyValue = algoPriceUseCase.getCachedAlgoPrice()?.data
-        val exchangePrice = currencyValue?.exchangePrice?.toBigDecimalOrNull() ?: BigDecimal.ZERO
-        val currencySymbol = currencyValue?.symbol ?: algoPriceUseCase.getSelectedCurrencySymbol()
+        val exchangePrice = algoPriceUseCase.getAlgoToSelectedCurrencyConversionRate() ?: BigDecimal.ZERO
         return assetTransferPreviewMapper.mapToAssetTransferPreview(
             signedTransactionDetail = signedTransactionDetail,
             exchangePrice = exchangePrice,
-            currencySymbol = currencySymbol
+            currencySymbol = algoPriceUseCase.getSelectedCurrencySymbolOrCurrencyName()
         )
     }
 

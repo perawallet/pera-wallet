@@ -27,7 +27,7 @@ class AssetDetailPreviewMapper @Inject constructor() {
     ): AssetDetailPreview {
         return AssetDetailPreview(
             assetId = assetData.id,
-            isAlgorand = assetData.isAlgo,
+            isAlgo = assetData.isAlgo,
             isVerified = assetData.isVerified,
             fullName = AssetName.create(assetData.name),
             shortName = AssetName.createShortName(assetData.shortName),

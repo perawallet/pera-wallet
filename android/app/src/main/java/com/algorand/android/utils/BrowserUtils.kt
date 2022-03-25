@@ -18,7 +18,6 @@ import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 private const val PRIVACY_POLICY_URL = "https://perawallet.app/privacy-policy/"
 private const val TERMS_AND_SERVICES_URL = "https://perawallet.app/terms-and-services/"
@@ -65,7 +64,7 @@ fun Context.openUrl(url: String) {
             .build()
             .launchUrl(this, Uri.parse(url))
     } catch (activityNotFoundException: ActivityNotFoundException) {
-        FirebaseCrashlytics.getInstance().recordException(activityNotFoundException)
+        recordException(activityNotFoundException)
     }
 }
 
@@ -99,7 +98,7 @@ fun Context.openApplicationPageOnStore() {
             setPackage("com.android.vending")
         })
     } catch (activityNotFoundException: ActivityNotFoundException) {
-        FirebaseCrashlytics.getInstance().recordException(activityNotFoundException)
+        recordException(activityNotFoundException)
     }
 }
 
@@ -108,7 +107,7 @@ fun Context.openAlgorandGovernancePage() {
         val intent = Intent(ACTION_VIEW, Uri.parse(GOVERNANCE_URL))
         startActivity(intent)
     } catch (activityNotFoundException: ActivityNotFoundException) {
-        FirebaseCrashlytics.getInstance().recordException(activityNotFoundException)
+        recordException(activityNotFoundException)
     }
 }
 

@@ -470,7 +470,6 @@
     <string name="support">Destek</string>
     <string name="rate_your_experience">Deneyiminizi değerlendirin</string>
     <string name="tell_us_how_was_your_experience">Deneyiminizin nasıl olduğundan bahseder misiniz?</string>
-    <string name="the_scanned_qr_is_not">Taranan QR, geçerli bir herkese açık Algorand adresi değildir. Diğer QR türleri (WalletConnect işlemleri gibi) için lütfen ana sayfada bulunan QR düğmesini taramayı kullanın.</string>
     <string name="become_a_governor">Yönetici olun.\nAlgorand\'ın geleceği için oy verin.\nÖdül kazanın.</string>
     <string name="the_registration_window_for">2. Yönetişim Dönemi için kayıt penceresi 25 Aralık ila 7 Ocak saat 16.00 (UTC) arasında açık olacaktır.</string>
     <string name="connection_failed">Bağlanamadı</string>

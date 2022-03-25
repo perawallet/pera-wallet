@@ -19,7 +19,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.algorand.android.R
-import com.algorand.android.core.DaggerBaseFragment
+import com.algorand.android.core.BaseBottomBarFragment
 import com.algorand.android.customviews.algorandchart.CompactChartView
 import com.algorand.android.databinding.FragmentAlgoPriceBinding
 import com.algorand.android.models.CandleHistory
@@ -49,7 +49,7 @@ import kotlinx.coroutines.launch
 
 // TODO Refactor AlgoPriceFragment line by line and rename is as AnalyticsDetailFragment
 @AndroidEntryPoint
-class AlgoPriceFragment : DaggerBaseFragment(R.layout.fragment_algo_price) {
+class AlgoPriceFragment : BaseBottomBarFragment(R.layout.fragment_algo_price) {
 
     private val toolbarConfiguration = ToolbarConfiguration()
 

@@ -300,7 +300,7 @@
     <string name="creating_a_passphrase_backup">Creating a passphrase backup will allow you to recover your account. Without the passphrase, if you lose your device, remove the account or delete the app, you can permanently lose access to your Algorand account!</string>
     <string name="prepare_to_write">Prepare to write down your recovery passphrase</string>
     <string name="the_only_way_to">The only way to recover an Algorand account is with this recovery passphrase.</string>
-    <string name="im_ready_to_begin">I\’m ready to Begin</string>
+    <string name="im_ready_to_begin">I\'m Ready to Begin</string>
     <string name="create_a_watch">Create a Watch Account</string>
     <string name="recover_an_algorand">Recover an Algorand account</string>
     <string name="in_the_following">In the following steps, you\'ll enter your 25-word recovery passphrase to recover an Algorand account. Have your recovery phrase handy before you begin.</string>
@@ -491,7 +491,7 @@
     <string name="please_follow_these_steps">Please follow these steps:</string>
     <string name="having_ledger_nano_x">Having Ledger Nano X connection issues?</string>
     <string name="make_sure_the_device_is">Make sure the device is unlocked, nearby and has bluetooth enabled. If problems persist, please remove the device from your phone’s bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Pera Wallet instructions.</string>
-    <string name="the_scanned_qr_is_not">The scanned QR is not a valid Algorand public address. For other types of QR (such as WalletConnect transactions), please use the scan QR button on the homepage.</string>
+    <string name="the_scanned_qr_is_not">The scanned QR is not a valid Algorand public address. For other types of QR (such as WalletConnect sessions), please use the scan QR button on the homepage.</string>
     <string name="become_a_governor">Become a governor.\nVote on Algorand\'s future.\nEarn rewards.</string>
     <string name="the_registration_window_for">The registration window for Governance Period #2 is Dec 25 to Jan 7, 16:00 UTC</string>
     <string name="connection_failed">Connection failed</string>
@@ -657,6 +657,39 @@
     <string name="pair_Ledger_device">Pair Ledger device</string>
     <string name="i_want_to_create_algorand">I want to create an Algorand account that is backed by my Ledger hardware wallet</string>
     <string name="transaction_received">Transaction Received</string>
-    <string name="your_order_was">Your order was successfully received by the Algorand network.</string>
+    <string name="your_transaction_was">Your transaction was successfully received by the Algorand network.</string>
     <string name="confirm_transaction">Confirm Transaction</string>
+
+    <!--Moonpay-->
+    <string name="buy_algo">Buy ALGO</string>
+    <string name="moonpay_offers">MoonPay offers the fastest way to buy ALGO with your local currency. Buy crypto with credit card or bank transfers. It\'s fast, simple, and secure.</string>
+    <string name="buy_algo_with">Buy ALGO with MoonPay</string>
+    <string name="secured_by">Secured by</string>
+    <string name="your_algos_are">Your Algos are on their way!</string>
+    <string name="your_payment_is">Your payment is being processed. It can take few minutes to be completed.</string>
+    <string name="success_algo_received">Success!\nAlgo Received.</string>
+    <string name="congratulations_your_account_has">Congratulations! Your account has been credited.</string>
+    <string name="almost_there">Almost there!</string>
+    <string name="your_purchase_request_is_pending">Your purchase request is pending payment. Once payment is processed, you will receive a notification.</string>
+    <string name="your_purchase_request_is_wating">Your purchase is waiting for authorization. Once payment is processed, you will receive a notification.</string>
+    <string name="uh_oh_something">Uh oh, something went wrong.</string>
+    <string name="looks_like_your">Looks like your purchase failed. You will need to try again.</string>
+
+    <string name="email_address">Email address</string>
+    <string name="enter_your_email">Enter your email</string>
+    <string name="continue_with_moonpay">Continue with MoonPay</string>
+    <string name="i_agree_to_share">I agree to share my e-mail address with Pera and receive updates on wallet features.</string>
+    <string name="not_available">Not available</string>
+    <string name="you_can_not_purchase">You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use MoonPay.</string>
+    <string name="your_walletconnect_request_failed">Your WalletConnect request failed with the following error:\n\n<annotation replacement="error_message">errorMessagePlaceholder</annotation>\n\nPlease try again by going back to the dApp where you initiated the request.</string>
+    <string name="add_an_account">Add an Account</string>
+    <string name="manage_assets">Manage Assets</string>
+    <string name="send_asset">Send Asset</string>
+    <string name="enable_pin_code">Enable PIN Code</string>
+    <string name="security_preferences">Security Preferences</string>
+    <string name="change_pin_code">Change PIN Code</string>
+
+    <string name="watch_account_added">Watch account added successfully</string>
+    <string name="the_watch_account_has_been">The Watch Account has been added successfully.</string>
+    <string name="currency_preferences">Currency Preferences</string>
 </resources>

@@ -43,8 +43,8 @@ import com.algorand.android.utils.coremanager.BlockPollingManager
 import com.algorand.android.utils.findAllNodes
 import com.algorand.android.utils.preference.getNotificationUserId
 import com.algorand.android.utils.preference.setNotificationUserId
+import com.algorand.android.utils.recordException
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -76,6 +76,10 @@ class MainViewModel @ViewModelInject constructor(
 
     val autoLockLiveData
         get() = autoLockManager.autoLockLiveData
+
+    fun checkLockState() {
+        autoLockManager.checkLockState()
+    }
 
     private var sendTransactionJob: Job? = null
     var refreshBalanceJob: Job? = null
@@ -115,7 +119,7 @@ class MainViewModel @ViewModelInject constructor(
     private suspend fun sendRegisterDevice(firebaseMessagingToken: String, accountPublicKeys: List<String>) {
         if (firebaseMessagingToken.isBlank()) {
             val exception = Exception("firebase messaging token is empty\naccounts: $accountPublicKeys")
-            FirebaseCrashlytics.getInstance().recordException(exception)
+            recordException(exception)
         }
 
         with(sharedPref.getNotificationUserId()) {

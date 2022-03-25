@@ -28,9 +28,9 @@ import com.algorand.android.R
 import com.algorand.android.customviews.PassphraseInputGroup.Companion.WORD_COUNT
 import com.algorand.android.databinding.CustomPassphraseInputBinding
 import com.algorand.android.utils.addFilterNotLetters
+import com.algorand.android.utils.recordException
 import com.algorand.android.utils.showKeyboard
 import com.algorand.android.utils.viewbinding.viewBinding
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlin.properties.Delegates
 
 class PassphraseInput @JvmOverloads constructor(
@@ -113,7 +113,7 @@ class PassphraseInput @JvmOverloads constructor(
     private fun onEditorActionClick(textView: TextView, actionId: Int, keyEvent: KeyEvent?): Boolean {
         if (index == -1) {
             val errorMessage = "index is -1 for ${PassphraseInput::class.java.name}"
-            FirebaseCrashlytics.getInstance().recordException(Exception(errorMessage))
+            recordException(Exception(errorMessage))
             return true
         }
         if (validated.not()) {
@@ -189,7 +189,7 @@ class PassphraseInput @JvmOverloads constructor(
     fun setWord(word: String, focusToNextOne: Boolean) {
         binding.passphraseInputEditText.apply {
             setText(word)
-            setSelection(word.length)
+            setSelection(length())
         }
         if (focusToNextOne) {
             listener?.onNextFocusRequested(index)

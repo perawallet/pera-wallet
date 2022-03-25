@@ -26,5 +26,9 @@ data class ToolbarConfiguration(
     val startIconClick: (() -> Unit)? = null,
     val showNodeStatus: Boolean = false,
     val showAvatarImage: Boolean = false,
-    val showAccountImage: Boolean = false
+    val showAccountImage: Boolean = false,
+    @ColorRes
+    val startIconColor: Int? = null,
+    @ColorRes
+    val titleColor: Int? = null,
 )
