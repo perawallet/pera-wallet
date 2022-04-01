@@ -12,12 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AnnouncementBannerViewModel.swift
+//   BuyAlgoViewTheme.swift
 
+import Foundation
 import MacaroonUIKit
+import UIKit
 
-struct AnnouncementBannerViewModel:
-    ViewModel,
-    Hashable {
+struct BuyAlgoViewTheme:
+    StyleSheet,
+    LayoutSheet {
+    var buyAlgoButton: ButtonTheme
+    var buyAlgoButtonHeight: LayoutMetric
+
+    init(
+        _ family: LayoutFamily
+    ) {
+
+        self.buyAlgoButton = ButtonPrimaryTheme(family)
+        self.buyAlgoButtonHeight = 52
+    }
 }

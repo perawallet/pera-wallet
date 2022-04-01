@@ -26,8 +26,7 @@ final class HomePortfolioView:
     UIControlInteractionPublisher,
     ListReusable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .showInfo: UIControlInteraction(),
-        .buyAlgo: UIControlInteraction()
+        .showInfo: UIControlInteraction()
     ]
 
     private lazy var titleView = Label()
@@ -47,7 +46,6 @@ final class HomePortfolioView:
         addInfoAction(theme)
         addValue(theme)
         addHoldings(theme)
-        addBuyAlgoButton(theme)
     }
     
     func customizeAppearance(
@@ -105,9 +103,7 @@ final class HomePortfolioView:
             theme.spacingBetweenTitleAndValue +
             valueSize.height +
             theme.spacingBetweenValueAndHoldings +
-            max(algoHoldingsSize.height, assetHoldingsSize.height) +
-            theme.buyAlgoButtonHeight +
-            theme.buyAlgoButtonMargin.top
+            max(algoHoldingsSize.height, assetHoldingsSize.height)
         return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
     }
 }
@@ -216,31 +212,10 @@ extension HomePortfolioView {
             $0.bottom == 0
         }
     }
-
-    private func addBuyAlgoButton(
-        _ theme: HomePortfolioViewTheme
-    ) {
-        buyAlgoButton.customize(theme.buyAlgoButton)
-        buyAlgoButton.setTitle("moonpay-buy-button-title".localized, for: .normal)
-
-        addSubview(buyAlgoButton)
-        buyAlgoButton.snp.makeConstraints {
-            $0.top == holdingsView.snp.bottom + theme.buyAlgoButtonMargin.top
-            $0.leading == 0
-            $0.trailing == 0
-            $0.height.equalTo(theme.buyAlgoButtonHeight)
-        }
-
-        startPublishing(
-            event: .buyAlgo,
-            for: buyAlgoButton
-        )
-    }
 }
 
 extension HomePortfolioView {
     enum Event {
         case showInfo
-        case buyAlgo
     }
 }

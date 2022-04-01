@@ -21,8 +21,12 @@ import MacaroonUIKit
 final class SettingsViewController: BaseViewController {
     private lazy var bottomModalTransition = BottomSheetTransition(presentingViewController: self)
     
-    private lazy var pushNotificationController =
-        PushNotificationController(session: session!, api: api!, bannerController: bannerController)
+    private lazy var pushNotificationController = PushNotificationController(
+        target: target,
+        session: session!,
+        api: api!,
+        bannerController: bannerController
+    )
     
     private lazy var theme = Theme()
     private lazy var settingsView = SettingsView()

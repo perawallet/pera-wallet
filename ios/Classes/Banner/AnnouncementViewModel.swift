@@ -12,18 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AccountTransactionListViewController+Theme.swift
+//   AnnouncementViewModel.swift
 
+import Foundation
 import MacaroonUIKit
-import UIKit
 
-extension AccountTransactionListViewController {
-    struct Theme: LayoutSheet {
-        let contentInset: LayoutPaddings
+struct AnnouncementViewModel:
+    PairedViewModel,
+    Hashable {
 
-        init(_ family: LayoutFamily) {
-            self.contentInset = (24, 0, 88, 0)
-        }
+    private(set) var title: String?
+    private(set) var subtitle: String?
+    private(set) var ctaTitle: String?
+    private(set) var isGeneric: Bool = false
+    private(set) var ctaUrl: URL?
+
+    init(_ model: Announcement) {
+        title = model.title
+        subtitle = model.subtitle
+        ctaTitle = model.buttonLabel
+        isGeneric = model.type == .generic
+        ctaUrl = model.buttonUrl
     }
 }

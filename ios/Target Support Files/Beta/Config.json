@@ -1,0 +1,11 @@
+{
+    "app": "pera-beta",
+    "is_production": false,
+    "server_config": {
+        "api_base": "",
+        "web_base": ""
+    },
+    "deeplink_config": {
+        "host": ""
+    }
+}

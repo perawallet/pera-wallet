@@ -206,6 +206,10 @@ extension BaseViewController {
 }
 
 extension BaseViewController {
+    var target: ALGAppTarget {
+        return ALGAppTarget.current
+    }
+    
     var session: Session? {
         return configuration.session
     }

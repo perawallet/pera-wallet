@@ -115,6 +115,15 @@ extension AppColors.Components {
     }
 }
 
+extension AppColors.Components {
+    enum Banner: String, Color {
+        case background = "Components/Banner/background"
+        case text = "Components/Banner/text"
+        case governanceBackground = "Components/Banner/governance-background"
+        case governanceText = "Components/Banner/governance-text"
+    }
+}
+
 extension AppColors.SendTransaction {
     enum Shadow: String, Color {
         case first = "SendTransaction/Shadow/account-first"

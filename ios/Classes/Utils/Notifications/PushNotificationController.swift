@@ -30,15 +30,18 @@ class PushNotificationController: NSObject {
         }
     }
     
+    private let target: ALGAppTarget
     private let session: Session
     private let api: ALGAPI
     private let bannerController: BannerController?
     
     init(
+        target: ALGAppTarget,
         session: Session,
         api: ALGAPI,
         bannerController: BannerController?
     ) {
+        self.target = target
         self.session = session
         self.api = api
         self.bannerController = bannerController
@@ -82,7 +85,7 @@ extension PushNotificationController {
     }
     
     private func updateDevice(with id: String, for user: User, completion handler: BoolHandler? = nil) {
-        let draft = DeviceUpdateDraft(id: id, pushToken: token, accounts: user.accounts.map(\.address))
+        let draft = DeviceUpdateDraft(id: id, pushToken: token, app: target.app, accounts: user.accounts.map(\.address))
         api.updateDevice(draft) { response in
             switch response {
             case let .success(device):
@@ -100,7 +103,7 @@ extension PushNotificationController {
     }
     
     private func registerDevice(for user: User, completion handler: BoolHandler? = nil) {
-        let draft = DeviceRegistrationDraft(pushToken: token, accounts: user.accounts.map(\.address))
+        let draft = DeviceRegistrationDraft(pushToken: token, app: target.app, accounts: user.accounts.map(\.address))
         api.registerDevice(draft) { response in
             switch response {
             case let .success(device):

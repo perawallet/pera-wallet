@@ -32,9 +32,6 @@ struct HomePortfolioViewTheme:
     var spacingBetweenTitleAndValue: LayoutMetric
     var spacingBetweenValueAndHoldings: LayoutMetric
     var minSpacingBetweenAlgoHoldingsAndAssetHoldings: LayoutMetric
-    var buyAlgoButton: ButtonTheme
-    var buyAlgoButtonHeight: LayoutMetric
-    var buyAlgoButtonMargin: LayoutMargins
     
     init(
         _ family: LayoutFamily
@@ -54,8 +51,5 @@ struct HomePortfolioViewTheme:
         self.spacingBetweenTitleAndValue = 8
         self.spacingBetweenValueAndHoldings = 24
         self.minSpacingBetweenAlgoHoldingsAndAssetHoldings = 8
-        self.buyAlgoButton = ButtonPrimaryTheme(family)
-        self.buyAlgoButtonHeight = 52
-        self.buyAlgoButtonMargin = (44, .noMetric, .noMetric, .noMetric)
     }
 }

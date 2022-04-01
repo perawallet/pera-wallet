@@ -21,6 +21,8 @@ import UIKit
 
 struct BottomWarningViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
+    let image: ImageStyle
+    let imageContentInsets: LayoutOffset
     let title: TextStyle
     let description: TextStyle
     let actionContentEdgeInsets: LayoutPaddings
@@ -32,11 +34,14 @@ struct BottomWarningViewTheme: StyleSheet, LayoutSheet {
     let horizontalInset: LayoutMetric
     let topInset: LayoutMetric
     let descriptionTopInset: LayoutMetric
-    let titleTopInset: LayoutMetric
     let bottomInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
+        self.image = [
+            .contentMode(.top)
+        ]
+        self.imageContentInsets = (0, 20)
         self.title = [
             .textColor(AppColors.Components.Text.main),
             .textOverflow(FittingText()),
@@ -65,7 +70,6 @@ struct BottomWarningViewTheme: StyleSheet, LayoutSheet {
         self.verticalInset = 32
         self.horizontalInset = 24
         self.topInset = 32
-        self.titleTopInset = 20
         self.descriptionTopInset = 12
         self.bottomInset = 16
     }

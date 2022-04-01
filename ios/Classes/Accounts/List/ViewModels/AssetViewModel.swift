@@ -42,7 +42,7 @@ extension AssetViewModel {
 
         amount = asset?.amount
             .assetAmount(fromFraction: assetDetail.decimals)
-            .abbreviatedFractionStringForLabel(fraction: assetDetail.decimals)
+            .abbreviatedFractionStringForLabel(fraction: 2)
     }
 
     private mutating func bindCurrencyAmount(from assetDetail: AssetInformation?, with asset: Asset?, and currency: Currency?) {

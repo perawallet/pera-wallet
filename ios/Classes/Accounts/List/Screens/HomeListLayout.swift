@@ -61,12 +61,13 @@ extension HomeListLayout {
         case .empty:
             return insets
         case .loading:
-            insets.top = sectionIdentifiers.contains(.announcement) ? 24 : 72
+            insets.top = 72
             return insets
         case .portfolio:
-            insets.top = sectionIdentifiers.contains(.announcement) ? 24 : 72
+            insets.top = 72
             return insets
         case .announcement:
+            insets.top = 36
             return insets
         case .accounts:
             insets.top = 36
@@ -75,6 +76,9 @@ extension HomeListLayout {
         case .watchAccounts:
             insets.top = 24
             insets.bottom = 8
+            return insets
+        case .buyAlgo:
+            insets.top = sectionIdentifiers.contains(.announcement) ? 24 : 44
             return insets
         }
     }
@@ -102,13 +106,22 @@ extension HomeListLayout {
                 layout: collectionViewLayout,
                 sizeForPortfolioItem: item
             )
-        case .announcement:
-            return CGSize((calculateContentWidth(for: collectionView), 0))
         case .account(let item):
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
                 sizeForAccountItem: item
+            )
+        case .announcement(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForAnnouncementCellItem: item
+            )
+        case .buyAlgo:
+            return listViewBuyAlgo(
+                collectionView,
+                layout: collectionViewLayout
             )
         }
     }
@@ -228,6 +241,40 @@ extension HomeListLayout {
         sizeCache[sizeCacheIdentifier] = newSize
         
         return newSize
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForAnnouncementCellItem item: AnnouncementViewModel
+    ) -> CGSize {
+        let width = calculateContentWidth(for: listView)
+
+        if item.isGeneric {
+            return GenericAnnouncementCell.calculatePreferredSize(
+                item,
+                for: GenericAnnouncementViewTheme(),
+                fittingIn: CGSize((width, .greatestFiniteMagnitude))
+            )
+        } else {
+            return GovernanceAnnouncementCell.calculatePreferredSize(
+                item,
+                for: GovernanceAnnouncementViewTheme(),
+                fittingIn: CGSize((width, .greatestFiniteMagnitude))
+            )
+        }
+    }
+
+    private func listViewBuyAlgo(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout
+    ) -> CGSize {
+        let width = calculateContentWidth(for: listView)
+
+        return BuyAlgoCell.calculatePreferredSize(
+            for: BuyAlgoViewTheme(),
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
     }
 }
 

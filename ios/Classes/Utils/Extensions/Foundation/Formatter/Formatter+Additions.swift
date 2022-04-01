@@ -126,8 +126,8 @@ extension Formatter {
         formatter.locale = Locale.preferred()
         formatter.currencySymbol = "\u{00A6}"
         formatter.numberStyle = .currencyAccounting
-        formatter.minimumFractionDigits = 6
-        formatter.maximumFractionDigits = 6
+        formatter.minimumFractionDigits = 2
+        formatter.maximumFractionDigits = 2
         formatter.positiveSuffix = suffix
         formatter.negativeSuffix = suffix
         return formatter

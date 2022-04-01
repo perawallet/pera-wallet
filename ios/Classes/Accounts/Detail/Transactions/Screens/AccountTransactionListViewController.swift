@@ -20,14 +20,7 @@ import UIKit
 import MacaroonUIKit
 
 final class AccountTransactionListViewController: TransactionsViewController {
-    private lazy var theme = Theme()
-
     init(draft: AccountTransactionListing, configuration: ViewControllerConfiguration) {
         super.init(draft: draft, configuration: configuration)
-    }
-
-    override func prepareLayout() {
-        super.prepareLayout()
-        listView.contentInset = UIEdgeInsets(theme.contentInset)
     }
 }

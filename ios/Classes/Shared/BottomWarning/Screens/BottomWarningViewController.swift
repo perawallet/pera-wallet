@@ -52,11 +52,6 @@ final class BottomWarningViewController: BaseScrollViewController {
                 self?.viewConfigurator.secondaryAction?()
             }
         }
-
-        bottomWarningView.handlers.didTapURL = {
-            [weak self] URL in
-            self?.open(URL)
-        }
     }
 
     override func prepareLayout() {
@@ -71,11 +66,5 @@ final class BottomWarningViewController: BaseScrollViewController {
 
     override func bindData() {
         bottomWarningView.bindData(viewConfigurator)
-    }
-}
-
-extension BottomWarningViewController: BottomSheetPresentable {
-    var modalHeight: ModalHeight {
-        return .compressed
     }
 }

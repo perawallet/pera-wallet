@@ -21,6 +21,7 @@ import MagpieCore
 
 struct DeviceRegistrationDraft: JSONObjectBody {
     let pushToken: String?
+    let app: ALGAppTarget.App
     let platform = "ios"
     let model = UIDevice.current.model
     let locale = Locale.current.languageCode ?? "en"
@@ -28,6 +29,7 @@ struct DeviceRegistrationDraft: JSONObjectBody {
     
     var bodyParams: [APIBodyParam] {
         var params: [APIBodyParam] = []
+        params.append(.init(.app, app.rawValue))
         params.append(.init(.platform, platform))
         params.append(.init(.model, model))
         params.append(.init(.locale, locale))

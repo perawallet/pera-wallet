@@ -48,12 +48,21 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSection, 
                 cell.bindData(item)
                 return cell
             case .announcement(let item):
-                let cell = collectionView.dequeue(
-                    AnnouncementBannerCell.self,
-                    at: indexPath
-                )
-                cell.bindData(item)
-                return cell
+                if item.isGeneric {
+                    let cell = collectionView.dequeue(
+                        GenericAnnouncementCell.self,
+                        at: indexPath
+                    )
+                    cell.bindData(item)
+                    return cell
+                } else {
+                    let cell = collectionView.dequeue(
+                        GovernanceAnnouncementCell.self,
+                        at: indexPath
+                    )
+                    cell.bindData(item)
+                    return cell
+                }
             case .account(let item):
                 switch item {
                 case .header(let headerItem):
@@ -71,6 +80,12 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSection, 
                     cell.bindData(cellItem)
                     return cell
                 }
+
+            case .buyAlgo:
+                return collectionView.dequeue(
+                    BuyAlgoCell.self,
+                    at: indexPath
+                )
             }
         }
 
@@ -78,7 +93,9 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSection, 
             HomeLoadingCell.self,
             HomeNoContentCell.self,
             HomePortfolioCell.self,
-            AnnouncementBannerCell.self,
+            GovernanceAnnouncementCell.self,
+            GenericAnnouncementCell.self,
+            BuyAlgoCell.self,
             TitleWithAccessorySupplementaryCell.self,
             AccountPreviewCell.self
         ].forEach {

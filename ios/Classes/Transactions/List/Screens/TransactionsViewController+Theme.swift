@@ -21,10 +21,12 @@ import UIKit
 extension TransactionsViewController {
     struct Theme: LayoutSheet, StyleSheet {
         let backgroundColor: Color
+        let contentInset: LayoutPaddings
         let transactionActionButtonPaddings: LayoutPaddings
 
         init(_ family: LayoutFamily) {
             self.backgroundColor = AppColors.Shared.System.background
+            self.contentInset = (0, 0, 88, 0)
             self.transactionActionButtonPaddings = (.noMetric, .noMetric, UIApplication.shared.safeAreaBottom + 24, 24)
         }
     }

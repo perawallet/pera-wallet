@@ -25,12 +25,18 @@ final class HomeAPIDataController:
     private var lastSnapshot: Snapshot?
     
     private let sharedDataController: SharedDataController
+    private let announcementDataController: AnnouncementAPIDataController
+    
+    private var visibleAnnouncement: Announcement?
+    
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.homeDataController")
     
     init(
-        _ sharedDataController: SharedDataController
+        _ sharedDataController: SharedDataController,
+        announcementDataController: AnnouncementAPIDataController
     ) {
         self.sharedDataController = sharedDataController
+        self.announcementDataController = announcementDataController
     }
     
     deinit {
@@ -47,10 +53,28 @@ final class HomeAPIDataController:
 extension HomeAPIDataController {
     func load() {
         sharedDataController.add(self)
+        announcementDataController.delegate = self
     }
     
     func reload() {
         deliverContentSnapshot()
+    }
+    
+    func fetchAnnouncements() {
+        announcementDataController.loadData()
+    }
+
+    func hideAnnouncement() {
+        defer {
+            self.visibleAnnouncement = nil
+            reload()
+        }
+
+        guard let visibleAnnouncement = self.visibleAnnouncement else {
+            return
+        }
+
+        announcementDataController.hideAnnouncement(visibleAnnouncement)
     }
 }
 
@@ -143,6 +167,19 @@ extension HomeAPIDataController {
                 [.portfolio(portfolioItem)],
                 toSection: .portfolio
             )
+
+            if let visibleAnnouncement = self.visibleAnnouncement {
+                snapshot.appendSections([.announcement])
+
+                let announcementItem = AnnouncementViewModel(visibleAnnouncement)
+                snapshot.appendItems([.announcement(announcementItem)], toSection: .announcement)
+            }
+
+            /// note: If accounts empty which means there is no any authenticated account, buy button will be hidden
+            if !accounts.isEmpty {
+                snapshot.appendSections([.buyAlgo])
+                snapshot.appendItems([.buyAlgo], toSection: .buyAlgo)
+            }
             
             if !accounts.isEmpty {
                 let headerItem: HomeAccountItem =
@@ -212,5 +249,11 @@ extension HomeAPIDataController {
             self.lastSnapshot = event.snapshot
             self.eventHandler?(event)
         }
+    }
+}
+
+extension HomeAPIDataController: AnnouncementAPIDataControllerDelegate {
+    func announcementAPIDataController(_ dataController: AnnouncementAPIDataController, didFetch announcement: Announcement) {
+        self.visibleAnnouncement = announcement
     }
 }

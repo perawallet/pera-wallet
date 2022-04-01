@@ -83,11 +83,18 @@ class AppDelegate:
     private lazy var router =
         Router(rootViewController: rootViewController, appConfiguration: appConfiguration)
     
-    private lazy var rootViewController =
-        RootViewController(appConfiguration: appConfiguration, launchController: appLaunchController)
+    private lazy var rootViewController = RootViewController(
+        target: ALGAppTarget.current,
+        appConfiguration: appConfiguration,
+        launchController: appLaunchController
+    )
 
-    private lazy var pushNotificationController =
-        PushNotificationController(session: session, api: api, bannerController: bannerController)
+    private lazy var pushNotificationController = PushNotificationController(
+        target: ALGAppTarget.current,
+        session: session,
+        api: api,
+        bannerController: bannerController
+    )
     
     private lazy var networkBannerView = UIView()
     private lazy var containerBlurView = UIVisualEffectView()
@@ -96,11 +103,13 @@ class AppDelegate:
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        prepareForLaunch()
-        
-        setupWindow()
-        setupNetworkBanner()
+        setupAppTarget()
         setupAppLibs()
+        
+        prepareForLaunch()
+
+        makeWindow()
+        makeNetworkBanner()
 
         launch(with: launchOptions)
 
@@ -304,11 +313,8 @@ extension AppDelegate {
 }
 
 extension AppDelegate {
-    private func setupWindow() {
-        window = UIWindow(frame: UIScreen.main.bounds)
-        window?.backgroundColor = .clear
-        window?.rootViewController = rootViewController
-        window?.makeKeyAndVisible()
+    private func setupAppTarget() {
+        ALGAppTarget.setup()
     }
     
     private func setupAppLibs() {
@@ -327,17 +333,14 @@ extension AppDelegate {
 }
 
 extension AppDelegate {
-    private func setNeedsUserInterfaceStyleUpdateIfNeeded() {
-        if session.userInterfaceStyle == .system {
-            return
-        }
-
-        UserInterfaceStyleController.setNeedsUserInterfaceStyleUpdate(session.userInterfaceStyle)
+    private func makeWindow() {
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.backgroundColor = .clear
+        window?.rootViewController = rootViewController
+        window?.makeKeyAndVisible()
     }
-}
-
-extension AppDelegate {
-    private func setupNetworkBanner() {
+    
+    private func makeNetworkBanner() {
         networkBannerView.layer.zPosition = 1
         
         window?.addSubview(networkBannerView)
@@ -369,6 +372,16 @@ extension AppDelegate {
         }
 
         rootViewController.setNeedsStatusBarAppearanceUpdate()
+    }
+}
+
+extension AppDelegate {
+    private func setNeedsUserInterfaceStyleUpdateIfNeeded() {
+        if session.userInterfaceStyle == .system {
+            return
+        }
+
+        UserInterfaceStyleController.setNeedsUserInterfaceStyleUpdate(session.userInterfaceStyle)
     }
 }
 

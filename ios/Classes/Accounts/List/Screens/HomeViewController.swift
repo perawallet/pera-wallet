@@ -26,9 +26,13 @@ final class HomeViewController:
 
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
-
-    private lazy var pushNotificationController =
-        PushNotificationController(session: session!, api: api!, bannerController: bannerController)
+      
+    private lazy var pushNotificationController = PushNotificationController(
+        target: target,
+        session: session!,
+        api: api!,
+        bannerController: bannerController
+    )
     
     private let onceWhenViewDidAppear = Once()
 
@@ -103,6 +107,8 @@ final class HomeViewController:
             presentPasscodeFlowIfNeeded()
             isViewFirstAppeared = false
         }
+        
+        dataController.fetchAnnouncements()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -216,12 +222,60 @@ extension HomeViewController {
                 by: .presentWithoutNavigationController
             )
         }
+    }
 
+    private func linkInteractors(
+        _ cell: BuyAlgoCell
+    ) {
         cell.observe(event: .buyAlgo) {
             [weak self] in
             guard let self = self else { return }
 
             self.launchBuyAlgo()
+        }
+    }
+
+    private func linkInteractors(
+        _ cell: GenericAnnouncementCell,
+        for item: AnnouncementViewModel
+    ) {
+        cell.observe(event: .close) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.dataController.hideAnnouncement()
+        }
+
+        cell.observe(event: .action) {
+            [weak self] in
+            guard let self = self else { return }
+
+
+            if let url = item.ctaUrl {
+                self.open(url)
+            }
+        }
+    }
+    
+    private func linkInteractors(
+        _ cell: GovernanceAnnouncementCell,
+        for item: AnnouncementViewModel
+    ) {
+        cell.observe(event: .close) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.dataController.hideAnnouncement()
+        }
+
+        cell.observe(event: .action) {
+            [weak self] in
+            guard let self = self else { return }
+
+
+            if let url = item.ctaUrl {
+                self.open(url)
+            }
         }
     }
     
@@ -529,8 +583,14 @@ extension HomeViewController {
             default:
                 break
             }
-        default:
-            break
+        case .buyAlgo:
+            linkInteractors(cell as! BuyAlgoCell)
+        case .announcement(let item):
+            if item.isGeneric {
+                linkInteractors(cell as! GenericAnnouncementCell, for: item)
+            } else {
+                linkInteractors(cell as! GovernanceAnnouncementCell, for: item)
+            }
         }
     }
     
