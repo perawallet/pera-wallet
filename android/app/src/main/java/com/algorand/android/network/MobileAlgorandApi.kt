@@ -12,6 +12,7 @@
 
 package com.algorand.android.network
 
+import com.algorand.android.banner.data.model.BannerListResponse
 import com.algorand.android.models.AssetQueryItem
 import com.algorand.android.models.AssetSupportRequest
 import com.algorand.android.models.CurrencyOption
@@ -109,4 +110,9 @@ interface MobileAlgorandApi {
         @Path("address") address: String,
         @Body notificationFilterRequest: NotificationFilterRequest
     ): Response<Unit>
+
+    @GET("devices/{device_id}/banners/")
+    suspend fun getDeviceBanners(
+        @Path("device_id") deviceId: String
+    ): Response<BannerListResponse>
 }

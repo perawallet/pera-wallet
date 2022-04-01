@@ -48,6 +48,12 @@ class AccountsViewModel @ViewModelInject constructor(
         }
     }
 
+    fun onCloseBannerClick(bannerId: Long) {
+        viewModelScope.launch {
+            accountsPreviewUseCase.onCloseBannerClick(bannerId)
+        }
+    }
+
     private fun initializeAccountPreviewFlow() {
         viewModelScope.launch {
             accountsPreviewUseCase.getAccountsPreview(_accountPreviewFlow.value).collectLatest {

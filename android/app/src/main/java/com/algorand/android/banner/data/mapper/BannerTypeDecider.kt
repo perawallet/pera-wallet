@@ -10,25 +10,20 @@
  * limitations under the License
  */
 
-package com.algorand.android.repository
+package com.algorand.android.banner.data.mapper
 
-import android.content.SharedPreferences
-import com.algorand.android.utils.preference.setBannerInvisible
-import com.algorand.android.utils.preference.isGovernanceBannerShown
-import com.algorand.android.utils.preference.setBannerVisible
+import com.algorand.android.banner.data.model.BannerTypeResponse
+import com.algorand.android.banner.domain.model.BannerType
 import javax.inject.Inject
 
-class BannerRepository @Inject constructor(
-    private val sharedPreferences: SharedPreferences
-) {
+class BannerTypeDecider @Inject constructor() {
 
-    fun setBannerVisible() {
-        sharedPreferences.setBannerVisible()
+    fun getBannerType(bannerTypeResponse: BannerTypeResponse?): BannerType {
+        return when (bannerTypeResponse) {
+            BannerTypeResponse.GOVERNANCE -> BannerType.GOVERNANCE
+            BannerTypeResponse.GENERIC -> BannerType.GENERIC
+            BannerTypeResponse.OTHER -> BannerType.GENERIC
+            else -> BannerType.GENERIC
+        }
     }
-
-    fun setBannerInvisible() {
-        sharedPreferences.setBannerInvisible()
-    }
-
-    fun getBannerVisibility() = sharedPreferences.isGovernanceBannerShown()
 }

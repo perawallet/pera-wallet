@@ -39,7 +39,6 @@ private const val CURRENCY_PREFERENCE_KEY = "currency_preference_key"
 private const val APP_REVIEW_START_COUNT_KEY = "app_review_start_count_key"
 private const val REGISTER_SKIP_KEY = "register_skip_key"
 private const val FIRST_REQUEST_WALLET_CONNECT_REQUEST_KEY = "first_request_wallet_connect_request"
-private const val BANNER_SHOW_KEY = "banner_show_key"
 const val SETTINGS = "algorand_settings"
 
 // </editor-fold>
@@ -194,19 +193,3 @@ fun SharedPreferences.getFirstWalletConnectRequestBottomSheetShown(): Boolean {
 }
 
 // </editor-fold>
-
-//region Algorand Governance Banner
-
-fun SharedPreferences.isGovernanceBannerShown(): Boolean {
-    return getBoolean(BANNER_SHOW_KEY, true)
-}
-
-fun SharedPreferences.setBannerInvisible() {
-    edit { putBoolean(BANNER_SHOW_KEY, false) }
-}
-
-fun SharedPreferences.setBannerVisible() {
-    edit { putBoolean(BANNER_SHOW_KEY, true) }
-}
-
-//endregion

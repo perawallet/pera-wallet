@@ -15,6 +15,7 @@
     <color name="transparent">#00000000</color>
 
     <color name="white">#FFFFFF</color>
+    <color name="white_1F">#1FFFFFFF</color> <!-- White Alpha %12 -->
 
     <color name="black">#000000</color>
     <color name="black_A3">#A3000000</color> <!-- black with 64% alpha -->
@@ -305,4 +306,12 @@
     <!--Moonpay-->
     <color name="moonpaySecureColor">@color/helperPositive</color>
     <color name="moonpayBgColor">#7D01FF</color>
+
+    <!-- Banner -->
+    <color name="genericBannerBackgroundColor">@color/turquoise_600</color>
+    <color name="governanceBannerBackgroundColor">@color/purple_500</color>
+    <color name="bannerTextColor">@color/white</color>
+    <color name="bannerCloseIconTintColor">@color/white</color>
+    <color name="bannerActionButtonBackgroundTintColor">@color/white_1F</color>
+
 </resources>

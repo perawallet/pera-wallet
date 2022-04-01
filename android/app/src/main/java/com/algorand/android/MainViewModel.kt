@@ -18,6 +18,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.algorand.android.banner.domain.usecase.BannersUseCase
 import com.algorand.android.core.AccountManager
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.database.NodeDao
@@ -34,7 +35,6 @@ import com.algorand.android.repository.TransactionsRepository
 import com.algorand.android.usecase.AssetAdditionUseCase
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.AutoLockManager
-import com.algorand.android.utils.BannerUseCase
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.analytics.CreationType
@@ -65,7 +65,7 @@ class MainViewModel @ViewModelInject constructor(
     private val accountCacheManager: AccountCacheManager,
     private val blockPollingManager: BlockPollingManager,
     private val firebaseAnalytics: FirebaseAnalytics,
-    private val bannerUseCase: BannerUseCase,
+    private val bannersUseCase: BannersUseCase,
     private val assetAdditionUseCase: AssetAdditionUseCase
 ) : BaseViewModel() {
 
@@ -87,13 +87,8 @@ class MainViewModel @ViewModelInject constructor(
 
     init {
         initializeAccountCacheManager()
-        setAlgorandGovernanceBannerAsVisible()
         initializeNodeInterceptor()
         registerDevice()
-    }
-
-    private fun setAlgorandGovernanceBannerAsVisible() {
-        bannerUseCase.setBannerVisible()
     }
 
     private fun initializeNodeInterceptor() {
@@ -146,9 +141,7 @@ class MainViewModel @ViewModelInject constructor(
             notificationUserId, DeviceUpdateRequest(notificationUserId, firebaseMessagingToken, accountPublicKeys)
         ).use(
             onSuccess = { deviceUpdateResponse ->
-                if (deviceUpdateResponse.userId != null) {
-                    sharedPref.setNotificationUserId(deviceUpdateResponse.userId)
-                }
+                setNotificationUserIdAndFetchBanners(deviceUpdateResponse.userId)
             },
             onFailed = { _, _ ->
                 delay(REGISTER_DEVICE_FAIL_DELAY)
@@ -162,15 +155,23 @@ class MainViewModel @ViewModelInject constructor(
             DeviceRegistrationRequest(firebaseMessagingToken, accountPublicKeys)
         ).use(
             onSuccess = { deviceRegistrationResponse ->
-                if (deviceRegistrationResponse.userId != null) {
-                    sharedPref.setNotificationUserId(deviceRegistrationResponse.userId)
-                }
+                setNotificationUserIdAndFetchBanners(deviceRegistrationResponse.userId)
             },
             onFailed = { _, _ ->
                 delay(REGISTER_DEVICE_FAIL_DELAY)
                 registerDevice(firebaseMessagingToken, accountPublicKeys)
             }
         )
+    }
+
+    // TODO Refactor this function. Create NotificationUseIdLocalSource
+    private fun setNotificationUserIdAndFetchBanners(userId: String?) {
+        if (userId != null) {
+            sharedPref.setNotificationUserId(userId)
+            viewModelScope.launch {
+                bannersUseCase.cacheBanners(userId)
+            }
+        }
     }
 
     fun resetBlockPolling() {

@@ -134,8 +134,12 @@ class AssetDetailFragment : DaggerBaseFragment(R.layout.fragment_asset_detail) {
         }
 
         override fun onNewPendingItemInserted() {
-            binding.screenStateView.hide()
-            binding.transactionListRecyclerView.scrollToPosition(0)
+// TODO This view check was added to prevent from the crash that was caused by accessing binding after fragment is dead
+// This should be fixed by observing flows in `repeatOnLifecycle` scope after migrating to API 31
+            if (view != null) {
+                binding.screenStateView.hide()
+                binding.transactionListRecyclerView.scrollToPosition(0)
+            }
         }
     }
 

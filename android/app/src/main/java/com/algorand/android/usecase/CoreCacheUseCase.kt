@@ -12,6 +12,7 @@
 
 package com.algorand.android.usecase
 
+import com.algorand.android.banner.domain.usecase.BannersUseCase
 import com.algorand.android.utils.AccountCacheManager
 import javax.inject.Inject
 
@@ -19,7 +20,8 @@ class CoreCacheUseCase @Inject constructor(
     private val accountCacheManager: AccountCacheManager,
     private val accountDetailUseCase: AccountDetailUseCase,
     private val assetDetailUseCase: SimpleAssetDetailUseCase,
-    private val blockPollingUseCase: BlockPollingUseCase
+    private val blockPollingUseCase: BlockPollingUseCase,
+    private val bannersUseCase: BannersUseCase
 ) {
 
     suspend fun handleNodeChange() {
@@ -27,11 +29,13 @@ class CoreCacheUseCase @Inject constructor(
         blockPollingUseCase.clearBlockCache()
         accountDetailUseCase.clearAccountDetailCache()
         assetDetailUseCase.clearAssetDetailCache()
+        bannersUseCase.clearBannerCache()
     }
 
     suspend fun clearAllCachedData() {
         accountCacheManager.removeCachedData()
         accountDetailUseCase.clearAccountDetailCache()
         assetDetailUseCase.clearAssetDetailCache()
+        bannersUseCase.clearBannerCache()
     }
 }

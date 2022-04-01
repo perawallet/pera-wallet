@@ -13,6 +13,11 @@
 package com.algorand.android.usecase
 
 import com.algorand.android.R
+import com.algorand.android.banner.domain.model.BaseBanner
+import com.algorand.android.banner.domain.model.BaseBanner.GenericBanner
+import com.algorand.android.banner.domain.model.BaseBanner.GovernanceBanner
+import com.algorand.android.banner.domain.usecase.BannersUseCase
+import com.algorand.android.banner.ui.mapper.BaseBannerItemMapper
 import com.algorand.android.core.AccountManager
 import com.algorand.android.mapper.AccountListItemMapper
 import com.algorand.android.mapper.AccountPreviewMapper
@@ -37,13 +42,14 @@ class AccountsPreviewUseCase @Inject constructor(
     private val algoPriceUseCase: AlgoPriceUseCase,
     private val accountDetailUseCase: AccountDetailUseCase,
     private val assetDetailUseCase: SimpleAssetDetailUseCase,
-    private val accountAssetDataUseCase: AccountAssetDataUseCase,
     private val accountManager: AccountManager,
     private val accountPreviewMapper: AccountPreviewMapper,
     private val accountListItemMapper: AccountListItemMapper,
     private val sortedAccountsUseCase: SortedAccountsUseCase,
     private val splittedAccountsUseCase: SplittedAccountsUseCase,
-    private val accountListItemsUseCase: AccountListItemsUseCase
+    private val accountListItemsUseCase: AccountListItemsUseCase,
+    private val bannersUseCase: BannersUseCase,
+    private val baseBannerItemMapper: BaseBannerItemMapper
 ) {
 
     fun getInitialAccountPreview() = accountPreviewMapper.getFullScreenLoadingState()
@@ -52,20 +58,25 @@ class AccountsPreviewUseCase @Inject constructor(
         return combine(
             algoPriceUseCase.getAlgoPriceCacheFlow(),
             accountDetailUseCase.getAccountDetailCacheFlow(),
+            bannersUseCase.getBanners(),
             assetDetailUseCase.getCachedAssetsFlow()
-        ) { algoPriceCache, accountDetailCache, _ ->
+        ) { algoPriceCache, accountDetailCache, banners, _ ->
             val localAccounts = accountManager.getAccounts()
             if (localAccounts.isEmpty()) {
                 return@combine accountPreviewMapper.getEmptyAccountListState()
             }
             when (algoPriceCache) {
                 is CacheResult.Success -> {
-                    processAccountsAndAssets(accountDetailCache, localAccounts)
+                    processAccountsAndAssets(accountDetailCache, localAccounts, banners)
                 }
                 is CacheResult.Error -> getAlgoPriceErrorState(algoPriceCache, previousState)
                 else -> accountPreviewMapper.getFullScreenLoadingState()
             }
         }
+    }
+
+    suspend fun onCloseBannerClick(bannerId: Long) {
+        bannersUseCase.dismissBanner(bannerId)
     }
 
     private fun getAlgoPriceErrorState(
@@ -80,11 +91,12 @@ class AccountsPreviewUseCase @Inject constructor(
 
     private suspend fun processAccountsAndAssets(
         accountDetailCache: HashMap<String, CacheResult<AccountDetail>>,
-        localAccounts: List<Account>
+        localAccounts: List<Account>,
+        banners: List<BaseBanner>
     ): AccountPreview {
         val areAllAccountsAreCached = accountDetailUseCase.areAllAccountsCached()
         return if (areAllAccountsAreCached) {
-            processSuccessAccountCacheAndOthers(accountDetailCache, localAccounts)
+            processSuccessAccountCacheAndOthers(accountDetailCache, localAccounts, banners)
         } else {
             accountPreviewMapper.getFullScreenLoadingState()
         }
@@ -92,7 +104,8 @@ class AccountsPreviewUseCase @Inject constructor(
 
     private suspend fun processSuccessAccountCacheAndOthers(
         accountDetailCache: HashMap<String, CacheResult<AccountDetail>>,
-        localAccounts: List<Account>
+        localAccounts: List<Account>,
+        banners: List<BaseBanner>
     ): AccountPreview {
         val isThereAnyAssetNeedsToBeCached = accountDetailCache.values.any {
             !it.data?.accountInformation?.assetHoldingList.isNullOrEmpty()
@@ -100,13 +113,14 @@ class AccountsPreviewUseCase @Inject constructor(
         return if (assetDetailUseCase.getCachedAssetList().isEmpty() && isThereAnyAssetNeedsToBeCached) {
             accountPreviewMapper.getFullScreenLoadingState()
         } else {
-            prepareAccountPreview(accountDetailCache, localAccounts)
+            prepareAccountPreview(accountDetailCache, localAccounts, banners)
         }
     }
 
     private suspend fun prepareAccountPreview(
         accountDetailCache: HashMap<String, CacheResult<AccountDetail>>,
-        localAccounts: List<Account>
+        localAccounts: List<Account>,
+        banners: List<BaseBanner>
     ): AccountPreview {
         return withContext(Dispatchers.Default) {
             var algoHoldings = BigDecimal.ZERO
@@ -127,8 +141,28 @@ class AccountsPreviewUseCase @Inject constructor(
                     getPortfolioItem(algoHoldings, assetHoldings, selectedCurrencySymbol)
                 }
                 add(PORTFOLIO_VALUES_ITEM_INDEX, portfolioValueItem)
+                val banner = getBannerItemOrNull(banners)
+                if (banner != null) add(BANNER_ITEM_INDEX, banner)
             }
             accountPreviewMapper.getSuccessAccountPreview(baseAccountListItems)
+        }
+    }
+
+    private fun getBannerItemOrNull(bannerList: List<BaseBanner>): BaseAccountListItem.BaseBannerItem? {
+        return bannerList.firstOrNull()?.let { banner ->
+            val isButtonVisible = !banner.buttonTitle.isNullOrBlank() && !banner.buttonUrl.isNullOrBlank()
+            val isTitleVisible = !banner.title.isNullOrBlank()
+            val isDescriptionVisible = !banner.description.isNullOrBlank()
+            with(baseBannerItemMapper) {
+                when (banner) {
+                    is GovernanceBanner -> {
+                        mapToGovernanceBannerItem(banner, isButtonVisible, isTitleVisible, isDescriptionVisible)
+                    }
+                    is GenericBanner -> {
+                        mapToGenericBannerItem(banner, isButtonVisible, isTitleVisible, isDescriptionVisible)
+                    }
+                }
+            }
         }
     }
 
@@ -204,5 +238,6 @@ class AccountsPreviewUseCase @Inject constructor(
 
     companion object {
         private const val PORTFOLIO_VALUES_ITEM_INDEX = 0
+        private const val BANNER_ITEM_INDEX = 1
     }
 }

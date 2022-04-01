@@ -16,6 +16,7 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.algorand.android.banner.domain.usecase.BannersUseCase
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.models.Node
 import com.algorand.android.usecase.CoreCacheUseCase
@@ -25,7 +26,8 @@ import kotlinx.coroutines.launch
 
 class NodeSettingsViewModel @ViewModelInject constructor(
     private val coreCacheUseCase: CoreCacheUseCase,
-    private val nodeSettingsUseCase: NodeSettingsUseCase
+    private val nodeSettingsUseCase: NodeSettingsUseCase,
+    private val bannersUseCase: BannersUseCase
 ) : BaseViewModel() {
 
     private val _nodeListLiveData = MutableLiveData<List<Node>>()
@@ -55,6 +57,7 @@ class NodeSettingsViewModel @ViewModelInject constructor(
                 coreCacheUseCase.handleNodeChange()
                 activateNode(activatedNode)
                 setNodeListToDatabase(this)
+                bannersUseCase.cacheBanners()
                 onNodeSwitchingFinished.invoke()
             }
         }

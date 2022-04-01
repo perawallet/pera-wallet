@@ -21,6 +21,7 @@ import androidx.lifecycle.lifecycleScope
 import com.algorand.android.MainActivity
 import com.algorand.android.MainNavigationDirections
 import com.algorand.android.R
+import com.algorand.android.banner.ui.viewholder.BaseBannerViewHolder
 import com.algorand.android.core.BaseBottomBarFragment
 import com.algorand.android.databinding.FragmentAccountsBinding
 import com.algorand.android.models.AnnotatedString
@@ -37,14 +38,15 @@ import com.algorand.android.ui.accountoptions.HomeAccountOptionsBottomSheet.Home
 import com.algorand.android.ui.common.listhelper.AccountAdapter
 import com.algorand.android.ui.common.listhelper.BaseAccountListItem
 import com.algorand.android.ui.qr.QrCodeScannerFragment
+import com.algorand.android.utils.openUrl
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class AccountsFragment : BaseBottomBarFragment(R.layout.fragment_accounts) {
@@ -87,12 +89,23 @@ class AccountsFragment : BaseBottomBarFragment(R.layout.fragment_accounts) {
         }
     }
 
+    private val bannerListener = object : BaseBannerViewHolder.BannerListener {
+        override fun onActionButtonClick(url: String) {
+            context?.openUrl(url)
+        }
+
+        override fun onCloseBannerClick(bannerId: Long) {
+            accountsViewModel.onCloseBannerClick(bannerId)
+        }
+    }
+
     private var accountAdapter: AccountAdapter =
         AccountAdapter(
             ::onLoadedAccountClick,
             ::onErrorAccountClick,
             ::onAccountOptionsClick,
-            portfolioInfoClickListener
+            portfolioInfoClickListener,
+            bannerListener
         )
 
     private val accountListCollector: suspend (List<BaseAccountListItem>) -> Unit = {

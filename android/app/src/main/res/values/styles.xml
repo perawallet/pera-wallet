@@ -615,4 +615,41 @@
         <item name="android:background">@drawable/bg_asset_avatar_border</item>
         <item name="android:padding">@dimen/spacing_xsmall</item>
     </style>
+
+    <style name="BannerTextAppearance" />
+
+    <style name="BannerTextAppearance.BannerTitleTextAppearance">
+        <item name="fontFamily">@font/dmsans_medium</item>
+        <item name="android:textSize">15sp</item>
+        <item name="lineHeight">24dp</item>
+    </style>
+
+    <style name="BannerTextAppearance.BannerDescriptionTextAppearance">
+        <item name="fontFamily">@font/dmsans_regular</item>
+        <item name="android:textSize">13sp</item>
+        <item name="lineHeight">20dp</item>
+    </style>
+
+    <style name="BannerTextStyle">
+        <item name="android:textColor">@color/bannerTextColor</item>
+    </style>
+
+    <style name="BannerTextStyle.BannerTitleTextStyle">
+        <item name="android:textAppearance">@style/BannerTextAppearance.BannerTitleTextAppearance
+        </item>
+    </style>
+
+    <style name="BannerTextStyle.BannerDescriptionTextStyle">
+        <item name="android:textAppearance">
+            @style/BannerTextAppearance.BannerDescriptionTextAppearance
+        </item>
+    </style>
+
+    <style name="Button.Primary.Banner">
+        <item name="backgroundTint">@color/bannerActionButtonBackgroundTintColor</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
 </resources>

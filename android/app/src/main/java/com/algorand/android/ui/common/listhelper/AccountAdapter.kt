@@ -14,6 +14,9 @@ package com.algorand.android.ui.common.listhelper
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
+import com.algorand.android.banner.ui.viewholder.BaseBannerViewHolder
+import com.algorand.android.banner.ui.viewholder.GenericBannerViewHolder
+import com.algorand.android.banner.ui.viewholder.GovernanceBannerViewHolder
 import com.algorand.android.models.BaseDiffUtil
 import com.algorand.android.models.BaseViewHolder
 import com.algorand.android.ui.accounts.AccountErrorItemViewHolder
@@ -24,6 +27,8 @@ import com.algorand.android.ui.accounts.PortfolioValuesErrorItemViewHolder
 import com.algorand.android.ui.accounts.PortfolioValuesItemViewHolder
 import com.algorand.android.ui.common.listhelper.BaseAccountListItem.ItemType.ACCOUNT_ERROR
 import com.algorand.android.ui.common.listhelper.BaseAccountListItem.ItemType.ACCOUNT_SUCCESS
+import com.algorand.android.ui.common.listhelper.BaseAccountListItem.ItemType.GENERIC_BANNER
+import com.algorand.android.ui.common.listhelper.BaseAccountListItem.ItemType.GOVERNANCE_BANNER
 import com.algorand.android.ui.common.listhelper.BaseAccountListItem.ItemType.HEADER
 import com.algorand.android.ui.common.listhelper.BaseAccountListItem.ItemType.PORTFOLIO_ERROR
 import com.algorand.android.ui.common.listhelper.BaseAccountListItem.ItemType.PORTFOLIO_SUCCESS
@@ -32,7 +37,8 @@ class AccountAdapter(
     private val accountClickListener: AccountItemViewHolder.AccountClickListener,
     private val accountErrorClickListener: AccountErrorItemViewHolder.AccountClickListener,
     private val optionsClickListener: HeaderViewHolder.OptionsClickListener,
-    private val portfolioValuesListener: PortfolioValuesListener
+    private val portfolioValuesListener: PortfolioValuesListener,
+    private val bannerListener: BaseBannerViewHolder.BannerListener
 ) : ListAdapter<BaseAccountListItem, BaseViewHolder<BaseAccountListItem>>(BaseDiffUtil<BaseAccountListItem>()) {
 
     override fun getItemViewType(position: Int): Int {
@@ -46,6 +52,8 @@ class AccountAdapter(
             HEADER.ordinal -> HeaderViewHolder.create(parent, optionsClickListener)
             ACCOUNT_SUCCESS.ordinal -> AccountItemViewHolder.create(parent, accountClickListener)
             ACCOUNT_ERROR.ordinal -> AccountErrorItemViewHolder.create(parent, accountErrorClickListener)
+            GOVERNANCE_BANNER.ordinal -> GovernanceBannerViewHolder.create(bannerListener, parent)
+            GENERIC_BANNER.ordinal -> GenericBannerViewHolder.create(bannerListener, parent)
             else -> throw Exception("$logTag: Item View Type is Unknown.")
         }
     }

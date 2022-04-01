@@ -27,7 +27,9 @@ sealed class BaseAccountListItem : RecyclerListItem {
         PORTFOLIO_ERROR,
         ACCOUNT_SUCCESS,
         ACCOUNT_ERROR,
-        HEADER
+        HEADER,
+        GOVERNANCE_BANNER,
+        GENERIC_BANNER
     }
 
     sealed class BasePortfolioValueItem : BaseAccountListItem() {
@@ -66,6 +68,65 @@ sealed class BaseAccountListItem : RecyclerListItem {
 
             override fun areContentsTheSame(other: RecyclerListItem): Boolean {
                 return other is PortfolioValuesErrorItem && this == other
+            }
+        }
+    }
+
+    sealed class BaseBannerItem : BaseAccountListItem() {
+
+        abstract val bannerId: Long
+
+        abstract val buttonText: String?
+        abstract val buttonUrl: String?
+        abstract val isButtonVisible: Boolean
+
+        abstract val title: String?
+        abstract val isTitleVisible: Boolean
+
+        abstract val description: String?
+        abstract val isDescriptionVisible: Boolean
+
+        data class GovernanceBannerItem(
+            override val bannerId: Long,
+            override val buttonText: String?,
+            override val buttonUrl: String?,
+            override val isButtonVisible: Boolean,
+            override val title: String?,
+            override val isTitleVisible: Boolean,
+            override val description: String?,
+            override val isDescriptionVisible: Boolean
+        ) : BaseBannerItem() {
+
+            override val itemType: ItemType = ItemType.GOVERNANCE_BANNER
+
+            override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+                return other is GovernanceBannerItem && other.bannerId == bannerId
+            }
+
+            override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+                return other is GovernanceBannerItem && other == this
+            }
+        }
+
+        data class GenericBannerItem(
+            override val bannerId: Long,
+            override val buttonText: String?,
+            override val buttonUrl: String?,
+            override val isButtonVisible: Boolean,
+            override val title: String?,
+            override val isTitleVisible: Boolean,
+            override val description: String?,
+            override val isDescriptionVisible: Boolean
+        ) : BaseBannerItem() {
+
+            override val itemType: ItemType = ItemType.GENERIC_BANNER
+
+            override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+                return other is GenericBannerItem && other.bannerId == bannerId
+            }
+
+            override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+                return other is GenericBannerItem && other == this
             }
         }
     }
