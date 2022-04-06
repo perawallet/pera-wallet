@@ -39,11 +39,11 @@ extension SingleLineIconTitleViewModel {
     private func bindTitle(
         _ item: SingleLineIconTitleItem
     ) {
-        title = item.title
+        title = .string(item.title)
     }
 }
 
 struct SingleLineIconTitleItem {
     let icon: Image?
-    let title: EditText?
+    let title: String?
 }

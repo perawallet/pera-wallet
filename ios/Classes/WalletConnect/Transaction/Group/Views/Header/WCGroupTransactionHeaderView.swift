@@ -23,7 +23,7 @@ class WCGroupTransactionHeaderView: BaseView {
 
     private lazy var groupIDLabel: UILabel = {
         UILabel()
-            .withTextColor(Colors.Text.secondary)
+            .withTextColor(AppColors.Components.Text.gray.uiColor)
             .withLine(.contained)
             .withAlignment(.center)
             .withFont(Fonts.DMMono.regular.make(15).uiFont)

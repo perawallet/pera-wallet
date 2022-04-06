@@ -66,7 +66,7 @@ class WCMultipleTransactionItemView: TripleShadowView {
     }
 
     func configureAppearance() {
-        backgroundColor = Colors.Background.secondary
+        backgroundColor = AppColors.Shared.System.background.uiColor
         layer.cornerRadius = 12.0
 
         let accountContainerCorner = Corner(radius: 4)

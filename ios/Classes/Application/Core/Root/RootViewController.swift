@@ -111,9 +111,11 @@ extension RootViewController {
             NavigationController(rootViewController: algoStatisticsViewController)
         )
         
-        let contactsViewController = ContactsViewController(configuration: configuration)
-        let contactsTab =
-            ContactsTabBarItem(NavigationController(rootViewController: contactsViewController))
+        let collectibleListViewController = CollectiblesViewController(
+            configuration: configuration
+        )
+        let collectiblesTab =
+            CollectiblesTabBarItem(NavigationController(rootViewController: collectibleListViewController))
         
         let settingsViewController = SettingsViewController(configuration: configuration)
         let settingsTab =
@@ -123,7 +125,7 @@ extension RootViewController {
             homeTab,
             algoStatisticsTab,
             FixedSpaceTabBarItem(width: .noMetric),
-            contactsTab,
+            collectiblesTab,
             settingsTab
         ]
     }
@@ -291,7 +293,7 @@ extension RootViewController {
     }
     
     private func addBackground() {
-        view.backgroundColor = Colors.Background.primary
+        view.backgroundColor = AppColors.Shared.System.background.uiColor
     }
     
     private func addMain() {

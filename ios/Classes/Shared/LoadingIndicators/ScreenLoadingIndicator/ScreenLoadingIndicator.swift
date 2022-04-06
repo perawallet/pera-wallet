@@ -19,7 +19,9 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class ScreenLoadingIndicator: View, MacaroonUIKit.LoadingIndicator {
+final class ScreenLoadingIndicator:
+    View,
+    MacaroonUIKit.LoadingIndicator {
     var title: String? {
         get { titleView.text }
         set { titleView.text = newValue }
@@ -38,19 +40,27 @@ final class ScreenLoadingIndicator: View, MacaroonUIKit.LoadingIndicator {
     private lazy var indicatorView = ViewLoadingIndicator()
     private lazy var titleView = Label()
 
-    override init(frame: CGRect) {
+    override init(
+        frame: CGRect
+    ) {
         super.init(frame: frame)
         customize(ScreenLoadingIndicatorTheme())
     }
 
-    func customize(_ theme: ScreenLoadingIndicatorTheme) {
+    func customize(
+        _ theme: ScreenLoadingIndicatorTheme
+    ) {
         addBackground(theme)
         addContent(theme)
     }
 
-    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+    func customizeAppearance(
+        _ styleSheet: NoStyleSheet
+    ) {}
 
-    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+    func prepareLayout(
+        _ layoutSheet: NoLayoutSheet
+    ) {}
 }
 
 extension ScreenLoadingIndicator {
@@ -64,11 +74,15 @@ extension ScreenLoadingIndicator {
 }
 
 extension ScreenLoadingIndicator {
-    private func addBackground(_ theme: ScreenLoadingIndicatorTheme) {
+    private func addBackground(
+        _ theme: ScreenLoadingIndicatorTheme
+    ) {
         drawAppearance(shadow: theme.background)
     }
 
-    private func addContent(_ theme: ScreenLoadingIndicatorTheme) {
+    private func addContent(
+        _ theme: ScreenLoadingIndicatorTheme
+    ) {
         addSubview(contentView)
         contentView.snp.makeConstraints {
             $0.width >= contentView.snp.height
@@ -80,7 +94,9 @@ extension ScreenLoadingIndicator {
         addTitle(theme)
     }
 
-    private func addIndicator(_ theme: ScreenLoadingIndicatorTheme) {
+    private func addIndicator(
+        _ theme: ScreenLoadingIndicatorTheme
+    ) {
         indicatorView.applyStyle(theme.indicator)
 
         contentView.addSubview(indicatorView)
@@ -91,7 +107,9 @@ extension ScreenLoadingIndicator {
         }
     }
 
-    private func addTitle(_ theme: ScreenLoadingIndicatorTheme) {
+    private func addTitle(
+        _ theme: ScreenLoadingIndicatorTheme
+    ) {
         titleView.customizeAppearance(theme.title)
 
         contentView.addSubview(titleView)

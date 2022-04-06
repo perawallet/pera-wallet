@@ -71,7 +71,7 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
         }
         
         let assets = account.assets.someArray
-        let newAssets: [Asset]
+        let newAssets: [ALGAsset]
         
         if let cacheAccount = input.cachedAccounts.account(for: account.address) {
             newAssets = Array(Set(assets).subtracting(cacheAccount.assets.someArray))
@@ -85,7 +85,7 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
         
         let dispatchGroup = DispatchGroup()
         
-        var newAssetDetails: [AssetID: AssetInformation] = [:]
+        var newAssetDetails: [AssetID: AssetDecoration] = [:]
         var error: Error?
         
         newAssets.chunked(by: apiQueryLimit).enumerated().forEach {
@@ -125,28 +125,43 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
             guard let self = self else { return }
             
             if let error = error {
-                account.removeAllCompoundAssets()
+                account.removeAllAssets()
                 self.result = .failure(error)
             } else {
                 if self.finishIfCancelled() {
                     return
                 }
 
-                var newCompoundAssets: [CompoundAsset] = []
-                var newCompoundAssetsIndexer: Account.CompoundAssetIndexer = [:]
+                var newStandardAssets: [StandardAsset] = []
+                var newStandardAssetsIndexer: Account.StandardAssetIndexer = [:]
+
+                var newCollectibles: [CollectibleAsset] = []
+                var newCollectibleAssetsIndexer: Account.CollectibleAssetIndexer = [:]
                 
                 assets.enumerated().forEach { index, asset in
                     let id = asset.id
                     
                     if let assetDetail = newAssetDetails[id] ?? self.input.cachedAssetDetails[id] {
-                        newCompoundAssets.append(CompoundAsset(asset, assetDetail))
-                        newCompoundAssetsIndexer[asset.id] = index
+                        if assetDetail.isCollectible {
+                            let collectible = CollectibleAsset(asset: asset, decoration: assetDetail)
+                            newCollectibles.append(collectible)
+                            newCollectibleAssetsIndexer[asset.id] = newCollectibleAssetsIndexer.count
+                        } else {
+                            let standardAsset = StandardAsset(asset: asset, decoration: assetDetail)
+                            newStandardAssets.append(standardAsset)
+                            newStandardAssetsIndexer[asset.id] = newStandardAssetsIndexer.count
+                        }
                     }
                 }
                 
-                account.setCompoundAssets(
-                    newCompoundAssets,
-                    newCompoundAssetsIndexer
+                account.setStandardAssets(
+                    newStandardAssets,
+                    newStandardAssetsIndexer
+                )
+
+                account.setCollectibleAssets(
+                    newCollectibles,
+                    newCollectibleAssetsIndexer
                 )
                 
                 let output = Output(account: account, newAssetDetails: newAssetDetails)
@@ -176,8 +191,8 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
 
 extension AssetDetailGroupFetchOperation {
     private func fetchAssetDetails(
-        _ assets: [Asset],
-        onComplete handler: @escaping (Result<[AssetInformation], Error>) -> Void
+        _ assets: [ALGAsset],
+        onComplete handler: @escaping (Result<[AssetDecoration], Error>) -> Void
     ) -> EndpointOperatable {
         let ids = assets.map(\.id)
         let draft = AssetFetchQuery(ids: ids)
@@ -217,6 +232,6 @@ extension AssetDetailGroupFetchOperation {
     
     struct Output {
         let account: Account
-        let newAssetDetails: [AssetID: AssetInformation]
+        let newAssetDetails: [AssetID: AssetDecoration]
     }
 }

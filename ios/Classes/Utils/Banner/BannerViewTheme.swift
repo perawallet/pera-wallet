@@ -73,12 +73,42 @@ extension BannerViewTheme {
             opacity: 1,
             offset: (0, 8),
             radius: 20,
-            fillColor: Colors.Background.secondary,
+            fillColor: AppColors.Components.Banner.infoBackground.uiColor,
+            cornerRadii: (12, 12),
+            corners: .allCorners
+        )
+
+        title = title.modify([ .textColor(AppColors.Shared.System.background) ])
+        message = message.modify([ .textColor(AppColors.Shared.System.background) ])
+    }
+
+    mutating func configureForNotification() {
+        backgroundShadow = MacaroonUIKit.Shadow(
+            color: rgba(0.0, 0.0, 0.0, 0.1),
+            opacity: 1,
+            offset: (0, 8),
+            radius: 20,
+            fillColor: AppColors.Shared.System.background.uiColor,
             cornerRadii: (12, 12),
             corners: .allCorners
         )
 
         title = title.modify([ .textColor(AppColors.Components.Text.main) ])
         message = message.modify([ .textColor(AppColors.Components.Text.main) ])
+    }
+
+    mutating func configureForSuccess() {
+        backgroundShadow = MacaroonUIKit.Shadow(
+            color: rgba(0.0, 0.0, 0.0, 0.1),
+            opacity: 1,
+            offset: (0, 8),
+            radius: 20,
+            fillColor: AppColors.Shared.Helpers.positive.uiColor,
+            cornerRadii: (12, 12),
+            corners: .allCorners
+        )
+
+        title = title.modify([ .textColor(AppColors.Shared.System.background) ])
+        message = message.modify([ .textColor(AppColors.Shared.System.background) ])
     }
 }

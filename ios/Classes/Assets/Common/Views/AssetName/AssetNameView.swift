@@ -26,7 +26,7 @@ class AssetNameView: BaseView {
     private(set) lazy var nameLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withTextColor(Colors.Text.primary)
+            .withTextColor(AppColors.Components.Text.main.uiColor)
             .withLine(.single)
             .withAlignment(.left)
     }()
@@ -34,7 +34,7 @@ class AssetNameView: BaseView {
     private(set) lazy var codeLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .regular(size: 12.0)))
-            .withTextColor(Colors.Text.secondary)
+            .withTextColor(AppColors.Components.Text.gray.uiColor)
             .withLine(.single)
             .withAlignment(.left)
     }()
@@ -42,7 +42,7 @@ class AssetNameView: BaseView {
     private(set) lazy var idLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .regular(size: 12.0)))
-            .withTextColor(Colors.Text.secondary)
+            .withTextColor(AppColors.Components.Text.gray.uiColor)
             .withLine(.single)
             .withAlignment(.left)
     }()
@@ -116,8 +116,8 @@ extension AssetNameView {
 }
 
 extension AssetNameView {
-    func setAssetName(for assetDetail: AssetInformation) {
-        if assetDetail.hasDisplayName() {
+    func setAssetName(for assetDetail: StandardAsset) {
+        if assetDetail.hasDisplayName {
             nameLabel.text = assetDetail.name
             codeLabel.text = assetDetail.unitName
         } else {

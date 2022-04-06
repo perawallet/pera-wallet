@@ -16,13 +16,16 @@
 //  ContactsViewModel.swift
 
 import UIKit
+import MacaroonUIKit
 
-final class ContactsViewModel {
+final class ContactsViewModel: Hashable {
+    private(set) var fullAddress: String?
     private(set) var image: UIImage?
-    private(set) var name: String?
+    private(set) var name: EditText?
     private(set) var address: String?
 
     init(contact: Contact, imageSize: CGSize) {
+        fullAddress = contact.address
         bindImage(from: contact, with: imageSize)
         bindName(contact)
         bindAddress(contact)
@@ -30,20 +33,35 @@ final class ContactsViewModel {
 }
 
 extension ContactsViewModel {
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(name)
+        hasher.combine(address)
+    }
+
+    static func == (
+        lhs: ContactsViewModel,
+        rhs: ContactsViewModel
+    ) -> Bool {
+        return lhs.name == rhs.name &&
+        lhs.address == rhs.address
+    }
+}
+
+extension ContactsViewModel {
     private func bindImage(from contact: Contact, with imageSize: CGSize) {
-        if let imageData = contact.image,
-           let image = UIImage(data: imageData) {
-            self.image = image.convert(to: imageSize)
-        } else {
-            self.image = img("icon-user-placeholder")
-        }
+        image = ContactImageProcessor(
+            data: contact.image,
+            size: imageSize
+        ).process()
     }
 
     private func bindName(_ contact: Contact) {
-        name = contact.name
+        name = .string(contact.name)
     }
 
     private func bindAddress(_ contact: Contact) {
-        address = contact.address?.shortAddressDisplay()
+        address = contact.address?.shortAddressDisplay
     }
 }

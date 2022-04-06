@@ -168,7 +168,12 @@ final class MultilineTextInputFieldView: View, FormTextInputFieldView, UITextVie
 
             return false
         }
-        return true
+
+        return delegate.multilineTextInputFieldView(
+            self,
+            shouldChangeCharactersIn: range,
+            replacementString: text
+        )
     }
 }
 
@@ -278,9 +283,10 @@ extension MultilineTextInputFieldView {
     }
     
     private func addTextInput(_ layoutSheet: MultilineTextInputFieldViewTheme) {
+        textInputView.textContainerInset = UIEdgeInsets(layoutSheet.textContainerInsets)
+
         addSubview(textInputView)
-        textInputView.setContentHuggingPriority(.required, for: .vertical)
-        textInputView.setContentCompressionResistancePriority(.required, for: .vertical)
+        textInputView.fitToVerticalIntrinsicSize()
         textInputView.snp.makeConstraints {
             $0.top == layoutSheet.topInset
             $0.setHorizontalPaddings()
@@ -345,7 +351,6 @@ extension MultilineTextInputFieldView {
 
 extension MultilineTextInputFieldView {
     func addRightAccessoryItem(_ accessoryView: UIView) {
-        textInputView.textContainerInset = UIEdgeInsets((0, 0, 0, 65))
         addSubview(accessoryView)
         accessoryView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
@@ -356,4 +361,19 @@ extension MultilineTextInputFieldView {
 
 protocol MultilineTextInputFieldViewDelegate: AnyObject {
     func multilineTextInputFieldViewDidReturn(_ view: MultilineTextInputFieldView)
+    func multilineTextInputFieldView(
+        _ view: MultilineTextInputFieldView,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool
+}
+
+extension MultilineTextInputFieldViewDelegate {
+    func multilineTextInputFieldView(
+        _ view: MultilineTextInputFieldView,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool {
+        return true
+    }
 }

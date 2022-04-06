@@ -91,7 +91,7 @@ extension AlgoPriceViewModel {
         
         let price = algoPrice.amount.toCurrencyStringForLabel.unwrap {
             "\($0) \(currencyId)"
-        } ?? "N/A"
+        }
         
         bindPrice(price)
     }

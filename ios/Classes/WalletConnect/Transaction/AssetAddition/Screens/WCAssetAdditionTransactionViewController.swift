@@ -25,7 +25,7 @@ class WCAssetAdditionTransactionViewController: WCSingleTransactionViewControlle
         return assetAdditionTransactionView
     }
 
-    var assetDetail: AssetDetail?
+    var asset: Asset?
 
     override func configureAppearance() {
         super.configureAppearance()
@@ -41,7 +41,7 @@ class WCAssetAdditionTransactionViewController: WCSingleTransactionViewControlle
         bindView()
 
         setCachedAsset {
-            if self.assetDetail == nil {
+            if self.asset == nil {
                 self.dismissScreen()
                 return
             }
@@ -59,7 +59,7 @@ extension WCAssetAdditionTransactionViewController {
             WCAssetAdditionTransactionViewModel(
                 transaction: transaction,
                 senderAccount: account,
-                assetDetail: assetDetail
+                asset: asset
             )
         )
     }
@@ -71,15 +71,15 @@ extension WCAssetAdditionTransactionViewController: WCAssetAdditionTransactionVi
     }
 
     func wcAssetAdditionTransactionViewDidOpenAlgoExplorer(_ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView) {
-        openInExplorer(assetDetail)
+        openInExplorer(asset)
     }
 
     func wcAssetAdditionTransactionViewDidOpenAssetURL(_ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView) {
-        openAssetURL(assetDetail)
+        openAssetURL(asset)
     }
 
     func wcAssetAdditionTransactionViewDidOpenAssetMetadata(_ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView) {
-        displayAssetMetadata(assetDetail)
+        displayAssetMetadata(asset)
     }
 }
 

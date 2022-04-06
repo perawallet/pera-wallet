@@ -19,7 +19,9 @@ import UIKit
 import MacaroonBottomSheet
 import MacaroonUIKit
 
-final class BottomWarningViewController: BaseScrollViewController {
+final class BottomWarningViewController:
+    BaseScrollViewController,
+    BottomSheetPresentable {
     private let viewConfigurator: BottomWarningViewConfigurator
 
     init(
@@ -66,5 +68,11 @@ final class BottomWarningViewController: BaseScrollViewController {
 
     override func bindData() {
         bottomWarningView.bindData(viewConfigurator)
+    }
+}
+
+extension BottomWarningViewController {
+    var modalHeight: ModalHeight {
+        return .compressed
     }
 }

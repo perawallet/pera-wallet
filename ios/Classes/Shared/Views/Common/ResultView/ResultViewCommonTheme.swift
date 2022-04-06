@@ -50,4 +50,3 @@ struct ResultViewCommonTheme: ResultViewTheme {
         self.bodyTopMargin = 16
     }
 }
-

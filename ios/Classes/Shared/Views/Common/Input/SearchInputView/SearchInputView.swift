@@ -20,7 +20,10 @@ import MacaroonUIKit
 import SnapKit
 import UIKit
 
-final class SearchInputView: View, UITextFieldDelegate {
+final class SearchInputView:
+    View,
+    UITextFieldDelegate,
+    ListReusable {
     weak var delegate: SearchInputViewDelegate?
 
     var text: String? {

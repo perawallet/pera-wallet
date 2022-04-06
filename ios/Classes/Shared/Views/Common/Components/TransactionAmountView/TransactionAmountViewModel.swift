@@ -61,18 +61,21 @@ extension TransactionAmountViewModel {
         isAlgos: Bool,
         assetSymbol: String? = nil
     ) {
-        if let fraction = assetFraction {
-            amountLabelText = .string(amount.toFractionStringForLabel(fraction: fraction))
-        } else {
-            amountLabelText = .string(amount.toAlgosStringForLabel)
-        }
-
         if isAlgos {
-            amountLabelText = .string("\(amountLabelText?.string ?? "")")
+            amountLabelText = .string(amount.toAlgosStringForLabel)
+            return
+        }
+        
+        guard let fraction = assetFraction else {
+            return
+        }
+        
+        let amountText = amount.toFractionStringForLabel(fraction: fraction) ?? ""
+        
+        if let assetSymbol = assetSymbol {
+            amountLabelText = .string("\(amountText) \(assetSymbol)")
         } else {
-            if let assetSymbol = assetSymbol {
-                amountLabelText = .string("\(amountLabelText?.string ?? "") \(assetSymbol)")
-            }
+            amountLabelText = .string(amountText)
         }
     }
 }

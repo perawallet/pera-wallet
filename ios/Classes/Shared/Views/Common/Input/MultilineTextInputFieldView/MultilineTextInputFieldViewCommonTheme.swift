@@ -20,6 +20,7 @@ import MacaroonUIKit
 
 struct MultilineTextInputFieldViewCommonTheme: MultilineTextInputFieldViewTheme {
     let textInput: TextInputStyle
+    var textContainerInsets: LayoutPaddings
     let placeholder: TextStyle
     let floatingPlaceholder: TextStyle
     let topInset: LayoutMetric
@@ -35,6 +36,7 @@ struct MultilineTextInputFieldViewCommonTheme: MultilineTextInputFieldViewTheme 
         _ family: LayoutFamily = .current
     ) {
         self.textInput = textInput
+        self.textContainerInsets = (0, 0, 0, 65)
         self.placeholder = [
             .font(Fonts.DMSans.regular.make(15, .body)),
             .textOverflow(SingleLineFittingText()),
@@ -64,5 +66,11 @@ struct MultilineTextInputFieldViewCommonTheme: MultilineTextInputFieldViewTheme 
             placeholder: "",
             family
         )
+    }
+}
+
+extension MultilineTextInputFieldViewCommonTheme {
+    mutating func configureForDoubleAccessory() {
+        textContainerInsets.trailing = 105
     }
 }

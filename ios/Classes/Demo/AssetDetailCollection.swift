@@ -25,7 +25,7 @@ struct AssetDetailCollection:
     Printable {
     typealias Key = AssetID
     typealias Index = AssetDetailCollectionIndex
-    typealias Element = AssetInformation
+    typealias Element = AssetDecoration
     
     fileprivate typealias Table = [Key: Element]
 

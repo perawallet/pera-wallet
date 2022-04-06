@@ -53,7 +53,7 @@ final class TransactionSendController {
         switch draft.transactionMode {
         case .algo:
             validateForAlgoTransaction()
-        case .assetDetail:
+        case .asset:
             validateForAssetTransaction()
         }
     }
@@ -82,7 +82,7 @@ extension TransactionSendController {
 
             receiverAddress = receiverAddress.trimmingCharacters(in: .whitespacesAndNewlines)
 
-            if !AlgorandSDK().isValidAddress(receiverAddress) {
+            if !receiverAddress.isValidatedAddress {
                 delegate?.transactionSendController(self, didFailValidation: .algo(.invalidAddressSelected))
                 return
             }
@@ -135,11 +135,11 @@ extension TransactionSendController {
     }
 
     private func checkIfAddressIsValidForTransaction(_ address: String) {
-        guard let assetDetail = draft.assetDetail else {
+        guard let asset = draft.asset else {
             return
         }
 
-        if !AlgorandSDK().isValidAddress(address) {
+        if !address.isValidatedAddress {
             self.delegate?.transactionSendController(self, didFailValidation: .algo(.invalidAddressSelected))
             return
         }
@@ -167,8 +167,8 @@ extension TransactionSendController {
                 let receiverAccount = receiverAccountWrapper.account
 
                 if let assets = receiverAccount.assets {
-                    if assets.contains(where: { asset -> Bool in
-                        assetDetail.id == asset.id
+                    if assets.contains(where: { anAsset -> Bool in
+                        asset.id == anAsset.id
                     }) {
                         self.validateAssetTransaction()
                     } else {
@@ -188,17 +188,13 @@ extension TransactionSendController {
     }
 
     private func validateAssetTransaction() {
-        guard let amount = self.draft.amount, let assetDetail = draft.assetDetail else {
+        guard let amount = self.draft.amount,
+              let asset = draft.asset else {
             self.delegate?.transactionSendController(self, didFailValidation: .amountNotSpecified)
             return
         }
 
-        guard let assetAmount = draft.from.amount(for: assetDetail) else {
-            self.delegate?.transactionSendController(self, didFailValidation: .amountNotSpecified)
-            return
-        }
-
-        if assetAmount < amount {
+        if asset.amountWithFraction < amount {
             self.delegate?.transactionSendController(self, didFailValidation: .asset(.minimumAmount))
             return
         }

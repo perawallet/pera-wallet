@@ -18,7 +18,7 @@
 import Foundation
 import UIKit
 
-protocol SelectAccountDataController {
+protocol SelectAccountDataController: AnyObject {
     typealias Snapshot = NSDiffableDataSourceSnapshot<SelectAccountListViewSection, SelectAccountListViewItem>
 
     var eventHandler: ((SelectAccountDataControllerEvent) -> Void)? { get set }

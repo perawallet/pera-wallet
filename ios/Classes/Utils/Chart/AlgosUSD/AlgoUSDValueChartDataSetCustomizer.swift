@@ -35,11 +35,11 @@ struct AlgoUSDValueChartDataSetCustomizer: AlgorandLineChartDataSetCustomizable 
     var color: UIColor {
         switch algoPriceChangeRate {
         case .increased:
-            return Colors.Chart.Line.increasing
+            return AppColors.Shared.Helpers.positive.uiColor
         case .same:
-            return Colors.Chart.Line.stable
+            return AppColors.Components.Text.gray.uiColor
         case .decreased:
-            return Colors.Chart.Line.decreasing
+            return AppColors.Shared.Helpers.negative.uiColor
         }
     }
 
@@ -63,11 +63,11 @@ struct AlgoUSDValueChartDataSetCustomizer: AlgorandLineChartDataSetCustomizable 
     var highlightColor: UIColor {
         switch algoPriceChangeRate {
         case .increased:
-            return Colors.Chart.Line.increasing
+            return AppColors.Shared.Helpers.positive.uiColor
         case .same:
-            return Colors.Chart.Line.stable
+            return AppColors.Components.Text.gray.uiColor
         case .decreased:
-            return Colors.Chart.Line.decreasing
+            return AppColors.Shared.Helpers.negative.uiColor
         }
     }
 

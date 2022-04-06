@@ -26,18 +26,19 @@ final class PassphraseVerifyDataSource: NSObject {
     private let numberOfWordsInAValidation = 3
 
     private var mnemonicIndexes: [Int] = []
-    private let mnemonics: [String]
+    private var mnemonics: [String] = []
     private var shownMnemonics: [Int: [String]] = [:]
     private var correctSelections: [String] = []
+    private var selectedMnemonics: [Int: Int] = [:]
 
     init(privateKey: Data) {
         self.privateKey = privateKey
-
+        
         var error: NSError?
         self.mnemonics = AlgorandSDK().mnemonicFrom(privateKey, error: &error).components(separatedBy: " ")
-
+        
         super.init()
-
+        
         if error == nil {
             composeDisplayedData()
         }
@@ -45,11 +46,39 @@ final class PassphraseVerifyDataSource: NSObject {
 }
 
 extension PassphraseVerifyDataSource {
+    func loadData() {
+        delegate?.passphraseVerifyDataSourceDidLoadData(
+            self,
+            shownMnemonics: shownMnemonics,
+            correctIndexes: mnemonicIndexes
+        )
+    }
+    
+    func resetAndReloadData() {
+        clearDisplayedData()
+        composeDisplayedData()
+                
+        delegate?.passphraseVerifyDataSourceDidLoadData(
+            self,
+            shownMnemonics: shownMnemonics,
+            correctIndexes: mnemonicIndexes
+        )
+    }
+    
+    private func clearDisplayedData() {
+        mnemonicIndexes.removeAll()
+        shownMnemonics.removeAll()
+        correctSelections.removeAll()
+        selectedMnemonics.removeAll()
+    }
+    
     private func composeDisplayedData() {
         generateRandomIndexes()
         generateShownMnemonics()
     }
+}
 
+extension PassphraseVerifyDataSource {
     private func generateRandomIndexes() {
         while mnemonicIndexes.count < numberOfValidations {
             let randomIndex = Int.random(in: 0 ..< mnemonics.count)
@@ -115,87 +144,43 @@ extension PassphraseVerifyDataSource {
     }
 }
 
-extension PassphraseVerifyDataSource: UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return numberOfValidations
-    }
-
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return numberOfWordsInAValidation
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let mnemonics = shownMnemonics[indexPath.section],
-              let mnemonic = mnemonics[safe: indexPath.item] else {
-                  fatalError("Index path is out of bounds")
-              }
-        let cell = collectionView.dequeue(PassphraseMnemonicCell.self, at: indexPath)
-        cell.bindData(PassphraseMnemonicViewModel(mnemonic: mnemonic))
-        return cell
-    }
-
-    func collectionView(
-        _ collectionView: UICollectionView,
-        viewForSupplementaryElementOfKind kind: String,
-        at indexPath: IndexPath
-    ) -> UICollectionReusableView {
-        if kind != UICollectionView.elementKindSectionHeader {
-            fatalError("Unexpected element kind")
-        }
-
-        let headerView = collectionView.dequeueHeader(PasshraseMnemonicNumberHeaderSupplementaryView.self, at: indexPath)
-        headerView.bind(PasshraseMnemonicNumberHeaderViewModel(order: mnemonicIndexes[indexPath.section]))
-        return headerView
-    }
-}
-
 extension PassphraseVerifyDataSource {
-    func notifyDelegateForSelectedItems(in collectionView: UICollectionView) {
-        delegate?.passphraseVerifyDataSource(
-            self,
-            isSelectedAllItems: collectionView.indexPathsForSelectedItems?.count == numberOfValidations
-        )
+    func selectMnemonic(
+        _ section: Int,
+        _ item: Int
+    ) {
+        selectedMnemonics[section] = item
+        
+        if selectedMnemonics.count == numberOfValidations {
+            delegate?.passphraseVerifyDataSourceSelectAllItems()
+        }
     }
-
-    func isSelectedValidMnemonics(for indexPathsForSelectedItems: [IndexPath]?) -> Bool {
-        guard let selectedIndexes = indexPathsForSelectedItems,
-              selectedIndexes.count == numberOfValidations else {
-                  return false
-              }
-
-        var isValidated = true
-        for indexPath in selectedIndexes {
-            isValidated = selectedMnemonic(at: indexPath) == mnemonicValue(at: indexPath)
-            if !isValidated {
+    
+    func verifyPassphrase() -> Bool {
+        var isValidate = true
+        
+        for (section, item) in selectedMnemonics {
+            guard let shownSection = shownMnemonics[section] else {
+                isValidate = false
+                return isValidate
+            }
+            
+            if shownSection[item] != correctSelections[section] {
+                isValidate = false
                 break
             }
         }
-
-        return isValidated
-    }
-
-    private func selectedMnemonic(at indexPath: IndexPath) -> String? {
-        let mnemonics = shownMnemonics[indexPath.section]
-        return mnemonics?[safe: indexPath.item]
-    }
-
-    private func mnemonicValue(at indexPath: IndexPath) -> String? {
-        let mnemonicIndex = mnemonicIndexes[safe: indexPath.section]
-        return mnemonics[safe: mnemonicIndex]
-    }
-
-    func resetVerificationData() {
-        clearDisplayedData()
-        composeDisplayedData()
-    }
-
-    private func clearDisplayedData() {
-        mnemonicIndexes.removeAll()
-        shownMnemonics.removeAll()
-        correctSelections.removeAll()
+        
+        return isValidate
     }
 }
 
 protocol PassphraseVerifyDataSourceDelegate: AnyObject {
-    func passphraseVerifyDataSource(_ passphraseVerifyDataSource: PassphraseVerifyDataSource, isSelectedAllItems: Bool)
+    func passphraseVerifyDataSourceDidLoadData(
+        _ passphraseVerifyDataSource: PassphraseVerifyDataSource,
+        shownMnemonics: [Int: [String]],
+        correctIndexes: [Int]
+    )
+    
+    func passphraseVerifyDataSourceSelectAllItems()
 }

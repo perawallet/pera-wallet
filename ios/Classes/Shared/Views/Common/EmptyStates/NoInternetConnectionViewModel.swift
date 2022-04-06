@@ -33,12 +33,42 @@ extension NoInternetConnectionViewModel {
     private mutating func bindImage() {
         icon = "icon-no-internet-connection"
     }
-
+    
     private mutating func bindTitle() {
-        title = .string("internet-connection-error-title".localized)
+        let font = Fonts.DMSans.medium.make(19)
+        let lineHeightMultiplier = 1.13
+
+        title = .attributedString(
+            "internet-connection-error-title"
+                .localized
+                .attributed([
+                .font(font),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .textAlignment(.center),
+                    .lineBreakMode(.byWordWrapping),
+                    .lineHeightMultiple(lineHeightMultiplier)
+                ])
+            ])
+        )
     }
 
     private mutating func bindBody() {
-        body = .string("internet-connection-error-detail".localized)
+        let font = Fonts.DMSans.regular.make(15)
+        let lineHeightMultiplier = 1.23
+
+        body = .attributedString(
+            "internet-connection-error-detail"
+                .localized
+                .attributed([
+                .font(font),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .textAlignment(.center),
+                    .lineBreakMode(.byWordWrapping),
+                    .lineHeightMultiple(lineHeightMultiplier)
+                ])
+            ])
+        )
     }
 }

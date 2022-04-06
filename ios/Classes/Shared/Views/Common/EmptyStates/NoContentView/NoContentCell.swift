@@ -22,6 +22,8 @@ import UIKit
 final class NoContentCell:
     CollectionCell<NoContentView>,
     ViewModelBindable {
+    static let theme = NoContentViewCommonTheme()
+
     override init(
         frame: CGRect
     ) {
@@ -33,6 +35,6 @@ final class NoContentCell:
     }
 
     func customize() {
-        contextView.customize(NoContentViewCommonTheme())
+        contextView.customize(Self.theme)
     }
 }

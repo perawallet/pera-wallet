@@ -24,11 +24,15 @@ class WCGroupTransactionAccountInformationViewModel {
     private(set) var balance: String?
     private(set) var assetName: String?
 
-    init(account: Account?, assetInformation: AssetInformation?, isDisplayingAmount: Bool) {
+    init(
+        account: Account?,
+        asset: Asset?,
+        isDisplayingAmount: Bool
+    ) {
         setAccountNameViewModel(from: account)
-        setIsAlgos(from: assetInformation, and: isDisplayingAmount)
-        setBalance(from: account, and: assetInformation, with: isDisplayingAmount)
-        setAssetName(from: assetInformation, and: isDisplayingAmount)
+        setIsAlgos(from: asset, and: isDisplayingAmount)
+        setBalance(from: account, and: asset, with: isDisplayingAmount)
+        setAssetName(from: asset, and: isDisplayingAmount)
         setIsDisplayingDotSeparator(from: isDisplayingAmount)
     }
 
@@ -40,37 +44,48 @@ class WCGroupTransactionAccountInformationViewModel {
         accountNameViewModel = AccountNameViewModel(account: account)
     }
 
-    private func setIsAlgos(from assetInformation: AssetInformation?, and isDisplayingAmount: Bool) {
+    private func setIsAlgos(
+        from asset: Asset?,
+        and isDisplayingAmount: Bool
+    ) {
         if !isDisplayingAmount {
             isAlgos = false
             return
         }
 
-        isAlgos = assetInformation == nil
+        isAlgos = asset == nil
     }
 
     private func setIsDisplayingDotSeparator(from isDisplayingAmount: Bool) {
         isDisplayingDotSeparator = isDisplayingAmount && balance != nil
     }
 
-    private func setBalance(from account: Account?, and assetInformation: AssetInformation?, with isDisplayingAmount: Bool) {
+    private func setBalance(
+        from account: Account?,
+        and asset: Asset?,
+        with isDisplayingAmount: Bool
+    ) {
         if !isDisplayingAmount {
             return
         }
 
-        guard let account = account, hasValidAmount(of: account, for: assetInformation) else {
+        guard let account = account,
+              hasValidAmount(of: account, for: asset) else {
             return
         }
 
-        if let assetInformation = assetInformation {
-            balance = account.amountDisplayWithFraction(for: assetInformation)
+        if let asset = asset {
+            balance = asset.amountDisplayWithFraction
             return
         }
 
         balance = account.amount.toAlgos.toAlgosStringForLabel
     }
 
-    private func setAssetName(from assetInformation: AssetInformation?, and isDisplayingAmount: Bool) {
+    private func setAssetName(
+        from asset: Asset?,
+        and isDisplayingAmount: Bool
+    ) {
         if !isDisplayingAmount {
             return
         }
@@ -79,21 +94,21 @@ class WCGroupTransactionAccountInformationViewModel {
             return
         }
 
-        if let assetInformation = assetInformation {
-            assetName = assetInformation.getDisplayNames().1
+        if let asset = asset {
+            assetName = asset.presentation.displayNames.secondaryName
         } else {
             assetName = "ALGO"
         }
     }
 
-    private func hasValidAmount(of account: Account, for assetDetail: AssetInformation?) -> Bool {
-        guard let assetDetail = assetDetail else {
+    private func hasValidAmount(
+        of account: Account,
+        for asset: Asset?
+    ) -> Bool {
+        guard let asset = asset else {
             return account.amount > 0
         }
 
-        guard let amount = account.amount(for: assetDetail) else {
-            return false
-        }
-        return !amount.isZero
+        return !asset.amountWithFraction.isZero
     }
 }

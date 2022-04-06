@@ -34,7 +34,7 @@ struct ContactsViewTheme: StyleSheet, LayoutSheet {
             placeholder: "contacts-search".localized,
             family: family
         )
-        self.topInset = 12
+        self.topInset = 20
         self.horizontalPadding = 24
         self.cellSpacing = 0
         self.contentInset = (28, 0, 0, 0)

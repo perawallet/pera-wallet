@@ -21,11 +21,15 @@ let validatedAddressLength = 58
 let defaultParticipationKey = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
 
 extension String {
-    func isValidatedAddress() -> Bool {
-        return count == validatedAddressLength
+    var hasValidAddressLength: Bool {
+        count == validatedAddressLength
+    }
+
+    var isValidatedAddress: Bool {
+        return AlgorandSDK().isValidAddress(self)
     }
     
-    func shortAddressDisplay() -> String {
+    var shortAddressDisplay: String {
         return String(prefix(6)) + "..." + String(suffix(6))
     }
 
@@ -35,10 +39,11 @@ extension String {
 }
 
 extension Optional where Wrapped == String {
-    func shortAddressDisplay() -> String? {
+    var shortAddressDisplay: String? {
         guard let string = self else {
             return self
         }
-        return string.shortAddressDisplay()
+
+        return string.shortAddressDisplay
     }
 }

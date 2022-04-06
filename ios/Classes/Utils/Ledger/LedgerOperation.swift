@@ -108,7 +108,7 @@ extension LedgerOperation {
         var error: NSError?
         let address = AlgorandSDK().addressFromPublicKey(mutableData, error: &error)
 
-        if error != nil || !AlgorandSDK().isValidAddress(address) {
+        if error != nil || !address.isValidatedAddress {
             return nil
         }
 

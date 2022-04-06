@@ -96,6 +96,8 @@ extension RekeyConfirmationViewController:
 
 extension RekeyConfirmationViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
+        loadingController?.stopLoading()
+
         log(RekeyEvent())
         saveRekeyedAccountDetails()
         openRekeyConfirmationAlert()
@@ -222,7 +224,7 @@ extension TransactionSignChecking where Self: BaseViewController {
             }
 
             bannerController?.presentErrorBanner(
-                title: "title-error".localized, message: "ledger-rekey-error-add-auth".localized(params: authAddress.shortAddressDisplay())
+                title: "title-error".localized, message: "ledger-rekey-error-add-auth".localized(params: authAddress.shortAddressDisplay)
             )
             return false
         }

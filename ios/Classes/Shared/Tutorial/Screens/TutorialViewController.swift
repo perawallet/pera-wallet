@@ -165,6 +165,8 @@ extension TutorialViewController: TutorialViewDelegate {
             open(.ledgerDeviceList(flow: flow), by: .push)
         case .accountSuccessfullyRekeyed:
             uiHandlers.didTapButtonPrimaryActionButton?(self)
+        case .collectibleTransferConfirmed:
+            uiHandlers.didTapButtonPrimaryActionButton?(self)
         }
     }
 
@@ -296,4 +298,5 @@ enum Tutorial: Equatable {
     case recoverWithLedger
     case ledgerSuccessfullyConnected
     case accountSuccessfullyRekeyed(accountName: String)
+    case collectibleTransferConfirmed
 }

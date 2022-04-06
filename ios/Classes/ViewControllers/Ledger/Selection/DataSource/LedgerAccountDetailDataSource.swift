@@ -173,11 +173,16 @@ extension LedgerAccountDetailDataSource {
 
                 for asset in assets {
                     if let assetDetail = self.sharedDataController.assetDetailCollection[asset.id] {
-                        let compoundAsset = CompoundAsset(asset, assetDetail)
-                        account.append(compoundAsset)
+                        if assetDetail.isCollectible {
+                            let collectible = CollectibleAsset(asset: asset, decoration: assetDetail)
+                            account.append(collectible)
+                        } else {
+                            let standardAsset = StandardAsset(asset: asset, decoration: assetDetail)
+                            account.append(standardAsset)
 
-                        let assetPreviewModel = AssetPreviewModelAdapter.adapt((assetDetail: assetDetail, asset: asset, currency: currency))
-                        self.assetPreviews.append(assetPreviewModel)
+                            let assetPreviewModel = AssetPreviewModelAdapter.adapt((asset: standardAsset, currency: currency))
+                            self.assetPreviews.append(assetPreviewModel)
+                        }
                     }
                 }
             case .failure:

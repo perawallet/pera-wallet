@@ -19,6 +19,7 @@ import MacaroonUIKit
 import UIKit
 
 final class PendingAssetImageView: View {
+    private lazy var borderImageView = ImageView()
     private lazy var loadingIndicator = ViewLoadingIndicator()
 
     override init(frame: CGRect) {
@@ -27,9 +28,8 @@ final class PendingAssetImageView: View {
     }
 
     private func customize(_ theme: PendingAssetImageViewTheme) {
+        addBorderImage(theme)
         addLoadingIndicator(theme)
-        draw(border: theme.border)
-        draw(corner: theme.corner)
     }
 
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
@@ -38,6 +38,15 @@ final class PendingAssetImageView: View {
 }
 
 extension PendingAssetImageView {
+    private func addBorderImage(_ theme: PendingAssetImageViewTheme) {
+        borderImageView.customizeAppearance(theme.borderImage)
+
+        addSubview(borderImageView)
+        borderImageView.snp.makeConstraints {
+            $0.setPaddings()
+        }
+    }
+
     private func addLoadingIndicator(_ theme: PendingAssetImageViewTheme) {
         loadingIndicator.applyStyle(theme.indicator)
 

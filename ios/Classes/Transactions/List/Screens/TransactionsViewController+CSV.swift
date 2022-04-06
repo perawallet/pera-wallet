@@ -33,7 +33,7 @@ extension TransactionsViewController: CSVExportable {
         nextToken token: String?
     ) {
         var assetId: String?
-        if let id = draft.compoundAsset?.id {
+        if let id = draft.asset?.id {
             assetId = String(id)
         }
 
@@ -100,7 +100,7 @@ extension TransactionsViewController: CSVExportable {
         case .all:
             fileName = "\(accountHandle.value.name ?? "")_transactions"
         case .asset:
-            guard let id = compoundAsset?.id else {
+            guard let id = asset?.id else {
                 return ""
             }
 
@@ -139,8 +139,8 @@ extension TransactionsViewController: CSVExportable {
             ]
 
             if let assetID = transaction.assetTransfer?.assetId {
-                if let name = sharedDataController.assetDetailCollection[assetID]?.name {
-                    transactionData["wallet-connect-asset-name-title".localized] = name
+                if let asset = sharedDataController.assetDetailCollection[assetID] {
+                    transactionData["wallet-connect-asset-name-title".localized] = asset.name
                 }
 
                 transactionData["title-asset-id".localized] = "\(assetID)"
@@ -158,15 +158,15 @@ extension TransactionsViewController: CSVExportable {
         case .algos:
             return amount?.toAlgos.toAlgosStringForLabel ?? " "
         case .asset:
-            guard let assetDetail = compoundAsset?.detail else {
+            guard let assetDetail = asset else {
                 return amount?.assetAmount(fromFraction: 0).toFractionStringForLabel(fraction: 0) ?? " "
             }
 
             return amount?.assetAmount(fromFraction: assetDetail.decimals).toFractionStringForLabel(fraction: assetDetail.decimals) ?? " "
         case .all:
             if let assetID = transaction.assetTransfer?.assetId {
-                if let decimal = sharedDataController.assetDetailCollection[assetID]?.decimals {
-                    return amount?.assetAmount(fromFraction: decimal).toFractionStringForLabel(fraction: decimal) ?? " "
+                if let asset = sharedDataController.assetDetailCollection[assetID] {
+                    return amount?.assetAmount(fromFraction: asset.decimals).toFractionStringForLabel(fraction: asset.decimals) ?? " "
                 }
             }
 

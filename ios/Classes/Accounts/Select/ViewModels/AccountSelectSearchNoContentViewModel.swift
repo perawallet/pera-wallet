@@ -31,10 +31,39 @@ struct AccountSelectSearchNoContentViewModel: NoContentViewModel {
 
 extension AccountSelectSearchNoContentViewModel {
     private mutating func bindTitle() {
-        title = .string("account-select-search-empty-title".localized)
+        let font = Fonts.DMSans.medium.make(19)
+        let lineHeightMultiplier = 1.13
+
+        title = .attributedString(
+            "account-select-search-empty-title".localized
+                .attributed([
+                .font(font),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .textAlignment(.center),
+                    .lineBreakMode(.byWordWrapping),
+                    .lineHeightMultiple(lineHeightMultiplier)
+                ])
+            ])
+        )
     }
 
     private mutating func bindBody() {
-        body = .string("account-select-search-empty-detail".localized)
+        let font = Fonts.DMSans.regular.make(15)
+        let lineHeightMultiplier = 1.23
+
+        body = .attributedString(
+            "account-select-search-empty-detail"
+                .localized
+                .attributed([
+                .font(font),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .textAlignment(.center),
+                    .lineBreakMode(.byWordWrapping),
+                    .lineHeightMultiple(lineHeightMultiplier)
+                ])
+            ])
+        )
     }
 }

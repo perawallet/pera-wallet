@@ -169,7 +169,7 @@ extension LedgerAccountVerificationViewController {
     private func setupLocalAccount(from account: Account) {
         var localAccount = AccountInformation(
             address: account.address,
-            name: account.address.shortAddressDisplay(),
+            name: account.address.shortAddressDisplay,
             type: account.type,
             preferredOrder: accountOrdering.getNewAccountIndex(for: account.type)
         )

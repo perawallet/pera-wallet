@@ -36,7 +36,7 @@ final class AccountListView: View {
 
     func customize(_ theme: AccountListViewTheme) {
         searchNoContentView.customize(NoContentViewCommonTheme())
-        searchNoContentView.bindData(AssetListSearchNoContentViewModel())
+        searchNoContentView.bindData(AssetListSearchNoContentViewModel(hasBody: true))
 
         addAccountCollectionView(theme)
     }

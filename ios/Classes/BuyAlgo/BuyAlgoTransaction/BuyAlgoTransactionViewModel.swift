@@ -122,7 +122,7 @@ extension BuyAlgoTransactionViewModel {
     }
     
     private mutating func bindAccountName(_ account: Account) {
-        let name = account.name ?? account.address.shortAddressDisplay()
+        let name = account.name ?? account.address.shortAddressDisplay
         
         let font = Fonts.DMSans.regular.make(15).uiFont
         let lineHeightMultiplier = 1.23

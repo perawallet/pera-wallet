@@ -29,7 +29,7 @@ final class WCConnectionApprovalViewController: BaseViewController {
     }
 
     private var hasMultipleAccounts: Bool {
-        let accounts = sharedDataController.accountCollection.filter { $0.value.type != .watch }
+        let accounts = sharedDataController.accountCollection.filter { !$0.value.isWatchAccount() }
         return accounts.count > 1
     }
 

@@ -27,7 +27,7 @@ final class AssetDetailViewController: TransactionsViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        log(DisplayAssetDetailEvent(assetId: compoundAsset?.detail.id))
+        log(DisplayAssetDetailEvent(assetId: asset?.id))
     }
 
     override func configureAppearance() {
@@ -40,7 +40,7 @@ extension AssetDetailViewController {
     private func addTitleView() {
         let assetDetailTitleView = AssetDetailTitleView()
         assetDetailTitleView.customize(AssetDetailTitleViewTheme())
-        assetDetailTitleView.bindData(AssetDetailTitleViewModel(assetDetail: compoundAsset?.detail))
+        assetDetailTitleView.bindData(AssetDetailTitleViewModel(asset))
 
         navigationItem.titleView = assetDetailTitleView
     }

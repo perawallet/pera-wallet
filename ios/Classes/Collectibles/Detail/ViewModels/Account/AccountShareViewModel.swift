@@ -1,0 +1,63 @@
+// Copyright 2022 Pera Wallet, LDA
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//   AccountShareViewModel.swift
+
+import Foundation
+import MacaroonUIKit
+import UIKit
+
+struct AccountShareViewModel:
+    ViewModel,
+    Hashable {
+    private(set) var image: UIImage?
+    private(set) var name: EditText?
+
+    init(
+        _ account: Account
+    ) {
+        bindImage(account)
+        bindName(account)
+    }
+}
+
+extension AccountShareViewModel {
+    private mutating func bindImage(
+        _ account: Account
+    ) {
+        image = account.image ?? account.type.image(for: AccountImageType.getRandomImage(for: account.type))
+    }
+
+    private mutating func bindName(
+        _ account: Account
+    ) {
+        let nameValue = account.name.unwrap(or: account.address.shortAddressDisplay)
+
+        let font = Fonts.DMSans.regular.make(15)
+        let lineHeightMultiplier = 1.23
+
+        name = .attributedString(
+            nameValue
+                .attributed([
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .lineBreakMode(.byWordWrapping),
+                        .lineHeightMultiple(lineHeightMultiplier),
+                        .textAlignment(.left)
+                    ])
+                ])
+        )
+    }
+}

@@ -30,8 +30,6 @@ final class AccountSelectScreen: BaseViewController {
 
     private var draft: SendTransactionDraft
 
-    private let algorandSDK = AlgorandSDK()
-
     private lazy var transactionController: TransactionController = {
         guard let api = api else {
             fatalError("API should be set.")
@@ -108,14 +106,14 @@ final class AccountSelectScreen: BaseViewController {
     }
 
     private func presentAssetNotSupportedAlert(receiverAddress: String?) {
-        guard let assetDetail = draft.assetDetail else {
+        guard let asset = draft.asset else {
             return
         }
 
         let assetAlertDraft = AssetAlertDraft(
             account: draft.from,
-            assetIndex: assetDetail.id,
-            assetDetail: assetDetail,
+            assetId: asset.id,
+            asset: AssetDecoration(asset: asset),
             title: "asset-support-title".localized,
             detail: "asset-support-error".localized,
             actionTitle: "title-ok".localized
@@ -126,7 +124,7 @@ final class AccountSelectScreen: BaseViewController {
             let draft = AssetSupportDraft(
                 sender: senderAddress,
                 receiver: receiverAddress,
-                assetId: assetDetail.id
+                assetId: asset.id
             )
             api?.sendAssetSupportRequest(draft)
         }
@@ -160,7 +158,7 @@ final class AccountSelectScreen: BaseViewController {
     }
 
     private func composeAssetTransactionData() {
-        guard let assetDetail = draft.assetDetail else {
+        guard let asset = draft.asset else {
             return
         }
 
@@ -168,13 +166,13 @@ final class AccountSelectScreen: BaseViewController {
             from: draft.from,
             toAccount: draft.toAccount,
             amount: draft.amount,
-            assetIndex: assetDetail.id,
-            assetDecimalFraction: assetDetail.decimals,
-            isVerifiedAsset: assetDetail.isVerified,
+            assetIndex: asset.id,
+            assetDecimalFraction: asset.presentation.decimals,
+            isVerifiedAsset: asset.presentation.isVerified,
             note: draft.note
         )
         transactionDraft.toContact = draft.toContact
-        transactionDraft.assetDetail = assetDetail
+        transactionDraft.asset = asset
 
         transactionController.delegate = self
         transactionController.setTransactionDraft(transactionDraft)
@@ -198,7 +196,7 @@ extension AccountSelectScreen {
 
     private func addTitleView() {
         assetDetailTitleView.customize(AssetDetailTitleViewTheme())
-        assetDetailTitleView.bindData(AssetDetailTitleViewModel(assetDetail: draft.assetDetail))
+        assetDetailTitleView.bindData(AssetDetailTitleViewModel(draft.asset))
 
         navigationItem.titleView = assetDetailTitleView
     }
@@ -294,19 +292,6 @@ extension AccountSelectScreen {
             accountView.searchInputView.setText(address)
         }
     }
-
-    @objc
-    private func didTapNext() {
-        guard let address = accountView.searchInputView.text,
-              algorandSDK.isValidAddress(address) else {
-                  return
-        }
-
-        draft.toAccount = Account(address: address, type: .standard)
-        draft.toContact = nil
-
-        routePreviewScreen()
-    }
 }
 
 extension AccountSelectScreen: UICollectionViewDelegateFlowLayout {
@@ -400,13 +385,10 @@ extension AccountSelectScreen: QRScannerViewControllerDelegate {
             completionHandler?()
         }
 
-        guard let qrAddress = qrText.address else {
-            return
-        }
-
-        guard algorandSDK.isValidAddress(qrAddress) else {
-            return
-        }
+        guard let qrAddress = qrText.address,
+              qrAddress.isValidatedAddress else {
+                  return
+              }
 
         accountView.searchInputView.setText(qrAddress)
     }
@@ -438,7 +420,7 @@ extension AccountSelectScreen: TransactionSendControllerDelegate {
             switch self.draft.transactionMode {
             case .algo:
                 self.composeAlgosTransactionData()
-            case .assetDetail:
+            case .asset:
                 self.composeAssetTransactionData()
             }
         }

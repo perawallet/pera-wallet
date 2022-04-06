@@ -39,7 +39,7 @@ class TransactionDataBuilder: NSObject, TransactionDataBuildable {
 
 extension TransactionDataBuilder {
     func isValidAddress(_ address: String) -> Bool {
-        if !algorandSDK.isValidAddress(address) {
+        if !address.isValidatedAddress {
             delegate?.transactionDataBuilder(self, didFailedComposing: .inapp(TransactionError.invalidAddress(address: address)))
             return false
         }

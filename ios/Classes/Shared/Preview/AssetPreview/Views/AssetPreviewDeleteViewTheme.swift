@@ -18,17 +18,18 @@ import Foundation
 import MacaroonUIKit
 
 struct AssetPreviewDeleteViewTheme: StyleSheet, LayoutSheet {
-    let imageSize: LayoutSize
+    let iconSize: LayoutSize
     let horizontalPadding: LayoutMetric
+    let spacingBetweenContents: LayoutMetric
     
-    let primaryAssetTitle: TextStyle
-    let secondaryAssetTitle: TextStyle
-    let secondaryImageLeadingPadding: LayoutMetric
+    let title: TextStyle
+    let verifiedIcon: ImageStyle
+    let subtitle: TextStyle
+    let contentMinWidthRatio: LayoutMetric
+    let verifiedIconLeadingPadding: LayoutMetric
     
-    let primaryAssetValue: TextStyle
-    let secondaryAssetValue: TextStyle
-    let assetValueTrailingPadding: LayoutMetric
-    let assetValueVerticalPadding: LayoutMetric
+    var primaryValue: TextStyle
+    var secondaryValue: TextStyle
     
     let button: ButtonStyle
     let buttonSize: LayoutSize
@@ -36,39 +37,43 @@ struct AssetPreviewDeleteViewTheme: StyleSheet, LayoutSheet {
     let buttonFirstShadow: MacaroonUIKit.Shadow
     let buttonSecondShadow: MacaroonUIKit.Shadow
     let buttonThirdShadow: MacaroonUIKit.Shadow
+    let buttonLeadingPadding: LayoutMetric
     
     init(_ family: LayoutFamily) {
-        self.imageSize = (40, 40)
+        self.iconSize = (40, 40)
         self.horizontalPadding = 16
+        self.spacingBetweenContents = 8
         
-        self.primaryAssetTitle = [
+        self.title = [
             .font(Fonts.DMSans.regular.make(15)),
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .textColor(AppColors.Components.Text.main),
             .textAlignment(.left)
         ]
-        self.secondaryAssetTitle = [
+        self.verifiedIcon = [
+            .contentMode(.right)
+        ]
+        self.subtitle = [
             .font(Fonts.DMSans.regular.make(13)),
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .textColor(AppColors.Components.Text.grayLighter),
             .textAlignment(.left)
         ]
-        self.secondaryImageLeadingPadding = 8
+        self.contentMinWidthRatio = 0.15
+        self.verifiedIconLeadingPadding = 8
         
-        self.primaryAssetValue = [
+        self.primaryValue = [
             .font(Fonts.DMMono.regular.make(15)),
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .textColor(AppColors.Components.Text.main),
             .textAlignment(.right)
         ]
-        self.secondaryAssetValue = [
+        self.secondaryValue = [
             .font(Fonts.DMSans.regular.make(13)),
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .textColor(AppColors.Components.Text.grayLighter),
             .textAlignment(.right)
         ]
-        self.assetValueTrailingPadding = 20
-        self.assetValueVerticalPadding = 14
         
         self.button = [
             .icon([.normal("icon-asset-delete")]),
@@ -101,6 +106,17 @@ struct AssetPreviewDeleteViewTheme: StyleSheet, LayoutSheet {
             fillColor: AppColors.Shared.System.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
+        )
+        self.buttonLeadingPadding = 20
+    }
+}
+
+extension AssetPreviewDeleteViewTheme {
+    mutating func configureForAssetPreviewAddition() {
+        primaryValue = primaryValue.modify( [] )
+
+        secondaryValue = secondaryValue.modify(
+            [ .textOverflow(SingleLineFittingText()), .textColor(AppColors.Components.Text.gray) ]
         )
     }
 }

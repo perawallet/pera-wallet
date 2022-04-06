@@ -67,14 +67,14 @@ extension AssetActionConfirmationViewController: BottomSheetPresentable {
 
 extension AssetActionConfirmationViewController {
     private func fetchAssetDetailIfNeeded() {
-        if !draft.isValid() {
-            if let assetDetail = session?.assetInformations[draft.assetIndex] {
-                handleAssetDetailSetup(with: assetDetail)
+        if !draft.hasValidAsset {
+            if let asset = sharedDataController.assetDetailCollection[draft.assetId] {
+                handleAssetDetailSetup(with: asset)
             } else {
                 loadingController?.startLoadingWithMessage("title-loading".localized)
 
                 api?.fetchAssetDetails(
-                    AssetFetchQuery(ids: [draft.assetIndex]),
+                    AssetFetchQuery(ids: [draft.assetId]),
                     queue: .main,
                     ignoreResponseOnCancelled: false
                 ) { [weak self] response in
@@ -95,9 +95,9 @@ extension AssetActionConfirmationViewController {
         }
     }
     
-    private func handleAssetDetailSetup(with asset: AssetInformation) {
+    private func handleAssetDetailSetup(with asset: AssetDecoration) {
         self.loadingController?.stopLoading()
-        draft.assetDetail = asset
+        draft.asset = asset
         assetActionConfirmationView.bindData(AssetActionConfirmationViewModel(draft))
     }
 }
@@ -109,8 +109,8 @@ extension AssetActionConfirmationViewController: AssetActionConfirmationViewDele
                 return
             }
 
-            if let assetDetail = self.draft.assetDetail {
-                self.delegate?.assetActionConfirmationViewController(self, didConfirmedActionFor: assetDetail)
+            if let asset = self.draft.asset {
+                self.delegate?.assetActionConfirmationViewController(self, didConfirmAction: asset)
             }
         }
     }
@@ -128,6 +128,6 @@ extension AssetActionConfirmationViewController: AssetActionConfirmationViewDele
 protocol AssetActionConfirmationViewControllerDelegate: AnyObject {
     func assetActionConfirmationViewController(
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
-        didConfirmedActionFor assetDetail: AssetInformation
+        didConfirmAction asset: AssetDecoration
     )
 }

@@ -19,60 +19,71 @@ import Foundation
 import UIKit
 
 enum AssetPreviewModelAdapter {
-    static func adapt(_ adaptee: (assetDetail: AssetInformation, asset: Asset, currency: Currency?)) -> AssetPreviewModel {
-        let assetViewModel = AssetViewModel(assetDetail: adaptee.assetDetail, asset: adaptee.asset, currency: adaptee.currency)
+    static func adapt(_ adaptee: (asset: Asset, currency: Currency?)) -> AssetPreviewModel {
+        let assetViewModel = AssetViewModel(asset: adaptee.asset, currency: adaptee.currency)
         return AssetPreviewModel(
-            image: nil,
-            secondaryImage: assetViewModel.assetDetail?.isVerified ?? false ? img("icon-verified-shield") : nil,
-            assetPrimaryTitle: assetViewModel.assetDetail?.name,
-            assetSecondaryTitle: assetViewModel.assetDetail?.unitName,
-            assetPrimaryValue: assetViewModel.amount,
-            assetSecondaryValue: assetViewModel.currencyAmount
+            icon: nil,
+            verifiedIcon: adaptee.asset.presentation.isVerified ? img("icon-verified-shield") : nil,
+            title: adaptee.asset.presentation.name,
+            subtitle: adaptee.asset.presentation.unitName,
+            primaryAccessory: assetViewModel.amount,
+            secondaryAccessory: assetViewModel.currencyAmount
         )
     }
 
     static func adapt(_ adaptee: (account: Account, currency: Currency?)) -> AssetPreviewModel {
         let algoAssetViewModel = AlgoAssetViewModel(account: adaptee.account, currency: adaptee.currency)
         return AssetPreviewModel(
-            image: img("icon-algo-circle-green"),
-            secondaryImage: img("icon-verified-shield"),
-            assetPrimaryTitle: "Algo",
-            assetSecondaryTitle: "ALGO",
-            assetPrimaryValue: algoAssetViewModel.amount,
-            assetSecondaryValue: algoAssetViewModel.currencyAmount
+            icon: .algo,
+            verifiedIcon: img("icon-verified-shield"),
+            title: "Algo",
+            subtitle: "ALGO",
+            primaryAccessory: algoAssetViewModel.amount,
+            secondaryAccessory: algoAssetViewModel.currencyAmount
         )
     }
 
-    static func adapt(_ adaptee: AssetInformation) -> AssetPreviewModel {
+    static func adapt(_ asset: Asset) -> AssetPreviewModel {
         return AssetPreviewModel(
-            image: nil,
-            secondaryImage: adaptee.isVerified ? img("icon-verified-shield") : nil,
-            assetPrimaryTitle: adaptee.name,
-            assetSecondaryTitle: adaptee.unitName,
-            assetPrimaryValue: String(adaptee.id),
-            assetSecondaryValue: nil
+            icon: nil,
+            verifiedIcon: asset.presentation.isVerified ? img("icon-verified-shield") : nil,
+            title: asset.presentation.name,
+            subtitle: asset.presentation.unitName,
+            primaryAccessory: nil,
+            secondaryAccessory: String(asset.id)
         )
     }
 
-    static func adaptAssetSelection(_ adaptee: (assetDetail: AssetInformation, asset: Asset, currency: Currency?)) -> AssetPreviewModel {
-        let assetViewModel = AssetViewModel(assetDetail: adaptee.assetDetail, asset: adaptee.asset, currency: adaptee.currency)
-        let assetId = assetViewModel.assetDetail?.id ?? 0
+    static func adaptAssetSelection(_ adaptee: (asset: Asset, currency: Currency?)) -> AssetPreviewModel {
+        let assetViewModel = AssetViewModel(asset: adaptee.asset, currency: adaptee.currency)
         return AssetPreviewModel(
-            image: nil,
-            secondaryImage: assetViewModel.assetDetail?.isVerified ?? false ? img("icon-verified-shield") : nil,
-            assetPrimaryTitle: assetViewModel.assetDetail?.name,
-            assetSecondaryTitle: "ID \(assetId)",
-            assetPrimaryValue: assetViewModel.amount,
-            assetSecondaryValue: assetViewModel.currencyAmount
+            icon: nil,
+            verifiedIcon: adaptee.asset.presentation.isVerified ? img("icon-verified-shield") : nil,
+            title: adaptee.asset.presentation.name,
+            subtitle: "ID \(adaptee.asset.id)",
+            primaryAccessory: assetViewModel.amount,
+            secondaryAccessory: assetViewModel.currencyAmount
         )
     }
 
-    static func adaptPendingAsset(_ adaptee: AssetInformation) -> PendingAssetPreviewModel {
-        let status = adaptee.isRecentlyAdded ? "asset-add-confirmation-title".localized : "asset-removing-status".localized
+    static func adaptPendingAsset(_ asset: StandardAsset) -> PendingAssetPreviewModel {
+        let status: String
+        switch asset.state {
+        case let .pending(operation):
+            switch operation {
+            case .add:
+                status = "asset-add-confirmation-title".localized
+            case .remove:
+                status = "asset-removing-status".localized
+            }
+        case .ready:
+            status = ""
+        }
+
         return PendingAssetPreviewModel(
-            secondaryImage: adaptee.isVerified ? img("icon-verified-shield") : nil,
-            assetPrimaryTitle: adaptee.name,
-            assetSecondaryTitle: "ID \(adaptee.id)",
+            secondaryImage: asset.isVerified ? img("icon-verified-shield") : nil,
+            assetPrimaryTitle: asset.name,
+            assetSecondaryTitle: "ID \(asset.id)",
             assetStatus: status
         )
     }

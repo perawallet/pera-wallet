@@ -33,7 +33,7 @@ extension SingleLineTitleActionViewModel {
     private func bindTitle(
         _ item: SingleLineIconTitleItem
     ) {
-        title = item.title
+        title = .string(item.title)
     }
 
     private func bindIcon(

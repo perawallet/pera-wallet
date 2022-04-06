@@ -62,6 +62,8 @@ extension TutorialViewModel {
             image = img("shield-check")
         case .recoverWithLedger:
             image = img("ledger")
+        case .collectibleTransferConfirmed:
+            image = img("check")
         }
     }
 
@@ -91,6 +93,8 @@ extension TutorialViewModel {
             title = "tutorial-title-ledger-connected".localized
         case .accountSuccessfullyRekeyed:
             title = "ledger-rekey-success-title".localized
+        case .collectibleTransferConfirmed:
+            title = "collectible-transfer-confirmed-title".localized
         }
     }
 
@@ -120,6 +124,8 @@ extension TutorialViewModel {
             description = "tutorial-description-ledger-connected".localized
         case .accountSuccessfullyRekeyed(let accountName):
             description = "ledger-rekey-success-message".localized(params: accountName)
+        case .collectibleTransferConfirmed:
+            description = "collectible-transfer-confirmed-description".localized
         }
     }
 
@@ -149,6 +155,8 @@ extension TutorialViewModel {
             primaryActionButtonTitle = "tutorial-main-title-ledger-connected".localized
         case .accountSuccessfullyRekeyed:
             primaryActionButtonTitle = "title-start-using-pera-wallet".localized
+        case .collectibleTransferConfirmed:
+            primaryActionButtonTitle = "collectible-transfer-confirmed-action-title".localized
         }
     }
 

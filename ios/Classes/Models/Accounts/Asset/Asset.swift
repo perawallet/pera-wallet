@@ -12,57 +12,89 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  Asset.swift
+//   Asset.swift
 
 import Foundation
-import MagpieCore
-import MacaroonUtils
 
-final class Asset:
-    ALGAPIModel,
-    Hashable {
-    let creator: String?
-    let amount: UInt64
-    let isFrozen: Bool?
-    let id: Int64
-    let isDeleted: Bool?
+protocol Asset {
+    /// Mimics ALGAsset in general so that it can be passed to different asset types as base.
+    var id: AssetID { get }
+    var amount: UInt64 { get }
+    var isFrozen: Bool? { get }
+    var isDeleted: Bool? { get }
+    var creator: AssetCreator? { get }
 
-    init() {
-        self.creator = nil
-        self.amount = 10
-        self.isFrozen = nil
-        self.id = 1
-        self.isDeleted = nil
+    /// Asset management actions
+    var state: AssetState { get set }
+
+    /// Asset presentation
+    var presentation: AssetPresentation { get }
+    var amountWithFraction: Decimal { get }
+    var amountDisplayWithFraction: String? { get }
+    var amountNumberWithAutoFraction: String? { get }
+}
+
+enum AssetState: Codable {
+    case ready
+    case pending(AssetOperation)
+
+    var isPending: Bool {
+        switch self {
+        case .ready:
+            return false
+        case .pending(let assetOperation):
+            return assetOperation == .remove
+        }
     }
 }
 
-extension Asset {
-    func hash(
-        into hasher: inout Hasher
-    ) {
-        hasher.combine(id)
-        hasher.combine(amount)
-    }
-    
-    static func == (
-        lhs: Asset,
-        rhs: Asset
-    ) -> Bool {
-        return
-            lhs.id == rhs.id &&
-            lhs.amount == rhs.amount
-    }
+enum AssetOperation: Codable {
+    case remove
+    case add
 }
 
-extension Asset {
-    private enum CodingKeys:
-        String,
-        CodingKey {
-        case creator
-        case amount
-        case isFrozen = "is-frozen"
-        case id = "asset-id"
-        case isDeleted = "deleted"
+struct AssetPresentation {
+    let id: AssetID
+    let decimals: Int
+    let name: String?
+    let unitName: String?
+    let isVerified: Bool
+    let url: String?
+
+    var displayNames: (primaryName: String, secondaryName: String?) {
+        if let name = name,
+           let code = unitName,
+           !name.isEmptyOrBlank,
+           !code.isEmptyOrBlank {
+            return (name, "\(code.uppercased())")
+        }
+
+        if let name = name,
+           !name.isEmptyOrBlank {
+            return (name, nil)
+        }
+
+        if let code = unitName,
+           !code.isEmptyOrBlank {
+            return ("\(code.uppercased())", nil)
+        }
+
+        return ("title-unknown".localized, nil)
+    }
+
+    var hasOnlyAssetName: Bool {
+        return !name.isNilOrEmpty && unitName.isNilOrEmpty
+    }
+
+    var hasOnlyUnitName: Bool {
+        return name.isNilOrEmpty && !unitName.isNilOrEmpty
+    }
+
+    var hasBothDisplayName: Bool {
+        return !name.isNilOrEmpty && !unitName.isNilOrEmpty
+    }
+
+    var hasDisplayName: Bool {
+        return !name.isNilOrEmpty || !unitName.isNilOrEmpty
     }
 }

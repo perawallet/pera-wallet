@@ -26,7 +26,7 @@ extension SendTransactionScreen {
         let nextButtonStyle: ButtonTheme
         let disabledValueLabelStyle: TextStyle
         let valueLabelStyle: TextStyle
-        let usdValueLabelStyle: TextStyle
+        let currencyValueLabelStyle: TextStyle
         let accountContainerCorner: Corner
         let accountContainerBorder: Border
         let accountContainerFirstShadow: MacaroonUIKit.Shadow
@@ -36,7 +36,7 @@ extension SendTransactionScreen {
         let accountContainerHeight: LayoutMetric
         let defaultLeadingInset: LayoutMetric
         let defaultBottomInset: LayoutMetric
-        let accountLeadingInset: LayoutMetric
+        let accountPaddings: LayoutPaddings
         let nextButtonHeight: LayoutMetric
         let numpadBottomInset: LayoutMetric
         let buttonsSpacing: LayoutMetric
@@ -55,7 +55,7 @@ extension SendTransactionScreen {
                 .textAlignment(.center),
                 .textOverflow(SingleLineFittingText())
             ]
-            usdValueLabelStyle = [
+            currencyValueLabelStyle = [
                 .textColor(AppColors.Components.Button.TransactionShadow.text),
                 .font(Fonts.DMMono.regular.make(15)),
                 .textAlignment(.center),
@@ -101,10 +101,10 @@ extension SendTransactionScreen {
                 corners: .allCorners
             )
 
-            accountContainerHeight = 72
+            accountContainerHeight = 75
             defaultLeadingInset = 24
             defaultBottomInset = -24 * verticalScale
-            accountLeadingInset = 20
+            accountPaddings = (14, 20, 14, 20)
             nextButtonHeight = 52 * verticalScale
             numpadBottomInset = -16
             buttonsSpacing = 10

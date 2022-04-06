@@ -31,7 +31,7 @@ final class SelectAccountDataSource: UICollectionViewDiffableDataSource<SelectAc
                 switch item {
                 case .loading:
                     return collectionView.dequeue(
-                        AssetPreviewLoadingCell.self,
+                        PreviewLoadingCell.self,
                         at: indexPath
                     )
                 case .noContent:
@@ -57,7 +57,7 @@ final class SelectAccountDataSource: UICollectionViewDiffableDataSource<SelectAc
         }
 
         [
-            AssetPreviewLoadingCell.self,
+            PreviewLoadingCell.self,
             AccountPreviewCell.self,
             NoContentCell.self
         ].forEach {

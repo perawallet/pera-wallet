@@ -28,21 +28,38 @@ final class AssetListViewDataSource: UICollectionViewDiffableDataSource<AssetLis
 
             switch itemIdentifier {
             case let .asset(item):
-                let cell = collectionView.dequeue(AssetPreviewAdditionCell.self, at: indexPath)
-                cell.bindData(item)
+                let cell = collectionView.dequeue(
+                    AssetPreviewAdditionCell.self,
+                    at: indexPath
+                )
+                cell.bindData(
+                    item
+                )
                 return cell
             case .loading:
-                return collectionView.dequeue(AssetPreviewLoadingCell.self, at: indexPath)
+                return collectionView.dequeue(
+                    PreviewLoadingCell.self,
+                    at: indexPath
+                )
             case .noContent:
-                let cell = collectionView.dequeue(NoContentCell.self, at: indexPath)
-                cell.bindData(AssetAdditionNoContentViewModel())
+                let cell = collectionView.dequeue(
+                    NoContentCell.self,
+                    at: indexPath
+                )
+                cell.bindData(
+                    AssetAdditionNoContentViewModel()
+                )
                 return cell
             }
         }
 
-        collectionView.register(AssetPreviewLoadingCell.self)
-        collectionView.register(AssetPreviewCell.self)
-        collectionView.register(NoContentCell.self)
+        [
+            PreviewLoadingCell.self,
+            AssetPreviewCell.self,
+            NoContentCell.self
+        ].forEach {
+            collectionView.register($0)
+        }
     }
 }
 

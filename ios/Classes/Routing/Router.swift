@@ -109,8 +109,8 @@ class Router:
         
         switch screen {
         case .addContact(let address, let name):
-            launch(tab: .contacts)
-            
+            launch(tab: .settings)
+
             route(
                 to: .addContact(address: address, name: name),
                 from: findVisibleScreen(over: rootViewController),
@@ -225,7 +225,7 @@ class Router:
             
             rootViewController.present(navigationController, animated: false, completion: completion)
         case .present,
-            .customPresent:
+                .customPresent:
             let navigationController: NavigationController
             
             if let navController = viewController as? NavigationController {
@@ -363,12 +363,12 @@ class Router:
             let optionsViewController = OptionsViewController(account: account, configuration: configuration)
             optionsViewController.delegate = delegate
             viewController = optionsViewController
+        case .contacts:
+            viewController = ContactsViewController(configuration: configuration)
         case let .editAccount(account, delegate):
             let aViewController = EditAccountViewController(account: account, configuration: configuration)
             aViewController.delegate = delegate
             viewController = aViewController
-        case .contactSelection:
-            viewController = ContactSelectionViewController(configuration: configuration)
         case let .addContact(address, name):
             viewController = AddContactViewController(address: address, name: name, configuration: configuration)
         case let .editContact(contact):
@@ -393,8 +393,11 @@ class Router:
             let aViewController = AccountDetailViewController(accountHandle: accountHandle, configuration: configuration)
             aViewController.eventHandler = eventHandler
             viewController = aViewController
-        case let .assetSearch(accountHandle):
-            viewController = AssetSearchViewController(accountHandle: accountHandle, configuration: configuration)
+        case let .assetSearch(dataController):
+            viewController = AssetSearchViewController(
+                dataController: dataController,
+                configuration: configuration
+            )
         case let .addAsset(account):
             viewController = AssetAdditionViewController(account: account, configuration: configuration)
         case .notifications:
@@ -580,8 +583,12 @@ class Router:
             )
             selectAccountViewController.delegate = delegate
             viewController = selectAccountViewController
-        case .assetSelection(let account):
-            viewController = SelectAssetViewController(account: account, configuration: configuration)
+        case .assetSelection(let filter, let account):
+            viewController = SelectAssetViewController(
+                filter: filter,
+                account: account,
+                configuration: configuration
+            )
         case .sendTransaction(let draft):
             let sendScreen = SendTransactionScreen(draft: draft, configuration: configuration)
             sendScreen.isModalInPresentation = true
@@ -630,6 +637,65 @@ class Router:
             )
         case .peraIntroduction:
             viewController = PeraIntroductionViewController(configuration: configuration)
+        case let .receiveCollectibleAccountList(dataController):
+            viewController = ReceiveCollectibleAccountListViewController(
+                dataController: dataController,
+                configuration: configuration
+            )
+        case let .receiveCollectibleAssetList(account, dataController):
+            viewController = ReceiveCollectibleAssetListViewController(
+                account: account,
+                dataController: dataController,
+                configuration: configuration
+            )
+        case let .collectibleDetail(asset, account, thumbnailImage):
+            viewController = CollectibleDetailViewController(
+                asset: asset,
+                account: account,
+                thumbnailImage: thumbnailImage,
+                configuration: configuration
+            )
+        case let .sendCollectible(draft, transactionController, uiInteractions):
+            let aViewController = SendCollectibleViewController(
+                draft: draft,
+                transactionController: transactionController,
+                configuration: configuration
+            )
+            aViewController.uiInteractions = uiInteractions
+            viewController = aViewController
+        case let .sendCollectibleAccountList(dataController):
+            viewController = SendCollectibleAccountListViewController(
+                dataController: dataController,
+                configuration: configuration
+            )
+        case let .approveCollectibleTransaction(draft, transactionController):
+            viewController = ApproveCollectibleTransactionViewController(
+                draft: draft,
+                transactionController: transactionController,
+                configuration: configuration
+            )
+        case let .shareActivity(items):
+            let activityController = UIActivityViewController(
+                activityItems: items,
+                applicationActivities: nil
+            )
+
+            activityController.excludedActivityTypes = [
+                UIActivity.ActivityType.addToReadingList
+            ]
+
+            viewController = activityController
+        case .image3DCard(let image):
+            viewController = Collectible3DImageViewController(
+                image: image,
+                configuration: configuration
+            )
+        case .video3DCard(let image, let url):
+            viewController = Collectible3DVideoViewController(
+                image: image,
+                url: url,
+                configuration: configuration
+            )
         case .buyAlgoHome(let draft, let delegate):
             let buyAlgoHomeScreen = BuyAlgoHomeScreen(
                 draft: draft,
@@ -651,9 +717,9 @@ extension Router {
         over screen: UIViewController? = nil
     ) -> UIViewController {
         let topmostPresentedScreen =
-            findVisibleScreen(
-                presentedBy: screen ?? rootViewController
-            )
+        findVisibleScreen(
+            presentedBy: screen ?? rootViewController
+        )
 
         return findVisibleScreen(
             in: topmostPresentedScreen
@@ -715,7 +781,7 @@ extension Router {
 extension Router {
     func assetActionConfirmationViewController(
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
-        didConfirmedActionFor assetDetail: AssetInformation
+        didConfirmAction asset: AssetDecoration
     ) {
         let draft = assetActionConfirmationViewController.draft
         
@@ -724,7 +790,7 @@ extension Router {
         }
         
         let assetTransactionDraft =
-            AssetTransactionSendDraft(from: account, assetIndex: Int64(draft.assetIndex))
+        AssetTransactionSendDraft(from: account, assetIndex: Int64(draft.assetId))
         let transactionController = TransactionController(
             api: appConfiguration.api,
             bannerController: appConfiguration.bannerController
@@ -745,7 +811,7 @@ extension Router {
         let bannerController = appConfiguration.bannerController
         
         let hasNonWatchAccount = sharedDataController.accountCollection.contains {
-            $0.value.type != .watch
+            !$0.value.isWatchAccount()
         }
         
         if !hasNonWatchAccount {
@@ -860,7 +926,7 @@ extension Router: SelectAccountViewControllerDelegate {
         guard let qrDraft = self.qrSendDraft else {
             return
         }
-
+        
         let draft = SendTransactionDraft(
             from: account,
             toAccount: Account(address: qrDraft.toAccount, type: .standard),

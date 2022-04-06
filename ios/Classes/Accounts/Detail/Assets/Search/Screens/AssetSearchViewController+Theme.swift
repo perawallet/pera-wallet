@@ -21,21 +21,21 @@ import UIKit
 
 extension AssetSearchViewController {
     struct Theme: LayoutSheet, StyleSheet {
-        let listBackgroundColor: Color
+        let background: ViewStyle
         let searchInputViewTheme: SearchInputViewTheme
         let topInset: LayoutMetric
         let horizontalPadding: LayoutMetric
-        let collectionViewEdgeInsets: LayoutPaddings
 
         init(_ family: LayoutFamily) {
-            self.listBackgroundColor = AppColors.Shared.System.background
-            self.searchInputViewTheme = SearchInputViewCommonTheme(
+            background = [
+                .backgroundColor(AppColors.Shared.System.background)
+            ]
+            searchInputViewTheme = SearchInputViewCommonTheme(
                 placeholder: "asset-search-placeholder".localized,
                 family: family
             )
-            self.topInset = 16
-            self.horizontalPadding = 24
-            self.collectionViewEdgeInsets = (24, 0, 0, 0)
+            topInset = 16
+            horizontalPadding = 24
         }
     }
 }

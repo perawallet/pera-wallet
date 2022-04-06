@@ -18,6 +18,8 @@
 import Foundation
 
 extension Formatter {
+    static let algoCurrencySymbol = "\u{00A6}"
+    
     static let separatorForAlgosInput: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.locale = Locale.preferred()
@@ -31,7 +33,7 @@ extension Formatter {
     static let separatorForAlgosLabel: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.locale = Locale.preferred()
-        formatter.currencySymbol = "\u{00A6}"
+        formatter.currencySymbol = algoCurrencySymbol
         formatter.numberStyle = .currencyAccounting
         formatter.minimumFractionDigits = 2
         formatter.maximumFractionDigits = 6
@@ -73,7 +75,11 @@ extension Formatter {
         formatter.currencySymbol = ""
         formatter.numberStyle = .currencyAccounting
         formatter.minimumFractionDigits = value == 0 ? 0 : 2
-        formatter.maximumFractionDigits = value
+        if let suffix = suffix, !suffix.isEmptyOrBlank {
+            formatter.maximumFractionDigits = 2
+        } else {
+            formatter.maximumFractionDigits = value
+        }
         formatter.negativeSuffix = suffix
         formatter.positiveSuffix = suffix
         return formatter
@@ -95,7 +101,12 @@ extension Formatter {
         formatter.currencySymbol = symbol ?? ""
         formatter.numberStyle = .currency
         formatter.minimumFractionDigits = 2
-        formatter.maximumFractionDigits = 2
+        if let suffix = suffix, !suffix.isEmptyOrBlank {
+            formatter.maximumFractionDigits = 2
+        } else {
+            formatter.maximumFractionDigits = symbol == algoCurrencySymbol ? 6 : 2
+        }
+        
         formatter.negativeSuffix = suffix
         formatter.positiveSuffix = suffix
         return formatter
@@ -124,10 +135,10 @@ extension Formatter {
     static func fullAlgosLabel(with suffix: String) -> NumberFormatter {
         let formatter = NumberFormatter()
         formatter.locale = Locale.preferred()
-        formatter.currencySymbol = "\u{00A6}"
+        formatter.currencySymbol = algoCurrencySymbol
         formatter.numberStyle = .currencyAccounting
         formatter.minimumFractionDigits = 2
-        formatter.maximumFractionDigits = 2
+        formatter.maximumFractionDigits = suffix.isEmptyOrBlank ? 6 : 2
         formatter.positiveSuffix = suffix
         formatter.negativeSuffix = suffix
         return formatter

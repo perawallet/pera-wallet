@@ -257,7 +257,7 @@ extension SharedAPIDataController {
     }
     
     private func blockProcessorDidFetchAssetDetails(
-        _ assetDetails: [AssetID: AssetInformation],
+        _ assetDetails: [AssetID: AssetDecoration],
         for account: Account
     ) {
         let updatedAccount = AccountHandle(account: account, status: .ready)

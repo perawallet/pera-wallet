@@ -80,7 +80,7 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
             WCAssetConfigTransactionItemViewModel(
                 transaction: transaction,
                 account: account,
-                assetInformation: assetInformation(from: transaction)
+                asset: asset(from: transaction)
             )
         )
 
@@ -104,7 +104,7 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
             WCAssetConfigTransactionItemViewModel(
                 transaction: transaction,
                 account: account,
-                assetInformation: assetInformation(from: transaction)
+                asset: asset(from: transaction)
             )
         )
 
@@ -127,7 +127,7 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
             WCGroupTransactionItemViewModel(
                 transaction: transaction,
                 account: nil,
-                assetInformation: assetInformation(from: transaction),
+                asset: asset(from: transaction),
                 currency: sharedDataController.currency.value
             )
         )
@@ -152,7 +152,7 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
             WCGroupTransactionItemViewModel(
                 transaction: transaction,
                 account: account,
-                assetInformation: assetInformation(from: transaction),
+                asset: asset(from: transaction),
                 currency: sharedDataController.currency.value
             )
         )
@@ -187,11 +187,18 @@ extension WCGroupTransactionDataSource {
         return transactions[safe: index]
     }
 
-    private func assetInformation(from transaction: WCTransaction) -> AssetInformation? {
-        guard let assetId = transaction.transactionDetail?.currentAssetId else {
+    private func asset(from transaction: WCTransaction) -> Asset? {
+        guard let assetId = transaction.transactionDetail?.currentAssetId,
+              let assetDecoration = sharedDataController.assetDetailCollection[assetId] else {
             return nil
         }
 
-        return sharedDataController.assetDetailCollection[assetId]
+        if assetDecoration.isCollectible {
+            let asset = CollectibleAsset(asset: ALGAsset(id: assetId), decoration: assetDecoration)
+            return asset
+        }
+
+        let asset = StandardAsset(asset: ALGAsset(id: assetId), decoration: assetDecoration)
+        return asset
     }
 }

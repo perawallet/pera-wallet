@@ -27,43 +27,43 @@ final class AssetSearchDataSource: UICollectionViewDiffableDataSource<AssetSearc
             collectionView, indexPath, itemIdentifier in
 
             switch itemIdentifier {
-            case let .asset(item):
-                let cell = collectionView.dequeue(AssetPreviewCell.self, at: indexPath)
-                cell.bindData(item)
-                return cell
-
-            case .empty:
-                let cell = collectionView.dequeue(NoContentCell.self, at: indexPath)
-                cell.bindData(AssetListSearchNoContentViewModel())
-                return cell
-            case .noContent:
-                let cell = collectionView.dequeue(NoContentCell.self, at: indexPath)
-                cell.bindData(AssetListSearchNoContentViewModel(hasBody: false))
-                return cell
-            }
-        }
-
-        supplementaryViewProvider = { collectionView, kind, indexPath in
-            guard let section = AssetSearchSection(rawValue: indexPath.section),
-                  section == .assets,
-                  kind == UICollectionView.elementKindSectionHeader else {
-                return nil
-            }
-
-            let view = collectionView.dequeueHeader(SingleLineTitleActionHeaderView.self, at: indexPath)
-            view.bindData(
-                SingleLineTitleActionViewModel(
-                    item: SingleLineIconTitleItem(
-                        icon: nil,
-                        title: .string("accounts-title-assets".localized)
-                    )
+            case let .header(item):
+                let cell = collectionView.dequeue(
+                    AssetSearchListTitleSupplementaryCell.self,
+                    at: indexPath
                 )
-            )
-            return view
+                cell.bindData(
+                    item
+                )
+                return cell
+            case let .asset(item):
+                let cell = collectionView.dequeue(
+                    AssetPreviewCell.self,
+                    at: indexPath
+                )
+                cell.bindData(
+                    item
+                )
+                return cell
+
+            case .empty(let item):
+                let cell = collectionView.dequeue(
+                    NoContentCell.self,
+                    at: indexPath
+                )
+                cell.bindData(
+                    item
+                )
+                return cell
+            }
         }
 
-        collectionView.register(AssetPreviewCell.self)
-        collectionView.register(header: SingleLineTitleActionHeaderView.self)
-        collectionView.register(NoContentCell.self)
+        [
+            NoContentCell.self,
+            AssetPreviewCell.self,
+            AssetSearchListTitleSupplementaryCell.self
+        ].forEach {
+            collectionView.register($0)
+        }
     }
 }

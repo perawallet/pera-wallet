@@ -32,6 +32,5 @@ final class AccountPreviewCell:
     ) {
         super.init(frame: frame)
         contextView.customize(Self.theme)
-
     }
 }

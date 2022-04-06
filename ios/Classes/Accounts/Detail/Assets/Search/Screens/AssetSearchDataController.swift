@@ -18,7 +18,7 @@
 import Foundation
 import UIKit
 
-protocol AssetSearchDataController {
+protocol AssetSearchDataController: AnyObject {
     typealias Snapshot = NSDiffableDataSourceSnapshot<AssetSearchSection, AssetSearchItem>
 
     var eventHandler: ((AssetSearchDataControllerEvent) -> Void)? { get set }
@@ -27,7 +27,7 @@ protocol AssetSearchDataController {
     func search(for query: String)
     func resetSearch()
 
-    func hasSection() -> Bool
+    subscript(index: Int) -> StandardAsset? { get }
 }
 
 enum AssetSearchSection:
@@ -38,9 +38,9 @@ enum AssetSearchSection:
 }
 
 enum AssetSearchItem: Hashable {
+    case header(AssetSearchListHeaderViewModel)
     case asset(AssetPreviewViewModel)
-    case empty
-    case noContent
+    case empty(AssetListSearchNoContentViewModel)
 }
 
 enum AssetSearchDataControllerEvent {

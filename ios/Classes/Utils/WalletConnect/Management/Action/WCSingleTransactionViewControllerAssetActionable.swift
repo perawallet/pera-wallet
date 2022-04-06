@@ -18,14 +18,14 @@
 import Foundation
 
 protocol WCSingleTransactionViewControllerAssetActionable: WCSingleTransactionViewControllerActionable {
-    func openInExplorer(_ assetDetail: AssetDetail?)
-    func openAssetURL(_ assetDetail: AssetDetail?)
-    func displayAssetMetadata(_ assetDetail: AssetDetail?)
+    func openInExplorer(_ asset: Asset?)
+    func openAssetURL(_ asset: Asset?)
+    func displayAssetMetadata(_ asset: Asset?)
 }
 
 extension WCSingleTransactionViewControllerAssetActionable where Self: WCSingleTransactionViewController {
-    func openInExplorer(_ assetDetail: AssetDetail?) {
-        if let assetId = assetDetail?.id,
+    func openInExplorer(_ asset: Asset?) {
+        if let assetId = asset?.id,
            let currentNetwork = api?.network {
             if currentNetwork == .mainnet {
                 if let url = URL(string: "https://algoexplorer.io/asset/\(String(assetId))") {
@@ -40,16 +40,16 @@ extension WCSingleTransactionViewControllerAssetActionable where Self: WCSingleT
         }
     }
 
-    func openAssetURL(_ assetDetail: AssetDetail?) {
-        if let urlString = assetDetail?.url,
+    func openAssetURL(_ asset: Asset?) {
+        if let urlString = asset?.presentation.url,
            let url = URL(string: urlString) {
             open(url)
         }
     }
 
-    func displayAssetMetadata(_ assetDetail: AssetDetail?) {
-        guard let assetDetail = assetDetail,
-              let transactionData = try? JSONEncoder().encode(AssetDetailPresenter(assetDetail: assetDetail)),
+    func displayAssetMetadata(_ asset: Asset?) {
+        guard let asset = asset,
+              let transactionData = try? JSONEncoder().encode(AssetDetailPresenter(asset: asset)),
               let object = try? JSONSerialization.jsonObject(with: transactionData, options: []),
               let data = try? JSONSerialization.data(withJSONObject: object, options: [.prettyPrinted]) else {
             return
@@ -60,53 +60,31 @@ extension WCSingleTransactionViewControllerAssetActionable where Self: WCSingleT
 }
 
 private struct AssetDetailPresenter: Encodable {
-    let creator: String
-    let total: UInt64
-    let isDefaultFrozen: Bool?
+    let id: Int64
+    let creator: String?
     let unitName: String?
     let assetName: String?
-    let url: String?
-    let managerKey: String?
-    let reserveAddress: String?
-    let freezeAddress: String?
-    let clawBackAddress: String?
     let fractionDecimals: Int
-    let id: Int64
-    var isDeleted: Bool?
     var isVerified: Bool = false
 
-    init(assetDetail: AssetDetail) {
-        id = assetDetail.id
-        creator = assetDetail.creator
-        total = assetDetail.total
-        isDefaultFrozen = assetDetail.isDefaultFrozen
-        unitName = assetDetail.unitName
-        assetName = assetDetail.assetName
-        url = assetDetail.url
-        managerKey = assetDetail.managerKey
-        reserveAddress = assetDetail.reserveAddress
-        freezeAddress = assetDetail.freezeAddress
-        clawBackAddress = assetDetail.clawBackAddress
-        fractionDecimals = assetDetail.fractionDecimals
-        isDeleted = assetDetail.isDeleted
-        isVerified = assetDetail.isVerified
+    init(asset: Asset) {
+        let decoration = AssetDecoration(asset: asset)
+        id = asset.id
+        creator = decoration.creator?.address
+        unitName = decoration.unitName
+        assetName = decoration.name
+        fractionDecimals = decoration.decimals
+        isVerified = decoration.isVerified
     }
 }
 
 extension AssetDetailPresenter {
     private enum CodingKeys: String, CodingKey {
         case id = "index"
-        case total = "total"
-        case isDefaultFrozen = "default-frozen"
+        case creator = "creator"
         case unitName = "unit-name"
         case assetName = "name"
-        case url = "url"
-        case managerKey = "manager"
-        case reserveAddress = "reserve"
-        case freezeAddress = "freeze"
-        case clawBackAddress = "clawback"
         case isVerified = "is_verified"
         case fractionDecimals = "decimals"
-        case isDeleted = "deleted"
     }
 }

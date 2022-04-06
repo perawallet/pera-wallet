@@ -20,7 +20,8 @@ import MagpieCore
 import MacaroonUtils
 
 final class Account: ALGEntityModel {
-    typealias CompoundAssetIndexer = [Int64: Int] /// asset id -> compound asset index
+    typealias StandardAssetIndexer = [AssetID: Int] /// asset id -> standard asset index
+    typealias CollectibleAssetIndexer = [AssetID: Int] /// asset id -> collectible asset index
     
     let address: String
     var amount: UInt64
@@ -33,7 +34,7 @@ final class Account: ALGEntityModel {
     var pendingRewards: UInt64
     var participation: Participation?
     var createdAssets: [AssetDetail]?
-    var assets: [Asset]?
+    var assets: [ALGAsset]?
     var authAddress: String?
     var createdRound: UInt64?
     var closedRound: UInt64?
@@ -42,7 +43,9 @@ final class Account: ALGEntityModel {
     var appsLocalState: [ApplicationLocalState]?
     var appsTotalExtraPages: Int?
     var appsTotalSchema: ApplicationStateSchema?
-    var createdApps: [AlgorandApplication]?
+
+    var totalCreatedApps: Int
+
     var name: String?
     var type: AccountType = .standard
     var ledgerDetail: LedgerDetail?
@@ -50,9 +53,12 @@ final class Account: ALGEntityModel {
     var rekeyDetail: RekeyDetail?
     var preferredOrder: Int
     var accountImage: String?
-    
-    var compoundAssets: [CompoundAsset] = []
-    private(set) var compoundAssetsIndexer: CompoundAssetIndexer = [:]
+
+    private(set) var standardAssets: [StandardAsset] = []
+    private var standardAssetsIndexer: StandardAssetIndexer = [:]
+
+    private(set) var collectibleAssets: [CollectibleAsset] = []
+    private var collectibleAssetsIndexer: CollectibleAssetIndexer = [:]
 
     init(
         _ apiModel: APIModel = APIModel()
@@ -76,10 +82,10 @@ final class Account: ALGEntityModel {
         appsLocalState = apiModel.appsLocalState
         appsTotalExtraPages = apiModel.appsTotalExtraPages
         appsTotalSchema = apiModel.appsTotalSchema
-        createdApps = apiModel.createdApps
         receivesNotification = true
         preferredOrder = AccountInformation.invalidOrder
         accountImage = AccountImageType.getRandomImage(for: type).rawValue
+        totalCreatedApps = apiModel.totalCreatedApps
     }
 
     init(
@@ -104,6 +110,7 @@ final class Account: ALGEntityModel {
         self.rekeyDetail = rekeyDetail
         self.preferredOrder = preferredOrder
         self.accountImage = accountImage ?? AccountImageType.getRandomImage(for: type).rawValue
+        self.totalCreatedApps = 0
     }
     
     init(
@@ -121,6 +128,7 @@ final class Account: ALGEntityModel {
         self.rekeyDetail = localAccount.rekeyDetail
         self.preferredOrder = localAccount.preferredOrder
         self.accountImage = localAccount.accountImage
+        self.totalCreatedApps = 0
     }
 
     func encode() -> APIModel {
@@ -141,41 +149,80 @@ final class Account: ALGEntityModel {
         apiModel.appsLocalState = appsLocalState
         apiModel.appsTotalExtraPages = appsTotalExtraPages
         apiModel.appsTotalSchema = appsTotalSchema
-        apiModel.createdApps = createdApps
+        apiModel.totalCreatedApps = totalCreatedApps
         return apiModel
     }
-    
-    subscript (assetId: Int64) -> CompoundAsset? {
-        let index = compoundAssetsIndexer[assetId]
-        return index.unwrap { compoundAssets[safe: $0] }
+
+    subscript (assetId: AssetID) -> Asset? {
+        if let index = standardAssetsIndexer[assetId] {
+            return standardAssets[safe: index]
+        }
+
+        let index = collectibleAssetsIndexer[assetId]
+        return index.unwrap { collectibleAssets[safe: $0] }
     }
 }
 
 extension Account {
-    func setCompoundAssets(
-        _ assets: [CompoundAsset],
-        _ indexer: CompoundAssetIndexer
-    ) {
-        compoundAssets = assets
-        compoundAssetsIndexer = indexer
+    var allAssets: [Asset] {
+        return standardAssets + collectibleAssets
     }
-    
+
+    func setStandardAssets(
+        _ assets: [StandardAsset],
+        _ indexer: StandardAssetIndexer
+    ) {
+        standardAssets = assets
+        standardAssetsIndexer = indexer
+    }
+
+    func setCollectibleAssets(
+        _ assets: [CollectibleAsset],
+        _ indexer: CollectibleAssetIndexer
+    ) {
+        collectibleAssets = assets
+        collectibleAssetsIndexer = indexer
+    }
+
     func append(
-        _ compoundAsset: CompoundAsset
+        _ asset: StandardAsset
     ) {
-        compoundAssets.append(compoundAsset)
-        compoundAssetsIndexer[compoundAsset.id] = compoundAssets.lastIndex!
+        standardAssets.append(asset)
+        standardAssetsIndexer[asset.id] = standardAssets.lastIndex!
+    }
+
+    func append(
+        _ collectible: CollectibleAsset
+    ) {
+        collectibleAssets.append(collectible)
+        collectibleAssetsIndexer[collectible.id] = collectibleAssets.lastIndex!
     }
     
-    func removeAllCompoundAssets() {
-        compoundAssets = []
-        compoundAssetsIndexer = [:]
+    func removeAllAssets() {
+        standardAssets = []
+        collectibleAssets = []
+        standardAssetsIndexer = [:]
+        collectibleAssetsIndexer = [:]
     }
     
-    func contains(
-        _ assetDetail: AssetInformation
+    func containsStandardAsset(
+        _ id: AssetID
     ) -> Bool {
-        return self[assetDetail.id] != nil
+        let index = standardAssetsIndexer[id]
+        return index.unwrap { standardAssets[safe: $0] } != nil
+    }
+
+    func containsCollectibleAsset(
+        _ id: AssetID
+    ) -> Bool {
+        let index = collectibleAssetsIndexer[id]
+        return index.unwrap { collectibleAssets[safe: $0] } != nil
+    }
+
+    func containsAsset(
+        _ id: AssetID
+    ) -> Bool {
+        return containsStandardAsset(id) || containsCollectibleAsset(id)
     }
 }
 
@@ -190,7 +237,7 @@ extension Account {
         var rewardBase: UInt64?
         var participation: Participation?
         var createdAssets: [AssetDetail.APIModel]?
-        var assets: [Asset]?
+        var assets: [ALGAsset]?
         var sigType: SignatureType?
         var round: UInt64?
         var authAddr: String?
@@ -201,6 +248,7 @@ extension Account {
         var appsTotalExtraPages: Int?
         var appsTotalSchema: ApplicationStateSchema?
         var createdApps: [AlgorandApplication]?
+        var totalCreatedApps: Int
 
         init() {
             self.address = ""
@@ -223,6 +271,7 @@ extension Account {
             self.appsTotalExtraPages = nil
             self.appsTotalSchema = nil
             self.createdApps = nil
+            self.totalCreatedApps = 0
         }
 
         private enum CodingKeys: String, CodingKey {
@@ -246,6 +295,7 @@ extension Account {
             case appsTotalExtraPages = "apps-total-extra-pages"
             case appsTotalSchema = "apps-total-schema"
             case createdApps = "created-apps"
+            case totalCreatedApps = "total-created-apps"
         }
     }
 }

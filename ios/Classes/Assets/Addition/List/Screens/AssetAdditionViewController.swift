@@ -51,7 +51,7 @@ final class AssetAdditionViewController: PageContainer, TestNetTitleDisplayable 
         configuration: configuration
     )
 
-    private var currentAsset: AssetInformation?
+    private var currentAsset: AssetDecoration?
 
     init(account: Account, configuration: ViewControllerConfiguration) {
         self.account = account
@@ -65,7 +65,6 @@ final class AssetAdditionViewController: PageContainer, TestNetTitleDisplayable 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         transactionController.stopBLEScan()
-        loadingController?.stopLoading()
         transactionController.stopTimer()
     }
     
@@ -161,13 +160,13 @@ extension AssetAdditionViewController:
     TransactionSignChecking {
     func assetActionConfirmationViewController(
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
-        didConfirmedActionFor assetDetail: AssetInformation
+        didConfirmAction asset: AssetDecoration
     ) {
         if !canSignTransaction(for: &account) {
             return
         }
         
-        let assetTransactionDraft = AssetTransactionSendDraft(from: account, assetIndex: assetDetail.id)
+        let assetTransactionDraft = AssetTransactionSendDraft(from: account, assetIndex: asset.id)
         transactionController.setTransactionDraft(assetTransactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
 
@@ -178,21 +177,25 @@ extension AssetAdditionViewController:
             transactionController.startTimer()
         }
 
-        currentAsset = assetDetail
+        currentAsset = asset
     }
 }
 
 extension AssetAdditionViewController: AssetListViewControllerDelegate {
-    func assetListViewController(_ assetListViewController: AssetListViewController, didSelectItem item: AssetInformation) {
-        if account.containsAsset(item.id) {
+    func assetListViewController(
+        _ assetListViewController: AssetListViewController,
+        didSelect asset: AssetDecoration
+    ) {
+        if account.containsAsset(asset.id) {
             displaySimpleAlertWith(title: "asset-you-already-own-message".localized, message: "")
             return
         }
 
         let assetAlertDraft = AssetAlertDraft(
             account: account,
-            assetIndex: item.id,
-            assetDetail: item,
+            assetId: asset.id,
+            asset: asset,
+            transactionFee: Transaction.Constant.minimumFee,
             title: "asset-add-confirmation-title".localized,
             detail: "asset-add-warning".localized,
             actionTitle: "title-approve".localized,
@@ -235,11 +238,29 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         _ transactionController: TransactionController,
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
+        loadingController?.stopLoading()
+
         guard let assetDetail = currentAsset else {
             return
         }
 
-        delegate?.assetAdditionViewController(self, didAdd: assetDetail, to: account)
+        if assetDetail.isCollectible {
+            let collectibleAsset = CollectibleAsset(
+                asset: ALGAsset(id: assetDetail.id),
+                decoration: assetDetail
+            )
+
+            NotificationCenter.default.post(
+                name: CollectibleListLocalDataController.didAddPendingCollectible,
+                object: self,
+                userInfo: [
+                    CollectibleListLocalDataController.assetUserInfoKey: (account, collectibleAsset)
+                ]
+            )
+        } else {
+            delegate?.assetAdditionViewController(self, didAdd: assetDetail)
+        }
+
         popScreen()
     }
 
@@ -292,18 +313,9 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
     }
 }
 
-extension AssetAdditionViewController {
-    struct LayoutConstants: AdaptiveLayoutConstants {
-        let itemHeight: CGFloat = 52.0
-        let multiItemHeight: CGFloat = 72.0
-        let modalHeight: CGFloat = 510.0
-    }
-}
-
 protocol AssetAdditionViewControllerDelegate: AnyObject {
     func assetAdditionViewController(
         _ assetAdditionViewController: AssetAdditionViewController,
-        didAdd assetSearchResult: AssetInformation,
-        to account: Account
+        didAdd asset: AssetDecoration
     )
 }

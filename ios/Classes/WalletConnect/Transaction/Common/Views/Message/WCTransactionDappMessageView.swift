@@ -28,8 +28,6 @@ class WCTransactionDappMessageView: BaseView {
     private lazy var dappImageView: URLImageView = {
         let imageView = URLImageView()
         imageView.layer.cornerRadius = layout.current.imageSize.width / 2
-        imageView.layer.borderWidth = 1.0
-        imageView.layer.borderColor = Colors.Component.dappImageBorderColor.cgColor
         return imageView
     }()
 
@@ -75,7 +73,7 @@ class WCTransactionDappMessageView: BaseView {
         UILabel()
             .withAlignment(.left)
             .withLine(.single)
-            .withTextColor(Colors.Text.link)
+            .withTextColor(AppColors.Shared.Helpers.positive.uiColor)
             .withFont(Fonts.DMSans.medium.make(13).uiFont)
             .withText("wallet-connect-transaction-dapp-show-more".localized)
     }()

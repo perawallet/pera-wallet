@@ -15,160 +15,246 @@
 //
 //   AssetPreviewView.swift
 
-import MacaroonUIKit
 import UIKit
+import MacaroonUIKit
 
-final class AssetPreviewView: View {
-    private lazy var imageView = AssetImageView()
-    private lazy var assetTitleVerticalStackView = UIStackView()
-    private lazy var assetTitleHorizontalStackView = UIStackView()
-    private lazy var primaryAssetTitleLabel = UILabel()
-    private lazy var secondaryImageView = UIImageView()
-    private lazy var secondaryAssetTitleLabel = UILabel()
-    private lazy var assetValueVerticalStackView = UIStackView()
-    private lazy var primaryAssetValueLabel = UILabel()
-    private lazy var secondaryAssetValueLabel = UILabel()
+final class AssetPreviewView:
+    View,
+    ViewModelBindable,
+    ListReusable {
+    private lazy var iconView = AssetImageView()
+    private lazy var contentView = UIView()
+    private lazy var titleView = Label()
+    private lazy var verifiedIconView = ImageView()
+    private lazy var subtitleView = Label()
+    private lazy var accessoryView = UIView()
+    private lazy var primaryAccessoryView = Label()
+    private lazy var secondaryAccessoryView = Label()
 
-    func customize(_ theme: AssetPreviewViewTheme) {
-        addImage(theme)
-        addAssetTitleVerticalStackView(theme)
-        addAssetValueVerticalStackView(theme)
+    func customize(
+        _ theme: AssetPreviewViewTheme
+    ) {
+        addIconView(theme)
+        addContent(theme)
+        addAccessory(theme)
     }
 
-    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+    func prepareLayout(
+        _ layoutSheet: NoLayoutSheet
+    ) {}
 
-    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+    func customizeAppearance(
+        _ styleSheet: NoStyleSheet
+    ) {}
+
+    func bindData(
+        _ viewModel: AssetPreviewViewModel?
+    ) {
+        iconView.bindData(viewModel?.assetImageViewModel)
+        titleView.editText = viewModel?.title
+        verifiedIconView.image = viewModel?.verifiedIcon
+        subtitleView.editText = viewModel?.subtitle
+        primaryAccessoryView.editText = viewModel?.primaryAccessory
+        secondaryAccessoryView.editText = viewModel?.secondaryAccessory
+    }
+
+    func prepareForReuse() {
+        iconView.prepareForReuse()
+        verifiedIconView.image = nil
+        titleView.editText = nil
+        subtitleView.editText = nil
+        primaryAccessoryView.editText = nil
+        secondaryAccessoryView.editText = nil
+    }
+
+    class func calculatePreferredSize(
+        _ viewModel: AssetPreviewViewModel?,
+        for theme: AssetPreviewViewTheme,
+        fittingIn size: CGSize
+    ) -> CGSize {
+        guard let viewModel = viewModel else {
+            return CGSize((size.width, 0))
+        }
+
+        let width = size.width
+        let iconSize = theme.imageSize
+        let titleSize = viewModel.title.boundingSize(
+            multiline: false,
+            fittingSize: CGSize((width, .greatestFiniteMagnitude))
+        )
+        let subtitleSize = viewModel.subtitle.boundingSize(
+            multiline: false,
+            fittingSize: CGSize((width, .greatestFiniteMagnitude))
+        )
+        let primaryAccessorySize = viewModel.primaryAccessory.boundingSize(
+            multiline: false,
+            fittingSize: CGSize((width, .greatestFiniteMagnitude))
+        )
+        let secondaryAccessorySize = viewModel.secondaryAccessory.boundingSize(
+            multiline: false,
+            fittingSize: CGSize((width, .greatestFiniteMagnitude))
+        )
+        let accessoryIconSize = viewModel.verifiedIcon?.size ?? .zero
+        let contentHeight = max(titleSize.height, accessoryIconSize.height) + subtitleSize.height
+        let accessoryHeight = primaryAccessorySize.height + secondaryAccessorySize.height
+        let preferredHeight = max(iconSize.h, max(contentHeight, accessoryHeight))
+        return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
+    }
 }
 
 extension AssetPreviewView {
-    private func addImage(_ theme: AssetPreviewViewTheme) {
-        addSubview(imageView)
+    private func addIconView(
+        _ theme: AssetPreviewViewTheme
+    ) {
+        iconView.customize(AssetImageViewTheme())
 
-        imageView.snp.makeConstraints {
-            $0.leading.equalToSuperview()
+        addSubview(iconView)
+        iconView.fitToIntrinsicSize()
+        iconView.snp.makeConstraints {
+            $0.leading == 0
+            $0.centerY == 0
             $0.fitToSize(theme.imageSize)
-            $0.centerY.equalToSuperview()
-            $0.top.bottom.equalToSuperview().inset(theme.verticalPadding)
         }
     }
 
-    private func addAssetTitleVerticalStackView(_ theme: AssetPreviewViewTheme) {
-        addSubview(assetTitleVerticalStackView)
-        assetTitleVerticalStackView.axis = .vertical
-        assetTitleVerticalStackView.alignment = .leading
-
-        assetTitleVerticalStackView.snp.makeConstraints {
-            $0.leading.equalTo(imageView.snp.trailing).offset(theme.horizontalPadding)
-            $0.centerY.equalTo(imageView.snp.centerY)
+    private func addContent(
+        _ theme: AssetPreviewViewTheme
+    ) {
+        addSubview(contentView)
+        contentView.snp.makeConstraints {
+            $0.width >= self * theme.contentMinWidthRatio
+            $0.top == 0
+            $0.leading == iconView.snp.trailing + theme.horizontalPadding
+            $0.bottom == 0
         }
 
-        addAssetTitleHorizontalStackView(theme)
-        addSecondaryAssetTitleLabel(theme)
+        addTitle(theme)
+        addSubtitle(theme)
     }
 
-    private func addAssetTitleHorizontalStackView(_ theme: AssetPreviewViewTheme) {
-        assetTitleVerticalStackView.addArrangedSubview(assetTitleHorizontalStackView)
-        assetTitleHorizontalStackView.spacing = theme.secondaryImageLeadingPadding
+    private func addTitle(
+        _ theme: AssetPreviewViewTheme
+    ) {
+        titleView.customizeAppearance(theme.title)
+        
+        contentView.addSubview(titleView)
 
-        addPrimaryAssetTitleLabel(theme)
-        addSecondaryImage(theme)
-    }
+        titleView.fitToVerticalIntrinsicSize(
+            hugging: .defaultLow,
+            compression: .required
+        ) /// Ask, without this there is ambiguous layout for vertical position & height.
 
-    private func addPrimaryAssetTitleLabel(_ theme: AssetPreviewViewTheme) {
-        primaryAssetTitleLabel.customizeAppearance(theme.primaryAssetTitle)
-        primaryAssetTitleLabel.adjustsFontSizeToFitWidth = false
+        titleView.fitToHorizontalIntrinsicSize(
+            hugging: .required,
+            compression: .defaultHigh
+        )
 
-        assetTitleHorizontalStackView.addArrangedSubview(primaryAssetTitleLabel)
-    }
-
-    private func addSecondaryImage(_ theme: AssetPreviewViewTheme) {
-        assetTitleHorizontalStackView.addArrangedSubview(secondaryImageView)
-    }
-
-    private func addSecondaryAssetTitleLabel(_ theme: AssetPreviewViewTheme) {
-        secondaryAssetTitleLabel.customizeAppearance(theme.secondaryAssetTitle)
-        secondaryAssetTitleLabel.adjustsFontSizeToFitWidth = false
-
-        assetTitleVerticalStackView.addArrangedSubview(secondaryAssetTitleLabel)
-    }
-
-    private func addAssetValueVerticalStackView(_ theme: AssetPreviewViewTheme) {
-        addSubview(assetValueVerticalStackView)
-        assetValueVerticalStackView.axis = .vertical
-        assetValueVerticalStackView.alignment = .trailing
-
-        assetValueVerticalStackView.snp.makeConstraints {
-            $0.trailing.equalToSuperview()
-            $0.leading.equalTo(assetTitleVerticalStackView.snp.trailing).offset(theme.horizontalPadding)
-            $0.centerY.equalTo(assetTitleVerticalStackView.snp.centerY)
-            $0.width.greaterThanOrEqualToSuperview().multipliedBy(theme.assetValueMinRatio)
+        titleView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == 0
         }
 
-        addPrimaryAssetValueLabel(theme)
-        addSecondaryAssetValueLabel(theme)
+        addVerifiedIcon(theme)
     }
 
-    private func addPrimaryAssetValueLabel(_ theme: AssetPreviewViewTheme) {
-        primaryAssetValueLabel.customizeAppearance(theme.primaryAssetValue)
+    private func addVerifiedIcon(
+        _ theme: AssetPreviewViewTheme
+    ) {
+        verifiedIconView.customizeAppearance(theme.verifiedIcon)
 
-        assetValueVerticalStackView.addArrangedSubview(primaryAssetValueLabel)
+        contentView.addSubview(verifiedIconView)
+        
+        verifiedIconView.fitToIntrinsicSize()
+        verifiedIconView.contentEdgeInsets = theme.verifiedIconContentEdgeInsets
+
+        verifiedIconView.snp.makeConstraints {
+            $0.centerY == titleView
+            $0.leading == titleView.snp.trailing
+            $0.trailing <= 0
+        }
     }
 
-    private func addSecondaryAssetValueLabel(_ theme: AssetPreviewViewTheme) {
-        secondaryAssetValueLabel.customizeAppearance(theme.secondaryAssetValue)
+    private func addSubtitle(
+        _ theme: AssetPreviewViewTheme
+    ) {
+        subtitleView.customizeAppearance(theme.subtitle)
+        
+        contentView.addSubview(subtitleView)
 
-        assetValueVerticalStackView.addArrangedSubview(secondaryAssetValueLabel)
-    }
-}
+        subtitleView.fitToVerticalIntrinsicSize()
+        subtitleView.fitToHorizontalIntrinsicSize(
+            hugging: .required,
+            compression: .defaultLow
+        )
 
-extension AssetPreviewView: ViewModelBindable {
-    func bindData(_ viewModel: AssetPreviewViewModel?) {
-        imageView.bindData(viewModel?.assetImageViewModel)
-        primaryAssetTitleLabel.editText = viewModel?.assetPrimaryTitle
-        secondaryImageView.image = viewModel?.secondaryImage
-        secondaryAssetTitleLabel.editText = viewModel?.assetSecondaryTitle
-        primaryAssetValueLabel.editText = viewModel?.assetPrimaryValue
-        secondaryAssetValueLabel.editText = viewModel?.assetSecondaryAssetValue
-    }
-
-    func reset() {
-        imageView.prepareForReuse()
-        secondaryImageView.image = nil
-        primaryAssetTitleLabel.text = nil
-        secondaryAssetTitleLabel.text = nil
-        primaryAssetValueLabel.text = nil
-        secondaryAssetValueLabel.text = nil
-    }
-}
-
-final class AssetPreviewCell: BaseCollectionViewCell<AssetPreviewView> {
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        contextView.customize(AssetPreviewViewCommonTheme())
+        subtitleView.snp.makeConstraints {
+            $0.top == titleView.snp.bottom
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing <= 0
+        }
     }
 
-    func bindData(_ viewModel: AssetPreviewViewModel) {
-        contextView.bindData(viewModel)
+    private func addAccessory(
+        _ theme: AssetPreviewViewTheme
+    ) {
+        addSubview(accessoryView)
+
+        accessoryView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == contentView.snp.trailing + theme.minSpacingBetweenContentAndSecondaryContent
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+
+        addPrimaryAccessory(theme)
+        addSecondaryAccessory(theme)
     }
 
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        contextView.reset()
-    }
-}
+    private func addPrimaryAccessory(
+        _ theme: AssetPreviewViewTheme
+    ) {
+        primaryAccessoryView.customizeAppearance(theme.primaryAccessory)
 
-final class AssetPreviewAdditionCell: BaseCollectionViewCell<AssetPreviewView> {
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        contextView.customize(AssetPreviewViewAdditionTheme())
+        accessoryView.addSubview(primaryAccessoryView)
+
+        primaryAccessoryView.fitToHorizontalIntrinsicSize(
+            hugging: .defaultLow,
+            compression: .required
+        )
+        primaryAccessoryView.fitToVerticalIntrinsicSize(
+            hugging: .defaultLow,
+            compression: .required
+        )
+
+        primaryAccessoryView.snp.makeConstraints {
+            $0.top == 0
+            $0.trailing == 0
+            $0.leading >= 0
+        }
     }
 
-    func bindData(_ viewModel: AssetPreviewViewModel) {
-        contextView.bindData(viewModel)
-    }
+    private func addSecondaryAccessory(
+        _ theme: AssetPreviewViewTheme
+    ) {
+        secondaryAccessoryView.customizeAppearance(theme.secondaryAccessory)
 
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        contextView.reset()
+        accessoryView.addSubview(secondaryAccessoryView)
+
+        secondaryAccessoryView.fitToHorizontalIntrinsicSize(
+            hugging: .defaultLow,
+            compression: .required
+        )
+        secondaryAccessoryView.fitToVerticalIntrinsicSize(
+            hugging: .defaultLow,
+            compression: .defaultLow
+        )
+
+        secondaryAccessoryView.snp.makeConstraints {
+            $0.top == primaryAccessoryView.snp.bottom
+            $0.bottom == 0
+            $0.trailing == 0
+            $0.leading >= 0
+        }
     }
 }

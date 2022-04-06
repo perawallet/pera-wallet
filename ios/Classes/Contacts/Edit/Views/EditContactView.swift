@@ -24,11 +24,11 @@ final class EditContactView: View {
     private(set) lazy var badgedImageView = BadgedImageView()
     private(set) lazy var nameInputView = createAccountNameTextInput(
         placeholder: "contacts-input-name-placeholder".localized,
-        floatingPlaceholder: "contacts-input-name-placeholder".localized
+        floatingPlaceholder: "contacts-input-name-placeholder".localized.capitalized
     )
     private(set) lazy var addressInputView = createAddressTextInput(
-        placeholder: "watch-account-input-explanation".localized,
-        floatingPlaceholder: "watch-account-input-explanation".localized
+        placeholder: "contact-input-address-placeholder".localized,
+        floatingPlaceholder: "contact-input-address-placeholder".localized.capitalized
     )
     private lazy var qrButton = Button()
     private(set) lazy var deleteContactButton = Button()

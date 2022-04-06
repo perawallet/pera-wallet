@@ -107,7 +107,7 @@ extension ContactContextView {
 extension ContactContextView: ViewModelBindable {
     func bindData(_ viewModel: ContactsViewModel?) {
         userImageView.image = viewModel?.image
-        nameLabel.text = viewModel?.name
+        nameLabel.editText = viewModel?.name
         addressLabel.text = viewModel?.address
     }
 }

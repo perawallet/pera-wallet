@@ -20,11 +20,25 @@ import UIKit
 final class SettingsDataSource: NSObject {
     weak var delegate: SettingsDataSourceDelegate?
     
-    private(set) lazy var sections: [GeneralSettings] = [.account, .appPreferences, .support]
-    private(set) lazy var settings: [[Settings]] = [accountSettings, appPreferenceSettings, supportSettings]
-    private(set) lazy var accountSettings: [AccountSettings] = [.security, .notifications, .walletConnect]
-    private(set) lazy var appPreferenceSettings: [AppPreferenceSettings] = [.rewards, .language, .currency, .appearance]
-    private(set) lazy var supportSettings: [SupportSettings] = [.feedback, .appReview, .termsAndServices, .privacyPolicy, .developer]
+    private(set) lazy var sections: [GeneralSettings] = [
+        .account, .appPreferences, .support
+    ]
+
+    private(set) lazy var settings: [[Settings]] = [
+        accountSettings, appPreferenceSettings, supportSettings
+    ]
+
+    private(set) lazy var accountSettings: [AccountSettings] = [
+        .security, .contacts, .notifications, .walletConnect
+    ]
+
+    private(set) lazy var appPreferenceSettings: [AppPreferenceSettings] = [
+        .rewards, .language, .currency, .appearance
+    ]
+
+    private(set) lazy var supportSettings: [SupportSettings] = [
+        .feedback, .appReview, .termsAndServices, .privacyPolicy, .developer
+    ]
     
     private var session: Session?
     

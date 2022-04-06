@@ -17,118 +17,174 @@
 
 import UIKit
 import MacaroonUIKit
-import Foundation
 
-final class PassphraseVerifyView: View {
+final class PassphraseVerifyView:
+    View,
+    ViewModelBindable,
+    UIInteractionObservable,
+    UIControlInteractionPublisher {
     weak var delegate: PassphraseVerifyViewDelegate?
+    
+    private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
+        .next: UIControlInteraction()
+    ]
 
-    private lazy var theme = PassphraseVerifyViewTheme()
-    private lazy var titleLabel = UILabel()
-
-    private(set) lazy var passphraseCollectionView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumLineSpacing = 0
-        flowLayout.minimumInteritemSpacing = theme.cellSpacing
-        let passphraseCollectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        passphraseCollectionView.showsVerticalScrollIndicator = false
-        passphraseCollectionView.showsHorizontalScrollIndicator = false
-        passphraseCollectionView.backgroundColor = .clear
-        passphraseCollectionView.allowsMultipleSelection = true
-        passphraseCollectionView.isScrollEnabled = false
-        passphraseCollectionView.register(PassphraseMnemonicCell.self)
-        passphraseCollectionView.register(header: PasshraseMnemonicNumberHeaderSupplementaryView.self)
-        return passphraseCollectionView
-    }()
+    private lazy var titleLabel = Label()
+    private lazy var firstCardView = PassphraseVerifyCardView()
+    private lazy var secondCardView = PassphraseVerifyCardView()
+    private lazy var thirdCardView = PassphraseVerifyCardView()
+    private lazy var fourthCardView = PassphraseVerifyCardView()
 
     private lazy var nextButton = Button()
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        customize(theme)
+        
         setListeners()
+        linkInteractors()
     }
 
     func customize(_ theme: PassphraseVerifyViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
         addTitleLabel(theme)
-        addCollectionView(theme)
+        addFirstCardView(theme)
+        addSecondCardView(theme)
+        addThirdCardView(theme)
+        addFourthCardView(theme)
         addNextButton(theme)
     }
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
-
+    
+    func linkInteractors() {
+        startPublishing(event: .next, for: nextButton)
+    }
+    
     func setListeners() {
-        nextButton.addTarget(self, action: #selector(notifyDelegateToVerifyPassphrase), for: .touchUpInside)
+        firstCardView.delegate = self
+        secondCardView.delegate = self
+        thirdCardView.delegate = self
+        fourthCardView.delegate = self
+    }
+    
+    func bindData(_ viewModel: PassphraseVerifyViewModel?) {
+        firstCardView.bindData(viewModel?.firstCardViewModel)
+        secondCardView.bindData(viewModel?.secondCardViewModel)
+        thirdCardView.bindData(viewModel?.thirdCardViewModel)
+        fourthCardView.bindData(viewModel?.fourthCardViewModel)
     }
 }
 
 extension PassphraseVerifyView {
     private func addTitleLabel(_ theme: PassphraseVerifyViewTheme) {
         titleLabel.customizeAppearance(theme.title)
+        titleLabel.editText = theme.titleText
 
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(theme.titleTopInset)
-            $0.leading.equalToSuperview().inset(theme.horizontalInset)
-            $0.trailing.equalToSuperview().inset(theme.horizontalInset)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
         }
     }
     
-    private func addCollectionView(_ theme: PassphraseVerifyViewTheme) {
-        addSubview(passphraseCollectionView)
-        passphraseCollectionView.snp.makeConstraints {
+    private func addFirstCardView(_ theme: PassphraseVerifyViewTheme) {
+        firstCardView.tag = 0
+        firstCardView.customize(theme.cardViewTheme)
+        
+        addSubview(firstCardView)
+        firstCardView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(theme.listTopOffset)
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(theme.listHeight)
+        }
+    }
+    
+    private func addSecondCardView(_ theme: PassphraseVerifyViewTheme) {
+        secondCardView.tag = 1
+        secondCardView.customize(theme.cardViewTheme)
+        
+        addSubview(secondCardView)
+        secondCardView.snp.makeConstraints {
+            $0.top.equalTo(firstCardView.snp.bottom).offset(theme.cardViewBottomOffset)
+            $0.leading.trailing.equalToSuperview()
+        }
+    }
+    
+    private func addThirdCardView(_ theme: PassphraseVerifyViewTheme) {
+        thirdCardView.tag = 2
+        thirdCardView.customize(theme.cardViewTheme)
+        
+        addSubview(thirdCardView)
+        thirdCardView.snp.makeConstraints {
+            $0.top.equalTo(secondCardView.snp.bottom).offset(theme.cardViewBottomOffset)
+            $0.leading.trailing.equalToSuperview()
+        }
+    }
+    
+    private func addFourthCardView(_ theme: PassphraseVerifyViewTheme) {
+        fourthCardView.tag = 3
+        fourthCardView.customize(theme.cardViewTheme)
+        
+        addSubview(fourthCardView)
+        fourthCardView.snp.makeConstraints {
+            $0.top.equalTo(thirdCardView.snp.bottom).offset(theme.cardViewBottomOffset)
+            $0.leading.trailing.equalToSuperview()
         }
     }
     
     private func addNextButton(_ theme: PassphraseVerifyViewTheme) {
         nextButton.customize(theme.nextButtonTheme)
         nextButton.bindData(ButtonCommonViewModel(title: "title-next".localized))
+        nextButton.isEnabled = false
 
         addSubview(nextButton)
         nextButton.snp.makeConstraints {
-            $0.top.greaterThanOrEqualTo(passphraseCollectionView.snp.bottom).offset(theme.buttonVerticalInset)
-            $0.centerX.equalToSuperview()
+            $0.top.equalTo(fourthCardView.snp.bottom).offset(theme.buttonTopOffset)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
-            $0.bottom.equalToSuperview().inset(safeAreaBottom + theme.buttonVerticalInset)
+            $0.bottom.equalToSuperview().inset(safeAreaBottom + theme.buttonBottomOffset)
         }
     }
 }
 
 extension PassphraseVerifyView {
-    func setCollectionViewDelegate(_ delegate: UICollectionViewDelegate?) {
-        passphraseCollectionView.delegate = delegate
+    func reset() {
+        firstCardView.reset()
+        secondCardView.reset()
+        thirdCardView.reset()
+        fourthCardView.reset()
+        nextButton.isEnabled = false
     }
-
-    func setCollectionViewDataSource(_ dataSource: UICollectionViewDataSource?) {
-        passphraseCollectionView.dataSource = dataSource
-    }
-
-    func setNextButtonEnabled(_ isEnabled: Bool) {
-        nextButton.isEnabled = isEnabled
-    }
-
-    func resetSelectionStatesAndReloadData() {
-        passphraseCollectionView.indexPathsForSelectedItems?.forEach {
-            passphraseCollectionView.deselectItem(at: $0, animated: false)
-        }
-        passphraseCollectionView.reloadData()
-        setNextButtonEnabled(false)
+    
+    func setButtonInteraction() {
+        nextButton.isEnabled = true
     }
 }
 
-extension PassphraseVerifyView {
-    @objc
-    private func notifyDelegateToVerifyPassphrase() {
-        delegate?.passphraseVerifyViewDidVerifyPassphrase(self)
+extension PassphraseVerifyView: PassphraseVerifyCardViewDelegate {
+    func passphraseVerifyCardViewDidSelectWord(
+        _ passphraseVerifyCardView: PassphraseVerifyCardView,
+        item: Int
+    ) {
+        delegate?.passphraseVerifyViewDidSelectMnemonic(
+            self,
+            section: passphraseVerifyCardView.tag,
+            item: item
+        )
     }
 }
 
 protocol PassphraseVerifyViewDelegate: AnyObject {
-    func passphraseVerifyViewDidVerifyPassphrase(_ passphraseVerifyView: PassphraseVerifyView)
+    func passphraseVerifyViewDidSelectMnemonic(
+        _ passphraseVerifyView: PassphraseVerifyView,
+        section: Int,
+        item: Int
+    )
+}
+
+extension PassphraseVerifyView {
+    enum Event {
+        case next
+    }
 }

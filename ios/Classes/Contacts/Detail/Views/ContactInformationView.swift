@@ -27,7 +27,7 @@ final class ContactInformationView: View {
     private lazy var topDivider = UIView()
     private lazy var accountAddressTitleLabel = UILabel()
     private lazy var accountAddressValueLabel = UILabel()
-    private lazy var qrCodeButton = UIButton()
+    private lazy var qrCodeButton = MacaroonUIKit.Button()
     private lazy var bottomDivider = UIView()
 
     override init(frame: CGRect) {

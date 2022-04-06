@@ -21,9 +21,10 @@ import UIKit
 
 protocol NoContentViewWithActionTheme: ResultViewTheme {
     var contentHorizontalPaddings: LayoutHorizontalPaddings { get }
-    var contentVerticalPadding: LayoutMetric { get }
+    var contentVerticalPaddings: LayoutVerticalPaddings { get }
     var actionContentEdgeInsets: LayoutPaddings { get }
     var actionCornerRadius: LayoutMetric { get }
     var actionTopMargin: LayoutMetric { get }
     var action: ButtonStyle { get }
+    var actionAlignment: NoContentWithActionView.ActionViewAlignment { get }
 }

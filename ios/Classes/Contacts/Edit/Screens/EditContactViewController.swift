@@ -74,59 +74,15 @@ final class EditContactViewController: BaseScrollViewController {
 
 extension EditContactViewController {
     private func addBarButtons() {
-         let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
-             self.checkFieldsHaveChanges()
-
-             if self.isUserEdited {
-                 self.presentCloseWithoutSavingAlert()
-             } else {
-                 self.closeScreen(by: .dismiss, animated: true)
-             }
-         }
-
          let saveBarButtonItem = ALGBarButtonItem(kind: .done) {
              if let keyedValues = self.parseFieldsForContact() {
                  self.edit(self.contact, with: keyedValues)
              }
          }
 
-         leftBarButtonItems = [closeBarButtonItem]
          rightBarButtonItems = [saveBarButtonItem]
      }
 
-}
-
-extension EditContactViewController {
-    private func checkFieldsHaveChanges() {
-        guard let name = editContactView.nameInputView.text,
-              let address = editContactView.addressInputView.text else {
-                  return
-              }
-
-        if contact.name != name || contact.address != address {
-            isUserEdited = true
-        }
-    }
-}
-
-extension EditContactViewController {
-    private func presentCloseWithoutSavingAlert() {
-           let alertController = UIAlertController(
-               title: "contacts-close-warning-subtitle".localized,
-               message: "contacts-close-warning-subtitle".localized,
-               preferredStyle: .alert
-           )
-
-           let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel, handler: nil)
-           let doneAction = UIAlertAction(title: "title-done".localized, style: .default) { _ in
-               self.closeScreen(by: .dismiss, animated: true)
-           }
-
-           alertController.addAction(cancelAction)
-           alertController.addAction(doneAction)
-
-           present(alertController, animated: true, completion: nil)
-       }
 }
 
 extension EditContactViewController: EditContactViewDelegate {
@@ -160,7 +116,7 @@ extension EditContactViewController: EditContactViewDelegate {
 
         guard let address = editContactView.addressInputView.text,
               !address.isEmpty,
-              address.isValidatedAddress() else {
+              address.isValidatedAddress else {
                   displaySimpleAlertWith(title: "title-error".localized, message: "contacts-address-validation-error".localized)
                   return nil
               }
@@ -193,7 +149,7 @@ extension EditContactViewController: EditContactViewDelegate {
 
                 NotificationCenter.default.post(name: .ContactEdit, object: self, userInfo: ["contact": contact])
                 self.delegate?.editContactViewController(self, didSave: contact)
-                self.closeScreen(by: .dismiss)
+                self.popScreen()
             default:
                 break
             }
@@ -207,13 +163,17 @@ extension EditContactViewController: EditContactViewDelegate {
             description: .plain("contacts-delete-contact-alert-explanation".localized),
             primaryActionButtonTitle: "contacts-approve-delete-contact".localized,
             secondaryActionButtonTitle: "title-keep".localized,
-            primaryAction: { [weak self] in
+            primaryAction: {
+                [weak self] in
                 guard let self = self else {
                     return
                 }
+
                 contact.remove(entity: Contact.entityName)
+
+                self.popScreenToContactsScreen()
+
                 NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: ["contact": contact])
-                self.dismissScreen()
             }
         )
 
@@ -221,6 +181,16 @@ extension EditContactViewController: EditContactViewDelegate {
             .bottomWarning(configurator: bottomWarningViewConfigurator),
             by: .presentWithoutNavigationController
         )
+    }
+
+    private func popScreenToContactsScreen() {
+        guard let navigationController = navigationController else {
+            return
+        }
+
+        var viewControllers = navigationController.viewControllers
+        viewControllers.removeLast(2)
+        navigationController.setViewControllers(viewControllers, animated: true)
     }
 
     func editContactViewDidTapQRCodeButton(_ editContactView: EditContactView) {

@@ -29,19 +29,19 @@ indirect enum Screen {
     case qrScanner(canReadWCSession: Bool)
     case qrGenerator(title: String?, draft: QRCreationDraft, isTrackable: Bool = false)
     case accountDetail(accountHandle: AccountHandle, eventHandler: AccountDetailViewController.EventHandler)
-    case assetSearch(accountHandle: AccountHandle)
+    case assetSearch(dataController: AssetSearchDataController)
     case assetDetail(draft: TransactionListing)
     case algosDetail(draft: TransactionListing)
     case options(account: Account, delegate: OptionsViewControllerDelegate)
     case accountList(mode: AccountListViewController.Mode, delegate: AccountListViewControllerDelegate)
     case editAccount(account: Account, delegate: EditAccountViewControllerDelegate)
-    case contactSelection
+    case contacts
     case notifications
     case addContact(address: String? = nil, name: String? = nil)
     case editContact(contact: Contact)
     case contactDetail(contact: Contact)
     case nodeSettings
-    case transactionDetail(account: Account, transaction: Transaction, transactionType: TransactionType, assetDetail: AssetInformation?)
+    case transactionDetail(account: Account, transaction: Transaction, transactionType: TransactionType, assetDetail: StandardAsset?)
     case addAsset(account: Account)
     case removeAsset(account: Account)
     case assetActionConfirmation(assetAlertDraft: AssetAlertDraft, delegate: AssetActionConfirmationViewControllerDelegate?)
@@ -93,7 +93,7 @@ indirect enum Screen {
         transactionAction: TransactionAction,
         delegate: SelectAccountViewControllerDelegate?
     )
-    case assetSelection(account: Account)
+    case assetSelection(filter: AssetType?, account: Account)
     case sendTransaction(draft: SendTransactionDraft)
     case editNote(note: String?, isLocked: Bool, delegate: EditNoteScreenDelegate?)
     case portfolioCalculationInfo(result: PortfolioCalculator.Result, eventHandler: PortfolioCalculationInfoViewController.EventHandler)
@@ -112,6 +112,36 @@ indirect enum Screen {
         transactionOption: WCTransactionOption?
     )
     case peraIntroduction
+    case receiveCollectibleAccountList(
+        dataController: ReceiveCollectibleAccountListDataController
+    )
+    case receiveCollectibleAssetList(
+        account: AccountHandle,
+        dataController: ReceiveCollectibleAssetListDataController
+    )
+    case collectibleDetail(
+        asset: CollectibleAsset,
+        account: Account,
+        thumbnailImage: UIImage?
+    )
+    case sendCollectible(
+        draft: SendCollectibleDraft,
+        transactionController: TransactionController,
+        uiInteractionsHandler: SendCollectibleViewController.SendCollectibleUIInteractions
+    )
+    case sendCollectibleAccountList(
+        dataController: SendCollectibleAccountListDataController
+    )
+    case approveCollectibleTransaction(
+        draft: SendCollectibleDraft,
+        transactionController: TransactionController
+    )
+    case shareActivity(items: [Any])
+    case image3DCard(image: UIImage)
+    case video3DCard(
+        image: UIImage?,
+        url: URL
+    )
     case buyAlgoHome(
         transactionDraft: BuyAlgoDraft,
         delegate: BuyAlgoHomeScreenDelegate?

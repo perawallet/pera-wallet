@@ -19,12 +19,9 @@ import UIKit
 import AVFoundation
 
 final class PassphraseVerifyViewController: BaseScrollViewController {
-    private lazy var passphraseVerifyView = PassphraseVerifyView()
+    private lazy var contextView = PassphraseVerifyView()
+        
     private lazy var theme = Theme()
-
-    private lazy var layoutBuilder: PassphraseVerifyLayoutBuilder = {
-        return PassphraseVerifyLayoutBuilder(dataSource: dataSource, theme: theme)
-    }()
 
     private lazy var accountOrdering = AccountOrdering(
         sharedDataController: sharedDataController,
@@ -45,66 +42,121 @@ final class PassphraseVerifyViewController: BaseScrollViewController {
         configuration: ViewControllerConfiguration
     ) {
         self.flow = flow
+
         super.init(configuration: configuration)
+    }
+    
+    override func linkInteractors() {
+        super.linkInteractors()
+        
+        contextView.observe(event: .next) {
+            [weak self] in
+            guard let self = self else { return }
+            
+            if !self.dataSource.verifyPassphrase() {
+                AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+                self.bannerController?.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: "passphrase-verify-wrong-message".localized
+                )
+                self.contextView.reset()
+                self.dataSource.resetAndReloadData()
+                return
+            }
+                        
+            guard let account = self.createAccount() else {
+                return
+            }
+            
+            self.open(
+                .tutorial(
+                    flow: self.flow,
+                    tutorial: .passphraseVerified(account: account)
+                ),
+                by: .push
+            )
+        }
+    }
+    
+    override func setListeners() {
+        super.setListeners()
+        
+        dataSource.delegate = self
+        contextView.delegate = self
     }
 
     override func configureAppearance() {
         super.configureAppearance()
         customizeBackground()
-        passphraseVerifyView.setNextButtonEnabled(false)
     }
 
     private func customizeBackground() {
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         scrollView.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
-    }
-    
-    override func linkInteractors() {
-        super.linkInteractors()
-        passphraseVerifyView.setCollectionViewDelegate(layoutBuilder)
-        passphraseVerifyView.setCollectionViewDataSource(dataSource)
-        passphraseVerifyView.delegate = self
-        dataSource.delegate = self
+        contentView.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
 
     override func prepareLayout() {
-        super.prepareLayout()        
-        contentView.addSubview(passphraseVerifyView)
-        passphraseVerifyView.pinToSuperview()
+        super.prepareLayout()
+        addContextView()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        dataSource.loadData()
+    }
+}
+
+extension PassphraseVerifyViewController {
+    private func addContextView() {
+        contextView.customize(PassphraseVerifyViewTheme())
+        
+        contentView.addSubview(contextView)
+        contextView.directionalLayoutMargins = NSDirectionalEdgeInsets(
+            top: 0,
+            leading: 0,
+            bottom: 0,
+            trailing: 0
+        )
+
+        contextView.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
+            $0.bottom.lessThanOrEqualToSuperview()
+        }
     }
 }
 
 extension PassphraseVerifyViewController: PassphraseVerifyDataSourceDelegate {
-    func passphraseVerifyDataSource(_ passphraseVerifyDataSource: PassphraseVerifyDataSource, isSelectedAllItems: Bool) {
-        passphraseVerifyView.setNextButtonEnabled(isSelectedAllItems)
+    func passphraseVerifyDataSourceDidLoadData(
+        _ passphraseVerifyDataSource: PassphraseVerifyDataSource,
+        shownMnemonics: [Int: [String]],
+        correctIndexes: [Int]
+    ) {
+        contextView.reset()
+        contextView.bindData(
+            PassphraseVerifyViewModel(
+                shownMnemonics: shownMnemonics,
+                correctIndexes: correctIndexes
+            )
+        )
+    }
+    
+    func passphraseVerifyDataSourceSelectAllItems() {
+        contextView.setButtonInteraction()
     }
 }
 
 extension PassphraseVerifyViewController: PassphraseVerifyViewDelegate {
-    func passphraseVerifyViewDidVerifyPassphrase(_ passphraseVerifyView: PassphraseVerifyView) {
-        if !dataSource.isSelectedValidMnemonics(
-            for: passphraseVerifyView.passphraseCollectionView.indexPathsForSelectedItems
-        ) {
-            AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-            bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "passphrase-verify-wrong-message".localized
-            )
-            dataSource.resetVerificationData()
-            passphraseVerifyView.resetSelectionStatesAndReloadData()
-            return
-        }
-
-        guard let account = createAccount() else {
-            return
-        }
-
-        open(
-            .tutorial(flow: flow, tutorial: .passphraseVerified(account: account)),
-            by: .push
-        )
+    func passphraseVerifyViewDidSelectMnemonic(
+        _ passphraseVerifyView: PassphraseVerifyView,
+        section: Int,
+        item: Int
+    ) {
+        dataSource.selectMnemonic(section, item)
     }
+}
 
+extension PassphraseVerifyViewController {
     private func createAccount() -> AccountInformation? {
         guard let tempPrivateKey = session?.privateData(for: "temp"),
             let address = session?.address(for: "temp") else {
@@ -115,7 +167,7 @@ extension PassphraseVerifyViewController: PassphraseVerifyViewDelegate {
 
         let account = AccountInformation(
             address: address,
-            name: address.shortAddressDisplay(),
+            name: address.shortAddressDisplay,
             type: .standard,
             preferredOrder: accountOrdering.getNewAccountIndex(for: .standard)
         )

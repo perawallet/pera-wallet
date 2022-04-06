@@ -36,25 +36,32 @@ class WCAssetAdditionTransactionViewModel {
     private(set) var urlInformationViewModel: WCTransactionActionableInformationViewModel?
     private(set) var metadataInformationViewModel: WCTransactionActionableInformationViewModel?
 
-    init(transaction: WCTransaction, senderAccount: Account?, assetDetail: AssetDetail?) {
+    init(
+        transaction: WCTransaction,
+        senderAccount: Account?,
+        asset: Asset?
+    ) {
         setFromInformationViewModel(from: senderAccount, and: transaction)
         setToInformationViewModel(from: senderAccount, and: transaction)
-        setAssetInformationViewModel(from: senderAccount, and: assetDetail)
-        setCloseWarningViewModel(from: transaction, and: assetDetail)
+        setAssetInformationViewModel(from: senderAccount, and: asset)
+        setCloseWarningViewModel(from: transaction, and: asset)
         setRekeyWarningViewModel(from: senderAccount, and: transaction)
 
-        setFeeInformationViewModel(from: transaction, and: assetDetail)
+        setFeeInformationViewModel(from: transaction, and: asset)
         setFeeWarningInformationViewModel(from: transaction)
 
         setNoteInformationViewModel(from: transaction)
 
-        setRawTransactionInformationViewModel(from: transaction, and: assetDetail)
-        setAlgoExplorerInformationViewModel(from: assetDetail)
-        setUrlInformationViewModel(from: assetDetail)
-        setMetadataInformationViewModel(from: assetDetail)
+        setRawTransactionInformationViewModel(from: transaction, and: asset)
+        setAlgoExplorerInformationViewModel(from: asset)
+        setUrlInformationViewModel(from: asset)
+        setMetadataInformationViewModel(from: asset)
     }
 
-    private func setFromInformationViewModel(from senderAccount: Account?, and transaction: WCTransaction) {
+    private func setFromInformationViewModel(
+        from senderAccount: Account?,
+        and transaction: WCTransaction
+    ) {
         guard let senderAddress = transaction.transactionDetail?.sender else {
             return
         }
@@ -76,7 +83,10 @@ class WCAssetAdditionTransactionViewModel {
         self.fromInformationViewModel = viewModel
     }
 
-    private func setToInformationViewModel(from senderAccount: Account?, and transaction: WCTransaction) {
+    private func setToInformationViewModel(
+        from senderAccount: Account?,
+        and transaction: WCTransaction
+    ) {
         guard let toAddress = transaction.transactionDetail?.receiver else {
             return
         }
@@ -98,19 +108,21 @@ class WCAssetAdditionTransactionViewModel {
         self.toInformationViewModel = viewModel
     }
 
-    private func setAssetInformationViewModel(from senderAccount: Account?, and assetDetail: AssetDetail?) {
-
+    private func setAssetInformationViewModel(
+        from senderAccount: Account?,
+        and asset: Asset?
+    ) {
         assetInformationViewModel = WCAssetInformationViewModel(
             title: "asset-title".localized,
-            assetDetail: assetDetail
+            asset: asset
         )
     }
 
-    private func setCloseWarningViewModel(from transaction: WCTransaction, and assetDetail: AssetDetail?) {
+    private func setCloseWarningViewModel(from transaction: WCTransaction, and asset: Asset?) {
         guard
             let transactionDetail = transaction.transactionDetail,
             let closeAddress = transactionDetail.closeAddress,
-            let assetDetail = assetDetail else {
+            let asset = asset else {
                 return
             }
 
@@ -120,11 +132,13 @@ class WCAssetAdditionTransactionViewModel {
         )
 
         self.closeInformationViewModel = TransactionTextInformationViewModel(titledInformation)
-
-        self.closeWarningInformationViewModel = WCTransactionWarningViewModel(warning: .closeAsset(asset: assetDetail))
+        self.closeWarningInformationViewModel = WCTransactionWarningViewModel(warning: .closeAsset(asset: asset))
     }
 
-    private func setRekeyWarningViewModel(from senderAccount: Account?, and transaction: WCTransaction) {
+    private func setRekeyWarningViewModel(
+        from senderAccount: Account?,
+        and transaction: WCTransaction
+    ) {
         guard let rekeyAddress = transaction.transactionDetail?.rekeyAddress else {
             return
         }
@@ -143,8 +157,10 @@ class WCAssetAdditionTransactionViewModel {
         self.rekeyWarningInformationViewModel = WCTransactionWarningViewModel(warning: .rekeyed)
     }
 
-    private func setFeeInformationViewModel(from transaction: WCTransaction, and assetDetail: AssetDetail?) {
-
+    private func setFeeInformationViewModel(
+        from transaction: WCTransaction,
+        and asset: Asset?
+    ) {
         guard let transactionDetail = transaction.transactionDetail,
               let fee = transactionDetail.fee,
               fee != 0 else {
@@ -186,32 +202,35 @@ class WCAssetAdditionTransactionViewModel {
         self.noteInformationViewModel = TransactionTextInformationViewModel(titledInformation)
     }
     
-    private func setRawTransactionInformationViewModel(from transaction: WCTransaction, and assetDetail: AssetDetail?) {
+    private func setRawTransactionInformationViewModel(
+        from transaction: WCTransaction,
+        and asset: Asset?
+    ) {
         rawTransactionInformationViewModel = WCTransactionActionableInformationViewModel(
             information: .rawTransaction,
-            isLastElement: assetDetail == nil
+            isLastElement: asset == nil
         )
     }
 
-    private func setAlgoExplorerInformationViewModel(from assetDetail: AssetDetail?) {
-        if assetDetail == nil {
+    private func setAlgoExplorerInformationViewModel(from asset: Asset?) {
+        if asset == nil {
             return
         }
 
         algoExplorerInformationViewModel = WCTransactionActionableInformationViewModel(information: .algoExplorer, isLastElement: false)
     }
 
-    private func setUrlInformationViewModel(from assetDetail: AssetDetail?) {
-        guard let assetDetail = assetDetail,
-              assetDetail.url != nil else {
+    private func setUrlInformationViewModel(from asset: Asset?) {
+        guard let asset = asset,
+              asset.presentation.url != nil else {
             return
         }
 
         urlInformationViewModel = WCTransactionActionableInformationViewModel(information: .assetUrl, isLastElement: false)
     }
 
-    private func setMetadataInformationViewModel(from assetDetail: AssetDetail?) {
-        if assetDetail == nil {
+    private func setMetadataInformationViewModel(from asset: Asset?) {
+        if asset == nil {
             return
         }
 

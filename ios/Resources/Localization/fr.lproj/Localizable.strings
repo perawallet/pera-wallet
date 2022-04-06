@@ -11,13 +11,13 @@
 "account-listing-error-message" = "Désolé, nous ne pouvons pas afficher les détails de ce portefeuille. Il semble que nous ayons des problèmes pour le calcul. \n\n Veuillez noter que certaines valeurs d'actifs peuvent ne pas être disponibles, par conséquent la valeur totale du portefeuille doit être considérée comme une estimation.";
 
 /* (No Comment) */
-"account-name-setup-description" = "Name your account to easily identify it while using the Pera Wallet. These names are stored locally, and can only be seen by you.";
+"account-name-setup-description" = "Nommez votre compte pour l'identifier facilement lorsque vous utilisez Pera Wallet. Ces noms sont stockés localement et ne peuvent être vus que par vous.";
 
 /* (No Comment) */
-"account-name-setup-explanation" = "Account Name";
+"account-name-setup-explanation" = "Nom Compte";
 
 /* (No Comment) */
-"account-name-setup-finish" = "Finish Account Creation";
+"account-name-setup-finish" = "Terminer Création Compte";
 
 /* (No Comment) */
 "account-name-setup-placeholder" = "Nom du compte";
@@ -38,7 +38,7 @@
 "account-select-header-contacts-title" = "Contacts";
 
 /* (No Comment) */
-"account-select-header-search-title" = "Rechercher ou saisir l'adresse";
+"account-select-header-search-title" = "Search or enter wallet address";
 
 /* (No Comment) */
 "account-select-search-empty-detail" = "Essayez un nom de compte différent";
@@ -47,46 +47,46 @@
 "account-select-search-empty-title" = "Aucun compte trouvé";
 
 /* MARK: Account Type Selection */
-"account-type-selection-add" = "I want to create an account";
+"account-type-selection-add" = "Je veux créer un compte";
 
 /* (No Comment) */
-"account-type-selection-add-detail" = "I want to create a new Algorand account with a new address and recovery passphrase";
+"account-type-selection-add-detail" = "Je souhaite créer un nouveau compte Algorand avec une nouvelle adresse et une nouvelle phrase secrète de récupération";
 
 /* (No Comment) */
-"account-type-selection-create" = "Create a new account";
+"account-type-selection-create" = "Créer un nouveau compte";
 
 /* (No Comment) */
-"account-type-selection-create-detail" = "Create a new Algorand account or add a watch account";
+"account-type-selection-create-detail" = "Créer un nouveau compte Algorand ou ajouter un compte de surveillance";
 
 /* (No Comment) */
 "account-type-selection-ledger" = "Associer avec Ledger";
 
 /* (No Comment) */
-"account-type-selection-ledger-detail" = "I want to create an Algorand account\nthat is backed by my Ledger hardware wallet";
+"account-type-selection-ledger-detail" = "Je souhaite créer un compte Algorand en utilisant mon portefeuille physique Ledger";
 
 /* (No Comment) */
-"account-type-selection-passphrase" = "Recover an account";
+"account-type-selection-passphrase" = "Récupérer un compte";
 
 /* (No Comment) */
-"account-type-selection-passphrase-detail" = "I want to recover an Algorand account using my 25-word passphrase";
+"account-type-selection-passphrase-detail" = "Je souhaite récupérer un compte avec une phrase secrète à 25 mots";
 
 /* (No Comment) */
-"account-type-selection-recover" = "I already have an account";
+"account-type-selection-recover" = "J'ai déjà un compte";
 
 /* (No Comment) */
-"account-type-selection-recover-detail" = "Import an existing Algorand account\nvia recovery passphrase or pair your Ledger";
+"account-type-selection-recover-detail" = "Importez un compte Algorand existant\nvia la phrase secrète de récupération ou associez votre Ledger";
 
 /* (No Comment) */
-"account-type-selection-watch" = "Add watch account";
+"account-type-selection-watch" = "Ajouter un compte de surveillance";
 
 /* (No Comment) */
-"account-type-selection-watch-detail" = "I want to monitor an Algorand account that's held in cold storage";
+"account-type-selection-watch-detail" = "Je souhaite surveiller un compte Algorand conservé hors ligne";
 
 /* (No Comment) */
-"account-welcome-add-account-title" = "Add an account";
+"account-welcome-add-account-title" = "Ajouter un compte";
 
 /* (No Comment) */
-"account-welcome-wallet-title" = "Welcome to\nPera Wallet";
+"account-welcome-wallet-title" = "Bienvenue sur\nPera Wallet";
 
 /* (No Comment) */
 "accounts-add-account" = "+ AJOUTER UN COMPTE";
@@ -107,10 +107,10 @@
 "accounts-title-assets" = "Actifs";
 
 /* (No Comment) */
-"accounts-title-history" = "Historique";
+"accounts-title-collectibles" = "Collectibles";
 
 /* (No Comment) */
-"accounts-title-nfts" = "NFT";
+"accounts-title-history" = "Historique";
 
 /* (No Comment) */
 "accounts-tranaction-empty-detail" = "Aucune transaction n'a été effectuée avec cet actif.";
@@ -125,7 +125,7 @@
 "accounts-transaction-value" = "Valeur";
 
 /* (No Comment) */
-"accounts-transaction-your-balance" = "Balance";
+"accounts-transaction-your-balance" = "Solde";
 
 /* (No Comment) */
 "add-node-title" = "Ajouter un nœud";
@@ -182,19 +182,19 @@
 "asset-no-value" = "N/A";
 
 /* (No Comment) */
-"asset-not-found-detail" = "Try different asset name or asset id";
+"asset-not-found-detail" = "Veuillez essayer un autre nom d'actif ou ID d'actif";
 
 /* (No Comment) */
 "asset-not-found-title" = "Aucun actif trouvé";
 
 /* (No Comment) */
-"asset-remove-confirmation-title" = "Manage asset";
+"asset-remove-confirmation-title" = "Gérer Actif";
 
 /* (No Comment) */
 "asset-remove-subtitle" = "Pour supprimer un actif, vous devez d'abord transférer le solde de cet actif vers un autre compte";
 
 /* (No Comment) */
-"asset-remove-title" = "Manage Assets";
+"asset-remove-title" = "Gérer Actifs";
 
 /* (No Comment) */
 "asset-remove-transaction-warning" = "Vous êtes sur le point de supprimer %@ de %@ . Vous ne pourrez pas effectuer de transaction avec cet actif à partir de ce compte, sauf si vous l'ajoutez à nouveau.";
@@ -263,7 +263,7 @@
 "ble-error-fail-ble-connection-power" = "Le Bluetooth doit être activé sur votre appareil afin de rechercher des appareils Ledger à proximité.";
 
 /* (No Comment) */
-"ble-error-fail-ble-connection-repairing" = "If you’re having Ledger Nano X connection issues, please remove the device from your phone’s bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Pera Wallet instructions.";
+"ble-error-fail-ble-connection-repairing" = "Si vous rencontrez des problèmes de connexion avec le Ledger Nano X, veuillez supprimer l'appareil des paramètres Bluetooth de votre téléphone, supprimer le compte Ledger, puis associer de nouveau votre Ledger en suivant les instructions de Pera Wallet.";
 
 /* (No Comment) */
 "ble-error-fail-ble-connection-resetting" = "Échec de la connexion BLE pour la réinitialisation";
@@ -272,7 +272,7 @@
 "ble-error-fail-ble-connection-unauthorized" = "L'autorisation Bluetooth doit être accordée pour effectuer des recherches de Ledger à proximité.";
 
 /* (No Comment) */
-"ble-error-fail-ble-connection-unsupported" = "The device you are trying to connect to is not supported with the Pera Wallet.";
+"ble-error-fail-ble-connection-unsupported" = "L'appareil auquel vous essayez de vous connecter n'est pas pris en charge par Pera Wallet.";
 
 /* (No Comment) */
 "ble-error-fail-connect-peripheral" = "Impossible de se connecter à l'appareil Ledger. Assurez-vous que l'appareil est déverrouillé, à proximité et que le Bluetooth est activé. Si les problèmes persistent, veuillez supprimer l'appareil des paramètres Bluetooth de votre téléphone, supprimer le compte Ledger et l'associer de nouveau.";
@@ -341,7 +341,169 @@
 "chart-time-selection-yearly" = "1A";
 
 /* (No Comment) */
-"contact-search-empty-detail" = "Try different contact name";
+"collectible-approve-transaction-action-title" = "Confirm transfer";
+
+/* (No Comment) */
+"collectible-approve-transaction-description" = "Are you sure you want to proceed?";
+
+/* (No Comment) */
+"collectible-approve-transaction-fee" = "Transaction Fee";
+
+/* (No Comment) */
+"collectible-approve-transaction-sender" = "Sender Account";
+
+/* MARK: Collectible Approve */
+"collectible-approve-transaction-title" = "Approve Transaction";
+
+/* (No Comment) */
+"collectible-approve-transaction-to" = "To";
+
+/* (No Comment) */
+"collectible-detail-algo-explorer" = "Show on Algoexplorer";
+
+/* (No Comment) */
+"collectible-detail-collection-name" = "Collection Name";
+
+/* (No Comment) */
+"collectible-detail-creator-address" = "Creator Wallet Address";
+
+/* (No Comment) */
+"collectible-detail-creator-name" = "Creator Name";
+
+/* (No Comment) */
+"collectible-detail-description" = "Description";
+
+/* (No Comment) */
+"collectible-detail-error-media-type" = "We don't support this NFT media type yet.";
+
+/* (No Comment) */
+"collectible-detail-error-not-owner" = "You are not the owner of this NFT yet, however you opted in for it. You can now transfer it to your wallet.";
+
+/* (No Comment) */
+"collectible-detail-error-visual" = "We can’t display the visual temporarily.";
+
+/* (No Comment) */
+"collectible-detail-nft-explorer" = "Show on NFTExplorer";
+
+/* (No Comment) */
+"collectible-detail-opt-out" = "Opt out";
+
+/* (No Comment) */
+"collectible-detail-opt-out-alert-message" = "You are about to opt out from this NFT with %@. You will not be able to transact with this asset until you opt in again.";
+
+/* (No Comment) */
+"collectible-detail-opt-out-alert-title" = "Opt out from “%@”";
+
+/* (No Comment) */
+"collectible-detail-opt-out-success" = "%@ NFT successfully opted-out";
+
+/* (No Comment) */
+"collectible-detail-opted-in" = "Opted in to";
+
+/* (No Comment) */
+"collectible-detail-owner" = "Owner";
+
+/* (No Comment) */
+"collectible-detail-properties" = "Properties";
+
+/* MARK: Collectible Detail */
+"collectible-detail-share" = "Share";
+
+/* (No Comment) */
+"collectible-detail-view-transaction" = "View Transaction";
+
+/* / MARK: Collectible List */
+"collectible-list-item-pending-title" = "Pending";
+
+/* (No Comment) */
+"collectible-opt-in-info-description" = "To avoid spammy transaction, the Algorand Blockchain only allow you to send and receive transaction for assets that have been previously opted-in.";
+
+/* / MARK: Collectible Opt In Info */
+"collectible-opt-in-info-title" = "Information about Opt-In";
+
+/* (No Comment) */
+"collectible-receive-account-list-info" = "You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet.";
+
+/* (No Comment) */
+"collectible-receive-asset-list-info" = "You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet. Paste the ASA ID in the search bar.";
+
+/* (No Comment) */
+"collectible-receive-asset-list-selected-account" = "Selected account";
+
+/* (No Comment) */
+"collectible-recipient-opt-in-action-title" = "Request Opt-in";
+
+/* (No Comment) */
+"collectible-recipient-opt-in-description" = "You can't send %@ to %@ because this wallet didn't opt in for this asset yet. Learn more about Opt-in";
+
+/* (No Comment) */
+"collectible-recipient-opt-in-description-marked" = "Learn more about Opt-in";
+
+/* / MARK: Collecitble Ask recipient to opt in */
+"collectible-recipient-opt-in-title" = "Ask recipient to opt in";
+
+/* (No Comment) */
+"collectible-send-account-list-title" = "Select the receiver account";
+
+/* (No Comment) */
+"collectible-send-action" = "Transfer";
+
+/* (No Comment) */
+"collectible-send-input-placeholder" = "Paste an Algorand wallet address";
+
+/* / MARK: Collectible Send */
+"collectible-send-title" = "Send your NFT";
+
+/* (No Comment) */
+"collectible-transfer-confirmed-action-title" = "Got it!";
+
+/* (No Comment) */
+"collectible-transfer-confirmed-description" = "Transactions can take a few minutes to finalize.";
+
+/* MARK: Collectible Transfer */
+"collectible-transfer-confirmed-title" = "Your NFT transfer is confirmed!";
+
+/* (No Comment) */
+"collectible-transfer-failed-retry-desription" = "Please try again.";
+
+/* (No Comment) */
+"collectible-transfer-failed-title" = "Your NFT transfer has failed!";
+
+/* (No Comment) */
+"collectible-transfer-failed-verify-algo-desription" = "Please verify that you have enough Algo to cover the transaction fees for transferring your NFT, and try again.";
+
+/* (No Comment) */
+"collectibles-empty-body" = "Welcome to your NFT Gallery! You don’t have any NFTs yet. All the NFTs available in your wallet will be visible here.";
+
+/* (No Comment) */
+"collectibles-empty-title" = "Collectibles";
+
+/* (No Comment) */
+"collectibles-list-input-placeholder" = "Search your NFTs";
+
+/* (No Comment) */
+"collectibles-receive-account-list-header-description" = "Select the wallet account you would like to receive to:";
+
+/* / MARK: Collectible Receive */
+"collectibles-receive-action" = "Receive an NFT";
+
+/* (No Comment) */
+"collectibles-receive-asset-list-header-description" = "You need to opt in to the ASA ID of the NFT to be able to receive it. Paste the ASA ID or scan it below.";
+
+/* (No Comment) */
+"collectibles-receive-asset-list-search-no-content" = "No NFT Found";
+
+/* (No Comment) */
+"collectibles-receive-asset-list-search-placeholder" = "Search Asset ID or NFT name";
+
+/* (No Comment) */
+"collectibles-receive-asset-title" = "Opt-in to NFT";
+
+/* (No Comment) */
+"contact-input-address-placeholder" = "Account address";
+
+/* (No Comment) */
+"contact-search-empty-detail" = "Veuillez essayer un nom de contact différent";
 
 /* (No Comment) */
 "contact-search-empty-title" = "Aucun contact trouvé";
@@ -365,7 +527,7 @@
 "contacts-close-warning-title" = "Êtes-vous sûr?";
 
 /* (No Comment) */
-"contacts-delete-contact" = "Delete contact";
+"contacts-delete-contact" = "Supprimer Contact";
 
 /* (No Comment) */
 "contacts-delete-contact-alert-explanation" = "Êtes-vous sûr de vouloir supprimer ce contact?";
@@ -383,7 +545,10 @@
 "contacts-info" = "Informations de contact";
 
 /* (No Comment) */
-"contacts-info-edit" = "Edit Contact";
+"contacts-info-address" = "Account Address";
+
+/* (No Comment) */
+"contacts-info-edit" = "Modifier Contact";
 
 /* (No Comment) */
 "contacts-input-name-placeholder" = "Nom du contact";
@@ -392,16 +557,16 @@
 "contacts-name-validation-error" = "Le nom est vide.";
 
 /* (No Comment) */
-"contacts-search" = "Search contacts or name";
+"contacts-search" = "Rechercher des contacts ou un nom";
 
 /* MARK: Contacts */
 "contacts-title" = "Contacts";
 
 /* (No Comment) */
-"contacts-title-assets" = "Assets";
+"contacts-title-assets" = "Actifs";
 
 /* (No Comment) */
-"contacts-transactions-title" = "Transaction History";
+"contacts-transactions-title" = "Historique Transactions";
 
 /* (No Comment) */
 "csv-download-error" = "Impossible de créer un fichier csv pour l'historique des transactions.";
@@ -485,7 +650,7 @@
 "governance-banner-detail" = "Devenez gouverneur. Votez sur l'avenir d'Algorand. Gagner des récompenses.";
 
 /* (No Comment) */
-"governance-banner-title" = "Algorand Governance Program is starting!";
+"governance-banner-title" = "Le programme de gouvernance Algorand va commencer!";
 
 /* (No Comment) */
 "internet-connection-error-detail" = "Nous n'avons pas pu atteindre le serveur, assurez-vous que vous êtes connecté à Internet";
@@ -494,13 +659,13 @@
 "internet-connection-error-title" = "Connecter à Internet";
 
 /* MARK: Introduction */
-"introduction-add-account-text" = "I want to create\nan Algorand account";
+"introduction-add-account-text" = "Je veux créer\nun compte Algorand";
 
 /* (No Comment) */
-"introduction-recover-account-text" = "I already have an account";
+"introduction-recover-account-text" = "J'ai déjà un compte";
 
 /* (No Comment) */
-"introduction-title-terms-and-services" = "By creating an account, you agree to Pera Wallet's<br><a href=\"https://perawallet.app/terms-and-services/\">Terms and Conditions</a> and <a href=\"https://www.perawallet.app/privacy-policy/\">Privacy Policy</a>";
+"introduction-title-terms-and-services" = "By creating an account, you agree to Pera Wallet's<br><a href=\"%@\">Terms and Conditions</a> and <a href=\"%@\">Privacy Policy</a>";
 
 /* (No Comment) */
 "ledger-account-detail-assets" = "Actifs";
@@ -521,7 +686,7 @@
 "ledger-account-fetct-error" = "Une erreur réseau s'est produite lors de la récupération des détails du compte. Redémarrez le processus.";
 
 /* (No Comment) */
-"ledger-account-selection-detail" = "This ledger device can sign transactions for the following accounts. Select the accounts to add to your Pera Wallet.";
+"ledger-account-selection-detail" = "Cet appareil Ledger peut signer des transactions pour les comptes suivants. Sélectionnez les comptes à ajouter à Pera Wallet.";
 
 /* (No Comment) */
 "ledger-account-selection-detail-rekey" = "Choisissez le compte que vous souhaitez utiliser pour signer ce compte.";
@@ -560,16 +725,16 @@
 "ledger-approval-connection-title" = "Connexion Ledger";
 
 /* (No Comment) */
-"ledger-approval-message" = "Please verify the account address on your Ledger device (%@)";
+"ledger-approval-message" = "Veuillez examiner et signer la transaction sur votre appareil Ledger.";
 
 /* MARK: Ledger Approval */
-"ledger-approval-title" = "Ledger Approval";
+"ledger-approval-title" = "Approbation Ledger";
 
 /* (No Comment) */
 "ledger-device-list-connect" = "Connecter";
 
 /* (No Comment) */
-"ledger-device-list-looking" = "Looking for devices";
+"ledger-device-list-looking" = "Recherche d'appareils Ledger";
 
 /* MARK: Ledger Device List */
 "ledger-device-list-title" = "Associer avec Ledger";
@@ -599,7 +764,7 @@
 "ledger-pairing-first-warning-title" = "Jumelage de Ledger avec votre appareil";
 
 /* (No Comment) */
-"ledger-pairing-issue-error-message" = "Make sure the device is unlocked, nearby and has bluetooth enabled. If problems persist, please remove the device from your phone’s bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Pera Wallet instructions.";
+"ledger-pairing-issue-error-message" = "Assurez-vous que l'appareil est déverrouillé, à proximité et que le Bluetooth est activé. Si les problèmes persistent, veuillez supprimer l'appareil des paramètres Bluetooth de votre téléphone, supprimer le compte Ledger, puis associer à nouveau votre Ledger en suivant les instructions de Pera Wallet.";
 
 /* (No Comment) */
 "ledger-pairing-issue-error-title" = "Vous avez des problèmes de connexion au Ledger Nano X ?";
@@ -629,13 +794,13 @@
 "ledger-rekey-more-assets" = "+%@ actifs de plus";
 
 /* (No Comment) */
-"ledger-rekey-success-message" = "The account \"%@\" has been successfully rekeyed";
+"ledger-rekey-success-message" = "Le compte «%@» a été réécrit avec succès";
 
 /* (No Comment) */
-"ledger-rekey-success-title" = "Account successfully\nrekeyed";
+"ledger-rekey-success-title" = "Compte réécrit\navec succès";
 
 /* (No Comment) */
-"ledger-rekey-total-fee" = "Total Rekeying fee of %@ Algo";
+"ledger-rekey-total-fee" = "Frais de réécriture totaux de %@ Algo";
 
 /* (No Comment) */
 "ledger-rekey-transaction-title" = "Répétition de la transaction";
@@ -650,22 +815,22 @@
 "ledger-troubleshooting-app-support" = "Pour obtenir de l'aide sur l'installation de l'application Algorand Ledger sur votre appareil, visitez %@";
 
 /* (No Comment) */
-"ledger-troubleshooting-bluetooth-connection-html" = "Disable or Enable Bluetooth for an iOS device. <br /> <br />\n<ul>\n<li>Tap on <b>Settings</b></li>\n<li>Select <b>“General”</b></li>\n<li>Tap on <b>“Bluetooth”</b></li>\n<li>Flip the <b>On/Off button</b> to toggle</li>\n<li>Bluetooth <b>On or Off</b></li>\n</ul>";
+"ledger-troubleshooting-bluetooth-connection-html" = "Désactiver ou activer Bluetooth pour un appareil iOS. <br /> <br />\n<ul>\n<li>Appuyez sur <b>Réglages</b></li>\n<li>Sélectionnez <b>«Général»</b></li>\n<li>Appuyez sur <b>«Bluetooth»</b></li>\n<li>Utilisez le bouton <b&gt:Activé / Désactivé</b> pour changer le réglage</li>\n<li>Bluetooth <b>Activé ou Désactivé</b></li>\n</ul>";
 
 /* (No Comment) */
 "ledger-troubleshooting-close-others" = "Fermez les autres applications (applications Ledger, portefeuilles cryptographiques ou tout ce qui pourrait essayer de s'associer au Ledger.)";
 
 /* (No Comment) */
-"ledger-troubleshooting-install-app-first-html" = "Begin by following Ledger’s comprehensive <a href=\"https://www.ledger.com/start\">Getting Started</a> tutorial.";
+"ledger-troubleshooting-install-app-first-html" = "Commencez par suivre les étapes détaillées de Ledger <a href=\"https://www.ledger.com/start\">Getting Started</a>.";
 
 /* (No Comment) */
-"ledger-troubleshooting-install-app-second-html" = "When the tutorial gets to the point where it directs you to “Select the application(s) you want to install on your device,” type <b>Algorand</b> in the search bar and install.";
+"ledger-troubleshooting-install-app-second-html" = "Lorsque le tutoriel arrive au point où il vous dirige vers «Sélectionnez les applications que vous souhaitez installer sur votre appareil», tapez <b>Algorand</b> dans la barre de recherche et installez l'application.";
 
 /* (No Comment) */
-"ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "For more advanced troubleshooting, please refer to Ledger’s official <a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">Bluetooth Troubleshooting Guide</a>.";
+"ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "Pour un dépannage plus avancé, veuillez consulter le site officiel de Ledger <a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">Bluetooth Troubleshooting Guide</a>.";
 
 /* (No Comment) */
-"ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "For general usage of your Ledger’s Bluetooth feature, please refer to Ledger’s official <a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">Bluetooth Connection Guide</a>.";
+"ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "Pour l’utilisation générale de la fonction Bluetooth de votre Ledger, veuillez consulter le guide officiel de Ledger <a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">Bluetooth Connection Guide</a>.";
 
 /* (No Comment) */
 "ledger-troubleshooting-ledger-support" = "Pour le dépannage général du Ledger, veuillez visiter";
@@ -674,10 +839,10 @@
 "ledger-troubleshooting-ledger-support-title" = "Support Ledger.";
 
 /* (No Comment) */
-"ledger-troubleshooting-open-app-first-html" = "Continue with Ledger’s comprehensive <a href=\"https://www.ledger.com/start\">Getting Started</a> tutorial, which will direct you how to install and open apps on your ledger device.";
+"ledger-troubleshooting-open-app-first-html" = "Commencez par suivre les étapes détaillées du tutoriel <a href=\"https://www.ledger.com/start\">Getting Started</a>, qui vous expliqueront comment installer et ouvrir des applications sur votre appareil Ledger.";
 
 /* (No Comment) */
-"ledger-troubleshooting-open-app-second-html" = "If you haven’t already installed the <b>Algorand</b> app on your Ledger device, when the tutorial gets to the point where it directs you to “Select the application(s) you want to install on your device,” type <b>Algorand</b> in the search bar and install.";
+"ledger-troubleshooting-open-app-second-html" = "Si vous n'avez pas installé l'application <b>Algorand</b> sur votre appareil Ledger, lorsque le tutoriel arrive au point où il vous dirige vers «Sélectionnez les applications que vous souhaitez installer sur votre appareil», tapez <b>Algorand</b> dans la barre de recherche et installez l'application.";
 
 /* (No Comment) */
 "ledger-troubleshooting-restart" = "Redémarrez le portefeuille Algorand et / ou votre appareil.";
@@ -698,7 +863,7 @@
 "ledger-tutorial-title-text" = "Associer avec Ledger";
 
 /* (No Comment) */
-"ledger-tutorial-turned-on" = "Make sure that your ledger device is on\nand has Bluetooth enabled.";
+"ledger-tutorial-turned-on" = "Assurez-vous que votre appareil Ledger est allumé et que Bluetooth est activé.";
 
 /* (No Comment) */
 "ledger-verified-add" = "Ajouter des comptes vérifiés";
@@ -707,7 +872,7 @@
 "ledger-verify-header-subtitle" = "Les adresses de compte suivantes s'afficheront sur votre appareil Ledger. Veuillez comparer et vérifier soigneusement chaque adresse afin de finaliser le couplage des appareils.";
 
 /* (No Comment) */
-"ledger-verify-header-title" = "Verify Account Addresses\nvia Ledger";
+"ledger-verify-header-title" = "Vérifier les adresses de compte via Ledger";
 
 /* (No Comment) */
 "local-authentication-enable" = "Activer Face ID / Touch ID";
@@ -716,7 +881,7 @@
 "local-authentication-enabled-subtitle" = "Votre code d'accès a été vérifié. Votre compte Algorand est désormais plus sécurisé.";
 
 /* (No Comment) */
-"local-authentication-enabled-title" = "Biometric\nAuthentication\nEnabled";
+"local-authentication-enabled-title" = "Authentification\nbiométrique\nactivée";
 
 /* (No Comment) */
 "local-authentication-go-settings-text" = "Vous avez désactivé l'authentification biométrique. Veuillez aller dans Réglages et activer cette option.";
@@ -740,16 +905,16 @@
 "local-authentication-reason-touch-id-title" = "Utiliser Touch ID pour déverrouiller";
 
 /* (No Comment) */
-"login-subtitle" = "Enter your\n6-digit pin";
+"login-subtitle" = "Entrez le code\nPIN à 6 chiffres";
 
 /* MARK: Login */
 "login-title" = "Déverrouiller";
 
 /* (No Comment) */
-"maximum-balance-standard-account-warning-description" = "Based on your account configuration, your minimum balance is %@.\n\nBy hitting continue, your transaction amount will be updated to maintain the Algorand Blockchain’s minimum required balance. You’ll be able to preview this change in the next step.";
+"maximum-balance-standard-account-warning-description" = "D'après la configuration de votre compte, votre solde minimum est de %@. \n\nSi vous appuyez sur Continuer, le montant de votre transaction sera mis à jour pour maintenir le solde minimum requis de la Blockchain Algorand. Vous pourrez prévisualiser ce changement à l'étape suivante.";
 
 /* (No Comment) */
-"maximum-balance-warning-description" = "Sending your maximum balance on this rekeyed account requires you to maintain a minimum balance of %@ Algos. This is to ensure that nothing changes with your rekeyed account.\n\nYour transaction amount will be automatically updated to reflect this change. You will be able to preview the transaction in the next step.";
+"maximum-balance-warning-description" = "L'envoi de votre solde maximum sur ce compte réécrit vous oblige à maintenir un solde minimum de %@ Algos. Cela permet de s'assurer que rien ne change avec votre compte réécrit. \n\nLe montant de votre transaction sera automatiquement mis à jour pour refléter ce changement. Vous pourrez prévisualiser la transaction à l'étape suivante.";
 
 /* (No Comment) */
 "maximum-balance-warning-title" = "Solde maximum";
@@ -758,55 +923,49 @@
 "min-balance-title" = "Solde minimum requis";
 
 /* MARK: MoonPay */
-"moonpay-buy-button-title" = "Buy ALGO";
+"moonpay-buy-button-title" = "Acheter ALGO";
 
 /* (No Comment) */
-"moonpay-introduction-description" = "MoonPay offers the fastest way to buy ALGO with your local currency. Buy crypto with credit card or bank transfers. It's fast, simple, and secure.";
+"moonpay-introduction-description" = "MoonPay offre le moyen le plus rapide d'acheter ALGO avec votre devise locale. Achetez des cryptos avec une carte de crédit ou des virements bancaires. C'est rapide, simple et sécurisé.";
 
 /* (No Comment) */
-"moonpay-introduction-security" = "Secured by";
+"moonpay-introduction-security" = "Sécurisé par";
 
 /* (No Comment) */
-"moonpay-introduction-title" = "Buy ALGO with Moonpay";
+"moonpay-introduction-title" = "Acheter ALGO avec Moonpay";
 
 /* (No Comment) */
-"moonpay-transaction-completed-description" = "Your purchase is completed and is being processed by the network. You will receive a notification when they are in your account.";
+"moonpay-transaction-completed-description" = "Votre achat est terminé et est en cours de traitement par le réseau. Vous recevrez une notification lorsqu'ils seront dans votre compte.";
 
 /* (No Comment) */
-"moonpay-transaction-completed-title" = "Your Algos are on their way!";
+"moonpay-transaction-completed-title" = "Vos Algos sont en route!";
 
 /* (No Comment) */
-"moonpay-transaction-failed-description" = "Looks like your purchase failed. You will need to try again.";
+"moonpay-transaction-failed-description" = "On dirait que votre achat a échoué. Vous devrez réessayer.";
 
 /* (No Comment) */
-"moonpay-transaction-failed-title" = "Uh oh, something went wrong.";
+"moonpay-transaction-failed-title" = "Euh oh, quelque chose s’est mal passé.";
 
 /* (No Comment) */
-"moonpay-transaction-pending-description" = "Your purchase is being processed. It can take a few minutes to be completed. You will receive a notification when it’s done.";
+"moonpay-transaction-pending-description" = "Votre achat est en cours de traitement. Cela peut prendre quelques minutes pour être complété. Vous recevrez une notification lorsque ce sera fait.";
 
 /* (No Comment) */
-"moonpay-transaction-pending-title" = "Your Algos are on their way!";
+"moonpay-transaction-pending-title" = "Vos Algos sont en route!";
 
 /* (No Comment) */
-"moonpay-transaction-testnet-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use MoonPay.";
+"moonpay-transaction-testnet-not-available-description" = "Vous ne pouvez pas acheter sur le TestNet. Veuillez revenir sur le MainNet à partir des paramètres pour utiliser MoonPay.";
 
 /* (No Comment) */
-"moonpay-transaction-waitingAuthorization-description" = "Your purchase is waiting for authorization. Once payment is processed, you will receive a notification.";
+"moonpay-transaction-waitingAuthorization-description" = "Votre achat est en attente d'autorisation. Une fois le paiement traité, vous recevrez une notification.";
 
 /* (No Comment) */
-"moonpay-transaction-waitingAuthorization-title" = "Almost there!";
+"moonpay-transaction-waitingAuthorization-title" = "On y est presque!";
 
 /* (No Comment) */
-"moonpay-transaction-waitingPayment-description" = "Your purchase request is pending payment. Once payment is processed, you will receive a notification.";
+"moonpay-transaction-waitingPayment-description" = "Votre demande d'achat est en attente de paiement. Une fois le paiement traité, vous recevrez une notification.";
 
 /* (No Comment) */
-"moonpay-transaction-waitingPayment-title" = "Almost there!";
-
-/* (No Comment) */
-"nft-list-empty-detail" = "Vous pourrez bientôt voir vos collections de NFT dans Pera Wallet.\n\nNotre équipe travaille sans relâche pour rendre cette fonctionnalité disponible. À très bientôt!";
-
-/* MARK: NFTs */
-"nft-list-empty-title" = "NFT - Bientôt disponible !";
+"moonpay-transaction-waitingPayment-title" = "On y est presque!";
 
 /* (No Comment) */
 "node-settings-action-delete-title" = "Supprimer";
@@ -923,7 +1082,7 @@
 "options-copy-address" = "Copier l'adresse";
 
 /* (No Comment) */
-"options-edit-account-name" = "Rename Account";
+"options-edit-account-name" = "Renommer Compte";
 
 /* (No Comment) */
 "options-manage-assets" = "Gérer les actifs";
@@ -944,13 +1103,13 @@
 "options-remove-assets" = "Supprimer les actifs";
 
 /* (No Comment) */
-"options-remove-main-account-explanation" = "You are about to remove your main account, are you sure you want to proceed with this choice?";
+"options-remove-main-account-explanation" = "Vous êtes sur le point de supprimer votre compte principal, êtes-vous sûr de vouloir poursuivre?";
 
 /* (No Comment) */
-"options-remove-watch-account-explanation" = "You are about to remove a watch account. Are you sure you want to proceed with this choice?";
+"options-remove-watch-account-explanation" = "Vous êtes sur le point de supprimer un compte de surveillance. Êtes-vous sûr de vouloir poursuivre?";
 
 /* (No Comment) */
-"options-show-qr" = "Show QR Code";
+"options-show-qr" = "Afficher Code QR";
 
 /* MARK: Options */
 "options-title" = "PARAMÈTRES DU COMPTE";
@@ -1016,7 +1175,7 @@
 "passphrase-verify-select-word" = "Sélectionnez le mot # %@";
 
 /* (No Comment) */
-"passphrase-verify-title" = "Verify recovery\npassphrase backup";
+"passphrase-verify-title" = "Vérifier la sauvegarde de la\nphrase secrète de récupération";
 
 /* (No Comment) */
 "passphrase-verify-wrong-message" = "Les mots sélectionnés sont faux. Veuillez réessayer.";
@@ -1028,13 +1187,13 @@
 "password-change-old-subtitle" = "Entrez votre ancien\ncode PIN à 6 chiffres";
 
 /* (No Comment) */
-"password-change-subtitle" = "Choose your\n6-digit PIN";
+"password-change-subtitle" = "Choisissez votre\ncode PIN à 6 chiffres";
 
 /* (No Comment) */
 "password-change-title" = "Changer le code PIN";
 
 /* MARK: Password Setting */
-"password-set-subtitle" = "Choose your\n6-digit PIN";
+"password-set-subtitle" = "Choisissez votre\ncode PIN à 6 chiffres";
 
 /* (No Comment) */
 "password-verify-fail-message" = "Le PIN ne correspond pas au PIN précédent.";
@@ -1046,7 +1205,7 @@
 "password-verify-new-subtitle" = "Entrez encore votre nouveau\ncode PIN 6 chiffres";
 
 /* (No Comment) */
-"password-verify-subtitle" = "Re-enter your\n6-digit PIN";
+"password-verify-subtitle" = "Entrez à nouveau votre\ncode PIN à 6 chiffres";
 
 /* (No Comment) */
 "password-verify-title" = "Vérifier le code PIN";
@@ -1070,7 +1229,7 @@
 "pin-limit-reset-all" = "Réinitialiser toutes les données";
 
 /* MARK: Pin Limit */
-"pin-limit-title" = "Pera Wallet app is locked";
+"pin-limit-title" = "L'application Pera Wallet est verrouillée";
 
 /* (No Comment) */
 "pin-limit-too-many" = "Trop de tentatives de code PIN";
@@ -1109,10 +1268,10 @@
 "qr-creation-copied" = "Adresse copiée dans le presse-papiers";
 
 /* (No Comment) */
-"qr-creation-copy-address" = "Copy Address";
+"qr-creation-copy-address" = "Copier Adresse";
 
 /* (No Comment) */
-"qr-creation-sharing-title" = "QR Code";
+"qr-creation-sharing-title" = "Code QR";
 
 /* MARK: QR Creation */
 "qr-creation-title" = "QR Phrase secrète";
@@ -1172,28 +1331,28 @@
 "recover-from-seed-passphrase-title" = "Phrase secrète";
 
 /* MARK: Recover From Seed */
-"recover-from-seed-title" = "Enter Your Recovery\nPassphrase";
+"recover-from-seed-title" = "Entrez votre phrase secrète de récupération";
 
 /* (No Comment) */
 "recover-from-seed-verify-exist-error" = "Ce compte existe déjà";
 
 /* (No Comment) */
-"recover-from-seed-verify-pop-up-description-watch-account" = "The Watch Account has been added successfully.";
+"recover-from-seed-verify-pop-up-description-watch-account" = "Le compte de surveillance a été ajouté avec succès.";
 
 /* (No Comment) */
-"recover-from-seed-verify-pop-up-explanation" = "Welcome to Pera Wallet!\nYour account is ready to use.";
+"recover-from-seed-verify-pop-up-explanation" = "Bienvenue sur Pera Wallet!\nVotre compte est prêt à être utilisé.";
 
 /* (No Comment) */
-"recover-from-seed-verify-pop-up-explanation-already-added" = "Congratulations, your account is ready to go.";
+"recover-from-seed-verify-pop-up-explanation-already-added" = "Félicitations! Votre compte est prêt à être utilisé.";
 
 /* (No Comment) */
-"recover-from-seed-verify-pop-up-title" = "Account is verified!";
+"recover-from-seed-verify-pop-up-title" = "Compte vérifié!";
 
 /* (No Comment) */
-"recover-from-seed-verify-pop-up-title-watch-account" = "Watch account added successfully";
+"recover-from-seed-verify-pop-up-title-watch-account" = "Compte de surveillance ajouté avec succès";
 
 /* MARK: Passphrase Back Up */
-"recover-passphrase-title" = "Recovery Passphrase";
+"recover-passphrase-title" = "Phrase secrète de récupération";
 
 /* (No Comment) */
 "recover-title" = "Récupérer";
@@ -1202,7 +1361,7 @@
 "rekey-instruction-first" = "Les transactions futures seront signées par votre nouvel Appareil Ledger.";
 
 /* (No Comment) */
-"rekey-instruction-header" = "What to expect";
+"rekey-instruction-header" = "À quoi s'attendre";
 
 /* (No Comment) */
 "rekey-instruction-second-ledger" = "Votre ancien Ledger ne fonctionnera plus pour ce compte.";
@@ -1226,7 +1385,7 @@
 "rekey-instruction-title" = "Rétablir la clé du compte";
 
 /* MARK: Algos Request */
-"request-algos-title" = "Request Algo";
+"request-algos-title" = "Demander Algo";
 
 /* (No Comment) */
 "request-title" = "Demande";
@@ -1235,7 +1394,7 @@
 "reward-list-title" = "Récompense";
 
 /* (No Comment) */
-"rewards-detail-subtitle" = "You earn rewards just by owning Algo! Here's a summary of your earned rewards since your last transaction. These rewards are always included in your balance.";
+"rewards-detail-subtitle" = "Vous gagnez des récompenses simplement en possédant Algo! Voici un résumé de vos récompenses depuis votre dernière transaction. Ces récompenses sont toujours incluses dans votre solde.";
 
 /* (No Comment) */
 "rewards-rate" = "Taux de récompenses";
@@ -1292,7 +1451,7 @@
 "send-algos-alert-message-address" = "Veuillez saisir une adresse de destination.";
 
 /* (No Comment) */
-"send-algos-amount-error" = "Transaction amount cannot be more than your available algo";
+"send-algos-amount-error" = "Le montant de la transaction ne peut pas être supérieur à votre solde Algo disponible";
 
 /* (No Comment) */
 "send-algos-balance-title" = "Solde:";
@@ -1304,10 +1463,10 @@
 "send-algos-contacts" = "Contacts";
 
 /* (No Comment) */
-"send-algos-minimum-amount-custom-error" = "The transaction cannot be completed because the amount will put your account below minimum required balance of %@ Algo.";
+"send-algos-minimum-amount-custom-error" = "La transaction ne peut pas être réalisée car le montant placera votre compte sous le solde minimum requis de %@ Algo.";
 
 /* (No Comment) */
-"send-algos-minimum-amount-error" = "Transaction amount results in a balance below the minimum account balance of 0.1 Algo.";
+"send-algos-minimum-amount-error" = "Le montant de la transaction se traduit par un solde inférieur au solde minimum du compte de 0,1 Algo.";
 
 /* (No Comment) */
 "send-algos-minimum-amount-error-new-account-description" = "Il s'agit de la première transaction pour le compte sélectionné. Les premières transactions nécessitent un montant minimum d'au moins 0,1 Algo. Veuillez saisir un montant valide et réessayer.";
@@ -1328,7 +1487,7 @@
 "send-algos-sent-title" = "ALGO envoyé!";
 
 /* MARK: Algos Send */
-"send-algos-title" = "Send Algo";
+"send-algos-title" = "Envoyer Algo";
 
 /* (No Comment) */
 "send-algos-to" = "À";
@@ -1397,7 +1556,7 @@
 "settings-currency" = "Devise";
 
 /* (No Comment) */
-"settings-currency-header-title" = "Currency Preferences";
+"settings-currency-header-title" = "Préférences Devises";
 
 /* (No Comment) */
 "settings-delete-data-title" = "Supprimer toutes les données";
@@ -1424,13 +1583,13 @@
 "settings-logout-button-delete" = "Oui, supprimer tous les comptes et se déconnecter";
 
 /* (No Comment) */
-"settings-logout-detail" = "You are about to delete all data in the wallet, including your stored accounts. Make sure to have your account passphrases stored elsewhere before confirming. You will not be able to restore your accounts otherwise. Are you sure you would like to proceed?";
+"settings-logout-detail" = "Vous êtes sur le point de supprimer toutes les données du portefeuille, y compris vos comptes enregistrés. Assurez-vous que les phrases secrètes de vos comptes sont conservées ailleurs avant de confirmer. Sans elles, vous ne pourrez pas restaurer vos comptes. Êtes-vous sûr de vouloir continuer?";
 
 /* (No Comment) */
 "settings-logout-success-message" = "Vos données ont été supprimées avec succès";
 
 /* (No Comment) */
-"settings-logout-title" = "Remove All Accounts and Logout";
+"settings-logout-title" = "Supprimer tous les comptes et se déconnecter";
 
 /* (No Comment) */
 "settings-notification-disabled-go-settings-text" = "Vous avez désactivé les notifications. Veuillez aller dans Paramètres et activer cette option.";
@@ -1448,7 +1607,7 @@
 "settings-rate-modal-title" = "Évaluez votre expérience";
 
 /* (No Comment) */
-"settings-rate-title" = "Rate Pera Wallet";
+"settings-rate-title" = "Évaluer Pera Wallet";
 
 /* MARK: Settings */
 "settings-sections-account" = "Compte";
@@ -1466,7 +1625,7 @@
 "settings-server-node-settings" = "Paramètres du nœud";
 
 /* (No Comment) */
-"settings-support-title" = "Send Feedback";
+"settings-support-title" = "Envoyer Feedback";
 
 /* (No Comment) */
 "settings-theme-dark" = "Sombre";
@@ -1475,7 +1634,7 @@
 "settings-theme-light" = "Lumineux";
 
 /* (No Comment) */
-"settings-theme-set" = "Theme";
+"settings-theme-set" = "Thème";
 
 /* (No Comment) */
 "settings-theme-system" = "Système par défaut";
@@ -1534,11 +1693,14 @@
 /* (No Comment) */
 "title-close" = "Fermer";
 
+/* MARK: Collectible Common */
+"title-collectibles" = "Collectibles";
+
 /* (No Comment) */
 "title-confirm" = "Confirmer";
 
 /* (No Comment) */
-"title-confirm-all" = "Confirm All";
+"title-confirm-all" = "Tout Confirmer";
 
 /* (No Comment) */
 "title-connect" = "Connecter";
@@ -1571,13 +1733,19 @@
 "title-edit" = "Modifier";
 
 /* (No Comment) */
-"title-enter-pin-for-passphrase" = "Enter a Passcode";
+"title-enter-pin-for-passphrase" = "Veuillez saisir un code d'accès";
 
 /* (No Comment) */
 "title-error" = "Erreur";
 
 /* (No Comment) */
+"title-error-description" = "Error: %@";
+
+/* (No Comment) */
 "title-failed-connection" = "Échec de la connexion";
+
+/* (No Comment) */
+"title-generic-api-error" = "Well, this is unexpected";
 
 /* (No Comment) */
 "title-go-to-accounts" = "Accéder aux Comptes";
@@ -1616,7 +1784,7 @@
 "title-no" = "NON";
 
 /* (No Comment) */
-"title-not-available" = "Not available";
+"title-not-available" = "Non disponible";
 
 /* (No Comment) */
 "title-off" = "Désactivé";
@@ -1631,10 +1799,16 @@
 "title-paste-passphrase" = "Coller la phrase de passe complète";
 
 /* (No Comment) */
-"title-plus-asset-count" = "%@ Assets";
+"title-plus-asset-count" = "%@ Actifs";
 
 /* (No Comment) */
 "title-plus-asset-singular-count" = "%@ Actif";
+
+/* (No Comment) */
+"title-plus-collectible-count" = "%@ NFTs";
+
+/* (No Comment) */
+"title-plus-collectible-singular-count" = "%@ NFT";
 
 /* (No Comment) */
 "title-preview" = "Aperçu";
@@ -1667,7 +1841,7 @@
 "title-send" = "Envoyer";
 
 /* (No Comment) */
-"title-share-qr" = "Share Address";
+"title-share-qr" = "Partager Adresse";
 
 /* (No Comment) */
 "title-show-all-detail" = "Afficher tous les détails";
@@ -1712,7 +1886,7 @@
 "total-rewards-faq" = "FAQ";
 
 /* (No Comment) */
-"total-rewards-faq-title" = "For more information on Algorand Rewards, visit our FAQ";
+"total-rewards-faq-title" = "Pour plus d'informations sur les Récompenses Algorand, veuillez consultez notre FAQ";
 
 /* (No Comment) */
 "total-rewards-title" = "%@ Récompenses";
@@ -1892,7 +2066,7 @@
 "tutorial-action-title-passcode" = "Pas maintenant";
 
 /* (No Comment) */
-"tutorial-description-back-up" = "Creating a passphrase backup will allow you to recover your account. Without the passphrase, if you lose your device, remove the account or delete the app, you can permanently lose access to your Algorand account!";
+"tutorial-description-back-up" = "Créer une sauvegarde de la phrase secrète vous permettra de récupérer votre compte. Sans cette phrase secrète, si vous perdez votre appareil, supprimez le compte ou supprimez l'application, vous pouvez perdre définitivement l'accès à votre compte Algorand!";
 
 /* (No Comment) */
 "tutorial-description-ledger" = "Veuillez vous assurer que votre Ledger est déverrouillé avec Bluetooth activé";
@@ -1904,7 +2078,7 @@
 "tutorial-description-local" = "Votre autorisation FaceID ou TouchID sera nécessaire pour utiliser l'application. Nous vous recommandons d'activer l'authentification biométrique pour améliorer la sécurité du portefeuille en cas de vol de votre téléphone.";
 
 /* (No Comment) */
-"tutorial-description-passcode" = "This 6-digit PIN will be required to use the Pera Wallet. We highly recommend creating a PIN to help increase wallet security in the event your phone is stolen.";
+"tutorial-description-passcode" = "Ce code PIN à 6 chiffres sera nécessaire pour utiliser Pera Wallet. Nous vous recommandons vivement de créer un code PIN pour améliorer la sécurité du portefeuille en cas de vol de votre téléphone.";
 
 /* (No Comment) */
 "tutorial-description-recover" = "Dans les étapes suivantes, vous entrerez votre phrase secrète de récupération de 25 mots pour récupérer un compte Algorand. Ayez votre phrase de récupération à portée de main avant de commencer.";
@@ -1913,34 +2087,34 @@
 "tutorial-description-warning-title" = "Avertissement:";
 
 /* (No Comment) */
-"tutorial-description-watch" = "Monitor activity of an account without needing a recovery passphrase. This is useful for monitoring assets that are kept in cold storage.";
+"tutorial-description-watch" = "Surveillez l'activité d'un compte sans avoir besoin d'une phrase secrète de récupération. Cela est utile pour surveiller les actifs conservés hors ligne.";
 
 /* (No Comment) */
 "tutorial-description-watch-warning" = "Si vous ne disposez pas de la phrase secrète de récupération correspondante, n'envoyez pas d'actifs à ce compte.";
 
 /* (No Comment) */
-"tutorial-description-write" = "The only way to recover an Algorand account is with this recovery passphrase.";
+"tutorial-description-write" = "La seule façon de récupérer un compte Algorand est d'utiliser cette phrase secrète de récupération.";
 
 /* (No Comment) */
 "tutorial-description-write-warning" = "Ne partagez cette phrase secrète avec personne, car elle vous donne un accès complet à votre compte.";
 
 /* (No Comment) */
-"tutorial-main-title-back-up" = "I Understand";
+"tutorial-main-title-back-up" = "Je comprends";
 
 /* (No Comment) */
 "tutorial-main-title-ledger-connected" = "Commencez à utiliser Pera Wallet";
 
 /* (No Comment) */
-"tutorial-main-title-passcode" = "Set PIN Code";
+"tutorial-main-title-passcode" = "Définir le code PIN";
 
 /* (No Comment) */
 "tutorial-main-title-recover" = "Récupérer un Compte Algorand";
 
 /* (No Comment) */
-"tutorial-main-title-write" = "I'm Ready to Begin";
+"tutorial-main-title-write" = "Je suis prêt";
 
 /* (No Comment) */
-"tutorial-title-back-up" = "Create a passphrase backup for your account";
+"tutorial-title-back-up" = "Créer une sauvegarde de la phrase secrète pour votre compte";
 
 /* (No Comment) */
 "tutorial-title-ledger-connected" = "Ledger connecté avec succès";
@@ -1952,16 +2126,16 @@
 "tutorial-title-recover" = "Récupérer un Compte Algorand";
 
 /* (No Comment) */
-"tutorial-title-write" = "Prepare to write\ndown your recovery passphrase";
+"tutorial-title-write" = "Préparez-vous à noter votre phrase secrète de récupération";
 
 /* (No Comment) */
 "verified-asset-double-check" = "toujours vérifier deux fois";
 
 /* (No Comment) */
-"verified-asset-information-text" = "Assets that go through our verification process are known projects that have their website and public information verified against this specific ASA. Verification status is not an endorsement of the asset.\n\nPera Wallet does not have any relationship with verified ASA owners. This badge is for informational purposes only.\n\nThat being said, you should always double check that the asset’s ID is the one that you intended to choose before transacting with that asset.\n\nIf you have questions about the verification process or general feedback about the app, we encourage you to visit;\n\n%@";
+"verified-asset-information-text" = "Les actifs qui passent par notre processus de vérification sont des projets connus dont le site Web et les informations publiques sont vérifiés par rapport à cet ASA spécifique. Cette vérification ne signifie pas que nous approuvons cet actif. \n\nPera Wallet n'a aucune relation avec les propriétaires d'ASA vérifiés. Ce badge existe à titre informatif uniquement. \n\nCeci dit, vous devez toujours vérifier que l'ID de l'actif est celui que vous avez l'intention de choisir avant d'effectuer une transaction avec cet actif. \n\nSi vous avez des questions sur le processus de vérification ou des commentaires généraux sur l'application, nous vous encourageons à visiter; \n\n %@";
 
 /* (No Comment) */
-"verified-asset-information-title" = "What does Asset Verification mean?";
+"verified-asset-information-title" = "Que signifie la vérification des actifs?";
 
 /* MARK: Verified Asset Information */
 "verified-assets-title" = "Actifs vérifiés";
@@ -2015,13 +2189,13 @@
 "wallet-connect-session-connected-with-account" = "Connecté avec %@";
 
 /* (No Comment) */
-"wallet-connect-session-connection-approved-description" = "Please return to %@ to continue and finish your operation. You can find all connected Sessions in the dedicated Settings page.";
+"wallet-connect-session-connection-approved-description" = "Veuillez retourner à %@ pour continuer et terminer votre opération. Vous pouvez retrouver toutes les Sessions connectées dans la page Paramètres dédiée.";
 
 /* (No Comment) */
-"wallet-connect-session-connection-approved-title" = "You are Connected to %@";
+"wallet-connect-session-connection-approved-title" = "Vous êtes connecté à %@";
 
 /* MARK: Wallet Connect Session */
-"wallet-connect-session-connection-description" = "%@ wants to\nconnect to your account";
+"wallet-connect-session-connection-description" = "%@ veut se connecter à votre compte";
 
 /* (No Comment) */
 "wallet-connect-session-disconnect-fail-message" = "Échec de la déconnexion de la session %@ .";
@@ -2054,13 +2228,13 @@
 "wallet-connect-transaction-all-count-singular" = "Toutes les transactions (1)";
 
 /* (No Comment) */
-"wallet-connect-transaction-count" = "%d Transactions  ·  Group ID: %@";
+"wallet-connect-transaction-count" = "%d Transactions · ID Groupe: %@";
 
 /* (No Comment) */
-"wallet-connect-transaction-count-singular" = "1 Transaction  ·  Group ID: %@";
+"wallet-connect-transaction-count-singular" = "1 Transaction · ID Groupe: %@";
 
 /* MARK: Wallet Connect Transaction Dapp Message */
-"wallet-connect-transaction-dapp-show-more" = "Read More";
+"wallet-connect-transaction-dapp-show-more" = "Afficher Plus";
 
 /* (No Comment) */
 "wallet-connect-transaction-detail-asset-url" = "Afficher l'URL de l'actif";
@@ -2168,7 +2342,7 @@
 "wallet-connect-transaction-request-count-singular" = "Demande Transaction (1)";
 
 /* (No Comment) */
-"wallet-connect-transaction-title-app-call" = "Application Call";
+"wallet-connect-transaction-title-app-call" = "Appel Application";
 
 /* (No Comment) */
 "wallet-connect-transaction-title-app-call-approval-hash" = "Hachage d'approbation";
@@ -2258,7 +2432,7 @@
 "wallet-connect-transaction-warning-future" = "Cette transaction sera soumise à l'avenir.";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-high-fee" = "This transaction fee is higher than the usual fee of 0.001 Algo.";
+"wallet-connect-transaction-warning-high-fee" = "Ces frais de transaction sont supérieurs aux frais habituels de 0,001 Algo.";
 
 /* (No Comment) */
 "wallet-connect-transaction-warning-initial-description" = "Les applications externes, que l'on appelle également dApps, peuvent effectuer des demandes de transaction qui ne sont pas contrôlées par Pera Wallet. Veuillez vous assurer d'examiner attentivement ces transactions avant de les approuver et de les signer.\n\nToutes les transactions sont irréversibles. N'approuvez jamais une transaction d'une dApp que vous ne connaissez pas.";
@@ -2276,16 +2450,16 @@
 "watch-account-button" = "Créer un compte de consultation";
 
 /* (No Comment) */
-"watch-account-create" = "Create a watch\naccount";
+"watch-account-create" = "Créer un compte de surveillance";
 
 /* (No Comment) */
 "watch-account-error-address" = "Veuillez saisir une adresse valide.";
 
 /* (No Comment) */
-"watch-account-explanation-title" = "You are creating a read-only view of an Algorand account.";
+"watch-account-explanation-title" = "Vous allez créer une vue en lecture seule d'un compte Algorand.";
 
 /* (No Comment) */
-"watch-account-input-explanation" = "Account Address";
+"watch-account-input-explanation" = "Adresse Compte";
 
 /* (No Comment) */
 "watch-account-input-placeholder" = "Coller l'adresse ou scanner le QR";

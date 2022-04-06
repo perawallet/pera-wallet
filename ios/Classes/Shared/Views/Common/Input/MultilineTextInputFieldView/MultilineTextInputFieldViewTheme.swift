@@ -20,6 +20,7 @@ import MacaroonUIKit
 
 protocol MultilineTextInputFieldViewTheme: StyleSheet, LayoutSheet {
     var textInput: TextInputStyle { get }
+    var textContainerInsets: LayoutPaddings { get }
     var placeholder: TextStyle { get }
     var floatingPlaceholder: TextStyle { get }
     var topInset: LayoutMetric { get }

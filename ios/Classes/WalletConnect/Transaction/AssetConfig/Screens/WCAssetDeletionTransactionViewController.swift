@@ -25,7 +25,7 @@ class WCAssetDeletionTransactionViewController: WCSingleTransactionViewControlle
         return assetDeletionTransactionView
     }
 
-    var assetDetail: AssetDetail?
+    var asset: Asset?
 
     override func configureAppearance() {
         super.configureAppearance()
@@ -41,7 +41,7 @@ class WCAssetDeletionTransactionViewController: WCSingleTransactionViewControlle
         bindView()
 
         setCachedAsset {
-            if self.assetDetail == nil {
+            if self.asset == nil {
                 self.dismissScreen()
                 return
             }
@@ -59,7 +59,7 @@ extension WCAssetDeletionTransactionViewController {
             WCAssetDeletionTransactionViewModel(
                 transaction: transaction,
                 senderAccount: account,
-                assetDetail: assetDetail
+                asset: asset
             )
         )
     }
@@ -71,7 +71,7 @@ extension WCAssetDeletionTransactionViewController: WCAssetDeletionTransactionVi
     }
 
     func wcAssetDeletionTransactionViewDidOpenAlgoExplorer(_ wcAssetDeletionTransactionView: WCAssetDeletionTransactionView) {
-        openInExplorer(assetDetail)
+        openInExplorer(asset)
     }
 }
 

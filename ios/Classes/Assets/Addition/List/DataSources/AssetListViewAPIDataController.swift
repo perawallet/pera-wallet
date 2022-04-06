@@ -17,14 +17,18 @@
 
 import Foundation
 import MacaroonUtils
+import MagpieCore
 
 final class AssetListViewAPIDataController:
     AssetListViewDataController {
     var eventHandler: ((AssetListViewDataControllerEvent) -> Void)?
 
-    var assets: [AssetInformation] = []
+    var assets: [AssetDecoration] = []
 
     private var lastSnapshot: Snapshot?
+
+    private lazy var searchThrottler = Throttler(intervalInSeconds: 0.3)
+    private var ongoingEndpoint: EndpointOperatable?
 
     private let api: ALGAPI
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.assetListViewDataController")
@@ -57,9 +61,17 @@ extension AssetListViewAPIDataController {
     }
 
     func search(for query: String?) {
-        resetSearch()
+        searchThrottler.performNext {
+            [weak self] in
 
-        load(with: query)
+            guard let self = self else {
+                return
+            }
+
+            self.resetSearch()
+
+            self.load(with: query)
+        }
     }
 
     func resetSearch() {
@@ -75,9 +87,14 @@ extension AssetListViewAPIDataController {
     }
 
     private func load(with query: String?, isPaginated: Bool = false) {
+        cancelOngoingEndpoint()
         let searchDraft = AssetSearchQuery(status: filter, query: query, cursor: nextCursor)
 
-        api.searchAssets(searchDraft) { [weak self] response in
+        ongoingEndpoint =
+        api.searchAssets(
+            searchDraft,
+            ignoreResponseOnCancelled: false
+        ) { [weak self] response in
             switch response {
             case let .success(searchResults):
                 guard let self = self else {
@@ -97,6 +114,11 @@ extension AssetListViewAPIDataController {
                 break
             }
         }
+    }
+
+    private func cancelOngoingEndpoint() {
+        ongoingEndpoint?.cancel()
+        ongoingEndpoint = nil
     }
 }
 
@@ -125,9 +147,27 @@ extension AssetListViewAPIDataController {
             var snapshot = Snapshot()
             var assetItems: [AssetListViewItem] = []
 
-            self.assets.forEach {
-                let assetItem: AssetListViewItem = .asset(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt($0)))
-                assetItems.append(assetItem)
+            for asset in self.assets {
+                let viewModel: AssetPreviewViewModel
+
+                if asset.isCollectible {
+                    let collectibleAsset = CollectibleAsset(
+                        asset: ALGAsset(id: asset.id),
+                        decoration: asset
+                    )
+                    viewModel = AssetPreviewViewModel(collectibleAsset)
+
+                } else {
+                    let standardAsset = StandardAsset(
+                        asset: ALGAsset(id: asset.id),
+                        decoration: asset
+                    )
+                    viewModel = AssetPreviewViewModel(
+                        AssetPreviewModelAdapter.adapt(standardAsset)
+                    )
+                }
+                
+                assetItems.append(.asset(viewModel))
             }
 
             snapshot.appendSections([.assets])

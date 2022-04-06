@@ -29,7 +29,7 @@ enum BlockEvent {
     case didFetchAccount(Account)
     case didFailToFetchAccount(localAccount: AccountInformation, error: HIPNetworkError<NoAPIModel>)
     case willFetchAssetDetails(Account)
-    case didFetchAssetDetails(account: Account, assetDetails: [AssetID: AssetInformation])
+    case didFetchAssetDetails(account: Account, assetDetails: [AssetID: AssetDecoration])
     case didFailToFetchAssetDetails(account: Account, error: HIPNetworkError<NoAPIModel>)
     case didFinish(BlockRound?)
 }

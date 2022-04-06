@@ -17,8 +17,10 @@
 
 import Foundation
 
-protocol WCSingleTransactionViewControllerAssetManagable: WCSingleTransactionViewControllerAssetActionable, AssetCachable {
-    var assetDetail: AssetDetail? { get set }
+protocol WCSingleTransactionViewControllerAssetManagable:
+    WCSingleTransactionViewControllerAssetActionable,
+    AssetCachable {
+    var asset: Asset? { get set }
 
     func setCachedAsset(then completion: @escaping EmptyHandler)
 }
@@ -43,13 +45,19 @@ extension WCSingleTransactionViewControllerAssetManagable where Self: WCSingleTr
                 return
             }
 
-            guard let assetInformation = assetDetail else {
+            guard let assetDetail = assetDetail else {
                 self.walletConnector.rejectTransactionRequest(self.transactionRequest, with: .invalidInput(.asset))
                 completion()
                 return
             }
 
-            self.assetDetail = AssetDetail(assetInformation: assetInformation)
+
+            if assetDetail.isCollectible {
+                self.asset = CollectibleAsset(asset: ALGAsset(id: assetId), decoration: assetDetail)
+            } else {
+                self.asset = StandardAsset(asset: ALGAsset(id: assetId), decoration: assetDetail)
+            }
+
             completion()
         }
     }

@@ -34,24 +34,30 @@ class WCAssetTransactionViewModel {
     private(set) var noteInformationViewModel: TransactionTextInformationViewModel?
     private(set) var rawTransactionInformationViewModel: WCTransactionActionableInformationViewModel?
 
-
-    init(transaction: WCTransaction, senderAccount: Account?, assetDetail: AssetDetail?) {
+    init(
+        transaction: WCTransaction,
+        senderAccount: Account?,
+        asset: Asset?
+    ) {
         setFromInformationViewModel(from: senderAccount, and: transaction)
         setToInformationViewModel(from: senderAccount, and: transaction)
-        setBalanceInformationViewModel(from: senderAccount, and: assetDetail)
-        setAssetInformationViewModel(from: senderAccount, and: assetDetail)
-        setCloseWarningViewModel(from: transaction, and: assetDetail)
+        setBalanceInformationViewModel(from: senderAccount, and: asset)
+        setAssetInformationViewModel(from: senderAccount, and: asset)
+        setCloseWarningViewModel(from: transaction, and: asset)
         setRekeyWarningViewModel(from: senderAccount, and: transaction)
 
-        setAmountInformationViewModel(from: transaction, and: assetDetail)
-        setFeeInformationViewModel(from: transaction, and: assetDetail)
+        setAmountInformationViewModel(from: transaction, and: asset)
+        setFeeInformationViewModel(from: transaction, and: asset)
         setFeeWarningInformationViewModel(from: transaction)
 
         setNoteInformationViewModel(from: transaction)
         setRawTransactionInformationViewModel(from: transaction)
     }
 
-    private func setFromInformationViewModel(from senderAccount: Account?, and transaction: WCTransaction) {
+    private func setFromInformationViewModel(
+        from senderAccount: Account?,
+        and transaction: WCTransaction
+    ) {
         guard let senderAddress = transaction.transactionDetail?.sender else {
             return
         }
@@ -73,7 +79,10 @@ class WCAssetTransactionViewModel {
         self.fromInformationViewModel = viewModel
     }
 
-    private func setToInformationViewModel(from senderAccount: Account?, and transaction: WCTransaction) {
+    private func setToInformationViewModel(
+        from senderAccount: Account?,
+        and transaction: WCTransaction
+    ) {
         guard let toAddress = transaction.transactionDetail?.receiver else {
             return
         }
@@ -95,20 +104,22 @@ class WCAssetTransactionViewModel {
         self.toInformationViewModel = viewModel
     }
 
-    private func setBalanceInformationViewModel(from senderAccount: Account?, and assetDetail: AssetDetail?) {
-        guard
-            let senderAccount = senderAccount,
-            let assetDetail = assetDetail,
-            let amount = senderAccount.amount(for: assetDetail) else {
-                return
+    private func setBalanceInformationViewModel(
+        from senderAccount: Account?,
+        and asset: Asset?
+    ) {
+        guard let asset = asset else {
+            return
         }
+
+        let amount = asset.amountWithFraction
 
         let amountViewModel = TransactionAmountViewModel(
             .normal(
                 amount: amount,
                 isAlgos: false,
-                fraction: assetDetail.fractionDecimals,
-                assetSymbol: assetDetail.unitName
+                fraction: asset.presentation.decimals,
+                assetSymbol: asset.presentation.unitName
             )
         )
 
@@ -117,19 +128,24 @@ class WCAssetTransactionViewModel {
         self.balanceViewModel = balanceViewModel
     }
 
-    private func setAssetInformationViewModel(from senderAccount: Account?, and assetDetail: AssetDetail?) {
-
+    private func setAssetInformationViewModel(
+        from senderAccount: Account?,
+        and asset: Asset?
+    ) {
         assetInformationViewModel = WCAssetInformationViewModel(
             title: "asset-title".localized,
-            assetDetail: assetDetail
+            asset: asset
         )
     }
 
-    private func setCloseWarningViewModel(from transaction: WCTransaction, and assetDetail: AssetDetail?) {
+    private func setCloseWarningViewModel(
+        from transaction: WCTransaction,
+        and asset: Asset?
+    ) {
         guard
             let transactionDetail = transaction.transactionDetail,
             let closeAddress = transactionDetail.closeAddress,
-            let assetDetail = assetDetail else {
+            let asset = asset else {
                 return
             }
 
@@ -139,11 +155,13 @@ class WCAssetTransactionViewModel {
         )
 
         self.closeInformationViewModel = TransactionTextInformationViewModel(titledInformation)
-
-        self.closeWarningInformationViewModel = WCTransactionWarningViewModel(warning: .closeAsset(asset: assetDetail))
+        self.closeWarningInformationViewModel = WCTransactionWarningViewModel(warning: .closeAsset(asset: asset))
     }
 
-    private func setRekeyWarningViewModel(from senderAccount: Account?, and transaction: WCTransaction) {
+    private func setRekeyWarningViewModel(
+        from senderAccount: Account?,
+        and transaction: WCTransaction
+    ) {
         guard let rekeyAddress = transaction.transactionDetail?.rekeyAddress else {
             return
         }
@@ -162,10 +180,13 @@ class WCAssetTransactionViewModel {
         self.rekeyWarningInformationViewModel = WCTransactionWarningViewModel(warning: .rekeyed)
     }
 
-    private func setAmountInformationViewModel(from transaction: WCTransaction, and assetDetail: AssetDetail?) {
+    private func setAmountInformationViewModel(
+        from transaction: WCTransaction,
+        and asset: Asset?
+    ) {
         guard
-            let assetDetail = assetDetail,
-            let amount = transaction.transactionDetail?.amount.assetAmount(fromFraction: assetDetail.fractionDecimals) else {
+            let asset = asset,
+            let amount = transaction.transactionDetail?.amount.assetAmount(fromFraction: asset.presentation.decimals) else {
                 return
         }
 
@@ -173,8 +194,8 @@ class WCAssetTransactionViewModel {
             .normal(
                 amount: amount,
                 isAlgos: false,
-                fraction: assetDetail.fractionDecimals,
-                assetSymbol: assetDetail.unitName
+                fraction: asset.presentation.decimals,
+                assetSymbol: asset.presentation.unitName
             )
         )
 
@@ -183,8 +204,10 @@ class WCAssetTransactionViewModel {
         self.amountViewModel = amountInformationViewModel
     }
 
-    private func setFeeInformationViewModel(from transaction: WCTransaction, and assetDetail: AssetDetail?) {
-
+    private func setFeeInformationViewModel(
+        from transaction: WCTransaction,
+        and asset: Asset?
+    ) {
         guard let transactionDetail = transaction.transactionDetail,
               let fee = transactionDetail.fee,
               fee != 0 else {

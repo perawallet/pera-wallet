@@ -34,7 +34,7 @@ struct AccountOrdering {
             return lastWatchAccount.value.preferredOrder + 1
         }
 
-        guard let lastNonWatchAccount = sortedAccounts.last(where: { $0.value.type != .watch }) else {
+        guard let lastNonWatchAccount = sortedAccounts.last(where: { !$0.value.isWatchAccount() }) else {
             return 0
         }
 

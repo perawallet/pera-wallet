@@ -104,3 +104,31 @@ extension Optional where Wrapped == String {
     return ifNil(.empty)
   }
 }
+
+extension Optional where Wrapped == String {
+    func fallback(
+        _ stringOrNilOrEmptyOrBlank: @autoclosure () -> Self
+    ) -> Self {
+        switch self {
+        case .none:
+            return stringOrNilOrEmptyOrBlank()
+        case .some(let value):
+            if !value.isEmptyOrBlank {
+                return value
+            }
+
+            return stringOrNilOrEmptyOrBlank()
+        }
+    }
+
+    func fallback(
+        _ string: @autoclosure () -> Wrapped
+    ) -> Wrapped {
+        switch self {
+        case .none:
+            return string()
+        case .some(let value):
+            return value
+        }
+    }
+}

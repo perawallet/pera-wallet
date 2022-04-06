@@ -49,19 +49,24 @@ final class WCSingleTransactionRequestScreen:
             account = nil
         }
 
-        let assetInformation: AssetInformation?
+        let asset: Asset?
 
-        if let assetId = transaction.transactionDetail?.currentAssetId, let asset = sharedDataController.assetDetailCollection[assetId] {
-            assetInformation = asset
+        if let assetId = transaction.transactionDetail?.currentAssetId,
+           let assetDetail = sharedDataController.assetDetailCollection[assetId] {
+            if assetDetail.isCollectible {
+                asset = StandardAsset(asset: ALGAsset(id: assetId), decoration: assetDetail)
+            } else {
+                asset = nil
+            }
         } else {
-            assetInformation = nil
+            asset = nil
         }
 
         return WCSingleTransactionRequestViewModel(
             transaction: transaction,
             account: account,
             currency: sharedDataController.currency.value,
-            assetInformation: assetInformation
+            asset: asset
         )
     }()
 
@@ -144,12 +149,18 @@ extension WCSingleTransactionRequestScreen {
     private func didAssetFetched(notification: Notification) {
         guard let transaction = transactions.first,
               let assetId = transaction.transactionDetail?.currentAssetId,
-              let assetInformation = sharedDataController.assetDetailCollection[assetId]
+              let assetDecoration = sharedDataController.assetDetailCollection[assetId]
         else {
             return
         }
-        
-        self.viewModel?.middleView?.assetInformation = assetInformation
+
+        if assetDecoration.isCollectible {
+            let asset = CollectibleAsset(asset: ALGAsset(id: assetId), decoration: assetDecoration)
+            self.viewModel?.middleView?.asset = asset
+        } else {
+            let asset = StandardAsset(asset: ALGAsset(id: assetId), decoration: assetDecoration)
+            self.viewModel?.middleView?.asset = asset
+        }
 
         bindData()
     }

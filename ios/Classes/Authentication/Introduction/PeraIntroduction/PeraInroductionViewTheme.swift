@@ -54,7 +54,7 @@ struct PeraInroductionViewTheme:
             .tintColor(UIColor.black)
         ]
         topViewContainer = [
-            .backgroundColor(AppColors.Shared.Global.yellow400)
+            .backgroundColor(AppColors.Shared.System.theme)
         ]
         peraLogoImageView = [
             .contentMode(.scaleAspectFit)

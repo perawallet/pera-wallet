@@ -19,42 +19,43 @@ import UIKit
 import MacaroonUIKit
 
 struct AssetViewModel: ViewModel {
-    private(set) var assetDetail: AssetInformation?
     private(set) var amount: String?
     private(set) var currencyAmount: String?
 
-    init(assetDetail: AssetInformation?, asset: Asset?, currency: Currency?) {
-        bindAssetDetail(assetDetail)
-        bindAmount(from: assetDetail, with: asset)
-        bindCurrencyAmount(from: assetDetail, with: asset, and: currency)
+    init(
+        asset: Asset?,
+        currency: Currency?
+    ) {
+        bindAmount(from: asset)
+        bindCurrencyAmount(from: asset, with: currency)
     }
 }
 
 extension AssetViewModel {
-    private mutating func bindAssetDetail(_ assetDetail: AssetInformation?) {
-        self.assetDetail = assetDetail
-    }
-
-    private mutating func bindAmount(from assetDetail: AssetInformation?, with asset: Asset?) {
-        guard let assetDetail = assetDetail else {
+    private mutating func bindAmount(
+        from asset: Asset?
+    ) {
+        guard let asset = asset as? StandardAsset else {
             return
         }
 
-        amount = asset?.amount
-            .assetAmount(fromFraction: assetDetail.decimals)
-            .abbreviatedFractionStringForLabel(fraction: 2)
+        amount = asset.amount
+            .assetAmount(fromFraction: asset.decimals)
+            .abbreviatedFractionStringForLabel(fraction: asset.decimals)
     }
 
-    private mutating func bindCurrencyAmount(from assetDetail: AssetInformation?, with asset: Asset?, and currency: Currency?) {
-        guard let asset = asset,
-              let assetDetail = assetDetail,
-              let assetUSDValue = assetDetail.usdValue,
+    private mutating func bindCurrencyAmount(
+        from asset: Asset?,
+        with currency: Currency?
+    ) {
+        guard let asset = asset as? StandardAsset,
+              let assetUSDValue = asset.usdValue,
               let currency = currency,
               let currencyUSDValue = currency.usdValue else {
             return
         }
 
-        let currencyValue = assetUSDValue * asset.amount.assetAmount(fromFraction: assetDetail.decimals) * currencyUSDValue
+        let currencyValue = assetUSDValue * asset.amount.assetAmount(fromFraction: asset.decimals) * currencyUSDValue
         if currencyValue > 0 {
             currencyAmount = currencyValue.abbreviatedCurrencyStringForLabel(with: currency.symbol)
         }

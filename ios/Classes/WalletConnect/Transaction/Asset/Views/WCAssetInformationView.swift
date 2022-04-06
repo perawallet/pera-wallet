@@ -72,11 +72,11 @@ extension WCAssetInformationView: ViewModelBindable {
             titleLabel.text = title
         }
 
-        if let asset = viewModel.asset {
+        if let name = viewModel.name {
             if let assetId = viewModel.assetId {
-                assetLabel.text = "\(asset) \(assetId)"
+                assetLabel.text = "\(name) \(assetId)"
             } else {
-                assetLabel.text = asset
+                assetLabel.text = name
             }
         }
 

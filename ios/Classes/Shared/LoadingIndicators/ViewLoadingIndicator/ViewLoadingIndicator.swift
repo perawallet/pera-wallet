@@ -19,13 +19,15 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class ViewLoadingIndicator: LoadingIndicator {
+final class ViewLoadingIndicator:
+    BaseView,
+    MacaroonUIKit.LoadingIndicator {
     private(set) var isAnimating = false
 
     private lazy var loadingAnimation: CABasicAnimation = {
         let animation = CABasicAnimation(keyPath: "transform.rotation.z")
         animation.fromValue = 0
-        animation.toValue = 2.0 * .pi
+        animation.toValue = 2 * CGFloat.pi
         animation.duration = 1
         animation.repeatCount = .greatestFiniteMagnitude
         return animation
@@ -47,7 +49,11 @@ final class ViewLoadingIndicator: LoadingIndicator {
         self.init(indicator: img("loading-indicator"))
     }
 
-    func applyStyle(_ style: ImageStyle) {
+    func applyStyle(
+        _ style: ImageStyle
+    ) {
+        backgroundColor = .clear
+
         indicatorView.customizeAppearance(style)
     }
 }
@@ -60,7 +66,9 @@ extension ViewLoadingIndicator {
 
         isAnimating = true
 
-        indicatorView.layer.add(loadingAnimation, forKey: loadingAnimationKey)
+        indicatorView.layer.add(
+            loadingAnimation, forKey: loadingAnimationKey
+        )
     }
 
     func stopAnimating() {
@@ -68,7 +76,9 @@ extension ViewLoadingIndicator {
             return
         }
 
-        indicatorView.layer.removeAnimation(forKey: loadingAnimationKey)
+        indicatorView.layer.removeAnimation(
+            forKey: loadingAnimationKey
+        )
 
         isAnimating = false
     }
@@ -79,7 +89,10 @@ extension ViewLoadingIndicator {
         addSubview(indicatorView)
         indicatorView.fitToIntrinsicSize()
         indicatorView.snp.makeConstraints {
-            $0.centerHorizontally(offset: 0, verticalPaddings: (0, 0))
+            $0.centerHorizontally(
+                offset: 0,
+                verticalPaddings: (0, 0)
+            )
         }
     }
 }

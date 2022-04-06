@@ -92,7 +92,7 @@ final class AccountSelectScreenDataSource: NSObject {
         }
 
         var searchedAccounts: [Account] = []
-        if filteredAccounts.isEmpty && filteredContacts.isEmpty && AlgorandSDK().isValidAddress(searchKeyword) {
+        if filteredAccounts.isEmpty && filteredContacts.isEmpty && searchKeyword.isValidatedAddress {
             searchedAccounts = [
                 Account(address: searchKeyword, type: .standard)
             ]

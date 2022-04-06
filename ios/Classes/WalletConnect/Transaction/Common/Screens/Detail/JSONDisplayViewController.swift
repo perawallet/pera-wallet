@@ -41,7 +41,7 @@ class JSONDisplayViewController: BaseScrollViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
-        view.backgroundColor = Colors.Background.secondary
+        view.backgroundColor = AppColors.Shared.System.background.uiColor
         title = screenTitle
     }
 

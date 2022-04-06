@@ -25,7 +25,7 @@ class WCAssetCreationTransactionViewController: WCSingleTransactionViewControlle
         return assetCreationTransactionView
     }
 
-    var assetDetail: AssetDetail?
+    var asset: Asset?
 
     override func configureAppearance() {
         super.configureAppearance()
@@ -46,7 +46,7 @@ class WCAssetCreationTransactionViewController: WCSingleTransactionViewControlle
             WCAssetCreationTransactionViewModel(
                 transaction: transaction,
                 senderAccount: account,
-                assetDetail: assetDetail
+                asset: asset
             )
         )
     }

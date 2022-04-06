@@ -169,8 +169,8 @@ extension NotificationsViewController {
             }
 
             let screen: Screen
-            if let compoundAsset = accountDetails.compoundAsset {
-                screen = .assetDetail(draft: AssetTransactionListing(accountHandle: accountHandle, compoundAsset: compoundAsset))
+            if let asset = accountDetails.asset as? StandardAsset {
+                screen = .assetDetail(draft: AssetTransactionListing(accountHandle: accountHandle, asset: asset))
             } else {
                 screen = .algosDetail(draft: AlgoTransactionListing(accountHandle: accountHandle))
             }

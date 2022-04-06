@@ -30,8 +30,8 @@ class WCTransactionWarningViewModel {
             title = "wallet-connect-transaction-warning-rekey".localized
         case .closeAlgos:
             title = "wallet-connect-transaction-warning-close-algos".localized
-        case let .closeAsset(assetDetail):
-            let assetDisplayName = assetDetail.getDisplayNames().0
+        case let .closeAsset(asset):
+            let assetDisplayName = asset.presentation.displayNames.primaryName
             title = "wallet-connect-transaction-warning-close-asset".localized(params: assetDisplayName, assetDisplayName)
         case .fee:
             title = "wallet-connect-transaction-warning-high-fee".localized
@@ -44,7 +44,7 @@ class WCTransactionWarningViewModel {
 enum WCTransactionWarning {
     case rekeyed
     case closeAlgos
-    case closeAsset(asset: AssetDetail)
+    case closeAsset(asset: Asset)
     case fee
     case assetDelete
 }

@@ -20,9 +20,10 @@ import MacaroonUIKit
 import UIKit
 
 final class AssetListViewLayout: NSObject {
-
     private lazy var theme = AssetListViewController.Theme()
     lazy var handlers = Handlers()
+
+    private var sizeCache: [String: CGSize] = [:]
 
     private let listDataSource: AssetListViewDataSource
 
@@ -48,13 +49,16 @@ extension AssetListViewLayout: UICollectionViewDelegateFlowLayout {
         switch itemIdentifier {
         case .loading:
             return CGSize(theme.cellSize)
-        case .asset:
-            return CGSize(theme.cellSize)
+        case .asset(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForAssetCellItem: item
+            )
         case .noContent:
-            let width = collectionView.bounds.width
-            let height = collectionView.bounds.height - collectionView.adjustedContentInset.bottom
-            return CGSize((width, height))
-            
+            return sizeForSearchNoContent(
+                collectionView
+            )
         }
     }
 
@@ -67,7 +71,7 @@ extension AssetListViewLayout: UICollectionViewDelegateFlowLayout {
         willDisplay cell: UICollectionViewCell,
         forItemAt indexPath: IndexPath
     ) {
-        if let loadingCell = cell as? AssetPreviewLoadingCell {
+        if let loadingCell = cell as? PreviewLoadingCell {
             loadingCell.startAnimating()
             return
         }
@@ -80,7 +84,7 @@ extension AssetListViewLayout: UICollectionViewDelegateFlowLayout {
         didEndDisplaying cell: UICollectionViewCell,
         forItemAt indexPath: IndexPath
     ) {
-        if let loadingCell = cell as? AssetPreviewLoadingCell {
+        if let loadingCell = cell as? PreviewLoadingCell {
             loadingCell.stopAnimating()
         }
     }
@@ -93,14 +97,74 @@ extension AssetListViewLayout {
         return listView.bounds.width - listView.contentInset.horizontal
     }
 
+    private func sizeForSearchNoContent(
+        _ listView: UICollectionView
+    ) -> CGSize {
+        let sizeCacheIdentifier = NoContentCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(for: listView)
+        let item = AssetAdditionNoContentViewModel()
+        let newSize = NoContentCell.calculatePreferredSize(
+            item,
+            for: NoContentCell.theme,
+            fittingIn:  CGSize((width, .greatestFiniteMagnitude))
+        )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
+    }
+
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForEmptyItem item: AssetListViewItem
+        sizeForAssetCellItem item: AssetPreviewViewModel
     ) -> CGSize {
-        let width = listView.bounds.width
-        let height = listView.bounds.height - listView.adjustedContentInset.bottom
-        return CGSize((width, height))
+        let sizeCacheIdentifier = AssetPreviewCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(for: listView)
+
+        let newSize = AssetPreviewCell.calculatePreferredSize(
+            item,
+            for: AssetPreviewCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForCollectibleAssetCellItem item: AssetPreviewViewModel
+    ) -> CGSize {
+        let sizeCacheIdentifier = AssetPreviewCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(for: listView)
+
+        let newSize = AssetPreviewCell.calculatePreferredSize(
+            item,
+            for: AssetPreviewCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
     }
 }
 

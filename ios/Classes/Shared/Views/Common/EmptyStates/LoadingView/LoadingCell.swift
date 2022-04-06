@@ -18,7 +18,8 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class LoadingCell: BaseCollectionViewCell<LoadingView> {
+final class LoadingCell:
+    CollectionCell<LoadingView> {
     override init(
         frame: CGRect
     ) {

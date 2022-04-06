@@ -64,8 +64,13 @@ extension AccountAssetListLayout {
             )
         case .search:
             return CGSize(theme.searchItemSize)
-        case .asset,
-             .pendingAsset:
+        case .asset(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForAssetCellItem: item
+            )
+        case .pendingAsset:
             return CGSize(theme.assetItemSize)
         case .addAsset:
             return CGSize(theme.listFooterSize)
@@ -114,7 +119,34 @@ extension AccountAssetListLayout {
         
         return newSize
     }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForAssetCellItem item: AssetPreviewViewModel
+    ) -> CGSize {
+        let sizeCacheIdentifier = AssetPreviewCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let horizontalPadding: LayoutMetric = 24
+        let width =
+        calculateContentWidth(for: listView) - (2 * horizontalPadding)
+
+        let newSize = AssetPreviewCell.calculatePreferredSize(
+            item,
+            for: AssetPreviewCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
+    }
 }
+
 
 extension AccountAssetListLayout {
     private func calculateContentWidth(

@@ -71,7 +71,7 @@ class AccountRecoverDataController: NSObject {
                 let accountType = sameAccount.isWatchAccount() ? .standard : sameAccount.type
                 return AccountInformation(
                     address: address,
-                    name: sameAccount.name ?? address.shortAddressDisplay(),
+                    name: sameAccount.name ?? address.shortAddressDisplay,
                     type: accountType,
                     ledgerDetail: sameAccount.ledgerDetail,
                     rekeyDetail: sameAccount.rekeyDetail,
@@ -84,7 +84,7 @@ class AccountRecoverDataController: NSObject {
         } else {
             return AccountInformation(
                 address: address,
-                name: address.shortAddressDisplay(),
+                name: address.shortAddressDisplay,
                 type: .standard,
                 preferredOrder: accountOrdering.getNewAccountIndex(for: .standard)
             )

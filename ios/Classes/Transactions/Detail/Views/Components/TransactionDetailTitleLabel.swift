@@ -33,6 +33,6 @@ class TransactionDetailTitleLabel: UILabel {
         textAlignment = .left
         numberOfLines = 1
         font = UIFont.font(withWeight: .regular(size: 14.0))
-        textColor = Colors.Text.tertiary
+        textColor = AppColors.Components.Text.grayLighter.uiColor
     }
 }

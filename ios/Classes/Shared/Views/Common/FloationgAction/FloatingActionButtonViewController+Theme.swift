@@ -27,7 +27,7 @@ extension TransactionFloatingActionButtonViewController {
 
         init(_ family: LayoutFamily) {
             chromeStyle = [
-                .backgroundColor(color("bottomOverlayBackground"))
+                .backgroundColor(AppColors.Shared.System.chrome.uiColor)
             ]
             trailingPadding = 24
             bottomPadding = 24

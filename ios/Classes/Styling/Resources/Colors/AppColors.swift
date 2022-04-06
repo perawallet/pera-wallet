@@ -25,18 +25,24 @@ enum AppColors {
     enum SendTransaction {}
 }
 
+extension AppColors {
+    enum Dapp: String, Color {
+        case moonpay = "Dapp/moonpay"
+    }
+}
+
 extension AppColors.Shared {
     enum Global: String, Color {
         case white = "Shared/Global/white"
         case gray400 = "Shared/Global/gray400"
         case gray800 = "Shared/Global/gray800"
         case turquoise600 = "Shared/Global/turquoise600"
-        case yellow400 = "Shared/Global/yellow400"
-        case purple = "Shared/Global/purple"
     }
 
     enum System: String, Color {
         case background = "Shared/System/background"
+        case chrome = "Shared/System/chrome"
+        case theme = "Shared/System/theme"
     }
 
     enum Layer: String, Color {
@@ -49,7 +55,13 @@ extension AppColors.Shared {
         case negative = "Shared/Helpers/negative"
         case negativeLighter = "Shared/Helpers/negativeLighter"
         case positive = "Shared/Helpers/positive"
+        case positiveLighter = "Shared/Helpers/positiveLighter"
         case success = "Shared/Helpers/success"
+        case testnet = "Shared/Helpers/testnet"
+    }
+
+    enum Modality: String, Color {
+        case background = "Shared/Modality/background"
     }
 }
 
@@ -106,6 +118,9 @@ extension AppColors.Components {
         case defaultBackground = "Components/TextField/defaultBackground"
         case indicatorActive = "Components/TextField/indicatorActive"
         case indicatorDeactive = "Components/TextField/indicatorDeactive"
+        case inputSuggestionBackground = "Components/TextField/inputSuggestionBackground"
+        case inputSuggestionSeparator = "Components/TextField/inputSuggestionSeparator"
+        case inputSuggestionText = "Components/TextField/inputSuggestionText"
     }
 }
 
@@ -121,6 +136,7 @@ extension AppColors.Components {
         case text = "Components/Banner/text"
         case governanceBackground = "Components/Banner/governance-background"
         case governanceText = "Components/Banner/governance-text"
+        case infoBackground = "Components/Banner/info-background"
     }
 }
 

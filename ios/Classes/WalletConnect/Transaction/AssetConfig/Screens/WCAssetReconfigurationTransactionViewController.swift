@@ -25,7 +25,7 @@ class WCAssetReconfigurationTransactionViewController: WCSingleTransactionViewCo
         return assetReconfigurationTransactionView
     }
 
-    var assetDetail: AssetDetail?
+    var asset: Asset?
 
     override func configureAppearance() {
         super.configureAppearance()
@@ -41,7 +41,7 @@ class WCAssetReconfigurationTransactionViewController: WCSingleTransactionViewCo
         bindView()
 
         setCachedAsset {
-            if self.assetDetail == nil {
+            if self.asset == nil {
                 self.dismissScreen()
                 return
             }
@@ -59,7 +59,7 @@ extension WCAssetReconfigurationTransactionViewController {
             WCAssetReconfigurationTransactionViewModel(
                 transaction: transaction,
                 senderAccount: account,
-                assetDetail: assetDetail
+                asset: asset
             )
         )
     }
@@ -75,13 +75,13 @@ extension WCAssetReconfigurationTransactionViewController: WCAssetReconfiguratio
     func wcAssetReconfigurationTransactionViewDidOpenAssetURL(
         _ wcAssetReconfigurationTransactionView: WCAssetReconfigurationTransactionView
     ) {
-        openAssetURL(assetDetail)
+        openAssetURL(asset)
     }
 
     func wcAssetReconfigurationTransactionViewDidOpenAlgoExplorer(
         _ wcAssetReconfigurationTransactionView: WCAssetReconfigurationTransactionView
     ) {
-        openInExplorer(assetDetail)
+        openInExplorer(asset)
     }
 }
 

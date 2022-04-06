@@ -17,7 +17,7 @@
 import UIKit
 
 protocol ShimmerAnimationDisplaying {
-    var shimmableSubviews: [ShimmerAnimatable] { get }
+    var animatableSubviews: [ShimmerAnimatable] { get }
 
     func startAnimating()
     func stopAnimating()
@@ -25,7 +25,7 @@ protocol ShimmerAnimationDisplaying {
 }
 
 extension ShimmerAnimationDisplaying where Self: UIView {
-    var shimmableSubviews: [ShimmerAnimatable] {
+    var animatableSubviews: [ShimmerAnimatable] {
         var shimmableViews = [ShimmerAnimatable]()
 
         allSubviews.forEach {
@@ -39,7 +39,7 @@ extension ShimmerAnimationDisplaying where Self: UIView {
 }
 
 extension ShimmerAnimationDisplaying where Self: UIViewController {
-    var shimmableSubviews: [ShimmerAnimatable] {
+    var animatableSubviews: [ShimmerAnimatable] {
         var shimmableViews = [ShimmerAnimatable]()
 
         view.allSubviews.forEach {
@@ -54,13 +54,13 @@ extension ShimmerAnimationDisplaying where Self: UIViewController {
 
 extension ShimmerAnimationDisplaying {
     func startAnimating() {
-        shimmableSubviews.forEach {
+        animatableSubviews.forEach {
             $0.startAnimating()
         }
     }
 
     func stopAnimating() {
-        shimmableSubviews.forEach {
+        animatableSubviews.forEach {
             $0.stopAnimating()
         }
     }

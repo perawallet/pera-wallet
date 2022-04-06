@@ -38,8 +38,8 @@ struct TestNetTitleViewTheme:
             .text("title-testnet".localized),
             .font(Fonts.DMSans.bold.make(11)),
             .textAlignment(.center),
-            .textColor(Colors.ButtonText.primary),
-            .backgroundColor(Colors.General.testNetBanner)
+            .textColor(AppColors.Components.Button.Primary.text.uiColor),
+            .backgroundColor(AppColors.Shared.Helpers.testnet.uiColor)
         ]
         
         titleOffset = -8

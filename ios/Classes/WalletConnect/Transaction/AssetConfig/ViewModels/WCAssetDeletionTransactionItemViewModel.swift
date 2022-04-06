@@ -35,11 +35,15 @@ class WCAssetDeletionTransactionViewModel {
     private(set) var rawTransactionInformationViewModel: WCTransactionActionableInformationViewModel?
     private(set) var algoExplorerInformationViewModel: WCTransactionActionableInformationViewModel?
 
-    init(transaction: WCTransaction, senderAccount: Account?, assetDetail: AssetDetail?) {
+    init(
+        transaction: WCTransaction,
+        senderAccount: Account?,
+        asset: Asset?
+    ) {
         setSenderInformationViewModel(from: senderAccount, and: transaction)
-        setAssetInformationViewModel(from: assetDetail)
+        setAssetInformationViewModel(from: asset)
         setAssetWarningViewModel()
-        setCloseWarningViewModel(from: transaction, and: assetDetail)
+        setCloseWarningViewModel(from: transaction, and: asset)
         setRekeyWarningViewModel(from: senderAccount, and: transaction)
         setFeeInformationViewModel(from: transaction)
         setFeeWarningViewModel(from: transaction)
@@ -48,7 +52,10 @@ class WCAssetDeletionTransactionViewModel {
         setAlgoExplorerInformationViewModel(from: transaction)
     }
 
-    private func setSenderInformationViewModel(from senderAccount: Account?, and transaction: WCTransaction) {
+    private func setSenderInformationViewModel(
+        from senderAccount: Account?,
+        and transaction: WCTransaction
+    ) {
         guard let senderAddress = transaction.transactionDetail?.sender else {
             return
         }
@@ -70,14 +77,14 @@ class WCAssetDeletionTransactionViewModel {
         self.fromInformationViewModel = viewModel
     }
 
-    private func setAssetInformationViewModel(from assetDetail: AssetDetail?) {
-        guard let assetDetail = assetDetail else {
+    private func setAssetInformationViewModel(from asset: Asset?) {
+        guard let asset = asset else {
             return
         }
 
-        self.assetInformationViewModel = WCAssetInformationViewModel(
+        assetInformationViewModel = WCAssetInformationViewModel(
             title: "asset-title".localized,
-            assetDetail: assetDetail
+            asset: asset
         )
     }
 
@@ -85,10 +92,13 @@ class WCAssetDeletionTransactionViewModel {
         assetWarningInformationViewModel = WCTransactionWarningViewModel(warning: .assetDelete)
     }
     
-    private func setCloseWarningViewModel(from transaction: WCTransaction, and assetDetail: AssetDetail?) {
+    private func setCloseWarningViewModel(
+        from transaction: WCTransaction,
+        and asset: Asset?
+    ) {
         guard let transactionDetail = transaction.transactionDetail,
               let closeAddress = transactionDetail.closeAddress,
-              let assetDetail = assetDetail else {
+              let asset = asset else {
             return
         }
 
@@ -98,10 +108,13 @@ class WCAssetDeletionTransactionViewModel {
         )
 
         self.closeInformationViewModel = TransactionTextInformationViewModel(titledInformation)
-        self.closeWarningInformationViewModel = WCTransactionWarningViewModel(warning: .closeAsset(asset: assetDetail))
+        self.closeWarningInformationViewModel = WCTransactionWarningViewModel(warning: .closeAsset(asset: asset))
     }
 
-    private func setRekeyWarningViewModel(from senderAccount: Account?, and transaction: WCTransaction) {
+    private func setRekeyWarningViewModel(
+        from senderAccount: Account?,
+        and transaction: WCTransaction
+    ) {
         guard let rekeyAddress = transaction.transactionDetail?.rekeyAddress else {
             return
         }
@@ -150,7 +163,8 @@ class WCAssetDeletionTransactionViewModel {
     }
 
     private func setNoteInformationViewModel(from transaction: WCTransaction) {
-        guard let note = transaction.transactionDetail?.noteRepresentation(), !note.isEmptyOrBlank else {
+        guard let note = transaction.transactionDetail?.noteRepresentation(),
+              !note.isEmptyOrBlank else {
             return
         }
 
@@ -159,7 +173,7 @@ class WCAssetDeletionTransactionViewModel {
             detail: note
         )
 
-        self.noteInformationViewModel = TransactionTextInformationViewModel(titledInformation)
+        noteInformationViewModel = TransactionTextInformationViewModel(titledInformation)
     }
 
     private func setRawTransactionInformationViewModel(from transaction: WCTransaction) {

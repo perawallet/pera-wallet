@@ -273,7 +273,13 @@ extension TabBarController: SelectAccountViewControllerDelegate {
         for transactionAction: TransactionAction
     ) {
         if transactionAction == .send {
-            selectAccountViewController.open(.assetSelection(account: account), by: .push)
+            selectAccountViewController.open(
+                .assetSelection(
+                    filter: nil,
+                    account: account
+                ),
+                by: .push
+            )
         } else {
             selectAccountViewController.closeScreen(by: .dismiss) { [weak self] in
                 guard let self = self else {
@@ -283,7 +289,7 @@ extension TabBarController: SelectAccountViewControllerDelegate {
                 let draft = QRCreationDraft(address: account.address, mode: .address, title: account.name)
                 self.open(
                     .qrGenerator(
-                        title: account.name ?? account.address.shortAddressDisplay(),
+                        title: account.name ?? account.address.shortAddressDisplay,
                         draft: draft, isTrackable: true),
                     by: .present
                 )

@@ -25,6 +25,7 @@ enum GeneralSettings {
 
 enum AccountSettings: Settings {
     case security
+    case contacts
     case notifications
     case walletConnect
     
@@ -32,6 +33,8 @@ enum AccountSettings: Settings {
         switch self {
         case .security:
             return img("icon-settings-security")
+        case .contacts:
+            return img("icon-settings-contacts")
         case .notifications:
             return img("icon-settings-notification")
         case .walletConnect:
@@ -43,6 +46,8 @@ enum AccountSettings: Settings {
         switch self {
         case .security:
             return "settings-security-title".localized
+        case .contacts:
+            return "contacts-title".localized
         case .notifications:
             return "notifications-title".localized
         case .walletConnect:

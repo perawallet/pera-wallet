@@ -139,7 +139,7 @@ extension HomeAPIDataController {
             self.sharedDataController.accountCollection
                 .sorted()
                 .forEach {
-                    let isNonWatchAccount = $0.value.type != .watch
+                    let isNonWatchAccount = !$0.value.isWatchAccount()
                     let accountPortfolio =
                         AccountPortfolio(account: $0, currency: currency, calculator: calculator)
                     let cellItem: HomeAccountItem =

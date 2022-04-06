@@ -20,9 +20,12 @@ import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class SelectContactView: View {
-    private(set) lazy var userImageView = UIImageView()
-    private lazy var nameLabel = UILabel()
+final class SelectContactView:
+    View,
+    ViewModelBindable,
+    ListReusable {
+    private lazy var userImageView = UIImageView()
+    private lazy var nameLabel = Label()
 
     func customize(_ theme: SelectContactViewTheme) {
         addUserImageView(theme)
@@ -33,6 +36,34 @@ final class SelectContactView: View {
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
+    func bindData(_ viewModel: ContactsViewModel?) {
+        userImageView.image = viewModel?.image
+        nameLabel.editText = viewModel?.name
+    }
+
+    class func calculatePreferredSize(
+        _ viewModel: ContactsViewModel?,
+        for theme: SelectContactViewTheme,
+        fittingIn size: CGSize
+    ) -> CGSize {
+        guard let viewModel = viewModel else {
+            return CGSize((size.width, 0))
+        }
+
+        let width = size.width
+        let iconSize = theme.imageSize
+        let titleSize = viewModel.name.boundingSize(
+            multiline: false,
+            fittingSize: CGSize((width, .greatestFiniteMagnitude))
+        )
+
+        let preferredHeight = max(iconSize.h, titleSize.height)
+        return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
+    }
+
+    func prepareForReuse() {
+        userImageView.image = "icon-user-placeholder".uiImage
+    }
 }
 
 extension SelectContactView {
@@ -61,29 +92,18 @@ extension SelectContactView {
     }
 }
 
-extension SelectContactView: ViewModelBindable {
-    func bindData(_ viewModel: ContactsViewModel?) {
-        userImageView.image = viewModel?.image
-        nameLabel.text = viewModel?.name
+final class SelectContactCell:
+    CollectionCell<SelectContactView>,
+    ViewModelBindable {
+    override class var contextPaddings: LayoutPaddings {
+        return (14, 0, 14, 0)
     }
-}
 
-final class SelectContactCell: BaseCollectionViewCell<SelectContactView> {
+    static let theme = SelectContactViewTheme()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-        customize(SelectContactViewTheme())
-    }
 
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        contextView.userImageView.image = img("icon-user-placeholder")
-    }
-
-    func bindData(_ viewModel: ContactsViewModel) {
-        contextView.bindData(viewModel)
-    }
-
-    func customize(_ theme: SelectContactViewTheme) {
-        contextView.customize(theme)
+        contextView.customize(Self.theme)
     }
 }

@@ -40,9 +40,13 @@ class WCAssetCreationTransactionViewModel {
     private(set) var rawTransactionInformationViewModel: WCTransactionActionableInformationViewModel?
     private(set) var assetURLInformationViewModel: WCTransactionActionableInformationViewModel?
 
-    init(transaction: WCTransaction, senderAccount: Account?, assetDetail: AssetDetail?) {
+    init(
+        transaction: WCTransaction,
+        senderAccount: Account?,
+        asset: Asset?
+    ) {
         setSenderInformationViewModel(from: senderAccount, and: transaction)
-        setAssetNameViewModel(from: transaction, assetDetail: assetDetail)
+        setAssetNameViewModel(from: transaction, asset: asset)
         setUnitNameViewModel(from: transaction)
         setCloseWarningViewModel(from: transaction)
         setRekeyWarningViewModel(from: senderAccount, and: transaction)
@@ -61,7 +65,10 @@ class WCAssetCreationTransactionViewModel {
         setAssetURLInformationViewModel(from: transaction)
     }
 
-    private func setSenderInformationViewModel(from senderAccount: Account?, and transaction: WCTransaction) {
+    private func setSenderInformationViewModel(
+        from senderAccount: Account?,
+        and transaction: WCTransaction
+    ) {
         guard let senderAddress = transaction.transactionDetail?.sender else {
             return
         }
@@ -83,10 +90,13 @@ class WCAssetCreationTransactionViewModel {
         self.senderInformationViewModel = viewModel
     }
 
-    private func setAssetNameViewModel(from transaction: WCTransaction, assetDetail: AssetDetail?) {
+    private func setAssetNameViewModel(
+        from transaction: WCTransaction,
+        asset: Asset?
+    ) {
         assetNameViewModel = WCAssetInformationViewModel(
             title: "asset-title".localized,
-            assetDetail: assetDetail
+            asset: asset
         )
     }
 
@@ -120,7 +130,10 @@ class WCAssetCreationTransactionViewModel {
         self.closeWarningInformationViewModel = WCTransactionWarningViewModel(warning: .closeAlgos)
     }
 
-    private func setRekeyWarningViewModel(from senderAccount: Account?, and transaction: WCTransaction) {
+    private func setRekeyWarningViewModel(
+        from senderAccount: Account?,
+        and transaction: WCTransaction
+    ) {
         guard let rekeyAddress = transaction.transactionDetail?.rekeyAddress else {
             return
         }

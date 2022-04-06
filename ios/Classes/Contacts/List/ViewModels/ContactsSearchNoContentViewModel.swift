@@ -31,10 +31,40 @@ struct ContactsSearchNoContentViewModel: NoContentViewModel {
 
 extension ContactsSearchNoContentViewModel {
     private mutating func bindTitle() {
-        title = .string("contact-search-empty-title".localized)
+        let font = Fonts.DMSans.medium.make(19)
+        let lineHeightMultiplier = 1.13
+
+        title = .attributedString(
+            "contact-search-empty-title"
+                .localized
+                .attributed([
+                .font(font),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .textAlignment(.center),
+                    .lineBreakMode(.byWordWrapping),
+                    .lineHeightMultiple(lineHeightMultiplier)
+                ])
+            ])
+        )
     }
 
     private mutating func bindBody() {
-        body = .string("contact-search-empty-detail".localized)
+        let font = Fonts.DMSans.regular.make(15)
+        let lineHeightMultiplier = 1.23
+
+        body = .attributedString(
+            "contact-search-empty-detail"
+                .localized
+                .attributed([
+                .font(font),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .textAlignment(.center),
+                    .lineBreakMode(.byWordWrapping),
+                    .lineHeightMultiple(lineHeightMultiplier)
+                ])
+            ])
+        )
     }
 }

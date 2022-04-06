@@ -97,7 +97,7 @@ class TransactionFeeCalculator: NSObject {
             }
         }
 
-        let createdAppAmount = minimumTransactionMicroAlgosLimit * UInt64(account.createdApps?.count ?? 0)
+        let createdAppAmount = minimumTransactionMicroAlgosLimit * UInt64(account.totalCreatedApps)
         let localStateAmount = minimumTransactionMicroAlgosLimit * UInt64(account.appsLocalState?.count ?? 0)
         let totalSchemaValueAmount = totalNumIntConstantForMinimumAmount * UInt64(account.appsTotalSchema?.intValue ?? 0)
         let byteSliceAmount = byteSliceConstantForMinimumAmount * UInt64(account.appsTotalSchema?.byteSliceCount ?? 0)

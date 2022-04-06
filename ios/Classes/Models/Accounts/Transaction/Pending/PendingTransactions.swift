@@ -49,7 +49,7 @@ final class PendingTransaction:
     init(
         _ apiModel: APIModel = APIModel()
     ) {
-        self.signature = apiModel.sig
+        self.signature = apiModel.signature
         self.algosAmount = apiModel.txn?.amt
         self.assetAmount = apiModel.txn?.aamt
         self.fee = apiModel.txn?.fee
@@ -87,6 +87,8 @@ final class PendingTransaction:
         hasher.combine(receiver)
         hasher.combine(amount)
         hasher.combine(type)
+        hasher.combine(lv)
+        hasher.combine(fv)
     }
     
     static func == (lhs: PendingTransaction, rhs: PendingTransaction) -> Bool {
@@ -94,7 +96,9 @@ final class PendingTransaction:
         lhs.sender == rhs.sender &&
         lhs.receiver == rhs.receiver &&
         lhs.amount == rhs.amount &&
-        lhs.type == rhs.type
+        lhs.type == rhs.type &&
+        lhs.lv == rhs.lv &&
+        rhs.fv == rhs.fv
     }
 }
 
@@ -112,11 +116,105 @@ extension PendingTransaction {
     struct APIModel: ALGAPIModel {
         var sig: String?
         var txn: TransactionDetail?
+        var lsig: LogicSignature?
+        var msig: MultiSignature?
+        
+        var signature: String? {
+            sig ?? lsig?.l ?? msig?.signature
+        }
 
         init() {
             self.sig = nil
             self.txn = nil
+            self.lsig = nil
+            self.msig = nil
         }
+    }
+}
+
+extension PendingTransaction.APIModel {
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case sig
+        case txn
+        case lsig
+        case msig
+    }
+}
+
+extension PendingTransaction.APIModel {
+    struct LogicSignature: ALGAPIModel {
+        var l: String
+        
+        init() {
+            self.l = ""
+        }
+    }
+}
+
+extension PendingTransaction.APIModel.LogicSignature {
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case l = "l"
+    }
+}
+
+extension PendingTransaction.APIModel {
+    struct MultiSignature: ALGAPIModel {
+        var subsig: [MultiSubSignature]
+        
+        var signature: String? {
+            var combinedSignature: String?
+            
+            for signature in subsig {
+                guard let signatureValue = signature.s else {
+                    continue
+                }
+                
+                if let oldCombinedSignature = combinedSignature {
+                    combinedSignature = oldCombinedSignature.appending(signatureValue)
+                } else {
+                    combinedSignature = signatureValue
+                }
+            }
+            
+            return combinedSignature
+        }
+        
+        init() {
+            self.subsig = []
+        }
+    }
+}
+
+extension PendingTransaction.APIModel.MultiSignature {
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case subsig = "subsig"
+    }
+}
+
+extension PendingTransaction.APIModel.MultiSignature {
+    struct MultiSubSignature: ALGAPIModel {
+        var pk: String?
+        var s: String?
+        
+        init() {
+            self.pk = nil
+            self.s = nil
+        }
+    }
+}
+
+extension PendingTransaction.APIModel.MultiSignature.MultiSubSignature {
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case pk = "pk"
+        case s = "s"
     }
 }
 

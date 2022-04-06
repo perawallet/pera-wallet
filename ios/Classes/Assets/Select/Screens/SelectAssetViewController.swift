@@ -16,37 +16,48 @@
 //  SelectAssetViewController.swift
 
 import UIKit
+import MacaroonUIKit
 
-final class SelectAssetViewController: BaseViewController {
-    private let theme = Theme()
+final class SelectAssetViewController:
+    BaseViewController,
+    UICollectionViewDelegateFlowLayout {
+
+    private lazy var listView: UICollectionView = {
+        let collectionViewLayout = SelectAssetViewControllerListLayout.build()
+        let collectionView =
+        UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.backgroundColor = .clear
+        collectionView.register(AssetPreviewCell.self)
+        return collectionView
+    }()
+
+    private lazy var listLayout = SelectAssetViewControllerListLayout()
+
     private lazy var accountListDataSource = SelectAssetViewControllerDataSource(
+        filter: filter,
         account: account,
         sharedDataController: sharedDataController
     )
-    private lazy var listView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumLineSpacing = theme.listMinimumLineSpacing
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = theme.listBackgroundColor
-        collectionView.register(AssetPreviewCell.self)
-        collectionView.contentInset.top = theme.listContentInsetTop
-        return collectionView
-    }()
     
+    private let filter: AssetType?
     private let account: Account
-    
+    private let theme: SelectAssetViewControllerTheme
+
     init(
+        filter: AssetType?,
         account: Account,
+        theme: SelectAssetViewControllerTheme = .init(),
         configuration: ViewControllerConfiguration
     ) {
+        self.filter = filter
         self.account = account
+        self.theme = theme
         super.init(configuration: configuration)
     }
     
     override func configureAppearance() {
-        view.backgroundColor = theme.listBackgroundColor
         navigationItem.title = "send-select-asset".localized
     }
     
@@ -56,41 +67,131 @@ final class SelectAssetViewController: BaseViewController {
     }
 
     override func prepareLayout() {
+        build()
+    }
+
+    private func build() {
+        addBackground()
         addListView()
     }
 }
 
 extension SelectAssetViewController {
+    private func addBackground() {
+        view.customizeAppearance(theme.background)
+    }
+
     private func addListView() {
         view.addSubview(listView)
         listView.snp.makeConstraints {
-            $0.trailing.leading.equalToSuperview().inset(theme.listLeadingInset)
-            $0.top.bottom.equalToSuperview()
+            $0.setPaddings()
         }
     }
 }
 
-extension SelectAssetViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension SelectAssetViewController {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
+        return listLayout.collectionView(
+            collectionView,
+            layout: collectionViewLayout,
+            insetForSectionAt: section
+        )
+    }
+
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: theme.listItemHeight)
+        return listLayout.collectionView(
+            collectionView,
+            layout: collectionViewLayout,
+            sizeForItemAt: indexPath
+        )
+    }
+}
+
+extension SelectAssetViewController {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        if filter != .collectible,
+           indexPath.item == .zero {
+
+            let draft = SendTransactionDraft(
+                from: account,
+                transactionMode: .algo
+            )
+
+            open(.sendTransaction(draft: draft), by: .push)
+            return
+        }
+
+        guard let asset = accountListDataSource[indexPath] else {
+            return
+        }
+
+        if let collectibleAsset = asset as? CollectibleAsset {
+            if collectibleAsset.isPure {
+                openSendCollectible(collectibleAsset)
+                return
+            }
+        }
+
+        let draft = SendTransactionDraft(
+            from: account,
+            transactionMode: .asset(asset)
+        )
+        open(.sendTransaction(draft: draft), by: .push)
     }
 
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let draft: SendTransactionDraft
-        if indexPath.item == .zero {
-            draft = SendTransactionDraft(from: account, transactionMode: .algo)
-        } else {
-            guard let compoundAsset = accountListDataSource[indexPath] else {
+    private func openSendCollectible(
+        _ asset: CollectibleAsset
+    ) {
+        let sendCollectibleDraft = SendCollectibleDraft(
+            fromAccount: account,
+            collectibleAsset: asset,
+            image: nil
+        )
+
+        open(
+            .sendCollectible(
+                draft: sendCollectibleDraft,
+                transactionController: TransactionController(
+                    api: api!,
+                    bannerController: bannerController
+                ),
+                uiInteractionsHandler: linkSendCollectibleUIInteractions()
+            ),
+            by: .customPresent(
+                presentationStyle: .overCurrentContext,
+                transitionStyle: .crossDissolve,
+                transitioningDelegate: nil
+            ),
+            animated: false
+        )
+    }
+}
+
+extension SelectAssetViewController {
+    private func linkSendCollectibleUIInteractions()
+    -> SendCollectibleViewController.SendCollectibleUIInteractions {
+        var uiInteractions = SendCollectibleViewController.SendCollectibleUIInteractions()
+
+        uiInteractions.didCompleteTransaction = {
+            [weak self] controller in
+            guard let self = self else {
                 return
             }
 
-            draft = SendTransactionDraft(from: account, transactionMode: .assetDetail(compoundAsset.detail))
+            /// <todo>: Dismiss the screen properly
         }
 
-        open(.sendTransaction(draft: draft), by: .push)
+        return uiInteractions
     }
 }

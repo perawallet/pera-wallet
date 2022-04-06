@@ -60,9 +60,9 @@ final class HomeViewController:
     private var sendTransactionDraft: SendTransactionDraft?
     
     private var isViewFirstAppeared = true
-    
+
     private let dataController: HomeDataController
-    
+
     init(
         dataController: HomeDataController,
         configuration: ViewControllerConfiguration
@@ -468,20 +468,20 @@ extension HomeViewController: QRScannerViewControllerDelegate {
                       return
                   }
 
-            var asset: AssetInformation?
+            var asset: Asset?
 
             for accountHandle in sharedDataController.accountCollection.sorted() {
-                for compoundAsset in accountHandle.value.compoundAssets where compoundAsset.id == assetId {
-                    asset = compoundAsset.detail
+                for anAsset in accountHandle.value.allAssets where anAsset.id == assetId {
+                    asset = anAsset
                     break
                 }
             }
 
-            guard let assetDetail = asset else {
+            guard let asset = asset else {
                 let assetAlertDraft = AssetAlertDraft(
                     account: nil,
-                    assetIndex: assetId,
-                    assetDetail: nil,
+                    assetId: assetId,
+                    asset: nil,
                     title: "asset-support-your-add-title".localized,
                     detail: "asset-support-your-add-message".localized,
                     actionTitle: "title-approve".localized,
@@ -496,7 +496,7 @@ extension HomeViewController: QRScannerViewControllerDelegate {
             }
 
             let toAccount = Account(address: address, type: .standard)
-            var draft = SendTransactionDraft(from: toAccount, transactionMode: .assetDetail(assetDetail))
+            var draft = SendTransactionDraft(from: toAccount, transactionMode: .asset(asset))
             draft.amount = Decimal(amount)
             draft.note = qrText.lockedNote
             draft.lockedNote = qrText.lockedNote
@@ -624,7 +624,7 @@ extension HomeViewController {
         guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
             return
         }
-        
+
         switch itemIdentifier {
         case .account(let item):
             switch item {
@@ -667,6 +667,7 @@ extension HomeViewController: SelectAccountViewControllerDelegate {
         didSelect account: Account,
         for transactionAction: TransactionAction
     ) {
+        /// <todo> Why we don't have account.isAvailable check like in didSelect method
         guard transactionAction == .send, let draft = sendTransactionDraft else {
             return
         }
@@ -702,7 +703,7 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
             )
             self.open(
                 .qrGenerator(
-                    title: accountHandle.value.name ?? accountHandle.value.address.shortAddressDisplay(),
+                    title: accountHandle.value.name ?? accountHandle.value.address.shortAddressDisplay,
                     draft: draft,
                     isTrackable: true
                 ),

@@ -57,9 +57,13 @@ struct AccountQuery: ObjectQuery {
     var queryParams: [APIQueryParam] {
         var params: [APIQueryParam] = []
 
+        let excludeParams = "created-assets,created-apps"
+        
         if includesAll {
             params.append(.init(.includesAll, includesAll))
         }
+
+        params.append(.init(.exclude, excludeParams))
 
         return params
     }

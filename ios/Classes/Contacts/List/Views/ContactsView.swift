@@ -33,7 +33,6 @@ final class ContactsView: View {
         collectionView.contentInset = UIEdgeInsets(theme.contentInset) 
         collectionView.keyboardDismissMode = .onDrag
         collectionView.register(ContactCell.self)
-        collectionView.register(ContactSelectionCell.self)
         return collectionView
     }()
     

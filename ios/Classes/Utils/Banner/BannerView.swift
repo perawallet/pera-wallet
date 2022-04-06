@@ -54,9 +54,7 @@ final class BannerView:
     ) {}
 
     func linkInteractors() {
-        addGestureRecognizer(
-            UITapGestureRecognizer(target: self, action: #selector(didTapBanner))
-        )
+        addBannerTapGesture()
     }
 
     func bindData(

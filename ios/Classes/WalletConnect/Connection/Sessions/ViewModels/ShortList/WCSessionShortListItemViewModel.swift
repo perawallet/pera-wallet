@@ -57,7 +57,7 @@ extension WCSessionShortListItemViewModel {
 
     private func bindDescription(_ session: WCSession) {
         if let connectedAccount = session.walletMeta?.accounts?.first {
-            description = "wallet-connect-session-connected-with-account".localized(params: connectedAccount.shortAddressDisplay())
+            description = "wallet-connect-session-connected-with-account".localized(params: connectedAccount.shortAddressDisplay)
             return
         }
 

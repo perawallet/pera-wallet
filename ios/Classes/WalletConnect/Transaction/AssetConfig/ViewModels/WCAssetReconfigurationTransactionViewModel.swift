@@ -40,10 +40,14 @@ class WCAssetReconfigurationTransactionViewModel {
     private(set) var assetURLInformationViewModel: WCTransactionActionableInformationViewModel?
     private(set) var algoExplorerInformationViewModel: WCTransactionActionableInformationViewModel?
 
-    init(transaction: WCTransaction, senderAccount: Account?, assetDetail: AssetDetail?) {
+    init(
+        transaction: WCTransaction,
+        senderAccount: Account?,
+        asset: Asset?
+    ) {
         setSenderInformationViewModel(from: senderAccount, and: transaction)
-        setAssetInformationViewModel(from: transaction, and: assetDetail)
-        setCloseWarningViewModel(from: transaction, and: assetDetail)
+        setAssetInformationViewModel(from: transaction, and: asset)
+        setCloseWarningViewModel(from: transaction, and: asset)
         setRekeyWarningViewModel(from: senderAccount, and: transaction)
         setFeeInformationViewModel(from: transaction)
         setFeeWarningViewModel(from: transaction)
@@ -53,11 +57,14 @@ class WCAssetReconfigurationTransactionViewModel {
         setClawbackAccountViewModel(from: transaction)
         setNoteInformationViewModel(from: transaction)
         setRawTransactionInformationViewModel(from: transaction)
-        setAssetURLInformationViewModel(from: assetDetail)
+        setAssetURLInformationViewModel(from: asset)
         setAlgoExplorerInformationViewModel(from: transaction)
     }
 
-    private func setSenderInformationViewModel(from senderAccount: Account?, and transaction: WCTransaction) {
+    private func setSenderInformationViewModel(
+        from senderAccount: Account?,
+        and transaction: WCTransaction
+    ) {
         guard let senderAddress = transaction.transactionDetail?.sender else {
             return
         }
@@ -79,17 +86,23 @@ class WCAssetReconfigurationTransactionViewModel {
         self.senderInformationViewModel = viewModel
     }
 
-    private func setAssetInformationViewModel(from transaction: WCTransaction, and assetDetail: AssetDetail?) {
+    private func setAssetInformationViewModel(
+        from transaction: WCTransaction,
+        and asset: Asset?
+    ) {
         assetNameViewModel = WCAssetInformationViewModel(
             title: "asset-title".localized,
-            assetDetail: assetDetail
+            asset: asset
         )
     }
 
-    private func setCloseWarningViewModel(from transaction: WCTransaction, and assetDetail: AssetDetail?) {
+    private func setCloseWarningViewModel(
+        from transaction: WCTransaction,
+        and asset: Asset?
+    ) {
         guard let transactionDetail = transaction.transactionDetail,
               let closeAddress = transactionDetail.closeAddress,
-              let assetDetail = assetDetail else {
+              let asset = asset else {
             return
         }
 
@@ -99,11 +112,13 @@ class WCAssetReconfigurationTransactionViewModel {
         )
 
         self.closeInformationViewModel = TransactionTextInformationViewModel(titledInformation)
-
-        self.closeWarningInformationViewModel = WCTransactionWarningViewModel(warning: .closeAsset(asset: assetDetail))
+        self.closeWarningInformationViewModel = WCTransactionWarningViewModel(warning: .closeAsset(asset: asset))
     }
 
-    private func setRekeyWarningViewModel(from senderAccount: Account?, and transaction: WCTransaction) {
+    private func setRekeyWarningViewModel(
+        from senderAccount: Account?,
+        and transaction: WCTransaction
+    ) {
         guard let rekeyAddress = transaction.transactionDetail?.rekeyAddress else {
             return
         }
@@ -220,8 +235,8 @@ class WCAssetReconfigurationTransactionViewModel {
         rawTransactionInformationViewModel = WCTransactionActionableInformationViewModel(information: .rawTransaction, isLastElement: false)
     }
 
-    private func setAssetURLInformationViewModel(from assetDetail: AssetDetail?) {
-        if let url = assetDetail?.url,
+    private func setAssetURLInformationViewModel(from asset: Asset?) {
+        if let url = asset?.presentation.url,
            !url.isEmpty {
             assetURLInformationViewModel = WCTransactionActionableInformationViewModel(information: .assetUrl, isLastElement: false)
         }

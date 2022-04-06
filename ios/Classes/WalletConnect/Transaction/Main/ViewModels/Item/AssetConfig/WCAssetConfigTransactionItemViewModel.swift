@@ -23,14 +23,21 @@ class WCAssetConfigTransactionItemViewModel {
     private(set) var detail: String?
     private(set) var accountInformationViewModel: WCGroupTransactionAccountInformationViewModel?
 
-    init(transaction: WCTransaction, account: Account?, assetInformation: AssetInformation?) {
+    init(
+        transaction: WCTransaction,
+        account: Account?,
+        asset: Asset?
+    ) {
         setHasWarning(from: transaction, and: account)
         setTitle(from: transaction, and: account)
-        setDetail(from: transaction, and: account, with: assetInformation)
-        setAccountInformationViewModel(from: account, with: assetInformation)
+        setDetail(from: transaction, and: account, with: asset)
+        setAccountInformationViewModel(from: account, with: asset)
     }
 
-    private func setHasWarning(from transaction: WCTransaction, and account: Account?) {
+    private func setHasWarning(
+        from transaction: WCTransaction,
+        and account: Account?
+    ) {
         guard let transactionDetail = transaction.transactionDetail, account != nil else {
             return
         }
@@ -38,7 +45,10 @@ class WCAssetConfigTransactionItemViewModel {
         hasWarning = transactionDetail.isAssetDeletionTransaction || transactionDetail.hasRekeyOrCloseAddress
     }
 
-    private func setTitle(from transaction: WCTransaction, and account: Account?) {
+    private func setTitle(
+        from transaction: WCTransaction,
+        and account: Account?
+    ) {
         guard let transactionDetail = transaction.transactionDetail,
               let transactionType = transactionDetail.transactionType(for: account),
               transactionDetail.isAssetConfigTransaction else {
@@ -60,7 +70,11 @@ class WCAssetConfigTransactionItemViewModel {
         }
     }
 
-    private func setDetail(from transaction: WCTransaction, and account: Account?, with assetInformation: AssetInformation?) {
+    private func setDetail(
+        from transaction: WCTransaction,
+        and account: Account?,
+        with asset: Asset?
+    ) {
         guard let transactionDetail = transaction.transactionDetail,
               let transactionType = transactionDetail.transactionType(for: account),
               transactionDetail.isAssetConfigTransaction else {
@@ -75,8 +89,8 @@ class WCAssetConfigTransactionItemViewModel {
                     detail = "\(assetConfigParams.name ?? assetConfigParams.unitName ?? "title-unknown".localized)"
                 }
             case .reconfig:
-                if let assetInformation = assetInformation {
-                    detail = "\(assetInformation.name ?? assetInformation.unitName ?? "title-unknown".localized)"
+                if let asset = asset {
+                    detail = "\(asset.presentation.name ?? asset.presentation.unitName ?? "title-unknown".localized)"
                 }
             case .delete:
                 if let assetId = transactionDetail.assetIdBeingConfigured {
@@ -88,10 +102,13 @@ class WCAssetConfigTransactionItemViewModel {
         }
     }
 
-    private func setAccountInformationViewModel(from account: Account?, with assetInformation: AssetInformation?) {
+    private func setAccountInformationViewModel(
+        from account: Account?,
+        with asset: Asset?
+    ) {
         accountInformationViewModel = WCGroupTransactionAccountInformationViewModel(
             account: account,
-            assetInformation: nil,
+            asset: nil,
             isDisplayingAmount: false
         )
     }

@@ -15,39 +15,60 @@
 //
 //   PassphraseVerifyViewTheme.swift
 
-import Foundation
 import MacaroonUIKit
 import UIKit
 
 struct PassphraseVerifyViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
+    
     let title: TextStyle
+    let titleText: EditText
+    let titleTopInset: LayoutMetric
+    
+    let listTopOffset: LayoutMetric
+    
+    let cardViewTheme: PassphraseVerifyCardViewTheme
+    let cardViewBottomOffset: LayoutMetric
 
     let nextButtonTheme: ButtonTheme
+    let buttonTopOffset: LayoutMetric
+    let buttonBottomOffset: LayoutMetric
 
-    let titleTopInset: LayoutMetric
     let horizontalInset: LayoutMetric
-    let buttonVerticalInset: LayoutMetric
-    let listTopOffset: LayoutMetric
-    let listHeight: LayoutMetric
-    let cellSpacing: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
+        
         self.title = [
-            .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMSans.medium.make(32)),
             .textAlignment(.left),
             .textOverflow(FittingText()),
-            .text("passphrase-verify-title".localized)
         ]
-        self.nextButtonTheme = ButtonPrimaryTheme()
-
+        let titleFont = Fonts.DMSans.medium.make(32)
+        let titleLineHeightMultiplier = 0.96
+        self.titleText = .attributedString(
+            "passphrase-verify-title"
+                .localized
+                .attributed([
+                    .font(titleFont),
+                    .lineHeightMultiplier(titleLineHeightMultiplier, titleFont),
+                    .paragraph([
+                        .lineHeightMultiple(titleLineHeightMultiplier)
+                    ]),
+                    .textColor(AppColors.Components.Text.main),
+                    .letterSpacing(-0.32)
+                ])
+        )
         self.titleTopInset = 2
-        self.horizontalInset = 24
-        self.buttonVerticalInset = 16
+        
         self.listTopOffset = 40
-        self.listHeight = 440
-        self.cellSpacing = 18
+        
+        self.cardViewTheme = PassphraseVerifyCardViewTheme()
+        self.cardViewBottomOffset = 32
+        
+        self.nextButtonTheme = ButtonPrimaryTheme()
+        self.buttonTopOffset = 24
+        self.buttonBottomOffset = 16
+        
+        self.horizontalInset = 24
     }
 }

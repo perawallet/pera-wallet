@@ -45,6 +45,8 @@
 "title-off" = "Off";
 "title-on" = "On";
 "title-retry" = "Retry";
+"title-error-description" = "Error: %@";
+"title-generic-api-error" = "Well, this is unexpected";
 "title-not-available" = "Not available";
 
 "title-show-transaction-detail" = "Show Transaction Details";
@@ -71,7 +73,7 @@
 
 "introduction-add-account-text" = "I want to create\nan Algorand account";
 "introduction-recover-account-text" = "I already have an account";
-"introduction-title-terms-and-services" = "By creating an account, you agree to Pera Wallet's<br><a href=\"https://perawallet.app/terms-and-services/\">Terms and Conditions</a> and <a href=\"https://www.perawallet.app/privacy-policy/\">Privacy Policy</a>";
+"introduction-title-terms-and-services" = "By creating an account, you agree to Pera Wallet's<br><a href=\"%@\">Terms and Conditions</a> and <a href=\"%@\">Privacy Policy</a>";
 
 // MARK: Password Setting
 "password-set-subtitle" = "Choose your\n6-digit PIN";
@@ -286,6 +288,7 @@
 "contacts-add" = "Add Contact";
 "contacts-add-photo" = "Add Photo";
 "contacts-info" = "Contact Info";
+"contacts-info-address" = "Account Address";
 "contacts-info-edit" = "Edit Contact";
 "contacts-input-name-placeholder" = "Contact name";
 "contacts-transactions-title" = "Transaction History";
@@ -300,12 +303,13 @@
 "contacts-close-warning-title" = "Are you sure?";
 "contacts-close-warning-subtitle" = "Your unsaved progress will be lost. Are you sure?";
 "accounts-title-assets" = "Assets";
-"accounts-title-nfts" = "NFTs";
+"accounts-title-collectibles" = "Collectibles";
 "accounts-title-history" = "History";
 "contacts-title-assets" = "Assets";
 "title-select-asset" = "Select Asset";
 "contact-search-empty-title" = "No contact found";
 "contact-search-empty-detail" = "Try different contact name";
+"contact-input-address-placeholder" = "Account address";
 
 // MARK: Settings
 "settings-sections-account" = "Account";
@@ -609,6 +613,8 @@
 
 "title-plus-asset-count" = "%@ Assets";
 "title-plus-asset-singular-count" = "%@ Asset";
+"title-plus-collectible-count" = "%@ NFTs";
+"title-plus-collectible-singular-count" = "%@ NFT";
 
 "ledger-account-detail-name" = "Ledger #%@";
 "ledger-account-detail-title" = "Ledger Account";
@@ -864,10 +870,6 @@
 "account-detail-portfolio-title" = "Account Value";
 "account-detail-assets-search" = "Search my assets";
 
-// MARK: NFTs
-"nft-list-empty-title" = "NFTs - Coming Soon!";
-"nft-list-empty-detail" = "You will be able to view your NFT collections\nin the Pera Wallet soon.\n\n\nOur team is working hard to make this feature available. Stay tuned!";
-
 // MARK: SendTransaction
 "send-transaction-title" = "Send %@";
 "send-transaction-add-note-title" = "+ Add Note";
@@ -888,7 +890,7 @@
 // MARK: AccountSelect
 "account-select-header-accounts-title" = "My Accounts";
 "account-select-header-contacts-title" = "Contacts";
-"account-select-header-search-title" = "Search or enter address";
+"account-select-header-search-title" = "Search or enter wallet address";
 "account-select-search-empty-title" = "No account found";
 "account-select-search-empty-detail" = "Try different account name";
 "account-select-clipboard-title" = "Paste From Clipboard";
@@ -915,6 +917,81 @@
 "pera-announcement-description" = "We are very excited to announce that Algorand Wallet is now called Pera Wallet. This is much more than a new name and logo. We are relaunching the most popular wallet in the Algorand ecosystem with a renewed focus on our roadmap, partner integrations, and community.\n\nDon't worry, Pera Wallet is built and maintained by the same team and all the features you know and love are still here as usual – With many more to come in the upcoming months.\n\nTo read more about the relaunch and our roadmap, head over to the Pera Wallet blog";
 "pera-announcement-description-blog" = "Pera Wallet blog";
 "pera-announcement-action-title" = "Start Using Pera Wallet";
+
+// MARK: Collectible Common
+"title-collectibles" = "Collectibles";
+"collectibles-empty-title" = "Collectibles";
+"collectibles-empty-body" = "Welcome to your NFT Gallery! You don’t have any NFTs yet. All the NFTs available in your wallet will be visible here.";
+
+/// MARK: Collectible List
+"collectible-list-item-pending-title" = "Pending";
+"collectibles-list-input-placeholder" = "Search your NFTs";
+
+/// MARK: Collectible Receive
+"collectibles-receive-action" = "Receive an NFT";
+"collectibles-receive-account-list-header-description" = "Select the wallet account you would like to receive to:";
+"collectible-receive-account-list-info" = "You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet.";
+"collectibles-receive-asset-title" = "Opt-in to NFT";
+"collectibles-receive-asset-list-search-placeholder" = "Search Asset ID or NFT name";
+"collectibles-receive-asset-list-header-description" = "You need to opt in to the ASA ID of the NFT to be able to receive it. Paste the ASA ID or scan it below.";
+"collectibles-receive-asset-list-search-no-content" = "No NFT Found";
+"collectible-receive-asset-list-info" = "You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet. Paste the ASA ID in the search bar.";
+"collectible-receive-asset-list-selected-account" = "Selected account";
+
+/// MARK: Collectible Send
+"collectible-send-title" = "Send your NFT";
+"collectible-send-input-placeholder" = "Paste an Algorand wallet address";
+"collectible-send-action" = "Transfer";
+"collectible-send-account-list-title" = "Select the receiver account";
+
+// MARK: Collectible Detail
+"collectible-detail-share" = "Share";
+"collectible-detail-description" = "Description";
+"collectible-detail-owner" = "Owner";
+"collectible-detail-collection-name" = "Collection Name";
+"collectible-detail-creator-name" = "Creator Name";
+"collectible-detail-creator-address" = "Creator Wallet Address";
+"collectible-detail-properties" = "Properties";
+"collectible-detail-view-transaction" = "View Transaction";
+"collectible-detail-algo-explorer" = "Show on Algoexplorer";
+"collectible-detail-nft-explorer" = "Show on NFTExplorer";
+"collectible-detail-error-media-type" = "We don't support this NFT media type yet.";
+"collectible-detail-error-not-owner" = "You are not the owner of this NFT yet, however you opted in for it. You can now transfer it to your wallet.";
+"collectible-detail-error-not-owner-watch-account" = "The Watch Account has opted in for this NFT.";
+"collectible-detail-error-visual" = "We can’t display the visual temporarily.";
+"collectible-detail-opted-in" = "Opted in to";
+"collectible-detail-opt-out" = "Opt out";
+"collectible-detail-opt-out-success" = "%@ NFT successfully opted-out";
+"collectible-detail-opt-out-alert-title" = "Opt out from “%@”";
+"collectible-detail-opt-out-alert-message" = "You are about to opt out from this NFT with %@. You will not be able to transact with this asset until you opt in again.";
+"collectible-detail-show-on" = "Show on";
+"collectible-detail-pera-explorer" = "Pera Explorer";
+
+// MARK: Collectible Transfer
+"collectible-transfer-confirmed-title" = "Your NFT transfer is confirmed!";
+"collectible-transfer-confirmed-description" = "Transactions can take a few minutes to finalize.";
+"collectible-transfer-confirmed-action-title" = "Got it!";
+"collectible-transfer-failed-title" = "Your NFT transfer has failed!";
+"collectible-transfer-failed-verify-algo-desription" = "Please verify that you have enough Algo to cover the transaction fees for transferring your NFT, and try again.";
+"collectible-transfer-failed-retry-desription" = "Please try again.";
+
+/// MARK: Collectible Opt In Info
+"collectible-opt-in-info-title" = "Information about Opt-In";
+"collectible-opt-in-info-description" = "To avoid spammy transaction, the Algorand Blockchain only allow you to send and receive transaction for assets that have been previously opted-in.";
+
+// MARK: Collectible Approve
+"collectible-approve-transaction-title" = "Approve Transaction";
+"collectible-approve-transaction-description" = "Are you sure you want to proceed?";
+"collectible-approve-transaction-action-title" = "Confirm transfer";
+"collectible-approve-transaction-sender" = "Sender Account";
+"collectible-approve-transaction-to" = "To";
+"collectible-approve-transaction-fee" = "Transaction Fee";
+
+/// MARK: Collecitble Ask recipient to opt in
+"collectible-recipient-opt-in-title" = "Ask recipient to opt in";
+"collectible-recipient-opt-in-description" = "You can't send %@ to %@ because this wallet didn't opt in for this asset yet. Learn more about Opt-in";
+"collectible-recipient-opt-in-description-marked" = "Learn more about Opt-in";
+"collectible-recipient-opt-in-action-title" = "Request Opt-in";
 
 // MARK: Number Abbreviation
 "number-abbreviation-thousand" = "K";

@@ -49,12 +49,9 @@ extension AccountNameViewModel {
             return
         }
 
-        if let imageData = contact.image,
-           let image = UIImage(data: imageData) {
-            self.image = image
-        } else {
-            self.image = "icon-user-placeholder".uiImage
-        }
+        image = ContactImageProcessor(
+            data: contact.image
+        ).process()
     }
 
     private func bindName(from account: Account, with hasImage: Bool) {
@@ -63,7 +60,7 @@ extension AccountNameViewModel {
             return
         }
 
-        name = account.name.unwrap(or: account.address.shortAddressDisplay())
+        name = account.name.unwrap(or: account.address.shortAddressDisplay)
     }
 
     private func bindName(from contact: Contact, with hasImage: Bool) {
@@ -76,6 +73,6 @@ extension AccountNameViewModel {
             return
         }
 
-        name = contact.name.unwrap(or: contactAddress.shortAddressDisplay())
+        name = contact.name.unwrap(or: contactAddress.shortAddressDisplay)
     }
 }

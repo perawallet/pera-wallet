@@ -276,7 +276,7 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
                 captureSession = nil
                 closeScreen(by: .pop)
                 delegate?.qrScannerViewController(self, didRead: qrText, completionHandler: nil)
-            } else if AlgorandSDK().isValidAddress(qrString) {
+            } else if qrString.isValidatedAddress {
                 let qrText = QRText(mode: .address, address: qrString)
                 captureSession = nil
                 closeScreen(by: .pop)
@@ -299,7 +299,7 @@ extension QRScannerViewController: WalletConnectorDelegate {
 
         let accounts = self.sharedDataController.accountCollection.sorted()
 
-        guard accounts.contains(where: { $0.value.type != .watch }) else {
+        guard accounts.contains(where: { !$0.value.isWatchAccount() }) else {
             asyncMain { [weak self] in
                 guard let self = self else {
                     return

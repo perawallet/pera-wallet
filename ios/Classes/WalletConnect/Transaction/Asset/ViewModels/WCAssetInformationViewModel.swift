@@ -20,32 +20,32 @@ import MacaroonUIKit
 
 final class WCAssetInformationViewModel: ViewModel {
     private(set) var title: String?
-    private(set) var asset: String?
+    private(set) var name: String?
     private(set) var assetId: String?
 
     var isAlgo: Bool {
-        assetDetail == nil
+        asset == nil
     }
 
     var isVerified: Bool {
-        isAlgo || (assetDetail?.isVerified ?? false)
+        isAlgo || (asset?.presentation.isVerified ?? false)
     }
 
-    private let assetDetail: AssetDetail?
+    private let asset: Asset?
 
-    init(title: String?, assetDetail: AssetDetail?) {
+    init(title: String?, asset: Asset?) {
         self.title = title
-        self.assetDetail = assetDetail
-        setAsset()
+        self.asset = asset
+        setName()
     }
 
-    private func setAsset() {
-        guard let assetDetail = assetDetail else {
-            asset = "ALGO"
+    private func setName() {
+        guard let asset = asset else {
+            name = "ALGO"
             return
         }
 
-        asset = assetDetail.assetName
-        assetId = "\(assetDetail.id)"
+        name = asset.presentation.name
+        assetId = "\(asset.id)"
     }
 }

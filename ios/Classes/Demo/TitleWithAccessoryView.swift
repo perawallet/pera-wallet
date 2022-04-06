@@ -100,7 +100,7 @@ extension TitleWithAccessoryView {
         titleView.customizeAppearance(theme.title)
         
         addSubview(titleView)
-        titleView.fitToVerticalIntrinsicSize()
+        titleView.fitToIntrinsicSize()
         titleView.snp.makeConstraints {
             $0.top == theme.titleVerticalPaddings.top
             $0.leading == 0

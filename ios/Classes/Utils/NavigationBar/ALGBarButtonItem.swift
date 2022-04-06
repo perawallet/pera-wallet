@@ -27,7 +27,7 @@ struct ALGBarButtonItem: BarButtonItem {
         case .save:
             return BarButtonItemTitleContent(
                 text: "title-save".localized,
-                textColor: Colors.Text.primary,
+                textColor: AppColors.Components.Text.main.uiColor,
                 font: UIFont.font(withWeight: .bold(size: 12.0))
             )
         case .done:
@@ -57,7 +57,7 @@ struct ALGBarButtonItem: BarButtonItem {
         case .copy:
             return BarButtonItemTitleContent(
                 text: "title-copy".localized,
-                textColor: Colors.ButtonText.actionButton,
+                textColor: AppColors.Components.Link.primary.uiColor,
                 font: UIFont.font(withWeight: .medium(size: 16.0))
             )
         default:

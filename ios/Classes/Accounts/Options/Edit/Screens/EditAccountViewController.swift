@@ -89,7 +89,7 @@ extension EditAccountViewController {
            !name.isEmpty {
             accountName = name
         } else {
-            accountName = account.address.shortAddressDisplay()
+            accountName = account.address.shortAddressDisplay
         }
 
         account.name = accountName

@@ -65,7 +65,7 @@ extension WCSessionItemViewModel {
 
     private func bindStatus(_ session: WCSession) {
         if let connectedAccount = session.walletMeta?.accounts?.first {
-            status = "wallet-connect-session-connected-with-account".localized(params: connectedAccount.shortAddressDisplay())
+            status = "wallet-connect-session-connected-with-account".localized(params: connectedAccount.shortAddressDisplay)
             return
         }
 

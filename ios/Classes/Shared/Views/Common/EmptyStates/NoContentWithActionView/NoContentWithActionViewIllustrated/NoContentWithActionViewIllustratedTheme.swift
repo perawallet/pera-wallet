@@ -1,0 +1,57 @@
+// Copyright 2022 Pera Wallet, LDA
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//   NoContentWithActionViewIllustratedTheme.swift
+
+import MacaroonUIKit
+
+struct NoContentWithActionViewIllustratedTheme: NoContentViewWithActionTheme {
+    let icon: ImageStyle
+    let title: TextStyle
+    let titleTopMargin: LayoutMetric
+    let body: TextStyle
+    let bodyTopMargin: LayoutMetric
+    var contentHorizontalPaddings: LayoutHorizontalPaddings
+    var contentVerticalPaddings: LayoutVerticalPaddings
+    let actionContentEdgeInsets: LayoutPaddings
+    let actionCornerRadius: LayoutMetric
+    let actionTopMargin: LayoutMetric
+    var action: ButtonStyle
+    let actionAlignment: NoContentWithActionView.ActionViewAlignment
+
+    init(
+        _ family: LayoutFamily
+    ) {
+        let resultTheme = ResultViewIllustratedTheme()
+
+        icon = resultTheme.icon
+        title = resultTheme.title
+        titleTopMargin = resultTheme.titleTopMargin
+        body = resultTheme.body
+        bodyTopMargin = resultTheme.bodyTopMargin
+        contentHorizontalPaddings = (24, 24)
+        contentVerticalPaddings = (16, 16)
+        actionContentEdgeInsets = (14, 24, 14, 24)
+        actionCornerRadius = 4
+        actionTopMargin = 52
+        action = [
+            .titleColor(
+                [.normal(AppColors.Components.Button.Primary.text)]
+            ),
+            .font(Fonts.DMSans.medium.make(15)),
+            .backgroundColor(AppColors.Components.Button.Primary.background)
+        ]
+        actionAlignment = .aligned(left: 0, right: 0)
+    }
+}

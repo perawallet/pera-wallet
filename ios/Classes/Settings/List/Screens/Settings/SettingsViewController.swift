@@ -135,6 +135,8 @@ extension SettingsViewController {
         switch setting {
         case .security:
             open(.securitySettings, by: .push)
+        case .contacts:
+            open(.contacts, by: .push)
         case .notifications:
             open(.notificationFilter(flow: .settings), by: .push)
         case .walletConnect:

@@ -22,7 +22,7 @@ import XCTest
 class AssetViewModelTests: XCTestCase {
 
     private let assetDetail = Bundle.main.decode(response: AssetDetail.self, from: "HipoCoinAsset.json")
-    private let asset = Bundle.main.decode(response: Asset.self, from: "Asset.json")
+//    private let asset = Bundle.main.decode(response: Asset.self, from: "Asset.json")
 
 //    func testAmount() {
 //        let viewModel = AssetViewModel(assetDetail: assetDetail, asset: asset)

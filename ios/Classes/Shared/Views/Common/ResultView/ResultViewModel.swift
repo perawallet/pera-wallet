@@ -23,3 +23,19 @@ protocol ResultViewModel: ViewModel {
     var title: EditText? { get }
     var body: EditText? { get }
 }
+
+extension ResultViewModel where Self: Hashable {
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(title)
+    }
+
+    static func == (
+        lhs: Self,
+        rhs: Self
+    ) -> Bool {
+        return lhs.title == rhs.title &&
+        lhs.body == rhs.body
+    }
+}

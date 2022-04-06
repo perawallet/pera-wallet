@@ -38,8 +38,8 @@ final class HomeLoadingView:
     private lazy var buyAlgoButton = Button()
     
     private lazy var accountsLabel = Label()
-    private lazy var firstAccountPreviewLoading = AssetPreviewLoadingView()
-    private lazy var secondAccountPreviewLoading = AssetPreviewLoadingView()
+    private lazy var firstAccountPreviewLoading = PreviewLoadingView()
+    private lazy var secondAccountPreviewLoading = PreviewLoadingView()
     
     override init(
         frame: CGRect
@@ -161,8 +161,8 @@ extension HomeLoadingView {
             $0.trailing.equalToSuperview()
         }
 
-        firstAccountPreviewLoading.customize(AssetPreviewLoadingViewCommonTheme())
-        secondAccountPreviewLoading.customize(AssetPreviewLoadingViewCommonTheme())
+        firstAccountPreviewLoading.customize(PreviewLoadingViewCommonTheme())
+        secondAccountPreviewLoading.customize(PreviewLoadingViewCommonTheme())
 
         addSubview(firstAccountPreviewLoading)
         firstAccountPreviewLoading.snp.makeConstraints {

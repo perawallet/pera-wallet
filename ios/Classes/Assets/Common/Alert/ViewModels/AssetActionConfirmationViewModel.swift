@@ -21,6 +21,7 @@ import MacaroonUIKit
 final class AssetActionConfirmationViewModel: PairedViewModel {
     private(set) var title: String?
     private(set) var id: String?
+    private(set) var transactionFee: String?
     private(set) var actionTitle: String?
     private(set) var cancelTitle: String?
     private(set) var detail: NSAttributedString?
@@ -29,6 +30,7 @@ final class AssetActionConfirmationViewModel: PairedViewModel {
     init(_ model: AssetAlertDraft) {
         bindTitle(model)
         bindID(model)
+        bindTransactionFee(model)
         bindActionTitle(model)
         bindCancelTitle(model)
         bindDetail(model)
@@ -42,7 +44,15 @@ extension AssetActionConfirmationViewModel {
     }
 
     private func bindID(_ draft: AssetAlertDraft) {
-        id = "\(draft.assetIndex)"
+        id = "\(draft.assetId)"
+    }
+    
+    private func bindTransactionFee(_ draft: AssetAlertDraft) {
+        guard let fee = draft.transactionFee?.toAlgos else {
+            return
+        }
+        
+        transactionFee = fee.toAlgosStringForLabel
     }
 
     private func bindActionTitle(_ draft: AssetAlertDraft) {
@@ -60,20 +70,20 @@ extension AssetActionConfirmationViewModel {
 
         let attributedDetailText = NSMutableAttributedString(attributedString: detailText.attributed([.lineSpacing(1.2)]))
 
-        guard let assetDetail = draft.assetDetail,
-              let unitName = assetDetail.unitName,
+        guard let asset = draft.asset,
+              let unitName = asset.unitName,
               !unitName.isEmptyOrBlank else {
                   detail = attributedDetailText
                   return
               }
 
         let range = (detailText as NSString).range(of: unitName)
-        attributedDetailText.addAttribute(NSAttributedString.Key.foregroundColor, value: Colors.General.selected, range: range)
-        attributedDetailText.addAttribute(NSAttributedString.Key.foregroundColor, value: Colors.General.selected, range: range)
+        attributedDetailText.addAttribute(NSAttributedString.Key.foregroundColor, value: AppColors.Components.Link.icon.uiColor, range: range)
+        attributedDetailText.addAttribute(NSAttributedString.Key.foregroundColor, value: AppColors.Components.Link.icon.uiColor, range: range)
         detail = attributedDetailText
     }
 
     private func bindAssetDisplayViewModel(_ draft: AssetAlertDraft) {
-        assetDisplayViewModel = AssetDisplayViewModel(draft.assetDetail)
+        assetDisplayViewModel = AssetDisplayViewModel(draft.asset)
     }
 }

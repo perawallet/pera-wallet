@@ -18,12 +18,14 @@
 import Foundation
 import MacaroonUIKit
 
-struct AssetListSearchNoContentViewModel: NoContentViewModel {
+struct AssetListSearchNoContentViewModel:
+    NoContentViewModel,
+    Hashable {
     private(set) var icon: Image?
     private(set) var title: EditText?
     private(set) var body: EditText?
 
-    init(hasBody: Bool = true) {
+    init(hasBody: Bool) {
         bindTitle()
         
         guard hasBody else {
@@ -36,10 +38,39 @@ struct AssetListSearchNoContentViewModel: NoContentViewModel {
 
 extension AssetListSearchNoContentViewModel {
     private mutating func bindTitle() {
-        title = .string("asset-not-found-title".localized)
+        let font = Fonts.DMSans.medium.make(19)
+        let lineHeightMultiplier = 1.13
+        title = .attributedString(
+            "asset-not-found-title"
+                .localized
+                .attributed([
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .textAlignment(.center),
+                        .lineBreakMode(.byWordWrapping),
+                        .lineHeightMultiple(lineHeightMultiplier)
+                    ])
+                ])
+        )
     }
 
     private mutating func bindBody() {
-        body = .string("asset-not-found-detail".localized)
+        let font = Fonts.DMSans.regular.make(15)
+        let lineHeightMultiplier = 1.23
+
+        body = .attributedString(
+            "asset-not-found-detail"
+                .localized
+                .attributed([
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .textAlignment(.center),
+                        .lineBreakMode(.byWordWrapping),
+                        .lineHeightMultiple(lineHeightMultiplier)
+                    ])
+                ])
+        )
     }
 }

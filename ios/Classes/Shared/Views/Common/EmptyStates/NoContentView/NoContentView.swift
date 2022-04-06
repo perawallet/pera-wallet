@@ -45,6 +45,38 @@ final class NoContentView:
     ) {
         resultView.bindData(viewModel)
     }
+
+    class func calculatePreferredSize(
+        _ viewModel: NoContentViewModel?,
+        for theme: NoContentViewTheme,
+        fittingIn size: CGSize
+    ) -> CGSize {
+        guard let viewModel = viewModel else {
+            return CGSize((size.width, 0))
+        }
+
+        let resultSize = ResultView.calculatePreferredSize(
+            viewModel,
+            for: theme,
+            fittingIn: size
+        )
+
+        var additionalTopHeight: LayoutMetric = 0
+
+        switch theme.resultAlignment {
+        case let .aligned(top):
+            additionalTopHeight = top
+        default: break
+        }
+
+        let preferredHeight =
+        resultSize.height +
+        additionalTopHeight +
+        theme.contentVerticalPaddings.top +
+        theme.contentVerticalPaddings.bottom
+
+        return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
+    }
 }
 
 extension NoContentView {
@@ -56,7 +88,7 @@ extension NoContentView {
             $0.height <= snp.height
 
             $0.setHorizontalPaddings(theme.contentHorizontalPaddings)
-            $0.setVerticalPaddings((theme.contentVerticalPadding, theme.contentVerticalPadding))
+            $0.setVerticalPaddings(theme.contentVerticalPaddings)
         }
 
         addResult(theme)
@@ -69,14 +101,33 @@ extension NoContentView {
 
         contentView.addSubview(resultView)
         resultView.snp.makeConstraints {
-            if let topInset = theme.resultTopInset {
-                $0.setPaddings((topInset, 0, .noMetric, 0))
-                return
-            }
-
-            $0.center == 0
-
-            $0.setPaddings((.noMetric, 0, .noMetric, 0))
+            $0.bottom <= 0
         }
+
+        alignResult(resultView, for: theme.resultAlignment)
+    }
+
+    private func alignResult(
+        _ view: UIView,
+        for alignment: ResultViewAlignment
+    ) {
+        switch alignment {
+        case .centered:
+            view.snp.makeConstraints {
+                $0.center == 0
+                $0.setPaddings((.noMetric, 0, .noMetric, 0))
+            }
+        case let .aligned(top):
+            view.snp.makeConstraints {
+                $0.setPaddings((top, 0, .noMetric, 0))
+            }
+        }
+    }
+}
+
+extension NoContentView {
+    enum ResultViewAlignment {
+        case centered
+        case aligned(top: LayoutMetric)
     }
 }

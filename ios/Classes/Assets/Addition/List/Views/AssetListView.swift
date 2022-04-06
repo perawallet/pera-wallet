@@ -39,7 +39,7 @@ final class AssetListView: View {
 
     func customize(_ theme: AssetListViewTheme) {
         searchNoContentView.customize(NoContentViewCommonTheme())
-        searchNoContentView.bindData(AssetListSearchNoContentViewModel())
+        searchNoContentView.bindData(AssetListSearchNoContentViewModel(hasBody: true))
 
         addCollectionView(theme)
     }

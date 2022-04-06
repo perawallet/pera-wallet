@@ -105,7 +105,7 @@ extension SelectAccountListLayout: UICollectionViewDelegateFlowLayout {
         case .empty(let item):
             switch item {
             case .loading:
-                let loadingCell = cell as? AssetPreviewLoadingCell
+                let loadingCell = cell as? PreviewLoadingCell
                 loadingCell?.startAnimating()
             default:
                 break
@@ -128,7 +128,7 @@ extension SelectAccountListLayout: UICollectionViewDelegateFlowLayout {
         case .empty(let item):
             switch item {
             case .loading:
-                let loadingCell = cell as? AssetPreviewLoadingCell
+                let loadingCell = cell as? PreviewLoadingCell
                 loadingCell?.stopAnimating()
             default:
                 break

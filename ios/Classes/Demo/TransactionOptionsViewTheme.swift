@@ -44,7 +44,7 @@ struct TransactionOptionsViewTheme:
             .backgroundColor(UIColor.clear)
         ]
         self.backgroundEnd = [
-            .backgroundColor(color("bottomOverlayBackground"))
+            .backgroundColor(AppColors.Shared.System.chrome.uiColor)
         ]
         self.content = [
             .backgroundColor(AppColors.Shared.System.background)

@@ -31,11 +31,11 @@ final class AccountDetailViewController: PageContainer {
         configuration: configuration
     )
 
-    private lazy var nftListScreen = AccountNFTListViewController(
-        account: accountHandle.value,
+    private lazy var collectibleListScreen = AccountCollectibleListViewController(
+        account: accountHandle,
         configuration: configuration
     )
-
+    
     private lazy var transactionListScreen = AccountTransactionListViewController(
         draft: AccountTransactionListing(accountHandle: accountHandle),
         configuration: configuration
@@ -70,6 +70,12 @@ final class AccountDetailViewController: PageContainer {
     override func linkInteractors() {
         super.linkInteractors()
         linkInteractors(assetListScreen)
+    }
+
+    override func itemDidSelect(
+        _ index: Int
+    ) {
+        view.endEditing(true)
     }
 }
 
@@ -108,7 +114,7 @@ extension AccountDetailViewController {
     private func setPageBarItems() {
         items = [
             AssetListPageBarItem(screen: assetListScreen),
-            NFTListPageBarItem(screen: nftListScreen),
+            CollectibleListPageBarItem(screen: collectibleListScreen),
             TransactionListPageBarItem(screen: transactionListScreen)
         ]
     }
@@ -250,10 +256,16 @@ extension AccountDetailViewController: EditAccountViewControllerDelegate {
 extension AccountDetailViewController: ManageAssetsViewControllerDelegate {
     func manageAssetsViewController(
         _ assetRemovalViewController: ManageAssetsViewController,
-        didRemove assetDetail: AssetInformation,
-        from account: Account
+        didRemove asset: StandardAsset
     ) {
-        assetListScreen.removeAsset(assetDetail)
+        assetListScreen.removeAsset(asset)
+    }
+
+    func manageAssetsViewController(
+        _ assetRemovalViewController: ManageAssetsViewController,
+        didRemove asset: CollectibleAsset
+    ) {
+        
     }
 }
 
@@ -270,14 +282,14 @@ extension AccountDetailViewController {
         }
     }
 
-    struct NFTListPageBarItem: PageBarItem {
+    struct CollectibleListPageBarItem: PageBarItem {
         let id: String
         let barButtonItem: PageBarButtonItem
         let screen: UIViewController
 
         init(screen: UIViewController) {
-            self.id = AccountDetailPageBarItemID.nfts.rawValue
-            self.barButtonItem = PrimaryPageBarButtonItem(title: "accounts-title-nfts".localized)
+            self.id = AccountDetailPageBarItemID.collectibles.rawValue
+            self.barButtonItem = PrimaryPageBarButtonItem(title: "accounts-title-collectibles".localized)
             self.screen = screen
         }
     }
@@ -294,10 +306,9 @@ extension AccountDetailViewController {
         }
     }
 
-
     enum AccountDetailPageBarItemID: String {
         case assets
-        case nfts
+        case collectibles
         case transactions
     }
 }

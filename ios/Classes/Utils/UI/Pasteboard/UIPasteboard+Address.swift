@@ -21,14 +21,12 @@ import UIKit
 
 extension UIPasteboard {
     var validAddress: String? {
-        guard let address = UIPasteboard.general.string else {
+        guard let pasteboardString = UIPasteboard.general.string else {
             return nil
         }
 
-        let algorandSDK = AlgorandSDK()
-
-        if algorandSDK.isValidAddress(address) {
-            return address
+        if pasteboardString.isValidatedAddress {
+            return pasteboardString
         }
 
         return nil

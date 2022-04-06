@@ -16,52 +16,178 @@
 //   AssetSearchListLayout.swift
 
 import Foundation
+import MacaroonUIKit
 import UIKit
 
 final class AssetSearchListLayout: NSObject {
-    private lazy var theme = Theme()
-    lazy var handlers = Handlers()
+    private var sizeCache: [String: CGSize] = [:]
 
-    private let dataController: AssetSearchDataController
+    private let listDataSource: AssetSearchDataSource
 
-    init(dataController: AssetSearchDataController) {
-        self.dataController = dataController
+    private let sectionHorizontalInsets: LayoutHorizontalPaddings = (24, 24)
+
+    init(
+        listDataSource: AssetSearchDataSource
+    ) {
+        self.listDataSource = listDataSource
+        super.init()
+    }
+
+    class func build() -> UICollectionViewLayout {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.minimumLineSpacing = 0
+        return flowLayout
     }
 }
 
-extension AssetSearchListLayout: UICollectionViewDelegateFlowLayout {
+extension AssetSearchListLayout {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
+        let sectionIdentifiers = listDataSource.snapshot().sectionIdentifiers
+
+        guard let listSection = sectionIdentifiers[safe: section] else {
+            return .zero
+        }
+
+        var insets = UIEdgeInsets(
+            (0, sectionHorizontalInsets.leading, 0, sectionHorizontalInsets.trailing)
+        )
+
+        switch listSection {
+        case .empty:
+            return insets
+        case .assets:
+            insets.top = 24
+            insets.bottom = 8
+            return insets
+        }
+    }
+
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(theme.assetItemSize)
-    }
-
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForHeaderInSection section: Int
-    ) -> CGSize {
-        guard dataController.hasSection() else {
-            return .zero
+        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+            return CGSize((collectionView.bounds.width, 0))
         }
 
-        return CGSize(theme.listHeaderSize)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let section = AssetSearchSection(rawValue: indexPath.section),
-              section == .assets else {
-            return
+        switch itemIdentifier {
+        case .header(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForHeaderItem: item
+            )
+        case .asset(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForAssetCellItem: item
+            )
+        case .empty(let item):
+            return sizeForNoContent(
+                collectionView,
+                item: item
+            )
         }
-
-        handlers.didSelectIndex?(indexPath.item)
     }
 }
 
 extension AssetSearchListLayout {
-    struct Handlers {
-        var didSelectIndex: ((Int) -> Void)?
+    private func sizeForNoContent(
+        _ listView: UICollectionView,
+        item: AssetListSearchNoContentViewModel
+    ) -> CGSize {
+        let sizeCacheIdentifier = NoContentCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(for: listView)
+
+        let newSize = NoContentCell.calculatePreferredSize(
+            item,
+            for: NoContentCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
+    }
+
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForHeaderItem item: AssetSearchListHeaderViewModel
+    ) -> CGSize {
+        let sizeCacheIdentifier = AssetSearchListTitleSupplementaryCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(for: listView)
+        let newSize = AssetSearchListTitleSupplementaryCell.calculatePreferredSize(
+            item,
+            for: AssetSearchListTitleSupplementaryCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForAssetCellItem item: AssetPreviewViewModel?
+    ) -> CGSize {
+        let sizeCacheIdentifier = AssetPreviewCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(for: listView)
+
+        let sampleAssetPreview = AssetPreviewModel(
+            icon: .algo,
+            verifiedIcon: img("icon-verified-shield"),
+            title: "title-unknown".localized,
+            subtitle: "title-unknown".localized,
+            primaryAccessory: "title-unknown".localized,
+            secondaryAccessory: "title-unknown".localized
+        )
+
+        let sampleAssetItem = AssetPreviewViewModel(sampleAssetPreview)
+
+        let newSize = AssetPreviewCell.calculatePreferredSize(
+            sampleAssetItem,
+            for: AssetPreviewCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
+    }
+}
+
+extension AssetSearchListLayout {
+    private func calculateContentWidth(
+        for listView: UICollectionView
+    ) -> LayoutMetric {
+        return listView.bounds.width -
+        listView.contentInset.horizontal -
+        sectionHorizontalInsets.leading -
+        sectionHorizontalInsets.trailing
     }
 }

@@ -30,7 +30,7 @@ struct AssetDetailInfoViewModel:
 
     init(
         _ account: Account,
-        _ assetDetail: AssetInformation,
+        _ assetDetail: StandardAsset,
         _ currency: Currency?
     ) {
         bind(
@@ -44,7 +44,7 @@ struct AssetDetailInfoViewModel:
 extension AssetDetailInfoViewModel {
     private mutating func bind(
         _ account: Account,
-        _ assetDetail: AssetInformation,
+        _ assetDetail: StandardAsset,
         _ currency: Currency?
     ) {
         bindYourBalanceTitle()
@@ -73,16 +73,20 @@ extension AssetDetailInfoViewModel {
         )
     }
 
-    private mutating func bindIsVerified(from assetDetail: AssetInformation) {
+    private mutating func bindIsVerified(
+        from assetDetail: StandardAsset
+    ) {
         isVerified = assetDetail.isVerified
     }
 
-    private mutating func bindName(from assetDetail: AssetInformation) {
+    private mutating func bindName(
+        from assetDetail: StandardAsset
+    ) {
         let font = Fonts.DMSans.medium.make(15)
         let lineHeightMultiplier = 1.23
 
         name = .attributedString(
-            assetDetail.getDisplayNames().0
+            assetDetail.presentation.displayNames.primaryName
                 .attributed([
                 .font(font),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
@@ -94,13 +98,13 @@ extension AssetDetailInfoViewModel {
         )
     }
 
-    private mutating func bindAmount(from assetDetail: AssetInformation, in account: Account) {
-        guard let fractionStringForLabel =
-                account
-                .amount(for: assetDetail)?
-                .toFractionStringForLabel(fraction: assetDetail.decimals) else {
-                    return
-                }
+    private mutating func bindAmount(
+        from assetDetail: StandardAsset,
+        in account: Account
+    ) {
+        guard let fractionStringForLabel = assetDetail.amountWithFraction.toFractionStringForLabel(fraction: assetDetail.decimals) else {
+            return
+        }
 
         let font = Fonts.DMMono.regular.make(36)
         let lineHeightMultiplier = 1.02
@@ -118,15 +122,18 @@ extension AssetDetailInfoViewModel {
         )
     }
 
-    private mutating func bindSecondaryValue(from assetDetail: AssetInformation, with account: Account, and currency: Currency?) {
+    private mutating func bindSecondaryValue(
+        from assetDetail: StandardAsset,
+        with account: Account,
+        and currency: Currency?
+    ) {
         guard let assetUSDValue = assetDetail.usdValue,
               let currency = currency,
-              let currencyUSDValue = currency.usdValue,
-              let assetAmount = account.amount(for: assetDetail) else {
+              let currencyUSDValue = currency.usdValue else {
             return
         }
 
-        let currencyValue = assetUSDValue * assetAmount * currencyUSDValue
+        let currencyValue = assetUSDValue * assetDetail.amountWithFraction * currencyUSDValue
         if currencyValue > 0,
            let currenyStringForLabel =
             currencyValue.toCurrencyStringForLabel(with: currency.symbol) {
@@ -148,7 +155,9 @@ extension AssetDetailInfoViewModel {
         }
     }
 
-    private mutating func bindID(from assetDetail: AssetInformation) {
+    private mutating func bindID(
+        from assetDetail: StandardAsset
+    ) {
         let font = Fonts.DMSans.regular.make(15)
         let lineHeightMultiplier = 1.23
 

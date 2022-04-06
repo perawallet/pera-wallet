@@ -255,21 +255,6 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
         }
     }
 
-    func wcMainTransactionViewDidDeclineSigning(_ wcMainTransactionView: WCMainTransactionView) {
-        if let session = wcSession {
-            log(
-                WCTransactionDeclinedEvent(
-                    transactionCount: transactions.count,
-                    dappName: session.peerMeta.name,
-                    dappURL: session.peerMeta.url.absoluteString,
-                    address: session.walletMeta?.accounts?.first
-                )
-            )
-        }
-
-        rejectSigning()
-    }
-
     func wcTransactionSigner(_ wcTransactionSigner: WCTransactionSigner, didSign transaction: WCTransaction, signedTransaction: Data) {
         signedTransactions.append(signedTransaction)
         continueSigningTransactions(after: transaction)

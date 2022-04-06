@@ -19,8 +19,9 @@ import Foundation
 
 struct AssetAlertDraft {
     let account: Account?
-    let assetIndex: Int64
-    var assetDetail: AssetInformation?
+    let assetId: Int64
+    var asset: AssetDecoration?
+    let transactionFee: UInt64?
     let title: String?
     let detail: String?
     let actionTitle: String?
@@ -28,23 +29,25 @@ struct AssetAlertDraft {
     
     init(
         account: Account?,
-        assetIndex: Int64,
-        assetDetail: AssetInformation?,
+        assetId: Int64,
+        asset: AssetDecoration?,
+        transactionFee: UInt64? = nil,
         title: String? = nil,
         detail: String? = nil,
         actionTitle: String? = nil,
         cancelTitle: String? = nil
     ) {
         self.account = account
-        self.assetIndex = assetIndex
-        self.assetDetail = assetDetail
+        self.assetId = assetId
+        self.asset = asset
+        self.transactionFee = transactionFee
         self.title = title
         self.detail = detail
         self.actionTitle = actionTitle
         self.cancelTitle = cancelTitle
     }
     
-    func isValid() -> Bool {
-        return assetDetail != nil
+    var hasValidAsset: Bool {
+        return asset != nil
     }
 }

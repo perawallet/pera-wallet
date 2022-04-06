@@ -22,13 +22,15 @@ extension ALGAPI {
     @discardableResult
     func searchAssets(
         _ draft: AssetSearchQuery,
-        onCompleted handler: @escaping (Response.ModelResult<AssetInformationList>) -> Void
+        ignoreResponseOnCancelled: Bool,
+        onCompleted handler: @escaping (Response.ModelResult<AssetDecorationList>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(.mobile)
             .path(.assets)
             .method(.get)
             .query(draft)
+            .ignoreResponseWhenEndpointCancelled(ignoreResponseOnCancelled)
             .completionHandler(handler)
             .execute()
     }
@@ -38,7 +40,7 @@ extension ALGAPI {
         _ draft: AssetFetchQuery,
         queue: DispatchQueue,
         ignoreResponseOnCancelled: Bool,
-        onCompleted handler: @escaping (Response.ModelResult<AssetInformationList>) -> Void
+        onCompleted handler: @escaping (Response.ModelResult<AssetDecorationList>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(.mobile)
@@ -48,6 +50,19 @@ extension ALGAPI {
             .ignoreResponseWhenEndpointCancelled(ignoreResponseOnCancelled)
             .completionHandler(handler)
             .responseDispatcher(queue)
+            .execute()
+    }
+
+    @discardableResult
+    func fetchAssetDetail(
+        _ draft: AssetDetailFetchDraft,
+        onCompleted handler: @escaping (Response.ModelResult<AssetDecoration>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobile)
+            .path(.assetDetail, args: "\(draft.id)")
+            .method(.get)
+            .completionHandler(handler)
             .execute()
     }
 

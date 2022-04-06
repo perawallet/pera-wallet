@@ -27,7 +27,7 @@ class TransactionsViewController: BaseViewController {
     private lazy var filterOptionsTransition = BottomSheetTransition(presentingViewController: self)
 
     private(set) var accountHandle: AccountHandle
-    private(set) var compoundAsset: CompoundAsset?
+    private(set) var asset: StandardAsset?
     private(set) var filterOption = TransactionFilterViewController.FilterOption.allTime
 
     lazy var csvTransactions = [Transaction]()
@@ -63,7 +63,7 @@ class TransactionsViewController: BaseViewController {
     init(draft: TransactionListing, configuration: ViewControllerConfiguration) {
         self.draft = draft
         self.accountHandle = draft.accountHandle
-        self.compoundAsset = draft.compoundAsset
+        self.asset = draft.asset
         super.init(configuration: configuration)
     }
     
@@ -187,7 +187,9 @@ class TransactionsViewController: BaseViewController {
 extension TransactionsViewController {
     private func addListView() {
         let isWatchAccount = accountHandle.value.isWatchAccount()
-        listView.contentInset = isWatchAccount ? .zero : UIEdgeInsets(theme.contentInset)
+        listView.contentInset = isWatchAccount
+            ? UIEdgeInsets(theme.contentInsetForWatchAccount)
+            : UIEdgeInsets(theme.contentInset)
         
         view.addSubview(listView)
         listView.snp.makeConstraints {
@@ -328,7 +330,7 @@ extension TransactionsViewController: AlgosDetailInfoViewCellDelegate {
 
 extension TransactionsViewController: AssetDetailInfoViewCellDelegate {
     func assetDetailInfoViewCellDidTapAssetID(_ assetDetailInfoViewCell: AssetDetailInfoViewCell) {
-        guard let assetID = draft.compoundAsset?.id else {
+        guard let assetID = draft.asset?.id else {
             return
         }
 
@@ -373,14 +375,20 @@ extension TransactionsViewController: TransactionFloatingActionButtonViewControl
 
         switch draft.type {
         case .all:
-            let controller = open(.assetSelection(account: accountHandle.value), by: .present) as? SelectAssetViewController
+            let controller = open(
+                .assetSelection(
+                    filter: nil,
+                    account: accountHandle.value
+                ),
+                by: .present
+            ) as? SelectAssetViewController
             let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
                 controller?.closeScreen(by: .dismiss, animated: true)
             }
             controller?.leftBarButtonItems = [closeBarButtonItem]
         case .asset:
-            if let compoundAsset = compoundAsset {
-                let draft = SendTransactionDraft(from: accountHandle.value, transactionMode: .assetDetail(compoundAsset.detail))
+            if let asset = asset {
+                let draft = SendTransactionDraft(from: accountHandle.value, transactionMode: .asset(asset))
                 let controller = open(.sendTransaction(draft: draft), by: .present) as? SendTransactionScreen
                 let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
                     controller?.closeScreen(by: .dismiss, animated: true)
@@ -400,7 +408,7 @@ extension TransactionsViewController: TransactionFloatingActionButtonViewControl
     func transactionFloatingActionButtonViewControllerDidReceive(_ viewController: TransactionFloatingActionButtonViewController) {
         log(ReceiveAssetDetailEvent(address: accountHandle.value.address))
         let draft = QRCreationDraft(address: accountHandle.value.address, mode: .address, title: accountHandle.value.name)
-        open(.qrGenerator(title: accountHandle.value.name ?? accountHandle.value.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
+        open(.qrGenerator(title: accountHandle.value.name ?? accountHandle.value.address.shortAddressDisplay, draft: draft, isTrackable: true), by: .present)
     }
 
     func transactionFloatingActionButtonViewControllerDidBuy(
@@ -444,16 +452,21 @@ extension TransactionsViewController {
         )
     }
 
-    private func getAssetDetailForTransactionType(_ transaction: Transaction) -> AssetInformation? {
+    private func getAssetDetailForTransactionType(_ transaction: Transaction) -> StandardAsset? {
         switch draft.type {
         case .all:
-            if let assetID = transaction.assetTransfer?.assetId {
-                return sharedDataController.assetDetailCollection[assetID]
+            if let assetID = transaction.assetTransfer?.assetId,
+                let decoration = sharedDataController.assetDetailCollection[assetID] {
+                let standardAsset = StandardAsset(
+                    asset: ALGAsset(id: assetID),
+                    decoration: decoration
+                )
+                return standardAsset
             }
 
             return nil
         case .asset:
-            return compoundAsset?.detail
+            return asset
         case .algos:
             return nil
         }

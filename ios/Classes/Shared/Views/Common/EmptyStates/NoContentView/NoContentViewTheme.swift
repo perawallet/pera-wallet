@@ -21,6 +21,6 @@ import UIKit
 
 protocol NoContentViewTheme: ResultViewTheme {
     var contentHorizontalPaddings: LayoutHorizontalPaddings { get }
-    var contentVerticalPadding: LayoutMetric { get }
-    var resultTopInset: LayoutMetric? { get }
+    var contentVerticalPaddings: LayoutVerticalPaddings { get }
+    var resultAlignment: NoContentView.ResultViewAlignment { get }
 }

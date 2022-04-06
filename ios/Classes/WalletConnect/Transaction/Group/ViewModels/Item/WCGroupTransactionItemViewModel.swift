@@ -26,17 +26,25 @@ class WCGroupTransactionItemViewModel {
     private(set) var usdValue: String?
     private(set) var accountInformationViewModel: WCGroupTransactionAccountInformationViewModel?
 
-    init(transaction: WCTransaction, account: Account?, assetInformation: AssetInformation?, currency: Currency?) {
+    init(
+        transaction: WCTransaction,
+        account: Account?,
+        asset: Asset?,
+        currency: Currency?
+    ) {
         setHasWarning(from: transaction, and: account)
         setTitle(from: transaction, and: account)
         setIsAlgos(from: transaction)
-        setAmount(from: transaction, and: assetInformation)
-        setAssetName(from: assetInformation)
-        setUsdValue(transaction: transaction, assetInformation: assetInformation, currency: currency)
-        setAccountInformationViewModel(from: account, with: assetInformation)
+        setAmount(from: transaction, and: asset)
+        setAssetName(from: asset)
+        setUsdValue(transaction: transaction, asset: asset, currency: currency)
+        setAccountInformationViewModel(from: account, with: asset)
     }
 
-    private func setHasWarning(from transaction: WCTransaction, and account: Account?) {
+    private func setHasWarning(
+        from transaction: WCTransaction,
+        and account: Account?
+    ) {
         guard let transactionDetail = transaction.transactionDetail, account != nil else {
             return
         }
@@ -44,7 +52,10 @@ class WCGroupTransactionItemViewModel {
         hasWarning = transactionDetail.hasRekeyOrCloseAddress
     }
 
-    private func setTitle(from transaction: WCTransaction, and account: Account?) {
+    private func setTitle(
+        from transaction: WCTransaction,
+        and account: Account?
+    ) {
         guard let transactionDetail = transaction.transactionDetail,
               let transactionType = transactionDetail.transactionType(for: account) else {
             return
@@ -95,7 +106,9 @@ class WCGroupTransactionItemViewModel {
         }
     }
 
-    private func setIsAlgos(from transaction: WCTransaction) {
+    private func setIsAlgos(
+        from transaction: WCTransaction
+    ) {
         guard let transactionDetail = transaction.transactionDetail else {
             return
         }
@@ -103,31 +116,36 @@ class WCGroupTransactionItemViewModel {
         isAlgos = transactionDetail.isAlgosTransaction
     }
 
-    private func setAmount(from transaction: WCTransaction, and assetInformation: AssetInformation?) {
+    private func setAmount(
+        from transaction: WCTransaction,
+        and asset: Asset?
+    ) {
         guard let transactionDetail = transaction.transactionDetail else {
             return
         }
         
-        if let assetInformation = assetInformation {
-            let decimals = assetInformation.decimals
+        if let asset = asset {
+            let decimals = asset.presentation.decimals
             amount = transactionDetail.amount.assetAmount(fromFraction: decimals).toFractionStringForLabel(fraction: decimals) ?? ""
         } else {
             amount = transactionDetail.amount.toAlgos.toAlgosStringForLabel ?? ""
         }
     }
 
-    private func setAssetName(from assetInformation: AssetInformation?) {
-        guard let assetInformation = assetInformation else {
+    private func setAssetName(
+        from asset: Asset?
+    ) {
+        guard let asset = asset else {
             assetName = "ALGO"
             return
         }
 
-        assetName = assetInformation.getDisplayNames().1
+        assetName = asset.presentation.displayNames.secondaryName
     }
 
     private func setUsdValue(
         transaction: WCTransaction,
-        assetInformation: AssetInformation?,
+        asset: Asset?,
         currency: Currency?
     ) {
         guard let currency = currency,
@@ -137,12 +155,12 @@ class WCGroupTransactionItemViewModel {
                   return
         }
 
-        if let assetInformation = assetInformation {
-            guard let assetUSDValue = assetInformation.usdValue else {
+        if let asset = asset {
+            guard let assetUSDValue = AssetDecoration(asset: asset).usdValue else {
                 return
             }
 
-            let currencyValue = assetUSDValue * amount.assetAmount(fromFraction: assetInformation.decimals) * currencyUsdValue
+            let currencyValue = assetUSDValue * amount.assetAmount(fromFraction: asset.presentation.decimals) * currencyUsdValue
             if currencyValue > 0 {
                 usdValue = currencyValue.toCurrencyStringForLabel(with: currency.symbol)
             }
@@ -154,22 +172,27 @@ class WCGroupTransactionItemViewModel {
         usdValue = totalAmount.toCurrencyStringForLabel(with: currency.symbol)
     }
 
-    private func setAccountInformationViewModel(from account: Account?, with assetInformation: AssetInformation?) {
+    private func setAccountInformationViewModel(
+        from account: Account?,
+        with asset: Asset?
+    ) {
         guard let account = account else {
             return
         }
 
         accountInformationViewModel = WCGroupTransactionAccountInformationViewModel(
             account: account,
-            assetInformation: assetInformation,
+            asset: asset,
             isDisplayingAmount: true
         )
     }
 }
 
 extension WCGroupTransactionItemViewModel {
-    static func calculatePreferredSize(_ viewModel: WCGroupTransactionItemViewModel, fittingIn size: CGSize) -> CGSize {
-
+    static func calculatePreferredSize(
+        _ viewModel: WCGroupTransactionItemViewModel,
+        fittingIn size: CGSize
+    ) -> CGSize {
         var currentSize = size
         var defaultHeight: CGFloat = 65
 

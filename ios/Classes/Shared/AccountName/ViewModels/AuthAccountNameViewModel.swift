@@ -37,7 +37,7 @@ extension AuthAccountNameViewModel {
             return
         }
         
-        address = account.authAddress.unwrap(or: account.address).shortAddressDisplay()
+        address = account.authAddress.unwrap(or: account.address).shortAddressDisplay
     }
 
     private func bindImage(_ account: Account) {

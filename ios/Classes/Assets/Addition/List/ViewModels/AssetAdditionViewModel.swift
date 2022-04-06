@@ -31,7 +31,7 @@ class AssetAdditionViewModel {
     }
 
     private func setBackgroundColor() {
-        backgroundColor = Colors.Background.secondary
+        backgroundColor = AppColors.Shared.System.background.uiColor
     }
 
     private func setAssetDetail(from assetInformation: AssetInformation) {
@@ -39,7 +39,7 @@ class AssetAdditionViewModel {
     }
 
     private func setActionColor() {
-        actionColor = Colors.Text.tertiary
+        actionColor = AppColors.Components.Text.grayLighter.uiColor
     }
 
     private func setId(from assetInformation: AssetInformation) {

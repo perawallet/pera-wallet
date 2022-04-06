@@ -61,18 +61,6 @@ extension UIView {
         }
     }
     
-    func applySmallShadow() {
-        applyMultipleShadows([smallTopShadow, smallBottomShadow])
-    }
-    
-    func applyMediumShadow() {
-        applyMultipleShadows([mediumTopShadow, mediumBottomShadow])
-    }
-    
-    func applyErrorShadow() {
-        applyShadow(errorShadow)
-    }
-    
     func updateShadowLayoutWhenViewDidLayoutSubviews(cornerRadius: CGFloat = 0.0) {
         layer.sublayers?.forEach { sublayer in
             if let sublayerName = sublayer.name,

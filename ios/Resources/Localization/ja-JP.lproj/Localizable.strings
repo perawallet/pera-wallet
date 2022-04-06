@@ -11,13 +11,13 @@
 "account-listing-error-message" = "申し訳ありませんが、このポートフォリオの詳細を表示することはできません。計算に問題が発生しているようです。\n\n一部の資産価格が公開されていない場合があり、ポートフォリオの合計値は推定値としてお考え下さい。";
 
 /* (No Comment) */
-"account-name-setup-description" = "Name your account to easily identify it while using the Pera Wallet. These names are stored locally, and can only be seen by you.";
+"account-name-setup-description" = "Pera Walletを使用する際、簡単に識別できるようにアカウントに名前を付けてください。これらの名前はローカルに保存され、ユーザーだけが見ることができます。";
 
 /* (No Comment) */
-"account-name-setup-explanation" = "Account Name";
+"account-name-setup-explanation" = "アカウント名";
 
 /* (No Comment) */
-"account-name-setup-finish" = "Finish Account Creation";
+"account-name-setup-finish" = "アカウント作成完了";
 
 /* (No Comment) */
 "account-name-setup-placeholder" = "アカウント名";
@@ -38,7 +38,7 @@
 "account-select-header-contacts-title" = "連絡先";
 
 /* (No Comment) */
-"account-select-header-search-title" = "検索またはアドレスの入力";
+"account-select-header-search-title" = "Search or enter wallet address";
 
 /* (No Comment) */
 "account-select-search-empty-detail" = "別のアカウント名をお試しください";
@@ -47,46 +47,46 @@
 "account-select-search-empty-title" = "アカウントが見つかりません";
 
 /* MARK: Account Type Selection */
-"account-type-selection-add" = "I want to create an account";
+"account-type-selection-add" = "アカウントを作成したい";
 
 /* (No Comment) */
-"account-type-selection-add-detail" = "I want to create a new Algorand account with a new address and recovery passphrase";
+"account-type-selection-add-detail" = "新規アドレスと回復用パスフレーズで新しいAlgorandアカウントを作成したい";
 
 /* (No Comment) */
-"account-type-selection-create" = "Create a new account";
+"account-type-selection-create" = "アカウントの新規作成";
 
 /* (No Comment) */
-"account-type-selection-create-detail" = "Create a new Algorand account or add a watch account";
+"account-type-selection-create-detail" = "Algorandアカウントの新規作成、またはウォッチアカウントの追加";
 
 /* (No Comment) */
 "account-type-selection-ledger" = "Ledgerデバイスのペアリング";
 
 /* (No Comment) */
-"account-type-selection-ledger-detail" = "I want to create an Algorand account\nthat is backed by my Ledger hardware wallet";
+"account-type-selection-ledger-detail" = "Ledgerハードウェアウォレットと紐づけされた\nAlgorandアカウントを作成したい";
 
 /* (No Comment) */
-"account-type-selection-passphrase" = "Recover an account";
+"account-type-selection-passphrase" = "アカウントを復元する";
 
 /* (No Comment) */
-"account-type-selection-passphrase-detail" = "I want to recover an Algorand account using my 25-word passphrase";
+"account-type-selection-passphrase-detail" = "25単語のパスフレーズを使ってAlgorandアカウントを復元したい";
 
 /* (No Comment) */
-"account-type-selection-recover" = "I already have an account";
+"account-type-selection-recover" = "すでにアカウントを持っている";
 
 /* (No Comment) */
-"account-type-selection-recover-detail" = "Import an existing Algorand account\nvia recovery passphrase or pair your Ledger";
+"account-type-selection-recover-detail" = "回復用パスフレーズを使用して既存のAlgorandアカウントを\nインポートするか、Ledgerをペアリングしてください";
 
 /* (No Comment) */
-"account-type-selection-watch" = "Add watch account";
+"account-type-selection-watch" = "ウォッチアカウントの追加";
 
 /* (No Comment) */
-"account-type-selection-watch-detail" = "I want to monitor an Algorand account that's held in cold storage";
+"account-type-selection-watch-detail" = "コールドストレージに保管されているAlgorandアカウントを監視したい";
 
 /* (No Comment) */
-"account-welcome-add-account-title" = "Add an account";
+"account-welcome-add-account-title" = "アカウントの追加";
 
 /* (No Comment) */
-"account-welcome-wallet-title" = "Welcome to\nPera Wallet";
+"account-welcome-wallet-title" = "Pera Walletへ\nようこそ";
 
 /* (No Comment) */
 "accounts-add-account" = "+ アカウントを追加";
@@ -107,10 +107,10 @@
 "accounts-title-assets" = "資産";
 
 /* (No Comment) */
-"accounts-title-history" = "履歴";
+"accounts-title-collectibles" = "Collectibles";
 
 /* (No Comment) */
-"accounts-title-nfts" = "NFT";
+"accounts-title-history" = "履歴";
 
 /* (No Comment) */
 "accounts-tranaction-empty-detail" = "この資産を使ったトランザクションは行われていません。";
@@ -125,7 +125,7 @@
 "accounts-transaction-value" = "価値";
 
 /* (No Comment) */
-"accounts-transaction-your-balance" = "Balance";
+"accounts-transaction-your-balance" = "残高";
 
 /* (No Comment) */
 "add-node-title" = "ノードの追加";
@@ -182,19 +182,19 @@
 "asset-no-value" = "N/A";
 
 /* (No Comment) */
-"asset-not-found-detail" = "Try different asset name or asset id";
+"asset-not-found-detail" = "別の資産名または資産idをお試しください";
 
 /* (No Comment) */
 "asset-not-found-title" = "資産が見つかりません";
 
 /* (No Comment) */
-"asset-remove-confirmation-title" = "Manage asset";
+"asset-remove-confirmation-title" = "資産の管理";
 
 /* (No Comment) */
 "asset-remove-subtitle" = "資産を削除するには、まずその資産の残高を他の口座に移す必要があります。";
 
 /* (No Comment) */
-"asset-remove-title" = "Manage Assets";
+"asset-remove-title" = "資産の管理";
 
 /* (No Comment) */
 "asset-remove-transaction-warning" = "%@から%@を削除しようとしています。再度追加しない限り、このアカウントからこの資産を取引することはできません。";
@@ -263,7 +263,7 @@
 "ble-error-fail-ble-connection-power" = "近くのLedgerデバイスを検索するには、デバイスでBluetoothが有効になっている必要があります。";
 
 /* (No Comment) */
-"ble-error-fail-ble-connection-repairing" = "If you’re having Ledger Nano X connection issues, please remove the device from your phone’s bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Pera Wallet instructions.";
+"ble-error-fail-ble-connection-repairing" = "Ledger Nano Xの接続に問題がある場合は、お使いの携帯電話のBluetooth設定からデバイスを削除し、Ledgerアカウントを削除してから、Pera Walletの指示に従ってLedgerを再ペアリングしてください。";
 
 /* (No Comment) */
 "ble-error-fail-ble-connection-resetting" = "リセット用のBLE接続に失敗しました";
@@ -272,7 +272,7 @@
 "ble-error-fail-ble-connection-unauthorized" = "近くのLedgerを検索するには、Bluetoothの許可が必要です。";
 
 /* (No Comment) */
-"ble-error-fail-ble-connection-unsupported" = "The device you are trying to connect to is not supported with the Pera Wallet.";
+"ble-error-fail-ble-connection-unsupported" = "接続しようとしているデバイスは、Pera Walletではサポートされていません。";
 
 /* (No Comment) */
 "ble-error-fail-connect-peripheral" = "Ledgerデバイスに接続できませんでした。デバイスのロックが解除されているか、近くにあるか、Bluetoothが有効になっているかを確認してください。";
@@ -341,7 +341,169 @@
 "chart-time-selection-yearly" = "1年";
 
 /* (No Comment) */
-"contact-search-empty-detail" = "Try different contact name";
+"collectible-approve-transaction-action-title" = "Confirm transfer";
+
+/* (No Comment) */
+"collectible-approve-transaction-description" = "Are you sure you want to proceed?";
+
+/* (No Comment) */
+"collectible-approve-transaction-fee" = "Transaction Fee";
+
+/* (No Comment) */
+"collectible-approve-transaction-sender" = "Sender Account";
+
+/* MARK: Collectible Approve */
+"collectible-approve-transaction-title" = "Approve Transaction";
+
+/* (No Comment) */
+"collectible-approve-transaction-to" = "To";
+
+/* (No Comment) */
+"collectible-detail-algo-explorer" = "Show on Algoexplorer";
+
+/* (No Comment) */
+"collectible-detail-collection-name" = "Collection Name";
+
+/* (No Comment) */
+"collectible-detail-creator-address" = "Creator Wallet Address";
+
+/* (No Comment) */
+"collectible-detail-creator-name" = "Creator Name";
+
+/* (No Comment) */
+"collectible-detail-description" = "Description";
+
+/* (No Comment) */
+"collectible-detail-error-media-type" = "We don't support this NFT media type yet.";
+
+/* (No Comment) */
+"collectible-detail-error-not-owner" = "You are not the owner of this NFT yet, however you opted in for it. You can now transfer it to your wallet.";
+
+/* (No Comment) */
+"collectible-detail-error-visual" = "We can’t display the visual temporarily.";
+
+/* (No Comment) */
+"collectible-detail-nft-explorer" = "Show on NFTExplorer";
+
+/* (No Comment) */
+"collectible-detail-opt-out" = "Opt out";
+
+/* (No Comment) */
+"collectible-detail-opt-out-alert-message" = "You are about to opt out from this NFT with %@. You will not be able to transact with this asset until you opt in again.";
+
+/* (No Comment) */
+"collectible-detail-opt-out-alert-title" = "Opt out from “%@”";
+
+/* (No Comment) */
+"collectible-detail-opt-out-success" = "%@ NFT successfully opted-out";
+
+/* (No Comment) */
+"collectible-detail-opted-in" = "Opted in to";
+
+/* (No Comment) */
+"collectible-detail-owner" = "Owner";
+
+/* (No Comment) */
+"collectible-detail-properties" = "Properties";
+
+/* MARK: Collectible Detail */
+"collectible-detail-share" = "Share";
+
+/* (No Comment) */
+"collectible-detail-view-transaction" = "View Transaction";
+
+/* / MARK: Collectible List */
+"collectible-list-item-pending-title" = "Pending";
+
+/* (No Comment) */
+"collectible-opt-in-info-description" = "To avoid spammy transaction, the Algorand Blockchain only allow you to send and receive transaction for assets that have been previously opted-in.";
+
+/* / MARK: Collectible Opt In Info */
+"collectible-opt-in-info-title" = "Information about Opt-In";
+
+/* (No Comment) */
+"collectible-receive-account-list-info" = "You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet.";
+
+/* (No Comment) */
+"collectible-receive-asset-list-info" = "You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet. Paste the ASA ID in the search bar.";
+
+/* (No Comment) */
+"collectible-receive-asset-list-selected-account" = "Selected account";
+
+/* (No Comment) */
+"collectible-recipient-opt-in-action-title" = "Request Opt-in";
+
+/* (No Comment) */
+"collectible-recipient-opt-in-description" = "You can't send %@ to %@ because this wallet didn't opt in for this asset yet. Learn more about Opt-in";
+
+/* (No Comment) */
+"collectible-recipient-opt-in-description-marked" = "Learn more about Opt-in";
+
+/* / MARK: Collecitble Ask recipient to opt in */
+"collectible-recipient-opt-in-title" = "Ask recipient to opt in";
+
+/* (No Comment) */
+"collectible-send-account-list-title" = "Select the receiver account";
+
+/* (No Comment) */
+"collectible-send-action" = "Transfer";
+
+/* (No Comment) */
+"collectible-send-input-placeholder" = "Paste an Algorand wallet address";
+
+/* / MARK: Collectible Send */
+"collectible-send-title" = "Send your NFT";
+
+/* (No Comment) */
+"collectible-transfer-confirmed-action-title" = "Got it!";
+
+/* (No Comment) */
+"collectible-transfer-confirmed-description" = "Transactions can take a few minutes to finalize.";
+
+/* MARK: Collectible Transfer */
+"collectible-transfer-confirmed-title" = "Your NFT transfer is confirmed!";
+
+/* (No Comment) */
+"collectible-transfer-failed-retry-desription" = "Please try again.";
+
+/* (No Comment) */
+"collectible-transfer-failed-title" = "Your NFT transfer has failed!";
+
+/* (No Comment) */
+"collectible-transfer-failed-verify-algo-desription" = "Please verify that you have enough Algo to cover the transaction fees for transferring your NFT, and try again.";
+
+/* (No Comment) */
+"collectibles-empty-body" = "Welcome to your NFT Gallery! You don’t have any NFTs yet. All the NFTs available in your wallet will be visible here.";
+
+/* (No Comment) */
+"collectibles-empty-title" = "Collectibles";
+
+/* (No Comment) */
+"collectibles-list-input-placeholder" = "Search your NFTs";
+
+/* (No Comment) */
+"collectibles-receive-account-list-header-description" = "Select the wallet account you would like to receive to:";
+
+/* / MARK: Collectible Receive */
+"collectibles-receive-action" = "Receive an NFT";
+
+/* (No Comment) */
+"collectibles-receive-asset-list-header-description" = "You need to opt in to the ASA ID of the NFT to be able to receive it. Paste the ASA ID or scan it below.";
+
+/* (No Comment) */
+"collectibles-receive-asset-list-search-no-content" = "No NFT Found";
+
+/* (No Comment) */
+"collectibles-receive-asset-list-search-placeholder" = "Search Asset ID or NFT name";
+
+/* (No Comment) */
+"collectibles-receive-asset-title" = "Opt-in to NFT";
+
+/* (No Comment) */
+"contact-input-address-placeholder" = "Account address";
+
+/* (No Comment) */
+"contact-search-empty-detail" = "別の連絡先名をお試しください";
 
 /* (No Comment) */
 "contact-search-empty-title" = "連絡先が見つかりません";
@@ -365,7 +527,7 @@
 "contacts-close-warning-title" = "よろしいですか？";
 
 /* (No Comment) */
-"contacts-delete-contact" = "Delete contact";
+"contacts-delete-contact" = "連絡先の削除";
 
 /* (No Comment) */
 "contacts-delete-contact-alert-explanation" = "この連絡先を削除してもよろしいですか？";
@@ -383,7 +545,10 @@
 "contacts-info" = "連絡先情報";
 
 /* (No Comment) */
-"contacts-info-edit" = "Edit Contact";
+"contacts-info-address" = "Account Address";
+
+/* (No Comment) */
+"contacts-info-edit" = "連絡先の編集";
 
 /* (No Comment) */
 "contacts-input-name-placeholder" = "連絡先名";
@@ -392,16 +557,16 @@
 "contacts-name-validation-error" = "名前が空欄です。";
 
 /* (No Comment) */
-"contacts-search" = "Search contacts or name";
+"contacts-search" = "連絡先または名前の検索";
 
 /* MARK: Contacts */
 "contacts-title" = "連絡先";
 
 /* (No Comment) */
-"contacts-title-assets" = "Assets";
+"contacts-title-assets" = "資産";
 
 /* (No Comment) */
-"contacts-transactions-title" = "Transaction History";
+"contacts-transactions-title" = "トランザクション履歴";
 
 /* (No Comment) */
 "csv-download-error" = "トランザクション履歴のcsvファイルを作成できませんでした。";
@@ -485,7 +650,7 @@
 "governance-banner-detail" = "統治者になりましょう。Algorandの未来を投票で決めましょう。報酬を獲得しましょう。";
 
 /* (No Comment) */
-"governance-banner-title" = "Algorand Governance Program is starting!";
+"governance-banner-title" = "Algorand Governance Programが始まります！";
 
 /* (No Comment) */
 "internet-connection-error-detail" = "サーバーにアクセスできません。インターネットに接続されていることを確認してください";
@@ -494,13 +659,13 @@
 "internet-connection-error-title" = "インターネットへの接続";
 
 /* MARK: Introduction */
-"introduction-add-account-text" = "I want to create\nan Algorand account";
+"introduction-add-account-text" = "Algorandアカウントを作成したい";
 
 /* (No Comment) */
-"introduction-recover-account-text" = "I already have an account";
+"introduction-recover-account-text" = "すでにアカウントを持っている";
 
 /* (No Comment) */
-"introduction-title-terms-and-services" = "By creating an account, you agree to Pera Wallet's<br><a href=\"https://perawallet.app/terms-and-services/\">Terms and Conditions</a> and <a href=\"https://www.perawallet.app/privacy-policy/\">Privacy Policy</a>";
+"introduction-title-terms-and-services" = "By creating an account, you agree to Pera Wallet's<br><a href=\"%@\">Terms and Conditions</a> and <a href=\"%@\">Privacy Policy</a>";
 
 /* (No Comment) */
 "ledger-account-detail-assets" = "資産";
@@ -521,7 +686,7 @@
 "ledger-account-fetct-error" = "アカウントの詳細を取得中にネットワークエラーが発生しました。プロセスを再開してください。";
 
 /* (No Comment) */
-"ledger-account-selection-detail" = "This ledger device can sign transactions for the following accounts. Select the accounts to add to your Pera Wallet.";
+"ledger-account-selection-detail" = "このLedgerデバイスは、以下のアカウントのトランザクションに署名できます。Pera Walletに追加するアカウントを選択してください。";
 
 /* (No Comment) */
 "ledger-account-selection-detail-rekey" = "このアカウントへの署名に使用するアカウントを選択します。";
@@ -560,16 +725,16 @@
 "ledger-approval-connection-title" = "Ledgerの接続";
 
 /* (No Comment) */
-"ledger-approval-message" = "Please verify the account address on your Ledger device (%@)";
+"ledger-approval-message" = "Ledgerデバイス (%@) でアカウントを確認してください";
 
 /* MARK: Ledger Approval */
-"ledger-approval-title" = "Ledger Approval";
+"ledger-approval-title" = "Ledgerの承認";
 
 /* (No Comment) */
 "ledger-device-list-connect" = "接続";
 
 /* (No Comment) */
-"ledger-device-list-looking" = "Looking for devices";
+"ledger-device-list-looking" = "デバイスを探しています";
 
 /* MARK: Ledger Device List */
 "ledger-device-list-title" = "Ledgerデバイスのペアリング";
@@ -599,7 +764,7 @@
 "ledger-pairing-first-warning-title" = "Ledgerとデバイスのペアリング";
 
 /* (No Comment) */
-"ledger-pairing-issue-error-message" = "Make sure the device is unlocked, nearby and has bluetooth enabled. If problems persist, please remove the device from your phone’s bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Pera Wallet instructions.";
+"ledger-pairing-issue-error-message" = "デバイスがロックされておらず、近くにあり、Bluetoothが有効であることをご確認ください。問題が解決しない場合は、携帯電話のBluetooth設定でデバイスを削除し、Ledgerアカウントを削除してから、Pera Walletの指示に従ってLedgerを再ペアリングしてください。";
 
 /* (No Comment) */
 "ledger-pairing-issue-error-title" = "Ledger Nano Xの接続でお困りですか？";
@@ -629,13 +794,13 @@
 "ledger-rekey-more-assets" = "+%@ の資産";
 
 /* (No Comment) */
-"ledger-rekey-success-message" = "The account \"%@\" has been successfully rekeyed";
+"ledger-rekey-success-message" = "アカウント「%@」は無事に再キー化されました";
 
 /* (No Comment) */
-"ledger-rekey-success-title" = "Account successfully\nrekeyed";
+"ledger-rekey-success-title" = "アカウントは無事に\n再キー化されました";
 
 /* (No Comment) */
-"ledger-rekey-total-fee" = "Total Rekeying fee of %@ Algo";
+"ledger-rekey-total-fee" = "合計再キー化手数料 %@ Algo";
 
 /* (No Comment) */
 "ledger-rekey-transaction-title" = "トランザクションの再キー化";
@@ -650,22 +815,22 @@
 "ledger-troubleshooting-app-support" = "Algorand Ledgerアプリをデバイスにインストールする方法については、%@ をご覧ください。";
 
 /* (No Comment) */
-"ledger-troubleshooting-bluetooth-connection-html" = "Disable or Enable Bluetooth for an iOS device. <br /> <br />\n<ul>\n<li>Tap on <b>Settings</b></li>\n<li>Select <b>“General”</b></li>\n<li>Tap on <b>“Bluetooth”</b></li>\n<li>Flip the <b>On/Off button</b> to toggle</li>\n<li>Bluetooth <b>On or Off</b></li>\n</ul>";
+"ledger-troubleshooting-bluetooth-connection-html" = "iOSデバイスのBluetoothを無効または有効にします。 <br /> <br />\n<ul>\n<li>設定を<b>タップ</b></li>\n<li>「一般」を<b>選択</b></li>\n<li>「Bluetooth」を<b>タップ</b></li>\n<li>On/Offボタンを<b>切り替えて</b> Bluetoothの</li>\n<li>OnまたはOffを<b>切り替えます</b></li>\n</ul>";
 
 /* (No Comment) */
 "ledger-troubleshooting-close-others" = "他のアプリケーション（Ledgerアプリ、暗号通貨ウォレット、Ledgerとペアリングしようとする可能性のあるもの）を閉じます。";
 
 /* (No Comment) */
-"ledger-troubleshooting-install-app-first-html" = "Begin by following Ledger’s comprehensive <a href=\"https://www.ledger.com/start\">Getting Started</a> tutorial.";
+"ledger-troubleshooting-install-app-first-html" = "まず、Ledgerの包括的な <a href=\"https://www.ledger.com/start\">Getting Started</a> チュートリアルに従ってください。";
 
 /* (No Comment) */
-"ledger-troubleshooting-install-app-second-html" = "When the tutorial gets to the point where it directs you to “Select the application(s) you want to install on your device,” type <b>Algorand</b> in the search bar and install.";
+"ledger-troubleshooting-install-app-second-html" = "チュートリアルで「デバイスにインストールするアプリケーションを選択してください」という指示が出たら、検索バーに <b>Algorand</b> と入力してインストールしてください。";
 
 /* (No Comment) */
-"ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "For more advanced troubleshooting, please refer to Ledger’s official <a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">Bluetooth Troubleshooting Guide</a>.";
+"ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "より高度なトラブルシューティングについては、Ledgerの公式 <a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">Bluetooth Troubleshooting Guide</a> をご覧ください。";
 
 /* (No Comment) */
-"ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "For general usage of your Ledger’s Bluetooth feature, please refer to Ledger’s official <a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">Bluetooth Connection Guide</a>.";
+"ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "LedgerのBluetooth機能の一般的な使用法については、ledgerの公式 <a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">Bluetooth Connection Guide</a> をご覧ください。";
 
 /* (No Comment) */
 "ledger-troubleshooting-ledger-support" = "Ledgerデバイスの一般的なトラブルシューティングについては、次のWebサイトをご覧ください。";
@@ -674,10 +839,10 @@
 "ledger-troubleshooting-ledger-support-title" = "Ledgerサポート";
 
 /* (No Comment) */
-"ledger-troubleshooting-open-app-first-html" = "Continue with Ledger’s comprehensive <a href=\"https://www.ledger.com/start\">Getting Started</a> tutorial, which will direct you how to install and open apps on your ledger device.";
+"ledger-troubleshooting-open-app-first-html" = "Ledgerの包括的な <a href=\"https://www.ledger.com/start\">Getting Started</a> チュートリアルで、Ledgerデバイスにアプリをインストールし、開く方法を説明します。";
 
 /* (No Comment) */
-"ledger-troubleshooting-open-app-second-html" = "If you haven’t already installed the <b>Algorand</b> app on your Ledger device, when the tutorial gets to the point where it directs you to “Select the application(s) you want to install on your device,” type <b>Algorand</b> in the search bar and install.";
+"ledger-troubleshooting-open-app-second-html" = "まだLedgerデバイスに<b>Algorand</b>アプリをインストールしていない場合、チュートリアルで「デバイスにインストールするアプリケーションを選択してください」という指示が出たら、検索バーに<b>Algorand</b>と入力してインストールしてください。";
 
 /* (No Comment) */
 "ledger-troubleshooting-restart" = "Algorand Walletおよび/またはお客様のデバイスを再起動します。";
@@ -698,7 +863,7 @@
 "ledger-tutorial-title-text" = "Ledgerとのペアリング";
 
 /* (No Comment) */
-"ledger-tutorial-turned-on" = "Make sure that your ledger device is on\nand has Bluetooth enabled.";
+"ledger-tutorial-turned-on" = "Ledgerデバイスがオンになっていて、Bluetoothが有効になっていることを確認してください。";
 
 /* (No Comment) */
 "ledger-verified-add" = "認証済みアカウントの追加";
@@ -707,7 +872,7 @@
 "ledger-verify-header-subtitle" = "以下のアカウントアドレスがLedgerデバイスに表示されます。デバイスのペアリングを完了するために、各アドレスを慎重に比較・確認してください。";
 
 /* (No Comment) */
-"ledger-verify-header-title" = "Verify Account Addresses\nvia Ledger";
+"ledger-verify-header-title" = "Ledgerによる\nアカウントアドレスの確認";
 
 /* (No Comment) */
 "local-authentication-enable" = "Face ID/Touch IDを有効にする";
@@ -716,7 +881,7 @@
 "local-authentication-enabled-subtitle" = "パスコードが確認されました。 Algorandアカウントのセキュリティが向上しました。";
 
 /* (No Comment) */
-"local-authentication-enabled-title" = "Biometric\nAuthentication\nEnabled";
+"local-authentication-enabled-title" = "生体認証が\n有効になりました";
 
 /* (No Comment) */
 "local-authentication-go-settings-text" = "生体認証を無効にしました。このオプションを有効にするには設定に移動してください。";
@@ -740,16 +905,16 @@
 "local-authentication-reason-touch-id-title" = "Touch IDによるロック解除";
 
 /* (No Comment) */
-"login-subtitle" = "Enter your\n6-digit pin";
+"login-subtitle" = "6桁のPINを\n入力してください";
 
 /* MARK: Login */
 "login-title" = "ロック解除";
 
 /* (No Comment) */
-"maximum-balance-standard-account-warning-description" = "Based on your account configuration, your minimum balance is %@.\n\nBy hitting continue, your transaction amount will be updated to maintain the Algorand Blockchain’s minimum required balance. You’ll be able to preview this change in the next step.";
+"maximum-balance-standard-account-warning-description" = "お客様のアカウント設定に基づく、最低残高は%@です。\n\n続行を押すと、Algorand Blockchainの最低必要残高を維持するために、取引が区が更新されます。次のステップでこの変更をプレビューできます。";
 
 /* (No Comment) */
-"maximum-balance-warning-description" = "Sending your maximum balance on this rekeyed account requires you to maintain a minimum balance of %@ Algos. This is to ensure that nothing changes with your rekeyed account.\n\nYour transaction amount will be automatically updated to reflect this change. You will be able to preview the transaction in the next step.";
+"maximum-balance-warning-description" = "この再キー化アカウントの最大残高を送信するには、最低残高の%@ Algosの最低残高を維持する必要があります。これは、再キー化されたアカウントに何も変化がないことを確認するためです。\n\n取引額は、この変更を反映するために自動で更新されます。次のステップでは、トランザクションの内容をプレビューできます。";
 
 /* (No Comment) */
 "maximum-balance-warning-title" = "最大残高";
@@ -758,55 +923,49 @@
 "min-balance-title" = "必要な最小残高";
 
 /* MARK: MoonPay */
-"moonpay-buy-button-title" = "Buy ALGO";
+"moonpay-buy-button-title" = "ALGOを購入する";
 
 /* (No Comment) */
-"moonpay-introduction-description" = "MoonPay offers the fastest way to buy ALGO with your local currency. Buy crypto with credit card or bank transfers. It's fast, simple, and secure.";
+"moonpay-introduction-description" = "MoonPayは、お客様がお使いの通貨で最も素早くALGOを購入できる方法を提供します。クレジットカードや銀行振込で暗号通貨を購入できます。高速、シンプルで、安全です。";
 
 /* (No Comment) */
-"moonpay-introduction-security" = "Secured by";
+"moonpay-introduction-security" = "認証方式";
 
 /* (No Comment) */
-"moonpay-introduction-title" = "Buy ALGO with Moonpay";
+"moonpay-introduction-title" = "MoonpayでALGOを購入する";
 
 /* (No Comment) */
-"moonpay-transaction-completed-description" = "Your purchase is completed and is being processed by the network. You will receive a notification when they are in your account.";
+"moonpay-transaction-completed-description" = "購入が完了し、ネットワークが処理中です。お客様のアカウントに登録されると、通知が届きます。";
 
 /* (No Comment) */
-"moonpay-transaction-completed-title" = "Your Algos are on their way!";
+"moonpay-transaction-completed-title" = "Algosが届きます！";
 
 /* (No Comment) */
-"moonpay-transaction-failed-description" = "Looks like your purchase failed. You will need to try again.";
+"moonpay-transaction-failed-description" = "購入に失敗したようです。もう一度やり直してください。";
 
 /* (No Comment) */
-"moonpay-transaction-failed-title" = "Uh oh, something went wrong.";
+"moonpay-transaction-failed-title" = "問題が発生しました。";
 
 /* (No Comment) */
-"moonpay-transaction-pending-description" = "Your purchase is being processed. It can take a few minutes to be completed. You will receive a notification when it’s done.";
+"moonpay-transaction-pending-description" = "購入手続き中です。完了までに数分かかる場合があります。完了すると、通知が届きます。";
 
 /* (No Comment) */
-"moonpay-transaction-pending-title" = "Your Algos are on their way!";
+"moonpay-transaction-pending-title" = "Algosが届きます！";
 
 /* (No Comment) */
-"moonpay-transaction-testnet-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use MoonPay.";
+"moonpay-transaction-testnet-not-available-description" = "TestNetでは購入できません。MoonPayをご利用になるには、設定からメインネットに切り替えてください。";
 
 /* (No Comment) */
-"moonpay-transaction-waitingAuthorization-description" = "Your purchase is waiting for authorization. Once payment is processed, you will receive a notification.";
+"moonpay-transaction-waitingAuthorization-description" = "ご購入いただいた商品は、承認待ちの状態です。支払いが処理されると、通知が届きます。";
 
 /* (No Comment) */
-"moonpay-transaction-waitingAuthorization-title" = "Almost there!";
+"moonpay-transaction-waitingAuthorization-title" = "あと少しです！";
 
 /* (No Comment) */
-"moonpay-transaction-waitingPayment-description" = "Your purchase request is pending payment. Once payment is processed, you will receive a notification.";
+"moonpay-transaction-waitingPayment-description" = "購入リクエストは支払い待ちです。支払いが処理されると、通知が届きます。";
 
 /* (No Comment) */
-"moonpay-transaction-waitingPayment-title" = "Almost there!";
-
-/* (No Comment) */
-"nft-list-empty-detail" = "Algorand Walletでは、近日中にお客様のNFTコレクションをご覧いただけるようになります。\n\n当社チームは、この機能を利用可能にするため、一生懸命取り組んでいます。ご期待ください！";
-
-/* MARK: NFTs */
-"nft-list-empty-title" = "NFT - 近日公開！";
+"moonpay-transaction-waitingPayment-title" = "あと少しです！";
 
 /* (No Comment) */
 "node-settings-action-delete-title" = "削除";
@@ -923,7 +1082,7 @@
 "options-copy-address" = "アドレスをコピー";
 
 /* (No Comment) */
-"options-edit-account-name" = "Rename Account";
+"options-edit-account-name" = "アカウント名の変更";
 
 /* (No Comment) */
 "options-manage-assets" = "資産の管理";
@@ -944,13 +1103,13 @@
 "options-remove-assets" = "資産の削除";
 
 /* (No Comment) */
-"options-remove-main-account-explanation" = "You are about to remove your main account, are you sure you want to proceed with this choice?";
+"options-remove-main-account-explanation" = "メインアカウントを削除しようとしています。この選択を続行してもよろしいですか？";
 
 /* (No Comment) */
-"options-remove-watch-account-explanation" = "You are about to remove a watch account. Are you sure you want to proceed with this choice?";
+"options-remove-watch-account-explanation" = "ウォッチアカウントを削除しようとしています。この選択を続行してもよろしいですか？";
 
 /* (No Comment) */
-"options-show-qr" = "Show QR Code";
+"options-show-qr" = "QRコードを表示";
 
 /* MARK: Options */
 "options-title" = "アカウント設定";
@@ -1016,7 +1175,7 @@
 "passphrase-verify-select-word" = "単語 #%@ を選択してください";
 
 /* (No Comment) */
-"passphrase-verify-title" = "Verify recovery\npassphrase backup";
+"passphrase-verify-title" = "回復用パスフレーズ\nバックアップの確認";
 
 /* (No Comment) */
 "passphrase-verify-wrong-message" = "選択された単語が間違っています。もう一度お試しください。";
@@ -1028,13 +1187,13 @@
 "password-change-old-subtitle" = "古い6桁のPINを\n入力してください";
 
 /* (No Comment) */
-"password-change-subtitle" = "Choose your\n6-digit PIN";
+"password-change-subtitle" = "6桁のPINを\n選択してください";
 
 /* (No Comment) */
 "password-change-title" = "PINの変更";
 
 /* MARK: Password Setting */
-"password-set-subtitle" = "Choose your\n6-digit PIN";
+"password-set-subtitle" = "6桁のPINを\n選択してください";
 
 /* (No Comment) */
 "password-verify-fail-message" = "PINが以前のPINと一致しませんでした。";
@@ -1046,7 +1205,7 @@
 "password-verify-new-subtitle" = "6桁のPINを\n再入力してください";
 
 /* (No Comment) */
-"password-verify-subtitle" = "Re-enter your\n6-digit PIN";
+"password-verify-subtitle" = "6桁のPINを\n再入力してください";
 
 /* (No Comment) */
 "password-verify-title" = "PINの確認";
@@ -1070,7 +1229,7 @@
 "pin-limit-reset-all" = "全データのリセット";
 
 /* MARK: Pin Limit */
-"pin-limit-title" = "Pera Wallet app is locked";
+"pin-limit-title" = "Pera Walletアプリはロックされました";
 
 /* (No Comment) */
 "pin-limit-too-many" = "PINの試行回数が多すぎます";
@@ -1109,10 +1268,10 @@
 "qr-creation-copied" = "アドレスがクリップボードにコピーされました";
 
 /* (No Comment) */
-"qr-creation-copy-address" = "Copy Address";
+"qr-creation-copy-address" = "アドレスをコピー";
 
 /* (No Comment) */
-"qr-creation-sharing-title" = "QR Code";
+"qr-creation-sharing-title" = "QRコード";
 
 /* MARK: QR Creation */
 "qr-creation-title" = "パスフレーズQR";
@@ -1172,28 +1331,28 @@
 "recover-from-seed-passphrase-title" = "パスフレーズ";
 
 /* MARK: Recover From Seed */
-"recover-from-seed-title" = "Enter Your Recovery\nPassphrase";
+"recover-from-seed-title" = "回復用パスフレーズの\n入力";
 
 /* (No Comment) */
 "recover-from-seed-verify-exist-error" = "このアカウントはすでに存在します。";
 
 /* (No Comment) */
-"recover-from-seed-verify-pop-up-description-watch-account" = "The Watch Account has been added successfully.";
+"recover-from-seed-verify-pop-up-description-watch-account" = "ウォッチアカウントは正常に追加されました。";
 
 /* (No Comment) */
-"recover-from-seed-verify-pop-up-explanation" = "Welcome to Pera Wallet!\nYour account is ready to use.";
+"recover-from-seed-verify-pop-up-explanation" = "Peraへようこそ！\nお客様のアカウントはすぐにお使いいただけます。";
 
 /* (No Comment) */
-"recover-from-seed-verify-pop-up-explanation-already-added" = "Congratulations, your account is ready to go.";
+"recover-from-seed-verify-pop-up-explanation-already-added" = "おめでとうございます。アカウントの準備が整いました。";
 
 /* (No Comment) */
-"recover-from-seed-verify-pop-up-title" = "Account is verified!";
+"recover-from-seed-verify-pop-up-title" = "アカウントが確認されました！";
 
 /* (No Comment) */
-"recover-from-seed-verify-pop-up-title-watch-account" = "Watch account added successfully";
+"recover-from-seed-verify-pop-up-title-watch-account" = "ウォッチアカウントは正常に追加されました";
 
 /* MARK: Passphrase Back Up */
-"recover-passphrase-title" = "Recovery Passphrase";
+"recover-passphrase-title" = "回復用パスフレーズ";
 
 /* (No Comment) */
 "recover-title" = "復元";
@@ -1202,7 +1361,7 @@
 "rekey-instruction-first" = "今後のトランザクションは、お使いの新しいLedgerデバイスによって署名されます。";
 
 /* (No Comment) */
-"rekey-instruction-header" = "What to expect";
+"rekey-instruction-header" = "期待される効果";
 
 /* (No Comment) */
 "rekey-instruction-second-ledger" = "古いLedgerはこのアカウントでは機能しなくなります。";
@@ -1226,7 +1385,7 @@
 "rekey-instruction-title" = "アカウントの再キー化";
 
 /* MARK: Algos Request */
-"request-algos-title" = "Request Algo";
+"request-algos-title" = "Algoをリクエストする";
 
 /* (No Comment) */
 "request-title" = "リクエスト";
@@ -1235,7 +1394,7 @@
 "reward-list-title" = "リワード";
 
 /* (No Comment) */
-"rewards-detail-subtitle" = "You earn rewards just by owning Algo! Here's a summary of your earned rewards since your last transaction. These rewards are always included in your balance.";
+"rewards-detail-subtitle" = "Algosを保有するだけでリワードを獲得できます！前回のトランザクション以降のリワード活動をまとめました。これらのリワードは常にお客様の残高に含まれています。";
 
 /* (No Comment) */
 "rewards-rate" = "報酬率";
@@ -1292,7 +1451,7 @@
 "send-algos-alert-message-address" = "送信先のアドレスを入力してください。";
 
 /* (No Comment) */
-"send-algos-amount-error" = "Transaction amount cannot be more than your available algo";
+"send-algos-amount-error" = "利用可能なAlgo以上の取引額は設定できません";
 
 /* (No Comment) */
 "send-algos-balance-title" = "残高:";
@@ -1304,10 +1463,10 @@
 "send-algos-contacts" = "連絡先";
 
 /* (No Comment) */
-"send-algos-minimum-amount-custom-error" = "The transaction cannot be completed because the amount will put your account below minimum required balance of %@ Algo.";
+"send-algos-minimum-amount-custom-error" = "この取引額によって、アカウントの口座が最低必要残高の%@ Algosを下回る結果になるため、トランザクションを完了できません。";
 
 /* (No Comment) */
-"send-algos-minimum-amount-error" = "Transaction amount results in a balance below the minimum account balance of 0.1 Algo.";
+"send-algos-minimum-amount-error" = "この取引額によって、アカウントの最低残高0.1 Algosを下回る結果になります。";
 
 /* (No Comment) */
 "send-algos-minimum-amount-error-new-account-description" = "これは、選択した口座での最初のトランザクションです。最初のトランザクションでは、最低でも0.1 Algoが必要です。有効な額を入力して、やり直してください。";
@@ -1328,7 +1487,7 @@
 "send-algos-sent-title" = "Algosを送信しました！";
 
 /* MARK: Algos Send */
-"send-algos-title" = "Send Algo";
+"send-algos-title" = "Algoを送信する";
 
 /* (No Comment) */
 "send-algos-to" = "To";
@@ -1388,7 +1547,7 @@
 "send-trasaction-address-placeholder" = "貼り付け #";
 
 /* (No Comment) */
-"settings-app-version" = "Pera Wallet Version %@";
+"settings-app-version" = "Pera Walletバージョン %@";
 
 /* (No Comment) */
 "settings-backup-title" = "バックアップ";
@@ -1397,7 +1556,7 @@
 "settings-currency" = "通貨";
 
 /* (No Comment) */
-"settings-currency-header-title" = "Currency Preferences";
+"settings-currency-header-title" = "通貨設定";
 
 /* (No Comment) */
 "settings-delete-data-title" = "全データの削除";
@@ -1424,13 +1583,13 @@
 "settings-logout-button-delete" = "はい、すべてのデータを削除します";
 
 /* (No Comment) */
-"settings-logout-detail" = "You are about to delete all data in the wallet, including your stored accounts. Make sure to have your account passphrases stored elsewhere before confirming. You will not be able to restore your accounts otherwise. Are you sure you would like to proceed?";
+"settings-logout-detail" = "保存されているアカウントを含む、ウォレット内のすべてのデータを削除しようとしています。確認する前に、アカウントのパスフレーズを別の場所に保存してください。そうでない場合、アカウントを復元することができません。続行してもよろしいですか？";
 
 /* (No Comment) */
 "settings-logout-success-message" = "データは正常に削除されました";
 
 /* (No Comment) */
-"settings-logout-title" = "Remove All Accounts and Logout";
+"settings-logout-title" = "すべてのアカウントを削除してログアウト";
 
 /* (No Comment) */
 "settings-notification-disabled-go-settings-text" = "通知を無効にしました。 このオプションを有効にするには設定に移動してください。";
@@ -1448,7 +1607,7 @@
 "settings-rate-modal-title" = "体験を評価する";
 
 /* (No Comment) */
-"settings-rate-title" = "Rate Pera Wallet";
+"settings-rate-title" = "Pera Walletを評価する";
 
 /* MARK: Settings */
 "settings-sections-account" = "アカウント";
@@ -1466,7 +1625,7 @@
 "settings-server-node-settings" = "ノード設定";
 
 /* (No Comment) */
-"settings-support-title" = "Send Feedback";
+"settings-support-title" = "フィードバックの送信";
 
 /* (No Comment) */
 "settings-theme-dark" = "ダーク";
@@ -1475,7 +1634,7 @@
 "settings-theme-light" = "ライト";
 
 /* (No Comment) */
-"settings-theme-set" = "Theme";
+"settings-theme-set" = "テーマ";
 
 /* (No Comment) */
 "settings-theme-system" = "システムのデフォルト";
@@ -1534,11 +1693,14 @@
 /* (No Comment) */
 "title-close" = "閉じる";
 
+/* MARK: Collectible Common */
+"title-collectibles" = "Collectibles";
+
 /* (No Comment) */
 "title-confirm" = "確認";
 
 /* (No Comment) */
-"title-confirm-all" = "Confirm All";
+"title-confirm-all" = "すべて確認する";
 
 /* (No Comment) */
 "title-connect" = "接続";
@@ -1571,13 +1733,19 @@
 "title-edit" = "編集";
 
 /* (No Comment) */
-"title-enter-pin-for-passphrase" = "Enter a Passcode";
+"title-enter-pin-for-passphrase" = "パスコードの入力";
 
 /* (No Comment) */
 "title-error" = "エラー";
 
 /* (No Comment) */
+"title-error-description" = "Error: %@";
+
+/* (No Comment) */
 "title-failed-connection" = "接続に失敗しました";
+
+/* (No Comment) */
+"title-generic-api-error" = "Well, this is unexpected";
 
 /* (No Comment) */
 "title-go-to-accounts" = "アカウントに移動";
@@ -1616,7 +1784,7 @@
 "title-no" = "いいえ";
 
 /* (No Comment) */
-"title-not-available" = "Not available";
+"title-not-available" = "利用不可";
 
 /* (No Comment) */
 "title-off" = "オフ";
@@ -1631,10 +1799,16 @@
 "title-paste-passphrase" = "パスフレーズ全体の貼り付け";
 
 /* (No Comment) */
-"title-plus-asset-count" = "%@ Assets";
+"title-plus-asset-count" = "%@ 資産";
 
 /* (No Comment) */
 "title-plus-asset-singular-count" = "%@資産";
+
+/* (No Comment) */
+"title-plus-collectible-count" = "%@ NFTs";
+
+/* (No Comment) */
+"title-plus-collectible-singular-count" = "%@ NFT";
 
 /* (No Comment) */
 "title-preview" = "プレビュー";
@@ -1667,7 +1841,7 @@
 "title-send" = "送信";
 
 /* (No Comment) */
-"title-share-qr" = "Share Address";
+"title-share-qr" = "共有アドレス";
 
 /* (No Comment) */
 "title-show-all-detail" = "すべての詳細を表示";
@@ -1712,7 +1886,7 @@
 "total-rewards-faq" = "FAQ";
 
 /* (No Comment) */
-"total-rewards-faq-title" = "For more information on Algorand Rewards, visit our FAQ";
+"total-rewards-faq-title" = "Algorandリワードの詳細については、FAQをご覧ください。";
 
 /* (No Comment) */
 "total-rewards-title" = "%@リワード";
@@ -1892,7 +2066,7 @@
 "tutorial-action-title-passcode" = "今はしない";
 
 /* (No Comment) */
-"tutorial-description-back-up" = "Creating a passphrase backup will allow you to recover your account. Without the passphrase, if you lose your device, remove the account or delete the app, you can permanently lose access to your Algorand account!";
+"tutorial-description-back-up" = "パスフレーズのバックアップを作成することで、アカウントを回復できます。パスフレーズ無しでは、デバイスを紛失したり、アカウントやアプリを削除した場合、Algorandアカウントへのアクセスを永久に失ってしまいます！";
 
 /* (No Comment) */
 "tutorial-description-ledger" = "Ledgerのロックが解除され、Bluetoothが有効になっていることを確認してください";
@@ -1904,7 +2078,7 @@
 "tutorial-description-local" = "アプリを使用するには、FaceIDまたはTouchIDが必要になります。携帯電話の盗難に備えウォレットのセキュリティを強化するために、生体認証を有効にすることをお勧めします。";
 
 /* (No Comment) */
-"tutorial-description-passcode" = "This 6-digit PIN will be required to use the Pera Wallet. We highly recommend creating a PIN to help increase wallet security in the event your phone is stolen.";
+"tutorial-description-passcode" = "この6桁のPINは、Pera Walletを使用するために必要になります。携帯電話の盗難に備え、ウォレットのセキュリティを強化するために、PINの作成を強くお勧めします。";
 
 /* (No Comment) */
 "tutorial-description-recover" = "次の手順では、25語のリカバリーパスフレーズを入力して、Algorandアカウントを復元します。始める前に、リカバリーフレーズをご用意ください。";
@@ -1913,34 +2087,34 @@
 "tutorial-description-warning-title" = "警告：";
 
 /* (No Comment) */
-"tutorial-description-watch" = "Monitor activity of an account without needing a recovery passphrase. This is useful for monitoring assets that are kept in cold storage.";
+"tutorial-description-watch" = "回復用パスフレーズの必要なく、アカウントのアクティビティを監視します。コールドストレージに保管されている資産を監視するのに便利です。";
 
 /* (No Comment) */
 "tutorial-description-watch-warning" = "対応するリカバリーパスフレーズがない場合は、このアカウントに資産を送信しないでください。";
 
 /* (No Comment) */
-"tutorial-description-write" = "The only way to recover an Algorand account is with this recovery passphrase.";
+"tutorial-description-write" = "この回復用パスフレーズが、Algorandアカウントを回復する唯一の方法です。";
 
 /* (No Comment) */
 "tutorial-description-write-warning" = "このパスフレーズは、アカウントへの完全なアクセスを許可するものですので、誰にも教えないでください。";
 
 /* (No Comment) */
-"tutorial-main-title-back-up" = "I Understand";
+"tutorial-main-title-back-up" = "理解しました";
 
 /* (No Comment) */
 "tutorial-main-title-ledger-connected" = "Algorandの使用を開始する";
 
 /* (No Comment) */
-"tutorial-main-title-passcode" = "Set PIN Code";
+"tutorial-main-title-passcode" = "PINコードを設定する";
 
 /* (No Comment) */
 "tutorial-main-title-recover" = "Algorandアカウントの復元";
 
 /* (No Comment) */
-"tutorial-main-title-write" = "I'm Ready to Begin";
+"tutorial-main-title-write" = "準備が出来ました";
 
 /* (No Comment) */
-"tutorial-title-back-up" = "Create a passphrase backup for your account";
+"tutorial-title-back-up" = "アカウントのパスフレーズのバックアップを作成する";
 
 /* (No Comment) */
 "tutorial-title-ledger-connected" = "Ledgerが正常に接続されました";
@@ -1952,16 +2126,16 @@
 "tutorial-title-recover" = "Algorandアカウントの復元";
 
 /* (No Comment) */
-"tutorial-title-write" = "Prepare to write\ndown your recovery passphrase";
+"tutorial-title-write" = "回復用パスフレーズを\nメモする準備をお願いします";
 
 /* (No Comment) */
 "verified-asset-double-check" = "常に再確認してください";
 
 /* (No Comment) */
-"verified-asset-information-text" = "Assets that go through our verification process are known projects that have their website and public information verified against this specific ASA. Verification status is not an endorsement of the asset.\n\nPera Wallet does not have any relationship with verified ASA owners. This badge is for informational purposes only.\n\nThat being said, you should always double check that the asset’s ID is the one that you intended to choose before transacting with that asset.\n\nIf you have questions about the verification process or general feedback about the app, we encourage you to visit;\n\n%@";
+"verified-asset-information-text" = "検証プロセスを通過した資産は、そのウェブサイトや公開情報が特定のASAに対して検証されているプロジェクトです。検証ステータスは、その資産の保証を意味するものではありません。\n\nPera Walletは検証済みのASA所有者とは何の関係もありません。このバッジは、情報提供のみを目的としています。\n\nつまり、資産の取引を行う前に、その資産のIDが意図したものであるかを常に再確認する必要があるということです。\n\n検証プロセスに関するご質問や、アプリに関する一般的なご感想については、こちらをご覧ください。\n\n%@";
 
 /* (No Comment) */
-"verified-asset-information-title" = "What does Asset Verification mean?";
+"verified-asset-information-title" = "資産の検証とは何ですか？";
 
 /* MARK: Verified Asset Information */
 "verified-assets-title" = "検証済み資産";
@@ -2015,13 +2189,13 @@
 "wallet-connect-session-connected-with-account" = "%@と接続しました";
 
 /* (No Comment) */
-"wallet-connect-session-connection-approved-description" = "Please return to %@ to continue and finish your operation. You can find all connected Sessions in the dedicated Settings page.";
+"wallet-connect-session-connection-approved-description" = "続行するには%@に戻って、操作を完了してください。専用の設定ページで、接続されたすべてのセッションを確認できます。";
 
 /* (No Comment) */
-"wallet-connect-session-connection-approved-title" = "You are Connected to %@";
+"wallet-connect-session-connection-approved-title" = "%@に接続しました";
 
 /* MARK: Wallet Connect Session */
-"wallet-connect-session-connection-description" = "%@ wants to\nconnect to your account";
+"wallet-connect-session-connection-description" = "%@ がお客様の\nアカウントへの接続を要求しています";
 
 /* (No Comment) */
 "wallet-connect-session-disconnect-fail-message" = "セッション%@からの切断に失敗しました。";
@@ -2054,13 +2228,13 @@
 "wallet-connect-transaction-all-count-singular" = "すべてのトランザクション (1)";
 
 /* (No Comment) */
-"wallet-connect-transaction-count" = "%d Transactions  ·  Group ID: %@";
+"wallet-connect-transaction-count" = "%d トランザクション  ·  グループ ID: %@";
 
 /* (No Comment) */
-"wallet-connect-transaction-count-singular" = "1 Transaction  ·  Group ID: %@";
+"wallet-connect-transaction-count-singular" = "1 トランザクション  ·  グループ ID: %@";
 
 /* MARK: Wallet Connect Transaction Dapp Message */
-"wallet-connect-transaction-dapp-show-more" = "Read More";
+"wallet-connect-transaction-dapp-show-more" = "詳しく読む";
 
 /* (No Comment) */
 "wallet-connect-transaction-detail-asset-url" = "アセットURLの表示";
@@ -2168,7 +2342,7 @@
 "wallet-connect-transaction-request-count-singular" = "トランザクションリクエスト(1)";
 
 /* (No Comment) */
-"wallet-connect-transaction-title-app-call" = "Application Call";
+"wallet-connect-transaction-title-app-call" = "アプリケーションコール";
 
 /* (No Comment) */
 "wallet-connect-transaction-title-app-call-approval-hash" = "承認ハッシュ";
@@ -2258,7 +2432,7 @@
 "wallet-connect-transaction-warning-future" = "このトランザクションは後ほど提出されます。";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-high-fee" = "This transaction fee is higher than the usual fee of 0.001 Algo.";
+"wallet-connect-transaction-warning-high-fee" = "このトランザクション手数料は、通常の手数料である0.001 Algoよりも高くなっています。";
 
 /* (No Comment) */
 "wallet-connect-transaction-warning-initial-description" = "dAppsと呼ばれる外部アプリケーションは、Pera Walletが管理していないトランザクション要求を行えます。署名する前にトランザクション内容を慎重にご確認ください。\n\nすべてのトランザクションは元に戻すことができません。知らないdAppからのトランザクションは絶対に承認しないでください。";
@@ -2276,16 +2450,16 @@
 "watch-account-button" = "ウォッチアカウントの作成";
 
 /* (No Comment) */
-"watch-account-create" = "Create a watch\naccount";
+"watch-account-create" = "ウォッチアカウントの\n作成";
 
 /* (No Comment) */
 "watch-account-error-address" = "有効なアドレスを入力してください。";
 
 /* (No Comment) */
-"watch-account-explanation-title" = "You are creating a read-only view of an Algorand account.";
+"watch-account-explanation-title" = "Algorandアカウントの読み取り専用ビューを作成しています。 account.";
 
 /* (No Comment) */
-"watch-account-input-explanation" = "Account Address";
+"watch-account-input-explanation" = "アカウントアドレス";
 
 /* (No Comment) */
 "watch-account-input-placeholder" = "アドレスを貼り付けるか、QRコードをスキャン";

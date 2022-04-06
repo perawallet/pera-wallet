@@ -26,8 +26,9 @@ final class NoContentWithActionView:
     lazy var handlers = Handlers()
 
     private lazy var contentView = UIView()
+    private lazy var resultWithActionContainer = UIView()
     private lazy var resultView = ResultView()
-    private lazy var actionView = Button()
+    private lazy var actionView = Button(.imageAtLeft(spacing: 12))
     
     override init(
         frame: CGRect
@@ -71,7 +72,21 @@ extension NoContentWithActionView {
             $0.height <= snp.height
 
             $0.setHorizontalPaddings(theme.contentHorizontalPaddings)
-            $0.setVerticalPaddings((theme.contentVerticalPadding, theme.contentVerticalPadding))
+            $0.setVerticalPaddings(theme.contentVerticalPaddings)
+        }
+
+        addResultWithActionContainer(theme)
+    }
+
+    private func addResultWithActionContainer(
+        _ theme: NoContentViewWithActionTheme
+    ) {
+        contentView.addSubview(resultWithActionContainer)
+        resultWithActionContainer.snp.makeConstraints {
+            $0.bottom <= 0
+            $0.center == 0
+
+            $0.setPaddings((.noMetric, 0, .noMetric, 0))
         }
 
         addResult(theme)
@@ -83,11 +98,9 @@ extension NoContentWithActionView {
     ) {
         resultView.customize(theme)
 
-        contentView.addSubview(resultView)
+        resultWithActionContainer.addSubview(resultView)
         resultView.snp.makeConstraints {
-            $0.center == 0
-            
-            $0.setPaddings((.noMetric, 0, .noMetric, 0))
+            $0.setPaddings((0, 0, .noMetric, 0))
         }
     }
 
@@ -96,17 +109,46 @@ extension NoContentWithActionView {
     ) {
         actionView.customizeAppearance(theme.action)
 
-        contentView.addSubview(actionView)
+        resultWithActionContainer.addSubview(actionView)
         actionView.contentEdgeInsets = UIEdgeInsets(theme.actionContentEdgeInsets)
+        actionView.fitToIntrinsicSize()
         actionView.snp.makeConstraints {
             $0.top == resultView.snp.bottom + theme.actionTopMargin
-            $0.centerX == resultView
-            $0.bottom <= 0
-            $0.trailing <= 0
-            $0.leading >= 0
+            $0.bottom == 0
         }
 
+        alignAction(actionView, for: theme.actionAlignment)
+
         actionView.draw(corner: Corner(radius: theme.actionCornerRadius))
+    }
+
+    private func alignAction(
+        _ action: MacaroonUIKit.Button,
+        for alignment: ActionViewAlignment
+    ) {
+        switch alignment {
+        case .centered:
+            action.snp.makeConstraints {
+                $0.centerX == resultView
+                $0.trailing <= 0
+                $0.leading >= 0
+            }
+        case let .aligned(left, right):
+            action.snp.makeConstraints {
+                $0.trailing == right
+                $0.leading == left
+            }
+        }
+    }
+}
+
+extension NoContentWithActionView {
+    enum ActionViewAlignment {
+        case centered
+        case aligned(
+            `left`: LayoutMetric,
+            `right`: LayoutMetric
+        )
     }
 }
 

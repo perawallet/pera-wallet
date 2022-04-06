@@ -23,33 +23,42 @@ final class AssetDisplayViewModel: PairedViewModel {
     private(set) var name: String?
     private(set) var code: String?
 
-    init(_ model: AssetInformation?) {
+    init(
+        _ model: AssetDecoration?
+    ) {
         if let assetDetail = model {
-            bindIsVerified(assetDetail)
-
-            let displayNames = assetDetail.getDisplayNames()
-            bindName(displayNames)
-            bindCode(displayNames)
+            bindVerified(assetDetail)
+            bindName(assetDetail)
+            bindCode(assetDetail)
         }
     }
 }
 
 extension AssetDisplayViewModel {
-    private func bindIsVerified(_ assetDetail: AssetInformation) {
+    private func bindVerified(
+        _ assetDetail: AssetDecoration
+    ) {
         isVerified = assetDetail.isVerified
     }
 
-    private func bindName(_ displayNames: (String, String?)) {
-        if !displayNames.0.isUnknown() {
-            name = displayNames.0
+    private func bindName(
+        _ assetDetail: AssetDecoration
+    ) {
+        let displayNames = assetDetail.displayNames
+        if !displayNames.primaryName.isUnknown() {
+            name = displayNames.primaryName
         }
     }
 
-    private func bindCode(_ displayNames: (String, String?)) {
-        if displayNames.0.isUnknown() {
-            code = displayNames.0
+    private func bindCode(
+        _ assetDetail: AssetDecoration
+    ) {
+        let displayNames = assetDetail.displayNames
+
+        if displayNames.primaryName.isUnknown() {
+            code = displayNames.primaryName
         } else {
-            code = displayNames.1
+            code = displayNames.secondaryName
         }
     }
 }

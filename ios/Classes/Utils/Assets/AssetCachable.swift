@@ -18,20 +18,20 @@
 import Foundation
 
 protocol AssetCachable {
-    func cacheAssetDetail(with id: Int64, completion: @escaping (AssetInformation?) -> Void)
+    func cacheAssetDetail(with id: Int64, completion: @escaping (AssetDecoration?) -> Void)
 }
 
 extension AssetCachable where Self: BaseViewController {
     // If the asset detail with id is already cached, returns it.
     // Else, fetches the asset detail from the api and caches it.
-    func cacheAssetDetail(with id: Int64, completion: @escaping (AssetInformation?) -> Void) {
+    func cacheAssetDetail(with id: Int64, completion: @escaping (AssetDecoration?) -> Void) {
         guard let api = api else {
             completion(nil)
             return
         }
 
-        if let assetInformation = self.sharedDataController.assetDetailCollection[id] {
-            completion(assetInformation)
+        if let assetDecoration = self.sharedDataController.assetDetailCollection[id] {
+            completion(assetDecoration)
         } else {
 
             /// <todo> Change for asset details ot information
@@ -46,12 +46,12 @@ extension AssetCachable where Self: BaseViewController {
                 
                 switch assetResponse {
                 case .success(let assetDetailResponse):
-                    guard let assetInformation = assetDetailResponse.results.first else {
+                    guard let assetDecoration = assetDetailResponse.results.first else {
                         completion(nil)
                         return
                     }
-                    self.sharedDataController.assetDetailCollection[id] = assetInformation
-                    completion(assetInformation)
+                    self.sharedDataController.assetDetailCollection[id] = assetDecoration
+                    completion(assetDecoration)
                 case .failure:
                     completion(nil)
                 }

@@ -26,11 +26,12 @@ struct NoContentWithActionViewCommonTheme: NoContentViewWithActionTheme {
     let body: TextStyle
     let bodyTopMargin: LayoutMetric
     let contentHorizontalPaddings: LayoutHorizontalPaddings
-    let contentVerticalPadding: LayoutMetric
+    let contentVerticalPaddings: LayoutVerticalPaddings
     let actionContentEdgeInsets: LayoutPaddings
     let actionCornerRadius: LayoutMetric
     let actionTopMargin: LayoutMetric
     let action: ButtonStyle
+    let actionAlignment: NoContentWithActionView.ActionViewAlignment
 
     init(
         _ family: LayoutFamily
@@ -43,7 +44,7 @@ struct NoContentWithActionViewCommonTheme: NoContentViewWithActionTheme {
         self.body = resultTheme.body
         self.bodyTopMargin = resultTheme.bodyTopMargin
         self.contentHorizontalPaddings = (24, 24)
-        self.contentVerticalPadding = 16
+        self.contentVerticalPaddings = (16, 16)
         self.actionContentEdgeInsets = (14, 24, 14, 24)
         self.actionCornerRadius = 4
         self.actionTopMargin = 32
@@ -54,5 +55,6 @@ struct NoContentWithActionViewCommonTheme: NoContentViewWithActionTheme {
             .font(Fonts.DMSans.medium.make(15)),
             .backgroundColor(AppColors.Components.Button.Primary.background)
         ]
+        self.actionAlignment = .centered
     }
 }

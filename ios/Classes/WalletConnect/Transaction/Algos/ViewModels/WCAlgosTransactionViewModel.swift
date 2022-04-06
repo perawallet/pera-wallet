@@ -117,7 +117,7 @@ class WCAlgosTransactionViewModel {
     private func setAssetInformationViewModel(from senderAccount: Account?) {
         assetInformationViewModel = WCAssetInformationViewModel(
             title: "asset-title".localized,
-            assetDetail: nil
+            asset: nil
         )
     }
 

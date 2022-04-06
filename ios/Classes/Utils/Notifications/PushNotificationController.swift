@@ -186,7 +186,7 @@ extension PushNotificationController {
         idleNotification notification: AlgorandNotification
     ) {
         if let alert = notification.alert {
-            bannerController?.presentInfoBanner(alert)
+            bannerController?.presentNotification(alert)
         }
     }
     
@@ -244,7 +244,7 @@ extension PushNotificationController {
                 receiverName
             )
             
-            self.bannerController?.presentInfoBanner(
+            self.bannerController?.presentNotification(
                 message,
                 handler
             )
@@ -301,7 +301,7 @@ extension PushNotificationController {
                 senderName
             )
 
-            self.bannerController?.presentInfoBanner(
+            self.bannerController?.presentNotification(
                 message,
                 handler
             )
@@ -341,7 +341,7 @@ extension PushNotificationController {
                 )
             )
 
-            self.bannerController?.presentInfoBanner(message)
+            self.bannerController?.presentNotification(message)
         }
     }
 }

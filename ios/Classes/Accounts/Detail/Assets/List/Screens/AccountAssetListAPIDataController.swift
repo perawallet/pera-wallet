@@ -24,10 +24,10 @@ final class AccountAssetListAPIDataController:
     var eventHandler: ((AccountAssetListDataControllerEvent) -> Void)?
 
     private var accountHandle: AccountHandle
-    private var assets: [AssetInformation] = []
+    private var assets: [StandardAsset] = []
 
-    var addedAssetDetails: [AssetInformation] = []
-    var removedAssetDetails: [AssetInformation] = []
+    var addedAssetDetails: [StandardAsset] = []
+    var removedAssetDetails: [StandardAsset] = []
 
     private var lastSnapshot: Snapshot?
 
@@ -98,7 +98,7 @@ extension AccountAssetListAPIDataController {
                 toSection: .portfolio
             )
 
-            var assets: [AssetInformation] = []
+            var assets: [StandardAsset] = []
             var assetItems: [AccountAssetsItem] = []
 
             assetItems.append(.search)
@@ -114,14 +114,14 @@ extension AccountAssetListAPIDataController {
             self.clearAddedAssetDetailsIfNeeded(for: self.accountHandle.value)
             self.clearRemovedAssetDetailsIfNeeded(for: self.accountHandle.value)
 
-            self.accountHandle.value.compoundAssets.forEach {
-                if self.removedAssetDetails.contains($0.detail) {
+            self.accountHandle.value.standardAssets.forEach { asset in
+                if self.removedAssetDetails.contains(asset) {
                     return
                 }
 
-                assets.append($0.detail)
+                assets.append(asset)
                 
-                let assetPreview = AssetPreviewModelAdapter.adaptAssetSelection(($0.detail, $0.base, currency))
+                let assetPreview = AssetPreviewModelAdapter.adaptAssetSelection((asset, currency))
                 let assetItem: AccountAssetsItem = .asset(AssetPreviewViewModel(assetPreview))
                 assetItems.append(assetItem)
             }
@@ -175,10 +175,10 @@ extension AccountAssetListAPIDataController {
     }
 
     private func clearAddedAssetDetailsIfNeeded(for account: Account) {
-        addedAssetDetails = addedAssetDetails.filter { !account.contains($0) }.uniqueElements()
+        addedAssetDetails = addedAssetDetails.filter { !account.containsAsset($0.id) }.uniqueElements()
     }
 
     private func clearRemovedAssetDetailsIfNeeded(for account: Account) {
-        removedAssetDetails = removedAssetDetails.filter { account.contains($0) }.uniqueElements()
+        removedAssetDetails = removedAssetDetails.filter { account.containsAsset($0.id) }.uniqueElements()
     }
 }

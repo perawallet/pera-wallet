@@ -22,7 +22,11 @@ import UIKit
 final class NoContentWithActionCell:
     CollectionCell<NoContentWithActionView>,
     ViewModelBindable {
-    lazy var handlers = Handlers()
+    lazy var handlers = Handlers() {
+        didSet {
+            contextView.handlers.didTapActionView = handlers.didTapActionView
+        }
+    }
 
     override init(
         frame: CGRect
@@ -31,17 +35,7 @@ final class NoContentWithActionCell:
             frame: frame
         )
 
-        customize()
-    }
-
-    func customize() {
         contextView.customize(NoContentWithActionViewCommonTheme())
-    }
-
-    override func setListeners() {
-        contextView.setListeners()
-
-        contextView.handlers.didTapActionView = handlers.didTapActionView
     }
 }
 

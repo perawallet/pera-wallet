@@ -33,7 +33,7 @@ extension URL {
         }
         
         guard let queryParameters = queryParameters else {
-            if AlgorandSDK().isValidAddress(address) {
+            if address.isValidatedAddress {
                 return QRText(mode: .address, address: address)
             }
             return nil

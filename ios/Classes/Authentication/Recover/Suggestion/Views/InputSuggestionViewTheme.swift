@@ -27,24 +27,16 @@ struct InputSuggestionViewTheme: StyleSheet, LayoutSheet {
     let separatorVerticalInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.InputSuggestionView.background
-        self.separator = Separator(color: AppColors.InputSuggestionView.separator)
+        self.backgroundColor = AppColors.Components.TextField.inputSuggestionBackground
+        self.separator = Separator(color: AppColors.Components.TextField.inputSuggestionSeparator)
         self.suggestionTitle = [
             .textOverflow(SingleLineFittingText(minimumScaleFactor: 0.7)),
             .textAlignment(.center),
             .font(UIFont.systemFont(ofSize: 16, weight: .regular)),
-            .textColor(AppColors.InputSuggestionView.text),
+            .textColor(AppColors.Components.TextField.inputSuggestionText),
         ]
 
         self.suggestionTrailingInset = 2
         self.separatorVerticalInset = 10
-    }
-}
-
-extension AppColors {
-    enum InputSuggestionView: String, Color {
-        case text = "inputSuggestionTextColor"
-        case background = "inputSuggestionBackgroundColor"
-        case separator = "inputSuggestionSeparatorColor"
     }
 }

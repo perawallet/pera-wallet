@@ -35,7 +35,7 @@ struct LedgerTutorialInstructionViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(FittingText()),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),
-            .textColor(Colors.Text.primary)
+            .textColor(AppColors.Components.Text.main.uiColor)
         ]
         self.arrowImage = [
             .image("icon-arrow-gray-24")

@@ -61,7 +61,7 @@ struct BuyAlgoHomeViewTheme:
             .tintColor(UIColor.white)
         ]
         header = [
-            .backgroundColor(AppColors.Shared.Global.purple)
+            .backgroundColor(AppColors.Dapp.moonpay)
         ]
         headerBackgroundView = [
             .contentMode(.bottomLeft),

@@ -73,8 +73,13 @@ final class LedgerAccountDetailViewDataSource: NSObject {
 
                 for asset in assets {
                     if let assetDetail = self.sharedDataController.assetDetailCollection[asset.id] {
-                        let compoundAsset = CompoundAsset(asset, assetDetail)
-                        account.append(compoundAsset)
+                        if assetDetail.isCollectible {
+                            let collectible = CollectibleAsset(asset: asset, decoration: assetDetail)
+                            account.append(collectible)
+                        } else {
+                            let standardAsset = StandardAsset(asset: asset, decoration: assetDetail)
+                            account.append(standardAsset)
+                        }
                     }
                 }
 

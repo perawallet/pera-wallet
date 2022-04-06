@@ -40,6 +40,11 @@ final class SendTransactionPreviewViewModel: ViewModel {
         guard let amount = draft.amount else {
             return
         }
+        
+        if let algoCurrency = currency as? AlgoCurrency {
+            bindAlgoTransactionPreview(draft, with: algoCurrency.currency)
+            return
+        }
 
         let currencyString: String?
 
@@ -74,13 +79,15 @@ final class SendTransactionPreviewViewModel: ViewModel {
     }
 
     private func bindAssetTransactionPreview(_ draft: AssetTransactionSendDraft, with currency: Currency?) {
-        guard let amount = draft.amount, let assetDetail = draft.assetDetail else {
+        guard let amount = draft.amount,
+              let asset = draft.asset else {
             return
         }
 
         let currencyString: String?
 
-        if let assetUSDValue = assetDetail.usdValue,
+        if let asset = asset as? StandardAsset,
+           let assetUSDValue = asset.usdValue,
            let currency = currency,
            let currencyUSDValue = currency.usdValue {
             let currencyValue = assetUSDValue * amount * currencyUSDValue
@@ -89,26 +96,38 @@ final class SendTransactionPreviewViewModel: ViewModel {
             currencyString = nil
         }
         
-        amountViewMode = .normal(amount: amount, isAlgos: false, fraction: algosFraction, assetSymbol: assetDetail.name, currency: currencyString)
+        amountViewMode = .normal(
+            amount: amount,
+            isAlgos: false,
+            fraction: algosFraction,
+            assetSymbol: asset.presentation.name,
+            currency: currencyString
+        )
 
         setUserView(for: draft)
         setOpponentView(for: draft)
         setFee(for: draft)
 
-        if let balance = draft.from.amount(for: assetDetail) {
-            let balanceCurrencyString: String?
+        let balance = asset.amountWithFraction
+        let balanceCurrencyString: String?
 
-            if let assetUSDValue = assetDetail.usdValue,
-               let currency = currency,
-               let currencyUSDValue = currency.usdValue {
-                let balanceCurrencyValue = assetUSDValue * balance * currencyUSDValue
-                balanceCurrencyString = balanceCurrencyValue.toCurrencyStringForLabel(with: currency.symbol)
-            } else {
-                balanceCurrencyString = nil
-            }
-
-            balanceViewMode = .normal(amount: balance, isAlgos: false, fraction: algosFraction, assetSymbol: assetDetail.name, currency: balanceCurrencyString)
+        if let asset = asset as? StandardAsset,
+           let assetUSDValue = asset.usdValue,
+           let currency = currency,
+           let currencyUSDValue = currency.usdValue {
+            let balanceCurrencyValue = assetUSDValue * balance * currencyUSDValue
+            balanceCurrencyString = balanceCurrencyValue.toCurrencyStringForLabel(with: currency.symbol)
+        } else {
+            balanceCurrencyString = nil
         }
+
+        balanceViewMode = .normal(
+            amount: balance,
+            isAlgos: false,
+            fraction: algosFraction,
+            assetSymbol: asset.presentation.name,
+            currency: balanceCurrencyString
+        )
 
         setNote(for: draft)
     }

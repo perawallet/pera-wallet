@@ -21,7 +21,7 @@ struct AssetDetailTitleViewTheme: LayoutSheet, StyleSheet {
     let horizontalPadding: LayoutMetric
     let imageSize: LayoutSize
     var titleLabel: TextStyle
-    var assetImageViewSmallerTheme: AssetImageViewSmallerTheme
+    var assetImageViewTheme: AssetImageViewTheme
 
     init(_ family: LayoutFamily) {
         self.imageSize = (24, 24)
@@ -30,8 +30,7 @@ struct AssetDetailTitleViewTheme: LayoutSheet, StyleSheet {
             .textOverflow(SingleLineFittingText()),
             .textAlignment(.left),
             .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMSans.medium.make(15))
         ]
-        self.assetImageViewSmallerTheme = AssetImageViewSmallerTheme()
+        self.assetImageViewTheme = AssetImageViewTheme()
     }
 }

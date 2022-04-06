@@ -34,7 +34,7 @@ final class AssetDetailTitleView: View {
 
 extension AssetDetailTitleView {
     private func addImageView(_ theme: AssetDetailTitleViewTheme) {
-        imageView.theme = theme.assetImageViewSmallerTheme
+        imageView.customize(theme.assetImageViewTheme)
 
         addSubview(imageView)
         imageView.snp.makeConstraints {
@@ -44,6 +44,8 @@ extension AssetDetailTitleView {
     }
 
     private func addTitleLabel(_ theme: AssetDetailTitleViewTheme) {
+        titleLabel.customizeAppearance(theme.titleLabel)
+
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
             $0.leading.equalTo(imageView.snp.trailing).offset(theme.horizontalPadding)
@@ -55,11 +57,11 @@ extension AssetDetailTitleView {
 extension AssetDetailTitleView {
     func bindData(_ viewModel: AssetDetailTitleViewModel?) {
         imageView.bindData(
-            AssetImageViewModel(
+            AssetImageSmallViewModel(
                 image: viewModel?.image,
-                assetAbbreviationForImage: viewModel?.assetAbbreviationForImage
+                assetAbbreviatedName: viewModel?.assetAbbreviatedName
             )
         )
-        titleLabel.text = viewModel?.title
+        titleLabel.editText = viewModel?.title
     }
 }

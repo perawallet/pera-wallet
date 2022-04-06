@@ -21,7 +21,7 @@ import UIKit
 
 struct AssetPreviewActionViewTheme: StyleSheet, LayoutSheet {
     let accountName: TextStyle
-    let assetAndNFTs: TextStyle
+    let assetAndCollectibles: TextStyle
     let secondaryAssetValue: TextStyle
     let actionButton: ButtonStyle
 
@@ -38,7 +38,7 @@ struct AssetPreviewActionViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.regular.make(15))
         ]
-        self.assetAndNFTs = [
+        self.assetAndCollectibles = [
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.grayLighter),

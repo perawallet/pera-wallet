@@ -109,7 +109,7 @@ extension WatchAccountAdditionViewController: WatchAccountAdditionViewDelegate {
     func watchAccountAdditionViewDidAddAccount(_ watchAccountAdditionView: WatchAccountAdditionView) {
         guard let address = watchAccountAdditionView.addressInputView.text,
             !address.isEmpty,
-            address.isValidatedAddress() else {
+            address.isValidatedAddress else {
             displaySimpleAlertWith(title: "title-error".localized, message: "watch-account-error-address".localized)
             return
         }
@@ -120,7 +120,7 @@ extension WatchAccountAdditionViewController: WatchAccountAdditionViewDelegate {
         }
         
         view.endEditing(true)
-        let account = createAccount(from: address, with: address.shortAddressDisplay())
+        let account = createAccount(from: address, with: address.shortAddressDisplay)
         log(RegistrationEvent(type: .watch))
         open(.accountNameSetup(flow: accountSetupFlow, mode: .add(type: .watch), accountAddress: account.address), by: .push)
     }

@@ -27,23 +27,27 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
     let description: TextStyle
     let assetCodeLabel: TextStyle
     let assetNameLabel: TextStyle
+    let transactionFeeTitleLabel: TextStyle
+    let transactionFeeAmountLabel: TextStyle
     let verifiedImage: ImageStyle
     let assetIDLabel: TextStyle
     let copyIDButton: ButtonStyle
-    let topSeparator: Separator
-    let bottomSeparator: Separator
+    let separator: Separator
 
     let titleTopPadding: LayoutMetric
     let assetCodeLabelTopPadding: LayoutMetric
+    let assetCodeLabelMinHeight: LayoutMetric
     let assetNameLabelTopPadding: LayoutMetric
+    let assetNameLabelMinHeight: LayoutMetric
     let assetIDPaddings: LayoutPaddings
+    let transactionTopPadding: LayoutMetric
+    let transactionBottomPadding: LayoutMetric
     let horizontalPadding: LayoutMetric
     let verticalInset: LayoutMetric
     let buttonInset: LayoutMetric
     let bottomInset: LayoutMetric
     let descriptionTopInset: LayoutMetric
-    let topSeparatorPadding: LayoutMetric
-    let bottomSeparatorPadding: LayoutMetric
+    let separatorPadding: LayoutMetric
     let copyIDButtonSize: LayoutSize
     let copyIDButtonCorner: Corner
 
@@ -88,12 +92,21 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
             .font(Fonts.DMSans.medium.make(13)),
             .titleColor([.normal(AppColors.Components.Text.main)])
         ]
-        let separatorColor = AppColors.Shared.Layer.grayLighter
-        let separatorHeight: LayoutMetric = 1
-        self.topSeparatorPadding = -20
-        self.bottomSeparatorPadding = -24
-        self.topSeparator = Separator(color: separatorColor, size: separatorHeight)
-        self.bottomSeparator = Separator(color: separatorColor, size: separatorHeight, position: .top((0, 0)))
+        self.transactionFeeTitleLabel = [
+            .text("collectible-approve-transaction-fee".localized),
+            .textColor(AppColors.Components.Text.gray),
+            .font(Fonts.DMSans.regular.make(15)),
+            .textAlignment(.left),
+            .textOverflow(FittingText())
+        ]
+        self.transactionFeeAmountLabel = [
+            .textColor(AppColors.Shared.Helpers.negative),
+            .font(Fonts.DMSans.medium.make(15)),
+            .textAlignment(.right),
+            .textOverflow(FittingText())
+        ]
+        self.separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
+        self.separatorPadding = -20
         self.mainButtonTheme = ButtonPrimaryTheme()
         self.secondaryButtonTheme = ButtonSecondaryTheme()
         self.horizontalPadding = 24
@@ -101,10 +114,14 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
         self.verticalInset = 36
         self.titleTopPadding = 22
         self.bottomInset = 16
-        self.descriptionTopInset = 48
+        self.descriptionTopInset = 44
         self.assetCodeLabelTopPadding = 42
+        self.assetCodeLabelMinHeight = 42
         self.assetNameLabelTopPadding = 4
-        self.assetIDPaddings = (44, 8, .noMetric, 105)
+        self.assetNameLabelMinHeight = 20
+        self.assetIDPaddings = (40, 8, .noMetric, 105)
+        self.transactionTopPadding = 46
+        self.transactionBottomPadding = 32
         self.copyIDButtonSize = (73, 32)
         self.copyIDButtonCorner = Corner(radius: copyIDButtonSize.h / 2)
     }

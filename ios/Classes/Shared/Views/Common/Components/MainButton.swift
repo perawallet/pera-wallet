@@ -35,17 +35,11 @@ class MainButton: UIButton {
 extension MainButton {
     private func configureButton() {
         titleLabel?.textAlignment = .center
-        setTitleColor(Colors.ButtonText.primary, for: .normal)
-        setTitleColor(Colors.MainButton.disabledTitle, for: .disabled)
+        setTitleColor(AppColors.Components.Button.Primary.text.uiColor, for: .normal)
+        setTitleColor(AppColors.Components.Button.Primary.disabledText.uiColor, for: .disabled)
         setTitle(title, for: .normal)
         setBackgroundImage(img("bg-main-button"), for: .normal)
         setBackgroundImage(img("bg-main-button-disabled"), for: .disabled)
         titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 16.0))
-    }
-}
-
-extension Colors {
-    fileprivate enum MainButton {
-        static let disabledTitle = color("mainButtonDisabledTitleColor")
     }
 }

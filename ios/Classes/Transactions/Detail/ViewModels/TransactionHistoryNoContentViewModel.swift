@@ -31,10 +31,40 @@ struct TransactionHistoryNoContentViewModel: NoContentViewModel {
 
 extension TransactionHistoryNoContentViewModel {
     private mutating func bindTitle() {
-        title = .string("accounts-tranaction-empty-text".localized)
+        let font = Fonts.DMSans.medium.make(19)
+        let lineHeightMultiplier = 1.13
+
+        title = .attributedString(
+            "accounts-tranaction-empty-text"
+                .localized
+                .attributed([
+                .font(font),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .textAlignment(.center),
+                    .lineBreakMode(.byWordWrapping),
+                    .lineHeightMultiple(lineHeightMultiplier)
+                ])
+            ])
+        )
     }
 
     private mutating func bindBody() {
-        body = .string( "No transactions have been made with this asset.".localized)
+        let font = Fonts.DMSans.regular.make(15)
+        let lineHeightMultiplier = 1.23
+
+        body = .attributedString(
+            "accounts-tranaction-empty-detail"
+                .localized
+                .attributed([
+                .font(font),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .textAlignment(.center),
+                    .lineBreakMode(.byWordWrapping),
+                    .lineHeightMultiple(lineHeightMultiplier)
+                ])
+            ])
+        )
     }
 }

@@ -60,7 +60,7 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
                     SingleLineTitleActionViewModel(
                         item: SingleLineIconTitleItem(
                             icon: nil,
-                            title: .string("accounts-title-assets".localized)
+                            title: "accounts-title-assets".localized
                         )
                     )
                 )

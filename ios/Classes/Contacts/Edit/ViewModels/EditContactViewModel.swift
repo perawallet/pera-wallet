@@ -35,10 +35,11 @@ final class EditContactViewModel: PairedViewModel {
 
 extension EditContactViewModel {
     private func bindImage(_ contact: Contact) {
-        if  let imageData = contact.image,
-            let resizedImage = UIImage(data: imageData)?.convert(to: CGSize(width: 80, height: 80)) {
-            self.image = resizedImage
-        }
+        image = ContactImageProcessor(
+            data: contact.image,
+            size: CGSize(width: 80, height: 80),
+            fallbackImage: .none
+        ).process()
     }
 
     private func bindImage() {

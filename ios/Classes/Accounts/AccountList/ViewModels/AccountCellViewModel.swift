@@ -56,9 +56,7 @@ extension AccountCellViewModel {
             let .transactionReceiver(assetDetail),
             let .contact(assetDetail):
             if let assetDetail = assetDetail {
-                guard let assetAmount = account.amount(for: assetDetail) else {
-                    return
-                }
+                let assetAmount = assetDetail.amountWithFraction
 
                 let amountText = "\(assetAmount.toFractionStringForLabel(fraction: assetDetail.decimals) ?? "")".attributed(
                     [

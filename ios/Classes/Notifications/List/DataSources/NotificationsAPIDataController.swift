@@ -261,15 +261,17 @@ extension NotificationsAPIDataController {
         }
     }
 
-    func getUserAccount(from notificationDetail: NotificationDetail) -> (account: Account?, compoundAsset: CompoundAsset?) {
-            let anAddress = notificationDetail.senderAddress ?? notificationDetail.receiverAddress
+    func getUserAccount(
+        from notificationDetail: NotificationDetail
+    ) -> (account: Account?, asset: Asset?) {
+        let anAddress = notificationDetail.senderAddress ?? notificationDetail.receiverAddress
 
-            guard let address = anAddress  else {
-                return (nil, nil)
-            }
-
-            let account = sharedDataController.accountCollection[address]?.value
-            let compoundAsset = notificationDetail.asset?.id.unwrap { account?[$0] }
-            return (account: account, compoundAsset: compoundAsset)
+        guard let address = anAddress  else {
+            return (nil, nil)
         }
+
+        let account = sharedDataController.accountCollection[address]?.value
+        let asset = notificationDetail.asset?.id.unwrap { account?[$0] }
+        return (account: account, asset: asset)
+    }
 }

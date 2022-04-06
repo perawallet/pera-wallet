@@ -115,8 +115,8 @@ extension BottomActionableBannerController {
         isPresenting: Bool
     ) -> UIViewPropertyAnimator {
         return UIViewPropertyAnimator(
-            duration: 0.5,
-            dampingRatio: 0.8
+            duration: 0.3,
+            curve: .easeInOut
         ) { [unowned self] in
             presentingView.layoutIfNeeded()
         }

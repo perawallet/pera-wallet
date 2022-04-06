@@ -3,6 +3,16 @@
     {
       "filename" : "button-loading-indicator.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "button-loading-indicator-dark.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

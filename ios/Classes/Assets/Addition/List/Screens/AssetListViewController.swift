@@ -72,7 +72,7 @@ final class AssetListViewController: BaseViewController {
             .collectionView
             .visibleCells
             .forEach {
-                let loadingCell = $0 as? AssetPreviewLoadingCell
+                let loadingCell = $0 as? PreviewLoadingCell
                 loadingCell?.startAnimating()
             }
     }
@@ -83,7 +83,7 @@ final class AssetListViewController: BaseViewController {
             .collectionView
             .visibleCells
             .forEach {
-                let loadingCell = $0 as? AssetPreviewLoadingCell
+                let loadingCell = $0 as? PreviewLoadingCell
                 loadingCell?.stopAnimating()
             }
     }
@@ -101,11 +101,11 @@ final class AssetListViewController: BaseViewController {
 
         listLayout.handlers.didSelectAssetAt = { [weak self] indexPath in
             guard let self = self,
-                  let item = self.dataController.assets[safe: indexPath.item] else {
+                  let asset = self.dataController.assets[safe: indexPath.item] else {
                 return
             }
 
-            self.delegate?.assetListViewController(self, didSelectItem: item)
+            self.delegate?.assetListViewController(self, didSelect: asset)
         }
     }
 
@@ -115,5 +115,5 @@ final class AssetListViewController: BaseViewController {
 }
 
 protocol AssetListViewControllerDelegate: AnyObject {
-    func assetListViewController(_ assetListViewController: AssetListViewController, didSelectItem item: AssetInformation)
+    func assetListViewController(_ assetListViewController: AssetListViewController, didSelect asset: AssetDecoration)
 }

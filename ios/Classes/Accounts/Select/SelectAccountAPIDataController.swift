@@ -90,7 +90,11 @@ extension SelectAccountAPIDataController {
     }
 
     private func deliverContentSnapshot() {
-        if sharedDataController.accountCollection.isEmpty {
+        let filteredAccounts = sharedDataController.accountCollection.sorted().filter {
+            $0.value.type != .watch
+        }
+
+        if filteredAccounts.isEmpty {
             deliverNoContentSnapshot()
             return
         }

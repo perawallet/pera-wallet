@@ -25,8 +25,8 @@ struct NoContentViewTopAttachedTheme: NoContentViewTheme {
     let body: TextStyle
     let bodyTopMargin: LayoutMetric
     let contentHorizontalPaddings: LayoutHorizontalPaddings
-    let contentVerticalPadding: LayoutMetric
-    let resultTopInset: LayoutMetric?
+    let contentVerticalPaddings: LayoutVerticalPaddings
+    let resultAlignment: NoContentView.ResultViewAlignment
 
     init(
         _ family: LayoutFamily
@@ -39,7 +39,7 @@ struct NoContentViewTopAttachedTheme: NoContentViewTheme {
         self.titleTopMargin = resultTheme.titleTopMargin
         self.bodyTopMargin = resultTheme.bodyTopMargin
         self.contentHorizontalPaddings = (24, 24)
-        self.contentVerticalPadding = 16
-        self.resultTopInset = 16
+        self.contentVerticalPaddings = (16, 16)
+        self.resultAlignment = .aligned(top: 16)
     }
 }

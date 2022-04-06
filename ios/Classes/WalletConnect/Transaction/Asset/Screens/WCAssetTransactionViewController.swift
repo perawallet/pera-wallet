@@ -25,7 +25,7 @@ class WCAssetTransactionViewController: WCSingleTransactionViewController {
         return assetTransactionView
     }
 
-    var assetDetail: AssetDetail?
+    var asset: Asset?
 
     override func configureAppearance() {
         super.configureAppearance()
@@ -41,7 +41,7 @@ class WCAssetTransactionViewController: WCSingleTransactionViewController {
         bindView()
 
         setCachedAsset {
-            if self.assetDetail == nil {
+            if self.asset == nil {
                 self.dismissScreen()
                 return
             }
@@ -59,7 +59,7 @@ extension WCAssetTransactionViewController {
             WCAssetTransactionViewModel(
                 transaction: transaction,
                 senderAccount: account,
-                assetDetail: assetDetail
+                asset: asset
             )
         )
     }

@@ -101,7 +101,7 @@ extension AddContactViewController: AddContactViewDelegate {
         
         guard let address = addContactView.addressInputView.text,
               !address.isEmpty,
-              address.isValidatedAddress() else {
+              address.isValidatedAddress else {
                   displaySimpleAlertWith(title: "title-error".localized, message: "contacts-address-validation-error".localized)
                   return nil
               }

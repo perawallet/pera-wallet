@@ -60,7 +60,7 @@ final class AccountNameSetupViewController: BaseScrollViewController {
 
     override func bindData() {
         super.bindData()
-        accountNameSetupView.bindData(accountAddress.shortAddressDisplay())
+        accountNameSetupView.bindData(accountAddress.shortAddressDisplay)
     }
 
     override func configureAppearance() {
@@ -106,7 +106,7 @@ extension AccountNameSetupViewController {
            !nameInput.isEmpty {
             accountName = nameInput
         } else {
-            accountName = accountAddress.shortAddressDisplay()
+            accountName = accountAddress.shortAddressDisplay
         }
 
         session?.updateName(accountName, for: accountAddress)

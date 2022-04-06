@@ -30,6 +30,21 @@ struct AssetAdditionNoContentViewModel: NoContentViewModel {
 
 extension AssetAdditionNoContentViewModel {
     private mutating func bindTitle() {
-        title = .string("asset-not-found-title".localized)
+        let font = Fonts.DMSans.medium.make(19)
+        let lineHeightMultiplier = 1.13
+        
+        title = .attributedString(
+            "asset-not-found-title"
+                .localized
+                .attributed([
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .textAlignment(.center),
+                        .lineBreakMode(.byWordWrapping),
+                        .lineHeightMultiple(lineHeightMultiplier)
+                    ])
+                ])
+        )
     }
 }

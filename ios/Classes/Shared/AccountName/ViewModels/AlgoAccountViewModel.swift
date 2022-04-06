@@ -38,7 +38,7 @@ extension AlgoAccountViewModel {
         }
 
         let accountAddress = account.authAddress ?? account.address
-        address = accountAddress.shortAddressDisplay()
+        address = accountAddress.shortAddressDisplay
     }
 
     private func bindImage(_ account: Account) {

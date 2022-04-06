@@ -25,6 +25,6 @@ struct AssetListViewTheme: LayoutSheet, StyleSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
         self.cellSpacing = 0
-        self.contentInset = (24, 0, 0, 0)
+        self.contentInset = (24, 24, 0, 24)
     }
 }

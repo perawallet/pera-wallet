@@ -46,7 +46,7 @@ final class TransactionDetailViewModel: ViewModel {
         transactionType: TransactionType,
         transaction: Transaction,
         account: Account,
-        assetDetail: AssetInformation?
+        assetDetail: StandardAsset?
     ) {
         if transactionType == .received {
             bindReceivedTransaction(with: transaction, and: assetDetail, for: account)
@@ -59,7 +59,7 @@ final class TransactionDetailViewModel: ViewModel {
 extension TransactionDetailViewModel {
     private func bindReceivedTransaction(
         with transaction: Transaction,
-        and assetDetail: AssetInformation?,
+        and assetDetail: StandardAsset?,
         for account: Account
     ) {
         transactionStatus = transaction.status
@@ -112,7 +112,7 @@ extension TransactionDetailViewModel {
 extension TransactionDetailViewModel {
     private func bindSentTransaction(
         with transaction: Transaction,
-        and assetDetail: AssetInformation?,
+        and assetDetail: StandardAsset?,
         for account: Account
     ) {
         transactionStatus = transaction.status

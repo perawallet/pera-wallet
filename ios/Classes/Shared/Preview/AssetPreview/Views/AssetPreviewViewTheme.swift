@@ -17,14 +17,60 @@
 
 import MacaroonUIKit
 
-protocol AssetPreviewViewTheme: StyleSheet, LayoutSheet {
-    var primaryAssetTitle: TextStyle { get }
-    var secondaryAssetTitle: TextStyle { get }
-    var primaryAssetValue: TextStyle { get }
-    var secondaryAssetValue: TextStyle { get }
-    var imageSize: LayoutSize { get }
-    var horizontalPadding: LayoutMetric { get }
-    var verticalPadding: LayoutMetric { get }
-    var secondaryImageLeadingPadding: LayoutMetric { get }
-    var assetValueMinRatio: LayoutMetric { get }
+struct AssetPreviewViewTheme:
+    LayoutSheet,
+    StyleSheet {
+    let verifiedIcon: ImageStyle
+    let title: TextStyle
+    let subtitle: TextStyle
+    var primaryAccessory: TextStyle
+    var secondaryAccessory: TextStyle
+
+    let contentMinWidthRatio: LayoutMetric
+    let minSpacingBetweenContentAndSecondaryContent: LayoutMetric
+    let verifiedIconContentEdgeInsets: LayoutOffset
+    let imageSize: LayoutSize
+    let horizontalPadding: LayoutMetric
+
+    init(_ family: LayoutFamily) {
+        self.contentMinWidthRatio = 0.15
+        self.minSpacingBetweenContentAndSecondaryContent = 8
+        self.verifiedIconContentEdgeInsets = (8, 0)
+        self.verifiedIcon = [
+            .contentMode(.right)
+        ]
+        self.title = [
+            .textOverflow(SingleLineText()),
+            .textColor(AppColors.Components.Text.main),
+            .textAlignment(.left)
+        ]
+        self.subtitle = [
+            .textOverflow(SingleLineText()),
+            .textColor(AppColors.Components.Text.grayLighter),
+            .textAlignment(.left)
+        ]
+        self.primaryAccessory = [
+            .textOverflow(SingleLineFittingText()),
+            .textColor(AppColors.Components.Text.main),
+            .textAlignment(.right)
+        ]
+        self.secondaryAccessory = [
+            .textOverflow(SingleLineFittingText()),
+            .textColor(AppColors.Components.Text.grayLighter),
+            .textAlignment(.right)
+        ]
+
+        self.imageSize = (40, 40)
+        self.horizontalPadding = 16
+    }
+}
+
+extension AssetPreviewViewTheme {
+    mutating func configureForAssetPreviewAddition() {
+        primaryAccessory = primaryAccessory.modify( [] )
+
+        secondaryAccessory = secondaryAccessory.modify(
+            [ .textOverflow(SingleLineFittingText()), .textColor(AppColors.Components.Text.gray) ]
+        )
+    }
 }

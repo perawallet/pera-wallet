@@ -27,7 +27,7 @@ final class AlgosDetailViewController: TransactionsViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        log(DisplayAssetDetailEvent(assetId: compoundAsset?.detail.id))
+        log(DisplayAssetDetailEvent(assetId: asset?.id))
     }
 
     override func configureAppearance() {

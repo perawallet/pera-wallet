@@ -92,7 +92,7 @@ extension LedgerAccountDetailViewController {
         if let index = ledgerIndex {
             title = "ledger-account-detail-name".localized(params: "\(index)")
         } else {
-            title = account.address.shortAddressDisplay()
+            title = account.address.shortAddressDisplay
         }
     }
 }
