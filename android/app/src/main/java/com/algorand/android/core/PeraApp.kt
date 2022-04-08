@@ -28,7 +28,7 @@ import java.util.Locale
 import javax.inject.Inject
 
 @HiltAndroidApp
-class PeraApp : Application() {
+open class PeraApp : Application() {
 
     @Inject
     lateinit var accountManager: AccountManager

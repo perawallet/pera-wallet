@@ -79,7 +79,7 @@ class AssetDetailFragment : DaggerBaseFragment(R.layout.fragment_asset_detail) {
     }
 
     private val extendedStatusBarConfiguration by lazy {
-        StatusBarConfiguration(backgroundColor = R.color.black_A3, showNodeStatus = false)
+        StatusBarConfiguration(backgroundColor = R.color.black_alpha_64, showNodeStatus = false)
     }
 
     private val defaultStatusBarConfiguration by lazy { StatusBarConfiguration() }

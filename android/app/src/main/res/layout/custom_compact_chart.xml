@@ -82,7 +82,7 @@
         android:layout_marginHorizontal="20dp"
         android:gravity="center"
         android:text="@string/no_chart_data_available"
-        android:textColor="@color/secondaryTextColor"
+        android:textColor="@color/secondary_text_color"
         android:visibility="gone"
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="parent"

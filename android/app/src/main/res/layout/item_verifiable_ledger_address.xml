@@ -18,10 +18,10 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/spacing_xlarge"
     android:layout_marginTop="@dimen/spacing_normal"
-    app:cardBackgroundColor="@color/primaryBackground"
+    app:cardBackgroundColor="@color/primary_background"
     app:cardCornerRadius="@dimen/spacing_small"
     app:cardElevation="0dp"
-    app:strokeColor="@color/negativeColor"
+    app:strokeColor="@color/negative"
     app:strokeWidth="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -48,7 +48,7 @@
                 style="?android:attr/progressBarStyleSmall"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:indeterminateTint="@color/negativeColor" />
+                android:indeterminateTint="@color/negative" />
 
         </FrameLayout>
 

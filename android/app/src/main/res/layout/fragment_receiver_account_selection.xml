@@ -24,18 +24,19 @@
         android:layout_marginHorizontal="@dimen/spacing_xlarge"
         android:layout_marginTop="@dimen/spacing_normal"
         android:hint="@string/search_or_enter_address"
-        app:customButtonIconColor="@color/secondaryIconTintColor"
+        app:customButtonIconColor="@color/secondary_icon_tint_color"
         app:customButtonIconRes="@drawable/ic_scan_qr"
-        app:endIconTintColor="@color/secondaryIconTintColor"
+        app:endIconTintColor="@color/secondary_icon_tint_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:startIconTintColor="@color/searchBarViewIconColor" />
+        app:startIconTintColor="@color/search_bar_view_icon_color" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:paddingHorizontal="@dimen/spacing_xlarge"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

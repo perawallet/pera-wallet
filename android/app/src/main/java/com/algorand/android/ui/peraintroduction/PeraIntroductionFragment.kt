@@ -66,7 +66,7 @@ class PeraIntroductionFragment : BaseInfoFragment() {
     }
 
     override fun setDescriptionText(textView: TextView) {
-        textView.setXmlStyledString(R.string.we_are_very_excited, R.color.linkPrimary, ::onPeraWalletBlogClick)
+        textView.setXmlStyledString(R.string.we_are_very_excited, R.color.link_primary, ::onPeraWalletBlogClick)
     }
 
     private fun onPeraWalletBlogClick(url: String) {

@@ -15,29 +15,21 @@ package com.algorand.android.usecase
 
 import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.Result
+import kotlinx.coroutines.CoroutineScope
 
 open class BaseSendAccountSelectionUseCase(
-    private val accountInformationUseCase: AccountInformationUseCase,
-    private val assetDetailUseCase: SimpleAssetDetailUseCase
+    private val accountInformationUseCase: AccountInformationUseCase
 ) {
 
-    suspend fun fetchAccountInformation(toAddress: String): Result<AccountInformation> {
+    suspend fun fetchAccountInformation(toAddress: String, coroutineScope: CoroutineScope): Result<AccountInformation> {
         return when (
-            val accountInformationResult = accountInformationUseCase.getAccountInformationAndFetchAssets(toAddress)
+            val accountInformationResult = accountInformationUseCase.getAccountInformationAndFetchAssets(
+                toAddress,
+                coroutineScope
+            )
         ) {
-            is Result.Success -> {
-                accountInformationResult.data.getAllAssetIds().forEach { fetchAssetParams(it) }
-                Result.Success(accountInformationResult.data)
-            }
-            is Result.Error -> {
-                Result.Error(accountInformationResult.exception)
-            }
-        }
-    }
-
-    private suspend fun fetchAssetParams(assetId: Long) {
-        if (assetDetailUseCase.isAssetCached(assetId).not()) {
-            assetDetailUseCase.fetchAndCacheAsset(assetId)
+            is Result.Success -> Result.Success(accountInformationResult.data)
+            is Result.Error -> Result.Error(accountInformationResult.exception)
         }
     }
 }

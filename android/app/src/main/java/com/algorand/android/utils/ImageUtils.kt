@@ -12,6 +12,7 @@
 
 package com.algorand.android.utils
 
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.widget.ImageView
@@ -80,4 +81,36 @@ fun ImageView.loadCircularImage(uri: Uri) {
         .load(uri)
         .circleCrop()
         .into(this)
+}
+
+fun Context.loadImage(uri: String, onResourceReady: (Drawable) -> Unit, onLoadFailed: (() -> Unit)? = null) {
+    Glide.with(this)
+        .load(uri)
+        .listener(object : RequestListener<Drawable> {
+            override fun onLoadFailed(
+                e: GlideException?,
+                model: Any?,
+                target: Target<Drawable>?,
+                isFirstResource: Boolean
+            ): Boolean {
+                onLoadFailed?.invoke()
+                return true
+            }
+
+            override fun onResourceReady(
+                resource: Drawable?,
+                model: Any?,
+                target: Target<Drawable>?,
+                dataSource: DataSource?,
+                isFirstResource: Boolean
+            ): Boolean {
+                if (resource != null) {
+                    onResourceReady(resource)
+                } else {
+                    onLoadFailed?.invoke()
+                }
+                return true
+            }
+        })
+        .preload()
 }

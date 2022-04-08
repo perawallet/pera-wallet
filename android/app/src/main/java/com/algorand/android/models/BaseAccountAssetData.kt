@@ -28,22 +28,115 @@ sealed class BaseAccountAssetData : Parcelable {
     abstract val creatorPublicKey: String?
     abstract val usdValue: BigDecimal?
 
-    @Parcelize
-    data class OwnedAssetData(
-        override val id: Long,
-        override val name: String?,
-        override val shortName: String?,
-        override val isVerified: Boolean,
-        override val isAlgo: Boolean,
-        override val decimals: Int,
-        override val creatorPublicKey: String?,
-        override val usdValue: BigDecimal?,
-        val amount: BigInteger,
-        val formattedAmount: String,
-        val amountInSelectedCurrency: BigDecimal,
-        val formattedSelectedCurrencyValue: String,
-        val isAmountInSelectedCurrencyVisible: Boolean
-    ) : BaseAccountAssetData()
+    sealed class BaseOwnedAssetData : BaseAccountAssetData() {
+        abstract val amount: BigInteger
+        abstract val formattedAmount: String
+        abstract val amountInSelectedCurrency: BigDecimal
+        abstract val formattedSelectedCurrencyValue: String
+        abstract val isAmountInSelectedCurrencyVisible: Boolean
+
+        @Parcelize
+        data class OwnedAssetData(
+            override val id: Long,
+            override val name: String?,
+            override val shortName: String?,
+            override val isVerified: Boolean,
+            override val isAlgo: Boolean,
+            override val decimals: Int,
+            override val creatorPublicKey: String?,
+            override val usdValue: BigDecimal?,
+            override val amount: BigInteger,
+            override val formattedAmount: String,
+            override val amountInSelectedCurrency: BigDecimal,
+            override val formattedSelectedCurrencyValue: String,
+            override val isAmountInSelectedCurrencyVisible: Boolean,
+        ) : BaseOwnedAssetData()
+
+        sealed class BaseOwnedCollectibleData : BaseOwnedAssetData() {
+
+            abstract val collectibleName: String?
+            abstract val collectionName: String?
+
+            @Parcelize
+            data class OwnedCollectibleImageData(
+                override val id: Long,
+                override val name: String?,
+                override val shortName: String?,
+                override val isVerified: Boolean,
+                override val isAlgo: Boolean,
+                override val decimals: Int,
+                override val creatorPublicKey: String?,
+                override val usdValue: BigDecimal?,
+                override val amount: BigInteger,
+                override val formattedAmount: String,
+                override val amountInSelectedCurrency: BigDecimal,
+                override val formattedSelectedCurrencyValue: String,
+                override val isAmountInSelectedCurrencyVisible: Boolean,
+                override val collectibleName: String?,
+                override val collectionName: String?,
+                val prismUrl: String?
+            ) : BaseOwnedCollectibleData()
+
+            @Parcelize
+            data class OwnedCollectibleVideoData(
+                override val id: Long,
+                override val name: String?,
+                override val shortName: String?,
+                override val isVerified: Boolean,
+                override val isAlgo: Boolean,
+                override val decimals: Int,
+                override val creatorPublicKey: String?,
+                override val usdValue: BigDecimal?,
+                override val amount: BigInteger,
+                override val formattedAmount: String,
+                override val amountInSelectedCurrency: BigDecimal,
+                override val formattedSelectedCurrencyValue: String,
+                override val isAmountInSelectedCurrencyVisible: Boolean,
+                override val collectibleName: String?,
+                override val collectionName: String?,
+                val thumbnailPrismUrl: String?
+            ) : BaseOwnedCollectibleData()
+
+            @Parcelize
+            data class OwnedCollectibleMixedData(
+                override val id: Long,
+                override val name: String?,
+                override val shortName: String?,
+                override val isVerified: Boolean,
+                override val isAlgo: Boolean,
+                override val decimals: Int,
+                override val creatorPublicKey: String?,
+                override val usdValue: BigDecimal?,
+                override val amount: BigInteger,
+                override val formattedAmount: String,
+                override val amountInSelectedCurrency: BigDecimal,
+                override val formattedSelectedCurrencyValue: String,
+                override val isAmountInSelectedCurrencyVisible: Boolean,
+                override val collectibleName: String?,
+                override val collectionName: String?,
+                val thumbnailPrismUrl: String?
+            ) : BaseOwnedCollectibleData()
+
+            @Parcelize
+            data class OwnedUnsupportedCollectibleData(
+                override val id: Long,
+                override val name: String?,
+                override val shortName: String?,
+                override val isVerified: Boolean,
+                override val isAlgo: Boolean,
+                override val decimals: Int,
+                override val creatorPublicKey: String?,
+                override val usdValue: BigDecimal?,
+                override val amount: BigInteger,
+                override val formattedAmount: String,
+                override val amountInSelectedCurrency: BigDecimal,
+                override val formattedSelectedCurrencyValue: String,
+                override val isAmountInSelectedCurrencyVisible: Boolean,
+                override val collectibleName: String?,
+                override val collectionName: String?,
+            ) : BaseOwnedCollectibleData()
+        }
+    }
 
     sealed class PendingAssetData : BaseAccountAssetData() {
 
@@ -70,5 +163,201 @@ sealed class BaseAccountAssetData : Parcelable {
             override val creatorPublicKey: String?,
             override val usdValue: BigDecimal?
         ) : PendingAssetData()
+
+        sealed class BasePendingCollectibleData : BaseAccountAssetData() {
+
+            abstract val collectibleName: String?
+            abstract val collectionName: String?
+            abstract val primaryImageUrl: String?
+
+            sealed class PendingAdditionCollectibleData : BasePendingCollectibleData() {
+
+                @Parcelize
+                data class AdditionImageCollectibleData(
+                    override val id: Long,
+                    override val name: String?,
+                    override val shortName: String?,
+                    override val isVerified: Boolean,
+                    override val isAlgo: Boolean,
+                    override val decimals: Int,
+                    override val creatorPublicKey: String?,
+                    override val usdValue: BigDecimal?,
+                    override val collectibleName: String?,
+                    override val collectionName: String?,
+                    override val primaryImageUrl: String?
+                ) : PendingAdditionCollectibleData()
+
+                @Parcelize
+                data class AdditionVideoCollectibleData(
+                    override val id: Long,
+                    override val name: String?,
+                    override val shortName: String?,
+                    override val isVerified: Boolean,
+                    override val isAlgo: Boolean,
+                    override val decimals: Int,
+                    override val creatorPublicKey: String?,
+                    override val usdValue: BigDecimal?,
+                    override val collectibleName: String?,
+                    override val collectionName: String?,
+                    override val primaryImageUrl: String?
+                ) : PendingAdditionCollectibleData()
+
+                @Parcelize
+                data class AdditionUnsupportedCollectibleData(
+                    override val id: Long,
+                    override val name: String?,
+                    override val shortName: String?,
+                    override val isVerified: Boolean,
+                    override val isAlgo: Boolean,
+                    override val decimals: Int,
+                    override val creatorPublicKey: String?,
+                    override val usdValue: BigDecimal?,
+                    override val collectibleName: String?,
+                    override val collectionName: String?,
+                    override val primaryImageUrl: String?
+                ) : PendingAdditionCollectibleData()
+
+                @Parcelize
+                data class AdditionMixedCollectibleData(
+                    override val id: Long,
+                    override val name: String?,
+                    override val shortName: String?,
+                    override val isVerified: Boolean,
+                    override val isAlgo: Boolean,
+                    override val decimals: Int,
+                    override val creatorPublicKey: String?,
+                    override val usdValue: BigDecimal?,
+                    override val collectibleName: String?,
+                    override val collectionName: String?,
+                    override val primaryImageUrl: String?
+                ) : PendingAdditionCollectibleData()
+            }
+
+            sealed class PendingDeletionCollectibleData : BasePendingCollectibleData() {
+
+                @Parcelize
+                data class DeletionImageCollectibleData(
+                    override val id: Long,
+                    override val name: String?,
+                    override val shortName: String?,
+                    override val isVerified: Boolean,
+                    override val isAlgo: Boolean,
+                    override val decimals: Int,
+                    override val creatorPublicKey: String?,
+                    override val usdValue: BigDecimal?,
+                    override val collectibleName: String?,
+                    override val collectionName: String?,
+                    override val primaryImageUrl: String?
+                ) : PendingDeletionCollectibleData()
+
+                @Parcelize
+                data class DeletionVideoCollectibleData(
+                    override val id: Long,
+                    override val name: String?,
+                    override val shortName: String?,
+                    override val isVerified: Boolean,
+                    override val isAlgo: Boolean,
+                    override val decimals: Int,
+                    override val creatorPublicKey: String?,
+                    override val usdValue: BigDecimal?,
+                    override val collectibleName: String?,
+                    override val collectionName: String?,
+                    override val primaryImageUrl: String?
+                ) : PendingDeletionCollectibleData()
+
+                @Parcelize
+                data class DeletionUnsupportedCollectibleData(
+                    override val id: Long,
+                    override val name: String?,
+                    override val shortName: String?,
+                    override val isVerified: Boolean,
+                    override val isAlgo: Boolean,
+                    override val decimals: Int,
+                    override val creatorPublicKey: String?,
+                    override val usdValue: BigDecimal?,
+                    override val collectibleName: String?,
+                    override val collectionName: String?,
+                    override val primaryImageUrl: String?
+                ) : PendingDeletionCollectibleData()
+
+                @Parcelize
+                data class DeletionMixedCollectibleData(
+                    override val id: Long,
+                    override val name: String?,
+                    override val shortName: String?,
+                    override val isVerified: Boolean,
+                    override val isAlgo: Boolean,
+                    override val decimals: Int,
+                    override val creatorPublicKey: String?,
+                    override val usdValue: BigDecimal?,
+                    override val collectibleName: String?,
+                    override val collectionName: String?,
+                    override val primaryImageUrl: String?
+                ) : PendingDeletionCollectibleData()
+            }
+
+            sealed class PendingSendingCollectibleData : BasePendingCollectibleData() {
+
+                @Parcelize
+                data class SendingImageCollectibleData(
+                    override val id: Long,
+                    override val name: String?,
+                    override val shortName: String?,
+                    override val isVerified: Boolean,
+                    override val isAlgo: Boolean,
+                    override val decimals: Int,
+                    override val creatorPublicKey: String?,
+                    override val usdValue: BigDecimal?,
+                    override val collectibleName: String?,
+                    override val collectionName: String?,
+                    override val primaryImageUrl: String?
+                ) : PendingSendingCollectibleData()
+
+                @Parcelize
+                data class SendingVideoCollectibleData(
+                    override val id: Long,
+                    override val name: String?,
+                    override val shortName: String?,
+                    override val isVerified: Boolean,
+                    override val isAlgo: Boolean,
+                    override val decimals: Int,
+                    override val creatorPublicKey: String?,
+                    override val usdValue: BigDecimal?,
+                    override val collectibleName: String?,
+                    override val collectionName: String?,
+                    override val primaryImageUrl: String?
+                ) : PendingSendingCollectibleData()
+
+                @Parcelize
+                data class SendingUnsupportedCollectibleData(
+                    override val id: Long,
+                    override val name: String?,
+                    override val shortName: String?,
+                    override val isVerified: Boolean,
+                    override val isAlgo: Boolean,
+                    override val decimals: Int,
+                    override val creatorPublicKey: String?,
+                    override val usdValue: BigDecimal?,
+                    override val collectibleName: String?,
+                    override val collectionName: String?,
+                    override val primaryImageUrl: String?
+                ) : PendingSendingCollectibleData()
+
+                @Parcelize
+                data class SendingMixedCollectibleData(
+                    override val id: Long,
+                    override val name: String?,
+                    override val shortName: String?,
+                    override val isVerified: Boolean,
+                    override val isAlgo: Boolean,
+                    override val decimals: Int,
+                    override val creatorPublicKey: String?,
+                    override val usdValue: BigDecimal?,
+                    override val collectibleName: String?,
+                    override val collectionName: String?,
+                    override val primaryImageUrl: String?
+                ) : PendingSendingCollectibleData()
+            }
+        }
     }
 }

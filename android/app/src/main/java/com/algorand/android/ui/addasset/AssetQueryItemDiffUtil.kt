@@ -14,14 +14,14 @@
 package com.algorand.android.ui.addasset
 
 import androidx.recyclerview.widget.DiffUtil
-import com.algorand.android.models.AssetQueryItem
+import com.algorand.android.models.AssetDetail
 
-class AssetQueryItemDiffUtil : DiffUtil.ItemCallback<AssetQueryItem>() {
-    override fun areItemsTheSame(oldItem: AssetQueryItem, newItem: AssetQueryItem): Boolean {
+class AssetQueryItemDiffUtil : DiffUtil.ItemCallback<AssetDetail>() {
+    override fun areItemsTheSame(oldItem: AssetDetail, newItem: AssetDetail): Boolean {
         return oldItem.assetId == newItem.assetId
     }
 
-    override fun areContentsTheSame(oldItem: AssetQueryItem, newItem: AssetQueryItem): Boolean {
+    override fun areContentsTheSame(oldItem: AssetDetail, newItem: AssetDetail): Boolean {
         return oldItem == newItem
     }
 }

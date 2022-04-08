@@ -18,6 +18,6 @@
     <shape>
         <size android:height="1dp" />
 
-        <solid android:color="@color/dividerColor" />
+        <solid android:color="@color/divider_color" />
     </shape>
 </inset>

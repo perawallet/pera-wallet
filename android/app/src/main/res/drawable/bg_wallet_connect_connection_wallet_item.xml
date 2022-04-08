@@ -14,7 +14,7 @@
 
     <stroke
         android:width="1dp"
-        android:color="@color/walletConnectAccountSelectionBorderColor" />
+        android:color="@color/wallet_connect_account_selection_border_color" />
 
     <corners android:radius="12dp" />
 

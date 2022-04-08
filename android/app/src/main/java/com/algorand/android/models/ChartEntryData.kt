@@ -14,8 +14,8 @@ package com.algorand.android.models
 
 import com.algorand.android.R
 import com.algorand.android.utils.formatAsDollar
-import com.algorand.android.utils.isBiggerThan
-import com.algorand.android.utils.isLessThan
+import com.algorand.android.utils.isGreaterThan
+import com.algorand.android.utils.isLesserThan
 import com.algorand.android.utils.percentageChangeOf
 import com.github.mikephil.charting.data.Entry
 import java.math.BigDecimal
@@ -30,11 +30,11 @@ data class ChartEntryData(
         get() = (entryList.lastOrNull()?.data as? CandleHistory)?.displayPrice?.formatAsDollar().orEmpty()
 
     val percentageChangeTextColorResId: Int
-        get() = if (priceChangePercentage isBiggerThan ZERO) R.color.helperPositive else R.color.helperNegative
+        get() = if (priceChangePercentage isGreaterThan ZERO) R.color.positive else R.color.negative
 
     val percentageChangeArrowResId: Int
         get() {
-            return if (priceChangePercentage isBiggerThan ZERO) {
+            return if (priceChangePercentage isGreaterThan ZERO) {
                 R.drawable.ic_arrow_up_line_positive_small
             } else {
                 R.drawable.ic_arrow_down_line_negative_small
@@ -44,8 +44,8 @@ data class ChartEntryData(
     val lineChartTheme: LineChartTheme
         get() {
             return when {
-                priceChangePercentage isBiggerThan ZERO -> LineChartTheme.GREEN
-                priceChangePercentage isLessThan ZERO -> LineChartTheme.RED
+                priceChangePercentage isGreaterThan ZERO -> LineChartTheme.GREEN
+                priceChangePercentage isLesserThan ZERO -> LineChartTheme.RED
                 else -> LineChartTheme.GRAY
             }
         }

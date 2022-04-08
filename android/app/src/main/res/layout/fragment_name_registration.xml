@@ -51,7 +51,6 @@
             android:hint="@string/account_name"
             app:maxCharacter="@integer/account_name_character_limit"
             app:hint="@string/account_name"
-            app:endIcon="@drawable/ic_close"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/descriptionTextView"

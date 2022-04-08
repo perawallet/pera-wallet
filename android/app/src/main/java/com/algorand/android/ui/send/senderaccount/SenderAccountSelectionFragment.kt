@@ -23,13 +23,13 @@ import com.algorand.android.core.TransactionBaseFragment
 import com.algorand.android.databinding.FragmentSenderAccountSelectionBinding
 import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.AssetTransaction
+import com.algorand.android.models.BaseAccountSelectionListItem
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.TargetUser
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.models.TransactionData
 import com.algorand.android.ui.accountselection.AccountSelectionAdapter
-import com.algorand.android.ui.common.listhelper.BaseAccountListItem
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.extensions.hide
@@ -55,9 +55,15 @@ class SenderAccountSelectionFragment : TransactionBaseFragment(R.layout.fragment
 
     private val binding by viewBinding(FragmentSenderAccountSelectionBinding::bind)
 
-    private val senderAccountSelectionAdapter = AccountSelectionAdapter(::onAccountClick)
+    private val listener = object : AccountSelectionAdapter.Listener {
+        override fun onAccountItemClick(publicKey: String) {
+            senderAccountSelectionViewModel.fetchFromAccountInformation(publicKey)
+        }
+    }
 
-    private val fromAccountCollector: suspend (List<BaseAccountListItem.BaseAccountItem>) -> Unit = {
+    private val senderAccountSelectionAdapter = AccountSelectionAdapter(listener)
+
+    private val fromAccountCollector: suspend (List<BaseAccountSelectionListItem>) -> Unit = {
         onGetAccountsSuccess(it)
     }
 
@@ -106,10 +112,6 @@ class SenderAccountSelectionFragment : TransactionBaseFragment(R.layout.fragment
         viewLifecycleOwner.lifecycleScope.launch {
             senderAccountSelectionViewModel.fromAccountInformationFlow.collectLatest(fromAccountInformationCollector)
         }
-    }
-
-    private fun onAccountClick(publicKey: String) {
-        senderAccountSelectionViewModel.fetchFromAccountInformation(publicKey)
     }
 
     // If user enter Send Algo flow via deeplink or qr code, then we have to check asset transaction params then
@@ -166,7 +168,7 @@ class SenderAccountSelectionFragment : TransactionBaseFragment(R.layout.fragment
         binding.progressBar.root.hide()
     }
 
-    private fun onGetAccountsSuccess(accountList: List<BaseAccountListItem.BaseAccountItem>) {
+    private fun onGetAccountsSuccess(accountList: List<BaseAccountSelectionListItem>) {
         senderAccountSelectionAdapter.submitList(accountList)
         binding.screenStateView.isVisible = accountList.isEmpty()
     }

@@ -13,13 +13,23 @@
 package com.algorand.android.usecase
 
 import com.algorand.android.core.BaseUseCase
+import com.algorand.android.repository.RewardsRepository
 import javax.inject.Inject
 
 class AlgoRewardUseCase @Inject constructor(
-    private val accountDetailUseCase: AccountDetailUseCase
+    private val accountDetailUseCase: AccountDetailUseCase,
+    private val rewardsRepository: RewardsRepository
 ) : BaseUseCase() {
 
     fun getPendingRewards(publicKey: String): Long {
         return accountDetailUseCase.getCachedAccountDetail(publicKey)?.data?.accountInformation?.pendingRewards ?: 0L
+    }
+
+    fun isRewardActivated(): Boolean {
+        return rewardsRepository.isRewardActivated()
+    }
+
+    fun setRewardsPreference(enableRewards: Boolean) {
+        rewardsRepository.setRewardsPreference(enableRewards)
     }
 }

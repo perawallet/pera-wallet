@@ -37,7 +37,7 @@ fun setupMnemonic(
 }
 
 private fun TextView.setupPassphraseColumn(range: IntRange, passphraseWords: List<String>) {
-    val positionTextColor = ContextCompat.getColor(context, R.color.secondaryTextColor)
+    val positionTextColor = ContextCompat.getColor(context, R.color.secondary_text_color)
     text = buildSpannedString {
         val textSize = context.resources.getDimensionPixelSize(R.dimen.text_size_13)
         val font = context.resources.getIdentifier("dmmono_medium", "font", context.packageName)

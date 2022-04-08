@@ -13,6 +13,7 @@
 package com.algorand.android.customviews
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
@@ -20,7 +21,9 @@ import com.algorand.android.R
 import com.algorand.android.databinding.CustomAssetNameViewBinding
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.utils.ALGOS_SHORT_NAME
+import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.setTextAndVisibility
+import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.getXmlStyledString
 import com.algorand.android.utils.viewbinding.viewBinding
 import java.util.Locale
@@ -35,7 +38,7 @@ class AlgorandAssetNameTextView @JvmOverloads constructor(
     fun setupUI(showVerified: Boolean?, shortName: String?, fullName: String?, assetId: Long?, isAlgorand: Boolean?) {
         with(binding) {
             mainTextView.setTextAndVisibility(fullName)
-            subTextView.setTextAndVisibility(shortName?.toUpperCase(Locale.ENGLISH))
+            subTextView.setTextAndVisibility(shortName?.uppercase(Locale.ENGLISH))
             assetVerifiedImageView.isVisible = showVerified != null && showVerified != false
             if (isAlgorand == true) {
                 algorandAssetAvatarView.setAlgorandAvatar()
@@ -51,12 +54,12 @@ class AlgorandAssetNameTextView @JvmOverloads constructor(
                 mainTextView.setTextAndVisibility(fullName)
                 assetVerifiedImageView.isVisible = isVerified
                 if (isAlgo()) {
-                    subTextView.setTextAndVisibility(shortName?.toUpperCase(Locale.ENGLISH))
+                    subTextView.setTextAndVisibility(shortName?.uppercase(Locale.ENGLISH))
                     algorandAssetAvatarView.setAlgorandAvatar()
                 } else {
                     val subTextRes = context.getString(
                         R.string.asset_name_with_id,
-                        shortName?.toUpperCase(Locale.ENGLISH),
+                        shortName?.uppercase(Locale.ENGLISH),
                         assetId
                     )
                     subTextView.setTextAndVisibility(subTextRes)
@@ -66,48 +69,49 @@ class AlgorandAssetNameTextView @JvmOverloads constructor(
         }
     }
 
-    fun setupUI(assetInformation: AssetInformation) {
-        with(assetInformation) {
-            setupUI(isVerified, shortName, fullName, assetId, isAlgo())
-        }
-    }
-
-    fun setupUIWithAmount(assetInformation: AssetInformation) {
+    fun setupUIWithId(
+        isVerified: Boolean,
+        fullName: String?,
+        assetId: Long,
+        isAlgo: Boolean
+    ) {
         with(binding) {
-            with(assetInformation) {
+            assetVerifiedImageView.isVisible = isVerified
+            if (isAlgo) {
+                mainTextView.setTextAndVisibility(ALGOS_SHORT_NAME)
+                subTextView.setTextAndVisibility(fullName)
+                algorandAssetAvatarView.setAlgorandAvatar()
+            } else {
                 mainTextView.setTextAndVisibility(fullName)
-                subTextView.setTextAndVisibility(
-                    resources.getString(
-                        R.string.asset_short_name_with_amount, formattedAmount, shortName?.toUpperCase(Locale.ENGLISH)
-                    )
-                )
-                assetVerifiedImageView.isVisible = isVerified
-                if (isAlgo()) {
-                    algorandAssetAvatarView.setAlgorandAvatar()
-                } else {
-                    algorandAssetAvatarView.setOtherAssetAvatar(fullName)
-                }
+                val subTextRes = context?.getXmlStyledString(
+                    stringResId = R.string.asset_id,
+                    replacementList = listOf("asset_id" to assetId.toString())
+                ).toString()
+                subTextView.setTextAndVisibility(subTextRes)
+                algorandAssetAvatarView.setOtherAssetAvatar(fullName)
             }
         }
     }
 
-    fun setupUIWithId(assetInformation: AssetInformation) {
-        with(assetInformation) {
-            with(binding) {
-                assetVerifiedImageView.isVisible = isVerified
-                if (isAlgo()) {
-                    mainTextView.setTextAndVisibility(ALGOS_SHORT_NAME)
-                    subTextView.setTextAndVisibility(fullName)
-                    algorandAssetAvatarView.setAlgorandAvatar()
-                } else {
-                    mainTextView.setTextAndVisibility(fullName)
-                    val subTextRes = context?.getXmlStyledString(
-                        stringResId = R.string.asset_id,
-                        replacementList = listOf("asset_id" to assetId.toString())
-                    ).toString()
-                    subTextView.setTextAndVisibility(subTextRes)
-                    algorandAssetAvatarView.setOtherAssetAvatar(fullName)
-                }
+    fun setupUiWithDrawable(
+        isVerified: Boolean,
+        fullName: String?,
+        assetId: Long,
+        drawable: Drawable,
+        isOwnedByUser: Boolean
+    ) {
+        with(binding) {
+            assetVerifiedImageView.isVisible = isVerified
+            mainTextView.setTextAndVisibility(fullName)
+            val subTextRes = context?.getXmlStyledString(
+                stringResId = R.string.asset_id,
+                replacementList = listOf("asset_id" to assetId.toString())
+            ).toString()
+            subTextView.setTextAndVisibility(subTextRes)
+            algorandAssetAvatarView.hide()
+            collectibleImageView.apply {
+                showImage(drawable, !isOwnedByUser)
+                show()
             }
         }
     }

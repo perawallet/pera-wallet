@@ -24,7 +24,7 @@
         android:orientation="vertical"
         android:paddingHorizontal="@dimen/spacing_normal"
         android:paddingBottom="@dimen/bottom_safe_area_margin"
-        tools:background="@color/secondaryBackground">
+        tools:background="@color/secondary_background">
 
         <View
             style="@style/BottomSheetModalityLine"
@@ -155,11 +155,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/remove_account"
-            android:textColor="@color/errorTintColor"
+            android:textColor="@color/error_tint_color"
             android:visibility="gone"
             app:icon="@drawable/ic_unlink"
-            app:iconTint="@color/errorTintColor"
-            app:rippleColor="@color/errorTintColor"
+            app:iconTint="@color/error_tint_color"
+            app:rippleColor="@color/error_tint_color"
             tools:visibility="visible" />
 
     </LinearLayout>

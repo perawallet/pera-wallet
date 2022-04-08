@@ -47,7 +47,7 @@ abstract class BaseAddEditContactFragment : DaggerBaseFragment(R.layout.fragment
                 contactImageUri = result.data?.data.toString()
                 with(binding.editProfilePhotoButton) {
                     setIconResource(R.drawable.ic_pen)
-                    setIconTintResource(R.color.primaryBackground)
+                    setIconTintResource(R.color.primary_background)
                 }
             }
         }

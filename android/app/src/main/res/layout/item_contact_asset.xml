@@ -28,6 +28,6 @@
         android:id="@+id/sendButton"
         style="@style/IconButton.Circle.Stroke"
         app:icon="@drawable/ic_arrow_up_line"
-        app:iconTint="@color/primaryTextColor" />
+        app:iconTint="@color/primary_text_color" />
 
 </LinearLayout>

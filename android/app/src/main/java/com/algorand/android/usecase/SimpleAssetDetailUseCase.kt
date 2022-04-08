@@ -13,11 +13,17 @@
 package com.algorand.android.usecase
 
 import com.algorand.android.core.BaseUseCase
-import com.algorand.android.models.AssetQueryItem
+import com.algorand.android.mapper.AssetDetailMapper
+import com.algorand.android.models.AssetDetail
+import com.algorand.android.models.AssetQueryType
+import com.algorand.android.models.BaseAssetDetail
+import com.algorand.android.models.Pagination
+import com.algorand.android.models.Result
 import com.algorand.android.repository.AssetRepository
 import com.algorand.android.usecase.AssetFetchAndCacheUseCase.Companion.MAX_ASSET_FETCH_COUNT
 import com.algorand.android.utils.CacheResult
 import com.algorand.android.utils.DataResource
+import com.algorand.android.utils.mapResult
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
@@ -25,7 +31,8 @@ import kotlinx.coroutines.flow.flow
 
 class SimpleAssetDetailUseCase @Inject constructor(
     private val assetRepository: AssetRepository,
-    private val assetFetchAndCacheUseCase: AssetFetchAndCacheUseCase
+    private val assetFetchAndCacheUseCase: AssetFetchAndCacheUseCase,
+    private val assetDetailMapper: AssetDetailMapper
 ) : BaseUseCase() {
 
     fun isAssetCached(assetId: Long): Boolean = assetRepository.getCachedAssetById(assetId) != null
@@ -34,22 +41,26 @@ class SimpleAssetDetailUseCase @Inject constructor(
 
     fun getCachedAssetDetail(assetId: Long) = assetRepository.getCachedAssetById(assetId)
 
-    fun getCachedAssetDetail(assetIdList: List<Long>): List<CacheResult<AssetQueryItem>> {
+    fun getCachedAssetDetail(assetIdList: List<Long>): List<CacheResult<AssetDetail>> {
         return assetRepository.getAssetCacheFlow().value.filter {
             assetIdList.contains(it.key)
         }.values.toList()
     }
 
-    suspend fun cacheAssets(assetList: List<CacheResult.Success<AssetQueryItem>>) {
+    suspend fun cacheAssets(assetList: List<CacheResult.Success<AssetDetail>>) {
         assetRepository.cacheAssets(assetList)
     }
 
-    suspend fun cacheAsset(asset: CacheResult.Success<AssetQueryItem>) {
+    suspend fun cacheAsset(asset: CacheResult.Success<AssetDetail>) {
         assetRepository.cacheAsset(asset)
     }
 
-    suspend fun cacheAsset(assetId: Long, asset: CacheResult.Error<AssetQueryItem>) {
+    suspend fun cacheAsset(assetId: Long, asset: CacheResult.Error<AssetDetail>) {
         assetRepository.cacheAsset(assetId, asset)
+    }
+
+    suspend fun cacheAllAssets(assetKeyValuePairList: List<Pair<Long, CacheResult<AssetDetail>>>) {
+        assetRepository.cacheAllAssets(assetKeyValuePairList)
     }
 
     fun getCachedAssetsFlow() = assetRepository.getAssetCacheFlow()
@@ -60,6 +71,10 @@ class SimpleAssetDetailUseCase @Inject constructor(
 
     suspend fun clearAssetDetailCache() {
         assetRepository.clearAssetCache()
+    }
+
+    suspend fun clearAssetDetailCache(assetId: Long) {
+        assetRepository.clearAssetCache(assetId)
     }
 
     suspend fun fetchAndCacheAsset(assetId: Long) {
@@ -76,10 +91,13 @@ class SimpleAssetDetailUseCase @Inject constructor(
         }
     }
 
-    suspend fun fetchAssetById(assetIdList: List<Long>) = flow<DataResource<List<AssetQueryItem>>> {
+    suspend fun fetchAssetById(assetIdList: List<Long>) = flow<DataResource<List<AssetDetail>>> {
         assetRepository.fetchAssetsById(assetIdList).use(
-            onSuccess = {
-                emit(DataResource.Success(it.results))
+            onSuccess = { assetDetailResponsePagination ->
+                val assetDetailList = assetDetailResponsePagination.results.map { assetDetailResponse ->
+                    assetDetailMapper.mapToAssetDetail(assetDetailResponse)
+                }
+                emit(DataResource.Success(assetDetailList))
             },
             onFailed = { exception, code ->
                 emit(DataResource.Error.Api(exception, code))
@@ -114,5 +132,21 @@ class SimpleAssetDetailUseCase @Inject constructor(
 
     companion object {
         private const val CACHED_ASSET_EXPIRATION_THRESHOLD = 600_000 // 10 min
+    }
+
+    suspend fun searchAssets(queryText: String, queryType: AssetQueryType): Result<Pagination<BaseAssetDetail>> {
+        return assetRepository.getAssets(queryText, queryType).map { assetDetailResponsePagination ->
+            assetDetailResponsePagination.mapResult { assetDetailResponseList ->
+                assetDetailResponseList.map { assetDetailMapper.mapToAssetDetail(it) }
+            }
+        }
+    }
+
+    suspend fun getAssetsByUrl(url: String): Result<Pagination<BaseAssetDetail>> {
+        return assetRepository.getAssetsMore(url).map { assetDetailResponsePagination ->
+            assetDetailResponsePagination.mapResult { assetDetailResponseList ->
+                assetDetailResponseList.map { assetDetailMapper.mapToAssetDetail(it) }
+            }
+        }
     }
 }

@@ -7,10 +7,10 @@
         android:fillColor="#00000000"
         android:pathData="M3,4.5h13v5h-13z"
         android:strokeWidth="2"
-        android:strokeColor="@color/primaryIconTintColor" />
+        android:strokeColor="@color/primary_icon_tint_color" />
     <path
         android:fillColor="#00000000"
         android:pathData="M3,14.5h18v5h-18z"
         android:strokeWidth="2"
-        android:strokeColor="@color/primaryIconTintColor" />
+        android:strokeColor="@color/primary_icon_tint_color" />
 </vector>

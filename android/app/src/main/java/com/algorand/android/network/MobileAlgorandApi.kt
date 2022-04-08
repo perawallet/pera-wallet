@@ -13,7 +13,7 @@
 package com.algorand.android.network
 
 import com.algorand.android.banner.data.model.BannerListResponse
-import com.algorand.android.models.AssetQueryItem
+import com.algorand.android.models.AssetDetailResponse
 import com.algorand.android.models.AssetSupportRequest
 import com.algorand.android.models.CurrencyOption
 import com.algorand.android.models.CurrencyValue
@@ -28,7 +28,7 @@ import com.algorand.android.models.Pagination
 import com.algorand.android.models.PushTokenDeleteRequest
 import com.algorand.android.models.TrackTransactionRequest
 import com.algorand.android.models.VerifiedAssetDetail
-import com.algorand.android.ui.addasset.AddAssetViewModel.Companion.SEARCH_RESULT_LIMIT
+import com.algorand.android.ui.addasset.BaseAddAssetViewModel.Companion.SEARCH_RESULT_LIMIT
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -85,16 +85,22 @@ interface MobileAlgorandApi {
         @Query("q") assetQuery: String?,
         @Query("status") status: String? = null,
         @Query("offset") offset: Long = 0,
-        @Query("limit") limit: Int = SEARCH_RESULT_LIMIT
-    ): Response<Pagination<AssetQueryItem>>
+        @Query("limit") limit: Int = SEARCH_RESULT_LIMIT,
+        @Query("has_collectible") hasCollectible: Boolean = false
+    ): Response<Pagination<AssetDetailResponse>>
 
     @GET("assets/")
     suspend fun getAssetsByIds(
         @Query("asset_ids", encoded = true) assetIdsList: String
-    ): Response<Pagination<AssetQueryItem>>
+    ): Response<Pagination<AssetDetailResponse>>
+
+    @GET("assets/{asset_id}")
+    suspend fun getCollectibleDetail(
+        @Path("asset_id") nftAssetId: Long
+    ): Response<AssetDetailResponse>
 
     @GET
-    suspend fun getAssetsMore(@Url url: String): Response<Pagination<AssetQueryItem>>
+    suspend fun getAssetsMore(@Url url: String): Response<Pagination<AssetDetailResponse>>
 
     @GET("currencies/")
     suspend fun getCurrencies(): Response<List<CurrencyOption>>

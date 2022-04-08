@@ -1,0 +1,39 @@
+<!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <path
+      android:fillColor="#FFEE55"
+      android:pathData="M12,12m-12,0a12,12 0,1 1,24 0a12,12 0,1 1,-24 0"/>
+  <path
+      android:fillColor="#000000"
+      android:pathData="M12.887,6.823C13.2043,8.1375 13.0971,9.2937 12.6475,9.4056C12.1979,9.5174 11.5763,8.5425 11.259,7.228C10.9418,5.9135 11.049,4.7573 11.4986,4.6455C11.9481,4.5336 12.5698,5.5085 12.887,6.823Z"/>
+  <path
+      android:fillColor="#000000"
+      android:pathData="M18.1258,7.9531C17.4232,7.2085 16.0254,7.4103 15.0036,8.4039C13.9819,9.3976 13.7232,10.8068 14.4258,11.5514C15.1285,12.2961 16.5263,12.0943 17.548,11.1006C18.5697,10.107 18.8284,8.6978 18.1258,7.9531Z"/>
+  <path
+      android:fillColor="#000000"
+      android:pathData="M12.5376,19.3558C12.9872,19.2439 13.0787,18.0223 12.7419,16.6271C12.4052,15.2319 11.7678,14.1916 11.3182,14.3035C10.8687,14.4153 10.7772,15.637 11.1139,17.0321C11.4507,18.4273 12.0881,19.4676 12.5376,19.3558Z"/>
+  <path
+      android:fillColor="#000000"
+      android:pathData="M7.9549,8.6349C9.2519,9.0174 10.1996,9.6884 10.0717,10.1336C9.9438,10.5789 8.7886,10.6297 7.4916,10.2473C6.1947,9.8648 5.2469,9.1938 5.3748,8.7485C5.5028,8.3033 6.6579,8.2524 7.9549,8.6349Z"/>
+  <path
+      android:fillColor="#000000"
+      android:pathData="M16.3729,13.6626C17.7495,14.0686 18.7618,14.7586 18.6339,15.2038C18.5059,15.6491 17.2863,15.6809 15.9097,15.275C14.5331,14.869 13.5208,14.179 13.6487,13.7338C13.7767,13.2885 14.9963,13.2566 16.3729,13.6626Z"/>
+  <path
+      android:fillColor="#000000"
+      android:pathData="M9.4143,12.7284C9.0927,12.395 8.0377,12.8802 7.058,13.8122C6.0782,14.7442 5.5447,15.77 5.8664,16.1034C6.188,16.4368 7.243,15.9516 8.2227,15.0196C9.2024,14.0876 9.7359,13.0618 9.4143,12.7284Z"/>
+</vector>

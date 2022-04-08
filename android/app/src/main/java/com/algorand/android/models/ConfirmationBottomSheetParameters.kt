@@ -22,7 +22,7 @@ data class ConfirmationBottomSheetParameters(
     val titleResId: Int,
     val descriptionText: String,
     val iconDrawableResId: Int = R.drawable.ic_info,
-    val imageTintResId: Int = R.color.negativeColor,
+    val imageTintResId: Int = R.color.negative,
     val confirmButtonTextResId: Int = R.string.accept,
     val rejectButtonTextResId: Int = R.string.cancel
 ) : Parcelable

@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/spacing_xlarge"
             android:layout_marginTop="@dimen/spacing_large"
-            android:textColor="@color/linkPrimary"
+            android:textColor="@color/link_primary"
             tools:text="www.perawallet.app/support" />
 
     </LinearLayout>

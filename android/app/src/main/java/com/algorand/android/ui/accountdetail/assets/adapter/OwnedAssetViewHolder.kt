@@ -31,8 +31,8 @@ class OwnedAssetViewHolder(
                 val formattedFullName = name.getName(root.resources)
                 assetNameTextView.setupUI(isVerified, formattedShortName, formattedFullName, id, isAlgo)
                 amountTextView.text = formattedAmount
-                currencyTextView.text = formattedSelectedCurrencyValue
-                currencyTextView.isVisible = isAmountInSelectedCurrencyVisible
+                currencyTextView.text = formattedDisplayedCurrencyValue
+                currencyTextView.isVisible = isAmountInDisplayedCurrencyVisible
             }
         }
     }

@@ -138,7 +138,13 @@ class MainViewModel @ViewModelInject constructor(
         accountPublicKeys: List<String>
     ) {
         notificationRepository.putRequestUpdateDevice(
-            notificationUserId, DeviceUpdateRequest(notificationUserId, firebaseMessagingToken, accountPublicKeys)
+            notificationUserId,
+            DeviceUpdateRequest(
+                notificationUserId,
+                firebaseMessagingToken,
+                accountPublicKeys,
+                BuildConfig.APPLICATION_NAME
+            )
         ).use(
             onSuccess = { deviceUpdateResponse ->
                 setNotificationUserIdAndFetchBanners(deviceUpdateResponse.userId)
@@ -152,7 +158,7 @@ class MainViewModel @ViewModelInject constructor(
 
     private suspend fun registerDevice(firebaseMessagingToken: String, accountPublicKeys: List<String>) {
         notificationRepository.postRequestRegisterDevice(
-            DeviceRegistrationRequest(firebaseMessagingToken, accountPublicKeys)
+            DeviceRegistrationRequest(firebaseMessagingToken, accountPublicKeys, BuildConfig.APPLICATION_NAME)
         ).use(
             onSuccess = { deviceRegistrationResponse ->
                 setNotificationUserIdAndFetchBanners(deviceRegistrationResponse.userId)

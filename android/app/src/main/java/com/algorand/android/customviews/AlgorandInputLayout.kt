@@ -21,12 +21,12 @@ import android.util.SparseArray
 import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.use
+import androidx.core.view.updatePadding
 import androidx.core.widget.addTextChangedListener
 import com.algorand.android.R
 import com.algorand.android.databinding.CustomInputLayoutBinding
 import com.algorand.android.models.CustomInputState
 import com.algorand.android.utils.addByteLimiter
-import com.algorand.android.utils.extensions.setImageResAndVisibility
 import com.algorand.android.utils.extensions.setTextAndVisibility
 import com.algorand.android.utils.viewbinding.viewBinding
 import kotlin.properties.Delegates
@@ -39,9 +39,6 @@ class AlgorandInputLayout @JvmOverloads constructor(
     private val binding = viewBinding(CustomInputLayoutBinding::inflate)
 
     private val editText = binding.textInputEditText
-
-    @DrawableRes
-    private var endIconResource: Int = -1
 
     var text: String
         get() = editText.text.toString()
@@ -86,15 +83,10 @@ class AlgorandInputLayout @JvmOverloads constructor(
 
     init {
         loadAttrs()
-        initUi()
     }
 
     fun setOnTextChangeListener(listener: (text: String) -> Unit) {
         binding.textInputEditText.addTextChangedListener { listener.invoke(text) }
-    }
-
-    fun setOnEndIconClickListener(listener: () -> Unit) {
-        binding.iconImageView.setOnClickListener { listener.invoke() }
     }
 
     private fun loadAttrs() {
@@ -103,18 +95,9 @@ class AlgorandInputLayout @JvmOverloads constructor(
             hint = attrs.getString(R.styleable.CustomInputLayout_hint).orEmpty()
             error = attrs.getString(R.styleable.CustomInputLayout_error).orEmpty()
             helper = attrs.getString(R.styleable.CustomInputLayout_helper).orEmpty()
-            endIconResource = attrs.getResourceId(R.styleable.CustomInputLayout_endIcon, -1)
             isSingleLine = attrs.getBoolean(R.styleable.CustomInputLayout_singleLine, false)
             maxCharacter = attrs.getInteger(R.styleable.CustomInputLayout_maxCharacter, -1)
         }
-    }
-
-    private fun initUi() {
-        setEndIconRes(endIconResource)
-    }
-
-    private fun setEndIconRes(@DrawableRes iconRes: Int) {
-        binding.iconImageView.setImageResAndVisibility(iconRes)
     }
 
     fun addByteLimiter(maximumByteLimit: Int) {
@@ -123,6 +106,15 @@ class AlgorandInputLayout @JvmOverloads constructor(
 
     fun setAsNonFocusable() {
         binding.textInputLayout.isEnabled = false
+    }
+
+    fun addTrailingIcon(@DrawableRes drawableRes: Int, onIconClick: () -> Unit) {
+        with(binding) {
+            iconContainerView.addIconView(drawableRes, onIconClick)
+            iconContainerView.post {
+                textInputEditText.updatePadding(right = iconContainerView.width)
+            }
+        }
     }
 
     override fun onSaveInstanceState(): Parcelable {

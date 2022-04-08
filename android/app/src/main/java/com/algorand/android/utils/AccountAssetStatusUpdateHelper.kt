@@ -15,6 +15,7 @@ package com.algorand.android.utils
 import com.algorand.android.models.AccountDetail
 import com.algorand.android.models.AssetHolding
 import com.algorand.android.models.AssetStatus
+import com.algorand.android.models.PendingAssetHoldings
 import com.algorand.android.usecase.AccountDetailUseCase
 import javax.inject.Inject
 
@@ -25,9 +26,12 @@ class AccountAssetStatusUpdateHelper @Inject constructor(
     fun getAssetStatusUpdatedAccount(accountDetail: AccountDetail): AccountDetail {
         val cachedAccountAssetHoldings = accountDetailUseCase.getCachedAccountDetail(accountDetail.account.address)
             ?.data?.accountInformation?.assetHoldingList ?: return accountDetail
-        val (pendingAssetAdditions, pendingAssetRemovals) = getPendingAssetHoldings(cachedAccountAssetHoldings)
+        val (pendingAssetAdditions, pendingAssetRemovals, pendingAssetSendings) = getPendingAssetHoldings(
+            cachedAccountAssetHoldings
+        )
         val assetRemovalsUpdatedAccount = handlePendingAssetRemovals(pendingAssetRemovals, accountDetail)
-        return handlePendingAssetAdditions(pendingAssetAdditions, assetRemovalsUpdatedAccount)
+        val assetSentUpdatedAccount = handlePendingAssetAdditions(pendingAssetAdditions, assetRemovalsUpdatedAccount)
+        return handlePendingAssetSent(pendingAssetSendings, assetSentUpdatedAccount)
     }
 
     private fun handlePendingAssetRemovals(
@@ -55,17 +59,34 @@ class AccountAssetStatusUpdateHelper @Inject constructor(
         }
     }
 
-    private fun getPendingAssetHoldings(
-        cachedAccountAssetHoldings: List<AssetHolding>
-    ): Pair<List<AssetHolding>, List<AssetHolding>> {
+    private fun handlePendingAssetSent(
+        pendingAssetSendings: List<AssetHolding>,
+        accountDetail: AccountDetail
+    ): AccountDetail {
+        return accountDetail.apply {
+            pendingAssetSendings.forEach { assetHolding ->
+                if (!accountInformation.assetHoldingList.any { it.assetId == assetHolding.assetId }) {
+                    accountInformation.addPendingAssetHolding(assetHolding)
+                }
+            }
+        }
+    }
+
+    private fun getPendingAssetHoldings(cachedAccountAssetHoldings: List<AssetHolding>): PendingAssetHoldings {
         val pendingAssetAdditions = mutableListOf<AssetHolding>()
         val pendingAssetRemovals = mutableListOf<AssetHolding>()
+        val pendingAssetSendings = mutableListOf<AssetHolding>()
         cachedAccountAssetHoldings.forEach { assetHolding ->
             when (assetHolding.status) {
                 AssetStatus.PENDING_FOR_ADDITION -> pendingAssetAdditions.add(assetHolding)
                 AssetStatus.PENDING_FOR_REMOVAL -> pendingAssetRemovals.add(assetHolding)
+                AssetStatus.PENDING_FOR_SENDING -> pendingAssetSendings.add(assetHolding)
             }
         }
-        return pendingAssetAdditions to pendingAssetRemovals
+        return PendingAssetHoldings(
+            pendingAssetAdditions = pendingAssetAdditions,
+            pendingAssetDeletions = pendingAssetRemovals,
+            pendingAssetSendings = pendingAssetSendings
+        )
     }
 }

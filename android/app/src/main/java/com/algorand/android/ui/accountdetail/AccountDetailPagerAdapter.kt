@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.algorand.android.ui.accountdetail.assets.AccountAssetsFragment
 import com.algorand.android.ui.accountdetail.history.AccountHistoryFragment
-import com.algorand.android.ui.accountdetail.nfts.AccountNftsFragment
+import com.algorand.android.ui.accountdetail.nfts.AccountCollectiblesFragment
 
 class AccountDetailPagerAdapter(
     fragment: Fragment,
@@ -29,7 +29,7 @@ class AccountDetailPagerAdapter(
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> AccountAssetsFragment.newInstance(accountPublicKey)
-            1 -> AccountNftsFragment.newInstance()
+            1 -> AccountCollectiblesFragment.newInstance(accountPublicKey)
             2 -> AccountHistoryFragment.newInstance(accountPublicKey)
             else -> throw Exception("Unknown Account Detail Tab")
         }

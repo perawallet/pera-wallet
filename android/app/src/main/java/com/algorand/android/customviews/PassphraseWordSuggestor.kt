@@ -31,7 +31,7 @@ class PassphraseWordSuggestor @JvmOverloads constructor(
     var listener: Listener? = null
 
     init {
-        setBackgroundColor(ContextCompat.getColor(context, R.color.secondaryBackground))
+        setBackgroundColor(ContextCompat.getColor(context, R.color.secondary_background))
         orientation = HORIZONTAL
         setWordClickListener(binding.firstWordTextView)
         setWordClickListener(binding.secondWordTextView)

@@ -13,28 +13,28 @@
 package com.algorand.android.ui.addasset
 
 import androidx.paging.PagingSource
-import com.algorand.android.models.AssetQueryItem
 import com.algorand.android.models.AssetQueryType
+import com.algorand.android.models.BaseAssetDetail
 import com.algorand.android.models.Result
-import com.algorand.android.repository.AssetRepository
+import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class AssetSearchDataSource(
-    private val assetRepository: AssetRepository,
+    private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase,
     private val currentQuery: Pair<String, AssetQueryType>,
-    private val onAssetsLoaded: suspend (List<AssetQueryItem>) -> Unit
-) : PagingSource<String, AssetQueryItem>() {
+    private val onAssetsLoaded: suspend (List<BaseAssetDetail>) -> Unit
+) : PagingSource<String, BaseAssetDetail>() {
 
-    override suspend fun load(params: LoadParams<String>): LoadResult<String, AssetQueryItem> {
+    override suspend fun load(params: LoadParams<String>): LoadResult<String, BaseAssetDetail> {
         return withContext(Dispatchers.IO) {
             try {
                 val nextUrl = params.key
                 val response = if (nextUrl == null) {
                     val (queryText, queryType) = currentQuery
-                    assetRepository.getAssets(queryText, queryType)
+                    simpleAssetDetailUseCase.searchAssets(queryText, queryType)
                 } else {
-                    assetRepository.getAssetsMore(nextUrl)
+                    simpleAssetDetailUseCase.getAssetsByUrl(nextUrl)
                 }
                 when (response) {
                     is Result.Success -> {
@@ -42,11 +42,11 @@ class AssetSearchDataSource(
                         LoadResult.Page(data = response.data.results, prevKey = null, nextKey = response.data.next)
                     }
                     is Result.Error -> {
-                        LoadResult.Error<String, AssetQueryItem>(response.exception)
+                        LoadResult.Error<String, BaseAssetDetail>(response.exception)
                     }
                 }
             } catch (exception: Exception) {
-                LoadResult.Error<String, AssetQueryItem>(exception)
+                LoadResult.Error<String, BaseAssetDetail>(exception)
             }
         }
     }

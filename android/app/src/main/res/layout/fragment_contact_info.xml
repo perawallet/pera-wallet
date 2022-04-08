@@ -66,7 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/spacing_xxlarge"
-            android:background="@color/layerGrayLighter"
+            android:background="@color/layer_gray_lighter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/addressBelowNameTextView" />
@@ -109,7 +109,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/spacing_xxlarge"
-            android:background="@color/layerGrayLighter"
+            android:background="@color/layer_gray_lighter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/addressTextView" />

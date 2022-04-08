@@ -13,22 +13,32 @@
 
 package com.algorand.android.mapper
 
-import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.AssetTransferAmountPreview
 import com.algorand.android.models.BaseAccountAssetData
+import com.algorand.android.utils.AssetName
 import javax.inject.Inject
 
 class AssetTransferAmountPreviewMapper @Inject constructor() {
 
     fun mapTo(
-        assetInformation: AssetInformation?,
-        accountAssetData: BaseAccountAssetData.OwnedAssetData?,
-        formattedCurrencyValue: String? = null
+        accountAssetData: BaseAccountAssetData.BaseOwnedAssetData,
+        enteredAmountSelectedCurrencyValue: String?,
+        collectiblePrismUrl: String?,
+        isCollectibleOwnedByUser: Boolean
     ): AssetTransferAmountPreview {
         return AssetTransferAmountPreview(
-            assetInformation,
-            accountAssetData,
-            formattedCurrencyValue
+            shortName = AssetName.createShortName(accountAssetData.shortName),
+            decimals = accountAssetData.decimals,
+            formattedSelectedCurrencyValue = accountAssetData.formattedSelectedCurrencyValue,
+            assetId = accountAssetData.id,
+            fullName = AssetName.create(accountAssetData.name),
+            isAlgo = accountAssetData.isAlgo,
+            isVerified = accountAssetData.isVerified,
+            formattedAmount = accountAssetData.formattedAmount,
+            isAmountInSelectedCurrencyVisible = accountAssetData.isAmountInSelectedCurrencyVisible,
+            enteredAmountSelectedCurrencyValue = enteredAmountSelectedCurrencyValue,
+            collectiblePrismUrl = collectiblePrismUrl,
+            isCollectibleOwnedByUser = isCollectibleOwnedByUser
         )
     }
 }

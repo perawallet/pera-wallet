@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="@dimen/bottom_safe_area_margin"
-        tools:background="@color/primaryBackground">
+        tools:background="@color/primary_background">
 
         <com.algorand.android.customviews.CustomToolbar
             android:id="@+id/toolbar"
@@ -43,7 +43,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:layout_constraintVertical_chainStyle="packed"
-            app:srcCompat="@drawable/ic_qr_code"
+            tools:srcCompat="@drawable/ic_qr_code"
             tools:background="@color/white" />
 
         <TextView

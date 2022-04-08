@@ -19,7 +19,6 @@ import com.algorand.android.core.BaseViewModel
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import com.algorand.android.utils.AccountCacheManager
-import com.algorand.android.utils.CacheResult
 import com.algorand.android.utils.DataResource
 import com.algorand.android.utils.Resource
 import kotlinx.coroutines.Dispatchers
@@ -33,14 +32,16 @@ class AssetActionViewModel @ViewModelInject constructor(
 
     val assetInformationLiveData = MutableLiveData<Resource<AssetInformation>>()
 
+    // TODO: 18.03.2022 We should use cacheIfThereIsNonCachedAsset while caching asset because
+    //  it's separating it is asset or collectible
     fun fetchAssetDescription(assetId: Long) {
         assetInformationLiveData.value = Resource.Loading
         viewModelScope.launch(Dispatchers.IO) {
+            assetDetailUseCase.cacheIfThereIsNonCachedAsset(setOf(assetId), viewModelScope)
             assetDetailUseCase.fetchAssetById(listOf(assetId)).collect {
                 when (it) {
                     is DataResource.Success -> {
                         val asset = it.data.firstOrNull() ?: return@collect
-                        assetDetailUseCase.cacheAsset(CacheResult.Success.create(asset))
                         assetInformationLiveData.postValue(Resource.Success(asset.convertToAssetInformation()))
                     }
                     is DataResource.Error -> {

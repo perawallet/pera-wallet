@@ -23,10 +23,8 @@ import com.algorand.android.core.TransactionBaseFragment
 import com.algorand.android.customviews.DialPadView
 import com.algorand.android.customviews.algorandamountinput.AlgorandAmountInputTextView
 import com.algorand.android.databinding.FragmentAssetTransferAmountBinding
-import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.AssetTransferAmountPreview
 import com.algorand.android.models.BalanceInput
-import com.algorand.android.models.BaseAccountAssetData
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.TargetUser
@@ -35,11 +33,11 @@ import com.algorand.android.models.TransactionData
 import com.algorand.android.ui.common.warningconfirmation.BaseMaximumBalanceWarningBottomSheet
 import com.algorand.android.utils.ALGOS_SHORT_NAME
 import com.algorand.android.utils.Event
+import com.algorand.android.utils.PrismUrlBuilder
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.extensions.hide
-import com.algorand.android.utils.extensions.setTextAndVisibility
 import com.algorand.android.utils.extensions.show
-import com.algorand.android.utils.formatAmount
+import com.algorand.android.utils.loadImage
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -151,32 +149,72 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
 
     private fun initUi(assetTransferAmountPreview: AssetTransferAmountPreview) {
         with(assetTransferAmountPreview) {
-            assetInformation?.let { assetInformation ->
-                getAppToolbar()?.changeTitle(getString(R.string.send_format, assetInformation.shortName))
-                updateEnteredAmountCurrencyValue(formattedCurrencyValue)
-                binding.algorandApproximateValueTextView.isVisible = assetInformation.isAlgo()
-                setAmountView(assetInformation.decimals)
-                setAmountCurrencyValueView(accountAssetData)
-                setAssetBalanceView(assetInformation)
-                setAssetNameView(assetInformation)
+            getAppToolbar()?.changeTitle(getString(R.string.send_format, shortName.getName()))
+            binding.algorandApproximateValueTextView.isVisible = isAmountInSelectedCurrencyVisible
+            updateEnteredAmountCurrencyValue(enteredAmountSelectedCurrencyValue, isAmountInSelectedCurrencyVisible)
+            setAmountView(decimals)
+            setAmountCurrencyValueView(formattedSelectedCurrencyValue, isAmountInSelectedCurrencyVisible)
+            setAssetBalanceView(isAlgo, formattedAmount)
+            setAssetNameView(
+                isVerified,
+                fullName.getName(binding.root.resources),
+                assetId,
+                isAlgo,
+                collectiblePrismUrl,
+                isCollectibleOwnedByUser
+            )
+        }
+    }
+
+    private fun setAssetNameView(
+        isVerified: Boolean,
+        fullName: String?,
+        assetId: Long,
+        isAlgo: Boolean,
+        collectiblePrismUrl: String?,
+        isOwnedByUser: Boolean
+    ) {
+        with(binding.assetNameView) {
+            if (collectiblePrismUrl != null) {
+                context?.loadImage(
+                    uri = createPrismUrlForCollectibleDrawable(collectiblePrismUrl),
+                    onResourceReady = {
+                        setupUiWithDrawable(isVerified, fullName, assetId, it, isOwnedByUser)
+                    },
+                    onLoadFailed = {
+                        setupUIWithId(isVerified, fullName, assetId, isAlgo)
+                    }
+                )
+            } else {
+                setupUIWithId(isVerified, fullName, assetId, isAlgo)
             }
         }
     }
 
-    private fun setAssetNameView(assetInformation: AssetInformation) {
-        binding.assetNameView.setupUIWithId(assetInformation)
+    private fun createPrismUrlForCollectibleDrawable(collectiblePrismUrl: String): String {
+        val collectibleImageViewWidth = resources.getDimension(R.dimen.asset_avatar_image_size).toInt()
+        return PrismUrlBuilder.create(collectiblePrismUrl)
+            .addWidth(collectibleImageViewWidth)
+            .addQuality(PrismUrlBuilder.DEFAULT_IMAGE_QUALITY)
+            .build()
     }
 
-    private fun setAssetBalanceView(assetInformation: AssetInformation) {
-        binding.assetBalanceTextView.text = if (assetInformation.isAlgo()) {
-            getString(R.string.asset_short_name_with_amount, assetInformation.formattedAmount, ALGOS_SHORT_NAME)
+    private fun setAssetBalanceView(isAlgo: Boolean, formattedAmount: String) {
+        binding.assetBalanceTextView.text = if (isAlgo) {
+            getString(R.string.asset_short_name_with_amount, formattedAmount, ALGOS_SHORT_NAME)
         } else {
-            assetInformation.formattedAmount
+            formattedAmount
         }
     }
 
-    private fun setAmountCurrencyValueView(accountAssetData: BaseAccountAssetData.OwnedAssetData?) {
-        binding.assetCurrencyTextView.setTextAndVisibility(accountAssetData?.formattedSelectedCurrencyValue)
+    private fun setAmountCurrencyValueView(
+        formattedDisplayedCurrencyValue: String,
+        isAmountInSelectedCurrencyVisible: Boolean
+    ) {
+        binding.assetCurrencyTextView.apply {
+            text = formattedDisplayedCurrencyValue
+            isVisible = isAmountInSelectedCurrencyVisible
+        }
     }
 
     private fun setAmountView(decimal: Int) {
@@ -190,17 +228,19 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
     }
 
     private fun onAmountChanged(balanceInput: BalanceInput) {
-        assetTransferAmountViewModel.updateAssetTransferAmountPreviewAccordingToAmount(balanceInput.formattedBalanceInBigDecimal)
+        assetTransferAmountViewModel.updateAssetTransferAmountPreviewAccordingToAmount(
+            balanceInput.formattedBalanceInBigDecimal
+        )
         binding.nextButton.isEnabled = balanceInput.isAmountValid
     }
 
-    private fun updateEnteredAmountCurrencyValue(formattedCurrencyValue: String?) {
-        with(binding) {
-            if (formattedCurrencyValue != null) {
-                algorandApproximateValueTextView.setTextAndVisibility(
-                    getString(R.string.approximate_currency_value, formattedCurrencyValue)
-                )
-            }
+    private fun updateEnteredAmountCurrencyValue(
+        formattedCurrencyValue: String?,
+        isAmountInSelectedCurrencyVisible: Boolean
+    ) {
+        binding.algorandApproximateValueTextView.apply {
+            isVisible = isAmountInSelectedCurrencyVisible
+            text = getString(R.string.approximate_currency_value, formattedCurrencyValue)
         }
     }
 
@@ -220,9 +260,8 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
     }
 
     private fun onMaxButtonClick() {
-        with(assetTransferAmountViewModel.getAssetInformation() ?: return) {
-            binding.amountTextView.updateBalance(amount.formatAmount(decimals))
-        }
+        val formattedMaximumAmount = assetTransferAmountViewModel.getMaximumAmountOfAsset().orEmpty()
+        binding.amountTextView.updateBalance(formattedMaximumAmount)
     }
 
     private fun onAddButtonClick() {
@@ -280,7 +319,7 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
         )
     }
 
-    // TODO: 2.02.2022 We have to move this logic in domain layer 
+    // TODO: 2.02.2022 We have to move this logic in domain layer
     private fun startSendingTransaction(targetUser: TargetUser, amount: BigInteger) {
         val note = lockedNote ?: transactionNote
         val selectedAccountCacheData = assetTransferAmountViewModel.getAccountCachedData() ?: return

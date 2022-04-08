@@ -28,7 +28,7 @@
         android:background="@drawable/bg_layer_gray_lighter_oval"
         android:padding="@dimen/spacing_xlarge"
         android:visibility="gone"
-        app:tint="@color/secondaryIconTintColor"
+        app:tint="@color/secondary_icon_tint_color"
         tools:srcCompat="@drawable/ic_menu_contacts"
         tools:visibility="visible" />
 

@@ -40,7 +40,7 @@ class VerifiedAssetInformationBottomSheet : BaseBottomSheet(R.layout.bottom_shee
             titleTextView.setXmlStyledString(R.string.what_does_asset)
             thirdParagraphTextView.setXmlStyledString(
                 stringResId = R.string.verified_assets_third_paragraph,
-                colorResId = R.color.errorTextColor
+                colorResId = R.color.error_text_color
             )
             supportUrlTextView.apply {
                 text = PERA_SUPPORT_URL

@@ -68,7 +68,9 @@ class AccountRepository @Inject constructor(
     suspend fun getRekeyedAccounts(rekeyAdminAddress: String): Result<List<AccountInformationResponsePayload>> =
         safeApiCall { requestGetRekeyedAccounts(rekeyAdminAddress) }
 
-    private suspend fun requestGetRekeyedAccounts(rekeyAdminAddress: String): Result<List<AccountInformationResponsePayload>> {
+    private suspend fun requestGetRekeyedAccounts(
+        rekeyAdminAddress: String
+    ): Result<List<AccountInformationResponsePayload>> {
         with(indexerApi.getRekeyedAccounts(rekeyAdminAddress)) {
             val accountInformationList = body()?.accountInformationList
             return if (isSuccessful && accountInformationList != null) {

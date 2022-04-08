@@ -39,8 +39,6 @@
             app:nullable="true" />
     </action>
 
-    <include app:graph="@navigation/single_button_bottom_sheet_navigation" />
-
     <action
         android:id="@+id/action_global_walletConnectConnectionBottomSheet"
         app:destination="@id/walletConnectConnectionBottomSheet" />
@@ -121,6 +119,105 @@
             android:defaultValue="false"
             app:argType="boolean" />
     </action>
+
+    <fragment
+        android:id="@+id/collectiblesFragment"
+        android:name="com.algorand.android.nft.ui.nftlisting.collectibles.CollectiblesFragment"
+        android:label="fragment_collectibles"
+        tools:layout="@layout/fragment_base_collectibles_listing">
+        <action
+            android:id="@+id/action_collectiblesFragment_to_collectibleDetailFragment"
+            app:destination="@id/collectibleDetailFragment" />
+
+        <action
+            android:id="@+id/action_collectiblesFragment_to_receiveCollectibleFragment"
+            app:destination="@id/receiveCollectibleFragment" />
+        <action
+            android:id="@+id/action_collectiblesFragment_to_collectibleReceiverAccountSelectionFragment"
+            app:destination="@id/collectibleReceiverAccountSelectionFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/collectibleDetailFragment"
+        android:name="com.algorand.android.nft.ui.nfsdetail.CollectibleDetailFragment"
+        android:label="CollectibleDetail"
+        tools:layout="@layout/fragment_collectible_detail">
+        <argument
+            android:name="collectibleAssetId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_collectibleDetailFragment_to_videoPlayerFragment"
+            app:destination="@+id/videoPlayerFragment" />
+        <action
+            android:id="@+id/action_collectibleDetailFragment_to_collectibleSendFragment"
+            app:destination="@id/collectibleSendFragment" />
+        <action
+            android:id="@+id/action_collectibleDetailFragment_to_collectibleOptOutConfirmationBottomSheet"
+            app:destination="@id/collectibleOptOutConfirmationBottomSheet"/>
+        <action
+            android:id="@+id/action_collectibleDetailFragment_to_collectiblesFragment"
+            app:destination="@id/collectiblesFragment"
+            app:popUpTo="@id/accountsFragment" />
+        <argument
+            android:name="publicKey"
+            app:argType="string"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/collectibleSendFragment"
+        android:name="com.algorand.android.nft.ui.nftsend.CollectibleSendFragment"
+        android:label="CollectibleSendFragment"
+        tools:layout="@layout/fragment_collectible_send">
+        <action
+            android:id="@+id/action_collectibleSendFragment_to_qrCodeScannerNavigation"
+            app:destination="@id/qrCodeScannerNavigation">
+            <argument
+                android:name="qrScanner"
+                app:argType="com.algorand.android.models.QrScanner" />
+        </action>
+        <action
+            android:id="@+id/action_collectibleSendFragment_to_requestOptInConfirmationBottomSheet"
+            app:destination="@id/requestOptInConfirmationBottomSheet" />
+        <action
+            android:id="@+id/action_collectibleSendFragment_to_collectibleReceiverSelectionFragment"
+            app:destination="@id/collectibleReceiverSelectionFragment" />
+        <argument
+            android:name="collectibleDetail"
+            app:argType="com.algorand.android.nft.ui.model.CollectibleDetail" />
+        <action
+            android:id="@+id/action_collectibleSendFragment_to_collectibleTransactionApproveBottomSheet"
+            app:destination="@id/collectibleTransactionApproveBottomSheet" />
+        <action
+            android:id="@+id/action_collectibleSendFragment_to_collectibleTransferConfirmedFragment"
+            app:destination="@id/collectibleTransferConfirmedFragment"
+            app:popUpTo="@id/accountsFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/collectibleReceiverSelectionFragment"
+        android:name="com.algorand.android.nft.ui.nftsend.CollectibleReceiverSelectionFragment"
+        android:label="CollectibleReceiverSelectionFragment"
+        tools:layout="@layout/fragment_base_account_selection">
+        <action
+            android:id="@+id/action_collectibleReceiverSelectionFragment_to_qrCodeScannerNavigation"
+            app:destination="@id/qrCodeScannerNavigation">
+            <argument
+                android:name="qrScanner"
+                app:argType="com.algorand.android.models.QrScanner" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/videoPlayerFragment"
+        android:name="com.algorand.android.nft.ui.videoplayer.VideoPlayerFragment"
+        android:label="VideoPlayerFragment"
+        tools:layout="@layout/fragment_video_player">
+        <argument
+            android:name="collectibleVideoUrl"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/contactsFragment"
@@ -331,6 +428,9 @@
         <action
             android:id="@+id/action_settingsFragment_to_securityFragment"
             app:destination="@id/securityFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_contactsFragment"
+            app:destination="@id/contactsFragment" />
     </fragment>
 
     <fragment
@@ -555,6 +655,12 @@
         <action
             android:id="@+id/action_accountDetailFragment_to_assetSelectionFragment"
             app:destination="@id/assetSelectionFragment" />
+        <action
+            android:id="@+id/action_accountDetailFragment_to_collectibleDetailFragment"
+            app:destination="@id/collectibleDetailFragment" />
+        <action
+            android:id="@+id/action_accountDetailFragment_to_receiveCollectibleFragment"
+            app:destination="@id/receiveCollectibleFragment" />
         <action
             android:id="@+id/action_accountDetailFragment_to_moonpayNavigation"
             app:destination="@id/moonpayNavigation">
@@ -823,6 +929,32 @@
         android:label="PeraIntroductionFragment"
         tools:layout="@layout/fragment_base_info" />
 
+    <fragment
+        android:id="@+id/receiveCollectibleFragment"
+        android:name="com.algorand.android.nft.ui.receivenftasset.ReceiveCollectibleFragment"
+        android:label="ReceiveCollectibleFragment">
+        <action
+            android:id="@+id/action_receiveCollectibleFragment_to_addAssetActionBottomSheet"
+            app:destination="@id/addAssetActionBottomSheet" />
+        <action
+            android:id="@+id/action_receiveCollectibleFragment_to_showQrBottomSheet"
+            app:destination="@id/showQrBottomSheet" />
+        <argument
+            android:name="publicKey"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/collectibleReceiverAccountSelectionFragment"
+        android:name="com.algorand.android.nft.ui.nftreceiveaccountselection.CollectibleReceiverAccountSelectionFragment"
+        android:label="CollectibleReceiverAccountSelectionFragment">
+
+        <action
+            android:id="@+id/action_collectibleReceiverAccountSelectionFragment_to_receiveCollectibleFragment"
+            app:destination="@id/receiveCollectibleFragment" />
+
+    </fragment>
+
     <dialog
         android:id="@+id/removeAssetActionBottomSheet"
         android:name="com.algorand.android.ui.assetaction.RemoveAssetActionBottomSheet"
@@ -936,6 +1068,15 @@
                 app:argType="string" />
         </action>
     </fragment>
+    <fragment
+        android:id="@+id/collectibleTransferConfirmedFragment"
+        android:name="com.algorand.android.nft.ui.nfttransferconfirmed.CollectibleTransferConfirmedFragment"
+        android:label="CollectibleTransferConfirmedFragment">
+        <action
+            android:id="@+id/action_collectibleTransferConfirmedFragment_to_collectiblesFragment"
+            app:destination="@id/collectiblesFragment"
+            app:popUpTo="@id/accountsFragment" />
+    </fragment>
 
     <dialog
         android:id="@+id/customDateRangeBottomSheet"
@@ -974,5 +1115,44 @@
         android:id="@+id/changePasscodeVerificationBottomSheet"
         android:name="com.algorand.android.ui.lock.ChangePasscodeVerificationBottomSheet"
         android:label="ChangePasscodeVerificationBottomSheet" />
+
+    <dialog
+        android:id="@+id/requestOptInConfirmationBottomSheet"
+        android:name="com.algorand.android.nft.ui.nftrequestoptin.RequestOptInConfirmationBottomSheet"
+        android:label="RequestOptInConfirmationBottomSheet">
+        <argument
+            android:name="requestOptInConfirmationArgs"
+            app:argType="com.algorand.android.nft.ui.model.RequestOptInConfirmationArgs" />
+    </dialog>
+    <dialog
+        android:id="@+id/collectibleTransactionApproveBottomSheet"
+        android:name="com.algorand.android.nft.ui.nftapprovetransaction.CollectibleTransactionApproveBottomSheet"
+        android:label="CollectibleTransactionApproveBottomSheet">
+        <argument
+            android:name="senderPublicKey"
+            app:argType="string" />
+        <argument
+            android:name="receiverPublicKey"
+            app:argType="string" />
+        <argument
+            android:name="fee"
+            app:argType="float" />
+    </dialog>
+    <dialog
+        android:id="@+id/collectibleOptOutConfirmationBottomSheet"
+        android:name="com.algorand.android.nft.ui.nfsdetail.CollectibleOptOutConfirmationBottomSheet"
+        android:label="CollectibleOptOutConfirmationBottomSheet" >
+        <argument
+            android:name="accountName"
+            app:argType="string" />
+        <argument
+            android:name="collectibleAssetId"
+            app:argType="long" />
+        <argument
+            android:name="collectibleName"
+            app:argType="string"
+            app:nullable="true" />
+    </dialog>
+
 
 </navigation>

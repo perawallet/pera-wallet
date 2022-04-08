@@ -57,10 +57,10 @@ class AccountListItemMapper @Inject constructor() {
     }
 
     fun mapToPortfolioValuesPartialErrorItem(): PortfolioValuesErrorItem {
-        return PortfolioValuesErrorItem(titleColorResId = R.color.errorTextColor)
+        return PortfolioValuesErrorItem(titleColorResId = R.color.error_text_color)
     }
 
     fun mapToPortfolioValuesInitializationErrorItem(): PortfolioValuesErrorItem {
-        return PortfolioValuesErrorItem(titleColorResId = R.color.errorTextColor)
+        return PortfolioValuesErrorItem(titleColorResId = R.color.error_text_color)
     }
 }

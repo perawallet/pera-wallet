@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/spacing_normal"
         android:maxLines="1"
-        android:textColor="@color/tertiaryTextColor"
+        android:textColor="@color/tertiary_text_color"
         app:layout_constraintBottom_toBottomOf="@id/algorandAssetAvatarView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/accountIconImageView"

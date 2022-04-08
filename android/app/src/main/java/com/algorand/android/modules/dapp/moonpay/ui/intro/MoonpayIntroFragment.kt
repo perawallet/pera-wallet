@@ -40,7 +40,7 @@ class MoonpayIntroFragment : BaseFragment(R.layout.fragment_moonpay_intro) {
     private val toolbarConfiguration = ToolbarConfiguration(
         titleResId = R.string.buy_algo_with,
         startIconResId = R.drawable.ic_close,
-        backgroundColor = R.color.moonpayBgColor,
+        backgroundColor = R.color.moonpay,
         titleColor = R.color.white,
         startIconColor = R.color.white,
         startIconClick = ::navBack
@@ -52,7 +52,7 @@ class MoonpayIntroFragment : BaseFragment(R.layout.fragment_moonpay_intro) {
     private val moonpayIntroViewModel by viewModels<MoonpayIntroViewModel>()
     private val binding by viewBinding(FragmentMoonpayIntroBinding::bind)
 
-    private val statusBarConfiguration = StatusBarConfiguration(backgroundColor = R.color.moonpayBgColor)
+    private val statusBarConfiguration = StatusBarConfiguration(backgroundColor = R.color.moonpay)
 
     private val signMoonpayUrlResponseCollector: suspend (Event<Resource<SignMoonpayUrlResponse>>?) -> Unit = {
         it?.consume()?.use(

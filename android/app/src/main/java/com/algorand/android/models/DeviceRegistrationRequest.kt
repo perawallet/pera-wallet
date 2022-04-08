@@ -18,6 +18,7 @@ import java.util.Locale
 data class DeviceRegistrationRequest(
     @SerializedName("push_token") val pushToken: String,
     @SerializedName("accounts") val accountPublicKeys: List<String>,
+    @SerializedName("application") val application: String,
     @SerializedName("platform") val platform: String = "android",
     @SerializedName("locale") val locale: String = Locale.getDefault().language ?: Locale.ENGLISH.language
 )

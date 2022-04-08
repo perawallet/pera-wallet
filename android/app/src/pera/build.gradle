@@ -1,0 +1,13 @@
+apply from: 'src/pera/versions.gradle'
+
+android {
+    productFlavors {
+        pera {
+            dimension "app"
+            versionCode peraApplication.versionCode
+            versionName peraApplication.versionName
+            buildConfigField "String", "APPLICATION_NAME", '"pera"'
+            buildConfigField "String", "DEEPLINK_PREFIX", '"algorand://"'
+        }
+    }
+}

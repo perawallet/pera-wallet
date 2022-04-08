@@ -15,37 +15,32 @@ package com.algorand.android.ui.send.receiveraccount.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.databinding.ItemReceiverAccountBinding
-import com.algorand.android.models.BaseReceiverAccount
+import com.algorand.android.models.BaseAccountSelectionListItem
 
 class ReceiverAccountViewHolder(
     private val binding: ItemReceiverAccountBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(baseReceiverAccount: BaseReceiverAccount) {
-        when (baseReceiverAccount) {
-            is BaseReceiverAccount.AccountItem -> bindAccountItem(baseReceiverAccount)
-            is BaseReceiverAccount.ContactItem -> bindContactItem(baseReceiverAccount)
+    fun bind(baseAccountSelectionListItem: BaseAccountSelectionListItem) {
+        when (baseAccountSelectionListItem) {
+            is BaseAccountSelectionListItem.BaseAccountItem.AccountItem -> bindAccountItem(baseAccountSelectionListItem)
+            is BaseAccountSelectionListItem.BaseAccountItem.ContactItem -> bindContactItem(baseAccountSelectionListItem)
         }
     }
 
-    private fun bindAccountItem(accountItem: BaseReceiverAccount.AccountItem) {
+    private fun bindAccountItem(accountItem: BaseAccountSelectionListItem.BaseAccountItem.AccountItem) {
         with(binding) {
-            with(accountItem.accountCacheData.account) {
-                accountImageview.setAccountIcon(accountItem.accountCacheData.account.createAccountIcon())
-                accountNameTextView.text = name
-            }
+            accountImageview.setAccountIcon(accountItem.accountIcon)
+            accountNameTextView.text = accountItem.displayName
         }
     }
 
-    private fun bindContactItem(contactItem: BaseReceiverAccount.ContactItem) {
+    private fun bindContactItem(contactItem: BaseAccountSelectionListItem.BaseAccountItem.ContactItem) {
         with(binding) {
-            with(contactItem.user) {
-                accountImageview.loadAccountImage(imageUriAsString?.toUri())
-                accountNameTextView.text = name
-            }
+            accountImageview.loadAccountImage(contactItem.imageUri)
+            accountNameTextView.text = contactItem.displayName
         }
     }
 

@@ -70,12 +70,12 @@ class WalletConnectSessionViewHolder(
             val shortenedAddress = session.connectedAccountPublicKey.toShortenedAddress()
             text = if (session.isConnected) {
                 setBackgroundResource(R.drawable.bg_connected_session_indicator)
-                setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.linkPrimary)))
+                setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.link_primary)))
                 context.getString(R.string.connected_with_formatted, shortenedAddress)
             } else {
                 background = null
                 setPadding(0, 0, 0, 0)
-                setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.gray_8A)))
+                setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.gray_400)))
                 shortenedAddress
             }
         }

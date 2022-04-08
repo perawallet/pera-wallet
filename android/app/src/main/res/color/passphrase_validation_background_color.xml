@@ -11,6 +11,6 @@
   ~ limitations under the License
   -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:color="@color/primaryButtonDisabledBackgroundColor" android:state_selected="true" />
-    <item android:color="@color/primaryBackground" />
+    <item android:color="@color/button_primary_disabled_bg" android:state_selected="true" />
+    <item android:color="@color/primary_background" />
 </selector>

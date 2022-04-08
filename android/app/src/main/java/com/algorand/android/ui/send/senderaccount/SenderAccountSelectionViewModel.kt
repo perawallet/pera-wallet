@@ -23,9 +23,9 @@ import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
 import com.algorand.android.models.AssetTransaction
+import com.algorand.android.models.BaseAccountSelectionListItem
 import com.algorand.android.models.Result
-import com.algorand.android.ui.common.listhelper.BaseAccountListItem
-import com.algorand.android.usecase.AccountSelectionPreviewUseCase
+import com.algorand.android.usecase.SenderAccountSelectionPreviewUseCase
 import com.algorand.android.usecase.SenderAccountSelectionUseCase
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
@@ -36,14 +36,14 @@ import kotlinx.coroutines.launch
 
 class SenderAccountSelectionViewModel @ViewModelInject constructor(
     private val senderAccountSelectionUseCase: SenderAccountSelectionUseCase,
-    private val accountSelectionUseCase: AccountSelectionPreviewUseCase,
+    private val senderAccountSelectionPreviewUseCase: SenderAccountSelectionPreviewUseCase,
     @Assisted savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     val assetTransaction: AssetTransaction = savedStateHandle.getOrElse(ASSET_TRANSACTION_KEY, AssetTransaction())
 
-    private val _fromAccountListFlow = MutableStateFlow<List<BaseAccountListItem.BaseAccountItem>>(emptyList())
-    val fromAccountListFlow: StateFlow<List<BaseAccountListItem.BaseAccountItem>> = _fromAccountListFlow
+    private val _fromAccountListFlow = MutableStateFlow<List<BaseAccountSelectionListItem>>(emptyList())
+    val fromAccountListFlow: StateFlow<List<BaseAccountSelectionListItem>> = _fromAccountListFlow
 
     private val _fromAccountInformationFlow = MutableStateFlow<Event<Resource<AccountInformation>>?>(null)
     val fromAccountInformationFlow: StateFlow<Event<Resource<AccountInformation>>?> = _fromAccountInformationFlow
@@ -59,20 +59,23 @@ class SenderAccountSelectionViewModel @ViewModelInject constructor(
 
     private fun getAccounts() {
         viewModelScope.launch {
-            _fromAccountListFlow.emit(accountSelectionUseCase.getBaseNormalAccountListItems())
+            _fromAccountListFlow.emit(senderAccountSelectionPreviewUseCase.getBaseNormalAccountListItems())
         }
     }
 
     private fun getAccountCacheWithSpecificAsset(assetId: Long) {
         viewModelScope.launch {
-            _fromAccountListFlow.emit(accountSelectionUseCase.getBaseNormalAccountListItemsFilteredByAssetId(assetId))
+            _fromAccountListFlow.emit(
+                senderAccountSelectionPreviewUseCase.getBaseNormalAccountListItemsFilteredByAssetId(assetId)
+            )
         }
     }
 
     fun fetchFromAccountInformation(fromAccountPublicKey: String) {
         viewModelScope.launch {
             _fromAccountInformationFlow.emit(Event(Resource.Loading))
-            when (val result = senderAccountSelectionUseCase.fetchAccountInformation(fromAccountPublicKey)) {
+            val result = senderAccountSelectionUseCase.fetchAccountInformation(fromAccountPublicKey, viewModelScope)
+            when (result) {
                 is Result.Error -> _fromAccountInformationFlow.emit(Event(result.getAsResourceError()))
                 is Result.Success -> _fromAccountInformationFlow.emit(Event(Resource.Success(result.data)))
             }

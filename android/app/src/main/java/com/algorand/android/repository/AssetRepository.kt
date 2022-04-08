@@ -12,16 +12,15 @@
 
 package com.algorand.android.repository
 
-import com.algorand.android.cache.AccountLocalCache
 import com.algorand.android.cache.SimpleAssetLocalCache
 import com.algorand.android.models.Asset
+import com.algorand.android.models.AssetDetail
+import com.algorand.android.models.AssetDetailResponse
 import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
-import com.algorand.android.models.AssetQueryItem
 import com.algorand.android.models.AssetQueryType
 import com.algorand.android.models.AssetSupportRequest
 import com.algorand.android.models.Pagination
 import com.algorand.android.models.Result
-import com.algorand.android.models.VerifiedAssetDetail
 import com.algorand.android.network.IndexerApi
 import com.algorand.android.network.MobileAlgorandApi
 import com.algorand.android.network.requestWithHipoErrorHandler
@@ -37,23 +36,22 @@ class AssetRepository @Inject constructor(
     private val mobileAlgorandApi: MobileAlgorandApi,
     private val hipoApiErrorHandler: RetrofitErrorHandler,
     private val simpleAssetLocalCache: SimpleAssetLocalCache,
-    private val accountLocalCache: AccountLocalCache,
     private val algoAssetInformationProvider: AlgoAssetInformationProvider
 ) {
-    suspend fun getAssetsMore(url: String): Result<Pagination<AssetQueryItem>> =
+    suspend fun getAssetsMore(url: String): Result<Pagination<AssetDetailResponse>> =
         safeApiCall { requestGetAssetsMore(url) }
 
     private suspend fun requestGetAssetsMore(url: String) = requestWithHipoErrorHandler(hipoApiErrorHandler) {
         mobileAlgorandApi.getAssetsMore(url)
     }
 
-    suspend fun getAssets(queryText: String, queryType: AssetQueryType): Result<Pagination<AssetQueryItem>> =
+    suspend fun getAssets(queryText: String, queryType: AssetQueryType): Result<Pagination<AssetDetailResponse>> =
         safeApiCall { requestGetAssets(queryText, queryType) }
 
     private suspend fun requestGetAssets(
         queryText: String,
         queryType: AssetQueryType
-    ): Result<Pagination<AssetQueryItem>> = requestWithHipoErrorHandler(hipoApiErrorHandler) {
+    ): Result<Pagination<AssetDetailResponse>> = requestWithHipoErrorHandler(hipoApiErrorHandler) {
         mobileAlgorandApi.getAssets(assetQuery = queryText.takeIf { it.isNotEmpty() }, status = queryType.apiName)
     }
 
@@ -71,13 +69,6 @@ class AssetRepository @Inject constructor(
         requestWithHipoErrorHandler(hipoApiErrorHandler) {
             mobileAlgorandApi.postAssetSupportRequest(assetSupportRequest)
         }
-
-    suspend fun getVerifiedAssetList(): Result<Pagination<VerifiedAssetDetail>> =
-        safeApiCall { requestGetVerifiedAssetList() }
-
-    private suspend fun requestGetVerifiedAssetList() = requestWithHipoErrorHandler(hipoApiErrorHandler) {
-        mobileAlgorandApi.getVerifiedAssets()
-    }
 
     suspend fun getAssetDescription(assetId: Long): Result<Asset> =
         safeApiCall { requestGetAssetDescription(assetId) }
@@ -101,25 +92,25 @@ class AssetRepository @Inject constructor(
         }
     }
 
-    suspend fun cacheAsset(asset: CacheResult.Success<AssetQueryItem>) {
+    suspend fun cacheAsset(asset: CacheResult.Success<AssetDetail>) {
         simpleAssetLocalCache.put(asset)
     }
 
-    suspend fun cacheAsset(assetId: Long, asset: CacheResult.Error<AssetQueryItem>) {
+    suspend fun cacheAsset(assetId: Long, asset: CacheResult.Error<AssetDetail>) {
         simpleAssetLocalCache.put(assetId, asset)
     }
 
-    suspend fun cacheAssets(assetList: List<CacheResult.Success<AssetQueryItem>>) {
+    suspend fun cacheAssets(assetList: List<CacheResult.Success<AssetDetail>>) {
         simpleAssetLocalCache.put(assetList)
     }
 
-    suspend fun cacheAllAssets(assetKeyValuePairList: List<Pair<Long, CacheResult<AssetQueryItem>>>) {
+    suspend fun cacheAllAssets(assetKeyValuePairList: List<Pair<Long, CacheResult<AssetDetail>>>) {
         simpleAssetLocalCache.putAll(assetKeyValuePairList)
     }
 
     fun getAssetCacheFlow() = simpleAssetLocalCache.cacheMapFlow
 
-    fun getCachedAssetById(assetId: Long): CacheResult<AssetQueryItem>? {
+    fun getCachedAssetById(assetId: Long): CacheResult<AssetDetail>? {
         return if (assetId == ALGORAND_ID) {
             algoAssetInformationProvider.getAlgoAssetInformation()
         } else {

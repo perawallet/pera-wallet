@@ -32,7 +32,7 @@
             android:layout_height="72dp"
             android:layout_marginTop="@dimen/spacing_xxlarge"
             app:srcCompat="@drawable/ic_error"
-            app:tint="@color/errorTintColor" />
+            app:tint="@color/error_tint_color" />
 
         <TextView
             style="@style/TextAppearance.Body.Large.Sans.Medium"

@@ -19,7 +19,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:background="@color/secondaryBackground">
+        tools:background="@color/secondary_background">
 
         <View
             android:id="@+id/modalityLineView"
@@ -38,7 +38,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/modalityLineView"
             app:srcCompat="@drawable/ic_info"
-            app:tint="@color/linkPrimary" />
+            app:tint="@color/link_primary" />
 
         <TextView
             android:id="@+id/titleTextView"

@@ -33,7 +33,7 @@ class CreateAccountResultInfoFragment : BaseInfoFragment() {
     override fun setImageView(imageView: ImageView) {
         with(imageView) {
             setImageResource(R.drawable.ic_check)
-            setColorFilter(ContextCompat.getColor(requireContext(), R.color.infoImageColor))
+            setColorFilter(ContextCompat.getColor(requireContext(), R.color.info_image_color))
         }
     }
 

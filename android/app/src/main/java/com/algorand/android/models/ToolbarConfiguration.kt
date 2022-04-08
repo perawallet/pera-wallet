@@ -31,4 +31,6 @@ data class ToolbarConfiguration(
     val startIconColor: Int? = null,
     @ColorRes
     val titleColor: Int? = null,
+    @DrawableRes
+    val centerImageRes: Int? = null
 )

@@ -15,7 +15,6 @@ package com.algorand.android.models
 import android.os.Parcelable
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.calculateMinBalance
-import com.algorand.android.utils.getAccountImageResource
 import com.algorand.android.utils.isRekeyedToAnotherAccount
 import kotlinx.android.parcel.Parcelize
 
@@ -55,10 +54,6 @@ data class AccountCacheData(
         assetsInformation.firstOrNull { it.assetId == assetId }?.assetStatus = AssetStatus.PENDING_FOR_REMOVAL
     }
 
-    fun getImageResource(): Int {
-        return getAccountImageResource(account.type, isRekeyedToAnotherAccount())
-    }
-
     fun getMinBalance(): Long {
         return calculateMinBalance(
             accountInformation,
@@ -74,12 +69,6 @@ data class AccountCacheData(
             else -> null
         }
     }
-
-    fun getAssetInfoById(assetId: Long): String? {
-        return assetsInformation.find { it.assetId == assetId }?.fullName
-    }
-
-    fun isThereAnyDifferentAsset() = assetsInformation.isNotEmpty()
 
     companion object {
         private const val ASSET_INSERTION_POSITION = 1

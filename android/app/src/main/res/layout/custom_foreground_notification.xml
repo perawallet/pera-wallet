@@ -26,7 +26,7 @@
         android:layout_marginVertical="10dp"
         android:minHeight="65dp"
         android:translationY="-85dp"
-        app:cardBackgroundColor="@color/secondaryBackground"
+        app:cardBackgroundColor="@color/secondary_background"
         app:cardCornerRadius="10dp"
         tools:translationY="0dp">
 

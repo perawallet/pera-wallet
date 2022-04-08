@@ -44,7 +44,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/titleTextView"
             app:layout_constraintVertical_chainStyle="packed"
-            app:tint="@color/secondaryTextColor"
+            app:tint="@color/secondary_text_color"
             tools:srcCompat="@drawable/ic_ledger" />
 
         <TextView
@@ -90,14 +90,14 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@drawable/bg_layer_gray_lighter_oval"
-            android:backgroundTint="@color/rekey_icon_background_color"
+            android:backgroundTint="@color/wallet_3"
             android:padding="@dimen/spacing_xsmall"
             app:layout_constraintBottom_toTopOf="@id/newLedgerLabel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/loadingAnimationView"
             app:srcCompat="@drawable/ic_rekey"
-            app:tint="@color/rekey_icon_color" />
+            app:tint="@color/wallet_3_icon" />
 
         <TextView
             android:id="@+id/newLedgerLabel"

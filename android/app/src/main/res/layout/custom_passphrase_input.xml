@@ -41,7 +41,7 @@
         android:paddingStart="0dp"
         android:paddingEnd="@dimen/spacing_small"
         android:saveEnabled="false"
-        android:textColor="@color/errorTextColor"
+        android:textColor="@color/error_text_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/passphraseIndexTextView"
@@ -53,7 +53,7 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/passphrase_input_bottom_line_unfocused"
         android:layout_marginBottom="@dimen/spacing_xxsmall"
-        android:background="@color/unFocusedLineColor"
+        android:background="@color/unfocused_line_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/passphraseInputEditText"
         app:layout_constraintStart_toStartOf="@id/passphraseInputEditText" />

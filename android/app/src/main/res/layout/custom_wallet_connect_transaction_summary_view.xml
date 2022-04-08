@@ -87,7 +87,7 @@
         app:layout_constraintBottom_toBottomOf="@id/transactionsAmountTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/transactionsAmountTextView"
-        app:tint="@color/negativeColor"
+        app:tint="@color/negative"
         tools:visibility="visible" />
 
     <TextView

@@ -18,6 +18,7 @@ import com.algorand.android.mapper.AccountSummaryMapper
 import com.algorand.android.models.Account
 import com.algorand.android.models.AccountDetail
 import com.algorand.android.models.AccountDetailSummary
+import com.algorand.android.models.AccountIcon
 import com.algorand.android.repository.AccountRepository
 import com.algorand.android.utils.CacheResult
 import com.algorand.android.utils.DataResource
@@ -65,6 +66,10 @@ class AccountDetailUseCase @Inject constructor(
 
     suspend fun cacheAccountDetails(accountDetailKeyValuePairList: List<Pair<String, CacheResult<AccountDetail>>>) {
         accountRepository.cacheAllAccountDetails(accountDetailKeyValuePairList)
+    }
+
+    fun isAssetOwnedByAccount(publicKey: String, assetId: Long): Boolean {
+        return getCachedAccountDetail(publicKey)?.data?.accountInformation?.getAllAssetIds()?.contains(assetId) ?: false
     }
 
     fun areAllAccountsCached(): Boolean {
@@ -135,6 +140,10 @@ class AccountDetailUseCase @Inject constructor(
     fun getAccountAddress(publicKey: String): String? {
         val accountInformation = accountRepository.getCachedAccountDetail(publicKey)?.data?.accountInformation
         return accountInformation?.address
+    }
+
+    fun getAccountIcon(publicKey: String): AccountIcon? {
+        return accountManager.getAccount(publicKey)?.createAccountIcon()
     }
 
     fun isAccountRekeyed(publicKey: String): Boolean {

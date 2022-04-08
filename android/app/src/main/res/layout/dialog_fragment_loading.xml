@@ -40,4 +40,3 @@
         tools:text="@string/connecting_to_ledger" />
 
 </LinearLayout>
-

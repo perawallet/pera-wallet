@@ -20,17 +20,17 @@
         android:fillColor="#00000000"
         android:pathData="M3,3h18v18h-18z"
         android:strokeWidth="2"
-        android:strokeColor="@color/primaryIconTintColor" />
+        android:strokeColor="@color/primary_icon_tint_color" />
     <path
-        android:fillColor="@color/primaryIconTintColor"
+        android:fillColor="@color/primary_icon_tint_color"
         android:pathData="M7,11h2v2h-2z" />
     <path
-        android:fillColor="@color/primaryIconTintColor"
+        android:fillColor="@color/primary_icon_tint_color"
         android:fillType="evenOdd"
         android:pathData="M13,11H11V13H13V11ZM13,15H11V17H13V15ZM15,15H17V17H15V15ZM17,11H15V13H17V11Z" />
     <path
         android:fillColor="#00000000"
         android:pathData="M8,7H16"
         android:strokeWidth="2"
-        android:strokeColor="@color/primaryIconTintColor" />
+        android:strokeColor="@color/primary_icon_tint_color" />
 </vector>

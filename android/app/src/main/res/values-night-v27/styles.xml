@@ -14,8 +14,8 @@
 <resources>
 
     <style name="AppTheme" parent="BaseTheme">
-        <item name="android:statusBarColor">@color/primaryBackground</item>
-        <item name="android:navigationBarColor">@color/tertiaryBackground</item>
+        <item name="android:statusBarColor">@color/primary_background</item>
+        <item name="android:navigationBarColor">@color/tertiary_background</item>
         <item name="android:windowLightNavigationBar">false</item>
         <item name="android:windowLightStatusBar">false</item>
     </style>
@@ -23,6 +23,6 @@
     <style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog">
         <item name="android:windowLightNavigationBar">false</item>
         <item name="android:statusBarColor">@color/transparent</item>
-        <item name="android:navigationBarColor">@color/secondaryBackground</item>
+        <item name="android:navigationBarColor">@color/secondary_background</item>
     </style>
 </resources>

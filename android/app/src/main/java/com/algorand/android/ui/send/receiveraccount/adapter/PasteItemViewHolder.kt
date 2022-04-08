@@ -16,20 +16,20 @@ package com.algorand.android.ui.send.receiveraccount.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.algorand.android.databinding.ItemReceiverAccountPasteBinding
-import com.algorand.android.models.BaseReceiverAccount
+import com.algorand.android.databinding.ItemPasteAddressBinding
+import com.algorand.android.models.BaseAccountSelectionListItem
 
 class PasteItemViewHolder(
-    private val binding: ItemReceiverAccountPasteBinding
+    private val binding: ItemPasteAddressBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(headerItem: BaseReceiverAccount.PasteItem) {
-        binding.copiedAddressTextView.text = headerItem.address
+    fun bind(headerItem: BaseAccountSelectionListItem.PasteItem) {
+        binding.copiedAddressTextView.text = headerItem.publicKey
     }
 
     companion object {
         fun create(parent: ViewGroup): PasteItemViewHolder {
-            val binding = ItemReceiverAccountPasteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            val binding = ItemPasteAddressBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             return PasteItemViewHolder(binding)
         }
     }

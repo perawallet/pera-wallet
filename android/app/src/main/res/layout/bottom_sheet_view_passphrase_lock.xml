@@ -18,7 +18,7 @@
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:background="@color/primaryButtonBackgroundColor">
+    tools:background="@color/button_primary_bg">
 
     <View
         android:id="@+id/modalityLineView"

@@ -34,9 +34,9 @@ class RegisterIntroFragment : DaggerBaseFragment(R.layout.fragment_register_type
 
     private val binding by viewBinding(FragmentRegisterTypeSelectionBinding::bind)
 
-    private val statusBarConfiguration = StatusBarConfiguration(backgroundColor = R.color.tertiaryBackground)
+    private val statusBarConfiguration = StatusBarConfiguration(backgroundColor = R.color.tertiary_background)
 
-    private val toolbarConfiguration = ToolbarConfiguration(backgroundColor = R.color.primaryBackground)
+    private val toolbarConfiguration = ToolbarConfiguration(backgroundColor = R.color.primary_background)
 
     override val fragmentConfiguration = FragmentConfiguration(
         toolbarConfiguration = toolbarConfiguration,
@@ -96,7 +96,7 @@ class RegisterIntroFragment : DaggerBaseFragment(R.layout.fragment_register_type
 
     private fun setupPolicyText() {
         binding.policyTextView.apply {
-            val linkTextColor = ContextCompat.getColor(context, R.color.linkPrimary)
+            val linkTextColor = ContextCompat.getColor(context, R.color.link_primary)
             val termAndConditionsString = AnnotatedString(
                 stringResId = R.string.by_creating_account,
                 customAnnotationList = listOf(

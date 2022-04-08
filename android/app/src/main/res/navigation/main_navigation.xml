@@ -209,7 +209,7 @@
         android:id="@+id/confirmationBottomSheet"
         android:name="com.algorand.android.ui.confirmation.ConfirmationBottomSheet"
         android:label="ConfirmationBottomSheet"
-        tools:layout="@layout/bottom_sheet_confirmation">
+        tools:layout="@layout/bottom_sheet_double_button">
         <argument
             android:name="parameters"
             app:argType="com.algorand.android.models.ConfirmationBottomSheetParameters" />

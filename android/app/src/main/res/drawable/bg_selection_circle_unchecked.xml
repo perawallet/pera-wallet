@@ -11,11 +11,11 @@
   -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="oval">
-    <solid android:tint="@color/primaryBackground" />
+    <solid android:tint="@color/primary_background" />
     <size
         android:width="24dp"
         android:height="24dp" />
     <stroke
         android:width="2dp"
-        android:color="@color/layerGray" />
+        android:color="@color/layer_gray" />
 </shape>

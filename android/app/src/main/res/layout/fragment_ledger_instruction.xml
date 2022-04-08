@@ -36,7 +36,7 @@
             app:layout_constraintVertical_bias="0"
             app:layout_constraintVertical_chainStyle="packed"
             app:srcCompat="@drawable/ic_ledger"
-            app:tint="@color/infoImageColor" />
+            app:tint="@color/info_image_color" />
 
         <TextView
             android:id="@+id/subtitleTextView"

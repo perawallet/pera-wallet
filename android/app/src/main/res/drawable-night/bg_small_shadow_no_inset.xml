@@ -16,5 +16,5 @@
     android:shape="rectangle"
     tools:ignore="MissingDefaultResource">
     <corners android:radius="12dp" />
-    <solid android:color="@color/secondaryBackground" />
+    <solid android:color="@color/secondary_background" />
 </shape>

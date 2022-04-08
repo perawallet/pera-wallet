@@ -30,7 +30,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class PassphraseValidationFragment : DaggerBaseFragment(R.layout.fragment_passphrase_validation) {
 
     private val toolbarConfiguration = ToolbarConfiguration(
-        backgroundColor = R.color.primaryBackground,
+        backgroundColor = R.color.primary_background,
         startIconResId = R.drawable.ic_left_arrow,
         startIconClick = ::navBack
     )

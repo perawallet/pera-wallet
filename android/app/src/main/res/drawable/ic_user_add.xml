@@ -19,15 +19,15 @@
       android:fillColor="#00000000"
       android:pathData="M5,22C5,18.134 8.134,15 12,15C12.5648,15 13.114,15.0669 13.6401,15.1932"
       android:strokeWidth="2"
-      android:strokeColor="@color/primaryIconTintColor"/>
+      android:strokeColor="@color/primary_icon_tint_color"/>
   <path
       android:fillColor="#00000000"
       android:pathData="M19,22V14M15,18L23,18"
       android:strokeWidth="2"
-      android:strokeColor="@color/primaryIconTintColor"/>
+      android:strokeColor="@color/primary_icon_tint_color"/>
   <path
       android:fillColor="#00000000"
       android:pathData="M12,7m-5,0a5,5 0,1 1,10 0a5,5 0,1 1,-10 0"
       android:strokeWidth="2"
-      android:strokeColor="@color/primaryIconTintColor"/>
+      android:strokeColor="@color/primary_icon_tint_color"/>
 </vector>

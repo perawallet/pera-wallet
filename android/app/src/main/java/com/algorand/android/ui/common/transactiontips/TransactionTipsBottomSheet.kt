@@ -54,7 +54,7 @@ class TransactionTipsBottomSheet : DaggerBaseBottomSheet(
 
     private fun setupForMoreInformationText() {
         binding.moreInfoTextView.apply {
-            val tapHereColor = ContextCompat.getColor(context, R.color.linkPrimary)
+            val tapHereColor = ContextCompat.getColor(context, R.color.link_primary)
             text = context.getXmlStyledString(
                 stringResId = R.string.for_more_information_on,
                 customAnnotations = listOf("tap_here_color" to ForegroundColorSpan(tapHereColor))
@@ -64,7 +64,7 @@ class TransactionTipsBottomSheet : DaggerBaseBottomSheet(
 
     private fun setupSecondDescriptionText() {
         binding.secondDescriptionTextView.apply {
-            val highlightColor = ContextCompat.getColor(context, R.color.errorTextColor)
+            val highlightColor = ContextCompat.getColor(context, R.color.error_text_color)
             text = context.getXmlStyledString(
                 stringResId = R.string.exchanges_change_their,
                 customAnnotations = listOf("highlight_color" to ForegroundColorSpan(highlightColor))

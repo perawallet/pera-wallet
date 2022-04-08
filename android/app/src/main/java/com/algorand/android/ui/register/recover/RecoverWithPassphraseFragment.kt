@@ -254,7 +254,7 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
             MainNavigationDirections.actionGlobalSingleButtonBottomSheet(
                 titleAnnotatedString = AnnotatedString(R.string.wrong_passphrase),
                 drawableResId = R.drawable.ic_error,
-                drawableTintResId = R.color.errorTintColor,
+                drawableTintResId = R.color.error_tint_color,
                 descriptionAnnotatedString = descriptionString,
                 isResultNeeded = false,
             )

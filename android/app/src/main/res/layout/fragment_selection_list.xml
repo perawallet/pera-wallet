@@ -16,7 +16,7 @@
     android:id="@+id/selectionRecyclerView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/tertiaryBackground"
+    android:background="@color/tertiary_background"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
     tools:itemCount="10"
     tools:listitem="@layout/item_selection" />

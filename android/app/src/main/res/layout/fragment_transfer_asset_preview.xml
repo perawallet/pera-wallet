@@ -68,7 +68,7 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="28dp"
-            android:background="@color/layerGrayLighter"
+            android:background="@color/layer_gray_lighter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/algoCurrencyValueTextView" />
@@ -143,7 +143,7 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="28dp"
-            android:background="@color/layerGrayLighter"
+            android:background="@color/layer_gray_lighter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/feeAmountView" />
@@ -193,7 +193,7 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="28dp"
-            android:background="@color/layerGrayLighter"
+            android:background="@color/layer_gray_lighter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/assetBalanceTextView" />

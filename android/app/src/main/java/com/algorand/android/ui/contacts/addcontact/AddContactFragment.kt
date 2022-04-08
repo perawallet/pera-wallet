@@ -127,7 +127,7 @@ class AddContactFragment : BaseAddEditContactFragment() {
         if (!args.contactPublicKey.isNullOrEmpty()) {
             algorandInputLayout.text = args.contactPublicKey!!
         }
-        algorandInputLayout.setOnEndIconClickListener { onScanQRClick() }
+        algorandInputLayout.addTrailingIcon(R.drawable.ic_scan_qr, ::onScanQRClick)
     }
 
     override fun openQrScannerForAlgorandAddress(context: Context) {

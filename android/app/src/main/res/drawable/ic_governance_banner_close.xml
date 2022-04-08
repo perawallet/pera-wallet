@@ -14,7 +14,7 @@
 
     <item>
         <shape android:shape="oval">
-            <solid android:color="@color/governanceBannerBackgroundColor" />
+            <solid android:color="@color/banner_bg_governance" />
         </shape>
     </item>
     <item android:drawable="@drawable/ic_close_white" />

@@ -26,6 +26,7 @@ import com.algorand.android.models.AccountBalance
 import com.algorand.android.models.AccountDetail
 import com.algorand.android.models.CurrencyValue
 import com.algorand.android.models.ui.AccountPreview
+import com.algorand.android.nft.domain.usecase.SimpleCollectibleUseCase
 import com.algorand.android.ui.common.listhelper.BaseAccountListItem
 import com.algorand.android.ui.common.listhelper.BaseAccountListItem.HeaderItem
 import com.algorand.android.utils.CacheResult
@@ -48,6 +49,7 @@ class AccountsPreviewUseCase @Inject constructor(
     private val sortedAccountsUseCase: SortedAccountsUseCase,
     private val splittedAccountsUseCase: SplittedAccountsUseCase,
     private val accountListItemsUseCase: AccountListItemsUseCase,
+    private val simpleCollectibleUseCase: SimpleCollectibleUseCase,
     private val bannersUseCase: BannersUseCase,
     private val baseBannerItemMapper: BaseBannerItemMapper
 ) {
@@ -110,7 +112,11 @@ class AccountsPreviewUseCase @Inject constructor(
         val isThereAnyAssetNeedsToBeCached = accountDetailCache.values.any {
             !it.data?.accountInformation?.assetHoldingList.isNullOrEmpty()
         }
-        return if (assetDetailUseCase.getCachedAssetList().isEmpty() && isThereAnyAssetNeedsToBeCached) {
+        return if (
+            assetDetailUseCase.getCachedAssetList().isEmpty() &&
+            simpleCollectibleUseCase.getCachedCollectibleList().isEmpty() &&
+            isThereAnyAssetNeedsToBeCached
+        ) {
             accountPreviewMapper.getFullScreenLoadingState()
         } else {
             prepareAccountPreview(accountDetailCache, localAccounts, banners)

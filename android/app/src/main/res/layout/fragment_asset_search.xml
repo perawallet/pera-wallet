@@ -33,12 +33,12 @@
         android:layout_marginTop="@dimen/spacing_normal"
         android:layout_marginBottom="@dimen/spacing_xlarge"
         android:hint="@string/search_assets_id"
-        app:endIconTintColor="@color/searchBarViewIconColor"
+        app:endIconTintColor="@color/search_bar_view_icon_color"
         app:layout_constraintBottom_toTopOf="@id/assetsRecyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/customToolbar"
-        app:startIconTintColor="@color/searchBarViewIconColor" />
+        app:startIconTintColor="@color/search_bar_view_icon_color" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/assetsRecyclerView"

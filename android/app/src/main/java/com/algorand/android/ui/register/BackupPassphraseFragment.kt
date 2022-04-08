@@ -35,7 +35,7 @@ class BackupPassphraseFragment : DaggerBaseFragment(R.layout.fragment_backup_pas
     private val toolbarConfiguration = ToolbarConfiguration(
         startIconResId = R.drawable.ic_left_arrow,
         startIconClick = ::navBack,
-        backgroundColor = R.color.tertiaryBackground
+        backgroundColor = R.color.tertiary_background
     )
 
     override val fragmentConfiguration = FragmentConfiguration(

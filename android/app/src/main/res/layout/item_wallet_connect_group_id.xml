@@ -20,5 +20,5 @@
     android:layout_marginTop="@dimen/spacing_xsmall"
     android:layout_marginBottom="@dimen/spacing_normal"
     android:gravity="center"
-    android:textColor="@color/secondaryTextColor"
+    android:textColor="@color/secondary_text_color"
     tools:text="@tools:sample/lorem[12]" />

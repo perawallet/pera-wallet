@@ -11,6 +11,6 @@
   -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:color="@color/textButtonDisabledTextColor" android:state_enabled="false" />
-    <item android:color="@color/textButtonTextColor" />
+    <item android:color="@color/text_button_disabled_text" android:state_enabled="false" />
+    <item android:color="@color/text_button_text" />
 </selector>

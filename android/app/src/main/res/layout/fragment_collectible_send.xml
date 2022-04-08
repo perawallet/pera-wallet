@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~  limitations under the License
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/modality_bg"
+    android:paddingTop="@dimen/default_toolbar_height"
+    tools:context=".nft.ui.nftsend.CollectibleSendFragment">
+
+    <com.algorand.android.customviews.CollectibleMediaPager
+        android:id="@+id/collectibleMediaPager"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="48dp"
+        android:layout_marginTop="@dimen/spacing_small"
+        app:layout_constraintBottom_toTopOf="@id/collectibleNamesLinearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread_inside" />
+
+    <LinearLayout
+        android:id="@+id/collectibleNamesLinearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:layout_marginBottom="@dimen/spacing_xxlarge"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/sendYourNftBottomSheetConstraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/collectibleMediaPager">
+
+        <TextView
+            android:id="@+id/collectibleCollectionName"
+            style="@style/TextAppearance.Footnote.Sans"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_xxsmall"
+            android:gravity="center"
+            android:textColor="@color/tertiary_text_color"
+            tools:text="@tools:sample/lorem[1]" />
+
+        <TextView
+            android:id="@+id/collectibleName"
+            style="@style/TextAppearance.Body.Large.Sans.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white"
+            tools:text="@tools:sample/lorem[1]" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/sendYourNftBottomSheetConstraintLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bottom_sheet_dialog_fragment_primary_background"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/collectibleNamesLinearLayout">
+
+        <View
+            style="@style/BottomSheetModalityLine"
+            android:layout_marginVertical="@dimen/spacing_small" />
+
+        <com.algorand.android.customviews.CustomToolbar
+            android:id="@+id/bottomSheetCustomToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_toolbar_height" />
+
+        <com.algorand.android.customviews.AlgorandInputLayout
+            android:id="@+id/algorandWalletAddressTextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_normal"
+            app:hint="@string/paste_an_algorand_wallet_address"
+            tools:text="@tools:sample/lorem[15]" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/transferButton"
+            style="@style/Button.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_xlarge"
+            android:layout_marginBottom="@dimen/bottom_safe_area_margin"
+            android:enabled="false"
+            android:text="@string/transfer" />
+
+    </LinearLayout>
+
+    <include
+        android:id="@+id/progressBar"
+        layout="@layout/layout_full_screen_progress" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

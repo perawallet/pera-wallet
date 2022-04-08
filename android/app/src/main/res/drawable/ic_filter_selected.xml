@@ -19,7 +19,7 @@
         android:fillColor="#00000000"
         android:pathData="M29,12H11V15L18,21V28L22,26V21L29,15V12Z"
         android:strokeWidth="2"
-        android:strokeColor="@color/secondaryIconTintColor" />
+        android:strokeColor="@color/secondary_icon_tint_color" />
     <path
         android:fillColor="#2CB7BC"
         android:pathData="M34,6m-2,0a2,2 0,1 1,4 0a2,2 0,1 1,-4 0" />

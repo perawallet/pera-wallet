@@ -42,7 +42,7 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/main_bottom_navigation_height"
         android:visibility="gone"
-        app:backgroundTint="@color/tertiaryBackground"
+        app:backgroundTint="@color/tertiary_background"
         app:elevation="@dimen/main_bottom_navigation_elevation"
         app:itemIconSize="24dp"
         app:itemIconTint="@color/navigation_icon_color"
@@ -88,4 +88,3 @@
         layout="@layout/layout_full_screen_progress" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-

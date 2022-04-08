@@ -27,35 +27,35 @@ enum class MoonpayTransactionStatus(
     COMPLETED(
         "completed",
         R.drawable.ic_check,
-        R.color.linkPrimary,
+        R.color.link_primary,
         R.string.success_algo_received,
         R.string.congratulations_your_account_has
     ),
     PENDING(
         "pending",
         R.drawable.ic_hourglass,
-        R.color.linkPrimary,
+        R.color.link_primary,
         R.string.your_algos_are,
         R.string.your_payment_is
     ),
     FAILED(
         "failed",
         R.drawable.ic_error,
-        R.color.helperNegative,
+        R.color.negative,
         R.string.uh_oh_something,
         R.string.looks_like_your
     ),
     WAITING_PAYMENT(
         "waitingpayment",
         R.drawable.ic_hourglass,
-        R.color.linkPrimary,
+        R.color.link_primary,
         R.string.almost_there,
         R.string.your_purchase_request_is_pending
     ),
     WAITING_AUTHORIZATION(
         "waitingauthorization",
         R.drawable.ic_hourglass,
-        R.color.linkPrimary,
+        R.color.link_primary,
         R.string.success_algo_received,
         R.string.your_purchase_request_is_wating
     );

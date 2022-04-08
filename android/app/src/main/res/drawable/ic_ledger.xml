@@ -17,14 +17,14 @@
     android:viewportWidth="24"
     android:viewportHeight="24">
     <path
-        android:fillColor="@color/primaryIconTintColor"
+        android:fillColor="@color/primary_icon_tint_color"
         android:pathData="M17,0H7V12.101C7.5741,11.5151 8.2504,11.0297 9,10.6736V2H15V10.6736C15.7496,11.0297 16.4259,11.5151 17,12.101V0Z" />
     <path
         android:fillColor="#00000000"
         android:pathData="M8,17C8,14.7909 9.7909,13 12,13V13C14.2091,13 16,14.7909 16,17V23H8V17Z"
         android:strokeWidth="2"
-        android:strokeColor="@color/primaryIconTintColor" />
+        android:strokeColor="@color/primary_icon_tint_color" />
     <path
-        android:fillColor="@color/primaryIconTintColor"
+        android:fillColor="@color/primary_icon_tint_color"
         android:pathData="M12,17m-1,0a1,1 0,1 1,2 0a1,1 0,1 1,-2 0" />
 </vector>

@@ -13,12 +13,14 @@
 package com.algorand.android.usecase
 
 import com.algorand.android.mapper.AccountAssetDataMapper
+import com.algorand.android.models.AssetDetail
 import com.algorand.android.models.AssetHolding
-import com.algorand.android.models.AssetQueryItem
 import com.algorand.android.models.BaseAccountAssetData
+import com.algorand.android.models.BaseAssetDetail
 import com.algorand.android.utils.DEFAULT_ASSET_DECIMAL
 import com.algorand.android.utils.formatAmount
 import com.algorand.android.utils.formatAsCurrency
+import java.math.BigDecimal
 import java.math.BigDecimal.ZERO
 import javax.inject.Inject
 
@@ -27,20 +29,32 @@ class AccountAssetAmountUseCase @Inject constructor(
     private val accountAssetDataMapper: AccountAssetDataMapper
 ) {
 
-    fun getAssetAmount(assetHolding: AssetHolding, assetItem: AssetQueryItem): BaseAccountAssetData.OwnedAssetData {
-        val selectedCurrencyUsdConversionRate = algoPriceUseCase.getUsdToSelectedCurrencyConversionRate()
+    // TODO: 16.03.2022 Find a better name since it returns OwnedAssetData but not amount
+    fun getAssetAmount(
+        assetHolding: AssetHolding,
+        assetItem: AssetDetail
+    ): BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData {
         val selectedCurrencySymbol = algoPriceUseCase.getSelectedCurrencySymbolOrEmpty()
-        val safeAssetUsdValue = assetItem.usdValue ?: ZERO
         val safeDecimal = assetItem.fractionDecimals ?: DEFAULT_ASSET_DECIMAL
-        val assetAmountInSelectedCurrency = assetHolding.amount.toBigDecimal().movePointLeft(safeDecimal)
-            .multiply(selectedCurrencyUsdConversionRate)
-            .multiply(safeAssetUsdValue)
+        val assetAmountInSelectedCurrency = getAssetAmountInSelectedCurrency(assetHolding, assetItem)
         return accountAssetDataMapper.mapToOwnedAssetData(
-            assetQueryItem = assetItem,
+            assetDetail = assetItem,
             amount = assetHolding.amount,
             formattedAmount = assetHolding.amount.formatAmount(safeDecimal),
             amountInSelectedCurrency = assetAmountInSelectedCurrency,
             formattedSelectedCurrencyValue = assetAmountInSelectedCurrency.formatAsCurrency(selectedCurrencySymbol),
         )
+    }
+
+    fun getAssetAmountInSelectedCurrency(
+        assetHolding: AssetHolding,
+        assetItem: BaseAssetDetail
+    ): BigDecimal {
+        val selectedCurrencyUsdConversionRate = algoPriceUseCase.getUsdToSelectedCurrencyConversionRate()
+        val safeAssetUsdValue = assetItem.usdValue ?: ZERO
+        val safeDecimal = assetItem.fractionDecimals ?: DEFAULT_ASSET_DECIMAL
+        return assetHolding.amount.toBigDecimal().movePointLeft(safeDecimal)
+            .multiply(selectedCurrencyUsdConversionRate)
+            .multiply(safeAssetUsdValue)
     }
 }

@@ -13,6 +13,7 @@
 package com.algorand.android.models
 
 import android.os.Parcelable
+import com.algorand.android.nft.ui.model.CollectibleDetail
 import com.algorand.android.utils.ALGOS_FULL_NAME
 import com.algorand.android.utils.ALGOS_SHORT_NAME
 import com.algorand.android.utils.ALGO_DECIMALS
@@ -66,7 +67,7 @@ data class AssetInformation(
             )
         }
 
-        fun createAssetInformation(assetHolding: AssetHolding, assetParams: AssetQueryItem): AssetInformation {
+        fun createAssetInformation(assetHolding: AssetHolding, assetParams: AssetDetail): AssetInformation {
             return AssetInformation(
                 assetId = assetHolding.assetId,
                 isVerified = assetParams.isVerified,
@@ -79,7 +80,7 @@ data class AssetInformation(
         }
 
         // TODO Remove this function after changing RemoveAssetFlow
-        fun createAssetInformation(removeAssetItem: RemoveAssetItem): AssetInformation {
+        fun createAssetInformation(removeAssetItem: BaseRemoveAssetItem): AssetInformation {
             return with(removeAssetItem) {
                 AssetInformation(
                     assetId = id,
@@ -89,6 +90,33 @@ data class AssetInformation(
                     fullName = name,
                     amount = amount,
                     decimals = decimals
+                )
+            }
+        }
+
+        // TODO: 18.03.2022 Remove this function after changing TransactionBaseFragment
+        fun createAssetInformation(baseOwnedAssetData: BaseAccountAssetData.BaseOwnedAssetData): AssetInformation {
+            return with(baseOwnedAssetData) {
+                AssetInformation(
+                    assetId = id,
+                    isVerified = isVerified,
+                    creatorPublicKey = creatorPublicKey,
+                    shortName = shortName,
+                    fullName = name,
+                    amount = amount,
+                    decimals = decimals
+                )
+            }
+        }
+
+        // TODO: 18.03.2022 Remove this function after changing TransactionBaseFragment
+        fun createAssetInformation(collectibleDetail: CollectibleDetail): AssetInformation {
+            return with(collectibleDetail) {
+                AssetInformation(
+                    assetId = collectibleId,
+                    isVerified = collectibleDetail.isVerified,
+                    creatorPublicKey = creatorWalletAddress,
+                    fullName = collectibleName
                 )
             }
         }

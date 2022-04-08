@@ -14,6 +14,7 @@ package com.algorand.android.customviews
 
 import android.content.Context
 import android.util.AttributeSet
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -64,6 +65,7 @@ class CustomToolbar @JvmOverloads constructor(
             setupBackground(backgroundColor)
             setupTitle(titleResId, titleColor)
             configureStartButton(startIconResId, startIconClick, startIconColor)
+            setupCenterImage(centerImageRes)
             val isTestNetStatusActive = binding.nodeStatusTextView.text == TESTNET_NETWORK_SLUG
             binding.nodeStatusTextView.isVisible = showNodeStatus && isTestNetStatusActive
             isAssetAvatarVisible = showAvatarImage
@@ -92,6 +94,14 @@ class CustomToolbar @JvmOverloads constructor(
         }
     }
 
+    private fun setupCenterImage(imageRes: Int?) {
+        if (imageRes != null) {
+            setCenterImage(imageRes)
+        } else {
+            binding.toolbarCenterImageView.hide()
+        }
+    }
+
     fun configureStartButton(resId: Int?, clickAction: (() -> Unit)?, iconColor: Int? = null) {
         binding.startImageButton.apply {
             if (resId == null) {
@@ -117,6 +127,13 @@ class CustomToolbar @JvmOverloads constructor(
 
     fun changeTitle(title: CharSequence) {
         binding.toolbarTitleTextView.text = title
+    }
+
+    fun setCenterImage(@DrawableRes imageRes: Int) {
+        binding.toolbarCenterImageView.apply {
+            show()
+            setImageResource(imageRes)
+        }
     }
 
     fun setNodeStatus(activatedNode: Node?) {
@@ -148,6 +165,6 @@ class CustomToolbar @JvmOverloads constructor(
     }
 
     private fun initRootView() {
-        setBackgroundColor(ContextCompat.getColor(context, R.color.primaryBackground))
+        setBackgroundColor(ContextCompat.getColor(context, R.color.primary_background))
     }
 }

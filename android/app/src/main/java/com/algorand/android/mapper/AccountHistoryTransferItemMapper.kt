@@ -15,17 +15,15 @@ package com.algorand.android.mapper
 
 import com.algorand.android.decider.TransactionNameDecider
 import com.algorand.android.decider.TransactionSymbolDecider
-import com.algorand.android.models.AssetQueryItem
+import com.algorand.android.models.BaseAssetDetail
 import com.algorand.android.models.BaseTransactionItem
 import com.algorand.android.models.Transaction
 import com.algorand.android.models.TransactionItemType
 import com.algorand.android.models.TransactionTargetUser
 import com.algorand.android.utils.ALGO_DECIMALS
 import com.algorand.android.utils.formatAmount
-import com.algorand.android.utils.formatAsCurrency
 import com.algorand.android.utils.formatAsTxString
 import com.algorand.android.utils.getZonedDateTimeFromTimeStamp
-import java.math.BigDecimal
 import javax.inject.Inject
 
 class AccountHistoryTransferItemMapper @Inject constructor(
@@ -35,20 +33,18 @@ class AccountHistoryTransferItemMapper @Inject constructor(
     // TODO: 30.12.2021 Mappers shouldn't contain any logic.
     fun mapTo(
         transaction: Transaction,
-        assetQueryItem: AssetQueryItem?,
+        assetDetail: BaseAssetDetail?,
         accountPublicKey: String,
         transactionTargetUser: TransactionTargetUser?,
         otherPublicKey: String,
-        selectedCurrencySymbol: String,
-        amountInSelectedCurrency: BigDecimal?
+        formattedAmountInDisplayedCurrency: String?
     ): BaseTransactionItem.TransactionItem {
         return with(transaction) {
             val transactionSymbol = transactionSymbolDecider.provideTransactionSymbol(this, accountPublicKey)
             val zonedDateTime = roundTimeAsTimestamp?.getZonedDateTimeFromTimeStamp()
-            val decimal = assetQueryItem?.fractionDecimals ?: ALGO_DECIMALS
-            val formattedSelectedCurrencyValue = amountInSelectedCurrency?.formatAsCurrency(selectedCurrencySymbol)
+            val decimal = assetDetail?.fractionDecimals ?: ALGO_DECIMALS
             BaseTransactionItem.TransactionItem.Transaction(
-                assetId = assetQueryItem?.assetId,
+                assetId = assetDetail?.assetId,
                 id = id,
                 signature = signature?.signatureKey,
                 accountPublicKey = accountPublicKey,
@@ -68,10 +64,9 @@ class AccountHistoryTransferItemMapper @Inject constructor(
                 closeToAddress = getCloseToAddress(),
                 closeToAmount = closeAmount,
                 rewardAmount = getReward(accountPublicKey),
-                assetShortName = assetQueryItem?.shortName,
+                assetShortName = assetDetail?.shortName.orEmpty(),
                 transactionName = transactionNameDecider.provideTransferTransactionName(this, accountPublicKey),
-                amountInSelectedCurrency = amountInSelectedCurrency,
-                formattedSelectedCurrencyValue = formattedSelectedCurrencyValue
+                formattedAmountInDisplayedCurrency = formattedAmountInDisplayedCurrency
             )
         }
     }

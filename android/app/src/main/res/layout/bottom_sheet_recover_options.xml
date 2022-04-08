@@ -18,7 +18,7 @@
     android:orientation="vertical"
     android:paddingTop="@dimen/spacing_small"
     android:paddingBottom="@dimen/bottom_safe_area_margin"
-    tools:background="@color/primaryBackground">
+    tools:background="@color/primary_background">
 
     <View
         android:id="@+id/modalityLineView"
@@ -55,4 +55,3 @@
         app:icon="@drawable/ic_info" />
 
 </LinearLayout>
-

@@ -26,19 +26,21 @@ import com.algorand.android.mapper.AccountHistoryRewardItemMapper
 import com.algorand.android.mapper.AccountHistoryTransferItemMapper
 import com.algorand.android.mapper.TransactionItemTypeMapper
 import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
-import com.algorand.android.models.AssetQueryItem
+import com.algorand.android.models.BaseAssetDetail
 import com.algorand.android.models.BaseTransactionItem
 import com.algorand.android.models.DateFilter
 import com.algorand.android.models.DateRange
 import com.algorand.android.models.Result
 import com.algorand.android.models.Transaction
 import com.algorand.android.models.TransactionItemType
-import com.algorand.android.repository.RewardsRepository
+import com.algorand.android.nft.domain.usecase.SimpleCollectibleUseCase
 import com.algorand.android.repository.TransactionHistoryPaginationHelper
 import com.algorand.android.repository.TransactionsRepository
+import com.algorand.android.utils.formatAsCurrency
 import com.algorand.android.utils.formatAsDate
 import com.algorand.android.utils.formatAsRFC3339Version
 import com.algorand.android.utils.getZonedDateTimeFromTimeStamp
+import java.math.BigDecimal
 import java.math.BigInteger
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
@@ -59,10 +61,11 @@ class TransactionUseCase @Inject constructor(
     private val accountHistoryTransferItemMapper: AccountHistoryTransferItemMapper,
     private val accountHistoryFeeItemMapper: AccountHistoryFeeItemMapper,
     private val transactionItemTypeMapper: TransactionItemTypeMapper,
-    rewardsRepository: RewardsRepository,
+    private val algoRewardUseCase: AlgoRewardUseCase,
+    private val collectibleUseCase: SimpleCollectibleUseCase
 ) : BaseUseCase() {
 
-    private val isRewardsActivated = rewardsRepository.isRewardActivated()
+    private val isRewardsActivated = algoRewardUseCase.isRewardActivated()
     private val dateFilterQuery = MutableStateFlow<DateFilter>(DateFilter.AllTime)
 
     private val headerSeparator: suspend (
@@ -88,17 +91,15 @@ class TransactionUseCase @Inject constructor(
             } else {
                 firstTxnItem?.otherPublicKey
             }
-            val amountInSelectedCurrency = transactionAmountUseCase.getAlgoAmount(
+            val formattedAmountInDisplayedCurrency = transactionAmountUseCase.getAlgoAmountInCachedCurrency(
                 firstTxnItem?.rewardAmount?.toBigInteger() ?: BigInteger.ZERO
-            )
-            val selectedCurrencySymbol = algoPriceUseCase.getSelectedCurrencySymbolOrCurrencyName()
+            ).formatAsCurrency(algoPriceUseCase.getCachedCurrencySymbolOrName())
             accountHistoryRewardItemMapper.mapTo(
                 transaction = firstTxnItem,
-                assetQueryItem = getAssetDetail(assetId),
+                assetDetail = getAssetDetail(assetId),
                 accountPublicKey = firstTxnItem?.accountPublicKey.orEmpty(),
                 transactionTargetUser = transactionUserUseCase.getTransactionTargetUser(otherPublicKey),
-                amountInSelectedCurrency = amountInSelectedCurrency,
-                selectedCurrencySymbol = selectedCurrencySymbol
+                formattedAmountInDisplayedCurrency = formattedAmountInDisplayedCurrency,
             )
         } else {
             null
@@ -173,24 +174,25 @@ class TransactionUseCase @Inject constructor(
                     accountHistoryFeeItemMapper.mapTo(transaction, asset, publicKey, transactionTargetUser)
                 } else {
                     val amountInSelectedCurrency = when {
-                        transaction.isAlgorand() -> transactionAmountUseCase.getAlgoAmount(transaction.getAmount(false))
+                        transaction.isAlgorand() -> {
+                            transactionAmountUseCase.getAlgoAmountInCachedCurrency(transaction.getAmount(false))
+                                .formatAsCurrency(algoPriceUseCase.getCachedCurrencySymbolOrName())
+                        }
                         asset?.usdValue != null -> {
-                            transactionAmountUseCase.getAssetAmount(
-                                asset.usdValue,
+                            transactionAmountUseCase.getAssetAmountInSelectedCurrency(
+                                asset.usdValue ?: BigDecimal.ZERO,
                                 transaction.getAmount(false),
                                 asset.fractionDecimals
-                            )
+                            ).formatAsCurrency(algoPriceUseCase.getSelectedCurrencySymbolOrCurrencyName())
                         }
                         else -> null
                     }
-                    val selectedCurrencySymbol = algoPriceUseCase.getSelectedCurrencySymbolOrCurrencyName()
                     accountHistoryTransferItemMapper.mapTo(
                         transaction,
                         asset,
                         publicKey,
                         transactionTargetUser,
                         otherPublicKey,
-                        selectedCurrencySymbol,
                         amountInSelectedCurrency
                     )
                 }
@@ -242,9 +244,10 @@ class TransactionUseCase @Inject constructor(
         return isRewardsActivated && isAlgorand == true
     }
 
-    private fun getAssetDetail(assetId: Long?): AssetQueryItem? {
+    private fun getAssetDetail(assetId: Long?): BaseAssetDetail? {
         if (assetId == null) return null
         return simpleAssetDetailUseCase.getCachedAssetDetail(assetId)?.data
+            ?: collectibleUseCase.getCachedCollectibleById(assetId)?.data
     }
 
     private fun shouldIncludeInTransactionFlow(transaction: Transaction, assetIdFilter: Long): Boolean {

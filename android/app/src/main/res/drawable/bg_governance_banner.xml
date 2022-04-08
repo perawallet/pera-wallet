@@ -14,6 +14,6 @@
     android:shape="rectangle">
 
     <corners android:radius="4dp" />
-    <solid android:color="@color/governanceBannerBackgroundColor" />
+    <solid android:color="@color/banner_bg_governance" />
 
 </shape>

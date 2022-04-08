@@ -19,7 +19,9 @@ import javax.inject.Inject
 
 class LedgerInformationAssetItemMapper @Inject constructor() {
 
-    fun mapTo(accountAssetData: BaseAccountAssetData.OwnedAssetData): LedgerInformationListItem.AssetInformationItem {
+    fun mapTo(
+        accountAssetData: BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData
+    ): LedgerInformationListItem.AssetInformationItem {
         return LedgerInformationListItem.AssetInformationItem(accountAssetData)
     }
 }

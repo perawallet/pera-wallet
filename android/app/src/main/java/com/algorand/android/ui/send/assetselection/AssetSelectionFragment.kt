@@ -20,12 +20,11 @@ import androidx.lifecycle.lifecycleScope
 import com.algorand.android.R
 import com.algorand.android.core.TransactionBaseFragment
 import com.algorand.android.databinding.FragmentAssetSelectionBinding
-import com.algorand.android.models.AssetInformation
-import com.algorand.android.models.AssetSelection
+import com.algorand.android.models.BaseSelectAssetItem
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.ToolbarConfiguration
-import com.algorand.android.ui.send.assetselection.adapter.AssetSelectionAdapter
+import com.algorand.android.ui.send.assetselection.adapter.SelectSendingAssetAdapter
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -48,9 +47,9 @@ class AssetSelectionFragment : TransactionBaseFragment(R.layout.fragment_asset_s
 
     private val assetSelectionViewModel: AssetSelectionViewModel by viewModels()
 
-    private val assetSelectionAdapter = AssetSelectionAdapter(::onAssetClick)
+    private val assetSelectionAdapter = SelectSendingAssetAdapter(::onAssetClick)
 
-    private val assetSelectionCollector: suspend (value: List<AssetSelection>?) -> Unit = {
+    private val assetSelectionCollector: suspend (value: List<BaseSelectAssetItem>?) -> Unit = {
         it?.let { assetSelectionAdapter.submitList(it) }
     }
 
@@ -89,10 +88,8 @@ class AssetSelectionFragment : TransactionBaseFragment(R.layout.fragment_asset_s
         }
     }
 
-    private fun onAssetClick(assetInformation: AssetInformation) {
-        val assetTransaction = assetSelectionViewModel.assetTransaction.copy(
-            assetId = assetInformation.assetId
-        )
+    private fun onAssetClick(assetId: Long) {
+        val assetTransaction = assetSelectionViewModel.assetTransaction.copy(assetId = assetId)
         nav(
             AssetSelectionFragmentDirections.actionAssetSelectionFragmentToAssetTransferAmountFragment(assetTransaction)
         )

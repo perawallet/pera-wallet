@@ -15,9 +15,10 @@ package com.algorand.android.models
 import android.os.Parcelable
 import com.algorand.android.utils.formatAsTxString
 import com.algorand.android.utils.getZonedDateTimeFromTimeStamp
+import com.algorand.android.utils.isNotEqualTo
 import com.google.gson.annotations.SerializedName
-import java.math.BigInteger
 import kotlinx.parcelize.Parcelize
+import java.math.BigInteger
 
 // TODO Create another model to separate data/ui models
 @Parcelize
@@ -52,7 +53,7 @@ data class Transaction(
 
     fun getAmount(includeCloseAmount: Boolean): BigInteger? {
         return payment?.amount?.run {
-            return if (includeCloseAmount && closeAmount != null && closeAmount != BigInteger.ZERO) {
+            return if (includeCloseAmount && closeAmount != null && closeAmount isNotEqualTo BigInteger.ZERO) {
                 this.plus(closeAmount)
             } else {
                 this

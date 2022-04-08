@@ -47,11 +47,11 @@
         android:layout_marginTop="@dimen/spacing_xxxxlarge"
         android:hint="@string/search_my_assets"
         android:inputType="text"
-        app:endIconTintColor="@color/secondaryIconTintColor"
+        app:endIconTintColor="@color/secondary_icon_tint_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/descriptionTextView"
-        app:startIconTintColor="@color/searchBarViewIconColor" />
+        app:startIconTintColor="@color/search_bar_view_icon_color" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/assetsRecyclerView"
@@ -70,4 +70,3 @@
         layout="@layout/layout_loading" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-

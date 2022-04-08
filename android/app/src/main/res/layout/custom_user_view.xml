@@ -59,7 +59,7 @@
         android:paddingVertical="@dimen/spacing_xxsmall"
         android:text="@string/add"
         android:visibility="gone"
-        app:backgroundTint="@color/layerGrayLighter"
+        app:backgroundTint="@color/layer_gray_lighter"
         app:cornerRadius="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

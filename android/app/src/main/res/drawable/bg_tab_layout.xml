@@ -15,13 +15,13 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@color/layerGrayLighter" />
+            <solid android:color="@color/layer_gray_lighter" />
         </shape>
     </item>
 
     <item android:bottom="1dp">
         <shape android:shape="rectangle">
-            <solid android:color="@color/primaryBackground" />
+            <solid android:color="@color/primary_background" />
         </shape>
     </item>
 </layer-list>

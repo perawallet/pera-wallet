@@ -20,7 +20,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primaryBackground"
+        android:background="@color/primary_background"
         android:orientation="vertical"
         android:paddingHorizontal="@dimen/spacing_xlarge">
 
@@ -46,6 +46,14 @@
             app:settingsIcon="@drawable/ic_shield_check"
             app:settingsShowArrow="true"
             app:settingsText="@string/security" />
+
+        <com.algorand.android.customviews.SettingsListItem
+            android:id="@+id/contactsListItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:settingsIcon="@drawable/ic_contacts"
+            app:settingsShowArrow="true"
+            app:settingsText="@string/contacts" />
 
         <com.algorand.android.customviews.SettingsListItem
             android:id="@+id/notificationListItem"

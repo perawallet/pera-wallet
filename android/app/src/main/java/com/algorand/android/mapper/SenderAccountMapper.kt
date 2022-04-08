@@ -22,7 +22,7 @@ class SenderAccountMapper @Inject constructor() {
 
     fun mapTo(
         accountCacheData: AccountCacheData,
-        accountAssetData: BaseAccountAssetData.OwnedAssetData
+        accountAssetData: BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData
     ): SenderAccount {
         return SenderAccount(accountCacheData, accountAssetData)
     }

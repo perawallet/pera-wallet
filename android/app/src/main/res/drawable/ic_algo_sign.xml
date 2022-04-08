@@ -16,7 +16,7 @@
     android:viewportWidth="20"
     android:viewportHeight="20">
     <path
-        android:fillColor="@color/algoDefaultIconTintColor"
+        android:fillColor="@color/algo_default_icon_tint_color"
         android:fillType="evenOdd"
         android:pathData="M5.9513,16L7.5841,12.9947L9.2168,10L10.8396,6.9946L11.1084,6.5184L11.2279,6.9946L11.7257,8.9735L11.1681,10L9.5354,12.9947L7.9126,16H9.8639L11.4967,12.9947L12.3429,11.439L12.7412,12.9947L13.4978,16H15.25L14.4934,12.9947L13.7367,10L13.5376,9.2275L14.7522,6.9946H12.9801L12.9204,6.7725L12.3031,4.3175L12.2235,4H10.521L10.4812,4.0635L8.8883,6.9946L7.2555,10L5.6327,12.9947L4,16H5.9513Z" />
 </vector>

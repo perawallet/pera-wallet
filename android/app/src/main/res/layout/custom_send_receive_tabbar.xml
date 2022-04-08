@@ -24,7 +24,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="@dimen/main_bottom_navigation_height"
-        android:background="@color/black_A3"
+        android:background="@color/black_alpha_64"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -126,12 +126,12 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginBottom="12dp"
-        app:backgroundTint="@color/primaryButtonBackgroundColor"
+        app:backgroundTint="@color/button_primary_bg"
         app:icon="@drawable/ic_send_request"
-        app:iconTint="@color/primaryButtonTextColor"
+        app:iconTint="@color/button_primary_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:rippleColor="@color/tertiaryBackground" />
+        app:rippleColor="@color/tertiary_background" />
 
 </merge>

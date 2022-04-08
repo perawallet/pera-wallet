@@ -16,7 +16,7 @@ package com.algorand.android.mapper
 import com.algorand.android.decider.TransactionItemTypeDecider
 import com.algorand.android.decider.TransactionNameDecider
 import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
-import com.algorand.android.models.AssetQueryItem
+import com.algorand.android.models.BaseAssetDetail
 import com.algorand.android.models.BaseTransactionItem
 import com.algorand.android.models.Transaction
 import com.algorand.android.models.TransactionTargetUser
@@ -33,13 +33,13 @@ class AccountHistoryFeeItemMapper @Inject constructor(
 
     fun mapTo(
         transaction: Transaction,
-        assetQueryItem: AssetQueryItem?,
+        assetDetail: BaseAssetDetail?,
         accountPublicKey: String,
         transactionTargetUser: TransactionTargetUser?
     ): BaseTransactionItem.TransactionItem.Fee {
         return with(transaction) {
             val zonedDateTime = roundTimeAsTimestamp?.getZonedDateTimeFromTimeStamp()
-            val decimal = assetQueryItem?.fractionDecimals ?: ALGO_DECIMALS
+            val decimal = assetDetail?.fractionDecimals ?: ALGO_DECIMALS
             val transactionItemType = transactionItemTypeDecider.provideTransactionItemType(this)
             BaseTransactionItem.TransactionItem.Fee(
                 // Since all fee transaction items is using Algo, we can set assetId as ALGORAND_ID manually
@@ -58,7 +58,7 @@ class AccountHistoryFeeItemMapper @Inject constructor(
                 closeToAddress = getCloseToAddress(),
                 closeToAmount = closeAmount,
                 rewardAmount = getReward(accountPublicKey),
-                assetShortName = assetQueryItem?.shortName,
+                assetShortName = assetDetail?.shortName,
                 decimals = decimal,
                 transactionItemType = transactionItemType,
                 transactionName = transactionNameDecider.provideTransactionName(transactionItemType),

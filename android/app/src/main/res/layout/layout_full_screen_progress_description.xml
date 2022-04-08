@@ -15,7 +15,7 @@
     android:id="@+id/loadingProgressBar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black_A3"
+    android:background="@color/black_alpha_64"
     android:clickable="true"
     android:focusable="true"
     android:visibility="gone">

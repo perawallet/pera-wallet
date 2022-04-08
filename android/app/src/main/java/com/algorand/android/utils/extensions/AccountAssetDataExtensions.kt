@@ -12,13 +12,8 @@
 
 package com.algorand.android.utils.extensions
 
-import com.algorand.android.models.AssetQueryItem
 import com.algorand.android.models.BaseAccountAssetData
 
-fun BaseAccountAssetData.OwnedAssetData.hasUsdValue(): Boolean {
-    return usdValue != null
-}
-
-fun AssetQueryItem.hasUsdValue(): Boolean {
+fun BaseAccountAssetData.BaseOwnedAssetData.hasUsdValue(): Boolean {
     return usdValue != null
 }

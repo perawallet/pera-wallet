@@ -17,7 +17,9 @@ import com.algorand.android.R
 import com.algorand.android.mapper.AccountDetailAssetItemMapper
 import com.algorand.android.models.AccountDetailAssetsItem
 import com.algorand.android.models.BaseAccountAssetData
-import com.algorand.android.models.BaseAccountAssetData.OwnedAssetData
+import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData
+import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.AdditionAssetData
+import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.DeletionAssetData
 import com.algorand.android.utils.formatAsCurrency
 import java.math.BigDecimal
 import javax.inject.Inject
@@ -45,7 +47,7 @@ class AccountAssetsUseCase @Inject constructor(
                 }
                 accountAssetData.forEach { accountAssetData ->
                     accountValue += (accountAssetData as? OwnedAssetData)?.amountInSelectedCurrency ?: BigDecimal.ZERO
-                    add(createAssetListItem(accountAssetData))
+                    add(createAssetListItem(accountAssetData) ?: return@forEach)
                 }
                 val selectedCurrencySymbol = algoPriceUseCase.getSelectedCurrencySymbolOrCurrencyName()
                 add(0, AccountDetailAssetsItem.AccountValueItem(accountValue.formatAsCurrency(selectedCurrencySymbol)))
@@ -53,12 +55,14 @@ class AccountAssetsUseCase @Inject constructor(
         }
     }
 
-    private fun createAssetListItem(assetData: BaseAccountAssetData): AccountDetailAssetsItem.BaseAssetItem {
+    private fun createAssetListItem(assetData: BaseAccountAssetData): AccountDetailAssetsItem.BaseAssetItem? {
         return with(accountDetailAssetItemMapper) {
             when (assetData) {
                 is OwnedAssetData -> mapToOwnedAssetItem(assetData)
-                is BaseAccountAssetData.PendingAssetData.AdditionAssetData -> mapToPendingAdditionAssetItem(assetData)
-                is BaseAccountAssetData.PendingAssetData.DeletionAssetData -> mapToPendingRemovalAssetItem(assetData)
+                is AdditionAssetData -> mapToPendingAdditionAssetItem(assetData)
+                is DeletionAssetData -> mapToPendingRemovalAssetItem(assetData)
+                // TODO: 24.03.2022 We should use interface instead of using when
+                else -> null
             }
         }
     }

@@ -17,7 +17,7 @@ import com.algorand.android.R
 
 data class StatusBarConfiguration(
     @ColorRes
-    val backgroundColor: Int = R.color.primaryBackground,
+    val backgroundColor: Int = R.color.primary_background,
     val showNodeStatus: Boolean = true,
     var showLightStatusBarIcons: Boolean = false
 )

@@ -36,18 +36,15 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iconImageView"
-        android:layout_width="@dimen/custom_input_layout_end_icon_size"
-        android:layout_height="@dimen/custom_input_layout_end_icon_size"
+    <com.algorand.android.customviews.InputLayoutTrailingIconContainerView
+        android:id="@+id/iconContainerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/spacing_xxsmall"
-        android:clickable="true"
-        android:visibility="gone"
+        android:paddingStart="@dimen/spacing_normal"
         app:layout_constraintBottom_toBottomOf="@+id/textInputLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textInputLayout"
-        tools:src="@drawable/ic_scan_qr"
-        tools:visibility="visible" />
+        app:layout_constraintTop_toTopOf="@+id/textInputLayout" />
 
     <TextView
         android:id="@+id/errorTextView"

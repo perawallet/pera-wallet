@@ -287,7 +287,7 @@ class MainActivity : CoreMainActivity(),
             MainNavigationDirections.actionGlobalSingleButtonBottomSheet(
                 titleAnnotatedString = AnnotatedString(R.string.uh_oh_something),
                 drawableResId = R.drawable.ic_error,
-                drawableTintResId = R.color.errorTintColor,
+                drawableTintResId = R.color.error_tint_color,
                 descriptionAnnotatedString = annotatedDescriptionErrorString
             )
         )
@@ -413,7 +413,7 @@ class MainActivity : CoreMainActivity(),
             MainNavigationDirections.actionGlobalSingleButtonBottomSheet(
                 titleAnnotatedString = AnnotatedString(R.string.connection_failed),
                 drawableResId = R.drawable.ic_error,
-                drawableTintResId = R.color.errorTintColor,
+                drawableTintResId = R.color.error_tint_color,
                 descriptionAnnotatedString = AnnotatedString(R.string.we_are_sorry_but_the),
             )
         )

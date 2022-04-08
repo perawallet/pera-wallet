@@ -32,6 +32,7 @@
     <dimen name="text_size_15">15sp</dimen>
     <dimen name="text_size_19">19sp</dimen>
     <dimen name="text_size_24">24sp</dimen>
+    <dimen name="text_size_28">28sp</dimen>
     <dimen name="text_size_32">32sp</dimen>
     <dimen name="text_size_36">36sp</dimen>
 
@@ -42,7 +43,6 @@
 
     <dimen name="keyline_1">16dp</dimen>
     <dimen name="keyline_1_minus_8dp">8dp</dimen>
-    <dimen name="unelevated_button_min_height">50dp</dimen>
     <dimen name="unelevated_button_corner_radius">28dp</dimen>
     <dimen name="page_horizontal_spacing">20dp</dimen>
     <dimen name="digit_size">24dp</dimen>
@@ -55,25 +55,16 @@
     <dimen name="passphrase_background_radius">8dp</dimen>
 
     <!-- Input-->
-    <dimen name="input_horizontal_20dp_margin">16dp</dimen>
-
-    <dimen name="input_label_vertical_margin">@dimen/smallshadow_top_margin_8dp</dimen>
-    <dimen name="input_label_horizontal_margin">@dimen/smallshadow_start_inset</dimen>
 
     <dimen name="bottom_safe_area_margin">32dp</dimen>
 
     <dimen name="default_toolbar_height">44dp</dimen>
-    <dimen name="toolbar_navigation_item_width">56dp</dimen>
 
     <!-- Passphrase View  -->
     <integer name="account_name_character_limit">60</integer>
-    <integer name="account_public_key_character_limit">58</integer>
 
     <!-- Settings List Item-->
     <dimen name="settings_list_item_min_height">64dp</dimen>
-
-    <!-- SendRequestBottomView -->
-    <dimen name="send_request_bottom_view_min_height">96dp</dimen>
 
     <!-- Asset Detail Card View -->
 
@@ -88,11 +79,8 @@
     <dimen name="chart_price_tag_offset">4dp</dimen>
     <dimen name="chart_vertical_padding">20dp</dimen>
 
-    <dimen name="wallet_connect_card_divider_margin">20dp</dimen>
-
     <!--    Custom Input Layout-->
     <dimen name="custom_input_layout_end_icon_size">24dp</dimen>
-    <dimen name="custom_input_layout_input_text_end_padding">40dp</dimen>
 
     <!-- Bottom Sheet Single Button -->
     <dimen name="bottom_sheet_single_button_icon_size">72dp</dimen>

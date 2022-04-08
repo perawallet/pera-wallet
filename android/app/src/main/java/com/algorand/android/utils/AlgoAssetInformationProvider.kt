@@ -14,14 +14,14 @@
 package com.algorand.android.utils
 
 import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
-import com.algorand.android.models.AssetQueryItem
+import com.algorand.android.models.AssetDetail
 import javax.inject.Inject
 
 class AlgoAssetInformationProvider @Inject constructor() {
 
-    fun getAlgoAssetInformation(): CacheResult<AssetQueryItem> {
+    fun getAlgoAssetInformation(): CacheResult<AssetDetail> {
         return CacheResult.Success.create(
-            AssetQueryItem(
+            AssetDetail(
                 assetId = ALGORAND_ID,
                 fullName = ALGOS_FULL_NAME,
                 shortName = ALGOS_SHORT_NAME,

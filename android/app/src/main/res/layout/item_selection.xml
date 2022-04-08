@@ -21,6 +21,3 @@
     android:paddingHorizontal="@dimen/spacing_xlarge"
     android:textAppearance="@style/TextAppearance.Body.Sans"
     tools:text="English" />
-
-
-

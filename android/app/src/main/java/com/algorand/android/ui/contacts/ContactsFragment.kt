@@ -13,14 +13,12 @@
 package com.algorand.android.ui.contacts
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.algorand.android.MainActivity
 import com.algorand.android.R
-import com.algorand.android.core.BaseBottomBarFragment
+import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentContactsBinding
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.IconButton
@@ -28,21 +26,17 @@ import com.algorand.android.models.ScreenState
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.models.User
 import com.algorand.android.ui.common.user.UserAdapter
-import com.algorand.android.utils.KeyboardToggleListener
-import com.algorand.android.utils.addKeyboardToggleListener
 import com.algorand.android.utils.hideKeyboard
-import com.algorand.android.utils.removeKeyboardToggleListener
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ContactsFragment : BaseBottomBarFragment(R.layout.fragment_contacts) {
+class ContactsFragment : DaggerBaseFragment(R.layout.fragment_contacts) {
 
-    private val toolbarConfiguration = ToolbarConfiguration(backgroundColor = R.color.primaryBackground)
+    private val toolbarConfiguration = ToolbarConfiguration(backgroundColor = R.color.primary_background)
 
     override val fragmentConfiguration = FragmentConfiguration(
         toolbarConfiguration = toolbarConfiguration,
-        isBottomBarNeeded = true,
         firebaseEventScreenId = FIREBASE_EVENT_SCREEN_ID
     )
 
@@ -51,8 +45,6 @@ class ContactsFragment : BaseBottomBarFragment(R.layout.fragment_contacts) {
     private val binding by viewBinding(FragmentContactsBinding::bind)
 
     private var userAdapter: UserAdapter? = null
-    private var openBottomBarHandler: Handler? = null
-    private var keyboardToggleListener: KeyboardToggleListener? = null
 
     private val contactListObserver = Observer<List<User>> { contactList ->
         userAdapter?.submitList(contactList)
@@ -60,17 +52,6 @@ class ContactsFragment : BaseBottomBarFragment(R.layout.fragment_contacts) {
             searchBar.isVisible = contactList.isNotEmpty() || searchBar.text.isNotEmpty()
             contactsRecyclerView.isVisible = contactList.isNotEmpty() || searchBar.text.isNotEmpty()
             updateScreenState(contactList.isEmpty(), searchBar.text.isNotEmpty())
-        }
-    }
-
-    private val onKeyboardToggleAction: (shown: Boolean) -> Unit = { keyboardShown ->
-        if (keyboardShown) {
-            (activity as? MainActivity)?.isBottomBarNavigationVisible = false
-        } else {
-            openBottomBarHandler = Handler()
-            openBottomBarHandler?.postDelayed({
-                (activity as? MainActivity)?.isBottomBarNavigationVisible = true
-            }, BOTTOM_NAV_OPEN_DELAY_DURATION)
         }
     }
 
@@ -115,17 +96,6 @@ class ContactsFragment : BaseBottomBarFragment(R.layout.fragment_contacts) {
         contactsViewModel.contactsListLiveData.observe(viewLifecycleOwner, contactListObserver)
     }
 
-    override fun onResume() {
-        super.onResume()
-        keyboardToggleListener = addKeyboardToggleListener(binding.root, onKeyboardToggleAction)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        openBottomBarHandler?.removeCallbacksAndMessages(null)
-        keyboardToggleListener?.removeKeyboardToggleListener(binding.root)
-    }
-
     private fun setupRecyclerView() {
         userAdapter = UserAdapter(onContactClick, onContactQrClick)
         binding.contactsRecyclerView.adapter = userAdapter
@@ -157,7 +127,6 @@ class ContactsFragment : BaseBottomBarFragment(R.layout.fragment_contacts) {
     }
 
     companion object {
-        private const val BOTTOM_NAV_OPEN_DELAY_DURATION = 300L
         private const val FIREBASE_EVENT_SCREEN_ID = "screen_contacts"
     }
 }

@@ -12,24 +12,24 @@
 
 package com.algorand.android.cache
 
-import com.algorand.android.models.AssetQueryItem
+import com.algorand.android.models.AssetDetail
 import com.algorand.android.utils.CacheResult
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SimpleAssetLocalCache @Inject constructor() : LocalCache<Long, AssetQueryItem>() {
+class SimpleAssetLocalCache @Inject constructor() : LocalCache<Long, AssetDetail>() {
 
-    override suspend fun put(value: CacheResult.Success<AssetQueryItem>) {
+    override suspend fun put(value: CacheResult.Success<AssetDetail>) {
         val key = value.data.assetId
         cacheValue(key, value)
     }
 
-    override suspend fun put(key: Long, value: CacheResult.Error<AssetQueryItem>) {
+    override suspend fun put(key: Long, value: CacheResult.Error<AssetDetail>) {
         cacheValue(key, value)
     }
 
-    override suspend fun put(valueList: List<CacheResult.Success<AssetQueryItem>>) {
+    override suspend fun put(valueList: List<CacheResult.Success<AssetDetail>>) {
         val cacheResultPairList = valueList.map {
             val key = it.data.assetId
             Pair(key, it)
@@ -37,7 +37,7 @@ class SimpleAssetLocalCache @Inject constructor() : LocalCache<Long, AssetQueryI
         cacheAll(cacheResultPairList)
     }
 
-    override suspend fun putAll(keyValuePair: List<Pair<Long, CacheResult<AssetQueryItem>>>) {
+    override suspend fun putAll(keyValuePair: List<Pair<Long, CacheResult<AssetDetail>>>) {
         cacheAll(keyValuePair)
     }
 }

@@ -43,7 +43,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class LockFragment : DaggerBaseFragment(R.layout.fragment_lock) {
 
-    private val statusBarConfiguration = StatusBarConfiguration(backgroundColor = R.color.tertiaryBackground)
+    private val statusBarConfiguration = StatusBarConfiguration(backgroundColor = R.color.tertiary_background)
 
     override val fragmentConfiguration = FragmentConfiguration(statusBarConfiguration = statusBarConfiguration)
 

@@ -15,7 +15,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/tertiaryBackground"
+    android:background="@color/tertiary_background"
     android:paddingHorizontal="@dimen/spacing_xlarge"
     android:paddingTop="@dimen/spacing_small">
 

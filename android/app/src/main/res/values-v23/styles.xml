@@ -14,7 +14,7 @@
 <resources>
 
     <style name="AppTheme" parent="BaseTheme">
-        <item name="android:statusBarColor">@color/primaryBackground</item>
+        <item name="android:statusBarColor">@color/primary_background</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 </resources>

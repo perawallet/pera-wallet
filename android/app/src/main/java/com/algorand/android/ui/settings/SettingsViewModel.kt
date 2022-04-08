@@ -16,16 +16,26 @@ import android.app.NotificationManager
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
+import com.algorand.android.usecase.AlgoRewardUseCase
 import com.algorand.android.usecase.DeleteAllDataUseCase
 import kotlinx.coroutines.launch
 
 class SettingsViewModel @ViewModelInject constructor(
-    private val deleteAllDataUseCase: DeleteAllDataUseCase
+    private val deleteAllDataUseCase: DeleteAllDataUseCase,
+    private val algoRewardUseCase: AlgoRewardUseCase
 ) : BaseViewModel() {
 
     fun deleteAllData(notificationManager: NotificationManager?, onDeletionCompleted: () -> Unit) {
         viewModelScope.launch {
             deleteAllDataUseCase.deleteAllData(notificationManager, onDeletionCompleted)
         }
+    }
+
+    fun isRewardActivated(): Boolean {
+        return algoRewardUseCase.isRewardActivated()
+    }
+
+    fun setRewardsPreference(enableRewards: Boolean) {
+        algoRewardUseCase.setRewardsPreference(enableRewards)
     }
 }

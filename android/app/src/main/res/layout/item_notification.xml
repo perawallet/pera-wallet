@@ -59,7 +59,7 @@
         android:layout_marginTop="@dimen/spacing_xxsmall"
         android:layout_marginBottom="@dimen/keyline_1"
         android:fontFamily="@font/dmsans_regular"
-        android:textColor="@color/secondaryTextColor"
+        android:textColor="@color/secondary_text_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@id/descriptionTextView"
         app:layout_constraintTop_toBottomOf="@id/descriptionTextView" />

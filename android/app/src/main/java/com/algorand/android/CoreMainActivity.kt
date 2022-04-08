@@ -27,6 +27,7 @@ import com.algorand.android.core.BaseActivity
 import com.algorand.android.customviews.CustomToolbar
 import com.algorand.android.database.ContactDao
 import com.algorand.android.databinding.ActivityMainBinding
+import com.algorand.android.models.NotificationMetadata
 import com.algorand.android.models.StatusBarConfiguration
 import com.algorand.android.network.IndexerInterceptor
 import com.algorand.android.notification.PeraNotificationManager
@@ -151,7 +152,7 @@ abstract class CoreMainActivity : BaseActivity() {
     private fun handleStatusBarChanges(statusBarConfiguration: StatusBarConfiguration) {
         val intendedStatusBarColor =
             if (statusBarConfiguration.showNodeStatus && isConnectedToTestNet) {
-                R.color.yellow_F8
+                R.color.testnet
             } else {
                 statusBarConfiguration.backgroundColor
             }
@@ -197,6 +198,10 @@ abstract class CoreMainActivity : BaseActivity() {
         val safeTitle = title ?: getString(R.string.error_default_title)
         val safeErrorMessage = errorMessage ?: getString(R.string.unknown_error)
         binding.slidingTopErrorView?.addErrorMessage(safeTitle, safeErrorMessage)
+    }
+
+    fun showForegroundNotification(notificationMetadata: NotificationMetadata) {
+        binding.foregroundNotificationView?.addNotification(notificationMetadata)
     }
 
     fun showProgress() {

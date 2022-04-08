@@ -25,7 +25,7 @@
         android:layout_width="96dp"
         android:layout_height="96dp"
         app:srcCompat="@drawable/ic_check"
-        app:tint="@color/infoImageColor" />
+        app:tint="@color/info_image_color" />
 
     <TextView
         style="@style/TextAppearance.Body.Large"

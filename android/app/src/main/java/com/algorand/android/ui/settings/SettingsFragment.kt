@@ -14,7 +14,6 @@ package com.algorand.android.ui.settings
 
 import android.app.NotificationManager
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -30,8 +29,6 @@ import com.algorand.android.ui.common.warningconfirmation.WarningConfirmationBot
 import com.algorand.android.utils.openPrivacyPolicyUrl
 import com.algorand.android.utils.openSupportCenterUrl
 import com.algorand.android.utils.openTermsAndServicesUrl
-import com.algorand.android.utils.preference.isRewardsActivated
-import com.algorand.android.utils.preference.setRewardsPreference
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -49,9 +46,6 @@ class SettingsFragment : BaseBottomBarFragment(R.layout.fragment_settings) {
     @Inject
     lateinit var gson: Gson
 
-    @Inject
-    lateinit var sharedPref: SharedPreferences
-
     private val settingsViewModel: SettingsViewModel by viewModels()
 
     private val binding by viewBinding(FragmentSettingsBinding::bind)
@@ -65,9 +59,10 @@ class SettingsFragment : BaseBottomBarFragment(R.layout.fragment_settings) {
         initDialogSavedStateListener()
         with(binding) {
             securityListItem.setOnClickListener { onSecurityClick() }
+            contactsListItem.setOnClickListener { onContactsClick() }
             notificationListItem.setOnClickListener { onNotificationClick() }
             walletConnectListItem.setOnClickListener { onWalletConnectSessionsClick() }
-            rewardsSwitch.isChecked = sharedPref.isRewardsActivated()
+            rewardsSwitch.isChecked = settingsViewModel.isRewardActivated()
             initSwitchChangeListeners()
             languageListItem.setOnClickListener { onLanguageClick() }
             currencyListItem.setOnClickListener { onCurrencyClick() }
@@ -82,6 +77,10 @@ class SettingsFragment : BaseBottomBarFragment(R.layout.fragment_settings) {
         }
     }
 
+    private fun onContactsClick() {
+        nav(SettingsFragmentDirections.actionSettingsFragmentToContactsFragment())
+    }
+
     private fun onSupportCenterClick() {
         context?.openSupportCenterUrl()
     }
@@ -92,7 +91,7 @@ class SettingsFragment : BaseBottomBarFragment(R.layout.fragment_settings) {
 
     private fun initSwitchChangeListeners() {
         binding.rewardsSwitch.setOnCheckedChangeListener { _, isChecked ->
-            sharedPref.setRewardsPreference(isChecked)
+            settingsViewModel.setRewardsPreference(isChecked)
         }
     }
 

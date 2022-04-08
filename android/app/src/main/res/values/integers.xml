@@ -16,4 +16,5 @@
     <integer name="navigation_duration">350</integer>
 
     <item name="label_percentage" format="float" type="integer">0.3</item>
+    <item name="half_label_percentage" format="float" type="integer">0.5</item>
 </resources>

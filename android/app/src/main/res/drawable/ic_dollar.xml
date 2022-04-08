@@ -19,5 +19,5 @@
       android:fillColor="#00000000"
       android:pathData="M15.5,9H9.5C8.9477,9 8.5,9.4477 8.5,10V11C8.5,11.5523 8.9477,12 9.5,12H14.5C15.0523,12 15.5,12.4477 15.5,13V14C15.5,14.5523 15.0523,15 14.5,15H7.5M12,9V6M12,18V15M21,12C21,16.9706 16.9706,21 12,21C7.0294,21 3,16.9706 3,12C3,7.0294 7.0294,3 12,3C16.9706,3 21,7.0294 21,12Z"
       android:strokeWidth="2"
-      android:strokeColor="@color/primaryIconTintColor"/>
+      android:strokeColor="@color/primary_icon_tint_color"/>
 </vector>

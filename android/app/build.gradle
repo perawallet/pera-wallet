@@ -11,13 +11,16 @@ plugins {
 
 apply from: 'https://raw.githubusercontent.com/Hipo/macaron/master/config/quality/quality.gradle'
 
+def flavorsGradlePath = 'flavors.gradle'
+if (project.file(flavorsGradlePath).exists()) {
+    apply from: flavorsGradlePath
+}
+
 android {
     compileSdkVersion targets.compileSdkVersion
     defaultConfig {
         minSdkVersion targets.minSdkVersion
         targetSdkVersion targets.targetSdkVersion
-        versionCode application.versionCode
-        versionName application.versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
@@ -53,6 +56,7 @@ android {
         }
 
         release {
+            multiDexEnabled true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             manifestPlaceholders = [enableCrashReporting: "true"]
@@ -66,13 +70,14 @@ android {
         }
     }
 
-    flavorDimensions "server"
+    flavorDimensions "app", "server"
     productFlavors {
         def apiKeyProps = new Properties()
-        staging {
-            applicationId application.stagingApplicationId
-            versionNameSuffix " (DEMO)"
 
+        staging {
+            dimension "server"
+            versionNameSuffix " (STAGING)"
+            applicationIdSuffix ".staging"
             apiKeyProps.load(new FileInputStream(file('../app/src/staging/api-key.properties')))
             buildConfigField "String", "ALGORAND_BASE_URL", '"https://node-testnet.chain.perawallet.app/"'
             buildConfigField "String", "ALGORAND_API_KEY", apiKeyProps["ALGORAND_API_KEY"]
@@ -80,9 +85,9 @@ android {
             buildConfigField "String", "MOBILE_ALGORAND_BASE_URL", '"https://staging.api.perawallet.app/v1/"'
             buildConfigField "String", "ALGO_EXPLORER_BASE_URL", '"https://price.algoexplorerapi.io/price/"'
         }
-        prod {
-            applicationId application.applicationId
 
+        prod {
+            dimension "server"
             apiKeyProps.load(new FileInputStream(file('../app/src/prod/api-key.properties')))
             buildConfigField "String", "ALGORAND_BASE_URL", '"https://node-mainnet.chain.perawallet.app/"'
             buildConfigField "String", "ALGORAND_API_KEY", apiKeyProps["ALGORAND_API_KEY"]
@@ -198,6 +203,10 @@ dependencies {
     implementation "com.squareup.moshi:moshi-kotlin:${libVersions.moshi}"
     implementation "org.bouncycastle:bcprov-jdk15to18:${libVersions.bcprov}"
 
+    // ExoPlayer
+    implementation "com.google.android.exoplayer:exoplayer:${libVersions.exoPlayer}"
+
+    // Test
     testImplementation "junit:junit:${testLibVersions.junit}"
     androidTestImplementation "androidx.room:room-testing:${libVersions.room}"
     androidTestImplementation "androidx.test:runner:${testLibVersions.runner}"

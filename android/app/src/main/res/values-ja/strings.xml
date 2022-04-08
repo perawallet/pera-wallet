@@ -19,7 +19,6 @@
     <string name="ok">OK</string>
     <string name="next">次</string>
     <string name="account_name">アカウント名</string>
-    <string name="passphrase_verified">パスフレーズ検証済み</string>
     <string name="name">名前</string>
     <string name="close">閉じる</string>
     <string name="account_verified">アカウント認証済み</string>
@@ -27,21 +26,15 @@
     <string name="settings">設定</string>
     <string name="history">履歴</string>
     <string name="contacts">連絡先</string>
-    <string name="search_contacts">連絡先を検索</string>
     <string name="send">送信</string>
     <string name="from">From</string>
     <string name="to">To</string>
-    <string name="enter_address">アドレスの入力</string>
-    <string name="preview">プレビュー</string>
-    <string name="preview_and_sign_with">プレビューおよびLedgerでの署名</string>
     <string name="fee">料金</string>
     <string name="amount">金額</string>
     <string name="transaction_id">トランザクションID</string>
     <string name="add_contact">連絡先を追加</string>
     <string name="contact_name">連絡先名</string>
-    <string name="paste_hash_or_scan_qr">＃を貼り付けるか、QRをスキャン</string>
     <string name="edit_contact">連絡先の編集</string>
-    <string name="scan_qr">QRをスキャン</string>
     <string name="view_passphrase">パスフレーズの表示</string>
     <string name="remove_account">アカウントの削除</string>
     <string name="copied_to_clipboard">クリップボードにコピーされました</string>
@@ -50,10 +43,8 @@
     <string name="enter_six_digit_pin">6桁のPINを入力してください</string>
     <string name="wrong_password">間違ったパスワード</string>
     <string name="password_did_not_match_with_previous_password">パスワードが以前のパスワードと一致しませんでした。</string>
-    <string name="account_must_be_selected">アカウントを選択する必要があります。</string>
     <string name="node_settings">ノード設定</string>
     <string name="language">言語</string>
-    <string name="set_change_password">パスワードの設定/変更</string>
     <string name="enable_face_id_touch_id">Face ID/Touch IDを有効にする</string>
     <string name="an_error_occured">エラーが発生しました</string>
     <string name="warning">警告</string>
@@ -63,7 +54,6 @@
     <string name="account">アカウント</string>
     <string name="delete_contact">連絡先を削除</string>
     <string name="are_you_sure_you_want_to_delete">この連絡先を削除してもよろしいですか？</string>
-    <string name="address">アドレス</string>
     <string name="pending">保留中</string>
     <string name="you_should_enter_your_correct_password">パスフレーズを表示するには、正しいパスワードを入力する必要があります</string>
     <string name="there_s_no_biometric_registration">デバイスに生体認証が登録されていないか、生体認証ハードウェアが見つかりません</string>
@@ -79,26 +69,17 @@
     <string name="you_earn_rewards_just">Algosを保有するだけでリワードを獲得できます！\n前回のトランザクション以降のリワード活動をまとめました。これらのリワードは常にお客様の残高に含まれています。</string>
     <string name="for_more_information">Algorand Rewardsの詳細については、<annotation custom="faq_color"><annotation type="bold">FAQ</annotation></annotation>をご覧ください</string>
     <string name="reward">リワード</string>
-    <string name="account_to_be_sent_must_have_58">送信するアカウントには58文字の公開鍵が必要です。</string>
     <string name="notifications">通知</string>
     <string name="the_internet_connection">インターネット接続がオフラインのようです。</string>
     <string name="status">状態</string>
-    <string name="your_account_is_about">アカウントが削除されます。続行してもよろしいですか？</string>
-    <string name="to_keep_an_account_open">アカウントを維持するには、最低でも0.01 ALGOが必要です。最大量を送信した場合、アカウントは削除され、お客様の有効な参加キーも削除されます。</string>
     <string name="in_order_to_delete">アカウントを削除するためには、資産アカウントの残高を空にし、作成した資産があればそれを破棄する必要があります。</string>
-    <string name="proceed">進む</string>
     <string name="remove_assets">資産の削除</string>
     <string name="asset">資産</string>
     <string name="assets">資産</string>
     <string name="send_format">%1$sを送信する</string>
-    <string name="asset_must_be_selected">資産を選択する必要があります。</string>
-    <string name="you_dont_have_any">この資産のアカウントを持っていません。続ける前に資産を追加してください。</string>
     <string name="add_asset_fee">資産手数料の追加</string>
-    <string name="select_sending_account">送信アカウントの選択</string>
-    <string name="select_receiving_account">受信アカウントの選択</string>
     <string name="unnamed">無名</string>
     <string name="entered_address_is_not_valid">入力されたアドレスは有効ではありません。</string>
-    <string name="an_error_more">詳細を取得中にエラーが発生しました。後でもう一度お試しください。</string>
     <string name="search_assets_id">資産IDまたは名前の検索</string>
     <string name="no_asset_found">資産が見つかりません</string>
     <string name="you_already_have">すでにこの資産を所有しています。</string>
@@ -115,8 +96,6 @@
     <string name="your_accounts_do_not">アカウントにはこの資産が含まれていません</string>
     <string name="please_add_this">この資産を追加して再度お試しください。</string>
     <string name="key_not_valid">キーが無効です。正しいキーをお持ちかどうかご確認ください。</string>
-    <string name="you_just_scanned">トランザクションリクエストのQRコードをスキャンしました。変更されている可能性がありますので、すべてのトランザクションフィールドを確認してください。</string>
-    <string name="qr_scan">QRをスキャン</string>
     <string name="scanned_qr_is_not_valid">スキャンしたQRが無効です。</string>
     <string name="connect">接続</string>
     <string name="error_default_title">エラー！</string>
@@ -124,7 +103,6 @@
     <string name="open_the_algorand_app">お使いのLedgerでAlgorandアプリを開きます。</string>
     <string name="make_sure_bluetooth">スマートフォンのBluetoothが有効になっていることを確認してください。</string>
     <string name="bluetooth_is_enabled">Bluetoothが有効です。</string>
-    <string name="verified_with_icon">検証済み<annotation type="verified-icon"> </annotation></string>
     <string name="all">すべて</string>
     <string name="verified_assets">検証済み資産</string>
     <string name="advanced_troubleshooting">高度なトラブルシューティング</string>
@@ -156,7 +134,6 @@
     <string name="please_ensure">位置情報サービスが有効になっていることを確認してください。</string>
     <string name="terms_and_services">利用規約とサービス</string>
     <string name="unknown_error">不明なエラー</string>
-    <string name="manage_all_assets_two_line">1つのアプリから\nすべての資産を管理</string>
     <string name="passphrase">パスフレーズ</string>
     <string name="scan_qr_code">QRコードのスキャン</string>
     <string name="go_to_home">ホームに移動</string>
@@ -168,12 +145,8 @@
     <string name="keep_it">維持する</string>
     <string name="done">完了</string>
     <string name="you_havent">まだ連絡先を追加していません</string>
-    <string name="please_try_a_different">別の連絡先名をお試しください。</string>
     <string name="contact_name_must">連絡先名は空欄にできません</string>
     <string name="no_transaction_yet">まだトランザクションはありません</string>
-    <string name="no_transaction_have">この資産を使ったトランザクションは行われていません。</string>
-    <string name="choose_asset">資産を選択</string>
-    <string name="preview_send_asset">送信資産のプレビュー</string>
     <string name="cancel_approval">承認の取り消し</string>
     <string name="delete_all_data">全データの削除</string>
     <string name="close_amount">金額を閉じる</string>
@@ -192,10 +165,8 @@
     <string name="no_current_notifications">通知は現在ありません</string>
     <string name="your_recent_transactions">最近のトランザクション、資産リクエスト、その他の通知がここに表示されます</string>
     <string name="to_remove_an_asset">資産を削除するには、まずその資産の残高を他の口座に移す必要があります。</string>
-    <string name="select_asset">資産の選択</string>
     <string name="connect_to_internet">インターネットへの接続</string>
     <string name="we_couldn_t_reach">サーバーにアクセスできません。インターネットに接続されていることを確認してください</string>
-    <string name="enter_note_here">ここにメモを入力してください</string>
     <string name="add_note">メモを追加</string>
     <string name="try_again_in">やり直してください</string>
     <string name="rekey_account">アカウントの再キー化</string>
@@ -210,7 +181,6 @@
     <string name="add_account">アカウントの追加</string>
     <string name="confirm_rekeying">再キー化の確認</string>
     <string name="total_rekeying_fee">再キー化料金の合計は%1$sAlgos</string>
-    <string name="plus_more_assets">+%1$dの資産</string>
     <string name="finalize_rekeying">再キー化を完了する</string>
     <string name="new_ledger">新Ledger</string>
     <string name="old_ledger">旧Ledger</string>
@@ -222,12 +192,10 @@
     <string name="transaction_send_failed"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>から<annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>への、<annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation>のトランザクションが失敗しました。</string>
     <string name="notification_algo_received_message"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> が、<annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>によって<annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>に送信されました。</string>
     <string name="too_many_pin_attempts">PINの試行回数が多すぎます</string>
-    <string name="reset_all_data">全データのリセット</string>
     <string name="this_ledger_device">接続されたLedgerデバイスは、以下のアカウントのトランザクションに署名できます。Pera Walletに追加するアカウントを選択してください。</string>
     <string name="this_account_has">このアカウントは再キー化されました。トランザクションに署名するには、パスフレーズまたはLedgerデバイスでこのアカウントをリカバリーしてください。</string>
     <string name="auth_account_address">Authアカウントアドレス</string>
     <string name="rekeying_account">アカウントの再キー化中…</string>
-    <string name="choose_account">アカウントの選択</string>
     <string name="date">日付</string>
     <string name="copy">コピー</string>
     <string name="developer_settings">開発者設定</string>
@@ -274,7 +242,6 @@
     <string name="exchanges_change_their">交換所は頻繁に入金アドレスを変更するため、保存されている交換所のアドレスはすでに使用されていない可能性があります。<annotation custom="highlight_color">正しいアドレスに送信しているか確認してください。</annotation></string>
     <string name="for_more_information_on">トランザクションの詳細については、<annotation font="dmsans_medium"><annotation custom="tap_here_color">こちらをタップ</annotation></annotation></string>
     <string name="i_understand">分かりました</string>
-    <string name="before_you_finalize">完了前に、いくつかのヒントを覚えておいてください。</string>
     <string name="the_transaction_cannot_be">トランザクション後の残高が、最小口座残高の<annotation replacement="min_balance">min_balance_placeholder</annotation> Algosを下回る結果になるため、トランザクションを完了できません。</string>
     <string name="recovery_passphrase">リカバリーパスフレーズ</string>
     <string name="select_word">次の番号の単語の選択 #<annotation replacement="word_number">wordNumberPlaceholder</annotation></string>
@@ -291,7 +258,6 @@
     <string name="increase_your_security">PINでセキュリティを強化</string>
     <string name="name_your_account">アカウントに名前を付ける</string>
     <string name="please_use_biometric">続行するには、生体認証を使用してください。</string>
-    <string name="set_passcode">パスコードの設定</string>
     <string name="not_now">今はしない</string>
     <string name="pair_with_ledger">Ledgerとのペアリング</string>
     <string name="enable_biometric_authentication">生体認証を有効にする</string>
@@ -302,14 +268,11 @@
     <string name="selected_words_are">選択された単語が間違っています。もう一度お試しください。</string>
     <string name="paste_full_passphrase">パスフレーズ全体の貼り付け</string>
     <string name="verify_recovery_passphrase">リカバリーパスフレーズのバックアップを確認</string>
-    <string name="please_enter_a_destination">送信先のアドレスを入力してください</string>
     <string name="transacting_tips">トランザクションのヒント</string>
     <string name="the_only_way_to">このリカバリーパスフレーズを使う以外に、Algorandアカウントを復元する方法はありません。\n\n<annotation font="dmsans_italic"><annotation custom="warning_color"><annotation type="bold">警告</annotation>：このパスフレーズは、アカウントへの完全なアクセスを許可するものですので、誰にも教えないでください。</annotation></annotation></string>
     <string name="monitor_activity_of">リカバリーパスフレーズの必要無く、アカウントのアクティビティを監視できます。これは、コールドストレージに保管されている資産を監視するのに便利です。\n\n<annotation font="dmsans_italic"><annotation custom="warning_color"><annotation type="bold">警告</annotation>：対応するリカバリーパスフレーズがない場合は、このアカウントに資産を送信しないでください。</annotation></annotation></string>
     <string name="i_want_to_monitor">コールドストレージに保管されているアカウントを監視したい</string>
-    <string name="you_are_creating">Algorandアカウントの読み取り専用ビューを作成しています。このアカウントに資産を送信し、対応するリカバリーパスフレーズがない場合、それらの資産は失われます。</string>
     <string name="name_your_account_to">Pera Walletを使用する際、簡単に識別できるようにアカウントに名前を付けてください。これらの名前はローカルに保存され、ユーザーだけが見ることができます。</string>
-    <string name="keep_this_recovery_passphrase">このリカバリーパスフレーズは、本人だけがアクセス可能な安全な場所に保管してください。このリカバリーパスフレーズをなくさないでください。</string>
     <string name="learn_more">さらに詳しく</string>
     <string name="no_contact_found">連絡先が見つかりません</string>
     <string name="you_can_make_the">新しい連絡先を追加することで、資産の送信プロセスを高速化できます。</string>
@@ -326,7 +289,6 @@
     <string name="open_in_goalseeker">GoalSeekerで開く</string>
     <string name="overwrite_existing_contract">既存の連絡先を上書きする</string>
     <string name="this_address_is_already_in_your_contract">このアドレスは、すでに連絡先に%1$sとして登録されています。連絡先を入れ替えますか？</string>
-    <string name="one_hour_abbr">1時間</string>
     <string name="one_day_abbr">1日</string>
     <string name="one_week_abbr">1週</string>
     <string name="one_month_abbr">1月</string>
@@ -334,7 +296,6 @@
     <string name="all_time_abbr">すべて</string>
     <string name="no_chart_data_available">価格APIは現在利用できません、改めてご確認ください。</string>
     <string name="balance">残高</string>
-    <string name="last_one_hour">過去1時間</string>
     <string name="last_one_day">過去1日</string>
     <string name="last_one_week">過去1週間</string>
     <string name="last_one_month">過去1か月</string>
@@ -368,7 +329,6 @@
     <string name="this_transaction_is_sending_asset">このトランザクションは、お客様のすべての%1$s残高を送信し、アカウントから%1$sを削除します。</string>
     <string name="this_transaction_fee_is_higher">このトランザクション手数料は、通常の手数料（0.001 Algos）よりも高くなっています。</string>
     <string name="wallet_connect_is_not_reachable">現在、WalletConnectにアクセスできません。後ほどお試しください。</string>
-    <string name="the_recipient_address_is_not">受信者のアドレスは有効なAlgorandアドレスではありません。もう一度お試しください。</string>
     <string name="connected_with_formatted">%1$sと接続しました</string>
     <string name="this_transaction_will_be">このトランザクションは後ほど提出されます。</string>
     <plurals name="confirm_transactions">
@@ -417,11 +377,6 @@
     <string name="on_the_ledger_home_screen">Ledgerのホーム画面で、ペアリングを確認します。</string>
     <string name="once_pairing_is_confirmed">ペアリングを確認した後、Algorand Ledgerアプリを開いてください。</string>
     <string name="pairing_failed">ペアリング失敗！</string>
-    <string name="after_confirming_pairing_on">Ledgerデバイスでペアリングを確認した後、Algorandアプリを開いてください。</string>
-    <string name="ledger_not_found">Ledgerが見つかりません！</string>
-    <string name="if_you_are_having_ledger">Ledger Nano Xの接続に問題がある場合は、お使いの携帯電話のBluetooth設定からデバイスを削除し、Ledgerアカウントを削除してから、Pera Walletの指示に従ってLedgerを再ペアリングしてください。</string>
-    <string name="open_ledger_support">Ledgerサポートを開く</string>
-    <string name="please_follow_these_steps">以下の手順に従ってください。</string>
     <string name="having_ledger_nano_x">Ledger Nano Xの接続でお困りですか？</string>
     <string name="make_sure_the_device_is">デバイスのロックが解除されていること、近くにあること、Bluetoothが有効になっていることをご確認ください。問題が解決しない場合は、携帯電話のBluetooth設定からデバイスを削除し、Ledgerアカウントを削除してから、Pera Walletの指示に従ってLedgerを再ペアリングしてください。</string>
     <string name="you_are_creating_a_read_only">Algorandアカウントの読み取り専用ビューを作成しています。</string>
@@ -535,12 +490,9 @@
     <string name="your_transactions_will_be_appeared_here">お客様のトランザクションはここに表示されます。</string>
     <string name="account_value">アカウントの価値</string>
     <string name="search_my_assets">資産を検索する</string>
-    <string name="your_balance">お客様の残高</string>
     <string name="transaction_history">取引履歴</string>
     <string name="account_successfully_rekeyed">アカウントは正常に再キー化されました</string>
     <string name="nfts">NFT</string>
-    <string name="nfts_coming_soon">NFT - 近日公開！</string>
-    <string name="you_will_be_able_to">Pera Walletでは、近日中にお客様のNFTコレクションをご覧いただけるようになります。\n \n当社チームは、この機能を利用可能にするため、一生懸命取り組んでいます。ご期待ください！</string>
     <string name="rekey_fee">再キー化手数料</string>
     <string name="remove_asset_fee">資産手数料を削除する</string>
     <string name="edit_note">メモを編集</string>

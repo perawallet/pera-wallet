@@ -120,7 +120,7 @@ class TransactionDetailBottomSheet : DaggerBaseBottomSheet(
         if (isPending) {
             binding.statusTextView.apply {
                 setBackgroundResource(R.drawable.bg_transaction_pending)
-                setTextColor(ContextCompat.getColor(context, R.color.secondaryTextColor))
+                setTextColor(ContextCompat.getColor(context, R.color.secondary_text_color))
                 text = getString(R.string.pending)
             }
         } else {

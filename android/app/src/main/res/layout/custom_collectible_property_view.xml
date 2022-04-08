@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~  limitations under the License
+  -->
+
+<!-- TODO Missing shadow -->
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:background="@drawable/bg_algo_rewards_border"
+    tools:orientation="vertical"
+    tools:paddingHorizontal="@dimen/spacing_normal"
+    tools:paddingVertical="@dimen/spacing_xsmall"
+    tools:parentTag="android.widget.LinearLayout">
+
+    <TextView
+        android:id="@+id/propertyTitle"
+        style="@style/TextAppearance.Caption.Sans.Description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="true"
+        tools:text="@tools:sample/lorem[1]" />
+
+    <TextView
+        android:id="@+id/propertyDescription"
+        style="@style/TextAppearance.Body.Sans"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_xxsmall"
+        tools:text="@tools:sample/lorem[2]" />
+
+</merge>

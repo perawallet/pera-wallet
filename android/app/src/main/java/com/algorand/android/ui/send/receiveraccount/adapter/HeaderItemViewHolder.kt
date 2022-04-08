@@ -17,13 +17,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.databinding.ItemReceiverAccountHeaderBinding
-import com.algorand.android.models.BaseReceiverAccount
+import com.algorand.android.models.BaseAccountSelectionListItem
 
 class HeaderItemViewHolder(
     private val binding: ItemReceiverAccountHeaderBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(headerItem: BaseReceiverAccount.HeaderItem) {
+    fun bind(headerItem: BaseAccountSelectionListItem.HeaderItem) {
         binding.titleTextView.setText(headerItem.titleRes)
     }
 

@@ -18,13 +18,15 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.algorand.android.R
+import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.AssetTransferPreview
-import com.algorand.android.models.Result
-import com.algorand.android.models.SendTransactionResponse
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.usecase.AssetTransferPreviewUseCase
+import com.algorand.android.utils.DataResource
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
+import com.algorand.android.utils.Resource.Error.GlobalWarning
 import com.algorand.android.utils.getOrThrow
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,8 +43,8 @@ class AssetTransferPreviewViewModel @ViewModelInject constructor(
     private val signedTransactionDetail =
         savedStateHandle.getOrThrow<SignedTransactionDetail.Send>(SIGNED_TRANSACTION_DETAIL_KEY)
 
-    private val _sendAlgoResponseFlow = MutableStateFlow<Event<Resource<SendTransactionResponse>>?>(null)
-    val sendAlgoResponseFlow: StateFlow<Event<Resource<SendTransactionResponse>>?> = _sendAlgoResponseFlow
+    private val _sendAlgoResponseFlow = MutableStateFlow<Event<Resource<String>>?>(null)
+    val sendAlgoResponseFlow: StateFlow<Event<Resource<String>>?> = _sendAlgoResponseFlow
 
     private val _assetTransferPreviewFlow = MutableStateFlow<AssetTransferPreview?>(null)
     val assetTransferPreviewFlow: StateFlow<AssetTransferPreview?> = _assetTransferPreviewFlow
@@ -63,11 +65,19 @@ class AssetTransferPreviewViewModel @ViewModelInject constructor(
             return
         }
         sendAlgoJob = viewModelScope.launch {
-            _sendAlgoResponseFlow.emit(Event(Resource.Loading))
             assetTransferPreviewUserCase.sendSignedTransaction(signedTransactionDetail).collectLatest {
                 when (it) {
-                    is Result.Error -> _sendAlgoResponseFlow.emit(Event(it.getAsResourceError()))
-                    is Result.Success -> _sendAlgoResponseFlow.emit(Event(Resource.Success(it.data)))
+                    is DataResource.Loading -> _sendAlgoResponseFlow.emit(Event(Resource.Loading))
+                    is DataResource.Error -> {
+                        if (it.exception != null) {
+                            _sendAlgoResponseFlow.emit(Event(Resource.Error.Api(it.exception!!)))
+                        } else {
+                            _sendAlgoResponseFlow.emit(
+                                Event(GlobalWarning(R.string.error, AnnotatedString(R.string.an_error_occured)))
+                            )
+                        }
+                    }
+                    is DataResource.Success -> _sendAlgoResponseFlow.emit(Event(Resource.Success(it.data)))
                 }
             }
         }

@@ -15,9 +15,10 @@ package com.algorand.android.ui.removeasset.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.databinding.ItemRemoveAssetBinding
-import com.algorand.android.models.RemoveAssetItem
+import com.algorand.android.models.BaseRemoveAssetItem.RemoveAssetItem
 
 class RemoveAssetItemViewHolder(
     val binding: ItemRemoveAssetBinding
@@ -28,13 +29,8 @@ class RemoveAssetItemViewHolder(
             with(binding) {
                 assetNameTextView.setupUI(isVerified, shortName, name, id, isAlgo)
                 assetBalanceTextView.text = formattedAmount
-                // TODO: 2.03.2022 Move these logics into domain layer
-                assetBalanceInCurrencyTextView.text =
-                    if (isAmountInSelectedCurrencyVisible) {
-                        formattedSelectedCurrencyValue
-                    } else {
-                        root.resources.getString(notAvailableResId)
-                    }
+                assetBalanceInCurrencyTextView.text = formattedSelectedCurrencyValue
+                assetBalanceInCurrencyTextView.isVisible = isAmountInSelectedCurrencyVisible
             }
         }
     }

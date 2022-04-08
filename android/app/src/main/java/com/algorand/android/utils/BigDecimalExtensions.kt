@@ -24,11 +24,11 @@ infix fun BigDecimal.percentageChangeOf(secondValue: BigDecimal): BigDecimal {
     return BigDecimal(percentageChange).setScale(PERCENTAGE_PRECISION, BigDecimal.ROUND_HALF_UP)
 }
 
-infix fun BigDecimal.isBiggerThan(other: BigDecimal): Boolean {
+infix fun BigDecimal.isGreaterThan(other: BigDecimal): Boolean {
     return this.compareTo(other) == 1
 }
 
-infix fun BigDecimal.isLessThan(other: BigDecimal): Boolean {
+infix fun BigDecimal.isLesserThan(other: BigDecimal): Boolean {
     return this.compareTo(other) == -1
 }
 

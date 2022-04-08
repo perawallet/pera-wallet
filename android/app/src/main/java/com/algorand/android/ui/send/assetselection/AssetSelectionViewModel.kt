@@ -17,14 +17,9 @@ import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.algorand.android.models.AssetSelection
 import com.algorand.android.models.AssetTransaction
 import com.algorand.android.usecase.AssetSelectionUseCase
 import com.algorand.android.utils.getOrThrow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 
 class AssetSelectionViewModel @ViewModelInject constructor(
     private val assetSelectionUseCase: AssetSelectionUseCase,
@@ -33,18 +28,7 @@ class AssetSelectionViewModel @ViewModelInject constructor(
 
     val assetTransaction = savedStateHandle.getOrThrow<AssetTransaction>(ASSET_TRANSACTION_KEY)
 
-    private val _assetSelectionFlow = MutableStateFlow<List<AssetSelection>?>(null)
-    val assetSelectionFlow: StateFlow<List<AssetSelection>?> = _assetSelectionFlow
-
-    init {
-        getAssets()
-    }
-
-    private fun getAssets() {
-        viewModelScope.launch {
-            _assetSelectionFlow.emit(assetSelectionUseCase.getAssets(assetTransaction.senderAddress))
-        }
-    }
+    val assetSelectionFlow = assetSelectionUseCase.getAssetSelectionPreview(assetTransaction.senderAddress)
 
     fun shouldShowTransactionTips(): Boolean {
         return assetSelectionUseCase.shouldShowTransactionTips()

@@ -13,6 +13,6 @@
 
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-    <solid android:color="@color/layerGrayLighter" />
+    <solid android:color="@color/layer_gray_lighter" />
     <corners android:radius="@dimen/spacing_xxsmall" />
 </shape>

@@ -137,7 +137,7 @@ class PassphraseInput @JvmOverloads constructor(
     }
 
     private fun onValidationChanged(isValidated: Boolean) {
-        val newTextColor = if (isValidated) R.color.primaryTextColor else R.color.errorTextColor
+        val newTextColor = if (isValidated) R.color.primary_text_color else R.color.error_text_color
         binding.passphraseInputEditText.setTextColor(ContextCompat.getColor(context, newTextColor))
         handleIndexTextColor()
     }
@@ -145,14 +145,14 @@ class PassphraseInput @JvmOverloads constructor(
     private fun handleIndexTextColor(isFocused: Boolean = true) {
         val isEditableAreaClear = binding.passphraseInputEditText.text.isNullOrEmpty()
         val indexTextColor = when {
-            isFocused.not() && isEditableAreaClear -> R.color.secondaryTextColor
-            validated || isEditableAreaClear -> R.color.primaryTextColor
-            else -> R.color.errorTextColor
+            isFocused.not() && isEditableAreaClear -> R.color.secondary_text_color
+            validated || isEditableAreaClear -> R.color.primary_text_color
+            else -> R.color.error_text_color
         }
         val lineViewColor = when {
-            isFocused.not() && isEditableAreaClear -> R.color.unFocusedLineColor
-            validated || isEditableAreaClear -> R.color.secondaryTextColor
-            else -> R.color.errorTextColor
+            isFocused.not() && isEditableAreaClear -> R.color.unfocused_line_color
+            validated || isEditableAreaClear -> R.color.secondary_text_color
+            else -> R.color.error_text_color
         }
         binding.passphraseIndexTextView.setTextColor(ContextCompat.getColor(context, indexTextColor))
         binding.passphraseInputLine.setBackgroundColor(ContextCompat.getColor(context, lineViewColor))

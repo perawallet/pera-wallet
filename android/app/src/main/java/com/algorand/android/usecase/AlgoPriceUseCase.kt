@@ -42,7 +42,7 @@ class AlgoPriceUseCase @Inject constructor(
      * That's why we make calculations based on the cached currency -> CURRENCY_TO_CACHE_WHEN_ALGO_IS_SELECTED
      */
     fun getUsdToSelectedCurrencyConversionRate(): BigDecimal {
-        return if (currencyUseCase.getSelectedCurrency() == Currency.ALGO.id) {
+        return if (isSelectedCurrencyAlgo()) {
             getUsdToAlgoConversionRate()
         } else {
             return priceRepository.getCachedAlgoPrice()?.data?.usdValue ?: BigDecimal.ZERO
@@ -50,7 +50,7 @@ class AlgoPriceUseCase @Inject constructor(
     }
 
     fun getAlgoToSelectedCurrencyConversionRate(): BigDecimal? {
-        return if (currencyUseCase.getSelectedCurrency() == Currency.ALGO.id) {
+        return if (isSelectedCurrencyAlgo()) {
             BigDecimal.ONE
         } else {
             getCachedAlgoPrice()?.data?.getAlgorandCurrencyValue()
@@ -62,8 +62,7 @@ class AlgoPriceUseCase @Inject constructor(
     }
 
     private fun getSelectedCurrencySymbol(): String? {
-        val selectedCurrency = currencyUseCase.getSelectedCurrency()
-        return if (selectedCurrency == Currency.ALGO.id) {
+        return if (isSelectedCurrencyAlgo()) {
             ALGO_CURRENCY_SYMBOL
         } else {
             priceRepository.getCachedAlgoPrice()?.data?.symbol
@@ -113,11 +112,31 @@ class AlgoPriceUseCase @Inject constructor(
         } ?: BigDecimal.ZERO
     }
 
+    fun getAlgoToUsdConversionRate(): BigDecimal {
+        return if (getUsdToAlgoConversionRate() != BigDecimal.ZERO) {
+            BigDecimal.ONE.divide(
+                getUsdToAlgoConversionRate(),
+                ALGO_DECIMALS,
+                RoundingMode.HALF_UP
+            )
+        } else {
+            BigDecimal.ZERO
+        }
+    }
+
     fun getCachedCurrencyId(): String {
-        return if (currencyUseCase.getSelectedCurrency() == Currency.ALGO.id) {
+        return if (isSelectedCurrencyAlgo()) {
             CURRENCY_TO_CACHE_WHEN_ALGO_IS_SELECTED
         } else {
             currencyUseCase.getSelectedCurrency()
         }
+    }
+
+    fun getCachedCurrencySymbolOrName(): String {
+        return priceRepository.getCachedAlgoPrice()?.data?.symbol ?: currencyUseCase.getSelectedCurrency()
+    }
+
+    fun isSelectedCurrencyAlgo(): Boolean {
+        return currencyUseCase.getSelectedCurrency() == Currency.ALGO.id
     }
 }

@@ -15,6 +15,7 @@ package com.algorand.android.utils
 import android.content.res.Resources
 import android.os.Parcelable
 import com.algorand.android.R
+import com.algorand.android.utils.extensions.formatAsAvatarTextOrThrow
 import java.util.Locale
 import kotlinx.parcelize.Parcelize
 
@@ -39,16 +40,25 @@ class AssetName private constructor(
         return assetName.takeIf { it?.isNotBlank() == true }
     }
 
+    fun getAsAvatarNameOrDefault(resource: Resources): String {
+        return try {
+            getName(resource).formatAsAvatarTextOrThrow(ASSET_AVATAR_MAX_LETTER_COUNT)
+        } catch (exception: Exception) {
+            resource.getString(assetNameResId).formatAsAvatarTextOrThrow(ASSET_AVATAR_MAX_LETTER_COUNT)
+        }
+    }
+
     companion object {
 
         const val DEFAULT_ASSET_NAME_RES_ID = R.string.unnamed
+        private const val ASSET_AVATAR_MAX_LETTER_COUNT = 3
 
         fun create(assetName: String?): AssetName {
             return AssetName(assetName)
         }
 
         fun createShortName(assetName: String?): AssetName {
-            val formattedAssetName = assetName?.toUpperCase(Locale.ENGLISH)
+            val formattedAssetName = assetName?.uppercase(Locale.ENGLISH)
             return AssetName(formattedAssetName)
         }
 

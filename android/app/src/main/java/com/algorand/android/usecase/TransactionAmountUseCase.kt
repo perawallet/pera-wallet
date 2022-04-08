@@ -26,18 +26,18 @@ class TransactionAmountUseCase @Inject constructor(
     private val algoPriceUseCase: AlgoPriceUseCase
 ) : BaseUseCase() {
 
-    fun getAlgoAmount(algoAmount: BigInteger?): BigDecimal {
-        val algoPrice = algoPriceUseCase.getAlgoToSelectedCurrencyConversionRate() ?: ZERO
+    fun getAlgoAmountInCachedCurrency(algoAmount: BigInteger?): BigDecimal {
+        val algoPrice = algoPriceUseCase.getAlgoToCachedCurrencyConversionRate() ?: ZERO
         val safeAlgoAmount = algoAmount ?: BigInteger.ZERO
         return safeAlgoAmount.toAlgoDisplayValue().multiply(algoPrice)
     }
 
-    fun getAssetAmount(assetUsdValue: BigDecimal, amount: BigInteger?, decimal: Int?): BigDecimal {
-        val selectedCurrencyUsdConversionRate = algoPriceUseCase.getUsdToSelectedCurrencyConversionRate()
+    fun getAssetAmountInSelectedCurrency(assetUsdValue: BigDecimal, amount: BigInteger?, decimal: Int?): BigDecimal {
+        val usdToSelectedCurrencyConversionRate = algoPriceUseCase.getUsdToSelectedCurrencyConversionRate()
         val safeDecimal = decimal ?: DEFAULT_ASSET_DECIMAL
         val safeAmount = amount ?: BigInteger.ZERO
         return safeAmount.toBigDecimal().movePointLeft(safeDecimal)
-            .multiply(selectedCurrencyUsdConversionRate)
+            .multiply(usdToSelectedCurrencyConversionRate)
             .multiply(assetUsdValue)
     }
 }

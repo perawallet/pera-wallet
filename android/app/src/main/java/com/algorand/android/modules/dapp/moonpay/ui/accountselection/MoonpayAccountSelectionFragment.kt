@@ -12,15 +12,31 @@
 
 package com.algorand.android.modules.dapp.moonpay.ui.accountselection
 
+import com.algorand.android.R
+import com.algorand.android.models.FragmentConfiguration
+import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.ui.accountselection.BaseAccountSelectionFragment
 import com.algorand.android.utils.setNavigationResult
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MoonpayAccountSelectionFragment : BaseAccountSelectionFragment() {
+
+    override val toolbarConfiguration = ToolbarConfiguration(
+        startIconClick = ::navBack,
+        startIconResId = R.drawable.ic_close,
+        titleResId = R.string.select_account
+    )
+
+    override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
+
     override fun onAccountSelected(publicKey: String) {
         setNavigationResult(ACCOUNT_SELECTION_RESULT_KEY, publicKey)
         navBack()
+    }
+
+    override fun initObservers() {
+        // Nothing to do
     }
 
     companion object {

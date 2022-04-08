@@ -13,14 +13,12 @@
 
 package com.algorand.android.mapper
 
-import com.algorand.android.models.AssetQueryItem
+import com.algorand.android.models.BaseAssetDetail
 import com.algorand.android.models.BaseTransactionItem
 import com.algorand.android.models.TransactionTargetUser
 import com.algorand.android.utils.ALGO_DECIMALS
 import com.algorand.android.utils.formatAmount
-import com.algorand.android.utils.formatAsCurrency
 import com.algorand.android.utils.formatAsTxString
-import java.math.BigDecimal
 import javax.inject.Inject
 
 class AccountHistoryRewardItemMapper @Inject constructor() {
@@ -28,17 +26,15 @@ class AccountHistoryRewardItemMapper @Inject constructor() {
     // TODO: 30.12.2021 Mappers shouldn't contain any logic.
     fun mapTo(
         transaction: BaseTransactionItem.TransactionItem?,
-        assetQueryItem: AssetQueryItem?,
+        assetDetail: BaseAssetDetail?,
         accountPublicKey: String,
         transactionTargetUser: TransactionTargetUser?,
-        selectedCurrencySymbol: String,
-        amountInSelectedCurrency: BigDecimal?
+        formattedAmountInDisplayedCurrency: String?
     ): BaseTransactionItem.TransactionItem.Reward? {
         return transaction?.run {
             val reward = rewardAmount
             if (reward != null && reward != 0L) {
-                val decimal = assetQueryItem?.fractionDecimals ?: ALGO_DECIMALS
-                val formattedSelectedCurrencyValue = amountInSelectedCurrency?.formatAsCurrency(selectedCurrencySymbol)
+                val decimal = assetDetail?.fractionDecimals ?: ALGO_DECIMALS
                 BaseTransactionItem.TransactionItem.Reward(
                     amountInMicroAlgos = reward,
                     id = id,
@@ -55,9 +51,8 @@ class AccountHistoryRewardItemMapper @Inject constructor() {
                     decimals = decimal,
                     formattedFullAmount = amount.formatAmount(decimal),
                     rewardAmount = reward,
-                    assetId = assetQueryItem?.assetId,
-                    amountInSelectedCurrency = amountInSelectedCurrency,
-                    formattedSelectedCurrencyValue = formattedSelectedCurrencyValue
+                    assetId = assetDetail?.assetId,
+                    formattedAmountInDisplayedCurrency = formattedAmountInDisplayedCurrency
                 )
             } else {
                 null

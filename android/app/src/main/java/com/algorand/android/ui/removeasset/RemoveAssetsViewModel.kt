@@ -21,7 +21,7 @@ import com.algorand.android.core.BaseViewModel
 import com.algorand.android.models.Account
 import com.algorand.android.models.AccountDetailSummary
 import com.algorand.android.models.AssetInformation
-import com.algorand.android.models.RemoveAssetItem
+import com.algorand.android.models.BaseRemoveAssetItem
 import com.algorand.android.models.Result
 import com.algorand.android.repository.TransactionsRepository
 import com.algorand.android.usecase.AccountAssetRemovalUseCase
@@ -29,6 +29,7 @@ import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.getOrThrow
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -43,12 +44,14 @@ class RemoveAssetsViewModel @ViewModelInject constructor(
     @Assisted savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
+    private var assetQueryJob: Job? = null
+
     private val accountPublicKey = savedStateHandle.getOrThrow<String>(ACCOUNT_PUBLIC_KEY)
 
     val removeAssetLiveData = MutableLiveData<Event<Resource<Unit>>>()
 
-    private val _accountAssetListFlow = MutableStateFlow<List<RemoveAssetItem>?>(null)
-    val accountAssetListFlow: StateFlow<List<RemoveAssetItem>?> = _accountAssetListFlow
+    private val _accountAssetListFlow = MutableStateFlow<List<BaseRemoveAssetItem>?>(null)
+    val accountAssetListFlow: StateFlow<List<BaseRemoveAssetItem>?> = _accountAssetListFlow
 
     private val _accountDetailSummaryFlow = MutableStateFlow<AccountDetailSummary?>(null)
     val accountDetailSummaryFlow: StateFlow<AccountDetailSummary?> = _accountDetailSummaryFlow
@@ -71,18 +74,31 @@ class RemoveAssetsViewModel @ViewModelInject constructor(
         assetInformation: AssetInformation,
         account: Account
     ) {
+        removeAssetLiveData.postValue(Event(Resource.Loading))
         viewModelScope.launch(Dispatchers.IO) {
-            when (transactionsRepository.sendSignedTransaction(signedTransactionData)) {
+            when (val result = transactionsRepository.sendSignedTransaction(signedTransactionData)) {
                 is Result.Success -> {
                     accountAssetRemovalUseCase.addAssetDeletionToAccountCache(account.address, assetInformation.assetId)
                     removeAssetLiveData.postValue(Event(Resource.Success((Unit))))
+                }
+                is Result.Error -> {
+                    removeAssetLiveData.postValue(Event((result.getAsResourceError())))
                 }
             }
         }
     }
 
+    fun refreshAssetQueryFlow() {
+        assetQueryJob?.cancel()
+        assetQueryJob = getAssetQueryJob()
+    }
+
     private fun initAssetQueryFlow() {
-        viewModelScope.launch {
+        assetQueryJob = getAssetQueryJob()
+    }
+
+    private fun getAssetQueryJob(): Job {
+        return viewModelScope.launch {
             assetQueryFlow.debounce(QUERY_DEBOUNCE)
                 .distinctUntilChanged()
                 .flatMapLatest { accountAssetRemovalUseCase.getRemovalAccountAssetsByQuery(accountPublicKey, it) }

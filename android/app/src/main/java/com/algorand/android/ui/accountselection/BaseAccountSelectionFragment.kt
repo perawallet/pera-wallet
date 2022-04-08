@@ -12,42 +12,60 @@
 
 package com.algorand.android.ui.accountselection
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
+import android.view.ViewTreeObserver
+import androidx.core.view.isVisible
 import com.algorand.android.R
 import com.algorand.android.core.BaseFragment
 import com.algorand.android.databinding.FragmentBaseAccountSelectionBinding
-import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
-import com.algorand.android.ui.common.listhelper.BaseAccountListItem
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
+import com.algorand.android.utils.getTextFromClipboard
+import com.algorand.android.utils.isValidAddress
 import com.algorand.android.utils.viewbinding.viewBinding
-import kotlinx.coroutines.flow.collect
 
 abstract class BaseAccountSelectionFragment : BaseFragment(R.layout.fragment_base_account_selection) {
 
-    private val toolbarConfiguration = ToolbarConfiguration(
-        titleResId = R.string.select_account,
-        startIconResId = R.drawable.ic_close,
-        startIconClick = ::navBack
-    )
-
-    override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
-
-    private val binding by viewBinding(FragmentBaseAccountSelectionBinding::bind)
-
-    private val baseAccountSelectionViewModel by viewModels<BaseAccountSelectionViewModel>()
-
-    private val accountItemsCollector: suspend (List<BaseAccountListItem.BaseAccountItem>) -> Unit = { accountItems ->
-        accountAdapter.submitList(accountItems)
-    }
+    protected abstract val toolbarConfiguration: ToolbarConfiguration
 
     protected abstract fun onAccountSelected(publicKey: String)
 
-    private val accountAdapter = AccountSelectionAdapter(::onAccountSelected)
+    protected abstract fun initObservers()
+
+    protected open fun onCopiedItemHandled(copiedMessage: String?) {}
+
+    protected open val isSearchBarVisible: Boolean = false
+
+    protected open val onSearchBarTextChangeListener: (String) -> Unit = {
+        binding.transferButton.isVisible = it.isValidAddress()
+    }
+
+    protected open val onSearchBarCustomButtonClickListener: () -> Unit = {}
+
+    private val binding by viewBinding(FragmentBaseAccountSelectionBinding::bind)
+
+    private val accountSelectionListener = object : AccountSelectionAdapter.Listener {
+        override fun onAccountItemClick(publicKey: String) {
+            onAccountSelected(publicKey)
+        }
+
+        override fun onContactItemClick(publicKey: String) {
+            onAccountSelected(publicKey)
+        }
+
+        override fun onPasteItemClick(publicKey: String) {
+            updateSearchBarText(publicKey)
+        }
+    }
+
+    protected val accountAdapter = AccountSelectionAdapter(accountSelectionListener)
+
+    private val windowFocusChangeListener = ViewTreeObserver.OnWindowFocusChangeListener { hasFocus ->
+        if (hasFocus) onCopiedItemHandled(context?.getTextFromClipboard()?.toString())
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,13 +74,34 @@ abstract class BaseAccountSelectionFragment : BaseFragment(R.layout.fragment_bas
     }
 
     private fun initUi() {
-        binding.accountsRecyclerView.adapter = accountAdapter
+        with(binding) {
+            accountsRecyclerView.adapter = accountAdapter
+            searchView.apply {
+                isVisible = isSearchBarVisible
+                setOnTextChanged(onSearchBarTextChangeListener)
+                setOnCustomButtonClick(onSearchBarCustomButtonClickListener)
+            }
+            transferButton.setOnClickListener { onAccountSelected(binding.searchView.text) }
+        }
     }
 
-    private fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            baseAccountSelectionViewModel.accountItemsFlow.collect(accountItemsCollector)
+    override fun onResume() {
+        super.onResume()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            view?.viewTreeObserver?.addOnWindowFocusChangeListener(windowFocusChangeListener)
         }
+        onCopiedItemHandled(context?.getTextFromClipboard()?.toString())
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            view?.viewTreeObserver?.removeOnWindowFocusChangeListener(windowFocusChangeListener)
+        }
+    }
+
+    protected fun updateSearchBarText(text: String) {
+        binding.searchView.text = text
     }
 
     protected fun showProgress() {

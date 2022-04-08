@@ -15,15 +15,13 @@ package com.algorand.android.mapper
 
 import com.algorand.android.decider.TransactionNameDecider
 import com.algorand.android.decider.TransactionSymbolDecider
-import com.algorand.android.models.AssetQueryItem
+import com.algorand.android.models.AssetDetail
 import com.algorand.android.models.BaseTransactionItem
 import com.algorand.android.models.PendingTransaction
 import com.algorand.android.models.TransactionTargetUser
 import com.algorand.android.utils.ALGO_DECIMALS
 import com.algorand.android.utils.formatAmount
-import com.algorand.android.utils.formatAsCurrency
 import com.algorand.android.utils.formatAsTxString
-import java.math.BigDecimal
 import java.time.ZonedDateTime
 import javax.inject.Inject
 
@@ -37,17 +35,15 @@ class AccountHistoryPendingItemMapper @Inject constructor(
         transaction: PendingTransaction,
         accountPublicKey: String,
         transactionTargetUser: TransactionTargetUser?,
-        assetQueryItem: AssetQueryItem?,
+        assetDetail: AssetDetail?,
         otherPublicKey: String,
-        selectedCurrencySymbol: String,
-        amountInSelectedCurrency: BigDecimal?
+        formattedAmountInDisplayedCurrency: String?
     ): BaseTransactionItem.TransactionItem.Pending {
         return with(transaction) {
             val transactionSymbol = transactionSymbolDecider.provideTransactionSymbol(this, accountPublicKey)
             val amount = getAmount()
             val nowZonedDateTime = ZonedDateTime.now()
-            val decimals = assetQueryItem?.fractionDecimals ?: ALGO_DECIMALS
-            val formattedSelectedCurrencyValue = amountInSelectedCurrency?.formatAsCurrency(selectedCurrencySymbol)
+            val decimals = assetDetail?.fractionDecimals ?: ALGO_DECIMALS
             BaseTransactionItem.TransactionItem.Pending(
                 assetId = getAssetId(),
                 id = null,
@@ -68,10 +64,9 @@ class AccountHistoryPendingItemMapper @Inject constructor(
                 closeToAddress = null, // TODO Add CloseTo Address after model is updated.
                 closeToAmount = null, // TODO Add CloseAmount after model is updated
                 rewardAmount = 0L,
-                assetShortName = assetQueryItem?.shortName,
+                assetShortName = assetDetail?.shortName,
                 transactionName = transactionNameDecider.providePendingTransactionName(this, accountPublicKey),
-                amountInSelectedCurrency = amountInSelectedCurrency,
-                formattedSelectedCurrencyValue = formattedSelectedCurrencyValue
+                formattedAmountInDisplayedCurrency = formattedAmountInDisplayedCurrency
             )
         }
     }

@@ -16,7 +16,7 @@
             <solid android:color="@color/transparent" />
             <stroke
                 android:width="2dp"
-                android:color="@color/helperSuccess" />
+                android:color="@color/success" />
             <size
                 android:width="24dp"
                 android:height="24dp" />
@@ -25,7 +25,7 @@
 
     <item android:gravity="center">
         <shape android:shape="oval">
-            <solid android:color="@color/helperSuccess" />
+            <solid android:color="@color/success" />
             <size
                 android:width="12dp"
                 android:height="12dp" />

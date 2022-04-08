@@ -13,6 +13,7 @@
 package com.algorand.android.usecase
 
 import com.algorand.android.banner.domain.usecase.BannersUseCase
+import com.algorand.android.nft.domain.usecase.SimpleCollectibleUseCase
 import com.algorand.android.utils.AccountCacheManager
 import javax.inject.Inject
 
@@ -21,6 +22,7 @@ class CoreCacheUseCase @Inject constructor(
     private val accountDetailUseCase: AccountDetailUseCase,
     private val assetDetailUseCase: SimpleAssetDetailUseCase,
     private val blockPollingUseCase: BlockPollingUseCase,
+    private val simpleCollectibleUseCase: SimpleCollectibleUseCase,
     private val bannersUseCase: BannersUseCase
 ) {
 
@@ -29,6 +31,7 @@ class CoreCacheUseCase @Inject constructor(
         blockPollingUseCase.clearBlockCache()
         accountDetailUseCase.clearAccountDetailCache()
         assetDetailUseCase.clearAssetDetailCache()
+        simpleCollectibleUseCase.clearCollectibleCache()
         bannersUseCase.clearBannerCache()
     }
 
@@ -36,6 +39,7 @@ class CoreCacheUseCase @Inject constructor(
         accountCacheManager.removeCachedData()
         accountDetailUseCase.clearAccountDetailCache()
         assetDetailUseCase.clearAssetDetailCache()
+        simpleCollectibleUseCase.clearCollectibleCache()
         bannersUseCase.clearBannerCache()
     }
 }

@@ -84,7 +84,7 @@ class RegisterWatchAccountFragment : DaggerBaseFragment(R.layout.fragment_regist
     private fun initUi() {
         with(binding) {
             addressCustomInputLayout.setOnTextChangeListener(::onAddressChanges)
-            addressCustomInputLayout.setOnEndIconClickListener(::onScanQrClick)
+            addressCustomInputLayout.addTrailingIcon(R.drawable.ic_scan_qr, ::onScanQrClick)
             confirmationButton.setOnClickListener { onNextClick() }
             pasteAddressButton.setOnClickListener { onPasteClick() }
         }
@@ -171,7 +171,7 @@ class RegisterWatchAccountFragment : DaggerBaseFragment(R.layout.fragment_regist
     }
 
     private fun setupPasteButton(copiedMessage: String?) {
-        val accountTextColor = ContextCompat.getColor(binding.root.context, R.color.secondaryTextColor)
+        val accountTextColor = ContextCompat.getColor(binding.root.context, R.color.secondary_text_color)
         val accountTextSize = resources.getDimensionPixelSize(R.dimen.text_size_11)
         val spannableString = context?.getXmlStyledString(
             stringResId = R.string.paste_with_account,

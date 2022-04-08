@@ -35,6 +35,7 @@ import com.algorand.android.models.StatusBarConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.ui.accountdetail.assets.AccountAssetsFragment
 import com.algorand.android.ui.accountdetail.history.AccountHistoryFragment
+import com.algorand.android.ui.accountdetail.nfts.AccountCollectiblesFragment
 import com.algorand.android.ui.accounts.RenameAccountBottomSheet
 import com.algorand.android.ui.accounts.ViewPassphraseLockBottomSheet
 import com.algorand.android.ui.common.warningconfirmation.WarningConfirmationBottomSheet
@@ -47,7 +48,7 @@ import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class AccountDetailFragment : BaseFragment(R.layout.fragment_account_detail), AccountHistoryFragment.Listener,
-    AccountAssetsFragment.Listener {
+    AccountAssetsFragment.Listener, AccountCollectiblesFragment.Listener {
 
     private val toolbarConfiguration = ToolbarConfiguration(
         startIconResId = R.drawable.ic_left_arrow,
@@ -70,7 +71,7 @@ class AccountDetailFragment : BaseFragment(R.layout.fragment_account_detail), Ac
     private lateinit var accountDetailPagerAdapter: AccountDetailPagerAdapter
 
     private val extendedStatusBarConfiguration by lazy {
-        StatusBarConfiguration(backgroundColor = R.color.black_A3, showNodeStatus = false)
+        StatusBarConfiguration(backgroundColor = R.color.black_alpha_64, showNodeStatus = false)
     }
 
     private val defaultStatusBarConfiguration by lazy { StatusBarConfiguration() }
@@ -126,6 +127,43 @@ class AccountDetailFragment : BaseFragment(R.layout.fragment_account_detail), Ac
 
     override fun onAssetSearchClick() {
         nav(AccountDetailFragmentDirections.actionAccountDetailFragmentToAssetSearchFragment(args.publicKey))
+    }
+
+    override fun onImageItemClick(nftAssetId: Long) {
+        navToCollectibleDetailFragment(nftAssetId)
+    }
+
+    override fun onVideoItemClick(nftAssetId: Long) {
+        navToCollectibleDetailFragment(nftAssetId)
+    }
+
+    override fun onSoundItemClick(nftAssetId: Long) {
+        // TODO "Not yet implemented"
+    }
+
+    override fun onGifItemClick(nftAssetId: Long) {
+        // TODO "Not yet implemented"
+    }
+
+    override fun onNotSupportedItemClick(nftAssetId: Long) {
+        navToCollectibleDetailFragment(nftAssetId)
+    }
+
+    override fun onMixedItemClick(nftAssetId: Long) {
+        navToCollectibleDetailFragment(nftAssetId)
+    }
+
+    private fun navToCollectibleDetailFragment(collectibleId: Long) {
+        nav(
+            AccountDetailFragmentDirections.actionAccountDetailFragmentToCollectibleDetailFragment(
+                collectibleId,
+                args.publicKey
+            )
+        )
+    }
+
+    override fun onReceiveCollectibleClick() {
+        nav(AccountDetailFragmentDirections.actionAccountDetailFragmentToReceiveCollectibleFragment(args.publicKey))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

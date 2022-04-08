@@ -21,6 +21,7 @@ import com.algorand.android.CoreMainActivity
 import com.algorand.android.MainActivity
 import com.algorand.android.customviews.CustomToolbar
 import com.algorand.android.models.FragmentConfiguration
+import com.algorand.android.models.NotificationMetadata
 import com.algorand.android.models.StatusBarConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.utils.hideKeyboard
@@ -81,6 +82,10 @@ abstract class BaseFragment(
 
     fun showGlobalError(errorMessage: CharSequence?, title: String? = null) {
         (activity as? MainActivity)?.showGlobalError(errorMessage, title)
+    }
+
+    fun showForegroundNotification(notificationMetadata: NotificationMetadata) {
+        (activity as? MainActivity)?.showForegroundNotification(notificationMetadata)
     }
 
     protected fun handleWalletConnectUrl(url: String) {

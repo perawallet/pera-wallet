@@ -15,7 +15,7 @@
     <solid android:color="@color/transparent" />
     <stroke
         android:width="2dp"
-        android:color="@color/layerGray" />
+        android:color="@color/layer_gray" />
     <size
         android:width="24dp"
         android:height="24dp" />

@@ -29,7 +29,6 @@ private const val ALGORAND_ACCOUNTS_KEY = "algorand_accounts"
 const val LOCK_PASSWORD = "lock_password"
 private const val NOTIFICATION_USER_ID_KEY = "notification_user_id"
 private const val DEFAULT_NODE_LIST_VERSION = "default_node_list_version"
-private const val REWARDS_ACTIVATED_KEY = "rewards_activated"
 private const val NOTIFICATION_ACTIVATED_KEY = "notification_activated"
 private const val QR_TUTORIAL_SHOWN_KEY = "qr_tutorial_shown_key"
 private const val TD_COPY_TUTORIAL_SHOWN_KEY = "transaction_detail_copy_shown_key"
@@ -93,13 +92,6 @@ fun SharedPreferences.setNotificationPreference(enableNotifications: Boolean) {
 }
 
 // </editor-fold>
-
-// <editor-fold defaultstate="collapsed" desc="Rewards">
-fun SharedPreferences.isRewardsActivated() = getBoolean(REWARDS_ACTIVATED_KEY, true)
-
-fun SharedPreferences.setRewardsPreference(enableRewards: Boolean) {
-    edit().putBoolean(REWARDS_ACTIVATED_KEY, enableRewards).apply()
-}
 
 // </editor-fold>
 

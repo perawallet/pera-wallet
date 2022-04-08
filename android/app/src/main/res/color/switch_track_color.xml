@@ -11,6 +11,6 @@
   ~ limitations under the License
   -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:color="@color/switchBg" android:state_checked="true" />
-    <item android:color="@color/switchBgOff" />
+    <item android:color="@color/switch_bg" android:state_checked="true" />
+    <item android:color="@color/switch_bg_off" />
 </selector>

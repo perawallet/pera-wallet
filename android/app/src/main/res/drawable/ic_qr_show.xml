@@ -19,70 +19,70 @@
       android:pathData="M4,4h6v6h-6z"
       android:strokeWidth="2"
       android:fillColor="#00000000"
-      android:strokeColor="@color/primaryIconTintColor"/>
+      android:strokeColor="@color/primary_icon_tint_color"/>
   <path
       android:pathData="M4,14h6v6h-6z"
       android:strokeWidth="2"
       android:fillColor="#00000000"
-      android:strokeColor="@color/primaryIconTintColor"/>
+      android:strokeColor="@color/primary_icon_tint_color"/>
   <path
       android:pathData="M14,4h6v6h-6z"
       android:strokeWidth="2"
       android:fillColor="#00000000"
-      android:strokeColor="@color/primaryIconTintColor"/>
+      android:strokeColor="@color/primary_icon_tint_color"/>
   <path
       android:pathData="M13,14H16"
       android:strokeWidth="2"
       android:fillColor="#00000000"
-      android:strokeColor="@color/primaryIconTintColor"/>
+      android:strokeColor="@color/primary_icon_tint_color"/>
   <path
       android:pathData="M19,18L21,18"
       android:strokeWidth="2"
       android:fillColor="#00000000"
-      android:strokeColor="@color/primaryIconTintColor"/>
+      android:strokeColor="@color/primary_icon_tint_color"/>
   <path
       android:pathData="M19,20L21,20"
       android:strokeWidth="2"
       android:fillColor="#00000000"
-      android:strokeColor="@color/primaryIconTintColor"/>
+      android:strokeColor="@color/primary_icon_tint_color"/>
   <path
       android:pathData="M17,20L19,20"
       android:strokeWidth="2"
       android:fillColor="#00000000"
-      android:strokeColor="@color/primaryIconTintColor"/>
+      android:strokeColor="@color/primary_icon_tint_color"/>
   <path
       android:pathData="M18,14H21"
       android:strokeWidth="2"
       android:fillColor="#00000000"
-      android:strokeColor="@color/primaryIconTintColor"/>
+      android:strokeColor="@color/primary_icon_tint_color"/>
   <path
       android:pathData="M13,15H18"
       android:strokeWidth="1.5"
       android:fillColor="#00000000"
-      android:strokeColor="@color/primaryIconTintColor"/>
+      android:strokeColor="@color/primary_icon_tint_color"/>
   <path
       android:pathData="M15,17H17"
       android:strokeWidth="1.5"
       android:fillColor="#00000000"
-      android:strokeColor="@color/primaryIconTintColor"/>
+      android:strokeColor="@color/primary_icon_tint_color"/>
   <path
       android:pathData="M15,18H17"
       android:strokeWidth="1.5"
       android:fillColor="#00000000"
-      android:strokeColor="@color/primaryIconTintColor"/>
+      android:strokeColor="@color/primary_icon_tint_color"/>
   <path
       android:pathData="M13,19H15"
       android:strokeWidth="1.5"
       android:fillColor="#00000000"
-      android:strokeColor="@color/primaryIconTintColor"/>
+      android:strokeColor="@color/primary_icon_tint_color"/>
   <path
       android:pathData="M13,20H15"
       android:strokeWidth="1.5"
       android:fillColor="#00000000"
-      android:strokeColor="@color/primaryIconTintColor"/>
+      android:strokeColor="@color/primary_icon_tint_color"/>
   <path
       android:pathData="M15,16H18"
       android:strokeWidth="1.5"
       android:fillColor="#00000000"
-      android:strokeColor="@color/primaryIconTintColor"/>
+      android:strokeColor="@color/primary_icon_tint_color"/>
 </vector>

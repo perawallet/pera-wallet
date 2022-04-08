@@ -36,7 +36,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/slidingTopErrorTitleTextView"
             app:srcCompat="@drawable/ic_error"
-            app:tint="@color/primaryBackground" />
+            app:tint="@color/primary_background" />
 
         <TextView
             android:id="@+id/slidingTopErrorTitleTextView"
@@ -46,7 +46,7 @@
             android:layout_marginStart="@dimen/spacing_small"
             android:layout_marginTop="@dimen/spacing_normal"
             android:layout_marginEnd="@dimen/spacing_normal"
-            android:textColor="@color/primaryBackground"
+            android:textColor="@color/primary_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/slidingTopErrorImageView"
             app:layout_constraintTop_toTopOf="parent"
@@ -60,7 +60,7 @@
             android:layout_marginTop="@dimen/spacing_xxsmall"
             android:layout_marginBottom="@dimen/spacing_normal"
             android:maxLines="22"
-            android:textColor="@color/primaryBackground"
+            android:textColor="@color/primary_background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/slidingTopErrorTitleTextView"
             app:layout_constraintStart_toStartOf="@id/slidingTopErrorTitleTextView"

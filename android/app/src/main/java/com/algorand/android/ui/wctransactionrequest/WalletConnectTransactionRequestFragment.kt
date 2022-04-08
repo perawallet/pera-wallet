@@ -39,7 +39,7 @@ import com.algorand.android.models.TransactionRequestAction
 import com.algorand.android.models.WalletConnectSignResult
 import com.algorand.android.models.WalletConnectTransaction
 import com.algorand.android.ui.common.walletconnect.WalletConnectAppPreviewCardView
-import com.algorand.android.ui.confirmation.ConfirmationBottomSheet
+import com.algorand.android.utils.BaseDoubleButtonBottomSheet.Companion.RESULT_KEY
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.LOCATION_PERMISSION
 import com.algorand.android.utils.Resource
@@ -175,7 +175,7 @@ class WalletConnectTransactionRequestFragment : DaggerBaseFragment(
     override fun onResume() {
         super.onResume()
         startSavedStateListener(R.id.walletConnectTransactionRequestFragment) {
-            useSavedStateValue<ConfirmationBottomSheetResult>(ConfirmationBottomSheet.RESULT_KEY) { result ->
+            useSavedStateValue<ConfirmationBottomSheetResult>(RESULT_KEY) { result ->
                 if (result.isAccepted) confirmTransaction()
             }
         }
@@ -282,7 +282,7 @@ class WalletConnectTransactionRequestFragment : DaggerBaseFragment(
         val navDirection = MainNavigationDirections.actionGlobalSingleButtonBottomSheet(
             titleAnnotatedString = AnnotatedString(R.string.transaction_request_faq),
             drawableResId = R.drawable.ic_info,
-            drawableTintResId = R.color.infoTintColor,
+            drawableTintResId = R.color.info_tint_color,
             descriptionAnnotatedString = AnnotatedString(R.string.external_applications_also)
         )
         nav(navDirection)
@@ -380,7 +380,7 @@ class WalletConnectTransactionRequestFragment : DaggerBaseFragment(
             HomeNavigationDirections.actionGlobalSingleButtonBottomSheet(
                 titleAnnotatedString = AnnotatedString(R.string.your_transaction_is_being_processed),
                 drawableResId = R.drawable.ic_info,
-                drawableTintResId = R.color.infoTintColor,
+                drawableTintResId = R.color.info_tint_color,
                 descriptionAnnotatedString = AnnotatedString(
                     R.string.the_transaction_has_been_signed,
                     replacementList = listOf(

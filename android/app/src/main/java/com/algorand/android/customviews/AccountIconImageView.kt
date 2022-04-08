@@ -44,8 +44,8 @@ class AccountIconImageView(context: Context, attrs: AttributeSet? = null) : AppC
     fun setPlaceholder(@DimenRes padding: Int) {
         updatePadding(padding)
         setImageResource(R.drawable.ic_user_placeholder)
-        imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.secondaryIconTintColor))
-        backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.layerGrayLighter))
+        imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.secondary_icon_tint_color))
+        backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.layer_gray_lighter))
     }
 
     fun loadAccountImage(uri: Uri? = null, @DimenRes padding: Int = R.dimen.spacing_xsmall) {

@@ -68,7 +68,7 @@ class RewardsBottomSheet : DaggerBaseBottomSheet(R.layout.bottom_sheet_rewards, 
 
     private fun setupForMoreInformationText() {
         binding.moreInfoTextView.apply {
-            val faqColor = ContextCompat.getColor(context, R.color.linkPrimary)
+            val faqColor = ContextCompat.getColor(context, R.color.link_primary)
             text = context.getXmlStyledString(
                 stringResId = R.string.for_more_information,
                 customAnnotations = listOf("faq_color" to ForegroundColorSpan(faqColor))

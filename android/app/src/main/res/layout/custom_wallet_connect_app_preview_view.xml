@@ -14,7 +14,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:background="@color/modalityBackgroundColor"
+    tools:background="@color/modality_bg"
     tools:layout_height="wrap_content"
     tools:layout_width="match_parent"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
@@ -55,7 +55,7 @@
         android:layout_marginTop="@dimen/spacing_xxsmall"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textColor="@color/tertiaryTextColor"
+        android:textColor="@color/tertiary_text_color"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="@id/dAppIconImageView"
         app:layout_constraintEnd_toStartOf="@id/showMoreInfoTextView"

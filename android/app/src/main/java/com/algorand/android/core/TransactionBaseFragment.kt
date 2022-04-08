@@ -75,10 +75,6 @@ abstract class TransactionBaseFragment(
                     hideLoading()
                     navigateToConnectionIssueBottomSheet()
                 }
-                TransactionManagerResult.LedgerScanFailed -> {
-                    hideLoading()
-                    navigateToConnectionIssueBottomSheet()
-                }
             }
         }
     }

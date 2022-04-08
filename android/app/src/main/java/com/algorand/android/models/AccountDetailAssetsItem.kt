@@ -59,7 +59,7 @@ sealed class AccountDetailAssetsItem : RecyclerListItem, Parcelable {
         abstract val shortName: AssetName
         abstract val isVerified: Boolean
         abstract val isAlgo: Boolean
-        abstract val isAmountInSelectedCurrencyVisible: Boolean
+        abstract val isAmountInDisplayedCurrencyVisible: Boolean
 
         @Parcelize
         data class OwnedAssetItem(
@@ -68,8 +68,8 @@ sealed class AccountDetailAssetsItem : RecyclerListItem, Parcelable {
             override val shortName: AssetName,
             override val isAlgo: Boolean,
             override val isVerified: Boolean,
-            override val isAmountInSelectedCurrencyVisible: Boolean,
-            val formattedSelectedCurrencyValue: String,
+            override val isAmountInDisplayedCurrencyVisible: Boolean,
+            val formattedDisplayedCurrencyValue: String,
             val formattedAmount: String
         ) : BaseAssetItem() {
 
@@ -96,7 +96,7 @@ sealed class AccountDetailAssetsItem : RecyclerListItem, Parcelable {
                 @StringRes override val actionDescriptionResId: Int
             ) : BasePendingAssetItem() {
 
-                override val isAmountInSelectedCurrencyVisible: Boolean
+                override val isAmountInDisplayedCurrencyVisible: Boolean
                     get() = false
 
                 override fun areItemsTheSame(other: RecyclerListItem): Boolean {
@@ -118,7 +118,7 @@ sealed class AccountDetailAssetsItem : RecyclerListItem, Parcelable {
                 @StringRes override val actionDescriptionResId: Int
             ) : BasePendingAssetItem() {
 
-                override val isAmountInSelectedCurrencyVisible: Boolean
+                override val isAmountInDisplayedCurrencyVisible: Boolean
                     get() = false
 
                 override fun areItemsTheSame(other: RecyclerListItem): Boolean {

@@ -22,7 +22,7 @@ import com.algorand.android.models.AccountCacheData
 import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.AssetTransaction
-import com.algorand.android.models.BaseReceiverAccount
+import com.algorand.android.models.BaseAccountSelectionListItem
 import com.algorand.android.models.Result
 import com.algorand.android.models.TargetUser
 import com.algorand.android.usecase.ReceiverAccountSelectionUseCase
@@ -49,8 +49,8 @@ class ReceiverAccountSelectionViewModel @ViewModelInject constructor(
 
     val assetTransaction = savedStateHandle.get<AssetTransaction>(ASSET_TRANSACTION_KEY)!!
 
-    private val _selectableAccountFlow = MutableStateFlow<List<BaseReceiverAccount>?>(null)
-    val selectableAccountFlow: StateFlow<List<BaseReceiverAccount>?> = _selectableAccountFlow
+    private val _selectableAccountFlow = MutableStateFlow<List<BaseAccountSelectionListItem>?>(null)
+    val selectableAccountFlow: StateFlow<List<BaseAccountSelectionListItem>?> = _selectableAccountFlow
 
     private val _toAccountAddressValidationFlow = MutableStateFlow<Event<Resource<String>>?>(null)
     val toAccountAddressValidationFlow: StateFlow<Event<Resource<String>>?> = _toAccountAddressValidationFlow
@@ -82,7 +82,7 @@ class ReceiverAccountSelectionViewModel @ViewModelInject constructor(
                 .flowOn(Dispatchers.Default)
                 .collect { toAccounts ->
                     toAccounts.toMutableList().apply {
-                        copiedMessage?.let { add(0, BaseReceiverAccount.PasteItem(it)) }
+                        copiedMessage?.let { add(0, BaseAccountSelectionListItem.PasteItem(it)) }
                         _selectableAccountFlow.emit(this)
                     }
                 }
@@ -108,7 +108,8 @@ class ReceiverAccountSelectionViewModel @ViewModelInject constructor(
     fun fetchToAccountInformation(toAccountPublicKey: String) {
         viewModelScope.launch {
             _toAccountInformationFlow.emit(Event(Resource.Loading))
-            when (val result = receiverAccountSelectionUseCase.fetchAccountInformation(toAccountPublicKey)) {
+            val result = receiverAccountSelectionUseCase.fetchAccountInformation(toAccountPublicKey, viewModelScope)
+            when (result) {
                 is Result.Success -> _toAccountInformationFlow.emit(Event(Resource.Success(result.data)))
                 is Result.Error -> _toAccountInformationFlow.emit(Event(result.getAsResourceError()))
             }
@@ -139,17 +140,17 @@ class ReceiverAccountSelectionViewModel @ViewModelInject constructor(
 
     fun getSelectedAssetInformation(): AssetInformation? {
         return with(assetTransaction) {
-            accountCacheManager.getAssetInformation(senderAddress, assetId)
+            receiverAccountSelectionUseCase.getAssetInformation(assetId, senderAddress)
         }
     }
 
     private fun insertPastedAccountAddress(address: String) {
         viewModelScope.launch {
             _selectableAccountFlow.value
-                ?.filter { it !is BaseReceiverAccount.PasteItem }
+                ?.filter { it !is BaseAccountSelectionListItem.PasteItem }
                 ?.toMutableList()
                 ?.apply {
-                    add(0, BaseReceiverAccount.PasteItem(address))
+                    add(0, BaseAccountSelectionListItem.PasteItem(address))
                     _selectableAccountFlow.emit(this)
                 }
         }

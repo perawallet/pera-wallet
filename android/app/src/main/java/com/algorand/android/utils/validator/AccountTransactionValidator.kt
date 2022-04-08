@@ -21,16 +21,18 @@ import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
 import com.algorand.android.models.Result
-import com.algorand.android.utils.AccountCacheManager
+import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.utils.exceptions.WarningException
+import com.algorand.android.utils.isEqualTo
+import com.algorand.android.utils.isLesserThan
 import com.algorand.android.utils.isValidAddress
 import com.algorand.android.utils.minBalancePerAssetAsBigInteger
 import java.math.BigInteger
 import javax.inject.Inject
 
 class AccountTransactionValidator @Inject constructor(
-    private val accountCacheManager: AccountCacheManager,
-    private val accountManager: AccountManager
+    private val accountManager: AccountManager,
+    private val accountDetailUseCase: AccountDetailUseCase,
 ) {
 
     fun isAccountAddressValid(toAccountPublicKey: String): Result<String> {
@@ -41,7 +43,9 @@ class AccountTransactionValidator @Inject constructor(
     }
 
     fun isSelectedAssetValid(fromAccountPublicKey: String, assetId: Long): Boolean {
-        return accountCacheManager.getAssetInformation(fromAccountPublicKey, assetId) != null
+        val accountDetail = accountDetailUseCase.getCachedAccountDetail(fromAccountPublicKey)?.data
+        val isAlgo = assetId == ALGORAND_ID
+        return accountDetail?.accountInformation?.assetHoldingList?.any { it.assetId == assetId } == true || isAlgo
     }
 
     fun isSelectedAssetSupported(accountInformation: AccountInformation, assetId: Long): Boolean {
@@ -57,7 +61,7 @@ class AccountTransactionValidator @Inject constructor(
         amount: BigInteger,
         minBalance: BigInteger
     ): Boolean {
-        return toAccountSelectedAssetBalance + amount < minBalance
+        return (toAccountSelectedAssetBalance + amount) isLesserThan minBalance
     }
 
     fun isCloseTransactionToSameAccount(
@@ -79,7 +83,7 @@ class AccountTransactionValidator @Inject constructor(
         assetId: Long
     ): Boolean {
         return assetId == ALGORAND_ID &&
-            receiverAccountInformation.amount == BigInteger.ZERO &&
+            receiverAccountInformation.amount isEqualTo BigInteger.ZERO &&
             amount < minBalancePerAssetAsBigInteger
     }
 }

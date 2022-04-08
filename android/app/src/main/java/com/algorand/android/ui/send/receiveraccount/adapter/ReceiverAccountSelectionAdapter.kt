@@ -17,69 +17,80 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.R
-import com.algorand.android.models.AccountCacheData
+import com.algorand.android.models.BaseAccountSelectionListItem
 import com.algorand.android.models.BaseDiffUtil
-import com.algorand.android.models.BaseReceiverAccount
-import com.algorand.android.models.User
 
 class ReceiverAccountSelectionAdapter(
-    private val onAccountClick: (AccountCacheData) -> Unit,
-    private val onContactClick: (User) -> Unit,
+    private val onAccountClick: (String) -> Unit,
+    private val onContactClick: (String) -> Unit,
     private val onPasteClick: (String) -> Unit
-) : ListAdapter<BaseReceiverAccount, RecyclerView.ViewHolder>(BaseDiffUtil()) {
+) : ListAdapter<BaseAccountSelectionListItem, RecyclerView.ViewHolder>(BaseDiffUtil()) {
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
-            is BaseReceiverAccount.HeaderItem -> {
-                R.layout.item_receiver_account_header
-            }
-            is BaseReceiverAccount.AccountItem, is BaseReceiverAccount.ContactItem -> {
-                R.layout.item_receiver_account
-            }
-            is BaseReceiverAccount.PasteItem -> {
-                R.layout.item_receiver_account_paste
-            }
-            else -> throw Exception("ReceiverAccountSelectionAdapter unknown item type.")
+            is BaseAccountSelectionListItem.HeaderItem -> R.layout.item_receiver_account_header
+            is BaseAccountSelectionListItem.BaseAccountItem -> R.layout.item_receiver_account
+            is BaseAccountSelectionListItem.PasteItem -> R.layout.item_paste_address
+            else -> throw Exception("$logTag unknown item type.")
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            R.layout.item_receiver_account_header -> HeaderItemViewHolder.create(parent)
-            R.layout.item_receiver_account -> {
-                ReceiverAccountViewHolder.create(parent).apply {
-                    itemView.setOnClickListener {
-                        if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                            (getItem(bindingAdapterPosition))?.let {
-                                when (it) {
-                                    is BaseReceiverAccount.ContactItem -> onContactClick(it.user)
-                                    is BaseReceiverAccount.AccountItem -> onAccountClick(it.accountCacheData)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            R.layout.item_receiver_account_paste -> {
-                PasteItemViewHolder.create(parent).apply {
-                    itemView.setOnClickListener {
-                        if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                            (getItem(bindingAdapterPosition) as? BaseReceiverAccount.PasteItem)?.let {
-                                onPasteClick(it.address)
-                            }
-                        }
-                    }
-                }
-            }
+            R.layout.item_receiver_account_header -> createHeaderItemViewHolder(parent)
+            R.layout.item_receiver_account -> createAccountItemViewHolder(parent)
+            R.layout.item_paste_address -> createPasteItemViewHolder(parent)
             else -> throw Exception("ReceiverAccountSelectionAdapter unknown item type.")
+        }
+    }
+
+    private fun createHeaderItemViewHolder(parent: ViewGroup): HeaderItemViewHolder {
+        return HeaderItemViewHolder.create(parent)
+    }
+
+    private fun createAccountItemViewHolder(parent: ViewGroup): ReceiverAccountViewHolder {
+        return ReceiverAccountViewHolder.create(parent).apply {
+            itemView.setOnClickListener {
+                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
+                    (getItem(bindingAdapterPosition))?.let {
+                        when (it) {
+                            is BaseAccountSelectionListItem.BaseAccountItem.ContactItem -> {
+                                onContactClick(it.publicKey)
+                            }
+                            is BaseAccountSelectionListItem.BaseAccountItem.AccountItem -> {
+                                onAccountClick(it.publicKey)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun createPasteItemViewHolder(parent: ViewGroup): PasteItemViewHolder {
+        return PasteItemViewHolder.create(parent).apply {
+            itemView.setOnClickListener {
+                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
+                    (getItem(bindingAdapterPosition) as? BaseAccountSelectionListItem.PasteItem)?.let {
+                        onPasteClick(it.publicKey)
+                    }
+                }
+            }
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is HeaderItemViewHolder -> holder.bind(getItem(position) as BaseReceiverAccount.HeaderItem)
-            is ReceiverAccountViewHolder -> holder.bind(getItem(position) as BaseReceiverAccount)
-            is PasteItemViewHolder -> holder.bind(getItem(position) as BaseReceiverAccount.PasteItem)
+            is HeaderItemViewHolder -> holder.bind(getItem(position) as BaseAccountSelectionListItem.HeaderItem)
+            is ReceiverAccountViewHolder -> holder.bind(
+                getItem(position) as BaseAccountSelectionListItem.BaseAccountItem
+            )
+            is PasteItemViewHolder -> holder.bind(getItem(position) as BaseAccountSelectionListItem.PasteItem)
+            else -> throw Exception("$logTag unknown item type.")
         }
+    }
+
+    companion object {
+        private val logTag = ReceiverAccountSelectionAdapter::class.simpleName
     }
 }

@@ -12,52 +12,45 @@
 
 package com.algorand.android.ui.confirmation
 
-import android.os.Bundle
-import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.navArgs
-import com.algorand.android.R
-import com.algorand.android.core.BaseBottomSheet
-import com.algorand.android.databinding.BottomSheetConfirmationBinding
-import com.algorand.android.models.ConfirmationBottomSheetParameters
 import com.algorand.android.models.ConfirmationBottomSheetResult
+import com.algorand.android.utils.BaseDoubleButtonBottomSheet
 import com.algorand.android.utils.setNavigationResult
-import com.algorand.android.utils.viewbinding.viewBinding
+import com.google.android.material.button.MaterialButton
 
-class ConfirmationBottomSheet : BaseBottomSheet(R.layout.bottom_sheet_confirmation) {
-
-    private val binding by viewBinding(BottomSheetConfirmationBinding::bind)
+class ConfirmationBottomSheet : BaseDoubleButtonBottomSheet() {
 
     private val args by navArgs<ConfirmationBottomSheetArgs>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        isCancelable = false
+    override fun setTitleText(textView: TextView) {
+        textView.setText(args.parameters.titleResId)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initUi(args.parameters)
+    override fun setDescriptionText(textView: TextView) {
+        textView.text = args.parameters.descriptionText
     }
 
-    private fun initUi(parameters: ConfirmationBottomSheetParameters) {
-        with(binding) {
-            with(parameters) {
-                titleTextView.setText(titleResId)
-                descriptionTextView.text = descriptionText
-                acceptButton.apply {
-                    text = getString(confirmButtonTextResId)
-                    setOnClickListener { setResultAndNavigateBack(true) }
-                }
-                cancelButton.apply {
-                    text = getString(rejectButtonTextResId)
-                    setOnClickListener { setResultAndNavigateBack(false) }
-                }
-                iconImageView.apply {
-                    setImageResource(iconDrawableResId)
-                    imageTintList = ContextCompat.getColorStateList(requireContext(), imageTintResId)
-                }
-            }
+    override fun setAcceptButton(materialButton: MaterialButton) {
+        materialButton.apply {
+            text = getString(args.parameters.confirmButtonTextResId)
+            setOnClickListener { setResultAndNavigateBack(true) }
+        }
+    }
+
+    override fun setCancelButton(materialButton: MaterialButton) {
+        materialButton.apply {
+            text = getString(args.parameters.rejectButtonTextResId)
+            setOnClickListener { setResultAndNavigateBack(false) }
+        }
+    }
+
+    override fun setIconImageView(imageView: ImageView) {
+        imageView.apply {
+            setImageResource(args.parameters.iconDrawableResId)
+            imageTintList = ContextCompat.getColorStateList(context, args.parameters.imageTintResId)
         }
     }
 
@@ -65,9 +58,5 @@ class ConfirmationBottomSheet : BaseBottomSheet(R.layout.bottom_sheet_confirmati
         val result = ConfirmationBottomSheetResult(args.parameters.confirmationIdentifier, isAccepted)
         setNavigationResult(RESULT_KEY, result)
         navBack()
-    }
-
-    companion object {
-        const val RESULT_KEY = "result_key"
     }
 }

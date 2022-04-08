@@ -13,8 +13,19 @@
 
 package com.algorand.android.models
 
+import com.algorand.android.utils.AssetName
+
 data class AssetTransferAmountPreview(
-    val assetInformation: AssetInformation?,
-    val accountAssetData: BaseAccountAssetData.OwnedAssetData?,
-    val formattedCurrencyValue: String? = null
+    val assetId: Long,
+    val fullName: AssetName,
+    val shortName: AssetName,
+    val isAlgo: Boolean,
+    val isVerified: Boolean,
+    val decimals: Int,
+    val enteredAmountSelectedCurrencyValue: String?,
+    val formattedAmount: String,
+    val formattedSelectedCurrencyValue: String,
+    val isAmountInSelectedCurrencyVisible: Boolean,
+    val collectiblePrismUrl: String?,
+    val isCollectibleOwnedByUser: Boolean
 )

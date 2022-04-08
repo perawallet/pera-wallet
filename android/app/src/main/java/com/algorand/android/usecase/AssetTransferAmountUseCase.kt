@@ -16,9 +16,10 @@ package com.algorand.android.usecase
 import com.algorand.android.mapper.AssetTransferAmountPreviewMapper
 import com.algorand.android.models.AccountCacheData
 import com.algorand.android.models.AssetInformation
-import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
 import com.algorand.android.models.AssetTransferAmountPreview
 import com.algorand.android.models.BaseAccountAssetData
+import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData
+import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleImageData
 import com.algorand.android.models.Result
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.calculateMinimumBalance
@@ -27,6 +28,7 @@ import com.algorand.android.utils.toFullAmountInBigInteger
 import com.algorand.android.utils.validator.AmountTransactionValidator
 import java.math.BigDecimal
 import java.math.BigInteger
+import java.math.BigInteger.ZERO
 import javax.inject.Inject
 
 // TODO: 29.09.2021 Some validations are updated in master, be careful while merging here
@@ -34,12 +36,9 @@ class AssetTransferAmountUseCase @Inject constructor(
     private val accountCacheManager: AccountCacheManager,
     private val assetTransferAmountPreviewMapper: AssetTransferAmountPreviewMapper,
     private val amountTransactionValidator: AmountTransactionValidator,
-    private val algoPriceUseCase: AlgoPriceUseCase,
     private val transactionTipsUseCase: TransactionTipsUseCase,
-    private val accountAssetAmountUseCase: AccountAssetAmountUseCase,
-    private val accountAlgoAmountUseCase: AccountAlgoAmountUseCase,
-    private val accountDetailUseCase: AccountDetailUseCase,
-    private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase
+    private val getBaseOwnedAssetDataUseCase: GetBaseOwnedAssetDataUseCase,
+    private val algoPriceUseCase: AlgoPriceUseCase
 ) {
 
     fun getAssetTransferAmountPreview(
@@ -47,37 +46,33 @@ class AssetTransferAmountUseCase @Inject constructor(
         assetId: Long,
         amount: BigDecimal = BigDecimal.ZERO
     ): AssetTransferAmountPreview? {
-
         val accountAssetData = getAccountAssetData(assetId, fromAccountPublicKey) ?: return null
+        val selectedCurrencySymbol = algoPriceUseCase.getSelectedCurrencySymbolOrEmpty()
+        val enteredAmountSelectedCurrencyValue = formatEnteredAmount(
+            amount,
+            accountAssetData.usdValue,
+            selectedCurrencySymbol
+        )
 
-        val assetInformation = accountCacheManager.getAssetInformation(fromAccountPublicKey, assetId)
-
-        val formattedCurrencyValue = if (accountAssetData.usdValue != null) {
-            val currencySymbol = algoPriceUseCase.getSelectedCurrencySymbolOrCurrencyName()
-            amount.multiply(accountAssetData.usdValue)?.formatAsCurrency(currencySymbol)
-        } else {
-            null
-        }
-
+        // TODO Refactor two lines below
+        val collectiblePrismUrl = (accountAssetData as? OwnedCollectibleImageData)?.prismUrl
+        val isCollectibleOwnedByUser = (accountAssetData as? BaseOwnedCollectibleData)?.amount ?: ZERO > ZERO
         return assetTransferAmountPreviewMapper.mapTo(
-            assetInformation = assetInformation,
             accountAssetData = accountAssetData,
-            formattedCurrencyValue = formattedCurrencyValue
+            enteredAmountSelectedCurrencyValue = enteredAmountSelectedCurrencyValue,
+            collectiblePrismUrl,
+            isCollectibleOwnedByUser
         )
     }
 
     fun validateAssetAmount(amount: BigDecimal, fromAccountPublicKey: String, assetId: Long): Result<BigInteger> {
-        val accountAssetDetail = getAccountAssetData(assetId, fromAccountPublicKey) ?: return Result.Error(Exception())
-        val amountInBigInteger = amount.toFullAmountInBigInteger(accountAssetDetail.decimals)
-        return amountTransactionValidator.validateAssetAmount(amountInBigInteger, fromAccountPublicKey, assetId)
+        return amountTransactionValidator.validateAssetAmount(amount, fromAccountPublicKey, assetId)
     }
 
     fun getCalculatedMinimumBalance(amount: BigDecimal, assetId: Long, publicKey: String): Result<BigInteger> {
         // Find better exception message
-        val accountCacheData = accountCacheManager.getCacheData(publicKey)
-            ?: return Result.Error(Exception())
-        val selectedAsset = accountCacheManager.getAssetInformation(publicKey, assetId)
-            ?: return Result.Error(Exception())
+        val accountCacheData = accountCacheManager.getCacheData(publicKey) ?: return Result.Error(Exception())
+        val selectedAsset = getAccountAssetData(assetId, publicKey) ?: return Result.Error(Exception())
         val amountInBigInteger = amount.toFullAmountInBigInteger(selectedAsset.decimals)
         return calculateMinimumBalance(amountInBigInteger, accountCacheData, selectedAsset)
     }
@@ -94,16 +89,19 @@ class AssetTransferAmountUseCase @Inject constructor(
         return transactionTipsUseCase.shouldShowTransactionTips()
     }
 
-    private fun getAccountAssetData(assetId: Long, publicKey: String): BaseAccountAssetData.OwnedAssetData? {
-        return if (assetId == ALGORAND_ID) {
-            accountAlgoAmountUseCase.getAccountAlgoAmount(publicKey)
-        } else {
-            val accountDetail = accountDetailUseCase.getCachedAccountDetail(publicKey)
-            val assetQueryItem = simpleAssetDetailUseCase.getCachedAssetDetail(assetId)?.data ?: return null
-            val assetHolding = accountDetail?.data?.accountInformation?.assetHoldingList?.firstOrNull {
-                it.assetId == assetId
-            } ?: return null
-            accountAssetAmountUseCase.getAssetAmount(assetHolding, assetQueryItem)
-        }
+    fun getMaximumAmountOfAsset(assetId: Long, publicKey: String): String? {
+        return getAccountAssetData(assetId, publicKey)?.formattedAmount
+    }
+
+    private fun getAccountAssetData(assetId: Long, publicKey: String): BaseAccountAssetData.BaseOwnedAssetData? {
+        return getBaseOwnedAssetDataUseCase.getBaseOwnedAssetData(assetId, publicKey)
+    }
+
+    private fun formatEnteredAmount(
+        amount: BigDecimal,
+        usdValue: BigDecimal?,
+        selectedCurrencySymbol: String
+    ): String? {
+        return amount.multiply(usdValue ?: return null).formatAsCurrency(selectedCurrencySymbol)
     }
 }

@@ -13,9 +13,9 @@
 <resources>
 
     <style name="BaseTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="android:colorBackground">@color/primaryBackground</item>
-        <item name="android:textColor">@color/primaryTextColor</item>
-        <item name="colorOnBackground">@color/primaryTextColor</item>
+        <item name="android:colorBackground">@color/primary_background</item>
+        <item name="android:textColor">@color/primary_text_color</item>
+        <item name="colorOnBackground">@color/primary_text_color</item>
         <item name="android:statusBarColor">@color/black</item>
         <item name="android:navigationBarColor">@color/black</item>
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -24,12 +24,12 @@
         <item name="colorSecondary">@color/colorSecondary</item>
         <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
         <item name="colorOnSecondary">@color/white</item>
-        <item name="colorControlNormal">@color/textFieldTypingColor</item>
-        <item name="colorSurface">@color/surfaceOnBackground</item>
-        <item name="colorOnSurface">@color/primaryTextColor</item>
+        <item name="colorControlNormal">@color/text_field_typing_color</item>
+        <item name="colorSurface">@color/surface_on_background</item>
+        <item name="colorOnSurface">@color/primary_text_color</item>
         <item name="colorError">@color/colorError</item>
         <item name="colorOnError">@color/white</item>
-        <item name="colorControlActivated">@color/textFieldTypingColor</item>
+        <item name="colorControlActivated">@color/text_field_typing_color</item>
         <item name="popupMenuStyle">@style/PopupMenuStyle</item>
         <item name="snackbarStyle">@style/SnackBarStyle</item>
         <item name="snackbarTextViewStyle">@style/SnackbarTextStyle</item>
@@ -43,22 +43,25 @@
     <style name="AppTheme" parent="BaseTheme" />
 
     <style name="AppTheme.TextColorHighlight">
-        <item name="colorControlHighlight">@color/primaryTextColor</item>
+        <item name="colorControlHighlight">@color/primary_text_color</item>
     </style>
 
     <style name="AppTheme.Splash">
-        <item name="android:navigationBarColor">@color/splashBackgroundColor</item>
-        <item name="android:statusBarColor">@color/splashBackgroundColor</item>
+        <item name="android:navigationBarColor">@color/splash_background</item>
+        <item name="android:statusBarColor">@color/splash_background</item>
         <item name="android:windowBackground">@drawable/splash_background</item>
-        <item name="backgroundColor">@color/primaryBackground</item>
+        <item name="backgroundColor">@color/primary_background</item>
     </style>
 
-    <style name="DefaultAppBarLayout">
-        <item name="elevation">0dp</item>
+    <style name="TabLayoutStyle">
+        <item name="tabBackground">@drawable/ic_tab_layout_dot</item>
+        <item name="tabIndicator">@null</item>
+        <item name="tabGravity">center</item>
+        <item name="android:background">@color/transparent</item>
     </style>
 
     <style name="TextAppearance.Label">
-        <item name="android:textColor">@color/tertiaryTextColor</item>
+        <item name="android:textColor">@color/tertiary_text_color</item>
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/dmsans_regular</item>
     </style>
@@ -71,9 +74,9 @@
         <item name="android:paddingBottom">6dp</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textSize">10sp</item>
-        <item name="android:background">@drawable/bg_yellowf8_20dp_radius</item>
+        <item name="android:background">@drawable/bg_testnet_20dp_radius</item>
         <item name="android:fontFamily">@font/dmsans_bold</item>
-        <item name="android:textColor">@color/tertiaryBackground</item>
+        <item name="android:textColor">@color/tertiary_background</item>
     </style>
 
     <style name="TextAppearance.VerifiedAssetsParagraph">
@@ -84,15 +87,15 @@
     </style>
 
     <style name="PopupMenuStyle" parent="Widget.AppCompat.PopupMenu">
-        <item name="android:background">@color/primaryBackground</item>
+        <item name="android:background">@color/primary_background</item>
     </style>
 
     <style name="SnackBarStyle" parent="Widget.MaterialComponents.Snackbar">
-        <item name="android:background">@color/secondaryBackground</item>
+        <item name="android:background">@color/secondary_background</item>
     </style>
 
     <style name="SnackbarTextStyle" parent="Widget.MaterialComponents.Snackbar.TextView">
-        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:textColor">@color/primary_text_color</item>
         <item name="android:fontFamily">@font/dmsans_regular</item>
     </style>
 
@@ -103,7 +106,7 @@
         <item name="android:letterSpacing">0</item>
         <item name="android:fontFamily">@font/dmsans_medium</item>
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/textButtonTextColor</item>
+        <item name="android:textColor">@color/text_button_text</item>
     </style>
 
     <!--  TODO Remove after implementing new banner item design  -->
@@ -123,7 +126,7 @@
     </style>
 
     <style name="HorizontalDivider">
-        <item name="android:background">@color/dividerColor</item>
+        <item name="android:background">@color/divider_color</item>
     </style>
 
     <style name="BottomSheetPrimary" parent="@style/Widget.Design.BottomSheet.Modal">
@@ -161,8 +164,8 @@
 
     <style name="ProgressBarStyle" parent="Widget.AppCompat.ProgressBar">
         <item name="android:indeterminate">true</item>
-        <item name="android:indeterminateTint">@color/progressBarTint</item>
-        <item name="android:colorAccent">@color/progressBarTint</item>
+        <item name="android:indeterminateTint">@color/progress_bar_tint</item>
+        <item name="android:colorAccent">@color/progress_bar_tint</item>
         <item name="android:indeterminateTintMode">src_in</item>
     </style>
 
@@ -179,10 +182,6 @@
     <style name="LoadingDialogStyle" parent="Base.Theme.AppCompat.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:backgroundDimAmount">0.5</item>
-    </style>
-
-    <style name="CustomMaterialCalendar" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
-        <item name="colorSurface">@color/primaryBackground</item>
     </style>
 
     <style name="ChartTimeFrameButton">
@@ -202,7 +201,7 @@
 
     <style name="ChartPriceTagStyle">
         <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@color/secondaryTextColor</item>
+        <item name="android:textColor">@color/secondary_text_color</item>
     </style>
 
     <style name="WalletConnectWarningTextStyle">
@@ -215,9 +214,9 @@
         <item name="android:paddingEnd">@dimen/spacing_small</item>
         <item name="android:paddingTop">@dimen/spacing_small</item>
         <item name="android:paddingBottom">@dimen/spacing_small</item>
-        <item name="android:textColor">@color/negativeColor</item>
+        <item name="android:textColor">@color/negative</item>
         <item name="drawableStartCompat">@drawable/ic_info</item>
-        <item name="drawableTint">@color/negativeColor</item>
+        <item name="drawableTint">@color/negative</item>
     </style>
 
     <!--    New UI Update Styles -->
@@ -265,7 +264,7 @@
     </style>
 
     <style name="TextAppearance.Title.Small">
-        <item name="android:textSize">@dimen/text_size_24</item>
+        <item name="android:textSize">@dimen/text_size_28</item>
         <item name="lineHeight">32sp</item>
     </style>
 
@@ -354,23 +353,27 @@
     </style>
 
     <style name="TextAppearance.Description" parent="TextAppearance.Body.Sans">
-        <item name="android:textColor">@color/secondaryTextColor</item>
+        <item name="android:textColor">@color/secondary_text_color</item>
     </style>
 
     <style name="TextAppearance.Footnote.Description" parent="TextAppearance.Footnote.Sans">
-        <item name="android:textColor">@color/secondaryTextColor</item>
+        <item name="android:textColor">@color/secondary_text_color</item>
     </style>
 
     <style name="TextAppearance.Footnote.Description.Mono" parent="TextAppearance.Footnote.Mono">
-        <item name="android:textColor">@color/secondaryTextColor</item>
+        <item name="android:textColor">@color/secondary_text_color</item>
     </style>
 
     <style name="TextAppearance.Mono.Description" parent="TextAppearance.Body.Mono">
-        <item name="android:textColor">@color/secondaryTextColor</item>
+        <item name="android:textColor">@color/secondary_text_color</item>
     </style>
 
     <style name="TextAppearance.Caption.Mono.Description">
-        <item name="android:textColor">@color/secondaryTextColor</item>
+        <item name="android:textColor">@color/secondary_text_color</item>
+    </style>
+
+    <style name="TextAppearance.Caption.Sans.Description">
+        <item name="android:textColor">@color/secondary_text_color</item>
     </style>
 
     <style name="TextView" parent="Widget.AppCompat.TextView">
@@ -379,12 +382,12 @@
 
     <style name="TextView.ErrorTextStyle">
         <item name="android:layout_marginStart">@dimen/spacing_xxsmall</item>
-        <item name="android:textColor">@color/errorTextColor</item>
+        <item name="android:textColor">@color/error_text_color</item>
         <item name="android:textAppearance">@style/TextAppearance.Footnote.Sans.Medium</item>
     </style>
 
     <style name="TextView.HelperTextStyle">
-        <item name="android:textColor">@color/secondaryTextColor</item>
+        <item name="android:textColor">@color/secondary_text_color</item>
         <item name="android:layout_marginStart">@dimen/spacing_xxsmall</item>
         <item name="android:textAppearance">@style/TextAppearance.Footnote.Sans</item>
     </style>
@@ -395,7 +398,7 @@
         <item name="autoSizeTextType">uniform</item>
         <item name="android:maxLines">2</item>
         <item name="android:paddingEnd">@dimen/spacing_xxsmall</item>
-        <item name="android:textColor">@color/secondaryTextColor</item>
+        <item name="android:textColor">@color/secondary_text_color</item>
         <item name="android:layout_marginStart">@dimen/spacing_xxsmall</item>
         <item name="android:textAppearance">@style/TextAppearance.Label</item>
     </style>
@@ -412,13 +415,13 @@
     <style name="Button.Primary">
         <item name="backgroundTint">@color/primary_button_background_color</item>
         <item name="android:textColor">@color/primary_button_text_color</item>
-        <item name="rippleColor">@color/primaryButtonRippleColor</item>
+        <item name="rippleColor">@color/button_primary_focus_bg</item>
     </style>
 
     <style name="Button.Secondary">
         <item name="backgroundTint">@color/secondary_button_background_color</item>
         <item name="android:textColor">@color/secondary_button_text_color</item>
-        <item name="rippleColor">@color/secondaryButtonRippleColor</item>
+        <item name="rippleColor">@color/button_secondary_focus_bg</item>
     </style>
 
     <style name="Button.Text" parent="Widget.MaterialComponents.Button.TextButton">
@@ -427,19 +430,19 @@
         <item name="android:letterSpacing">0</item>
         <item name="android:textAppearance">@style/TextAppearance.Body.Sans.Medium</item>
         <item name="android:textColor">@color/text_button_text_color</item>
-        <item name="rippleColor">@color/textButtonRippleColor</item>
+        <item name="rippleColor">@color/text_button_ripple</item>
     </style>
 
     <style name="Button.Text.Link">
         <item name="android:textAppearance">@style/TextAppearance.Footnote.Sans.Medium</item>
-        <item name="android:textColor">@color/linkPrimary</item>
+        <item name="android:textColor">@color/link_primary</item>
         <item name="android:minHeight">0dp</item>
         <item name="android:padding">0dp</item>
     </style>
 
     <style name="Button.Text.Option">
         <item name="android:gravity">start|center_vertical</item>
-        <item name="iconTint">@color/primaryTextColor</item>
+        <item name="iconTint">@color/primary_text_color</item>
         <item name="iconPadding">@dimen/spacing_normal</item>
         <item name="android:layout_marginStart">@dimen/spacing_xlarge</item>
         <item name="android:layout_marginEnd">@dimen/spacing_xlarge</item>
@@ -448,23 +451,11 @@
 
     <style name="Button.Text.Options">
         <item name="android:gravity">start|center_vertical</item>
-        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:textColor">@color/primary_text_color</item>
         <item name="iconPadding">@dimen/spacing_normal</item>
         <item name="android:paddingTop">@dimen/spacing_large</item>
         <item name="android:paddingBottom">@dimen/spacing_large</item>
-        <item name="iconTint">@color/primaryTextColor</item>
-    </style>
-
-    <style name="Button.Chip">
-        <item name="android:textAppearance">@style/TextAppearance.Footnote.Sans.Medium</item>
-        <item name="android:textColor">@color/primaryTextColor</item>
-        <item name="android:paddingTop">@dimen/spacing_xsmall</item>
-        <item name="android:paddingBottom">@dimen/spacing_xsmall</item>
-        <item name="android:paddingStart">@dimen/spacing_small</item>
-        <item name="android:paddingEnd">@dimen/spacing_small</item>
-        <item name="backgroundTint">@color/layerGrayLighter</item>
-        <item name="cornerRadius">48dp</item>
-        <item name="android:minHeight">36dp</item>
+        <item name="iconTint">@color/primary_text_color</item>
     </style>
 
     <style name="Button.Primary.Icon">
@@ -481,22 +472,22 @@
 
     <style name="Button.Transparent">
         <item name="backgroundTint">@color/transparent</item>
-        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:textColor">@color/primary_text_color</item>
     </style>
 
     <style name="Button.Transparent.Icon">
         <item name="android:gravity">center_vertical</item>
         <item name="iconPadding">@dimen/spacing_xlarge</item>
         <item name="iconGravity">start</item>
-        <item name="iconTint">@color/primaryTextColor</item>
+        <item name="iconTint">@color/primary_text_color</item>
     </style>
 
     <style name="Button.DialPad">
-        <item name="rippleColor">@color/dialpadRippleColor</item>
+        <item name="rippleColor">@color/dialpad_ripple_color</item>
         <item name="android:gravity">center</item>
         <item name="cornerRadius">@null</item>
-        <item name="backgroundTint">@color/primaryBackground</item>
-        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="backgroundTint">@color/primary_background</item>
+        <item name="android:textColor">@color/primary_text_color</item>
         <item name="layout_constraintDimensionRatio">1:1</item>
         <item name="android:textSize">@dimen/text_size_24</item>
         <item name="fontFamily">@font/dmmono_regular</item>
@@ -511,7 +502,7 @@
         <item name="iconTint">@null</item>
         <item name="iconPadding">0dp</item>
         <item name="iconGravity">textStart</item>
-        <item name="rippleColor">@color/primaryBackground</item>
+        <item name="rippleColor">@color/primary_background</item>
     </style>
 
     <style name="IconButton.Circle">
@@ -533,9 +524,18 @@
         <item name="strokeWidth">0dp</item>
     </style>
 
+    <style name="IconButton.Negative">
+        <item name="iconTint">@color/negative</item>
+        <item name="iconSize">20dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:layout_width">32dp</item>
+        <item name="android:layout_height">32dp</item>
+        <item name="android:textColor">@color/error_text_color</item>
+    </style>
+
     <style name="TextInputLayout" parent="Base.Widget.MaterialComponents.TextInputLayout">
-        <item name="android:textColorHint">@color/secondaryTextColor</item>
-        <item name="hintTextColor">@color/secondaryTextColor</item>
+        <item name="android:textColorHint">@color/secondary_text_color</item>
+        <item name="hintTextColor">@color/secondary_text_color</item>
         <item name="strokeWidth">0dp</item>
         <item name="boxStrokeWidthFocused">0dp</item>
     </style>
@@ -544,18 +544,17 @@
         <item name="android:paddingBottom">@dimen/spacing_large</item>
         <item name="android:paddingTop">@dimen/spacing_small</item>
         <item name="android:textAppearance">@style/TextAppearance.Body.Sans</item>
-        <item name="android:paddingEnd">@dimen/custom_input_layout_input_text_end_padding</item>
         <item name="android:paddingStart">@dimen/spacing_xsmall</item>
         <item name="android:imeOptions">actionNext</item>
     </style>
 
     <style name="TabLayout" parent="Widget.MaterialComponents.TabLayout">
         <item name="android:background">@drawable/bg_tab_layout</item>
-        <item name="tabIndicatorColor">@color/primaryTextColor</item>
+        <item name="tabIndicatorColor">@color/primary_text_color</item>
         <item name="tabMode">fixed</item>
         <item name="tabTextAppearance">@style/TextAppearance.Body.Sans.Medium</item>
-        <item name="tabTextColor">@color/primaryTextColor</item>
-        <item name="tabRippleColor">@color/primaryButtonRippleColor</item>
+        <item name="tabTextColor">@color/primary_text_color</item>
+        <item name="tabRippleColor">@color/button_primary_focus_bg</item>
         <item name="android:paddingBottom">1dp</item>
     </style>
 
@@ -568,7 +567,7 @@
         <item name="android:paddingBottom">@dimen/spacing_xsmall</item>
         <item name="android:paddingEnd">@dimen/spacing_xsmall</item>
         <item name="android:textAppearance">@style/TextAppearance.Footnote.Description</item>
-        <item name="android:textColorHint">@color/secondaryTextColor</item>
+        <item name="android:textColorHint">@color/secondary_text_color</item>
         <item name="android:background">@null</item>
         <item name="android:drawablePadding">@dimen/spacing_xsmall</item>
         <item name="drawableStartCompat">@drawable/ic_search</item>
@@ -583,10 +582,10 @@
 
     <style name="Button.PassphraseValidation">
         <item name="cornerRadius">2dp</item>
-        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:textColor">@color/primary_text_color</item>
         <item name="android:layout_marginTop">@dimen/spacing_xxsmall</item>
         <item name="android:layout_marginBottom">@dimen/spacing_xxsmall</item>
-        <item name="rippleColor">@color/primaryButtonDisabledBackgroundColor</item>
+        <item name="rippleColor">@color/button_primary_disabled_bg</item>
         <item name="backgroundTint">@color/passphrase_validation_background_color</item>
     </style>
 
@@ -597,7 +596,7 @@
     </style>
 
     <style name="Divider">
-        <item name="android:background">@color/layerGrayLighter</item>
+        <item name="android:background">@color/layer_gray_lighter</item>
     </style>
 
     <style name="Divider.Horizontal">
@@ -610,10 +609,28 @@
     <style name="InstructionStepIndicator">
         <item name="android:layout_width">40dp</item>
         <item name="android:layout_height">40dp</item>
-        <item name="tint">@color/helperSuccess</item>
+        <item name="tint">@color/success</item>
         <item name="srcCompat">@drawable/ic_check</item>
         <item name="android:background">@drawable/bg_asset_avatar_border</item>
         <item name="android:padding">@dimen/spacing_xsmall</item>
+    </style>
+
+    <style name="CollectibleImageShapeAppearance">
+        <item name="cornerSize">4dp</item>
+    </style>
+
+    <style name="CollectibleOptInInfoTextStyle">
+        <item name="android:background">@drawable/bg_collectible_opt_in_info</item>
+        <item name="android:drawablePadding">@dimen/spacing_xsmall</item>
+        <item name="android:textAppearance">@style/TextAppearance.Footnote.Sans.Medium</item>
+        <item name="android:padding">@dimen/spacing_small</item>
+        <item name="android:layout_marginStart">@dimen/spacing_xlarge</item>
+        <item name="android:layout_marginEnd">@dimen/spacing_xlarge</item>
+        <item name="android:textColor">@color/positive</item>
+        <item name="drawableStartCompat">@drawable/ic_info</item>
+        <item name="drawableTint">@color/positive</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="BannerTextAppearance" />
@@ -631,7 +648,7 @@
     </style>
 
     <style name="BannerTextStyle">
-        <item name="android:textColor">@color/bannerTextColor</item>
+        <item name="android:textColor">@color/banner_text</item>
     </style>
 
     <style name="BannerTextStyle.BannerTitleTextStyle">
@@ -646,7 +663,7 @@
     </style>
 
     <style name="Button.Primary.Banner">
-        <item name="backgroundTint">@color/bannerActionButtonBackgroundTintColor</item>
+        <item name="backgroundTint">@color/banner_action_button_bg</item>
         <item name="android:paddingTop">0dp</item>
         <item name="android:paddingBottom">0dp</item>
         <item name="android:textColor">@color/white</item>

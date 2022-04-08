@@ -16,7 +16,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:background="@color/primaryBackground">
+    tools:background="@color/primary_background">
 
     <com.algorand.android.customviews.CustomToolbar
         android:id="@+id/toolbar"
@@ -144,7 +144,7 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_marginTop="@dimen/spacing_xxlarge"
-                android:background="@color/layerGrayLighter"
+                android:background="@color/layer_gray_lighter"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rewardAmountTextView" />
@@ -291,7 +291,7 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_marginTop="@dimen/spacing_xxlarge"
-                android:background="@color/layerGrayLighter"
+                android:background="@color/layer_gray_lighter"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/transactionIdTextView" />
@@ -325,7 +325,7 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_marginTop="@dimen/spacing_xxlarge"
-                android:background="@color/layerGrayLighter"
+                android:background="@color/layer_gray_lighter"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/noteTextView" />

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -27,6 +26,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.algorand.android.customviews.CollectibleImageView
+        android:id="@+id/collectibleImageView"
+        android:layout_width="@dimen/asset_avatar_image_size"
+        android:layout_height="@dimen/asset_avatar_image_size"
+        android:layout_marginVertical="@dimen/spacing_normal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/mainTextView"
         style="@style/TextAppearance.Body.Sans"
@@ -40,8 +49,9 @@
         app:layout_constraintEnd_toStartOf="@id/assetVerifiedImageView"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toEndOf="@id/algorandAssetAvatarView"
-        app:layout_constraintTop_toTopOf="@id/algorandAssetAvatarView"
+        app:layout_constraintStart_toEndOf="@id/assetAvatarBarrier"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
         tools:text="@tools:sample/lorem[2]" />
 
     <ImageView
@@ -63,13 +73,21 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/spacing_normal"
         android:maxLines="1"
-        android:textColor="@color/tertiaryTextColor"
+        android:textColor="@color/tertiary_text_color"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/algorandAssetAvatarView"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/algorandAssetAvatarView"
+        app:layout_constraintStart_toEndOf="@id/assetAvatarBarrier"
         app:layout_constraintTop_toBottomOf="@id/mainTextView"
         tools:text="@tools:sample/lorem[2]"
         tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/assetAvatarBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="collectibleImageView, algorandAssetAvatarView" />
 
 </merge>

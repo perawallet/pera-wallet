@@ -24,7 +24,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/warningTextView"
         app:srcCompat="@drawable/ic_error"
-        app:tint="@color/errorTintColor" />
+        app:tint="@color/error_tint_color" />
 
     <TextView
         android:id="@+id/warningTextView"

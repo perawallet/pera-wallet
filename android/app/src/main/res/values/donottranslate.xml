@@ -13,18 +13,18 @@
 <resources>
     <string name="app_name">Pera Algo Wallet</string>
 
-    <string name="version_format">Pera Wallet v%1$s</string>
-    <string name="min_seconds_template" translatable="false">%1$02d:%2$02d</string>
-    <string name="hidden_passphrase" translatable="false">*************</string>
-    <string name="plus" translatable="false">+</string>
-    <string name="minus" translatable="false">-</string>
-    <string name="ticker_asset_format" translatable="false">(%1$s)</string>
-    <string name="title_and_value_format" translatable="false">%1$s %2$s</string>
-    <string name="algo" translatable="false">Algo</string>
+    <string name="version_format">Pera Algo Wallet v%1$s</string>
+    <string name="min_seconds_template">%1$02d:%2$02d</string>
+    <string name="hidden_passphrase">*************</string>
+    <string name="plus">+</string>
+    <string name="minus">-</string>
+    <string name="ticker_asset_format">(%1$s)</string>
+    <string name="title_and_value_format">%1$s %2$s</string>
+    <string name="algo">Algo</string>
+    <string name="pera_explorer">Pera Explorer</string>
 
     <!--Accessibility-->
-    <string name="accessibility_user_image" translatable="false">User Image</string>
-    <string name="accessibility_add_contact_icon" translatable="false">Add Contact Icon</string>
+    <string name="accessibility_user_image">User Image</string>
 
     <!-- Wallet Connect Application Calls -->
     <string name="on_complete">On\nComplete</string>

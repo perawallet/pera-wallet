@@ -23,4 +23,8 @@ class RewardsRepository @Inject constructor(
     fun isRewardActivated(): Boolean {
         return rewardsLocalSource.getData(RewardsLocalSource.defaultRewardPreferences)
     }
+
+    fun setRewardsPreference(enableRewards: Boolean) {
+        rewardsLocalSource.saveData(enableRewards)
+    }
 }

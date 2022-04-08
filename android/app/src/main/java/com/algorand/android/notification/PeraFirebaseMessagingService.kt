@@ -96,7 +96,7 @@ class PeraFirebaseMessagingService : FirebaseMessagingService() {
             PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val notificationBuilder = NotificationCompat.Builder(this, DEFAULT_CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_small_notification)
+            .setSmallIcon(R.drawable.ic_notification_small)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .setContentTitle(getString(R.string.app_name))

@@ -16,7 +16,6 @@ import android.os.Parcelable
 import androidx.annotation.StringRes
 import com.algorand.android.R
 import com.algorand.android.utils.ALGOS_SHORT_NAME
-import java.math.BigDecimal
 import java.math.BigInteger
 import java.time.ZonedDateTime
 import kotlinx.parcelize.Parcelize
@@ -72,8 +71,7 @@ sealed class BaseTransactionItem : RecyclerListItem, Parcelable {
         open val rewardAmount: Long? = null
         open val assetShortName: String? = null
 
-        open val amountInSelectedCurrency: BigDecimal? = null
-        open val formattedSelectedCurrencyValue: String? = null
+        open val formattedAmountInDisplayedCurrency: String? = null
 
         abstract fun isSameTransaction(other: RecyclerListItem): Boolean
 
@@ -101,8 +99,7 @@ sealed class BaseTransactionItem : RecyclerListItem, Parcelable {
             override val rewardAmount: Long?,
             override val assetShortName: String?,
             override val transactionName: TransactionName,
-            override val amountInSelectedCurrency: BigDecimal?,
-            override val formattedSelectedCurrencyValue: String?
+            override val formattedAmountInDisplayedCurrency: String?
         ) : TransactionItem(), Parcelable {
 
             override fun isSameTransaction(other: RecyclerListItem): Boolean {
@@ -141,8 +138,7 @@ sealed class BaseTransactionItem : RecyclerListItem, Parcelable {
             override val rewardAmount: Long?,
             override val transactionName: TransactionName = TransactionName.REWARD,
             override val assetShortName: String? = ALGOS_SHORT_NAME,
-            override val amountInSelectedCurrency: BigDecimal?,
-            override val formattedSelectedCurrencyValue: String?
+            override val formattedAmountInDisplayedCurrency: String?
         ) : TransactionItem(), Parcelable {
 
             override fun isSameTransaction(other: RecyclerListItem): Boolean {
@@ -182,8 +178,7 @@ sealed class BaseTransactionItem : RecyclerListItem, Parcelable {
             override val rewardAmount: Long?,
             override val assetShortName: String?,
             override val transactionName: TransactionName,
-            override val amountInSelectedCurrency: BigDecimal?,
-            override val formattedSelectedCurrencyValue: String?
+            override val formattedAmountInDisplayedCurrency: String?
         ) : TransactionItem(), Parcelable {
 
             override fun isSameTransaction(other: RecyclerListItem): Boolean {

@@ -12,6 +12,7 @@
 
 package com.algorand.android.utils
 
+import com.algorand.android.models.AssetDetailResponse
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.RoundingMode
@@ -73,4 +74,8 @@ fun BigDecimal.toFullAmountInBigInteger(decimal: Int): BigInteger {
     return formatAmount(decimal, true)
         .filter { it.isDigit() }
         .toBigIntegerOrNull() ?: BigInteger.ZERO
+}
+
+fun isAssetCollectible(assetDetailResponse: AssetDetailResponse): Boolean {
+    return assetDetailResponse.collectible != null
 }

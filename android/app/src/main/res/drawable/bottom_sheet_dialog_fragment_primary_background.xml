@@ -16,5 +16,5 @@
     <corners
         android:topLeftRadius="@dimen/keyline_1"
         android:topRightRadius="@dimen/keyline_1" />
-    <solid android:color="@color/tertiaryBackground" />
+    <solid android:color="@color/tertiary_background" />
 </shape>

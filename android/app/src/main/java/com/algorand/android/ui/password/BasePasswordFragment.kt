@@ -49,7 +49,7 @@ abstract class BasePasswordFragment : DaggerBaseFragment(R.layout.fragment_base_
     })
 
     private val toolbarConfiguration = ToolbarConfiguration(
-        backgroundColor = R.color.primaryBackground,
+        backgroundColor = R.color.primary_background,
         startIconResId = R.drawable.ic_left_arrow,
         startIconClick = ::onBackPressed
     )

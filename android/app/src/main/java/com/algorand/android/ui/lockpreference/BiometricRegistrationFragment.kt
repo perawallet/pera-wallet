@@ -40,7 +40,7 @@ class BiometricRegistrationFragment : BaseInfoFragment() {
     override fun setImageView(imageView: ImageView) {
         val icon = R.drawable.ic_faceid
         imageView.setImageResource(icon)
-        imageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.infoImageColor))
+        imageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.info_image_color))
     }
 
     override fun setTitleText(textView: TextView) {

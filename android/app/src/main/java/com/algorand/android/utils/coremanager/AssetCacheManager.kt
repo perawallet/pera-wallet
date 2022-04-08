@@ -30,11 +30,17 @@ class AssetCacheManager(
     private val assetFetchAndCacheUseCase: AssetFetchAndCacheUseCase
 ) : BaseCacheManager() {
 
+    var cacheStatus: AssetCacheStatus = AssetCacheStatus.NOT_STARTED
+        private set
+
     private val accountCacheAndAccountCollector: suspend (
         AccountCacheStatus,
         HashMap<String, CacheResult<AccountDetail>>
     ) -> Unit = { cacheStatus, accountDetailCacheResult ->
         when {
+            cacheStatus == AccountCacheStatus.DONE && accountDetailCacheResult.values.isEmpty() -> updateCacheStatus(
+                AssetCacheStatus.EMPTY
+            )
             cacheStatus == AccountCacheStatus.DONE && accountDetailCacheResult.values.isNotEmpty() -> startJob()
             else -> if (isCurrentJobActive) stopCurrentJob()
         }
@@ -46,11 +52,19 @@ class AssetCacheManager(
             .launchIn(coroutineScope)
     }
 
+    override fun doBeforeJobStarts() {
+        updateCacheStatus(AssetCacheStatus.STARTED)
+    }
+
     override suspend fun doJob(coroutineScope: CoroutineScope) {
         val assetIdsOfAccounts = getAllAssetIdsOfAccounts()
         val filteredAssetIdLists = simpleAssetDetailUseCase.getChunkedAndFilteredAssetList(assetIdsOfAccounts)
-        if (filteredAssetIdLists.isEmpty()) return
+        if (filteredAssetIdLists.isEmpty()) {
+            updateCacheStatus(AssetCacheStatus.EMPTY)
+            return
+        }
         assetFetchAndCacheUseCase.processFilteredAssetIdList(filteredAssetIdLists, coroutineScope)
+        updateCacheStatus(AssetCacheStatus.INITIALIZED)
     }
 
     private fun getAllAssetIdsOfAccounts(): Set<Long> {
@@ -58,5 +72,22 @@ class AssetCacheManager(
             .values.mapNotNull { it.data?.accountInformation?.getAllAssetIds() }
             .flatten()
             .toSet()
+    }
+
+    private fun updateCacheStatus(newStatus: AssetCacheStatus) {
+        if (newStatus.ordinal > cacheStatus.ordinal) {
+            cacheStatus = newStatus
+        }
+    }
+
+    enum class AssetCacheStatus {
+        NOT_STARTED,
+        STARTED,
+        EMPTY,
+        INITIALIZED;
+
+        infix fun isAtLeast(status: AssetCacheStatus): Boolean {
+            return ordinal >= status.ordinal
+        }
     }
 }

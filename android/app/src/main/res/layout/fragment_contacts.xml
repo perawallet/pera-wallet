@@ -15,7 +15,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primaryBackground"
+    android:background="@color/primary_background"
     tools:context="ui.contacts.ContactsFragment">
 
     <TextView
@@ -37,11 +37,11 @@
         android:layout_marginHorizontal="@dimen/spacing_xlarge"
         android:layout_marginTop="@dimen/spacing_large"
         android:hint="@string/search_contacts_or_name"
-        app:endIconTintColor="@color/secondaryIconTintColor"
+        app:endIconTintColor="@color/secondary_icon_tint_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/titleTextView"
-        app:startIconTintColor="@color/searchBarViewIconColor" />
+        app:startIconTintColor="@color/search_bar_view_icon_color" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/contactsRecyclerView"

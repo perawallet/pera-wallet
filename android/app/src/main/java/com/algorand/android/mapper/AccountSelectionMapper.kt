@@ -22,7 +22,7 @@ import javax.inject.Inject
 class AccountSelectionMapper @Inject constructor() {
 
     fun mapToAccountSelection(
-        accountAssetData: BaseAccountAssetData.OwnedAssetData,
+        accountAssetData: BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData,
         accountCacheDataWithAssetInformation: Pair<AccountCacheData, AssetInformation>
     ): AccountSelection {
         val (accountCacheData, assetInformation) = accountCacheDataWithAssetInformation

@@ -15,54 +15,65 @@ package com.algorand.android.utils.validator
 
 import com.algorand.android.R
 import com.algorand.android.models.AnnotatedString
-import com.algorand.android.models.AssetInformation
+import com.algorand.android.models.BaseAccountAssetData
 import com.algorand.android.models.Result
 import com.algorand.android.ui.send.transferamount.AssetTransferAmountFragmentDirections
+import com.algorand.android.usecase.GetBaseOwnedAssetDataUseCase
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.calculateMinimumBalance
 import com.algorand.android.utils.exceptions.AnnotatedException
 import com.algorand.android.utils.exceptions.NavigationException
 import com.algorand.android.utils.exceptions.WarningException
+import com.algorand.android.utils.isGreaterThan
 import com.algorand.android.utils.shouldKeepMinimumAlgoBalance
+import com.algorand.android.utils.toFullAmountInBigInteger
+import java.math.BigDecimal
 import java.math.BigInteger
 import javax.inject.Inject
 
 class AmountTransactionValidator @Inject constructor(
-    private val accountCacheManager: AccountCacheManager
+    private val accountCacheManager: AccountCacheManager,
+    private val getBaseOwnedAssetDataUseCase: GetBaseOwnedAssetDataUseCase
 ) {
 
     @Suppress("ReturnCount")
-    fun validateAssetAmount(amount: BigInteger, fromAccountPublicKey: String, assetId: Long): Result<BigInteger> {
-        val selectedAsset = accountCacheManager.getAssetInformation(fromAccountPublicKey, assetId)
+    fun validateAssetAmount(
+        amountInBigDecimal: BigDecimal,
+        fromAccountPublicKey: String,
+        assetId: Long
+    ): Result<BigInteger> {
+        val ownedAssetData = getBaseOwnedAssetDataUseCase.getBaseOwnedAssetData(assetId, fromAccountPublicKey)
             ?: return Result.Error(Exception())
         val accountCacheData = accountCacheManager.getCacheData(fromAccountPublicKey)
             ?: return Result.Error(Exception())
-        val assetBalance = selectedAsset.amount ?: BigInteger.ZERO
 
-        if (isAccountBalanceViolated(selectedAsset.amount, amount)) {
+        val amount = amountInBigDecimal.toFullAmountInBigInteger(ownedAssetData.decimals)
+        val assetBalance = ownedAssetData.amount
+
+        if (isAccountBalanceViolated(ownedAssetData.amount, amount)) {
             return Result.Error(AnnotatedException(R.string.transaction_amount_cannot))
         }
 
-        if (checkIfAccountRekeyedAndTransactionMax(selectedAsset, amount, fromAccountPublicKey)) {
+        if (checkIfAccountRekeyedAndTransactionMax(ownedAssetData, amount, fromAccountPublicKey)) {
             val direction = AssetTransferAmountFragmentDirections
                 .actionAssetTransferAmountFragmentToRekeyedMaximumBalanceWarningBottomSheet(fromAccountPublicKey)
             return Result.Error(NavigationException(direction))
         }
 
-        if (shouldKeepMinimumAlgoBalance(selectedAsset, accountCacheData, amount, assetBalance)) {
+        if (shouldKeepMinimumAlgoBalance(ownedAssetData, accountCacheData, amount, assetBalance)) {
             val direction = AssetTransferAmountFragmentDirections
                 .actionAssetTransferAmountFragmentToTransactionMaximumBalanceWarningBottomSheet(fromAccountPublicKey)
             return Result.Error(NavigationException(direction))
         }
 
-        if (selectedAsset.isAlgo() && assetBalance == amount) {
+        if (ownedAssetData.isAlgo && assetBalance == amount) {
             val shouldForceUserRemoveAssets = shouldForceUserRemoveAssets(fromAccountPublicKey, amount)
             if (shouldForceUserRemoveAssets is Result.Error) {
                 return Result.Error(shouldForceUserRemoveAssets.exception)
             }
         }
 
-        return calculateMinimumBalance(amount, accountCacheData, selectedAsset)
+        return calculateMinimumBalance(amount, accountCacheData, ownedAssetData)
     }
 
     private fun shouldForceUserRemoveAssets(fromAccountPublicKey: String, amount: BigInteger): Result<Unit> {
@@ -79,16 +90,16 @@ class AmountTransactionValidator @Inject constructor(
     }
 
     private fun isAccountBalanceViolated(assetBalance: BigInteger?, amount: BigInteger): Boolean {
-        return amount > (assetBalance ?: BigInteger.ZERO)
+        return amount isGreaterThan (assetBalance ?: BigInteger.ZERO)
     }
 
     private fun checkIfAccountRekeyedAndTransactionMax(
-        assetInformation: AssetInformation,
+        ownedAssetData: BaseAccountAssetData.BaseOwnedAssetData,
         amount: BigInteger,
         fromAccountPublicKey: String
     ): Boolean {
-        return assetInformation.isAlgo() &&
-            amount == assetInformation.amount &&
+        return ownedAssetData.isAlgo &&
+            amount == ownedAssetData.amount &&
             accountCacheManager.accountCacheMap.value[fromAccountPublicKey]?.isRekeyedToAnotherAccount() == true
     }
 }

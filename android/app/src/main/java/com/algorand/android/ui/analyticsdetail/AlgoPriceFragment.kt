@@ -33,8 +33,8 @@ import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.setTextAndVisibility
 import com.algorand.android.utils.formatAsDollar
 import com.algorand.android.utils.getFormatter
-import com.algorand.android.utils.isBiggerThan
-import com.algorand.android.utils.isLessThan
+import com.algorand.android.utils.isGreaterThan
+import com.algorand.android.utils.isLesserThan
 import com.algorand.android.utils.setDrawable
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
@@ -151,7 +151,7 @@ class AlgoPriceFragment : BaseBottomBarFragment(R.layout.fragment_algo_price) {
 
     private fun setPriceChangePercentageText(chartEntryData: ChartEntryData) {
         val priceChangePercentage = chartEntryData.priceChangePercentage
-        if (priceChangePercentage isBiggerThan ZERO || priceChangePercentage isLessThan ZERO) {
+        if (priceChangePercentage isGreaterThan ZERO || priceChangePercentage isLesserThan ZERO) {
             setNonNeutralPriceChangePercentageText(chartEntryData)
         } else {
             clearPriceChangePercentageText()

@@ -37,7 +37,7 @@ sealed class LedgerInformationListItem {
     }
 
     data class AssetInformationItem(
-        val accountAssetData: BaseAccountAssetData.OwnedAssetData
+        val accountAssetData: BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData
     ) : LedgerInformationListItem() {
         override fun areItemsTheSame(other: LedgerInformationListItem): Boolean {
             return other is AssetInformationItem && accountAssetData.id == other.accountAssetData.id

@@ -17,7 +17,7 @@
     android:id="@+id/addAssetRootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primaryBackground"
+    android:background="@color/primary_background"
     android:focusableInTouchMode="true"
     tools:context="ui.addasset.AddAssetFragment">
 
@@ -28,12 +28,12 @@
         android:layout_marginHorizontal="@dimen/spacing_xlarge"
         android:layout_marginTop="@dimen/spacing_normal"
         android:hint="@string/search_assets_id"
-        app:endIconTintColor="@color/secondaryIconTintColor"
+        app:endIconTintColor="@color/secondary_icon_tint_color"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:startIconTintColor="@color/searchBarViewIconColor" />
+        app:startIconTintColor="@color/search_bar_view_icon_color" />
 
     <com.algorand.android.customviews.AlgorandTabLayout
         android:id="@+id/algorandTabLayout"
@@ -51,7 +51,7 @@
         android:id="@+id/assetsRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:paddingTop="@dimen/spacing_xlarge"
+        android:padding="@dimen/spacing_xlarge"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

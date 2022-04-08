@@ -35,7 +35,7 @@ class ChoosePasswordInfoFragment : BaseInfoFragment() {
     @Inject
     lateinit var sharedPref: SharedPreferences
 
-    private val toolbarConfiguration = ToolbarConfiguration(backgroundColor = R.color.tertiaryBackground)
+    private val toolbarConfiguration = ToolbarConfiguration(backgroundColor = R.color.tertiary_background)
 
     override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
 
@@ -54,7 +54,7 @@ class ChoosePasswordInfoFragment : BaseInfoFragment() {
         val icon = R.drawable.ic_locked
         imageView.apply {
             setImageResource(icon)
-            setColorFilter(ContextCompat.getColor(requireContext(), R.color.infoImageColor))
+            setColorFilter(ContextCompat.getColor(requireContext(), R.color.info_image_color))
         }
     }
 

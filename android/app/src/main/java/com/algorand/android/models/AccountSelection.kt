@@ -18,7 +18,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class AccountSelection(
-    val accountAssetData: BaseAccountAssetData.OwnedAssetData,
+    val accountAssetData: BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData,
     val accountCacheData: AccountCacheData,
     val assetInformation: AssetInformation
 ) : Parcelable, RecyclerListItem {

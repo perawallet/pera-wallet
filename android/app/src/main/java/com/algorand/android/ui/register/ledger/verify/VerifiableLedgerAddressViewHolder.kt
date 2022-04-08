@@ -44,27 +44,27 @@ class VerifiableLedgerAddressViewHolder(
     }
 
     private fun showAwaitingVerificationUI() {
-        setStatusText(R.string.awaiting_verification, R.color.negativeColor, R.style.TextAppearance_Body_Sans)
+        setStatusText(R.string.awaiting_verification, R.color.negative, R.style.TextAppearance_Body_Sans)
         showLoading()
-        customizeCard(backgroundColor = R.color.transparent, newStrokeColor = R.color.negativeColor)
+        customizeCard(backgroundColor = R.color.transparent, newStrokeColor = R.color.negative)
     }
 
     private fun showPendingUI() {
-        setStatusText(R.string.pending, R.color.secondaryTextColor, R.style.TextAppearance_Body_Sans)
-        setStatusImageView(R.drawable.ic_clock, R.color.pending_ledger_approve)
-        customizeCard(backgroundColor = R.color.transparent, newStrokeColor = R.color.secondaryTextColor)
+        setStatusText(R.string.pending, R.color.secondary_text_color, R.style.TextAppearance_Body_Sans)
+        setStatusImageView(R.drawable.ic_clock, R.color.text_gray)
+        customizeCard(backgroundColor = R.color.transparent, newStrokeColor = R.color.secondary_text_color)
     }
 
     private fun showApprovedUI() {
-        setStatusText(R.string.account_verified, R.color.linkPrimary, R.style.TextAppearance_Body_Sans_Medium)
-        setStatusImageView(R.drawable.ic_check, R.color.linkIcon)
-        customizeCard(backgroundColor = R.color.transparent, newStrokeColor = R.color.secondaryTextColor)
+        setStatusText(R.string.account_verified, R.color.link_primary, R.style.TextAppearance_Body_Sans_Medium)
+        setStatusImageView(R.drawable.ic_check, R.color.link_icon)
+        customizeCard(backgroundColor = R.color.transparent, newStrokeColor = R.color.secondary_text_color)
     }
 
     private fun showRejectedUI() {
-        setStatusText(R.string.not_verified, R.color.negativeColor, R.style.TextAppearance_Body_Sans_Medium)
-        setStatusImageView(R.drawable.ic_close, R.color.negativeColor)
-        customizeCard(backgroundColor = R.color.transparent, newStrokeColor = R.color.secondaryTextColor)
+        setStatusText(R.string.not_verified, R.color.negative, R.style.TextAppearance_Body_Sans_Medium)
+        setStatusImageView(R.drawable.ic_close, R.color.negative)
+        customizeCard(backgroundColor = R.color.transparent, newStrokeColor = R.color.secondary_text_color)
     }
 
     private fun setStatusText(@StringRes textResId: Int, @ColorRes colorResId: Int, @StyleRes styleResId: Int) {

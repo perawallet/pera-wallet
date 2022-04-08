@@ -20,8 +20,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.models.AccountCacheData
 import com.algorand.android.models.AssetInformation
-import com.algorand.android.models.AssetTransferAmountPreview
 import com.algorand.android.models.AssetTransaction
+import com.algorand.android.models.AssetTransferAmountPreview
 import com.algorand.android.models.Result
 import com.algorand.android.usecase.AssetTransferAmountUseCase
 import com.algorand.android.utils.Event
@@ -99,6 +99,13 @@ class AssetTransferAmountViewModel @ViewModelInject constructor(
                 is Result.Success -> _amountValidationFlow.emit(Event(Resource.Success(result.data)))
             }
         }
+    }
+
+    fun getMaximumAmountOfAsset(): String? {
+        return assetTransferAmountUseCase.getMaximumAmountOfAsset(
+            assetTransaction.assetId,
+            assetTransaction.senderAddress
+        )
     }
 
     fun getAssetInformation(): AssetInformation? {

@@ -32,14 +32,6 @@
         tools:itemCount="2"
         tools:listitem="@layout/item_account_selection" />
 
-    <View
-        android:layout_width="0dp"
-        android:layout_height="130dp"
-        android:background="@drawable/bg_alpha_gradient"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/confirmationButton"
         style="@style/Button.Primary"

@@ -18,8 +18,9 @@ import com.algorand.android.models.Result
 import com.algorand.android.repository.AccountRepository
 import com.algorand.android.repository.AccountRepository.Companion.ACCOUNT_NOT_FOUND_ERROR_CODE
 import com.algorand.android.utils.DataResource
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.flow
 
 class AccountInformationUseCase @Inject constructor(
     private val accountRepository: AccountRepository,
@@ -46,18 +47,14 @@ class AccountInformationUseCase @Inject constructor(
     // TODO Return flow and remove accountNotFoundErrorCode duplication
     suspend fun getAccountInformationAndFetchAssets(
         publicKey: String,
+        coroutineScope: CoroutineScope,
         includeClosedAccounts: Boolean = false
     ): Result<AccountInformation> {
         lateinit var accountInformationResult: Result<AccountInformation>
         accountRepository.getAccountInformation(publicKey, includeClosedAccounts).use(
             onSuccess = {
-                it.allAssetHoldingList?.forEach { assetHolding ->
-                    assetHolding.assetId?.let { assetId ->
-                        if (assetDetailUseCase.isAssetCached(assetId).not()) {
-                            assetDetailUseCase.fetchAndCacheAsset(assetId)
-                        }
-                    }
-                }
+                val assetIds = it.allAssetHoldingList?.mapNotNull { it.assetId }?.toSet().orEmpty()
+                assetDetailUseCase.cacheIfThereIsNonCachedAsset(assetIds, coroutineScope)
                 accountInformationResult = Result.Success(accountInformationMapper.mapToAccountInformation(it))
             },
             onFailed = { exception, code ->

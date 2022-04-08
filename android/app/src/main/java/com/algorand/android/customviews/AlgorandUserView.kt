@@ -85,13 +85,14 @@ class AlgorandUserView @JvmOverloads constructor(
         }
     }
 
-    fun setAccount(name: String, icon: AccountIcon) {
+    fun setAccount(name: String, icon: AccountIcon?) {
         with(binding) {
             mainTextView.apply {
                 text = name
                 changeTextAppearance(R.style.TextAppearance_Body_Sans)
             }
-            accountIconImageView.setAccountIcon(icon, R.dimen.spacing_xxsmall)
+            icon?.let { accountIconImageView.setAccountIcon(it, R.dimen.spacing_xxsmall) }
+                ?: accountIconImageView.hide()
             addButton.hide()
         }
     }
@@ -106,5 +107,11 @@ class AlgorandUserView @JvmOverloads constructor(
             context.copyToClipboard(address)
             return@setOnLongClickListener true
         }
+    }
+
+    fun setContactOrAccount(contact: User?, name: String, icon: AccountIcon?) {
+        contact?.let {
+            setContact(contact)
+        } ?: icon?.let { setAccount(name, icon) }
     }
 }

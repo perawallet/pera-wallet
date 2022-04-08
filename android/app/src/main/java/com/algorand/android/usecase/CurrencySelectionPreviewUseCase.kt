@@ -15,7 +15,6 @@ package com.algorand.android.usecase
 import com.algorand.android.core.BaseUseCase
 import com.algorand.android.mapper.CurrencyListItemMapper
 import com.algorand.android.mapper.CurrencySelectionPreviewMapper
-import com.algorand.android.models.Currency
 import com.algorand.android.models.CurrencyOption
 import com.algorand.android.models.ui.CurrencySelectionPreview
 import com.algorand.android.ui.settings.selection.CurrencyListItem
@@ -28,7 +27,8 @@ class CurrencySelectionPreviewUseCase @Inject constructor(
     private val currencyListItemMapper: CurrencyListItemMapper,
     private val currencySelectionPreviewMapper: CurrencySelectionPreviewMapper,
     private val currencyUseCase: CurrencyUseCase,
-    private val currencyOptionUseCase: CurrencyOptionUseCase
+    private val currencyOptionUseCase: CurrencyOptionUseCase,
+    private val algoPriceUseCase: AlgoPriceUseCase
 ) : BaseUseCase() {
 
     suspend fun getCurrencySelectionPreviewFlow(): Flow<CurrencySelectionPreview> {
@@ -63,7 +63,7 @@ class CurrencySelectionPreviewUseCase @Inject constructor(
         }.toMutableList()
         currencyListItems.add(
             0,
-            currencyListItemMapper.createAlgoCurrencyListItem(getSelectedCurrencyId() == Currency.ALGO.id)
+            currencyListItemMapper.createAlgoCurrencyListItem(algoPriceUseCase.isSelectedCurrencyAlgo())
         )
         return currencyListItems.toList()
     }

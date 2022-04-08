@@ -11,6 +11,6 @@
   -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:color="@color/secondaryButtonDisabledTextColor" android:state_enabled="false" />
-    <item android:color="@color/secondaryButtonTextColor" />
+    <item android:color="@color/button_secondary_disabled_text" android:state_enabled="false" />
+    <item android:color="@color/button_secondary_text" />
 </selector>

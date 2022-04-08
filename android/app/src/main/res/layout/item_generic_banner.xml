@@ -24,7 +24,7 @@
         android:layout_height="24dp"
         android:layout_margin="@dimen/spacing_xsmall"
         app:icon="@drawable/ic_close"
-        app:iconTint="@color/bannerCloseIconTintColor"
+        app:iconTint="@color/banner_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

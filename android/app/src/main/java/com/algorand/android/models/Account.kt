@@ -105,15 +105,15 @@ data class Account constructor(
      */
     enum class AccountIconColor(@ColorRes val backgroundColorResId: Int, @ColorRes val iconTintResId: Int) {
 
-        BLUSH(R.color.account_icon_background_color_blush, R.color.account_icon_tint_color_blush),
+        BLUSH(R.color.wallet_1, R.color.wallet_1_icon),
 
-        ORANGE(R.color.account_icon_background_color_orange, R.color.account_icon_tint_color_orange),
+        ORANGE(R.color.wallet_2, R.color.wallet_2_icon),
 
-        PURPLE(R.color.account_icon_background_color_purple, R.color.account_icon_tint_color_purple),
+        PURPLE(R.color.wallet_3, R.color.wallet_3_icon),
 
-        TURQUOISE(R.color.account_icon_background_color_turquoise, R.color.account_icon_tint_color_turquoise),
+        TURQUOISE(R.color.wallet_4, R.color.wallet_4_icon),
 
-        SALMON(R.color.account_icon_background_color_salmon, R.color.account_icon_tint_color_salmon),
+        SALMON(R.color.wallet_5, R.color.wallet_5_icon),
 
         UNDEFINED(R.color.transparent, R.color.transparent);
 

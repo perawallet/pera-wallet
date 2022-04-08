@@ -36,6 +36,7 @@ import com.algorand.android.utils.Event
 import com.algorand.android.utils.LifecycleScopedCoroutineOwner
 import com.algorand.android.utils.formatAsAlgoString
 import com.algorand.android.utils.getTxFee
+import com.algorand.android.utils.isLesserThan
 import com.algorand.android.utils.makeAddAssetTx
 import com.algorand.android.utils.makeRekeyTx
 import com.algorand.android.utils.makeRemoveAssetTx
@@ -43,13 +44,13 @@ import com.algorand.android.utils.makeTx
 import com.algorand.android.utils.minBalancePerAssetAsBigInteger
 import com.algorand.android.utils.recordException
 import com.algorand.android.utils.signTx
+import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import java.math.BigInteger
 import java.net.ConnectException
 import java.net.SocketException
 import javax.inject.Inject
-import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 class TransactionManager @Inject constructor(
     private val accountCacheManager: AccountCacheManager,
@@ -314,7 +315,7 @@ class TransactionManager @Inject constructor(
             projectedAmount
         }
 
-        if (calculatedAmount < BigInteger.ZERO) {
+        if (calculatedAmount isLesserThan BigInteger.ZERO) {
             if (accountCacheData.isRekeyedToAnotherAccount()) {
                 val errorMinBalance = AnnotatedString(
                     stringResId = R.string.the_transaction_cannot_be,

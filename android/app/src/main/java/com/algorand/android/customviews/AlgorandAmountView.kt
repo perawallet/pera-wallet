@@ -60,7 +60,7 @@ class AlgorandAmountView @JvmOverloads constructor(
         val color = when (symbol) {
             TransactionSymbol.NEGATIVE -> ContextCompat.getColor(context, R.color.transaction_amount_negative_color)
             TransactionSymbol.POSITIVE -> ContextCompat.getColor(context, R.color.transaction_amount_positive_color)
-            null -> ContextCompat.getColor(context, R.color.primaryTextColor)
+            null -> ContextCompat.getColor(context, R.color.primary_text_color)
         }
         setAmountTextColor(color)
     }

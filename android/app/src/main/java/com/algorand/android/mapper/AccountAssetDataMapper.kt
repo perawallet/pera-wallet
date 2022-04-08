@@ -12,12 +12,12 @@
 
 package com.algorand.android.mapper
 
+import com.algorand.android.models.AssetDetail
 import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
-import com.algorand.android.models.AssetQueryItem
 import com.algorand.android.models.BaseAccountAssetData
+import com.algorand.android.models.BaseAssetDetail
 import com.algorand.android.utils.ALGO_DECIMALS
 import com.algorand.android.utils.DEFAULT_ASSET_DECIMAL
-import com.algorand.android.utils.extensions.hasUsdValue
 import com.algorand.android.utils.formatAmount
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -26,69 +26,69 @@ import javax.inject.Inject
 class AccountAssetDataMapper @Inject constructor() {
 
     fun mapToOwnedAssetData(
-        assetQueryItem: AssetQueryItem,
+        assetDetail: AssetDetail,
         amount: BigInteger,
         formattedAmount: String,
         amountInSelectedCurrency: BigDecimal,
         formattedSelectedCurrencyValue: String
-    ): BaseAccountAssetData.OwnedAssetData {
-        return BaseAccountAssetData.OwnedAssetData(
-            id = assetQueryItem.assetId,
-            name = assetQueryItem.fullName,
-            shortName = assetQueryItem.shortName,
+    ): BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData {
+        return BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData(
+            id = assetDetail.assetId,
+            name = assetDetail.fullName,
+            shortName = assetDetail.shortName,
             amount = amount,
             formattedAmount = formattedAmount,
             amountInSelectedCurrency = amountInSelectedCurrency,
             formattedSelectedCurrencyValue = formattedSelectedCurrencyValue,
-            isVerified = assetQueryItem.isVerified,
+            isVerified = assetDetail.isVerified,
             isAlgo = false,
-            decimals = assetQueryItem.fractionDecimals ?: DEFAULT_ASSET_DECIMAL,
-            creatorPublicKey = assetQueryItem.assetCreator?.publicKey,
-            usdValue = assetQueryItem.usdValue,
-            isAmountInSelectedCurrencyVisible = assetQueryItem.hasUsdValue()
+            decimals = assetDetail.fractionDecimals ?: DEFAULT_ASSET_DECIMAL,
+            creatorPublicKey = assetDetail.assetCreator?.publicKey,
+            usdValue = assetDetail.usdValue,
+            isAmountInSelectedCurrencyVisible = assetDetail.hasUsdValue()
         )
     }
 
-    fun mapToPendingAdditionAssetData(assetQueryItem: AssetQueryItem): BaseAccountAssetData {
+    fun mapToPendingAdditionAssetData(assetDetail: BaseAssetDetail): BaseAccountAssetData {
         return BaseAccountAssetData.PendingAssetData.AdditionAssetData(
-            id = assetQueryItem.assetId,
-            name = assetQueryItem.fullName,
-            shortName = assetQueryItem.shortName,
-            isVerified = assetQueryItem.isVerified,
+            id = assetDetail.assetId,
+            name = assetDetail.fullName,
+            shortName = assetDetail.shortName,
+            isVerified = assetDetail.isVerified,
             isAlgo = false,
-            decimals = assetQueryItem.fractionDecimals ?: DEFAULT_ASSET_DECIMAL,
-            creatorPublicKey = assetQueryItem.assetCreator?.publicKey,
-            usdValue = assetQueryItem.usdValue
+            decimals = assetDetail.fractionDecimals ?: DEFAULT_ASSET_DECIMAL,
+            creatorPublicKey = assetDetail.assetCreator?.publicKey,
+            usdValue = assetDetail.usdValue
         )
     }
 
-    fun mapToPendingRemovalAssetData(assetQueryItem: AssetQueryItem): BaseAccountAssetData {
+    fun mapToPendingRemovalAssetData(assetDetail: BaseAssetDetail): BaseAccountAssetData {
         return BaseAccountAssetData.PendingAssetData.DeletionAssetData(
-            id = assetQueryItem.assetId,
-            name = assetQueryItem.fullName,
-            shortName = assetQueryItem.shortName,
-            isVerified = assetQueryItem.isVerified,
+            id = assetDetail.assetId,
+            name = assetDetail.fullName,
+            shortName = assetDetail.shortName,
+            isVerified = assetDetail.isVerified,
             isAlgo = false,
-            decimals = assetQueryItem.fractionDecimals ?: DEFAULT_ASSET_DECIMAL,
-            creatorPublicKey = assetQueryItem.assetCreator?.publicKey,
-            usdValue = assetQueryItem.usdValue
+            decimals = assetDetail.fractionDecimals ?: DEFAULT_ASSET_DECIMAL,
+            creatorPublicKey = assetDetail.assetCreator?.publicKey,
+            usdValue = assetDetail.usdValue
         )
     }
 
     fun mapToAlgoAssetData(
         amount: BigInteger,
         amountInSelectedCurrency: BigDecimal,
-        formattedSelectedCurrencyValue: String,
+        formattedCachedCurrencyValue: String,
         usdValue: BigDecimal
-    ): BaseAccountAssetData.OwnedAssetData {
-        return BaseAccountAssetData.OwnedAssetData(
+    ): BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData {
+        return BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData(
             id = ALGORAND_ID,
             name = "Algo", // TODO Get these from constants
             shortName = "ALGO",
             amount = amount,
             formattedAmount = amount.formatAmount(ALGO_DECIMALS),
             amountInSelectedCurrency = amountInSelectedCurrency,
-            formattedSelectedCurrencyValue = formattedSelectedCurrencyValue,
+            formattedSelectedCurrencyValue = formattedCachedCurrencyValue,
             isVerified = true,
             isAlgo = true,
             decimals = ALGO_DECIMALS,

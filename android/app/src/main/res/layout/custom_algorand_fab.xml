@@ -110,12 +110,12 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/spacing_xlarge"
         android:layout_marginBottom="@dimen/bottom_safe_area_margin"
-        app:backgroundTint="@color/primaryButtonBackgroundColor"
+        app:backgroundTint="@color/button_primary_bg"
         app:fabCustomSize="64dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_arrow_swap"
-        app:tint="@color/primaryButtonTextColor" />
+        app:tint="@color/button_primary_text" />
 
     <TextView
         android:id="@+id/openCloseButtonLabel"

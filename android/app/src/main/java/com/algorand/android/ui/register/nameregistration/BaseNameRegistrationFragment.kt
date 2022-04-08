@@ -69,7 +69,7 @@ abstract class BaseNameRegistrationFragment : DaggerBaseFragment(R.layout.fragme
             nextButton.setOnClickListener { onNextButtonClick() }
             nameInputLayout.apply {
                 text = nameRegistrationViewModel.accountPublicKey.toShortenedAddress()
-                setOnEndIconClickListener { text = "" }
+                addTrailingIcon(drawableRes = R.drawable.ic_close, onIconClick = { text = "" })
                 post {
                     requestFocus()
                     showKeyboard()

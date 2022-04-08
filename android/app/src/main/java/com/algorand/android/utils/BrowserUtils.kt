@@ -83,6 +83,17 @@ fun Context.openAssetInAlgoExplorer(assetId: Long?, nodeSlug: String?) {
     openUrl("https://$subDomain$ALGO_EXPLORER_URL/asset/$assetId")
 }
 
+fun Context.openAccountAddressInAlgoExplorer(accountAddress: String, nodeSlug: String?) {
+    val subDomain = if (nodeSlug == MAINNET_NETWORK_SLUG) "" else "$nodeSlug."
+    openUrl("https://$subDomain$ALGO_EXPLORER_URL/address/$accountAddress")
+}
+
+// TODO: 4.03.2022 The site is not supporting test net yet, so it's not tested on MainNet
+fun Context.showAssetOnNftExplorer(assetId: Long, nodeSlug: String?) {
+    val subDomain = if (nodeSlug == MAINNET_NETWORK_SLUG) "" else "$nodeSlug."
+    openUrl("https://www.nftexplorer.app/asset/$assetId")
+}
+
 fun Context.openApplicationInAlgoExplorer(applicationId: Long?, nodeSlug: String?) {
     val subDomain = if (nodeSlug == MAINNET_NETWORK_SLUG) "" else "$nodeSlug."
     openUrl("https://$subDomain$ALGO_EXPLORER_URL/application/$applicationId")

@@ -13,6 +13,7 @@
 package com.algorand.android.utils
 
 import android.graphics.Bitmap
+import com.algorand.android.BuildConfig
 import com.algorand.android.models.DecodedQrCode
 import com.algorand.android.ui.qr.QrCodeScannerFragment
 import com.algorand.android.utils.walletconnect.WALLET_CONNECT_URL_PREFIX
@@ -29,7 +30,6 @@ private const val NOTE_KEY = "note"
 private const val XNOTE_KEY = "xnote"
 private const val TRANSACTION_ID_KEY = "transactionId"
 private const val TRANSACTION_STATUS_KEY = "transactionStatus"
-private const val DEEPLINK_PREFIX = "algorand://"
 private const val QUERY_START_CHAR = "?"
 private const val QUERY_NEXT_CHAR = "&"
 private const val QUERY_KEY_ASSIGNER_CHAR = "="
@@ -47,7 +47,7 @@ fun getQrCodeBitmap(size: Int, qrContent: String): Bitmap? {
 
 fun getDeeplinkUrl(address: String, amount: BigInteger? = null, assetId: Long? = null): String {
     return StringBuilder().apply {
-        append("$DEEPLINK_PREFIX$address")
+        append("${BuildConfig.DEEPLINK_PREFIX}$address")
         getDeeplinkQueryList(amount, assetId).forEachIndexed { index, (key, value) ->
             append(if (index == 0) QUERY_START_CHAR else QUERY_NEXT_CHAR)
             append("$key=$value")
@@ -91,8 +91,8 @@ fun decodeDeeplink(qrContent: String?): DecodedQrCode? {
     var transactionStatus: String? = null
     val address: String
 
-    if (qrContent.startsWith(DEEPLINK_PREFIX)) {
-        val addressQuerySplit = qrContent.removePrefix(DEEPLINK_PREFIX).split(QUERY_START_CHAR)
+    if (qrContent.startsWith(BuildConfig.DEEPLINK_PREFIX)) {
+        val addressQuerySplit = qrContent.removePrefix(BuildConfig.DEEPLINK_PREFIX).split(QUERY_START_CHAR)
         address = addressQuerySplit.getOrNull(ADDRESS_INDEX) ?: return null
         addressQuerySplit.getOrNull(QUERY_INDEX)
             ?.split(QUERY_NEXT_CHAR)
@@ -138,7 +138,7 @@ private fun decodeWalletConnectQr(qrCode: String): DecodedQrCode {
 
 fun decodeAccountPublicKeyFromQr(qrContent: String?): DecodedQrCode? {
     // Removing prefix for Algo Explorer support because they return public key with a deeplink prefix.
-    val address = qrContent?.removePrefix(DEEPLINK_PREFIX)
+    val address = qrContent?.removePrefix(BuildConfig.DEEPLINK_PREFIX)
     if (address.isValidAddress().not()) {
         return null
     }

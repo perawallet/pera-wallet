@@ -14,26 +14,20 @@
 package com.algorand.android.usecase
 
 import com.algorand.android.mapper.AssetTransferPreviewMapper
-import com.algorand.android.models.Account
+import com.algorand.android.models.AssetStatus
 import com.algorand.android.models.AssetTransferPreview
-import com.algorand.android.models.Result
 import com.algorand.android.models.SignedTransactionDetail
-import com.algorand.android.models.TrackTransactionRequest
-import com.algorand.android.network.AlgodInterceptor
-import com.algorand.android.repository.TransactionsRepository
-import com.algorand.android.utils.MAINNET_NETWORK_SLUG
-import com.algorand.android.utils.analytics.logTransactionEvent
-import com.google.firebase.analytics.FirebaseAnalytics
+import com.algorand.android.utils.CacheResult
+import com.algorand.android.utils.DataResource
 import java.math.BigDecimal
 import javax.inject.Inject
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.Flow
 
 class AssetTransferPreviewUseCase @Inject constructor(
     private val assetTransferPreviewMapper: AssetTransferPreviewMapper,
-    private val transactionsRepository: TransactionsRepository,
-    private val algodInterceptor: AlgodInterceptor,
-    private val firebaseAnalytics: FirebaseAnalytics,
-    private val algoPriceUseCase: AlgoPriceUseCase
+    private val algoPriceUseCase: AlgoPriceUseCase,
+    private val sendSignedTransactionUseCase: SendSignedTransactionUseCase,
+    private val accountDetailUseCase: AccountDetailUseCase
 ) {
 
     fun getAssetTransferPreview(
@@ -47,33 +41,19 @@ class AssetTransferPreviewUseCase @Inject constructor(
         )
     }
 
-    suspend fun sendSignedTransaction(signedTransactionDetail: SignedTransactionDetail.Send) = flow {
-        val signedTransactionData = signedTransactionDetail.signedTransactionData
-        when (val result = transactionsRepository.sendSignedTransaction(signedTransactionData)) {
-            is Result.Success -> {
-                result.data.taxId?.run {
-                    transactionsRepository.postTrackTransaction(TrackTransactionRequest(this@run))
-                }
-                logTransactionEvent(signedTransactionDetail, result.data.taxId)
-                emit(Result.Success(result.data))
-            }
-            is Result.Error -> {
-                emit(Result.Error(result.exception))
-            }
-        }
+    suspend fun sendSignedTransaction(
+        signedTransactionDetail: SignedTransactionDetail.Send
+    ): Flow<DataResource<String>> {
+        addAssetSendingToAccountCache(
+            signedTransactionDetail.accountCacheData.account.address,
+            signedTransactionDetail.assetInformation.assetId
+        )
+        return sendSignedTransactionUseCase.sendSignedTransaction(signedTransactionDetail)
     }
 
-    private fun logTransactionEvent(signedTransactionDetail: SignedTransactionDetail.Send, taxId: String?) {
-        if (algodInterceptor.currentActiveNode?.networkSlug == MAINNET_NETWORK_SLUG) {
-            with(signedTransactionDetail) {
-                firebaseAnalytics.logTransactionEvent(
-                    amount = amount,
-                    assetId = assetInformation.assetId,
-                    accountType = accountCacheData.account.type ?: Account.Type.STANDARD,
-                    isMax = isMax,
-                    transactionId = taxId
-                )
-            }
-        }
+    private suspend fun addAssetSendingToAccountCache(publicKey: String, assetId: Long) {
+        val cachedAccountDetail = accountDetailUseCase.getCachedAccountDetail(publicKey)?.data ?: return
+        cachedAccountDetail.accountInformation.setAssetHoldingStatus(assetId, AssetStatus.PENDING_FOR_SENDING)
+        accountDetailUseCase.cacheAccountDetail(CacheResult.Success.create(cachedAccountDetail))
     }
 }

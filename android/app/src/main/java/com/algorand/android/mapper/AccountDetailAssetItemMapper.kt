@@ -16,25 +16,30 @@ import com.algorand.android.R
 import com.algorand.android.models.AccountDetailAssetsItem
 import com.algorand.android.models.AccountDetailAssetsItem.BaseAssetItem.BasePendingAssetItem.PendingAdditionItem
 import com.algorand.android.models.AccountDetailAssetsItem.BaseAssetItem.BasePendingAssetItem.PendingRemovalItem
-import com.algorand.android.models.BaseAccountAssetData.OwnedAssetData
+import com.algorand.android.models.BaseAccountAssetData
 import com.algorand.android.models.BaseAccountAssetData.PendingAssetData
 import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.extensions.hasUsdValue
+import com.algorand.android.utils.isNotEqualTo
+import java.math.BigInteger
 import javax.inject.Inject
 
 // TODO Rename this function to make it screen independent
 class AccountDetailAssetItemMapper @Inject constructor() {
 
-    fun mapToOwnedAssetItem(accountAssetData: OwnedAssetData): AccountDetailAssetsItem.BaseAssetItem.OwnedAssetItem {
+    fun mapToOwnedAssetItem(
+        accountAssetData: BaseAccountAssetData.BaseOwnedAssetData
+    ): AccountDetailAssetsItem.BaseAssetItem.OwnedAssetItem {
         return AccountDetailAssetsItem.BaseAssetItem.OwnedAssetItem(
             id = accountAssetData.id,
             name = AssetName.create(accountAssetData.name),
             shortName = AssetName.createShortName(accountAssetData.shortName),
             formattedAmount = accountAssetData.formattedAmount,
-            formattedSelectedCurrencyValue = accountAssetData.formattedSelectedCurrencyValue,
+            formattedDisplayedCurrencyValue = accountAssetData.formattedSelectedCurrencyValue,
             isVerified = accountAssetData.isVerified,
             isAlgo = accountAssetData.isAlgo,
-            isAmountInSelectedCurrencyVisible = accountAssetData.hasUsdValue()
+            isAmountInDisplayedCurrencyVisible = accountAssetData.hasUsdValue() &&
+                accountAssetData.amount isNotEqualTo BigInteger.ZERO
         )
     }
 

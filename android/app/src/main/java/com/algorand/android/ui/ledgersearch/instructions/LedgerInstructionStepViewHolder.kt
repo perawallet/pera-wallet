@@ -32,7 +32,7 @@ class LedgerInstructionStepViewHolder(
                 R.string.position_with_dot,
                 listOf("position" to (position + 1).toString())
             )
-            descriptionTextView.setXmlStyledString(instructionStepText, R.color.linkPrimary, ::onUrlClick)
+            descriptionTextView.setXmlStyledString(instructionStepText, R.color.link_primary, ::onUrlClick)
         }
     }
 

@@ -23,7 +23,7 @@ class AddAccountTypeSelectionFragment : DaggerBaseFragment(R.layout.fragment_add
     private val toolbarConfiguration = ToolbarConfiguration(
         startIconResId = R.drawable.ic_left_arrow,
         startIconClick = ::navBack,
-        backgroundColor = R.color.primaryBackground
+        backgroundColor = R.color.primary_background
     )
 
     override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)

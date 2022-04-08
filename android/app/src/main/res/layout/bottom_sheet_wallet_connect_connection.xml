@@ -15,8 +15,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/spacing_xlarge"
-    tools:background="@color/backgroundOnPrimary">
+    android:padding="@dimen/spacing_xlarge">
 
     <ImageView
         android:id="@+id/appIconImageView"
@@ -31,11 +30,11 @@
 
     <TextView
         android:id="@+id/descriptionTextView"
-        android:textAppearance="@style/TextAppearance.Body.Large.Sans"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_large"
         android:gravity="center"
+        android:textAppearance="@style/TextAppearance.Body.Large.Sans"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appIconImageView"
@@ -48,7 +47,7 @@
         android:layout_marginTop="@dimen/spacing_normal"
         android:drawablePadding="@dimen/spacing_xsmall"
         android:fontFamily="@font/dmsans_bold"
-        android:textColor="@color/linkPrimary"
+        android:textColor="@color/link_primary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/descriptionTextView"
@@ -81,12 +80,12 @@
             android:layout_marginStart="@dimen/spacing_normal"
             android:gravity="center_vertical"
             android:text="@string/select_account"
-            tools:visibility="gone"
             android:textAppearance="@style/TextAppearance.Body.Sans"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/arrowImageView"
             app:layout_constraintStart_toEndOf="@id/accountIconImageView"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="gone" />
 
         <TextView
             android:id="@+id/accountNameTextView"
@@ -102,24 +101,24 @@
             app:layout_constraintEnd_toStartOf="@id/arrowImageView"
             app:layout_constraintStart_toEndOf="@id/accountIconImageView"
             app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="visible"
-            tools:text="@tools:sample/lorem[10]" />
+            tools:text="@tools:sample/lorem[10]"
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/accountBalanceTextView"
             android:layout_width="0dp"
-            android:textAppearance="@style/TextAppearance.Footnote.Description"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_normal"
             android:layout_marginTop="@dimen/spacing_xxsmall"
             android:gravity="center_vertical"
-            android:textColor="@color/tertiaryTextColor"
+            android:textAppearance="@style/TextAppearance.Footnote.Description"
+            android:textColor="@color/tertiary_text_color"
             android:visibility="gone"
-            tools:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/accountIconImageView"
             app:layout_constraintTop_toBottomOf="@id/accountNameTextView"
-            tools:text="13,020.00" />
+            tools:text="13,020.00"
+            tools:visibility="visible" />
 
 
         <ImageView
@@ -130,7 +129,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_right_arrow"
-            app:tint="@color/primaryIconTintColor" />
+            app:tint="@color/primary_icon_tint_color" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

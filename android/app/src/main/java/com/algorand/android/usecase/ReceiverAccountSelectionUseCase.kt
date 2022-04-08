@@ -17,13 +17,13 @@ import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.SendAlgoNavigationDirections
 import com.algorand.android.core.AccountManager
-import com.algorand.android.mapper.BaseReceiverAccountSelectionMapper
 import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.AssetAction
+import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
 import com.algorand.android.models.AssetSupportRequest
-import com.algorand.android.models.BaseReceiverAccount
+import com.algorand.android.models.BaseAccountSelectionListItem
 import com.algorand.android.models.Result
 import com.algorand.android.models.TargetUser
 import com.algorand.android.models.User
@@ -42,52 +42,51 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 
 class ReceiverAccountSelectionUseCase @Inject constructor(
     private val contactRepository: ContactRepository,
-    private val baseReceiverAccountSelectionMapper: BaseReceiverAccountSelectionMapper,
     private val accountCacheManager: AccountCacheManager,
     private val accountTransactionValidator: AccountTransactionValidator,
     private val assetRepository: AssetRepository,
     private val accountManager: AccountManager,
-    accountInformationUseCase: AccountInformationUseCase,
-    assetDetailUseCase: SimpleAssetDetailUseCase
-) : BaseSendAccountSelectionUseCase(accountInformationUseCase, assetDetailUseCase) {
+    private val accountSelectionListUseCase: AccountSelectionListUseCase,
+    private val getBaseOwnedAssetDataUseCase: GetBaseOwnedAssetDataUseCase,
+    accountInformationUseCase: AccountInformationUseCase
+) : BaseSendAccountSelectionUseCase(accountInformationUseCase) {
 
-    fun getToAccountList(query: String, assetId: Long): Flow<List<BaseReceiverAccount>> {
+    fun getToAccountList(query: String, assetId: Long): Flow<List<BaseAccountSelectionListItem>> {
         val contactList = fetchContactList(query)
         val accountList = fetchAccountList(assetId, query)
         return combine(accountList, contactList) { accounts, contacts ->
-            mutableListOf<BaseReceiverAccount>().apply {
+            mutableListOf<BaseAccountSelectionListItem>().apply {
                 if (accounts.isNotEmpty()) {
-                    add(BaseReceiverAccount.HeaderItem(R.string.my_accounts))
+                    add(BaseAccountSelectionListItem.HeaderItem(R.string.my_accounts))
                     addAll(accounts)
                 }
                 if (contacts.isNotEmpty()) {
-                    add(BaseReceiverAccount.HeaderItem(R.string.contacts))
+                    add(BaseAccountSelectionListItem.HeaderItem(R.string.contacts))
                     addAll(contacts)
                 }
             }
         }
     }
 
-    private fun fetchContactList(query: String): Flow<List<BaseReceiverAccount.ContactItem>> {
-        return contactRepository.getContactsByName(query).map { userList ->
-            userList.map { user ->
-                baseReceiverAccountSelectionMapper.mapToContactItem(user)
-            }
+    private fun fetchContactList(query: String) = flow {
+        val contacts = accountSelectionListUseCase.createAccountSelectionListContactItems().filter {
+            it.displayName.contains(query, true) || it.publicKey.contains(query, true)
         }
+        emit(contacts)
     }
 
     private fun fetchAccountList(assetId: Long, query: String) = flow {
-        val mappedList = accountCacheManager.getCachedAccounts().filter {
-            val hasSelectedAsset = it.assetsInformation.find { it.assetId == assetId } != null
-            hasSelectedAsset && it.account.name.contains(query, ignoreCase = true)
-        }.map { accountCacheData ->
-            baseReceiverAccountSelectionMapper.mapToAccountItem(accountCacheData)
-        }
-        emit(mappedList)
+        val localAccounts = accountSelectionListUseCase.createAccountSelectionListAccountItemsFilteredByAssetId(
+            showAssetCount = false,
+            showHoldings = false,
+            shouldIncludeWatchAccounts = true,
+            showFailedAccounts = false,
+            assetId = assetId
+        ).filter { it.displayName.contains(query, true) || it.publicKey.contains(query, true) }
+        emit(localAccounts)
     }
 
     fun isAccountAddressValid(toAccountPublicKey: String): Result<String> {
@@ -103,6 +102,7 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
     ): Result<TargetUser> {
         val isSelectedAssetValid = accountTransactionValidator.isSelectedAssetValid(fromAccountPublicKey, assetId)
         if (!isSelectedAssetValid) {
+            // TODO: 18.03.2022 Find better exception message
             return Result.Error(Exception())
         }
 
@@ -173,7 +173,7 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
                         descriptionAnnotatedString = AnnotatedString(R.string.this_is_the_first_transaction),
                         buttonStringResId = R.string.i_understand,
                         drawableResId = R.drawable.ic_info,
-                        drawableTintResId = R.color.errorTintColor
+                        drawableTintResId = R.color.error_tint_color
                     )
                 )
             )
@@ -197,5 +197,10 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
             accountList = accountManager.getAccounts(),
             nonOwnerPublicKey = publicKey
         )
+    }
+
+    fun getAssetInformation(assetId: Long, publicKey: String): AssetInformation? {
+        val ownedAssetData = getBaseOwnedAssetDataUseCase.getBaseOwnedAssetData(assetId, publicKey)
+        return AssetInformation.createAssetInformation(ownedAssetData ?: return null)
     }
 }

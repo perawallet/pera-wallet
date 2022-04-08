@@ -15,21 +15,25 @@ package com.algorand.android.ui.addasset.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import com.algorand.android.assetsearch.ui.model.BaseAssetSearchListItem
 import com.algorand.android.databinding.ItemSearchAssetBinding
-import com.algorand.android.models.AssetQueryItem
+import com.algorand.android.models.BaseViewHolder
 
-class AssetSearchItemViewHolder(private val binding: ItemSearchAssetBinding) : RecyclerView.ViewHolder(binding.root) {
+class AssetSearchItemViewHolder(
+    private val binding: ItemSearchAssetBinding
+) : BaseViewHolder<BaseAssetSearchListItem>(binding.root) {
 
-    fun bind(assetQueryItem: AssetQueryItem?) {
-        binding.nameTextView.setupUI(
-            showVerified = assetQueryItem?.isVerified,
-            shortName = assetQueryItem?.shortName,
-            fullName = assetQueryItem?.fullName,
-            assetId = assetQueryItem?.assetId,
-            isAlgorand = false
-        )
-        binding.idTextView.text = assetQueryItem?.assetId.toString()
+    override fun bind(item: BaseAssetSearchListItem) {
+        with(binding) {
+            nameTextView.setupUI(
+                showVerified = item.isVerified,
+                shortName = item.shortName.getName(root.resources),
+                fullName = item.fullName.getName(root.resources),
+                assetId = item.assetId,
+                isAlgorand = false
+            )
+            idTextView.text = item.assetId.toString()
+        }
     }
 
     companion object {

@@ -151,7 +151,7 @@
         app:icon="@drawable/ic_delete"
         app:iconGravity="textStart"
         app:iconPadding="0dp"
-        app:iconTint="@color/primaryTextColor"
+        app:iconTint="@color/primary_text_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/padView0Button"

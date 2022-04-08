@@ -23,9 +23,8 @@ import androidx.lifecycle.lifecycleScope
 import com.algorand.android.R
 import com.algorand.android.core.TransactionBaseFragment
 import com.algorand.android.databinding.FragmentReceiverAccountSelectionBinding
-import com.algorand.android.models.AccountCacheData
 import com.algorand.android.models.AccountInformation
-import com.algorand.android.models.BaseReceiverAccount
+import com.algorand.android.models.BaseAccountSelectionListItem
 import com.algorand.android.models.DecodedQrCode
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.QrScanner
@@ -33,9 +32,8 @@ import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.TargetUser
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.models.TransactionData
-import com.algorand.android.models.User
+import com.algorand.android.ui.accountselection.AccountSelectionAdapter
 import com.algorand.android.ui.qr.QrCodeScannerFragment
-import com.algorand.android.ui.send.receiveraccount.adapter.ReceiverAccountSelectionAdapter
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.extensions.hide
@@ -49,6 +47,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+// TODO: 18.03.2022 Use BaseAccountSelectionFragment after refactoring TransactionBaseFragment
 @AndroidEntryPoint
 class ReceiverAccountSelectionFragment : TransactionBaseFragment(R.layout.fragment_receiver_account_selection) {
 
@@ -64,11 +63,23 @@ class ReceiverAccountSelectionFragment : TransactionBaseFragment(R.layout.fragme
 
     private val binding by viewBinding(FragmentReceiverAccountSelectionBinding::bind)
 
-    private val receiverAccountSelectionAdapter = ReceiverAccountSelectionAdapter(
-        ::onAccountClick, ::onContactClick, ::onPasteClick
-    )
+    private val accountSelectionListener = object : AccountSelectionAdapter.Listener {
+        override fun onAccountItemClick(publicKey: String) {
+            receiverAccountSelectionViewModel.fetchToAccountInformation(publicKey)
+        }
 
-    private val listCollector: suspend (List<BaseReceiverAccount>?) -> Unit = { accountList ->
+        override fun onContactItemClick(publicKey: String) {
+            receiverAccountSelectionViewModel.fetchToAccountInformation(publicKey)
+        }
+
+        override fun onPasteItemClick(publicKey: String) {
+            binding.searchView.text = publicKey
+        }
+    }
+
+    private val receiverAccountSelectionAdapter = AccountSelectionAdapter(accountSelectionListener)
+
+    private val listCollector: suspend (List<BaseAccountSelectionListItem>?) -> Unit = { accountList ->
         receiverAccountSelectionAdapter.submitList(accountList)
         binding.screenStateView.isVisible = accountList?.isEmpty() == true
     }
@@ -200,18 +211,6 @@ class ReceiverAccountSelectionFragment : TransactionBaseFragment(R.layout.fragme
 
     private fun onNextButtonClick() {
         receiverAccountSelectionViewModel.checkIsGivenAddressValid(binding.searchView.text)
-    }
-
-    private fun onAccountClick(accountCacheData: AccountCacheData) {
-        receiverAccountSelectionViewModel.fetchToAccountInformation(accountCacheData.account.address)
-    }
-
-    private fun onContactClick(user: User) {
-        receiverAccountSelectionViewModel.fetchToAccountInformation(user.publicKey)
-    }
-
-    private fun onPasteClick(address: String) {
-        binding.searchView.text = address
     }
 
     private fun startSendingTransaction(targetUser: TargetUser) {

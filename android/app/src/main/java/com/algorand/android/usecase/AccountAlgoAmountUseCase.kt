@@ -28,30 +28,35 @@ class AccountAlgoAmountUseCase @Inject constructor(
     private val accountAssetDataMapper: AccountAssetDataMapper
 ) {
 
-    fun getAccountAlgoAmount(publicKey: String): BaseAccountAssetData.OwnedAssetData {
+    fun getAccountAlgoAmount(publicKey: String): BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData {
         val accountAlgoAmount = accountDetailUseCase.getCachedAccountAlgoAmount(publicKey) ?: BigInteger.ZERO
         return createAccountAlgoAmount(accountAlgoAmount)
     }
 
-    fun getAccountAlgoAmount(accountDetail: AccountDetail): BaseAccountAssetData.OwnedAssetData {
+    fun getAccountAlgoAmount(accountDetail: AccountDetail): BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData {
         val accountAlgoAmount = accountDetail.accountInformation.amount
         return createAccountAlgoAmount(accountAlgoAmount)
     }
 
-    private fun createAccountAlgoAmount(accountAlgoAmount: BigInteger): BaseAccountAssetData.OwnedAssetData {
+    private fun createAccountAlgoAmount(
+        accountAlgoAmount: BigInteger
+    ): BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData {
         val algoPrice = algoPriceUseCase.getAlgoToSelectedCurrencyConversionRate() ?: ZERO
         val amountInSelectedCurrency = accountAlgoAmount.toAlgoDisplayValue().multiply(algoPrice) ?: ZERO
-        val formattedAlgoAmountInSelectedCurrency = formatAlgoAmountToSelectedCurrency(amountInSelectedCurrency)
+        val algoToCachedCurrencyRate = algoPriceUseCase.getAlgoToCachedCurrencyConversionRate() ?: ZERO
+        val algoUsdValue = algoPriceUseCase.getAlgoToUsdConversionRate()
+        val amountInCachedCurrency = accountAlgoAmount.toAlgoDisplayValue().multiply(algoToCachedCurrencyRate) ?: ZERO
+        val formattedAlgoAmountInCachedCurrency = formatAlgoAmountToCachedCurrency(amountInCachedCurrency)
         return accountAssetDataMapper.mapToAlgoAssetData(
             accountAlgoAmount,
             amountInSelectedCurrency,
-            formattedAlgoAmountInSelectedCurrency,
-            algoPrice
+            formattedAlgoAmountInCachedCurrency,
+            algoUsdValue
         )
     }
 
-    private fun formatAlgoAmountToSelectedCurrency(algoAmountInSelectedCurrency: BigDecimal): String {
-        val selectedCurrencySymbol = algoPriceUseCase.getSelectedCurrencySymbolOrCurrencyName()
-        return algoAmountInSelectedCurrency.formatAsCurrency(selectedCurrencySymbol)
+    private fun formatAlgoAmountToCachedCurrency(algoAmountInCachedCurrency: BigDecimal): String {
+        val cachedCurrencySymbol = algoPriceUseCase.getCachedCurrencySymbolOrName()
+        return algoAmountInCachedCurrency.formatAsCurrency(cachedCurrencySymbol)
     }
 }

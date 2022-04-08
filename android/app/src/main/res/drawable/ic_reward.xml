@@ -17,12 +17,12 @@
     android:viewportHeight="40">
   <path
       android:fillAlpha="0.05"
-      android:fillColor="@color/reward_icon_color"
+      android:fillColor="@color/positive"
       android:pathData="M20,20m-20,0a20,20 0,1 1,40 0a20,20 0,1 1,-40 0"
       android:strokeAlpha="0.05"/>
   <path
       android:fillColor="#00000000"
       android:pathData="M9,17L31,17M20,28V17M20,17V14M20,17H17C15.3431,17 14,15.6569 14,14C14,12.3431 15.3431,11 17,11C18.6569,11 20,12.3431 20,14M20,17H23C24.6569,17 26,15.6569 26,14C26,12.3431 24.6569,11 23,11C21.3431,11 20,12.3431 20,14M12,17H28V28H12V17Z"
       android:strokeWidth="2"
-      android:strokeColor="@color/reward_icon_color"/>
+      android:strokeColor="@color/link_primary"/>
 </vector>

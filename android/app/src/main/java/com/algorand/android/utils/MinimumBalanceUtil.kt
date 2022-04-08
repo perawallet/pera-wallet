@@ -16,7 +16,7 @@ package com.algorand.android.utils
 import com.algorand.android.R
 import com.algorand.android.models.AccountCacheData
 import com.algorand.android.models.AnnotatedString
-import com.algorand.android.models.AssetInformation
+import com.algorand.android.models.BaseAccountAssetData
 import com.algorand.android.models.Result
 import com.algorand.android.utils.exceptions.GlobalException
 import java.math.BigInteger
@@ -24,10 +24,10 @@ import java.math.BigInteger
 fun calculateMinimumBalance(
     amount: BigInteger,
     accountCacheData: AccountCacheData,
-    selectedAsset: AssetInformation
+    ownedAssetData: BaseAccountAssetData.BaseOwnedAssetData
 ): Result<BigInteger> {
-    val calculatedMinBalance = getMinimumCalculatedAmount(amount, accountCacheData, selectedAsset)
-    return if (calculatedMinBalance < BigInteger.ZERO) {
+    val calculatedMinBalance = getMinimumCalculatedAmount(amount, accountCacheData, ownedAssetData)
+    return if (calculatedMinBalance isLesserThan BigInteger.ZERO) {
         val errorMinBalance = AnnotatedString(
             stringResId = R.string.the_transaction_cannot_be,
             replacementList = listOf("min_balance" to accountCacheData.getMinBalance().formatAsAlgoString())
@@ -47,11 +47,11 @@ fun calculateMinimumBalance(
 private fun getMinimumCalculatedAmount(
     amount: BigInteger,
     selectedAccountCacheData: AccountCacheData,
-    selectedAsset: AssetInformation
+    ownedAssetData: BaseAccountAssetData.BaseOwnedAssetData
 ): BigInteger {
-    val assetBalance = selectedAsset.amount ?: BigInteger.ZERO
+    val assetBalance = ownedAssetData.amount
     val shouldKeepMinimumAlgoBalance = shouldKeepMinimumAlgoBalance(
-        selectedAsset,
+        ownedAssetData,
         selectedAccountCacheData,
         amount,
         assetBalance
@@ -67,7 +67,7 @@ private fun getMinimumCalculatedAmount(
 }
 
 fun shouldKeepMinimumAlgoBalance(
-    selectedAsset: AssetInformation,
+    ownedAssetData: BaseAccountAssetData.BaseOwnedAssetData,
     accountCacheData: AccountCacheData,
     amount: BigInteger,
     assetBalance: BigInteger
@@ -75,7 +75,7 @@ fun shouldKeepMinimumAlgoBalance(
     val isThereAnotherAsset = accountCacheData.accountInformation.isThereAnyDifferentAsset()
     val isThereAppOptedIn = accountCacheData.accountInformation.isThereAnOptedInApp()
     val minimumBalance = calculateMinBalance(accountCacheData.accountInformation, true).toBigInteger()
-    return selectedAsset.isAlgo() &&
-        assetBalance - amount < minimumBalance &&
+    return ownedAssetData.isAlgo &&
+        (assetBalance - amount) isLesserThan minimumBalance &&
         (isThereAnotherAsset || isThereAppOptedIn)
 }

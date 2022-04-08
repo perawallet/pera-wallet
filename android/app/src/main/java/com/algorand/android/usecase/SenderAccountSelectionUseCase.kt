@@ -26,9 +26,8 @@ class SenderAccountSelectionUseCase @Inject constructor(
     private val accountCacheManager: AccountCacheManager,
     private val accountAlgoAmountUseCase: AccountAlgoAmountUseCase,
     private val transactionTipsUseCase: TransactionTipsUseCase,
-    accountInformationUseCase: AccountInformationUseCase,
-    assetDetailUseCase: SimpleAssetDetailUseCase
-) : BaseSendAccountSelectionUseCase(accountInformationUseCase, assetDetailUseCase) {
+    accountInformationUseCase: AccountInformationUseCase
+) : BaseSendAccountSelectionUseCase(accountInformationUseCase) {
 
     fun getAccounts(): List<SenderAccount> {
         return accountCacheManager.getCachedAccounts(listOf(Account.Type.WATCH)).map { accountCacheData ->

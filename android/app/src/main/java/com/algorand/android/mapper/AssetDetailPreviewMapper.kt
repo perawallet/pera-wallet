@@ -22,7 +22,7 @@ import javax.inject.Inject
 class AssetDetailPreviewMapper @Inject constructor() {
 
     fun mapToAssetDetailPreview(
-        assetData: BaseAccountAssetData.OwnedAssetData,
+        assetData: BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData,
         canSignTransaction: Boolean
     ): AssetDetailPreview {
         return AssetDetailPreview(

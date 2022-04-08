@@ -17,6 +17,11 @@ import com.algorand.android.core.BaseUseCase
 import com.algorand.android.mapper.RemoveAssetItemMapper
 import com.algorand.android.models.AccountDetailSummary
 import com.algorand.android.models.AssetStatus
+import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleImageData
+import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleMixedData
+import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleVideoData
+import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedUnsupportedCollectibleData
+import com.algorand.android.models.BaseRemoveAssetItem
 import com.algorand.android.utils.CacheResult
 import javax.inject.Inject
 import kotlinx.coroutines.flow.flow
@@ -24,6 +29,7 @@ import kotlinx.coroutines.flow.flow
 class AccountAssetRemovalUseCase @Inject constructor(
     private val accountDetailUseCase: AccountDetailUseCase,
     private val accountAssetDataUseCase: AccountAssetDataUseCase,
+    private val accountCollectibleDataUseCase: AccountCollectibleDataUseCase,
     private val removeAssetItemMapper: RemoveAssetItemMapper
 ) : BaseUseCase() {
 
@@ -32,10 +38,26 @@ class AccountAssetRemovalUseCase @Inject constructor(
     }
 
     fun getRemovalAccountAssetsByQuery(publicKey: String, query: String) = flow {
-        val removalAccountAssets = accountAssetDataUseCase.getAccountOwnedAssetData(publicKey, false)
-            .filter { it.name?.contains(query, true) == true }
-            .map { removeAssetItemMapper.mapTo(it) }
-        emit(removalAccountAssets)
+        val removeAssetItems = mutableListOf<BaseRemoveAssetItem>().apply {
+            addAll(
+                accountAssetDataUseCase.getAccountOwnedAssetData(publicKey, false)
+                    .filter { it.name?.contains(query, true) == true }
+                    .map { removeAssetItemMapper.mapTo(it) }
+            )
+            addAll(
+                accountCollectibleDataUseCase.getAccountOwnedCollectibleDataList(publicKey)
+                    .filter { it.name?.contains(query, true) == true }
+                    .map {
+                        when (it) {
+                            is OwnedCollectibleImageData -> removeAssetItemMapper.mapTo(it)
+                            is OwnedUnsupportedCollectibleData -> removeAssetItemMapper.mapTo(it)
+                            is OwnedCollectibleVideoData -> removeAssetItemMapper.mapTo(it)
+                            is OwnedCollectibleMixedData -> removeAssetItemMapper.mapTo(it)
+                        }
+                    }
+            )
+        }
+        emit(removeAssetItems)
     }
 
     suspend fun addAssetDeletionToAccountCache(publicKey: String, assetId: Long) {

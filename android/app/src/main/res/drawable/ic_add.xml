@@ -16,9 +16,9 @@
     android:viewportWidth="24"
     android:viewportHeight="24">
     <path
-        android:fillColor="@color/primaryIconTintColor"
+        android:fillColor="@color/primary_icon_tint_color"
         android:pathData="M5,11L19,11A1,1 0,0 1,20 12L20,12A1,1 0,0 1,19 13L5,13A1,1 0,0 1,4 12L4,12A1,1 0,0 1,5 11z" />
     <path
-        android:fillColor="@color/primaryIconTintColor"
+        android:fillColor="@color/primary_icon_tint_color"
         android:pathData="M11,19L11,5A1,1 0,0 1,12 4L12,4A1,1 0,0 1,13 5L13,19A1,1 0,0 1,12 20L12,20A1,1 0,0 1,11 19z" />
 </vector>

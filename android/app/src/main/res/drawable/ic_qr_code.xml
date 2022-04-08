@@ -16,33 +16,33 @@
     android:viewportWidth="18"
     android:viewportHeight="18">
     <path
-        android:fillColor="@color/qrIconTintColor"
+        android:fillColor="@color/qr_icon_tint_color"
         android:pathData="M1.8001,1.8001V6H6V1.8001H1.8001ZM4.8001,4.8001H3.0001V3.0001H4.8001V4.8001Z" />
     <path
-        android:fillColor="@color/qrIconTintColor"
+        android:fillColor="@color/qr_icon_tint_color"
         android:pathData="M1.8001,11.9999V16.2H6V11.9999H1.8001ZM4.8001,15.0001H3.0001V13.2001H4.8001V15.0001Z" />
     <path
-        android:fillColor="@color/qrIconTintColor"
+        android:fillColor="@color/qr_icon_tint_color"
         android:pathData="M12.0001,1.8001V6H16.2V1.8001H12.0001ZM14.9999,4.8001H13.1999V3.0001H14.9999V4.8001Z" />
     <path
-        android:fillColor="@color/qrIconTintColor"
+        android:fillColor="@color/qr_icon_tint_color"
         android:pathData="M14.9999,7.2V10.8H12.0001V11.9998H16.2V7.2H14.9999Z" />
     <path
-        android:fillColor="@color/qrIconTintColor"
+        android:fillColor="@color/qr_icon_tint_color"
         android:pathData="M12.0001,13.2002V16.2001H13.1999V14.4001H14.9999V16.2001H16.2V13.2002H12.0001Z" />
     <path
-        android:fillColor="@color/qrIconTintColor"
+        android:fillColor="@color/qr_icon_tint_color"
         android:pathData="M7.2,1.8001V3.0001H9.5999V6H10.7999V1.8001H7.2Z" />
     <path
-        android:fillColor="@color/qrIconTintColor"
+        android:fillColor="@color/qr_icon_tint_color"
         android:pathData="M9.5999,7.2V9.6001H7.2V13.2001H9.5999V16.1999H10.8V11.9998H8.4V10.8H10.8V8.4H12V9.6001H13.1999V7.2H9.5999Z" />
     <path
-        android:fillColor="@color/qrIconTintColor"
+        android:fillColor="@color/qr_icon_tint_color"
         android:pathData="M8.4,14.4H7.2V16.2H8.4V14.4Z" />
     <path
-        android:fillColor="@color/qrIconTintColor"
+        android:fillColor="@color/qr_icon_tint_color"
         android:pathData="M5.9999,9.6001H4.1999V10.8H5.9999V9.6001Z" />
     <path
-        android:fillColor="@color/qrIconTintColor"
+        android:fillColor="@color/qr_icon_tint_color"
         android:pathData="M7.2,4.2V7.2H1.8001V10.8H3.0001V8.4001H8.4001V4.2H7.2Z" />
 </vector>

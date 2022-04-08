@@ -20,5 +20,5 @@
         android:fillColor="#00000000"
         android:pathData="M2,1L22,1A1,1 0,0 1,23 2L23,22A1,1 0,0 1,22 23L2,23A1,1 0,0 1,1 22L1,2A1,1 0,0 1,2 1z"
         android:strokeWidth="2"
-        android:strokeColor="@color/layerGray" />
+        android:strokeColor="@color/layer_gray" />
 </vector>

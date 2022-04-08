@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:fontFamily="@font/dmsans_bold"
-        android:textColor="@color/primaryTextColor"
+        android:textColor="@color/primary_text_color"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="@id/iconImageView"
         app:layout_constraintEnd_toEndOf="@id/iconImageView"

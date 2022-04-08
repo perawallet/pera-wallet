@@ -22,7 +22,7 @@
         android:layout_width="@dimen/spacing_normal"
         android:layout_height="@dimen/spacing_normal"
         android:layout_marginEnd="@dimen/spacing_small"
-        android:indeterminateTint="@color/progressBarTint"
+        android:indeterminateTint="@color/progress_bar_tint"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/nameTextView"
         app:layout_constraintStart_toStartOf="parent"

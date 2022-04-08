@@ -23,29 +23,29 @@
             android:fillColor="#00000000"
             android:pathData="M3.5,17C3.5,14.7909 5.2909,13 7.5,13V13C9.7091,13 11.5,14.7909 11.5,17V23H3.5V17Z"
             android:strokeWidth="2"
-            android:strokeColor="@color/primaryIconTintColor" />
+            android:strokeColor="@color/primary_icon_tint_color" />
         <path
-            android:fillColor="@color/primaryIconTintColor"
+            android:fillColor="@color/primary_icon_tint_color"
             android:pathData="M7.5,17m-1,0a1,1 0,1 1,2 0a1,1 0,1 1,-2 0" />
         <path
             android:fillColor="#00000000"
             android:pathData="M21.8818,16L20.3818,14L18.8818,16"
             android:strokeWidth="2"
-            android:strokeColor="@color/primaryIconTintColor" />
+            android:strokeColor="@color/primary_icon_tint_color" />
         <path
             android:fillColor="#00000000"
             android:pathData="M20.54,15.2955L20.54,20.3289C20.54,20.6995 20.2396,21 19.8689,21L14.4999,21"
             android:strokeWidth="2"
-            android:strokeColor="@color/primaryIconTintColor" />
+            android:strokeColor="@color/primary_icon_tint_color" />
         <path
             android:fillColor="#00000000"
             android:pathData="M16.8818,8L18.3818,10L19.8818,8"
             android:strokeWidth="2"
-            android:strokeColor="@color/primaryIconTintColor" />
+            android:strokeColor="@color/primary_icon_tint_color" />
         <path
             android:fillColor="#00000000"
             android:pathData="M18.1445,8.7045V3.6711C18.1445,3.3005 18.445,3 18.8157,3H24.1846"
             android:strokeWidth="2"
-            android:strokeColor="@color/primaryIconTintColor" />
+            android:strokeColor="@color/primary_icon_tint_color" />
     </group>
 </vector>

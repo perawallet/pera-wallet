@@ -14,5 +14,5 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <corners android:radius="@dimen/passphrase_background_radius" />
-    <solid android:color="@color/passphraseBackgroundColor" />
+    <solid android:color="@color/passphrase_background_color" />
 </shape>

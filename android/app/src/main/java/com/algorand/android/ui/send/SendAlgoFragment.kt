@@ -19,6 +19,7 @@ import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
 import com.algorand.android.core.BaseFragment
 import com.algorand.android.models.FragmentConfiguration
+import com.algorand.android.utils.isEqualTo
 import java.math.BigInteger
 
 // TODO: 13.01.2022 send_algo_navigation graph will be separated into multiple graphs
@@ -38,7 +39,7 @@ class SendAlgoFragment : BaseFragment(R.layout.fragment_send_algo) {
             assetTransaction.assetId == -1L -> {
                 SendAlgoFragmentDirections.actionSendAlgoFragmentToAssetSelectionFragment(assetTransaction)
             }
-            assetTransaction.amount == BigInteger.ZERO -> {
+            assetTransaction.amount isEqualTo BigInteger.ZERO -> {
                 SendAlgoFragmentDirections.actionSendAlgoFragmentToAssetTransferAmountFragment(assetTransaction)
             }
             assetTransaction.receiverUser == null -> {

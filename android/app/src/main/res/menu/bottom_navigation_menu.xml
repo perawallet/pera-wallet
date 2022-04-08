@@ -28,9 +28,9 @@
         android:title="" />
 
     <item
-        android:id="@id/contactsFragment"
-        android:icon="@drawable/ic_menu_contacts"
-        android:title="@string/contacts" />
+        android:id="@id/collectiblesFragment"
+        android:icon="@drawable/ic_collectibles"
+        android:title="@string/collectibles" />
 
     <item
         android:id="@id/settingsFragment"

@@ -22,6 +22,7 @@ import com.algorand.android.R
 import com.algorand.android.models.BalanceInput
 import com.algorand.android.models.CustomInputState
 import com.algorand.android.utils.BalanceInputFormatter
+import com.algorand.android.utils.isEqualTo
 import java.math.BigInteger
 import kotlin.properties.Delegates
 
@@ -38,7 +39,7 @@ class AlgorandAmountInputTextView @JvmOverloads constructor(
         }
     }
 
-    private var amountTextColor: Int by Delegates.observable(R.color.tertiaryTextColor) { _, oldValue, newValue ->
+    private var amountTextColor: Int by Delegates.observable(R.color.tertiary_text_color) { _, oldValue, newValue ->
         if (oldValue != newValue) {
             setTextColor(ContextCompat.getColor(context, newValue))
         }
@@ -75,10 +76,10 @@ class AlgorandAmountInputTextView @JvmOverloads constructor(
     }
 
     private fun updateTextColor(amount: BigInteger) {
-        amountTextColor = if (amount == BigInteger.ZERO) {
-            R.color.tertiaryTextColor
+        amountTextColor = if (amount isEqualTo BigInteger.ZERO) {
+            R.color.tertiary_text_color
         } else {
-            R.color.primaryTextColor
+            R.color.primary_text_color
         }
     }
 

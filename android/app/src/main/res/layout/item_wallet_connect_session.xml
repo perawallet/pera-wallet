@@ -75,7 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_small"
         style="@style/TextAppearance.Footnote.Description"
-        android:textColor="@color/walletConnectSessionDateTextColor"
+        android:textColor="@color/text_gray_lighter"
         app:layout_constraintStart_toStartOf="@id/appDescriptionTextView"
         app:layout_constraintTop_toBottomOf="@id/appDescriptionTextView"
         app:layout_goneMarginStart="0dp"
@@ -99,7 +99,7 @@
         android:textAppearance="@style/TextAppearance.Footnote.Sans.Medium"
         tools:background="@drawable/bg_connected_session_indicator"
         tools:text="Connected with C2AWQ_21XQS"
-        tools:textColor="@color/linkPrimary" />
+        tools:textColor="@color/link_primary" />
 
     <TextView
         android:id="@+id/connectedTextView"
@@ -107,7 +107,7 @@
         android:layout_height="wrap_content"
         android:text="@string/connected"
         android:textAppearance="@style/TextAppearance.Footnote.Sans"
-        android:textColor="@color/tertiaryTextColor"
+        android:textColor="@color/tertiary_text_color"
         app:layout_constraintStart_toStartOf="@id/appNameTextView"
         app:layout_constraintTop_toBottomOf="@id/appNameTextView"
         android:paddingTop="@dimen/spacing_xxsmall"

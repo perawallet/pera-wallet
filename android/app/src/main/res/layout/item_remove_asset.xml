@@ -60,14 +60,8 @@
     <!--  TODO Missing shadow  -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/removeAssetButton"
-        style="@style/IconButton"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:minWidth="0dp"
-        android:textColor="@color/errorTextColor"
+        style="@style/IconButton.Negative"
         app:icon="@drawable/ic_trash"
-        app:iconSize="20dp"
-        app:iconTint="@color/negativeColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

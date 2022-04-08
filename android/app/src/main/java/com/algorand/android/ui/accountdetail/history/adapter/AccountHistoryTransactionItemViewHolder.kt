@@ -43,7 +43,7 @@ class AccountHistoryTransactionItemViewHolder(
                     assetShortName = assetShortName,
                     decimal = decimals
                 )
-                amountInCurrencyTextView.setTextAndVisibility(formattedSelectedCurrencyValue)
+                amountInCurrencyTextView.setTextAndVisibility(formattedAmountInDisplayedCurrency)
             }
         }
     }

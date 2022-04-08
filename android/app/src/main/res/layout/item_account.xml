@@ -47,7 +47,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:textAppearance="@style/TextAppearance.Footnote.Sans"
-        android:textColor="@color/secondaryTextColor"
+        android:textColor="@color/secondary_text_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/accountHoldingsTextView"
         app:layout_constraintStart_toStartOf="@id/accountDisplayNameTextView"

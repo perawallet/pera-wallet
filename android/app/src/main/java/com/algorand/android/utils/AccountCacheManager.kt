@@ -18,7 +18,7 @@ import com.algorand.android.models.AccountCacheData
 import com.algorand.android.models.AccountCacheStatus
 import com.algorand.android.models.AccountDetail
 import com.algorand.android.models.AssetInformation
-import com.algorand.android.models.AssetQueryItem
+import com.algorand.android.models.AssetDetail
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import java.math.BigInteger
@@ -100,7 +100,7 @@ class AccountCacheManager(
             .distinctUntilChanged()
     }
 
-    fun getAssetDescription(assetId: Long): AssetQueryItem? {
+    fun getAssetDescription(assetId: Long): AssetDetail? {
         return assetDetailUseCase.getCachedAssetDetail(assetId)?.data
     }
 

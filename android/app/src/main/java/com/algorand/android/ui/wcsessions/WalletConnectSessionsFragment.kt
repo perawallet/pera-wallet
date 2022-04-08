@@ -105,6 +105,6 @@ class WalletConnectSessionsFragment : DaggerBaseFragment(R.layout.fragment_walle
     }
 
     private fun initAddMoreSessionsButton() {
-        getAppToolbar()?.addButtonToEnd(IconButton(R.drawable.ic_qr_scan, onClick = ::onScanQrClick))
+        getAppToolbar()?.addButtonToEnd(IconButton(R.drawable.ic_scan_qr, onClick = ::onScanQrClick))
     }
 }

@@ -12,46 +12,42 @@
 
 package com.algorand.android.ui.addasset
 
-import android.os.Bundle
-import android.view.View
-import androidx.core.view.isVisible
+import androidx.core.widget.ContentLoadingProgressBar
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
-import androidx.paging.PagingData
+import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.R
-import com.algorand.android.core.TransactionBaseFragment
 import com.algorand.android.customviews.AlgorandTabLayout
+import com.algorand.android.customviews.ScreenStateView
 import com.algorand.android.databinding.FragmentAddAssetBinding
 import com.algorand.android.models.AssetAction
-import com.algorand.android.models.AssetActionResult
-import com.algorand.android.models.AssetInformation
-import com.algorand.android.models.AssetQueryItem
 import com.algorand.android.models.AssetQueryType
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.IconButton
-import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.ToolbarConfiguration
-import com.algorand.android.models.TransactionData
-import com.algorand.android.models.ui.AssetAdditionLoadStatePreview
-import com.algorand.android.ui.addasset.adapter.AssetSearchAdapter
-import com.algorand.android.ui.assetaction.AddAssetActionBottomSheet
-import com.algorand.android.utils.Event
-import com.algorand.android.utils.Resource
-import com.algorand.android.utils.hideKeyboard
 import com.algorand.android.utils.showAlertDialog
-import com.algorand.android.utils.startSavedStateListener
-import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class AddAssetFragment : TransactionBaseFragment(R.layout.fragment_add_asset) {
+class AddAssetFragment : BaseAddAssetFragment(R.layout.fragment_add_asset) {
 
-    private var assetSearchAdapter: AssetSearchAdapter? = null
+    private val args: AddAssetFragmentArgs by navArgs()
+
+    override val loadingProgressBar: ContentLoadingProgressBar
+        get() = binding.loadingProgressBar
+
+    override val screenStateView: ScreenStateView
+        get() = binding.screenStateView
+
+    override val assetsRecyclerView: RecyclerView
+        get() = binding.assetsRecyclerView
+
+    override val fragmentResId: Int
+        get() = R.id.addAssetFragment
+
+    override val accountPublicKey: String
+        get() = args.accountPublicKey
 
     private val toolbarConfiguration = ToolbarConfiguration(
         titleResId = R.string.add_new_asset,
@@ -64,9 +60,10 @@ class AddAssetFragment : TransactionBaseFragment(R.layout.fragment_add_asset) {
 
     private val binding by viewBinding(FragmentAddAssetBinding::bind)
 
-    private val args: AddAssetFragmentArgs by navArgs()
-
     private val addAssetViewModel: AddAssetViewModel by viewModels()
+
+    override val baseAddAssetViewModel: BaseAddAssetViewModel
+        get() = addAssetViewModel
 
     private val algorandTabLayoutListener = object : AlgorandTabLayout.Listener {
         override fun onLeftTabSelected() {
@@ -78,144 +75,34 @@ class AddAssetFragment : TransactionBaseFragment(R.layout.fragment_add_asset) {
         }
     }
 
-    override val transactionFragmentListener = object : TransactionFragmentListener {
-        override fun onSignTransactionLoadingFinished() {
-            binding.loadingProgressBar.isVisible = false
-        }
-
-        override fun onSignTransactionLoading() {
-            binding.loadingProgressBar.isVisible = true
-        }
-
-        override fun onSignTransactionFinished(signedTransactionDetail: SignedTransactionDetail) {
-            with(signedTransactionDetail) {
-                if (this is SignedTransactionDetail.AssetOperation) {
-                    addAssetViewModel.sendSignedTransaction(
-                        signedTransactionData,
-                        assetInformation,
-                        accountCacheData.account
-                    )
-                }
-            }
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="Observers">
-
-    private val sendTransactionObserver = Observer<Event<Resource<Unit>>> {
-        it.consume()?.use(
-            onSuccess = { nav(AddAssetFragmentDirections.actionAddAssetFragmentToAccountsFragment()) },
-            onFailed = { error -> showGlobalError(error.parse(requireContext())) },
-            onLoadingFinished = { binding.loadingProgressBar.visibility = View.GONE }
-        )
-    }
-
-    private val assetSearchPaginationCollector: suspend (PagingData<AssetQueryItem>) -> Unit = { pagingData ->
-        assetSearchAdapter?.submitData(pagingData)
-    }
-
-    // </editor-fold>
-
-    override fun onResume() {
-        super.onResume()
-        initSavedStateListener()
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView()
+    override fun initUi() {
         addAssetViewModel.start(getString(R.string.the_internet_connection))
-        initObservers()
         setupToolbar()
-        initUi()
+        with(binding) {
+            algorandTabLayout.setListener(algorandTabLayoutListener)
+            searchBar.setOnTextChanged { addAssetViewModel.queryText = it }
+            screenStateView.setOnNeutralButtonClickListener { addAssetViewModel.refreshTransactionHistory() }
+            assetsRecyclerView.adapter = assetSearchAdapter
+        }
     }
 
     private fun setupToolbar() {
         getAppToolbar()?.addButtonToEnd(IconButton(R.drawable.ic_info, onClick = ::onInfoClick))
     }
 
-    private fun onBackPressed() {
-        view?.hideKeyboard()
-        navBack()
+    override fun onSendTransactionSuccess() {
+        nav(AddAssetFragmentDirections.actionAddAssetFragmentToAccountsFragment())
     }
 
-    private fun setupRecyclerView() {
-        if (assetSearchAdapter == null) {
-            assetSearchAdapter = AssetSearchAdapter(::onAssetClick)
-        }
-        binding.assetsRecyclerView.adapter = assetSearchAdapter
-        handleLoadState()
+    override fun navigateToAssetAdditionBottomSheet(assetAdditionAssetAction: AssetAction) {
+        nav(AddAssetFragmentDirections.actionAddAssetFragmentToAddAssetActionBottomSheet(assetAdditionAssetAction))
     }
 
-    private fun onAssetClick(assetQueryItem: AssetQueryItem) {
-        nav(
-            AddAssetFragmentDirections.actionAddAssetFragmentToAddAssetActionBottomSheet(
-                AssetAction(
-                    assetId = assetQueryItem.assetId,
-                    asset = AssetInformation(
-                        assetId = assetQueryItem.assetId,
-                        isVerified = assetQueryItem.isVerified,
-                        fullName = assetQueryItem.fullName,
-                        shortName = assetQueryItem.shortName
-                    )
-                )
-            )
-        )
-    }
-
-    private fun initUi() {
-        with(binding) {
-            algorandTabLayout.setListener(algorandTabLayoutListener)
-            searchBar.setOnTextChanged { addAssetViewModel.queryText = it }
-            screenStateView.setOnNeutralButtonClickListener { addAssetViewModel.refreshTransactionHistory() }
-        }
-    }
-
-    private fun initObservers() {
-        addAssetViewModel.sendTransactionResultLiveData.observe(viewLifecycleOwner, sendTransactionObserver)
-        viewLifecycleOwner.lifecycleScope.launch {
-            addAssetViewModel.assetSearchPaginationFlow.collectLatest(assetSearchPaginationCollector)
-        }
+    override fun onAssetAlreadyOwned() {
+        context?.showAlertDialog(getString(R.string.error), getString(R.string.you_already_have))
     }
 
     private fun onInfoClick() {
         nav(AddAssetFragmentDirections.actionAddAssetFragmentToVerifiedAssetInformationBottomSheet())
-    }
-
-    private fun handleLoadState() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            assetSearchAdapter?.loadStateFlow?.collectLatest { combinedLoadStates ->
-                updateUiWithAssetAdditionLoadStatePreview(
-                    addAssetViewModel.createAssetAdditionLoadStatePreview(
-                        combinedLoadStates,
-                        assetSearchAdapter?.itemCount ?: 0,
-                        binding.screenStateView.isVisible
-                    )
-                )
-            }
-        }
-    }
-
-    private fun updateUiWithAssetAdditionLoadStatePreview(loadStatePreview: AssetAdditionLoadStatePreview) {
-        with(binding) {
-            loadingProgressBar.isVisible = loadStatePreview.isLoading
-            screenStateView.isVisible = loadStatePreview.isScreenStateViewVisible
-            assetsRecyclerView.isVisible = loadStatePreview.isAssetListVisible
-            loadStatePreview.screenStateViewType?.let { screenStateView.setupUi(it) }
-        }
-    }
-
-    private fun initSavedStateListener() {
-        startSavedStateListener(R.id.addAssetFragment) {
-            useSavedStateValue<AssetActionResult>(AddAssetActionBottomSheet.ADD_ASSET_ACTION_RESULT) {
-                if (!accountCacheManager.isAccountOwnerOfAsset(args.accountPublicKey, it.asset.assetId)) {
-                    val accountCacheData = accountCacheManager.getCacheData(args.accountPublicKey)
-                        ?: return@useSavedStateValue
-                    sendTransaction(TransactionData.AddAsset(accountCacheData, it.asset))
-                } else {
-                    context?.showAlertDialog(getString(R.string.error), getString(R.string.you_already_have))
-                }
-            }
-        }
     }
 }

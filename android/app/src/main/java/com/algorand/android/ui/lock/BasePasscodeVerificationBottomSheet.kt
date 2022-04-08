@@ -69,7 +69,7 @@ abstract class BasePasscodeVerificationBottomSheet :
 
     private fun configureToolbar() {
         val toolbarConfiguration = ToolbarConfiguration(
-            backgroundColor = R.color.primaryBackground,
+            backgroundColor = R.color.primary_background,
             startIconResId = R.drawable.ic_left_arrow,
             titleResId = titleResId,
             startIconClick = ::navBack

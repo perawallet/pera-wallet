@@ -26,7 +26,6 @@ import com.algorand.android.models.AccountCacheData
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.AssetTransferPreview
 import com.algorand.android.models.FragmentConfiguration
-import com.algorand.android.models.SendTransactionResponse
 import com.algorand.android.models.TargetUser
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.utils.ALGOS_SHORT_NAME
@@ -65,7 +64,7 @@ class AssetTransferPreviewFragment : BaseFragment(R.layout.fragment_transfer_ass
         it?.let { updateUi(it) }
     }
 
-    private val sendAlgoResponseCollector: suspend (Event<Resource<SendTransactionResponse>>?) -> Unit = {
+    private val sendAlgoResponseCollector: suspend (Event<Resource<String>>?) -> Unit = {
         it?.consume()?.use(
             onSuccess = {
                 nav(
@@ -148,7 +147,7 @@ class AssetTransferPreviewFragment : BaseFragment(R.layout.fragment_transfer_ass
             assetBalanceTextView.setAmount(amount = assetInformation.amount, assetInformation = assetInformation)
             assetAmountTextView.setAmount(amount = amount, assetInformation = assetInformation)
             if (assetInformation.isAlgo()) {
-                assetBalanceTextView.setTextColor(ContextCompat.getColor(root.context, R.color.tertiaryTextColor))
+                assetBalanceTextView.setTextColor(ContextCompat.getColor(root.context, R.color.tertiary_text_color))
             } else {
                 assetBalanceTextView.changeTextAppearance(R.style.TextAppearance_Body_Mono)
             }

@@ -57,7 +57,8 @@ class AccountsFragment : BaseBottomBarFragment(R.layout.fragment_accounts) {
     private val toolbarConfiguration = ToolbarConfiguration(
         showNodeStatus = true,
         startIconResId = R.drawable.ic_notification,
-        startIconClick = ::navigateToNotifications
+        startIconClick = ::navigateToNotifications,
+        centerImageRes = R.drawable.ic_toolbar_app_logo
     )
 
     override val fragmentConfiguration = FragmentConfiguration(
@@ -151,7 +152,7 @@ class AccountsFragment : BaseBottomBarFragment(R.layout.fragment_accounts) {
     private fun configureToolbar() {
         getAppToolbar()?.apply {
             addButtonToEnd(IconButton(R.drawable.ic_scan_qr, onClick = ::onScanQrClick))
-            addButtonToEnd(TabButton(R.drawable.ic_add, R.color.layerGrayLighter, onClick = ::onAddAccountClick))
+            addButtonToEnd(TabButton(R.drawable.ic_add, R.color.layer_gray_lighter, onClick = ::onAddAccountClick))
         }
     }
 

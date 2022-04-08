@@ -14,7 +14,6 @@ package com.algorand.android.ui.removeasset
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -29,8 +28,8 @@ import com.algorand.android.models.AssetAction
 import com.algorand.android.models.AssetActionResult
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.AssetTransaction
+import com.algorand.android.models.BaseRemoveAssetItem
 import com.algorand.android.models.FragmentConfiguration
-import com.algorand.android.models.RemoveAssetItem
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.models.TransactionData
@@ -41,13 +40,14 @@ import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
+import com.algorand.android.utils.isGreaterThan
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import java.math.BigInteger
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.math.BigInteger
 
 @AndroidEntryPoint
 class RemoveAssetsFragment : TransactionBaseFragment(R.layout.fragment_remove_assets) {
@@ -70,13 +70,18 @@ class RemoveAssetsFragment : TransactionBaseFragment(R.layout.fragment_remove_as
 
     private val isAssetRemovedObserver = Observer<Event<Resource<Unit>>> { event ->
         event.consume()?.use(
-            onSuccess = { navBack() },
+            onSuccess = { refreshList() },
             onFailed = { error -> showGlobalError(error.parse(requireContext())) },
-            onLoadingFinished = { binding.removeAssetsLoadingLayout.root.isVisible = false }
+            onLoading = { binding.removeAssetsLoadingLayout.root.show() },
+            onLoadingFinished = { binding.removeAssetsLoadingLayout.root.hide() }
         )
     }
 
-    private val accountAssetListCollector: suspend (value: List<RemoveAssetItem>?) -> Unit = {
+    private fun refreshList() {
+        removeAssetsViewModel.refreshAssetQueryFlow()
+    }
+
+    private val accountAssetListCollector: suspend (value: List<BaseRemoveAssetItem>?) -> Unit = {
         removeAssetAdapter.submitList(it)
     }
 
@@ -144,8 +149,8 @@ class RemoveAssetsFragment : TransactionBaseFragment(R.layout.fragment_remove_as
         removeAssetsViewModel.removeAssetLiveData.observe(viewLifecycleOwner, isAssetRemovedObserver)
     }
 
-    private fun onRemoveAssetClick(removeAssetItem: RemoveAssetItem) {
-        val hasBalanceInAccount = removeAssetItem.amount > BigInteger.ZERO
+    private fun onRemoveAssetClick(removeAssetItem: BaseRemoveAssetItem) {
+        val hasBalanceInAccount = removeAssetItem.amount isGreaterThan BigInteger.ZERO
         if (hasBalanceInAccount) {
             navToTransferBalanceActionBottomSheet(removeAssetItem)
         } else {
@@ -153,7 +158,7 @@ class RemoveAssetsFragment : TransactionBaseFragment(R.layout.fragment_remove_as
         }
     }
 
-    private fun navToTransferBalanceActionBottomSheet(removeAssetItem: RemoveAssetItem) {
+    private fun navToTransferBalanceActionBottomSheet(removeAssetItem: BaseRemoveAssetItem) {
         nav(
             RemoveAssetsFragmentDirections.actionRemoveAssetsFragmentToTransferBalanceActionBottomSheet(
                 AssetAction(
@@ -164,7 +169,7 @@ class RemoveAssetsFragment : TransactionBaseFragment(R.layout.fragment_remove_as
         )
     }
 
-    private fun navToRemoveAssetActionBottomSheet(removeAssetItem: RemoveAssetItem) {
+    private fun navToRemoveAssetActionBottomSheet(removeAssetItem: BaseRemoveAssetItem) {
         nav(
             RemoveAssetsFragmentDirections.actionRemoveAssetsFragmentToRemoveAssetActionBottomSheet(
                 AssetAction(

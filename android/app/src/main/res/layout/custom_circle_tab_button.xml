@@ -17,6 +17,5 @@
     style="@style/IconButton.Circle"
     android:layout_width="40dp"
     android:layout_height="40dp"
-    app:backgroundTint="@color/toolbarButtonColor"
-    tools:icon="@drawable/ic_qr_scan" />
-
+    app:backgroundTint="@color/toolbar_button_color"
+    tools:icon="@drawable/ic_add" />

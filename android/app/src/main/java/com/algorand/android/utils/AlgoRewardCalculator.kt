@@ -33,7 +33,7 @@ class AlgoRewardCalculator @Inject constructor() {
             return BigDecimal.ZERO
         }
 
-        if (totalMoney == BigInteger.ZERO) {
+        if (totalMoney isEqualTo BigInteger.ZERO) {
             return BigDecimal.ZERO
         }
 

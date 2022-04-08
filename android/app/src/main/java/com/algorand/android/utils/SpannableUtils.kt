@@ -60,7 +60,7 @@ fun SpannableStringBuilder.addAssetName(
         if (!isFullNameNullOrBlank) {
             addSpace()
         }
-        color(ContextCompat.getColor(context, R.color.gray_71)) {
+        color(ContextCompat.getColor(context, R.color.gray_500)) {
             append(context.getString(R.string.ticker_asset_format, shortName?.uppercase(Locale.ENGLISH)))
         }
     }
@@ -72,7 +72,7 @@ fun SpannableStringBuilder.addAssetName(
 fun SpannableStringBuilder.addAssetId(context: Context, assetId: Long?, textColor: Int? = null) {
     if (assetId != null && assetId != AssetInformation.ALGORAND_ID) {
         append("  ") // Tried to put \t but it's broken for SpannedString.
-        color(ContextCompat.getColor(context, textColor ?: R.color.gray_71)) {
+        color(ContextCompat.getColor(context, textColor ?: R.color.gray_500)) {
             append(assetId.toString())
         }
     }
@@ -89,7 +89,7 @@ fun SpannableStringBuilder.addVerifiedIcon(
 }
 
 fun SpannableStringBuilder.addUnnamedAssetName(context: Context) {
-    color(ContextCompat.getColor(context, R.color.orange_E0)) {
+    color(ContextCompat.getColor(context, R.color.salmon_500)) {
         inSpans(CustomTypefaceSpan(ResourcesCompat.getFont(context, R.font.dmsans_medium_italic))) {
             append(context.getString(R.string.unnamed))
         }

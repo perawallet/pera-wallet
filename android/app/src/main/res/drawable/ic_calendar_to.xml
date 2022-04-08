@@ -20,13 +20,13 @@
       android:pathData="M3,3h18v18h-18z"
       android:strokeWidth="2"
       android:fillColor="#00000000"
-      android:strokeColor="@color/primaryIconTintColor"/>
+      android:strokeColor="@color/primary_icon_tint_color"/>
   <path
       android:pathData="M15,15H17V17H15V15Z"
-      android:fillColor="@color/primaryIconTintColor"/>
+      android:fillColor="@color/primary_icon_tint_color"/>
   <path
       android:pathData="M8,7H16"
       android:strokeWidth="2"
-      android:fillColor="@color/primaryIconTintColor"
-      android:strokeColor="@color/primaryIconTintColor"/>
+      android:fillColor="@color/primary_icon_tint_color"
+      android:strokeColor="@color/primary_icon_tint_color"/>
 </vector>

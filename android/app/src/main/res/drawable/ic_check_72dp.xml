@@ -19,5 +19,5 @@
       android:pathData="M13.5,33L30,49.5L58.5,21"
       android:strokeWidth="6"
       android:fillColor="#00000000"
-      android:strokeColor="@color/linkIcon"/>
+      android:strokeColor="@color/link_icon"/>
 </vector>

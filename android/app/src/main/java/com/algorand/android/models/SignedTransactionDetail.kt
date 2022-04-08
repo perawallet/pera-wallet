@@ -17,9 +17,12 @@ import java.math.BigInteger
 import kotlinx.parcelize.Parcelize
 
 sealed class SignedTransactionDetail {
+
+    abstract val signedTransactionData: ByteArray
+
     @Parcelize
     data class Send(
-        val signedTransactionData: ByteArray,
+        override val signedTransactionData: ByteArray,
         val amount: BigInteger,
         val accountCacheData: AccountCacheData,
         val targetUser: TargetUser,
@@ -31,14 +34,14 @@ sealed class SignedTransactionDetail {
 
     @Parcelize
     data class AssetOperation(
-        val signedTransactionData: ByteArray,
+        override val signedTransactionData: ByteArray,
         val accountCacheData: AccountCacheData,
         val assetInformation: AssetInformation
     ) : SignedTransactionDetail(), Parcelable
 
     @Parcelize
     data class RekeyOperation(
-        val signedTransactionData: ByteArray,
+        override val signedTransactionData: ByteArray,
         val accountCacheData: AccountCacheData,
         val rekeyAdminAddress: String,
         val ledgerDetail: Account.Detail.Ledger

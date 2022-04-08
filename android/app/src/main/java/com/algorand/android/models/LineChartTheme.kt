@@ -15,7 +15,7 @@ package com.algorand.android.models
 import com.algorand.android.R
 
 enum class LineChartTheme(val markerDrawableResId: Int, val lineColorResId: Int) {
-    GREEN(R.drawable.bg_chart_mark_green_oval, R.color.helperPositive),
-    RED(R.drawable.bg_chart_mark_red_oval, R.color.helperNegative),
-    GRAY(R.drawable.bg_chart_mark_gray_oval, R.color.gray_A4)
+    GREEN(R.drawable.bg_chart_mark_green_oval, R.color.positive),
+    RED(R.drawable.bg_chart_mark_red_oval, R.color.negative),
+    GRAY(R.drawable.bg_chart_mark_gray_oval, R.color.gray_400)
 }

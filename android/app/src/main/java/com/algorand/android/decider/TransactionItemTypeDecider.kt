@@ -15,6 +15,7 @@ package com.algorand.android.decider
 
 import com.algorand.android.models.Transaction
 import com.algorand.android.models.TransactionItemType
+import com.algorand.android.utils.isEqualTo
 import java.math.BigInteger
 import javax.inject.Inject
 
@@ -37,18 +38,24 @@ class TransactionItemTypeDecider @Inject constructor() {
     private fun isAssetCreationTransaction(transaction: Transaction): Boolean {
         return with(transaction) {
             assetTransfer != null && senderAddress == assetTransfer.receiverAddress &&
-                assetTransfer.amount == BigInteger.ZERO
+                assetTransfer.amount isEqualTo BigInteger.ZERO
         }
     }
 
     private fun isAssetRemovalTransaction(transaction: Transaction): Boolean {
         return with(transaction) {
-            assetTransfer != null && assetTransfer.amount == BigInteger.ZERO &&
-                senderAddress != assetTransfer.receiverAddress && assetTransfer.closeTo != null
+            assetTransfer != null &&
+                assetTransfer.amount isEqualTo BigInteger.ZERO &&
+                senderAddress != assetTransfer.receiverAddress &&
+                assetTransfer.closeTo != null
         }
     }
 
     private fun isRekeyTransaction(transaction: Transaction): Boolean {
-        return with(transaction) { payment != null && payment.amount == BigInteger.ZERO && rekeyTo != null }
+        return with(transaction) {
+            payment != null &&
+                payment.amount isEqualTo BigInteger.ZERO &&
+                rekeyTo != null
+        }
     }
 }

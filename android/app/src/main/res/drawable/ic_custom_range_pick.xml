@@ -19,30 +19,30 @@
         android:fillColor="#00000000"
         android:pathData="M3,3h18v18h-18z"
         android:strokeWidth="2"
-        android:strokeColor="@color/primaryIconTintColor" />
+        android:strokeColor="@color/primary_icon_tint_color" />
     <path
         android:fillColor="#00000000"
         android:pathData="M9,17V11"
         android:strokeWidth="2"
-        android:strokeColor="@color/primaryIconTintColor"
+        android:strokeColor="@color/primary_icon_tint_color"
         android:strokeLineCap="square"
         android:strokeLineJoin="round" />
     <path
         android:fillColor="#00000000"
         android:pathData="M15,17V11"
         android:strokeWidth="2"
-        android:strokeColor="@color/primaryIconTintColor"
+        android:strokeColor="@color/primary_icon_tint_color"
         android:strokeLineCap="square"
         android:strokeLineJoin="round" />
     <path
-        android:fillColor="@color/primaryIconTintColor"
+        android:fillColor="@color/primary_icon_tint_color"
         android:pathData="M7,13h4v4h-4z" />
     <path
-        android:fillColor="@color/primaryIconTintColor"
+        android:fillColor="@color/primary_icon_tint_color"
         android:pathData="M13,11h4v4h-4z" />
     <path
         android:fillColor="#00000000"
         android:pathData="M8,7H16"
         android:strokeWidth="2"
-        android:strokeColor="@color/primaryIconTintColor" />
+        android:strokeColor="@color/primary_icon_tint_color" />
 </vector>

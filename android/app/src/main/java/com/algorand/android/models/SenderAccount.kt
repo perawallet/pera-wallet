@@ -15,7 +15,7 @@ package com.algorand.android.models
 
 data class SenderAccount(
     val accountCacheData: AccountCacheData,
-    val accountAssetData: BaseAccountAssetData.OwnedAssetData
+    val accountAssetData: BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData
 ) : RecyclerListItem {
     override fun areItemsTheSame(other: RecyclerListItem): Boolean {
         return other is SenderAccount && accountCacheData.account.address == other.accountCacheData.account.address
