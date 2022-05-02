@@ -89,13 +89,7 @@ class WalletConnectTransactionSummaryCardView(
     ) {
         with(binding.transactionsAmountTextView) {
             val formattedBalance = transactionAmount.formatAmount(assetDecimal ?: ALGO_DECIMALS)
-            text = context?.getXmlStyledString(
-                stringResId = R.string.amount_with_asset_short_name,
-                replacementList = listOf(
-                    "amount" to formattedBalance,
-                    "asset_short_name" to shortName.orEmpty()
-                )
-            )
+            text = context.getString(R.string.pair_value_format, formattedBalance, shortName.orEmpty())
             changeTextAppearance(R.style.TextAppearance_Body_Large_Mono)
         }
     }
@@ -125,13 +119,7 @@ class WalletConnectTransactionSummaryCardView(
             if (accountBalance != null) {
                 val formattedBalance = accountBalance.formatAmount(assetDecimal ?: ALGO_DECIMALS)
                 accountBalanceTextView.setTextAndVisibility(
-                    context?.getXmlStyledString(
-                        stringResId = R.string.amount_with_asset_short_name,
-                        replacementList = listOf(
-                            "amount" to formattedBalance,
-                            "asset_short_name" to shortName.orEmpty()
-                        )
-                    ).toString()
+                    context.getString(R.string.pair_value_format, formattedBalance, shortName.orEmpty())
                 )
                 dotImageView.show()
             }

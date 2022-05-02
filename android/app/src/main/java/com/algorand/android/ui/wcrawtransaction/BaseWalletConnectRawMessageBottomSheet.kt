@@ -13,12 +13,14 @@
 
 package com.algorand.android.ui.wcrawtransaction
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseBottomSheet
 import com.algorand.android.databinding.BottomSheetWalletConnectRawMessageBinding
+import com.algorand.android.models.TransactionRequestAction
 import com.algorand.android.utils.copyToClipboard
 import com.algorand.android.utils.viewbinding.viewBinding
 import com.google.android.material.button.MaterialButton
@@ -31,10 +33,17 @@ abstract class BaseWalletConnectRawMessageBottomSheet :
     private val rawTextMessage
         get() = binding.rawMessageTextView.text
 
+    private var transactionRequestListener: TransactionRequestAction? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        transactionRequestListener = parentFragment?.parentFragment as? TransactionRequestAction
+    }
+
     abstract fun setRawMessage(textView: TextView)
 
     open fun setCloseButton(closeButton: MaterialButton) {
-        closeButton.setOnClickListener { navBack() }
+        closeButton.setOnClickListener { transactionRequestListener?.onNavigateBack() }
     }
 
     open fun setCopyButton(copyButton: MaterialButton) {

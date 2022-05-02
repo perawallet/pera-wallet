@@ -36,12 +36,9 @@ import com.algorand.android.models.TransactionItemType
 import com.algorand.android.nft.domain.usecase.SimpleCollectibleUseCase
 import com.algorand.android.repository.TransactionHistoryPaginationHelper
 import com.algorand.android.repository.TransactionsRepository
-import com.algorand.android.utils.formatAsCurrency
 import com.algorand.android.utils.formatAsDate
 import com.algorand.android.utils.formatAsRFC3339Version
 import com.algorand.android.utils.getZonedDateTimeFromTimeStamp
-import java.math.BigDecimal
-import java.math.BigInteger
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -56,8 +53,6 @@ class TransactionUseCase @Inject constructor(
     private val accountHistoryHeaderMapper: AccountHistoryHeaderMapper,
     private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase,
     private val transactionUserUseCase: TransactionUserUseCase,
-    private val transactionAmountUseCase: TransactionAmountUseCase,
-    private val algoPriceUseCase: AlgoPriceUseCase,
     private val accountHistoryTransferItemMapper: AccountHistoryTransferItemMapper,
     private val accountHistoryFeeItemMapper: AccountHistoryFeeItemMapper,
     private val transactionItemTypeMapper: TransactionItemTypeMapper,
@@ -91,15 +86,11 @@ class TransactionUseCase @Inject constructor(
             } else {
                 firstTxnItem?.otherPublicKey
             }
-            val formattedAmountInDisplayedCurrency = transactionAmountUseCase.getAlgoAmountInCachedCurrency(
-                firstTxnItem?.rewardAmount?.toBigInteger() ?: BigInteger.ZERO
-            ).formatAsCurrency(algoPriceUseCase.getCachedCurrencySymbolOrName())
             accountHistoryRewardItemMapper.mapTo(
                 transaction = firstTxnItem,
                 assetDetail = getAssetDetail(assetId),
                 accountPublicKey = firstTxnItem?.accountPublicKey.orEmpty(),
-                transactionTargetUser = transactionUserUseCase.getTransactionTargetUser(otherPublicKey),
-                formattedAmountInDisplayedCurrency = formattedAmountInDisplayedCurrency,
+                transactionTargetUser = transactionUserUseCase.getTransactionTargetUser(otherPublicKey)
             )
         } else {
             null
@@ -173,27 +164,12 @@ class TransactionUseCase @Inject constructor(
                 if (isFeeTransaction(transaction)) {
                     accountHistoryFeeItemMapper.mapTo(transaction, asset, publicKey, transactionTargetUser)
                 } else {
-                    val amountInSelectedCurrency = when {
-                        transaction.isAlgorand() -> {
-                            transactionAmountUseCase.getAlgoAmountInCachedCurrency(transaction.getAmount(false))
-                                .formatAsCurrency(algoPriceUseCase.getCachedCurrencySymbolOrName())
-                        }
-                        asset?.usdValue != null -> {
-                            transactionAmountUseCase.getAssetAmountInSelectedCurrency(
-                                asset.usdValue ?: BigDecimal.ZERO,
-                                transaction.getAmount(false),
-                                asset.fractionDecimals
-                            ).formatAsCurrency(algoPriceUseCase.getSelectedCurrencySymbolOrCurrencyName())
-                        }
-                        else -> null
-                    }
                     accountHistoryTransferItemMapper.mapTo(
                         transaction,
                         asset,
                         publicKey,
                         transactionTargetUser,
-                        otherPublicKey,
-                        amountInSelectedCurrency
+                        otherPublicKey
                     )
                 }
             }

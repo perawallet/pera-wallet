@@ -15,14 +15,18 @@ package com.algorand.android.nft.ui.nfsdetail
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.algorand.android.BuildConfig
+import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.core.TransactionBaseFragment
 import com.algorand.android.customviews.AccountCopyQrView
 import com.algorand.android.customviews.CollectibleMediaPager
 import com.algorand.android.databinding.FragmentCollectibleDetailBinding
-import com.algorand.android.models.AccountIcon
+import com.algorand.android.models.AssetTransaction
+import com.algorand.android.models.BaseAccountAddress.AccountAddress
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.NotificationMetadata
 import com.algorand.android.models.SignedTransactionDetail
@@ -32,6 +36,10 @@ import com.algorand.android.nft.ui.model.CollectibleDetail
 import com.algorand.android.nft.ui.model.CollectibleDetailPreview
 import com.algorand.android.nft.ui.model.CollectibleTraitItem
 import com.algorand.android.nft.ui.nfsdetail.CollectibleOptOutConfirmationBottomSheet.Companion.COLLECTIBLE_OPT_OUT_KEY
+import com.algorand.android.ui.send.confirmation.TransactionConfirmationFragment.Companion.TRANSACTION_CONFIRMATION_KEY
+import com.algorand.android.ui.send.confirmation.TransactionConfirmationFragment.Companion.TRANSACTION_CONFIRMED_KEY
+import com.algorand.android.utils.PrismUrlBuilder
+import com.algorand.android.utils.PrismUrlBuilder.Companion.DEFAULT_IMAGE_QUALITY
 import com.algorand.android.utils.copyToClipboard
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
@@ -40,7 +48,6 @@ import com.algorand.android.utils.openAssetInAlgoExplorer
 import com.algorand.android.utils.openTextShareBottomMenuChooser
 import com.algorand.android.utils.openUrl
 import com.algorand.android.utils.startSavedStateListener
-import com.algorand.android.utils.toShortenedAddress
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -77,6 +84,11 @@ class CollectibleDetailFragment : TransactionBaseFragment(R.layout.fragment_coll
             if (videoUrl.isNullOrBlank()) return
             navToVideoPlayerFragment(videoUrl)
         }
+
+        override fun onImageMediaClick(imageUrl: String?) {
+            if (imageUrl.isNullOrBlank()) return
+            context?.openUrl(getImage3DViewUrl(imageUrl))
+        }
     }
 
     private var collectibleDetailPreview: CollectibleDetailPreview? by Delegates.observable(null) { _, _, newValue ->
@@ -108,6 +120,9 @@ class CollectibleDetailFragment : TransactionBaseFragment(R.layout.fragment_coll
                 if (isOptOutApproved) optOutFromCollectible()
             }
         }
+        setFragmentResultListener(TRANSACTION_CONFIRMATION_KEY) { _, bundle ->
+            if (bundle.getBoolean(TRANSACTION_CONFIRMED_KEY)) navBack()
+        }
     }
 
     private fun optOutFromCollectible() {
@@ -136,12 +151,12 @@ class CollectibleDetailFragment : TransactionBaseFragment(R.layout.fragment_coll
             with(collectibleDetail ?: return) {
                 setCollectibleMedias(collectibleDetail.collectibleMedias)
                 setWarningViewGroup(warningTextRes)
-                setOptedInWarningViewGroup(isOwnedByTheUser)
+                setOptedInWarningViewGroup(isOwnedByTheUser, optedInWarningTextRes)
                 setCollectionTitleView(collectionName)
                 setCollectibleNameView(collectibleName)
                 setSendAndShareButtonVisibility(this)
                 setCollectibleDescription(collectibleDescription)
-                setCollectibleOwnerAddress(ownerAccountAddress, ownerAccountIcon, isOwnedByTheUser)
+                setCollectibleOwnerAddress(ownerAccountAddress, isOwnedByTheUser)
                 setCollectibleAssetId(collectibleId)
                 setCollectibleCreatorNameView(creatorName)
                 setCollectibleCreatorWalletAddressView(creatorWalletAddress)
@@ -150,6 +165,8 @@ class CollectibleDetailFragment : TransactionBaseFragment(R.layout.fragment_coll
                 setShowOnPeraExplorerGroup(collectibleDetail)
                 optOutSuccessEvent?.consume()?.run { onOptOutSuccess(collectibleDetailPreview.collectibleDetail) }
                 globalErrorEvent?.consume()?.run { if (this.isNotBlank()) showGlobalError(this) }
+                fractionalCollectibleSendEvent?.consume()?.run { navToSendAlgoNavigation(collectibleDetail) }
+                pureCollectibleSendEvent?.consume()?.run { navToCollectibleSendFragment(collectibleDetail) }
             }
         }
     }
@@ -158,16 +175,16 @@ class CollectibleDetailFragment : TransactionBaseFragment(R.layout.fragment_coll
         val collectibleIdentifier = (collectible?.collectibleName ?: collectible?.collectibleId.toString())
         val alertMessage = getString(R.string.nft_successfully_opted_out, collectibleIdentifier)
         showForegroundNotification(NotificationMetadata(alertMessage = alertMessage))
-        nav(CollectibleDetailFragmentDirections.actionCollectibleDetailFragmentToCollectiblesFragment())
+        navBack()
     }
 
     private fun copyOptedInAccountAddress() {
-        val addressToCopy = collectibleDetailPreview?.collectibleDetail?.ownerAccountAddress ?: return
+        val addressToCopy = collectibleDetailPreview?.collectibleDetail?.ownerAccountAddress?.publicKey ?: return
         context?.copyToClipboard(addressToCopy)
     }
 
     private fun navToShowQrBottomSheet() {
-        val addressToShow = collectibleDetailPreview?.collectibleDetail?.ownerAccountAddress ?: return
+        val addressToShow = collectibleDetailPreview?.collectibleDetail?.ownerAccountAddress?.publicKey ?: return
         val title = getString(R.string.qr_code)
         nav(CollectibleDetailFragmentDirections.actionGlobalShowQrBottomSheet(title, addressToShow))
     }
@@ -211,16 +228,18 @@ class CollectibleDetailFragment : TransactionBaseFragment(R.layout.fragment_coll
         }
     }
 
-    private fun setCollectibleOwnerAddress(ownerAddress: String?, ownerAccountIcon: AccountIcon?, isOwned: Boolean) {
+    private fun setCollectibleOwnerAddress(ownerAddress: AccountAddress?, isOwned: Boolean) {
         with(binding) {
             collectibleOwnerAccountUserView.apply {
-                if (ownerAccountIcon != null) {
-                    setAccount(ownerAddress.toShortenedAddress(), ownerAccountIcon)
-                } else {
-                    setAddress(ownerAddress.toShortenedAddress())
+                ownerAddress?.run {
+                    if (accountIcon != null) {
+                        setAccount(getDisplayAddress(), accountIcon)
+                    } else {
+                        setAddress(ownerAddress.getDisplayAddress())
+                    }
                 }
             }
-            collectibleOwnerGroup.isVisible = !ownerAddress.isNullOrBlank() && isOwned
+            collectibleOwnerGroup.isVisible = ownerAddress != null && isOwned
         }
     }
 
@@ -235,14 +254,16 @@ class CollectibleDetailFragment : TransactionBaseFragment(R.layout.fragment_coll
         }
     }
 
-    private fun setCollectibleCreatorWalletAddressView(collectibleCreatorWalletAddress: String?) {
+    private fun setCollectibleCreatorWalletAddressView(collectibleCreatorWalletAddress: AccountAddress?) {
         with(binding) {
-            creatorWalletNameGroup.isVisible = !collectibleCreatorWalletAddress.isNullOrBlank()
+            creatorWalletNameGroup.isVisible = !collectibleCreatorWalletAddress?.publicKey.isNullOrBlank()
+            if (collectibleCreatorWalletAddress == null) return
             creatorWalletAddressTextView.apply {
-                text = collectibleCreatorWalletAddress.toShortenedAddress()
+                text = collectibleCreatorWalletAddress.getDisplayAddress()
+                setOnLongClickListener { context?.copyToClipboard(collectibleCreatorWalletAddress.publicKey); true }
                 setOnClickListener {
                     val activeNodeSlug = collectibleDetailViewModel.getActiveNodeSlug()
-                    context.openAccountAddressInAlgoExplorer(collectibleCreatorWalletAddress.orEmpty(), activeNodeSlug)
+                    context.openAccountAddressInAlgoExplorer(collectibleCreatorWalletAddress.publicKey, activeNodeSlug)
                 }
             }
         }
@@ -253,7 +274,7 @@ class CollectibleDetailFragment : TransactionBaseFragment(R.layout.fragment_coll
             with(collectibleDetail) {
                 collectibleSendButton.apply {
                     isVisible = !isHoldingByWatchAccount && isOwnedByTheUser
-                    setOnClickListener { navToCollectibleSendFragment(collectibleDetail) }
+                    setOnClickListener { collectibleDetailViewModel.checkSendingCollectibleIsFractional() }
                 }
                 collectibleShareButton.apply {
                     isVisible = isOwnedByTheUser || isHoldingByWatchAccount
@@ -272,8 +293,8 @@ class CollectibleDetailFragment : TransactionBaseFragment(R.layout.fragment_coll
                 }
                 optedInViewsGroup.isVisible = !isOwnedByTheUser
                 optedInAccountQrView.apply {
-                    setAccountIcon(ownerAccountIcon)
-                    setAccountName(ownerAccountAddress.toShortenedAddress())
+                    setAccountIcon(ownerAccountAddress.accountIcon)
+                    setAccountName(ownerAccountAddress.getDisplayAddress())
                     setListener(accountQrViewListener)
                 }
             }
@@ -284,7 +305,7 @@ class CollectibleDetailFragment : TransactionBaseFragment(R.layout.fragment_coll
         nav(
             CollectibleDetailFragmentDirections
                 .actionCollectibleDetailFragmentToCollectibleOptOutConfirmationBottomSheet(
-                    accountName = collectibleDetail.ownerAccountAddress.orEmpty(),
+                    accountName = collectibleDetail.ownerAccountAddress.publicKey,
                     collectibleAssetId = collectibleDetail.collectibleId,
                     collectibleName = collectibleDetail.collectibleName
                 )
@@ -306,6 +327,14 @@ class CollectibleDetailFragment : TransactionBaseFragment(R.layout.fragment_coll
         )
     }
 
+    private fun navToSendAlgoNavigation(collectibleDetail: CollectibleDetail) {
+        val assetTransaction = AssetTransaction(
+            senderAddress = collectibleDetail.ownerAccountAddress.publicKey,
+            assetId = collectibleDetail.collectibleId
+        )
+        nav(HomeNavigationDirections.actionGlobalSendAlgoNavigation(assetTransaction))
+    }
+
     private fun setCollectibleTraits(traits: List<CollectibleTraitItem>?) {
         with(binding) {
             collectibleTraitsGroup.isVisible = !traits.isNullOrEmpty()
@@ -322,8 +351,19 @@ class CollectibleDetailFragment : TransactionBaseFragment(R.layout.fragment_coll
         }
     }
 
-    private fun setOptedInWarningViewGroup(isOwnedByTheUser: Boolean) {
+    private fun setOptedInWarningViewGroup(isOwnedByTheUser: Boolean, optedInWarningTextRes: Int?) {
         binding.optedInWarningGroup.isVisible = !isOwnedByTheUser
+        if (optedInWarningTextRes != null) {
+            binding.optedInWarningTextView.setText(optedInWarningTextRes)
+        }
+    }
+
+    private fun getImage3DViewUrl(rawImageUrl: String): String {
+        return PrismUrlBuilder.create(BuildConfig.PERA_3D_EXPLORER_BASE_URL)
+            .addImageUrl(rawImageUrl)
+            .addWidth(IMAGE_3D_CARD_WIDTH)
+            .addQuality(DEFAULT_IMAGE_QUALITY)
+            .build()
     }
 
     // TODO: We can remove explorer from the code in time.
@@ -339,5 +379,9 @@ class CollectibleDetailFragment : TransactionBaseFragment(R.layout.fragment_coll
             }
             showOnAlgoExplorerDivider.isVisible = isNftExplorerVisible
         }
+    }
+
+    companion object {
+        private const val IMAGE_3D_CARD_WIDTH = 1440
     }
 }

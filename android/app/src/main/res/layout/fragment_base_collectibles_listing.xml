@@ -29,6 +29,50 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.algorand.android.customviews.AlgorandSearchView
+        android:id="@+id/collectibleSearchView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_xxlarge"
+        android:hint="@string/search_your_nfts"
+        android:inputType="text"
+        android:visibility="gone"
+        app:endIconTintColor="@color/secondary_icon_tint_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleTextView"
+        app:startIconTintColor="@color/search_bar_view_icon_color"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/collectibleCountTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_xlarge"
+        android:textAppearance="@style/TextAppearance.Body.Sans.Medium"
+        app:layout_constraintBottom_toBottomOf="@id/filterButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/filterButton"
+        tools:text="3 NFTs" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/filterButton"
+        style="@style/IconButton.Transparent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:layout_marginEnd="@dimen/spacing_xlarge"
+        android:minHeight="0dp"
+        android:text="@string/filter"
+        android:textAppearance="@style/TextAppearance.Body.Sans.Medium"
+        android:textColor="@color/positive"
+        app:icon="@drawable/selector_filter_button"
+        app:iconPadding="@dimen/spacing_xxsmall"
+        app:iconSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/collectibleSearchView" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/collectiblesRecyclerView"
         android:layout_width="0dp"
@@ -38,63 +82,79 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/titleTextView" />
+        app:layout_constraintTop_toBottomOf="@id/filterButton" />
 
     <!-- Empty State Group -->
 
-    <ImageView
-        android:id="@+id/collectiblesPlaceholderImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_nft_placeholder"
-        app:layout_constraintBottom_toTopOf="@id/emptyStateTitleTextView"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
-
-    <TextView
-        android:id="@+id/emptyStateTitleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_xxxxlarge"
-        android:text="@string/collectibles"
-        android:textAppearance="@style/TextAppearance.Title.Sans.Medium"
-        app:layout_constraintBottom_toTopOf="@id/emptyStateDescriptionTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/collectiblesPlaceholderImageView" />
-
-    <TextView
-        android:id="@+id/emptyStateDescriptionTextView"
+    <ScrollView
+        android:id="@+id/emptyStateScrollView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_xlarge"
-        android:layout_marginTop="@dimen/spacing_normal"
-        android:gravity="center"
-        android:text="@string/welcome_to_your_nft"
-        android:textColor="@color/secondary_text_color"
-        app:layout_constraintBottom_toTopOf="@id/receiveCollectiblesButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/emptyStateTitleTextView" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/receiveCollectiblesButton"
-        style="@style/Button.Primary.Icon"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_xlarge"
-        android:layout_marginTop="52dp"
-        android:text="@string/receive_nft"
+        android:layout_height="0dp"
+        android:fillViewport="true"
         android:visibility="gone"
-        app:icon="@drawable/ic_plus"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/emptyStateDescriptionTextView"
-        tools:visibility="visible" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible">
+
+        <LinearLayout
+            android:id="@+id/emptyStateFrameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/spacing_xlarge"
+            android:paddingBottom="@dimen/bottom_safe_area_margin">
+
+            <ImageView
+                android:id="@+id/collectiblesPlaceholderImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_nft_placeholder" />
+
+            <TextView
+                android:id="@+id/emptyStateTitleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xxxxlarge"
+                android:gravity="center"
+                android:text="@string/collectibles"
+                android:textAppearance="@style/TextAppearance.Title.Sans.Medium" />
+
+            <TextView
+                android:id="@+id/emptyStateDescriptionTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:gravity="center"
+                android:text="@string/welcome_to_your_nft"
+                android:textColor="@color/secondary_text_color" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/receiveCollectiblesButton"
+                style="@style/Button.Primary.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="52dp"
+                android:text="@string/receive_nft"
+                android:visibility="gone"
+                app:icon="@drawable/ic_plus"
+                tools:visibility="visible" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/clearFiltersButton"
+                style="@style/Button.Secondary.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:visibility="gone"
+                app:icon="@drawable/ic_eye"
+                tools:text="@string/show_filtered_nfts_formatted"
+                tools:visibility="visible" />
+
+        </LinearLayout>
+    </ScrollView>
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -105,17 +165,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible" />
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/emptyStateGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="
-        collectiblesPlaceholderImageView,
-        emptyStateDescriptionTextView,
-        emptyStateTitleTextView"
         tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

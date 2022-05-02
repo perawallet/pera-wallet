@@ -18,6 +18,6 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/spacing_xlarge"
     android:layout_marginVertical="@dimen/spacing_normal"
-    android:hint="@string/search_my_assets"
+    android:hint="@string/search_your_assets"
     app:endIconTintColor="@color/search_bar_view_icon_color"
     app:startIconTintColor="@color/search_bar_view_icon_color" />

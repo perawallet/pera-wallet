@@ -37,16 +37,16 @@ class WatchAccountResultInfoFragment : BaseInfoFragment() {
     }
 
     override fun setTitleText(textView: TextView) {
-        textView.setText(R.string.account_is_verified)
+        textView.setText(watchAccountResultInfoViewModel.getPreviewTitle())
     }
 
     override fun setDescriptionText(textView: TextView) {
-        textView.setText(R.string.the_watch_account_has_been)
+        textView.setText(watchAccountResultInfoViewModel.getPreviewDescription())
     }
 
     override fun setFirstButton(materialButton: MaterialButton) {
         with(materialButton) {
-            setText(R.string.continue_text)
+            setText(watchAccountResultInfoViewModel.getPreviewFirstButtonText())
             setOnClickListener { onContinueClick() }
         }
     }

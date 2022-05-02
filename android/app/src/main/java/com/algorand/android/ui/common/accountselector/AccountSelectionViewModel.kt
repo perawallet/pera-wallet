@@ -19,14 +19,14 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.models.AccountSelection
-import com.algorand.android.usecase.AssetSelectionUseCase
+import com.algorand.android.usecase.AccountSelectionUseCase
 import com.algorand.android.utils.getOrThrow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class AccountSelectionViewModel @ViewModelInject constructor(
-    private val assetSelectionUseCase: AssetSelectionUseCase,
+    private val accountSelectionUseCase: AccountSelectionUseCase,
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -41,7 +41,7 @@ class AccountSelectionViewModel @ViewModelInject constructor(
 
     private fun getCachedAccountFilteredByAssetId() {
         viewModelScope.launch {
-            _cachedAccountFlow.emit(assetSelectionUseCase.getCachedAccountFilteredByAssetId(assetId))
+            _cachedAccountFlow.emit(accountSelectionUseCase.getAccountFilteredByAssetId(assetId))
         }
     }
 

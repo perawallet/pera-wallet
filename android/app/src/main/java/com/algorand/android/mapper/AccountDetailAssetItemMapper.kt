@@ -34,7 +34,7 @@ class AccountDetailAssetItemMapper @Inject constructor() {
             id = accountAssetData.id,
             name = AssetName.create(accountAssetData.name),
             shortName = AssetName.createShortName(accountAssetData.shortName),
-            formattedAmount = accountAssetData.formattedAmount,
+            formattedAmount = accountAssetData.formattedCompactAmount,
             formattedDisplayedCurrencyValue = accountAssetData.formattedSelectedCurrencyValue,
             isVerified = accountAssetData.isVerified,
             isAlgo = accountAssetData.isAlgo,

@@ -71,8 +71,6 @@ sealed class BaseTransactionItem : RecyclerListItem, Parcelable {
         open val rewardAmount: Long? = null
         open val assetShortName: String? = null
 
-        open val formattedAmountInDisplayedCurrency: String? = null
-
         abstract fun isSameTransaction(other: RecyclerListItem): Boolean
 
         @Parcelize
@@ -98,8 +96,7 @@ sealed class BaseTransactionItem : RecyclerListItem, Parcelable {
             override val round: Long?,
             override val rewardAmount: Long?,
             override val assetShortName: String?,
-            override val transactionName: TransactionName,
-            override val formattedAmountInDisplayedCurrency: String?
+            override val transactionName: TransactionName
         ) : TransactionItem(), Parcelable {
 
             override fun isSameTransaction(other: RecyclerListItem): Boolean {
@@ -137,8 +134,7 @@ sealed class BaseTransactionItem : RecyclerListItem, Parcelable {
             override val formattedFullAmount: String,
             override val rewardAmount: Long?,
             override val transactionName: TransactionName = TransactionName.REWARD,
-            override val assetShortName: String? = ALGOS_SHORT_NAME,
-            override val formattedAmountInDisplayedCurrency: String?
+            override val assetShortName: String? = ALGOS_SHORT_NAME
         ) : TransactionItem(), Parcelable {
 
             override fun isSameTransaction(other: RecyclerListItem): Boolean {
@@ -177,8 +173,7 @@ sealed class BaseTransactionItem : RecyclerListItem, Parcelable {
             override val round: Long?,
             override val rewardAmount: Long?,
             override val assetShortName: String?,
-            override val transactionName: TransactionName,
-            override val formattedAmountInDisplayedCurrency: String?
+            override val transactionName: TransactionName
         ) : TransactionItem(), Parcelable {
 
             override fun isSameTransaction(other: RecyclerListItem): Boolean {

@@ -16,6 +16,7 @@ import com.algorand.android.nft.domain.model.BaseCollectibleDetail.ImageCollecti
 import com.algorand.android.nft.domain.model.BaseCollectibleDetail.MixedCollectibleDetail
 import com.algorand.android.nft.domain.model.BaseCollectibleDetail.NotSupportedCollectibleDetail
 import com.algorand.android.nft.domain.model.BaseCollectibleDetail.VideoCollectibleDetail
+import com.algorand.android.nft.domain.model.BaseCollectibleMedia
 import com.algorand.android.nft.domain.model.CollectibleDetailDTO
 import javax.inject.Inject
 
@@ -36,11 +37,17 @@ class CollectibleDetailMapper @Inject constructor() {
             traits = collectibleDetailDTO.traits,
             prismUrl = collectibleDetailDTO.primaryImageUrl,
             nftExplorerUrl = collectibleDetailDTO.explorerUrl,
-            collectibleMedias = collectibleDetailDTO.medias
+            collectibleMedias = collectibleDetailDTO.medias,
+            totalSupply = collectibleDetailDTO.totalSupply
         )
     }
 
     fun mapToNotSupportedCollectibleDetail(collectibleDetailDTO: CollectibleDetailDTO): NotSupportedCollectibleDetail {
+        val collectibleMedias = if (collectibleDetailDTO.medias.isEmpty()) {
+            listOf(BaseCollectibleMedia.NoMediaCollectibleMedia(null, null))
+        } else {
+            collectibleDetailDTO.medias
+        }
         return NotSupportedCollectibleDetail(
             assetId = collectibleDetailDTO.collectibleAssetId,
             fullName = collectibleDetailDTO.fullName,
@@ -54,7 +61,8 @@ class CollectibleDetailMapper @Inject constructor() {
             description = collectibleDetailDTO.description,
             traits = collectibleDetailDTO.traits,
             nftExplorerUrl = collectibleDetailDTO.explorerUrl,
-            collectibleMedias = collectibleDetailDTO.medias
+            collectibleMedias = collectibleMedias,
+            totalSupply = collectibleDetailDTO.totalSupply
         )
     }
 
@@ -76,7 +84,8 @@ class CollectibleDetailMapper @Inject constructor() {
             traits = collectibleDetailDTO.traits,
             thumbnailPrismUrl = thumbnailPrismUrl,
             nftExplorerUrl = collectibleDetailDTO.explorerUrl,
-            collectibleMedias = collectibleDetailDTO.medias
+            collectibleMedias = collectibleDetailDTO.medias,
+            totalSupply = collectibleDetailDTO.totalSupply
         )
     }
 
@@ -95,7 +104,8 @@ class CollectibleDetailMapper @Inject constructor() {
             traits = collectibleDetailDTO.traits,
             thumbnailPrismUrl = collectibleDetailDTO.primaryImageUrl,
             nftExplorerUrl = collectibleDetailDTO.explorerUrl,
-            collectibleMedias = collectibleDetailDTO.medias
+            collectibleMedias = collectibleDetailDTO.medias,
+            totalSupply = collectibleDetailDTO.totalSupply
         )
     }
 }

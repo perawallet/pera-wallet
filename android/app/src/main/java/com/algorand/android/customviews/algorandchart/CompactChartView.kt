@@ -188,7 +188,7 @@ class CompactChartView @JvmOverloads constructor(
 
     private fun getFormattedSignedPriceText(valuePosition: ValuePosition): String {
         return resources.getString(
-            R.string.title_and_value_format,
+            R.string.pair_value_format,
             selectedCurrencyValue,
             valuePosition.getFormattedPriceValue()
         )

@@ -75,6 +75,7 @@ class CurrencySelectionFragment : DaggerBaseFragment(R.layout.fragment_currency_
             screenStateView.setOnNeutralButtonClickListener {
                 currencySelectionViewModel.refreshPreview()
             }
+            searchView.setOnTextChanged { currencySelectionViewModel.updateSearchKeyword(it) }
         }
     }
 

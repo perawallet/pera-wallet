@@ -14,6 +14,7 @@ package com.algorand.android.nft.mapper
 
 import com.algorand.android.models.BaseAccountAssetData
 import com.algorand.android.nft.domain.decider.CollectibleBadgeDecider
+import com.algorand.android.nft.ui.model.BaseCollectibleListData
 import com.algorand.android.nft.ui.model.BaseCollectibleListItem
 import com.algorand.android.nft.ui.model.CollectiblesListingPreview
 import javax.inject.Inject
@@ -25,14 +26,13 @@ class CollectibleListingItemMapper @Inject constructor(
     fun mapToNotSupportedItem(
         collectible: BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedUnsupportedCollectibleData,
         isOwnedByTheUser: Boolean,
-        errorDisplayText: String,
         optedInAccountAddress: String
     ): BaseCollectibleListItem.BaseCollectibleItem.NotSupportedCollectibleItem {
         return BaseCollectibleListItem.BaseCollectibleItem.NotSupportedCollectibleItem(
             collectibleId = collectible.id,
             collectibleName = collectible.collectibleName,
             collectionName = collectible.collectionName,
-            errorDisplayText = errorDisplayText,
+            avatarDisplayText = collectible.avatarDisplayText,
             isOwnedByTheUser = isOwnedByTheUser,
             badgeImageResId = collectibleBadgeDecider.decideCollectibleBadgeResId(collectible),
             optedInAccountAddress = optedInAccountAddress
@@ -42,7 +42,6 @@ class CollectibleListingItemMapper @Inject constructor(
     fun mapToImageItem(
         collectible: BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleImageData,
         isOwnedByTheUser: Boolean,
-        errorDisplayText: String,
         optedInAccountAddress: String
     ): BaseCollectibleListItem.BaseCollectibleItem.CollectibleImageItem {
         return BaseCollectibleListItem.BaseCollectibleItem.CollectibleImageItem(
@@ -50,7 +49,7 @@ class CollectibleListingItemMapper @Inject constructor(
             collectibleName = collectible.collectibleName,
             collectionName = collectible.collectionName,
             isOwnedByTheUser = isOwnedByTheUser,
-            errorDisplayText = errorDisplayText,
+            avatarDisplayText = collectible.avatarDisplayText,
             badgeImageResId = collectibleBadgeDecider.decideCollectibleBadgeResId(collectible),
             prismUrl = collectible.prismUrl,
             optedInAccountAddress = optedInAccountAddress
@@ -60,7 +59,6 @@ class CollectibleListingItemMapper @Inject constructor(
     fun mapToVideoItem(
         collectible: BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleVideoData,
         isOwnedByTheUser: Boolean,
-        errorDisplayText: String,
         optedInAccountAddress: String
     ): BaseCollectibleListItem.BaseCollectibleItem.CollectibleVideoItem {
         return BaseCollectibleListItem.BaseCollectibleItem.CollectibleVideoItem(
@@ -68,7 +66,7 @@ class CollectibleListingItemMapper @Inject constructor(
             collectibleName = collectible.collectibleName,
             collectionName = collectible.collectionName,
             isOwnedByTheUser = isOwnedByTheUser,
-            errorDisplayText = errorDisplayText,
+            avatarDisplayText = collectible.avatarDisplayText,
             badgeImageResId = collectibleBadgeDecider.decideCollectibleBadgeResId(collectible),
             thumbnailPrismUrl = collectible.thumbnailPrismUrl,
             optedInAccountAddress = optedInAccountAddress
@@ -78,7 +76,6 @@ class CollectibleListingItemMapper @Inject constructor(
     fun mapToMixedItem(
         collectible: BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleMixedData,
         isOwnedByTheUser: Boolean,
-        errorDisplayText: String,
         optedInAccountAddress: String
     ): BaseCollectibleListItem.BaseCollectibleItem.CollectibleMixedItem {
         return BaseCollectibleListItem.BaseCollectibleItem.CollectibleMixedItem(
@@ -86,7 +83,7 @@ class CollectibleListingItemMapper @Inject constructor(
             collectibleName = collectible.collectibleName,
             collectionName = collectible.collectionName,
             isOwnedByTheUser = isOwnedByTheUser,
-            errorDisplayText = errorDisplayText,
+            avatarDisplayText = collectible.avatarDisplayText,
             badgeImageResId = collectibleBadgeDecider.decideCollectibleBadgeResId(collectible),
             thumbnailPrismUrl = collectible.thumbnailPrismUrl,
             optedInAccountAddress = optedInAccountAddress
@@ -98,6 +95,10 @@ class CollectibleListingItemMapper @Inject constructor(
         isEmptyStateVisible: Boolean,
         isErrorVisible: Boolean,
         isReceiveButtonVisible: Boolean,
+        isFilterActive: Boolean,
+        displayedCollectibleCount: Int,
+        filteredCollectibleCount: Int,
+        isClearFilterButtonVisible: Boolean,
         itemList: List<BaseCollectibleListItem>
     ): CollectiblesListingPreview {
         return CollectiblesListingPreview(
@@ -105,13 +106,16 @@ class CollectibleListingItemMapper @Inject constructor(
             isEmptyStateVisible = isEmptyStateVisible,
             isErrorVisible = isErrorVisible,
             isReceiveButtonVisible = isReceiveButtonVisible,
-            baseCollectibleListItems = itemList
+            baseCollectibleListItems = itemList,
+            isFilterActive = isFilterActive,
+            isClearFilterButtonVisible = isClearFilterButtonVisible,
+            displayedCollectibleCount = displayedCollectibleCount,
+            filteredCollectibleCount = filteredCollectibleCount
         )
     }
 
     fun mapToPendingRemovalItem(
         collectible: BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingDeletionCollectibleData,
-        errorDisplayText: String,
         optedInAccountAddress: String
     ): BaseCollectibleListItem.BaseCollectibleItem.BasePendingCollectibleItem.PendingRemovalItem {
         return BaseCollectibleListItem.BaseCollectibleItem.BasePendingCollectibleItem.PendingRemovalItem(
@@ -119,7 +123,7 @@ class CollectibleListingItemMapper @Inject constructor(
             collectibleName = collectible.collectibleName,
             collectionName = collectible.collectionName,
             isOwnedByTheUser = false,
-            errorDisplayText = errorDisplayText,
+            avatarDisplayText = collectible.avatarDisplayText,
             primaryImageUrl = collectible.primaryImageUrl,
             badgeImageResId = collectibleBadgeDecider.decidePendingCollectibleBadgeResId(collectible),
             optedInAccountAddress = optedInAccountAddress
@@ -128,7 +132,6 @@ class CollectibleListingItemMapper @Inject constructor(
 
     fun mapToPendingAdditionItem(
         collectible: BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingAdditionCollectibleData,
-        errorDisplayText: String,
         optedInAccountAddress: String
     ): BaseCollectibleListItem.BaseCollectibleItem.BasePendingCollectibleItem.PendingAdditionItem {
         return BaseCollectibleListItem.BaseCollectibleItem.BasePendingCollectibleItem.PendingAdditionItem(
@@ -136,7 +139,7 @@ class CollectibleListingItemMapper @Inject constructor(
             collectibleName = collectible.collectibleName,
             collectionName = collectible.collectionName,
             isOwnedByTheUser = false,
-            errorDisplayText = errorDisplayText,
+            avatarDisplayText = collectible.avatarDisplayText,
             primaryImageUrl = collectible.primaryImageUrl,
             badgeImageResId = collectibleBadgeDecider.decidePendingCollectibleBadgeResId(collectible),
             optedInAccountAddress = optedInAccountAddress
@@ -145,7 +148,6 @@ class CollectibleListingItemMapper @Inject constructor(
 
     fun mapToPendingSendingItem(
         collectible: BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingSendingCollectibleData,
-        errorDisplayText: String,
         optedInAccountAddress: String
     ): BaseCollectibleListItem.BaseCollectibleItem.BasePendingCollectibleItem.PendingSendingItem {
         return BaseCollectibleListItem.BaseCollectibleItem.BasePendingCollectibleItem.PendingSendingItem(
@@ -153,10 +155,24 @@ class CollectibleListingItemMapper @Inject constructor(
             collectibleName = collectible.collectibleName,
             collectionName = collectible.collectionName,
             isOwnedByTheUser = false,
-            errorDisplayText = errorDisplayText,
+            avatarDisplayText = collectible.avatarDisplayText,
             primaryImageUrl = collectible.primaryImageUrl,
             badgeImageResId = collectibleBadgeDecider.decidePendingCollectibleBadgeResId(collectible),
             optedInAccountAddress = optedInAccountAddress
+        )
+    }
+
+    fun mapToBaseCollectibleListData(
+        collectibleList: List<BaseCollectibleListItem>,
+        isFilterActive: Boolean,
+        displayedCollectibleCount: Int,
+        filteredOutCollectibleCount: Int
+    ): BaseCollectibleListData {
+        return BaseCollectibleListData(
+            baseCollectibleItemList = collectibleList,
+            isFilterActive = isFilterActive,
+            displayedCollectibleCount = displayedCollectibleCount,
+            filteredOutCollectibleCount = filteredOutCollectibleCount
         )
     }
 }

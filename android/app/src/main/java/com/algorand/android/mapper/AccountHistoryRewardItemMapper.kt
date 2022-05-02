@@ -28,8 +28,7 @@ class AccountHistoryRewardItemMapper @Inject constructor() {
         transaction: BaseTransactionItem.TransactionItem?,
         assetDetail: BaseAssetDetail?,
         accountPublicKey: String,
-        transactionTargetUser: TransactionTargetUser?,
-        formattedAmountInDisplayedCurrency: String?
+        transactionTargetUser: TransactionTargetUser?
     ): BaseTransactionItem.TransactionItem.Reward? {
         return transaction?.run {
             val reward = rewardAmount
@@ -51,8 +50,7 @@ class AccountHistoryRewardItemMapper @Inject constructor() {
                     decimals = decimal,
                     formattedFullAmount = amount.formatAmount(decimal),
                     rewardAmount = reward,
-                    assetId = assetDetail?.assetId,
-                    formattedAmountInDisplayedCurrency = formattedAmountInDisplayedCurrency
+                    assetId = assetDetail?.assetId
                 )
             } else {
                 null

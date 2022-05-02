@@ -14,32 +14,31 @@ package com.algorand.android.ui.wcconnection
 
 import androidx.hilt.lifecycle.ViewModelInject
 import com.algorand.android.core.BaseViewModel
-import com.algorand.android.models.Account
-import com.algorand.android.models.AccountCacheData
-import com.algorand.android.utils.AccountCacheManager
+import com.algorand.android.models.AccountSelection
+import com.algorand.android.usecase.WalletConnectConnectionUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class WalletConnectConnectionViewModel @ViewModelInject constructor(
-    private val accountCacheManager: AccountCacheManager
+    private val walletConnectConnectionUseCase: WalletConnectConnectionUseCase
 ) : BaseViewModel() {
 
-    val selectedAccountFlow: Flow<AccountCacheData?>
+    val selectedAccountFlow: Flow<AccountSelection?>
         get() = _selectedAccountFlow
-    private val _selectedAccountFlow = MutableStateFlow<AccountCacheData?>(null)
+    private val _selectedAccountFlow = MutableStateFlow<AccountSelection?>(null)
 
     init {
         initDefaultSelectedAccount()
     }
 
-    fun getSelectedAccount(): AccountCacheData? = _selectedAccountFlow.value
+    fun getSelectedAccount(): AccountSelection? = _selectedAccountFlow.value
 
-    fun setSelectedAccount(selectedAccount: AccountCacheData) {
-        _selectedAccountFlow.value = selectedAccount
+    fun setSelectedAccount(accountSelection: AccountSelection) {
+        _selectedAccountFlow.value = accountSelection
     }
 
     private fun initDefaultSelectedAccount() {
-        val cachedAccounts = accountCacheManager.getCachedAccounts(listOf(Account.Type.WATCH))
+        val cachedAccounts = walletConnectConnectionUseCase.getNormalAccounts()
         if (cachedAccounts.size == 1) {
             _selectedAccountFlow.value = cachedAccounts.first()
         }

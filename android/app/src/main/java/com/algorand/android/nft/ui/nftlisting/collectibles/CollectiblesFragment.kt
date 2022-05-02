@@ -18,9 +18,11 @@ import com.algorand.android.R
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.IconButton
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.nft.ui.base.BaseCollectibleListingViewModel
 import com.algorand.android.nft.ui.nftlisting.BaseCollectiblesListingFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
 
 @AndroidEntryPoint
 class CollectiblesFragment : BaseCollectiblesListingFragment() {
@@ -34,8 +36,20 @@ class CollectiblesFragment : BaseCollectiblesListingFragment() {
 
     override val isTitleVisible: Boolean
         get() = true
-
     private val collectiblesViewModel by viewModels<CollectiblesViewModel>()
+
+    override val baseCollectibleListingViewModel: BaseCollectibleListingViewModel
+        get() = collectiblesViewModel
+
+    private val toolbarReceiveButtonVisibilityCollector: suspend (Boolean?) -> Unit = { isReceiveButtonVisible ->
+        updateUiWithReceiveButtonVisibility(isReceiveButtonVisible)
+    }
+
+    override fun initUi() {
+        super.initUi()
+        val receiveCollectibleButton = IconButton(R.drawable.ic_plus, onClick = ::onReceiveCollectibleClick)
+        getAppToolbar()?.addButtonToEnd(receiveCollectibleButton)
+    }
 
     override fun onVideoItemClick(collectibleAssetId: Long, publicKey: String) {
         nav(
@@ -80,14 +94,21 @@ class CollectiblesFragment : BaseCollectiblesListingFragment() {
         nav(CollectiblesFragmentDirections.actionCollectiblesFragmentToCollectibleReceiverAccountSelectionFragment())
     }
 
+    override fun onFilterClick() {
+        nav(CollectiblesFragmentDirections.actionCollectiblesFragmentToCollectibleFiltersFragment())
+    }
+
     override fun initCollectiblesListingPreviewCollector() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            collectiblesViewModel.collectiblesListingPreviewFlow.collect(collectibleListingPreviewCollector)
+            with(collectiblesViewModel.collectiblesListingPreviewFlow) {
+                collect(collectibleListingPreviewCollector)
+                map { it?.isReceiveButtonVisible }.collect(toolbarReceiveButtonVisibilityCollector)
+            }
         }
     }
 
-    override fun updateUiWithReceiveButtonVisibility(isVisible: Boolean) {
-        if (isVisible) {
+    private fun updateUiWithReceiveButtonVisibility(isVisible: Boolean?) {
+        if (isVisible == true) {
             getAppToolbar()?.addButtonToEnd(IconButton(R.drawable.ic_plus, onClick = ::onReceiveCollectibleClick))
         }
     }

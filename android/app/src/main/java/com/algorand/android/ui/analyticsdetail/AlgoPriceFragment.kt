@@ -31,7 +31,7 @@ import com.algorand.android.utils.PERCENT_FORMAT
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.setTextAndVisibility
-import com.algorand.android.utils.formatAsDollar
+import com.algorand.android.utils.formatAsTwoDecimals
 import com.algorand.android.utils.getFormatter
 import com.algorand.android.utils.isGreaterThan
 import com.algorand.android.utils.isLesserThan
@@ -129,7 +129,7 @@ class AlgoPriceFragment : BaseBottomBarFragment(R.layout.fragment_algo_price) {
 
     private fun onGetAlgoPriceHistoryFailed() {
         binding.assetPriceChartView.showError()
-        setPriceText(ZERO.formatAsDollar())
+        setPriceText(ZERO.formatAsTwoDecimals()) // TODO This should come from UseCase. Move this into UseCase layer
         clearPriceChangePercentageText()
     }
 

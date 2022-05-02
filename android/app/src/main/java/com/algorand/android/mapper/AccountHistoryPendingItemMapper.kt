@@ -36,8 +36,7 @@ class AccountHistoryPendingItemMapper @Inject constructor(
         accountPublicKey: String,
         transactionTargetUser: TransactionTargetUser?,
         assetDetail: AssetDetail?,
-        otherPublicKey: String,
-        formattedAmountInDisplayedCurrency: String?
+        otherPublicKey: String
     ): BaseTransactionItem.TransactionItem.Pending {
         return with(transaction) {
             val transactionSymbol = transactionSymbolDecider.provideTransactionSymbol(this, accountPublicKey)
@@ -65,8 +64,7 @@ class AccountHistoryPendingItemMapper @Inject constructor(
                 closeToAmount = null, // TODO Add CloseAmount after model is updated
                 rewardAmount = 0L,
                 assetShortName = assetDetail?.shortName,
-                transactionName = transactionNameDecider.providePendingTransactionName(this, accountPublicKey),
-                formattedAmountInDisplayedCurrency = formattedAmountInDisplayedCurrency
+                transactionName = transactionNameDecider.providePendingTransactionName(this, accountPublicKey)
             )
         }
     }

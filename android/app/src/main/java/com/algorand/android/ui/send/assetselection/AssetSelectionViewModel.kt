@@ -17,21 +17,72 @@ import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.algorand.android.models.AssetTransaction
+import com.algorand.android.nft.domain.usecase.SimpleCollectibleUseCase
+import com.algorand.android.nft.ui.model.AssetSelectionPreview
 import com.algorand.android.usecase.AssetSelectionUseCase
+import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import com.algorand.android.utils.getOrThrow
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class AssetSelectionViewModel @ViewModelInject constructor(
     private val assetSelectionUseCase: AssetSelectionUseCase,
+    private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase,
+    private val simpleCollectibleUseCase: SimpleCollectibleUseCase,
     @Assisted savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     val assetTransaction = savedStateHandle.getOrThrow<AssetTransaction>(ASSET_TRANSACTION_KEY)
 
-    val assetSelectionFlow = assetSelectionUseCase.getAssetSelectionPreview(assetTransaction.senderAddress)
+    val assetSelectionPreview: StateFlow<AssetSelectionPreview>
+        get() = _assetSelectionPreview
+    private val _assetSelectionPreview = MutableStateFlow(
+        assetSelectionUseCase.getInitialStateOfAssetSelectionPreview(assetTransaction)
+    )
+
+    init {
+        viewModelScope.launch(Dispatchers.IO) {
+            assetSelectionUseCase.getAssetSelectionListFlow(assetTransaction.senderAddress).collectLatest { list ->
+                _assetSelectionPreview.emit(
+                    _assetSelectionPreview.value.copy(
+                        assetList = list,
+                        isLoadingVisible = false
+                    )
+                )
+            }
+        }
+    }
 
     fun shouldShowTransactionTips(): Boolean {
         return assetSelectionUseCase.shouldShowTransactionTips()
+    }
+
+    fun isReceiverAccountSet(): Boolean {
+        return assetTransaction.receiverUser != null
+    }
+
+    fun checkIfSelectedAccountReceiveAsset(assetId: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            assetTransaction.receiverUser?.publicKey?.let {
+                assetSelectionUseCase.checkIfSelectedAccountReceiveAsset(
+                    it,
+                    assetId,
+                    _assetSelectionPreview.value
+                ).collectLatest { assetSelectionPreview ->
+                    _assetSelectionPreview.emit(assetSelectionPreview)
+                }
+            }
+        }
+    }
+
+    fun getAssetOrCollectibleNameOrNull(assetId: Long): String? {
+        return simpleAssetDetailUseCase.getCachedAssetDetail(assetId)?.data?.fullName
+            ?: simpleCollectibleUseCase.getCachedCollectibleById(assetId)?.data?.fullName
     }
 
     companion object {

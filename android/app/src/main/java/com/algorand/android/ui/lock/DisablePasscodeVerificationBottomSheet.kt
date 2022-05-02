@@ -12,11 +12,15 @@
 
 package com.algorand.android.ui.lock
 
+import com.algorand.android.R
 import com.algorand.android.utils.setNavigationResult
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class DisablePasscodeVerificationBottomSheet : BasePasscodeVerificationBottomSheet() {
+
+    override val titleResId: Int
+        get() = R.string.enter_your_old
 
     override fun onPasscodeSuccess() {
         setNavigationResult(DISABLE_VERIFICATION_RESULT_KEY, true)

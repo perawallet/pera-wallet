@@ -12,6 +12,7 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -25,13 +26,17 @@
         android:layout_marginTop="60dp"
         android:text="@string/account_value" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/accountValueTextView"
         style="@style/TextAppearance.Title.Large.Mono"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_xsmall"
         android:layout_marginBottom="60dp"
-        tools:text="$15,232.42" />
+        android:maxLines="1"
+        app:autoSizeMaxTextSize="@dimen/text_size_36"
+        app:autoSizeMinTextSize="@dimen/text_size_13"
+        app:autoSizeTextType="uniform"
+        tools:text="$15,232,232,232,232,232,232,232.42" />
 
 </LinearLayout>

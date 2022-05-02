@@ -65,22 +65,22 @@ class SixDigitPasswordView @JvmOverloads constructor(
         with(binding) { digitViewList.addAll(listOf(digit1, digit2, digit3, digit4, digit5, digit6)) }
     }
 
-    fun onNewDigit(digit: Int, onNewDigitAdded: (Boolean) -> Unit) {
+    fun onNewDigit(digit: Int, onNewDigitAdded: (Boolean, Boolean) -> Unit) {
         if (isWrongPinAnimatorRunning) {
-            onNewDigitAdded.invoke(false)
+            onNewDigitAdded.invoke(false, false)
             return
         }
         if (password.size < PASSWORD_LENGTH) {
             val enteredPin = digitViewList[password.size]
             password.add(digit)
             enteredPin.setImageResource(R.drawable.filled_password_digit)
-            animateEnteringPin(enteredPin) { onNewDigitAdded.invoke(true) }
+            animateEnteringPin(enteredPin) { onNewDigitAdded.invoke(true, isPasswordFilled()) }
         } else {
-            onNewDigitAdded.invoke(false)
+            onNewDigitAdded.invoke(false, false)
         }
     }
 
-    fun getPasswordSize(): Int {
+    private fun getPasswordSize(): Int {
         return password.size
     }
 
@@ -101,9 +101,19 @@ class SixDigitPasswordView @JvmOverloads constructor(
         digitViewList.forEach { it.setImageResource(R.drawable.unfilled_password_digit) }
     }
 
+    private fun clearPassword() {
+        password.clear()
+    }
+
+    private fun clearUi() {
+        pinAnimators.clear()
+        digitViewList.forEach { it.setImageResource(R.drawable.unfilled_password_digit) }
+    }
+
     fun clearWithAnimation() {
+        clearPassword()
         digitViewList.forEach { it.setImageResource(R.drawable.filled_wrong_password_digit) }
-        animateWrongPin(onAnimationFinish = { clear() })
+        animateWrongPin(onAnimationFinish = { clearUi() })
     }
 
     fun cancelAnimations() {
@@ -135,6 +145,10 @@ class SixDigitPasswordView @JvmOverloads constructor(
         wrongPinAnimator.apply {
             doOnEnd { onAnimationFinish.invoke() }
         }.start()
+    }
+
+    private fun isPasswordFilled(): Boolean {
+        return getPasswordSize() == PASSWORD_LENGTH
     }
 
     companion object {

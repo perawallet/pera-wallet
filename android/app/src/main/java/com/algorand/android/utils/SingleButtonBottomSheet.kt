@@ -47,7 +47,7 @@ class SingleButtonBottomSheet : BaseSingleButtonBottomSheet() {
         if (args.isResultNeeded) {
             setNavigationResult(CLOSE_KEY, true)
         }
-        navBack()
+        dismissAllowingStateLoss()
     }
 
     companion object {

@@ -22,6 +22,7 @@ import com.algorand.android.utils.AlgoRewardResponseHandler
 import com.algorand.android.utils.formatAsAlgoRewardString
 import java.math.BigDecimal
 import java.math.BigInteger
+import java.math.BigInteger.ZERO
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
@@ -54,9 +55,9 @@ class PendingRewardUseCase @Inject constructor(
             val latestBlockNumber = cachedBlockNumber?.data
                 ?: return@combine pendingRewardMapper.mapToEmptyObject()
 
-            val accountDetail = cachedAccountDetail?.data!!
-            val amountWithoutPendingRewards = accountDetail.accountInformation.amountWithoutPendingRewards
-            val earnedRewards = accountDetail.accountInformation.pendingRewards
+            val accountDetail = cachedAccountDetail?.data
+            val amountWithoutPendingRewards = accountDetail?.accountInformation?.amountWithoutPendingRewards ?: ZERO
+            val earnedRewards = accountDetail?.accountInformation?.pendingRewards ?: 0L
 
             val calculatedReward = calculatePendingRewards(
                 latestBlockNumber, coroutineScope, amountWithoutPendingRewards, earnedRewards

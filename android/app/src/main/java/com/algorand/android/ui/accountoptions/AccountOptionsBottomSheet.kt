@@ -18,7 +18,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
 import com.algorand.android.models.Account
-import com.algorand.android.models.WarningConfirmation
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.extensions.show
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,16 +39,6 @@ class AccountOptionsBottomSheet : BaseAccountOptionsBottomSheet() {
 
     private val notificationFilterCheckCollector: suspend (Boolean?) -> Unit = { isMuted ->
         isMuted?.let { setupNotificationOptionButton(it) }
-    }
-
-    private val disconnectAccountWarningConfirmation by lazy {
-        WarningConfirmation(
-            drawableRes = R.drawable.ic_trash,
-            titleRes = R.string.disconnect_account,
-            descriptionRes = R.string.you_are_about_to_remove_an_account,
-            positiveButtonTextRes = R.string.remove,
-            negativeButtonTextRes = R.string.keep_it
-        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -141,7 +130,7 @@ class AccountOptionsBottomSheet : BaseAccountOptionsBottomSheet() {
     private fun navToDisconnectAccountConfirmationBottomSheet() {
         nav(
             AccountOptionsBottomSheetDirections.actionAccountOptionsBottomSheetToWarningConfirmationNavigation(
-                disconnectAccountWarningConfirmation
+                accountOptionsViewModel.getRemovingAccountWarningConfirmationModel()
             )
         )
     }

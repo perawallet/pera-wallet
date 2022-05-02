@@ -12,9 +12,9 @@
 
 package com.algorand.android.models
 
-import com.algorand.android.utils.DOLLAR_DECIMALS
+import com.algorand.android.utils.TWO_DECIMALS
 import com.algorand.android.utils.formatAsDateAndTime
-import com.algorand.android.utils.formatAsDollar
+import com.algorand.android.utils.formatAsTwoDecimals
 import com.algorand.android.utils.getZonedDateTimeFromTimeStamp
 import com.google.gson.annotations.SerializedName
 import java.math.BigDecimal
@@ -34,10 +34,10 @@ data class CandleHistory(
         get() = timestampAsSec?.getZonedDateTimeFromTimeStamp()?.formatAsDateAndTime().orEmpty()
 
     val formattedDisplayPrice: String
-        get() = displayPrice?.formatAsDollar().orEmpty()
+        get() = displayPrice?.formatAsTwoDecimals().orEmpty()
 
     val displayPrice: BigDecimal?
-        get() = high?.setScale(DOLLAR_DECIMALS, RoundingMode.FLOOR)
+        get() = high?.setScale(TWO_DECIMALS, RoundingMode.FLOOR)
 
     fun getCurrencyConvertedInstance(currencyToUsdRatio: BigDecimal): CandleHistory {
         return with(currencyToUsdRatio) {

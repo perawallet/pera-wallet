@@ -28,8 +28,7 @@ class CurrencyOptionUseCase @Inject constructor(
         emit(DataResource.Loading())
         priceRepository.getCurrencies().use(
             onSuccess = { currencyOptionList ->
-                val currencyListItemList = currencyOptionList.sortedBy { it.id }
-                emit(DataResource.Success(currencyListItemList))
+                emit(DataResource.Success(currencyOptionList))
             },
             onFailed = { exception, code ->
                 val dataResource = if (code == CURRENCY_NOT_FOUND_ERROR_CODE) {

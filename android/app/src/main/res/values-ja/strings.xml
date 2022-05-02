@@ -38,7 +38,6 @@
     <string name="view_passphrase">パスフレーズの表示</string>
     <string name="remove_account">アカウントの削除</string>
     <string name="copied_to_clipboard">クリップボードにコピーされました</string>
-    <string name="you_are_about_to_remove_an_account">アカウントを削除しようとしています。この選択を続行してもよろしいですか？</string>
     <string name="remove">削除</string>
     <string name="enter_six_digit_pin">6桁のPINを入力してください</string>
     <string name="wrong_password">間違ったパスワード</string>
@@ -105,6 +104,11 @@
     <string name="bluetooth_is_enabled">Bluetoothが有効です。</string>
     <string name="all">すべて</string>
     <string name="verified_assets">検証済み資産</string>
+    <string name="what_does_asset">資産の検証とはどういう意味ですか？<annotation type="verified-icon"> </annotation></string>
+    <string name="verified_assets_first_paragraph">検証プロセスを経た資産とは、既知のプロジェクトで、そのウェブサイトや公開情報がこのASAに対して検証されているものです。検証ステータスは、その資産を保証するものではありません。</string>
+    <string name="verified_assets_second_paragraph">Pera Wallet は、検証済みASAの所有者とはいかなる関係もありません。このバッジは、情報提供のみを目的としています。</string>
+    <string name="verified_assets_third_paragraph">ただし、その資産を取引する前に、資産のIDが意図したものかどうかを<annotation type="color">常に再確認する</annotation>必要があります。</string>
+    <string name="verified_assets_fourth_paragraph">検証プロセスに関するご質問や、アプリについての一般的なご意見がございましたら、以下をご覧ください。</string>
     <string name="advanced_troubleshooting">高度なトラブルシューティング</string>
     <string name="connecting_to_ledger">Ledgerに接続しています…</string>
     <string name="ledger_approval">Ledgerの承認</string>
@@ -190,7 +194,7 @@
     <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>が<annotation replacement="asset">assetPlaceholder</annotation>を送信しようとしていますが、これはサポートされていません。こちらの資産をアカウントに追加するには、ここをクリックしてください。</string>
     <string name="transaction_send_successful"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>から<annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>への、<annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation>のトランザクションが完了しました。</string>
     <string name="transaction_send_failed"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>から<annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>への、<annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation>のトランザクションが失敗しました。</string>
-    <string name="notification_algo_received_message"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> が、<annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>によって<annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>に送信されました。</string>
+    <string name="transaction_received">トランザクションを受信</string>
     <string name="too_many_pin_attempts">PINの試行回数が多すぎます</string>
     <string name="this_ledger_device">接続されたLedgerデバイスは、以下のアカウントのトランザクションに署名できます。Pera Walletに追加するアカウントを選択してください。</string>
     <string name="this_account_has">このアカウントは再キー化されました。トランザクションに署名するには、パスフレーズまたはLedgerデバイスでこのアカウントをリカバリーしてください。</string>
@@ -246,7 +250,7 @@
     <string name="recovery_passphrase">リカバリーパスフレーズ</string>
     <string name="select_word">次の番号の単語の選択 #<annotation replacement="word_number">wordNumberPlaceholder</annotation></string>
     <string name="prepare_to_write">リカバリーパスフレーズを書き留める用意</string>
-    <string name="im_ready_to_begin">始める準備ができました</string>
+    <string name="im_ready_to_begin">準備ができました</string>
     <string name="create_a_watch">ウォッチアカウントの作成</string>
     <string name="recover_an_algorand">Algorandアカウントの復元</string>
     <string name="in_the_following">次の手順では、25語のリカバリーパスフレーズを入力して、Algorandアカウントを復元します。始める前に、リカバリーフレーズをご用意ください。</string>
@@ -408,13 +412,11 @@
     <string name="rename_account">アカウント名の変更</string>
     <string name="add">追加</string>
     <string name="completed">完了</string>
-    <string name="amount_with_asset"><annotation replacement="asset_amount">assetAmountPlaceholder</annotation> <annotation replacement="asset_short_name">assetShortNamePlaceholder</annotation></string>
     <string name="search_contacts_or_name">連絡先または名前を検索する</string>
     <string name="try_different_contact_name">別の連絡先名をお試しください</string>
     <string name="add_photo">写真の追加</string>
     <string name="delete_this_contact">この連絡先を削除</string>
     <string name="yes_delete_contact">はい、連絡先を削除します</string>
-    <string name="asset_name_with_id">%1$s, %2$d</string>
     <string name="available_balance_with_currency">%1$s の利用可能残高</string>
     <string name="security">セキュリティ</string>
     <string name="app_preferences">アプリの設定</string>
@@ -429,7 +431,6 @@
     <string name="your_transaction_is_being_processed">トランザクションを処理しています</string>
     <string name="the_transaction_has_been_signed">トランザクションは署名され、<annotation replacement="peer_name">peer_name_placeholder</annotation>に送信されました。残りの手順については、<annotation replacement="peer_name">peer_name_placeholder</annotation>にアクセスしてください。</string>
     <string name="select_the_asset_to_send">送信する資産の選択</string>
-    <string name="asset_short_name_with_amount">%1$s %2$s</string>
     <string name="paste_from_clipboard">クリップボードから貼り付け</string>
     <string name="search_or_enter_address">検索またはアドレスの入力</string>
     <string name="my_accounts">マイアカウント</string>
@@ -452,7 +453,6 @@
     <string name="step_three">ステップ3</string>
     <string name="looking_for_devices">デバイスを探しています</string>
     <string name="ledger_account">Ledgerアカウント</string>
-    <string name="amount_with_asset_short_name"><annotation replacement="amount">amountPlaceholder</annotation> <annotation replacement="asset_short_name">assetShortNamePlaceholder</annotation></string>
     <string name="asset_id">ID <annotation replacement="asset_id">assetIdPlaceholder</annotation></string>
     <string name="asset_id_formatted">ID %1$s</string>
     <string name="find_a_code_to_scan">スキャンするコードを探す</string>
@@ -515,7 +515,6 @@
     <string name="show_note">メモを表示</string>
     <string name="create_a_passphrase_backup">アカウントのパスフレーズバックアップの作成</string>
     <string name="creating_a_passphrase_backup">パスフレーズのバックアップを作成すると、アカウントのリカバリーが可能です。パスフレーズがないと、デバイスを紛失したり、アカウントやアプリを削除した場合、Algorandアカウントへのアクセスを永久に失うことになります！</string>
-    <string name="congratulations_your_account">おめでとうございます。アカウントの準備が整いました。</string>
     <string name="welcome_to_pera_your_account">Pera Walletへようこそ！お客様のアカウントはすぐにお使いいただけます。</string>
     <string name="loading">読み込み中</string>
     <string name="algorand_wallet_is_now">公式発表です！\nAlgorand WalletはPera Walletになりました。</string>
@@ -526,5 +525,85 @@
     <string name="sorry_we_cant_show_account">申し訳ありませんが、このアカウントの詳細を表示することはできません。計算に問題が発生しているようです。\n\n一部の資産価格が公開されていない場合があり、ポートフォリオの合計値は推定値としてお考え下さい。</string>
     <string name="sorry_we_cant_show_portfolio">申し訳ありませんが、このポートフォリオの詳細を表示することはできません。計算に問題が発生しているようです。\n\n一部の資産価格が公開されていない場合があり、ポートフォリオの合計値は推定値としてお考え下さい。</string>
     <string name="transaction_request_faq">トランザクションリクエストに関するFAQ</string>
-    <string name="external_applications_also">dAppsと呼ばれる外部アプリケーションは、Pera Walletが管理していないトランザクション要求を行えます。署名する前にトランザクション内容を慎重にご確認ください。\n\nすべてのトランザクションは元に戻すことができません。知らないdAppからのトランザクションは絶対に承認しないでください。</string>
+    <string name="notification_algo_received_message"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> を、<annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>へ<annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>が送信しました。</string>
+    <string name="minimum_amount_required">最少額を満たす必要があります</string>
+    <string name="this_is_the_first_transaction">これは、選択した口座での最初のトランザクションです。最初のトランザクションでは、最低でも0.1 Algoが必要です。有効な額を入力して、やり直してください。</string>
+    <string name="i_want_to_create">アカウントを作成したい</string>
+    <string name="create_a_new_algorand">Algorandアカウントの新規作成、またはウォッチアカウントの追加</string>
+    <string name="i_already_have">すでにアカウントを持っている</string>
+    <string name="import_an_existing">回復用パスフレーズを使用してAlgorandアカウントをインポートするか、Ledgerをペアリングする</string>
+    <string name="i_want_to_create_an_algorand_account">Algorandアカウントを\n作成したい</string>
+    <string name="create_a_new_account">新規アカウントの作成</string>
+    <string name="create_a_new_algorand_account_with">新規アドレスと回復用パスフレーズを持つ、新しいAlgorandアカウントを作成</string>
+    <string name="add_watch_account">ウォッチアカウントの追加</string>
+    <string name="i_already_have_nan_account">すでにアカウントを\n持っています</string>
+    <string name="recover_an_account">アカウントの復元</string>
+    <string name="pair_Ledger_device">Ledgerデバイスのペアリング</string>
+    <string name="i_want_to_create_algorand">Ledgerハードウェアウォレットに紐づけされたAlgorandアカウントを作成したい</string>
+    <string name="confirm_transaction">トランザクションの確認</string>
+    <string name="your_transaction_was">トランザクションはAlgorandネットワークによって正常に受信されました。</string>
+    <string name="buy_algo">ALGOを購入する</string>
+    <string name="moonpay_offers">MoonPayは、お客様がお使いの通貨で最も素早くalgoを購入できる方法を提供します。クレジットカードや銀行振込で暗号通貨を購入できます。高速、シンプルで、安全です。</string>
+    <string name="buy_algo_with">MoonPayでALGOを購入する</string>
+    <string name="secured_by">セキュリティ方式</string>
+    <string name="your_algos_are">まもなくAlgoが届きます！</string>
+    <string name="your_payment_is">お支払いの手続き中です。完了するまで数分かかる場合があります。</string>
+    <string name="success_algo_received">成功！\nAlgoを受け取りました。</string>
+    <string name="congratulations_your_account_has">おめでとうございます！アカウントに入金されました。</string>
+    <string name="almost_there">もう少しです！</string>
+    <string name="your_purchase_request_is_pending">購入リクエストは支払い待ちです。支払いが完了すると、通知が届きます。</string>
+    <string name="your_purchase_request_is_wating">購入した商品の認証を待っています。支払いが完了すると、通知が届きます。</string>
+    <string name="uh_oh_something">問題が発生しました。</string>
+    <string name="looks_like_your">購入に失敗したようです。もう一度やり直してください。</string>
+    <string name="email_address">メールアドレス</string>
+    <string name="enter_your_email">メールアドレスを入力</string>
+    <string name="continue_with_moonpay">MoonPayで続ける</string>
+    <string name="i_agree_to_share">私は、メールアドレスをPeraと共有し、ウォレット機能に関する最新情報を受け取ることに同意します。</string>
+    <string name="not_available">使用不可</string>
+    <string name="you_can_not_purchase">TestNetでは購入できません。MoonPayをご利用になるには、設定からMainNetに切り替えてください。</string>
+    <string name="your_walletconnect_request_failed">WalletConnectのリクエストは、以下のエラーにより失敗しました:\n\n<annotation replacement="error_message">errorMessagePlaceholder</annotation>\n\nリクエストを開始したdAppに戻り、再度お試しください。</string>
+    <string name="add_an_account">アカウントの追加</string>
+    <string name="manage_assets">資産の管理</string>
+    <string name="send_asset">資産の送信</string>
+    <string name="enable_pin_code">PINコードを有効にする</string>
+    <string name="security_preferences">セキュリティ設定</string>
+    <string name="change_pin_code">PINコードの変更</string>
+    <string name="watch_account_added">ウォッチアカウントが正常に追加されました</string>
+    <string name="the_watch_account_has_been">ウォッチアカウントが正常に追加されました。</string>
+    <string name="currency_preferences">通貨設定</string>
+    <string name="collectibles">コレクション</string>
+    <string name="welcome_to_your_nft">NFT Galleryへようこそ！まだNFTを持っていません。ウォレットにあるすべてのNFTがここに表示されます。</string>
+    <string name="receive_nft">NFTを受け取る</string>
+    <string name="share">シェア</string>
+    <string name="description">説明</string>
+    <string name="owner">所有者</string>
+    <string name="asset_id_">資産ID</string>
+    <string name="creator_wallet_address">制作者ウォレットアドレス</string>
+    <string name="collection_name">コレクション名</string>
+    <string name="creator_name">制作者名</string>
+    <string name="properties">プロパティ</string>
+    <string name="view_transaction">トランザクションを見る</string>
+    <string name="show_on_algoexplorer">Algoexplorerで表示する</string>
+    <string name="show_on_nftexplorer">NFTExplorerで表示する</string>
+    <string name="we_don_t_support">このNFTメディアタイプはまだサポートされていません。</string>
+    <string name="we_can_t_display">一時的にビジュアルを表示できません。</string>
+    <string name="transfer">転送</string>
+    <string name="send_your_nft">NFTを送信する</string>
+    <string name="paste_an_algorand_wallet_address">Algorandウォレットアドレスを貼り付ける</string>
+    <string name="ask_recipient_to">受信者にオプトインをリクエストする</string>
+    <string name="you_cant_send"><annotation replacement="collectible_name">collectibleNamePlaceHolder</annotation>を<annotation replacement="wallet_address">walletAddressPlaceholder</annotation>にできません。このウォレットはまだこの資産をオプトインしていません。<annotation font="dmsans_medium"><annotation custom="learn_more">オプトインについてもっと知る</annotation></annotation></string>
+    <string name="request_opt_in">オプトインをリクエスト</string>
+    <string name="information_about_opt">オプトインに関する情報</string>
+    <string name="to_avoid_spammy">スパム的なトランザクションを避けるため、Algorand Blockchainでは事前にオプトインされた資産のみ、トランザクションの送受信が可能です。</string>
+    <string name="search_or_enter_wallet_address">検索またはウォレットアドレスを入力</string>
+    <string name="your_nft_transfer">NFTの転送が確認されました！</string>
+    <string name="transactions_can_take">トランザクションの完了まで数分かかることがあります。</string>
+    <string name="got_it">了解！</string>
+    <string name="approve_transaction">トランザクションの承認</string>
+    <string name="are_you_sure">続行してよろしいですか？</string>
+    <string name="sender_account">送信者アカウント</string>
+    <string name="transacting_fee">トランザクション手数料</string>
+    <string name="confirm_transfer">転送の確認</string>
+    <string name="search_asset_id_or_nft">資産IDまたはNFT名の検索</string>
+    <string name="receive_an_nft">NFTを受け取る</string>
 </resources>

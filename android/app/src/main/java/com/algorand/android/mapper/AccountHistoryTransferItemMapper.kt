@@ -36,8 +36,7 @@ class AccountHistoryTransferItemMapper @Inject constructor(
         assetDetail: BaseAssetDetail?,
         accountPublicKey: String,
         transactionTargetUser: TransactionTargetUser?,
-        otherPublicKey: String,
-        formattedAmountInDisplayedCurrency: String?
+        otherPublicKey: String
     ): BaseTransactionItem.TransactionItem {
         return with(transaction) {
             val transactionSymbol = transactionSymbolDecider.provideTransactionSymbol(this, accountPublicKey)
@@ -65,8 +64,7 @@ class AccountHistoryTransferItemMapper @Inject constructor(
                 closeToAmount = closeAmount,
                 rewardAmount = getReward(accountPublicKey),
                 assetShortName = assetDetail?.shortName.orEmpty(),
-                transactionName = transactionNameDecider.provideTransferTransactionName(this, accountPublicKey),
-                formattedAmountInDisplayedCurrency = formattedAmountInDisplayedCurrency
+                transactionName = transactionNameDecider.provideTransferTransactionName(this, accountPublicKey)
             )
         }
     }

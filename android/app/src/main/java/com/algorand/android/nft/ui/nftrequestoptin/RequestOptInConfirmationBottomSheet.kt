@@ -106,7 +106,10 @@ class RequestOptInConfirmationBottomSheet : BaseDoubleButtonBottomSheet() {
     private fun updateUi(requestOptInConfirmationPreview: RequestOptInConfirmationPreview) {
         with(requestOptInConfirmationPreview) {
             setProgressVisibility(isLoadingVisible)
-            globalErrorEvent?.consume()?.run { showGlobalError(this) }
+            globalErrorEvent?.consume()?.run {
+                showGlobalError(this)
+                navBack()
+            }
             requestSendSuccessEvent?.consume()?.run { navBack() }
         }
     }

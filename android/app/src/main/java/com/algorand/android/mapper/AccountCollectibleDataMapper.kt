@@ -43,8 +43,10 @@ class AccountCollectibleDataMapper @Inject constructor() {
         collectibleDetail: SimpleCollectibleDetail,
         amount: BigInteger,
         formattedAmount: String,
+        formattedCompactAmount: String,
         amountInSelectedCurrency: BigDecimal,
-        formattedSelectedCurrencyValue: String
+        formattedSelectedCurrencyValue: String,
+        formattedSelectedCurrencyCompactValue: String
     ): OwnedCollectibleImageData {
         return OwnedCollectibleImageData(
             id = collectibleDetail.assetId,
@@ -52,8 +54,10 @@ class AccountCollectibleDataMapper @Inject constructor() {
             shortName = collectibleDetail.shortName,
             amount = amount,
             formattedAmount = formattedAmount,
+            formattedCompactAmount = formattedCompactAmount,
             amountInSelectedCurrency = amountInSelectedCurrency,
             formattedSelectedCurrencyValue = formattedSelectedCurrencyValue,
+            formattedSelectedCurrencyCompactValue = formattedSelectedCurrencyCompactValue,
             isVerified = collectibleDetail.isVerified,
             isAlgo = false,
             decimals = collectibleDetail.fractionDecimals ?: DEFAULT_ASSET_DECIMAL,
@@ -70,8 +74,10 @@ class AccountCollectibleDataMapper @Inject constructor() {
         collectibleDetail: SimpleCollectibleDetail,
         amount: BigInteger,
         formattedAmount: String,
+        formattedCompactAmount: String,
         amountInSelectedCurrency: BigDecimal,
-        formattedSelectedCurrencyValue: String
+        formattedSelectedCurrencyValue: String,
+        formattedSelectedCurrencyCompactValue: String
     ): OwnedCollectibleVideoData {
         return OwnedCollectibleVideoData(
             id = collectibleDetail.assetId,
@@ -79,8 +85,10 @@ class AccountCollectibleDataMapper @Inject constructor() {
             shortName = collectibleDetail.shortName,
             amount = amount,
             formattedAmount = formattedAmount,
+            formattedCompactAmount = formattedCompactAmount,
             amountInSelectedCurrency = amountInSelectedCurrency,
             formattedSelectedCurrencyValue = formattedSelectedCurrencyValue,
+            formattedSelectedCurrencyCompactValue = formattedSelectedCurrencyCompactValue,
             isVerified = collectibleDetail.isVerified,
             isAlgo = false,
             decimals = collectibleDetail.fractionDecimals ?: DEFAULT_ASSET_DECIMAL,
@@ -97,8 +105,10 @@ class AccountCollectibleDataMapper @Inject constructor() {
         collectibleDetail: SimpleCollectibleDetail,
         amount: BigInteger,
         formattedAmount: String,
+        formattedCompactAmount: String,
         amountInSelectedCurrency: BigDecimal,
-        formattedSelectedCurrencyValue: String
+        formattedSelectedCurrencyValue: String,
+        formattedSelectedCurrencyCompactValue: String
     ): OwnedCollectibleMixedData {
         return OwnedCollectibleMixedData(
             id = collectibleDetail.assetId,
@@ -106,8 +116,10 @@ class AccountCollectibleDataMapper @Inject constructor() {
             shortName = collectibleDetail.shortName,
             amount = amount,
             formattedAmount = formattedAmount,
+            formattedCompactAmount = formattedCompactAmount,
             amountInSelectedCurrency = amountInSelectedCurrency,
             formattedSelectedCurrencyValue = formattedSelectedCurrencyValue,
+            formattedSelectedCurrencyCompactValue = formattedSelectedCurrencyCompactValue,
             isVerified = collectibleDetail.isVerified,
             isAlgo = false,
             decimals = collectibleDetail.fractionDecimals ?: DEFAULT_ASSET_DECIMAL,
@@ -124,8 +136,10 @@ class AccountCollectibleDataMapper @Inject constructor() {
         collectibleDetail: SimpleCollectibleDetail,
         amount: BigInteger,
         formattedAmount: String,
+        formattedCompactAmount: String,
         amountInSelectedCurrency: BigDecimal,
-        formattedSelectedCurrencyValue: String
+        formattedSelectedCurrencyValue: String,
+        formattedSelectedCurrencyCompactValue: String
     ): OwnedUnsupportedCollectibleData {
         return OwnedUnsupportedCollectibleData(
             id = collectibleDetail.assetId,
@@ -133,8 +147,10 @@ class AccountCollectibleDataMapper @Inject constructor() {
             shortName = collectibleDetail.shortName,
             amount = amount,
             formattedAmount = formattedAmount,
+            formattedCompactAmount = formattedCompactAmount,
             amountInSelectedCurrency = amountInSelectedCurrency,
             formattedSelectedCurrencyValue = formattedSelectedCurrencyValue,
+            formattedSelectedCurrencyCompactValue = formattedSelectedCurrencyCompactValue,
             isVerified = collectibleDetail.isVerified,
             isAlgo = false,
             decimals = collectibleDetail.fractionDecimals ?: DEFAULT_ASSET_DECIMAL,

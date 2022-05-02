@@ -32,10 +32,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 
 class RemoveAssetsViewModel @ViewModelInject constructor(
@@ -64,9 +63,7 @@ class RemoveAssetsViewModel @ViewModelInject constructor(
     }
 
     fun updateSearchingQuery(query: String) {
-        viewModelScope.launch {
-            assetQueryFlow.emit(query)
-        }
+        assetQueryFlow.value = query
     }
 
     fun sendSignedTransaction(
@@ -99,10 +96,12 @@ class RemoveAssetsViewModel @ViewModelInject constructor(
 
     private fun getAssetQueryJob(): Job {
         return viewModelScope.launch {
-            assetQueryFlow.debounce(QUERY_DEBOUNCE)
-                .distinctUntilChanged()
-                .flatMapLatest { accountAssetRemovalUseCase.getRemovalAccountAssetsByQuery(accountPublicKey, it) }
-                .collectLatest { _accountAssetListFlow.emit(it) }
+            accountAssetRemovalUseCase.getRemovalAccountAssetsByQuery(
+                accountPublicKey,
+                assetQueryFlow.debounce(QUERY_DEBOUNCE).distinctUntilChanged()
+            ).collect {
+                _accountAssetListFlow.emit(it)
+            }
         }
     }
 

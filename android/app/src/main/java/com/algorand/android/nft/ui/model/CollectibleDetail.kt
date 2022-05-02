@@ -13,14 +13,13 @@
 package com.algorand.android.nft.ui.model
 
 import android.os.Parcelable
-import com.algorand.android.models.AccountIcon
+import com.algorand.android.models.BaseAccountAddress.AccountAddress
 import kotlinx.parcelize.Parcelize
 
 sealed class CollectibleDetail : Parcelable {
 
     abstract val isOwnedByTheUser: Boolean
-    abstract val ownerAccountAddress: String?
-    abstract val ownerAccountIcon: AccountIcon?
+    abstract val ownerAccountAddress: AccountAddress
 
     abstract val isHoldingByWatchAccount: Boolean
 
@@ -32,9 +31,10 @@ sealed class CollectibleDetail : Parcelable {
     abstract val collectionName: String?
 
     abstract val creatorName: String?
-    abstract val creatorWalletAddress: String?
+    abstract val creatorWalletAddress: AccountAddress?
 
     abstract val warningTextRes: Int?
+    abstract val optedInWarningTextRes: Int?
 
     abstract val isPeraExplorerVisible: Boolean
     abstract val peraExplorerUrl: String?
@@ -43,24 +43,30 @@ sealed class CollectibleDetail : Parcelable {
 
     abstract val isVerified: Boolean
 
+    abstract val collectibleFractionDecimals: Int?
+
+    abstract val isPure: Boolean
+
     @Parcelize
     data class ImageCollectibleDetail(
         override val isOwnedByTheUser: Boolean,
         override val collectionName: String?,
         override val collectibleName: String?,
         override val collectibleDescription: String?,
-        override val ownerAccountAddress: String?,
-        override val ownerAccountIcon: AccountIcon?,
+        override val ownerAccountAddress: AccountAddress,
         override val collectibleId: Long,
         override val creatorName: String?,
-        override val creatorWalletAddress: String?,
+        override val creatorWalletAddress: AccountAddress?,
         override val isHoldingByWatchAccount: Boolean,
         override val warningTextRes: Int?,
         override val collectibleTraits: List<CollectibleTraitItem>?,
         override val isPeraExplorerVisible: Boolean,
         override val peraExplorerUrl: String?,
-        override val collectibleMedias: List<BaseCollectibleMediaItem.ImageCollectibleMediaItem>,
+        override val collectibleMedias: List<BaseCollectibleMediaItem>,
         override val isVerified: Boolean,
+        override val optedInWarningTextRes: Int?,
+        override val collectibleFractionDecimals: Int?,
+        override val isPure: Boolean,
         val prismUrl: String?
     ) : CollectibleDetail()
 
@@ -70,11 +76,10 @@ sealed class CollectibleDetail : Parcelable {
         override val collectionName: String?,
         override val collectibleName: String?,
         override val collectibleDescription: String?,
-        override val ownerAccountAddress: String?,
-        override val ownerAccountIcon: AccountIcon?,
+        override val ownerAccountAddress: AccountAddress,
         override val collectibleId: Long,
         override val creatorName: String?,
-        override val creatorWalletAddress: String?,
+        override val creatorWalletAddress: AccountAddress?,
         override val isHoldingByWatchAccount: Boolean,
         override val warningTextRes: Int?,
         override val collectibleTraits: List<CollectibleTraitItem>?,
@@ -82,6 +87,9 @@ sealed class CollectibleDetail : Parcelable {
         override val peraExplorerUrl: String?,
         override val collectibleMedias: List<BaseCollectibleMediaItem.VideoCollectibleMediaItem>,
         override val isVerified: Boolean,
+        override val optedInWarningTextRes: Int?,
+        override val collectibleFractionDecimals: Int?,
+        override val isPure: Boolean,
         val prismUrl: String?
     ) : CollectibleDetail()
 
@@ -91,11 +99,10 @@ sealed class CollectibleDetail : Parcelable {
         override val collectionName: String?,
         override val collectibleName: String?,
         override val collectibleDescription: String?,
-        override val ownerAccountAddress: String?,
-        override val ownerAccountIcon: AccountIcon?,
+        override val ownerAccountAddress: AccountAddress,
         override val collectibleId: Long,
         override val creatorName: String?,
-        override val creatorWalletAddress: String?,
+        override val creatorWalletAddress: AccountAddress?,
         override val isHoldingByWatchAccount: Boolean,
         override val warningTextRes: Int?,
         override val collectibleTraits: List<CollectibleTraitItem>?,
@@ -103,14 +110,16 @@ sealed class CollectibleDetail : Parcelable {
         override val peraExplorerUrl: String?,
         override val collectibleMedias: List<BaseCollectibleMediaItem>,
         override val isVerified: Boolean,
+        override val optedInWarningTextRes: Int?,
+        override val collectibleFractionDecimals: Int?,
+        override val isPure: Boolean,
         val prismUrl: String?
     ) : CollectibleDetail()
 
     @Parcelize
     data class NotSupportedCollectibleDetail(
         override val isOwnedByTheUser: Boolean,
-        override val ownerAccountAddress: String?,
-        override val ownerAccountIcon: AccountIcon?,
+        override val ownerAccountAddress: AccountAddress,
         override val isHoldingByWatchAccount: Boolean,
         override val collectibleId: Long,
         override val collectibleName: String?,
@@ -118,11 +127,14 @@ sealed class CollectibleDetail : Parcelable {
         override val collectibleTraits: List<CollectibleTraitItem>?,
         override val collectionName: String?,
         override val creatorName: String?,
-        override val creatorWalletAddress: String?,
+        override val creatorWalletAddress: AccountAddress?,
         override val warningTextRes: Int?,
         override val isPeraExplorerVisible: Boolean,
         override val peraExplorerUrl: String?,
-        override val collectibleMedias: List<BaseCollectibleMediaItem.UnsupportedCollectibleMediaItem>,
-        override val isVerified: Boolean
+        override val collectibleMedias: List<BaseCollectibleMediaItem>,
+        override val optedInWarningTextRes: Int?,
+        override val isVerified: Boolean,
+        override val collectibleFractionDecimals: Int?,
+        override val isPure: Boolean,
     ) : CollectibleDetail()
 }

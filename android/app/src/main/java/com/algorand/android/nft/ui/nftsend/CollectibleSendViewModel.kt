@@ -76,7 +76,7 @@ class CollectibleSendViewModel @ViewModelInject constructor(
     // TODO Transaction signing & sending flow needs to be refactored
     fun getSendTransactionData(): TransactionData.Send? {
         val senderAccountCacheData = accountCacheManager
-            .getCacheData(collectibleDetail.ownerAccountAddress) ?: return null
+            .getCacheData(collectibleDetail.ownerAccountAddress.publicKey) ?: return null
         val targetUser = TargetUser(publicKey = selectedAccountAddressFlow.value)
         return TransactionData.Send(
             accountCacheData = senderAccountCacheData,

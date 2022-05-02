@@ -24,6 +24,7 @@ import com.algorand.android.databinding.FragmentReceiveCollectibleBinding
 import com.algorand.android.models.AssetAction
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.ui.addasset.AssetAdditionType
 import com.algorand.android.ui.addasset.BaseAddAssetFragment
 import com.algorand.android.ui.addasset.BaseAddAssetViewModel
 import com.algorand.android.utils.copyToClipboard
@@ -56,6 +57,9 @@ class ReceiveCollectibleFragment : BaseAddAssetFragment(R.layout.fragment_receiv
 
     override val baseAddAssetViewModel: BaseAddAssetViewModel
         get() = receiveCollectibleViewModel
+
+    override val assetAdditionType: AssetAdditionType
+        get() = AssetAdditionType.COLLECTIBLE
 
     private val toolbarConfiguration = ToolbarConfiguration(
         titleResId = R.string.receive_an_nft,

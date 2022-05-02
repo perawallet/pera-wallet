@@ -13,14 +13,18 @@
 
 package com.algorand.android.usecase
 
+import com.algorand.android.R
 import com.algorand.android.core.BaseUseCase
+import com.algorand.android.mapper.WarningConfirmationMapper
 import com.algorand.android.models.Account
+import com.algorand.android.models.WarningConfirmation
 import com.algorand.android.repository.AccountRepository
 import javax.inject.Inject
 
 class AccountOptionsUseCase @Inject constructor(
     private val accountRepository: AccountRepository,
-    private val accountDetailUseCase: AccountDetailUseCase
+    private val accountDetailUseCase: AccountDetailUseCase,
+    private val warningConfirmationMapper: WarningConfirmationMapper
 ) : BaseUseCase() {
 
     fun isThereAnyAsset(publicKey: String): Boolean {
@@ -46,5 +50,21 @@ class AccountOptionsUseCase @Inject constructor(
 
     fun getAccountName(publicKey: String): String {
         return accountDetailUseCase.getAccountName(publicKey)
+    }
+
+    fun getRemovingAccountWarningConfirmationModel(publicKey: String): WarningConfirmation {
+        val descriptionRes = when (getAccountType(publicKey)) {
+            Account.Type.STANDARD, Account.Type.LEDGER, Account.Type.REKEYED, Account.Type.REKEYED_AUTH -> {
+                R.string.you_are_about_to_remove_main_account
+            }
+            Account.Type.WATCH -> R.string.you_are_about_to_remove_watch_account
+        }
+        return warningConfirmationMapper.mapToAccountWarningConfirmation(
+            drawableRes = R.drawable.ic_trash,
+            titleRes = R.string.remove_account,
+            descriptionRes = descriptionRes,
+            positiveButtonTextRes = R.string.remove,
+            negativeButtonTextRes = R.string.keep_it
+        )
     }
 }

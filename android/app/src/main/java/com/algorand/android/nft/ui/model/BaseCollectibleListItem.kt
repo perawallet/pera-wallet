@@ -51,7 +51,7 @@ sealed class BaseCollectibleListItem : RecyclerListItem {
         abstract val collectibleName: String?
         abstract val collectionName: String?
         abstract val isOwnedByTheUser: Boolean
-        abstract val errorDisplayText: String
+        abstract val avatarDisplayText: String
         abstract val badgeImageResId: Int?
         abstract val optedInAccountAddress: String
 
@@ -60,7 +60,7 @@ sealed class BaseCollectibleListItem : RecyclerListItem {
             override val collectibleName: String?,
             override val collectionName: String?,
             override val isOwnedByTheUser: Boolean,
-            override val errorDisplayText: String,
+            override val avatarDisplayText: String,
             override val badgeImageResId: Int?,
             override val optedInAccountAddress: String
         ) : BaseCollectibleItem() {
@@ -81,7 +81,7 @@ sealed class BaseCollectibleListItem : RecyclerListItem {
             override val collectibleName: String?,
             override val collectionName: String?,
             override val isOwnedByTheUser: Boolean,
-            override val errorDisplayText: String,
+            override val avatarDisplayText: String,
             override val badgeImageResId: Int?,
             override val optedInAccountAddress: String,
             val thumbnailPrismUrl: String?
@@ -103,7 +103,7 @@ sealed class BaseCollectibleListItem : RecyclerListItem {
             override val collectibleName: String?,
             override val collectionName: String?,
             override val isOwnedByTheUser: Boolean,
-            override val errorDisplayText: String,
+            override val avatarDisplayText: String,
             override val badgeImageResId: Int?,
             override val optedInAccountAddress: String,
             val prismUrl: String?
@@ -125,7 +125,7 @@ sealed class BaseCollectibleListItem : RecyclerListItem {
             override val collectibleName: String?,
             override val collectionName: String?,
             override val isOwnedByTheUser: Boolean,
-            override val errorDisplayText: String,
+            override val avatarDisplayText: String,
             override val badgeImageResId: Int?,
             override val optedInAccountAddress: String,
             val thumbnailPrismUrl: String?
@@ -147,7 +147,7 @@ sealed class BaseCollectibleListItem : RecyclerListItem {
             override val collectibleName: String?,
             override val collectionName: String?,
             override val isOwnedByTheUser: Boolean,
-            override val errorDisplayText: String,
+            override val avatarDisplayText: String,
             override val badgeImageResId: Int?,
             override val optedInAccountAddress: String
         ) : BaseCollectibleItem() {
@@ -168,7 +168,7 @@ sealed class BaseCollectibleListItem : RecyclerListItem {
             override val collectibleName: String?,
             override val collectionName: String?,
             override val isOwnedByTheUser: Boolean,
-            override val errorDisplayText: String,
+            override val avatarDisplayText: String,
             override val badgeImageResId: Int?,
             override val optedInAccountAddress: String
         ) : BaseCollectibleItem() {
@@ -195,7 +195,7 @@ sealed class BaseCollectibleListItem : RecyclerListItem {
                 override val collectibleName: String?,
                 override val collectionName: String?,
                 override val isOwnedByTheUser: Boolean,
-                override val errorDisplayText: String,
+                override val avatarDisplayText: String,
                 override val primaryImageUrl: String?,
                 override val badgeImageResId: Int?,
                 override val optedInAccountAddress: String
@@ -217,7 +217,7 @@ sealed class BaseCollectibleListItem : RecyclerListItem {
                 override val collectibleName: String?,
                 override val collectionName: String?,
                 override val isOwnedByTheUser: Boolean,
-                override val errorDisplayText: String,
+                override val avatarDisplayText: String,
                 override val primaryImageUrl: String?,
                 override val badgeImageResId: Int?,
                 override val optedInAccountAddress: String
@@ -239,7 +239,7 @@ sealed class BaseCollectibleListItem : RecyclerListItem {
                 override val collectibleName: String?,
                 override val collectionName: String?,
                 override val isOwnedByTheUser: Boolean,
-                override val errorDisplayText: String,
+                override val avatarDisplayText: String,
                 override val primaryImageUrl: String?,
                 override val badgeImageResId: Int?,
                 override val optedInAccountAddress: String

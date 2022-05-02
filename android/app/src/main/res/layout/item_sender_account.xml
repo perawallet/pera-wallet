@@ -19,13 +19,22 @@
     android:paddingHorizontal="@dimen/spacing_xlarge"
     android:paddingVertical="@dimen/spacing_normal">
 
+    <include layout="@layout/include_list_item_guidelines" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/firstColumnBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="start"
+        app:constraint_referenced_ids="endGuideline, accountBalanceTextView" />
+
     <com.algorand.android.customviews.AlgorandAccountView
         android:id="@+id/accountView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/accountBalanceTextView"
+        app:layout_constraintEnd_toStartOf="@id/firstColumnBarrier"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -34,10 +43,14 @@
         style="@style/TextAppearance.Body.Mono"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:paddingStart="@dimen/spacing_normal"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/accountView"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toEndOf="@id/startGuideline"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="$21,554.95" />
+        tools:text="$21,554,554,554.95" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

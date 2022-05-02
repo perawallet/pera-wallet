@@ -23,8 +23,11 @@ import com.algorand.android.utils.walletconnect.getRandomPeerMetaIconResId
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.CustomViewTarget
 import com.bumptech.glide.request.target.Target
+import com.bumptech.glide.request.transition.Transition
 
 fun ImageView.loadContactProfileImage(uri: Uri?, shouldUsePlaceHolder: Boolean = true) {
     if (uri == null) {
@@ -113,4 +116,23 @@ fun Context.loadImage(uri: String, onResourceReady: (Drawable) -> Unit, onLoadFa
             }
         })
         .preload()
+}
+
+fun ImageView.loadGif(uri: String, onResourceReady: (GifDrawable) -> Unit, onLoadFailed: ((Drawable?) -> Unit)?) {
+    Glide.with(this)
+        .asGif()
+        .load(uri)
+        .into(object : CustomViewTarget<ImageView, GifDrawable>(this) {
+            override fun onLoadFailed(errorDrawable: Drawable?) {
+                onLoadFailed?.invoke(errorDrawable)
+            }
+
+            override fun onResourceReady(resource: GifDrawable, transition: Transition<in GifDrawable>?) {
+                onResourceReady(resource)
+            }
+
+            override fun onResourceCleared(placeholder: Drawable?) {
+                setImageDrawable(null)
+            }
+        })
 }

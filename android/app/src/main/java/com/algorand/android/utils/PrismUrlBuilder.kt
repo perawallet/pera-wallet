@@ -31,6 +31,12 @@ class PrismUrlBuilder private constructor(url: String) {
         return this
     }
 
+    fun addImageUrl(imageUrl: String): PrismUrlBuilder {
+        addQuery(Query.IMAGE_URL, imageUrl)
+        baseUrl.append(QUERY_SYMBOL)
+        return this
+    }
+
     fun build(): String {
         return baseUrl.apply {
             removeSuffix(QUERY_DIVIDER)
@@ -48,7 +54,8 @@ class PrismUrlBuilder private constructor(url: String) {
     private enum class Query(val key: String) {
         WIDTH("width"),
         HEIGHT("height"),
-        QUALITY("quality")
+        QUALITY("quality"),
+        IMAGE_URL("image_url")
     }
 
     companion object {

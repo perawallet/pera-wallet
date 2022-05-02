@@ -18,66 +18,16 @@ import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.BasePen
 import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingDeletionCollectibleData
 import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingSendingCollectibleData
 import com.algorand.android.nft.mapper.CollectibleListingItemMapper
+import com.algorand.android.nft.ui.model.BaseCollectibleListData
 import com.algorand.android.nft.ui.model.BaseCollectibleListItem
 
 open class BaseCollectiblesListingPreviewUseCase(
-    private val collectibleListingItemMapper: CollectibleListingItemMapper
+    private val collectibleListingItemMapper: CollectibleListingItemMapper,
+    private val collectibleFilterUseCase: CollectibleFilterUseCase
 ) {
 
-    private fun createOwnedCollectibleListItem(
-        accountAssetData: BaseOwnedCollectibleData,
-        isOwnedByTheUser: Boolean,
-        optedInAccountAddress: String
-    ): BaseCollectibleListItem.BaseCollectibleItem {
-        with(collectibleListingItemMapper) {
-            with(accountAssetData) {
-                val errorDisplayText = collectibleName ?: name ?: shortName ?: id.toString()
-                return when (this) {
-                    is BaseOwnedCollectibleData.OwnedCollectibleImageData -> {
-                        mapToImageItem(this, isOwnedByTheUser, errorDisplayText, optedInAccountAddress)
-                    }
-                    is BaseOwnedCollectibleData.OwnedCollectibleVideoData -> {
-                        mapToVideoItem(this, isOwnedByTheUser, errorDisplayText, optedInAccountAddress)
-                    }
-                    is BaseOwnedCollectibleData.OwnedUnsupportedCollectibleData -> {
-                        mapToNotSupportedItem(this, isOwnedByTheUser, errorDisplayText, optedInAccountAddress)
-                    }
-                    is BaseOwnedCollectibleData.OwnedCollectibleMixedData -> {
-                        mapToMixedItem(this, isOwnedByTheUser, errorDisplayText, optedInAccountAddress)
-                    }
-                }
-            }
-        }
-    }
-
-    private fun createPendingAdditionCollectibleListItem(
-        pendingCollectibleData: PendingAdditionCollectibleData,
-        optedInAccountAddress: String
-    ): BaseCollectibleListItem.BaseCollectibleItem.BasePendingCollectibleItem {
-        with(pendingCollectibleData) {
-            val errorDisplayText = collectibleName ?: name ?: shortName ?: id.toString()
-            return collectibleListingItemMapper.mapToPendingAdditionItem(this, errorDisplayText, optedInAccountAddress)
-        }
-    }
-
-    private fun createPendingDeletionCollectibleListItem(
-        pendingCollectibleData: PendingDeletionCollectibleData,
-        optedInAccountAddress: String
-    ): BaseCollectibleListItem.BaseCollectibleItem.BasePendingCollectibleItem {
-        with(pendingCollectibleData) {
-            val errorDisplayText = collectibleName ?: name ?: shortName ?: id.toString()
-            return collectibleListingItemMapper.mapToPendingRemovalItem(this, errorDisplayText, optedInAccountAddress)
-        }
-    }
-
-    private fun createPendingSentCollectibleListItem(
-        pendingCollectibleData: PendingSendingCollectibleData,
-        optedInAccountAddress: String
-    ): BaseCollectibleListItem.BaseCollectibleItem.BasePendingCollectibleItem {
-        with(pendingCollectibleData) {
-            val errorDisplayText = collectibleName ?: name ?: shortName ?: id.toString()
-            return collectibleListingItemMapper.mapToPendingSendingItem(this, errorDisplayText, optedInAccountAddress)
-        }
+    fun clearCollectibleFilters() {
+        collectibleFilterUseCase.clearCollectibleFilters()
     }
 
     protected fun createCollectibleListItem(
@@ -99,6 +49,72 @@ open class BaseCollectiblesListingPreviewUseCase(
                 createPendingSentCollectibleListItem(accountAssetData, optedInAccountAddress)
             }
             else -> null
+        }
+    }
+
+    protected fun isAllCollectiblesFilteredOut(collectibleListData: BaseCollectibleListData): Boolean {
+        return with(collectibleListData) {
+            displayedCollectibleCount == 0 && filteredOutCollectibleCount > 0
+        }
+    }
+
+    protected fun shouldFilterOutBasedOnSearch(searchKeyword: String, collectibleData: BaseAccountAssetData): Boolean {
+        return with(collectibleData) {
+            name?.contains(searchKeyword, ignoreCase = true) != true &&
+                shortName?.contains(searchKeyword, ignoreCase = true) != true &&
+                !id.toString().contains(searchKeyword, ignoreCase = true)
+        }
+    }
+
+    private fun createOwnedCollectibleListItem(
+        accountAssetData: BaseOwnedCollectibleData,
+        isOwnedByTheUser: Boolean,
+        optedInAccountAddress: String
+    ): BaseCollectibleListItem.BaseCollectibleItem {
+        with(collectibleListingItemMapper) {
+            with(accountAssetData) {
+                return when (this) {
+                    is BaseOwnedCollectibleData.OwnedCollectibleImageData -> {
+                        mapToImageItem(this, isOwnedByTheUser, optedInAccountAddress)
+                    }
+                    is BaseOwnedCollectibleData.OwnedCollectibleVideoData -> {
+                        mapToVideoItem(this, isOwnedByTheUser, optedInAccountAddress)
+                    }
+                    is BaseOwnedCollectibleData.OwnedUnsupportedCollectibleData -> {
+                        mapToNotSupportedItem(this, isOwnedByTheUser, optedInAccountAddress)
+                    }
+                    is BaseOwnedCollectibleData.OwnedCollectibleMixedData -> {
+                        mapToMixedItem(this, isOwnedByTheUser, optedInAccountAddress)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun createPendingAdditionCollectibleListItem(
+        pendingCollectibleData: PendingAdditionCollectibleData,
+        optedInAccountAddress: String
+    ): BaseCollectibleListItem.BaseCollectibleItem.BasePendingCollectibleItem {
+        with(pendingCollectibleData) {
+            return collectibleListingItemMapper.mapToPendingAdditionItem(this, optedInAccountAddress)
+        }
+    }
+
+    private fun createPendingDeletionCollectibleListItem(
+        pendingCollectibleData: PendingDeletionCollectibleData,
+        optedInAccountAddress: String
+    ): BaseCollectibleListItem.BaseCollectibleItem.BasePendingCollectibleItem {
+        with(pendingCollectibleData) {
+            return collectibleListingItemMapper.mapToPendingRemovalItem(this, optedInAccountAddress)
+        }
+    }
+
+    private fun createPendingSentCollectibleListItem(
+        pendingCollectibleData: PendingSendingCollectibleData,
+        optedInAccountAddress: String
+    ): BaseCollectibleListItem.BaseCollectibleItem.BasePendingCollectibleItem {
+        with(pendingCollectibleData) {
+            return collectibleListingItemMapper.mapToPendingSendingItem(this, optedInAccountAddress)
         }
     }
 }

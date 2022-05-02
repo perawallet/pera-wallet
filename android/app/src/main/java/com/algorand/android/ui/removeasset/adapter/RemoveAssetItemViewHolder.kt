@@ -28,8 +28,8 @@ class RemoveAssetItemViewHolder(
         with(removeAssetListItem) {
             with(binding) {
                 assetNameTextView.setupUI(isVerified, shortName, name, id, isAlgo)
-                assetBalanceTextView.text = formattedAmount
-                assetBalanceInCurrencyTextView.text = formattedSelectedCurrencyValue
+                assetBalanceTextView.text = formattedCompactAmount
+                assetBalanceInCurrencyTextView.text = formattedSelectedCurrencyCompactValue
                 assetBalanceInCurrencyTextView.isVisible = isAmountInSelectedCurrencyVisible
             }
         }

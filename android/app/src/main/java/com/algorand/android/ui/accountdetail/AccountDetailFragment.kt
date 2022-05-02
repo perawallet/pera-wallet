@@ -39,6 +39,7 @@ import com.algorand.android.ui.accountdetail.nfts.AccountCollectiblesFragment
 import com.algorand.android.ui.accounts.RenameAccountBottomSheet
 import com.algorand.android.ui.accounts.ViewPassphraseLockBottomSheet
 import com.algorand.android.ui.common.warningconfirmation.WarningConfirmationBottomSheet
+import com.algorand.android.utils.Event
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -66,6 +67,10 @@ class AccountDetailFragment : BaseFragment(R.layout.fragment_account_detail), Ac
 
     private val accountDetailSummaryCollector: suspend (AccountDetailSummary?) -> Unit = { summary ->
         if (summary != null) initAccountDetailSummary(summary)
+    }
+
+    private val accountDetailTabArgCollector: suspend (Event<Int>?) -> Unit = {
+        it?.consume()?.run { updateViewPagerBySelectedTab(this) }
     }
 
     private lateinit var accountDetailPagerAdapter: AccountDetailPagerAdapter
@@ -166,6 +171,10 @@ class AccountDetailFragment : BaseFragment(R.layout.fragment_account_detail), Ac
         nav(AccountDetailFragmentDirections.actionAccountDetailFragmentToReceiveCollectibleFragment(args.publicKey))
     }
 
+    override fun onFilterClick() {
+        nav(AccountDetailFragmentDirections.actionAccountDetailFragmentToCollectibleFiltersFragment())
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUi()
@@ -205,6 +214,9 @@ class AccountDetailFragment : BaseFragment(R.layout.fragment_account_detail), Ac
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             accountDetailViewModel.accountDetailSummaryFlow.collect(accountDetailSummaryCollector)
         }
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            accountDetailViewModel.accountDetailTabArgFlow.collect(accountDetailTabArgCollector)
+        }
     }
 
     private fun setupTabLayout() {
@@ -213,7 +225,7 @@ class AccountDetailFragment : BaseFragment(R.layout.fragment_account_detail), Ac
             TabLayoutMediator(algorandTabLayout, accountDetailViewPager) { tab, position ->
                 tab.text = when (position) {
                     0 -> getString(R.string.assets)
-                    1 -> getString(R.string.nfts)
+                    1 -> getString(R.string.collectibles)
                     else -> getString(R.string.history)
                 }
             }.attach()
@@ -248,6 +260,12 @@ class AccountDetailFragment : BaseFragment(R.layout.fragment_account_detail), Ac
     private fun initAccountDetailPager() {
         accountDetailPagerAdapter = AccountDetailPagerAdapter(this, args.publicKey)
         binding.accountDetailViewPager.adapter = accountDetailPagerAdapter
+    }
+
+    private fun updateViewPagerBySelectedTab(selectedTab: Int) {
+        binding.accountDetailViewPager.post {
+            binding.accountDetailViewPager.setCurrentItem(selectedTab, false)
+        }
     }
 
     private fun navToMoonpayIntroFragment() {

@@ -25,7 +25,9 @@ class CollectibleDetailPreviewMapper @Inject constructor() {
         isErrorVisible: Boolean,
         collectibleDetail: CollectibleDetail,
         optOutSuccessEvent: Event<Unit>? = null,
-        globalErrorEvent: Event<String>? = null
+        globalErrorEvent: Event<String>? = null,
+        fractionalCollectibleSendEvent: Event<Unit>? = null,
+        pureCollectibleSendEvent: Event<Unit>? = null
     ): CollectibleDetailPreview {
         return CollectibleDetailPreview(
             isLoadingVisible = isLoadingVisible,
@@ -33,7 +35,9 @@ class CollectibleDetailPreviewMapper @Inject constructor() {
             isErrorVisible = isErrorVisible,
             collectibleDetail = collectibleDetail,
             optOutSuccessEvent = optOutSuccessEvent,
-            globalErrorEvent = globalErrorEvent
+            globalErrorEvent = globalErrorEvent,
+            fractionalCollectibleSendEvent = fractionalCollectibleSendEvent,
+            pureCollectibleSendEvent = pureCollectibleSendEvent
         )
     }
 
@@ -44,7 +48,9 @@ class CollectibleDetailPreviewMapper @Inject constructor() {
             isErrorVisible = false,
             collectibleDetail = null,
             optOutSuccessEvent = null,
-            globalErrorEvent = null
+            globalErrorEvent = null,
+            fractionalCollectibleSendEvent = null,
+            pureCollectibleSendEvent = null
         )
     }
 }

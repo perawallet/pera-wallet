@@ -120,6 +120,10 @@
             app:argType="boolean" />
     </action>
 
+    <action
+        android:id="@+id/action_global_requestOptInConfirmationBottomSheet"
+        app:destination="@id/requestOptInConfirmationBottomSheet" />
+
     <fragment
         android:id="@+id/collectiblesFragment"
         android:name="com.algorand.android.nft.ui.nftlisting.collectibles.CollectiblesFragment"
@@ -135,7 +139,9 @@
         <action
             android:id="@+id/action_collectiblesFragment_to_collectibleReceiverAccountSelectionFragment"
             app:destination="@id/collectibleReceiverAccountSelectionFragment" />
-
+        <action
+            android:id="@+id/action_collectiblesFragment_to_collectibleFiltersFragment"
+            app:destination="@id/collectibleFiltersFragment" />
     </fragment>
 
     <fragment
@@ -154,14 +160,10 @@
             app:destination="@id/collectibleSendFragment" />
         <action
             android:id="@+id/action_collectibleDetailFragment_to_collectibleOptOutConfirmationBottomSheet"
-            app:destination="@id/collectibleOptOutConfirmationBottomSheet"/>
-        <action
-            android:id="@+id/action_collectibleDetailFragment_to_collectiblesFragment"
-            app:destination="@id/collectiblesFragment"
-            app:popUpTo="@id/accountsFragment" />
+            app:destination="@id/collectibleOptOutConfirmationBottomSheet" />
         <argument
             android:name="publicKey"
-            app:argType="string"/>
+            app:argType="string" />
     </fragment>
 
     <fragment
@@ -460,6 +462,12 @@
         <action
             android:id="@+id/action_notificationCenterFragment_to_notificationFilterFragment"
             app:destination="@id/notificationFilterFragment" />
+        <action
+            android:id="@+id/action_notificationCenterFragment_to_collectibleDetailFragment"
+            app:destination="@id/collectibleDetailFragment" />
+        <action
+            android:id="@+id/action_notificationCenterFragment_to_accountDetailFragment"
+            app:destination="@id/accountDetailFragment" />
     </fragment>
 
     <fragment
@@ -626,6 +634,11 @@
         <argument
             android:name="publicKey"
             app:argType="string" />
+        <argument
+            android:name="accountDetailTab"
+            app:argType="com.algorand.android.models.AccountDetailTab"
+            android:defaultValue="@null"
+            app:nullable="true" />
         <action
             android:id="@+id/action_accountDetailFragment_to_accountOptionsBottomSheet"
             app:destination="@id/accountOptionsBottomSheet" />
@@ -658,6 +671,9 @@
         <action
             android:id="@+id/action_accountDetailFragment_to_collectibleDetailFragment"
             app:destination="@id/collectibleDetailFragment" />
+        <action
+            android:id="@+id/action_accountDetailFragment_to_collectibleFiltersFragment"
+            app:destination="@id/collectibleFiltersFragment" />
         <action
             android:id="@+id/action_accountDetailFragment_to_receiveCollectibleFragment"
             app:destination="@id/receiveCollectibleFragment" />
@@ -955,6 +971,12 @@
 
     </fragment>
 
+    <fragment
+        android:id="@+id/collectibleFiltersFragment"
+        android:name="com.algorand.android.nft.ui.nftfilters.CollectibleFiltersFragment"
+        android:label="CollectibleFiltersFragment"
+        tools:layout="@layout/fragment_collectible_filters" />
+
     <dialog
         android:id="@+id/removeAssetActionBottomSheet"
         android:name="com.algorand.android.ui.assetaction.RemoveAssetActionBottomSheet"
@@ -1141,7 +1163,7 @@
     <dialog
         android:id="@+id/collectibleOptOutConfirmationBottomSheet"
         android:name="com.algorand.android.nft.ui.nfsdetail.CollectibleOptOutConfirmationBottomSheet"
-        android:label="CollectibleOptOutConfirmationBottomSheet" >
+        android:label="CollectibleOptOutConfirmationBottomSheet">
         <argument
             android:name="accountName"
             app:argType="string" />
@@ -1153,6 +1175,5 @@
             app:argType="string"
             app:nullable="true" />
     </dialog>
-
 
 </navigation>

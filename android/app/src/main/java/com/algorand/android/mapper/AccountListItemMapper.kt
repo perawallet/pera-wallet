@@ -32,13 +32,19 @@ class AccountListItemMapper @Inject constructor() {
         )
     }
 
-    fun mapToAccountItem(accountDetail: AccountDetail, formattedHoldings: String, assetCount: Int): AccountItem {
+    fun mapToAccountItem(
+        accountDetail: AccountDetail,
+        formattedHoldings: String,
+        assetCount: Int,
+        collectibleCount: Int
+    ): AccountItem {
         return with(accountDetail) {
             AccountItem(
                 displayName = account.name.takeIf { it.isNotBlank() } ?: account.address,
                 publicKey = account.address,
                 formattedHoldings = formattedHoldings,
                 assetCount = assetCount,
+                collectibleCount = collectibleCount,
                 accountIcon = account.createAccountIcon(),
             )
         }

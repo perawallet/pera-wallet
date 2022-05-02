@@ -140,6 +140,9 @@
         <action
             android:id="@+id/action_assetSelectionFragment_to_receiverAccountSelectionFragment"
             app:destination="@id/receiverAccountSelectionFragment" />
+        <action
+            android:id="@+id/action_assetSelectionFragment_to_requestOptInConfirmationBottomSheet"
+            app:destination="@id/requestOptInConfirmationBottomSheet" />
     </fragment>
 
     <fragment
@@ -249,4 +252,13 @@
         android:name="com.algorand.android.ui.common.transactiontips.TransactionTipsBottomSheet"
         android:label="TransactionTipsBottomSheet"
         tools:layout="@layout/bottom_sheet_transaction_tips" />
+
+    <dialog
+        android:id="@+id/requestOptInConfirmationBottomSheet"
+        android:name="com.algorand.android.nft.ui.nftrequestoptin.RequestOptInConfirmationBottomSheet"
+        android:label="RequestOptInConfirmationBottomSheet">
+        <argument
+            android:name="requestOptInConfirmationArgs"
+            app:argType="com.algorand.android.nft.ui.model.RequestOptInConfirmationArgs" />
+    </dialog>
 </navigation>

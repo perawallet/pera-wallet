@@ -17,6 +17,15 @@
     android:layout_height="wrap_content"
     android:paddingVertical="@dimen/spacing_normal">
 
+    <include layout="@layout/include_list_item_guidelines" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/firstColumnBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="start"
+        app:constraint_referenced_ids="endGuideline, amountTextView" />
+
     <ProgressBar
         android:id="@+id/pendingProgressBar"
         android:layout_width="@dimen/spacing_normal"
@@ -36,30 +45,38 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:textAppearance="@style/TextAppearance.Body.Sans"
-        app:layout_constraintEnd_toStartOf="@id/amountTextView"
+        app:layout_constraintEnd_toStartOf="@id/firstColumnBarrier"
         app:layout_constraintStart_toEndOf="@id/pendingProgressBar"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="@tools:sample/lorem[10]" />
-
-    <com.algorand.android.customviews.AlgorandAmountView
-        android:id="@+id/amountTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.Body.Mono"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:showOperator="true"
-        tools:text="+123.40000 ALGO"
-        tools:textColor="@color/transaction_amount_positive_color" />
+        tools:text="@tools:sample/lorem[12]" />
 
     <TextView
         android:id="@+id/dateTextView"
         style="@style/TextAppearance.Footnote.Description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintEnd_toEndOf="@id/nameTextView"
         app:layout_constraintStart_toStartOf="@id/nameTextView"
         app:layout_constraintTop_toBottomOf="@id/nameTextView"
         tools:text="July 20, 2018" />
+
+    <com.algorand.android.customviews.AlgorandAmountView
+        android:id="@+id/amountTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:paddingStart="@dimen/spacing_normal"
+        android:textAppearance="@style/TextAppearance.Body.Mono"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toEndOf="@id/startGuideline"
+        app:layout_constraintTop_toTopOf="parent"
+        app:showOperator="true"
+        tools:text="+123.40000 ALGO"
+        tools:textColor="@color/transaction_amount_positive_color" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

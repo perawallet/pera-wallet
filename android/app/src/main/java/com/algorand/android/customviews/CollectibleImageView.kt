@@ -36,7 +36,6 @@ class CollectibleImageView(context: Context, attrs: AttributeSet? = null) : Fram
 
     fun showText(text: String) {
         with(binding) {
-            collectibleProgressBar.hide()
             collectibleShapeableImageView.apply {
                 setImageDrawable(ColorDrawable(ContextCompat.getColor(context, R.color.layer_gray_lighter)))
                 show()
@@ -51,7 +50,6 @@ class CollectibleImageView(context: Context, attrs: AttributeSet? = null) : Fram
     fun showImage(drawable: Drawable, decreaseOpacity: Boolean = false) {
         background = null
         with(binding) {
-            collectibleProgressBar.hide()
             collectibleNameTextView.hide()
             collectibleShapeableImageView.apply {
                 alpha = if (decreaseOpacity) DECREASED_OPACITY else 1f
@@ -61,20 +59,10 @@ class CollectibleImageView(context: Context, attrs: AttributeSet? = null) : Fram
         }
     }
 
+    fun getImageView() = binding.collectibleShapeableImageView
+
     fun showVideoPlayButton() {
         binding.videoPlayButton.show()
-    }
-
-    fun showProgressBar() {
-        background = null
-        with(binding) {
-            collectibleNameTextView.hide()
-            collectibleProgressBar.show()
-            collectibleShapeableImageView.apply {
-                setImageDrawable(null)
-                hide()
-            }
-        }
     }
 
     private fun initAttributes(attrs: AttributeSet?) {

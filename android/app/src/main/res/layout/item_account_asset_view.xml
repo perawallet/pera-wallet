@@ -18,12 +18,21 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/spacing_xlarge">
 
+    <include layout="@layout/include_list_item_guidelines" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/firstColumnBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="start"
+        app:constraint_referenced_ids="endGuideline, amountTextView,currencyTextView" />
+
     <com.algorand.android.customviews.AlgorandAssetNameTextView
         android:id="@+id/assetNameTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/amountTextView"
+        app:layout_constraintEnd_toStartOf="@id/firstColumnBarrier"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -34,18 +43,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ellipsize="end"
-        android:gravity="end|center_vertical"
+        android:gravity="end"
         android:maxLines="1"
-        app:autoSizeMaxTextSize="@dimen/text_size_15"
-        app:autoSizeTextType="uniform"
+        android:paddingStart="@dimen/spacing_small"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toTopOf="@id/currencyTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toEndOf="@id/assetNameTextView"
+        app:layout_constraintStart_toEndOf="@id/startGuideline"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        tools:text="123,123,123,123.60" />
+        tools:text="123,123,123,123,123,123,123,123,123,123,123,123,123,123.60" />
 
     <TextView
         android:id="@+id/currencyTextView"
@@ -53,15 +61,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="end"
+        android:maxLines="1"
+        android:paddingStart="@dimen/spacing_small"
         android:visibility="gone"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toEndOf="@id/assetNameTextView"
+        app:layout_constraintStart_toEndOf="@id/startGuideline"
         app:layout_constraintTop_toBottomOf="@id/amountTextView"
         app:layout_constraintVertical_chainStyle="packed"
-        tools:text="$16,000.50"
+        tools:text="$16,000,000,000,000,000,000,000,000,000,000.50"
         tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

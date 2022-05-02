@@ -28,19 +28,20 @@ class AccountSelectionViewHolder(
     fun bind(accountSelection: AccountSelection, showBalance: Boolean, defaultSelectedAccountAddress: String?) {
         with(binding) {
             with(accountSelection) {
-                nameTextView.text = accountCacheData.account.name
-                typeImageView.setAccountIcon(accountCacheData.account.createAccountIcon())
-                checkImageView.isVisible = accountCacheData.account.address == defaultSelectedAccountAddress
+                nameTextView.text = accountName
+                typeImageView.setAccountIcon(accountIcon)
+                checkImageView.isVisible = accountAddress == defaultSelectedAccountAddress
+                // TODO: 7.04.2022 View holder shouldn't contain any logic
                 balanceTextView.text = if (showBalance) {
                     root.context.getString(
                         R.string.available_balance_with_currency,
-                        accountAssetData.formattedSelectedCurrencyValue
+                        formattedAccountBalance
                     )
                 } else {
                     root.resources.getQuantityString(
                         R.plurals.account_asset_count,
-                        accountCacheData.assetsInformation.size,
-                        accountCacheData.assetsInformation.size
+                        accountAssetCount,
+                        accountAssetCount
                     )
                 }
             }

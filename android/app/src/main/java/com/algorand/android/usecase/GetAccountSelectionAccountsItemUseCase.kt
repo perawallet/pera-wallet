@@ -26,7 +26,8 @@ class GetAccountSelectionAccountsItemUseCase @Inject constructor(
     private val splittedAccountsUseCase: SplittedAccountsUseCase,
     private val sortedAccountsUseCase: SortedAccountsUseCase,
     private val accountTotalBalanceUseCase: AccountTotalBalanceUseCase,
-    private val accountSelectionListItemMapper: AccountSelectionListItemMapper
+    private val accountSelectionListItemMapper: AccountSelectionListItemMapper,
+    private val getAccountCollectibleCountUseCase: GetAccountCollectibleCountUseCase
 ) {
 
     // TODO: 11.03.2022 Use flow here to get realtime updates
@@ -39,8 +40,7 @@ class GetAccountSelectionAccountsItemUseCase @Inject constructor(
     ): List<BaseAccountSelectionListItem.BaseAccountItem> {
         val accounts = getRequiredAccounts(shouldIncludeWatchAccounts, assetId)
         val sortedAccounts = getRequiredSortedAccounts(shouldIncludeWatchAccounts)
-        val algoPriceCache = algoPriceUseCase.getCachedAlgoPrice()
-        val selectedCurrencySymbol = algoPriceCache?.data?.symbol.orEmpty()
+        val selectedCurrencySymbol = algoPriceUseCase.getSelectedCurrencySymbolOrEmpty()
 
         return sortedAccounts.map { localAccount ->
             accounts.firstOrNull { cachedAccount ->
@@ -50,12 +50,14 @@ class GetAccountSelectionAccountsItemUseCase @Inject constructor(
                 val accountTotalHoldings = with(accountBalance) {
                     algoHoldingsInSelectedCurrency.add(assetHoldingsInSelectedCurrency)
                 }
+                val collectibleCount = getAccountCollectibleCountUseCase.getAccountCollectibleCount(account.address)
                 accountSelectionListItemMapper.mapToAccountItem(
                     publicKey = account.address,
                     name = account.name,
                     accountIcon = account.createAccountIcon(),
-                    formattedHoldings = accountTotalHoldings.formatAsCurrency(selectedCurrencySymbol),
+                    formattedHoldings = accountTotalHoldings.formatAsCurrency(selectedCurrencySymbol, true),
                     assetCount = accountBalance.assetCount,
+                    collectibleCount = collectibleCount,
                     showAssetCount = showAssetCount,
                     showHoldings = showHoldings
                 )

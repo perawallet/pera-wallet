@@ -24,7 +24,6 @@ import androidx.fragment.app.viewModels
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.customviews.DialPadView
-import com.algorand.android.customviews.SixDigitPasswordView
 import com.algorand.android.databinding.FragmentLockBinding
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.StatusBarConfiguration
@@ -61,9 +60,9 @@ class LockFragment : DaggerBaseFragment(R.layout.fragment_lock) {
 
     private val dialPadListener = object : DialPadView.DialPadListener {
         override fun onNumberClick(number: Int) {
-            binding.passwordView.onNewDigit(number, onNewDigitAdded = { isNewDigitAdded ->
+            binding.passwordView.onNewDigit(number, onNewDigitAdded = { isNewDigitAdded, isPasswordFilled ->
                 if (!isNewDigitAdded) return@onNewDigit
-                if (binding.passwordView.getPasswordSize() == SixDigitPasswordView.PASSWORD_LENGTH) {
+                if (isPasswordFilled) {
                     val givenPassword = binding.passwordView.getPassword()
                     if (lockViewModel.getCurrentPassword() == givenPassword) {
                         onEnteredCorrectPassword()

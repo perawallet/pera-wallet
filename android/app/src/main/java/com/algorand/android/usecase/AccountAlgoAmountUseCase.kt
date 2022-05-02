@@ -46,17 +46,19 @@ class AccountAlgoAmountUseCase @Inject constructor(
         val algoToCachedCurrencyRate = algoPriceUseCase.getAlgoToCachedCurrencyConversionRate() ?: ZERO
         val algoUsdValue = algoPriceUseCase.getAlgoToUsdConversionRate()
         val amountInCachedCurrency = accountAlgoAmount.toAlgoDisplayValue().multiply(algoToCachedCurrencyRate) ?: ZERO
-        val formattedAlgoAmountInCachedCurrency = formatAlgoAmountToCachedCurrency(amountInCachedCurrency)
+        val formattedSelectedCurrencyValue = formatAlgoAmountToCachedCurrency(amountInCachedCurrency, false)
+        val formattedSelectedCurrencyCompactValue = formatAlgoAmountToCachedCurrency(amountInCachedCurrency, true)
         return accountAssetDataMapper.mapToAlgoAssetData(
             accountAlgoAmount,
             amountInSelectedCurrency,
-            formattedAlgoAmountInCachedCurrency,
+            formattedSelectedCurrencyValue,
+            formattedSelectedCurrencyCompactValue,
             algoUsdValue
         )
     }
 
-    private fun formatAlgoAmountToCachedCurrency(algoAmountInCachedCurrency: BigDecimal): String {
+    private fun formatAlgoAmountToCachedCurrency(algoAmountInCachedCurrency: BigDecimal, isCompact: Boolean): String {
         val cachedCurrencySymbol = algoPriceUseCase.getCachedCurrencySymbolOrName()
-        return algoAmountInCachedCurrency.formatAsCurrency(cachedCurrencySymbol)
+        return algoAmountInCachedCurrency.formatAsCurrency(cachedCurrencySymbol, isCompact)
     }
 }

@@ -15,6 +15,7 @@ package com.algorand.android.nft.domain.usecase
 import com.algorand.android.models.AccountDetail
 import com.algorand.android.models.BaseAccountAssetData
 import com.algorand.android.nft.mapper.CollectibleListingItemMapper
+import com.algorand.android.nft.ui.model.BaseCollectibleListData
 import com.algorand.android.nft.ui.model.BaseCollectibleListItem
 import com.algorand.android.nft.ui.model.CollectiblesListingPreview
 import com.algorand.android.nft.utils.CollectibleUtils
@@ -31,47 +32,78 @@ class AccountCollectiblesListingPreviewUseCase @Inject constructor(
     private val accountDetailUseCase: AccountDetailUseCase,
     private val failedAssetRepository: FailedAssetRepository,
     private val collectibleUtils: CollectibleUtils,
-    private val accountCollectibleDataUseCase: AccountCollectibleDataUseCase
-) : BaseCollectiblesListingPreviewUseCase(collectibleListingItemMapper) {
+    private val accountCollectibleDataUseCase: AccountCollectibleDataUseCase,
+    private val collectibleFilterUseCase: CollectibleFilterUseCase
+) : BaseCollectiblesListingPreviewUseCase(collectibleListingItemMapper, collectibleFilterUseCase) {
 
-    fun getCollectiblesListingPreviewFlow(publicKey: String): Flow<CollectiblesListingPreview> {
+    fun getCollectiblesListingPreviewFlow(searchKeyword: String, publicKey: String): Flow<CollectiblesListingPreview> {
         return combine(
             accountDetailUseCase.getAccountDetailCacheFlow(publicKey),
             failedAssetRepository.getFailedAssetCacheFlow(),
             accountCollectibleDataUseCase.getAccountAllCollectibleDataFlow(publicKey)
         ) { accountDetail, failedAssets, accountCollectibleData ->
             val canAccountSignTransaction = canAccountSignTransaction(accountDetail)
-            val collectibleList = prepareCollectiblesListItems(
+            val collectibleListData = prepareCollectiblesListItems(
+                searchKeyword,
                 accountDetail,
                 canAccountSignTransaction,
                 accountCollectibleData
             )
-            val isEmptyStateVisible = accountCollectibleData.isEmpty()
+            val isAllCollectiblesFilteredOut = isAllCollectiblesFilteredOut(collectibleListData)
+            val isEmptyStateVisible = accountCollectibleData.isEmpty() || isAllCollectiblesFilteredOut
             collectibleListingItemMapper.mapToPreviewItem(
                 isLoadingVisible = false,
                 isEmptyStateVisible = isEmptyStateVisible,
                 isErrorVisible = failedAssets.isNotEmpty(),
-                itemList = collectibleList,
-                isReceiveButtonVisible = isEmptyStateVisible && canAccountSignTransaction
+                itemList = collectibleListData.baseCollectibleItemList,
+                isReceiveButtonVisible = isEmptyStateVisible && canAccountSignTransaction,
+                isFilterActive = collectibleListData.isFilterActive,
+                displayedCollectibleCount = collectibleListData.displayedCollectibleCount,
+                filteredCollectibleCount = collectibleListData.filteredOutCollectibleCount,
+                isClearFilterButtonVisible = isAllCollectiblesFilteredOut
             )
         }
     }
 
     private fun prepareCollectiblesListItems(
+        searchKeyword: String,
         accountDetail: CacheResult<AccountDetail>?,
         canAccountSignTransaction: Boolean,
         accountCollectibleData: List<BaseAccountAssetData>
-    ): List<BaseCollectibleListItem> {
-        return mutableListOf<BaseCollectibleListItem>().apply {
+    ): BaseCollectibleListData {
+        var displayedCollectibleCount = 0
+        var filteredOutCollectibleCount = 0
+        val isFilterActive = collectibleFilterUseCase.isFilterActive()
+        val collectibleList = mutableListOf<BaseCollectibleListItem>().apply {
             accountCollectibleData.forEach { collectibleData ->
+                if (shouldFilterOutBasedOnSearch(searchKeyword, collectibleData)) return@forEach
                 val isOwnedByTheUser = collectibleUtils.isCollectibleOwnedByTheUser(accountDetail, collectibleData.id)
                 val accountAddress = accountDetail?.data?.account?.address.orEmpty()
-                add(createCollectibleListItem(collectibleData, isOwnedByTheUser, accountAddress) ?: return@forEach)
+                val shouldFilterOutCollectible = collectibleFilterUseCase.shouldFilterOutCollectible(
+                    collectibleData,
+                    accountDetail?.data ?: return@forEach
+                )
+                if (shouldFilterOutCollectible) {
+                    filteredOutCollectibleCount++
+                    return@forEach
+                }
+                val collectibleListItem = createCollectibleListItem(collectibleData, isOwnedByTheUser, accountAddress)
+                if (collectibleListItem != null) {
+                    add(collectibleListItem)
+                    displayedCollectibleCount++
+                }
             }
             if (canAccountSignTransaction && accountCollectibleData.isNotEmpty()) {
                 add(BaseCollectibleListItem.ReceiveNftItem)
             }
         }
+
+        return collectibleListingItemMapper.mapToBaseCollectibleListData(
+            collectibleList,
+            isFilterActive,
+            displayedCollectibleCount,
+            filteredOutCollectibleCount
+        )
     }
 
     private fun canAccountSignTransaction(accountDetail: CacheResult<AccountDetail>?): Boolean {

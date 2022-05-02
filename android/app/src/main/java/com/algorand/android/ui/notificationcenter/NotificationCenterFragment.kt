@@ -21,17 +21,16 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.paging.PagingData
 import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentNotificationCenterBinding
-import com.algorand.android.models.AssetAction
-import com.algorand.android.models.AssetInformation
+import com.algorand.android.models.AccountDetailTab
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.IconButton
+import com.algorand.android.models.NotificationCenterPreview
 import com.algorand.android.models.NotificationListItem
-import com.algorand.android.models.NotificationType
 import com.algorand.android.models.ScreenState
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -54,6 +53,11 @@ class NotificationCenterFragment : DaggerBaseFragment(R.layout.fragment_notifica
         startIconClick = ::navBack
     )
 
+    override val fragmentConfiguration = FragmentConfiguration(
+        toolbarConfiguration = toolbarConfiguration,
+        isBottomBarNeeded = false
+    )
+
     private val emptyState by lazy {
         ScreenState.CustomState(
             icon = R.drawable.ic_notification,
@@ -62,12 +66,21 @@ class NotificationCenterFragment : DaggerBaseFragment(R.layout.fragment_notifica
         )
     }
 
-    override val fragmentConfiguration = FragmentConfiguration(
-        toolbarConfiguration = toolbarConfiguration,
-        isBottomBarNeeded = false
-    )
+    private val notificationAdapter = NotificationAdapter(::onNewItemAddedToTop, ::onNotificationClick)
 
-    private var notificationAdapter = NotificationAdapter(::onNewItemAddedToTop, ::onNotificationClick)
+    private val notificationCenterPreviewCollector: suspend (NotificationCenterPreview?) -> Unit = {
+        if (it != null) initPreview(it)
+    }
+
+    private val notificationPaginationCollector: suspend (PagingData<NotificationListItem>) -> Unit = { pagingData ->
+        notificationAdapter.submitData(pagingData)
+    }
+
+    private val isRefreshNeededObserver = Observer<Boolean> { isRefreshNeeded ->
+        if (isRefreshNeeded) {
+            refreshList(changeRefreshTime = true)
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -81,14 +94,35 @@ class NotificationCenterFragment : DaggerBaseFragment(R.layout.fragment_notifica
         binding.screenStateView.setOnNeutralButtonClickListener(::handleErrorButtonClick)
     }
 
+    private fun initPreview(notificationCenterPreview: NotificationCenterPreview) {
+        with(notificationCenterPreview) {
+            onGoingAssetDetailEvent?.consume()?.run {
+                navToAssetDetail(publicKey = first, assetId = second)
+            }
+            onGoingCollectibleDetailEvent?.consume()?.run {
+                navToCollectibleDetail(publicKey = first, assetId = second)
+            }
+            onAssetSupportRequestEvent?.consume()?.run {
+                nav(HomeNavigationDirections.actionGlobalUnsupportedAssetNotificationRequestActionBottomSheet(this))
+            }
+            onHistoryNotAvailableEvent?.consume()?.run {
+                onHistoryNotAvailable(publicKey = this)
+            }
+            onTransactionReceivedEvent?.consume()?.run {
+                notificationCenterViewModel.isAssetAvailableOnAccount(publicKey = first, assetId = second)
+            }
+            onTransactionSentEvent?.consume()?.run {
+                notificationCenterViewModel.isAssetAvailableOnAccount(publicKey = first, assetId = second)
+            }
+        }
+    }
+
     private fun setupToolbar() {
         getAppToolbar()?.addButtonToEnd(IconButton(R.drawable.ic_filter, onClick = ::onFilterClick))
     }
 
     private fun setupRecyclerView() {
-        val layoutManager = LinearLayoutManager(context)
         binding.notificationsRecyclerView.apply {
-            setLayoutManager(layoutManager)
             notificationAdapter.lastRefreshedDateTime = notificationCenterViewModel.getLastRefreshedDateTime()
             notificationCenterViewModel.setLastRefreshedDateTime(ZonedDateTime.now())
             adapter = notificationAdapter
@@ -102,17 +136,13 @@ class NotificationCenterFragment : DaggerBaseFragment(R.layout.fragment_notifica
     }
 
     private fun initObservers() {
-        lifecycleScope.launch {
-            notificationCenterViewModel.notificationPaginationFlow.collectLatest { pagingData ->
-                notificationAdapter.submitData(pagingData)
-            }
+        viewLifecycleOwner.lifecycleScope.launch {
+            notificationCenterViewModel.notificationPaginationFlow.collectLatest(notificationPaginationCollector)
         }
-
-        notificationCenterViewModel.isRefreshNeededLiveData().observe(viewLifecycleOwner, Observer { isRefreshNeeded ->
-            if (isRefreshNeeded) {
-                refreshList(changeRefreshTime = true)
-            }
-        })
+        viewLifecycleOwner.lifecycleScope.launch {
+            notificationCenterViewModel.notificationCenterPreviewFlow.collectLatest(notificationCenterPreviewCollector)
+        }
+        notificationCenterViewModel.isRefreshNeededLiveData().observe(viewLifecycleOwner, isRefreshNeededObserver)
     }
 
     override fun onResume() {
@@ -163,31 +193,7 @@ class NotificationCenterFragment : DaggerBaseFragment(R.layout.fragment_notifica
     }
 
     private fun onNotificationClick(notificationListItem: NotificationListItem) {
-        val metadata = notificationListItem.metadata ?: return
-        val assetInformation = metadata.getAssetDescription().convertToAssetInformation()
-        when (notificationListItem.type) {
-            NotificationType.TRANSACTION_RECEIVED, NotificationType.ASSET_TRANSACTION_RECEIVED -> {
-                navigateToAssetDetail(assetInformation, metadata.receiverPublicKey.orEmpty())
-            }
-            NotificationType.TRANSACTION_SENT, NotificationType.ASSET_TRANSACTION_SENT -> {
-                navigateToAssetDetail(assetInformation, metadata.senderPublicKey.orEmpty())
-            }
-            NotificationType.ASSET_SUPPORT_REQUEST -> {
-                val assetAction = AssetAction(
-                    assetId = assetInformation.assetId,
-                    publicKey = metadata.receiverPublicKey,
-                    asset = assetInformation
-                )
-                nav(
-                    HomeNavigationDirections.actionGlobalUnsupportedAssetNotificationRequestActionBottomSheet(
-                        assetAction
-                    )
-                )
-            }
-            else -> {
-                // NO ACTION TO TAKE
-            }
-        }
+        notificationCenterViewModel.onNotificationClickEvent(notificationListItem)
     }
 
     private fun onNewItemAddedToTop() {
@@ -201,17 +207,45 @@ class NotificationCenterFragment : DaggerBaseFragment(R.layout.fragment_notifica
         super.onDestroyView()
     }
 
-    private fun navigateToAssetDetail(assetInformation: AssetInformation, publicKey: String) {
-        if (notificationCenterViewModel.isAssetAvailableOnAccount(publicKey, assetInformation)) {
-            nav(HomeNavigationDirections.actionGlobalAssetDetailFragment(assetInformation.assetId, publicKey))
-        }
-    }
-
     private fun onFilterClick() {
         nav(
             NotificationCenterFragmentDirections.actionNotificationCenterFragmentToNotificationFilterFragment(
                 showDoneButton = false
             )
+        )
+    }
+
+    private fun navToCollectibleDetail(publicKey: String, assetId: Long) {
+        nav(
+            NotificationCenterFragmentDirections.actionNotificationCenterFragmentToCollectibleDetailFragment(
+                publicKey = publicKey,
+                collectibleAssetId = assetId
+            )
+        )
+    }
+
+    private fun navToAssetDetail(publicKey: String, assetId: Long) {
+        nav(HomeNavigationDirections.actionGlobalAssetDetailFragment(address = publicKey, assetId = assetId))
+    }
+
+    private fun onHistoryNotAvailable(publicKey: String) {
+        navToAccountHistory(publicKey)
+        showUnavailableTransactionHistoryError()
+    }
+
+    private fun navToAccountHistory(publicKey: String) {
+        nav(
+            NotificationCenterFragmentDirections.actionNotificationCenterFragmentToAccountDetailFragment(
+                publicKey = publicKey,
+                accountDetailTab = AccountDetailTab.HISTORY
+            )
+        )
+    }
+
+    private fun showUnavailableTransactionHistoryError() {
+        showGlobalError(
+            errorMessage = getString(R.string.the_history_for_this_spesific),
+            title = getString(R.string.asset_history_not_available)
         )
     }
 }

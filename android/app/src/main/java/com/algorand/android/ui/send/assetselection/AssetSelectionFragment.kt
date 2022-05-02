@@ -15,15 +15,17 @@ package com.algorand.android.ui.send.assetselection
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.algorand.android.R
 import com.algorand.android.core.TransactionBaseFragment
 import com.algorand.android.databinding.FragmentAssetSelectionBinding
-import com.algorand.android.models.BaseSelectAssetItem
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.nft.ui.model.AssetSelectionPreview
+import com.algorand.android.nft.ui.model.RequestOptInConfirmationArgs
 import com.algorand.android.ui.send.assetselection.adapter.SelectSendingAssetAdapter
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
@@ -49,8 +51,8 @@ class AssetSelectionFragment : TransactionBaseFragment(R.layout.fragment_asset_s
 
     private val assetSelectionAdapter = SelectSendingAssetAdapter(::onAssetClick)
 
-    private val assetSelectionCollector: suspend (value: List<BaseSelectAssetItem>?) -> Unit = {
-        it?.let { assetSelectionAdapter.submitList(it) }
+    private val assetSelectionPreviewCollector: suspend (preview: AssetSelectionPreview) -> Unit = {
+        updateUiWithPreview(it)
     }
 
     override val transactionFragmentListener = object : TransactionFragmentListener {
@@ -84,14 +86,37 @@ class AssetSelectionFragment : TransactionBaseFragment(R.layout.fragment_asset_s
 
     private fun initObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
-            assetSelectionViewModel.assetSelectionFlow.collectLatest(assetSelectionCollector)
+            assetSelectionViewModel.assetSelectionPreview.collectLatest(assetSelectionPreviewCollector)
+        }
+    }
+
+    private fun updateUiWithPreview(assetSelectionPreview: AssetSelectionPreview) {
+        binding.progressBar.root.isVisible = assetSelectionPreview.isLoadingVisible
+        assetSelectionPreview.assetList?.let { assetSelectionAdapter.submitList(it) }
+        assetSelectionPreview.navigateToOptInEvent?.consume()?.run {
+            val receiverPublicKey = assetSelectionPreview.assetTransaction.receiverUser?.publicKey ?: return@run
+            val senderPublicKey = assetSelectionPreview.assetTransaction.senderAddress
+            navToRequestOptInBottomSheet(this, receiverPublicKey, senderPublicKey)
+        }
+        assetSelectionPreview.navigateToAssetTransferAmountFragmentEvent?.consume()?.run {
+            navToAssetTransferAmountFragment(this)
         }
     }
 
     private fun onAssetClick(assetId: Long) {
+        if (assetSelectionViewModel.isReceiverAccountSet()) {
+            assetSelectionViewModel.checkIfSelectedAccountReceiveAsset(assetId)
+        } else {
+            navToAssetTransferAmountFragment(assetId)
+        }
+    }
+
+    private fun navToAssetTransferAmountFragment(assetId: Long) {
         val assetTransaction = assetSelectionViewModel.assetTransaction.copy(assetId = assetId)
         nav(
-            AssetSelectionFragmentDirections.actionAssetSelectionFragmentToAssetTransferAmountFragment(assetTransaction)
+            AssetSelectionFragmentDirections.actionAssetSelectionFragmentToAssetTransferAmountFragment(
+                assetTransaction
+            )
         )
     }
 
@@ -107,5 +132,22 @@ class AssetSelectionFragment : TransactionBaseFragment(R.layout.fragment_asset_s
         if (assetSelectionViewModel.shouldShowTransactionTips()) {
             nav(AssetSelectionFragmentDirections.actionAssetSelectionFragmentToTransactionTipsBottomSheet())
         }
+    }
+
+    private fun navToRequestOptInBottomSheet(
+        assetId: Long,
+        receiverPublicKey: String,
+        senderPublicKey: String
+    ) {
+        nav(
+            AssetSelectionFragmentDirections.actionAssetSelectionFragmentToRequestOptInConfirmationBottomSheet(
+                RequestOptInConfirmationArgs(
+                    senderPublicKey = senderPublicKey,
+                    receiverPublicKey = receiverPublicKey,
+                    assetId = assetId,
+                    assetName = assetSelectionViewModel.getAssetOrCollectibleNameOrNull(assetId)
+                )
+            )
+        )
     }
 }

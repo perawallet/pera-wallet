@@ -11,7 +11,7 @@
   ~
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -19,20 +19,32 @@
     android:orientation="horizontal"
     android:paddingVertical="@dimen/spacing_xlarge">
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/titleTextView"
         style="@style/TextAppearance.Body.Sans"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        tools:text="@tools:sample/lorem[4]" />
+        android:maxLines="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_max="wrap"
+        app:layout_constraintWidth_percent="0.5"
+        tools:text="@tools:sample/lorem[1]" />
 
     <com.algorand.android.customviews.AlgorandAmountView
         android:id="@+id/amountTextView"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_xlarge"
+        android:layout_marginStart="@dimen/spacing_small"
         android:gravity="end"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.Body.Mono"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/titleTextView"
+        app:layout_constraintTop_toTopOf="parent"
         app:showOperator="true"
-        tools:text="+423.2343121 MCN" />
+        tools:text="+423.423.423.423.423.423,2343121 MCN" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

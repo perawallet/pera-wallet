@@ -27,7 +27,9 @@ abstract class BaseRemoveCollectibleItemViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     protected open fun bindImage(collectibleImageView: CollectibleImageView, item: BaseRemoveCollectibleItem) {
-        collectibleImageView.showProgressBar()
+        with(collectibleImageView) {
+            showText(item.avatarDisplayText.getAsAvatarNameOrDefault(resources))
+        }
     }
 
     fun bind(baseRemoveAssetItem: BaseRemoveCollectibleItem) {
@@ -36,11 +38,11 @@ abstract class BaseRemoveCollectibleItemViewHolder(
                 mainTextView.text = name
                 subTextView.text = shortName
                 verifiedImageView.isVisible = isVerified
-                assetBalanceTextView.text = formattedAmount
+                assetBalanceTextView.text = formattedCompactAmount
                 // TODO: 2.03.2022 Move these logics into domain layer
                 assetBalanceInCurrencyTextView.text =
                     if (isAmountInSelectedCurrencyVisible) {
-                        formattedSelectedCurrencyValue
+                        formattedSelectedCurrencyCompactValue
                     } else {
                         root.resources.getString(notAvailableResId)
                     }

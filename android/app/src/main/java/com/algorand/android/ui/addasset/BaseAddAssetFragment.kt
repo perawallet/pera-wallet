@@ -53,6 +53,7 @@ abstract class BaseAddAssetFragment(@LayoutRes layoutResId: Int) : TransactionBa
     abstract val loadingProgressBar: ContentLoadingProgressBar
     abstract val screenStateView: ScreenStateView
     abstract val assetsRecyclerView: RecyclerView
+    abstract val assetAdditionType: AssetAdditionType
 
     abstract val baseAddAssetViewModel: BaseAddAssetViewModel
 
@@ -142,9 +143,10 @@ abstract class BaseAddAssetFragment(@LayoutRes layoutResId: Int) : TransactionBa
         combinedLoadStates: CombinedLoadStates,
     ): AssetAdditionLoadStatePreview {
         return baseAddAssetViewModel.createAssetAdditionLoadStatePreview(
-            combinedLoadStates,
-            assetSearchAdapter.itemCount,
-            screenStateView.isVisible
+            combinedLoadStates = combinedLoadStates,
+            itemCount = assetSearchAdapter.itemCount,
+            isLastStateError = screenStateView.isVisible,
+            assetAdditionType = assetAdditionType
         )
     }
 

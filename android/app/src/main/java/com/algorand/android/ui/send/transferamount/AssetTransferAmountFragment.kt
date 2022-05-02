@@ -26,6 +26,7 @@ import com.algorand.android.databinding.FragmentAssetTransferAmountBinding
 import com.algorand.android.models.AssetTransferAmountPreview
 import com.algorand.android.models.BalanceInput
 import com.algorand.android.models.FragmentConfiguration
+import com.algorand.android.models.IconButton
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.TargetUser
 import com.algorand.android.models.ToolbarConfiguration
@@ -42,10 +43,10 @@ import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import java.math.BigInteger
-import kotlin.properties.Delegates
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.math.BigInteger
+import kotlin.properties.Delegates
 
 // TODO: 17.08.2021 We will update this fragment when input format finalized,
 // TODO: 29.09.2021 `handleError` function will be updated when this branch merge with `send-asset-amount-input`
@@ -137,6 +138,7 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initToolbar()
         showTransactionTipsIfNeed()
         handleTransactionNote()
         initObservers()
@@ -145,6 +147,11 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
             maxButton.setOnClickListener { onMaxButtonClick() }
             addNoteButton.setOnClickListener { onAddButtonClick() }
         }
+    }
+
+    private fun initToolbar() {
+        val transactionTipButton = IconButton(iconResId = R.drawable.ic_info, onClick = ::navToTransactionTips)
+        getAppToolbar()?.addButtonToEnd(transactionTipButton)
     }
 
     private fun initUi(assetTransferAmountPreview: AssetTransferAmountPreview) {
@@ -174,7 +181,7 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
         collectiblePrismUrl: String?,
         isOwnedByUser: Boolean
     ) {
-        with(binding.assetNameView) {
+        with(binding.assetNameTextView) {
             if (collectiblePrismUrl != null) {
                 context?.loadImage(
                     uri = createPrismUrlForCollectibleDrawable(collectiblePrismUrl),
@@ -201,7 +208,7 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
 
     private fun setAssetBalanceView(isAlgo: Boolean, formattedAmount: String) {
         binding.assetBalanceTextView.text = if (isAlgo) {
-            getString(R.string.asset_short_name_with_amount, formattedAmount, ALGOS_SHORT_NAME)
+            getString(R.string.pair_value_format, formattedAmount, ALGOS_SHORT_NAME)
         } else {
             formattedAmount
         }
@@ -293,8 +300,12 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
 
     private fun showTransactionTipsIfNeed() {
         if (assetTransferAmountViewModel.shouldShowTransactionTips()) {
-            nav(AssetTransferAmountFragmentDirections.actionAssetTransferAmountFragmentToTransactionTipsBottomSheet())
+            navToTransactionTips()
         }
+    }
+
+    private fun navToTransactionTips() {
+        nav(AssetTransferAmountFragmentDirections.actionAssetTransferAmountFragmentToTransactionTipsBottomSheet())
     }
 
     private fun handleNextNavigation(amount: BigInteger) {

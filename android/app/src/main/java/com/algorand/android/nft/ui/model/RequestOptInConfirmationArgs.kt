@@ -19,6 +19,6 @@ import kotlinx.parcelize.Parcelize
 data class RequestOptInConfirmationArgs(
     val senderPublicKey: String,
     val receiverPublicKey: String,
-    val collectibleId: Long,
-    val collectibleName: String?
+    val assetId: Long,
+    val assetName: String?
 ) : Parcelable

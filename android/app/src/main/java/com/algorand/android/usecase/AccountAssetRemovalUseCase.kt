@@ -24,7 +24,8 @@ import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseO
 import com.algorand.android.models.BaseRemoveAssetItem
 import com.algorand.android.utils.CacheResult
 import javax.inject.Inject
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 
 class AccountAssetRemovalUseCase @Inject constructor(
     private val accountDetailUseCase: AccountDetailUseCase,
@@ -37,15 +38,19 @@ class AccountAssetRemovalUseCase @Inject constructor(
         return accountDetailUseCase.getAccountSummary(publicKey)
     }
 
-    fun getRemovalAccountAssetsByQuery(publicKey: String, query: String) = flow {
+    fun getRemovalAccountAssetsByQuery(publicKey: String, queryFlow: Flow<String>) = combine(
+        queryFlow,
+        accountAssetDataUseCase.getAccountOwnedAssetDataFlow(publicKey, false),
+        accountCollectibleDataUseCase.getAccountOwnedCollectibleDataFlow(publicKey)
+    ) { query, accountOwnedAssetDataList, accountOwnedCollectibleDataList ->
         val removeAssetItems = mutableListOf<BaseRemoveAssetItem>().apply {
             addAll(
-                accountAssetDataUseCase.getAccountOwnedAssetData(publicKey, false)
+                accountOwnedAssetDataList
                     .filter { it.name?.contains(query, true) == true }
                     .map { removeAssetItemMapper.mapTo(it) }
             )
             addAll(
-                accountCollectibleDataUseCase.getAccountOwnedCollectibleDataList(publicKey)
+                accountOwnedCollectibleDataList
                     .filter { it.name?.contains(query, true) == true }
                     .map {
                         when (it) {
@@ -57,7 +62,7 @@ class AccountAssetRemovalUseCase @Inject constructor(
                     }
             )
         }
-        emit(removeAssetItems)
+        removeAssetItems
     }
 
     suspend fun addAssetDeletionToAccountCache(publicKey: String, assetId: Long) {

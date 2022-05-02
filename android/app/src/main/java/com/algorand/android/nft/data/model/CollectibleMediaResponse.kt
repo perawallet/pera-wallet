@@ -17,5 +17,6 @@ import com.google.gson.annotations.SerializedName
 data class CollectibleMediaResponse(
     @SerializedName("type") val mediaType: CollectibleMediaTypeResponse?,
     @SerializedName("download_url") val downloadUrl: String?,
-    @SerializedName("preview_url") val previewUrl: String?
+    @SerializedName("preview_url") val previewUrl: String?,
+    @SerializedName("extension") val mediaTypeExtension: CollectibleMediaTypeExtensionResponse?
 )

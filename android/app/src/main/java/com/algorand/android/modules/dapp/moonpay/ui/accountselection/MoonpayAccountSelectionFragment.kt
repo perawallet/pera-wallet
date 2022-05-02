@@ -12,12 +12,16 @@
 
 package com.algorand.android.modules.dapp.moonpay.ui.accountselection
 
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.algorand.android.R
+import com.algorand.android.models.BaseAccountSelectionListItem
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.ui.accountselection.BaseAccountSelectionFragment
 import com.algorand.android.utils.setNavigationResult
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class MoonpayAccountSelectionFragment : BaseAccountSelectionFragment() {
@@ -30,13 +34,21 @@ class MoonpayAccountSelectionFragment : BaseAccountSelectionFragment() {
 
     override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
 
+    private val moonpayAccountSelectionViewModel by viewModels<MoonpayAccountSelectionViewModel>()
+
+    private val accountItemsCollector: suspend (List<BaseAccountSelectionListItem>) -> Unit = { accountItems ->
+        accountAdapter.submitList(accountItems)
+    }
+
     override fun onAccountSelected(publicKey: String) {
         setNavigationResult(ACCOUNT_SELECTION_RESULT_KEY, publicKey)
         navBack()
     }
 
     override fun initObservers() {
-        // Nothing to do
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            moonpayAccountSelectionViewModel.accountItemsFlow.collectLatest(accountItemsCollector)
+        }
     }
 
     companion object {

@@ -21,9 +21,9 @@ class DateFilterImageResourceDecider @Inject constructor() {
 
     fun decideDateFilterImageRes(dateFilter: DateFilter): Int {
         return if (dateFilter == DateFilter.AllTime) {
-            R.drawable.ic_filter
+            R.drawable.ic_filter_gray
         } else {
-            R.drawable.ic_filter_selected
+            R.drawable.ic_filter_selected_gray
         }
     }
 }

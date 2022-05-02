@@ -47,9 +47,4 @@
         tools:text="@tools:sample/lorem/random"
         tools:visibility="visible" />
 
-    <ProgressBar
-        android:id="@+id/collectibleProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
 </merge>

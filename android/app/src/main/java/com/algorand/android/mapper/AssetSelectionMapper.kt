@@ -39,7 +39,9 @@ class AssetSelectionMapper @Inject constructor() {
             name = accountAssetData.name,
             amount = accountAssetData.amount,
             formattedAmount = accountAssetData.formattedAmount,
+            formattedCompactAmount = accountAssetData.formattedCompactAmount,
             formattedSelectedCurrencyValue = accountAssetData.formattedSelectedCurrencyValue,
+            formattedSelectedCurrencyCompactValue = accountAssetData.formattedSelectedCurrencyCompactValue,
             isAmountInSelectedCurrencyVisible = accountAssetData.isAmountInSelectedCurrencyVisible,
             avatarDisplayText = AssetName.create(accountAssetData.name)
         )
@@ -56,7 +58,9 @@ class AssetSelectionMapper @Inject constructor() {
             name = ownedCollectibleImageData.name,
             amount = ownedCollectibleImageData.amount,
             formattedAmount = ownedCollectibleImageData.formattedAmount,
+            formattedCompactAmount = ownedCollectibleImageData.formattedCompactAmount,
             formattedSelectedCurrencyValue = ownedCollectibleImageData.formattedSelectedCurrencyValue,
+            formattedSelectedCurrencyCompactValue = ownedCollectibleImageData.formattedSelectedCurrencyCompactValue,
             isAmountInSelectedCurrencyVisible = ownedCollectibleImageData.isAmountInSelectedCurrencyVisible,
             avatarDisplayText = AssetName.create(ownedCollectibleImageData.name),
             prismUrl = ownedCollectibleImageData.prismUrl
@@ -74,7 +78,9 @@ class AssetSelectionMapper @Inject constructor() {
             name = ownedCollectibleVideoData.name,
             amount = ownedCollectibleVideoData.amount,
             formattedAmount = ownedCollectibleVideoData.formattedAmount,
+            formattedCompactAmount = ownedCollectibleVideoData.formattedCompactAmount,
             formattedSelectedCurrencyValue = ownedCollectibleVideoData.formattedSelectedCurrencyValue,
+            formattedSelectedCurrencyCompactValue = ownedCollectibleVideoData.formattedSelectedCurrencyCompactValue,
             isAmountInSelectedCurrencyVisible = ownedCollectibleVideoData.isAmountInSelectedCurrencyVisible,
             avatarDisplayText = AssetName.create(ownedCollectibleVideoData.name),
             thumbnailPrismUrl = ownedCollectibleVideoData.thumbnailPrismUrl
@@ -92,7 +98,9 @@ class AssetSelectionMapper @Inject constructor() {
             name = ownedCollectibleVideoData.name,
             amount = ownedCollectibleVideoData.amount,
             formattedAmount = ownedCollectibleVideoData.formattedAmount,
+            formattedCompactAmount = ownedCollectibleVideoData.formattedCompactAmount,
             formattedSelectedCurrencyValue = ownedCollectibleVideoData.formattedSelectedCurrencyValue,
+            formattedSelectedCurrencyCompactValue = ownedCollectibleVideoData.formattedSelectedCurrencyCompactValue,
             isAmountInSelectedCurrencyVisible = ownedCollectibleVideoData.isAmountInSelectedCurrencyVisible,
             avatarDisplayText = AssetName.create(ownedCollectibleVideoData.name),
             thumbnailPrismUrl = ownedCollectibleVideoData.thumbnailPrismUrl
@@ -110,7 +118,9 @@ class AssetSelectionMapper @Inject constructor() {
             name = ownedUnsupportedCollectibleData.name,
             amount = ownedUnsupportedCollectibleData.amount,
             formattedAmount = ownedUnsupportedCollectibleData.formattedAmount,
+            formattedCompactAmount = ownedUnsupportedCollectibleData.formattedCompactAmount,
             formattedSelectedCurrencyValue = ownedUnsupportedCollectibleData.formattedSelectedCurrencyValue,
+            formattedSelectedCurrencyCompactValue = ownedUnsupportedCollectibleData.formattedSelectedCurrencyCompactValue,
             isAmountInSelectedCurrencyVisible = ownedUnsupportedCollectibleData.isAmountInSelectedCurrencyVisible,
             avatarDisplayText = AssetName.create(ownedUnsupportedCollectibleData.name)
         )

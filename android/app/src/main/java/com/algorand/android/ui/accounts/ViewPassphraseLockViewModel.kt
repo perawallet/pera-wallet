@@ -21,10 +21,6 @@ class ViewPassphraseLockViewModel @ViewModelInject constructor(
     private val viewPassphrasesUseCase: ViewPassphrasesUseCase
 ) : ViewModel() {
 
-    fun isBiometricActive(): Boolean {
-        return viewPassphrasesUseCase.isBiometricActive()
-    }
-
     fun getPassword(): String? {
         return viewPassphrasesUseCase.getPassword()
     }

@@ -18,7 +18,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.models.BaseDiffUtil
 import com.algorand.android.models.BaseViewHolder
 import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem
+import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem.ItemType.GIF
 import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem.ItemType.IMAGE
+import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem.ItemType.NO_MEDIA
 import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem.ItemType.UNSUPPORTED
 import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem.ItemType.VIDEO
 
@@ -35,6 +37,8 @@ class CollectibleMediaAdapter(
             IMAGE.ordinal -> createImageMediaViewHolder(parent)
             VIDEO.ordinal -> createVideMediaViewHolder(parent)
             UNSUPPORTED.ordinal -> createUnsupportedMediaViewHolder(parent)
+            GIF.ordinal -> createGifMediaViewHolder(parent)
+            NO_MEDIA.ordinal -> createNoMediaViewHolder(parent)
             else -> throw IllegalArgumentException("$logTag : Unknown view type")
         }
     }
@@ -44,7 +48,13 @@ class CollectibleMediaAdapter(
     }
 
     private fun createImageMediaViewHolder(parent: ViewGroup): CollectibleImageMediaViewHolder {
-        return CollectibleImageMediaViewHolder.create(parent)
+        return CollectibleImageMediaViewHolder.create(parent).apply {
+            itemView.setOnClickListener {
+                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
+                    listener.onImageMediaClick(getItem(bindingAdapterPosition).downloadUrl)
+                }
+            }
+        }
     }
 
     private fun createVideMediaViewHolder(parent: ViewGroup): CollectibleVideoMediaViewHolder {
@@ -61,8 +71,17 @@ class CollectibleMediaAdapter(
         return CollectibleUnsupportedMediaViewHolder.create(parent)
     }
 
+    private fun createNoMediaViewHolder(parent: ViewGroup): CollectibleNoMediaViewHolder {
+        return CollectibleNoMediaViewHolder.create(parent)
+    }
+
+    private fun createGifMediaViewHolder(parent: ViewGroup): CollectibleGifMediaViewHolder {
+        return CollectibleGifMediaViewHolder.create(parent)
+    }
+
     interface MediaClickListener {
         fun onVideoMediaClick(videoUrl: String?)
+        fun onImageMediaClick(imageUrl: String?)
     }
 
     companion object {

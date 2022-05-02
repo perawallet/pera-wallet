@@ -41,6 +41,7 @@ class AccountSelectionListItemMapper @Inject constructor(
         accountIcon: AccountIcon,
         formattedHoldings: String,
         assetCount: Int,
+        collectibleCount: Int,
         showAssetCount: Boolean,
         showHoldings: Boolean
     ): BaseAccountSelectionListItem.BaseAccountItem.AccountItem {
@@ -49,6 +50,7 @@ class AccountSelectionListItemMapper @Inject constructor(
             publicKey = publicKey,
             formattedHoldings = formattedHoldings,
             assetCount = assetCount,
+            collectibleCount = collectibleCount,
             accountIcon = accountIcon,
             showAssetCount = showAssetCount,
             showHoldings = showHoldings

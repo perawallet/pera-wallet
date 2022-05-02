@@ -29,8 +29,10 @@ class AccountAssetDataMapper @Inject constructor() {
         assetDetail: AssetDetail,
         amount: BigInteger,
         formattedAmount: String,
+        formattedCompactAmount: String,
         amountInSelectedCurrency: BigDecimal,
-        formattedSelectedCurrencyValue: String
+        formattedSelectedCurrencyValue: String,
+        formattedSelectedCurrencyCompactValue: String
     ): BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData {
         return BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData(
             id = assetDetail.assetId,
@@ -38,8 +40,10 @@ class AccountAssetDataMapper @Inject constructor() {
             shortName = assetDetail.shortName,
             amount = amount,
             formattedAmount = formattedAmount,
+            formattedCompactAmount = formattedCompactAmount,
             amountInSelectedCurrency = amountInSelectedCurrency,
             formattedSelectedCurrencyValue = formattedSelectedCurrencyValue,
+            formattedSelectedCurrencyCompactValue = formattedSelectedCurrencyCompactValue,
             isVerified = assetDetail.isVerified,
             isAlgo = false,
             decimals = assetDetail.fractionDecimals ?: DEFAULT_ASSET_DECIMAL,
@@ -79,6 +83,7 @@ class AccountAssetDataMapper @Inject constructor() {
         amount: BigInteger,
         amountInSelectedCurrency: BigDecimal,
         formattedCachedCurrencyValue: String,
+        formattedSelectedCurrencyCompactValue: String,
         usdValue: BigDecimal
     ): BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData {
         return BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData(
@@ -86,9 +91,11 @@ class AccountAssetDataMapper @Inject constructor() {
             name = "Algo", // TODO Get these from constants
             shortName = "ALGO",
             amount = amount,
-            formattedAmount = amount.formatAmount(ALGO_DECIMALS),
+            formattedAmount = amount.formatAmount(ALGO_DECIMALS), // TODO Move these logics into UseCase
+            formattedCompactAmount = amount.formatAmount(ALGO_DECIMALS, isCompact = true),
             amountInSelectedCurrency = amountInSelectedCurrency,
             formattedSelectedCurrencyValue = formattedCachedCurrencyValue,
+            formattedSelectedCurrencyCompactValue = formattedSelectedCurrencyCompactValue,
             isVerified = true,
             isAlgo = true,
             decimals = ALGO_DECIMALS,

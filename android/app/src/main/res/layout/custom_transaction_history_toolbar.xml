@@ -32,8 +32,7 @@
         style="@style/IconButton.Transparent"
         android:layout_width="@dimen/transaction_view_button_size"
         android:layout_height="@dimen/transaction_view_button_size"
-        app:icon="@drawable/ic_filter"
-        app:iconTint="@color/text_gray" />
+        app:icon="@drawable/ic_filter_gray" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/exportButton"

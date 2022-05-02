@@ -23,11 +23,10 @@ import com.algorand.android.nft.domain.mapper.SimpleCollectibleDetailMapper
 import com.algorand.android.repository.AssetRepository
 import com.algorand.android.repository.FailedAssetRepository
 import com.algorand.android.utils.CacheResult
-import com.algorand.android.utils.isAssetCollectible
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import javax.inject.Inject
 
 class AssetFetchAndCacheUseCase @Inject constructor(
     private val assetRepository: AssetRepository,
@@ -138,6 +137,10 @@ class AssetFetchAndCacheUseCase @Inject constructor(
         assetRepository.cacheAllAssets(assetResult)
         collectibleRepository.cacheAllCollectibles(collectibleResult)
         failedAssetRepository.cacheAllFailedAssets(failedAssetIdList)
+    }
+
+    private fun isAssetCollectible(assetDetailResponse: AssetDetailResponse): Boolean {
+        return assetDetailResponse.collectible != null
     }
 
     private data class AssetCacheResultData(

@@ -30,13 +30,25 @@ class AccountItemViewHolder(
             root.setOnClickListener { listener.onAccountClick(item.publicKey) }
             accountDisplayNameTextView.text = item.displayName
             accountHoldingsTextView.text = item.formattedHoldings
-            assetCountTextView.text = root.resources.getQuantityString(
+            accountIconImageView.setAccountIcon(item.accountIcon)
+            val assetCount = root.resources.getQuantityString(
                 R.plurals.account_asset_count,
                 item.assetCount,
                 item.assetCount,
                 item.assetCount
             )
-            accountIconImageView.setAccountIcon(item.accountIcon)
+            assetAndCollectibleCountTextView.text = if (item.collectibleCount == 0) {
+                // If the account does not have any collectible, we should show only asset count
+                assetCount
+            } else {
+                val accountHoldingsStringBuilder = StringBuilder().append(assetCount)
+                val collectibleCount = root.resources.getQuantityString(
+                    R.plurals.account_collectible_count,
+                    item.collectibleCount,
+                    item.collectibleCount
+                )
+                accountHoldingsStringBuilder.append(COMMA_WITH_SPACE).append(collectibleCount)
+            }
         }
     }
 
@@ -45,6 +57,8 @@ class AccountItemViewHolder(
             val binding = ItemAccountBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             return AccountItemViewHolder(binding, listener)
         }
+
+        private const val COMMA_WITH_SPACE = ", "
     }
 
     fun interface AccountClickListener {

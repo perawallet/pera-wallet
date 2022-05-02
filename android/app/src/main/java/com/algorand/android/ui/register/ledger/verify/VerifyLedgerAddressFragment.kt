@@ -74,8 +74,8 @@ class VerifyLedgerAddressFragment : DaggerBaseFragment(R.layout.fragment_verify_
         adapter.submitList(list)
     }
 
-    private val isAllOperationDoneObserver = Observer<Event<Boolean>> { isAllOperationDoneEvent ->
-        isAllOperationDoneEvent.consume()?.let { isAllOperationDone ->
+    private val isAllOperationDoneObserver = Observer<Event<Boolean>?> { isAllOperationDoneEvent ->
+        isAllOperationDoneEvent?.consume()?.let { isAllOperationDone ->
             binding.confirmationButton.isVisible = isAllOperationDone
         }
     }

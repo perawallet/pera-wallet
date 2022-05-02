@@ -14,7 +14,6 @@ package com.algorand.android.nft.ui.nftlisting.viewholder
 
 import android.view.ViewGroup
 import androidx.core.view.doOnLayout
-import com.algorand.android.R
 import com.algorand.android.databinding.ItemBaseCollectibleListBinding
 import com.algorand.android.nft.ui.model.BaseCollectibleListItem
 import com.algorand.android.utils.loadImage
@@ -31,15 +30,12 @@ class CollectibleImageViewHolder(
 
     private fun loadImage(item: BaseCollectibleListItem.BaseCollectibleItem.CollectibleImageItem) {
         binding.collectibleImageView.run {
-            showProgressBar()
+            showText(item.avatarDisplayText)
             doOnLayout {
                 context.loadImage(
                     createPrismUrl(item.prismUrl.orEmpty(), measuredWidth),
                     onResourceReady = { showImage(it, !item.isOwnedByTheUser) },
-                    onLoadFailed = {
-                        showText(item.errorDisplayText)
-                        showWarningIcon(R.drawable.ic_warning)
-                    }
+                    onLoadFailed = { showText(item.avatarDisplayText) }
                 )
             }
         }

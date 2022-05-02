@@ -75,6 +75,14 @@ class CollectibleDetailViewModel @ViewModelInject constructor(
         }
     }
 
+    fun checkSendingCollectibleIsFractional() {
+        viewModelScope.launch(Dispatchers.IO) {
+            collectibleDetailPreviewUseCase.checkSendingCollectibleIsFractional(collectibleDetailFlow.value).collect {
+                _collectibleDetailPreviewFlow.emit(it)
+            }
+        }
+    }
+
     private fun getCollectibleDetailPreview() {
         viewModelScope.launch {
             collectibleDetailPreviewUseCase

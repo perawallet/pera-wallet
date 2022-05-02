@@ -29,6 +29,7 @@ import com.algorand.android.models.Result
 import com.algorand.android.models.ui.AssetDetailPreview
 import com.algorand.android.models.ui.DateFilterPreview
 import com.algorand.android.models.ui.TransactionLoadStatePreview
+import com.algorand.android.utils.formatAsAlgoAmount
 import java.io.File
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
@@ -134,7 +135,8 @@ class AssetDetailUseCase @Inject constructor(
         val canAccountSignTransaction = accountDetailUseCase.canAccountSignTransaction(accountDetail.account.address)
         return assetDetailPreviewMapper.mapToAssetDetailPreview(
             algoAmountData,
-            canAccountSignTransaction
+            canAccountSignTransaction,
+            algoAmountData.formattedAmount.formatAsAlgoAmount()
         )
     }
 
@@ -154,6 +156,10 @@ class AssetDetailUseCase @Inject constructor(
             accountDetail.account.address
         )
         val assetData = accountAssetAmountUseCase.getAssetAmount(assetHolding, assetQueryItem)
-        return assetDetailPreviewMapper.mapToAssetDetailPreview(assetData, canAccountSignTransaction)
+        return assetDetailPreviewMapper.mapToAssetDetailPreview(
+            assetData,
+            canAccountSignTransaction,
+            assetData.formattedAmount
+        )
     }
 }

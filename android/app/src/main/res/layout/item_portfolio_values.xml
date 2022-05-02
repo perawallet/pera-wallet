@@ -15,7 +15,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="@dimen/spacing_xxxxlarge">
+    android:paddingBottom="@dimen/spacing_xlarge">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/portfolioValueTitleTextView"
@@ -40,6 +40,7 @@
         android:maxLines="1"
         android:textAppearance="@style/TextAppearance.Title.Mono"
         app:autoSizeMaxTextSize="@dimen/text_size_36"
+        app:autoSizeMinTextSize="@dimen/text_size_13"
         app:autoSizeTextType="uniform"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,44 +49,58 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/algoHoldingsTitleTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_large"
         android:layout_marginTop="@dimen/spacing_xlarge"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="@string/algo_holdings"
         android:textAppearance="@style/TextAppearance.Body.Sans"
         android:textColor="@color/secondary_text_color"
+        app:layout_constraintEnd_toStartOf="@id/assetHoldingsTitleTextView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/portfolioValueTextView" />
+        app:layout_constraintTop_toBottomOf="@id/portfolioValueTextView"
+        app:layout_constraintWidth_percent="0.5" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/algoHoldingsTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_small"
-        android:layout_marginEnd="@dimen/spacing_normal"
         android:drawablePadding="@dimen/spacing_small"
         android:gravity="center_vertical"
         android:maxLines="1"
+
         android:textAppearance="@style/TextAppearance.Body.Mono"
         app:autoSizeMaxTextSize="@dimen/text_size_15"
         app:autoSizeTextType="uniform"
         app:drawableStartCompat="@drawable/ic_algo_green_round"
-        app:layout_constraintEnd_toStartOf="@id/assetHoldingsTextView"
+        app:layout_constraintEnd_toEndOf="@id/algoHoldingsTitleTextView"
         app:layout_constraintStart_toStartOf="@id/algoHoldingsTitleTextView"
         app:layout_constraintTop_toBottomOf="@id/algoHoldingsTitleTextView"
-        tools:text="$33,664.21421" />
+        tools:text="$33,664,664,664,664.21421" />
 
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/algoHoldingsBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="algoHoldingsTitleTextView,algoHoldingsTextView" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/assetHoldingsTitleTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_large"
         android:layout_marginTop="@dimen/spacing_xlarge"
-        android:layout_marginEnd="@dimen/spacing_xxxlarge"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="@string/asset_holdings"
         android:textAppearance="@style/TextAppearance.Body.Sans"
         android:textColor="@color/secondary_text_color"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/algoHoldingsTitleTextView"
         app:layout_constraintTop_toBottomOf="@id/portfolioValueTextView" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -103,16 +118,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/assetHoldingsTitleTextView"
         app:layout_constraintTop_toTopOf="@id/algoHoldingsTextView"
-        tools:text="$33,664.21421" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/buyAlgoButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_xxxxlarge"
-        android:text="@string/buy_algo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/assetHoldingsTextView" />
+        tools:text="$33,664,664,664,664,664,664.21421" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,16 +21,13 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.algorand.android.MainNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentQrCodeScannerBinding
-import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.DecodedQrCode
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.StatusBarConfiguration
 import com.algorand.android.models.WalletConnectSession
-import com.algorand.android.ui.wcconnection.WalletConnectConnectionBottomSheet.Companion.PEER_META_NAME_KEY
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.CAMERA_PERMISSION
 import com.algorand.android.utils.CAMERA_PERMISSION_REQUEST_CODE
@@ -167,22 +164,6 @@ class QrCodeScannerFragment : DaggerBaseFragment(R.layout.fragment_qr_code_scann
     override fun onResume() {
         super.onResume()
         startSavedStateListener(R.id.qrCodeScannerFragment) {
-            useSavedStateValue<String>(PEER_META_NAME_KEY) { name ->
-                nav(
-                    MainNavigationDirections.actionGlobalSingleButtonBottomSheet(
-                        titleAnnotatedString = AnnotatedString(
-                            stringResId = R.string.you_are_connected,
-                            replacementList = listOf("peer_name" to name)
-                        ),
-                        descriptionAnnotatedString = AnnotatedString(
-                            stringResId = R.string.please_return_to,
-                            replacementList = listOf("peer_name" to name)
-                        ),
-                        drawableResId = R.drawable.ic_check_72dp,
-                        isResultNeeded = true
-                    )
-                )
-            }
             useSavedStateValue<Boolean>(CLOSE_KEY) { isSuccessBottomSheetClosed ->
                 if (isSuccessBottomSheetClosed) {
                     navBack()

@@ -119,6 +119,10 @@ fun String?.parseFormattedDate(dateTimeFormatter: DateTimeFormatter): ZonedDateT
     }
 }
 
+fun ZonedDateTime?.orNow(): ZonedDateTime {
+    return this ?: ZonedDateTime.now()
+}
+
 fun getRelativeTimeDifference(resources: Resources, time: ZonedDateTime, timeDifference: Long): String {
     return when {
         timeDifference < DateUtils.MINUTE_IN_MILLIS -> resources.getString(R.string.just_now)

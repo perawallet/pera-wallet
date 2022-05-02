@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface NodeDao {
     @Query("SELECT * FROM node WHERE is_added_default")
-    fun getAllNode(): List<Node>
+    suspend fun getAllNode(): List<Node>
 
     @Query("SELECT * FROM node WHERE is_added_default")
     fun getAllNodeAsFlow(): Flow<List<Node>>

@@ -17,6 +17,7 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import com.algorand.android.R
 import com.algorand.android.models.ScreenState
+import com.algorand.android.ui.addasset.AssetAdditionType
 import java.io.IOException
 import javax.inject.Inject
 
@@ -24,7 +25,8 @@ class AssetAdditionScreenStateViewTypeDecider @Inject constructor() {
 
     fun decideScreenStateViewType(
         combinedLoadStates: CombinedLoadStates,
-        itemCount: Int
+        itemCount: Int,
+        assetAdditionType: AssetAdditionType
     ): ScreenState? {
         val isCurrentStateError = combinedLoadStates.refresh is LoadState.Error
         val isLoading = combinedLoadStates.refresh is LoadState.Loading
@@ -40,12 +42,15 @@ class AssetAdditionScreenStateViewTypeDecider @Inject constructor() {
                     ScreenState.DefaultError()
                 }
             }
-            isEmpty -> {
-                ScreenState.CustomState(
-                    title = R.string.no_asset_found,
-                )
-            }
+            isEmpty -> ScreenState.CustomState(title = decideEmptyStateTitle(assetAdditionType))
             else -> null
+        }
+    }
+
+    private fun decideEmptyStateTitle(assetAdditionType: AssetAdditionType): Int {
+        return when (assetAdditionType) {
+            AssetAdditionType.ASSET -> R.string.no_asset_found
+            AssetAdditionType.COLLECTIBLE -> R.string.no_nft_found
         }
     }
 }

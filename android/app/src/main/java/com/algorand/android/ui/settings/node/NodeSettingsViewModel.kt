@@ -51,14 +51,14 @@ class NodeSettingsViewModel @ViewModelInject constructor(
         nodeSettingsUseCase.activateNewNode(node)
     }
 
-    fun onNodeChanged(activatedNode: Node, onNodeSwitchingFinished: () -> Unit) {
+    fun onNodeChanged(activatedNode: Node, onNodeSwitchingFinished: (previousNode: Node) -> Unit) {
         viewModelScope.launch {
+            val previousSelectedNode = nodeSettingsUseCase.getActiveNodeOrDefault()
             nodeSettingsUseCase.setSelectedNode(_nodeListLiveData.value, activatedNode).apply {
                 coreCacheUseCase.handleNodeChange()
                 activateNode(activatedNode)
                 setNodeListToDatabase(this)
-                bannersUseCase.cacheBanners()
-                onNodeSwitchingFinished.invoke()
+                onNodeSwitchingFinished.invoke(previousSelectedNode)
             }
         }
     }

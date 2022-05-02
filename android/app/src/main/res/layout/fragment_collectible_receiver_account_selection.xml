@@ -12,6 +12,7 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -31,7 +32,7 @@
         android:id="@+id/infoTextView"
         style="@style/CollectibleOptInInfoTextStyle"
         android:layout_marginTop="@dimen/spacing_normal"
-        android:text="@string/you_need_to"
+        android:text="@string/your_account_needs_to_be"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/titleTextView" />
@@ -42,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/spacing_xlarge"
         android:layout_marginTop="@dimen/spacing_normal"
-        android:text="@string/select_the_account_you_would"
+        android:text="@string/select_the_wallet_account"
         android:textColor="@color/secondary_text_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,13 +53,27 @@
         android:id="@+id/accountsRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_xsmall"
         android:padding="@dimen/spacing_xlarge"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/descriptionTextView" />
+
+    <com.algorand.android.customviews.ScreenStateView
+        android:id="@+id/screenStateView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_large"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/descriptionTextView"
+        tools:descriptionRes="@string/you_need_to_create"
+        tools:titleRes="@string/no_account_found"
+        tools:visibility="visible" />
 
     <include
         android:id="@+id/progressLayout"

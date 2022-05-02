@@ -43,7 +43,8 @@ class CollectibleDetailDTOMapper @Inject constructor(
             explorerUrl = response.collectible?.explorerUrl,
             medias = response.collectible?.collectibleMedias?.map {
                 collectibleMediaMapper.mapToCollectibleMedia(it)
-            }.orEmpty()
+            }.orEmpty(),
+            totalSupply = response.totalSupply
         )
     }
 }

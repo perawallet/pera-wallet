@@ -84,6 +84,7 @@ android {
             buildConfigField "String", "INDEXER_API_KEY", apiKeyProps["INDEXER_API_KEY"]
             buildConfigField "String", "MOBILE_ALGORAND_BASE_URL", '"https://staging.api.perawallet.app/v1/"'
             buildConfigField "String", "ALGO_EXPLORER_BASE_URL", '"https://price.algoexplorerapi.io/price/"'
+            buildConfigField "String", "PERA_3D_EXPLORER_BASE_URL", '"https://static-hosting.perawallet.app/3dviewer/index.html"'
         }
 
         prod {
@@ -94,6 +95,7 @@ android {
             buildConfigField "String", "INDEXER_API_KEY", apiKeyProps["INDEXER_API_KEY"]
             buildConfigField "String", "MOBILE_ALGORAND_BASE_URL", '"https://api.perawallet.app/v1/"'
             buildConfigField "String", "ALGO_EXPLORER_BASE_URL", '"https://price.algoexplorerapi.io/price/"'
+            buildConfigField "String", "PERA_3D_EXPLORER_BASE_URL", '"https://static-hosting.perawallet.app/3dviewer/index.html"'
         }
     }
 

@@ -14,8 +14,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/spacing_xsmall">
+    android:layout_height="wrap_content">
 
     <com.algorand.android.customviews.CollectibleImageView
         android:id="@+id/collectibleImageView"
@@ -62,8 +61,8 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/collectibleImageView"
         app:layout_constraintStart_toStartOf="@id/collectibleImageView"
-        app:tint="@color/error_tint_color"
-        tools:src="@drawable/ic_warning"
+        app:tint="@color/text_gray"
+        tools:src="@drawable/ic_error"
         tools:visibility="visible" />
 
     <ImageView

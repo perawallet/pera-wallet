@@ -24,7 +24,8 @@ import javax.inject.Inject
 class AccountListItemsUseCase @Inject constructor(
     private val accountListItemMapper: AccountListItemMapper,
     private val accountTotalBalanceUseCase: AccountTotalBalanceUseCase,
-    private val algoPriceUseCase: AlgoPriceUseCase
+    private val algoPriceUseCase: AlgoPriceUseCase,
+    private val getAccountCollectibleCountUseCase: GetAccountCollectibleCountUseCase
 ) {
 
     fun createAccountListItems(
@@ -43,10 +44,12 @@ class AccountListItemsUseCase @Inject constructor(
                 val accountTotalHoldings = with(accountBalance) {
                     algoHoldingsInSelectedCurrency.add(assetHoldingsInSelectedCurrency)
                 }
+                val collectibleCount = getAccountCollectibleCountUseCase.getAccountCollectibleCount(account.address)
                 accountListItemMapper.mapToAccountItem(
-                    this,
-                    accountTotalHoldings.formatAsCurrency(selectedCurrencySymbol),
-                    accountBalance.assetCount
+                    accountDetail = this,
+                    formattedHoldings = accountTotalHoldings.formatAsCurrency(selectedCurrencySymbol, true),
+                    assetCount = accountBalance.assetCount,
+                    collectibleCount = collectibleCount
                 )
             } ?: accountListItemMapper.mapToErrorAccountItem(localAccount, true)
         }

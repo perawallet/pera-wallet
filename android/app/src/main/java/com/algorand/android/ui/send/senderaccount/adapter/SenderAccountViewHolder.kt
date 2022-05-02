@@ -27,7 +27,7 @@ class SenderAccountViewHolder(
         with(binding) {
             with(senderAccount) {
                 accountView.setAccount(accountCacheData)
-                accountBalanceTextView.text = accountAssetData.formattedSelectedCurrencyValue
+                accountBalanceTextView.text = accountAssetData.formattedSelectedCurrencyCompactValue
             }
         }
     }

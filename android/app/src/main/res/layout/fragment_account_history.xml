@@ -48,13 +48,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:descriptionRes="@string/your_transactions_will_be_appeared_here"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/transactionHistoryToolbar"
         app:layout_constraintVertical_bias="0.45"
-        tools:titleRes="@string/no_transaction_yet"
+        tools:descriptionRes="@string/there_are_no"
+        tools:titleRes="@string/no_transactions"
         tools:visibility="visible" />
 
     <include

@@ -38,25 +38,25 @@ class RecoverAccountResultInfoFragment : BaseInfoFragment() {
     }
 
     override fun setTitleText(textView: TextView) {
-        textView.setText(R.string.account_is_verified)
+        textView.setText(recoverAccountResultInfoViewModel.getPreviewTitle())
     }
 
     override fun setDescriptionText(textView: TextView) {
-        textView.setText(R.string.congratulations_your_account)
+        textView.setText(recoverAccountResultInfoViewModel.getPreviewDescription())
     }
 
     override fun setFirstButton(materialButton: MaterialButton) {
         with(materialButton) {
-            setText(R.string.start_using_pera)
-            setOnClickListener { onStartUsingPeraClick() }
+            setText(recoverAccountResultInfoViewModel.getPreviewFirstButtonText())
+            setOnClickListener { navToMoonpayNavigation() }
         }
     }
 
     override fun setSecondButton(materialButton: MaterialButton) {
         with(materialButton) {
-            setText(R.string.buy_algo)
+            setText(recoverAccountResultInfoViewModel.getPreviewSecondButtonText())
             show()
-            setOnClickListener { navToMoonpayNavigation() }
+            setOnClickListener { onStartUsingPeraClick() }
         }
     }
 

@@ -15,9 +15,9 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
-    <path
-        android:fillColor="#00000000"
-        android:pathData="M21,4H3V7L10,13V20L14,18V13L21,7V4Z"
-        android:strokeWidth="2"
-        android:strokeColor="@color/text_main" />
+  <path
+      android:fillColor="#00000000"
+      android:pathData="M21,4H3V7L10,13V20L14,18V13L21,7V4Z"
+      android:strokeWidth="1.66667"
+      android:strokeColor="@color/positive"/>
 </vector>

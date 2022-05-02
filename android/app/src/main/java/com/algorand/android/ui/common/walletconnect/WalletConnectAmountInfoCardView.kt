@@ -26,7 +26,6 @@ import com.algorand.android.utils.ALGOS_SHORT_NAME
 import com.algorand.android.utils.ALGO_DECIMALS
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.formatAmount
-import com.algorand.android.utils.getXmlStyledString
 import com.algorand.android.utils.viewbinding.viewBinding
 import java.math.BigInteger
 
@@ -58,13 +57,10 @@ class WalletConnectAmountInfoCardView(
     private fun initAmount(amount: BigInteger?, decimal: Int?, assetShortName: String?) {
         amount?.let {
             with(binding) {
-                amountTextView.text = context?.getXmlStyledString(
-                    stringResId = R.string.amount_with_asset_short_name,
-                    replacementList = listOf(
-                        "amount" to amount.formatAmount(decimal ?: ALGO_DECIMALS),
-                        "asset_short_name" to assetShortName.orEmpty()
-                    )
-                )
+                // TODO Move this into UseCase. Formatted data should come from domain layer
+                val formattedAmount = amount.formatAmount(decimal ?: ALGO_DECIMALS)
+                amountTextView.text =
+                    context.getString(R.string.pair_value_format, formattedAmount, assetShortName.orEmpty())
                 amountGroup.show()
             }
         }
@@ -73,13 +69,8 @@ class WalletConnectAmountInfoCardView(
     private fun initFee(fee: Long?, shouldShowFeeWarning: Boolean) {
         fee?.let {
             with(binding) {
-                feeTextView.text = context?.getXmlStyledString(
-                    stringResId = R.string.amount_with_asset_short_name,
-                    replacementList = listOf(
-                        "amount" to fee.formatAmount(ALGO_DECIMALS),
-                        "asset_short_name" to ALGOS_SHORT_NAME
-                    )
-                )
+                val formattedAmount = fee.formatAmount(ALGO_DECIMALS)
+                feeTextView.text = context.getString(R.string.pair_value_format, formattedAmount, ALGOS_SHORT_NAME)
                 feeWarningTextView.isVisible = shouldShowFeeWarning
                 feeGroup.show()
             }

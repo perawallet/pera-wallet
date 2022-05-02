@@ -61,6 +61,10 @@ class AlgoPriceUseCase @Inject constructor(
         return getCachedAlgoPrice()?.data?.getAlgorandCurrencyValue()
     }
 
+    fun getUsdToCachedCurrencyConversionRate(): BigDecimal? {
+        return getCachedAlgoPrice()?.data?.usdValue
+    }
+
     private fun getSelectedCurrencySymbol(): String? {
         return if (isSelectedCurrencyAlgo()) {
             ALGO_CURRENCY_SYMBOL

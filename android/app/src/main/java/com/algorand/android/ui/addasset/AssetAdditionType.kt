@@ -10,15 +10,9 @@
  * limitations under the License
  */
 
-package com.algorand.android.models
+package com.algorand.android.ui.addasset
 
-import com.google.gson.annotations.SerializedName
-import java.util.Locale
-
-data class DeviceRegistrationRequest(
-    @SerializedName("push_token") val pushToken: String,
-    @SerializedName("accounts") val accountPublicKeys: List<String>,
-    @SerializedName("application") val application: String,
-    @SerializedName("platform") val platform: String = "android",
-    @SerializedName("locale") val locale: String = Locale.getDefault().language ?: Locale.ENGLISH.language
-)
+enum class AssetAdditionType {
+    ASSET,
+    COLLECTIBLE
+}

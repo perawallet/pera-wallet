@@ -37,7 +37,6 @@
     <string name="view_passphrase">View Passphrase</string>
     <string name="remove_account">Remove Account</string>
     <string name="copied_to_clipboard">Copied to Clipboard</string>
-    <string name="you_are_about_to_remove_an_account">You are about to remove an account. Are you sure you want to proceed with this choice?</string>
     <string name="remove">Remove</string>
     <string name="enter_six_digit_pin">Enter six digit pin</string>
     <string name="wrong_password">Wrong Password</string>
@@ -285,7 +284,10 @@
         <item quantity="one">%1$d Asset</item>
         <item quantity="other">%1$d Assets</item>
     </plurals>
-
+    <plurals name="account_collectible_count">
+        <item quantity="one">%1$d NFT</item>
+        <item quantity="other">%1$d NFTs</item>
+    </plurals>
     <string name="please_use_biometric">Please use Biometric to proceed.</string>
     <string name="not_now">Not now</string>
     <string name="pair_with_ledger">Pair with Ledger</string>
@@ -392,7 +394,7 @@
     <string name="account_not_found">Account not found. Please try again by entering the correct passphrase.</string>
 
     <string name="account_is_verified">Account is verified!</string>
-    <string name="congratulations_your_account">Congratulations, your account is ready to go.</string>
+    <string name="congratulations_your_account">Congratulations, your account is ready to use.</string>
     <string name="welcome_to_pera_your_account">Welcome to Pera Wallet! Your account is ready to use.</string>
     <string name="start_using_pera">Start Using Pera Wallet</string>
 
@@ -409,13 +411,11 @@
     <string name="rename_account">Rename Account</string>
     <string name="add">Add</string>
     <string name="completed">Completed</string>
-    <string name="amount_with_asset"><annotation replacement="asset_amount">assetAmountPlaceholder</annotation> <annotation replacement="asset_short_name">assetShortNamePlaceholder</annotation></string>
     <string name="search_contacts_or_name">Search contacts or name</string>
     <string name="try_different_contact_name">Try different contact name</string>
     <string name="add_photo">Add photo</string>
     <string name="delete_this_contact">Delete this contact</string>
     <string name="yes_delete_contact">Yes, delete contact</string>
-    <string name="asset_name_with_id">%1$s, %2$d</string>
     <string name="available_balance_with_currency">%1$s available balance</string>
     <string name="security">Security</string>
     <string name="app_preferences">App Preferences</string>
@@ -453,7 +453,6 @@
     <string name="your_transaction_is_being_processed">Your transaction is being processed</string>
     <string name="the_transaction_has_been_signed">The transaction has been signed and sent to  <annotation replacement="peer_name">peer_name_placeholder</annotation>. Please visit  <annotation replacement="peer_name">peer_name_placeholder</annotation> for the remaining process.</string>
     <string name="select_the_asset_to_send">Select the Asset to Send</string>
-    <string name="asset_short_name_with_amount">%1$s %2$s</string>
     <string name="paste_from_clipboard">Paste From Clipboard</string>
     <string name="search_or_enter_address">Search or enter address</string>
     <string name="my_accounts">My Accounts</string>
@@ -477,7 +476,6 @@
     <string name="step_three">Step 3</string>
     <string name="looking_for_devices">Looking for devices</string>
     <string name="ledger_account">Ledger Account</string>
-    <string name="amount_with_asset_short_name"><annotation replacement="amount">amountPlaceholder</annotation> <annotation replacement="asset_short_name">assetShortNamePlaceholder</annotation></string>
     <string name="asset_id">ID <annotation replacement="asset_id">assetIdPlaceholder</annotation></string>
     <string name="asset_id_formatted">ID %1$s</string>
     <string name="find_a_code_to_scan">Find a code to scan</string>
@@ -587,7 +585,7 @@
     <string name="sorry_we_cant_show_portfolio">Sorry, we can\'t show the details of this portfolio. It looks like we are having issues for the calculation.\n\nPlease note that some asset values might not be available, therefore the total portfolio value should be considered an estimation.  </string>
 
     <string name="transaction_request_faq">Transaction Request FAQ</string>
-    <string name="external_applications_also">External applications also called as dApps can make transaction requests that the Pera Wallet does not control. Please ensure you review these transactions carefully before approving and signing them.\n\nAll transactions are irreversible. Never approve transaction from dApp that you don\'t know.</string>
+    <string name="external_applications_also">External applications, also called dApps, can initiate transaction requests independently from Pera Wallet. Please ensure you review these transactions carefully before approving and signing them.\n\nAll transactions are irreversible. As these requests are outside Pera Wallet\'s control, never approve transactions from a dApp you don\'t know.</string>
     <string name="minimum_amount_required">Minimum Amount Required</string>
     <string name="this_is_the_first_transaction">This is the first transaction for the selected account. The first transactions require a minimum amount of at least 0.1 Algo. Please enter a valid amount and try again.</string>
     <string name="i_want_to_create">I want to create an account</string>
@@ -654,7 +652,6 @@
     <string name="view_transaction">View Transaction</string>
     <string name="show_on_algoexplorer">Show on Algoexplorer</string>
     <string name="show_on_nftexplorer">Show on NFTExplorer</string>
-    <string name="you_are_not_the_owner">You are not the owner of this NFT yet, however you opted in for it. You can now transfer it to your wallet.</string>
     <string name="we_don_t_support">We don\'t support this NFT media type yet.</string>
     <string name="we_can_t_display">We can\'t display the visual temporarily.</string>
     <string name="transfer">Transfer</string>
@@ -676,9 +673,6 @@
     <string name="confirm_transfer">Confirm transfer</string>
     <string name="search_asset_id_or_nft">Search Asset ID or NFT name</string>
     <string name="receive_an_nft">Receive an NFT</string>
-    <string name="select_the_account_you_would">Select the account you would like to opt in with:</string>
-    <string name="you_need_to">You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet.</string>
-    <string name="you_need_to_opt">You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet. Paste the ASA ID in the search bar.</string>
     <string name="selected_account">Selected account</string>
     <string name="your_nft_transfer_has_failed">Your NFT transfer has failed!</string>
     <string name="please_verify_that_you_have">Please verify that you have enough Algo to cover the transaction fees for transferring your NFT, and try again.</string>
@@ -690,4 +684,37 @@
     <string name="nft_successfully_opted_out">%1$s NFT successfully opted-out</string>
     <string name="opted_in_to">Opted in to</string>
     <string name="show_on">Show on</string>
+    <string name="no_nft_found">No NFT Found</string>
+    <string name="you_are_about_to_remove_watch_account">You are about to remove a watch account. Are you sure you want to proceed with this choice?</string>
+    <string name="you_are_about_to_remove_main_account">You are about to remove your main account, are you sure you want to proceed with this choice?</string>
+    <string name="this_watch_account_has_opted">This watch account has opted in for this NFT, however doesn\'t own it.</string>
+    <string name="you_are_not_the_owner">You are not the owner of this NFT yet, however you opted in for it. You can now transfer it to your wallet.</string>
+    <string name="display_opted_in_nfts">Display opted-in NFTs</string>
+    <string name="you_can_show_hide">You can show/hide NFTs that are opted-in but not owned</string>
+    <string name="filter">Filter</string>
+    <plurals name="collectible_count">
+        <item quantity="one">%1$d NFT</item>
+        <item quantity="other">%1$d NFTs</item>
+    </plurals>
+    <string name="show_filtered_nfts_formatted">Show Filtered NFTs (%1$d)</string>
+    <string name="search_your_nfts">Search your NFTs</string>
+    <string name="enter_your_old">Enter your old 6-digit PIN</string>
+    <string name="tap_thumbnail_to_view_in">Tap thumbnail to view in 3D mode</string>
+    <string name="welcome_to_pera_wallet_your_watch">Welcome to Pera Wallet! Your Watch Account has been added successfully.</string>
+    <string name="congratulations_your_watch_account_has">Congratulations, your Watch Account has been added successfully.</string>
+    <string name="passphrase_verified">Passphrase Verified</string>
+    <string name="keep_this_recovery">Keep this recovery passphrase in a secure location that is accessible only by you. Do not lose this recovery passphrase.</string>
+    <string name="tap_the_media_to_view_in">Tap the media to view in 3D mode</string>
+    <string name="search_your_assets">Search your assets</string>
+    <string name="search">Search</string>
+    <string name="wrong_pin">Wrong Pin</string>
+    <string name="pin_does_not">Pin does not match with the previous pin</string>
+    <string name="no_transactions">No transactions</string>
+    <string name="there_are_no">There are no transactions to be displayed for selected period</string>
+    <string name="filter_by_date">Filter by Date</string>
+    <string name="asset_history_not_available">Asset history not available</string>
+    <string name="the_history_for_this_spesific">The history for this specific asset is not available.</string>
+    <string name="your_account_needs_to_be">Your account needs to be opt in to the NFT before you can receive it. Make sure to check the Asset ID while confirming.</string>
+    <string name="you_can_search_the_nft">You can search the NFT you want to opt in to by pasting its name or Asset ID in the search bar below.</string>
+    <string name="select_the_wallet_account">Select the wallet account you would like to receive to:</string>
 </resources>

@@ -18,8 +18,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.databinding.ItemAccountHistoryFeeBinding
 import com.algorand.android.models.BaseTransactionItem
-import com.algorand.android.utils.ALGOS_SHORT_NAME
-import com.algorand.android.utils.ALGO_DECIMALS
 
 class AccountHistoryFeeViewHolder(
     private val binding: ItemAccountHistoryFeeBinding
@@ -28,7 +26,7 @@ class AccountHistoryFeeViewHolder(
     fun bind(fee: BaseTransactionItem.TransactionItem.Fee) {
         with(binding) {
             titleTextView.setText(fee.transactionName.stringRes)
-            amountTextView.setAmount(fee.fee?.toBigInteger(), ALGO_DECIMALS, fee.transactionSymbol, ALGOS_SHORT_NAME)
+            amountTextView.setAmountAsFee(fee.fee)
         }
     }
 

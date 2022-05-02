@@ -36,7 +36,9 @@ sealed class BaseRemoveAssetItem : RecyclerListItem {
     abstract val creatorPublicKey: String?
     abstract val amount: BigInteger
     abstract val formattedAmount: String
+    abstract val formattedCompactAmount: String
     abstract val formattedSelectedCurrencyValue: String
+    abstract val formattedSelectedCurrencyCompactValue: String
     abstract val isAmountInSelectedCurrencyVisible: Boolean
     abstract val itemType: ItemType
     abstract val notAvailableResId: Int
@@ -46,7 +48,10 @@ sealed class BaseRemoveAssetItem : RecyclerListItem {
     }
 
     override fun areContentsTheSame(other: RecyclerListItem): Boolean {
-        return other is BaseRemoveAssetItem && shortName == other.shortName && name == other.name
+        return other is BaseRemoveAssetItem &&
+            shortName == other.shortName &&
+            name == other.name &&
+            amount == other.amount
     }
 
     data class RemoveAssetItem(
@@ -60,7 +65,9 @@ sealed class BaseRemoveAssetItem : RecyclerListItem {
         override val creatorPublicKey: String?,
         override val amount: BigInteger,
         override val formattedAmount: String,
+        override val formattedCompactAmount: String,
         override val formattedSelectedCurrencyValue: String,
+        override val formattedSelectedCurrencyCompactValue: String,
         override val isAmountInSelectedCurrencyVisible: Boolean,
         @StringRes
         override val notAvailableResId: Int
@@ -81,7 +88,9 @@ sealed class BaseRemoveAssetItem : RecyclerListItem {
             override val creatorPublicKey: String?,
             override val amount: BigInteger,
             override val formattedAmount: String,
+            override val formattedCompactAmount: String,
             override val formattedSelectedCurrencyValue: String,
+            override val formattedSelectedCurrencyCompactValue: String,
             override val isAmountInSelectedCurrencyVisible: Boolean,
             @StringRes
             override val notAvailableResId: Int,
@@ -101,7 +110,9 @@ sealed class BaseRemoveAssetItem : RecyclerListItem {
             override val creatorPublicKey: String?,
             override val amount: BigInteger,
             override val formattedAmount: String,
+            override val formattedCompactAmount: String,
             override val formattedSelectedCurrencyValue: String,
+            override val formattedSelectedCurrencyCompactValue: String,
             override val isAmountInSelectedCurrencyVisible: Boolean,
             @StringRes
             override val notAvailableResId: Int,
@@ -121,7 +132,9 @@ sealed class BaseRemoveAssetItem : RecyclerListItem {
             override val creatorPublicKey: String?,
             override val amount: BigInteger,
             override val formattedAmount: String,
+            override val formattedCompactAmount: String,
             override val formattedSelectedCurrencyValue: String,
+            override val formattedSelectedCurrencyCompactValue: String,
             override val isAmountInSelectedCurrencyVisible: Boolean,
             @StringRes
             override val notAvailableResId: Int,
@@ -141,7 +154,9 @@ sealed class BaseRemoveAssetItem : RecyclerListItem {
             override val creatorPublicKey: String?,
             override val amount: BigInteger,
             override val formattedAmount: String,
+            override val formattedCompactAmount: String,
             override val formattedSelectedCurrencyValue: String,
+            override val formattedSelectedCurrencyCompactValue: String,
             override val isAmountInSelectedCurrencyVisible: Boolean,
             @StringRes
             override val notAvailableResId: Int

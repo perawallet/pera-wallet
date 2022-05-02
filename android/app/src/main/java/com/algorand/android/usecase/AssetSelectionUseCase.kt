@@ -13,40 +13,35 @@
 
 package com.algorand.android.usecase
 
-import com.algorand.android.mapper.AccountSelectionMapper
 import com.algorand.android.mapper.AssetSelectionMapper
-import com.algorand.android.models.Account
-import com.algorand.android.models.AccountSelection
+import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
+import com.algorand.android.models.AssetTransaction
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleImageData
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleMixedData
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleVideoData
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedUnsupportedCollectibleData
 import com.algorand.android.models.BaseSelectAssetItem
-import com.algorand.android.utils.AccountCacheManager
+import com.algorand.android.nft.mapper.AssetSelectionPreviewMapper
+import com.algorand.android.nft.ui.model.AssetSelectionPreview
+import com.algorand.android.utils.Event
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
 
 class AssetSelectionUseCase @Inject constructor(
     private val accountAlgoAmountUseCase: AccountAlgoAmountUseCase,
     private val transactionTipsUseCase: TransactionTipsUseCase,
-    private val accountCacheManager: AccountCacheManager,
-    private val accountSelectionMapper: AccountSelectionMapper,
     private val assetSelectionMapper: AssetSelectionMapper,
     private val accountDetailUseCase: AccountDetailUseCase,
     private val algoPriceUseCase: AlgoPriceUseCase,
     private val accountAssetDataUseCase: AccountAssetDataUseCase,
     private val accountCollectibleDataUseCase: AccountCollectibleDataUseCase,
+    private val assetSelectionPreviewMapper: AssetSelectionPreviewMapper,
+    private val accountInformationUseCase: AccountInformationUseCase
 ) {
-
-    fun getCachedAccountFilteredByAssetId(assetId: Long): List<AccountSelection> {
-        return accountCacheManager.getAccountCacheWithSpecificAsset(assetId, listOf(Account.Type.WATCH)).map {
-            val accountAssetData = accountAlgoAmountUseCase.getAccountAlgoAmount(it.first.account.address)
-            accountSelectionMapper.mapToAccountSelection(accountAssetData, it)
-        }
-    }
-
-    fun getAssetSelectionPreview(publicKey: String): Flow<List<BaseSelectAssetItem>> {
+    fun getAssetSelectionListFlow(publicKey: String): Flow<List<BaseSelectAssetItem>> {
         return combine(
             accountDetailUseCase.getAccountDetailCacheFlow(publicKey),
             algoPriceUseCase.getAlgoPriceCacheFlow()
@@ -92,5 +87,41 @@ class AssetSelectionUseCase @Inject constructor(
 
     fun shouldShowTransactionTips(): Boolean {
         return transactionTipsUseCase.shouldShowTransactionTips()
+    }
+
+    fun getInitialStateOfAssetSelectionPreview(assetTransaction: AssetTransaction): AssetSelectionPreview {
+        return assetSelectionPreviewMapper.mapToInitialState(assetTransaction)
+    }
+
+    fun checkIfSelectedAccountReceiveAsset(
+        publicKey: String,
+        assetId: Long,
+        previousState: AssetSelectionPreview
+    ) = flow<AssetSelectionPreview> {
+        emit(previousState.copy(isLoadingVisible = true))
+        accountInformationUseCase.getAccountInformation(publicKey).collect {
+            it.useSuspended(
+                onSuccess = { accountInformation ->
+                    val isReceiverOptedInToAsset = accountInformation.assetHoldingList.any { assetHolding ->
+                        assetHolding.assetId == assetId
+                    } || assetId == ALGORAND_ID
+                    if (!isReceiverOptedInToAsset) {
+                        emit(previousState.copy(navigateToOptInEvent = Event(assetId)))
+                    } else {
+                        emit(previousState.copy(navigateToAssetTransferAmountFragmentEvent = Event(assetId)))
+                    }
+                },
+                onFailed = { errorDataResource ->
+                    val exceptionMessage = errorDataResource.exception?.message
+                    if (exceptionMessage != null) {
+                        emit(previousState.copy(globalErrorTextEvent = Event(exceptionMessage)))
+                    } else {
+                        // TODO Show default error message
+                        emit(previousState.copy(isLoadingVisible = false))
+                    }
+                }
+            )
+            emit(previousState.copy(isLoadingVisible = false))
+        }
     }
 }

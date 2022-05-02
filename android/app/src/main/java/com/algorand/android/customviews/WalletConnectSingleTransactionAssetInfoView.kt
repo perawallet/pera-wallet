@@ -70,10 +70,10 @@ class WalletConnectSingleTransactionAssetInfoView @JvmOverloads constructor(
             val assetShortNameTextSize = context.resources.getDimensionPixelSize(R.dimen.text_size_19)
             // TODO: 13.01.2022 Find a better way to format this text 
             assetAmountTextView.text = context?.getXmlStyledString(
-                stringResId = R.string.formatted_amount_with_asset_name,
+                stringResId = R.string.formatted_amount_with_asset_name_txn,
                 replacementList = listOf(
-                    "amount" to formattedAmount,
-                    "asset_name" to assetShortName.orEmpty()
+                    "asset_amount" to formattedAmount,
+                    "asset_short_name" to assetShortName.orEmpty()
                 ),
                 customAnnotations = listOf(
                     "text_size" to AbsoluteSizeSpan(assetShortNameTextSize)

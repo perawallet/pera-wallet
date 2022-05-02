@@ -12,7 +12,7 @@
 
 package com.algorand.android.models
 
-import com.algorand.android.utils.formatAsDollar
+import com.algorand.android.utils.formatAsTwoDecimals
 import java.math.BigDecimal
 
 data class ValuePosition(
@@ -22,6 +22,6 @@ data class ValuePosition(
 ) {
 
     fun getFormattedPriceValue(): String {
-        return value.formatAsDollar()
+        return value.formatAsTwoDecimals()
     }
 }

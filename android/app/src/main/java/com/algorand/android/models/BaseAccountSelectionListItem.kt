@@ -62,6 +62,7 @@ abstract class BaseAccountSelectionListItem : RecyclerListItem {
             val accountIcon: AccountIcon,
             val showAssetCount: Boolean,
             val assetCount: Int,
+            val collectibleCount: Int,
             val showHoldings: Boolean,
             val formattedHoldings: String,
         ) : BaseAccountItem() {

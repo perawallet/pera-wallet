@@ -20,7 +20,7 @@
         android:id="@+id/infoTextView"
         style="@style/CollectibleOptInInfoTextStyle"
         android:layout_marginTop="@dimen/spacing_small"
-        android:text="@string/you_need_to_opt"
+        android:text="@string/you_can_search_the_nft"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

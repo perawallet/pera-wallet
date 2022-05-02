@@ -161,9 +161,15 @@
         <attr name="textHorizontalMargin" format="dimension" />
     </declare-styleable>
 
+    <declare-styleable name="CollectibleMediaPager">
+        <attr name="bottomButtonText" format="string" />
+        <attr name="bottomButtonIcon" format="reference" />
+        <attr name="isBottomButtonVisible" format="boolean" />
+    </declare-styleable>
+
     <declare-styleable name="AccountCopyQrView">
         <attr name="isTitleVisible" format="boolean" />
-        <attr name="accountIconSize" format="dimension"/>
+        <attr name="accountIconSize" format="dimension" />
     </declare-styleable>
 
 </resources>

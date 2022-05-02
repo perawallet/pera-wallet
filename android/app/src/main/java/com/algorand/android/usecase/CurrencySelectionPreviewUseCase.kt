@@ -31,8 +31,8 @@ class CurrencySelectionPreviewUseCase @Inject constructor(
     private val algoPriceUseCase: AlgoPriceUseCase
 ) : BaseUseCase() {
 
-    suspend fun getCurrencySelectionPreviewFlow(): Flow<CurrencySelectionPreview> {
-        return getCurrencyListFlow().map { assetList ->
+    suspend fun getCurrencySelectionPreviewFlow(query: String): Flow<CurrencySelectionPreview> {
+        return getCurrencyListFlow(query).map { assetList ->
             currencySelectionPreviewMapper.mapToCurrencySelectionPreview(
                 dataResource = assetList,
                 isLoading = assetList is DataResource.Loading,
@@ -41,10 +41,12 @@ class CurrencySelectionPreviewUseCase @Inject constructor(
         }
     }
 
-    private suspend fun getCurrencyListFlow(): Flow<DataResource<List<CurrencyListItem>>> {
+    private suspend fun getCurrencyListFlow(query: String): Flow<DataResource<List<CurrencyListItem>>> {
         return currencyOptionUseCase.getCurrencyOptionListFlow().map {
             when (it) {
-                is DataResource.Success -> DataResource.Success(createCurrencyListItems(it))
+                is DataResource.Success -> DataResource.Success(createCurrencyListItems(it.data.filter { currency ->
+                    currency.id.contains(query, true) || currency.name.contains(query, true)
+                }))
                 is DataResource.Error.Api -> DataResource.Error.Api(it.exception, it.code)
                 is DataResource.Error.Local -> DataResource.Error.Local(it.exception)
                 is DataResource.Loading -> DataResource.Loading()
@@ -53,9 +55,9 @@ class CurrencySelectionPreviewUseCase @Inject constructor(
     }
 
     private fun createCurrencyListItems(
-        currencyOptionList: DataResource.Success<List<CurrencyOption>>
+        currencyOptionList: List<CurrencyOption>
     ): List<CurrencyListItem> {
-        val currencyListItems = currencyOptionList.data.map { currencyOption ->
+        val currencyListItems = currencyOptionList.map { currencyOption ->
             currencyListItemMapper.mapToCurrencyListItem(
                 currencyOption = currencyOption,
                 isSelectedItem = getSelectedCurrencyId() == currencyOption.id

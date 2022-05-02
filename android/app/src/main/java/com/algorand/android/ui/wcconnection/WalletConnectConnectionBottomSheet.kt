@@ -21,7 +21,6 @@ import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
 import com.algorand.android.core.BaseBottomSheet
 import com.algorand.android.databinding.BottomSheetWalletConnectConnectionBinding
-import com.algorand.android.models.AccountCacheData
 import com.algorand.android.models.AccountSelection
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
@@ -33,7 +32,6 @@ import com.algorand.android.utils.extensions.setTextAndVisibility
 import com.algorand.android.utils.getXmlStyledString
 import com.algorand.android.utils.loadPeerMetaIcon
 import com.algorand.android.utils.openUrl
-import com.algorand.android.utils.setNavigationResult
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -50,8 +48,7 @@ class WalletConnectConnectionBottomSheet : BaseBottomSheet(
     private val args: WalletConnectConnectionBottomSheetArgs by navArgs()
     private val walletConnectConnectionViewModel by viewModels<WalletConnectConnectionViewModel>()
 
-    // TODO Create screen related account model and don't use AccountCacheData
-    private val selectedAccountCollector: suspend (AccountCacheData?) -> Unit = { accountCacheData ->
+    private val selectedAccountCollector: suspend (AccountSelection?) -> Unit = { accountCacheData ->
         if (accountCacheData != null) initSelectedAccountUi(accountCacheData)
     }
 
@@ -89,7 +86,7 @@ class WalletConnectConnectionBottomSheet : BaseBottomSheet(
         super.onResume()
         startSavedStateListener(R.id.walletConnectConnectionBottomSheet) {
             useSavedStateValue<AccountSelection>(ACCOUNT_SELECTION_KEY) { result ->
-                walletConnectConnectionViewModel.setSelectedAccount(result.accountCacheData)
+                walletConnectConnectionViewModel.setSelectedAccount(result)
             }
         }
     }
@@ -117,8 +114,7 @@ class WalletConnectConnectionBottomSheet : BaseBottomSheet(
 
     private fun onConnectClick() {
         walletConnectConnectionViewModel.getSelectedAccount()?.run {
-            listener?.onSessionRequestResult(ApproveRequest(account.address, args.sessionRequest))
-            setNavigationResult(PEER_META_NAME_KEY, args.sessionRequest.peerMeta.name)
+            listener?.onSessionRequestResult(ApproveRequest(accountAddress, args.sessionRequest))
             navBack()
         }
     }
@@ -130,24 +126,21 @@ class WalletConnectConnectionBottomSheet : BaseBottomSheet(
                 .actionWalletConnectConnectionBottomSheetToAccountSelectionBottomSheet(
                     assetId = ALGORAND_ID,
                     titleResId = R.string.accounts,
-                    selectedAccountAddress = selectedAccount?.account?.address,
+                    selectedAccountAddress = selectedAccount?.accountAddress,
                     showBackButton = true,
                     showBalance = false
                 )
         )
     }
 
-    private fun initSelectedAccountUi(accountCacheData: AccountCacheData) {
+    private fun initSelectedAccountUi(accountSelection: AccountSelection) {
         with(binding) {
-            with(accountCacheData) {
-                accountIconImageView.setAccountIcon(accountCacheData.account.createAccountIcon())
-                accountNameTextView.setTextAndVisibility(account.name)
+            with(accountSelection) {
+                accountIconImageView.setAccountIcon(accountIcon)
+                accountNameTextView.setTextAndVisibility(accountName)
                 accountBalanceTextView.setTextAndVisibility(
                     root.resources.getQuantityString(
-                        R.plurals.account_asset_count,
-                        assetsInformation.size,
-                        assetsInformation.size,
-                        assetsInformation.size
+                        R.plurals.account_asset_count, accountAssetCount, accountAssetCount, accountAssetCount
                     )
                 )
                 selectAccountTextView.hide()
@@ -157,9 +150,5 @@ class WalletConnectConnectionBottomSheet : BaseBottomSheet(
 
     interface Callback {
         fun onSessionRequestResult(wCSessionRequestResult: WCSessionRequestResult)
-    }
-
-    companion object {
-        const val PEER_META_NAME_KEY = "peer_meta_name_key"
     }
 }

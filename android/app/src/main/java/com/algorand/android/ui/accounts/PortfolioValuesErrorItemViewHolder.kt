@@ -33,7 +33,6 @@ class PortfolioValuesErrorItemViewHolder(
             algoHoldingsTextView.text = notAvailableText
             assetHoldingsTextView.text = notAvailableText
             portfolioValueTextView.text = notAvailableText
-            buyAlgoButton.setOnClickListener { portfolioValuesListener.onBuyAlgoClick() }
             portfolioValueTitleTextView.apply {
                 setTextColor(ContextCompat.getColor(root.context, item.titleColorResId))
                 setDrawableTintColor(item.titleColorResId)

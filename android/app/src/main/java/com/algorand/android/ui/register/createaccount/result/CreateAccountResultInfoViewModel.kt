@@ -14,13 +14,33 @@ package com.algorand.android.ui.register.createaccount.result
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
+import com.algorand.android.usecase.CreateAccountResultInfoUseCase
 import com.algorand.android.usecase.LockPreferencesUseCase
 
 class CreateAccountResultInfoViewModel @ViewModelInject constructor(
+    createAccountResultInfoUseCase: CreateAccountResultInfoUseCase,
     private val lockPreferencesUseCase: LockPreferencesUseCase
 ) : ViewModel() {
 
+    private val createAccountResultInfoPreview = createAccountResultInfoUseCase.getCreateAccountResultInfoPreview()
+
     fun shouldForceLockNavigation(): Boolean {
         return lockPreferencesUseCase.shouldNavigateLockNavigation()
+    }
+
+    fun getPreviewTitle(): Int {
+        return createAccountResultInfoPreview.titleTextRes
+    }
+
+    fun getPreviewDescription(): Int {
+        return createAccountResultInfoPreview.descriptionTextRes
+    }
+
+    fun getPreviewFirstButtonText(): Int {
+        return createAccountResultInfoPreview.firstButtonTextRes
+    }
+
+    fun getPreviewSecondButtonText(): Int {
+        return createAccountResultInfoPreview.secondButtonTextRes
     }
 }

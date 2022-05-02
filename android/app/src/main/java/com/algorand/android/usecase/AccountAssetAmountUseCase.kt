@@ -41,8 +41,16 @@ class AccountAssetAmountUseCase @Inject constructor(
             assetDetail = assetItem,
             amount = assetHolding.amount,
             formattedAmount = assetHolding.amount.formatAmount(safeDecimal),
+            formattedCompactAmount = assetHolding.amount.formatAmount(safeDecimal, isCompact = true),
             amountInSelectedCurrency = assetAmountInSelectedCurrency,
-            formattedSelectedCurrencyValue = assetAmountInSelectedCurrency.formatAsCurrency(selectedCurrencySymbol),
+            formattedSelectedCurrencyValue = assetAmountInSelectedCurrency.formatAsCurrency(
+                selectedCurrencySymbol,
+                false
+            ),
+            formattedSelectedCurrencyCompactValue = assetAmountInSelectedCurrency.formatAsCurrency(
+                selectedCurrencySymbol,
+                true
+            )
         )
     }
 

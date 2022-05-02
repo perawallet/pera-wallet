@@ -19,11 +19,9 @@ import androidx.activity.OnBackPressedCallback
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.customviews.DialPadView
-import com.algorand.android.customviews.SixDigitPasswordView
 import com.algorand.android.databinding.FragmentBasePasswordBinding
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
-import com.algorand.android.utils.alertDialog
 import com.algorand.android.utils.preference.savePassword
 import com.algorand.android.utils.viewbinding.viewBinding
 import javax.inject.Inject
@@ -81,9 +79,9 @@ abstract class BasePasswordFragment : DaggerBaseFragment(R.layout.fragment_base_
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, onBackPressedCallback)
     }
 
-    private fun onNewDigitAdded(isNewDigitAdded: Boolean) {
+    private fun onNewDigitAdded(isNewDigitAdded: Boolean, isPasswordFilled: Boolean) {
         if (!isNewDigitAdded) return
-        if (binding.passwordView.getPasswordSize() == SixDigitPasswordView.PASSWORD_LENGTH) {
+        if (isPasswordFilled) {
             val enteredPassword = binding.passwordView.getPassword()
             if (chosenPassword == null) {
                 chosenPassword = enteredPassword
@@ -104,11 +102,10 @@ abstract class BasePasswordFragment : DaggerBaseFragment(R.layout.fragment_base_
 
     private fun showPasswordDidNotMatchError() {
         binding.passwordView.clearWithAnimation()
-        context?.alertDialog {
-            setTitle(getString(R.string.wrong_password))
-            setMessage(getString(R.string.password_did_not_match_with_previous_password))
-            setPositiveButton(R.string.yes) { dialog, _ -> dialog.dismiss() }
-        }?.show()
+        showGlobalError(
+            errorMessage = getString(R.string.pin_does_not),
+            title = getString(R.string.wrong_pin)
+        )
     }
 
     private fun onBackPressed() {

@@ -35,6 +35,7 @@ import com.algorand.android.ui.common.walletconnect.WalletConnectExtrasChipGroup
 import com.algorand.android.utils.ALGO_DECIMALS
 import com.algorand.android.utils.decodeBase64IfUTF8
 import com.algorand.android.utils.enableClickToCopy
+import com.algorand.android.utils.formatAmount
 import com.algorand.android.utils.formatAsTxnDateAndTime
 import com.algorand.android.utils.openTransactionInAlgoExplorer
 import com.algorand.android.utils.openTransactionInGoalSeeker
@@ -98,7 +99,7 @@ class TransactionDetailBottomSheet : DaggerBaseBottomSheet(
             if (this is BaseTransactionItem.TransactionItem.Transaction) {
                 setStatusUI(transactionItemType == TransactionItemType.PENDING)
             } else {
-                setRewardAmount(rewardAmount, assetInformation)
+                setRewardAmount(rewardAmount)
             }
         }
     }
@@ -109,7 +110,9 @@ class TransactionDetailBottomSheet : DaggerBaseBottomSheet(
         transactionSymbol: TransactionSymbol?,
         assetInformation: AssetInformation?
     ) {
-        binding.amountView.setAmount(amount, decimal, transactionSymbol, assetInformation?.shortName)
+        // TODO Formatting should be done in UseCase. Move this into domain layer
+        val formattedAmount = amount.formatAmount(decimal)
+        binding.amountView.setAmount(formattedAmount, transactionSymbol, assetInformation?.shortName)
     }
 
     private fun setFee(fee: Long?) {
@@ -165,9 +168,9 @@ class TransactionDetailBottomSheet : DaggerBaseBottomSheet(
         }
     }
 
-    private fun setRewardAmount(rewardAmount: Long?, assetInformation: AssetInformation?) {
+    private fun setRewardAmount(rewardAmount: Long?) {
         if (rewardAmount != null && rewardAmount != 0L) {
-            binding.rewardAmountTextView.setAmountAsReward(rewardAmount, ALGO_DECIMALS, assetInformation)
+            binding.rewardAmountTextView.setAmountAsReward(rewardAmount, ALGO_DECIMALS)
             binding.rewardGroup.visibility = View.VISIBLE
         }
     }
@@ -211,9 +214,9 @@ class TransactionDetailBottomSheet : DaggerBaseBottomSheet(
                 }.applyTo(binding.containerLayout)
             }
             binding.closeToUserView.setAddress(closeToAddress)
+            val formattedAmount = closeToAmount.formatAmount(ALGO_DECIMALS, isCompact = true)
             binding.closeAmountView.setAmount(
-                closeToAmount,
-                ALGO_DECIMALS,
+                formattedAmount,
                 transactionSymbol,
                 assetInformation?.shortName
             )

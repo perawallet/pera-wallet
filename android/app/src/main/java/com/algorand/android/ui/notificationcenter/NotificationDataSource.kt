@@ -12,10 +12,10 @@
 
 package com.algorand.android.ui.notificationcenter
 
-import android.content.SharedPreferences
 import androidx.paging.PagingSource
 import com.algorand.android.core.AccountManager
 import com.algorand.android.database.ContactDao
+import com.algorand.android.deviceregistration.domain.usecase.DeviceIdUseCase
 import com.algorand.android.models.Account
 import com.algorand.android.models.NotificationItem
 import com.algorand.android.models.NotificationListItem
@@ -28,14 +28,13 @@ import com.algorand.android.utils.formatAmount
 import com.algorand.android.utils.getAlgorandMobileDateFormatter
 import com.algorand.android.utils.getUserIfSavedLocally
 import com.algorand.android.utils.parseFormattedDate
-import com.algorand.android.utils.preference.getNotificationUserId
 import java.time.ZonedDateTime
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class NotificationDataSource(
     private val notificationRepository: NotificationRepository,
-    private val sharedPref: SharedPreferences,
+    private val deviceIdUseCase: DeviceIdUseCase,
     private val contactDao: ContactDao,
     accountManager: AccountManager
 ) : PagingSource<String, NotificationListItem>() {
@@ -73,8 +72,8 @@ class NotificationDataSource(
         }
     }
 
-    private fun getNotificationUserId(): String {
-        return notificationUserId ?: (sharedPref.getNotificationUserId()?.also { newNotificationUserId ->
+    private suspend fun getNotificationUserId(): String {
+        return notificationUserId ?: (deviceIdUseCase.getSelectedNodeDeviceId()?.also { newNotificationUserId ->
             notificationUserId = newNotificationUserId
         } ?: throw Exception("Notification User ID couldn't found"))
     }

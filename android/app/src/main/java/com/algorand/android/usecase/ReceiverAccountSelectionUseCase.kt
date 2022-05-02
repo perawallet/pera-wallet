@@ -19,7 +19,6 @@ import com.algorand.android.SendAlgoNavigationDirections
 import com.algorand.android.core.AccountManager
 import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.AnnotatedString
-import com.algorand.android.models.AssetAction
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
 import com.algorand.android.models.AssetSupportRequest
@@ -27,6 +26,8 @@ import com.algorand.android.models.BaseAccountSelectionListItem
 import com.algorand.android.models.Result
 import com.algorand.android.models.TargetUser
 import com.algorand.android.models.User
+import com.algorand.android.nft.domain.usecase.SimpleCollectibleUseCase
+import com.algorand.android.nft.ui.model.RequestOptInConfirmationArgs
 import com.algorand.android.repository.AssetRepository
 import com.algorand.android.repository.ContactRepository
 import com.algorand.android.utils.AccountCacheManager
@@ -43,6 +44,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 
+@Suppress("LongParameterList")
 class ReceiverAccountSelectionUseCase @Inject constructor(
     private val contactRepository: ContactRepository,
     private val accountCacheManager: AccountCacheManager,
@@ -51,6 +53,8 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
     private val accountManager: AccountManager,
     private val accountSelectionListUseCase: AccountSelectionListUseCase,
     private val getBaseOwnedAssetDataUseCase: GetBaseOwnedAssetDataUseCase,
+    private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase,
+    private val simpleCollectibleUseCase: SimpleCollectibleUseCase,
     accountInformationUseCase: AccountInformationUseCase
 ) : BaseSendAccountSelectionUseCase(accountInformationUseCase) {
 
@@ -113,20 +117,14 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
         val selectedAsset = accountCacheManager.getAssetInformation(fromAccountPublicKey, assetId)
 
         if (!isSelectedAssetSupported) {
-            val isThereAccountWithToAddress = accountTransactionValidator.isThereAnyAccountWithToPublicKey(
-                accountInformation.address
+            val nextDirection = HomeNavigationDirections.actionGlobalRequestOptInConfirmationBottomSheet(
+                RequestOptInConfirmationArgs(
+                    fromAccountPublicKey,
+                    accountInformation.address,
+                    assetId,
+                    getAssetOrCollectibleNameOrNull(assetId)
+                )
             )
-            if (isThereAccountWithToAddress.not()) {
-                sendAssetSupportRequest(accountInformation.address, fromAccountPublicKey, assetId)
-            }
-
-            val assetAction = AssetAction(assetId = assetId, asset = selectedAsset)
-
-            val nextDirection = if (isThereAccountWithToAddress) {
-                HomeNavigationDirections.actionGlobalUnsupportedAddAssetTryLaterBottomSheet(assetAction)
-            } else {
-                HomeNavigationDirections.actionGlobalUnsupportedAssetInfoActionBottomSheet(assetAction)
-            }
             return Result.Error(NavigationException(nextDirection))
         }
 
@@ -202,5 +200,10 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
     fun getAssetInformation(assetId: Long, publicKey: String): AssetInformation? {
         val ownedAssetData = getBaseOwnedAssetDataUseCase.getBaseOwnedAssetData(assetId, publicKey)
         return AssetInformation.createAssetInformation(ownedAssetData ?: return null)
+    }
+
+    fun getAssetOrCollectibleNameOrNull(assetId: Long): String? {
+        return simpleAssetDetailUseCase.getCachedAssetDetail(assetId)?.data?.fullName
+            ?: simpleCollectibleUseCase.getCachedCollectibleById(assetId)?.data?.fullName
     }
 }

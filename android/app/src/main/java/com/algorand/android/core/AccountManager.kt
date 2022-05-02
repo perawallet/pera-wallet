@@ -13,12 +13,10 @@
 package com.algorand.android.core
 
 import android.content.SharedPreferences
-import androidx.lifecycle.MutableLiveData
 import com.algorand.android.models.Account
 import com.algorand.android.usecase.StandardAccountOrderUseCase.Companion.STANDARD_ACCOUNT_START_INDEX
 import com.algorand.android.usecase.WatchAccountOrderUseCase.Companion.WATCH_ACCOUNT_START_INDEX
 import com.algorand.android.utils.AccountMigrationHelper
-import com.algorand.android.utils.Event
 import com.algorand.android.utils.decrpytString
 import com.algorand.android.utils.fromJson
 import com.algorand.android.utils.preference.getEncryptedAlgorandAccounts
@@ -39,10 +37,6 @@ class AccountManager(
 ) {
 
     val accounts = MutableStateFlow<List<Account>>(listOf())
-
-    val isFirebaseTokenChanged = MutableLiveData<Event<Unit>>()
-
-    private var firebaseMessagingToken: String? = null
 
     private val accountTypeChangeMutex = Mutex()
 
@@ -136,15 +130,6 @@ class AccountManager(
 
     fun getAccounts(): List<Account> {
         return accounts.value
-    }
-
-    fun setFirebaseToken(token: String, isRegisterNeeded: Boolean) {
-        if (firebaseMessagingToken != token) {
-            firebaseMessagingToken = token
-            if (isRegisterNeeded) {
-                isFirebaseTokenChanged.postValue(Event(Unit))
-            }
-        }
     }
 
     private fun getIndexedAccount(account: Account): Account {

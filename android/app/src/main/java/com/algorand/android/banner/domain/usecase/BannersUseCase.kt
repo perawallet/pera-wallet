@@ -12,13 +12,12 @@
 
 package com.algorand.android.banner.domain.usecase
 
-import android.content.SharedPreferences
 import com.algorand.android.banner.domain.mapper.BannerMapper
 import com.algorand.android.banner.domain.model.BannerDetailDTO
 import com.algorand.android.banner.domain.model.BannerType
 import com.algorand.android.banner.domain.model.BaseBanner
 import com.algorand.android.banner.domain.repository.BannerRepository
-import com.algorand.android.utils.preference.getNotificationUserId
+import com.algorand.android.deviceregistration.domain.usecase.DeviceIdUseCase
 import javax.inject.Inject
 import javax.inject.Named
 import kotlinx.coroutines.flow.map
@@ -26,7 +25,7 @@ import kotlinx.coroutines.flow.map
 class BannersUseCase @Inject constructor(
     @Named(BannerRepository.BANNER_REPOSITORY_INJECTION_NAME) private val bannerRepository: BannerRepository,
     private val bannerMapper: BannerMapper,
-    private val sharedPreferences: SharedPreferences
+    private val deviceIdUseCase: DeviceIdUseCase
 ) {
 
     suspend fun getBanners() = bannerRepository.getCachedBanners().map { bannerDetailDtoList ->
@@ -35,9 +34,8 @@ class BannersUseCase @Inject constructor(
         getMappedAndFilteredBanners(filteredList)
     }
 
-    // TODO create notification user id local source
     suspend fun cacheBanners(deviceId: String? = null) {
-        val safeDeviceId = deviceId ?: sharedPreferences.getNotificationUserId() ?: return
+        val safeDeviceId = deviceId ?: deviceIdUseCase.getSelectedNodeDeviceId() ?: return
         bannerRepository.cacheBanners(safeDeviceId)
     }
 

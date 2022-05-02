@@ -24,8 +24,8 @@ class CollectibleNotSupportedViewHolder(
     override fun bind(item: BaseCollectibleListItem.BaseCollectibleItem) {
         super.bind(item)
         if (item !is BaseCollectibleListItem.BaseCollectibleItem.NotSupportedCollectibleItem) return
-        showWarningIcon(R.drawable.ic_warning)
-        binding.collectibleImageView.showText(item.errorDisplayText)
+        showWarningIcon(R.drawable.ic_error)
+        binding.collectibleImageView.showText(item.avatarDisplayText)
     }
 
     companion object : NftListViewHolderCreator {

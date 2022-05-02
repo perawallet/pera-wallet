@@ -13,6 +13,7 @@
 package com.algorand.android.nft.domain.mapper
 
 import com.algorand.android.nft.data.model.CollectibleMediaResponse
+import com.algorand.android.nft.data.model.CollectibleMediaTypeExtensionResponse
 import com.algorand.android.nft.data.model.CollectibleMediaTypeResponse
 import com.algorand.android.nft.domain.model.BaseCollectibleMedia
 import javax.inject.Inject
@@ -21,10 +22,18 @@ class CollectibleMediaMapper @Inject constructor() {
 
     fun mapToCollectibleMedia(mediaResponse: CollectibleMediaResponse): BaseCollectibleMedia {
         return when (mediaResponse.mediaType) {
-            CollectibleMediaTypeResponse.IMAGE -> mapToImageCollectibleMedia(mediaResponse)
+            CollectibleMediaTypeResponse.IMAGE -> getCollectibleMediaForImage(mediaResponse)
             CollectibleMediaTypeResponse.VIDEO -> mapToVideoCollectibleMedia(mediaResponse)
             CollectibleMediaTypeResponse.UNKNOWN -> mapToUnsupportedCollectibleMedia(mediaResponse)
             else -> mapToUnsupportedCollectibleMedia(mediaResponse)
+        }
+    }
+
+    private fun getCollectibleMediaForImage(mediaResponse: CollectibleMediaResponse): BaseCollectibleMedia {
+        return when (mediaResponse.mediaTypeExtension) {
+            CollectibleMediaTypeExtensionResponse.GIF -> mapToGifCollectibleMedia(mediaResponse)
+            CollectibleMediaTypeExtensionResponse.WEBP -> mapToImageCollectibleMedia(mediaResponse)
+            else -> mapToImageCollectibleMedia(mediaResponse)
         }
     }
 
@@ -32,6 +41,15 @@ class CollectibleMediaMapper @Inject constructor() {
         mediaResponse: CollectibleMediaResponse
     ): BaseCollectibleMedia.ImageCollectibleMedia {
         return BaseCollectibleMedia.ImageCollectibleMedia(
+            downloadUrl = mediaResponse.downloadUrl,
+            previewUrl = mediaResponse.previewUrl
+        )
+    }
+
+    private fun mapToGifCollectibleMedia(
+        mediaResponse: CollectibleMediaResponse
+    ): BaseCollectibleMedia.GifCollectibleMedia {
+        return BaseCollectibleMedia.GifCollectibleMedia(
             downloadUrl = mediaResponse.downloadUrl,
             previewUrl = mediaResponse.previewUrl
         )

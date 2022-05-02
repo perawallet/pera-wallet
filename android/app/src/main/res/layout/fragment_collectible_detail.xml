@@ -27,6 +27,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_small"
+            app:bottomButtonIcon="@drawable/ic_3d_object"
+            app:bottomButtonText="@string/tap_the_media_to_view_in"
+            app:isBottomButtonVisible="true"
             app:layout_constraintEnd_toEndOf="@id/endGuideLine"
             app:layout_constraintStart_toStartOf="@id/startGuideLine"
             app:layout_constraintTop_toTopOf="parent" />
@@ -38,8 +41,8 @@
             app:layout_constraintBottom_toBottomOf="@id/optedInWarningTextView"
             app:layout_constraintStart_toStartOf="@id/startGuideLine"
             app:layout_constraintTop_toTopOf="@id/optedInWarningTextView"
-            app:srcCompat="@drawable/ic_info"
-            app:tint="@color/negative" />
+            app:srcCompat="@drawable/ic_error"
+            app:tint="@color/text_gray" />
 
         <TextView
             android:id="@+id/optedInWarningTextView"
@@ -48,8 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_xsmall"
             android:layout_marginTop="@dimen/spacing_xlarge"
-            android:text="@string/you_are_not_the_owner"
-            android:textColor="@color/negative"
+            android:textColor="@color/text_gray"
             app:layout_constraintEnd_toEndOf="@id/endGuideLine"
             app:layout_constraintStart_toEndOf="@id/optedInWarningImageView"
             app:layout_constraintTop_toBottomOf="@id/collectibleMediaPager"
@@ -62,8 +64,8 @@
             app:layout_constraintBottom_toBottomOf="@id/warningTextView"
             app:layout_constraintStart_toStartOf="@id/startGuideLine"
             app:layout_constraintTop_toTopOf="@id/warningTextView"
-            app:srcCompat="@drawable/ic_warning"
-            app:tint="@color/negative" />
+            app:srcCompat="@drawable/ic_error"
+            app:tint="@color/text_gray" />
 
         <TextView
             android:id="@+id/warningTextView"
@@ -72,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_xsmall"
             android:layout_marginTop="@dimen/spacing_xlarge"
-            android:textColor="@color/negative"
+            android:textColor="@color/text_gray"
             app:layout_constraintEnd_toEndOf="@id/endGuideLine"
             app:layout_constraintStart_toEndOf="@id/warningImageView"
             app:layout_constraintTop_toBottomOf="@id/optedInWarningTextView"

@@ -13,8 +13,10 @@
 package com.algorand.android.nft.mapper
 
 import com.algorand.android.models.Account
+import com.algorand.android.models.BaseAccountAddress
 import com.algorand.android.nft.domain.decider.CollectibleDetailDecider
 import com.algorand.android.nft.domain.model.BaseCollectibleDetail
+import com.algorand.android.nft.domain.model.BaseCollectibleMedia
 import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem
 import com.algorand.android.nft.ui.model.CollectibleDetail
 import javax.inject.Inject
@@ -28,21 +30,22 @@ class CollectibleDetailMapper @Inject constructor(
     fun mapToCollectibleImage(
         imageCollectibleDetail: BaseCollectibleDetail.ImageCollectibleDetail,
         isOwnedByTheUser: Boolean,
-        ownerAccount: Account?,
+        ownerAccountType: Account.Type?,
+        ownerAccountAddress: BaseAccountAddress.AccountAddress,
         errorDisplayText: String,
         isHoldingByWatchAccount: Boolean,
-        isNftExplorerVisible: Boolean
+        isNftExplorerVisible: Boolean,
+        creatorAddress: BaseAccountAddress.AccountAddress?
     ): CollectibleDetail.ImageCollectibleDetail {
         return CollectibleDetail.ImageCollectibleDetail(
             isOwnedByTheUser = isOwnedByTheUser,
             collectionName = imageCollectibleDetail.collectionName,
             collectibleName = imageCollectibleDetail.title,
             collectibleDescription = imageCollectibleDetail.description,
-            ownerAccountAddress = ownerAccount?.address,
-            ownerAccountIcon = ownerAccount?.createAccountIcon(),
+            ownerAccountAddress = ownerAccountAddress,
             collectibleId = imageCollectibleDetail.assetId,
             creatorName = "", // todo it's an optional field and we don't know json field name yet
-            creatorWalletAddress = imageCollectibleDetail.assetCreator?.publicKey,
+            creatorWalletAddress = creatorAddress,
             prismUrl = imageCollectibleDetail.prismUrl,
             collectibleTraits = imageCollectibleDetail.traits?.map { collectibleTraitItemMapper.mapToTraitItem(it) },
             isHoldingByWatchAccount = isHoldingByWatchAccount,
@@ -51,34 +54,53 @@ class CollectibleDetailMapper @Inject constructor(
             peraExplorerUrl = imageCollectibleDetail.nftExplorerUrl,
             isVerified = imageCollectibleDetail.isVerified,
             collectibleMedias = imageCollectibleDetail.collectibleMedias?.map {
-                collectibleMediaItemMapper.mapToImageCollectibleMediaItem(
-                    imageCollectibleDetail.assetId,
-                    isOwnedByTheUser,
-                    errorDisplayText,
-                    it
-                )
-            }.orEmpty()
+                when (it) {
+                    is BaseCollectibleMedia.GifCollectibleMedia -> {
+                        collectibleMediaItemMapper.mapToGifCollectibleMediaItem(
+                            imageCollectibleDetail.assetId,
+                            isOwnedByTheUser,
+                            errorDisplayText,
+                            it
+                        )
+                    }
+                    else -> {
+                        collectibleMediaItemMapper.mapToImageCollectibleMediaItem(
+                            imageCollectibleDetail.assetId,
+                            isOwnedByTheUser,
+                            errorDisplayText,
+                            it
+                        )
+                    }
+                }
+            }.orEmpty(),
+            optedInWarningTextRes = collectibleDetailDecider.decideOptedInWarningTextRes(
+                isOwnedByTheUser = isOwnedByTheUser,
+                accountType = ownerAccountType
+            ),
+            collectibleFractionDecimals = imageCollectibleDetail.fractionDecimals,
+            isPure = imageCollectibleDetail.isPure()
         )
     }
 
     fun mapToCollectibleVideo(
         videoCollectibleDetail: BaseCollectibleDetail.VideoCollectibleDetail,
         isOwnedByTheUser: Boolean,
-        ownerAccount: Account?,
+        ownerAccountType: Account.Type?,
+        ownerAccountAddress: BaseAccountAddress.AccountAddress,
         errorDisplayText: String,
         isHoldingByWatchAccount: Boolean,
-        isNftExplorerVisible: Boolean
+        isNftExplorerVisible: Boolean,
+        creatorAddress: BaseAccountAddress.AccountAddress?
     ): CollectibleDetail.VideoCollectibleDetail {
         return CollectibleDetail.VideoCollectibleDetail(
             isOwnedByTheUser = isOwnedByTheUser,
             collectionName = videoCollectibleDetail.collectionName,
             collectibleName = videoCollectibleDetail.title,
             collectibleDescription = videoCollectibleDetail.description,
-            ownerAccountAddress = ownerAccount?.address,
-            ownerAccountIcon = ownerAccount?.createAccountIcon(),
+            ownerAccountAddress = ownerAccountAddress,
             collectibleId = videoCollectibleDetail.assetId,
             creatorName = "", // todo it's an optional field and we don't know json field name yet
-            creatorWalletAddress = videoCollectibleDetail.assetCreator?.publicKey,
+            creatorWalletAddress = creatorAddress,
             collectibleTraits = videoCollectibleDetail.traits?.map { collectibleTraitItemMapper.mapToTraitItem(it) },
             isHoldingByWatchAccount = isHoldingByWatchAccount,
             warningTextRes = collectibleDetailDecider.decideWarningTextRes(videoCollectibleDetail.thumbnailPrismUrl),
@@ -94,28 +116,35 @@ class CollectibleDetailMapper @Inject constructor(
                     it,
                     videoCollectibleDetail.thumbnailPrismUrl.orEmpty()
                 )
-            }.orEmpty()
+            }.orEmpty(),
+            optedInWarningTextRes = collectibleDetailDecider.decideOptedInWarningTextRes(
+                isOwnedByTheUser = isOwnedByTheUser,
+                accountType = ownerAccountType
+            ),
+            collectibleFractionDecimals = videoCollectibleDetail.fractionDecimals,
+            isPure = videoCollectibleDetail.isPure()
         )
     }
 
     fun mapToCollectibleMixed(
         mixedCollectibleDetail: BaseCollectibleDetail.MixedCollectibleDetail,
         isOwnedByTheUser: Boolean,
-        ownerAccount: Account?,
+        ownerAccountType: Account.Type?,
+        ownerAccountAddress: BaseAccountAddress.AccountAddress,
         isHoldingByWatchAccount: Boolean,
         isNftExplorerVisible: Boolean,
-        collectibleMedias: List<BaseCollectibleMediaItem>
+        collectibleMedias: List<BaseCollectibleMediaItem>,
+        creatorAddress: BaseAccountAddress.AccountAddress?
     ): CollectibleDetail.MixedCollectibleDetail {
         return CollectibleDetail.MixedCollectibleDetail(
             isOwnedByTheUser = isOwnedByTheUser,
             collectionName = mixedCollectibleDetail.collectionName,
             collectibleName = mixedCollectibleDetail.title,
             collectibleDescription = mixedCollectibleDetail.description,
-            ownerAccountAddress = ownerAccount?.address,
-            ownerAccountIcon = ownerAccount?.createAccountIcon(),
+            ownerAccountAddress = ownerAccountAddress,
             collectibleId = mixedCollectibleDetail.assetId,
             creatorName = "", // todo it's an optional field and we don't know json field name yet
-            creatorWalletAddress = mixedCollectibleDetail.assetCreator?.publicKey,
+            creatorWalletAddress = creatorAddress,
             collectibleTraits = mixedCollectibleDetail.traits?.map { collectibleTraitItemMapper.mapToTraitItem(it) },
             isHoldingByWatchAccount = isHoldingByWatchAccount,
             warningTextRes = collectibleDetailDecider.decideWarningTextRes(mixedCollectibleDetail.thumbnailPrismUrl),
@@ -123,29 +152,36 @@ class CollectibleDetailMapper @Inject constructor(
             isPeraExplorerVisible = isNftExplorerVisible,
             peraExplorerUrl = mixedCollectibleDetail.nftExplorerUrl,
             collectibleMedias = collectibleMedias,
-            isVerified = mixedCollectibleDetail.isVerified
+            isVerified = mixedCollectibleDetail.isVerified,
+            optedInWarningTextRes = collectibleDetailDecider.decideOptedInWarningTextRes(
+                isOwnedByTheUser = isOwnedByTheUser,
+                accountType = ownerAccountType
+            ),
+            collectibleFractionDecimals = mixedCollectibleDetail.fractionDecimals,
+            isPure = mixedCollectibleDetail.isPure()
         )
     }
 
     fun mapToUnsupportedCollectible(
         unsupportedCollectible: BaseCollectibleDetail.NotSupportedCollectibleDetail,
         isOwnedByTheUser: Boolean,
-        ownerAccount: Account?,
+        ownerAccountType: Account.Type?,
+        ownerAccountAddress: BaseAccountAddress.AccountAddress,
         errorDisplayText: String,
         isHoldingByWatchAccount: Boolean,
         warningTextRes: Int?,
-        isNftExplorerVisible: Boolean
+        isNftExplorerVisible: Boolean,
+        creatorAddress: BaseAccountAddress.AccountAddress?
     ): CollectibleDetail.NotSupportedCollectibleDetail {
         return CollectibleDetail.NotSupportedCollectibleDetail(
             isOwnedByTheUser = isOwnedByTheUser,
             collectionName = unsupportedCollectible.collectionName,
             collectibleName = unsupportedCollectible.title,
             collectibleDescription = unsupportedCollectible.description,
-            ownerAccountAddress = ownerAccount?.address,
-            ownerAccountIcon = ownerAccount?.createAccountIcon(),
+            ownerAccountAddress = ownerAccountAddress,
             collectibleId = unsupportedCollectible.assetId,
             creatorName = "", // todo it's an optional field and we don't know json field name yet
-            creatorWalletAddress = unsupportedCollectible.assetCreator?.publicKey,
+            creatorWalletAddress = creatorAddress,
             collectibleTraits = unsupportedCollectible.traits?.map { collectibleTraitItemMapper.mapToTraitItem(it) },
             isHoldingByWatchAccount = isHoldingByWatchAccount,
             warningTextRes = warningTextRes,
@@ -159,7 +195,13 @@ class CollectibleDetailMapper @Inject constructor(
                     errorDisplayText,
                     it
                 )
-            }.orEmpty()
+            }.orEmpty(),
+            optedInWarningTextRes = collectibleDetailDecider.decideOptedInWarningTextRes(
+                isOwnedByTheUser = isOwnedByTheUser,
+                accountType = ownerAccountType
+            ),
+            collectibleFractionDecimals = unsupportedCollectible.fractionDecimals,
+            isPure = unsupportedCollectible.isPure()
         )
     }
 }

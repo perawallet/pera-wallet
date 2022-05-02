@@ -23,7 +23,6 @@ import com.algorand.android.utils.ALGOS_SHORT_NAME
 import com.algorand.android.utils.ALGO_DECIMALS
 import com.algorand.android.utils.extensions.setTextAndVisibility
 import com.algorand.android.utils.formatAmount
-import com.algorand.android.utils.getXmlStyledString
 import com.algorand.android.utils.viewbinding.viewBinding
 
 class WalletConnectSingleTransactionShortDetailView @JvmOverloads constructor(
@@ -40,7 +39,7 @@ class WalletConnectSingleTransactionShortDetailView @JvmOverloads constructor(
         with(walletConnectTransactionShortDetail) {
             with(binding) {
                 val feeText = resources.getString(
-                    R.string.asset_short_name_with_amount,
+                    R.string.pair_value_format,
                     fee.formatAmount(ALGO_DECIMALS),
                     ALGOS_SHORT_NAME
                 )
@@ -56,13 +55,11 @@ class WalletConnectSingleTransactionShortDetailView @JvmOverloads constructor(
                     )
                 }
                 if (accountBalance != null) {
-                    val accountBalanceText = context?.getXmlStyledString(
-                        stringResId = R.string.amount_with_asset_short_name,
-                        replacementList = listOf(
-                            "amount" to accountBalance.formatAmount(decimal),
-                            "asset_short_name" to assetShortName.orEmpty()
-                        )
-                    ).toString()
+                    val accountBalanceText = context?.getString(
+                        R.string.pair_value_format,
+                        accountBalance.formatAmount(decimal),
+                        assetShortName.orEmpty()
+                    )
                     accountAssetBalanceTextView.setTextAndVisibility(accountBalanceText)
                 }
             }

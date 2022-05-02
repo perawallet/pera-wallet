@@ -29,7 +29,6 @@ class PortfolioValuesItemViewHolder(
             algoHoldingsTextView.text = item.formattedAlgoHoldings
             assetHoldingsTextView.text = item.formattedAssetHoldings
             portfolioValueTextView.text = item.formattedPortfolioValue
-            buyAlgoButton.setOnClickListener { portfolioValuesListener.onBuyAlgoClick() }
             portfolioValueTitleTextView.setOnClickListener { portfolioValuesListener.onPortfolioInfoClick(item) }
         }
     }

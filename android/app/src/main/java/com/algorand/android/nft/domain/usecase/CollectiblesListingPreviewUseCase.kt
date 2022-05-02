@@ -15,6 +15,7 @@ package com.algorand.android.nft.domain.usecase
 import com.algorand.android.models.AccountDetail
 import com.algorand.android.models.BaseAccountAssetData
 import com.algorand.android.nft.mapper.CollectibleListingItemMapper
+import com.algorand.android.nft.ui.model.BaseCollectibleListData
 import com.algorand.android.nft.ui.model.BaseCollectibleListItem
 import com.algorand.android.nft.ui.model.CollectiblesListingPreview
 import com.algorand.android.nft.utils.CollectibleUtils
@@ -24,9 +25,9 @@ import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.utils.CacheResult
 import com.algorand.android.utils.coremanager.AssetCacheManager
 import com.algorand.android.utils.coremanager.AssetCacheManager.AssetCacheStatus.EMPTY
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import javax.inject.Inject
 
 class CollectiblesListingPreviewUseCase @Inject constructor(
     private val collectibleListingItemMapper: CollectibleListingItemMapper,
@@ -34,10 +35,11 @@ class CollectiblesListingPreviewUseCase @Inject constructor(
     private val failedAssetRepository: FailedAssetRepository,
     private val assetCacheManager: AssetCacheManager,
     private val collectibleUtils: CollectibleUtils,
-    private val accountCollectibleDataUseCase: AccountCollectibleDataUseCase
-) : BaseCollectiblesListingPreviewUseCase(collectibleListingItemMapper) {
+    private val accountCollectibleDataUseCase: AccountCollectibleDataUseCase,
+    private val collectibleFilterUseCase: CollectibleFilterUseCase
+) : BaseCollectiblesListingPreviewUseCase(collectibleListingItemMapper, collectibleFilterUseCase) {
 
-    fun getCollectiblesListingPreviewFlow(): Flow<CollectiblesListingPreview> {
+    fun getCollectiblesListingPreviewFlow(searchKeyword: String): Flow<CollectiblesListingPreview> {
         return combine(
             accountDetailUseCase.getAccountDetailCacheFlow(),
             failedAssetRepository.getFailedAssetCacheFlow(),
@@ -45,17 +47,23 @@ class CollectiblesListingPreviewUseCase @Inject constructor(
         ) { accountDetailList, failedAssets, accountsAllCollectibles ->
             if (assetCacheManager.cacheStatus isAtLeast EMPTY) {
                 val canUserSignTransaction = canAnyAccountSignTransaction(accountDetailList.values)
-                val collectibleList = prepareCollectiblesListItems(
+                val collectibleListData = prepareCollectiblesListItems(
+                    searchKeyword,
                     canUserSignTransaction,
                     accountsAllCollectibles
                 )
-                val isEmptyStateVisible = accountsAllCollectibles.isEmpty()
+                val isAllCollectiblesFilteredOut = isAllCollectiblesFilteredOut(collectibleListData)
+                val isEmptyStateVisible = accountsAllCollectibles.isEmpty() || isAllCollectiblesFilteredOut
                 collectibleListingItemMapper.mapToPreviewItem(
                     isLoadingVisible = false,
                     isEmptyStateVisible = isEmptyStateVisible,
                     isErrorVisible = failedAssets.isNotEmpty(),
-                    itemList = collectibleList,
-                    isReceiveButtonVisible = canUserSignTransaction
+                    itemList = collectibleListData.baseCollectibleItemList,
+                    isReceiveButtonVisible = isEmptyStateVisible,
+                    isFilterActive = collectibleListData.isFilterActive,
+                    displayedCollectibleCount = collectibleListData.displayedCollectibleCount,
+                    filteredCollectibleCount = collectibleListData.filteredOutCollectibleCount,
+                    isClearFilterButtonVisible = isAllCollectiblesFilteredOut
                 )
             } else {
                 collectibleListingItemMapper.mapToPreviewItem(
@@ -63,20 +71,35 @@ class CollectiblesListingPreviewUseCase @Inject constructor(
                     isEmptyStateVisible = false,
                     isErrorVisible = false,
                     isReceiveButtonVisible = false,
-                    itemList = emptyList()
+                    itemList = emptyList(),
+                    isFilterActive = false,
+                    displayedCollectibleCount = 0,
+                    filteredCollectibleCount = 0,
+                    isClearFilterButtonVisible = false
                 )
             }
         }
     }
 
     private fun prepareCollectiblesListItems(
+        searchKeyword: String,
         canUserSignTransaction: Boolean,
         allAccountAllCollectibles: List<Pair<AccountDetail, List<BaseAccountAssetData>>>
-    ): List<BaseCollectibleListItem> {
-        return mutableListOf<BaseCollectibleListItem>().apply {
+    ): BaseCollectibleListData {
+        var displayedCollectibleCount = 0
+        var totalCollectibleCount = 0
+        val isFilterActive = collectibleFilterUseCase.isFilterActive()
+        val baseCollectibleItemList = mutableListOf<BaseCollectibleListItem>().apply {
             allAccountAllCollectibles.forEach { accountDetailWithCollectibles ->
                 val (accountDetail, collectibles) = accountDetailWithCollectibles
                 collectibles.forEach { collectibleData ->
+                    if (shouldFilterOutBasedOnSearch(searchKeyword, collectibleData)) return@forEach
+                    totalCollectibleCount++
+                    val shouldFilterOutCollectible = collectibleFilterUseCase.shouldFilterOutCollectible(
+                        collectibleData,
+                        accountDetail
+                    )
+                    if (shouldFilterOutCollectible) return@forEach
                     val isOwnedByTheUser = collectibleUtils.isCollectibleOwnedByTheUser(
                         accountDetail,
                         collectibleData.id
@@ -86,8 +109,10 @@ class CollectiblesListingPreviewUseCase @Inject constructor(
                         collectibleData,
                         isOwnedByTheUser,
                         optedInAccountAddress
-                    )
-                    if (collectibleItem != null) add(collectibleItem)
+                    ) ?: return@forEach
+
+                    add(collectibleItem)
+                    displayedCollectibleCount++
                 }
             }
             sortByDescending { it is BaseCollectibleListItem.BaseCollectibleItem.BasePendingCollectibleItem }
@@ -95,6 +120,13 @@ class CollectiblesListingPreviewUseCase @Inject constructor(
                 add(BaseCollectibleListItem.ReceiveNftItem)
             }
         }
+
+        return collectibleListingItemMapper.mapToBaseCollectibleListData(
+            baseCollectibleItemList,
+            isFilterActive,
+            displayedCollectibleCount,
+            totalCollectibleCount
+        )
     }
 
     private fun canAnyAccountSignTransaction(accountList: Collection<CacheResult<AccountDetail>?>): Boolean {

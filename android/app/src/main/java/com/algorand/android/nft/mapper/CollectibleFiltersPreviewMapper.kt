@@ -10,11 +10,18 @@
  * limitations under the License
  */
 
-package com.algorand.android.models
+package com.algorand.android.nft.mapper
 
-import com.google.gson.annotations.SerializedName
+import com.algorand.android.nft.ui.model.CollectibleFiltersPreview
+import javax.inject.Inject
 
-data class DeviceRegistrationResponse(
-    @SerializedName("id")
-    val userId: String?
-)
+class CollectibleFiltersPreviewMapper @Inject constructor() {
+
+    fun mapToCollectibleFiltersPreview(
+        hideOptedInNotOwnedCollectibles: Boolean
+    ): CollectibleFiltersPreview {
+        return CollectibleFiltersPreview(
+            showOptedInNotOwnedCollectibles = hideOptedInNotOwnedCollectibles
+        )
+    }
+}

@@ -32,11 +32,36 @@
         android:id="@+id/collectibleMediaTabLayout"
         style="@style/TabLayoutStyle"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/spacing_large"
+        android:layout_marginTop="@dimen/spacing_xsmall"
+        android:minHeight="0dp"
         android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/collectibleMediaViewPager"
+        app:layout_constraintStart_toStartOf="@id/collectibleMediaViewPager"
+        app:layout_constraintTop_toBottomOf="@id/collectibleMediaViewPager"
+        app:tabIndicatorFullWidth="false"
+        app:tabMinWidth="0dp"
+        app:tabMode="scrollable"
+        app:tabPadding="0dp"
+        tools:visibility="visible" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/collectibleMediaBottomButton"
+        style="@style/IconButton.Transparent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/spacing_xxxlarge"
+        android:textAppearance="@style/TextAppearance.Footnote.Sans.Medium"
+        android:textColor="@color/text_gray_lighter"
+        android:visibility="invisible"
+        app:iconTint="@color/text_gray_lighter"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/collectibleMediaViewPager"
+        app:layout_constraintTop_toBottomOf="@id/collectibleMediaTabLayout"
+        app:layout_goneMarginTop="@dimen/spacing_xxsmall"
+        tools:icon="@drawable/ic_3d_object"
+        tools:text="@string/tap_the_media_to_view_in"
         tools:visibility="visible" />
 
 </merge>

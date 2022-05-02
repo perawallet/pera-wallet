@@ -14,20 +14,15 @@ package com.algorand.android.utils.preference
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.core.content.edit
 import com.algorand.android.models.Account
 import com.algorand.android.utils.encryptString
-import com.algorand.android.utils.parseFormattedDate
 import com.google.crypto.tink.Aead
 import com.google.gson.Gson
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 
 // <editor-fold defaultstate="collapsed" desc="Constants">
 
 private const val ALGORAND_ACCOUNTS_KEY = "algorand_accounts"
 const val LOCK_PASSWORD = "lock_password"
-private const val NOTIFICATION_USER_ID_KEY = "notification_user_id"
 private const val DEFAULT_NODE_LIST_VERSION = "default_node_list_version"
 private const val NOTIFICATION_ACTIVATED_KEY = "notification_activated"
 private const val QR_TUTORIAL_SHOWN_KEY = "qr_tutorial_shown_key"
@@ -50,7 +45,6 @@ fun SharedPreferences.removeAll() {
         .putBoolean(QR_TUTORIAL_SHOWN_KEY, isQrTutorialShown())
         .putBoolean(TD_COPY_TUTORIAL_SHOWN_KEY, isTransactionDetailCopyTutorialShown())
         .putBoolean(FILTER_TUTORIAL_SHOWN_KEY, isFilterTutorialShown())
-        .putString(NOTIFICATION_USER_ID_KEY, getNotificationUserId())
         .apply()
 }
 
@@ -71,16 +65,6 @@ fun SharedPreferences.savePassword(newPassword: String?) = edit().putString(LOCK
 fun SharedPreferences.getPassword() = getString(LOCK_PASSWORD, null)
 
 fun SharedPreferences.isPasswordChosen() = getString(LOCK_PASSWORD, null) != null
-
-// </editor-fold>
-
-// <editor-fold defaultstate="collapsed" desc="NotificationUserId">
-
-fun SharedPreferences.setNotificationUserId(userId: String) {
-    edit().putString(NOTIFICATION_USER_ID_KEY, userId).apply()
-}
-
-fun SharedPreferences.getNotificationUserId() = getString(NOTIFICATION_USER_ID_KEY, null)
 
 // </editor-fold>
 
@@ -131,22 +115,6 @@ fun SharedPreferences.setFilterTutorialShown() {
 }
 
 fun SharedPreferences.isFilterTutorialShown() = getBoolean(FILTER_TUTORIAL_SHOWN_KEY, false)
-
-// </editor-fold>
-
-// <editor-fold defaultstate="collapsed" desc="NotificationRefreshDate">
-
-// ISO-8601 ISO_DATE_TIME
-fun SharedPreferences.setNotificationRefreshDate(notificationRefreshDate: ZonedDateTime) {
-    edit()
-        .putString(NOTIFICATION_REFRESH_DATE_KEY, notificationRefreshDate.format(DateTimeFormatter.ISO_DATE_TIME))
-        .apply()
-}
-
-fun SharedPreferences.getNotificationRefreshDateTime(): ZonedDateTime {
-    return getString(NOTIFICATION_REFRESH_DATE_KEY, null)
-        .parseFormattedDate(DateTimeFormatter.ISO_DATE_TIME) ?: ZonedDateTime.now()
-}
 
 // </editor-fold>
 

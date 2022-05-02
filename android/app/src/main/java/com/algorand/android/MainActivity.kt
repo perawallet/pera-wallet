@@ -219,16 +219,10 @@ class MainActivity : CoreMainActivity(),
     private fun initObservers() {
         peraNotificationManager.newNotificationLiveData.observe(this, newNotificationObserver)
 
-        accountManager.isFirebaseTokenChanged.observe(this, Observer {
-            if (it.consume() != null) {
-                mainViewModel.registerDevice()
-            }
-        })
-
         lifecycleScope.launch {
             // Drop 1 added to get any list changes.
             accountManager.accounts.drop(1).collect { accounts ->
-                mainViewModel.registerDevice()
+                mainViewModel.refreshFirebasePushToken(null)
                 binding.foregroundNotificationView.accounts = accounts
             }
         }
@@ -375,8 +369,8 @@ class MainActivity : CoreMainActivity(),
         }
     }
 
-    fun onNewNodeActivated(activatedNode: Node) {
-        mainViewModel.registerDevice()
+    fun onNewNodeActivated(previousNode: Node, activatedNode: Node) {
+        mainViewModel.refreshFirebasePushToken(previousNode)
         mainViewModel.resetBlockPolling()
         binding.toolbar.setNodeStatus(activatedNode)
         checkIfConnectedToTestNet()
@@ -389,10 +383,30 @@ class MainActivity : CoreMainActivity(),
     private fun handleSessionConnectionResult(result: WCSessionRequestResult) {
         with(walletConnectViewModel) {
             when (result) {
-                is WCSessionRequestResult.ApproveRequest -> approveSession(result)
+                is WCSessionRequestResult.ApproveRequest -> {
+                    approveSession(result)
+                    showConnectedDappInfoBottomSheet(result.wcSessionRequest.peerMeta.name)
+                }
                 is WCSessionRequestResult.RejectRequest -> rejectSession(result.session)
             }
         }
+    }
+
+    private fun showConnectedDappInfoBottomSheet(pearName: String) {
+        nav(
+            MainNavigationDirections.actionGlobalSingleButtonBottomSheet(
+                titleAnnotatedString = AnnotatedString(
+                    stringResId = R.string.you_are_connected,
+                    replacementList = listOf("peer_name" to pearName)
+                ),
+                descriptionAnnotatedString = AnnotatedString(
+                    stringResId = R.string.please_return_to,
+                    replacementList = listOf("peer_name" to pearName)
+                ),
+                drawableResId = R.drawable.ic_check_72dp,
+                isResultNeeded = true
+            )
+        )
     }
 
     override fun onUnsupportedAssetRequest(assetActionResult: AssetActionResult) {

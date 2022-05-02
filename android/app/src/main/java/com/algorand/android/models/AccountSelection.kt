@@ -18,14 +18,15 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class AccountSelection(
-    val accountAssetData: BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData,
-    val accountCacheData: AccountCacheData,
-    val assetInformation: AssetInformation
+    val assetId: Long?,
+    val accountName: String,
+    val accountIcon: AccountIcon,
+    val accountAddress: String,
+    val formattedAccountBalance: String?,
+    val accountAssetCount: Int
 ) : Parcelable, RecyclerListItem {
     override fun areItemsTheSame(other: RecyclerListItem): Boolean {
-        return other is AccountSelection &&
-            accountCacheData.account.address == other.accountCacheData.account.address &&
-            assetInformation.assetId == other.assetInformation.assetId
+        return other is AccountSelection && accountAddress == other.accountAddress && assetId == other.assetId
     }
 
     override fun areContentsTheSame(other: RecyclerListItem): Boolean {

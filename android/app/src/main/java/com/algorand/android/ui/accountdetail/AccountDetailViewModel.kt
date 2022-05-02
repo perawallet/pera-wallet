@@ -19,8 +19,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.models.AccountDetailSummary
+import com.algorand.android.models.AccountDetailTab
 import com.algorand.android.usecase.AccountDeletionUseCase
 import com.algorand.android.usecase.AccountDetailUseCase
+import com.algorand.android.utils.Event
 import com.algorand.android.utils.getOrThrow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -33,13 +35,25 @@ class AccountDetailViewModel @ViewModelInject constructor(
 ) : ViewModel() {
 
     val accountPublicKey: String = savedStateHandle.getOrThrow(ACCOUNT_PUBLIC_KEY)
+    private val accountDetailTab = savedStateHandle.get<AccountDetailTab?>(ACCOUNT_DETAIL_TAB)
 
-    val accountDetailSummaryFlow: StateFlow<AccountDetailSummary?>
-        get() = _accountDetailSummaryFlow
+    val accountDetailSummaryFlow: StateFlow<AccountDetailSummary?> get() = _accountDetailSummaryFlow
     private val _accountDetailSummaryFlow = MutableStateFlow<AccountDetailSummary?>(null)
+
+    private val _accountDetailTabArgFlow = MutableStateFlow<Event<Int>?>(null)
+    val accountDetailTabArgFlow: StateFlow<Event<Int>?> get() = _accountDetailTabArgFlow
 
     init {
         initAccountDetailSummary()
+        checkAccountDetailTabArg()
+    }
+
+    private fun checkAccountDetailTabArg() {
+        viewModelScope.launch {
+            accountDetailTab?.tabIndex?.run {
+                _accountDetailTabArgFlow.emit(Event(this))
+            }
+        }
     }
 
     fun removeAccount(publicKey: String) {
@@ -56,5 +70,6 @@ class AccountDetailViewModel @ViewModelInject constructor(
 
     companion object {
         private const val ACCOUNT_PUBLIC_KEY = "publicKey"
+        private const val ACCOUNT_DETAIL_TAB = "accountDetailTab"
     }
 }

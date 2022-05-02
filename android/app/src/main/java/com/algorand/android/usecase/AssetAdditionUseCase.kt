@@ -17,6 +17,7 @@ import com.algorand.android.mapper.AssetAdditionLoadStatePreviewMapper
 import com.algorand.android.mapper.AssetHoldingsMapper
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.ui.AssetAdditionLoadStatePreview
+import com.algorand.android.ui.addasset.AssetAdditionType
 import com.algorand.android.utils.CacheResult
 import javax.inject.Inject
 
@@ -36,12 +37,14 @@ class AssetAdditionUseCase @Inject constructor(
     fun createAssetAdditionLoadStatePreview(
         combinedLoadStates: CombinedLoadStates,
         itemCount: Int,
-        isLastStateError: Boolean
+        isLastStateError: Boolean,
+        assetAdditionType: AssetAdditionType
     ): AssetAdditionLoadStatePreview {
         return assetAdditionLoadStatePreviewMapper.mapToAssetAdditionLoadStatePreview(
-            combinedLoadStates,
-            itemCount,
-            isLastStateError
+            combinedLoadStates = combinedLoadStates,
+            itemCount = itemCount,
+            isLastStateError = isLastStateError,
+            assetAdditionType = assetAdditionType
         )
     }
 }

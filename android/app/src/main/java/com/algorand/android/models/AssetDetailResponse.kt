@@ -15,6 +15,7 @@ package com.algorand.android.models
 import com.algorand.android.nft.data.model.CollectibleResponse
 import com.google.gson.annotations.SerializedName
 import java.math.BigDecimal
+import java.math.BigInteger
 
 data class AssetDetailResponse(
     @SerializedName("asset_id") val assetId: Long,
@@ -24,5 +25,6 @@ data class AssetDetailResponse(
     @SerializedName("fraction_decimals") val fractionDecimals: Int?,
     @SerializedName("usd_value") val usdValue: BigDecimal?,
     @SerializedName("creator") val assetCreator: AssetCreator?,
-    @SerializedName("collectible") val collectible: CollectibleResponse?
+    @SerializedName("collectible") val collectible: CollectibleResponse?,
+    @SerializedName("total") val totalSupply: BigInteger?
 )

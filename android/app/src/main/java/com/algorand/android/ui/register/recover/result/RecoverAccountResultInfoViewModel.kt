@@ -15,12 +15,32 @@ package com.algorand.android.ui.register.recover.result
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import com.algorand.android.usecase.LockPreferencesUseCase
+import com.algorand.android.usecase.RecoverAccountResultInfoUseCase
 
 class RecoverAccountResultInfoViewModel @ViewModelInject constructor(
+    recoverAccountResultInfoUseCase: RecoverAccountResultInfoUseCase,
     private val lockPreferencesUseCase: LockPreferencesUseCase
 ) : ViewModel() {
 
+    private val recoverAccountResultInfoPreview = recoverAccountResultInfoUseCase.getRecoverAccountResultInfoPreview()
+
     fun shouldForceLockNavigation(): Boolean {
         return lockPreferencesUseCase.shouldNavigateLockNavigation()
+    }
+
+    fun getPreviewTitle(): Int {
+        return recoverAccountResultInfoPreview.titleTextRes
+    }
+
+    fun getPreviewDescription(): Int {
+        return recoverAccountResultInfoPreview.descriptionTextRes
+    }
+
+    fun getPreviewFirstButtonText(): Int {
+        return recoverAccountResultInfoPreview.firstButtonTextRes
+    }
+
+    fun getPreviewSecondButtonText(): Int {
+        return recoverAccountResultInfoPreview.secondButtonTextRes
     }
 }

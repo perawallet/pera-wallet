@@ -19,6 +19,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.databinding.ItemAccountAssetViewBinding
 import com.algorand.android.models.AccountDetailAssetsItem
+import com.algorand.android.utils.formatAsAlgoAmount
 
 class OwnedAssetViewHolder(
     private val binding: ItemAccountAssetViewBinding
@@ -29,6 +30,9 @@ class OwnedAssetViewHolder(
             with(assetItem) {
                 val formattedShortName = shortName.getName(root.resources)
                 val formattedFullName = name.getName(root.resources)
+
+                // TODO: 12.04.2022 Move this logic into use case layer while creating this object 
+                val formattedAmount = if (isAlgo) formattedAmount.formatAsAlgoAmount() else formattedAmount
                 assetNameTextView.setupUI(isVerified, formattedShortName, formattedFullName, id, isAlgo)
                 amountTextView.text = formattedAmount
                 currencyTextView.text = formattedDisplayedCurrencyValue

@@ -17,6 +17,15 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/spacing_xlarge">
 
+    <include layout="@layout/include_list_item_guidelines" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/firstColumnBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="start"
+        app:constraint_referenced_ids="endGuideline, assetBalanceTextView,assetBalanceInCurrencyTextView" />
+
     <com.algorand.android.customviews.CollectibleImageView
         android:id="@+id/collectibleImageView"
         android:layout_width="@dimen/asset_avatar_image_size"
@@ -37,7 +46,6 @@
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toTopOf="@id/subTextView"
         app:layout_constraintEnd_toStartOf="@id/verifiedImageView"
-        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toEndOf="@id/collectibleImageView"
         app:layout_constraintTop_toTopOf="@id/collectibleImageView"
@@ -50,17 +58,10 @@
         android:layout_marginStart="@dimen/spacing_xsmall"
         android:layout_marginEnd="@dimen/spacing_normal"
         app:layout_constraintBottom_toBottomOf="@id/mainTextView"
-        app:layout_constraintEnd_toStartOf="@id/assetBalanceTextView"
+        app:layout_constraintEnd_toStartOf="@id/firstColumnBarrier"
         app:layout_constraintStart_toEndOf="@id/mainTextView"
         app:layout_constraintTop_toTopOf="@id/mainTextView"
         app:srcCompat="@drawable/ic_shield_check_small" />
-
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/nameBarrier"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="end"
-        app:constraint_referenced_ids="mainTextView, verifiedImageView" />
 
     <TextView
         android:id="@+id/subTextView"
@@ -72,10 +73,10 @@
         android:textColor="@color/tertiary_text_color"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/collectibleImageView"
-        app:layout_constraintEnd_toStartOf="@id/assetBalanceTextView"
+        app:layout_constraintEnd_toStartOf="@id/firstColumnBarrier"
         app:layout_constraintStart_toEndOf="@id/collectibleImageView"
         app:layout_constraintTop_toBottomOf="@id/mainTextView"
-        tools:text="@tools:sample/lorem[2]"
+        tools:text="@tools:sample/lorem[22]"
         tools:visibility="visible" />
 
     <TextView
@@ -83,26 +84,28 @@
         style="@style/TextAppearance.Body.Mono"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="end"
+        android:maxLines="1"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toTopOf="@id/assetBalanceInCurrencyTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintStart_toEndOf="@id/nameBarrier"
+        app:layout_constraintStart_toEndOf="@id/startGuideline"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        tools:text="3,123,123.1232" />
+        tools:text="3,123,123,333,343333.1232" />
 
     <TextView
         android:id="@+id/assetBalanceInCurrencyTextView"
         style="@style/TextAppearance.Footnote.Description.Mono"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="end"
+        android:maxLines="1"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintStart_toEndOf="@id/subTextView"
+        app:layout_constraintStart_toEndOf="@id/startGuideline"
         app:layout_constraintTop_toBottomOf="@id/assetBalanceTextView"
-        tools:text="$23,123.99" />
+        tools:text="$23,123,123,123,123.99" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

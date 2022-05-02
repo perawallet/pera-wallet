@@ -18,6 +18,7 @@ import com.algorand.android.network.AlgodInterceptor
 import com.algorand.android.network.IndexerInterceptor
 import com.algorand.android.network.MobileHeaderInterceptor
 import com.algorand.android.repository.NodeRepository
+import com.algorand.android.utils.defaultNodeList
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
@@ -41,6 +42,10 @@ class NodeSettingsUseCase @Inject constructor(
             forEach { it.isActive = false }
             firstOrNull { it.nodeDatabaseId == selectedItem.nodeDatabaseId }?.apply { isActive = true }
         }.orEmpty()
+    }
+
+    suspend fun getActiveNodeOrDefault(): Node {
+        return nodeRepository.getAllNodes().firstOrNull { it.isActive } ?: defaultNodeList.first()
     }
 
     fun activateNewNode(newNode: Node) {

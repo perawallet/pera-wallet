@@ -38,25 +38,25 @@ class CreateAccountResultInfoFragment : BaseInfoFragment() {
     }
 
     override fun setTitleText(textView: TextView) {
-        textView.setText(R.string.account_is_verified)
+        textView.setText(createAccountResultInfoViewModel.getPreviewTitle())
     }
 
     override fun setDescriptionText(textView: TextView) {
-        textView.setText(R.string.welcome_to_pera_your_account)
+        textView.setText(createAccountResultInfoViewModel.getPreviewDescription())
     }
 
     override fun setFirstButton(materialButton: MaterialButton) {
         with(materialButton) {
-            setText(R.string.start_using_pera)
-            setOnClickListener { onStartUsingPeraClick() }
+            setText(createAccountResultInfoViewModel.getPreviewFirstButtonText())
+            setOnClickListener { navToMoonpayNavigation() }
         }
     }
 
     override fun setSecondButton(materialButton: MaterialButton) {
         with(materialButton) {
-            setText(R.string.buy_algo)
+            setText(createAccountResultInfoViewModel.getPreviewSecondButtonText())
             show()
-            setOnClickListener { navToMoonpayNavigation() }
+            setOnClickListener { onStartUsingPeraClick() }
         }
     }
 

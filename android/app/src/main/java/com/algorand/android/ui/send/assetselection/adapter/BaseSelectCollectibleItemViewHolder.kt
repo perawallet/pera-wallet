@@ -29,7 +29,9 @@ abstract class BaseSelectCollectibleItemViewHolder(
         collectibleImageView: CollectibleImageView,
         item: BaseSelectAssetItem.BaseSelectCollectibleItem
     ) {
-        collectibleImageView.showProgressBar()
+        with(collectibleImageView) {
+            showText(item.avatarDisplayText.getAsAvatarNameOrDefault(resources))
+        }
     }
 
     fun bind(item: BaseSelectAssetItem.BaseSelectCollectibleItem) {
@@ -38,9 +40,9 @@ abstract class BaseSelectCollectibleItemViewHolder(
                 mainTextView.text = name
                 subTextView.text = shortName
                 verifiedImageView.isVisible = isVerified
-                assetBalanceTextView.text = formattedAmount
+                assetBalanceTextView.text = formattedCompactAmount
                 assetBalanceInCurrencyTextView.isVisible = isAmountInSelectedCurrencyVisible
-                assetBalanceInCurrencyTextView.text = formattedSelectedCurrencyValue
+                assetBalanceInCurrencyTextView.text = formattedSelectedCurrencyCompactValue
                 bindImage(collectibleImageView, item)
             }
         }

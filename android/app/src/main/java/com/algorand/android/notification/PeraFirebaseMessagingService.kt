@@ -22,7 +22,7 @@ import android.content.SharedPreferences
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.algorand.android.R
-import com.algorand.android.core.AccountManager
+import com.algorand.android.deviceregistration.domain.usecase.FirebasePushTokenUseCase
 import com.algorand.android.models.NotificationMetadata
 import com.algorand.android.models.NotificationType
 import com.algorand.android.ui.splash.LauncherActivity
@@ -36,7 +36,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.lang.Integer.parseInt
 import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -49,10 +48,10 @@ class PeraFirebaseMessagingService : FirebaseMessagingService() {
     lateinit var sharedPref: SharedPreferences
 
     @Inject
-    lateinit var accountManager: AccountManager
+    lateinit var firebasePushTokenUseCase: FirebasePushTokenUseCase
 
     override fun onNewToken(token: String) {
-        accountManager.setFirebaseToken(token, true)
+        firebasePushTokenUseCase.setPushToken(token)
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
@@ -124,7 +123,7 @@ class PeraFirebaseMessagingService : FirebaseMessagingService() {
     private fun getUniqueId(): Int {
         val dateFormatForNotificationId = "HHmmssSS"
         val now = Date()
-        return parseInt(SimpleDateFormat(dateFormatForNotificationId, Locale.US).format(now))
+        return parseInt(SimpleDateFormat(dateFormatForNotificationId).format(now))
     }
 
     private fun getNotificationData(remoteMessage: RemoteMessage): NotificationMetadata {

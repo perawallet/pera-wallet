@@ -22,10 +22,11 @@
     <com.algorand.android.customviews.CollectibleMediaPager
         android:id="@+id/collectibleMediaPager"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginHorizontal="48dp"
         android:layout_marginTop="@dimen/spacing_small"
         app:layout_constraintBottom_toTopOf="@id/collectibleNamesLinearLayout"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -94,7 +95,7 @@
             android:layout_marginHorizontal="@dimen/spacing_xlarge"
             android:layout_marginTop="@dimen/spacing_normal"
             app:hint="@string/paste_an_algorand_wallet_address"
-            tools:text="@tools:sample/lorem[15]" />
+            tools:text="@tools:sample/lorem[25]" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/transferButton"

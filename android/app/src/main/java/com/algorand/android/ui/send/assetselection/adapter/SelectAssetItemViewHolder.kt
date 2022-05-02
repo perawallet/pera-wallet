@@ -29,8 +29,8 @@ class SelectAssetItemViewHolder(
             with(item) {
                 assetNameView.setupUIWithId(isVerified, name, id, isAlgo)
                 assetCurrencyValueTextView.isVisible = isAmountInSelectedCurrencyVisible
-                assetCurrencyValueTextView.text = formattedSelectedCurrencyValue
-                assetBalanceTextView.text = formattedAmount
+                assetCurrencyValueTextView.text = formattedSelectedCurrencyCompactValue
+                assetBalanceTextView.text = formattedCompactAmount
             }
         }
     }

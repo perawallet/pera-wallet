@@ -44,7 +44,7 @@ class RequestOptInConfirmationViewModel @ViewModelInject constructor(
         viewModelScope.launch {
             with(requestOptInConfirmationArgs) {
                 requestOptInConfirmationPreviewUseCase.sendOptInRequest(
-                    collectibleId,
+                    assetId,
                     senderPublicKey,
                     _requestOptInPreviewFlow.value
                 ).collect { preview ->
@@ -55,7 +55,7 @@ class RequestOptInConfirmationViewModel @ViewModelInject constructor(
     }
 
     fun getCollectibleDisplayText(): String = with(requestOptInConfirmationArgs) {
-        collectibleName ?: collectibleId.toString()
+        assetName ?: assetId.toString()
     }
 
     fun getReceiverPublicKey(): String = requestOptInConfirmationArgs.receiverPublicKey

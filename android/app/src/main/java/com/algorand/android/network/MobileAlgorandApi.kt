@@ -13,13 +13,13 @@
 package com.algorand.android.network
 
 import com.algorand.android.banner.data.model.BannerListResponse
+import com.algorand.android.deviceregistration.data.model.DeviceRegistrationRequest
+import com.algorand.android.deviceregistration.data.model.DeviceRegistrationResponse
+import com.algorand.android.deviceregistration.data.model.DeviceUpdateRequest
 import com.algorand.android.models.AssetDetailResponse
 import com.algorand.android.models.AssetSupportRequest
 import com.algorand.android.models.CurrencyOption
 import com.algorand.android.models.CurrencyValue
-import com.algorand.android.models.DeviceRegistrationRequest
-import com.algorand.android.models.DeviceRegistrationResponse
-import com.algorand.android.models.DeviceUpdateRequest
 import com.algorand.android.models.Feedback
 import com.algorand.android.models.FeedbackCategory
 import com.algorand.android.models.NotificationFilterRequest
@@ -28,11 +28,13 @@ import com.algorand.android.models.Pagination
 import com.algorand.android.models.PushTokenDeleteRequest
 import com.algorand.android.models.TrackTransactionRequest
 import com.algorand.android.models.VerifiedAssetDetail
+import com.algorand.android.network.MobileHeaderInterceptor.Companion.ALGORAND_NETWORK_KEY
 import com.algorand.android.ui.addasset.BaseAddAssetViewModel.Companion.SEARCH_RESULT_LIMIT
 import retrofit2.Response
 import retrofit2.http.Body
-import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.HTTP
+import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -56,11 +58,15 @@ interface MobileAlgorandApi {
     @PUT("devices/{device_id}/")
     suspend fun putUpdateDevice(
         @Path("device_id") deviceId: String,
-        @Body deviceUpdateRequest: DeviceUpdateRequest
+        @Body deviceUpdateRequest: DeviceUpdateRequest,
+        @Header(ALGORAND_NETWORK_KEY) networkSlug: String?
     ): Response<DeviceRegistrationResponse>
 
-    @DELETE("devices/")
-    suspend fun deletePushToken(@Body pushTokenDeleteRequest: PushTokenDeleteRequest): Response<Unit>
+    @HTTP(method = "DELETE", path = "devices/", hasBody = true)
+    suspend fun deletePushToken(
+        @Header(ALGORAND_NETWORK_KEY) networkSlug: String,
+        @Body pushTokenDeleteRequest: PushTokenDeleteRequest
+    ): Response<Unit>
 
     @POST("transactions/")
     suspend fun trackTransaction(@Body trackTransactionRequest: TrackTransactionRequest): Response<Unit>

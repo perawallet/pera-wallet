@@ -23,6 +23,7 @@ import com.algorand.android.ui.accounts.AccountErrorItemViewHolder
 import com.algorand.android.ui.accounts.AccountItemViewHolder
 import com.algorand.android.ui.accounts.BasePortfolioValuesItemViewHolder.PortfolioValuesListener
 import com.algorand.android.ui.accounts.HeaderViewHolder
+import com.algorand.android.ui.accounts.MoonpayBuyAlgoViewHolder
 import com.algorand.android.ui.accounts.PortfolioValuesErrorItemViewHolder
 import com.algorand.android.ui.accounts.PortfolioValuesItemViewHolder
 import com.algorand.android.ui.common.listhelper.BaseAccountListItem.ItemType.ACCOUNT_ERROR
@@ -30,6 +31,7 @@ import com.algorand.android.ui.common.listhelper.BaseAccountListItem.ItemType.AC
 import com.algorand.android.ui.common.listhelper.BaseAccountListItem.ItemType.GENERIC_BANNER
 import com.algorand.android.ui.common.listhelper.BaseAccountListItem.ItemType.GOVERNANCE_BANNER
 import com.algorand.android.ui.common.listhelper.BaseAccountListItem.ItemType.HEADER
+import com.algorand.android.ui.common.listhelper.BaseAccountListItem.ItemType.MOONPAY_BUY_ALGO
 import com.algorand.android.ui.common.listhelper.BaseAccountListItem.ItemType.PORTFOLIO_ERROR
 import com.algorand.android.ui.common.listhelper.BaseAccountListItem.ItemType.PORTFOLIO_SUCCESS
 
@@ -38,7 +40,8 @@ class AccountAdapter(
     private val accountErrorClickListener: AccountErrorItemViewHolder.AccountClickListener,
     private val optionsClickListener: HeaderViewHolder.OptionsClickListener,
     private val portfolioValuesListener: PortfolioValuesListener,
-    private val bannerListener: BaseBannerViewHolder.BannerListener
+    private val bannerListener: BaseBannerViewHolder.BannerListener,
+    private val moonpayBuyAlgoListener: MoonpayBuyAlgoViewHolder.MoonpayBuyAlgoListener
 ) : ListAdapter<BaseAccountListItem, BaseViewHolder<BaseAccountListItem>>(BaseDiffUtil<BaseAccountListItem>()) {
 
     override fun getItemViewType(position: Int): Int {
@@ -54,6 +57,7 @@ class AccountAdapter(
             ACCOUNT_ERROR.ordinal -> AccountErrorItemViewHolder.create(parent, accountErrorClickListener)
             GOVERNANCE_BANNER.ordinal -> GovernanceBannerViewHolder.create(bannerListener, parent)
             GENERIC_BANNER.ordinal -> GenericBannerViewHolder.create(bannerListener, parent)
+            MOONPAY_BUY_ALGO.ordinal -> MoonpayBuyAlgoViewHolder.create(moonpayBuyAlgoListener, parent)
             else -> throw Exception("$logTag: Item View Type is Unknown.")
         }
     }

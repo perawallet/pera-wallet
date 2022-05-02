@@ -26,7 +26,9 @@ abstract class BaseCollectibleSearchItemViewHolder(
 ) : BaseViewHolder<BaseAssetSearchListItem>(binding.root) {
 
     protected open fun bindImage(collectibleImageView: CollectibleImageView, item: BaseAssetSearchListItem) {
-        collectibleImageView.showProgressBar()
+        with(collectibleImageView) {
+            showText(item.avatarDisplayText.getAsAvatarNameOrDefault(resources))
+        }
     }
 
     override fun bind(item: BaseAssetSearchListItem) {

@@ -16,6 +16,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <include layout="@layout/include_list_item_guidelines" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/firstColumnBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:barrierDirection="start"
+        app:constraint_referenced_ids="endGuideline, accountHoldingsTextView" />
+
     <com.algorand.android.customviews.AccountIconImageView
         android:id="@+id/accountIconImageView"
         android:layout_width="40dp"
@@ -33,15 +43,15 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:textAppearance="@style/TextAppearance.Body.Sans"
-        app:layout_constraintBottom_toTopOf="@id/assetCountTextView"
-        app:layout_constraintEnd_toStartOf="@id/accountHoldingsTextView"
+        app:layout_constraintBottom_toTopOf="@id/assetAndCollectibleCountTextView"
+        app:layout_constraintEnd_toStartOf="@id/firstColumnBarrier"
         app:layout_constraintStart_toEndOf="@id/accountIconImageView"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        tools:text="0x6583...9b77" />
+        tools:text="@tools:sample/lorem/random" />
 
     <TextView
-        android:id="@+id/assetCountTextView"
+        android:id="@+id/assetAndCollectibleCountTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"
@@ -49,20 +59,26 @@
         android:textAppearance="@style/TextAppearance.Footnote.Sans"
         android:textColor="@color/secondary_text_color"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/accountHoldingsTextView"
+        app:layout_constraintEnd_toStartOf="@id/firstColumnBarrier"
         app:layout_constraintStart_toStartOf="@id/accountDisplayNameTextView"
         app:layout_constraintTop_toBottomOf="@id/accountDisplayNameTextView"
-        tools:text="5 assets" />
+        tools:text="5 Assets, 4 NFTs" />
 
     <TextView
         android:id="@+id/accountHoldingsTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingStart="@dimen/spacing_small"
         android:textAppearance="@style/TextAppearance.Body.Mono"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toEndOf="@id/startGuideline"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        tools:text="$62,006.00" />
+        tools:text="@tools:sample/lorem[12]" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

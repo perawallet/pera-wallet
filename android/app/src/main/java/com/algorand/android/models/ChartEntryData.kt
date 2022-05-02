@@ -13,7 +13,7 @@
 package com.algorand.android.models
 
 import com.algorand.android.R
-import com.algorand.android.utils.formatAsDollar
+import com.algorand.android.utils.formatAsTwoDecimals
 import com.algorand.android.utils.isGreaterThan
 import com.algorand.android.utils.isLesserThan
 import com.algorand.android.utils.percentageChangeOf
@@ -27,7 +27,7 @@ data class ChartEntryData(
 ) {
 
     val latestFormattedPrice: String
-        get() = (entryList.lastOrNull()?.data as? CandleHistory)?.displayPrice?.formatAsDollar().orEmpty()
+        get() = (entryList.lastOrNull()?.data as? CandleHistory)?.displayPrice?.formatAsTwoDecimals().orEmpty()
 
     val percentageChangeTextColorResId: Int
         get() = if (priceChangePercentage isGreaterThan ZERO) R.color.positive else R.color.negative

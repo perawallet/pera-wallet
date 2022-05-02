@@ -16,6 +16,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.algorand.android.customviews.AlgorandSearchView
+        android:id="@+id/searchView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:hint="@string/search"
+        app:endIconTintColor="@color/search_bar_view_icon_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:startIconTintColor="@color/search_bar_view_icon_color" />
+
     <TextView
         android:id="@+id/currencyLabelTextView"
         style="@style/TextAppearance.Footnote.Description"
@@ -26,7 +39,7 @@
         android:text="@string/currency_preferences"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/searchView"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/currencyRecyclerView"

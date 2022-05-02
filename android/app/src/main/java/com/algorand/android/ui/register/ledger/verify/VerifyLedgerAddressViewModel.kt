@@ -24,12 +24,12 @@ class VerifyLedgerAddressViewModel @ViewModelInject constructor(
 
     val currentLedgerAddressesListLiveData = MutableLiveData<List<VerifyLedgerAddressListItem>>()
 
-    val awaitingLedgerAccountLiveData = MutableLiveData<Account>()
+    val awaitingLedgerAccountLiveData = MutableLiveData<Account?>()
 
     val awaitingLedgerAccount
         get() = awaitingLedgerAccountLiveData.value
 
-    val isVerifyOperationsDoneLiveData = MutableLiveData<Event<Boolean>>()
+    val isVerifyOperationsDoneLiveData = MutableLiveData<Event<Boolean>?>()
 
     private val listLock = Any()
 

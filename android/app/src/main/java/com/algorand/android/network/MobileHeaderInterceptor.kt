@@ -43,7 +43,9 @@ class MobileHeaderInterceptor(
         val requestBuilder = request.newBuilder()
 
         currentActiveNode?.let { currentActiveNode ->
-            requestBuilder.addHeader(ALGORAND_NETWORK_KEY, currentActiveNode.networkSlug)
+            if (request.header(ALGORAND_NETWORK_KEY) == null) {
+                requestBuilder.addHeader(ALGORAND_NETWORK_KEY, currentActiveNode.networkSlug)
+            }
 
             val baseUrl = currentActiveNode.mobileAlgorandAddress.toHttpUrlOrNull()
             if (baseUrl != null) {
@@ -72,7 +74,7 @@ class MobileHeaderInterceptor(
     }
 
     companion object {
-        private const val ALGORAND_NETWORK_KEY = "algorand-network"
+        const val ALGORAND_NETWORK_KEY = "algorand-network"
         private const val KEY_APP_NAME = "App-Name"
         private const val KEY_CLIENT_TYPE = "Client-Type"
         private const val KEY_DEVICE_OS_VERSION = "Device-OS-Version"

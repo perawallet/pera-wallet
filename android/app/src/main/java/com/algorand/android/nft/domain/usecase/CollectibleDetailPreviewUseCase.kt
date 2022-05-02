@@ -14,9 +14,12 @@ package com.algorand.android.nft.domain.usecase
 
 import com.algorand.android.R
 import com.algorand.android.models.Account
+import com.algorand.android.models.BaseAccountAddress
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.nft.domain.model.BaseCollectibleDetail
+import com.algorand.android.nft.domain.model.BaseCollectibleMedia.GifCollectibleMedia
 import com.algorand.android.nft.domain.model.BaseCollectibleMedia.ImageCollectibleMedia
+import com.algorand.android.nft.domain.model.BaseCollectibleMedia.NoMediaCollectibleMedia
 import com.algorand.android.nft.domain.model.BaseCollectibleMedia.UnsupportedCollectibleMedia
 import com.algorand.android.nft.domain.model.BaseCollectibleMedia.VideoCollectibleMedia
 import com.algorand.android.nft.mapper.CollectibleDetailMapper
@@ -25,6 +28,7 @@ import com.algorand.android.nft.mapper.CollectibleMediaItemMapper
 import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem
 import com.algorand.android.nft.ui.model.CollectibleDetailPreview
 import com.algorand.android.nft.utils.CollectibleUtils
+import com.algorand.android.usecase.AccountAddressUseCase
 import com.algorand.android.usecase.AccountAssetRemovalUseCase
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.usecase.SendSignedTransactionUseCase
@@ -42,7 +46,8 @@ open class CollectibleDetailPreviewUseCase @Inject constructor(
     private val collectibleDetailUseCase: GetCollectibleDetailUseCase,
     private val collectibleMediaItemMapper: CollectibleMediaItemMapper,
     private val sendSignedTransactionUseCase: SendSignedTransactionUseCase,
-    private val accountAssetRemovalUseCase: AccountAssetRemovalUseCase
+    private val accountAssetRemovalUseCase: AccountAssetRemovalUseCase,
+    private val accountAddressUseCase: AccountAddressUseCase
 ) {
 
     suspend fun getCollectableDetailPreviewFlow(collectibleAssetId: Long, publicKey: String) = flow {
@@ -62,7 +67,8 @@ open class CollectibleDetailPreviewUseCase @Inject constructor(
                         baseCollectibleDetail = baseCollectibleDetail,
                         isOwnedByTheUser = isOwnedByTheUser,
                         ownerAccount = ownerAccount,
-                        isHoldingByWatchAccount = isHoldingByWatchAccount
+                        isHoldingByWatchAccount = isHoldingByWatchAccount,
+                        ownerAccountPublicKey = publicKey
                     )
                     emit(collectibleDetailPreview)
                 },
@@ -100,6 +106,7 @@ open class CollectibleDetailPreviewUseCase @Inject constructor(
     private fun onCollectibleDetailFetchedSuccessfully(
         baseCollectibleDetail: BaseCollectibleDetail,
         isOwnedByTheUser: Boolean,
+        ownerAccountPublicKey: String,
         ownerAccount: Account?,
         isHoldingByWatchAccount: Boolean
     ): CollectibleDetailPreview {
@@ -109,47 +116,56 @@ open class CollectibleDetailPreviewUseCase @Inject constructor(
             ?: baseCollectibleDetail.shortName
             ?: baseCollectibleDetail.assetId.toString()
         val isNftExplorerVisible = !baseCollectibleDetail.nftExplorerUrl.isNullOrBlank()
-
+        val ownerAccountAddress = accountAddressUseCase.createAccountAddress(ownerAccountPublicKey)
+        val creatorAccountAddress = getCreatorAccountAddress(baseCollectibleDetail.assetCreator?.publicKey)
         val collectibleDetail = when (baseCollectibleDetail) {
             is BaseCollectibleDetail.ImageCollectibleDetail -> {
                 collectibleDetailMapper.mapToCollectibleImage(
                     imageCollectibleDetail = baseCollectibleDetail,
                     isOwnedByTheUser = isOwnedByTheUser,
-                    ownerAccount = ownerAccount,
+                    ownerAccountAddress = ownerAccountAddress,
                     errorDisplayText = errorDisplayText,
                     isHoldingByWatchAccount = isHoldingByWatchAccount,
-                    isNftExplorerVisible = isNftExplorerVisible
+                    isNftExplorerVisible = isNftExplorerVisible,
+                    ownerAccountType = ownerAccount?.type,
+                    creatorAddress = creatorAccountAddress
                 )
             }
             is BaseCollectibleDetail.VideoCollectibleDetail -> {
                 collectibleDetailMapper.mapToCollectibleVideo(
                     videoCollectibleDetail = baseCollectibleDetail,
                     isOwnedByTheUser = isOwnedByTheUser,
-                    ownerAccount = ownerAccount,
+                    ownerAccountAddress = ownerAccountAddress,
                     errorDisplayText = errorDisplayText,
                     isHoldingByWatchAccount = isHoldingByWatchAccount,
-                    isNftExplorerVisible = isNftExplorerVisible
+                    isNftExplorerVisible = isNftExplorerVisible,
+                    ownerAccountType = ownerAccount?.type,
+                    creatorAddress = creatorAccountAddress
                 )
             }
             is BaseCollectibleDetail.MixedCollectibleDetail -> {
                 collectibleDetailMapper.mapToCollectibleMixed(
                     mixedCollectibleDetail = baseCollectibleDetail,
                     isOwnedByTheUser = isOwnedByTheUser,
-                    ownerAccount = ownerAccount,
+                    ownerAccountAddress = ownerAccountAddress,
                     isHoldingByWatchAccount = isHoldingByWatchAccount,
                     isNftExplorerVisible = isNftExplorerVisible,
-                    collectibleMedias = mapToMixedMediaItem(baseCollectibleDetail, isOwnedByTheUser, errorDisplayText)
+                    collectibleMedias = mapToMixedMediaItem(baseCollectibleDetail, isOwnedByTheUser, errorDisplayText),
+                    ownerAccountType = ownerAccount?.type,
+                    creatorAddress = creatorAccountAddress
                 )
             }
             is BaseCollectibleDetail.NotSupportedCollectibleDetail -> {
                 collectibleDetailMapper.mapToUnsupportedCollectible(
                     unsupportedCollectible = baseCollectibleDetail,
                     isOwnedByTheUser = isOwnedByTheUser,
-                    ownerAccount = ownerAccount,
+                    ownerAccountAddress = ownerAccountAddress,
                     errorDisplayText = errorDisplayText,
                     isHoldingByWatchAccount = isHoldingByWatchAccount,
                     warningTextRes = R.string.we_don_t_support,
-                    isNftExplorerVisible = isNftExplorerVisible
+                    isNftExplorerVisible = isNftExplorerVisible,
+                    ownerAccountType = ownerAccount?.type,
+                    creatorAddress = creatorAccountAddress
                 )
             }
         }
@@ -181,9 +197,33 @@ open class CollectibleDetailPreviewUseCase @Inject constructor(
                             val previewUrl = (it.previewUrl ?: it.downloadUrl).orEmpty()
                             mapToVideoCollectibleMediaItem(assetId, isOwnedByTheUser, errorDisplayText, it, previewUrl)
                         }
+                        is GifCollectibleMedia -> {
+                            mapToGifCollectibleMediaItem(assetId, isOwnedByTheUser, errorDisplayText, it)
+                        }
+                        is NoMediaCollectibleMedia -> {
+                            mapToNoMediaCollectibleMediaItem(assetId, isOwnedByTheUser, errorDisplayText, it)
+                        }
                     }
                 }
             }
         }.orEmpty()
+    }
+
+    fun checkSendingCollectibleIsFractional(
+        previousState: CollectibleDetailPreview?
+    ) = flow<CollectibleDetailPreview?> {
+        val collectibleDetail = previousState?.collectibleDetail
+        val isCollectiblePure = collectibleDetail?.isPure ?: return@flow
+        emit(
+            previousState.copy(
+                fractionalCollectibleSendEvent = if (isCollectiblePure.not()) Event(Unit) else null,
+                pureCollectibleSendEvent = if (isCollectiblePure) Event(Unit) else null
+            )
+        )
+    }
+
+    private fun getCreatorAccountAddress(publicKey: String?): BaseAccountAddress.AccountAddress? {
+        if (publicKey == null) return null
+        return accountAddressUseCase.createAccountAddress(publicKey)
     }
 }

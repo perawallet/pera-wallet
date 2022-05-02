@@ -42,8 +42,8 @@ class TransactionScreenStateViewTypeDecider @Inject constructor() {
             }
             isEmpty -> {
                 ScreenState.CustomState(
-                    title = R.string.no_transaction_yet,
-                    description = R.string.your_transactions_will_be_appeared_here
+                    title = R.string.no_transactions,
+                    description = R.string.there_are_no
                 )
             }
             else -> null

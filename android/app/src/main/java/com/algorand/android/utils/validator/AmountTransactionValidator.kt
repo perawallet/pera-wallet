@@ -26,7 +26,7 @@ import com.algorand.android.utils.exceptions.NavigationException
 import com.algorand.android.utils.exceptions.WarningException
 import com.algorand.android.utils.isGreaterThan
 import com.algorand.android.utils.shouldKeepMinimumAlgoBalance
-import com.algorand.android.utils.toFullAmountInBigInteger
+import com.algorand.android.utils.formatAmountAsBigInteger
 import java.math.BigDecimal
 import java.math.BigInteger
 import javax.inject.Inject
@@ -47,7 +47,7 @@ class AmountTransactionValidator @Inject constructor(
         val accountCacheData = accountCacheManager.getCacheData(fromAccountPublicKey)
             ?: return Result.Error(Exception())
 
-        val amount = amountInBigDecimal.toFullAmountInBigInteger(ownedAssetData.decimals)
+        val amount = amountInBigDecimal.formatAmountAsBigInteger(ownedAssetData.decimals)
         val assetBalance = ownedAssetData.amount
 
         if (isAccountBalanceViolated(ownedAssetData.amount, amount)) {

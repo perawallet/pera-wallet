@@ -28,7 +28,9 @@ sealed class BaseCollectibleMediaItem : Parcelable, RecyclerListItem {
     enum class ItemType {
         IMAGE,
         VIDEO,
-        UNSUPPORTED
+        UNSUPPORTED,
+        GIF,
+        NO_MEDIA
     }
 
     @Parcelize
@@ -51,6 +53,29 @@ sealed class BaseCollectibleMediaItem : Parcelable, RecyclerListItem {
 
         override fun areContentsTheSame(other: RecyclerListItem): Boolean {
             return other is ImageCollectibleMediaItem && other == this
+        }
+    }
+
+    @Parcelize
+    data class GifCollectibleMediaItem(
+        override val collectibleId: Long,
+        override val errorText: String,
+        override val downloadUrl: String?,
+        override val previewUrl: String?,
+        override val isOwnedByTheUser: Boolean
+    ) : BaseCollectibleMediaItem() {
+
+        override val itemType: ItemType = ItemType.GIF
+
+        override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+            return other is GifCollectibleMediaItem &&
+                other.previewUrl == previewUrl &&
+                other.downloadUrl == downloadUrl &&
+                other.isOwnedByTheUser == isOwnedByTheUser
+        }
+
+        override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+            return other is GifCollectibleMediaItem && other == this
         }
     }
 
@@ -97,6 +122,29 @@ sealed class BaseCollectibleMediaItem : Parcelable, RecyclerListItem {
 
         override fun areContentsTheSame(other: RecyclerListItem): Boolean {
             return other is UnsupportedCollectibleMediaItem && other == this
+        }
+    }
+
+    @Parcelize
+    data class NoMediaCollectibleMediaItem(
+        override val collectibleId: Long,
+        override val errorText: String,
+        override val downloadUrl: String?,
+        override val previewUrl: String?,
+        override val isOwnedByTheUser: Boolean
+    ) : BaseCollectibleMediaItem() {
+
+        override val itemType: ItemType = ItemType.NO_MEDIA
+
+        override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+            return other is NoMediaCollectibleMediaItem &&
+                other.previewUrl == previewUrl &&
+                other.downloadUrl == downloadUrl &&
+                other.isOwnedByTheUser == isOwnedByTheUser
+        }
+
+        override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+            return other is NoMediaCollectibleMediaItem && other == this
         }
     }
 }

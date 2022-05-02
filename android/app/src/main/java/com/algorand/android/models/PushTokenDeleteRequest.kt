@@ -15,5 +15,6 @@ package com.algorand.android.models
 import com.google.gson.annotations.SerializedName
 
 data class PushTokenDeleteRequest(
-    @SerializedName("push_token") val pushToken: String
+    @SerializedName("push_token") val pushToken: String,
+    @SerializedName("platform") val platform: String
 )

@@ -183,10 +183,10 @@ class CollectibleSendFragment : TransactionBaseFragment(R.layout.fragment_collec
         nav(
             CollectibleSendFragmentDirections.actionCollectibleSendFragmentToRequestOptInConfirmationBottomSheet(
                 RequestOptInConfirmationArgs(
-                    senderPublicKey = collectibleSendViewModel.getSenderPublicKey().orEmpty(),
+                    senderPublicKey = collectibleSendViewModel.getSenderPublicKey().publicKey,
                     receiverPublicKey = receiverPublicKey,
-                    collectibleId = collectibleId,
-                    collectibleName = collectibleName
+                    assetId = collectibleId,
+                    assetName = collectibleName
                 )
             )
         )

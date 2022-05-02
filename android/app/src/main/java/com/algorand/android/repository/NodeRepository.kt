@@ -26,4 +26,6 @@ class NodeRepository @Inject constructor(
     }
 
     fun getAllNodesAsFlow() = nodeDao.getAllNodeAsFlow()
+
+    suspend fun getAllNodes() = nodeDao.getAllNode()
 }

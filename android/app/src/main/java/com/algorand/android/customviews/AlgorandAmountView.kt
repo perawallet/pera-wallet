@@ -21,11 +21,10 @@ import androidx.core.content.res.use
 import com.algorand.android.R
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.TransactionSymbol
-import com.algorand.android.utils.ALGOS_SHORT_NAME
 import com.algorand.android.utils.ALGO_DECIMALS
 import com.algorand.android.utils.extensions.changeTextAppearance
 import com.algorand.android.utils.formatAmount
-import com.algorand.android.utils.getXmlStyledString
+import com.algorand.android.utils.formatAsAlgoAmount
 import java.math.BigInteger
 
 // TODO: 30.12.2021 We must create own model class for custom views
@@ -67,54 +66,36 @@ class AlgorandAmountView @JvmOverloads constructor(
 
     fun setAmountAsFee(amount: Long?) {
         setColorAccordingToTransactionType(null)
-        val formattedAmount = amount.formatAmount(ALGO_DECIMALS)
-        val assetShortName = ALGOS_SHORT_NAME
-        text = context.getXmlStyledString(
-            stringResId = R.string.amount_with_asset,
-            replacementList = listOf(
-                "asset_amount" to formattedAmount,
-                "asset_short_name" to assetShortName
-            )
-        )
+        text = amount.formatAmount(ALGO_DECIMALS).formatAsAlgoAmount()
     }
 
-    fun setAmountAsReward(amount: Long?, decimal: Int, assetInformation: AssetInformation?) {
+    fun setAmountAsReward(amount: Long?, decimal: Int) {
         setColorAccordingToTransactionType(TransactionSymbol.POSITIVE)
-        val formattedAmount = amount.formatAmount(decimal)
-        val assetShortName = assetInformation?.shortName.toString()
-        val xmlStyledAmount = context.getXmlStyledString(
-            stringResId = R.string.amount_with_asset,
-            replacementList = listOf(
-                "asset_amount" to formattedAmount,
-                "asset_short_name" to assetShortName
-            )
-        )
+        val formattedAmount = amount.formatAmount(decimal).formatAsAlgoAmount()
         text = StringBuilder().apply {
             append(context.getString(R.string.plus))
-            append(xmlStyledAmount)
+            append(formattedAmount)
         }
     }
 
     fun setAmount(
-        amount: BigInteger?,
-        decimal: Int?,
+        formattedAmount: String,
         transactionSymbol: TransactionSymbol? = null,
-        assetShortName: String?
+        assetShortName: String?,
+        isAlgorand: Boolean = false
     ) {
         setColorAccordingToTransactionType(transactionSymbol)
-        val formattedAmount = amount.formatAmount(decimal ?: ALGO_DECIMALS)
         val operatorSign = when (transactionSymbol) {
             TransactionSymbol.POSITIVE -> context.getString(R.string.plus)
             TransactionSymbol.NEGATIVE -> context.getString(R.string.minus)
             else -> ""
         }
-        val xmlStyledAmount = context.getXmlStyledString(
-            stringResId = R.string.amount_with_asset,
-            replacementList = listOf(
-                "asset_amount" to formattedAmount,
-                "asset_short_name" to assetShortName.toString()
-            )
-        )
+        val xmlStyledAmount = if (isAlgorand) {
+            formattedAmount.formatAsAlgoAmount()
+        } else {
+            context.getString(R.string.pair_value_format, formattedAmount, assetShortName.orEmpty())
+        }
+
         text = StringBuilder().apply {
             if (isOperatorShown) {
                 append(operatorSign)
@@ -128,6 +109,7 @@ class AlgorandAmountView @JvmOverloads constructor(
         transactionSymbol: TransactionSymbol? = null,
         assetInformation: AssetInformation
     ) {
-        setAmount(amount, assetInformation.decimals, transactionSymbol, assetInformation.shortName)
+        val formattedAmount = amount.formatAmount(assetInformation.decimals, isCompact = true)
+        setAmount(formattedAmount, transactionSymbol, assetInformation.shortName)
     }
 }

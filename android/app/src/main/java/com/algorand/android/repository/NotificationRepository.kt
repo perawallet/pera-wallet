@@ -12,33 +12,24 @@
 
 package com.algorand.android.repository
 
-import android.content.SharedPreferences
 import com.algorand.android.database.NotificationFilterDao
-import com.algorand.android.models.DeviceRegistrationRequest
-import com.algorand.android.models.DeviceUpdateRequest
+import com.algorand.android.deviceregistration.domain.usecase.DeviceIdUseCase
 import com.algorand.android.models.NotificationFilter
 import com.algorand.android.models.NotificationFilterRequest
 import com.algorand.android.network.MobileAlgorandApi
-import com.algorand.android.network.request
 import com.algorand.android.network.requestWithHipoErrorHandler
+import com.algorand.android.sharedpref.NotificationRefreshTimeLocalSource
 import com.algorand.android.utils.Resource
-import com.algorand.android.utils.preference.getNotificationUserId
 import com.hipo.hipoexceptionsandroid.RetrofitErrorHandler
 import javax.inject.Inject
 
 class NotificationRepository @Inject constructor(
     private val notificationFilterDao: NotificationFilterDao,
-    private val sharedPref: SharedPreferences,
     private val mobileAlgorandApi: MobileAlgorandApi,
-    private val hipoApiErrorHandler: RetrofitErrorHandler
+    private val hipoApiErrorHandler: RetrofitErrorHandler,
+    private val deviceIdUseCase: DeviceIdUseCase,
+    private val notificationRefreshTimeLocalSource: NotificationRefreshTimeLocalSource
 ) {
-
-    suspend fun postRequestRegisterDevice(deviceRegistrationRequest: DeviceRegistrationRequest) = request {
-        mobileAlgorandApi.postRegisterDevice(deviceRegistrationRequest)
-    }
-
-    suspend fun putRequestUpdateDevice(deviceId: String, deviceUpdateRequest: DeviceUpdateRequest) =
-        request { mobileAlgorandApi.putUpdateDevice(deviceId, deviceUpdateRequest) }
 
     suspend fun getNotifications(notificationUserId: String) = requestWithHipoErrorHandler(hipoApiErrorHandler) {
         mobileAlgorandApi.getNotifications(notificationUserId)
@@ -57,7 +48,7 @@ class NotificationRepository @Inject constructor(
     }
 
     suspend fun addNotificationFilter(publicKey: String, isFiltered: Boolean): Resource<Unit> {
-        val notificationUserId = sharedPref.getNotificationUserId()
+        val notificationUserId = deviceIdUseCase.getSelectedNodeDeviceId()
         if (!notificationUserId.isNullOrBlank()) {
             addFilterToDatabase(publicKey, isFiltered)
             var result: Resource<Unit> = Resource.Error.Api(Exception())
@@ -88,5 +79,13 @@ class NotificationRepository @Inject constructor(
         } else {
             notificationFilterDao.delete(NotificationFilter(publicKey))
         }
+    }
+
+    fun saveLastRefreshedDateTime(lastRefreshedZonedDateTimeAsString: String) {
+        notificationRefreshTimeLocalSource.saveData(lastRefreshedZonedDateTimeAsString)
+    }
+
+    fun getLastRefreshedDateTime(): String? {
+        return notificationRefreshTimeLocalSource.getDataOrNull()
     }
 }

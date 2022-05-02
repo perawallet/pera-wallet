@@ -28,6 +28,7 @@ sealed class BaseAccountListItem : RecyclerListItem {
         ACCOUNT_SUCCESS,
         ACCOUNT_ERROR,
         HEADER,
+        MOONPAY_BUY_ALGO,
         GOVERNANCE_BANNER,
         GENERIC_BANNER
     }
@@ -69,6 +70,19 @@ sealed class BaseAccountListItem : RecyclerListItem {
             override fun areContentsTheSame(other: RecyclerListItem): Boolean {
                 return other is PortfolioValuesErrorItem && this == other
             }
+        }
+    }
+
+    object MoonpayBuyAlgoItem : BaseAccountListItem() {
+
+        override val itemType: ItemType = ItemType.MOONPAY_BUY_ALGO
+
+        override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+            return other is MoonpayBuyAlgoItem
+        }
+
+        override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+            return other is MoonpayBuyAlgoItem
         }
     }
 
@@ -151,6 +165,7 @@ sealed class BaseAccountListItem : RecyclerListItem {
             val publicKey: String,
             val formattedHoldings: String,
             val assetCount: Int,
+            val collectibleCount: Int,
             val accountIcon: AccountIcon
         ) : BaseAccountItem() {
 

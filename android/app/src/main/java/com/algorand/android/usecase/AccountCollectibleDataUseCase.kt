@@ -60,6 +60,15 @@ class AccountCollectibleDataUseCase @Inject constructor(
             .mapNotNull { account -> createAccountAllCollectibleDataList(account) }
     }
 
+    fun getAccountOwnedCollectibleDataFlow(publicKey: String): Flow<List<BaseOwnedCollectibleData>> {
+        return accountDetailUseCase.getAccountDetailCacheFlow()
+            .mapNotNull { it.getOrDefault(publicKey, null)?.data }
+            .distinctUntilChanged()
+            .mapNotNull { account ->
+                createAccountAllCollectibleDataList(account).filterIsInstance<BaseOwnedCollectibleData>()
+            }
+    }
+
     private fun createAccountAllCollectibleDataList(account: AccountDetail): List<BaseAccountAssetData> {
         val accountAllCollectibleList = getAccountAllCachedCollectibleList(account)
         return createCollectibleDataList(account, accountAllCollectibleList)
@@ -130,7 +139,7 @@ class AccountCollectibleDataUseCase @Inject constructor(
         collectibleItem: SimpleCollectibleDetail
     ): BaseOwnedCollectibleData {
         // TODO: 16.03.2022 Get selected currency symbol from algoPriceUseCase method when branch is merged to dev
-        val selectedCurrencySymbol = algoPriceUseCase.getCachedAlgoPrice()?.data?.symbol.orEmpty()
+        val selectedCurrencySymbol = algoPriceUseCase.getSelectedCurrencySymbolOrEmpty()
         val safeDecimal = collectibleItem.fractionDecimals ?: DEFAULT_ASSET_DECIMAL
         val assetAmountInSelectedCurrency =
             accountAssetAmountUseCase.getAssetAmountInSelectedCurrency(assetHolding, collectibleItem)
@@ -139,29 +148,49 @@ class AccountCollectibleDataUseCase @Inject constructor(
                 collectibleDetail = collectibleItem,
                 amount = assetHolding.amount,
                 formattedAmount = assetHolding.amount.formatAmount(safeDecimal),
+                formattedCompactAmount = assetHolding.amount.formatAmount(safeDecimal, isCompact = true),
                 amountInSelectedCurrency = assetAmountInSelectedCurrency,
                 formattedSelectedCurrencyValue = assetAmountInSelectedCurrency.formatAsCurrency(selectedCurrencySymbol),
+                formattedSelectedCurrencyCompactValue = assetAmountInSelectedCurrency.formatAsCurrency(
+                    selectedCurrencySymbol,
+                    true
+                )
             )
             CollectibleMediaType.VIDEO -> accountCollectibleDataMapper.mapToOwnedCollectibleVideoData(
                 collectibleDetail = collectibleItem,
                 amount = assetHolding.amount,
                 formattedAmount = assetHolding.amount.formatAmount(safeDecimal),
+                formattedCompactAmount = assetHolding.amount.formatAmount(safeDecimal, isCompact = true),
                 amountInSelectedCurrency = assetAmountInSelectedCurrency,
                 formattedSelectedCurrencyValue = assetAmountInSelectedCurrency.formatAsCurrency(selectedCurrencySymbol),
+                formattedSelectedCurrencyCompactValue = assetAmountInSelectedCurrency.formatAsCurrency(
+                    selectedCurrencySymbol,
+                    true
+                )
             )
             CollectibleMediaType.MIXED -> accountCollectibleDataMapper.mapToOwnedCollectibleMixedData(
                 collectibleDetail = collectibleItem,
                 amount = assetHolding.amount,
                 formattedAmount = assetHolding.amount.formatAmount(safeDecimal),
+                formattedCompactAmount = assetHolding.amount.formatAmount(safeDecimal, isCompact = true),
                 amountInSelectedCurrency = assetAmountInSelectedCurrency,
                 formattedSelectedCurrencyValue = assetAmountInSelectedCurrency.formatAsCurrency(selectedCurrencySymbol),
+                formattedSelectedCurrencyCompactValue = assetAmountInSelectedCurrency.formatAsCurrency(
+                    selectedCurrencySymbol,
+                    true
+                )
             )
             CollectibleMediaType.NOT_SUPPORTED -> accountCollectibleDataMapper.mapToNotSupportedOwnedCollectibleData(
                 collectibleDetail = collectibleItem,
                 amount = assetHolding.amount,
                 formattedAmount = assetHolding.amount.formatAmount(safeDecimal),
+                formattedCompactAmount = assetHolding.amount.formatAmount(safeDecimal, isCompact = true),
                 amountInSelectedCurrency = assetAmountInSelectedCurrency,
                 formattedSelectedCurrencyValue = assetAmountInSelectedCurrency.formatAsCurrency(selectedCurrencySymbol),
+                formattedSelectedCurrencyCompactValue = assetAmountInSelectedCurrency.formatAsCurrency(
+                    selectedCurrencySymbol,
+                    true
+                )
             )
         }
     }

@@ -19,7 +19,8 @@
     <string name="plus">+</string>
     <string name="minus">-</string>
     <string name="ticker_asset_format">(%1$s)</string>
-    <string name="title_and_value_format">%1$s %2$s</string>
+    <string name="pair_value_format">%1$s %2$s</string>
+    <string name="pair_value_format_with_coma">%1$s, %2$d</string>
     <string name="algo">Algo</string>
     <string name="pera_explorer">Pera Explorer</string>
 
@@ -39,5 +40,5 @@
 
     <string name="position_with_dot"><annotation replacement="position">positionPlaceholder</annotation>.</string>
 
-    <string name="formatted_amount_with_asset_name"><annotation replacement="amount">amountPlaceholder</annotation> <annotation replacement="asset_name"><annotation custom="text_size"><annotation font="dmsans_medium">assetNamePlaceholder</annotation></annotation></annotation></string>
+    <string name="formatted_amount_with_asset_name_txn"><annotation replacement="asset_amount">assetAmountPlaceholder</annotation> <annotation replacement="asset_short_name"><annotation custom="text_size"><annotation font="dmsans_medium">assetShortNamePlaceholder</annotation></annotation></annotation></string>
 </resources>

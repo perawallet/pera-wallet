@@ -33,6 +33,21 @@ class CollectibleMediaItemMapper @Inject constructor() {
         )
     }
 
+    fun mapToGifCollectibleMediaItem(
+        collectibleId: Long,
+        isOwnedByTheUser: Boolean,
+        errorText: String,
+        collectibleMedia: BaseCollectibleMedia
+    ): BaseCollectibleMediaItem.GifCollectibleMediaItem {
+        return BaseCollectibleMediaItem.GifCollectibleMediaItem(
+            downloadUrl = collectibleMedia.downloadUrl,
+            previewUrl = collectibleMedia.previewUrl,
+            collectibleId = collectibleId,
+            errorText = errorText,
+            isOwnedByTheUser = isOwnedByTheUser
+        )
+    }
+
     fun mapToVideoCollectibleMediaItem(
         collectibleId: Long,
         isOwnedByTheUser: Boolean,
@@ -56,6 +71,21 @@ class CollectibleMediaItemMapper @Inject constructor() {
         collectibleMedia: BaseCollectibleMedia
     ): BaseCollectibleMediaItem.UnsupportedCollectibleMediaItem {
         return BaseCollectibleMediaItem.UnsupportedCollectibleMediaItem(
+            downloadUrl = collectibleMedia.downloadUrl,
+            previewUrl = collectibleMedia.previewUrl,
+            collectibleId = collectibleId,
+            errorText = errorText,
+            isOwnedByTheUser = isOwnedByTheUser
+        )
+    }
+
+    fun mapToNoMediaCollectibleMediaItem(
+        collectibleId: Long,
+        isOwnedByTheUser: Boolean,
+        errorText: String,
+        collectibleMedia: BaseCollectibleMedia
+    ): BaseCollectibleMediaItem.NoMediaCollectibleMediaItem {
+        return BaseCollectibleMediaItem.NoMediaCollectibleMediaItem(
             downloadUrl = collectibleMedia.downloadUrl,
             previewUrl = collectibleMedia.previewUrl,
             collectibleId = collectibleId,

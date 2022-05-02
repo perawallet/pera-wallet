@@ -15,7 +15,6 @@ package com.algorand.android.utils
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
-import java.util.Locale
 
 const val PERCENT_FORMAT = "##0.00'%'"
 const val PLUS_SIGN = "+"
@@ -27,7 +26,7 @@ fun getFormatter(
     positiveSuffix: String? = null,
     negativeSuffix: String? = null
 ): DecimalFormat {
-    return DecimalFormat(format, DecimalFormatSymbols(Locale.US)).apply {
+    return DecimalFormat(format, DecimalFormatSymbols()).apply {
         roundingMode = RoundingMode.DOWN
         if (positiveSuffix != null) this.positiveSuffix = positiveSuffix
         if (negativeSuffix != null) this.negativeSuffix = negativeSuffix

@@ -22,33 +22,34 @@ import com.algorand.android.banner.domain.usecase.BannersUseCase
 import com.algorand.android.core.AccountManager
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.database.NodeDao
+import com.algorand.android.deviceregistration.domain.usecase.DeviceIdMigrationUseCase
+import com.algorand.android.deviceregistration.domain.usecase.DeviceIdUseCase
+import com.algorand.android.deviceregistration.domain.usecase.DeviceRegistrationUseCase
+import com.algorand.android.deviceregistration.domain.usecase.FirebasePushTokenUseCase
+import com.algorand.android.deviceregistration.domain.usecase.UpdatePushTokenUseCase
 import com.algorand.android.models.Account
 import com.algorand.android.models.AssetInformation
-import com.algorand.android.models.DeviceRegistrationRequest
-import com.algorand.android.models.DeviceUpdateRequest
+import com.algorand.android.models.Node
 import com.algorand.android.models.Result
 import com.algorand.android.network.AlgodInterceptor
 import com.algorand.android.network.IndexerInterceptor
 import com.algorand.android.network.MobileHeaderInterceptor
-import com.algorand.android.repository.NotificationRepository
 import com.algorand.android.repository.TransactionsRepository
 import com.algorand.android.usecase.AssetAdditionUseCase
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.AutoLockManager
+import com.algorand.android.utils.DataResource
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.analytics.CreationType
 import com.algorand.android.utils.analytics.logRegisterEvent
 import com.algorand.android.utils.coremanager.BlockPollingManager
 import com.algorand.android.utils.findAllNodes
-import com.algorand.android.utils.preference.getNotificationUserId
-import com.algorand.android.utils.preference.setNotificationUserId
-import com.algorand.android.utils.recordException
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @Suppress("LongParameterList")
@@ -60,13 +61,17 @@ class MainViewModel @ViewModelInject constructor(
     private val mobileHeaderInterceptor: MobileHeaderInterceptor,
     private val algodInterceptor: AlgodInterceptor,
     private val accountManager: AccountManager,
-    private val notificationRepository: NotificationRepository,
     private val transactionRepository: TransactionsRepository,
     private val accountCacheManager: AccountCacheManager,
     private val blockPollingManager: BlockPollingManager,
     private val firebaseAnalytics: FirebaseAnalytics,
     private val bannersUseCase: BannersUseCase,
-    private val assetAdditionUseCase: AssetAdditionUseCase
+    private val assetAdditionUseCase: AssetAdditionUseCase,
+    private val deviceRegistrationUseCase: DeviceRegistrationUseCase,
+    private val deviceIdMigrationUseCase: DeviceIdMigrationUseCase,
+    private val firebasePushTokenUseCase: FirebasePushTokenUseCase,
+    private val updatePushTokenUseCase: UpdatePushTokenUseCase,
+    private val deviceIdUseCase: DeviceIdUseCase
 ) : BaseViewModel() {
 
     val addAssetResultLiveData = MutableLiveData<Event<Resource<Unit>>>()
@@ -88,7 +93,16 @@ class MainViewModel @ViewModelInject constructor(
     init {
         initializeAccountCacheManager()
         initializeNodeInterceptor()
-        registerDevice()
+        observeFirebasePushToken()
+        refreshFirebasePushToken(null)
+    }
+
+    private fun observeFirebasePushToken() {
+        viewModelScope.launch {
+            firebasePushTokenUseCase.getPushTokenCacheFlow().collect {
+                if (it?.data.isNullOrBlank().not()) registerFirebasePushToken(it?.data.orEmpty())
+            }
+        }
     }
 
     private fun initializeNodeInterceptor() {
@@ -97,33 +111,37 @@ class MainViewModel @ViewModelInject constructor(
                 val lastActivatedNode = findAllNodes(sharedPref, nodeDao).find { it.isActive }
                 lastActivatedNode?.activate(indexerInterceptor, mobileHeaderInterceptor, algodInterceptor)
             }
+            migrateDeviceIdIfNeed()
         }
     }
 
-    fun registerDevice() {
+    private fun registerFirebasePushToken(token: String) {
+        registerDeviceJob?.cancel()
+        registerDeviceJob = viewModelScope.launch(Dispatchers.IO) {
+            deviceRegistrationUseCase.registerDevice(token).collect {
+                if (it is DataResource.Success) bannersUseCase.cacheBanners(it.data)
+            }
+        }
+    }
+
+    fun refreshFirebasePushToken(previousNode: Node?) {
+        if (previousNode != null) deletePreviousNodePushToken(previousNode)
         FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
-            accountManager.setFirebaseToken(token, false)
-            val accountsPublicKeys = accountManager.getAccounts().map { account -> account.address }
-            registerDeviceJob?.cancel()
-            registerDeviceJob = viewModelScope.launch(Dispatchers.IO) {
-                sendRegisterDevice(token, accountsPublicKeys)
-            }
+            firebasePushTokenUseCase.setPushToken(token)
         }
     }
 
-    private suspend fun sendRegisterDevice(firebaseMessagingToken: String, accountPublicKeys: List<String>) {
-        if (firebaseMessagingToken.isBlank()) {
-            val exception = Exception("firebase messaging token is empty\naccounts: $accountPublicKeys")
-            recordException(exception)
-        }
-
-        with(sharedPref.getNotificationUserId()) {
-            if (!this.isNullOrEmpty()) {
-                updateDeviceRegistration(this, firebaseMessagingToken, accountPublicKeys)
-            } else {
-                registerDevice(firebaseMessagingToken, accountPublicKeys)
+    private fun deletePreviousNodePushToken(previousNode: Node) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val deviceId = deviceIdUseCase.getNodeDeviceId(previousNode) ?: run {
+                return@launch
             }
+            updatePushTokenUseCase.updatePushToken(deviceId, null, previousNode.networkSlug).collect()
         }
+    }
+
+    private suspend fun migrateDeviceIdIfNeed() {
+        deviceIdMigrationUseCase.migrateDeviceIdIfNeed()
     }
 
     private fun initializeAccountCacheManager() {
@@ -132,58 +150,9 @@ class MainViewModel @ViewModelInject constructor(
         }
     }
 
-    private suspend fun updateDeviceRegistration(
-        notificationUserId: String,
-        firebaseMessagingToken: String,
-        accountPublicKeys: List<String>
-    ) {
-        notificationRepository.putRequestUpdateDevice(
-            notificationUserId,
-            DeviceUpdateRequest(
-                notificationUserId,
-                firebaseMessagingToken,
-                accountPublicKeys,
-                BuildConfig.APPLICATION_NAME
-            )
-        ).use(
-            onSuccess = { deviceUpdateResponse ->
-                setNotificationUserIdAndFetchBanners(deviceUpdateResponse.userId)
-            },
-            onFailed = { _, _ ->
-                delay(REGISTER_DEVICE_FAIL_DELAY)
-                updateDeviceRegistration(notificationUserId, firebaseMessagingToken, accountPublicKeys)
-            }
-        )
-    }
-
-    private suspend fun registerDevice(firebaseMessagingToken: String, accountPublicKeys: List<String>) {
-        notificationRepository.postRequestRegisterDevice(
-            DeviceRegistrationRequest(firebaseMessagingToken, accountPublicKeys, BuildConfig.APPLICATION_NAME)
-        ).use(
-            onSuccess = { deviceRegistrationResponse ->
-                setNotificationUserIdAndFetchBanners(deviceRegistrationResponse.userId)
-            },
-            onFailed = { _, _ ->
-                delay(REGISTER_DEVICE_FAIL_DELAY)
-                registerDevice(firebaseMessagingToken, accountPublicKeys)
-            }
-        )
-    }
-
-    // TODO Refactor this function. Create NotificationUseIdLocalSource
-    private fun setNotificationUserIdAndFetchBanners(userId: String?) {
-        if (userId != null) {
-            sharedPref.setNotificationUserId(userId)
-            viewModelScope.launch {
-                bannersUseCase.cacheBanners(userId)
-            }
-        }
-    }
-
     fun resetBlockPolling() {
         refreshBalanceJob?.cancel()
         blockPollingManager.startJob()
-        // TODO handle node change
     }
 
     fun sendSignedTransaction(
@@ -210,9 +179,6 @@ class MainViewModel @ViewModelInject constructor(
             if (tempAccount.isRegistrationCompleted()) {
                 firebaseAnalytics.logRegisterEvent(creationType)
                 accountManager.addNewAccount(tempAccount)
-                if (accountManager.getAccounts().size == 1) {
-                    // activateBlockPolling() TODO check here after deciding loading state of home page
-                }
                 return true
             }
         }
@@ -221,9 +187,5 @@ class MainViewModel @ViewModelInject constructor(
 
     fun setupAutoLockManager(lifecycle: Lifecycle) {
         autoLockManager.registerAppLifecycle(lifecycle)
-    }
-
-    companion object {
-        private const val REGISTER_DEVICE_FAIL_DELAY = 1500L
     }
 }

@@ -17,6 +17,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <include layout="@layout/include_list_item_guidelines" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/firstColumnBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="start"
+        app:constraint_referenced_ids="endGuideline, amountTextView,amountInCurrencyTextView" />
+
     <ProgressBar
         android:id="@+id/pendingTransactionProgressBar"
         android:layout_width="20dp"
@@ -32,13 +41,15 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spacing_small"
         android:layout_marginTop="@dimen/spacing_small"
+        android:ellipsize="end"
+        android:maxLines="1"
         app:layout_constraintBottom_toTopOf="@id/descriptionTextView"
-        app:layout_constraintEnd_toStartOf="@id/amountTextView"
+        app:layout_constraintEnd_toStartOf="@id/firstColumnBarrier"
         app:layout_constraintStart_toEndOf="@id/pendingTransactionProgressBar"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_goneMarginBottom="@dimen/spacing_small"
         app:layout_goneMarginStart="0dp"
-        tools:text="@tools:sample/lorem[5]" />
+        tools:text="@tools:sample/lorem[12]" />
 
     <TextView
         android:id="@+id/descriptionTextView"
@@ -47,39 +58,33 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spacing_small"
         android:layout_marginBottom="@dimen/spacing_small"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:textColor="@color/tertiary_text_color"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/amountTextView"
+        app:layout_constraintEnd_toStartOf="@id/firstColumnBarrier"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@id/pendingTransactionProgressBar"
         app:layout_constraintTop_toBottomOf="@id/titleTextView"
         app:layout_goneMarginStart="0dp"
-        tools:text="@tools:sample/lorem[2]" />
+        tools:text="@tools:sample/lorem[1]" />
 
     <com.algorand.android.customviews.AlgorandAmountView
         android:id="@+id/amountTextView"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_xlarge"
+        android:layout_marginStart="@dimen/spacing_small"
         android:gravity="end"
-        app:layout_constraintBottom_toTopOf="@id/amountInCurrencyTextView"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.Body.Mono"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/titleTextView"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toEndOf="@id/startGuideline"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
         app:showOperator="true"
-        tools:text="+423.2343121 MCN" />
-
-    <TextView
-        android:id="@+id/amountInCurrencyTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.Footnote.Sans"
-        android:textColor="@color/tertiary_text_color"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/amountTextView"
-        tools:text="$62,006.00"
-        tools:visibility="visible" />
+        tools:text="423.2312 MCN" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

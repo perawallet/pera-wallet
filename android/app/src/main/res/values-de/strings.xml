@@ -38,7 +38,6 @@
     <string name="view_passphrase">Passphrase anzeigen</string>
     <string name="remove_account">Konto entfernen</string>
     <string name="copied_to_clipboard">In die Zwischenablage kopiert</string>
-    <string name="you_are_about_to_remove_an_account">Sie sind dabei, ein Konto zu entfernen. Sind Sie sicher, dass Sie fortfahren möchten?</string>
     <string name="remove">Entfernen</string>
     <string name="enter_six_digit_pin">Geben Sie die sechsstellige PIN ein</string>
     <string name="wrong_password">Falsches Passwort</string>
@@ -105,11 +104,11 @@
     <string name="bluetooth_is_enabled">Bluetooth ist aktiviert.</string>
     <string name="all">Alle</string>
     <string name="verified_assets">Verifizierte Assets</string>
-    <string name="what_does_asset">Was sind verifizierte Assets?</string>
-    <string name="verified_assets_first_paragraph">Assets, die unseren Verifizierungsprozess durchlaufen, sind bekannte Projekte, deren Website und öffentliche Informationen anhand dieser spezifischen ASA verifiziert wurden. Der Verifizierungsstatus ist keine Bestätigung des Inhalts. Pera Wallet hat keine Beziehung zu verifizierten ASA-Eigentümern. Dieses Abzeichen <annotation type="verified-icon"> </annotation> dient nur zu Informationszwecken.</string>
-    <string name="verified_assets_second_paragraph">Damit soll die Wahrscheinlichkeit verringert werden, dass unsere Benutzer aus Versehen falsche Assets transferieren.</string>
+    <string name="what_does_asset">Was sind verifizierte Assets?<annotation type="verified-icon"> </annotation></string>
+    <string name="verified_assets_first_paragraph">Assets, die unseren Verifizierungsprozess durchlaufen, sind bekannte Projekte, deren Website und öffentliche Informationen anhand dieser spezifischen ASA verifiziert wurden. Der Verifizierungsstatus ist keine Bestätigung des Inhalts.</string>
+    <string name="verified_assets_second_paragraph">Pera Wallet hat keine Beziehung zu verifizierten ASA-Eigentümern. Dieses Abzeichen dient nur zu Informationszwecken.</string>
     <string name="verified_assets_third_paragraph">Sie sollten aber trotzdem <annotation type="color">immer überprüfen</annotation>, ob die Asset-ID wirklich stimmt, bevor Sie eine Transaktion ausführen.</string>
-    <string name="verified_assets_fourth_paragraph">Bei Fragen zum Verifizierungsprozess oder allgemeinem Feedback zur App zögern Sie bitte nicht, <annotation type="color">uns zu kontaktieren</annotation>.</string>
+    <string name="verified_assets_fourth_paragraph">Bei Fragen zum Verifizierungsprozess oder allgemeinem Feedback zur App besuchen Sie bitte:</string>
     <string name="advanced_troubleshooting">Erweiterte Fehlerbehebung</string>
     <string name="connecting_to_ledger">Verbindung mit Ledger-Gerät wird hergestellt …</string>
     <string name="ledger_approval">Ledger-Genehmigung</string>
@@ -420,13 +419,11 @@
     <string name="rename_account">Konto umbenennen</string>
     <string name="add">Hinzufügen</string>
     <string name="completed">Abgeschlossen</string>
-    <string name="amount_with_asset"><annotation replacement="asset_amount">assetAmountPlaceholder</annotation> <annotation replacement="asset_short_name">assetShortNamePlaceholder</annotation></string>
     <string name="search_contacts_or_name">Kontakte oder Namen suchen</string>
     <string name="try_different_contact_name">Versuchen Sie einen anderen Kontaktnamen</string>
     <string name="add_photo">Foto hinzufügen</string>
     <string name="delete_this_contact">Diesen Kontakt löschen</string>
     <string name="yes_delete_contact">Ja, Kontakt löschen</string>
-    <string name="asset_name_with_id">%1$s, %2$d</string>
     <string name="available_balance_with_currency">%1$s verfügbares Guthaben</string>
     <string name="security">Sicherheit</string>
     <string name="app_preferences">App-Einstellungen</string>
@@ -441,7 +438,6 @@
     <string name="your_transaction_is_being_processed">Ihre Transaktion wird bearbeitet</string>
     <string name="the_transaction_has_been_signed">Die Transaktion wurde signiert und an <annotation replacement="peer_name">peer_name_placeholder</annotation> gesendet. Bitte besuchen Sie <annotation replacement="peer_name">peer_name_placeholder</annotation> für den weiteren Prozess.</string>
     <string name="select_the_asset_to_send">Asset wählen uns senden</string>
-    <string name="asset_short_name_with_amount">%1$s %2$s</string>
     <string name="paste_from_clipboard">Aus Zwischenablage einfügen</string>
     <string name="search_or_enter_address">Adresse suchen oder eingeben</string>
     <string name="my_accounts">Meine Konten</string>
@@ -464,7 +460,6 @@
     <string name="step_three">Schritt 3</string>
     <string name="looking_for_devices">Es wird nach Geräten gesucht</string>
     <string name="ledger_account">Ledger-Konto</string>
-    <string name="amount_with_asset_short_name"><annotation replacement="amount">amountPlaceholder</annotation> <annotation replacement="asset_short_name">assetShortNamePlaceholder</annotation></string>
     <string name="asset_id">ID <annotation replacement="asset_id">assetIdPlaceholder</annotation></string>
     <string name="asset_id_formatted">ID %1$s</string>
     <string name="find_a_code_to_scan">Einen Code zum Scannen finden</string>
@@ -527,7 +522,6 @@
     <string name="show_note">Notiz anzeigen</string>
     <string name="create_a_passphrase_backup">Erstellen Sie einen Passphrase-Backup für Ihr Konto</string>
     <string name="creating_a_passphrase_backup">Durch die Erstellung eines Passphrase-Backups können Sie Ihr Konto wiederherstellen. Wenn Sie Ihr Gerät verlieren, das Konto entfernen oder die App löschen, können Sie den Zugang zu Ihrem Algorand-Konto ohne die Passphrase dauerhaft verlieren!</string>
-    <string name="congratulations_your_account">Herzlichen Glückwunsch, Ihr Konto ist jetzt einsatzbereit.</string>
     <string name="welcome_to_pera_your_account">Welcome bei Pera Wallet! Ihr Konto kann jetzt verwendet werden.</string>
     <string name="loading">Wird geladen</string>
     <string name="algorand_wallet_is_now">Es ist offiziell! \nAlgorand Wallet ist jetzt Pera Wallet.</string>
@@ -539,4 +533,86 @@
     <string name="sorry_we_cant_show_portfolio">Leider können wir die Details zu diesem Portfolio nicht anzeigen. Es sieht so aus, als ob wir Probleme mit der Berechnung haben.\n\nBitte beachten Sie, dass einige Assets möglicherweise nicht verfügbar sind. Der Gesamtwert des Portfolios sollte daher als Schätzung betrachtet werden.</string>
     <string name="transaction_request_faq">Transaktionsanfrage FAQ</string>
     <string name="external_applications_also">Externe Anwendungen, auch dApps genannt, können Transaktionsanfragen stellen, die von der Pera Wallet nicht kontrolliert werden. Bitte stellen Sie sicher, dass Sie diese Transaktionen sorgfältig prüfen, bevor Sie sie genehmigen und signieren.\n\nAlle Transaktionen sind irreversibel. Genehmigen Sie niemals Transaktionen von dApps, die Sie nicht kennen.</string>
+    <string name="notification_algo_received_message"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> wurden von <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> an <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> gesendet.</string>
+    <string name="minimum_amount_required">Mindestbetrag erforderlich</string>
+    <string name="this_is_the_first_transaction">Dies ist die erste Transaktion für das ausgewählte Konto. Für die ersten Transaktionen ist ein Mindestbetrag von 0,1 Algo erforderlich. Bitte geben Sie einen gültigen Betrag ein und versuchen Sie es erneut.</string>
+    <string name="i_want_to_create">Ich möchte ein Konto erstellen</string>
+    <string name="create_a_new_algorand">Ein neues Algorand-Konto anlegen oder ein Watch-Konto hinzufügen</string>
+    <string name="i_already_have">Ich habe bereits ein Konto</string>
+    <string name="import_an_existing">Importieren Sie ein bestehendes Algorand-Konto über die Wiederherstellungspassphrase oder koppeln Sie Ihr Ledger-Gerät</string>
+    <string name="i_want_to_create_an_algorand_account">Ich möchte\nein Algorand-Konto erstellen</string>
+    <string name="create_a_new_account">Neues Konto erstellen</string>
+    <string name="create_a_new_algorand_account_with">Neues Algorand-Konto mit einer neuen Adresse und einer Passphrase für die Wiederherstellung erstellen</string>
+    <string name="add_watch_account">Watch-Konto hinzufügen</string>
+    <string name="i_already_have_nan_account">Ich habe bereits\nein Konto</string>
+    <string name="recover_an_account">Ein Konto wiederherstellen</string>
+    <string name="pair_Ledger_device">Ledger-Gerät koppeln</string>
+    <string name="i_want_to_create_algorand">Ich möchte ein Algorand-Konto erstellen, das durch meine Ledger-Hardware-Wallet gesichert ist.</string>
+    <string name="confirm_transaction">Transaktion bestätigen</string>
+    <string name="your_transaction_was">Ihre Transaktion wurde erfolgreich vom Algorand-Netzwerk empfangen.</string>
+    <string name="buy_algo">ALGO kaufen</string>
+    <string name="moonpay_offers">MoonPay bietet die schnellste Möglichkeit, ALGO mit Ihrer lokalen Währung zu kaufen. Kaufen Sie Krypto mit Kreditkarte oder Banküberweisung. Es ist schnell, einfach und sicher.</string>
+    <string name="buy_algo_with">ALGO mit MoonPay kaufen</string>
+    <string name="secured_by">Gesichert durch</string>
+    <string name="your_algos_are">Ihre Algos sind auf dem Weg!</string>
+    <string name="your_payment_is">Ihre Zahlung wird gerade bearbeitet. Es kann einige Minuten dauern, bis sie abgeschlossen ist.</string>
+    <string name="success_algo_received">Erfolg!\nAlgo erhalten.</string>
+    <string name="congratulations_your_account_has">Herzlichen Glückwunsch! Die Zahlung ist auf Ihrem Konto eingegangen.</string>
+    <string name="almost_there">Fast geschafft!</string>
+    <string name="your_purchase_request_is_pending">Ihr Kaufantrag ist noch nicht bezahlt. Sobald die Zahlung verarbeitet ist, erhalten Sie eine Benachrichtigung.</string>
+    <string name="your_purchase_request_is_wating">Ihr Kauf wartet auf die Genehmigung. Sobald die Zahlung bearbeitet wurde, erhalten Sie eine Benachrichtigung.</string>
+    <string name="uh_oh_something">Oh, da ist etwas schief gelaufen.</string>
+    <string name="looks_like_your">Es sieht so aus, als wäre Ihr Kauf fehlgeschlagen. Sie müssen es erneut versuchen.</string>
+    <string name="email_address">E-Mail-Adresse</string>
+    <string name="enter_your_email">Geben sie ihre E-Mail-Adresse ein</string>
+    <string name="continue_with_moonpay">Weiter mit MoonPay</string>
+    <string name="i_agree_to_share">Ich bin damit einverstanden, dass meine E-Mail-Adresse an Pera weitergegeben wird und ich Updates zu den Wallet-Funktionen erhalte.</string>
+    <string name="not_available">Nicht verfügbar</string>
+    <string name="you_can_not_purchase">Im TestNet können Sie nicht kaufen. Bitte wechseln Sie von den Einstellungen zurück zum MainNet, um MoonPay zu verwenden.</string>
+    <string name="your_walletconnect_request_failed">Ihre WalletConnect-Anfrage ist mit folgendem Fehler fehlgeschlagen:\n\n<annotation replacement="error_message">errorMessagePlaceholder</annotation>\n\nBitte versuchen Sie es erneut, indem Sie zu der dApp zurückkehren, mit der Sie die Anfrage initiiert haben.</string>
+    <string name="add_an_account">Konto hinzufügen</string>
+    <string name="manage_assets">Assets verwalten</string>
+    <string name="send_asset">Asset senden</string>
+    <string name="enable_pin_code">PIN-Code aktivieren</string>
+    <string name="security_preferences">Sicherheitseinstellungen</string>
+    <string name="change_pin_code">PIN-Code ändern</string>
+    <string name="watch_account_added">Überwachungskonto erfolgreich hinzugefügt</string>
+    <string name="the_watch_account_has_been">Das Überwachungskonto wurde erfolgreich hinzugefügt.</string>
+    <string name="currency_preferences">Währungseinstellungen</string>
+    <string name="collectibles">Collectibles</string>
+    <string name="welcome_to_your_nft">Willkommen in Ihrer NFT-Galerie! Sie haben noch keine NFTs. Alle NFTs, die in Ihrer Wallet  vorhanden sind, werden hier angezeigt.</string>
+    <string name="receive_nft">NFT empfangen</string>
+    <string name="share">Teilen</string>
+    <string name="description">Beschreibung</string>
+    <string name="owner">Eigentümer</string>
+    <string name="asset_id_">Asset-ID</string>
+    <string name="creator_wallet_address">Wallet-Adresse des Erstellers</string>
+    <string name="collection_name">Name der Sammlung</string>
+    <string name="creator_name">Name des Erstellers</string>
+    <string name="properties">Eigenschaften</string>
+    <string name="view_transaction">Transaktion anzeigen</string>
+    <string name="show_on_algoexplorer">Im Algoexplorer anzeigen</string>
+    <string name="show_on_nftexplorer">Im NFTExplorer anzeigen</string>
+    <string name="you_are_not_the_owner">Sie sind noch nicht Eigentümer dieses NFT, aber Sie haben das Opt-in dafür durchgeführt.</string>
+    <string name="we_don_t_support">Dieser NFT-Medientyp wird von uns noch nicht unterstützt.</string>
+    <string name="we_can_t_display">Wir können das Bildmaterial vorübergehend nicht anzeigen.</string>
+    <string name="transfer">Übertragen</string>
+    <string name="send_your_nft">Senden Sie Ihren NFT</string>
+    <string name="paste_an_algorand_wallet_address">Algorand-Wallet-Adresse einfügen</string>
+    <string name="ask_recipient_to">Empfänger um Opt-in bitten</string>
+    <string name="you_cant_send">Sie können <annotation replacement="collectible_name">collectibleNamePlaceHolder</annotation> nicht an <annotation replacement="wallet_address">walletAddressPlaceholder</annotation> senden, da diese Wallet noch nicht für dieses Asset optiert hat. <annotation font="dmsans_medium"><annotation custom="learn_more">Erfahren Sie mehr über Opt-in</annotation></annotation></string>
+    <string name="request_opt_in">Opt-in anfordern</string>
+    <string name="information_about_opt">Informationen zum Opt-in</string>
+    <string name="to_avoid_spammy">Um Spam-Transaktionen zu vermeiden, erlaubt die Algorand-Blockchain nur das Senden und Empfangen von Transaktionen für Assets, für die zuvor ein Opt-in erteilt wurde.</string>
+    <string name="search_or_enter_wallet_address">Wallet-Adresse suchen oder eingeben</string>
+    <string name="your_nft_transfer">Ihr NFT-Transfer ist bestätigt!</string>
+    <string name="transactions_can_take">Es kann einige Minuten dauern, bis die Transaktionen abgeschlossen sind.</string>
+    <string name="got_it">Alles klar!</string>
+    <string name="approve_transaction">Transaktion genehmigen</string>
+    <string name="are_you_sure">Sind Sie sicher, dass Sie fortfahren möchten?</string>
+    <string name="sender_account">Absender-Konto</string>
+    <string name="transacting_fee">Transaktionsgebühr</string>
+    <string name="confirm_transfer">Übertragung bestätigen</string>
+    <string name="search_asset_id_or_nft">Asset-ID oder NFT-Name suchen</string>
+    <string name="receive_an_nft">NFT empfangen</string>
 </resources>

@@ -34,7 +34,9 @@ sealed class BaseSelectAssetItem : RecyclerListItem {
     abstract val isAlgo: Boolean
     abstract val amount: BigInteger
     abstract val formattedAmount: String
+    abstract val formattedCompactAmount: String
     abstract val formattedSelectedCurrencyValue: String
+    abstract val formattedSelectedCurrencyCompactValue: String
     abstract val isAmountInSelectedCurrencyVisible: Boolean
     abstract val itemType: ItemType
 
@@ -53,7 +55,9 @@ sealed class BaseSelectAssetItem : RecyclerListItem {
         override val shortName: String?,
         override val name: String?,
         override val formattedAmount: String,
+        override val formattedCompactAmount: String,
         override val formattedSelectedCurrencyValue: String,
+        override val formattedSelectedCurrencyCompactValue: String,
         override val isAmountInSelectedCurrencyVisible: Boolean,
         override val avatarDisplayText: AssetName,
         override val amount: BigInteger
@@ -72,7 +76,9 @@ sealed class BaseSelectAssetItem : RecyclerListItem {
             override val isAlgo: Boolean,
             override val amount: BigInteger,
             override val formattedAmount: String,
+            override val formattedCompactAmount: String,
             override val formattedSelectedCurrencyValue: String,
+            override val formattedSelectedCurrencyCompactValue: String,
             override val isAmountInSelectedCurrencyVisible: Boolean,
             val prismUrl: String?
         ) : BaseSelectCollectibleItem() {
@@ -88,7 +94,9 @@ sealed class BaseSelectAssetItem : RecyclerListItem {
             override val isAlgo: Boolean,
             override val amount: BigInteger,
             override val formattedAmount: String,
+            override val formattedCompactAmount: String,
             override val formattedSelectedCurrencyValue: String,
+            override val formattedSelectedCurrencyCompactValue: String,
             override val isAmountInSelectedCurrencyVisible: Boolean,
             val thumbnailPrismUrl: String?
         ) : BaseSelectCollectibleItem() {
@@ -104,7 +112,9 @@ sealed class BaseSelectAssetItem : RecyclerListItem {
             override val isAlgo: Boolean,
             override val amount: BigInteger,
             override val formattedAmount: String,
+            override val formattedCompactAmount: String,
             override val formattedSelectedCurrencyValue: String,
+            override val formattedSelectedCurrencyCompactValue: String,
             override val isAmountInSelectedCurrencyVisible: Boolean,
             val thumbnailPrismUrl: String?
         ) : BaseSelectCollectibleItem() {
@@ -120,7 +130,9 @@ sealed class BaseSelectAssetItem : RecyclerListItem {
             override val isAlgo: Boolean,
             override val amount: BigInteger,
             override val formattedAmount: String,
+            override val formattedCompactAmount: String,
             override val formattedSelectedCurrencyValue: String,
+            override val formattedSelectedCurrencyCompactValue: String,
             override val isAmountInSelectedCurrencyVisible: Boolean
         ) : BaseSelectCollectibleItem() {
             override val itemType: ItemType = ItemType.SELECT_COLLECTIBLE_NOT_SUPPORTED_ITEM

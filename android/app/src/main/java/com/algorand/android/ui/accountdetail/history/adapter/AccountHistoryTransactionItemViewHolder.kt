@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.databinding.ItemAccountHistoryTransactionBinding
 import com.algorand.android.models.BaseTransactionItem
 import com.algorand.android.utils.extensions.setTextAndVisibility
+import com.algorand.android.utils.formatAmount
 
 class AccountHistoryTransactionItemViewHolder(
     private val binding: ItemAccountHistoryTransactionBinding
@@ -37,13 +38,13 @@ class AccountHistoryTransactionItemViewHolder(
                     this is BaseTransactionItem.TransactionItem.Reward
                 } ?: amount
 
+                val formattedAmount = safeAmount.formatAmount(decimals, isCompact = true)
                 amountTextView.setAmount(
-                    amount = safeAmount,
+                    formattedAmount = formattedAmount,
                     transactionSymbol = transactionSymbol,
                     assetShortName = assetShortName,
-                    decimal = decimals
+                    isAlgorand = isAlgorand
                 )
-                amountInCurrencyTextView.setTextAndVisibility(formattedAmountInDisplayedCurrency)
             }
         }
     }

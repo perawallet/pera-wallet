@@ -13,6 +13,7 @@
 package com.algorand.android.nft.domain.decider
 
 import com.algorand.android.R
+import com.algorand.android.models.Account
 import javax.inject.Inject
 
 class CollectibleDetailDecider @Inject constructor() {
@@ -23,6 +24,19 @@ class CollectibleDetailDecider @Inject constructor() {
             R.string.we_can_t_display
         } else {
             null
+        }
+    }
+
+    fun decideOptedInWarningTextRes(isOwnedByTheUser: Boolean, accountType: Account.Type?): Int? {
+        if (isOwnedByTheUser) return null
+        return when (accountType) {
+            Account.Type.STANDARD, Account.Type.LEDGER, Account.Type.REKEYED, Account.Type.REKEYED_AUTH -> {
+                R.string.you_are_not_the_owner
+            }
+            Account.Type.WATCH -> {
+                R.string.this_watch_account_has_opted
+            }
+            else -> null
         }
     }
 }

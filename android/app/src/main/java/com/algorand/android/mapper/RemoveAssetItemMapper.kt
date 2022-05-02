@@ -41,7 +41,9 @@ class RemoveAssetItemMapper @Inject constructor() {
                 creatorPublicKey = creatorPublicKey,
                 decimals = decimals,
                 formattedAmount = formattedAmount,
+                formattedCompactAmount = formattedCompactAmount,
                 formattedSelectedCurrencyValue = formattedSelectedCurrencyValue,
+                formattedSelectedCurrencyCompactValue = formattedSelectedCurrencyCompactValue,
                 isAmountInSelectedCurrencyVisible = isAmountInSelectedCurrencyVisible,
                 notAvailableResId = R.string.not_available_shortened
             )
@@ -61,7 +63,9 @@ class RemoveAssetItemMapper @Inject constructor() {
                 creatorPublicKey = creatorPublicKey,
                 decimals = decimals,
                 formattedAmount = formattedAmount,
+                formattedCompactAmount = formattedCompactAmount,
                 formattedSelectedCurrencyValue = formattedSelectedCurrencyValue,
+                formattedSelectedCurrencyCompactValue = formattedSelectedCurrencyCompactValue,
                 isAmountInSelectedCurrencyVisible = isAmountInSelectedCurrencyVisible,
                 prismUrl = prismUrl,
                 notAvailableResId = R.string.not_available_shortened
@@ -82,7 +86,9 @@ class RemoveAssetItemMapper @Inject constructor() {
                 creatorPublicKey = creatorPublicKey,
                 decimals = decimals,
                 formattedAmount = formattedAmount,
+                formattedCompactAmount = formattedCompactAmount,
                 formattedSelectedCurrencyValue = formattedSelectedCurrencyValue,
+                formattedSelectedCurrencyCompactValue = formattedSelectedCurrencyCompactValue,
                 isAmountInSelectedCurrencyVisible = isAmountInSelectedCurrencyVisible,
                 prismUrl = thumbnailPrismUrl,
                 notAvailableResId = R.string.not_available_shortened
@@ -103,7 +109,9 @@ class RemoveAssetItemMapper @Inject constructor() {
                 creatorPublicKey = creatorPublicKey,
                 decimals = decimals,
                 formattedAmount = formattedAmount,
+                formattedCompactAmount = formattedCompactAmount,
                 formattedSelectedCurrencyValue = formattedSelectedCurrencyValue,
+                formattedSelectedCurrencyCompactValue = formattedSelectedCurrencyCompactValue,
                 isAmountInSelectedCurrencyVisible = isAmountInSelectedCurrencyVisible,
                 prismUrl = thumbnailPrismUrl,
                 notAvailableResId = R.string.not_available_shortened
@@ -124,7 +132,9 @@ class RemoveAssetItemMapper @Inject constructor() {
                 creatorPublicKey = creatorPublicKey,
                 decimals = decimals,
                 formattedAmount = formattedAmount,
+                formattedCompactAmount = formattedCompactAmount,
                 formattedSelectedCurrencyValue = formattedSelectedCurrencyValue,
+                formattedSelectedCurrencyCompactValue = formattedSelectedCurrencyCompactValue,
                 isAmountInSelectedCurrencyVisible = isAmountInSelectedCurrencyVisible,
                 notAvailableResId = R.string.not_available_shortened
             )

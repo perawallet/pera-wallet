@@ -40,34 +40,45 @@ class VerifyLedgerInfoFragment : BaseInfoFragment() {
     }
 
     override fun setTitleText(textView: TextView) {
-        textView.text = getString(R.string.ledger_successfully_connected)
+        textView.setText(verifyLedgerInfoViewModel.getPreviewTitle())
     }
 
     override fun setDescriptionText(textView: TextView) {
-        textView.text = getString(R.string.congratulations_your_account)
+        textView.setText(verifyLedgerInfoViewModel.getPreviewDescription())
     }
 
     override fun setFirstButton(materialButton: MaterialButton) {
         with(materialButton) {
-            text = getString(R.string.start_using_pera)
-            val action = if (verifyLedgerInfoViewModel.shouldForceLockNavigation()) {
-                LoginNavigationDirections.actionToLockPreferenceNavigation(shouldNavigateHome = true)
-            } else {
-                LoginNavigationDirections.actionGlobalToHomeNavigation()
-            }
-            setOnClickListener { nav(action) }
+            setText(verifyLedgerInfoViewModel.getPreviewFirstButtonText())
+            setOnClickListener { navToMoonpayNavigation() }
         }
     }
 
     override fun setSecondButton(materialButton: MaterialButton) {
         with(materialButton) {
-            text = getString(R.string.buy_algo)
+            setText(verifyLedgerInfoViewModel.getPreviewSecondButtonText())
             show()
-            setOnClickListener { navToMoonpayNavigation() }
+            setOnClickListener { onStartUsingPeraClick() }
         }
     }
 
     private fun navToMoonpayNavigation() {
         nav(VerifyLedgerInfoFragmentDirections.actionVerifyLedgerInfoFragmentToMoonpayNavigation())
+    }
+
+    private fun onStartUsingPeraClick() {
+        if (verifyLedgerInfoViewModel.shouldForceLockNavigation()) {
+            navToForceLockNavigation()
+        } else {
+            navToHomeNavigation()
+        }
+    }
+
+    private fun navToHomeNavigation() {
+        nav(LoginNavigationDirections.actionGlobalToHomeNavigation())
+    }
+
+    private fun navToForceLockNavigation() {
+        nav(LoginNavigationDirections.actionToLockPreferenceNavigation(shouldNavigateHome = true))
     }
 }

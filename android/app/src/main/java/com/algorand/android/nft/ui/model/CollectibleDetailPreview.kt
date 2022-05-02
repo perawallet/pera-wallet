@@ -20,5 +20,7 @@ data class CollectibleDetailPreview(
     val isErrorVisible: Boolean,
     val collectibleDetail: CollectibleDetail?,
     val optOutSuccessEvent: Event<Unit>?,
-    val globalErrorEvent: Event<String>?
+    val globalErrorEvent: Event<String>?,
+    val fractionalCollectibleSendEvent: Event<Unit>?,
+    val pureCollectibleSendEvent: Event<Unit>?
 )

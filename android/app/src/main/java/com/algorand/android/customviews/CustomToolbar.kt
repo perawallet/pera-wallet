@@ -108,9 +108,7 @@ class CustomToolbar @JvmOverloads constructor(
                 hide()
                 return
             }
-            if (iconColor != null) {
-                imageTintList = ContextCompat.getColorStateList(context, iconColor)
-            }
+            imageTintList = iconColor?.let { ContextCompat.getColorStateList(context, iconColor) }
             setImageResource(resId)
             setOnClickListener { clickAction?.invoke() }
             show()

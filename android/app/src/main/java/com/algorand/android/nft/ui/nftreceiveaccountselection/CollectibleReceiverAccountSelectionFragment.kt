@@ -74,8 +74,12 @@ class CollectibleReceiverAccountSelectionFragment :
 
     private fun updateUi(preview: CollectibleReceiverAccountSelectionPreview) {
         with(preview) {
-            binding.progressLayout.loadingProgressBar.isVisible = isLoadingVisible
             accountSelectionAdapter.submitList(accountListItems)
+            with(binding) {
+                progressLayout.loadingProgressBar.isVisible = isLoadingVisible
+                screenStateView.isVisible = isScreenStateViewVisible
+                screenStateViewType?.run { screenStateView.setupUi(this) }
+            }
         }
     }
 

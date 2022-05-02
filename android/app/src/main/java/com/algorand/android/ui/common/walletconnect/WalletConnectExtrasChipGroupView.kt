@@ -101,7 +101,7 @@ class WalletConnectExtrasChipGroupView(
 
     private fun createChip(@StringRes textRes: Int): Chip {
         return Chip(context).apply {
-            text = context?.getString(textRes)
+            text = context?.getString(textRes).orEmpty()
             setTextAppearance(TextAppearance(context, R.style.TextAppearance_Footnote_Sans_Medium))
             setChipBackgroundColorResource(R.color.layer_gray_lighter)
         }

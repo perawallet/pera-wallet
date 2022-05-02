@@ -39,6 +39,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.withContext
 
 // TODO Refactor this class for performance and code quality
+@Suppress("LongParameterList")
 class AccountsPreviewUseCase @Inject constructor(
     private val algoPriceUseCase: AlgoPriceUseCase,
     private val accountDetailUseCase: AccountDetailUseCase,
@@ -149,9 +150,15 @@ class AccountsPreviewUseCase @Inject constructor(
                 add(PORTFOLIO_VALUES_ITEM_INDEX, portfolioValueItem)
                 val banner = getBannerItemOrNull(banners)
                 if (banner != null) add(BANNER_ITEM_INDEX, banner)
+                insertMoonpayBuyAlgoButton(banner != null, this)
             }
             accountPreviewMapper.getSuccessAccountPreview(baseAccountListItems)
         }
+    }
+
+    private fun insertMoonpayBuyAlgoButton(hasBanner: Boolean, accountsList: MutableList<BaseAccountListItem>) {
+        val buyAlgoItemIndex = if (hasBanner) MOONPAY_BUY_ALGO_ITEM_INDEX else MOONPAY_BUY_ALGO_ITEM_INDEX - 1
+        accountsList.add(buyAlgoItemIndex, BaseAccountListItem.MoonpayBuyAlgoItem)
     }
 
     private fun getBannerItemOrNull(bannerList: List<BaseBanner>): BaseAccountListItem.BaseBannerItem? {
@@ -245,5 +252,6 @@ class AccountsPreviewUseCase @Inject constructor(
     companion object {
         private const val PORTFOLIO_VALUES_ITEM_INDEX = 0
         private const val BANNER_ITEM_INDEX = 1
+        private const val MOONPAY_BUY_ALGO_ITEM_INDEX = 2
     }
 }

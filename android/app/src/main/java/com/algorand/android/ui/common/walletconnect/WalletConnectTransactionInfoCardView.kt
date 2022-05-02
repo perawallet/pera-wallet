@@ -31,7 +31,6 @@ import com.algorand.android.utils.addUnnamedAssetName
 import com.algorand.android.utils.enableClickToCopy
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.formatAmount
-import com.algorand.android.utils.getXmlStyledString
 import com.algorand.android.utils.setDrawable
 import com.algorand.android.utils.viewbinding.viewBinding
 import java.math.BigInteger
@@ -139,14 +138,13 @@ class WalletConnectTransactionInfoCardView(
     private fun initAccountBalance(balance: BigInteger?, assetInformation: TransactionRequestAssetInformation?) {
         balance?.let {
             with(binding) {
-                val formattedBalance = context?.getXmlStyledString(
-                    stringResId = R.string.amount_with_asset_short_name,
-                    replacementList = listOf(
-                        "amount" to balance.formatAmount(assetInformation?.decimals ?: ALGO_DECIMALS),
-                        "asset_short_name" to assetInformation?.shortName.orEmpty()
-                    )
+                // TODO Move this formatting into UseCase
+                val formattedBalance = balance.formatAmount(assetInformation?.decimals ?: ALGO_DECIMALS)
+                accountBalanceTextView.text = context?.getString(
+                    R.string.pair_value_format,
+                    formattedBalance,
+                    assetInformation?.shortName.orEmpty()
                 )
-                accountBalanceTextView.text = formattedBalance
                 accountBalanceGroup.show()
             }
         }

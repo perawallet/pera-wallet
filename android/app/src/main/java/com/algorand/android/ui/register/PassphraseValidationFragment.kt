@@ -68,7 +68,7 @@ class PassphraseValidationFragment : DaggerBaseFragment(R.layout.fragment_passph
         if (binding.passphraseValidationGroupView.isValidated()) {
             nav(
                 PassphraseValidationFragmentDirections
-                    .actionPassphraseQuestionFragmentToCreateAccountNameRegistrationFragment(args.accountCreation)
+                    .actionPassphraseQuestionFragmentToPassphraseVerifiedInfoFragment(args.accountCreation)
             )
         } else {
             showGlobalError(errorMessage = getString(R.string.selected_words_are))

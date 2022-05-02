@@ -18,6 +18,7 @@ import android.os.Bundle
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.algorand.android.models.FragmentConfiguration
+import com.algorand.android.nft.ui.base.BaseCollectibleListingViewModel
 import com.algorand.android.nft.ui.nftlisting.BaseCollectiblesListingFragment
 import com.algorand.android.utils.extensions.hide
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,6 +33,9 @@ class AccountCollectiblesFragment : BaseCollectiblesListingFragment() {
         get() = false
 
     private val accountCollectiblesViewModel by viewModels<AccountCollectiblesViewModel>()
+
+    override val baseCollectibleListingViewModel: BaseCollectibleListingViewModel
+        get() = accountCollectiblesViewModel
 
     private var listener: Listener? = null
 
@@ -79,8 +83,8 @@ class AccountCollectiblesFragment : BaseCollectiblesListingFragment() {
         }
     }
 
-    override fun updateUiWithReceiveButtonVisibility(isVisible: Boolean) {
-        // Nothing to do
+    override fun onFilterClick() {
+        listener?.onFilterClick()
     }
 
     interface Listener {
@@ -91,6 +95,7 @@ class AccountCollectiblesFragment : BaseCollectiblesListingFragment() {
         fun onNotSupportedItemClick(nftAssetId: Long)
         fun onMixedItemClick(nftAssetId: Long)
         fun onReceiveCollectibleClick()
+        fun onFilterClick()
     }
 
     companion object {

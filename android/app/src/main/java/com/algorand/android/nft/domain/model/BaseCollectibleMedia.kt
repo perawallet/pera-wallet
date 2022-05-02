@@ -22,12 +22,22 @@ sealed class BaseCollectibleMedia {
         override val previewUrl: String?
     ) : BaseCollectibleMedia()
 
+    data class GifCollectibleMedia(
+        override val downloadUrl: String?,
+        override val previewUrl: String?
+    ) : BaseCollectibleMedia()
+
     data class VideoCollectibleMedia(
         override val downloadUrl: String?,
         override val previewUrl: String?
     ) : BaseCollectibleMedia()
 
     data class UnsupportedCollectibleMedia(
+        override val downloadUrl: String?,
+        override val previewUrl: String?
+    ) : BaseCollectibleMedia()
+
+    data class NoMediaCollectibleMedia(
         override val downloadUrl: String?,
         override val previewUrl: String?
     ) : BaseCollectibleMedia()

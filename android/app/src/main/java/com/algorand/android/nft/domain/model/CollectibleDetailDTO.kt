@@ -14,6 +14,7 @@ package com.algorand.android.nft.domain.model
 
 import com.algorand.android.models.AssetCreator
 import java.math.BigDecimal
+import java.math.BigInteger
 
 data class CollectibleDetailDTO(
     val collectibleAssetId: Long,
@@ -30,5 +31,6 @@ data class CollectibleDetailDTO(
     val description: String?,
     val traits: List<CollectibleTrait>,
     val medias: List<BaseCollectibleMedia>,
-    val explorerUrl: String?
+    val explorerUrl: String?,
+    val totalSupply: BigInteger?
 )

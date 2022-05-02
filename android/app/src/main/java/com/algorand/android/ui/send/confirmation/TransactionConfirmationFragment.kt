@@ -15,6 +15,8 @@ package com.algorand.android.ui.send.confirmation
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.lifecycleScope
 import com.algorand.android.R
 import com.algorand.android.SendAlgoNavigationDirections
@@ -31,11 +33,14 @@ class TransactionConfirmationFragment : BaseFragment(R.layout.fragment_transacti
         super.onViewCreated(view, savedInstanceState)
         viewLifecycleOwner.lifecycleScope.launch {
             delay(ANIMATION_DURATION)
+            setFragmentResult(TRANSACTION_CONFIRMATION_KEY, bundleOf(TRANSACTION_CONFIRMED_KEY to true))
             nav(SendAlgoNavigationDirections.actionSendAlgoNavigationPop())
         }
     }
 
     companion object {
+        const val TRANSACTION_CONFIRMATION_KEY = "transaction_confirmation_key"
+        const val TRANSACTION_CONFIRMED_KEY = "transaction_confirmed_key"
         private const val ANIMATION_DURATION = 1000L
     }
 }

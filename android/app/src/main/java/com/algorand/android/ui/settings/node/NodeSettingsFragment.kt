@@ -64,7 +64,9 @@ class NodeSettingsFragment : DaggerBaseFragment(R.layout.fragment_node_settings)
     private fun onDifferentNodeSelected(activatedNode: Node) {
         nodeSettingsViewModel.onNodeChanged(
             activatedNode = activatedNode,
-            onNodeSwitchingFinished = { (activity as? MainActivity)?.onNewNodeActivated(activatedNode) }
+            onNodeSwitchingFinished = { previousNode ->
+                (activity as? MainActivity)?.onNewNodeActivated(previousNode, activatedNode)
+            }
         )
     }
 }

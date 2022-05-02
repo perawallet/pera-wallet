@@ -16,23 +16,20 @@ package com.algorand.android.usecase
 import com.algorand.android.R
 import com.algorand.android.decider.TransactionUserUseCase
 import com.algorand.android.mapper.AccountHistoryPendingItemMapper
-import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.AssetDetail
+import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.BaseTransactionItem
 import com.algorand.android.models.PendingTransaction
 import com.algorand.android.models.Result
 import com.algorand.android.models.TransactionType
 import com.algorand.android.repository.AccountRepository
-import com.algorand.android.utils.formatAsCurrency
 import javax.inject.Inject
 
 class PendingTransactionUseCase @Inject constructor(
     private val accountRepository: AccountRepository,
     private val accountHistoryPendingItemMapper: AccountHistoryPendingItemMapper,
     private val transactionUserUseCase: TransactionUserUseCase,
-    private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase,
-    private val transactionAmountUseCase: TransactionAmountUseCase,
-    private val algoPriceUseCase: AlgoPriceUseCase
+    private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase
 ) {
 
     val pendingFlowDistinctUntilChangedListener: (
@@ -74,26 +71,12 @@ class PendingTransactionUseCase @Inject constructor(
                 TransactionType.PAY_TRANSACTION -> AssetInformation.ALGORAND_ID
                 else -> pendingTransaction.detail?.assetId
             }
-            val assetQueryItem = getAssetDetail(assetId)
-            val formattedAmountInDisplayedCurrency = when {
-                assetId == AssetInformation.ALGORAND_ID -> {
-                    transactionAmountUseCase.getAlgoAmountInCachedCurrency(pendingTransaction.getAmount())
-                        .formatAsCurrency(algoPriceUseCase.getCachedCurrencySymbolOrName())
-                }
-                assetQueryItem?.usdValue != null -> {
-                    transactionAmountUseCase.getAssetAmountInSelectedCurrency(
-                        assetQueryItem.usdValue, pendingTransaction.getAmount(), assetQueryItem.fractionDecimals
-                    ).formatAsCurrency(algoPriceUseCase.getSelectedCurrencySymbolOrCurrencyName())
-                }
-                else -> null
-            }
             accountHistoryPendingItemMapper.mapTo(
                 transaction = pendingTransaction,
                 accountPublicKey = publicKey,
                 transactionTargetUser = transactionUserUseCase.getTransactionTargetUser(publicKey),
                 assetDetail = getAssetDetail(assetId),
-                otherPublicKey = getOtherPublicKey(pendingTransaction, publicKey),
-                formattedAmountInDisplayedCurrency = formattedAmountInDisplayedCurrency
+                otherPublicKey = getOtherPublicKey(pendingTransaction, publicKey)
             )
         }
     }

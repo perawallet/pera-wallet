@@ -17,6 +17,7 @@ import androidx.paging.LoadState
 import com.algorand.android.decider.AssetAdditionScreenStateViewTypeDecider
 import com.algorand.android.decider.AssetAdditionScreenStateViewVisibilityDecider
 import com.algorand.android.models.ui.AssetAdditionLoadStatePreview
+import com.algorand.android.ui.addasset.AssetAdditionType
 import javax.inject.Inject
 
 class AssetAdditionLoadStatePreviewMapper @Inject constructor(
@@ -27,7 +28,8 @@ class AssetAdditionLoadStatePreviewMapper @Inject constructor(
     fun mapToAssetAdditionLoadStatePreview(
         combinedLoadStates: CombinedLoadStates,
         itemCount: Int,
-        isLastStateError: Boolean
+        isLastStateError: Boolean,
+        assetAdditionType: AssetAdditionType
     ): AssetAdditionLoadStatePreview {
         return AssetAdditionLoadStatePreview(
             isAssetListVisible = (combinedLoadStates.refresh is LoadState.Error).not() &&
@@ -37,8 +39,9 @@ class AssetAdditionLoadStatePreviewMapper @Inject constructor(
                 itemCount,
             ),
             screenStateViewType = assetAdditionScreenStateViewTypeDecider.decideScreenStateViewType(
-                combinedLoadStates,
-                itemCount
+                combinedLoadStates = combinedLoadStates,
+                itemCount = itemCount,
+                assetAdditionType = assetAdditionType
             ),
             isLoading = (combinedLoadStates.refresh is LoadState.Loading) ||
                 (combinedLoadStates.append is LoadState.Loading)

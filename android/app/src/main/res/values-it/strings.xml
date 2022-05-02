@@ -38,7 +38,6 @@
     <string name="view_passphrase">Visualizza passphrase</string>
     <string name="remove_account">Rimuovi il conto</string>
     <string name="copied_to_clipboard">Copiato negli Appunti</string>
-    <string name="you_are_about_to_remove_an_account">Stai per rimuovere un conto. Sei sicuro di voler procedere con questa scelta?</string>
     <string name="remove">Rimuovi</string>
     <string name="enter_six_digit_pin">Inserisci il pin a sei cifre</string>
     <string name="wrong_password">Password errata</string>
@@ -105,6 +104,11 @@
     <string name="bluetooth_is_enabled">Il Bluetooth è abilitato.</string>
     <string name="all">Tutti</string>
     <string name="verified_assets">Attivi verificati</string>
+    <string name="what_does_asset">Cosa significa \"Verifica degli attivi?\"<annotation type="verified-icon"> </annotation></string>
+    <string name="verified_assets_first_paragraph">Gli attivi  che passano attraverso il nostro processo di verifica sono progetti noti che hanno il loro sito Web e informazioni pubbliche verificate rispetto a questo specifico ASA. Lo stato di verifica non è un\'approvazione dell\'attività.</string>
+    <string name="verified_assets_second_paragraph">Pera Wallet non ha alcuna relazione con i proprietari degli ASA verificati. Questo badge è solo a scopo informativo.</string>
+    <string name="verified_assets_third_paragraph">Detto questo, dovresti <annotation type="color">ricontrollare sempre</annotation> che l\'ID dell\'attivo sia quello che intendevi scegliere prima di effettuare transazioni con quell\'attivo.</string>
+    <string name="verified_assets_fourth_paragraph">In caso di domande sulla procedura di verifica o di feedback generali sull\'app, ti invitiamo a visitare:</string>
     <string name="advanced_troubleshooting">Risoluzione avanzata dei problemi</string>
     <string name="connecting_to_ledger">Connessione a Ledger…</string>
     <string name="ledger_approval">Approvazione Ledger</string>
@@ -190,7 +194,7 @@
     <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> sta cercando di inviarti <annotation replacement="asset">assetPlaceholder</annotation>, ma tu non lo supporti. Tocca qui per aggiungere questa risorsa al tuo account.</string>
     <string name="transaction_send_successful">La tua transazione di <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> da <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> a <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> è completa.</string>
     <string name="transaction_send_failed">La tua transazione di <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> da <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> a <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> non è riuscita.</string>
-    <string name="notification_algo_received_message"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> sono stati inviati a <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> da <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>.</string>
+    <string name="transaction_received">Transazione ricevuta</string>
     <string name="too_many_pin_attempts">Troppi tentativi di PIN</string>
     <string name="this_ledger_device">Questo dispositivo Ledger può firmare transazioni per i seguenti conti. Seleziona i conti da aggiungere al tuo Pera Wallet.</string>
     <string name="this_account_has">Questo conto è stato ricodificato. Per firmare le transazioni, recupera questo conto con una passphrase o un dispositivo Ledger.</string>
@@ -415,13 +419,11 @@
     <string name="rename_account">Rinomina il conto</string>
     <string name="add">Aggiungi</string>
     <string name="completed">Completato</string>
-    <string name="amount_with_asset"><annotation replacement="asset_amount">assetAmountPlaceholder</annotation> <annotation replacement="asset_short_name">assetShortNamePlaceholder</annotation></string>
     <string name="search_contacts_or_name">Cerca contatti o nome</string>
     <string name="try_different_contact_name">Prova con un nome di contatto diverso</string>
     <string name="add_photo">Aggiungi foto</string>
     <string name="delete_this_contact">Elimina questo contatto</string>
     <string name="yes_delete_contact">Sì, elimina contatto</string>
-    <string name="asset_name_with_id">%1$s, %2$d</string>
     <string name="available_balance_with_currency">%1$s saldo disponibile</string>
     <string name="security">Sicurezza</string>
     <string name="app_preferences">Preferenze App</string>
@@ -436,7 +438,6 @@
     <string name="your_transaction_is_being_processed">La tua transazione è in corso di elaborazione</string>
     <string name="the_transaction_has_been_signed">La transazione è stata firmata e inviata a <annotation replacement="peer_name">peer_name_placeholder</annotation>. Ti invitiamo a visitare <annotation replacement="peer_name">peer_name_placeholder</annotation> per il processo rimanente.</string>
     <string name="select_the_asset_to_send">Seleziona la risorsa da inviare</string>
-    <string name="asset_short_name_with_amount">%1$s %2$s</string>
     <string name="paste_from_clipboard">Incolla dagli Appunti</string>
     <string name="search_or_enter_address">Cerca o inserisci l\'indirizzo</string>
     <string name="my_accounts">I miei conti</string>
@@ -459,7 +460,6 @@
     <string name="step_three">Passaggio 3</string>
     <string name="looking_for_devices">Ricerca di dispositivi</string>
     <string name="ledger_account">Conto Ledger</string>
-    <string name="amount_with_asset_short_name"><annotation replacement="amount">amountPlaceholder</annotation> <annotation replacement="asset_short_name">assetShortNamePlaceholder</annotation></string>
     <string name="asset_id">ID <annotation replacement="asset_id"> assetIdPlaceholder</annotation></string>
     <string name="asset_id_formatted">ID %1$s</string>
     <string name="find_a_code_to_scan">Trova un codice da scansionare</string>
@@ -522,7 +522,6 @@
     <string name="show_note">Mostra Nota</string>
     <string name="create_a_passphrase_backup">Crea una passphrase di ripristino per il tuo conto</string>
     <string name="creating_a_passphrase_backup">Creare una passphrase di ripristino consente di recuperare il tuo conto. Senza la passphrase, se perdi il dispositivo, elimini il conto  o cancelli l\'app, perderai definitivamente l\'accesso al tuo conto Algorand!</string>
-    <string name="congratulations_your_account">Congratulazioni, il tuo conto è pronto per l\'uso.</string>
     <string name="welcome_to_pera_your_account">Benvenuto in Pera Wallet! Il tuo conto è pronto per l\'uso.</string>
     <string name="loading">Caricamento in corso</string>
     <string name="algorand_wallet_is_now">È ufficiale!\nAlgorand Wallet è ora Pera Wallet.</string>
@@ -533,5 +532,85 @@
     <string name="sorry_we_cant_show_account">Siamo spiacenti, non possiamo mostrare i dettagli di questo conto. Sembra che stiamo avendo problemi per il calcolo.\n\nTi facciamo presente che alcuni valori di attività potrebbero non essere disponibili, quindi il valore totale del portafoglio deve essere considerato una stima.  </string>
     <string name="sorry_we_cant_show_portfolio">Siamo spiacenti, non possiamo mostrare i dettagli di questo portafoglio. Sembra che stiamo avendo problemi per il calcolo.\n\nTi facciamo presente che alcuni valori di attività potrebbero non essere disponibili, quindi il valore totale del portafoglio deve essere considerato una stima.  </string>
     <string name="transaction_request_faq">FAQ sulle richieste di transazione</string>
-    <string name="external_applications_also">Le applicazioni esterne, chiamate anche dApp, possono effettuare di transazione che Pera Wallet non controlla. Assicurati di esaminare attentamente queste transazioni prima di firmare.\n\nTutte le transazioni sono irreversibili. Non approvare mai una transazione da una dApp che non conosci.</string>
+    <string name="notification_algo_received_message"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> sono stati inviati a <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> da <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>.</string>
+    <string name="minimum_amount_required">Importo minimo richiesto</string>
+    <string name="this_is_the_first_transaction">Questa è la prima transazione per il conto selezionato. Le prime transazioni richiedono un importo minimo di almeno 0,1 Algo. Inserisci un importo valido e riprova.</string>
+    <string name="i_want_to_create">Voglio creare un conto</string>
+    <string name="create_a_new_algorand">Crea un nuovo conto Algorand o associa un conto watch</string>
+    <string name="i_already_have">Ho già un conto</string>
+    <string name="import_an_existing">Importa un conto Algorand esistente tramite la passphrase di ripristino o abbina il tuo Ledger</string>
+    <string name="i_want_to_create_an_algorand_account">Voglio creare un nuovo\nconto Algorand</string>
+    <string name="create_a_new_account">Crea un nuovo conto</string>
+    <string name="create_a_new_algorand_account_with">Crea un nuovo conto Algorand con un nuovo indirizzo e una nuova passphrase di ripristino.</string>
+    <string name="add_watch_account">Aggiungi conto watch</string>
+    <string name="i_already_have_nan_account">Ho già\nun conto</string>
+    <string name="recover_an_account">Recupera un conto</string>
+    <string name="pair_Ledger_device">Associa un dispositivo Ledger</string>
+    <string name="i_want_to_create_algorand">Voglio creare un conto Algorand che sia supportato dal mio wallet hardware Ledger.</string>
+    <string name="confirm_transaction">Conferma transazione</string>
+    <string name="your_transaction_was">La tua transazione è stata ricevuta con successo dalla rete Algorand.</string>
+    <string name="buy_algo">Acquista ALGO</string>
+    <string name="moonpay_offers">MoonPay offre il modo più veloce per comprare ALGO con la tua valuta locale. Compra criptovalute con carta di credito o bonifici bancari. È veloce, semplice e sicuro.</string>
+    <string name="buy_algo_with">Acquista ALGO con MoonPay</string>
+    <string name="secured_by">Protetto da</string>
+    <string name="your_algos_are">I tuoi Algo sono in arrivo!</string>
+    <string name="your_payment_is">Il pagamento è in fase di elaborazione. Il completamento può richiedere alcuni minuti.</string>
+    <string name="success_algo_received">Successo!\n Algo ricevuto.</string>
+    <string name="congratulations_your_account_has">Congratulazioni! Il tuo conto è stato accreditato.</string>
+    <string name="almost_there">Ci siamo quasi!</string>
+    <string name="your_purchase_request_is_pending">La tua richiesta di acquisto è in attesa di pagamento. Una volta elaborato il pagamento, riceverai una notifica.</string>
+    <string name="your_purchase_request_is_wating">Il tuo acquisto è in attesa di autorizzazione. Una volta elaborato il pagamento, riceverai una notifica.</string>
+    <string name="uh_oh_something">Oh oh, qualcosa è andato storto.</string>
+    <string name="looks_like_your">Sembra che il tuo acquisto non sia riuscito. Dovrai riprovare.</string>
+    <string name="email_address">Indirizzo email</string>
+    <string name="enter_your_email">Inserisci la tua email</string>
+    <string name="continue_with_moonpay">Continua con MoonPay</string>
+    <string name="i_agree_to_share">Accetto di condividere il mio indirizzo email con Pera e di ricevere aggiornamenti sulle funzionalità del wallet.</string>
+    <string name="not_available">Non disponibile</string>
+    <string name="you_can_not_purchase">Non è possibile acquistare mentre si è su TestNet. Torna a MainNet da Impostazioni per utilizzare MoonPay.</string>
+    <string name="your_walletconnect_request_failed">La tua richiesta di WalletConnect non è andata a buon fine con il seguente errore:\n\n<annotation replacement="error_message">errorMessagePlaceholder</annotation>\n\nRiprova tornando alla dApp dove hai iniziato la richiesta.</string>
+    <string name="add_an_account">Aggiungi un conto</string>
+    <string name="manage_assets">Gestisci gli attivi</string>
+    <string name="send_asset">Invia attivo</string>
+    <string name="enable_pin_code">Abilita codice PIN</string>
+    <string name="security_preferences">Preferenze di sicurezza</string>
+    <string name="change_pin_code">Modifica codice PIN</string>
+    <string name="watch_account_added">Conto Watch aggiunto correttamente</string>
+    <string name="the_watch_account_has_been">Il conto Watch è aggiunto correttamente</string>
+    <string name="currency_preferences">Preferenze di valuta</string>
+    <string name="collectibles">Elementi da collezione</string>
+    <string name="welcome_to_your_nft">Benvenuto nella tua Galleria NFT! Non hai ancora nessun NFT. Tutti gli NFT disponibili nel tuo wallet  saranno visibili qui.</string>
+    <string name="receive_nft">Ricevi NFT</string>
+    <string name="share">Condividi</string>
+    <string name="description">Descrizione</string>
+    <string name="owner">Proprietario</string>
+    <string name="asset_id_">ID attivo</string>
+    <string name="creator_wallet_address">Indirizzo del wallet del creatore</string>
+    <string name="collection_name">Nome della collezione</string>
+    <string name="creator_name">Nome del creatore</string>
+    <string name="properties">Proprietà</string>
+    <string name="view_transaction">Visualizza transazione</string>
+    <string name="show_on_algoexplorer">Mostra su Algoexplorer</string>
+    <string name="show_on_nftexplorer">Mostra su NFTExplorer</string>
+    <string name="we_don_t_support">Non supportiamo ancora questo tipo d supporto NFT.</string>
+    <string name="we_can_t_display">Non possiamo visualizzare temporaneamente l\'oggetto visivo.</string>
+    <string name="transfer">Trasferimento</string>
+    <string name="send_your_nft">Invia il tuo NFT</string>
+    <string name="paste_an_algorand_wallet_address">Incolla un indirizzo di wallet Algorand</string>
+    <string name="ask_recipient_to">Chiedi al destinatario di acconsentire (opt-in)</string>
+    <string name="you_cant_send">Non puoi inviare <annotation replacement="collectible_name">collectibleNamePlaceHolder</annotation> a <annotation replacement="wallet_address">walletAddressPlaceholder</annotation> perché questo wallet non prevede ancora questo attivo. <annotation font="dmsans_medium"><annotation custom="learn_more">Scopri di più sull\'Opt-in</annotation></annotation></string>
+    <string name="request_opt_in">Richiedi l\'adesione (opt-in)</string>
+    <string name="information_about_opt">Informazioni sull\'adesione (Opt-in)</string>
+    <string name="to_avoid_spammy">Per evitare transazioni di spam, Algorand Blockchain ti consente di inviare e ricevere transazioni solo per asset che sono stati precedentemente attivati (opt-in).</string>
+    <string name="search_or_enter_wallet_address">Cerca o inserisci l\'indirizzo del wallet</string>
+    <string name="your_nft_transfer">Il tuo trasferimento NFT è confermato!</string>
+    <string name="transactions_can_take">La finalizzazione delle transazioni può richiedere alcuni minuti.</string>
+    <string name="got_it">Capito!</string>
+    <string name="approve_transaction">Approva transazione</string>
+    <string name="are_you_sure">Sei sicuro di voler procedere?</string>
+    <string name="sender_account">Conto mittente</string>
+    <string name="transacting_fee">Commissione di transazione</string>
+    <string name="confirm_transfer">Conferma il trasferimento</string>
+    <string name="search_asset_id_or_nft">Cerca l\'ID dell\'attivo o il nome dell\'NFT</string>
+    <string name="receive_an_nft">Ricevi un NFT</string>
 </resources>

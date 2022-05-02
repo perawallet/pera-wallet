@@ -115,7 +115,7 @@ data class AssetInformation(
                 AssetInformation(
                     assetId = collectibleId,
                     isVerified = collectibleDetail.isVerified,
-                    creatorPublicKey = creatorWalletAddress,
+                    creatorPublicKey = creatorWalletAddress?.publicKey,
                     fullName = collectibleName
                 )
             }

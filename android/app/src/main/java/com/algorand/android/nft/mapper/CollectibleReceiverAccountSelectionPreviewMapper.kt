@@ -13,6 +13,7 @@
 package com.algorand.android.nft.mapper
 
 import com.algorand.android.models.BaseAccountSelectionListItem
+import com.algorand.android.models.ScreenState
 import com.algorand.android.nft.ui.model.CollectibleReceiverAccountSelectionPreview
 import javax.inject.Inject
 
@@ -21,16 +22,22 @@ class CollectibleReceiverAccountSelectionPreviewMapper @Inject constructor() {
     fun mapToLoadingPreview(): CollectibleReceiverAccountSelectionPreview {
         return CollectibleReceiverAccountSelectionPreview(
             isLoadingVisible = true,
-            accountListItems = emptyList()
+            accountListItems = emptyList(),
+            screenStateViewType = null,
+            isScreenStateViewVisible = false
         )
     }
 
     fun mapToCollectibleReceiverAccountSelectionPreview(
-        accountItems: List<BaseAccountSelectionListItem>
+        accountItems: List<BaseAccountSelectionListItem>,
+        screenState: ScreenState?,
+        isScreenStateViewVisible: Boolean
     ): CollectibleReceiverAccountSelectionPreview {
         return CollectibleReceiverAccountSelectionPreview(
             isLoadingVisible = false,
-            accountListItems = accountItems
+            accountListItems = accountItems,
+            screenStateViewType = screenState,
+            isScreenStateViewVisible = isScreenStateViewVisible
         )
     }
 }

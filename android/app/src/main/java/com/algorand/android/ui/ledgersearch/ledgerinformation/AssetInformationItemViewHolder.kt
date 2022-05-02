@@ -18,7 +18,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.databinding.ItemLedgerInformationAssetBinding
 import com.algorand.android.models.LedgerInformationListItem
-import com.algorand.android.utils.extensions.setTextAndVisibility
 
 class AssetInformationItemViewHolder(
     private val binding: ItemLedgerInformationAssetBinding
@@ -28,8 +27,8 @@ class AssetInformationItemViewHolder(
         with(binding) {
             with(assetInformationItem.accountAssetData) {
                 assetNameTextView.setupUI(isVerified, shortName, name, id, isAlgo)
-                assetBalanceTextView.text = formattedAmount
-                currencyBalanceTextView.setTextAndVisibility(formattedSelectedCurrencyValue)
+                assetBalanceTextView.text = formattedCompactAmount
+                currencyBalanceTextView.text = formattedSelectedCurrencyCompactValue
             }
         }
     }

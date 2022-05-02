@@ -19,6 +19,7 @@ import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.database.NotificationFilterDao
 import com.algorand.android.models.Account
+import com.algorand.android.models.WarningConfirmation
 import com.algorand.android.repository.NotificationRepository
 import com.algorand.android.usecase.AccountOptionsUseCase
 import com.algorand.android.utils.Resource
@@ -78,6 +79,10 @@ class AccountOptionsViewModel @ViewModelInject constructor(
 
     fun getAccountName(): String {
         return accountOptionsUseCase.getAccountName(publicKey)
+    }
+
+    fun getRemovingAccountWarningConfirmationModel(): WarningConfirmation {
+        return accountOptionsUseCase.getRemovingAccountWarningConfirmationModel(publicKey)
     }
 
     companion object {

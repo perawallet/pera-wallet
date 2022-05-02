@@ -84,10 +84,10 @@ class AccountsFragment : BaseBottomBarFragment(R.layout.fragment_accounts) {
         override fun onPortfolioInfoClick(portfolioItem: BaseAccountListItem.BasePortfolioValueItem) {
             navToPortfolioInfoBottomSheet(portfolioItem)
         }
+    }
 
-        override fun onBuyAlgoClick() {
-            navToMoonpayIntroFragment()
-        }
+    private val moonpayBuyAlgoListener = MoonpayBuyAlgoViewHolder.MoonpayBuyAlgoListener {
+        navToMoonpayIntroFragment()
     }
 
     private val bannerListener = object : BaseBannerViewHolder.BannerListener {
@@ -106,7 +106,8 @@ class AccountsFragment : BaseBottomBarFragment(R.layout.fragment_accounts) {
             ::onErrorAccountClick,
             ::onAccountOptionsClick,
             portfolioInfoClickListener,
-            bannerListener
+            bannerListener,
+            moonpayBuyAlgoListener
         )
 
     private val accountListCollector: suspend (List<BaseAccountListItem>) -> Unit = {

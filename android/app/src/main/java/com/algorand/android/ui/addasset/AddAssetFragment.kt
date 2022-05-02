@@ -49,6 +49,9 @@ class AddAssetFragment : BaseAddAssetFragment(R.layout.fragment_add_asset) {
     override val accountPublicKey: String
         get() = args.accountPublicKey
 
+    override val assetAdditionType: AssetAdditionType
+        get() = AssetAdditionType.ASSET
+
     private val toolbarConfiguration = ToolbarConfiguration(
         titleResId = R.string.add_new_asset,
         startIconResId = R.drawable.ic_left_arrow,
@@ -76,7 +79,6 @@ class AddAssetFragment : BaseAddAssetFragment(R.layout.fragment_add_asset) {
     }
 
     override fun initUi() {
-        addAssetViewModel.start(getString(R.string.the_internet_connection))
         setupToolbar()
         with(binding) {
             algorandTabLayout.setListener(algorandTabLayoutListener)

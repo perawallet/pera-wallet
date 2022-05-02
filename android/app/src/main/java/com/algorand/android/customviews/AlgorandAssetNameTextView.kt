@@ -58,7 +58,7 @@ class AlgorandAssetNameTextView @JvmOverloads constructor(
                     algorandAssetAvatarView.setAlgorandAvatar()
                 } else {
                     val subTextRes = context.getString(
-                        R.string.asset_name_with_id,
+                        R.string.pair_value_format_with_coma,
                         shortName?.uppercase(Locale.ENGLISH),
                         assetId
                     )

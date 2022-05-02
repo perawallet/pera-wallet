@@ -39,8 +39,6 @@ abstract class BaseAddAssetViewModel(
     private val accountDetailUseCase: AccountDetailUseCase
 ) : BaseViewModel() {
 
-    private lateinit var networkErrorMessage: String
-
     protected abstract val searchPaginationFlow: Flow<PagingData<BaseAssetSearchListItem>>
 
     protected val assetSearchPagerBuilder = AssetSearchPagerBuilder.create()
@@ -52,16 +50,18 @@ abstract class BaseAddAssetViewModel(
 
     private var sendTransactionJob: Job? = null
 
-    fun start(networkErrorMessage: String) {
-        this.networkErrorMessage = networkErrorMessage
-    }
-
     fun createAssetAdditionLoadStatePreview(
         combinedLoadStates: CombinedLoadStates,
         itemCount: Int,
-        isLastStateError: Boolean
+        isLastStateError: Boolean,
+        assetAdditionType: AssetAdditionType
     ): AssetAdditionLoadStatePreview {
-        return assetAdditionUseCase.createAssetAdditionLoadStatePreview(combinedLoadStates, itemCount, isLastStateError)
+        return assetAdditionUseCase.createAssetAdditionLoadStatePreview(
+            combinedLoadStates = combinedLoadStates,
+            itemCount = itemCount,
+            isLastStateError = isLastStateError,
+            assetAdditionType = assetAdditionType
+        )
     }
 
     fun sendSignedTransaction(

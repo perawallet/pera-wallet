@@ -39,6 +39,8 @@ class CurrencySelectionViewModel @ViewModelInject constructor(
 
     private var previewJob: Job? = null
 
+    private var searchKeyword = ""
+
     init {
         initPreviewFlow()
     }
@@ -52,9 +54,14 @@ class CurrencySelectionViewModel @ViewModelInject constructor(
         previewJob = getPreviewJob()
     }
 
+    fun updateSearchKeyword(searchKeyword: String) {
+        this.searchKeyword = searchKeyword
+        refreshPreview()
+    }
+
     private fun getPreviewJob(): Job {
         return viewModelScope.launch {
-            currencySelectionPreviewUseCase.getCurrencySelectionPreviewFlow().collectLatest {
+            currencySelectionPreviewUseCase.getCurrencySelectionPreviewFlow(searchKeyword).collectLatest {
                 _currencySelectionPreviewFlow.value = it
             }
         }

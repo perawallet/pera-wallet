@@ -23,7 +23,8 @@ class AssetDetailPreviewMapper @Inject constructor() {
 
     fun mapToAssetDetailPreview(
         assetData: BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData,
-        canSignTransaction: Boolean
+        canSignTransaction: Boolean,
+        formattedAssetBalance: String
     ): AssetDetailPreview {
         return AssetDetailPreview(
             assetId = assetData.id,
@@ -32,7 +33,7 @@ class AssetDetailPreviewMapper @Inject constructor() {
             fullName = AssetName.create(assetData.name),
             shortName = AssetName.createShortName(assetData.shortName),
             formattedAssetId = assetData.id.toString(),
-            formattedAssetBalance = assetData.formattedAmount,
+            formattedAssetBalance = formattedAssetBalance,
             formattedAssetBalanceInCurrency = assetData.formattedSelectedCurrencyValue,
             isAmountInSelectedCurrencyVisible = assetData.hasUsdValue(),
             canSignTransaction = canSignTransaction

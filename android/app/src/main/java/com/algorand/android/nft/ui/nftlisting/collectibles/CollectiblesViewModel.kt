@@ -13,16 +13,17 @@
 package com.algorand.android.nft.ui.nftlisting.collectibles
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.ViewModel
 import com.algorand.android.nft.domain.usecase.CollectiblesListingPreviewUseCase
+import com.algorand.android.nft.ui.base.BaseCollectibleListingViewModel
 import com.algorand.android.nft.ui.model.CollectiblesListingPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 
 class CollectiblesViewModel @ViewModelInject constructor(
     private val collectiblesListingPreviewUseCase: CollectiblesListingPreviewUseCase,
-) : ViewModel() {
+) : BaseCollectibleListingViewModel(collectiblesListingPreviewUseCase) {
 
-    val collectiblesListingPreviewFlow: Flow<CollectiblesListingPreview>
-        get() = collectiblesListingPreviewUseCase.getCollectiblesListingPreviewFlow().distinctUntilChanged()
+    override fun initCollectiblesListingPreviewFlow(searchKeyword: String): Flow<CollectiblesListingPreview> {
+        return collectiblesListingPreviewUseCase.getCollectiblesListingPreviewFlow(searchKeyword).distinctUntilChanged()
+    }
 }

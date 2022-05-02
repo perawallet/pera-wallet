@@ -12,6 +12,10 @@
 
 package com.algorand.android.nft.domain.usecase
 
+import com.algorand.android.R
+import com.algorand.android.mapper.ScreenStateMapper
+import com.algorand.android.models.BaseAccountSelectionListItem
+import com.algorand.android.models.ScreenState
 import com.algorand.android.nft.mapper.CollectibleReceiverAccountSelectionPreviewMapper
 import com.algorand.android.nft.ui.model.CollectibleReceiverAccountSelectionPreview
 import com.algorand.android.usecase.AccountSelectionListUseCase
@@ -20,7 +24,8 @@ import kotlinx.coroutines.flow.flow
 
 class CollectibleReceiverAccountSelectionPreviewUseCase @Inject constructor(
     private val accountSelectionUseCase: AccountSelectionListUseCase,
-    private val previewMapper: CollectibleReceiverAccountSelectionPreviewMapper
+    private val previewMapper: CollectibleReceiverAccountSelectionPreviewMapper,
+    private val screenStateMapper: ScreenStateMapper
 ) {
 
     fun getAccountListItems() = flow<CollectibleReceiverAccountSelectionPreview> {
@@ -31,6 +36,25 @@ class CollectibleReceiverAccountSelectionPreviewUseCase @Inject constructor(
             shouldIncludeWatchAccounts = false,
             showFailedAccounts = true
         )
-        emit(previewMapper.mapToCollectibleReceiverAccountSelectionPreview(accountListItems))
+        val screenState = createEmptyStateIfNeed(accountListItems)
+        val isScreenStateViewVisible = screenState != null
+        emit(
+            previewMapper.mapToCollectibleReceiverAccountSelectionPreview(
+                accountItems = accountListItems,
+                screenState = screenState,
+                isScreenStateViewVisible = isScreenStateViewVisible
+            )
+        )
+    }
+
+    private fun createEmptyStateIfNeed(accountItems: List<BaseAccountSelectionListItem>): ScreenState.CustomState? {
+        return if (accountItems.isEmpty()) {
+            screenStateMapper.mapToCustomState(
+                title = R.string.no_account_found,
+                description = R.string.you_need_to_create,
+            )
+        } else {
+            null
+        }
     }
 }

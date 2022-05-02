@@ -15,12 +15,29 @@ package com.algorand.android.ui.register.watch.result
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import com.algorand.android.usecase.LockPreferencesUseCase
+import com.algorand.android.usecase.WatchAccountAdditionResultInfoUseCase
 
 class WatchAccountResultInfoViewModel @ViewModelInject constructor(
+    watchAccountAdditionResultInfoUseCase: WatchAccountAdditionResultInfoUseCase,
     private val lockPreferencesUseCase: LockPreferencesUseCase
 ) : ViewModel() {
 
+    private val watchAccountAdditionResultInfoPreview =
+        watchAccountAdditionResultInfoUseCase.getWatchAccountAdditionResultInfoPreview()
+
     fun shouldForceLockNavigation(): Boolean {
         return lockPreferencesUseCase.shouldNavigateLockNavigation()
+    }
+
+    fun getPreviewTitle(): Int {
+        return watchAccountAdditionResultInfoPreview.titleTextRes
+    }
+
+    fun getPreviewDescription(): Int {
+        return watchAccountAdditionResultInfoPreview.descriptionTextRes
+    }
+
+    fun getPreviewFirstButtonText(): Int {
+        return watchAccountAdditionResultInfoPreview.firstButtonTextRes
     }
 }

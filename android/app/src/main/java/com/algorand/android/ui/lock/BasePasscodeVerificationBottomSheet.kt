@@ -14,17 +14,14 @@ package com.algorand.android.ui.lock
 
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.algorand.android.R
 import com.algorand.android.core.BaseBottomSheet
 import com.algorand.android.customviews.DialPadView
-import com.algorand.android.customviews.SixDigitPasswordView
 import com.algorand.android.databinding.BottomSheetViewPassphraseLockBinding
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.ui.accounts.ViewPassphraseLockViewModel
-import com.algorand.android.utils.showBiometricAuthentication
 import com.algorand.android.utils.viewbinding.viewBinding
 
 abstract class BasePasscodeVerificationBottomSheet :
@@ -40,20 +37,21 @@ abstract class BasePasscodeVerificationBottomSheet :
 
     private val dialPadListener = object : DialPadView.DialPadListener {
         override fun onNumberClick(number: Int) {
-            binding.viewPassphraseLockSixDigitPasswordView.onNewDigit(number, onNewDigitAdded = { isNewDigitAdded ->
-                if (!isNewDigitAdded) {
-                    return@onNewDigit
-                }
-                val passwordSize = binding.viewPassphraseLockSixDigitPasswordView.getPasswordSize()
-                if (passwordSize == SixDigitPasswordView.PASSWORD_LENGTH) {
-                    val givenPassword = binding.viewPassphraseLockSixDigitPasswordView.getPassword()
-                    if (viewPassphraseLockViewModel.getPassword() == givenPassword) {
-                        onPasscodeSuccess()
-                    } else {
-                        onPasscodeError()
+            binding.viewPassphraseLockSixDigitPasswordView.onNewDigit(
+                number,
+                onNewDigitAdded = { isNewDigitAdded, isPasswordFilled ->
+                    if (!isNewDigitAdded) {
+                        return@onNewDigit
                     }
-                }
-            })
+                    if (isPasswordFilled) {
+                        val givenPassword = binding.viewPassphraseLockSixDigitPasswordView.getPassword()
+                        if (viewPassphraseLockViewModel.getPassword() == givenPassword) {
+                            onPasscodeSuccess()
+                        } else {
+                            onPasscodeError()
+                        }
+                    }
+                })
         }
 
         override fun onBackspaceClick() {
@@ -81,21 +79,6 @@ abstract class BasePasscodeVerificationBottomSheet :
         super.onStart()
         if (viewPassphraseLockViewModel.isNotPasswordChosen()) {
             onPasscodeSuccess()
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (viewPassphraseLockViewModel.isBiometricActive()) {
-            lockHandler = Handler(Looper.myLooper() ?: Looper.getMainLooper())
-            lockHandler?.post {
-                activity?.showBiometricAuthentication(
-                    getString(R.string.app_name),
-                    getString(R.string.please_scan_your_fingerprint_or),
-                    getString(R.string.cancel),
-                    successCallback = { onPasscodeSuccess() }
-                )
-            }
         }
     }
 

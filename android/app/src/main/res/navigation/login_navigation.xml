@@ -78,8 +78,8 @@
             android:name="accountCreation"
             app:argType="com.algorand.android.models.AccountCreation" />
         <action
-            android:id="@+id/action_passphraseQuestionFragment_to_createAccountNameRegistrationFragment"
-            app:destination="@id/createAccountNameRegistrationFragment" />
+            android:id="@+id/action_passphraseQuestionFragment_to_passphraseVerifiedInfoFragment"
+            app:destination="@id/passphraseVerifiedInfoFragment" />
     </fragment>
 
     <fragment
@@ -271,5 +271,18 @@
         android:name="com.algorand.android.ui.register.recover.RecoverOptionsBottomSheet"
         android:label="RecoverOptionsBottomSheet"
         tools:layout="@layout/bottom_sheet_recover_options" />
+
+    <fragment
+        android:id="@+id/passphraseVerifiedInfoFragment"
+        android:name="com.algorand.android.ui.register.createaccount.passphraseverified.PassphraseVerifiedInfoFragment"
+        android:label="PassphraseVerifiedInfoFragment"
+        tools:layout="@layout/fragment_base_info">
+        <argument
+            android:name="accountCreation"
+            app:argType="com.algorand.android.models.AccountCreation" />
+        <action
+            android:id="@+id/action_passphraseVerifiedInfoFragment_to_recoverAccountNameRegistrationFragment"
+            app:destination="@id/recoverAccountNameRegistrationFragment" />
+    </fragment>
 
 </navigation>

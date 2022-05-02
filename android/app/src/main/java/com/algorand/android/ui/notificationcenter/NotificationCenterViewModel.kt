@@ -12,7 +12,6 @@
 
 package com.algorand.android.ui.notificationcenter
 
-import android.content.SharedPreferences
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
@@ -23,21 +22,25 @@ import androidx.paging.cachedIn
 import com.algorand.android.core.AccountManager
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.database.ContactDao
-import com.algorand.android.models.AssetInformation
+import com.algorand.android.deviceregistration.domain.usecase.DeviceIdUseCase
+import com.algorand.android.models.NotificationCenterPreview
+import com.algorand.android.models.NotificationListItem
 import com.algorand.android.notification.PeraNotificationManager
 import com.algorand.android.repository.NotificationRepository
-import com.algorand.android.utils.AccountCacheManager
-import com.algorand.android.utils.preference.getNotificationRefreshDateTime
-import com.algorand.android.utils.preference.setNotificationRefreshDate
+import com.algorand.android.usecase.NotificationCenterUseCase
 import java.time.ZonedDateTime
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class NotificationCenterViewModel @ViewModelInject constructor(
     private val peraNotificationManager: PeraNotificationManager,
-    private val sharedPref: SharedPreferences,
     private val contactDao: ContactDao,
     private val accountManager: AccountManager,
-    private val accountCacheManager: AccountCacheManager,
-    private val notificationRepository: NotificationRepository
+    private val deviceIdUseCase: DeviceIdUseCase,
+    private val notificationRepository: NotificationRepository,
+    private val notificationCenterUseCase: NotificationCenterUseCase
 ) : BaseViewModel() {
 
     private var notificationDataSource: NotificationDataSource? = null
@@ -45,13 +48,16 @@ class NotificationCenterViewModel @ViewModelInject constructor(
     val notificationPaginationFlow = Pager(PagingConfig(pageSize = DEFAULT_NOTIFICATION_COUNT)) {
         NotificationDataSource(
             notificationRepository = notificationRepository,
-            sharedPref = sharedPref,
             contactDao = contactDao,
-            accountManager = accountManager
+            accountManager = accountManager,
+            deviceIdUseCase = deviceIdUseCase
         ).also { notificationDataSource ->
             this.notificationDataSource = notificationDataSource
         }
     }.flow.cachedIn(viewModelScope)
+
+    private val _notificationCenterPreviewFlow = MutableStateFlow<NotificationCenterPreview?>(null)
+    val notificationCenterPreviewFlow: StateFlow<NotificationCenterPreview?> get() = _notificationCenterPreviewFlow
 
     fun refreshNotificationData(refreshDateTime: ZonedDateTime? = null) {
         if (refreshDateTime != null) {
@@ -61,15 +67,27 @@ class NotificationCenterViewModel @ViewModelInject constructor(
     }
 
     fun getLastRefreshedDateTime(): ZonedDateTime {
-        return sharedPref.getNotificationRefreshDateTime()
+        return notificationCenterUseCase.getLastRefreshedDateTime()
     }
 
     fun setLastRefreshedDateTime(zonedDateTime: ZonedDateTime) {
-        sharedPref.setNotificationRefreshDate(zonedDateTime)
+        notificationCenterUseCase.setLastRefreshedDateTime(zonedDateTime)
     }
 
-    fun isAssetAvailableOnAccount(publicKey: String, assetInformation: AssetInformation): Boolean {
-        return accountCacheManager.getAssetInformation(publicKey, assetInformation.assetId) != null
+    fun isAssetAvailableOnAccount(publicKey: String, assetId: Long) {
+        viewModelScope.launch {
+            notificationCenterUseCase.checkClickedNotificationItemType(assetId, publicKey).collect {
+                _notificationCenterPreviewFlow.emit(it)
+            }
+        }
+    }
+
+    fun onNotificationClickEvent(notificationListItem: NotificationListItem) {
+        viewModelScope.launch {
+            notificationCenterUseCase.onNotificationClickEvent(notificationListItem).collect {
+                _notificationCenterPreviewFlow.emit(it)
+            }
+        }
     }
 
     fun isRefreshNeededLiveData(): LiveData<Boolean> {
