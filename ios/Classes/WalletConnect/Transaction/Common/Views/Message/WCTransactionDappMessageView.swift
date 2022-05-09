@@ -105,8 +105,9 @@ class WCTransactionDappMessageView: BaseView {
 
 extension WCTransactionDappMessageView {
     private func setupDappImageViewLayout() {
+        dappImageView.build(URLImageViewNoStyleLayoutSheet())
+        
         addSubview(dappImageView)
-
         dappImageView.snp.makeConstraints { make in
             make.leading.equalToSuperview()
             make.centerY.equalToSuperview()

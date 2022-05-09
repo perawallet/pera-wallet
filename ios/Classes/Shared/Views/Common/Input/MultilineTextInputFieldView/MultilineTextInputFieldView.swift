@@ -288,8 +288,8 @@ extension MultilineTextInputFieldView {
         addSubview(textInputView)
         textInputView.fitToVerticalIntrinsicSize()
         textInputView.snp.makeConstraints {
-            $0.top == layoutSheet.topInset
-            $0.setHorizontalPaddings()
+            $0.height.greaterThanOrEqualTo(layoutSheet.textInputMinHeight)
+            $0.top.leading.trailing.equalToSuperview()
         }
     }
     
@@ -322,7 +322,7 @@ extension MultilineTextInputFieldView {
     private func addFocusIndicator(_ layoutSheet: MultilineTextInputFieldViewTheme) {
         addSubview(focusIndicatorView)
         focusIndicatorView.snp.makeConstraints {
-            $0.bottom == textInputView.snp.bottom + 5
+            $0.bottom == textInputView.snp.bottom + layoutSheet.focusIndicatorTopInset
             $0.fitToHeight(1)
             $0.setHorizontalPaddings()
         }

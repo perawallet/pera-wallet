@@ -24,7 +24,7 @@ final class AssetSearchViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout {
     lazy var handlers = Handlers()
-
+    
     private lazy var searchInputView = SearchInputView()
 
     private lazy var listView: UICollectionView = {
@@ -46,13 +46,17 @@ final class AssetSearchViewController:
 
     private let theme: Theme
     private let dataController: AssetSearchDataController
+    
+    private let accountHandle: AccountHandle
 
     init(
         theme: Theme = .init(),
+        accountHandle: AccountHandle,
         dataController: AssetSearchDataController,
         configuration: ViewControllerConfiguration
     ) {
         self.theme = theme
+        self.accountHandle = accountHandle
         self.dataController = dataController
         super.init(configuration: configuration)
     }
@@ -145,11 +149,7 @@ extension AssetSearchViewController {
                   return
               }
 
-        closeScreen(by: .dismiss, animated: false) {
-            [weak self] in
-            guard let self = self else { return }
-            self.handlers.didSelectAsset?(asset)
-        }
+        self.handlers.didSelectAsset?(asset)
     }
 }
 

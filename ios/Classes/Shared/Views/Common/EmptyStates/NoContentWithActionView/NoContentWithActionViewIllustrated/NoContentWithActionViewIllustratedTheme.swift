@@ -26,9 +26,11 @@ struct NoContentWithActionViewIllustratedTheme: NoContentViewWithActionTheme {
     var contentVerticalPaddings: LayoutVerticalPaddings
     let actionContentEdgeInsets: LayoutPaddings
     let actionCornerRadius: LayoutMetric
-    let actionTopMargin: LayoutMetric
-    var action: ButtonStyle
+    let primaryActionTopMargin: LayoutMetric
+    var primaryAction: ButtonStyle
     let actionAlignment: NoContentWithActionView.ActionViewAlignment
+    let secondaryActionTopMargin: LayoutMetric
+    var secondaryAction: ButtonStyle
 
     init(
         _ family: LayoutFamily
@@ -44,13 +46,21 @@ struct NoContentWithActionViewIllustratedTheme: NoContentViewWithActionTheme {
         contentVerticalPaddings = (16, 16)
         actionContentEdgeInsets = (14, 24, 14, 24)
         actionCornerRadius = 4
-        actionTopMargin = 52
-        action = [
+        primaryActionTopMargin = 52
+        primaryAction = [
             .titleColor(
                 [.normal(AppColors.Components.Button.Primary.text)]
             ),
             .font(Fonts.DMSans.medium.make(15)),
             .backgroundColor(AppColors.Components.Button.Primary.background)
+        ]
+        secondaryActionTopMargin = 16
+        secondaryAction = [
+            .titleColor(
+                [.normal(AppColors.Components.Button.Secondary.text)]
+            ),
+            .font(Fonts.DMSans.medium.make(15)),
+            .backgroundColor(AppColors.Components.Button.Secondary.background)
         ]
         actionAlignment = .aligned(left: 0, right: 0)
     }

@@ -20,42 +20,44 @@ import MacaroonUIKit
 import UIKit
 
 struct TransactionCurrencyAmountViewModel:
-    PairedViewModel,
     Hashable {
     private(set) var amountLabelText: EditText?
     private(set) var amountLabelColor: UIColor?
     private(set) var currencyLabelText: EditText?
 
     init(
-        _ mode: TransactionAmountView.Mode
+        _ mode: TransactionAmountView.Mode,
+        showAbbreviation: Bool = false
     ) {
-        bindMode(mode)
+        bindMode(mode, showAbbreviation: showAbbreviation)
     }
 }
 
 extension TransactionCurrencyAmountViewModel {
     private mutating func bindMode(
-        _ mode: TransactionAmountView.Mode
+        _ mode: TransactionAmountView.Mode,
+        showAbbreviation: Bool
     ) {
         switch mode {
         case let .normal(amount, isAlgos, assetFraction, assetSymbol, currency):
-            bindAmount(amount, with: assetFraction, isAlgos: isAlgos, assetSymbol: assetSymbol, currency: currency)
+            bindAmount(amount, showAbbreviation: showAbbreviation, with: assetFraction, isAlgos: isAlgos, assetSymbol: assetSymbol, currency: currency)
         case let .positive(amount, isAlgos, assetFraction, assetSymbol, currency):
-            bindAmount(amount, with: assetFraction, isAlgos: isAlgos, assetSymbol: assetSymbol, currency: currency)
+            bindAmount(amount, showAbbreviation: showAbbreviation, with: assetFraction, isAlgos: isAlgos, assetSymbol: assetSymbol, currency: currency)
         case let .negative(amount, isAlgos, assetFraction, assetSymbol, currency):
-            bindAmount(amount, with: assetFraction, isAlgos: isAlgos, assetSymbol: assetSymbol, currency: currency)
+            bindAmount(amount, showAbbreviation: showAbbreviation, with: assetFraction, isAlgos: isAlgos, assetSymbol: assetSymbol, currency: currency)
         }
     }
 
     private mutating func bindAmount(
         _ amount: Decimal,
+        showAbbreviation: Bool,
         with assetFraction: Int?,
         isAlgos: Bool,
         assetSymbol: String? = nil,
         currency: String? = nil
     ) {
         if isAlgos {
-            amountLabelText = .string(amount.toAlgosStringForLabel)
+            amountLabelText = .string(showAbbreviation ? amount.toFullAlgosStringForLabel : amount.toAlgosStringForLabel)
             currencyLabelText = .string(currency)
             return
         }
@@ -64,7 +66,7 @@ extension TransactionCurrencyAmountViewModel {
             return
         }
         
-        let amountText = amount.toFractionStringForLabel(fraction: fraction) ?? ""
+        let amountText = amount.abbreviatedFractionStringForLabel(fraction: fraction) ?? ""
         
         if let assetSymbol = assetSymbol {
             amountLabelText = .string("\(amountText) \(assetSymbol)")

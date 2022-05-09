@@ -33,6 +33,7 @@ extension CollectibleDetailLayout {
         let externalTopPadding: LayoutMetric
         let externalBottomPadding: LayoutMetric
         let mediaInset: LayoutMetric
+        let mediaLabelOffset: LayoutMetric
 
         init(
             _ family: LayoutFamily
@@ -50,6 +51,7 @@ extension CollectibleDetailLayout {
             self.externalTopPadding = 12
             self.externalBottomPadding = 20
             self.mediaInset = 24
+            self.mediaLabelOffset = 32
         }
     }
 }

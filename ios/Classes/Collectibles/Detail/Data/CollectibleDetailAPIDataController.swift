@@ -25,6 +25,8 @@ final class CollectibleDetailAPIDataController: CollectibleDetailDataController 
     private var lastSnapshot: Snapshot?
     private let snapshotQueue = DispatchQueue(label: Constants.DispatchQueues.collectibleDetailSnapshot)
 
+    private var ongoingEndpoint: EndpointOperatable?
+
     private let api: ALGAPI
     private var asset: CollectibleAsset
     private let account: Account
@@ -51,8 +53,11 @@ extension CollectibleDetailAPIDataController {
     }
 
     private func fetchAssetDetails() {
-        api.fetchAssetDetail(
-            AssetDetailFetchDraft(id: asset.id)
+        cancelOngoingEndpoint()
+
+        ongoingEndpoint = api.fetchAssetDetail(
+            AssetDetailFetchDraft(id: asset.id),
+            ignoreResponseOnCancelled: false
         ) { [weak self] response in
             guard let self = self else { return }
 
@@ -77,6 +82,11 @@ extension CollectibleDetailAPIDataController {
                 self.eventHandler?(.didResponseFail(message: message))
             }
         }
+    }
+
+    private func cancelOngoingEndpoint() {
+        ongoingEndpoint?.cancel()
+        ongoingEndpoint = nil
     }
 }
 
@@ -156,6 +166,12 @@ extension CollectibleDetailAPIDataController {
             return
         }
 
+        /// <note>: Creators cannot opt-out from the asset.
+        if asset.creator?.address == account.address {
+            addCreatorAccountActionContent(&snapshot)
+            return
+        }
+
         addOptedInActionContent(&snapshot)
     }
 
@@ -164,6 +180,25 @@ extension CollectibleDetailAPIDataController {
     ) {
         let actionItem: [CollectibleDetailItem] = [
             .watchAccountAction(
+                CollectibleDetailActionViewModel(
+                    asset: asset,
+                    account: account
+                )
+            )
+        ]
+
+        snapshot.appendSections([.action])
+        snapshot.appendItems(
+            actionItem,
+            toSection: .action
+        )
+    }
+
+    private func addCreatorAccountActionContent(
+        _ snapshot: inout Snapshot
+    ) {
+        let actionItem: [CollectibleDetailItem] = [
+            .collectibleCreatorAccountAction(
                 CollectibleDetailActionViewModel(
                     asset: asset,
                     account: account

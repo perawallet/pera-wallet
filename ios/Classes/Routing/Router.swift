@@ -125,8 +125,6 @@ class Router:
                 by: .present
             )
         case .assetActionConfirmation(let draft):
-            launch(tab: .home)
-            
             let visibleScreen = findVisibleScreen(over: rootViewController)
             let transition = BottomSheetTransition(presentingViewController: visibleScreen)
 
@@ -205,9 +203,9 @@ class Router:
                 sourceViewController.closeScreen(by: .dismiss, animated: false)
             }
             
-            let navigationController: NavigationController
+            let navigationController: NavigationContainer
             
-            if let navController = viewController as? NavigationController {
+            if let navController = viewController as? NavigationContainer {
                 navigationController = navController
             } else {
                 if let presentingViewController = self as? StatusBarConfigurable,
@@ -218,7 +216,7 @@ class Router:
                     presentedViewController.isStatusBarHidden = true
                 }
                 
-                navigationController = NavigationController(rootViewController: viewController)
+                navigationController = NavigationContainer(rootViewController: viewController)
             }
             
             navigationController.modalPresentationStyle = .fullScreen
@@ -226,9 +224,9 @@ class Router:
             rootViewController.present(navigationController, animated: false, completion: completion)
         case .present,
                 .customPresent:
-            let navigationController: NavigationController
+            let navigationController: NavigationContainer
             
-            if let navController = viewController as? NavigationController {
+            if let navController = viewController as? NavigationContainer {
                 navigationController = navController
             } else {
                 if let presentingViewController = self as? StatusBarConfigurable,
@@ -239,7 +237,7 @@ class Router:
                     presentedViewController.isStatusBarHidden = true
                 }
                 
-                navigationController = NavigationController(rootViewController: viewController)
+                navigationController = NavigationContainer(rootViewController: viewController)
             }
             
             if case .customPresent(
@@ -393,8 +391,9 @@ class Router:
             let aViewController = AccountDetailViewController(accountHandle: accountHandle, configuration: configuration)
             aViewController.eventHandler = eventHandler
             viewController = aViewController
-        case let .assetSearch(dataController):
+        case let .assetSearch(accountHandle, dataController):
             viewController = AssetSearchViewController(
+                accountHandle: accountHandle,
                 dataController: dataController,
                 configuration: configuration
             )
@@ -637,6 +636,11 @@ class Router:
             )
         case .peraIntroduction:
             viewController = PeraIntroductionViewController(configuration: configuration)
+        case let .collectiblesFilterSelection(filter):
+            viewController = CollectiblesFilterSelectionViewController(
+                filter: filter,
+                configuration: configuration
+            )
         case let .receiveCollectibleAccountList(dataController):
             viewController = ReceiveCollectibleAccountListViewController(
                 dataController: dataController,
@@ -655,23 +659,20 @@ class Router:
                 thumbnailImage: thumbnailImage,
                 configuration: configuration
             )
-        case let .sendCollectible(draft, transactionController, uiInteractions):
+        case let .sendCollectible(draft):
             let aViewController = SendCollectibleViewController(
                 draft: draft,
-                transactionController: transactionController,
                 configuration: configuration
             )
-            aViewController.uiInteractions = uiInteractions
             viewController = aViewController
         case let .sendCollectibleAccountList(dataController):
             viewController = SendCollectibleAccountListViewController(
                 dataController: dataController,
                 configuration: configuration
             )
-        case let .approveCollectibleTransaction(draft, transactionController):
+        case let .approveCollectibleTransaction(draft):
             viewController = ApproveCollectibleTransactionViewController(
                 draft: draft,
-                transactionController: transactionController,
                 configuration: configuration
             )
         case let .shareActivity(items):
@@ -785,7 +786,8 @@ extension Router {
     ) {
         let draft = assetActionConfirmationViewController.draft
         
-        guard let account = draft.account else {
+        guard let account = draft.account,
+              !account.isWatchAccount() else {
             return
         }
         
@@ -932,7 +934,7 @@ extension Router: SelectAccountViewControllerDelegate {
             toAccount: Account(address: qrDraft.toAccount, type: .standard),
             amount: qrDraft.amount,
             transactionMode: qrDraft.transactionMode,
-            note: qrDraft.lockedNote,
+            note: qrDraft.note,
             lockedNote: qrDraft.lockedNote
         )
 

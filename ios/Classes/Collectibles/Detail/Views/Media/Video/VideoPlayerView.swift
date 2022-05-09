@@ -24,8 +24,8 @@ final class VideoPlayerView: View {
     override static var layerClass: AnyClass {
         return AVPlayerLayer.self
     }
-
-    private var playerLayer: AVPlayerLayer? {
+    
+    var playerLayer: AVPlayerLayer? {
         return layer as? AVPlayerLayer
     }
 

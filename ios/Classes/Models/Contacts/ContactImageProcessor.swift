@@ -35,6 +35,13 @@ struct ContactImageProcessor {
     func process() -> UIImage? {
         guard let data = data,
               let image = UIImage(data: data) else {
+
+            if let size = size,
+               let fallbackImage = fallbackImage.underlyingImage,
+               let resizedFallbackImage = fallbackImage.convert(to: size) {
+                return resizedFallbackImage
+            }
+
             return fallbackImage.underlyingImage
         }
 

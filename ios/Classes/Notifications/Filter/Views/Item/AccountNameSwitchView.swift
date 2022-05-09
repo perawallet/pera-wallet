@@ -60,13 +60,13 @@ extension AccountNameSwitchView {
     }
 
     private func addAccountNameView(_ theme: AccountNameSwitchViewTheme) {
-        accountNameView.customize(AccountNameViewLargeTheme())
+        accountNameView.customize(SwitchAccountNameViewTheme())
         
         addSubview(accountNameView)
         accountNameView.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(theme.horizontalPadding)
             $0.centerY.equalToSuperview()
-            $0.trailing.equalTo(toggleView.snp.leading).inset(theme.horizontalPadding)
+            $0.trailing.equalTo(toggleView.snp.leading).offset(-theme.horizontalPadding)
         }
     }
 }

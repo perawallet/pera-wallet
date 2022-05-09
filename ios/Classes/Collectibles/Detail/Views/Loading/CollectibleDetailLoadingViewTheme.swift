@@ -19,6 +19,8 @@ import MacaroonUIKit
 struct CollectibleDetailLoadingViewTheme:
     LayoutSheet,
     StyleSheet {
+    let imagePaddings: LayoutPaddings
+
     let titleViewHeight: LayoutMetric
     let titleTopPadding: LayoutMetric
     let titleWidthMultiplier: LayoutMetric
@@ -48,6 +50,8 @@ struct CollectibleDetailLoadingViewTheme:
     init(
         _ family: LayoutFamily
     ) {
+        imagePaddings = (12, 24, .noMetric, 24)
+
         titleTopPadding = 36
         titleViewHeight = 16
         titleWidthMultiplier = 0.20

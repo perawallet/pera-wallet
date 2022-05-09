@@ -26,7 +26,6 @@ struct AssetTransactionSendDraft: TransactionSendDraft {
     var identifier: String?
     let assetIndex: Int64?
     var assetCreator = ""
-    var closeAssetsTo: String?
     var assetDecimalFraction = 0
     var isVerifiedAsset = false
     var note: String?

@@ -45,6 +45,7 @@ final class WCSessionShortListItemView: View {
 
 extension WCSessionShortListItemView {
     private func addDappImageView(_ theme: WCSessionShortListItemViewTheme) {
+        dappImageView.build(URLImageViewNoStyleLayoutSheet())
         dappImageView.draw(border: theme.imageBorder)
         dappImageView.draw(corner: theme.imageCorner)
 

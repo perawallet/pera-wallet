@@ -86,7 +86,7 @@ extension ManageAssetsView {
     private func addAssetsCollectionView(_ theme: ManageAssetsViewTheme) {
         addSubview(assetsCollectionView)
         assetsCollectionView.snp.makeConstraints {
-            $0.top.equalTo(searchInputView.snp.bottom).offset(theme.collectionViewTopPadding)
+            $0.top.equalTo(searchInputView.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
         }
     }

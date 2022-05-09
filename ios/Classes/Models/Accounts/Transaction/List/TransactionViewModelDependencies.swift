@@ -22,6 +22,5 @@ struct TransactionViewModelDependencies {
     let asset: AssetDecoration?
     let transaction: TransactionItem
     var contact: Contact?
-    let currency: Currency?
     let localAccounts: [Account]
 }

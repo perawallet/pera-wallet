@@ -164,8 +164,6 @@ extension AlgosDetailInfoView {
     }
 
     private func addRewardsInfoView(_ theme: AlgosDetailInfoViewTheme) {
-        rewardsInfoView.customize(theme.rewardsInfoViewTheme)
-
         addSubview(rewardsInfoView)
         rewardsInfoView.snp.makeConstraints {
             $0.top.equalTo(secondaryValueLabel.snp.bottom).offset(theme.rewardsInfoViewTopPadding)

@@ -81,7 +81,7 @@ extension AlgoPriceCalculator {
             
             /// <todo>
             /// Move it to `Macaroon` library.
-            let rate = (lastPriceValue - firstPriceValue) / lastPriceValue
+            let rate = (lastPriceValue - firstPriceValue) / firstPriceValue
             
             let priceChangeRate: AlgoPriceChangeRate
             switch rate {

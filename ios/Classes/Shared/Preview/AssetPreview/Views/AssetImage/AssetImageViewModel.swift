@@ -21,7 +21,7 @@ import MacaroonUIKit
 import MacaroonURLImage
 import Prism
 
-protocol AssetImageViewModel: AssetImagePlaceholderViewModel {
+protocol AssetImageViewModel {
     var imageSource: PNGImageSource? { get }
     var image: UIImage? { get }
 }
@@ -43,8 +43,43 @@ extension AssetImageViewModel where Self: Hashable {
     }
 }
 
+extension AssetImageViewModel {
+    typealias TextAttributes = (font: CustomFont, lineHeightMultiplier: LayoutMetric)
+    
+    func getPlaceholder(
+        _ aPlaceholder: String?,
+        with attributes: TextAttributes
+    ) -> ImagePlaceholder? {
+        guard let aPlaceholder = aPlaceholder else {
+            return nil
+        }
+
+        let font = attributes.font
+        let lineHeightMultiplier = attributes.lineHeightMultiplier
+
+        let placeholderText: EditText = .attributedString(
+            aPlaceholder.attributed([
+                .font(font),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .textAlignment(.center),
+                    .lineBreakMode(.byTruncatingTail),
+                    .lineHeightMultiple(lineHeightMultiplier)
+                ])
+            ])
+        )
+
+        return ImagePlaceholder(
+            image: AssetImageSource(
+                asset: "asset-image-placeholder-border".uiImage
+            ),
+            text: placeholderText
+        )
+    }
+}
+
 enum AssetImage {
-    case url(URL)
+    case url(URL?, title: String?)
     case algo
     case custom(UIImage)
 }
@@ -54,52 +89,47 @@ struct AssetImageLargeViewModel:
     Hashable {
     private(set) var imageSource: PNGImageSource?
     private(set) var image: UIImage?
-    private(set) var assetAbbreviatedName: EditText?
 
     init(
-        image: AssetImage? = nil,
-        assetAbbreviatedName: String? = nil
+        image: AssetImage
     ) {
-        bindImage(image)
-        bindAssetAbbreviatedName(assetAbbreviatedName)
+        bindImage(
+            image: image
+        )
     }
 
-    private mutating func bindImage(_ image: AssetImage?) {
-        guard let image = image else {
-            return
-        }
-
+    private mutating func bindImage(
+        image: AssetImage
+    ) {
         switch image {
-        case .url(let url):
+        case .url(let url, let title):
             let imageSize = CGSize(width: 40, height: 40)
             let prismURL =
-            PrismURL(baseURL: url)
+            PrismURL(baseURL: url)?
                 .setExpectedImageSize(imageSize)
                 .setImageQuality(.normal)
-                .setResizeMode(.fit)
                 .build()
+
+            let placeholder = TextFormatter.assetShortName.format(
+                (title.isNilOrEmpty ? "title-unknown".localized : title!)
+            )
 
             self.imageSource = PNGImageSource(
                 url: prismURL,
-                size: .resize(imageSize, .aspectFit),
                 shape: .rounded(4),
-                placeholder: nil
+                placeholder: getPlaceholder(
+                    placeholder,
+                    with: TextAttributes(
+                        font: Fonts.DMSans.regular.make(13),
+                        lineHeightMultiplier: 1.18
+                    )
+                )
             )
         case .algo:
             self.image = "icon-algo-circle-green".uiImage
         case .custom(let image):
             self.image = image
         }
-    }
-
-    private mutating func bindAssetAbbreviatedName(_ name: String?) {
-        assetAbbreviatedName = getAssetAbbreviatedName(
-            name: name,
-            with: TextAttributes(
-                font: Fonts.DMSans.regular.make(13),
-                lineHeightMultiplier: 1.18
-            )
-        )
     }
 }
 
@@ -108,27 +138,57 @@ struct AssetImageSmallViewModel:
     Hashable {
     private(set) var imageSource: PNGImageSource?
     private(set) var image: UIImage?
-    private(set) var assetAbbreviatedName: EditText?
 
     init(
-        image: UIImage? = nil,
-        assetAbbreviatedName: String? = nil
+        image: AssetImage
     ) {
-        bindImage(image)
-        bindAssetAbbreviatedName(assetAbbreviatedName)
-    }
-
-    private mutating func bindImage(_ image: UIImage?) {
-        self.image = image
-    }
-
-    private mutating func bindAssetAbbreviatedName(_ name: String?) {
-        assetAbbreviatedName = getAssetAbbreviatedName(
-            name: name,
-            with: TextAttributes(
-                font: Fonts.DMSans.medium.make(10),
-                lineHeightMultiplier: 0.92
-            )
+        bindImage(
+            image: image
         )
+    }
+
+    private mutating func bindImage(
+        image: AssetImage
+    ) {
+        switch image {
+        case .url(let url, let title):
+            let imageSize = CGSize(width: 24, height: 24)
+
+            let prismURL =
+            PrismURL(baseURL: url)?
+                .setExpectedImageSize(imageSize)
+                .setImageQuality(.normal)
+                .build()
+
+            let placeholder = TextFormatter.assetShortName.format(
+                (title.isNilOrEmpty ? "title-unknown".localized : title!)
+            )
+
+            self.imageSource = PNGImageSource(
+                url: prismURL,
+                shape: .rounded(4),
+                placeholder: getPlaceholder(
+                    placeholder,
+                    with: TextAttributes(
+                        font: Fonts.DMSans.medium.make(10),
+                        lineHeightMultiplier: 0.92
+                    )
+                )
+            )
+        case .algo:
+            self.image = "icon-algo-circle-green".uiImage
+        case .custom(let image):
+            self.image = image
+        }
+    }
+}
+
+fileprivate extension PrismURL {
+    convenience init?(baseURL: URL?) {
+        guard let baseURL = baseURL else {
+            return nil
+        }
+
+        self.init(baseURL: baseURL)
     }
 }

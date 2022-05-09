@@ -23,7 +23,7 @@ final class ManageAssetsViewController: BaseViewController {
     
     private lazy var theme = Theme()
     
-    private lazy var listLayout = ManageAssetsListLayout()
+    private lazy var listLayout = ManageAssetsListLayout(dataSource)
     private lazy var dataSource = ManageAssetsListDataSource(contextView.assetsCollectionView)
     private lazy var dataController = ManageAssetsListLocalDataController(account, sharedDataController)
 

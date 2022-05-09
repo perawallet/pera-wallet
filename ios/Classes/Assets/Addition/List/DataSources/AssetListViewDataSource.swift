@@ -55,7 +55,7 @@ final class AssetListViewDataSource: UICollectionViewDiffableDataSource<AssetLis
 
         [
             PreviewLoadingCell.self,
-            AssetPreviewCell.self,
+            AssetPreviewAdditionCell.self,
             NoContentCell.self
         ].forEach {
             collectionView.register($0)

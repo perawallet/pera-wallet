@@ -22,7 +22,7 @@ enum AssetPreviewModelAdapter {
     static func adapt(_ adaptee: (asset: Asset, currency: Currency?)) -> AssetPreviewModel {
         let assetViewModel = AssetViewModel(asset: adaptee.asset, currency: adaptee.currency)
         return AssetPreviewModel(
-            icon: nil,
+            icon: .url(nil, title: adaptee.asset.presentation.name),
             verifiedIcon: adaptee.asset.presentation.isVerified ? img("icon-verified-shield") : nil,
             title: adaptee.asset.presentation.name,
             subtitle: adaptee.asset.presentation.unitName,
@@ -45,7 +45,7 @@ enum AssetPreviewModelAdapter {
 
     static func adapt(_ asset: Asset) -> AssetPreviewModel {
         return AssetPreviewModel(
-            icon: nil,
+            icon: .url(nil, title: asset.presentation.name),
             verifiedIcon: asset.presentation.isVerified ? img("icon-verified-shield") : nil,
             title: asset.presentation.name,
             subtitle: asset.presentation.unitName,
@@ -57,7 +57,7 @@ enum AssetPreviewModelAdapter {
     static func adaptAssetSelection(_ adaptee: (asset: Asset, currency: Currency?)) -> AssetPreviewModel {
         let assetViewModel = AssetViewModel(asset: adaptee.asset, currency: adaptee.currency)
         return AssetPreviewModel(
-            icon: nil,
+            icon: .url(nil, title: adaptee.asset.presentation.name),
             verifiedIcon: adaptee.asset.presentation.isVerified ? img("icon-verified-shield") : nil,
             title: adaptee.asset.presentation.name,
             subtitle: "ID \(adaptee.asset.id)",

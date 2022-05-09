@@ -38,7 +38,7 @@
 "account-select-header-contacts-title" = "連絡先";
 
 /* (No Comment) */
-"account-select-header-search-title" = "Search or enter wallet address";
+"account-select-header-search-title" = "ウォレットアドレスの検索または入力";
 
 /* (No Comment) */
 "account-select-search-empty-detail" = "別のアカウント名をお試しください";
@@ -107,7 +107,7 @@
 "accounts-title-assets" = "資産";
 
 /* (No Comment) */
-"accounts-title-collectibles" = "Collectibles";
+"accounts-title-collectibles" = "コレクティブル";
 
 /* (No Comment) */
 "accounts-title-history" = "履歴";
@@ -171,6 +171,9 @@
 
 /* (No Comment) */
 "asset-id-copied-title" = "IDがクリップボードにコピーされました";
+
+/* (No Comment) */
+"asset-manage-button" = "Manage";
 
 /* (No Comment) */
 "asset-min-transaction-error-message" = "この資産を追加するには、最低でも%@ Algosが必要です。";
@@ -341,166 +344,196 @@
 "chart-time-selection-yearly" = "1年";
 
 /* (No Comment) */
-"collectible-approve-transaction-action-title" = "Confirm transfer";
+"collectible-approve-transaction-action-title" = "転送の確認";
 
 /* (No Comment) */
-"collectible-approve-transaction-description" = "Are you sure you want to proceed?";
+"collectible-approve-transaction-description" = "続行してよろしいですか？";
 
 /* (No Comment) */
-"collectible-approve-transaction-fee" = "Transaction Fee";
+"collectible-approve-transaction-fee" = "トランザクション手数料";
 
 /* (No Comment) */
-"collectible-approve-transaction-sender" = "Sender Account";
+"collectible-approve-transaction-opt-out" = "Opt out from the NFT";
+
+/* (No Comment) */
+"collectible-approve-transaction-sender" = "送信者アカウント";
 
 /* MARK: Collectible Approve */
-"collectible-approve-transaction-title" = "Approve Transaction";
+"collectible-approve-transaction-title" = "トランザクションの承認";
 
 /* (No Comment) */
 "collectible-approve-transaction-to" = "To";
 
 /* (No Comment) */
-"collectible-detail-algo-explorer" = "Show on Algoexplorer";
+"collectible-detail-algo-explorer" = "Show on Algoexplorerで表示する";
 
 /* (No Comment) */
-"collectible-detail-collection-name" = "Collection Name";
+"collectible-detail-collection-name" = "コレクション名";
 
 /* (No Comment) */
-"collectible-detail-creator-address" = "Creator Wallet Address";
+"collectible-detail-creator-address" = "制作者ウォレットアドレス";
 
 /* (No Comment) */
-"collectible-detail-creator-name" = "Creator Name";
+"collectible-detail-creator-name" = "制作者名";
 
 /* (No Comment) */
-"collectible-detail-description" = "Description";
+"collectible-detail-description" = "詳細";
 
 /* (No Comment) */
-"collectible-detail-error-media-type" = "We don't support this NFT media type yet.";
+"collectible-detail-error-media-type" = "このNFTメディアタイプはまだサポートされていません。";
 
 /* (No Comment) */
-"collectible-detail-error-not-owner" = "You are not the owner of this NFT yet, however you opted in for it. You can now transfer it to your wallet.";
+"collectible-detail-error-not-owner" = "まだこのNFTの所有者ではありませんが、オプトインしています。これでウォレットに転送可能です。";
 
 /* (No Comment) */
-"collectible-detail-error-visual" = "We can’t display the visual temporarily.";
+"collectible-detail-error-not-owner-watch-account" = "This watch account has opted in for this NFT, however doesn't own it.";
 
 /* (No Comment) */
-"collectible-detail-nft-explorer" = "Show on NFTExplorer";
+"collectible-detail-nft-explorer" = "NFTExplorerで表示する";
 
 /* (No Comment) */
-"collectible-detail-opt-out" = "Opt out";
+"collectible-detail-opt-out" = "オプトアウト";
 
 /* (No Comment) */
-"collectible-detail-opt-out-alert-message" = "You are about to opt out from this NFT with %@. You will not be able to transact with this asset until you opt in again.";
+"collectible-detail-opt-out-alert-message" = "このとNFTと%@ をオプトアウトしようとしています。再度オプトインしない限り、この資産を取引することはできません。";
 
 /* (No Comment) */
-"collectible-detail-opt-out-alert-title" = "Opt out from “%@”";
+"collectible-detail-opt-out-alert-title" = "“%@” をオプトアウト";
 
 /* (No Comment) */
-"collectible-detail-opt-out-success" = "%@ NFT successfully opted-out";
+"collectible-detail-opt-out-success" = "%@ NFTは正常にオプトアウトされました";
 
 /* (No Comment) */
-"collectible-detail-opted-in" = "Opted in to";
+"collectible-detail-opted-in" = "オプトイン先";
 
 /* (No Comment) */
-"collectible-detail-owner" = "Owner";
+"collectible-detail-owner" = "所有者";
 
 /* (No Comment) */
-"collectible-detail-properties" = "Properties";
+"collectible-detail-pera-explorer" = "Pera Explorer";
+
+/* (No Comment) */
+"collectible-detail-properties" = "プロパティ";
 
 /* MARK: Collectible Detail */
-"collectible-detail-share" = "Share";
+"collectible-detail-share" = "シェア";
 
 /* (No Comment) */
-"collectible-detail-view-transaction" = "View Transaction";
-
-/* / MARK: Collectible List */
-"collectible-list-item-pending-title" = "Pending";
+"collectible-detail-show-on" = "Show on";
 
 /* (No Comment) */
-"collectible-opt-in-info-description" = "To avoid spammy transaction, the Algorand Blockchain only allow you to send and receive transaction for assets that have been previously opted-in.";
-
-/* / MARK: Collectible Opt In Info */
-"collectible-opt-in-info-title" = "Information about Opt-In";
+"collectible-detail-tap-3D" = "Tap media to view in 3D mode";
 
 /* (No Comment) */
-"collectible-receive-account-list-info" = "You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet.";
+"collectible-detail-view-transaction" = "トランザクションを見る";
+
+/* MARK: Collectible Filter Selection */
+"collectible-filter-selection-title" = "Filter";
 
 /* (No Comment) */
-"collectible-receive-asset-list-info" = "You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet. Paste the ASA ID in the search bar.";
+"collectible-filter-selection-toggle-description" = "You can show/hide NFTs that are opted-in but not owned";
 
 /* (No Comment) */
-"collectible-receive-asset-list-selected-account" = "Selected account";
+"collectible-filter-selection-toggle-title" = "Display opted-in NFTs";
+
+/* MARK: Collectible List */
+"collectible-list-item-pending-title" = "保留中";
 
 /* (No Comment) */
-"collectible-recipient-opt-in-action-title" = "Request Opt-in";
+"collectible-opt-in-info-description" = "To avoid spam transactions, Algorand blockchain only allows you to send and receive transactions for assets that have been previously opted-in to.";
+
+/* MARK: Collectible Opt In Info */
+"collectible-opt-in-info-title" = "オプトインに関する情報";
 
 /* (No Comment) */
-"collectible-recipient-opt-in-description" = "You can't send %@ to %@ because this wallet didn't opt in for this asset yet. Learn more about Opt-in";
+"collectible-opt-out-info-description" = "Algorand blockchain requires an account to opt in to an ASA before it can receive it. Now that you've transferred this NFT to another account, you can opt out from it. Opting out requires an additional transaction.";
+
+/* MARK: Collectible Opt Out Info */
+"collectible-opt-out-info-title" = "Opt out from the NFT ";
 
 /* (No Comment) */
-"collectible-recipient-opt-in-description-marked" = "Learn more about Opt-in";
-
-/* / MARK: Collecitble Ask recipient to opt in */
-"collectible-recipient-opt-in-title" = "Ask recipient to opt in";
+"collectible-receive-account-list-info" = "ウォレットに転送するには、NFT ASA IDをオプトインする必要があります。";
 
 /* (No Comment) */
-"collectible-send-account-list-title" = "Select the receiver account";
+"collectible-receive-asset-list-info" = "ウォレットに転送するには、NFT ASA IDをオプトインする必要があります。検索バーにASA IDを貼り付けてください。";
 
 /* (No Comment) */
-"collectible-send-action" = "Transfer";
+"collectible-receive-asset-list-selected-account" = "選択したアカウント";
 
 /* (No Comment) */
-"collectible-send-input-placeholder" = "Paste an Algorand wallet address";
-
-/* / MARK: Collectible Send */
-"collectible-send-title" = "Send your NFT";
+"collectible-recipient-opt-in-action-title" = "オプトインのリクエスト";
 
 /* (No Comment) */
-"collectible-transfer-confirmed-action-title" = "Got it!";
+"collectible-recipient-opt-in-description" = "このウォレットはまだこの資産をオプトインしていないため、%@を%@に送信できません。オプトインについてもっと知る";
 
 /* (No Comment) */
-"collectible-transfer-confirmed-description" = "Transactions can take a few minutes to finalize.";
+"collectible-recipient-opt-in-description-marked" = "オプトインについてもっと知る";
+
+/* MARK: Collecitble Ask recipient to opt in */
+"collectible-recipient-opt-in-title" = "受取人にオプトインを依頼してください";
+
+/* (No Comment) */
+"collectible-send-account-list-title" = "受け取りアカウントを選んでください。";
+
+/* (No Comment) */
+"collectible-send-action" = "転送";
+
+/* (No Comment) */
+"collectible-send-input-placeholder" = "Algorandウォレットアドレスを貼り付けてください";
+
+/* MARK: Collectible Send */
+"collectible-send-title" = "NFTを送信する";
+
+/* (No Comment) */
+"collectible-transfer-confirmed-action-title" = "了解！";
+
+/* (No Comment) */
+"collectible-transfer-confirmed-description" = "トランザクションの完了まで数分かかることがあります。";
 
 /* MARK: Collectible Transfer */
-"collectible-transfer-confirmed-title" = "Your NFT transfer is confirmed!";
+"collectible-transfer-confirmed-title" = "NFT転送が確認されました！";
 
 /* (No Comment) */
-"collectible-transfer-failed-retry-desription" = "Please try again.";
+"collectible-transfer-failed-retry-desription" = "もう一度お試しください。";
 
 /* (No Comment) */
-"collectible-transfer-failed-title" = "Your NFT transfer has failed!";
+"collectible-transfer-failed-title" = "NFT転送に失敗しました！";
 
 /* (No Comment) */
-"collectible-transfer-failed-verify-algo-desription" = "Please verify that you have enough Algo to cover the transaction fees for transferring your NFT, and try again.";
+"collectible-transfer-failed-verify-algo-desription" = "NFTの転送に必要な取引手数料の支払いに十分なAlgoがあることを確認の上、もう一度お試しください。";
 
 /* (No Comment) */
-"collectibles-empty-body" = "Welcome to your NFT Gallery! You don’t have any NFTs yet. All the NFTs available in your wallet will be visible here.";
+"collectibles-empty-body" = "NFTギャラリーへようこそ！NFTはまだありません。利用可能なすべてのNFTがここに表示されます。";
 
 /* (No Comment) */
-"collectibles-empty-title" = "Collectibles";
+"collectibles-empty-secondary-action-title" = "Show hidden NFTs (%@)";
 
 /* (No Comment) */
-"collectibles-list-input-placeholder" = "Search your NFTs";
+"collectibles-empty-title" = "コレクティブル";
 
 /* (No Comment) */
-"collectibles-receive-account-list-header-description" = "Select the wallet account you would like to receive to:";
-
-/* / MARK: Collectible Receive */
-"collectibles-receive-action" = "Receive an NFT";
+"collectibles-list-input-placeholder" = "NFTの検索";
 
 /* (No Comment) */
-"collectibles-receive-asset-list-header-description" = "You need to opt in to the ASA ID of the NFT to be able to receive it. Paste the ASA ID or scan it below.";
+"collectibles-receive-account-list-header-description" = "受け取りたいウォレットアカウントを選んでください。";
+
+/* MARK: Collectible Receive */
+"collectibles-receive-action" = "NFTを受け取る";
 
 /* (No Comment) */
-"collectibles-receive-asset-list-search-no-content" = "No NFT Found";
+"collectibles-receive-asset-list-header-description" = "NFTのASA IDをオプトインすることで受け取ることができます。ASA IDを下に貼り付けるか、スキャンしてください。";
 
 /* (No Comment) */
-"collectibles-receive-asset-list-search-placeholder" = "Search Asset ID or NFT name";
+"collectibles-receive-asset-list-search-no-content" = "NFTが見つかりません";
 
 /* (No Comment) */
-"collectibles-receive-asset-title" = "Opt-in to NFT";
+"collectibles-receive-asset-list-search-placeholder" = "資産IDまたはNFT名の検索";
 
 /* (No Comment) */
-"contact-input-address-placeholder" = "Account address";
+"collectibles-receive-asset-title" = "NFTにオプトインする";
+
+/* (No Comment) */
+"contact-input-address-placeholder" = "アカウントアドレス";
 
 /* (No Comment) */
 "contact-search-empty-detail" = "別の連絡先名をお試しください";
@@ -545,7 +578,7 @@
 "contacts-info" = "連絡先情報";
 
 /* (No Comment) */
-"contacts-info-address" = "Account Address";
+"contacts-info-address" = "アカウントアドレス";
 
 /* (No Comment) */
 "contacts-info-edit" = "連絡先の編集";
@@ -665,7 +698,7 @@
 "introduction-recover-account-text" = "すでにアカウントを持っている";
 
 /* (No Comment) */
-"introduction-title-terms-and-services" = "By creating an account, you agree to Pera Wallet's<br><a href=\"%@\">Terms and Conditions</a> and <a href=\"%@\">Privacy Policy</a>";
+"introduction-title-terms-and-services" = "アカウントを作成することにより、お客様はPera Walletの<br><a href=\"%@\">Terms and Conditions</a>および<a href=\"%@\">Privacy Policy</a>に同意したとみなされます";
 
 /* (No Comment) */
 "ledger-account-detail-assets" = "資産";
@@ -1053,6 +1086,12 @@
 
 /* (No Comment) */
 "notification-support-success" = "%@がアカウントに%@を追加しました。送信可能です。";
+
+/* (No Comment) */
+"notifications-asset-not-found-description" = "The history for this specific asset is not available.";
+
+/* (No Comment) */
+"notifications-asset-not-found-title" = "Asset history not available";
 
 /* (No Comment) */
 "notifications-empty-subtitle" = "最近のトランザクション、資産リクエスト、その他の通知がここに表示されます。";
@@ -1694,7 +1733,7 @@
 "title-close" = "閉じる";
 
 /* MARK: Collectible Common */
-"title-collectibles" = "Collectibles";
+"title-collectibles" = "コレクティブル";
 
 /* (No Comment) */
 "title-confirm" = "確認";
@@ -1730,6 +1769,12 @@
 "title-dont-show-again" = "今後表示しない";
 
 /* (No Comment) */
+"required-min-balance-title" = "Low Balance";
+
+/* (No Comment) */
+"required-min-balance-description" = "You don't have enough balance to support the transaction fees. The Algorand blockchain requires 0.001 Algos to support a transaction. You can increase your Algo balance to support this transaction fee.\n\nIf you opted-in for dApps and smart contracts associated with your account (from different ecosystem apps), each asset increases the minimum balance required by 0.1 Algo. To reduce the minimum balance required for this account, you must opt-out from the assets or dApps causing that increased minimum balance.";
+
+/* (No Comment) */
 "title-edit" = "編集";
 
 /* (No Comment) */
@@ -1739,13 +1784,19 @@
 "title-error" = "エラー";
 
 /* (No Comment) */
-"title-error-description" = "Error: %@";
+"title-error-description" = "エラー: %@";
 
 /* (No Comment) */
 "title-failed-connection" = "接続に失敗しました";
 
 /* (No Comment) */
-"title-generic-api-error" = "Well, this is unexpected";
+"title-generic-api-error" = "予期せぬエラーです";
+
+/* (No Comment) */
+"title-generic-error" = "Something went wrong";
+
+/* (No Comment) */
+"title-generic-response-description" = "We couldn't fetch some of the assets. Please try again.";
 
 /* (No Comment) */
 "title-go-to-accounts" = "アカウントに移動";
@@ -1805,7 +1856,7 @@
 "title-plus-asset-singular-count" = "%@資産";
 
 /* (No Comment) */
-"title-plus-collectible-count" = "%@ NFTs";
+"title-plus-collectible-count" = "%@ NFT";
 
 /* (No Comment) */
 "title-plus-collectible-singular-count" = "%@ NFT";
@@ -2006,7 +2057,7 @@
 "transaction-filter-option-yesterday" = "昨日";
 
 /* MARK: Transaction Filter */
-"transaction-filter-title-sort" = "日付順に表示";
+"transaction-filter-title-sort" = "Filter by Date";
 
 /* (No Comment) */
 "transaction-filter-tooltip" = "トランザクション履歴をフィルタリングできるようになりました";
@@ -2435,7 +2486,7 @@
 "wallet-connect-transaction-warning-high-fee" = "このトランザクション手数料は、通常の手数料である0.001 Algoよりも高くなっています。";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-initial-description" = "dAppsと呼ばれる外部アプリケーションは、Pera Walletが管理していないトランザクション要求を行えます。署名する前にトランザクション内容を慎重にご確認ください。\n\nすべてのトランザクションは元に戻すことができません。知らないdAppからのトランザクションは絶対に承認しないでください。";
+"wallet-connect-transaction-warning-initial-description" = "External applications, also called dApps, can initiate transaction requests independently from Pera Wallet. Please ensure you review these transactions carefully before approving and signing them.\n\nAll transactions are irreversible. As these requests are outside Pera Wallet's control, never approve transactions from a dApp you don’t know.";
 
 /* (No Comment) */
 "wallet-connect-transaction-warning-initial-title" = "トランザクションリクエストに関するFAQ";

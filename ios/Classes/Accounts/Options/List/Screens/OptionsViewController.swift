@@ -228,7 +228,10 @@ extension OptionsViewController {
 
 extension OptionsViewController {
     private func updateNotificationStatus() {
-        guard let deviceId = session?.authenticatedUser?.deviceId else {
+        guard
+            let network = api?.network,
+            let deviceId = session?.authenticatedUser?.getDeviceId(on: network)
+        else {
             return
         }
 

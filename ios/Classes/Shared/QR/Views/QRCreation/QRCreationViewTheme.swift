@@ -21,12 +21,10 @@ import UIKit
 
 struct QRCreationViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
-    let copyFeedbackLabel: TextStyle
     let copyButtonTheme: ButtonPrimaryTheme
     let shareButtonTheme: ButtonSecondaryTheme
     let addressTheme: QRAddressLabelTheme
     
-    let copyFeedBackInsets: LayoutPaddings
     let topInset: LayoutMetric
     let labelTopInset: LayoutMetric
     let labelHorizontalInset: LayoutMetric
@@ -35,25 +33,13 @@ struct QRCreationViewTheme: StyleSheet, LayoutSheet {
     let buttonTitleInset: LayoutMetric
     let buttonHorizontalInset: LayoutMetric
     let bottomInset: LayoutMetric
-    let copyFeedbackLabelTopInset: LayoutMetric
-    let copyFeedbackLabelCorner: Corner
-    
+
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
-        self.copyFeedbackLabel = [
-            .font(Fonts.DMSans.medium.make(15)),
-            .backgroundColor(AppColors.Components.Text.main.uiColor.withAlphaComponent(0.9)),
-            .textColor(AppColors.Components.TextField.defaultBackground),
-            .text("qr-creation-copied".localized),
-            .textAlignment(.center),
-            .textOverflow(FittingText())
-        ]
-        self.copyFeedbackLabelCorner = Corner(radius: 4)
         self.copyButtonTheme = ButtonPrimaryTheme()
         self.shareButtonTheme = ButtonSecondaryTheme()
         self.addressTheme = QRAddressLabelTheme()
         
-        self.copyFeedBackInsets = (8, 16, 8, 16)
         self.topInset = 92 * verticalScale
         self.labelTopInset = 28
         self.labelHorizontalInset = 40
@@ -62,6 +48,5 @@ struct QRCreationViewTheme: StyleSheet, LayoutSheet {
         self.buttonTitleInset = 12
         self.buttonHorizontalInset = 24
         self.bottomInset = 16
-        self.copyFeedbackLabelTopInset = 16
     }
 }

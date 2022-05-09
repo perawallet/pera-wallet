@@ -76,6 +76,7 @@ extension Formatter {
         formatter.numberStyle = .currencyAccounting
         formatter.minimumFractionDigits = value == 0 ? 0 : 2
         if let suffix = suffix, !suffix.isEmptyOrBlank {
+            formatter.roundingMode = .down
             formatter.maximumFractionDigits = 2
         } else {
             formatter.maximumFractionDigits = value
@@ -102,6 +103,7 @@ extension Formatter {
         formatter.numberStyle = .currency
         formatter.minimumFractionDigits = 2
         if let suffix = suffix, !suffix.isEmptyOrBlank {
+            formatter.roundingMode = .down
             formatter.maximumFractionDigits = 2
         } else {
             formatter.maximumFractionDigits = symbol == algoCurrencySymbol ? 6 : 2
@@ -138,7 +140,12 @@ extension Formatter {
         formatter.currencySymbol = algoCurrencySymbol
         formatter.numberStyle = .currencyAccounting
         formatter.minimumFractionDigits = 2
-        formatter.maximumFractionDigits = suffix.isEmptyOrBlank ? 6 : 2
+        if suffix.isEmptyOrBlank {
+            formatter.maximumFractionDigits = 6
+        } else {
+            formatter.roundingMode = .down
+            formatter.maximumFractionDigits = 2
+        }
         formatter.positiveSuffix = suffix
         formatter.negativeSuffix = suffix
         return formatter

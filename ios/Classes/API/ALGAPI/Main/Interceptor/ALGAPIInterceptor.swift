@@ -76,7 +76,7 @@ extension ALGAPIInterceptor {
     }
 
     private func setMobileHeaders(_ endpoint: EndpointOperatable) {
-        endpoint.setAdditionalHeader(CustomHeader(key: "algorand-network", value: apiBase.network.rawValue), .alwaysOverride)
+        endpoint.setAdditionalHeader(NetworkHeader(apiBase.network), .setIfNotExists)
         endpoint.setAdditionalHeader(AppNameHeader(application), .alwaysOverride)
         endpoint.setAdditionalHeader(AppPackageNameHeader(application), .alwaysOverride)
         endpoint.setAdditionalHeader(AppVersionHeader(application), .alwaysOverride)
@@ -98,5 +98,17 @@ extension ALGAPIInterceptor {
 
     func setupNetworkBase(_ network: ALGAPI.Network) -> String {
         return apiBase.setupNetworkBase(network)
+    }
+}
+
+struct NetworkHeader: Header {
+    let key: String
+    let value: String?
+
+    init(
+        _ network: ALGAPI.Network?
+    ) {
+        self.key = "algorand-network"
+        self.value = network?.rawValue
     }
 }

@@ -28,7 +28,7 @@ final class AnnouncementAPIDataController {
     }
     
     func loadData() {
-        guard let deviceId = session.authenticatedUser?.deviceId else {
+        guard let deviceId = session.authenticatedUser?.getDeviceId(on: api.network) else {
             return
         }
         

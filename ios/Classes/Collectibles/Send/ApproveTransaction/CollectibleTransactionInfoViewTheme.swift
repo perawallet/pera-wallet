@@ -22,11 +22,15 @@ struct CollectibleTransactionInfoViewTheme:
     StyleSheet,
     LayoutSheet {
     let title: TextStyle
-    let value: ButtonStyle
+    let titleContentEdgeInsets: LayoutPaddings
+    let value: TextStyle
 
+    let icon: ImageStyle
+    var iconContentEdgeInsets: LayoutOffset
     let iconSize: LayoutSize
+    let iconCorner: Corner
+
     let valueWidthRatio: LayoutMetric
-    let buttonPadding: LayoutMetric
     let verticalPadding: LayoutMetric
 
     let separator: Separator
@@ -34,19 +38,28 @@ struct CollectibleTransactionInfoViewTheme:
     init(
         _ family: LayoutFamily
     ) {
-        self.title = [
+        title = [
+            .textAlignment(.left),
             .textOverflow(FittingText()),
             .textColor(AppColors.Components.Text.gray)
         ]
-        self.value = [
-            .titleColor([.normal(AppColors.Components.Text.main.uiColor)])
+        titleContentEdgeInsets = (0, 0, 0, 8)
+        value = [
+            .textAlignment(.right),
+            .textOverflow(FittingText()),
+            .textColor(AppColors.Components.Text.main)
         ]
+        icon = [
+            .contentMode(.topLeft),
+            .isInteractable(false)
+        ]
+        iconContentEdgeInsets = (8, 0)
+        iconSize = (24, 24)
+        iconCorner = Corner(radius: 12)
 
-        self.iconSize = (24, 24)
-        self.valueWidthRatio = 0.45
-        self.buttonPadding = 8
-        self.verticalPadding = 16
+        valueWidthRatio = 0.50
+        verticalPadding = 16
 
-        self.separator = Separator(color: AppColors.Shared.Layer.grayLighter)
+        separator = Separator(color: AppColors.Shared.Layer.grayLighter)
     }
 }

@@ -21,6 +21,10 @@ import UIKit
 import MacaroonUIKit
 
 final class TransactionResultScreen: BaseViewController {
+    typealias EventHandler = (Event) -> Void
+
+    var eventHandler: EventHandler?
+
     private lazy var theme = Theme()
     private lazy var successIcon = UIImageView()
     private lazy var titleLabel = UILabel()
@@ -58,6 +62,8 @@ final class TransactionResultScreen: BaseViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+
+        eventHandler?(.didCompleteTransaction)
 
         // Close screen after 1 seconds
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
@@ -122,5 +128,11 @@ extension TransactionResultScreen.Status {
         case .completed:
             return "transaction-result-completed-subtitle".localized
         }
+    }
+}
+
+extension TransactionResultScreen {
+    enum Event {
+        case didCompleteTransaction
     }
 }

@@ -20,12 +20,13 @@ import MacaroonUIKit
 
 final class NoContentWithActionIllustratedCell:
     CollectionCell<NoContentWithActionView>,
-    ViewModelBindable {
-    lazy var handlers = Handlers() {
-        didSet {
-            contextView.handlers.didTapActionView = handlers.didTapActionView
-        }
-    }
+    ViewModelBindable,
+    UIInteractionObservable {
+    static let theme: NoContentWithActionViewIllustratedTheme = {
+        var theme = NoContentWithActionViewIllustratedTheme()
+        theme.configureForCollectiblesNoContentWithAction()
+        return theme
+    }()
 
     override init(
         frame: CGRect
@@ -34,15 +35,6 @@ final class NoContentWithActionIllustratedCell:
             frame: frame
         )
 
-        var theme = NoContentWithActionViewIllustratedTheme()
-        theme.configureForCollectiblesNoContentWithAction()
-
-        contextView.customize(theme)
-    }
-}
-
-extension NoContentWithActionIllustratedCell {
-    struct Handlers {
-        var didTapActionView: EmptyHandler?
+        contextView.customize(Self.theme)
     }
 }

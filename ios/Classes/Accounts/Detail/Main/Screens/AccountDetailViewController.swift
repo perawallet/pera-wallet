@@ -90,6 +90,12 @@ extension AccountDetailViewController {
             switch event {
             case .didUpdate(let accountHandle):
                 self.accountHandle = accountHandle
+            case .manageAssets:
+                let controller = self.open(.removeAsset(account: self.accountHandle.value), by: .present) as? ManageAssetsViewController
+                controller?.delegate = self
+            case .addAsset:
+                let controller = self.open(.addAsset(account: self.accountHandle.value), by: .push) as? AssetAdditionViewController
+                controller?.delegate = self
             }
         }
     }
@@ -253,6 +259,14 @@ extension AccountDetailViewController: EditAccountViewControllerDelegate {
     }
 }
 
+extension AccountDetailViewController: AssetAdditionViewControllerDelegate {
+    func assetAdditionViewController(_ assetAdditionViewController: AssetAdditionViewController, didAdd asset: AssetDecoration) {
+        let standardAsset = StandardAsset(asset: ALGAsset(id: asset.id), decoration: asset)
+        standardAsset.state = .pending(.add)
+        assetListScreen.addAsset(standardAsset)
+    }
+}
+
 extension AccountDetailViewController: ManageAssetsViewControllerDelegate {
     func manageAssetsViewController(
         _ assetRemovalViewController: ManageAssetsViewController,
@@ -265,7 +279,13 @@ extension AccountDetailViewController: ManageAssetsViewControllerDelegate {
         _ assetRemovalViewController: ManageAssetsViewController,
         didRemove asset: CollectibleAsset
     ) {
-        
+        NotificationCenter.default.post(
+            name: CollectibleListLocalDataController.didRemoveCollectible,
+            object: self,
+            userInfo: [
+                CollectibleListLocalDataController.accountAssetPairUserInfoKey: (accountHandle.value, asset)
+            ]
+        )
     }
 }
 

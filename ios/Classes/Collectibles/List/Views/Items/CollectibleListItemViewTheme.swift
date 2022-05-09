@@ -21,7 +21,7 @@ import UIKit
 struct CollectibleListItemViewTheme:
     LayoutSheet,
     StyleSheet {
-    let image: URLImageViewStyleSheet
+    let image: URLImageViewStyleLayoutSheet
 
     var overlay: ViewStyle
     var overlayAlpha: LayoutMetric
@@ -39,12 +39,23 @@ struct CollectibleListItemViewTheme:
     let topLeftBadgeContentEdgeInsets: LayoutOffset
     let topLeftBadgePaddings: LayoutPaddings
 
+    let pendingContent: ViewStyle
+    let pendingContentPaddings: LayoutPaddings
+
+    let indicator: ImageStyle
+    let indicatorSize: LayoutSize
+    let indicatorLeadingPadding: LayoutMetric
+
+    let pendingOverlay: ViewStyle
+    let pendingLabel: TextStyle
+    let pendingLabelPaddings: LayoutPaddings
+
     let corner: Corner
 
     init(
         _ family: LayoutFamily
     ) {
-        image = CollectibleListItemImageViewTheme()
+        image = URLImageViewCollectibleListTheme()
 
         overlay = [
             .backgroundColor(UIColor.clear)
@@ -64,7 +75,8 @@ struct CollectibleListItemViewTheme:
 
         bottomLeftBadge = [
             .backgroundColor(AppColors.Shared.System.background),
-            .contentMode(.center)
+            .contentMode(.center),
+            .tintColor(AppColors.Components.Text.gray)
         ]
         bottomLeftBadgeContentEdgeInsets = (8, 8)
         bottomLeftBadgePaddings = (.noMetric, 8, 8, .noMetric)
@@ -77,22 +89,52 @@ struct CollectibleListItemViewTheme:
         topLeftBadgeContentEdgeInsets = (4, 4)
         topLeftBadgePaddings = (8, 8, .noMetric, .noMetric)
 
+        pendingContentPaddings = (.noMetric, 8, 8, .noMetric)
+        pendingContent = [
+            .backgroundColor(AppColors.Shared.System.background)
+        ]
+        indicator = [
+            .image("loading-indicator"),
+            .contentMode(.scaleAspectFit)
+        ]
+        indicatorSize = (16, 16)
+        indicatorLeadingPadding = 8
+
+        pendingOverlay = [
+            .backgroundColor(AppColors.Shared.System.background.uiColor.withAlphaComponent(0.4))
+        ]
+        pendingLabel = [
+            .textColor(AppColors.Shared.Helpers.positive),
+            .textOverflow(SingleLineFittingText()),
+        ]
+        pendingLabelPaddings = (4, 8, 4, 8)
+
         corner = Corner(radius: 4)
     }
 }
 
-struct CollectibleListItemImageViewTheme: URLImageViewStyleSheet {
-    struct PlaceholderTheme: URLImagePlaceholderViewStyleSheet {
+struct URLImageViewCollectibleListTheme: URLImageViewStyleLayoutSheet {
+    struct PlaceholderLayoutSheet: URLImagePlaceholderViewLayoutSheet {
+        let textPaddings: LayoutPaddings
+
+        init(
+            _ family: LayoutFamily
+        ) {
+            textPaddings = (8, 8, 8, 8)
+        }
+    }
+
+    struct PlaceholderStyleSheet: URLImagePlaceholderViewStyleSheet {
         let background: ViewStyle
         let image: ImageStyle
         let text: TextStyle
 
         init() {
-            self.background = [
+            background = [
                 .backgroundColor(AppColors.Shared.Layer.grayLighter)
             ]
-            self.image = []
-            self.text = [
+            image = []
+            text = [
                 .textColor(AppColors.Components.Text.gray),
                 .textOverflow(FittingText())
             ]
@@ -101,12 +143,16 @@ struct CollectibleListItemImageViewTheme: URLImageViewStyleSheet {
 
     let background: ViewStyle
     let content: ImageStyle
-    let placeholder: URLImagePlaceholderViewStyleSheet?
+    let placeholderStyleSheet: URLImagePlaceholderViewStyleSheet?
+    let placeholderLayoutSheet: URLImagePlaceholderViewLayoutSheet?
 
-    init() {
-        self.background = []
-        self.content = .aspectFill()
-        self.placeholder = PlaceholderTheme()
+    init(
+        _ family: LayoutFamily
+    ) {
+        background = []
+        content = .aspectFit()
+        placeholderStyleSheet = PlaceholderStyleSheet()
+        placeholderLayoutSheet = PlaceholderLayoutSheet()
     }
 }
 

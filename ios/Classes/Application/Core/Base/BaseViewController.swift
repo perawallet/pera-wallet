@@ -16,7 +16,7 @@
 //  BaseViewController.swift
 
 import Foundation
-import MacaroonTabBarController
+import MacaroonUIKit
 import UIKit
 
 class BaseViewController:

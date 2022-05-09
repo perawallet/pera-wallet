@@ -38,7 +38,7 @@
 "account-select-header-contacts-title" = "Contactos";
 
 /* (No Comment) */
-"account-select-header-search-title" = "Search or enter wallet address";
+"account-select-header-search-title" = "Busca o ingresa una dirección de monedero";
 
 /* (No Comment) */
 "account-select-search-empty-detail" = "Intenta con un nombre de cuenta diferente";
@@ -107,7 +107,7 @@
 "accounts-title-assets" = "Activos";
 
 /* (No Comment) */
-"accounts-title-collectibles" = "Collectibles";
+"accounts-title-collectibles" = "Coleccionables";
 
 /* (No Comment) */
 "accounts-title-history" = "Historial";
@@ -171,6 +171,9 @@
 
 /* (No Comment) */
 "asset-id-copied-title" = "ID copiado al portapapeles";
+
+/* (No Comment) */
+"asset-manage-button" = "Manage";
 
 /* (No Comment) */
 "asset-min-transaction-error-message" = "Necesitas al menos %@ Algos para agregar este activo";
@@ -341,166 +344,196 @@
 "chart-time-selection-yearly" = "1A";
 
 /* (No Comment) */
-"collectible-approve-transaction-action-title" = "Confirm transfer";
+"collectible-approve-transaction-action-title" = "Confirmar transferencia";
 
 /* (No Comment) */
-"collectible-approve-transaction-description" = "Are you sure you want to proceed?";
+"collectible-approve-transaction-description" = "¿Estás seguro de que deseas continuar?";
 
 /* (No Comment) */
-"collectible-approve-transaction-fee" = "Transaction Fee";
+"collectible-approve-transaction-fee" = "Tarifa de transacción";
 
 /* (No Comment) */
-"collectible-approve-transaction-sender" = "Sender Account";
+"collectible-approve-transaction-opt-out" = "Opt out from the NFT";
+
+/* (No Comment) */
+"collectible-approve-transaction-sender" = "Cuenta del remitente";
 
 /* MARK: Collectible Approve */
-"collectible-approve-transaction-title" = "Approve Transaction";
+"collectible-approve-transaction-title" = "Aprobar transacción";
 
 /* (No Comment) */
-"collectible-approve-transaction-to" = "To";
+"collectible-approve-transaction-to" = "Para";
 
 /* (No Comment) */
-"collectible-detail-algo-explorer" = "Show on Algoexplorer";
+"collectible-detail-algo-explorer" = "Mostrar en Algoexplorer";
 
 /* (No Comment) */
-"collectible-detail-collection-name" = "Collection Name";
+"collectible-detail-collection-name" = "Nombre de la colección";
 
 /* (No Comment) */
-"collectible-detail-creator-address" = "Creator Wallet Address";
+"collectible-detail-creator-address" = "Dirección de monedero del creador";
 
 /* (No Comment) */
-"collectible-detail-creator-name" = "Creator Name";
+"collectible-detail-creator-name" = "Nombre del creador";
 
 /* (No Comment) */
-"collectible-detail-description" = "Description";
+"collectible-detail-description" = "Descripción";
 
 /* (No Comment) */
-"collectible-detail-error-media-type" = "We don't support this NFT media type yet.";
+"collectible-detail-error-media-type" = "Todavía no admitimos este tipo de medio NFT.";
 
 /* (No Comment) */
-"collectible-detail-error-not-owner" = "You are not the owner of this NFT yet, however you opted in for it. You can now transfer it to your wallet.";
+"collectible-detail-error-not-owner" = "Todavía no eres el propietario de este NFT, sin embargo, estás suscrito a el. Ya puedes transferirlo a tu monedero.";
 
 /* (No Comment) */
-"collectible-detail-error-visual" = "We can’t display the visual temporarily.";
+"collectible-detail-error-not-owner-watch-account" = "This watch account has opted in for this NFT, however doesn't own it.";
 
 /* (No Comment) */
-"collectible-detail-nft-explorer" = "Show on NFTExplorer";
+"collectible-detail-nft-explorer" = "Mostrar en NFTExplorer";
 
 /* (No Comment) */
-"collectible-detail-opt-out" = "Opt out";
+"collectible-detail-opt-out" = "Dar de baja";
 
 /* (No Comment) */
-"collectible-detail-opt-out-alert-message" = "You are about to opt out from this NFT with %@. You will not be able to transact with this asset until you opt in again.";
+"collectible-detail-opt-out-alert-message" = "Estás a punto de dar de baja este NFT con %@ . No podrás realizar transacciones con este activo hasta que vuelvas a suscribirte.";
 
 /* (No Comment) */
-"collectible-detail-opt-out-alert-title" = "Opt out from “%@”";
+"collectible-detail-opt-out-alert-title" = "Dar de baja \"%@\"";
 
 /* (No Comment) */
-"collectible-detail-opt-out-success" = "%@ NFT successfully opted-out";
+"collectible-detail-opt-out-success" = "%@ NFT dado de baja con éxito";
 
 /* (No Comment) */
-"collectible-detail-opted-in" = "Opted in to";
+"collectible-detail-opted-in" = "Te suscrbiste a";
 
 /* (No Comment) */
-"collectible-detail-owner" = "Owner";
+"collectible-detail-owner" = "Propietario";
 
 /* (No Comment) */
-"collectible-detail-properties" = "Properties";
+"collectible-detail-pera-explorer" = "Pera Explorer";
+
+/* (No Comment) */
+"collectible-detail-properties" = "Propiedades";
 
 /* MARK: Collectible Detail */
-"collectible-detail-share" = "Share";
+"collectible-detail-share" = "Compartir";
 
 /* (No Comment) */
-"collectible-detail-view-transaction" = "View Transaction";
-
-/* / MARK: Collectible List */
-"collectible-list-item-pending-title" = "Pending";
+"collectible-detail-show-on" = "Show on";
 
 /* (No Comment) */
-"collectible-opt-in-info-description" = "To avoid spammy transaction, the Algorand Blockchain only allow you to send and receive transaction for assets that have been previously opted-in.";
-
-/* / MARK: Collectible Opt In Info */
-"collectible-opt-in-info-title" = "Information about Opt-In";
+"collectible-detail-tap-3D" = "Tap media to view in 3D mode";
 
 /* (No Comment) */
-"collectible-receive-account-list-info" = "You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet.";
+"collectible-detail-view-transaction" = "Ver transacción";
+
+/* MARK: Collectible Filter Selection */
+"collectible-filter-selection-title" = "Filter";
 
 /* (No Comment) */
-"collectible-receive-asset-list-info" = "You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet. Paste the ASA ID in the search bar.";
+"collectible-filter-selection-toggle-description" = "You can show/hide NFTs that are opted-in but not owned";
 
 /* (No Comment) */
-"collectible-receive-asset-list-selected-account" = "Selected account";
+"collectible-filter-selection-toggle-title" = "Display opted-in NFTs";
+
+/* MARK: Collectible List */
+"collectible-list-item-pending-title" = "Pendiente";
 
 /* (No Comment) */
-"collectible-recipient-opt-in-action-title" = "Request Opt-in";
+"collectible-opt-in-info-description" = "To avoid spam transactions, Algorand blockchain only allows you to send and receive transactions for assets that have been previously opted-in to.";
+
+/* MARK: Collectible Opt In Info */
+"collectible-opt-in-info-title" = "Información sobre la suscripción a activos";
 
 /* (No Comment) */
-"collectible-recipient-opt-in-description" = "You can't send %@ to %@ because this wallet didn't opt in for this asset yet. Learn more about Opt-in";
+"collectible-opt-out-info-description" = "Algorand blockchain requires an account to opt in to an ASA before it can receive it. Now that you've transferred this NFT to another account, you can opt out from it. Opting out requires an additional transaction.";
+
+/* MARK: Collectible Opt Out Info */
+"collectible-opt-out-info-title" = "Opt out from the NFT ";
 
 /* (No Comment) */
-"collectible-recipient-opt-in-description-marked" = "Learn more about Opt-in";
-
-/* / MARK: Collecitble Ask recipient to opt in */
-"collectible-recipient-opt-in-title" = "Ask recipient to opt in";
+"collectible-receive-account-list-info" = "Debes suscribirte al ID del ASA del NFT para poder transferirlo a tu monedero.";
 
 /* (No Comment) */
-"collectible-send-account-list-title" = "Select the receiver account";
+"collectible-receive-asset-list-info" = "Debes suscribirte al ID del ASA del NFT para poder transferirlo a tu monedero. Pega el ID del ASA en la barra de búsqueda.";
 
 /* (No Comment) */
-"collectible-send-action" = "Transfer";
+"collectible-receive-asset-list-selected-account" = "Cuenta seleccionada";
 
 /* (No Comment) */
-"collectible-send-input-placeholder" = "Paste an Algorand wallet address";
-
-/* / MARK: Collectible Send */
-"collectible-send-title" = "Send your NFT";
+"collectible-recipient-opt-in-action-title" = "Solicitar suscripción a un activo";
 
 /* (No Comment) */
-"collectible-transfer-confirmed-action-title" = "Got it!";
+"collectible-recipient-opt-in-description" = "No puedes enviar %@ a %@ porque este monedero no está suscrito a este activo todavía. Más información sobre la suscripción a activos.";
 
 /* (No Comment) */
-"collectible-transfer-confirmed-description" = "Transactions can take a few minutes to finalize.";
+"collectible-recipient-opt-in-description-marked" = "Más información sobre la suscripción a activos";
+
+/* MARK: Collecitble Ask recipient to opt in */
+"collectible-recipient-opt-in-title" = "Pídele al destinatario que se suscriba a este activo";
+
+/* (No Comment) */
+"collectible-send-account-list-title" = "Selecciona la cuenta destino";
+
+/* (No Comment) */
+"collectible-send-action" = "Transferir";
+
+/* (No Comment) */
+"collectible-send-input-placeholder" = "Pega una dirección de monedero de Algorand";
+
+/* MARK: Collectible Send */
+"collectible-send-title" = "Envía tu NFT";
+
+/* (No Comment) */
+"collectible-transfer-confirmed-action-title" = "¡Listo!";
+
+/* (No Comment) */
+"collectible-transfer-confirmed-description" = "Las transacciones pueden tardar unos minutos en finalizar.";
 
 /* MARK: Collectible Transfer */
-"collectible-transfer-confirmed-title" = "Your NFT transfer is confirmed!";
+"collectible-transfer-confirmed-title" = "Tu transferencia de NFT fue confirmada.";
 
 /* (No Comment) */
-"collectible-transfer-failed-retry-desription" = "Please try again.";
+"collectible-transfer-failed-retry-desription" = "Inténtalo de nuevo.";
 
 /* (No Comment) */
-"collectible-transfer-failed-title" = "Your NFT transfer has failed!";
+"collectible-transfer-failed-title" = "Tu transferencia de NFT falló.";
 
 /* (No Comment) */
-"collectible-transfer-failed-verify-algo-desription" = "Please verify that you have enough Algo to cover the transaction fees for transferring your NFT, and try again.";
+"collectible-transfer-failed-verify-algo-desription" = "Verifica que tienes suficientes Algos para cubrir las tarifas de transacción para transferir tu NFT e intenta nuevamente.";
 
 /* (No Comment) */
-"collectibles-empty-body" = "Welcome to your NFT Gallery! You don’t have any NFTs yet. All the NFTs available in your wallet will be visible here.";
+"collectibles-empty-body" = "¡Bienvenido a tu Galería NFT! Todavía no tienes ningún NFT. Todos los NFT disponibles en tu monedero aparecerán aquí.";
 
 /* (No Comment) */
-"collectibles-empty-title" = "Collectibles";
+"collectibles-empty-secondary-action-title" = "Show hidden NFTs (%@)";
 
 /* (No Comment) */
-"collectibles-list-input-placeholder" = "Search your NFTs";
+"collectibles-empty-title" = "Coleccionables";
 
 /* (No Comment) */
-"collectibles-receive-account-list-header-description" = "Select the wallet account you would like to receive to:";
-
-/* / MARK: Collectible Receive */
-"collectibles-receive-action" = "Receive an NFT";
+"collectibles-list-input-placeholder" = "Buscar tus NFT";
 
 /* (No Comment) */
-"collectibles-receive-asset-list-header-description" = "You need to opt in to the ASA ID of the NFT to be able to receive it. Paste the ASA ID or scan it below.";
+"collectibles-receive-account-list-header-description" = "Selecciona la cuenta del monedero en la que deseas recibirlo:";
+
+/* MARK: Collectible Receive */
+"collectibles-receive-action" = "Recibir un NFT";
 
 /* (No Comment) */
-"collectibles-receive-asset-list-search-no-content" = "No NFT Found";
+"collectibles-receive-asset-list-header-description" = "Debes suscribirte al ID del ASA del NFT para poder recibirlo. Pega el ID del ASA o escanéalo a continuación.";
 
 /* (No Comment) */
-"collectibles-receive-asset-list-search-placeholder" = "Search Asset ID or NFT name";
+"collectibles-receive-asset-list-search-no-content" = "No se encontró ningún NFT";
 
 /* (No Comment) */
-"collectibles-receive-asset-title" = "Opt-in to NFT";
+"collectibles-receive-asset-list-search-placeholder" = "Buscar ID del activo o nombre del NFT";
 
 /* (No Comment) */
-"contact-input-address-placeholder" = "Account address";
+"collectibles-receive-asset-title" = "Suscribirse al NFT";
+
+/* (No Comment) */
+"contact-input-address-placeholder" = "Dirección de la cuenta";
 
 /* (No Comment) */
 "contact-search-empty-detail" = "Intenta con un nombre de contacto diferente";
@@ -545,7 +578,7 @@
 "contacts-info" = "Información del contacto";
 
 /* (No Comment) */
-"contacts-info-address" = "Account Address";
+"contacts-info-address" = "Dirección de la cuenta";
 
 /* (No Comment) */
 "contacts-info-edit" = "Editar contacto";
@@ -665,7 +698,7 @@
 "introduction-recover-account-text" = "Ya tengo una cuenta";
 
 /* (No Comment) */
-"introduction-title-terms-and-services" = "By creating an account, you agree to Pera Wallet's<br><a href=\"%@\">Terms and Conditions</a> and <a href=\"%@\">Privacy Policy</a>";
+"introduction-title-terms-and-services" = "Al crear una cuenta, aceptas los <br><a href=\"%@\">Términos y Condiciones</a> y la <a href=\"%@\">Política de Privacidad</a> de Pera Wallet";
 
 /* (No Comment) */
 "ledger-account-detail-assets" = "Activos";
@@ -1053,6 +1086,12 @@
 
 /* (No Comment) */
 "notification-support-success" = "%@ agregó %@ a su cuenta. Puedes enviarlos.";
+
+/* (No Comment) */
+"notifications-asset-not-found-description" = "The history for this specific asset is not available.";
+
+/* (No Comment) */
+"notifications-asset-not-found-title" = "Asset history not available";
 
 /* (No Comment) */
 "notifications-empty-subtitle" = "Aquí aparecerán las transacciones recientes, las solicitudes de activos y otras notificaciones.";
@@ -1694,7 +1733,7 @@
 "title-close" = "Cerrar";
 
 /* MARK: Collectible Common */
-"title-collectibles" = "Collectibles";
+"title-collectibles" = "Coleccionables";
 
 /* (No Comment) */
 "title-confirm" = "Confirmar";
@@ -1730,6 +1769,12 @@
 "title-dont-show-again" = "No volver a mostrar";
 
 /* (No Comment) */
+"required-min-balance-title" = "Low Balance";
+
+/* (No Comment) */
+"required-min-balance-description" = "You don't have enough balance to support the transaction fees. The Algorand blockchain requires 0.001 Algos to support a transaction. You can increase your Algo balance to support this transaction fee.\n\nIf you opted-in for dApps and smart contracts associated with your account (from different ecosystem apps), each asset increases the minimum balance required by 0.1 Algo. To reduce the minimum balance required for this account, you must opt-out from the assets or dApps causing that increased minimum balance.";
+
+/* (No Comment) */
 "title-edit" = "Editar";
 
 /* (No Comment) */
@@ -1745,7 +1790,13 @@
 "title-failed-connection" = "Error de conexión";
 
 /* (No Comment) */
-"title-generic-api-error" = "Well, this is unexpected";
+"title-generic-api-error" = "Bueno, esto es inesperado.";
+
+/* (No Comment) */
+"title-generic-error" = "Something went wrong";
+
+/* (No Comment) */
+"title-generic-response-description" = "We couldn't fetch some of the assets. Please try again.";
 
 /* (No Comment) */
 "title-go-to-accounts" = "Ir a Cuentas";
@@ -1805,7 +1856,7 @@
 "title-plus-asset-singular-count" = "Activo %@";
 
 /* (No Comment) */
-"title-plus-collectible-count" = "%@ NFTs";
+"title-plus-collectible-count" = "%@ NFT";
 
 /* (No Comment) */
 "title-plus-collectible-singular-count" = "%@ NFT";
@@ -2006,7 +2057,7 @@
 "transaction-filter-option-yesterday" = "Ayer";
 
 /* MARK: Transaction Filter */
-"transaction-filter-title-sort" = "Ordenar por fecha";
+"transaction-filter-title-sort" = "Filter by Date";
 
 /* (No Comment) */
 "transaction-filter-tooltip" = "Ya puedes filtrar el historial de transacciones";
@@ -2435,7 +2486,7 @@
 "wallet-connect-transaction-warning-high-fee" = "Esta tarifa de transacción es más alta que la tarifa habitual de 0,001 Algos.";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-initial-description" = "Las aplicaciones externas, también llamadas dApps, pueden realizar solicitudes de transacciones que Pera Wallet no controla. Asegúrate de revisar estas transacciones con cuidado antes de aprobarlas y firmarlas.\n\nTodas las transacciones son irreversibles. Nunca apruebes una transacción de una dApp que no conoces.";
+"wallet-connect-transaction-warning-initial-description" = "External applications, also called dApps, can initiate transaction requests independently from Pera Wallet. Please ensure you review these transactions carefully before approving and signing them.\n\nAll transactions are irreversible. As these requests are outside Pera Wallet's control, never approve transactions from a dApp you don’t know.";
 
 /* (No Comment) */
 "wallet-connect-transaction-warning-initial-title" = "Preguntas frecuentes sobre las solicitudes de transacciones";

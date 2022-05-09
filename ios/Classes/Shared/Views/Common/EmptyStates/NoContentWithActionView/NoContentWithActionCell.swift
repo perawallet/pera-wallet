@@ -21,13 +21,9 @@ import UIKit
 
 final class NoContentWithActionCell:
     CollectionCell<NoContentWithActionView>,
-    ViewModelBindable {
-    lazy var handlers = Handlers() {
-        didSet {
-            contextView.handlers.didTapActionView = handlers.didTapActionView
-        }
-    }
-
+    ViewModelBindable,
+    UIInteractionObservable {
+    
     override init(
         frame: CGRect
     ) {
@@ -36,11 +32,5 @@ final class NoContentWithActionCell:
         )
 
         contextView.customize(NoContentWithActionViewCommonTheme())
-    }
-}
-
-extension NoContentWithActionCell {
-    struct Handlers {
-        var didTapActionView: EmptyHandler?
     }
 }

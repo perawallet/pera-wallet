@@ -142,12 +142,12 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
             UIPasteboard.general.string = address
         }
         
-        displaySimpleAlertWith(title: "qr-creation-copied".localized)
+        bannerController?.presentInfoBanner("qr-creation-copied".localized)
     }
     
     func transactionDetailViewDidCopyCloseToAddress(_ transactionDetailView: TransactionDetailView) {
         UIPasteboard.general.string = transaction.payment?.closeAddress
-        displaySimpleAlertWith(title: "qr-creation-copied".localized)
+        bannerController?.presentInfoBanner("qr-creation-copied".localized)
     }
 
     func transactionDetailView(_ transactionDetailView: TransactionDetailView, didOpen explorer: AlgoExplorerType) {
@@ -160,12 +160,12 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
     
     func transactionDetailViewDidCopyTransactionNote(_ transactionDetailView: TransactionDetailView) {
         UIPasteboard.general.string = transaction.noteRepresentation()
-        displaySimpleAlertWith(title: "transaction-detail-note-copied".localized)
+        bannerController?.presentInfoBanner("transaction-detail-note-copied".localized)
     }
 
     func transactionDetailViewDidCopyTransactionID(_ transactionDetailView: TransactionDetailView) {
         UIPasteboard.general.string = transaction.id
-        displaySimpleAlertWith(title: "transaction-detail-id-copied-title".localized)
+        bannerController?.presentInfoBanner("transaction-detail-id-copied-title".localized)
     }
 }
 

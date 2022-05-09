@@ -18,18 +18,23 @@ import UIKit
 import MacaroonUIKit
 import AVKit
 import AVFoundation
+import MacaroonURLImage
 
 final class CollectibleMediaVideoPreviewView:
     View,
     ViewModelBindable,
     ListReusable {
 
+    private lazy var placeholderView = URLImagePlaceholderView()
     private lazy var videoPlayerView = VideoPlayerView()
     private lazy var overlayView = UIView()
+
+    private var playerStateObserver: NSKeyValueObservation?
 
     func customize(
         _ theme: CollectibleMediaVideoPreviewViewTheme
     ) {
+        addPlaceholderView(theme)
         addVideoPlayerView(theme)
         addOverlayView(theme)
     }
@@ -43,15 +48,24 @@ final class CollectibleMediaVideoPreviewView:
     ) {}
 
     deinit {
-        NotificationCenter.default.removeObserver(
-            self,
-            name: .AVPlayerItemDidPlayToEndTime,
-            object: nil
-        )
+        removeObservers()
     }
 }
 
 extension CollectibleMediaVideoPreviewView {
+    private func addPlaceholderView(
+        _ theme: CollectibleMediaVideoPreviewViewTheme
+    ) {
+        placeholderView.build(theme.placeholder)
+        placeholderView.layer.draw(corner: theme.corner)
+        placeholderView.clipsToBounds = true
+
+        addSubview(placeholderView)
+        placeholderView.snp.makeConstraints {
+            $0.setPaddings()
+        }
+    }
+
     private func addVideoPlayerView(
         _ theme: CollectibleMediaVideoPreviewViewTheme
     ) {
@@ -62,13 +76,6 @@ extension CollectibleMediaVideoPreviewView {
         videoPlayerView.snp.makeConstraints {
             $0.setPaddings()
         }
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(playerItemDidReachEnd),
-            name: .AVPlayerItemDidPlayToEndTime,
-            object: videoPlayerView.player?.currentItem
-        )
     }
 
     private func addOverlayView(
@@ -90,14 +97,27 @@ extension CollectibleMediaVideoPreviewView {
     func bindData(
         _ viewModel: CollectibleMediaVideoPreviewViewModel?
     ) {
+        placeholderView.placeholder = viewModel?.placeholder
+
         guard let viewModel = viewModel,
               let url = viewModel.url else {
             return
         }
 
+        playerStateObserver = videoPlayerView.playerLayer?.observe(
+            \.isReadyForDisplay,
+             options:  [.new]
+        ) {
+            [weak self] (playerLayer, change) in
+            guard let self = self else { return }
+            self.placeholderView.isHidden = playerLayer.isReadyForDisplay
+        }
+
         let videoPlayer = AVPlayer(url: url)
         videoPlayer.playImmediately(atRate: 1)
         videoPlayerView.player = videoPlayer
+
+        addObservers()
 
         if !viewModel.isOwned {
             overlayView.alpha = 0.4
@@ -135,6 +155,30 @@ extension CollectibleMediaVideoPreviewView {
 
 extension CollectibleMediaVideoPreviewView {
     func prepareForReuse() {
+        removeObservers()
+        playerStateObserver?.invalidate()
+        stopVideo()
+        videoPlayerView.player = nil
+        placeholderView.prepareForReuse()
         overlayView.alpha = 0.0
+    }
+}
+
+extension CollectibleMediaVideoPreviewView {
+    private func addObservers() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(playerItemDidReachEnd),
+            name: .AVPlayerItemDidPlayToEndTime,
+            object: videoPlayerView.player?.currentItem
+        )
+    }
+
+    private func removeObservers() {
+        NotificationCenter.default.removeObserver(
+            self,
+            name: .AVPlayerItemDidPlayToEndTime,
+            object: nil
+        )
     }
 }

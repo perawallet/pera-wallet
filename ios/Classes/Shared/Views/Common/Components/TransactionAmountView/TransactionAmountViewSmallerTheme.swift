@@ -24,13 +24,13 @@ struct TransactionAmountViewSmallerTheme: TransactionAmountViewTheme {
     init(_ family: LayoutFamily) {
         self.signLabel = [
             .textAlignment(.left),
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMMono.regular.make(15))
         ]
         self.amountLabel = [
             .textAlignment(.right),
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMMono.regular.make(15))
         ]

@@ -22,15 +22,15 @@ import MacaroonUIKit
 extension AccountAssetListLayout {
     struct Theme: LayoutSheet, StyleSheet {
         let assetItemSize: LayoutSize
+        let assetManagementItemSize: LayoutSize
+        let assetTitleItemSize: LayoutSize
         let searchItemSize: LayoutSize
-        let listHeaderSize: LayoutSize
-        let listFooterSize: LayoutSize
 
         init(_ family: LayoutFamily) {
             self.assetItemSize = (UIScreen.main.bounds.width - 48, 72)
+            self.assetManagementItemSize = (UIScreen.main.bounds.width - 48, 24)
+            self.assetTitleItemSize = (UIScreen.main.bounds.width - 48, 24)
             self.searchItemSize = (UIScreen.main.bounds.width, 72)
-            self.listHeaderSize = (UIScreen.main.bounds.width, 40)
-            self.listFooterSize = (UIScreen.main.bounds.width, 72)
         }
     }
 }

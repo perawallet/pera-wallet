@@ -97,4 +97,13 @@ enum NotificationType:
     init() {
         self = .broadcast
     }
+    
+    func isSent() -> Bool {
+        switch self {
+        case .transactionSent, .assetTransactionSent:
+            return true
+        default:
+            return false
+        }
+    }
 }

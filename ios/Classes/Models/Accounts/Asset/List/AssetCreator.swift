@@ -21,21 +21,23 @@ import MagpieCore
 final class AssetCreator: ALGEntityModel {
     let id: Int64
     let address: String
-    let isVerifiedAssetCreator: Bool
 
     init(
         _ apiModel: APIModel = APIModel()
     ) {
         self.id = apiModel.id
         self.address = apiModel.address
-        self.isVerifiedAssetCreator = apiModel.isVerifiedAssetCreator
+    }
+    
+    init(address: String) {
+        self.id = 0
+        self.address = address
     }
 
     func encode() -> APIModel {
         var apiModel = APIModel()
         apiModel.id = id
         apiModel.address = address
-        apiModel.isVerifiedAssetCreator = isVerifiedAssetCreator
         return apiModel
     }
 }
@@ -44,18 +46,15 @@ extension AssetCreator {
     struct APIModel: ALGAPIModel {
         var id: Int64
         var address: String
-        var isVerifiedAssetCreator: Bool
 
         init() {
             self.id = 0
             self.address = ""
-            self.isVerifiedAssetCreator = false
         }
 
         private enum CodingKeys: String, CodingKey {
             case id
             case address
-            case isVerifiedAssetCreator = "is_verified_asset_creator"
         }
     }
 }

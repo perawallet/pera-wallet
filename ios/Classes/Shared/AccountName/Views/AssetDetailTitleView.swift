@@ -18,7 +18,9 @@
 import UIKit
 import MacaroonUIKit
 
-final class AssetDetailTitleView: View {
+final class AssetDetailTitleView:
+    View,
+    ViewModelBindable {
     private lazy var imageView = AssetImageView()
     private lazy var titleLabel = UILabel()
 
@@ -30,6 +32,11 @@ final class AssetDetailTitleView: View {
     func customizeAppearance(_ styleSheet: StyleSheet) {}
 
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
+
+    func bindData(_ viewModel: AssetDetailTitleViewModel?) {
+        imageView.bindData(viewModel?.image)
+        titleLabel.editText = viewModel?.title
+    }
 }
 
 extension AssetDetailTitleView {
@@ -51,17 +58,5 @@ extension AssetDetailTitleView {
             $0.leading.equalTo(imageView.snp.trailing).offset(theme.horizontalPadding)
             $0.centerY.trailing.equalToSuperview()
         }
-    }
-}
-
-extension AssetDetailTitleView {
-    func bindData(_ viewModel: AssetDetailTitleViewModel?) {
-        imageView.bindData(
-            AssetImageSmallViewModel(
-                image: viewModel?.image,
-                assetAbbreviatedName: viewModel?.assetAbbreviatedName
-            )
-        )
-        titleLabel.editText = viewModel?.title
     }
 }

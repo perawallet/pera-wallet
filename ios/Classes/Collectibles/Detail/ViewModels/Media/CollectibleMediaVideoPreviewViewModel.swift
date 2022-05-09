@@ -17,8 +17,10 @@
 import Foundation
 import UIKit
 import MacaroonUIKit
+import MacaroonURLImage
 
 struct CollectibleMediaVideoPreviewViewModel: ViewModel {
+    private(set) var placeholder: ImagePlaceholder?
     private(set) var url: URL?
     private(set) var isOwned: Bool = true
 
@@ -26,12 +28,21 @@ struct CollectibleMediaVideoPreviewViewModel: ViewModel {
         asset: CollectibleAsset,
         media: Media
     ) {
+        bindPlaceholder(asset)
         bindURL(media)
         bindOwned(asset)
     }
 }
 
 extension CollectibleMediaVideoPreviewViewModel {
+    private mutating func bindPlaceholder(
+        _ asset: CollectibleAsset
+    ) {
+        let placeholder = asset.title.fallback(asset.name.fallback(asset.id.stringWithHashtag))
+
+        self.placeholder = getPlaceholder(placeholder)
+    }
+
     private mutating func bindURL(
         _ media: Media
     ) {
@@ -46,5 +57,31 @@ extension CollectibleMediaVideoPreviewViewModel {
         _ asset: CollectibleAsset
     ) {
         isOwned = asset.isOwned
+    }
+}
+
+extension CollectibleMediaVideoPreviewViewModel {
+    private func getPlaceholder(
+        _ aPlaceholder: String
+    ) -> ImagePlaceholder {
+        let font = Fonts.DMSans.regular.make(19)
+        let lineHeightMultiplier = 1.13
+
+        let placeholderText: EditText = .attributedString(
+            aPlaceholder.attributed([
+                .font(font),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .textAlignment(.center),
+                    .lineBreakMode(.byWordWrapping),
+                    .lineHeightMultiple(lineHeightMultiplier)
+                ])
+            ])
+        )
+
+        return ImagePlaceholder(
+            image: nil,
+            text: placeholderText
+        )
     }
 }

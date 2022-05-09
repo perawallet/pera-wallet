@@ -33,13 +33,13 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
                         CollectibleListLoadingViewCell.self,
                         at: indexPath
                     )
-                case .noContent:
+                case .noContent(let item):
                     let cell = collectionView.dequeue(
                         NoContentWithActionIllustratedCell.self,
                         at: indexPath
                     )
                     cell.bindData(
-                        CollectiblesNoContentWithActionViewModel()
+                        item
                     )
                     return cell
                 case .noContentSearch:
@@ -52,6 +52,16 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
                     )
                     return cell
                 }
+            case .header(let item):
+                let cell = collectionView.dequeue(
+                    CollectibleListInfoWithFilterCell.self,
+                    at: indexPath
+                )
+                cell.isFilterSelected = item.isSelected
+                cell.bindData(
+                    item.value
+                )
+                return cell
             case .search:
                 let cell = collectionView.dequeue(
                     CollectibleListSearchInputCell.self,
@@ -62,11 +72,22 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
                 switch item {
                 case .cell(let item):
                     switch item {
+                    case .pending(let item):
+                        let cell = collectionView.dequeue(
+                            CollectibleListItemCell.self,
+                            at: indexPath
+                        )
+                        cell.isPending = item.isPending
+                        cell.bindData(
+                            item.viewModel
+                        )
+                        return cell
                     case .owner(let item):
                         let cell = collectionView.dequeue(
                             CollectibleListItemCell.self,
                             at: indexPath
                         )
+                        cell.isPending = item.isPending
                         cell.bindData(
                             item.viewModel
                         )
@@ -76,15 +97,7 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
                             CollectibleListItemOptedInCell.self,
                             at: indexPath
                         )
-                        cell.bindData(
-                            item.viewModel
-                        )
-                        return cell
-                    case .pending(let item):
-                        let cell = collectionView.dequeue(
-                            CollectibleListItemPendingCell.self,
-                            at: indexPath
-                        )
+                        cell.isPending = item.isPending
                         cell.bindData(
                             item.viewModel
                         )
@@ -103,10 +116,10 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
         [
             CollectibleListItemCell.self,
             CollectibleListItemOptedInCell.self,
-            CollectibleListItemPendingCell.self,
             CollectibleListItemReceiveCell.self,
             NoContentWithActionIllustratedCell.self,
             CollectibleListSearchInputCell.self,
+            CollectibleListInfoWithFilterCell.self,
             CollectibleListLoadingViewCell.self,
             NoContentCell.self,
         ].forEach {

@@ -32,6 +32,24 @@ extension ALGAPI {
             .completionHandler(handler)
             .execute()
     }
+    
+    @discardableResult
+    func unregisterDevice(
+        _ draft: DeviceUpdateDraft,
+        from network: ALGAPI.Network,
+        onCompleted handler: @escaping (Response.Result<Device, HIPAPIError>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobile)
+            .path(.deviceDetail, args: draft.id)
+            .method(.put)
+            .body(draft)
+            .headers([
+                NetworkHeader(network)
+            ])
+            .completionHandler(handler)
+            .execute()
+    }
 
     @discardableResult
     func updateDevice(
@@ -48,7 +66,7 @@ extension ALGAPI {
     }
 
     @discardableResult
-    func unregisterDevice(
+    func revokeDevice(
         _ draft: DeviceDeletionDraft,
         onCompleted handler: @escaping (Response.ErrorModelResult<HIPAPIError>) -> Void
     ) -> EndpointOperatable {

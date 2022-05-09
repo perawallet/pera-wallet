@@ -44,6 +44,7 @@ enum CollectibleDetailItem: Hashable {
     case media(CollectibleAsset)
     case action(CollectibleDetailActionViewModel)
     case watchAccountAction(CollectibleDetailActionViewModel)
+    case collectibleCreatorAccountAction(CollectibleDetailActionViewModel)
     case optedInAction(CollectibleDetailOptedInActionViewModel)
     case description(CollectibleDescriptionViewModel)
     case information(CollectibleTransactionInformation)

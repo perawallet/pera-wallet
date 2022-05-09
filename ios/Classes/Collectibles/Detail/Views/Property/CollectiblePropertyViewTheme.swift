@@ -32,12 +32,12 @@ struct CollectiblePropertyViewTheme:
         _ family: LayoutFamily
     ) {
         self.name = [
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .textAlignment(.left),
             .textColor(AppColors.Components.Text.gray.uiColor)
         ]
         self.value = [
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .textAlignment(.left),
             .textColor(AppColors.Components.Text.main.uiColor)
         ]

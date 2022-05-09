@@ -1,8 +1,8 @@
 /* Privacy - Bluetooth Always Usage Description */
-"NSBluetoothAlwaysUsageDescription" = "Pera utilisera Bluetooth pour communiquer avec Ledger X.";
+"NSBluetoothAlwaysUsageDescription" = "Pera utilisera Bluetooth pour communiquer avec le Ledger X.";
 
 /* Privacy - Bluetooth Peripheral Usage Description */
-"NSBluetoothPeripheralUsageDescription" = "Pera utilisera Bluetooth pour communiquer avec Ledger X.";
+"NSBluetoothPeripheralUsageDescription" = "Pera utilisera Bluetooth pour communiquer avec le Ledger X.";
 
 /* Privacy - Camera Usage Description */
 "NSCameraUsageDescription" = "Pera utilisera votre appareil photo pour scanner les codes QR.";
@@ -11,5 +11,4 @@
 "NSFaceIDUsageDescription" = "Pera utilisera Face ID pour vous connecter en toute sécurité.";
 
 /* Privacy - Photo Library Additions Usage Description */
-"NSPhotoLibraryAddUsageDescription" = "Pera enregistrera les codes QR dans votre photothèque.";
-
+"NSPhotoLibraryAddUsageDescription" = "Pera enregistrera les codes QR dans votre galerie de photos.";

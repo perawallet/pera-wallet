@@ -23,13 +23,11 @@ final class AssetImageView:
     View,
     ViewModelBindable,
     ListReusable {
-    private lazy var placeholderView = AssetImagePlaceholderView()
     private lazy var imageView = URLImageView()
 
     func customize(
         _ theme: AssetImageViewTheme
     ) {
-        addPlaceholder(theme)
         addImage(theme)
     }
 
@@ -46,54 +44,23 @@ final class AssetImageView:
     ) {
         if let image = viewModel?.image {
             imageView.imageContainer.image = image
-            placeholderView.isHidden = true
-
             return
         }
 
-        if let imageSource = viewModel?.imageSource {
-            placeholderView.bindData(viewModel)
-
-            imageView.load(from: imageSource) {
-                [weak self] error in
-                guard let self = self else {
-                    return
-                }
-
-                if error == nil {
-                    self.placeholderView.isHidden = true
-                }
-            }
-
-            return
-        }
-
-        placeholderView.bindData(viewModel)
+        imageView.load(from: viewModel?.imageSource)
     }
 
     func prepareForReuse() {
-        placeholderView.prepareForReuse()
-        placeholderView.isHidden = false
         imageView.prepareForReuse()
     }
 }
 
 extension AssetImageView {
-    func addPlaceholder(
-        _ theme: AssetImageViewTheme
-    ) {
-        placeholderView.customize(theme.placeholder)
-
-        placeholderView.fitToIntrinsicSize()
-        addSubview(placeholderView)
-        placeholderView.snp.makeConstraints {
-            $0.setPaddings()
-        }
-    }
-
     func addImage(
         _ theme: AssetImageViewTheme
     ) {
+        imageView.build(theme.image)
+
         addSubview(imageView)
         imageView.snp.makeConstraints {
             $0.setPaddings()

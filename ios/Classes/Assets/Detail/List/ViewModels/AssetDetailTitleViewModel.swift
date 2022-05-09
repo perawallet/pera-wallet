@@ -20,15 +20,14 @@ import UIKit
 import MacaroonUIKit
 
 final class AssetDetailTitleViewModel: ViewModel {
-    private(set) var image: UIImage?
+    private(set) var image: AssetImageSmallViewModel?
     private(set) var title: EditText?
-    private(set) var assetAbbreviatedName: String?
-    
+
     init(
         _ asset: Asset? = nil
     ) {
-        bindTitle(asset)
         bindImage(asset)
+        bindTitle(asset)
     }
 }
 
@@ -37,15 +36,13 @@ extension AssetDetailTitleViewModel {
         _ asset: Asset?
     ) {
         if let asset = asset {
-            if let assetName = asset.presentation.name,
-               !assetName.isEmptyOrBlank {
-                assetAbbreviatedName = TextFormatter.assetShortName.format(assetName)
-            } else {
-                assetAbbreviatedName = TextFormatter.assetShortName.format("title-unknown".localized)
-            }
-        } else {
-            image = "icon-algo-circle-green".uiImage
+            image = AssetImageSmallViewModel(
+                image: .url(nil, title: asset.presentation.name)
+            )
+            return
         }
+
+        image = AssetImageSmallViewModel(image: .algo)
     }
 
     private func bindTitle(
@@ -58,9 +55,11 @@ extension AssetDetailTitleViewModel {
             } else {
                 title = getTitle("title-unknown".localized)
             }
-        } else {
-            title = getTitle("ALGO")
+
+            return
         }
+
+        title = getTitle("ALGO")
     }
 }
 

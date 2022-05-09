@@ -63,7 +63,7 @@ extension CollectibleDetailOptedInActionViewModel {
     private mutating func bindSubtitle(
         _ asset: CollectibleAsset
     ) {
-        let aSubtitle = asset.title.fallback(asset.name.fallback("#".appending(String(asset.id))))
+        let aSubtitle = asset.title.fallback(asset.name.fallback(asset.id.stringWithHashtag))
 
         let font = Fonts.DMSans.medium.make(19)
         let lineHeightMultiplier = 1.13

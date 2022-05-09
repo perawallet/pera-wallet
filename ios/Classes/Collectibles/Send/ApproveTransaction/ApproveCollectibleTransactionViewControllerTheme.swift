@@ -21,14 +21,24 @@ import UIKit
 struct ApproveCollectibleTransactionViewControllerTheme:
     StyleSheet,
     LayoutSheet {
+    let minimumHorizontalSpacing: LayoutMetric
     let background: ViewStyle
     let separator: Separator
     let contentEdgeInsets: LayoutPaddings
+
     let title: TextStyle
     let description: TextStyle
     let descriptionTopMargin: LayoutMetric
     let spacingBetweenDescriptionAndSeparator: LayoutMetric
     let spacingBetweenInfoAndSeparator: LayoutMetric
+
+    let info: CollectibleTransactionInfoViewTheme
+
+    let optOutCheckbox: ButtonStyle
+    let optOutTitle: TextStyle
+    let optOutInfo: ButtonStyle
+    let optOutTitleLeadingMargin: LayoutMetric
+
     let actionContentEdgeInsets: LayoutPaddings
     let actionCorner: Corner
     let confirmActionIndicator: ImageStyle
@@ -37,16 +47,17 @@ struct ApproveCollectibleTransactionViewControllerTheme:
     let confirmActionHeight: LayoutMetric
     let cancelAction: ButtonStyle
     let spacingBetweenActions: LayoutMetric
-    let info: CollectibleTransactionInfoViewTheme
 
     init(
         _ family: LayoutFamily
     ) {
+        minimumHorizontalSpacing = 8
         background = [
             .backgroundColor(AppColors.Shared.System.background)
         ]
         separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
         contentEdgeInsets = (24, 24, 16, 24)
+
         title = [
             .text(Self.getTitle()),
             .textColor(AppColors.Components.Text.main),
@@ -56,17 +67,41 @@ struct ApproveCollectibleTransactionViewControllerTheme:
             .text(Self.getDescription()),
             .textColor(AppColors.Components.Text.main),
             .textOverflow(FittingText())
+
         ]
         descriptionTopMargin = 16
         spacingBetweenDescriptionAndSeparator = 32
         spacingBetweenInfoAndSeparator = 20
+
+        info = CollectibleTransactionInfoViewTheme()
+
+        optOutCheckbox = [
+            .icon(
+                [
+                    .normal("icon-border-checkbox-unselected"),
+                    .selected("icon-border-checkbox-selected")
+                ]
+            ),
+            .tintColor(AppColors.Shared.Helpers.success)
+        ]
+        optOutTitle = [
+            .text(Self.getOptOutTitle()),
+            .textColor(AppColors.Components.Text.main),
+            .textOverflow(FittingText())
+        ]
+        optOutInfo = [
+            .icon([.normal("icon-info-24".templateImage)]),
+            .tintColor(AppColors.Components.Text.grayLighter)
+        ]
+        optOutTitleLeadingMargin = 12
+
         actionContentEdgeInsets = (14, 0, 14, 0)
         actionCorner = Corner(radius: 4)
         confirmActionIndicator = [
             .image("button-loading-indicator"),
             .contentMode(.scaleAspectFit)
         ]
-        confirmActionViewTopPadding = 44
+        confirmActionViewTopPadding = 40
         confirmAction = [
             .title(Self.getActionTitle("collectible-approve-transaction-action-title")),
             .titleColor([
@@ -85,7 +120,6 @@ struct ApproveCollectibleTransactionViewControllerTheme:
         ]
         confirmActionHeight = 52
         spacingBetweenActions = 12
-        info = CollectibleTransactionInfoViewTheme()
     }
 }
 
@@ -114,6 +148,24 @@ extension ApproveCollectibleTransactionViewControllerTheme {
 
         return .attributedString(
             "collectible-approve-transaction-description"
+                .localized
+                .attributed([
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .lineBreakMode(.byWordWrapping),
+                        .lineHeightMultiple(lineHeightMultiplier)
+                    ])
+                ])
+        )
+    }
+
+    private static func getOptOutTitle() -> EditText {
+        let font = Fonts.DMSans.regular.make(15)
+        let lineHeightMultiplier = 1.23
+
+        return .attributedString(
+            "collectible-approve-transaction-opt-out"
                 .localized
                 .attributed([
                     .font(font),

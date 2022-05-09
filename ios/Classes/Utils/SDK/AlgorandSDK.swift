@@ -76,7 +76,7 @@ extension AlgorandSDK {
         return AlgoMobileMakeAssetTransferTxn(
             getTrimmedAddress(from: draft.from),
             draft.toAccount.trimmingCharacters(in: .whitespacesAndNewlines),
-            "", // closing address should be empty for asset transaction
+            draft.closeTo, // closing address should be empty for asset transaction
             draft.amount.toSDKInt64(),
             draft.note,
             draft.transactionParams.toSDKSuggestedParams(),

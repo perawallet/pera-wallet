@@ -51,6 +51,24 @@ final class CollectibleListItemLoadingView:
     func linkInteractors() {
         isUserInteractionEnabled = false
     }
+
+    class func calculatePreferredSize(
+        for theme: CollectibleListItemLoadingViewTheme,
+        fittingIn size: CGSize
+    ) -> CGSize {
+        let width = size.width
+
+        let imageHeight = width
+
+        let preferredHeight =
+        imageHeight +
+        theme.titleTopPadding +
+        theme.titleViewHeight +
+        theme.subtitleTopPadding +
+        theme.subtitleViewHeight
+
+        return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
+    }
 }
 
 extension CollectibleListItemLoadingView {

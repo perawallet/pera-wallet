@@ -78,8 +78,8 @@ extension BannerViewTheme {
             corners: .allCorners
         )
 
-        title = title.modify([ .textColor(AppColors.Shared.System.background) ])
-        message = message.modify([ .textColor(AppColors.Shared.System.background) ])
+        title = title.modify([ .textColor(AppColors.Shared.Global.white) ])
+        message = message.modify([ .textColor(AppColors.Shared.Global.white) ])
     }
 
     mutating func configureForNotification() {
@@ -103,7 +103,7 @@ extension BannerViewTheme {
             opacity: 1,
             offset: (0, 8),
             radius: 20,
-            fillColor: AppColors.Shared.Helpers.positive.uiColor,
+            fillColor: AppColors.Components.Link.icon.uiColor,
             cornerRadii: (12, 12),
             corners: .allCorners
         )

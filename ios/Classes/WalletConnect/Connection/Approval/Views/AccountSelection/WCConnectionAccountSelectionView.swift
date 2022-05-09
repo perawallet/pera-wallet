@@ -30,12 +30,17 @@ final class WCConnectionAccountSelectionView: Control {
     }
 
     private let configuration: Configuration
+    private let theme: WCConnectionAccountSelectionViewTheme
 
-    public init(configurationHandler: (inout Configuration) -> Void = { _ in }) {
+    init(theme: WCConnectionAccountSelectionViewTheme, configurationHandler: (inout Configuration) -> Void = { _ in }) {
+        self.theme = theme
         var configuration = Configuration()
         configurationHandler(&configuration)
         self.configuration = configuration
+
         super.init(frame: .zero)
+        
+        customize(theme)
     }
 
     func customize(_ theme: WCConnectionAccountSelectionViewTheme) {
@@ -50,6 +55,14 @@ final class WCConnectionAccountSelectionView: Control {
     func prepareLayout(_ layoutSheet: LayoutSheet) { }
 
     func customizeAppearance(_ styleSheet: StyleSheet) {}
+    
+    override func preferredUserInterfaceStyleDidChange() {
+        super.preferredUserInterfaceStyleDidChange()
+        
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        drawAppearance(shadow: Shadows.primaryShadow.create())
+    }
+    
 }
 
 extension WCConnectionAccountSelectionView {

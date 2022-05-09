@@ -35,7 +35,7 @@ extension CollectiblePropertyViewModel {
     private mutating func bindName(
         _ property: CollectibleTrait
     ) {
-        guard let aName = property.displayName else {
+        guard let aName = property.displayName?.uppercased() else {
             return
         }
 
@@ -47,7 +47,7 @@ extension CollectiblePropertyViewModel {
                 .font(font),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([
-                    .lineBreakMode(.byWordWrapping),
+                    .lineBreakMode(.byTruncatingTail),
                     .lineHeightMultiple(lineHeightMultiplier)
                 ])
             ])
@@ -69,7 +69,7 @@ extension CollectiblePropertyViewModel {
                 .font(font),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([
-                    .lineBreakMode(.byWordWrapping),
+                    .lineBreakMode(.byTruncatingTail),
                     .lineHeightMultiple(lineHeightMultiplier)
                 ])
             ])

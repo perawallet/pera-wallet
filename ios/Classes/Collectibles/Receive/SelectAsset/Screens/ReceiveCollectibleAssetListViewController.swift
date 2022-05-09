@@ -350,6 +350,8 @@ extension ReceiveCollectibleAssetListViewController {
             return
         }
 
+        view.endEditing(true)
+
         switch itemIdentifier {
         case .collectible:
             guard let selectedAsset = dataController[indexPath.item] else {
@@ -481,10 +483,10 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
             )
 
             NotificationCenter.default.post(
-                name: CollectibleListLocalDataController.didAddPendingCollectible,
+                name: CollectibleListLocalDataController.didAddCollectible,
                 object: self,
                 userInfo: [
-                    CollectibleListLocalDataController.assetUserInfoKey: (account.value, collectibleAsset)
+                    CollectibleListLocalDataController.accountAssetPairUserInfoKey: (account.value, collectibleAsset)
                 ]
             )
         }

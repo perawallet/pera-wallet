@@ -29,7 +29,7 @@ struct Collectible3DViewerTheme:
         _ family: LayoutFamily
     ) {
         close = [
-            .icon([.normal("icon-close")])
+            .icon([.normal("icon-close-background")])
         ]
 
         butonSize = (44, 44)

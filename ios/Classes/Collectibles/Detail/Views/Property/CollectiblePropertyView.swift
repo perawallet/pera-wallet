@@ -45,8 +45,6 @@ final class CollectiblePropertyView:
 
 extension CollectiblePropertyView {
     private func addContentView(_ theme: CollectiblePropertyViewTheme) {
-        contentView.fitToIntrinsicSize()
-
         addSubview(contentView)
         contentView.snp.makeConstraints {
             $0.top.bottom.equalToSuperview().inset(theme.verticallInset)
@@ -61,6 +59,7 @@ extension CollectiblePropertyView {
         nameLabel.customizeAppearance(theme.name)
 
         contentView.addSubview(nameLabel)
+        nameLabel.fitToVerticalIntrinsicSize()
         nameLabel.snp.makeConstraints {
             $0.top == 0
             $0.leading == 0
@@ -96,21 +95,26 @@ extension CollectiblePropertyView {
             return CGSize((0, size.height))
         }
 
+        let width = size.width
         let height = size.height
+
         let horizontalInset = theme.horizontalInset * 2
-        let verticalInset = theme.verticallInset * 2 + theme.labelPadding
+
         let nameSize = viewModel.name.boundingSize(
             multiline: false,
-            fittingSize: CGSize((.greatestFiniteMagnitude, height - verticalInset))
+            fittingSize: CGSize((width - horizontalInset, .greatestFiniteMagnitude))
         )
         let valueSize = viewModel.value.boundingSize(
             multiline: false,
-            fittingSize: CGSize((.greatestFiniteMagnitude, height - verticalInset))
+            fittingSize: CGSize((width - horizontalInset, .greatestFiniteMagnitude))
         )
 
         let contentWidth =
-            max(nameSize.width, valueSize.width) +
-            horizontalInset
+        min(
+            size.width,
+            max(nameSize.width, valueSize.width) + horizontalInset
+        )
+        .ceil()
         
         return CGSize((contentWidth, height))
     }

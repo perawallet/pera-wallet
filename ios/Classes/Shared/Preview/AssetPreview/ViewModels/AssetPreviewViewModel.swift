@@ -19,7 +19,7 @@ import MacaroonUIKit
 import UIKit
 
 struct AssetPreviewModel {
-    let icon: AssetImage?
+    let icon: AssetImage
     let verifiedIcon: UIImage?
     let title: String?
     let subtitle: String?
@@ -81,12 +81,11 @@ extension AssetPreviewViewModel {
 }
 
 extension AssetPreviewViewModel {
-    private mutating func bindAssetImageView(_ image: AssetImage?) {
-        let assetAbbreviationForImage = TextFormatter.assetShortName.format(title?.string)
-        
+    private mutating func bindAssetImageView(
+        _ image: AssetImage
+    ) {
         assetImageViewModel = AssetImageLargeViewModel(
-            image: image,
-            assetAbbreviatedName: assetAbbreviationForImage
+            image: image
         )
     }
     
@@ -189,19 +188,8 @@ extension AssetPreviewViewModel {
     private mutating func bindImage(
         _ asset: CollectibleAsset
     ) {
-        var assetImage: AssetImage?
-
-        if let thumbnailImage = asset.thumbnailImage {
-            assetImage = .url(thumbnailImage)
-        }
-
-        let name = asset.name
-
-        assetImageViewModel = AssetImageLargeViewModel(
-            image: assetImage,
-            assetAbbreviatedName: TextFormatter.assetShortName.format(
-                (name.isNilOrEmpty ? "title-unknown".localized : name!)
-            )
+        bindAssetImageView(
+            .url(asset.thumbnailImage, title: asset.name)
         )
     }
 
@@ -234,19 +222,8 @@ extension AssetPreviewViewModel {
     private mutating func bindImage(
         _ draft: CollectibleAssetSelectionDraft
     ) {
-        var assetImage: AssetImage?
-
-        if let thumbnailImage = draft.asset.thumbnailImage {
-            assetImage = .url(thumbnailImage)
-        }
-
-        let name = draft.asset.name
-
-        assetImageViewModel = AssetImageLargeViewModel(
-            image: assetImage,
-            assetAbbreviatedName: TextFormatter.assetShortName.format(
-                (name.isNilOrEmpty ? "title-unknown".localized : name!)
-            )
+        bindAssetImageView(
+            .url(draft.asset.thumbnailImage, title: draft.asset.name)
         )
     }
 

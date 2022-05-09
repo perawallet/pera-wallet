@@ -48,6 +48,8 @@
 "title-error-description" = "Error: %@";
 "title-generic-api-error" = "Well, this is unexpected";
 "title-not-available" = "Not available";
+"title-generic-error" = "Something went wrong";
+"title-generic-response-description" = "We couldn't fetch some of the assets. Please try again.";
 
 "title-show-transaction-detail" = "Show Transaction Details";
 "title-show-all-detail" = "Show All Details";
@@ -197,6 +199,7 @@
 "asset-remove-subtitle" = "To remove an asset, you must first transfer that asset’s balance to another account";
 "asset-search-placeholder" = "Search Assets ID or Name";
 "asset-remove-confirmation-title" = "Manage asset";
+"asset-manage-button" = "Manage";
 "asset-transfer-balance" = "Transfer Balance";
 "title-remove-assets" = "Remove Assets";
 "title-add-asset" = "Add New Asset";
@@ -525,8 +528,11 @@
 "notifications-empty-title" = "No current notifications";
 "notifications-empty-subtitle" = "Your recent transactions, asset requests and other notifications will appear here.";
 
+"notifications-asset-not-found-title" = "Asset history not available";
+"notifications-asset-not-found-description" = "The history for this specific asset is not available.";
+
 // MARK: Transaction Filter
-"transaction-filter-title-sort" = "Sort by Date";
+"transaction-filter-title-sort" = "Filter by Date";
 "transaction-filter-option-all" = "All Time";
 "transaction-filter-option-today" = "Today";
 "transaction-filter-option-yesterday" = "Yesterday";
@@ -627,6 +633,8 @@
 "min-balance-title" = "Minimum Balance Required";
 "title-continue" = "Continue";
 "title-dont-show-again" = "Don’t Show This Again";
+"required-min-balance-title" = "Low Balance";
+"required-min-balance-description" = "You don't have enough balance to support the transaction fees. The Algorand blockchain requires 0.001 Algos to support a transaction. You can increase your Algo balance to support this transaction fee.\n\nIf you opted-in for dApps and smart contracts associated with your account (from different ecosystem apps), each asset increases the minimum balance required by 0.1 Algo. To reduce the minimum balance required for this account, you must opt-out from the assets or dApps causing that increased minimum balance.";
 
 "screenshot-title" = "Screenshot Detected";
 "screenshot-description" = "Do not backup your recovery passphrase by taking a screenshot. Having an image containing your passphrase is a security risk.";
@@ -738,7 +746,7 @@
 "wallet-connect-transaction-warning-close-algos-title" = "Close Remainder To";
 "wallet-connect-transaction-warning-high-fee" = "This transaction fee is higher than the usual fee of 0.001 Algo.";
 "wallet-connect-transaction-warning-initial-title" = "Transaction Request FAQ";
-"wallet-connect-transaction-warning-initial-description" = "External applications also called as dApps can make transaction requests that the Pera Wallet does not control. Please ensure you review these transactions carefully before approving and signing them.\n\nAll transactions are irreversible. Never approve transaction from dApp that you don’t know.";
+"wallet-connect-transaction-warning-initial-description" = "External applications, also called dApps, can initiate transaction requests independently from Pera Wallet. Please ensure you review these transactions carefully before approving and signing them.\n\nAll transactions are irreversible. As these requests are outside Pera Wallet's control, never approve transactions from a dApp you don’t know.";
 "wallet-connect-transaction-warning-future" = "This transaction will be submitted in the future. ";
 "wallet-connect-transaction-warning-confirmation" = "Once confirmed, the connected application can send these transactions out at their discretion. Please make sure you review the transactions carefully as this process is irreversible.";
 
@@ -868,7 +876,7 @@
 "account-listing-error-message" = "Sorry, we can't show the details of this portfolio. It looks like we are having issues for the calculation.\n\nPlease note that some asset values might not be available, therefore the total portfolio value should be considered an estimation.";
 
 "account-detail-portfolio-title" = "Account Value";
-"account-detail-assets-search" = "Search my assets";
+"account-detail-assets-search" = "Search your assets";
 
 // MARK: SendTransaction
 "send-transaction-title" = "Send %@";
@@ -923,11 +931,17 @@
 "collectibles-empty-title" = "Collectibles";
 "collectibles-empty-body" = "Welcome to your NFT Gallery! You don’t have any NFTs yet. All the NFTs available in your wallet will be visible here.";
 
-/// MARK: Collectible List
+// MARK: Collectible List
 "collectible-list-item-pending-title" = "Pending";
 "collectibles-list-input-placeholder" = "Search your NFTs";
+"collectibles-empty-secondary-action-title" =  "Show hidden NFTs (%@)";
 
-/// MARK: Collectible Receive
+// MARK: Collectible Filter Selection
+"collectible-filter-selection-title" = "Filter";
+"collectible-filter-selection-toggle-title" = "Display opted-in NFTs";
+"collectible-filter-selection-toggle-description" = "You can show/hide NFTs that are opted-in but not owned";
+
+// MARK: Collectible Receive
 "collectibles-receive-action" = "Receive an NFT";
 "collectibles-receive-account-list-header-description" = "Select the wallet account you would like to receive to:";
 "collectible-receive-account-list-info" = "You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet.";
@@ -938,7 +952,7 @@
 "collectible-receive-asset-list-info" = "You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet. Paste the ASA ID in the search bar.";
 "collectible-receive-asset-list-selected-account" = "Selected account";
 
-/// MARK: Collectible Send
+// MARK: Collectible Send
 "collectible-send-title" = "Send your NFT";
 "collectible-send-input-placeholder" = "Paste an Algorand wallet address";
 "collectible-send-action" = "Transfer";
@@ -957,8 +971,7 @@
 "collectible-detail-nft-explorer" = "Show on NFTExplorer";
 "collectible-detail-error-media-type" = "We don't support this NFT media type yet.";
 "collectible-detail-error-not-owner" = "You are not the owner of this NFT yet, however you opted in for it. You can now transfer it to your wallet.";
-"collectible-detail-error-not-owner-watch-account" = "The Watch Account has opted in for this NFT.";
-"collectible-detail-error-visual" = "We can’t display the visual temporarily.";
+"collectible-detail-error-not-owner-watch-account" = "This watch account has opted in for this NFT, however doesn't own it.";
 "collectible-detail-opted-in" = "Opted in to";
 "collectible-detail-opt-out" = "Opt out";
 "collectible-detail-opt-out-success" = "%@ NFT successfully opted-out";
@@ -966,6 +979,7 @@
 "collectible-detail-opt-out-alert-message" = "You are about to opt out from this NFT with %@. You will not be able to transact with this asset until you opt in again.";
 "collectible-detail-show-on" = "Show on";
 "collectible-detail-pera-explorer" = "Pera Explorer";
+"collectible-detail-tap-3D" = "Tap media to view in 3D mode";
 
 // MARK: Collectible Transfer
 "collectible-transfer-confirmed-title" = "Your NFT transfer is confirmed!";
@@ -975,9 +989,9 @@
 "collectible-transfer-failed-verify-algo-desription" = "Please verify that you have enough Algo to cover the transaction fees for transferring your NFT, and try again.";
 "collectible-transfer-failed-retry-desription" = "Please try again.";
 
-/// MARK: Collectible Opt In Info
+// MARK: Collectible Opt In Info
 "collectible-opt-in-info-title" = "Information about Opt-In";
-"collectible-opt-in-info-description" = "To avoid spammy transaction, the Algorand Blockchain only allow you to send and receive transaction for assets that have been previously opted-in.";
+"collectible-opt-in-info-description" = "To avoid spam transactions, Algorand blockchain only allows you to send and receive transactions for assets that have been previously opted-in to.";
 
 // MARK: Collectible Approve
 "collectible-approve-transaction-title" = "Approve Transaction";
@@ -986,8 +1000,13 @@
 "collectible-approve-transaction-sender" = "Sender Account";
 "collectible-approve-transaction-to" = "To";
 "collectible-approve-transaction-fee" = "Transaction Fee";
+"collectible-approve-transaction-opt-out" = "Opt out from the NFT";
 
-/// MARK: Collecitble Ask recipient to opt in
+// MARK: Collectible Opt Out Info
+"collectible-opt-out-info-title" = "Opt out from the NFT ";
+"collectible-opt-out-info-description" = "Algorand blockchain requires an account to opt in to an ASA before it can receive it. Now that you've transferred this NFT to another account, you can opt out from it. Opting out requires an additional transaction.";
+
+// MARK: Collecitble Ask recipient to opt in
 "collectible-recipient-opt-in-title" = "Ask recipient to opt in";
 "collectible-recipient-opt-in-description" = "You can't send %@ to %@ because this wallet didn't opt in for this asset yet. Learn more about Opt-in";
 "collectible-recipient-opt-in-description-marked" = "Learn more about Opt-in";

@@ -19,8 +19,16 @@ import Foundation
 extension NoContentWithActionViewIllustratedTheme {
     mutating func configureForCollectiblesNoContentWithAction() {
         contentHorizontalPaddings = (0, 0)
-        action = action.modify(
-            [ .icon( [.normal("icon-plus"), .highlighted("icon-plus")] ) ]
+        primaryAction = primaryAction.modify(
+            [
+                .tintColor(AppColors.Components.Button.Primary.text)
+            ]
+        )
+
+        secondaryAction = secondaryAction.modify(
+            [
+                .tintColor(AppColors.Components.Button.Secondary.text)
+            ]
         )
     }
 }

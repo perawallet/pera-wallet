@@ -60,8 +60,8 @@ struct SearchInputViewCommonTheme: SearchInputViewTheme {
             .placeholder(placeholder),
             .placeholderColor(AppColors.Components.Text.gray),
             .autocorrectionType(.no),
-            .textContentType(.username),
-            .returnKeyType(.search)
+            .returnKeyType(.search),
+            .autocapitalizationType(.none)
         ]
         self.textInputBackground = [
             .backgroundColor(AppColors.Shared.Layer.grayLighter)

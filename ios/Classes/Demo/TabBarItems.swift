@@ -16,12 +16,12 @@
 //  TabBarItems.swift
 
 import Foundation
-import MacaroonTabBarController
+import MacaroonUIKit
 import UIKit
 
 struct HomeTabBarItem: TabBarItem {
     let id: String
-    let barButtonItem: MacaroonTabBarController.TabBarButtonItem
+    let barButtonItem: MacaroonUIKit.TabBarButtonItem
     let screen: UIViewController?
 
     init(
@@ -41,7 +41,7 @@ struct HomeTabBarItem: TabBarItem {
 
 struct AlgoStatisticsTabBarItem: TabBarItem {
     let id: String
-    let barButtonItem: MacaroonTabBarController.TabBarButtonItem
+    let barButtonItem: MacaroonUIKit.TabBarButtonItem
     let screen: UIViewController?
 
     init(
@@ -61,7 +61,7 @@ struct AlgoStatisticsTabBarItem: TabBarItem {
 
 struct CollectiblesTabBarItem: TabBarItem {
     let id: String
-    let barButtonItem: MacaroonTabBarController.TabBarButtonItem
+    let barButtonItem: MacaroonUIKit.TabBarButtonItem
     let screen: UIViewController?
 
     init(
@@ -81,7 +81,7 @@ struct CollectiblesTabBarItem: TabBarItem {
 
 struct SettingsTabBarItem: TabBarItem {
     let id: String
-    let barButtonItem: MacaroonTabBarController.TabBarButtonItem
+    let barButtonItem: MacaroonUIKit.TabBarButtonItem
     let screen: UIViewController?
 
     init(

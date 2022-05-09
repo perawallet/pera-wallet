@@ -58,6 +58,8 @@ extension CollectibleMediaErrorView {
     private func addImageView(
         _ theme: CollectibleMediaErrorViewTheme
     ) {
+        imageView.customizeAppearance(theme.icon)
+
         addSubview(imageView)
         imageView.fitToVerticalIntrinsicSize()
         imageView.snp.makeConstraints {

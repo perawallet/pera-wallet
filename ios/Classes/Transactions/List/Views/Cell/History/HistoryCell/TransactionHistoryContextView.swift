@@ -24,7 +24,6 @@ class TransactionHistoryContextView:
     private(set) lazy var titleLabel = Label()
     private(set) lazy var subtitleLabel = Label()
     private(set) lazy var transactionAmountView = TransactionAmountView()
-    private(set) lazy var secondaryAmountLabel = Label()
 
     func customize(
         _ theme: TransactionHistoryContextViewTheme
@@ -32,7 +31,6 @@ class TransactionHistoryContextView:
         addTitleLabel(theme)
         addSubtitleLabel(theme)
         addTransactionAmountView(theme)
-        addSecondaryAmountLabel(theme)
     }
 
     func prepareLayout(
@@ -84,20 +82,7 @@ extension TransactionHistoryContextView {
         transactionAmountView.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(theme.horizontalInset)
             $0.top.equalToSuperview().inset(theme.verticalInset)
-            $0.centerY.equalToSuperview().priority(.low)
-            $0.leading.greaterThanOrEqualTo(subtitleLabel.snp.trailing).offset(theme.horizontalInset)
-        }
-    }
-
-    private func addSecondaryAmountLabel(
-        _ theme: TransactionHistoryContextViewTheme
-    ) {
-        secondaryAmountLabel.customizeAppearance(theme.secondaryAmountLabel)
-
-        addSubview(secondaryAmountLabel)
-        secondaryAmountLabel.snp.makeConstraints {
-            $0.trailing.equalToSuperview().inset(theme.horizontalInset)
-            $0.top.equalTo(transactionAmountView.snp.bottom)
+            $0.centerY.equalToSuperview()
             $0.bottom.equalToSuperview().inset(theme.verticalInset)
             $0.leading.greaterThanOrEqualTo(subtitleLabel.snp.trailing).offset(theme.horizontalInset)
         }
@@ -114,8 +99,6 @@ extension TransactionHistoryContextView {
         if let transactionAmountViewModel = viewModel?.transactionAmountViewModel {
             transactionAmountView.bindData(transactionAmountViewModel)
         }
-
-        secondaryAmountLabel.editText = viewModel?.secondaryAmount
     }
 
     class func calculatePreferredSize(
@@ -140,12 +123,8 @@ extension TransactionHistoryContextView {
             multiline: false,
             fittingSize: CGSize((width, .greatestFiniteMagnitude))
         )
-        let secondaryAmountSize = viewModel.secondaryAmount.boundingSize(
-            multiline: false,
-            fittingSize: CGSize((width, .greatestFiniteMagnitude))
-        )
         let contentHeight = titleSize.height + subtitleSize.height
-        let accessoryTextHeight = (amountSize?.height ?? 0) + secondaryAmountSize.height
+        let accessoryTextHeight = (amountSize?.height ?? 0)
         let preferredHeight = max(contentHeight, accessoryTextHeight)
         return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
     }
@@ -153,7 +132,6 @@ extension TransactionHistoryContextView {
     func prepareForReuse() {
         titleLabel.text = nil
         subtitleLabel.text = nil
-        secondaryAmountLabel.text = nil
         transactionAmountView.prepareForReuse()
     }
 }

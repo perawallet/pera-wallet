@@ -65,6 +65,10 @@ final class SearchInputView:
     }
 
     func customizeAppearance(_ theme: SearchInputViewTheme) {
+        /// <note>
+        /// Setting  `spellCheckingType` to `.no` hides native suggestion word bar on the keyboard.
+        textInputView.spellCheckingType = .no
+
         customizeTextInputBackgroundAppearance(theme)
         customizeTextInputAppearance(theme)
         customizeTextInputLeftAccessoryAppearance(theme)

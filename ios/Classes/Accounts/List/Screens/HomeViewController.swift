@@ -177,9 +177,9 @@ extension HomeViewController {
 
 extension HomeViewController {
     private func linkInteractors(
-        _ cell: HomeNoContentCell
+        _ cell: NoContentWithActionCell
     ) {
-        cell.observe(event: .performAction) {
+        cell.observe(event: .performPrimaryAction) {
             [weak self] in
             guard let self = self else { return }
             
@@ -449,7 +449,7 @@ extension HomeViewController: QRScannerViewControllerDelegate {
             let toAccount = Account(address: address, type: .standard)
 
             var draft = SendTransactionDraft(from: toAccount, transactionMode: .algo)
-            draft.note = qrText.lockedNote
+            draft.note = qrText.note
             draft.lockedNote = qrText.lockedNote
             draft.amount = amount.toAlgos
 
@@ -498,7 +498,7 @@ extension HomeViewController: QRScannerViewControllerDelegate {
             let toAccount = Account(address: address, type: .standard)
             var draft = SendTransactionDraft(from: toAccount, transactionMode: .asset(asset))
             draft.amount = Decimal(amount)
-            draft.note = qrText.lockedNote
+            draft.note = qrText.note
             draft.lockedNote = qrText.lockedNote
 
             self.sendTransactionDraft = draft
@@ -566,7 +566,7 @@ extension HomeViewController {
                 let loadingCell = cell as? HomeLoadingCell
                 loadingCell?.startAnimating()
             case .noContent:
-                linkInteractors(cell as! HomeNoContentCell)
+                linkInteractors(cell as! NoContentWithActionCell)
             }
         case .portfolio(let item):
             linkInteractors(
@@ -678,7 +678,7 @@ extension HomeViewController: SelectAccountViewControllerDelegate {
             amount: draft.amount,
             transactionMode: draft.transactionMode
         )
-        transactionDraft.note = draft.lockedNote
+        transactionDraft.note = draft.note
         transactionDraft.lockedNote = draft.lockedNote
 
         selectAccountViewController.open(.sendTransaction(draft: transactionDraft), by: .push)

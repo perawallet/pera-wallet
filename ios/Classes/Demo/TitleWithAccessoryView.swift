@@ -29,7 +29,9 @@ final class TitleWithAccessoryView:
         .performAccessory: UIControlInteraction()
     ]
     
-    private lazy var titleView = Label()
+    /// TODO: Used UILabel instead Label because it causes that text shrinks when you change tab and go back multiple times
+    /// Possible issue is text rect is changing with incorrect value
+    private lazy var titleView = UILabel()
     private lazy var accessoryView = MacaroonUIKit.Button()
     
     override init(

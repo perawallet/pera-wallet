@@ -687,7 +687,6 @@ extension TransactionsAPIDataController {
                 asset: asset,
                 transaction: transaction,
                 contact: contact,
-                currency: sharedDataController.currency.value,
                 localAccounts: sharedDataController.accountCollection.sorted().map { $0.value }
             )
 
@@ -698,7 +697,6 @@ extension TransactionsAPIDataController {
             account: draft.accountHandle.value,
             asset: asset,
             transaction: transaction,
-            currency: sharedDataController.currency.value,
             localAccounts: sharedDataController.accountCollection.sorted().map { $0.value }
         )
 
@@ -720,7 +718,6 @@ extension TransactionsAPIDataController {
                 asset: asset,
                 transaction: transaction,
                 contact: contact,
-                currency: sharedDataController.currency.value,
                 localAccounts: sharedDataController.accountCollection.sorted().map { $0.value }
             )
 
@@ -731,7 +728,6 @@ extension TransactionsAPIDataController {
             account: draft.accountHandle.value,
             asset: asset,
             transaction: transaction,
-            currency: sharedDataController.currency.value,
             localAccounts: sharedDataController.accountCollection.sorted().map { $0.value }
         )
 

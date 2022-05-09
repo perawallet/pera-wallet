@@ -56,7 +56,8 @@ class SendAssetTransactionDataBuilder: TransactionDataBuilder {
             transactionParams: params,
             amount: amountDecimalValue.toFraction(of: assetTransactionDraft.assetDecimalFraction),
             assetIndex: assetIndex,
-            note: assetTransactionDraft.note?.data(using: .utf8)
+            note: assetTransactionDraft.note?.data(using: .utf8),
+            closeTo: assetTransactionDraft.assetCreator
         )
 
         guard let transactionData = algorandSDK.sendAsset(with: draft, error: &transactionError) else {

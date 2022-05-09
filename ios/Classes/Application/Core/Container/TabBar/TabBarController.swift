@@ -16,7 +16,6 @@
 //  TabBarController.swift
 
 import Foundation
-import MacaroonTabBarController
 import MacaroonUIKit
 import UIKit
 

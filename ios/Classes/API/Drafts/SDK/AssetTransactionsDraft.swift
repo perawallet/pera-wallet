@@ -24,4 +24,5 @@ struct AssetTransactionDraft: TransactionDraft {
     let amount: UInt64
     let assetIndex: Int64
     var note: Data?
+    var closeTo: String?
 }

@@ -169,6 +169,7 @@ extension DeepLinkParser {
         let qrDraft = QRSendTransactionDraft(
             toAccount: accountAddress,
             amount: amount.toAlgos,
+            note: qr.note,
             lockedNote: qr.lockedNote,
             transactionMode: .algo
         )
@@ -211,6 +212,7 @@ extension DeepLinkParser {
         let qrDraft = QRSendTransactionDraft(
             toAccount: accountAddress,
             amount: Decimal(amount),
+            note: qr.note,
             lockedNote: qr.lockedNote,
             transactionMode: .asset(StandardAsset(asset: ALGAsset(id: assetDecoration.id), decoration: assetDecoration))
         )

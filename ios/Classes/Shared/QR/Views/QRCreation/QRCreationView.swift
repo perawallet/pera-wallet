@@ -20,11 +20,7 @@ import MacaroonUIKit
 
 final class QRCreationView: View {
     weak var delegate: QRCreationViewDelegate?
-    
-    private lazy var labelTapGestureRecognizer = UITapGestureRecognizer(
-        target: self,
-        action: #selector(notifyToCopyText(_:))
-    )
+
 
     private lazy var theme = QRCreationViewTheme()
     
@@ -51,7 +47,6 @@ final class QRCreationView: View {
         addLabel(theme)
         addCopyButton(theme)
         addShareButton(theme)
-        addCopyFeedbackLabel(theme)
     }
     
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
@@ -61,7 +56,12 @@ final class QRCreationView: View {
     func setListeners() {
         shareButton.addTarget(self, action: #selector(notifyDelegateToShareQR), for: .touchUpInside)
         copyButton.addTarget(self, action: #selector(notifyToCopyText), for: .touchUpInside)
-        addressView.addGestureRecognizer(labelTapGestureRecognizer)
+        addressView.addGestureRecognizer(
+            UITapGestureRecognizer(
+                target: self,
+                action: #selector(notifyToCopyText(_:))
+            )
+        )
     }
 }
 
@@ -73,30 +73,11 @@ extension QRCreationView {
     
     @objc
     private func notifyToCopyText(_ gestureRecognizer: UITapGestureRecognizer) {
-        showCopyFeedbackLabel(theme)
-        delegate?.qrCreationView(self, didSelect: addressView.getAddress())
+        delegate?.qrCreationViewDidCopy(self)
     }
 }
 
 extension QRCreationView {
-    private func addCopyFeedbackLabel(_ theme: QRCreationViewTheme) {
-        copyFeedbackLabel.customizeAppearance(theme.copyFeedbackLabel)
-        copyFeedbackLabel.draw(corner: theme.copyFeedbackLabelCorner)
-        copyFeedbackLabel.contentEdgeInsets = theme.copyFeedBackInsets
-
-        addSubview(copyFeedbackLabel)
-        copyFeedbackLabel.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-        }
-        copyFeedbackLabelTopConstraint = copyFeedbackLabel.topAnchor.constraint(
-            equalTo: topAnchor,
-            constant: -theme.copyFeedbackLabelTopInset
-        )
-
-        copyFeedbackLabelTopConstraint?.isActive = true
-        copyFeedbackLabel.alpha = 0
-    }
-    
     private func addQRView(_ theme: QRCreationViewTheme) {
         addSubview(qrView)
         qrView.snp.makeConstraints {
@@ -160,36 +141,7 @@ extension QRCreationView {
     }
 }
 
-extension QRCreationView {
-    private func showCopyFeedbackLabel(_ theme: QRCreationViewTheme) {
-        guard copyFeedbackLabel.alpha == 0 else { return }
-
-        copyFeedbackLabel.alpha = 1
-        copyFeedbackLabelTopConstraint?.constant = theme.copyFeedbackLabelTopInset
-
-        UIView.animate(
-            withDuration: 1.0,
-            delay: 0.0,
-            usingSpringWithDamping: 0.6,
-            initialSpringVelocity: 1,
-            animations: {
-                self.layoutIfNeeded()
-            }) { _ in
-                UIView.animate(
-                    withDuration: 1.0,
-                    delay: 0.0,
-                    usingSpringWithDamping: 0.6,
-                    initialSpringVelocity: 1,
-                    animations: {
-                        self.copyFeedbackLabelTopConstraint?.constant = -theme.copyFeedbackLabelTopInset
-                        self.copyFeedbackLabel.alpha = 0
-                        self.layoutIfNeeded()
-                    })
-            }
-    }
-}
-
 protocol QRCreationViewDelegate: AnyObject {
     func qrCreationViewDidShare(_ qrCreationView: QRCreationView)
-    func qrCreationView(_ qrCreationView: QRCreationView, didSelect text: String)
+    func qrCreationViewDidCopy(_ qrCreationView: QRCreationView)
 }

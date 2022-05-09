@@ -24,6 +24,10 @@ import Alamofire
 import MacaroonUIKit
 
 final class SendTransactionScreen: BaseViewController {
+    typealias EventHandler = (Event) -> Void
+
+    var eventHandler: EventHandler?
+
     private(set) lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
 
     private lazy var nextButton = Button()
@@ -146,7 +150,7 @@ final class SendTransactionScreen: BaseViewController {
         bindAssetPreview()
         bindAmount()
 
-        self.note = draft.lockedNote
+        self.note = draft.lockedNote ?? draft.note
     }
 
     override func linkInteractors() {
@@ -413,7 +417,19 @@ extension SendTransactionScreen: TransactionSignChecking {
                 return
             }
 
-            open(.transactionAccountSelect(draft: self.draft), by: .push)
+            let controller = open(
+                .transactionAccountSelect(draft: draft),
+                by: .push
+            ) as? AccountSelectScreen
+
+            controller?.eventHandler = {
+                [weak self] event in
+                guard let self = self else { return }
+                switch event {
+                case .didCompleteTransaction:
+                    self.eventHandler?(.didCompleteTransaction)
+                }
+            }
             return
         case .algoParticipationKeyWarning:
             self.presentParticipationKeyWarningForMaxTransaction()
@@ -422,11 +438,8 @@ extension SendTransactionScreen: TransactionSignChecking {
             self.displayMaxTransactionWarning()
             return
         case .requiredMinAlgo:
-            let minimumAmount = calculateMininmumAmount(for: draft.from)
-
-            errorTitle = "asset-min-transaction-error-title".localized
-            errorMessage = "send-algos-minimum-amount-custom-error".localized(params: minimumAmount.toAlgos.toAlgosStringForLabel ?? ""
-            )
+            self.displayRequiredMinAlgoWarning()
+            return
         }
 
         bannerController?.presentErrorBanner(
@@ -540,12 +553,13 @@ extension SendTransactionScreen: NumpadViewDelegate {
             return .maximumAmountAlgoError
         }
 
-        if Int(draft.from.amount) - Int(decimalAmount.toMicroAlgos) - Int(minimumFee) < minimumTransactionMicroAlgosLimit && !isMaxTransaction {
-            return .minimumAmountAlgoError
-        }
-
         if Int(draft.from.amount) - Int(decimalAmount.toMicroAlgos) - Int(minimumFee) < calculateMininmumAmount(for: draft.from) {
-            return .requiredMinAlgo
+            
+            if Int(decimalAmount.toMicroAlgos) <= Int(calculateMininmumAmount(for: draft.from)) + Int(minimumFee) {
+                return .requiredMinAlgo
+            }
+            
+            return .maxAlgo
         }
 
         if isMaxTransaction {
@@ -607,6 +621,20 @@ extension SendTransactionScreen: NumpadViewDelegate {
             }
         }
     }
+    
+    private func displayRequiredMinAlgoWarning() {
+        let configurator = BottomWarningViewConfigurator(
+            image: "icon-info-red".uiImage,
+            title: "required-min-balance-title".localized,
+            description: .plain("required-min-balance-description".localized),
+            secondaryActionButtonTitle: "title-got-it".localized
+        )
+
+        self.modalTransition.perform(
+            .bottomWarning(configurator: configurator),
+            by: .presentWithoutNavigationController
+        )
+    }
 
     private func displayMaxTransactionWarning() {
         guard let transactionParams = transactionParams else {
@@ -633,7 +661,9 @@ extension SendTransactionScreen: NumpadViewDelegate {
                     return
                 }
 
-                self.draft.amount = self.amount.decimalAmount
+                let maxAmount = self.draft.from.amount.toAlgos.toNumberStringWithSeparatorForLabel ?? "0"
+                self.draft.amount = maxAmount.decimalAmount
+                
                 self.open(.transactionAccountSelect(draft: self.draft), by: .push)
             }
         )
@@ -706,10 +736,22 @@ extension SendTransactionScreen: TransactionControllerDelegate {
             return
         }
 
-        open(
-            .sendTransactionPreview(draft: draft, transactionController: transactionController),
+        let controller = open(
+            .sendTransactionPreview(
+                draft: draft,
+                transactionController: transactionController
+            ),
             by: .push
-        )
+        ) as? SendTransactionPreviewScreen
+
+        controller?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .didCompleteTransaction:
+                self.eventHandler?(.didCompleteTransaction)
+            }
+        }
     }
 
     private func displayTransactionError(from transactionError: TransactionError) {
@@ -934,5 +976,11 @@ extension SendTransactionScreen {
             .assetActionConfirmation(assetAlertDraft: assetAlertDraft, delegate: nil),
             by: .presentWithoutNavigationController
         )
+    }
+}
+
+extension SendTransactionScreen {
+    enum Event {
+        case didCompleteTransaction
     }
 }

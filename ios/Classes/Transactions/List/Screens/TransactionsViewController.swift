@@ -382,7 +382,7 @@ extension TransactionsViewController: TransactionFloatingActionButtonViewControl
                 ),
                 by: .present
             ) as? SelectAssetViewController
-            let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
+            let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak controller] in
                 controller?.closeScreen(by: .dismiss, animated: true)
             }
             controller?.leftBarButtonItems = [closeBarButtonItem]
@@ -390,7 +390,7 @@ extension TransactionsViewController: TransactionFloatingActionButtonViewControl
             if let asset = asset {
                 let draft = SendTransactionDraft(from: accountHandle.value, transactionMode: .asset(asset))
                 let controller = open(.sendTransaction(draft: draft), by: .present) as? SendTransactionScreen
-                let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
+                let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak controller] in
                     controller?.closeScreen(by: .dismiss, animated: true)
                 }
                 controller?.leftBarButtonItems = [closeBarButtonItem]
@@ -398,7 +398,7 @@ extension TransactionsViewController: TransactionFloatingActionButtonViewControl
         case .algos:
             let draft = SendTransactionDraft(from: accountHandle.value, transactionMode: .algo)
             let controller = open(.sendTransaction(draft: draft), by: .present) as? SendTransactionScreen
-            let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
+            let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak controller] in
                 controller?.closeScreen(by: .dismiss, animated: true)
             }
             controller?.leftBarButtonItems = [closeBarButtonItem]

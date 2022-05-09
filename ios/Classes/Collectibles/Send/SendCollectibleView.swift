@@ -149,7 +149,7 @@ extension SendCollectibleView {
     private func addImage(
         _ theme: SendCollectibleViewTheme
     ) {
-        imageView.customizeAppearance(theme.image)
+        imageView.build(theme.image)
         imageView.layer.draw(corner: theme.imageCorner)
         imageView.clipsToBounds = true
 

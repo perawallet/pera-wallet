@@ -18,13 +18,55 @@
 import Foundation
 import MacaroonUIKit
 import UIKit
+import MacaroonURLImage
 
 struct AssetImageViewTheme:
     LayoutSheet,
     StyleSheet {
-    let placeholder: AssetImagePlaceholderViewTheme
+    let image: URLImageViewStyleLayoutSheet
 
     init(_ family: LayoutFamily) {
-        placeholder = AssetImagePlaceholderViewTheme()
+        image = URLImageViewAssetTheme()
+    }
+}
+
+struct URLImageViewAssetTheme: URLImageViewStyleLayoutSheet {
+    struct PlaceholderLayoutSheet: URLImagePlaceholderViewLayoutSheet {
+        let textPaddings: LayoutPaddings
+
+        init(
+            _ family: LayoutFamily
+        ) {
+            textPaddings = (2, 2, 2, 2)
+        }
+    }
+
+    struct PlaceholderStyleSheet: URLImagePlaceholderViewStyleSheet {
+        let background: ViewStyle
+        let image: ImageStyle
+        let text: TextStyle
+
+        init() {
+            background = []
+            image = [
+                .image("asset-image-placeholder-border")
+            ]
+            text = [
+                .textColor(AppColors.Components.Text.gray),
+                .textOverflow(SingleLineFittingText())
+            ]
+        }
+    }
+
+    let background: ViewStyle
+    let content: ImageStyle
+    let placeholderStyleSheet: URLImagePlaceholderViewStyleSheet?
+    let placeholderLayoutSheet: URLImagePlaceholderViewLayoutSheet?
+
+    init(_ family: LayoutFamily) {
+        background = []
+        content = .aspectFit()
+        placeholderStyleSheet = PlaceholderStyleSheet()
+        placeholderLayoutSheet = PlaceholderLayoutSheet()
     }
 }

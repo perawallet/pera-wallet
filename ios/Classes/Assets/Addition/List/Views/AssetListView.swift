@@ -28,10 +28,8 @@ final class AssetListView: View {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = theme.backgroundColor.uiColor
-        collectionView.contentInset = UIEdgeInsets(theme.contentInset)
         collectionView.keyboardDismissMode = .onDrag
         collectionView.alwaysBounceVertical = true
-        collectionView.register(AssetPreviewAdditionCell.self)
         return collectionView
     }()
 

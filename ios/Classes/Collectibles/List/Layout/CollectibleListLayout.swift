@@ -60,13 +60,15 @@ extension CollectibleListLayout {
         case .empty:
             return insets
         case .loading:
-            insets.bottom = 8
+            return insets
+        case .header:
+            insets.top = 24
             return insets
         case .search:
             insets.top = 20
             return insets
         case .collectibles:
-            insets.top = 24
+            insets.top = 16
             insets.bottom = 8
             return insets
         }
@@ -85,22 +87,27 @@ extension CollectibleListLayout {
         case .empty(let item):
             switch item {
             case .loading:
-                return sizeForEmptyItem(
+                return sizeForLoadingItem(
                     collectionView,
-                    layout: collectionViewLayout,
-                    atSection: indexPath.section
+                    layout: collectionViewLayout
                 )
-            case .noContent:
-                return sizeForEmptyItem(
+            case .noContent(let item):
+                return listView(
                     collectionView,
                     layout: collectionViewLayout,
-                    atSection: indexPath.section
+                    sizeForNoContentItem: item
                 )
             case .noContentSearch:
                 return sizeForSearchNoContent(
                     collectionView
                 )
             }
+        case .header(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForHeaderItem: item.value
+            )
         case .search:
             return sizeForSearch(
                 collectionView,
@@ -139,7 +146,7 @@ extension CollectibleListLayout {
         let newSize = NoContentCell.calculatePreferredSize(
             item,
             for: NoContentCell.theme,
-            fittingIn:  CGSize((width, .greatestFiniteMagnitude))
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 
         sizeCache[sizeCacheIdentifier] = newSize
@@ -147,23 +154,52 @@ extension CollectibleListLayout {
         return newSize
     }
 
-    private func sizeForEmptyItem(
+    private func sizeForLoadingItem(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout
+    ) -> CGSize {
+        let sizeCacheIdentifier = CollectibleListLoadingViewCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(for: listView)
+        let newSize = CollectibleListLoadingView.calculatePreferredSize(
+            for: CollectibleListLoadingViewCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
+    }
+
+    private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        atSection section: Int
+        sizeForNoContentItem item: CollectiblesNoContentWithActionViewModel
     ) -> CGSize {
         let width = calculateContentWidth(for: listView)
         let sectionInset = collectionView(
             listView,
             layout: listViewLayout,
-            insetForSectionAt: section
+            insetForSectionAt: 0
         )
-        let height =
+
+        let listFittingHeight =
             listView.bounds.height -
             sectionInset.vertical -
             listView.safeAreaTop -
             listView.safeAreaBottom
-        return CGSize((width, height))
+
+        let calculatedHeight = NoContentWithActionIllustratedCell.calculatePreferredSize(
+            item,
+            for: NoContentWithActionIllustratedCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        ).height
+
+        return CGSize((width, max(listFittingHeight, calculatedHeight)))
     }
 
     private func sizeForSearch(
@@ -179,6 +215,29 @@ extension CollectibleListLayout {
         let width = calculateContentWidth(for: listView)
         let height: LayoutMetric = 40
         let newSize = CGSize((width, height))
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
+    }
+
+    func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForHeaderItem item: CollectibleListInfoWithFilterViewModel
+    )-> CGSize {
+        let sizeCacheIdentifier = CollectibleListInfoWithFilterCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(for: listView)
+        let newSize = CollectibleListInfoWithFilterCell.calculatePreferredSize(
+            item,
+            for: CollectibleListInfoWithFilterCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
 
         sizeCache[sizeCacheIdentifier] = newSize
 
@@ -210,18 +269,13 @@ extension CollectibleListLayout {
         sizeForCollectibleItem item: CollectibleCellItem
     ) -> CGSize {
         switch item {
-        case let .owner(item),
-             let .optedIn(item):
+        case let .pending(item),
+            let .owner(item),
+            let .optedIn(item):
             return self.listView(
                 listView,
                 layout: listViewLayout,
-                sizeForCollectibleReadyCellItem: item.viewModel
-            )
-        case .pending(let item):
-            return self.listView(
-                listView,
-                layout: listViewLayout,
-                sizeForCollectiblePendingCellItem: item.viewModel
+                sizeForCollectibleItem: item.viewModel
             )
         }
     }
@@ -229,29 +283,13 @@ extension CollectibleListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForCollectibleReadyCellItem item: CollectibleListItemReadyViewModel
+        sizeForCollectibleItem item: CollectibleListItemViewModel
     ) -> CGSize {
         let width = calculateGridCellWidth(listView, layout: listViewLayout)
 
         let newSize = CollectibleListItemCell.calculatePreferredSize(
             item,
             for: CollectibleListItemCell.theme,
-            fittingIn: CGSize(width: width.float(), height: .greatestFiniteMagnitude)
-        )
-
-        return newSize
-    }
-
-    private func listView(
-        _ listView: UICollectionView,
-        layout listViewLayout: UICollectionViewLayout,
-        sizeForCollectiblePendingCellItem item: CollectibleListItemPendingViewModel
-    ) -> CGSize {
-        let width = calculateGridCellWidth(listView, layout: listViewLayout)
-
-        let newSize = CollectibleListItemPendingCell.calculatePreferredSize(
-            item,
-            for: CollectibleListItemPendingCell.theme,
             fittingIn: CGSize(width: width.float(), height: .greatestFiniteMagnitude)
         )
 

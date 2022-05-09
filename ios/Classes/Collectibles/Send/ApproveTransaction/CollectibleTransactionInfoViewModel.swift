@@ -21,7 +21,7 @@ struct CollectibleTransactionInfoViewModel: ViewModel {
     private(set) var title: EditText?
     private(set) var icon: UIImage?
     private(set) var value: EditText?
-    private(set) var valueStyle: ButtonStyle?
+    private(set) var valueStyle: TextStyle?
 
     init(
         _ information: CollectibleTransactionInformation
@@ -71,13 +71,17 @@ extension CollectibleTransactionInfoViewModel {
     ) {
         if information.isCollectibleSpecificValue {
             valueStyle = [
-                .titleColor([.normal(AppColors.Components.Link.primary)])
+                .textOverflow(FittingText()),
+                .textAlignment(.right),
+                .textColor(AppColors.Components.Link.primary)
             ]
             return
         }
 
         valueStyle = [
-            .titleColor([.normal(AppColors.Components.Text.main)])
+            .textOverflow(FittingText()),
+            .textAlignment(.right),
+            .textColor(AppColors.Components.Text.main)
         ]
     }
 }
@@ -95,7 +99,7 @@ extension CollectibleTransactionInfoViewModel {
                     .font(font),
                     .lineHeightMultiplier(lineHeightMultiplier, font),
                     .paragraph([
-                        .lineBreakMode(.byTruncatingTail),
+                        .lineBreakMode(.byWordWrapping),
                         .textAlignment(.left),
                         .lineHeightMultiple(lineHeightMultiplier)
                     ])
@@ -122,7 +126,7 @@ extension CollectibleTransactionInfoViewModel {
                     .font(font),
                     .lineHeightMultiplier(lineHeightMultiplier, font),
                     .paragraph([
-                        .lineBreakMode(.byTruncatingTail),
+                        .lineBreakMode(.byWordWrapping),
                         .textAlignment(.right),
                         .lineHeightMultiple(lineHeightMultiplier)
                     ])

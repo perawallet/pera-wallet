@@ -18,6 +18,7 @@
 
 import Foundation
 import MagpieCore
+import MagpieExceptions
 import MagpieHipo
 
 extension HIPNetworkError {
@@ -25,6 +26,19 @@ extension HIPNetworkError {
         switch self {
         case .connection(let connectionError): return connectionError.isCancelled
         default: return false
+        }
+    }
+    
+    var prettyDescription: String {
+        let defaulMessage = "title-generic-api-error".localized
+        
+        switch self {
+        case .client(_, let detail),
+             .server(_, let detail):
+            let apiDetail = detail as? HIPAPIError
+            return apiDetail?.message() ?? defaulMessage
+        default:
+            return defaulMessage
         }
     }
 }

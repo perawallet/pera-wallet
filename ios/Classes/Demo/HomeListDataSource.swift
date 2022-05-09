@@ -35,10 +35,14 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSection, 
                         at: indexPath
                     )
                 case .noContent:
-                    return collectionView.dequeue(
-                        HomeNoContentCell.self,
+                    let cell = collectionView.dequeue(
+                        NoContentWithActionCell.self,
                         at: indexPath
                     )
+                    cell.bindData(
+                        HomeNoContentViewModel()
+                    )
+                    return cell
                 }
             case .portfolio(let item):
                 let cell = collectionView.dequeue(
@@ -91,7 +95,7 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSection, 
 
         [
             HomeLoadingCell.self,
-            HomeNoContentCell.self,
+            NoContentWithActionCell.self,
             HomePortfolioCell.self,
             GovernanceAnnouncementCell.self,
             GenericAnnouncementCell.self,

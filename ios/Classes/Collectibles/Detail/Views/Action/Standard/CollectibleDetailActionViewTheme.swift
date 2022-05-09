@@ -76,7 +76,7 @@ struct CollectibleDetailActionViewTheme:
             .backgroundColor(AppColors.Shared.Layer.grayLighter)
         ]
 
-        topInset = 24
+        topInset = 16
         subtitleTopOffset = 4
         buttonTopOffset = 20
         buttonBottomInset = 32

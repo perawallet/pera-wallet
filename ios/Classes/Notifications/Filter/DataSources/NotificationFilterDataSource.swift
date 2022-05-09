@@ -35,7 +35,7 @@ final class NotificationFilterDataSource: NSObject {
 
 extension NotificationFilterDataSource {
     func updateNotificationFilter(for account: AccountHandle, to value: Bool) {
-        guard let deviceId = api.session.authenticatedUser?.deviceId else {
+        guard let deviceId = api.session.authenticatedUser?.getDeviceId(on: api.network) else {
             return
         }
 

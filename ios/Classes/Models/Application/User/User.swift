@@ -20,10 +20,60 @@ import UIKit
 final class User: Codable {
     private(set) var accounts: [AccountInformation] = []
     private(set) var defaultNode: String?
-    private(set) var deviceId: String?
+
+    private var deviceIDOnMainnet: String?
+    private var deviceIDOnTestnet: String?
     
-    init(accounts: [AccountInformation]) {
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case accounts
+        case defaultNode
+        case legacyDeviceID = "deviceId"
+        case deviceIDOnMainnet
+        case deviceIDOnTestnet
+    }
+    
+    init(
+        accounts: [AccountInformation]
+    ) {
         self.accounts = accounts
+    }
+    
+    init(
+        from decoder: Decoder
+    ) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        self.accounts = try container.decodeIfPresent([AccountInformation].self, forKey: .accounts) ?? []
+        
+        let defaultNode = try container.decodeIfPresent(String.self, forKey: .defaultNode)
+        self.defaultNode = defaultNode
+        
+        let legacyDeviceID = try container.decodeIfPresent(String.self, forKey: .legacyDeviceID)
+        let network = User.makeNetwork(from: defaultNode)
+        
+        if let deviceID = try container.decodeIfPresent(String.self, forKey: .deviceIDOnMainnet) {
+            self.deviceIDOnMainnet = deviceID
+        } else if network == .mainnet {
+            self.deviceIDOnMainnet = legacyDeviceID
+        }
+        
+        if let deviceID = try container.decodeIfPresent(String.self, forKey: .deviceIDOnTestnet) {
+            self.deviceIDOnTestnet = deviceID
+        } else if network == .testnet {
+            self.deviceIDOnTestnet = legacyDeviceID
+        }
+    }
+    
+    func encode(
+        to encoder: Encoder
+    ) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(accounts, forKey: .accounts)
+        try container.encodeIfPresent(defaultNode, forKey: .defaultNode)
+        try container.encodeIfPresent(deviceIDOnMainnet, forKey: .deviceIDOnMainnet)
+        try container.encodeIfPresent(deviceIDOnTestnet, forKey: .deviceIDOnTestnet)
     }
     
     func encoded() -> Data? {
@@ -101,36 +151,12 @@ extension User {
     }
     
     func setDefaultNode(_ node: AlgorandNode?) {
-        defer {
-            syncronize()
-        }
-        
-        guard let selectedNode = node else {
-            self.defaultNode = nil
-            return
-        }
-        
-        self.defaultNode = selectedNode.network.rawValue
+        defaultNode = node?.network.rawValue
+        syncronize()
     }
     
     func preferredAlgorandNetwork() -> ALGAPI.Network? {
-        guard let defaultNode = defaultNode else {
-            return nil
-        }
-        
-        if defaultNode == ALGAPI.Network.mainnet.rawValue {
-            return .mainnet
-        } else if defaultNode == ALGAPI.Network.testnet.rawValue {
-            return .testnet
-        } else {
-            return nil
-        }
-    }
-    
-    func setDeviceId(_ id: String?) {
-        deviceId = id
-        NotificationCenter.default.post(name: .DeviceIDDidSet, object: nil)
-        syncronize()
+        return User.makeNetwork(from: defaultNode)
     }
     
     func account(address: String) -> AccountInformation? {
@@ -145,5 +171,41 @@ extension User {
 extension User {
     private func accountFrom(address: String) -> AccountInformation? {
         return accounts.first { $0.address == address }
+    }
+}
+
+extension User {
+    func getDeviceId(
+        on network: ALGAPI.Network
+    ) -> String? {
+        switch network {
+        case .mainnet: return deviceIDOnMainnet
+        case .testnet: return deviceIDOnTestnet
+        }
+    }
+    
+    func setDeviceID(
+        _ deviceID: String?,
+        on network: ALGAPI.Network
+    ) {
+        switch network {
+        case .mainnet: deviceIDOnMainnet = deviceID
+        case .testnet: deviceIDOnTestnet = deviceID
+        }
+        
+        NotificationCenter.default.post(
+            name: .DeviceIDDidSet,
+            object: nil
+        )
+
+        syncronize()
+    }
+}
+
+extension User {
+    private static func makeNetwork(
+        from rawValue: String?
+    ) -> ALGAPI.Network? {
+        return rawValue.unwrap(ALGAPI.Network.init(rawValue:))
     }
 }

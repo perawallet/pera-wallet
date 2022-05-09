@@ -30,6 +30,11 @@ final class CollectibleListItemView:
     private lazy var topLeftBadge = ImageView()
     private lazy var bottomLeftBadge = ImageView()
 
+    private lazy var pendingOverlayView = MacaroonUIKit.BaseView()
+    private lazy var pendingContentView = UIView()
+    private lazy var pendingLoadingIndicator = ViewLoadingIndicator()
+    private lazy var pendingLabel = Label()
+
     var currentImage: UIImage? {
         return image.imageContainer.image
     }
@@ -50,22 +55,14 @@ final class CollectibleListItemView:
     ) {}
 
     func bindData(
-        _ viewModel: CollectibleListItemReadyViewModel?
+        _ viewModel: CollectibleListItemViewModel?
     ) {
-        var viewModel = viewModel
-
-        image.load(from: viewModel?.image) { error in
-            if let mediaType = viewModel?.mediaType,
-               !mediaType.isSupported {
-                viewModel?.bindBottomLeftBadgeForError()
-                return
-            }
-        }
-
+        image.load(from: viewModel?.image)
         title.editText = viewModel?.title
         subtitle.editText = viewModel?.subtitle
         topLeftBadge.image = viewModel?.topLeftBadge
         bottomLeftBadge.image = viewModel?.bottomLeftBadge
+        pendingLabel.editText = viewModel?.pendingTitle
     }
 
     func prepareForReuse() {
@@ -74,10 +71,12 @@ final class CollectibleListItemView:
         subtitle.editText = nil
         topLeftBadge.image = nil
         bottomLeftBadge.image = nil
+
+        setPendingHiddenWhenPendingStatusChange(false)
     }
 
     class func calculatePreferredSize(
-        _ viewModel: CollectibleListItemReadyViewModel?,
+        _ viewModel: CollectibleListItemViewModel?,
         for theme: CollectibleListItemViewTheme,
         fittingIn size: CGSize
     ) -> CGSize {
@@ -108,10 +107,10 @@ extension CollectibleListItemView {
     private func addImage(
         _ theme: CollectibleListItemViewTheme
     ) {
-        image.customizeAppearance(theme.image)
+        image.build(theme.image)
         image.layer.draw(corner: theme.corner)
         image.clipsToBounds = true
-
+        
         addSubview(image)
         image.fitToIntrinsicSize()
         image.snp.makeConstraints {
@@ -122,6 +121,7 @@ extension CollectibleListItemView {
         }
 
         addOverlay(theme)
+        addPendingOverlayView(theme)
         addBottomLeftBadge(theme)
         addTopLeftBadge(theme)
     }
@@ -196,6 +196,72 @@ extension CollectibleListItemView {
         }
     }
 
+    private func addPendingOverlayView(
+        _ theme: CollectibleListItemViewTheme
+    ) {
+        pendingOverlayView.customizeAppearance(theme.pendingOverlay)
+
+        image.addSubview(pendingOverlayView)
+        pendingOverlayView.snp.makeConstraints {
+            $0.setPaddings()
+        }
+
+        addPendingContentView(theme)
+
+        setPendingHiddenWhenPendingStatusChange(false)
+    }
+
+    private func addPendingContentView(
+        _ theme: CollectibleListItemViewTheme
+    ) {
+        pendingContentView.customizeAppearance(theme.pendingContent)
+        pendingContentView.layer.draw(corner: theme.corner)
+        pendingContentView.layer.draw(
+            border: Border(
+                color: AppColors.SendTransaction.Shadow.first.uiColor,
+                width: 1
+            )
+        ) /// <todo> Add proper shadow when shadow & borders are refactored.
+
+        pendingOverlayView.addSubview(pendingContentView)
+        pendingContentView.snp.makeConstraints {
+            $0.leading == theme.pendingContentPaddings.leading
+            $0.bottom == theme.pendingContentPaddings.bottom
+            $0.trailing <= theme.pendingContentPaddings.leading
+        }
+
+        addPendingLoadingIndicator(theme)
+        addPendingLabel(theme)
+    }
+
+    private func addPendingLoadingIndicator(
+        _ theme: CollectibleListItemViewTheme
+    ) {
+        pendingLoadingIndicator.applyStyle(theme.indicator)
+
+        pendingContentView.addSubview(pendingLoadingIndicator)
+        pendingLoadingIndicator.fitToIntrinsicSize()
+        pendingLoadingIndicator.snp.makeConstraints {
+            $0.fitToSize(theme.indicatorSize)
+            $0.leading == theme.indicatorLeadingPadding
+            $0.centerY == 0
+        }
+    }
+
+    private func addPendingLabel(
+        _ theme: CollectibleListItemViewTheme
+    ) {
+        pendingLabel.customizeAppearance(theme.pendingLabel)
+
+        pendingContentView.addSubview(pendingLabel)
+        pendingLabel.snp.makeConstraints {
+            $0.top == theme.pendingLabelPaddings.top
+            $0.leading == pendingLoadingIndicator.snp.trailing + theme.pendingLabelPaddings.leading
+            $0.bottom == theme.pendingLabelPaddings.bottom
+            $0.trailing == theme.pendingLabelPaddings.trailing
+        }
+    }
+
     private func addTopLeftBadge(
         _ theme: CollectibleListItemViewTheme
     ) {
@@ -207,6 +273,20 @@ extension CollectibleListItemView {
         topLeftBadge.snp.makeConstraints {
             $0.leading == theme.topLeftBadgePaddings.leading
             $0.top == theme.topLeftBadgePaddings.top
+        }
+    }
+}
+
+extension CollectibleListItemView {
+    func setPendingHiddenWhenPendingStatusChange(_ isPending: Bool) {
+        pendingOverlayView.isHidden = !isPending
+        overlay.isHidden = isPending
+        bottomLeftBadge.isHidden = isPending
+        
+        if isPending {
+            pendingLoadingIndicator.startAnimating()
+        } else {
+            pendingLoadingIndicator.stopAnimating()
         }
     }
 }

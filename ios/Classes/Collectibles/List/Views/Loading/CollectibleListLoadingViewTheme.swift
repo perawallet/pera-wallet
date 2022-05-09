@@ -22,6 +22,11 @@ struct CollectibleListLoadingViewTheme:
     let searchInputPaddings: LayoutPaddings
     let searchInputHeight: LayoutMetric
 
+    let infoTopPadding: LayoutMetric
+    let infoSize: LayoutSize
+
+    let filterActionWidthRatio: LayoutMetric
+
     let collectibleListItemsVerticalStackSpacing: LayoutMetric
     let collectibleListItemsVerticalStackPaddings: LayoutPaddings
 
@@ -37,8 +42,13 @@ struct CollectibleListLoadingViewTheme:
         searchInputPaddings = (20, 0, .noMetric, 0)
         searchInputHeight = 40
 
+        infoTopPadding = 24
+        infoSize = (48, 26)
+
+        filterActionWidthRatio = 1.5
+
         collectibleListItemsVerticalStackSpacing = 28
-        collectibleListItemsVerticalStackPaddings = (24, 0, .noMetric, 0)
+        collectibleListItemsVerticalStackPaddings = (16, 0, 8, 0)
 
         collectibleListItemsHorizontalStackSpacing = 24
 

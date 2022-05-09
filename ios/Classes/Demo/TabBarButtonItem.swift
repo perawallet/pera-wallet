@@ -16,10 +16,9 @@
 //   TabBarButtonItem.swift
 
 import Foundation
-import MacaroonTabBarController
 import MacaroonUIKit
 
-struct TabBarButtonItem: MacaroonTabBarController.TabBarButtonItem {
+struct TabBarButtonItem: MacaroonUIKit.TabBarButtonItem {
     let style: ButtonStyle
     let spacingBetweenIconAndTitle: LayoutMetric
 

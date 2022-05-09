@@ -52,7 +52,7 @@ final class CollectibleDetailViewController:
     lazy var eventHandlers = Event()
 
     private lazy var listView: UICollectionView = {
-        let collectionViewLayout = CollectibleListLayout.build()
+        let collectionViewLayout = CollectibleDetailLayout.build()
         let collectionView = UICollectionView(
             frame: .zero,
             collectionViewLayout: collectionViewLayout
@@ -259,6 +259,11 @@ extension CollectibleDetailViewController {
                 cell as! CollectibleDetailWatchAccountActionCell,
                 for: item
             )
+        case .collectibleCreatorAccountAction(let item):
+            linkInteractors(
+                cell as! CollectibleDetailCreatorAccountActionCell,
+                for: item
+            )
         case .optedInAction(let item):
             linkInteractors(
                 cell as! CollectibleDetailOptedInActionCell,
@@ -324,20 +329,43 @@ extension CollectibleDetailViewController {
                 return
             }
 
+            if !asset.isPure {
+                let draft = SendTransactionDraft(
+                    from: self.account,
+                    transactionMode: .asset(asset)
+                )
+
+                let controller = self.open(
+                    .sendTransaction(draft: draft),
+                    by: .present
+                ) as? SendTransactionScreen
+
+                controller?.eventHandler = {
+                    [weak self] event in
+                    guard let self = self else { return }
+                    switch event {
+                    case .didCompleteTransaction:
+                        self.popScreen()
+                    }
+                }
+
+                let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
+                    [weak controller] in
+                    controller?.dismissScreen()
+                }
+                controller?.leftBarButtonItems = [closeBarButtonItem]
+                return
+            }
+
             let draft = SendCollectibleDraft(
                 fromAccount: self.account,
                 collectibleAsset: asset,
                 image: self.mediaPreviewController.getExistingImage()
             )
 
-            self.open(
+            let controller = self.open(
                 .sendCollectible(
-                    draft: draft,
-                    transactionController: TransactionController(
-                        api: self.api!,
-                        bannerController: self.bannerController
-                    ),
-                    uiInteractionsHandler: self.linkSendCollectibleUIInteractions()
+                    draft: draft
                 ),
                 by: .customPresent(
                     presentationStyle: .overCurrentContext,
@@ -345,7 +373,18 @@ extension CollectibleDetailViewController {
                     transitioningDelegate: nil
                 ),
                 animated: false
-            )
+            ) as? SendCollectibleViewController
+
+            controller?.eventHandler = {
+                [weak self, controller] event in
+                guard let self = self else { return }
+                switch event {
+                case .didCompleteTransaction:
+                    controller?.dismissScreen(animated: false) {
+                        self.popScreen(animated: false)
+                    }
+                }
+            }
         }
 
         cell.observe(event: .performShare) {
@@ -361,18 +400,10 @@ extension CollectibleDetailViewController {
     private func shareCollectible() {
         var items: [Any] = []
 
-        if let name = asset.title {
-            items.append(name)
-        }
-
         if let explorerURL = asset.explorerURL {
             items.append(explorerURL.absoluteString)
         } else if let downloadURL = displayedMedia?.downloadURL {
             items.append(downloadURL.absoluteString)
-        }
-
-        if let displayedImage = mediaPreviewController.getExistingImage() {
-            items.append(displayedImage)
         }
 
         presentShareController(items)
@@ -391,6 +422,20 @@ extension CollectibleDetailViewController {
 
     private func linkInteractors(
         _ cell: CollectibleDetailWatchAccountActionCell,
+        for item: CollectibleDetailActionViewModel
+    ) {
+        cell.observe(event: .performShare) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.shareCollectible()
+        }
+    }
+
+    private func linkInteractors(
+        _ cell: CollectibleDetailCreatorAccountActionCell,
         for item: CollectibleDetailActionViewModel
     ) {
         cell.observe(event: .performShare) {
@@ -474,24 +519,6 @@ extension CollectibleDetailViewController {
         }
     }
 
-    private func linkSendCollectibleUIInteractions()
-    -> SendCollectibleViewController.SendCollectibleUIInteractions {
-        var uiInteractions = SendCollectibleViewController.SendCollectibleUIInteractions()
-
-        uiInteractions.didCompleteTransaction = {
-            [weak self] controller in
-            guard let self = self else {
-                return
-            }
-
-            controller.dismissScreen(animated: false) {
-                self.popScreen(animated: false)
-            }
-        }
-
-        return uiInteractions
-    }
-
     private func linkInteractors(
         _ cell: CollectibleExternalSourceCell,
         for item: CollectibleExternalSourceViewModel
@@ -514,12 +541,22 @@ extension CollectibleDetailViewController {
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
         loadingController?.stopLoading()
-        asset.state = .pending(.remove)
 
-        let assetName = asset.title ?? asset.name ?? ""
-        bannerController?.presentSuccessBanner(title: "collectible-detail-opt-out-success".localized(params: assetName))
-        eventHandlers.didOptOutAssetFromAccount?(asset, account)
-        popScreen()
+        bannerController?.presentSuccessBanner(
+            title: "collectible-detail-opt-out-success".localized(
+                params: asset.title ?? asset.name ?? .empty
+            )
+        )
+
+        NotificationCenter.default.post(
+            name: CollectibleListLocalDataController.didRemoveCollectible,
+            object: self,
+            userInfo: [
+                CollectibleListLocalDataController.accountAssetPairUserInfoKey: (account, asset)
+            ]
+        )
+
+        eventHandlers.didOptOutAssetFromAccount?()
     }
 
     func transactionController(
@@ -608,6 +645,6 @@ extension CollectibleDetailViewController {
 
 extension CollectibleDetailViewController {
     struct Event {
-        var didOptOutAssetFromAccount: ((CollectibleAsset, Account) -> Void)?
+        var didOptOutAssetFromAccount: EmptyHandler?
     }
 }

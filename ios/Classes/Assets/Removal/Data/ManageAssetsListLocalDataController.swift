@@ -158,7 +158,11 @@ extension ManageAssetsListLocalDataController {
                 let viewModel: AssetPreviewViewModel
 
                 if let collectibleAsset = asset as? CollectibleAsset {
-                    viewModel = AssetPreviewViewModel(collectibleAsset)
+                    let draft = CollectibleAssetSelectionDraft(
+                        currency: currency,
+                        asset: collectibleAsset
+                    )
+                    viewModel = AssetPreviewViewModel(draft)
                 } else {
                     let assetPreviewModel = AssetPreviewModelAdapter.adaptAssetSelection((asset, currency))
                     viewModel = AssetPreviewViewModel(assetPreviewModel)

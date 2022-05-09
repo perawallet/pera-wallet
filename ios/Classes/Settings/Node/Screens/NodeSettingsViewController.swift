@@ -20,24 +20,18 @@ import MacaroonUtils
 import UIKit
 
 final class NodeSettingsViewController: BaseViewController {
-    static var willChangeNetwork: Notification.Name {
-        return .init(rawValue: "com.algorand.algorand.notification.network.willChange")
-    }
-    static var didChangeNetwork: Notification.Name {
-        return .init(rawValue: "com.algorand.algorand.notification.network.didChange")
+    static var didUpdateNetwork: Notification.Name {
+        return .init(rawValue: "com.algorand.algorand.notification.network.didUpdate")
     }
     
     private lazy var theme = Theme()
     private lazy var nodeSettingsView = SingleSelectionListView()
     
+    private var selectedNetwork: ALGAPI.Network {
+        return api?.network ?? .mainnet
+    }
+    
     private let nodes = [mainNetNode, testNetNode]
-        
-    private lazy var lastActiveNetwork: ALGAPI.Network = {
-        guard let api = api else {
-            fatalError("API should be set.")
-        }
-        return api.network
-    }()
     
     private lazy var pushNotificationController = PushNotificationController(
         target: target,
@@ -73,20 +67,27 @@ extension NodeSettingsViewController {
 }
 
 extension NodeSettingsViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int
+    ) -> Int {
         return nodes.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        let node = nodes[indexPath.item]
+        let viewModel = SingleSelectionViewModel(
+            title: node.name,
+            isSelected: node.network == selectedNetwork
+        )
         let cell = collectionView.dequeue(SingleSelectionCell.self, at: indexPath)
         
-        if let algorandNode = nodes[safe: indexPath.item] {
-            let isActiveNetwork = algorandNode.network == lastActiveNetwork
-            cell.bindData(SingleSelectionViewModel(title: algorandNode.name, isSelected: isActiveNetwork))
-            return cell
-        }
+        cell.bindData(viewModel)
         
-        fatalError("Index path is out of bounds")
+        return cell
     }
 }
 
@@ -99,65 +100,115 @@ extension NodeSettingsViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(theme.cellSize)
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        changeNode(at: indexPath)
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        let node = nodes[indexPath.item]
+        
+        if node.network == selectedNetwork {
+            return
+        }
+
+        select(node)
     }
 }
 
 extension NodeSettingsViewController {
-    /// <todo>
-    /// The flow here is too complicated to understand. It should be refactored later.
-    private func changeNode(at indexPath: IndexPath) {
-        let selectedNode = nodes[indexPath.item]
-        let selectedNetwork = selectedNode.network
-        
-        willChangeNetwork(selectedNetwork)
+    private func select(
+        _ node: AlgorandNode
+    ) {
+        willSelectNetwork(node.network)
         
         if pushNotificationController.token == nil {
-            session?.authenticatedUser?.setDefaultNode(selectedNode)
-            didChangeNetwork(selectedNetwork)
-            sharedDataController.resetPolling()
-        } else {
-            loadingController?.startLoadingWithMessage("title-loading".localized)
-            
-            pushNotificationController.sendDeviceDetails {
-                [weak self] isCompleted in
-                guard let self = self else { return }
-
-                if isCompleted {
-                    self.session?.authenticatedUser?.setDefaultNode(selectedNode)
-                    self.didChangeNetwork(selectedNetwork)
-                    self.sharedDataController.resetPolling()
-                } else {
-                    self.didChangeNetwork(self.lastActiveNetwork)
-                    self.sharedDataController.startPolling()
-                }
-                
-                self.loadingController?.stopLoading()
+            selectOnPushDisabledDevice(node: node) {
+                network in
+                self.didSelectNetwork(network)
             }
+        } else {
+            selectOnPushEnabledDevice(
+                node: node,
+                onChange: {
+                    self.nodeSettingsView.reloadData()
+                    
+                    NotificationCenter.default.post(
+                        name: Self.didUpdateNetwork,
+                        object: self
+                    )
+                },
+                onComplete: {
+                    [weak self] network in
+                    self?.didSelectNetwork(network)
+                }
+            )
         }
     }
     
-    private func willChangeNetwork(
+    private func willSelectNetwork(
         _ network: ALGAPI.Network
     ) {
         sharedDataController.stopPolling()
-        api?.setupNetworkBase(network)
-        
-        NotificationCenter.default.post(
-            name: Self.willChangeNetwork,
-            object: self
-        )
     }
     
-    private func didChangeNetwork(
+    private func selectOnPushDisabledDevice(
+        node: AlgorandNode,
+        onComplete completion: (ALGAPI.Network) -> Void
+    ) {
+        session?.authenticatedUser?.setDefaultNode(node)
+        api?.setupNetworkBase(node.network)
+        sharedDataController.resetPolling()
+        
+        completion(node.network)
+    }
+    
+    private func selectOnPushEnabledDevice(
+        node: AlgorandNode,
+        onChange change: () -> Void,
+        onComplete completion: @escaping (ALGAPI.Network) -> Void
+    ) {
+        loadingController?.startLoadingWithMessage("title-loading".localized)
+        
+        let oldNetwork = selectedNetwork
+        
+        api?.setupNetworkBase(node.network)
+        change()
+        
+        pushNotificationController.sendDeviceDetails {
+            [weak self] error in
+            guard let self = self else { return }
+            
+            self.loadingController?.stopLoading()
+            
+            guard let error = error else {
+                self.pushNotificationController.unregisterDevice(from: oldNetwork)
+                
+                self.session?.authenticatedUser?.setDefaultNode(node)
+                self.sharedDataController.resetPolling()
+                
+                completion(node.network)
+                
+                return
+            }
+            
+            self.api?.setupNetworkBase(oldNetwork)
+            self.sharedDataController.startPolling()
+
+            self.bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: error.prettyDescription
+            )
+            
+            completion(oldNetwork)
+        }
+    }
+    
+    private func didSelectNetwork(
         _ network: ALGAPI.Network
     ) {
-        lastActiveNetwork = network
         nodeSettingsView.reloadData()
         
         NotificationCenter.default.post(
-            name: Self.didChangeNetwork,
+            name: Self.didUpdateNetwork,
             object: self
         )
     }

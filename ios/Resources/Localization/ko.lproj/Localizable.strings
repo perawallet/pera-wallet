@@ -38,7 +38,7 @@
 "account-select-header-contacts-title" = "연락처";
 
 /* (No Comment) */
-"account-select-header-search-title" = "Search or enter wallet address";
+"account-select-header-search-title" = "지갑 주소를 검색하거나 입력하세요";
 
 /* (No Comment) */
 "account-select-search-empty-detail" = "다른 계정 이름을 사용해보세요";
@@ -107,7 +107,7 @@
 "accounts-title-assets" = "자산";
 
 /* (No Comment) */
-"accounts-title-collectibles" = "Collectibles";
+"accounts-title-collectibles" = "수집품";
 
 /* (No Comment) */
 "accounts-title-history" = "내역";
@@ -171,6 +171,9 @@
 
 /* (No Comment) */
 "asset-id-copied-title" = "ID를 클립보드로 복사 완료";
+
+/* (No Comment) */
+"asset-manage-button" = "Manage";
 
 /* (No Comment) */
 "asset-min-transaction-error-message" = "%@ 이상의 알고를 보유해야 자산 추가가 가능합니다";
@@ -341,166 +344,196 @@
 "chart-time-selection-yearly" = "1년";
 
 /* (No Comment) */
-"collectible-approve-transaction-action-title" = "Confirm transfer";
+"collectible-approve-transaction-action-title" = "전송 확인";
 
 /* (No Comment) */
-"collectible-approve-transaction-description" = "Are you sure you want to proceed?";
+"collectible-approve-transaction-description" = "계속하시겠습니까?";
 
 /* (No Comment) */
-"collectible-approve-transaction-fee" = "Transaction Fee";
+"collectible-approve-transaction-fee" = "트랜잭션 수수료";
 
 /* (No Comment) */
-"collectible-approve-transaction-sender" = "Sender Account";
+"collectible-approve-transaction-opt-out" = "Opt out from the NFT";
+
+/* (No Comment) */
+"collectible-approve-transaction-sender" = "보내는 사람 계정";
 
 /* MARK: Collectible Approve */
-"collectible-approve-transaction-title" = "Approve Transaction";
+"collectible-approve-transaction-title" = "트랜잭션 승인";
 
 /* (No Comment) */
-"collectible-approve-transaction-to" = "To";
+"collectible-approve-transaction-to" = "받으시는 분";
 
 /* (No Comment) */
-"collectible-detail-algo-explorer" = "Show on Algoexplorer";
+"collectible-detail-algo-explorer" = "Algoexplorer에서 보기";
 
 /* (No Comment) */
-"collectible-detail-collection-name" = "Collection Name";
+"collectible-detail-collection-name" = "컬렉션 이름";
 
 /* (No Comment) */
-"collectible-detail-creator-address" = "Creator Wallet Address";
+"collectible-detail-creator-address" = "크리에이터 지갑 주소";
 
 /* (No Comment) */
-"collectible-detail-creator-name" = "Creator Name";
+"collectible-detail-creator-name" = "크리에이터 이름";
 
 /* (No Comment) */
-"collectible-detail-description" = "Description";
+"collectible-detail-description" = "설명";
 
 /* (No Comment) */
-"collectible-detail-error-media-type" = "We don't support this NFT media type yet.";
+"collectible-detail-error-media-type" = "아직 지원하지 않는 NFT 미디어 유형입니다.";
 
 /* (No Comment) */
-"collectible-detail-error-not-owner" = "You are not the owner of this NFT yet, however you opted in for it. You can now transfer it to your wallet.";
+"collectible-detail-error-not-owner" = "아직 해당 NFT의 소유자가 아니지만, NFT를 옵트인 설정했습니다. 이제 지갑에 NFT를 전송 가능합니다.";
 
 /* (No Comment) */
-"collectible-detail-error-visual" = "We can’t display the visual temporarily.";
+"collectible-detail-error-not-owner-watch-account" = "This watch account has opted in for this NFT, however doesn't own it.";
 
 /* (No Comment) */
-"collectible-detail-nft-explorer" = "Show on NFTExplorer";
+"collectible-detail-nft-explorer" = "NFTExplorer에서 보기";
 
 /* (No Comment) */
-"collectible-detail-opt-out" = "Opt out";
+"collectible-detail-opt-out" = "옵트아웃";
 
 /* (No Comment) */
-"collectible-detail-opt-out-alert-message" = "You are about to opt out from this NFT with %@. You will not be able to transact with this asset until you opt in again.";
+"collectible-detail-opt-out-alert-message" = "%@의 NFT에서 옵트아웃하려고 하십니다. 다시 옵트인하기 전까지는 이 계정에서 해당 자산을 거래하실 수 없습니다.";
 
 /* (No Comment) */
-"collectible-detail-opt-out-alert-title" = "Opt out from “%@”";
+"collectible-detail-opt-out-alert-title" = "\"%@\"의 옵트아웃";
 
 /* (No Comment) */
-"collectible-detail-opt-out-success" = "%@ NFT successfully opted-out";
+"collectible-detail-opt-out-success" = "%@ NFT가 옵트아웃되었습니다";
 
 /* (No Comment) */
-"collectible-detail-opted-in" = "Opted in to";
+"collectible-detail-opted-in" = "다음을 옵트인:";
 
 /* (No Comment) */
-"collectible-detail-owner" = "Owner";
+"collectible-detail-owner" = "소유자";
 
 /* (No Comment) */
-"collectible-detail-properties" = "Properties";
+"collectible-detail-pera-explorer" = "Pera Explorer";
+
+/* (No Comment) */
+"collectible-detail-properties" = "속성";
 
 /* MARK: Collectible Detail */
-"collectible-detail-share" = "Share";
+"collectible-detail-share" = "공유";
 
 /* (No Comment) */
-"collectible-detail-view-transaction" = "View Transaction";
-
-/* / MARK: Collectible List */
-"collectible-list-item-pending-title" = "Pending";
+"collectible-detail-show-on" = "Show on";
 
 /* (No Comment) */
-"collectible-opt-in-info-description" = "To avoid spammy transaction, the Algorand Blockchain only allow you to send and receive transaction for assets that have been previously opted-in.";
-
-/* / MARK: Collectible Opt In Info */
-"collectible-opt-in-info-title" = "Information about Opt-In";
+"collectible-detail-tap-3D" = "Tap media to view in 3D mode";
 
 /* (No Comment) */
-"collectible-receive-account-list-info" = "You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet.";
+"collectible-detail-view-transaction" = "트랜잭션 보기";
+
+/* MARK: Collectible Filter Selection */
+"collectible-filter-selection-title" = "Filter";
 
 /* (No Comment) */
-"collectible-receive-asset-list-info" = "You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet. Paste the ASA ID in the search bar.";
+"collectible-filter-selection-toggle-description" = "You can show/hide NFTs that are opted-in but not owned";
 
 /* (No Comment) */
-"collectible-receive-asset-list-selected-account" = "Selected account";
+"collectible-filter-selection-toggle-title" = "Display opted-in NFTs";
+
+/* MARK: Collectible List */
+"collectible-list-item-pending-title" = "대기 중";
 
 /* (No Comment) */
-"collectible-recipient-opt-in-action-title" = "Request Opt-in";
+"collectible-opt-in-info-description" = "To avoid spam transactions, Algorand blockchain only allows you to send and receive transactions for assets that have been previously opted-in to.";
+
+/* MARK: Collectible Opt In Info */
+"collectible-opt-in-info-title" = "옵트인 정보";
 
 /* (No Comment) */
-"collectible-recipient-opt-in-description" = "You can't send %@ to %@ because this wallet didn't opt in for this asset yet. Learn more about Opt-in";
+"collectible-opt-out-info-description" = "Algorand blockchain requires an account to opt in to an ASA before it can receive it. Now that you've transferred this NFT to another account, you can opt out from it. Opting out requires an additional transaction.";
+
+/* MARK: Collectible Opt Out Info */
+"collectible-opt-out-info-title" = "Opt out from the NFT ";
 
 /* (No Comment) */
-"collectible-recipient-opt-in-description-marked" = "Learn more about Opt-in";
-
-/* / MARK: Collecitble Ask recipient to opt in */
-"collectible-recipient-opt-in-title" = "Ask recipient to opt in";
+"collectible-receive-account-list-info" = "NFT ASA ID를 옵트인해야 지갑으로 전송할 수 있습니다.";
 
 /* (No Comment) */
-"collectible-send-account-list-title" = "Select the receiver account";
+"collectible-receive-asset-list-info" = "NFT ASA ID를 옵트인해야 지갑으로 전송할 수 있습니다. 검색 창에 ASA ID를 붙여넣으세요.";
 
 /* (No Comment) */
-"collectible-send-action" = "Transfer";
+"collectible-receive-asset-list-selected-account" = "선택한 계정";
 
 /* (No Comment) */
-"collectible-send-input-placeholder" = "Paste an Algorand wallet address";
-
-/* / MARK: Collectible Send */
-"collectible-send-title" = "Send your NFT";
+"collectible-recipient-opt-in-action-title" = "옵트인 요청";
 
 /* (No Comment) */
-"collectible-transfer-confirmed-action-title" = "Got it!";
+"collectible-recipient-opt-in-description" = "%@을(를) %@ 주소로 보낼 수 없습니다. 이 지갑은 아직 해당 자산을 옵트인 설정하지 않았습니다. 옵트인에 대해 자세히 알아보세요";
 
 /* (No Comment) */
-"collectible-transfer-confirmed-description" = "Transactions can take a few minutes to finalize.";
+"collectible-recipient-opt-in-description-marked" = "옵트인에 대해 자세히 알아보기";
+
+/* MARK: Collecitble Ask recipient to opt in */
+"collectible-recipient-opt-in-title" = "받는 분께 옵트인 요청";
+
+/* (No Comment) */
+"collectible-send-account-list-title" = "받는 분의 계정 선택";
+
+/* (No Comment) */
+"collectible-send-action" = "전송";
+
+/* (No Comment) */
+"collectible-send-input-placeholder" = "알고랜드 지갑 주소 붙여넣기";
+
+/* MARK: Collectible Send */
+"collectible-send-title" = "NFT 보내기";
+
+/* (No Comment) */
+"collectible-transfer-confirmed-action-title" = "알겠습니다!";
+
+/* (No Comment) */
+"collectible-transfer-confirmed-description" = "트랜잭션을 완료하는 데 몇 분 정도 소요됩니다.";
 
 /* MARK: Collectible Transfer */
-"collectible-transfer-confirmed-title" = "Your NFT transfer is confirmed!";
+"collectible-transfer-confirmed-title" = "NFT 전송이 확인되었습니다!";
 
 /* (No Comment) */
-"collectible-transfer-failed-retry-desription" = "Please try again.";
+"collectible-transfer-failed-retry-desription" = "다시 시도해 주세요.";
 
 /* (No Comment) */
-"collectible-transfer-failed-title" = "Your NFT transfer has failed!";
+"collectible-transfer-failed-title" = "NFT 전송에 실패했습니다!";
 
 /* (No Comment) */
-"collectible-transfer-failed-verify-algo-desription" = "Please verify that you have enough Algo to cover the transaction fees for transferring your NFT, and try again.";
+"collectible-transfer-failed-verify-algo-desription" = "NFT 전송 트랜잭션 수수료를 충당할 만큼 알고가 충분한지 확인하고 다시 시도하십시오.";
 
 /* (No Comment) */
-"collectibles-empty-body" = "Welcome to your NFT Gallery! You don’t have any NFTs yet. All the NFTs available in your wallet will be visible here.";
+"collectibles-empty-body" = "NFT 갤러리에 오신 것을 환영합니다! 아직 보유하신 NFT가 없습니다. 지갑에서 사용 가능한 모든 NFT가 여기에 표시됩니다.";
 
 /* (No Comment) */
-"collectibles-empty-title" = "Collectibles";
+"collectibles-empty-secondary-action-title" = "Show hidden NFTs (%@)";
 
 /* (No Comment) */
-"collectibles-list-input-placeholder" = "Search your NFTs";
+"collectibles-empty-title" = "수집품";
 
 /* (No Comment) */
-"collectibles-receive-account-list-header-description" = "Select the wallet account you would like to receive to:";
-
-/* / MARK: Collectible Receive */
-"collectibles-receive-action" = "Receive an NFT";
+"collectibles-list-input-placeholder" = "NFT 검색";
 
 /* (No Comment) */
-"collectibles-receive-asset-list-header-description" = "You need to opt in to the ASA ID of the NFT to be able to receive it. Paste the ASA ID or scan it below.";
+"collectibles-receive-account-list-header-description" = "수신할 지갑 계정을 선택하세요.";
+
+/* MARK: Collectible Receive */
+"collectibles-receive-action" = "NFT 받기";
 
 /* (No Comment) */
-"collectibles-receive-asset-list-search-no-content" = "No NFT Found";
+"collectibles-receive-asset-list-header-description" = "NFT의 ASA ID를 옵트인해야 NFT를 받을 수 있습니다. ASA ID를 붙여넣거나 아래에서 스캔하세요.";
 
 /* (No Comment) */
-"collectibles-receive-asset-list-search-placeholder" = "Search Asset ID or NFT name";
+"collectibles-receive-asset-list-search-no-content" = "NFT를 찾을 수 없습니다";
 
 /* (No Comment) */
-"collectibles-receive-asset-title" = "Opt-in to NFT";
+"collectibles-receive-asset-list-search-placeholder" = "자산 ID 또는 NFT 이름 검색";
 
 /* (No Comment) */
-"contact-input-address-placeholder" = "Account address";
+"collectibles-receive-asset-title" = "NFT 옵트인";
+
+/* (No Comment) */
+"contact-input-address-placeholder" = "계정 주소";
 
 /* (No Comment) */
 "contact-search-empty-detail" = "다른 연락처 이름을 사용해보세요";
@@ -545,7 +578,7 @@
 "contacts-info" = "연락처 정보";
 
 /* (No Comment) */
-"contacts-info-address" = "Account Address";
+"contacts-info-address" = "계정 주소";
 
 /* (No Comment) */
 "contacts-info-edit" = "연락처 수정";
@@ -1053,6 +1086,12 @@
 
 /* (No Comment) */
 "notification-support-success" = "%@에서 %@ 자산을 계정에 추가했습니다. 이제 해당 자산을 전송하실 수 있습니다.";
+
+/* (No Comment) */
+"notifications-asset-not-found-description" = "The history for this specific asset is not available.";
+
+/* (No Comment) */
+"notifications-asset-not-found-title" = "Asset history not available";
 
 /* (No Comment) */
 "notifications-empty-subtitle" = "최근 트랜잭션, 자산 요청 및 기타 알림이 표시됩니다.";
@@ -1694,7 +1733,7 @@
 "title-close" = "닫기";
 
 /* MARK: Collectible Common */
-"title-collectibles" = "Collectibles";
+"title-collectibles" = "수집품";
 
 /* (No Comment) */
 "title-confirm" = "확정";
@@ -1730,6 +1769,12 @@
 "title-dont-show-again" = "다시 표시하지 않음";
 
 /* (No Comment) */
+"required-min-balance-title" = "Low Balance";
+
+/* (No Comment) */
+"required-min-balance-description" = "You don't have enough balance to support the transaction fees. The Algorand blockchain requires 0.001 Algos to support a transaction. You can increase your Algo balance to support this transaction fee.\n\nIf you opted-in for dApps and smart contracts associated with your account (from different ecosystem apps), each asset increases the minimum balance required by 0.1 Algo. To reduce the minimum balance required for this account, you must opt-out from the assets or dApps causing that increased minimum balance.";
+
+/* (No Comment) */
 "title-edit" = "수정";
 
 /* (No Comment) */
@@ -1739,13 +1784,19 @@
 "title-error" = "오류";
 
 /* (No Comment) */
-"title-error-description" = "Error: %@";
+"title-error-description" = "오류: %@";
 
 /* (No Comment) */
 "title-failed-connection" = "연결 실패";
 
 /* (No Comment) */
-"title-generic-api-error" = "Well, this is unexpected";
+"title-generic-api-error" = "이런, 예상치 못한 상황이네요";
+
+/* (No Comment) */
+"title-generic-error" = "Something went wrong";
+
+/* (No Comment) */
+"title-generic-response-description" = "We couldn't fetch some of the assets. Please try again.";
 
 /* (No Comment) */
 "title-go-to-accounts" = "계정으로 이동";
@@ -1805,7 +1856,7 @@
 "title-plus-asset-singular-count" = "%@ 자산";
 
 /* (No Comment) */
-"title-plus-collectible-count" = "%@ NFTs";
+"title-plus-collectible-count" = "%@ NFT";
 
 /* (No Comment) */
 "title-plus-collectible-singular-count" = "%@ NFT";
@@ -2006,7 +2057,7 @@
 "transaction-filter-option-yesterday" = "어제";
 
 /* MARK: Transaction Filter */
-"transaction-filter-title-sort" = "날짜별 정렬";
+"transaction-filter-title-sort" = "Filter by Date";
 
 /* (No Comment) */
 "transaction-filter-tooltip" = "트랜잭션 내역을 필터링하실 수 있습니다.";
@@ -2435,7 +2486,7 @@
 "wallet-connect-transaction-warning-high-fee" = "이 트랜잭션 수수료는 일반적인 수수료(0.001알고)보다 높습니다.";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-initial-description" = "Pera Wallet이 관리하지 않는 외부 애플리케이션(\"디앱\"이라고도 합니다)에서 트랜잭션 요청을 전송할 수 있습니다. 트랜잭션을 실행한 후에는 되돌릴 수 없으므로, 서명하기 전에 트랜잭션의 상세 정보를 신중히 검토하시기 바랍니다.\n\n모든 트랜잭션은 실행 취소가 불가능합니다. 모르는 디앱에서 요청한 트랜잭션은 승인하지 마세요.";
+"wallet-connect-transaction-warning-initial-description" = "External applications, also called dApps, can initiate transaction requests independently from Pera Wallet. Please ensure you review these transactions carefully before approving and signing them.\n\nAll transactions are irreversible. As these requests are outside Pera Wallet's control, never approve transactions from a dApp you don’t know.";
 
 /* (No Comment) */
 "wallet-connect-transaction-warning-initial-title" = "트랜잭션 요청 FAQ";

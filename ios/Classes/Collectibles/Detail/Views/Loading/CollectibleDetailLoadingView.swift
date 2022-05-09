@@ -21,6 +21,8 @@ final class CollectibleDetailLoadingView:
     View,
     ListReusable,
     ShimmerAnimationDisplaying {
+    static let theme = CollectibleDetailLoadingViewTheme()
+
     private lazy var image = ShimmerView()
     private lazy var title = ShimmerView()
     private lazy var subtitle = ShimmerView()
@@ -36,8 +38,9 @@ final class CollectibleDetailLoadingView:
         frame: CGRect
     ) {
         super.init(frame: frame)
+
         linkInteractors()
-        build(CollectibleDetailLoadingViewTheme())
+        build(Self.theme)
     }
 
     private func build(
@@ -64,6 +67,54 @@ final class CollectibleDetailLoadingView:
     func linkInteractors() {
         isUserInteractionEnabled = false
     }
+
+    class func calculatePreferredSize(
+        for theme: CollectibleDetailLoadingViewTheme,
+        fittingIn size: CGSize
+    ) -> CGSize {
+        let width = size.width
+
+        let imageHeight =
+        width -
+        theme.imagePaddings.leading -
+        theme.imagePaddings.trailing
+
+        let image = theme.imagePaddings.top + imageHeight
+
+        let title =
+        theme.titleTopPadding +
+        theme.titleViewHeight
+
+        let subtitle =
+        theme.subtitleTopPadding +
+        theme.subtitleViewHeight
+
+        let action =
+        theme.actionTopPadding +
+        theme.actionHeight
+
+        let separator =
+        theme.spacingBetweenDescriptionAndSeparator +
+        theme.separator.size +
+        theme.spacingBetweenDescriptionAndSeparator
+
+        let description =
+        theme.descriptionHeight +
+        theme.descriptionValueFirstLineTopMargin +
+        theme.descriptionValueLineHeight +
+        theme.descriptionValueLineSpacing +
+        theme.descriptionValueLineHeight
+
+        let preferredHeight =
+        image +
+        title +
+        subtitle +
+        action +
+        separator +
+        description
+
+        return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
+    }
 }
 
 extension CollectibleDetailLoadingView {
@@ -76,7 +127,7 @@ extension CollectibleDetailLoadingView {
         image.snp.makeConstraints {
             $0.height == image.snp.width
 
-            $0.setPaddings((12, 24, .noMetric, 24))
+            $0.setPaddings(theme.imagePaddings)
         }
     }
 
@@ -181,7 +232,7 @@ extension CollectibleDetailLoadingView {
             $0.leading == image
             $0.fitToHeight(theme.descriptionValueLineHeight)
             $0.width == self * theme.descriptionValueSecondLineWidthMultiplier
-            $0.bottom <= 0
+            $0.bottom == 0
         }
     }
 }

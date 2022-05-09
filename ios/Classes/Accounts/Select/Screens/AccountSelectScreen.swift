@@ -21,6 +21,10 @@ import UIKit
 import MacaroonUIKit
 
 final class AccountSelectScreen: BaseViewController {
+    typealias EventHandler = (Event) -> Void
+
+    var eventHandler: EventHandler?
+
     private lazy var assetDetailTitleView = AssetDetailTitleView()
     private lazy var accountView = SelectAccountView()
     private lazy var searchNoContentView = NoContentView()
@@ -227,10 +231,21 @@ extension AccountSelectScreen: TransactionControllerDelegate {
             return
         }
 
-        open(
-            .sendTransactionPreview(draft: draft, transactionController: transactionController),
+        let controller = open(
+            .sendTransactionPreview(
+                draft: draft,
+                transactionController: transactionController
+            ),
             by: .push
-        )
+        ) as? SendTransactionPreviewScreen
+        controller?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .didCompleteTransaction:
+                self.eventHandler?(.didCompleteTransaction)
+            }
+        }
     }
 
     private func displayTransactionError(from transactionError: TransactionError) {
@@ -499,5 +514,11 @@ extension AccountSelectScreen: TransactionSendControllerDelegate {
         loadingController?.stopLoadingAfter(seconds: 0.3, on: .main) {
             execute()
         }
+    }
+}
+
+extension AccountSelectScreen {
+    enum Event {
+        case didCompleteTransaction
     }
 }

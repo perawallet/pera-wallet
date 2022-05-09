@@ -24,11 +24,13 @@ final class CollectibleTransactionInfoView:
     UIInteractionObservable,
     UIControlInteractionPublisher {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .performAction: UIControlInteraction()
+        .performAction: UIViewTapInteraction()
     ]
 
     private lazy var titleView = Label()
-    private lazy var valueButton = MacaroonUIKit.Button(.imageAtLeft(spacing: 8))
+    private lazy var valueContent = MacaroonUIKit.BaseView()
+    private lazy var iconView = ImageView()
+    private lazy var valueView = Label()
 
     func customize(
         _ theme: CollectibleTransactionInfoViewTheme
@@ -44,22 +46,24 @@ final class CollectibleTransactionInfoView:
         _ styleSheet: NoStyleSheet
     ) {}
 
+    func prepareForReuse() {
+        titleView.editText = nil
+        iconView.image = nil
+        valueView.editText = nil
+    }
+
     func bindData(
         _ viewModel: CollectibleTransactionInfoViewModel?
     ) {
         titleView.editText = viewModel?.title
 
-        if let icon = viewModel?.icon {
-            valueButton.setImage(icon, for: .normal)
-        } else {
-            valueButton.setImage(nil, for: .normal)
-        }
+        iconView.image = viewModel?.icon
 
         if let valueStyle = viewModel?.valueStyle {
-            valueButton.customizeAppearance(valueStyle)
+            valueView.customizeAppearance(valueStyle)
         }
 
-        valueButton.setEditTitle(viewModel?.value, for: .normal)
+        valueView.editText = viewModel?.value
     }
 
     class func calculatePreferredSize(
@@ -72,14 +76,20 @@ final class CollectibleTransactionInfoView:
         }
 
         let width = size.width
-        let valueMaxWidth =
-            width *
-            theme.valueWidthRatio
+
+        var valueMaxWidth =
+        width *
+        theme.valueWidthRatio
+
+        if viewModel.icon != nil {
+            valueMaxWidth -= (theme.iconSize.w + theme.iconContentEdgeInsets.x)
+        }
+
         let titleWidth =
-            width -
-            valueMaxWidth -
-            theme.iconSize.w -
-            theme.buttonPadding * 2
+        width -
+        valueMaxWidth -
+        theme.titleContentEdgeInsets.trailing
+
         let titleSize = viewModel.title.boundingSize(
             multiline: true,
             fittingSize: CGSize((titleWidth, .greatestFiniteMagnitude))
@@ -91,8 +101,8 @@ final class CollectibleTransactionInfoView:
 
         let verticalSpacing = theme.verticalPadding * 2
         let contentHeight =
-            max(titleSize.height, valueSize.height) +
-            verticalSpacing
+        max(titleSize.height, valueSize.height) +
+        verticalSpacing
 
         return CGSize((size.width, min(contentHeight.ceil(), size.height)))
     }
@@ -102,40 +112,69 @@ extension CollectibleTransactionInfoView {
     private func addContext(
         _ theme: CollectibleTransactionInfoViewTheme
     ) {
-        addValue(theme)
+        addValueContent(theme)
         addTitle(theme)
         addSeparator(theme.separator)
     }
 
+    private func addValueContent(
+        _ theme: CollectibleTransactionInfoViewTheme
+    ) {
+        addSubview(valueContent)
+        valueContent.snp.makeConstraints {
+            $0.trailing == 0
+            $0.top == theme.verticalPadding
+            $0.bottom <= theme.verticalPadding
+            $0.width == self * theme.valueWidthRatio
+        }
+
+        addValue(theme)
+        addIcon(theme)
+    }
 
     private func addValue(
         _ theme: CollectibleTransactionInfoViewTheme
     ) {
-        valueButton.customizeAppearance(theme.value)
-        valueButton.imageView?.contentMode = .scaleAspectFit
+        valueView.customizeAppearance(theme.value)
 
-        addSubview(valueButton)
-        valueButton.snp.makeConstraints {
+        valueContent.addSubview(valueView)
+        valueView.snp.makeConstraints {
             $0.trailing == 0
-            $0.top == theme.verticalPadding
-            $0.bottom == theme.verticalPadding
-            $0.width <= self * theme.valueWidthRatio
+            $0.top == 0
+            $0.bottom == 0
         }
 
-        valueButton.fitToVerticalIntrinsicSize(
+        valueView.fitToVerticalIntrinsicSize(
             hugging: .defaultLow,
             compression: .required
         )
 
-        valueButton.fitToHorizontalIntrinsicSize(
+        valueView.fitToHorizontalIntrinsicSize(
             hugging: .defaultLow,
-            compression: .required
+            compression: .defaultHigh
         )
 
         startPublishing(
             event: .performAction,
-            for: valueButton
+            for: valueView
         )
+    }
+
+    private func addIcon(
+        _ theme: CollectibleTransactionInfoViewTheme
+    ) {
+        iconView.customizeAppearance(theme.icon)
+        iconView.layer.draw(corner: theme.iconCorner)
+        iconView.clipsToBounds = true
+
+        valueContent.addSubview(iconView)
+        iconView.contentEdgeInsets = theme.iconContentEdgeInsets
+        iconView.fitToIntrinsicSize()
+        iconView.snp.makeConstraints {
+            $0.centerY == valueView
+            $0.trailing == valueView.snp.leading
+            $0.leading >= 0
+        }
     }
 
     private func addTitle(
@@ -144,11 +183,12 @@ extension CollectibleTransactionInfoView {
         titleView.customizeAppearance(theme.title)
 
         addSubview(titleView)
+        titleView.contentEdgeInsets = theme.titleContentEdgeInsets
         titleView.snp.makeConstraints {
             $0.leading == 0
             $0.top == theme.verticalPadding
-            $0.bottom == theme.verticalPadding
-            $0.trailing <= valueButton.snp.leading - theme.buttonPadding
+            $0.bottom <= theme.verticalPadding
+            $0.trailing <= valueContent.snp.leading
         }
 
         titleView.fitToVerticalIntrinsicSize(

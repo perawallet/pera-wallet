@@ -115,9 +115,10 @@ extension QRCreationViewController: QRCreationViewDelegate {
         navigationController?.present(activityViewController, animated: true, completion: nil)
     }
     
-    func qrCreationView(_ qrCreationView: QRCreationView, didSelect text: String) {
+    func qrCreationViewDidCopy(_ qrCreationView: QRCreationView) {
         log(ReceiveCopyEvent(address: draft.address))
-        UIPasteboard.general.string = text
+        UIPasteboard.general.string = draft.address
+        bannerController?.presentInfoBanner("qr-creation-copied".localized)
     }
 }
 

@@ -20,6 +20,8 @@ import UIKit
 
 final class CollectibleListLoadingViewCell:
     CollectionCell<CollectibleListLoadingView> {
+    static let theme = CollectibleListLoadingViewTheme()
+
     override init(
         frame: CGRect
     ) {
@@ -27,7 +29,7 @@ final class CollectibleListLoadingViewCell:
             frame: frame
         )
 
-        contextView.customize(CollectibleListLoadingViewTheme())
+        contextView.customize(Self.theme)
     }
 }
 

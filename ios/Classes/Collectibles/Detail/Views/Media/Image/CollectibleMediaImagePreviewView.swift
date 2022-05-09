@@ -51,7 +51,7 @@ extension CollectibleMediaImagePreviewView {
     private func addImage(
         _ theme: CollectibleMediaImagePreviewViewTheme
     ) {
-        image.customizeAppearance(theme.image)
+        image.build(theme.image)
         image.layer.draw(corner: theme.corner)
         image.clipsToBounds = true
 

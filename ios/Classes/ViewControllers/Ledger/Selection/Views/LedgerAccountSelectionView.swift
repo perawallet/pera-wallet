@@ -81,8 +81,8 @@ final class LedgerAccountSelectionView: View {
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
     func setListeners() {
-        errorView.setListeners()
-        errorView.handlers.didTapActionView = { [weak self] in
+        errorView.observe(event: .performPrimaryAction) {
+            [weak self] in
             guard let self = self else {
                 return
             }

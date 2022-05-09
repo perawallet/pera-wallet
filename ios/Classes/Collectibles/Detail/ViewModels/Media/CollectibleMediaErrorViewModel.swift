@@ -61,7 +61,6 @@ extension CollectibleMediaErrorViewModel {
 enum CollectibleMediaError: Error {
     case unsupported
     case notOwner(isWatchAccount: Bool)
-    case unavailable
 
     var message: String {
         switch self {
@@ -73,17 +72,10 @@ enum CollectibleMediaError: Error {
             } else {
                 return "collectible-detail-error-not-owner".localized
             }
-        case .unavailable:
-            return "collectible-detail-error-visual".localized
         }
     }
 
     var image: UIImage {
-        switch self {
-        case .notOwner:
-            return "badge-warning".uiImage
-        default:
-            return "badge-error".uiImage
-        }
+        return "badge-warning".uiImage.template
     }
 }

@@ -20,6 +20,10 @@ import UIKit
 import MacaroonUIKit
 
 final class SendTransactionPreviewScreen: BaseScrollViewController {
+   typealias EventHandler = (Event) -> Void
+
+   var eventHandler: EventHandler?
+
    private lazy var transactionDetailView = SendTransactionPreviewView()
    private lazy var nextButtonContainer = UIView()
    private lazy var nextButton = Button()
@@ -136,7 +140,20 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
       didCompletedTransaction id: TransactionID
    ) {
       loadingController?.stopLoading()
-      open(.transactionResult, by: .push)
+
+      let controller = open(
+         .transactionResult,
+         by: .push
+      ) as? TransactionResultScreen
+
+      controller?.eventHandler = {
+         [weak self] event in
+         guard let self = self else { return }
+         switch event {
+         case .didCompleteTransaction:
+            self.eventHandler?(.didCompleteTransaction)
+         }
+      }
 
       if let algoDraft = draft as? AlgosTransactionSendDraft, let amount = algoDraft.amount {
          log(
@@ -188,4 +205,10 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
    func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {
 
    }
+}
+
+extension SendTransactionPreviewScreen {
+    enum Event {
+        case didCompleteTransaction
+    }
 }

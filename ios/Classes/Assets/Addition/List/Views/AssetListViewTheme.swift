@@ -20,11 +20,9 @@ import MacaroonUIKit
 struct AssetListViewTheme: LayoutSheet, StyleSheet {
     let backgroundColor: Color
     let cellSpacing: LayoutMetric
-    let contentInset: LayoutPaddings
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
         self.cellSpacing = 0
-        self.contentInset = (24, 24, 0, 24)
     }
 }

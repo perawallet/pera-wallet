@@ -45,7 +45,7 @@ final class DeveloperSettingsViewController:
     }
 
     override func setListeners() {
-        observe(notification: NodeSettingsViewController.didChangeNetwork) {
+        observe(notification: NodeSettingsViewController.didUpdateNetwork) {
             [weak self] _ in
             self?.reload()
         }
@@ -62,7 +62,7 @@ extension DeveloperSettingsViewController {
         case .mainnet, .none:
             settings = [.nodeSettings]
         case .testnet:
-            settings.append(.dispenser)
+            settings = [.nodeSettings, .dispenser]
         }
 
         developerSettingsView.collectionView.reloadData()

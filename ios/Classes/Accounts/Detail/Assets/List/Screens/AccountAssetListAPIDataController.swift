@@ -100,13 +100,18 @@ extension AccountAssetListAPIDataController {
 
             var assets: [StandardAsset] = []
             var assetItems: [AccountAssetsItem] = []
+            
+            if !self.accountHandle.value.isWatchAccount() {
+                assetItems.append(.assetManagement)
+            } else {
+                let titleItem: AccountAssetsItem = .assetTitle(
+                    AssetSearchListHeaderViewModel("accounts-title-assets".localized)
+                )
+                assetItems.append(titleItem)
+            }
 
             assetItems.append(.search)
             
-            if !self.accountHandle.value.isWatchAccount() {
-                assetItems.append(.addAsset)
-            }
-
             let currency = self.sharedDataController.currency.value
 
             assetItems.append(.asset(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt((self.accountHandle.value, currency)))))

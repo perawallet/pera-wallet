@@ -20,11 +20,13 @@ import MacaroonUIKit
 
 protocol MultilineTextInputFieldViewTheme: StyleSheet, LayoutSheet {
     var textInput: TextInputStyle { get }
+    var textInputMinHeight: LayoutMetric { get }
     var textContainerInsets: LayoutPaddings { get }
     var placeholder: TextStyle { get }
     var floatingPlaceholder: TextStyle { get }
     var topInset: LayoutMetric { get }
     var focusIndicator: ViewStyle { get }
+    var focusIndicatorTopInset: LayoutMetric { get }
     var focusIndicatorActive: ViewStyle { get }
     var errorFocusIndicator: ViewStyle { get }
     var assistive: FormInputFieldAssistiveViewTheme { get }

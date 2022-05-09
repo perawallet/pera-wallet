@@ -20,6 +20,7 @@ import Foundation
 struct QRSendTransactionDraft {
     let toAccount: String
     let amount: Decimal?
+    let note: String?
     let lockedNote: String?
     let transactionMode: TransactionMode
 }

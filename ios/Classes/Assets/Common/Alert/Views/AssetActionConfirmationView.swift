@@ -45,15 +45,15 @@ final class AssetActionConfirmationView: View {
         addActionButton(theme)
         addCancelButton(theme)
     }
-    
+
     func prepareLayout(_ layoutSheet: AssetActionConfirmationViewTheme) {}
 
     func customizeAppearance(_ styleSheet: AssetActionConfirmationViewTheme) {}
 
     func setListeners() {
-        copyIDButton.addTarget(self, action: #selector(notifyDelegateToCopyAssetId), for: .touchUpInside)
-        actionButton.addTarget(self, action: #selector(notifyDelegateToHandleAction), for: .touchUpInside)
-        cancelButton.addTarget(self, action: #selector(notifyDelegateToCancelScreen), for: .touchUpInside)
+        copyIDButton.addTouch(target: self, action: #selector(notifyDelegateToCopyAssetId))
+        actionButton.addTouch(target: self, action: #selector(notifyDelegateToHandleAction))
+        cancelButton.addTouch(target: self, action: #selector(notifyDelegateToCancelScreen))
     }
 }
 
@@ -62,7 +62,7 @@ extension AssetActionConfirmationView {
     private func notifyDelegateToHandleAction() {
         delegate?.assetActionConfirmationViewDidTapActionButton(self)
     }
-    
+
     @objc
     private func notifyDelegateToCancelScreen() {
         delegate?.assetActionConfirmationViewDidTapCancelButton(self)
@@ -81,6 +81,7 @@ extension AssetActionConfirmationView {
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
             $0.top.equalToSuperview().inset(theme.titleTopPadding)
         }
     }
@@ -107,18 +108,18 @@ extension AssetActionConfirmationView {
         }
         assetNameLabel.addSeparator(theme.separator, padding: theme.separatorPadding)
     }
-    
+
     private func addAssetIDView(_ theme: AssetActionConfirmationViewTheme) {
         addSubview(assetIDView)
         assetIDView.snp.makeConstraints {
             $0.top.equalTo(assetNameLabel.snp.bottom).offset(theme.assetIDPaddings.top)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
-        
-        addCopyIDButton(theme)
+
         addVerifiedImage(theme)
         addAssetIDLabel(theme)
-        
+        addCopyIDButton(theme)
+
         assetIDView.addSeparator(theme.separator, padding: theme.separatorPadding)
     }
 
@@ -126,11 +127,11 @@ extension AssetActionConfirmationView {
         verifiedImage.customizeAppearance(theme.verifiedImage)
 
         assetIDView.addSubview(verifiedImage)
+        verifiedImage.fitToIntrinsicSize()
         verifiedImage.snp.makeConstraints {
             $0.leading.equalToSuperview()
-            $0.centerY.equalTo(copyIDButton)
+            $0.centerY.equalToSuperview()
         }
-        verifiedImage.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
 
     private func addAssetIDLabel(_ theme: AssetActionConfirmationViewTheme) {
@@ -140,45 +141,69 @@ extension AssetActionConfirmationView {
         assetIDLabel.snp.makeConstraints {
             $0.leading.equalTo(verifiedImage.snp.trailing).offset(theme.assetIDPaddings.leading)
             $0.leading.equalToSuperview().priority(.medium)
-            $0.centerY.equalTo(copyIDButton)
+            $0.centerY.equalToSuperview()
         }
     }
 
     private func addCopyIDButton(_ theme: AssetActionConfirmationViewTheme) {
         copyIDButton.customizeAppearance(theme.copyIDButton)
+        copyIDButton.contentEdgeInsets = UIEdgeInsets(theme.copyIDButtonEdgeInsets)
         copyIDButton.draw(corner: theme.copyIDButtonCorner)
         
         assetIDView.addSubview(copyIDButton)
+        copyIDButton.fitToIntrinsicSize()
         copyIDButton.snp.makeConstraints {
-            $0.fitToSize(theme.copyIDButtonSize)
+            $0.fitToHeight(theme.copyIDButtonHeight)
+            $0.leading >= assetIDLabel.snp.trailing + theme.minimumHorizontalSpacing
             $0.top.bottom.trailing.equalToSuperview()
         }
     }
-    
+
     private func addTransactionView(_ theme: AssetActionConfirmationViewTheme) {
-        transactionView.distribution = .fillEqually
-        transactionView.alignment = .center
-        
         addSubview(transactionView)
+        transactionView.spacing = theme.minimumHorizontalSpacing
+
         transactionView.snp.makeConstraints {
-            $0.top.equalTo(assetIDLabel.snp.bottom).offset(theme.transactionTopPadding)
+            $0.top.equalTo(assetIDView.snp.bottom).offset(theme.transactionTopPadding)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
-        
+
         addTransactionTitleLabel(theme)
         addTransactionAmountLabel(theme)
     }
-    
+
     private func addTransactionTitleLabel(_ theme: AssetActionConfirmationViewTheme) {
         transactionFeeTitleLabel.customizeAppearance(theme.transactionFeeTitleLabel)
+
+        transactionFeeTitleLabel.fitToVerticalIntrinsicSize(
+            hugging: .defaultHigh,
+            compression: .required
+        )
+
+        transactionFeeTitleLabel.fitToHorizontalIntrinsicSize(
+            hugging: .required,
+            compression: .defaultHigh
+        )
+
         transactionView.addArrangedSubview(transactionFeeTitleLabel)
     }
-    
+
     private func addTransactionAmountLabel(_ theme: AssetActionConfirmationViewTheme) {
         transactionFeeAmountLabel.customizeAppearance(theme.transactionFeeAmountLabel)
+
+        transactionFeeAmountLabel.fitToVerticalIntrinsicSize(
+            hugging: .defaultLow,
+            compression: .required
+        )
+
+        transactionFeeAmountLabel.fitToHorizontalIntrinsicSize(
+            hugging: .defaultLow,
+            compression: .required
+        )
+
         transactionView.addArrangedSubview(transactionFeeAmountLabel)
     }
-    
+
     private func addDetailLabel(_ theme: AssetActionConfirmationViewTheme) {
         detailLabel.customizeAppearance(theme.description)
 
@@ -190,7 +215,7 @@ extension AssetActionConfirmationView {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
-    
+
     private func addActionButton(_ theme: AssetActionConfirmationViewTheme) {
         actionButton.customize(theme.mainButtonTheme)
 
@@ -218,23 +243,23 @@ extension AssetActionConfirmationView {
 extension AssetActionConfirmationView: ViewModelBindable {
     func bindData(_ viewModel: AssetActionConfirmationViewModel?) {
         titleLabel.text = viewModel?.title
-        assetIDLabel.text = viewModel?.id
-        
-        if viewModel?.transactionFee.isNilOrEmpty ?? true {
-            transactionView.removeFromSuperview()
-        }
-        
-        transactionFeeAmountLabel.text = viewModel?.transactionFee
-        detailLabel.attributedText = viewModel?.detail
-        actionButton.bindData(ButtonCommonViewModel(title: viewModel?.actionTitle))
-        cancelButton.bindData(ButtonCommonViewModel(title: viewModel?.cancelTitle))
+        assetCodeLabel.text = viewModel?.assetDisplayViewModel?.code
+        assetNameLabel.text = viewModel?.assetDisplayViewModel?.name
 
         if !(viewModel?.assetDisplayViewModel?.isVerified ?? false) {
             verifiedImage.removeFromSuperview()
         }
+        assetIDLabel.text = viewModel?.id
 
-        assetNameLabel.text = viewModel?.assetDisplayViewModel?.name
-        assetCodeLabel.text = viewModel?.assetDisplayViewModel?.code
+        if viewModel?.transactionFee.isNilOrEmpty ?? true {
+            transactionView.removeFromSuperview()
+        }
+        transactionFeeAmountLabel.text = viewModel?.transactionFee
+
+        detailLabel.attributedText = viewModel?.detail
+
+        actionButton.bindData(ButtonCommonViewModel(title: viewModel?.actionTitle))
+        cancelButton.bindData(ButtonCommonViewModel(title: viewModel?.cancelTitle))
     }
 }
 

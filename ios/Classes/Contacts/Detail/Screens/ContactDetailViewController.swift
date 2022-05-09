@@ -319,7 +319,7 @@ extension ContactDetailViewController: AccountListViewControllerDelegate {
         transactionDraft.toContact = contact
 
         let controller = open(.sendTransaction(draft: transactionDraft), by: .present) as? SendTransactionScreen
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak controller] in
             controller?.closeScreen(by: .dismiss, animated: true)
         }
         controller?.leftBarButtonItems = [closeBarButtonItem]

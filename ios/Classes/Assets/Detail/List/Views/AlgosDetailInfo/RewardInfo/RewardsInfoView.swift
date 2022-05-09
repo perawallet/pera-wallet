@@ -33,6 +33,14 @@ final class RewardsInfoView:
     var thirdShadowLayer: CAShapeLayer = CAShapeLayer()
     var secondShadow: MacaroonUIKit.Shadow?
     var secondShadowLayer: CAShapeLayer = CAShapeLayer()
+    
+    private lazy var theme = RewardsInfoViewTheme()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        customize(theme)
+    }
 
     func customize(
         _ theme: RewardsInfoViewTheme
@@ -48,6 +56,17 @@ final class RewardsInfoView:
         addInfoButton(theme)
         addRewardsLabel(theme)
         addRewardsValueLabel(theme)
+    }
+    
+    override func preferredUserInterfaceStyleDidChange() {
+        super.preferredUserInterfaceStyleDidChange()
+        
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        draw(corner: theme.containerCorner)
+        draw(border: theme.containerBorder)
+        draw(shadow: theme.containerFirstShadow)
+        draw(secondShadow: theme.containerSecondShadow)
+        draw(thirdShadow: theme.containerThirdShadow)
     }
 
     func prepareLayout(

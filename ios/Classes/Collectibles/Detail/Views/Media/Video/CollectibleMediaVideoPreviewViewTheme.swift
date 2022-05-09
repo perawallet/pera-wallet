@@ -20,16 +20,45 @@ import MacaroonURLImage
 struct CollectibleMediaVideoPreviewViewTheme:
     StyleSheet,
     LayoutSheet {
+    let placeholder: URLImagePlaceholderViewLayoutSheet & URLImagePlaceholderViewStyleSheet
     let overlay: ViewStyle
     let corner: Corner
 
     init(
         _ family: LayoutFamily
     ) {
+        self.placeholder = PlaceholerViewTheme()
+
         self.overlay = [
             .backgroundColor(AppColors.Shared.System.background)
         ]
 
         self.corner = Corner(radius: 4)
+    }
+}
+
+extension CollectibleMediaVideoPreviewViewTheme {
+    struct PlaceholerViewTheme:
+        URLImagePlaceholderViewLayoutSheet,
+        URLImagePlaceholderViewStyleSheet {
+
+        var textPaddings: LayoutPaddings
+        var background: ViewStyle
+        var image: ImageStyle
+        var text: TextStyle
+
+        init(
+            _ family: LayoutFamily
+        ) {
+            textPaddings = (8, 8, 8, 8)
+            background = [
+                .backgroundColor(AppColors.Shared.Layer.grayLighter)
+            ]
+            image = []
+            text = [
+                .textColor(AppColors.Components.Text.gray),
+                .textOverflow(FittingText())
+            ]
+        }
     }
 }

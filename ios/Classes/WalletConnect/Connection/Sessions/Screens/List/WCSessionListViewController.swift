@@ -47,7 +47,8 @@ final class WCSessionListViewController: BaseViewController {
         dataSource.delegate = self
 
         noContentWithActionView.setListeners()
-        noContentWithActionView.handlers.didTapActionView = { [weak self] in
+        noContentWithActionView.observe(event: .performPrimaryAction) {
+            [weak self] in
             self?.openQRScanner()
         }
     }

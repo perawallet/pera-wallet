@@ -29,8 +29,10 @@ struct NoContentWithActionViewCommonTheme: NoContentViewWithActionTheme {
     let contentVerticalPaddings: LayoutVerticalPaddings
     let actionContentEdgeInsets: LayoutPaddings
     let actionCornerRadius: LayoutMetric
-    let actionTopMargin: LayoutMetric
-    let action: ButtonStyle
+    let primaryActionTopMargin: LayoutMetric
+    let primaryAction: ButtonStyle
+    let secondaryActionTopMargin: LayoutMetric
+    let secondaryAction: ButtonStyle
     let actionAlignment: NoContentWithActionView.ActionViewAlignment
 
     init(
@@ -47,13 +49,21 @@ struct NoContentWithActionViewCommonTheme: NoContentViewWithActionTheme {
         self.contentVerticalPaddings = (16, 16)
         self.actionContentEdgeInsets = (14, 24, 14, 24)
         self.actionCornerRadius = 4
-        self.actionTopMargin = 32
-        self.action = [
+        self.primaryActionTopMargin = 32
+        self.primaryAction = [
             .titleColor(
                 [.normal(AppColors.Components.Button.Primary.text)]
             ),
             .font(Fonts.DMSans.medium.make(15)),
             .backgroundColor(AppColors.Components.Button.Primary.background)
+        ]
+        self.secondaryActionTopMargin = 16
+        self.secondaryAction = [
+            .titleColor(
+                [.normal(AppColors.Components.Button.Secondary.text)]
+            ),
+            .font(Fonts.DMSans.medium.make(15)),
+            .backgroundColor(AppColors.Components.Button.Secondary.background)
         ]
         self.actionAlignment = .centered
     }

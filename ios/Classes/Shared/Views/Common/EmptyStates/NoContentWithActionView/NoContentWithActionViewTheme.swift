@@ -24,7 +24,9 @@ protocol NoContentViewWithActionTheme: ResultViewTheme {
     var contentVerticalPaddings: LayoutVerticalPaddings { get }
     var actionContentEdgeInsets: LayoutPaddings { get }
     var actionCornerRadius: LayoutMetric { get }
-    var actionTopMargin: LayoutMetric { get }
-    var action: ButtonStyle { get }
+    var primaryActionTopMargin: LayoutMetric { get }
+    var primaryAction: ButtonStyle { get }
+    var secondaryActionTopMargin: LayoutMetric { get }
+    var secondaryAction: ButtonStyle { get }
     var actionAlignment: NoContentWithActionView.ActionViewAlignment { get }
 }

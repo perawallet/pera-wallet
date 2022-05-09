@@ -20,6 +20,16 @@ import MacaroonUIKit
 final class CollectibleListItemOptedInCell:
     CollectionCell<CollectibleListItemView>,
     ViewModelBindable {
+    var isPending: Bool = false {
+        didSet {
+            if oldValue == isPending {
+                return
+            }
+
+            contextView.setPendingHiddenWhenPendingStatusChange(isPending)
+        }
+    }
+
     static let theme: CollectibleListItemViewTheme = {
         var theme = CollectibleListItemViewTheme()
         theme.configureOverlayForOptedInCell()
@@ -31,5 +41,11 @@ final class CollectibleListItemOptedInCell:
     ) {
         super.init(frame: frame)
         contextView.customize(Self.theme)
+    }
+
+    override func prepareForReuse() {
+        contextView.prepareForReuse()
+
+        isPending = false
     }
 }

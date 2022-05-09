@@ -50,6 +50,43 @@ final class AssetPreviewDeleteView:
 }
 
 extension AssetPreviewDeleteView {
+    class func calculatePreferredSize(
+        _ viewModel: AssetPreviewViewModel?,
+        for theme: AssetPreviewDeleteViewTheme,
+        fittingIn size: CGSize
+    ) -> CGSize {
+        guard let viewModel = viewModel else {
+            return CGSize((size.width, 0))
+        }
+        
+        let width = size.width
+        let iconSize = theme.iconSize
+        let titleSize = viewModel.title.boundingSize(
+            multiline: false,
+            fittingSize: CGSize((width, .greatestFiniteMagnitude))
+        )
+        let subtitleSize = viewModel.subtitle.boundingSize(
+            multiline: false,
+            fittingSize: CGSize((width, .greatestFiniteMagnitude))
+        )
+        let primaryAccessorySize = viewModel.primaryAccessory.boundingSize(
+            multiline: false,
+            fittingSize: CGSize((width, .greatestFiniteMagnitude))
+        )
+        let secondaryAccessorySize = viewModel.secondaryAccessory.boundingSize(
+            multiline: false,
+            fittingSize: CGSize((width, .greatestFiniteMagnitude))
+        )
+        let buttonSize = theme.buttonSize
+        let accessoryIconSize = viewModel.verifiedIcon?.size ?? .zero
+        let contentHeight = max(titleSize.height, accessoryIconSize.height) + subtitleSize.height
+        let accessoryHeight = primaryAccessorySize.height + secondaryAccessorySize.height
+        let preferredHeight = max(iconSize.h, max(contentHeight, accessoryHeight), buttonSize.h)
+        return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
+    }
+}
+
+extension AssetPreviewDeleteView {
     private func addIconView(_ theme: AssetPreviewDeleteViewTheme) {
         iconView.customize(AssetImageViewTheme())
 

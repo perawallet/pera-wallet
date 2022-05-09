@@ -351,8 +351,8 @@ extension AppDelegate {
             
             $0.fitToHeight(0)
         }
-        
-        observe(notification: NodeSettingsViewController.didChangeNetwork) {
+
+        observe(notification: NodeSettingsViewController.didUpdateNetwork) {
             [unowned self] _ in
             self.setNeedsNetworkBannerUpdateIfNeeded()
         }

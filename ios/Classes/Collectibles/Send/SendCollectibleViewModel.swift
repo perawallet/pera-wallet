@@ -73,25 +73,14 @@ extension SendCollectibleViewModel {
     ) {
         let placeholder = asset.title.fallback(asset.name.fallback("#\(String(asset.id))"))
 
-        let size: ImageSize
-
-        if imageSize.width <= 0 ||
-            imageSize.height <= 0 {
-            size = .original
-        } else {
-            size = .resize(imageSize, .aspectFit)
-        }
-
         if let imageURL = asset.thumbnailImage {
             let prismURL = PrismURL(baseURL: imageURL)
                 .setExpectedImageSize(imageSize)
                 .setImageQuality(.normal)
-                .setResizeMode(.fit)
                 .build()
 
             image = PNGImageSource(
                 url: prismURL,
-                size: size,
                 shape: .rounded(4),
                 placeholder: getPlaceholder(placeholder)
             )

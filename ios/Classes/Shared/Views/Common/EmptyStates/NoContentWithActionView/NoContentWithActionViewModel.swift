@@ -17,7 +17,11 @@
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
 protocol NoContentWithActionViewModel: ResultViewModel {
-    var actionTitle: EditText? { get }
+    typealias Action = (title: EditText?, image: UIImage?)
+
+    var primaryAction: Action? { get }
+    var secondaryAction: Action? { get }
 }

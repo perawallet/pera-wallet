@@ -20,6 +20,7 @@ final class Media: ALGEntityModel {
     let type: MediaType
     let previewURL: URL?
     let downloadURL: URL?
+    let mediaExtension: MediaExtension
 
     init(
         _ apiModel: APIModel = APIModel()
@@ -27,6 +28,7 @@ final class Media: ALGEntityModel {
         self.type = apiModel.type
         self.previewURL = apiModel.previewURL
         self.downloadURL = apiModel.downloadURL
+        self.mediaExtension = apiModel.mediaExtension ?? .init()
     }
 
     func encode() -> APIModel {
@@ -34,6 +36,7 @@ final class Media: ALGEntityModel {
         apiModel.type = type
         apiModel.previewURL = previewURL
         apiModel.downloadURL = downloadURL
+        apiModel.mediaExtension = mediaExtension
         return apiModel
     }
 }
@@ -43,17 +46,20 @@ extension Media {
         var type: MediaType
         var previewURL: URL?
         var downloadURL: URL?
+        var mediaExtension: MediaExtension?
 
         init() {
             self.type = .init()
             self.previewURL = nil
             self.downloadURL = nil
+            self.mediaExtension = .init()
         }
 
         private enum CodingKeys: String, CodingKey {
             case type
             case previewURL = "preview_url"
             case downloadURL = "download_url"
+            case mediaExtension = "extension"
         }
     }
 }

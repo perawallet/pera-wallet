@@ -19,7 +19,7 @@ import MacaroonUIKit
 import UIKit
 
 final class CollectibleDetailLayout: NSObject {
-    private let theme = Theme()
+    private static let theme = Theme()
     
     private let dataSource: CollectibleDetailDataSource
 
@@ -31,7 +31,7 @@ final class CollectibleDetailLayout: NSObject {
     }
 
     class func build() -> UICollectionViewLayout {
-        let flowLayout = UICollectionViewFlowLayout()
+        let flowLayout = CollectibleDetailCollectionViewFlowLayout(Self.theme)
         flowLayout.minimumLineSpacing = 0
         return flowLayout
     }
@@ -51,36 +51,35 @@ extension CollectibleDetailLayout {
 
         var insets =
         UIEdgeInsets(
-            (0, theme.sectionHorizontalInsets.leading, 0, theme.sectionHorizontalInsets.trailing)
+            (0, Self.theme.sectionHorizontalInsets.leading, 0, Self.theme.sectionHorizontalInsets.trailing)
         )
 
         switch listSection {
         case .loading:
-            insets.bottom = 8
             insets.left = 0
             insets.right = 0
             return insets
         case .media:
-            insets.top = theme.mediaTopPadding
+            insets.top = Self.theme.mediaTopPadding
             insets.bottom = 0
             insets.left = 0
             insets.right = 0
             return insets
         case .action:
             insets.top = 0
-            insets.bottom = theme.actionBottomPadding
+            insets.bottom = Self.theme.actionBottomPadding
             return insets
         case .description:
-            insets.top = theme.descriptionTopPadding
-            insets.bottom = theme.descriptionBottomPadding
+            insets.top = Self.theme.descriptionTopPadding
+            insets.bottom = Self.theme.descriptionBottomPadding
             return insets
         case .properties:
-            insets.top = theme.propertiesTopPadding
-            insets.bottom = theme.propertiesBottomPadding
+            insets.top = Self.theme.propertiesTopPadding
+            insets.bottom = Self.theme.propertiesBottomPadding
             return insets
         case .external:
-            insets.top = theme.externalTopPadding
-            insets.bottom = theme.externalBottomPadding
+            insets.top = Self.theme.externalTopPadding
+            insets.bottom = Self.theme.externalBottomPadding
             return insets
         }
     }
@@ -98,7 +97,7 @@ extension CollectibleDetailLayout {
 
         switch listSection {
         case .properties:
-            return theme.propertiesCellSpacing
+            return Self.theme.propertiesCellSpacing
         default:
             return 0
         }
@@ -117,7 +116,7 @@ extension CollectibleDetailLayout {
 
         switch listSection {
         case .properties:
-            return theme.propertiesCellSpacing
+            return Self.theme.propertiesCellSpacing
         default:
             return 0
         }
@@ -151,7 +150,8 @@ extension CollectibleDetailLayout {
                 sizeForErrorItem: item
             )
         case .action(let item),
-                .watchAccountAction(let item):
+                .watchAccountAction(let item),
+                .collectibleCreatorAccountAction(let item):
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
@@ -210,7 +210,7 @@ extension CollectibleDetailLayout {
                 .properties,
                 .external:
             let width = calculateContentWidth(collectionView)
-            return CGSize((width, theme.headerHeight))
+            return CGSize((width, Self.theme.headerHeight))
         }
     }
 }
@@ -221,11 +221,11 @@ extension CollectibleDetailLayout {
         layout listViewLayout: UICollectionViewLayout
     ) -> CGSize {
         let width = listView.bounds.width
-        let height =
-        listView.bounds.height -
-        listView.safeAreaTop -
-        listView.safeAreaBottom
-        return CGSize((width, height))
+
+        return CollectibleDetailLoadingView.calculatePreferredSize(
+            for: CollectibleDetailLoadingView.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
     }
 
     private func listView(
@@ -234,7 +234,10 @@ extension CollectibleDetailLayout {
         sizeForMediaItem item: CollectibleAsset
     ) -> CGSize {
         let width = listView.bounds.width
-        return CGSize(width: width.float(), height: width.float() - theme.mediaInset * 2)
+        return CGSize(
+            width: width.float(),
+            height: width.float() - Self.theme.mediaInset * 2 + Self.theme.mediaLabelOffset
+        )
     }
 
     private func listView(
@@ -312,10 +315,11 @@ extension CollectibleDetailLayout {
         layout listViewLayout: UICollectionViewLayout,
         sizeForPropertyItem item: CollectiblePropertyViewModel
     ) -> CGSize {
+        let width = calculateContentWidth(listView)
         return CollectiblePropertyCell.calculatePreferredSize(
             item,
             for: CollectiblePropertyCell.theme,
-            fittingIn: CGSize(width: CGFloat.greatestFiniteMagnitude, height: theme.propertyHeight)
+            fittingIn: CGSize((width, Self.theme.propertyHeight))
         )
     }
 
@@ -341,7 +345,7 @@ extension CollectibleDetailLayout {
         return
             listView.bounds.width -
             listView.contentInset.horizontal -
-            theme.sectionHorizontalInsets.leading -
-            theme.sectionHorizontalInsets.trailing
+            Self.theme.sectionHorizontalInsets.leading -
+            Self.theme.sectionHorizontalInsets.trailing
     }
 }

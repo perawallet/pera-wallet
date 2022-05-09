@@ -33,6 +33,13 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
                 let cell = collectionView.dequeue(AccountPortfolioCell.self, at: indexPath)
                 cell.bindData(item)
                 return cell
+            case .assetManagement:
+                let cell = collectionView.dequeue(AssetManagementItemCell.self, at: indexPath)
+                return cell
+            case let .assetTitle(item):
+                let cell = collectionView.dequeue(AssetTitleItemCell.self, at: indexPath)
+                cell.bindData(item)
+                return cell
             case .search:
                 return collectionView.dequeue(SearchBarItemCell.self, at: indexPath)
             case let .asset(item):
@@ -43,44 +50,19 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
                 let cell = collectionView.dequeue(PendingAssetPreviewCell.self, at: indexPath)
                 cell.bindData(item)
                 return cell
-            case .addAsset:
-                return collectionView.dequeue(AddAssetItemCell.self, at: indexPath)
             }
-        }
-
-        supplementaryViewProvider = { collectionView, kind, indexPath in
-            guard let section = AccountAssetsSection(rawValue: indexPath.section),
-                  section == .assets else {
-                return nil
-            }
-
-            if kind == UICollectionView.elementKindSectionHeader {
-                let view = collectionView.dequeueHeader(SingleLineTitleActionHeaderView.self, at: indexPath)
-                view.bindData(
-                    SingleLineTitleActionViewModel(
-                        item: SingleLineIconTitleItem(
-                            icon: nil,
-                            title: "accounts-title-assets".localized
-                        )
-                    )
-                )
-                return view
-            }
-
-            return nil
         }
 
         [
             AccountPortfolioCell.self,
+            AssetManagementItemCell.self,
+            AssetTitleItemCell.self,
             SearchBarItemCell.self,
             AssetPreviewCell.self,
             PendingAssetPreviewCell.self,
-            AddAssetItemCell.self
         ].forEach {
             collectionView.register($0)
         }
-
-        collectionView.register(header: SingleLineTitleActionHeaderView.self)
     }
 }
 

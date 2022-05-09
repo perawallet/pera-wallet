@@ -74,7 +74,7 @@ extension NotificationsAPIDataController {
     }
 
     private func load(with query: String?, isPaginated: Bool = false) {
-        guard let deviceId = api.session.authenticatedUser?.deviceId else {
+        guard let deviceId = api.session.authenticatedUser?.getDeviceId(on: api.network) else {
             ///TODO: Should Deliver error snapshot
             deliverNoContentSnapshot()
             return
@@ -263,15 +263,37 @@ extension NotificationsAPIDataController {
 
     func getUserAccount(
         from notificationDetail: NotificationDetail
-    ) -> (account: Account?, asset: Asset?) {
-        let anAddress = notificationDetail.senderAddress ?? notificationDetail.receiverAddress
+    ) -> (account: Account?, asset: TransactionMode?) {
+        let account: Account?
+        
+        if notificationDetail.type.isSent() {
+            account = getAccount(from: notificationDetail.senderAddress) ?? getAccount(from: notificationDetail.receiverAddress)
+        } else {
+            account = getAccount(from: notificationDetail.receiverAddress) ?? getAccount(from: notificationDetail.senderAddress)
+        }
 
-        guard let address = anAddress  else {
+        guard let account = account  else {
             return (nil, nil)
         }
 
-        let account = sharedDataController.accountCollection[address]?.value
-        let asset = notificationDetail.asset?.id.unwrap { account?[$0] }
-        return (account: account, asset: asset)
+        let asset = notificationDetail.asset?.id.unwrap { account[$0] }
+        
+        if notificationDetail.asset?.id != nil && asset == nil {
+            return (account: account, asset: nil)
+        }
+        
+        if let asset = asset {
+            return (account: account, asset: .asset(asset))
+        }
+        
+        return (account: account, asset: .algo)
+    }
+    
+    private func getAccount(from address: String?) -> Account? {
+        guard let address = address else {
+            return nil
+        }
+
+        return sharedDataController.accountCollection[address]?.value
     }
 }

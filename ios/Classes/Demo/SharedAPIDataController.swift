@@ -95,6 +95,8 @@ extension SharedAPIDataController {
             session.authenticatedUser?.removeAccount(localAccount)
         }
 
+        session.removePrivateData(for: address)
+
         accountCollection[address] = nil
         
         startPolling()

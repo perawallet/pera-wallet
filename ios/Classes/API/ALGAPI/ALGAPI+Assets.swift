@@ -56,13 +56,38 @@ extension ALGAPI {
     @discardableResult
     func fetchAssetDetail(
         _ draft: AssetDetailFetchDraft,
+        ignoreResponseOnCancelled: Bool = true,
         onCompleted handler: @escaping (Response.ModelResult<AssetDecoration>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(.mobile)
             .path(.assetDetail, args: "\(draft.id)")
             .method(.get)
+            .ignoreResponseWhenEndpointCancelled(ignoreResponseOnCancelled)
             .completionHandler(handler)
+            .execute()
+    }
+    
+    @discardableResult
+    func fetchAssetDetailFromNode(
+        _ draft: AssetDetailFetchDraft,
+        onCompleted handler: @escaping (Response.ModelResult<AssetDecoration>) -> Void
+    ) -> EndpointOperatable {
+        let assetDetailHandler: (Response.ModelResult<AssetDetail>) -> Void = { response in
+            switch response {
+            case .failure(let apiError, let apiModel):
+                handler(.failure(apiError, apiModel))
+            case .success(let assetDetail):
+                let decoration = AssetDecoration(assetDetail: assetDetail)
+                handler(.success(decoration))
+            }
+        }
+        
+        return EndpointBuilder(api: self)
+            .base(.algod(network))
+            .path(.assetDetail, args: "\(draft.id)")
+            .method(.get)
+            .completionHandler(assetDetailHandler)
             .execute()
     }
 

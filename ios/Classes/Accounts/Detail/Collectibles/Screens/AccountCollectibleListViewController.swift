@@ -22,17 +22,29 @@ import MacaroonUIKit
 final class AccountCollectibleListViewController: BaseViewController {
     private lazy var theme = Theme()
 
+    private lazy var bottomBannerController = BottomActionableBannerController(
+        presentingView: view,
+        configuration: BottomActionableBannerControllerConfiguration(
+            bottomMargin: 0,
+            contentBottomPadding: view.safeAreaBottom + 20
+        )
+    )
+
     private lazy var collectibleListScreen = CollectibleListViewController(
         dataController: CollectibleListLocalDataController(
             galleryAccount: .single(account),
             sharedDataController: sharedDataController
+        ),
+        theme: account.value.isWatchAccount() ? .common : CollectibleListViewControllerTheme(
+            .current,
+            listContentBottomInset: 88
         ),
         configuration: configuration
     )
 
     private lazy var transactionActionButton = FloatingActionItemButton(hasTitleLabel: false)
     
-    private let account: AccountHandle
+    private var account: AccountHandle
 
     init(
         account: AccountHandle,
@@ -66,11 +78,37 @@ extension AccountCollectibleListViewController {
     private func linkInteractors(
         _ screen: CollectibleListViewController
     ) {
-        screen.observe(event: .performReceiveAction) {
-            [weak self] in
-            guard let self = self else { return }
+        screen.eventHandler = {
+            [weak self] event in
+            guard let self = self else {
+                return
+            }
 
-            self.openReceiveCollectible()
+            switch event {
+            case .didTapReceive:
+                if self.account.value.isWatchAccount() {
+                    return
+                }
+
+                self.openReceiveCollectible()
+            case .didUpdate(let accounts):
+                self.account = accounts.first!
+            case .didFinishRunning(let hasError):
+                if hasError {
+                    self.bottomBannerController.presentFetchError(
+                        title: "title-generic-error".localized,
+                        message: "title-generic-response-description".localized,
+                        actionTitle: "title-retry".localized,
+                        actionHandler: {
+                            [unowned self] in
+                            self.bottomBannerController.dismissError()
+                        }
+                    )
+                    return
+                }
+
+                self.bottomBannerController.dismissError()
+            }
         }
     }
 }
@@ -125,7 +163,7 @@ extension AccountCollectibleListViewController: TransactionFloatingActionButtonV
             by: .present
         ) as? SelectAssetViewController
 
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak controller] in
             controller?.closeScreen(
                 by: .dismiss,
                 animated: true
@@ -184,7 +222,7 @@ extension AccountCollectibleListViewController {
 
         controller?.delegate = self
 
-        let close = ALGBarButtonItem(kind: .close) {
+        let close = ALGBarButtonItem(kind: .close) { [weak controller] in
             controller?.dismissScreen()
         }
 

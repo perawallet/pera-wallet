@@ -17,17 +17,46 @@
 import Foundation
 import MacaroonUIKit
 
-struct CollectiblesNoContentWithActionViewModel: NoContentWithActionViewModel {
+struct CollectiblesNoContentWithActionViewModel:
+    NoContentWithActionViewModel,
+    Hashable {
     private(set) var icon: Image?
     private(set) var title: EditText?
     private(set) var body: EditText?
-    private(set) var actionTitle: EditText?
+    private(set) var primaryAction: Action?
+    private(set) var secondaryAction: Action?
 
-    init() {
+    private let hiddenCollectibleCount: Int
+
+    init(
+        hiddenCollectibleCount: Int,
+        isWatchAccount: Bool
+    ) {
+        self.hiddenCollectibleCount = hiddenCollectibleCount
+
         bindIcon()
         bindTitle()
         bindBody()
-        bindActionTitle()
+
+        if isWatchAccount {
+            bindPrimaryActionTitle(hiddenCollectibleCount)
+        } else {
+            bindPrimaryActionTitle()
+            bindSecondaryActionTitle(hiddenCollectibleCount)
+        }
+    }
+
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(hiddenCollectibleCount)
+    }
+
+    static func == (
+        lhs: Self,
+        rhs: Self
+    ) -> Bool {
+        return lhs.hiddenCollectibleCount == rhs.hiddenCollectibleCount
     }
 }
 
@@ -73,8 +102,55 @@ extension CollectiblesNoContentWithActionViewModel {
                 ])
         )
     }
+}
 
-    private mutating func bindActionTitle() {
-        actionTitle = .string("collectibles-receive-action".localized)
+extension CollectiblesNoContentWithActionViewModel {
+    private mutating func bindPrimaryActionTitle() {
+        primaryAction = Action(
+            title: .string("collectibles-receive-action".localized),
+            image: "icon-plus".uiImage
+        )
+    }
+
+    private mutating func bindSecondaryActionTitle(
+        _ hiddenCollectibleCount: Int
+    ) {
+        if hiddenCollectibleCount < 1 {
+            return
+        }
+
+        secondaryAction = Action(
+            title: getHiddenCollectibleCountTitle(hiddenCollectibleCount),
+            image: "icon-eye".uiImage
+        )
+    }
+}
+
+extension CollectiblesNoContentWithActionViewModel {
+    private mutating func bindPrimaryActionTitle(
+        _ hiddenCollectibleCount: Int
+    ) {
+        if hiddenCollectibleCount < 1 {
+            return
+        }
+
+        primaryAction = Action(
+            title: getHiddenCollectibleCountTitle(hiddenCollectibleCount),
+            image: "icon-eye".uiImage
+        )
+    }
+}
+
+extension CollectiblesNoContentWithActionViewModel {
+    private func getHiddenCollectibleCountTitle(
+        _ hiddenCollectibleCount: Int
+    ) -> EditText? {
+        if hiddenCollectibleCount < 1 {
+            return nil
+        }
+
+        return .string(
+            "collectibles-empty-secondary-action-title".localized(params: "\(hiddenCollectibleCount)")
+        )
     }
 }

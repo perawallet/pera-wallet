@@ -22,6 +22,8 @@ import UIKit
 /// <todo>
 /// Refactor. See `HomeListLayout`
 final class AccountAssetListLayout: NSObject {
+    lazy var handlers = Handlers()
+    
     private var sizeCache: [String: CGSize] = [:]
 
     private lazy var theme = Theme()
@@ -48,6 +50,14 @@ final class AccountAssetListLayout: NSObject {
 extension AccountAssetListLayout {
     func collectionView(
         _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        handlers.willDisplay?(cell, indexPath)
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
@@ -62,6 +72,10 @@ extension AccountAssetListLayout {
                 layout: collectionViewLayout,
                 sizeForPortfolioItem: item
             )
+        case .assetManagement:
+            return CGSize(theme.assetManagementItemSize)
+        case .assetTitle:
+            return CGSize(theme.assetTitleItemSize)
         case .search:
             return CGSize(theme.searchItemSize)
         case .asset(let item):
@@ -72,27 +86,6 @@ extension AccountAssetListLayout {
             )
         case .pendingAsset:
             return CGSize(theme.assetItemSize)
-        case .addAsset:
-            return CGSize(theme.listFooterSize)
-        }
-    }
-
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForHeaderInSection section: Int
-    ) -> CGSize {
-        let sectionIdentifiers = listDataSource.snapshot().sectionIdentifiers
-
-        guard let listSection = sectionIdentifiers[safe: section] else {
-            return .zero
-        }
-
-        switch listSection {
-        case .portfolio:
-            return .zero
-        case .assets:
-            return CGSize(theme.listHeaderSize)
         }
     }
 }
@@ -147,11 +140,16 @@ extension AccountAssetListLayout {
     }
 }
 
-
 extension AccountAssetListLayout {
     private func calculateContentWidth(
         for listView: UICollectionView
     ) -> LayoutMetric {
         return listView.bounds.width - listView.contentInset.horizontal
+    }
+}
+
+extension AccountAssetListLayout {
+    struct Handlers {
+        var willDisplay: ((UICollectionViewCell, IndexPath) -> Void)?
     }
 }
