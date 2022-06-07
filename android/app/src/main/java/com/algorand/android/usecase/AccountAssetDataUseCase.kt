@@ -77,26 +77,26 @@ class AccountAssetDataUseCase @Inject constructor(
         includeAlgo: Boolean,
         cachedAssetList: List<AssetDetail>
     ): List<BaseAccountAssetData> {
-        return mutableListOf<BaseAccountAssetData>().apply {
-            if (includeAlgo) add(accountAlgoAmountUseCase.getAccountAlgoAmount(account.account.address))
-            account.accountInformation.assetHoldingList.forEach { assetHolding ->
-                cachedAssetList.firstOrNull { it.assetId == assetHolding.assetId }?.let { assetItem ->
-                    val accountAssetData = when (assetHolding.status) {
-                        OWNED_BY_ACCOUNT -> accountAssetAmountUseCase.getAssetAmount(assetHolding, assetItem)
-                        // We shouldn't show pending state if sending asset is ASA
-                        PENDING_FOR_SENDING -> accountAssetAmountUseCase.getAssetAmount(assetHolding, assetItem)
-                        PENDING_FOR_REMOVAL -> accountAssetDataMapper.mapToPendingRemovalAssetData(assetItem)
-                        PENDING_FOR_ADDITION -> accountAssetDataMapper.mapToPendingAdditionAssetData(assetItem)
-                    }
-                    if (accountAssetData is OwnedAssetData) {
-                        add(accountAssetData)
-                    } else {
-                        val insertIndex = if (includeAlgo) 1 else 0
-                        add(insertIndex, accountAssetData)
-                    }
+        val assetDataList = mutableListOf<BaseAccountAssetData>()
+        if (includeAlgo) assetDataList.add(accountAlgoAmountUseCase.getAccountAlgoAmount(account.account.address))
+        account.accountInformation.assetHoldingList.forEach { assetHolding ->
+            cachedAssetList.firstOrNull { it.assetId == assetHolding.assetId }?.let { assetItem ->
+                val accountAssetData = when (assetHolding.status) {
+                    OWNED_BY_ACCOUNT -> accountAssetAmountUseCase.getAssetAmount(assetHolding, assetItem)
+                    // We shouldn't show pending state if sending asset is ASA
+                    PENDING_FOR_SENDING -> accountAssetAmountUseCase.getAssetAmount(assetHolding, assetItem)
+                    PENDING_FOR_REMOVAL -> accountAssetDataMapper.mapToPendingRemovalAssetData(assetItem)
+                    PENDING_FOR_ADDITION -> accountAssetDataMapper.mapToPendingAdditionAssetData(assetItem)
+                }
+                if (accountAssetData is OwnedAssetData) {
+                    assetDataList.add(accountAssetData)
+                } else {
+                    val insertIndex = if (includeAlgo) 1 else 0
+                    assetDataList.add(insertIndex, accountAssetData)
                 }
             }
         }
+        return assetDataList
     }
 
     private fun getAccountOwnedCachedAssetList(account: AccountDetail): List<AssetDetail> {

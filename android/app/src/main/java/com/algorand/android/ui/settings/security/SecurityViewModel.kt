@@ -10,7 +10,7 @@
  * limitations under the License
  */
 
-package com.algorand.android.ui.settings
+package com.algorand.android.ui.settings.security
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
@@ -45,4 +45,6 @@ class SecurityViewModel @ViewModelInject constructor(
     }
 
     fun isPasscodeSet() = _isPasswordChosenLiveData.value ?: false
+
+    fun isBiometricAuthEnabled() = _isBiometricEnabledLiveData.value ?: false
 }

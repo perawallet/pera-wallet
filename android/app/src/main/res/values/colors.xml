@@ -29,6 +29,7 @@
     <color name="gray_900_alpha_20">#3318181B</color>
     <color name="gray_900_alpha_60">#9918181B</color>
     <color name="gray_900_alpha_84">#D618181B</color>
+    <color name="gray_900_alpha_90">#E518181B</color>
     <color name="gray_800">#27272A</color>
     <color name="gray_700">#3F3F46</color>
     <color name="gray_600">#525252</color>
@@ -237,6 +238,7 @@
 
     <color name="primary_icon_tint_color">@color/gray_900</color>
     <color name="secondary_icon_tint_color">@color/gray_500</color>
+    <color name="tertiary_icon_tint_color">@color/gray_400</color>
 
     <color name="primary_text_color">@color/gray_900</color>
     <color name="secondary_text_color">@color/gray_500</color>
@@ -280,4 +282,5 @@
 
     <color name="badge_background_color">@color/gray_900_alpha_60</color>
 
+    <color name="toast_background_color">@color/gray_900_alpha_90</color>
 </resources>

@@ -44,7 +44,7 @@ class AssetSearchDataSource(
 
     private suspend fun searchAssets(): Result<Pagination<AssetDetailDTO>> {
         val (queryText, queryType) = currentQuery ?: DEFAULT_ASSET_QUERY
-        val filterCollectibles = currentQuery?.filterCollectibles ?: false
+        val filterCollectibles = currentQuery?.filterCollectibles
         return assetSearchRepository.searchAsset(queryText, queryType, filterCollectibles)
     }
 

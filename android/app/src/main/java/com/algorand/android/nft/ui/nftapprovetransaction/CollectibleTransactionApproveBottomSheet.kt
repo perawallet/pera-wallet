@@ -63,8 +63,16 @@ class CollectibleTransactionApproveBottomSheet :
     private fun updateUiWithCollectibleTransactionApprovePreview(preview: CollectibleTransactionApprovePreview?) {
         with(binding) {
             preview?.let {
-                senderAlgorandUserView.setAccount(it.senderAccountDisplayText, it.senderAccountIcon)
-                toAlgorandUserView.setAccount(it.receiverAccountDisplayText, it.receiverAccountIcon)
+                senderAlgorandUserView.setAccount(
+                    name = it.senderAccountDisplayText,
+                    icon = it.senderAccountIcon,
+                    publicKey = it.senderAccountPublicKey
+                )
+                toAlgorandUserView.setAccount(
+                    name = it.receiverAccountDisplayText,
+                    icon = it.receiverAccountIcon,
+                    publicKey = it.receiverAccountPublicKey
+                )
                 transactionFeeTextView.text = it.formattedTransactionFee
             }
         }

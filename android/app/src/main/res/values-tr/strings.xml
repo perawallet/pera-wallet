@@ -113,9 +113,6 @@
     <string name="connecting_to_ledger">Ledger\'a bağlanıyor…</string>
     <string name="ledger_approval">Ledger Onayı</string>
     <string name="please_make_sure">İşlemi  <annotation replacement="ledger_name">ledgerNamePlaceholder</annotation> adlı Ledger cihazınızda onayladığınızdan lütfen emin olun</string>
-    <string name="ledger_info_power_first_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">Ledger\'ınızın Bluetooth özelliğinin kullanımı için, lütfen Ledger\'ın resmi <annotation type="bold"><annotation type="color">Bluetooth Bağlantı Kılavuzu</annotation>\'na başvurun.</annotation></annotation></string>
-    <string name="ledger_info_power_second_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">Daha gelişmiş sorun giderme için, lütfen Ledger\'ın resmi <annotation type="bold"><annotation type="color">Bluetooth Sorun Giderme Kılavuzu</annotation>\'na başvurun.</annotation></annotation></string>
-    <string name="ledger_info_ledger_first_paragraph"><annotation url="https://www.ledger.com/start">Ledger\'ın kapsamlı <annotation type="bold"><annotation type="color">Kullanmaya Başlama</annotation></annotation> öğreticisini izleyerek başlayın.</annotation></string>
     <string name="ledger_info_ledger_second_paragraph">Öğretici sizi “Cihazınıza yüklemek istediğiniz uygulamaları seçin” adımına getirdiğinde, arama çubuğuna Algorand yazın ve yükleyin.</string>
     <string name="ledger_info_algorand_first_paragraph"><annotation url="https://www.ledger.com/start">Uygulamaları Ledger cihazınıza nasıl yükleyeceğinizi ve nasıl açacağınızı gösteren Ledger\'ın kapsamlı <annotation type="bold"><annotation type="color">Kullanmaya Başlama</annotation></annotation> öğreticisini izleyerek başlayın.</annotation></string>
     <string name="ledger_info_algorand_second_paragraph">Ledger cihazınıza <annotation type="bold">Algorand</annotation> uygulamasını henüz yüklemediyseniz, öğretici sizi “Cihazınıza yüklemek istediğiniz uygulamaları seçin” adımına getirdiğinde, arama çubuğuna Algorand yazın ve yükleyin.</string>
@@ -162,7 +159,6 @@
     <string name="last_week">Geçen Hafta</string>
     <string name="last_month">Geçen Ay</string>
     <string name="custom_range">Özel Aralık</string>
-    <string name="press_and_hold">Panoya Kopyalamak için Basılı Tutun</string>
     <string name="something_went_wrong">Bir sorun oluştu</string>
     <string name="sorry_something_went">Üzgünüz, bir sorun oluştu.</string>
     <string name="try_again">Tekrar Dene</string>
@@ -188,7 +184,6 @@
     <string name="finalize_rekeying">Yeniden Anahtarlamayı Bitir</string>
     <string name="new_ledger">Yeni Ledger</string>
     <string name="old_ledger">Eski Ledger</string>
-    <string name="the_account_name"><annotation font="dmsans_bold">\"<annotation replacement="account_name"> </annotation>\"</annotation> hesabı, başarıyla yeniden anahtarlandı</string>
     <string name="just_now">Şimdi</string>
     <string name="transaction_received">İşlem Alındı</string>
     <string name="too_many_pin_attempts">Çok fazla PIN denemesi</string>
@@ -274,8 +269,6 @@
     <string name="paste_full_passphrase">Parolanın Tamamını Yapıştır</string>
     <string name="verify_recovery_passphrase">Kurtarma parolası yedeklemesini doğrulayın</string>
     <string name="transacting_tips">İşlemlere Yönelik İpuçları</string>
-    <string name="the_only_way_to">Bir Algorand hesabını kurtarmanın tek yolu bu kurtarma parolasıdır.\n\n<annotation font="dmsans_italic"><annotation custom="warning_color"><annotation type="bold">Uyarı</annotation>: Hesabınıza tam erişim sağladığından, bu parolayı kimseyle paylaşmayın.</annotation></annotation></string>
-    <string name="monitor_activity_of">Bir kurtarma parolasına gerek kalmadan bir hesabın etkinliğini izleyin. Soğuk depolamada tutulan varlıkların izlenmesi için yararlıdır.\n\n<annotation font="dmsans_italic"><annotation custom="warning_color"><annotation type="bold">Uyarı</annotation>: İlgili hesabın kurtarma parolasına sahip değilseniz, bu hesaba varlık göndermeyin.</annotation></annotation></string>
     <string name="i_want_to_monitor">Soğuk depolamada tutulan bir hesabı izlemek istiyorum</string>
     <string name="name_your_account_to">Pera Wallet\'ı kullanırken kolayca ayırt edebilmek için hesabınızı adlandırın. Bu adlar yerel olarak saklanır ve yalnızca sizin tarafınızdan görülebilir.</string>
     <string name="learn_more">Daha Fazla Bilgi</string>
@@ -333,7 +326,6 @@
     <string name="this_transaction_is_sending">Bu işlem Algo bakiyenizin tümünü gönderecek.</string>
     <string name="close_asset_to">Kapatılacak\nVarlık:</string>
     <string name="this_transaction_is_sending_asset">Bu işlem %1$s bakiyenizin tamamını gönderecek ve %1$s, hesabınızdan kaldırılacak.</string>
-    <string name="this_transaction_fee_is_higher">Bu işlem ücreti, normalde 0,001 Algo olan ücretten daha yüksek.</string>
     <string name="wallet_connect_is_not_reachable">WalletConnect\'e şu anda ulaşılamıyor. Lütfen daha sonra tekrar deneyin.</string>
     <string name="connected_with_formatted">%1$s ile Bağlandı</string>
     <string name="this_transaction_will_be">Bu işlem ileride gönderilecek.</string>
@@ -371,7 +363,6 @@
     <string name="signing_error_transaction_in_request">İmzalama Hatası: İşlem isteği sürecindeki bir işlem, bağlı olan Cüzdanda bulunmayan bir özel anahtarı (imzalayan) gerektiriyor.</string>
     <string name="transaction_request_contains_unsupported">İşlem isteği, Desteklenmeyen İşlem Türünü içeriyor</string>
     <string name="transaction_request_contains_unsupported_multisig">İşlem isteği, Desteklenmeyen İşlem Türünü içeriyor: Çoklu imza</string>
-    <string name="invalid_input_transaction_request">Geçersiz Giriş: İşlem isteği %1$d\'dan fazla işlemi içeriyor</string>
     <string name="invalid_input_unable_to_parse">Geçersiz Giriş: İşlem ayrıştırılamıyor</string>
     <string name="invalid_input_invalid_public_key">Geçersiz Giriş: Ortak Anahtar Geçersiz</string>
     <string name="invalid_input_invalid_asset">Geçersiz Giriş: Geçersiz Varlık</string>
@@ -530,6 +521,7 @@
     <string name="show_note">Notu Göster</string>
     <string name="create_a_passphrase_backup">Hesabınız için bir parola yedeği oluşturun</string>
     <string name="creating_a_passphrase_backup">Bir parola yedeği oluşturmanız hesabınızı kurtarmanızı sağlayacak. Parolaya sahip olmadığınızda cihazınızı kaybeder, hesabı kaldırır veya uygulamayı silerseniz, Algorand hesabınıza erişiminizi kalıcı olarak kaybedebilirsiniz.</string>
+    <string name="congratulations_your_account">Tebrikler, hesabınız kullanıma hazır.</string>
     <string name="welcome_to_pera_your_account">Pera Wallet\'a hoş geldiniz! Hesabınız kullanıma hazır.</string>
     <string name="loading">Yükleniyor</string>
     <string name="algorand_wallet_is_now">Resmen değişti!\nAlgorand Wallet artık Pera Wallet.</string>
@@ -540,7 +532,7 @@
     <string name="sorry_we_cant_show_account">Üzgünüz, bu hesabın ayrıntılarını gösteremiyoruz. Hesaplama konusunda bazı sorunlar var gibi görünüyor.\n\nBazı varlıkların fiyat bilgisinin bulunmayabileceğini lütfen dikkate alın. Bu nedenle, toplam portföy değerinin bir tahmin olarak düşünülmesi gerekmektedir.</string>
     <string name="sorry_we_cant_show_portfolio">Üzgünüz, bu portföyün ayrıntılarını gösteremiyoruz. Hesaplama konusunda bazı sorunlar var gibi görünüyor.\n\nBazı varlıkların fiyat bilgisinin bulunmayabileceğini lütfen dikkate alın. Bu nedenle, toplam portföy değerinin bir tahmin olarak düşünülmesi gerekmektedir.</string>
     <string name="transaction_request_faq">İşlem İsteği İle İlgili SSS</string>
-    <string name="external_applications_also">dApp\'ler olarak da adlandırılan harici uygulamalar, Pera Wallet\'ın kontrol etmediği işlem isteklerinde bulunabilirler. Bu tür istekleri onaylamadan ve imzalamadan önce dikkatlice incelediğinizden lütfen emin olun.\n\nİşlemler geri alınamazdır. Tanımadığınız dApp\'ten gelen işlemleri hiçbir zaman onaylamayın.</string>
+    <string name="external_applications_also">dApp\'ler olarak da adlandırılan harici uygulamalar, Pera Wallet\'tan bağımsız olarak işlem başlatabilirler. Bu tür işlemleri onaylamadan ve imzalamadan önce dikkatlice incelediğinizden lütfen emin olun.\n\nİşlemler geri alınamazdır. Bu istekler Pera Wallet\'ın kontrolü dışında olduğundan, tanımadığınız dApp\'ten gelen işlemleri hiçbir zaman onaylamayın.</string>
     <string name="notification_algo_received_message"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation>, <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> adresine <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> tarafından gönderildi.</string>
     <string name="minimum_amount_required">Minimum Miktar Gerekli</string>
     <string name="this_is_the_first_transaction">Bu, seçili hesabın ilk işlemidir. İlk işlemler için en az 0,1 Algo\'luk minimum miktar gereklidir. Lütfen geçerli bir miktar girerek tekrar deneyin.</string>
@@ -601,7 +593,7 @@
     <string name="view_transaction">İşlemi Görüntüle</string>
     <string name="show_on_algoexplorer">Algoexplorer\'da Göster</string>
     <string name="show_on_nftexplorer">NFTExplorer\'da Göster</string>
-    <string name="you_are_not_the_owner">Henüz bu NFT\'nin sahibi değilsiniz ancak katılmayı seçtiniz.</string>
+    <string name="you_are_not_the_owner">Henüz bu NFT\'nin sahibi değilsiniz ancak katılmayı seçtiniz. Artık cüzdanınıza transfer edebilirsiniz.</string>
     <string name="we_don_t_support">Bu NFT medya türünü henüz desteklemiyoruz.</string>
     <string name="we_can_t_display">Görseli geçici olarak görüntüleyemiyoruz.</string>
     <string name="transfer">Transfer</string>
@@ -623,4 +615,58 @@
     <string name="confirm_transfer">Transferi onaylayın</string>
     <string name="search_asset_id_or_nft">Varlık Kimliğini veya NFT Adını Ara</string>
     <string name="receive_an_nft">Bir NFT Alın</string>
+    <string name="the_account_name"><annotation font="dmsans_bold">"<annotation replacement="account_name"> </annotation>"</annotation> hesabı, başarıyla yeniden anahtarlandı.</string>
+    <string name="asset_support_success"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>, hesabına <annotation replacement="asset">assetPlaceholder</annotation> ekledi.  <annotation replacement="asset">assetPlaceholder</annotation> gönderebilirsiniz.</string>
+    <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation>, size <annotation replacement="asset">assetPlaceholder</annotation> göndermek istiyor. Ancak, siz bu varlığı desteklemiyorsunuz. Bu varlığı hesabınıza eklemek için buraya dokunun.</annotation></string>
+    <string name="transaction_send_successful"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> işleminiz, <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> adresinden <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> adresine gönderilerek tamamlandı.</string>
+    <string name="transaction_send_failed"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> işleminiz, <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> adresinden <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> adresine gönderilemeyerek başarısız oldu.</string>
+    <string name="the_only_way_to">Bir Algorand hesabını kurtarmanın tek yolu bu kurtarma parolasıdır.</string>
+    <string name="monitor_activity_of">Bir kurtarma parolasına gerek kalmadan bir hesabın etkinliğini izleyin. Soğuk depolamada tutulan varlıkların izlenmesi için yararlıdır.</string>
+    <string name="this_transaction_fee_is_higher">Bu işlem ücreti, normalde 0,001 Algo olan ücretten daha yüksek.</string>
+    <string name="you_are_about_to"><annotation replacement="asset_name">assetNamePlaceholder</annotation> varlığını <annotation replacement="account_name">accountNamePlaceholder</annotation> hesabından kaldırmak üzeresiniz. Yeniden etkinleştirene kadar bu varlıkla işlem yapamayacaksınız.</string>
+    <string name="to_remove_the_balance"><annotation replacement="asset_name">assetNamePlaceholder</annotation> varlığını kaldırmak için bakiyenin 0 olması gerekir. Lütfen bakiyeyi başka bir hesaba transfer edin ve tekrar deneyin.</string>
+    <string name="you_are_about_to_receive_description"><annotation replacement="account_name">1accountNamePlaceholder</annotation> hesabına bir varlık almak üzeresiniz. Bu varlığı almak için bu hesaba eklemek ister misiniz?</string>
+    <string name="invalid_input_transaction_request">Geçersiz Giriş: İşlem isteği 16\'dan fazla işlemi içeriyor</string>
+    <string name="selected_account">Seçili hesap</string>
+    <string name="your_nft_transfer_has_failed">NFT transferiniz başarısız oldu!</string>
+    <string name="please_verify_that_you_have">NFT\'nizi transfer etmek için gereken işlem ücretlerini karşılamak üzere yeterli Algo\'nuzun bulunduğunu doğrulayın ve tekrar deneyin.</string>
+    <string name="please_try_again">Lütfen tekrar deneyin.</string>
+    <string name="retry">Yeniden Dene</string>
+    <string name="opt_out">Katılımdan Çık</string>
+    <string name="opt_out_from">\"%1$s\" öğesi katılımından çıkıldı</string>
+    <string name="you_are_about_to_opt_out">%1$s ile bu NFT katılımından çıkmak üzeresiniz. Tekrar katılım sağlayana kadar bu varlıkla işlem yapamayacaksınız.</string>
+    <string name="nft_successfully_opted_out">%1$s NFT katılımından başarıyla çıkıldı</string>
+    <string name="opted_in_to">Katılım sağlanan:</string>
+    <string name="show_on">Göster</string>
+    <string name="you_are_about_to_remove_watch_account">İzleme hesabını kaldırmak üzeresiniz. Devam etmek istediğinizden emin misiniz?</string>
+    <string name="you_are_about_to_remove_main_account">Ana hesabınızı kaldırmak üzeresiniz. Devam etmek istediğinizden emin misiniz?</string>
+    <string name="this_watch_account_has_opted">Bu izleme hesabı, bu NFT\'ye katılım sağlamış ancak söz konusu NFT\'ye sahip değil.</string>
+    <string name="display_opted_in_nfts">Katılım sağlanan NFT\'leri göster</string>
+    <string name="you_can_show_hide">Katılım sağlanan ancak sahip olunmayan NFT\'leri gösterebilir/gizleyebilirsiniz</string>
+    <string name="filter">Filtrele</string>
+    <string name="show_filtered_nfts_formatted">Filtrelenmiş NFT\'leri Göster (%1$d)</string>
+    <string name="search_your_nfts">NFT\'lerinizi arayın</string>
+    <string name="enter_your_old">6 haneli eski PIN\'inizi girin</string>
+    <string name="ledger_info_power_first_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">Ledger\'ınızın Bluetooth özelliğinin kullanımı için lütfen Ledger\'ın resmi <annotation type="bold"><annotation type="color">Bluetooth Bağlantısı Kılavuzu</annotation></annotation>\'na başvurun.</annotation></string>
+    <string name="ledger_info_power_second_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">Daha kapsamlı sorun giderme için lütfen Ledger\'ın resmi <annotation type="bold"><annotation type="color">Bluetooth Sorun Giderme Kılavuzu</annotation></annotation>\'na başvurun.</annotation></string>
+    <string name="ledger_info_ledger_first_paragraph"><annotation url="https://www.ledger.com/start">Ledger\'ın kapsamlı <annotation type="bold"><annotation type="color">Kullanmaya Başlama</annotation></annotation> öğreticisini izleyerek başlayın.</annotation></string>
+    <string name="no_nft_found">NFT Bulunamadı</string>
+    <string name="tap_thumbnail_to_view_in">3D modunda görüntülemek için küçük resme dokunun</string>
+    <string name="welcome_to_pera_wallet_your_watch">Pera Wallet\'a hoş geldiniz! İzleme Hesabınız başarıyla eklendi.</string>
+    <string name="congratulations_your_watch_account_has">Tebrikler, İzleme Hesabınız başarıyla eklendi.</string>
+    <string name="passphrase_verified">Parola Doğrulandı</string>
+    <string name="keep_this_recovery">Bu kurtarma parolasını yalnızca sizin ulaşabileceğiniz güvenli bir yerde saklayın. Bu kurtarma parolasını kaybetmeyin.</string>
+    <string name="tap_the_media_to_view_in">3D modunda görüntülemek için medyaya dokunun</string>
+    <string name="search_your_assets">Varlıklarınızı arayın</string>
+    <string name="search">Ara</string>
+    <string name="wrong_pin">Hatalı PIN</string>
+    <string name="pin_does_not">PIN, önceki PIN ile eşleşmiyor.</string>
+    <string name="no_transactions">İşlem yok</string>
+    <string name="there_are_no">Seçili dönem için gösterilecek hiçbir işlem bulunmuyor</string>
+    <string name="filter_by_date">Tarihe Göre Filtrele</string>
+    <string name="asset_history_not_available">Varlık geçmişi mevcut değil</string>
+    <string name="the_history_for_this_spesific">Bu belirli varlığın geçmişi mevcut değil.</string>
+    <string name="your_account_needs_to_be">NFT\'yi almadan önce, hesabınızın söz konusu NFT\'ye katılım sağlaması gerekmektedir. Onaylarken Varlık Kimliğini kontrol ettiğinizden emin olun.</string>
+    <string name="you_can_search_the_nft">Adını veya Varlık Kimliğini aşağıdaki arama çubuğuna yapıştırarak katılım sağlamak istediğiniz NFT\'yi arayabilirsiniz.</string>
+    <string name="select_the_wallet_account">Almak istediğiniz cüzdan hesabını seçin:</string>
 </resources>

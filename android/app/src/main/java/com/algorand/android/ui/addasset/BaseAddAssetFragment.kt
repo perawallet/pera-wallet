@@ -155,6 +155,7 @@ abstract class BaseAddAssetFragment(@LayoutRes layoutResId: Int) : TransactionBa
         screenStateView.isVisible = loadStatePreview.isScreenStateViewVisible
         assetsRecyclerView.isVisible = loadStatePreview.isAssetListVisible
         loadStatePreview.screenStateViewType?.let { screenStateView.setupUi(it) }
+        loadStatePreview.onRetryEvent?.consume()?.run { assetSearchAdapter.retry() }
     }
 
     private fun initSavedStateListener() {

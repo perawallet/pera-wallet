@@ -10,7 +10,7 @@
  * limitations under the License
  */
 
-package com.algorand.android.ui.settings
+package com.algorand.android.ui.settings.security
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -24,7 +24,9 @@ import com.algorand.android.databinding.FragmentSecurityBinding
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.ui.lock.ChangePasscodeVerificationBottomSheet.Companion.CHANGE_PASSCODE_VERIFICATION_RESULT_KEY
+import com.algorand.android.ui.lock.DisableBiometricAuthVerificationBottomSheet.Companion.DISABLE_BIOMETRIC_AUTH_VERIFICATION_RESULT_KEY
 import com.algorand.android.ui.lock.DisablePasscodeVerificationBottomSheet.Companion.DISABLE_VERIFICATION_RESULT_KEY
+import com.algorand.android.ui.settings.ChangePasswordFragment
 import com.algorand.android.utils.isBiometricAvailable
 import com.algorand.android.utils.showBiometricAuthentication
 import com.algorand.android.utils.startSavedStateListener
@@ -86,18 +88,23 @@ class SecurityFragment : DaggerBaseFragment(R.layout.fragment_security) {
     @SuppressLint("ClickableViewAccessibility")
     private fun initSwitchChangeListeners() {
         with(binding) {
-            biometricSwitch.setOnClickListener {
-                if (!biometricSwitch.isChecked) {
-                    updateSwitchMaterialState(biometricSwitch.isChecked)
-                    return@setOnClickListener
-                }
-                checkBiometricAuthentication()
+            biometricSwitch.setOnTouchListener { _, _ ->
+                onEnableBiometricCodeTouch()
+                true
             }
 
             pinCodeSwitch.setOnTouchListener { _, _ ->
                 onEnablePinCodeTouch()
                 true
             }
+        }
+    }
+
+    private fun onEnableBiometricCodeTouch() {
+        if (securityViewModel.isBiometricAuthEnabled()) {
+            nav(SecurityFragmentDirections.actionSecurityFragmentToDisableBiometricAuthVerificationBottomSheet())
+        } else {
+            checkBiometricAuthentication()
         }
     }
 
@@ -120,6 +127,9 @@ class SecurityFragment : DaggerBaseFragment(R.layout.fragment_security) {
             useSavedStateValue<Boolean>(DISABLE_VERIFICATION_RESULT_KEY) { isPasscodeVerified ->
                 handleDisablePasscodeVerificationResult(isPasscodeVerified)
             }
+            useSavedStateValue<Boolean>(DISABLE_BIOMETRIC_AUTH_VERIFICATION_RESULT_KEY) { isPasscodeVerified ->
+                handleDisableBiometricAuthVerificationResult(isPasscodeVerified)
+            }
         }
     }
 
@@ -132,6 +142,13 @@ class SecurityFragment : DaggerBaseFragment(R.layout.fragment_security) {
 
     private fun handleChangePasscodeVerificationResult(isPasscodeVerified: Boolean) {
         if (isPasscodeVerified) navToSetChangePasscodeFragment()
+    }
+
+    private fun handleDisableBiometricAuthVerificationResult(isPasscodeVerified: Boolean) {
+        if (isPasscodeVerified) {
+            securityViewModel.setBiometricRegistrationPreference(false)
+            securityViewModel.updateBiometricEnabledFlow(false)
+        }
     }
 
     private fun checkBiometricAuthentication() {

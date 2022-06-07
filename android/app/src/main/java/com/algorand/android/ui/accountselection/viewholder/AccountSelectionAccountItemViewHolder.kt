@@ -61,6 +61,6 @@ class AccountSelectionAccountItemViewHolder(
             return AccountSelectionAccountItemViewHolder(binding)
         }
 
-        private val COMMA_WITH_SPACE = ", "
+        private const val COMMA_WITH_SPACE = ", "
     }
 }

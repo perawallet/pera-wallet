@@ -39,13 +39,8 @@ abstract class BaseRemoveCollectibleItemViewHolder(
                 subTextView.text = shortName
                 verifiedImageView.isVisible = isVerified
                 assetBalanceTextView.text = formattedCompactAmount
-                // TODO: 2.03.2022 Move these logics into domain layer
-                assetBalanceInCurrencyTextView.text =
-                    if (isAmountInSelectedCurrencyVisible) {
-                        formattedSelectedCurrencyCompactValue
-                    } else {
-                        root.resources.getString(notAvailableResId)
-                    }
+                assetBalanceInCurrencyTextView.isVisible = isAmountInSelectedCurrencyVisible
+                assetBalanceInCurrencyTextView.text = formattedSelectedCurrencyCompactValue
                 bindImage(collectibleImageView, baseRemoveAssetItem)
             }
         }

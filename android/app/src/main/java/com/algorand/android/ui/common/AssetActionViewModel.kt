@@ -17,6 +17,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.models.AssetInformation
+import com.algorand.android.usecase.GetFormattedTransactionFeeAmountUseCase
 import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.DataResource
@@ -27,7 +28,8 @@ import kotlinx.coroutines.launch
 
 class AssetActionViewModel @ViewModelInject constructor(
     private val accountCacheManager: AccountCacheManager,
-    private val assetDetailUseCase: SimpleAssetDetailUseCase
+    private val assetDetailUseCase: SimpleAssetDetailUseCase,
+    private val getFormattedTransactionFeeAmountUseCase: GetFormattedTransactionFeeAmountUseCase
 ) : BaseViewModel() {
 
     val assetInformationLiveData = MutableLiveData<Resource<AssetInformation>>()
@@ -55,5 +57,9 @@ class AssetActionViewModel @ViewModelInject constructor(
 
     fun getAssetDescription(assetId: Long): AssetInformation? {
         return accountCacheManager.getAssetDescription(assetId)?.convertToAssetInformation()
+    }
+
+    fun getTransactionFee(): String {
+        return getFormattedTransactionFeeAmountUseCase.getTransactionFee()
     }
 }

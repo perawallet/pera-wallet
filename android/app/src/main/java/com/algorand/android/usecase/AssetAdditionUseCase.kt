@@ -13,12 +13,14 @@
 package com.algorand.android.usecase
 
 import androidx.paging.CombinedLoadStates
+import androidx.paging.LoadState
 import com.algorand.android.mapper.AssetAdditionLoadStatePreviewMapper
 import com.algorand.android.mapper.AssetHoldingsMapper
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.ui.AssetAdditionLoadStatePreview
 import com.algorand.android.ui.addasset.AssetAdditionType
 import com.algorand.android.utils.CacheResult
+import com.algorand.android.utils.Event
 import javax.inject.Inject
 
 class AssetAdditionUseCase @Inject constructor(
@@ -43,8 +45,12 @@ class AssetAdditionUseCase @Inject constructor(
         return assetAdditionLoadStatePreviewMapper.mapToAssetAdditionLoadStatePreview(
             combinedLoadStates = combinedLoadStates,
             itemCount = itemCount,
-            isLastStateError = isLastStateError,
-            assetAdditionType = assetAdditionType
+            assetAdditionType = assetAdditionType,
+            isAssetListVisible = (combinedLoadStates.refresh is LoadState.Error).not() &&
+                (isLastStateError && combinedLoadStates.refresh is LoadState.Loading).not(),
+            isLoading = (combinedLoadStates.refresh is LoadState.Loading) ||
+                (combinedLoadStates.append is LoadState.Loading),
+            onRetryEvent = if (combinedLoadStates.refresh is LoadState.Error) Event(Unit) else null
         )
     }
 }

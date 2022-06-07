@@ -169,7 +169,7 @@
     <string name="last_week">Last Week</string>
     <string name="last_month">Last Month</string>
     <string name="custom_range">Custom Range</string>
-    <string name="press_and_hold">Press and hold to Copy to Clipboard</string>
+    <string name="press_and_hold">Press and hold to copy address</string>
     <string name="something_went_wrong">Something went wrong</string>
     <string name="sorry_something_went">Sorry, something went wrong there.</string>
     <string name="try_again">Try Again</string>
@@ -688,7 +688,7 @@
     <string name="you_are_about_to_remove_watch_account">You are about to remove a watch account. Are you sure you want to proceed with this choice?</string>
     <string name="you_are_about_to_remove_main_account">You are about to remove your main account, are you sure you want to proceed with this choice?</string>
     <string name="this_watch_account_has_opted">This watch account has opted in for this NFT, however doesn\'t own it.</string>
-    <string name="you_are_not_the_owner">You are not the owner of this NFT yet, however you opted in for it. You can now transfer it to your wallet.</string>
+    <string name="you_are_not_the_owner">You are not the owner of this NFT yet, however you opted in for it. You can now transfer it to your account.</string>
     <string name="display_opted_in_nfts">Display opted-in NFTs</string>
     <string name="you_can_show_hide">You can show/hide NFTs that are opted-in but not owned</string>
     <string name="filter">Filter</string>
@@ -717,4 +717,7 @@
     <string name="your_account_needs_to_be">Your account needs to be opt in to the NFT before you can receive it. Make sure to check the Asset ID while confirming.</string>
     <string name="you_can_search_the_nft">You can search the NFT you want to opt in to by pasting its name or Asset ID in the search bar below.</string>
     <string name="select_the_wallet_account">Select the wallet account you would like to receive to:</string>
+    <string name="enter_your_six_digit_pin">Enter your\n6-digit PIN</string>
+    <string name="refused_ledger_transaction">Refused Ledger Transaction</string>
+    <string name="the_opt_out_request_has">The opt-out request has been rejected on the Ledger device. Please try again.</string>
 </resources>

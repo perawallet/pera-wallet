@@ -21,5 +21,6 @@ data class CollectiblesListingPreview(
     val isClearFilterButtonVisible: Boolean,
     val displayedCollectibleCount: Int,
     val filteredCollectibleCount: Int,
-    val baseCollectibleListItems: List<BaseCollectibleListItem>
+    val baseCollectibleListItems: List<BaseCollectibleListItem>,
+    val isAccountFabVisible: Boolean
 )

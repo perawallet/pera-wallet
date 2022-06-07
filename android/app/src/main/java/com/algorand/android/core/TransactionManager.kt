@@ -95,12 +95,7 @@ class TransactionManager @Inject constructor(
                     postResult(TransactionManagerResult.Error.Defined(AnnotatedString(errorMessageId), titleResId))
                 }
                 is LedgerBleResult.OperationCancelledResult -> {
-                    postResult(
-                        TransactionManagerResult.Error.Defined(
-                            AnnotatedString(R.string.error_cancelled_message),
-                            R.string.error_cancelled_title
-                        )
-                    )
+                    postResult(TransactionManagerResult.LedgerOperationCanceled)
                 }
                 is LedgerBleResult.OnMissingBytes -> {
                     postResult(

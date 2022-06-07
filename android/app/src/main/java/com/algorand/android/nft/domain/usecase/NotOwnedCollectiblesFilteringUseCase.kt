@@ -50,9 +50,9 @@ class NotOwnedCollectiblesFilteringUseCase @Inject constructor(
         )
     }
 
-    fun isFilterActive() = getShowNotOwnedCollectiblesPreference() != FILTER_NOT_OWNED_COLLECTIBLES_DEFAULT_VALUE
+    fun isFilterActive() = getShowNotOwnedCollectiblesPreference() == FILTER_NOT_OWNED_COLLECTIBLES_DEFAULT_VALUE
 
     companion object {
-        private const val FILTER_NOT_OWNED_COLLECTIBLES_DEFAULT_VALUE = false
+        private const val FILTER_NOT_OWNED_COLLECTIBLES_DEFAULT_VALUE = true
     }
 }

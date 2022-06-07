@@ -29,15 +29,16 @@ private const val ALGO_REWARD_AMOUNT_FORMAT = "#,##0.000000"
 private const val ALGO_DISPLAY_AMOUNT_DECIMAL = 2
 
 fun BigDecimal.formatAsCurrency(symbol: String, isCompact: Boolean = false): String {
-    return StringBuilder(symbol).append(formatAsTwoDecimals(isCompact)).toString()
+    val formattedString = if (isCompact) formatCompactNumber(this) else formatAsTwoDecimals()
+    return StringBuilder(symbol).append(formattedString).toString()
 }
 
 fun BigInteger.toAlgoDisplayValue(): BigDecimal {
     return toBigDecimal().movePointLeft(ALGO_DECIMALS)
 }
 
-fun BigDecimal.formatAsTwoDecimals(isCompact: Boolean = false): String {
-    return getNumberFormat(this, TWO_DECIMALS, isCompact = isCompact).format(this)
+fun BigDecimal.formatAsTwoDecimals(): String {
+    return getNumberFormat(TWO_DECIMALS).format(this)
 }
 
 fun Long?.formatAsAlgoString(): String {
@@ -73,5 +74,5 @@ fun Long?.formatAsAlgoRewardString(): String {
 fun BigDecimal?.formatAsAlgoRewardString(): String {
     return DecimalFormat(ALGO_REWARD_AMOUNT_FORMAT, DecimalFormatSymbols()).format(
         (this ?: BigDecimal.ZERO).setScale(ALGO_DECIMALS, RoundingMode.FLOOR)
-    )
+    ).formatAsAlgoAmount()
 }

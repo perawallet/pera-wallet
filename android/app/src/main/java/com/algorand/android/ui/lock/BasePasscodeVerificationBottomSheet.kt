@@ -19,6 +19,7 @@ import androidx.fragment.app.viewModels
 import com.algorand.android.R
 import com.algorand.android.core.BaseBottomSheet
 import com.algorand.android.customviews.DialPadView
+import com.algorand.android.customviews.SixDigitPasswordView
 import com.algorand.android.databinding.BottomSheetViewPassphraseLockBinding
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.ui.accounts.ViewPassphraseLockViewModel
@@ -35,23 +36,19 @@ abstract class BasePasscodeVerificationBottomSheet :
 
     private val viewPassphraseLockViewModel: ViewPassphraseLockViewModel by viewModels()
 
+    private val pinCodeListener = object : SixDigitPasswordView.Listener {
+        override fun onPinCodeCompleted(pinCode: String) {
+            if (viewPassphraseLockViewModel.getPassword() == pinCode) {
+                onPasscodeSuccess()
+            } else {
+                onPasscodeError()
+            }
+        }
+    }
+
     private val dialPadListener = object : DialPadView.DialPadListener {
         override fun onNumberClick(number: Int) {
-            binding.viewPassphraseLockSixDigitPasswordView.onNewDigit(
-                number,
-                onNewDigitAdded = { isNewDigitAdded, isPasswordFilled ->
-                    if (!isNewDigitAdded) {
-                        return@onNewDigit
-                    }
-                    if (isPasswordFilled) {
-                        val givenPassword = binding.viewPassphraseLockSixDigitPasswordView.getPassword()
-                        if (viewPassphraseLockViewModel.getPassword() == givenPassword) {
-                            onPasscodeSuccess()
-                        } else {
-                            onPasscodeError()
-                        }
-                    }
-                })
+            binding.viewPassphraseLockSixDigitPasswordView.onNewDigit(number)
         }
 
         override fun onBackspaceClick() {
@@ -62,7 +59,10 @@ abstract class BasePasscodeVerificationBottomSheet :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         configureToolbar()
-        binding.viewPassphraseLockDialPadView.setDialPadListener(dialPadListener)
+        with(binding) {
+            viewPassphraseLockDialPadView.setDialPadListener(dialPadListener)
+            viewPassphraseLockSixDigitPasswordView.setListener(pinCodeListener)
+        }
     }
 
     private fun configureToolbar() {

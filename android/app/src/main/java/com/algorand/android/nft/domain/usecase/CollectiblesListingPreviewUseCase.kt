@@ -63,7 +63,8 @@ class CollectiblesListingPreviewUseCase @Inject constructor(
                     isFilterActive = collectibleListData.isFilterActive,
                     displayedCollectibleCount = collectibleListData.displayedCollectibleCount,
                     filteredCollectibleCount = collectibleListData.filteredOutCollectibleCount,
-                    isClearFilterButtonVisible = isAllCollectiblesFilteredOut
+                    isClearFilterButtonVisible = isAllCollectiblesFilteredOut,
+                    isAccountFabVisible = false
                 )
             } else {
                 collectibleListingItemMapper.mapToPreviewItem(
@@ -75,7 +76,8 @@ class CollectiblesListingPreviewUseCase @Inject constructor(
                     isFilterActive = false,
                     displayedCollectibleCount = 0,
                     filteredCollectibleCount = 0,
-                    isClearFilterButtonVisible = false
+                    isClearFilterButtonVisible = false,
+                    isAccountFabVisible = false
                 )
             }
         }

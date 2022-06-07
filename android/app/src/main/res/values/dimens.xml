@@ -120,4 +120,9 @@
     <!-- Divider -->
     <dimen name="divider_height">1dp</dimen>
     <dimen name="custom_date_range_divider_height">2dp</dimen>
+
+    <dimen name="safe_padding_for_floating_action_button">76dp</dimen>
+
+    <!-- Tooltip -->
+    <dimen name="tooltip_background_corner_radius">12dp</dimen>
 </resources>

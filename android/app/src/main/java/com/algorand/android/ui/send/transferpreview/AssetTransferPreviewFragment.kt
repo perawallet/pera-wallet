@@ -37,6 +37,7 @@ import com.algorand.android.utils.extensions.setTextAndVisibility
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.formatAsCurrency
 import com.algorand.android.utils.toAlgoDisplayValue
+import com.algorand.android.utils.toShortenedAddress
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.math.BigDecimal
@@ -161,7 +162,7 @@ class AssetTransferPreviewFragment : BaseFragment(R.layout.fragment_transfer_ass
             when {
                 targetUser.contact != null -> toUserView.setContact(targetUser.contact)
                 targetUser.account != null -> toUserView.setAccount(targetUser.account)
-                else -> toUserView.setAddress(targetUser.publicKey)
+                else -> toUserView.setAddress(targetUser.publicKey.toShortenedAddress(), targetUser.publicKey)
             }
         }
     }

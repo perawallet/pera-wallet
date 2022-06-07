@@ -19,6 +19,7 @@
     <string name="plus">+</string>
     <string name="minus">-</string>
     <string name="ticker_asset_format">(%1$s)</string>
+    <string name="pair_value_format_packed">%1$s%2$s</string>
     <string name="pair_value_format">%1$s %2$s</string>
     <string name="pair_value_format_with_coma">%1$s, %2$d</string>
     <string name="algo">Algo</string>

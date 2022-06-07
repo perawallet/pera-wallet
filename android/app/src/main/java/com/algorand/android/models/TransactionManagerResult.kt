@@ -51,7 +51,11 @@ sealed class TransactionManagerResult {
         data class MinBalanceError(val neededBalance: BigInteger) : Error(titleResId = R.string.min_transaction_error)
     }
 
+    object LedgerOperationCanceled : TransactionManagerResult()
+
     object Loading : TransactionManagerResult()
+
     data class LedgerWaitingForApproval(val bluetoothName: String?) : TransactionManagerResult()
+
     object LedgerScanFailed : TransactionManagerResult()
 }

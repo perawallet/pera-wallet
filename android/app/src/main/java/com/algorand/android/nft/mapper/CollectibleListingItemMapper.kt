@@ -99,7 +99,8 @@ class CollectibleListingItemMapper @Inject constructor(
         displayedCollectibleCount: Int,
         filteredCollectibleCount: Int,
         isClearFilterButtonVisible: Boolean,
-        itemList: List<BaseCollectibleListItem>
+        itemList: List<BaseCollectibleListItem>,
+        isAccountFabVisible: Boolean
     ): CollectiblesListingPreview {
         return CollectiblesListingPreview(
             isLoadingVisible = isLoadingVisible,
@@ -110,7 +111,8 @@ class CollectibleListingItemMapper @Inject constructor(
             isFilterActive = isFilterActive,
             isClearFilterButtonVisible = isClearFilterButtonVisible,
             displayedCollectibleCount = displayedCollectibleCount,
-            filteredCollectibleCount = filteredCollectibleCount
+            filteredCollectibleCount = filteredCollectibleCount,
+            isAccountFabVisible = isAccountFabVisible
         )
     }
 

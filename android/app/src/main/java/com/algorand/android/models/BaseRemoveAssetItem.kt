@@ -12,7 +12,6 @@
 
 package com.algorand.android.models
 
-import androidx.annotation.StringRes
 import com.algorand.android.utils.AssetName
 import java.math.BigInteger
 
@@ -41,7 +40,6 @@ sealed class BaseRemoveAssetItem : RecyclerListItem {
     abstract val formattedSelectedCurrencyCompactValue: String
     abstract val isAmountInSelectedCurrencyVisible: Boolean
     abstract val itemType: ItemType
-    abstract val notAvailableResId: Int
 
     override fun areItemsTheSame(other: RecyclerListItem): Boolean {
         return other is BaseRemoveAssetItem && id == other.id
@@ -68,9 +66,7 @@ sealed class BaseRemoveAssetItem : RecyclerListItem {
         override val formattedCompactAmount: String,
         override val formattedSelectedCurrencyValue: String,
         override val formattedSelectedCurrencyCompactValue: String,
-        override val isAmountInSelectedCurrencyVisible: Boolean,
-        @StringRes
-        override val notAvailableResId: Int
+        override val isAmountInSelectedCurrencyVisible: Boolean
     ) : BaseRemoveAssetItem() {
         override val itemType = ItemType.REMOVE_ASSET_ITEM
     }
@@ -92,8 +88,6 @@ sealed class BaseRemoveAssetItem : RecyclerListItem {
             override val formattedSelectedCurrencyValue: String,
             override val formattedSelectedCurrencyCompactValue: String,
             override val isAmountInSelectedCurrencyVisible: Boolean,
-            @StringRes
-            override val notAvailableResId: Int,
             val prismUrl: String?,
         ) : BaseRemoveCollectibleItem() {
             override val itemType = ItemType.REMOVE_COLLECTIBLE_IMAGE_ITEM
@@ -114,8 +108,6 @@ sealed class BaseRemoveAssetItem : RecyclerListItem {
             override val formattedSelectedCurrencyValue: String,
             override val formattedSelectedCurrencyCompactValue: String,
             override val isAmountInSelectedCurrencyVisible: Boolean,
-            @StringRes
-            override val notAvailableResId: Int,
             val prismUrl: String?,
         ) : BaseRemoveCollectibleItem() {
             override val itemType = ItemType.REMOVE_COLLECTIBLE_VIDEO_ITEM
@@ -136,8 +128,6 @@ sealed class BaseRemoveAssetItem : RecyclerListItem {
             override val formattedSelectedCurrencyValue: String,
             override val formattedSelectedCurrencyCompactValue: String,
             override val isAmountInSelectedCurrencyVisible: Boolean,
-            @StringRes
-            override val notAvailableResId: Int,
             val prismUrl: String?,
         ) : BaseRemoveCollectibleItem() {
             override val itemType = ItemType.REMOVE_COLLECTIBLE_MIXED_ITEM
@@ -157,9 +147,7 @@ sealed class BaseRemoveAssetItem : RecyclerListItem {
             override val formattedCompactAmount: String,
             override val formattedSelectedCurrencyValue: String,
             override val formattedSelectedCurrencyCompactValue: String,
-            override val isAmountInSelectedCurrencyVisible: Boolean,
-            @StringRes
-            override val notAvailableResId: Int
+            override val isAmountInSelectedCurrencyVisible: Boolean
         ) : BaseRemoveCollectibleItem() {
             override val itemType = ItemType.REMOVE_COLLECTIBLE_NOT_SUPPORTED_ITEM
         }

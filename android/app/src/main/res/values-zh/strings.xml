@@ -113,9 +113,6 @@
     <string name="connecting_to_ledger">正在连接Ledger…</string>
     <string name="ledger_approval">Ledger批准</string>
     <string name="please_make_sure">请在Ledger设备上确认交易</string>
-    <string name="ledger_info_power_first_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">关于Ledger蓝牙功能的一般使用，请查阅Ledger的官方 <annotation type="bold"><annotation type="color">蓝牙连接指南</annotation></annotation></annotation></string>
-    <string name="ledger_info_power_second_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">关于更多高级故障排除功能，请查阅Ledger的官方 <annotation type="bold"><annotation type="color">蓝牙故障排除指南。</annotation></annotation></annotation></string>
-    <string name="ledger_info_ledger_first_paragraph"><annotation url="https://www.ledger.com/start">遵循Ledger的完整<annotation type="bold"><annotation type="color">开始使用</annotation></annotation>教程。</annotation></string>
     <string name="ledger_info_ledger_second_paragraph">当教程指导您“选择想在设备上安装的应用”，请在搜索栏上输入Algorand，并进行安装。</string>
     <string name="ledger_info_algorand_first_paragraph"><annotation url="https://www.ledger.com/start">继续学习Ledger的 <annotation type="bold"><annotation type="color">入门</annotation></annotation>教程，了解如何在您的Ledger设备上安装和打开APP。</annotation></string>
     <string name="ledger_info_algorand_second_paragraph">若您尚未在Ledger设备上安装<annotation type="bold">Algorand</annotation> 应用，当教程指导您“选择想在设备上安装的应用”，请在搜索栏上输入Algorand，并进行安装。</string>
@@ -162,7 +159,6 @@
     <string name="last_week">上周</string>
     <string name="last_month">上个月</string>
     <string name="custom_range">自定义范围</string>
-    <string name="press_and_hold">长按复制到剪贴板</string>
     <string name="something_went_wrong">出错了</string>
     <string name="sorry_something_went">抱歉，出错了。</string>
     <string name="try_again">请再次尝试</string>
@@ -188,12 +184,7 @@
     <string name="finalize_rekeying">最终确认密钥更新</string>
     <string name="new_ledger">新的Ledger</string>
     <string name="old_ledger">旧的Ledger</string>
-    <string name="the_account_name">账户<annotation font="dmsans_bold">\"<annotation replacement="account_name"> </annotation>\"</annotation>密钥成功更新。</string>
     <string name="just_now">刚刚</string>
-    <string name="asset_support_success"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> 已添加<annotation replacement="asset">assetPlaceholder</annotation> 到他们的账户上。您可以给他们发送 <annotation replacement="asset">assetPlaceholder</annotation>。</string>
-    <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>试图向您发送<annotation replacement="asset">assetPlaceholder</annotation>，但并不受到您的支持。点此此处将该资产添加到您的账户中。</string>
-    <string name="transaction_send_successful">您从 <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> 发送至 <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>的交易 <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> 已经完成。</string>
-    <string name="transaction_send_failed">您从 <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> 发送至 <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>的交易 <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation>  没有成功。</string>
     <string name="transaction_received">已收到交易</string>
     <string name="too_many_pin_attempts">密码输入次数过于频繁</string>
     <string name="this_ledger_device">该Ledger设备可为下列账户签署交易。请选择要添加到您Pera钱包的账户。</string>
@@ -273,8 +264,6 @@
     <string name="paste_full_passphrase">粘贴完整的助记词</string>
     <string name="verify_recovery_passphrase">验证恢复助记词备份</string>
     <string name="transacting_tips">交易技巧</string>
-    <string name="the_only_way_to">恢复Algorand账户的唯一途径是使用恢复助记词。<annotation font="dmsans_italic"><annotation custom="warning_color"><annotation type="bold">警告</annotation>：请勿与任何人分享恢复助记词，因为助记词拥有完整的账户访问权限。</annotation></annotation></string>
-    <string name="monitor_activity_of">无需恢复助记词也可监控账户活动。这对有助于监控冷存储中的资产。<annotation font="dmsans_italic"><annotation custom="warning_color"><annotation type="bold">警告：</annotation>若您没有相应的恢复助记词，请勿向该账户发送资产。</annotation></annotation></string>
     <string name="i_want_to_monitor">监控冷储存中的账户。</string>
     <string name="name_your_account_to">在使用Pera钱包时，请为账户取一个容易识别的名称。将名称储存在本地，仅个人可见。</string>
     <string name="learn_more">了解更多</string>
@@ -331,7 +320,6 @@
     <string name="this_transaction_is_sending">此交易将发送您的全部ALGO余额。</string>
     <string name="close_asset_to">资产抄送至</string>
     <string name="this_transaction_is_sending_asset">此交易将发送您的全部%1$s余额，并将从您的账户中扣除%1$s。</string>
-    <string name="this_transaction_fee_is_higher">此交易费用高于平时的 0.001 ALGO。</string>
     <string name="wallet_connect_is_not_reachable">目前无法访问 WalletConnect，请稍后再试。</string>
     <string name="connected_with_formatted">与%1$s连接</string>
     <string name="this_transaction_will_be">此交易将在未来提交。</string>
@@ -368,7 +356,6 @@
     <string name="signing_error_transaction_in_request">签名错误：在交易请求中，交易要求连接的钱包没有私钥（签名者）。</string>
     <string name="transaction_request_contains_unsupported">该交易请求包含一个不支持的交易类型</string>
     <string name="transaction_request_contains_unsupported_multisig">交易请求包含一个不支持的交易类型:多重签名</string>
-    <string name="invalid_input_transaction_request">无效输入：该交易请求包含超过%1$d个交易</string>
     <string name="invalid_input_unable_to_parse">无效输入：无法解析交易</string>
     <string name="invalid_input_invalid_public_key">无效输入：无效公钥</string>
     <string name="invalid_input_invalid_asset">无效输入：无效资产</string>
@@ -524,6 +511,7 @@
     <string name="show_note">显示更多</string>
     <string name="create_a_passphrase_backup">为账户创建助记词备份</string>
     <string name="creating_a_passphrase_backup">创建助记词备份能够帮助您恢复账号。若无助记词，在设备丢失或删除APP后，您会永久无法访问您的Algorand账户。</string>
+    <string name="congratulations_your_account">恭喜，您可以开始使用账户了。</string>
     <string name="welcome_to_pera_your_account">欢迎使用Pera钱包！您的账户已准备就绪。</string>
     <string name="loading">正在加载</string>
     <string name="algorand_wallet_is_now">这是官方信息！Algorand钱包现在更名为Pera钱包。</string>
@@ -534,6 +522,7 @@
     <string name="sorry_we_cant_show_account">抱歉，我们无法显示该账户的详细信息。我们似乎遇到了计算方面的问题。\n\n 请注意，部分资产价值可能不可用，因此，投资组合总价值应当做估值。</string>
     <string name="sorry_we_cant_show_portfolio">抱歉，我们无法显示该投资组合的详细信息。我们似乎遇到了计算方面的问题。\n\n 请注意，部分资产价值可能不可用，因此，投资组合总价值应当做估值。</string>
     <string name="transaction_request_faq">交易请求常见问题</string>
+    <string name="external_applications_also">外部应用程序，也称为dApps，可以不受Pera Wallet限制发起交易请求。请确保您在批准和签署这些交易之前有进行仔细审查。由于这些请求不在Pera Wallet的控制范围内，所以不要批准来自您不认识的dApp的交易。</string>
     <string name="notification_algo_received_message"><annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> 已发送至 <annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> ，发送人是 <annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>。</string>
     <string name="minimum_amount_required">所需最低余额</string>
     <string name="this_is_the_first_transaction">这是所选账户的首笔交易。首笔交易的最低金额要求为0.1ALGO。请输入有效金额，并再重试。</string>
@@ -594,6 +583,7 @@
     <string name="view_transaction">显示交易</string>
     <string name="show_on_algoexplorer">在Algo浏览器上显示</string>
     <string name="show_on_nftexplorer">在NFT浏览器是显示</string>
+    <string name="you_are_not_the_owner">您尚未拥有该NFT，但是您选择加入了该NFT。您现在可以将它转移到您的钱包里。</string>
     <string name="we_don_t_support">我们尚不支持该NFT媒体类型。</string>
     <string name="we_can_t_display">我们暂时无法显示视觉效果。</string>
     <string name="transfer">转账</string>
@@ -615,4 +605,58 @@
     <string name="confirm_transfer">确认转账</string>
     <string name="search_asset_id_or_nft">搜索资产ID或NFT名称</string>
     <string name="receive_an_nft">接收NFT</string>
+    <string name="the_account_name">帐户<annotation font="dmsans_bold">"<annotation replacement="account_name"> </annotation>"</annotation>已经成功更新密钥。</string>
+    <string name="asset_support_success"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>已将<annotation replacement="asset">assetPlaceholder</annotation>添加到他们的账户。您可以向他们发送<annotation replacement="asset">assetPlaceholder</annotation>。</string>
+    <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>正试图向你发送<annotation replacement="asset">assetPlaceholder</annotation>，但您并不支持该行动。点击此处将该资产添加到您的账户中。</string>
+    <string name="transaction_send_successful">您的交易的 <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation><annotation replacement="asset">assetPlaceholder</annotation>从 <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>到 <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>的交易已完成。</string>
+    <string name="transaction_send_failed">您的交易的 <annotation font="dmsans_medium"><annotation replacement="amount">amountNamePlaceholder</annotation></annotation><annotation replacement="asset">assetNamePlaceholder</annotation>从 <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>到 <annotation font="dmsans_medium"><annotation replacement="receiver">addressNamePlaceholder</annotation></annotation>的交易已经失败。</string>
+    <string name="the_only_way_to">恢复Algorand账户的唯一途径是使用恢复助记词。</string>
+    <string name="monitor_activity_of">无需恢复助记词也可监控账户活动。这对有助于监控冷存储中的资产。</string>
+    <string name="this_transaction_fee_is_higher">此交易费用高于平时的0.001 ALGO。</string>
+    <string name="you_are_about_to">您将要从<annotation replacement="account_name">accountNamePlaceholder</annotation>中移除<annotation replacement="asset_name">assetNamePlaceholder</annotation> 。除非您重新启用该资产，否则不能再进行该资产的交易。</string>
+    <string name="to_remove_the_balance">若需移除 <annotation replacement="asset_name">assetNamePlaceholder</annotation>，余额必须为0。请将余额转移到其他账户后，再做尝试。</string>
+    <string name="you_are_about_to_receive_description">您将会在<annotation replacement="account_name">accountNamePlaceholder</annotation>收到一项资产。请问您需要添加这项资产到账户上来接收它吗？</string>
+    <string name="invalid_input_transaction_request">无效输入：该交易请求包含超过%1$d个交易</string>
+    <string name="selected_account">选定的账户</string>
+    <string name="your_nft_transfer_has_failed">您的NFT转移失败了!</string>
+    <string name="please_verify_that_you_have">请确认您有足够的ALGO来支付转移NFT的交易费用，并再次尝试。</string>
+    <string name="please_try_again">请再试一次。</string>
+    <string name="retry">重试</string>
+    <string name="opt_out">选择退出</string>
+    <string name="opt_out_from">从\"%1$s \"中选择退出</string>
+    <string name="you_are_about_to_opt_out">您即将退出此NFT的%1$s。在您再次选择加入之前，您将无法与该资产进行交易。</string>
+    <string name="nft_successfully_opted_out">%1$s NFT成功选择退出</string>
+    <string name="opted_in_to">已选择加入</string>
+    <string name="show_on">显示于</string>
+    <string name="you_are_about_to_remove_watch_account">您将移除watch账户。您确定要这样做吗？</string>
+    <string name="you_are_about_to_remove_main_account">您将要移除您的主要账户，您确定要这样做吗？</string>
+    <string name="this_watch_account_has_opted">该watch账户已经选择了加入这个NFT，但并不拥有它。</string>
+    <string name="display_opted_in_nfts">显示选择加入的NFT</string>
+    <string name="you_can_show_hide">您可以显示/隐藏已选择加入但未拥有的NFT</string>
+    <string name="filter">筛选</string>
+    <string name="show_filtered_nfts_formatted">显示筛选后的NFT（%1$d）</string>
+    <string name="search_your_nfts">搜索您的NFT</string>
+    <string name="enter_your_old">输入您旧的6位数PIN码</string>
+    <string name="ledger_info_power_first_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">关于Ledger蓝牙功能的一般使用方法，请参考Ledger的官方指南。 <annotation type="bold"><annotation type="color">蓝牙连接指南。</annotation></annotation></annotation></string>
+    <string name="ledger_info_power_second_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">关于更高级的故障排除，请参考Ledger官方的 <annotation type="bold"><annotation type="color">蓝牙故障排除指南。</annotation></annotation></annotation></string>
+    <string name="ledger_info_ledger_first_paragraph"><annotation url="https://www.ledger.com/start">按照Ledger的综合<annotation type="bold"><annotation type="color">入门</annotation></annotation>教程开始使用。</annotation></string>
+    <string name="no_nft_found">未发现NFT</string>
+    <string name="tap_thumbnail_to_view_in">点击缩略图，使用3D模式查看</string>
+    <string name="welcome_to_pera_wallet_your_watch">欢迎使用Pear钱包！您已成功添加Watch账户。</string>
+    <string name="congratulations_your_watch_account_has">恭喜，您已成功添加Watch账户。</string>
+    <string name="passphrase_verified">助记词已验证</string>
+    <string name="keep_this_recovery">请将恢复助记词保存在仅您能访问的安全位置，请勿丢失恢复助记词。</string>
+    <string name="tap_the_media_to_view_in">点选媒体，使用3D模式查看</string>
+    <string name="search_your_assets">搜索您的资产</string>
+    <string name="search">搜索</string>
+    <string name="wrong_pin">错误的针脚</string>
+    <string name="pin_does_not">引脚与前一个引脚不匹配</string>
+    <string name="no_transactions">没有交易</string>
+    <string name="there_are_no">所选日期内并无交易可供显示。</string>
+    <string name="filter_by_date">按日期筛选</string>
+    <string name="asset_history_not_available">资产历史记录不可用。</string>
+    <string name="the_history_for_this_spesific">该特定资产的历史记录不可用。</string>
+    <string name="your_account_needs_to_be">您的账户需要选择加入NFT后，才能接收NFT。确认过程中，请确保您有检查资产ID。</string>
+    <string name="you_can_search_the_nft">您可以通过在下面的搜索栏中粘贴NFT名称或资产ID来搜索想选择加入的NFT。</string>
+    <string name="select_the_wallet_account">选择您想用于接收的钱包账户：</string>
 </resources>

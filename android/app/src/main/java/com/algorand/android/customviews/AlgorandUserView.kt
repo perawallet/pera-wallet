@@ -14,20 +14,23 @@
 package com.algorand.android.customviews
 
 import android.content.Context
+import android.net.Uri
+import android.os.Handler
 import android.util.AttributeSet
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import com.algorand.android.R
 import com.algorand.android.databinding.CustomUserViewBinding
 import com.algorand.android.models.AccountCacheData
 import com.algorand.android.models.AccountIcon
+import com.algorand.android.models.TooltipConfig
 import com.algorand.android.models.User
-import com.algorand.android.utils.copyToClipboard
+import com.algorand.android.utils.enableLongPressToCopyText
 import com.algorand.android.utils.extensions.changeTextAppearance
 import com.algorand.android.utils.extensions.hide
-import com.algorand.android.utils.toShortenedAddress
 import com.algorand.android.utils.viewbinding.viewBinding
 
 class AlgorandUserView @JvmOverloads constructor(
@@ -37,8 +40,9 @@ class AlgorandUserView @JvmOverloads constructor(
 
     private val binding = viewBinding(CustomUserViewBinding::inflate)
     private var onAddButtonClick: ((String) -> Unit?)? = null
+    private var tutorialShowHandler: Handler? = null
 
-    fun setContact(user: User, enableAddressCopy: Boolean = true) {
+    fun setContact(user: User, enableAddressCopy: Boolean = true, showTooltip: Boolean = false) {
         with(binding) {
             mainTextView.apply {
                 text = user.name
@@ -48,70 +52,115 @@ class AlgorandUserView @JvmOverloads constructor(
                 uri = user.imageUriAsString?.toUri(),
                 padding = R.dimen.spacing_xxsmall
             )
-            addButton.hide()
+            addContactButton.hide()
         }
-        if (enableAddressCopy) {
-            setLongPressToCopy(user.publicKey)
-        }
+        if (enableAddressCopy) enableLongPressToCopyText(user.publicKey)
+        if (showTooltip) showCopyTutorial()
     }
 
-    fun setAddress(address: String, enableAddressCopy: Boolean = true, showAddButton: Boolean = true) {
-        with(binding) {
-            mainTextView.apply {
-                text = address.toShortenedAddress()
-                changeTextAppearance(R.style.TextAppearance_Body_Mono)
-            }
-            addButton.apply {
-                setOnClickListener { onAddButtonClick?.invoke(address) }
-                isVisible = showAddButton
-            }
-            accountIconImageView.hide()
-        }
-        if (enableAddressCopy) {
-            setLongPressToCopy(address)
-        }
-    }
-
-    fun setAccount(accountCacheData: AccountCacheData?) {
-        with(binding) {
-            mainTextView.apply {
-                text = accountCacheData?.account?.name
-                changeTextAppearance(R.style.TextAppearance_Body_Sans)
-            }
-            accountCacheData?.account?.let {
-                accountIconImageView.setAccountIcon(it.createAccountIcon(), R.dimen.spacing_xxsmall)
-            }
-            addButton.hide()
-        }
-    }
-
-    fun setAccount(name: String, icon: AccountIcon?) {
+    fun setContact(
+        name: String,
+        imageUriAsString: Uri?,
+        publicKey: String,
+        enableAddressCopy: Boolean = true,
+        showTooltip: Boolean = false
+    ) {
         with(binding) {
             mainTextView.apply {
                 text = name
                 changeTextAppearance(R.style.TextAppearance_Body_Sans)
             }
-            icon?.let { accountIconImageView.setAccountIcon(it, R.dimen.spacing_xxsmall) }
-                ?: accountIconImageView.hide()
-            addButton.hide()
+            accountIconImageView.loadAccountImage(
+                uri = imageUriAsString,
+                padding = R.dimen.spacing_xxsmall
+            )
+            addContactButton.hide()
         }
+        if (enableAddressCopy) enableLongPressToCopyText(publicKey)
+        if (showTooltip) showCopyTutorial()
+    }
+
+    fun setAddress(
+        displayAddress: String,
+        publicKey: String,
+        enableAddressCopy: Boolean = true,
+        showAddButton: Boolean = true,
+        showTooltip: Boolean = false
+    ) {
+        with(binding) {
+            mainTextView.apply {
+                text = displayAddress
+                changeTextAppearance(R.style.TextAppearance_Body_Mono)
+            }
+            addContactButton.apply {
+                setOnClickListener { onAddButtonClick?.invoke(publicKey) }
+                isVisible = showAddButton
+            }
+            accountIconImageView.hide()
+        }
+        if (enableAddressCopy) enableLongPressToCopyText(publicKey)
+        if (showTooltip) showCopyTutorial()
+    }
+
+    fun setAccount(accountCacheData: AccountCacheData?, enableAddressCopy: Boolean = true) {
+        with(binding) {
+            mainTextView.apply {
+                text = accountCacheData?.account?.name
+                changeTextAppearance(R.style.TextAppearance_Body_Sans)
+            }
+            if (accountCacheData?.account != null) {
+                accountIconImageView.setAccountIcon(
+                    accountIcon = accountCacheData.account.createAccountIcon(),
+                    padding = R.dimen.spacing_xxsmall
+                )
+                if (enableAddressCopy) enableLongPressToCopyText(accountCacheData.account.address)
+            }
+            addContactButton.hide()
+        }
+    }
+
+    fun setAccount(
+        name: String,
+        icon: AccountIcon?,
+        publicKey: String,
+        enableAddressCopy: Boolean = true,
+        showTooltip: Boolean = false
+    ) {
+        with(binding) {
+            mainTextView.apply {
+                text = name
+                changeTextAppearance(R.style.TextAppearance_Body_Sans)
+            }
+            icon?.let {
+                accountIconImageView.setAccountIcon(it, R.dimen.spacing_xxsmall)
+            } ?: accountIconImageView.hide()
+            addContactButton.hide()
+            if (enableAddressCopy) enableLongPressToCopyText(publicKey)
+        }
+        if (showTooltip) showCopyTutorial()
     }
 
     fun setOnAddButtonClickListener(onAddButtonClick: (String) -> Unit) {
-        if (binding.addButton.isInvisible) return
+        if (binding.addContactButton.isInvisible) return
         this.onAddButtonClick = onAddButtonClick
     }
 
-    private fun setLongPressToCopy(address: String) {
-        binding.mainTextView.setOnLongClickListener {
-            context.copyToClipboard(address)
-            return@setOnLongClickListener true
-        }
+    private fun showCopyTutorial() {
+        tutorialShowHandler = Handler()
+        tutorialShowHandler?.postDelayed({
+            binding.mainTextView.run {
+                val margin = resources.getDimensionPixelOffset(R.dimen.spacing_xlarge)
+                val config = TooltipConfig(
+                    anchor = this,
+                    offsetX = margin,
+                    tooltipTextResId = R.string.press_and_hold
+                )
+                Tooltip(context).show(config, findViewTreeLifecycleOwner())
+            }
+        }, TUTORIAL_SHOW_DELAY)
     }
 
-    fun setContactOrAccount(contact: User?, name: String, icon: AccountIcon?) {
-        contact?.let {
-            setContact(contact)
-        } ?: icon?.let { setAccount(name, icon) }
+    companion object {
+        private const val TUTORIAL_SHOW_DELAY = 600L
     }
 }

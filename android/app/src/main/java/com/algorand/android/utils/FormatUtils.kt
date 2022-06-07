@@ -12,6 +12,10 @@
 
 package com.algorand.android.utils
 
+import com.mitsinsar.peracompactdecimalformat.PeraCompactDecimalFormatBuilder
+import com.mitsinsar.peracompactdecimalformat.utils.NumberConstants
+import com.mitsinsar.peracompactdecimalformat.utils.toPeraDecimal
+import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
@@ -35,4 +39,12 @@ fun getFormatter(
             this.negativePrefix = MINUS_SIGN
         }
     }
+}
+
+// TODO Support locale when translations are completed
+fun formatCompactNumber(number: BigDecimal): String {
+    return PeraCompactDecimalFormatBuilder.getInstance()
+        .excludeShorteningNumber(NumberConstants.THOUSAND)
+        .build()
+        .format(number.toPeraDecimal()).formattedNumberWithSuffix
 }

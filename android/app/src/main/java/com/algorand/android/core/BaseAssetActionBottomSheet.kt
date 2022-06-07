@@ -37,7 +37,7 @@ abstract class BaseAssetActionBottomSheet : BaseBottomSheet(R.layout.bottom_shee
     abstract val accountName: String
     abstract val assetId: Long
 
-    private val binding by viewBinding(BottomSheetAssetActionBinding::bind)
+    protected val binding by viewBinding(BottomSheetAssetActionBinding::bind)
     protected val assetActionViewModel: AssetActionViewModel by viewModels()
 
     protected var asset: AssetInformation? by Delegates.observable(null) { _, _, newValue ->
@@ -65,17 +65,23 @@ abstract class BaseAssetActionBottomSheet : BaseBottomSheet(R.layout.bottom_shee
     abstract fun setPositiveButton(materialButton: MaterialButton)
     abstract fun setNegativeButton(materialButton: MaterialButton)
 
+    open fun setTransactionFeeTextView(textView: TextView) {}
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initArgs()
+        initUi()
         initObservers()
         with(binding) {
             setDescriptionTextView(descriptionTextView)
             setToolbar(customToolbar)
             setPositiveButton(positiveButton)
             setNegativeButton(negativeButton)
+            setTransactionFeeTextView(transactionFeeTextView)
         }
     }
+
+    open fun initUi() {}
 
     open fun initArgs() {}
 

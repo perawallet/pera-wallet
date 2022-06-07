@@ -304,8 +304,14 @@ class AssetDetailFragment : DaggerBaseFragment(R.layout.fragment_asset_detail) {
         context?.copyToClipboard(assetId.toString(), ASSET_ID_COPY_LABEL)
     }
 
-    private fun onTransactionItemClick(transaction: BaseTransactionItem) {
-        nav(AssetDetailFragmentDirections.actionAssetDetailFragmentToTransactionDetailFragment(transaction))
+    private fun onTransactionItemClick(transaction: BaseTransactionItem.TransactionItem) {
+        nav(
+            AssetDetailFragmentDirections.actionAssetDetailFragmentToTransactionDetailFragment(
+                transactionId = transaction.id ?: return,
+                publicKey = assetDetailViewModel.getPublicKey(),
+                isRewardTransaction = transaction is BaseTransactionItem.TransactionItem.Reward
+            )
+        )
     }
 
     private fun onFilterClick() {

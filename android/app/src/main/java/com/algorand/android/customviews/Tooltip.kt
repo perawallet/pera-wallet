@@ -13,43 +13,48 @@
 package com.algorand.android.customviews
 
 import android.content.Context
+import android.graphics.Point
 import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
+import android.os.Handler
+import android.util.AttributeSet
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.PopupWindow
-import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import androidx.core.view.doOnLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import com.algorand.android.R
 import com.algorand.android.databinding.CustomTooltipBinding
+import com.algorand.android.models.TooltipConfig
 import com.algorand.android.utils.getDisplaySize
+import com.algorand.android.utils.viewbinding.viewBinding
 
 // TODO currently doesn't support RTL.
-class Tooltip(private val context: Context) {
+class Tooltip(
+    context: Context,
+    attrs: AttributeSet? = null
+) : FrameLayout(context, attrs) {
 
     private val popupWindow: PopupWindow
 
-    private var positionX: Int = 0
-    private var positionY: Int = 0
+    private lateinit var positionPoint: Point
 
     private var contentWidth: Int = 0
     private var contentHeight: Int = 0
 
-    private var screenWidth: Int = 0
-    private var screenHeight: Int = 0
+    private val screenWidth: Int
+    private val screenHeight: Int
 
-    private var binding: CustomTooltipBinding
+    private val binding = viewBinding(CustomTooltipBinding::inflate)
 
     init {
         val displaySize = context.getDisplaySize()
         screenWidth = displaySize.x
         screenHeight = displaySize.y
-        binding = CustomTooltipBinding.inflate(LayoutInflater.from(context))
         popupWindow = PopupWindow(context).apply {
             isClippingEnabled = true
             isOutsideTouchable = true
@@ -58,74 +63,67 @@ class Tooltip(private val context: Context) {
         }
     }
 
-    fun show(config: Config, lifecycleOwner: LifecycleOwner? = null) {
-        with(config) {
+    fun show(tooltipConfig: TooltipConfig, lifecycleOwner: LifecycleOwner?) {
+        with(tooltipConfig) {
             binding.tooltipTextView.setText(tooltipTextResId)
 
-            // Get location of anchor view on screen
-            val screenPos = IntArray(2)
-            anchor.getLocationOnScreen(screenPos)
-            // Get rect for anchor view
-            val anchorRect =
-                Rect(screenPos[0], screenPos[1], screenPos[0] + anchor.width, screenPos[1] + anchor.height)
-
             measureContentSize(offsetX)
+            val anchorRect = getAnchorViewRect(anchor)
+            setPositions(anchorRect, offsetX)
+            showPopupWindow(anchor, anchorRect, offsetX)
+            initTooltipArrow(anchorRect)
 
-            setPositionX(offsetX, anchorToLeft)
-            setPositionY(anchorRect)
+            if (lifecycleOwner != null) enableAutoDismiss(lifecycleOwner.lifecycle)
+        }
+    }
 
-            initTooltipArrow(anchorRect, offsetX, anchorToLeft)
+    private fun setPositions(anchorRect: Rect, offsetX: Int) {
+        positionPoint = TooltipPositionHelper
+            .getPopupDialogPositionPoint(anchorRect, offsetX, screenWidth, contentWidth, contentHeight)
+    }
 
-            popupWindow.apply {
-                width = contentWidth
-                height = contentHeight
-                showAtLocation(anchor, Gravity.NO_GRAVITY, positionX, positionY)
-            }
-
-            if (lifecycleOwner != null) {
-                enableAutoDismiss(lifecycleOwner.lifecycle)
-            }
+    private fun showPopupWindow(anchorView: View, anchorRect: Rect, offsetX: Int) {
+        popupWindow.apply {
+            width = contentWidth
+            height = contentHeight
+            showAtLocation(anchorView, Gravity.NO_GRAVITY, positionPoint.x, positionPoint.y)
         }
     }
 
     private fun measureContentSize(offsetX: Int) {
-        val widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(
-            screenWidth - (offsetX * 2),
-            View.MeasureSpec.AT_MOST
-        )
-        val heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        val widthMeasureSpec = MeasureSpec.makeMeasureSpec(screenWidth - (offsetX * 2), MeasureSpec.AT_MOST)
+        val heightMeasureSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
         binding.root.measure(widthMeasureSpec, heightMeasureSpec)
         contentWidth = binding.root.measuredWidth
         contentHeight = binding.root.measuredHeight
     }
 
-    private fun setPositionX(offsetX: Int, anchorToLeft: Boolean) {
-        positionX = if (anchorToLeft) {
-            offsetX
-        } else {
-            screenWidth - contentWidth - offsetX
-        }
+    private fun getAnchorViewRect(anchorView: View): Rect {
+        // Get location of anchor view on screen
+        val screenPos = IntArray(2)
+        anchorView.getLocationOnScreen(screenPos)
+
+        val anchorViewPositionX = screenPos[POSITION_X_INDEX]
+        val anchorViewPositionY = screenPos[POSITION_Y_INDEX]
+        // Get rect for anchor view
+        return Rect(
+            anchorViewPositionX,
+            anchorViewPositionY,
+            anchorViewPositionX + anchorView.width,
+            anchorViewPositionY + anchorView.height
+        )
     }
 
-    private fun setPositionY(anchor: Rect) {
-        positionY = anchor.bottom
-    }
-
-    private fun initTooltipArrow(anchorRect: Rect, offsetX: Int, anchorToLeft: Boolean) {
-        val offset = if (anchorToLeft) {
-            anchorRect.centerX() - offsetX - (binding.tooltipImageView.measuredWidth / 2)
-        } else {
-            screenWidth - anchorRect.centerX() - (binding.tooltipImageView.measuredWidth / 2) - offsetX
-        }
-
-        (binding.tooltipImageView.layoutParams as FrameLayout.LayoutParams).apply {
-            if (anchorToLeft) {
-                gravity = Gravity.START
-                marginStart = offset
-            } else {
-                gravity = Gravity.END
-                marginEnd = offset
-            }
+    private fun initTooltipArrow(anchorRect: Rect) {
+        val backgroundCornerRadius = resources.getDimensionPixelSize(R.dimen.tooltip_background_corner_radius)
+        binding.tooltipImageView.doOnLayout {
+            it.x = TooltipPositionHelper.getArrowTranslationX(
+                anchorRect,
+                positionPoint.x,
+                contentWidth,
+                it.measuredWidth,
+                backgroundCornerRadius
+            )
         }
     }
 
@@ -138,12 +136,12 @@ class Tooltip(private val context: Context) {
                 }
             }
         })
+        Handler().postDelayed({ popupWindow.dismiss() }, AUTO_DISMISS_DELAY)
     }
 
-    data class Config(
-        val anchor: View,
-        val offsetX: Int = 0,
-        @StringRes val tooltipTextResId: Int,
-        val anchorToLeft: Boolean
-    )
+    companion object {
+        const val POSITION_X_INDEX = 0
+        const val POSITION_Y_INDEX = 1
+        private const val AUTO_DISMISS_DELAY = 5_000L
+    }
 }

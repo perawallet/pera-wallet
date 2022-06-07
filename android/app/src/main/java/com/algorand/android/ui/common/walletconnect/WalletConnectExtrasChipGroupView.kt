@@ -59,6 +59,12 @@ class WalletConnectExtrasChipGroupView(
         }
     }
 
+    fun initOpenInExplorerChips(algoExplorerUrl: String, goalSeekerUrl: String, @DimenRes padding: Int) {
+        updatePadding(padding)
+        createOpenInAlgoExplorerChip(algoExplorerUrl)
+        createOpenInGoalSeekerChip(goalSeekerUrl)
+    }
+
     private fun createRawTransactionChip(rawTransaction: WCAlgoTransactionRequest) {
         Chip(context).apply {
             val rawTransactionChip = createChip(R.string.raw_transaction)

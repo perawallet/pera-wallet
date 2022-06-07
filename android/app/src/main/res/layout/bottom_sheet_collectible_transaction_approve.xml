@@ -138,6 +138,7 @@
 
         <TextView
             android:id="@+id/transactionFeeTextView"
+            style="@style/TextAppearance.Body.Sans"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="end"

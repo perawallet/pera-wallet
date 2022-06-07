@@ -12,7 +12,6 @@
 
 package com.algorand.android.mapper
 
-import com.algorand.android.R
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleImageData
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleMixedData
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleVideoData
@@ -44,8 +43,7 @@ class RemoveAssetItemMapper @Inject constructor() {
                 formattedCompactAmount = formattedCompactAmount,
                 formattedSelectedCurrencyValue = formattedSelectedCurrencyValue,
                 formattedSelectedCurrencyCompactValue = formattedSelectedCurrencyCompactValue,
-                isAmountInSelectedCurrencyVisible = isAmountInSelectedCurrencyVisible,
-                notAvailableResId = R.string.not_available_shortened
+                isAmountInSelectedCurrencyVisible = isAmountInSelectedCurrencyVisible
             )
         }
     }
@@ -67,8 +65,7 @@ class RemoveAssetItemMapper @Inject constructor() {
                 formattedSelectedCurrencyValue = formattedSelectedCurrencyValue,
                 formattedSelectedCurrencyCompactValue = formattedSelectedCurrencyCompactValue,
                 isAmountInSelectedCurrencyVisible = isAmountInSelectedCurrencyVisible,
-                prismUrl = prismUrl,
-                notAvailableResId = R.string.not_available_shortened
+                prismUrl = prismUrl
             )
         }
     }
@@ -90,8 +87,7 @@ class RemoveAssetItemMapper @Inject constructor() {
                 formattedSelectedCurrencyValue = formattedSelectedCurrencyValue,
                 formattedSelectedCurrencyCompactValue = formattedSelectedCurrencyCompactValue,
                 isAmountInSelectedCurrencyVisible = isAmountInSelectedCurrencyVisible,
-                prismUrl = thumbnailPrismUrl,
-                notAvailableResId = R.string.not_available_shortened
+                prismUrl = thumbnailPrismUrl
             )
         }
     }
@@ -113,8 +109,7 @@ class RemoveAssetItemMapper @Inject constructor() {
                 formattedSelectedCurrencyValue = formattedSelectedCurrencyValue,
                 formattedSelectedCurrencyCompactValue = formattedSelectedCurrencyCompactValue,
                 isAmountInSelectedCurrencyVisible = isAmountInSelectedCurrencyVisible,
-                prismUrl = thumbnailPrismUrl,
-                notAvailableResId = R.string.not_available_shortened
+                prismUrl = thumbnailPrismUrl
             )
         }
     }
@@ -135,8 +130,7 @@ class RemoveAssetItemMapper @Inject constructor() {
                 formattedCompactAmount = formattedCompactAmount,
                 formattedSelectedCurrencyValue = formattedSelectedCurrencyValue,
                 formattedSelectedCurrencyCompactValue = formattedSelectedCurrencyCompactValue,
-                isAmountInSelectedCurrencyVisible = isAmountInSelectedCurrencyVisible,
-                notAvailableResId = R.string.not_available_shortened
+                isAmountInSelectedCurrencyVisible = isAmountInSelectedCurrencyVisible
             )
         }
     }

@@ -92,7 +92,7 @@ interface MobileAlgorandApi {
         @Query("status") status: String? = null,
         @Query("offset") offset: Long = 0,
         @Query("limit") limit: Int = SEARCH_RESULT_LIMIT,
-        @Query("has_collectible") hasCollectible: Boolean = false
+        @Query("has_collectible") hasCollectible: Boolean? = null
     ): Response<Pagination<AssetDetailResponse>>
 
     @GET("assets/")

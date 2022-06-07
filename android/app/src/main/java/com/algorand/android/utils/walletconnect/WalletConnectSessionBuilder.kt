@@ -13,8 +13,10 @@
 package com.algorand.android.utils.walletconnect
 
 import com.algorand.android.models.WalletConnectSessionMeta
-import com.algorand.android.utils.walletconnect.peermeta.WalletConnectPeraPeerMeta
+import com.algorand.android.utils.HTTPS_PROTOCOL
+import com.algorand.android.utils.HTTP_PROTOCOL
 import com.algorand.android.utils.walletconnect.peermeta.WalletConnectPeerMetaBuilder
+import com.algorand.android.utils.walletconnect.peermeta.WalletConnectPeraPeerMeta
 import com.squareup.moshi.Moshi
 import javax.inject.Inject
 import okhttp3.OkHttpClient
@@ -43,16 +45,23 @@ class WalletConnectSessionBuilder @Inject constructor(
 
     private fun createWCSession(sessionConfig: Config, sessionId: Long? = null): WalletConnectSessionCachedData? {
         val fullyQualifiedConfig = createFullyQualifiedSessionConfig(sessionConfig) ?: return null
+
+        if (checkIfWalletConnectConfigHasInvalidBridgeProtocol(fullyQualifiedConfig.bridge)) return null
+
         val session = WCSession(
-            fullyQualifiedConfig,
-            MoshiPayloadAdapter(moshi),
-            storage,
-            OkHttpTransport.Builder(okHttpClient, moshi),
-            WalletConnectPeerMetaBuilder.createPeerMeta(WalletConnectPeraPeerMeta)
+            config = fullyQualifiedConfig,
+            payloadAdapter = MoshiPayloadAdapter(moshi),
+            sessionStore = storage,
+            transportBuilder = OkHttpTransport.Builder(okHttpClient, moshi),
+            clientMeta = WalletConnectPeerMetaBuilder.createPeerMeta(WalletConnectPeraPeerMeta)
         ).apply {
             init()
         }
 
         return WalletConnectSessionCachedData.create(session, sessionConfig, sessionId)
+    }
+
+    private fun checkIfWalletConnectConfigHasInvalidBridgeProtocol(bridge: String): Boolean {
+        return !bridge.contains(HTTPS_PROTOCOL, true) && !bridge.contains(HTTP_PROTOCOL, true)
     }
 }

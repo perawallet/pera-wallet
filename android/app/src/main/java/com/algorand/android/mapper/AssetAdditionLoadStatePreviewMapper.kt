@@ -13,11 +13,11 @@
 package com.algorand.android.mapper
 
 import androidx.paging.CombinedLoadStates
-import androidx.paging.LoadState
 import com.algorand.android.decider.AssetAdditionScreenStateViewTypeDecider
 import com.algorand.android.decider.AssetAdditionScreenStateViewVisibilityDecider
 import com.algorand.android.models.ui.AssetAdditionLoadStatePreview
 import com.algorand.android.ui.addasset.AssetAdditionType
+import com.algorand.android.utils.Event
 import javax.inject.Inject
 
 class AssetAdditionLoadStatePreviewMapper @Inject constructor(
@@ -28,12 +28,13 @@ class AssetAdditionLoadStatePreviewMapper @Inject constructor(
     fun mapToAssetAdditionLoadStatePreview(
         combinedLoadStates: CombinedLoadStates,
         itemCount: Int,
-        isLastStateError: Boolean,
-        assetAdditionType: AssetAdditionType
+        assetAdditionType: AssetAdditionType,
+        isAssetListVisible: Boolean,
+        isLoading: Boolean,
+        onRetryEvent: Event<Unit>?
     ): AssetAdditionLoadStatePreview {
         return AssetAdditionLoadStatePreview(
-            isAssetListVisible = (combinedLoadStates.refresh is LoadState.Error).not() &&
-                (isLastStateError && combinedLoadStates.refresh is LoadState.Loading).not(),
+            isAssetListVisible = isAssetListVisible,
             isScreenStateViewVisible = assetAdditionScreenStateViewVisibilityDecider.decideScreenStateViewVisibility(
                 combinedLoadStates,
                 itemCount,
@@ -43,8 +44,8 @@ class AssetAdditionLoadStatePreviewMapper @Inject constructor(
                 itemCount = itemCount,
                 assetAdditionType = assetAdditionType
             ),
-            isLoading = (combinedLoadStates.refresh is LoadState.Loading) ||
-                (combinedLoadStates.append is LoadState.Loading)
+            isLoading = isLoading,
+            onRetryEvent = onRetryEvent
         )
     }
 }

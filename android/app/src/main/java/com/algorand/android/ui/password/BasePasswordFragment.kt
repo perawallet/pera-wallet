@@ -19,6 +19,7 @@ import androidx.activity.OnBackPressedCallback
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.customviews.DialPadView
+import com.algorand.android.customviews.SixDigitPasswordView
 import com.algorand.android.databinding.FragmentBasePasswordBinding
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
@@ -37,14 +38,14 @@ abstract class BasePasswordFragment : DaggerBaseFragment(R.layout.fragment_base_
     @Inject
     lateinit var sharedPref: SharedPreferences
 
-    private var chosenPassword by Delegates.observable<String?>(null, { _, _, newValue ->
+    private var chosenPassword by Delegates.observable<String?>(null) { _, _, newValue ->
         binding.passwordView.clear()
         if (newValue != null) {
             binding.headlineTextView.setText(nextTitleResId)
         } else {
             binding.headlineTextView.setText(initialTitleResId)
         }
-    })
+    }
 
     private val toolbarConfiguration = ToolbarConfiguration(
         backgroundColor = R.color.primary_background,
@@ -56,9 +57,19 @@ abstract class BasePasswordFragment : DaggerBaseFragment(R.layout.fragment_base_
 
     private val binding by viewBinding(FragmentBasePasswordBinding::bind)
 
+    private val pinCodeListener = object : SixDigitPasswordView.Listener {
+        override fun onPinCodeCompleted(pinCode: String) {
+            if (chosenPassword == null) {
+                chosenPassword = pinCode
+            } else {
+                verifyPassword(pinCode)
+            }
+        }
+    }
+
     private val dialPadListener = object : DialPadView.DialPadListener {
         override fun onNumberClick(number: Int) {
-            binding.passwordView.onNewDigit(digit = number, onNewDigitAdded = ::onNewDigitAdded)
+            binding.passwordView.onNewDigit(number)
         }
 
         override fun onBackspaceClick() {
@@ -75,19 +86,10 @@ abstract class BasePasswordFragment : DaggerBaseFragment(R.layout.fragment_base_
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         chosenPassword = null
-        binding.dialpadView.setDialPadListener(dialPadListener)
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, onBackPressedCallback)
-    }
-
-    private fun onNewDigitAdded(isNewDigitAdded: Boolean, isPasswordFilled: Boolean) {
-        if (!isNewDigitAdded) return
-        if (isPasswordFilled) {
-            val enteredPassword = binding.passwordView.getPassword()
-            if (chosenPassword == null) {
-                chosenPassword = enteredPassword
-            } else {
-                verifyPassword(enteredPassword)
-            }
+        with(binding) {
+            dialpadView.setDialPadListener(dialPadListener)
+            passwordView.setListener(pinCodeListener)
         }
     }
 

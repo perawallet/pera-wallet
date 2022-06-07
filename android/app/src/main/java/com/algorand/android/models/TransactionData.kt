@@ -12,6 +12,7 @@
 
 package com.algorand.android.models
 
+import com.algorand.android.utils.MIN_FEE
 import java.math.BigInteger
 
 sealed class TransactionData(
@@ -29,7 +30,7 @@ sealed class TransactionData(
         val note: String? = null,
         val targetUser: TargetUser,
         var isMax: Boolean = false,
-        var projectedFee: Long = 0
+        var projectedFee: Long = MIN_FEE
     ) : TransactionData(accountCacheData, amount = amount) {
         override fun getSignedTransactionDetail(signedTransactionData: ByteArray): SignedTransactionDetail {
             return SignedTransactionDetail.Send(

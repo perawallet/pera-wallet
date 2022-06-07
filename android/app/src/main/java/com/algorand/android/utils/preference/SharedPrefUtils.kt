@@ -100,10 +100,6 @@ fun SharedPreferences.isQrTutorialShown() = getBoolean(QR_TUTORIAL_SHOWN_KEY, fa
 
 // <editor-fold defaultstate="collapsed" desc="TDCopyShown">
 
-fun SharedPreferences.setTransactionDetailCopyShown() {
-    edit().putBoolean(TD_COPY_TUTORIAL_SHOWN_KEY, true).apply()
-}
-
 fun SharedPreferences.isTransactionDetailCopyTutorialShown() = getBoolean(TD_COPY_TUTORIAL_SHOWN_KEY, false)
 
 // </editor-fold>

@@ -16,6 +16,7 @@ import com.algorand.android.models.AccountInformationResponse
 import com.algorand.android.models.AccountsResponse
 import com.algorand.android.models.AssetResponse
 import com.algorand.android.models.TransactionsResponse
+import com.algorand.android.transactiondetail.data.model.TransactionDetailResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -48,6 +49,6 @@ interface IndexerApi {
     @GET("v2/assets/{assetId}")
     suspend fun getAssetDescription(@Path("assetId") assetId: Long): Response<AssetResponse>
 
-    @GET("v2/transactions")
-    suspend fun getTransactionDetail(@Query("txid") transactionId: String): Response<TransactionsResponse>
+    @GET("v2/transactions/{txid}")
+    suspend fun getTransactionDetail(@Path("txid") transactionId: String): Response<TransactionDetailResponse>
 }

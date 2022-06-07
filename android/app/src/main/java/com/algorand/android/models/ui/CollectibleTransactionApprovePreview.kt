@@ -15,8 +15,10 @@ package com.algorand.android.models.ui
 import com.algorand.android.models.AccountIcon
 
 data class CollectibleTransactionApprovePreview(
+    val senderAccountPublicKey: String,
     val senderAccountDisplayText: String,
     val senderAccountIcon: AccountIcon?,
+    val receiverAccountPublicKey: String,
     val receiverAccountDisplayText: String,
     val receiverAccountIcon: AccountIcon?,
     val formattedTransactionFee: String

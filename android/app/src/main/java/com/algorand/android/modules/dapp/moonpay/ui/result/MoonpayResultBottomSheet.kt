@@ -19,6 +19,7 @@ import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseBottomSheet
 import com.algorand.android.databinding.BottomSheetMoonpayResultBinding
+import com.algorand.android.utils.toShortenedAddress
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -50,7 +51,11 @@ class MoonpayResultBottomSheet : DaggerBaseBottomSheet(R.layout.bottom_sheet_moo
             }
             resultTitleTextView.setText(status.titleRes)
             resultDescriptionTextView.setText(status.descriptionRes)
-            algorandUserView.setAddress(args.walletAddress, showAddButton = false)
+            algorandUserView.setAddress(
+                displayAddress = args.walletAddress.toShortenedAddress(),
+                publicKey = args.walletAddress,
+                showAddButton = false
+            )
         }
     }
 }

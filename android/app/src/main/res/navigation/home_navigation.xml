@@ -380,12 +380,19 @@
 
     <dialog
         android:id="@+id/transactionDetailBottomSheet"
-        android:name="com.algorand.android.ui.transactiondetail.TransactionDetailBottomSheet"
+        android:name="com.algorand.android.transactiondetail.ui.TransactionDetailBottomSheet"
         android:label="TransactionDetailBottomSheet"
         tools:layout="@layout/bottom_sheet_transaction_detail">
         <argument
-            android:name="transactionItem"
-            app:argType="com.algorand.android.models.BaseTransactionItem" />
+            android:name="isRewardTransaction"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <argument
+            android:name="transactionId"
+            app:argType="string" />
+        <argument
+            android:name="publicKey"
+            app:argType="string" />
         <action
             android:id="@+id/action_transactionDetailBottomSheet_to_addContactFragment"
             app:destination="@id/addContactFragment" />
@@ -437,7 +444,7 @@
 
     <fragment
         android:id="@+id/securityFragment"
-        android:name="com.algorand.android.ui.settings.SecurityFragment"
+        android:name="com.algorand.android.ui.settings.security.SecurityFragment"
         android:label="SecurityFragment"
         tools:layout="@layout/fragment_security">
         <action
@@ -449,6 +456,9 @@
         <action
             android:id="@+id/action_securityFragment_to_changePasscodeVerificationBottomSheet"
             app:destination="@id/changePasscodeVerificationBottomSheet" />
+        <action
+            android:id="@+id/action_securityFragment_to_disableBiometricAuthVerificationBottomSheet"
+            app:destination="@id/disableBiometricAuthVerificationBottomSheet" />
     </fragment>
 
     <fragment
@@ -1175,5 +1185,11 @@
             app:argType="string"
             app:nullable="true" />
     </dialog>
+
+    <dialog
+        android:id="@+id/disableBiometricAuthVerificationBottomSheet"
+        android:name="com.algorand.android.ui.lock.DisableBiometricAuthVerificationBottomSheet"
+        tools:layout="@layout/bottom_sheet_view_passphrase_lock"
+        android:label="DisableBiometricAuthVerificationBottomSheet" />
 
 </navigation>

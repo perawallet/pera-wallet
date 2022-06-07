@@ -19,15 +19,19 @@ import javax.inject.Inject
 class CollectibleTransactionApprovePreviewMapper @Inject constructor() {
 
     fun mapToPreview(
+        senderAccountPublicKey: String,
         senderAccountDisplayText: String,
         senderAccountIcon: AccountIcon?,
+        receiverAccountPublicKey: String,
         receiverAccountDisplayText: String,
         receiverAccountIcon: AccountIcon?,
         formattedTransactionFee: String
     ): CollectibleTransactionApprovePreview {
         return CollectibleTransactionApprovePreview(
+            senderAccountPublicKey = senderAccountPublicKey,
             senderAccountDisplayText = senderAccountDisplayText,
             senderAccountIcon = senderAccountIcon,
+            receiverAccountPublicKey = receiverAccountPublicKey,
             receiverAccountDisplayText = receiverAccountDisplayText,
             receiverAccountIcon = receiverAccountIcon,
             formattedTransactionFee = formattedTransactionFee

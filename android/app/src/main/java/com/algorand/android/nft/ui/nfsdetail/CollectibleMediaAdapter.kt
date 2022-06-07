@@ -35,7 +35,7 @@ class CollectibleMediaAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<BaseCollectibleMediaItem> {
         return when (viewType) {
             IMAGE.ordinal -> createImageMediaViewHolder(parent)
-            VIDEO.ordinal -> createVideMediaViewHolder(parent)
+            VIDEO.ordinal -> createVideoMediaViewHolder(parent)
             UNSUPPORTED.ordinal -> createUnsupportedMediaViewHolder(parent)
             GIF.ordinal -> createGifMediaViewHolder(parent)
             NO_MEDIA.ordinal -> createNoMediaViewHolder(parent)
@@ -51,17 +51,17 @@ class CollectibleMediaAdapter(
         return CollectibleImageMediaViewHolder.create(parent).apply {
             itemView.setOnClickListener {
                 if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                    listener.onImageMediaClick(getItem(bindingAdapterPosition).downloadUrl)
+                    listener.onImageMediaClick(getItem(bindingAdapterPosition).previewUrl)
                 }
             }
         }
     }
 
-    private fun createVideMediaViewHolder(parent: ViewGroup): CollectibleVideoMediaViewHolder {
+    private fun createVideoMediaViewHolder(parent: ViewGroup): CollectibleVideoMediaViewHolder {
         return CollectibleVideoMediaViewHolder.create(parent).apply {
             itemView.setOnClickListener {
                 if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                    listener.onVideoMediaClick(getItem(bindingAdapterPosition).downloadUrl)
+                    listener.onVideoMediaClick(getItem(bindingAdapterPosition).previewUrl)
                 }
             }
         }

@@ -44,14 +44,22 @@ class ReceiveCollectiblePreviewUseCase @Inject constructor(
         scope: CoroutineScope,
         queryText: String
     ): Flow<PagingData<BaseAssetSearchListItem>> {
-        val assetSearchQuery = assetSearchQueryMapper.mapToAssetSearchQuery(queryText, AssetQueryType.ALL, true)
+        val assetSearchQuery = assetSearchQueryMapper.mapToAssetSearchQuery(
+            queryText = queryText,
+            queryType = AssetQueryType.ALL,
+            filterCollectibles = true
+        )
         return searchAssetUseCase.createPaginationFlow(searchPagerBuilder, scope, assetSearchQuery).mapNotNull {
             it.map { baseAssetDetail -> getSearchItemMappedAssetDetail(baseAssetDetail) }
         }
     }
 
     fun searchAsset(queryText: String) {
-        val assetSearchQuery = assetSearchQueryMapper.mapToAssetSearchQuery(queryText, AssetQueryType.ALL, true)
+        val assetSearchQuery = assetSearchQueryMapper.mapToAssetSearchQuery(
+            queryText = queryText,
+            queryType = AssetQueryType.ALL,
+            filterCollectibles = true
+        )
         searchAssetUseCase.searchAsset(assetSearchQuery)
     }
 

@@ -12,37 +12,20 @@
 
 package com.algorand.android.utils
 
-import android.icu.text.CompactDecimalFormat
 import android.icu.text.NumberFormat
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.RoundingMode
-import java.util.Locale
 
 const val TWO_DECIMALS = 2
-const val FIXED_DECIMAL_LIMIT = 999L
 
 fun getNumberFormat(
-    number: BigDecimal,
     decimals: Int,
     isDecimalFixed: Boolean = false,
-    isCompact: Boolean = false
 ): NumberFormat {
-    return if (isCompact) {
-        CompactDecimalFormat.getInstance(Locale.getDefault(), CompactDecimalFormat.CompactStyle.SHORT)
-    } else {
-        NumberFormat.getInstance()
-    }.apply {
+    return NumberFormat.getInstance().apply {
         roundingMode = RoundingMode.FLOOR.ordinal
-        maximumFractionDigits = if (
-            isCompact &&
-            decimals >= TWO_DECIMALS &&
-            number.isGreaterThan(BigDecimal.valueOf(FIXED_DECIMAL_LIMIT))
-        ) {
-            TWO_DECIMALS
-        } else {
-            decimals
-        }
+        maximumFractionDigits = decimals
         minimumFractionDigits = when {
             isDecimalFixed -> decimals
             else -> TWO_DECIMALS
@@ -63,7 +46,7 @@ fun BigDecimal.formatAmount(
     isDecimalFixed: Boolean,
     isCompact: Boolean = false
 ): String {
-    return getNumberFormat(this, decimals, isDecimalFixed, isCompact).format(this)
+    return if (isCompact) formatCompactNumber(this) else getNumberFormat(decimals, isDecimalFixed).format(this)
 }
 
 fun Long?.formatAmount(
@@ -86,4 +69,8 @@ fun BigDecimal.formatAmountAsBigInteger(decimal: Int): BigInteger {
     return formatAmount(decimal, true)
         .filter { it.isDigit() }
         .toBigIntegerOrNull() ?: BigInteger.ZERO
+}
+
+fun String.appendAssetName(assetName: AssetName): String {
+    return if (assetName.getName() != null) "$this ${assetName.getName()}" else this
 }

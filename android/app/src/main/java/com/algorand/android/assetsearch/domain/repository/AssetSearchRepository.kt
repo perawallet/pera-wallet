@@ -21,7 +21,7 @@ interface AssetSearchRepository {
     suspend fun searchAsset(
         queryText: String,
         queryType: AssetQueryType,
-        hasCollectible: Boolean
+        hasCollectible: Boolean?
     ): Result<Pagination<AssetDetailDTO>>
 
     suspend fun getAssetsByUrl(url: String): Result<Pagination<AssetDetailDTO>>

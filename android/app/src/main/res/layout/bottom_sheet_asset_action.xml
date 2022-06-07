@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -129,15 +128,41 @@
             app:layout_constraintTop_toBottomOf="@id/assetIdTextView" />
 
         <TextView
+            android:id="@+id/transactionFeeLabel"
+            style="@style/TextAppearance.Description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_xlarge"
+            android:text="@string/transacting_fee"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/assetCodeDivider" />
+
+        <TextView
+            android:id="@+id/transactionFeeTextView"
+            style="@style/TextAppearance.Body.Sans.Medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginEnd="@dimen/spacing_xlarge"
+            android:gravity="end"
+            android:textColor="@color/negative"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/transactionFeeLabel"
+            app:layout_constraintTop_toTopOf="@id/transactionFeeLabel"
+            tools:text="@tools:sample/lorem[2]" />
+
+        <TextView
             android:id="@+id/descriptionTextView"
             style="@style/TextAppearance.Body.Sans"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/spacing_xlarge"
-            android:layout_marginTop="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_xxlarge"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/assetCodeDivider"
+            app:layout_constraintTop_toBottomOf="@id/transactionFeeLabel"
+            app:layout_goneMarginTop="@dimen/spacing_xlarge"
             tools:text="@string/adding_an_asset" />
 
         <com.google.android.material.button.MaterialButton
@@ -175,6 +200,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/customToolbar"
+            tools:visibility="visible" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/transactionFeeGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="transactionFeeLabel, transactionFeeTextView"
             tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

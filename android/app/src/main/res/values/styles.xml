@@ -403,6 +403,14 @@
         <item name="android:textAppearance">@style/TextAppearance.Label</item>
     </style>
 
+    <style name="TextView.TransactionDescriptionStyle">
+        <item name="android:maxLines">1</item>
+        <item name="autoSizeMaxTextSize">@dimen/text_size_19</item>
+        <item name="autoSizeMinTextSize">@dimen/text_size_11</item>
+        <item name="autoSizeTextType">uniform</item>
+    </style>
+
+
     <style name="Button" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:letterSpacing">0</item>
         <item name="android:insetTop">0dp</item>

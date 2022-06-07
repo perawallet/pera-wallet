@@ -78,7 +78,12 @@ class CollectiblesFragment : BaseCollectiblesListingFragment() {
     }
 
     override fun onNotSupportedItemClick(collectibleAssetId: Long, publicKey: String) {
-        // TODO "Not yet implemented"
+        nav(
+            CollectiblesFragmentDirections.actionCollectiblesFragmentToCollectibleDetailFragment(
+                collectibleAssetId = collectibleAssetId,
+                publicKey = publicKey
+            )
+        )
     }
 
     override fun onMixedItemClick(collectibleAssetId: Long, publicKey: String) {

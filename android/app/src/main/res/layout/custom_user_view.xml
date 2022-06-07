@@ -14,7 +14,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
@@ -23,14 +23,12 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/mainTextView"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/mainTextView"
+        style="@style/TextAppearance.Body.Sans"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spacing_small"
@@ -39,32 +37,37 @@
         android:maxLines="1"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/addButton"
-        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintEnd_toStartOf="@id/copyButton"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@id/accountIconImageView"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_goneMarginEnd="0dp"
         app:layout_goneMarginStart="0dp"
-        tools:text="@tools:sample/lorem[2]"
-        tools:textAppearance="@style/TextAppearance.Body.Sans" />
+        tools:text="@tools:sample/lorem[3]" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/addButton"
-        style="@style/TextAppearance.Description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minWidth="54dp"
-        android:minHeight="24dp"
-        android:paddingHorizontal="@dimen/spacing_small"
-        android:paddingVertical="@dimen/spacing_xxsmall"
-        android:text="@string/add"
+        android:id="@+id/copyButton"
+        style="@style/IconButton.Transparent"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="@dimen/spacing_xsmall"
         android:visibility="gone"
-        app:backgroundTint="@color/layer_gray_lighter"
-        app:cornerRadius="24dp"
+        app:icon="@drawable/ic_copy"
+        app:iconTint="@color/tertiary_icon_tint_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/addContactButton"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/addContactButton"
+        style="@style/IconButton.Transparent"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:visibility="gone"
+        app:icon="@drawable/ic_user_add"
+        app:iconTint="@color/tertiary_icon_tint_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toEndOf="@id/mainTextView"
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
 

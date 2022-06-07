@@ -33,7 +33,7 @@ class AssetSearchRepositoryImpl @Inject constructor(
     override suspend fun searchAsset(
         queryText: String,
         queryType: AssetQueryType,
-        hasCollectible: Boolean
+        hasCollectible: Boolean?
     ): Result<Pagination<AssetDetailDTO>> {
         return requestWithHipoErrorHandler(hipoApiErrorHandler) {
             val assetQuery = queryText.takeIf { it.isNotBlank() }

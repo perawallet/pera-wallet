@@ -21,7 +21,7 @@ class AssetSearchQueryMapper @Inject constructor() {
     fun mapToAssetSearchQuery(
         queryText: String,
         queryType: AssetQueryType,
-        filterCollectibles: Boolean
+        filterCollectibles: Boolean?
     ): AssetSearchQuery {
         return AssetSearchQuery(
             queryText = queryText,

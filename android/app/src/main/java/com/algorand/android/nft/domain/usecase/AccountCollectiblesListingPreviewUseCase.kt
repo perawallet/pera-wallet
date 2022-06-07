@@ -60,7 +60,8 @@ class AccountCollectiblesListingPreviewUseCase @Inject constructor(
                 isFilterActive = collectibleListData.isFilterActive,
                 displayedCollectibleCount = collectibleListData.displayedCollectibleCount,
                 filteredCollectibleCount = collectibleListData.filteredOutCollectibleCount,
-                isClearFilterButtonVisible = isAllCollectiblesFilteredOut
+                isClearFilterButtonVisible = isAllCollectiblesFilteredOut,
+                isAccountFabVisible = canAccountSignTransaction
             )
         }
     }

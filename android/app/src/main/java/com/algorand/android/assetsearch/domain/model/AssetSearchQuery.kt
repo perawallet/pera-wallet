@@ -17,7 +17,7 @@ import com.algorand.android.models.AssetQueryType
 data class AssetSearchQuery(
     val queryText: String,
     val queryType: AssetQueryType,
-    val filterCollectibles: Boolean = false
+    val filterCollectibles: Boolean? = null
 ) {
     companion object {
         fun createDefaultQuery(): AssetSearchQuery {

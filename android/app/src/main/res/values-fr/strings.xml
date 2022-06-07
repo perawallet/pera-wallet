@@ -113,9 +113,6 @@
     <string name="connecting_to_ledger">Connexion au Ledger…</string>
     <string name="ledger_approval">Approbation Ledger</string>
     <string name="please_make_sure">Veuillez vous assurer de confirmer la transaction sur votre appareil Ledger</string>
-    <string name="ledger_info_power_first_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">Pour une utilisation générale de la fonction Bluetooth de votre Ledger, veuillez vous référer au <annotation type="bold"><annotation type="color">Guide de connexion Bluetooth.</annotation></annotation></annotation></string>
-    <string name="ledger_info_power_second_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">Pour un dépannage plus avancé, veuillez consulter le <annotation type="bold"><annotation type="color">Guide de dépannage Bluetooth.</annotation></annotation></annotation></string>
-    <string name="ledger_info_ledger_first_paragraph"><annotation url="https://www.ledger.com/start">Commencez par suivre le didacticiel complet <annotation type="bold"><annotation type="color">Getting Started</annotation></annotation> de Ledger. </annotation></string>
     <string name="ledger_info_ledger_second_paragraph">Lorsque le didacticiel arrive au point où il vous demande de «sélectionner la ou les applications que vous souhaitez installer sur votre appareil», tapez Algorand dans la barre de recherche et installez l\'application.</string>
     <string name="ledger_info_algorand_first_paragraph"><annotation url="https://www.ledger.com/start">Commencez par suivre le tutoriel <annotation type="bold"><annotation type="color">Getting Started</annotation></annotation> de Ledger, qui vous expliquera comment installer et ouvrir des applications sur votre appareil Ledger.</annotation></string>
     <string name="ledger_info_algorand_second_paragraph">Si vous n\'avez pas encore installé l\'application <annotation type="bold"> Algorand </annotation> sur votre appareil Ledger, lorsque le didacticiel arrive au point où il vous dirige vers «sélectionnez la ou les applications que vous souhaitez installer sur votre appareil», tapez Algorand dans la barre de recherche et installez l\'application.</string>
@@ -162,7 +159,6 @@
     <string name="last_week">La semaine dernière</string>
     <string name="last_month">Le mois dernier</string>
     <string name="custom_range">Gamme personnalisée</string>
-    <string name="press_and_hold">Appuyez et maintenez pour copier dans le presse-papiers</string>
     <string name="something_went_wrong">Un problème est survenu</string>
     <string name="sorry_something_went">Désolé, une erreur s\'est produite.</string>
     <string name="try_again">Réessayer</string>
@@ -188,12 +184,7 @@
     <string name="finalize_rekeying">Finaliser Récupération</string>
     <string name="new_ledger">Nouveau Ledger</string>
     <string name="old_ledger">Ancien Ledger</string>
-    <string name="the_account_name">Le compte <annotation font="dmsans_bold">\"<annotation replacement="account_name"> </annotation>\"</annotation> a été rétabli avec succès.</string>
     <string name="just_now">Juste maintenant</string>
-    <string name="asset_support_success"><annotation font="dmsans_medium"><annotation replacement="sender">addressplaceholder</annotation></annotation> a ajouté <annotation replacement="asset">assetPlaceholder</annotation> à son compte. Vous pouvez leur envoyer <annotation replacement="asset">assetPlaceholder</annotation> .</string>
-    <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> essaie de vous envoyer <annotation replacement="asset">assetPlaceholder</annotation> mais vous ne le prenez pas en charge. Appuyez ici pour ajouter cet actif à votre compte.</string>
-    <string name="transaction_send_successful">Votre transaction de <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> de <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> vers <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> est terminée.</string>
-    <string name="transaction_send_failed">Votre transaction de <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> depuis <annotation font="dmsans_medium"><annotation replacement="sender">addressplaceholder</annotation></annotation> vers <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> a échoué.</string>
     <string name="transaction_received">Transaction reçue</string>
     <string name="too_many_pin_attempts">Trop de tentatives de code PIN</string>
     <string name="this_ledger_device">Cet appareil Ledger peut signer des transactions pour les comptes suivants. Sélectionnez les comptes à ajouter à Pera Wallet.</string>
@@ -278,8 +269,6 @@
     <string name="paste_full_passphrase">Coller la phrase de passe complète</string>
     <string name="verify_recovery_passphrase">Vérifier la sauvegarde de la phrase secrète de récupération</string>
     <string name="transacting_tips">Conseils pour les transactions</string>
-    <string name="the_only_way_to">La seule façon de récupérer un compte Algorand est d\'utiliser cette phrase secrète de récupération. \n \n <annotation font="dmsans_italic"> <annotation custom="warning_color"> <annotation type="bold"> Avertissement </annotation> : ne partagez pas cette phrase de passe avec qui que ce soit, car elle accorde un accès complet à votre compte . </annotation> </annotation></string>
-    <string name="monitor_activity_of">Surveillez l\'activité d\'un compte sans avoir besoin d\'une phrase secrète de récupération. Ceci est utile pour surveiller les actifs conservés hors ligne. \n \n <annotation font="dmsans_italic"> <annotation custom="warning_color"> <annotation type="bold"> Avertissement </annotation> : Si vous ne disposez pas de la phrase secrète de récupération correspondante, n\'envoyez pas d\'actifs vers ce compte. </annotation> </annotation></string>
     <string name="i_want_to_monitor">Je souhaite surveiller un compte conservé hors ligne.</string>
     <string name="name_your_account_to">Nommez votre compte de façon à l\'identifier facilement lorsque vous utilisez Pera Wallet. Ces noms sont stockés localement et ne peuvent être vus que par vous.</string>
     <string name="learn_more">En Savoir Plus</string>
@@ -337,7 +326,6 @@
     <string name="this_transaction_is_sending">Cette transaction envoie votre solde complet d\'Algo.</string>
     <string name="close_asset_to">Fermer l’actif pour</string>
     <string name="this_transaction_is_sending_asset">Cette transaction envoie votre %1$s et supprimera %1$s de votre compte.</string>
-    <string name="this_transaction_fee_is_higher">Ces frais de transaction sont supérieurs aux frais habituels de 0,001 Algos.</string>
     <string name="wallet_connect_is_not_reachable">WalletConnect n\'est pas accessible pour le moment. Veuillez réessayer plus tard.</string>
     <string name="connected_with_formatted">Connecté avec %1$s</string>
     <string name="this_transaction_will_be">Cette transaction sera soumise à l\'avenir.</string>
@@ -375,7 +363,6 @@
     <string name="signing_error_transaction_in_request">Erreur de signature : une transaction dans la demande de transaction nécessite une clé privée (signataire) qui n\'existe pas dans le portefeuille connecté.</string>
     <string name="transaction_request_contains_unsupported">La demande de transaction contient un type de transaction non pris en charge</string>
     <string name="transaction_request_contains_unsupported_multisig">La demande de transaction contient un type de transaction non pris en charge : Multi-sig</string>
-    <string name="invalid_input_transaction_request">Entrée non valide : la demande de transaction contient plus de %1$d transactions</string>
     <string name="invalid_input_unable_to_parse">Entrée non valide : impossible d\'analyser la transaction</string>
     <string name="invalid_input_invalid_public_key">Entrée non valide : clé publique non valide</string>
     <string name="invalid_input_invalid_asset">Entrée non valide : actif non valide</string>
@@ -522,6 +509,7 @@
     <string name="show_note">Afficher la note</string>
     <string name="create_a_passphrase_backup">Créer une sauvegarde de la phrase secrète pour votre compte</string>
     <string name="creating_a_passphrase_backup">Créer une sauvegarde de la phrase secrète vous permettra de récupérer votre compte. Sans la phrase secrète, si vous perdez votre appareil, supprimez le compte ou supprimez l\'application, vous pouvez perdre définitivement l\'accès à votre compte Algorand!</string>
+    <string name="congratulations_your_account">Félicitations, votre compte est prêt à être utilisé.</string>
     <string name="welcome_to_pera_your_account">Bienvenue sur Pera Wallet! Votre compte est prêt à être utilisé.</string>
     <string name="loading">Chargement</string>
     <string name="algorand_wallet_is_now">C\'est officiel!\nLe Portefeuille Algorand s\'appelle désormais Pera Wallet.</string>
@@ -532,6 +520,7 @@
     <string name="sorry_we_cant_show_account">Nous sommes désolés, nous ne pouvons pas afficher les détails de ce compte. Il semble que nous ayons des problèmes pour le calcul.\n\nVeuillez noter que certaines valeurs d\'actifs peuvent ne pas être disponibles, par conséquent la valeur totale du portefeuille doit être considérée comme une estimation.</string>
     <string name="sorry_we_cant_show_portfolio">Nous sommes désolés, nous ne pouvons pas afficher les détails de ce portefeuille. Il semble que nous ayons des problèmes pour le calcul.\n\nVeuillez noter que certaines valeurs d\'actifs peuvent ne pas être disponibles, par conséquent la valeur totale du portefeuille doit être considérée comme une estimation.</string>
     <string name="transaction_request_faq">FAQ sur les demandes de transaction</string>
+    <string name="external_applications_also">Les applications externes, que l\'on appelle également dApps, peuvent effectuer des demandes de transaction qui ne sont pas contrôlées par  Pera Wallet. Veuillez vous assurer d\'examiner attentivement ces transactions avant de les approuver et de les signer.\n\nToutes les transactions sont irréversibles. Comme ces demandes échappent au contrôle de Pera Wallet, n\'approuvez jamais de transactions d\'une dApp que vous ne connaissez pas.</string>
     <string name="notification_algo_received_message"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> ont été envoyés à <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> par <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> .</string>
     <string name="minimum_amount_required">Montant minimum requis</string>
     <string name="this_is_the_first_transaction">Il s\'agit de la première transaction pour le compte sélectionné. Les premières transactions nécessitent un montant minimum d\'au moins 0,1 Algo. Veuillez saisir un montant valide et réessayer.</string>
@@ -592,6 +581,7 @@
     <string name="view_transaction">Afficher la transaction</string>
     <string name="show_on_algoexplorer">Afficher sur Algoexplorer</string>
     <string name="show_on_nftexplorer">Afficher sur NFTExplorer</string>
+    <string name="you_are_not_the_owner">Vous n\'êtes pas encore propriétaire de ce NFT, mais vous l\'avez activé. Vous pouvez maintenant le transférer dans votre portefeuille.</string>
     <string name="we_don_t_support">Nous ne prenons pas encore en charge ce type de média NFT.</string>
     <string name="we_can_t_display">Nous ne pouvons pas afficher le visuel temporairement.</string>
     <string name="transfer">Transfert</string>
@@ -613,4 +603,58 @@
     <string name="confirm_transfer">Confirmer le transfert</string>
     <string name="search_asset_id_or_nft">Rechercher l\'ID d\'actif ou le nom du NFT</string>
     <string name="receive_an_nft">Recevoir un NFT</string>
+    <string name="the_account_name">Le compte <annotation font="dmsans_bold">"<annotation replacement="account_name"> </annotation>"</annotation> a été rétabli avec succès.</string>
+    <string name="asset_support_success"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> a ajouté <annotation replacement="asset">assetPlaceholder</annotation> à son compte. Vous pouvez lui envoyer <annotation replacement="asset">assetPlaceholder</annotation>.</string>
+    <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> essaie de vous envoyer <annotation replacement="asset">assetPlaceholder</annotation>, mais vous ne le prenez pas en charge. Appuyez ici pour ajouter cet actif à votre compte.</string>
+    <string name="transaction_send_successful">Votre transaction de <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> depuis <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> vers <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> est terminée.</string>
+    <string name="transaction_send_failed">Votre transaction de <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> depuis <annotation font="dmsans_medium"><annotation replacement="sender">addressplaceholder</annotation></annotation> vers <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> a échoué.</string>
+    <string name="the_only_way_to">La seule façon de récupérer un compte Algorand est d\'utiliser cette phrase secrète de récupération.</string>
+    <string name="monitor_activity_of">Surveillez l\'activité d\'un compte sans avoir besoin d\'une phrase secrète de récupération. Cela est utile pour surveiller les actifs conservés hors ligne</string>
+    <string name="this_transaction_fee_is_higher">Ces frais de transaction sont supérieurs aux frais habituels de 0,001 Algos.</string>
+    <string name="you_are_about_to">Vous êtes sur le point de supprimer <annotation replacement="asset_name">assetNamePlaceholder</annotation> de <annotation replacement="account_name">accountNamePlaceholder</annotation>. Vous ne pourrez pas effectuer de transaction avec cet actif tant que vous ne l\'aurez pas réactivé.</string>
+    <string name="to_remove_the_balance">Pour supprimer <annotation replacement="asset_name">assetNamePlaceholder</annotation>, le solde doit être égal à 0. Veuillez transférer le solde vers un autre compte et réessayer.</string>
+    <string name="you_are_about_to_receive_description">Vous êtes sur le point de recevoir un actif dans <annotation replacement="account_name">accountNamePlaceholder</annotation>. Souhaitez-vous ajouter cet actif à ce compte pour le recevoir?</string>
+    <string name="invalid_input_transaction_request">Saisie non valide: la demande de transaction contient plus de %1$d transactions</string>
+    <string name="selected_account">Compte sélectionné</string>
+    <string name="your_nft_transfer_has_failed">Votre transfert de NFT a échoué!</string>
+    <string name="please_verify_that_you_have">Veuillez vérifier que vous disposez de suffisamment d\'Algos pour couvrir les frais de transaction liés au transfert de votre NFT, puis réessayez.</string>
+    <string name="please_try_again">Veuillez réessayer.</string>
+    <string name="retry">Réessayer</string>
+    <string name="opt_out">Désactiver</string>
+    <string name="opt_out_from">Désactiver \"%1$s\"</string>
+    <string name="you_are_about_to_opt_out">Vous êtes sur le point de désactiver ce NFT avec %1$s. Vous ne pourrez pas effectuer de transaction avec cet actif tant que vous ne vous l\'aurez pas réactivé.</string>
+    <string name="nft_successfully_opted_out">NFT %1$s désactivé avec succès</string>
+    <string name="opted_in_to">Activé pour</string>
+    <string name="show_on">Afficher sur</string>
+    <string name="you_are_about_to_remove_watch_account">Vous êtes sur le point de supprimer un compte de surveillance. Êtes-vous sûr de vouloir poursuivre?</string>
+    <string name="you_are_about_to_remove_main_account">Vous êtes sur le point de supprimer votre compte principal, êtes-vous sûr de vouloir poursuivre?</string>
+    <string name="this_watch_account_has_opted">Ce compte de surveillance a activé ce NFT, mais il ne le possède pas.</string>
+    <string name="display_opted_in_nfts">Afficher les NFT activés</string>
+    <string name="you_can_show_hide">Vous pouvez afficher/masquer les NFT qui sont activés mais qui ne vous appartiennent pas</string>
+    <string name="filter">Filtrer</string>
+    <string name="show_filtered_nfts_formatted">Afficher les NFT filtrés (%1$d)</string>
+    <string name="search_your_nfts">Rechercher dans vos NFT</string>
+    <string name="enter_your_old">Saisissez votre ancien code PIN à 6 chiffres</string>
+    <string name="ledger_info_power_first_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">Pour une utilisation générale de la fonction Bluetooth de votre Ledger, veuillez vous référer au <annotation type="bold"><annotation type="color">Guide de connexion Bluetooth.</annotation></annotation></annotation></string>
+    <string name="ledger_info_power_second_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">Pour un dépannage plus avancé, veuillez consulter le <annotation type="bold"><annotation type="color">Guide de dépannage Bluetooth.</annotation></annotation></annotation></string>
+    <string name="ledger_info_ledger_first_paragraph"><annotation url="https://www.ledger.com/start">Commencez par suivre le tutoriel complet <annotation type="bold"><annotation type="color">Getting Started</annotation></annotation> de Ledger. </annotation></string>
+    <string name="no_nft_found">Aucun NFT trouvé</string>
+    <string name="tap_thumbnail_to_view_in">Appuyez sur la vignette pour afficher le mode 3D</string>
+    <string name="welcome_to_pera_wallet_your_watch">Bienvenue sur Pera Wallet! Votre compte de surveillance a été ajouté avec succès.</string>
+    <string name="congratulations_your_watch_account_has">Félicitations, votre compte de surveillance a été ajouté avec succès.</string>
+    <string name="passphrase_verified">Phrase secrète vérifiée</string>
+    <string name="keep_this_recovery">Conservez cette phrase secrète de récupération dans un emplacement sécurisé accessible uniquement par vous. Ne perdez pas cette phrase secrète de récupération.</string>
+    <string name="tap_the_media_to_view_in">Appuyez sur le média pour afficher le mode 3D</string>
+    <string name="search_your_assets">Rechercher vos actifs</string>
+    <string name="search">Recherche</string>
+    <string name="wrong_pin">PIN incorrect</string>
+    <string name="pin_does_not">Le code PIN ne correspond pas au code PIN précédent</string>
+    <string name="no_transactions">Aucune transaction</string>
+    <string name="there_are_no">Il n\'y a aucune transaction à afficher pour la période sélectionnée</string>
+    <string name="filter_by_date">Filtrer par date</string>
+    <string name="asset_history_not_available">L\'historique des actifs n\'est pas disponible</string>
+    <string name="the_history_for_this_spesific">L\'historique de cet actif spécifique n\'est pas disponible.</string>
+    <string name="your_account_needs_to_be">Votre compte doit avoir activé le NFT avant de pouvoir le recevoir. Assurez-vous de vérifier l\'ID de l\'actif lors de la confirmation.</string>
+    <string name="you_can_search_the_nft">Vous pouvez rechercher le NFT que vous souhaitez activer en collant son nom ou son ID d\'actif dans la barre de recherche ci-dessous.</string>
+    <string name="select_the_wallet_account">Sélectionnez le portefeuille sur lequel vous souhaitez le recevoir:</string>
 </resources>

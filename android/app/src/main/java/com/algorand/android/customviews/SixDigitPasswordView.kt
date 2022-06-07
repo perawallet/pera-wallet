@@ -13,9 +13,7 @@
 package com.algorand.android.customviews
 
 import android.animation.Animator
-import android.animation.ObjectAnimator
-import android.animation.PropertyValuesHolder
-import android.animation.ValueAnimator
+import android.animation.AnimatorInflater
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
@@ -35,20 +33,15 @@ class SixDigitPasswordView @JvmOverloads constructor(
 
     private val binding = viewBinding(CustomSixDigitPasswordBinding::inflate)
 
+    private var listener: Listener? = null
+
     private val digitViewList = mutableListOf<ImageButton>()
     private val password = mutableListOf<Int>()
     private val pinAnimators = mutableListOf<Animator>()
 
-    // TODO: 11.02.2022 Move animation into xml files
     private val wrongPinAnimator by lazy {
-        ObjectAnimator.ofPropertyValuesHolder(
-            this@SixDigitPasswordView,
-            PropertyValuesHolder.ofFloat("translationX", WRONG_PIN_ANIMATION_RATE),
-            PropertyValuesHolder.ofFloat("translationX", -WRONG_PIN_ANIMATION_RATE)
-        ).apply {
-            duration = WRONG_PIN_ANIMATION_DURATION
-            repeatMode = ValueAnimator.REVERSE
-            repeatCount = WRONG_PIN_ANIMATION_REPEAT_COUNT
+        AnimatorInflater.loadAnimator(context, R.animator.wrong_pin_animator).apply {
+            setTarget(this@SixDigitPasswordView)
             doOnCancel { it.end() }
         }
     }
@@ -61,38 +54,28 @@ class SixDigitPasswordView @JvmOverloads constructor(
         initViewList()
     }
 
-    private fun initViewList() {
-        with(binding) { digitViewList.addAll(listOf(digit1, digit2, digit3, digit4, digit5, digit6)) }
+    fun setListener(listener: Listener) {
+        this.listener = listener
     }
 
-    fun onNewDigit(digit: Int, onNewDigitAdded: (Boolean, Boolean) -> Unit) {
-        if (isWrongPinAnimatorRunning) {
-            onNewDigitAdded.invoke(false, false)
-            return
+    fun onNewDigit(digit: Int) {
+        if (isWrongPinAnimatorRunning) return
+        password.add(digit)
+        listener?.onNewPinAdded()
+        when {
+            password.size < PASSWORD_LENGTH -> digitViewList[password.size - 1].run {
+                setImageResource(R.drawable.filled_password_digit)
+                animateEnteringPin(this)
+            }
+            isPasswordFilled() -> listener?.onPinCodeCompleted(password.toString())
         }
-        if (password.size < PASSWORD_LENGTH) {
-            val enteredPin = digitViewList[password.size]
-            password.add(digit)
-            enteredPin.setImageResource(R.drawable.filled_password_digit)
-            animateEnteringPin(enteredPin) { onNewDigitAdded.invoke(true, isPasswordFilled()) }
-        } else {
-            onNewDigitAdded.invoke(false, false)
-        }
-    }
-
-    private fun getPasswordSize(): Int {
-        return password.size
     }
 
     fun removeLastDigit() {
         if (password.size > 0) {
-            password.removeAt(password.size - 1)
-            digitViewList[password.size].setImageResource(R.drawable.unfilled_password_digit)
+            password.removeLast()
+            digitViewList.last().setImageResource(R.drawable.unfilled_password_digit)
         }
-    }
-
-    fun getPassword(): String {
-        return password.toString()
     }
 
     fun clear() {
@@ -100,6 +83,37 @@ class SixDigitPasswordView @JvmOverloads constructor(
         pinAnimators.clear()
         digitViewList.forEach { it.setImageResource(R.drawable.unfilled_password_digit) }
     }
+
+    fun clearWithAnimation() {
+        clearPassword()
+        digitViewList.forEach { it.setImageResource(R.drawable.filled_wrong_password_digit) }
+        animateWrongPin()
+    }
+
+    fun cancelAnimations() {
+        pinAnimators.forEach { it.cancel() }
+        wrongPinAnimator.cancel()
+        pinAnimators.clear()
+    }
+
+    private fun initViewList() {
+        with(binding) { digitViewList.addAll(listOf(digit1, digit2, digit3, digit4, digit5, digit6)) }
+    }
+
+    private fun animateEnteringPin(pin: View) {
+        AnimatorInflater.loadAnimator(pin.context, R.animator.enter_pin_animator).apply {
+            setTarget(pin)
+            doOnStart { pinAnimators.add(it) }
+            doOnCancel { it.end() }
+        }.start()
+    }
+
+    private fun animateWrongPin() {
+        if (isWrongPinAnimatorRunning) return
+        wrongPinAnimator.apply { doOnEnd { clearUi() } }.start()
+    }
+
+    private fun isPasswordFilled(): Boolean = password.size == PASSWORD_LENGTH
 
     private fun clearPassword() {
         password.clear()
@@ -110,54 +124,12 @@ class SixDigitPasswordView @JvmOverloads constructor(
         digitViewList.forEach { it.setImageResource(R.drawable.unfilled_password_digit) }
     }
 
-    fun clearWithAnimation() {
-        clearPassword()
-        digitViewList.forEach { it.setImageResource(R.drawable.filled_wrong_password_digit) }
-        animateWrongPin(onAnimationFinish = { clearUi() })
-    }
-
-    fun cancelAnimations() {
-        pinAnimators.forEach { it.cancel() }
-        wrongPinAnimator.cancel()
-        pinAnimators.clear()
-    }
-
-    private fun animateEnteringPin(pin: View, onAnimationFinish: () -> Unit) {
-        // TODO: 11.02.2022 Move animation into xml files
-        ObjectAnimator.ofPropertyValuesHolder(
-            pin,
-            PropertyValuesHolder.ofFloat("scaleX", ENTERING_PIN_ANIMATION_RATE),
-            PropertyValuesHolder.ofFloat("scaleY", ENTERING_PIN_ANIMATION_RATE)
-        ).apply {
-            duration = ENTERING_PIN_ANIMATION_DURATION
-            repeatMode = ValueAnimator.REVERSE
-            repeatCount = 1
-            doOnStart { pinAnimators.add(it) }
-            doOnCancel { it.end() }
-            doOnEnd {
-                onAnimationFinish.invoke()
-            }
-        }.start()
-    }
-
-    private fun animateWrongPin(onAnimationFinish: () -> Unit) {
-        if (isWrongPinAnimatorRunning) return
-        wrongPinAnimator.apply {
-            doOnEnd { onAnimationFinish.invoke() }
-        }.start()
-    }
-
-    private fun isPasswordFilled(): Boolean {
-        return getPasswordSize() == PASSWORD_LENGTH
+    interface Listener {
+        fun onNewPinAdded() {}
+        fun onPinCodeCompleted(pinCode: String)
     }
 
     companion object {
-        const val PASSWORD_LENGTH = 6
-        private const val WRONG_PIN_ANIMATION_RATE = 100f
-        private const val WRONG_PIN_ANIMATION_DURATION = 100L
-        private const val WRONG_PIN_ANIMATION_REPEAT_COUNT = 3
-
-        private const val ENTERING_PIN_ANIMATION_RATE = 1.5f
-        private const val ENTERING_PIN_ANIMATION_DURATION = 100L
+        private const val PASSWORD_LENGTH = 6
     }
 }

@@ -15,8 +15,8 @@ package com.algorand.android.nft.domain.usecase
 import com.algorand.android.models.ui.CollectibleTransactionApprovePreview
 import com.algorand.android.nft.mapper.CollectibleTransactionApprovePreviewMapper
 import com.algorand.android.usecase.AccountNameIconUseCase
-import com.algorand.android.utils.ALGO_DECIMALS
-import com.algorand.android.utils.formatAmount
+import com.algorand.android.utils.formatAsAlgoAmount
+import com.algorand.android.utils.formatAsAlgoString
 import javax.inject.Inject
 import kotlinx.coroutines.flow.flow
 
@@ -37,11 +37,13 @@ class CollectibleTransactionApprovePreviewUseCase @Inject constructor(
             receiverPublicKey
         )
         val collectibleTransactionApprovePreview = collectibleTransactionApprovePreviewMapper.mapToPreview(
-            senderDisplayText,
+            senderAccountPublicKey = senderPublicKey,
+            senderAccountDisplayText = senderDisplayText,
             senderAccountIcon = senderAccountIcon,
+            receiverAccountPublicKey = receiverPublicKey,
             receiverAccountDisplayText = receiverDisplayText,
             receiverAccountIcon = receiverAccountIcon,
-            formattedTransactionFee = fee.toBigDecimal().formatAmount(ALGO_DECIMALS, true)
+            formattedTransactionFee = fee.toLong().formatAsAlgoString().formatAsAlgoAmount()
         )
         emit(collectibleTransactionApprovePreview)
     }

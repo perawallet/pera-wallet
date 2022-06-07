@@ -1,3 +1,4 @@
+@file:SuppressWarnings("TooManyFunctions")
 /*
  * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,6 +35,9 @@ const val LEDGER_HELP_WEB_URL = "https://perawallet.app/support/ledger/"
 private const val PERA_INTRODUCTION_URL = "https://perawallet.app/blog/launch-announcement/"
 const val PERA_SUPPORT_URL = "https://perawallet.app/support/"
 
+const val HTTPS_PROTOCOL = "https://"
+const val HTTP_PROTOCOL = "http://"
+
 fun Context.openPeraIntroductionBlog() {
     openUrl(PERA_INTRODUCTION_URL)
 }
@@ -69,8 +73,8 @@ fun Context.openUrl(url: String) {
 }
 
 // TODO Refactor here
-fun Context.openTransactionInAlgoExplorer(transactionIdWithoutPrefix: String, nodeSlug: String?) {
-    val subDomain = if (nodeSlug == MAINNET_NETWORK_SLUG) "" else "$nodeSlug."
+fun Context.openTransactionInAlgoExplorer(transactionIdWithoutPrefix: String, networkSlug: String?) {
+    val subDomain = createSubDomainWithNetworkSlug(networkSlug)
     openUrl("https://$subDomain$ALGO_EXPLORER_URL/tx/$transactionIdWithoutPrefix")
 }
 
@@ -78,24 +82,24 @@ fun Context.openTransactionInGoalSeeker(transactionIdWithoutPrefix: String, node
     openUrl("$GOAL_SEEKER_BASE_URL/$nodeSlug/transaction/$transactionIdWithoutPrefix")
 }
 
-fun Context.openAssetInAlgoExplorer(assetId: Long?, nodeSlug: String?) {
-    val subDomain = if (nodeSlug == MAINNET_NETWORK_SLUG) "" else "$nodeSlug."
+fun Context.openAssetInAlgoExplorer(assetId: Long?, networkSlug: String?) {
+    val subDomain = createSubDomainWithNetworkSlug(networkSlug)
     openUrl("https://$subDomain$ALGO_EXPLORER_URL/asset/$assetId")
 }
 
-fun Context.openAccountAddressInAlgoExplorer(accountAddress: String, nodeSlug: String?) {
-    val subDomain = if (nodeSlug == MAINNET_NETWORK_SLUG) "" else "$nodeSlug."
+fun Context.openAccountAddressInAlgoExplorer(accountAddress: String, networkSlug: String?) {
+    val subDomain = createSubDomainWithNetworkSlug(networkSlug)
     openUrl("https://$subDomain$ALGO_EXPLORER_URL/address/$accountAddress")
 }
 
 // TODO: 4.03.2022 The site is not supporting test net yet, so it's not tested on MainNet
-fun Context.showAssetOnNftExplorer(assetId: Long, nodeSlug: String?) {
-    val subDomain = if (nodeSlug == MAINNET_NETWORK_SLUG) "" else "$nodeSlug."
+fun Context.showAssetOnNftExplorer(assetId: Long, networkSlug: String?) {
+    val subDomain = createSubDomainWithNetworkSlug(networkSlug)
     openUrl("https://www.nftexplorer.app/asset/$assetId")
 }
 
-fun Context.openApplicationInAlgoExplorer(applicationId: Long?, nodeSlug: String?) {
-    val subDomain = if (nodeSlug == MAINNET_NETWORK_SLUG) "" else "$nodeSlug."
+fun Context.openApplicationInAlgoExplorer(applicationId: Long?, networkSlug: String?) {
+    val subDomain = createSubDomainWithNetworkSlug(networkSlug)
     openUrl("https://$subDomain$ALGO_EXPLORER_URL/application/$applicationId")
 }
 
@@ -132,4 +136,17 @@ fun Context.openWatchAccountSupportUrl() {
 
 fun Context.openPeraSupportUrl() {
     openUrl(PERA_SUPPORT_URL)
+}
+
+fun getGoalSeekerUrl(transactionId: String, nodeSlug: String?): String {
+    return "$GOAL_SEEKER_BASE_URL/$nodeSlug/transaction/$transactionId"
+}
+
+fun getAlgoExplorerUrl(transactionId: String, networkSlug: String?): String {
+    val subDomain = createSubDomainWithNetworkSlug(networkSlug)
+    return "$HTTPS_PROTOCOL$subDomain$ALGO_EXPLORER_URL/tx/$transactionId"
+}
+
+private fun createSubDomainWithNetworkSlug(networkSlug: String?): String {
+    return if (networkSlug == MAINNET_NETWORK_SLUG) "" else "$networkSlug."
 }

@@ -56,7 +56,7 @@
     <string name="pending">保留中</string>
     <string name="you_should_enter_your_correct_password">パスフレーズを表示するには、正しいパスワードを入力する必要があります</string>
     <string name="there_s_no_biometric_registration">デバイスに生体認証が登録されていないか、生体認証ハードウェアが見つかりません</string>
-    <string name="you_re_trying_to_send">残高が最低残高に満たないアカウントにトランザクションを送信しようとしています。金額は最低でも <annotation replacement="amount">amountPlaceholder</annotation> algosでなければなりません。</string>
+    <string name="you_re_trying_to_send">残高が最低残高よりも少ないアカウントにトランザクションを送ろうとしています。残高は少なくとも<annotation replacement="amount">amountPlaceholder</annotation> algosでなければなりません。</string>
     <string name="transaction_amount">取引金額は、最小口座残高の<annotation replacement="min_balance"> </annotation> algosを下回る結果になります。</string>
     <string name="transaction_amount_cannot">取引額が利用可能額を超えることはできません。</string>
     <string name="transaction_amount_results">トランザクションの結果、残高がマイナスになります。</string>
@@ -113,9 +113,6 @@
     <string name="connecting_to_ledger">Ledgerに接続しています…</string>
     <string name="ledger_approval">Ledgerの承認</string>
     <string name="please_make_sure">Ledgerデバイスでトランザクションを確認してください</string>
-    <string name="ledger_info_power_first_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">LedgerのBluetooth機能の一般的な使用法については、Ledgerの公式<annotation type="bold"><annotation type="color">Bluetooth Connection Guide</annotation></annotation>をご覧ください。</annotation></string>
-    <string name="ledger_info_power_second_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">より高度なトラブルシューティングについては、Ledgerの公式<annotation type="bold"><annotation type="color">Bluetooth Troubleshooting Guide</annotation></annotation>をご覧ください。</annotation></string>
-    <string name="ledger_info_ledger_first_paragraph"><annotation url="https://www.ledger.com/start">まず、Ledgerの包括的な<annotation type="bold"><annotation type="color">Getting Started</annotation></annotation>チュートリアルに従ってください。</annotation></string>
     <string name="ledger_info_ledger_second_paragraph">チュートリアルで「デバイスにインストールするアプリケーションを選択してください」という指示が出たら、検索バーにAlgorandと入力してインストールしてください。</string>
     <string name="ledger_info_algorand_first_paragraph"><annotation url="https://www.ledger.com/start">まず、Ledgerの包括的な<annotation type="bold"><annotation type="color">Getting Started</annotation></annotation>チュートリアルに従ってください。このチュートリアルでは、Ledgerデバイスにアプリケーションをインストールして開く方法を説明しています。</annotation>\n  </string>
     <string name="ledger_info_algorand_second_paragraph">まだLedgerデバイスに<annotation type="bold">Algorand</annotation>アプリをインストールしていない場合、チュートリアルで「デバイスにインストールするアプリケーションを選択してください」という指示が出たら、検索バーにAlgorandと入力してインストールしてください。</string>
@@ -162,7 +159,6 @@
     <string name="last_week">先週</string>
     <string name="last_month">先月</string>
     <string name="custom_range">カスタム範囲</string>
-    <string name="press_and_hold">長押しでクリップボードにコピー</string>
     <string name="something_went_wrong">問題が発生しました</string>
     <string name="sorry_something_went">申し訳ありませんが、問題が発生しました。</string>
     <string name="try_again">やり直す</string>
@@ -188,12 +184,7 @@
     <string name="finalize_rekeying">再キー化を完了する</string>
     <string name="new_ledger">新Ledger</string>
     <string name="old_ledger">旧Ledger</string>
-    <string name="the_account_name">アカウント<annotation font="dmsans_bold">\"<annotation replacement="account_name"> </annotation>\"</annotation>が正常に再キー化されました。</string>
     <string name="just_now">たった今</string>
-    <string name="asset_support_success"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>が<annotation replacement="asset">assetPlaceholder</annotation>をアカウントに追加しました。<annotation replacement="asset">assetPlaceholder</annotation>を送信可能です。</string>
-    <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>が<annotation replacement="asset">assetPlaceholder</annotation>を送信しようとしていますが、これはサポートされていません。こちらの資産をアカウントに追加するには、ここをクリックしてください。</string>
-    <string name="transaction_send_successful"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>から<annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>への、<annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation>のトランザクションが完了しました。</string>
-    <string name="transaction_send_failed"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>から<annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>への、<annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation>のトランザクションが失敗しました。</string>
     <string name="transaction_received">トランザクションを受信</string>
     <string name="too_many_pin_attempts">PINの試行回数が多すぎます</string>
     <string name="this_ledger_device">接続されたLedgerデバイスは、以下のアカウントのトランザクションに署名できます。Pera Walletに追加するアカウントを選択してください。</string>
@@ -273,8 +264,6 @@
     <string name="paste_full_passphrase">パスフレーズ全体の貼り付け</string>
     <string name="verify_recovery_passphrase">リカバリーパスフレーズのバックアップを確認</string>
     <string name="transacting_tips">トランザクションのヒント</string>
-    <string name="the_only_way_to">このリカバリーパスフレーズを使う以外に、Algorandアカウントを復元する方法はありません。\n\n<annotation font="dmsans_italic"><annotation custom="warning_color"><annotation type="bold">警告</annotation>：このパスフレーズは、アカウントへの完全なアクセスを許可するものですので、誰にも教えないでください。</annotation></annotation></string>
-    <string name="monitor_activity_of">リカバリーパスフレーズの必要無く、アカウントのアクティビティを監視できます。これは、コールドストレージに保管されている資産を監視するのに便利です。\n\n<annotation font="dmsans_italic"><annotation custom="warning_color"><annotation type="bold">警告</annotation>：対応するリカバリーパスフレーズがない場合は、このアカウントに資産を送信しないでください。</annotation></annotation></string>
     <string name="i_want_to_monitor">コールドストレージに保管されているアカウントを監視したい</string>
     <string name="name_your_account_to">Pera Walletを使用する際、簡単に識別できるようにアカウントに名前を付けてください。これらの名前はローカルに保存され、ユーザーだけが見ることができます。</string>
     <string name="learn_more">さらに詳しく</string>
@@ -331,7 +320,6 @@
     <string name="this_transaction_is_sending">このトランザクションは、お客様のすべてのAlgo残高を送信します。</string>
     <string name="close_asset_to">資産をクローズする</string>
     <string name="this_transaction_is_sending_asset">このトランザクションは、お客様のすべての%1$s残高を送信し、アカウントから%1$sを削除します。</string>
-    <string name="this_transaction_fee_is_higher">このトランザクション手数料は、通常の手数料（0.001 Algos）よりも高くなっています。</string>
     <string name="wallet_connect_is_not_reachable">現在、WalletConnectにアクセスできません。後ほどお試しください。</string>
     <string name="connected_with_formatted">%1$sと接続しました</string>
     <string name="this_transaction_will_be">このトランザクションは後ほど提出されます。</string>
@@ -368,7 +356,6 @@
     <string name="signing_error_transaction_in_request">署名エラー：トランザクションリクエストのトランザクションには、接続されたウォレットに存在しない秘密鍵（署名者）が必要です。</string>
     <string name="transaction_request_contains_unsupported">トランザクションリクエストには、サポートされていないトランザクションタイプが含まれています</string>
     <string name="transaction_request_contains_unsupported_multisig">トランザクションリクエストには、サポートされていないトランザクションタイプが含まれています：Multi-sig</string>
-    <string name="invalid_input_transaction_request">無効な入力：トランザクションリクエストに%1$dを超えるトランザクションが含まれています</string>
     <string name="invalid_input_unable_to_parse">無効な入力：トランザクションを解析できません</string>
     <string name="invalid_input_invalid_public_key">無効な入力：公開鍵が無効です</string>
     <string name="invalid_input_invalid_asset">無効な入力：無効な資産です</string>
@@ -515,6 +502,7 @@
     <string name="show_note">メモを表示</string>
     <string name="create_a_passphrase_backup">アカウントのパスフレーズバックアップの作成</string>
     <string name="creating_a_passphrase_backup">パスフレーズのバックアップを作成すると、アカウントのリカバリーが可能です。パスフレーズがないと、デバイスを紛失したり、アカウントやアプリを削除した場合、Algorandアカウントへのアクセスを永久に失うことになります！</string>
+    <string name="congratulations_your_account">おめでとうございます。アカウントの準備が整いました。</string>
     <string name="welcome_to_pera_your_account">Pera Walletへようこそ！お客様のアカウントはすぐにお使いいただけます。</string>
     <string name="loading">読み込み中</string>
     <string name="algorand_wallet_is_now">公式発表です！\nAlgorand WalletはPera Walletになりました。</string>
@@ -525,6 +513,7 @@
     <string name="sorry_we_cant_show_account">申し訳ありませんが、このアカウントの詳細を表示することはできません。計算に問題が発生しているようです。\n\n一部の資産価格が公開されていない場合があり、ポートフォリオの合計値は推定値としてお考え下さい。</string>
     <string name="sorry_we_cant_show_portfolio">申し訳ありませんが、このポートフォリオの詳細を表示することはできません。計算に問題が発生しているようです。\n\n一部の資産価格が公開されていない場合があり、ポートフォリオの合計値は推定値としてお考え下さい。</string>
     <string name="transaction_request_faq">トランザクションリクエストに関するFAQ</string>
+    <string name="external_applications_also">dAppsとも呼ばれる外部アプリケーションは、Pera Walletが管理していないトランザクション要求を行えます。これらのトランザクションを承認し、署名する前に、内容を慎重にご確認ください。\n\nすべてのトランザクションは取消不可能です。これらの要求はPera Walletの管理下にありませんので、知らないdAppからのトランザクションは絶対に承認しないでください。</string>
     <string name="notification_algo_received_message"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> を、<annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>へ<annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>が送信しました。</string>
     <string name="minimum_amount_required">最少額を満たす必要があります</string>
     <string name="this_is_the_first_transaction">これは、選択した口座での最初のトランザクションです。最初のトランザクションでは、最低でも0.1 Algoが必要です。有効な額を入力して、やり直してください。</string>
@@ -585,6 +574,7 @@
     <string name="view_transaction">トランザクションを見る</string>
     <string name="show_on_algoexplorer">Algoexplorerで表示する</string>
     <string name="show_on_nftexplorer">NFTExplorerで表示する</string>
+    <string name="you_are_not_the_owner">まだこのNFTの所有者ではありませんが、オプトインしています。これでウォレットに転送可能です。</string>
     <string name="we_don_t_support">このNFTメディアタイプはまだサポートされていません。</string>
     <string name="we_can_t_display">一時的にビジュアルを表示できません。</string>
     <string name="transfer">転送</string>
@@ -606,4 +596,57 @@
     <string name="confirm_transfer">転送の確認</string>
     <string name="search_asset_id_or_nft">資産IDまたはNFT名の検索</string>
     <string name="receive_an_nft">NFTを受け取る</string>
+    <string name="the_account_name"><annotation font="dmsans_bold">"<annotation replacement="account_name"> </annotation>"</annotation>のアカウントは正常に再キー化されました。</string>
+    <string name="asset_support_success"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>は<annotation replacement="asset">assetPlaceholder</annotation>をアカウントに追加しました。<annotation replacement="asset">assetPlaceholder</annotation>を送信可能です。</string>
+    <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>はあなたに<annotation replacement="asset">assetPlaceholder</annotation>を送信しようとしていますが、こちらはサポートされていません。こちらの資産をアカウントに追加するには、ここをタップしてください。</string>
+    <string name="transaction_send_successful"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>から<annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>への、<annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation>のトランザクションが完了しました。</string>
+    <string name="the_only_way_to">Algorandアカウントを回復させる唯一の方法は、このリカバリーパスフレーズです。</string>
+    <string name="monitor_activity_of">リカバリーパスフレーズを必要とすることなく、アカウントのアクティビティを監視できます。コールドストレージに保管されている資産の監視に役立ちます。</string>
+    <string name="this_transaction_fee_is_higher">トランザクション手数料は、通常の0.001 Algosよりも高くなっています。</string>
+    <string name="you_are_about_to"><annotation replacement="asset_name">AassetNamePlaceholder</annotation>を<annotation replacement="account_name">accountNamePlaceholder</annotation>から削除しようとしています。この資産を再び有効にするまで、この資産の取引はできません。</string>
+    <string name="to_remove_the_balance"><annotation replacement="asset_name">assetNamePlaceholder</annotation>を削除するには、残高が0でなければなりません。残高を別のアカウントに移し、もう一度お試しください。</string>
+    <string name="you_are_about_to_receive_description"><annotation replacement="account_name">accountNamePlaceholder</annotation>で資産を受け取ろうとしています。この資産をこのアカウントに追加して受け取りますか？</string>
+    <string name="invalid_input_transaction_request">無効な入力：トランザクションリクエストに%1$d以上のトランザクションが含まれています</string>
+    <string name="selected_account">選択したアカウント</string>
+    <string name="your_nft_transfer_has_failed">NFT転送に失敗しました！</string>
+    <string name="please_verify_that_you_have">NFTの転送に必要となる、取引手数料の支払いに十分なAlgoがあることをご確認の上、もう一度お試しください。</string>
+    <string name="please_try_again">もう一度お試しください。</string>
+    <string name="retry">再試行</string>
+    <string name="opt_out">オプトアウト</string>
+    <string name="opt_out_from">「%1$s」をオプトアウトしました</string>
+    <string name="you_are_about_to_opt_out">%1$sでこのNFTをオプトアウトしようとしています。再びオプトインするまで、この資産の取引はできません。</string>
+    <string name="nft_successfully_opted_out">%1$sNFTをオプトアウトしました</string>
+    <string name="opted_in_to">オプトイン先</string>
+    <string name="show_on">表示する</string>
+    <string name="you_are_about_to_remove_watch_account">ウォッチアカウントを削除しようとしています。この選択を続行してよろしいですか？</string>
+    <string name="you_are_about_to_remove_main_account">メインアカウントを削除しようとしています。この選択を続行してよろしいですか？</string>
+    <string name="this_watch_account_has_opted">このウォッチアカウントはこのNFTをオプトインしていますが、NFTを所有していません。</string>
+    <string name="display_opted_in_nfts">オプトイン済NFTの表示</string>
+    <string name="you_can_show_hide">オプトインしているが所有していないNFTの表示 / 非表示が可能です</string>
+    <string name="filter">フィルタリング</string>
+    <string name="show_filtered_nfts_formatted">フィルタリングされたNFTの表示（%1$d）</string>
+    <string name="search_your_nfts">NFTの検索</string>
+    <string name="enter_your_old">6桁のPINを入力してください</string>
+    <string name="ledger_info_power_first_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">LedgerのBluetooth機能の一般的な使用法については、Ledgerの公式<annotation type="bold"><annotation type="color">Bluetooth Connection Guideをご覧ください。</annotation></annotation></annotation></string>
+    <string name="ledger_info_power_second_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">より高度なトラブルシューティングについては、Ledgerの公式<annotation type="bold"><annotation type="color">Bluetooth Troubleshooting Guideをご覧ください。</annotation></annotation></annotation></string>
+    <string name="ledger_info_ledger_first_paragraph"><annotation url="https://www.ledger.com/start">Ledgerの包括的な<annotation type="bold"><annotation type="color">Getting Started</annotation></annotation>チュートリアルに従い、始めましょう。</annotation></string>
+    <string name="no_nft_found">NFTが見つかりません</string>
+    <string name="tap_thumbnail_to_view_in">サムネイルをタップすると3Dモードで表示されます</string>
+    <string name="welcome_to_pera_wallet_your_watch">Pera Walletへようこそ！ウォッチアカウントは正常に追加されました。</string>
+    <string name="congratulations_your_watch_account_has">おめでとうございます。ウォッチアカウントが正常に追加されました。</string>
+    <string name="passphrase_verified">パスフレーズ確認</string>
+    <string name="keep_this_recovery">この回復用パスフレーズは、自分だけがアクセス可能な安全な場所に保管してください。この回復用パスフレーズは失くさないでください。</string>
+    <string name="tap_the_media_to_view_in">メディアをタップすると3Dモードで表示されます</string>
+    <string name="search_your_assets">資産の検索</string>
+    <string name="search">検索</string>
+    <string name="wrong_pin">間違ったPIN</string>
+    <string name="pin_does_not">PINが以前のPINと一致しません</string>
+    <string name="no_transactions">トランザクションなし</string>
+    <string name="there_are_no">選択した期間のトランザクションはありません</string>
+    <string name="filter_by_date">日付でフィルタリング</string>
+    <string name="asset_history_not_available">資産履歴がありません</string>
+    <string name="the_history_for_this_spesific">この特定の資産に関する履歴はありません。</string>
+    <string name="your_account_needs_to_be">NFTを受け取るには、お客様のアカウントにオプトインする必要があります。必ず資産IDをご確認ください。</string>
+    <string name="you_can_search_the_nft">オプトインしたいNFTの名前または資産IDを、下の検索バーに貼り付けて検索できます。</string>
+    <string name="select_the_wallet_account">受取先のウォレットアカウントを選択してください。</string>
 </resources>

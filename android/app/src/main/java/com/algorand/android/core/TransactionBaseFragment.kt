@@ -75,6 +75,9 @@ abstract class TransactionBaseFragment(
                     hideLoading()
                     navigateToConnectionIssueBottomSheet()
                 }
+                TransactionManagerResult.LedgerOperationCanceled -> {
+                    onSignTransactionCancelledByLedger()
+                }
             }
         }
     }
@@ -149,7 +152,7 @@ abstract class TransactionBaseFragment(
         transactionManager.signTransaction(transactionData)
     }
 
-    private fun showTransactionError(error: TransactionManagerResult.Error) {
+    protected fun showTransactionError(error: TransactionManagerResult.Error) {
         hideLoading()
         val (title, errorMessage) = error.getMessage(requireContext())
         showGlobalError(errorMessage, title)
@@ -178,6 +181,14 @@ abstract class TransactionBaseFragment(
                 context?.run { showGlobalError(error.parse(this)) }
             }
         }
+    }
+
+    protected open fun onSignTransactionCancelledByLedger() {
+        val transactionManagerResult = TransactionManagerResult.Error.Defined(
+            description = AnnotatedString(R.string.error_cancelled_message),
+            titleResId = R.string.error_cancelled_title
+        )
+        showTransactionError(transactionManagerResult)
     }
 
     override fun onLedgerLoadingCancelled() {

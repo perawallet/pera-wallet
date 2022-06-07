@@ -25,12 +25,14 @@ import com.algorand.android.core.TransactionBaseFragment
 import com.algorand.android.customviews.AccountCopyQrView
 import com.algorand.android.customviews.CollectibleMediaPager
 import com.algorand.android.databinding.FragmentCollectibleDetailBinding
+import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.AssetTransaction
 import com.algorand.android.models.BaseAccountAddress.AccountAddress
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.NotificationMetadata
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.models.TransactionManagerResult
 import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem
 import com.algorand.android.nft.ui.model.CollectibleDetail
 import com.algorand.android.nft.ui.model.CollectibleDetailPreview
@@ -39,7 +41,6 @@ import com.algorand.android.nft.ui.nfsdetail.CollectibleOptOutConfirmationBottom
 import com.algorand.android.ui.send.confirmation.TransactionConfirmationFragment.Companion.TRANSACTION_CONFIRMATION_KEY
 import com.algorand.android.ui.send.confirmation.TransactionConfirmationFragment.Companion.TRANSACTION_CONFIRMED_KEY
 import com.algorand.android.utils.PrismUrlBuilder
-import com.algorand.android.utils.PrismUrlBuilder.Companion.DEFAULT_IMAGE_QUALITY
 import com.algorand.android.utils.copyToClipboard
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
@@ -111,6 +112,14 @@ class CollectibleDetailFragment : TransactionBaseFragment(R.layout.fragment_coll
         override fun onSignTransactionLoadingFinished() {
             binding.progressbar.loadingProgressBar.hide()
         }
+    }
+
+    override fun onSignTransactionCancelledByLedger() {
+        val transactionManagerResult = TransactionManagerResult.Error.Defined(
+            description = AnnotatedString(R.string.the_opt_out_request_has),
+            titleResId = R.string.refused_ledger_transaction
+        )
+        showTransactionError(transactionManagerResult)
     }
 
     override fun onResume() {
@@ -233,9 +242,12 @@ class CollectibleDetailFragment : TransactionBaseFragment(R.layout.fragment_coll
             collectibleOwnerAccountUserView.apply {
                 ownerAddress?.run {
                     if (accountIcon != null) {
-                        setAccount(getDisplayAddress(), accountIcon)
+                        setAccount(getDisplayAddress(), accountIcon, publicKey)
                     } else {
-                        setAddress(ownerAddress.getDisplayAddress())
+                        setAddress(
+                            displayAddress = ownerAddress.getDisplayAddress(),
+                            publicKey = ownerAddress.publicKey
+                        )
                     }
                 }
             }
@@ -362,7 +374,7 @@ class CollectibleDetailFragment : TransactionBaseFragment(R.layout.fragment_coll
         return PrismUrlBuilder.create(BuildConfig.PERA_3D_EXPLORER_BASE_URL)
             .addImageUrl(rawImageUrl)
             .addWidth(IMAGE_3D_CARD_WIDTH)
-            .addQuality(DEFAULT_IMAGE_QUALITY)
+            .addQuality(IMAGE_3D_QUALITY)
             .build()
     }
 
@@ -383,5 +395,6 @@ class CollectibleDetailFragment : TransactionBaseFragment(R.layout.fragment_coll
 
     companion object {
         private const val IMAGE_3D_CARD_WIDTH = 1440
+        private const val IMAGE_3D_QUALITY = 100
     }
 }

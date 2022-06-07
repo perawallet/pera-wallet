@@ -120,7 +120,8 @@ class AssetSelectionMapper @Inject constructor() {
             formattedAmount = ownedUnsupportedCollectibleData.formattedAmount,
             formattedCompactAmount = ownedUnsupportedCollectibleData.formattedCompactAmount,
             formattedSelectedCurrencyValue = ownedUnsupportedCollectibleData.formattedSelectedCurrencyValue,
-            formattedSelectedCurrencyCompactValue = ownedUnsupportedCollectibleData.formattedSelectedCurrencyCompactValue,
+            formattedSelectedCurrencyCompactValue =
+            ownedUnsupportedCollectibleData.formattedSelectedCurrencyCompactValue,
             isAmountInSelectedCurrencyVisible = ownedUnsupportedCollectibleData.isAmountInSelectedCurrencyVisible,
             avatarDisplayText = AssetName.create(ownedUnsupportedCollectibleData.name)
         )

@@ -20,6 +20,7 @@ import com.algorand.android.core.BaseAssetActionBottomSheet
 import com.algorand.android.customviews.CustomToolbar
 import com.algorand.android.models.AssetActionResult
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.setNavigationResult
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,9 +40,12 @@ class AddAssetActionBottomSheet : BaseAssetActionBottomSheet() {
         titleResId = R.string.adding_asset
     )
 
+    override fun initUi() {
+        binding.transactionFeeGroup.show()
+    }
+
     override fun initArgs() {
-        this@AddAssetActionBottomSheet.asset = args.assetAction.asset
-            ?: assetActionViewModel.getAssetDescription(assetId)
+        asset = args.assetAction.asset ?: assetActionViewModel.getAssetDescription(assetId)
     }
 
     override fun setDescriptionTextView(textView: TextView) {
@@ -71,6 +75,10 @@ class AddAssetActionBottomSheet : BaseAssetActionBottomSheet() {
         materialButton.setOnClickListener {
             navBack()
         }
+    }
+
+    override fun setTransactionFeeTextView(textView: TextView) {
+        textView.text = assetActionViewModel.getTransactionFee()
     }
 
     companion object {

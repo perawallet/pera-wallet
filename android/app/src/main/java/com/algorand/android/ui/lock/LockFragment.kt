@@ -24,6 +24,7 @@ import androidx.fragment.app.viewModels
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.customviews.DialPadView
+import com.algorand.android.customviews.SixDigitPasswordView
 import com.algorand.android.databinding.FragmentLockBinding
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.StatusBarConfiguration
@@ -58,20 +59,19 @@ class LockFragment : DaggerBaseFragment(R.layout.fragment_lock) {
 
     private var biometricHandler: Handler? = null
 
+    private val pinCodeListener = object : SixDigitPasswordView.Listener {
+        override fun onPinCodeCompleted(pinCode: String) {
+            if (lockViewModel.getCurrentPassword() == pinCode) {
+                onEnteredCorrectPassword()
+            } else {
+                setLockAttemptCount(lockAttemptCount + 1)
+                binding.passwordView.clearWithAnimation()
+            }
+        }
+    }
     private val dialPadListener = object : DialPadView.DialPadListener {
         override fun onNumberClick(number: Int) {
-            binding.passwordView.onNewDigit(number, onNewDigitAdded = { isNewDigitAdded, isPasswordFilled ->
-                if (!isNewDigitAdded) return@onNewDigit
-                if (isPasswordFilled) {
-                    val givenPassword = binding.passwordView.getPassword()
-                    if (lockViewModel.getCurrentPassword() == givenPassword) {
-                        onEnteredCorrectPassword()
-                    } else {
-                        setLockAttemptCount(lockAttemptCount + 1)
-                        binding.passwordView.clearWithAnimation()
-                    }
-                }
-            })
+            binding.passwordView.onNewDigit(number)
         }
 
         override fun onBackspaceClick() {
@@ -94,6 +94,7 @@ class LockFragment : DaggerBaseFragment(R.layout.fragment_lock) {
     private fun initUi() {
         with(binding) {
             dialPad.setDialPadListener(dialPadListener)
+            passwordView.setListener(pinCodeListener)
             deleteAllDataButton.setOnClickListener { onDeleteAllDataClick() }
         }
     }

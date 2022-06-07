@@ -114,7 +114,13 @@ class AccountDetailFragment : BaseFragment(R.layout.fragment_account_detail), Ac
     }
 
     override fun onTransactionClick(transaction: BaseTransactionItem.TransactionItem) {
-        nav(AccountDetailFragmentDirections.actionAccountDetailFragmentToTransactionDetailBottomSheet(transaction))
+        nav(
+            AccountDetailFragmentDirections.actionAccountDetailFragmentToTransactionDetailBottomSheet(
+                transactionId = transaction.id ?: return,
+                publicKey = accountDetailViewModel.accountPublicKey,
+                isRewardTransaction = transaction is BaseTransactionItem.TransactionItem.Reward
+            )
+        )
     }
 
     override fun onFilterTransactionClick(dateFilter: DateFilter) {

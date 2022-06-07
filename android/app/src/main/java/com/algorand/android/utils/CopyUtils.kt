@@ -61,3 +61,17 @@ fun View.enableClickToCopy(text: String) {
         context.copyToClipboard(text)
     }
 }
+
+fun TextView.enableLongPressToCopyText() {
+    setOnLongClickListener {
+        enableLongPressToCopyText(text.toString())
+        true
+    }
+}
+
+fun View.enableLongPressToCopyText(text: String) {
+    setOnLongClickListener {
+        context.copyToClipboard(text)
+        true
+    }
+}

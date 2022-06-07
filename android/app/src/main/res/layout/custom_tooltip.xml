@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -11,32 +10,35 @@
   ~ limitations under the License
   -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:minHeight="48dp"
+    tools:parentTag="android.widget.FrameLayout">
 
     <ImageView
         android:id="@+id/tooltipImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        app:srcCompat="@drawable/ic_tooltip_top" />
+        android:layout_gravity="center|bottom"
+        app:srcCompat="@drawable/ic_tooltip_bottom" />
 
     <TextView
         android:id="@+id/tooltipTextView"
+        style="@style/TextAppearance.Body.Sans"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
+        android:layout_marginBottom="@dimen/spacing_xsmall"
         android:background="@drawable/bg_tooltip"
         android:ellipsize="end"
-        android:fontFamily="@font/dmsans_medium"
-        android:maxLines="3"
-        android:paddingHorizontal="20dp"
-        android:paddingVertical="12dp"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:minHeight="40dp"
+        android:paddingHorizontal="@dimen/spacing_normal"
+        android:paddingVertical="@dimen/spacing_xsmall"
         android:textColor="@color/white"
-        android:textSize="14sp"
-        tools:text="@tools:sample/lorem[4]" />
+        tools:text="@tools:sample/lorem[7]" />
 
-</FrameLayout>
+</merge>

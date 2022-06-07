@@ -17,7 +17,6 @@ import com.algorand.android.models.NextBlockResponse
 import com.algorand.android.models.Result
 import com.algorand.android.models.SendTransactionResponse
 import com.algorand.android.models.TrackTransactionRequest
-import com.algorand.android.models.Transaction
 import com.algorand.android.models.TransactionParams
 import com.algorand.android.models.TransactionsResponse
 import com.algorand.android.network.AlgodApi
@@ -92,20 +91,6 @@ class TransactionsRepository @Inject constructor(
             hipoApiErrorHandler.getMessageAsResultError(errorResponse)
         }
     )
-
-    suspend fun getTransactionDetail(transactionId: String): Result<Transaction> =
-        safeApiCall { requestGetTransactionDetail(transactionId) }
-
-    private suspend fun requestGetTransactionDetail(transactionId: String): Result<Transaction> {
-        with(indexerApi.getTransactionDetail(transactionId)) {
-            val queriedTransaction = body()?.transactionList?.firstOrNull()
-            return if (isSuccessful && queriedTransaction != null) {
-                Result.Success(queriedTransaction)
-            } else {
-                Result.Error(Exception(errorBody()?.charStream()?.readText()))
-            }
-        }
-    }
 
     suspend fun getTransactionHistory(
         assetId: Long? = null,
