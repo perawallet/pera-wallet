@@ -13,11 +13,11 @@
 package com.algorand.android.deviceregistration.domain.usecase
 
 import com.algorand.android.utils.DataResource
-import java.net.HttpURLConnection
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
+import java.net.HttpURLConnection
+import javax.inject.Inject
 
 class DeviceRegistrationUseCase @Inject constructor(
     private val deviceIdUseCase: DeviceIdUseCase,
@@ -31,6 +31,8 @@ class DeviceRegistrationUseCase @Inject constructor(
             else -> updatePushTokenUseCase.updatePushToken(deviceId, token, null).collect {
                 if (it is DataResource.Error.Api && it.code == HttpURLConnection.HTTP_NOT_FOUND) {
                     registerDeviceIdUseCase.registerDevice(token).collect { emit(it) }
+                } else {
+                    emit(it)
                 }
             }
         }
