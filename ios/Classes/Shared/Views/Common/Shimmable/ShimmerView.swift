@@ -53,6 +53,6 @@ final class ShimmerView:
     }
 
     deinit {
-        unobserveNotifications()
+        stopObservingNotifications()
     }
 }

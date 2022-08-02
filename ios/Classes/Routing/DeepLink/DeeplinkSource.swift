@@ -25,10 +25,10 @@ enum DeeplinkSource {
     /// true => Show message and wait for the user to confirm before taking any action.
     /// false => Take the action immediately.
     case remoteNotification(UserInfo, waitForUserConfirmation: Bool)
-    case url(URL)
     case walletConnectSessionRequest(URL)
     case walletConnectRequest(WalletConnectRequestDraft)
     case buyAlgo(BuyAlgoDraft)
+    case qrText(QRText)
 }
 
 extension DeeplinkSource {

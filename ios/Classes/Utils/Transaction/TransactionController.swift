@@ -338,6 +338,10 @@ extension TransactionController: LedgerTransactionOperationDelegate {
         delegate?.transactionController(self, didRequestUserApprovalFrom: ledger)
     }
 
+    func ledgerTransactionOperationDidRejected(_ ledgerTransactionOperation: LedgerTransactionOperation) {
+        delegate?.transactionControllerDidRejectedLedgerOperation(self)
+    }
+
     func ledgerTransactionOperationDidFinishTimingOperation(_ ledgerTransactionOperation: LedgerTransactionOperation) {
         stopTimer()
     }

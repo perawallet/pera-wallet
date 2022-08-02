@@ -61,9 +61,7 @@ final class ALGAppLaunchController:
         /// <todo>
         /// Authenticated user is decoded everytime its getter is called.
         let authenticatedUser = session.authenticatedUser
-        
         setupPreferredNetwork(authenticatedUser)
-        setupAccountsPreordering(authenticatedUser)
     }
     
     func launch(
@@ -256,25 +254,6 @@ extension ALGAppLaunchController {
 }
 
 extension ALGAppLaunchController {
-    /// <todo>
-    /// Another way? It will be called everytime the application is launched.
-    private func setupAccountsPreordering(
-        _ authenticatedUser: User?
-    ) {        
-        authenticatedUser?.accounts
-            .enumerated()
-            .forEach { index, account in
-                if !account.isOrderred {
-                    let initialOffset = account.type == .watch ? 100000 : 0
-                    account.preferredOrder = initialOffset + index
-                }
-            }
-        authenticatedUser?.syncronize()
-        session.authenticatedUser = authenticatedUser
-    }
-}
-
-extension ALGAppLaunchController {
     private typealias DeeplinkResult = Result<AppLaunchUIState, DeepLinkParser.Error>?
     
     private func resumeOrSuspend(
@@ -288,14 +267,14 @@ extension ALGAppLaunchController {
                 forRemoteNotificationWithUserInfo: userInfo,
                 waitForUserConfirmation: waitForUserConfirmation
             )
-        case .url(let url):
-            result = determineUIStateIfPossible(forURL: url)
         case .walletConnectSessionRequest(let url):
             result = determineUIStateIfPossible(forWalletConnectSessionRequest: url)
         case .walletConnectRequest(let draft):
             result = determineUIStateIfPossible(forWalletConnectRequest: draft)
         case .buyAlgo(let draft):
             result = determineUIStateIfPossible(forBuyAlgo: draft)
+        case .qrText(let qrText):
+            result = determineUIStateIfPossible(forQRText: qrText)
         }
         
         switch result {
@@ -336,12 +315,12 @@ extension ALGAppLaunchController {
             return .failure(error)
         }
     }
-    
+
     private func determineUIStateIfPossible(
-        forURL url: URL
+        forQRText qrText: QRText
     ) -> DeeplinkResult {
-        let parserResult = deeplinkParser.discover(url: url)
-        
+        let parserResult = deeplinkParser.discover(qrText: qrText)
+
         switch parserResult {
         case .none: return nil
         case .success(let screen): return .success(.deeplink(screen))
@@ -386,7 +365,7 @@ extension ALGAppLaunchController {
     private func suspend(
         deeplinkWithSource src: DeeplinkSource
     ) {
-        $pendingDeeplinkSource.modify { $0 = src }
+        $pendingDeeplinkSource.mutate { $0 = src }
     }
     
     private func resumePendingDeeplink() {
@@ -396,11 +375,11 @@ extension ALGAppLaunchController {
     }
     
     private func completePendingDeeplink() {
-        $pendingDeeplinkSource.modify { $0 = nil }
+        $pendingDeeplinkSource.mutate { $0 = nil }
     }
     
     private func cancelPendingDeeplink() {
-        $pendingDeeplinkSource.modify { $0 = nil }
+        $pendingDeeplinkSource.mutate { $0 = nil }
     }
 }
 

@@ -23,6 +23,7 @@ import Prism
 struct CollectibleMediaWebPImagePreviewViewModel: CollectibleMediaImagePreviewViewModel {
     var image: ImageSource?
     var isOwned: Bool = true
+    var isFullScreenBadgeHidden: Bool = false
 
     init(
         imageSize: CGSize,
@@ -36,6 +37,7 @@ struct CollectibleMediaWebPImagePreviewViewModel: CollectibleMediaImagePreviewVi
         )
 
         bindOwned(asset)
+        bindIsFullScreenBadgeHidden(asset)
     }
 }
 
@@ -47,9 +49,13 @@ extension CollectibleMediaWebPImagePreviewViewModel {
     ) {
         let placeholder = asset.title.fallback(asset.name.fallback("#\(String(asset.id))"))
 
-        if let imageURL = media?.downloadURL {
+        if let imageURL = media?.previewURL {
+            let prismURL = PrismURL(baseURL: imageURL)
+                .setExpectedImageSize(imageSize)
+                .build()
+
             image = PNGImageSource(
-                url: imageURL,
+                url: prismURL,
                 shape: .rounded(4),
                 placeholder: getPlaceholder(placeholder)
             )

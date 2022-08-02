@@ -51,7 +51,8 @@ struct ContactContextViewTheme: StyleSheet, LayoutSheet {
             .font(Fonts.DMMono.regular.make(13))
         ]
         self.qrButton = [
-            .icon([.normal("icon-qr")])
+            .icon([.normal("icon-qr")]),
+            .tintColor(AppColors.Components.Text.main)
         ]
         self.horizontalPadding = 24
         self.imageSize = (40, 40)

@@ -18,7 +18,7 @@
 import MacaroonUIKit
 import UIKit
 
-final class AssetDetailViewController: TransactionsViewController {
+final class AssetDetailViewController: BaseAssetDetailViewController {
     override var name: AnalyticsScreenName? {
         return .assetDetail
     }

@@ -22,6 +22,8 @@ final class ReceiveCollectibleAccountListAPIDataController:
     SharedDataControllerObserver {
     var eventHandler: ((ReceiveCollectibleAccountListDataControllerEvent) -> Void)?
 
+    private lazy var currencyFormatter = CurrencyFormatter()
+
     private var lastSnapshot: Snapshot?
 
     private let sharedDataController: SharedDataController
@@ -93,7 +95,7 @@ extension ReceiveCollectibleAccountListAPIDataController {
     }
 
     private func deliverContentSnapshot() {
-        let filteredAccounts = sharedDataController.accountCollection.sorted().filter {
+        let filteredAccounts = sharedDataController.sortedAccounts().filter {
             $0.value.type != .watch
         }
 
@@ -110,17 +112,17 @@ extension ReceiveCollectibleAccountListAPIDataController {
             var accountItems: [ReceiveCollectibleAccountListItem] = []
 
             let currency = self.sharedDataController.currency
-            let calculator = ALGPortfolioCalculator()
 
             filteredAccounts
                 .forEach {
-                    let accountPortfolio =
-                        AccountPortfolio(account: $0, currency: currency, calculator: calculator)
-
+                    let accountPortfolioItem = AccountPortfolioItem(
+                        accountValue: $0,
+                        currency: currency,
+                        currencyFormatter: self.currencyFormatter
+                    )
+                    let accountPreviewViewModel = AccountPreviewViewModel(accountPortfolioItem)
                     let cellItem: ReceiveCollectibleAccountListItem = .account(
-                        AccountPreviewViewModel(
-                            accountPortfolio
-                        )
+                        accountPreviewViewModel
                     )
 
                     accounts.append($0)

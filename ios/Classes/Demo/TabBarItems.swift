@@ -32,8 +32,10 @@ struct HomeTabBarItem: TabBarItem {
             TabBarButtonItem(
                 icon: [
                     .normal("tabbar-icon-accounts"),
-                    .selected("tabbar-icon-accounts-selected")
-                ]
+                    .selected("tabbar-icon-accounts-selected"),
+                    .disabled("tabbar-icon-accounts-disabled")
+                ],
+                title: "title-home".localized
             )
         self.screen = screen
     }
@@ -52,8 +54,10 @@ struct AlgoStatisticsTabBarItem: TabBarItem {
             TabBarButtonItem(
                 icon: [
                     .normal("tabbar-icon-algo-statistics"),
-                    .selected("tabbar-icon-algo-statistics-selected")
-                ]
+                    .selected("tabbar-icon-algo-statistics-selected"),
+                    .disabled("tabbar-icon-algo-statistics-disabled")
+                ],
+                title: "title-price".localized
             )
         self.screen = screen
     }
@@ -72,8 +76,10 @@ struct CollectiblesTabBarItem: TabBarItem {
             TabBarButtonItem(
                 icon: [
                     .normal("tabbar-icon-collectibles"),
-                    .selected("tabbar-icon-collectibles-selected")
-                ]
+                    .selected("tabbar-icon-collectibles-selected"),
+                    .disabled("tabbar-icon-collectibles-disabled")
+                ],
+                title: "title-collectibles".localized
             )
         self.screen = screen
     }
@@ -92,8 +98,10 @@ struct SettingsTabBarItem: TabBarItem {
             TabBarButtonItem(
                 icon: [
                     .normal("tabbar-icon-settings"),
-                    .selected("tabbar-icon-settings-selected")
-                ]
+                    .selected("tabbar-icon-settings-selected"),
+                    .disabled("tabbar-icon-settings-disabled")
+                ],
+                title: "settings-title".localized
             )
         self.screen = screen
     }

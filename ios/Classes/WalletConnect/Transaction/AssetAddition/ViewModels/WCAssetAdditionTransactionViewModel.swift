@@ -39,7 +39,9 @@ class WCAssetAdditionTransactionViewModel {
     init(
         transaction: WCTransaction,
         senderAccount: Account?,
-        asset: Asset?
+        asset: Asset?,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
     ) {
         setFromInformationViewModel(from: senderAccount, and: transaction)
         setToInformationViewModel(from: senderAccount, and: transaction)
@@ -47,7 +49,12 @@ class WCAssetAdditionTransactionViewModel {
         setCloseWarningViewModel(from: transaction, and: asset)
         setRekeyWarningViewModel(from: senderAccount, and: transaction)
 
-        setFeeInformationViewModel(from: transaction, and: asset)
+        setFeeInformationViewModel(
+            from: transaction,
+            and: asset,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
         setFeeWarningInformationViewModel(from: transaction)
 
         setNoteInformationViewModel(from: transaction)
@@ -159,7 +166,9 @@ class WCAssetAdditionTransactionViewModel {
 
     private func setFeeInformationViewModel(
         from transaction: WCTransaction,
-        and asset: Asset?
+        and asset: Asset?,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
     ) {
         guard let transactionDetail = transaction.transactionDetail,
               let fee = transactionDetail.fee,
@@ -167,12 +176,15 @@ class WCAssetAdditionTransactionViewModel {
             return
         }
 
+        let mode = TransactionAmountView.Mode.normal(
+            amount: fee.toAlgos,
+            isAlgos: true,
+            fraction: algosFraction
+        )
         let feeViewModel = TransactionAmountViewModel(
-            .normal(
-                amount: fee.toAlgos,
-                isAlgos: true,
-                fraction: algosFraction
-            )
+            mode,
+            currency: currency,
+            currencyFormatter: currencyFormatter
         )
 
         let feeInformationViewModel = TransactionAmountInformationViewModel(transactionViewModel: feeViewModel)

@@ -24,6 +24,8 @@ final class CollectibleListViewController:
 
     var eventHandler: EventHandler?
 
+    private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
+
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = CollectibleListLayout.build()
         let collectionView = UICollectionView(
@@ -43,15 +45,20 @@ final class CollectibleListViewController:
     private lazy var listDataSource = CollectibleListDataSource(listView)
 
     private let dataController: CollectibleListDataController
+    private let copyToClipboardController: CopyToClipboardController
+
     private let theme: CollectibleListViewControllerTheme
 
     init(
         dataController: CollectibleListDataController,
+        copyToClipboardController: CopyToClipboardController,
         theme: CollectibleListViewControllerTheme,
         configuration: ViewControllerConfiguration
     ) {
         self.dataController = dataController
+        self.copyToClipboardController = copyToClipboardController
         self.theme = theme
+
         super.init(configuration: configuration)
     }
 
@@ -128,7 +135,7 @@ final class CollectibleListViewController:
 
                     accounts = [account]
                 case .all:
-                    accounts = self.sharedDataController.accountCollection.sorted()
+                    accounts = self.sharedDataController.sortedAccounts()
                 }
 
                 self.eventHandler?(.didUpdate(accounts))
@@ -192,7 +199,9 @@ extension CollectibleListViewController {
 
         switch itemIdentifier {
         case .header:
-            linkInteractors(cell as! CollectibleListInfoWithFilterCell)
+            linkInteractors(cell as! ManagementItemWithSecondaryActionCell)
+        case .watchAccountHeader:
+            linkInteractors(cell as! ManagementItemCell)
         case .search:
             linkInteractors(cell as! CollectibleListSearchInputCell)
         case .empty(let item):
@@ -209,8 +218,6 @@ extension CollectibleListViewController {
             switch item {
             case .cell(let item):
                 linkInteractors(cell, item: item)
-            default:
-                break
             }
         }
     }
@@ -248,7 +255,7 @@ extension CollectibleListViewController {
             return
         }
 
-        view.endEditing(true)
+        endEditing()
 
         switch itemIdentifier {
         case .collectible(let item):
@@ -271,11 +278,79 @@ extension CollectibleListViewController {
                         thumbnailImage: cell?.contextView.currentImage
                     )
                 }
-            case .footer:
-                openReceiveCollectibleAccountList()
             }
         default:
             break
+        }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        contextMenuConfigurationForItemAt indexPath: IndexPath,
+        point: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        guard let asset = getCollectibleItem(at: indexPath)?.asset else {
+            return nil
+        }
+
+        return UIContextMenuConfiguration(
+            identifier: indexPath as NSIndexPath
+        ) { _ in
+            let copyActionItem = UIAction(item: .copyAssetID) {
+                [unowned self] _ in
+                self.copyToClipboardController.copyID(asset)
+            }
+            return UIMenu(children: [ copyActionItem ])
+        }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        return makeTargetedPreview(
+            collectionView,
+            configuration: configuration
+        )
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        return makeTargetedPreview(
+            collectionView,
+            configuration: configuration
+        )
+    }
+
+    private func makeTargetedPreview(
+        _ collectionView: UICollectionView,
+        configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard
+            let indexPath = configuration.identifier as? IndexPath,
+            let itemIdentifier = listDataSource.itemIdentifier(for: indexPath)
+        else {
+            return nil
+        }
+
+        switch itemIdentifier {
+        case .collectible(let item):
+            switch item {
+            case .cell(let cell):
+                switch cell {
+                case .pending,
+                     .owner:
+                    let cell = collectionView.cellForItem(at: indexPath) as! CollectibleListItemCell
+                    return cell.getTargetedPreview()
+                case .optedIn:
+                    let cell = collectionView.cellForItem(at: indexPath) as! CollectibleListItemOptedInCell
+                    return cell.getTargetedPreview()
+                }
+            }
+        default:
+            return nil
         }
     }
 }
@@ -317,31 +392,43 @@ extension CollectibleListViewController {
     }
 
     private func linkInteractors(
-        _ cell: CollectibleListInfoWithFilterCell
+        _ cell: ManagementItemWithSecondaryActionCell
     ) {
-        cell.observe(event: .showFilterSelection) {
+        cell.observe(event: .primaryAction) {
             [weak self] in
             guard let self = self else {
                 return
             }
 
-            let controller = self.open(
-                .collectiblesFilterSelection(
-                    filter: self.dataController.currentFilter
-                ),
-                by: .present
-            ) as? CollectiblesFilterSelectionViewController
+            self.endEditing()
+            
+            self.openCollectiblesManagementScreen()
+        }
 
-            controller?.handlers.didChangeFilter = {
-                [weak self] filter in
-                guard let self = self else {
-                    return
-                }
-
-                self.dataController.filter(
-                    by: filter
-                )
+        cell.observe(event: .secondaryAction) {
+            [weak self] in
+            guard let self = self else {
+                return
             }
+
+            self.endEditing()
+
+            self.openReceiveCollectibleAccountList()
+        }
+    }
+
+    private func linkInteractors(
+        _ cell: ManagementItemCell
+    ) {
+        cell.observe(event: .primaryAction) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.endEditing()
+
+            self.openCollectiblesManagementScreen()
         }
     }
 
@@ -381,6 +468,16 @@ extension CollectibleListViewController {
     private func openReceiveCollectibleAccountList() {
         eventHandler?(.didTapReceive)
     }
+
+    private func openCollectiblesManagementScreen() {
+        modalTransition.perform(
+            .managementOptions(
+                managementType: .collectibles,
+                delegate: self
+            ),
+            by: .present
+        )
+    }
 }
 
 extension CollectibleListViewController: SearchInputViewDelegate {
@@ -399,6 +496,88 @@ extension CollectibleListViewController: SearchInputViewDelegate {
 
     func searchInputViewDidReturn(_ view: SearchInputView) {
         view.endEditing()
+    }
+}
+
+extension CollectibleListViewController: ManagementOptionsViewControllerDelegate {
+    func managementOptionsViewControllerDidTapSort(
+        _ managementOptionsViewController: ManagementOptionsViewController
+    ) {
+        let eventHandler: SortCollectibleListViewController.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            
+            self.dismiss(animated: true) {
+                [weak self] in
+                guard let self = self else { return }
+
+                switch event {
+                case .didComplete: self.dataController.reload()
+                }
+            }
+        }
+
+        open(
+            .sortCollectibleList(
+                dataController: SortCollectibleListLocalDataController(
+                    session: session!,
+                    sharedDataController: sharedDataController
+                ),
+                eventHandler: eventHandler
+            ),
+            by: .present
+        )
+    }
+
+    func managementOptionsViewControllerDidTapFilter(
+        _ managementOptionsViewController: ManagementOptionsViewController
+    ) {
+        let controller = open(
+            .collectiblesFilterSelection(
+                filter: dataController.currentFilter
+            ),
+            by: .present
+        ) as? CollectiblesFilterSelectionViewController
+
+        controller?.handlers.didChangeFilter = {
+            [weak self] filter in
+            guard let self = self else {
+                return
+            }
+
+            self.dataController.filter(
+                by: filter
+            )
+        }
+    }
+
+    func managementOptionsViewControllerDidTapRemove(
+        _ managementOptionsViewController: ManagementOptionsViewController
+    ) {}
+}
+
+extension CollectibleListViewController {
+    private func getCollectibleItem(
+        at indexPath: IndexPath
+    ) -> CollectibleCellItemContainer<CollectibleListItemViewModel>? {
+        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+            return nil
+        }
+
+        switch itemIdentifier {
+        case .collectible(let collectibleItem):
+            switch collectibleItem {
+            case .cell(let collectibleCellItem):
+                switch collectibleCellItem {
+                case .owner(let item),
+                     .optedIn(let item),
+                     .pending(let item):
+                    return item
+                }
+            }
+        default:
+            return nil
+        }
     }
 }
 

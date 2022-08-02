@@ -26,50 +26,87 @@ final class WCSingleTransactionRequestMiddleViewModel {
 
     var asset: Asset? {
         didSet {
-            setData(transaction, for: account, with: currency)
+            setData(transaction, for: account)
         }
     }
 
     private let transaction: WCTransaction
     private let account: Account?
-    private let currency: Currency?
+    private let currency: CurrencyProvider
+    private let currencyFormatter: CurrencyFormatter
 
-    init(transaction: WCTransaction, account: Account?, currency: Currency?) {
+    init(
+        transaction: WCTransaction,
+        account: Account?,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) {
         self.transaction = transaction
         self.account = account
         self.currency = currency
+        self.currencyFormatter = currencyFormatter
         
-        self.setData(transaction, for: account, with: currency)
+        self.setData(
+            transaction,
+            for: account
+        )
     }
 
-    private func setData(_ transaction: WCTransaction, for account: Account?, with currency: Currency?) {
+    private func setData(
+        _ transaction: WCTransaction,
+        for account: Account?
+    ) {
         guard let type = transaction.transactionDetail?.transactionType(for: account) else {
             return
         }
 
         switch type {
         case .algos:
-            self.title = "\(transaction.transactionDetail?.amount.toAlgos.toAlgosStringForLabel ?? "")"
+            if let amount = transaction.transactionDetail?.amount {
+                currencyFormatter.formattingContext = .standalone()
+                currencyFormatter.currency = AlgoLocalCurrency()
+
+                let text = currencyFormatter.format(amount.toAlgos)
+
+                title = text.someString
+            } else {
+                title = ""
+            }
+
             self.isAssetIconHidden = true
-            self.setUsdValue(transaction: transaction, asset: nil, currency: currency)
+            self.setUsdValue(transaction: transaction, asset: nil)
         case .asset:
-            guard let asset = asset else {
+            guard
+                let asset = asset,
+                let amount = transaction.transactionDetail?.amount
+            else {
                 return
             }
 
-            let decimals = asset.presentation.decimals
+            let assetDecimals = asset.decimals
 
-            let amount = transaction.transactionDetail?.amount.assetAmount(fromFraction: decimals).toFractionStringForLabel(fraction: decimals) ?? ""
+            /// <todo>
+            /// Not sure we need this constraint, because the final number should be sent to the
+            /// formatter unless the number itself is modified.
+            var constraintRules = CurrencyFormattingContextRules()
+            constraintRules.maximumFractionDigits = assetDecimals
+
+            currencyFormatter.formattingContext = .standalone(constraints: constraintRules)
+            currencyFormatter.currency = nil
+
+            let finalAmount = amount.assetAmount(fromFraction: assetDecimals)
+            let finalAmountText = currencyFormatter.format(finalAmount)
+            let text = finalAmountText.someString
 
             if let assetCode = asset.presentation.hasOnlyAssetName ?
                     asset.presentation.displayNames.primaryName :
                     asset.presentation.displayNames.secondaryName {
-                self.title = "\(amount) \(assetCode)"
+                self.title = "\(text) \(assetCode)"
             }
 
             self.isAssetIconHidden = !asset.presentation.isVerified
 
-            self.setUsdValue(transaction: transaction, asset: asset, currency: currency)
+            self.setUsdValue(transaction: transaction, asset: asset)
         case .assetAddition,
                 .possibleAssetAddition:
             guard let asset = asset else {
@@ -131,30 +168,38 @@ final class WCSingleTransactionRequestMiddleViewModel {
 
     private func setUsdValue(
         transaction: WCTransaction,
-        asset: Asset?,
-        currency: Currency?
+        asset: Asset?
     ) {
-        guard let currency = currency,
-              let currencyPriceValue = currency.priceValue,
-              let currencyUsdValue = currency.usdValue,
-              let amount = transaction.transactionDetail?.amount else {
-                  return
-        }
-
-        if let asset = asset {
-            guard let assetUSDValue = AssetDecoration(asset: asset).usdValue else {
-                return
-            }
-
-            let currencyValue = assetUSDValue * amount.assetAmount(fromFraction: asset.presentation.decimals) * currencyUsdValue
-            if currencyValue > 0 {
-                subtitle = currencyValue.toCurrencyStringForLabel(with: currency.symbol)
-            }
-
+        guard
+            let amount = transaction.transactionDetail?.amount,
+            let currencyValue = currency.primaryValue
+        else {
+            subtitle = nil
             return
         }
 
-        let totalAmount = amount.toAlgos * currencyPriceValue
-        subtitle = totalAmount.toCurrencyStringForLabel(with: currency.symbol)
+        do {
+            let rawCurrency = try currencyValue.unwrap()
+            let exchanger = CurrencyExchanger(currency: rawCurrency)
+
+            let amountInCurrency: Decimal
+            if let asset = asset {
+                let assetAmount = amount.assetAmount(fromFraction: asset.decimals)
+                amountInCurrency = try exchanger.exchange(
+                    asset,
+                    amount: assetAmount
+                )
+            } else {
+                let algoAmount = amount.toAlgos
+                amountInCurrency = try exchanger.exchangeAlgo(amount: algoAmount)
+            }
+
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = rawCurrency
+
+            subtitle = currencyFormatter.format(amountInCurrency)
+        } catch {
+            subtitle = nil
+        }
     }
 }

@@ -24,7 +24,6 @@ protocol BarButtonItem {
     typealias ImageContent = BarButtonItemImageContent
     typealias Size = BarButtonSize
     
-    var theme: Theme { get }
     var title: TitleContent? { get }
     var image: ImageContent? { get }
     var size: Size { get }
@@ -36,11 +35,6 @@ protocol BarButtonItem {
 }
 
 extension BarButtonItem {
-    
-    var theme: Theme {
-        return .light
-    }
-    
     var title: TitleContent? {
         return nil
     }
@@ -160,9 +154,4 @@ enum BarButtonSize {
     case expanded(width: BarButtonExpandedSizeMetric, height: BarButtonExpandedSizeMetric)
     case aligned(BarButtonAlignedContentSize)
     case explicit(CGSize)
-}
-
-enum Theme {
-    case light
-    case dark
 }

@@ -35,6 +35,7 @@ final class PendingTransaction:
     private let algosReceiver: String?
     let sender: String?
     let type: Transaction.TransferType?
+    let assetID: Int64?
     
     var amount: UInt64 {
         return assetAmount ?? algosAmount ?? 0
@@ -60,6 +61,7 @@ final class PendingTransaction:
         self.algosReceiver = apiModel.txn?.rcv
         self.sender = apiModel.txn?.snd
         self.type = apiModel.txn?.type
+        self.assetID = apiModel.txn?.xaid
     }
 
     func encode() -> APIModel {
@@ -74,6 +76,7 @@ final class PendingTransaction:
         transaction.rcv = algosReceiver
         transaction.snd = sender
         transaction.type = type
+        transaction.xaid = assetID
 
         var apiModel = APIModel()
         apiModel.sig = signature
@@ -89,6 +92,7 @@ final class PendingTransaction:
         hasher.combine(type)
         hasher.combine(lv)
         hasher.combine(fv)
+        hasher.combine(assetID)
     }
     
     static func == (lhs: PendingTransaction, rhs: PendingTransaction) -> Bool {
@@ -98,7 +102,8 @@ final class PendingTransaction:
         lhs.amount == rhs.amount &&
         lhs.type == rhs.type &&
         lhs.lv == rhs.lv &&
-        rhs.fv == rhs.fv
+        rhs.fv == rhs.fv &&
+        rhs.assetID == rhs.assetID
     }
 }
 
@@ -229,6 +234,7 @@ extension PendingTransaction.APIModel {
         var rcv: String?
         var arcv: String?
         var snd: String?
+        var xaid: Int64?
         var type: Transaction.TransferType?
 
         init() {
@@ -241,6 +247,7 @@ extension PendingTransaction.APIModel {
             self.rcv = nil
             self.arcv = nil
             self.snd = nil
+            self.xaid = nil
             self.type = nil
         }
     }

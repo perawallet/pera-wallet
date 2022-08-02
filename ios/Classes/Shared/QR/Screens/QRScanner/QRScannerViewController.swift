@@ -22,7 +22,10 @@ import MacaroonUIKit
 
 final class QRScannerViewController: BaseViewController {
     weak var delegate: QRScannerViewControllerDelegate?
-    
+
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .portrait
     }
@@ -34,7 +37,11 @@ final class QRScannerViewController: BaseViewController {
     private lazy var wcConnectionModalTransition = BottomSheetTransition(presentingViewController: self)
 
     private lazy var overlayView = QRScannerOverlayView {
-        $0.showsConnectedAppsButton = isShowingConnectedAppsButton
+        [weak self] in
+        guard let self = self else { return }
+
+        $0.cancelMode = self.canGoBack() ? .pop : .dismiss
+        $0.showsConnectedAppsButton = self.isShowingConnectedAppsButton
     }
 
     private var captureSession: AVCaptureSession?
@@ -64,6 +71,11 @@ final class QRScannerViewController: BaseViewController {
 
     deinit {
         wcConnectionRepeater?.invalidate()
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = AppColors.Shared.System.background.uiColor
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -227,6 +239,16 @@ extension QRScannerViewController {
     }
 }
 
+extension QRScannerViewController {
+    private func closeScreen() {
+        if canGoBack() {
+            popScreen()
+        } else {
+            dismissScreen()
+        }
+    }
+}
+
 extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
     func metadataOutput(
         _ output: AVCaptureMetadataOutput,
@@ -242,7 +264,7 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
                 let qrString = readableObject.stringValue,
                 let qrStringData = qrString.data(using: .utf8) else {
                     captureSession = nil
-                    closeScreen(by: .pop)
+                    closeScreen()
                     delegate?.qrScannerViewController(self, didFail: .invalidData, completionHandler: nil)
                     return
             }
@@ -256,7 +278,7 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
                         message: "qr-scan-invalid-wc-screen-error".localized
                     )
                     captureSession = nil
-                    closeScreen(by: .pop)
+                    closeScreen()
                     return
                 }
 
@@ -265,21 +287,24 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
                 startWCConnectionTimer()
             } else if let qrText = try? JSONDecoder().decode(QRText.self, from: qrStringData) {
                 captureSession = nil
-                closeScreen(by: .pop)
+                closeScreen()
                 delegate?.qrScannerViewController(self, didRead: qrText, completionHandler: nil)
             } else if let url = URL(string: qrString),
-                qrString.hasPrefix("algorand://") {
-                guard let qrText = url.buildQRText() else {
+                let scheme = url.scheme,
+                target.deeplinkConfig.qr.canAcceptScheme(scheme) {
+
+                let deeplinkQR = DeeplinkQR(url: url)
+                guard let qrText = deeplinkQR.qrText() else {
                     delegate?.qrScannerViewController(self, didFail: .jsonSerialization, completionHandler: cameraResetHandler)
                     return
                 }
                 captureSession = nil
-                closeScreen(by: .pop)
+                closeScreen()
                 delegate?.qrScannerViewController(self, didRead: qrText, completionHandler: nil)
             } else if qrString.isValidatedAddress {
                 let qrText = QRText(mode: .address, address: qrString)
                 captureSession = nil
-                closeScreen(by: .pop)
+                closeScreen()
                 delegate?.qrScannerViewController(self, didRead: qrText, completionHandler: nil)
             } else {
                 delegate?.qrScannerViewController(self, didFail: .jsonSerialization, completionHandler: cameraResetHandler)
@@ -297,7 +322,7 @@ extension QRScannerViewController: WalletConnectorDelegate {
     ) {
         stopWCConnectionTimer()
 
-        let accounts = self.sharedDataController.accountCollection.sorted()
+        let accounts = self.sharedDataController.sortedAccounts()
 
         guard accounts.contains(where: { !$0.value.isWatchAccount() }) else {
             asyncMain { [weak self] in
@@ -331,7 +356,6 @@ extension QRScannerViewController: WalletConnectorDelegate {
         delegate?.qrScannerViewControllerDidApproveWCConnection(self)
         walletConnector.saveConnectedWCSession(session)
         captureSession = nil
-        closeScreen(by: .pop)
     }
 
     func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.Error) {
@@ -350,7 +374,6 @@ extension QRScannerViewController: WalletConnectorDelegate {
                     message: "wallet-connect-session-invalid-qr-message".localized
                 )
                 self.captureSession = nil
-                self.closeScreen(by: .pop)
             }
         default:
             break
@@ -442,7 +465,7 @@ extension QRScannerViewController: WCConnectionApprovalViewControllerDelegate {
                         ),
                         secondaryActionButtonTitle: "title-close".localized,
                         secondaryAction: { [weak self] in
-                            self?.popScreen()
+                            self?.closeScreen()
                         }
                     )
             ),
@@ -452,16 +475,22 @@ extension QRScannerViewController: WCConnectionApprovalViewControllerDelegate {
 }
 
 extension QRScannerViewController: QRScannerOverlayViewDelegate {
-    func qrScannerOverlayViewDidTapBackButton(_ qrScannerOverlayView: QRScannerOverlayView) {
-        popScreen()
-    }
-
     func qrScannerOverlayViewDidTapConnectedAppsButton(_ qrScannerOverlayView: QRScannerOverlayView) {
         let walletConnectSessionsShortList: WCSessionShortListViewController? = wcConnectionModalTransition.perform(
             .walletConnectSessionShortList,
             by: .presentWithoutNavigationController
         )
         walletConnectSessionsShortList?.delegate = self
+    }
+
+    func qrScannerOverlayView(
+        _ qrScannerOverlayView: QRScannerOverlayView,
+        didCancel mode: QRScannerOverlayView.Configuration.CancelMode
+    ) {
+        switch mode {
+        case .pop: popScreen()
+        case .dismiss: dismissScreen()
+        }
     }
 }
 

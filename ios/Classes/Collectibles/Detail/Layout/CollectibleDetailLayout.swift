@@ -234,9 +234,10 @@ extension CollectibleDetailLayout {
         sizeForMediaItem item: CollectibleAsset
     ) -> CGSize {
         let width = listView.bounds.width
-        return CGSize(
-            width: width.float(),
-            height: width.float() - Self.theme.mediaInset * 2 + Self.theme.mediaLabelOffset
+
+        return CollectibleMediaPreviewViewController.calculatePreferredSize(
+            item,
+            fittingIn: CGSize((width.float(), .greatestFiniteMagnitude))
         )
     }
 

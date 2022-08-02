@@ -17,15 +17,20 @@
 import Foundation
 
 final class CollectibleAsset: Asset {
+    var optedInAddress: String?
+
     let id: AssetID
     let amount: UInt64
+    let decimals: Int
+    let decimalAmount: Decimal
     let isFrozen: Bool?
     let isDeleted: Bool?
+    let optedInAtRound: UInt64?
     let creator: AssetCreator?
     let name: String?
     let unitName: String?
-    let decimals: Int
     let usdValue: Decimal?
+    let totalUSDValue: Decimal?
     let total: Int64?
     let isVerified: Bool
     let thumbnailImage: URL?
@@ -56,14 +61,6 @@ final class CollectibleAsset: Asset {
         return amount.assetAmount(fromFraction: decimals)
     }
 
-    var amountDisplayWithFraction: String? {
-        return amountWithFraction.toExactFractionLabel(fraction: decimals)
-    }
-
-    var amountNumberWithAutoFraction: String? {
-        return amountWithFraction.toNumberStringWithSeparatorForLabel(fraction: decimals)
-    }
-
     var isOwned: Bool {
         return amount != 0
     }
@@ -87,14 +84,12 @@ final class CollectibleAsset: Asset {
         decoration: AssetDecoration
     ) {
         self.id = asset.id
-        self.amount = asset.amount
         self.isFrozen = asset.isFrozen
         self.isDeleted = asset.isDeleted
+        self.optedInAtRound = asset.optedInAtRound
         self.creator = decoration.creator
         self.name = decoration.name
         self.unitName = decoration.unitName
-        self.decimals = decoration.decimals
-        self.usdValue = decoration.usdValue
         self.total = decoration.total
         self.isVerified = decoration.isVerified
         self.thumbnailImage = decoration.collectible?.thumbnailImage
@@ -106,7 +101,20 @@ final class CollectibleAsset: Asset {
         self.url = decoration.url
         self.description = decoration.collectible?.description
         self.properties = decoration.collectible?.properties
-        self.explorerURL = decoration.collectible?.explorerURL
+        self.explorerURL = decoration.explorerURL
+
+        let amount = asset.amount
+        let decimals = decoration.decimals
+        /// <note>
+        /// decimalAmount = amount * 10^-(decimals)
+        let decimalAmount = Decimal(sign: .plus, exponent: -decimals, significand: Decimal(amount))
+        let usdValue = decoration.usdValue
+
+        self.amount = amount
+        self.decimals = decimals
+        self.decimalAmount = decimalAmount
+        self.usdValue = usdValue
+        self.totalUSDValue = usdValue.unwrap { $0 * decimalAmount }
     }
 }
 
@@ -130,7 +138,8 @@ extension CollectibleAsset: Comparable {
             lhs.isVerified == rhs.isVerified &&
             lhs.thumbnailImage == rhs.thumbnailImage &&
             lhs.title == rhs.title &&
-            lhs.collectionName == rhs.collectionName
+            lhs.collectionName == rhs.collectionName &&
+            lhs.optedInAtRound == rhs.optedInAtRound
     }
 
     static func < (lhs: CollectibleAsset, rhs: CollectibleAsset) -> Bool {

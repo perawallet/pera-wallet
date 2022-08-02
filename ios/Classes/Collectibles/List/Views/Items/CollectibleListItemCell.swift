@@ -44,4 +44,8 @@ final class CollectibleListItemCell:
 
         isPending = false
     }
+
+    func getTargetedPreview() -> UITargetedPreview {
+        return contextView.getTargetedPreview()
+    }
 }

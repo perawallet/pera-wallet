@@ -18,6 +18,8 @@
 import UIKit
 import MacaroonUIKit
 
+/// <todo>
+/// Remove `Button` from the project.
 final class Button: MacaroonUIKit.Button, TripleShadowDrawable {
     var secondShadow: MacaroonUIKit.Shadow?
     var secondShadowLayer: CAShapeLayer = CAShapeLayer()

@@ -37,8 +37,11 @@ final class WCUnsignedRequestScreen: BaseViewController {
     private lazy var unsignedRequestView = WCUnsignedRequestView()
     private lazy var layoutBuilder = WCMainTransactionLayout(
         dataSource: dataSource,
-        sharedDataController: sharedDataController
+        sharedDataController: sharedDataController,
+        currencyFormatter: currencyFormatter
     )
+
+    private lazy var currencyFormatter = CurrencyFormatter()
 
     let dataSource: WCMainTransactionDataSource
 

@@ -61,8 +61,28 @@ extension ListActionView {
         iconView.contentEdgeInsets = theme.iconContentEdgeInsets
         iconView.fitToIntrinsicSize()
         iconView.snp.makeConstraints {
-            $0.centerY == 0
             $0.leading == 0
+        }
+
+        alignIcon(
+            iconView,
+            with: theme
+        )
+    }
+
+    private func alignIcon(
+        _ view: UIView,
+        with theme: ListActionViewTheme
+    ) {
+        switch theme.iconAlignment {
+        case .centered:
+            view.snp.makeConstraints {
+                $0.centerY == 0
+            }
+        case let .aligned(top):
+            view.snp.makeConstraints {
+                $0.top == top + theme.contentVerticalPaddings.top
+            }
         }
     }
     
@@ -117,5 +137,12 @@ extension ListActionView {
             $0.bottom == 0
             $0.trailing == 0
         }
+    }
+}
+
+extension ListActionView {
+    enum IconViewAlignment {
+        case centered
+        case aligned(top: LayoutMetric)
     }
 }

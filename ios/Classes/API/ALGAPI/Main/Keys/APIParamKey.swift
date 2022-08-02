@@ -74,4 +74,6 @@ enum APIParamKey: String, CodingKey {
     case walletAddress = "wallet_address"
     case redirectUrl = "redirect_url"
     case exclude = "exclude"
+    case includeDeleted = "include_deleted"
+    case name = "name"
 }

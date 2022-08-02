@@ -155,7 +155,9 @@ extension AssetListViewAPIDataController {
                         asset: ALGAsset(id: asset.id),
                         decoration: asset
                     )
-                    viewModel = AssetPreviewViewModel(collectibleAsset)
+                    viewModel = AssetPreviewViewModel(
+                        CollectibleAssetPreviewAdditionDraft(asset: collectibleAsset)
+                    )
 
                 } else {
                     let standardAsset = StandardAsset(
@@ -163,7 +165,7 @@ extension AssetListViewAPIDataController {
                         decoration: asset
                     )
                     viewModel = AssetPreviewViewModel(
-                        AssetPreviewModelAdapter.adapt(standardAsset)
+                        StandardAssetPreviewAdditionDraft(asset: standardAsset)
                     )
                 }
                 

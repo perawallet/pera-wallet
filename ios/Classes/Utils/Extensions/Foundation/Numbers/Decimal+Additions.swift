@@ -18,5 +18,11 @@
 import Foundation
 
 extension Decimal {
-    var number: NSDecimalNumber { return NSDecimalNumber(decimal: self) }
+    var number: NSDecimalNumber {
+        return NSDecimalNumber(decimal: self)
+    }
+
+    var doubleValue: Double {
+        return number.doubleValue
+    }
 }

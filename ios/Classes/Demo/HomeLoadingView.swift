@@ -25,29 +25,22 @@ final class HomeLoadingView:
     ShimmerAnimationDisplaying {
     private lazy var theme = HomeLoadingViewTheme()
 
-    private lazy var portfolioLabel = UILabel()
-    private lazy var portfolioLoading = ShimmerView()
-    private lazy var holdingsContainer = UIView()
-    private lazy var algoHoldingsContainer = UIView()
-    private lazy var algoHoldingsLabel = Label()
-    private lazy var algoHoldingLoading = ShimmerView()
-    private lazy var assetHoldingsContainer = UIView()
-    private lazy var assetHoldingsLabel = Label()
-    private lazy var assetHoldingLoading = ShimmerView()
-    
-    private lazy var buyAlgoButton = Button()
-    
-    private lazy var accountsLabel = Label()
-    private lazy var firstAccountPreviewLoading = PreviewLoadingView()
-    private lazy var secondAccountPreviewLoading = PreviewLoadingView()
+    private lazy var contentView = UIView()
+    private lazy var portfolioView = UIView()
+    private lazy var portfolioTitleView = UILabel()
+    private lazy var portfolioInfoView = MacaroonUIKit.Button()
+    private lazy var portfolioPrimaryValueView = ShimmerView()
+    private lazy var portfolioSecondaryValueView = ShimmerView()
+    private lazy var quickActionsView = HomeQuickActionsView()
+    private lazy var accountsHeaderView = ManagementItemView()
+    private lazy var accountsView = VStackView()
+    private lazy var backgroundView = UIView()
     
     override init(
         frame: CGRect
     ) {
         super.init(frame: frame)
-        addPortfolioView()
-        addBuyAlgoButton()
-        addAccountCells()
+        addContent()
     }
 
     func customizeAppearance(
@@ -60,124 +53,165 @@ final class HomeLoadingView:
 }
 
 extension HomeLoadingView {
-    private func addPortfolioView() {
-        portfolioLabel.editText = theme.portfolioText
-        algoHoldingsLabel.editText = theme.algoHoldingText
-        assetHoldingsLabel.editText = theme.assetHoldingText
-
-        addSubview(portfolioLabel)
-        portfolioLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(theme.portfolioMargin.top)
-            $0.leading.equalToSuperview()
+    private func addContent() {
+        addSubview(contentView)
+        contentView.snp.makeConstraints {
+            $0.top == theme.contentEdgeInsets.top
+            $0.leading == theme.contentEdgeInsets.leading
+            $0.bottom == theme.contentEdgeInsets.bottom
+            $0.trailing == theme.contentEdgeInsets.trailing
         }
 
-        portfolioLoading.draw(corner: theme.loadingCorner)
-
-        addSubview(portfolioLoading)
-        portfolioLoading.snp.makeConstraints {
-            $0.top.equalTo(portfolioLabel.snp.bottom).offset(theme.portfolioLoadingMargin.top)
-            $0.leading.equalTo(portfolioLabel)
-            $0.fitToSize(theme.portfolioLoadingSize)
-        }
-
-        addSubview(holdingsContainer)
-        holdingsContainer.snp.makeConstraints {
-            $0.top.equalTo(portfolioLabel.snp.bottom).offset(theme.holdingsContainerMargin.top)
-            $0.leading.equalToSuperview()
-            $0.trailing.equalToSuperview()
-            $0.height.equalTo(theme.holdingsContainerHeight)
-        }
-
-        addAlgoHoldings()
-        addAssetHoldings()
+        addPortfolio()
+        addAccounts()
+        addBackground()
     }
 
-    private func addAlgoHoldings() {
-        holdingsContainer.addSubview(algoHoldingsContainer)
-        algoHoldingsContainer.snp.makeConstraints {
-            $0.top.leading.bottom.equalToSuperview()
+    private func addPortfolio() {
+        contentView.addSubview(portfolioView)
+        portfolioView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == 0
+            $0.trailing == 0
         }
 
-        algoHoldingsContainer.addSubview(algoHoldingsLabel)
-        algoHoldingsLabel.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.leading.equalToSuperview()
+        addPortfolioTitle()
+        addPortfolioValues()
+        addQuickActions()
+    }
+
+    private func addPortfolioTitle() {
+        portfolioTitleView.customizeAppearance(theme.portfolioTitle)
+
+        portfolioView.addSubview(portfolioTitleView)
+        portfolioTitleView.fitToIntrinsicSize()
+        portfolioTitleView.snp.makeConstraints {
+            $0.top == theme.portfolioTitleTopPadding
+            $0.centerX == 0
         }
 
-        algoHoldingLoading.draw(corner: theme.loadingCorner)
+        portfolioInfoView.customizeAppearance(theme.portfolioInfoAction)
+        portfolioInfoView.isUserInteractionEnabled = false
 
-        algoHoldingsContainer.addSubview(algoHoldingLoading)
-        algoHoldingLoading.snp.makeConstraints {
-            $0.top.equalTo(algoHoldingsLabel.snp.bottom).offset(theme.algoHoldingLoadingTopInset)
-            $0.leading.equalToSuperview()
-            $0.fitToSize(theme.algoHoldingLoadingSize)
+        portfolioView.addSubview(portfolioInfoView)
+        portfolioInfoView.snp.makeConstraints {
+            $0.leading == portfolioTitleView.snp.trailing +
+                theme.spacingBetweenPortfolioTitleAndPortfolioInfoAction
+            $0.centerY == portfolioTitleView
         }
     }
 
-    private func addAssetHoldings() {
-        holdingsContainer.addSubview(assetHoldingsContainer)
-        assetHoldingsContainer.snp.makeConstraints {
-            $0.width.equalTo(algoHoldingsContainer)
-            $0.top.equalToSuperview()
-            $0.leading.equalTo(algoHoldingsContainer.snp.trailing)
-            $0.bottom.equalToSuperview()
-            $0.trailing.equalToSuperview()
+    private func addPortfolioValues() {
+        portfolioPrimaryValueView.draw(corner: theme.portfolioValueCorner)
+
+        portfolioView.addSubview(portfolioPrimaryValueView)
+        portfolioPrimaryValueView.snp.makeConstraints {
+            $0.fitToSize(theme.primaryPortfolioValueSize)
+            $0.top == portfolioTitleView.snp.bottom +
+                theme.spacingBetweenPortfolioTitleAndPrimaryPortfolioValue
+            $0.centerX == 0
         }
 
-        assetHoldingsContainer.addSubview(assetHoldingsLabel)
-        assetHoldingsLabel.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-            $0.top.equalToSuperview()
-        }
+        portfolioSecondaryValueView.draw(corner: theme.portfolioValueCorner)
 
-        assetHoldingLoading.draw(corner:theme.loadingCorner)
-        assetHoldingsContainer.addSubview(assetHoldingLoading)
-        assetHoldingLoading.snp.makeConstraints {
-            $0.centerY.equalTo(algoHoldingLoading)
-            $0.leading.equalTo(assetHoldingsLabel.snp.leading)
-            $0.fitToSize(theme.algoHoldingLoadingSize)
+        portfolioView.addSubview(portfolioSecondaryValueView)
+        portfolioSecondaryValueView.snp.makeConstraints {
+            $0.fitToSize(theme.secondaryPortfolioValueSize)
+            $0.top == portfolioPrimaryValueView.snp.bottom +
+                theme.spacingBetweenPrimaryPortfolioValueAndSecondaryPortfolioValue
+            $0.centerX == 0
         }
     }
 
-    private func addBuyAlgoButton() {
-        buyAlgoButton.customize(theme.buyAlgoButtonTheme)
+    private func addQuickActions() {
+        let quickActionsTheme = theme.quickActions
 
-        addSubview(buyAlgoButton)
-        buyAlgoButton.snp.makeConstraints {
-            $0.top.equalTo(holdingsContainer.snp.bottom).offset(theme.buyAlgoButtonMargin.top)
-            $0.leading.equalToSuperview()
-            $0.trailing.equalToSuperview()
-            $0.height.equalTo(theme.buyAlgoButtonHeight)
+        quickActionsView.customize(quickActionsTheme)
+        quickActionsView.isUserInteractionEnabled = false
+
+        /// <todo>
+        /// It should calculate its own size.
+        let quickActionsSize = HomeQuickActionsView.calculatePreferredSize(
+            for: quickActionsTheme,
+            fittingIn: CGSize(
+                width: UIScreen.main.bounds.width -
+                    theme.contentEdgeInsets.leading -
+                    theme.contentEdgeInsets.trailing,
+                height: .greatestFiniteMagnitude
+            )
+        )
+
+        portfolioView.addSubview(quickActionsView)
+        quickActionsView.snp.makeConstraints {
+            $0.fitToHeight(quickActionsSize.height)
+            $0.top == portfolioSecondaryValueView.snp.bottom +
+                theme.spacingBetweenQuickActionsAndSecondaryPortfolioValue
+            $0.leading == 0
+            $0.bottom == theme.quickActionsBottomPadding
+            $0.trailing == 0
         }
     }
 
-    private func addAccountCells() {
-        accountsLabel.customizeAppearance(theme.accountsLabelStyle)
+    private func addAccounts() {
+        let accountsHeaderTheme = theme.accountsHeader
+        let accountsHeaderViewModel = ManagementItemViewModel(.account)
 
-        addSubview(accountsLabel)
-        accountsLabel.snp.makeConstraints {
-            $0.top.equalTo(buyAlgoButton.snp.bottom).offset(theme.accountsLabelMargin.top)
-            $0.leading.equalToSuperview()
-            $0.trailing.equalToSuperview()
+        accountsHeaderView.customize(accountsHeaderTheme)
+        accountsHeaderView.bindData(accountsHeaderViewModel)
+        accountsHeaderView.isUserInteractionEnabled = false
+
+        /// <todo>
+        /// It should calculate its own size.
+        let accountsHeaderSize = ManagementItemView.calculatePreferredSize(
+            accountsHeaderViewModel,
+            for: accountsHeaderTheme,
+            fittingIn: CGSize(
+                width: UIScreen.main.bounds.width -
+                    theme.contentEdgeInsets.leading -
+                    theme.contentEdgeInsets.trailing,
+                height: .greatestFiniteMagnitude
+            )
+        )
+
+        contentView.addSubview(accountsHeaderView)
+        accountsHeaderView.snp.makeConstraints {
+            $0.fitToHeight(accountsHeaderSize.height)
+            $0.top == portfolioView.snp.bottom + theme.spacingBetweenAccountsHeaderAndPortfolio
+            $0.leading == 0
+            $0.trailing == 0
         }
 
-        firstAccountPreviewLoading.customize(PreviewLoadingViewCommonTheme())
-        secondAccountPreviewLoading.customize(PreviewLoadingViewCommonTheme())
-
-        addSubview(firstAccountPreviewLoading)
-        firstAccountPreviewLoading.snp.makeConstraints {
-            $0.top.equalTo(accountsLabel.snp.bottom).offset(theme.accountLoadingMargin.top)
-            $0.leading.equalToSuperview()
-            $0.trailing.equalToSuperview()
-            $0.height.equalTo(theme.accountLoadingHeight)
+        contentView.addSubview(accountsView)
+        accountsView.directionalLayoutMargins = theme.accountsContentEdgeInsets
+        accountsView.isLayoutMarginsRelativeArrangement = true
+        accountsView.snp.makeConstraints {
+            $0.top == accountsHeaderView.snp.bottom
+            $0.leading == 0
+            $0.trailing == 0
         }
-        
-        addSubview(secondAccountPreviewLoading)
-        secondAccountPreviewLoading.snp.makeConstraints {
-            $0.top.equalTo(firstAccountPreviewLoading.snp.bottom)
-            $0.leading.equalToSuperview()
-            $0.trailing.equalToSuperview()
-            $0.height.equalTo(theme.accountLoadingHeight)
+
+        (1...6).forEach { _ in
+            let accountView = PreviewLoadingView()
+            accountView.customize(theme.account)
+            accountsView.addArrangedSubview(accountView)
+            accountView.snp.makeConstraints {
+                $0.fitToHeight(theme.accountHeight)
+            }
+        }
+    }
+
+    private func addBackground() {
+        backgroundView.customizeAppearance(theme.background)
+
+        insertSubview(
+            backgroundView,
+            at: 0
+        )
+        backgroundView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == 0
+            $0.bottom == portfolioView
+            $0.trailing == 0
         }
     }
 }

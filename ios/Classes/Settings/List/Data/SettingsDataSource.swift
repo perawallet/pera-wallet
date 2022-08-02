@@ -33,7 +33,7 @@ final class SettingsDataSource: NSObject {
     ]
 
     private(set) lazy var appPreferenceSettings: [AppPreferenceSettings] = [
-        .rewards, .language, .currency, .appearance
+        .language, .currency, .appearance
     ]
 
     private(set) lazy var supportSettings: [SupportSettings] = [
@@ -67,14 +67,6 @@ extension SettingsDataSource: UICollectionViewDataSource {
             case .appPreferences:
                 if let setting = appPreferenceSettings[safe: indexPath.item] {
                     switch setting {
-                    case .rewards:
-                        let rewardDisplayPreference = session?.rewardDisplayPreference == .allowed
-                        return setSettingsToggleCell(
-                            from: setting,
-                            isOn: rewardDisplayPreference,
-                            in: collectionView,
-                            at: indexPath
-                        )
                     case .language, .currency, .appearance:
                         return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
                     }
@@ -96,18 +88,6 @@ extension SettingsDataSource: UICollectionViewDataSource {
     ) -> SettingsDetailCell {
         let cell = collectionView.dequeue(SettingsDetailCell.self, at: indexPath)
         cell.bindData(SettingsDetailViewModel(setting: setting))
-        return cell
-    }
-    
-    private func setSettingsToggleCell(
-        from setting: Settings,
-        isOn: Bool,
-        in collectionView: UICollectionView,
-        at indexPath: IndexPath
-    ) -> SettingsToggleCell {
-        let cell = collectionView.dequeue(SettingsToggleCell.self, at: indexPath)
-        cell.delegate = self
-        cell.bindData(SettingsToggleViewModel(setting: setting, isOn: isOn))
         return cell
     }
     
@@ -137,18 +117,7 @@ extension SettingsDataSource: SettingsFooterSupplementaryViewDelegate {
     }
 }
 
-extension SettingsDataSource: SettingsToggleCellDelegate {
-    func settingsToggleCell(_ settingsToggleCell: SettingsToggleCell, didChangeValue value: Bool) {
-        delegate?.settingsDataSource(self, settingsToggleCell, didChangeValue: value)
-    }
-}
-
 protocol SettingsDataSourceDelegate: AnyObject {
-    func settingsDataSource(
-        _ settingsDataSource: SettingsDataSource,
-        _ settingsToggleCell: SettingsToggleCell,
-        didChangeValue value: Bool
-    )
     func settingsDataSourceDidTapLogout(
         _ settingsDataSource: SettingsDataSource,
         _ settingsFooterSupplementaryView: SettingsFooterSupplementaryView

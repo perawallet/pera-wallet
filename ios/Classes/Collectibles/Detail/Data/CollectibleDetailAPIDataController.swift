@@ -305,28 +305,17 @@ extension CollectibleDetailAPIDataController {
             )
         }
 
-        if let assetTitle = asset.title,
-           !assetTitle.isEmpty {
-            descriptionItems.append(
-                .information(
-                    CollectibleTransactionInformation(
-                        icon: nil,
-                        title: "collectible-detail-creator-name".localized,
-                        value: assetTitle,
-                        isCollectibleSpecificValue: true
-                    )
-                )
-            )
-        }
-
         if let creator = asset.creator?.address {
+            let source = AlgoExplorerExternalSource(address: creator, network: api.network)
+
             descriptionItems.append(
                 .information(
                     CollectibleTransactionInformation(
                         icon: nil,
                         title: "collectible-detail-creator-address".localized,
                         value: creator.shortAddressDisplay,
-                        isCollectibleSpecificValue: true
+                        isCollectibleSpecificValue: true,
+                        actionURL: source.url
                     )
                 )
             )

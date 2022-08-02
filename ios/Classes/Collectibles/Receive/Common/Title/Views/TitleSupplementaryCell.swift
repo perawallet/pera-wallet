@@ -31,6 +31,32 @@ final class TitleSupplementaryCell:
     }
 }
 
+final class TitleSupplementaryTableCell:
+    TableCell<TitleView>,
+    ViewModelBindable,
+    ListIdentifiable {
+    override class var contextPaddings: LayoutPaddings {
+        return (28, 24, 12, 24)
+    }
+
+    static let theme = TitleViewTheme()
+
+    override init(
+        style: UITableViewCell.CellStyle,
+        reuseIdentifier: String?
+    ) {
+        super.init(
+            style: style,
+            reuseIdentifier: reuseIdentifier
+        )
+
+        backgroundColor = .clear
+        selectionStyle = .none
+
+        contextView.customize(Self.theme)
+    }
+}
+
 final class TitleSupplementaryHeader: BaseSupplementaryView<TitleView> {
     static let theme = TitleViewTheme(paddings: (0, 24, 0, 24))
 

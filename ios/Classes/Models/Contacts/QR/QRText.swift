@@ -50,18 +50,7 @@ final class QRText: Codable {
     
     required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        
-        if try values.decodeIfPresent(String.self, forKey: .mnemonic) != nil {
-            mode = .mnemonic
-        } else if try values.decodeIfPresent(String.self, forKey: .asset) != nil,
-            try values.decodeIfPresent(String.self, forKey: .amount) != nil {
-            mode = .assetRequest
-        } else if try values.decodeIfPresent(String.self, forKey: .amount) != nil {
-            mode = .algosRequest
-        } else {
-            mode = .address
-        }
-        
+
         address = try values.decodeIfPresent(String.self, forKey: .address)
         label = try values.decodeIfPresent(String.self, forKey: .label)
         mnemonic = try values.decodeIfPresent(String.self, forKey: .mnemonic)
@@ -76,6 +65,21 @@ final class QRText: Codable {
 
         note = try values.decodeIfPresent(String.self, forKey: .note)
         lockedNote = try values.decodeIfPresent(String.self, forKey: .lockedNote)
+
+        if mnemonic != nil {
+            mode = .mnemonic
+        } else if asset != nil,
+                  amount != nil {
+            if amount == 0 && address == nil {
+                mode = .optInRequest
+            } else {
+                mode = .assetRequest
+            }
+        } else if try values.decodeIfPresent(String.self, forKey: .amount) != nil {
+            mode = .algosRequest
+        } else {
+            mode = .address
+        }
     }
     
     func encode(to encoder: Encoder) throws {
@@ -122,13 +126,81 @@ final class QRText: Codable {
             if let lockedNote = lockedNote {
                 try container.encode(lockedNote, forKey: .lockedNote)
             }
+        case .optInRequest:
+            if let amount = amount {
+                try container.encode(amount, forKey: .amount)
+            }
+            if let asset = asset {
+                try container.encode(asset, forKey: .asset)
+            }
         }
+    }
+
+    class func build(for address: String?, with queryParameters: [String: String]?) -> Self? {
+        guard let queryParameters = queryParameters else {
+            if let address = address {
+                return Self(mode: .address, address: address)
+            }
+
+            return nil
+        }
+
+        if let amount = queryParameters[QRText.CodingKeys.amount.rawValue],
+           let asset = queryParameters[QRText.CodingKeys.asset.rawValue] {
+
+            if let address = address {
+                return Self(
+                    mode: .assetRequest,
+                    address: address,
+                    amount: UInt64(amount),
+                    asset: Int64(asset),
+                    note: queryParameters[QRText.CodingKeys.note.rawValue],
+                    lockedNote: queryParameters[QRText.CodingKeys.lockedNote.rawValue]
+                )
+            }
+
+            if amount == "0" {
+                return Self(
+                    mode: .optInRequest,
+                    address: nil,
+                    amount: UInt64(amount),
+                    asset: Int64(asset),
+                    note: queryParameters[QRText.CodingKeys.note.rawValue],
+                    lockedNote: queryParameters[QRText.CodingKeys.lockedNote.rawValue]
+                )
+            }
+
+            return nil
+        }
+
+        guard let address = address else {
+            return nil
+        }
+
+        if let amount = queryParameters[QRText.CodingKeys.amount.rawValue] {
+            return Self(
+                mode: .algosRequest,
+                address: address,
+                amount: UInt64(amount),
+                note: queryParameters[QRText.CodingKeys.note.rawValue],
+                lockedNote: queryParameters[QRText.CodingKeys.lockedNote.rawValue]
+            )
+        }
+
+        if let label = queryParameters[QRText.CodingKeys.label.rawValue] {
+            return Self(mode: .address, address: address, label: label)
+        }
+
+        return nil
     }
 }
 
 extension QRText {
     func qrText() -> String {
-        let base = "algorand://"
+        /// <todo>
+        /// This should be converted to a builder/generator, not implemented in the model itself.
+        let deeplinkConfig = ALGAppTarget.current.deeplinkConfig.qr
+        let base = "\(deeplinkConfig.preferredScheme)://"
         switch mode {
         case .mnemonic:
             if let mnemonic = mnemonic {
@@ -182,6 +254,16 @@ extension QRText {
             }
 
             return "\(base)\(address)\(query)"
+        case .optInRequest:
+            var query = ""
+
+            if let asset = asset,
+               !query.isEmpty {
+                query += "?\(CodingKeys.amount.rawValue)=0"
+                query += "&\(CodingKeys.asset.rawValue)=\(asset)"
+            }
+
+            return "\(base)\(query)"
         }
         return ""
     }

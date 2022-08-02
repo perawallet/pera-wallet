@@ -26,23 +26,67 @@ final class WCSingleTransactionRequestBottomViewModel {
     private(set) var assetIcon: UIImage?
     private(set) var balance: String?
 
-    init(transaction: WCTransaction, account: Account?, asset: Asset?) {
-        let fee = transaction.transactionDetail?.fee ?? 0
+    init(
+        transaction: WCTransaction,
+        account: Account?,
+        asset: Asset?,
+        currencyFormatter: CurrencyFormatter
+    ) {
         let warningCount = transaction.transactionDetail?.warningCount ?? 0
-        networkFee = "\(fee.toAlgos.toAlgosStringForLabel ?? "")"
         senderAddress = transaction.signerAccount?.name ?? transaction.signerAccount?.address
         warningMessage = warningCount > 0 ? "node-settings-warning-title".localized: nil
-        assetIcon = account?.image ?? account?.accountTypeImage()
+        assetIcon = account?.typeImage
 
+        bindNetworkFee(
+            transaction: transaction,
+            currencyFormatter: currencyFormatter
+        )
+        bindBalance(
+            transaction: transaction,
+            account: account,
+            asset: asset,
+            currencyFormatter: currencyFormatter
+        )
+    }
+}
+
+extension WCSingleTransactionRequestBottomViewModel {
+    private func bindNetworkFee(
+        transaction: WCTransaction,
+        currencyFormatter: CurrencyFormatter
+    ) {
+        currencyFormatter.formattingContext = .standalone()
+        currencyFormatter.currency = AlgoLocalCurrency()
+
+        let fee = transaction.transactionDetail?.fee ?? 0
+        let text = currencyFormatter.format(fee.toAlgos)
+
+        networkFee = text.someString
+    }
+
+    private func bindBalance(
+        transaction: WCTransaction,
+        account: Account?,
+        asset: Asset?,
+        currencyFormatter: CurrencyFormatter
+    ) {
         if let asset = asset as? StandardAsset {
             balance = "\(asset.amountWithFraction) \(asset.unitNameRepresentation)"
         } else {
-            guard transaction.transactionDetail?.currentAssetId == nil,
-                  let amount = account?.amount.toAlgos.toAlgosStringForLabel else {
-                      return
+            guard let amount = account?.amount else {
+                balance = nil
+                return
             }
 
-            balance = "\(amount)"
+            if transaction.transactionDetail?.currentAssetId != nil {
+                balance = nil
+                return
+            }
+
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = AlgoLocalCurrency()
+
+            balance = currencyFormatter.format(amount.toAlgos)
         }
     }
 }

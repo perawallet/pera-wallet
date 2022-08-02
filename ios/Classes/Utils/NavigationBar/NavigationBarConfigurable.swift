@@ -42,27 +42,20 @@ extension NavigationBarConfigurable where Self: UIViewController {
     }
     
     func setNeedsNavigationBarAppearanceUpdate() {
-        guard let navigationController = navigationController,
-            let topViewController = navigationController.viewControllers.first else {
-                return
-        }
-        
         navigationItem.hidesBackButton = hidesCloseBarButtonItem
         
         if !hidesCloseBarButtonItem {
-            if topViewController == self {
-                if presentingViewController != nil {
-                    if var dismissBarButtonItem = BarButtonItemRef.dismiss() {
-                        dismissBarButtonItem.handler = { [unowned self] in
-                            if !self.didTapDismissBarButton() {
-                                return
-                            }
-                            self.navigationController?.presentingViewController?.dismiss(animated: true, completion: nil)
+            if canDismiss() {
+                if var dismissBarButtonItem = BarButtonItemRef.dismiss() {
+                    dismissBarButtonItem.handler = { [unowned self] in
+                        if !self.didTapDismissBarButton() {
+                            return
                         }
-                        leftBarButtonItems.insert(dismissBarButtonItem, at: 0)
+                        self.navigationController?.presentingViewController?.dismiss(animated: true, completion: nil)
                     }
+                    leftBarButtonItems.insert(dismissBarButtonItem, at: 0)
                 }
-            } else {
+            } else if canGoBack() {
                 if var backBarButtonItem = BarButtonItemRef.back() {
                     backBarButtonItem.handler = { [unowned self] in
                         if !self.didTapBackBarButton() {
@@ -88,5 +81,20 @@ extension NavigationBarConfigurable where Self: UIViewController {
     
     func didTapDismissBarButton() -> Bool {
         return true
+    }
+}
+
+extension NavigationBarConfigurable where Self: UIViewController {
+    func canDismiss() -> Bool {
+        return
+            presentingViewController != nil &&
+            navigationController != nil &&
+            navigationController?.viewControllers.first == self
+    }
+
+    func canGoBack() -> Bool {
+        return
+            navigationController != nil &&
+            navigationController?.viewControllers.first != self
     }
 }

@@ -24,18 +24,29 @@ struct AccountPortfolioViewTheme:
     LayoutSheet {
     let contentHorizontalPaddings: LayoutHorizontalPaddings
     var title: TextStyle
+    var titleTopPadding: LayoutMetric
     var value: TextStyle
+    var secondaryValue: TextStyle
     var spacingBetweenTitleAndValue: LayoutMetric
 
     init(
         _ family: LayoutFamily
     ) {
-        self.contentHorizontalPaddings = (24, 24)
-        self.title = []
+        self.title = [
+            .textColor(AppColors.Components.Text.gray)
+        ]
+        self.titleTopPadding = 8
         self.value = [
             .textColor(AppColors.Components.Text.main.uiColor),
-            .textOverflow(SingleLineFittingText())
+            .textOverflow(SingleLineFittingText()),
+            .textAlignment(.center)
+        ]
+        self.secondaryValue = [
+            .textColor(AppColors.Components.Text.gray.uiColor),
+            .textOverflow(SingleLineFittingText()),
+            .textAlignment(.center)
         ]
         self.spacingBetweenTitleAndValue = 8
+        self.contentHorizontalPaddings = (24, 24)
     }
 }

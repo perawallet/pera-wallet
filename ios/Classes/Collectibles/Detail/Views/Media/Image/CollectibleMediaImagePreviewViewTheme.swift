@@ -16,23 +16,35 @@
 
 import MacaroonUIKit
 import MacaroonURLImage
+import UIKit
 
 struct CollectibleMediaImagePreviewViewTheme:
     StyleSheet,
     LayoutSheet {
     let image: URLImageViewStyleLayoutSheet
     let overlay: ViewStyle
+    let fullScreenBadge: ImageStyle
+    let fullScreenBadgeContentEdgeInsets: LayoutOffset
+    let fullScreenBadgePaddings: LayoutPaddings
     let corner: Corner
-
+    
     init(
         _ family: LayoutFamily
     ) {
-        self.image = URLImageViewCollectibleMediaTheme()
-        self.overlay = [
+        image = URLImageViewCollectibleMediaTheme()
+        overlay = [
             .backgroundColor(AppColors.Shared.System.background)
         ]
-        
-        self.corner = Corner(radius: 4)
+
+        fullScreenBadge = [
+            .image("icon-full-screen"),
+            .backgroundColor(UIColor(red: 0.09, green: 0.09, blue: 0.11, alpha: 0.6)),
+            .contentMode(.center)
+        ]
+        fullScreenBadgeContentEdgeInsets = (8, 8)
+        fullScreenBadgePaddings = (.noMetric, .noMetric, 12, 12)
+
+        corner = Corner(radius: 4)
     }
 }
 

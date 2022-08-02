@@ -21,107 +21,117 @@ import MacaroonUIKit
 struct AlgosDetailInfoViewModel:
     ViewModel,
     Hashable {
-    private(set) var yourBalanceTitle: EditText?
-    private(set) var totalAmount: EditText?
-    private(set) var secondaryValue: EditText?
-    private(set) var rewardsInfoViewModel: RewardInfoViewModel?
-    private(set) var hasBuyAlgoButton: Bool = false
+    private(set) var title: TextProvider?
+    private(set) var primaryValue: TextProvider?
+    private(set) var secondaryValue: TextProvider?
+    private(set) var rewardsInfo: RewardInfoViewModel?
+    private(set) var isBuyAlgoAvailable: Bool = false
 
     init(
-        _ account: Account,
-        _ currency: Currency?,
-        _ calculatedRewards: Decimal?
+        account: Account,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
     ) {
-        bindYourBalanceTitle()
-        bindTotalAmount(from: account, calculatedRewards: calculatedRewards ?? 0)
-        bindSecondaryValue(from: account, with: currency, calculatedRewards: calculatedRewards ?? 0)
-        bindRewardsInfoViewModel(from: account, rewards: calculatedRewards ?? 0)
-        hasBuyAlgoButton = !account.isWatchAccount()
+        bindTitle()
+        bindPrimaryValue(
+            account: account,
+            currencyFormatter: currencyFormatter
+        )
+        bindSecondaryValue(
+            account: account,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
+        bindRewardsInfo(
+            account: account,
+            currencyFormatter: currencyFormatter
+        )
+        bindIsBuyAlgoAvailable(account)
     }
 }
 
 extension AlgosDetailInfoViewModel {
-    private mutating func bindYourBalanceTitle() {
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-
-        yourBalanceTitle = .attributedString(
-            "accounts-transaction-your-balance"
-                .localized
-                .attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineHeightMultiple(lineHeightMultiplier),
-                    .textAlignment(.left)
-                ])
-            ])
-        )
-    }
-    
-    private mutating func bindTotalAmount(from account: Account, calculatedRewards: Decimal) {
-        guard let totalAmount =
-                getTotalAmount(from: account, and: calculatedRewards)
-                .toAlgosStringForLabel else {
-                    return
-                }
-        
-
-        let font = Fonts.DMMono.regular.make(36)
-        let lineHeightMultiplier = 1.02
-
-        self.totalAmount = .attributedString(
-            totalAmount
-                .attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineHeightMultiple(lineHeightMultiplier),
-                    .textAlignment(.left)
-                ])
-            ])
-        )
+    mutating func bindTitle() {
+        title = "accounts-transaction-your-balance"
+            .localized
+            .bodyRegular(hasMultilines: false)
     }
 
-    private mutating func bindSecondaryValue(from account: Account, with currency: Currency?, calculatedRewards: Decimal) {
-        guard let currency = currency,
-              let currencyPriceValue = currency.priceValue,
-              !(currency is AlgoCurrency) else {
-            return
+    mutating func bindPrimaryValue(
+        account: Account,
+        currencyFormatter: CurrencyFormatter
+    ) {
+        let amount = account.amount.toAlgos
+
+        currencyFormatter.formattingContext = .standalone()
+        currencyFormatter.currency = AlgoLocalCurrency()
+
+        let text = currencyFormatter.format(amount)
+        primaryValue = text?.largeTitleMonoRegular(hasMultilines: false)
+    }
+
+    mutating func bindSecondaryValue(
+        account: Account,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) {
+        do {
+            guard let fiatCurrencyValue = currency.fiatValue else {
+                secondaryValue = nil
+                return
+            }
+
+            let fiatRawCurrency = try fiatCurrencyValue.unwrap()
+
+            let algoAmount = account.amount.toAlgos
+            let exchanger = CurrencyExchanger(currency: fiatRawCurrency)
+            let amount = try exchanger.exchangeAlgo(amount: algoAmount)
+
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = fiatRawCurrency
+
+            let text = currencyFormatter.format(amount)
+            secondaryValue = text?.bodyMonoRegular(hasMultilines: false)
+        } catch {
+            secondaryValue = nil
         }
+    }
 
-        let totalAmount = getTotalAmount(from: account, and: calculatedRewards) * currencyPriceValue
-        let secondaryValue = totalAmount.toCurrencyStringForLabel(with: currency.symbol)
-
-        guard let secondaryValue = secondaryValue else {
-            return
-        }
-
-        let font = Fonts.DMMono.regular.make(15)
-        let lineHeightMultiplier = 1.23
-
-        self.secondaryValue = .attributedString(
-            secondaryValue
-                .attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineHeightMultiple(lineHeightMultiplier),
-                    .textAlignment(.left)
-                ])
-            ])
+    mutating func bindRewardsInfo(
+        account: Account,
+        currencyFormatter: CurrencyFormatter
+    ) {
+        rewardsInfo = RewardInfoViewModel(
+            account: account,
+            currencyFormatter: currencyFormatter
         )
     }
 
-    private mutating func bindRewardsInfoViewModel(from account: Account, rewards: Decimal) {
-        rewardsInfoViewModel = RewardInfoViewModel(account: account, calculatedRewards: rewards)
+    mutating func bindIsBuyAlgoAvailable(
+        _ account: Account
+    ) {
+        isBuyAlgoAvailable = !account.isWatchAccount()
+    }
+}
+
+extension AlgosDetailInfoViewModel {
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(primaryValue?.string)
+        hasher.combine(secondaryValue?.string)
+        hasher.combine(rewardsInfo)
+        hasher.combine(isBuyAlgoAvailable)
     }
 
-    private func getTotalAmount(from account: Account, and calculatedRewards: Decimal) -> Decimal {
-        return account.amountWithoutRewards.toAlgos + getPendingRewards(from: account, and: calculatedRewards)
-    }
-
-    private func getPendingRewards(from account: Account, and calculatedRewards: Decimal) -> Decimal {
-        return account.pendingRewards.toAlgos + calculatedRewards
+    static func == (
+        lhs: AlgosDetailInfoViewModel,
+        rhs: AlgosDetailInfoViewModel
+    ) -> Bool {
+        return
+            lhs.primaryValue?.string == rhs.primaryValue?.string &&
+            lhs.secondaryValue?.string == rhs.secondaryValue?.string &&
+            lhs.rewardsInfo == rhs.rewardsInfo &&
+            lhs.isBuyAlgoAvailable == rhs.isBuyAlgoAvailable
     }
 }

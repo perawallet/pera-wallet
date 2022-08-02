@@ -26,14 +26,17 @@ final class QRCreationViewController: BaseScrollViewController {
     }
     
     private let draft: QRCreationDraft
+    private let copyToClipboardController: CopyToClipboardController
     private let isTrackable: Bool
     
     init(
         draft: QRCreationDraft,
+        copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration,
         isTrackable: Bool = false
     ) {
         self.draft = draft
+        self.copyToClipboardController = copyToClipboardController
         self.isTrackable = isTrackable
         super.init(configuration: configuration)
     }
@@ -87,7 +90,8 @@ extension QRCreationViewController {
             [unowned self] in
             self.closeScreen(by: .dismiss, animated: true)
         }
-        
+
+        hidesCloseBarButtonItem = true
         leftBarButtonItems = [closeBarButtonItem]
     }
 }
@@ -117,14 +121,26 @@ extension QRCreationViewController: QRCreationViewDelegate {
     
     func qrCreationViewDidCopy(_ qrCreationView: QRCreationView) {
         log(ReceiveCopyEvent(address: draft.address))
-        UIPasteboard.general.string = draft.address
-        bannerController?.presentInfoBanner("qr-creation-copied".localized)
+        copyToClipboardController.copyAddress(draft.address)
     }
-}
+
+    func contextMenuInteractionForAddress(
+        in qrCreationView: QRCreationView
+    ) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration { _ in
+            let copyActionItem = UIAction(item: .copyAddress) {
+                [unowned self] _ in
+                self.copyToClipboardController.copyAddress(self.draft.address)
+            }
+            return UIMenu(children: [ copyActionItem ])
+        }
+    }
+} 
 
 enum QRMode {
     case address
     case mnemonic
     case algosRequest
     case assetRequest
+    case optInRequest
 }

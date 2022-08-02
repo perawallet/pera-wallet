@@ -100,9 +100,6 @@ extension NoContentView {
         resultView.customize(theme)
 
         contentView.addSubview(resultView)
-        resultView.snp.makeConstraints {
-            $0.bottom <= 0
-        }
 
         alignResult(resultView, for: theme.resultAlignment)
     }

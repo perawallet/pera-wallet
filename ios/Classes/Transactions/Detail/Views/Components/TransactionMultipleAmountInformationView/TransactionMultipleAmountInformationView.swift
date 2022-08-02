@@ -39,7 +39,9 @@ extension TransactionMultipleAmountInformationView {
 
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
-            $0.top.leading.equalToSuperview()
+            $0.top == 0
+            $0.leading == 0
+            $0.bottom <= 0
         }
     }
 
@@ -51,6 +53,10 @@ extension TransactionMultipleAmountInformationView {
             $0.top.bottom.equalToSuperview()
             $0.leading.equalToSuperview().offset(theme.amountLeadingPadding)
             $0.trailing.lessThanOrEqualToSuperview()
+        }
+
+        titleLabel.snp.makeConstraints {
+            $0.trailing == transactionAmountView.snp.leading - theme.minimumSpacingBetweenTitleAndAmount
         }
     }
 }

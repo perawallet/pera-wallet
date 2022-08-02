@@ -23,6 +23,8 @@ final class TransactionDetailViewController: BaseScrollViewController {
     }
     
     private lazy var transactionDetailView = TransactionDetailView(transactionType: transactionType)
+
+    private lazy var currencyFormatter = CurrencyFormatter()
     
     private var transaction: Transaction
     private let account: Account
@@ -35,18 +37,27 @@ final class TransactionDetailViewController: BaseScrollViewController {
         account: account,
         assetDetail: assetDetail
     )
+
+    private lazy var tooltipController = TooltipUIController(
+        presentingView: view
+    )
+
+    private let copyToClipboardController: CopyToClipboardController
     
     init(
         account: Account,
         transaction: Transaction,
         transactionType: TransactionType,
         assetDetail: StandardAsset?,
+        copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
         self.account = account
         self.transaction = transaction
         self.transactionType = transactionType
         self.assetDetail = assetDetail
+        self.copyToClipboardController = copyToClipboardController
+
         super.init(configuration: configuration)
     }
     
@@ -57,6 +68,23 @@ final class TransactionDetailViewController: BaseScrollViewController {
     
     override func linkInteractors() {
         transactionDetailView.delegate = self
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        let tooltipDisplayStore = TooltipDisplayStore()
+
+        if !tooltipDisplayStore.isDisplayedCopyAddressTooltip {
+            tooltipDisplayStore.isDisplayedCopyAddressTooltip = true
+
+            tooltipController.present(
+                on: transactionDetailView.userView.detailLabel,
+                title: "title-press-hold-copy-address".localized,
+                duration: .default
+            )
+            return
+        }
     }
     
     override func setListeners() {
@@ -106,8 +134,8 @@ extension TransactionDetailViewController {
     @objc
     private func didContactAdded(notification: Notification) {
         guard let userInfo = notification.userInfo as? [String: Contact],
-            let contact = userInfo["contact"] else {
-                return
+              let contact = userInfo["contact"] else {
+            return
         }
         
         transaction.contact = contact
@@ -118,7 +146,11 @@ extension TransactionDetailViewController {
 
 extension TransactionDetailViewController {
     private func configureTransactionDetail() {
-        transactionDetailView.bindData(transactionDetailViewModel)
+        transactionDetailView.bindData(
+            transactionDetailViewModel,
+            currency: sharedDataController.currency,
+            currencyFormatter: currencyFormatter
+        )
     }
 }
 
@@ -129,43 +161,96 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
         }
         open(.addContact(address: address), by: .push)
     }
-    
-    func transactionDetailViewDidCopyOpponentAddress(_ transactionDetailView: TransactionDetailView) {
-        guard let opponentType = transactionDetailViewModel.opponentType else {
-            return
+
+    func contextMenuInteractionForUser(
+        _ transactionDetailView: TransactionDetailView
+    ) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration { _ in
+            let copyActionItem = UIAction(item: .copyAddress) {
+                [unowned self] _ in
+                guard let address = self.getUserAddress(
+                    transaction: transaction,
+                    type: transactionType
+                ) else {
+                    return
+                }
+
+                self.copyToClipboardController.copyAddress(
+                    address
+                )
+            }
+            return UIMenu(children: [ copyActionItem ])
         }
-        
-        switch opponentType {
-        case let .contact(address),
-             let .localAccount(address),
-             let .address(address):
-            UIPasteboard.general.string = address
-        }
-        
-        bannerController?.presentInfoBanner("qr-creation-copied".localized)
-    }
-    
-    func transactionDetailViewDidCopyCloseToAddress(_ transactionDetailView: TransactionDetailView) {
-        UIPasteboard.general.string = transaction.payment?.closeAddress
-        bannerController?.presentInfoBanner("qr-creation-copied".localized)
     }
 
+    private func getUserAddress(
+        transaction: Transaction,
+        type: TransactionType
+    ) -> String? {
+        switch type {
+        case .received:
+            return transaction.getReceiver()
+        case .sent:
+            return transaction.sender
+        }
+    }
+
+    func contextMenuInteractionForOpponent(
+        _ transactionDetailView: TransactionDetailView
+    ) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration { _ in
+            let copyActionItem = UIAction(item: .copyAddress) {
+                [unowned self] _ in
+                let address = (self.transactionDetailViewModel.opponentType?.address).someString
+                self.copyToClipboardController.copyAddress(address)
+            }
+            return UIMenu(children: [ copyActionItem ])
+        }
+    }
+
+    func contextMenuInteractionForCloseTo(
+        _ transactionDetailView: TransactionDetailView
+    ) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration { _ in
+            let copyActionItem = UIAction(item: .copyAddress) {
+                [unowned self] _ in
+                let address = (self.transaction.payment?.closeAddress).someString
+                self.copyToClipboardController.copyAddress(address)
+            }
+            return UIMenu(children: [ copyActionItem ])
+        }
+    }
+
+    func contextMenuInteractionForTransactionID(
+        _ transactionDetailView: TransactionDetailView
+    ) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration { _ in
+            let copyActionItem = UIAction(item: .copyTransactionID) {
+                [unowned self] _ in
+                self.copyToClipboardController.copyID(self.transaction)
+            }
+            return UIMenu(children: [ copyActionItem ])
+        }
+    }
+
+    func contextMenuInteractionForTransactionNote(
+        _ transactionDetailView: TransactionDetailView
+    ) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration { _ in
+            let copyActionItem = UIAction(item: .copyTransactionNote) {
+                [unowned self] _ in
+                self.copyToClipboardController.copyNote(self.transaction)
+            }
+            return UIMenu(children: [ copyActionItem ])
+        }
+    }
+    
     func transactionDetailView(_ transactionDetailView: TransactionDetailView, didOpen explorer: AlgoExplorerType) {
         if let api = api,
-           let transactionId = transaction.id,
+           let transactionId = transaction.id ?? transaction.parentID,
            let url = explorer.transactionURL(with: transactionId, in: api.network) {
             open(url)
         }
-    }
-    
-    func transactionDetailViewDidCopyTransactionNote(_ transactionDetailView: TransactionDetailView) {
-        UIPasteboard.general.string = transaction.noteRepresentation()
-        bannerController?.presentInfoBanner("transaction-detail-note-copied".localized)
-    }
-
-    func transactionDetailViewDidCopyTransactionID(_ transactionDetailView: TransactionDetailView) {
-        UIPasteboard.general.string = transaction.id
-        bannerController?.presentInfoBanner("transaction-detail-id-copied-title".localized)
     }
 }
 
@@ -203,5 +288,22 @@ enum AlgoExplorerType {
         case .goalseeker:
             return URL(string: "https://goalseeker.purestake.io/algorand/mainnet/transaction/\(id)")
         }
+    }
+}
+
+extension TransactionDetailViewController {
+    private final class TooltipDisplayStore: Storable {
+        typealias Object = Any
+
+        var isDisplayedCopyAddressTooltip: Bool {
+            get { userDefaults.bool(forKey: isDisplayedCopyAddressTooltipKey) }
+            set {
+                userDefaults.set(newValue, forKey: isDisplayedCopyAddressTooltipKey)
+                userDefaults.synchronize()
+            }
+        }
+
+        private let isDisplayedCopyAddressTooltipKey =
+        "cache.key.transactionDetailIsDisplayedCopyAddressTooltip"
     }
 }

@@ -16,6 +16,7 @@
 //   AccountDetailViewController.swift
 
 import Foundation
+import MacaroonUIKit
 import UIKit
 
 final class AccountDetailViewController: PageContainer {
@@ -28,38 +29,91 @@ final class AccountDetailViewController: PageContainer {
 
     private lazy var assetListScreen = AccountAssetListViewController(
         accountHandle: accountHandle,
+        copyToClipboardController: copyToClipboardController,
         configuration: configuration
     )
 
     private lazy var collectibleListScreen = AccountCollectibleListViewController(
         account: accountHandle,
+        copyToClipboardController: copyToClipboardController,
         configuration: configuration
     )
     
     private lazy var transactionListScreen = AccountTransactionListViewController(
         draft: AccountTransactionListing(accountHandle: accountHandle),
+        copyToClipboardController: copyToClipboardController,
         configuration: configuration
     )
 
+    private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
+    private lazy var sendTransactionFlowCoordinator =
+    SendTransactionFlowCoordinator(
+        presentingScreen: self,
+        sharedDataController: sharedDataController,
+        account: accountHandle.value
+    )
+    private lazy var receiveTransactionFlowCoordinator =
+    ReceiveTransactionFlowCoordinator(presentingScreen: self, account: accountHandle.value)
+
     private lazy var localAuthenticator = LocalAuthenticator()
 
-    private lazy var accountTitleView = ImageWithTitleView()
+    private lazy var accountNamePreviewTitleView = AccountNamePreviewView()
+    private lazy var accountActionsMenuActionView = FloatingActionItemButton(hasTitleLabel: false)
 
     private var accountHandle: AccountHandle
 
-    init(accountHandle: AccountHandle, configuration: ViewControllerConfiguration) {
+    private let copyToClipboardController: CopyToClipboardController
+
+    init(
+        accountHandle: AccountHandle,
+        copyToClipboardController: CopyToClipboardController,
+        configuration: ViewControllerConfiguration
+    ) {
         self.accountHandle = accountHandle
+        self.copyToClipboardController = copyToClipboardController
+
         super.init(configuration: configuration)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         setPageBarItems()
         addTitleView()
+
+        if !accountHandle.value.isWatchAccount() {
+            addAccountActionsMenuAction()
+            updateSafeAreaWhenAccountActionsMenuActionWasAdded()
+        }
+    }
+
+    override func viewWillAppear(
+        _ animated: Bool
+    ) {
+        super.viewWillAppear(animated)
+        switchToHighlightedNavigationBarAppearance()
+    }
+
+    override func viewWillDisappear(
+        _ animated: Bool
+    ) {
+        super.viewWillDisappear(animated)
+
+        if presentedViewController == nil {
+            switchToDefaultNavigationBarAppearance()
+        }
     }
 
     override func configureNavigationBarAppearance() {
         addOptionsBarButton()
+    }
+
+    override func customizePageBarAppearance() {
+        super.customizePageBarAppearance()
+
+        pageBar.customizeAppearance([
+            .backgroundColor(AppColors.Shared.Helpers.heroBackground)
+        ])
     }
 
     override func configureAppearance() {
@@ -75,7 +129,7 @@ final class AccountDetailViewController: PageContainer {
     override func itemDidSelect(
         _ index: Int
     ) {
-        view.endEditing(true)
+        endEditing()
     }
 }
 
@@ -90,31 +144,92 @@ extension AccountDetailViewController {
             switch event {
             case .didUpdate(let accountHandle):
                 self.accountHandle = accountHandle
-            case .manageAssets:
-                let controller = self.open(.removeAsset(account: self.accountHandle.value), by: .present) as? ManageAssetsViewController
-                controller?.delegate = self
+            case .manageAssets(let isWatchAccount):
+                self.assetListScreen.endEditing()
+
+                self.modalTransition.perform(
+                    .managementOptions(
+                        managementType: isWatchAccount ? .watchAccountAssets : .assets,
+                        delegate: self
+                    ),
+                    by: .present
+                )
             case .addAsset:
+                self.assetListScreen.endEditing()
+
                 let controller = self.open(.addAsset(account: self.accountHandle.value), by: .push) as? AssetAdditionViewController
                 controller?.delegate = self
+            case .buyAlgo:
+                self.assetListScreen.endEditing()
+
+                self.buyAlgoFlowCoordinator.launch()
+            case .send:
+                self.assetListScreen.endEditing()
+
+                self.sendTransactionFlowCoordinator.launch()
+            case .address:
+                self.assetListScreen.endEditing()
+
+                self.receiveTransactionFlowCoordinator.launch()
+            case .more:
+                self.assetListScreen.endEditing()
+
+                self.presentOptionsScreen()
             }
+        }
+    }
+}
+
+extension AccountDetailViewController: TransactionOptionsScreenDelegate {
+    func transactionOptionsScreenDidBuyAlgo(_ transactionOptionsScreen: TransactionOptionsScreen) {
+        transactionOptionsScreen.dismiss(animated: true) {
+            [weak self] in
+            self?.buyAlgoFlowCoordinator.launch()
+        }
+    }
+
+    func transactionOptionsScreenDidSend(_ transactionOptionsScreen: TransactionOptionsScreen) {
+        transactionOptionsScreen.dismiss(animated: true) {
+            [weak self] in
+            self?.sendTransactionFlowCoordinator.launch()
+        }
+    }
+
+    func transactionOptionsScreenDidReceive(_ transactionOptionsScreen: TransactionOptionsScreen) {
+        transactionOptionsScreen.dismiss(animated: true) {
+            [weak self] in
+            self?.receiveTransactionFlowCoordinator.launch()
+        }
+    }
+
+    func transactionOptionsScreenDidMore(_ transactionOptionsScreen: TransactionOptionsScreen) {
+        transactionOptionsScreen.dismiss(animated: true) {
+            [weak self] in
+            self?.presentOptionsScreen()
         }
     }
 }
 
 extension AccountDetailViewController {
     private func addOptionsBarButton() {
-        let optionsBarButtonItem = ALGBarButtonItem(kind: .options) { [weak self] in
+        let optionsBarButtonItem = ALGBarButtonItem(kind: .account(accountHandle.value.typeImage)) { [weak self] in
             guard let self = self else {
                 return
             }
 
-            self.modalTransition.perform(
-                .options(account: self.accountHandle.value, delegate: self),
-                by: .presentWithoutNavigationController
-            )
+            self.endEditing()
+
+            self.presentOptionsScreen()
         }
 
         rightBarButtonItems = [optionsBarButtonItem]
+    }
+
+    private func presentOptionsScreen() {
+        modalTransition.perform(
+            .options(account: self.accountHandle.value, delegate: self),
+            by: .presentWithoutNavigationController
+        )
     }
 
     private func setPageBarItems() {
@@ -126,18 +241,82 @@ extension AccountDetailViewController {
     }
 
     private func addTitleView() {
-        accountTitleView.customize(AccountNameViewSmallTheme())
-        accountTitleView.bindData(AccountNameViewModel(account: accountHandle.value))
+        accountNamePreviewTitleView.customize(AccountNamePreviewViewTheme())
+        accountNamePreviewTitleView.bindData(
+            AccountNamePreviewViewModel(
+                account: accountHandle.value,
+                with: .center
+            )
+        )
 
-        navigationItem.titleView = accountTitleView
+        accountNamePreviewTitleView.addGestureRecognizer(
+            UILongPressGestureRecognizer(
+                target: self,
+                action: #selector(didLongPressToAccountNamePreviewTitleView)
+            )
+        )
+
+        navigationItem.titleView = accountNamePreviewTitleView
+    }
+
+    private func addAccountActionsMenuAction() {
+        accountActionsMenuActionView.image = theme.accountActionsMenuActionIcon
+
+        view.addSubview(accountActionsMenuActionView)
+
+        accountActionsMenuActionView.snp.makeConstraints {
+            let safeAreaBottom = view.compactSafeAreaInsets.bottom
+            let bottom = safeAreaBottom + theme.accountActionsMenuActionBottomPadding
+
+            $0.fitToSize(theme.accountActionsMenuActionSize)
+            $0.trailing == theme.accountActionsMenuActionTrailingPadding
+            $0.bottom == bottom
+        }
+
+        accountActionsMenuActionView.addTouch(
+            target: self,
+            action: #selector(openAccountActionsMenu)
+        )
+    }
+
+    private func updateSafeAreaWhenAccountActionsMenuActionWasAdded() {
+        let listSafeAreaBottom =
+            theme.spacingBetweenListAndAccountActionsMenuAction +
+            theme.accountActionsMenuActionSize.h +
+            theme.accountActionsMenuActionBottomPadding
+        assetListScreen.additionalSafeAreaInsets.bottom = listSafeAreaBottom
+        collectibleListScreen.additionalSafeAreaInsets.bottom = listSafeAreaBottom
+        transactionListScreen.additionalSafeAreaInsets.bottom = listSafeAreaBottom
+    }
+}
+
+extension AccountDetailViewController {
+    @objc
+    private func didLongPressToAccountNamePreviewTitleView(
+        _ gesture: UILongPressGestureRecognizer
+    ) {
+        guard gesture.state == .began else {
+            return
+        }
+
+        copyToClipboardController.copyAddress(accountHandle.value)
+    }
+
+    @objc
+    private func openAccountActionsMenu() {
+        view.endEditing(true)
+
+        self.modalTransition.perform(
+            .transactionOptions(delegate: self),
+            by: .presentWithoutNavigationController
+        )
     }
 }
 
 extension AccountDetailViewController: OptionsViewControllerDelegate {
     func optionsViewControllerDidCopyAddress(_ optionsViewController: OptionsViewController) {
         log(ReceiveCopyEvent(address: accountHandle.value.address))
-        UIPasteboard.general.string = accountHandle.value.address
-        bannerController?.presentInfoBanner("qr-creation-copied".localized)
+        copyToClipboardController.copyAddress(accountHandle.value)
     }
 
     func optionsViewControllerDidOpenRekeying(_ optionsViewController: OptionsViewController) {
@@ -202,11 +381,6 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
             by: .present
         )
     }
-    
-    func optionsViewControllerDidRemoveAsset(_ optionsViewController: OptionsViewController) {
-        let controller = open(.removeAsset(account: accountHandle.value), by: .present) as? ManageAssetsViewController
-        controller?.delegate = self
-    }
 
     func optionsViewControllerDidRemoveAccount(_ optionsViewController: OptionsViewController) {
         displayRemoveAccountAlert()
@@ -255,7 +429,14 @@ extension AccountDetailViewController: ChoosePasswordViewControllerDelegate {
 
 extension AccountDetailViewController: EditAccountViewControllerDelegate {
     func editAccountViewControllerDidTapDoneButton(_ viewController: EditAccountViewController) {
-        accountTitleView.bindData(AccountNameViewModel(account: accountHandle.value))
+        accountNamePreviewTitleView.bindData(
+            AccountNamePreviewViewModel(
+                account: accountHandle.value,
+                with: .center
+            )
+        )
+
+        eventHandler?(.didEdit)
     }
 }
 
@@ -286,6 +467,56 @@ extension AccountDetailViewController: ManageAssetsViewControllerDelegate {
                 CollectibleListLocalDataController.accountAssetPairUserInfoKey: (accountHandle.value, asset)
             ]
         )
+    }
+}
+
+extension AccountDetailViewController: ManagementOptionsViewControllerDelegate {
+    func managementOptionsViewControllerDidTapSort(
+        _ managementOptionsViewController: ManagementOptionsViewController
+    ) {
+        let eventHandler: SortAccountAssetListViewController.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            self.dismiss(animated: true) {
+                [weak self] in
+                guard let self = self else { return }
+
+                switch event {
+                case .didComplete: self.assetListScreen.reload()
+                }
+            }
+        }
+
+        open(
+            .sortAccountAsset(
+                dataController: SortAccountAssetListLocalDataController(
+                    session: session!,
+                    sharedDataController: sharedDataController
+                ),
+                eventHandler: eventHandler
+            ),
+            by: .present
+        )
+    }
+
+    func managementOptionsViewControllerDidTapFilter(
+        _ managementOptionsViewController: ManagementOptionsViewController
+    ) {}
+
+    func managementOptionsViewControllerDidTapRemove(
+        _ managementOptionsViewController: ManagementOptionsViewController
+    ) {
+        let dataController = ManageAssetsListLocalDataController(
+            account: accountHandle.value,
+            sharedDataController: sharedDataController
+        )
+
+        let controller = open(
+            .removeAsset(dataController: dataController),
+            by: .present
+        ) as? ManageAssetsViewController
+        controller?.delegate = self
     }
 }
 
@@ -335,6 +566,7 @@ extension AccountDetailViewController {
 
 extension AccountDetailViewController {
     enum Event {
+        case didEdit
         case didRemove
     }
 }

@@ -18,54 +18,68 @@
 import UIKit
 import MacaroonUIKit
 
-struct RewardInfoViewModel: ViewModel, Hashable {
+struct RewardInfoViewModel:
+    ViewModel,
+    Hashable {
     private let account: Account
-    private(set) var title: EditText?
-    private(set) var rewardAmount: EditText?
 
-    init(account: Account, calculatedRewards: Decimal) {
+    private(set) var title: TextProvider?
+    private(set) var value: TextProvider?
+
+    init(
+        account: Account,
+        currencyFormatter: CurrencyFormatter
+    ) {
         self.account = account
+
         bindTitle()
-        bindRewardAmount(from: account, and: calculatedRewards)
+        bindValue(
+            account: account,
+            currencyFormatter: currencyFormatter
+        )
     }
 }
 
 extension RewardInfoViewModel {
-    private mutating func bindTitle() {
-        let font = Fonts.DMSans.regular.make(13)
-        let lineHeightMultiplier = 1.18
-
-        title = .attributedString(
-            "rewards-title"
-                .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.left)
-                    ])
-                ])
-        )
+    mutating func bindTitle() {
+        title = "rewards-title"
+            .localized
+            .footnoteRegular(hasMultilines: false)
     }
-    private mutating func bindRewardAmount(from account: Account, and calculatedRewards: Decimal) {
-        guard let rewardAmount =
-                (account.pendingRewards.toAlgos + calculatedRewards).toAlgosStringForLabel else {
-                    return
-                }
-        let font = Fonts.DMMono.regular.make(13)
-        let lineHeightMultiplier = 1.13
 
-        self.rewardAmount = .attributedString(
-            rewardAmount
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.left)
-                    ])
-                ])
-        )
+    mutating func bindValue(
+        account: Account,
+        currencyFormatter: CurrencyFormatter
+    ) {
+        let totalRewards = calculateTotalRewards(account: account)
+
+        currencyFormatter.formattingContext = .standalone()
+        currencyFormatter.currency = AlgoLocalCurrency()
+
+        let text = currencyFormatter.format(totalRewards)
+        value = text?.footnoteMonoRegular(hasMultilines: false)
+    }
+}
+
+extension RewardInfoViewModel {
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(value?.string)
+    }
+
+    static func == (
+        lhs: RewardInfoViewModel,
+        rhs: RewardInfoViewModel
+    ) -> Bool {
+        return lhs.value?.string == rhs.value?.string
+    }
+}
+
+extension RewardInfoViewModel {
+    private func calculateTotalRewards(
+        account: Account
+    ) -> Decimal {
+        return account.pendingRewards.toAlgos
     }
 }

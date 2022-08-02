@@ -42,7 +42,7 @@ final class AddContactViewController: BaseScrollViewController {
     override func linkInteractors() {
         keyboardController.dataSource = self
         addContactView.delegate = self
-        scrollView.touchDetectingDelegate = self
+        (scrollView as? TouchDetectingScrollView)?.touchDetectingDelegate = self
     }
     
     override func prepareLayout() {
@@ -125,7 +125,8 @@ extension AddContactViewController: AddContactViewDelegate {
     }
     
     private func addContact(with values: [String: Any]) {
-        Contact.create(entity: Contact.entityName, with: values) { result in
+        Contact.create(entity: Contact.entityName, with: values) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case let .result(object: object):
                 guard let contact = object as? Contact else {
@@ -133,7 +134,13 @@ extension AddContactViewController: AddContactViewDelegate {
                 }
                 
                 NotificationCenter.default.post(name: .ContactAddition, object: self, userInfo: ["contact": contact])
-                self.closeScreen(by: .pop)
+
+                if self.presentingViewController == nil {
+                    self.popScreen()
+                } else {
+                    self.dismissScreen()
+                }
+
             default:
                 break
             }

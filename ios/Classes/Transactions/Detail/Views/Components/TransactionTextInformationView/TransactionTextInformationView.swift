@@ -20,7 +20,7 @@ import MacaroonUIKit
 
 final class TransactionTextInformationView: View {
     private lazy var titleLabel = UILabel()
-    private lazy var detailLabel = UILabel()
+    private(set) lazy var detailLabel = UILabel()
     
     func customize(_ theme: TransactionTextInformationViewTheme) {
         addTitleLabel(theme)
@@ -38,18 +38,25 @@ extension TransactionTextInformationView {
 
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
-            $0.top.leading.equalToSuperview()
+            $0.top == theme.contentPaddings.top
+            $0.leading == theme.contentPaddings.leading
+            $0.bottom <= theme.contentPaddings.bottom
         }
     }
-    
+
     private func addDetailLabel(_ theme: TransactionTextInformationViewTheme) {
         detailLabel.customizeAppearance(theme.detail)
 
         addSubview(detailLabel)
         detailLabel.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview()
-            $0.leading.equalToSuperview().offset(theme.detailLabelLeadingPadding)
-            $0.trailing.lessThanOrEqualToSuperview()
+            $0.top == theme.contentPaddings.top
+            $0.leading == theme.contentPaddings.leading + theme.detailLabelLeadingPadding
+            $0.bottom == theme.contentPaddings.bottom
+            $0.trailing <= theme.contentPaddings.trailing
+        }
+
+        titleLabel.snp.makeConstraints {
+            $0.trailing == detailLabel.snp.leading - theme.minimumSpacingBetweenTitleAndDetail
         }
     }
 }

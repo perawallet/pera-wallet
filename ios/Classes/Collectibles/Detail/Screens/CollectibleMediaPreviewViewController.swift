@@ -21,7 +21,7 @@ import AVFoundation
 final class CollectibleMediaPreviewViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout {
-    private let theme = Theme()
+    static let theme = Theme()
 
     var eventHandler: ((Event) -> Void)?
 
@@ -31,9 +31,9 @@ final class CollectibleMediaPreviewViewController:
     private lazy var listView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .horizontal
-        flowLayout.minimumLineSpacing = theme.cellSpacing
-        flowLayout.sectionInset.left = theme.horizontalInset
-        flowLayout.sectionInset.right = theme.horizontalInset
+        flowLayout.minimumLineSpacing = Self.theme.cellSpacing
+        flowLayout.sectionInset.left = Self.theme.horizontalInset
+        flowLayout.sectionInset.right = Self.theme.horizontalInset
 
         let collectionView = UICollectionView(
             frame: .zero,
@@ -53,6 +53,9 @@ final class CollectibleMediaPreviewViewController:
         return collectionView
     }()
 
+    private lazy var imageTransitionDelegate = ImageTransitionDelegate()
+    private lazy var videoTransitionDelegate = VideoTransitionDelegate()
+
     private lazy var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
         pageControl.currentPage = 0
@@ -61,7 +64,7 @@ final class CollectibleMediaPreviewViewController:
         return pageControl
     }()
 
-    private lazy var tap3DView = CollectibleMediaTapInfoView()
+    private lazy var tap3DActionView = MacaroonUIKit.Button(.imageAtLeft(spacing: 8))
 
     private var selectedIndex = 0 {
         didSet {
@@ -69,9 +72,7 @@ final class CollectibleMediaPreviewViewController:
             selectedMedia = asset.media[safe: selectedIndex]
             eventHandler?(.didScrollToMedia(selectedMedia))
 
-            if let selectedMedia = selectedMedia {
-                tap3DView.isHidden = !selectedMedia.type.isSupported
-            }
+            tap3DActionView.isHidden = !(selectedMedia?.type.isSupported ?? false)
         }
     }
 
@@ -80,7 +81,7 @@ final class CollectibleMediaPreviewViewController:
     private var isPageControlSizeUpdated = false
 
     private lazy var dataSource = CollectibleMediaPreviewDataSource(
-        theme: theme,
+        theme: Self.theme,
         asset: asset
     )
 
@@ -97,11 +98,39 @@ final class CollectibleMediaPreviewViewController:
         super.init(configuration: configuration)
     }
 
+    class func calculatePreferredSize(
+        _ asset: CollectibleAsset?,
+        fittingIn size: CGSize
+    ) -> CGSize {
+        guard let asset = asset else {
+            return CGSize((size.width, 0))
+        }
+
+        let tap3DViewHeight: CGFloat = 24
+        let tap3DViewTopPadding = Self.theme.tap3DActionViewTopPadding
+
+        let mediaHeight =
+        size.width -
+        2 * Self.theme.horizontalInset
+
+        var preferredHeight: CGFloat =
+        mediaHeight.float() +
+        tap3DViewHeight +
+        tap3DViewTopPadding
+
+        if asset.media.count > 1 {
+            let pageControlHeight: CGFloat = 26
+            preferredHeight += pageControlHeight
+        }
+
+        return CGSize((size.width, min(preferredHeight.float(), size.height)))
+    }
+
     override func prepareLayout() {
         super.prepareLayout()
         addListView()
         addPageControl()
-        addTap3DView()
+        addTap3DActionView()
     }
 
     override func linkInteractors() {
@@ -112,6 +141,17 @@ final class CollectibleMediaPreviewViewController:
         if let interactivePopGestureRecognizer = navigationController?.interactivePopGestureRecognizer {
             listView.panGestureRecognizer.require(toFail: interactivePopGestureRecognizer)
         }
+
+        tap3DActionView.addTouch(
+            target: self,
+            action: #selector(didTap3DActionView)
+        )
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        selectedIndex = .zero
     }
 
     override func viewDidLayoutSubviews() {
@@ -121,8 +161,8 @@ final class CollectibleMediaPreviewViewController:
         if !isPageControlSizeUpdated {
             pageControl.subviews.forEach {
                 $0.transform = CGAffineTransform(
-                    scaleX: theme.pageControlScale,
-                    y: theme.pageControlScale
+                    scaleX: Self.theme.pageControlScale,
+                    y: Self.theme.pageControlScale
                 )
             }
 
@@ -161,21 +201,32 @@ extension CollectibleMediaPreviewViewController {
         pageControl.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.top == listView.snp.bottom
-            $0.leading.trailing.lessThanOrEqualToSuperview().inset(theme.horizontalInset)
+            $0.leading.trailing
+                .lessThanOrEqualToSuperview()
+                .inset(Self.theme.horizontalInset)
         }
 
         configurePageControl()
     }
 
-    private func addTap3DView() {
-        view.addSubview(tap3DView)
+    private func addTap3DActionView() {
+        tap3DActionView.customizeAppearance(Self.theme.tap3DActionView)
 
-        tap3DView.snp.makeConstraints {
-            $0.leading == theme.horizontalInset
-            $0.trailing == theme.horizontalInset
-            $0.top == pageControl.snp.bottom + theme.tapInfoViewTopPadding
+        view.addSubview(tap3DActionView)
+        tap3DActionView.snp.makeConstraints {
+            $0.leading >= Self.theme.horizontalInset
+            $0.trailing <= Self.theme.horizontalInset
+            $0.centerX == 0
+            $0.top == pageControl.snp.bottom + Self.theme.tap3DActionViewTopPadding
             $0.bottom == 0
         }
+    }
+}
+
+extension CollectibleMediaPreviewViewController {
+    @objc
+    private func didTap3DActionView() {
+        open3DCard()
     }
 }
 
@@ -207,8 +258,8 @@ extension CollectibleMediaPreviewViewController {
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
         let width =
-            collectionView.bounds.width -
-            theme.horizontalInset * 2
+        collectionView.bounds.width -
+        Self.theme.horizontalInset * 2
         return CGSize(width: width.float(), height: width.float())
     }
 
@@ -275,21 +326,87 @@ extension CollectibleMediaPreviewViewController {
             return
         }
 
-        open3DCard(
-            for: media,
-            at: indexPath
-        )
+        let cell = collectionView.cellForItem(at: indexPath)
 
-        eventHandler?(.didSelectMedia(media, indexPath))
+        switch media.type {
+        case .video:
+            let videoPreviewCell = cell as? CollectibleMediaVideoPreviewCell
+            let player = videoPreviewCell?.contextView.currentPlayer
+
+            guard let videoPreviewCell = videoPreviewCell,
+                  videoPreviewCell.isReadyForDisplay,
+                  let player = player else {
+                return
+            }
+
+            videoPreviewCell.stopVideo()
+
+            openFullScreenVideoPreview(
+                with: player,
+                didDismiss: {
+                    [weak videoPreviewCell] in
+                    videoPreviewCell?.playVideo()
+                }
+            )
+        default:
+            let imagePreviewCell = cell as? CollectibleMediaImagePreviewCell
+            let image = imagePreviewCell?.contextView.currentImage
+
+            guard let image = image else {
+                return
+            }
+
+            openFullScreenImagePreview(
+                image: image,
+                media: media
+            )
+        }
     }
 
-    private func open3DCard(
-        for media: Media,
-        at indexPath: IndexPath
+    private func openFullScreenImagePreview(
+        image: UIImage,
+        media: Media
     ) {
+        let draft = CollectibleFullScreenImageDraft(
+            image: image,
+            media: media
+        )
+        open(
+            .collectibleFullScreenImage(draft: draft),
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .overCurrentContext,
+                transitionStyle: nil,
+                transitioningDelegate: imageTransitionDelegate
+            )
+        )
+    }
+
+    private func openFullScreenVideoPreview(
+        with player: AVPlayer,
+        didDismiss: @escaping (() -> Void)
+    ) {
+        videoTransitionDelegate.didFinishDismissalTransition = didDismiss
+
+        let draft = CollectibleFullScreenVideoDraft(player: player)
+
+        open(
+            .collectibleFullScreenVideo(draft: draft),
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .overCurrentContext,
+                transitionStyle: nil,
+                transitioningDelegate: videoTransitionDelegate
+            )
+        )
+    }
+
+    private func open3DCard() {
+        guard let media = selectedMedia else {
+            return
+        }
+
         switch media.type {
         case .image:
-            if let cell = listView.cellForItem(at: indexPath) as? CollectibleMediaImagePreviewCell,
+            if let cell = currentVisibleCell as? CollectibleMediaImagePreviewCell,
                let image = cell.contextView.currentImage {
                 open(
                     .image3DCard(
@@ -318,9 +435,9 @@ extension CollectibleMediaPreviewViewController {
         targetContentOffset: UnsafeMutablePointer<CGPoint>
     ) {
         let pageWidth =
-            listView.bounds.width -
-            theme.horizontalInset * 2 +
-            theme.cellSpacing
+        listView.bounds.width -
+        Self.theme.horizontalInset * 2 +
+        Self.theme.cellSpacing
 
         var newPage = CGFloat(selectedIndex)
 
@@ -351,8 +468,17 @@ extension CollectibleMediaPreviewViewController {
 }
 
 extension CollectibleMediaPreviewViewController {
+    var currentVisibleCell: UICollectionViewCell? {
+        guard let currentItem = listView.indexPathForItemAtCenter() else {
+            return nil
+        }
+
+        return listView.cellForItem(at: currentItem)
+    }
+}
+
+extension CollectibleMediaPreviewViewController {
     enum Event {
         case didScrollToMedia(Media?)
-        case didSelectMedia(Media, IndexPath)
     }
 }

@@ -43,6 +43,7 @@ enum ALGAPIPath: String {
     case algoUSDHistory = "/price/algo-usd/history"
     case signBuyAlgo = "/moonpay/sign-url/"
     case announcements = "/devices/%@/banners/"
+    case nameServicesSearch = "/name-services/search/"
 }
 
 extension EndpointBuilder {
@@ -54,7 +55,7 @@ extension EndpointBuilder {
 
     @discardableResult
     func path(_ aPath: ALGAPIPath, args: CVarArg...) -> Self {
-        let vPath = MagpieCore.Path(aPath.rawValue, args: args)
+        let vPath = MagpieCore.Path(format: aPath.rawValue, arguments: args)
         return path(vPath)
     }
 }

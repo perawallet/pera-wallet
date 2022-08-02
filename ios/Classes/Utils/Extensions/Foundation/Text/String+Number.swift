@@ -16,6 +16,7 @@
 //  String+Number.swift
 
 import Foundation
+import MacaroonUtils
 
 extension String {
     var digits: String { return filter(("0"..."9").contains) }
@@ -23,7 +24,7 @@ extension String {
 
     /// <note> Number formatters are not able to get the decimal values properly sometimes.
     var decimalAmount: Decimal? {
-        let locale = Locale.preferred()
+        let locale = Locale.preferred
         return Decimal(string: without(locale.groupingSeparator ?? ","), locale: locale)
     }
 
@@ -35,21 +36,12 @@ extension String {
         return decimalString.count - 1
     }
 
-    func decimalForSendSeparator(with fraction: Int) -> Decimal? {
-        return Formatter.separatorWith(fraction: fraction).number(from: self)?.decimalValue
-    }
-    
-    func currencyInputFormatting(with fraction: Int) -> String? {
-        let decimal = self.decimal / pow(10, fraction)
-        return Formatter.separatorForInputWith(fraction: fraction).string(for: decimal)
-    }
-
     func without<T: StringProtocol>(_ string: T) -> String {
         return replacingOccurrences(of: string, with: "")
     }
 
     func decimalStrings() -> String? {
-        let separator = Locale.preferred().decimalSeparator?.first ?? "."
+        let separator = Locale.preferred.decimalSeparator?.first ?? "."
         let separated = self.split(separator: separator)
 
         if separated.count > 1 {

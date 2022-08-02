@@ -43,21 +43,26 @@ final class SelectAssetViewController:
     
     private let filter: AssetType?
     private let account: Account
+    private let receiver: String?
     private let theme: SelectAssetViewControllerTheme
 
     init(
         filter: AssetType?,
         account: Account,
+        receiver: String?,
         theme: SelectAssetViewControllerTheme = .init(),
         configuration: ViewControllerConfiguration
     ) {
         self.filter = filter
         self.account = account
+        self.receiver = receiver
         self.theme = theme
         super.init(configuration: configuration)
     }
-    
-    override func configureAppearance() {
+
+    override func configureNavigationBarAppearance() {
+        super.configureNavigationBarAppearance()
+
         navigationItem.title = "send-select-asset".localized
     }
     
@@ -74,6 +79,14 @@ final class SelectAssetViewController:
         addBackground()
         addListView()
     }
+
+    /// <todo>: It will be moved to configureNavigationBarAppearance method
+    /// currently if we do in configure method, both back and dismiss buttons will be visible
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        addBarButtons()
+    }
 }
 
 extension SelectAssetViewController {
@@ -86,6 +99,19 @@ extension SelectAssetViewController {
         listView.snp.makeConstraints {
             $0.setPaddings()
         }
+    }
+
+    private func addBarButtons() {
+        if canGoBack() {
+            return
+        }
+        
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
+            [unowned self] in
+            self.closeScreen(by: .dismiss, animated: true)
+        }
+        leftBarButtonItems = [closeBarButtonItem]
+        setNeedsNavigationBarAppearanceUpdate()
     }
 }
 
@@ -120,11 +146,20 @@ extension SelectAssetViewController {
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
+        var receiverAccount: Account?
+        if let receiver = receiver {
+            receiverAccount = Account(
+                address: receiver,
+                type: .standard
+            )
+        }
+
         if filter != .collectible,
            indexPath.item == .zero {
 
             let draft = SendTransactionDraft(
                 from: account,
+                toAccount: receiverAccount,
                 transactionMode: .algo
             )
 
@@ -145,6 +180,7 @@ extension SelectAssetViewController {
 
         let draft = SendTransactionDraft(
             from: account,
+            toAccount: receiverAccount,
             transactionMode: .asset(asset)
         )
         open(.sendTransaction(draft: draft), by: .push)

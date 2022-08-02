@@ -17,17 +17,36 @@
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
 struct TabBarButtonItem: MacaroonUIKit.TabBarButtonItem {
     let style: ButtonStyle
     let spacingBetweenIconAndTitle: LayoutMetric
 
     init(
-        icon: StateImageGroup
+        icon: StateImageGroup?,
+        title: String?,
+        spacingBetweenIconAndTitle: LayoutMetric = 2
     ) {
-        self.style = [
-            .icon(icon)
-        ]
-        self.spacingBetweenIconAndTitle = 0
+        var style = ButtonStyle()
+
+        if let icon = icon {
+            style.icon = icon
+        }
+
+        if let title = title {
+            style.title = title
+            style.titleColor = [
+                .normal(AppColors.Components.Text.grayLighter.uiColor),
+                .selected(AppColors.Components.Text.main.uiColor),
+                .disabled(
+                    AppColors.Components.Text.grayLighter.uiColor.withAlphaComponent(0.5)
+                )
+            ]
+            style.font =  Fonts.DMSans.medium.make(11).uiFont
+        }
+
+        self.style = style
+        self.spacingBetweenIconAndTitle = spacingBetweenIconAndTitle
     }
 }

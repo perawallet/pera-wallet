@@ -24,6 +24,7 @@ final class AppConfiguration {
     let walletConnector: WalletConnector
     let loadingController: LoadingController
     let bannerController: BannerController
+    let toastPresentationController: ToastPresentationController
     
     init(
         api: ALGAPI,
@@ -31,7 +32,8 @@ final class AppConfiguration {
         sharedDataController: SharedDataController,
         walletConnector: WalletConnector,
         loadingController: LoadingController,
-        bannerController: BannerController
+        bannerController: BannerController,
+        toastPresentationController: ToastPresentationController
     ) {
         self.api = api
         self.session = session
@@ -39,6 +41,7 @@ final class AppConfiguration {
         self.walletConnector = walletConnector
         self.loadingController = loadingController
         self.bannerController = bannerController
+        self.toastPresentationController = toastPresentationController
     }
     
     func all() -> ViewControllerConfiguration {
@@ -48,7 +51,8 @@ final class AppConfiguration {
             sharedDataController: sharedDataController,
             walletConnector: walletConnector,
             loadingControlller: loadingController,
-            bannerController: bannerController
+            bannerController: bannerController,
+            toastPresentationController: toastPresentationController
         )
         return configuration
     }

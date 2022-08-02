@@ -24,8 +24,6 @@ final class HomeListLayout: NSObject {
     
     private let listDataSource: HomeListDataSource
 
-    private let sectionHorizontalInsets: LayoutHorizontalPaddings = (24, 24)
-
     init(
         listDataSource: HomeListDataSource
     ) {
@@ -52,37 +50,12 @@ extension HomeListLayout {
             return .zero
         }
         
-        var insets =
-            UIEdgeInsets(
-                (0, sectionHorizontalInsets.leading, 0, sectionHorizontalInsets.trailing)
-            )
-        
         switch listSection {
-        case .empty:
-            return insets
-        case .loading:
-            insets.top = 72
-            return insets
-        case .portfolio:
-            insets.top = 72
-            return insets
-        case .announcement:
-            insets.top = 36
-            return insets
-        case .accounts:
-            insets.top = 36
-            insets.bottom = 8
-            return insets
-        case .watchAccounts:
-            insets.top = 24
-            insets.bottom = 8
-            return insets
-        case .buyAlgo:
-            insets.top = sectionIdentifiers.contains(.announcement) ? 24 : 44
-            return insets
+        case .accounts: return UIEdgeInsets(top: 36, left: 0, bottom: 24, right: 0)
+        default: return .zero
         }
     }
-    
+
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -104,24 +77,22 @@ extension HomeListLayout {
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
-                sizeForPortfolioItem: item
+                sizeForPortfolioItem: item,
+                atSection: indexPath.section
             )
         case .account(let item):
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
-                sizeForAccountItem: item
+                sizeForAccountItem: item,
+                atSection: indexPath.section
             )
         case .announcement(let item):
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
-                sizeForAnnouncementCellItem: item
-            )
-        case .buyAlgo:
-            return listViewBuyAlgo(
-                collectionView,
-                layout: collectionViewLayout
+                sizeForAnnouncementCellItem: item,
+                atSection: indexPath.section
             )
         }
     }
@@ -131,10 +102,13 @@ extension HomeListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForEmptyItem item: HomeEmptyItem,
+        sizeForEmptyItem item: HomeEmptyItemIdentifier,
         atSection section: Int
     ) -> CGSize {
-        let width = calculateContentWidth(for: listView)
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: section
+        )
         let sectionInset = collectionView(
             listView,
             layout: listViewLayout,
@@ -151,42 +125,100 @@ extension HomeListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForPortfolioItem item: HomePortfolioViewModel
+        sizeForPortfolioItem item: HomePortfolioItemIdentifier,
+        atSection section: Int
+    ) -> CGSize {
+        switch item {
+        case .portfolio(let portfolioItem):
+            return self.listView(
+                listView,
+                layout: listViewLayout,
+                sizeForPortfolioValueItem: portfolioItem,
+                atSection: section
+            )
+        case .quickActions:
+            return self.listView(
+                listView,
+                layout: listViewLayout,
+                sizeForQuickActions: item,
+                atSection: section
+            )
+        }
+
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForPortfolioValueItem item: HomePortfolioViewModel,
+        atSection section: Int
     ) -> CGSize {
         let sizeCacheIdentifier = HomePortfolioCell.reuseIdentifier
-        
+
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
         }
-        
-        let width = calculateContentWidth(for: listView)
+
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: section
+        )
         let newSize = HomePortfolioCell.calculatePreferredSize(
             item,
             for: HomePortfolioCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude)))
-        
+
         sizeCache[sizeCacheIdentifier] = newSize
-        
+
+        return newSize
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForQuickActions item: HomePortfolioItemIdentifier,
+        atSection section: Int
+    ) -> CGSize {
+        let sizeCacheIdentifier = HomeQuickActionsCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: section
+        )
+        let newSize = HomeQuickActionsCell.calculatePreferredSize(
+            for: HomeQuickActionsViewTheme(),
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
         return newSize
     }
     
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForAccountItem item: HomeAccountItem
+        sizeForAccountItem item: HomeAccountItemIdentifier,
+        atSection section: Int
     ) -> CGSize {
         switch item {
         case .header(let headerItem):
             return self.listView(
                 listView,
                 layout: listViewLayout,
-                sizeForAccountHeaderItem: headerItem
+                sizeForAccountHeaderItem: headerItem,
+                atSection: section
             )
         case .cell(let cellItem):
             return self.listView(
                 listView,
                 layout: listViewLayout,
-                sizeForAccountCellItem: cellItem
+                sizeForAccountCellItem: cellItem,
+                atSection: section
             )
         }
     }
@@ -194,18 +226,22 @@ extension HomeListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForAccountHeaderItem item: HomeAccountSectionHeaderViewModel
+        sizeForAccountHeaderItem item: ManagementItemViewModel,
+        atSection section: Int
     ) -> CGSize {
-        let sizeCacheIdentifier = TitleWithAccessorySupplementaryCell.reuseIdentifier
+        let sizeCacheIdentifier = HomeAccountsHeader.reuseIdentifier
         
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
         }
         
-        let width = calculateContentWidth(for: listView)
-        let newSize = TitleWithAccessorySupplementaryCell.calculatePreferredSize(
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: section
+        )
+        let newSize = HomeAccountsHeader.calculatePreferredSize(
             item,
-            for: TitleWithAccessorySupplementaryCell.theme,
+            for: HomeAccountsHeader.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
         
@@ -217,24 +253,29 @@ extension HomeListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForAccountCellItem item: AccountPreviewViewModel
+        sizeForAccountCellItem item: AccountPreviewViewModel,
+        atSection section: Int
     ) -> CGSize {
-        let sizeCacheIdentifier = AccountPreviewCell.reuseIdentifier
+        let sizeCacheIdentifier = HomeAccountCell.reuseIdentifier
         
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
         }
         
-        let width = calculateContentWidth(for: listView)
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: section
+        )
         let sampleAccountPreview = CustomAccountPreview(
-            icon: "standard-orange".uiImage,
+            address: "someAlgorandAddress",
+            icon: "icon-standard-account".uiImage,
             title: "title-unknown".localized,
             subtitle: "title-plus-asset-singular-count".localized(params: "1")
         )
         let sampleAccountItem = AccountPreviewViewModel(sampleAccountPreview)
-        let newSize = AccountPreviewCell.calculatePreferredSize(
+        let newSize = HomeAccountCell.calculatePreferredSize(
             sampleAccountItem,
-            for: AccountPreviewCell.theme,
+            for: HomeAccountCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
         
@@ -246,9 +287,13 @@ extension HomeListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForAnnouncementCellItem item: AnnouncementViewModel
+        sizeForAnnouncementCellItem item: AnnouncementViewModel,
+        atSection section: Int
     ) -> CGSize {
-        let width = calculateContentWidth(for: listView)
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: section
+        )
 
         if item.isGeneric {
             return GenericAnnouncementCell.calculatePreferredSize(
@@ -264,28 +309,22 @@ extension HomeListLayout {
             )
         }
     }
-
-    private func listViewBuyAlgo(
-        _ listView: UICollectionView,
-        layout listViewLayout: UICollectionViewLayout
-    ) -> CGSize {
-        let width = calculateContentWidth(for: listView)
-
-        return BuyAlgoCell.calculatePreferredSize(
-            for: BuyAlgoViewTheme(),
-            fittingIn: CGSize((width, .greatestFiniteMagnitude))
-        )
-    }
 }
 
 extension HomeListLayout {
     private func calculateContentWidth(
-        for listView: UICollectionView
+        _ collectionView: UICollectionView,
+        forSectionAt section: Int
     ) -> LayoutMetric {
+        let sectionInset = self.collectionView(
+            collectionView,
+            layout: collectionView.collectionViewLayout,
+            insetForSectionAt: section
+        )
         return
-            listView.bounds.width -
-            listView.contentInset.horizontal -
-            sectionHorizontalInsets.leading -
-            sectionHorizontalInsets.trailing
+            collectionView.bounds.width -
+            collectionView.contentInset.horizontal -
+            sectionInset.left -
+            sectionInset.right
     }
 }

@@ -30,6 +30,12 @@ struct ALGBarButtonItem: BarButtonItem {
                 textColor: AppColors.Components.Text.main.uiColor,
                 font: UIFont.font(withWeight: .bold(size: 12.0))
             )
+        case .closeTitle:
+            return BarButtonItemTitleContent(
+                text: "title-close".localized,
+                textColor: AppColors.Components.Link.primary.uiColor,
+                font: Fonts.DMSans.medium.make(15).uiFont
+            )
         case .done:
             return BarButtonItemTitleContent(
                 text: "title-done".localized,
@@ -92,6 +98,8 @@ struct ALGBarButtonItem: BarButtonItem {
                 return ImageContent(normal: icon)
             }
             return nil
+        case .closeTitle:
+            return nil
         case .save:
             return nil
         case .qr:
@@ -144,6 +152,8 @@ struct ALGBarButtonItem: BarButtonItem {
                 return ImageContent(normal: icon)
             }
             return nil
+        case .account(let image):
+            return ImageContent(normal: image)
         }
     }
     
@@ -161,6 +171,14 @@ struct ALGBarButtonItem: BarButtonItem {
             return .explicit(CGSize(width: 40, height: 40))
         case .close:
             return .explicit(CGSize(width: 44.0, height: 44.0))
+        case .closeTitle:
+            return .expanded(
+                width: .dynamicWidth(BarButtonExpandedSizeHorizontalInsets(
+                    contentInsets: (left: 0.0, right: 0.0),
+                    titleInsets: (left: 4.0, right: -4.0))
+                ),
+                height: .equal(44.0)
+            )
         case .qr:
             return .explicit(CGSize(width: 40, height: 40))
         case .save:
@@ -225,6 +243,8 @@ struct ALGBarButtonItem: BarButtonItem {
             return .explicit(CGSize(width: 40, height: 40))
         case .notification:
             return .explicit(CGSize(width: 40, height: 40))
+        case .account:
+            return .explicit(CGSize(width: 28, height: 28))
         }
     }
     
@@ -250,6 +270,7 @@ extension ALGBarButtonItem {
         case add
         case notification
         case close
+        case closeTitle
         case save
         case qr
         case done
@@ -263,6 +284,7 @@ extension ALGBarButtonItem {
         case share
         case filter
         case troubleshoot
+        case account(UIImage)
     }
 }
 

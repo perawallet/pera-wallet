@@ -30,15 +30,29 @@ class WCGroupTransactionItemViewModel {
         transaction: WCTransaction,
         account: Account?,
         asset: Asset?,
-        currency: Currency?
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
     ) {
         setHasWarning(from: transaction, and: account)
         setTitle(from: transaction, and: account)
         setIsAlgos(from: transaction)
-        setAmount(from: transaction, and: asset)
+        setAmount(
+            from: transaction,
+            and: asset,
+            currencyFormatter: currencyFormatter
+        )
         setAssetName(from: asset)
-        setUsdValue(transaction: transaction, asset: asset, currency: currency)
-        setAccountInformationViewModel(from: account, with: asset)
+        setUsdValue(
+            transaction: transaction,
+            asset: asset,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
+        setAccountInformationViewModel(
+            from: account,
+            with: asset,
+            currencyFormatter: currencyFormatter
+        )
     }
 
     private func setHasWarning(
@@ -118,17 +132,35 @@ class WCGroupTransactionItemViewModel {
 
     private func setAmount(
         from transaction: WCTransaction,
-        and asset: Asset?
+        and asset: Asset?,
+        currencyFormatter: CurrencyFormatter
     ) {
         guard let transactionDetail = transaction.transactionDetail else {
             return
         }
         
         if let asset = asset {
-            let decimals = asset.presentation.decimals
-            amount = transactionDetail.amount.assetAmount(fromFraction: decimals).toFractionStringForLabel(fraction: decimals) ?? ""
+            let assetDecimals = asset.decimals
+
+            /// <todo>
+            /// Not sure we need this constraint, because the final number should be sent to the
+            /// formatter unless the number itself is modified.
+            var constraintRules = CurrencyFormattingContextRules()
+            constraintRules.maximumFractionDigits = assetDecimals
+
+            currencyFormatter.formattingContext = .standalone(constraints: constraintRules)
+            currencyFormatter.currency = nil
+
+            let finalAmount = transactionDetail.amount.assetAmount(fromFraction: assetDecimals)
+            let finalAmountText = currencyFormatter.format(finalAmount)
+            let text = finalAmountText.someString
+
+            amount = text
         } else {
-            amount = transactionDetail.amount.toAlgos.toAlgosStringForLabel ?? ""
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = AlgoLocalCurrency()
+
+            amount = currencyFormatter.format(transactionDetail.amount.toAlgos).someString
         }
     }
 
@@ -146,35 +178,46 @@ class WCGroupTransactionItemViewModel {
     private func setUsdValue(
         transaction: WCTransaction,
         asset: Asset?,
-        currency: Currency?
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
     ) {
-        guard let currency = currency,
-              let currencyPriceValue = currency.priceValue,
-              let currencyUsdValue = currency.usdValue,
-              let amount = transaction.transactionDetail?.amount else {
-                  return
-        }
-
-        if let asset = asset {
-            guard let assetUSDValue = AssetDecoration(asset: asset).usdValue else {
-                return
-            }
-
-            let currencyValue = assetUSDValue * amount.assetAmount(fromFraction: asset.presentation.decimals) * currencyUsdValue
-            if currencyValue > 0 {
-                usdValue = currencyValue.toCurrencyStringForLabel(with: currency.symbol)
-            }
-
+        guard
+            let amount = transaction.transactionDetail?.amount,
+            let currencyValue = currency.primaryValue
+        else {
+            usdValue = nil
             return
         }
 
-        let totalAmount = amount.toAlgos * currencyPriceValue
-        usdValue = totalAmount.toCurrencyStringForLabel(with: currency.symbol)
+        do {
+            let rawCurrency = try currencyValue.unwrap()
+            let exchanger = CurrencyExchanger(currency: rawCurrency)
+
+            let amountInCurrency: Decimal
+            if let asset = asset {
+                let assetAmount = amount.assetAmount(fromFraction: asset.decimals)
+                amountInCurrency = try exchanger.exchange(
+                    asset,
+                    amount: assetAmount
+                )
+            } else {
+                let algoAmount = amount.toAlgos
+                amountInCurrency = try exchanger.exchangeAlgo(amount: algoAmount)
+            }
+
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = rawCurrency
+
+            usdValue = currencyFormatter.format(amountInCurrency)
+        } catch {
+            usdValue = nil
+        }
     }
 
     private func setAccountInformationViewModel(
         from account: Account?,
-        with asset: Asset?
+        with asset: Asset?,
+        currencyFormatter: CurrencyFormatter
     ) {
         guard let account = account else {
             return
@@ -183,7 +226,8 @@ class WCGroupTransactionItemViewModel {
         accountInformationViewModel = WCGroupTransactionAccountInformationViewModel(
             account: account,
             asset: asset,
-            isDisplayingAmount: true
+            isDisplayingAmount: true,
+            currencyFormatter: currencyFormatter
         )
     }
 }

@@ -27,11 +27,17 @@ class WCGroupTransactionAccountInformationViewModel {
     init(
         account: Account?,
         asset: Asset?,
-        isDisplayingAmount: Bool
+        isDisplayingAmount: Bool,
+        currencyFormatter: CurrencyFormatter
     ) {
         setAccountNameViewModel(from: account)
         setIsAlgos(from: asset, and: isDisplayingAmount)
-        setBalance(from: account, and: asset, with: isDisplayingAmount)
+        setBalance(
+            from: account,
+            and: asset,
+            with: isDisplayingAmount,
+            currencyFormatter: currencyFormatter
+        )
         setAssetName(from: asset, and: isDisplayingAmount)
         setIsDisplayingDotSeparator(from: isDisplayingAmount)
     }
@@ -63,7 +69,8 @@ class WCGroupTransactionAccountInformationViewModel {
     private func setBalance(
         from account: Account?,
         and asset: Asset?,
-        with isDisplayingAmount: Bool
+        with isDisplayingAmount: Bool,
+        currencyFormatter: CurrencyFormatter
     ) {
         if !isDisplayingAmount {
             return
@@ -75,11 +82,23 @@ class WCGroupTransactionAccountInformationViewModel {
         }
 
         if let asset = asset {
-            balance = asset.amountDisplayWithFraction
+            /// <todo>
+            /// Not sure we need this constraint, because the final number should be sent to the
+            /// formatter unless the number itself is modified.
+            var constraintRules = CurrencyFormattingContextRules()
+            constraintRules.maximumFractionDigits = asset.decimals
+
+            currencyFormatter.formattingContext = .standalone(constraints: constraintRules)
+            currencyFormatter.currency = nil
+
+            balance = currencyFormatter.format(asset.amountWithFraction)
             return
         }
 
-        balance = account.amount.toAlgos.toAlgosStringForLabel
+        currencyFormatter.formattingContext = .standalone()
+        currencyFormatter.currency = AlgoLocalCurrency()
+
+        balance = currencyFormatter.format(account.amount.toAlgos)
     }
 
     private func setAssetName(

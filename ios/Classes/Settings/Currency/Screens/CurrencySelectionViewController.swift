@@ -16,25 +16,55 @@
 //  CurrencySelectionViewController.swift
 
 import UIKit
+import MacaroonUtils
 
+/// <todo>
+/// It should be reimplemented later with the base list screen integration.
 final class CurrencySelectionViewController: BaseViewController {
     static var didChangePreferredCurrency: Notification.Name {
         return .init(rawValue: "com.algorand.algorand.notification.preferredCurrency.didChange")
     }
     
     private lazy var theme = Theme()
-    private lazy var currencySelectionView = SingleSelectionListView()
+    private lazy var contextView = CurrencySelectionView()
     
-    private lazy var dataSource: CurrencySelectionDataSource = {
-        guard let api = api else {
-            fatalError("API should be set.")
-        }
-        return CurrencySelectionDataSource(api: api)
-    }()
+    private lazy var listLayout = CurrencySelectionListLayout(dataSource)
+    private lazy var dataSource = CurrencySelectionListDataSource(contextView.collectionView)
+
+    private let dataController: CurrencySelectionDataController
+
+    init(
+        dataController: CurrencySelectionDataController,
+        configuration: ViewControllerConfiguration
+    ) {
+        self.dataController = dataController
+        super.init(configuration: configuration)
+    }
         
     override func viewDidLoad() {
         super.viewDidLoad()
-        getCurrencies()
+
+        dataController.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            
+            switch event {
+            case .didUpdate(let updates):
+                if updates.isLoading {
+                    self.contextView.showLoading()
+                } else {
+                    self.contextView.hideLoading()
+                }
+
+                self.dataSource.apply(
+                    updates.snapshot,
+                    animatingDifferences: self.isViewAppeared
+                )
+
+                self.bindSelection()
+            }
+        }
+        dataController.loadData()
     }
     
     override func configureAppearance() {
@@ -44,85 +74,84 @@ final class CurrencySelectionViewController: BaseViewController {
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
     
-    override func linkInteractors() {
-        super.linkInteractors()
-        
-        currencySelectionView.delegate = self
-        currencySelectionView.setDataSource(dataSource)
-        currencySelectionView.setListDelegate(self)
-        currencySelectionView.setRefreshControl()
-        dataSource.delegate = self
+    override func setListeners() {
+        contextView.setDataSource(dataSource)
+        contextView.setCollectionViewDelegate(listLayout)
+        contextView.setSearchInputDelegate(self)
+        setListLayoutListeners()
+    }
+    
+    private func setListLayoutListeners() {
+        listLayout.handlers.didTapReload = {
+            [weak self] cell in
+            
+            let noContentCell = cell as! NoContentWithActionCell
+            noContentCell.observe(event: .performPrimaryAction) {
+                [weak self] in
+                guard let self = self else { return }
+                self.dataController.loadData()
+            }
+        }
+        listLayout.handlers.didSelectCurrency = {
+            [weak self] indexPath in
+            guard let self = self else { return }
+
+            let selectedCurrency = self.dataController.selectCurrency(at: indexPath)
+
+            guard let selectedCurrencyID = selectedCurrency?.id else {
+                return
+            }
+
+            self.sharedDataController.stopPolling()
+            self.sharedDataController.currency.setAsPrimaryCurrency(selectedCurrencyID)
+            self.sharedDataController.resetPollingAfterPreferredCurrencyWasChanged()
+
+            self.log(CurrencyChangeEvent(currencyId: selectedCurrencyID.localValue))
+            
+            NotificationCenter.default.post(
+                name: Self.didChangePreferredCurrency,
+                object: self
+            )
+        }
     }
     
     override func prepareLayout() {
-        super.prepareLayout()
-        prepareWholeScreenLayoutFor(currencySelectionView)
+        contextView.customize(theme.contextViewTheme)
+        
+        view.addSubview(contextView)
+        contextView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
 }
 
-extension CurrencySelectionViewController: CurrencySelectionDataSourceDelegate {
-    func currencySelectionDataSourceDidFetchCurrencies(_ currencySelectionDataSource: CurrencySelectionDataSource) {
-        currencySelectionView.endRefreshing()
-        currencySelectionView.setNormalState()
-        currencySelectionView.reloadData()
-    }
-    
-    func currencySelectionDataSourceDidFailToFetch(_ currencySelectionDataSource: CurrencySelectionDataSource) {
-        currencySelectionView.endRefreshing()
-        currencySelectionView.setErrorState()
-        currencySelectionView.reloadData()
-    }
-    
-    private func getCurrencies() {
-        currencySelectionView.setLoadingState()
-        dataSource.loadData()
+extension CurrencySelectionViewController {
+    private func bindSelection() {
+        let selectedCurrencyID = dataController.selectedCurrencyID
+        let viewModel = CurrencySelectionViewModel(currencyID: selectedCurrencyID)
+        contextView.bindData(viewModel)
     }
 }
 
-extension CurrencySelectionViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let selectedCurrency = dataSource.currency(at: indexPath.item) else {
+extension CurrencySelectionViewController: SearchInputViewDelegate {
+    func searchInputViewDidEdit(_ view: SearchInputView) {
+        guard let query = view.text else {
             return
         }
         
-        log(CurrencyChangeEvent(currencyId: selectedCurrency.id))
-
-        sharedDataController.stopPolling()
+        if query.isEmpty {
+            dataController.resetSearch()
+            return
+        }
         
-        api?.session.preferredCurrency = selectedCurrency.id
-        currencySelectionView.reloadData()
-        
-        sharedDataController.resetPollingAfterPreferredCurrencyWasChanged()
-        
-        NotificationCenter.default.post(
-            name: Self.didChangePreferredCurrency,
-            object: self
-        )
+        dataController.search(for: query)
     }
     
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
-        return CGSize(width: theme.cellWidth, height: theme.cellHeight)
+    func searchInputViewDidReturn(_ view: SearchInputView) {
+        view.endEditing()
     }
     
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForHeaderInSection section: Int
-    ) -> CGSize {
-        return CGSize(theme.headerSize)
-    }
-}
-
-extension CurrencySelectionViewController: SingleSelectionListViewDelegate {
-    func singleSelectionListViewDidRefreshList(_ singleSelectionListView: SingleSelectionListView) {
-        getCurrencies()
-    }
-    
-    func singleSelectionListViewDidTryAgain(_ singleSelectionListView: SingleSelectionListView) {
-        getCurrencies()
+    func searchInputViewDidTapRightAccessory(_ view: SearchInputView) {
+        dataController.resetSearch()
     }
 }

@@ -143,6 +143,6 @@ extension BuyAlgoTransactionViewModel {
     }
     
     private mutating func bindAccountIcon(_ account: Account) {
-        accountIcon = account.type.image(for: .getRandomImage(for: account.type))
+        accountIcon = account.typeImage
     }
 }

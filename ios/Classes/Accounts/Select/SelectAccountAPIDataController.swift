@@ -23,11 +23,15 @@ final class SelectAccountAPIDataController:
     SharedDataControllerObserver {
     var eventHandler: ((SelectAccountDataControllerEvent) -> Void)?
 
+    private lazy var currencyFormatter = CurrencyFormatter()
+
     private var lastSnapshot: Snapshot?
 
     private let sharedDataController: SharedDataController
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.selectAccountDataController")
     private let transactionAction: TransactionAction
+
+    var shouldFilterAccount: ((Account) -> Bool)?
 
     init(
         _ sharedDataController: SharedDataController,
@@ -90,7 +94,7 @@ extension SelectAccountAPIDataController {
     }
 
     private func deliverContentSnapshot() {
-        let filteredAccounts = sharedDataController.accountCollection.sorted().filter {
+        let filteredAccounts = sharedDataController.sortedAccounts().filter {
             $0.value.type != .watch
         }
 
@@ -107,33 +111,47 @@ extension SelectAccountAPIDataController {
             var accountItems: [SelectAccountListViewItem] = []
 
             let currency = self.sharedDataController.currency
-            let calculator = ALGPortfolioCalculator()
+            let currencyFormatter = self.currencyFormatter
 
-            self.sharedDataController.accountCollection
-                .sorted()
-                .forEach { accountHandle in
-                    let isWatchAccount = accountHandle.value.type == .watch
-
-                    if isWatchAccount {
-                        return
-                    }
-
-                    let cellItem: SelectAccountListViewItem
-
-                    if self.transactionAction == .buyAlgo {
-                        let algoAccount = CustomAccountPreview(AlgoAccountViewModel(accountHandle.value))
-
-                        cellItem = .account(AccountPreviewViewModel(algoAccount), accountHandle)
-                    } else {
-                        let accountPortfolio =
-                            AccountPortfolio(account: accountHandle, currency: currency, calculator: calculator)
-
-                        cellItem = .account(AccountPreviewViewModel(accountPortfolio), accountHandle)
-                    }
-
-                    accounts.append(accountHandle)
-                    accountItems.append(cellItem)
+            self.sharedDataController.sortedAccounts().forEach { accountHandle in
+                let isWatchAccount = accountHandle.value.type == .watch
+                
+                if isWatchAccount {
+                    return
                 }
+
+                if let shouldFilterAccount = self.shouldFilterAccount,
+                   shouldFilterAccount(accountHandle.value) {
+                    return
+                }
+
+                let cellItem: SelectAccountListViewItem
+                
+                if self.transactionAction == .buyAlgo {
+                    let account = accountHandle.value
+                    let algoAccount = CustomAccountPreview(
+                        AlgoAccountViewModel(
+                            account,
+                            currencyFormatter: currencyFormatter
+                        ),
+                        address: account.address
+                    )
+                    
+                    cellItem = .account(AccountPreviewViewModel(algoAccount), accountHandle)
+                } else {
+                    let accountPortfolioItem = AccountPortfolioItem(
+                        accountValue: accountHandle,
+                        currency: currency,
+                        currencyFormatter: currencyFormatter
+                    )
+                    let accountPreviewViewModel = AccountPreviewViewModel(accountPortfolioItem)
+
+                    cellItem = .account(accountPreviewViewModel, accountHandle)
+                }
+                
+                accounts.append(accountHandle)
+                accountItems.append(cellItem)
+            }
 
             var snapshot = Snapshot()
 

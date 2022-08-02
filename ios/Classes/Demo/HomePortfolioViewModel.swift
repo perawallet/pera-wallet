@@ -20,17 +20,17 @@ import MacaroonUIKit
 import UIKit
 
 struct HomePortfolioViewModel:
-    PairedViewModel,
+    PortfolioViewModel,
     Hashable {
-    private(set) var totalValueResult: PortfolioCalculator.Result = .failure(.idle)
-    private(set) var title: EditText?
+    private(set) var title: TextProvider?
     private(set) var titleColor: UIColor?
-    private(set) var value: EditText?
-    private(set) var algoHoldings: HomePortfolioItemViewModel?
-    private(set) var assetHoldings: HomePortfolioItemViewModel?
+    private(set) var primaryValue: TextProvider?
+    private(set) var secondaryValue: TextProvider?
+
+    private(set) var currencyFormatter: CurrencyFormatter?
     
     init(
-        _ model: Portfolio
+        _ model: TotalPortfolioItem
     ) {
         bind(model)
     }
@@ -38,84 +38,58 @@ struct HomePortfolioViewModel:
 
 extension HomePortfolioViewModel {
     mutating func bind(
-        _ portfolio: Portfolio
+        _ portfolioItem: TotalPortfolioItem
     ) {
-        var mPortfolio = portfolio
-        mPortfolio.calculate()
-        
-        bindTitle(mPortfolio)
-        bindValue(mPortfolio)
-        bindAlgoHoldings(mPortfolio)
-        bindAssetHoldings(mPortfolio)
+        self.currencyFormatter = portfolioItem.currencyFormatter
+
+        bindTitle(portfolioItem)
+        bindPrimaryValue(portfolioItem)
+        bindSecondaryValue(portfolioItem)
     }
-    
+
     mutating func bindTitle(
-        _ portfolio: Portfolio
+        _ portfolioItem: TotalPortfolioItem
     ) {
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-        
-        title = .attributedString(
-            "portfolio-title"
-                .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+        title = "portfolio-title"
+            .localized
+            .bodyRegular(
+                alignment: .center,
+                lineBreakMode: .byTruncatingTail,
+                hasMultilines: false
             )
-        
-        switch portfolio.totalValueResult {
-        case .success:
-            titleColor = AppColors.Components.Text.gray.uiColor
-        case .failure:
-            titleColor = AppColors.Shared.Helpers.negative.uiColor
-        }
+        titleColor = portfolioItem.portfolioValue.isAvailable
+            ? AppColors.Components.Text.gray.uiColor
+            : AppColors.Shared.Helpers.negative.uiColor
     }
     
-    mutating func bindValue(
-        _ portfolio: Portfolio
+    mutating func bindPrimaryValue(
+        _ portfolioItem: TotalPortfolioItem
     ) {
-        totalValueResult = portfolio.totalValueResult
-        
-        let font = Fonts.DMMono.regular.make(36)
-        let lineHeightMultiplier = 1.02
-        
-        value = .attributedString(
-            totalValueResult.uiDescription.attributed([
-                .font(font),
-                .letterSpacing(-0.72),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineBreakMode(.byTruncatingTail),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ])
+        let text = format(
+            portfolioValue: portfolioItem.portfolioValue,
+            currencyValue: portfolioItem.currency.primaryValue,
+            in: .standalone()
+        ) ?? CurrencyConstanst.unavailable
+        primaryValue = text.largeTitleMedium(
+            alignment: .center,
+            lineBreakMode: .byTruncatingTail,
+            hasMultilines: false
         )
     }
     
-    mutating func bindAlgoHoldings(
-        _ portfolio: Portfolio
+    mutating func bindSecondaryValue(
+        _ portfolioItem: TotalPortfolioItem
     ) {
-        let item = PortfolioItem(
-            title: "portfolio-algo-holdings-title".localized,
-            icon: "icon-algo-circle-green-24",
-            valueResult: portfolio.coinsValueResult
+        let text = format(
+            portfolioValue: portfolioItem.portfolioValue,
+            currencyValue: portfolioItem.currency.secondaryValue,
+            in: .standalone()
+        ) ?? CurrencyConstanst.unavailable
+        secondaryValue = "≈ \(text)".bodyMedium(
+            alignment: .center,
+            lineBreakMode: .byTruncatingTail,
+            hasMultilines: false
         )
-        algoHoldings = HomePortfolioItemViewModel(item)
-    }
-    
-    mutating func bindAssetHoldings(
-        _ portfolio: Portfolio
-    ) {
-        let item = PortfolioItem(
-            title: "portfolio-asset-holdings-title".localized,
-            icon: nil,
-            valueResult: portfolio.assetsValueResult
-        )
-        assetHoldings = HomePortfolioItemViewModel(item)
     }
 }
 
@@ -123,9 +97,8 @@ extension HomePortfolioViewModel {
     func hash(
         into hasher: inout Hasher
     ) {
-        hasher.combine(value)
-        hasher.combine(algoHoldings)
-        hasher.combine(assetHoldings)
+        hasher.combine(primaryValue?.string)
+        hasher.combine(secondaryValue?.string)
     }
     
     static func == (
@@ -133,8 +106,7 @@ extension HomePortfolioViewModel {
         rhs: HomePortfolioViewModel
     ) -> Bool {
         return
-            lhs.value == rhs.value &&
-            lhs.algoHoldings == rhs.algoHoldings &&
-            lhs.assetHoldings == rhs.assetHoldings
+            lhs.primaryValue?.string == rhs.primaryValue?.string &&
+            lhs.secondaryValue?.string == rhs.secondaryValue?.string
     }
 }

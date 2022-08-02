@@ -47,7 +47,7 @@ final class SendCollectibleAccountListAPIDataController:
     ) {
         self.sharedDataController = sharedDataController
         self.addressInputViewText = addressInputViewText
-        self.accounts = sharedDataController.accountCollection.sorted()
+        self.accounts = sharedDataController.sortedAccounts()
     }
 
     deinit {
@@ -127,7 +127,7 @@ extension SendCollectibleAccountListAPIDataController {
         case .didFinishRunning:
             sharedDataController.remove(self)
 
-            let updatedAccounts = sharedDataController.accountCollection.sorted()
+            let updatedAccounts = sharedDataController.sortedAccounts()
             accounts = updatedAccounts
             deliverContentSnapshot(for: lastQuery)
         }

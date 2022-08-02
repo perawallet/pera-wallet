@@ -30,12 +30,13 @@ final class OptionsViewController:
         return false
     }
     
-    private lazy var contextView = VStackView()
+    private lazy var primaryContextView = VStackView()
+    private lazy var secondaryContextView = VStackView()
     
     private var muteNotificationsView: ListActionView?
 
     private let account: Account
-    private let options: [Option]
+    private let optionGroup: OptionGroup
     
     private let theme: OptionsViewControllerTheme
     
@@ -45,7 +46,7 @@ final class OptionsViewController:
         theme: OptionsViewControllerTheme = .init()
     ) {
         self.account = account
-        self.options = Option.makeOptions(for: account)
+        self.optionGroup = OptionGroup.makeOptionGroup(for: account)
         self.theme = theme
         
         super.init(configuration: configuration)
@@ -67,66 +68,109 @@ extension OptionsViewController {
     private func addBackground() {
         view.customizeAppearance(theme.background)
     }
-    
+
     private func addContext() {
-        contentView.addSubview(contextView)
-        contextView.directionalLayoutMargins = NSDirectionalEdgeInsets(
-            top: theme.contentPaddings.top,
-            leading: theme.contentPaddings.leading,
-            bottom: theme.contentPaddings.bottom,
-            trailing: theme.contentPaddings.trailing
+        addPrimaryContext()
+        addSecondaryContext()
+    }
+
+    private func addActions() {
+        addActions(
+            optionGroup.primaryOptions,
+            to: primaryContextView
         )
-        contextView.isLayoutMarginsRelativeArrangement = true
-        contextView.snp.makeConstraints {
-            $0.top == 0
-            $0.leading == 0
-            $0.bottom == 0
-            $0.trailing == 0
+        addActions(
+            optionGroup.secondaryOptions,
+            to: secondaryContextView
+        )
+    }
+    
+    private func addPrimaryContext() {
+        contentView.addSubview(primaryContextView)
+        primaryContextView.directionalLayoutMargins = NSDirectionalEdgeInsets(
+            top: theme.primaryContextPaddings.top,
+            leading: theme.primaryContextPaddings.leading,
+            bottom: theme.primaryContextPaddings.bottom,
+            trailing: theme.primaryContextPaddings.trailing
+        )
+        primaryContextView.isLayoutMarginsRelativeArrangement = true
+        primaryContextView.snp.makeConstraints {
+            $0.setPaddings(
+                (0, 0, .noMetric, 0)
+            )
+        }
+    }
+
+    private func addSecondaryContext() {
+        let separator = contentView.attachSeparator(
+            theme.separator,
+            to: primaryContextView,
+            margin: theme.verticalPadding
+        )
+
+        contentView.addSubview(secondaryContextView)
+        secondaryContextView.directionalLayoutMargins = NSDirectionalEdgeInsets(
+            top: theme.secondaryContextPaddings.top,
+            leading: theme.secondaryContextPaddings.leading,
+            bottom: theme.secondaryContextPaddings.bottom,
+            trailing: theme.secondaryContextPaddings.trailing
+        )
+        secondaryContextView.isLayoutMarginsRelativeArrangement = true
+        secondaryContextView.snp.makeConstraints {
+            $0.top == separator
+            $0.setPaddings(
+                (.noMetric, 0, 0, 0)
+            )
         }
     }
     
-    private func addActions() {
+    private func addActions(
+        _ options: [Option],
+        to stackView: UIStackView
+    ) {
         options.forEach {
             switch $0 {
             case .copyAddress:
                 addAction(
                     CopyAddressListActionViewModel(account),
-                    #selector(copyAddress)
+                    #selector(copyAddress),
+                    to: stackView
                 )
             case .rekey:
                 addAction(
                     RekeyAccountListActionViewModel(),
-                    #selector(rekeyAccount)
+                    #selector(rekeyAccount),
+                    to: stackView
                 )
             case .rekeyInformation:
                 addAction(
                     ShowQrCodeListActionViewModel(),
-                    #selector(showQRCode)
+                    #selector(showQRCode),
+                    to: stackView
                 )
             case .viewPassphrase:
                 addAction(
                     ViewPassphraseListActionViewModel(),
-                    #selector(viewPassphrase)
+                    #selector(viewPassphrase),
+                    to: stackView
                 )
             case .muteNotifications:
                 muteNotificationsView = addAction(
                     MuteNotificationsListActionViewModel(account),
-                    #selector(muteNotifications)
+                    #selector(muteNotifications),
+                    to: stackView
                 )
             case .renameAccount:
                 addAction(
                     RenameAccountListActionViewModel(),
-                    #selector(renameAccount)
-                )
-            case .removeAsset:
-                addAction(
-                    ManageAssetsListActionViewModel(),
-                    #selector(manageAssets)
+                    #selector(renameAccount),
+                    to: stackView
                 )
             case .removeAccount:
                 addAction(
                     RemoveAccountListActionViewModel(),
-                    #selector(removeAccount)
+                    #selector(removeAccount),
+                    to: stackView
                 )
             }
         }
@@ -135,14 +179,15 @@ extension OptionsViewController {
     @discardableResult
     private func addAction(
         _ viewModel: ListActionViewModel,
-        _ selector: Selector
+        _ selector: Selector,
+        to stackView: UIStackView
     ) -> ListActionView {
         let actionView = ListActionView()
         
         actionView.customize(theme.action)
         actionView.bindData(viewModel)
         
-        contextView.addArrangedSubview(actionView)
+        stackView.addArrangedSubview(actionView)
         
         actionView.addTouch(
             target: self,
@@ -202,16 +247,6 @@ extension OptionsViewController {
             guard let self = self else { return }
 
             self.delegate?.optionsViewControllerDidRenameAccount(self)
-        }
-    }
-    
-    @objc
-    private func manageAssets() {
-        closeScreen(by: .dismiss) {
-            [weak self] in
-            guard let self = self else { return }
-            
-            self.delegate?.optionsViewControllerDidRemoveAsset(self)
         }
     }
     
@@ -282,6 +317,66 @@ extension OptionsViewController {
 }
 
 extension OptionsViewController {
+    struct OptionGroup {
+        let primaryOptions: [Option]
+        let secondaryOptions: [Option]
+
+        static func makeOptionGroup(
+            for account: Account
+        ) -> OptionGroup {
+            return account.isWatchAccount()
+            ? makeOptionGroup(forWatchAccount: account)
+            : makeOptionGroup(forNonWatchAccount: account)
+        }
+
+        private static func makeOptionGroup(
+            forWatchAccount account: Account
+        ) -> OptionGroup {
+            let primaryOptions: [Option] = [
+                .copyAddress
+            ]
+
+            let secondaryOptions: [Option] = [
+                .renameAccount,
+                .muteNotifications,
+                .removeAccount
+            ]
+            return OptionGroup(
+                primaryOptions: primaryOptions,
+                secondaryOptions: secondaryOptions
+            )
+        }
+
+        private static func makeOptionGroup(
+            forNonWatchAccount account: Account
+        ) -> OptionGroup {
+            var primaryOptions: [Option] = []
+
+            primaryOptions.append(.copyAddress)
+
+            if account.isRekeyed() {
+                primaryOptions.append(.rekeyInformation)
+            }
+
+            if !account.requiresLedgerConnection() {
+                primaryOptions.append(.viewPassphrase)
+            }
+
+            primaryOptions.append(.rekey)
+
+            let secondaryOptions: [Option] = [
+                .muteNotifications,
+                .renameAccount,
+                .removeAccount
+            ]
+
+            return OptionGroup(
+                primaryOptions: primaryOptions,
+                secondaryOptions: secondaryOptions
+            )
+        }
+    }
+
     enum Option {
         case copyAddress
         case rekey
@@ -289,55 +384,7 @@ extension OptionsViewController {
         case viewPassphrase
         case muteNotifications
         case renameAccount
-        case removeAsset
         case removeAccount
-        
-        static func makeOptions(
-            for account: Account
-        ) -> [Option] {
-            return account.isWatchAccount()
-                ? makeOptions(forWatchAccount: account)
-                : makeOptions(forNonWatchAccount: account)
-        }
-        
-        private static func makeOptions(
-            forWatchAccount account: Account
-        ) -> [Option] {
-            return [
-                .copyAddress,
-                .muteNotifications,
-                .renameAccount,
-                .removeAccount
-            ]
-        }
-        
-        private static func makeOptions(
-            forNonWatchAccount account: Account
-        ) -> [Option] {
-            var options: [Option] = []
-            
-            options.append(.copyAddress)
-            options.append(.rekey)
-            
-            if account.isRekeyed() {
-                options.append(.rekeyInformation)
-            }
-            
-            if !account.requiresLedgerConnection() {
-                options.append(.viewPassphrase)
-            }
-            
-            options.append(.muteNotifications)
-            options.append(.renameAccount)
-            
-            if account.hasAnyAssets() {
-                options.append(.removeAsset)
-            }
-            
-            options.append(.removeAccount)
-            
-            return options
-        }
     }
 }
 
@@ -346,9 +393,6 @@ protocol OptionsViewControllerDelegate: AnyObject {
         _ optionsViewController: OptionsViewController
     )
     func optionsViewControllerDidOpenRekeying(
-        _ optionsViewController: OptionsViewController
-    )
-    func optionsViewControllerDidRemoveAsset(
         _ optionsViewController: OptionsViewController
     )
     func optionsViewControllerDidViewPassphrase(

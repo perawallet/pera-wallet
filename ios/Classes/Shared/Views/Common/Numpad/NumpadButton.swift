@@ -17,6 +17,7 @@
 
 import UIKit
 import MacaroonUIKit
+import MacaroonUtils
 import Foundation
 
 final class NumpadButton: UIButton, ViewComposable {
@@ -57,7 +58,7 @@ final class NumpadButton: UIButton, ViewComposable {
             break
         case .decimalSeparator:
             customizeAppearance(theme.button)
-            customizeBaseAppearance(title: Locale.preferred().decimalSeparator ?? ".")
+            customizeBaseAppearance(title: Locale.preferred.decimalSeparator ?? ".")
         }
     }
 

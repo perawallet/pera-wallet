@@ -27,7 +27,6 @@ struct PortfolioCalculationInfoViewControllerTheme:
     var contentHorizontalPaddings: LayoutHorizontalPaddings
     var error: ErrorViewTheme
     var info: PortfolioCalculationInfoViewTheme
-    var infoTopPadding: LayoutMetric
     var spacingBetweenErrorAndInfo: LayoutMetric
     var footerVerticalPaddings: LayoutVerticalPaddings
     var linearGradientHeight: LayoutMetric
@@ -38,11 +37,10 @@ struct PortfolioCalculationInfoViewControllerTheme:
         self.background = [
             .backgroundColor(AppColors.Shared.System.background)
         ]
-        self.contentTopPadding = 24
+        self.contentTopPadding = 32
         self.contentHorizontalPaddings = (24, 24)
         self.error = ErrorViewTheme(family)
         self.info = PortfolioCalculationInfoViewTheme(family)
-        self.infoTopPadding = 12
         self.spacingBetweenErrorAndInfo = 28
         self.footerVerticalPaddings = (32, 16)
         let buttonHeight: LayoutMetric = 52

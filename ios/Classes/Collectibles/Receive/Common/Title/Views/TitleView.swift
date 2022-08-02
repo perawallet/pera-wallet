@@ -22,7 +22,7 @@ final class TitleView:
     View,
     ViewModelBindable,
     ListReusable {
-    private lazy var titleView = Label()
+    private lazy var titleView = UILabel()
 
     func customize(
         _ theme: TitleViewTheme

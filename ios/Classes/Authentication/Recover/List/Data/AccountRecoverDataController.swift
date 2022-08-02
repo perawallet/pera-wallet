@@ -21,17 +21,18 @@ class AccountRecoverDataController: NSObject {
 
     weak var delegate: AccountRecoverDataControllerDelegate?
 
-    private lazy var accountOrdering = AccountOrdering(
-        sharedDataController: sharedDataController,
-        session: session
-    )
-
     private let sharedDataController: SharedDataController
     private let session: Session
+    private let pushNotificationController: PushNotificationController
 
-    init(sharedDataController: SharedDataController, session: Session) {
+    init(
+        sharedDataController: SharedDataController,
+        session: Session,
+        pushNotificationController: PushNotificationController
+    ) {
         self.sharedDataController = sharedDataController
         self.session = session
+        self.pushNotificationController = pushNotificationController
     }
 
     func recoverAccount(from mnemonics: String) {
@@ -75,7 +76,7 @@ class AccountRecoverDataController: NSObject {
                     type: accountType,
                     ledgerDetail: sameAccount.ledgerDetail,
                     rekeyDetail: sameAccount.rekeyDetail,
-                    preferredOrder: accountOrdering.getNewAccountIndex(for: accountType)
+                    preferredOrder: sharedDataController.getPreferredOrderForNewAccount()
                 )
             } else {
                 delegate?.accountRecoverDataController(self, didFailRecoveringWith: .alreadyExist)
@@ -86,7 +87,7 @@ class AccountRecoverDataController: NSObject {
                 address: address,
                 name: address.shortAddressDisplay,
                 type: .standard,
-                preferredOrder: accountOrdering.getNewAccountIndex(for: .standard)
+                preferredOrder: sharedDataController.getPreferredOrderForNewAccount()
             )
         }
     }
@@ -104,6 +105,8 @@ class AccountRecoverDataController: NSObject {
             } else {
                 user.addAccount(account)
             }
+
+            pushNotificationController.sendDeviceDetails()
         } else {
             user = User(accounts: [account])
         }

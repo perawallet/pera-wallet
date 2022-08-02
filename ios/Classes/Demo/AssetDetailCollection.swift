@@ -46,7 +46,7 @@ struct AssetDetailCollection:
     init(
         _ collection: AssetDetailCollection
     ) {
-        $table.modify { $0 = collection.table }
+        $table.mutate { $0 = collection.table }
     }
     
     init(
@@ -54,7 +54,7 @@ struct AssetDetailCollection:
     ) {
         let keysAndValues = elements.map { ($0.id, $0) }
         let aTable = Table(keysAndValues, uniquingKeysWith: { $1 })
-        $table.modify { $0 = aTable }
+        $table.mutate { $0 = aTable }
     }
 
     init(
@@ -71,7 +71,7 @@ extension AssetDetailCollection {
     
     subscript (key: Key) -> Element? {
         get { table[key] }
-        set { $table.modify { $0[key] = newValue } }
+        set { $table.mutate { $0[key] = newValue } }
     }
 }
 

@@ -38,7 +38,9 @@ extension TransactionStatusInformationView {
 
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
-            $0.top.leading.equalToSuperview()
+            $0.top == theme.contentPaddings.top
+            $0.leading == theme.contentPaddings.leading
+            $0.bottom <= theme.contentPaddings.bottom
         }
     }
     
@@ -47,9 +49,14 @@ extension TransactionStatusInformationView {
 
         addSubview(transactionStatusView)
         transactionStatusView.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(theme.statusLeadingPadding)
-            $0.trailing.lessThanOrEqualToSuperview()
-            $0.top.bottom.equalToSuperview()
+            $0.top == theme.contentPaddings.top
+            $0.leading == theme.contentPaddings.leading + theme.statusLeadingPadding
+            $0.bottom == theme.contentPaddings.bottom
+            $0.trailing <= theme.contentPaddings.trailing
+        }
+
+        titleLabel.snp.makeConstraints {
+            $0.trailing == transactionStatusView.snp.leading - theme.minimumSpacingBetweenTitleAndStatus
         }
     }
 }

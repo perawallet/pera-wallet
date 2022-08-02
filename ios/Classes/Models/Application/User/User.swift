@@ -123,11 +123,13 @@ extension User {
         accounts[index].receivesNotification = account.receivesNotification
         accounts[index].rekeyDetail = account.rekeyDetail
         accounts[index].preferredOrder = account.preferredOrder
-        accounts[index].accountImage = account.accountImage
         syncronize()
     }
 
-    func updateLocalAccount(_ updatedAccount: Account) {
+    func updateLocalAccount(
+        _ updatedAccount: Account,
+        syncChangesImmediately: Bool = true
+    ) {
         guard let localAccountIndex = indexOfAccount(updatedAccount.address) else {
             return
         }
@@ -138,8 +140,10 @@ extension User {
         accounts[localAccountIndex].receivesNotification = updatedAccount.receivesNotification
         accounts[localAccountIndex].rekeyDetail = updatedAccount.rekeyDetail
         accounts[localAccountIndex].preferredOrder = updatedAccount.preferredOrder
-        accounts[localAccountIndex].accountImage = updatedAccount.accountImage
-        syncronize()
+
+        if syncChangesImmediately {
+            syncronize()
+        }
     }
 
     func syncronize() {

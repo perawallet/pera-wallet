@@ -20,6 +20,9 @@ import MacaroonUtils
 
 final class ALGAppTarget: MacaroonApplication.AppTarget {
     let app: App
+    let deeplinkConfig: ALGDeeplinkConfig
+    let walletConnectConfig: ALGWalletConnectConfig
+    let universalLinkConfig: ALGUniversalLinkConfig
     /// <todo>
     /// Let's name it as `isStore` in 'Macaroon' later.
     let isProduction: Bool
@@ -29,6 +32,14 @@ final class ALGAppTarget: MacaroonApplication.AppTarget {
     let version = getVersion()
     
     static var current: ALGAppTarget!
+    
+    private enum CodingKeys: CodingKey {
+        case app
+        case deeplinkConfig
+        case walletConnectConfig
+        case universalLinkConfig
+        case isProduction
+    }
     
     static func setup() {
         current = load(fromResource: "Config")
@@ -63,10 +74,5 @@ extension ALGAppTarget {
             let foundCase = Self.allCases.first(matching: (\.rawValue, rawValue))
             self = foundCase ?? .store
         }
-    }
-    
-    private enum CodingKeys: CodingKey {
-        case app
-        case isProduction
     }
 }

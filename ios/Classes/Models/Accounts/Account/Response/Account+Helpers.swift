@@ -27,46 +27,13 @@ extension Account {
 }
 
 extension Account {
-    func amount(for assetDetail: AssetDetail) -> Decimal? {
-        guard let asset = assets?.first(where: { $0.id == assetDetail.id }) else {
-            return nil
-        }
-        return asset.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
-    }
-
-    func amount(for assetDecoration: AssetDecoration) -> Decimal? {
-        guard let asset = assets?.first(where: { $0.id == assetDecoration.id }) else {
-            return nil
-        }
-        return asset.amount.assetAmount(fromFraction: assetDecoration.decimals)
-    }
-
-    func amountWithoutFraction(for assetDetail: AssetDetail) -> UInt64? {
-        guard let asset = assets?.first(where: { $0.id == assetDetail.id }) else {
-            return nil
-        }
-        return UInt64(asset.amount)
-    }
-    
-    func amountDisplayWithFraction(for assetDetail: AssetDetail) -> String? {
-        return amount(for: assetDetail)?.toExactFractionLabel(fraction: assetDetail.fractionDecimals)
-    }
-
-    func amountDisplayWithFraction(for assetDecoration: AssetDecoration) -> String? {
-        return amount(for: assetDecoration)?.toExactFractionLabel(fraction: assetDecoration.decimals)
-    }
-
-    func amountNumberWithAutoFraction(for assetDetail: AssetDecoration) -> String? {
-        return amount(for: assetDetail)?.toNumberStringWithSeparatorForLabel(fraction: assetDetail.decimals)
-    }
-
     func isSameAccount(with address: String) -> Bool {
         return self.address == address
     }
 }
 
 extension Account {
-    func doesAccountHasParticipationKey() -> Bool {
+    func hasParticipationKey() -> Bool {
         return !(participation == nil || participation?.voteParticipationKey == defaultParticipationKey)
     }
 
@@ -77,14 +44,14 @@ extension Account {
     func hasDifferentAssets(than account: Account) -> Bool {
         return
             assets != account.assets ||
-            !standardAssets.containsSameElements(as: account.standardAssets)
+            !standardAssets.someArray.containsSameElements(as: account.standardAssets.someArray)
     }
 
     func hasDifferentApps(than account: Account) -> Bool {
         return totalCreatedApps != account.totalCreatedApps || appsLocalState?.count != account.appsLocalState?.count
     }
 
-    var hasMinAmountFields: Bool {
+    var hasDifferentMinBalance: Bool {
         return hasAnyAssets() || isThereAnyCreatedApps || isThereAnyOptedApps || isThereSchemaValues || isThereAnyAppExtraPages
     }
 
@@ -115,7 +82,6 @@ extension Account {
         receivesNotification = localAccount.receivesNotification
         rekeyDetail = localAccount.rekeyDetail
         preferredOrder = localAccount.preferredOrder
-        accountImage = localAccount.accountImage
     }
     
     func removeDeletedAssets() {
@@ -209,31 +175,36 @@ extension Account {
         appsTotalExtraPages = account.appsTotalExtraPages
         appsTotalSchema = account.appsTotalSchema
         preferredOrder = account.preferredOrder
-        accountImage = account.accountImage
 
         if let updatedName = account.name {
             name = updatedName
         }
     }
-    
-    func accountTypeImage() -> UIImage? {
+
+    var typeTitle: String? {
         if isWatchAccount() {
-            return img("icon-account-type-watch")
-        } else if isRekeyed() {
-            return img("icon-account-type-rekeyed")
-        } else if isLedger() {
-            return img("img-ledger-small")
-        } else {
-            return img("icon-account-type-standard")
+            return "title-watch-account".localized
         }
+        if isRekeyed() {
+            return "title-rekeyed-account".localized
+        }
+        if isLedger() {
+            return "title-ledger-account".localized
+        }
+        return nil
     }
-
-    var image: UIImage? {
-        guard let accountImage = accountImage else {
-            return nil
+    
+    var typeImage: UIImage {
+        if isWatchAccount() {
+            return "icon-watch-account".uiImage
         }
-
-        return img("\(type.rawValue)-\(accountImage)")
+        if isRekeyed() {
+            return "icon-rekeyed-account".uiImage
+        }
+        if isLedger() {
+            return "icon-ledger-account".uiImage
+        }
+        return "icon-standard-account".uiImage
     }
 
     func isOwner(of asset: AssetID) -> Bool {

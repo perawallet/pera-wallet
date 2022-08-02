@@ -18,7 +18,7 @@
 import UIKit
 import MacaroonUIKit
 
-final class AssetActionConfirmationViewModel: PairedViewModel {
+final class AssetActionConfirmationViewModel: ViewModel {
     private(set) var title: String?
     private(set) var id: String?
     private(set) var transactionFee: String?
@@ -27,10 +27,16 @@ final class AssetActionConfirmationViewModel: PairedViewModel {
     private(set) var detail: NSAttributedString?
     private(set) var assetDisplayViewModel: AssetDisplayViewModel?
 
-    init(_ model: AssetAlertDraft) {
+    init(
+        _ model: AssetAlertDraft,
+        currencyFormatter: CurrencyFormatter
+    ) {
         bindTitle(model)
         bindID(model)
-        bindTransactionFee(model)
+        bindTransactionFee(
+            model,
+            currencyFormatter: currencyFormatter
+        )
         bindActionTitle(model)
         bindCancelTitle(model)
         bindDetail(model)
@@ -47,12 +53,18 @@ extension AssetActionConfirmationViewModel {
         id = "\(draft.assetId)"
     }
     
-    private func bindTransactionFee(_ draft: AssetAlertDraft) {
+    private func bindTransactionFee(
+        _ draft: AssetAlertDraft,
+        currencyFormatter: CurrencyFormatter
+    ) {
         guard let fee = draft.transactionFee?.toAlgos else {
             return
         }
-        
-        transactionFee = fee.toAlgosStringForLabel
+
+        currencyFormatter.formattingContext = .listItem
+        currencyFormatter.currency = AlgoLocalCurrency()
+
+        transactionFee = currencyFormatter.format(fee)
     }
 
     private func bindActionTitle(_ draft: AssetAlertDraft) {

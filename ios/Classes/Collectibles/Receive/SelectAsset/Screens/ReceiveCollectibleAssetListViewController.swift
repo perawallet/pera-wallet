@@ -21,7 +21,8 @@ import MacaroonUtils
 final class ReceiveCollectibleAssetListViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout,
-    NotificationObserver {
+    NotificationObserver,
+    UIContextMenuInteractionDelegate {
     var notificationObservations: [NSObjectProtocol] = []
 
     weak var delegate: ReceiveCollectibleAssetListViewControllerDelegate?
@@ -57,6 +58,12 @@ final class ReceiveCollectibleAssetListViewController:
         )
     }()
 
+    private lazy var accountMenuInteraction = UIContextMenuInteraction(delegate: self)
+
+    private lazy var currencyFormatter = CurrencyFormatter()
+
+    private let copyToClipboardController: CopyToClipboardController
+
     private var ledgerApprovalViewController: LedgerApprovalViewController?
     private var currentAsset: AssetDecoration?
 
@@ -68,17 +75,19 @@ final class ReceiveCollectibleAssetListViewController:
         account: AccountHandle,
         dataController: ReceiveCollectibleAssetListDataController,
         theme: ReceiveCollectibleAssetListViewControllerTheme = .init(),
+        copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
         self.account = account
         self.dataController = dataController
         self.theme = theme
+        self.copyToClipboardController = copyToClipboardController
 
         super.init(configuration: configuration)
     }
 
     deinit {
-        unobserveNotifications()
+        stopObservingNotifications()
     }
 
     override func configureNavigationBarAppearance() {
@@ -160,6 +169,8 @@ final class ReceiveCollectibleAssetListViewController:
     override func linkInteractors() {
         transactionController.delegate = self
 
+        selectedAccountPreviewView.addInteraction(accountMenuInteraction)
+
         selectedAccountPreviewView.observe(event: .performCopyAction) {
             [weak self] in
             guard let self = self else {
@@ -239,8 +250,7 @@ extension ReceiveCollectibleAssetListViewController {
 
 extension ReceiveCollectibleAssetListViewController {
     private func copyAddress() {
-        UIPasteboard.general.string = account.value.address
-        bannerController?.presentInfoBanner("qr-creation-copied".localized)
+        copyToClipboardController.copyAddress(self.account.value)
     }
 
     private func openQRGenerator() {
@@ -262,6 +272,49 @@ extension ReceiveCollectibleAssetListViewController {
         )
     }
 }
+
+extension ReceiveCollectibleAssetListViewController {
+     func contextMenuInteraction(
+         _ interaction: UIContextMenuInteraction,
+         configurationForMenuAtLocation location: CGPoint
+     ) -> UIContextMenuConfiguration? {
+         return UIContextMenuConfiguration { _ in
+             let copyActionItem = UIAction(item: .copyAddress) {
+                 [unowned self] _ in
+                 self.copyToClipboardController.copyAddress(self.account.value)
+             }
+             return UIMenu(children: [ copyActionItem ])
+         }
+     }
+
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        previewForHighlightingMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard let view = interaction.view else {
+            return nil
+        }
+
+        return UITargetedPreview(
+            view: view,
+            backgroundColor: AppColors.Shared.System.background.uiColor
+        )
+    }
+
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        previewForDismissingMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard let view = interaction.view else {
+            return nil
+        }
+
+        return UITargetedPreview(
+            view: view,
+            backgroundColor: AppColors.Shared.System.background.uiColor
+        )
+    }
+ }
 
 extension ReceiveCollectibleAssetListViewController {
     func collectionView(
@@ -499,9 +552,16 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
     ) {
         switch transactionError {
         case let .minimumAmount(amount):
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = AlgoLocalCurrency()
+
+            let amountText = currencyFormatter.format(amount.toAlgos)
+
             bannerController?.presentErrorBanner(
                 title: "asset-min-transaction-error-title".localized,
-                message: "asset-min-transaction-error-message".localized(params: amount.toAlgos.toAlgosStringForLabel ?? "")
+                message: "asset-min-transaction-error-message".localized(
+                    params: amountText.someString
+                )
             )
         case .invalidAddress:
             bannerController?.presentErrorBanner(
@@ -547,6 +607,12 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
         _ transactionController: TransactionController
     ) {
         ledgerApprovalViewController?.dismissScreen()
+    }
+
+    func transactionControllerDidRejectedLedgerOperation(
+        _ transactionController: TransactionController
+    ) {
+        loadingController?.stopLoading()
     }
 }
 

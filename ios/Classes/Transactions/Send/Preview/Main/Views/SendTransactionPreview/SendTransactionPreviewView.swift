@@ -137,12 +137,20 @@ extension SendTransactionPreviewView {
     }
 }
 
-extension SendTransactionPreviewView: ViewModelBindable {
-    func bindData(_ viewModel: SendTransactionPreviewViewModel?) {
+extension SendTransactionPreviewView {
+    func bindData(
+        _ viewModel: SendTransactionPreviewViewModel?,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) {
         if let amountViewMode = viewModel?.amountViewMode {
             amountView.bindData(
                 TransactionCurrencyAmountInformationViewModel(
-                    transactionViewModel: TransactionCurrencyAmountViewModel(amountViewMode)
+                    transactionViewModel: TransactionCurrencyAmountViewModel(
+                        amountViewMode,
+                        currency: currency,
+                        currencyFormatter: currencyFormatter
+                    )
                 )
             )
         }
@@ -158,7 +166,11 @@ extension SendTransactionPreviewView: ViewModelBindable {
         if let feeViewMode = viewModel?.feeViewMode {
             feeView.bindData(
                 TransactionAmountInformationViewModel(
-                    transactionViewModel: TransactionAmountViewModel(feeViewMode)
+                    transactionViewModel: TransactionAmountViewModel(
+                        feeViewMode,
+                        currency: currency,
+                        currencyFormatter: currencyFormatter
+                    )
                 )
             )
         }
@@ -166,7 +178,11 @@ extension SendTransactionPreviewView: ViewModelBindable {
         if let balanceViewMode = viewModel?.balanceViewMode {
             balanceView.bindData(
                 TransactionCurrencyAmountInformationViewModel(
-                    transactionViewModel: TransactionCurrencyAmountViewModel(balanceViewMode)
+                    transactionViewModel: TransactionCurrencyAmountViewModel(
+                        balanceViewMode,
+                        currency: currency,
+                        currencyFormatter: currencyFormatter
+                    )
                 )
             )
         }

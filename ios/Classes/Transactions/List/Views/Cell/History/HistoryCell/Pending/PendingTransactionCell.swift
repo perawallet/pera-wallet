@@ -29,7 +29,7 @@ final class PendingTransactionCell: BaseCollectionViewCell<PendingTransactionVie
         stopAnimating()
     }
 
-    func bindData(_ viewModel: TransactionHistoryContextViewModel) {
+    func bindData(_ viewModel: TransactionListItemViewModel) {
         contextView.bindData(viewModel)
     }
 }

@@ -35,7 +35,7 @@ final class SelectAccountViewController: BaseViewController {
         return collectionView
     }()
 
-    private let transactionAction: TransactionAction
+    private let draft: SelectAccountDraft
 
     private lazy var listLayout = SelectAccountListLayout(listDataSource: listDataSource)
     private lazy var listDataSource = SelectAccountDataSource(listView)
@@ -44,11 +44,11 @@ final class SelectAccountViewController: BaseViewController {
 
     init(
         dataController: SelectAccountDataController,
-        transactionAction: TransactionAction,
+        draft: SelectAccountDraft,
         configuration: ViewControllerConfiguration
     ) {
         self.dataController = dataController
-        self.transactionAction = transactionAction
+        self.draft = draft
         super.init(configuration: configuration)
     }
 
@@ -59,11 +59,14 @@ final class SelectAccountViewController: BaseViewController {
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
 
-        guard transactionAction != .buyAlgo else {
-            return
+        switch draft.transactionAction {
+        case .send,
+            .receive,
+            .optIn:
+            addBarButtons()
+        default:
+            break
         }
-
-        addBarButtons()
     }
 
     override func configureAppearance() {
@@ -98,7 +101,11 @@ final class SelectAccountViewController: BaseViewController {
                 return
             }
 
-            self.delegate?.selectAccountViewController(self, didSelect: accountHandle.value, for: self.transactionAction)
+            self.delegate?.selectAccountViewController(
+                self,
+                didSelect: accountHandle.value,
+                for: self.draft
+            )
         }
         dataController.load()
     }
@@ -161,16 +168,24 @@ extension SelectAccountViewController: SharedDataControllerObserver {
     }
 }
 
-enum TransactionAction {
+enum TransactionAction: Equatable {
     case send
     case receive
     case buyAlgo
+    case optIn(asset: AssetID)
 }
 
 protocol SelectAccountViewControllerDelegate: AnyObject {
     func selectAccountViewController(
         _ selectAccountViewController: SelectAccountViewController,
         didSelect account: Account,
-        for transactionAction: TransactionAction
+        for draft: SelectAccountDraft
     )
+}
+
+struct SelectAccountDraft {
+    let transactionAction: TransactionAction
+    let requiresAssetSelection: Bool // Asset selection screen should be presented after account selection
+    var transactionDraft: TransactionSendDraft? // Transaction is already created
+    var receiver: String? // Receiver is already set for the transaction
 }

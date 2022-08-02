@@ -30,6 +30,7 @@ protocol TransactionControllerDelegate: AnyObject {
     func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController)
     func transactionController(_ transactionController: TransactionController, didRequestUserApprovalFrom ledger: String)
     func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController)
+    func transactionControllerDidRejectedLedgerOperation(_ transactionController: TransactionController)
 }
 
 extension TransactionControllerDelegate where Self: BaseViewController {
@@ -49,6 +50,8 @@ extension TransactionControllerDelegate where Self: BaseViewController {
     func transactionController(_ transactionController: TransactionController, didRequestUserApprovalFrom ledger: String) { }
 
     func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {}
+
+    func transactionControllerDidRejectedLedgerOperation(_ transactionController: TransactionController) {}
 }
 
 class PrintableErrorDetail: DebugPrintable {

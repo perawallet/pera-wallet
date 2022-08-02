@@ -28,7 +28,7 @@ extension AccountAssetListLayout {
 
         init(_ family: LayoutFamily) {
             self.assetItemSize = (UIScreen.main.bounds.width - 48, 72)
-            self.assetManagementItemSize = (UIScreen.main.bounds.width - 48, 24)
+            self.assetManagementItemSize = (UIScreen.main.bounds.width - 48, 40)
             self.assetTitleItemSize = (UIScreen.main.bounds.width - 48, 24)
             self.searchItemSize = (UIScreen.main.bounds.width, 72)
         }

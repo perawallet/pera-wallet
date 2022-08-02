@@ -21,6 +21,8 @@ class WCAppCallTransactionViewController: WCSingleTransactionViewController {
 
     private lazy var appCallTransactionView = WCAppCallTransactionView()
 
+    private lazy var currencyFormatter = CurrencyFormatter()
+
     override var transactionView: WCSingleTransactionView? {
         return appCallTransactionView
     }
@@ -42,7 +44,14 @@ class WCAppCallTransactionViewController: WCSingleTransactionViewController {
     }
 
     override func bindData() {
-        appCallTransactionView.bind(WCAppCallTransactionViewModel(transaction: transaction, account: account))
+        appCallTransactionView.bind(
+            WCAppCallTransactionViewModel(
+                transaction: transaction,
+                account: account,
+                currency: sharedDataController.currency,
+                currencyFormatter: currencyFormatter
+            )
+        )
     }
 }
 

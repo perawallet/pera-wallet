@@ -76,7 +76,7 @@ extension RekeyConfirmationViewModel {
     }
 
     private func bindNewLedgerImage(_ account: Account) {
-        newLedgerImage = account.type.image(for: .purple)
+        newLedgerImage = account.typeImage
     }
 
     private func bindFeeValue() {

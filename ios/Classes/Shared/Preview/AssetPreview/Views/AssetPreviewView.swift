@@ -23,6 +23,7 @@ final class AssetPreviewView:
     ViewModelBindable,
     ListReusable {
     private lazy var iconView = AssetImageView()
+    private lazy var contentAndAccessoryContextView = UIView()
     private lazy var contentView = UIView()
     private lazy var titleView = Label()
     private lazy var verifiedIconView = ImageView()
@@ -35,8 +36,7 @@ final class AssetPreviewView:
         _ theme: AssetPreviewViewTheme
     ) {
         addIconView(theme)
-        addContent(theme)
-        addAccessory(theme)
+        addContentAndAccessoryContext(theme)
     }
 
     func prepareLayout(
@@ -106,7 +106,7 @@ extension AssetPreviewView {
     private func addIconView(
         _ theme: AssetPreviewViewTheme
     ) {
-        iconView.customize(AssetImageViewTheme())
+        iconView.customize(theme.icon)
 
         addSubview(iconView)
         iconView.fitToIntrinsicSize()
@@ -117,14 +117,29 @@ extension AssetPreviewView {
         }
     }
 
+    private func addContentAndAccessoryContext(
+        _ theme: AssetPreviewViewTheme
+    ) {
+        addSubview(contentAndAccessoryContextView)
+        contentAndAccessoryContextView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == iconView.snp.trailing + theme.horizontalPadding
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+
+        addContent(theme)
+        addAccessory(theme)
+    }
+
     private func addContent(
         _ theme: AssetPreviewViewTheme
     ) {
-        addSubview(contentView)
+        contentAndAccessoryContextView.addSubview(contentView)
         contentView.snp.makeConstraints {
-            $0.width >= self * theme.contentMinWidthRatio
+            $0.width >= contentAndAccessoryContextView * theme.contentMinWidthRatio
             $0.top == 0
-            $0.leading == iconView.snp.trailing + theme.horizontalPadding
+            $0.leading == 0
             $0.bottom == 0
         }
 
@@ -142,11 +157,10 @@ extension AssetPreviewView {
         titleView.fitToVerticalIntrinsicSize(
             hugging: .defaultLow,
             compression: .required
-        ) /// Ask, without this there is ambiguous layout for vertical position & height.
-
+        )
         titleView.fitToHorizontalIntrinsicSize(
             hugging: .required,
-            compression: .defaultHigh
+            compression: .defaultLow
         )
 
         titleView.snp.makeConstraints {
@@ -181,7 +195,10 @@ extension AssetPreviewView {
         
         contentView.addSubview(subtitleView)
 
-        subtitleView.fitToVerticalIntrinsicSize()
+        subtitleView.fitToVerticalIntrinsicSize(
+            hugging: .required,
+            compression: .defaultHigh
+        )
         subtitleView.fitToHorizontalIntrinsicSize(
             hugging: .required,
             compression: .defaultLow
@@ -198,11 +215,11 @@ extension AssetPreviewView {
     private func addAccessory(
         _ theme: AssetPreviewViewTheme
     ) {
-        addSubview(accessoryView)
+        contentAndAccessoryContextView.addSubview(accessoryView)
 
         accessoryView.snp.makeConstraints {
             $0.top == 0
-            $0.leading == contentView.snp.trailing + theme.minSpacingBetweenContentAndSecondaryContent
+            $0.leading == contentView.snp.trailing
             $0.bottom == 0
             $0.trailing == 0
         }
@@ -227,10 +244,14 @@ extension AssetPreviewView {
             compression: .required
         )
 
+        primaryAccessoryView.contentEdgeInsets.leading = theme.minSpacingBetweenContentAndSecondaryContent
         primaryAccessoryView.snp.makeConstraints {
             $0.top == 0
             $0.trailing == 0
-            $0.leading >= 0
+            $0.leading == 0
+            $0.bottom
+                .equalToSuperview()
+                .priority(.low)
         }
     }
 
@@ -250,11 +271,12 @@ extension AssetPreviewView {
             compression: .defaultLow
         )
 
+        secondaryAccessoryView.contentEdgeInsets.leading = theme.minSpacingBetweenContentAndSecondaryContent
         secondaryAccessoryView.snp.makeConstraints {
             $0.top == primaryAccessoryView.snp.bottom
             $0.bottom == 0
             $0.trailing == 0
-            $0.leading >= 0
+            $0.leading == 0
         }
     }
 }

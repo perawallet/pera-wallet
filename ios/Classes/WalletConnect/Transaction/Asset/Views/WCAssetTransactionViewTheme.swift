@@ -37,7 +37,7 @@ extension WCAssetTransactionView {
             ]
             self.buttonsCorner = Corner(radius: 18)
             self.buttonEdgeInsets = (8, 12, 8, 12)
-            self.textInformationTheme = TransactionTextInformationViewCommonTheme()
+            self.textInformationTheme = TransactionTextInformationViewTheme()
             self.amountInformationTheme = TransactionAmountInformationViewTheme()
             self.assetInformationTheme = WCAssetInformationViewTheme()
             self.accountInformationTheme = TitledTransactionAccountNameViewTheme(family)

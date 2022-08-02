@@ -19,6 +19,8 @@ import MacaroonUIKit
 import UIKit
 
 final class LedgerAccountDetailDataSource: NSObject {
+    private lazy var currencyFormatter = CurrencyFormatter()
+
     private let api: ALGAPI
     private let sharedDataController: SharedDataController
     private let loadingController: LoadingController?
@@ -97,7 +99,10 @@ extension LedgerAccountDetailDataSource {
     func cellForLedgerAccount(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(AccountPreviewCell.self, at: indexPath)
         let accountNameViewModel = AccountNameViewModel(account: account)
-        let preview = CustomAccountPreview(accountNameViewModel)
+        let preview = CustomAccountPreview(
+            accountNameViewModel,
+            address: account.address
+        )
         cell.bindData(AccountPreviewViewModel(preview))
         return cell
     }
@@ -113,12 +118,18 @@ extension LedgerAccountDetailDataSource {
 
         if account.isRekeyed() {
             let accountNameViewModel = AuthAccountNameViewModel(account)
-            let preview = CustomAccountPreview(accountNameViewModel)
+            let preview = CustomAccountPreview(
+                accountNameViewModel,
+                address: account.address
+            )
             cell.bindData(AccountPreviewViewModel(preview))
         } else {
             let rekeyedAccount = rekeyedAccounts[indexPath.row]
             let accountNameViewModel = AccountNameViewModel(account: rekeyedAccount)
-            let preview = CustomAccountPreview(accountNameViewModel)
+            let preview = CustomAccountPreview(
+                accountNameViewModel,
+                address: rekeyedAccount.address
+            )
             cell.bindData(AccountPreviewViewModel(preview))
         }
         return cell
@@ -135,9 +146,13 @@ extension LedgerAccountDetailDataSource {
 
 extension LedgerAccountDetailDataSource {
     private func fetchAssets(for account: Account) {
-        let currency = sharedDataController.currency.value
-        let assetPreviewModel = AssetPreviewModelAdapter.adapt((account, currency))
-        assetPreviews.append(assetPreviewModel)
+        let algoAssetItem = AlgoAssetItem(
+            account: account,
+            currency: sharedDataController.currency,
+            currencyFormatter: currencyFormatter
+        )
+        let algoAssetPreview = AssetPreviewModelAdapter.adapt(algoAssetItem)
+        assetPreviews.append(algoAssetPreview)
 
         guard let assets = account.assets,
               !assets.isEmpty else {
@@ -159,11 +174,12 @@ extension LedgerAccountDetailDataSource {
             queue: .main,
             ignoreResponseOnCancelled: false
         ) { [weak self] assetResponse in
-            guard let self = self else {
-                return
-            }
+            guard let self = self else { return }
 
             self.loadingController?.stopLoading()
+
+            let currency = self.sharedDataController.currency
+            let currencyFormatter = self.currencyFormatter
 
             switch assetResponse {
             case let .success(assetDetailResponse):
@@ -180,8 +196,13 @@ extension LedgerAccountDetailDataSource {
                             let standardAsset = StandardAsset(asset: asset, decoration: assetDetail)
                             account.append(standardAsset)
 
-                            let assetPreviewModel = AssetPreviewModelAdapter.adapt((asset: standardAsset, currency: currency))
-                            self.assetPreviews.append(assetPreviewModel)
+                            let standardAssetItem = AssetItem(
+                                asset: standardAsset,
+                                currency: currency,
+                                currencyFormatter: currencyFormatter
+                            )
+                            let preview = AssetPreviewModelAdapter.adapt(standardAssetItem)
+                            self.assetPreviews.append(preview)
                         }
                     }
                 }

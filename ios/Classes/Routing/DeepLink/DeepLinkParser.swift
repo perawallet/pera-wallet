@@ -63,8 +63,14 @@ extension DeepLinkParser {
             return .failure(.waitingForAccountsToBeAvailable)
         }
         
-        let draft = AlgoTransactionListing(accountHandle: account)
-        return .success(.algosDetail(draft: draft))
+        let draft = AlgoTransactionListing(
+            accountHandle: account
+        )
+
+        var preferences = BaseAssetDetailViewController.Preferences()
+        preferences.showsAccountActionsMenu = false
+
+        return .success(.algosDetail(draft: draft, preferences: preferences))
     }
     
     private func makeAssetTransactionDetailScreen(
@@ -89,8 +95,15 @@ extension DeepLinkParser {
             return .failure(.waitingForAssetsToBeAvailable)
         }
         
-        let draft = AssetTransactionListing(accountHandle: account, asset: asset)
-        return .success(.assetDetail(draft: draft))
+        let draft = AssetTransactionListing(
+            accountHandle: account,
+            asset: asset
+        )
+
+        var preferences = BaseAssetDetailViewController.Preferences()
+        preferences.showsAccountActionsMenu = false
+
+        return .success(.assetDetail(draft: draft, preferences: preferences))
     }
     
     private func makeAssetTransactionRequestScreen(
@@ -127,40 +140,48 @@ extension DeepLinkParser {
 
 extension DeepLinkParser {
     func discover(
-        url: URL
+        qrText: QRText
     ) -> Result? {
-        if canDiscover(moonpayTransaction: url) {
-            /// note: When moonpay transaction can discoverable, we should return nil  Otherwise It may cause a conflcit on QR discover function
+        switch qrText.mode {
+        case .address:
+            return makeActionSelectionScreen(
+                qrText
+            )
+        case .algosRequest:
+            return makeTransactionRequestScreen(
+                qrText
+            )
+        case .assetRequest:
+            return makeAssetTransactionRequestScreen(
+                qrText
+            )
+        case .optInRequest:
+            return makeAssetOptInRequestScreen(
+                qrText
+            )
+        case .mnemonic:
             return nil
         }
-
-        if let result = discover(qr: url) {
-            return result
-        }
-
-        return nil
     }
     
-    private func makeAccountAdditionScreen(
-        _ qr: QRText,
-        for url: URL
+    private func makeActionSelectionScreen(
+        _ qr: QRText
     ) -> Result? {
-        let address = extractAccountAddress(from: url)
+        let address = qr.address
         return address.unwrap {
-            .success(.addContact(address: $0, name: qr.label))
+            .success(.actionSelection(address: $0, label: qr.label))
         }
     }
     
     private func makeTransactionRequestScreen(
-        _ qr: QRText,
-        for url: URL
+        _ qr: QRText
     ) -> Result? {
         guard let amount = qr.amount else {
             return nil
         }
 
         guard
-            let accountAddress = extractAccountAddress(from: url),
+            let accountAddress = qr.address,
             sharedDataController.isAvailable
         else {
             return .failure(.waitingForAssetsToBeAvailable)
@@ -178,53 +199,75 @@ extension DeepLinkParser {
     }
     
     private func makeAssetTransactionRequestScreen(
-        _ qr: QRText,
-        for url: URL
+        _ qr: QRText
     ) -> Result? {
         guard let assetId = qr.asset, let amount = qr.amount else {
             return nil
         }
 
         guard
-            let accountAddress = extractAccountAddress(from: url),
+            let accountAddress = qr.address,
             sharedDataController.isAvailable
         else {
             return .failure(.waitingForAssetsToBeAvailable)
         }
 
+        let nonWatchAccounts = sharedDataController.accountCollection.filter { !$0.value.isWatchAccount() }
+
+        let hasAsset = nonWatchAccounts.contains { account in
+            return account.value.containsAsset(assetId)
+        }
+
         guard
+            hasAsset,
             let assetDecoration = sharedDataController.assetDetailCollection[assetId]
         else {
             let draft = AssetAlertDraft(
                 account: nil,
                 assetId: assetId,
                 asset: nil,
-                title: "asset-support-title".localized,
-                detail: "asset-support-error".localized,
-                actionTitle: "title-approve".localized,
-                cancelTitle: "title-cancel".localized
+                title: "asset-support-your-add-title".localized,
+                detail: "asset-support-your-add-message".localized,
+                cancelTitle: "title-close".localized
             )
-            return .success(.assetActionConfirmation(draft: draft))
+            return .success(
+                .assetActionConfirmation(
+                    draft: draft,
+                    theme: .secondaryActionOnly
+                )
+            )
         }
 
         /// <todo> Support the collectibles later when its detail screen is done.
 
         let qrDraft = QRSendTransactionDraft(
             toAccount: accountAddress,
-            amount: Decimal(amount),
+            amount: amount.assetAmount(fromFraction: assetDecoration.decimals),
             note: qr.note,
             lockedNote: qr.lockedNote,
             transactionMode: .asset(StandardAsset(asset: ALGAsset(id: assetDecoration.id), decoration: assetDecoration))
         )
-        return .success(.sendTransaction(draft: qrDraft))
+
+        let shouldFilterAccount: (Account) -> Bool = {
+            !$0.containsAsset(assetId)
+        }
+
+        return .success(
+            .sendTransaction(
+                draft: qrDraft,
+                shouldFilterAccount: shouldFilterAccount
+            )
+        )
     }
-    
-    private func extractAccountAddress(
-        from url: URL
-    ) -> String? {
-        let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true)
-        let accountAddress = urlComponents?.host
-        return accountAddress.unwrap { $0.isValidatedAddress }
+
+    private func makeAssetOptInRequestScreen(
+        _ qr: QRText
+    ) -> Result? {
+        guard let assetID = qr.asset else {
+            return nil
+        }
+
+        return .success(.accountSelect(asset: assetID))
     }
 }
 
@@ -267,58 +310,29 @@ extension DeepLinkParser {
 }
 
 extension DeepLinkParser {
-    private func canDiscover(moonpayTransaction url: URL) -> Bool {
-        if let buyAlgoParams = url.extractBuyAlgoParamsFromMoonPay() {
-            NotificationCenter.default.post(
-                name: .didRedirectFromMoonPay,
-                object: self,
-                userInfo: [BuyAlgoParams.notificationObjectKey: buyAlgoParams]
-            )
-
-            return true
-        }
-
-        return false
-    }
-
-    private func discover(qr url: URL) -> Result? {
-        guard let qr = url.buildQRText() else {
-            return nil
-        }
-
-        switch qr.mode {
-        case .address:
-            return makeAccountAdditionScreen(
-                qr,
-                for: url
-            )
-        case .algosRequest:
-            return makeTransactionRequestScreen(
-                qr,
-                for: url
-            )
-        case .assetRequest:
-            return makeAssetTransactionRequestScreen(
-                qr,
-                for: url
-            )
-        case .mnemonic:
-            return nil
-        }
-    }
-}
-
-extension DeepLinkParser {
     typealias Result = Swift.Result<Screen, Error>
     
     enum Screen {
-        case addContact(address: String, name: String?)
-        case algosDetail(draft: TransactionListing)
-        case assetActionConfirmation(draft: AssetAlertDraft)
-        case assetDetail(draft: TransactionListing)
-        case sendTransaction(draft: QRSendTransactionDraft)
+        case actionSelection(address: String, label: String?)
+        case assetActionConfirmation(
+            draft: AssetAlertDraft,
+            theme: AssetActionConfirmationViewControllerTheme = .init()
+        )
+        case algosDetail(
+            draft: TransactionListing,
+            preferences: BaseAssetDetailViewController.Preferences
+        )
+        case assetDetail(
+            draft: TransactionListing,
+            preferences: BaseAssetDetailViewController.Preferences
+        )
+        case sendTransaction(
+            draft: QRSendTransactionDraft,
+            shouldFilterAccount: ((Account) -> Bool)? = nil
+        )
         case wcMainTransactionScreen(draft: WalletConnectRequestDraft)
         case buyAlgo(draft: BuyAlgoDraft)
+        case accountSelect(asset: AssetID)
     }
     
     enum Error: Swift.Error {

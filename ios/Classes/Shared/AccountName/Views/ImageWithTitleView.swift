@@ -55,7 +55,7 @@ extension ImageWithTitleView {
 
 extension ImageWithTitleView {
     func bindData(_ viewModel: AccountNameViewModel?) {
-        imageView.image = viewModel?.image
+        imageView.load(from: viewModel?.image)
         titleLabel.text = viewModel?.name
     }
 }

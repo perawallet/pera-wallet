@@ -44,3 +44,18 @@ final class SingleGrayTitleHeaderViewModel: ViewModel {
         self.title = name.localized
     }
 }
+
+extension SingleGrayTitleHeaderViewModel: Hashable {
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(title)
+    }
+    
+    static func == (
+        lhs: SingleGrayTitleHeaderViewModel,
+        rhs: SingleGrayTitleHeaderViewModel
+    ) -> Bool {
+        return lhs.title == rhs.title
+    }
+}

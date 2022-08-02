@@ -18,17 +18,6 @@
 import UIKit
 
 final class TutorialViewController: BaseScrollViewController {
-    override var hidesCloseBarButtonItem: Bool {
-        switch tutorial {
-        case .passphraseVerified,
-                .localAuthentication,
-                .accountVerified:
-            return true
-        default:
-            return false
-        }
-    }
-
     lazy var uiHandlers = TutorialViewControllerUIHandlers()
 
     private lazy var tutorialView = TutorialView()
@@ -43,6 +32,15 @@ final class TutorialViewController: BaseScrollViewController {
         self.flow = flow
         self.tutorial = tutorial
         super.init(configuration: configuration)
+
+        switch tutorial {
+        case .passphraseVerified,
+             .localAuthentication,
+             .accountVerified:
+            hidesCloseBarButtonItem = true
+        default:
+            hidesCloseBarButtonItem = false
+        }
     }
 
     override func configureNavigationBarAppearance() {

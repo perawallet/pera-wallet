@@ -49,7 +49,7 @@ extension CollectibleTransactionInfoViewModel {
 
         switch icon {
         case .account(let account):
-            self.icon = account.image?.convert(to: CGSize(width: 24, height: 24))
+            self.icon = account.typeImage.convert(to: CGSize(width: 24, height: 24))
         case .contact(let contact):
             self.icon = ContactImageProcessor(
                 data: contact.image,

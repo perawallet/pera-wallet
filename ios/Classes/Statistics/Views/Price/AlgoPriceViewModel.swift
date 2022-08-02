@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@ import MacaroonUIKit
 import MagpieCore
 import MagpieHipo
 
-struct AlgoPriceViewModel: BindableViewModel {
-    typealias AlgoPrice = (amount: Double, currency: Currency)
+struct AlgoPriceViewModel: ViewModel {
+    typealias AlgoPrice = (amount: Double, currency: RemoteCurrency)
     typealias Error = AlgoStatisticsDataControllerError
     
     private(set) var price: EditText?
@@ -29,71 +29,38 @@ struct AlgoPriceViewModel: BindableViewModel {
     private(set) var chart: AlgosUSDChartViewModel?
     
     init() {}
-    
-    init<T>(
-        _ model: T
-    ) {
-        bind(model)
-    }
-}
-
-extension AlgoPriceViewModel {
-    mutating func bind<T>(
-        _ model: T
-    ) {
-        if let algoPrice = model as? AlgoPrice {
-            bind(algoPrice: algoPrice)
-            return
-        }
-        
-        if let algoPriceChangeRate = model as? AlgoPriceChangeRate {
-            bind(algoPriceChangeRate: algoPriceChangeRate)
-            return
-        }
-        
-        if let algoPriceTimestamp = model as? Double {
-            bind(algoPriceTimestamp: algoPriceTimestamp)
-            return
-        }
-        
-        if let algoPriceChartDataSet = model as? AlgoPriceChartDataSet {
-            bind(algoPriceChartDataSet: algoPriceChartDataSet)
-            return
-        }
-        
-        if let error = model as? Error {
-            bind(error: error)
-            return
-        }
-    }
 }
 
 extension AlgoPriceViewModel {
     mutating func bind(
-        algoPrice: AlgoPrice
+        algoPrice: AlgoPrice,
+        currencyFormatter: CurrencyFormatter
     ) {
-        bindPrice(algoPrice)
+        bindPrice(
+            algoPrice,
+            currencyFormatter: currencyFormatter
+        )
     }
     
     mutating func bindPrice(
-        _ algoPrice: AlgoPrice
+        _ algoPrice: AlgoPrice,
+        currencyFormatter: CurrencyFormatter
     ) {
-        let currencyId: String
-        
-        if let algoCurrency = algoPrice.currency as? AlgoCurrency {
-            /// In order to get USD currency id, we should cast to AlgoCurrency and get the ID from currency parameter
-            /// AlgoCurrency has currency parameter that includes USD currency to handle Algo Conversion easiliy
-            /// When API supports Algo Currency, these checks should be deleted
-            currencyId = algoCurrency.currency.id
-        } else {
-            currencyId = algoPrice.currency.id
+        var constraintRules = CurrencyFormattingContextRules()
+        constraintRules.minimumFractionDigits = 2
+        constraintRules.maximumFractionDigits = 2
+
+        currencyFormatter.formattingContext = .standalone(constraints: constraintRules)
+        currencyFormatter.currency = nil
+
+        let currencyID = algoPrice.currency.id
+        let currencyName = currencyID.isAlgo ? currencyID.pairValue : currencyID.localValue
+        let text = currencyFormatter.format(algoPrice.amount)
+        let finalText = text.unwrap {
+            "\($0) \(currencyName)"
         }
         
-        let price = algoPrice.amount.toCurrencyStringForLabel.unwrap {
-            "\($0) \(currencyId)"
-        }
-        
-        bindPrice(price)
+        bindPrice(finalText)
     }
 }
 

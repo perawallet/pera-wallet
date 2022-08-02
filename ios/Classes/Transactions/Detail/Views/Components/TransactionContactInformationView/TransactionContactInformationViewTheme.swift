@@ -16,20 +16,37 @@
 //   TransactionContactInformationViewTheme.swift
 
 import MacaroonUIKit
+import UIKit
 
-struct TransactionContactInformationViewTheme: LayoutSheet, StyleSheet {
-    let title: TextStyle
-    let contactDisplayViewTheme: ContactDisplayViewTheme
-    let contactDisplayLeadingPadding: LayoutMetric
+struct TransactionContactInformationViewTheme:
+    LayoutSheet,
+    StyleSheet {
+    var contentPaddings: NSDirectionalEdgeInsets
+    var title: TextStyle
+    var minimumSpacingBetweenTitleAndContact: LayoutMetric
+    var contactDisplayViewTheme: ContactDisplayViewTheme
+    var contactDisplayLeadingPadding: LayoutMetric
 
-    init(_ family: LayoutFamily) {
+    init(
+        _ family: LayoutFamily
+    ) {
+        self.contentPaddings = .zero
         self.title = [
             .textAlignment(.left),
             .textOverflow(FittingText()),
             .textColor(AppColors.Components.Text.gray),
             .font(Fonts.DMSans.regular.make(15))
         ]
+        self.minimumSpacingBetweenTitleAndContact = 16
         self.contactDisplayViewTheme = ContactDisplayViewTheme()
         self.contactDisplayLeadingPadding = 137
+    }
+}
+
+extension TransactionContactInformationViewTheme {
+    func configuredForInteraction() -> TransactionContactInformationViewTheme {
+        var theme = TransactionContactInformationViewTheme()
+        theme.contentPaddings = .init(top: 12, leading: 24, bottom: 12, trailing: 24)
+        return theme
     }
 }

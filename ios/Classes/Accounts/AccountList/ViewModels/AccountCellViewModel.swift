@@ -34,12 +34,20 @@ final class AccountCellViewModel {
     private let mode: AccountListViewController.Mode
     private let account: Account
 
-    init(account: Account, mode: AccountListViewController.Mode) {
+    init(
+        account: Account,
+        mode: AccountListViewController.Mode,
+        currencyFormatter: CurrencyFormatter
+    ) {
         self.mode = mode
         self.account = account
         bindAccountImageTypeImage(account)
         bindName(account)
-        bindDetail(account, for: mode)
+        bindDetail(
+            account,
+            for: mode,
+            currencyFormatter: currencyFormatter
+        )
     }
 }
 
@@ -48,37 +56,49 @@ extension AccountCellViewModel {
         name = account.name ?? "title-unknown".localized
     }
 
-    private func bindDetail(_ account: Account, for mode: AccountListViewController.Mode) {
+    private func bindDetail(
+        _ account: Account,
+        for mode: AccountListViewController.Mode,
+        currencyFormatter: CurrencyFormatter
+    ) {
         switch mode {
         case .walletConnect:
-            detail = account.amount.toAlgos.toAlgosStringForLabel
+            currencyFormatter.formattingContext = .listItem
+            currencyFormatter.currency = AlgoLocalCurrency()
+
+            detail = currencyFormatter.format(account.amount.toAlgos)
         case let .transactionSender(assetDetail),
             let .transactionReceiver(assetDetail),
             let .contact(assetDetail):
             if let assetDetail = assetDetail {
-                let assetAmount = assetDetail.amountWithFraction
+                currencyFormatter.formattingContext = .listItem
+                currencyFormatter.currency = nil
 
-                let amountText = "\(assetAmount.toFractionStringForLabel(fraction: assetDetail.decimals) ?? "")".attributed(
+                let amount = assetDetail.amountWithFraction
+                let amountText = currencyFormatter.format(amount)
+                let amountAttributedText = amountText.someString.attributed(
                     [
                         .textColor(AppColors.Components.Text.main.uiColor),
                         .font(Fonts.DMMono.regular.make(15).uiFont)
                     ]
                 )
-
                 let codeText = " (\(assetDetail.unitNameRepresentation))".attributed(
                     [
                         .textColor(AppColors.Components.Text.grayLighter.uiColor),
                         .font(Fonts.DMSans.regular.make(13).uiFont)
                     ]
                 )
-                attributedDetail = amountText + codeText
+                attributedDetail = amountAttributedText + codeText
             } else {
-                detail = account.amount.toAlgos.toAlgosStringForLabel
+                currencyFormatter.formattingContext = .listItem
+                currencyFormatter.currency = AlgoLocalCurrency()
+
+                detail = currencyFormatter.format(account.amount.toAlgos)
             }
         }
     }
 
     private func bindAccountImageTypeImage(_ account: Account) {
-        accountImageTypeImage = account.image
+        accountImageTypeImage = account.typeImage
     }
 }

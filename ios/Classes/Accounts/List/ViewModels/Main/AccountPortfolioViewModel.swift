@@ -19,64 +19,72 @@ import Foundation
 import MacaroonUIKit
 
 struct AccountPortfolioViewModel:
+    PortfolioViewModel,
     PairedViewModel,
     Hashable {
-    private(set) var title: EditText?
-    private(set) var value: EditText?
+    private(set) var title: TextProvider?
+    private(set) var primaryValue: TextProvider?
+    private(set) var secondaryValue: TextProvider?
+
+    private(set) var currencyFormatter: CurrencyFormatter?
 
     init(
-        _ model: AccountPortfolio
+        _ portfolioItem: AccountPortfolioItem
     ) {
-        bind(model)
+        bind(portfolioItem)
     }
 }
 
 extension AccountPortfolioViewModel {
     mutating func bind(
-        _ portfolio: AccountPortfolio
+        _ portfolioItem: AccountPortfolioItem
     ) {
-        var mPortfolio = portfolio
-        mPortfolio.calculate()
-        
-        bindTitle(mPortfolio)
-        bindValue(mPortfolio)
+        self.currencyFormatter = portfolioItem.currencyFormatter
+
+        bindTitle(portfolioItem)
+        bindPrimaryValue(portfolioItem)
+        bindSecondaryValue(portfolioItem)
     }
     
     mutating func bindTitle(
-        _ portfolio: AccountPortfolio
+        _ portfolioItem: AccountPortfolioItem
     ) {
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-        
-        title = .attributedString(
-            "account-detail-portfolio-title"
-                .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+        title = "account-detail-portfolio-title"
+            .localized
+            .bodyRegular(
+                alignment: .center,
+                lineBreakMode: .byTruncatingTail,
+                hasMultilines: false
             )
     }
     
-    mutating func bindValue(
-        _ portfolio: AccountPortfolio
+    mutating func bindPrimaryValue(
+        _ portfolioItem: AccountPortfolioItem
     ) {
-        let font = Fonts.DMMono.regular.make(36)
-        let lineHeightMultiplier = 1.02
-        
-        value = .attributedString(
-            portfolio.valueResult.uiDescription.attributed([
-                .font(font),
-                .letterSpacing(-0.72),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineBreakMode(.byTruncatingTail),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ])
+        let text = format(
+            portfolioValue: portfolioItem.portfolioValue,
+            currencyValue: portfolioItem.currency.primaryValue,
+            in: .standalone()
+        ) ?? CurrencyConstanst.unavailable
+        primaryValue = text.largeTitleMedium(
+            alignment: .center,
+            lineBreakMode: .byTruncatingTail,
+            hasMultilines: false
+        )
+    }
+
+    mutating func bindSecondaryValue(
+        _ portfolioItem: AccountPortfolioItem
+    ) {
+        let text = format(
+            portfolioValue: portfolioItem.portfolioValue,
+            currencyValue: portfolioItem.currency.secondaryValue,
+            in: .standalone()
+        ) ?? CurrencyConstanst.unavailable
+        secondaryValue = "≈ \(text)".bodyMedium(
+            alignment: .center,
+            lineBreakMode: .byTruncatingTail,
+            hasMultilines: false
         )
     }
 }
@@ -85,13 +93,16 @@ extension AccountPortfolioViewModel {
     func hash(
         into hasher: inout Hasher
     ) {
-        hasher.combine(value)
+        hasher.combine(primaryValue?.string)
+        hasher.combine(secondaryValue?.string)
     }
     
     static func == (
         lhs: AccountPortfolioViewModel,
         rhs: AccountPortfolioViewModel
     ) -> Bool {
-        return lhs.value == rhs.value
+        return
+            lhs.primaryValue?.string == rhs.primaryValue?.string &&
+            lhs.secondaryValue?.string == rhs.secondaryValue?.string
     }
 }

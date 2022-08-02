@@ -18,21 +18,34 @@
 import UIKit
 
 final class WatchAccountAdditionViewController: BaseScrollViewController {
+    private lazy var pushNotificationController = PushNotificationController(
+        target: target,
+        session: session!,
+        api: api!,
+        bannerController: bannerController
+    )
+
     private lazy var watchAccountAdditionView = WatchAccountAdditionView()
     private lazy var theme = Theme()
     
     private var keyboardController = KeyboardController()
-
-    private lazy var accountOrdering = AccountOrdering(
-        sharedDataController: sharedDataController,
-        session: session!
-    )
     
     private let accountSetupFlow: AccountSetupFlow
+    private var address: PublicKey?
     
-    init(accountSetupFlow: AccountSetupFlow, configuration: ViewControllerConfiguration) {
+    init(
+        accountSetupFlow: AccountSetupFlow,
+        address: PublicKey?,
+        configuration: ViewControllerConfiguration
+    ) {
         self.accountSetupFlow = accountSetupFlow
+        self.address = address
         super.init(configuration: configuration)
+    }
+
+    override func configureNavigationBarAppearance() {
+        super.configureNavigationBarAppearance()
+        addBarButtons()
     }
     
     override func setListeners() {
@@ -58,7 +71,7 @@ final class WatchAccountAdditionViewController: BaseScrollViewController {
         watchAccountAdditionView.linkInteractors()
         keyboardController.dataSource = self
         watchAccountAdditionView.delegate = self
-        scrollView.touchDetectingDelegate = self
+        (scrollView as? TouchDetectingScrollView)?.touchDetectingDelegate = self
     }
     
     override func prepareLayout() {
@@ -81,11 +94,28 @@ final class WatchAccountAdditionViewController: BaseScrollViewController {
     }
 
     override func bindData() {
+        if let address = address {
+            watchAccountAdditionView.addressInputView.text = address
+        }
+
         pasteFromClipboard()
     }
 }
 
 extension WatchAccountAdditionViewController {
+    private func addBarButtons() {
+        // Add dismiss option if presented from the QR or deeplink
+        if address.isNilOrEmpty {
+            return
+        }
+
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
+            self?.closeScreen(by: .dismiss, animated: true)
+        }
+
+        leftBarButtonItems = [closeBarButtonItem]
+    }
+    
     @objc
     func pasteFromClipboard() {
         watchAccountAdditionView.bindData(WatchAccountAdditionViewModel(UIPasteboard.general.string))
@@ -130,7 +160,7 @@ extension WatchAccountAdditionViewController: WatchAccountAdditionViewDelegate {
             address: address,
             name: name,
             type: .watch,
-            preferredOrder: accountOrdering.getNewAccountIndex(for: .watch)
+            preferredOrder: sharedDataController.getPreferredOrderForNewAccount()
         )
         let user: User
         
@@ -141,6 +171,7 @@ extension WatchAccountAdditionViewController: WatchAccountAdditionViewDelegate {
             } else {
                 user.addAccount(account)
             }
+            pushNotificationController.sendDeviceDetails()
         } else {
             user = User(accounts: [account])
         }

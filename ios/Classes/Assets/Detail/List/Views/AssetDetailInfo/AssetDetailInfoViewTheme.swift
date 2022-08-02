@@ -25,21 +25,21 @@ struct AssetDetailInfoViewTheme: StyleSheet, LayoutSheet {
     let balanceLabel: TextStyle
     let secondaryValueLabel: TextStyle
     let assetNameLabel: TextStyle
-    let assetIDButton: ButtonStyle
+    let assetID: TextStyle
+    let assetIDPadding: LayoutPaddings
     let verifiedImage: ImageStyle
     let separator: Separator
 
     let topPadding: LayoutMetric
     let separatorPadding: LayoutMetric
-    let bottomSeparatorTopPadding: LayoutMetric
     let horizontalPadding: LayoutMetric
     let balanceLabelTopPadding: LayoutMetric
-    let assetIDLabelTopPadding: LayoutMetric
-    let assetIDInfoButtonLeadingPadding: LayoutMetric
-    let assetNameLabelTopPadding: LayoutMetric
     let bottomPadding: LayoutMetric
     let secondaryValueLabelTopPadding: LayoutMetric
     let verifiedImageHorizontalSpacing: LayoutMetric
+    let spacingBetweenSeparatorAndAssetName: LayoutMetric
+    let spacingBetweenAssetNameAndAssetID: LayoutMetric
+    let spacingBetweenAssetIDAndSeparator: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
@@ -68,11 +68,13 @@ struct AssetDetailInfoViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(15)),
         ]
-        self.assetIDButton = [
-            .icon([.normal("icon-copy-gray")]),
-            .titleColor([.normal(AppColors.Components.Text.gray)]),
-            .font(Fonts.DMSans.regular.make(15)),
+        self.assetID = [
+            .textAlignment(.left),
+            .textOverflow(SingleLineFittingText()),
+            .textColor(AppColors.Components.Text.gray),
+            .font(Fonts.DMSans.regular.make(15))
         ]
+        self.assetIDPadding = (8, 24, 8, 24)
         self.verifiedImage = [
             .image("icon-verified-shield")
         ]
@@ -80,12 +82,11 @@ struct AssetDetailInfoViewTheme: StyleSheet, LayoutSheet {
         self.separatorPadding = 32
         self.horizontalPadding = 24
         self.balanceLabelTopPadding = 8
-        self.assetIDLabelTopPadding = 11
-        self.assetIDInfoButtonLeadingPadding = 5
-        self.assetNameLabelTopPadding = 32
-        self.bottomSeparatorTopPadding = -67
         self.bottomPadding = 32
         self.secondaryValueLabelTopPadding = 4
         self.verifiedImageHorizontalSpacing = 8
+        self.spacingBetweenSeparatorAndAssetName = 32
+        self.spacingBetweenAssetNameAndAssetID = 4
+        self.spacingBetweenAssetIDAndSeparator = 24
     }
 }

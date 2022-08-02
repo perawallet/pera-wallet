@@ -23,32 +23,27 @@ struct AccountPreviewViewTheme:
     StyleSheet,
     LayoutSheet {
     var icon: ImageStyle
-    var iconContentEdgeInsets: LayoutOffset
+    var iconSize: LayoutSize
+    var horizontalPadding: LayoutMetric
     var contentMinWidthRatio: LayoutMetric
-    var title: TextStyle
-    var subtitle: TextStyle
+    var namePreviewView: AccountNamePreviewViewTheme
     var primaryAccessory: TextStyle
     var secondaryAccessory: TextStyle
     var accessoryIcon: ImageStyle
     var accessoryIconContentEdgeInsets: LayoutOffset
-    var minSpacingBetweenContentAndAccessory: LayoutMetric
-    var accessoryMinWidthRatio: LayoutMetric
 
     init(
         _ family: LayoutFamily
     ) {
         self.icon = [
-            .contentMode(.left)
+            .contentMode(.scaleAspectFit)
         ]
-        self.iconContentEdgeInsets = (16, 0)
+        self.iconSize = (40, 40)
+        self.horizontalPadding = 16
         self.contentMinWidthRatio = 0.25
-        self.accessoryMinWidthRatio = 0.35
-        self.title = [
-            .textColor(AppColors.Components.Text.main)
-        ]
-        self.subtitle = [
-            .textColor(AppColors.Components.Text.grayLighter)
-        ]
+        var namePreviewViewTheme = AccountNamePreviewViewTheme()
+        namePreviewViewTheme.configureForAccountPreviewView()
+        self.namePreviewView = namePreviewViewTheme
         self.primaryAccessory = [
             .textColor(AppColors.Components.Text.main)
         ]
@@ -59,6 +54,5 @@ struct AccountPreviewViewTheme:
             .contentMode(.right)
         ]
         self.accessoryIconContentEdgeInsets = (8, 0)
-        self.minSpacingBetweenContentAndAccessory = 8
     }
 }

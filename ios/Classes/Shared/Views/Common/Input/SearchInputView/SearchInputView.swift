@@ -217,7 +217,7 @@ extension SearchInputView {
 
         clearAccessoryView = TextFieldAccessory(
             content: textClearInputAccessoryView,
-            mode: .always,
+            mode: .whileEditing,
             size: CGSize(width: theme.textInputAccessorySize.w,
                          height: theme.textInputAccessorySize.h),
             ignoresContentEdgeInsets: true
@@ -254,15 +254,38 @@ extension SearchInputView {
 
         return false
     }
+
+    func textFieldDidBeginEditing(
+        _ textField: UITextField
+    ) {
+        delegate?.searchInputViewDidBeginEditing(self)
+    }
+
+    func textFieldDidEndEditing(
+        _ textField: UITextField
+    ) {
+        delegate?.searchInputViewDidEndEditing(self)
+    }
 }
 
 protocol SearchInputViewDelegate: AnyObject {
     func searchInputViewDidEdit(_ view: SearchInputView)
+    func searchInputViewDidBeginEditing(_ view: SearchInputView)
+    func searchInputViewDidEndEditing(_ view: SearchInputView)
     func searchInputViewDidReturn(_ view: SearchInputView)
     func searchInputViewDidTapRightAccessory(_ view: SearchInputView)
 }
 
 extension SearchInputViewDelegate {
-    func searchInputViewDidTapRightAccessory(_ view: SearchInputView) {
-    }
+    func searchInputViewDidTapRightAccessory(
+        _ view: SearchInputView
+    ) {}
+
+    func searchInputViewDidBeginEditing(
+        _ view: SearchInputView
+    ) {}
+
+    func searchInputViewDidEndEditing(
+        _ view: SearchInputView
+    ) {}
 }

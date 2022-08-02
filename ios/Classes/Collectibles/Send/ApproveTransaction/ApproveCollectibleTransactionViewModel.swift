@@ -23,19 +23,27 @@ struct ApproveCollectibleTransactionViewModel: ViewModel {
     private(set) var transactionFeeViewModel: CollectibleTransactionInfoViewModel?
 
     init(
-        _ draft: SendCollectibleDraft
+        _ draft: SendCollectibleDraft,
+        currencyFormatter: CurrencyFormatter
     ) {
-        bind(draft)
+        bind(
+            draft,
+            currencyFormatter: currencyFormatter
+        )
     }
 }
 
 extension ApproveCollectibleTransactionViewModel {
     private mutating func bind(
-        _ draft: SendCollectibleDraft
+        _ draft: SendCollectibleDraft,
+        currencyFormatter: CurrencyFormatter
     ) {
         bindSenderAccount(draft)
         bindToAccount(draft)
-        bindTransactionFee(draft)
+        bindTransactionFee(
+            draft,
+            currencyFormatter: currencyFormatter
+        )
     }
 }
 
@@ -79,18 +87,22 @@ extension ApproveCollectibleTransactionViewModel {
     }
 
     private mutating func bindTransactionFee(
-        _ draft: SendCollectibleDraft
+        _ draft: SendCollectibleDraft,
+        currencyFormatter: CurrencyFormatter
     ) {
-
-        guard let fee = draft.fee,
-        let value = fee.toAlgos.toAlgosStringForLabel else {
+        guard let fee = draft.fee else {
             return
         }
 
+        currencyFormatter.formattingContext = .listItem
+        currencyFormatter.currency = AlgoLocalCurrency()
+
+        let feeText = currencyFormatter.format(fee.toAlgos)
         let info = CollectibleTransactionInformation(
             title: "collectible-approve-transaction-fee".localized,
-            value: value
+            value: feeText.someString
         )
+
         transactionFeeViewModel = CollectibleTransactionInfoViewModel(info)
     }
 }

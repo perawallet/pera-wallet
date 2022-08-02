@@ -43,15 +43,25 @@ class WCAssetCreationTransactionViewModel {
     init(
         transaction: WCTransaction,
         senderAccount: Account?,
-        asset: Asset?
+        asset: Asset?,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
     ) {
         setSenderInformationViewModel(from: senderAccount, and: transaction)
         setAssetNameViewModel(from: transaction, asset: asset)
         setUnitNameViewModel(from: transaction)
         setCloseWarningViewModel(from: transaction)
         setRekeyWarningViewModel(from: senderAccount, and: transaction)
-        setAmountInformationViewModel(from: transaction)
-        setFeeInformationViewModel(from: transaction)
+        setAmountInformationViewModel(
+            from: transaction,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
+        setFeeInformationViewModel(
+            from: transaction,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
         setFeeWarningViewModel(from: transaction)
         setDecimalPlacesViewModel(from: transaction)
         setDefaultFrozenViewModel(from: transaction)
@@ -152,7 +162,11 @@ class WCAssetCreationTransactionViewModel {
         self.rekeyWarningInformationViewModel = WCTransactionWarningViewModel(warning: .rekeyed)
     }
 
-    private func setAmountInformationViewModel(from transaction: WCTransaction) {
+    private func setAmountInformationViewModel(
+        from transaction: WCTransaction,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) {
         let amount = transaction.transactionDetail?.assetConfigParams?.totalSupply ?? 0
         let decimals = transaction.transactionDetail?.assetConfigParams?.decimal ?? 0
 
@@ -161,7 +175,9 @@ class WCAssetCreationTransactionViewModel {
                 amount: Decimal(amount),
                 isAlgos: false,
                 fraction: decimals
-            )
+            ),
+            currency: currency,
+            currencyFormatter: currencyFormatter
         )
 
         let amountInformationViewModel = TransactionAmountInformationViewModel(transactionViewModel: amountViewModel)
@@ -169,7 +185,11 @@ class WCAssetCreationTransactionViewModel {
         self.amountInformationViewModel = amountInformationViewModel
     }
 
-    private func setFeeInformationViewModel(from transaction: WCTransaction) {
+    private func setFeeInformationViewModel(
+        from transaction: WCTransaction,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) {
         guard let transactionDetail = transaction.transactionDetail,
               let fee = transactionDetail.fee,
               fee != 0 else {
@@ -181,7 +201,9 @@ class WCAssetCreationTransactionViewModel {
                 amount: fee.toAlgos,
                 isAlgos: true,
                 fraction: algosFraction
-            )
+            ),
+            currency: currency,
+            currencyFormatter: currencyFormatter
         )
 
         let feeInformationViewModel = TransactionAmountInformationViewModel(transactionViewModel: feeViewModel)

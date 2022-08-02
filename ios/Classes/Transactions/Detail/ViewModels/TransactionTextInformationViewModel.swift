@@ -27,6 +27,14 @@ final class TransactionTextInformationViewModel: ViewModel {
         detail = draft.detail
     }
 
+    init(
+        title: String?,
+        detail: String?
+    ) {
+        self.title = title
+        self.detail = detail
+    }
+
     init(title: String?) {
         self.title = title
     }

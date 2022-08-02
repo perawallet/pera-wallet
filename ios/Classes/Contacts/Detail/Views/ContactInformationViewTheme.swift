@@ -64,7 +64,8 @@ struct ContactInformationViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.main)
         ]
         self.qrCode = [
-            .icon([.normal("icon-qr")])
+            .icon([.normal("icon-qr")]),
+            .tintColor(AppColors.Components.Text.main)
         ]
         self.divider = [
             .backgroundColor(AppColors.Shared.Layer.grayLighter)

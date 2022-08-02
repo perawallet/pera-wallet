@@ -167,7 +167,7 @@ extension WCConnectionApprovalView {
         urlButton.setTitle(viewModel.urlString, for: .normal)
     }
 
-    func bindData(_ viewModel: AccountPreviewViewModel) {
+    func bindData(_ viewModel: WCConnectionAccountSelectionViewModel) {
         accountSelectionView.bindData(viewModel)
     }
 }

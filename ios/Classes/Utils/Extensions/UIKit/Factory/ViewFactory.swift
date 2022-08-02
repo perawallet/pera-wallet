@@ -17,6 +17,8 @@
 
 import UIKit
 
+/// <todo>
+/// Remove `ViewFactory` from the project.
 enum ViewFactory {
     enum Button { }
 }

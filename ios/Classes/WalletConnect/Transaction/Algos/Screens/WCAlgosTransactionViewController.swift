@@ -21,6 +21,8 @@ class WCAlgosTransactionViewController: WCSingleTransactionViewController {
 
     private lazy var algosTransactionView = WCAlgosTransactionView()
 
+    private lazy var currencyFormatter = CurrencyFormatter()
+
     override var transactionView: WCSingleTransactionView? {
         return algosTransactionView
     }
@@ -36,7 +38,14 @@ class WCAlgosTransactionViewController: WCSingleTransactionViewController {
     }
 
     override func bindData() {
-        algosTransactionView.bind(WCAlgosTransactionViewModel(transaction: transaction, senderAccount: account))
+        algosTransactionView.bind(
+            WCAlgosTransactionViewModel(
+                transaction: transaction,
+                senderAccount: account,
+                currency: sharedDataController.currency,
+                currencyFormatter: currencyFormatter
+            )
+        )
     }
 }
 

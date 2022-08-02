@@ -20,7 +20,7 @@ import MacaroonUIKit
 
 struct TransactionMultipleAmountInformationViewTheme: LayoutSheet, StyleSheet {
     let title: TextStyle
-
+    let minimumSpacingBetweenTitleAndAmount: LayoutMetric
     let amountLeadingPadding: LayoutMetric
     let verticalTransactionAmountViewTheme: VerticalTransactionAmountViewTheme
 
@@ -31,6 +31,7 @@ struct TransactionMultipleAmountInformationViewTheme: LayoutSheet, StyleSheet {
             .textColor(AppColors.Components.Text.gray),
             .font(Fonts.DMSans.regular.make(15))
         ]
+        self.minimumSpacingBetweenTitleAndAmount = 16
         self.amountLeadingPadding = 137
         self.verticalTransactionAmountViewTheme = transactionAmountViewTheme
     }

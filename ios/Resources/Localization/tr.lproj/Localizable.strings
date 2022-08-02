@@ -1,5 +1,5 @@
 /* (No Comment) */
-"account-detail-assets-search" = "Varlıklarımı ara";
+"account-detail-assets-search" = "Varlıkları ara";
 
 /* (No Comment) */
 "account-detail-portfolio-title" = "Hesap Değeri";
@@ -31,11 +31,14 @@
 /* (No Comment) */
 "account-select-clipboard-title" = "Panodan Yapıştır";
 
-/* MARK: AccountSelect */
+/* (No Comment) */
 "account-select-header-accounts-title" = "Hesaplarım";
 
 /* (No Comment) */
 "account-select-header-contacts-title" = "Kişiler";
+
+/* MARK: AccountSelect */
+"account-select-header-matched-accounts-title" = "Eşleşen Hesaplar";
 
 /* (No Comment) */
 "account-select-header-search-title" = "Cüzdan adresi arayın veya girin";
@@ -161,6 +164,12 @@
 "asset-all-title" = "Tümü";
 
 /* (No Comment) */
+"asset-confirmation-not-fetched" = "Varlık getirilemedi. Lütfen daha sonra tekrar deneyin.";
+
+/* (No Comment) */
+"asset-confirmation-not-found" = "Varlık bulunamadı.";
+
+/* (No Comment) */
 "asset-copy-id" = "Kimliği Kopyala";
 
 /* (No Comment) */
@@ -173,7 +182,7 @@
 "asset-id-copied-title" = "Kimlik panoya kopyalandı";
 
 /* (No Comment) */
-"asset-manage-button" = "Manage";
+"asset-manage-button" = "Yönet";
 
 /* (No Comment) */
 "asset-min-transaction-error-message" = "Bu varlığı eklemek için en az %@ Algo'ya ihtiyacınız var";
@@ -191,13 +200,13 @@
 "asset-not-found-title" = "Varlık bulunamadı";
 
 /* (No Comment) */
-"asset-remove-confirmation-title" = "Varlık yönetimi";
+"asset-remove-confirmation-title" = "Varlığı Kaldır";
 
 /* (No Comment) */
-"asset-remove-subtitle" = "Varlık kaldırmak için, önce söz konusu varlığı başka bir hesaba transfer etmeniz gerekir";
+"asset-remove-subtitle" = "Varlık kaldırmak için önce kalan bakiyeyi başka bir hesaba transfer etmeniz gerekir.";
 
 /* (No Comment) */
-"asset-remove-title" = "Varlıkları Yönet";
+"asset-remove-title" = "Varlıkları Kaldır";
 
 /* (No Comment) */
 "asset-remove-transaction-warning" = "%@ varlığını %@ hesabından kaldırmak üzeresiniz. Tekrar eklemediğiniz sürece, bu varlıkla bu hesapta işlem yapamayacaksınız.";
@@ -230,10 +239,10 @@
 "asset-support-title" = "Hesap, bu varlığı kabul etmiyor";
 
 /* (No Comment) */
-"asset-support-your-add-message" = "Lütfen bu varlığı ekleyin ve tekrar deneyin.";
+"asset-support-your-add-message" = "Hesaplarınız bu varlığı içermiyor. Lütfen bu varlığı ekleyin ve tekrar deneyin.";
 
 /* (No Comment) */
-"asset-support-your-add-title" = "Bu varlık hesabınızda bulunmuyor";
+"asset-support-your-add-title" = "Hesaplarınız bu varlığı içermiyor";
 
 /* MARK: Asset */
 "asset-title" = "Varlık";
@@ -246,6 +255,9 @@
 
 /* (No Comment) */
 "asset-you-already-own-message" = "Zaten bu varlığa sahipsiniz";
+
+/* (No Comment) */
+"assets-title" = "Varlıklar";
 
 /* (No Comment) */
 "back-up-phrase-qr" = "QR Kodunu Göster";
@@ -353,7 +365,7 @@
 "collectible-approve-transaction-fee" = "İşlem Ücreti";
 
 /* (No Comment) */
-"collectible-approve-transaction-opt-out" = "Opt out from the NFT";
+"collectible-approve-transaction-opt-out" = "NFT katılımından çık";
 
 /* (No Comment) */
 "collectible-approve-transaction-sender" = "Gönderen Hesap";
@@ -386,7 +398,7 @@
 "collectible-detail-error-not-owner" = "Henüz bu NFT'nin sahibi değilsiniz ancak katılmayı seçtiniz. Artık cüzdanınıza transfer edebilirsiniz.";
 
 /* (No Comment) */
-"collectible-detail-error-not-owner-watch-account" = "This watch account has opted in for this NFT, however doesn't own it.";
+"collectible-detail-error-not-owner-watch-account" = "Bu izleme hesabı, bu NFT'ye katılım sağlamış ancak söz konusu NFT'ye sahip değil.";
 
 /* (No Comment) */
 "collectible-detail-nft-explorer" = "NFTExplorer'da Göster";
@@ -419,43 +431,43 @@
 "collectible-detail-share" = "Paylaş";
 
 /* (No Comment) */
-"collectible-detail-show-on" = "Show on";
+"collectible-detail-show-on" = "Göster";
 
 /* (No Comment) */
-"collectible-detail-tap-3D" = "Tap media to view in 3D mode";
+"collectible-detail-tap-3D" = "3D kart modu";
 
 /* (No Comment) */
 "collectible-detail-view-transaction" = "İşlemi Görüntüle";
 
 /* MARK: Collectible Filter Selection */
-"collectible-filter-selection-title" = "Filter";
+"collectible-filter-selection-title" = "Filtrele";
 
 /* (No Comment) */
-"collectible-filter-selection-toggle-description" = "You can show/hide NFTs that are opted-in but not owned";
+"collectible-filter-selection-toggle-description" = "Katılım sağlanan ancak sahip olunmayan NFT'leri gösterebilir/gizleyebilirsiniz";
 
 /* (No Comment) */
-"collectible-filter-selection-toggle-title" = "Display opted-in NFTs";
+"collectible-filter-selection-toggle-title" = "Katılım sağlanan NFT'leri göster";
 
 /* MARK: Collectible List */
 "collectible-list-item-pending-title" = "Bekliyor";
 
 /* (No Comment) */
-"collectible-opt-in-info-description" = "To avoid spam transactions, Algorand blockchain only allows you to send and receive transactions for assets that have been previously opted-in to.";
+"collectible-opt-in-info-description" = "Algorand blok zinciri, istenmeyen türde işlemlerin yapılmasını önlemek için yalnızca önceden katılım sağlanan varlıklarda gönderim ve alım işlemleri yapmanızı sağlar.";
 
 /* MARK: Collectible Opt In Info */
 "collectible-opt-in-info-title" = "Katılım hakkında bilgiler";
 
 /* (No Comment) */
-"collectible-opt-out-info-description" = "Algorand blockchain requires an account to opt in to an ASA before it can receive it. Now that you've transferred this NFT to another account, you can opt out from it. Opting out requires an additional transaction.";
+"collectible-opt-out-info-description" = "Algorand blok zinciri, bir hesabın ASA almadan önce söz konusu ASA'ya katılmasını gerekli kılar. Bu NFT'yi başka bir hesaba transfer ettiğinizden, katılımından çıkabilirsiniz. Katılımdan çıkma, ekstra bir işlem yapılmasını gerektirir.";
 
 /* MARK: Collectible Opt Out Info */
-"collectible-opt-out-info-title" = "Opt out from the NFT ";
+"collectible-opt-out-info-title" = "NFT katılımından çıkış";
 
 /* (No Comment) */
-"collectible-receive-account-list-info" = "NFT'yi cüzdanınıza transfer edebilmek için NFT ASA Kimliğine katılmanız gerekmektedir.";
+"collectible-receive-account-list-info" = "NFT'yi almadan önce, hesabınızın söz konusu NFT'ye katılım sağlaması gerekmektedir. Onaylarken Varlık Kimliğini kontrol ettiğinizden emin olun.";
 
 /* (No Comment) */
-"collectible-receive-asset-list-info" = "NFT'yi cüzdanınıza transfer edebilmek için NFT ASA Kimliğine katılmanız gerekmektedir. ASA Kimliğini arama çubuğuna yapıştırın.";
+"collectible-receive-asset-list-info" = "Adını veya Varlık Kimliğini aşağıdaki arama çubuğuna yapıştırarak katılım sağlamak istediğiniz NFT'yi arayabilirsiniz.";
 
 /* (No Comment) */
 "collectible-receive-asset-list-selected-account" = "Seçili hesap";
@@ -506,16 +518,16 @@
 "collectibles-empty-body" = "NFT Galerinize hoş geldiniz! Henüz hiç NFT'niz yok. Cüzdanınızda bulunan NFT'ler burada görüntülenecek.";
 
 /* (No Comment) */
-"collectibles-empty-secondary-action-title" = "Show hidden NFTs (%@)";
+"collectibles-empty-secondary-action-title" = "Gizli NFT'leri Göster (%@)";
 
-/* (No Comment) */
+/* MARK: Collectible Common */
 "collectibles-empty-title" = "Koleksiyon";
 
 /* (No Comment) */
-"collectibles-list-input-placeholder" = "NFT'lerinizi arayın";
+"collectibles-list-input-placeholder" = "NFT Arama";
 
 /* (No Comment) */
-"collectibles-receive-account-list-header-description" = "Almak istediğiniz cüzdan adresini seçin:";
+"collectibles-receive-account-list-header-description" = "Almak istediğiniz cüzdan hesabını seçin:";
 
 /* MARK: Collectible Receive */
 "collectibles-receive-action" = "Bir NFT Alın";
@@ -684,6 +696,21 @@
 
 /* (No Comment) */
 "governance-banner-title" = "Algorand Yönetişim Programı başlıyor!";
+
+/* (No Comment) */
+"inner-transaction-plural-count" = "%@ Dahili İşlem";
+
+/* (No Comment) */
+"inner-transaction-singular-count" = "1 Dahili İşlem";
+
+/* MARK: Inner Transactions */
+"inner-transactions-title" = "Dahili İşlemler";
+
+/* (No Comment) */
+"inner-txns-plural-count" = "%@ dahili txn";
+
+/* (No Comment) */
+"inner-txns-singular-count" = "1 dahili txn";
 
 /* (No Comment) */
 "internet-connection-error-detail" = "Sunucuya ulaşamadık. İnternete bağlı olduğunuzdan emin olun";
@@ -1088,10 +1115,10 @@
 "notification-support-success" = "%@, hesabına %@ ekledi. Bunları gönderebilirsiniz.";
 
 /* (No Comment) */
-"notifications-asset-not-found-description" = "The history for this specific asset is not available.";
+"notifications-asset-not-found-description" = "Bu belirli varlığın geçmişi mevcut değil.";
 
 /* (No Comment) */
-"notifications-asset-not-found-title" = "Asset history not available";
+"notifications-asset-not-found-title" = "Varlık geçmişi mevcut değil";
 
 /* (No Comment) */
 "notifications-empty-subtitle" = "Son işlemleriniz, varlık istekleriniz ve diğer bildirimleriniz burada görüntülenir.";
@@ -1105,14 +1132,20 @@
 /* (No Comment) */
 "number-abbreviation-billion" = "Mlyr";
 
-/* (No Comment) */
+/* MARK: Number Abbreviation */
 "number-abbreviation-million" = "Mlyn";
 
-/* MARK: Number Abbreviation */
-"number-abbreviation-thousand" = "B";
+/* (No Comment) */
+"number-abbreviation-quadrillion" = "Kt";
+
+/* (No Comment) */
+"number-abbreviation-quintillion" = "Kn";
 
 /* (No Comment) */
 "number-abbreviation-trillion" = "T";
+
+/* (No Comment) */
+"opitons-collectibles-filter" = "NFT'leri Filtrele";
 
 /* (No Comment) */
 "options-auth-account" = "Hesap Adresini Doğrula";
@@ -1127,6 +1160,9 @@
 "options-manage-assets" = "Varlıkları Yönet";
 
 /* (No Comment) */
+"options-manage-collectibles" = "Koleksiyonları Yönet";
+
+/* (No Comment) */
 "options-mute-notification" = "Bildirimleri Sessize Al";
 
 /* (No Comment) */
@@ -1139,16 +1175,16 @@
 "options-remove-account" = "Hesabı Kaldır";
 
 /* (No Comment) */
-"options-remove-assets" = "Varlıkları Kaldır";
-
-/* (No Comment) */
 "options-remove-main-account-explanation" = "Ana hesabınızı kaldırmak üzeresiniz. Devam etmek istediğinizden emin misiniz?";
 
 /* (No Comment) */
 "options-remove-watch-account-explanation" = "İzleme hesabını kaldırmak üzeresiniz. Devam etmek istediğinizden emin misiniz?";
 
 /* (No Comment) */
-"options-show-qr" = "QR Kodunu Göster";
+"options-show-qr" = "Adresi Göster";
+
+/* (No Comment) */
+"options-sort-title" = "Sırala";
 
 /* MARK: Options */
 "options-title" = "HESAP AYARLARI";
@@ -1283,7 +1319,7 @@
 "portfolio-asset-holdings-title" = "Tutulan Varlıklar";
 
 /* (No Comment) */
-"portfolio-calculation-description" = "Portföyünüzün toplam değeri, hesaplarınızda bulunan tüm varlıklara kullanılabilir durumdaki Algo'ların eklenmesiyle hesaplanır. Birden fazla cüzdanınız varsa, Toplam Portföy değeri tüm hesaplardaki değerlerin toplamına eşittir.\n\nVarlık fiyatları, Tinyman'den alınan günlük değerlere göre olup tahminidir. Bazı varlıkların fiyat bilgisinin bulunmayabileceğini lütfen dikkate alın. Bu nedenle, toplam portföy değerinin bir tahmin olarak düşünülmesi gerekmektedir.\n\nİzleme hesapları portföyünüzün bir parçası olarak değerlendirmeye alınmaz ve Toplam Portföy hesaplamasına dahil edilmez.";
+"portfolio-calculation-description" = "Toplam Portföy Değeri, İzleme Hesapları hariç olmak üzere hesaplarınızda bulunan kullanılabilir durumdaki tüm varlıkların ve Algo'ların değerlerinin toplanmasıyla hesaplanır.\n\nVarlıkların değeri, çeşitli ekosistem ortaklarından alınan günlük değerlere göre hesaplanır. Bazı varlıkların değeri bulunmadığından Toplam Portföy Değerinin bir tahmin olarak düşünülmesi gerekmektedir.";
 
 /* MARK: PortfolioDescription */
 "portfolio-calculation-title" = "Portföyünüzün değerini nasıl hesaplarız?";
@@ -1339,8 +1375,23 @@
 /* (No Comment) */
 "qr-scan-message-text" = "Bu sayfada yalnızca QR Kodunuzu tarayabilirsiniz. QR Kodunuzu görüntülemek için lütfen hesabınızdaki simgeyi seçin";
 
+/* (No Comment) */
+"qr-scan-option-add-contact" = "Yeni kişi ekle";
+
+/* (No Comment) */
+"qr-scan-option-add-watch" = "İzleme hesabı ekle";
+
+/* (No Comment) */
+"qr-scan-option-scanned-title" = "Taranan hesap adresi";
+
+/* (No Comment) */
+"qr-scan-option-send-transaction" = "İşlemi gönder";
+
+/* (No Comment) */
+"qr-scan-option-title" = "Adres tarandı!";
+
 /* MARK: QR Scanning */
-"qr-scan-overlay-title" = "Taranacak bir kod bulun";
+"qr-scan-overlay-title" = "Bir QR kodu tarayın";
 
 /* (No Comment) */
 "qr-scan-should-scan-address-message" = "Geçerli bir hesap adresi taramanız gerekli";
@@ -1353,6 +1404,24 @@
 
 /* (No Comment) */
 "qr-scan-title" = "QR Kodunu Tara";
+
+/* (No Comment) */
+"quick-actions-address-title" = "Adres";
+
+/* MARK: QuickActions */
+"quick-actions-buy-algo-title" = "ALGO Al";
+
+/* (No Comment) */
+"quick-actions-more-title" = "Diğer";
+
+/* (No Comment) */
+"quick-actions-receive-title" = "Al";
+
+/* (No Comment) */
+"quick-actions-scan-qr-title" = "QR Kodunu Tara";
+
+/* (No Comment) */
+"quick-actions-send-title" = "Gönder";
 
 /* (No Comment) */
 "recover-copy-error" = "Son kopyalanan metin, 25 kelimelik geçerli bir parola değil. Lütfen geçerli parolayı kopyalayın ve tekrar deneyin.";
@@ -1376,7 +1445,10 @@
 "recover-from-seed-verify-exist-error" = "Bu hesap zaten mevcut";
 
 /* (No Comment) */
-"recover-from-seed-verify-pop-up-description-watch-account" = "İzleme hesabı başarıyla eklendi.";
+"recover-from-seed-verify-pop-up-description-watch-account-add" = "İzleme Hesabı başarıyla eklendi.";
+
+/* (No Comment) */
+"recover-from-seed-verify-pop-up-description-watch-account-initialize" = "Pera Wallet'a hoş geldiniz! \nİzleme Hesabı başarıyla eklendi.";
 
 /* (No Comment) */
 "recover-from-seed-verify-pop-up-explanation" = "Pera Wallet'a hoş geldiniz! \nHesabınız kullanıma hazır.";
@@ -1385,7 +1457,7 @@
 "recover-from-seed-verify-pop-up-explanation-already-added" = "Tebrikler, hesabınız kullanıma hazır.";
 
 /* (No Comment) */
-"recover-from-seed-verify-pop-up-title" = "Hesap doğrulandı!";
+"recover-from-seed-verify-pop-up-title" = "Hesap Doğrulandı!";
 
 /* (No Comment) */
 "recover-from-seed-verify-pop-up-title-watch-account" = "İzleme hesabı başarıyla eklendi";
@@ -1428,6 +1500,12 @@
 
 /* (No Comment) */
 "request-title" = "İste";
+
+/* (No Comment) */
+"required-min-balance-description" = "İşlem ücretlerini desteklemek için bakiyeniz yeterli değil. Algorand blok zinrici, işlemi desteklemek için 0,001 Algo'yu gerekli kılar. Bu işlem ücretini desteklemek için Algo bakiyenizi artırabilirsiniz.\n\nHesabınızla bağlantılı olarak dApp'lere veya akıllı sözleşmelere (farklı ekosistem uygulamalarından) katılım sağladıysanız, her varlık gerekli olan minimum bakiyeyi 0,1 Algo oranında artırır. Bu hesap için gereken minimum bakiyeyi azaltmak için, minimum bakiye artışına neden olan bu varlıklara veya dApp'lere katılımdan çıkmanız gerekir.";
+
+/* (No Comment) */
+"required-min-balance-title" = "Düşük Bakiye";
 
 /* (No Comment) */
 "reward-list-title" = "Ödül";
@@ -1595,7 +1673,22 @@
 "settings-currency" = "Para Birimi";
 
 /* (No Comment) */
+"settings-currency-description" = "Ana para biriminiz %@, ikinci para birimi ise %@";
+
+/* (No Comment) */
 "settings-currency-header-title" = "Para Birimi Tercihleri";
+
+/* (No Comment) */
+"settings-currency-not-found-detail" = "Farklı para birimi deneyin";
+
+/* (No Comment) */
+"settings-currency-not-found-title" = "Para birimi bulunamadı";
+
+/* (No Comment) */
+"settings-currency-search" = "Ara";
+
+/* (No Comment) */
+"settings-currency-title" = "Ana Para Birimi";
 
 /* (No Comment) */
 "settings-delete-data-title" = "Tüm Verileri Sil";
@@ -1696,6 +1789,15 @@
 /* MARK: SingleTransactionRequestMARK: SingleTransactionRequest */
 "single-transaction-request-show-detail-title" = "İşlem Ayrıntılarını Göster";
 
+/* MARK: Sort Account List */
+"sort-account-list-manually-header-title" = "Hesapları Manuel Olarak Yeniden Düzenleyin";
+
+/* (No Comment) */
+"story-copy-address-description" = "Hesap kutusuna basılı tutarak hesap adresini hızlıca kopyalayabilirsiniz";
+
+/* MARK: Story */
+"story-copy-address-title" = "\"Adresi Kopyala\" seçeneğine basılı tutun";
+
 /* MARK: Terms and Services */
 "terms-and-services-title" = "Koşullar ve Hizmetler";
 
@@ -1721,10 +1823,22 @@
 "title-algorand-value" = "Değeri";
 
 /* (No Comment) */
+"title-alphabetically-a-to-z" = "Alfabetik olarak A'dan Z'ye";
+
+/* (No Comment) */
+"title-alphabetically-z-to-a" = "Alfabetik olarak Z'den A'ya";
+
+/* (No Comment) */
+"title-app-call" = "Uygulama Çağrısı";
+
+/* (No Comment) */
 "title-approve" = "Onayla";
 
 /* (No Comment) */
 "title-asset-id" = "Varlık Kimliği";
+
+/* (No Comment) */
+"title-buy-algo" = "ALGO Alın";
 
 /* (No Comment) */
 "title-cancel" = "İptal";
@@ -1732,7 +1846,7 @@
 /* (No Comment) */
 "title-close" = "Kapat";
 
-/* MARK: Collectible Common */
+/* (No Comment) */
 "title-collectibles" = "Koleksiyon";
 
 /* (No Comment) */
@@ -1769,12 +1883,6 @@
 "title-dont-show-again" = "Bunu Tekrar Gösterme";
 
 /* (No Comment) */
-"required-min-balance-title" = "Low Balance";
-
-/* (No Comment) */
-"required-min-balance-description" = "You don't have enough balance to support the transaction fees. The Algorand blockchain requires 0.001 Algos to support a transaction. You can increase your Algo balance to support this transaction fee.\n\nIf you opted-in for dApps and smart contracts associated with your account (from different ecosystem apps), each asset increases the minimum balance required by 0.1 Algo. To reduce the minimum balance required for this account, you must opt-out from the assets or dApps causing that increased minimum balance.";
-
-/* (No Comment) */
 "title-edit" = "Düzenle";
 
 /* (No Comment) */
@@ -1793,10 +1901,10 @@
 "title-generic-api-error" = "Beklenmedik bir sorun meydana geldi";
 
 /* (No Comment) */
-"title-generic-error" = "Something went wrong";
+"title-generic-error" = "Bir sorun oluştu";
 
 /* (No Comment) */
-"title-generic-response-description" = "We couldn't fetch some of the assets. Please try again.";
+"title-generic-response-description" = "Varlıkların bazılarını getiremedik. Lütfen tekrar deneyin.";
 
 /* (No Comment) */
 "title-go-to-accounts" = "Hesaplara Git";
@@ -1806,6 +1914,12 @@
 
 /* (No Comment) */
 "title-got-it" = "Anladım!";
+
+/* (No Comment) */
+"title-highest-value-to-lowest" = "Değeri En Yüksekten En Düşüğe";
+
+/* (No Comment) */
+"title-home" = "Ana Sayfa";
 
 /* (No Comment) */
 "title-i-understand" = "Anladım";
@@ -1823,10 +1937,25 @@
 "title-learn-more" = "Daha Fazla Bilgi";
 
 /* (No Comment) */
+"title-ledger-account" = "Ledger Hesabı";
+
+/* (No Comment) */
 "title-loading" = "Yükleniyor";
 
 /* (No Comment) */
+"title-lowest-value-to-highest" = "Değeri En Düşükten En Yükseğe";
+
+/* (No Comment) */
+"title-manually" = "Manuel Olarak";
+
+/* (No Comment) */
+"title-more" = "Diğer";
+
+/* (No Comment) */
 "title-new-uppercased" = "YENİ";
+
+/* (No Comment) */
+"title-newest-to-oldest" = "Yeniden Eskiye";
 
 /* (No Comment) */
 "title-next" = "İleri";
@@ -1842,6 +1971,9 @@
 
 /* (No Comment) */
 "title-ok" = "Tamam";
+
+/* (No Comment) */
+"title-oldest-to-newest" = "Eskiden Yeniye";
 
 /* (No Comment) */
 "title-on" = "Açık";
@@ -1862,10 +1994,16 @@
 "title-plus-collectible-singular-count" = "%@ NFT";
 
 /* (No Comment) */
+"title-press-hold-copy-address" = "Adresi kopyalamak için basılı tutun";
+
+/* (No Comment) */
 "title-preview" = "Önizleme";
 
 /* (No Comment) */
 "title-preview-and-sign-with-ledger-title" = "Önizle ve Ledger ile İmzala";
+
+/* (No Comment) */
+"title-price" = "Fiyat";
 
 /* (No Comment) */
 "title-proceed" = "İlerle";
@@ -1874,10 +2012,10 @@
 "title-receive" = "Al";
 
 /* (No Comment) */
-"title-remove" = "Kaldır";
+"title-rekeyed-account" = "Yeniden Anahtarlanan Hesap";
 
 /* (No Comment) */
-"title-remove-assets" = "Varlıkları Kaldır";
+"title-remove" = "Kaldır";
 
 /* (No Comment) */
 "title-retry" = "Yeniden Dene";
@@ -1898,10 +2036,16 @@
 "title-show-all-detail" = "Tüm Ayrıntıları Göster";
 
 /* (No Comment) */
+"title-show-more-assets" = "Diğer %@ varlığı göster";
+
+/* (No Comment) */
 "title-show-transaction-detail" = "İşlem Ayrıntılarını Göster";
 
 /* (No Comment) */
 "title-skip" = "Atla";
+
+/* (No Comment) */
+"title-sort" = "Sırala";
 
 /* (No Comment) */
 "title-start-using-pera-wallet" = "Pera Wallet'ı Kullanmaya Başlayın";
@@ -1927,7 +2071,7 @@
 /* (No Comment) */
 "title-verify" = "Doğrula";
 
-/* MARK: Watch Account */
+/* (No Comment) */
 "title-watch-account" = "Hesabı İzle";
 
 /* MARK: Common */
@@ -1964,9 +2108,6 @@
 "transaction-detail-completed" = "Tamamlandı";
 
 /* (No Comment) */
-"transaction-detail-copy-tooltip" = "Panoya kopyalamak için basılı tutun";
-
-/* (No Comment) */
 "transaction-detail-date" = "Tarih";
 
 /* (No Comment) */
@@ -1982,22 +2123,28 @@
 "transaction-detail-id" = "İşlem Kimliği";
 
 /* (No Comment) */
-"transaction-detail-id-copied" = "İşlem kimliği panoya kopyalandı";
+"transaction-detail-id-copied-title" = "Kimlik panoya kopyalandı";
 
 /* (No Comment) */
-"transaction-detail-id-copied-title" = "Kimlik panoya kopyalandı";
+"transaction-detail-inner-transaction-title" = "Dahili İşlemler";
 
 /* (No Comment) */
 "transaction-detail-note" = "Not";
 
 /* (No Comment) */
-"transaction-detail-note-copied" = "İşlem notu panoya kopyalandı";
+"transaction-detail-note-copied" = "Not panoya kopyalandı";
+
+/* (No Comment) */
+"transaction-detail-parent-id" = "Ana İşlem Kimliği";
 
 /* (No Comment) */
 "transaction-detail-pending" = "Bekliyor";
 
 /* (No Comment) */
 "transaction-detail-pending-transactions" = "Bekleyen İşlemler";
+
+/* (No Comment) */
+"transaction-detail-plural-inner-transaction-detail" = "%@ TXN Göster";
 
 /* (No Comment) */
 "transaction-detail-receive" = "Al";
@@ -2013,6 +2160,9 @@
 
 /* (No Comment) */
 "transaction-detail-sender" = "Gönderen";
+
+/* (No Comment) */
+"transaction-detail-singular-inner-transaction-detail" = "1 TXN Göster";
 
 /* (No Comment) */
 "transaction-detail-status" = "Durum";
@@ -2057,7 +2207,7 @@
 "transaction-filter-option-yesterday" = "Dün";
 
 /* MARK: Transaction Filter */
-"transaction-filter-title-sort" = "Filter by Date";
+"transaction-filter-title-sort" = "Tarihe Göre Filtrele";
 
 /* (No Comment) */
 "transaction-filter-tooltip" = "Artık işlem geçmişini filtreleyebilirsiniz";
@@ -2070,6 +2220,42 @@
 
 /* (No Comment) */
 "transaction-id-open-goalseeker" = "GoalSeeker'da Aç";
+
+/* (No Comment) */
+"transaction-item-app-id-title" = "Uygulama Kimliği: %d";
+
+/* (No Comment) */
+"transaction-item-opt-in" = "Katılım/Kendine Transfer";
+
+/* (No Comment) */
+"transaction-item-opt-out" = "Katılımdan Çık";
+
+/* (No Comment) */
+"transaction-item-receive-opt-out" = "Alım (Katılımdan çık)";
+
+/* (No Comment) */
+"transaction-item-self-transfer" = "Kendine Transfer";
+
+/* (No Comment) */
+"transaction-menu-copy-id" = "Kimliği Kopyala";
+
+/* (No Comment) */
+"transaction-menu-copy-note" = "Notu Kopyala";
+
+/* MARK: Transaction Options */
+"transaction-option-list-buy-algo-subtitle" = "Kredi kartıyla veya banka transferiyle kripto alın";
+
+/* (No Comment) */
+"transaction-option-list-more-subtitle" = "Diğer işlemleri göster";
+
+/* (No Comment) */
+"transaction-option-list-receive-subtitle" = "Hesap adresinizi görüntüleyin veya kopyalayın";
+
+/* (No Comment) */
+"transaction-option-list-scan-qr-code-subtitle" = "WalletConnect'i kullanın veya hesap adresini tarayın";
+
+/* (No Comment) */
+"transaction-option-list-send-subtitle" = "Başka bir hesaba Algo veya diğer ASA";
 
 /* (No Comment) */
 "transaction-request-signing-alert-title" = "Emin misiniz?";
@@ -2432,6 +2618,9 @@
 "wallet-connect-transaction-title-asset" = "Varlık Transfer İsteği";
 
 /* (No Comment) */
+"wallet-connect-transaction-title-asset-config" = "Varlık Yapılandırması";
+
+/* (No Comment) */
 "wallet-connect-transaction-title-asset-url" = "Varlık URL'si";
 
 /* (No Comment) */
@@ -2486,7 +2675,7 @@
 "wallet-connect-transaction-warning-high-fee" = "Bu işlem ücreti, normalde 0,001 Algo olan ücretten daha yüksek.";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-initial-description" = "External applications, also called dApps, can initiate transaction requests independently from Pera Wallet. Please ensure you review these transactions carefully before approving and signing them.\n\nAll transactions are irreversible. As these requests are outside Pera Wallet's control, never approve transactions from a dApp you don’t know.";
+"wallet-connect-transaction-warning-initial-description" = "dApp'ler olarak da adlandırılan harici uygulamalar, Pera Wallet'tan bağımsız olarak işlem başlatabilirler. Bu tür işlemleri onaylamadan ve imzalamadan önce dikkatlice incelediğinizden lütfen emin olun.\n\nİşlemler geri alınamazdır. Bu istekler Pera Wallet'ın kontrolü dışında olduğundan, tanımadığınız dApp'ten gelen işlemleri hiçbir zaman onaylamayın.";
 
 /* (No Comment) */
 "wallet-connect-transaction-warning-initial-title" = "İşlem İsteği İle İlgili SSS";
@@ -2500,7 +2689,7 @@
 /* (No Comment) */
 "watch-account-button" = "Bir İzleme Hesabı Oluştur";
 
-/* (No Comment) */
+/* MARK: Watch Account */
 "watch-account-create" = "Bir izleme \nhesabı oluşturun";
 
 /* (No Comment) */
@@ -2524,3 +2713,4 @@
 /* (No Comment) */
 "wc-transaction-request-signed-warning-title" = "İşleminiz gerçekleştiriliyor!";
 
+"wallet-connect-transaction-error-invalid-group" = "It looks like this transaction group contains one or more missing transactions. For your security, Pera Wallet won’t allow you to sign transaction groups that have obscured details. Please contact the dApp that sent this transaction so they can rectify this problem.";

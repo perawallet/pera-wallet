@@ -51,6 +51,8 @@ final class AssetAdditionViewController: PageContainer, TestNetTitleDisplayable 
         configuration: configuration
     )
 
+    private lazy var currencyFormatter = CurrencyFormatter()
+
     private var currentAsset: AssetDecoration?
 
     init(account: Account, configuration: ViewControllerConfiguration) {
@@ -267,9 +269,16 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
     private func displayTransactionError(from transactionError: TransactionError) {
         switch transactionError {
         case let .minimumAmount(amount):
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = AlgoLocalCurrency()
+
+            let amountText = currencyFormatter.format(amount.toAlgos)
+
             bannerController?.presentErrorBanner(
                 title: "asset-min-transaction-error-title".localized,
-                message: "asset-min-transaction-error-message".localized(params: amount.toAlgos.toAlgosStringForLabel ?? "")
+                message: "asset-min-transaction-error-message".localized(
+                    params: amountText.someString
+                )
             )
         case .invalidAddress:
             bannerController?.presentErrorBanner(
@@ -310,6 +319,12 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
 
     func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {
         ledgerApprovalViewController?.dismissScreen()
+    }
+
+    func transactionControllerDidRejectedLedgerOperation(
+        _ transactionController: TransactionController
+    ) {
+        loadingController?.stopLoading()
     }
 }
 

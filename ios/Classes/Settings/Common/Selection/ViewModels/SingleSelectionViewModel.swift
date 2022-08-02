@@ -17,7 +17,7 @@
 
 import UIKit
 
-final class SingleSelectionViewModel {
+final class SingleSelectionViewModel: Hashable {
     private(set) var title: String?
     private(set) var isSelected = false
     private(set) var selectionImage: UIImage?
@@ -38,10 +38,19 @@ final class SingleSelectionViewModel {
     
     private func setSelectionImage() {
         if isSelected {
-            selectionImage = img("icon-checkbox-single-selected")
+            selectionImage = img("icon-radio-selected")
             return
         }
         
-        selectionImage = img("icon-checkbox-single-unselected")
+        selectionImage = img("icon-radio-unselected")
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(title)
+    }
+    
+    static func == (lhs: SingleSelectionViewModel, rhs: SingleSelectionViewModel) -> Bool {
+        return lhs.title == rhs.title &&
+        lhs.isSelected == rhs.isSelected
     }
 }

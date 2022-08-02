@@ -18,9 +18,10 @@
 import UIKit
 import MacaroonUIKit
 
-final class QRCreationView: View {
+final class QRCreationView:
+    View,
+    UIContextMenuInteractionDelegate {
     weak var delegate: QRCreationViewDelegate?
-
 
     private lazy var theme = QRCreationViewTheme()
     
@@ -28,8 +29,8 @@ final class QRCreationView: View {
     private lazy var addressView = QRAddressLabel()
     private lazy var copyButton = Button(.imageAtLeft(spacing: theme.buttonTitleInset))
     private lazy var shareButton = Button(.imageAtLeft(spacing: theme.buttonTitleInset))
-    private lazy var copyFeedbackLabel = Label()
-    private var copyFeedbackLabelTopConstraint: NSLayoutConstraint?
+
+    private lazy var addressMenuInteraction = UIContextMenuInteraction(delegate: self)
 
     private let draft: QRCreationDraft
     
@@ -54,6 +55,7 @@ final class QRCreationView: View {
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
     
     func setListeners() {
+        addressView.addInteraction(addressMenuInteraction)
         shareButton.addTarget(self, action: #selector(notifyDelegateToShareQR), for: .touchUpInside)
         copyButton.addTarget(self, action: #selector(notifyToCopyText), for: .touchUpInside)
         addressView.addGestureRecognizer(
@@ -76,6 +78,43 @@ extension QRCreationView {
         delegate?.qrCreationViewDidCopy(self)
     }
 }
+
+extension QRCreationView {
+     func contextMenuInteraction(
+         _ interaction: UIContextMenuInteraction,
+         configurationForMenuAtLocation location: CGPoint
+     ) -> UIContextMenuConfiguration? {
+         delegate?.contextMenuInteractionForAddress(in: self)
+     }
+
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        previewForHighlightingMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard let view = interaction.view else {
+            return nil
+        }
+
+        return UITargetedPreview(
+            view: view,
+            backgroundColor: AppColors.Shared.System.background.uiColor
+        )
+    }
+
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        previewForDismissingMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard let view = interaction.view else {
+            return nil
+        }
+
+        return UITargetedPreview(
+            view: view,
+            backgroundColor: AppColors.Shared.System.background.uiColor
+        )
+    }
+ }
 
 extension QRCreationView {
     private func addQRView(_ theme: QRCreationViewTheme) {
@@ -144,4 +183,7 @@ extension QRCreationView {
 protocol QRCreationViewDelegate: AnyObject {
     func qrCreationViewDidShare(_ qrCreationView: QRCreationView)
     func qrCreationViewDidCopy(_ qrCreationView: QRCreationView)
+    func contextMenuInteractionForAddress(
+        in qrCreationView: QRCreationView
+    ) -> UIContextMenuConfiguration?
 }

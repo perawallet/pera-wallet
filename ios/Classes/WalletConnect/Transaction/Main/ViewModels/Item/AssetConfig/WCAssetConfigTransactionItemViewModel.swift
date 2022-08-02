@@ -26,12 +26,17 @@ class WCAssetConfigTransactionItemViewModel {
     init(
         transaction: WCTransaction,
         account: Account?,
-        asset: Asset?
+        asset: Asset?,
+        currencyFormatter: CurrencyFormatter
     ) {
         setHasWarning(from: transaction, and: account)
         setTitle(from: transaction, and: account)
         setDetail(from: transaction, and: account, with: asset)
-        setAccountInformationViewModel(from: account, with: asset)
+        setAccountInformationViewModel(
+            from: account,
+            with: asset,
+            currencyFormatter: currencyFormatter
+        )
     }
 
     private func setHasWarning(
@@ -104,12 +109,14 @@ class WCAssetConfigTransactionItemViewModel {
 
     private func setAccountInformationViewModel(
         from account: Account?,
-        with asset: Asset?
+        with asset: Asset?,
+        currencyFormatter: CurrencyFormatter
     ) {
         accountInformationViewModel = WCGroupTransactionAccountInformationViewModel(
             account: account,
             asset: nil,
-            isDisplayingAmount: false
+            isDisplayingAmount: false,
+            currencyFormatter: currencyFormatter
         )
     }
 }

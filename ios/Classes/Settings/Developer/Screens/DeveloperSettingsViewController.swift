@@ -119,8 +119,21 @@ extension DeveloperSettingsViewController: UICollectionViewDelegateFlowLayout {
             guard let url = AlgorandWeb.dispenser.link else {
                 return
             }
-            
-            open(url)
+
+            guard let firstAccount = self.sharedDataController.sortedAccounts().first else {
+                open(url)
+                return
+            }
+
+            let params = [
+                URLQueryItem(
+                    name: "account",
+                    value: firstAccount.value.address
+                )
+            ]
+            let newUrl = url.appendQueryParameters(params)
+
+            open(newUrl)
         }
     }
 }

@@ -23,7 +23,7 @@ extension TransactionsViewController: CSVExportable {
         loadingController?.startLoadingWithMessage("title-loading".localized)
 
         fetchAllTransactions(
-            between: dataController.getTransactionFilterDates(),
+            between: dataController.filterOption.getDateRanges(),
             nextToken: nil
         )
     }
@@ -109,7 +109,7 @@ extension TransactionsViewController: CSVExportable {
             fileName = "\(accountHandle.value.name ?? "")_algos"
         }
 
-        let dates = dataController.getTransactionFilterDates()
+        let dates = dataController.filterOption.getDateRanges()
         if let fromDate = dates.from,
            let toDate = dates.to {
             if filterOption == .today {
@@ -122,16 +122,29 @@ extension TransactionsViewController: CSVExportable {
     }
 
     private func createCSVData(from transactions: [Transaction]) -> [[String: Any]] {
+        let currencyFormatter = CurrencyFormatter()
+
         var csvData = [[String: Any]]()
         for transaction in transactions {
             var transactionData: [String: Any] = [
-                "transaction-detail-amount".localized: getFormattedAmount(transaction.getAmount(), for: transaction),
+                "transaction-detail-amount".localized: getFormattedAmount(
+                    transaction.getAmount(),
+                    for: transaction,
+                    currencyFormatter: currencyFormatter
+                ),
                 "transaction-detail-reward".localized: transaction.getRewards(for: accountHandle.value.address)?.toAlgos ?? " ",
-                "transaction-detail-close-amount".localized: getFormattedAmount(transaction.getCloseAmount(), for: transaction),
+                "transaction-detail-close-amount".localized: getFormattedAmount(
+                    transaction.getCloseAmount(),
+                    for: transaction,
+                    currencyFormatter: currencyFormatter
+                ),
                 "transaction-download-close-to".localized: transaction.getCloseAddress() ?? " ",
                 "transaction-download-to".localized: transaction.getReceiver() ?? " ",
                 "transaction-download-from".localized: transaction.sender ?? " ",
-                "transaction-detail-fee".localized: transaction.fee?.toAlgos.toAlgosStringForLabel ?? " ",
+                "transaction-detail-fee".localized: getFormatterFee(
+                    transaction: transaction,
+                    currencyFormatter: currencyFormatter
+                ),
                 "transaction-detail-round".localized: transaction.lastRound ?? " ",
                 "transaction-detail-date".localized: transaction.date?.toFormat("MMMM dd, yyyy - HH:mm:ss") ?? " ",
                 "title-id".localized: transaction.id ?? " ",
@@ -153,24 +166,95 @@ extension TransactionsViewController: CSVExportable {
         return csvData
     }
 
-    private func getFormattedAmount(_ amount: UInt64?, for transaction: Transaction) -> String {
+    private func getFormattedAmount(
+        _ amount: UInt64?,
+        for transaction: Transaction,
+        currencyFormatter: CurrencyFormatter
+    ) -> String {
+        let defaultAmountText = " "
+
         switch draft.type {
         case .algos:
-            return amount?.toAlgos.toAlgosStringForLabel ?? " "
-        case .asset:
-            guard let assetDetail = asset else {
-                return amount?.assetAmount(fromFraction: 0).toFractionStringForLabel(fraction: 0) ?? " "
+            guard let amount = amount else {
+                return defaultAmountText
             }
 
-            return amount?.assetAmount(fromFraction: assetDetail.decimals).toFractionStringForLabel(fraction: assetDetail.decimals) ?? " "
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = AlgoLocalCurrency()
+
+            return currencyFormatter.format(amount.toAlgos) ?? defaultAmountText
+        case .asset:
+            guard let amount = amount else {
+                return defaultAmountText
+            }
+
+            /// <todo>
+            /// Not sure we need this constraint, because the final number should be sent to the
+            /// formatter unless the number itself is modified.
+            var constraintRules = CurrencyFormattingContextRules()
+            var finalAmount: Decimal
+
+            if let asset = asset {
+                let decimals = asset.decimals
+
+                constraintRules.maximumFractionDigits = decimals
+
+                finalAmount = amount.assetAmount(fromFraction: decimals)
+            } else {
+                constraintRules.minimumFractionDigits = 0
+                constraintRules.maximumFractionDigits = 0
+
+                finalAmount = amount.assetAmount(fromFraction: 0)
+            }
+
+            currencyFormatter.formattingContext = .standalone(constraints: constraintRules)
+            currencyFormatter.currency = nil
+
+            return currencyFormatter.format(finalAmount) ?? defaultAmountText
         case .all:
+            guard let amount = amount else {
+                return defaultAmountText
+            }
+
             if let assetID = transaction.assetTransfer?.assetId {
                 if let asset = sharedDataController.assetDetailCollection[assetID] {
-                    return amount?.assetAmount(fromFraction: asset.decimals).toFractionStringForLabel(fraction: asset.decimals) ?? " "
+                    let assetDecimals = asset.decimals
+
+                    /// <todo>
+                    /// Not sure we need this constraint, because the final number should be sent to the
+                    /// formatter unless the number itself is modified.
+                    var constraintRules = CurrencyFormattingContextRules()
+                    constraintRules.maximumFractionDigits = assetDecimals
+
+                    let finalAmount = amount.assetAmount(fromFraction: assetDecimals)
+
+                    currencyFormatter.formattingContext = .standalone(constraints: constraintRules)
+                    currencyFormatter.currency = nil
+
+                    return currencyFormatter.format(finalAmount) ?? defaultAmountText
                 }
             }
 
-            return amount?.toAlgos.toAlgosStringForLabel ?? " "
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = AlgoLocalCurrency()
+
+            return currencyFormatter.format(amount.toAlgos) ?? defaultAmountText
         }
+    }
+
+    private func getFormatterFee(
+        transaction: Transaction,
+        currencyFormatter: CurrencyFormatter
+    ) -> String {
+        let defaultAmountText = " "
+
+        guard let fee = transaction.fee else {
+            return defaultAmountText
+        }
+
+        currencyFormatter.formattingContext = .standalone()
+        currencyFormatter.currency = AlgoLocalCurrency()
+
+        return currencyFormatter.format(fee.toAlgos) ?? defaultAmountText
     }
 }

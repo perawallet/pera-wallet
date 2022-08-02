@@ -28,6 +28,7 @@ final class NotificationsViewModel: Hashable {
     
     init(
         notification: NotificationMessage,
+        currencyFormatter: CurrencyFormatter,
         senderAccount: Account? = nil,
         receiverAccount: Account? = nil,
         contact: Contact? = nil,
@@ -36,7 +37,13 @@ final class NotificationsViewModel: Hashable {
         self.notificationMessage = notification
 
         bindImage(notification: notification, contact: contact)
-        bindTitle(notification: notification, senderAccount: senderAccount, receiverAccount: receiverAccount, contact: contact)
+        bindTitle(
+            notification: notification,
+            senderAccount: senderAccount,
+            receiverAccount: receiverAccount,
+            contact: contact,
+            currencyFormatter: currencyFormatter
+        )
         bindTime(notification: notification)
         bindIsRead(notification: notification, latestReadTimestamp: latestReadTimestamp)
     }
@@ -67,7 +74,13 @@ extension NotificationsViewModel {
         }
     }
 
-    private func bindTitle(notification: NotificationMessage, senderAccount: Account?, receiverAccount: Account?, contact: Contact?) {
+    private func bindTitle(
+        notification: NotificationMessage,
+        senderAccount: Account?,
+        receiverAccount: Account?,
+        contact: Contact?,
+        currencyFormatter: CurrencyFormatter
+    ) {
         guard let notificationDetail = notification.detail,
             let notificationType = notification.notificationType else {
             title = NSAttributedString(string: notification.message ?? "")
@@ -77,7 +90,10 @@ extension NotificationsViewModel {
         let sender = getSenderInformationFromLocalValues(in: notificationDetail, account: senderAccount, contact: contact) ?? ""
         let receiver = getReceiverInformationFromLocalValues(in: notificationDetail, account: receiverAccount, contact: contact) ?? ""
         let assetDisplayName = getAssetDisplayName(from: notificationDetail) ?? ""
-        let amount = getAmount(from: notificationDetail) ?? ""
+        let amount = getAmount(
+            from: notificationDetail,
+            currencyFormatter: currencyFormatter
+        ) ?? ""
         let assetWithAmount = "\(amount) \(assetDisplayName)"
 
         switch notificationType {
@@ -164,13 +180,33 @@ extension NotificationsViewModel {
         }
     }
     
-    private func getAmount(from notificationDetail: NotificationDetail) -> String? {
+    private func getAmount(
+        from notificationDetail: NotificationDetail,
+        currencyFormatter: CurrencyFormatter
+    ) -> String? {
         let amount = notificationDetail.amount
-        if let asset = notificationDetail.asset {
-            let fraction = asset.fractionDecimals ?? 0
-            return amount.assetAmount(fromFraction: fraction).toFractionStringForLabel(fraction: fraction)
+
+        guard let asset = notificationDetail.asset else {
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = AlgoLocalCurrency()
+
+            return currencyFormatter.format(amount.toAlgos)
         }
-        return amount.toAlgos.toAlgosStringForLabel
+
+        let assetFraction = asset.fractionDecimals ?? 0
+
+        /// <todo>
+        /// Not sure we need this constraint, because the final number should be sent to the
+        /// formatter unless the number itself is modified.
+        var constraintRules = CurrencyFormattingContextRules()
+        constraintRules.maximumFractionDigits = assetFraction
+
+        currencyFormatter.formattingContext = .standalone(constraints: constraintRules)
+        currencyFormatter.currency = nil
+
+        let assetAmount = amount.assetAmount(fromFraction: assetFraction)
+
+        return currencyFormatter.format(assetAmount)
     }
     
     private func getAssetDisplayName(from notificationDetail: NotificationDetail) -> String? {

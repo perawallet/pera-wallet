@@ -41,7 +41,7 @@ extension ALGBlockOperationQueue {
         _ operations: [Operation],
         forAccountAddress address: String
     ) {
-        $underlyingOperationsGroupedByAccountAddress.modify { $0[address] = operations }
+        $underlyingOperationsGroupedByAccountAddress.mutate { $0[address] = operations }
         underlyingQueue.addOperations(
             operations,
             waitUntilFinished: false
@@ -51,7 +51,7 @@ extension ALGBlockOperationQueue {
     func dequeueOperations(
         forAccountAddress address: String
     ) {
-        $underlyingOperationsGroupedByAccountAddress.modify { $0[address] = nil }
+        $underlyingOperationsGroupedByAccountAddress.mutate { $0[address] = nil }
     }
 }
 
@@ -65,7 +65,7 @@ extension ALGBlockOperationQueue {
 
 extension ALGBlockOperationQueue {
     func cancelAllOperations() {
-        $underlyingOperationsGroupedByAccountAddress.modify { $0 = [:] }
+        $underlyingOperationsGroupedByAccountAddress.mutate { $0 = [:] }
         underlyingQueue.cancelAllOperations()
     }
 }

@@ -1,15 +1,15 @@
 /* Privacy - Bluetooth Always Usage Description */
-"NSBluetoothAlwaysUsageDescription" = "알고랜드에서 Ledger X와 통신하기 위해 Bluetooth를 사용합니다.";
+"NSBluetoothAlwaysUsageDescription" = "Pera에서 Ledger X와 통신하기 위해 Bluetooth를 사용합니다.";
 
 /* Privacy - Bluetooth Peripheral Usage Description */
-"NSBluetoothPeripheralUsageDescription" = "알고랜드에서 Ledger X와 통신하기 위해 Bluetooth를 사용합니다.";
+"NSBluetoothPeripheralUsageDescription" = "Pera에서 Ledger X와 통신하기 위해 Bluetooth를 사용합니다.";
 
 /* Privacy - Camera Usage Description */
-"NSCameraUsageDescription" = "알고랜드에서 카메라를 사용해 QR 코드를 스캔합니다.";
+"NSCameraUsageDescription" = "Pera에서 카메라를 사용해 QR 코드를 스캔합니다.";
 
 /* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "알고랜드에서 Face ID를 사용해 안전하게 로그인합니다.";
+"NSFaceIDUsageDescription" = "Pera에서 Face ID를 사용해 안전하게 로그인합니다.";
 
 /* Privacy - Photo Library Additions Usage Description */
-"NSPhotoLibraryAddUsageDescription" = "알고랜드에서 사진 라이브러리에 QR 코드를 저장합니다.";
+"NSPhotoLibraryAddUsageDescription" = "Pera에서 사진 라이브러리에 QR 코드를 저장합니다.";
 

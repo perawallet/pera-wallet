@@ -29,6 +29,7 @@ final class AssetDecoration: ALGEntityModel {
     let isVerified: Bool
     let creator: AssetCreator?
     let collectible: Collectible?
+    let explorerURL: URL?
     let url: String?
 
     var state: AssetState = .ready
@@ -48,6 +49,7 @@ final class AssetDecoration: ALGEntityModel {
         self.total = apiModel.total.unwrap { Int64($0) }
         self.isVerified = apiModel.isVerified ?? false
         self.creator = apiModel.creator.unwrap(AssetCreator.init)
+        self.explorerURL = apiModel.explorerURL
         self.collectible = apiModel.collectible.unwrap(Collectible.init)
         self.url = apiModel.url
     }
@@ -61,6 +63,7 @@ final class AssetDecoration: ALGEntityModel {
         self.total = nil
         self.isVerified = assetDetail.isVerified
         self.creator = AssetCreator(address: assetDetail.creator)
+        self.explorerURL = nil
         self.collectible = nil
         self.url = assetDetail.url
     }
@@ -75,6 +78,7 @@ final class AssetDecoration: ALGEntityModel {
         apiModel.total = total.unwrap { String(describing: $0) }
         apiModel.isVerified = isVerified
         apiModel.creator = creator?.encode()
+        apiModel.explorerURL = explorerURL
         apiModel.collectible = collectible?.encode()
         apiModel.url = url
         return apiModel
@@ -89,6 +93,7 @@ final class AssetDecoration: ALGEntityModel {
         self.total = nil
         self.isVerified = asset.presentation.isVerified
         self.creator = asset.creator
+        self.explorerURL = nil
         self.collectible = nil
         self.url = asset.presentation.url
     }
@@ -103,6 +108,7 @@ extension AssetDecoration {
         var usdValue: String?
         var isVerified: Bool?
         var creator: AssetCreator.APIModel?
+        var explorerURL: URL?
         var collectible: Collectible.APIModel?
         var url: String?
         var total: String?
@@ -115,6 +121,7 @@ extension AssetDecoration {
             self.usdValue = nil
             self.isVerified = nil
             self.creator = nil
+            self.explorerURL = nil
             self.collectible = nil
             self.url = nil
             self.total = nil
@@ -128,6 +135,7 @@ extension AssetDecoration {
             case usdValue = "usd_value"
             case isVerified = "is_verified"
             case creator
+            case explorerURL = "explorer_url"
             case collectible
             case url
             case total

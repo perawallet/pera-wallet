@@ -29,15 +29,10 @@ final class HomePortfolioView:
         .showInfo: UIControlInteraction()
     ]
 
-    private lazy var titleView = Label()
+    private(set) lazy var titleView = Label()
     private lazy var infoActionView = MacaroonUIKit.Button()
     private lazy var valueView = Label()
-    private lazy var holdingsView = UIView()
-    private lazy var algoHoldingsCanvasView = UIView()
-    private lazy var algoHoldingsView = HomePortfolioItemView()
-    private lazy var assetHoldingsCanvasView = UIView()
-    private lazy var assetHoldingsView = HomePortfolioItemView()
-    private lazy var buyAlgoButton = Button()
+    private lazy var secondaryValueView = Label()
     
     func customize(
         _ theme: HomePortfolioViewTheme
@@ -45,7 +40,7 @@ final class HomePortfolioView:
         addTitle(theme)
         addInfoAction(theme)
         addValue(theme)
-        addHoldings(theme)
+        addSecondaryValue(theme)
     }
     
     func customizeAppearance(
@@ -59,12 +54,29 @@ final class HomePortfolioView:
     func bindData(
         _ viewModel: HomePortfolioViewModel?
     ) {
-        titleView.editText = viewModel?.title
+        if let title = viewModel?.title {
+            title.load(in: titleView)
+        } else {
+            titleView.text = nil
+            titleView.attributedText = nil
+        }
+
         titleView.textColor = viewModel?.titleColor
         infoActionView.tintColor = viewModel?.titleColor
-        valueView.editText = viewModel?.value
-        algoHoldingsView.bindData(viewModel?.algoHoldings)
-        assetHoldingsView.bindData(viewModel?.assetHoldings)
+
+        if let primaryValue = viewModel?.primaryValue {
+            primaryValue.load(in: valueView)
+        } else {
+            valueView.text = nil
+            valueView.attributedText = nil
+        }
+
+        if let secondaryValue = viewModel?.secondaryValue {
+            secondaryValue.load(in: secondaryValueView)
+        } else {
+            secondaryValueView.text = nil
+            secondaryValueView.attributedText = nil
+        }
     }
     
     class func calculatePreferredSize(
@@ -77,33 +89,25 @@ final class HomePortfolioView:
         }
         
         let width = size.width
-        let titleSize = viewModel.title.boundingSize(
+        let titleSize = viewModel.title?.boundingSize(
             multiline: false,
             fittingSize: CGSize((width, .greatestFiniteMagnitude))
-        )
-        let valueSize = viewModel.value.boundingSize(
+        ) ?? .zero
+        let valueSize = viewModel.primaryValue?.boundingSize(
             multiline: false,
             fittingSize: .greatestFiniteMagnitude
-        )
-        let holdingsMaxWidth =
-            (width - theme.minSpacingBetweenAlgoHoldingsAndAssetHoldings) / 2
-        let algoHoldingsSize = HomePortfolioItemView.calculatePreferredSize(
-            viewModel.algoHoldings,
-            for: theme.algoHoldings,
-            fittingIn: CGSize((holdingsMaxWidth, .greatestFiniteMagnitude))
-        )
-        let assetHoldingsSize = HomePortfolioItemView.calculatePreferredSize(
-            viewModel.assetHoldings,
-            for: theme.assetHoldings,
-            fittingIn: CGSize((holdingsMaxWidth, .greatestFiniteMagnitude))
-        )
+        ) ?? .zero
+        let secondaryValueSize = viewModel.secondaryValue?.boundingSize(
+            multiline: false,
+            fittingSize: .greatestFiniteMagnitude
+        ) ?? .zero
         let preferredHeight =
             theme.titleTopPadding +
             titleSize.height +
             theme.spacingBetweenTitleAndValue +
             valueSize.height +
-            theme.spacingBetweenValueAndHoldings +
-            max(algoHoldingsSize.height, assetHoldingsSize.height)
+            theme.spacingBetweenTitleAndValue +
+            secondaryValueSize.height
         return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
     }
 }
@@ -118,7 +122,7 @@ extension HomePortfolioView {
         titleView.fitToIntrinsicSize()
         titleView.snp.makeConstraints {
             $0.top == theme.titleTopPadding
-            $0.leading == 0
+            $0.centerX.equalToSuperview()
         }
     }
     
@@ -144,6 +148,9 @@ extension HomePortfolioView {
     ) {
         valueView.customizeAppearance(theme.value)
         
+        valueView.adjustsFontSizeToFitWidth = true
+        valueView.minimumScaleFactor = 14/36
+        
         addSubview(valueView)
         valueView.fitToIntrinsicSize()
         valueView.snp.makeConstraints {
@@ -153,62 +160,20 @@ extension HomePortfolioView {
         }
     }
     
-    private func addHoldings(
+    private func addSecondaryValue(
         _ theme: HomePortfolioViewTheme
     ) {
-        addSubview(holdingsView)
-        holdingsView.snp.makeConstraints {
-            $0.top == valueView.snp.bottom + theme.spacingBetweenValueAndHoldings
+        secondaryValueView.customizeAppearance(theme.secondaryValue)
+        
+        secondaryValueView.adjustsFontSizeToFitWidth = true
+        secondaryValueView.minimumScaleFactor = 14/36
+        
+        addSubview(secondaryValueView)
+        secondaryValueView.fitToIntrinsicSize()
+        secondaryValueView.snp.makeConstraints {
+            $0.top == valueView.snp.bottom + theme.spacingBetweenTitleAndValue
             $0.leading == 0
             $0.trailing == 0
-        }
-        
-        addAlgoHoldings(theme)
-        addAssetHoldings(theme)
-    }
-    
-    private func addAlgoHoldings(
-        _ theme: HomePortfolioViewTheme
-    ) {
-        holdingsView.addSubview(algoHoldingsCanvasView)
-        algoHoldingsCanvasView.snp.makeConstraints {
-            $0.top == 0
-            $0.leading == 0
-            $0.bottom == 0
-        }
-        
-        algoHoldingsView.customize(theme.algoHoldings)
-        
-        algoHoldingsCanvasView.addSubview(algoHoldingsView)
-        algoHoldingsView.snp.makeConstraints {
-            $0.top == 0
-            $0.leading == 0
-            $0.trailing <= 0
-            $0.bottom == 0
-        }
-    }
-    
-    private func addAssetHoldings(
-        _ theme: HomePortfolioViewTheme
-    ) {
-        holdingsView.addSubview(assetHoldingsCanvasView)
-        assetHoldingsCanvasView.snp.makeConstraints {
-            $0.width == algoHoldingsCanvasView
-            $0.top == 0
-            $0.leading ==
-                algoHoldingsCanvasView.snp.trailing +
-                theme.minSpacingBetweenAlgoHoldingsAndAssetHoldings
-            $0.bottom == 0
-            $0.trailing == 0
-        }
-        
-        assetHoldingsView.customize(theme.assetHoldings)
-        
-        assetHoldingsCanvasView.addSubview(assetHoldingsView)
-        assetHoldingsView.snp.makeConstraints {
-            $0.width <= 0
-            $0.centerX == 0
-            $0.top == 0
             $0.bottom == 0
         }
     }

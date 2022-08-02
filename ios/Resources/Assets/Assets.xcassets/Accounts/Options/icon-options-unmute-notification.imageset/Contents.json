@@ -1,17 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "notification-unmute.pdf",
-      "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "filename" : "notification-unmute-1.pdf",
+      "filename" : "icon-options-unmute-notification.pdf",
       "idiom" : "universal"
     }
   ],
@@ -20,6 +10,7 @@
     "version" : 1
   },
   "properties" : {
-    "preserves-vector-representation" : true
+    "preserves-vector-representation" : true,
+    "template-rendering-intent" : "template"
   }
 }

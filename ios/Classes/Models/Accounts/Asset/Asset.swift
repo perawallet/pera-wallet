@@ -22,7 +22,16 @@ protocol Asset {
     var amount: UInt64 { get }
     var isFrozen: Bool? { get }
     var isDeleted: Bool? { get }
+    var optedInAtRound: UInt64? { get }
     var creator: AssetCreator? { get }
+    var decimals: Int { get }
+
+    /// <todo>
+    /// Switch decimalAmount -> amount
+    var decimalAmount: Decimal { get }
+
+    var usdValue: Decimal? { get }
+    var totalUSDValue: Decimal? { get }
 
     /// Asset management actions
     var state: AssetState { get set }
@@ -30,8 +39,6 @@ protocol Asset {
     /// Asset presentation
     var presentation: AssetPresentation { get }
     var amountWithFraction: Decimal { get }
-    var amountDisplayWithFraction: String? { get }
-    var amountNumberWithAutoFraction: String? { get }
 }
 
 enum AssetState: Codable {

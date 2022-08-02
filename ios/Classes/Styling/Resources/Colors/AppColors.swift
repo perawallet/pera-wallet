@@ -52,6 +52,7 @@ extension AppColors.Shared {
     }
 
     enum Helpers: String, Color {
+        case heroBackground = "Shared/Helpers/heroBackground"
         case negative = "Shared/Helpers/negative"
         case negativeLighter = "Shared/Helpers/negativeLighter"
         case positive = "Shared/Helpers/positive"
@@ -137,6 +138,14 @@ extension AppColors.Components {
         case governanceBackground = "Components/Banner/governance-background"
         case governanceText = "Components/Banner/governance-text"
         case infoBackground = "Components/Banner/info-background"
+    }
+}
+
+extension AppColors.Components {
+    enum Toast: String, Color {
+        case background = "Components/Toast/bg"
+        case description = "Components/Toast/description"
+        case title = "Components/Toast/title"
     }
 }
 

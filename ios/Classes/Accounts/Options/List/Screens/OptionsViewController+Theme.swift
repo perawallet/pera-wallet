@@ -22,16 +22,27 @@ struct OptionsViewControllerTheme:
     StyleSheet,
     LayoutSheet {
     var background: ViewStyle
-    var contentPaddings: LayoutPaddings
+    var verticalPadding: LayoutMetric
+    var primaryContextPaddings: LayoutPaddings
+    var secondaryContextPaddings: LayoutPaddings
+    var separator: Separator
     var action: ListActionViewTheme
 
     init(
         _ family: LayoutFamily
-) {
-        self.background = [
+    ) {
+        background = [
             .backgroundColor(AppColors.Shared.System.background)
         ]
-        self.contentPaddings = (12, 24, 12, 24)
-        self.action = ListActionViewTheme(family)
+        verticalPadding = 20
+        let horizontalPadding: LayoutMetric = 24
+        primaryContextPaddings = (verticalPadding, horizontalPadding, 0, horizontalPadding)
+        secondaryContextPaddings = (verticalPadding, horizontalPadding, verticalPadding, horizontalPadding)
+        separator = Separator(
+            color: AppColors.Shared.Layer.grayLighter,
+            size: 1,
+            position: .bottom((horizontalPadding, horizontalPadding))
+        )
+        action = ListActionViewTheme(family)
     }
 }

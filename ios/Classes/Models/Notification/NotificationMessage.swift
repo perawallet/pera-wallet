@@ -38,6 +38,7 @@ final class NotificationMessage: ALGEntityModel {
         self.date = apiModel.creationDatetime?.toDate()?.date
         self.message = apiModel.message
         self.detail = apiModel.metadata
+        self.detail?.type = apiModel.type ?? .broadcast
     }
 
     func encode() -> APIModel {

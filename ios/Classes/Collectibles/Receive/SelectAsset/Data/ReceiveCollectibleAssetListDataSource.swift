@@ -58,7 +58,7 @@ final class ReceiveCollectibleAssetListDataSource:
                 return cell
             case .collectible(let item):
                 let cell = collectionView.dequeue(
-                    AssetPreviewAdditionCell.self,
+                    AssetPreviewCell.self,
                     at: indexPath
                 )
                 cell.bindData(
@@ -71,7 +71,7 @@ final class ReceiveCollectibleAssetListDataSource:
         [
             PreviewLoadingCell.self,
             NoContentCell.self,
-            AssetPreviewAdditionCell.self,
+            AssetPreviewCell.self,
             InfoCell.self,
             CollectibleReceiveSearchInputCell.self,
         ].forEach {

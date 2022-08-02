@@ -20,7 +20,7 @@ import MacaroonUtils
 import MagpieCore
 import MagpieHipo
 
-final class AlgoStatisticsDataController: SharedDataControllerObserver {
+final class AlgoStatisticsDataController {
     typealias EventHandler = (AlgoStatisticsDataControllerEvent) -> Void
     
     private typealias Error = AlgoStatisticsDataControllerError
@@ -30,8 +30,10 @@ final class AlgoStatisticsDataController: SharedDataControllerObserver {
 
     private(set) var selectedAlgoPriceTimeFrame: AlgoPriceTimeFrameSelection = .idle
 
-    @Atomic(identifier: "algoStatisticsDataController.currency")
-    private var currency: CurrencyHandle = .idle
+    private lazy var currencyFormatter = CurrencyFormatter()
+
+    private var currencyValue: RemoteCurrencyValue?
+
     @Atomic(identifier: "algoStatisticsDataController.algoPriceValues")
     private var algoPriceValues: [AlgoPriceTimeFrameSelection: Result<[AlgoUSDPrice], Error>]
         = [:]
@@ -40,6 +42,8 @@ final class AlgoStatisticsDataController: SharedDataControllerObserver {
 
     private var ongoingAlgoPriceEndpoints: [EndpointOperatable] = []
     private var ongoingAlgoPriceCalculation: DispatchWorkItem?
+
+    private var currencyObserverKey: UUID?
 
     private let api: ALGAPI
     private let sharedDataController: SharedDataController
@@ -56,7 +60,7 @@ final class AlgoStatisticsDataController: SharedDataControllerObserver {
     }
     
     deinit {
-        sharedDataController.remove(self)
+        stopObservingCurrencyEvents()
     }
 }
 
@@ -76,7 +80,7 @@ extension AlgoStatisticsDataController {
         cancelLoadingAlgoPrice()
         
         let cachedViewModel = algoPriceViewModels[timeFrame]
-        eventHandler?(.didUpdateAlgoPrice(cachedViewModel.unwrap { .success($0) }))
+        publish(.didUpdateAlgoPrice(cachedViewModel.unwrap { .success($0) }))
 
         selectedAlgoPriceTimeFrame = timeFrame
 
@@ -89,9 +93,9 @@ extension AlgoStatisticsDataController {
         /// <note>
         /// Reset state on reloading if the last one is unavailable.
         switch algoPriceValues[selectedAlgoPriceTimeFrame] {
-        case .none: eventHandler?(.didUpdateAlgoPrice(nil))
+        case .none: publish(.didUpdateAlgoPrice(nil))
         case .success: break
-        case .failure: eventHandler?(.didUpdateAlgoPrice(nil))
+        case .failure: publish(.didUpdateAlgoPrice(nil))
         }
         
         loadAlgoPrice()
@@ -100,8 +104,8 @@ extension AlgoStatisticsDataController {
     func reset() {
         cancelLoadingAlgoPrice()
         
-        $algoPriceViewModels.modify { $0 = [:] }
-        eventHandler?(.didUpdateAlgoPrice(nil))
+        $algoPriceViewModels.mutate { $0 = [:] }
+        publish(.didUpdateAlgoPrice(nil))
         
         loadAlgoPrice()
     }
@@ -117,70 +121,69 @@ extension AlgoStatisticsDataController {
         case .none:
             break
         case .success(let algoPriceValues):
-            let calculator = AlgoPriceCalculator(algoPriceValues: algoPriceValues, currency: currency)
+            let calculator = AlgoPriceCalculator(algoPriceValues: algoPriceValues, currencyValue: currencyValue)
             let selectedPriceValue = algoPriceValues[index]
             let calculationResult = calculator.calculatePrice(selectedPriceValue)
             
             switch calculationResult {
             case .success(let price):
                 var viewModel = AlgoPriceViewModel()
-                viewModel.bind(price)
-                viewModel.bind(selectedPriceValue.timestamp)
-                eventHandler?(.didSelectAlgoPrice(.success(viewModel)))
+                viewModel.bind(
+                    algoPrice: price,
+                    currencyFormatter: currencyFormatter
+                )
+
+                if let timestamp = selectedPriceValue.timestamp {
+                    viewModel.bind(algoPriceTimestamp: timestamp)
+                }
+
+                publish(.didSelectAlgoPrice(.success(viewModel)))
             case .failure(let error):
-                eventHandler?(.didSelectAlgoPrice(.failure(.calculation(error))))
+                publish(.didSelectAlgoPrice(.failure(.calculation(error))))
             }
         case .failure(let error):
-            eventHandler?(.didSelectAlgoPrice(.failure(error)))
+            publish(.didSelectAlgoPrice(.failure(error)))
         }
     }
     
     func deselectPrice() {
         let cachedViewModel = algoPriceViewModels[selectedAlgoPriceTimeFrame]
-        eventHandler?(.didUpdateAlgoPrice(cachedViewModel.unwrap { .success($0) }))
-    }
-}
-
-extension AlgoStatisticsDataController {
-    func sharedDataController(
-        _ sharedDataController: SharedDataController,
-        didPublish event: SharedDataControllerEvent
-    ) {
-        switch event {
-        case .didFinishRunning:
-            let newCurrency = sharedDataController.currency
-            currencyDidLoad(newCurrency)
-        default:
-            break
-        }
+        publish(.didUpdateAlgoPrice(cachedViewModel.unwrap { .success($0) }))
     }
 }
 
 extension AlgoStatisticsDataController {
     private func loadCurrency() {
-        sharedDataController.add(self)
+        performUpdatesWithLatestCurrency()
+        startObservingCurrencyEvents()
     }
-    
-    private func currencyDidLoad(
-        _ newCurrency: CurrencyHandle
-    ) {
-        if newCurrency == currency {
+
+    private func performUpdatesWithLatestCurrency() {
+        let latestCurrencyValue = sharedDataController.currency.fiatValue
+
+        /// <note>
+        /// Checks if a completely new currency is selected, i.e. USD -> EUR
+        if !(currencyValue ~= latestCurrencyValue) {
+            currencyValue = latestCurrencyValue
+
+            reset()
             return
         }
-        
-        if newCurrency.isFailure &&
-           currency.isAvailable {
-           return
+
+        /// <note>
+        /// Checks if the currency has any updates which actually matters.
+        if currencyValue == latestCurrencyValue {
+            return
         }
-        
-        $currency.modify { $0 = newCurrency }
-        
+
+        currencyValue = latestCurrencyValue
+
         /// <note>
         /// Currency updates aren't needed to be proceeded immediately.
         if hasOngoingAlgoPriceCalculation() {
             return
         }
-        
+
         let calculation = makeAlgoPriceCalculationForSelectedAlgoPriceTimeFrame()
         proceed(with: calculation)
     }
@@ -235,9 +238,10 @@ extension AlgoStatisticsDataController {
             self.ongoingAlgoPriceEndpoints = []
             
             if let error = maybeError {
-                self.algoPriceDidFailToLoad(error)
+                self.performUpdatesForAlgoPrice(with: error)
             } else {
-                self.algoPriceDidLoad((maybeRecentPriceValue, timeFramePriceValues))
+                let algoPriceValues = (maybeRecentPriceValue, timeFramePriceValues)
+                self.performUpdatesForAlgoPrice(with: algoPriceValues)
             }
         }
     }
@@ -297,15 +301,15 @@ extension AlgoStatisticsDataController {
         ongoingAlgoPriceCalculation = nil
     }
     
-    private func algoPriceDidLoad(
-        _ algoPriceValues: AlgoPriceValues
+    private func performUpdatesForAlgoPrice(
+        with algoPriceValues: AlgoPriceValues
     ) {
         let calculation = makeAlgoPriceCalculationForSelectedAlgoPriceTimeFrame(algoPriceValues)
         proceed(with: calculation)
     }
     
-    private func algoPriceDidFailToLoad(
-        _ error: NetworkError
+    private func performUpdatesForAlgoPrice(
+        with error: NetworkError
     ) {
         /// <warning>
         /// Ongoing algo price endpoints are cancelled, means the selected time frame is changed,
@@ -382,7 +386,7 @@ extension AlgoStatisticsDataController {
             [weak self] in
             guard let self = self else { return }
             
-            self.$algoPriceValues.modify {
+            self.$algoPriceValues.mutate {
                 $0[lastSelectedAlgoPriceTimeFrame] = .failure(.network(error))
             }
 
@@ -436,7 +440,7 @@ extension AlgoStatisticsDataController {
             finalAlgoPriceValues = timeFrameAlgoPriceValues
         }
         
-        $algoPriceValues.modify {
+        $algoPriceValues.mutate {
             $0[timeFrame] = .success(finalAlgoPriceValues)
         }
         
@@ -453,27 +457,34 @@ extension AlgoStatisticsDataController {
     private func calculateAlgoPrice(
         _ algoPriceValues: [AlgoUSDPrice]
     ) -> Result<AlgoPriceViewModel, Error> {
-        let calculator = AlgoPriceCalculator(algoPriceValues: algoPriceValues, currency: currency)
+        let calculator = AlgoPriceCalculator(algoPriceValues: algoPriceValues, currencyValue: currencyValue)
         
         var viewModel = AlgoPriceViewModel()
         
         switch calculator.calculateRecentPrice() {
-        case .success(let price): viewModel.bind(price)
-        case .failure(let error): return .failure(.calculation(error))
+        case .success(let price):
+            viewModel.bind(
+                algoPrice: price,
+                currencyFormatter: currencyFormatter
+            )
+        case .failure(let error):
+            return .failure(
+                .calculation(error)
+            )
         }
         
         switch calculator.calculatePriceChangeRate() {
         case .success(let priceChangeRate):
-            viewModel.bind(priceChangeRate)
+            viewModel.bind(algoPriceChangeRate: priceChangeRate)
             
             let chartDataSet = AlgoPriceChartDataSet(
                 values: algoPriceValues,
                 changeRate: priceChangeRate,
-                currency: currency
+                currency: currencyValue
             )
-            viewModel.bind(chartDataSet)
+            viewModel.bind(algoPriceChartDataSet: chartDataSet)
         case .failure:
-            viewModel.bind(0)
+            viewModel.bind(algoPriceTimestamp: 0)
         }
 
         return .success(viewModel)
@@ -518,7 +529,7 @@ extension AlgoStatisticsDataController {
                 return
             }
             
-            self.eventHandler?(.didUpdateAlgoPrice(result))
+            self.publish(.didUpdateAlgoPrice(result))
         }
     }
 }
@@ -545,13 +556,46 @@ extension AlgoStatisticsDataController {
         _ viewModel: AlgoPriceViewModel,
         for timeFrame: AlgoPriceTimeFrameSelection
     ) {
-        $algoPriceViewModels.modify { $0[timeFrame] = viewModel }
+        $algoPriceViewModels.mutate { $0[timeFrame] = viewModel }
     }
     
     private func deleteCache(
         for timeFrame: AlgoPriceTimeFrameSelection
     ) {
-        $algoPriceViewModels.modify { $0[timeFrame] = nil }
+        $algoPriceViewModels.mutate { $0[timeFrame] = nil }
+    }
+}
+
+extension AlgoStatisticsDataController {
+    private func startObservingCurrencyEvents() {
+        currencyObserverKey = sharedDataController.currency.addObserver {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didUpdate:
+                self.performUpdatesWithLatestCurrency()
+            }
+        }
+    }
+
+    private func stopObservingCurrencyEvents() {
+        if let currencyObserverKey = currencyObserverKey {
+            sharedDataController.currency.removeObserver(currencyObserverKey)
+        }
+    }
+}
+
+extension AlgoStatisticsDataController {
+    private func publish(
+        _ event: AlgoStatisticsDataControllerEvent
+    ) {
+        DispatchQueue.main.async {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.eventHandler?(event)
+        }
     }
 }
 

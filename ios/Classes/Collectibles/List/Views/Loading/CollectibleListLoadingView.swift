@@ -21,10 +21,16 @@ final class CollectibleListLoadingView:
     View,
     ListReusable,
     ShimmerAnimationDisplaying {
-    private lazy var searchInput = ShimmerView()
-    private lazy var infoView = ShimmerView()
-    private lazy var filterActionView = ShimmerView()
+    private lazy var managementItemView = ManagementItemView()
+    private lazy var searchInput = SearchInputView()
     private lazy var collectibleListItemsVerticalStack = UIStackView()
+
+    private static let managementItemViewModel = ManagementItemViewModel(
+        .collectible(
+            count: .zero,
+            isWatchAccountDisplay: false
+        )
+    )
 
     private static let rowCount = 2
     private static let columnCount = 2
@@ -39,9 +45,8 @@ final class CollectibleListLoadingView:
     func customize(
         _ theme: CollectibleListLoadingViewTheme
     ) {
+        addManagementItem(theme)
         addSearchInput(theme)
-        addInfo(theme)
-        addFilterAction(theme)
         addCollectibleListItemsVerticalStack(theme)
         addCollectibleListItem(theme)
     }
@@ -62,12 +67,19 @@ final class CollectibleListLoadingView:
         for theme: CollectibleListLoadingViewTheme,
         fittingIn size: CGSize
     ) -> CGSize {
+        let width = size.width
+
+        let managementItemSize = ManagementItemView.calculatePreferredSize(
+            CollectibleListLoadingView.managementItemViewModel,
+            for: theme.managementItemTheme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+
         let rowCount = CollectibleListLoadingView.rowCount
         let columnCount = CollectibleListLoadingView.columnCount
 
-
         let rowSpacing = theme.collectibleListItemsHorizontalStackSpacing
-        let itemWidth = (size.width - rowSpacing)  / columnCount.cgFloat
+        let itemWidth = (width - rowSpacing) / columnCount.cgFloat
 
         let itemHeight =  CollectibleListItemLoadingView.calculatePreferredSize(
             for: theme.collectibleListItemLoadingViewTheme,
@@ -77,56 +89,46 @@ final class CollectibleListLoadingView:
         let collectibleListItemsVerticalStackItemsHeight = itemHeight.height * rowCount.cgFloat
 
         let preferredHeight =
+        theme.managementItemTopPadding +
+        managementItemSize.height +
         theme.searchInputHeight +
         theme.searchInputPaddings.top +
-        theme.infoTopPadding +
-        theme.infoSize.h +
         theme.collectibleListItemsVerticalStackPaddings.top +
         theme.collectibleListItemsVerticalStackSpacing +
         collectibleListItemsVerticalStackItemsHeight +
         theme.collectibleListItemsVerticalStackPaddings.bottom
 
-        return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
+        return CGSize((width, min(preferredHeight.ceil(), size.height)))
     }
 }
 
 extension CollectibleListLoadingView {
+    private func addManagementItem(
+        _ theme: CollectibleListLoadingViewTheme
+    ) {
+        managementItemView.customize(theme.managementItemTheme)
+        managementItemView.bindData(CollectibleListLoadingView.managementItemViewModel)
+
+        addSubview(managementItemView)
+        managementItemView.snp.makeConstraints {
+            $0.top == theme.managementItemTopPadding
+            $0.leading == 0
+            $0.trailing == 0
+        }
+    }
+
     private func addSearchInput(
         _ theme: CollectibleListLoadingViewTheme
     ) {
-        searchInput.draw(corner: theme.corner)
+        searchInput.customize(theme.searchInputTheme)
 
         addSubview(searchInput)
         searchInput.snp.makeConstraints {
-            $0.setPaddings(theme.searchInputPaddings)
+            $0.top == managementItemView.snp.bottom + theme.searchInputPaddings.top
+            $0.leading == theme.searchInputPaddings.leading
+            $0.trailing == theme.searchInputPaddings.trailing
+
             $0.fitToHeight(theme.searchInputHeight)
-        }
-    }
-
-    private func addInfo(
-        _ theme: CollectibleListLoadingViewTheme
-    ) {
-        infoView.draw(corner: theme.corner)
-
-        addSubview(infoView)
-        infoView.snp.makeConstraints {
-            $0.top == searchInput.snp.bottom + theme.infoTopPadding
-            $0.leading == 0
-            $0.fitToSize(theme.infoSize)
-        }
-    }
-
-    private func addFilterAction(
-        _ theme: CollectibleListLoadingViewTheme
-    ) {
-        filterActionView.draw(corner: theme.corner)
-
-        addSubview(filterActionView)
-        filterActionView.snp.makeConstraints {
-            $0.top == infoView.snp.top
-            $0.trailing == 0
-            $0.width == infoView.snp.width * theme.filterActionWidthRatio
-            $0.height == infoView.snp.height
         }
     }
 
@@ -140,7 +142,7 @@ extension CollectibleListLoadingView {
         addSubview(collectibleListItemsVerticalStack)
 
         collectibleListItemsVerticalStack.snp.makeConstraints {
-            $0.top == filterActionView.snp.bottom + theme.collectibleListItemsVerticalStackPaddings.top
+            $0.top == searchInput.snp.bottom + theme.collectibleListItemsVerticalStackPaddings.top
             $0.leading == theme.collectibleListItemsVerticalStackPaddings.leading
             $0.trailing == theme.collectibleListItemsVerticalStackPaddings.trailing
             $0.bottom == theme.collectibleListItemsVerticalStackPaddings.bottom

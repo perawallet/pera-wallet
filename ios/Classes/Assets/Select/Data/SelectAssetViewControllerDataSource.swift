@@ -21,6 +21,8 @@ import UIKit
 final class SelectAssetViewControllerDataSource:
     NSObject,
     UICollectionViewDataSource {
+    private lazy var currencyFormatter = CurrencyFormatter()
+
     private let sharedDataController: SharedDataController
     private let account: Account
 
@@ -38,11 +40,11 @@ final class SelectAssetViewControllerDataSource:
 
         switch filter {
         case .collectible:
-            assets = account.collectibleAssets.filter(\.isOwned)
+            assets = account.collectibleAssets.someArray.filter(\.isOwned)
         case .standard:
-            assets = account.standardAssets
+            assets = account.standardAssets.someArray
         default:
-            assets = account.standardAssets + account.collectibleAssets.filter(\.isOwned)
+            assets = account.standardAssets.someArray + account.collectibleAssets.someArray.filter(\.isOwned)
         }
 
         super.init()
@@ -77,13 +79,20 @@ extension SelectAssetViewControllerDataSource {
     ) -> UICollectionViewCell {
         let cell = collectionView.dequeue(AssetPreviewCell.self, at: indexPath)
 
-        let currency = sharedDataController.currency.value
+        let currency = sharedDataController.currency
 
         if  filter != .collectible,
             indexPath.item == .zero {
-            cell.bindData(
-                AssetPreviewViewModel(AssetPreviewModelAdapter.adapt((account, currency)))
+            let algoAssetItem = AlgoAssetItem(
+                account: account,
+                currency: currency,
+                currencyFormatter: currencyFormatter
             )
+            let preview = AssetPreviewModelAdapter.adapt(algoAssetItem)
+            let previewViewModel = AssetPreviewViewModel(preview)
+
+            cell.bindData(previewViewModel)
+
             return cell
         }
 
@@ -91,21 +100,29 @@ extension SelectAssetViewControllerDataSource {
             fatalError("Index path is out of bounds")
         }
 
-        let viewModel: AssetPreviewViewModel
-
         if let collectibleAsset = asset as? CollectibleAsset {
-            let draft = CollectibleAssetSelectionDraft(
+            let draft = CollectibleAssetPreviewSelectionDraft(
+                asset: collectibleAsset,
                 currency: currency,
-                asset: collectibleAsset
+                currencyFormatter: currencyFormatter
             )
-            viewModel = AssetPreviewViewModel(draft)
-        } else {
-            viewModel = AssetPreviewViewModel(
-                AssetPreviewModelAdapter.adaptAssetSelection((asset, currency))
-            )
+            let viewModel = AssetPreviewViewModel(draft)
+
+            cell.bindData(viewModel)
+
+            return cell
         }
 
-        cell.bindData(viewModel)
+        let assetItem = AssetItem(
+            asset: asset,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
+        let preview = AssetPreviewModelAdapter.adaptAssetSelection(assetItem)
+        let previewViewModel = AssetPreviewViewModel(preview)
+
+        cell.bindData(previewViewModel)
+
         return cell
     }
 }

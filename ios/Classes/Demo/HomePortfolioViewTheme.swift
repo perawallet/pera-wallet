@@ -26,12 +26,9 @@ struct HomePortfolioViewTheme:
     var titleTopPadding: LayoutMetric
     var infoAction: ButtonStyle
     var value: TextStyle
-    var algoHoldings: HomePortfolioItemViewTheme
-    var assetHoldings: HomePortfolioItemViewTheme
+    var secondaryValue: TextStyle
     var spacingBetweenTitleAndInfoAction: LayoutMetric
     var spacingBetweenTitleAndValue: LayoutMetric
-    var spacingBetweenValueAndHoldings: LayoutMetric
-    var minSpacingBetweenAlgoHoldingsAndAssetHoldings: LayoutMetric
     
     init(
         _ family: LayoutFamily
@@ -43,13 +40,15 @@ struct HomePortfolioViewTheme:
         ]
         self.value = [
             .textColor(AppColors.Components.Text.main.uiColor),
-            .textOverflow(SingleLineFittingText())
+            .textOverflow(SingleLineFittingText()),
+            .textAlignment(.center)
         ]
-        self.algoHoldings = HomePortfolioItemViewTheme()
-        self.assetHoldings = HomePortfolioItemViewTheme()
+        self.secondaryValue = [
+            .textColor(AppColors.Components.Text.gray.uiColor),
+            .textOverflow(SingleLineFittingText()),
+            .textAlignment(.center)
+        ]
         self.spacingBetweenTitleAndInfoAction = 8
         self.spacingBetweenTitleAndValue = 8
-        self.spacingBetweenValueAndHoldings = 24
-        self.minSpacingBetweenAlgoHoldingsAndAssetHoldings = 8
     }
 }

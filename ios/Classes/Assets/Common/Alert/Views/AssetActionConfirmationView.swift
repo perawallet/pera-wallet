@@ -18,7 +18,9 @@
 import UIKit
 import MacaroonUIKit
 
-final class AssetActionConfirmationView: View {
+final class AssetActionConfirmationView:
+    View,
+    UIContextMenuInteractionDelegate {
     weak var delegate: AssetActionConfirmationViewDelegate?
 
     private lazy var titleLabel = Label()
@@ -31,9 +33,12 @@ final class AssetActionConfirmationView: View {
     private lazy var transactionView = HStackView()
     private lazy var transactionFeeTitleLabel = Label()
     private lazy var transactionFeeAmountLabel = Label()
+    private lazy var warningIconView = ImageView()
     private lazy var detailLabel = Label()
     private lazy var actionButton = Button()
     private lazy var cancelButton = Button()
+
+    private lazy var assetIDMenuInteraction = UIContextMenuInteraction(delegate: self)
 
     func customize(_ theme: AssetActionConfirmationViewTheme) {
         addTitleLabel(theme)
@@ -41,6 +46,7 @@ final class AssetActionConfirmationView: View {
         addAssetNameLabel(theme)
         addAssetIDView(theme)
         addTransactionView(theme)
+        addWarningIcon(theme)
         addDetailLabel(theme)
         addActionButton(theme)
         addCancelButton(theme)
@@ -51,6 +57,7 @@ final class AssetActionConfirmationView: View {
     func customizeAppearance(_ styleSheet: AssetActionConfirmationViewTheme) {}
 
     func setListeners() {
+        assetIDView.addInteraction(assetIDMenuInteraction)
         copyIDButton.addTouch(target: self, action: #selector(notifyDelegateToCopyAssetId))
         actionButton.addTouch(target: self, action: #selector(notifyDelegateToHandleAction))
         cancelButton.addTouch(target: self, action: #selector(notifyDelegateToCancelScreen))
@@ -70,7 +77,7 @@ extension AssetActionConfirmationView {
 
     @objc
     private func notifyDelegateToCopyAssetId() {
-        delegate?.assetActionConfirmationViewDidTapCopyIDButton(self, assetID: assetIDLabel.text)
+        delegate?.assetActionConfirmationViewDidTapCopyIDButton(self)
     }
 }
 
@@ -204,15 +211,27 @@ extension AssetActionConfirmationView {
         transactionView.addArrangedSubview(transactionFeeAmountLabel)
     }
 
+    private func addWarningIcon(_ theme: AssetActionConfirmationViewTheme) {
+        warningIconView.customizeAppearance(theme.warningIcon)
+
+        addSubview(warningIconView)
+        warningIconView.contentEdgeInsets = theme.warningIconContentEdgeInsets
+        warningIconView.fitToIntrinsicSize()
+        warningIconView.snp.makeConstraints {
+            $0.top.equalTo(transactionFeeTitleLabel.snp.bottom).offset(theme.transactionBottomPadding)
+            $0.top.equalTo(assetIDView.snp.bottom).offset(theme.descriptionTopInset).priority(.medium)
+            $0.leading.equalToSuperview().inset(theme.horizontalPadding)
+        }
+    }
+
     private func addDetailLabel(_ theme: AssetActionConfirmationViewTheme) {
-        detailLabel.customizeAppearance(theme.description)
+        detailLabel.customizeAppearance(theme.detail)
 
         addSubview(detailLabel)
         detailLabel.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-            $0.top.equalTo(transactionFeeTitleLabel.snp.bottom).offset(theme.transactionBottomPadding)
-            $0.top.equalTo(assetIDView.snp.bottom).offset(theme.descriptionTopInset).priority(.medium)
-            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.top.equalTo(warningIconView)
+            $0.leading.equalTo(warningIconView.snp.trailing)
+            $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
 
@@ -222,7 +241,7 @@ extension AssetActionConfirmationView {
         addSubview(actionButton)
         actionButton.fitToVerticalIntrinsicSize()
         actionButton.snp.makeConstraints {
-            $0.top.greaterThanOrEqualTo(detailLabel.snp.bottom).offset(theme.verticalInset)
+            $0.top.greaterThanOrEqualTo(detailLabel.snp.bottom).offset(theme.spacingBetweenButtonAndDetail)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
@@ -239,6 +258,43 @@ extension AssetActionConfirmationView {
         }
     }
 }
+
+extension AssetActionConfirmationView {
+     func contextMenuInteraction(
+         _ interaction: UIContextMenuInteraction,
+         configurationForMenuAtLocation location: CGPoint
+     ) -> UIContextMenuConfiguration? {
+         delegate?.contextMenuInteractionForAssetID(in: self)
+     }
+
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        previewForHighlightingMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard let view = interaction.view else {
+            return nil
+        }
+
+        return UITargetedPreview(
+            view: view,
+            backgroundColor: AppColors.Shared.System.background.uiColor
+        )
+    }
+
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        previewForDismissingMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard let view = interaction.view else {
+            return nil
+        }
+
+        return UITargetedPreview(
+            view: view,
+            backgroundColor: AppColors.Shared.System.background.uiColor
+        )
+    }
+ }
 
 extension AssetActionConfirmationView: ViewModelBindable {
     func bindData(_ viewModel: AssetActionConfirmationViewModel?) {
@@ -266,5 +322,8 @@ extension AssetActionConfirmationView: ViewModelBindable {
 protocol AssetActionConfirmationViewDelegate: AnyObject {
     func assetActionConfirmationViewDidTapActionButton(_ assetActionConfirmationView: AssetActionConfirmationView)
     func assetActionConfirmationViewDidTapCancelButton(_ assetActionConfirmationView: AssetActionConfirmationView)
-    func assetActionConfirmationViewDidTapCopyIDButton(_ assetActionConfirmationView: AssetActionConfirmationView, assetID: String?)
+    func assetActionConfirmationViewDidTapCopyIDButton(_ assetActionConfirmationView: AssetActionConfirmationView)
+    func contextMenuInteractionForAssetID(
+        in assetActionConfirmationView: AssetActionConfirmationView
+    ) -> UIContextMenuConfiguration?
 }

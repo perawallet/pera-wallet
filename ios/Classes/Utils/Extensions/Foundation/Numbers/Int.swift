@@ -46,10 +46,6 @@ extension UInt64 {
         return Decimal(self) / pow(10, decimal)
     }
 
-    func toFractionStringForLabel(fraction: Int) -> String? {
-        return Formatter.separatorWith(fraction: fraction).string(from: NSNumber(value: self))
-    }
-
     var isBelowZero: Bool {
         return self < 0
     }

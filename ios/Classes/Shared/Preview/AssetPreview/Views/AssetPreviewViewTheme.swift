@@ -20,6 +20,7 @@ import MacaroonUIKit
 struct AssetPreviewViewTheme:
     LayoutSheet,
     StyleSheet {
+    let icon: AssetImageViewTheme
     let verifiedIcon: ImageStyle
     let title: TextStyle
     let subtitle: TextStyle
@@ -33,44 +34,27 @@ struct AssetPreviewViewTheme:
     let horizontalPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.contentMinWidthRatio = 0.15
-        self.minSpacingBetweenContentAndSecondaryContent = 8
-        self.verifiedIconContentEdgeInsets = (8, 0)
-        self.verifiedIcon = [
+        icon = AssetImageViewTheme()
+        contentMinWidthRatio = 0.25
+        minSpacingBetweenContentAndSecondaryContent = 16
+        verifiedIconContentEdgeInsets = (6, 0)
+        verifiedIcon = [
             .contentMode(.right)
         ]
-        self.title = [
-            .textOverflow(SingleLineText()),
+        title = [
             .textColor(AppColors.Components.Text.main),
-            .textAlignment(.left)
         ]
-        self.subtitle = [
-            .textOverflow(SingleLineText()),
+        subtitle = [
             .textColor(AppColors.Components.Text.grayLighter),
-            .textAlignment(.left)
         ]
-        self.primaryAccessory = [
-            .textOverflow(SingleLineFittingText()),
+        primaryAccessory = [
             .textColor(AppColors.Components.Text.main),
-            .textAlignment(.right)
         ]
-        self.secondaryAccessory = [
-            .textOverflow(SingleLineFittingText()),
+        secondaryAccessory = [
             .textColor(AppColors.Components.Text.grayLighter),
-            .textAlignment(.right)
         ]
 
-        self.imageSize = (40, 40)
-        self.horizontalPadding = 16
-    }
-}
-
-extension AssetPreviewViewTheme {
-    mutating func configureForAssetPreviewAddition() {
-        primaryAccessory = primaryAccessory.modify( [] )
-
-        secondaryAccessory = secondaryAccessory.modify(
-            [ .textOverflow(SingleLineFittingText()), .textColor(AppColors.Components.Text.gray) ]
-        )
+        imageSize = (40, 40)
+        horizontalPadding = 16
     }
 }

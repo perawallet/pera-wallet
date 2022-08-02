@@ -78,8 +78,19 @@ final class RewardsInfoView:
     ) {}
 
     func bindData(_ viewModel: RewardInfoViewModel?) {
-        rewardsLabel.editText = viewModel?.title
-        rewardsValueLabel.editText = viewModel?.rewardAmount
+        if let title = viewModel?.title {
+            title.load(in: rewardsLabel)
+        } else {
+            rewardsLabel.text = nil
+            rewardsLabel.attributedText = nil
+        }
+
+        if let value = viewModel?.value {
+            value.load(in: rewardsValueLabel)
+        } else {
+            rewardsValueLabel.text = nil
+            rewardsLabel.attributedText = nil
+        }
     }
 
     class func calculatePreferredSize(
@@ -92,14 +103,14 @@ final class RewardsInfoView:
         }
 
         let width = size.width
-        let titleSize = viewModel.title.boundingSize(
+        let titleSize = viewModel.title?.boundingSize(
             multiline: false,
             fittingSize: CGSize((width, .greatestFiniteMagnitude))
-        )
-        let valueSize = viewModel.rewardAmount.boundingSize(
+        ) ?? .zero
+        let valueSize = viewModel.value?.boundingSize(
             multiline: false,
             fittingSize: CGSize((width, .greatestFiniteMagnitude))
-        )
+        ) ?? .zero
         let preferredHeight =
         theme.bottomPadding +
         titleSize.height +

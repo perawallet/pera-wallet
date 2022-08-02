@@ -19,13 +19,12 @@ import MacaroonUIKit
 struct CollectibleListLoadingViewTheme:
     StyleSheet,
     LayoutSheet {
+    let managementItemTheme: ManagementItemViewTheme
+    let managementItemTopPadding: LayoutMetric
+
+    let searchInputTheme: SearchInputViewTheme
     let searchInputPaddings: LayoutPaddings
     let searchInputHeight: LayoutMetric
-
-    let infoTopPadding: LayoutMetric
-    let infoSize: LayoutSize
-
-    let filterActionWidthRatio: LayoutMetric
 
     let collectibleListItemsVerticalStackSpacing: LayoutMetric
     let collectibleListItemsVerticalStackPaddings: LayoutPaddings
@@ -39,16 +38,18 @@ struct CollectibleListLoadingViewTheme:
     init(
         _ family: LayoutFamily
     ) {
-        searchInputPaddings = (20, 0, .noMetric, 0)
+        managementItemTheme = ManagementItemViewTheme()
+        managementItemTopPadding = 28
+
+        searchInputTheme = SearchInputViewCommonTheme(
+            placeholder: "collectibles-list-input-placeholder".localized,
+            family: family
+        )
+        searchInputPaddings = (16, 0, .noMetric, 0)
         searchInputHeight = 40
 
-        infoTopPadding = 24
-        infoSize = (48, 26)
-
-        filterActionWidthRatio = 1.5
-
         collectibleListItemsVerticalStackSpacing = 28
-        collectibleListItemsVerticalStackPaddings = (16, 0, 8, 0)
+        collectibleListItemsVerticalStackPaddings = (20, 0, 8, 0)
 
         collectibleListItemsHorizontalStackSpacing = 24
 

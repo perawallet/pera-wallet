@@ -172,6 +172,29 @@ extension TransactionFilterViewController {
         func isCustomRange() -> Bool {
             return self == .customRange(from: nil, to: nil)
         }
+
+        func getDateRanges() -> (from: Date?, to: Date?) {
+            switch self {
+            case .allTime:
+                return (nil, nil)
+            case .today:
+                return (Date().dateAt(.startOfDay), Date().dateAt(.endOfDay))
+            case .yesterday:
+                let yesterday = Date().dateAt(.yesterday)
+                let endOfYesterday = yesterday.dateAt(.endOfDay)
+                return (yesterday, endOfYesterday)
+            case .lastWeek:
+                let prevOfLastWeek = Date().dateAt(.prevWeek)
+                let endOfLastWeek = prevOfLastWeek.dateAt(.endOfWeek)
+                return (prevOfLastWeek, endOfLastWeek)
+            case .lastMonth:
+                let prevOfLastMonth = Date().dateAt(.prevMonth)
+                let endOfLastMonth = prevOfLastMonth.dateAt(.endOfMonth)
+                return (prevOfLastMonth, endOfLastMonth)
+            case let .customRange(from, to):
+                return (from, to)
+            }
+        }
     }
 }
 

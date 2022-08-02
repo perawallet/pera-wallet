@@ -38,14 +38,20 @@ class WCAssetDeletionTransactionViewModel {
     init(
         transaction: WCTransaction,
         senderAccount: Account?,
-        asset: Asset?
+        asset: Asset?,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
     ) {
         setSenderInformationViewModel(from: senderAccount, and: transaction)
         setAssetInformationViewModel(from: asset)
         setAssetWarningViewModel()
         setCloseWarningViewModel(from: transaction, and: asset)
         setRekeyWarningViewModel(from: senderAccount, and: transaction)
-        setFeeInformationViewModel(from: transaction)
+        setFeeInformationViewModel(
+            from: transaction,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
         setFeeWarningViewModel(from: transaction)
         setNoteInformationViewModel(from: transaction)
         setRawTransactionInformationViewModel(from: transaction)
@@ -133,7 +139,11 @@ class WCAssetDeletionTransactionViewModel {
         self.rekeyWarningInformationViewModel = WCTransactionWarningViewModel(warning: .rekeyed)
     }
 
-    private func setFeeInformationViewModel(from transaction: WCTransaction) {
+    private func setFeeInformationViewModel(
+        from transaction: WCTransaction,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) {
         guard let transactionDetail = transaction.transactionDetail,
               let fee = transactionDetail.fee,
               fee != 0 else {
@@ -145,7 +155,9 @@ class WCAssetDeletionTransactionViewModel {
                 amount: fee.toAlgos,
                 isAlgos: true,
                 fraction: algosFraction
-            )
+            ),
+            currency: currency,
+            currencyFormatter: currencyFormatter
         )
 
         let feeInformationViewModel = TransactionAmountInformationViewModel(transactionViewModel: feeViewModel)

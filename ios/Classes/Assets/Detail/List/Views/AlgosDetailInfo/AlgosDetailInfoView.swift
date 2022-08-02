@@ -56,12 +56,29 @@ final class AlgosDetailInfoView:
     func bindData(
         _ viewModel: AlgosDetailInfoViewModel?
     ) {
-        yourBalanceTitleLabel.editText = viewModel?.yourBalanceTitle
-        algosValueLabel.editText = viewModel?.totalAmount
-        secondaryValueLabel.editText = viewModel?.secondaryValue
-        rewardsInfoView.bindData(viewModel?.rewardsInfoViewModel)
-        
-        buyAlgoButton.isHidden = !(viewModel?.hasBuyAlgoButton ?? false)
+        if let title = viewModel?.title {
+            title.load(in: yourBalanceTitleLabel)
+        } else {
+            yourBalanceTitleLabel.text = nil
+            yourBalanceTitleLabel.attributedText = nil
+        }
+
+        if let primaryValue = viewModel?.primaryValue {
+            primaryValue.load(in: algosValueLabel)
+        } else {
+            algosValueLabel.text = nil
+            algosValueLabel.attributedText = nil
+        }
+
+        if let secondaryValue = viewModel?.secondaryValue {
+            secondaryValue.load(in: secondaryValueLabel)
+        } else {
+            secondaryValueLabel.text = nil
+            secondaryValueLabel.attributedText = nil
+        }
+
+        rewardsInfoView.bindData(viewModel?.rewardsInfo)
+        buyAlgoButton.isHidden = !(viewModel?.isBuyAlgoAvailable ?? false)
     }
 
     class func calculatePreferredSize(
@@ -76,46 +93,39 @@ final class AlgosDetailInfoView:
         let width =
             size.width -
             2 * theme.horizontalPadding
-        let yourBalanceTitleSize = viewModel.yourBalanceTitle.boundingSize(
+        let titleSize = viewModel.title?.boundingSize(
             multiline: false,
             fittingSize: CGSize((width, .greatestFiniteMagnitude))
-        )
-        let amountSize = viewModel.totalAmount.boundingSize(
+        ) ?? .zero
+        let primaryValueSize = viewModel.primaryValue?.boundingSize(
             multiline: false,
             fittingSize: CGSize((width, .greatestFiniteMagnitude))
-        )
+        ) ?? .zero
+        let secondaryValueSize = viewModel.secondaryValue?.boundingSize(
+            multiline: false,
+            fittingSize: CGSize((width, .greatestFiniteMagnitude))
+        ) ?? .zero
         let rewardsInfoSize = RewardsInfoView.calculatePreferredSize(
-            viewModel.rewardsInfoViewModel,
+            viewModel.rewardsInfo,
             for: theme.rewardsInfoViewTheme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 
         var preferredHeight =
-        theme.topPadding +
-        yourBalanceTitleSize.height +
-        theme.algosValueLabelTopPadding +
-        amountSize.height +
-        theme.rewardsInfoViewTopPadding +
-        rewardsInfoSize.height +
-        theme.separatorPadding +
-        theme.separator.size +
-        theme.bottomPadding
+            theme.topPadding +
+            titleSize.height +
+            theme.algosValueLabelTopPadding +
+            primaryValueSize.height +
+            secondaryValueSize.height +
+            theme.rewardsInfoViewTopPadding +
+            rewardsInfoSize.height +
+            theme.separatorPadding +
+            theme.separator.size +
+            theme.bottomPadding
         
-        if viewModel.hasBuyAlgoButton {
+        if viewModel.isBuyAlgoAvailable {
             preferredHeight += theme.buyAlgoButtonHeight
             preferredHeight += theme.buyAlgoButtonMargin.top
-        }
-
-        if !viewModel.secondaryValue.isNilOrEmpty {
-            let secondaryValueLabelSize = viewModel.secondaryValue.boundingSize(
-                multiline: false,
-                fittingSize: CGSize((width, .greatestFiniteMagnitude))
-            )
-
-            preferredHeight =
-            preferredHeight +
-            theme.secondaryValueLabelTopPadding +
-            secondaryValueLabelSize.height
         }
 
         return CGSize((size.width, min(preferredHeight.ceil(), size.height)))

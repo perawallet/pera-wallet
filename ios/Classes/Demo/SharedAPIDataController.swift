@@ -28,10 +28,43 @@ final class SharedAPIDataController:
 
     var assetDetailCollection: AssetDetailCollection = []
 
+    var selectedAccountSortingAlgorithm: AccountSortingAlgorithm? {
+        didSet { cache.accountSortingAlgorithmName = selectedAccountSortingAlgorithm?.name }
+    }
+    var selectedCollectibleSortingAlgorithm: CollectibleSortingAlgorithm? {
+        didSet { cache.collectibleSortingAlgorithmName = selectedCollectibleSortingAlgorithm?.name }
+    }
+    var selectedAccountAssetSortingAlgorithm: AccountAssetSortingAlgorithm? {
+        didSet { cache.accountAssetSortingAlgorithmName = selectedAccountAssetSortingAlgorithm?.name }
+    }
+
     private(set) var accountCollection: AccountCollection = []
-    private(set) var currency: CurrencyHandle = .idle
+
+    private(set) var currency: CurrencyProvider
 
     private(set) var lastRound: BlockRound?
+
+    private(set) lazy var accountSortingAlgorithms: [AccountSortingAlgorithm] = [
+        AccountAscendingTitleAlgorithm(),
+        AccountDescendingTitleAlgorithm(),
+        AccountAscendingTotalPortfolioValueAlgorithm(currency: currency),
+        AccountDescendingTotalPortfolioValueAlgorithm(currency: currency),
+        AccountCustomReorderingAlgorithm()
+    ]
+
+    private(set) lazy var collectibleSortingAlgorithms: [CollectibleSortingAlgorithm] = [
+        CollectibleDescendingOptedInRoundAlgorithm(),
+        CollectibleAscendingOptedInRoundAlgorithm(),
+        CollectibleAscendingTitleAlgorithm(),
+        CollectibleDescendingTitleAlgorithm()
+    ]
+
+    private(set) lazy var accountAssetSortingAlgorithms: [AccountAssetSortingAlgorithm] = [
+        AccountAssetAscendingTitleAlgorithm(),
+        AccountAssetDescendingTitleAlgorithm(),
+        AccountAssetDescendingAmountAlgorithm(),
+        AccountAssetAscendingAmountAlgorithm()
+    ]
     
     var isAvailable: Bool {
         return isFirstPollingRoundCompleted
@@ -53,29 +86,47 @@ final class SharedAPIDataController:
     
     private let session: Session
     private let api: ALGAPI
-    
+    private let cache: Cache
+
     init(
+        currency: CurrencyProvider,
         session: Session,
         api: ALGAPI
     ) {
+        let cache = Cache()
+
+        self.currency = currency
         self.session = session
         self.api = api
+        self.cache = Cache()
+
+        self.selectedAccountSortingAlgorithm = accountSortingAlgorithms.first {
+            $0.name == cache.accountSortingAlgorithmName
+        } ?? AccountCustomReorderingAlgorithm()
+
+        self.selectedCollectibleSortingAlgorithm = collectibleSortingAlgorithms.first {
+            $0.name == cache.collectibleSortingAlgorithmName
+        } ?? CollectibleDescendingOptedInRoundAlgorithm()
+
+        self.selectedAccountAssetSortingAlgorithm = accountAssetSortingAlgorithms.first {
+            $0.name == cache.accountAssetSortingAlgorithmName
+        } ?? AccountAssetAscendingTitleAlgorithm()
     }
 }
 
 extension SharedAPIDataController {
     func startPolling() {
-        $status.modify { $0 = .running }
+        $status.mutate { $0 = .running }
         blockProcessor.start()
     }
     
     func stopPolling() {
-        $status.modify { $0 = .suspended }
+        $status.mutate { $0 = .suspended }
         blockProcessor.stop()
     }
     
     func resetPolling() {
-        $status.modify { $0 = .suspended }
+        $status.mutate { $0 = .suspended }
         blockProcessor.cancel()
         
         deleteData()
@@ -103,8 +154,15 @@ extension SharedAPIDataController {
     }
 
     func resetPollingAfterPreferredCurrencyWasChanged() {
-        currency = .idle
         resetPolling()
+    }
+}
+
+extension SharedAPIDataController {
+    func getPreferredOrderForNewAccount() -> Int {
+        let localAccounts = session.authenticatedUser?.accounts ?? []
+        let lastLocalAccount = localAccounts.max { $0.preferredOrder < $1.preferredOrder }
+        return lastLocalAccount.unwrap { $0.preferredOrder + 1 } ?? 0
     }
 }
 
@@ -130,14 +188,12 @@ extension SharedAPIDataController {
 extension SharedAPIDataController {
     private func createBlockProcessor() -> BlockProcessor {
         let request: ALGBlockProcessor.BlockRequest = { [unowned self] in
-            var request = ALGBlockRequest()
-            request.localAccounts = self.session.authenticatedUser?.accounts ?? []
-            /// <warning>
-            request.cachedAccounts = self.accountCollection
-            request.cachedAssetDetails = self.assetDetailCollection
-            request.localCurrencyId = self.session.preferredCurrency
-            request.cachedCurrency = self.currency
-            return request
+            return ALGBlockRequest(
+                localAccounts: self.session.authenticatedUser?.accounts ?? [],
+                cachedAccounts: self.accountCollection,
+                cachedAssetDetails: self.assetDetailCollection,
+                cachedCurrency: self.currency
+            )
         }
         let cycle = ALGBlockCycle(api: api)
         let processor = ALGBlockProcessor(blockRequest: request, blockCycle: cycle, api: api)
@@ -149,12 +205,6 @@ extension SharedAPIDataController {
             switch event {
             case .willStart(let round):
                 self.blockProcessorWillStart(for: round)
-            case .willFetchCurrency:
-                self.blockProcessorWillFetchCurrency()
-            case .didFetchCurrency(let currency):
-                self.blockProcessorDidFetchCurrency(currency)
-            case .didFailToFetchCurrency(let error):
-                self.blockProcessorDidFailToFetchCurrency(error)
             case .willFetchAccount(let localAccount):
                 self.blockProcessorWillFetchAccount(localAccount)
             case .didFetchAccount(let account):
@@ -187,30 +237,12 @@ extension SharedAPIDataController {
     private func blockProcessorWillStart(
         for round: BlockRound?
     ) {
-        $status.modify { $0 = .running }
+        $status.mutate { $0 = .running }
         
         lastRound = round
         nextAccountCollection = []
         
         publish(.didStartRunning(first: !isFirstPollingRoundCompleted))
-    }
-    
-    private func blockProcessorWillFetchCurrency() {}
-    
-    private func blockProcessorDidFetchCurrency(
-        _ currencyValue: Currency
-    ) {
-        currency = .ready(currency: currencyValue, lastUpdateDate: Date())
-    }
-    
-    private func blockProcessorDidFailToFetchCurrency(
-        _ error: HIPNetworkError<NoAPIModel>
-    ) {
-        if currency.isAvailable {
-            return
-        }
-        
-        currency = .failed(error)
     }
     
     private func blockProcessorWillFetchAccount(
@@ -289,13 +321,13 @@ extension SharedAPIDataController {
         accountCollection = nextAccountCollection
         nextAccountCollection = []
         
-        $isFirstPollingRoundCompleted.modify { $0 = true }
+        $isFirstPollingRoundCompleted.mutate { $0 = true }
 
         if status != .running {
             return
         }
 
-        $status.modify { $0 = .completed }
+        $status.mutate { $0 = .completed }
         
         publish(.didFinishRunning)
     }
@@ -303,8 +335,8 @@ extension SharedAPIDataController {
     private func blockDidReset() {
         lastRound = nil
         
-        $isFirstPollingRoundCompleted.modify { $0 = false }
-        $status.modify { $0 = .idle }
+        $isFirstPollingRoundCompleted.mutate { $0 = false }
+        $status.mutate { $0 = .idle }
         
         publish(.didBecomeIdle)
     }
@@ -346,6 +378,40 @@ extension SharedAPIDataController {
         ) {
             self.observer = observer
         }
+    }
+}
+
+extension SharedAPIDataController {
+    private final class Cache: Storable {
+        typealias Object = Any
+
+        var accountSortingAlgorithmName: String? {
+            get { userDefaults.string(forKey: accountSortingAlgorithmNameKey) }
+            set {
+                userDefaults.set(newValue, forKey: accountSortingAlgorithmNameKey)
+                userDefaults.synchronize()
+            }
+        }
+
+        var collectibleSortingAlgorithmName: String? {
+            get { userDefaults.string(forKey: collectibleSortingAlgorithmNameKey) }
+            set {
+                userDefaults.set(newValue, forKey: collectibleSortingAlgorithmNameKey)
+                userDefaults.synchronize()
+            }
+        }
+
+        var accountAssetSortingAlgorithmName: String? {
+            get { userDefaults.string(forKey: accountAssetSortingAlgorithmNameKey) }
+            set {
+                userDefaults.set(newValue, forKey: accountAssetSortingAlgorithmNameKey)
+                userDefaults.synchronize()
+            }
+        }
+
+        private let accountSortingAlgorithmNameKey = "cache.key.accountSortingAlgorithmName"
+        private let collectibleSortingAlgorithmNameKey = "cache.key.collectibleSortingAlgorithmName"
+        private let accountAssetSortingAlgorithmNameKey = "cache.key.accountAssetSortingAlgorithmName"
     }
 }
 

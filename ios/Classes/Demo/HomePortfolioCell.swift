@@ -23,12 +23,29 @@ final class HomePortfolioCell:
     CollectionCell<HomePortfolioView>,
     ViewModelBindable,
     UIInteractionObservable {
+    override class var contextPaddings: LayoutPaddings {
+        return (16, 24, 8, 24)
+    }
+
     static let theme = HomePortfolioViewTheme()
     
     override init(
         frame: CGRect
     ) {
         super.init(frame: frame)
+
+        contentView.backgroundColor = AppColors.Shared.Helpers.heroBackground.uiColor
         contextView.customize(Self.theme)
+    }
+}
+
+extension HomePortfolioCell: NavigationBarLargeTitleView {
+    var title: EditText? {
+        get { contextView.titleView.editText }
+        set { contextView.titleView.editText = newValue }
+    }
+
+    var scrollEdgeOffset: CGFloat {
+        return bounds.height - contextView.frame.maxY
     }
 }

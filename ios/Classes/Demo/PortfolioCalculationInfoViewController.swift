@@ -33,12 +33,12 @@ final class PortfolioCalculationInfoViewController:
     private lazy var closeActionView =
         ViewFactory.Button.makeSecondaryButton("title-close".localized)
     
-    private let result: PortfolioCalculator.Result
+    private let result: PortfolioValue?
 
     private let theme: PortfolioCalculationInfoViewControllerTheme
     
     init(
-        result: PortfolioCalculator.Result,
+        result: PortfolioValue?,
         configuration: ViewControllerConfiguration,
         theme: PortfolioCalculationInfoViewControllerTheme = .init()
     ) {
@@ -61,7 +61,6 @@ final class PortfolioCalculationInfoViewController:
         if !isLayoutFinalized {
             isLayoutFinalized = true
 
-            updateScrollWhenViewDidLayoutSubviews()
             addLinearGradient()
         }
     }
@@ -71,9 +70,10 @@ final class PortfolioCalculationInfoViewController:
         addContext()
         
         switch result {
-        case .success:
-            addInfo(topPadding: theme.infoTopPadding)
-        case .failure:
+        case .available:
+            addInfo(topPadding: 0)
+        case .none,
+             .failure:
             addError()
             addInfo(topPadding: theme.spacingBetweenErrorAndInfo)
         }
@@ -85,14 +85,6 @@ final class PortfolioCalculationInfoViewController:
 extension PortfolioCalculationInfoViewController {
     private func addBackground() {
         view.customizeAppearance(theme.background)
-    }
-    
-    private func updateScrollWhenViewDidLayoutSubviews() {
-        let bottom =
-            theme.footerVerticalPaddings.top +
-            closeActionView.bounds.height +
-            theme.footerVerticalPaddings.bottom
-        scrollView.setContentInset(bottom: bottom)
     }
     
     private func addContext() {
@@ -133,10 +125,10 @@ extension PortfolioCalculationInfoViewController {
         infoView.snp.makeConstraints {
             $0.top == topPadding
             $0.leading == 0
-            $0.bottom == 0
+            $0.bottom == theme.linearGradientHeight + view.safeAreaBottom
             $0.trailing == 0
         }
-        
+
         contextView.addArrangedSubview(infoCanvasView)
     }
     

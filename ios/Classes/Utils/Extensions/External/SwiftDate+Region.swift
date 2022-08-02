@@ -30,6 +30,7 @@ extension SwiftDate {
 
 enum DateFormat {
     case fullNumeric
+    case fullNumericWithoutTimezone
     case shortNumeric(separator: String = "/")
     case dateAndTime
     case time
@@ -40,6 +41,7 @@ extension DateFormat {
     var raw: String {
         switch self {
         case .fullNumeric: return "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        case .fullNumericWithoutTimezone: return "yyyy-MM-dd HH:mm:ss"
         case .shortNumeric(let separator): return "MM\(separator)dd\(separator)yyyy"
         case .dateAndTime: return "dd/MM/yyyy, hh:mm:ss a"
         case .time: return "h:mm a"

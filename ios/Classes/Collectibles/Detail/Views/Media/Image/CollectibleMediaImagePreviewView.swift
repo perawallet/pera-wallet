@@ -24,11 +24,12 @@ final class CollectibleMediaImagePreviewView:
     ListReusable {
     lazy var handlers = Handlers()
 
-    private lazy var image = URLImageView()
+    private(set) lazy var imageView = URLImageView()
     private lazy var overlayView = UIView()
+    private lazy var fullScreenBadge = ImageView()
 
     var currentImage: UIImage? {
-        return image.imageContainer.image
+        return imageView.imageContainer.image
     }
 
     func customize(
@@ -36,6 +37,7 @@ final class CollectibleMediaImagePreviewView:
     ) {
         addImage(theme)
         addOverlayView(theme)
+        addFullScreenBadge(theme)
     }
 
     func customizeAppearance(
@@ -51,13 +53,13 @@ extension CollectibleMediaImagePreviewView {
     private func addImage(
         _ theme: CollectibleMediaImagePreviewViewTheme
     ) {
-        image.build(theme.image)
-        image.layer.draw(corner: theme.corner)
-        image.clipsToBounds = true
+        imageView.build(theme.image)
+        imageView.layer.draw(corner: theme.corner)
+        imageView.clipsToBounds = true
 
-        addSubview(image)
-        image.fitToIntrinsicSize()
-        image.snp.makeConstraints {
+        addSubview(imageView)
+        imageView.fitToIntrinsicSize()
+        imageView.snp.makeConstraints {
             $0.setPaddings()
         }
     }
@@ -70,9 +72,23 @@ extension CollectibleMediaImagePreviewView {
         overlayView.clipsToBounds = true
         overlayView.alpha = 0.0
 
-        image.addSubview(overlayView)
+        addSubview(overlayView)
         overlayView.snp.makeConstraints {
             $0.setPaddings()
+        }
+    }
+
+    private func addFullScreenBadge(
+        _ theme: CollectibleMediaImagePreviewViewTheme
+    ) {
+        fullScreenBadge.customizeAppearance(theme.fullScreenBadge)
+        fullScreenBadge.layer.draw(corner: theme.corner)
+
+        fullScreenBadge.contentEdgeInsets = theme.fullScreenBadgeContentEdgeInsets
+        addSubview(fullScreenBadge)
+        fullScreenBadge.snp.makeConstraints {
+            $0.trailing == theme.fullScreenBadgePaddings.trailing
+            $0.bottom == theme.fullScreenBadgePaddings.bottom
         }
     }
 }
@@ -81,10 +97,10 @@ extension CollectibleMediaImagePreviewView {
     func bindData(
         _ viewModel: CollectibleMediaImagePreviewViewModel?
     ) {
-        image.load(from: viewModel?.image) {
+        imageView.load(from: viewModel?.image) {
             [weak self] _ in
             guard let self = self,
-                  let image = self.image.imageContainer.image else {
+                  let image = self.imageView.imageContainer.image else {
                 return
             }
 
@@ -100,6 +116,8 @@ extension CollectibleMediaImagePreviewView {
         } else {
             overlayView.alpha = 0.0
         }
+
+        fullScreenBadge.isHidden = viewModel.isFullScreenBadgeHidden
     }
 
     class func calculatePreferredSize(
@@ -114,7 +132,8 @@ extension CollectibleMediaImagePreviewView {
 extension CollectibleMediaImagePreviewView {
     func prepareForReuse() {
         overlayView.alpha = 0.0
-        image.prepareForReuse()
+        imageView.prepareForReuse()
+        fullScreenBadge.isHidden = false
     }
 }
 

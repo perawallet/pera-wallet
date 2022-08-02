@@ -46,7 +46,7 @@ struct AccountCollection:
     init(
         _ collection: AccountCollection
     ) {
-        $table.modify { $0 = collection.table }
+        $table.mutate { $0 = collection.table }
     }
     
     init(
@@ -54,7 +54,7 @@ struct AccountCollection:
     ) {
         let keysAndValues = elements.map { ($0.value.address, $0) }
         let aTable = Table(keysAndValues, uniquingKeysWith: { $1 })
-        $table.modify { $0 = aTable }
+        $table.mutate { $0 = aTable }
     }
     
     init(
@@ -71,7 +71,7 @@ extension AccountCollection {
     
     subscript (key: Key) -> Element? {
         get { table[key] }
-        set { $table.modify { $0[key] = newValue } }
+        set { $table.mutate { $0[key] = newValue } }
     }
 }
 
@@ -92,10 +92,10 @@ extension AccountCollection {
 }
 
 extension AccountCollection {
-    func sorted() -> [AccountHandle] {
-        return sorted {
-            $0.value.preferredOrder < $1.value.preferredOrder
-        }
+    func sorted(
+        _ algorithm: AccountSortingAlgorithm
+    ) -> [AccountHandle] {
+        return sorted(by: algorithm.getFormula)
     }
 }
 

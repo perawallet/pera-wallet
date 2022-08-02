@@ -65,8 +65,9 @@ final class WCSingleTransactionRequestScreen:
         return WCSingleTransactionRequestViewModel(
             transaction: transaction,
             account: account,
-            currency: sharedDataController.currency.value,
-            asset: asset
+            asset: asset,
+            currency: sharedDataController.currency,
+            currencyFormatter: currencyFormatter
         )
     }()
 
@@ -78,12 +79,18 @@ final class WCSingleTransactionRequestScreen:
 
     let dataSource: WCMainTransactionDataSource
 
+    private let currencyFormatter: CurrencyFormatter
+
     init(
         dataSource: WCMainTransactionDataSource,
-        configuration: ViewControllerConfiguration
+        configuration: ViewControllerConfiguration,
+        currencyFormatter: CurrencyFormatter
     ) {
         self.dataSource = dataSource
+        self.currencyFormatter = currencyFormatter
+
         super.init(configuration: configuration)
+
         setupObserver()
     }
 

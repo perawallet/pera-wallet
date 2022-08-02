@@ -19,29 +19,50 @@ import Foundation
 import UIKit
 
 protocol AccountAssetListDataController: AnyObject {
-    typealias Snapshot = NSDiffableDataSourceSnapshot<AccountAssetsSection, AccountAssetsItem>
-
     var eventHandler: ((AccountAssetListDataControllerEvent) -> Void)? { get set }
 
     func load()
+    func reload()
 }
 
 enum AccountAssetsSection:
     Int,
     Hashable {
     case portfolio
+    case quickActions
     case assets
+    case empty
 }
 
 enum AccountAssetsItem: Hashable {
     case portfolio(AccountPortfolioViewModel)
+    case watchPortfolio(AccountPortfolioViewModel)
     case search
+    case algo(AssetPreviewViewModel)
     case asset(AssetPreviewViewModel)
     case pendingAsset(PendingAssetPreviewViewModel)
-    case assetManagement
-    case assetTitle(AssetSearchListHeaderViewModel)
+    case assetManagement(ManagementItemViewModel)
+    case watchAccountAssetManagement(ManagementItemViewModel)
+    case quickActions
+    case empty(AssetListSearchNoContentViewModel)
 }
 
 enum AccountAssetListDataControllerEvent {
-    case didUpdate(AccountAssetListDataController.Snapshot)
+    case didUpdate(AccountAssetListUpdates)
+}
+
+struct AccountAssetListUpdates {
+    var isNewSearch = false
+    var completion: Completion?
+
+    let snapshot: Snapshot
+
+    init(snapshot: Snapshot) {
+        self.snapshot = snapshot
+    }
+}
+
+extension AccountAssetListUpdates {
+    typealias Snapshot = NSDiffableDataSourceSnapshot<AccountAssetsSection, AccountAssetsItem>
+    typealias Completion = () -> Void
 }

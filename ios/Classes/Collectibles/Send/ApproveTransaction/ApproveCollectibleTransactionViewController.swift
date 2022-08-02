@@ -60,7 +60,10 @@ final class ApproveCollectibleTransactionViewController:
         configuration: ViewControllerConfiguration
     ) {
         self.draft = draft
-        self.viewModel = ApproveCollectibleTransactionViewModel(draft)
+        self.viewModel = ApproveCollectibleTransactionViewModel(
+            draft,
+            currencyFormatter: CurrencyFormatter()
+        )
         self.theme = theme
 
         super.init(configuration: configuration)

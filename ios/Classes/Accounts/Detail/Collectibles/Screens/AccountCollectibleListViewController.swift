@@ -35,37 +35,32 @@ final class AccountCollectibleListViewController: BaseViewController {
             galleryAccount: .single(account),
             sharedDataController: sharedDataController
         ),
+        copyToClipboardController: copyToClipboardController,
         theme: account.value.isWatchAccount() ? .common : CollectibleListViewControllerTheme(
             .current,
             listContentBottomInset: 88
         ),
         configuration: configuration
     )
-
-    private lazy var transactionActionButton = FloatingActionItemButton(hasTitleLabel: false)
     
     private var account: AccountHandle
 
+    private let copyToClipboardController: CopyToClipboardController
+
     init(
         account: AccountHandle,
+        copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
         self.account = account
+        self.copyToClipboardController = copyToClipboardController
+
         super.init(configuration: configuration)
     }
 
     override func prepareLayout() {
         super.prepareLayout()
         add(collectibleListScreen)
-
-        if !account.value.isWatchAccount() {
-            addTransactionActionButton(theme)
-        }
-    }
-
-    override func setListeners() {
-        super.setListeners()
-        setTransactionActionButtonAction()
     }
 
     override func linkInteractors() {
@@ -110,40 +105,6 @@ extension AccountCollectibleListViewController {
                 self.bottomBannerController.dismissError()
             }
         }
-    }
-}
-
-extension AccountCollectibleListViewController {
-    private func addTransactionActionButton(_ theme: Theme) {
-        transactionActionButton.image = "fab-swap".uiImage
-
-        view.addSubview(transactionActionButton)
-        transactionActionButton.snp.makeConstraints {
-            $0.setPaddings(theme.transactionActionButtonPaddings)
-        }
-    }
-
-    private func setTransactionActionButtonAction() {
-        transactionActionButton.addTarget(
-            self,
-            action: #selector(didTapTransactionActionButton),
-            for: .touchUpInside
-        )
-    }
-
-    @objc
-    private func didTapTransactionActionButton() {
-        let viewController = open(
-            .transactionFloatingActionButton,
-            by: .customPresentWithoutNavigationController(
-                presentationStyle: .overCurrentContext,
-                transitionStyle: nil,
-                transitioningDelegate: nil
-            ),
-            animated: false
-        ) as? TransactionFloatingActionButtonViewController
-
-        viewController?.delegate = self
     }
 }
 

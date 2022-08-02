@@ -20,44 +20,61 @@ import MacaroonUIKit
 
 struct AssetViewModel: ViewModel {
     private(set) var amount: String?
-    private(set) var currencyAmount: String?
+    private(set) var valueInCurrency: String?
+    private(set) var valueInUSD: Decimal = 0
 
     init(
-        asset: Asset?,
-        currency: Currency?
+        _ model: AssetItem
     ) {
-        bindAmount(from: asset)
-        bindCurrencyAmount(from: asset, with: currency)
+        bind(model)
     }
 }
 
 extension AssetViewModel {
-    private mutating func bindAmount(
-        from asset: Asset?
+    mutating func bind(
+        _ item: AssetItem
     ) {
-        guard let asset = asset as? StandardAsset else {
-            return
-        }
-
-        amount = asset.amount
-            .assetAmount(fromFraction: asset.decimals)
-            .abbreviatedFractionStringForLabel(fraction: asset.decimals)
+        bindAmount(item)
+        bindValue(item)
     }
 
-    private mutating func bindCurrencyAmount(
-        from asset: Asset?,
-        with currency: Currency?
+    mutating func bindAmount(
+        _ item: AssetItem
     ) {
-        guard let asset = asset as? StandardAsset,
-              let assetUSDValue = asset.usdValue,
-              let currency = currency,
-              let currencyUSDValue = currency.usdValue else {
+        let asset = item.asset
+
+        let formatter = item.currencyFormatter
+        formatter.formattingContext = item.currencyFormattingContext ?? .listItem
+        formatter.currency = nil
+
+        amount = formatter.format(asset.decimalAmount)
+    }
+
+    mutating func bindValue(
+        _ item: AssetItem
+    ) {
+        let asset = item.asset
+
+        valueInUSD = asset.totalUSDValue ?? 0
+
+        guard let currencyValue = item.currency.primaryValue else {
+            valueInCurrency = nil
             return
         }
 
-        let currencyValue = assetUSDValue * asset.amount.assetAmount(fromFraction: asset.decimals) * currencyUSDValue
-        if currencyValue > 0 {
-            currencyAmount = currencyValue.abbreviatedCurrencyStringForLabel(with: currency.symbol)
+        do {
+            let rawCurrency = try currencyValue.unwrap()
+
+            let exchanger = CurrencyExchanger(currency: rawCurrency)
+            let amount = try exchanger.exchange(asset)
+
+            let formatter = item.currencyFormatter
+            formatter.formattingContext = item.currencyFormattingContext ?? .listItem
+            formatter.currency = rawCurrency
+
+            valueInCurrency = formatter.format(amount)
+        } catch {
+            valueInCurrency = nil
         }
     }
 }

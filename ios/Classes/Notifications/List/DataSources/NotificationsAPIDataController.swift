@@ -18,7 +18,8 @@ import Foundation
 import MacaroonUtils
 
 final class NotificationsAPIDataController:
-    NotificationsDataController {
+    NotificationsDataController,
+    SharedDataControllerObserver {
 
     var eventHandler: ((NotificationsDataControllerEvent) -> Void)?
 
@@ -28,6 +29,7 @@ final class NotificationsAPIDataController:
     private let sharedDataController: SharedDataController
     private var contacts = [Contact]()
     private(set) var notifications = [NotificationMessage]()
+    private var addedAssetsWithAccounts = [PublicKey: [AssetID]]()
 
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.notificationsDataController")
 
@@ -37,16 +39,23 @@ final class NotificationsAPIDataController:
         return nextCursor != nil
     }
 
+    private let currencyFormatter: CurrencyFormatter
+
     init(
         sharedDataController: SharedDataController,
-        api: ALGAPI
+        api: ALGAPI,
+        currencyFormatter: CurrencyFormatter
     ) {
         self.sharedDataController = sharedDataController
         self.api = api
+        self.currencyFormatter = currencyFormatter
 
         startObserving()
     }
 
+    deinit {
+        sharedDataController.remove(self)
+    }
 }
 
 extension NotificationsAPIDataController {
@@ -58,6 +67,8 @@ extension NotificationsAPIDataController {
     }
 
     func load(isPaginated: Bool = false) {
+        sharedDataController.add(self)
+
         if !isPaginated {
             deliverLoadingSnapshot()
         }
@@ -110,11 +121,37 @@ extension NotificationsAPIDataController {
     ) -> NotificationsViewModel {
         return NotificationsViewModel(
             notification: notification,
+            currencyFormatter: currencyFormatter,
             senderAccount: getSenderAccountIfExists(for: notification),
             receiverAccount: getReceiverAccountIfExists(for: notification),
             contact: getContactIfExists(for: notification),
             latestReadTimestamp: latesTimestamp
         )
+    }
+}
+
+extension NotificationsAPIDataController {
+    func sharedDataController(
+        _ sharedDataController: SharedDataController,
+        didPublish event: SharedDataControllerEvent
+    ) {
+        switch event {
+        case .didFinishRunning:
+            clearAddedAssetDetailsIfNeeded()
+            return
+        default:
+            break
+        }
+    }
+
+    private func clearAddedAssetDetailsIfNeeded() {
+        for (address, addedAssets) in addedAssetsWithAccounts {
+            if let account = sharedDataController.accountCollection[address] {
+                addedAssetsWithAccounts[address] = addedAssets.filter {
+                    !account.value.containsAsset($0)
+                }.uniqueElements()
+            }
+        }
     }
 }
 
@@ -295,5 +332,51 @@ extension NotificationsAPIDataController {
         }
 
         return sharedDataController.accountCollection[address]?.value
+    }
+
+    func getReceiverAccount(
+        from notificationDetail: NotificationDetail?
+    ) -> Account? {
+        guard let detail = notificationDetail,
+              let address = detail.receiverAddress else {
+            return nil
+        }
+
+        let receiverAccount = getAccount(from: address)
+
+        return receiverAccount
+    }
+
+    func canOptIn(
+        to asset: AssetID,
+        for account: Account
+    ) -> Bool {
+        guard let receiverAccount = sharedDataController.accountCollection[account.address]?.value else {
+            return false
+        }
+
+        if receiverAccount.isWatchAccount() ||
+            receiverAccount.containsAsset(asset) {
+            return false
+        }
+
+        if let addedAssets = addedAssetsWithAccounts[receiverAccount.address] {
+            for addedAsset in addedAssets {
+                if addedAsset == asset {
+                    return false
+                }
+            }
+        }
+
+        return true
+    }
+
+    func addOptedInAsset(
+        _ address: PublicKey,
+        _ assetId: AssetID
+    ) {
+        var addedAssets = addedAssetsWithAccounts[address] ?? []
+        addedAssets.append(assetId)
+        addedAssetsWithAccounts[address] = addedAssets
     }
 }

@@ -24,7 +24,6 @@ final class Collectible: ALGEntityModel {
     let thumbnailImage: URL?
     let title: String?
     let collectionName: String?
-    let explorerURL: URL?
     let media: [Media]
     let description: String?
     let properties: [CollectibleTrait]?
@@ -37,7 +36,6 @@ final class Collectible: ALGEntityModel {
         self.thumbnailImage = apiModel.primaryImage
         self.title = apiModel.title
         self.collectionName = apiModel.collectionName
-        self.explorerURL = apiModel.explorerURL
         self.media = apiModel.media.unwrapMap(Media.init)
         self.description = apiModel.description
         self.properties = apiModel.traits
@@ -50,7 +48,6 @@ final class Collectible: ALGEntityModel {
         apiModel.primaryImage = thumbnailImage
         apiModel.title = title
         apiModel.collectionName = collectionName
-        apiModel.explorerURL = explorerURL
         apiModel.media = media.map { $0.encode() }
         apiModel.description = description
         apiModel.traits = properties
@@ -65,7 +62,6 @@ extension Collectible {
         var primaryImage: URL?
         var title: String?
         var collectionName: String?
-        var explorerURL: URL?
         var media: [Media.APIModel]?
         var description: String?
         var traits: [CollectibleTrait]?
@@ -76,7 +72,6 @@ extension Collectible {
             self.primaryImage = nil
             self.title = nil
             self.collectionName = nil
-            self.explorerURL = nil
             self.media = []
             self.description = nil
             self.traits = nil
@@ -88,7 +83,6 @@ extension Collectible {
             case primaryImage = "primary_image"
             case title
             case collectionName = "collection_name"
-            case explorerURL = "explorer_url"
             case media
             case description
             case traits

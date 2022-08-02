@@ -21,156 +21,135 @@ import MacaroonUIKit
 struct AssetDetailInfoViewModel:
     ViewModel,
     Hashable {
-    private(set) var yourBalanceTitle: EditText?
+    private(set) var title: TextProvider?
+    private(set) var primaryValue: TextProvider?
+    private(set) var secondaryValue: TextProvider?
+    private(set) var name: TextProvider?
     private(set) var isVerified: Bool = false
-    private(set) var amount: EditText?
-    private(set) var secondaryValue: EditText?
-    private(set) var name: EditText?
-    private(set) var ID: EditText?
+    private(set) var id: TextProvider?
 
     init(
-        _ account: Account,
-        _ assetDetail: StandardAsset,
-        _ currency: Currency?
+        asset: StandardAsset?,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
     ) {
-        bind(
-            account,
-            assetDetail,
-            currency
+        bindTitle()
+        bindPrimaryValue(
+            asset: asset,
+            currency: currency,
+            currencyFormatter: currencyFormatter
         )
+        bindSecondaryValue(
+            asset: asset,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
+        bindName(asset)
+        bindIsVerified(asset)
+        bindID(asset)
     }
 }
 
 extension AssetDetailInfoViewModel {
-    private mutating func bind(
-        _ account: Account,
-        _ assetDetail: StandardAsset,
-        _ currency: Currency?
-    ) {
-        bindYourBalanceTitle()
-        bindIsVerified(from: assetDetail)
-        bindName(from: assetDetail)
-        bindAmount(from: assetDetail, in: account)
-        bindSecondaryValue(from: assetDetail, with: account, and: currency)
-        bindID(from: assetDetail)
+    mutating func bindTitle() {
+        title = "accounts-transaction-your-balance"
+            .localized
+            .bodyRegular(hasMultilines: false)
     }
 
-    private mutating func bindYourBalanceTitle() {
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-
-        yourBalanceTitle = .attributedString(
-            "accounts-transaction-your-balance"
-                .localized
-                .attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineHeightMultiple(lineHeightMultiplier),
-                    .textAlignment(.left)
-                ])
-            ])
-        )
-    }
-
-    private mutating func bindIsVerified(
-        from assetDetail: StandardAsset
+    mutating func bindPrimaryValue(
+        asset: StandardAsset?,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
     ) {
-        isVerified = assetDetail.isVerified
-    }
-
-    private mutating func bindName(
-        from assetDetail: StandardAsset
-    ) {
-        let font = Fonts.DMSans.medium.make(15)
-        let lineHeightMultiplier = 1.23
-
-        name = .attributedString(
-            assetDetail.presentation.displayNames.primaryName
-                .attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineHeightMultiple(lineHeightMultiplier),
-                    .textAlignment(.left)
-                ])
-            ])
-        )
-    }
-
-    private mutating func bindAmount(
-        from assetDetail: StandardAsset,
-        in account: Account
-    ) {
-        guard let fractionStringForLabel = assetDetail.amountWithFraction.toFractionStringForLabel(fraction: assetDetail.decimals) else {
+        guard let asset = asset else {
+            primaryValue = nil
             return
         }
 
-        let font = Fonts.DMMono.regular.make(36)
-        let lineHeightMultiplier = 1.02
+        currencyFormatter.formattingContext = .standalone()
+        currencyFormatter.currency = nil
 
-        amount = .attributedString(
-            fractionStringForLabel
-                .attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineHeightMultiple(lineHeightMultiplier),
-                    .textAlignment(.left)
-                ])
-            ])
-        )
+        let text = currencyFormatter.format(asset.decimalAmount)
+        primaryValue = text?.largeTitleMonoRegular(hasMultilines: false)
     }
 
-    private mutating func bindSecondaryValue(
-        from assetDetail: StandardAsset,
-        with account: Account,
-        and currency: Currency?
+    mutating func bindSecondaryValue(
+        asset: StandardAsset?,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
     ) {
-        guard let assetUSDValue = assetDetail.usdValue,
-              let currency = currency,
-              let currencyUSDValue = currency.usdValue else {
+        guard
+            let asset = asset,
+            let currencyValue = currency.primaryValue
+        else {
+            secondaryValue = nil
             return
         }
 
-        let currencyValue = assetUSDValue * assetDetail.amountWithFraction * currencyUSDValue
-        if currencyValue > 0,
-           let currenyStringForLabel =
-            currencyValue.toCurrencyStringForLabel(with: currency.symbol) {
+        do {
+            let rawCurrency = try currencyValue.unwrap()
 
-            let font = Fonts.DMMono.regular.make(15)
-            let lineHeightMultiplier = 1.23
+            let exchanger = CurrencyExchanger(currency: rawCurrency)
+            let amount = try exchanger.exchange(asset)
 
-            secondaryValue = .attributedString(
-                currenyStringForLabel
-                    .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.left)
-                    ])
-                ])
-            )
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = rawCurrency
+
+            let text = currencyFormatter.format(amount)
+            secondaryValue = text?.bodyMonoRegular(hasMultilines: false)
+        } catch {
+            secondaryValue = nil
         }
     }
 
-    private mutating func bindID(
-        from assetDetail: StandardAsset
+    mutating func bindName(
+        _ asset: StandardAsset?
     ) {
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
+        let text = asset?.presentation.displayNames.primaryName
+        name = text?.bodyMedium(hasMultilines: false)
+    }
 
-        ID = .attributedString(
-            "asset-detail-id-title".localized(params: "\(assetDetail.id)")
-                .attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineHeightMultiple(lineHeightMultiplier),
-                    .textAlignment(.left)
-                ])
-            ])
-        )
+    mutating func bindIsVerified(
+        _ asset: StandardAsset?
+    ) {
+        isVerified = asset?.isVerified ?? false
+    }
+
+    mutating func bindID(
+        _ asset: StandardAsset?
+    ) {
+        guard let asset = asset else {
+            id = nil
+            return
+        }
+
+        id = "asset-detail-id-title"
+            .localized(params: "\(asset.id)")
+            .bodyRegular(hasMultilines: false)
+    }
+}
+
+extension AssetDetailInfoViewModel {
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(primaryValue?.string)
+        hasher.combine(secondaryValue?.string)
+        hasher.combine(name?.string)
+        hasher.combine(isVerified)
+        hasher.combine(id?.string)
+    }
+
+    static func == (
+        lhs: AssetDetailInfoViewModel,
+        rhs: AssetDetailInfoViewModel
+    ) -> Bool {
+        return
+            lhs.primaryValue?.string == rhs.primaryValue?.string &&
+            lhs.secondaryValue?.string == rhs.secondaryValue?.string &&
+            lhs.name?.string == rhs.name?.string &&
+            lhs.isVerified == rhs.isVerified &&
+            lhs.id?.string == rhs.id?.string
     }
 }

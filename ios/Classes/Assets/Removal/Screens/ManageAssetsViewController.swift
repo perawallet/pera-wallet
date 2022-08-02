@@ -25,13 +25,14 @@ final class ManageAssetsViewController: BaseViewController {
     
     private lazy var listLayout = ManageAssetsListLayout(dataSource)
     private lazy var dataSource = ManageAssetsListDataSource(contextView.assetsCollectionView)
-    private lazy var dataController = ManageAssetsListLocalDataController(account, sharedDataController)
 
     private lazy var assetActionConfirmationTransition = BottomSheetTransition(presentingViewController: self)
     
     private lazy var contextView = ManageAssetsView()
     
-    private var account: Account
+    private var account: Account {
+        return dataController.account
+    }
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
     
@@ -42,11 +43,15 @@ final class ManageAssetsViewController: BaseViewController {
         return TransactionController(api: api, bannerController: bannerController)
     }()
 
+    private lazy var currencyFormatter = CurrencyFormatter()
+
+    private let dataController: ManageAssetsListDataController
+
     init(
-        account: Account,
+        dataController: ManageAssetsListDataController,
         configuration: ViewControllerConfiguration
     ) {
-        self.account = account
+        self.dataController = dataController
         super.init(configuration: configuration)
     }
 
@@ -56,6 +61,7 @@ final class ManageAssetsViewController: BaseViewController {
     }
     
     override func setListeners() {
+        dataController.dataSource = dataSource
         contextView.assetsCollectionView.dataSource = dataSource
         contextView.assetsCollectionView.delegate = listLayout
         contextView.setSearchInputDelegate(self)
@@ -69,18 +75,18 @@ final class ManageAssetsViewController: BaseViewController {
             guard let self = self,
                   let itemIdentifier = self.dataSource.itemIdentifier(for: indexPath),
                   let asset = self.dataController[indexPath.item] else {
-                      return
-                  }
+                return
+            }
             
             switch itemIdentifier {
             case .asset:
-                let assetCell = cell as! AssetPreviewDeleteCell
-                assetCell.observe(event: .delete) {
+                let assetCell = cell as! AssetPreviewWithActionCell
+                assetCell.observe(event: .performAction) {
                     [weak self] in
                     guard let self = self else {
                         return
                     }
-                    
+
                     self.showAlertToDelete(asset)
                 }
             default:
@@ -136,7 +142,6 @@ extension ManageAssetsViewController {
 extension ManageAssetsViewController: SearchInputViewDelegate {
     func searchInputViewDidEdit(_ view: SearchInputView) {
         guard let query = view.text else {
-            dataController.resetSearch()
             return
         }
         
@@ -150,10 +155,6 @@ extension ManageAssetsViewController: SearchInputViewDelegate {
     
     func searchInputViewDidReturn(_ view: SearchInputView) {
         view.endEditing()
-    }
-    
-    func searchInputViewDidTapRightAccessory(_ view: SearchInputView) {
-        dataController.resetSearch()
     }
 }
 
@@ -207,11 +208,13 @@ extension ManageAssetsViewController:
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
         didConfirmAction asset: AssetDecoration
     ) {
+        var account = dataController.account
+
         if !canSignTransaction(for: &account) {
             return
         }
 
-        guard let asset = account[asset.id] else {
+        guard let asset = self.dataController[asset.id] else {
             return
         }
         
@@ -260,12 +263,12 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
 
         guard let assetTransactionDraft = draft as? AssetTransactionSendDraft,
               var removedAssetDetail = getRemovedAssetDetail(from: assetTransactionDraft) else {
-                  return
-              }
+            return
+        }
 
         removedAssetDetail.state = .pending(.remove)
-        
-        contextView.resetSearchInputView()
+
+        dataController.removeAsset(removedAssetDetail)
 
         if let standardAsset = removedAssetDetail as? StandardAsset {
             delegate?.manageAssetsViewController(self, didRemove: standardAsset)
@@ -288,10 +291,15 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
     private func displayTransactionError(from transactionError: TransactionError) {
         switch transactionError {
         case let .minimumAmount(amount):
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = AlgoLocalCurrency()
+
+            let amountText = currencyFormatter.format(amount.toAlgos)
+
             bannerController?.presentErrorBanner(
                 title: "asset-min-transaction-error-title".localized,
                 message: "asset-min-transaction-error-message".localized(
-                    params: amount.toAlgos.toAlgosStringForLabel ?? ""
+                    params: amountText.someString
                 )
             )
         case .invalidAddress:
@@ -343,6 +351,12 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
 
     func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {
         ledgerApprovalViewController?.dismissScreen()
+    }
+
+    func transactionControllerDidRejectedLedgerOperation(
+        _ transactionController: TransactionController
+    ) {
+        loadingController?.stopLoading()
     }
     
     private func getRemovedAssetDetail(from draft: AssetTransactionSendDraft?) -> Asset? {

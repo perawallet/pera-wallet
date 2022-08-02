@@ -37,7 +37,7 @@ struct SendTransactionPreviewViewTheme: LayoutSheet, StyleSheet {
         self.backgroundColor = AppColors.Shared.System.background
         self.separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
         self.commonTransactionAmountInformationViewTheme = TransactionAmountInformationViewTheme()
-        self.transactionTextInformationViewCommonTheme = TransactionTextInformationViewCommonTheme()
+        self.transactionTextInformationViewCommonTheme = TransactionTextInformationViewTheme()
         self.transactionAccountInformationViewCommonTheme = TitledTransactionAccountNameViewTheme(family)
 
         self.separatorTopPadding = -32

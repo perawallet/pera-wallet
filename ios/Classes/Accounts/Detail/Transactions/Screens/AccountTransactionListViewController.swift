@@ -20,7 +20,15 @@ import UIKit
 import MacaroonUIKit
 
 final class AccountTransactionListViewController: TransactionsViewController {
-    init(draft: AccountTransactionListing, configuration: ViewControllerConfiguration) {
-        super.init(draft: draft, configuration: configuration)
+    init(
+        draft: AccountTransactionListing,
+        copyToClipboardController: CopyToClipboardController,
+        configuration: ViewControllerConfiguration
+    ) {
+        super.init(
+            draft: draft,
+            copyToClipboardController: copyToClipboardController,
+            configuration: configuration
+        )
     }
 }

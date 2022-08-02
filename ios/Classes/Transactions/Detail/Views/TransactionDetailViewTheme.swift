@@ -24,22 +24,21 @@ struct TransactionDetailViewTheme: LayoutSheet, StyleSheet {
     let openInGoalSeekerButton: ButtonStyle
     let buttonsCorner: Corner
 
+    let transactionAmountInformationViewTheme: TransactionAmountInformationViewTheme
     let transactionTextInformationViewTransactionIDTheme: TransactionTextInformationViewTheme
     let transactionTextInformationViewCommonTheme: TransactionTextInformationViewTheme
-    let transactionAccountInformationViewCommonTheme: TitledTransactionAccountNameViewTheme
+    let transactionUserInformationViewTheme: TransactionTextInformationViewTheme
     let commonTransactionAmountInformationViewTheme: TransactionAmountInformationViewTheme
     let transactionStatusInformationViewTheme: TransactionStatusInformationViewTheme
     let transactionContactInformationViewTheme: TransactionContactInformationViewTheme
-    let smallMultipleAmountInformationViewTheme: TransactionMultipleAmountInformationViewTheme
-    let bigMultipleAmountInformationViewTheme: TransactionMultipleAmountInformationViewTheme
 
     let buttonEdgeInsets: LayoutPaddings
     let openInGoalSeekerButtonLeadingPadding: LayoutMetric
     let horizontalPadding: LayoutMetric
-    let verticalStackViewSpacing: LayoutMetric
     let verticalStackViewTopPadding: LayoutMetric
     let bottomPaddingForSeparator: LayoutMetric
     let separatorTopPadding: LayoutMetric
+    let spacingBetweenPropertiesAndActions: LayoutMetric
     let bottomInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
@@ -57,26 +56,24 @@ struct TransactionDetailViewTheme: LayoutSheet, StyleSheet {
             .font(Fonts.DMSans.medium.make(13)),
             .backgroundColor(AppColors.Components.Button.Secondary.background)
         ]
-        self.transactionTextInformationViewTransactionIDTheme = TransactionTextInformationViewTransactionIDTheme()
-        self.commonTransactionAmountInformationViewTheme = TransactionAmountInformationViewTheme()
-        self.transactionTextInformationViewCommonTheme = TransactionTextInformationViewCommonTheme()
-        self.transactionStatusInformationViewTheme = TransactionStatusInformationViewTheme()
-        self.transactionContactInformationViewTheme = TransactionContactInformationViewTheme()
-        self.transactionAccountInformationViewCommonTheme = TitledTransactionAccountNameViewTheme(family)
+        self.transactionAmountInformationViewTheme = TransactionAmountInformationViewTheme(
+            transactionAmountViewTheme: TransactionAmountViewBiggerTheme()
+        ).configuredForInteraction()
+        self.transactionTextInformationViewTransactionIDTheme = TransactionTextInformationViewTheme().configuredForInteraction()
+        self.commonTransactionAmountInformationViewTheme = TransactionAmountInformationViewTheme().configuredForInteraction()
+        self.transactionTextInformationViewCommonTheme = TransactionTextInformationViewTheme().configuredForInteraction()
+        self.transactionUserInformationViewTheme = TransactionTextInformationViewTheme().configuredForInteraction()
+        self.transactionStatusInformationViewTheme = TransactionStatusInformationViewTheme().configuredForInteraction()
+        self.transactionContactInformationViewTheme = TransactionContactInformationViewTheme().configuredForInteraction()
 
-        self.separatorTopPadding = -32
+        self.separatorTopPadding = -20
         self.buttonsCorner = Corner(radius: 18)
         self.buttonEdgeInsets = (8, 12, 8, 12)
         self.openInGoalSeekerButtonLeadingPadding = 16
         self.horizontalPadding = 24
-        self.verticalStackViewSpacing = 24
-        self.verticalStackViewTopPadding = 72
-        self.bottomPaddingForSeparator = 65
+        self.verticalStackViewTopPadding = 40
+        self.bottomPaddingForSeparator = 40
+        self.spacingBetweenPropertiesAndActions = 64
         self.bottomInset = 24
-        self.smallMultipleAmountInformationViewTheme = TransactionMultipleAmountInformationViewTheme(family)
-        self.bigMultipleAmountInformationViewTheme = TransactionMultipleAmountInformationViewTheme(
-            family,
-            transactionAmountViewTheme: VerticalTransactionAmountViewBiggerTheme(family)
-        )
     }
 }

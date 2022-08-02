@@ -18,10 +18,23 @@
 
 import Foundation
 
-struct ALGBlockRequest {
-    var localAccounts: [AccountInformation] = []
-    var cachedAccounts: AccountCollection = []
-    var cachedAssetDetails: AssetDetailCollection = []
-    var localCurrencyId: String = "ALGO"
-    var cachedCurrency: CurrencyHandle = .idle
+final class ALGBlockRequest {
+    let localAccounts: [AccountInformation]
+
+    let cachedAccounts: AccountCollection
+    let cachedAssetDetails: AssetDetailCollection
+
+    let cachedCurrency: CurrencyProvider
+
+    init(
+        localAccounts: [AccountInformation],
+        cachedAccounts: AccountCollection,
+        cachedAssetDetails: AssetDetailCollection,
+        cachedCurrency: CurrencyProvider
+    ) {
+        self.localAccounts = localAccounts
+        self.cachedAccounts = cachedAccounts
+        self.cachedAssetDetails = cachedAssetDetails
+        self.cachedCurrency = cachedCurrency
+    }
 }

@@ -25,7 +25,9 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
     let mainButtonTheme: ButtonTheme
     let secondaryButtonTheme: ButtonTheme
     let titleLabel: TextStyle
-    let description: TextStyle
+    let warningIcon: ImageStyle
+    let warningIconContentEdgeInsets: LayoutOffset
+    let detail: TextStyle
     let assetCodeLabel: TextStyle
     let assetNameLabel: TextStyle
     let transactionFeeTitleLabel: TextStyle
@@ -44,8 +46,8 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
     let transactionTopPadding: LayoutMetric
     let transactionBottomPadding: LayoutMetric
     let horizontalPadding: LayoutMetric
-    let verticalInset: LayoutMetric
-    let buttonInset: LayoutMetric
+    let spacingBetweenButtonAndDetail: LayoutMetric
+    var buttonInset: LayoutMetric
     let bottomInset: LayoutMetric
     let descriptionTopInset: LayoutMetric
     let separatorPadding: LayoutMetric
@@ -62,9 +64,15 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(15))
         ]
-        self.description = [
-            .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMSans.regular.make(15)),
+        self.warningIcon = [
+            .image("icon-red-warning".templateImage),
+            .tintColor(AppColors.Shared.Helpers.negative),
+            .contentMode(.left)
+        ]
+        self.warningIconContentEdgeInsets = (12, 0)
+        self.detail = [
+            .textColor(AppColors.Shared.Helpers.negative),
+            .font(Fonts.DMSans.medium.make(13)),
             .textAlignment(.left),
             .textOverflow(FittingText())
         ]
@@ -114,7 +122,7 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
         self.secondaryButtonTheme = ButtonSecondaryTheme()
         self.horizontalPadding = 24
         self.buttonInset = 16
-        self.verticalInset = 36
+        self.spacingBetweenButtonAndDetail = 24
         self.titleTopPadding = 22
         self.bottomInset = 16
         self.descriptionTopInset = 44
@@ -122,11 +130,17 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
         self.assetCodeLabelMinHeight = 42
         self.assetNameLabelTopPadding = 4
         self.assetNameLabelMinHeight = 20
-        self.assetIDPaddings = (40, 8, .noMetric, 105)
+        self.assetIDPaddings = (40, 8, .noMetric, .noMetric)
         self.transactionTopPadding = 48
         self.transactionBottomPadding = 32
         self.copyIDButtonEdgeInsets = (6, 12, 6, 12)
         self.copyIDButtonHeight = 32
         self.copyIDButtonCorner = Corner(radius: 16)
+    }
+}
+
+extension AssetActionConfirmationViewTheme {
+    mutating func configureForSecondaryActionOnly() {
+        buttonInset = .zero
     }
 }

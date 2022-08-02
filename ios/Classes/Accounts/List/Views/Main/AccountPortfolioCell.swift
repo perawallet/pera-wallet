@@ -19,11 +19,11 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class AccountPortfolioCell:
+class AccountPortfolioCell:
     CollectionCell<AccountPortfolioView>,
     ViewModelBindable {
     override class var contextPaddings: LayoutPaddings {
-        return (60, 0, 60, 0)
+        return (16, 24, 8, 24)
     }
     
     static let theme = AccountPortfolioViewTheme()
@@ -32,6 +32,14 @@ final class AccountPortfolioCell:
         frame: CGRect
     ) {
         super.init(frame: frame)
+
+        contentView.backgroundColor = AppColors.Shared.Helpers.heroBackground.uiColor
         contextView.customize(Self.theme)
+    }
+}
+
+class WatchAccountPortfolioCell: AccountPortfolioCell {
+    override class var contextPaddings: LayoutPaddings {
+        return (16, 24, 36, 24)
     }
 }

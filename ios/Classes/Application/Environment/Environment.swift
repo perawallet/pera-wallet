@@ -103,7 +103,7 @@ enum AlgorandWeb: String {
     case termsAndServices = "https://www.perawallet.app/terms-and-services/"
     case privacyPolicy = "https://www.perawallet.app/privacy-policy/"
     case support = "https://perawallet.app/support/"
-    case dispenser = "https://bank.testnet.algorand.network"
+    case dispenser = "https://dispenser.testnet.aws.algodev.network/"
     case backUpSupport = "https://perawallet.app/support/passphrase/"
     case recoverSupport = "https://perawallet.app/support/recover-account/"
     case watchAccountSupport = "https://perawallet.app/support/watch-accounts/"
@@ -119,6 +119,37 @@ enum AlgorandWeb: String {
             return "www.perawallet.app/support/"
         default:
             return self.rawValue
+        }
+    }
+    
+    enum AlgoExplorer {
+        case address(isMainnet: Bool, param: String)
+        case asset(isMainnet: Bool, param: String)
+        
+        var link: URL? {
+            switch self {
+            case .address(let isMainnet, let param):
+                return isMainnet
+                    ? URL(string: "https://algoexplorer.io/address/\(param)")
+                    : URL(string: "https://testnet.algoexplorer.io/address/\(param)")
+            case .asset(let isMainnet, let param):
+                return isMainnet
+                    ? URL(string: "https://algoexplorer.io/asset/\(param)")
+                    : URL(string: "https://testnet.algoexplorer.io/asset/\(param)")
+            }
+        }
+    }
+    
+    enum NftExplorer {
+        case asset(isMainnet: Bool, param: String)
+        
+        var link: URL? {
+            switch self {
+            case .asset(let isMainnet, let param):
+                return isMainnet
+                    ? URL(string: "https://www.nftexplorer.app/asset/\(param)")
+                    : nil
+            }
         }
     }
 }

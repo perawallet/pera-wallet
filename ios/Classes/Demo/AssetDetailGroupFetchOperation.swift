@@ -144,6 +144,7 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
                     if let assetDetail = newAssetDetails[id] ?? self.input.cachedAssetDetails[id] {
                         if assetDetail.isCollectible {
                             let collectible = CollectibleAsset(asset: asset, decoration: assetDetail)
+                            collectible.optedInAddress = account.address
                             newCollectibles.append(collectible)
                             newCollectibleAssetsIndexer[asset.id] = newCollectibleAssetsIndexer.count
                         } else {

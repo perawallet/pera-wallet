@@ -31,6 +31,11 @@ class TitledTransactionAccountNameViewModel {
         setAccountNameViewModel(from: contact, and: hasImage)
     }
 
+    init(title: String, nameService: NameService) {
+        setTitle(from: title)
+        setAccountNameViewModel(from: nameService)
+    }
+
     private func setTitle(from title: String) {
         self.title = title
     }
@@ -41,5 +46,9 @@ class TitledTransactionAccountNameViewModel {
 
     private func setAccountNameViewModel(from contact: Contact, and hasImage: Bool) {
         accountNameViewModel = AccountNameViewModel(contact: contact, hasImage: hasImage)
+    }
+
+    private func setAccountNameViewModel(from nameService: NameService) {
+        accountNameViewModel = AccountNameViewModel(nameService: nameService)
     }
 }

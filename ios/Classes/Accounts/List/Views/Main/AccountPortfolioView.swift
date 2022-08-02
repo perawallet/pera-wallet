@@ -25,12 +25,14 @@ final class AccountPortfolioView:
     ListReusable {
     private lazy var titleView = Label()
     private lazy var valueView = Label()
+    private lazy var secondaryValueView = Label()
 
     func customize(
         _ theme: AccountPortfolioViewTheme
     ) {
         addTitle(theme)
         addValue(theme)
+        addSecondaryValue(theme)
     }
 
     func customizeAppearance(
@@ -44,8 +46,26 @@ final class AccountPortfolioView:
     func bindData(
         _ viewModel: AccountPortfolioViewModel?
     ) {
-        titleView.editText = viewModel?.title
-        valueView.editText = viewModel?.value
+        if let title = viewModel?.title {
+            title.load(in: titleView)
+        } else {
+            titleView.text = nil
+            titleView.attributedText = nil
+        }
+
+        if let primaryValue = viewModel?.primaryValue {
+            primaryValue.load(in: valueView)
+        } else {
+            valueView.text = nil
+            valueView.attributedText = nil
+        }
+
+        if let secondaryValue = viewModel?.secondaryValue {
+            secondaryValue.load(in: secondaryValueView)
+        } else {
+            secondaryValueView.text = nil
+            secondaryValueView.attributedText = nil
+        }
     }
     
     class func calculatePreferredSize(
@@ -56,23 +76,27 @@ final class AccountPortfolioView:
         guard let viewModel = viewModel else {
             return CGSize((size.width, 0))
         }
-        
-        let width =
-            size.width -
-            theme.contentHorizontalPaddings.leading -
-            theme.contentHorizontalPaddings.trailing
-        let titleSize = viewModel.title.boundingSize(
+
+        let width = size.width
+        let titleSize = viewModel.title?.boundingSize(
             multiline: false,
             fittingSize: CGSize((width, .greatestFiniteMagnitude))
-        )
-        let valueSize = viewModel.value.boundingSize(
+        ) ?? .zero
+        let valueSize = viewModel.primaryValue?.boundingSize(
             multiline: false,
-            fittingSize: CGSize((width, .greatestFiniteMagnitude))
-        )
+            fittingSize: .greatestFiniteMagnitude
+        ) ?? .zero
+        let secondaryValueSize = viewModel.secondaryValue?.boundingSize(
+            multiline: false,
+            fittingSize: .greatestFiniteMagnitude
+        ) ?? .zero
         let preferredHeight =
+            theme.titleTopPadding +
             titleSize.height +
             theme.spacingBetweenTitleAndValue +
-            valueSize.height
+            valueSize.height +
+            theme.spacingBetweenTitleAndValue +
+            secondaryValueSize.height
         return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
     }
 }
@@ -87,8 +111,7 @@ extension AccountPortfolioView {
         titleView.fitToIntrinsicSize()
         titleView.snp.makeConstraints {
             $0.top == 0
-            $0.leading == theme.contentHorizontalPaddings.leading
-            $0.trailing == theme.contentHorizontalPaddings.trailing
+            $0.centerX.equalToSuperview()
         }
     }
     
@@ -101,6 +124,20 @@ extension AccountPortfolioView {
         valueView.fitToIntrinsicSize()
         valueView.snp.makeConstraints {
             $0.top == titleView.snp.bottom + theme.spacingBetweenTitleAndValue
+            $0.leading == theme.contentHorizontalPaddings.leading
+            $0.trailing == theme.contentHorizontalPaddings.trailing
+        }
+    }
+
+    private func addSecondaryValue(
+        _ theme: AccountPortfolioViewTheme
+    ) {
+        secondaryValueView.customizeAppearance(theme.secondaryValue)
+
+        addSubview(secondaryValueView)
+        secondaryValueView.fitToIntrinsicSize()
+        secondaryValueView.snp.makeConstraints {
+            $0.top == valueView.snp.bottom + theme.spacingBetweenTitleAndValue
             $0.leading == theme.contentHorizontalPaddings.leading
             $0.bottom == 0
             $0.trailing == theme.contentHorizontalPaddings.trailing

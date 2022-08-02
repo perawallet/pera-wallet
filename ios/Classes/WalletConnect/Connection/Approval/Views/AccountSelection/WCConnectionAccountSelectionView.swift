@@ -19,7 +19,9 @@ import UIKit
 import MacaroonUIKit
 import SnapKit
 
-final class WCConnectionAccountSelectionView: Control {
+final class WCConnectionAccountSelectionView:
+    Control,
+    ViewModelBindable {
     private lazy var typeImageView = UIImageView()
     private lazy var nameLabel = UILabel()
     private lazy var detailLabel = UILabel()
@@ -52,6 +54,14 @@ final class WCConnectionAccountSelectionView: Control {
         addDetailLabel(theme)
     }
 
+    func bindData(
+        _ viewModel: WCConnectionAccountSelectionViewModel?
+    ) {
+        typeImageView.image = viewModel?.icon
+        nameLabel.text = viewModel?.title
+        detailLabel.text = viewModel?.subtitle
+    }
+
     func prepareLayout(_ layoutSheet: LayoutSheet) { }
 
     func customizeAppearance(_ styleSheet: StyleSheet) {}
@@ -62,7 +72,6 @@ final class WCConnectionAccountSelectionView: Control {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         drawAppearance(shadow: Shadows.primaryShadow.create())
     }
-    
 }
 
 extension WCConnectionAccountSelectionView {
@@ -120,13 +129,5 @@ extension WCConnectionAccountSelectionView {
         } else {
             constraintMaker.trailing.lessThanOrEqualToSuperview().offset(offset)
         }
-    }
-}
-
-extension WCConnectionAccountSelectionView: ViewModelBindable {
-    func bindData(_ viewModel: AccountPreviewViewModel?) {
-        typeImageView.image = viewModel?.icon
-        nameLabel.text = viewModel?.title?.string
-        detailLabel.text = viewModel?.subtitle?.string
     }
 }

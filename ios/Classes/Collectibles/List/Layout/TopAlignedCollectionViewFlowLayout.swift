@@ -23,32 +23,52 @@ final class TopAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
         let attributes = super.layoutAttributesForElements(in: rect)?.map { attribute in
             attribute.copy()
         } as? [UICollectionViewLayoutAttributes]
+        
+        if let attributes = attributes {
+            var previousCenterY: CGFloat = 0
+            var sameLineElements = [UICollectionViewLayoutAttributes]()
+            
+            for attribute in attributes where attribute.representedElementCategory == .cell {
+                let frame = attribute.frame
+                let centerY = frame.midY
 
-        attributes?
-            .reduce([CGFloat: (CGFloat, [UICollectionViewLayoutAttributes])]()) { partialResult, layoutAttributes in
-                if layoutAttributes.representedElementCategory != .cell {
-                    return partialResult
+                if abs(centerY - previousCenterY) > 1 {
+                    previousCenterY = centerY
+                    alignToTopForSameLineElements(sameLineElements: sameLineElements)
+                    sameLineElements.removeAll()
                 }
-
-                let dictionaryToMerge = [
-                    ceil(layoutAttributes.center.y): (layoutAttributes.frame.origin.y, [layoutAttributes])
-                ]
-
-                return partialResult
-                    .merging(dictionaryToMerge) { current, new in
-                        (min(current.0, new.0), current.1 + new.1)
-                    }
+                sameLineElements.append(attribute)
             }
-            .values
-            .forEach { minY, lines in
-                lines.forEach { line in
-                    line.frame = line.frame.offsetBy(
-                        dx: 0,
-                        dy: minY - line.frame.origin.y
-                    )
-                }
-            }
-
+            
+            alignToTopForSameLineElements(sameLineElements: sameLineElements)
+            
+            return attributes
+        }
+        
         return attributes
+    }
+
+    private func alignToTopForSameLineElements(sameLineElements: [UICollectionViewLayoutAttributes]) {
+        if sameLineElements.count < 1 {
+            return
+        }
+        
+        let elementsSortedByHeight = sameLineElements.sorted { (
+            firstElement: UICollectionViewLayoutAttributes, secondElement: UICollectionViewLayoutAttributes
+        ) -> Bool in
+            let firstElementHeight = firstElement.frame.size.height
+            let secondElementHeight = secondElement.frame.size.height
+            
+            return (firstElementHeight - secondElementHeight) <= 0
+        }
+        
+        if let tallest = elementsSortedByHeight.last {
+            for element in sameLineElements {
+                element.frame = element.frame.offsetBy(
+                    dx: 0,
+                    dy: tallest.frame.origin.y - element.frame.origin.y
+                )
+            }
+        }
     }
 }

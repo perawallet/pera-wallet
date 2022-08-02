@@ -49,9 +49,16 @@ final class Transaction:
     let assetFreeze: AssetFreezeTransaction?
     let assetConfig: AssetConfigTransaction?
     let assetTransfer: AssetTransferTransaction?
+    let applicationCall: AppCallTransaction?
     let date: Date?
     let transactionSignature: TransactionSignature?
-    
+    let groupKey: String?
+    let innerTransactions: [Transaction]?
+
+    /// <note>:
+    /// If transaction is inner transaction, its parentID is set to parent transaction ID.
+    var parentID: String?
+
     var status: Status?
     var contact: Contact?
 
@@ -74,9 +81,12 @@ final class Transaction:
         self.createdAssetId = apiModel.createdAssetIndex
         self.assetFreeze = apiModel.assetFreezeTransaction
         self.assetConfig = apiModel.assetConfigTransaction
+        self.applicationCall = apiModel.applicationCall
         self.assetTransfer = apiModel.assetTransferTransaction.unwrap(AssetTransferTransaction.init)
         self.date = apiModel.roundTime.unwrap { Date(timeIntervalSince1970: $0) }
         self.transactionSignature = apiModel.signature
+        self.groupKey = apiModel.group
+        self.innerTransactions = apiModel.innerTransactions.unwrapMap(Transaction.init)
     }
 
     func encode() -> APIModel {
@@ -96,9 +106,12 @@ final class Transaction:
         apiModel.createdAssetIndex = createdAssetId
         apiModel.assetFreezeTransaction = assetFreeze
         apiModel.assetConfigTransaction = assetConfig
+        apiModel.applicationCall = applicationCall
         apiModel.assetTransferTransaction = assetTransfer?.encode()
         apiModel.roundTime = date?.timeIntervalSince1970
         apiModel.signature = transactionSignature
+        apiModel.innerTransactions = innerTransactions.map { $0.encode() }
+        apiModel.group = groupKey
         return apiModel
     }
 }
@@ -111,7 +124,7 @@ extension Transaction {
         return confirmedRound == nil || confirmedRound == 0
     }
 
-    func isSelfTransaction() -> Bool {
+    var isSelfTransaction: Bool {
         return sender == getReceiver()
     }
     
@@ -163,6 +176,50 @@ extension Transaction {
         assetTransfer.amount == 0 &&
         sender == account
     }
+
+    var allInnerTransactionsCount: Int {
+        guard let innerTransactions = innerTransactions,
+              !innerTransactions.isEmpty else {
+            return .zero
+        }
+
+        return innerTransactions.reduce(
+            innerTransactions.count
+        ) { partialResult, transaction in
+            partialResult + transaction.allInnerTransactionsCount
+        }
+    }
+
+    var isInner: Bool {
+        return parentID != nil
+    }
+
+    func setAllParentID(
+        _ parentID: String?
+    ) {
+        guard let innerTransactions = innerTransactions,
+              !innerTransactions.isEmpty else {
+            return
+        }
+
+        innerTransactions.forEach {
+            $0.parentID = parentID
+
+            $0.setAllParentID(parentID)
+        }
+    }
+
+    func completeAll() {
+        guard let innerTransactions = innerTransactions,
+              !innerTransactions.isEmpty else {
+            status = .completed
+            return
+        }
+
+        status = .completed
+
+        innerTransactions.forEach { $0.completeAll() }
+    }
 }
 
 extension Transaction {
@@ -213,8 +270,11 @@ extension Transaction {
         var assetFreezeTransaction: AssetFreezeTransaction?
         var assetConfigTransaction: AssetConfigTransaction?
         var assetTransferTransaction: AssetTransferTransaction.APIModel?
+        var applicationCall: AppCallTransaction?
         var roundTime: Double?
         var signature: TransactionSignature?
+        var group: String?
+        var innerTransactions: [Transaction.APIModel]?
 
         init() {
             self.closeRewards = nil
@@ -234,8 +294,11 @@ extension Transaction {
             self.assetFreezeTransaction = nil
             self.assetConfigTransaction = nil
             self.assetTransferTransaction = nil
+            self.applicationCall = nil
             self.roundTime = nil
             self.signature = nil
+            self.group = nil
+            self.innerTransactions = nil
         }
 
         private enum CodingKeys: String, CodingKey {
@@ -256,8 +319,11 @@ extension Transaction {
             case assetFreezeTransaction = "asset-freeze-transaction"
             case assetConfigTransaction = "asset-config-transaction"
             case assetTransferTransaction = "asset-transfer-transaction"
+            case applicationCall = "application-transaction"
             case roundTime = "round-time"
             case signature
+            case group
+            case innerTransactions = "inner-txns"
         }
     }
 }

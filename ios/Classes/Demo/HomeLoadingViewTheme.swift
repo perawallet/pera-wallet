@@ -22,102 +22,55 @@ import UIKit
 struct HomeLoadingViewTheme:
     StyleSheet,
     LayoutSheet {
-    var portfolioText: EditText
-    var portfolioMargin: LayoutMargins
-    var portfolioLoadingMargin: LayoutMargins
-    var portfolioLoadingSize: LayoutSize
-
-    var algoHoldingText: EditText
-    var assetHoldingText: EditText
-    var loadingCorner: Corner
-
-    var holdingsContainerMargin: LayoutMargins
-    var holdingsContainerHeight: LayoutMetric
-
-    var algoHoldingLoadingLeadingInset: LayoutMetric
-    var algoHoldingLoadingSize: LayoutSize
-    var algoHoldingLoadingTopInset: LayoutMetric
-
-    var buyAlgoButtonTheme: ButtonTheme
-    var buyAlgoButtonMargin: LayoutMargins
-    var buyAlgoButtonHeight: LayoutMetric
-
-    var accountsLabelStyle: TextStyle
-    var accountsLabelMargin: LayoutMargins
-
-    var accountLoadingMargin: LayoutMargins
-    var accountLoadingHeight: LayoutMetric
+    var background: ViewStyle
+    var contentEdgeInsets: LayoutPaddings
+    var portfolioTitle: TextStyle
+    var portfolioTitleTopPadding: LayoutMetric
+    var portfolioInfoAction: ButtonStyle
+    var spacingBetweenPortfolioTitleAndPortfolioInfoAction: LayoutMetric
+    var primaryPortfolioValueSize: LayoutSize
+    var spacingBetweenPortfolioTitleAndPrimaryPortfolioValue: LayoutMetric
+    var secondaryPortfolioValueSize: LayoutSize
+    var spacingBetweenPrimaryPortfolioValueAndSecondaryPortfolioValue: LayoutMetric
+    var portfolioValueCorner: Corner
+    var quickActions: HomeQuickActionsViewTheme
+    var spacingBetweenQuickActionsAndSecondaryPortfolioValue: LayoutMetric
+    var quickActionsBottomPadding: LayoutMetric
+    var accountsHeader: ManagementItemViewTheme
+    var spacingBetweenAccountsHeaderAndPortfolio: LayoutMetric
+    var accountsContentEdgeInsets: NSDirectionalEdgeInsets
+    var account: PreviewLoadingViewTheme
+    var accountHeight: LayoutMetric
 
     init(
         _ family: LayoutFamily
     ) {
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-
-        self.portfolioText = .attributedString(
-            "portfolio-title"
-                .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ]),
-                    .textColor(AppColors.Components.Text.gray)
-                ])
-            )
-
-        self.portfolioMargin = (8, 24, .noMetric, .noMetric)
-        self.portfolioLoadingMargin = (18, .noMetric, .noMetric, .noMetric)
-        self.portfolioLoadingSize = (128, 38)
-
-        self.algoHoldingText = .attributedString(
-            "portfolio-algo-holdings-title"
-                .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ]),
-                    .textColor(AppColors.Components.Text.gray)
-                ])
-            )
-
-        self.assetHoldingText = .attributedString(
-            "portfolio-asset-holdings-title"
-                .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ]),
-                    .textColor(AppColors.Components.Text.gray)
-                ])
-            )
-
-        self.loadingCorner = Corner(radius: 4)
-
-        self.holdingsContainerMargin = (80, 24, .noMetric, 24)
-        self.holdingsContainerHeight = 63
-
-        self.algoHoldingLoadingLeadingInset = 12
-        self.algoHoldingLoadingSize = (57, 20)
-        self.algoHoldingLoadingTopInset = 13
-
-        self.buyAlgoButtonTheme = ButtonPrimaryTheme(family)
-        self.buyAlgoButtonMargin = (44, 24, .noMetric, 24)
-        self.buyAlgoButtonHeight = 52
-
-        self.accountsLabelStyle = [
-            .font(Fonts.DMSans.medium.make(15)),
-            .textColor(AppColors.Components.Text.main),
-            .textOverflow(FittingText()),
-            .text("accounts-title".localized)
+        self.background = [
+            .backgroundColor(AppColors.Shared.Helpers.heroBackground)
         ]
-        self.accountsLabelMargin = (44, 24, .noMetric, 24)
-        self.accountLoadingMargin = (4, 24, .noMetric, 24)
-        self.accountLoadingHeight = 72
+        self.contentEdgeInsets = (16, 24, 0, 24)
+        self.portfolioTitle = [
+            .text("portfolio-title".localized.bodyRegular()),
+            .textColor(AppColors.Components.Text.gray)
+        ]
+        self.portfolioTitleTopPadding = 8
+        self.portfolioInfoAction = [
+            .icon([ .normal("icon-info-20".templateImage) ]),
+            .tintColor(AppColors.Components.Text.grayLighter)
+        ]
+        self.spacingBetweenPortfolioTitleAndPortfolioInfoAction = 8
+        self.primaryPortfolioValueSize = (181, 44)
+        self.spacingBetweenPortfolioTitleAndPrimaryPortfolioValue = 8
+        self.secondaryPortfolioValueSize = (97, 20)
+        self.spacingBetweenPrimaryPortfolioValueAndSecondaryPortfolioValue = 12
+        self.portfolioValueCorner = Corner(radius: 4)
+        self.quickActions = HomeQuickActionsViewTheme(family)
+        self.spacingBetweenQuickActionsAndSecondaryPortfolioValue = 48
+        self.quickActionsBottomPadding = 36
+        self.accountsHeader = ManagementItemViewTheme()
+        self.spacingBetweenAccountsHeaderAndPortfolio = 36
+        self.accountsContentEdgeInsets = .init(top: 8, leading: 0, bottom: 24, trailing: 0)
+        self.account = PreviewLoadingViewCommonTheme()
+        self.accountHeight = 76
     }
 }

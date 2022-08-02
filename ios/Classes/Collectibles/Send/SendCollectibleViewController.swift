@@ -57,6 +57,8 @@ final class SendCollectibleViewController:
         bannerController: bannerController
     )
 
+    private lazy var currencyFormatter = CurrencyFormatter()
+
     let theme: SendCollectibleViewControllerTheme
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
@@ -199,6 +201,8 @@ extension SendCollectibleViewController {
 
 extension SendCollectibleViewController {
     private func makeTransfer() {
+        closeKeyboard()
+
         cancelOngoingFetchAccountsEnpoint()
 
         guard let recipientAddress = sendCollectibleActionView.addressInputViewText else {
@@ -263,6 +267,11 @@ extension SendCollectibleViewController {
                 )
             case .failure(let error, _):
                 if error.isHttpNotFound {
+                    self.draft.toAccount = Account(
+                        address: recipientAddress,
+                        type: .standard
+                    )
+
                     self.openAskRecipientToOptIn()
                     return
                 }
@@ -549,9 +558,16 @@ extension SendCollectibleViewController {
     ) {
         switch transactionError {
         case let .minimumAmount(amount):
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = AlgoLocalCurrency()
+
+            let amountText = currencyFormatter.format(amount.toAlgos)
+
             openTransferFailed(
                 title: "collectible-transfer-failed-title".localized,
-                description: "send-algos-minimum-amount-custom-error".localized(params: amount.toAlgos.toAlgosStringForLabel ?? "")
+                description: "send-algos-minimum-amount-custom-error".localized(
+                    params: amountText.someString
+                                                                               )
             )
         case .invalidAddress:
             bannerController?.presentErrorBanner(
@@ -611,6 +627,12 @@ extension SendCollectibleViewController {
         _ transactionController: TransactionController
     ) {
         ledgerApprovalViewController?.dismissScreen()
+    }
+    
+    func transactionControllerDidRejectedLedgerOperation(
+        _ transactionController: TransactionController
+    ) {
+        loadingController?.stopLoading()
     }
 
     func transactionController(

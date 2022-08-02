@@ -18,8 +18,8 @@
 import MacaroonUIKit
 
 struct TransactionAmountViewSmallerTheme: TransactionAmountViewTheme {
-    let signLabel: TextStyle
-    let amountLabel: TextStyle
+    var signLabel: TextStyle
+    var amountLabel: TextStyle
 
     init(_ family: LayoutFamily) {
         self.signLabel = [
@@ -34,5 +34,12 @@ struct TransactionAmountViewSmallerTheme: TransactionAmountViewTheme {
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMMono.regular.make(15))
         ]
+    }
+}
+
+extension TransactionAmountViewSmallerTheme {
+    mutating func configureForInnerTransactionPreviewView() {
+        signLabel = signLabel.modify([ .font(Fonts.DMSans.medium.make(15)) ])
+        amountLabel = amountLabel.modify([ .font(Fonts.DMSans.medium.make(15)) ])
     }
 }

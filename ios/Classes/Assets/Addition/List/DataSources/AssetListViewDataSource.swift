@@ -29,7 +29,7 @@ final class AssetListViewDataSource: UICollectionViewDiffableDataSource<AssetLis
             switch itemIdentifier {
             case let .asset(item):
                 let cell = collectionView.dequeue(
-                    AssetPreviewAdditionCell.self,
+                    AssetPreviewCell.self,
                     at: indexPath
                 )
                 cell.bindData(
@@ -55,7 +55,7 @@ final class AssetListViewDataSource: UICollectionViewDiffableDataSource<AssetLis
 
         [
             PreviewLoadingCell.self,
-            AssetPreviewAdditionCell.self,
+            AssetPreviewCell.self,
             NoContentCell.self
         ].forEach {
             collectionView.register($0)

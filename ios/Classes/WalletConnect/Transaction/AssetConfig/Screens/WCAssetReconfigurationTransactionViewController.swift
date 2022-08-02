@@ -21,6 +21,8 @@ class WCAssetReconfigurationTransactionViewController: WCSingleTransactionViewCo
 
     private lazy var assetReconfigurationTransactionView = WCAssetReconfigurationTransactionView()
 
+    private lazy var currencyFormatter = CurrencyFormatter()
+
     override var transactionView: WCSingleTransactionView? {
         return assetReconfigurationTransactionView
     }
@@ -59,7 +61,9 @@ extension WCAssetReconfigurationTransactionViewController {
             WCAssetReconfigurationTransactionViewModel(
                 transaction: transaction,
                 senderAccount: account,
-                asset: asset
+                asset: asset,
+                currency: sharedDataController.currency,
+                currencyFormatter: currencyFormatter
             )
         )
     }

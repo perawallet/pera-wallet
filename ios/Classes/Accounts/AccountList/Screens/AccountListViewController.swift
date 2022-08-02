@@ -26,7 +26,11 @@ final class AccountListViewController: BaseViewController {
     private(set) lazy var accountListView = AccountListView()
     
     private lazy var accountListLayoutBuilder = AccountListLayoutBuilder(theme: theme)
-    private(set) lazy var accountListDataSource = AccountListDataSource(sharedDataController: sharedDataController, mode: mode)
+    private(set) lazy var accountListDataSource = AccountListDataSource(
+        sharedDataController: sharedDataController,
+        mode: mode,
+        currencyFormatter: CurrencyFormatter()
+    )
 
     private var mode: Mode
     

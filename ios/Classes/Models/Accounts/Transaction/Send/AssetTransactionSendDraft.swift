@@ -33,4 +33,5 @@ struct AssetTransactionSendDraft: TransactionSendDraft {
 
     var toContact: Contact?
     var asset: Asset?
+    var nameService: NameService?
 }

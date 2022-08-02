@@ -19,62 +19,108 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct TransactionCurrencyAmountViewModel:
-    Hashable {
+struct TransactionCurrencyAmountViewModel: Hashable {
     private(set) var amountLabelText: EditText?
     private(set) var amountLabelColor: UIColor?
     private(set) var currencyLabelText: EditText?
 
     init(
         _ mode: TransactionAmountView.Mode,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter,
         showAbbreviation: Bool = false
     ) {
-        bindMode(mode, showAbbreviation: showAbbreviation)
+        bindMode(
+            mode,
+            currency: currency,
+            currencyFormatter: currencyFormatter,
+            showAbbreviation: showAbbreviation
+        )
     }
 }
 
 extension TransactionCurrencyAmountViewModel {
     private mutating func bindMode(
         _ mode: TransactionAmountView.Mode,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter,
         showAbbreviation: Bool
     ) {
         switch mode {
-        case let .normal(amount, isAlgos, assetFraction, assetSymbol, currency):
-            bindAmount(amount, showAbbreviation: showAbbreviation, with: assetFraction, isAlgos: isAlgos, assetSymbol: assetSymbol, currency: currency)
-        case let .positive(amount, isAlgos, assetFraction, assetSymbol, currency):
-            bindAmount(amount, showAbbreviation: showAbbreviation, with: assetFraction, isAlgos: isAlgos, assetSymbol: assetSymbol, currency: currency)
-        case let .negative(amount, isAlgos, assetFraction, assetSymbol, currency):
-            bindAmount(amount, showAbbreviation: showAbbreviation, with: assetFraction, isAlgos: isAlgos, assetSymbol: assetSymbol, currency: currency)
+        case let .normal(amount, isAlgos, assetFraction, assetSymbol, currencySymbol):
+            bindAmount(
+                amount,
+                currency: currency,
+                currencyFormatter: currencyFormatter,
+                showAbbreviation: showAbbreviation,
+                with: assetFraction,
+                isAlgos: isAlgos,
+                assetSymbol: assetSymbol,
+                currencySymbol: currencySymbol
+            )
+        case let .positive(amount, isAlgos, assetFraction, assetSymbol, currencySymbol):
+            bindAmount(
+                amount,
+                currency: currency,
+                currencyFormatter: currencyFormatter,
+                showAbbreviation: showAbbreviation,
+                with: assetFraction,
+                isAlgos: isAlgos,
+                assetSymbol: assetSymbol,
+                currencySymbol: currencySymbol
+            )
+        case let .negative(amount, isAlgos, assetFraction, assetSymbol, currencySymbol):
+            bindAmount(
+                amount,
+                currency: currency,
+                currencyFormatter: currencyFormatter,
+                showAbbreviation: showAbbreviation,
+                with: assetFraction,
+                isAlgos: isAlgos,
+                assetSymbol: assetSymbol,
+                currencySymbol: currencySymbol
+            )
         }
     }
 
     private mutating func bindAmount(
         _ amount: Decimal,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter,
         showAbbreviation: Bool,
         with assetFraction: Int?,
         isAlgos: Bool,
         assetSymbol: String? = nil,
-        currency: String? = nil
+        currencySymbol: String? = nil
     ) {
         if isAlgos {
-            amountLabelText = .string(showAbbreviation ? amount.toFullAlgosStringForLabel : amount.toAlgosStringForLabel)
-            currencyLabelText = .string(currency)
+            currencyFormatter.formattingContext = showAbbreviation ? .listItem : .standalone()
+            currencyFormatter.currency = AlgoLocalCurrency()
+
+            let text = currencyFormatter.format(amount)
+
+            amountLabelText = .string(text)
+            currencyLabelText = .string(currencySymbol)
+
             return
         }
-        
-        guard let fraction = assetFraction else {
-            return
-        }
-        
-        let amountText = amount.abbreviatedFractionStringForLabel(fraction: fraction) ?? ""
-        
-        if let assetSymbol = assetSymbol {
-            amountLabelText = .string("\(amountText) \(assetSymbol)")
+
+        if showAbbreviation {
+            currencyFormatter.formattingContext = .listItem
         } else {
-            amountLabelText = .string(amountText)
+            var constraintRules = CurrencyFormattingContextRules()
+            constraintRules.maximumFractionDigits = assetFraction
+
+            currencyFormatter.formattingContext = .standalone(constraints: constraintRules)
         }
-        
+
+        currencyFormatter.currency = nil
+
+        let amountText = currencyFormatter.format(amount)
+        let text = [ amountText, assetSymbol ].compound(" ")
+
+        amountLabelText = .string(text)
         amountLabelColor = AppColors.Components.Text.main.uiColor
-        currencyLabelText = .string(currency)
+        currencyLabelText = .string(currencySymbol)
     }
 }

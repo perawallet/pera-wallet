@@ -41,7 +41,7 @@ class AccountTests: XCTestCase {
 //    }
 
     func testDoesAccountHasParticipationKey() {
-        let doesAccountHasParticipationKey = account.doesAccountHasParticipationKey()
+        let doesAccountHasParticipationKey = account.hasParticipationKey()
         XCTAssertFalse(doesAccountHasParticipationKey)
     }
 

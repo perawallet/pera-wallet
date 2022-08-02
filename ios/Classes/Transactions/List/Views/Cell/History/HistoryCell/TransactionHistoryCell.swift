@@ -27,8 +27,8 @@ final class TransactionHistoryCell: BaseCollectionViewCell<TransactionHistoryCon
         super.prepareForReuse()
         contextView.prepareForReuse()
     }
-
-    func bindData(_ viewModel: TransactionHistoryContextViewModel) {
+    
+    func bindData(_ viewModel: TransactionListItemViewModel) {
         contextView.bindData(viewModel)
     }
 }

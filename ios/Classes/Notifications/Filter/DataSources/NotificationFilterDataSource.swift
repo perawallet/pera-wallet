@@ -29,7 +29,7 @@ final class NotificationFilterDataSource: NSObject {
     init(sharedDataController: SharedDataController, api: ALGAPI) {
         self.api = api
         super.init()
-        accounts = sharedDataController.accountCollection.sorted()
+        accounts = sharedDataController.sortedAccounts()
     }
 }
 

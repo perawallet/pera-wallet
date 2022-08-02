@@ -92,6 +92,12 @@ extension EditAccountViewController {
             accountName = account.address.shortAddressDisplay
         }
 
+        /// <note>
+        /// Since the syncing is always running, the references of the cached accounts may change
+        /// at this moment. Let's be sure we can switch to the new name immediately.
+        let cachedAccount = sharedDataController.accountCollection[account.address]?.value
+        cachedAccount?.name = accountName
+
         account.name = accountName
         session?.updateName(accountName, for: account.address)
 

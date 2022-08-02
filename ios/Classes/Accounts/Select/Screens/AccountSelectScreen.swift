@@ -27,10 +27,17 @@ final class AccountSelectScreen: BaseViewController {
 
     private lazy var assetDetailTitleView = AssetDetailTitleView()
     private lazy var accountView = SelectAccountView()
-    private lazy var searchNoContentView = NoContentView()
     private lazy var theme = Theme()
 
-    private lazy var dataSource = AccountSelectScreenDataSource(sharedDataController: sharedDataController)
+    private lazy var listLayout = AccountSelectScreenListLayout(
+        listDataSource: listDataSource,
+        theme: Theme()
+    )
+    private lazy var listDataSource = AccountSelectScreenDataSource(accountView.listView)
+
+    private lazy var currencyFormatter = CurrencyFormatter()
+
+    private let dataController: AccountSelectScreenListDataController
 
     private var draft: SendTransactionDraft
 
@@ -51,27 +58,25 @@ final class AccountSelectScreen: BaseViewController {
 
     private var transactionSendController: TransactionSendController?
 
-    init(draft: SendTransactionDraft, configuration: ViewControllerConfiguration) {
+    init(
+        draft: SendTransactionDraft,
+        dataController: AccountSelectScreenListDataController,
+        configuration: ViewControllerConfiguration
+    ) {
         self.draft = draft
+        self.dataController = dataController
         super.init(configuration: configuration)
     }
 
     override func linkInteractors() {
-        dataSource.delegate = self
         accountView.searchInputView.delegate = self
         accountView.listView.delegate = self
-        accountView.listView.dataSource = dataSource
+        accountView.listView.dataSource = listDataSource
 
         accountView.clipboardView.addGestureRecognizer(
             UITapGestureRecognizer(target: self, action: #selector(didTapCopy))
         )
         transactionController.delegate = self
-    }
-
-    override func configureAppearance() {
-        super.configureAppearance()
-        searchNoContentView.customize(NoContentViewTopAttachedTheme())
-        searchNoContentView.bindData(AccountSelectSearchNoContentViewModel())
     }
 
     override func prepareLayout() {
@@ -94,7 +99,16 @@ final class AccountSelectScreen: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        dataSource.loadData()
+        dataController.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didUpdate(let snapshot):
+                self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+            }
+        }
+        dataController.load()
     }
 
     private func routePreviewScreen() {
@@ -150,6 +164,7 @@ final class AccountSelectScreen: BaseViewController {
             note: draft.note
         )
         transactionDraft.toContact = draft.toContact
+        transactionDraft.nameService = draft.nameService
 
         transactionController.delegate = self
         transactionController.setTransactionDraft(transactionDraft)
@@ -177,6 +192,7 @@ final class AccountSelectScreen: BaseViewController {
         )
         transactionDraft.toContact = draft.toContact
         transactionDraft.asset = asset
+        transactionDraft.nameService = draft.nameService
 
         transactionController.delegate = self
         transactionController.setTransactionDraft(transactionDraft)
@@ -251,9 +267,15 @@ extension AccountSelectScreen: TransactionControllerDelegate {
     private func displayTransactionError(from transactionError: TransactionError) {
         switch transactionError {
         case let .minimumAmount(amount):
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = AlgoLocalCurrency()
+
+            let amountText = currencyFormatter.format(amount.toAlgos)
+
             bannerController?.presentErrorBanner(
                 title: "asset-min-transaction-error-title".localized,
-                message: "send-algos-minimum-amount-custom-error".localized(params: amount.toAlgos.toAlgosStringForLabel ?? ""
+                message: "send-algos-minimum-amount-custom-error".localized(
+                    params: amountText.someString
                 )
             )
         case .invalidAddress:
@@ -295,8 +317,15 @@ extension AccountSelectScreen: TransactionControllerDelegate {
             by: .present
         )
     }
+
     func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {
         ledgerApprovalViewController?.dismissScreen()
+    }
+
+    func transactionControllerDidRejectedLedgerOperation(
+        _ transactionController: TransactionController
+    ) {
+        loadingController?.stopLoading()
     }
 }
 
@@ -310,27 +339,37 @@ extension AccountSelectScreen {
 }
 
 extension AccountSelectScreen: UICollectionViewDelegateFlowLayout {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
-        return CGSize(width: collectionView.frame.size.width, height: theme.cellHeight)
-    }
-
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         view.endEditing(true)
 
-        if let contact = dataSource.item(at: indexPath) as? Contact {
-            draft.toContact = contact
-            draft.toAccount = nil
-        } else if let account = dataSource.item(at: indexPath) as? AccountHandle {
-            draft.toAccount = account.value
-            draft.toContact = nil
-        } else if let account = dataSource.item(at: indexPath) as? Account {
-            draft.toAccount = account
-            draft.toContact = nil
-        } else {
+        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+            return
+        }
+
+        switch itemIdentifier {
+        case .account(let accountItem):
+            switch accountItem {
+            case .contactCell:
+                draft.toContact = dataController.contact(at: indexPath)
+                draft.toAccount = nil
+                draft.nameService = nil
+            case .accountCell:
+                draft.toAccount = dataController.account(at: indexPath)
+                draft.toContact = nil
+                draft.nameService = nil
+            case .searchAccountCell:
+                draft.toAccount = dataController.searchedAccount(at: indexPath)
+                draft.toContact = nil
+                draft.nameService = nil
+            case .matchedAccountCell:
+                let nameService = dataController.matchedAccount(at: indexPath)
+                draft.toAccount = nameService?.account.value
+                draft.toContact = nil
+                draft.nameService = nameService
+            default:
+                return
+            }
+        default:
             return
         }
 
@@ -340,44 +379,29 @@ extension AccountSelectScreen: UICollectionViewDelegateFlowLayout {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForHeaderInSection section: Int
+        sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        if dataSource.list[section].isEmpty {
-            return .zero
-        }
-        
-        return CGSize(
-            width: collectionView.frame.size.width,
-            height: theme.headerHeight
+        return listLayout.collectionView(
+            collectionView,
+            layout: collectionViewLayout,
+            sizeForItemAt: indexPath
         )
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        if let loadingCell = cell as? LoadingCell {
+            loadingCell.startAnimating()
+        }
     }
 }
 
 extension AccountSelectScreen: SearchInputViewDelegate {
     func searchInputViewDidEdit(_ view: SearchInputView) {
-        if dataSource.isEmpty {
-            accountView.listView.contentState = .empty(searchNoContentView)
-            return
-        }
-
-        guard let query = view.text,
-            !query.isEmpty else {
-                accountView.listView.contentState = .none
-                dataSource.search(keyword: nil)
-                accountView.listView.reloadData()
-                return
-        }
-
-        dataSource.search(keyword: query)
-
-
-        if dataSource.isListEmtpy {
-            accountView.listView.contentState = .empty(searchNoContentView)
-        } else {
-            accountView.listView.contentState = .none
-        }
-
-        accountView.listView.reloadData()
+        dataController.search(query: view.text)
     }
 
     func searchInputViewDidReturn(_ view: SearchInputView) {
@@ -416,12 +440,6 @@ extension AccountSelectScreen: QRScannerViewControllerDelegate {
         displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-valid-qr".localized) { _ in
             completionHandler?()
         }
-    }
-}
-
-extension AccountSelectScreen: AccountSelectScreenDataSourceDelegate {
-    func accountSelectScreenDataSourceDidLoad(_ dataSource: AccountSelectScreenDataSource) {
-        accountView.listView.reloadData()
     }
 }
 

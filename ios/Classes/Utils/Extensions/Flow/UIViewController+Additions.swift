@@ -114,6 +114,22 @@ extension UIViewController {
 
         return safariViewController
     }
+
+    public func openInBrowser(
+        _ url: URL
+    ) {
+        if !UIApplication.shared.canOpenURL(
+            url
+        ) {
+            return
+        }
+
+        UIApplication.shared.open(
+            url,
+            options: [:],
+            completionHandler: nil
+        )
+    }
 }
 
 extension UIViewController {
@@ -132,5 +148,13 @@ extension UIViewController {
         case .testnet:
             return .darkContent
         }
+    }
+}
+
+extension UIViewController {
+    func endEditing(
+        _ force: Bool = true
+    ) {
+        view.endEditing(force)
     }
 }

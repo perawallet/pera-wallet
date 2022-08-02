@@ -74,6 +74,7 @@ extension LedgerTransactionOperation {
             }
 
             if data.isLedgerTransactionCancelledError {
+                delegate?.ledgerTransactionOperationDidRejected(self)
                 delegate?.ledgerTransactionOperation(self, didFailed: .cancelled)
             } else {
                 delegate?.ledgerTransactionOperation(self, didFailed: .closedApp)
@@ -215,6 +216,7 @@ extension LedgerTransactionOperation: LedgerAccountFetchOperationDelegate {
 protocol LedgerTransactionOperationDelegate: AnyObject {
     func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didReceiveSignature data: Data)
     func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didFailed error: LedgerOperationError)
+    func ledgerTransactionOperationDidRejected(_ ledgerTransactionOperation: LedgerTransactionOperation)
     func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didRequestUserApprovalFor ledger: String)
     func ledgerTransactionOperationDidFinishTimingOperation(_ ledgerTransactionOperation: LedgerTransactionOperation)
     func ledgerTransactionOperationDidResetOperation(_ ledgerTransactionOperation: LedgerTransactionOperation)

@@ -38,7 +38,7 @@ extension WCAlgosTransactionView {
             self.buttonsCorner = Corner(radius: 18)
             self.buttonEdgeInsets = (8, 12, 8, 12)
             self.accountInformationTheme = TitledTransactionAccountNameViewTheme()
-            self.textInformationTheme = TransactionTextInformationViewCommonTheme()
+            self.textInformationTheme = TransactionTextInformationViewTheme()
             self.amountInformationTheme = TransactionAmountInformationViewTheme()
             self.assetInformationTheme = WCAssetInformationViewTheme()
         }

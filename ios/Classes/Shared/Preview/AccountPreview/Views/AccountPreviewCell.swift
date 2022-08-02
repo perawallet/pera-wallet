@@ -31,6 +31,14 @@ final class AccountPreviewCell:
         frame: CGRect
     ) {
         super.init(frame: frame)
+
         contextView.customize(Self.theme)
+
+        let separator = Separator(
+            color: AppColors.Shared.Layer.grayLighter,
+            size: 1,
+            position: .bottom((56, 0))
+        )
+        separatorStyle = .single(separator)
     }
 }

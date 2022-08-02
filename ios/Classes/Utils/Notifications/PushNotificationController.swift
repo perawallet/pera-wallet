@@ -31,6 +31,8 @@ class PushNotificationController: NSObject {
             UserDefaults.standard.synchronize()
         }
     }
+
+    private lazy var currencyFormatter = CurrencyFormatter()
     
     private let target: ALGAppTarget
     private let session: Session
@@ -255,15 +257,30 @@ extension PushNotificationController {
             
             let transactionAmountText: String
             if let asset = detail.asset {
+                let assetFraction = asset.fractionDecimals.someInt
+
+                /// <todo>
+                /// Not sure we need this constraint, because the final number should be sent to the
+                /// formatter unless the number itself is modified.
+                var constraintRules = CurrencyFormattingContextRules()
+                constraintRules.maximumFractionDigits = assetFraction
+
+                self.currencyFormatter.formattingContext = .standalone(constraints: constraintRules)
+                self.currencyFormatter.currency = nil
+
                 let assetName = asset.name.someString
                 let assetCode = asset.code.someString
-                let fractionDecimals = asset.fractionDecimals.someInt
-                let amountText = amount
-                    .assetAmount(fromFraction: fractionDecimals)
-                    .toFractionStringForLabel(fraction: fractionDecimals).someString
-                transactionAmountText = "\(amountText) \(assetName) (\(assetCode))"
+                let amount = amount.assetAmount(fromFraction: assetFraction)
+                let amountText = self.currencyFormatter.format(amount)
+
+                transactionAmountText = "\(amountText.someString) \(assetName) (\(assetCode))"
             } else {
-                transactionAmountText = "\(amount.toAlgos.toAlgosStringForLabel.someString) Algo"
+                self.currencyFormatter.formattingContext = .standalone()
+                self.currencyFormatter.currency = AlgoLocalCurrency()
+
+                let text = self.currencyFormatter.format(amount.toAlgos)
+
+                transactionAmountText = text.someString
             }
             
             let format = failure
@@ -315,15 +332,30 @@ extension PushNotificationController {
 
             let transactionAmountText: String
             if let asset = detail.asset {
+                let assetFraction = asset.fractionDecimals.someInt
+
+                /// <todo>
+                /// Not sure we need this constraint, because the final number should be sent to the
+                /// formatter unless the number itself is modified.
+                var constraintRules = CurrencyFormattingContextRules()
+                constraintRules.maximumFractionDigits = assetFraction
+
+                self.currencyFormatter.formattingContext = .standalone(constraints: constraintRules)
+                self.currencyFormatter.currency = nil
+
                 let assetName = asset.name.someString
                 let assetCode = asset.code.someString
-                let fractionDecimals = asset.fractionDecimals.someInt
-                let amountText = amount
-                    .assetAmount(fromFraction: fractionDecimals)
-                    .toFractionStringForLabel(fraction: fractionDecimals).someString
-                transactionAmountText = "\(amountText) \(assetName) (\(assetCode))"
+                let amount = amount.assetAmount(fromFraction: assetFraction)
+                let amountText = self.currencyFormatter.format(amount)
+
+                transactionAmountText = "\(amountText.someString) \(assetName) (\(assetCode))"
             } else {
-                transactionAmountText = "\(amount.toAlgos.toAlgosStringForLabel.someString) Algo"
+                self.currencyFormatter.formattingContext = .standalone()
+                self.currencyFormatter.currency = AlgoLocalCurrency()
+
+                let text = self.currencyFormatter.format(amount.toAlgos)
+
+                transactionAmountText = text.someString
             }
             
             let message = String(

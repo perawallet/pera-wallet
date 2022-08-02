@@ -140,7 +140,7 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
             return false
         }
 
-        return algosTransactionDraft.from.hasMinAmountFields && algosTransactionDraft.isMaxTransaction
+        return algosTransactionDraft.from.hasDifferentMinBalance && algosTransactionDraft.isMaxTransaction
     }
 
     private func hasMaximumAccountAmountForTransaction() -> Bool {

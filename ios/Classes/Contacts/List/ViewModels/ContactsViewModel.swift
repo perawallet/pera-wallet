@@ -19,12 +19,18 @@ import UIKit
 import MacaroonUIKit
 
 final class ContactsViewModel: Hashable {
+    /// <note>
+    /// For uniqueness purposes, we need to store the address of the account.
+    private let underlyingAddress: String?
+
     private(set) var fullAddress: String?
     private(set) var image: UIImage?
     private(set) var name: EditText?
     private(set) var address: String?
 
     init(contact: Contact, imageSize: CGSize) {
+        self.underlyingAddress = contact.address
+
         fullAddress = contact.address
         bindImage(from: contact, with: imageSize)
         bindName(contact)
@@ -37,7 +43,7 @@ extension ContactsViewModel {
         into hasher: inout Hasher
     ) {
         hasher.combine(name)
-        hasher.combine(address)
+        hasher.combine(underlyingAddress)
     }
 
     static func == (
@@ -45,7 +51,7 @@ extension ContactsViewModel {
         rhs: ContactsViewModel
     ) -> Bool {
         return lhs.name == rhs.name &&
-        lhs.address == rhs.address
+        lhs.address == rhs.underlyingAddress
     }
 }
 

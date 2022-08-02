@@ -16,25 +16,47 @@
 //   TransactionAmountInformationViewTheme.swift
 
 import MacaroonUIKit
+import UIKit
 
-struct TransactionAmountInformationViewTheme: LayoutSheet, StyleSheet {
-    let title: TextStyle
+struct TransactionAmountInformationViewTheme:
+    LayoutSheet,
+    StyleSheet {
+    var contentPaddings: NSDirectionalEdgeInsets
+    var title: TextStyle
+    var minimumSpacingBetweenTitleAndAmount: LayoutMetric
+    var amountLeadingPadding: LayoutMetric
+    var transactionAmountViewTheme: TransactionAmountViewTheme
 
-    let amountLeadingPadding: LayoutMetric
-    let transactionAmountViewTheme: TransactionAmountViewTheme
-
-    init(_ family: LayoutFamily = LayoutFamily.getCurrentLayoutFamily(), transactionAmountViewTheme: TransactionAmountViewTheme) {
+    init(
+        _ family: LayoutFamily = LayoutFamily.getCurrentLayoutFamily(),
+        transactionAmountViewTheme: TransactionAmountViewTheme
+    ) {
+        self.contentPaddings = .zero
         self.title = [
             .textAlignment(.left),
             .textOverflow(FittingText()),
             .textColor(AppColors.Components.Text.gray),
             .font(Fonts.DMSans.regular.make(15))
         ]
+        self.minimumSpacingBetweenTitleAndAmount = 16
         self.amountLeadingPadding = 137
         self.transactionAmountViewTheme = transactionAmountViewTheme
     }
 
-    init(_ family: LayoutFamily) {
-        self.init(family, transactionAmountViewTheme: TransactionAmountViewSmallerTheme())
+    init(
+        _ family: LayoutFamily
+    ) {
+        self.init(
+            family,
+            transactionAmountViewTheme: TransactionAmountViewSmallerTheme()
+        )
+    }
+}
+
+extension TransactionAmountInformationViewTheme {
+    func configuredForInteraction() -> TransactionAmountInformationViewTheme {
+        var theme = TransactionAmountInformationViewTheme()
+        theme.contentPaddings = .init(top: 12, leading: 24, bottom: 12, trailing: 24)
+        return theme
     }
 }

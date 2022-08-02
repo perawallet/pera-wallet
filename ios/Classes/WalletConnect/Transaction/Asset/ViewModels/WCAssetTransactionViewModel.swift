@@ -37,17 +37,34 @@ class WCAssetTransactionViewModel {
     init(
         transaction: WCTransaction,
         senderAccount: Account?,
-        asset: Asset?
+        asset: Asset?,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
     ) {
         setFromInformationViewModel(from: senderAccount, and: transaction)
         setToInformationViewModel(from: senderAccount, and: transaction)
-        setBalanceInformationViewModel(from: senderAccount, and: asset)
+        setBalanceInformationViewModel(
+            from: senderAccount,
+            and: asset,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
         setAssetInformationViewModel(from: senderAccount, and: asset)
         setCloseWarningViewModel(from: transaction, and: asset)
         setRekeyWarningViewModel(from: senderAccount, and: transaction)
 
-        setAmountInformationViewModel(from: transaction, and: asset)
-        setFeeInformationViewModel(from: transaction, and: asset)
+        setAmountInformationViewModel(
+            from: transaction,
+            and: asset,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
+        setFeeInformationViewModel(
+            from: transaction,
+            and: asset,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
         setFeeWarningInformationViewModel(from: transaction)
 
         setNoteInformationViewModel(from: transaction)
@@ -106,7 +123,9 @@ class WCAssetTransactionViewModel {
 
     private func setBalanceInformationViewModel(
         from senderAccount: Account?,
-        and asset: Asset?
+        and asset: Asset?,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
     ) {
         guard let asset = asset else {
             return
@@ -120,7 +139,9 @@ class WCAssetTransactionViewModel {
                 isAlgos: false,
                 fraction: asset.presentation.decimals,
                 assetSymbol: asset.presentation.unitName
-            )
+            ),
+            currency: currency,
+            currencyFormatter: currencyFormatter
         )
 
         let balanceViewModel = TransactionAmountInformationViewModel(transactionViewModel: amountViewModel)
@@ -182,7 +203,9 @@ class WCAssetTransactionViewModel {
 
     private func setAmountInformationViewModel(
         from transaction: WCTransaction,
-        and asset: Asset?
+        and asset: Asset?,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
     ) {
         guard
             let asset = asset,
@@ -196,7 +219,9 @@ class WCAssetTransactionViewModel {
                 isAlgos: false,
                 fraction: asset.presentation.decimals,
                 assetSymbol: asset.presentation.unitName
-            )
+            ),
+            currency: currency,
+            currencyFormatter: currencyFormatter
         )
 
         let amountInformationViewModel = TransactionAmountInformationViewModel(transactionViewModel: amountViewModel)
@@ -206,7 +231,9 @@ class WCAssetTransactionViewModel {
 
     private func setFeeInformationViewModel(
         from transaction: WCTransaction,
-        and asset: Asset?
+        and asset: Asset?,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
     ) {
         guard let transactionDetail = transaction.transactionDetail,
               let fee = transactionDetail.fee,
@@ -219,7 +246,9 @@ class WCAssetTransactionViewModel {
                 amount: fee.toAlgos,
                 isAlgos: true,
                 fraction: algosFraction
-            )
+            ),
+            currency: currency,
+            currencyFormatter: currencyFormatter
         )
 
         let feeInformationViewModel = TransactionAmountInformationViewModel(transactionViewModel: feeViewModel)

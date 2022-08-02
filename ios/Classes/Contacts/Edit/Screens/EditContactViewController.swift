@@ -43,7 +43,7 @@ final class EditContactViewController: BaseScrollViewController {
     override func linkInteractors() {
         keyboardController.dataSource = self
         editContactView.delegate = self
-        scrollView.touchDetectingDelegate = self
+        (scrollView as? TouchDetectingScrollView)?.touchDetectingDelegate = self
     }
 
     override func prepareLayout() {

@@ -18,6 +18,8 @@
 import UIKit
 import MacaroonUIKit
 
+/// <todo>
+/// Remove `ButtonStyles` from the project.
 enum ButtonStyles {
     case primaryButton(title: String)
     case secondaryButton(title: String)

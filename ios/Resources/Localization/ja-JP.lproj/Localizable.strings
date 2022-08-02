@@ -1,5 +1,5 @@
 /* (No Comment) */
-"account-detail-assets-search" = "資産を検索する";
+"account-detail-assets-search" = "資産の検索";
 
 /* (No Comment) */
 "account-detail-portfolio-title" = "アカウントの価値";
@@ -31,11 +31,14 @@
 /* (No Comment) */
 "account-select-clipboard-title" = "クリップボードから貼り付け";
 
-/* MARK: AccountSelect */
+/* (No Comment) */
 "account-select-header-accounts-title" = "マイアカウント";
 
 /* (No Comment) */
 "account-select-header-contacts-title" = "連絡先";
+
+/* MARK: AccountSelect */
+"account-select-header-matched-accounts-title" = "一致したアカウント";
 
 /* (No Comment) */
 "account-select-header-search-title" = "ウォレットアドレスの検索または入力";
@@ -161,6 +164,12 @@
 "asset-all-title" = "すべて";
 
 /* (No Comment) */
+"asset-confirmation-not-fetched" = "資産を取得できませんでした。後でもう一度お試しください。";
+
+/* (No Comment) */
+"asset-confirmation-not-found" = "資産が見つかりません。";
+
+/* (No Comment) */
 "asset-copy-id" = "IDをコピー";
 
 /* (No Comment) */
@@ -173,7 +182,7 @@
 "asset-id-copied-title" = "IDがクリップボードにコピーされました";
 
 /* (No Comment) */
-"asset-manage-button" = "Manage";
+"asset-manage-button" = "管理";
 
 /* (No Comment) */
 "asset-min-transaction-error-message" = "この資産を追加するには、最低でも%@ Algosが必要です。";
@@ -191,13 +200,13 @@
 "asset-not-found-title" = "資産が見つかりません";
 
 /* (No Comment) */
-"asset-remove-confirmation-title" = "資産の管理";
+"asset-remove-confirmation-title" = "資産の削除";
 
 /* (No Comment) */
 "asset-remove-subtitle" = "資産を削除するには、まずその資産の残高を他の口座に移す必要があります。";
 
 /* (No Comment) */
-"asset-remove-title" = "資産の管理";
+"asset-remove-title" = "資産の削除";
 
 /* (No Comment) */
 "asset-remove-transaction-warning" = "%@から%@を削除しようとしています。再度追加しない限り、このアカウントからこの資産を取引することはできません。";
@@ -230,10 +239,10 @@
 "asset-support-title" = "アカウントはこの資産を受け入れません";
 
 /* (No Comment) */
-"asset-support-your-add-message" = "この資産を追加して再度お試しください。";
+"asset-support-your-add-message" = "この資産はアカウントに含まれていません。この資産を追加してもう一度お試しください。";
 
 /* (No Comment) */
-"asset-support-your-add-title" = "アカウントにはこの資産が含まれていません";
+"asset-support-your-add-title" = "この資産はアカウントに含まれていません";
 
 /* MARK: Asset */
 "asset-title" = "資産";
@@ -246,6 +255,9 @@
 
 /* (No Comment) */
 "asset-you-already-own-message" = "すでにこの資産を所有しています";
+
+/* (No Comment) */
+"assets-title" = "資産";
 
 /* (No Comment) */
 "back-up-phrase-qr" = "QRを表示";
@@ -353,7 +365,7 @@
 "collectible-approve-transaction-fee" = "トランザクション手数料";
 
 /* (No Comment) */
-"collectible-approve-transaction-opt-out" = "Opt out from the NFT";
+"collectible-approve-transaction-opt-out" = "NFTをオプトアウトする";
 
 /* (No Comment) */
 "collectible-approve-transaction-sender" = "送信者アカウント";
@@ -386,7 +398,7 @@
 "collectible-detail-error-not-owner" = "まだこのNFTの所有者ではありませんが、オプトインしています。これでウォレットに転送可能です。";
 
 /* (No Comment) */
-"collectible-detail-error-not-owner-watch-account" = "This watch account has opted in for this NFT, however doesn't own it.";
+"collectible-detail-error-not-owner-watch-account" = "このウォッチアカウントはこのNFTをオプトインしていますが、所有していません。";
 
 /* (No Comment) */
 "collectible-detail-nft-explorer" = "NFTExplorerで表示する";
@@ -419,43 +431,43 @@
 "collectible-detail-share" = "シェア";
 
 /* (No Comment) */
-"collectible-detail-show-on" = "Show on";
+"collectible-detail-show-on" = "表示方法";
 
 /* (No Comment) */
-"collectible-detail-tap-3D" = "Tap media to view in 3D mode";
+"collectible-detail-tap-3D" = "3Dカードモード";
 
 /* (No Comment) */
 "collectible-detail-view-transaction" = "トランザクションを見る";
 
 /* MARK: Collectible Filter Selection */
-"collectible-filter-selection-title" = "Filter";
+"collectible-filter-selection-title" = "フィルター";
 
 /* (No Comment) */
-"collectible-filter-selection-toggle-description" = "You can show/hide NFTs that are opted-in but not owned";
+"collectible-filter-selection-toggle-description" = "オプトインしているが、所有していないNFTの表示/非表示が可能です";
 
 /* (No Comment) */
-"collectible-filter-selection-toggle-title" = "Display opted-in NFTs";
+"collectible-filter-selection-toggle-title" = "オプトインしたNFTを表示";
 
 /* MARK: Collectible List */
 "collectible-list-item-pending-title" = "保留中";
 
 /* (No Comment) */
-"collectible-opt-in-info-description" = "To avoid spam transactions, Algorand blockchain only allows you to send and receive transactions for assets that have been previously opted-in to.";
+"collectible-opt-in-info-description" = "スパムトランザクションを避けるため、Algorandブロックチェーンでは、事前にオプトインした資産のトランザクションのみ送受信が可能です。";
 
 /* MARK: Collectible Opt In Info */
 "collectible-opt-in-info-title" = "オプトインに関する情報";
 
 /* (No Comment) */
-"collectible-opt-out-info-description" = "Algorand blockchain requires an account to opt in to an ASA before it can receive it. Now that you've transferred this NFT to another account, you can opt out from it. Opting out requires an additional transaction.";
+"collectible-opt-out-info-description" = "Algorandブロックチェーンは、ASAを受け取る前にそのアカウントでオプトインする必要があります。このNFTを別のアカウントに転送したので、オプトアウトが可能です。オプトアウトするには、追加のトランザクションが必要です。";
 
 /* MARK: Collectible Opt Out Info */
-"collectible-opt-out-info-title" = "Opt out from the NFT ";
+"collectible-opt-out-info-title" = "NFTをオプトアウトする ";
 
 /* (No Comment) */
-"collectible-receive-account-list-info" = "ウォレットに転送するには、NFT ASA IDをオプトインする必要があります。";
+"collectible-receive-account-list-info" = "NFTを受け取るには、お客様のアカウントにオプトインする必要があります。必ず資産IDをご確認ください。";
 
 /* (No Comment) */
-"collectible-receive-asset-list-info" = "ウォレットに転送するには、NFT ASA IDをオプトインする必要があります。検索バーにASA IDを貼り付けてください。";
+"collectible-receive-asset-list-info" = "オプトインしたいNFTの名前または資産IDを、下の検索バーに貼り付けて検索できます。";
 
 /* (No Comment) */
 "collectible-receive-asset-list-selected-account" = "選択したアカウント";
@@ -506,9 +518,9 @@
 "collectibles-empty-body" = "NFTギャラリーへようこそ！NFTはまだありません。利用可能なすべてのNFTがここに表示されます。";
 
 /* (No Comment) */
-"collectibles-empty-secondary-action-title" = "Show hidden NFTs (%@)";
+"collectibles-empty-secondary-action-title" = "隠されたNFTを表示 (%@)";
 
-/* (No Comment) */
+/* MARK: Collectible Common */
 "collectibles-empty-title" = "コレクティブル";
 
 /* (No Comment) */
@@ -684,6 +696,21 @@
 
 /* (No Comment) */
 "governance-banner-title" = "Algorand Governance Programが始まります！";
+
+/* (No Comment) */
+"inner-transaction-plural-count" = "%@内部トランザクション";
+
+/* (No Comment) */
+"inner-transaction-singular-count" = "1内部トランザクション";
+
+/* MARK: Inner Transactions */
+"inner-transactions-title" = "内部トランザクション";
+
+/* (No Comment) */
+"inner-txns-plural-count" = "%@内部トランザクション";
+
+/* (No Comment) */
+"inner-txns-singular-count" = "1内部トランザクション";
 
 /* (No Comment) */
 "internet-connection-error-detail" = "サーバーにアクセスできません。インターネットに接続されていることを確認してください";
@@ -1088,10 +1115,10 @@
 "notification-support-success" = "%@がアカウントに%@を追加しました。送信可能です。";
 
 /* (No Comment) */
-"notifications-asset-not-found-description" = "The history for this specific asset is not available.";
+"notifications-asset-not-found-description" = "この特定の資産に関する履歴はありません。";
 
 /* (No Comment) */
-"notifications-asset-not-found-title" = "Asset history not available";
+"notifications-asset-not-found-title" = "資産の履歴がありません";
 
 /* (No Comment) */
 "notifications-empty-subtitle" = "最近のトランザクション、資産リクエスト、その他の通知がここに表示されます。";
@@ -1105,14 +1132,20 @@
 /* (No Comment) */
 "number-abbreviation-billion" = "B";
 
-/* (No Comment) */
+/* MARK: Number Abbreviation */
 "number-abbreviation-million" = "M";
 
-/* MARK: Number Abbreviation */
-"number-abbreviation-thousand" = "K";
+/* (No Comment) */
+"number-abbreviation-quadrillion" = "Qa";
+
+/* (No Comment) */
+"number-abbreviation-quintillion" = "Qi";
 
 /* (No Comment) */
 "number-abbreviation-trillion" = "T";
+
+/* (No Comment) */
+"opitons-collectibles-filter" = "NFTのフィルタリング";
 
 /* (No Comment) */
 "options-auth-account" = "Authアカウントアドレス";
@@ -1127,6 +1160,9 @@
 "options-manage-assets" = "資産の管理";
 
 /* (No Comment) */
+"options-manage-collectibles" = "コレクションの管理";
+
+/* (No Comment) */
 "options-mute-notification" = "通知のミュート";
 
 /* (No Comment) */
@@ -1139,16 +1175,16 @@
 "options-remove-account" = "アカウントの削除";
 
 /* (No Comment) */
-"options-remove-assets" = "資産の削除";
-
-/* (No Comment) */
 "options-remove-main-account-explanation" = "メインアカウントを削除しようとしています。この選択を続行してもよろしいですか？";
 
 /* (No Comment) */
 "options-remove-watch-account-explanation" = "ウォッチアカウントを削除しようとしています。この選択を続行してもよろしいですか？";
 
 /* (No Comment) */
-"options-show-qr" = "QRコードを表示";
+"options-show-qr" = "アドレスを表示";
+
+/* (No Comment) */
+"options-sort-title" = "ソート";
 
 /* MARK: Options */
 "options-title" = "アカウント設定";
@@ -1283,7 +1319,7 @@
 "portfolio-asset-holdings-title" = "保有資産";
 
 /* (No Comment) */
-"portfolio-calculation-description" = "ポートフォリオの合計額は、お客様のアカウントで利用可能なすべての資産とAlgoを合計して算出されます。複数のウォレットを保有している場合は、すべてのアカウントの合計がポートフォリオ合計額となります。\n\n資産価格は、Tinymanから取得した日々の価格に基づいて見積もられます。一部の資産価格が公開されていない場合があり、ポートフォリオの合計値は推定値としてお考え下さい。\n\nウォッチアカウントはお客様のポートフォリオの一部とは見なされず、ポートフォリオ合計値の算出には含まれません。";
+"portfolio-calculation-description" = "合計ポートフォリオ評価額は、ウォッチアカウントを除く、お使いのアカウントで利用可能なすべての資産評価額とAlgoを合算して算出されます。\n\n資産評価額は、複数のエコシステムパートナーから取得した日々の評価額に基づいて計算されています。一部の資産評価額は取得できないため、合計ポートフォリオ評価額は推計としてお考え下さい。";
 
 /* MARK: PortfolioDescription */
 "portfolio-calculation-title" = "ポートフォリオ価値の算出方法";
@@ -1339,8 +1375,23 @@
 /* (No Comment) */
 "qr-scan-message-text" = "このページからのみQRをスキャンできます。QRを表示するには、アカウントのアイコンを選択してください";
 
+/* (No Comment) */
+"qr-scan-option-add-contact" = "新しい連絡先の追加";
+
+/* (No Comment) */
+"qr-scan-option-add-watch" = "ウォッチアカウントの追加";
+
+/* (No Comment) */
+"qr-scan-option-scanned-title" = "アカウントアドレスをスキャンしました";
+
+/* (No Comment) */
+"qr-scan-option-send-transaction" = "トランザクションの送信";
+
+/* (No Comment) */
+"qr-scan-option-title" = "アドレスをスキャンしました！";
+
 /* MARK: QR Scanning */
-"qr-scan-overlay-title" = "スキャンするコードを探す";
+"qr-scan-overlay-title" = "QRコードのスキャン";
 
 /* (No Comment) */
 "qr-scan-should-scan-address-message" = "有効なアカウントアドレスをスキャンする必要があります";
@@ -1353,6 +1404,24 @@
 
 /* (No Comment) */
 "qr-scan-title" = "QRコードのスキャン";
+
+/* (No Comment) */
+"quick-actions-address-title" = "アドレス";
+
+/* MARK: QuickActions */
+"quick-actions-buy-algo-title" = "ALGOを購入する";
+
+/* (No Comment) */
+"quick-actions-more-title" = "さらに詳しく";
+
+/* (No Comment) */
+"quick-actions-receive-title" = "受け取る";
+
+/* (No Comment) */
+"quick-actions-scan-qr-title" = "QRコードのスキャン";
+
+/* (No Comment) */
+"quick-actions-send-title" = "送信";
 
 /* (No Comment) */
 "recover-copy-error" = "コピーされたテキストは、25語の有効なパスフレーズではありません。有効なパスフレーズをコピーして、再試行してください。";
@@ -1376,7 +1445,10 @@
 "recover-from-seed-verify-exist-error" = "このアカウントはすでに存在します。";
 
 /* (No Comment) */
-"recover-from-seed-verify-pop-up-description-watch-account" = "ウォッチアカウントは正常に追加されました。";
+"recover-from-seed-verify-pop-up-description-watch-account-add" = "ウォッチアカウントは正常に追加されました。";
+
+/* (No Comment) */
+"recover-from-seed-verify-pop-up-description-watch-account-initialize" = "Pera Walletへようこそ！\nウォッチアカウントは正常に追加されました。";
 
 /* (No Comment) */
 "recover-from-seed-verify-pop-up-explanation" = "Peraへようこそ！\nお客様のアカウントはすぐにお使いいただけます。";
@@ -1428,6 +1500,12 @@
 
 /* (No Comment) */
 "request-title" = "リクエスト";
+
+/* (No Comment) */
+"required-min-balance-description" = "トランザクション手数料をまかなうために十分な残高がありません。Algorandブロックチェーンでは、トランザクションをサポートするために0.001 Algosを必要とします。トランザクション手数料をサポートするために、Algo残高を増やしてください。\n\nアカウントに関連するdAppsとスマートコントラクト（別のエコシステムのアプリオプトインした場合、各資産によって必要な最低残高が0.1 Algo増加します。このアカウントに必要な最低残高を減らすには、最低残高を増加させている資産またはdAppsをオプトアウトする必要があります。";
+
+/* (No Comment) */
+"required-min-balance-title" = "残高が低いです";
 
 /* (No Comment) */
 "reward-list-title" = "リワード";
@@ -1595,7 +1673,22 @@
 "settings-currency" = "通貨";
 
 /* (No Comment) */
+"settings-currency-description" = "お使いのメイン通貨は%@、サブ通貨は%@です";
+
+/* (No Comment) */
 "settings-currency-header-title" = "通貨設定";
+
+/* (No Comment) */
+"settings-currency-not-found-detail" = "別の通貨でお試しください";
+
+/* (No Comment) */
+"settings-currency-not-found-title" = "通貨が見つかりません";
+
+/* (No Comment) */
+"settings-currency-search" = "検索";
+
+/* (No Comment) */
+"settings-currency-title" = "メイン通貨";
 
 /* (No Comment) */
 "settings-delete-data-title" = "全データの削除";
@@ -1696,6 +1789,15 @@
 /* MARK: SingleTransactionRequestMARK: SingleTransactionRequest */
 "single-transaction-request-show-detail-title" = "トランザクションの詳細を表示";
 
+/* MARK: Sort Account List */
+"sort-account-list-manually-header-title" = "アカウントを手動で整理する";
+
+/* (No Comment) */
+"story-copy-address-description" = "アカウントボックスを長押しすることで、アカウントアドレスを素早くコピーできます";
+
+/* MARK: Story */
+"story-copy-address-title" = "長押しして“アドレスをコピー”";
+
 /* MARK: Terms and Services */
 "terms-and-services-title" = "利用規約とサービス";
 
@@ -1721,10 +1823,22 @@
 "title-algorand-value" = "価値";
 
 /* (No Comment) */
+"title-alphabetically-a-to-z" = "AからZのアルファベット順";
+
+/* (No Comment) */
+"title-alphabetically-z-to-a" = "ZからAのアルファベット順";
+
+/* (No Comment) */
+"title-app-call" = "アプリ呼び出し";
+
+/* (No Comment) */
 "title-approve" = "承認する";
 
 /* (No Comment) */
 "title-asset-id" = "資産ID";
+
+/* (No Comment) */
+"title-buy-algo" = "ALGOを購入する";
 
 /* (No Comment) */
 "title-cancel" = "キャンセル";
@@ -1732,7 +1846,7 @@
 /* (No Comment) */
 "title-close" = "閉じる";
 
-/* MARK: Collectible Common */
+/* (No Comment) */
 "title-collectibles" = "コレクティブル";
 
 /* (No Comment) */
@@ -1769,12 +1883,6 @@
 "title-dont-show-again" = "今後表示しない";
 
 /* (No Comment) */
-"required-min-balance-title" = "Low Balance";
-
-/* (No Comment) */
-"required-min-balance-description" = "You don't have enough balance to support the transaction fees. The Algorand blockchain requires 0.001 Algos to support a transaction. You can increase your Algo balance to support this transaction fee.\n\nIf you opted-in for dApps and smart contracts associated with your account (from different ecosystem apps), each asset increases the minimum balance required by 0.1 Algo. To reduce the minimum balance required for this account, you must opt-out from the assets or dApps causing that increased minimum balance.";
-
-/* (No Comment) */
 "title-edit" = "編集";
 
 /* (No Comment) */
@@ -1793,10 +1901,10 @@
 "title-generic-api-error" = "予期せぬエラーです";
 
 /* (No Comment) */
-"title-generic-error" = "Something went wrong";
+"title-generic-error" = "問題が発生しました";
 
 /* (No Comment) */
-"title-generic-response-description" = "We couldn't fetch some of the assets. Please try again.";
+"title-generic-response-description" = "一部の資産を取得できませんでした。もう一度お試しください。";
 
 /* (No Comment) */
 "title-go-to-accounts" = "アカウントに移動";
@@ -1806,6 +1914,12 @@
 
 /* (No Comment) */
 "title-got-it" = "了解です！";
+
+/* (No Comment) */
+"title-highest-value-to-lowest" = "最高値から最低値へ";
+
+/* (No Comment) */
+"title-home" = "ホーム";
 
 /* (No Comment) */
 "title-i-understand" = "分かりました";
@@ -1823,10 +1937,25 @@
 "title-learn-more" = "さらに詳しく";
 
 /* (No Comment) */
+"title-ledger-account" = "Ledgerアカウント";
+
+/* (No Comment) */
 "title-loading" = "読み込み中";
 
 /* (No Comment) */
+"title-lowest-value-to-highest" = "最低値から最高値へ";
+
+/* (No Comment) */
+"title-manually" = "手動で";
+
+/* (No Comment) */
+"title-more" = "さらに詳しく";
+
+/* (No Comment) */
 "title-new-uppercased" = "新";
+
+/* (No Comment) */
+"title-newest-to-oldest" = "新しい順";
 
 /* (No Comment) */
 "title-next" = "次";
@@ -1842,6 +1971,9 @@
 
 /* (No Comment) */
 "title-ok" = "OK";
+
+/* (No Comment) */
+"title-oldest-to-newest" = "古い順";
 
 /* (No Comment) */
 "title-on" = "オン";
@@ -1862,10 +1994,16 @@
 "title-plus-collectible-singular-count" = "%@ NFT";
 
 /* (No Comment) */
+"title-press-hold-copy-address" = "長押ししてアドレスをコピー";
+
+/* (No Comment) */
 "title-preview" = "プレビュー";
 
 /* (No Comment) */
 "title-preview-and-sign-with-ledger-title" = "プレビューおよびLedgerでの署名";
+
+/* (No Comment) */
+"title-price" = "価格";
 
 /* (No Comment) */
 "title-proceed" = "進む";
@@ -1874,10 +2012,10 @@
 "title-receive" = "受け取る";
 
 /* (No Comment) */
-"title-remove" = "削除";
+"title-rekeyed-account" = "再キー済アカウント";
 
 /* (No Comment) */
-"title-remove-assets" = "資産の削除";
+"title-remove" = "削除";
 
 /* (No Comment) */
 "title-retry" = "リトライ";
@@ -1898,10 +2036,16 @@
 "title-show-all-detail" = "すべての詳細を表示";
 
 /* (No Comment) */
+"title-show-more-assets" = "さらに+%@トランザクションを表示する";
+
+/* (No Comment) */
 "title-show-transaction-detail" = "トランザクションの詳細を表示";
 
 /* (No Comment) */
 "title-skip" = "スキップ";
+
+/* (No Comment) */
+"title-sort" = "ソート";
 
 /* (No Comment) */
 "title-start-using-pera-wallet" = "Pera Walletの使用を開始する";
@@ -1927,7 +2071,7 @@
 /* (No Comment) */
 "title-verify" = "検証";
 
-/* MARK: Watch Account */
+/* (No Comment) */
 "title-watch-account" = "ウォッチアカウント";
 
 /* MARK: Common */
@@ -1964,9 +2108,6 @@
 "transaction-detail-completed" = "完了";
 
 /* (No Comment) */
-"transaction-detail-copy-tooltip" = "長押しでクリップボードにコピー";
-
-/* (No Comment) */
 "transaction-detail-date" = "日付";
 
 /* (No Comment) */
@@ -1982,22 +2123,28 @@
 "transaction-detail-id" = "トランザクションID";
 
 /* (No Comment) */
-"transaction-detail-id-copied" = "トランザクションIDがクリップボードにコピーされました";
+"transaction-detail-id-copied-title" = "IDがクリップボードにコピーされました";
 
 /* (No Comment) */
-"transaction-detail-id-copied-title" = "IDがクリップボードにコピーされました";
+"transaction-detail-inner-transaction-title" = "内部トランザクション";
 
 /* (No Comment) */
 "transaction-detail-note" = "メモ";
 
 /* (No Comment) */
-"transaction-detail-note-copied" = "トランザクションメモがクリップボードにコピーされました";
+"transaction-detail-note-copied" = "備考をクリップボードにコピー";
+
+/* (No Comment) */
+"transaction-detail-parent-id" = "親トランザクションID";
 
 /* (No Comment) */
 "transaction-detail-pending" = "保留中";
 
 /* (No Comment) */
 "transaction-detail-pending-transactions" = "保留中のトランザクション";
+
+/* (No Comment) */
+"transaction-detail-plural-inner-transaction-detail" = "%@トランザクションを表示する";
 
 /* (No Comment) */
 "transaction-detail-receive" = "受け取る";
@@ -2013,6 +2160,9 @@
 
 /* (No Comment) */
 "transaction-detail-sender" = "送信者";
+
+/* (No Comment) */
+"transaction-detail-singular-inner-transaction-detail" = "1トランザクションを表示する";
 
 /* (No Comment) */
 "transaction-detail-status" = "状態";
@@ -2057,7 +2207,7 @@
 "transaction-filter-option-yesterday" = "昨日";
 
 /* MARK: Transaction Filter */
-"transaction-filter-title-sort" = "Filter by Date";
+"transaction-filter-title-sort" = "日付でフィルタリング";
 
 /* (No Comment) */
 "transaction-filter-tooltip" = "トランザクション履歴をフィルタリングできるようになりました";
@@ -2070,6 +2220,42 @@
 
 /* (No Comment) */
 "transaction-id-open-goalseeker" = "GoalSeekerで開く";
+
+/* (No Comment) */
+"transaction-item-app-id-title" = "アプリケーションID: %d";
+
+/* (No Comment) */
+"transaction-item-opt-in" = "オプトイン / セルフ送信";
+
+/* (No Comment) */
+"transaction-item-opt-out" = "オプトアウト";
+
+/* (No Comment) */
+"transaction-item-receive-opt-out" = "受け取る（オプトアウト）";
+
+/* (No Comment) */
+"transaction-item-self-transfer" = "セルフ送信";
+
+/* (No Comment) */
+"transaction-menu-copy-id" = "IDをコピー";
+
+/* (No Comment) */
+"transaction-menu-copy-note" = "備考をコピー";
+
+/* MARK: Transaction Options */
+"transaction-option-list-buy-algo-subtitle" = "クレジットカードまたは銀行振込で暗号通貨を購入する";
+
+/* (No Comment) */
+"transaction-option-list-more-subtitle" = "その他のアクションを表示する";
+
+/* (No Comment) */
+"transaction-option-list-receive-subtitle" = "アカウントアドレスの表示またはコピー";
+
+/* (No Comment) */
+"transaction-option-list-scan-qr-code-subtitle" = "WalletConnectを使うか、アカウントアドレスをスキャンする";
+
+/* (No Comment) */
+"transaction-option-list-send-subtitle" = "Algoまたは任意のASAを別のアカウントに";
 
 /* (No Comment) */
 "transaction-request-signing-alert-title" = "よろしいですか？";
@@ -2432,6 +2618,9 @@
 "wallet-connect-transaction-title-asset" = "アセット転送リクエスト";
 
 /* (No Comment) */
+"wallet-connect-transaction-title-asset-config" = "資産の構成";
+
+/* (No Comment) */
 "wallet-connect-transaction-title-asset-url" = "アセットURL";
 
 /* (No Comment) */
@@ -2486,7 +2675,7 @@
 "wallet-connect-transaction-warning-high-fee" = "このトランザクション手数料は、通常の手数料である0.001 Algoよりも高くなっています。";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-initial-description" = "External applications, also called dApps, can initiate transaction requests independently from Pera Wallet. Please ensure you review these transactions carefully before approving and signing them.\n\nAll transactions are irreversible. As these requests are outside Pera Wallet's control, never approve transactions from a dApp you don’t know.";
+"wallet-connect-transaction-warning-initial-description" = "dAppsとも呼ばれる外部アプリケーションは、Pera Walletから独立してトランザクション要求を行えます。これらのトランザクションを承認し、署名する前に、内容を慎重にご確認ください。\n\nすべてのトランザクションは取消不可能です。これらの要求はPera Walletの管轄外にあるため、知らないdAppからのトランザクションは絶対に承認しないでください。";
 
 /* (No Comment) */
 "wallet-connect-transaction-warning-initial-title" = "トランザクションリクエストに関するFAQ";
@@ -2500,7 +2689,7 @@
 /* (No Comment) */
 "watch-account-button" = "ウォッチアカウントの作成";
 
-/* (No Comment) */
+/* MARK: Watch Account */
 "watch-account-create" = "ウォッチアカウントの\n作成";
 
 /* (No Comment) */
@@ -2524,3 +2713,4 @@
 /* (No Comment) */
 "wc-transaction-request-signed-warning-title" = "トランザクションを処理しています！";
 
+"wallet-connect-transaction-error-invalid-group" = "It looks like this transaction group contains one or more missing transactions. For your security, Pera Wallet won’t allow you to sign transaction groups that have obscured details. Please contact the dApp that sent this transaction so they can rectify this problem.";

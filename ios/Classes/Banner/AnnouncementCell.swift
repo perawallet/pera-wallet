@@ -18,10 +18,45 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class GenericAnnouncementCell:
+class AnnouncementCell:
     CollectionCell<AnnouncementView>,
     ViewModelBindable,
     UIInteractionObservable {
+    private lazy var topBackgroundView = UIView()
+
+    override class var contextPaddings: LayoutPaddings {
+        return (0, 24, 0, 24)
+    }
+
+    override init(
+        frame: CGRect
+    ) {
+        super.init(frame: frame)
+        addTopBackgroundView()
+    }
+}
+
+extension AnnouncementCell {
+    private func addTopBackgroundView() {
+        topBackgroundView.backgroundColor = AppColors.Shared.Helpers.heroBackground.uiColor
+
+        contentView.insertSubview(
+            topBackgroundView,
+            at: 0
+        )
+        topBackgroundView.snp.makeConstraints {
+            $0.matchToHeight(
+                of: contentView,
+                multiplier: 0.5
+            )
+            $0.top == 0
+            $0.leading == 0
+            $0.trailing == 0
+        }
+    }
+}
+
+final class GenericAnnouncementCell: AnnouncementCell {
     static let theme = GenericAnnouncementViewTheme()
     
     override init(
@@ -32,10 +67,7 @@ final class GenericAnnouncementCell:
     }
 }
 
-final class GovernanceAnnouncementCell:
-    CollectionCell<AnnouncementView>,
-    ViewModelBindable,
-    UIInteractionObservable {
+final class GovernanceAnnouncementCell: AnnouncementCell {
     static let theme = GovernanceAnnouncementViewTheme()
     
     override init(

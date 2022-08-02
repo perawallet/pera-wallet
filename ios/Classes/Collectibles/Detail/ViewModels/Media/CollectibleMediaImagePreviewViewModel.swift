@@ -22,6 +22,7 @@ import MacaroonURLImage
 protocol CollectibleMediaImagePreviewViewModel: ViewModel {
     var image: ImageSource? { get set }
     var isOwned: Bool { get set }
+    var isFullScreenBadgeHidden: Bool { get set }
 }
 
 extension CollectibleMediaImagePreviewViewModel {
@@ -29,6 +30,12 @@ extension CollectibleMediaImagePreviewViewModel {
         _ asset: CollectibleAsset
     ) {
         isOwned = asset.isOwned
+    }
+
+    mutating func bindIsFullScreenBadgeHidden(
+        _ asset: CollectibleAsset
+    ) {
+        isFullScreenBadgeHidden = !asset.mediaType.isSupported
     }
 
     func getPlaceholder(

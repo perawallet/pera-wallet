@@ -20,7 +20,7 @@ import MagpieCore
 import MacaroonUtils
 
 final class NotificationDetail: ALGAPIModel {
-    let type: NotificationType
+    var type: NotificationType
     let senderAddress: String?
     let receiverAddress: String?
     let asset: NotificationAsset?

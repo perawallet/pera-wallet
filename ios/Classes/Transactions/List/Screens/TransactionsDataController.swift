@@ -44,9 +44,11 @@ enum TransactionsItem: Hashable {
     case algosInfo(AlgosDetailInfoViewModel)
     case assetInfo(AssetDetailInfoViewModel)
     case filter(TransactionHistoryFilterViewModel)
-    case transaction(TransactionHistoryContextViewModel)
-    case pending(TransactionHistoryContextViewModel)
-    case reward(TransactionHistoryContextViewModel)
+    case algoTransaction(AlgoTransactionItemViewModel)
+    case assetTransaction(AssetTransactionItemViewModel)
+    case assetConfigTransaction(AssetConfigTransactionItemViewModel)
+    case appCallTransaction(AppCallTransactionItemViewModel)
+    case pendingTransaction(PendingTransactionItemViewModel)
     case title(TransactionHistoryTitleContextViewModel)
     case empty(EmptyState)
     case nextList
@@ -54,7 +56,6 @@ enum TransactionsItem: Hashable {
 
 enum EmptyState: Hashable {
     case noContent
-    case loading
     case transactionHistoryLoading
     case algoTransactionHistoryLoading
     case assetTransactionHistoryLoading
@@ -62,5 +63,4 @@ enum EmptyState: Hashable {
 
 enum TransactionsDataControllerEvent {
     case didUpdateSnapshot(TransactionsDataController.Snapshot)
-    case didUpdateReward(Decimal)
 }

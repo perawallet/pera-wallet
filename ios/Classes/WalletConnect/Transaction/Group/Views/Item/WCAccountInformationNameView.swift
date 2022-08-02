@@ -65,7 +65,7 @@ extension WCAccountInformationNameView {
 
 extension WCAccountInformationNameView {
     func bind(_ viewModel: AccountNameViewModel) {
-        imageView.image = viewModel.image
+        imageView.load(from: viewModel.image)
         nameLabel.text = viewModel.name
     }
 }

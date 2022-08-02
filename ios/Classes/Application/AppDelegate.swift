@@ -66,7 +66,8 @@ class AppDelegate:
         sharedDataController: sharedDataController,
         walletConnector: walletConnector,
         loadingController: loadingController,
-        bannerController: bannerController
+        bannerController: bannerController,
+        toastPresentationController: toastPresentationController
     )
     
     private(set) lazy var firebaseAnalytics = FirebaseAnalytics()
@@ -75,9 +76,10 @@ class AppDelegate:
 
     private lazy var session = Session()
     private lazy var api = ALGAPI(session: session)
-    private lazy var sharedDataController = SharedAPIDataController(session: session, api: api)
+    private lazy var sharedDataController = createSharedDataController()
     private lazy var walletConnector = WalletConnector()
     private lazy var loadingController: LoadingController = BlockingLoadingController(presentingView: window!)
+    private lazy var toastPresentationController = ToastPresentationController(presentingView: window!)
     private lazy var bannerController = BannerController(presentingView: window!)
     
     private lazy var router =
@@ -187,22 +189,58 @@ class AppDelegate:
         open url: URL,
         options: [UIApplication.OpenURLOptionsKey: Any] = [:]
     ) -> Bool {
-        guard let scheme = url.scheme else {
+
+        if let buyAlgoParams = url.extractBuyAlgoParamsFromMoonPay() {
+            NotificationCenter.default.post(
+                name: .didRedirectFromMoonPay,
+                object: self,
+                userInfo: [BuyAlgoParams.notificationObjectKey: buyAlgoParams]
+            )
+
+            return true
+        }
+
+        let deeplinkQR = DeeplinkQR(url: url)
+
+        if let walletConnectURL = deeplinkQR.walletConnectUrl() {
+            receive(deeplinkWithSource: .walletConnectSessionRequest(walletConnectURL))
+            return true
+        }
+
+        if let qrText = deeplinkQR.qrText() {
+            receive(deeplinkWithSource: .qrText(qrText))
+            return true
+        }
+
+        return false
+    }
+
+    func application(
+        _ application: UIApplication,
+        continue userActivity: NSUserActivity,
+        restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void
+    ) -> Bool {
+        guard
+            userActivity.activityType == NSUserActivityTypeBrowsingWeb,
+            let incomingURL = userActivity.webpageURL
+        else {
             return false
         }
+
+        let deeplinkQR = DeeplinkQR(url: incomingURL)
+
+        if let walletConnectURL = deeplinkQR.walletConnectUrl() {
+            receive(deeplinkWithSource: .walletConnectSessionRequest(walletConnectURL))
+            return true
+        }
+
+        if let qrText = deeplinkQR.qrText() {
+            receive(deeplinkWithSource: .qrText(qrText))
+            return true
+        }
+
+        return false
         
-        /// <todo>
-        /// Schemes should be controlled from a single point.
-        switch scheme {
-        case "algorand":
-            receive(deeplinkWithSource: .url(url))
-            return true
-        case "algorand-wc":
-            receive(deeplinkWithSource: .walletConnectSessionRequest(url))
-            return true
-        default:
-            return false
-        }
     }
 }
 
@@ -219,7 +257,13 @@ extension AppDelegate {
         if let userInfo = options?[.remoteNotification] as? DeeplinkSource.UserInfo {
             src = .remoteNotification(userInfo, waitForUserConfirmation: false)
         } else if let url = options?[.url] as? URL {
-            src = .url(url)
+            let deeplinkQR = DeeplinkQR(url: url)
+
+            if let qrText = deeplinkQR.qrText() {
+                src = .qrText(qrText)
+            } else {
+                src = nil
+            }
         } else {
             src = nil
         }
@@ -430,6 +474,11 @@ extension AppDelegate {
             authChecker: ALGAppAuthChecker(session: session),
             uiHandler: self
         )
+    }
+
+    private func createSharedDataController() -> SharedDataController {
+        let currency = CurrencyAPIProvider(session: session, api: api)
+        return SharedAPIDataController(currency: currency, session: session, api: api)
     }
 }
 

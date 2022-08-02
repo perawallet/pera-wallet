@@ -22,7 +22,7 @@ import MagpieHipo
 
 final class ALGAPIInterceptor: APIInterceptor {
 
-    private let sharedHeaders: Headers = [AcceptHeader.json(), AcceptEncodingHeader.gzip(), ContentTypeHeader.json()]
+    private let sharedHeaders: Headers = [AcceptJSONHeader(), AcceptGZIPEncodingHeader(), ContentTypeJSONHeader()]
 
     private lazy var apiBase = ALGAPIBase()
 
@@ -42,7 +42,7 @@ final class ALGAPIInterceptor: APIInterceptor {
 extension ALGAPIInterceptor {
     private func setCommonHeaders(_ endpoint: EndpointOperatable) {
         for header in sharedHeaders {
-            endpoint.setAdditionalHeader(header, .alwaysOverride)
+            endpoint.setAdditionalHeader(header, policy: .alwaysOverride)
         }
     }
 
@@ -65,24 +65,24 @@ extension ALGAPIInterceptor {
 
     private func setAlgodHeaders(_ endpoint: EndpointOperatable) {
         if let token = apiBase.algodToken {
-            endpoint.setAdditionalHeader(CustomHeader(key: "X-Algo-API-Token", value: token), .alwaysOverride)
+            endpoint.setAdditionalHeader(CustomHeader(key: "X-Algo-API-Token", value: token), policy: .alwaysOverride)
         }
     }
 
     private func setIndexerHeaders(_ endpoint: EndpointOperatable) {
         if let token = apiBase.indexerToken {
-            endpoint.setAdditionalHeader(CustomHeader(key: "X-Indexer-API-Token", value: token), .alwaysOverride)
+            endpoint.setAdditionalHeader(CustomHeader(key: "X-Indexer-API-Token", value: token), policy: .alwaysOverride)
         }
     }
 
     private func setMobileHeaders(_ endpoint: EndpointOperatable) {
-        endpoint.setAdditionalHeader(NetworkHeader(apiBase.network), .setIfNotExists)
-        endpoint.setAdditionalHeader(AppNameHeader(application), .alwaysOverride)
-        endpoint.setAdditionalHeader(AppPackageNameHeader(application), .alwaysOverride)
-        endpoint.setAdditionalHeader(AppVersionHeader(application), .alwaysOverride)
-        endpoint.setAdditionalHeader(ClientTypeHeader(device), .alwaysOverride)
-        endpoint.setAdditionalHeader(DeviceOSVersionHeader(device), .alwaysOverride)
-        endpoint.setAdditionalHeader(DeviceModelHeader(device), .alwaysOverride)
+        endpoint.setAdditionalHeader(NetworkHeader(apiBase.network), policy: .setIfNotExists)
+        endpoint.setAdditionalHeader(AppNameHeader(application), policy: .alwaysOverride)
+        endpoint.setAdditionalHeader(AppPackageNameHeader(application), policy: .alwaysOverride)
+        endpoint.setAdditionalHeader(AppVersionHeader(application), policy: .alwaysOverride)
+        endpoint.setAdditionalHeader(ClientTypeHeader(device), policy: .alwaysOverride)
+        endpoint.setAdditionalHeader(DeviceOSVersionHeader(device), policy: .alwaysOverride)
+        endpoint.setAdditionalHeader(DeviceModelHeader(device), policy: .alwaysOverride)
     }
 }
 

@@ -21,9 +21,11 @@ import MacaroonUtils
 
 final class AssetConfigTransaction: ALGAPIModel {
     let id: Int64?
+    let asset: AssetDetail.APIModel?
 
     init() {
         self.id = nil
+        self.asset = nil
     }
 }
 
@@ -32,5 +34,6 @@ extension AssetConfigTransaction {
         String,
         CodingKey {
         case id = "asset-id"
+        case asset = "params"
     }
 }

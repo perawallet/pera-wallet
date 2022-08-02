@@ -47,7 +47,8 @@ final class WCMainTransactionScreen: BaseViewController, Container {
     private lazy var singleTransactionFragment: WCSingleTransactionRequestScreen = {
         return WCSingleTransactionRequestScreen(
             dataSource: self.dataSource,
-            configuration: configuration
+            configuration: configuration,
+            currencyFormatter: currencyFormatter
         )
     }()
 
@@ -81,10 +82,14 @@ final class WCMainTransactionScreen: BaseViewController, Container {
 
     let dataSource: WCMainTransactionDataSource
 
+    private let currencyFormatter: CurrencyFormatter
+
     init(
         draft: WalletConnectRequestDraft,
         configuration: ViewControllerConfiguration
     ) {
+        let currencyFormatter = CurrencyFormatter()
+
         self.transactions = draft.transactions
         self.transactionRequest = draft.request
         self.transactionOption = draft.option
@@ -94,9 +99,14 @@ final class WCMainTransactionScreen: BaseViewController, Container {
             transactions: transactions,
             transactionRequest: transactionRequest,
             transactionOption: transactionOption,
-            walletConnector: configuration.walletConnector
+            walletConnector: configuration.walletConnector,
+            currencyFormatter: currencyFormatter
         )
+        self.currencyFormatter = currencyFormatter
+
         super.init(configuration: configuration)
+
+        dataSource.delegate = self
         setTransactionSigners()
         setupObserver()
     }
@@ -145,6 +155,8 @@ final class WCMainTransactionScreen: BaseViewController, Container {
     }
 
     override func viewDidLoad() {
+        dataSource.load()
+
         super.viewDidLoad()
 
         validateTransactions(transactions, with: dataSource.groupedTransactions)
@@ -328,6 +340,10 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
 
     func wcTransactionSignerDidResetLedgerOperation(_ wcTransactionSigner: WCTransactionSigner) {
         ledgerApprovalViewController?.dismissScreen()
+    }
+
+    func wcTransactionSignerDidRejectedLedgerOperation(_ wcTransactionSigner: WCTransactionSigner) {
+        loadingController?.stopLoading()
     }
 
     private func showLedgerError(_ ledgerError: LedgerOperationError) {
@@ -542,6 +558,33 @@ extension WCMainTransactionScreen: WCTransactionDappMessageViewDelegate {
         )
 
         modalTransition.perform(.wcTransactionFullDappDetail(configurator: configurator), by: .presentWithoutNavigationController)
+    }
+}
+
+extension WCMainTransactionScreen: WCMainTransactionDataSourceDelegate {
+    func wcMainTransactionDataSourceDidFailedGroupingValidation(
+        _ wcMainTransactionDataSource: WCMainTransactionDataSource
+    ) {
+        let configurator = BottomWarningViewConfigurator(
+            image: "icon-info-red".uiImage,
+            title: "title-error".localized,
+            description: .plain("wallet-connect-transaction-error-invalid-group".localized),
+            secondaryActionButtonTitle: "title-ok".localized,
+            secondaryAction: { [weak self] in
+                self?.rejectSigning(reason: .rejected(.failedValidation))
+            }
+        )
+
+        modalTransition.perform(
+            .bottomWarning(configurator: configurator),
+            by: .presentWithoutNavigationController
+        )
+    }
+
+    func wcMainTransactionDataSourceDidOpenLongDappMessageView(
+        _ wcMainTransactionDataSource: WCMainTransactionDataSource
+    ) {
+
     }
 }
 

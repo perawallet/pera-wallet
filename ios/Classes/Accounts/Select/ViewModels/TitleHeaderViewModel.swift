@@ -24,7 +24,7 @@ protocol TitleHeaderViewModel: PairedViewModel {
     var title: String? { get }
 }
 
-final class SelectAccountHeaderViewModel: TitleHeaderViewModel {
+final class SelectAccountHeaderViewModel: TitleHeaderViewModel, Hashable {
     private let mode: SelectAccountHeaderMode
 
     private(set) var title: String?
@@ -36,6 +36,8 @@ final class SelectAccountHeaderViewModel: TitleHeaderViewModel {
 
     private func bindTitle(_ mode: SelectAccountHeaderMode) {
         switch mode {
+        case .matchedAccounts:
+            self.title = "account-select-header-matched-accounts-title".localized
         case .accounts:
             self.title = "account-select-header-accounts-title".localized
         case .contacts:
@@ -44,9 +46,19 @@ final class SelectAccountHeaderViewModel: TitleHeaderViewModel {
             self.title = "title-account".localized
         }
     }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(title)
+    }
+
+    static func == (lhs: SelectAccountHeaderViewModel, rhs: SelectAccountHeaderViewModel) -> Bool {
+        lhs.mode == rhs.mode &&
+        lhs.title == rhs.title
+    }
 }
 
 enum SelectAccountHeaderMode {
+    case matchedAccounts
     case accounts
     case contacts
     case search

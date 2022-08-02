@@ -32,7 +32,7 @@ final class ManageAssetsView: View {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.keyboardDismissMode = .onDrag
         collectionView.backgroundColor = theme.backgroundColor.uiColor
-        collectionView.register(AssetPreviewDeleteCell.self)
+        collectionView.register(AssetPreviewWithActionCell.self)
         return collectionView
     }()
     
@@ -96,8 +96,5 @@ extension ManageAssetsView {
     func setSearchInputDelegate(_ delegate: SearchInputViewDelegate?) {
         searchInputView.delegate = delegate
     }
-    
-    func resetSearchInputView() {
-        searchInputView.setText(nil)
-    }
+
 }

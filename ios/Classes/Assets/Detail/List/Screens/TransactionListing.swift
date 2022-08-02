@@ -26,7 +26,7 @@ protocol TransactionListing {
 
 extension TransactionListing {
     var asset: StandardAsset? {
-        nil
+        return nil
     }
 }
 
@@ -59,4 +59,15 @@ enum TransactionTypeFilter {
     case algos
     case asset
     case all
+
+    var currentTransactionType: Transaction.TransferType? {
+        switch self {
+        case .algos:
+            return .payment
+        case .asset:
+            return .assetTransfer
+        case .all:
+            return nil
+        }
+    }
 }

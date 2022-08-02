@@ -45,7 +45,9 @@ extension TransactionContactInformationView {
 
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
-            $0.top.leading.equalToSuperview()
+            $0.top == theme.contentPaddings.top
+            $0.leading == theme.contentPaddings.leading
+            $0.bottom <= theme.contentPaddings.bottom
         }
     }
 
@@ -54,8 +56,14 @@ extension TransactionContactInformationView {
 
         addSubview(contactDisplayView)
         contactDisplayView.snp.makeConstraints {
-            $0.top.bottom.trailing.equalToSuperview()
-            $0.leading.equalToSuperview().offset(theme.contactDisplayLeadingPadding)
+            $0.top == theme.contentPaddings.top
+            $0.leading == theme.contentPaddings.leading + theme.contactDisplayLeadingPadding
+            $0.bottom == theme.contentPaddings.bottom
+            $0.trailing == theme.contentPaddings.trailing
+        }
+
+        titleLabel.snp.makeConstraints {
+            $0.trailing == contactDisplayView.snp.leading - theme.minimumSpacingBetweenTitleAndContact
         }
     }
 }
@@ -66,9 +74,11 @@ extension TransactionContactInformationView: ViewModelBindable {
             titleLabel.text = title
         }
 
-        if let contactDisplayViewModel = viewModel?.contactDisplayViewModel {
-            contactDisplayView.bindData(contactDisplayViewModel)
-        }
+        contactDisplayView.bindData(viewModel?.contactDisplayViewModel)
+    }
+
+    func removeAccessoryViews() {
+        contactDisplayView.removeAccessoryViews()
     }
 }
 

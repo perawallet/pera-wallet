@@ -20,31 +20,68 @@ import MacaroonUIKit
 
 struct AlgoAssetViewModel: ViewModel {
     private(set) var amount: String?
-    private(set) var currencyAmount: String?
+    private(set) var valueInCurrency: String?
+    private(set) var valueInUSD: Decimal = 0
 
-    init(account: Account, currency: Currency?) {
-        bindAmount(from: account)
-        bindCurrencyAmount(from: account, with: currency)
+    init(
+        _ model: AlgoAssetItem
+    ) {
+        bind(model)
     }
 }
 
 extension AlgoAssetViewModel {
-    private mutating func bindAmount(from account: Account) {
-        amount = account.amount.toAlgos.toFullAlgosStringForLabel
+    mutating func bind(
+        _ item: AlgoAssetItem
+    ) {
+        bindAmount(item)
+        bindValue(item)
     }
 
-    private mutating func bindCurrencyAmount(from account: Account, with currency: Currency?) {
-        guard let currency = currency,
-              let currencyPriceValue = currency.priceValue else {
-            return
-        }
-        
-        if let algoCurrency = currency as? AlgoCurrency {
-            bindCurrencyAmount(from: account, with: algoCurrency.currency)
+    mutating func bindAmount(
+        _ item: AlgoAssetItem
+    ) {
+        guard let algoAmount = item.amount else {
+            amount = nil
             return
         }
 
-        let totalAmount = account.amount.toAlgos * currencyPriceValue
-        currencyAmount = totalAmount.abbreviatedCurrencyStringForLabel(with: currency.symbol)
+        let formatter = item.currencyFormatter
+        formatter.formattingContext = item.currencyFormattingContext ?? .listItem
+        formatter.currency = AlgoLocalCurrency()
+
+        amount = formatter.format(algoAmount)
+    }
+
+    private mutating func bindValue(
+        _ item: AlgoAssetItem
+    ) {
+        do {
+            guard
+                let algoAmount = item.amount,
+                let fiatCurrencyValue = item.currency.fiatValue
+            else {
+                valueInCurrency = nil
+                valueInUSD = 0
+                return
+            }
+
+            let fiatRawCurrency = try fiatCurrencyValue.unwrap()
+
+            let exchanger = CurrencyExchanger(currency: fiatRawCurrency)
+            let amount = try exchanger.exchangeAlgo(amount: algoAmount)
+
+            let formatter = item.currencyFormatter
+            formatter.formattingContext = item.currencyFormattingContext ?? .listItem
+            formatter.currency = fiatRawCurrency
+
+            valueInCurrency = formatter.format(amount)
+
+            let amountInUSD = try? exchanger.exchangeAlgoToUSD(amount: algoAmount)
+            valueInUSD = amountInUSD ?? 0
+        } catch {
+            valueInCurrency = nil
+            valueInUSD = 0
+        }
     }
 }

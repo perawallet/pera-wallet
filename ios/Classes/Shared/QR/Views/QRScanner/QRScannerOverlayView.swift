@@ -23,7 +23,7 @@ final class QRScannerOverlayView: View {
 
     private lazy var theme = QRScannerOverlayViewTheme()
 
-    private lazy var backButton = UIButton()
+    private lazy var cancelButton = UIButton()
     private lazy var titleLabel = UILabel()
     private lazy var overlayView = UIView()
     private lazy var overlayImageView = UIImageView()
@@ -37,7 +37,13 @@ final class QRScannerOverlayView: View {
     )
 
     struct Configuration {
+        var cancelMode: CancelMode = .pop
         var showsConnectedAppsButton = false
+
+        enum CancelMode {
+            case pop
+            case dismiss
+        }
     }
 
     private let configuration: Configuration
@@ -55,12 +61,12 @@ final class QRScannerOverlayView: View {
         addOverlayView(theme)
         addOverlayImageView(theme)
         addTitleLabel(theme)
-        addBackBarButton(theme)
+        addCancelButton(theme)
         if configuration.showsConnectedAppsButton { addConnectedAppsButton(theme) }
     }
 
     func setListeners() {
-        backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
+        cancelButton.addTarget(self, action: #selector(didTapCancel), for: .touchUpInside)
         if configuration.showsConnectedAppsButton {
             connectedAppsButton.addTarget(self, action: #selector(didTapConnectedAppsButton), for: .touchUpInside)
         }
@@ -78,20 +84,30 @@ extension QRScannerOverlayView {
     }
 
     @objc
-    private func didTapBackButton() {
-        delegate?.qrScannerOverlayViewDidTapBackButton(self)
+    private func didTapCancel() {
+        delegate?.qrScannerOverlayView(
+            self,
+            didCancel: configuration.cancelMode
+        )
     }
 }
 
 extension QRScannerOverlayView {
-    private func addBackBarButton(_ theme: QRScannerOverlayViewTheme) {
-        backButton.customizeAppearance(theme.backButton)
+    private func addCancelButton(_ theme: QRScannerOverlayViewTheme) {
+        let style: ButtonStyle
 
-        addSubview(backButton)
-        backButton.snp.makeConstraints {
+        switch configuration.cancelMode {
+        case .pop: style = theme.backButton
+        case .dismiss: style = theme.dismissButton
+        }
+
+        cancelButton.customizeAppearance(style)
+
+        addSubview(cancelButton)
+        cancelButton.snp.makeConstraints {
             $0.top.equalTo(safeAreaLayoutGuide.snp.top)
             $0.leading.equalToSuperview().inset(theme.horizontalInset)
-            $0.fitToSize(theme.backButtonSize)
+            $0.fitToSize(theme.cancelButtonSize)
         }
     }
 
@@ -174,7 +190,10 @@ extension QRScannerOverlayView: ViewModelBindable {
 
 protocol QRScannerOverlayViewDelegate: AnyObject {
     func qrScannerOverlayViewDidTapConnectedAppsButton(_ qrScannerOverlayView: QRScannerOverlayView)
-    func qrScannerOverlayViewDidTapBackButton(_ qrScannerOverlayView: QRScannerOverlayView)
+    func qrScannerOverlayView(
+        _ qrScannerOverlayView: QRScannerOverlayView,
+        didCancel mode: QRScannerOverlayView.Configuration.CancelMode
+    )
 }
 
 extension UIVisualEffectView: CornerDrawable {}

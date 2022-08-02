@@ -26,10 +26,10 @@ final class BuyAlgoHomeScreen: BaseViewController, NotificationObserver {
 
     private lazy var contentView = BuyAlgoHomeView()
 
-    private var transactionDraft: BuyAlgoDraft
+    private var buyAlgoDraft: BuyAlgoDraft
 
     init(draft: BuyAlgoDraft, configuration: ViewControllerConfiguration) {
-        self.transactionDraft = draft
+        self.buyAlgoDraft = draft
         super.init(configuration: configuration)
     }
 
@@ -39,7 +39,7 @@ final class BuyAlgoHomeScreen: BaseViewController, NotificationObserver {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
-        unobserveNotifications()
+        stopObservingNotifications()
     }
     
     override func prepareLayout() {
@@ -76,13 +76,18 @@ final class BuyAlgoHomeScreen: BaseViewController, NotificationObserver {
                 return
             }
 
-            if self.transactionDraft.hasValidAddress() {
-                self.openMoonPay(for: self.transactionDraft)
+            if self.buyAlgoDraft.hasValidAddress() {
+                self.openMoonPay(for: self.buyAlgoDraft)
                 return
             }
 
+            let draft = SelectAccountDraft(
+                transactionAction: .buyAlgo,
+                requiresAssetSelection: false
+            )
+
             self.open(
-                .accountSelection(transactionAction: .buyAlgo, delegate: self),
+                .accountSelection(draft: draft, delegate: self),
                 by: .push
             )
         }
@@ -118,15 +123,15 @@ extension BuyAlgoHomeScreen: SelectAccountViewControllerDelegate {
     func selectAccountViewController(
         _ selectAccountViewController: SelectAccountViewController,
         didSelect account: Account,
-        for transactionAction: TransactionAction
+        for draft: SelectAccountDraft
     ) {
-        guard transactionAction == .buyAlgo else {
+        guard draft.transactionAction == .buyAlgo else {
             return
         }
 
-        transactionDraft.address = account.address
+        buyAlgoDraft.address = account.address
 
-        openMoonPay(for: transactionDraft)
+        openMoonPay(for: buyAlgoDraft)
     }
 
     private func openMoonPay(for draft: BuyAlgoDraft) {
@@ -134,7 +139,8 @@ extension BuyAlgoHomeScreen: SelectAccountViewControllerDelegate {
             return
         }
 
-        let buyAlgoSignDraft = BuyAlgoSignDraft(walletAddress: address, redirectUrl: "algorand://\(address)")
+        let deeplinkURL = "\(target.deeplinkConfig.moonpay.scheme)://\(address)"
+        let buyAlgoSignDraft = BuyAlgoSignDraft(walletAddress: address, redirectUrl: deeplinkURL)
 
         loadingController?.startLoadingWithMessage("title-loading".localized)
 

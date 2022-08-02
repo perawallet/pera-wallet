@@ -76,7 +76,9 @@ extension SelectAssetViewControllerListLayout {
             title: "title-unknown".localized,
             subtitle: "title-unknown".localized,
             primaryAccessory: "title-unknown".localized,
-            secondaryAccessory: "title-unknown".localized
+            secondaryAccessory: "title-unknown".localized,
+            currencyAmount: 0,
+            asset: nil
         )
 
         let sampleAssetItem = AssetPreviewViewModel(sampleAssetPreview)

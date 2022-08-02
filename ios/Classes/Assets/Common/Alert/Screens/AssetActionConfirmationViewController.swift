@@ -24,11 +24,22 @@ final class AssetActionConfirmationViewController: BaseViewController {
     
     private(set) var draft: AssetAlertDraft
 
-    private lazy var theme = Theme()
+    private let theme: AssetActionConfirmationViewControllerTheme
     private lazy var assetActionConfirmationView = AssetActionConfirmationView()
+
+    private lazy var currencyFormatter = CurrencyFormatter()
+
+    private let copyToClipboardController: CopyToClipboardController
     
-    init(draft: AssetAlertDraft, configuration: ViewControllerConfiguration) {
+    init(
+        draft: AssetAlertDraft,
+        copyToClipboardController: CopyToClipboardController,
+        configuration: ViewControllerConfiguration,
+        theme: AssetActionConfirmationViewControllerTheme
+    ) {
         self.draft = draft
+        self.copyToClipboardController = copyToClipboardController
+        self.theme = theme
         super.init(configuration: configuration)
     }
     
@@ -55,7 +66,14 @@ final class AssetActionConfirmationViewController: BaseViewController {
     }
 
     override func bindData() {
-        assetActionConfirmationView.bindData(AssetActionConfirmationViewModel(draft))
+        currencyFormatter.formattingContext = .standalone()
+        currencyFormatter.currency = AlgoLocalCurrency()
+
+        let viewModel = AssetActionConfirmationViewModel(
+            draft,
+            currencyFormatter: currencyFormatter
+        )
+        assetActionConfirmationView.bindData(viewModel)
     }
 }
 
@@ -84,11 +102,18 @@ extension AssetActionConfirmationViewController {
 
                     switch response {
                     case let .success(assetResponse):
+                        if assetResponse.results.isEmpty {
+                            self.bannerController?.presentErrorBanner(title: "asset-confirmation-not-found".localized, message: "")
+                            self.closeScreen()
+                            return
+                        }
+
                         if let result = assetResponse.results[safe: 0] {
                             self.handleAssetDetailSetup(with: result)
                         }
                     case .failure:
-                        self.loadingController?.stopLoading()
+                        self.bannerController?.presentErrorBanner(title: "asset-confirmation-not-fetched".localized, message: "")
+                        self.closeScreen()
                     }
                 }
             }
@@ -98,7 +123,13 @@ extension AssetActionConfirmationViewController {
     private func handleAssetDetailSetup(with asset: AssetDecoration) {
         self.loadingController?.stopLoading()
         draft.asset = asset
-        assetActionConfirmationView.bindData(AssetActionConfirmationViewModel(draft))
+
+        bindData()
+    }
+
+    private func closeScreen() {
+        loadingController?.stopLoading()
+        dismissScreen()
     }
 }
 
@@ -116,12 +147,23 @@ extension AssetActionConfirmationViewController: AssetActionConfirmationViewDele
     }
     
     func assetActionConfirmationViewDidTapCancelButton(_ assetActionConfirmationView: AssetActionConfirmationView) {
-        dismissScreen()
+        closeScreen()
     }
 
-    func assetActionConfirmationViewDidTapCopyIDButton(_ assetActionConfirmationView: AssetActionConfirmationView, assetID: String?) {
-        UIPasteboard.general.string = assetID
-        bannerController?.presentInfoBanner("asset-id-copied-title".localized)
+    func assetActionConfirmationViewDidTapCopyIDButton(_ assetActionConfirmationView: AssetActionConfirmationView) {
+        copyToClipboardController.copyID(draft.assetId)
+    }
+
+    func contextMenuInteractionForAssetID(
+        in assetActionConfirmationView: AssetActionConfirmationView
+    ) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration { _ in
+            let copyActionItem = UIAction(item: .copyAssetID) {
+                [unowned self] _ in
+                self.copyToClipboardController.copyID(self.draft.assetId)
+            }
+            return UIMenu(children: [ copyActionItem ])
+        }
     }
 }
 

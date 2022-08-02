@@ -29,7 +29,7 @@ struct PageBarCommonLayoutSheet: PageBarLayoutSheet {
     let onIndicatorBottomPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.intrinsicHeight = 44
+        self.intrinsicHeight = 52
         self.contentPaddings = (0, 0, 0, 0)
         self.offIndicatorHeight = 1
         self.offIndicatorHorizontalPaddings = (0, 0)

@@ -18,18 +18,35 @@
 import UIKit
 import MacaroonUIKit
 
-final class TransactionAmountInformationView: View {
+
+final class TransactionAmountInformationView:
+    View,
+    UIInteractionObservable,
+    UIControlInteractionPublisher {
+
     private lazy var titleLabel = UILabel()
     private lazy var transactionAmountView = TransactionAmountView()
+
+    private(set) var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
+        .touch: UIViewTapInteraction()
+    ]
 
     func customize(_ theme: TransactionAmountInformationViewTheme) {
         addTitleLabel(theme)
         addTransactionAmountView(theme)
+        linkInteractors()
     }
 
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
 
     func customizeAppearance(_ styleSheet: ViewStyle) {}
+
+    func linkInteractors() {
+        startPublishing(
+            event: .touch,
+            for: self
+        )
+    }
 }
 
 extension TransactionAmountInformationView {
@@ -38,7 +55,10 @@ extension TransactionAmountInformationView {
 
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
-            $0.top.leading.equalToSuperview()
+            $0.top == theme.contentPaddings.top
+            $0.leading == theme.contentPaddings.leading
+            $0.bottom >= theme.contentPaddings.bottom
+            $0.centerY.equalToSuperview()
         }
     }
     
@@ -47,9 +67,14 @@ extension TransactionAmountInformationView {
 
         addSubview(transactionAmountView)
         transactionAmountView.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview()
-            $0.leading.equalToSuperview().offset(theme.amountLeadingPadding)
-            $0.trailing.lessThanOrEqualToSuperview()
+            $0.top == theme.contentPaddings.top
+            $0.leading == theme.contentPaddings.leading + theme.amountLeadingPadding
+            $0.bottom == theme.contentPaddings.bottom
+            $0.trailing <= theme.contentPaddings.trailing
+        }
+
+        titleLabel.snp.makeConstraints {
+            $0.trailing == transactionAmountView.snp.leading - theme.minimumSpacingBetweenTitleAndAmount
         }
     }
 }
@@ -63,5 +88,11 @@ extension TransactionAmountInformationView: ViewModelBindable {
         if let transactionViewModel = viewModel?.transactionViewModel {
             transactionAmountView.bindData(transactionViewModel)
         }
+    }
+}
+
+extension TransactionAmountInformationView {
+    enum Event {
+        case touch
     }
 }

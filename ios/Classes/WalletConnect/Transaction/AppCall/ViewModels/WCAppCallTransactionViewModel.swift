@@ -38,7 +38,12 @@ class WCAppCallTransactionViewModel {
     private(set) var rawTransactionInformationViewModel: WCTransactionActionableInformationViewModel?
     private(set) var algoExplorerInformationViewModel: WCTransactionActionableInformationViewModel?
 
-    init(transaction: WCTransaction, account: Account?) {
+    init(
+        transaction: WCTransaction,
+        account: Account?,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) {
         setSenderInformationViewModel(from: account, and: transaction)
         setIdInformationViewModel(from: transaction)
         setOnCompletionInformationViewModel(from: transaction)
@@ -49,7 +54,11 @@ class WCAppCallTransactionViewModel {
         setClearStateHashInformationViewModel(from: transaction)
         setCloseWarningViewModel(from: transaction)
         setRekeyWarningViewModel(from: account, and: transaction)
-        setFeeInformationViewModel(from: transaction)
+        setFeeInformationViewModel(
+            from: transaction,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
         setFeeWarningViewModel(from: transaction)
         setNoteInformationViewModel(from: transaction)
         setRawTransactionInformationViewModel(from: transaction)
@@ -218,7 +227,11 @@ class WCAppCallTransactionViewModel {
         self.rekeyWarningInformationViewModel = WCTransactionWarningViewModel(warning: .rekeyed)
     }
 
-    private func setFeeInformationViewModel(from transaction: WCTransaction) {
+    private func setFeeInformationViewModel(
+        from transaction: WCTransaction,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) {
         guard let transactionDetail = transaction.transactionDetail,
               let fee = transactionDetail.fee,
               fee != 0 else {
@@ -230,7 +243,9 @@ class WCAppCallTransactionViewModel {
                 amount: fee.toAlgos,
                 isAlgos: true,
                 fraction: algosFraction
-            )
+            ),
+            currency: currency,
+            currencyFormatter: currencyFormatter
         )
 
         let feeInformationViewModel = TransactionAmountInformationViewModel(transactionViewModel: feeViewModel)

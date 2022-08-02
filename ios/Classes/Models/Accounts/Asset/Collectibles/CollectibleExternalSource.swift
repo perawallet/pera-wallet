@@ -20,37 +20,38 @@ import UIKit
 protocol CollectibleExternalSource {
     var image: UIImage? { get }
     var title: String { get }
-    var url: String? { get }
+    var url: URL? { get }
 }
 
 struct AlgoExplorerExternalSource: CollectibleExternalSource {
     let image = img("icon-algo-explorer")
     let title = "collectible-detail-algo-explorer".localized
-
-    let url: String?
+    let url: URL?
 
     init(asset: AssetID, network: ALGAPI.Network) {
-        switch network {
-        case .mainnet:
-            url = "https://algoexplorer.io/asset/\(String(asset))"
-        case .testnet:
-            url = "https://testnet.algoexplorer.io/asset/\(String(asset))"
-        }
+        url = AlgorandWeb.AlgoExplorer.asset(
+            isMainnet: network == .mainnet,
+            param: String(asset)
+        ).link
+    }
+    
+    init(address: String, network: ALGAPI.Network) {
+        url = AlgorandWeb.AlgoExplorer.address(
+            isMainnet: network == .mainnet,
+            param: address
+        ).link
     }
 }
 
 struct NFTExplorerExternalSource: CollectibleExternalSource {
     let image = img("icon-nft-explorer")
     let title = "collectible-detail-nft-explorer".localized
-
-    let url: String?
+    let url: URL?
 
     init(asset: AssetID, network: ALGAPI.Network) {
-        switch network {
-        case .mainnet:
-            url = "https://www.nftexplorer.app/asset/\(String(asset))"
-        case .testnet:
-            url = nil
-        }
+        url = AlgorandWeb.NftExplorer.asset(
+            isMainnet: network == .mainnet,
+            param: String(asset)
+        ).link
     }
 }

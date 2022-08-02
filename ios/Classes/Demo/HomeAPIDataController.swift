@@ -20,14 +20,17 @@ import Foundation
 final class HomeAPIDataController:
     HomeDataController,
     SharedDataControllerObserver {
+
     var eventHandler: ((HomeDataControllerEvent) -> Void)?
 
-    private var lastSnapshot: Snapshot?
-    
+    private lazy var currencyFormatter = CurrencyFormatter()
+
     private let sharedDataController: SharedDataController
     private let announcementDataController: AnnouncementAPIDataController
     
     private var visibleAnnouncement: Announcement?
+
+    private var lastSnapshot: Snapshot?
     
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.homeDataController")
     
@@ -57,7 +60,7 @@ extension HomeAPIDataController {
     }
     
     func reload() {
-        deliverContentSnapshot()
+        deliverContentUpdates()
     }
     
     func fetchAnnouncements() {
@@ -85,88 +88,92 @@ extension HomeAPIDataController {
     ) {
         switch event {
         case .didBecomeIdle:
-            deliverInitialSnapshot()
+            deliverInitialUpdates()
         case .didStartRunning(let isFirst):
-            if isFirst ||
-               lastSnapshot == nil {
-                deliverInitialSnapshot()
+            if isFirst || lastSnapshot == nil {
+                deliverInitialUpdates()
             }
         case .didFinishRunning:
-            deliverContentSnapshot()
+            deliverContentUpdates()
         }
     }
 }
 
 extension HomeAPIDataController {
-    private func deliverInitialSnapshot() {
+    private func deliverInitialUpdates() {
         if sharedDataController.isPollingAvailable {
-            deliverLoadingSnapshot()
+            deliverLoadingUpdates()
         } else {
-            deliverNoContentSnapshot()
+            deliverNoContentUpdates()
         }
     }
     
-    private func deliverLoadingSnapshot() {
-        deliverSnapshot {
+    private func deliverLoadingUpdates() {
+        deliverUpdates {
             var snapshot = Snapshot()
-            snapshot.appendSections([.loading])
+            snapshot.appendSections([.empty])
             snapshot.appendItems(
                 [.empty(.loading)],
-                toSection: .loading
+                toSection: .empty
             )
-            return snapshot
+            return (nil as TotalPortfolioItem?, snapshot)
         }
     }
     
-    private func deliverContentSnapshot() {
+    private func deliverContentUpdates() {
         if sharedDataController.accountCollection.isEmpty {
-            deliverNoContentSnapshot()
+            deliverNoContentUpdates()
             return
         }
         
-        deliverSnapshot {
+        deliverUpdates {
             [weak self] in
-            guard let self = self else { return Snapshot() }
+            guard let self = self else { return nil }
             
             var accounts: [AccountHandle] = []
-            var accountItems: [HomeItem] = []
-            var watchAccounts: [AccountHandle] = []
-            var watchAccountItems: [HomeItem] = []
-            
+            var accountItems: [HomeItemIdentifier] = []
+
             let currency = self.sharedDataController.currency
-            let calculator = ALGPortfolioCalculator()
+            let currencyFormatter = self.currencyFormatter
             
-            self.sharedDataController.accountCollection
-                .sorted()
-                .forEach {
-                    let isNonWatchAccount = !$0.value.isWatchAccount()
-                    let accountPortfolio =
-                        AccountPortfolio(account: $0, currency: currency, calculator: calculator)
-                    let cellItem: HomeAccountItem =
-                        .cell(AccountPreviewViewModel(accountPortfolio))
-                    let item: HomeItem = .account(cellItem)
-                
-                    if isNonWatchAccount {
-                        accounts.append($0)
-                        accountItems.append(item)
-                    } else {
-                        watchAccounts.append($0)
-                        watchAccountItems.append(item)
-                    }
-                }
+            self.sharedDataController.sortedAccounts().forEach {
+                let accountPortfolioItem = AccountPortfolioItem(
+                    accountValue: $0,
+                    currency: currency,
+                    currencyFormatter: currencyFormatter
+                )
+                let accountPreviewViewModel = AccountPreviewViewModel(accountPortfolioItem)
+                let cellItem: HomeAccountItemIdentifier = .cell(accountPreviewViewModel)
+                let item: HomeItemIdentifier = .account(cellItem)
+
+                accounts.append($0)
+                accountItems.append(item)
+            }
             
             var snapshot = Snapshot()
             
             snapshot.appendSections([.portfolio])
-            
-            let portfolio =
-                Portfolio(accounts: accounts, currency: currency, calculator: calculator)
-            let portfolioItem = HomePortfolioViewModel(portfolio)
+
+            let nonWatchAccounts = accounts.filter { !$0.value.isWatchAccount() }
+            let totalPortfolioItem = TotalPortfolioItem(
+                accountValues: nonWatchAccounts,
+                currency: currency,
+                currencyFormatter: currencyFormatter
+            )
+            let totalPortfolioViewModel = HomePortfolioViewModel(totalPortfolioItem)
 
             snapshot.appendItems(
-                [.portfolio(portfolioItem)],
+                [.portfolio(.portfolio(totalPortfolioViewModel))],
                 toSection: .portfolio
             )
+
+            /// note: If accounts empty which means there is no any authenticated account, quick actions will be hidden
+            if !accounts.isEmpty {
+                snapshot.appendItems(
+                    [.portfolio(.quickActions)],
+                    toSection: .portfolio
+                )
+            }
 
             if let visibleAnnouncement = self.visibleAnnouncement {
                 snapshot.appendSections([.announcement])
@@ -174,16 +181,10 @@ extension HomeAPIDataController {
                 let announcementItem = AnnouncementViewModel(visibleAnnouncement)
                 snapshot.appendItems([.announcement(announcementItem)], toSection: .announcement)
             }
-
-            /// note: If accounts empty which means there is no any authenticated account, buy button will be hidden
-            if !accounts.isEmpty {
-                snapshot.appendSections([.buyAlgo])
-                snapshot.appendItems([.buyAlgo], toSection: .buyAlgo)
-            }
             
             if !accounts.isEmpty {
-                let headerItem: HomeAccountItem =
-                    .header(HomeAccountSectionHeaderViewModel(.standard))
+                let headerItem: HomeAccountItemIdentifier =
+                    .header(ManagementItemViewModel(.account))
                 accountItems.insert(
                     .account(headerItem),
                     at: 0
@@ -195,45 +196,35 @@ extension HomeAPIDataController {
                     toSection: .accounts
                 )
             }
-            
-            if !watchAccounts.isEmpty {
-                let headerItem: HomeAccountItem =
-                    .header(HomeAccountSectionHeaderViewModel(.watch))
-                watchAccountItems.insert(
-                    .account(headerItem),
-                    at: 0
-                )
-                
-                snapshot.appendSections([.watchAccounts])
-                snapshot.appendItems(
-                    watchAccountItems,
-                    toSection: .watchAccounts
-                )
-            }
-            
-            return snapshot
+
+            return (totalPortfolioItem, snapshot)
         }
     }
     
-    private func deliverNoContentSnapshot() {
-        deliverSnapshot {
+    private func deliverNoContentUpdates() {
+        deliverUpdates {
             var snapshot = Snapshot()
             snapshot.appendSections([.empty])
             snapshot.appendItems(
                 [.empty(.noContent)],
                 toSection: .empty
             )
-            return snapshot
+            return (nil as TotalPortfolioItem?, snapshot)
         }
     }
     
-    private func deliverSnapshot(
-        _ snapshot: @escaping () -> Snapshot
+    private func deliverUpdates(
+        _ updates: @escaping () -> Updates?
     ) {
         snapshotQueue.async {
             [weak self] in
             guard let self = self else { return }
-            self.publish(.didUpdate(snapshot()))
+
+            guard let updates = updates() else {
+                return
+            }
+
+            self.publish(.didUpdate(updates))
         }
     }
 }

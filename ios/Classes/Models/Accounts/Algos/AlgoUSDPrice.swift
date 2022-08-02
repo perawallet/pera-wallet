@@ -38,16 +38,16 @@ final class AlgoUSDPrice: ALGAPIModel {
 }
 
 extension AlgoUSDPrice {
-    func getCurrencyScaledChartHighValue(with current: AlgoUSDPrice, for currency: Currency) -> Double? {
+    func getCurrencyScaledChartHighValue(with current: AlgoUSDPrice, for currency: RemoteCurrency) -> Double? {
         return getCurrencyScaledChartValue(current.high, with: current, for: currency)
     }
 
-    func getCurrencyScaledChartOpenValue(with current: AlgoUSDPrice, for currency: Currency) -> Double? {
+    func getCurrencyScaledChartOpenValue(with current: AlgoUSDPrice, for currency: RemoteCurrency) -> Double? {
         return getCurrencyScaledChartValue(current.open, with: current, for: currency)
     }
 
     // Scales conversion of current algo-preferredCurrency value with the current algo price to display
-    private func getCurrencyScaledChartValue(_ value: Double?, with current: AlgoUSDPrice, for currency: Currency) -> Double? {
+    private func getCurrencyScaledChartValue(_ value: Double?, with current: AlgoUSDPrice, for currency: RemoteCurrency) -> Double? {
         guard let chartDisplayValue = getChartDisplayValue(with: currency),
               let currentPrice = current.open else {
             return nil
@@ -57,14 +57,13 @@ extension AlgoUSDPrice {
     }
 
     // Convert current value of algo to preferred currency value
-    private func getChartDisplayValue(with currency: Currency? = nil) -> Double? {
+    private func getChartDisplayValue(with currency: RemoteCurrency? = nil) -> Double? {
         guard let currency = currency,
-              let currencyPrice = currency.price,
-              let currencyPriceDoubleValue = Double(currencyPrice),
+              let algoValue = currency.algoValue,
               let highValue = high else {
             return high?.round(to: 2)
         }
 
-        return (currencyPriceDoubleValue * highValue).round(to: 2)
+        return (algoValue.doubleValue * highValue).round(to: 2)
     }
 }

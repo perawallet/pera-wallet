@@ -68,7 +68,7 @@ final class SendCollectibleAccountListViewController:
     }
 
     deinit {
-        unobserveNotifications()
+        stopObservingNotifications()
     }
 
     override func configureNavigationBarAppearance() {

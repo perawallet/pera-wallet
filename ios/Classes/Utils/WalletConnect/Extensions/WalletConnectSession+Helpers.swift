@@ -21,23 +21,18 @@ let algorandWalletConnectChainID = 4160
 
 extension WalletConnectSession {
     func getClientMeta() -> ClientMeta {
-        // No need for localization since it won't be translated and sent to the Dapp.
+        /// <note>
+        /// No need for localization since it won't be translated and sent to the Dapp.
+        /// <todo>
+        /// Let's find a way to not use the current instance of `ALGAppTarget` directly here when refactoring the wallet connect
+        /// integration.
+        let metaConfig = ALGAppTarget.current.walletConnectConfig.meta
         return ClientMeta(
-            name: "Pera Wallet",
-            description: "Pera Wallet: Simply the best Algorand wallet.",
-            icons: getIconURLs(),
-            url: URL(string: "https://perawallet.app/") ?? dAppInfo.peerMeta.url
+            name: metaConfig.name,
+            description: metaConfig.description,
+            icons: metaConfig.icons,
+            url: metaConfig.url
         )
-    }
-
-    private func getIconURLs() -> [URL] {
-        let icons = [
-            "https://algorand-app.s3.amazonaws.com/app-icons/Pera-walletconnect-128.png",
-            "https://algorand-app.s3.amazonaws.com/app-icons/Pera-walletconnect-192.png",
-            "https://algorand-app.s3.amazonaws.com/app-icons/Pera-walletconnect-512.png"
-        ]
-
-        return icons.compactMap { URL(string: $0) }
     }
 
     func getApprovedWalletConnectionInfo(for account: String) -> WalletInfo {

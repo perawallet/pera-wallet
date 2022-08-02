@@ -27,6 +27,8 @@ final class ContactDetailViewController: BaseScrollViewController {
     private lazy var accountListModalTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var theme = Theme()
     private lazy var contactDetailView = ContactDetailView()
+
+    private lazy var currencyFormatter = CurrencyFormatter()
     
     private let contact: Contact
     private var contactAccount: Account?
@@ -100,7 +102,6 @@ extension ContactDetailViewController {
         }
         
         loadingController?.startLoadingWithMessage("title-loading".localized)
-        let currency = sharedDataController.currency.value
 
         api?.fetchAccount(
             AccountFetchDraft(publicKey: address),
@@ -108,6 +109,9 @@ extension ContactDetailViewController {
             ignoreResponseOnCancelled: true
         ) { [weak self] response in
             guard let self = self else { return }
+
+            let currency = self.sharedDataController.currency
+            let currencyFormatter = self.currencyFormatter
 
             switch response {
             case let .success(accountWrapper):
@@ -120,10 +124,17 @@ extension ContactDetailViewController {
                 }
 
                 accountWrapper.account.assets = accountWrapper.account.nonDeletedAssets()
+
                 let account = accountWrapper.account
                 self.contactAccount = account
-                let assetPreviewModel = AssetPreviewModelAdapter.adapt((account, currency))
-                self.assetPreviews.append(assetPreviewModel)
+
+                let algoAssetItem = AlgoAssetItem(
+                    account: account,
+                    currency: currency,
+                    currencyFormatter: currencyFormatter
+                )
+                let algoAssetPreview = AssetPreviewModelAdapter.adapt(algoAssetItem)
+                self.assetPreviews.append(algoAssetPreview)
                 
                 if account.hasAnyAssets() {
                     if let assets = account.assets {
@@ -159,8 +170,13 @@ extension ContactDetailViewController {
                                             let standardAsset = StandardAsset(asset: asset, decoration: assetDetail)
                                             account.append(standardAsset)
 
-                                            let assetPreviewModel = AssetPreviewModelAdapter.adapt((asset: standardAsset, currency: currency))
-                                            self.assetPreviews.append(assetPreviewModel)
+                                            let standardAssetItem = AssetItem(
+                                                asset: standardAsset,
+                                                currency: currency,
+                                                currencyFormatter: currencyFormatter
+                                            )
+                                            let preview = AssetPreviewModelAdapter.adapt(standardAssetItem)
+                                            self.assetPreviews.append(preview)
                                         }
                                     }
                                 }
@@ -186,8 +202,15 @@ extension ContactDetailViewController {
                     self.loadingController?.stopLoading()
 
                     guard let account = self.contactAccount else { return }
-                    let assetPreviewModel = AssetPreviewModelAdapter.adapt((account, currency))
-                    self.assetPreviews.append(assetPreviewModel)
+
+                    let algoAssetItem = AlgoAssetItem(
+                        account: account,
+                        currency: currency,
+                        currencyFormatter: currencyFormatter
+                    )
+                    let algoAssetPreview = AssetPreviewModelAdapter.adapt(algoAssetItem)
+                    self.assetPreviews.append(algoAssetPreview)
+
                     self.contactDetailView.assetsCollectionView.reloadData()
                 } else {
                     self.contactAccount = nil
@@ -234,8 +257,12 @@ extension ContactDetailViewController: AssetPreviewActionCellDelegate {
             return
         }
 
-        let mode: AccountListViewController.Mode = .contact(asset: itemIndex.item == 0 ? nil : contactAccount.standardAssets[itemIndex.item - 1])
-        let accountListDataSource = AccountListDataSource(sharedDataController: sharedDataController, mode: mode)
+        let mode: AccountListViewController.Mode = .contact(asset: itemIndex.item == 0 ? nil : contactAccount.standardAssets?[itemIndex.item - 1])
+        let accountListDataSource = AccountListDataSource(
+            sharedDataController: sharedDataController,
+            mode: mode,
+            currencyFormatter: currencyFormatter
+        )
 
         guard !accountListDataSource.accounts.isEmpty else {
             bannerController?.presentErrorBanner(
@@ -254,7 +281,7 @@ extension ContactDetailViewController: AssetPreviewActionCellDelegate {
         )
 
         if itemIndex.item != 0 {
-            selectedAsset = contactAccount.standardAssets[itemIndex.item - 1]
+            selectedAsset = contactAccount.standardAssets?[itemIndex.item - 1]
         }
     }
 }

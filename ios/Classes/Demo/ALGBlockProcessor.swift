@@ -91,27 +91,13 @@ extension ALGBlockProcessor {
     ) {        
         publish(blockEvent: .willStart(round))
         
-        var currencyFetchOperation: Operation?
+        var currencyFetchOperation: CurrencyRefreshOperation?
 
         if newBlockRequest.cachedCurrency.isExpired {
-            publish(blockEvent: .willFetchCurrency)
-
-            let aCurrencyFetchOperation =
-                CurrencyFetchOperation(
-                    input: .init(currencyId: newBlockRequest.localCurrencyId), api: api
-                )
-            aCurrencyFetchOperation.completionHandler = {
-                [weak self] result in
-                guard let self = self else { return }
-                
-                switch result {
-                case .success(let output):
-                    self.publish(blockEvent: .didFetchCurrency(output.currency))
-                case .failure(let error):
-                    self.publish(blockEvent: .didFailToFetchCurrency(error))
-                }
-            }
-
+            let aCurrencyFetchOperation = CurrencyRefreshOperation(
+                cachedCurrency: newBlockRequest.cachedCurrency,
+                api: api
+            )
             queue.enqueue(aCurrencyFetchOperation)
             
             currencyFetchOperation = aCurrencyFetchOperation
@@ -120,12 +106,24 @@ extension ALGBlockProcessor {
         newBlockRequest.localAccounts.forEach { localAccount in
             publish(blockEvent: .willFetchAccount(localAccount))
 
-            let accountFetchOperation =
-                AccountDetailFetchOperation(input: .init(localAccount: localAccount), api: api)
-            let assetDetailGroupFetchOperation =
-                AssetDetailGroupFetchOperation(input: .init(), api: api)
+            let accountFetchOperationInput = AccountDetailFetchOperation.Input(
+                localAccount: localAccount
+            )
+            let accountFetchOperation = AccountDetailFetchOperation(
+                input: accountFetchOperationInput,
+                api: api
+            )
+            let assetDetailGroupFetchOperationInput = AssetDetailGroupFetchOperation.Input()
+            let assetDetailGroupFetchOperation = AssetDetailGroupFetchOperation(
+                input: assetDetailGroupFetchOperationInput,
+                api: api
+            )
             let adapterOperation = BlockOperation {
-                [weak self, unowned accountFetchOperation, unowned assetDetailGroupFetchOperation] in
+                [
+                    weak self,
+                    unowned accountFetchOperation,
+                    unowned assetDetailGroupFetchOperation
+                ] in
                 guard let self = self else { return }
                 
                 var input = AssetDetailGroupFetchOperation.Input()

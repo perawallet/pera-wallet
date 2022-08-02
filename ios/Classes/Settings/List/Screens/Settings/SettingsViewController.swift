@@ -181,27 +181,6 @@ extension SettingsViewController {
 }
 
 extension SettingsViewController: SettingsDataSourceDelegate {
-    func settingsDataSource(
-        _ settingsDataSource: SettingsDataSource,
-        _ settingsToggleCell: SettingsToggleCell,
-        didChangeValue value: Bool
-    ) {
-        guard let indexPath = settingsView.collectionView.indexPath(for: settingsToggleCell),
-              let section = dataSource.sections[safe: indexPath.section] else {
-            return
-        }
-        
-        if section == .appPreferences,
-           let setting = dataSource.appPreferenceSettings[safe: indexPath.item] {
-            switch setting {
-            case .rewards:
-                session?.rewardDisplayPreference = value ? .allowed : .disabled
-            default:
-                return
-            }
-        }
-    }
-    
     func settingsDataSourceDidTapLogout(
         _ settingsDataSource: SettingsDataSource,
         _ settingsFooterSupplementaryView: SettingsFooterSupplementaryView

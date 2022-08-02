@@ -17,6 +17,7 @@
 
 import UIKit
 
+/// <todo> Remove when new contact detail UI is implemented.
 final class AssetPreviewActionCell: BaseCollectionViewCell<AssetPreviewActionView> {
     weak var delegate: AssetPreviewActionCellDelegate?
     

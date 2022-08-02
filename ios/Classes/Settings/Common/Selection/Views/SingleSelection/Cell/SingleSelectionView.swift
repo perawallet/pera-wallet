@@ -18,7 +18,10 @@
 import UIKit
 import MacaroonUIKit
 
-final class SingleSelectionView: View {
+final class SingleSelectionView:
+    View,
+    ViewModelBindable,
+    ListReusable {
     private lazy var theme = SingleSelectionViewTheme()
     
     private lazy var titleLabel = UILabel()
@@ -34,6 +37,11 @@ final class SingleSelectionView: View {
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
     
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
+
+    func bindData(_ viewModel: SingleSelectionViewModel?) {
+        titleLabel.text = viewModel?.title
+        selectionImageView.image = viewModel?.selectionImage
+    }
 }
 
 extension SingleSelectionView {
@@ -53,12 +61,5 @@ extension SingleSelectionView {
             $0.fitToSize(theme.imageSize)
             $0.centerY.trailing.equalToSuperview()
         }
-    }
-}
-
-extension SingleSelectionView {
-    func bind(_ viewModel: SingleSelectionViewModel) {
-        titleLabel.text = viewModel.title
-        selectionImageView.image = viewModel.selectionImage
     }
 }

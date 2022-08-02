@@ -33,6 +33,10 @@ final class CollectibleMediaVideoPreviewCell:
 }
 
 extension CollectibleMediaVideoPreviewCell {
+    var isReadyForDisplay: Bool {
+        return contextView.isReadyForDisplay
+    }
+
     func playVideo() {
         contextView.playVideo()
     }

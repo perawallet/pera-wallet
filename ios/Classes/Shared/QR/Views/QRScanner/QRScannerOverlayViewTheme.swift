@@ -22,6 +22,7 @@ struct QRScannerOverlayViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
     let title: TextStyle
     let backButton: ButtonStyle
+    let dismissButton: ButtonStyle
     let overlayImage: ImageStyle
     let connectedAppsButton: ButtonStyle
     let connectedAppsButtonCorner: Corner
@@ -33,7 +34,7 @@ struct QRScannerOverlayViewTheme: StyleSheet, LayoutSheet {
     let overlayImageViewSize: LayoutMetric
     let connectedAppsButtonContentEdgeInsets: LayoutPaddings
     let connectedAppsButtonBottomInset: LayoutMetric
-    let backButtonSize: LayoutSize
+    let cancelButtonSize: LayoutSize
     let connectedAppsButtonTitleImageSpacing: LayoutMetric
 
     init(_ family: LayoutFamily) {
@@ -41,6 +42,11 @@ struct QRScannerOverlayViewTheme: StyleSheet, LayoutSheet {
         let backButtonIcon = "icon-back".uiImage.withRenderingMode(.alwaysTemplate)
         self.backButton = [
             .icon([.normal(backButtonIcon)]),
+            .tintColor(AppColors.Shared.Global.white)
+        ]
+        let dismissButtonIcon = "icon-close".uiImage.withRenderingMode(.alwaysTemplate)
+        self.dismissButton = [
+            .icon([.normal(dismissButtonIcon)]),
             .tintColor(AppColors.Shared.Global.white)
         ]
         self.title = [
@@ -66,7 +72,7 @@ struct QRScannerOverlayViewTheme: StyleSheet, LayoutSheet {
         self.connectedAppsButtonTitleImageSpacing = 8
         self.connectedAppsButtonCorner = Corner(radius: 4)
         self.connectedAppsButtonBottomInset = 34
-        self.backButtonSize = (44, 44)
-        self.titleLabelTopInset = 30 + backButtonSize.h
+        self.cancelButtonSize = (44, 44)
+        self.titleLabelTopInset = 30 + cancelButtonSize.h
     }
 }

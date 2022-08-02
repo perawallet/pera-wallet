@@ -18,7 +18,9 @@
 import UIKit
 import MacaroonUIKit
 
-final class TransactionDetailView: View {    
+final class TransactionDetailView:
+    View,
+    UIContextMenuInteractionDelegate {
     weak var delegate: TransactionDetailViewDelegate?
 
     private lazy var verticalStackView = UIStackView()
@@ -26,7 +28,7 @@ final class TransactionDetailView: View {
     private lazy var amountView = TransactionAmountInformationView()
     private lazy var closeAmountView = TransactionAmountInformationView()
     private lazy var rewardView = TransactionAmountInformationView()
-    private lazy var userView = TransactionTextInformationView()
+    private(set) lazy var userView = TransactionTextInformationView()
     private lazy var opponentView = TransactionContactInformationView()
     private lazy var closeToView = TransactionTextInformationView()
     private lazy var feeView = TransactionAmountInformationView()
@@ -36,6 +38,12 @@ final class TransactionDetailView: View {
     private lazy var noteView = TransactionTextInformationView()
     private lazy var openInAlgoExplorerButton = UIButton()
     private lazy var openInGoalSeekerButton = UIButton()
+
+    private lazy var userContextMenuInteraction = UIContextMenuInteraction(delegate: self)
+    private lazy var opponentContextMenuInteraction = UIContextMenuInteraction(delegate: self)
+    private lazy var closeToContextMenuInteraction = UIContextMenuInteraction(delegate: self)
+    private lazy var idContextMenuInteraction = UIContextMenuInteraction(delegate: self)
+    private lazy var noteContextMenuInteraction = UIContextMenuInteraction(delegate: self)
 
     private let transactionType: TransactionType
     
@@ -51,30 +59,12 @@ final class TransactionDetailView: View {
         opponentView.delegate = self
         opponentView.linkInteractors()
 
-        closeToView.addGestureRecognizer(
-            UILongPressGestureRecognizer(
-                target: self,
-                action: #selector(notifyDelegateToCopyCloseToView)
-            )
-        )
-        opponentView.addGestureRecognizer(
-            UILongPressGestureRecognizer(
-                target: self,
-                action: #selector(notifyDelegateToCopyOpponentView)
-            )
-        )
-        noteView.addGestureRecognizer(
-            UILongPressGestureRecognizer(
-                target: self,
-                action: #selector(notifyDelegateToCopyNoteView)
-            )
-        )
-        idView.addGestureRecognizer(
-            UILongPressGestureRecognizer(
-                target: self,
-                action: #selector(notifyDelegateToCopyTransactionID)
-            )
-        )
+        userView.addInteraction(userContextMenuInteraction)
+        opponentView.addInteraction(opponentContextMenuInteraction)
+        closeToView.addInteraction(closeToContextMenuInteraction)
+        idView.addInteraction(idContextMenuInteraction)
+        noteView.addInteraction(noteContextMenuInteraction)
+
         openInAlgoExplorerButton.addTarget(self, action: #selector(notifyDelegateToOpenAlgoExplorer), for: .touchUpInside)
         openInGoalSeekerButton.addTarget(self, action: #selector(notifyDelegateToOpenGoalSeaker), for: .touchUpInside)
     }
@@ -113,17 +103,16 @@ final class TransactionDetailView: View {
 extension TransactionDetailView {
     private func addVerticalStackView(_ theme: TransactionDetailViewTheme) {
         verticalStackView.axis = .vertical
-        verticalStackView.spacing = theme.verticalStackViewSpacing
         addSubview(verticalStackView)
 
         verticalStackView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(theme.verticalStackViewTopPadding)
-            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.leading.trailing.equalToSuperview()
         }
     }
     
     private func addAmountView(_ theme: TransactionDetailViewTheme) {
-        amountView.customize(TransactionAmountInformationViewTheme(transactionAmountViewTheme: TransactionAmountViewBiggerTheme()))
+        amountView.customize(theme.transactionAmountInformationViewTheme)
         amountView.bindData(TransactionAmountInformationViewModel(title: "transaction-detail-amount".localized))
 
         verticalStackView.addArrangedSubview(amountView)
@@ -153,7 +142,7 @@ extension TransactionDetailView {
     }
     
     private func addUserView(_ theme: TransactionDetailViewTheme) {
-        userView.customize(theme.transactionTextInformationViewCommonTheme)
+        userView.customize(theme.transactionUserInformationViewTheme)
 
         verticalStackView.addArrangedSubview(userView)
     }
@@ -196,7 +185,6 @@ extension TransactionDetailView {
     
     private func addIdView(_ theme: TransactionDetailViewTheme) {
         idView.customize(theme.transactionTextInformationViewTransactionIDTheme)
-        idView.bindData(TransactionTextInformationViewModel(title: "transaction-detail-id".localized))
 
         verticalStackView.addArrangedSubview(idView)
         verticalStackView.setCustomSpacing(theme.bottomPaddingForSeparator, after: idView)
@@ -222,7 +210,7 @@ extension TransactionDetailView {
 
         openInAlgoExplorerButton.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(theme.horizontalPadding)
-            $0.top.equalTo(verticalStackView.snp.bottom).offset(theme.bottomPaddingForSeparator)
+            $0.top.equalTo(verticalStackView.snp.bottom).offset(theme.spacingBetweenPropertiesAndActions)
             $0.bottom.lessThanOrEqualToSuperview().inset(safeAreaBottom + theme.bottomInset)
         }
     }
@@ -249,26 +237,6 @@ extension TransactionDetailView: TransactionContactInformationViewDelegate {
 
 extension TransactionDetailView {
     @objc
-    private func notifyDelegateToCopyCloseToView() {
-        delegate?.transactionDetailViewDidCopyCloseToAddress(self)
-    }
-    
-    @objc
-    private func notifyDelegateToCopyOpponentView() {
-        delegate?.transactionDetailViewDidCopyOpponentAddress(self)
-    }
-    
-    @objc
-    private func notifyDelegateToCopyNoteView() {
-        delegate?.transactionDetailViewDidCopyTransactionNote(self)
-    }
-
-    @objc
-    private func notifyDelegateToCopyTransactionID() {
-        delegate?.transactionDetailViewDidCopyTransactionID(self)
-    }
-
-    @objc
     func notifyDelegateToOpenAlgoExplorer() {
         delegate?.transactionDetailView(self, didOpen: .algoexplorer)
     }
@@ -279,15 +247,23 @@ extension TransactionDetailView {
     }
 }
 
-extension TransactionDetailView: ViewModelBindable {
-    func bindData(_ viewModel: TransactionDetailViewModel?) {
+extension TransactionDetailView {
+    func bindData(
+        _ viewModel: TransactionDetailViewModel?,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) {
         closeToView.bindData(TransactionTextInformationViewModel(detail: viewModel?.closeToViewDetail))
         closeToView.isHidden = (viewModel?.closeToViewIsHidden).falseIfNil
 
         if let rewardViewMode = viewModel?.rewardViewMode {
             rewardView.bindData(
                 TransactionAmountInformationViewModel(
-                    transactionViewModel: TransactionAmountViewModel(rewardViewMode)
+                    transactionViewModel: TransactionAmountViewModel(
+                        rewardViewMode,
+                        currency: currency,
+                        currencyFormatter: currencyFormatter
+                    )
                 )
             )
         }
@@ -297,7 +273,11 @@ extension TransactionDetailView: ViewModelBindable {
         if let closeAmountViewMode = viewModel?.closeAmountViewMode {
             closeAmountView.bindData(
                 TransactionAmountInformationViewModel(
-                    transactionViewModel: TransactionAmountViewModel(closeAmountViewMode)
+                    transactionViewModel: TransactionAmountViewModel(
+                        closeAmountViewMode,
+                        currency: currency,
+                        currencyFormatter: currencyFormatter
+                    )
                 )
             )
         }
@@ -308,7 +288,12 @@ extension TransactionDetailView: ViewModelBindable {
         roundView.bindData(TransactionTextInformationViewModel(detail: viewModel?.roundViewDetail))
         roundView.isHidden = (viewModel?.roundViewIsHidden).falseIfNil
         dateView.bindData(TransactionTextInformationViewModel(detail: viewModel?.date))
-        idView.bindData(TransactionTextInformationViewModel(detail: viewModel?.transactionID))
+        idView.bindData(
+            TransactionTextInformationViewModel(
+                title: viewModel?.transactionIDTitle,
+                detail: viewModel?.transactionID
+            )
+        )
 
         if let status = viewModel?.transactionStatus {
             statusView.bindData(
@@ -318,31 +303,51 @@ extension TransactionDetailView: ViewModelBindable {
             )
         }
 
-        userView.bindData(
-            TransactionTextInformationViewModel(
-                TitledInformation(title: viewModel?.userViewTitle, detail: viewModel?.userViewDetail)
+        if let userViewDetail = viewModel?.userViewDetail {
+            userView.bindData(
+                TransactionTextInformationViewModel(
+                    TitledInformation(title: viewModel?.userViewTitle, detail: userViewDetail)
+                )
             )
-        )
+        } else {
+            userView.hideViewInStack()
+        }
+
 
         if let feeViewMode = viewModel?.feeViewMode {
             feeView.bindData(
                 TransactionAmountInformationViewModel(
-                    transactionViewModel: TransactionAmountViewModel(feeViewMode)
+                    transactionViewModel: TransactionAmountViewModel(
+                        feeViewMode,
+                        currency: currency,
+                        currencyFormatter: currencyFormatter
+                    )
                 )
             )
         }
-
-        opponentView.bindData(TransactionContactInformationViewModel(title: viewModel?.opponentViewTitle))
 
         if let transactionAmountViewMode = viewModel?.transactionAmountViewMode {
             amountView.bindData(
                 TransactionAmountInformationViewModel(
-                    transactionViewModel: TransactionAmountViewModel(transactionAmountViewMode)
+                    transactionViewModel: TransactionAmountViewModel(
+                        transactionAmountViewMode,
+                        currency: currency,
+                        currencyFormatter: currencyFormatter
+                    )
                 )
             )
+        } else {
+            amountView.isHidden = true
         }
 
-        bindOpponentViewDetail(viewModel)
+        if let opponentViewTitle = viewModel?.opponentViewTitle {
+            opponentView.bindData(
+                TransactionContactInformationViewModel(title: opponentViewTitle)
+            )
+            bindOpponentViewDetail(viewModel)
+        } else {
+            opponentView.isHidden = true
+        }
     }
 
     func bindOpponentViewDetail(_ viewModel: TransactionDetailViewModel?) {
@@ -364,15 +369,81 @@ extension TransactionDetailView: ViewModelBindable {
                     contactDisplayViewModel: ContactDisplayViewModel(localAddress: localAddress)
                 )
             )
+        } else {
+            opponentView.hideViewInStack()
+            opponentView.removeAccessoryViews()
         }
     }
 }
 
+extension TransactionDetailView {
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        configurationForMenuAtLocation location: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        switch interaction {
+        case userContextMenuInteraction:
+            return delegate?.contextMenuInteractionForUser(self)
+        case opponentContextMenuInteraction:
+            return delegate?.contextMenuInteractionForOpponent(self)
+        case closeToContextMenuInteraction:
+            return delegate?.contextMenuInteractionForCloseTo(self)
+        case idContextMenuInteraction:
+            return delegate?.contextMenuInteractionForTransactionID(self)
+        case noteContextMenuInteraction:
+            return delegate?.contextMenuInteractionForTransactionNote(self)
+        default:
+            return nil
+        }
+    }
+
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        previewForHighlightingMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard let view = interaction.view else {
+            return nil
+        }
+
+        return UITargetedPreview(
+            view: view,
+            backgroundColor: AppColors.Shared.System.background.uiColor
+        )
+    }
+
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        previewForDismissingMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard let view = interaction.view else {
+            return nil
+        }
+
+        return UITargetedPreview(
+            view: view,
+            backgroundColor: AppColors.Shared.System.background.uiColor
+        )
+    }
+}
+
 protocol TransactionDetailViewDelegate: AnyObject {
-    func transactionDetailViewDidTapAddContactButton(_ transactionDetailView: TransactionDetailView)
-    func transactionDetailViewDidCopyTransactionID(_ transactionDetailView: TransactionDetailView)
-    func transactionDetailViewDidCopyOpponentAddress(_ transactionDetailView: TransactionDetailView)
-    func transactionDetailViewDidCopyCloseToAddress(_ transactionDetailView: TransactionDetailView)
+    func transactionDetailViewDidTapAddContactButton(
+        _ transactionDetailView: TransactionDetailView
+    )
+    func contextMenuInteractionForUser(
+        _ transactionDetailView: TransactionDetailView
+    ) -> UIContextMenuConfiguration?
+    func contextMenuInteractionForOpponent(
+        _ transactionDetailView: TransactionDetailView
+    ) -> UIContextMenuConfiguration?
+    func contextMenuInteractionForCloseTo(
+        _ transactionDetailView: TransactionDetailView
+    ) -> UIContextMenuConfiguration?
+    func contextMenuInteractionForTransactionID(
+        _ transactionDetailView: TransactionDetailView
+    ) -> UIContextMenuConfiguration?
+    func contextMenuInteractionForTransactionNote(
+        _ transactionDetailView: TransactionDetailView
+    ) -> UIContextMenuConfiguration?
     func transactionDetailView(_ transactionDetailView: TransactionDetailView, didOpen explorer: AlgoExplorerType)
-    func transactionDetailViewDidCopyTransactionNote(_ transactionDetailView: TransactionDetailView)
 }

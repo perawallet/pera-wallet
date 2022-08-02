@@ -35,10 +35,40 @@ final class TabBarController: TabBarContainer {
     private lazy var toggleTransactionOptionsActionView = Button()
     private lazy var transactionOptionsView = createTransactionOptions()
 
+    private lazy var buyAlgoFlowCoordinator = BuyAlgoFlowCoordinator(presentingScreen: self)
+    private lazy var sendTransactionFlowCoordinator =
+    SendTransactionFlowCoordinator(
+        presentingScreen: self,
+        sharedDataController: sharedDataController
+    )
+    private lazy var receiveTransactionFlowCoordinator =
+        ReceiveTransactionFlowCoordinator(presentingScreen: self)
+    private lazy var scanQRFlowCoordinator =
+        ScanQRFlowCoordinator(
+            sharedDataController: sharedDataController,
+            presentingScreen: self,
+            api: api,
+            bannerController: bannerController
+        )
+
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
     
     private var isTransactionOptionsVisible: Bool = false
     private var currentTransactionOptionsAnimator: UIViewPropertyAnimator?
+
+    private let sharedDataController: SharedDataController
+    private let api: ALGAPI
+    private let bannerController: BannerController
+
+    init(
+        sharedDataController: SharedDataController,
+        api: ALGAPI,
+        bannerController: BannerController
+    ) {
+        self.sharedDataController = sharedDataController
+        self.api = api
+        self.bannerController = bannerController
+    }
     
     override func addTabBar() {
         super.addTabBar()
@@ -123,20 +153,25 @@ extension TabBarController {
         
         let aView = TransactionOptionsView()
         aView.customize(theme)
-        aView.observe(event: .send) {
-            [weak self] in
-            guard let self = self else { return }
-            self.navigateToAccountSelection(.send)
-        }
-        aView.observe(event: .receive) {
-            [weak self] in
-            guard let self = self else { return }
-            self.navigateToAccountSelection(.receive)
-        }
         aView.observe(event: .buyAlgo) {
             [weak self] in
             guard let self = self else { return }
             self.navigateToBuyAlgo()
+        }
+        aView.observe(event: .send) {
+            [weak self] in
+            guard let self = self else { return }
+            self.navigateToSendTransaction()
+        }
+        aView.observe(event: .receive) {
+            [weak self] in
+            guard let self = self else { return }
+            self.navigateToReceiveTransaction()
+        }
+        aView.observe(event: .scanQRCode) {
+            [weak self] in
+            guard let self = self else { return }
+            self.navigateToQRScanner()
         }
         aView.observe(event: .close) {
             [weak self] in
@@ -240,60 +275,29 @@ extension TabBarController {
 }
 
 extension TabBarController {
-    private func navigateToAccountSelection(
-        _ action: TransactionAction
-    ) {
+    private func navigateToSendTransaction() {
         toggleTransactionOptions()
-        
-        open(
-            .accountSelection(transactionAction: action, delegate: self),
-            by: .present
-        )
-        
-        switch action {
-        case .send: log(SendTabEvent())
-        case .receive: log(ReceiveTabEvent())
-        case .buyAlgo:
-            break
-        }
+        sendTransactionFlowCoordinator.launch()
+
+        log(SendTabEvent())
+    }
+
+    private func navigateToReceiveTransaction() {
+        toggleTransactionOptions()
+        receiveTransactionFlowCoordinator.launch()
+
+        log(ReceiveTabEvent())
     }
 
     private func navigateToBuyAlgo() {
         toggleTransactionOptions()
-
-        launchBuyAlgo()
+        buyAlgoFlowCoordinator.launch()
     }
-}
 
-extension TabBarController: SelectAccountViewControllerDelegate {
-    func selectAccountViewController(
-        _ selectAccountViewController: SelectAccountViewController,
-        didSelect account: Account,
-        for transactionAction: TransactionAction
-    ) {
-        if transactionAction == .send {
-            selectAccountViewController.open(
-                .assetSelection(
-                    filter: nil,
-                    account: account
-                ),
-                by: .push
-            )
-        } else {
-            selectAccountViewController.closeScreen(by: .dismiss) { [weak self] in
-                guard let self = self else {
-                    return
-                }
+    private func navigateToQRScanner() {
+        toggleTransactionOptions()
+        scanQRFlowCoordinator.launch()
 
-                let draft = QRCreationDraft(address: account.address, mode: .address, title: account.name)
-                self.open(
-                    .qrGenerator(
-                        title: account.name ?? account.address.shortAddressDisplay,
-                        draft: draft, isTrackable: true),
-                    by: .present
-                )
-            }
-        }
     }
 }
 

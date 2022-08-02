@@ -76,10 +76,13 @@ final class CollectibleDetailViewController:
         configuration: configuration
     )
 
+    private lazy var currencyFormatter = CurrencyFormatter()
+
     private var asset: CollectibleAsset
     private let account: Account
     private let thumbnailImage: UIImage?
     private let dataController: CollectibleDetailDataController
+    private let copyToClipboardController: CopyToClipboardController
 
     private var displayedMedia: Media?
 
@@ -87,6 +90,7 @@ final class CollectibleDetailViewController:
         asset: CollectibleAsset,
         account: Account,
         thumbnailImage: UIImage?,
+        copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {
         self.asset = asset
@@ -97,6 +101,7 @@ final class CollectibleDetailViewController:
             asset: asset,
             account: account
         )
+        self.copyToClipboardController = copyToClipboardController
         super.init(configuration: configuration)
     }
 
@@ -313,7 +318,6 @@ extension CollectibleDetailViewController {
             switch event {
             case .didScrollToMedia(let media):
                 self.displayedMedia = media
-            default: break
             }
         }
     }
@@ -475,7 +479,7 @@ extension CollectibleDetailViewController {
                 return
             }
 
-            self.bannerController?.presentInfoBanner("qr-creation-copied".localized)
+            self.copyToClipboardController.copyAddress(self.account)
             UIPasteboard.general.string = self.account.address
         }
 
@@ -527,8 +531,7 @@ extension CollectibleDetailViewController {
             [weak self] in
             guard let self = self else { return }
 
-            if let urlString = item.source?.url,
-               let url = URL(string: urlString) {
+            if let url = item.source?.url {
                 self.open(url)
             }
         }
@@ -606,16 +609,27 @@ extension CollectibleDetailViewController {
         ledgerApprovalViewController?.dismissScreen()
         ledgerApprovalViewController = nil
     }
+
+    func transactionControllerDidRejectedLedgerOperation(
+        _ transactionController: TransactionController
+    ) {
+        loadingController?.stopLoading()
+    }
 }
 
 extension CollectibleDetailViewController {
     private func displayTransactionError(from transactionError: TransactionError) {
         switch transactionError {
         case let .minimumAmount(amount):
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = AlgoLocalCurrency()
+
+            let amountText = currencyFormatter.format(amount.toAlgos)
+
             bannerController?.presentErrorBanner(
                 title: "asset-min-transaction-error-title".localized,
                 message: "asset-min-transaction-error-message".localized(
-                    params: amount.toAlgos.toAlgosStringForLabel ?? ""
+                    params: amountText.someString
                 )
             )
         case let .sdkError(error):
@@ -640,6 +654,12 @@ extension CollectibleDetailViewController {
         default:
             break
         }
+    }
+}
+
+extension CollectibleDetailViewController {
+    var currentVisibleMediaCell: UICollectionViewCell? {
+        return mediaPreviewController.currentVisibleCell
     }
 }
 

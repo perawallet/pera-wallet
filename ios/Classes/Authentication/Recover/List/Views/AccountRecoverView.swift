@@ -116,7 +116,7 @@ extension AccountRecoverView {
         inputView.bindData(RecoverInputViewModel(state: .empty, index: recoverInputViews.count))
         recoverInputViews.append(inputView)
 
-        if recoverInputViews.count == constants.totalMnemonicCount {
+        if recoverInputViews.count == Mnemonics.fullCount {
             inputView.returnKey = .go
         } else {
             inputView.returnKey = .next
@@ -169,7 +169,6 @@ extension AccountRecoverView: RecoverInputViewDelegate {
 
 extension AccountRecoverView {
     struct Constants {
-        let totalMnemonicCount = 25
         let firstColumnCount = 13
         let secondColumnCount = 12
     }

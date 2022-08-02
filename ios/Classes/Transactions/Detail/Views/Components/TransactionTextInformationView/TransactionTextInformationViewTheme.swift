@@ -16,24 +16,42 @@
 //   TransactionTextInformationViewTheme.swift
 
 import MacaroonUIKit
+import UIKit
 
-protocol TransactionTextInformationViewTheme: LayoutSheet, StyleSheet {
-    var title: TextStyle { get }
-    var detail: TextStyle { get }
-    var detailLabelLeadingPadding: LayoutMetric { get }
-}
+struct TransactionTextInformationViewTheme:
+    LayoutSheet,
+    StyleSheet {
+    var contentPaddings: NSDirectionalEdgeInsets
+    var title: TextStyle
+    var minimumSpacingBetweenTitleAndDetail: LayoutMetric
+    var detail: TextStyle
+    var detailLabelLeadingPadding: LayoutMetric
 
-extension TransactionTextInformationViewTheme {
-    var title: TextStyle {
-        return [
+    init(
+        _ family: LayoutFamily
+    ) {
+        self.contentPaddings = .zero
+        self.title = [
             .textAlignment(.left),
             .textOverflow(FittingText()),
             .textColor(AppColors.Components.Text.gray),
             .font(Fonts.DMSans.regular.make(15))
         ]
+        self.minimumSpacingBetweenTitleAndDetail = 16
+        self.detail = [
+            .textAlignment(.left),
+            .textOverflow(FittingText()),
+            .textColor(AppColors.Components.Text.main),
+            .font(Fonts.DMSans.regular.make(15))
+        ]
+        self.detailLabelLeadingPadding = 137
     }
+}
 
-    var detailLabelLeadingPadding: LayoutMetric {
-        return 137
+extension TransactionTextInformationViewTheme {
+    func configuredForInteraction() -> TransactionTextInformationViewTheme {
+        var theme = TransactionTextInformationViewTheme()
+        theme.contentPaddings = .init(top: 12, leading: 24, bottom: 12, trailing: 24)
+        return theme
     }
 }

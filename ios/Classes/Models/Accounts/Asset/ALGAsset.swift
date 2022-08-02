@@ -27,6 +27,7 @@ final class ALGAsset:
     let isFrozen: Bool?
     let id: Int64
     let isDeleted: Bool?
+    let optedInAtRound: UInt64?
 
     init() {
         self.creator = nil
@@ -34,6 +35,7 @@ final class ALGAsset:
         self.isFrozen = nil
         self.id = 1
         self.isDeleted = nil
+        self.optedInAtRound = nil
     }
 
     init(id: AssetID) {
@@ -42,6 +44,7 @@ final class ALGAsset:
         self.amount = 0
         self.isFrozen = nil
         self.isDeleted = nil
+        self.optedInAtRound = nil
     }
 
     init(collectibleAsset: CollectibleAsset) {
@@ -50,6 +53,7 @@ final class ALGAsset:
         self.amount = collectibleAsset.amount
         self.isFrozen = collectibleAsset.isFrozen
         self.isDeleted = collectibleAsset.isDeleted
+        self.optedInAtRound = collectibleAsset.optedInAtRound
     }
 }
 
@@ -80,5 +84,6 @@ extension ALGAsset {
         case isFrozen = "is-frozen"
         case id = "asset-id"
         case isDeleted = "deleted"
+        case optedInAtRound = "opted-in-at-round"
     }
 }

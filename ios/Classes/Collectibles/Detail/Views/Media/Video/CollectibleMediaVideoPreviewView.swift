@@ -26,10 +26,17 @@ final class CollectibleMediaVideoPreviewView:
     ListReusable {
 
     private lazy var placeholderView = URLImagePlaceholderView()
-    private lazy var videoPlayerView = VideoPlayerView()
+    private(set) lazy var videoPlayerView = VideoPlayerView()
     private lazy var overlayView = UIView()
+    private lazy var fullScreenBadge = ImageView()
+
+    private(set) var isReadyForDisplay = false
 
     private var playerStateObserver: NSKeyValueObservation?
+
+    var currentPlayer: AVPlayer? {
+        return videoPlayerView.player
+    }
 
     func customize(
         _ theme: CollectibleMediaVideoPreviewViewTheme
@@ -37,6 +44,7 @@ final class CollectibleMediaVideoPreviewView:
         addPlaceholderView(theme)
         addVideoPlayerView(theme)
         addOverlayView(theme)
+        addFullScreenBadge(theme)
     }
 
     func customizeAppearance(
@@ -91,6 +99,20 @@ extension CollectibleMediaVideoPreviewView {
             $0.setPaddings()
         }
     }
+
+    private func addFullScreenBadge(
+        _ theme: CollectibleMediaVideoPreviewViewTheme
+    ) {
+        fullScreenBadge.customizeAppearance(theme.fullScreenBadge)
+        fullScreenBadge.layer.draw(corner: theme.corner)
+
+        fullScreenBadge.contentEdgeInsets = theme.fullScreenBadgeContentEdgeInsets
+        addSubview(fullScreenBadge)
+        fullScreenBadge.snp.makeConstraints {
+            $0.trailing == theme.fullScreenBadgePaddings.trailing
+            $0.bottom == theme.fullScreenBadgePaddings.bottom
+        }
+    }
 }
 
 extension CollectibleMediaVideoPreviewView {
@@ -111,6 +133,7 @@ extension CollectibleMediaVideoPreviewView {
             [weak self] (playerLayer, change) in
             guard let self = self else { return }
             self.placeholderView.isHidden = playerLayer.isReadyForDisplay
+            self.isReadyForDisplay = playerLayer.isReadyForDisplay
         }
 
         let videoPlayer = AVPlayer(url: url)
@@ -124,6 +147,8 @@ extension CollectibleMediaVideoPreviewView {
         } else {
             overlayView.alpha = 0.0
         }
+
+        fullScreenBadge.isHidden = viewModel.isFullScreenBadgeHidden
     }
 
     class func calculatePreferredSize(
@@ -161,6 +186,7 @@ extension CollectibleMediaVideoPreviewView {
         videoPlayerView.player = nil
         placeholderView.prepareForReuse()
         overlayView.alpha = 0.0
+        fullScreenBadge.isHidden = false
     }
 }
 

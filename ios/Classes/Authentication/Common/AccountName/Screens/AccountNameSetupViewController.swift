@@ -48,7 +48,7 @@ final class AccountNameSetupViewController: BaseScrollViewController {
     
     override func linkInteractors() {
         accountNameSetupView.linkInteractors()
-        scrollView.touchDetectingDelegate = self
+        (scrollView as? TouchDetectingScrollView)?.touchDetectingDelegate = self
         keyboardController.dataSource = self
         accountNameSetupView.delegate = self
     }

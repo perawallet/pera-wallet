@@ -24,13 +24,17 @@ class WCGroupTransactionViewController: BaseViewController {
     private lazy var dataSource = WCGroupTransactionDataSource(
         sharedDataController: sharedDataController,
         transactions: transactions,
-        walletConnector: walletConnector
+        walletConnector: walletConnector,
+        currencyFormatter: currencyFormatter
     )
 
     private lazy var layoutBuilder = WCGroupTransactionLayout(
         dataSource: dataSource,
-        sharedDataController: sharedDataController
+        sharedDataController: sharedDataController,
+        currencyFormatter: currencyFormatter
     )
+
+    private lazy var currencyFormatter = CurrencyFormatter()
 
     private let transactions: [WCTransaction]
     private let transactionRequest: WalletConnectRequest

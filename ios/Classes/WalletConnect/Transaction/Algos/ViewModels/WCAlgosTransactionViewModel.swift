@@ -35,16 +35,33 @@ class WCAlgosTransactionViewModel {
     private(set) var rawTransactionInformationViewModel: WCTransactionActionableInformationViewModel?
 
 
-    init(transaction: WCTransaction, senderAccount: Account?) {
+    init(
+        transaction: WCTransaction,
+        senderAccount: Account?,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) {
         setFromInformationViewModel(from: senderAccount, and: transaction)
         setToInformationViewModel(from: senderAccount, and: transaction)
-        setBalanceInformationViewModel(from: senderAccount)
+        setBalanceInformationViewModel(
+            from: senderAccount,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
         setAssetInformationViewModel(from: senderAccount)
         setCloseWarningViewModel(from: transaction)
         setRekeyWarningViewModel(from: senderAccount, and: transaction)
 
-        setAmountInformationViewModel(from: transaction)
-        setFeeInformationViewModel(from: transaction)
+        setAmountInformationViewModel(
+            from: transaction,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
+        setFeeInformationViewModel(
+            from: transaction,
+            currency: currency,
+            currencyFormatter: currencyFormatter
+        )
         setFeeWarningInformationViewModel(from: transaction)
 
         setNoteInformationViewModel(from: transaction)
@@ -95,7 +112,11 @@ class WCAlgosTransactionViewModel {
         self.toInformationViewModel = viewModel
     }
 
-    private func setBalanceInformationViewModel(from senderAccount: Account?) {
+    private func setBalanceInformationViewModel(
+        from senderAccount: Account?,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) {
         guard let senderAccount = senderAccount else {
             return
         }
@@ -106,7 +127,9 @@ class WCAlgosTransactionViewModel {
                 isAlgos: true,
                 fraction: algosFraction,
                 assetSymbol: "ALGO"
-            )
+            ),
+            currency: currency,
+            currencyFormatter: currencyFormatter
         )
 
         let balanceViewModel = TransactionAmountInformationViewModel(transactionViewModel: amountViewModel)
@@ -157,7 +180,11 @@ class WCAlgosTransactionViewModel {
         self.rekeyWarningInformationViewModel = WCTransactionWarningViewModel(warning: .rekeyed)
     }
 
-    private func setAmountInformationViewModel(from transaction: WCTransaction) {
+    private func setAmountInformationViewModel(
+        from transaction: WCTransaction,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) {
         guard let amount = transaction.transactionDetail?.amount else {
             return
         }
@@ -168,7 +195,9 @@ class WCAlgosTransactionViewModel {
                 isAlgos: true,
                 fraction: algosFraction,
                 assetSymbol: "ALGO"
-            )
+            ),
+            currency: currency,
+            currencyFormatter: currencyFormatter
         )
 
         let amountInformationViewModel = TransactionAmountInformationViewModel(transactionViewModel: amountViewModel)
@@ -176,7 +205,11 @@ class WCAlgosTransactionViewModel {
         self.amountViewModel = amountInformationViewModel
     }
 
-    private func setFeeInformationViewModel(from transaction: WCTransaction) {
+    private func setFeeInformationViewModel(
+        from transaction: WCTransaction,
+        currency: CurrencyProvider,
+        currencyFormatter: CurrencyFormatter
+    ) {
 
         guard let transactionDetail = transaction.transactionDetail,
               let fee = transactionDetail.fee,
@@ -189,7 +222,9 @@ class WCAlgosTransactionViewModel {
                 amount: fee.toAlgos,
                 isAlgos: true,
                 fraction: algosFraction
-            )
+            ),
+            currency: currency,
+            currencyFormatter: currencyFormatter
         )
 
         let feeInformationViewModel = TransactionAmountInformationViewModel(transactionViewModel: feeViewModel)

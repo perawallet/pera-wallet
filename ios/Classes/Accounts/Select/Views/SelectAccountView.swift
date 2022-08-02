@@ -26,18 +26,13 @@ final class SelectAccountView: View {
     private(set) lazy var clipboardView = AccountClipboardView()
 
     private(set) lazy var listView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumLineSpacing = theme.cellSpacing
-
+        let flowLayout = AccountSelectScreenListLayout.build()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = theme.backgroundColor.uiColor
         collectionView.contentInset = UIEdgeInsets(theme.contentInset)
         collectionView.keyboardDismissMode = .onDrag
-        collectionView.register(SelectContactCell.self)
-        collectionView.register(AccountPreviewCell.self)
-        collectionView.register(header: TitleHeaderSupplementaryView.self)
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.showsVerticalScrollIndicator = false
         return collectionView
     }()
 

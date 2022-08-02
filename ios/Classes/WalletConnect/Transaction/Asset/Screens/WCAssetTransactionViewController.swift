@@ -21,6 +21,8 @@ class WCAssetTransactionViewController: WCSingleTransactionViewController {
 
     private lazy var assetTransactionView = WCAssetTransactionView()
 
+    private lazy var currencyFormatter = CurrencyFormatter()
+
     override var transactionView: WCSingleTransactionView? {
         return assetTransactionView
     }
@@ -59,7 +61,9 @@ extension WCAssetTransactionViewController {
             WCAssetTransactionViewModel(
                 transaction: transaction,
                 senderAccount: account,
-                asset: asset
+                asset: asset,
+                currency: sharedDataController.currency,
+                currencyFormatter: currencyFormatter
             )
         )
     }

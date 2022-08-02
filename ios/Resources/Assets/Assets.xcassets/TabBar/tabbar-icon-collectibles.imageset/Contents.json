@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "tabbar-icon-nfts.pdf",
+      "filename" : "tabbar-icon-collectibles.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "tabbar-icon-nfts-1.pdf",
+      "filename" : "tabbar-icon-collectibles-1.pdf",
       "idiom" : "universal"
     }
   ],

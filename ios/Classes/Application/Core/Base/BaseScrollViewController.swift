@@ -17,11 +17,12 @@
 
 import Foundation
 import MacaroonBottomSheet
+import MacaroonStorySheet
 import MacaroonUIKit
 import UIKit
 
 class BaseScrollViewController: BaseViewController {
-    private(set) lazy var scrollView: TouchDetectingScrollView = {
+    private(set) lazy var scrollView: UIScrollView = {
         let scrollView = TouchDetectingScrollView()
         scrollView.alwaysBounceVertical = true
         scrollView.showsHorizontalScrollIndicator = false

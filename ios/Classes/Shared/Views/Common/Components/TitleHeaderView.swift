@@ -20,19 +20,19 @@ import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class TitleHeaderView: View {
+final class TitleHeaderView: View, ViewModelBindable, ListReusable {
     private lazy var titleLabel = UILabel()
 
     func customize(_ theme: TitleHeaderViewTheme) {
         addTitleLabel(theme)
     }
-    
+
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
-    func bind(_ viewModel: SelectAccountHeaderViewModel) {
-        titleLabel.text = viewModel.title
+    func bindData(_ viewModel: SelectAccountHeaderViewModel?) {
+        titleLabel.text = viewModel?.title
     }
 }
 
@@ -54,6 +54,19 @@ class TitleHeaderSupplementaryView: BaseSupplementaryView<TitleHeaderView> {
     }
 
     func bind(_ viewModel: SelectAccountHeaderViewModel) {
-        contextView.bind(viewModel)
+        contextView.bindData(viewModel)
+    }
+}
+
+final class TitleHeaderCell:
+    CollectionCell<TitleHeaderView>,
+    ViewModelBindable {
+    
+    override init(
+        frame: CGRect
+    ) {
+        super.init(frame: frame)
+
+        contextView.customize(TitleHeaderViewTheme())
     }
 }

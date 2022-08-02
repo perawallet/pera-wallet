@@ -23,6 +23,8 @@ final class AssetSearchLocalDataController:
     SharedDataControllerObserver {
     var eventHandler: ((AssetSearchDataControllerEvent) -> Void)?
 
+    private lazy var currencyFormatter = CurrencyFormatter()
+
     private var accountHandle: AccountHandle
     private var lastSnapshot: Snapshot?
 
@@ -37,7 +39,7 @@ final class AssetSearchLocalDataController:
     ) {
         self.accountHandle = accountHandle
         self.sharedDataController = sharedDataController
-        self.searchResults = accountHandle.value.standardAssets
+        self.searchResults = accountHandle.value.standardAssets.someArray
     }
 
     deinit {
@@ -55,7 +57,7 @@ extension AssetSearchLocalDataController {
     }
 
     func search(for query: String) {
-        searchResults = accountHandle.value.standardAssets.filter { asset in
+        searchResults = accountHandle.value.standardAssets.someArray.filter { asset in
             isAssetContainsID(asset, query: query) ||
             isAssetContainsName(asset, query: query) ||
             isAssetContainsUnitName(asset, query: query)
@@ -65,7 +67,7 @@ extension AssetSearchLocalDataController {
     }
 
     func resetSearch() {
-        searchResults = accountHandle.value.standardAssets
+        searchResults = accountHandle.value.standardAssets.someArray
         deliverContentSnapshot()
     }
 
@@ -106,7 +108,7 @@ extension AssetSearchLocalDataController {
 
 extension AssetSearchLocalDataController {
     private func deliverContentSnapshot() {
-        guard !accountHandle.value.standardAssets.isEmpty else {
+        guard !accountHandle.value.standardAssets.someArray.isEmpty else {
             deliverNoContentSnapshot()
             return
         }
@@ -123,14 +125,20 @@ extension AssetSearchLocalDataController {
             }
 
             var snapshot = Snapshot()
-
             var assetItems: [AssetSearchItem] = []
-            let currency = self.sharedDataController.currency.value
+            let currency = self.sharedDataController.currency
+            let currencyFormatter = self.currencyFormatter
 
             self.searchResults.forEach {
-                let assetPreview = AssetPreviewModelAdapter.adaptAssetSelection(($0, currency))
-                let assetItem: AssetSearchItem = .asset(AssetPreviewViewModel(assetPreview))
-                assetItems.append(assetItem)
+                let assetItem = AssetItem(
+                    asset: $0,
+                    currency: currency,
+                    currencyFormatter: currencyFormatter
+                )
+                let preview = AssetPreviewModelAdapter.adaptAssetSelection(assetItem)
+                let previewViewModel = AssetPreviewViewModel(preview)
+                let assetSearchItem: AssetSearchItem = .asset(previewViewModel)
+                assetItems.append(assetSearchItem)
             }
 
             snapshot.appendSections([.assets])

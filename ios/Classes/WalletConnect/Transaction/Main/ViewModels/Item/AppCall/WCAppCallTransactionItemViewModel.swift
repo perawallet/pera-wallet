@@ -22,10 +22,17 @@ class WCAppCallTransactionItemViewModel {
     private(set) var title: String?
     private(set) var accountInformationViewModel: WCGroupTransactionAccountInformationViewModel?
 
-    init(transaction: WCTransaction, account: Account?) {
+    init(
+        transaction: WCTransaction,
+        account: Account?,
+        currencyFormatter: CurrencyFormatter
+    ) {
         setHasWarning(from: transaction, and: account)
         setTitle(from: transaction)
-        setAccountInformationViewModel(from: account)
+        setAccountInformationViewModel(
+            from: account,
+            currencyFormatter: currencyFormatter
+        )
     }
 
     private func setHasWarning(from transaction: WCTransaction, and account: Account?) {
@@ -66,11 +73,15 @@ class WCAppCallTransactionItemViewModel {
         }
     }
 
-    private func setAccountInformationViewModel(from account: Account?) {
+    private func setAccountInformationViewModel(
+        from account: Account?,
+        currencyFormatter: CurrencyFormatter
+    ) {
         accountInformationViewModel = WCGroupTransactionAccountInformationViewModel(
             account: account,
             asset: nil,
-            isDisplayingAmount: false
+            isDisplayingAmount: false,
+            currencyFormatter: currencyFormatter
         )
     }
 }

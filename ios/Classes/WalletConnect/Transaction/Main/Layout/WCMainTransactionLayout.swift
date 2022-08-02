@@ -26,12 +26,17 @@ class WCMainTransactionLayout: NSObject {
     private weak var dataSource: WCMainTransactionDataSource?
 
     private let sharedDataController: SharedDataController
+    private let currencyFormatter: CurrencyFormatter
+
     init(
         dataSource: WCMainTransactionDataSource,
-        sharedDataController: SharedDataController
+        sharedDataController: SharedDataController,
+        currencyFormatter: CurrencyFormatter
     ) {
         self.dataSource = dataSource
         self.sharedDataController = sharedDataController
+        self.currencyFormatter = currencyFormatter
+
         super.init()
     }
 }
@@ -53,7 +58,8 @@ extension WCMainTransactionLayout: UICollectionViewDelegateFlowLayout {
                 transaction: transaction,
                 account: transaction.signerAccount,
                 asset: asset(from: transaction),
-                currency: sharedDataController.currency.value
+                currency: sharedDataController.currency,
+                currencyFormatter: currencyFormatter
             )
 
             return WCGroupTransactionItemViewModel.calculatePreferredSize(

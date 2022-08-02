@@ -26,47 +26,6 @@ extension URL {
             result[item.name] = item.value
         }
     }
-    
-    func buildQRText() -> QRText? {
-        guard let address = host else {
-            return nil
-        }
-        
-        guard let queryParameters = queryParameters else {
-            if address.isValidatedAddress {
-                return QRText(mode: .address, address: address)
-            }
-            return nil
-        }
-        
-        if let amount = queryParameters[QRText.CodingKeys.amount.rawValue],
-           let asset = queryParameters[QRText.CodingKeys.asset.rawValue] {
-            return QRText(
-                mode: .assetRequest,
-                address: address,
-                amount: UInt64(amount),
-                asset: Int64(asset),
-                note: queryParameters[QRText.CodingKeys.note.rawValue],
-                lockedNote: queryParameters[QRText.CodingKeys.lockedNote.rawValue]
-            )
-        }
-        
-        if let amount = queryParameters[QRText.CodingKeys.amount.rawValue] {
-            return QRText(
-                mode: .algosRequest,
-                address: address,
-                amount: UInt64(amount),
-                note: queryParameters[QRText.CodingKeys.note.rawValue],
-                lockedNote: queryParameters[QRText.CodingKeys.lockedNote.rawValue]
-            )
-        }
-        
-        if let label = queryParameters[QRText.CodingKeys.label.rawValue] {
-            return QRText(mode: .address, address: address, label: label)
-        }
-        
-        return nil
-    }
 
     func extractBuyAlgoParamsFromMoonPay() -> BuyAlgoParams? {
         guard let address = host else {
@@ -89,5 +48,14 @@ extension URL {
             transactionStatus: transactionStatus,
             transactionId: transactionId
         )
+    }
+
+    func appendQueryParameters(_ newItems: [URLQueryItem]) -> URL? {
+        var components = URLComponents(string: self.absoluteString)
+        var params = components?.queryItems ?? [URLQueryItem]()
+        params += newItems
+        components?.queryItems = params
+
+        return components?.url
     }
 }

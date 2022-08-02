@@ -17,13 +17,25 @@
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
 extension AccountDetailViewController {
     struct Theme: LayoutSheet, StyleSheet {
         let backgroundColor: Color
+        let accountActionsMenuActionIcon: UIImage
+        let accountActionsMenuActionSize: LayoutSize
+        let accountActionsMenuActionTrailingPadding: LayoutMetric
+        let accountActionsMenuActionBottomPadding: LayoutMetric
+        let spacingBetweenListAndAccountActionsMenuAction: LayoutMetric
 
         init(_ family: LayoutFamily) {
-            backgroundColor = AppColors.Shared.System.background
+            self.backgroundColor = AppColors.Shared.System.background
+
+            self.accountActionsMenuActionIcon = "fab-swap".uiImage
+            self.accountActionsMenuActionSize = (64, 64)
+            self.accountActionsMenuActionTrailingPadding = 24
+            self.accountActionsMenuActionBottomPadding = 8
+            self.spacingBetweenListAndAccountActionsMenuAction = 4
         }
     }
 }

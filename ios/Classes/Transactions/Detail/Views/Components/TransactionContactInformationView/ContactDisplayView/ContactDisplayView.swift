@@ -93,12 +93,14 @@ extension ContactDisplayView: ViewModelBindable {
         if let name = viewModel?.name {
             nameLabel.text = name
             removeContactImage()
+            return
         }
 
         if let localAddress = viewModel?.localAddress {
             nameLabel.text = localAddress
             removeContactImage()
             removeAddContactButton()
+            return
         }
 
         if let contact = viewModel?.contact {
@@ -111,7 +113,13 @@ extension ContactDisplayView: ViewModelBindable {
             }
 
             nameLabel.text = contact.name
+            return
         }
+    }
+
+    func removeAccessoryViews() {
+        addContactButton.removeFromSuperview()
+        imageView.removeFromSuperview()
     }
     
     private func removeAddContactButton() {

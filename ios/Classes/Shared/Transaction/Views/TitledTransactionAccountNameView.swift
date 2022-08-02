@@ -86,7 +86,7 @@ extension TitledTransactionAccountNameView: ViewModelBindable {
         }
 
         if let accountNameViewModel = viewModel?.accountNameViewModel {
-            imageView.image = accountNameViewModel.image
+            imageView.load(from: accountNameViewModel.image)
             nameLabel.text = accountNameViewModel.name
 
             imageView.isHidden = accountNameViewModel.image == nil
