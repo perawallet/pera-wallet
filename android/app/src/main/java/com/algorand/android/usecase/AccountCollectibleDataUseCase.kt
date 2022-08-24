@@ -22,11 +22,12 @@ import com.algorand.android.models.AssetStatus.PENDING_FOR_SENDING
 import com.algorand.android.models.BaseAccountAssetData
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData
 import com.algorand.android.models.SimpleCollectibleDetail
+import com.algorand.android.modules.parity.domain.usecase.PrimaryCurrencyParityCalculationUseCase
+import com.algorand.android.modules.parity.domain.usecase.SecondaryCurrencyParityCalculationUseCase
 import com.algorand.android.nft.domain.model.CollectibleMediaType
 import com.algorand.android.nft.domain.usecase.SimpleCollectibleUseCase
 import com.algorand.android.utils.DEFAULT_ASSET_DECIMAL
 import com.algorand.android.utils.formatAmount
-import com.algorand.android.utils.formatAsCurrency
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -35,9 +36,9 @@ import kotlinx.coroutines.flow.mapNotNull
 class AccountCollectibleDataUseCase @Inject constructor(
     private val accountDetailUseCase: AccountDetailUseCase,
     private val simpleCollectibleUseCase: SimpleCollectibleUseCase,
-    private val algoPriceUseCase: AlgoPriceUseCase,
     private val accountCollectibleDataMapper: AccountCollectibleDataMapper,
-    private val accountAssetAmountUseCase: AccountAssetAmountUseCase
+    private val primaryCurrencyParityCalculationUseCase: PrimaryCurrencyParityCalculationUseCase,
+    private val secondaryCurrencyParityCalculationUseCase: SecondaryCurrencyParityCalculationUseCase
 ) {
 
     fun getAccountOwnedCollectibleDataList(publicKey: String): List<BaseOwnedCollectibleData> {
@@ -138,59 +139,43 @@ class AccountCollectibleDataUseCase @Inject constructor(
         assetHolding: AssetHolding,
         collectibleItem: SimpleCollectibleDetail
     ): BaseOwnedCollectibleData {
-        // TODO: 16.03.2022 Get selected currency symbol from algoPriceUseCase method when branch is merged to dev
-        val selectedCurrencySymbol = algoPriceUseCase.getSelectedCurrencySymbolOrEmpty()
         val safeDecimal = collectibleItem.fractionDecimals ?: DEFAULT_ASSET_DECIMAL
-        val assetAmountInSelectedCurrency =
-            accountAssetAmountUseCase.getAssetAmountInSelectedCurrency(assetHolding, collectibleItem)
+        val parityValueInSelectedCurrency = primaryCurrencyParityCalculationUseCase
+            .getAssetParityValue(assetHolding, collectibleItem)
+        val parityValueInSecondaryCurrency = secondaryCurrencyParityCalculationUseCase
+            .getAssetParityValue(assetHolding, collectibleItem)
         return when (collectibleItem.collectible.mediaType) {
             CollectibleMediaType.IMAGE -> accountCollectibleDataMapper.mapToOwnedCollectibleImageData(
                 collectibleDetail = collectibleItem,
                 amount = assetHolding.amount,
                 formattedAmount = assetHolding.amount.formatAmount(safeDecimal),
                 formattedCompactAmount = assetHolding.amount.formatAmount(safeDecimal, isCompact = true),
-                amountInSelectedCurrency = assetAmountInSelectedCurrency,
-                formattedSelectedCurrencyValue = assetAmountInSelectedCurrency.formatAsCurrency(selectedCurrencySymbol),
-                formattedSelectedCurrencyCompactValue = assetAmountInSelectedCurrency.formatAsCurrency(
-                    selectedCurrencySymbol,
-                    true
-                )
+                parityValueInSelectedCurrency = parityValueInSelectedCurrency,
+                parityValueInSecondaryCurrency = parityValueInSecondaryCurrency
             )
             CollectibleMediaType.VIDEO -> accountCollectibleDataMapper.mapToOwnedCollectibleVideoData(
                 collectibleDetail = collectibleItem,
                 amount = assetHolding.amount,
                 formattedAmount = assetHolding.amount.formatAmount(safeDecimal),
                 formattedCompactAmount = assetHolding.amount.formatAmount(safeDecimal, isCompact = true),
-                amountInSelectedCurrency = assetAmountInSelectedCurrency,
-                formattedSelectedCurrencyValue = assetAmountInSelectedCurrency.formatAsCurrency(selectedCurrencySymbol),
-                formattedSelectedCurrencyCompactValue = assetAmountInSelectedCurrency.formatAsCurrency(
-                    selectedCurrencySymbol,
-                    true
-                )
+                parityValueInSelectedCurrency = parityValueInSelectedCurrency,
+                parityValueInSecondaryCurrency = parityValueInSecondaryCurrency
             )
             CollectibleMediaType.MIXED -> accountCollectibleDataMapper.mapToOwnedCollectibleMixedData(
                 collectibleDetail = collectibleItem,
                 amount = assetHolding.amount,
                 formattedAmount = assetHolding.amount.formatAmount(safeDecimal),
                 formattedCompactAmount = assetHolding.amount.formatAmount(safeDecimal, isCompact = true),
-                amountInSelectedCurrency = assetAmountInSelectedCurrency,
-                formattedSelectedCurrencyValue = assetAmountInSelectedCurrency.formatAsCurrency(selectedCurrencySymbol),
-                formattedSelectedCurrencyCompactValue = assetAmountInSelectedCurrency.formatAsCurrency(
-                    selectedCurrencySymbol,
-                    true
-                )
+                parityValueInSelectedCurrency = parityValueInSelectedCurrency,
+                parityValueInSecondaryCurrency = parityValueInSecondaryCurrency
             )
             CollectibleMediaType.NOT_SUPPORTED -> accountCollectibleDataMapper.mapToNotSupportedOwnedCollectibleData(
                 collectibleDetail = collectibleItem,
                 amount = assetHolding.amount,
                 formattedAmount = assetHolding.amount.formatAmount(safeDecimal),
                 formattedCompactAmount = assetHolding.amount.formatAmount(safeDecimal, isCompact = true),
-                amountInSelectedCurrency = assetAmountInSelectedCurrency,
-                formattedSelectedCurrencyValue = assetAmountInSelectedCurrency.formatAsCurrency(selectedCurrencySymbol),
-                formattedSelectedCurrencyCompactValue = assetAmountInSelectedCurrency.formatAsCurrency(
-                    selectedCurrencySymbol,
-                    true
-                )
+                parityValueInSelectedCurrency = parityValueInSelectedCurrency,
+                parityValueInSecondaryCurrency = parityValueInSecondaryCurrency
             )
         }
     }

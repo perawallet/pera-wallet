@@ -17,8 +17,8 @@
     android:layout_height="match_parent"
     tools:parentTag="android.widget.FrameLayout">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/collectibleShapeableImageView"
+    <ViewStub
+        android:id="@+id/collectibleImageViewStup"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitCenter"

@@ -22,7 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="28dp"
-        android:paddingHorizontal="@dimen/spacing_normal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_sender_account" />
 
@@ -32,8 +31,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:visibility="gone"
-        app:titleRes="@string/no_account_found"
         app:descriptionRes="@string/you_need_to_create"
+        app:titleRes="@string/no_account_found"
         tools:visibility="visible" />
 
     <include

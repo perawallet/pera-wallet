@@ -21,7 +21,7 @@ import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentDeveloperSettingsBinding
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
-import com.algorand.android.utils.openUrl
+import com.algorand.android.utils.openDispenserUrl
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -56,10 +56,6 @@ class DeveloperSettingsFragment : DaggerBaseFragment(R.layout.fragment_developer
     }
 
     private fun onDispenserClick() {
-        context?.openUrl(DISPENSER_URL)
-    }
-
-    companion object {
-        private const val DISPENSER_URL = "https://bank.testnet.algorand.network"
+        context?.openDispenserUrl(accountAddress = developerSettingsViewModel.firstAccountAddress)
     }
 }

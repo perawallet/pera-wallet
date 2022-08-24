@@ -28,7 +28,7 @@ class BaseAppCallSingleTransactionUiBuilder @Inject constructor() :
     override fun buildTransactionShortDetail(txn: BaseAppCallTransaction): WalletConnectTransactionShortDetail {
         return with(txn) {
             WalletConnectTransactionShortDetail(
-                accountIcon = createAccountIcon(),
+                accountIconResource = createAccountIconResource(),
                 accountName = account?.name,
                 warningCount = warningCount,
                 decimal = assetDecimal,

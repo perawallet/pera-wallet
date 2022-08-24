@@ -12,6 +12,7 @@
 
 package com.algorand.android.models
 
+import com.algorand.android.modules.transaction.common.data.model.TransactionTypeResponse
 import com.algorand.android.utils.walletconnect.decodeBase64ToString
 import com.google.gson.annotations.SerializedName
 import java.math.BigInteger
@@ -26,7 +27,7 @@ data class WalletConnectTransactionRequest(
     @SerializedName("note") val noteInBase64: String? = null,
     @SerializedName("rcv") val receiverAddress: String? = null,
     @SerializedName("snd") val senderAddress: String? = null,
-    @SerializedName("type") val transactionType: TransactionType,
+    @SerializedName("type") val transactionType: TransactionTypeResponse,
     @SerializedName("close") val closeToAddress: String? = null, // Double check closes
     @SerializedName("rekey") val rekeyAddress: String? = null,
     @SerializedName("aclose") val assetCloseToAddress: String? = null,

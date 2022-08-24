@@ -15,6 +15,7 @@ package com.algorand.android.ui.common.warningconfirmation
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import com.algorand.android.R
 import com.algorand.android.customviews.WarningTextView
 import com.algorand.android.models.FragmentConfiguration
@@ -23,7 +24,9 @@ import com.algorand.android.ui.common.BaseInfoFragment
 import com.algorand.android.ui.common.warningconfirmation.WriteDownInfoFragmentDirections.Companion.actionWriteDownInfoFragmentToBackupPassphraseFragment
 import com.algorand.android.utils.extensions.show
 import com.google.android.material.button.MaterialButton
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class WriteDownInfoFragment : BaseInfoFragment() {
 
     private val toolbarConfiguration = ToolbarConfiguration(
@@ -34,6 +37,8 @@ class WriteDownInfoFragment : BaseInfoFragment() {
     override val fragmentConfiguration = FragmentConfiguration(
         toolbarConfiguration = toolbarConfiguration
     )
+
+    private val writeDownInfoViewModel: WriteDownInfoViewModel by viewModels()
 
     override fun setImageView(imageView: ImageView) {
         val icon = R.drawable.ic_pen_with_underline
@@ -63,6 +68,7 @@ class WriteDownInfoFragment : BaseInfoFragment() {
     }
 
     private fun navigateToBackupPassphraseFragment() {
+        writeDownInfoViewModel.logOnboardingReadyToBeginClickEvent()
         nav(actionWriteDownInfoFragmentToBackupPassphraseFragment())
     }
 }

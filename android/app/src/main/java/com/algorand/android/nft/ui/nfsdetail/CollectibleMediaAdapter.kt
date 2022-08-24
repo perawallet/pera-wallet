@@ -12,9 +12,9 @@
 
 package com.algorand.android.nft.ui.nfsdetail
 
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.models.BaseDiffUtil
 import com.algorand.android.models.BaseViewHolder
 import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem
@@ -23,10 +23,27 @@ import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem.ItemType.IMAGE
 import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem.ItemType.NO_MEDIA
 import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem.ItemType.UNSUPPORTED
 import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem.ItemType.VIDEO
+import com.algorand.android.nft.ui.nfsdetail.CollectibleGifMediaViewHolder.CollectibleGifMediaViewHolderListener
+import com.algorand.android.nft.ui.nfsdetail.CollectibleImageMediaViewHolder.CollectibleImageMediaViewHolderListener
+import com.algorand.android.nft.ui.nfsdetail.CollectibleVideoMediaViewHolder.CollectibleVideoMediaViewHolderListener
 
 class CollectibleMediaAdapter(
     private val listener: MediaClickListener
 ) : ListAdapter<BaseCollectibleMediaItem, BaseViewHolder<BaseCollectibleMediaItem>>(BaseDiffUtil()) {
+
+    private val imageClickListener =
+        CollectibleImageMediaViewHolderListener { imageUrl, errorDisplayText, imageView, mediaType, previewPrismUrl ->
+            listener.onImageMediaClick(imageUrl, errorDisplayText, imageView, mediaType, previewPrismUrl)
+        }
+
+    private val videoClickListener = CollectibleVideoMediaViewHolderListener { imageUrl, collectibleImageView ->
+        listener.onVideoMediaClick(imageUrl, collectibleImageView)
+    }
+
+    private val gifClickListener =
+        CollectibleGifMediaViewHolderListener { imageUrl, errorText, collectibleImageView, mediaType, previewPrismUrl ->
+            listener.onGifMediaClick(imageUrl, errorText, collectibleImageView, mediaType, previewPrismUrl)
+        }
 
     override fun getItemViewType(position: Int): Int {
         return getItem(position).itemType.ordinal
@@ -48,23 +65,11 @@ class CollectibleMediaAdapter(
     }
 
     private fun createImageMediaViewHolder(parent: ViewGroup): CollectibleImageMediaViewHolder {
-        return CollectibleImageMediaViewHolder.create(parent).apply {
-            itemView.setOnClickListener {
-                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                    listener.onImageMediaClick(getItem(bindingAdapterPosition).previewUrl)
-                }
-            }
-        }
+        return CollectibleImageMediaViewHolder.create(parent, imageClickListener)
     }
 
     private fun createVideoMediaViewHolder(parent: ViewGroup): CollectibleVideoMediaViewHolder {
-        return CollectibleVideoMediaViewHolder.create(parent).apply {
-            itemView.setOnClickListener {
-                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                    listener.onVideoMediaClick(getItem(bindingAdapterPosition).previewUrl)
-                }
-            }
-        }
+        return CollectibleVideoMediaViewHolder.create(parent, videoClickListener)
     }
 
     private fun createUnsupportedMediaViewHolder(parent: ViewGroup): CollectibleUnsupportedMediaViewHolder {
@@ -76,12 +81,26 @@ class CollectibleMediaAdapter(
     }
 
     private fun createGifMediaViewHolder(parent: ViewGroup): CollectibleGifMediaViewHolder {
-        return CollectibleGifMediaViewHolder.create(parent)
+        return CollectibleGifMediaViewHolder.create(parent, gifClickListener)
     }
 
     interface MediaClickListener {
-        fun onVideoMediaClick(videoUrl: String?)
-        fun onImageMediaClick(imageUrl: String?)
+        fun onVideoMediaClick(videoUrl: String?, collectibleImageView: View)
+        fun onImageMediaClick(
+            imageUrl: String?,
+            errorDisplayText: String,
+            collectibleImageView: View,
+            mediaType: BaseCollectibleMediaItem.ItemType,
+            previewPrismUrl: String
+        )
+
+        fun onGifMediaClick(
+            previewUrl: String?,
+            errorDisplayText: String,
+            collectibleImageView: View,
+            mediaType: BaseCollectibleMediaItem.ItemType,
+            previewPrismUrl: String
+        )
     }
 
     companion object {

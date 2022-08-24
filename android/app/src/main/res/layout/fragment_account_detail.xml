@@ -11,11 +11,12 @@
   ~
   -->
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/accountDetailContainer"
+    android:id="@+id/accountDetailMotionLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    app:layoutDescription="@xml/fragment_account_detail_scene">
 
     <com.algorand.android.customviews.CustomToolbar
         android:id="@+id/toolbar"
@@ -43,14 +44,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/algorandTabLayout" />
 
-    <com.algorand.android.customviews.AlgorandFloatingActionButton
-        android:id="@+id/accountDetailSendReceiveFab"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layoutDescription="@xml/algorand_fab_motion_scene"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/accountQuickActionsFloatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/spacing_xlarge"
+        android:layout_marginBottom="@dimen/bottom_safe_area_margin"
+        app:backgroundTint="@color/button_primary_bg"
+        app:fabCustomSize="@dimen/custom_fab_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:srcCompat="@drawable/ic_arrow_swap"
+        app:tint="@color/button_primary_text" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.motion.widget.MotionLayout>

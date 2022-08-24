@@ -23,8 +23,8 @@ import com.algorand.android.models.NotificationListItem
 import com.algorand.android.models.NotificationMetadata
 import com.algorand.android.models.NotificationType
 import com.algorand.android.models.User
+import com.algorand.android.utils.extensions.setContactIconDrawable
 import com.algorand.android.utils.getRelativeTimeDifference
-import com.algorand.android.utils.loadImage
 import com.algorand.android.utils.setupAlgoReceivedMessage
 import com.algorand.android.utils.setupAlgoSentMessage
 import com.algorand.android.utils.setupAssetSupportRequestMessage
@@ -52,7 +52,7 @@ class NotificationItemViewHolder(
         receiverUser: User?
     ) {
         if (type == NotificationType.ASSET_TRANSACTION_FAILED || type == NotificationType.ASSET_TRANSACTION_FAILED) {
-            binding.avatarImageView.loadImage(R.drawable.ic_default_failed_notification)
+            binding.avatarImageView.setImageResource(R.drawable.ic_default_failed_notification)
             return
         }
 
@@ -67,9 +67,12 @@ class NotificationItemViewHolder(
             else -> null
         }
         if (avatarUser != null) {
-            binding.avatarImageView.loadAccountImage(avatarUser.imageUriAsString?.toUri())
+            binding.avatarImageView.setContactIconDrawable(
+                uri = avatarUser.imageUriAsString?.toUri(),
+                iconSize = R.dimen.account_icon_size_large
+            )
         } else {
-            binding.avatarImageView.loadImage(R.drawable.ic_default_successful_notification)
+            binding.avatarImageView.setImageResource(R.drawable.ic_algo_green_round)
         }
     }
 

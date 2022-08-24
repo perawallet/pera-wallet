@@ -32,9 +32,9 @@ class AccountTotalBalanceUseCase @Inject constructor(
         var totalAssetCount = 0
         accountAssetDataUseCase.getNonCachedAccountAssetData(account, true).forEach {
             if (it.isAlgo) {
-                algoHoldingsInSelectedCurrency += it.amountInSelectedCurrency
+                algoHoldingsInSelectedCurrency += it.parityValueInSelectedCurrency.amountAsCurrency
             } else {
-                assetHoldingsInSelectedCurrency += it.amountInSelectedCurrency
+                assetHoldingsInSelectedCurrency += it.parityValueInSelectedCurrency.amountAsCurrency
             }
             totalAssetCount++
         }

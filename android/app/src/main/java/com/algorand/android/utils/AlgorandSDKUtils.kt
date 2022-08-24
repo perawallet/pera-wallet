@@ -20,6 +20,7 @@ import com.algorand.algosdk.mobile.Uint64
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.TransactionParams
+import java.io.ByteArrayOutputStream
 import java.math.BigInteger
 
 fun ByteArray.signTx(secretKey: ByteArray): ByteArray {
@@ -95,6 +96,24 @@ fun TransactionParams.makeRemoveAssetTx(
     )
 }
 
+fun TransactionParams.makeSendAndRemoveAssetTx(
+    senderAddress: String,
+    receiverAddress: String,
+    assetId: Long,
+    amount: BigInteger,
+    noteInByteArray: ByteArray? = null
+): ByteArray {
+    return Mobile.makeAssetTransferTxn(
+        senderAddress,
+        receiverAddress,
+        receiverAddress,
+        amount.toUint64(),
+        noteInByteArray,
+        toSuggestedParams(addGenesisId = false),
+        assetId
+    )
+}
+
 fun TransactionParams.makeTx(
     senderAddress: String,
     receiverAddress: String,
@@ -105,7 +124,7 @@ fun TransactionParams.makeTx(
 ): ByteArray {
     val noteInByteArray = note?.toByteArray(charset = Charsets.UTF_8)
 
-    return if (assetId == AssetInformation.ALGORAND_ID) {
+    return if (assetId == AssetInformation.ALGO_ID) {
         makeAlgoTx(senderAddress, receiverAddress, amount, isMax, noteInByteArray)
     } else {
         makeAssetTx(senderAddress, receiverAddress, amount, assetId, noteInByteArray)
@@ -140,9 +159,9 @@ fun TransactionParams.toSuggestedParams(
     }
 }
 
-fun getPublicKey(addressAsByteArray: ByteArray): String? {
+fun getPublicKey(publicKey: ByteArray): String? {
     return try {
-        Mobile.generateAddressFromPublicKey(addressAsByteArray)
+        Mobile.generateAddressFromPublicKey(publicKey)
     } catch (exception: Exception) {
         recordException(exception)
         null
@@ -206,18 +225,22 @@ fun generateAddressFromProgram(hashValue: String?): String {
  */
 fun groupWalletConnectTransactions(
     txnList: List<BaseWalletConnectTransaction>
-): List<List<BaseWalletConnectTransaction>> {
+): List<List<BaseWalletConnectTransaction>>? {
     val decodedTxnList = txnList.map { Base64.decode(it.rawTransactionPayload.transactionMsgPack, Base64.DEFAULT) }
     val decodedTxnBytesArray = BytesArray().apply {
         decodedTxnList.forEach { append(it) }
     }
-    val txnGroupInt64Array = Mobile.findAndVerifyTxnGroups(decodedTxnBytesArray)
-    val txnGroupList = mutableListOf<Pair<Long, BaseWalletConnectTransaction>>().apply {
-        for (index in 0L until txnGroupInt64Array.length()) {
-            add(txnGroupInt64Array.get(index) to txnList[index.toInt()])
+    return try {
+        val txnGroupInt64Array = Mobile.findAndVerifyTxnGroups(decodedTxnBytesArray)
+        val txnGroupList = mutableListOf<Pair<Long, BaseWalletConnectTransaction>>().apply {
+            for (index in 0L until txnGroupInt64Array.length()) {
+                add(txnGroupInt64Array.get(index) to txnList[index.toInt()])
+            }
         }
+        txnGroupList.groupBy { it.first }.map { it.value.map { it.second } }
+    } catch (e: Exception) {
+        null
     }
-    return txnGroupList.groupBy { it.first }.map { it.value.map { it.second } }
 }
 
 fun getTransactionId(txnByteArray: ByteArray?): String {
@@ -227,4 +250,23 @@ fun getTransactionId(txnByteArray: ByteArray?): String {
         recordException(exception)
         ""
     }
+}
+
+fun List<ByteArray>.toBytesArray(): BytesArray {
+    return BytesArray().apply {
+        this@toBytesArray.forEach {
+            append(it)
+        }
+    }
+}
+
+// TODO: 1.06.2022 Create a wrapper for grouped BytesArray so that we can distinguish between them
+fun BytesArray.assignGroupId(): BytesArray {
+    return Mobile.assignGroupID(this)
+}
+
+fun List<ByteArray?>.flatten(): ByteArray {
+    return ByteArrayOutputStream().apply {
+        this@flatten.forEach { write(it) }
+    }.toByteArray()
 }

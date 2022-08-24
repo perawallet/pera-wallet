@@ -22,6 +22,7 @@ import android.widget.TextView
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import com.algorand.android.modules.currency.domain.model.Currency
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.internal.managers.ViewComponentManager
 import java.math.BigInteger
@@ -130,6 +131,10 @@ fun String.decodeUrl(charset: String = StandardCharsets.UTF_8.name()): String? {
     }
 }
 
-fun String.formatAsAlgoAmount(): String {
-    return ALGO_CURRENCY_SYMBOL + this
+fun String.formatAsAlgoAmount(transactionSign: String? = null): String {
+    return transactionSign.orEmpty() + Currency.ALGO.symbol + this
+}
+
+fun String.formatAsAssetAmount(assetShortName: String?, transactionSign: String? = null): String {
+    return "${transactionSign.orEmpty()}$this $assetShortName"
 }

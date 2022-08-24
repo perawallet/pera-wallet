@@ -15,13 +15,11 @@ package com.algorand.android.nft.ui.nftsend
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.algorand.android.R
-import com.algorand.android.models.DecodedQrCode
 import com.algorand.android.models.FragmentConfiguration
-import com.algorand.android.models.QrScanner
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.nft.ui.model.CollectibleReceiverSelectionPreview
+import com.algorand.android.nft.ui.nftsend.CollectibleReceiverSelectionQrScannerFragment.Companion.ACCOUNT_ADDRESS_SCAN_RESULT_KEY
 import com.algorand.android.ui.accountselection.BaseAccountSelectionFragment
-import com.algorand.android.ui.qr.QrCodeScannerFragment
 import com.algorand.android.utils.setNavigationResult
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
@@ -51,12 +49,7 @@ class CollectibleReceiverSelectionFragment : BaseAccountSelectionFragment() {
     override val onSearchBarCustomButtonClickListener: () -> Unit = {
         nav(
             CollectibleReceiverSelectionFragmentDirections
-                .actionCollectibleReceiverSelectionFragmentToQrCodeScannerNavigation(
-                    qrScanner = QrScanner(
-                        scanTypes = arrayOf(QrCodeScannerFragment.ScanReturnType.ADDRESS_NAVIGATE_BACK),
-                        titleRes = R.string.scan_an_algorand
-                    )
-                )
+                .actionCollectibleReceiverSelectionFragmentToCollectibleReceiverSelectionQrScannerFragment()
         )
     }
 
@@ -89,10 +82,8 @@ class CollectibleReceiverSelectionFragment : BaseAccountSelectionFragment() {
 
     private fun initSavedStateListeners() {
         startSavedStateListener(R.id.collectibleReceiverSelectionFragment) {
-            useSavedStateValue<DecodedQrCode>(QrCodeScannerFragment.QR_SCAN_RESULT_KEY) { decodedQrCode ->
-                if (!decodedQrCode.address.isNullOrBlank()) {
-                    updateSearchBarText(decodedQrCode.address)
-                }
+            useSavedStateValue<String>(ACCOUNT_ADDRESS_SCAN_RESULT_KEY) { accountAddress ->
+                updateSearchBarText(accountAddress)
             }
         }
     }

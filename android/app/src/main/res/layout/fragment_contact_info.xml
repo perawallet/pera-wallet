@@ -22,10 +22,10 @@
         android:id="@+id/contactsRoot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/bottom_safe_area_margin"
-        android:paddingHorizontal="@dimen/spacing_xlarge">
+        android:paddingHorizontal="@dimen/spacing_xlarge"
+        android:paddingBottom="@dimen/bottom_safe_area_margin">
 
-        <com.algorand.android.customviews.AccountIconImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/contactImageView"
             android:layout_width="80dp"
             android:layout_height="80dp"
@@ -99,7 +99,7 @@
             style="@style/IconButton.Transparent"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            app:icon="@drawable/ic_qr_show"
+            app:icon="@drawable/ic_qr"
             app:layout_constraintBottom_toBottomOf="@id/addressTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/addressLabelTextView" />
@@ -116,13 +116,13 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/sendAssetButton"
+            style="@style/Button.Primary"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/send_asset"
             app:layout_constraintBottom_toBottomOf="parent"
-            style="@style/Button.Primary"
-            android:text="@string/send_asset" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

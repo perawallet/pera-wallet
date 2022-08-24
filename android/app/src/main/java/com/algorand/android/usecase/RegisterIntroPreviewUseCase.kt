@@ -14,14 +14,14 @@ package com.algorand.android.usecase
 
 import com.algorand.android.core.AccountManager
 import com.algorand.android.mapper.RegisterIntroPreviewMapper
-import com.algorand.android.repository.RegistrationRepository
+import com.algorand.android.modules.tracking.onboarding.register.registerintro.RegisterIntroFragmentEventTracker
 import javax.inject.Inject
 import kotlinx.coroutines.flow.flow
 
 class RegisterIntroPreviewUseCase @Inject constructor(
     private val accountManager: AccountManager,
-    private val registrationRepository: RegistrationRepository,
-    private val registerIntroPreviewMapper: RegisterIntroPreviewMapper
+    private val registerIntroPreviewMapper: RegisterIntroPreviewMapper,
+    private val registerIntroFragmentEventTracker: RegisterIntroFragmentEventTracker
 ) {
 
     fun getRegisterIntroPreview(isShowingCloseButton: Boolean) = flow {
@@ -35,7 +35,15 @@ class RegisterIntroPreviewUseCase @Inject constructor(
         emit(registerIntroPreview)
     }
 
-    fun setRegistrationSkipPreferenceAsSkipped() {
-        registrationRepository.setRegistrationSkipPreferenceAsSkipped()
+    suspend fun logOnboardingWelcomeAccountCreateClickEvent() {
+        registerIntroFragmentEventTracker.logOnboardingWelcomeAccountCreateEvent()
+    }
+
+    suspend fun logOnboardingWelcomeAccountRecoverClickEvent() {
+        registerIntroFragmentEventTracker.logOnboardingWelcomeAccountRecoverEvent()
+    }
+
+    suspend fun logOnboardingCreateAccountSkipClickEvent() {
+        registerIntroFragmentEventTracker.logOnboardingWelcomeAccountSkipEvent()
     }
 }

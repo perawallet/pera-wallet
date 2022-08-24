@@ -30,7 +30,8 @@ class AssetDetailDTOMapper @Inject constructor(
             fractionDecimals = response.fractionDecimals,
             usdValue = response.usdValue,
             assetCreator = response.assetCreator,
-            collectible = collectibleMapper.mapToSimpleCollectible(response.collectible)
+            collectible = collectibleMapper.mapToSimpleCollectible(response.collectible),
+            explorerUrl = response.explorerUrl
         )
     }
 }

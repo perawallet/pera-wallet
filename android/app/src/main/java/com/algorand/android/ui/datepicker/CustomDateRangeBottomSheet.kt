@@ -29,7 +29,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
-class CustomDateRangeBottomSheet : BaseBottomSheet(R.layout.bottom_sheet_custom_date_range, false) {
+class CustomDateRangeBottomSheet : BaseBottomSheet(R.layout.bottom_sheet_custom_date_range) {
 
     private val toolbarConfiguration = ToolbarConfiguration(
         titleResId = R.string.custom_range,

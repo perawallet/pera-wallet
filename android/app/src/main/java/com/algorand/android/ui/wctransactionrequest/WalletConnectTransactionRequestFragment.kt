@@ -12,12 +12,9 @@
 
 package com.algorand.android.ui.wctransactionrequest
 
-import android.app.Activity.RESULT_OK
-import android.bluetooth.BluetoothAdapter
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -41,16 +38,11 @@ import com.algorand.android.models.WalletConnectTransaction
 import com.algorand.android.ui.common.walletconnect.WalletConnectAppPreviewCardView
 import com.algorand.android.utils.BaseDoubleButtonBottomSheet.Companion.RESULT_KEY
 import com.algorand.android.utils.Event
-import com.algorand.android.utils.LOCATION_PERMISSION
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.isBluetoothEnabled
-import com.algorand.android.utils.isLocationEnabled
-import com.algorand.android.utils.isPermissionGranted
 import com.algorand.android.utils.navigateSafe
-import com.algorand.android.utils.requestLocationRequestFromUser
-import com.algorand.android.utils.showEnableBluetoothPopup
 import com.algorand.android.utils.showWithStateCheck
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
@@ -74,25 +66,6 @@ class WalletConnectTransactionRequestFragment : DaggerBaseFragment(
 
     private var walletConnectTransaction: WalletConnectTransaction? = null
 
-    private val bleRequestLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        if (it.resultCode == RESULT_OK) {
-            confirmTransaction()
-        } else {
-            permissionDeniedOnTransaction(R.string.error_bluetooth_message, R.string.error_bluetooth_title)
-        }
-    }
-
-    private val locationRequestLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-        if (it) {
-            confirmTransaction()
-        } else {
-            permissionDeniedOnTransaction(
-                R.string.error_location_message,
-                R.string.error_permission_title
-            )
-        }
-    }
-
     private val signResultObserver = Observer<WalletConnectSignResult> {
         handleSignResult(it)
     }
@@ -103,7 +76,9 @@ class WalletConnectTransactionRequestFragment : DaggerBaseFragment(
                 navBack()
                 navToSuccessfulTransactionDialog()
             },
-            onFailed = { navBack() }
+            onFailed = {
+                navBack()
+            }
         )
     }
 
@@ -222,27 +197,13 @@ class WalletConnectTransactionRequestFragment : DaggerBaseFragment(
     }
 
     private fun showLedgerWaitingForApprovalBottomSheet(ledgerName: String?) {
-        ledgerLoadingDialog = LedgerLoadingDialog.createLedgerLoadingDialog(ledgerName)
-        ledgerLoadingDialog?.showWithStateCheck(childFragmentManager)
-    }
-
-    private fun arePermissionsTaken(): Boolean {
-        val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter() ?: return false
-        return when {
-            context?.isPermissionGranted(LOCATION_PERMISSION) != true -> {
-                requestLocationRequestFromUser(locationRequestLauncher)
-                false
-            }
-            bluetoothAdapter.isEnabled.not() -> {
-                showEnableBluetoothPopup(bleRequestLauncher)
-                false
-            }
-            context?.isLocationEnabled() != true -> {
-                permissionDeniedOnTransaction(R.string.please_ensure, R.string.bluetooth_location_services)
-                navBack()
-                false
-            }
-            else -> true
+        if (ledgerLoadingDialog == null) {
+            ledgerLoadingDialog = LedgerLoadingDialog.createLedgerLoadingDialog(ledgerName)
+            ledgerLoadingDialog?.showWithStateCheck(childFragmentManager, ledgerName.orEmpty())
+        } else {
+            ledgerLoadingDialog?.onDismissDialog(false)
+            ledgerLoadingDialog = null
+            showLedgerWaitingForApprovalBottomSheet(ledgerName)
         }
     }
 
@@ -265,12 +226,6 @@ class WalletConnectTransactionRequestFragment : DaggerBaseFragment(
             nav(MainNavigationDirections.actionGlobalConfirmationBottomSheet(confirmationParams))
         }
     }
-
-//    private fun initTransactionDetails(transaction: WalletConnectTransaction?) {
-//        if (transaction == null) return
-//        val transactionListItem = WalletConnectTransactionListItem.create(transaction)
-//        transactionAdapter.submitList(transactionListItem)
-//    }
 
     private fun checkIfShouldShowFirstRequestBottomSheet() {
         if (transactionRequestViewModel.shouldShowFirstRequestBottomSheet()) {
@@ -327,15 +282,12 @@ class WalletConnectTransactionRequestFragment : DaggerBaseFragment(
     private fun navigateToConnectionIssueBottomSheet() {
         nav(HomeNavigationDirections.actionGlobalLedgerConnectionIssueBottomSheet())
     }
-//
-//    private fun showLedgerWaitingForApprovalBottomSheet() {
-//        ledgerLoadingDialog = LedgerLoadingDialog.createLedgerLoadingDialog()
-//        ledgerLoadingDialog?.showWithStateCheck(childFragmentManager)
-//    }
 
-    override fun onLedgerLoadingCancelled() {
+    override fun onLedgerLoadingCancelled(shouldStopResources: Boolean) {
         hideLoading()
-        transactionRequestViewModel.stopAllResources()
+        if (shouldStopResources) {
+            transactionRequestViewModel.stopAllResources()
+        }
     }
 
     private fun hideLoading() {

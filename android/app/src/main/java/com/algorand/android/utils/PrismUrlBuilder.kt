@@ -60,6 +60,7 @@ class PrismUrlBuilder private constructor(url: String) {
 
     companion object {
 
+        const val DEFAULT_IMAGE_SIZE = 1024
         const val DEFAULT_IMAGE_QUALITY = 70
         private const val QUERY_SYMBOL = "?"
         private const val QUERY_DIVIDER = "&"

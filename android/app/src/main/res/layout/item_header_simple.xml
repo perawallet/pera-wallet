@@ -18,6 +18,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/spacing_xxxlarge"
+    android:paddingHorizontal="@dimen/spacing_xlarge"
     android:layout_marginBottom="@dimen/spacing_small"
     tools:text="@string/assets" />
 

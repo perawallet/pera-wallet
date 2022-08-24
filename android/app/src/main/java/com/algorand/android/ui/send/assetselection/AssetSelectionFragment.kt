@@ -91,15 +91,18 @@ class AssetSelectionFragment : TransactionBaseFragment(R.layout.fragment_asset_s
     }
 
     private fun updateUiWithPreview(assetSelectionPreview: AssetSelectionPreview) {
-        binding.progressBar.root.isVisible = assetSelectionPreview.isLoadingVisible
-        assetSelectionPreview.assetList?.let { assetSelectionAdapter.submitList(it) }
-        assetSelectionPreview.navigateToOptInEvent?.consume()?.run {
-            val receiverPublicKey = assetSelectionPreview.assetTransaction.receiverUser?.publicKey ?: return@run
-            val senderPublicKey = assetSelectionPreview.assetTransaction.senderAddress
-            navToRequestOptInBottomSheet(this, receiverPublicKey, senderPublicKey)
-        }
-        assetSelectionPreview.navigateToAssetTransferAmountFragmentEvent?.consume()?.run {
-            navToAssetTransferAmountFragment(this)
+        with(assetSelectionPreview) {
+            binding.progressBar.loadingProgressBar.isVisible =
+                isAssetListLoadingVisible || isReceiverAccountOptInCheckLoadingVisible
+            assetList?.let { assetSelectionAdapter.submitList(it) }
+            navigateToOptInEvent?.consume()?.run {
+                val receiverPublicKey = assetTransaction.receiverUser?.publicKey ?: return@run
+                val senderPublicKey = assetTransaction.senderAddress
+                navToRequestOptInBottomSheet(this, receiverPublicKey, senderPublicKey)
+            }
+            navigateToAssetTransferAmountFragmentEvent?.consume()?.run {
+                navToAssetTransferAmountFragment(this)
+            }
         }
     }
 
@@ -121,11 +124,11 @@ class AssetSelectionFragment : TransactionBaseFragment(R.layout.fragment_asset_s
     }
 
     private fun showProgress() {
-        binding.progressBar.root.show()
+        binding.progressBar.loadingProgressBar.show()
     }
 
     private fun hideProgress() {
-        binding.progressBar.root.hide()
+        binding.progressBar.loadingProgressBar.hide()
     }
 
     private fun showTransactionTipsIfNeed() {

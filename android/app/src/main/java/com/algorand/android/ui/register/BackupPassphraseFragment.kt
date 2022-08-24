@@ -14,6 +14,7 @@ package com.algorand.android.ui.register
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import com.algorand.algosdk.mobile.Mobile
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
@@ -44,6 +45,8 @@ class BackupPassphraseFragment : DaggerBaseFragment(R.layout.fragment_backup_pas
 
     private val binding by viewBinding(FragmentBackupPassphraseBinding::bind)
 
+    private val backupPassphraseViewModel: BackupPassphraseViewModel by viewModels()
+
     private val accountCreation: AccountCreation?
         get() = arguments?.getParcelable(ACCOUNT_CREATION_KEY)
 
@@ -72,7 +75,10 @@ class BackupPassphraseFragment : DaggerBaseFragment(R.layout.fragment_backup_pas
             if (accountCreation?.tempAccount?.getSecretKey() == null) {
                 secretKeyByteArray = Mobile.generateSK()
                 val publicKey = Mobile.generateAddressFromSK(secretKeyByteArray)
-                val tempAccount = Account.create(publicKey, Account.Detail.Standard(secretKeyByteArray))
+                val tempAccount = Account.create(
+                    publicKey = publicKey,
+                    detail = Account.Detail.Standard(secretKeyByteArray)
+                )
                 arguments?.putParcelable(ACCOUNT_CREATION_KEY, AccountCreation(tempAccount, CreationType.CREATE))
             } else {
                 secretKeyByteArray = accountCreation?.tempAccount?.getSecretKey()
@@ -91,6 +97,7 @@ class BackupPassphraseFragment : DaggerBaseFragment(R.layout.fragment_backup_pas
     }
 
     private fun onNextClick() {
+        backupPassphraseViewModel.logOnboardingNextClickEvent()
         accountCreation?.let { tempAccountCreation ->
             nav(BackupPassphraseFragmentDirections.actionBackupPassphraseToPassphraseQuestion(tempAccountCreation))
         }

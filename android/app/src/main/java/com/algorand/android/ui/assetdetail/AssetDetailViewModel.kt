@@ -19,15 +19,14 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.CombinedLoadStates
 import androidx.paging.PagingData
 import com.algorand.android.core.BaseViewModel
-import com.algorand.android.models.BaseTransactionItem
-import com.algorand.android.models.CsvStatusPreview
 import com.algorand.android.models.DateFilter
-import com.algorand.android.models.PendingReward
 import com.algorand.android.models.ui.AssetDetailPreview
 import com.algorand.android.models.ui.DateFilterPreview
 import com.algorand.android.models.ui.TransactionLoadStatePreview
+import com.algorand.android.modules.transaction.csv.ui.model.CsvStatusPreview
+import com.algorand.android.modules.transaction.csv.ui.usecase.CsvStatusPreviewUseCase
+import com.algorand.android.modules.transactionhistory.ui.model.BaseTransactionItem
 import com.algorand.android.usecase.AssetDetailUseCase
-import com.algorand.android.usecase.PendingRewardUseCase
 import com.algorand.android.utils.getOrThrow
 import java.io.File
 import kotlinx.coroutines.Dispatchers
@@ -35,7 +34,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
@@ -46,7 +44,7 @@ import kotlinx.coroutines.launch
 class AssetDetailViewModel @ViewModelInject constructor(
     @Assisted savedStateHandle: SavedStateHandle,
     private val assetDetailUseCase: AssetDetailUseCase,
-    private val pendingRewardUseCase: PendingRewardUseCase
+    private val csvStatusPreviewUseCase: CsvStatusPreviewUseCase
 ) : BaseViewModel() {
 
     private val accountPublicKey = savedStateHandle.getOrThrow<String>(ADDRESS_KEY)
@@ -65,7 +63,7 @@ class AssetDetailViewModel @ViewModelInject constructor(
             .distinctUntilChanged(assetDetailUseCase.pendingTransactionDistinctUntilChangedListener)
 
     val transactionPaginationFlow: Flow<PagingData<BaseTransactionItem>>?
-        get() = assetDetailUseCase.getTransactionFlow(accountPublicKey, assetId)
+        get() = assetDetailUseCase.getTransactionFlow(accountPublicKey, assetId, viewModelScope)
 
     val assetDetailPreviewFlow: Flow<AssetDetailPreview?>
         get() = _assetDetailViewFlow
@@ -75,27 +73,14 @@ class AssetDetailViewModel @ViewModelInject constructor(
         get() = _csvStatusPreviewFlow
     private val _csvStatusPreviewFlow = MutableStateFlow<CsvStatusPreview?>(null)
 
-    private val _pendingRewardFlow = MutableStateFlow<PendingReward>(pendingRewardUseCase.getInitialPendingReward())
-    val pendingRewardFlow: StateFlow<PendingReward> = _pendingRewardFlow
-
     init {
         initPreviewFlow()
-        initPendingRewardFlow()
-        fetchAssetTransactionHistory()
         initRefreshTransactionsFlow()
         initDateFilterFlow()
     }
 
     fun getDateFilterValue(): DateFilter {
         return dateFilterFlow.value
-    }
-
-    fun getPendingRewards(): PendingReward {
-        return _pendingRewardFlow.value
-    }
-
-    private fun fetchAssetTransactionHistory() {
-        assetDetailUseCase.fetchAssetTransactionHistory(accountPublicKey, viewModelScope, assetId)
     }
 
     fun setDateFilter(dateFilter: DateFilter) {
@@ -136,7 +121,13 @@ class AssetDetailViewModel @ViewModelInject constructor(
     fun createCsvFile(cacheDirectory: File) {
         viewModelScope.launch {
             val dateRange = getDateFilterValue().getDateRange()
-            assetDetailUseCase.createCsvFile(assetId, cacheDirectory, dateRange, accountPublicKey, this)
+            csvStatusPreviewUseCase.createCsvFile(
+                cacheDir = cacheDirectory,
+                dateRange = dateRange,
+                publicKey = accountPublicKey,
+                scope = this,
+                assetId = assetId
+            )
                 .collectLatest {
                     _csvStatusPreviewFlow.emit(it)
                 }
@@ -147,14 +138,6 @@ class AssetDetailViewModel @ViewModelInject constructor(
         viewModelScope.launch {
             assetDetailUseCase.getAssetDetailPreviewFlow(accountPublicKey, assetId).collectLatest {
                 _assetDetailViewFlow.value = it
-            }
-        }
-    }
-
-    private fun initPendingRewardFlow() {
-        viewModelScope.launch {
-            pendingRewardUseCase.getPendingRewardFlow(accountPublicKey, assetId, viewModelScope).collectLatest {
-                _pendingRewardFlow.emit(it)
             }
         }
     }
@@ -170,13 +153,10 @@ class AssetDetailViewModel @ViewModelInject constructor(
     private fun activatePendingTransactionsPolling(publicKey: String) {
         pendingTransactionPolling = viewModelScope.launch(Dispatchers.IO) {
             while (true) {
-                assetDetailUseCase.fetchPendingTransactions(publicKey, assetId).use(
-                    onSuccess = { pendingList ->
-                        synchronized(_pendingTransactionsFlow) {
-                            _pendingTransactionsFlow.value = pendingList
-                        }
-                    }
-                )
+                val pendingTransactions = assetDetailUseCase.fetchPendingTransactions(publicKey, assetId)
+                synchronized(_pendingTransactionsFlow) {
+                    _pendingTransactionsFlow.value = pendingTransactions
+                }
                 delay(PENDING_TRANSACTION_DELAY)
             }
         }

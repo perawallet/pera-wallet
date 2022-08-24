@@ -28,7 +28,7 @@ class AssetInformationItemViewHolder(
             with(assetInformationItem.accountAssetData) {
                 assetNameTextView.setupUI(isVerified, shortName, name, id, isAlgo)
                 assetBalanceTextView.text = formattedCompactAmount
-                currencyBalanceTextView.text = formattedSelectedCurrencyCompactValue
+                currencyBalanceTextView.text = assetInformationItem.formattedCurrencyBalanceText
             }
         }
     }

@@ -22,5 +22,5 @@ data class TransactionTargetUser(
     val publicKey: String,
     val displayName: String,
     val accountName: String? = null,
-    val accountIcon: AccountIcon? = null
+    val accountIconResource: AccountIconResource? = null
 ) : Parcelable

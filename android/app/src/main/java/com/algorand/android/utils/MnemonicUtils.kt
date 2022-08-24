@@ -23,13 +23,14 @@ import com.algorand.android.R
 private const val MAX_PASSPHRASE_ON_COLUMN = 13
 private const val PASSPHRASE_WORD_COUNT = 25
 private const val DOUBLE_DIGIT_START_POSITION = 10
+const val MNEMONIC_DELIMITER_REGEX = "[, ]+"
 
 fun setupMnemonic(
     mnemonicString: String,
     leftColumnTextView: TextView,
     rightColumnTextView: TextView
 ) {
-    val passphraseWords = mnemonicString.split(" ")
+    val passphraseWords = mnemonicString.splitMnemonic()
     leftColumnTextView.setupPassphraseColumn(1..MAX_PASSPHRASE_ON_COLUMN, passphraseWords)
     rightColumnTextView.setupPassphraseColumn(
         (MAX_PASSPHRASE_ON_COLUMN + 1)..PASSPHRASE_WORD_COUNT, passphraseWords
@@ -71,4 +72,8 @@ private fun SpannableStringBuilder.appendPosition(
     }
 
     append(positionOfSpannable)
+}
+
+fun String.splitMnemonic(): List<String> {
+    return this.trim().split(Regex(MNEMONIC_DELIMITER_REGEX))
 }

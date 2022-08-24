@@ -16,27 +16,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/spacing_xlarge"
-    android:orientation="vertical">
+    android:background="@color/hero_bg"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/spacing_xlarge"
+    android:paddingBottom="@dimen/spacing_xxxlarge">
 
     <TextView
         style="@style/TextAppearance.Description"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="45dp"
         android:text="@string/account_value" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/accountValueTextView"
-        style="@style/TextAppearance.Title.Large.Mono"
+        android:id="@+id/primaryValueTextView"
+        style="@style/TextAppearance.Title.Large.Sans.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_xsmall"
-        android:layout_marginBottom="60dp"
+        android:layout_marginVertical="@dimen/spacing_xsmall"
+        android:gravity="center"
         android:maxLines="1"
         app:autoSizeMaxTextSize="@dimen/text_size_36"
         app:autoSizeMinTextSize="@dimen/text_size_13"
         app:autoSizeTextType="uniform"
-        tools:text="$15,232,232,232,232,232,232,232.42" />
+        tools:text="$15,23232,232.42" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/secondaryValueTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_xsmall"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.Body.Sans.Medium"
+        android:textColor="@color/text_gray"
+        app:autoSizeMaxTextSize="@dimen/text_size_36"
+        app:autoSizeMinTextSize="@dimen/text_size_13"
+        app:autoSizeTextType="uniform"
+        tools:text="≈ $15,594.15" />
 
 </LinearLayout>

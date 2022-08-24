@@ -13,25 +13,56 @@
 package com.algorand.android.models
 
 import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import androidx.annotation.StringRes
 import java.math.BigInteger
+import kotlinx.android.parcel.Parcelize
 
-@Parcelize
-data class DecodedQrCode(
-    val version: String? = null,
-    val mnemonic: String? = null,
-    val address: String? = null,
-    val amount: BigInteger? = null,
-    val note: String? = null,
-    val xnote: String? = null, // locked note
-    val label: String? = null,
-    private val assetId: Long? = null,
-    val walletConnectUrl: String? = null,
-    val transactionId: String? = null,
-    val transactionStatus: String? = null
-) : Parcelable {
+sealed class DecodedQrCode : Parcelable {
 
-    fun getDecodedAssetID(): Long {
-        return assetId ?: AssetInformation.ALGORAND_ID
+    sealed class Success : DecodedQrCode() {
+        @Parcelize
+        data class Mnemonic(val mnemonic: String?) : Success()
+
+        @Parcelize
+        data class AccountPublicKey(val address: String?) : Success()
+
+        sealed class Deeplink : Success() {
+            @Parcelize
+            data class AssetTransaction(
+                val address: String,
+                val amount: BigInteger,
+                val note: String?,
+                val xnote: String?,
+                val label: String?,
+                private val assetId: Long?
+            ) : Deeplink() {
+                fun getDecodedAssetID(): Long {
+                    return assetId ?: AssetInformation.ALGO_ID
+                }
+            }
+
+            @Parcelize
+            data class WalletConnect(val walletConnectUrl: String) : Deeplink()
+
+            @Parcelize
+            data class AddContact(val contactPublicKey: String, val contactName: String?) : Deeplink()
+
+            @Parcelize
+            data class MoonPayResult(val address: String, val transactionStatus: String, val transactionId: String?) :
+                Deeplink()
+        }
+    }
+
+    sealed class Error : DecodedQrCode() {
+        abstract val titleRes: Int
+
+        @Parcelize
+        data class WalletConnect(@StringRes override val titleRes: Int) : Error()
+
+        @Parcelize
+        data class Mnemonic(@StringRes override val titleRes: Int) : Error()
+
+        @Parcelize
+        data class PublicKey(@StringRes override val titleRes: Int) : Error()
     }
 }

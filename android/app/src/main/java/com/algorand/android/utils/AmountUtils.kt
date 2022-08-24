@@ -13,20 +13,27 @@
 package com.algorand.android.utils
 
 import android.icu.text.NumberFormat
+import com.mitsinsar.peracompactdecimalformat.utils.fractionaldigit.AssetFractionalDigit
+import com.mitsinsar.peracompactdecimalformat.utils.fractionaldigit.FiatFractionalDigit
+import com.mitsinsar.peracompactdecimalformat.utils.fractionaldigit.FractionalDigit
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.RoundingMode
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 
 const val TWO_DECIMALS = 2
 
 fun getNumberFormat(
     decimals: Int,
     isDecimalFixed: Boolean = false,
+    minDecimals: Int? = null
 ): NumberFormat {
     return NumberFormat.getInstance().apply {
-        roundingMode = RoundingMode.FLOOR.ordinal
+        roundingMode = RoundingMode.DOWN.ordinal
         maximumFractionDigits = decimals
         minimumFractionDigits = when {
+            minDecimals != null -> minDecimals
             isDecimalFixed -> decimals
             else -> TWO_DECIMALS
         }
@@ -44,33 +51,54 @@ private fun getAmountAsBigDecimal(amount: Long?, decimals: Int): BigDecimal {
 fun BigDecimal.formatAmount(
     decimals: Int,
     isDecimalFixed: Boolean,
-    isCompact: Boolean = false
+    isCompact: Boolean = false,
+    minDecimals: Int? = null,
+    isFiat: Boolean = false
 ): String {
-    return if (isCompact) formatCompactNumber(this) else getNumberFormat(decimals, isDecimalFixed).format(this)
+    return if (isCompact) {
+        val fractionalDigitCreator = getFractionalDigitCreator(isFiat)
+        formatCompactNumber(this, fractionalDigitCreator)
+    } else {
+        getNumberFormat(decimals, isDecimalFixed, minDecimals).format(this)
+    }
 }
 
 fun Long?.formatAmount(
     decimals: Int,
     isDecimalFixed: Boolean = false,
-    isCompact: Boolean = false
+    isCompact: Boolean = false,
+    isFiat: Boolean = false
 ): String {
-    return getAmountAsBigDecimal(this, decimals).formatAmount(decimals, isDecimalFixed, isCompact)
+    return getAmountAsBigDecimal(this, decimals).formatAmount(decimals, isDecimalFixed, isCompact, isFiat = isFiat)
 }
 
 fun BigInteger?.formatAmount(
     decimals: Int,
     isDecimalFixed: Boolean = false,
-    isCompact: Boolean = false
+    isCompact: Boolean = false,
+    isFiat: Boolean = false
 ): String {
-    return (this ?: BigInteger.ZERO).toBigDecimal(decimals).formatAmount(decimals, isDecimalFixed, isCompact)
+    return (this ?: BigInteger.ZERO).toBigDecimal(decimals)
+        .formatAmount(decimals, isDecimalFixed, isCompact, isFiat = isFiat)
 }
 
-fun BigDecimal.formatAmountAsBigInteger(decimal: Int): BigInteger {
-    return formatAmount(decimal, true)
+fun BigDecimal.formatAmountAsBigInteger(decimal: Int, isFiat: Boolean = false): BigInteger {
+    return formatAmount(decimal, true, isFiat = isFiat)
         .filter { it.isDigit() }
         .toBigIntegerOrNull() ?: BigInteger.ZERO
 }
 
 fun String.appendAssetName(assetName: AssetName): String {
     return if (assetName.getName() != null) "$this ${assetName.getName()}" else this
+}
+
+fun getDecimalSeparator(): String {
+    val numberFormat: java.text.NumberFormat = java.text.NumberFormat.getInstance()
+    val separator: DecimalFormatSymbols? = (numberFormat as? DecimalFormat)?.decimalFormatSymbols
+    return separator?.decimalSeparator.toString()
+}
+
+// TODO Find a better solution for this
+fun getFractionalDigitCreator(isFiat: Boolean): FractionalDigit.FractionalDigitCreator {
+    return if (isFiat) FiatFractionalDigit else AssetFractionalDigit
 }

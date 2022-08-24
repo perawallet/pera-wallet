@@ -14,20 +14,16 @@
 package com.algorand.android.models
 
 import java.math.BigDecimal
-import java.math.BigInteger
 
 data class BalanceInput(
-    val formattedBalance: BigInteger,
     val formattedBalanceString: String,
     val formattedBalanceInBigDecimal: BigDecimal,
     val isAmountValid: Boolean,
     val decimal: Int
 ) {
-
     companion object {
         fun createDefaultBalanceInput(): BalanceInput {
             return BalanceInput(
-                formattedBalance = BigInteger.ZERO,
                 formattedBalanceString = "",
                 formattedBalanceInBigDecimal = BigDecimal.ZERO,
                 isAmountValid = false,

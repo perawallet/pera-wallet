@@ -12,6 +12,7 @@
 
 package com.algorand.android.utils.viewbinding
 
+import android.app.Dialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,4 +33,10 @@ inline fun <T : ViewBinding> ViewGroup.viewBinding(
     crossinline inflater: (LayoutInflater, ViewGroup) -> T
 ): T {
     return inflater.invoke(LayoutInflater.from(context), this)
+}
+
+inline fun <T : ViewBinding> Dialog.viewBinding(
+    crossinline inflater: (LayoutInflater) -> T
+): T {
+    return inflater.invoke(LayoutInflater.from(context))
 }

@@ -13,34 +13,60 @@
 package com.algorand.android.nft.ui.nfsdetail
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnLayout
 import com.algorand.android.databinding.ItemCollectibleImageMediaBinding
 import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem
+import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem.ItemType
 import com.algorand.android.utils.loadImage
 
 class CollectibleImageMediaViewHolder(
-    private val binding: ItemCollectibleImageMediaBinding
+    private val binding: ItemCollectibleImageMediaBinding,
+    private val listener: CollectibleImageMediaViewHolderListener
 ) : BaseCollectibleMediaViewHolder(binding.root) {
 
     override fun bind(item: BaseCollectibleMediaItem) {
         if (item !is BaseCollectibleMediaItem.ImageCollectibleMediaItem) return
         with(binding.collectibleImageCollectibleImageView) {
+            transitionName = id.toString()
             doOnLayout {
+                val previewPrismUrl = createPrismPreviewImageUrl(item.previewUrl, measuredWidth)
                 context.loadImage(
-                    createPrismPreviewImageUrl(item.previewUrl, measuredWidth),
-                    onResourceReady = { showImage(it, !item.isOwnedByTheUser) },
+                    previewPrismUrl,
+                    onResourceReady = { showImage(it) },
                     onLoadFailed = { showText(item.errorText) }
                 )
+                setOnClickListener {
+                    listener.onImageClick(
+                        imageUrl = item.previewUrl,
+                        errorDisplayText = item.errorText,
+                        collectibleImageView = this,
+                        mediaType = item.itemType,
+                        previewPrismUrl = previewPrismUrl
+                    )
+                }
             }
         }
     }
 
+    fun interface CollectibleImageMediaViewHolderListener {
+        fun onImageClick(
+            imageUrl: String?,
+            errorDisplayText: String,
+            collectibleImageView: View,
+            mediaType: ItemType,
+            previewPrismUrl: String
+        )
+    }
+
     companion object {
-        fun create(parent: ViewGroup): CollectibleImageMediaViewHolder {
-            val binding = ItemCollectibleImageMediaBinding
-                .inflate(LayoutInflater.from(parent.context), parent, false)
-            return CollectibleImageMediaViewHolder(binding)
+        fun create(
+            parent: ViewGroup,
+            collectibleImageMediaViewHolderListener: CollectibleImageMediaViewHolderListener
+        ): CollectibleImageMediaViewHolder {
+            val binding = ItemCollectibleImageMediaBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            return CollectibleImageMediaViewHolder(binding, collectibleImageMediaViewHolderListener)
         }
     }
 }

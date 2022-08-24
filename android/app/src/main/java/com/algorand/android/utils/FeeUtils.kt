@@ -25,7 +25,7 @@ private const val MIN_BALANCE = 100000
 fun calculateMinBalance(accountInformation: AccountInformation, includeMinBalance: Boolean): Long {
     with(accountInformation) {
         val optedAssets = getOptedInAssetsCount()
-        val createdApps = createdApps?.size ?: 0
+        val createdApps = totalCreatedApps
         val optedApps = appsLocalState?.size ?: 0
         val intSchemeValue = appsTotalSchema?.numUint ?: 0
         val byteSchemeValue = appsTotalSchema?.numByteSlice ?: 0

@@ -27,18 +27,18 @@ import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.customviews.AlgorandFloatingActionButton
 import com.algorand.android.databinding.FragmentAssetDetailBinding
 import com.algorand.android.models.AssetTransaction
-import com.algorand.android.models.BaseTransactionItem
-import com.algorand.android.models.CsvStatusPreview
 import com.algorand.android.models.DateFilter
 import com.algorand.android.models.FragmentConfiguration
-import com.algorand.android.models.PendingReward
 import com.algorand.android.models.StatusBarConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.models.ui.AssetDetailPreview
 import com.algorand.android.models.ui.DateFilterPreview
 import com.algorand.android.models.ui.TransactionLoadStatePreview
-import com.algorand.android.ui.accountdetail.history.adapter.AccountHistoryAdapter
-import com.algorand.android.ui.accountdetail.history.adapter.PendingTransactionAdapter
+import com.algorand.android.modules.transaction.csv.ui.model.CsvStatusPreview
+import com.algorand.android.modules.transaction.detail.ui.model.TransactionDetailEntryPoint
+import com.algorand.android.modules.transactionhistory.ui.AccountHistoryAdapter
+import com.algorand.android.modules.transactionhistory.ui.PendingTransactionAdapter
+import com.algorand.android.modules.transactionhistory.ui.model.BaseTransactionItem
 import com.algorand.android.ui.datepicker.DateFilterListBottomSheet
 import com.algorand.android.utils.CSV_FILE_MIME_TYPE
 import com.algorand.android.utils.copyToClipboard
@@ -73,8 +73,14 @@ class AssetDetailFragment : DaggerBaseFragment(R.layout.fragment_asset_detail) {
     private val assetId by lazy { assetDetailViewModel.getAssetId() }
 
     private val transactionListener = object : AccountHistoryAdapter.Listener {
-        override fun onTransactionClick(transaction: BaseTransactionItem.TransactionItem) {
-            onTransactionItemClick(transaction)
+        override fun onStandardTransactionClick(transaction: BaseTransactionItem.TransactionItem) {
+            onStandardTransactionItemClick(transaction)
+        }
+
+        override fun onApplicationCallTransactionClick(
+            transaction: BaseTransactionItem.TransactionItem.ApplicationCallItem
+        ) {
+            onApplicationCallTransactionItemClick(transaction)
         }
     }
 
@@ -130,7 +136,7 @@ class AssetDetailFragment : DaggerBaseFragment(R.layout.fragment_asset_detail) {
 
     private val pendingTransactionListener = object : PendingTransactionAdapter.Listener {
         override fun onTransactionClick(transaction: BaseTransactionItem.TransactionItem) {
-            onTransactionItemClick(transaction)
+            onStandardTransactionItemClick(transaction)
         }
 
         override fun onNewPendingItemInserted() {
@@ -161,12 +167,6 @@ class AssetDetailFragment : DaggerBaseFragment(R.layout.fragment_asset_detail) {
 
     private val dateFilterPreviewCollector: suspend (DateFilterPreview) -> Unit = {
         setTransactionToolbarUi(it)
-    }
-
-    private val pendingRewardCollector: suspend (PendingReward) -> Unit = {
-        // TODO: 10.02.2022 Implementing the loading state could be good cause calculating
-        //  reward is taking a bit of time at the first time
-        binding.rewardsTextView.text = it.formattedPendingRewardAmount
     }
 
     override fun onStart() {
@@ -213,9 +213,6 @@ class AssetDetailFragment : DaggerBaseFragment(R.layout.fragment_asset_detail) {
             viewLifecycleOwner.lifecycleScope.launch {
                 dateFilterPreviewFlow.collectLatest(dateFilterPreviewCollector)
             }
-            viewLifecycleOwner.lifecycleScope.launch {
-                pendingRewardFlow.collectLatest(pendingRewardCollector)
-            }
             viewLifecycleOwner.lifecycleScope.launchWhenStarted {
                 csvStatusPreview.collectLatest(csvStatusPreviewCollector)
             }
@@ -225,7 +222,6 @@ class AssetDetailFragment : DaggerBaseFragment(R.layout.fragment_asset_detail) {
     private fun initUi() {
         with(binding) {
             assetDetailSendReceiveFab.setListener(fabListener)
-            rewardsInfo.setOnClickListener { onRewardsInfoClicked() }
             transactionListRecyclerView.adapter = concatAdapter
             transactionHistoryToolbar.apply {
                 setOnFilterClickListener(::onFilterClick)
@@ -241,7 +237,10 @@ class AssetDetailFragment : DaggerBaseFragment(R.layout.fragment_asset_detail) {
         with(binding) {
             // TODO Find a better way to handling null & error & loading cases
             assetDetailPreview?.run {
-                getAppToolbar()?.setAssetAvatarIfAlgo(isAlgo, shortName.getName(resources))
+                getAppToolbar()?.apply {
+                    changeTitle(fullName.getName(resources))
+                    if (isAlgo) setStartDrawable(assetDrawableProvider?.provideAssetDrawable(context, fullName))
+                }
                 assetDetailSendReceiveFab.isVisible = canSignTransaction
                 algoAssetGroup.isVisible = isAlgo
                 otherAssetGroup.isVisible = isAlgo.not()
@@ -304,12 +303,22 @@ class AssetDetailFragment : DaggerBaseFragment(R.layout.fragment_asset_detail) {
         context?.copyToClipboard(assetId.toString(), ASSET_ID_COPY_LABEL)
     }
 
-    private fun onTransactionItemClick(transaction: BaseTransactionItem.TransactionItem) {
+    private fun onStandardTransactionItemClick(transaction: BaseTransactionItem.TransactionItem) {
         nav(
-            AssetDetailFragmentDirections.actionAssetDetailFragmentToTransactionDetailFragment(
+            AssetDetailFragmentDirections.actionAssetDetailFragmentToTransactionDetailNavigation(
                 transactionId = transaction.id ?: return,
                 publicKey = assetDetailViewModel.getPublicKey(),
-                isRewardTransaction = transaction is BaseTransactionItem.TransactionItem.Reward
+                entryPoint = TransactionDetailEntryPoint.STANDARD_TRANSACTION
+            )
+        )
+    }
+
+    private fun onApplicationCallTransactionItemClick(transaction: BaseTransactionItem.TransactionItem) {
+        nav(
+            AssetDetailFragmentDirections.actionAssetDetailFragmentToTransactionDetailNavigation(
+                transactionId = transaction.id ?: return,
+                publicKey = assetDetailViewModel.getPublicKey(),
+                entryPoint = TransactionDetailEntryPoint.APPLICATION_CALL_TRANSACTION
             )
         )
     }
@@ -317,11 +326,6 @@ class AssetDetailFragment : DaggerBaseFragment(R.layout.fragment_asset_detail) {
     private fun onFilterClick() {
         val currentFilter = assetDetailViewModel.getDateFilterValue()
         nav(AssetDetailFragmentDirections.actionAssetDetailFragmentToDateFilterPickerBottomSheet(currentFilter))
-    }
-
-    private fun onRewardsInfoClicked() {
-        val publicKey = assetDetailViewModel.getPublicKey()
-        nav(AssetDetailFragmentDirections.actionAssetDetailFragmentToRewardsBottomSheet(publicKey))
     }
 
     private fun onExportClick() {

@@ -14,7 +14,7 @@ package com.algorand.android.ui.send.assetselection.adapter
 
 import android.view.ViewGroup
 import androidx.core.view.doOnLayout
-import com.algorand.android.customviews.CollectibleImageView
+import com.algorand.android.customviews.collectibleimageview.CollectibleImageView
 import com.algorand.android.databinding.ItemSelectCollectibleBinding
 import com.algorand.android.models.BaseSelectAssetItem
 import com.algorand.android.utils.loadImage

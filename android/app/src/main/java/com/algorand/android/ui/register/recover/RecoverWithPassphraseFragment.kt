@@ -28,17 +28,15 @@ import com.algorand.android.databinding.FragmentRecoverWithPassphraseBinding
 import com.algorand.android.models.Account
 import com.algorand.android.models.AccountCreation
 import com.algorand.android.models.AnnotatedString
-import com.algorand.android.models.DecodedQrCode
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.IconButton
-import com.algorand.android.models.QrScanner
 import com.algorand.android.models.ToolbarConfiguration
-import com.algorand.android.ui.qr.QrCodeScannerFragment
-import com.algorand.android.ui.qr.QrCodeScannerFragment.Companion.QR_SCAN_RESULT_KEY
 import com.algorand.android.ui.register.recover.RecoverOptionsBottomSheet.Companion.RESULT_KEY
+import com.algorand.android.ui.register.recover.RecoverWithPassphraseQrScannerFragment.Companion.MNEMONIC_QR_SCAN_RESULT_KEY
 import com.algorand.android.utils.KeyboardToggleListener
 import com.algorand.android.utils.addKeyboardToggleListener
 import com.algorand.android.utils.analytics.CreationType
+import com.algorand.android.utils.splitMnemonic
 import com.algorand.android.utils.getTextFromClipboard
 import com.algorand.android.utils.hideKeyboard
 import com.algorand.android.utils.removeKeyboardToggleListener
@@ -47,9 +45,9 @@ import com.algorand.android.utils.toShortenedAddress
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.util.Locale
 
 @AndroidEntryPoint
 class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recover_with_passphrase) {
@@ -90,10 +88,8 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
 
     private fun initSavedStateListener() {
         startSavedStateListener(R.id.recoverWithPassphraseFragment) {
-            useSavedStateValue<DecodedQrCode>(QR_SCAN_RESULT_KEY) { decodedQrCode ->
-                if (!decodedQrCode.mnemonic.isNullOrBlank()) {
-                    binding.passphraseInputGroup.setMnemonic(decodedQrCode.mnemonic)
-                }
+            useSavedStateValue<String>(MNEMONIC_QR_SCAN_RESULT_KEY) { mnemonic ->
+                binding.passphraseInputGroup.setMnemonic(mnemonic)
             }
             useSavedStateValue<RecoverOptionsBottomSheet.OptionResult>(RESULT_KEY) { optionResult ->
                 when (optionResult) {
@@ -108,9 +104,7 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
         recoverWithPassphraseViewModel.mnemonic = binding.passphraseInputGroup.getMnemonicResponse().mnemonic
         nav(
             RecoverWithPassphraseFragmentDirections
-                .actionRecoverWithPassphraseFragmentToQrCodeScannerNavigation(
-                    QrScanner(scanTypes = arrayOf(QrCodeScannerFragment.ScanReturnType.MNEMONIC_NAVIGATE_BACK))
-                )
+                .actionRecoverWithPassphraseFragmentToRecoverWithPassphraseQrScannerFragment()
         )
     }
 
@@ -233,8 +227,8 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
     }
 
     private fun pasteClipboard() {
-        val pastedPassphrase = context?.getTextFromClipboard() ?: ""
-        val keywords = pastedPassphrase.split(" ")
+        val pastedPassphrase = context?.getTextFromClipboard().toString()
+        val keywords = pastedPassphrase.splitMnemonic()
         if (keywords.count() == WORD_COUNT) {
             binding.passphraseInputGroup.setMnemonic(pastedPassphrase.toString())
         } else {

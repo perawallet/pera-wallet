@@ -92,7 +92,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="7"
-        app:layout_constraintBottom_toTopOf="@id/padViewDotButton"
+        app:layout_constraintBottom_toTopOf="@id/padViewSeparatorButton"
         app:layout_constraintEnd_toStartOf="@id/padView8Button"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
@@ -121,7 +121,7 @@
         app:layout_constraintTop_toBottomOf="@id/padView6Button" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/padViewDotButton"
+        android:id="@+id/padViewSeparatorButton"
         style="@style/Button.DialPad"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -140,7 +140,7 @@
         android:text="0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/padViewDeleteButton"
-        app:layout_constraintStart_toEndOf="@id/padViewDotButton"
+        app:layout_constraintStart_toEndOf="@id/padViewSeparatorButton"
         app:layout_constraintTop_toBottomOf="@id/padView8Button" />
 
     <com.google.android.material.button.MaterialButton

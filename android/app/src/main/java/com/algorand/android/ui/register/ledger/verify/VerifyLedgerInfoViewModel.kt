@@ -13,18 +13,24 @@
 
 package com.algorand.android.ui.register.ledger.verify
 
+import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.algorand.android.usecase.LedgerAccountAdditionResultInfoUseCase
 import com.algorand.android.usecase.LockPreferencesUseCase
+import com.algorand.android.utils.getOrElse
 
 class VerifyLedgerInfoViewModel @ViewModelInject constructor(
     ledgerAccountAdditionResultInfoUseCase: LedgerAccountAdditionResultInfoUseCase,
-    private val lockPreferencesUseCase: LockPreferencesUseCase
+    private val lockPreferencesUseCase: LockPreferencesUseCase,
+    @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
+    private val numberOfAccountsAdded = savedStateHandle.getOrElse(NUMBER_OF_ACCOUNTS, 0)
+
     private val ledgerAccountAdditionResultInfoPreview =
-        ledgerAccountAdditionResultInfoUseCase.getLedgerAccountAdditionResultInfoPreview()
+        ledgerAccountAdditionResultInfoUseCase.getLedgerAccountAdditionResultInfoPreview(numberOfAccountsAdded)
 
     fun shouldForceLockNavigation(): Boolean {
         return lockPreferencesUseCase.shouldNavigateLockNavigation()
@@ -44,5 +50,9 @@ class VerifyLedgerInfoViewModel @ViewModelInject constructor(
 
     fun getPreviewSecondButtonText(): Int {
         return ledgerAccountAdditionResultInfoPreview.secondButtonTextRes
+    }
+
+    companion object {
+        private const val NUMBER_OF_ACCOUNTS = "numberOfAccounts"
     }
 }

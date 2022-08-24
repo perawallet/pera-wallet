@@ -14,24 +14,22 @@
 package com.algorand.android.ui.contacts.editcontact
 
 import android.content.Context
+import android.widget.ImageView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
-import com.algorand.android.customviews.AccountIconImageView
 import com.algorand.android.customviews.AlgorandInputLayout
 import com.algorand.android.customviews.CustomToolbar
-import com.algorand.android.models.DecodedQrCode
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.OperationState
-import com.algorand.android.models.QrScanner
 import com.algorand.android.models.TextButton
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.models.User
 import com.algorand.android.models.WarningConfirmation
 import com.algorand.android.ui.common.warningconfirmation.WarningConfirmationBottomSheet
 import com.algorand.android.ui.contacts.BaseAddEditContactFragment
-import com.algorand.android.ui.qr.QrCodeScannerFragment
+import com.algorand.android.ui.contacts.editcontact.EditContactQrScannerFragment.Companion.ACCOUNT_ADDRESS_QR_SCAN_RESULT_KEY
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.isValidAddress
@@ -74,10 +72,8 @@ class EditContactFragment : BaseAddEditContactFragment() {
             useSavedStateValue<Boolean>(WarningConfirmationBottomSheet.WARNING_CONFIRMATION_KEY) {
                 editContactViewModel.removeContactInDatabase(contactDatabaseId)
             }
-            useSavedStateValue<DecodedQrCode>(QrCodeScannerFragment.QR_SCAN_RESULT_KEY) { decodedQrCode ->
-                if (!decodedQrCode.address.isNullOrBlank()) {
-                    setContactAddressInputLayoutText(decodedQrCode.address)
-                }
+            useSavedStateValue<String>(ACCOUNT_ADDRESS_QR_SCAN_RESULT_KEY) { accountAddress ->
+                setContactAddressInputLayoutText(accountAddress)
             }
         }
     }
@@ -90,11 +86,7 @@ class EditContactFragment : BaseAddEditContactFragment() {
 
     override fun openQrScannerForAlgorandAddress(context: Context) {
         hideKeyboard(context, requireView())
-        nav(
-            EditContactFragmentDirections.actionEditContactFragmentToQrCodeScannerNavigation(
-                QrScanner(arrayOf(QrCodeScannerFragment.ScanReturnType.ADDRESS_NAVIGATE_BACK))
-            )
-        )
+        nav(EditContactFragmentDirections.actionEditContactFragmentToEditContactQrScannerFragment())
     }
 
     override fun setToolbar(customToolbar: CustomToolbar?) {
@@ -103,7 +95,7 @@ class EditContactFragment : BaseAddEditContactFragment() {
         })
     }
 
-    override fun setProfileImageView(accountIconImageView: AccountIconImageView) {
+    override fun setProfileImageView(imageView: ImageView) {
         contactImageUri = args.contactProfileImageUri
     }
 
@@ -124,7 +116,7 @@ class EditContactFragment : BaseAddEditContactFragment() {
         if (!args.contactPublicKey.isNullOrEmpty()) {
             algorandInputLayout.text = args.contactPublicKey!!
         }
-        algorandInputLayout.addTrailingIcon(R.drawable.ic_scan_qr, ::onScanQRClick)
+        algorandInputLayout.addTrailingIcon(R.drawable.ic_qr_scan, ::onScanQRClick)
     }
 
     override fun setDeleteContactButton(materialButton: MaterialButton) {

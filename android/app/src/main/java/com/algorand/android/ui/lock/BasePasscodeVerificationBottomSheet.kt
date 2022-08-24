@@ -25,8 +25,7 @@ import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.ui.accounts.ViewPassphraseLockViewModel
 import com.algorand.android.utils.viewbinding.viewBinding
 
-abstract class BasePasscodeVerificationBottomSheet :
-    BaseBottomSheet(R.layout.bottom_sheet_view_passphrase_lock, false) {
+abstract class BasePasscodeVerificationBottomSheet : BaseBottomSheet(R.layout.bottom_sheet_view_passphrase_lock) {
 
     protected open val titleResId: Int? = null
 

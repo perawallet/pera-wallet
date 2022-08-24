@@ -20,10 +20,10 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import com.algorand.android.R
 import com.algorand.android.models.BalanceInput
-import com.algorand.android.models.CustomInputState
+import com.algorand.android.models.CustomInputSavedState
 import com.algorand.android.utils.BalanceInputFormatter
 import com.algorand.android.utils.isEqualTo
-import java.math.BigInteger
+import java.math.BigDecimal
 import kotlin.properties.Delegates
 
 class AlgorandAmountInputTextView @JvmOverloads constructor(
@@ -48,7 +48,7 @@ class AlgorandAmountInputTextView @JvmOverloads constructor(
     private var listener: Listener? = null
 
     private val inputChangeListener = BalanceInputFormatter.Listener {
-        updateTextColor(it.formattedBalance)
+        updateTextColor(it.formattedBalanceInBigDecimal)
         updateText(it.formattedBalanceString)
         listener?.onBalanceChanged(it)
     }
@@ -67,16 +67,16 @@ class AlgorandAmountInputTextView @JvmOverloads constructor(
         algorandAmountFormatter.onNumberClick(number)
     }
 
-    fun onDotEntered() {
-        algorandAmountFormatter.onDotClick()
+    fun onDecimalSeparatorClicked() {
+        algorandAmountFormatter.onDecimalSeparatorClick()
     }
 
     fun onBackspaceEntered() {
         algorandAmountFormatter.onBackspaceClick()
     }
 
-    private fun updateTextColor(amount: BigInteger) {
-        amountTextColor = if (amount isEqualTo BigInteger.ZERO) {
+    private fun updateTextColor(amount: BigDecimal) {
+        amountTextColor = if (amount isEqualTo BigDecimal.ZERO) {
             R.color.tertiary_text_color
         } else {
             R.color.primary_text_color
@@ -88,12 +88,12 @@ class AlgorandAmountInputTextView @JvmOverloads constructor(
     }
 
     override fun onSaveInstanceState(): Parcelable {
-        return CustomInputState(super.onSaveInstanceState(), text.toString())
+        return CustomInputSavedState(super.onSaveInstanceState(), text.toString())
     }
 
     override fun onRestoreInstanceState(state: Parcelable?) {
-        (state as? CustomInputState)?.run {
-            super.onRestoreInstanceState(superState)
+        super.onRestoreInstanceState(state)
+        (state as? CustomInputSavedState)?.run {
             updateBalance(text)
         }
     }

@@ -183,16 +183,18 @@
             android:id="@+id/action_receiverAccountSelectionFragment_to_assetTransferPreviewFragment"
             app:destination="@id/assetTransferPreviewFragment" />
         <action
-            android:id="@+id/action_receiverAccountSelectionFragment_to_qrCodeScannerNavigation"
-            app:destination="@id/qrCodeScannerNavigation">
-            <argument
-                android:name="qrScanner"
-                app:argType="com.algorand.android.models.QrScanner" />
-        </action>
+            android:id="@+id/action_receiverAccountSelectionFragment_to_receiverAccountSelectionQrScannerFragment"
+            app:destination="@id/receiverAccountSelectionQrScannerFragment" />
         <action
             android:id="@+id/action_receiverAccountSelectionFragment_to_transactionTipsBottomSheet"
             app:destination="@id/transactionTipsBottomSheet" />
     </fragment>
+
+    <fragment
+        android:id="@+id/receiverAccountSelectionQrScannerFragment"
+        android:name="com.algorand.android.ui.send.receiveraccount.ReceiverAccountSelectionQrScannerFragment"
+        android:label="AssetTransferPreviewFragment"
+        tools:layout="@layout/fragment_qr_code_scanner" />
 
     <fragment
         android:id="@+id/assetTransferPreviewFragment"

@@ -44,7 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/scan_qr_code"
-        app:icon="@drawable/ic_scan_qr" />
+        app:icon="@drawable/ic_qr_scan" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/learnMoreButton"

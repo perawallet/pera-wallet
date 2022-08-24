@@ -87,7 +87,7 @@
             android:layout_height="wrap_content"
             android:text="@string/auth_account_address"
             android:visibility="gone"
-            app:icon="@drawable/ic_show_qr"
+            app:icon="@drawable/ic_qr"
             tools:visibility="visible" />
 
         <com.google.android.material.button.MaterialButton
@@ -117,7 +117,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/show_qr_code"
-            app:icon="@drawable/ic_scan_qr" />
+            app:icon="@drawable/ic_qr_scan" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/renameAccountButton"

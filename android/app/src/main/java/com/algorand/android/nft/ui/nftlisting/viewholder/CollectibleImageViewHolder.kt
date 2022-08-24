@@ -30,6 +30,7 @@ class CollectibleImageViewHolder(
 
     private fun loadImage(item: BaseCollectibleListItem.BaseCollectibleItem.CollectibleImageItem) {
         binding.collectibleImageView.run {
+            getImageView()?.setImageDrawable(null)
             showText(item.avatarDisplayText)
             doOnLayout {
                 context.loadImage(

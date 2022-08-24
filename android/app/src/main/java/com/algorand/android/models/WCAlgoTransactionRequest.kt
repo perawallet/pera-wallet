@@ -26,7 +26,7 @@ data class WCAlgoTransactionRequest(
 ) : Parcelable {
 
     val hasMultipleSigner: Boolean
-        get() = signers?.size ?: 0 > 1
+        get() = (signers?.size ?: 0) > 1
 
     val firstSignerAddressBase64: String?
         get() = signers?.firstOrNull()

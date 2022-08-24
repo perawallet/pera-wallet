@@ -15,6 +15,7 @@
     <attr name="algoLogoViewSize" format="dimension" />
     <attr name="defaultTintColor" format="color" />
     <attr name="useMicroAlgos" format="boolean" />
+    <attr name="title" format="string" />
 
     <declare-styleable name="PadView">
         <attr name="number" format="integer" />
@@ -42,13 +43,6 @@
         <attr name="defaultTintColor" />
         <attr name="iconTint" />
         <attr name="algoFontFamily" format="reference" />
-    </declare-styleable>
-
-    <declare-styleable name="SendRequestCustomButton">
-        <attr name="buttonType" format="enum">
-            <enum name="Send" value="0" />
-            <enum name="Request" value="1" />
-        </attr>
     </declare-styleable>
 
     <declare-styleable name="SelectionView">
@@ -138,7 +132,7 @@
         <attr name="buttonVerticalMargin" format="dimension" />
         <attr name="buttonHorizontalMargin" format="dimension" />
         <attr name="padButtonSize" format="dimension" />
-        <attr name="showDotButton" format="boolean" />
+        <attr name="showSeparatorButton" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="AlgorandSearchBarView">
@@ -157,7 +151,7 @@
         <attr name="heightOffset" format="dimension" />
     </declare-styleable>
 
-    <declare-styleable name="CollectibleImageView">
+    <declare-styleable name="BaseCollectibleImageView">
         <attr name="textHorizontalMargin" format="dimension" />
     </declare-styleable>
 
@@ -170,6 +164,29 @@
     <declare-styleable name="AccountCopyQrView">
         <attr name="isTitleVisible" format="boolean" />
         <attr name="accountIconSize" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="PeraRadioButton">
+        <attr name="android:checked" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="ListMenuItemView">
+        <attr name="title" />
+        <attr name="description" format="string" />
+        <attr name="icon" format="reference" />
+        <attr name="showBottomDivider" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="ListConfigurationHeaderView">
+        <attr name="title" />
+        <attr name="primaryButtonIcon" format="reference" />
+        <attr name="primaryButtonText" format="string" />
+        <attr name="secondaryButtonIcon" format="reference" />
+        <attr name="secondaryButtonText" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="GradientButtonView">
+        <attr name="buttonText" format="string" />
     </declare-styleable>
 
 </resources>

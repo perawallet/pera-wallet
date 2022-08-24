@@ -16,12 +16,16 @@ package com.algorand.android.ui.register.addaccounttypeselection
 import android.content.SharedPreferences
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.AccountManager
+import com.algorand.android.modules.tracking.onboarding.register.addaccounttypeselection.AddAccountTypeSelectionFragmentEventTracker
 import com.algorand.android.utils.preference.setRegisterSkip
+import kotlinx.coroutines.launch
 
 class AddAccountTypeSelectionViewModel @ViewModelInject constructor(
     private val sharedPref: SharedPreferences,
-    private val accountManager: AccountManager
+    private val accountManager: AccountManager,
+    private val addAccountTypeSelectionFragmentEventTracker: AddAccountTypeSelectionFragmentEventTracker
 ) : ViewModel() {
 
     fun setRegisterSkip() {
@@ -30,5 +34,17 @@ class AddAccountTypeSelectionViewModel @ViewModelInject constructor(
 
     fun hasAccount(): Boolean {
         return accountManager.accounts.value.isNotEmpty()
+    }
+
+    fun logOnboardingCreateNewAccountClickEvent() {
+        viewModelScope.launch {
+            addAccountTypeSelectionFragmentEventTracker.logOnboardingCreateNewAccountEvent()
+        }
+    }
+
+    fun logOnboardingCreateWatchAccountClickEvent() {
+        viewModelScope.launch {
+            addAccountTypeSelectionFragmentEventTracker.logOnboardingCreateWatchAccountEvent()
+        }
     }
 }

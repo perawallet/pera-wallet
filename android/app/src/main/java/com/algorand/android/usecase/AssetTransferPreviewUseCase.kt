@@ -17,6 +17,7 @@ import com.algorand.android.mapper.AssetTransferPreviewMapper
 import com.algorand.android.models.AssetStatus
 import com.algorand.android.models.AssetTransferPreview
 import com.algorand.android.models.SignedTransactionDetail
+import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
 import com.algorand.android.utils.CacheResult
 import com.algorand.android.utils.DataResource
 import java.math.BigDecimal
@@ -25,7 +26,7 @@ import kotlinx.coroutines.flow.Flow
 
 class AssetTransferPreviewUseCase @Inject constructor(
     private val assetTransferPreviewMapper: AssetTransferPreviewMapper,
-    private val algoPriceUseCase: AlgoPriceUseCase,
+    private val parityUseCase: ParityUseCase,
     private val sendSignedTransactionUseCase: SendSignedTransactionUseCase,
     private val accountDetailUseCase: AccountDetailUseCase
 ) {
@@ -33,11 +34,11 @@ class AssetTransferPreviewUseCase @Inject constructor(
     fun getAssetTransferPreview(
         signedTransactionDetail: SignedTransactionDetail.Send
     ): AssetTransferPreview {
-        val exchangePrice = algoPriceUseCase.getAlgoToSelectedCurrencyConversionRate() ?: BigDecimal.ZERO
+        val exchangePrice = parityUseCase.getAlgoToPrimaryCurrencyConversionRate() ?: BigDecimal.ZERO
         return assetTransferPreviewMapper.mapToAssetTransferPreview(
             signedTransactionDetail = signedTransactionDetail,
             exchangePrice = exchangePrice,
-            currencySymbol = algoPriceUseCase.getSelectedCurrencySymbolOrCurrencyName()
+            currencySymbol = parityUseCase.getPrimaryCurrencySymbolOrName()
         )
     }
 

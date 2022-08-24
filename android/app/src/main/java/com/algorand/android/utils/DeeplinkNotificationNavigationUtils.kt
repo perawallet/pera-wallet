@@ -13,9 +13,9 @@
 package com.algorand.android.utils
 
 import android.content.Intent
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import com.algorand.android.HomeNavigationDirections
+import com.algorand.android.modules.accounts.ui.AccountsFragmentDirections
 import com.algorand.android.models.Account
 import com.algorand.android.models.AssetAction
 import com.algorand.android.models.AssetInformation
@@ -24,7 +24,6 @@ import com.algorand.android.models.DecodedQrCode
 import com.algorand.android.models.NotificationType
 import com.algorand.android.models.User
 import com.algorand.android.modules.dapp.moonpay.domain.model.MoonpayTransactionStatus
-import com.algorand.android.ui.accounts.AccountsFragmentDirections
 
 const val SELECTED_ACCOUNT_KEY = "selectedAccountKey"
 const val SELECTED_ASSET_ID_KEY = "selectedAssetIdKey"
@@ -54,69 +53,69 @@ fun NavController.handleDeeplink(
     accountCacheManager: AccountCacheManager,
     onWalletConnectResult: ((String) -> Unit?)? = null
 ): Boolean {
+    if (decodedQrCode is DecodedQrCode.Success.Deeplink) {
+        when (decodedQrCode) {
+            is DecodedQrCode.Success.Deeplink.WalletConnect -> {
+                onWalletConnectResult?.invoke(decodedQrCode.walletConnectUrl)
+            }
+            is DecodedQrCode.Success.Deeplink.AssetTransaction -> {
+                // If deeplink does not contain assetId then it should be Algo
+                val assetId = decodedQrCode.getDecodedAssetID()
 
-    if (decodedQrCode.walletConnectUrl != null) {
-        onWalletConnectResult?.invoke(decodedQrCode.walletConnectUrl)
+                val accountAssetPairList = accountCacheManager.getAccountCacheWithSpecificAsset(
+                    assetId, listOf(Account.Type.WATCH)
+                )
+
+                if (accountAssetPairList.isEmpty()) {
+                    val assetAction = AssetAction(assetId = assetId)
+                    // No account owns this asset
+                    navigateSafe(
+                        HomeNavigationDirections.actionGlobalUnsupportedAddAssetTryLaterBottomSheet(assetAction)
+                    )
+                    return false
+                }
+
+                val assetTransaction = AssetTransaction(
+                    assetId = assetId,
+                    note = decodedQrCode.note, // normal note
+                    xnote = decodedQrCode.xnote, // locked note
+                    amount = decodedQrCode.amount,
+                    receiverUser = User(
+                        publicKey = decodedQrCode.address,
+                        name = decodedQrCode.label ?: decodedQrCode.address,
+                        imageUriAsString = null
+                    )
+                )
+                navigateSafe(HomeNavigationDirections.actionGlobalSendAlgoNavigation(assetTransaction))
+            }
+            is DecodedQrCode.Success.Deeplink.MoonPayResult -> {
+                navigateSafe(
+                    HomeNavigationDirections.actionGlobalMoonpayResultNavigation(
+                        walletAddress = decodedQrCode.address,
+                        transactionStatus = MoonpayTransactionStatus.getByValueOrDefault(
+                            decodedQrCode.transactionStatus.orEmpty()
+                        )
+                    )
+                )
+            }
+            is DecodedQrCode.Success.Deeplink.AddContact -> {
+                navigateSafe(
+                    HomeNavigationDirections.actionGlobalContactAdditionNavigation(
+                        contactName = decodedQrCode.contactName,
+                        contactPublicKey = decodedQrCode.contactPublicKey
+                    )
+                )
+            }
+        }
         return true
-    }
-
-    if (decodedQrCode.address == null) {
+    } else {
         return false
     }
-
-    if (decodedQrCode.amount != null) {
-        // If deeplink does not contain assetId then it should be Algo
-        val assetId = decodedQrCode.getDecodedAssetID()
-
-        val accountAssetPairList = accountCacheManager.getAccountCacheWithSpecificAsset(
-            assetId, listOf(Account.Type.WATCH)
-        )
-
-        if (accountAssetPairList.isEmpty()) {
-            val assetAction = AssetAction(assetId = assetId)
-            // No account owns this asset
-            navigateSafe(HomeNavigationDirections.actionGlobalUnsupportedAddAssetTryLaterBottomSheet(assetAction))
-            return false
-        }
-
-        val assetTransaction = AssetTransaction(
-            assetId = assetId,
-            note = decodedQrCode.note, // normal note
-            xnote = decodedQrCode.xnote, // locked note
-            amount = decodedQrCode.amount,
-            receiverUser = User(
-                publicKey = decodedQrCode.address,
-                name = decodedQrCode.label ?: decodedQrCode.address,
-                imageUriAsString = null
-            )
-        )
-        navigateSafe(HomeNavigationDirections.actionGlobalSendAlgoNavigation(assetTransaction))
-    } else if (decodedQrCode.transactionStatus != null) {
-        // If deeplink contains transaction status then it should navigate to moonpay result fragment
-        navigateSafe(
-            HomeNavigationDirections.actionGlobalMoonpayResultNavigation(
-                walletAddress = decodedQrCode.address,
-                transactionStatus = MoonpayTransactionStatus.getByValueOrDefault(
-                    decodedQrCode.transactionStatus.orEmpty()
-                )
-            )
-        )
-    } else {
-        // If deeplink does not contain amount information then it should be navigate to account addition flow
-        navigateSafe(
-            HomeNavigationDirections.actionGlobalAddContactFragment(
-                contactName = decodedQrCode.label,
-                contactPublicKey = decodedQrCode.address
-            )
-        )
-    }
-    return true
 }
 
 fun NavController.handleIntent(
     intentToHandle: Intent,
     accountCacheManager: AccountCacheManager,
-    fragmentManager: FragmentManager,
     onWalletConnectResult: (String) -> Unit
 ): Boolean {
     with(intentToHandle) {
@@ -130,7 +129,7 @@ fun NavController.handleIntent(
     }
 }
 
-private fun NavController.handleIntentWithBundle(
+fun NavController.handleIntentWithBundle(
     intentToHandle: Intent,
     accountCacheManager: AccountCacheManager
 ): Boolean {

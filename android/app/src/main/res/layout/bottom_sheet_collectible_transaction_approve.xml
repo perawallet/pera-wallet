@@ -148,6 +148,36 @@
             app:layout_constraintTop_toTopOf="@id/transactionFeeLabelTextView"
             tools:text="46 ALGO" />
 
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/optOutCheckbox"
+            style="@style/CheckBoxStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:checked="true"
+            android:text="@string/opt_out_from_the"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/transactionFeeLabelTextView"
+            tools:visibility="visible" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/optOutInfoButton"
+            style="@style/IconButton.Transparent"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:icon="@drawable/ic_info"
+            app:iconTint="@color/tertiary_icon_tint_color"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/optOutCheckbox"
+            app:layout_constraintBottom_toBottomOf="@id/optOutCheckbox"/>
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/optOutGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="optOutCheckbox, optOutInfoButton" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/positiveButton"
             style="@style/Button.Primary"
@@ -157,10 +187,10 @@
             android:text="@string/confirm_transfer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/transactionFeeLabelTextView" />
+            app:layout_constraintTop_toBottomOf="@id/optOutCheckbox" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/learnMoreButton"
+            android:id="@+id/cancelButton"
             style="@style/Button.Secondary"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

@@ -14,7 +14,7 @@ package com.algorand.android.utils.walletconnect
 
 import com.algorand.android.R
 import com.algorand.android.models.Account.Type.WATCH
-import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
+import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.utils.AccountCacheManager
 import javax.inject.Inject
 
@@ -33,7 +33,7 @@ class WalletConnectUrlHandler @Inject constructor(private val accountCacheManage
     }
 
     private fun hasValidAccountForWalletConnect(): Boolean {
-        return accountCacheManager.getAccountCacheWithSpecificAsset(ALGORAND_ID, listOf(WATCH)).isNotEmpty()
+        return accountCacheManager.getAccountCacheWithSpecificAsset(ALGO_ID, listOf(WATCH)).isNotEmpty()
     }
 
     interface Listener {

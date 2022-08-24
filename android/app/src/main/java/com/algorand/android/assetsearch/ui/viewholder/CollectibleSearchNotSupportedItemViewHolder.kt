@@ -14,7 +14,7 @@ package com.algorand.android.assetsearch.ui.viewholder
 
 import android.view.ViewGroup
 import com.algorand.android.assetsearch.ui.model.BaseAssetSearchListItem
-import com.algorand.android.customviews.CollectibleImageView
+import com.algorand.android.customviews.collectibleimageview.CollectibleImageView
 import com.algorand.android.databinding.ItemSearchCollectibleBinding
 
 class CollectibleSearchNotSupportedItemViewHolder(

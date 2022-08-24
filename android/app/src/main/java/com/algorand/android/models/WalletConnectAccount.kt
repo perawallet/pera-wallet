@@ -20,14 +20,15 @@ data class WalletConnectAccount constructor(
     val address: String,
     var name: String = "",
     val type: Account.Type? = null,
-    val accountIconColor: Account.AccountIconColor
+    val accountIconResource: AccountIconResource
 ) : Parcelable {
 
     companion object {
         fun create(account: Account?): WalletConnectAccount? {
             with(account) {
                 if (this == null) return null
-                return WalletConnectAccount(address, name, type, accountIconColor)
+                val accountIcon = AccountIconResource.getAccountIconResourceByAccountType(account?.type)
+                return WalletConnectAccount(address, name, type, accountIcon)
             }
         }
     }

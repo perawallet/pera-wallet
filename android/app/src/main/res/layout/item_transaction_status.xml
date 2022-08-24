@@ -51,7 +51,7 @@
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@id/guideline"
         app:layout_constraintTop_toTopOf="parent"
-        tools:background="@drawable/bg_turquoise_1a_24dp_radius"
+        tools:background="@drawable/bg_positive_lighter_24dp_radius"
         tools:text="Completed"
         tools:textColor="@color/transaction_confirmed_text_color" />
 

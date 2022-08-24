@@ -86,7 +86,7 @@ class BaseAssetTransferTransactionDetailUiBuilder @Inject constructor() :
         return with(txn) {
             TransactionRequestTransactionInfo(
                 fromDisplayedAddress = getProvidedAddressAsDisplayAddress(senderAddress.decodedAddress.orEmpty()),
-                fromAccountIcon = createAccountIcon(),
+                fromAccountIcon = createAccountIconResource(),
                 toDisplayedAddress = assetReceiverAddress.decodedAddress,
                 accountBalance = assetInformation?.amount,
                 assetInformation = TransactionRequestAssetInformation(

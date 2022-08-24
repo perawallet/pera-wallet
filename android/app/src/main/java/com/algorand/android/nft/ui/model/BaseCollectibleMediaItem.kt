@@ -25,6 +25,9 @@ sealed class BaseCollectibleMediaItem : Parcelable, RecyclerListItem {
     abstract val isOwnedByTheUser: Boolean
     abstract val itemType: ItemType
 
+    open val has3dSupport: Boolean = false
+    open val hasFullScreenSupport: Boolean = false
+
     enum class ItemType {
         IMAGE,
         VIDEO,
@@ -43,6 +46,12 @@ sealed class BaseCollectibleMediaItem : Parcelable, RecyclerListItem {
     ) : BaseCollectibleMediaItem() {
 
         override val itemType: ItemType = ItemType.IMAGE
+
+        override val has3dSupport: Boolean
+            get() = true
+
+        override val hasFullScreenSupport: Boolean
+            get() = true
 
         override fun areItemsTheSame(other: RecyclerListItem): Boolean {
             return other is ImageCollectibleMediaItem &&
@@ -67,6 +76,9 @@ sealed class BaseCollectibleMediaItem : Parcelable, RecyclerListItem {
 
         override val itemType: ItemType = ItemType.GIF
 
+        override val hasFullScreenSupport: Boolean
+            get() = true
+
         override fun areItemsTheSame(other: RecyclerListItem): Boolean {
             return other is GifCollectibleMediaItem &&
                 other.previewUrl == previewUrl &&
@@ -89,6 +101,9 @@ sealed class BaseCollectibleMediaItem : Parcelable, RecyclerListItem {
     ) : BaseCollectibleMediaItem() {
 
         override val itemType: ItemType = ItemType.VIDEO
+
+        override val hasFullScreenSupport: Boolean
+            get() = true
 
         override fun areItemsTheSame(other: RecyclerListItem): Boolean {
             return other is VideoCollectibleMediaItem &&

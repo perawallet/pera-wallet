@@ -13,7 +13,7 @@
 package com.algorand.android.mapper
 
 import com.algorand.android.models.AssetInformation
-import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
+import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.models.BasePaymentTransaction
 import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.WCAlgoTransactionRequest
@@ -22,7 +22,7 @@ import com.algorand.android.models.WalletConnectAssetInformation
 import com.algorand.android.models.WalletConnectPeerMeta
 import com.algorand.android.models.WalletConnectSigner
 import com.algorand.android.models.WalletConnectTransactionRequest
-import com.algorand.android.usecase.AlgoPriceUseCase
+import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.toAlgoDisplayValue
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionErrorProvider
@@ -35,7 +35,7 @@ import javax.inject.Inject
 class PaymentTransactionMapper @Inject constructor(
     private val accountCacheManager: AccountCacheManager,
     private val errorProvider: WalletConnectTransactionErrorProvider,
-    private val algoPriceUseCase: AlgoPriceUseCase,
+    private val parityUseCase: ParityUseCase,
     private val walletConnectAssetInformationMapper: WalletConnectAssetInformationMapper
 ) : BaseWalletConnectTransactionMapper() {
 
@@ -70,7 +70,7 @@ class PaymentTransactionMapper @Inject constructor(
             val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
             val amount = amount ?: BigInteger.ZERO
             val assetInformation = accountCacheData?.assetsInformation?.firstOrNull {
-                it.assetId == ALGORAND_ID
+                it.assetId == ALGO_ID
             }
             val walletConnectAssetInformation = createWalletConnectAssetInformation(assetInformation, amount)
 
@@ -103,7 +103,7 @@ class PaymentTransactionMapper @Inject constructor(
             val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
             val amount = amount ?: BigInteger.ZERO
             val assetInformation = accountCacheData?.assetsInformation?.firstOrNull {
-                it.assetId == ALGORAND_ID
+                it.assetId == ALGO_ID
             }
             val walletConnectAssetInformation = createWalletConnectAssetInformation(assetInformation, amount)
 
@@ -135,7 +135,7 @@ class PaymentTransactionMapper @Inject constructor(
             val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
             val amount = amount ?: BigInteger.ZERO
             val assetInformation = accountCacheData?.assetsInformation?.firstOrNull {
-                it.assetId == ALGORAND_ID
+                it.assetId == ALGO_ID
             }
             val walletConnectAssetInformation = createWalletConnectAssetInformation(assetInformation, amount)
 
@@ -167,7 +167,7 @@ class PaymentTransactionMapper @Inject constructor(
             val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
             val amount = amount ?: BigInteger.ZERO
             val assetInformation = accountCacheData?.assetsInformation?.firstOrNull {
-                it.assetId == ALGORAND_ID
+                it.assetId == ALGO_ID
             }
             val walletConnectAssetInformation = createWalletConnectAssetInformation(assetInformation, amount)
 
@@ -193,9 +193,9 @@ class PaymentTransactionMapper @Inject constructor(
         amount: BigInteger
     ): WalletConnectAssetInformation? {
 
-        val algoPrice = algoPriceUseCase.getAlgoToSelectedCurrencyConversionRate()
+        val algoPrice = parityUseCase.getAlgoToPrimaryCurrencyConversionRate()
             ?: BigDecimal.ZERO
-        val currencySymbol = algoPriceUseCase.getSelectedCurrencySymbolOrCurrencyName()
+        val currencySymbol = parityUseCase.getPrimaryCurrencySymbolOrName()
 
         return walletConnectAssetInformationMapper.algorandMapToWalletConnectAssetInformation(
             assetInformation,

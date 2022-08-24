@@ -22,7 +22,7 @@ import com.algorand.android.R
 import com.algorand.android.databinding.CustomWalletConnectAmountInfoCardBinding
 import com.algorand.android.models.BaseWalletConnectDisplayedAddress
 import com.algorand.android.models.TransactionRequestAmountInfo
-import com.algorand.android.utils.ALGOS_SHORT_NAME
+import com.algorand.android.utils.ALGO_SHORT_NAME
 import com.algorand.android.utils.ALGO_DECIMALS
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.formatAmount
@@ -70,7 +70,7 @@ class WalletConnectAmountInfoCardView(
         fee?.let {
             with(binding) {
                 val formattedAmount = fee.formatAmount(ALGO_DECIMALS)
-                feeTextView.text = context.getString(R.string.pair_value_format, formattedAmount, ALGOS_SHORT_NAME)
+                feeTextView.text = context.getString(R.string.pair_value_format, formattedAmount, ALGO_SHORT_NAME)
                 feeWarningTextView.isVisible = shouldShowFeeWarning
                 feeGroup.show()
             }

@@ -13,7 +13,7 @@
 
 package com.algorand.android.utils
 
-import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
+import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.models.AssetDetail
 import javax.inject.Inject
 
@@ -22,9 +22,9 @@ class AlgoAssetInformationProvider @Inject constructor() {
     fun getAlgoAssetInformation(): CacheResult<AssetDetail> {
         return CacheResult.Success.create(
             AssetDetail(
-                assetId = ALGORAND_ID,
-                fullName = ALGOS_FULL_NAME,
-                shortName = ALGOS_SHORT_NAME,
+                assetId = ALGO_ID,
+                fullName = ALGO_FULL_NAME,
+                shortName = ALGO_SHORT_NAME,
                 isVerified = true,
                 fractionDecimals = ALGO_DECIMALS,
                 usdValue = null,

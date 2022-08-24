@@ -16,17 +16,14 @@ import com.algorand.android.models.Account
 import javax.inject.Inject
 
 class AccountMigrationHelper @Inject constructor(
-    private val accountIconColorMigrationHelper: AccountIconColorMigrationHelper,
-    private val accountIndexMigrationHelper: AccountIndexMigrationHelper,
+    private val accountIndexMigrationHelper: AccountIndexMigrationHelper
 ) {
 
     fun isMigrationNeed(accountList: List<Account>): Boolean {
-        return accountIconColorMigrationHelper.isMigrationNeeded(accountList) ||
-            accountIconColorMigrationHelper.isMigrationNeeded(accountList)
+        return accountIndexMigrationHelper.isMigrationNeeded(accountList)
     }
 
     fun migrateAccounts(accountList: List<Account>): List<Account> {
-        val colorMigratedAccounts = accountIconColorMigrationHelper.getMigratedValues(accountList)
-        return accountIndexMigrationHelper.getMigratedValues(colorMigratedAccounts)
+        return accountIndexMigrationHelper.getMigratedValues(accountList)
     }
 }

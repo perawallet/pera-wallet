@@ -30,7 +30,11 @@ class LedgerAccountSelectionAccountItemMapper @Inject constructor() {
         with(accountInformation) {
             return AccountSelectionListItem.AccountItem(
                 assetInformationList = getAssetInformationList(accountCacheManager),
-                account = Account.create(address, accountDetail, address.toShortenedAddress()),
+                account = Account.create(
+                    publicKey = address,
+                    detail = accountDetail,
+                    accountName = address.toShortenedAddress()
+                ),
                 accountInformation = this
             )
         }

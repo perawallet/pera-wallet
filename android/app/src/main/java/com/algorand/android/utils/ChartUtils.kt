@@ -36,12 +36,12 @@ import kotlinx.coroutines.withContext
  *          Then we can multiply historic data with that value which is 8.5₺
  */
 fun getCurrencyConvertedHistoryList(
-    cachedCurrencyValueOfPerAlgo: BigDecimal,
+    algoToDisplayCurrencyConversionRate: BigDecimal,
     usdSelectedIntervalHistory: List<CandleHistory>,
     usdLastFiveMinInterval: CandleHistory
 ): List<CandleHistory> {
     val currentUsdPrice = usdLastFiveMinInterval.close ?: BigDecimal.ZERO
-    val usdToSelectedCurrencyRatio = cachedCurrencyValueOfPerAlgo.divide(currentUsdPrice, RoundingMode.FLOOR)
+    val usdToSelectedCurrencyRatio = algoToDisplayCurrencyConversionRate.divide(currentUsdPrice, RoundingMode.FLOOR)
     val currencyConvertedHistoryList = usdSelectedIntervalHistory.map {
         it.getCurrencyConvertedInstance(usdToSelectedCurrencyRatio)
     }

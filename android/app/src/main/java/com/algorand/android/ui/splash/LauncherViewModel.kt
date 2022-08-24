@@ -21,7 +21,6 @@ import com.algorand.android.database.NodeDao
 import com.algorand.android.network.AlgodInterceptor
 import com.algorand.android.network.IndexerInterceptor
 import com.algorand.android.network.MobileHeaderInterceptor
-import com.algorand.android.usecase.PeraIntroductionUseCase
 import com.algorand.android.utils.findAllNodes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,19 +30,13 @@ class LauncherViewModel @ViewModelInject constructor(
     private val mobileHeaderInterceptor: MobileHeaderInterceptor,
     private val algodInterceptor: AlgodInterceptor,
     private val indexerInterceptor: IndexerInterceptor,
-    private val nodeDao: NodeDao,
-    private val peraIntroductionUseCase: PeraIntroductionUseCase
+    private val nodeDao: NodeDao
 ) : BaseViewModel() {
 
     val isNodeOperationFinished = MutableLiveData<Boolean>()
 
     init {
-        initializePeraIntroductionSharedPref()
         initializeNodeInterceptor()
-    }
-
-    private fun initializePeraIntroductionSharedPref() {
-        peraIntroductionUseCase.initializePeraIntroductionSharedPref()
     }
 
     private fun initializeNodeInterceptor() {

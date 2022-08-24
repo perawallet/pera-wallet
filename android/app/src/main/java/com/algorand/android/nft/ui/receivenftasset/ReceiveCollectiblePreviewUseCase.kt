@@ -19,7 +19,7 @@ import com.algorand.android.assetsearch.domain.pagination.AssetSearchPagerBuilde
 import com.algorand.android.assetsearch.domain.usecase.SearchAssetUseCase
 import com.algorand.android.assetsearch.ui.mapper.BaseAssetSearchItemMapper
 import com.algorand.android.assetsearch.ui.model.BaseAssetSearchListItem
-import com.algorand.android.models.AccountIcon
+import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.AssetQueryType
 import com.algorand.android.models.BaseAssetDetail
 import com.algorand.android.nft.domain.model.BaseSimpleCollectible.ImageSimpleCollectibleDetail
@@ -47,7 +47,7 @@ class ReceiveCollectiblePreviewUseCase @Inject constructor(
         val assetSearchQuery = assetSearchQueryMapper.mapToAssetSearchQuery(
             queryText = queryText,
             queryType = AssetQueryType.ALL,
-            filterCollectibles = true
+            hasCollectibles = true
         )
         return searchAssetUseCase.createPaginationFlow(searchPagerBuilder, scope, assetSearchQuery).mapNotNull {
             it.map { baseAssetDetail -> getSearchItemMappedAssetDetail(baseAssetDetail) }
@@ -58,7 +58,7 @@ class ReceiveCollectiblePreviewUseCase @Inject constructor(
         val assetSearchQuery = assetSearchQueryMapper.mapToAssetSearchQuery(
             queryText = queryText,
             queryType = AssetQueryType.ALL,
-            filterCollectibles = true
+            hasCollectibles = true
         )
         searchAssetUseCase.searchAsset(assetSearchQuery)
     }
@@ -79,7 +79,7 @@ class ReceiveCollectiblePreviewUseCase @Inject constructor(
         }
     }
 
-    fun getReceiverAccountDisplayTextAndIcon(publicKey: String): Pair<String, AccountIcon?> {
+    fun getReceiverAccountDisplayTextAndIcon(publicKey: String): Pair<String, AccountIconResource?> {
         return accountNameIconUseCase.getAccountDisplayTextAndIcon(publicKey)
     }
 }

@@ -13,13 +13,16 @@
 
 package com.algorand.android.mapper
 
+import com.algorand.android.decider.AssetDrawableProviderDecider
 import com.algorand.android.models.BaseAccountAssetData
 import com.algorand.android.models.ui.AssetDetailPreview
 import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.extensions.hasUsdValue
 import javax.inject.Inject
 
-class AssetDetailPreviewMapper @Inject constructor() {
+class AssetDetailPreviewMapper @Inject constructor(
+    private val assetDrawableProviderDecider: AssetDrawableProviderDecider
+) {
 
     fun mapToAssetDetailPreview(
         assetData: BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData,
@@ -34,9 +37,10 @@ class AssetDetailPreviewMapper @Inject constructor() {
             shortName = AssetName.createShortName(assetData.shortName),
             formattedAssetId = assetData.id.toString(),
             formattedAssetBalance = formattedAssetBalance,
-            formattedAssetBalanceInCurrency = assetData.formattedSelectedCurrencyValue,
+            formattedAssetBalanceInCurrency = assetData.getSelectedCurrencyParityValue().getFormattedValue(),
             isAmountInSelectedCurrencyVisible = assetData.hasUsdValue(),
-            canSignTransaction = canSignTransaction
+            canSignTransaction = canSignTransaction,
+            assetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(assetData.id)
         )
     }
 }

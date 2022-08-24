@@ -18,54 +18,48 @@ import androidx.paging.PagingData
 import com.algorand.android.core.BaseUseCase
 import com.algorand.android.decider.DateFilterUseCase
 import com.algorand.android.mapper.AssetDetailPreviewMapper
-import com.algorand.android.mapper.CsvStatusPreviewMapper
 import com.algorand.android.models.AccountDetail
-import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
-import com.algorand.android.models.BaseTransactionItem
-import com.algorand.android.models.CsvStatusPreview
+import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.models.DateFilter
-import com.algorand.android.models.DateRange
-import com.algorand.android.models.Result
 import com.algorand.android.models.ui.AssetDetailPreview
 import com.algorand.android.models.ui.DateFilterPreview
 import com.algorand.android.models.ui.TransactionLoadStatePreview
-import com.algorand.android.utils.formatAsAlgoAmount
-import java.io.File
+import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
+import com.algorand.android.modules.transaction.common.domain.model.TransactionTypeDTO
+import com.algorand.android.modules.transactionhistory.ui.model.BaseTransactionItem
+import com.algorand.android.modules.transactionhistory.ui.usecase.PendingTransactionsPreviewUseCase
+import com.algorand.android.modules.transactionhistory.ui.usecase.TransactionHistoryPreviewUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.map
 
 @SuppressWarnings("LongParameterList")
 class AssetDetailUseCase @Inject constructor(
-    private val algoPriceUseCase: AlgoPriceUseCase,
+    private val parityUseCase: ParityUseCase,
     private val accountDetailUseCase: AccountDetailUseCase,
     private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase,
-    private val algoRewardUseCase: AlgoRewardUseCase,
-    private val transactionUseCase: TransactionUseCase,
-    private val pendingTransactionUseCase: PendingTransactionUseCase,
+    private val transactionHistoryPreviewUseCase: TransactionHistoryPreviewUseCase,
+    private val pendingTransactionsPreviewUseCase: PendingTransactionsPreviewUseCase,
     private val dateFilterUseCase: DateFilterUseCase,
     private val assetDetailPreviewMapper: AssetDetailPreviewMapper,
     private val accountAlgoAmountUseCase: AccountAlgoAmountUseCase,
     private val accountAssetAmountUseCase: AccountAssetAmountUseCase,
     private val transactionLoadStateUseCase: TransactionLoadStateUseCase,
-    private val createCsvUseCase: CreateCsvUseCase,
-    private val csvStatusPreviewMapper: CsvStatusPreviewMapper,
     private val accountTotalBalanceUseCase: AccountTotalBalanceUseCase
 ) : BaseUseCase() {
 
     val pendingTransactionDistinctUntilChangedListener
-        get() = pendingTransactionUseCase.pendingFlowDistinctUntilChangedListener
+        get() = pendingTransactionsPreviewUseCase.pendingFlowDistinctUntilChangedListener
 
     fun getAssetDetailPreviewFlow(publicKey: String, assetId: Long): Flow<AssetDetailPreview?> {
         return combine(
-            algoPriceUseCase.getAlgoPriceCacheFlow(),
+            parityUseCase.getSelectedCurrencyDetailCacheFlow(),
             accountDetailUseCase.getAccountDetailCacheFlow(publicKey),
             simpleAssetDetailUseCase.getCachedAssetsFlow()
         ) { _, accountDetailCache, _ ->
-            if (assetId == ALGORAND_ID) {
+            if (assetId == ALGO_ID) {
                 createAssetDetailPreviewForAlgo(accountDetailCache?.data)
             } else {
                 createAssetDetailPreviewForOtherAssets(accountDetailCache?.data, assetId)
@@ -75,20 +69,21 @@ class AssetDetailUseCase @Inject constructor(
 
     fun getAccountBalanceFlow(publicKey: String) = accountTotalBalanceUseCase.getAccountBalanceFlow(publicKey)
 
-    fun getPendingRewards(publicKey: String): Long {
-        return algoRewardUseCase.getPendingRewards(publicKey)
-    }
-
-    fun fetchAssetTransactionHistory(publicKey: String, cacheInScope: CoroutineScope, assetId: Long) {
-        transactionUseCase.fetchAssetTransactionHistory(assetId, publicKey, cacheInScope)
-    }
-
-    fun getTransactionFlow(publicKey: String, assetIdFilter: Long): Flow<PagingData<BaseTransactionItem>>? {
-        return transactionUseCase.getTransactionPaginationFlow(publicKey, assetIdFilter)
+    fun getTransactionFlow(
+        publicKey: String,
+        assetIdFilter: Long,
+        cacheInScope: CoroutineScope
+    ): Flow<PagingData<BaseTransactionItem>>? {
+        return transactionHistoryPreviewUseCase.getTransactionHistoryPaginationFlow(
+            publicKey,
+            cacheInScope,
+            assetIdFilter,
+            TransactionTypeDTO.PAY_TRANSACTION.takeIf { assetIdFilter == ALGO_ID }?.value
+        )
     }
 
     suspend fun setDateFilter(dateFilter: DateFilter) {
-        transactionUseCase.filterHistoryByDate(dateFilter)
+        transactionHistoryPreviewUseCase.filterHistoryByDate(dateFilter)
     }
 
     fun createDateFilterPreview(dateFilter: DateFilter): DateFilterPreview {
@@ -108,23 +103,11 @@ class AssetDetailUseCase @Inject constructor(
     }
 
     fun refreshTransactionHistory() {
-        transactionUseCase.refreshTransactionHistory()
+        transactionHistoryPreviewUseCase.refreshTransactionHistory()
     }
 
-    fun createCsvFile(
-        assetId: Long,
-        cacheDir: File,
-        dateRange: DateRange?,
-        publicKey: String,
-        scope: CoroutineScope
-    ): Flow<CsvStatusPreview> {
-        return createCsvUseCase
-            .createTransactionHistoryCsvFile(cacheDir, publicKey, dateRange, assetId, scope)
-            .map { csvStatusPreviewMapper.mapToCsvStatus(it) }
-    }
-
-    suspend fun fetchPendingTransactions(publicKey: String, assetId: Long): Result<List<BaseTransactionItem>> {
-        return pendingTransactionUseCase.fetchPendingTransactions(publicKey, assetId)
+    suspend fun fetchPendingTransactions(publicKey: String, assetId: Long): List<BaseTransactionItem> {
+        return pendingTransactionsPreviewUseCase.getPendingTransactionItems(publicKey, assetId)
     }
 
     private fun createAssetDetailPreviewForAlgo(accountDetail: AccountDetail?): AssetDetailPreview? {
@@ -134,9 +117,9 @@ class AssetDetailUseCase @Inject constructor(
         val algoAmountData = accountAlgoAmountUseCase.getAccountAlgoAmount(accountDetail.account.address)
         val canAccountSignTransaction = accountDetailUseCase.canAccountSignTransaction(accountDetail.account.address)
         return assetDetailPreviewMapper.mapToAssetDetailPreview(
-            algoAmountData,
-            canAccountSignTransaction,
-            algoAmountData.formattedAmount.formatAsAlgoAmount()
+            assetData = algoAmountData,
+            canSignTransaction = canAccountSignTransaction,
+            formattedAssetBalance = algoAmountData.formattedAmount
         )
     }
 

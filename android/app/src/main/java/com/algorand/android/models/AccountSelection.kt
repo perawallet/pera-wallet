@@ -14,19 +14,17 @@
 package com.algorand.android.models
 
 import android.os.Parcelable
+import com.algorand.android.utils.AccountDisplayName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class AccountSelection(
-    val assetId: Long?,
-    val accountName: String,
-    val accountIcon: AccountIcon,
+    val accountDisplayName: AccountDisplayName?,
+    val accountIconResource: AccountIconResource?,
     val accountAddress: String,
-    val formattedAccountBalance: String?,
-    val accountAssetCount: Int
 ) : Parcelable, RecyclerListItem {
     override fun areItemsTheSame(other: RecyclerListItem): Boolean {
-        return other is AccountSelection && accountAddress == other.accountAddress && assetId == other.assetId
+        return other is AccountSelection && accountAddress == other.accountAddress
     }
 
     override fun areContentsTheSame(other: RecyclerListItem): Boolean {

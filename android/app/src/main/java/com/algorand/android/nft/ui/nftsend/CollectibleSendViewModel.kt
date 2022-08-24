@@ -24,6 +24,7 @@ import com.algorand.android.models.TransactionData
 import com.algorand.android.nft.domain.usecase.CollectibleSendPreviewUseCase
 import com.algorand.android.nft.ui.model.CollectibleDetail
 import com.algorand.android.nft.ui.model.CollectibleSendPreview
+import com.algorand.android.usecase.AccountAssetRemovalUseCase
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.getOrThrow
 import java.math.BigInteger
@@ -36,6 +37,7 @@ import kotlinx.coroutines.launch
 class CollectibleSendViewModel @ViewModelInject constructor(
     private val collectibleSendPreviewUseCase: CollectibleSendPreviewUseCase,
     private val accountCacheManager: AccountCacheManager,
+    private val accountAssetRemovalUseCase: AccountAssetRemovalUseCase,
     @Assisted savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
@@ -61,6 +63,8 @@ class CollectibleSendViewModel @ViewModelInject constructor(
 
     fun getSelectedAddress(): String = _selectedAccountAddressFlow.value
 
+    fun getCollectibleDetail(): CollectibleDetail = collectibleDetail
+
     fun checkIfSelectedAccountReceiveCollectible() {
         viewModelScope.launch(Dispatchers.IO) {
             collectibleSendPreviewUseCase.checkIfSelectedAccountReceiveCollectible(
@@ -74,11 +78,23 @@ class CollectibleSendViewModel @ViewModelInject constructor(
     }
 
     // TODO Transaction signing & sending flow needs to be refactored
-    fun getSendTransactionData(): TransactionData.Send? {
+    fun createSendTransactionData(): TransactionData.Send? {
         val senderAccountCacheData = accountCacheManager
             .getCacheData(collectibleDetail.ownerAccountAddress.publicKey) ?: return null
         val targetUser = TargetUser(publicKey = selectedAccountAddressFlow.value)
         return TransactionData.Send(
+            accountCacheData = senderAccountCacheData,
+            amount = BigInteger.ONE,
+            assetInformation = AssetInformation(assetId = collectibleDetail.collectibleId, false),
+            targetUser = targetUser
+        )
+    }
+
+    fun createSendAndRemoveAssetTransactionData(): TransactionData.SendAndRemoveAsset? {
+        val senderAccountCacheData = accountCacheManager
+            .getCacheData(collectibleDetail.ownerAccountAddress.publicKey) ?: return null
+        val targetUser = TargetUser(publicKey = selectedAccountAddressFlow.value)
+        return TransactionData.SendAndRemoveAsset(
             accountCacheData = senderAccountCacheData,
             amount = BigInteger.ONE,
             assetInformation = AssetInformation(assetId = collectibleDetail.collectibleId, false),
@@ -96,6 +112,13 @@ class CollectibleSendViewModel @ViewModelInject constructor(
                 _collectibleSendPreviewFlow.emit(preview)
             }
         }
+    }
+
+    suspend fun addAssetDeletionToAccountCache() {
+        accountAssetRemovalUseCase.addAssetDeletionToAccountCache(
+            _selectedAccountAddressFlow.value,
+            collectibleDetail.collectibleId
+        )
     }
 
     fun retrySendingTransaction() {

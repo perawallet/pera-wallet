@@ -12,7 +12,7 @@
 
 package com.algorand.android.mapper
 
-import com.algorand.android.models.TransactionCsvDetail
+import com.algorand.android.modules.transaction.csv.domain.model.TransactionCsvDetail
 import javax.inject.Inject
 
 class TransactionCsvDetailMapper @Inject constructor() {
@@ -20,7 +20,6 @@ class TransactionCsvDetailMapper @Inject constructor() {
     fun createTransactionCsvDetail(
         transactionId: String,
         formattedAmount: String,
-        formattedReward: String,
         formattedFee: String,
         closeAmount: String,
         closeToAddress: String,
@@ -34,7 +33,6 @@ class TransactionCsvDetailMapper @Inject constructor() {
         return TransactionCsvDetail(
             transactionId = transactionId,
             formattedAmount = formattedAmount,
-            formattedReward = formattedReward,
             formattedFee = formattedFee,
             closeAmount = closeAmount,
             closeToAddress = closeToAddress,

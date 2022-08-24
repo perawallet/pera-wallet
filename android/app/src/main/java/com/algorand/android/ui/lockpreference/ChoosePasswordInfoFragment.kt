@@ -18,6 +18,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
 import com.algorand.android.models.FragmentConfiguration
@@ -40,6 +41,8 @@ class ChoosePasswordInfoFragment : BaseInfoFragment() {
     override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
 
     private val args by navArgs<ChoosePasswordInfoFragmentArgs>()
+
+    private val choosePasswordInfoViewModel: ChoosePasswordInfoViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -91,6 +94,7 @@ class ChoosePasswordInfoFragment : BaseInfoFragment() {
     }
 
     private fun navigateToChoosePasswordFragment() {
+        choosePasswordInfoViewModel.logOnboardingSetPinCodeClickEvent()
         nav(ChoosePasswordInfoFragmentDirections.actionChoosePasswordInfoFragmentToChoosePasswordFragment())
     }
 

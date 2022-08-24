@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/transactionDetailNavigation"
+    app:startDestination="@id/navigationDetailEntryFragment">
+
+    <include app:graph="@navigation/contact_addition_navigation" />
+
+    <action
+        android:id="@+id/action_transactionDetailNavigation_pop"
+        app:popUpTo="@id/transactionDetailNavigation"
+        app:popUpToInclusive="true" />
+
+    <fragment
+        android:id="@+id/navigationDetailEntryFragment"
+        android:name="com.algorand.android.modules.transaction.detail.ui.NavigationDetailEntryFragment"
+        android:label="NavigationDetailEntryFragment">
+        <argument
+            android:name="transactionId"
+            app:argType="string" />
+        <argument
+            android:name="publicKey"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_navigationDetailEntryFragment_to_standardTransactionDetailFragment"
+            app:destination="@id/standardTransactionDetailFragment"
+            app:popUpTo="@id/navigationDetailEntryFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_navigationDetailEntryFragment_to_applicationCallTransactionDetailFragment"
+            app:destination="@id/applicationCallTransactionDetailFragment"
+            app:popUpTo="@id/navigationDetailEntryFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="entryPoint"
+            app:argType="com.algorand.android.modules.transaction.detail.ui.model.TransactionDetailEntryPoint" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/standardTransactionDetailFragment"
+        android:name="com.algorand.android.modules.transaction.detail.ui.standardtransaction.StandardTransactionDetailFragment"
+        android:label="StandardTransactionDetailFragment"
+        tools:layout="@layout/fragment_transaction_detail">
+        <argument
+            android:name="transactionId"
+            app:argType="string" />
+        <argument
+            android:name="publicKey"
+            app:argType="string" />
+        <argument
+            android:name="showCloseButton"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <argument
+            android:name="transaction"
+            android:defaultValue="@null"
+            app:argType="com.algorand.android.modules.transaction.detail.domain.model.BaseTransactionDetail"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_standardTransactionDetailFragment_to_contactAdditionNavigation"
+            app:destination="@id/contactAdditionNavigation">
+            <argument
+                android:name="contactName"
+                android:defaultValue="@null"
+                app:argType="string"
+                app:nullable="true" />
+            <argument
+                android:name="contactPublicKey"
+                android:defaultValue="@null"
+                app:argType="string"
+                app:nullable="true" />
+            <argument
+                android:name="returnContactToBackStack"
+                android:defaultValue="false"
+                app:argType="boolean" />
+        </action>
+        <action
+            android:id="@+id/action_standardTransactionDetailFragment_to_innerTransactionDetailFragment"
+            app:destination="@id/innerTransactionDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/innerTransactionDetailFragment"
+        android:name="com.algorand.android.modules.transaction.detail.ui.innertransaction.InnerTransactionDetailFragment"
+        android:label="InnerTransactionDetailFragment"
+        tools:layout="@layout/fragment_transaction_detail">
+        <argument
+            android:name="transactionId"
+            app:argType="string" />
+        <argument
+            android:name="publicKey"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_innerTransactionDetailFragment_to_applicationCallTransactionDetailFragment"
+            app:destination="@id/applicationCallTransactionDetailFragment" />
+        <action
+            android:id="@+id/action_innerTransactionDetailFragment_to_standardTransactionDetailFragment"
+            app:destination="@id/standardTransactionDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/applicationCallTransactionDetailFragment"
+        android:name="com.algorand.android.modules.transaction.detail.ui.applicationcalltransaction.ApplicationCallTransactionDetailFragment"
+        android:label="ApplicationCallTransactionDetailFragment"
+        tools:layout="@layout/fragment_transaction_detail">
+        <argument
+            android:name="transactionId"
+            app:argType="string" />
+        <argument
+            android:name="publicKey"
+            app:argType="string" />
+        <argument
+            android:name="showCloseButton"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <argument
+            android:name="transaction"
+            android:defaultValue="@null"
+            app:argType="com.algorand.android.modules.transaction.detail.domain.model.BaseTransactionDetail$ApplicationCallTransaction"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_applicationCallTransactionDetailFragment_to_innerTransactionDetailFragment"
+            app:destination="@id/innerTransactionDetailFragment" />
+        <action
+            android:id="@+id/action_applicationCallTransactionDetailFragment_to_applicationCallAssetsBottomSheet"
+            app:destination="@id/applicationCallAssetsBottomSheet" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/applicationCallAssetsBottomSheet"
+        android:name="com.algorand.android.modules.transaction.detail.ui.applicationcallassets.ApplicationCallAssetsBottomSheet"
+        android:label="ApplicationCallAssetsBottomSheet"
+        tools:layout="@layout/bottom_sheet_application_call_assets" >
+        <argument
+            android:name="assetInformationList"
+            app:argType="com.algorand.android.modules.transaction.detail.ui.model.ApplicationCallAssetInformation[]" />
+    </dialog>
+
+</navigation>

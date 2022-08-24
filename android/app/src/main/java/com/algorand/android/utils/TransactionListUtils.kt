@@ -14,6 +14,7 @@ package com.algorand.android.utils
 
 import com.algorand.android.models.Account
 import com.algorand.android.models.User
+import com.algorand.android.modules.transaction.common.domain.model.TransactionDTO
 
 fun getUserIfSavedLocally(
     contactList: List<User>,
@@ -35,4 +36,13 @@ fun getUserIfSavedLocally(
     }
 
     return null
+}
+
+fun getAllNestedTransactions(transactionDTO: TransactionDTO): Sequence<TransactionDTO> {
+    return sequence {
+        if (transactionDTO.innerTransactions != null) {
+            yieldAll(transactionDTO.innerTransactions)
+            transactionDTO.innerTransactions.forEach { yieldAll(getAllNestedTransactions(it)) }
+        }
+    }
 }

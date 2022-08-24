@@ -17,7 +17,7 @@ import com.algorand.android.R
 import com.algorand.android.models.BasePaymentTransaction
 import com.algorand.android.models.WalletConnectTransactionAmount
 import com.algorand.android.models.WalletConnectTransactionShortDetail
-import com.algorand.android.utils.ALGOS_SHORT_NAME
+import com.algorand.android.utils.ALGO_SHORT_NAME
 import javax.inject.Inject
 
 class BasePaymentSingleTransactionUiBuilder @Inject constructor() :
@@ -30,7 +30,7 @@ class BasePaymentSingleTransactionUiBuilder @Inject constructor() :
     override fun buildTransactionShortDetail(txn: BasePaymentTransaction): WalletConnectTransactionShortDetail {
         return with(txn) {
             WalletConnectTransactionShortDetail(
-                accountIcon = createAccountIcon(),
+                accountIconResource = createAccountIconResource(),
                 accountName = account?.name,
                 accountBalance = assetInformation?.amount,
                 assetShortName = assetInformation?.shortName,
@@ -46,7 +46,7 @@ class BasePaymentSingleTransactionUiBuilder @Inject constructor() :
             WalletConnectTransactionAmount(
                 transactionAmount = transactionAmount,
                 assetDecimal = assetDecimal,
-                assetShortName = ALGOS_SHORT_NAME,
+                assetShortName = ALGO_SHORT_NAME,
                 isNeedCurrencyValue = true,
                 formattedSelectedCurrencyValue = assetInformation?.formattedSelectedCurrencyValue
             )

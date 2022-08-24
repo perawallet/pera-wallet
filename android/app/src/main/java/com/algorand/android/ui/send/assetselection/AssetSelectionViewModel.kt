@@ -51,7 +51,7 @@ class AssetSelectionViewModel @ViewModelInject constructor(
                 _assetSelectionPreview.emit(
                     _assetSelectionPreview.value.copy(
                         assetList = list,
-                        isLoadingVisible = false
+                        isAssetListLoadingVisible = false
                     )
                 )
             }
@@ -70,9 +70,9 @@ class AssetSelectionViewModel @ViewModelInject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             assetTransaction.receiverUser?.publicKey?.let {
                 assetSelectionUseCase.checkIfSelectedAccountReceiveAsset(
-                    it,
-                    assetId,
-                    _assetSelectionPreview.value
+                    publicKey = it,
+                    assetId = assetId,
+                    previousState = _assetSelectionPreview.value
                 ).collectLatest { assetSelectionPreview ->
                     _assetSelectionPreview.emit(assetSelectionPreview)
                 }

@@ -16,30 +16,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/mainCurrencyTitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_xlarge"
+        android:layout_marginTop="28dp"
+        android:text="@string/main_currency"
+        android:textAppearance="@style/TextAppearance.Body.Sans.Medium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/currencyDescriptionTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_xsmall"
+        android:textAppearance="@style/TextAppearance.Footnote.Sans"
+        android:textColor="@color/secondary_text_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mainCurrencyTitleText"
+        tools:text="@string/your_main_currency_is" />
+
     <com.algorand.android.customviews.AlgorandSearchView
         android:id="@+id/searchView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/spacing_xlarge"
-        android:layout_marginTop="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_xlarge"
         android:hint="@string/search"
         app:endIconTintColor="@color/search_bar_view_icon_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/currencyDescriptionTextView"
         app:startIconTintColor="@color/search_bar_view_icon_color" />
-
-    <TextView
-        android:id="@+id/currencyLabelTextView"
-        style="@style/TextAppearance.Footnote.Description"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_xlarge"
-        android:layout_marginTop="@dimen/spacing_xxlarge"
-        android:text="@string/currency_preferences"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchView"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/currencyRecyclerView"
@@ -49,7 +61,7 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/currencyLabelTextView"
+        app:layout_constraintTop_toBottomOf="@id/searchView"
         tools:itemCount="10"
         tools:listitem="@layout/item_selection" />
 
@@ -82,7 +94,8 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         app:constraint_referenced_ids="
-            currencyLabelTextView,
+            mainCurrencyTitleText,
+            currencyDescriptionTextView,
             currencyRecyclerView"
         tools:visibility="visible" />
 

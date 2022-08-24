@@ -16,6 +16,5 @@ data class SimpleCollectible(
     val mediaType: CollectibleMediaType,
     val primaryImageUrl: String?,
     val title: String?,
-    val collectionName: String?,
-    val explorerUrl: String?
+    val collectionName: String?
 )

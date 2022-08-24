@@ -28,7 +28,7 @@ import com.algorand.android.models.BaseRemoveAssetItem.ItemType.REMOVE_COLLECTIB
 import com.algorand.android.models.BaseRemoveAssetItem.ItemType.REMOVE_COLLECTIBLE_NOT_SUPPORTED_ITEM
 import com.algorand.android.models.BaseRemoveAssetItem.ItemType.REMOVE_COLLECTIBLE_VIDEO_ITEM
 import com.algorand.android.models.BaseRemoveAssetItem.RemoveAssetItem
-import com.algorand.android.ui.accountdetail.assets.adapter.AccountAssetsAdapter
+import com.algorand.android.modules.accountdetail.assets.ui.adapter.AccountAssetsAdapter
 
 class RemoveAssetAdapter(
     private val onRemoveAssetClick: (BaseRemoveAssetItem) -> Unit

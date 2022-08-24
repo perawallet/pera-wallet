@@ -15,16 +15,19 @@ package com.algorand.android
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.activity.viewModels
+import androidx.core.view.forEach
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.algorand.android.core.TransactionManager
+import com.algorand.android.customviews.CoreActionsTabBarView
 import com.algorand.android.customviews.ForegroundNotificationView
-import com.algorand.android.customviews.SendReceiveTabBarView
 import com.algorand.android.models.AccountCacheStatus
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.AssetAction
 import com.algorand.android.models.AssetActionResult
+import com.algorand.android.models.AssetTransaction
 import com.algorand.android.models.Node
 import com.algorand.android.models.NotificationMetadata
 import com.algorand.android.models.NotificationType
@@ -34,10 +37,14 @@ import com.algorand.android.models.TransactionManagerResult
 import com.algorand.android.models.WCSessionRequestResult
 import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.models.WalletConnectTransaction
+import com.algorand.android.modules.dapp.moonpay.domain.model.MoonpayTransactionStatus
+import com.algorand.android.modules.deeplink.domain.model.BaseDeepLink
+import com.algorand.android.modules.deeplink.ui.DeeplinkHandler
+import com.algorand.android.modules.qrscanning.QrScannerViewModel
+import com.algorand.android.tutorialdialog.util.showCopyAccountAddressTutorialDialog
 import com.algorand.android.ui.accountselection.receive.ReceiveAccountSelectionFragment
 import com.algorand.android.ui.assetaction.UnsupportedAssetNotificationRequestActionBottomSheet
 import com.algorand.android.ui.lockpreference.AutoLockSuggestionManager
-import com.algorand.android.ui.qr.QrCodeScannerViewModel
 import com.algorand.android.ui.wcconnection.WalletConnectConnectionBottomSheet
 import com.algorand.android.utils.DEEPLINK_AND_NAVIGATION_INTENT
 import com.algorand.android.utils.Event
@@ -45,9 +52,10 @@ import com.algorand.android.utils.Resource
 import com.algorand.android.utils.WC_TRANSACTION_ID_INTENT_KEY
 import com.algorand.android.utils.analytics.logTapReceive
 import com.algorand.android.utils.analytics.logTapSend
-import com.algorand.android.utils.handleIntent
+import com.algorand.android.utils.handleIntentWithBundle
 import com.algorand.android.utils.inappreview.InAppReviewManager
 import com.algorand.android.utils.isNotificationCanBeShown
+import com.algorand.android.utils.navigateSafe
 import com.algorand.android.utils.preference.isPasswordChosen
 import com.algorand.android.utils.walletconnect.WalletConnectManager
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionErrorProvider
@@ -71,7 +79,7 @@ class MainActivity : CoreMainActivity(),
 
     val mainViewModel: MainViewModel by viewModels()
     private val walletConnectViewModel: WalletConnectViewModel by viewModels()
-    private val qrCodeScannerViewModel: QrCodeScannerViewModel by viewModels()
+    private val qrScannerViewModel: QrScannerViewModel by viewModels()
 
     private var pendingIntent: Intent? = null
 
@@ -105,6 +113,12 @@ class MainActivity : CoreMainActivity(),
         }
     }
 
+    private val addAssetResultObserver = Observer<Event<Resource<String?>>> {
+        it.consume()?.use(
+            onSuccess = { assetName -> showAssetAdditionForegroundNotification(assetName) }
+        )
+    }
+
     private val assetSetupCompletedObserver = Observer<AccountCacheStatus> {
         isAssetSetupCompleted = it == AccountCacheStatus.DONE
     }
@@ -133,6 +147,10 @@ class MainActivity : CoreMainActivity(),
         }
     }
 
+    private val shouldShowAccountAddressCopyTutorialDialogCollector: suspend (Boolean) -> Unit = { shouldShow ->
+        if (shouldShow) showCopyAccountAddressTutorialDialog()
+    }
+
     private val invalidTransactionCauseObserver = Observer<Event<Resource.Error.Local>> { cause ->
         cause.consume()?.let { onInvalidWalletConnectTransacitonReceived(it) }
     }
@@ -144,8 +162,66 @@ class MainActivity : CoreMainActivity(),
         }
 
         override fun onInvalidWalletConnectUrl(errorResId: Int) {
-            qrCodeScannerViewModel.setQrCodeInProgress(false)
+            qrScannerViewModel.setQrCodeInProgress(false)
             showGlobalError(getString(errorResId))
+        }
+    }
+
+    private val deepLinkHandlerListener = object : DeeplinkHandler.Listener {
+
+        override fun onAssetTransferDeepLink(assetTransaction: AssetTransaction): Boolean {
+            return true.also {
+                navController.navigateSafe(HomeNavigationDirections.actionGlobalSendAlgoNavigation(assetTransaction))
+            }
+        }
+
+        override fun onAccountAddressDeeplink(accountAddress: String, label: String?): Boolean {
+            return true.also {
+                navController.navigateSafe(
+                    HomeNavigationDirections.actionGlobalAccountsAddressScanActionBottomSheet(accountAddress, label)
+                )
+            }
+        }
+
+        override fun onWalletConnectConnectionDeeplink(wcUrl: String): Boolean {
+            return true.also { handleWalletConnectUrl(wcUrl) }
+        }
+
+        override fun onAssetTransferWithNotOptInDeepLink(assetId: Long): Boolean {
+            return true.also {
+                val assetAction = AssetAction(assetId = assetId)
+                navController.navigateSafe(
+                    HomeNavigationDirections.actionGlobalUnsupportedAddAssetTryLaterBottomSheet(assetAction)
+                )
+            }
+        }
+
+        override fun onMoonpayResultDeepLink(accountAddress: String, txnStatus: String, txnId: String?): Boolean {
+            mainViewModel.logMoonpayAlgoBuyCompletedEvent()
+            return true.also {
+                navController.navigateSafe(
+                    HomeNavigationDirections.actionGlobalMoonpayResultNavigation(
+                        walletAddress = accountAddress,
+                        transactionStatus = MoonpayTransactionStatus.getByValueOrDefault(txnStatus)
+                    )
+                )
+            }
+        }
+
+        override fun onAssetOptInDeepLink(assetAction: AssetAction): Boolean {
+            return true.also {
+                navController.navigateSafe(
+                    HomeNavigationDirections.actionGlobalAddAssetAccountSelectionFragment(assetAction.assetId)
+                )
+            }
+        }
+
+        override fun onUndefinedDeepLink(undefinedDeeplink: BaseDeepLink.UndefinedDeepLink) {
+            // TODO show error after discussing with the team
+        }
+
+        override fun onDeepLinkNotHandled(deepLink: BaseDeepLink) {
+            // TODO show error after discussing with the team
         }
     }
 
@@ -163,7 +239,7 @@ class MainActivity : CoreMainActivity(),
     }
 
     private fun onSessionFailed(error: Resource.Error) {
-        qrCodeScannerViewModel.setQrCodeInProgress(false)
+        qrScannerViewModel.setQrCodeInProgress(false)
         val errorMessage = error.parse(this)
         showGlobalError(errorMessage)
     }
@@ -181,9 +257,11 @@ class MainActivity : CoreMainActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
-        mainViewModel.setupAutoLockManager(lifecycle)
-        binding.toolbar.setNodeStatus(indexerInterceptor.currentActiveNode)
-        setupSendRequestTabBarView()
+        with(mainViewModel) {
+            setupAutoLockManager(lifecycle)
+            setDeepLinkHandlerListener(deepLinkHandlerListener)
+        }
+        setupCoreActionsTabBarView()
         setupWalletConnectManager()
 
         binding.foregroundNotificationView.apply {
@@ -195,6 +273,19 @@ class MainActivity : CoreMainActivity(),
 
         if (savedInstanceState == null) {
             handleDeeplinkAndNotificationNavigation()
+        }
+
+        mainViewModel.checkAccountAddressCopyTutorialDialogState()
+    }
+
+    override fun onMenuItemClicked(item: MenuItem) {
+        when (item.itemId) {
+            R.id.algoPriceFragment -> {
+                mainViewModel.logBottomNavAlgoPriceTapEvent()
+            }
+            R.id.accountsFragment -> {
+                mainViewModel.logBottomNavAccountsTapEvent()
+            }
         }
     }
 
@@ -211,6 +302,17 @@ class MainActivity : CoreMainActivity(),
         }
     }
 
+    // TODO Use new notification view when ForegroundNotification and SlidingTopErrorView are refactored
+    private fun showAssetAdditionForegroundNotification(assetName: String?) {
+        val safeAssetName = assetName ?: getString(R.string.asset)
+        val messageDescription = getString(R.string.asset_successfully_added_formatted, safeAssetName)
+        val metadata = NotificationMetadata(
+            alertMessage = messageDescription,
+            notificationType = NotificationType.BROADCAST
+        )
+        showForegroundNotification(metadata)
+    }
+
     override fun onAccountSelected(publicKey: String) {
         val qrCodeTitle = getString(R.string.qr_code)
         nav(HomeNavigationDirections.actionGlobalShowQrBottomSheet(qrCodeTitle, publicKey))
@@ -218,6 +320,8 @@ class MainActivity : CoreMainActivity(),
 
     private fun initObservers() {
         peraNotificationManager.newNotificationLiveData.observe(this, newNotificationObserver)
+
+        mainViewModel.addAssetResultLiveData.observe(this, addAssetResultObserver)
 
         lifecycleScope.launch {
             // Drop 1 added to get any list changes.
@@ -266,6 +370,11 @@ class MainActivity : CoreMainActivity(),
         }
 
         walletConnectViewModel.setWalletConnectSessionTimeoutListener(::onWalletConnectSessionTimedOut)
+
+        lifecycleScope.launchWhenResumed {
+            mainViewModel.shouldShowAccountAddressCopyTutorialDialogFlow
+                .collectLatest(shouldShowAccountAddressCopyTutorialDialogCollector)
+        }
     }
 
     private fun navigateToConnectionIssueBottomSheet() {
@@ -282,7 +391,8 @@ class MainActivity : CoreMainActivity(),
                 titleAnnotatedString = AnnotatedString(R.string.uh_oh_something),
                 drawableResId = R.drawable.ic_error,
                 drawableTintResId = R.color.error_tint_color,
-                descriptionAnnotatedString = annotatedDescriptionErrorString
+                descriptionAnnotatedString = annotatedDescriptionErrorString,
+                isDraggable = false
             )
         )
     }
@@ -296,10 +406,19 @@ class MainActivity : CoreMainActivity(),
     }
 
     private fun onNewWalletConnectTransactionRequest(transaction: WalletConnectTransaction) {
-        nav(HomeNavigationDirections.actionGlobalWalletConnectRequestNavigation()) {
-            pendingIntent = Intent().apply {
-                putExtra(WC_TRANSACTION_ID_INTENT_KEY, transaction.requestId)
-            }
+        if (isAppUnlocked) {
+            nav(
+                directions = MainNavigationDirections.actionGlobalWalletConnectRequestNavigation(),
+                onError = { saveWcTransactionToPendingIntent(transaction.requestId) }
+            )
+        } else {
+            saveWcTransactionToPendingIntent(transaction.requestId)
+        }
+    }
+
+    private fun saveWcTransactionToPendingIntent(transactionRequestId: Long) {
+        pendingIntent = Intent().apply {
+            putExtra(WC_TRANSACTION_ID_INTENT_KEY, transactionRequestId)
         }
     }
 
@@ -318,27 +437,26 @@ class MainActivity : CoreMainActivity(),
     }
 
     private fun handlePendingIntent(): Boolean {
-        pendingIntent?.apply {
-            if (isAssetSetupCompleted && isAppUnlocked) {
-                val handled = navController.handleIntent(
-                    this,
-                    accountCacheManager,
-                    supportFragmentManager,
-                    ::handleWalletConnectUrl
-                )
+        return pendingIntent?.run {
+            val canPendingBeHandled = isAssetSetupCompleted && isAppUnlocked
+            if (canPendingBeHandled) {
+                if (dataString != null) {
+                    mainViewModel.handleDeepLink(dataString.orEmpty())
+                } else {
+                    navController.handleIntentWithBundle(this, accountCacheManager)
+                }
                 pendingIntent = null
-                return handled
             }
-        }
-        return false
+            canPendingBeHandled
+        } ?: false
     }
 
     fun handleWalletConnectUrl(walletConnectUrl: String) {
         walletConnectViewModel.handleWalletConnectUrl(walletConnectUrl, walletConnectUrlHandlerListener)
     }
 
-    private fun setupSendRequestTabBarView() {
-        binding.sendReceiveTabBarView.setListener(object : SendReceiveTabBarView.Listener {
+    private fun setupCoreActionsTabBarView() {
+        binding.coreActionsTabBarView.setListener(object : CoreActionsTabBarView.Listener {
             override fun onSendClick() {
                 firebaseAnalytics.logTapSend()
                 nav(HomeNavigationDirections.actionGlobalSendAlgoNavigation(null))
@@ -350,7 +468,16 @@ class MainActivity : CoreMainActivity(),
             }
 
             override fun onBuyAlgoClick() {
+                mainViewModel.logBottomNavigationBuyAlgoEvent()
                 navToMoonpayIntroFragment()
+            }
+
+            override fun onScanQRClick() {
+                navToQRCodeScannerNavigation()
+            }
+
+            override fun onCoreActionsClick(isCoreActionsOpen: Boolean) {
+                binding.bottomNavigationView.menu.forEach { menuItem -> menuItem.isEnabled = isCoreActionsOpen.not() }
             }
         })
     }
@@ -372,7 +499,6 @@ class MainActivity : CoreMainActivity(),
     fun onNewNodeActivated(previousNode: Node, activatedNode: Node) {
         mainViewModel.refreshFirebasePushToken(previousNode)
         mainViewModel.resetBlockPolling()
-        binding.toolbar.setNodeStatus(activatedNode)
         checkIfConnectedToTestNet()
     }
 
@@ -410,10 +536,17 @@ class MainActivity : CoreMainActivity(),
     }
 
     override fun onUnsupportedAssetRequest(assetActionResult: AssetActionResult) {
+        signAddAssetTransaction(assetActionResult)
+    }
+
+    fun signAddAssetTransaction(assetActionResult: AssetActionResult) {
         if (!assetActionResult.publicKey.isNullOrBlank()) {
             val accountCacheData = accountCacheManager.getCacheData(assetActionResult.publicKey) ?: return
             transactionManager.setup(lifecycle)
-            transactionManager.signTransaction(TransactionData.AddAsset(accountCacheData, assetActionResult.asset))
+            transactionManager.initSigningTransactions(
+                isGroupTransaction = false,
+                TransactionData.AddAsset(accountCacheData, assetActionResult.asset)
+            )
         }
     }
 
@@ -435,6 +568,10 @@ class MainActivity : CoreMainActivity(),
 
     private fun navToMoonpayIntroFragment() {
         nav(HomeNavigationDirections.actionGlobalMoonpayNavigation())
+    }
+
+    private fun navToQRCodeScannerNavigation() {
+        nav(HomeNavigationDirections.actionGlobalAccountsQrScannerFragment())
     }
 
     companion object {

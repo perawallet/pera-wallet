@@ -41,8 +41,8 @@ class RemoveAssetItemMapper @Inject constructor() {
                 decimals = decimals,
                 formattedAmount = formattedAmount,
                 formattedCompactAmount = formattedCompactAmount,
-                formattedSelectedCurrencyValue = formattedSelectedCurrencyValue,
-                formattedSelectedCurrencyCompactValue = formattedSelectedCurrencyCompactValue,
+                formattedSelectedCurrencyValue = parityValueInSelectedCurrency.getFormattedValue(),
+                formattedSelectedCurrencyCompactValue = parityValueInSelectedCurrency.getFormattedCompactValue(),
                 isAmountInSelectedCurrencyVisible = isAmountInSelectedCurrencyVisible
             )
         }
@@ -62,8 +62,8 @@ class RemoveAssetItemMapper @Inject constructor() {
                 decimals = decimals,
                 formattedAmount = formattedAmount,
                 formattedCompactAmount = formattedCompactAmount,
-                formattedSelectedCurrencyValue = formattedSelectedCurrencyValue,
-                formattedSelectedCurrencyCompactValue = formattedSelectedCurrencyCompactValue,
+                formattedSelectedCurrencyValue = parityValueInSelectedCurrency.getFormattedValue(),
+                formattedSelectedCurrencyCompactValue = parityValueInSelectedCurrency.getFormattedCompactValue(),
                 isAmountInSelectedCurrencyVisible = isAmountInSelectedCurrencyVisible,
                 prismUrl = prismUrl
             )
@@ -84,8 +84,8 @@ class RemoveAssetItemMapper @Inject constructor() {
                 decimals = decimals,
                 formattedAmount = formattedAmount,
                 formattedCompactAmount = formattedCompactAmount,
-                formattedSelectedCurrencyValue = formattedSelectedCurrencyValue,
-                formattedSelectedCurrencyCompactValue = formattedSelectedCurrencyCompactValue,
+                formattedSelectedCurrencyValue = parityValueInSelectedCurrency.getFormattedValue(),
+                formattedSelectedCurrencyCompactValue = parityValueInSelectedCurrency.getFormattedCompactValue(),
                 isAmountInSelectedCurrencyVisible = isAmountInSelectedCurrencyVisible,
                 prismUrl = thumbnailPrismUrl
             )
@@ -106,8 +106,8 @@ class RemoveAssetItemMapper @Inject constructor() {
                 decimals = decimals,
                 formattedAmount = formattedAmount,
                 formattedCompactAmount = formattedCompactAmount,
-                formattedSelectedCurrencyValue = formattedSelectedCurrencyValue,
-                formattedSelectedCurrencyCompactValue = formattedSelectedCurrencyCompactValue,
+                formattedSelectedCurrencyValue = parityValueInSelectedCurrency.getFormattedValue(),
+                formattedSelectedCurrencyCompactValue = parityValueInSelectedCurrency.getFormattedCompactValue(),
                 isAmountInSelectedCurrencyVisible = isAmountInSelectedCurrencyVisible,
                 prismUrl = thumbnailPrismUrl
             )
@@ -128,8 +128,8 @@ class RemoveAssetItemMapper @Inject constructor() {
                 decimals = decimals,
                 formattedAmount = formattedAmount,
                 formattedCompactAmount = formattedCompactAmount,
-                formattedSelectedCurrencyValue = formattedSelectedCurrencyValue,
-                formattedSelectedCurrencyCompactValue = formattedSelectedCurrencyCompactValue,
+                formattedSelectedCurrencyValue = parityValueInSelectedCurrency.getFormattedValue(),
+                formattedSelectedCurrencyCompactValue = parityValueInSelectedCurrency.getFormattedCompactValue(),
                 isAmountInSelectedCurrencyVisible = isAmountInSelectedCurrencyVisible
             )
         }

@@ -13,60 +13,7 @@
 package com.algorand.android.utils.walletconnect
 
 import com.algorand.android.models.BaseWalletConnectTransaction
+import com.algorand.android.utils.ListQueuingHelper
 import javax.inject.Inject
-import kotlin.properties.Delegates
 
-class WalletConnectSigningHelper @Inject constructor() {
-
-    val currentTransaction: BaseWalletConnectTransaction?
-        get() = _currentTransaction
-
-    private val signedTransactionList = mutableListOf<ByteArray?>()
-    private var transactionCount = -1
-    private val transactionsToBeSigned = mutableListOf<BaseWalletConnectTransaction>()
-    private var _currentTransaction: BaseWalletConnectTransaction? by Delegates.observable(null) { _, _, newValue ->
-        if (newValue != null) listener?.onNextTransactionToSign(newValue)
-    }
-
-    private var listener: Listener? = null
-
-    private val areAllTransactionsSigned: Boolean
-        get() = transactionCount == signedTransactionList.size && transactionCount != -1
-
-    fun initListener(listener: Listener) {
-        this.listener = listener
-    }
-
-    fun initTransactionsToBeSigned(transactionList: List<List<BaseWalletConnectTransaction>>) {
-        clearCachedData()
-        transactionsToBeSigned.addAll(transactionList.flatten())
-        transactionCount = transactionsToBeSigned.size
-        setCurrentTransaction()
-    }
-
-    fun cacheSignedTransaction(transactionByteArray: ByteArray?) {
-        signedTransactionList.add(transactionByteArray)
-        if (areAllTransactionsSigned) {
-            listener?.onTransactionSignCompleted(signedTransactionList.toList())
-            clearCachedData()
-            return
-        }
-        setCurrentTransaction()
-    }
-
-    private fun setCurrentTransaction() {
-        _currentTransaction = transactionsToBeSigned.removeFirstOrNull()
-    }
-
-    fun clearCachedData() {
-        signedTransactionList.clear()
-        transactionsToBeSigned.clear()
-        transactionCount = -1
-        _currentTransaction = null
-    }
-
-    interface Listener {
-        fun onTransactionSignCompleted(signedTransactions: List<ByteArray?>)
-        fun onNextTransactionToSign(transaction: BaseWalletConnectTransaction)
-    }
-}
+class WalletConnectSigningHelper @Inject constructor() : ListQueuingHelper<BaseWalletConnectTransaction, ByteArray>()

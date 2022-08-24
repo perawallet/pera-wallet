@@ -27,12 +27,14 @@ class CollectibleDetailPreviewMapper @Inject constructor() {
         optOutSuccessEvent: Event<Unit>? = null,
         globalErrorEvent: Event<String>? = null,
         fractionalCollectibleSendEvent: Event<Unit>? = null,
-        pureCollectibleSendEvent: Event<Unit>? = null
+        pureCollectibleSendEvent: Event<Unit>? = null,
+        isOptOutButtonVisible: Boolean
     ): CollectibleDetailPreview {
         return CollectibleDetailPreview(
             isLoadingVisible = isLoadingVisible,
             isSendButtonVisible = isSendButtonVisible,
             isErrorVisible = isErrorVisible,
+            isOptOutButtonVisible = isOptOutButtonVisible,
             collectibleDetail = collectibleDetail,
             optOutSuccessEvent = optOutSuccessEvent,
             globalErrorEvent = globalErrorEvent,
@@ -46,6 +48,7 @@ class CollectibleDetailPreviewMapper @Inject constructor() {
             isLoadingVisible = true,
             isSendButtonVisible = false,
             isErrorVisible = false,
+            isOptOutButtonVisible = false,
             collectibleDetail = null,
             optOutSuccessEvent = null,
             globalErrorEvent = null,

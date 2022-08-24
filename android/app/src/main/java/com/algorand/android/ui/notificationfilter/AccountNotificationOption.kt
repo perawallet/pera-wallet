@@ -12,11 +12,9 @@
 
 package com.algorand.android.ui.notificationfilter
 
-import com.algorand.android.models.AccountIcon
+import com.algorand.android.models.BaseAccountAndAssetListItem
 
 data class AccountNotificationOption(
-    val publicKey: String,
-    val accountName: String,
-    val accountIcon: AccountIcon,
+    val accountListItem: BaseAccountAndAssetListItem.AccountListItem,
     var isFiltered: Boolean
 )

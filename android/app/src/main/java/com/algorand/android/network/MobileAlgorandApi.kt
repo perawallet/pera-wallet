@@ -18,8 +18,6 @@ import com.algorand.android.deviceregistration.data.model.DeviceRegistrationResp
 import com.algorand.android.deviceregistration.data.model.DeviceUpdateRequest
 import com.algorand.android.models.AssetDetailResponse
 import com.algorand.android.models.AssetSupportRequest
-import com.algorand.android.models.CurrencyOption
-import com.algorand.android.models.CurrencyValue
 import com.algorand.android.models.Feedback
 import com.algorand.android.models.FeedbackCategory
 import com.algorand.android.models.NotificationFilterRequest
@@ -28,6 +26,9 @@ import com.algorand.android.models.Pagination
 import com.algorand.android.models.PushTokenDeleteRequest
 import com.algorand.android.models.TrackTransactionRequest
 import com.algorand.android.models.VerifiedAssetDetail
+import com.algorand.android.modules.currency.data.model.CurrencyOptionResponse
+import com.algorand.android.modules.nftdomain.data.model.NftDomainSearchResponse
+import com.algorand.android.modules.parity.data.model.CurrencyDetailResponse
 import com.algorand.android.network.MobileHeaderInterceptor.Companion.ALGORAND_NETWORK_KEY
 import com.algorand.android.ui.addasset.BaseAddAssetViewModel.Companion.SEARCH_RESULT_LIMIT
 import retrofit2.Response
@@ -97,10 +98,11 @@ interface MobileAlgorandApi {
 
     @GET("assets/")
     suspend fun getAssetsByIds(
-        @Query("asset_ids", encoded = true) assetIdsList: String
+        @Query("asset_ids", encoded = true) assetIdsList: String,
+        @Query("include_deleted") includeDeleted: Boolean? = null
     ): Response<Pagination<AssetDetailResponse>>
 
-    @GET("assets/{asset_id}")
+    @GET("assets/{asset_id}/")
     suspend fun getCollectibleDetail(
         @Path("asset_id") nftAssetId: Long
     ): Response<AssetDetailResponse>
@@ -109,12 +111,12 @@ interface MobileAlgorandApi {
     suspend fun getAssetsMore(@Url url: String): Response<Pagination<AssetDetailResponse>>
 
     @GET("currencies/")
-    suspend fun getCurrencies(): Response<List<CurrencyOption>>
+    suspend fun getCurrencies(): Response<List<CurrencyOptionResponse>>
 
     @GET("currencies/{currency_id}/")
-    suspend fun getAlgorandCurrenyValue(
+    suspend fun getCurrencyDetail(
         @Path("currency_id") currencyId: String
-    ): Response<CurrencyValue>
+    ): Response<CurrencyDetailResponse>
 
     @PATCH("devices/{device_id}/accounts/{address}/")
     suspend fun putNotificationFilter(
@@ -127,4 +129,9 @@ interface MobileAlgorandApi {
     suspend fun getDeviceBanners(
         @Path("device_id") deviceId: String
     ): Response<BannerListResponse>
+
+    @GET("name-services/search/")
+    suspend fun getNftDomainAccountAddresses(
+        @Query("name") name: String
+    ): Response<NftDomainSearchResponse>
 }

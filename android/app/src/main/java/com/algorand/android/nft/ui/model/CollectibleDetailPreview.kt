@@ -18,6 +18,7 @@ data class CollectibleDetailPreview(
     val isLoadingVisible: Boolean,
     val isSendButtonVisible: Boolean,
     val isErrorVisible: Boolean,
+    val isOptOutButtonVisible: Boolean,
     val collectibleDetail: CollectibleDetail?,
     val optOutSuccessEvent: Event<Unit>?,
     val globalErrorEvent: Event<String>?,

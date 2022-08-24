@@ -13,10 +13,9 @@
 package com.algorand.android.models
 
 import android.os.Parcelable
-import androidx.annotation.ColorRes
-import androidx.annotation.DrawableRes
-import com.algorand.android.R
-import com.algorand.android.usecase.BaseAccountOrderUseCase.Companion.NOT_INITIALIZED_ACCOUNT_INDEX
+import com.algorand.android.models.Account.Type.LEDGER
+import com.algorand.android.models.Account.Type.STANDARD
+import com.algorand.android.modules.sorting.accountsorting.domain.usecase.AccountSortingPreviewUseCase.Companion.NOT_INITIALIZED_ACCOUNT_INDEX
 import com.algorand.android.utils.toShortenedAddress
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
@@ -29,7 +28,6 @@ data class Account constructor(
     var name: String = "",
     val type: Type? = null,
     val detail: Detail? = null,
-    var accountIconColor: AccountIconColor,
     var index: Int = NOT_INITIALIZED_ACCOUNT_INDEX
 ) : Parcelable {
 
@@ -42,10 +40,6 @@ data class Account constructor(
             is Detail.Standard -> detail.secretKey
             else -> null // TODO may throw exception later.
         }
-    }
-
-    fun createAccountIcon(): AccountIcon {
-        return AccountIcon.create(accountIconColor, type?.iconResId)
     }
 
     // TODO Combine Detail class with Account.Type class
@@ -72,8 +66,8 @@ data class Account constructor(
             companion object {
                 fun create(authDetail: Detail?, rekeyedAuthDetail: Map<String, Ledger>): RekeyedAuth {
                     val authDetailType = when (authDetail) {
-                        is Standard -> Type.STANDARD
-                        is Ledger -> Type.LEDGER
+                        is Standard -> STANDARD
+                        is Ledger -> LEDGER
                         else -> null
                     }
                     val safeAuthDetail = authDetail.takeIf { authDetailType != null }
@@ -86,56 +80,27 @@ data class Account constructor(
         object Watch : Detail()
     }
 
-    enum class Type(@DrawableRes val iconResId: Int) {
+    enum class Type {
         // STANDARD is personal account which its secretKey is stored on the device.
-        STANDARD(R.drawable.ic_wallet_curve),
-        LEDGER(R.drawable.ic_ledger),
-        REKEYED(R.drawable.ic_ledger_rekeyed),
-        REKEYED_AUTH(R.drawable.ic_ledger_rekeyed),
-        WATCH(R.drawable.ic_eye)
+        STANDARD,
+        LEDGER,
+        REKEYED,
+        REKEYED_AUTH,
+        WATCH
     }
 
     override fun toString(): String {
         return "Account(publicKey='$address', accountName='$name', type=$type, detail=$detail, index=$index)"
     }
 
-    /**
-     * Should be used in Account class only and it shouldn't be changed
-     * It may break migration, so changes should be tested.
-     */
-    enum class AccountIconColor(@ColorRes val backgroundColorResId: Int, @ColorRes val iconTintResId: Int) {
-
-        BLUSH(R.color.wallet_1, R.color.wallet_1_icon),
-
-        ORANGE(R.color.wallet_2, R.color.wallet_2_icon),
-
-        PURPLE(R.color.wallet_3, R.color.wallet_3_icon),
-
-        TURQUOISE(R.color.wallet_4, R.color.wallet_4_icon),
-
-        SALMON(R.color.wallet_5, R.color.wallet_5_icon),
-
-        UNDEFINED(R.color.transparent, R.color.transparent);
-
-        companion object {
-            fun getRandomColor() = listOf(BLUSH, ORANGE, PURPLE, TURQUOISE, SALMON).random()
-
-            fun getByName(name: String?): AccountIconColor {
-                return values().firstOrNull { it.name == name } ?: UNDEFINED
-            }
-        }
-    }
-
     companion object {
 
-        val defaultAccountType = Type.STANDARD
-        val defaultAccountIconColor = AccountIconColor.UNDEFINED
+        val defaultAccountType = STANDARD
 
         fun create(
             publicKey: String,
             detail: Detail,
             accountName: String = publicKey.toShortenedAddress(),
-            iconColor: AccountIconColor? = null,
             index: Int = NOT_INITIALIZED_ACCOUNT_INDEX
         ): Account {
             val type = when (detail) {
@@ -145,7 +110,14 @@ data class Account constructor(
                 is Detail.Watch -> Type.WATCH
                 is Detail.RekeyedAuth -> Type.REKEYED_AUTH
             }
-            return Account(publicKey, accountName, type, detail, iconColor ?: AccountIconColor.getRandomColor(), index)
+
+            return Account(
+                address = publicKey,
+                name = accountName,
+                type = type,
+                detail = detail,
+                index = index
+            )
         }
     }
 }

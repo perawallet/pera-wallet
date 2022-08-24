@@ -20,9 +20,8 @@ class MoonpayAccountSelectionPreviewUseCase @Inject constructor(
     private val accountSelectionListUseCase: AccountSelectionListUseCase
 ) {
 
-    fun getMoonpayAccountSelectionPreview(): List<BaseAccountSelectionListItem> {
+    suspend fun getMoonpayAccountSelectionPreview(): List<BaseAccountSelectionListItem> {
         return accountSelectionListUseCase.createAccountSelectionListAccountItems(
-            showAssetCount = false,
             showHoldings = true,
             shouldIncludeWatchAccounts = false,
             showFailedAccounts = false

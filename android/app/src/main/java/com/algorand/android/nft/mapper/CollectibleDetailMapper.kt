@@ -30,6 +30,7 @@ class CollectibleDetailMapper @Inject constructor(
     fun mapToCollectibleImage(
         imageCollectibleDetail: BaseCollectibleDetail.ImageCollectibleDetail,
         isOwnedByTheUser: Boolean,
+        isCreatedByTheUser: Boolean,
         ownerAccountType: Account.Type?,
         ownerAccountAddress: BaseAccountAddress.AccountAddress,
         errorDisplayText: String,
@@ -39,6 +40,7 @@ class CollectibleDetailMapper @Inject constructor(
     ): CollectibleDetail.ImageCollectibleDetail {
         return CollectibleDetail.ImageCollectibleDetail(
             isOwnedByTheUser = isOwnedByTheUser,
+            isCreatedByTheUser = isCreatedByTheUser,
             collectionName = imageCollectibleDetail.collectionName,
             collectibleName = imageCollectibleDetail.title,
             collectibleDescription = imageCollectibleDetail.description,
@@ -85,6 +87,7 @@ class CollectibleDetailMapper @Inject constructor(
     fun mapToCollectibleVideo(
         videoCollectibleDetail: BaseCollectibleDetail.VideoCollectibleDetail,
         isOwnedByTheUser: Boolean,
+        isCreatedByTheUser: Boolean,
         ownerAccountType: Account.Type?,
         ownerAccountAddress: BaseAccountAddress.AccountAddress,
         errorDisplayText: String,
@@ -94,6 +97,7 @@ class CollectibleDetailMapper @Inject constructor(
     ): CollectibleDetail.VideoCollectibleDetail {
         return CollectibleDetail.VideoCollectibleDetail(
             isOwnedByTheUser = isOwnedByTheUser,
+            isCreatedByTheUser = isCreatedByTheUser,
             collectionName = videoCollectibleDetail.collectionName,
             collectibleName = videoCollectibleDetail.title,
             collectibleDescription = videoCollectibleDetail.description,
@@ -129,6 +133,7 @@ class CollectibleDetailMapper @Inject constructor(
     fun mapToCollectibleMixed(
         mixedCollectibleDetail: BaseCollectibleDetail.MixedCollectibleDetail,
         isOwnedByTheUser: Boolean,
+        isCreatedByTheUser: Boolean,
         ownerAccountType: Account.Type?,
         ownerAccountAddress: BaseAccountAddress.AccountAddress,
         isHoldingByWatchAccount: Boolean,
@@ -138,6 +143,7 @@ class CollectibleDetailMapper @Inject constructor(
     ): CollectibleDetail.MixedCollectibleDetail {
         return CollectibleDetail.MixedCollectibleDetail(
             isOwnedByTheUser = isOwnedByTheUser,
+            isCreatedByTheUser = isCreatedByTheUser,
             collectionName = mixedCollectibleDetail.collectionName,
             collectibleName = mixedCollectibleDetail.title,
             collectibleDescription = mixedCollectibleDetail.description,
@@ -165,6 +171,7 @@ class CollectibleDetailMapper @Inject constructor(
     fun mapToUnsupportedCollectible(
         unsupportedCollectible: BaseCollectibleDetail.NotSupportedCollectibleDetail,
         isOwnedByTheUser: Boolean,
+        isCreatedByTheUser: Boolean,
         ownerAccountType: Account.Type?,
         ownerAccountAddress: BaseAccountAddress.AccountAddress,
         errorDisplayText: String,
@@ -175,6 +182,7 @@ class CollectibleDetailMapper @Inject constructor(
     ): CollectibleDetail.NotSupportedCollectibleDetail {
         return CollectibleDetail.NotSupportedCollectibleDetail(
             isOwnedByTheUser = isOwnedByTheUser,
+            isCreatedByTheUser = isCreatedByTheUser,
             collectionName = unsupportedCollectible.collectionName,
             collectibleName = unsupportedCollectible.title,
             collectibleDescription = unsupportedCollectible.description,

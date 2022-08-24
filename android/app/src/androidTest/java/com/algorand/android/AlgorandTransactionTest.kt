@@ -39,7 +39,7 @@ class AlgorandTransactionTest {
             senderAddress = "53DDJWXPS6GV6QVTMVIQEZQSYSC2SV3XUAHFTFPGCTNJ77SHY7L3WSK5E4",
             receiverAddress = "5KYQMJHCDW6CJNLZPZCB6IBWO7FTEDYAH3U7DH3JWWPJP7NXH3BSGAGUUM",
             amount = BigInteger.valueOf(1000000),
-            assetId = AssetInformation.ALGORAND_ID,
+            assetId = AssetInformation.ALGO_ID,
             isMax = false,
             note = null
         )

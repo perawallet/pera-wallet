@@ -41,7 +41,7 @@ class BaseAssetConfigurationSingleTransactionUiBuilder @Inject constructor() :
     ): WalletConnectTransactionShortDetail {
         return with(txn) {
             WalletConnectTransactionShortDetail(
-                accountIcon = createAccountIcon(),
+                accountIconResource = createAccountIconResource(),
                 accountName = account?.name,
                 warningCount = warningCount,
                 decimal = assetDecimal,

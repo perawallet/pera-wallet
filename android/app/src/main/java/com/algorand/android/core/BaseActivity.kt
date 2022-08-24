@@ -13,5 +13,21 @@
 package com.algorand.android.core
 
 import com.akexorcist.localizationactivity.ui.LocalizationActivity
+import com.algorand.android.customviews.TopToast
 
-abstract class BaseActivity : LocalizationActivity()
+abstract class BaseActivity : LocalizationActivity() {
+
+    private var topToast: TopToast? = null
+
+    fun showTopToast(title: String? = null, description: String? = null) {
+        if (topToast == null) {
+            topToast = TopToast(this)
+        }
+        topToast?.show(title, description)
+    }
+
+    override fun onStop() {
+        topToast?.dismissAnimated()
+        super.onStop()
+    }
+}

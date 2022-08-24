@@ -26,13 +26,18 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.NavOptions
+import androidx.navigation.fragment.FragmentNavigator
 import com.algorand.android.CoreMainActivity
 import com.algorand.android.MainActivity
 import com.algorand.android.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-fun BottomNavigationView.setupWithNavController(navController: NavController) {
+fun BottomNavigationView.setupWithNavController(
+    navController: NavController,
+    onMenuItemClicked: (item: MenuItem) -> Unit
+) {
     setOnNavigationItemSelectedListener { item ->
+        onMenuItemClicked(item)
         return@setOnNavigationItemSelectedListener onNavDestinationChanged(item, navController)
     }
 }
@@ -108,6 +113,14 @@ fun NavController.navigateSafe(@NonNull directions: NavDirections, onError: (() 
 fun NavController.navigateSafe(@IdRes resId: Int, args: Bundle?, navOptions: NavOptions) {
     try {
         navigate(resId, args, navOptions)
+    } catch (exception: IllegalArgumentException) {
+        recordException(exception)
+    }
+}
+
+fun NavController.navigateSafe(directions: NavDirections, extras: FragmentNavigator.Extras) {
+    try {
+        navigate(directions, extras)
     } catch (exception: IllegalArgumentException) {
         recordException(exception)
     }

@@ -1,3 +1,4 @@
+@file:Suppress("TooManyFunctions")
 /*
  * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");

@@ -50,6 +50,10 @@
             android:name="isResultNeeded"
             android:defaultValue="false"
             app:argType="boolean" />
+        <argument
+            android:name="isDraggable"
+            android:defaultValue="true"
+            app:argType="boolean" />
     </dialog>
 
 </navigation>

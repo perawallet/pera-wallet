@@ -16,16 +16,21 @@ package com.algorand.android.usecase
 import com.algorand.android.mapper.AssetTransferAmountPreviewMapper
 import com.algorand.android.models.AccountCacheData
 import com.algorand.android.models.AssetInformation
-import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
+import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.models.AssetTransferAmountPreview
 import com.algorand.android.models.BaseAccountAssetData
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleImageData
 import com.algorand.android.models.Result
+import com.algorand.android.modules.currency.domain.usecase.CurrencyUseCase
+import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
+import com.algorand.android.utils.ALGO_DECIMALS
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.calculateMinimumBalance
-import com.algorand.android.utils.formatAsCurrency
+import com.algorand.android.utils.formatAmount
 import com.algorand.android.utils.formatAmountAsBigInteger
+import com.algorand.android.utils.formatAsCurrency
+import com.algorand.android.utils.getDecimalSeparator
 import com.algorand.android.utils.validator.AmountTransactionValidator
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -39,7 +44,8 @@ class AssetTransferAmountUseCase @Inject constructor(
     private val amountTransactionValidator: AmountTransactionValidator,
     private val transactionTipsUseCase: TransactionTipsUseCase,
     private val getBaseOwnedAssetDataUseCase: GetBaseOwnedAssetDataUseCase,
-    private val algoPriceUseCase: AlgoPriceUseCase
+    private val parityUseCase: ParityUseCase,
+    private val currencyUseCase: CurrencyUseCase
 ) {
 
     fun getAssetTransferAmountPreview(
@@ -48,24 +54,43 @@ class AssetTransferAmountUseCase @Inject constructor(
         amount: BigDecimal = BigDecimal.ZERO
     ): AssetTransferAmountPreview? {
         val accountAssetData = getAccountAssetData(assetId, fromAccountPublicKey) ?: return null
-        val isAlgo = assetId == ALGORAND_ID
-        with(algoPriceUseCase) {
-            val enteredAmountSelectedCurrencyValue = formatEnteredAmount(
-                amount,
-                accountAssetData.usdValue,
-                if (isAlgo) getUsdToCachedCurrencyConversionRate() else getUsdToSelectedCurrencyConversionRate(),
-                if (isAlgo) getCachedCurrencySymbolOrName() else getSelectedCurrencySymbolOrCurrencyName()
-            )
-            // TODO Refactor two lines below
-            val collectiblePrismUrl = (accountAssetData as? OwnedCollectibleImageData)?.prismUrl
-            val isCollectibleOwnedByUser = (accountAssetData as? BaseOwnedCollectibleData)?.amount ?: ZERO > ZERO
-            return assetTransferAmountPreviewMapper.mapTo(
-                accountAssetData = accountAssetData,
-                enteredAmountSelectedCurrencyValue = enteredAmountSelectedCurrencyValue,
-                collectiblePrismUrl,
-                isCollectibleOwnedByUser
-            )
+        val enteredAmountSelectedCurrencyValue = formatEnteredAmount(
+            amount = amount,
+            usdValue = accountAssetData.usdValue,
+            usdToDisplayedCurrencyConversionRate = getUsdToDisplayedCurrencyConversionRate(assetId),
+            displayCurrencySymbol = getDisplayCurrencySymbol(assetId)
+        )
+        // TODO Refactor two lines below
+        val collectiblePrismUrl = (accountAssetData as? OwnedCollectibleImageData)?.prismUrl
+        val isCollectibleOwnedByUser = ((accountAssetData as? BaseOwnedCollectibleData)?.amount ?: ZERO) > ZERO
+        val decimalSeparator = getDecimalSeparator()
+        return assetTransferAmountPreviewMapper.mapTo(
+            accountAssetData = accountAssetData,
+            enteredAmountSelectedCurrencyValue = enteredAmountSelectedCurrencyValue,
+            collectiblePrismUrl = collectiblePrismUrl,
+            isCollectibleOwnedByUser = isCollectibleOwnedByUser,
+            decimalSeparator = decimalSeparator
+        )
+    }
+
+    private fun getUsdToDisplayedCurrencyConversionRate(assetId: Long): BigDecimal {
+        return if (shouldUseSecondaryCurrency(assetId)) {
+            parityUseCase.getUsdToSecondaryCurrencyConversionRate()
+        } else {
+            parityUseCase.getUsdToPrimaryCurrencyConversionRate()
         }
+    }
+
+    private fun getDisplayCurrencySymbol(assetId: Long): String {
+        return if (shouldUseSecondaryCurrency(assetId)) {
+            parityUseCase.getSecondaryCurrencySymbol()
+        } else {
+            parityUseCase.getPrimaryCurrencySymbolOrName()
+        }
+    }
+
+    private fun shouldUseSecondaryCurrency(assetId: Long): Boolean {
+        return assetId == ALGO_ID && currencyUseCase.isPrimaryCurrencyAlgo()
     }
 
     fun validateAssetAmount(amount: BigDecimal, fromAccountPublicKey: String, assetId: Long): Result<BigInteger> {
@@ -92,8 +117,13 @@ class AssetTransferAmountUseCase @Inject constructor(
         return transactionTipsUseCase.shouldShowTransactionTips()
     }
 
-    fun getMaximumAmountOfAsset(assetId: Long, publicKey: String): String? {
-        return getAccountAssetData(assetId, publicKey)?.formattedAmount
+    fun getMaximumAmountOfAsset(assetId: Long, publicKey: String): String {
+        val assetDetail = getAccountAssetData(assetId, publicKey)
+        return if (assetDetail?.isAlgo == true) {
+            assetDetail.amount.formatAmount(ALGO_DECIMALS)
+        } else {
+            assetDetail?.formattedAmount.orEmpty()
+        }
     }
 
     private fun getAccountAssetData(assetId: Long, publicKey: String): BaseAccountAssetData.BaseOwnedAssetData? {
@@ -104,10 +134,10 @@ class AssetTransferAmountUseCase @Inject constructor(
         amount: BigDecimal,
         usdValue: BigDecimal?,
         usdToDisplayedCurrencyConversionRate: BigDecimal?,
-        cachedCurrencySymbol: String
+        displayCurrencySymbol: String
     ): String? {
         return amount.multiply(usdValue ?: return null)
             .multiply(usdToDisplayedCurrencyConversionRate ?: return null)
-            .formatAsCurrency(cachedCurrencySymbol)
+            .formatAsCurrency(displayCurrencySymbol)
     }
 }

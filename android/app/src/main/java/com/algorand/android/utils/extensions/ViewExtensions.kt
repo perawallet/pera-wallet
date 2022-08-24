@@ -15,16 +15,24 @@ package com.algorand.android.utils.extensions
 
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
+import android.net.Uri
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorRes
+import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.core.view.isVisible
+import com.algorand.android.models.AccountIconResource
+import com.algorand.android.models.GovernorIconResource
+import com.algorand.android.utils.AccountIconDrawable
+import com.algorand.android.utils.ContactIconDrawable
+import com.algorand.android.utils.GovernorIconDrawable
+import com.algorand.android.utils.loadCircularImage
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.textview.MaterialTextView
@@ -100,5 +108,30 @@ fun TextView.setDrawableTintColor(@ColorRes colorRes: Int) {
         if (it != null) {
             it.colorFilter = PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN)
         }
+    }
+}
+
+fun ImageView.setGovernorIconDrawable(governorIconResource: GovernorIconResource, @DimenRes iconSize: Int) {
+    val governorIconSize = resources.getDimension(iconSize).toInt()
+    val accountIconDrawable = GovernorIconDrawable.create(context, governorIconResource, governorIconSize)
+    setImageDrawable(accountIconDrawable)
+}
+
+fun ImageView.setAccountIconDrawable(accountIconResource: AccountIconResource, @DimenRes iconSize: Int) {
+    val accountIconSize = resources.getDimension(iconSize).toInt()
+    val accountIconDrawable = AccountIconDrawable.create(context, accountIconResource, accountIconSize)
+    setImageDrawable(accountIconDrawable)
+}
+
+fun ImageView.setContactIconDrawable(uri: Uri?, @DimenRes iconSize: Int) {
+    if (uri != null) {
+        loadCircularImage(uri)
+    } else {
+        val contactIconSize = resources.getDimension(iconSize).toInt()
+        val contactIconDrawable = ContactIconDrawable.create(
+            context = context,
+            size = contactIconSize
+        )
+        setImageDrawable(contactIconDrawable)
     }
 }

@@ -12,87 +12,82 @@
 
 package com.algorand.android.usecase
 
+import com.algorand.android.customviews.accountandassetitem.mapper.AccountItemConfigurationMapper
 import com.algorand.android.mapper.AccountSelectionListItemMapper
 import com.algorand.android.models.Account
-import com.algorand.android.models.AccountDetail
-import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
+import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.BaseAccountSelectionListItem
-import com.algorand.android.utils.CacheResult
+import com.algorand.android.modules.accounts.domain.usecase.GetAccountValueUseCase
+import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
+import com.algorand.android.modules.sorting.accountsorting.domain.usecase.AccountSortPreferenceUseCase
+import com.algorand.android.modules.sorting.accountsorting.domain.usecase.GetSortedAccountsByPreferenceUseCase
 import com.algorand.android.utils.formatAsCurrency
 import javax.inject.Inject
 
 class GetAccountSelectionAccountsItemUseCase @Inject constructor(
-    private val algoPriceUseCase: AlgoPriceUseCase,
-    private val splittedAccountsUseCase: SplittedAccountsUseCase,
-    private val sortedAccountsUseCase: SortedAccountsUseCase,
-    private val accountTotalBalanceUseCase: AccountTotalBalanceUseCase,
+    private val parityUseCase: ParityUseCase,
     private val accountSelectionListItemMapper: AccountSelectionListItemMapper,
-    private val getAccountCollectibleCountUseCase: GetAccountCollectibleCountUseCase
+    private val getSortedAccountsByPreferenceUseCase: GetSortedAccountsByPreferenceUseCase,
+    private val accountItemConfigurationMapper: AccountItemConfigurationMapper,
+    private val getAccountValueUseCase: GetAccountValueUseCase,
+    private val accountSortPreferenceUseCase: AccountSortPreferenceUseCase
 ) {
 
     // TODO: 11.03.2022 Use flow here to get realtime updates
-    fun getAccountSelectionAccounts(
-        showAssetCount: Boolean,
+    suspend fun getAccountSelectionAccounts(
         showHoldings: Boolean,
         shouldIncludeWatchAccounts: Boolean,
         showFailedAccounts: Boolean,
         assetId: Long? = null,
     ): List<BaseAccountSelectionListItem.BaseAccountItem> {
-        val accounts = getRequiredAccounts(shouldIncludeWatchAccounts, assetId)
-        val sortedAccounts = getRequiredSortedAccounts(shouldIncludeWatchAccounts)
-        val selectedCurrencySymbol = algoPriceUseCase.getSelectedCurrencySymbolOrEmpty()
+        val excludedAccountTypes = if (shouldIncludeWatchAccounts) null else listOf(Account.Type.WATCH)
+        val selectedCurrencySymbol = parityUseCase.getPrimaryCurrencySymbolOrEmpty()
 
-        return sortedAccounts.map { localAccount ->
-            accounts.firstOrNull { cachedAccount ->
-                cachedAccount.data?.account?.address == localAccount.address
-            }?.data?.run {
-                val accountBalance = accountTotalBalanceUseCase.getAccountBalance(this)
-                val accountTotalHoldings = with(accountBalance) {
-                    algoHoldingsInSelectedCurrency.add(assetHoldingsInSelectedCurrency)
+        val sortedAccountListItems = getSortedAccountsByPreferenceUseCase
+            .getFilteredSortedAccountListItemsByAssetIdAndAccountType(
+                sortingPreferences = accountSortPreferenceUseCase.getAccountSortPreference(),
+                excludedAccountTypes = excludedAccountTypes,
+                accountFilterAssetId = assetId,
+                onLoadedAccountConfiguration = {
+                    val accountValue = getAccountValueUseCase.getAccountValue(this)
+                    val primaryAccountValue = accountValue.primaryAccountValue
+                    accountItemConfigurationMapper.mapTo(
+                        accountAddress = account.address,
+                        accountName = account.name,
+                        accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(account.type),
+                        accountPrimaryValueText = if (showHoldings) {
+                            primaryAccountValue.formatAsCurrency(
+                                symbol = selectedCurrencySymbol,
+                                isCompact = true,
+                                isFiat = true
+                            )
+                        } else {
+                            null
+                        },
+                        accountPrimaryValue = primaryAccountValue,
+                        accountType = account.type
+                    )
+                },
+                onFailedAccountConfiguration = {
+                    this?.run {
+                        accountItemConfigurationMapper.mapTo(
+                            accountAddress = address,
+                            accountName = name,
+                            accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(type),
+                            showWarningIcon = true,
+                            accountType = type
+                        )
+                    }
                 }
-                val collectibleCount = getAccountCollectibleCountUseCase.getAccountCollectibleCount(account.address)
-                accountSelectionListItemMapper.mapToAccountItem(
-                    publicKey = account.address,
-                    name = account.name,
-                    accountIcon = account.createAccountIcon(),
-                    formattedHoldings = accountTotalHoldings.formatAsCurrency(selectedCurrencySymbol, true),
-                    assetCount = accountBalance.assetCount,
-                    collectibleCount = collectibleCount,
-                    showAssetCount = showAssetCount,
-                    showHoldings = showHoldings
-                )
-            } ?: accountSelectionListItemMapper.mapToErrorAccountItem(localAccount, true)
+            )
+        return sortedAccountListItems.map { accountListItem ->
+            if (accountListItem.itemConfiguration.showWarning == true) {
+                accountSelectionListItemMapper.mapToErrorAccountItem(accountListItem)
+            } else {
+                accountSelectionListItemMapper.mapToAccountItem(accountListItem)
+            }
         }.filter {
             if (showFailedAccounts) true else it !is BaseAccountSelectionListItem.BaseAccountItem.AccountErrorItem
-        }
-    }
-
-    private fun getRequiredAccounts(
-        shouldIncludeWatchAccounts: Boolean,
-        assetId: Long?
-    ): List<CacheResult<AccountDetail>> {
-        val (normalAccounts, watchAccounts) = splittedAccountsUseCase.getWatchAccountSplittedAccountDetails()
-        val requiredAccounts = if (shouldIncludeWatchAccounts) {
-            normalAccounts + watchAccounts
-        } else {
-            normalAccounts
-        }
-
-        if (assetId == null || assetId == ALGORAND_ID) return requiredAccounts
-
-        return requiredAccounts.filter { accountDetail ->
-            accountDetail.data?.accountInformation?.assetHoldingList?.any { assetHolding ->
-                assetHolding.assetId == assetId
-            } == true
-        }
-    }
-
-    private fun getRequiredSortedAccounts(shouldIncludeWatchAccounts: Boolean): List<Account> {
-        val (sortedNormalLocalAccounts, sortedWatchLocalAccounts) = sortedAccountsUseCase.getSortedLocalAccounts()
-        return if (shouldIncludeWatchAccounts) {
-            sortedNormalLocalAccounts + sortedWatchLocalAccounts
-        } else {
-            sortedNormalLocalAccounts
         }
     }
 }

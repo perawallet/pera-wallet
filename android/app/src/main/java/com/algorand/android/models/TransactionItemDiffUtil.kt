@@ -14,6 +14,7 @@
 package com.algorand.android.models
 
 import androidx.recyclerview.widget.DiffUtil
+import com.algorand.android.modules.transactionhistory.ui.model.BaseTransactionItem
 
 class TransactionItemDiffUtil : DiffUtil.ItemCallback<BaseTransactionItem>() {
 

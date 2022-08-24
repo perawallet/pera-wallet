@@ -10,7 +10,7 @@
   ~ limitations under the License
   -->
 
-<com.algorand.android.customviews.CollectibleImageView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.algorand.android.customviews.collectibleimageview.CollectibleImageView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/collectibleVideoCollectibleImageView"
     android:layout_width="match_parent"

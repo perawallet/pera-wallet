@@ -74,7 +74,7 @@ class SixDigitPasswordView @JvmOverloads constructor(
     fun removeLastDigit() {
         if (password.size > 0) {
             password.removeLast()
-            digitViewList.last().setImageResource(R.drawable.unfilled_password_digit)
+            digitViewList[password.size].setImageResource(R.drawable.unfilled_password_digit)
         }
     }
 

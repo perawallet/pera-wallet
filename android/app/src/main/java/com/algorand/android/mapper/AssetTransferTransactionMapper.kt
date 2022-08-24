@@ -22,7 +22,7 @@ import com.algorand.android.models.WalletConnectPeerMeta
 import com.algorand.android.models.WalletConnectSigner
 import com.algorand.android.models.WalletConnectTransactionRequest
 import com.algorand.android.usecase.AccountDetailUseCase
-import com.algorand.android.usecase.AlgoPriceUseCase
+import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
 import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionErrorProvider
@@ -36,7 +36,7 @@ class AssetTransferTransactionMapper @Inject constructor(
     private val accountCacheManager: AccountCacheManager,
     private val errorProvider: WalletConnectTransactionErrorProvider,
     private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase,
-    private val algoPriceUseCase: AlgoPriceUseCase,
+    private val parityUseCase: ParityUseCase,
     private val accountDetailUseCase: AccountDetailUseCase,
     private val walletConnectAssetInformationMapper: WalletConnectAssetInformationMapper
 ) : BaseWalletConnectTransactionMapper() {
@@ -235,8 +235,8 @@ class AssetTransferTransactionMapper @Inject constructor(
         val assetHolding = accountDetail?.accountInformation?.assetHoldingList?.firstOrNull {
             it.assetId == assetId
         }
-        val selectedCurrencyUsdConversionRate = algoPriceUseCase.getUsdToSelectedCurrencyConversionRate()
-        val currencySymbol = algoPriceUseCase.getSelectedCurrencySymbolOrCurrencyName()
+        val selectedCurrencyUsdConversionRate = parityUseCase.getUsdToPrimaryCurrencyConversionRate()
+        val currencySymbol = parityUseCase.getPrimaryCurrencySymbolOrName()
         return walletConnectAssetInformationMapper.otherAssetMapToWalletConnectAssetInformation(
             assetDetail = assetQueryItem,
             assetHolding = assetHolding,

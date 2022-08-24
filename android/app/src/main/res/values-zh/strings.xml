@@ -12,7 +12,6 @@
   -->
 
 <resources>
-    <string name="yes">是</string>
     <string name="please_scan_your_fingerprint_or">请扫描您的指纹或进行脸部识别。</string>
     <string name="cancel">取消</string>
     <string name="share_via">分享通过</string>
@@ -41,7 +40,6 @@
     <string name="remove">移除</string>
     <string name="enter_six_digit_pin">输入6位数密码</string>
     <string name="wrong_password">密码错误</string>
-    <string name="password_did_not_match_with_previous_password">与前面输入的密码不匹配。</string>
     <string name="node_settings">节点设置</string>
     <string name="language">语言</string>
     <string name="enable_face_id_touch_id">使用人脸识别/触控</string>
@@ -56,7 +54,7 @@
     <string name="pending">待处理</string>
     <string name="you_should_enter_your_correct_password">请输入正确的密码来查看助记词。</string>
     <string name="there_s_no_biometric_registration">未在设备上找到生物特征注册或硬件</string>
-    <string name="you_re_trying_to_send">您正在尝试向余额低于最小余额的账户发送交易。金额应当大于<annotation replacement="amount">amountPlaceholder</annotation> ALGO。</string>
+    <string name="you_re_trying_to_send">您正在尝试向余额低于最小余额的账户发送交易。金额应当大于<annotation replacement="amount">amountPlaceholder</annotation>ALGO。</string>
     <string name="transaction_amount">交易后的账户余额低于最小账户余额 <annotation replacement="min_balance"> </annotation> ALGO。</string>
     <string name="transaction_amount_cannot">交易金额不可超过所持有的金额。</string>
     <string name="transaction_amount_results">交易金额导致账户余额为负。</string>
@@ -65,7 +63,7 @@
     <string name="rewards">奖励</string>
     <string name="show_rewards">显示奖励</string>
     <string name="max">最大值</string>
-    <string name="you_earn_rewards_just">持有ALGO即可获得奖励！\n以下是自从您上笔交易后的奖励汇总。您的余额中将始终包括这些奖励。</string>
+    <string name="you_earn_rewards_just">持有ALGO即可获得奖励！以下是自从您上笔交易后的奖励汇总。您的余额中将始终包括这些奖励。</string>
     <string name="for_more_information">更多关于Algorand奖励的信息，请访问我们的 <annotation custom="faq_color"><annotation type="bold">常见问题解答</annotation></annotation></string>
     <string name="reward">奖励</string>
     <string name="notifications">通知</string>
@@ -152,13 +150,13 @@
     <string name="delete_all_data">删除全部数据</string>
     <string name="close_amount">成交金额</string>
     <string name="close_to">接近</string>
-    <string name="sort_by_date">按日期排序</string>
     <string name="all_time">全部时间</string>
     <string name="today">今天</string>
     <string name="yesterday">昨天</string>
     <string name="last_week">上周</string>
     <string name="last_month">上个月</string>
     <string name="custom_range">自定义范围</string>
+    <string name="press_and_hold">长按以复制地址</string>
     <string name="something_went_wrong">出错了</string>
     <string name="sorry_something_went">抱歉，出错了。</string>
     <string name="try_again">请再次尝试</string>
@@ -398,9 +396,7 @@
     <string name="share_address">分享地址</string>
     <string name="show_qr_code">显示二维码</string>
     <string name="qr_code">二维码</string>
-    <string name="disconnect_account">断开连接账户</string>
     <string name="rename_account">重新命名账户</string>
-    <string name="add">添加</string>
     <string name="completed">已完成</string>
     <string name="search_contacts_or_name">搜索联系人或姓名</string>
     <string name="try_different_contact_name">试用其他联系人名称</string>
@@ -427,7 +423,6 @@
     <string name="no_account_found">未找到账户</string>
     <string name="try_different_account_name">试用不同的账户名</string>
     <string name="add_note_with_plus">+ 添加备注</string>
-    <string name="approximate_currency_value">≈ %1$s</string>
     <string name="enter_your_note">输入您的备注</string>
     <string name="do_not_share">请勿与任何人分享恢复助记词，因为助记词拥有完整的账户访问权限。</string>
     <string name="if_you_do_not">若您没有相应的恢复助记词，请勿向该账户发送资产。</string>
@@ -450,7 +445,6 @@
     <plurals name="app_connected">
         <item quantity="other">%1$d APP均已连接</item>
     </plurals>
-    <string name="ledger_successfully_connected">成功连接Ledger</string>
     <string name="read_more">了解更多</string>
     <string name="show_transaction_details">显示交易细节</string>
     <string name="network_fee">网络费用</string>
@@ -488,14 +482,13 @@
     <string name="search_my_assets">搜素我的资产</string>
     <string name="transaction_history">交易历史</string>
     <string name="account_successfully_rekeyed">账户已成功更新密钥</string>
-    <string name="nfts">NFT</string>
     <string name="rekey_fee">密钥更新费用</string>
     <string name="remove_asset_fee">移除资产费用</string>
     <string name="edit_note">编辑备注</string>
     <string name="well_this_is_unexpected">这非常出乎意料</string>
     <string name="not_available_shortened">不适用</string>
     <string name="how_we_calculate_portfolio">我们计算投资组合价值的方法</string>
-    <string name="the_total_portfolio_value">投资组合的总价值是指您账户中的所有的资产与ALGO相加的和。如果您持有多个钱包，总投资组合价值是指所有账户的价值总和。资产价格是根据从Tinyman获取的每日价值估算的。请注意，一些资产的价值可能无法获得，因此，投资组合的总价值应被视为一个估计值。</string>
+    <string name="the_total_portfolio_value">投资组合的总价值是指您账户中的所有的资产与ALGO相加的和，除了Watch账户外。\n\n资产价格是根据从多个生态系统合作伙伴处获取的每日价值估算的。由于无法获得部分资产的价值，投资组合的总价值应被视为一个估计值。</string>
     <string name="undefined">未定义</string>
     <string name="pera_app_is_locked">Pera钱包APP已被锁定</string>
     <string name="rate_pera_wallet">为Pera钱包评分</string>
@@ -514,7 +507,6 @@
     <string name="congratulations_your_account">恭喜，您可以开始使用账户了。</string>
     <string name="welcome_to_pera_your_account">欢迎使用Pera钱包！您的账户已准备就绪。</string>
     <string name="loading">正在加载</string>
-    <string name="algorand_wallet_is_now">这是官方信息！Algorand钱包现在更名为Pera钱包。</string>
     <string name="we_are_very_excited">我们很高兴宣布，Algorand Wallet现更名为Pera钱包。这不仅是新名称和新徽标。我们正在重新推出Algorand生态系统中最受欢迎的钱包，并重新关注我们的路线图、合作伙伴融合和社区。\n\n放心，Pera钱包将由相同团队构建和维护，您熟悉和喜爱的全部功能都能照常使用——在接下来的几个月里，还会推出更多新功能。\n\n阅读关于重新发布和路线图的更多信息，请查看<annotation type="color"><annotation url="peraBlogUrl">Pera钱包的博客</annotation></annotation></string>
     <string name="remove_all_accounts_and_logout">删除所有账户并注销</string>
     <string name="yes_remove_all_accounts">是的，删除所有账户并注销</string>
@@ -523,7 +515,7 @@
     <string name="sorry_we_cant_show_portfolio">抱歉，我们无法显示该投资组合的详细信息。我们似乎遇到了计算方面的问题。\n\n 请注意，部分资产价值可能不可用，因此，投资组合总价值应当做估值。</string>
     <string name="transaction_request_faq">交易请求常见问题</string>
     <string name="external_applications_also">外部应用程序，也称为dApps，可以不受Pera Wallet限制发起交易请求。请确保您在批准和签署这些交易之前有进行仔细审查。由于这些请求不在Pera Wallet的控制范围内，所以不要批准来自您不认识的dApp的交易。</string>
-    <string name="notification_algo_received_message"><annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> 已发送至 <annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> ，发送人是 <annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>。</string>
+    <string name="notification_algo_received_message"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> 已发送至 <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> ，发送人是 <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>。</string>
     <string name="minimum_amount_required">所需最低余额</string>
     <string name="this_is_the_first_transaction">这是所选账户的首笔交易。首笔交易的最低金额要求为0.1ALGO。请输入有效金额，并再重试。</string>
     <string name="i_want_to_create">我想要创建一个账户</string>
@@ -568,7 +560,6 @@
     <string name="change_pin_code">更改PIN码</string>
     <string name="watch_account_added">成功添加Watch账户。</string>
     <string name="the_watch_account_has_been">已成功添加Watch账户。</string>
-    <string name="currency_preferences">货币偏好</string>
     <string name="collectibles">收藏品</string>
     <string name="welcome_to_your_nft">欢迎来到您的NFT画廊！你尚未拥有任何NFT。您钱包中的所有NFT都将在此处显示。</string>
     <string name="receive_nft">接受NFT</string>
@@ -583,7 +574,7 @@
     <string name="view_transaction">显示交易</string>
     <string name="show_on_algoexplorer">在Algo浏览器上显示</string>
     <string name="show_on_nftexplorer">在NFT浏览器是显示</string>
-    <string name="you_are_not_the_owner">您尚未拥有该NFT，但是您选择加入了该NFT。您现在可以将它转移到您的钱包里。</string>
+    <string name="you_are_not_the_owner">您尚未拥有该NFT，但是您选择加入了该NFT。您现在可以将它转移到您的账户里。</string>
     <string name="we_don_t_support">我们尚不支持该NFT媒体类型。</string>
     <string name="we_can_t_display">我们暂时无法显示视觉效果。</string>
     <string name="transfer">转账</string>
@@ -605,7 +596,7 @@
     <string name="confirm_transfer">确认转账</string>
     <string name="search_asset_id_or_nft">搜索资产ID或NFT名称</string>
     <string name="receive_an_nft">接收NFT</string>
-    <string name="the_account_name">帐户<annotation font="dmsans_bold">"<annotation replacement="account_name"> </annotation>"</annotation>已经成功更新密钥。</string>
+    <string name="the_account_name">帐户<annotation font="dmsans_bold">\"<annotation replacement="account_name"> </annotation>\"</annotation>已经成功更新密钥。</string>
     <string name="asset_support_success"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>已将<annotation replacement="asset">assetPlaceholder</annotation>添加到他们的账户。您可以向他们发送<annotation replacement="asset">assetPlaceholder</annotation>。</string>
     <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>正试图向你发送<annotation replacement="asset">assetPlaceholder</annotation>，但您并不支持该行动。点击此处将该资产添加到您的账户中。</string>
     <string name="transaction_send_successful">您的交易的 <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation><annotation replacement="asset">assetPlaceholder</annotation>从 <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>到 <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>的交易已完成。</string>
@@ -619,9 +610,7 @@
     <string name="invalid_input_transaction_request">无效输入：该交易请求包含超过%1$d个交易</string>
     <string name="selected_account">选定的账户</string>
     <string name="your_nft_transfer_has_failed">您的NFT转移失败了!</string>
-    <string name="please_verify_that_you_have">请确认您有足够的ALGO来支付转移NFT的交易费用，并再次尝试。</string>
     <string name="please_try_again">请再试一次。</string>
-    <string name="retry">重试</string>
     <string name="opt_out">选择退出</string>
     <string name="opt_out_from">从\"%1$s \"中选择退出</string>
     <string name="you_are_about_to_opt_out">您即将退出此NFT的%1$s。在您再次选择加入之前，您将无法与该资产进行交易。</string>
@@ -641,12 +630,10 @@
     <string name="ledger_info_power_second_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">关于更高级的故障排除，请参考Ledger官方的 <annotation type="bold"><annotation type="color">蓝牙故障排除指南。</annotation></annotation></annotation></string>
     <string name="ledger_info_ledger_first_paragraph"><annotation url="https://www.ledger.com/start">按照Ledger的综合<annotation type="bold"><annotation type="color">入门</annotation></annotation>教程开始使用。</annotation></string>
     <string name="no_nft_found">未发现NFT</string>
-    <string name="tap_thumbnail_to_view_in">点击缩略图，使用3D模式查看</string>
     <string name="welcome_to_pera_wallet_your_watch">欢迎使用Pear钱包！您已成功添加Watch账户。</string>
     <string name="congratulations_your_watch_account_has">恭喜，您已成功添加Watch账户。</string>
     <string name="passphrase_verified">助记词已验证</string>
     <string name="keep_this_recovery">请将恢复助记词保存在仅您能访问的安全位置，请勿丢失恢复助记词。</string>
-    <string name="tap_the_media_to_view_in">点选媒体，使用3D模式查看</string>
     <string name="search_your_assets">搜索您的资产</string>
     <string name="search">搜索</string>
     <string name="wrong_pin">错误的针脚</string>
@@ -659,4 +646,62 @@
     <string name="your_account_needs_to_be">您的账户需要选择加入NFT后，才能接收NFT。确认过程中，请确保您有检查资产ID。</string>
     <string name="you_can_search_the_nft">您可以通过在下面的搜索栏中粘贴NFT名称或资产ID来搜索想选择加入的NFT。</string>
     <string name="select_the_wallet_account">选择您想用于接收的钱包账户：</string>
+    <string name="receive_opt_out">接收（选择退出）</string>
+    <string name="enter_your_six_digit_pin">请输入\n6位数PIN码</string>
+    <string name="refused_ledger_transaction">被拒绝的Ledger交易</string>
+    <string name="the_opt_out_request_has">Ledger设备上的退出请求已被拒绝。请重试。</string>
+    <string name="home">主页</string>
+    <string name="price">价格</string>
+    <string name="three_d_card_mode">3D卡模式</string>
+    <string name="alphabetically_a_to_z">按从A到Z的字母顺序</string>
+    <string name="alphabetically_z_to_a">按从Z到A的字母顺序</string>
+    <string name="highest_value_to_lowest">从最高值到最低值</string>
+    <string name="lowest_value_to_highest">从最低值到最高值</string>
+    <string name="sort">分类</string>
+    <string name="address">地址</string>
+    <string name="more">更多</string>
+    <string name="manage">管理</string>
+    <string name="algo_wallet">ALGO钱包</string>
+    <string name="address_copied_to_clipboard">地址已复制到剪贴板</string>
+    <string name="main_currency">主要货币</string>
+    <string name="your_main_currency_is">您的主要货币是<annotation font="dmsans_regular"><annotation type="primaryCurrencyColor"><annotation type="bold"><annotation replacement="primaryCurrencyId">primaryCurrencyPlaceholder</annotation></annotation></annotation></annotation>，次要货币为<annotation font="dmsans_regular"><annotation type="secondaryCurrencyColor"><annotation type="bold"><annotation replacement="secondaryCurrencyId">secondaryCurrencyPlaceholder</annotation></annotation></annotation></annotation></string>
+    <string name="the_scanned_qr_is_not">所扫二维码不是有效的Algorand公共地址。对于其他类型的QR（如WalletConnect会话），请使用主页上的扫描二维码按钮。</string>
+    <string name="buy_crypto_with_credit">用信用卡或通过银行转账购买加密货币</string>
+    <string name="algo_or_any_asa">ALOG或任意ASA转到另一个账户</string>
+    <string name="view_or_copy">查看或复制您的帐户地址</string>
+    <string name="use_wallet_connect">使用WalletConnect或扫描账户地址</string>
+    <string name="opt_out_from_the">选择退出NFT</string>
+    <string name="asset_configuration">资产配置</string>
+    <string name="scan_qr">扫描二维码</string>
+    <string name="algorand_blockchain">Algorand区块链要求账户选择加入ASA之后，才能接收该ASA。现在您已经把此NFT转到另一个账户上，你可以选择退出该NFT。选择退出需要做一笔额外的交易。</string>
+    <string name="scanned_account_address">账户地址已扫描</string>
+    <string name="send_transaction">发送交易</string>
+    <string name="add_new_contact">添加新的联系人</string>
+    <string name="address_scanned">地址已扫描！</string>
+    <string name="rekeyed_auth_account">密钥重置后的授权账户</string>
+    <string name="rekeyed_account">密钥重置后的账户</string>
+    <string name="press_and_hold_to">长按以\n“复制地址”</string>
+    <string name="you_can_quickly_copy">您可以长按帐户按钮快速复制帐户地址</string>
+    <string name="matched_accounts">匹配账户</string>
+    <string name="manually">手动</string>
+    <string name="recently_received">最近收到的</string>
+    <string name="reorganize_accounts_manually">手动重新整理账户</string>
+    <string name="app_call">APP呼叫</string>
+    <plurals name="count_inner_txns">
+        <item quantity="other">%1$d内部交易</item>
+    </plurals>
+    <plurals name="show_count_inner_txns">
+        <item quantity="other">展示%1$d交易</item>
+    </plurals>
+    <plurals name="count_inner_transactions">
+        <item quantity="other">%1$d内部交易</item>
+    </plurals>
+    <string name="inner_n_transactions">内部\n交易</string>
+    <string name="inner_transactions">内部交易</string>
+    <string name="your_accounts_don_t_contain_this">您的账户不包含此项资产，请添加该资产，并再次尝试。</string>
+    <plurals name="show_count_more_assets">
+        <item quantity="other">展示 +%1$d 更多资产</item>
+    </plurals>
+    <string name="invalid_asset_id">资产ID无效</string>
+    <string name="asset_successfully_added_formatted">%1$s已成功添加到您的账户。</string>
 </resources>

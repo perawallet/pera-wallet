@@ -26,6 +26,14 @@
 
     <include app:graph="@navigation/warning_confirmation_navigation" />
 
+    <include app:graph="@navigation/wallet_connect_navigation" />
+
+    <action
+        android:id="@+id/action_global_walletConnectRequestNavigation"
+        app:destination="@id/walletConnectRequestNavigation"
+        app:popUpTo="@id/walletConnectRequestNavigation"
+        app:popUpToInclusive="true" />
+
     <action
         android:id="@+id/action_to_mainNavigation"
         app:destination="@id/mainNavigation"
@@ -43,6 +51,16 @@
             android:name="shouldNavToRegisterWatchAccount"
             android:defaultValue="false"
             app:argType="boolean" />
+        <argument
+            android:name="mnemonic"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="accountAddress"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
     </action>
 
     <action
@@ -96,6 +114,10 @@
         <argument
             android:name="isResultNeeded"
             android:defaultValue="false"
+            app:argType="boolean" />
+        <argument
+            android:name="isDraggable"
+            android:defaultValue="true"
             app:argType="boolean" />
     </action>
 

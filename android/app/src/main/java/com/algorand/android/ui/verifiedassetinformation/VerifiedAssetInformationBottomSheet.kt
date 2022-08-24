@@ -23,7 +23,9 @@ import com.algorand.android.utils.openPeraSupportUrl
 import com.algorand.android.utils.setXmlStyledString
 import com.algorand.android.utils.viewbinding.viewBinding
 
-class VerifiedAssetInformationBottomSheet : BaseBottomSheet(R.layout.bottom_sheet_verified_asset_information, true) {
+class VerifiedAssetInformationBottomSheet(
+    override val fullPageNeeded: Boolean = true
+) : BaseBottomSheet(R.layout.bottom_sheet_verified_asset_information) {
 
     private val toolbarConfiguration = ToolbarConfiguration(
         titleResId = R.string.verified_assets,

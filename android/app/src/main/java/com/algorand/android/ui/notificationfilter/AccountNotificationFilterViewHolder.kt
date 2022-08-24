@@ -15,7 +15,9 @@ package com.algorand.android.ui.notificationfilter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.algorand.android.R
 import com.algorand.android.databinding.ItemAccountNotificationFilterBinding
+import com.algorand.android.utils.extensions.setAccountIconDrawable
 
 class AccountNotificationFilterViewHolder(
     private val binding: ItemAccountNotificationFilterBinding,
@@ -25,10 +27,19 @@ class AccountNotificationFilterViewHolder(
     fun bind(accountNotificationOption: AccountNotificationOption) {
         with(accountNotificationOption) {
             with(binding) {
-                nameTextView.text = accountName
-                typeImageView.setAccountIcon(accountIcon)
+                nameTextView.text = accountListItem.itemConfiguration
+                    .accountDisplayName
+                    ?.getDisplayTextOrAccountShortenedAddress()
+
+                if (accountListItem.itemConfiguration.accountIconResource != null) {
+                    typeImageView.setAccountIconDrawable(
+                        accountIconResource = accountListItem.itemConfiguration.accountIconResource,
+                        iconSize = R.dimen.account_icon_size_large
+                    )
+                }
+
                 filterSwitch.setOnCheckedChangeListener(null)
-                filterSwitch.isChecked = isFiltered.not()
+                filterSwitch.isChecked = accountNotificationOption.isFiltered.not()
             }
             enableSwitchCheckedChangeListener(this)
         }
@@ -39,7 +50,10 @@ class AccountNotificationFilterViewHolder(
     ) {
         binding.filterSwitch.setOnCheckedChangeListener { _, isChecked ->
             accountNotificationOption.isFiltered = !isChecked
-            accountOptionChanged.invoke(accountNotificationOption.publicKey, !isChecked)
+            accountOptionChanged.invoke(
+                accountNotificationOption.accountListItem.itemConfiguration.accountAddress,
+                !isChecked
+            )
         }
     }
 

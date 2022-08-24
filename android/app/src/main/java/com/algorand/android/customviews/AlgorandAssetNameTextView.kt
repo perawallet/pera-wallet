@@ -20,7 +20,7 @@ import androidx.core.view.isVisible
 import com.algorand.android.R
 import com.algorand.android.databinding.CustomAssetNameViewBinding
 import com.algorand.android.models.AssetInformation
-import com.algorand.android.utils.ALGOS_SHORT_NAME
+import com.algorand.android.utils.ALGO_SHORT_NAME
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.setTextAndVisibility
 import com.algorand.android.utils.extensions.show
@@ -78,7 +78,7 @@ class AlgorandAssetNameTextView @JvmOverloads constructor(
         with(binding) {
             assetVerifiedImageView.isVisible = isVerified
             if (isAlgo) {
-                mainTextView.setTextAndVisibility(ALGOS_SHORT_NAME)
+                mainTextView.setTextAndVisibility(ALGO_SHORT_NAME)
                 subTextView.setTextAndVisibility(fullName)
                 algorandAssetAvatarView.setAlgorandAvatar()
             } else {

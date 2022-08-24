@@ -17,49 +17,67 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.PagingData
 import com.algorand.android.core.BaseUseCase
 import com.algorand.android.decider.DateFilterUseCase
-import com.algorand.android.mapper.CsvStatusPreviewMapper
-import com.algorand.android.models.BaseTransactionItem
-import com.algorand.android.models.CsvStatusPreview
 import com.algorand.android.models.DateFilter
-import com.algorand.android.models.DateRange
-import com.algorand.android.models.Result
 import com.algorand.android.models.ui.DateFilterPreview
 import com.algorand.android.models.ui.TransactionLoadStatePreview
-import java.io.File
+import com.algorand.android.modules.accounts.domain.mapper.AccountValueMapper
+import com.algorand.android.modules.accounts.domain.model.AccountValue
+import com.algorand.android.modules.transactionhistory.ui.model.BaseTransactionItem
+import com.algorand.android.modules.transactionhistory.ui.usecase.PendingTransactionsPreviewUseCase
+import com.algorand.android.modules.transactionhistory.ui.usecase.TransactionHistoryPreviewUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 class AccountHistoryUseCase @Inject constructor(
-    private val transactionUseCase: TransactionUseCase,
-    private val pendingTransactionUseCase: PendingTransactionUseCase,
+    private val transactionHistoryPreviewUseCase: TransactionHistoryPreviewUseCase,
+    private val pendingTransactionsPreviewUseCase: PendingTransactionsPreviewUseCase,
     private val dateFilterUseCase: DateFilterUseCase,
     private val transactionLoadStateUseCase: TransactionLoadStateUseCase,
-    private val createCsvUseCase: CreateCsvUseCase,
-    private val csvStatusPreviewMapper: CsvStatusPreviewMapper,
-    private val accountTotalBalanceUseCase: AccountTotalBalanceUseCase
+    private val getAccountTotalCollectibleValueUseCase: GetAccountTotalCollectibleValueUseCase,
+    private val getAccountTotalAssetValueUseCase: GetAccountTotalAssetValueUseCase,
+    private val accountValueMapper: AccountValueMapper
 ) : BaseUseCase() {
 
     val pendingTransactionDistinctUntilChangedListener
-        get() = pendingTransactionUseCase.pendingFlowDistinctUntilChangedListener
+        get() = pendingTransactionsPreviewUseCase.pendingFlowDistinctUntilChangedListener
 
-    fun getTransactionPaginationFlow(publicKey: String): Flow<PagingData<BaseTransactionItem>>? {
-        return transactionUseCase.getTransactionPaginationFlow(publicKey)
-    }
-
-    fun fetchAccountHistory(publicKey: String, cacheInScope: CoroutineScope) {
-        transactionUseCase.fetchAccountTransactionHistory(publicKey, cacheInScope)
+    fun getTransactionPaginationFlow(
+        publicKey: String,
+        coroutineScope: CoroutineScope
+    ): Flow<PagingData<BaseTransactionItem>>? {
+        return transactionHistoryPreviewUseCase.getTransactionHistoryPaginationFlow(publicKey, coroutineScope)
     }
 
     fun refreshAccountHistoryData() {
-        transactionUseCase.refreshTransactionHistory()
+        transactionHistoryPreviewUseCase.refreshTransactionHistory()
     }
 
-    fun getAccountBalanceFlow(publicKey: String) = accountTotalBalanceUseCase.getAccountBalanceFlow(publicKey)
+    fun getAccountTotalValueFlow(accountAddress: String): Flow<AccountValue> {
+        return combine(
+            getAccountAssetValueFlow(accountAddress).distinctUntilChanged(),
+            getAccountCollectibleValueFlow(accountAddress).distinctUntilChanged()
+        ) { assetValue, collectibleValue ->
+            accountValueMapper.mapTo(
+                primaryAccountValue = assetValue.primaryAccountValue + collectibleValue.primaryAccountValue,
+                secondaryAccountValue = assetValue.secondaryAccountValue + collectibleValue.secondaryAccountValue,
+                assetCount = assetValue.assetCount + collectibleValue.assetCount
+            )
+        }
+    }
 
-    suspend fun fetchPendingTransactions(publicKey: String): Result<List<BaseTransactionItem>> {
-        return pendingTransactionUseCase.fetchPendingTransactions(publicKey)
+    private fun getAccountAssetValueFlow(publicKey: String): Flow<AccountValue> {
+        return getAccountTotalAssetValueUseCase.getAccountTotalAssetValueFlow(publicKey)
+    }
+
+    private fun getAccountCollectibleValueFlow(accountAddress: String): Flow<AccountValue> {
+        return getAccountTotalCollectibleValueUseCase.getAccountTotalCollectibleValueFlow(accountAddress)
+    }
+
+    suspend fun fetchPendingTransactions(publicKey: String): List<BaseTransactionItem> {
+        return pendingTransactionsPreviewUseCase.getPendingTransactionItems(publicKey)
     }
 
     fun createDateFilterPreview(dateFilter: DateFilter): DateFilterPreview {
@@ -67,7 +85,7 @@ class AccountHistoryUseCase @Inject constructor(
     }
 
     suspend fun setDateFilter(dateFilter: DateFilter) {
-        transactionUseCase.filterHistoryByDate(dateFilter)
+        transactionHistoryPreviewUseCase.filterHistoryByDate(dateFilter)
     }
 
     fun createTransactionLoadStatePreview(
@@ -83,17 +101,6 @@ class AccountHistoryUseCase @Inject constructor(
     }
 
     fun refreshTransactionHistory() {
-        transactionUseCase.refreshTransactionHistory()
-    }
-
-    fun createCsvFile(
-        cacheDir: File,
-        dateRange: DateRange?,
-        publicKey: String,
-        scope: CoroutineScope
-    ): Flow<CsvStatusPreview> {
-        return createCsvUseCase
-            .createTransactionHistoryCsvFile(cacheDir, publicKey, dateRange, null, scope)
-            .map { csvStatusPreviewMapper.mapToCsvStatus(it) }
+        transactionHistoryPreviewUseCase.refreshTransactionHistory()
     }
 }

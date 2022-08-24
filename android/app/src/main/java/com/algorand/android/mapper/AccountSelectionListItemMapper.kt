@@ -14,9 +14,9 @@ package com.algorand.android.mapper
 
 import android.net.Uri
 import com.algorand.android.decider.AccountDisplayNameDecider
-import com.algorand.android.models.Account
-import com.algorand.android.models.AccountIcon
+import com.algorand.android.models.BaseAccountAndAssetListItem
 import com.algorand.android.models.BaseAccountSelectionListItem
+import com.algorand.android.modules.nftdomain.domain.model.NftDomainSearchResult
 import javax.inject.Inject
 
 class AccountSelectionListItemMapper @Inject constructor(
@@ -24,37 +24,15 @@ class AccountSelectionListItemMapper @Inject constructor(
 ) {
 
     fun mapToErrorAccountItem(
-        account: Account,
-        isErrorIconVisible: Boolean
+        accountListItem: BaseAccountAndAssetListItem.AccountListItem
     ): BaseAccountSelectionListItem.BaseAccountItem.AccountErrorItem {
-        return BaseAccountSelectionListItem.BaseAccountItem.AccountErrorItem(
-            displayName = accountDisplayNameDecider.decideDisplayName(account.name, account.address),
-            publicKey = account.address,
-            accountIcon = account.createAccountIcon(),
-            isErrorIconVisible = isErrorIconVisible
-        )
+        return BaseAccountSelectionListItem.BaseAccountItem.AccountErrorItem(accountListItem = accountListItem)
     }
 
     fun mapToAccountItem(
-        name: String,
-        publicKey: String,
-        accountIcon: AccountIcon,
-        formattedHoldings: String,
-        assetCount: Int,
-        collectibleCount: Int,
-        showAssetCount: Boolean,
-        showHoldings: Boolean
+        accountListItem: BaseAccountAndAssetListItem.AccountListItem
     ): BaseAccountSelectionListItem.BaseAccountItem.AccountItem {
-        return BaseAccountSelectionListItem.BaseAccountItem.AccountItem(
-            displayName = accountDisplayNameDecider.decideDisplayName(name, publicKey),
-            publicKey = publicKey,
-            formattedHoldings = formattedHoldings,
-            assetCount = assetCount,
-            collectibleCount = collectibleCount,
-            accountIcon = accountIcon,
-            showAssetCount = showAssetCount,
-            showHoldings = showHoldings
-        )
+        return BaseAccountSelectionListItem.BaseAccountItem.AccountItem(accountListItem = accountListItem)
     }
 
     fun mapToContactItem(
@@ -66,6 +44,16 @@ class AccountSelectionListItemMapper @Inject constructor(
             displayName = accountDisplayNameDecider.decideDisplayName(name, publicKey),
             publicKey = publicKey,
             imageUri = imageUri
+        )
+    }
+
+    fun mapToNftDomainAccountItem(
+        nftDomainSearchResult: NftDomainSearchResult
+    ): BaseAccountSelectionListItem.BaseAccountItem.NftDomainAccountItem {
+        return BaseAccountSelectionListItem.BaseAccountItem.NftDomainAccountItem(
+            displayName = nftDomainSearchResult.name,
+            publicKey = nftDomainSearchResult.accountAddress,
+            serviceLogoUrl = nftDomainSearchResult.service?.logoUrl
         )
     }
 }

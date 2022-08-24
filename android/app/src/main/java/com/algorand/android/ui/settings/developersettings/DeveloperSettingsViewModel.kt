@@ -13,15 +13,30 @@
 package com.algorand.android.ui.settings.developersettings
 
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.network.AlgodInterceptor
 import com.algorand.android.utils.TESTNET_NETWORK_SLUG
+import kotlinx.coroutines.launch
 
 class DeveloperSettingsViewModel @ViewModelInject constructor(
-    private val algodInterceptor: AlgodInterceptor
+    private val algodInterceptor: AlgodInterceptor,
+    private val developerSettingsPreviewUseCase: DeveloperSettingsPreviewUseCase
 ) : BaseViewModel() {
+
+    var firstAccountAddress: String? = null
+
+    init {
+        updateFirstAccountAddress()
+    }
 
     fun isConnectedToTestnet(): Boolean {
         return algodInterceptor.currentActiveNode?.networkSlug == TESTNET_NETWORK_SLUG
+    }
+
+    private fun updateFirstAccountAddress() {
+        viewModelScope.launch {
+            firstAccountAddress = developerSettingsPreviewUseCase.getFirstAccountAddress()
+        }
     }
 }

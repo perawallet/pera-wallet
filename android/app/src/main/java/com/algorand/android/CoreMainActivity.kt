@@ -15,12 +15,14 @@ package com.algorand.android
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.view.MenuItem
 import android.view.View
 import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
+import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.NavHostFragment
 import com.algorand.android.core.AccountManager
 import com.algorand.android.core.BaseActivity
@@ -35,9 +37,9 @@ import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.BETANET_NETWORK_SLUG
 import com.algorand.android.utils.TESTNET_NETWORK_SLUG
 import com.algorand.android.utils.coremanager.AccountDetailCacheManager
-import com.algorand.android.utils.coremanager.AlgoPriceManager
 import com.algorand.android.utils.coremanager.AssetCacheManager
 import com.algorand.android.utils.coremanager.BlockPollingManager
+import com.algorand.android.utils.coremanager.ParityManager
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.navigateSafe
@@ -74,7 +76,7 @@ abstract class CoreMainActivity : BaseActivity() {
     protected val binding by viewBinding(ActivityMainBinding::inflate)
 
     @Inject
-    lateinit var algoPriceManager: AlgoPriceManager
+    lateinit var parityManager: ParityManager
 
     @Inject
     lateinit var blockPollingManager: BlockPollingManager
@@ -88,7 +90,7 @@ abstract class CoreMainActivity : BaseActivity() {
     var isBottomBarNavigationVisible by Delegates.observable(true) { _, oldValue, newValue ->
         if (newValue != oldValue) {
             binding.bottomNavigationView.isVisible = newValue
-            binding.sendReceiveTabBarView.apply {
+            binding.coreActionsTabBarView.apply {
                 if (newValue) visibility = View.VISIBLE else hideWithoutAnimation()
             }
         }
@@ -125,7 +127,7 @@ abstract class CoreMainActivity : BaseActivity() {
 
     private fun initializeCoreManagers() {
         with(lifecycle) {
-            addObserver(algoPriceManager)
+            addObserver(parityManager)
             addObserver(blockPollingManager)
             addObserver(accountDetailCacheManager)
             addObserver(assetCacheManager)
@@ -137,9 +139,11 @@ abstract class CoreMainActivity : BaseActivity() {
             graph = navInflater.inflate(R.navigation.main_navigation).apply {
                 startDestination = getStartDestinationFragmentId()
             }
-            binding.bottomNavigationView.setupWithNavController(this)
+            binding.bottomNavigationView.setupWithNavController(this, ::onMenuItemClicked)
         }
     }
+
+    abstract fun onMenuItemClicked(item: MenuItem)
 
     private fun getStartDestinationFragmentId(): Int {
         return if (accountManager.isThereAnyRegisteredAccount() || sharedPref.getRegisterSkip()) {
@@ -152,7 +156,7 @@ abstract class CoreMainActivity : BaseActivity() {
     private fun handleStatusBarChanges(statusBarConfiguration: StatusBarConfiguration) {
         val intendedStatusBarColor =
             if (statusBarConfiguration.showNodeStatus && isConnectedToTestNet) {
-                R.color.testnet
+                R.color.testnet_bg
             } else {
                 statusBarConfiguration.backgroundColor
             }
@@ -186,8 +190,20 @@ abstract class CoreMainActivity : BaseActivity() {
         navController.navigateSafe(directions, onError)
     }
 
+    fun nav(directions: NavDirections, extras: FragmentNavigator.Extras) {
+        navController.navigateSafe(directions, extras)
+    }
+
     fun setBottomNavigationBarSelectedItem(@IdRes itemRes: Int) {
         binding.bottomNavigationView.selectedItemId = itemRes
+    }
+
+    fun isCoreActionsTabBarViewVisible(): Boolean {
+        return isBottomBarNavigationVisible && binding.coreActionsTabBarView.isCoreActionsOpened
+    }
+
+    fun hideCoreActionsTabBarView() {
+        binding.coreActionsTabBarView.hideWithAnimation()
     }
 
     fun getToolbar(): CustomToolbar {

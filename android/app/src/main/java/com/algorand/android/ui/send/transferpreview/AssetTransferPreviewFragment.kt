@@ -28,9 +28,10 @@ import com.algorand.android.models.AssetTransferPreview
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.TargetUser
 import com.algorand.android.models.ToolbarConfiguration
-import com.algorand.android.utils.ALGOS_SHORT_NAME
+import com.algorand.android.utils.ALGO_SHORT_NAME
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
+import com.algorand.android.utils.extensions.capitalize
 import com.algorand.android.utils.extensions.changeTextAppearance
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.setTextAndVisibility
@@ -42,7 +43,6 @@ import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.math.BigDecimal
 import java.math.BigInteger
-import java.util.Locale
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -112,10 +112,7 @@ class AssetTransferPreviewFragment : BaseFragment(R.layout.fragment_transfer_ass
         with(binding.nextButton) {
             text = if (isAlgorand) {
                 // TODO get formatted shortname from AlgoInfoProvider
-                getString(
-                    R.string.send_format,
-                    ALGOS_SHORT_NAME.toLowerCase(Locale.getDefault()).capitalize(Locale.getDefault())
-                )
+                getString(R.string.send_format, ALGO_SHORT_NAME.capitalize())
             } else {
                 getString(R.string.next)
             }
@@ -160,6 +157,9 @@ class AssetTransferPreviewFragment : BaseFragment(R.layout.fragment_transfer_ass
             accountUserView.setAccount(fromAccountCacheData)
             toUserView.setOnAddButtonClickListener(::onAddButtonClicked)
             when {
+                targetUser.nftDomainAddress != null -> {
+                    toUserView.setNftDomainAddress(targetUser.nftDomainAddress, targetUser.nftDomainServiceLogoUrl)
+                }
                 targetUser.contact != null -> toUserView.setContact(targetUser.contact)
                 targetUser.account != null -> toUserView.setAccount(targetUser.account)
                 else -> toUserView.setAddress(targetUser.publicKey.toShortenedAddress(), targetUser.publicKey)
@@ -181,7 +181,7 @@ class AssetTransferPreviewFragment : BaseFragment(R.layout.fragment_transfer_ass
     }
 
     private fun onAddButtonClicked(address: String) {
-        nav(HomeNavigationDirections.actionGlobalAddContactFragment(contactPublicKey = address))
+        nav(HomeNavigationDirections.actionGlobalContactAdditionNavigation(contactPublicKey = address))
     }
 
     private fun showProgress() {

@@ -118,6 +118,46 @@ fun Context.loadImage(uri: String, onResourceReady: (Drawable) -> Unit, onLoadFa
         .preload()
 }
 
+fun Context.loadImageWithCachedFirst(
+    uri: String,
+    cachedUri: String,
+    onCachedResourceReady: (Drawable) -> Unit,
+    onResourceReady: (Drawable) -> Unit,
+    onCachedLoadFailed: (() -> Unit)? = null,
+    onLoadFailed: (() -> Unit)? = null
+) {
+    Glide.with(this)
+        .load(cachedUri)
+        .listener(object : RequestListener<Drawable> {
+            override fun onLoadFailed(
+                e: GlideException?,
+                model: Any?,
+                target: Target<Drawable>?,
+                isFirstResource: Boolean
+            ): Boolean {
+                onLoadFailed?.invoke()
+                return true
+            }
+
+            override fun onResourceReady(
+                resource: Drawable?,
+                model: Any?,
+                target: Target<Drawable>?,
+                dataSource: DataSource?,
+                isFirstResource: Boolean
+            ): Boolean {
+                if (resource != null) {
+                    onCachedResourceReady(resource)
+                    this@loadImageWithCachedFirst.loadImage(uri, onResourceReady, onLoadFailed)
+                } else {
+                    onCachedLoadFailed?.invoke()
+                }
+                return true
+            }
+        })
+        .preload()
+}
+
 fun ImageView.loadGif(uri: String, onResourceReady: (GifDrawable) -> Unit, onLoadFailed: ((Drawable?) -> Unit)?) {
     Glide.with(this)
         .asGif()

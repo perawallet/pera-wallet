@@ -13,12 +13,24 @@
 package com.algorand.android.utils
 
 import com.mitsinsar.peracompactdecimalformat.PeraCompactDecimalFormatBuilder
-import com.mitsinsar.peracompactdecimalformat.utils.NumberConstants
+import com.mitsinsar.peracompactdecimalformat.locals.ChineseLocale
+import com.mitsinsar.peracompactdecimalformat.locals.EnglishLocale
+import com.mitsinsar.peracompactdecimalformat.locals.FrenchLocale
+import com.mitsinsar.peracompactdecimalformat.locals.GermanLocale
+import com.mitsinsar.peracompactdecimalformat.locals.ItalianLocale
+import com.mitsinsar.peracompactdecimalformat.locals.JapaneseLocale
+import com.mitsinsar.peracompactdecimalformat.locals.KoreanLocale
+import com.mitsinsar.peracompactdecimalformat.locals.PortugueseLocale
+import com.mitsinsar.peracompactdecimalformat.locals.SpanishLocale
+import com.mitsinsar.peracompactdecimalformat.locals.TurkishLocale
+import com.mitsinsar.peracompactdecimalformat.locals.base.BaseLocale
+import com.mitsinsar.peracompactdecimalformat.utils.fractionaldigit.FractionalDigit
 import com.mitsinsar.peracompactdecimalformat.utils.toPeraDecimal
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
+import java.util.Locale
 
 const val PERCENT_FORMAT = "##0.00'%'"
 const val PLUS_SIGN = "+"
@@ -41,10 +53,27 @@ fun getFormatter(
     }
 }
 
-// TODO Support locale when translations are completed
-fun formatCompactNumber(number: BigDecimal): String {
+fun formatCompactNumber(number: BigDecimal, fractionalDigitCreator: FractionalDigit.FractionalDigitCreator): String {
     return PeraCompactDecimalFormatBuilder.getInstance()
-        .excludeShorteningNumber(NumberConstants.THOUSAND)
+        .setLocale(getPeraCompactDecimalFormatterLocal())
+        .setFractionalDigitCreator(fractionalDigitCreator)
         .build()
         .format(number.toPeraDecimal()).formattedNumberWithSuffix
+}
+
+// TODO: Create a library function for this
+private fun getPeraCompactDecimalFormatterLocal(): BaseLocale {
+    return when (Locale.getDefault().language.uppercase()) {
+        TurkishLocale.localeConstant -> TurkishLocale
+        EnglishLocale.localeConstant -> EnglishLocale
+        GermanLocale.localeConstant -> GermanLocale
+        ChineseLocale.localeConstant -> ChineseLocale
+        FrenchLocale.localeConstant -> FrenchLocale
+        ItalianLocale.localeConstant -> ItalianLocale
+        JapaneseLocale.localeConstant -> JapaneseLocale
+        KoreanLocale.localeConstant -> KoreanLocale
+        PortugueseLocale.localeConstant -> PortugueseLocale
+        SpanishLocale.localeConstant -> SpanishLocale
+        else -> EnglishLocale
+    }
 }

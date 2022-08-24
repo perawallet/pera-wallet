@@ -23,8 +23,8 @@ class LedgerAccountAdditionResultInfoUseCase @Inject constructor(
     private val baseAccountAdditionResultInfoPreviewMapper: BaseAccountAdditionResultInfoPreviewMapper
 ) {
 
-    fun getLedgerAccountAdditionResultInfoPreview(): LedgerAccountAdditionResultInfoPreview {
-        val isItFirstAccountThatAdded = accountManager.getAccounts().size == 1
+    fun getLedgerAccountAdditionResultInfoPreview(numberOfAccountsAdded: Int): LedgerAccountAdditionResultInfoPreview {
+        val isItFirstAccountThatAdded = accountManager.getAccounts().size == numberOfAccountsAdded
         val titleTextRes = R.string.account_is_verified
         val descriptionTextRes = if (isItFirstAccountThatAdded) {
             R.string.welcome_to_pera_your_account

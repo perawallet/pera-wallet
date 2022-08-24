@@ -61,7 +61,17 @@
         app:layout_constraintTop_toBottomOf="@id/collectibleMediaTabLayout"
         app:layout_goneMarginTop="@dimen/spacing_xxsmall"
         tools:icon="@drawable/ic_3d_object"
-        tools:text="@string/tap_the_media_to_view_in"
+        tools:text="@string/three_d_card_mode"
         tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/fullScreenImageView"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_margin="@dimen/spacing_small"
+        android:background="@drawable/bg_collectible_badge"
+        app:layout_constraintBottom_toBottomOf="@id/collectibleMediaViewPager"
+        app:layout_constraintEnd_toEndOf="@id/collectibleMediaViewPager"
+        app:srcCompat="@drawable/ic_fullscreen" />
 
 </merge>

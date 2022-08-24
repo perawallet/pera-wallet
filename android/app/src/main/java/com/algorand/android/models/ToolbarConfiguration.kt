@@ -12,6 +12,7 @@
 
 package com.algorand.android.models
 
+import android.graphics.drawable.Drawable
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -19,18 +20,18 @@ import androidx.annotation.StringRes
 data class ToolbarConfiguration(
     @StringRes
     val titleResId: Int? = null,
+    @StringRes
+    val subtitleResId: Int? = null,
     @DrawableRes
     val startIconResId: Int? = null,
     @ColorRes
     val backgroundColor: Int? = null,
     val startIconClick: (() -> Unit)? = null,
-    val showNodeStatus: Boolean = false,
-    val showAvatarImage: Boolean = false,
-    val showAccountImage: Boolean = false,
     @ColorRes
     val startIconColor: Int? = null,
     @ColorRes
     val titleColor: Int? = null,
-    @DrawableRes
-    val centerImageRes: Int? = null
+    val textStartDrawable: Drawable? = null,
+    val textEndDrawable: Drawable? = null,
+    val centerDrawable: Drawable? = null
 )

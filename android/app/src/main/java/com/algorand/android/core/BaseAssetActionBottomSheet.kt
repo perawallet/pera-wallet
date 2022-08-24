@@ -15,6 +15,7 @@ package com.algorand.android.core
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.text.buildSpannedString
 import androidx.core.view.isVisible
@@ -54,7 +55,8 @@ abstract class BaseAssetActionBottomSheet : BaseBottomSheet(R.layout.bottom_shee
         resource.use(
             onSuccess = { assetDescription -> asset = assetDescription },
             onLoading = { binding.loadingProgressBar.visibility = View.VISIBLE },
-            onLoadingFinished = { binding.loadingProgressBar.visibility = View.GONE }
+            onLoadingFinished = { binding.loadingProgressBar.visibility = View.GONE },
+            onFailed = { showErrorAndNavBack(it) }
         )
     }
 
@@ -66,6 +68,7 @@ abstract class BaseAssetActionBottomSheet : BaseBottomSheet(R.layout.bottom_shee
     abstract fun setNegativeButton(materialButton: MaterialButton)
 
     open fun setTransactionFeeTextView(textView: TextView) {}
+    open fun setWarningIconImageView(imageView: ImageView) {}
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -78,6 +81,7 @@ abstract class BaseAssetActionBottomSheet : BaseBottomSheet(R.layout.bottom_shee
             setPositiveButton(positiveButton)
             setNegativeButton(negativeButton)
             setTransactionFeeTextView(transactionFeeTextView)
+            setWarningIconImageView(warningIconImageView)
         }
     }
 
@@ -107,6 +111,14 @@ abstract class BaseAssetActionBottomSheet : BaseBottomSheet(R.layout.bottom_shee
 
     private fun onCopyClick() {
         context?.copyToClipboard(assetId.toString(), ASSET_ID_COPY_LABEL)
+    }
+
+    private fun showErrorAndNavBack(error: Resource.Error) {
+        context?.run {
+            val errorMessage = error.parse(this).toString()
+            showGlobalError(errorMessage = errorMessage)
+            navBack()
+        }
     }
 
     companion object {

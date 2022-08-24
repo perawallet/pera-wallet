@@ -102,6 +102,36 @@ class CollectibleSendPreviewUseCase @Inject constructor(
         }
     }
 
+    suspend fun sendSignedGroupTransaction(
+        signedTransactionDetail: SignedTransactionDetail.Group,
+        previousState: CollectibleSendPreview
+    ): Flow<CollectibleSendPreview> {
+        return sendSignedTransactionUseCase.sendSignedTransaction(signedTransactionDetail).map { dataResource ->
+            when (dataResource) {
+                is DataResource.Success -> {
+                    val sendTransaction = getSendTransactionInGroupIfExists(signedTransactionDetail)
+                    sendTransaction?.let {
+                        addAssetSendingToAccountCache(
+                            it.accountCacheData.accountInformation.address,
+                            it.assetInformation.assetId
+                        )
+                    }
+                    getTransactionSentSuccessPreview(previousState)
+                }
+                is DataResource.Error -> getTransactionSentFailedPreview(dataResource, previousState)
+                else -> previousState.copy(isLoadingVisible = true)
+            }
+        }
+    }
+
+    private fun getSendTransactionInGroupIfExists(
+        signedTransactionDetail: SignedTransactionDetail.Group
+    ): SignedTransactionDetail.Send? {
+        return signedTransactionDetail.transactions?.firstOrNull {
+            it is SignedTransactionDetail.Send
+        } as? SignedTransactionDetail.Send
+    }
+
     private suspend fun addAssetSendingToAccountCache(publicKey: String, assetId: Long) {
         val cachedAccountDetail = accountDetailUseCase.getCachedAccountDetail(publicKey)?.data ?: return
         cachedAccountDetail.accountInformation.setAssetHoldingStatus(assetId, AssetStatus.PENDING_FOR_SENDING)
@@ -120,7 +150,7 @@ class CollectibleSendPreviewUseCase @Inject constructor(
         previousState: CollectibleSendPreview
     ): CollectibleSendPreview {
         return with(dataResource) {
-            if (code ?: -1 >= java.net.HttpURLConnection.HTTP_INTERNAL_ERROR || exception is IOException) {
+            if ((code ?: -1) >= java.net.HttpURLConnection.HTTP_INTERNAL_ERROR || exception is IOException) {
                 previousState.copy(
                     showNetworkErrorEvent = Event(Unit),
                     isLoadingVisible = false

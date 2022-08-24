@@ -21,15 +21,14 @@ import com.algorand.android.R
 import com.algorand.android.core.TransactionBaseFragment
 import com.algorand.android.databinding.FragmentCollectibleSendBinding
 import com.algorand.android.models.AnnotatedString
-import com.algorand.android.models.DecodedQrCode
+import com.algorand.android.models.CollectibleSendApproveResult
 import com.algorand.android.models.FragmentConfiguration
-import com.algorand.android.models.QrScanner
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.nft.ui.model.CollectibleSendPreview
 import com.algorand.android.nft.ui.model.RequestOptInConfirmationArgs
 import com.algorand.android.nft.ui.nftapprovetransaction.CollectibleTransactionApproveBottomSheet.Companion.COLLECTIBLE_TXN_APPROVE_KEY
-import com.algorand.android.ui.qr.QrCodeScannerFragment
+import com.algorand.android.nft.ui.nftsend.CollectibleSendQrScannerFragment.Companion.ACCOUNT_ADDRESS_SCAN_RESULT_KEY
 import com.algorand.android.utils.SingleButtonBottomSheet
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
@@ -54,14 +53,7 @@ class CollectibleSendFragment : TransactionBaseFragment(R.layout.fragment_collec
     }
 
     private val onScanQrClick: () -> Unit = {
-        nav(
-            CollectibleSendFragmentDirections.actionCollectibleSendFragmentToQrCodeScannerNavigation(
-                QrScanner(
-                    scanTypes = arrayOf(QrCodeScannerFragment.ScanReturnType.ADDRESS_NAVIGATE_BACK),
-                    titleRes = R.string.scan_an_algorand
-                )
-            )
-        )
+        nav(CollectibleSendFragmentDirections.actionCollectibleSendFragmentToCollectibleSendQrScannerFragment())
     }
 
     private val collectibleSendPreviewCollector: suspend (CollectibleSendPreview) -> Unit = {
@@ -117,18 +109,22 @@ class CollectibleSendFragment : TransactionBaseFragment(R.layout.fragment_collec
 
     private fun initSavedStateListeners() {
         startSavedStateListener(R.id.collectibleSendFragment) {
-            useSavedStateValue<DecodedQrCode>(QrCodeScannerFragment.QR_SCAN_RESULT_KEY) { decodedQrCode ->
-                if (!decodedQrCode.address.isNullOrBlank()) {
-                    collectibleSendViewModel.updateSelectedAccountAddress(decodedQrCode.address)
-                }
+            useSavedStateValue<String>(ACCOUNT_ADDRESS_SCAN_RESULT_KEY) { accountAddress ->
+                collectibleSendViewModel.updateSelectedAccountAddress(accountAddress)
             }
             useSavedStateValue<String>(CollectibleReceiverSelectionFragment.ACCOUNT_PUBLIC_KEY_KEY) { publicKey ->
                 collectibleSendViewModel.updateSelectedAccountAddress(publicKey)
             }
-            useSavedStateValue<Boolean>(COLLECTIBLE_TXN_APPROVE_KEY) { isApproved ->
-                if (isApproved) {
-                    collectibleSendViewModel.getSendTransactionData()?.let { transactionData ->
-                        sendTransaction(transactionData)
+            useSavedStateValue<CollectibleSendApproveResult>(COLLECTIBLE_TXN_APPROVE_KEY) { result ->
+                if (result.isApproved) {
+                    if (result.isOptOutChecked) {
+                        collectibleSendViewModel.createSendAndRemoveAssetTransactionData()?.let { transactionData ->
+                            sendTransaction(transactionData)
+                        }
+                    } else {
+                        collectibleSendViewModel.createSendTransactionData()?.let { transactionData ->
+                            sendTransaction(transactionData)
+                        }
                     }
                 }
             }
@@ -193,12 +189,13 @@ class CollectibleSendFragment : TransactionBaseFragment(R.layout.fragment_collec
     }
 
     private fun navToApproveTransactionBottomSheet() {
-        val transactionData = collectibleSendViewModel.getSendTransactionData() ?: return
+        val transactionData = collectibleSendViewModel.createSendTransactionData() ?: return
         nav(
             CollectibleSendFragmentDirections.actionCollectibleSendFragmentToCollectibleTransactionApproveBottomSheet(
                 senderPublicKey = transactionData.accountCacheData.account.address,
                 receiverPublicKey = transactionData.targetUser.publicKey,
-                fee = (transactionData.calculatedFee ?: transactionData.projectedFee).toFloat()
+                fee = (transactionData.calculatedFee ?: transactionData.projectedFee).toFloat(),
+                collectibleDetail = collectibleSendViewModel.getCollectibleDetail()
             )
         )
     }
@@ -229,7 +226,7 @@ class CollectibleSendFragment : TransactionBaseFragment(R.layout.fragment_collec
         with(binding.algorandWalletAddressTextInputLayout) {
             setOnTextChangeListener(onAlgorandAddressInputChangeListener)
             addTrailingIcon(R.drawable.ic_contacts, onContactClick)
-            addTrailingIcon(R.drawable.ic_scan_qr, onScanQrClick)
+            addTrailingIcon(R.drawable.ic_qr_scan, onScanQrClick)
         }
     }
 }

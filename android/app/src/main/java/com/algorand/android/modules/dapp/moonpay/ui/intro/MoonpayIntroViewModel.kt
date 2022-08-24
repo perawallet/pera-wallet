@@ -17,6 +17,7 @@ import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.modules.dapp.moonpay.data.remote.model.SignMoonpayUrlResponse
 import com.algorand.android.modules.dapp.moonpay.domain.usecase.MoonpaySignUrlUseCase
+import com.algorand.android.modules.tracking.moonpay.MoonpayAlgoBuyTapEventTracker
 import com.algorand.android.network.AlgodInterceptor
 import com.algorand.android.utils.MAINNET_NETWORK_SLUG
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +26,8 @@ import kotlinx.coroutines.launch
 
 class MoonpayIntroViewModel @ViewModelInject constructor(
     private val algodInterceptor: AlgodInterceptor,
-    private val moonpaySignUrlUseCase: MoonpaySignUrlUseCase
+    private val moonpaySignUrlUseCase: MoonpaySignUrlUseCase,
+    private val moonpayAlgoBuyTapEventTracker: MoonpayAlgoBuyTapEventTracker
 ) : BaseViewModel() {
 
     val signMoonpayUrlFlow = MutableStateFlow<SignMoonpayUrlResponse?>(null)
@@ -40,5 +42,11 @@ class MoonpayIntroViewModel @ViewModelInject constructor(
 
     fun isMainNet(): Boolean {
         return algodInterceptor.currentActiveNode?.networkSlug == MAINNET_NETWORK_SLUG
+    }
+
+    fun logBuyAlgoTapEvent() {
+        viewModelScope.launch {
+            moonpayAlgoBuyTapEventTracker.logMoonpayAlgoBuyTapEvent()
+        }
     }
 }

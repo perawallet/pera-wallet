@@ -17,11 +17,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.R
 import com.algorand.android.models.BaseAccountSelectionListItem
+import com.algorand.android.models.BaseAccountSelectionListItem.BaseAccountItem.NftDomainAccountItem
 import com.algorand.android.models.BaseDiffUtil
 import com.algorand.android.ui.accountselection.viewholder.AccountSelectionAccountErrorItemViewHolder
 import com.algorand.android.ui.accountselection.viewholder.AccountSelectionAccountItemViewHolder
 import com.algorand.android.ui.accountselection.viewholder.AccountSelectionContactItemViewHolder
 import com.algorand.android.ui.accountselection.viewholder.AccountSelectionHeaderItemViewHolder
+import com.algorand.android.ui.accountselection.viewholder.AccountSelectionNftDomainAccountItemViewHolder
 import com.algorand.android.ui.accountselection.viewholder.AccountSelectionPasteItemViewHolder
 
 class AccountSelectionAdapter(
@@ -35,6 +37,7 @@ class AccountSelectionAdapter(
             is BaseAccountSelectionListItem.BaseAccountItem.ContactItem -> R.layout.item_contact_simple
             is BaseAccountSelectionListItem.BaseAccountItem.AccountItem -> R.layout.item_account_simple
             is BaseAccountSelectionListItem.BaseAccountItem.AccountErrorItem -> R.layout.item_account_error_simple
+            is NftDomainAccountItem -> R.layout.item_nft_domain_account
             else -> throw Exception("$logTag list item is unknown")
         }
     }
@@ -46,6 +49,7 @@ class AccountSelectionAdapter(
             R.layout.item_contact_simple -> createContactItemViewHolder(parent)
             R.layout.item_account_simple -> createAccountItemViewHolder(parent)
             R.layout.item_account_error_simple -> createAccountErrorItemViewHolder(parent)
+            R.layout.item_nft_domain_account -> createNftDomainAccountItemViewHolder(parent)
             else -> throw Exception("$logTag list item is unknown")
         }
     }
@@ -94,6 +98,24 @@ class AccountSelectionAdapter(
         return AccountSelectionAccountErrorItemViewHolder.create(parent)
     }
 
+    private fun createNftDomainAccountItemViewHolder(
+        parent: ViewGroup
+    ): AccountSelectionNftDomainAccountItemViewHolder {
+        return AccountSelectionNftDomainAccountItemViewHolder.create(parent).apply {
+            itemView.setOnClickListener {
+                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
+                    (getItem(bindingAdapterPosition) as NftDomainAccountItem).run {
+                        listener.onNftDomainItemClick(
+                            accountAddress = publicKey,
+                            nftDomain = displayName,
+                            logoUrl = serviceLogoUrl
+                        )
+                    }
+                }
+            }
+        }
+    }
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is AccountSelectionPasteItemViewHolder -> {
@@ -111,6 +133,9 @@ class AccountSelectionAdapter(
             is AccountSelectionAccountErrorItemViewHolder -> {
                 holder.bind(getItem(position) as BaseAccountSelectionListItem.BaseAccountItem.AccountErrorItem)
             }
+            is AccountSelectionNftDomainAccountItemViewHolder -> {
+                holder.bind(getItem(position) as NftDomainAccountItem)
+            }
         }
     }
 
@@ -118,6 +143,7 @@ class AccountSelectionAdapter(
         fun onPasteItemClick(publicKey: String) {}
         fun onAccountItemClick(publicKey: String) {}
         fun onContactItemClick(publicKey: String) {}
+        fun onNftDomainItemClick(accountAddress: String, nftDomain: String, logoUrl: String?) {}
     }
 
     companion object {

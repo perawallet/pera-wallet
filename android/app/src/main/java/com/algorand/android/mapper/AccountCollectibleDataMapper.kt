@@ -32,8 +32,8 @@ import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.BasePen
 import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingSendingCollectibleData.SendingUnsupportedCollectibleData
 import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingSendingCollectibleData.SendingVideoCollectibleData
 import com.algorand.android.models.SimpleCollectibleDetail
+import com.algorand.android.modules.parity.domain.model.ParityValue
 import com.algorand.android.utils.DEFAULT_ASSET_DECIMAL
-import java.math.BigDecimal
 import java.math.BigInteger
 import javax.inject.Inject
 
@@ -44,9 +44,8 @@ class AccountCollectibleDataMapper @Inject constructor() {
         amount: BigInteger,
         formattedAmount: String,
         formattedCompactAmount: String,
-        amountInSelectedCurrency: BigDecimal,
-        formattedSelectedCurrencyValue: String,
-        formattedSelectedCurrencyCompactValue: String
+        parityValueInSelectedCurrency: ParityValue,
+        parityValueInSecondaryCurrency: ParityValue
     ): OwnedCollectibleImageData {
         return OwnedCollectibleImageData(
             id = collectibleDetail.assetId,
@@ -55,9 +54,8 @@ class AccountCollectibleDataMapper @Inject constructor() {
             amount = amount,
             formattedAmount = formattedAmount,
             formattedCompactAmount = formattedCompactAmount,
-            amountInSelectedCurrency = amountInSelectedCurrency,
-            formattedSelectedCurrencyValue = formattedSelectedCurrencyValue,
-            formattedSelectedCurrencyCompactValue = formattedSelectedCurrencyCompactValue,
+            parityValueInSelectedCurrency = parityValueInSelectedCurrency,
+            parityValueInSecondaryCurrency = parityValueInSecondaryCurrency,
             isVerified = collectibleDetail.isVerified,
             isAlgo = false,
             decimals = collectibleDetail.fractionDecimals ?: DEFAULT_ASSET_DECIMAL,
@@ -75,9 +73,8 @@ class AccountCollectibleDataMapper @Inject constructor() {
         amount: BigInteger,
         formattedAmount: String,
         formattedCompactAmount: String,
-        amountInSelectedCurrency: BigDecimal,
-        formattedSelectedCurrencyValue: String,
-        formattedSelectedCurrencyCompactValue: String
+        parityValueInSelectedCurrency: ParityValue,
+        parityValueInSecondaryCurrency: ParityValue
     ): OwnedCollectibleVideoData {
         return OwnedCollectibleVideoData(
             id = collectibleDetail.assetId,
@@ -86,9 +83,8 @@ class AccountCollectibleDataMapper @Inject constructor() {
             amount = amount,
             formattedAmount = formattedAmount,
             formattedCompactAmount = formattedCompactAmount,
-            amountInSelectedCurrency = amountInSelectedCurrency,
-            formattedSelectedCurrencyValue = formattedSelectedCurrencyValue,
-            formattedSelectedCurrencyCompactValue = formattedSelectedCurrencyCompactValue,
+            parityValueInSelectedCurrency = parityValueInSelectedCurrency,
+            parityValueInSecondaryCurrency = parityValueInSecondaryCurrency,
             isVerified = collectibleDetail.isVerified,
             isAlgo = false,
             decimals = collectibleDetail.fractionDecimals ?: DEFAULT_ASSET_DECIMAL,
@@ -106,9 +102,8 @@ class AccountCollectibleDataMapper @Inject constructor() {
         amount: BigInteger,
         formattedAmount: String,
         formattedCompactAmount: String,
-        amountInSelectedCurrency: BigDecimal,
-        formattedSelectedCurrencyValue: String,
-        formattedSelectedCurrencyCompactValue: String
+        parityValueInSelectedCurrency: ParityValue,
+        parityValueInSecondaryCurrency: ParityValue
     ): OwnedCollectibleMixedData {
         return OwnedCollectibleMixedData(
             id = collectibleDetail.assetId,
@@ -117,9 +112,8 @@ class AccountCollectibleDataMapper @Inject constructor() {
             amount = amount,
             formattedAmount = formattedAmount,
             formattedCompactAmount = formattedCompactAmount,
-            amountInSelectedCurrency = amountInSelectedCurrency,
-            formattedSelectedCurrencyValue = formattedSelectedCurrencyValue,
-            formattedSelectedCurrencyCompactValue = formattedSelectedCurrencyCompactValue,
+            parityValueInSelectedCurrency = parityValueInSelectedCurrency,
+            parityValueInSecondaryCurrency = parityValueInSecondaryCurrency,
             isVerified = collectibleDetail.isVerified,
             isAlgo = false,
             decimals = collectibleDetail.fractionDecimals ?: DEFAULT_ASSET_DECIMAL,
@@ -137,9 +131,8 @@ class AccountCollectibleDataMapper @Inject constructor() {
         amount: BigInteger,
         formattedAmount: String,
         formattedCompactAmount: String,
-        amountInSelectedCurrency: BigDecimal,
-        formattedSelectedCurrencyValue: String,
-        formattedSelectedCurrencyCompactValue: String
+        parityValueInSelectedCurrency: ParityValue,
+        parityValueInSecondaryCurrency: ParityValue
     ): OwnedUnsupportedCollectibleData {
         return OwnedUnsupportedCollectibleData(
             id = collectibleDetail.assetId,
@@ -148,9 +141,8 @@ class AccountCollectibleDataMapper @Inject constructor() {
             amount = amount,
             formattedAmount = formattedAmount,
             formattedCompactAmount = formattedCompactAmount,
-            amountInSelectedCurrency = amountInSelectedCurrency,
-            formattedSelectedCurrencyValue = formattedSelectedCurrencyValue,
-            formattedSelectedCurrencyCompactValue = formattedSelectedCurrencyCompactValue,
+            parityValueInSelectedCurrency = parityValueInSelectedCurrency,
+            parityValueInSecondaryCurrency = parityValueInSecondaryCurrency,
             isVerified = collectibleDetail.isVerified,
             isAlgo = false,
             decimals = collectibleDetail.fractionDecimals ?: DEFAULT_ASSET_DECIMAL,

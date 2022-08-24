@@ -27,7 +27,7 @@ class GetBaseOwnedAssetDataUseCase @Inject constructor(
 ) {
 
     fun getBaseOwnedAssetData(assetId: Long, publicKey: String): BaseAccountAssetData.BaseOwnedAssetData? {
-        val isAlgo = assetId == AssetInformation.ALGORAND_ID
+        val isAlgo = assetId == AssetInformation.ALGO_ID
         val isAsset = simpleAssetDetailUseCase.isAssetCached(assetId)
         val isCollectible = simpleCollectibleUseCase.isCollectibleCached(assetId)
         return when {

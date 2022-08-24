@@ -64,7 +64,7 @@ class RekeyInstructionFragment : DaggerBaseFragment(R.layout.fragment_rekey_inst
         }
 
         with(binding) {
-            secondExpectationText.setText(secondStepTextResId)
+            secondExpectationTextView.setText(secondStepTextResId)
             descriptionTextView.setText(descriptionTextResId)
         }
     }

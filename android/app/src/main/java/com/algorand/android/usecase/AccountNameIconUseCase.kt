@@ -12,7 +12,7 @@
 
 package com.algorand.android.usecase
 
-import com.algorand.android.models.AccountIcon
+import com.algorand.android.models.AccountIconResource
 import com.algorand.android.repository.ContactRepository
 import com.algorand.android.utils.toShortenedAddress
 import javax.inject.Inject
@@ -22,16 +22,17 @@ class AccountNameIconUseCase @Inject constructor(
     private val contactRepository: ContactRepository,
 ) {
 
-    fun getAccountDisplayTextAndIcon(publicKey: String): Pair<String, AccountIcon?> {
+    fun getAccountDisplayTextAndIcon(publicKey: String): Pair<String, AccountIconResource?> {
         return with(accountDetailUseCase) {
             getAccountName(publicKey) to getAccountIcon(publicKey)
         }
     }
 
-    suspend fun getAccountOrContactDisplayTextAndIcon(publicKey: String): Pair<String, AccountIcon?> {
+    suspend fun getAccountOrContactDisplayTextAndIcon(publicKey: String): Pair<String, AccountIconResource?> {
         val localReceiver = accountDetailUseCase.getCachedAccountDetail(publicKey)?.data
         if (localReceiver != null) {
-            return accountDetailUseCase.getAccountName(publicKey) to localReceiver.account.createAccountIcon()
+            return accountDetailUseCase.getAccountName(publicKey) to
+                AccountIconResource.getAccountIconResourceByAccountType(localReceiver.account.type)
         }
         val contactReceiver = contactRepository.getAllContacts().firstOrNull { it.publicKey == publicKey }
         return (contactReceiver?.name ?: publicKey.toShortenedAddress()) to null

@@ -31,10 +31,14 @@ import com.algorand.android.models.Account
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.Node
 import com.algorand.android.models.Result
+import com.algorand.android.modules.deeplink.ui.DeeplinkHandler
+import com.algorand.android.modules.tracking.bottomnavigation.BottomNavigationEventTracker
+import com.algorand.android.modules.tracking.moonpay.MoonpayEventTracker
 import com.algorand.android.network.AlgodInterceptor
 import com.algorand.android.network.IndexerInterceptor
 import com.algorand.android.network.MobileHeaderInterceptor
 import com.algorand.android.repository.TransactionsRepository
+import com.algorand.android.tutorialdialog.domain.usecase.AccountAddressTutorialDisplayPreferencesUseCase
 import com.algorand.android.usecase.AssetAdditionUseCase
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.AutoLockManager
@@ -45,10 +49,14 @@ import com.algorand.android.utils.analytics.CreationType
 import com.algorand.android.utils.analytics.logRegisterEvent
 import com.algorand.android.utils.coremanager.BlockPollingManager
 import com.algorand.android.utils.findAllNodes
+import com.algorand.android.utils.preference.getRegisterSkip
+import com.algorand.android.utils.preference.setRegisterSkip
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -71,10 +79,18 @@ class MainViewModel @ViewModelInject constructor(
     private val deviceIdMigrationUseCase: DeviceIdMigrationUseCase,
     private val firebasePushTokenUseCase: FirebasePushTokenUseCase,
     private val updatePushTokenUseCase: UpdatePushTokenUseCase,
-    private val deviceIdUseCase: DeviceIdUseCase
+    private val deviceIdUseCase: DeviceIdUseCase,
+    private val bottomNavigationEventTracker: BottomNavigationEventTracker,
+    private val deepLinkHandler: DeeplinkHandler,
+    private val moonpayEventTracker: MoonpayEventTracker,
+    private val accountAddressTutorialDisplayPreferencesUseCase: AccountAddressTutorialDisplayPreferencesUseCase
 ) : BaseViewModel() {
 
-    val addAssetResultLiveData = MutableLiveData<Event<Resource<Unit>>>()
+    val addAssetResultLiveData = MutableLiveData<Event<Resource<String?>>>()
+
+    private val _shouldShowAccountAddressCopyTutorialDialogFlow = MutableStateFlow(false)
+    val shouldShowAccountAddressCopyTutorialDialogFlow: StateFlow<Boolean>
+        get() = _shouldShowAccountAddressCopyTutorialDialogFlow
 
     // TODO I'll change after checking usage of flow in activity.
     val accountBalanceSyncStatus = accountCacheManager.getCacheStatusFlow().asLiveData()
@@ -168,7 +184,8 @@ class MainViewModel @ViewModelInject constructor(
             when (transactionRepository.sendSignedTransaction(signedTransactionData)) {
                 is Result.Success -> {
                     assetAdditionUseCase.addAssetAdditionToAccountCache(accountPublicKey, assetInformation)
-                    addAssetResultLiveData.postValue(Event(Resource.Success(Unit)))
+                    val assetName = assetInformation.fullName ?: assetInformation.shortName
+                    addAssetResultLiveData.postValue(Event(Resource.Success(assetName)))
                 }
             }
         }
@@ -179,13 +196,55 @@ class MainViewModel @ViewModelInject constructor(
             if (tempAccount.isRegistrationCompleted()) {
                 firebaseAnalytics.logRegisterEvent(creationType)
                 accountManager.addNewAccount(tempAccount)
+                if (!sharedPref.getRegisterSkip()) {
+                    sharedPref.setRegisterSkip()
+                }
                 return true
             }
         }
         return false
     }
 
+    fun handleDeepLink(uri: String) {
+        deepLinkHandler.handleDeepLink(uri)
+    }
+
+    fun setDeepLinkHandlerListener(listener: DeeplinkHandler.Listener) {
+        deepLinkHandler.setListener(listener)
+    }
+
     fun setupAutoLockManager(lifecycle: Lifecycle) {
         autoLockManager.registerAppLifecycle(lifecycle)
+    }
+
+    fun logBottomNavAlgoPriceTapEvent() {
+        viewModelScope.launch {
+            bottomNavigationEventTracker.logAlgoPriceTapEvent()
+        }
+    }
+
+    fun logBottomNavAccountsTapEvent() {
+        viewModelScope.launch {
+            bottomNavigationEventTracker.logAccountsTapEvent()
+        }
+    }
+
+    fun logBottomNavigationBuyAlgoEvent() {
+        viewModelScope.launch {
+            bottomNavigationEventTracker.logBottomNavigationAlgoBuyTapEvent()
+        }
+    }
+
+    fun logMoonpayAlgoBuyCompletedEvent() {
+        viewModelScope.launch {
+            moonpayEventTracker.logMoonpayAlgoBuyCompletedEvent()
+        }
+    }
+
+    fun checkAccountAddressCopyTutorialDialogState() {
+        viewModelScope.launch {
+            _shouldShowAccountAddressCopyTutorialDialogFlow.value =
+                accountAddressTutorialDisplayPreferencesUseCase.shouldShowDialogByApplicationOpeningCount()
+        }
     }
 }

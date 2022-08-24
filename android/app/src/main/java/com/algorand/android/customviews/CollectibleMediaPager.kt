@@ -15,6 +15,7 @@ package com.algorand.android.customviews
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.use
 import androidx.core.view.isInvisible
@@ -36,12 +37,40 @@ class CollectibleMediaPager(context: Context, attrs: AttributeSet? = null) : Con
     private var pagerListener: MediaPagerListener? = null
 
     private var adapterListener = object : CollectibleMediaAdapter.MediaClickListener {
-        override fun onVideoMediaClick(videoUrl: String?) {
-            pagerListener?.onVideoMediaClick(videoUrl)
+        override fun onVideoMediaClick(videoUrl: String?, collectibleImageView: View) {
+            pagerListener?.onVideoMediaClick(videoUrl, collectibleImageView)
         }
 
-        override fun onImageMediaClick(imageUrl: String?) {
-            pagerListener?.onImageMediaClick(imageUrl)
+        override fun onImageMediaClick(
+            imageUrl: String?,
+            errorDisplayText: String,
+            collectibleImageView: View,
+            mediaType: BaseCollectibleMediaItem.ItemType,
+            previewPrismUrl: String
+        ) {
+            pagerListener?.onImageMediaClick(
+                imageUrl,
+                errorDisplayText,
+                collectibleImageView,
+                mediaType,
+                previewPrismUrl
+            )
+        }
+
+        override fun onGifMediaClick(
+            previewUrl: String?,
+            errorDisplayText: String,
+            collectibleImageView: View,
+            mediaType: BaseCollectibleMediaItem.ItemType,
+            previewPrismUrl: String
+        ) {
+            pagerListener?.onGifMediaClick(
+                previewUrl,
+                errorDisplayText,
+                collectibleImageView,
+                mediaType,
+                previewPrismUrl
+            )
         }
     }
 
@@ -104,9 +133,14 @@ class CollectibleMediaPager(context: Context, attrs: AttributeSet? = null) : Con
 
     private fun onCollectiblePageSelected(position: Int) {
         val selectedItem = adapter.currentList.getOrNull(position)
-        val isImageSelected = selectedItem?.itemType == BaseCollectibleMediaItem.ItemType.IMAGE
-        binding.collectibleMediaBottomButton
-            .isInvisible = !isImageSelected || !isBottomButtonVisible || selectedItem?.previewUrl == null
+        val isSelectedMediaHas3dSupport = selectedItem?.has3dSupport ?: false
+        binding.fullScreenImageView.isVisible = selectedItem?.hasFullScreenSupport ?: false
+        binding.collectibleMediaBottomButton.apply {
+            isInvisible = !isSelectedMediaHas3dSupport || !isBottomButtonVisible || selectedItem?.previewUrl == null
+            if (isSelectedMediaHas3dSupport) {
+                setOnClickListener { pagerListener?.on3dModeClick(selectedItem?.previewUrl) }
+            }
+        }
     }
 
     override fun onDetachedFromWindow() {
@@ -115,7 +149,23 @@ class CollectibleMediaPager(context: Context, attrs: AttributeSet? = null) : Con
     }
 
     interface MediaPagerListener {
-        fun onVideoMediaClick(videoUrl: String?)
-        fun onImageMediaClick(imageUrl: String?)
+        fun onVideoMediaClick(videoUrl: String?, collectibleImageView: View)
+        fun onImageMediaClick(
+            imageUrl: String?,
+            errorDisplayText: String,
+            collectibleImageView: View,
+            mediaType: BaseCollectibleMediaItem.ItemType,
+            previewPrismUrl: String
+        )
+
+        fun onGifMediaClick(
+            previewUrl: String?,
+            errorDisplayText: String,
+            collectibleImageView: View,
+            mediaType: BaseCollectibleMediaItem.ItemType,
+            previewPrismUrl: String
+        )
+
+        fun on3dModeClick(imageUrl: String?)
     }
 }

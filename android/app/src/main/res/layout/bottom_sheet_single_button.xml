@@ -10,80 +10,87 @@
   ~ limitations under the License
   -->
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:backgroundTint="@color/primary_background"
-    android:paddingBottom="@dimen/bottom_safe_area_margin">
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
-    <View
-        android:id="@+id/modalityLineView"
-        style="@style/BottomSheetModalityLine"
-        android:layout_marginTop="@dimen/spacing_small"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <include
-        android:id="@+id/errorGroupLayout"
-        layout="@layout/layout_bottom_sheet_top_error"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_normal"
-        android:layout_marginTop="@dimen/spacing_xlarge"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/modalityLineView" />
+        android:backgroundTint="@color/primary_background"
+        android:paddingBottom="@dimen/bottom_safe_area_margin">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iconImageView"
-        android:layout_width="@dimen/bottom_sheet_single_button_icon_size"
-        android:layout_height="@dimen/bottom_sheet_single_button_icon_size"
-        android:layout_marginTop="@dimen/spacing_xxxxlarge"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/errorGroupLayout"
-        tools:srcCompat="@drawable/ic_info" />
+        <View
+            android:id="@+id/modalityLineView"
+            style="@style/BottomSheetModalityLine"
+            android:layout_marginTop="@dimen/spacing_small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/titleTextView"
-        style="@style/TextAppearance.Body.Large.Sans.Medium"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_xlarge"
-        android:layout_marginTop="@dimen/spacing_xxlarge"
-        android:gravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iconImageView"
-        tools:text="Screenshot Detected" />
+        <include
+            android:id="@+id/errorGroupLayout"
+            layout="@layout/layout_bottom_sheet_top_error"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_xlarge"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/modalityLineView" />
 
-    <TextView
-        android:id="@+id/descriptionTextView"
-        style="@style/TextAppearance.Description"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_xlarge"
-        android:layout_marginTop="@dimen/spacing_small"
-        android:gravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/titleTextView"
-        tools:text="Do not backup your recovery passphrase by taking a screenshot. Having an image containing your passphrase is a security risk." />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iconImageView"
+            android:layout_width="@dimen/bottom_sheet_single_button_icon_size"
+            android:layout_height="@dimen/bottom_sheet_single_button_icon_size"
+            android:layout_marginTop="@dimen/spacing_xxxxlarge"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/errorGroupLayout"
+            tools:srcCompat="@drawable/ic_info" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/confirmationButton"
-        style="@style/Button.Secondary"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_xlarge"
-        android:layout_marginTop="@dimen/spacing_xxlarge"
-        android:text="@string/close"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/descriptionTextView" />
+        <TextView
+            android:id="@+id/titleTextView"
+            style="@style/TextAppearance.Body.Large.Sans.Medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_xxlarge"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iconImageView"
+            tools:text="Screenshot Detected" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/descriptionTextView"
+            style="@style/TextAppearance.Description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/titleTextView"
+            tools:text="Do not backup your recovery passphrase by taking a screenshot. Having an image containing your passphrase is a security risk." />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/confirmationButton"
+            style="@style/Button.Secondary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_xlarge"
+            android:layout_marginTop="@dimen/spacing_xxlarge"
+            android:text="@string/close"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionTextView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

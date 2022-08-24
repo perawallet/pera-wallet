@@ -47,8 +47,8 @@ class DialPadView @JvmOverloads constructor(
 
     private fun loadAttrs(attrs: AttributeSet?) {
         context?.obtainStyledAttributes(attrs, R.styleable.DialPadView)?.use { attrs ->
-            attrs.getBoolean(R.styleable.DialPadView_showDotButton, false).let { isShown ->
-                binding.padViewDotButton.isInvisible = isShown.not()
+            attrs.getBoolean(R.styleable.DialPadView_showSeparatorButton, false).let { isShown ->
+                binding.padViewSeparatorButton.isInvisible = isShown.not()
             }
             attrs.getDimensionPixelSize(R.styleable.DialPadView_padButtonSize, -1).let { size ->
                 if (size != -1) setButtonSize(size)
@@ -107,7 +107,7 @@ class DialPadView @JvmOverloads constructor(
     private fun setClickListeners() {
         numPadViewList.forEach { it.setOnClickListener { v -> onNumPadClick(v) } }
         binding.padViewDeleteButton.setOnClickListener { onBackspaceClick() }
-        binding.padViewDotButton.setOnClickListener { onDotClick() }
+        binding.padViewSeparatorButton.setOnClickListener { onDecimalSeparatorClicked() }
     }
 
     private fun onNumPadClick(view: View?) {
@@ -118,8 +118,8 @@ class DialPadView @JvmOverloads constructor(
         dialPadListener?.onBackspaceClick()
     }
 
-    private fun onDotClick() {
-        dialPadListener?.onDotClick()
+    private fun onDecimalSeparatorClicked() {
+        dialPadListener?.onDecimalSeparatorClicked()
     }
 
     private fun applyAllViews(action: (View) -> Unit) {
@@ -132,9 +132,13 @@ class DialPadView @JvmOverloads constructor(
         this.dialPadListener = dialPadListener
     }
 
+    fun setSeparator(separator: String) {
+        binding.padViewSeparatorButton.text = separator
+    }
+
     interface DialPadListener {
         fun onNumberClick(number: Int)
         fun onBackspaceClick()
-        fun onDotClick() {}
+        fun onDecimalSeparatorClicked() {}
     }
 }

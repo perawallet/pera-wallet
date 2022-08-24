@@ -28,6 +28,8 @@ import com.algorand.android.R
 import com.algorand.android.customviews.PassphraseInputGroup.Companion.WORD_COUNT
 import com.algorand.android.databinding.CustomPassphraseInputBinding
 import com.algorand.android.utils.addFilterNotLetters
+import com.algorand.android.utils.splitMnemonic
+import com.algorand.android.utils.getTextFromClipboard
 import com.algorand.android.utils.recordException
 import com.algorand.android.utils.showKeyboard
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -68,10 +70,10 @@ class PassphraseInput @JvmOverloads constructor(
 
     private fun setupPasteListener() {
         binding.passphraseInputEditText.doOnPaste {
-            val pastedText = binding.passphraseInputEditText.text.toString()
-            val splittedText = pastedText.trim().split(" ")
+            val pastedText = context?.getTextFromClipboard().toString()
+            val splittedText = pastedText.splitMnemonic()
             if (splittedText.size == WORD_COUNT) {
-                listener?.onMnemonicPasted(pastedText.trim())
+                listener?.onMnemonicPasted(pastedText)
             } else if (splittedText.size > 1) {
                 listener?.onError(R.string.the_last_copied_text)
                 binding.passphraseInputEditText.setText("")

@@ -15,7 +15,8 @@ package com.algorand.android.mapper
 
 import com.algorand.android.models.AccountDetail
 import com.algorand.android.models.AccountDetailSummary
-import com.algorand.android.utils.toShortenedAddress
+import com.algorand.android.models.AccountIconResource
+import com.algorand.android.utils.AccountDisplayName
 import javax.inject.Inject
 
 class AccountSummaryMapper @Inject constructor() {
@@ -23,8 +24,8 @@ class AccountSummaryMapper @Inject constructor() {
     fun mapTo(accountDetail: AccountDetail, canSignTransaction: Boolean): AccountDetailSummary {
         return with(accountDetail) {
             AccountDetailSummary(
-                accountIcon = accountDetail.account.createAccountIcon(),
-                name = account.name.ifEmpty { accountInformation.address.toShortenedAddress() },
+                accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(account.type),
+                accountDisplayName = AccountDisplayName.create(account.address, account.name, account.type),
                 publicKey = accountInformation.address,
                 canSignTransaction = canSignTransaction
             )

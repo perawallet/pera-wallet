@@ -17,7 +17,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.isVisible
 import com.algorand.android.models.BaseViewHolder
-import com.algorand.android.ui.common.listhelper.BaseAccountListItem
+import com.algorand.android.modules.accounts.domain.model.BaseAccountListItem
 import com.google.android.material.button.MaterialButton
 
 abstract class BaseBannerViewHolder(

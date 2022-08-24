@@ -38,13 +38,6 @@ class CollectibleTransferConfirmedFragment : BaseInfoFragment() {
 
     override fun setFirstButton(materialButton: MaterialButton) {
         materialButton.setText(R.string.got_it)
-        materialButton.setOnClickListener { navigateToHomeNavigation() }
-    }
-
-    private fun navigateToHomeNavigation() {
-        nav(
-            CollectibleTransferConfirmedFragmentDirections
-                .actionCollectibleTransferConfirmedFragmentToCollectiblesFragment()
-        )
+        materialButton.setOnClickListener { navBack() }
     }
 }

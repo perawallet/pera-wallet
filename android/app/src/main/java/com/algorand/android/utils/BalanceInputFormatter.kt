@@ -1,9 +1,8 @@
 package com.algorand.android.utils
 
 import com.algorand.android.models.BalanceInput
+import com.algorand.android.utils.extensions.toBigDecimalWithLocale
 import java.math.BigDecimal
-import java.math.BigInteger
-import java.text.DecimalFormat
 import kotlin.properties.Delegates
 
 class BalanceInputFormatter {
@@ -12,13 +11,13 @@ class BalanceInputFormatter {
 
     val amountInitialPlaceholder by lazy { createAmountInitialPlaceholder() }
 
+    private val zeroWithSeparator by lazy { createZeroWithSeparator() }
+
     private var formattedText: String by Delegates.observable(EMPTY_TEXT) { _, _, newValue ->
         onFormattedTextChanged(newValue)
     }
 
     private var listener: Listener? = null
-
-    private val decimalFormatter = DecimalFormat()
 
     fun updateAmount(text: String) {
         formattedText = text
@@ -34,59 +33,69 @@ class BalanceInputFormatter {
         }
         if (shouldAddNewNumber()) {
             formattedText = formattedText.plus(number)
+            reformatCurrentText()
         }
     }
 
     fun onBackspaceClick() {
         removeLatestNumber()
+        reformatCurrentText()
     }
 
-    fun onDotClick() {
+    private fun reformatCurrentText() {
+        if (!hasSeparator()) {
+            formattedText = formattedText.toBigDecimalWithLocale().formatAmount(
+                decimals = maxDecimalLimit,
+                isDecimalFixed = false,
+                minDecimals = 0
+            )
+        }
+    }
+
+    private fun hasSeparator(): Boolean {
+        return formattedText.contains(getDecimalSeparator())
+    }
+
+    fun onDecimalSeparatorClick() {
         formattedText.run {
             formattedText = when {
-                (this != amountInitialPlaceholder && contains(DOT)) || maxDecimalLimit == 0 -> return
-                this == amountInitialPlaceholder -> ZERO_WITH_DOT
-                else -> plus(if (isBlank()) ZERO_WITH_DOT else DOT)
+                (this != amountInitialPlaceholder && contains(getDecimalSeparator())) || maxDecimalLimit == 0 -> return
+                this == amountInitialPlaceholder -> zeroWithSeparator
+                else -> plus(if (isBlank()) zeroWithSeparator else getDecimalSeparator())
             }
         }
     }
 
-    private fun onFormattedTextChanged(formattedText: String) {
-        val amountAsBigDecimal = with(formattedText) {
-            takeUnless { hasDotAtTheEnd(this) } ?: dropLast(1)
-        }.filter { it.isDigit() || it == DOT_CHAR }.toBigDecimalOrNull() ?: BigDecimal.ZERO
-
-        val amountAsBigInteger = formattedText.filter { it.isDigit() }.toBigIntegerOrNull() ?: BigInteger.ZERO
-        val formattedBalanceString = formatInput(formattedText)
-        val balanceInput = BalanceInput(
-            formattedBalance = amountAsBigInteger,
-            formattedBalanceString = formattedBalanceString,
-            formattedBalanceInBigDecimal = amountAsBigDecimal,
-            decimal = maxDecimalLimit,
-            isAmountValid = formattedBalanceString != amountInitialPlaceholder || formattedText.isNotEmpty()
-        )
-
-        listener?.onBalanceFormatted(balanceInput)
+    private fun createZeroWithSeparator(): String {
+        return ZERO.plus(getDecimalSeparator())
     }
 
-    private fun hasDotAtTheEnd(formattedText: String): Boolean {
-        return formattedText.isNotBlank() && formattedText.last().toString() == DOT
+    private fun onFormattedTextChanged(formattedText: String) {
+        val balanceInput = BalanceInput(
+            formattedBalanceString = formattedText,
+            formattedBalanceInBigDecimal = formattedText.toBigDecimalWithLocale(),
+            decimal = maxDecimalLimit,
+            isAmountValid = formattedText != amountInitialPlaceholder || formattedText.isNotEmpty()
+        )
+        listener?.onBalanceFormatted(balanceInput)
     }
 
     private fun shouldAddNewNumber(): Boolean {
         val remainingDecimalCount = getRemainingDecimalCount()
-        return !formattedText.contains(DOT) || (formattedText.contains(DOT) && remainingDecimalCount > 0)
+        val separator = getDecimalSeparator()
+        return !formattedText.contains(separator) || (formattedText.contains(separator) && remainingDecimalCount > 0)
     }
 
     private fun shouldRemoveZeroPrefix(upComingNumber: Int): Boolean {
         return with(formattedText) {
-            this == ZERO_CHAR.toString() || (this == amountInitialPlaceholder && formattedText.isBlank())
+            this == ZERO || (this == amountInitialPlaceholder && formattedText.isBlank())
         }
     }
 
     private fun getRemainingDecimalCount(): Int {
-        return if (formattedText.contains(DOT)) {
-            maxDecimalLimit - formattedText.split(DOT).last().length
+        val separator = getDecimalSeparator()
+        return if (formattedText.contains(separator)) {
+            maxDecimalLimit - formattedText.split(separator).last().length
         } else {
             maxDecimalLimit
         }
@@ -102,29 +111,7 @@ class BalanceInputFormatter {
     }
 
     private fun createAmountInitialPlaceholder(): String {
-        return BigDecimal.ZERO.formatAmount(maxDecimalLimit, false)
-    }
-
-    private fun formatInput(input: String): String {
-        val addedDecimalCount = if (input.contains(DOT)) formattedText.split(DOT).last().length else 0
-
-        // BigDecimal can include only [DOT] and [DIGITS] otherwise it returns [ZERO]
-        val inputAsBigDecimal = input.filter { it.isDigit() || it == DOT_CHAR }.toBigDecimalOrNull() ?: BigDecimal.ZERO
-        val formatter = updateFormatter(addedDecimalCount)
-        val formattedInput = formatter.format(inputAsBigDecimal)
-
-        // Number formatter is removing trailing [DOT]
-        if (input.endsWith(DOT)) {
-            return formattedInput.plus(DOT)
-        }
-        return formattedInput
-    }
-
-    private fun updateFormatter(minimumFractionDigits: Int): DecimalFormat {
-        return decimalFormatter.apply {
-            maximumFractionDigits = maxDecimalLimit
-            this.minimumFractionDigits = minimumFractionDigits
-        }
+        return BigDecimal.ZERO.formatAmount(maxDecimalLimit, isDecimalFixed = false)
     }
 
     fun interface Listener {
@@ -133,11 +120,6 @@ class BalanceInputFormatter {
 
     companion object {
         private const val EMPTY_TEXT = ""
-        private const val DOT = "."
-        private const val DOT_CHAR = '.'
         private const val ZERO = "0"
-        private const val ZERO_CHAR = '0'
-        private const val DEFAULT_TEXT = "0"
-        private const val ZERO_WITH_DOT = "0."
     }
 }

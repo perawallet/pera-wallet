@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_margin="@dimen/keyline_1"
+            android:layout_margin="@dimen/spacing_normal"
             android:fontFamily="@font/dmsans_medium"
             android:textSize="15sp"
             tools:text="18,421,331.00 received" />

@@ -80,22 +80,6 @@
             android:text="@string/app_preferences" />
 
         <com.algorand.android.customviews.SettingsListItem
-            android:id="@+id/rewardsListItem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:settingsIcon="@drawable/ic_gift"
-            app:settingsShowArrow="false"
-            app:settingsText="@string/show_rewards">
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/rewardsSwitch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:useMaterialThemeColors="false" />
-
-        </com.algorand.android.customviews.SettingsListItem>
-
-        <com.algorand.android.customviews.SettingsListItem
             android:id="@+id/languageListItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

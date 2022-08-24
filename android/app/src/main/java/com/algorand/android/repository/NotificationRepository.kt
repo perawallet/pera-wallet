@@ -77,8 +77,12 @@ class NotificationRepository @Inject constructor(
         if (isFiltered) {
             notificationFilterDao.insert(NotificationFilter(publicKey))
         } else {
-            notificationFilterDao.delete(NotificationFilter(publicKey))
+            notificationFilterDao.deleteByPublicKey(publicKey)
         }
+    }
+
+    fun deleteFilterFromDatabase(publicKey: String) {
+        notificationFilterDao.deleteByPublicKey(publicKey)
     }
 
     fun saveLastRefreshedDateTime(lastRefreshedZonedDateTimeAsString: String) {

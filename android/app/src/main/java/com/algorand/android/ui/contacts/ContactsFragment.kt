@@ -33,7 +33,11 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ContactsFragment : DaggerBaseFragment(R.layout.fragment_contacts) {
 
-    private val toolbarConfiguration = ToolbarConfiguration(backgroundColor = R.color.primary_background)
+    private val toolbarConfiguration = ToolbarConfiguration(
+        backgroundColor = R.color.primary_background,
+        startIconResId = R.drawable.ic_left_arrow,
+        startIconClick = ::navBack
+    )
 
     override val fragmentConfiguration = FragmentConfiguration(
         toolbarConfiguration = toolbarConfiguration,
@@ -66,7 +70,7 @@ class ContactsFragment : DaggerBaseFragment(R.layout.fragment_contacts) {
 
     private val emptyScreenState by lazy {
         ScreenState.CustomState(
-            icon = R.drawable.ic_menu_contacts,
+            icon = R.drawable.ic_contacts,
             title = R.string.you_havent,
             description = R.string.you_can_make_the,
             buttonText = R.string.add_contact
@@ -108,7 +112,7 @@ class ContactsFragment : DaggerBaseFragment(R.layout.fragment_contacts) {
     }
 
     private fun addContactClick() {
-        nav(ContactsFragmentDirections.actionContactsFragmentToAddContactFragment())
+        nav(ContactsFragmentDirections.actionGlobalContactAdditionNavigation())
     }
 
     private fun updateScreenState(shouldShown: Boolean, isQueryStated: Boolean) {

@@ -28,7 +28,7 @@ import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ViewPassphraseBottomSheet : BaseBottomSheet(R.layout.dialog_view_passphrase, false) {
+class ViewPassphraseBottomSheet : BaseBottomSheet(R.layout.dialog_view_passphrase) {
 
     private val toolbarConfiguration = ToolbarConfiguration(
         titleResId = R.string.passphrase,

@@ -24,5 +24,6 @@ data class AssetDetailDTO(
     val fractionDecimals: Int?,
     val usdValue: BigDecimal?,
     val assetCreator: AssetCreator?,
-    val collectible: SimpleCollectible?
+    val collectible: SimpleCollectible?,
+    val explorerUrl: String?
 )

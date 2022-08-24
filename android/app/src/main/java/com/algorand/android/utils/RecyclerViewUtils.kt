@@ -15,8 +15,10 @@ package com.algorand.android.utils
 import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.R
+import kotlin.properties.Delegates
 
 // TODO remove addDivider and use addCustomDivider in refactor
 fun RecyclerView.addDivider(@DrawableRes dividerResId: Int) {
@@ -33,4 +35,24 @@ fun RecyclerView.addCustomDivider(
     AppCompatResources.getDrawable(context, drawableResId)?.let { dividerDrawable ->
         addItemDecoration(CustomDividerItemDecoration(orientation, dividerDrawable, showLastDivider))
     }
+}
+
+fun RecyclerView.addItemVisibilityChangeListener(
+    position: Int,
+    onItemVisibilityChange: ((isVisible: Boolean) -> Unit)
+) {
+    addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        var isVisible: Boolean? by Delegates.observable(null, { _, oldValue, newValue ->
+            if (newValue != oldValue && newValue != null) onItemVisibilityChange.invoke(newValue)
+        })
+
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            (layoutManager as? LinearLayoutManager)?.let {
+                val firstVisiblePosition = it.findFirstVisibleItemPosition()
+                val lastVisiblePosition = it.findLastVisibleItemPosition()
+                isVisible = position in firstVisiblePosition until lastVisiblePosition + 1
+            }
+        }
+    })
 }

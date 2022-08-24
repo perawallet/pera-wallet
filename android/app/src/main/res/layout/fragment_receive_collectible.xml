@@ -55,19 +55,19 @@
         android:id="@+id/accountDividerView"
         style="@style/Divider.Horizontal"
         android:layout_margin="0dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/accountCopyQrView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/accountCopyQrView" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.algorand.android.customviews.AccountCopyQrView
         android:id="@+id/accountCopyQrView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:paddingHorizontal="@dimen/spacing_xlarge"
-        android:paddingVertical="@dimen/spacing_small" />
+        android:paddingVertical="@dimen/spacing_small"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
     <androidx.core.widget.ContentLoadingProgressBar
@@ -86,10 +86,8 @@
         android:id="@+id/screenStateView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_xxlarge"
-        android:layout_marginBottom="@dimen/bottom_safe_area_margin"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/accountCopyQrView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/searchView"

@@ -27,7 +27,7 @@ class AccountItemViewHolder(
     fun bind(accountItem: LedgerInformationListItem.AccountItem) {
         with(binding) {
             with(accountItem) {
-                accountView.setAccount(name, assetCount, accountIcon)
+                accountView.setAccount(name, assetCount, accountIconResource)
                 currencyBalanceTextView.setTextAndVisibility(portfolioValue)
             }
         }

@@ -14,7 +14,7 @@
     android:shape="rectangle">
 
     <corners android:radius="40dp" />
-    <solid android:color="@color/turquoise_1A" />
+    <solid android:color="@color/positive_lighter" />
     <padding
         android:bottom="4dp"
         android:left="8dp"

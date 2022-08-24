@@ -101,7 +101,7 @@ class AssetTransferAmountViewModel @ViewModelInject constructor(
         }
     }
 
-    fun getMaximumAmountOfAsset(): String? {
+    fun getMaximumAmountOfAsset(): String {
         return assetTransferAmountUseCase.getMaximumAmountOfAsset(
             assetTransaction.assetId,
             assetTransaction.senderAddress

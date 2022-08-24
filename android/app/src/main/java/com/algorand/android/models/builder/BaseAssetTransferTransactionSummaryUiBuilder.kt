@@ -33,7 +33,7 @@ class BaseAssetTransferTransactionSummaryUiBuilder @Inject constructor() :
         return with(txn) {
             WalletConnectTransactionSummary(
                 accountName = account?.name,
-                accountIcon = createAccountIcon(),
+                accountIconResource = createAccountIconResource(),
                 accountBalance = assetInformation?.amount,
                 assetShortName = assetParams?.shortName,
                 assetDecimal = assetDecimal,
@@ -54,7 +54,7 @@ class BaseAssetTransferTransactionSummaryUiBuilder @Inject constructor() :
             )
             WalletConnectTransactionSummary(
                 accountName = account?.name,
-                accountIcon = createAccountIcon(),
+                accountIconResource = createAccountIconResource(),
                 summaryTitle = titleText,
                 showWarning = warningCount != null,
                 showMoreButtonText = R.string.show_all_details

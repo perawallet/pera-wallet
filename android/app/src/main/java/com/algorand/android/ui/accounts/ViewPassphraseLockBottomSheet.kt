@@ -12,7 +12,6 @@
 
 package com.algorand.android.ui.accounts
 
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
 import com.algorand.android.ui.lock.BasePasscodeVerificationBottomSheet
@@ -27,8 +26,6 @@ class ViewPassphraseLockBottomSheet : BasePasscodeVerificationBottomSheet() {
 
     private val args: ViewPassphraseLockBottomSheetArgs by navArgs()
 
-    private val viewPassphraseLockViewModel: ViewPassphraseLockViewModel by viewModels()
-
     override fun onPasscodeError() {
         super.onPasscodeError()
         context?.showAlertDialog(
@@ -40,13 +37,6 @@ class ViewPassphraseLockBottomSheet : BasePasscodeVerificationBottomSheet() {
     override fun onPasscodeSuccess() {
         setNavigationResult(VIEW_PASSPHRASE_ADDRESS_KEY, args.publicKey)
         navBack()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        if (viewPassphraseLockViewModel.isNotPasswordChosen()) {
-            onPasscodeSuccess()
-        }
     }
 
     companion object {

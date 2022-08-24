@@ -14,7 +14,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <corners
-        android:topLeftRadius="@dimen/keyline_1"
-        android:topRightRadius="@dimen/keyline_1" />
+        android:topLeftRadius="@dimen/spacing_normal"
+        android:topRightRadius="@dimen/spacing_normal" />
     <solid android:color="@color/secondary_background" />
 </shape>

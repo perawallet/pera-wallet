@@ -22,6 +22,9 @@ class LedgerInformationAssetItemMapper @Inject constructor() {
     fun mapTo(
         accountAssetData: BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData
     ): LedgerInformationListItem.AssetInformationItem {
-        return LedgerInformationListItem.AssetInformationItem(accountAssetData)
+        return LedgerInformationListItem.AssetInformationItem(
+            accountAssetData = accountAssetData,
+            formattedCurrencyBalanceText = accountAssetData.parityValueInSelectedCurrency.getFormattedValue()
+        )
     }
 }

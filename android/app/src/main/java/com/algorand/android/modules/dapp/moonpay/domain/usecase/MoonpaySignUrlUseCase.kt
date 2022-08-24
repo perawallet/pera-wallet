@@ -14,15 +14,15 @@ package com.algorand.android.modules.dapp.moonpay.domain.usecase
 
 import com.algorand.android.modules.dapp.moonpay.data.remote.model.SignMoonpayUrlRequest
 import com.algorand.android.modules.dapp.moonpay.data.repository.MoonpayRepository
-import com.algorand.android.utils.getDeeplinkUrl
-import kotlinx.coroutines.flow.flow
+import com.algorand.android.utils.getDeepLinkUrl
 import javax.inject.Inject
+import kotlinx.coroutines.flow.flow
 
 class MoonpaySignUrlUseCase @Inject constructor(
     private val moonpayRepository: MoonpayRepository
 ) {
     operator fun invoke(walletAddress: String) = flow {
-        moonpayRepository.signMoonpayUrl(SignMoonpayUrlRequest(walletAddress, getDeeplinkUrl(walletAddress))).use(
+        moonpayRepository.signMoonpayUrl(SignMoonpayUrlRequest(walletAddress, getDeepLinkUrl(walletAddress))).use(
             onSuccess = {
                 emit(it)
             }

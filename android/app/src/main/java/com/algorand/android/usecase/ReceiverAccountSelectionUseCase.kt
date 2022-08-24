@@ -17,10 +17,11 @@ import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.SendAlgoNavigationDirections
 import com.algorand.android.core.AccountManager
+import com.algorand.android.decider.AssetDrawableProviderDecider
 import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.AssetInformation
-import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
+import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.models.AssetSupportRequest
 import com.algorand.android.models.BaseAccountSelectionListItem
 import com.algorand.android.models.Result
@@ -55,14 +56,20 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
     private val getBaseOwnedAssetDataUseCase: GetBaseOwnedAssetDataUseCase,
     private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase,
     private val simpleCollectibleUseCase: SimpleCollectibleUseCase,
+    private val assetDataProviderDecider: AssetDrawableProviderDecider, // TODO Remove decider after refactor AssetInfo
     accountInformationUseCase: AccountInformationUseCase
 ) : BaseSendAccountSelectionUseCase(accountInformationUseCase) {
 
     fun getToAccountList(query: String, assetId: Long): Flow<List<BaseAccountSelectionListItem>> {
         val contactList = fetchContactList(query)
         val accountList = fetchAccountList(assetId, query)
-        return combine(accountList, contactList) { accounts, contacts ->
+        val nftDomainAccountList = fetchNftDomainAccountList(query)
+        return combine(accountList, contactList, nftDomainAccountList) { accounts, contacts, nftDomainAccounts ->
             mutableListOf<BaseAccountSelectionListItem>().apply {
+                if (nftDomainAccounts.isNotEmpty()) {
+                    add(BaseAccountSelectionListItem.HeaderItem(R.string.matched_accounts))
+                    addAll(nftDomainAccounts)
+                }
                 if (accounts.isNotEmpty()) {
                     add(BaseAccountSelectionListItem.HeaderItem(R.string.my_accounts))
                     addAll(accounts)
@@ -82,9 +89,13 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
         emit(contacts)
     }
 
+    private fun fetchNftDomainAccountList(query: String) = flow {
+        val nftDomainAccounts = accountSelectionListUseCase.createAccountSelectionNftDomainItems(query)
+        emit(nftDomainAccounts)
+    }
+
     private fun fetchAccountList(assetId: Long, query: String) = flow {
         val localAccounts = accountSelectionListUseCase.createAccountSelectionListAccountItemsFilteredByAssetId(
-            showAssetCount = false,
             showHoldings = false,
             shouldIncludeWatchAccounts = true,
             showFailedAccounts = false,
@@ -102,7 +113,9 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
         accountInformation: AccountInformation,
         assetId: Long,
         fromAccountPublicKey: String,
-        amount: BigInteger
+        amount: BigInteger,
+        nftDomainAddress: String?,
+        nftDomainServiceLogoUrl: String?
     ): Result<TargetUser> {
         val isSelectedAssetValid = accountTransactionValidator.isSelectedAssetValid(fromAccountPublicKey, assetId)
         if (!isSelectedAssetValid) {
@@ -128,7 +141,7 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
             return Result.Error(NavigationException(nextDirection))
         }
 
-        if (assetId == ALGORAND_ID) {
+        if (assetId == ALGO_ID) {
             val minBalance = accountInformation.getMinAlgoBalance()
             val toAccountSelectedAssetBalance = accountInformation.getBalance(assetId)
             val isSendingAmountValid = accountTransactionValidator.isSendingAmountLesserThanMinimumBalance(
@@ -180,7 +193,8 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
         val toAccountPublicKey = accountInformation.address
         val contact = handleIfToAccountPublicKeyIntoLocal(toAccountPublicKey)
         val toAccountCacheData = accountCacheManager.getCacheData(toAccountPublicKey)
-        val targetUser = TargetUser(contact, toAccountPublicKey, toAccountCacheData)
+        val targetUser =
+            TargetUser(contact, toAccountPublicKey, toAccountCacheData, nftDomainAddress, nftDomainServiceLogoUrl)
         return Result.Success(targetUser)
     }
 
@@ -199,7 +213,10 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
 
     fun getAssetInformation(assetId: Long, publicKey: String): AssetInformation? {
         val ownedAssetData = getBaseOwnedAssetDataUseCase.getBaseOwnedAssetData(assetId, publicKey)
-        return AssetInformation.createAssetInformation(ownedAssetData ?: return null)
+        return AssetInformation.createAssetInformation(
+            ownedAssetData ?: return null,
+            assetDataProviderDecider.getAssetDrawableProvider(assetId)
+        )
     }
 
     fun getAssetOrCollectibleNameOrNull(assetId: Long): String? {

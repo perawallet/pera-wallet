@@ -14,7 +14,6 @@ package com.algorand.android.ui.accountselection.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.databinding.ItemAccountErrorSimpleBinding
 import com.algorand.android.models.BaseAccountSelectionListItem
@@ -24,11 +23,7 @@ class AccountSelectionAccountErrorItemViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: BaseAccountSelectionListItem.BaseAccountItem.AccountErrorItem) {
-        with(binding) {
-            accountDisplayNameTextView.text = item.displayName
-            errorIconImageView.isVisible = item.isErrorIconVisible
-            accountIconImageView.setAccountIcon(item.accountIcon)
-        }
+        binding.accountItemView.initItemView(item.accountListItem.itemConfiguration)
     }
 
     companion object {

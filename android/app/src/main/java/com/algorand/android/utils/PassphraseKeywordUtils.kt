@@ -12,6 +12,7 @@
 
 package com.algorand.android.utils
 
+@SuppressWarnings("LargeClass")
 class PassphraseKeywordUtils {
 
     fun getSuggestedWords(wordCount: Int, prefix: String): List<String> {

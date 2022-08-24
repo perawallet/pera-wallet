@@ -24,12 +24,12 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.algorand.android.R
 
-fun Context.copyToClipboard(textToCopy: CharSequence, label: String = "") {
+fun Context.copyToClipboard(textToCopy: CharSequence, label: String = "", showToast: Boolean = true) {
     val clipboard =
         ContextCompat.getSystemService<ClipboardManager>(this, ClipboardManager::class.java)
     val clip = ClipData.newPlainText(label, textToCopy)
     clipboard?.setPrimaryClip(clip)
-    Toast.makeText(this, getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show()
+    if (showToast) Toast.makeText(this, getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show()
 }
 
 fun Context.getTextFromClipboard(): CharSequence {

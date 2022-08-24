@@ -13,12 +13,17 @@
 package com.algorand.android.mapper
 
 import com.algorand.android.models.AssetDetail
-import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
+import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.models.BaseAccountAssetData
 import com.algorand.android.models.BaseAssetDetail
+import com.algorand.android.modules.parity.domain.model.ParityValue
 import com.algorand.android.utils.ALGO_DECIMALS
+import com.algorand.android.utils.ALGO_FULL_NAME
+import com.algorand.android.utils.ALGO_SHORT_NAME
 import com.algorand.android.utils.DEFAULT_ASSET_DECIMAL
 import com.algorand.android.utils.formatAmount
+import com.algorand.android.utils.formatAsAlgoAmount
+import com.algorand.android.utils.isNotEqualTo
 import java.math.BigDecimal
 import java.math.BigInteger
 import javax.inject.Inject
@@ -30,9 +35,8 @@ class AccountAssetDataMapper @Inject constructor() {
         amount: BigInteger,
         formattedAmount: String,
         formattedCompactAmount: String,
-        amountInSelectedCurrency: BigDecimal,
-        formattedSelectedCurrencyValue: String,
-        formattedSelectedCurrencyCompactValue: String
+        parityValueInSelectedCurrency: ParityValue,
+        parityValueInSecondaryCurrency: ParityValue
     ): BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData {
         return BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData(
             id = assetDetail.assetId,
@@ -41,15 +45,14 @@ class AccountAssetDataMapper @Inject constructor() {
             amount = amount,
             formattedAmount = formattedAmount,
             formattedCompactAmount = formattedCompactAmount,
-            amountInSelectedCurrency = amountInSelectedCurrency,
-            formattedSelectedCurrencyValue = formattedSelectedCurrencyValue,
-            formattedSelectedCurrencyCompactValue = formattedSelectedCurrencyCompactValue,
             isVerified = assetDetail.isVerified,
             isAlgo = false,
             decimals = assetDetail.fractionDecimals ?: DEFAULT_ASSET_DECIMAL,
             creatorPublicKey = assetDetail.assetCreator?.publicKey,
             usdValue = assetDetail.usdValue,
-            isAmountInSelectedCurrencyVisible = assetDetail.hasUsdValue()
+            isAmountInSelectedCurrencyVisible = assetDetail.usdValue != null && amount isNotEqualTo BigInteger.ZERO,
+            parityValueInSelectedCurrency = parityValueInSelectedCurrency,
+            parityValueInSecondaryCurrency = parityValueInSecondaryCurrency
         )
     }
 
@@ -81,27 +84,25 @@ class AccountAssetDataMapper @Inject constructor() {
 
     fun mapToAlgoAssetData(
         amount: BigInteger,
-        amountInSelectedCurrency: BigDecimal,
-        formattedCachedCurrencyValue: String,
-        formattedSelectedCurrencyCompactValue: String,
+        parityValueInSelectedCurrency: ParityValue,
+        parityValueInSecondaryCurrency: ParityValue,
         usdValue: BigDecimal
     ): BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData {
         return BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData(
-            id = ALGORAND_ID,
-            name = "Algo", // TODO Get these from constants
-            shortName = "ALGO",
+            id = ALGO_ID,
+            name = ALGO_FULL_NAME,
+            shortName = ALGO_SHORT_NAME,
             amount = amount,
-            formattedAmount = amount.formatAmount(ALGO_DECIMALS), // TODO Move these logics into UseCase
-            formattedCompactAmount = amount.formatAmount(ALGO_DECIMALS, isCompact = true),
-            amountInSelectedCurrency = amountInSelectedCurrency,
-            formattedSelectedCurrencyValue = formattedCachedCurrencyValue,
-            formattedSelectedCurrencyCompactValue = formattedSelectedCurrencyCompactValue,
+            formattedAmount = amount.formatAmount(ALGO_DECIMALS).formatAsAlgoAmount(),
+            formattedCompactAmount = amount.formatAmount(ALGO_DECIMALS, isCompact = true).formatAsAlgoAmount(),
             isVerified = true,
             isAlgo = true,
             decimals = ALGO_DECIMALS,
-            creatorPublicKey = "", // TODO set creator public key
+            creatorPublicKey = "",
             usdValue = usdValue,
-            isAmountInSelectedCurrencyVisible = true // Algo always has a currency value
+            isAmountInSelectedCurrencyVisible = true, // Algo always has a currency value
+            parityValueInSelectedCurrency = parityValueInSelectedCurrency,
+            parityValueInSecondaryCurrency = parityValueInSecondaryCurrency
         )
     }
 }

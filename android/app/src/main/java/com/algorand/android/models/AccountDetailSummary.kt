@@ -13,9 +13,11 @@
 
 package com.algorand.android.models
 
+import com.algorand.android.utils.AccountDisplayName
+
 data class AccountDetailSummary(
-    val accountIcon: AccountIcon,
-    val name: String,
+    val accountIconResource: AccountIconResource,
+    val accountDisplayName: AccountDisplayName,
     val publicKey: String,
     val canSignTransaction: Boolean
 )

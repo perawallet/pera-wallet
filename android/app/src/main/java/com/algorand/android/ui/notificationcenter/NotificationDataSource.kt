@@ -12,7 +12,6 @@
 
 package com.algorand.android.ui.notificationcenter
 
-import androidx.paging.PagingSource
 import com.algorand.android.core.AccountManager
 import com.algorand.android.database.ContactDao
 import com.algorand.android.deviceregistration.domain.usecase.DeviceIdUseCase
@@ -20,10 +19,12 @@ import com.algorand.android.models.Account
 import com.algorand.android.models.NotificationItem
 import com.algorand.android.models.NotificationListItem
 import com.algorand.android.models.NotificationType
+import com.algorand.android.models.Pagination
 import com.algorand.android.models.Result
 import com.algorand.android.models.User
 import com.algorand.android.repository.NotificationRepository
 import com.algorand.android.utils.ALGO_DECIMALS
+import com.algorand.android.utils.PeraPagingSource
 import com.algorand.android.utils.formatAmount
 import com.algorand.android.utils.getAlgorandMobileDateFormatter
 import com.algorand.android.utils.getUserIfSavedLocally
@@ -37,7 +38,9 @@ class NotificationDataSource(
     private val deviceIdUseCase: DeviceIdUseCase,
     private val contactDao: ContactDao,
     accountManager: AccountManager
-) : PagingSource<String, NotificationListItem>() {
+) : PeraPagingSource<String, NotificationListItem>() {
+
+    override val logTag: String = NotificationDataSource::class.java.simpleName
 
     private val accountList = accountManager.getAccounts()
 
@@ -45,29 +48,27 @@ class NotificationDataSource(
 
     private var notificationUserId: String? = null
 
-    override suspend fun load(params: LoadParams<String>): LoadResult<String, NotificationListItem> {
-        return withContext(Dispatchers.IO) {
-            try {
-                val currentKey = params.key
-                val response = if (currentKey == null) {
-                    notificationRepository.getNotifications(getNotificationUserId())
-                } else {
-                    notificationRepository.getNotificationsMore(currentKey)
-                }
-                return@withContext when (response) {
-                    is Result.Success -> {
-                        val list = response.data.results.toListItems(getCachedContacts(), accountList)
-                        val nextKey = response.data.next
-                        LoadResult.Page(list, currentKey, nextKey)
-                    }
-                    is Result.Error -> {
-                        LoadResult.Error<String, NotificationListItem>(response.exception)
-                    }
-                }
-            } catch (exception: Exception) {
-                LoadResult.Error<String, NotificationListItem>(exception)
-                // Handle errors in this block and return LoadResult.Error if it is an
-                // expected error (such as a network failure).
+    override suspend fun initializeData(): LoadResult<String, NotificationListItem> {
+        val result = notificationRepository.getNotifications(getNotificationUserId())
+        return parseResult(result)
+    }
+
+    override suspend fun loadMore(loadUrl: String): LoadResult<String, NotificationListItem> {
+        val result = notificationRepository.getNotificationsMore(loadUrl)
+        return parseResult(result)
+    }
+
+    private suspend fun parseResult(
+        result: Result<Pagination<NotificationItem>>,
+    ): LoadResult<String, NotificationListItem> {
+        return when (result) {
+            is Result.Success -> {
+                val list = result.data.results.toListItems(getCachedContacts(), accountList)
+                val nextKey = result.data.next
+                LoadResult.Page(data = list, prevKey = null, nextKey = nextKey)
+            }
+            is Result.Error -> {
+                LoadResult.Error<String, NotificationListItem>(result.exception)
             }
         }
     }

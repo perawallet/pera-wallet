@@ -20,19 +20,46 @@ import kotlinx.parcelize.Parcelize
 
 sealed class AccountDetailAssetsItem : RecyclerListItem, Parcelable {
 
+    enum class ItemType {
+        ACCOUNT_PORTFOLIO,
+        ASSETS_LIST_TITLE,
+        SEARCH,
+        QUICK_ACTIONS,
+        ASSET,
+        PENDING_ASSET,
+        NO_ASSET_FOUND
+    }
+
+    abstract val itemType: ItemType
+
     @Parcelize
-    data class AccountValueItem(val accountValue: String?) : AccountDetailAssetsItem() {
+    data class AccountPortfolioItem(
+        val accountPrimaryFormattedParityValue: String?,
+        val accountSecondaryFormattedParityValue: String?
+    ) : AccountDetailAssetsItem() {
+
+        override val itemType: ItemType
+            get() = ItemType.ACCOUNT_PORTFOLIO
+
         override fun areItemsTheSame(other: RecyclerListItem): Boolean {
-            return other is AccountValueItem && accountValue == other.accountValue
+            return other is AccountPortfolioItem &&
+                accountPrimaryFormattedParityValue == other.accountPrimaryFormattedParityValue
         }
 
         override fun areContentsTheSame(other: RecyclerListItem): Boolean {
-            return other is AccountValueItem && this == other
+            return other is AccountPortfolioItem && this == other
         }
     }
 
     @Parcelize
-    data class TitleItem(@StringRes val titleRes: Int) : AccountDetailAssetsItem() {
+    data class TitleItem(
+        @StringRes val titleRes: Int,
+        val isAddAssetButtonVisible: Boolean
+    ) : AccountDetailAssetsItem() {
+
+        override val itemType: ItemType
+            get() = ItemType.ASSETS_LIST_TITLE
+
         override fun areItemsTheSame(other: RecyclerListItem): Boolean {
             return other is TitleItem && titleRes == other.titleRes
         }
@@ -44,12 +71,31 @@ sealed class AccountDetailAssetsItem : RecyclerListItem, Parcelable {
 
     @Parcelize
     object SearchViewItem : AccountDetailAssetsItem() {
+
+        override val itemType: ItemType
+            get() = ItemType.SEARCH
+
         override fun areItemsTheSame(other: RecyclerListItem): Boolean {
             return other is SearchViewItem && this == other
         }
 
         override fun areContentsTheSame(other: RecyclerListItem): Boolean {
             return other is SearchViewItem && this == other
+        }
+    }
+
+    @Parcelize
+    object QuickActionsItem : AccountDetailAssetsItem() {
+
+        override val itemType: ItemType
+            get() = ItemType.QUICK_ACTIONS
+
+        override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+            return other is QuickActionsItem
+        }
+
+        override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+            return other is QuickActionsItem
         }
     }
 
@@ -60,6 +106,9 @@ sealed class AccountDetailAssetsItem : RecyclerListItem, Parcelable {
         abstract val isVerified: Boolean
         abstract val isAlgo: Boolean
         abstract val isAmountInDisplayedCurrencyVisible: Boolean
+
+        override val itemType: ItemType
+            get() = ItemType.ASSET
 
         @Parcelize
         data class OwnedAssetItem(
@@ -85,6 +134,9 @@ sealed class AccountDetailAssetsItem : RecyclerListItem, Parcelable {
         sealed class BasePendingAssetItem : BaseAssetItem() {
 
             abstract val actionDescriptionResId: Int
+
+            override val itemType: ItemType
+                get() = ItemType.PENDING_ASSET
 
             @Parcelize
             data class PendingAdditionItem(
@@ -133,13 +185,17 @@ sealed class AccountDetailAssetsItem : RecyclerListItem, Parcelable {
     }
 
     @Parcelize
-    object AssetAdditionItem : AccountDetailAssetsItem() {
+    object NoAssetFoundViewItem : AccountDetailAssetsItem() {
+
+        override val itemType: ItemType
+            get() = ItemType.NO_ASSET_FOUND
+
         override fun areItemsTheSame(other: RecyclerListItem): Boolean {
-            return other is AssetAdditionItem && this == other
+            return other is NoAssetFoundViewItem
         }
 
         override fun areContentsTheSame(other: RecyclerListItem): Boolean {
-            return other is AssetAdditionItem && this == other
+            return other is NoAssetFoundViewItem
         }
     }
 }

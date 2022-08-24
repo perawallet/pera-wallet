@@ -57,39 +57,61 @@ abstract class BaseAccountSelectionListItem : RecyclerListItem {
         }
 
         data class AccountItem(
-            override val displayName: String,
-            override val publicKey: String,
-            val accountIcon: AccountIcon,
-            val showAssetCount: Boolean,
-            val assetCount: Int,
-            val collectibleCount: Int,
-            val showHoldings: Boolean,
-            val formattedHoldings: String,
+            val accountListItem: BaseAccountAndAssetListItem.AccountListItem
         ) : BaseAccountItem() {
+
+            override val displayName: String = accountListItem.itemConfiguration
+                .accountDisplayName
+                ?.getDisplayTextOrAccountShortenedAddress()
+                .orEmpty()
+
+            override val publicKey: String = accountListItem.itemConfiguration.accountAddress
+
             override fun areItemsTheSame(other: RecyclerListItem): Boolean {
-                return other is AccountItem && other.publicKey == publicKey
+                return other is AccountItem &&
+                    other.accountListItem.itemConfiguration.accountAddress ==
+                    accountListItem.itemConfiguration.accountAddress
             }
 
             override fun areContentsTheSame(other: RecyclerListItem): Boolean {
-                return other is AccountItem &&
-                    other.displayName == displayName &&
-                    other.accountIcon == accountIcon &&
-                    other.formattedHoldings == formattedHoldings
+                return other is AccountItem && this == other
             }
         }
 
         data class AccountErrorItem(
-            override val displayName: String,
-            override val publicKey: String,
-            val accountIcon: AccountIcon,
-            val isErrorIconVisible: Boolean
+            val accountListItem: BaseAccountAndAssetListItem.AccountListItem
         ) : BaseAccountItem() {
+
+            override val displayName: String = accountListItem.itemConfiguration
+                .accountDisplayName
+                ?.getDisplayTextOrAccountShortenedAddress()
+                .orEmpty()
+
+            override val publicKey: String = accountListItem.itemConfiguration.accountAddress
+
             override fun areItemsTheSame(other: RecyclerListItem): Boolean {
-                return other is AccountErrorItem && other.publicKey == publicKey
+                return other is AccountErrorItem &&
+                    other.accountListItem.itemConfiguration.accountAddress ==
+                    accountListItem.itemConfiguration.accountAddress
             }
 
             override fun areContentsTheSame(other: RecyclerListItem): Boolean {
                 return other is AccountErrorItem && this == other
+            }
+        }
+
+        data class NftDomainAccountItem(
+            override val displayName: String,
+            override val publicKey: String,
+            val serviceLogoUrl: String?
+        ) : BaseAccountItem() {
+
+            override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+                return other is NftDomainAccountItem && other.publicKey == publicKey
+            }
+
+            override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+                return other is NftDomainAccountItem && this == other
             }
         }
     }

@@ -13,24 +13,22 @@
 package com.algorand.android.customviews
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
 import com.algorand.android.R
 import com.algorand.android.databinding.CustomToolbarBinding
-import com.algorand.android.models.AccountIcon
 import com.algorand.android.models.BaseToolbarButton
-import com.algorand.android.models.Node
 import com.algorand.android.models.ToolbarConfiguration
-import com.algorand.android.utils.ALGOS_SHORT_NAME
-import com.algorand.android.utils.TESTNET_NETWORK_SLUG
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
+import com.algorand.android.utils.getDisplaySize
 import com.algorand.android.utils.viewbinding.viewBinding
-import kotlin.properties.Delegates
+import kotlin.math.max
 
 class CustomToolbar @JvmOverloads constructor(
     context: Context,
@@ -38,18 +36,6 @@ class CustomToolbar @JvmOverloads constructor(
 ) : ConstraintLayout(context, attrs) {
 
     private val binding = viewBinding(CustomToolbarBinding::inflate)
-
-    private var isAvatarLayoutVisible by Delegates.observable(false) { _, _, newValue ->
-        binding.accountAndAssetAvatarLayout.isVisible = newValue
-    }
-
-    private var isAssetAvatarVisible by Delegates.observable(false) { _, _, newValue ->
-        binding.assetAvatarView.isVisible = newValue
-    }
-
-    private var isAccountImageVisible by Delegates.observable(false) { _, _, newValue ->
-        binding.accountImageView.isVisible = newValue
-    }
 
     init {
         initRootView()
@@ -62,31 +48,37 @@ class CustomToolbar @JvmOverloads constructor(
         }
         binding.buttonContainerView.removeAllViews()
         with(toolbarConfiguration) {
-            setupBackground(backgroundColor)
-            setupTitle(titleResId, titleColor)
+            initBackground(backgroundColor)
+            initTitle(titleResId, titleColor)
+            initSubtitle(subtitleResId)
             configureStartButton(startIconResId, startIconClick, startIconColor)
-            setupCenterImage(centerImageRes)
-            val isTestNetStatusActive = binding.nodeStatusTextView.text == TESTNET_NETWORK_SLUG
-            binding.nodeStatusTextView.isVisible = showNodeStatus && isTestNetStatusActive
-            isAssetAvatarVisible = showAvatarImage
-            isAccountImageVisible = showAccountImage
-            isAvatarLayoutVisible = showAvatarImage || showAccountImage
+            initTitleDrawables(textStartDrawable, textEndDrawable)
+            initCenterDrawable(centerDrawable)
         }
         show()
     }
 
-    private fun setupTitle(titleResId: Int?, titleColor: Int? = null) {
-        if (titleResId != null) {
-            binding.toolbarTitleTextView.setText(titleResId)
-        } else {
-            binding.toolbarTitleTextView.text = ""
-        }
-        if (titleColor != null) {
-            binding.toolbarTitleTextView.setTextColor(ContextCompat.getColor(context, titleColor))
+    private fun initTitleDrawables(leftDrawable: Drawable?, rightDrawable: Drawable?) {
+        setStartDrawable(leftDrawable)
+        setEndDrawable(rightDrawable)
+    }
+
+    private fun initTitle(titleResId: Int?, titleColor: Int? = null) {
+        with(binding.toolbarTitleTextView) {
+            isVisible = titleResId != null
+            if (titleResId != null) setText(titleResId)
+            if (titleColor != null) setTextColor(ContextCompat.getColor(context, titleColor))
         }
     }
 
-    private fun setupBackground(newBackgroundColor: Int?) {
+    private fun initSubtitle(subtitleResId: Int?) {
+        binding.toolbarSubtitleTextView.apply {
+            isVisible = subtitleResId != null
+            if (subtitleResId != null) setText(subtitleResId)
+        }
+    }
+
+    private fun initBackground(newBackgroundColor: Int?) {
         if (newBackgroundColor != null) {
             setBackgroundResource(newBackgroundColor)
         } else {
@@ -94,12 +86,13 @@ class CustomToolbar @JvmOverloads constructor(
         }
     }
 
-    private fun setupCenterImage(imageRes: Int?) {
-        if (imageRes != null) {
-            setCenterImage(imageRes)
-        } else {
-            binding.toolbarCenterImageView.hide()
+    private fun initCenterDrawable(drawable: Drawable?) {
+        if (drawable != null) {
+            initTitle(null)
+            initSubtitle(null)
+            initTitleDrawables(null, null)
         }
+        setCenterDrawable(drawable)
     }
 
     fun configureStartButton(resId: Int?, clickAction: (() -> Unit)?, iconColor: Int? = null) {
@@ -113,53 +106,90 @@ class CustomToolbar @JvmOverloads constructor(
             setOnClickListener { clickAction?.invoke() }
             show()
         }
+        setGuidelinePosition()
     }
 
     fun changeTitle(title: String) {
-        binding.toolbarTitleTextView.text = title
-    }
-
-    fun changeTitle(@StringRes titleRes: Int) {
-        binding.toolbarTitleTextView.setText(titleRes)
-    }
-
-    fun changeTitle(title: CharSequence) {
-        binding.toolbarTitleTextView.text = title
-    }
-
-    fun setCenterImage(@DrawableRes imageRes: Int) {
-        binding.toolbarCenterImageView.apply {
+        binding.toolbarTitleTextView.apply {
+            text = title
             show()
-            setImageResource(imageRes)
         }
     }
 
-    fun setNodeStatus(activatedNode: Node?) {
-        binding.nodeStatusTextView.text = activatedNode?.networkSlug
+    fun changeTitle(@StringRes titleRes: Int) {
+        binding.toolbarTitleTextView.apply {
+            setText(titleRes)
+            show()
+        }
+    }
+
+    fun changeTitle(title: CharSequence) {
+        binding.toolbarTitleTextView.apply {
+            text = title
+            show()
+        }
+    }
+
+    fun changeSubtitle(subtitle: String) {
+        binding.toolbarSubtitleTextView.apply {
+            text = subtitle
+            show()
+        }
+    }
+
+    fun changeSubtitle(@StringRes subtitleResId: Int) {
+        binding.toolbarSubtitleTextView.apply {
+            setText(subtitleResId)
+            show()
+        }
+    }
+
+    fun setOnTitleLongClickListener(action: () -> Unit) {
+        with(binding) {
+            toolbarSubtitleTextView.setOnLongClickListener { action(); true }
+            toolbarTitleTextView.setOnLongClickListener { action(); true }
+        }
     }
 
     fun addButtonToEnd(button: BaseToolbarButton) {
         binding.buttonContainerView.addButton(button)
+        setGuidelinePosition()
     }
 
-    fun setAssetAvatar(isAlgorand: Boolean, fullName: String?) {
-        val assetFullName = fullName ?: context.getString(R.string.unnamed)
-        changeTitle(if (isAlgorand) ALGOS_SHORT_NAME else assetFullName)
-        binding.assetAvatarView.setAssetAvatar(isAlgorand, assetFullName)
-    }
-
-    fun setAssetAvatarIfAlgo(isAlgo: Boolean, shortName: String?) {
-        val assetShortName = shortName ?: context.getString(R.string.unnamed)
-        changeTitle(if (isAlgo) ALGOS_SHORT_NAME else assetShortName)
-        if (isAlgo) {
-            isAssetAvatarVisible = isAlgo
-            isAvatarLayoutVisible = isAlgo
-            binding.assetAvatarView.setAssetAvatar(true, assetShortName)
+    fun setEndDrawable(drawable: Drawable?) {
+        binding.textEndImageView.apply {
+            isVisible = drawable != null
+            setImageDrawable(drawable ?: return)
         }
     }
 
-    fun setAccountImage(accountIcon: AccountIcon) {
-        binding.accountImageView.setAccountIcon(accountIcon, R.dimen.toolbar_avatar_view_padding)
+    fun setStartDrawable(drawable: Drawable?) {
+        binding.textStartImageView.apply {
+            isVisible = drawable != null
+            setImageDrawable(drawable ?: return)
+        }
+    }
+
+    fun setCenterDrawable(drawable: Drawable?) {
+        binding.centerImageView.apply {
+            isVisible = drawable != null
+            setImageDrawable(drawable ?: return)
+        }
+    }
+
+    private fun setGuidelinePosition() {
+        doOnPreDraw {
+            with(binding) {
+                val viewWidthToCalculate = max(startImageButton.measuredWidth, buttonContainerView.measuredWidth).run {
+                    plus(if (textStartImageView.isVisible) textStartImageView.width else textEndImageView.width)
+                    plus(resources.getDimension(R.dimen.spacing_small).toInt())
+                }.toFloat()
+                val screenWidth = context.getDisplaySize().x
+                val percentage = viewWidthToCalculate / screenWidth
+                parentStartGuideline.setGuidelinePercent(percentage)
+                parentEndGuideline.setGuidelinePercent(1 - percentage)
+            }
+        }
     }
 
     private fun initRootView() {

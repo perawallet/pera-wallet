@@ -20,5 +20,7 @@ import kotlinx.parcelize.Parcelize
 data class TargetUser(
     val contact: User? = null,
     val publicKey: String,
-    val account: AccountCacheData? = null
+    val account: AccountCacheData? = null,
+    val nftDomainAddress: String? = null,
+    val nftDomainServiceLogoUrl: String? = null
 ) : Parcelable

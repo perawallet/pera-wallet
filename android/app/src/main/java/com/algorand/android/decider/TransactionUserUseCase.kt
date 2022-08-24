@@ -26,10 +26,7 @@ class TransactionUserUseCase @Inject constructor(
     private val transactionTargetUserMapper: TransactionTargetUserMapper
 ) {
 
-    suspend fun getTransactionTargetUser(nonOwnerPublicKey: String?): TransactionTargetUser? {
-        if (nonOwnerPublicKey == null) {
-            return null
-        }
+    suspend fun getTransactionTargetUser(nonOwnerPublicKey: String): TransactionTargetUser {
         val foundContact = contactRepository.getAllContacts().firstOrNull { it.publicKey == nonOwnerPublicKey }
         if (foundContact != null) {
             return transactionTargetUserMapper.mapTo(

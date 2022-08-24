@@ -17,3 +17,7 @@ fun <E> MutableCollection<E>.clearAndAddAll(replace: Collection<E>) {
     clear()
     addAll(replace)
 }
+
+fun <E> MutableList<E>.addFirst(element: E) {
+    add(0, element)
+}

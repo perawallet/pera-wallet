@@ -15,7 +15,7 @@ package com.algorand.android.ui.removeasset.adapter
 
 import android.view.ViewGroup
 import androidx.core.view.doOnLayout
-import com.algorand.android.customviews.CollectibleImageView
+import com.algorand.android.customviews.collectibleimageview.CollectibleImageView
 import com.algorand.android.databinding.ItemRemoveCollectibleBinding
 import com.algorand.android.models.BaseRemoveAssetItem.BaseRemoveCollectibleItem
 import com.algorand.android.utils.loadImage

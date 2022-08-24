@@ -62,13 +62,13 @@ class RenameAccountBottomSheet : DaggerBaseBottomSheet(
     private fun onSaveClick() {
         val newAccountName = binding.accountNameInputLayout.text
         if (newAccountName.isNotBlank()) {
-            renameAccountNameViewModel.changeAccountName(newAccountName)
-            setNavigationResult(RENAME_ACCOUNT_RESULT, newAccountName)
+            renameAccountNameViewModel.changeAccountName(newAccountName.trim())
             dismissAllowingStateLoss()
+            setNavigationResult(RENAME_ACCOUNT_KEY, true)
         }
     }
 
     companion object {
-        const val RENAME_ACCOUNT_RESULT = "rename_account_result"
+        const val RENAME_ACCOUNT_KEY = "rename_account_key"
     }
 }

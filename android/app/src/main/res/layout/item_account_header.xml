@@ -14,26 +14,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/spacing_xlarge"
+    android:paddingTop="@dimen/spacing_xxxlarge"
+    android:paddingBottom="@dimen/spacing_xsmall">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/titleTextView"
-        android:layout_width="wrap_content"
+    <com.algorand.android.customviews.ListConfigurationHeaderView
+        android:id="@+id/listConfigurationHeaderView"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.Body.Sans.Medium"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="@tools:sample/lorem[2]" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/optionsButton"
-        style="@style/IconButton.Transparent"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        app:icon="@drawable/ic_more"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:primaryButtonIcon="@drawable/ic_sort"
+        app:primaryButtonText="@string/sort"
+        app:secondaryButtonIcon="@drawable/ic_plus"
+        tools:title="@string/accounts" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

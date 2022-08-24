@@ -21,7 +21,7 @@ import androidx.lifecycle.viewModelScope
 import com.algorand.android.models.AccountCacheData
 import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.AssetInformation
-import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
+import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.models.AssetTransaction
 import com.algorand.android.models.BaseAccountSelectionListItem
 import com.algorand.android.models.Result
@@ -50,7 +50,7 @@ class SenderAccountSelectionViewModel @ViewModelInject constructor(
 
     init {
         // If user came with deeplink or qr code then we have to filter accounts that have incoming asset id
-        if (assetTransaction.assetId != -1L && assetTransaction.assetId != ALGORAND_ID) {
+        if (assetTransaction.assetId != -1L && assetTransaction.assetId != ALGO_ID) {
             getAccountCacheWithSpecificAsset(assetTransaction.assetId)
         } else {
             getAccounts()

@@ -17,6 +17,7 @@
         <item name="android:textColor">@color/primary_text_color</item>
         <item name="colorOnBackground">@color/primary_text_color</item>
         <item name="android:statusBarColor">@color/black</item>
+        <item name="android:windowLightStatusBar">true</item>
         <item name="android:navigationBarColor">@color/black</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryVariant</item>
@@ -53,6 +54,11 @@
         <item name="backgroundColor">@color/primary_background</item>
     </style>
 
+    <style name="TopToastAnimationStyle">
+        <item name="android:windowEnterAnimation">@anim/anim_top_toast_enter</item>
+        <item name="android:windowExitAnimation">@anim/anim_top_toast_exit</item>
+    </style>
+
     <style name="TabLayoutStyle">
         <item name="tabBackground">@drawable/ic_tab_layout_dot</item>
         <item name="tabIndicator">@null</item>
@@ -64,19 +70,6 @@
         <item name="android:textColor">@color/tertiary_text_color</item>
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/dmsans_regular</item>
-    </style>
-
-    <style name="TextAppearance.NodeStatus">
-        <item name="android:includeFontPadding">false</item>
-        <item name="android:paddingStart">@dimen/spacing_xsmall</item>
-        <item name="android:paddingEnd">@dimen/spacing_xsmall</item>
-        <item name="android:paddingTop">6dp</item>
-        <item name="android:paddingBottom">6dp</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:textSize">10sp</item>
-        <item name="android:background">@drawable/bg_testnet_20dp_radius</item>
-        <item name="android:fontFamily">@font/dmsans_bold</item>
-        <item name="android:textColor">@color/tertiary_background</item>
     </style>
 
     <style name="TextAppearance.VerifiedAssetsParagraph">
@@ -236,6 +229,10 @@
         <item name="fontFamily">@font/dmsans_medium</item>
     </style>
 
+    <style name="TextAppearance.Title.Sans.Bold">
+        <item name="fontFamily">@font/dmsans_bold</item>
+    </style>
+
     <style name="TextAppearance.Title.Mono">
         <item name="fontFamily">@font/dmmono_regular</item>
         <item name="android:textSize">@dimen/text_size_36</item>
@@ -327,6 +324,10 @@
         <item name="fontFamily">@font/dmsans_regular</item>
     </style>
 
+    <style name="TextAppearance.Footnote.Sans.Bold">
+        <item name="fontFamily">@font/dmsans_bold</item>
+    </style>
+
     <style name="TextAppearance.Footnote.Sans.Medium">
         <item name="fontFamily">@font/dmsans_medium</item>
     </style>
@@ -344,7 +345,15 @@
         <item name="lineHeight">16sp</item>
     </style>
 
-    <style name="TextAppearance.Caption.Sans">
+    <style name="TextAppearance.Caption.Bold">
+        <item name="fontFamily">@font/dmsans_bold</item>
+    </style>
+
+    <style name="TextAppearance.Caption.Medium">
+        <item name="fontFamily">@font/dmsans_medium</item>
+    </style>
+
+    <style name="TextAppearance.Caption.Regular">
         <item name="fontFamily">@font/dmsans_regular</item>
     </style>
 
@@ -372,7 +381,7 @@
         <item name="android:textColor">@color/secondary_text_color</item>
     </style>
 
-    <style name="TextAppearance.Caption.Sans.Description">
+    <style name="TextAppearance.Caption.Regular.Description">
         <item name="android:textColor">@color/secondary_text_color</item>
     </style>
 
@@ -516,7 +525,7 @@
     <style name="IconButton.Circle">
         <item name="rippleColor">@color/white</item>
         <item name="backgroundTint">@color/transparent</item>
-        <item name="cornerRadius">20dp</item>
+        <item name="cornerRadius">24dp</item>
         <item name="android:layout_width">40dp</item>
         <item name="android:layout_height">40dp</item>
         <item name="strokeWidth">0dp</item>
@@ -671,10 +680,37 @@
     </style>
 
     <style name="Button.Primary.Banner">
-        <item name="backgroundTint">@color/banner_action_button_bg</item>
+        <item name="backgroundTint">@color/banner_button</item>
         <item name="android:paddingTop">0dp</item>
         <item name="android:paddingBottom">0dp</item>
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="IconButton.Transparent.QuickAction">
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:padding">0dp</item>
+        <item name="iconGravity">top</item>
+        <item name="iconPadding">@dimen/spacing_xsmall</item>
+        <item name="iconSize">48dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.Footnote.Sans</item>
+        <item name="android:textColor">@color/text_main</item>
+    </style>
+
+    <style name="CardView.AccountAddress" parent="Widget.MaterialComponents.CardView">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.AccountAddress</item>
+        <item name="cardBackgroundColor">@color/background</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="strokeColor">@color/layer_gray_lighter</item>
+    </style>
+
+    <style name="ThemeOverlay.AccountAddress" parent="">
+        <item name="elevationOverlayEnabled">false</item>
+    </style>
+
+    <style name="BottomViewGradient">
+        <item name="android:layout_height">@dimen/bottom_fade_gradient_height</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@drawable/bg_gradient_view</item>
+    </style>
 </resources>

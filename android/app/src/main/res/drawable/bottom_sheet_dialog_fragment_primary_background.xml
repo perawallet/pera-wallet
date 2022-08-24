@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -14,7 +13,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <corners
-        android:topLeftRadius="@dimen/keyline_1"
-        android:topRightRadius="@dimen/keyline_1" />
-    <solid android:color="@color/tertiary_background" />
+        android:topLeftRadius="12dp"
+        android:topRightRadius="12dp" />
+    <solid android:color="@color/background" />
 </shape>

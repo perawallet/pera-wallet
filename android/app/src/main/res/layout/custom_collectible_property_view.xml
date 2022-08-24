@@ -23,7 +23,7 @@
 
     <TextView
         android:id="@+id/propertyTitle"
-        style="@style/TextAppearance.Caption.Sans.Description"
+        style="@style/TextAppearance.Caption.Regular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAllCaps="true"

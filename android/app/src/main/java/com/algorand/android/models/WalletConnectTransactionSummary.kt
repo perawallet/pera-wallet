@@ -22,7 +22,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class WalletConnectTransactionSummary(
     val accountName: String? = null,
-    val accountIcon: AccountIcon? = null,
+    val accountIconResource: AccountIconResource? = null,
     val accountBalance: BigInteger? = null,
     val assetDecimal: Int? = null,
     val assetShortName: String? = null,

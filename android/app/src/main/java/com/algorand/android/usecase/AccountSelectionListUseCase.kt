@@ -13,36 +13,34 @@
 package com.algorand.android.usecase
 
 import com.algorand.android.models.BaseAccountSelectionListItem
+import com.algorand.android.modules.nftdomain.ui.usecase.GetAccountSelectionNftDomainItemsUseCase
 import javax.inject.Inject
 
 class AccountSelectionListUseCase @Inject constructor(
     private val getAccountSelectionAccountsItemUseCase: GetAccountSelectionAccountsItemUseCase,
-    private val getAccountSelectionContactsItemUseCase: GetAccountSelectionContactsItemUseCase
+    private val getAccountSelectionContactsItemUseCase: GetAccountSelectionContactsItemUseCase,
+    private val getAccountSelectionNftDomainItemsUseCase: GetAccountSelectionNftDomainItemsUseCase
 ) {
-    fun createAccountSelectionListAccountItems(
-        showAssetCount: Boolean,
+    suspend fun createAccountSelectionListAccountItems(
         showHoldings: Boolean,
         shouldIncludeWatchAccounts: Boolean,
         showFailedAccounts: Boolean
     ): List<BaseAccountSelectionListItem.BaseAccountItem> {
         return getAccountSelectionAccountsItemUseCase.getAccountSelectionAccounts(
-            showAssetCount = showAssetCount,
             showHoldings = showHoldings,
             shouldIncludeWatchAccounts = shouldIncludeWatchAccounts,
             showFailedAccounts = showFailedAccounts,
         )
     }
 
-    fun createAccountSelectionListAccountItemsFilteredByAssetId(
+    suspend fun createAccountSelectionListAccountItemsFilteredByAssetId(
         assetId: Long,
-        showAssetCount: Boolean,
         showHoldings: Boolean,
         shouldIncludeWatchAccounts: Boolean,
         showFailedAccounts: Boolean
     ): List<BaseAccountSelectionListItem.BaseAccountItem> {
         return getAccountSelectionAccountsItemUseCase.getAccountSelectionAccounts(
             assetId = assetId,
-            showAssetCount = showAssetCount,
             showHoldings = showHoldings,
             shouldIncludeWatchAccounts = shouldIncludeWatchAccounts,
             showFailedAccounts = showFailedAccounts,
@@ -51,5 +49,11 @@ class AccountSelectionListUseCase @Inject constructor(
 
     suspend fun createAccountSelectionListContactItems(): List<BaseAccountSelectionListItem.BaseAccountItem> {
         return getAccountSelectionContactsItemUseCase.getAccountSelectionContacts()
+    }
+
+    suspend fun createAccountSelectionNftDomainItems(
+        query: String
+    ): List<BaseAccountSelectionListItem.BaseAccountItem> {
+        return getAccountSelectionNftDomainItemsUseCase.getAccountSelectionNftDomainAccounts(query)
     }
 }

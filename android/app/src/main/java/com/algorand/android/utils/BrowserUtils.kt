@@ -34,6 +34,7 @@ const val RECOVER_INFO_URL = "https://perawallet.app/support/recover-account/"
 const val LEDGER_HELP_WEB_URL = "https://perawallet.app/support/ledger/"
 private const val PERA_INTRODUCTION_URL = "https://perawallet.app/blog/launch-announcement/"
 const val PERA_SUPPORT_URL = "https://perawallet.app/support/"
+private const val DISPENSER_URL = "https://dispenser.testnet.aws.algodev.network/"
 
 const val HTTPS_PROTOCOL = "https://"
 const val HTTP_PROTOCOL = "http://"
@@ -136,6 +137,11 @@ fun Context.openWatchAccountSupportUrl() {
 
 fun Context.openPeraSupportUrl() {
     openUrl(PERA_SUPPORT_URL)
+}
+
+fun Context.openDispenserUrl(accountAddress: String?) {
+    val accountParameter = accountAddress?.let { "?account=$it" }.orEmpty()
+    openUrl("$DISPENSER_URL$accountParameter")
 }
 
 fun getGoalSeekerUrl(transactionId: String, nodeSlug: String?): String {

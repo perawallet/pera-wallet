@@ -16,8 +16,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
+import com.algorand.android.R
 import com.algorand.android.databinding.ItemUserBinding
 import com.algorand.android.models.User
+import com.algorand.android.utils.extensions.setContactIconDrawable
 import com.algorand.android.utils.toShortenedAddress
 
 class UserViewHolder(
@@ -25,7 +27,7 @@ class UserViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(user: User) {
-        binding.userImageView.loadAccountImage(user.imageUriAsString?.toUri())
+        binding.userImageView.setContactIconDrawable(user.imageUriAsString?.toUri(), R.dimen.account_icon_size_large)
         binding.nameTextView.text = user.name
         binding.addressTextView.text = user.publicKey.toShortenedAddress()
     }

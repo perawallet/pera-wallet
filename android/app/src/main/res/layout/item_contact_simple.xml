@@ -15,13 +15,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingHorizontal="@dimen/spacing_xlarge">
 
-    <com.algorand.android.customviews.AccountIconImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/contactImageView"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginVertical="@dimen/spacing_small" />
+        android:layout_marginVertical="@dimen/spacing_small"
+        tools:srcCompat="@drawable/ic_wallet" />
 
     <TextView
         android:id="@+id/contactDisplayNameTextView"

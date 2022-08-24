@@ -29,7 +29,7 @@
         android:padding="@dimen/spacing_xlarge"
         android:visibility="gone"
         app:tint="@color/secondary_icon_tint_color"
-        tools:srcCompat="@drawable/ic_menu_contacts"
+        tools:srcCompat="@drawable/ic_contacts"
         tools:visibility="visible" />
 
     <TextView

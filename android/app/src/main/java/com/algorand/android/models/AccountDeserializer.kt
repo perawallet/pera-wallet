@@ -12,8 +12,7 @@
 
 package com.algorand.android.models
 
-import com.algorand.android.models.Account.AccountIconColor
-import com.algorand.android.usecase.BaseAccountOrderUseCase.Companion.NOT_INITIALIZED_ACCOUNT_INDEX
+import com.algorand.android.modules.sorting.accountsorting.domain.usecase.AccountSortingPreviewUseCase.Companion.NOT_INITIALIZED_ACCOUNT_INDEX
 import com.algorand.android.utils.recordException
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
@@ -50,10 +49,14 @@ class AccountDeserializer : JsonDeserializer<Account> {
 
         val name = jsonObject.get("accountName").asString
         val publicKey = jsonObject.get("publicKey").asString
-        val accountIconColor = AccountIconColor.getByName(jsonObject.get("accountIconColor")?.asString)
         val accountIndex = jsonObject.get("index")?.asString?.toIntOrNull() ?: NOT_INITIALIZED_ACCOUNT_INDEX
 
-        return Account.create(publicKey, detail, name, accountIconColor, accountIndex)
+        return Account.create(
+            publicKey = publicKey,
+            detail = detail,
+            accountName = name,
+            index = accountIndex
+        )
     }
 
     private fun JsonDeserializationContext.deserializeDetail(

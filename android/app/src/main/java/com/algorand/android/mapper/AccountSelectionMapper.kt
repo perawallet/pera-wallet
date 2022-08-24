@@ -13,25 +13,22 @@
 
 package com.algorand.android.mapper
 
-import com.algorand.android.models.AccountDetail
+import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.AccountSelection
+import com.algorand.android.utils.AccountDisplayName
 import javax.inject.Inject
 
 class AccountSelectionMapper @Inject constructor() {
 
     fun mapToAccountSelection(
-        assetId: Long?,
-        formattedAccountBalance: String?,
-        accountDetail: AccountDetail,
-        assetCount: Int
+        accountDisplayName: AccountDisplayName?,
+        accountIconResource: AccountIconResource?,
+        accountAddress: String,
     ): AccountSelection {
         return AccountSelection(
-            assetId = assetId,
-            accountName = accountDetail.account.name,
-            accountIcon = accountDetail.account.createAccountIcon(),
-            accountAddress = accountDetail.account.address,
-            formattedAccountBalance = formattedAccountBalance,
-            accountAssetCount = assetCount
+            accountDisplayName = accountDisplayName,
+            accountIconResource = accountIconResource,
+            accountAddress = accountAddress
         )
     }
 }

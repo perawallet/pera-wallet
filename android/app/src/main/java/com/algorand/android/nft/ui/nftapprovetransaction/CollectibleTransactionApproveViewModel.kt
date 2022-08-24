@@ -19,6 +19,7 @@ import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.models.ui.CollectibleTransactionApprovePreview
 import com.algorand.android.nft.domain.usecase.CollectibleTransactionApprovePreviewUseCase
+import com.algorand.android.nft.ui.model.CollectibleDetail
 import com.algorand.android.utils.getOrThrow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,6 +34,7 @@ class CollectibleTransactionApproveViewModel @ViewModelInject constructor(
     private val senderPublicKey = savedStateHandle.getOrThrow<String>(SENDER_PUBLIC_KEY_KEY)
     private val receiverPublicKey = savedStateHandle.getOrThrow<String>(RECEIVER_PUBLIC_KEY_KEY)
     private val fee = savedStateHandle.getOrThrow<Float>(FEE_KEY)
+    private val collectibleDetail = savedStateHandle.getOrThrow<CollectibleDetail>(COLLECTIBLE_DETAIL_KEY)
 
     val collectibleTransactionApprovePreviewFlow: Flow<CollectibleTransactionApprovePreview?>
         get() = _collectibleTransactionApprovePreviewFlow
@@ -46,9 +48,10 @@ class CollectibleTransactionApproveViewModel @ViewModelInject constructor(
     private fun initCollectibleTransactionApprovePreviewFlow() {
         viewModelScope.launch {
             collectibleTransactionApprovePreviewUseCase.getCollectibleTransactionApprovePreviewFlow(
-                senderPublicKey,
-                receiverPublicKey,
-                fee
+                senderPublicKey = senderPublicKey,
+                receiverPublicKey = receiverPublicKey,
+                fee = fee,
+                collectibleDetail = collectibleDetail
             ).collect { _collectibleTransactionApprovePreviewFlow.emit(it) }
         }
     }
@@ -57,5 +60,6 @@ class CollectibleTransactionApproveViewModel @ViewModelInject constructor(
         private const val SENDER_PUBLIC_KEY_KEY = "senderPublicKey"
         private const val RECEIVER_PUBLIC_KEY_KEY = "receiverPublicKey"
         private const val FEE_KEY = "fee"
+        private const val COLLECTIBLE_DETAIL_KEY = "collectibleDetail"
     }
 }

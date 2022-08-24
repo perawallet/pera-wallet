@@ -18,9 +18,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.algorand.android.BuildConfig
+import com.algorand.android.CoreMainActivity
 import com.algorand.android.MainNavigationDirections
 import com.algorand.android.R
-import com.algorand.android.core.BaseBottomBarFragment
+import com.algorand.android.core.BackPressedControllerComponent
+import com.algorand.android.core.BottomNavigationBackPressedDelegate
+import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentSettingsBinding
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.FragmentConfiguration
@@ -38,7 +41,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SettingsFragment : BaseBottomBarFragment(R.layout.fragment_settings) {
+class SettingsFragment : DaggerBaseFragment(R.layout.fragment_settings),
+    BackPressedControllerComponent by BottomNavigationBackPressedDelegate() {
 
     @Inject
     lateinit var aead: Aead
@@ -57,13 +61,12 @@ class SettingsFragment : BaseBottomBarFragment(R.layout.fragment_settings) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initDialogSavedStateListener()
+        (activity as? CoreMainActivity)?.let { initBackPressedControllerComponent(it, viewLifecycleOwner) }
         with(binding) {
             securityListItem.setOnClickListener { onSecurityClick() }
             contactsListItem.setOnClickListener { onContactsClick() }
             notificationListItem.setOnClickListener { onNotificationClick() }
             walletConnectListItem.setOnClickListener { onWalletConnectSessionsClick() }
-            rewardsSwitch.isChecked = settingsViewModel.isRewardActivated()
-            initSwitchChangeListeners()
             languageListItem.setOnClickListener { onLanguageClick() }
             currencyListItem.setOnClickListener { onCurrencyClick() }
             themeListItem.setOnClickListener { onThemeClick() }
@@ -87,12 +90,6 @@ class SettingsFragment : BaseBottomBarFragment(R.layout.fragment_settings) {
 
     private fun onSecurityClick() {
         nav(SettingsFragmentDirections.actionSettingsFragmentToSecurityFragment())
-    }
-
-    private fun initSwitchChangeListeners() {
-        binding.rewardsSwitch.setOnCheckedChangeListener { _, isChecked ->
-            settingsViewModel.setRewardsPreference(isChecked)
-        }
     }
 
     private fun initDialogSavedStateListener() {

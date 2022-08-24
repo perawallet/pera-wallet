@@ -50,15 +50,26 @@ class RegisterIntroFragment : DaggerBaseFragment(R.layout.fragment_register_type
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        checkIfNavigateToRegisterWatchAccount()
+        checkNavDestinations()
         initUi()
         initObservers()
     }
 
-    private fun checkIfNavigateToRegisterWatchAccount() {
-        if (registerIntroViewModel.getShouldNavToRegisterWatchAccount()) {
-            nav(RegisterIntroFragmentDirections.actionRegisterIntroFragmentToRegisterWatchAccountFragment())
+    private fun checkNavDestinations() {
+        with(registerIntroViewModel) {
+            when {
+                shouldNavToRegisterWatchAccount() -> navToRegisterWatchAccount(getAccountAddress())
+                shouldNavToRecoverWithPassphrase() -> navToRecoverWithPassphrase(getMnemonic())
+            }
         }
+    }
+
+    private fun navToRegisterWatchAccount(accountAddress: String?) {
+        nav(RegisterIntroFragmentDirections.actionRegisterIntroFragmentToRegisterWatchAccountFragment(accountAddress))
+    }
+
+    private fun navToRecoverWithPassphrase(mnemonic: String?) {
+        nav(RegisterIntroFragmentDirections.actionRegisterIntroFragmentToRecoverWithPassphraseFragment(mnemonic))
     }
 
     private fun initUi() {
@@ -76,10 +87,12 @@ class RegisterIntroFragment : DaggerBaseFragment(R.layout.fragment_register_type
     }
 
     private fun navToAddAccountTypeSelectionFragment() {
+        registerIntroViewModel.logOnboardingWelcomeAccountCreateClickEvent()
         nav(RegisterIntroFragmentDirections.actionRegisterIntroFragmentToAddAccountTypeSelectionFragment())
     }
 
     private fun navToAccountRecoveryTypeSelectionFragment() {
+        registerIntroViewModel.logOnboardingWelcomeAccountRecoverClickEvent()
         nav(RegisterIntroFragmentDirections.actionRegisterIntroFragmentToAccountRecoveryTypeSelectionFragment())
     }
 
@@ -111,6 +124,7 @@ class RegisterIntroFragment : DaggerBaseFragment(R.layout.fragment_register_type
     }
 
     private fun onSkipClick() {
+        registerIntroViewModel.logOnboardingCreateAccountSkipClickEvent()
         registerIntroViewModel.setRegisterSkip()
         nav(LoginNavigationDirections.actionGlobalToHomeNavigation())
     }

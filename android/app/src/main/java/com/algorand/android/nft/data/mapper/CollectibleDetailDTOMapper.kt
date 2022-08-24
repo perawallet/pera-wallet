@@ -40,7 +40,7 @@ class CollectibleDetailDTOMapper @Inject constructor(
             collectionName = response.collectible?.collectionName,
             description = response.collectible?.description,
             traits = response.collectible?.traits?.map { collectibleTraitMapper.mapToTraits(it) }.orEmpty(),
-            explorerUrl = response.collectible?.explorerUrl,
+            explorerUrl = response.explorerUrl,
             medias = response.collectible?.collectibleMedias?.map {
                 collectibleMediaMapper.mapToCollectibleMedia(it)
             }.orEmpty(),

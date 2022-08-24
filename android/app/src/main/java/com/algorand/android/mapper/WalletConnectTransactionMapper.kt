@@ -16,10 +16,10 @@ import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.SignTxnOptions
 import com.algorand.android.models.WCAlgoTransactionRequest
 import com.algorand.android.models.WalletConnectPeerMeta
-import com.algorand.android.models.TransactionType.APP_TRANSACTION
-import com.algorand.android.models.TransactionType.ASSET_CONFIGURATION
-import com.algorand.android.models.TransactionType.ASSET_TRANSACTION
-import com.algorand.android.models.TransactionType.PAY_TRANSACTION
+import com.algorand.android.modules.transaction.common.data.model.TransactionTypeResponse.APP_TRANSACTION
+import com.algorand.android.modules.transaction.common.data.model.TransactionTypeResponse.ASSET_CONFIGURATION
+import com.algorand.android.modules.transaction.common.data.model.TransactionTypeResponse.ASSET_TRANSACTION
+import com.algorand.android.modules.transaction.common.data.model.TransactionTypeResponse.PAY_TRANSACTION
 import com.algorand.android.utils.walletconnect.getTransactionRequest
 import com.google.gson.Gson
 import javax.inject.Inject

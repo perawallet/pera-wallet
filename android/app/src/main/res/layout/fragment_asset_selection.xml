@@ -29,6 +29,6 @@
 
     <include
         android:id="@+id/progressBar"
-        layout="@layout/layout_loading_blocker" />
+        layout="@layout/layout_full_screen_progress" />
 
 </FrameLayout>

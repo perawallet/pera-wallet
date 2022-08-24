@@ -27,5 +27,6 @@ data class AssetTransferAmountPreview(
     val formattedSelectedCurrencyValue: String,
     val isAmountInSelectedCurrencyVisible: Boolean,
     val collectiblePrismUrl: String?,
-    val isCollectibleOwnedByUser: Boolean
+    val isCollectibleOwnedByUser: Boolean,
+    val decimalSeparator: String
 )

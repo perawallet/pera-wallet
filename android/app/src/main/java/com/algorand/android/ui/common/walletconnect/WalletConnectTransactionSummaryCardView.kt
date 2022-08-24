@@ -20,12 +20,13 @@ import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import com.algorand.android.R
 import com.algorand.android.databinding.CustomWalletConnectTransactionSummaryViewBinding
-import com.algorand.android.models.AccountIcon
+import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionListItem
 import com.algorand.android.utils.ALGO_DECIMALS
 import com.algorand.android.utils.extensions.changeTextAppearance
+import com.algorand.android.utils.extensions.setAccountIconDrawable
 import com.algorand.android.utils.extensions.setTextAndVisibility
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.formatAmount
@@ -54,7 +55,7 @@ class WalletConnectTransactionSummaryCardView(
                 accountBalance,
                 assetDecimal,
                 assetShortName,
-                accountIcon
+                accountIconResource
             )
             setTitleText(transactionAmount, assetDecimal, assetShortName, summaryTitle)
             setCurrencyText(formattedSelectedCurrencyValue)
@@ -106,12 +107,12 @@ class WalletConnectTransactionSummaryCardView(
         accountBalance: BigInteger?,
         assetDecimal: Int?,
         shortName: String?,
-        accountIcon: AccountIcon?
+        accountIconResource: AccountIconResource?
     ) {
         with(binding) {
-            if (accountIcon != null) {
+            if (accountIconResource != null) {
                 transactionAccountTypeImageView.apply {
-                    setAccountIcon(accountIcon, R.dimen.spacing_xxsmall)
+                    setAccountIconDrawable(accountIconResource, R.dimen.account_icon_size_small)
                     show()
                 }
             }

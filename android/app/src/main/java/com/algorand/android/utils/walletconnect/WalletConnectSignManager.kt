@@ -41,6 +41,7 @@ import com.algorand.android.models.WalletConnectSignResult.TransactionCancelled
 import com.algorand.android.models.WalletConnectSigner
 import com.algorand.android.models.WalletConnectTransaction
 import com.algorand.android.utils.AccountCacheManager
+import com.algorand.android.utils.ListQueuingHelper
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.LifecycleScopedCoroutineOwner
 import com.algorand.android.utils.signTx
@@ -63,17 +64,17 @@ class WalletConnectSignManager @Inject constructor(
 
     private var transaction: WalletConnectTransaction? = null
 
-    private val signHelperListener = object : WalletConnectSigningHelper.Listener {
-        override fun onTransactionSignCompleted(signedTransactions: List<ByteArray?>) {
+    private val signHelperListener = object : ListQueuingHelper.Listener<BaseWalletConnectTransaction, ByteArray> {
+        override fun onAllItemsDequeued(signedTransactions: List<ByteArray?>) {
             transaction?.run {
                 _signResultLiveData.postValue(Success(session.id, requestId, signedTransactions))
             }
         }
 
-        override fun onNextTransactionToSign(transaction: BaseWalletConnectTransaction) {
+        override fun onNextItemToBeDequeued(transaction: BaseWalletConnectTransaction) {
             val accountType = transaction.signer.getSignerAccountType()
             if (accountType == null) {
-                signHelper.cacheSignedTransaction(null)
+                signHelper.cacheDequeuedItem(null)
             } else {
                 transaction.signTransaction(accountType)
             }
@@ -84,7 +85,7 @@ class WalletConnectSignManager @Inject constructor(
         override fun onLedgerScanned(device: BluetoothDevice) {
             ledgerBleSearchManager.stop()
             currentScope.launch {
-                signHelper.currentTransaction?.run {
+                signHelper.currentItem?.run {
                     ledgerBleOperationManager.startLedgerOperation(WalletConnectTransactionOperation(device, this))
                 }
             }
@@ -100,7 +101,7 @@ class WalletConnectSignManager @Inject constructor(
             if (transaction == null) return@run
             when (this) {
                 is LedgerBleResult.LedgerWaitingForApproval -> postResult(LedgerWaitingForApproval(bluetoothName))
-                is SignedTransactionResult -> signHelper.cacheSignedTransaction(transactionByteArray)
+                is SignedTransactionResult -> signHelper.cacheDequeuedItem(transactionByteArray)
                 is LedgerErrorResult -> postResult(Api(errorMessage))
                 is AppErrorResult -> postResult(Defined(AnnotatedString(errorMessageId), titleResId))
                 is OperationCancelledResult -> postResult(TransactionCancelled())
@@ -119,7 +120,8 @@ class WalletConnectSignManager @Inject constructor(
         this.transaction = transaction
         with(transaction) {
             when (val result = walletConnectSignValidator.canTransactionBeSigned(this)) {
-                is WalletConnectSignResult.CanBeSigned -> signHelper.initTransactionsToBeSigned(transactionList)
+                is WalletConnectSignResult.CanBeSigned ->
+                    signHelper.initItemsToBeEnqueued(transactionList.flatten())
                 is WalletConnectSignResult.Error -> postResult(result)
             }
         }
@@ -149,11 +151,11 @@ class WalletConnectSignManager @Inject constructor(
                     if (accountDetail.authDetail != null) {
                         signTransaction(accountDetail.authDetail, checkIfRekeyed = false)
                     } else {
-                        signHelper.cacheSignedTransaction(null)
+                        signHelper.cacheDequeuedItem(null)
                     }
                 }
-                is Standard -> signHelper.cacheSignedTransaction(decodedTransaction?.signTx(accountDetail.secretKey))
-                else -> signHelper.cacheSignedTransaction(null)
+                is Standard -> signHelper.cacheDequeuedItem(decodedTransaction?.signTx(accountDetail.secretKey))
+                else -> signHelper.cacheDequeuedItem(null)
             }
         }
     }
@@ -169,7 +171,7 @@ class WalletConnectSignManager @Inject constructor(
     }
 
     private fun sendCurrentTransaction(bluetoothDevice: BluetoothDevice) {
-        signHelper.currentTransaction?.run {
+        signHelper.currentItem?.run {
             ledgerBleOperationManager.startLedgerOperation(WalletConnectTransactionOperation(bluetoothDevice, this))
         }
     }
@@ -182,9 +184,9 @@ class WalletConnectSignManager @Inject constructor(
         when (
             val authAccountDetail = accountCacheManager.getCacheData(authAddress)?.account?.detail
         ) {
-            is Standard -> signHelper.cacheSignedTransaction(decodedTransaction?.signTx(authAccountDetail.secretKey))
+            is Standard -> signHelper.cacheDequeuedItem(decodedTransaction?.signTx(authAccountDetail.secretKey))
             is Ledger -> sendTransactionWithLedger(authAccountDetail)
-            else -> signHelper.cacheSignedTransaction(null)
+            else -> signHelper.cacheDequeuedItem(null)
         }
     }
 

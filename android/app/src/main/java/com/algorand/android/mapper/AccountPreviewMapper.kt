@@ -12,53 +12,82 @@
 
 package com.algorand.android.mapper
 
-import com.algorand.android.models.ui.AccountPreview
-import com.algorand.android.ui.common.listhelper.BaseAccountListItem
+import com.algorand.android.R
+import com.algorand.android.modules.accounts.domain.model.AccountPreview
+import com.algorand.android.modules.accounts.domain.model.BaseAccountListItem
+import com.algorand.android.modules.accounts.domain.model.BasePortfolioValue
 import javax.inject.Inject
 
 class AccountPreviewMapper @Inject constructor(
     private val bottomGlobalErrorMapper: BottomGlobalErrorMapper
 ) {
 
-    fun getEmptyAccountListState(): AccountPreview {
+    fun getEmptyAccountListState(isTestnetBadgeVisible: Boolean): AccountPreview {
         return AccountPreview(
             isEmptyStateVisible = true,
             isFullScreenAnimatedLoadingVisible = false,
-            isBlockingLoadingVisible = false
+            isBlockingLoadingVisible = false,
+            isTestnetBadgeVisible = isTestnetBadgeVisible,
+            shouldShowDialog = false,
+            isMotionLayoutTransitionEnabled = false,
+            portfolioValuesBackgroundRes = R.color.transparent,
+            isPortfolioValueGroupVisible = false
         )
     }
 
-    fun getFullScreenLoadingState(): AccountPreview {
+    fun getFullScreenLoadingState(isTestnetBadgeVisible: Boolean): AccountPreview {
         return AccountPreview(
             isEmptyStateVisible = false,
             isFullScreenAnimatedLoadingVisible = true,
-            isBlockingLoadingVisible = false
+            isBlockingLoadingVisible = false,
+            isTestnetBadgeVisible = isTestnetBadgeVisible,
+            shouldShowDialog = false,
+            isMotionLayoutTransitionEnabled = false,
+            portfolioValuesBackgroundRes = R.color.transparent,
+            isPortfolioValueGroupVisible = false
         )
     }
 
-    fun getBlockingLoadingState(previousState: AccountPreview): AccountPreview {
-        return previousState.copy(
-            isFullScreenAnimatedLoadingVisible = false,
-            isBlockingLoadingVisible = true
-        )
-    }
-
-    fun getAlgoPriceInitialErrorState(accountListItems: List<BaseAccountListItem>, errorCode: Int?): AccountPreview {
+    fun getAlgoPriceInitialErrorState(
+        accountListItems: List<BaseAccountListItem>,
+        errorCode: Int?,
+        isTestnetBadgeVisible: Boolean,
+        portfolioValuesError: BasePortfolioValue.PortfolioValuesError
+    ): AccountPreview {
         return AccountPreview(
             isEmptyStateVisible = false,
             isFullScreenAnimatedLoadingVisible = false,
             isBlockingLoadingVisible = false,
             accountListItems = accountListItems,
-            bottomGlobalError = bottomGlobalErrorMapper.mapToBottomGlobalError(errorCode)
+            bottomGlobalError = bottomGlobalErrorMapper.mapToBottomGlobalError(errorCode),
+            isTestnetBadgeVisible = isTestnetBadgeVisible,
+            portfolioValuesError = portfolioValuesError,
+            shouldShowDialog = false,
+            isMotionLayoutTransitionEnabled = true,
+            portfolioValuesBackgroundRes = R.color.hero_bg,
+            isPortfolioValueGroupVisible = true
         )
     }
 
-    fun getSuccessAccountPreview(accountListItems: List<BaseAccountListItem>): AccountPreview {
+    fun getSuccessAccountPreview(
+        accountListItems: List<BaseAccountListItem>,
+        isTestnetBadgeVisible: Boolean,
+        shouldShowDialog: Boolean,
+        portfolioValues: BasePortfolioValue.PortfolioValues?,
+        portfolioValuesError: BasePortfolioValue.PortfolioValuesError?
+    ): AccountPreview {
         return AccountPreview(
             isEmptyStateVisible = false,
             isFullScreenAnimatedLoadingVisible = false,
             isBlockingLoadingVisible = false,
-            accountListItems = accountListItems
+            accountListItems = accountListItems,
+            isTestnetBadgeVisible = isTestnetBadgeVisible,
+            portfolioValues = portfolioValues,
+            portfolioValuesError = portfolioValuesError,
+            shouldShowDialog = shouldShowDialog,
+            isMotionLayoutTransitionEnabled = true,
+            portfolioValuesBackgroundRes = R.color.hero_bg,
+            isPortfolioValueGroupVisible = true
         )
     }
 }

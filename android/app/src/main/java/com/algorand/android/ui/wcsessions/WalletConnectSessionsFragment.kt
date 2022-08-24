@@ -20,16 +20,10 @@ import androidx.lifecycle.lifecycleScope
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentWalletConnectSessionsBinding
-import com.algorand.android.models.DecodedQrCode
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.IconButton
-import com.algorand.android.models.QrScanner
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.models.WalletConnectSession
-import com.algorand.android.ui.qr.QrCodeScannerFragment.Companion.QR_SCAN_RESULT_KEY
-import com.algorand.android.ui.qr.QrCodeScannerFragment.ScanReturnType.WALLET_CONNECT
-import com.algorand.android.utils.startSavedStateListener
-import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import com.algorand.android.utils.walletconnect.WalletConnectViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -82,15 +76,6 @@ class WalletConnectSessionsFragment : DaggerBaseFragment(R.layout.fragment_walle
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        startSavedStateListener(R.id.walletConnectSessionsFragment) {
-            useSavedStateValue<DecodedQrCode?>(QR_SCAN_RESULT_KEY) {
-                handleWalletConnectUrl(it?.walletConnectUrl.orEmpty())
-            }
-        }
-    }
-
     private fun onGetLocalSessionsSuccess(wcSessions: List<WalletConnectSession>) {
         walletConnectSessionAdapter.submitList(wcSessions)
         binding.emptyStateGroup.isVisible = wcSessions.isEmpty()
@@ -98,13 +83,12 @@ class WalletConnectSessionsFragment : DaggerBaseFragment(R.layout.fragment_walle
 
     private fun onScanQrClick() {
         nav(
-            WalletConnectSessionsFragmentDirections.actionWalletConnectSessionsFragmentToQrCodeScannerNavigation(
-                QrScanner(scanTypes = arrayOf(WALLET_CONNECT), isShowingWCSessionsButton = true)
-            )
+            WalletConnectSessionsFragmentDirections
+                .actionWalletConnectSessionsFragmentToWalletConnectSessionsQrScannerFragment()
         )
     }
 
     private fun initAddMoreSessionsButton() {
-        getAppToolbar()?.addButtonToEnd(IconButton(R.drawable.ic_scan_qr, onClick = ::onScanQrClick))
+        getAppToolbar()?.addButtonToEnd(IconButton(R.drawable.ic_qr_scan, onClick = ::onScanQrClick))
     }
 }

@@ -24,6 +24,10 @@ class SenderAccountMapper @Inject constructor() {
         accountCacheData: AccountCacheData,
         accountAssetData: BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData
     ): SenderAccount {
-        return SenderAccount(accountCacheData, accountAssetData)
+        return SenderAccount(
+            accountCacheData = accountCacheData,
+            accountAssetData = accountAssetData,
+            accountBalanceText = accountAssetData.parityValueInSelectedCurrency.getFormattedValue()
+        )
     }
 }

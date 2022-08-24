@@ -14,11 +14,15 @@ package com.algorand.android.nft.ui.nftapprovetransaction
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseBottomSheet
 import com.algorand.android.databinding.BottomSheetCollectibleTransactionApproveBinding
+import com.algorand.android.models.AnnotatedString
+import com.algorand.android.models.CollectibleSendApproveResult
 import com.algorand.android.models.ui.CollectibleTransactionApprovePreview
 import com.algorand.android.utils.setNavigationResult
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -45,11 +49,19 @@ class CollectibleTransactionApproveBottomSheet :
     }
 
     private fun initUi() {
-        binding.positiveButton.setOnClickListener {
-            setNavigationResult(COLLECTIBLE_TXN_APPROVE_KEY, true)
-            navBack()
+        with(binding) {
+            positiveButton.setOnClickListener {
+                setNavigationResult(
+                    COLLECTIBLE_TXN_APPROVE_KEY, CollectibleSendApproveResult(
+                        isApproved = true,
+                        isOptOutChecked = optOutCheckbox.isChecked && optOutCheckbox.isVisible
+                    )
+                )
+                navBack()
+            }
+            cancelButton.setOnClickListener { navBack() }
+            optOutInfoButton.setOnClickListener { navToOptOutInfoBottomSheet() }
         }
-        binding.learnMoreButton.setOnClickListener { navBack() }
     }
 
     private fun initObservers() {
@@ -65,17 +77,30 @@ class CollectibleTransactionApproveBottomSheet :
             preview?.let {
                 senderAlgorandUserView.setAccount(
                     name = it.senderAccountDisplayText,
-                    icon = it.senderAccountIcon,
+                    accountIconResource = it.senderAccountIconResource,
                     publicKey = it.senderAccountPublicKey
                 )
                 toAlgorandUserView.setAccount(
                     name = it.receiverAccountDisplayText,
-                    icon = it.receiverAccountIcon,
+                    accountIconResource = it.receiverAccountIconResource,
                     publicKey = it.receiverAccountPublicKey
                 )
                 transactionFeeTextView.text = it.formattedTransactionFee
+                optOutGroup.isVisible = it.isOptOutGroupVisible
+                optOutCheckbox.isChecked = it.isOptOutGroupVisible
             }
         }
+    }
+
+    private fun navToOptOutInfoBottomSheet() {
+        nav(
+            HomeNavigationDirections.actionGlobalSingleButtonBottomSheet(
+                titleAnnotatedString = AnnotatedString(R.string.opt_out_from_the),
+                drawableResId = R.drawable.ic_info,
+                drawableTintResId = R.color.info_tint_color,
+                descriptionAnnotatedString = AnnotatedString(R.string.algorand_blockchain)
+            )
+        )
     }
 
     companion object {

@@ -24,7 +24,7 @@ sealed class LedgerInformationListItem {
         val name: String,
         val address: String,
         val assetCount: Int,
-        val accountIcon: AccountIcon,
+        val accountIconResource: AccountIconResource,
         val portfolioValue: String
     ) : LedgerInformationListItem() {
         override fun areItemsTheSame(other: LedgerInformationListItem): Boolean {
@@ -36,8 +36,10 @@ sealed class LedgerInformationListItem {
         }
     }
 
+    // TODO refactor this item. Don't pass owned asset data completely
     data class AssetInformationItem(
-        val accountAssetData: BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData
+        val accountAssetData: BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData,
+        val formattedCurrencyBalanceText: String
     ) : LedgerInformationListItem() {
         override fun areItemsTheSame(other: LedgerInformationListItem): Boolean {
             return other is AssetInformationItem && accountAssetData.id == other.accountAssetData.id
@@ -59,7 +61,7 @@ sealed class LedgerInformationListItem {
     }
 
     data class CanSignedByItem(
-        val accountIcon: AccountIcon,
+        val accountIconResource: AccountIconResource,
         val accountPublicKey: String
     ) : LedgerInformationListItem() {
 

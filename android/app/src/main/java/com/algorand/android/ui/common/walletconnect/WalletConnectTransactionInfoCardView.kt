@@ -22,13 +22,14 @@ import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import com.algorand.android.R
 import com.algorand.android.databinding.CustomWalletConnectTransactionInfoBinding
-import com.algorand.android.models.AccountIcon
+import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.BaseWalletConnectDisplayedAddress
 import com.algorand.android.models.TransactionRequestAssetInformation
 import com.algorand.android.models.TransactionRequestTransactionInfo
 import com.algorand.android.utils.ALGO_DECIMALS
 import com.algorand.android.utils.addUnnamedAssetName
 import com.algorand.android.utils.enableClickToCopy
+import com.algorand.android.utils.extensions.setAccountIconDrawable
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.formatAmount
 import com.algorand.android.utils.setDrawable
@@ -98,7 +99,7 @@ class WalletConnectTransactionInfoCardView(
 
     private fun initFromAddress(
         displayedAddress: BaseWalletConnectDisplayedAddress?,
-        accountIcon: AccountIcon?
+        accountIconResource: AccountIconResource?
     ) {
         if (displayedAddress != null) {
             with(binding) {
@@ -106,8 +107,11 @@ class WalletConnectTransactionInfoCardView(
                     text = displayedAddress.displayValue
                     isSingleLine = displayedAddress.isSingleLine == true
                 }
-                if (accountIcon != null) {
-                    fromAccountTypeImageView.setAccountIcon(accountIcon, R.dimen.spacing_xxsmall)
+                if (accountIconResource != null) {
+                    fromAccountTypeImageView.setAccountIconDrawable(
+                        accountIconResource,
+                        R.dimen.account_icon_size_normal
+                    )
                 }
                 fromGroup.show()
             }

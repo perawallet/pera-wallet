@@ -27,6 +27,7 @@ import com.algorand.android.utils.setScreenOrientationPortrait
 import com.algorand.android.utils.viewbinding.viewBinding
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DataSource
@@ -97,6 +98,7 @@ class VideoPlayerFragment : BaseFragment(R.layout.fragment_video_player) {
                 binding.playerView.player = this
                 setMediaSource(mediaSource)
                 playWhenReady = true
+                repeatMode = Player.REPEAT_MODE_ONE
                 prepare()
             }
         }

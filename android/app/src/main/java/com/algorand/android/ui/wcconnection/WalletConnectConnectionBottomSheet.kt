@@ -23,11 +23,12 @@ import com.algorand.android.core.BaseBottomSheet
 import com.algorand.android.databinding.BottomSheetWalletConnectConnectionBinding
 import com.algorand.android.models.AccountSelection
 import com.algorand.android.models.AnnotatedString
-import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
+import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.models.WCSessionRequestResult
 import com.algorand.android.models.WCSessionRequestResult.ApproveRequest
 import com.algorand.android.ui.common.accountselector.AccountSelectionBottomSheet.Companion.ACCOUNT_SELECTION_KEY
 import com.algorand.android.utils.extensions.hide
+import com.algorand.android.utils.extensions.setAccountIconDrawable
 import com.algorand.android.utils.extensions.setTextAndVisibility
 import com.algorand.android.utils.getXmlStyledString
 import com.algorand.android.utils.loadPeerMetaIcon
@@ -39,10 +40,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
-class WalletConnectConnectionBottomSheet : BaseBottomSheet(
-    layoutResId = R.layout.bottom_sheet_wallet_connect_connection,
-    fullPageNeeded = false
-) {
+class WalletConnectConnectionBottomSheet :
+    BaseBottomSheet(layoutResId = R.layout.bottom_sheet_wallet_connect_connection) {
 
     private val binding by viewBinding(BottomSheetWalletConnectConnectionBinding::bind)
     private val args: WalletConnectConnectionBottomSheetArgs by navArgs()
@@ -114,7 +113,12 @@ class WalletConnectConnectionBottomSheet : BaseBottomSheet(
 
     private fun onConnectClick() {
         walletConnectConnectionViewModel.getSelectedAccount()?.run {
-            listener?.onSessionRequestResult(ApproveRequest(accountAddress, args.sessionRequest))
+            listener?.onSessionRequestResult(
+                ApproveRequest(
+                    address = accountAddress,
+                    wcSessionRequest = args.sessionRequest
+                )
+            )
             navBack()
         }
     }
@@ -124,7 +128,7 @@ class WalletConnectConnectionBottomSheet : BaseBottomSheet(
         nav(
             WalletConnectConnectionBottomSheetDirections
                 .actionWalletConnectConnectionBottomSheetToAccountSelectionBottomSheet(
-                    assetId = ALGORAND_ID,
+                    assetId = ALGO_ID,
                     titleResId = R.string.accounts,
                     selectedAccountAddress = selectedAccount?.accountAddress,
                     showBackButton = true,
@@ -136,12 +140,17 @@ class WalletConnectConnectionBottomSheet : BaseBottomSheet(
     private fun initSelectedAccountUi(accountSelection: AccountSelection) {
         with(binding) {
             with(accountSelection) {
-                accountIconImageView.setAccountIcon(accountIcon)
-                accountNameTextView.setTextAndVisibility(accountName)
-                accountBalanceTextView.setTextAndVisibility(
-                    root.resources.getQuantityString(
-                        R.plurals.account_asset_count, accountAssetCount, accountAssetCount, accountAssetCount
+                if (accountIconResource != null) {
+                    accountIconImageView.setAccountIconDrawable(
+                        accountIconResource = accountIconResource,
+                        iconSize = R.dimen.account_icon_size_large
                     )
+                }
+                accountNameTextView.setTextAndVisibility(
+                    accountDisplayName?.getDisplayTextOrAccountShortenedAddress()
+                )
+                accountBalanceTextView.setTextAndVisibility(
+                    accountDisplayName?.getAccountShortenedAddressOrAccountType(resources)
                 )
                 selectAccountTextView.hide()
             }

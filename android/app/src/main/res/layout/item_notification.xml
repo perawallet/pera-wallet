@@ -20,13 +20,13 @@
         android:id="@+id/readStatusImageView"
         android:layout_width="@dimen/spacing_xxsmall"
         android:layout_height="@dimen/spacing_xxsmall"
-        android:layout_marginStart="@dimen/keyline_1_minus_8dp"
+        android:layout_marginStart="@dimen/spacing_xsmall"
         app:layout_constraintBottom_toBottomOf="@id/avatarImageView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/avatarImageView"
         app:srcCompat="@drawable/ic_not_read" />
 
-    <com.algorand.android.customviews.AccountIconImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/avatarImageView"
         android:layout_width="@dimen/spacing_xxxxlarge"
         android:layout_height="@dimen/spacing_xxxxlarge"
@@ -34,15 +34,15 @@
         app:layout_constraintBottom_toBottomOf="@id/descriptionTextView"
         app:layout_constraintStart_toEndOf="@id/readStatusImageView"
         app:layout_constraintTop_toTopOf="@id/descriptionTextView"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@drawable/ic_algo_green_round" />
 
     <TextView
         android:id="@+id/descriptionTextView"
         style="@style/TextAppearance.Body"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/keyline_1"
-        android:layout_marginTop="@dimen/keyline_1"
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_normal"
         android:layout_marginEnd="@dimen/spacing_small"
         android:fontFamily="@font/dmsans_regular"
         android:includeFontPadding="false"
@@ -57,7 +57,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_xxsmall"
-        android:layout_marginBottom="@dimen/keyline_1"
+        android:layout_marginBottom="@dimen/spacing_normal"
         android:fontFamily="@font/dmsans_regular"
         android:textColor="@color/secondary_text_color"
         app:layout_constraintBottom_toBottomOf="parent"

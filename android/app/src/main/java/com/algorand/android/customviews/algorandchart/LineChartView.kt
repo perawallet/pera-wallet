@@ -69,7 +69,7 @@ class LineChartView @JvmOverloads constructor(
     }
 
     private fun hasMultiplePointer(event: MotionEvent?): Boolean {
-        return event?.pointerCount ?: 0 > 1
+        return (event?.pointerCount ?: 0) > 1
     }
 
     private fun setChartOffset() {

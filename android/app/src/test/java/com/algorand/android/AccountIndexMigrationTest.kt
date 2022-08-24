@@ -68,11 +68,11 @@ class AccountIndexMigrationTest {
         val migratedAccounts = accountIndexMigrationHelper.getMigratedValues(accountList)
 
         val expectedListResult = listOf<Account>(
-            Account.create("standard1", Account.Detail.Standard(byteArrayOf()), index = 0),
-            Account.create("standard2", Account.Detail.Standard(byteArrayOf()), index = 1),
-            Account.create("watch1", Account.Detail.Watch, index = 10000),
-            Account.create("watch2", Account.Detail.Watch, index = 10001),
-            Account.create("watch3", Account.Detail.Watch, index = 10002),
+            Account.create("watch1", Account.Detail.Watch, index = 0),
+            Account.create("standard1", Account.Detail.Standard(byteArrayOf()), index = 1),
+            Account.create("watch2", Account.Detail.Watch, index = 2),
+            Account.create("standard2", Account.Detail.Standard(byteArrayOf()), index = 3),
+            Account.create("watch3", Account.Detail.Watch, index = 4),
         )
 
         var isSuccessfullyMigrated = true

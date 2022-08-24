@@ -15,14 +15,14 @@ package com.algorand.android.dependencyinjection
 import com.algorand.android.core.AccountManager
 import com.algorand.android.usecase.AccountCacheStatusUseCase
 import com.algorand.android.usecase.AccountDetailUseCase
-import com.algorand.android.usecase.AlgoPriceUseCase
+import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
 import com.algorand.android.usecase.AssetFetchAndCacheUseCase
 import com.algorand.android.usecase.BlockPollingUseCase
-import com.algorand.android.usecase.CurrencyUseCase
+import com.algorand.android.modules.currency.domain.usecase.CurrencyUseCase
 import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import com.algorand.android.utils.AccountDetailUpdateHelper
 import com.algorand.android.utils.coremanager.AccountDetailCacheManager
-import com.algorand.android.utils.coremanager.AlgoPriceManager
+import com.algorand.android.utils.coremanager.ParityManager
 import com.algorand.android.utils.coremanager.AssetCacheManager
 import com.algorand.android.utils.coremanager.BlockPollingManager
 import dagger.Module
@@ -47,10 +47,10 @@ object ManagerModule {
     @Singleton
     @Provides
     fun provideAlgoPriceManager(
-        algoPriceUseCase: AlgoPriceUseCase,
+        parityUseCase: ParityUseCase,
         currencyUseCase: CurrencyUseCase
-    ): AlgoPriceManager {
-        return AlgoPriceManager(algoPriceUseCase, currencyUseCase)
+    ): ParityManager {
+        return ParityManager(parityUseCase, currencyUseCase)
     }
 
     @Singleton

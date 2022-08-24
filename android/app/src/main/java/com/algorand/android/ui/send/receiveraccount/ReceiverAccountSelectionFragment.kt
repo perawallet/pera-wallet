@@ -25,15 +25,14 @@ import com.algorand.android.core.TransactionBaseFragment
 import com.algorand.android.databinding.FragmentReceiverAccountSelectionBinding
 import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.BaseAccountSelectionListItem
-import com.algorand.android.models.DecodedQrCode
 import com.algorand.android.models.FragmentConfiguration
-import com.algorand.android.models.QrScanner
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.TargetUser
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.models.TransactionData
 import com.algorand.android.ui.accountselection.AccountSelectionAdapter
-import com.algorand.android.ui.qr.QrCodeScannerFragment
+import com.algorand.android.ui.send.receiveraccount.ReceiverAccountSelectionQrScannerFragment.Companion.ACCOUNT_ADDRESS_SCAN_RESULT_KEY
+import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.extensions.hide
@@ -55,8 +54,7 @@ class ReceiverAccountSelectionFragment : TransactionBaseFragment(R.layout.fragme
 
     private val toolbarConfiguration = ToolbarConfiguration(
         startIconClick = ::navBack,
-        startIconResId = R.drawable.ic_left_arrow,
-        showAvatarImage = true
+        startIconResId = R.drawable.ic_left_arrow
     )
 
     override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
@@ -74,6 +72,10 @@ class ReceiverAccountSelectionFragment : TransactionBaseFragment(R.layout.fragme
 
         override fun onPasteItemClick(publicKey: String) {
             binding.searchView.text = publicKey
+        }
+
+        override fun onNftDomainItemClick(accountAddress: String, nftDomain: String, logoUrl: String?) {
+            receiverAccountSelectionViewModel.fetchToAccountInformation(accountAddress, nftDomain, logoUrl)
         }
     }
 
@@ -151,23 +153,30 @@ class ReceiverAccountSelectionFragment : TransactionBaseFragment(R.layout.fragme
 
     private fun initSavedStateListener() {
         startSavedStateListener(R.id.receiverAccountSelectionFragment) {
-            useSavedStateValue<DecodedQrCode>(QrCodeScannerFragment.QR_SCAN_RESULT_KEY) { decodedQrCode ->
-                if (!decodedQrCode.address.isNullOrBlank()) {
-                    binding.searchView.text = decodedQrCode.address
-                }
+            useSavedStateValue<String>(ACCOUNT_ADDRESS_SCAN_RESULT_KEY) { accountAddress ->
+                binding.searchView.text = accountAddress
             }
         }
     }
 
     private fun initUi() {
-        receiverAccountSelectionViewModel.getSelectedAssetInformation()?.let { assetInformation ->
-            getAppToolbar()?.setAssetAvatar(assetInformation.isAlgo(), assetInformation.fullName)
-        }
+        initToolbarAssetDetails()
         with(binding) {
             listRecyclerView.adapter = receiverAccountSelectionAdapter
             searchView.setOnTextChanged(::onTextChangeListener)
             searchView.setOnCustomButtonClick(::onScanQrClick)
             nextButton.setOnClickListener { onNextButtonClick() }
+        }
+    }
+
+    private fun initToolbarAssetDetails() {
+        receiverAccountSelectionViewModel.getSelectedAssetInformation()?.let { assetInformation ->
+            val assetName = AssetName.create(assetInformation.fullName)
+            val assetDrawable = assetInformation.assetDrawableProvider?.provideAssetDrawable(context, assetName)
+            getAppToolbar()?.apply {
+                setStartDrawable(assetDrawable)
+                changeTitle(assetName.getName(resources))
+            }
         }
     }
 
@@ -200,12 +209,8 @@ class ReceiverAccountSelectionFragment : TransactionBaseFragment(R.layout.fragme
 
     private fun onScanQrClick() {
         nav(
-            ReceiverAccountSelectionFragmentDirections.actionReceiverAccountSelectionFragmentToQrCodeScannerNavigation(
-                QrScanner(
-                    scanTypes = arrayOf(QrCodeScannerFragment.ScanReturnType.ADDRESS_NAVIGATE_BACK),
-                    titleRes = R.string.scan_an_algorand
-                )
-            )
+            ReceiverAccountSelectionFragmentDirections
+                .actionReceiverAccountSelectionFragmentToReceiverAccountSelectionQrScannerFragment()
         )
     }
 

@@ -17,7 +17,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.algorand.android.customviews.CollectibleImageView
+import com.algorand.android.customviews.collectibleimageview.CollectibleImageView
 import com.algorand.android.databinding.ItemRemoveCollectibleBinding
 import com.algorand.android.models.BaseRemoveAssetItem.BaseRemoveCollectibleItem
 import com.algorand.android.utils.PrismUrlBuilder

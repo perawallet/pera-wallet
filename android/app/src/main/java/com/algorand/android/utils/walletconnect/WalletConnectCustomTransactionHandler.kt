@@ -83,8 +83,12 @@ class WalletConnectCustomTransactionHandler @Inject constructor(
                 return
             }
 
-            // TODO reject if there is an error
             val groupedWalletConnectTxnList = groupWalletConnectTransactions(walletConnectTxnList)
+
+            if (groupedWalletConnectTxnList == null) {
+                onResult(Error(sessionId, requestId, errorProvider.invalidInput.missingTransactionFromGroup))
+                return
+            }
 
             if (!areAllAddressPublicKeysValid(groupedWalletConnectTxnList)) {
                 onResult(Error(sessionId, requestId, errorProvider.invalidInput.invalidPublicKey))

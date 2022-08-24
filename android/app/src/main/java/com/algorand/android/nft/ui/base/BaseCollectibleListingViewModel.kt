@@ -14,6 +14,7 @@ package com.algorand.android.nft.ui.base
 
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
+import com.algorand.android.modules.tracking.nft.CollectibleEventTracker
 import com.algorand.android.nft.domain.usecase.BaseCollectiblesListingPreviewUseCase
 import com.algorand.android.nft.ui.model.CollectiblesListingPreview
 import kotlinx.coroutines.Job
@@ -24,7 +25,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 abstract class BaseCollectibleListingViewModel(
-    private val baseCollectiblesPreviewUseCase: BaseCollectiblesListingPreviewUseCase
+    private val baseCollectiblesPreviewUseCase: BaseCollectiblesListingPreviewUseCase,
+    private val collectibleEventTracker: CollectibleEventTracker
 ) : BaseViewModel() {
 
     protected abstract fun initCollectiblesListingPreviewFlow(searchKeyword: String): Flow<CollectiblesListingPreview>
@@ -55,6 +57,12 @@ abstract class BaseCollectibleListingViewModel(
             initCollectiblesListingPreviewFlow(searchKeyword).collectLatest {
                 _collectiblesListingPreviewFlow.emit(it)
             }
+        }
+    }
+
+    fun logCollectibleReceiveEvent() {
+        viewModelScope.launch {
+            collectibleEventTracker.logCollectibleReceiveEvent()
         }
     }
 }

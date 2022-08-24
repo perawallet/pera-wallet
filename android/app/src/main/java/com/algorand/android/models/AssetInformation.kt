@@ -14,9 +14,10 @@ package com.algorand.android.models
 
 import android.os.Parcelable
 import com.algorand.android.nft.ui.model.CollectibleDetail
-import com.algorand.android.utils.ALGOS_FULL_NAME
-import com.algorand.android.utils.ALGOS_SHORT_NAME
+import com.algorand.android.utils.ALGO_FULL_NAME
+import com.algorand.android.utils.ALGO_SHORT_NAME
 import com.algorand.android.utils.ALGO_DECIMALS
+import com.algorand.android.utils.assetdrawable.BaseAssetDrawableProvider
 import com.algorand.android.utils.formatAmount
 import java.math.BigInteger
 import kotlinx.android.parcel.IgnoredOnParcel
@@ -31,39 +32,31 @@ data class AssetInformation(
     val fullName: String? = null,
     val amount: BigInteger? = null,
     val decimals: Int = 0,
-    val totalRewards: Long? = null,
-    val pendingRewards: Long? = null,
     var assetStatus: AssetStatus = AssetStatus.OWNED_BY_ACCOUNT,
-    val amountWithoutPendingRewards: BigInteger? = null,
-    val url: String? = null
+    val url: String? = null,
+    val assetDrawableProvider: BaseAssetDrawableProvider? = null
 ) : Parcelable {
 
     @IgnoredOnParcel
     val formattedAmount by lazy { amount.formatAmount(decimals) }
 
     fun isAlgo(): Boolean {
-        return assetId == ALGORAND_ID
+        return assetId == ALGO_ID
     }
 
     companion object {
-        const val ALGORAND_ID = -7L
+        const val ALGO_ID = -7L
 
         fun getAlgorandAsset(
-            amount: BigInteger = BigInteger.ZERO,
-            totalRewards: Long = 0,
-            pendingRewards: Long = 0,
-            amountWithoutPendingRewards: BigInteger = BigInteger.ZERO
+            amount: BigInteger = BigInteger.ZERO
         ): AssetInformation {
             return AssetInformation(
-                assetId = ALGORAND_ID,
-                fullName = ALGOS_FULL_NAME,
-                shortName = ALGOS_SHORT_NAME,
+                assetId = ALGO_ID,
+                fullName = ALGO_FULL_NAME,
+                shortName = ALGO_SHORT_NAME,
                 decimals = ALGO_DECIMALS,
                 amount = amount,
-                totalRewards = totalRewards,
-                pendingRewards = pendingRewards,
                 isVerified = true,
-                amountWithoutPendingRewards = amountWithoutPendingRewards
             )
         }
 
@@ -95,7 +88,10 @@ data class AssetInformation(
         }
 
         // TODO: 18.03.2022 Remove this function after changing TransactionBaseFragment
-        fun createAssetInformation(baseOwnedAssetData: BaseAccountAssetData.BaseOwnedAssetData): AssetInformation {
+        fun createAssetInformation(
+            baseOwnedAssetData: BaseAccountAssetData.BaseOwnedAssetData,
+            assetDrawableProvider: BaseAssetDrawableProvider?
+        ): AssetInformation {
             return with(baseOwnedAssetData) {
                 AssetInformation(
                     assetId = id,
@@ -104,7 +100,8 @@ data class AssetInformation(
                     shortName = shortName,
                     fullName = name,
                     amount = amount,
-                    decimals = decimals
+                    decimals = decimals,
+                    assetDrawableProvider = assetDrawableProvider
                 )
             }
         }

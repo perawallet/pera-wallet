@@ -18,6 +18,7 @@ import androidx.annotation.StringRes
 import androidx.core.view.children
 import com.algorand.android.R
 import com.algorand.android.models.AnnotatedString
+import com.algorand.android.utils.splitMnemonic
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayout
@@ -127,7 +128,7 @@ class PassphraseInputGroup @JvmOverloads constructor(
 
     fun setMnemonic(mnemonic: String) {
         val latestFocusedInputIndex = children.indexOfFirst { it.hasFocus() }
-        val keywords = mnemonic.trim().split(" ")
+        val keywords = mnemonic.splitMnemonic()
         val iterationCount = minOf(keywords.size, WORD_COUNT)
         repeat(iterationCount) { index ->
             passphraseInputArray[index].setWord(word = keywords[index], focusToNextOne = false)

@@ -119,7 +119,8 @@ object WalletConnectModule {
                 invalidAssetErrorMessage = getString(R.string.invalid_input_invalid_asset),
                 unableToSignErrorMessage = getString(R.string.invalid_input_unable_to_be),
                 atomicTxnNoNeedToBeSignedErrorMessage = getString(R.string.invalid_input_group_transaction),
-                invalidSignerErrorMessage = getString(R.string.invalid_input_requested_signer)
+                invalidSignerErrorMessage = getString(R.string.invalid_input_requested_signer),
+                missingTransactionFromGroupErrorMessage = getString(R.string.it_looks_like)
             )
 
             WalletConnectTransactionErrorProvider(

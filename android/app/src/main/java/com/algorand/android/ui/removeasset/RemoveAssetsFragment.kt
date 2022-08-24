@@ -23,7 +23,7 @@ import com.algorand.android.R
 import com.algorand.android.core.TransactionBaseFragment
 import com.algorand.android.databinding.FragmentRemoveAssetsBinding
 import com.algorand.android.models.AccountDetailSummary
-import com.algorand.android.models.AccountIcon
+import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.AssetAction
 import com.algorand.android.models.AssetActionResult
 import com.algorand.android.models.AssetInformation
@@ -36,6 +36,7 @@ import com.algorand.android.models.TransactionData
 import com.algorand.android.ui.assetaction.RemoveAssetActionBottomSheet
 import com.algorand.android.ui.assetaction.TransferBalanceActionBottomSheet
 import com.algorand.android.ui.removeasset.adapter.RemoveAssetAdapter
+import com.algorand.android.utils.AccountIconDrawable
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.extensions.hide
@@ -45,17 +46,16 @@ import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
+import java.math.BigInteger
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.math.BigInteger
 
 @AndroidEntryPoint
 class RemoveAssetsFragment : TransactionBaseFragment(R.layout.fragment_remove_assets) {
 
     private val toolbarConfiguration = ToolbarConfiguration(
         startIconResId = R.drawable.ic_close,
-        startIconClick = ::navBack,
-        showAccountImage = true
+        startIconClick = ::navBack
     )
 
     override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
@@ -86,7 +86,10 @@ class RemoveAssetsFragment : TransactionBaseFragment(R.layout.fragment_remove_as
     }
 
     private val accountDetailSummaryCollector: suspend (value: AccountDetailSummary?) -> Unit = {
-        if (it != null) updateToolbar(it.name, it.accountIcon)
+        if (it != null) updateToolbar(
+            it.accountDisplayName.getDisplayTextOrAccountShortenedAddress(),
+            it.accountIconResource
+        )
     }
 
     override val transactionFragmentListener = object : TransactionFragmentListener {
@@ -127,10 +130,11 @@ class RemoveAssetsFragment : TransactionBaseFragment(R.layout.fragment_remove_as
         getAppToolbar()?.configure(toolbarConfiguration)
     }
 
-    private fun updateToolbar(title: String, accountIcon: AccountIcon) {
+    private fun updateToolbar(title: String, accountIconResource: AccountIconResource) {
         getAppToolbar()?.apply {
             changeTitle(title)
-            setAccountImage(accountIcon)
+            val drawableWidth = resources.getDimension(R.dimen.toolbar_title_drawable_size).toInt()
+            setStartDrawable(AccountIconDrawable.create(context, accountIconResource, drawableWidth))
         }
     }
 

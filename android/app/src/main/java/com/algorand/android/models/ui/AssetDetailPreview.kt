@@ -13,6 +13,7 @@
 package com.algorand.android.models.ui
 
 import com.algorand.android.utils.AssetName
+import com.algorand.android.utils.assetdrawable.BaseAssetDrawableProvider
 
 data class AssetDetailPreview(
     val assetId: Long,
@@ -24,5 +25,6 @@ data class AssetDetailPreview(
     val formattedAssetBalanceInCurrency: String?,
     val formattedAssetId: String? = null,
     val isAmountInSelectedCurrencyVisible: Boolean,
-    val canSignTransaction: Boolean
+    val canSignTransaction: Boolean,
+    val assetDrawableProvider: BaseAssetDrawableProvider?
 )

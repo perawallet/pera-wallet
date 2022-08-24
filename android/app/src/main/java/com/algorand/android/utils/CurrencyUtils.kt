@@ -12,25 +12,43 @@
 
 package com.algorand.android.utils
 
+import com.algorand.android.modules.currency.domain.model.Currency
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 
-const val ALGO_CURRENCY_SYMBOL = "\u00A6"
-const val ALGOS_FULL_NAME = "Algos"
-const val ALGOS_SHORT_NAME = "ALGO"
+const val ALGO_FULL_NAME = "Algo"
+const val ALGO_SHORT_NAME = "ALGO"
 const val ALGO_DECIMALS = 6
 const val DEFAULT_ASSET_DECIMAL = 0
+const val POSITIVE_SIGN = "+"
+const val NEGATIVE_SIGN = "-"
+private const val FIAT_MAX_DECIMAL = 6
+private const val FIAT_MIN_DECIMAL = 2
 
 private const val ALGO_AMOUNT_FORMAT = "#,##0.00####"
-private const val ALGO_REWARD_AMOUNT_FORMAT = "#,##0.000000"
 private const val ALGO_DISPLAY_AMOUNT_DECIMAL = 2
 
-fun BigDecimal.formatAsCurrency(symbol: String, isCompact: Boolean = false): String {
-    val formattedString = if (isCompact) formatCompactNumber(this) else formatAsTwoDecimals()
+fun BigDecimal.formatAsCurrency(symbol: String, isCompact: Boolean = false, isFiat: Boolean = false): String {
+    val formattedString = if (isCompact) {
+        val fractionalDigitCreator = getFractionalDigitCreator(isFiat)
+        formatCompactNumber(this, fractionalDigitCreator)
+    } else {
+        formatAsCurrencyDecimals(symbol)
+    }
     return StringBuilder(symbol).append(formattedString).toString()
+}
+
+private fun BigDecimal.formatAsCurrencyDecimals(symbol: String): String {
+    val numberFormatter = if (symbol == Currency.ALGO.symbol) {
+        getNumberFormat(ALGO_DECIMALS)
+    } else {
+        val decimal = getFiatFormatDecimal(this)
+        getNumberFormat(decimal)
+    }
+    return numberFormatter.format(this)
 }
 
 fun BigInteger.toAlgoDisplayValue(): BigDecimal {
@@ -65,14 +83,6 @@ fun BigDecimal?.formatAsAlgoString(): String {
     )
 }
 
-fun Long?.formatAsAlgoRewardString(): String {
-    return DecimalFormat(ALGO_REWARD_AMOUNT_FORMAT, DecimalFormatSymbols()).format(
-        BigDecimal.valueOf(this ?: 0, ALGO_DECIMALS)
-    )
-}
-
-fun BigDecimal?.formatAsAlgoRewardString(): String {
-    return DecimalFormat(ALGO_REWARD_AMOUNT_FORMAT, DecimalFormatSymbols()).format(
-        (this ?: BigDecimal.ZERO).setScale(ALGO_DECIMALS, RoundingMode.FLOOR)
-    ).formatAsAlgoAmount()
+private fun getFiatFormatDecimal(number: BigDecimal): Int {
+    return if (number isLesserThan BigDecimal.ONE) FIAT_MAX_DECIMAL else FIAT_MIN_DECIMAL
 }

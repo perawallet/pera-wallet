@@ -38,10 +38,12 @@ class AddAccountTypeSelectionFragment : DaggerBaseFragment(R.layout.fragment_add
     }
 
     private fun navToBackupInfoFragment() {
+        addAccountTypeSelectionViewModel.logOnboardingCreateNewAccountClickEvent()
         nav(AddAccountTypeSelectionFragmentDirections.actionAddAccountTypeSelectionFragmentToBackupInfoFragment())
     }
 
     private fun navToWatchAccountInfoFragment() {
+        addAccountTypeSelectionViewModel.logOnboardingCreateWatchAccountClickEvent()
         nav(
             AddAccountTypeSelectionFragmentDirections
                 .actionAddAccountTypeSelectionFragmentToWatchAccountInfoFragment()

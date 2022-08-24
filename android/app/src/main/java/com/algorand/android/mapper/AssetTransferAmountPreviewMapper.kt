@@ -24,12 +24,14 @@ class AssetTransferAmountPreviewMapper @Inject constructor() {
         accountAssetData: BaseAccountAssetData.BaseOwnedAssetData,
         enteredAmountSelectedCurrencyValue: String?,
         collectiblePrismUrl: String?,
-        isCollectibleOwnedByUser: Boolean
+        isCollectibleOwnedByUser: Boolean,
+        decimalSeparator: String
     ): AssetTransferAmountPreview {
         return AssetTransferAmountPreview(
             shortName = AssetName.createShortName(accountAssetData.shortName),
             decimals = accountAssetData.decimals,
-            formattedSelectedCurrencyValue = accountAssetData.formattedSelectedCurrencyCompactValue,
+            formattedSelectedCurrencyValue = accountAssetData.getSelectedCurrencyParityValue()
+                .getFormattedCompactValue(),
             assetId = accountAssetData.id,
             fullName = AssetName.create(accountAssetData.name),
             isAlgo = accountAssetData.isAlgo,
@@ -38,7 +40,8 @@ class AssetTransferAmountPreviewMapper @Inject constructor() {
             isAmountInSelectedCurrencyVisible = accountAssetData.isAmountInSelectedCurrencyVisible,
             enteredAmountSelectedCurrencyValue = enteredAmountSelectedCurrencyValue,
             collectiblePrismUrl = collectiblePrismUrl,
-            isCollectibleOwnedByUser = isCollectibleOwnedByUser
+            isCollectibleOwnedByUser = isCollectibleOwnedByUser,
+            decimalSeparator = decimalSeparator
         )
     }
 }

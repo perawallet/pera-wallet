@@ -14,6 +14,7 @@ package com.algorand.android.nft.domain.usecase
 
 import com.algorand.android.models.ui.CollectibleTransactionApprovePreview
 import com.algorand.android.nft.mapper.CollectibleTransactionApprovePreviewMapper
+import com.algorand.android.nft.ui.model.CollectibleDetail
 import com.algorand.android.usecase.AccountNameIconUseCase
 import com.algorand.android.utils.formatAsAlgoAmount
 import com.algorand.android.utils.formatAsAlgoString
@@ -28,7 +29,8 @@ class CollectibleTransactionApprovePreviewUseCase @Inject constructor(
     fun getCollectibleTransactionApprovePreviewFlow(
         senderPublicKey: String,
         receiverPublicKey: String,
-        fee: Float
+        fee: Float,
+        collectibleDetail: CollectibleDetail
     ) = flow<CollectibleTransactionApprovePreview> {
         val (senderDisplayText, senderAccountIcon) = accountNameIconUseCase.getAccountDisplayTextAndIcon(
             senderPublicKey
@@ -36,14 +38,20 @@ class CollectibleTransactionApprovePreviewUseCase @Inject constructor(
         val (receiverDisplayText, receiverAccountIcon) = accountNameIconUseCase.getAccountOrContactDisplayTextAndIcon(
             receiverPublicKey
         )
+        val isOptOutGroupVisible = collectibleDetail.isOwnedByTheUser &&
+            !collectibleDetail.isHoldingByWatchAccount &&
+            collectibleDetail.creatorWalletAddress != collectibleDetail.ownerAccountAddress &&
+            senderPublicKey != receiverPublicKey
+
         val collectibleTransactionApprovePreview = collectibleTransactionApprovePreviewMapper.mapToPreview(
             senderAccountPublicKey = senderPublicKey,
             senderAccountDisplayText = senderDisplayText,
-            senderAccountIcon = senderAccountIcon,
+            senderAccountIconResource = senderAccountIcon,
             receiverAccountPublicKey = receiverPublicKey,
             receiverAccountDisplayText = receiverDisplayText,
-            receiverAccountIcon = receiverAccountIcon,
-            formattedTransactionFee = fee.toLong().formatAsAlgoString().formatAsAlgoAmount()
+            receiverAccountIconResource = receiverAccountIcon,
+            formattedTransactionFee = fee.toLong().formatAsAlgoString().formatAsAlgoAmount(),
+            isOptOutGroupVisible = isOptOutGroupVisible
         )
         emit(collectibleTransactionApprovePreview)
     }

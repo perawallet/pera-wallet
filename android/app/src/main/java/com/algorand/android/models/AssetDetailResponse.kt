@@ -26,5 +26,6 @@ data class AssetDetailResponse(
     @SerializedName("usd_value") val usdValue: BigDecimal?,
     @SerializedName("creator") val assetCreator: AssetCreator?,
     @SerializedName("collectible") val collectible: CollectibleResponse?,
-    @SerializedName("total") val totalSupply: BigInteger?
+    @SerializedName("total") val totalSupply: BigInteger?,
+    @SerializedName("explorer_url") val explorerUrl: String?
 )

@@ -13,6 +13,7 @@
 
 package com.algorand.android.mapper
 
+import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.AccountSelectionListItem
 import com.algorand.android.models.LedgerInformationListItem
 import javax.inject.Inject
@@ -21,7 +22,11 @@ class LedgerInformationCanSignByItemMapper @Inject constructor() {
 
     fun mapTo(accountItem: AccountSelectionListItem.AccountItem): LedgerInformationListItem.CanSignedByItem {
         return with(accountItem.account) {
-            LedgerInformationListItem.CanSignedByItem(accountItem.account.createAccountIcon(), address)
+            LedgerInformationListItem.CanSignedByItem(
+                AccountIconResource.getAccountIconResourceByAccountType(
+                    accountItem.account.type
+                ), address
+            )
         }
     }
 }

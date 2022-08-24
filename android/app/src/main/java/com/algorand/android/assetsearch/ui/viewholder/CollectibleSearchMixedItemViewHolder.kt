@@ -16,7 +16,7 @@ import android.view.ViewGroup
 import androidx.core.view.doOnLayout
 import com.algorand.android.assetsearch.ui.model.BaseAssetSearchListItem
 import com.algorand.android.assetsearch.ui.model.BaseAssetSearchListItem.BaseCollectibleSearchListItem
-import com.algorand.android.customviews.CollectibleImageView
+import com.algorand.android.customviews.collectibleimageview.CollectibleImageView
 import com.algorand.android.databinding.ItemSearchCollectibleBinding
 import com.algorand.android.utils.loadImage
 

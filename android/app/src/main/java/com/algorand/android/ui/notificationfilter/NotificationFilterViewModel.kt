@@ -16,9 +16,13 @@ import android.content.SharedPreferences
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
+import com.algorand.android.customviews.accountandassetitem.mapper.AccountItemConfigurationMapper
 import com.algorand.android.database.NotificationFilterDao
+import com.algorand.android.models.AccountIconResource
+import com.algorand.android.modules.accounts.domain.usecase.GetAccountValueUseCase
+import com.algorand.android.modules.sorting.accountsorting.domain.usecase.AccountSortPreferenceUseCase
+import com.algorand.android.modules.sorting.accountsorting.domain.usecase.GetSortedAccountsByPreferenceUseCase
 import com.algorand.android.repository.NotificationRepository
-import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.preference.isNotificationActivated
 import com.algorand.android.utils.preference.setNotificationPreference
@@ -30,8 +34,11 @@ import kotlinx.coroutines.launch
 class NotificationFilterViewModel @ViewModelInject constructor(
     private val sharedPref: SharedPreferences,
     private val notificationRepository: NotificationRepository,
-    private val accountCacheManager: AccountCacheManager,
-    private val notificationFilterDao: NotificationFilterDao
+    private val notificationFilterDao: NotificationFilterDao,
+    private val getSortedAccountsByPreferenceUseCase: GetSortedAccountsByPreferenceUseCase,
+    private val accountItemConfigurationMapper: AccountItemConfigurationMapper,
+    private val getAccountValueUseCase: GetAccountValueUseCase,
+    private val accountSortPreferenceUseCase: AccountSortPreferenceUseCase
 ) : BaseViewModel() {
 
     val notificationFilterOperation = MutableStateFlow<Resource<Unit>?>(null)
@@ -40,19 +47,37 @@ class NotificationFilterViewModel @ViewModelInject constructor(
     init {
         viewModelScope.launch(Dispatchers.IO) {
             notificationFilterDao.getAllAsFlow().collectLatest { notificationFilterList ->
-                val generatedList = mutableListOf<AccountNotificationOption>()
-                accountCacheManager.accountCacheMap.value.forEach { (publicKey, accountCacheData) ->
-                    val isAccountFiltered = notificationFilterList.any { it.publicKey == publicKey }
-                    generatedList.add(
-                        AccountNotificationOption(
-                            publicKey = publicKey,
-                            accountName = accountCacheData.account.name,
-                            isFiltered = isAccountFiltered,
-                            accountIcon = accountCacheData.account.createAccountIcon()
+                val sortedAccountListItem = getSortedAccountsByPreferenceUseCase.getSortedAccountListItems(
+                    sortingPreferences = accountSortPreferenceUseCase.getAccountSortPreference(),
+                    onLoadedAccountConfiguration = {
+                        val accountValue = getAccountValueUseCase.getAccountValue(this)
+                        accountItemConfigurationMapper.mapTo(
+                            accountAddress = account.address,
+                            accountName = account.name,
+                            accountType = account.type,
+                            accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(account.type),
+                            accountPrimaryValue = accountValue.primaryAccountValue
                         )
-                    )
+                    },
+                    onFailedAccountConfiguration = {
+                        this?.run {
+                            accountItemConfigurationMapper.mapTo(
+                                accountAddress = address,
+                                accountName = name,
+                                accountType = type,
+                                accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(type),
+                                showWarningIcon = true
+                            )
+                        }
+                    }
+                )
+                val generatedList = sortedAccountListItem.map { accountListItem ->
+                    val isAccountFiltered = notificationFilterList.any {
+                        it.publicKey == accountListItem.itemConfiguration.accountAddress
+                    }
+                    AccountNotificationOption(accountListItem = accountListItem, isFiltered = isAccountFiltered)
                 }
-                notificationFilterListStateFlow.value = generatedList
+                notificationFilterListStateFlow.emit(generatedList)
             }
         }
     }

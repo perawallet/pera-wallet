@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipToPadding="false"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/bottom_safe_area_margin">
+
+    <View
+        style="@style/BottomSheetModalityLine"
+        android:layout_marginVertical="@dimen/spacing_small" />
+
+    <com.algorand.android.customviews.CustomToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_toolbar_height" />
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/CardView.AccountAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_large"
+        android:layout_marginTop="@dimen/spacing_large">
+
+        <LinearLayout
+            android:id="@+id/accountAddressContainerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/spacing_large"
+            android:paddingVertical="@dimen/spacing_normal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/scanned_account_address"
+                android:textAppearance="@style/TextAppearance.Footnote.Sans"
+                android:textColor="@color/text_gray_lighter" />
+
+            <TextView
+                android:id="@+id/accountAddressTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xxsmall"
+                android:textAppearance="@style/TextAppearance.Footnote.Sans"
+                tools:text="@tools:sample/lorem[10]" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.algorand.android.customviews.ListMenuItemView
+        android:id="@+id/sendTransactionButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:layout_marginBottom="@dimen/spacing_xxxsmall"
+        app:icon="@drawable/ic_send_helper_button_bg_gray"
+        app:showBottomDivider="true"
+        app:title="@string/send_transaction" />
+
+    <com.algorand.android.customviews.ListMenuItemView
+        android:id="@+id/addWatchAccountButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_xxxsmall"
+        app:icon="@drawable/ic_watch_account_circle"
+        app:showBottomDivider="true"
+        app:title="@string/add_watch_account" />
+
+    <com.algorand.android.customviews.ListMenuItemView
+        android:id="@+id/addNewContactButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/ic_contact_circle"
+        app:title="@string/add_new_contact" />
+
+</LinearLayout>

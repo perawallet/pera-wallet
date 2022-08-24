@@ -24,6 +24,7 @@ import com.algorand.android.models.AssetTransaction
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.IconButton
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.utils.extensions.setContactIconDrawable
 import com.algorand.android.utils.hideKeyboard
 import com.algorand.android.utils.openTextShareBottomMenuChooser
 import com.algorand.android.utils.toShortenedAddress
@@ -63,9 +64,9 @@ class ContactInfoFragment : DaggerBaseFragment(R.layout.fragment_contact_info) {
     private fun initUi() {
         with(args.contact) {
             with(binding) {
-                contactImageView.loadAccountImage(
+                contactImageView.setContactIconDrawable(
                     uri = imageUriAsString?.toUri(),
-                    padding = R.dimen.spacing_normal
+                    iconSize = R.dimen.account_icon_size_xlarge
                 )
                 nameTextView.text = name
                 addressBelowNameTextView.text = publicKey.toShortenedAddress()

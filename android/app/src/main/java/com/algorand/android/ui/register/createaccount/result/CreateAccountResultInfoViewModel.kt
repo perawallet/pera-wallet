@@ -14,12 +14,16 @@ package com.algorand.android.ui.register.createaccount.result
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.algorand.android.modules.tracking.onboarding.register.createaccountresultinfo.CreateAccountResultInfoFragmentEventTracker
 import com.algorand.android.usecase.CreateAccountResultInfoUseCase
 import com.algorand.android.usecase.LockPreferencesUseCase
+import kotlinx.coroutines.launch
 
 class CreateAccountResultInfoViewModel @ViewModelInject constructor(
     createAccountResultInfoUseCase: CreateAccountResultInfoUseCase,
-    private val lockPreferencesUseCase: LockPreferencesUseCase
+    private val lockPreferencesUseCase: LockPreferencesUseCase,
+    private val createAccountResultInfoFragmentEventTracker: CreateAccountResultInfoFragmentEventTracker
 ) : ViewModel() {
 
     private val createAccountResultInfoPreview = createAccountResultInfoUseCase.getCreateAccountResultInfoPreview()
@@ -42,5 +46,17 @@ class CreateAccountResultInfoViewModel @ViewModelInject constructor(
 
     fun getPreviewSecondButtonText(): Int {
         return createAccountResultInfoPreview.secondButtonTextRes
+    }
+
+    fun logOnboardingBuyAlgoClickEvent() {
+        viewModelScope.launch {
+            createAccountResultInfoFragmentEventTracker.logOnboardingAccountVerifiedBuyAlgoEvent()
+        }
+    }
+
+    fun logOnboardingStartUsingPeraClickEvent() {
+        viewModelScope.launch {
+            createAccountResultInfoFragmentEventTracker.logOnboardingAccountVerifiedStartPeraEvent()
+        }
     }
 }

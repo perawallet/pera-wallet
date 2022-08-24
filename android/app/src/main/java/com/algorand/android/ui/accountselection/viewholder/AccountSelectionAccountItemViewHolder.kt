@@ -14,9 +14,7 @@ package com.algorand.android.ui.accountselection.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.algorand.android.R
 import com.algorand.android.databinding.ItemAccountSimpleBinding
 import com.algorand.android.models.BaseAccountSelectionListItem
 
@@ -25,34 +23,7 @@ class AccountSelectionAccountItemViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: BaseAccountSelectionListItem.BaseAccountItem.AccountItem) {
-        with(binding) {
-            accountIconImageView.setAccountIcon(item.accountIcon)
-            accountDisplayNameTextView.text = item.displayName
-            accountHoldingsTextView.isVisible = item.showHoldings
-            accountHoldingsTextView.text = item.formattedHoldings
-            assetAndCollectibleCountTextView.isVisible = item.showAssetCount
-            if (!item.showAssetCount) {
-                return
-            }
-            val assetCount = root.resources.getQuantityString(
-                R.plurals.account_asset_count,
-                item.assetCount,
-                item.assetCount,
-                item.assetCount
-            )
-            assetAndCollectibleCountTextView.text = if (item.collectibleCount == 0) {
-                // If the account does not have any collectible, we should show only asset count
-                assetCount
-            } else {
-                val accountHoldingsStringBuilder = StringBuilder().append(assetCount)
-                val collectibleCount = root.resources.getQuantityString(
-                    R.plurals.account_collectible_count,
-                    item.collectibleCount,
-                    item.collectibleCount
-                )
-                accountHoldingsStringBuilder.append(COMMA_WITH_SPACE).append(collectibleCount)
-            }
-        }
+        binding.accountItemView.initItemView(item.accountListItem.itemConfiguration)
     }
 
     companion object {
@@ -60,7 +31,5 @@ class AccountSelectionAccountItemViewHolder(
             val binding = ItemAccountSimpleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             return AccountSelectionAccountItemViewHolder(binding)
         }
-
-        private const val COMMA_WITH_SPACE = ", "
     }
 }

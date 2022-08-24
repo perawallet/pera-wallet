@@ -12,7 +12,7 @@
 
 package com.algorand.android.models
 
-import com.algorand.android.utils.ALGOS_FULL_NAME
+import com.algorand.android.utils.ALGO_FULL_NAME
 import com.algorand.android.utils.ALGO_DECIMALS
 import com.google.gson.annotations.SerializedName
 
@@ -44,9 +44,9 @@ data class AssetNotificationDescription(
     companion object {
         fun getAlgorandNotificationDescription(): AssetNotificationDescription {
             return AssetNotificationDescription(
-                assetId = AssetInformation.ALGORAND_ID,
+                assetId = AssetInformation.ALGO_ID,
                 isVerified = true,
-                fullName = ALGOS_FULL_NAME,
+                fullName = ALGO_FULL_NAME,
                 decimals = ALGO_DECIMALS
             )
         }

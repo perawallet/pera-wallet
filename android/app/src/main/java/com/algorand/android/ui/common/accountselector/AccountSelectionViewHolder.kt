@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.R
 import com.algorand.android.databinding.ItemAccountOptionBinding
 import com.algorand.android.models.AccountSelection
+import com.algorand.android.utils.extensions.setAccountIconDrawable
 
 class AccountSelectionViewHolder(
     private val binding: ItemAccountOptionBinding
@@ -28,22 +29,12 @@ class AccountSelectionViewHolder(
     fun bind(accountSelection: AccountSelection, showBalance: Boolean, defaultSelectedAccountAddress: String?) {
         with(binding) {
             with(accountSelection) {
-                nameTextView.text = accountName
-                typeImageView.setAccountIcon(accountIcon)
-                checkImageView.isVisible = accountAddress == defaultSelectedAccountAddress
-                // TODO: 7.04.2022 View holder shouldn't contain any logic
-                balanceTextView.text = if (showBalance) {
-                    root.context.getString(
-                        R.string.available_balance_with_currency,
-                        formattedAccountBalance
-                    )
-                } else {
-                    root.resources.getQuantityString(
-                        R.plurals.account_asset_count,
-                        accountAssetCount,
-                        accountAssetCount
-                    )
+                nameTextView.text = accountDisplayName?.getDisplayTextOrAccountShortenedAddress()
+                if (accountIconResource != null) {
+                    typeImageView.setAccountIconDrawable(accountIconResource, R.dimen.account_icon_size_large)
                 }
+                checkImageView.isVisible = accountAddress == defaultSelectedAccountAddress
+                balanceTextView.text = accountDisplayName?.getAccountShortenedAddressOrAccountType(root.resources)
             }
         }
     }

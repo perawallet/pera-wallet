@@ -12,13 +12,13 @@
 
 package com.algorand.android.models.ui
 
-import com.algorand.android.models.AccountIcon
+import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.RecyclerListItem
 
 data class AccountOrderItem(
     val publicKey: String,
     val displayName: String,
-    val accountIcon: AccountIcon
+    val accountIconResource: AccountIconResource
 ) : RecyclerListItem {
 
     override fun areItemsTheSame(other: RecyclerListItem): Boolean {

@@ -20,16 +20,29 @@
     android:padding="@dimen/spacing_large"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
-    <com.algorand.android.customviews.AccountIconImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/transactionAccountTypeImageView"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="@dimen/account_icon_size_small"
+        android:layout_height="@dimen/account_icon_size_small"
         android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/transactionAccountNameTextView"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/ic_wallet"
+        tools:visibility="visible" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/governorIconImageView"
+        android:layout_width="@dimen/governor_icon_size_small"
+        android:layout_height="@dimen/governor_icon_size_small"
+        android:visibility="gone"
+        app:layout_constraintCircle="@id/transactionAccountTypeImageView"
+        app:layout_constraintCircleAngle="@integer/governor_icon_angle"
+        app:layout_constraintCircleRadius="10dp"
+        tools:backgroundTint="@color/background"
+        tools:srcCompat="@drawable/ic_crown_filled"
         tools:visibility="visible" />
 
     <TextView

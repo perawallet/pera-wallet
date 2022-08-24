@@ -12,7 +12,7 @@
 
 package com.algorand.android.nft.mapper
 
-import com.algorand.android.models.AccountIcon
+import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.ui.CollectibleTransactionApprovePreview
 import javax.inject.Inject
 
@@ -21,20 +21,22 @@ class CollectibleTransactionApprovePreviewMapper @Inject constructor() {
     fun mapToPreview(
         senderAccountPublicKey: String,
         senderAccountDisplayText: String,
-        senderAccountIcon: AccountIcon?,
+        senderAccountIconResource: AccountIconResource?,
         receiverAccountPublicKey: String,
         receiverAccountDisplayText: String,
-        receiverAccountIcon: AccountIcon?,
-        formattedTransactionFee: String
+        receiverAccountIconResource: AccountIconResource?,
+        formattedTransactionFee: String,
+        isOptOutGroupVisible: Boolean
     ): CollectibleTransactionApprovePreview {
         return CollectibleTransactionApprovePreview(
             senderAccountPublicKey = senderAccountPublicKey,
             senderAccountDisplayText = senderAccountDisplayText,
-            senderAccountIcon = senderAccountIcon,
+            senderAccountIconResource = senderAccountIconResource,
             receiverAccountPublicKey = receiverAccountPublicKey,
             receiverAccountDisplayText = receiverAccountDisplayText,
-            receiverAccountIcon = receiverAccountIcon,
-            formattedTransactionFee = formattedTransactionFee
+            receiverAccountIconResource = receiverAccountIconResource,
+            formattedTransactionFee = formattedTransactionFee,
+            isOptOutGroupVisible = isOptOutGroupVisible
         )
     }
 }

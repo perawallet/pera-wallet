@@ -15,61 +15,83 @@ package com.algorand.android.models
 import com.algorand.android.utils.MIN_FEE
 import java.math.BigInteger
 
-sealed class TransactionData(
-    val accountCacheData: AccountCacheData,
-    var calculatedFee: Long? = null,
-    var transactionByteArray: ByteArray? = null,
-    var amount: BigInteger = BigInteger.ZERO
-) {
+sealed class TransactionData {
+
+    abstract val accountCacheData: AccountCacheData
+    open var calculatedFee: Long? = null
+    open var transactionByteArray: ByteArray? = null
+    open var amount: BigInteger = BigInteger.ZERO
+
     abstract fun getSignedTransactionDetail(signedTransactionData: ByteArray): SignedTransactionDetail
 
-    class Send(
-        accountCacheData: AccountCacheData,
-        amount: BigInteger,
+    data class Send(
+        override val accountCacheData: AccountCacheData,
+        override var amount: BigInteger,
         val assetInformation: AssetInformation,
         val note: String? = null,
         val targetUser: TargetUser,
         var isMax: Boolean = false,
         var projectedFee: Long = MIN_FEE
-    ) : TransactionData(accountCacheData, amount = amount) {
+    ) : TransactionData() {
         override fun getSignedTransactionDetail(signedTransactionData: ByteArray): SignedTransactionDetail {
             return SignedTransactionDetail.Send(
-                signedTransactionData,
-                amount,
-                accountCacheData,
-                targetUser,
-                isMax,
-                calculatedFee ?: 0,
-                assetInformation,
-                note
+                signedTransactionData = signedTransactionData,
+                amount = amount,
+                accountCacheData = accountCacheData,
+                targetUser = targetUser,
+                isMax = isMax,
+                fee = calculatedFee ?: 0,
+                assetInformation = assetInformation,
+                note = note
             )
         }
     }
 
-    class AddAsset(
-        accountCacheData: AccountCacheData,
+    data class AddAsset(
+        override val accountCacheData: AccountCacheData,
         val assetInformation: AssetInformation
-    ) : TransactionData(accountCacheData) {
+    ) : TransactionData() {
         override fun getSignedTransactionDetail(signedTransactionData: ByteArray): SignedTransactionDetail {
             return SignedTransactionDetail.AssetOperation(signedTransactionData, accountCacheData, assetInformation)
         }
     }
 
-    class RemoveAsset(
-        accountCacheData: AccountCacheData,
+    data class RemoveAsset(
+        override val accountCacheData: AccountCacheData,
         val assetInformation: AssetInformation,
         val creatorPublicKey: String
-    ) : TransactionData(accountCacheData) {
+    ) : TransactionData() {
         override fun getSignedTransactionDetail(signedTransactionData: ByteArray): SignedTransactionDetail {
             return SignedTransactionDetail.AssetOperation(signedTransactionData, accountCacheData, assetInformation)
         }
     }
 
-    class Rekey(
-        accountCacheData: AccountCacheData,
+    data class SendAndRemoveAsset(
+        override val accountCacheData: AccountCacheData,
+        override var amount: BigInteger,
+        val assetInformation: AssetInformation,
+        val note: String? = null,
+        val targetUser: TargetUser,
+    ) : TransactionData() {
+        override fun getSignedTransactionDetail(signedTransactionData: ByteArray): SignedTransactionDetail {
+            return SignedTransactionDetail.Send(
+                signedTransactionData = signedTransactionData,
+                amount = amount,
+                accountCacheData = accountCacheData,
+                targetUser = targetUser,
+                isMax = false,
+                fee = calculatedFee ?: 0,
+                assetInformation = assetInformation,
+                note = note
+            )
+        }
+    }
+
+    data class Rekey(
+        override val accountCacheData: AccountCacheData,
         val rekeyAdminAddress: String,
         val ledgerDetail: Account.Detail.Ledger,
-    ) : TransactionData(accountCacheData) {
+    ) : TransactionData() {
         override fun getSignedTransactionDetail(signedTransactionData: ByteArray): SignedTransactionDetail {
             return SignedTransactionDetail.RekeyOperation(
                 signedTransactionData, accountCacheData, rekeyAdminAddress, ledgerDetail

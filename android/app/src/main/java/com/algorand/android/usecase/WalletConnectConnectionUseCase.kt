@@ -12,32 +12,57 @@
 
 package com.algorand.android.usecase
 
+import com.algorand.android.customviews.accountandassetitem.mapper.AccountItemConfigurationMapper
 import com.algorand.android.mapper.AccountSelectionMapper
-import com.algorand.android.models.AccountDetail
+import com.algorand.android.models.Account
+import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.AccountSelection
+import com.algorand.android.modules.accounts.domain.usecase.GetAccountValueUseCase
+import com.algorand.android.modules.sorting.accountsorting.domain.usecase.AccountSortPreferenceUseCase
+import com.algorand.android.modules.sorting.accountsorting.domain.usecase.GetSortedAccountsByPreferenceUseCase
 import javax.inject.Inject
 
 class WalletConnectConnectionUseCase @Inject constructor(
-    private val splittedAccountsUseCase: SplittedAccountsUseCase,
-    private val accountTotalBalanceUseCase: AccountTotalBalanceUseCase,
-    private val accountSelectionMapper: AccountSelectionMapper
+    private val accountSelectionMapper: AccountSelectionMapper,
+    private val getSortedAccountsByPreferenceUseCase: GetSortedAccountsByPreferenceUseCase,
+    private val accountItemConfigurationMapper: AccountItemConfigurationMapper,
+    private val getAccountValueUseCase: GetAccountValueUseCase,
+    private val accountSortPreferenceUseCase: AccountSortPreferenceUseCase
 ) {
 
-    fun getNormalAccounts(): List<AccountSelection> {
-        val normalAccounts = getCachedNormalAccounts()
-        return normalAccounts.map { accountDetail ->
-            val accountBalance = accountTotalBalanceUseCase.getAccountBalance(accountDetail)
+    suspend fun getNormalAccounts(): List<AccountSelection> {
+        val sortedAccountListItems = getSortedAccountsByPreferenceUseCase
+            .getFilteredSortedAccountListItemsByAccountType(
+                sortingPreferences = accountSortPreferenceUseCase.getAccountSortPreference(),
+                excludedAccountTypes = listOf(Account.Type.WATCH),
+                onLoadedAccountConfiguration = {
+                    val accountValue = getAccountValueUseCase.getAccountValue(this)
+                    accountItemConfigurationMapper.mapTo(
+                        accountName = account.name,
+                        accountAddress = account.address,
+                        accountType = account.type,
+                        accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(account.type),
+                        accountPrimaryValue = accountValue.primaryAccountValue
+                    )
+                },
+                onFailedAccountConfiguration = {
+                    this?.run {
+                        accountItemConfigurationMapper.mapTo(
+                            accountName = name,
+                            accountAddress = address,
+                            accountType = type,
+                            accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(type),
+                            showWarningIcon = true
+                        )
+                    }
+                }
+            )
+        return sortedAccountListItems.map { accountListItem ->
             accountSelectionMapper.mapToAccountSelection(
-                accountDetail = accountDetail,
-                assetCount = accountBalance.assetCount,
-                assetId = null,
-                formattedAccountBalance = null
+                accountDisplayName = accountListItem.itemConfiguration.accountDisplayName,
+                accountIconResource = accountListItem.itemConfiguration.accountIconResource,
+                accountAddress = accountListItem.itemConfiguration.accountAddress
             )
         }
-    }
-
-    private fun getCachedNormalAccounts(): List<AccountDetail> {
-        val (normalAccounts, _) = splittedAccountsUseCase.getWatchAccountSplittedAccountDetails()
-        return normalAccounts.mapNotNull { it.data }
     }
 }

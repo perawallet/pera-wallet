@@ -13,7 +13,7 @@
 package com.algorand.android.models
 
 import android.os.Parcelable
-import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
+import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.models.Participation.Companion.DEFAULT_PARTICIPATION_KEY
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.calculateMinBalance
@@ -25,17 +25,14 @@ import kotlinx.parcelize.Parcelize
 data class AccountInformation(
     val address: String,
     val amount: BigInteger,
-    val rewards: Long,
-    val pendingRewards: Long,
     val participation: Participation?,
     val rekeyAdminAddress: String?,
     private val allAssetHoldingList: MutableSet<AssetHolding>?,
     val createdAtRound: Long?,
-    val amountWithoutPendingRewards: BigInteger,
-    val createdApps: List<CreatedApps>? = null,
     val appsLocalState: List<CreatedAppLocalState>? = null,
     val appsTotalSchema: CreatedAppStateScheme? = null,
-    val appsTotalExtraPages: Int? = null
+    val appsTotalExtraPages: Int? = null,
+    val totalCreatedApps: Int = 0
 ) : Parcelable {
 
     val assetHoldingList: List<AssetHolding>
@@ -61,12 +58,7 @@ data class AccountInformation(
     fun getAssetInformationList(accountCacheManager: AccountCacheManager): MutableList<AssetInformation> {
         val assetInformationList = mutableListOf<AssetInformation>()
         assetInformationList.add(
-            AssetInformation.getAlgorandAsset(
-                amount,
-                rewards,
-                pendingRewards,
-                amountWithoutPendingRewards
-            )
+            AssetInformation.getAlgorandAsset(amount)
         )
         assetHoldingList.forEach { assetHolding ->
             accountCacheManager.getAssetDescription(assetHolding.assetId)?.let { assetDescription ->
@@ -81,7 +73,7 @@ data class AccountInformation(
     }
 
     fun getAllAssetIdsIncludeAlgorand(): List<Long> {
-        return assetHoldingList.map { it.assetId }.toMutableList().apply { add(0, ALGORAND_ID) }
+        return assetHoldingList.map { it.assetId }.toMutableList().apply { add(0, ALGO_ID) }
     }
 
     fun getOptedInAssetsCount() = allAssetHoldingList?.size ?: 0
@@ -94,11 +86,11 @@ data class AccountInformation(
     }
 
     fun isAssetSupported(assetId: Long): Boolean {
-        return assetId == AssetInformation.ALGORAND_ID || assetHoldingList.any { it.assetId == assetId }
+        return assetId == AssetInformation.ALGO_ID || assetHoldingList.any { it.assetId == assetId }
     }
 
     fun getBalance(assetId: Long): BigInteger {
-        return if (assetId == AssetInformation.ALGORAND_ID) {
+        return if (assetId == AssetInformation.ALGO_ID) {
             amount
         } else {
             assetHoldingList.firstOrNull { it.assetId == assetId }?.amount ?: ZERO
@@ -110,5 +102,5 @@ data class AccountInformation(
 
     fun isThereAnyDifferentAsset() = assetHoldingList.isNotEmpty()
 
-    fun isThereAnOptedInApp() = appsLocalState?.isNotEmpty() == true || createdApps?.isNotEmpty() == true
+    fun isThereAnOptedInApp() = appsLocalState?.isNotEmpty() == true || totalCreatedApps > 0
 }

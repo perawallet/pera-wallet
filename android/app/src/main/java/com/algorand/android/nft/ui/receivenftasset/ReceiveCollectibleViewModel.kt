@@ -15,7 +15,7 @@ package com.algorand.android.nft.ui.receivenftasset
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import com.algorand.android.models.AccountIcon
+import com.algorand.android.models.AccountIconResource
 import com.algorand.android.repository.TransactionsRepository
 import com.algorand.android.ui.addasset.BaseAddAssetViewModel
 import com.algorand.android.usecase.AccountDetailUseCase
@@ -41,7 +41,7 @@ class ReceiveCollectibleViewModel @ViewModelInject constructor(
         receiveCollectiblePreviewUseCase.invalidateDataSource()
     }
 
-    fun getReceiverAccountDisplayTextAndIcon(publicKey: String): Pair<String, AccountIcon?> {
+    fun getReceiverAccountDisplayTextAndIcon(publicKey: String): Pair<String, AccountIconResource?> {
         return receiveCollectiblePreviewUseCase.getReceiverAccountDisplayTextAndIcon(publicKey)
     }
 }

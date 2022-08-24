@@ -13,22 +13,25 @@
 package com.algorand.android.nft.ui.nfsdetail
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import com.algorand.android.databinding.ItemCollectibleVideoMediaBinding
 import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem
 import com.algorand.android.utils.loadImage
 
 class CollectibleVideoMediaViewHolder(
-    private val binding: ItemCollectibleVideoMediaBinding
+    private val binding: ItemCollectibleVideoMediaBinding,
+    private val listener: CollectibleVideoMediaViewHolderListener
 ) : BaseCollectibleMediaViewHolder(binding.root) {
 
     override fun bind(item: BaseCollectibleMediaItem) {
         if (item !is BaseCollectibleMediaItem.VideoCollectibleMediaItem) return
         with(binding.collectibleVideoCollectibleImageView) {
+            setOnClickListener { listener.onVideoClick(item.previewUrl, this) }
             context.loadImage(
                 item.previewUrl.orEmpty(),
                 onResourceReady = {
-                    showImage(it, !item.isOwnedByTheUser)
+                    showImage(it)
                     showVideoPlayButton()
                 },
                 onLoadFailed = { showText(item.errorText) }
@@ -36,11 +39,18 @@ class CollectibleVideoMediaViewHolder(
         }
     }
 
+    fun interface CollectibleVideoMediaViewHolderListener {
+        fun onVideoClick(imageUrl: String?, collectibleImageView: View)
+    }
+
     companion object {
-        fun create(parent: ViewGroup): CollectibleVideoMediaViewHolder {
+        fun create(
+            parent: ViewGroup,
+            listener: CollectibleVideoMediaViewHolderListener
+        ): CollectibleVideoMediaViewHolder {
             val binding = ItemCollectibleVideoMediaBinding
                 .inflate(LayoutInflater.from(parent.context), parent, false)
-            return CollectibleVideoMediaViewHolder(binding)
+            return CollectibleVideoMediaViewHolder(binding, listener)
         }
     }
 }

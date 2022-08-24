@@ -14,8 +14,6 @@ package com.algorand.android.core
 
 import android.content.SharedPreferences
 import com.algorand.android.models.Account
-import com.algorand.android.usecase.StandardAccountOrderUseCase.Companion.STANDARD_ACCOUNT_START_INDEX
-import com.algorand.android.usecase.WatchAccountOrderUseCase.Companion.WATCH_ACCOUNT_START_INDEX
 import com.algorand.android.utils.AccountMigrationHelper
 import com.algorand.android.utils.decrpytString
 import com.algorand.android.utils.fromJson
@@ -51,12 +49,11 @@ class AccountManager(
 
     fun addNewAccount(newAccount: Account) {
         val sameSavedAccount = getAccounts().find { account -> account.address == newAccount.address }
-        val indexedNewAccount = getIndexedAccount(newAccount)
         if (sameSavedAccount == null) {
-            accounts.value = getAccounts() + indexedNewAccount
+            accounts.value = getAccounts() + newAccount
             sharedPref.saveAlgorandAccounts(gson, getAccounts(), aead)
         } else {
-            accounts.value = (getAccounts() - sameSavedAccount) + indexedNewAccount
+            accounts.value = (getAccounts() - sameSavedAccount) + newAccount
             sharedPref.saveAlgorandAccounts(gson, getAccounts(), aead)
         }
     }
@@ -130,16 +127,6 @@ class AccountManager(
 
     fun getAccounts(): List<Account> {
         return accounts.value
-    }
-
-    private fun getIndexedAccount(account: Account): Account {
-        return account.copy(
-            index = if (account.type == Account.Type.WATCH) {
-                getAccounts().filter { it.type == Account.Type.WATCH }.size + WATCH_ACCOUNT_START_INDEX
-            } else {
-                getAccounts().filterNot { it.type == Account.Type.WATCH }.size + STANDARD_ACCOUNT_START_INDEX
-            }
-        )
     }
 
     private fun checkForMigrations() {

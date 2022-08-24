@@ -15,7 +15,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/spacing_xlarge">
+    android:paddingHorizontal="@dimen/spacing_xlarge">
 
     <com.algorand.android.customviews.AlgorandAssetNameTextView
         android:id="@+id/assetNameTextView"

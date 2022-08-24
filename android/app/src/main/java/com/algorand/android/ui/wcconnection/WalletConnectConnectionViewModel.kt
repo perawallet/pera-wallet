@@ -13,11 +13,13 @@
 package com.algorand.android.ui.wcconnection
 
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.models.AccountSelection
 import com.algorand.android.usecase.WalletConnectConnectionUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 
 class WalletConnectConnectionViewModel @ViewModelInject constructor(
     private val walletConnectConnectionUseCase: WalletConnectConnectionUseCase
@@ -38,9 +40,11 @@ class WalletConnectConnectionViewModel @ViewModelInject constructor(
     }
 
     private fun initDefaultSelectedAccount() {
-        val cachedAccounts = walletConnectConnectionUseCase.getNormalAccounts()
-        if (cachedAccounts.size == 1) {
-            _selectedAccountFlow.value = cachedAccounts.first()
+        viewModelScope.launch {
+            val cachedAccounts = walletConnectConnectionUseCase.getNormalAccounts()
+            if (cachedAccounts.size == 1) {
+                _selectedAccountFlow.value = cachedAccounts.first()
+            }
         }
     }
 }

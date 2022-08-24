@@ -28,10 +28,12 @@ import com.algorand.android.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-abstract class BaseBottomSheet(
-    @LayoutRes private val layoutResId: Int,
-    val fullPageNeeded: Boolean = false,
-) : BottomSheetDialogFragment() {
+// TODO: 5.08.2022 Having a default value in abstract class constructor may create Hilt crashes.
+// TODO: 5.08.2022 A work around is to provide all fields again in child classes which makes having default parameter
+// TODO: 5.08.2022 completely non-sense. It would be good to investigate
+abstract class BaseBottomSheet(@LayoutRes private val layoutResId: Int) : BottomSheetDialogFragment() {
+
+    open val fullPageNeeded: Boolean = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
@@ -63,6 +65,10 @@ abstract class BaseBottomSheet(
     protected fun setDraggableEnabled(isEnabled: Boolean) {
         val bottomSheet = getBottomSheetFrameLayout() ?: return
         BottomSheetBehavior.from(bottomSheet).isDraggable = isEnabled
+    }
+
+    protected fun showTopToast(title: String? = null, description: String? = null) {
+        (activity as? BaseActivity)?.showTopToast(title, description)
     }
 
     private fun getBottomSheetFrameLayout(): FrameLayout? {

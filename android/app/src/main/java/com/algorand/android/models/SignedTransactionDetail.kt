@@ -16,7 +16,7 @@ import android.os.Parcelable
 import java.math.BigInteger
 import kotlinx.parcelize.Parcelize
 
-sealed class SignedTransactionDetail {
+sealed class SignedTransactionDetail : Parcelable {
 
     abstract val signedTransactionData: ByteArray
 
@@ -30,14 +30,14 @@ sealed class SignedTransactionDetail {
         var fee: Long,
         val assetInformation: AssetInformation,
         val note: String? = null
-    ) : SignedTransactionDetail(), Parcelable
+    ) : SignedTransactionDetail()
 
     @Parcelize
     data class AssetOperation(
         override val signedTransactionData: ByteArray,
         val accountCacheData: AccountCacheData,
         val assetInformation: AssetInformation
-    ) : SignedTransactionDetail(), Parcelable
+    ) : SignedTransactionDetail()
 
     @Parcelize
     data class RekeyOperation(
@@ -45,5 +45,11 @@ sealed class SignedTransactionDetail {
         val accountCacheData: AccountCacheData,
         val rekeyAdminAddress: String,
         val ledgerDetail: Account.Detail.Ledger
-    ) : SignedTransactionDetail(), Parcelable
+    ) : SignedTransactionDetail()
+
+    @Parcelize
+    data class Group(
+        override val signedTransactionData: ByteArray,
+        val transactions: List<SignedTransactionDetail>?
+    ) : SignedTransactionDetail()
 }

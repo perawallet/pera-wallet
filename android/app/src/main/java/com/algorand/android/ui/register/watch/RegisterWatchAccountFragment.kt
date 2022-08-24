@@ -26,12 +26,9 @@ import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentRegisterWatchAccountBinding
 import com.algorand.android.models.Account
 import com.algorand.android.models.AccountCreation
-import com.algorand.android.models.DecodedQrCode
 import com.algorand.android.models.FragmentConfiguration
-import com.algorand.android.models.QrScanner
 import com.algorand.android.models.ToolbarConfiguration
-import com.algorand.android.ui.qr.QrCodeScannerFragment
-import com.algorand.android.ui.qr.QrCodeScannerFragment.Companion.QR_SCAN_RESULT_KEY
+import com.algorand.android.ui.register.watch.RegisterWatchAccountQrScannerFragment.Companion.ACCOUNT_ADDRESS_SCAN_RESULT_KEY
 import com.algorand.android.utils.analytics.CreationType.WATCH
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
@@ -83,8 +80,13 @@ class RegisterWatchAccountFragment : DaggerBaseFragment(R.layout.fragment_regist
 
     private fun initUi() {
         with(binding) {
-            addressCustomInputLayout.setOnTextChangeListener(::onAddressChanges)
-            addressCustomInputLayout.addTrailingIcon(R.drawable.ic_scan_qr, ::onScanQrClick)
+            addressCustomInputLayout.apply {
+                setOnTextChangeListener(::onAddressChanges)
+                addTrailingIcon(R.drawable.ic_qr_scan, ::onScanQrClick)
+                registerWatchAccountViewModel.getAccountAddress()?.let { accountAddress ->
+                    text = accountAddress
+                }
+            }
             confirmationButton.setOnClickListener { onNextClick() }
             pasteAddressButton.setOnClickListener { onPasteClick() }
         }
@@ -115,19 +117,23 @@ class RegisterWatchAccountFragment : DaggerBaseFragment(R.layout.fragment_regist
 
     private fun initSavedStateListeners() {
         startSavedStateListener(R.id.registerWatchAccountFragment) {
-            useSavedStateValue<DecodedQrCode>(QR_SCAN_RESULT_KEY) { decodedQrCode ->
-                if (!decodedQrCode.address.isNullOrBlank()) {
-                    binding.addressCustomInputLayout.text = decodedQrCode.address
-                }
+            useSavedStateValue<String>(ACCOUNT_ADDRESS_SCAN_RESULT_KEY) { accountAddress ->
+                binding.addressCustomInputLayout.text = accountAddress
             }
         }
     }
 
     private fun onNextClick() {
+        registerWatchAccountViewModel.logOnboardingVerifyWatchAccountClickEvent()
         val enteredAddress = binding.addressCustomInputLayout.text
         if (enteredAddress.isValidAddress()) {
             if (registerWatchAccountViewModel.isThereAccountWithAddress(enteredAddress).not()) {
-                val newAccount = AccountCreation(Account.create(enteredAddress, Account.Detail.Watch), WATCH)
+                val newAccount = AccountCreation(
+                    tempAccount = Account.create(
+                        publicKey = enteredAddress,
+                        detail = Account.Detail.Watch
+                    ), creationType = WATCH
+                )
                 navToNameRegistrationFragment(newAccount)
             } else {
                 context?.showAlertDialog(getString(R.string.error), getString(R.string.this_account_already_exists))
@@ -147,12 +153,8 @@ class RegisterWatchAccountFragment : DaggerBaseFragment(R.layout.fragment_regist
     private fun onScanQrClick() {
         view?.hideKeyboard()
         nav(
-            RegisterWatchAccountFragmentDirections.actionRegisterWatchAccountInfoFragmentToQrCodeScannerNavigation(
-                QrScanner(
-                    scanTypes = arrayOf(QrCodeScannerFragment.ScanReturnType.ADDRESS_NAVIGATE_BACK),
-                    titleRes = R.string.scan_an_algorand
-                )
-            )
+            RegisterWatchAccountFragmentDirections
+                .actionRegisterWatchAccountInfoFragmentToRegisterWatchAccountQrScannerFragment()
         )
     }
 

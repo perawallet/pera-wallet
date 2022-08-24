@@ -64,14 +64,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appUrlTextView">
 
-        <com.algorand.android.customviews.AccountIconImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/accountIconImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/account_icon_size_large"
+            android:layout_height="@dimen/account_icon_size_large"
             android:src="@drawable/ic_wallet_curved"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/governorIconImageView"
+            android:layout_width="@dimen/governor_icon_size_large"
+            android:layout_height="@dimen/governor_icon_size_large"
+            android:visibility="gone"
+            app:layout_constraintCircle="@id/accountIconImageView"
+            app:layout_constraintCircleAngle="@integer/governor_icon_angle"
+            app:layout_constraintCircleRadius="20dp"
+            app:layout_constraintEnd_toEndOf="@id/accountIconImageView"
+            app:layout_constraintTop_toTopOf="@id/accountIconImageView"
+            tools:backgroundTint="@color/background"
+            tools:srcCompat="@drawable/ic_crown_filled"
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/selectAccountTextView"

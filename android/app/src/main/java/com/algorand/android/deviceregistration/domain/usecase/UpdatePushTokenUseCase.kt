@@ -51,13 +51,13 @@ class UpdatePushTokenUseCase @Inject constructor(
 
     private fun getDeviceUpdateDTO(deviceId: String, token: String?, networkSlug: String?): DeviceUpdateDTO {
         return deviceUpdateDTOMapper.mapToDeviceUpdateDTO(
-            deviceId,
-            token,
-            getAccountPublicKeys(),
-            getApplicationName(),
-            PLATFORM_NAME,
-            getLocaleLanguageCode(),
-            networkSlug
+            deviceId = deviceId,
+            token = token,
+            accountPublicKeyList = getAccountPublicKeys(),
+            application = getApplicationName(),
+            platform = PLATFORM_NAME,
+            locale = getLocaleLanguageCode(),
+            networkSlug = networkSlug
         )
     }
 }

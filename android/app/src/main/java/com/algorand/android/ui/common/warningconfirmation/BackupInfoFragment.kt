@@ -17,6 +17,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import com.algorand.android.R
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.IconButton
@@ -25,7 +26,9 @@ import com.algorand.android.ui.common.BaseInfoFragment
 import com.algorand.android.ui.common.warningconfirmation.BackupInfoFragmentDirections.Companion.actionBackupInfoFragmentToWriteDownInfoFragment
 import com.algorand.android.utils.openRecoveryPassphraseSupportUrl
 import com.google.android.material.button.MaterialButton
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class BackupInfoFragment : BaseInfoFragment() {
 
     private val toolbarConfiguration = ToolbarConfiguration(
@@ -34,6 +37,8 @@ class BackupInfoFragment : BaseInfoFragment() {
     )
 
     override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
+
+    private val backupInfoViewModel: BackupInfoViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -63,6 +68,7 @@ class BackupInfoFragment : BaseInfoFragment() {
     }
 
     private fun navigateToWriteDownFragment() {
+        backupInfoViewModel.logOnboardingIUnderstandClickEvent()
         nav(actionBackupInfoFragmentToWriteDownInfoFragment())
     }
 

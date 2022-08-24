@@ -16,6 +16,7 @@ import android.bluetooth.BluetoothDevice
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.coroutineScope
+import com.algorand.algosdk.mobile.BytesArray
 import com.algorand.android.R
 import com.algorand.android.ledger.CustomScanCallback
 import com.algorand.android.ledger.LedgerBleOperationManager
@@ -27,91 +28,151 @@ import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.LedgerBleResult
 import com.algorand.android.models.Result
+import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.TransactionData
 import com.algorand.android.models.TransactionManagerResult
+import com.algorand.android.models.TransactionManagerResult.Error.Defined
 import com.algorand.android.models.TransactionParams
 import com.algorand.android.repository.TransactionsRepository
+import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.LifecycleScopedCoroutineOwner
+import com.algorand.android.utils.ListQueuingHelper
+import com.algorand.android.utils.TransactionSigningHelper
+import com.algorand.android.utils.assignGroupId
+import com.algorand.android.utils.flatten
 import com.algorand.android.utils.formatAsAlgoString
 import com.algorand.android.utils.getTxFee
 import com.algorand.android.utils.isLesserThan
 import com.algorand.android.utils.makeAddAssetTx
 import com.algorand.android.utils.makeRekeyTx
 import com.algorand.android.utils.makeRemoveAssetTx
+import com.algorand.android.utils.makeSendAndRemoveAssetTx
 import com.algorand.android.utils.makeTx
 import com.algorand.android.utils.minBalancePerAssetAsBigInteger
 import com.algorand.android.utils.recordException
 import com.algorand.android.utils.signTx
-import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import com.algorand.android.utils.toBytesArray
 import java.math.BigInteger
 import java.net.ConnectException
 import java.net.SocketException
 import javax.inject.Inject
+import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
+// TODO: 26.06.2022 Refactor and use AccountDetail instead of AccountCacheData in transaction flow
+// TODO: 26.06.2022 Replace AccountCacheManager with AccountDetailUsecase
 class TransactionManager @Inject constructor(
     private val accountCacheManager: AccountCacheManager,
     private val ledgerBleSearchManager: LedgerBleSearchManager,
     private val transactionsRepository: TransactionsRepository,
-    private val ledgerBleOperationManager: LedgerBleOperationManager
+    private val ledgerBleOperationManager: LedgerBleOperationManager,
+    private val signHelper: TransactionSigningHelper,
+    private val accountDetailUseCase: AccountDetailUseCase
 ) : LifecycleScopedCoroutineOwner() {
 
     val transactionManagerResultLiveData = MutableLiveData<Event<TransactionManagerResult>?>()
 
     private var transactionParams: TransactionParams? = null
-    private var currentTransactionData: TransactionData? = null
+    var transactionDataList: List<TransactionData>? = null
 
     private val scanCallback = object : CustomScanCallback() {
         override fun onLedgerScanned(device: BluetoothDevice) {
             ledgerBleSearchManager.stop()
             currentScope.launch {
-                currentTransactionData?.run {
+                signHelper.currentItem?.run {
                     ledgerBleOperationManager.startLedgerOperation(TransactionOperation(device, this))
                 }
             }
         }
 
         override fun onScanError(errorMessageResId: Int, titleResId: Int) {
-            postResult(TransactionManagerResult.LedgerScanFailed)
+            setSignFailed(TransactionManagerResult.LedgerScanFailed)
         }
     }
 
     private val operationManagerCollectorAction: (suspend (Event<LedgerBleResult>?) -> Unit) = { ledgerBleResultEvent ->
         ledgerBleResultEvent?.consume()?.run {
             when (this) {
-                is LedgerBleResult.LedgerWaitingForApproval -> {
-                    postResult(TransactionManagerResult.LedgerWaitingForApproval(bluetoothName))
-                }
-                is LedgerBleResult.SignedTransactionResult -> {
-                    processSignedTransactionData(transactionByteArray)
-                }
-                is LedgerBleResult.LedgerErrorResult -> {
-                    postResult(TransactionManagerResult.Error.Api(errorMessage))
-                }
-                is LedgerBleResult.AppErrorResult -> {
-                    postResult(TransactionManagerResult.Error.Defined(AnnotatedString(errorMessageId), titleResId))
-                }
-                is LedgerBleResult.OperationCancelledResult -> {
-                    postResult(TransactionManagerResult.LedgerOperationCanceled)
-                }
-                is LedgerBleResult.OnMissingBytes -> {
-                    postResult(
-                        TransactionManagerResult.Error.Defined(
-                            AnnotatedString(R.string.error_sending_message),
-                            R.string.error_bluetooth_title
-                        )
+                is LedgerBleResult.LedgerWaitingForApproval -> postResult(
+                    TransactionManagerResult.LedgerWaitingForApproval(
+                        bluetoothName
                     )
-                }
+                )
+                is LedgerBleResult.SignedTransactionResult ->
+                    checkAndCacheSignedTransaction(transactionByteArray)
+                is LedgerBleResult.LedgerErrorResult ->
+                    setSignFailed(TransactionManagerResult.Error.Api(errorMessage))
+                is LedgerBleResult.AppErrorResult -> setSignFailed(Defined(AnnotatedString(errorMessageId), titleResId))
+                is LedgerBleResult.OperationCancelledResult -> setSignFailed(
+                    Defined(AnnotatedString(R.string.error_cancelled_message), R.string.error_cancelled_title)
+                )
+                is LedgerBleResult.OnMissingBytes -> setSignFailed(
+                    Defined(AnnotatedString(R.string.error_sending_message), R.string.error_bluetooth_title)
+                )
             }
         }
+    }
+
+    private val signHelperListener = object : ListQueuingHelper.Listener<TransactionData, ByteArray> {
+        override fun onAllItemsDequeued(signedTransactions: List<ByteArray?>) {
+            if (signedTransactions.isEmpty() || signedTransactions.any { it == null }) {
+                setSignFailed(Defined(AnnotatedString(stringResId = R.string.an_error_occured)))
+                return
+            }
+            if (signedTransactions.size == 1) {
+                transactionDataList?.let { postTxnSignResult(signedTransactions.firstOrNull(), it.firstOrNull()) }
+            } else {
+                transactionDataList?.let { postGroupTxnSignResult(signedTransactions, it) }
+            }
+        }
+
+        override fun onNextItemToBeDequeued(transaction: TransactionData) {
+            val accountDetail = transaction.accountCacheData.account.detail
+            if (accountDetail == null) {
+                setSignFailed(Defined(AnnotatedString(stringResId = R.string.an_error_occured)))
+            } else {
+                transaction.signTxn(accountDetail)
+            }
+        }
+    }
+
+    private fun checkAndCacheSignedTransaction(transactionByteArray: ByteArray?) {
+        if (transactionByteArray == null) {
+            setSignFailed(Defined(AnnotatedString(R.string.unknown_error)))
+            return
+        }
+        signHelper.currentItem?.run {
+            calculatedFee = transactionParams?.getTxFee(transactionByteArray)
+            if (this is TransactionData.Send && projectedFee != calculatedFee) {
+                currentScope.launch { resignCurrentTransaction() }
+                return
+            }
+
+            if (isMinimumLimitViolated()) {
+                setSignFailed(Defined(AnnotatedString(stringResId = R.string.minimum_balance_required)))
+                return
+            }
+        }
+        signHelper.cacheDequeuedItem(transactionByteArray)
+    }
+
+    private fun setSignFailed(transactionManagerResult: TransactionManagerResult) {
+        postResult(transactionManagerResult)
+        signHelper.clearCachedData()
+    }
+
+    private suspend fun resignCurrentTransaction() {
+        signHelper.currentItem?.createTransaction()
+        signHelper.requeueCurrentItem()
     }
 
     fun setup(lifecycle: Lifecycle) {
         assignToLifecycle(lifecycle)
         setupLedgerOperationManager(lifecycle)
+        signHelper.initListener(signHelperListener)
     }
 
     private fun setupLedgerOperationManager(lifecycle: Lifecycle) {
@@ -121,32 +182,30 @@ class TransactionManager @Inject constructor(
         }
     }
 
-    fun signTransaction(transactionData: TransactionData) {
+    fun initSigningTransactions(isGroupTransaction: Boolean, vararg transactionData: TransactionData) {
         currentScope.launch {
             postResult(TransactionManagerResult.Loading)
-            currentTransactionData = transactionData.apply {
-                createTransaction()
-            }
-            transactionData.accountCacheData.account.detail?.let {
-                currentTransactionData?.process(it)
-            }
+            processTransactionDataList(transactionData.toList(), isGroupTransaction)?.let {
+                this@TransactionManager.transactionDataList = it
+                signHelper.initItemsToBeEnqueued(it)
+            } ?: setSignFailed(Defined(AnnotatedString(stringResId = R.string.an_error_occured)))
         }
     }
 
-    private fun TransactionData.process(accountDetail: Account.Detail, checkIfRekeyed: Boolean = true) {
+    private fun TransactionData.signTxn(accountDetail: Account.Detail, checkIfRekeyed: Boolean = true) {
         if (checkIfRekeyed && accountCacheData.isRekeyedToAnotherAccount()) {
             when (accountDetail) {
                 is Account.Detail.RekeyedAuth -> {
                     accountDetail.rekeyedAuthDetail[accountCacheData.authAddress].let { rekeyedAuthDetail ->
                         if (rekeyedAuthDetail != null) {
-                            process(rekeyedAuthDetail, checkIfRekeyed = false)
+                            signTxn(rekeyedAuthDetail, checkIfRekeyed = false)
                         } else {
-                            processWithCheckingOtherAccounts()
+                            signTxnWithCheckingOtherAccounts()
                         }
                     }
                 }
                 else -> {
-                    processWithCheckingOtherAccounts()
+                    signTxnWithCheckingOtherAccounts()
                 }
             }
         } else {
@@ -156,42 +215,38 @@ class TransactionManager @Inject constructor(
                 }
                 is Account.Detail.RekeyedAuth -> {
                     if (accountDetail.authDetail != null) {
-                        process(accountDetail.authDetail, checkIfRekeyed = false)
+                        signTxn(accountDetail.authDetail, checkIfRekeyed = false)
                     } else {
-                        TransactionManagerResult.Error.Defined(AnnotatedString(stringResId = R.string.this_account_has))
+                        setSignFailed(Defined(AnnotatedString(stringResId = R.string.this_account_has)))
                     }
                 }
                 is Account.Detail.Standard -> {
-                    processSignedTransactionData(transactionByteArray?.signTx(accountDetail.secretKey))
+                    checkAndCacheSignedTransaction(transactionByteArray?.signTx(accountDetail.secretKey))
                 }
                 else -> {
                     val exceptionMessage = "${accountCacheData.account.type} cannot sign by itself."
                     recordException(Exception(exceptionMessage))
-                    postResult(
-                        TransactionManagerResult.Error.Defined(AnnotatedString(stringResId = R.string.an_error_occured))
-                    )
+                    setSignFailed(Defined(AnnotatedString(stringResId = R.string.an_error_occured)))
                 }
             }
         }
     }
 
-    private fun TransactionData.processWithCheckingOtherAccounts() {
+    private fun TransactionData.signTxnWithCheckingOtherAccounts() {
         when (val authAccountDetail = accountCacheManager.getCacheData(accountCacheData.authAddress)?.account?.detail) {
             is Account.Detail.Standard -> {
-                processSignedTransactionData(transactionByteArray?.signTx(authAccountDetail.secretKey))
+                checkAndCacheSignedTransaction(transactionByteArray?.signTx(authAccountDetail.secretKey))
             }
             is Account.Detail.Ledger -> {
                 sendTransactionWithLedger(authAccountDetail)
             }
             else -> {
-                postResult(
-                    TransactionManagerResult.Error.Defined(AnnotatedString(stringResId = R.string.this_account_has))
-                )
+                postResult(Defined(AnnotatedString(stringResId = R.string.this_account_has)))
             }
         }
     }
 
-    private suspend fun TransactionData.createTransaction(): ByteArray? {
+    suspend fun TransactionData.createTransaction(): ByteArray? {
         val transactionParams = getTransactionParams() ?: return null
 
         val createdTransactionByteArray = when (this) {
@@ -213,22 +268,34 @@ class TransactionManager @Inject constructor(
                 }
 
                 transactionParams.makeTx(
-                    accountCacheData.account.address,
-                    targetUser.publicKey,
-                    amount,
-                    assetInformation.assetId,
-                    isMax,
-                    note
+                    senderAddress = accountCacheData.account.address,
+                    receiverAddress = targetUser.publicKey,
+                    amount = amount,
+                    assetId = assetInformation.assetId,
+                    isMax = isMax,
+                    note = note
                 )
             }
             is TransactionData.AddAsset -> {
                 transactionParams.makeAddAssetTx(accountCacheData.account.address, assetInformation.assetId)
             }
             is TransactionData.RemoveAsset -> {
-                transactionParams.makeRemoveAssetTx(
-                    accountCacheData.account.address,
-                    creatorPublicKey,
-                    assetInformation.assetId
+                if (shouldCreateAssetRemoveTransaction(accountCacheData.account.address, assetInformation.assetId)) {
+                    transactionParams.makeRemoveAssetTx(
+                        senderAddress = accountCacheData.account.address,
+                        creatorPublicKey = creatorPublicKey,
+                        assetId = assetInformation.assetId
+                    )
+                } else {
+                    null
+                }
+            }
+            is TransactionData.SendAndRemoveAsset -> {
+                transactionParams.makeSendAndRemoveAssetTx(
+                    senderAddress = accountCacheData.account.address,
+                    receiverAddress = targetUser.publicKey,
+                    assetId = assetInformation.assetId,
+                    amount = amount
                 )
             }
             is TransactionData.Rekey -> {
@@ -251,7 +318,7 @@ class TransactionManager @Inject constructor(
                 when (result.exception.cause) {
                     is ConnectException, is SocketException -> {
                         postResult(
-                            TransactionManagerResult.Error.Defined(AnnotatedString(R.string.the_internet_connection))
+                            Defined(AnnotatedString(R.string.the_internet_connection))
                         )
                     }
                     else -> {
@@ -263,32 +330,8 @@ class TransactionManager @Inject constructor(
         return transactionParams
     }
 
-    private fun processSignedTransactionData(signedTransactionData: ByteArray?) {
-        currentScope.launch {
-            if (signedTransactionData == null) {
-                postResult(TransactionManagerResult.Error.Defined(AnnotatedString(R.string.unknown_error)))
-                return@launch
-            }
-
-            currentTransactionData?.run {
-                calculatedFee = transactionParams?.getTxFee(signedTransactionData)
-
-                if (this is TransactionData.Send && projectedFee != calculatedFee) {
-                    signTransaction(this)
-                    return@launch
-                }
-
-                if (isMinimumLimitViolated()) {
-                    return@launch
-                }
-
-                postResult(TransactionManagerResult.Success(getSignedTransactionDetail(signedTransactionData)))
-            }
-        }
-    }
-
     private fun sendCurrentTransaction(bluetoothDevice: BluetoothDevice) {
-        currentTransactionData?.run {
+        signHelper.currentItem?.run {
             ledgerBleOperationManager.startLedgerOperation(TransactionOperation(bluetoothDevice, this))
         }
     }
@@ -300,7 +343,7 @@ class TransactionManager @Inject constructor(
         assetId: Long,
         fee: Long
     ): BigInteger? {
-        val calculatedAmount = if (isMax && assetId == AssetInformation.ALGORAND_ID) {
+        val calculatedAmount = if (isMax && assetId == AssetInformation.ALGO_ID) {
             if (accountCacheData.isRekeyedToAnotherAccount()) {
                 projectedAmount - fee.toBigInteger() - accountCacheData.getMinBalance().toBigInteger()
             } else {
@@ -316,9 +359,9 @@ class TransactionManager @Inject constructor(
                     stringResId = R.string.the_transaction_cannot_be,
                     replacementList = listOf("min_balance" to accountCacheData.getMinBalance().formatAsAlgoString())
                 )
-                postResult(TransactionManagerResult.Error.Defined(errorMinBalance))
+                postResult(Defined(errorMinBalance))
             } else {
-                postResult(TransactionManagerResult.Error.Defined(AnnotatedString(R.string.transaction_amount_results)))
+                postResult(Defined(AnnotatedString(R.string.transaction_amount_results)))
             }
             return null
         }
@@ -327,7 +370,7 @@ class TransactionManager @Inject constructor(
     }
 
     private fun isTransactionMax(amount: BigInteger, publicKey: String, assetId: Long): Boolean {
-        if (assetId != AssetInformation.ALGORAND_ID) {
+        if (assetId != AssetInformation.ALGO_ID) {
             return false
         } else {
             accountCacheManager.getAssetInformation(publicKey, assetId)?.let { assetBalanceInformation ->
@@ -337,9 +380,15 @@ class TransactionManager @Inject constructor(
         }
     }
 
+    private fun shouldCreateAssetRemoveTransaction(publicKey: String, assetId: Long): Boolean {
+        with(accountDetailUseCase) {
+            return isAssetOwnedByAccount(publicKey, assetId) && isAssetBalanceZero(publicKey, assetId) == true
+        }
+    }
+
     private fun TransactionData.isCloseToSameAccount(): Boolean {
         if (this is TransactionData.Send && isMax && accountCacheData.account.address == targetUser.publicKey) {
-            postResult(TransactionManagerResult.Error.Defined(AnnotatedString(R.string.you_can_not_send_your)))
+            postResult(Defined(AnnotatedString(R.string.you_can_not_send_your)))
             return true
         }
         return false
@@ -362,7 +411,7 @@ class TransactionManager @Inject constructor(
 
         val balance = accountCacheManager.getAssetInformation(
             accountCacheData.account.address,
-            AssetInformation.ALGORAND_ID
+            AssetInformation.ALGO_ID
         )?.amount ?: return true
 
         val fee = calculatedFee?.toBigInteger() ?: return true
@@ -383,7 +432,7 @@ class TransactionManager @Inject constructor(
                     stringResId = R.string.transaction_amount,
                     replacementList = listOf("min_balance" to minBalance.formatAsAlgoString())
                 )
-                postResult(TransactionManagerResult.Error.Defined(description))
+                postResult(Defined(description))
             }
             return true
         }
@@ -419,6 +468,77 @@ class TransactionManager @Inject constructor(
     override fun stopAllResources() {
         ledgerBleSearchManager.stop()
         transactionManagerResultLiveData.value = null
-        currentTransactionData = null
+        transactionDataList = null
+    }
+
+    private suspend fun processTransactionDataList(
+        transactionDataList: List<TransactionData>,
+        isGroupTransaction: Boolean
+    ): List<TransactionData>? {
+        if (transactionDataList.isEmpty()) {
+            return null
+        }
+        transactionDataList.forEach { it.createTransaction() ?: return null }
+        if (isGroupTransaction) {
+            createGroupedBytesArray(transactionDataList)?.let {
+                for (index in 0L until it.length()) {
+                    transactionDataList[index.toInt()].transactionByteArray = it.get(index)
+                }
+            }
+        }
+        return transactionDataList
+    }
+
+    private fun postTxnSignResult(
+        bytesArray: ByteArray?,
+        transactionData: TransactionData?
+    ) {
+        if (bytesArray == null || transactionData == null) {
+            postResult(Defined(AnnotatedString(stringResId = R.string.an_error_occured)))
+        } else {
+            postResult(TransactionManagerResult.Success(transactionData.getSignedTransactionDetail(bytesArray)))
+        }
+    }
+
+    private fun postGroupTxnSignResult(
+        groupedBytesArrayList: List<ByteArray?>,
+        transactionDataList: List<TransactionData>
+    ) {
+        val signedGroupTxnDetailList = createSignedTransactionDetailList(transactionDataList, groupedBytesArrayList)
+        if (signedGroupTxnDetailList != null) {
+            postResult(
+                TransactionManagerResult.Success(
+                    SignedTransactionDetail.Group(
+                        groupedBytesArrayList.flatten(),
+                        signedGroupTxnDetailList
+                    )
+                )
+            )
+        } else {
+            postResult(Defined(AnnotatedString(stringResId = R.string.an_error_occured)))
+        }
+    }
+
+    private fun createSignedTransactionDetailList(
+        transactionDataList: List<TransactionData>,
+        signedBytesArrayList: List<ByteArray?>
+    ): List<SignedTransactionDetail>? {
+        return mutableListOf<SignedTransactionDetail>().apply {
+            for (index in transactionDataList.indices) {
+                signedBytesArrayList[index]?.let {
+                    add(transactionDataList[index].getSignedTransactionDetail(it))
+                } ?: return null
+            }
+        }
+    }
+
+    private fun createGroupedBytesArray(transactionDataList: List<TransactionData>): BytesArray? {
+        return mutableListOf<ByteArray>().apply {
+            transactionDataList.forEach {
+                it.transactionByteArray?.let { transactionByteArray ->
+                    add(transactionByteArray)
+                } ?: return null
+            }
+        }.toBytesArray().assignGroupId()
     }
 }

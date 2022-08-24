@@ -13,7 +13,6 @@
 package com.algorand.android.database
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -28,8 +27,8 @@ interface NotificationFilterDao {
     @Query("SELECT * FROM notificationfilter WHERE public_key = :publicKey")
     fun getNotificationFilterForUser(publicKey: String): List<NotificationFilter>
 
-    @Delete
-    fun delete(notificationFilter: NotificationFilter)
+    @Query("DELETE FROM notificationfilter WHERE public_key = :publicKey")
+    fun deleteByPublicKey(publicKey: String)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(notificationFilter: NotificationFilter)

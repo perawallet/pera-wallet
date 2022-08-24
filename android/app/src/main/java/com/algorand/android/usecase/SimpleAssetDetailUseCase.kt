@@ -23,6 +23,7 @@ import com.algorand.android.repository.AssetRepository
 import com.algorand.android.usecase.AssetFetchAndCacheUseCase.Companion.MAX_ASSET_FETCH_COUNT
 import com.algorand.android.utils.CacheResult
 import com.algorand.android.utils.DataResource
+import com.algorand.android.utils.exception.AssetNotFoundException
 import com.algorand.android.utils.mapResult
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
@@ -94,6 +95,10 @@ class SimpleAssetDetailUseCase @Inject constructor(
     suspend fun fetchAssetById(assetIdList: List<Long>) = flow<DataResource<List<AssetDetail>>> {
         assetRepository.fetchAssetsById(assetIdList).use(
             onSuccess = { assetDetailResponsePagination ->
+                if (assetDetailResponsePagination.results.isEmpty()) {
+                    emit(DataResource.Error.Local(AssetNotFoundException()))
+                    return@use
+                }
                 val assetDetailList = assetDetailResponsePagination.results.map { assetDetailResponse ->
                     assetDetailMapper.mapToAssetDetail(assetDetailResponse)
                 }
@@ -105,10 +110,14 @@ class SimpleAssetDetailUseCase @Inject constructor(
         )
     }
 
-    suspend fun cacheIfThereIsNonCachedAsset(assetIdList: Set<Long>, coroutineScope: CoroutineScope) {
+    suspend fun cacheIfThereIsNonCachedAsset(
+        assetIdList: Set<Long>,
+        coroutineScope: CoroutineScope,
+        includeDeleted: Boolean? = null
+    ) {
         val filteredAssetIdLists = getChunkedAndFilteredAssetList(assetIdList)
         if (filteredAssetIdLists.isEmpty()) return
-        assetFetchAndCacheUseCase.processFilteredAssetIdList(filteredAssetIdLists, coroutineScope)
+        assetFetchAndCacheUseCase.processFilteredAssetIdList(filteredAssetIdLists, coroutineScope, includeDeleted)
     }
 
     /**

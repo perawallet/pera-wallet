@@ -25,12 +25,15 @@ import androidx.lifecycle.findViewTreeLifecycleOwner
 import com.algorand.android.R
 import com.algorand.android.databinding.CustomUserViewBinding
 import com.algorand.android.models.AccountCacheData
-import com.algorand.android.models.AccountIcon
+import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.TooltipConfig
 import com.algorand.android.models.User
 import com.algorand.android.utils.enableLongPressToCopyText
 import com.algorand.android.utils.extensions.changeTextAppearance
 import com.algorand.android.utils.extensions.hide
+import com.algorand.android.utils.extensions.setAccountIconDrawable
+import com.algorand.android.utils.extensions.setContactIconDrawable
+import com.algorand.android.utils.loadImage
 import com.algorand.android.utils.viewbinding.viewBinding
 
 class AlgorandUserView @JvmOverloads constructor(
@@ -48,9 +51,9 @@ class AlgorandUserView @JvmOverloads constructor(
                 text = user.name
                 changeTextAppearance(R.style.TextAppearance_Body_Sans)
             }
-            accountIconImageView.loadAccountImage(
+            accountIconImageView.setContactIconDrawable(
                 uri = user.imageUriAsString?.toUri(),
-                padding = R.dimen.spacing_xxsmall
+                iconSize = R.dimen.account_icon_size_normal
             )
             addContactButton.hide()
         }
@@ -70,9 +73,9 @@ class AlgorandUserView @JvmOverloads constructor(
                 text = name
                 changeTextAppearance(R.style.TextAppearance_Body_Sans)
             }
-            accountIconImageView.loadAccountImage(
+            accountIconImageView.setContactIconDrawable(
                 uri = imageUriAsString,
-                padding = R.dimen.spacing_xxsmall
+                iconSize = R.dimen.account_icon_size_normal
             )
             addContactButton.hide()
         }
@@ -102,6 +105,17 @@ class AlgorandUserView @JvmOverloads constructor(
         if (showTooltip) showCopyTutorial()
     }
 
+    fun setNftDomainAddress(nftDomainAddress: String, nftDomainServiceLogoUrl: String?) {
+        with(binding) {
+            mainTextView.text = nftDomainAddress
+            context.loadImage(
+                nftDomainServiceLogoUrl.orEmpty(),
+                onResourceReady = { accountIconImageView.setImageDrawable(it) },
+                onLoadFailed = { accountIconImageView.setImageResource(R.drawable.ic_nfd_round) }
+            )
+        }
+    }
+
     fun setAccount(accountCacheData: AccountCacheData?, enableAddressCopy: Boolean = true) {
         with(binding) {
             mainTextView.apply {
@@ -109,9 +123,12 @@ class AlgorandUserView @JvmOverloads constructor(
                 changeTextAppearance(R.style.TextAppearance_Body_Sans)
             }
             if (accountCacheData?.account != null) {
-                accountIconImageView.setAccountIcon(
-                    accountIcon = accountCacheData.account.createAccountIcon(),
-                    padding = R.dimen.spacing_xxsmall
+                val accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(
+                    accountCacheData.account.type
+                )
+                accountIconImageView.setAccountIconDrawable(
+                    accountIconResource = accountIconResource,
+                    iconSize = R.dimen.account_icon_size_normal
                 )
                 if (enableAddressCopy) enableLongPressToCopyText(accountCacheData.account.address)
             }
@@ -121,7 +138,7 @@ class AlgorandUserView @JvmOverloads constructor(
 
     fun setAccount(
         name: String,
-        icon: AccountIcon?,
+        accountIconResource: AccountIconResource?,
         publicKey: String,
         enableAddressCopy: Boolean = true,
         showTooltip: Boolean = false
@@ -131,8 +148,11 @@ class AlgorandUserView @JvmOverloads constructor(
                 text = name
                 changeTextAppearance(R.style.TextAppearance_Body_Sans)
             }
-            icon?.let {
-                accountIconImageView.setAccountIcon(it, R.dimen.spacing_xxsmall)
+            accountIconResource?.let {
+                accountIconImageView.setAccountIconDrawable(
+                    accountIconResource = it,
+                    iconSize = R.dimen.account_icon_size_normal
+                )
             } ?: accountIconImageView.hide()
             addContactButton.hide()
             if (enableAddressCopy) enableLongPressToCopyText(publicKey)

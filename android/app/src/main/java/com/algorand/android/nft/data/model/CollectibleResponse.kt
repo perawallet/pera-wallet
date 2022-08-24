@@ -20,7 +20,6 @@ data class CollectibleResponse(
     @SerializedName("primary_image") val primaryImageUrl: String?,
     @SerializedName("title") val title: String?,
     @SerializedName("collection_name") val collectionName: String?,
-    @SerializedName("explorer_url") val explorerUrl: String?,
     @SerializedName("media") val collectibleMedias: List<CollectibleMediaResponse>,
     @SerializedName("description") val description: String?,
     @SerializedName("traits") val traits: List<CollectibleTraitResponse>

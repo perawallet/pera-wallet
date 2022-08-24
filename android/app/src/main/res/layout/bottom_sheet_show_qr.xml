@@ -43,8 +43,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:layout_constraintVertical_chainStyle="packed"
-            tools:srcCompat="@drawable/ic_qr_code"
-            tools:background="@color/white" />
+            tools:background="@color/white"
+            tools:srcCompat="@drawable/ic_qr" />
 
         <TextView
             android:id="@+id/accountAddressLabelTextView"

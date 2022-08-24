@@ -15,13 +15,16 @@ package com.algorand.android.ui.common
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.algorand.android.R
 import com.algorand.android.core.BaseViewModel
+import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.usecase.GetFormattedTransactionFeeAmountUseCase
 import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.DataResource
 import com.algorand.android.utils.Resource
+import com.algorand.android.utils.exception.AssetNotFoundException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -47,8 +50,13 @@ class AssetActionViewModel @ViewModelInject constructor(
                         assetInformationLiveData.postValue(Resource.Success(asset.convertToAssetInformation()))
                     }
                     is DataResource.Error -> {
-                        // TODO Handle error case
-                        // assetInformationLiveData.postValue(Resource.Error.Api(it.exception))
+                        val errorResourceId = if (it.exception is AssetNotFoundException) {
+                            R.string.asset_not_found_please_make
+                        } else {
+                            R.string.an_error_occured
+                        }
+                        val annotatedErrorString = AnnotatedString(errorResourceId)
+                        assetInformationLiveData.postValue(Resource.Error.Annotated(annotatedErrorString))
                     }
                 }
             }

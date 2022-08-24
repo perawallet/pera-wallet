@@ -54,7 +54,7 @@ class LauncherActivity : BaseActivity() {
         fun newIntentWithNewSelectedAccount(context: Context, publicKey: String?, assetId: Long?): Intent {
             return Intent(context, LauncherActivity::class.java).apply {
                 putExtra(SELECTED_ACCOUNT_KEY, publicKey)
-                putExtra(SELECTED_ASSET_ID_KEY, assetId ?: AssetInformation.ALGORAND_ID)
+                putExtra(SELECTED_ASSET_ID_KEY, assetId ?: AssetInformation.ALGO_ID)
             }
         }
 

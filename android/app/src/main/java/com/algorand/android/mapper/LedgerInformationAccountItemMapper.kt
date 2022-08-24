@@ -14,6 +14,7 @@
 package com.algorand.android.mapper
 
 import com.algorand.android.models.AccountDetail
+import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.LedgerInformationListItem
 import javax.inject.Inject
 
@@ -25,7 +26,7 @@ class LedgerInformationAccountItemMapper @Inject constructor() {
                 name = account.name,
                 address = account.address,
                 assetCount = accountInformation.assetHoldingList.count(),
-                accountIcon = accountDetail.account.createAccountIcon(),
+                accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(account.type),
                 portfolioValue = portfolioValue
             )
         }

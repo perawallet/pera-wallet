@@ -12,6 +12,7 @@
 
 package com.algorand.android.ui.lockpreference
 
+import androidx.fragment.app.viewModels
 import com.algorand.android.R
 import com.algorand.android.ui.password.BasePasswordFragment
 import com.algorand.android.utils.isBiometricAvailable
@@ -23,7 +24,10 @@ class ChoosePasswordFragment : BasePasswordFragment() {
     override val initialTitleResId = R.string.choose_your_six_digit_pin
     override val nextTitleResId = R.string.re_enter_your_six_digit_pin
 
+    private val choosePasswordViewModel: ChoosePasswordViewModel by viewModels()
+
     override fun handleNextNavigation() {
+        choosePasswordViewModel.logOnboardingSetPinCodeCompletedEvent()
         if (context?.isBiometricAvailable() == true) {
             nav(ChoosePasswordFragmentDirections.actionChoosePasswordFragmentToBiometricRegistrationFragment())
         } else {

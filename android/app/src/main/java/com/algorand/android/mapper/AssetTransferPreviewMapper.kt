@@ -27,14 +27,14 @@ class AssetTransferPreviewMapper @Inject constructor() {
     ): AssetTransferPreview {
         with(signedTransactionDetail) {
             return AssetTransferPreview(
-                accountCacheData,
-                amount,
-                assetInformation,
-                targetUser,
-                exchangePrice,
-                currencySymbol,
-                fee,
-                note
+                accountCacheData = accountCacheData,
+                amount = amount,
+                assetInformation = assetInformation,
+                targetUser = targetUser,
+                exchangePrice = exchangePrice,
+                currencySymbol = currencySymbol,
+                fee = fee,
+                note = note
             )
         }
     }

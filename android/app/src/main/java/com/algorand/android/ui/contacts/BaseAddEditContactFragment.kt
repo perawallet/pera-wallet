@@ -20,16 +20,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
-import com.algorand.android.customviews.AccountIconImageView
 import com.algorand.android.customviews.AlgorandInputLayout
 import com.algorand.android.customviews.CustomToolbar
 import com.algorand.android.databinding.FragmentBaseAddEditContactBinding
 import com.algorand.android.models.User
+import com.algorand.android.utils.extensions.setContactIconDrawable
 import com.algorand.android.utils.hideKeyboard
 import com.algorand.android.utils.isPermissionGranted
 import com.algorand.android.utils.setNavigationResult
@@ -66,13 +67,13 @@ abstract class BaseAddEditContactFragment : DaggerBaseFragment(R.layout.fragment
         get() = binding.addressCustomInputLayout.text.trim()
 
     open var contactImageUri: String? by Delegates.observable(null) { _, _, newValue ->
-        binding.contactImageView.loadAccountImage(
+        binding.contactImageView.setContactIconDrawable(
             uri = newValue?.toUri(),
-            padding = R.dimen.spacing_normal
+            iconSize = R.dimen.account_icon_size_xlarge
         )
     }
 
-    abstract fun setProfileImageView(accountIconImageView: AccountIconImageView)
+    abstract fun setProfileImageView(imageView: ImageView)
     abstract fun setEditProfilePhotoButton(materialButton: MaterialButton)
     abstract fun setContactNameInputLayout(algorandInputLayout: AlgorandInputLayout)
     abstract fun setContactAddressInputLayout(algorandInputLayout: AlgorandInputLayout)

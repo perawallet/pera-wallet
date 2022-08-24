@@ -27,8 +27,7 @@ import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class WalletConnectSessionsBottomSheet : BaseBottomSheet(
-    layoutResId = R.layout.bottom_sheet_wallet_connect_sessions,
-    fullPageNeeded = false
+    layoutResId = R.layout.bottom_sheet_wallet_connect_sessions
 ) {
 
     private val walletConnectViewModel: WalletConnectViewModel by activityViewModels()

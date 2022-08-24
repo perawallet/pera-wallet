@@ -19,9 +19,9 @@ import javax.inject.Inject
 
 abstract class DaggerBaseBottomSheet(
     @LayoutRes layoutResId: Int,
-    fullPageNeeded: Boolean,
+    override val fullPageNeeded: Boolean,
     val firebaseEventScreenId: String?
-) : BaseBottomSheet(layoutResId, fullPageNeeded) {
+) : BaseBottomSheet(layoutResId) {
 
     @Inject
     lateinit var firebaseAnalytics: FirebaseAnalytics

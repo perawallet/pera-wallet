@@ -13,13 +13,16 @@
 
 package com.algorand.android.ui.assetaction
 
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
 import com.algorand.android.core.BaseAssetActionBottomSheet
 import com.algorand.android.customviews.CustomToolbar
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.utils.extensions.hide
+import com.algorand.android.utils.extensions.show
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -44,7 +47,14 @@ class UnsupportedAddAssetTryLaterBottomSheet : BaseAssetActionBottomSheet() {
     }
 
     override fun setDescriptionTextView(textView: TextView) {
-        textView.setText(R.string.please_add_this)
+        textView.apply {
+            text = getString(R.string.your_accounts_don_t_contain_this)
+            setTextColor(ContextCompat.getColor(context, R.color.negative))
+        }
+    }
+
+    override fun setWarningIconImageView(imageView: ImageView) {
+        imageView.show()
     }
 
     override fun setToolbar(customToolbar: CustomToolbar) {

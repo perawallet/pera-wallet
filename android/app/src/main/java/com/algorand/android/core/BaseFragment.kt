@@ -17,6 +17,7 @@ import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
+import androidx.navigation.fragment.FragmentNavigator
 import com.algorand.android.CoreMainActivity
 import com.algorand.android.MainActivity
 import com.algorand.android.customviews.CustomToolbar
@@ -59,6 +60,10 @@ abstract class BaseFragment(
         }
     }
 
+    protected fun showTopToast(title: String? = null, description: String? = null) {
+        (activity as? BaseActivity)?.showTopToast(title, description)
+    }
+
     fun changeStatusBarConfiguration(statusBarConfiguration: StatusBarConfiguration) {
         setupStatusBar(statusBarConfiguration)
     }
@@ -74,6 +79,10 @@ abstract class BaseFragment(
 
     fun nav(directions: NavDirections) {
         (activity as? CoreMainActivity)?.nav(directions)
+    }
+
+    fun nav(directions: NavDirections, extras: FragmentNavigator.Extras) {
+        (activity as? CoreMainActivity)?.nav(directions, extras)
     }
 
     fun getAppToolbar(): CustomToolbar? {

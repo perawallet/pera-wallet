@@ -10,49 +10,127 @@
   ~ limitations under the License
   -->
 
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<com.algorand.android.customviews.ProgressSaverMotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/swipeRefreshLayout"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/accountsFragmentMotionLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    app:layoutDescription="@xml/accounts_motion_scene">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <FrameLayout
+        android:id="@+id/toolbarLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/secondaryPortfolioValue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/accountsRecyclerView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:clipToPadding="false"
-            android:padding="@dimen/spacing_xlarge"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/nodeImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/notificationImageButton"
+        app:layout_constraintEnd_toEndOf="@id/portfolioValueTitleTextView"
+        app:layout_constraintStart_toStartOf="@id/portfolioValueTitleTextView"
+        app:layout_constraintTop_toTopOf="@id/notificationImageButton"
+        tools:srcCompat="@drawable/ic_algo"
+        tools:visibility="visible" />
 
-        <androidx.core.widget.ContentLoadingProgressBar
-            android:id="@+id/loadingProgressBar"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/notificationImageButton"
+        style="?attr/toolbarNavigationButtonStyle"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/spacing_xxxsmall"
+        android:layout_marginEnd="@dimen/spacing_xlarge"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_notification" />
 
-        <com.algorand.android.customviews.ScreenStateView
-            android:id="@+id/emptyScreenStateView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/spacing_large"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/portfolioValueTitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_xsmall"
+        android:drawablePadding="@dimen/spacing_xsmall"
+        android:text="@string/portfolio_value"
+        android:textAppearance="@style/TextAppearance.Body.Sans"
+        android:textColor="@color/secondary_text_color"
+        android:visibility="invisible"
+        app:drawableEndCompat="@drawable/ic_info_small"
+        app:drawableTint="@color/secondary_text_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/notificationImageButton" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/primaryPortfolioValue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_xsmall"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.Title.Large.Sans.Medium"
+        app:autoSizeMaxTextSize="@dimen/text_size_36"
+        app:autoSizeMinTextSize="@dimen/text_size_13"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/portfolioValueTitleTextView"
+        tools:text="¦107,114.72" />
 
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/secondaryPortfolioValue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_xsmall"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.Body.Sans"
+        android:textColor="@color/secondary_text_color"
+        app:autoSizeMaxTextSize="@dimen/text_size_15"
+        app:autoSizeMinTextSize="@dimen/text_size_11"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/primaryPortfolioValue"
+        tools:text="≈ $105,413.95" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/accountsRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbarLayout" />
+
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/loadingProgressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.algorand.android.customviews.ScreenStateView
+        android:id="@+id/emptyScreenStateView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_large"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</com.algorand.android.customviews.ProgressSaverMotionLayout>

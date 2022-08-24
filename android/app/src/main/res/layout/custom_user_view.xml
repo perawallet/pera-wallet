@@ -18,13 +18,14 @@
     android:layout_height="wrap_content"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
-    <com.algorand.android.customviews.AccountIconImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/accountIconImageView"
         android:layout_width="24dp"
         android:layout_height="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/ic_wallet" />
 
     <TextView
         android:id="@+id/mainTextView"

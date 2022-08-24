@@ -14,7 +14,7 @@ package com.algorand.android.utils
 
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.DateRange
-import com.algorand.android.models.TransactionCsvDetail
+import com.algorand.android.modules.transaction.csv.domain.model.TransactionCsvDetail
 import java.io.File
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -25,7 +25,6 @@ class TransactionCsvFileCreator @Inject constructor() {
     private val csvKeys =
         listOf(
             "Amount",
-            "Reward",
             "Close Amount",
             "Close To: Address",
             "To: Address",
@@ -56,8 +55,6 @@ class TransactionCsvFileCreator @Inject constructor() {
                 transactionCsvDetailList.forEachIndexed { index, transaction ->
                     // Amount
                     bufferedWriter.write("\"${transaction.formattedAmount}\",")
-                    // Reward
-                    bufferedWriter.write("\"${transaction.formattedReward}\",")
                     // Close Amount
                     bufferedWriter.write("\"${transaction.closeAmount}\",")
                     // Close To
@@ -101,8 +98,8 @@ class TransactionCsvFileCreator @Inject constructor() {
         val toFormatted = dateRange?.to?.format(csvFormatter)
         var fileName = "${accountName}_"
 
-        if (assetId == AssetInformation.ALGORAND_ID) {
-            fileName += ALGOS_FULL_NAME.lowercase(Locale.ENGLISH)
+        if (assetId == AssetInformation.ALGO_ID) {
+            fileName += ALGO_FULL_NAME.lowercase(Locale.ENGLISH)
         } else {
             fileName += assetId.getSafeCSVValue()
         }

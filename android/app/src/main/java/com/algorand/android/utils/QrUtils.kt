@@ -13,11 +13,11 @@
 package com.algorand.android.utils
 
 import android.graphics.Bitmap
+import android.net.Uri
 import com.algorand.android.BuildConfig
+import com.algorand.android.R
 import com.algorand.android.models.DecodedQrCode
-import com.algorand.android.ui.qr.QrCodeScannerFragment
 import com.algorand.android.utils.walletconnect.WALLET_CONNECT_URL_PREFIX
-import com.google.gson.Gson
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import java.math.BigInteger
@@ -45,39 +45,17 @@ fun getQrCodeBitmap(size: Int, qrContent: String): Bitmap? {
     }
 }
 
-fun getDeeplinkUrl(address: String, amount: BigInteger? = null, assetId: Long? = null): String {
-    return StringBuilder().apply {
-        append("${BuildConfig.DEEPLINK_PREFIX}$address")
-        getDeeplinkQueryList(amount, assetId).forEachIndexed { index, (key, value) ->
-            append(if (index == 0) QUERY_START_CHAR else QUERY_NEXT_CHAR)
-            append("$key=$value")
+fun getDeepLinkUrl(address: String, amount: BigInteger? = null, assetId: Long? = null): String {
+    return Uri.parse(BuildConfig.DEEPLINK_PREFIX).buildUpon()
+        .authority(address)
+        .apply {
+            if (amount != null) appendQueryParameter(AMOUNT_KEY, amount.toString())
+            if (assetId != null) appendQueryParameter(ASSET_ID_KEY, assetId.toString())
         }
-    }.toString()
+        .toString()
 }
 
-private fun getDeeplinkQueryList(amount: BigInteger?, assetId: Long?): List<Pair<String, String>> {
-    val deeplinkQueryList = mutableListOf<Pair<String, String>>()
-    if (amount != null) {
-        deeplinkQueryList.add(Pair(AMOUNT_KEY, amount.toString()))
-    }
-    if (assetId != null && assetId > 0) {
-        deeplinkQueryList.add(Pair(ASSET_ID_KEY, assetId.toString()))
-    }
-    return deeplinkQueryList
-}
-
-fun getMnemonicQrContent(mnemonic: String): String {
-    return "{\"version\":\"1.0\", \"$MNEMONIC_KEY\":\"$mnemonic\"}"
-}
-
-private fun decodeMnemonicFromQr(qrContent: String): DecodedQrCode? {
-    return try {
-        Gson().fromJson(qrContent, DecodedQrCode::class.java)
-    } catch (exception: Exception) {
-        null
-    }
-}
-
+@SuppressWarnings("ReturnCount", "LongMethod")
 fun decodeDeeplink(qrContent: String?): DecodedQrCode? {
     if (qrContent.isNullOrBlank()) {
         return null
@@ -116,58 +94,37 @@ fun decodeDeeplink(qrContent: String?): DecodedQrCode? {
     } else {
         address = qrContent
     }
-    return if (address.isValidAddress()) {
-        DecodedQrCode(
-            address = address,
-            label = label,
-            amount = amount,
-            note = note,
-            xnote = xnote,
-            assetId = assetId,
-            transactionId = transactionId,
-            transactionStatus = transactionStatus
+    if (address.isValidAddress()) {
+        amount?.let {
+            return DecodedQrCode.Success.Deeplink.AssetTransaction(
+                address = address,
+                label = label,
+                amount = it,
+                note = note,
+                xnote = xnote,
+                assetId = assetId,
+            )
+        }
+        transactionStatus?.let {
+            return DecodedQrCode.Success.Deeplink.MoonPayResult(
+                address = address,
+                transactionStatus = it,
+                transactionId = transactionId
+            )
+        }
+        return DecodedQrCode.Success.Deeplink.AddContact(
+            contactPublicKey = address,
+            contactName = label
         )
     } else {
-        null
+        return null
     }
 }
 
 private fun decodeWalletConnectQr(qrCode: String): DecodedQrCode {
-    return DecodedQrCode(walletConnectUrl = qrCode)
-}
-
-fun decodeAccountPublicKeyFromQr(qrContent: String?): DecodedQrCode? {
-    // Removing prefix for Algo Explorer support because they return public key with a deeplink prefix.
-    val address = qrContent?.removePrefix(BuildConfig.DEEPLINK_PREFIX)
-    if (address.isValidAddress().not()) {
-        return null
+    return if (qrCode.startsWith(WALLET_CONNECT_URL_PREFIX)) {
+        DecodedQrCode.Success.Deeplink.WalletConnect(walletConnectUrl = qrCode)
+    } else {
+        DecodedQrCode.Error.WalletConnect(R.string.could_not_create_wallet_connect)
     }
-    return DecodedQrCode(address = address)
-}
-
-fun getContentOfQR(
-    deeplink: String,
-    scanReturnTypeList: Array<QrCodeScannerFragment.ScanReturnType>
-): Pair<QrCodeScannerFragment.ScanReturnType?, DecodedQrCode?> {
-    var decodedQrCode: DecodedQrCode? = null
-    var scanResult: QrCodeScannerFragment.ScanReturnType? = null
-
-    scanReturnTypeList.forEach { scanType ->
-        scanResult = scanType
-        decodedQrCode = when (scanType) {
-            QrCodeScannerFragment.ScanReturnType.MNEMONIC_NAVIGATE_BACK -> decodeMnemonicFromQr(deeplink)
-            QrCodeScannerFragment.ScanReturnType.WALLET_CONNECT -> decodeWalletConnectQr(deeplink)
-            QrCodeScannerFragment.ScanReturnType.ADDRESS_NAVIGATE_BACK -> decodeAccountPublicKeyFromQr(deeplink)
-            else -> decodeDeeplink(deeplink)
-        }
-        // TODO: 13.08.2021 decodeDeepLink also handle Wallet Connect QR Code, so we should ignore this case for now.
-        if (scanResult != QrCodeScannerFragment.ScanReturnType.WALLET_CONNECT &&
-            decodedQrCode?.walletConnectUrl != null
-        ) {
-            return@forEach
-        }
-        if (decodedQrCode != null) return Pair(scanResult, decodedQrCode)
-    }
-
-    return Pair(scanResult, decodedQrCode)
 }

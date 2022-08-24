@@ -29,9 +29,8 @@ class SortedAccountsUseCase @Inject constructor(
         return sortedAccountsMapper.mapToSortedAccounts(sortedNormalLocalAccounts, sortedWatchLocalAccounts)
     }
 
-    fun getSortedLocalAccounts(localAccounts: List<Account>): SortedAccounts {
-        val (sortedNormalLocalAccounts, sortedWatchLocalAccounts) = getSortedSplittedAccounts(localAccounts)
-        return sortedAccountsMapper.mapToSortedAccounts(sortedNormalLocalAccounts, sortedWatchLocalAccounts)
+    fun getSortedLocalAccounts(localAccounts: List<Account>): List<Account> {
+        return localAccounts.sortedBy { it.index }
     }
 
     private fun getSortedSplittedAccounts(accountList: List<Account>): Pair<List<Account>, List<Account>> {

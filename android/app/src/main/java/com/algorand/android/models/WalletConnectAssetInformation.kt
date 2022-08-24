@@ -14,7 +14,7 @@
 package com.algorand.android.models
 
 import android.os.Parcelable
-import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
+import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import java.math.BigInteger
 import kotlinx.parcelize.Parcelize
 
@@ -29,7 +29,7 @@ data class WalletConnectAssetInformation(
     val formattedSelectedCurrencyValue: String? = null,
 ) : Parcelable {
     val isAlgorand: Boolean
-        get() = assetId == ALGORAND_ID
+        get() = assetId == ALGO_ID
 
     companion object {
         fun create(

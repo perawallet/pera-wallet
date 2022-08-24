@@ -18,7 +18,7 @@ import com.algorand.android.mapper.AccountSummaryMapper
 import com.algorand.android.models.Account
 import com.algorand.android.models.AccountDetail
 import com.algorand.android.models.AccountDetailSummary
-import com.algorand.android.models.AccountIcon
+import com.algorand.android.models.AccountIconResource
 import com.algorand.android.repository.AccountRepository
 import com.algorand.android.utils.CacheResult
 import com.algorand.android.utils.DataResource
@@ -72,6 +72,20 @@ class AccountDetailUseCase @Inject constructor(
         return getCachedAccountDetail(publicKey)?.data?.accountInformation?.getAllAssetIds()?.contains(assetId) ?: false
     }
 
+    fun isAssetBalanceZero(publicKey: String, assetId: Long): Boolean? {
+        getCachedAccountDetail(publicKey)?.let { account ->
+            account.data?.accountInformation?.assetHoldingList?.firstOrNull { it.assetId == assetId }?.let {
+                return it.amount == BigInteger.ZERO
+            }
+        } ?: return null
+    }
+
+    fun isAssetOwnedByAnyAccount(assetId: Long): Boolean {
+        return getCachedAccountDetails().any {
+            it.data?.accountInformation?.getAllAssetIds()?.contains(assetId) ?: false
+        }
+    }
+
     fun areAllAccountsCached(): Boolean {
         return accountManager.accounts.value.size <= accountRepository.getAccountDetailCacheFlow().value.size
     }
@@ -89,7 +103,7 @@ class AccountDetailUseCase @Inject constructor(
 
     fun canAccountSignTransaction(publicKey: String): Boolean {
         val account = accountManager.getAccount(publicKey)
-        return account?.type != null && account.type != Account.Type.WATCH && account.type != Account.Type.REKEYED
+        return account?.type != null && account.type != Account.Type.WATCH
     }
 
     suspend fun fetchAccountDetail(account: Account): Flow<DataResource<AccountDetail>> {
@@ -142,8 +156,8 @@ class AccountDetailUseCase @Inject constructor(
         return accountInformation?.address
     }
 
-    fun getAccountIcon(publicKey: String): AccountIcon? {
-        return accountManager.getAccount(publicKey)?.createAccountIcon()
+    fun getAccountIcon(publicKey: String): AccountIconResource? {
+        return AccountIconResource.getAccountIconResourceByAccountType(accountManager.getAccount(publicKey)?.type)
     }
 
     fun isAccountRekeyed(publicKey: String): Boolean {

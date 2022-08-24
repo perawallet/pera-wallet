@@ -19,7 +19,7 @@ import com.algorand.android.models.AccountCacheData
 import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.AssetInformation
-import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
+import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.models.Result
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.utils.exceptions.WarningException
@@ -44,7 +44,7 @@ class AccountTransactionValidator @Inject constructor(
 
     fun isSelectedAssetValid(fromAccountPublicKey: String, assetId: Long): Boolean {
         val accountDetail = accountDetailUseCase.getCachedAccountDetail(fromAccountPublicKey)?.data
-        val isAlgo = assetId == ALGORAND_ID
+        val isAlgo = assetId == ALGO_ID
         return accountDetail?.accountInformation?.assetHoldingList?.any { it.assetId == assetId } == true || isAlgo
     }
 
@@ -82,7 +82,7 @@ class AccountTransactionValidator @Inject constructor(
         amount: BigInteger,
         assetId: Long
     ): Boolean {
-        return assetId == ALGORAND_ID &&
+        return assetId == ALGO_ID &&
             receiverAccountInformation.amount isEqualTo BigInteger.ZERO &&
             amount < minBalancePerAssetAsBigInteger
     }

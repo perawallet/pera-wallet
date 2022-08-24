@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_small"
             app:bottomButtonIcon="@drawable/ic_3d_object"
-            app:bottomButtonText="@string/tap_the_media_to_view_in"
+            app:bottomButtonText="@string/three_d_card_mode"
             app:isBottomButtonVisible="true"
             app:layout_constraintEnd_toEndOf="@id/endGuideLine"
             app:layout_constraintStart_toStartOf="@id/startGuideLine"

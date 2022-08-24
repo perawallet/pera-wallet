@@ -21,7 +21,6 @@ import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
 import com.algorand.android.core.BaseBottomSheet
 import com.algorand.android.databinding.BottomSheetLedgerInformationBinding
-import com.algorand.android.utils.toShortenedAddress
 import com.algorand.android.models.Account
 import com.algorand.android.models.LedgerInformationListItem
 import com.algorand.android.models.ToolbarConfiguration
@@ -32,7 +31,9 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class LedgerInformationBottomSheet : BaseBottomSheet(R.layout.bottom_sheet_ledger_information, fullPageNeeded = true) {
+class LedgerInformationBottomSheet(
+    override val fullPageNeeded: Boolean = true
+) : BaseBottomSheet(R.layout.bottom_sheet_ledger_information) {
 
     private val toolbarConfiguration = ToolbarConfiguration(
         startIconResId = R.drawable.ic_close,
@@ -74,7 +75,8 @@ class LedgerInformationBottomSheet : BaseBottomSheet(R.layout.bottom_sheet_ledge
     }
 
     private fun setupToolbarTitle() {
-        when (val detail = args.selectedLedgerAccountSelectionListItem.account.detail) {
+        val account = args.selectedLedgerAccountSelectionListItem.account as? Account
+        when (val detail = account?.detail) {
             is Account.Detail.Ledger -> {
                 binding.toolbar.changeTitle(
                     context?.getXmlStyledString(
@@ -84,9 +86,7 @@ class LedgerInformationBottomSheet : BaseBottomSheet(R.layout.bottom_sheet_ledge
                 )
             }
             is Account.Detail.RekeyedAuth -> {
-                binding.toolbar.changeTitle(
-                    args.selectedLedgerAccountSelectionListItem.account.address.toShortenedAddress()
-                )
+                binding.toolbar.changeTitle(account.address)
             }
         }
     }

@@ -13,6 +13,10 @@
 
 package com.algorand.android.utils.extensions
 
+import com.algorand.android.utils.recordException
+import java.math.BigDecimal
+import java.text.DecimalFormat
+import java.text.NumberFormat
 import java.util.Locale
 
 /**
@@ -50,4 +54,30 @@ fun String.wrapWithBrackets(): String {
         append(this@wrapWithBrackets)
         append(")")
     }.toString()
+}
+
+fun String.toBigDecimalWithLocale(): BigDecimal {
+    if (this.isBlank()) {
+        return BigDecimal.ZERO
+    }
+    val numberFormat: NumberFormat = NumberFormat.getNumberInstance()
+    val decimalFormat: DecimalFormat? = numberFormat as? DecimalFormat
+    decimalFormat?.isParseBigDecimal = true
+    return try {
+        decimalFormat?.parse(this) as? BigDecimal ?: BigDecimal.ZERO
+    } catch (exception: Exception) {
+        recordException(exception)
+        BigDecimal.ZERO
+    }
+}
+
+fun String.capitalize(): String {
+    return lowercase(Locale.getDefault())
+        .replaceFirstChar {
+            if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+        }
+}
+
+fun String.addHashtagToStart(): String {
+    return "#$this"
 }

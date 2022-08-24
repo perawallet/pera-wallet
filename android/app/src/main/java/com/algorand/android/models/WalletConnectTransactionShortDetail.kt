@@ -18,7 +18,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class WalletConnectTransactionShortDetail(
-    val accountIcon: AccountIcon?,
+    val accountIconResource: AccountIconResource?,
     val accountName: String?,
     val accountBalance: BigInteger? = null,
     val assetShortName: String? = null,

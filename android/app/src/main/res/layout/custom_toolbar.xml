@@ -17,90 +17,117 @@
     tools:layout_height="@dimen/default_toolbar_height"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
-    <ImageButton
+    <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/startImageButton"
         style="?attr/toolbarNavigationButtonStyle"
         android:layout_width="40dp"
-        android:layout_height="match_parent"
+        android:layout_height="40dp"
         android:layout_gravity="center"
         android:layout_marginStart="@dimen/spacing_small"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@drawable/ic_left_arrow" />
 
-    <FrameLayout
-        android:id="@+id/accountAndAssetAvatarLayout"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="56dp"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/textStartImageView"
+        android:layout_width="@dimen/toolbar_title_drawable_size"
+        android:layout_height="@dimen/toolbar_title_drawable_size"
         android:layout_marginEnd="@dimen/spacing_small"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/toolbarTitleTextView"
+        app:layout_constraintBottom_toBottomOf="@id/toolbarSubtitleTextView"
+        app:layout_constraintEnd_toStartOf="@id/titleLeftBarrier"
+        app:layout_constraintHorizontal_bias="1"
         app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@id/startImageButton"
+        app:layout_constraintTop_toTopOf="@id/toolbarTitleTextView"
+        tools:srcCompat="@drawable/ic_algo_sign"
+        tools:visibility="visible" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/centerImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible">
-
-        <com.algorand.android.customviews.AlgorandAssetAvatarView
-            android:id="@+id/assetAvatarView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"
-            tools:visibility="visible" />
-
-        <com.algorand.android.customviews.AccountIconImageView
-            android:id="@+id/accountImageView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"
-            tools:visibility="visible" />
-    </FrameLayout>
-
+        tools:srcCompat="@drawable/ic_algo_green_round"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/toolbarTitleTextView"
-        style="@style/TextAppearance.Body.Sans.Medium"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.Body.Sans.Medium"
         app:layout_constrainedWidth="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/nodeStatusTextView"
-        app:layout_constraintStart_toEndOf="@id/accountAndAssetAvatarLayout"
+        app:layout_constraintBottom_toTopOf="@id/toolbarSubtitleTextView"
+        app:layout_constraintEnd_toEndOf="@id/parentEndGuideline"
+        app:layout_constraintStart_toStartOf="@id/parentStartGuideline"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_goneMarginEnd="56dp"
-        app:layout_goneMarginStart="56dp"
-        tools:text="@tools:sample/lorem[10]" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/toolbarCenterImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_toolbar_app_logo"
-        tools:visibility="visible" />
+        tools:text="@tools:sample/lorem[1]" />
 
     <TextView
-        android:id="@+id/nodeStatusTextView"
-        style="@style/TextAppearance.NodeStatus"
+        android:id="@+id/toolbarSubtitleTextView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_xsmall"
-        android:layout_marginEnd="56dp"
+        android:layout_height="0dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.Footnote.Sans"
+        android:textColor="@color/secondary_text_color"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/toolbarTitleTextView"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="TESTNET"
+        app:layout_constraintEnd_toEndOf="@id/parentEndGuideline"
+        app:layout_constraintStart_toStartOf="@id/parentStartGuideline"
+        app:layout_constraintTop_toBottomOf="@id/toolbarTitleTextView"
+        tools:text="@tools:sample/lorem[1]"
         tools:visibility="visible" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/textEndImageView"
+        android:layout_width="@dimen/toolbar_title_drawable_size"
+        android:layout_height="@dimen/toolbar_title_drawable_size"
+        android:layout_marginStart="@dimen/spacing_small"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/toolbarSubtitleTextView"
+        app:layout_constraintEnd_toStartOf="@id/buttonContainerView"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@id/titleRightBarrier"
+        app:layout_constraintTop_toTopOf="@id/toolbarTitleTextView"
+        tools:srcCompat="@drawable/ic_algo_sign"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/titleLeftBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="start"
+        app:constraint_referenced_ids="toolbarSubtitleTextView, toolbarTitleTextView" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/titleRightBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="toolbarSubtitleTextView, toolbarTitleTextView" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/parentEndGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/parentStartGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0" />
 
     <com.algorand.android.customviews.ToolbarButtonContainerView
         android:id="@+id/buttonContainerView"
@@ -109,4 +136,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </merge>

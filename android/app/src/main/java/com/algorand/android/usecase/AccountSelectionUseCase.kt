@@ -12,44 +12,67 @@
 
 package com.algorand.android.usecase
 
+import com.algorand.android.customviews.accountandassetitem.mapper.AccountItemConfigurationMapper
 import com.algorand.android.mapper.AccountSelectionMapper
-import com.algorand.android.models.AccountDetail
+import com.algorand.android.models.Account
+import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.AccountSelection
-import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
-import com.algorand.android.utils.CacheResult
+import com.algorand.android.modules.accounts.domain.usecase.GetAccountValueUseCase
+import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
+import com.algorand.android.modules.sorting.accountsorting.domain.usecase.AccountSortPreferenceUseCase
+import com.algorand.android.modules.sorting.accountsorting.domain.usecase.GetSortedAccountsByPreferenceUseCase
+import com.algorand.android.utils.formatAsCurrency
 import javax.inject.Inject
 
 class AccountSelectionUseCase @Inject constructor(
-    private val splittedAccountsUseCase: SplittedAccountsUseCase,
     private val accountSelectionMapper: AccountSelectionMapper,
-    private val accountAlgoAmountUseCase: AccountAlgoAmountUseCase,
-    private val accountTotalBalanceUseCase: AccountTotalBalanceUseCase
+    private val getSortedAccountsByPreferenceUseCase: GetSortedAccountsByPreferenceUseCase,
+    private val accountItemConfigurationMapper: AccountItemConfigurationMapper,
+    private val getAccountValueUseCase: GetAccountValueUseCase,
+    private val parityUseCase: ParityUseCase,
+    private val accountSortPreferenceUseCase: AccountSortPreferenceUseCase
 ) {
 
-    fun getAccountFilteredByAssetId(assetId: Long): List<AccountSelection> {
-        val (normalAccounts, _) = splittedAccountsUseCase.getWatchAccountSplittedAccountDetails()
-        return filterAccountsByAssetId(assetId, normalAccounts).map { accountDetail ->
-            val accountBalance = accountTotalBalanceUseCase.getAccountBalance(accountDetail)
-            val accountAssetData = accountAlgoAmountUseCase.getAccountAlgoAmount(accountDetail.account.address)
-            accountSelectionMapper.mapToAccountSelection(
-                assetId = assetId,
-                formattedAccountBalance = accountAssetData.formattedSelectedCurrencyValue,
-                accountDetail = accountDetail,
-                assetCount = accountBalance.assetCount
+    suspend fun getAccountFilteredByAssetId(assetId: Long): List<AccountSelection> {
+        val selectedCurrencySymbol = parityUseCase.getPrimaryCurrencySymbolOrEmpty()
+        val sortedAccountListItems = getSortedAccountsByPreferenceUseCase
+            .getFilteredSortedAccountListItemsByAssetIdAndAccountType(
+                sortingPreferences = accountSortPreferenceUseCase.getAccountSortPreference(),
+                excludedAccountTypes = listOf(Account.Type.WATCH),
+                accountFilterAssetId = assetId,
+                onLoadedAccountConfiguration = {
+                    val accountValue = getAccountValueUseCase.getAccountValue(this)
+                    accountItemConfigurationMapper.mapTo(
+                        accountName = account.name,
+                        accountAddress = account.address,
+                        accountType = account.type,
+                        accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(account.type),
+                        accountPrimaryValue = accountValue.primaryAccountValue,
+                        accountPrimaryValueText = accountValue.primaryAccountValue.formatAsCurrency(
+                            symbol = selectedCurrencySymbol,
+                            isCompact = true,
+                            isFiat = true
+                        ),
+                    )
+                },
+                onFailedAccountConfiguration = {
+                    this?.run {
+                        accountItemConfigurationMapper.mapTo(
+                            accountName = name,
+                            accountAddress = address,
+                            accountType = type,
+                            accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(type),
+                            showWarningIcon = true
+                        )
+                    }
+                }
             )
-        }
-    }
-
-    private fun filterAccountsByAssetId(
-        assetId: Long,
-        accounts: List<CacheResult<AccountDetail>>
-    ): List<AccountDetail> {
-        return accounts.mapNotNull { cachedAccountDetail ->
-            val accountDetail = cachedAccountDetail.data
-            val hasAccountFilteredAsset = accountDetail?.accountInformation?.assetHoldingList?.firstOrNull {
-                it.assetId == assetId
-            } != null
-            accountDetail.takeIf { hasAccountFilteredAsset || assetId == ALGORAND_ID }
+        return sortedAccountListItems.map { accountListItem ->
+            accountSelectionMapper.mapToAccountSelection(
+                accountDisplayName = accountListItem.itemConfiguration.accountDisplayName,
+                accountIconResource = accountListItem.itemConfiguration.accountIconResource,
+                accountAddress = accountListItem.itemConfiguration.accountAddress
+            )
         }
     }
 }

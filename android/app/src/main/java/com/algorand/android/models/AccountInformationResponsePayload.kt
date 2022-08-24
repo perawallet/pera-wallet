@@ -18,15 +18,16 @@ import java.math.BigInteger
 data class AccountInformationResponsePayload(
     @SerializedName("address") val address: String?,
     @SerializedName("amount") val amount: BigInteger?,
-    @SerializedName("rewards") val rewards: Long?,
-    @SerializedName("pending-rewards") val pendingRewards: Long?,
     @SerializedName("participation") val participation: Participation?,
     @SerializedName("auth-addr") val rekeyAdminAddress: String?,
     @SerializedName("assets") val allAssetHoldingList: MutableSet<AssetHoldingResponse>?,
     @SerializedName("created-at-round") val createdAtRound: Long?,
-    @SerializedName("amount-without-pending-rewards") val amountWithoutPendingRewards: BigInteger?,
     @SerializedName("created-apps") val createdApps: List<CreatedApps>?,
     @SerializedName("apps-local-state") val appsLocalState: List<CreatedAppLocalState>?,
     @SerializedName("apps-total-schema") val appsTotalSchema: CreatedAppStateScheme?,
-    @SerializedName("apps-total-extra-pages") val appsTotalExtraPages: Int?
+    @SerializedName("apps-total-extra-pages") val appsTotalExtraPages: Int?,
+    @SerializedName("total-apps-opted-in") val totalAppsOptedIn: Int?,
+    @SerializedName("total-assets-opted-in") val totalAssetsOptedIn: Int?,
+    @SerializedName("total-created-apps") val totalCreatedApps: Int?,
+    @SerializedName("total-created-assets") val totalCreatedAssets: Int?
 )

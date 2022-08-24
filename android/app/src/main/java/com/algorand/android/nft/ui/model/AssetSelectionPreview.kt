@@ -22,5 +22,6 @@ data class AssetSelectionPreview(
     val navigateToOptInEvent: Event<Long>?,
     val globalErrorTextEvent: Event<String>?,
     val navigateToAssetTransferAmountFragmentEvent: Event<Long>?,
-    val isLoadingVisible: Boolean
+    val isAssetListLoadingVisible: Boolean,
+    val isReceiverAccountOptInCheckLoadingVisible: Boolean
 )

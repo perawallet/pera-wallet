@@ -164,6 +164,7 @@ object AppModule {
         return AutoLockManager()
     }
 
+    // TODO Move this into tracking di module
     @Singleton
     @Provides
     fun provideFirebaseAnalytics(@ApplicationContext appContext: Context): FirebaseAnalytics {

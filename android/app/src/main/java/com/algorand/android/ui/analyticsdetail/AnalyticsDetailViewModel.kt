@@ -20,7 +20,7 @@ import com.algorand.android.models.ChartInterval
 import com.algorand.android.models.ChartTimeFrame
 import com.algorand.android.usecase.AnalyticsDetailUseCase
 import com.algorand.android.utils.Resource
-import com.algorand.android.utils.coremanager.AlgoPriceManager
+import com.algorand.android.utils.coremanager.ParityManager
 import java.math.BigDecimal
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,7 +34,7 @@ import kotlinx.coroutines.launch
 // TODO Refactor AnalyticsDetailViewModel line by line and update it based on new architecture
 class AnalyticsDetailViewModel @ViewModelInject constructor(
     private val analyticsDetailUseCase: AnalyticsDetailUseCase,
-    private val algoPriceManager: AlgoPriceManager
+    private val parityManager: ParityManager
 ) : BaseViewModel() {
 
     private val algoPriceHistoryCollector: suspend (value: Resource<ChartEntryData>) -> Unit = {
@@ -65,12 +65,12 @@ class AnalyticsDetailViewModel @ViewModelInject constructor(
     }
 
     fun getCurrencyFormattedPrice(price: String): String {
-        return "$price ${analyticsDetailUseCase.getSelectedCurrencyId()}"
+        return "$price ${analyticsDetailUseCase.getDisplayedCurrencyId()}"
     }
 
     fun refreshCachedAlgoPrice() {
         viewModelScope.launch {
-            algoPriceManager.refreshAlgoPriceCache()
+            parityManager.refreshSelectedCurrencyDetailCache()
         }
     }
 

@@ -14,6 +14,7 @@ package com.algorand.android.ui.register
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.algorand.algosdk.mobile.Mobile
 import com.algorand.android.R
@@ -43,6 +44,8 @@ class PassphraseValidationFragment : DaggerBaseFragment(R.layout.fragment_passph
 
     private val args: PassphraseValidationFragmentArgs by navArgs()
 
+    private val passphraseValidationViewModel: PassphraseValidationViewModel by viewModels()
+
     private val passphraseValidationGroupListener = object : PassphraseValidationGroupView.Listener {
         override fun onInputUpdate(allWordsSelected: Boolean) {
             binding.nextButton.isEnabled = allWordsSelected
@@ -65,6 +68,7 @@ class PassphraseValidationFragment : DaggerBaseFragment(R.layout.fragment_passph
     }
 
     private fun onNextClick() {
+        passphraseValidationViewModel.logOnboardingNextClickEvent()
         if (binding.passphraseValidationGroupView.isValidated()) {
             nav(
                 PassphraseValidationFragmentDirections

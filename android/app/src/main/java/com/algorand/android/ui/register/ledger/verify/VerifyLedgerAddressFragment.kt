@@ -186,7 +186,11 @@ class VerifyLedgerAddressFragment : DaggerBaseFragment(R.layout.fragment_verify_
             }
             mainViewModel.addAccount(selectedAccount, creationType)
         }
-        nav(VerifyLedgerAddressFragmentDirections.actionVerifyLedgerAddressFragmentToVerifyLedgerInfoFragment())
+        nav(
+            VerifyLedgerAddressFragmentDirections.actionVerifyLedgerAddressFragmentToVerifyLedgerInfoFragment(
+                selectedVerifiedAccounts.size
+            )
+        )
     }
 
     companion object {

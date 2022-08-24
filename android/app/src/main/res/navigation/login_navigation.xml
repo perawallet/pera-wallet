@@ -16,8 +16,6 @@
     android:id="@+id/loginNavigation"
     app:startDestination="@id/registerIntroFragment">
 
-    <include app:graph="@navigation/qr_scanner_navigation" />
-
     <include app:graph="@navigation/pair_ledger_navigation" />
 
     <include app:graph="@navigation/moonpay_navigation" />
@@ -98,12 +96,8 @@
         android:label="fragment_recover_from_seed"
         tools:layout="@layout/fragment_recover_with_passphrase">
         <action
-            android:id="@+id/action_recoverWithPassphraseFragment_to_qrCodeScannerNavigation"
-            app:destination="@id/qrCodeScannerNavigation">
-            <argument
-                android:name="qrScanner"
-                app:argType="com.algorand.android.models.QrScanner" />
-        </action>
+            android:id="@+id/action_recoverWithPassphraseFragment_to_recoverWithPassphraseQrScannerFragment"
+            app:destination="@id/recoverWithPassphraseQrScannerFragment" />
         <action
             android:id="@+id/action_recoverWithPassphraseFragment_to_recoverOptionsBottomSheet"
             app:destination="@id/recoverOptionsBottomSheet" />
@@ -113,6 +107,11 @@
         <action
             android:id="@+id/action_recoverWithPassphraseFragment_to_recoverAccountNameRegistrationFragment"
             app:destination="@id/recoverAccountNameRegistrationFragment" />
+        <argument
+            android:name="mnemonic"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 
     <fragment
@@ -131,16 +130,24 @@
         android:label="RegisterWatchAccountFragment"
         tools:layout="@layout/fragment_register_watch_account">
         <action
-            android:id="@+id/action_registerWatchAccountInfoFragment_to_qrCodeScannerNavigation"
-            app:destination="@id/qrCodeScannerNavigation">
-            <argument
-                android:name="qrScanner"
-                app:argType="com.algorand.android.models.QrScanner" />
-        </action>
+            android:id="@+id/action_registerWatchAccountInfoFragment_to_registerWatchAccountQrScannerFragment"
+            app:destination="@id/registerWatchAccountQrScannerFragment" />
         <action
             android:id="@+id/action_registerWatchAccountFragment_to_watchAccountNameRegistrationFragment"
             app:destination="@id/watchAccountNameRegistrationFragment" />
+
+        <argument
+            android:name="accountAddress"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
+
+    <fragment
+        android:id="@+id/registerWatchAccountQrScannerFragment"
+        android:name="com.algorand.android.ui.register.watch.RegisterWatchAccountQrScannerFragment"
+        android:label="RegisterWatchAccountQrScannerFragment"
+        tools:layout="@layout/fragment_qr_code_scanner" />
 
     <fragment
         android:id="@+id/registerIntroFragment"
@@ -154,6 +161,16 @@
             android:name="shouldNavToRegisterWatchAccount"
             android:defaultValue="false"
             app:argType="boolean" />
+        <argument
+            android:name="mnemonic"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_registerIntroFragment_to_recoverWithPassphraseFragment"
+            app:destination="@id/recoverWithPassphraseFragment"
+            app:popUpTo="@id/registerIntroFragment"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_registerIntroFragment_to_addAccountTypeSelectionFragment"
             app:destination="@id/addAccountTypeSelectionFragment" />
@@ -284,5 +301,11 @@
             android:id="@+id/action_passphraseVerifiedInfoFragment_to_recoverAccountNameRegistrationFragment"
             app:destination="@id/recoverAccountNameRegistrationFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/recoverWithPassphraseQrScannerFragment"
+        android:name="com.algorand.android.ui.register.recover.RecoverWithPassphraseQrScannerFragment"
+        android:label="RecoverWithPassphraseQrScannerFragment"
+        tools:layout="@layout/fragment_qr_code_scanner" />
 
 </navigation>

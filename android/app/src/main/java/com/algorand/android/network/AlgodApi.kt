@@ -14,7 +14,7 @@ package com.algorand.android.network
 
 import com.algorand.android.models.BlockResponse
 import com.algorand.android.models.NextBlockResponse
-import com.algorand.android.models.PendingTransactionsResponse
+import com.algorand.android.modules.transactionhistory.data.model.PendingTransactionsResponse
 import com.algorand.android.models.SendTransactionResponse
 import com.algorand.android.models.TotalAlgoSupply
 import com.algorand.android.models.TransactionParams

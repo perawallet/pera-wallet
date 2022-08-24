@@ -19,9 +19,8 @@ class ReceiveAccountSelectionPreviewUseCase @Inject constructor(
     private val accountSelectionListUseCase: AccountSelectionListUseCase
 ) {
 
-    fun getReceiveAccountSelectionPreview(): List<BaseAccountSelectionListItem> {
+    suspend fun getReceiveAccountSelectionPreview(): List<BaseAccountSelectionListItem> {
         return accountSelectionListUseCase.createAccountSelectionListAccountItems(
-            showAssetCount = true,
             showHoldings = true,
             shouldIncludeWatchAccounts = false,
             showFailedAccounts = true

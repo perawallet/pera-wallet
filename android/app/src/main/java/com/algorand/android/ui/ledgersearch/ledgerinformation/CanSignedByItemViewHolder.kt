@@ -28,7 +28,7 @@ class CanSignedByItemViewHolder(
         with(binding.accountView) {
             with(canSignedByItem) {
                 setAccountAddress(accountPublicKey.toShortenedAddress())
-                setAccountIcon(accountIcon)
+                setAccountIcon(accountIconResource)
             }
         }
     }

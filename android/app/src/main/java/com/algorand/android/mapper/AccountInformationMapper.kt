@@ -29,17 +29,14 @@ class AccountInformationMapper @Inject constructor(
         return AccountInformation(
             address = accountInformationPayload.address.orEmpty(),
             amount = accountInformationPayload.amount ?: BigInteger.ZERO,
-            rewards = accountInformationPayload.rewards ?: 0L,
-            pendingRewards = accountInformationPayload.pendingRewards ?: 0L,
             participation = accountInformationPayload.participation,
             rekeyAdminAddress = accountInformationPayload.rekeyAdminAddress,
             allAssetHoldingList = assetHoldingList,
             createdAtRound = accountInformationPayload.createdAtRound,
-            amountWithoutPendingRewards = accountInformationPayload.amountWithoutPendingRewards ?: BigInteger.ZERO,
-            createdApps = accountInformationPayload.createdApps,
             appsLocalState = accountInformationPayload.appsLocalState,
             appsTotalSchema = accountInformationPayload.appsTotalSchema,
-            appsTotalExtraPages = accountInformationPayload.appsTotalExtraPages
+            appsTotalExtraPages = accountInformationPayload.appsTotalExtraPages,
+            totalCreatedApps = accountInformationPayload.totalCreatedApps ?: 0
         )
     }
 
@@ -47,13 +44,10 @@ class AccountInformationMapper @Inject constructor(
         return AccountInformation(
             address = accountPublicKey,
             amount = BigInteger.ZERO,
-            rewards = 0L,
-            pendingRewards = 0L,
             participation = Participation(),
             rekeyAdminAddress = null,
             allAssetHoldingList = mutableSetOf(),
             createdAtRound = null,
-            amountWithoutPendingRewards = BigInteger.ZERO
         )
     }
 }

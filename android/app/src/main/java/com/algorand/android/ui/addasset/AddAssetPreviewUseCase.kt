@@ -46,7 +46,7 @@ class AddAssetPreviewUseCase @Inject constructor(
         val assetSearchQuery = assetSearchQueryMapper.mapToAssetSearchQuery(
             queryText = queryText,
             queryType = queryType,
-            filterCollectibles = null
+            hasCollectibles = null
         )
         return searchAssetUseCase.createPaginationFlow(searchPagerBuilder, scope, assetSearchQuery).mapNotNull {
             it.map { baseAssetDetail -> getSearchItemMappedAssetDetail(baseAssetDetail) }
@@ -57,7 +57,7 @@ class AddAssetPreviewUseCase @Inject constructor(
         val assetSearchQuery = assetSearchQueryMapper.mapToAssetSearchQuery(
             queryText = queryText,
             queryType = queryType,
-            filterCollectibles = null
+            hasCollectibles = null
         )
         searchAssetUseCase.searchAsset(assetSearchQuery)
     }

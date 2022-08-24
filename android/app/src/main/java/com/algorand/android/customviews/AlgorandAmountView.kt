@@ -15,6 +15,7 @@ package com.algorand.android.customviews
 
 import android.content.Context
 import android.util.AttributeSet
+import androidx.annotation.ColorRes
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
@@ -69,15 +70,6 @@ class AlgorandAmountView @JvmOverloads constructor(
         text = amount.formatAmount(ALGO_DECIMALS).formatAsAlgoAmount()
     }
 
-    fun setAmountAsReward(amount: Long?, decimal: Int) {
-        setColorAccordingToTransactionType(TransactionSymbol.POSITIVE)
-        val formattedAmount = amount.formatAmount(decimal).formatAsAlgoAmount()
-        text = StringBuilder().apply {
-            append(context.getString(R.string.plus))
-            append(formattedAmount)
-        }
-    }
-
     fun setAmount(
         formattedAmount: String,
         transactionSymbol: TransactionSymbol? = null,
@@ -109,7 +101,16 @@ class AlgorandAmountView @JvmOverloads constructor(
         transactionSymbol: TransactionSymbol? = null,
         assetInformation: AssetInformation
     ) {
-        val formattedAmount = amount.formatAmount(assetInformation.decimals, isCompact = true)
+        val formattedAmount = amount.formatAmount(assetInformation.decimals, isCompact = false)
         setAmount(formattedAmount, transactionSymbol, assetInformation.shortName)
+    }
+
+    fun setAmount(
+        formattedAmount: String?,
+        @ColorRes
+        color: Int?
+    ) {
+        text = formattedAmount
+        setAmountTextColor(ContextCompat.getColor(context, color ?: R.color.text_main))
     }
 }

@@ -17,4 +17,9 @@
 
     <item name="label_percentage" format="float" type="integer">0.3</item>
     <item name="half_label_percentage" format="float" type="integer">0.5</item>
+
+    <!-- Transition Times -->
+    <integer name="shared_fragment_transition_delay_ms">500</integer>
+
+    <integer name="governor_icon_angle">135</integer>
 </resources>

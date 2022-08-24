@@ -25,8 +25,7 @@ import com.algorand.android.nft.ui.model.CollectiblesListingPreview
 import com.algorand.android.utils.GridSpacingItemDecoration
 import com.algorand.android.utils.viewbinding.viewBinding
 
-abstract class BaseCollectiblesListingFragment :
-    DaggerBaseFragment(R.layout.fragment_base_collectibles_listing),
+abstract class BaseCollectiblesListingFragment : DaggerBaseFragment(R.layout.fragment_base_collectibles_listing),
     CollectibleListAdapter.CollectibleListAdapterListener {
 
     abstract val isTitleVisible: Boolean
@@ -55,6 +54,10 @@ abstract class BaseCollectiblesListingFragment :
         initCollectiblesListingPreviewCollector()
     }
 
+    override fun onReceiveCollectibleItemClick() {
+        onReceiveCollectibleClick()
+    }
+
     protected open fun initUi() {
         initializeCollectibleListAdapter()
         with(binding) {
@@ -68,6 +71,10 @@ abstract class BaseCollectiblesListingFragment :
             filterButton.setOnClickListener { onFilterClick() }
             collectibleSearchView.setOnTextChanged { baseCollectibleListingViewModel.updateSearchKeyword(it) }
         }
+    }
+
+    protected open fun onReceiveCollectibleClick() {
+        baseCollectibleListingViewModel.logCollectibleReceiveEvent()
     }
 
     private fun initCollectibleListingPreview(nftListingPreview: CollectiblesListingPreview) {

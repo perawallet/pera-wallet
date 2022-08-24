@@ -61,63 +61,6 @@
                 app:layout_constraintTop_toBottomOf="@id/balanceTextView"
                 tools:text="$6.06" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/algoRewardsView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xxlarge"
-                android:background="@drawable/bg_algo_rewards_border"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/balanceInCurrencyTextView">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/rewardIconImageView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/spacing_large"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_reward" />
-
-                <TextView
-                    android:id="@+id/rewardsLabelTextView"
-                    style="@style/TextAppearance.Footnote.Description"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/spacing_normal"
-                    android:layout_marginTop="@dimen/spacing_normal"
-                    android:text="@string/rewards"
-                    app:layout_constraintStart_toEndOf="@id/rewardIconImageView"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/rewardsTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/spacing_normal"
-                    android:layout_marginTop="@dimen/spacing_xxsmall"
-                    android:layout_marginBottom="@dimen/spacing_normal"
-                    android:textAppearance="@style/TextAppearance.Footnote.Mono"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/rewardIconImageView"
-                    app:layout_constraintTop_toBottomOf="@id/rewardsLabelTextView"
-                    tools:text="0.94028594 ALGO" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/rewardsInfo"
-                    style="@style/IconButton.Transparent"
-                    android:layout_width="@dimen/reward_info_button_size"
-                    android:layout_height="@dimen/reward_info_button_size"
-                    android:layout_marginEnd="@dimen/spacing_normal"
-                    app:icon="@drawable/ic_info"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buyAlgoButton"
                 android:layout_width="0dp"
@@ -127,7 +70,7 @@
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/algoRewardsView"
+                app:layout_constraintTop_toBottomOf="@id/balanceInCurrencyTextView"
                 tools:visibility="visible" />
 
             <View
@@ -144,9 +87,7 @@
                 android:id="@+id/algoAssetGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:constraint_referenced_ids="
-            algoRewardsView,
-            assetInfoDividerLine" />
+                app:constraint_referenced_ids="assetInfoDividerLine" />
 
             <View
                 android:id="@+id/otherAssetBalanceDividerLine"

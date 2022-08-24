@@ -42,16 +42,13 @@ abstract class BaseWalletConnectTransaction : Parcelable {
         return isRekeyedToAnotherAccount(authAddress, account?.address)
     }
 
-    fun createAccountIcon(): AccountIcon {
-        return AccountIcon.create(getAccountIconColor(), getAccountImageResource())
+    fun createAccountIconResource(): AccountIconResource? {
+        return account?.accountIconResource
     }
 
     fun getAccountImageResource(): Int {
-        return account?.type?.iconResId ?: Account.defaultAccountType.iconResId
-    }
-
-    fun getAccountIconColor(): Account.AccountIconColor {
-        return account?.accountIconColor ?: Account.defaultAccountIconColor
+        return account?.accountIconResource?.iconResId
+            ?: AccountIconResource.getAccountIconResourceByAccountType(Account.defaultAccountType).iconResId
     }
 
     open val assetDecimal: Int = DEFAULT_ASSET_DECIMAL

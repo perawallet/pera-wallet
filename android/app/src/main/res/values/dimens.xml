@@ -41,8 +41,6 @@
     <dimen name="button_small_min_height">40dp</dimen>
     <dimen name="button_small_corner_radius">32dp</dimen>
 
-    <dimen name="keyline_1">16dp</dimen>
-    <dimen name="keyline_1_minus_8dp">8dp</dimen>
     <dimen name="unelevated_button_corner_radius">28dp</dimen>
     <dimen name="page_horizontal_spacing">20dp</dimen>
     <dimen name="digit_size">24dp</dimen>
@@ -115,7 +113,7 @@
     <dimen name="reward_info_button_size">24dp</dimen>
     <dimen name="asset_id_copy_button_size">20dp</dimen>
 
-    <dimen name="toolbar_avatar_view_padding">5dp</dimen>
+    <dimen name="toolbar_title_drawable_size">24dp</dimen>
 
     <!-- Divider -->
     <dimen name="divider_height">1dp</dimen>
@@ -125,4 +123,36 @@
 
     <!-- Tooltip -->
     <dimen name="tooltip_background_corner_radius">12dp</dimen>
+
+    <!-- Top Toast -->
+    <dimen name="toast_background_corner_radius">12dp</dimen>
+
+    <!-- PeraRadioButton -->
+    <dimen name="pera_radio_button_min_height">56dp</dimen>
+
+    <!-- Asset Item View -->
+    <dimen name="asset_item_view_min_height">76dp</dimen>
+
+    <!-- Testnet Badge-->
+    <dimen name="testnet_badge_height">26dp</dimen>
+    <dimen name="testnet_badge_width">60dp</dimen>
+    <dimen name="testnet_badge_radius">13dp</dimen>
+
+    <!--  Account Icon  -->
+    <dimen name="account_icon_size_xlarge">80dp</dimen>
+    <dimen name="account_icon_size_large">40dp</dimen>
+    <dimen name="account_icon_size_normal">24dp</dimen>
+    <dimen name="account_icon_size_small">20dp</dimen>
+
+    <!--  Governor Icon (governor icon size is %60 of account icon size) -->
+    <dimen name="governor_icon_size_xlarge">48dp</dimen>
+    <dimen name="governor_icon_size_large">24dp</dimen>
+    <dimen name="governor_icon_size_normal">14dp</dimen>
+    <dimen name="governor_icon_size_small">12dp</dimen>
+
+    <!--  Button Background Gradient  -->
+    <dimen name="bottom_fade_gradient_height">144dp</dimen>
+
+    <dimen name="custom_fab_size">64dp</dimen>
+
 </resources>

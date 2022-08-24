@@ -18,15 +18,28 @@
     android:layout_height="wrap_content"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
-    <com.algorand.android.customviews.AccountIconImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/accountTypeImageView"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="@dimen/account_icon_size_small"
+        android:layout_height="@dimen/account_icon_size_small"
         android:layout_marginStart="@dimen/spacing_xlarge"
         app:layout_constraintBottom_toBottomOf="@id/accountNameTextView"
         app:layout_constraintEnd_toStartOf="@id/accountNameTextView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/accountNameTextView" />
+        app:layout_constraintTop_toTopOf="@id/accountNameTextView"
+        tools:srcCompat="@drawable/ic_wallet" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/governorIconImageView"
+        android:layout_width="@dimen/governor_icon_size_small"
+        android:layout_height="@dimen/governor_icon_size_small"
+        android:visibility="gone"
+        app:layout_constraintCircle="@id/accountTypeImageView"
+        app:layout_constraintCircleAngle="@integer/governor_icon_angle"
+        app:layout_constraintCircleRadius="10dp"
+        tools:backgroundTint="@color/background"
+        tools:srcCompat="@drawable/ic_crown_filled"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/accountNameTextView"
@@ -101,7 +114,7 @@
         android:layout_marginStart="@dimen/spacing_normal"
         android:layout_marginEnd="@dimen/spacing_xlarge"
         android:drawablePadding="@dimen/spacing_xsmall"
-		android:gravity="center_vertical"
+        android:gravity="center_vertical"
         android:textColor="@color/negative"
         android:visibility="gone"
         app:drawableStartCompat="@drawable/ic_error"

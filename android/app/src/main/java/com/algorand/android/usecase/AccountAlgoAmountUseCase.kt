@@ -15,17 +15,18 @@ package com.algorand.android.usecase
 import com.algorand.android.mapper.AccountAssetDataMapper
 import com.algorand.android.models.AccountDetail
 import com.algorand.android.models.BaseAccountAssetData
-import com.algorand.android.utils.formatAsCurrency
-import com.algorand.android.utils.toAlgoDisplayValue
-import java.math.BigDecimal
-import java.math.BigDecimal.ZERO
+import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
+import com.algorand.android.modules.parity.domain.usecase.PrimaryCurrencyParityCalculationUseCase
+import com.algorand.android.modules.parity.domain.usecase.SecondaryCurrencyParityCalculationUseCase
 import java.math.BigInteger
 import javax.inject.Inject
 
 class AccountAlgoAmountUseCase @Inject constructor(
     private val accountDetailUseCase: AccountDetailUseCase,
-    private val algoPriceUseCase: AlgoPriceUseCase,
-    private val accountAssetDataMapper: AccountAssetDataMapper
+    private val parityUseCase: ParityUseCase,
+    private val accountAssetDataMapper: AccountAssetDataMapper,
+    private val primaryCurrencyParityCalculationUseCase: PrimaryCurrencyParityCalculationUseCase,
+    private val secondaryCurrencyParityCalculationUseCase: SecondaryCurrencyParityCalculationUseCase
 ) {
 
     fun getAccountAlgoAmount(publicKey: String): BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData {
@@ -39,26 +40,14 @@ class AccountAlgoAmountUseCase @Inject constructor(
     }
 
     private fun createAccountAlgoAmount(
-        accountAlgoAmount: BigInteger
+        algoAmount: BigInteger
     ): BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData {
-        val algoPrice = algoPriceUseCase.getAlgoToSelectedCurrencyConversionRate() ?: ZERO
-        val amountInSelectedCurrency = accountAlgoAmount.toAlgoDisplayValue().multiply(algoPrice) ?: ZERO
-        val algoToCachedCurrencyRate = algoPriceUseCase.getAlgoToCachedCurrencyConversionRate() ?: ZERO
-        val algoUsdValue = algoPriceUseCase.getAlgoToUsdConversionRate()
-        val amountInCachedCurrency = accountAlgoAmount.toAlgoDisplayValue().multiply(algoToCachedCurrencyRate) ?: ZERO
-        val formattedSelectedCurrencyValue = formatAlgoAmountToCachedCurrency(amountInCachedCurrency, false)
-        val formattedSelectedCurrencyCompactValue = formatAlgoAmountToCachedCurrency(amountInCachedCurrency, true)
+        val algoUsdValue = parityUseCase.getAlgoToUsdConversionRate()
         return accountAssetDataMapper.mapToAlgoAssetData(
-            accountAlgoAmount,
-            amountInSelectedCurrency,
-            formattedSelectedCurrencyValue,
-            formattedSelectedCurrencyCompactValue,
-            algoUsdValue
+            amount = algoAmount,
+            parityValueInSelectedCurrency = primaryCurrencyParityCalculationUseCase.getAlgoParityValue(algoAmount),
+            parityValueInSecondaryCurrency = secondaryCurrencyParityCalculationUseCase.getAlgoParityValue(algoAmount),
+            usdValue = algoUsdValue
         )
-    }
-
-    private fun formatAlgoAmountToCachedCurrency(algoAmountInCachedCurrency: BigDecimal, isCompact: Boolean): String {
-        val cachedCurrencySymbol = algoPriceUseCase.getCachedCurrencySymbolOrName()
-        return algoAmountInCachedCurrency.formatAsCurrency(cachedCurrencySymbol, isCompact)
     }
 }

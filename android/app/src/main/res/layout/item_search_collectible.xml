@@ -17,7 +17,7 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical">
 
-    <com.algorand.android.customviews.CollectibleImageView
+    <com.algorand.android.customviews.collectibleimageview.CollectibleImageView
         android:id="@+id/collectibleImageView"
         android:layout_width="@dimen/asset_avatar_image_size"
         android:layout_height="@dimen/asset_avatar_image_size"

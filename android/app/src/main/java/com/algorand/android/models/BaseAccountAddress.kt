@@ -24,7 +24,7 @@ sealed class BaseAccountAddress : Parcelable {
     @Parcelize
     data class AccountAddress(
         override val publicKey: String,
-        val accountIcon: AccountIcon?,
+        val accountIconResource: AccountIconResource?,
         private val displayName: String?
     ) : BaseAccountAddress() {
 

@@ -62,6 +62,8 @@ class ReceiverAccountSelectionViewModel @ViewModelInject constructor(
     val toAccountTransactionRequirementsFlow: StateFlow<Event<Resource<TargetUser>>?> =
         _toAccountTransactionRequirementsFlow
 
+    private var nftDomainAddressServiceLogoPair: Pair<String, String?>? = null
+
     private val queryFlow = MutableStateFlow("")
 
     private var copiedMessage: String? by Delegates.observable(null) { _, oldValue, newValue ->
@@ -105,7 +107,12 @@ class ReceiverAccountSelectionViewModel @ViewModelInject constructor(
         }
     }
 
-    fun fetchToAccountInformation(toAccountPublicKey: String) {
+    fun fetchToAccountInformation(
+        toAccountPublicKey: String,
+        nftDomainAddress: String? = null,
+        nftDomainServiceLogoUrl: String? = null
+    ) {
+        nftDomainAddressServiceLogoPair = nftDomainAddress?.run { Pair(this, nftDomainServiceLogoUrl) }
         viewModelScope.launch {
             _toAccountInformationFlow.emit(Event(Resource.Loading))
             val result = receiverAccountSelectionUseCase.fetchAccountInformation(toAccountPublicKey, viewModelScope)
@@ -123,7 +130,9 @@ class ReceiverAccountSelectionViewModel @ViewModelInject constructor(
                 accountInformation,
                 assetTransaction.assetId,
                 assetTransaction.senderAddress,
-                assetTransaction.amount
+                amount = assetTransaction.amount,
+                nftDomainAddress = nftDomainAddressServiceLogoPair?.first,
+                nftDomainServiceLogoUrl = nftDomainAddressServiceLogoPair?.second
             )
             when (result) {
                 is Result.Error -> _toAccountTransactionRequirementsFlow.emit(Event(result.getAsResourceError()))

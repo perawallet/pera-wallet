@@ -16,7 +16,7 @@ import com.algorand.android.cache.SimpleAssetLocalCache
 import com.algorand.android.models.Asset
 import com.algorand.android.models.AssetDetail
 import com.algorand.android.models.AssetDetailResponse
-import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
+import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.models.AssetQueryType
 import com.algorand.android.models.AssetSupportRequest
 import com.algorand.android.models.Pagination
@@ -55,9 +55,9 @@ class AssetRepository @Inject constructor(
         mobileAlgorandApi.getAssets(assetQuery = queryText.takeIf { it.isNotEmpty() }, status = queryType.apiName)
     }
 
-    suspend fun fetchAssetsById(assetIdList: List<Long>) = safeApiCall {
+    suspend fun fetchAssetsById(assetIdList: List<Long>, includeDeleted: Boolean? = null) = safeApiCall {
         requestWithHipoErrorHandler(hipoApiErrorHandler) {
-            mobileAlgorandApi.getAssetsByIds(assetIdList.toQueryString())
+            mobileAlgorandApi.getAssetsByIds(assetIdList.toQueryString(), includeDeleted)
         }
     }
 
@@ -111,7 +111,7 @@ class AssetRepository @Inject constructor(
     fun getAssetCacheFlow() = simpleAssetLocalCache.cacheMapFlow
 
     fun getCachedAssetById(assetId: Long): CacheResult<AssetDetail>? {
-        return if (assetId == ALGORAND_ID) {
+        return if (assetId == ALGO_ID) {
             algoAssetInformationProvider.getAlgoAssetInformation()
         } else {
             simpleAssetLocalCache.getOrNull(assetId)

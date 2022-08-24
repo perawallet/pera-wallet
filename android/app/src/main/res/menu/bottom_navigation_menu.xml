@@ -14,16 +14,16 @@
 
     <item
         android:id="@id/accountsFragment"
-        android:icon="@drawable/ic_menu_wallet"
-        android:title="@string/accounts" />
+        android:icon="@drawable/ic_wallet"
+        android:title="@string/home" />
 
     <item
         android:id="@id/algoPriceFragment"
-        android:icon="@drawable/ic_menu_chart"
-        android:title="@string/statistics" />
+        android:icon="@drawable/ic_price"
+        android:title="@string/price" />
 
     <item
-        android:id="@+id/sendRequestButton"
+        android:id="@+id/coreActionsMenuButton"
         android:enabled="false"
         android:title="" />
 
@@ -34,6 +34,6 @@
 
     <item
         android:id="@id/settingsFragment"
-        android:icon="@drawable/ic_menu_settings"
+        android:icon="@drawable/ic_settings"
         android:title="@string/settings" />
 </menu>

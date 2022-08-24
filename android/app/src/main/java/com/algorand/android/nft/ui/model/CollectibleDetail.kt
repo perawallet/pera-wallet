@@ -19,6 +19,7 @@ import kotlinx.parcelize.Parcelize
 sealed class CollectibleDetail : Parcelable {
 
     abstract val isOwnedByTheUser: Boolean
+    abstract val isCreatedByTheUser: Boolean
     abstract val ownerAccountAddress: AccountAddress
 
     abstract val isHoldingByWatchAccount: Boolean
@@ -50,6 +51,7 @@ sealed class CollectibleDetail : Parcelable {
     @Parcelize
     data class ImageCollectibleDetail(
         override val isOwnedByTheUser: Boolean,
+        override val isCreatedByTheUser: Boolean,
         override val collectionName: String?,
         override val collectibleName: String?,
         override val collectibleDescription: String?,
@@ -73,6 +75,7 @@ sealed class CollectibleDetail : Parcelable {
     @Parcelize
     data class VideoCollectibleDetail(
         override val isOwnedByTheUser: Boolean,
+        override val isCreatedByTheUser: Boolean,
         override val collectionName: String?,
         override val collectibleName: String?,
         override val collectibleDescription: String?,
@@ -96,6 +99,7 @@ sealed class CollectibleDetail : Parcelable {
     @Parcelize
     data class MixedCollectibleDetail(
         override val isOwnedByTheUser: Boolean,
+        override val isCreatedByTheUser: Boolean,
         override val collectionName: String?,
         override val collectibleName: String?,
         override val collectibleDescription: String?,
@@ -119,6 +123,7 @@ sealed class CollectibleDetail : Parcelable {
     @Parcelize
     data class NotSupportedCollectibleDetail(
         override val isOwnedByTheUser: Boolean,
+        override val isCreatedByTheUser: Boolean,
         override val ownerAccountAddress: AccountAddress,
         override val isHoldingByWatchAccount: Boolean,
         override val collectibleId: Long,

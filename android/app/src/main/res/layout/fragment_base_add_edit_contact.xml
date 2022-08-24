@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.algorand.android.customviews.AccountIconImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/contactImageView"
             android:layout_width="@dimen/contact_placeholder_image_size"
             android:layout_height="@dimen/contact_placeholder_image_size"

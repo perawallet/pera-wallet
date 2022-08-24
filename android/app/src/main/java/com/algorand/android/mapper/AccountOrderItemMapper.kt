@@ -13,6 +13,7 @@
 package com.algorand.android.mapper
 
 import com.algorand.android.models.Account
+import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.ui.AccountOrderItem
 import javax.inject.Inject
 
@@ -22,7 +23,7 @@ class AccountOrderItemMapper @Inject constructor() {
         return AccountOrderItem(
             publicKey = account.address,
             displayName = displayName,
-            accountIcon = account.createAccountIcon()
+            accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(account.type ?: defaultType)
         )
     }
 }

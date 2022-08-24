@@ -17,6 +17,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import com.algorand.android.R
 import com.algorand.android.customviews.WarningTextView
 import com.algorand.android.models.FragmentConfiguration
@@ -25,13 +26,17 @@ import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.ui.common.BaseInfoFragment
 import com.algorand.android.utils.openWatchAccountSupportUrl
 import com.google.android.material.button.MaterialButton
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class WatchAccountInfoFragment : BaseInfoFragment() {
 
     private val toolbarConfiguration = ToolbarConfiguration(
         startIconResId = R.drawable.ic_left_arrow,
         startIconClick = ::navBack
     )
+
+    private val watchAccountInfoViewModel: WatchAccountInfoViewModel by viewModels()
 
     override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
 
@@ -68,6 +73,7 @@ class WatchAccountInfoFragment : BaseInfoFragment() {
     }
 
     private fun navigateToRegisterWatchAccountFragment() {
+        watchAccountInfoViewModel.logOnboardingCreateWatchAccountClickEvent()
         nav(WatchAccountInfoFragmentDirections.actionWatchAccountInfoFragmentToRegisterWatchAccountFragment())
     }
 

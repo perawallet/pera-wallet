@@ -10,35 +10,7 @@
   ~ limitations under the License
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.algorand.android.customviews.accountandassetitem.accountitem.AccountItemView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/accountItemView"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical">
-
-    <com.algorand.android.customviews.AccountIconImageView
-        android:id="@+id/accountIconImageView"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginVertical="@dimen/spacing_small" />
-
-    <TextView
-        android:id="@+id/accountDisplayNameTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_normal"
-        android:layout_weight="1"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textAppearance="@style/TextAppearance.Body.Sans"
-        tools:text="@tools:sample/lorem[3]" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/errorIconImageView"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        app:srcCompat="@drawable/ic_error"
-        app:tint="@color/error_tint_color" />
-
-</LinearLayout>
+    android:layout_height="wrap_content" />

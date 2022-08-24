@@ -56,7 +56,7 @@ data class ChartValuePositionMapper(val valuePositions: List<ValuePosition>) {
 
         private fun shouldCreateChartValuePositionMapper(data: LineData?): Boolean {
             return data?.run {
-                dataSets?.isNotEmpty() == false || dataSets?.firstOrNull()?.entryCount ?: 0 > 0
+                dataSets?.isNotEmpty() == false || (dataSets?.firstOrNull()?.entryCount ?: 0) > 0
             } ?: false
         }
     }

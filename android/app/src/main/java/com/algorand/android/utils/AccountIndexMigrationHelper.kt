@@ -13,9 +13,8 @@
 package com.algorand.android.utils
 
 import com.algorand.android.models.Account
-import com.algorand.android.usecase.BaseAccountOrderUseCase.Companion.NOT_INITIALIZED_ACCOUNT_INDEX
-import com.algorand.android.usecase.StandardAccountOrderUseCase.Companion.STANDARD_ACCOUNT_START_INDEX
-import com.algorand.android.usecase.WatchAccountOrderUseCase.Companion.WATCH_ACCOUNT_START_INDEX
+import com.algorand.android.modules.sorting.accountsorting.domain.usecase.AccountSortingPreviewUseCase.Companion.LOCAL_ACCOUNT_START_INDEX
+import com.algorand.android.modules.sorting.accountsorting.domain.usecase.AccountSortingPreviewUseCase.Companion.NOT_INITIALIZED_ACCOUNT_INDEX
 import javax.inject.Inject
 
 class AccountIndexMigrationHelper @Inject constructor() : BaseMigrationHelper<List<Account>> {
@@ -25,10 +24,7 @@ class AccountIndexMigrationHelper @Inject constructor() : BaseMigrationHelper<Li
     }
 
     override fun getMigratedValues(values: List<Account>): List<Account> {
-        val (standardAccounts, watchAccounts) = values.partition { it.type == Account.Type.STANDARD }
-        val migratedStandardAccounts = getMigratedAccountList(standardAccounts, STANDARD_ACCOUNT_START_INDEX)
-        val migratedWatchAccounts = getMigratedAccountList(watchAccounts, WATCH_ACCOUNT_START_INDEX)
-        return migratedStandardAccounts + migratedWatchAccounts
+        return getMigratedAccountList(values, LOCAL_ACCOUNT_START_INDEX)
     }
 
     private fun getMigratedAccountList(accountList: List<Account>, startIndex: Int): List<Account> {

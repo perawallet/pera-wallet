@@ -92,6 +92,7 @@ class MoonpayIntroFragment : BaseFragment(R.layout.fragment_moonpay_intro) {
     }
 
     private fun onBuyAlgoButtonClick() {
+        moonpayIntroViewModel.logBuyAlgoTapEvent()
         if (moonpayIntroViewModel.isMainNet().not()) {
             showGlobalError(getString(R.string.you_can_not_purchase), getString(R.string.not_available))
             return

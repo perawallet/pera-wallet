@@ -14,7 +14,7 @@ package com.algorand.android.banner.ui.mapper
 
 import com.algorand.android.banner.domain.model.BaseBanner
 import com.algorand.android.banner.domain.model.BaseBanner.GovernanceBanner
-import com.algorand.android.ui.common.listhelper.BaseAccountListItem
+import com.algorand.android.modules.accounts.domain.model.BaseAccountListItem
 import javax.inject.Inject
 
 class BaseBannerItemMapper @Inject constructor() {

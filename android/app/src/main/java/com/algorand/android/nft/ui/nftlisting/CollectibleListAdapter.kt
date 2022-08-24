@@ -108,7 +108,7 @@ class CollectibleListAdapter(
         return ReceiveNftViewHolder.create(parent).apply {
             itemView.setOnClickListener {
                 if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                    listener.onReceiveCollectibleClick()
+                    listener.onReceiveCollectibleItemClick()
                 }
             }
         }
@@ -158,7 +158,7 @@ class CollectibleListAdapter(
         fun onGifItemClick(collectibleAssetId: Long, publicKey: String)
         fun onNotSupportedItemClick(collectibleAssetId: Long, publicKey: String)
         fun onMixedItemClick(collectibleAssetId: Long, publicKey: String)
-        fun onReceiveCollectibleClick()
+        fun onReceiveCollectibleItemClick()
     }
 
     companion object {

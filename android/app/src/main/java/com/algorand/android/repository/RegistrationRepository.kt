@@ -22,4 +22,8 @@ class RegistrationRepository @Inject constructor(
     fun setRegistrationSkipPreferenceAsSkipped() {
         registrationSkipLocalSource.saveData(true)
     }
+
+    fun getRegistrationSkipped(): Boolean {
+        return registrationSkipLocalSource.getData(RegistrationSkipLocalSource.defaultRegisterSkipPreference)
+    }
 }

@@ -12,7 +12,6 @@
 
 package com.algorand.android.customviews
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
 import com.algorand.android.R
@@ -38,7 +37,7 @@ class LedgerLoadingDialog : BaseBottomSheet(R.layout.dialog_ledger_loading) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
-            cancelButton.setOnClickListener { dismissAllowingStateLoss() }
+            cancelButton.setOnClickListener { onDismissDialog(true) }
             val ledgerName = arguments?.getString(LEDGER_NAME_KEY)?.wrapWithBrackets().orEmpty()
             descriptionTextView.text = context?.getXmlStyledString(
                 stringResId = R.string.please_make_sure,
@@ -47,13 +46,17 @@ class LedgerLoadingDialog : BaseBottomSheet(R.layout.dialog_ledger_loading) {
         }
     }
 
-    override fun onDismiss(dialog: DialogInterface) {
-        listener?.onLedgerLoadingCancelled()
-        super.onDismiss(dialog)
+    /**
+     * We should stop resources only if user clicks `Cancel` button, otherwise we should just dismiss bottom sheet
+     * without taking any action on [TransactionManager] side
+     */
+    fun onDismissDialog(shouldStopResources: Boolean) {
+        listener?.onLedgerLoadingCancelled(shouldStopResources)
+        dismissAllowingStateLoss()
     }
 
     interface Listener {
-        fun onLedgerLoadingCancelled()
+        fun onLedgerLoadingCancelled(shouldStopResources: Boolean)
     }
 
     companion object {

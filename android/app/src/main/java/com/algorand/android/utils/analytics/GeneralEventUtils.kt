@@ -45,5 +45,5 @@ fun FirebaseAnalytics.logScreen(page: String) {
 }
 
 fun getAssetIdAsEventParam(assetId: Long): String {
-    return if (assetId == AssetInformation.ALGORAND_ID) ALGO_ASSET_ID else assetId.toString()
+    return if (assetId == AssetInformation.ALGO_ID) ALGO_ASSET_ID else assetId.toString()
 }

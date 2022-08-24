@@ -13,15 +13,15 @@
 
 package com.algorand.android.models.builder
 
-import com.algorand.android.models.AssetInformation.Companion.ALGORAND_ID
+import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.models.BasePaymentTransaction
 import com.algorand.android.models.TransactionRequestAmountInfo
 import com.algorand.android.models.TransactionRequestAssetInformation
 import com.algorand.android.models.TransactionRequestExtrasInfo
 import com.algorand.android.models.TransactionRequestNoteInfo
 import com.algorand.android.models.TransactionRequestTransactionInfo
-import com.algorand.android.utils.ALGOS_FULL_NAME
-import com.algorand.android.utils.ALGOS_SHORT_NAME
+import com.algorand.android.utils.ALGO_FULL_NAME
+import com.algorand.android.utils.ALGO_SHORT_NAME
 import com.algorand.android.utils.MIN_FEE
 import javax.inject.Inject
 
@@ -34,14 +34,14 @@ class BasePaymentTransactionDetailUiBuilder @Inject constructor() :
         return with(txn) {
             TransactionRequestTransactionInfo(
                 fromDisplayedAddress = getProvidedAddressAsDisplayAddress(senderAddress.decodedAddress.orEmpty()),
-                fromAccountIcon = createAccountIcon(),
+                fromAccountIcon = createAccountIconResource(),
                 toDisplayedAddress = receiverAddress.decodedAddress,
                 accountBalance = assetInformation?.amount,
                 assetInformation = TransactionRequestAssetInformation(
-                    assetId = ALGORAND_ID,
+                    assetId = ALGO_ID,
                     isVerified = true,
-                    shortName = ALGOS_SHORT_NAME,
-                    fullName = ALGOS_FULL_NAME,
+                    shortName = ALGO_SHORT_NAME,
+                    fullName = ALGO_FULL_NAME,
                     decimals = assetDecimal
                 ),
                 rekeyToAccountAddress = getProvidedAddressAsDisplayAddress(
@@ -61,7 +61,7 @@ class BasePaymentTransactionDetailUiBuilder @Inject constructor() :
                 fee = fee,
                 shouldShowFeeWarning = fee > MIN_FEE,
                 assetDecimal = assetDecimal,
-                assetShortName = ALGOS_SHORT_NAME
+                assetShortName = ALGO_SHORT_NAME
             )
         }
     }

@@ -15,7 +15,7 @@ package com.algorand.android.models.builder
 
 import com.algorand.android.models.BasePaymentTransaction
 import com.algorand.android.models.WalletConnectTransactionSummary
-import com.algorand.android.utils.ALGOS_SHORT_NAME
+import com.algorand.android.utils.ALGO_SHORT_NAME
 import com.algorand.android.utils.ALGO_DECIMALS
 import javax.inject.Inject
 
@@ -26,9 +26,9 @@ class BasePaymentTransactionSummaryUiBuilder @Inject constructor() :
         return with(txn) {
             WalletConnectTransactionSummary(
                 accountName = account?.name,
-                accountIcon = createAccountIcon(),
+                accountIconResource = createAccountIconResource(),
                 accountBalance = assetInformation?.amount,
-                assetShortName = ALGOS_SHORT_NAME,
+                assetShortName = ALGO_SHORT_NAME,
                 assetDecimal = ALGO_DECIMALS,
                 transactionAmount = transactionAmount,
                 showWarning = warningCount != null,

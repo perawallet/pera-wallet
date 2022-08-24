@@ -13,6 +13,7 @@
 package com.algorand.android.nft.ui.nftlisting.collectibles
 
 import androidx.hilt.lifecycle.ViewModelInject
+import com.algorand.android.modules.tracking.nft.CollectibleEventTracker
 import com.algorand.android.nft.domain.usecase.CollectiblesListingPreviewUseCase
 import com.algorand.android.nft.ui.base.BaseCollectibleListingViewModel
 import com.algorand.android.nft.ui.model.CollectiblesListingPreview
@@ -21,7 +22,8 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 
 class CollectiblesViewModel @ViewModelInject constructor(
     private val collectiblesListingPreviewUseCase: CollectiblesListingPreviewUseCase,
-) : BaseCollectibleListingViewModel(collectiblesListingPreviewUseCase) {
+    collectibleEventTracker: CollectibleEventTracker
+) : BaseCollectibleListingViewModel(collectiblesListingPreviewUseCase, collectibleEventTracker) {
 
     override fun initCollectiblesListingPreviewFlow(searchKeyword: String): Flow<CollectiblesListingPreview> {
         return collectiblesListingPreviewUseCase.getCollectiblesListingPreviewFlow(searchKeyword).distinctUntilChanged()

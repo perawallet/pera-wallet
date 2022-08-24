@@ -24,6 +24,7 @@
     <string name="pair_value_format_with_coma">%1$s, %2$d</string>
     <string name="algo">Algo</string>
     <string name="pera_explorer">Pera Explorer</string>
+    <string name="testnet">TESTNET</string>
 
     <!--Accessibility-->
     <string name="accessibility_user_image">User Image</string>
@@ -42,4 +43,5 @@
     <string name="position_with_dot"><annotation replacement="position">positionPlaceholder</annotation>.</string>
 
     <string name="formatted_amount_with_asset_name_txn"><annotation replacement="asset_amount">assetAmountPlaceholder</annotation> <annotation replacement="asset_short_name"><annotation custom="text_size"><annotation font="dmsans_medium">assetShortNamePlaceholder</annotation></annotation></annotation></string>
+    <string name="approximate_currency_value">≈ %1$s</string>
 </resources>

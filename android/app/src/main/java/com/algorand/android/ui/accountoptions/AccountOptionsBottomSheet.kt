@@ -14,23 +14,37 @@ package com.algorand.android.ui.accountoptions
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
+import com.algorand.android.core.DaggerBaseBottomSheet
+import com.algorand.android.databinding.BottomSheetAccountDetailAccountsOptionsBinding
 import com.algorand.android.models.Account
 import com.algorand.android.utils.Resource
+import com.algorand.android.utils.copyToClipboard
 import com.algorand.android.utils.extensions.show
+import com.algorand.android.utils.toShortenedAddress
+import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class AccountOptionsBottomSheet : BaseAccountOptionsBottomSheet() {
+class AccountOptionsBottomSheet : DaggerBaseBottomSheet(
+    layoutResId = R.layout.bottom_sheet_account_detail_accounts_options,
+    fullPageNeeded = false,
+    firebaseEventScreenId = null
+) {
 
     private val args by navArgs<AccountOptionsBottomSheetArgs>()
 
-    override val publicKey: String
+    private val binding by viewBinding(BottomSheetAccountDetailAccountsOptionsBinding::bind)
+
+    private val accountOptionsViewModel: AccountOptionsViewModel by viewModels()
+
+    private val publicKey: String
         get() = args.publicKey
 
     private val notificationObserverCollector: suspend (Resource<Unit>?) -> Unit = {
@@ -43,7 +57,9 @@ class AccountOptionsBottomSheet : BaseAccountOptionsBottomSheet() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRemoveAssetButton()
+        setupViewPassphraseButton()
+        setupCopyButton()
+        setupShowQrButton()
         setupAuthAddressButton()
         setupRekeyOptionButton()
         setupRenameAccountButton()
@@ -80,17 +96,6 @@ class AccountOptionsBottomSheet : BaseAccountOptionsBottomSheet() {
         }
     }
 
-    private fun setupRemoveAssetButton() {
-        with(accountOptionsViewModel) {
-            if (isThereAnyAsset() && getAccountType() != Account.Type.WATCH) {
-                binding.removeAssetButton.apply {
-                    show()
-                    setOnClickListener { navToRemoveAssetsBottomSheet() }
-                }
-            }
-        }
-    }
-
     private fun setupAuthAddressButton() {
         if (accountOptionsViewModel.isRekeyedToAnotherAccount()) {
             binding.authAddressButton.apply {
@@ -119,10 +124,6 @@ class AccountOptionsBottomSheet : BaseAccountOptionsBottomSheet() {
         }
     }
 
-    private fun navToRemoveAssetsBottomSheet() {
-        nav(AccountOptionsBottomSheetDirections.actionAccountOptionsBottomSheetToRemoveAssetsFragment(publicKey))
-    }
-
     private fun navToRekeyAccountFragment() {
         nav(AccountOptionsBottomSheetDirections.actionAccountOptionsBottomSheetToRekeyAccountFragment(publicKey))
     }
@@ -144,14 +145,45 @@ class AccountOptionsBottomSheet : BaseAccountOptionsBottomSheet() {
         )
     }
 
-    override fun navToShowQrBottomSheet(title: String, publicKey: String) {
+    private fun navToShowQrBottomSheet(title: String, publicKey: String) {
         nav(AccountOptionsBottomSheetDirections.actionAccountOptionsBottomSheetToShowQrBottomSheet(title, publicKey))
     }
 
-    override fun navToViewPassphraseBottomSheet() {
+    private fun setupViewPassphraseButton() {
+        if (accountOptionsViewModel.getAccountType() == Account.Type.STANDARD) {
+            binding.viewPassphraseButton.apply {
+                show()
+                setOnClickListener { navToViewPassphraseBottomSheet() }
+            }
+        }
+    }
+
+    private fun setupCopyButton() {
+        with(binding) {
+            copyAddressLayout.setOnClickListener {
+                val publicKey = accountOptionsViewModel.getAccountAddress() ?: return@setOnClickListener
+                context?.copyToClipboard(publicKey, ADDRESS_COPY_LABEL, false)
+                showTopToast(getString(R.string.address_copied_to_clipboard), publicKey.toShortenedAddress())
+                navBack()
+            }
+            addressTextView.text = accountOptionsViewModel.getAccountAddress()
+        }
+    }
+
+    private fun setupShowQrButton() {
+        binding.showQrButton.setOnClickListener {
+            navToShowQrBottomSheet(getString(R.string.qr_code), publicKey)
+        }
+    }
+
+    private fun navToViewPassphraseBottomSheet() {
         nav(
             AccountOptionsBottomSheetDirections
                 .actionAccountOptionsBottomSheetToViewPassphraseLockBottomSheet(publicKey)
         )
+    }
+
+    companion object {
+        private const val ADDRESS_COPY_LABEL = "address"
     }
 }

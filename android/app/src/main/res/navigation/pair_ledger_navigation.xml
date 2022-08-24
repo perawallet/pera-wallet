@@ -76,6 +76,9 @@
         android:name="com.algorand.android.ui.register.ledger.verify.VerifyLedgerInfoFragment"
         android:label="VerifyLedgerInfoFragment"
         tools:layout="@layout/fragment_base_info">
+        <argument
+            android:name="numberOfAccounts"
+            app:argType="integer" />
         <action
             android:id="@+id/action_verifyLedgerInfoFragment_to_moonpayNavigation"
             app:destination="@id/moonpayNavigation"

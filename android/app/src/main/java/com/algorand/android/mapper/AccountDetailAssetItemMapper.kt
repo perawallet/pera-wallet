@@ -19,9 +19,6 @@ import com.algorand.android.models.AccountDetailAssetsItem.BaseAssetItem.BasePen
 import com.algorand.android.models.BaseAccountAssetData
 import com.algorand.android.models.BaseAccountAssetData.PendingAssetData
 import com.algorand.android.utils.AssetName
-import com.algorand.android.utils.extensions.hasUsdValue
-import com.algorand.android.utils.isNotEqualTo
-import java.math.BigInteger
 import javax.inject.Inject
 
 // TODO Rename this function to make it screen independent
@@ -35,11 +32,10 @@ class AccountDetailAssetItemMapper @Inject constructor() {
             name = AssetName.create(accountAssetData.name),
             shortName = AssetName.createShortName(accountAssetData.shortName),
             formattedAmount = accountAssetData.formattedCompactAmount,
-            formattedDisplayedCurrencyValue = accountAssetData.formattedSelectedCurrencyValue,
+            formattedDisplayedCurrencyValue = accountAssetData.getSelectedCurrencyParityValue().getFormattedCompactValue(),
             isVerified = accountAssetData.isVerified,
             isAlgo = accountAssetData.isAlgo,
-            isAmountInDisplayedCurrencyVisible = accountAssetData.hasUsdValue() &&
-                accountAssetData.amount isNotEqualTo BigInteger.ZERO
+            isAmountInDisplayedCurrencyVisible = accountAssetData.isAmountInSelectedCurrencyVisible
         )
     }
 

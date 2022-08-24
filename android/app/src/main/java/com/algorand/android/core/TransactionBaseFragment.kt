@@ -50,7 +50,9 @@ abstract class TransactionBaseFragment(
     @Inject
     lateinit var accountCacheManager: AccountCacheManager
 
+    // TODO: 13.06.2022 Remove bleWaitingTransactionData and use a list instance for both txn type
     private var bleWaitingTransactionData: TransactionData? = null
+    private var bleWaitingGroupTransactionData: List<TransactionData>? = null
     private var ledgerLoadingDialog: LedgerLoadingDialog? = null
 
     abstract val transactionFragmentListener: TransactionFragmentListener
@@ -115,6 +117,7 @@ abstract class TransactionBaseFragment(
 
     internal fun permissionDeniedOnTransactionData(@StringRes errorResId: Int, @StringRes titleResId: Int) {
         bleWaitingTransactionData = null
+        bleWaitingGroupTransactionData = null
         showTransactionError(TransactionManagerResult.Error.Defined(AnnotatedString(errorResId), titleResId))
     }
 
@@ -122,16 +125,22 @@ abstract class TransactionBaseFragment(
         bleWaitingTransactionData?.run {
             sendTransaction(this)
         }
+        bleWaitingGroupTransactionData?.run {
+            sendGroupTransaction(this)
+        }
     }
 
     private fun hideLoading() {
         transactionFragmentListener.onSignTransactionLoadingFinished()
         ledgerLoadingDialog?.dismissAllowingStateLoss()
+        ledgerLoadingDialog = null
     }
 
     private fun showLedgerLoading(ledgerName: String?) {
-        ledgerLoadingDialog = LedgerLoadingDialog.createLedgerLoadingDialog(ledgerName)
-        ledgerLoadingDialog?.showWithStateCheck(childFragmentManager)
+        if (ledgerLoadingDialog == null) {
+            ledgerLoadingDialog = LedgerLoadingDialog.createLedgerLoadingDialog(ledgerName)
+            ledgerLoadingDialog?.showWithStateCheck(childFragmentManager)
+        }
     }
 
     private fun navigateToConnectionIssueBottomSheet() {
@@ -149,7 +158,25 @@ abstract class TransactionBaseFragment(
                 }
             }
         }
-        transactionManager.signTransaction(transactionData)
+        transactionManager.initSigningTransactions(false, transactionData)
+    }
+
+    fun sendGroupTransaction(transactionDataList: List<TransactionData>) {
+        if (transactionDataList.all {
+                with(it.accountCacheData.account.type) {
+                    this == Account.Type.LEDGER || this == Account.Type.REKEYED || this == Account.Type.REKEYED_AUTH
+                }
+            }
+        ) {
+            if (isBluetoothEnabled().not()) {
+                bleWaitingGroupTransactionData = transactionDataList
+                return
+            }
+        }
+        transactionManager.initSigningTransactions(
+            isGroupTransaction = true,
+            transactionData = transactionDataList.toTypedArray()
+        )
     }
 
     protected fun showTransactionError(error: TransactionManagerResult.Error) {
@@ -191,7 +218,7 @@ abstract class TransactionBaseFragment(
         showTransactionError(transactionManagerResult)
     }
 
-    override fun onLedgerLoadingCancelled() {
+    override fun onLedgerLoadingCancelled(shouldStopResources: Boolean) {
         hideLoading()
         transactionManager.manualStopAllResources()
     }

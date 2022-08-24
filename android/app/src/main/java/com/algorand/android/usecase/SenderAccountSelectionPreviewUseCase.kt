@@ -19,19 +19,17 @@ class SenderAccountSelectionPreviewUseCase @Inject constructor(
     private val accountSelectionListUseCase: AccountSelectionListUseCase
 ) {
 
-    fun getBaseNormalAccountListItems(): List<BaseAccountSelectionListItem> {
+    suspend fun getBaseNormalAccountListItems(): List<BaseAccountSelectionListItem> {
         return accountSelectionListUseCase.createAccountSelectionListAccountItems(
-            showAssetCount = true,
             showHoldings = true,
             shouldIncludeWatchAccounts = false,
             showFailedAccounts = true
         )
     }
 
-    fun getBaseNormalAccountListItemsFilteredByAssetId(assetId: Long): List<BaseAccountSelectionListItem> {
+    suspend fun getBaseNormalAccountListItemsFilteredByAssetId(assetId: Long): List<BaseAccountSelectionListItem> {
         return accountSelectionListUseCase.createAccountSelectionListAccountItemsFilteredByAssetId(
             assetId = assetId,
-            showAssetCount = true,
             showHoldings = true,
             shouldIncludeWatchAccounts = false,
             showFailedAccounts = true

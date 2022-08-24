@@ -24,21 +24,25 @@ import com.algorand.android.models.AccountBalance
 import com.algorand.android.models.AccountDetail
 import com.algorand.android.models.AccountSelectionListItem
 import com.algorand.android.models.LedgerInformationListItem
+import com.algorand.android.modules.currency.domain.usecase.CurrencyUseCase
+import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
 import com.algorand.android.utils.formatAsCurrency
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+@Suppress("LongParameterList")
 class LedgerInformationUseCase @Inject constructor(
     private val accountTotalBalanceUseCase: AccountTotalBalanceUseCase,
-    private val algoPriceUseCase: AlgoPriceUseCase,
+    private val parityUseCase: ParityUseCase,
     private val accountAssetAmountUseCase: AccountAssetAmountUseCase,
     private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase,
     private val accountAlgoAmountUseCase: AccountAlgoAmountUseCase,
     private val ledgerInformationTitleItemMapper: LedgerInformationTitleItemMapper,
     private val ledgerInformationAccountItemMapper: LedgerInformationAccountItemMapper,
     private val ledgerInformationAssetItemMapper: LedgerInformationAssetItemMapper,
-    private val ledgerInformationCanSignByItemMapper: LedgerInformationCanSignByItemMapper
+    private val ledgerInformationCanSignByItemMapper: LedgerInformationCanSignByItemMapper,
+    private val currencyUseCase: CurrencyUseCase
 ) : BaseUseCase() {
 
     suspend fun getLedgerInformationListItem(
@@ -63,7 +67,7 @@ class LedgerInformationUseCase @Inject constructor(
     ): List<LedgerInformationListItem> {
         return withContext(Dispatchers.Default) {
             return@withContext mutableListOf<LedgerInformationListItem>().apply {
-                val selectedCurrencySymbol = algoPriceUseCase.getSelectedCurrencySymbolOrCurrencyName()
+                val selectedCurrencySymbol = parityUseCase.getPrimaryCurrencySymbolOrName()
                 val accountBalance = accountTotalBalanceUseCase.getAccountBalance(accountDetail)
                 val portfolioValue = getPortfolioValue(accountBalance, selectedCurrencySymbol)
                 addAll(createLedgerAccountItem(accountDetail, portfolioValue))
@@ -130,6 +134,7 @@ class LedgerInformationUseCase @Inject constructor(
         symbol: String
     ): String {
         val totalHoldings = with(accountBalance) { algoHoldingsInSelectedCurrency.add(assetHoldingsInSelectedCurrency) }
-        return totalHoldings.formatAsCurrency(symbol)
+        val isSelectedPrimaryCurrencyFiat = !currencyUseCase.isPrimaryCurrencyAlgo()
+        return totalHoldings.formatAsCurrency(symbol, isFiat = isSelectedPrimaryCurrencyFiat)
     }
 }

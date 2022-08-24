@@ -13,37 +13,63 @@
 package com.algorand.android.nft.ui.nfsdetail
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnLayout
 import com.algorand.android.databinding.ItemCollectibleGifMediaBinding
 import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem
+import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem.ItemType
 import com.algorand.android.utils.loadGif
 
 class CollectibleGifMediaViewHolder(
-    private val binding: ItemCollectibleGifMediaBinding
+    private val binding: ItemCollectibleGifMediaBinding,
+    private val listener: CollectibleGifMediaViewHolderListener
 ) : BaseCollectibleMediaViewHolder(binding.root) {
 
     override fun bind(item: BaseCollectibleMediaItem) {
         if (item !is BaseCollectibleMediaItem.GifCollectibleMediaItem) return
         with(binding.collectibleGifCollectibleImageView) {
             doOnLayout {
-                getImageView().loadGif(
-                    uri = createPrismPreviewImageUrl(item.previewUrl, measuredWidth),
-                    onResourceReady = { gifDrawable ->
-                        showImage(gifDrawable, !item.isOwnedByTheUser)
-                        gifDrawable.start()
-                    },
-                    onLoadFailed = { showText(item.errorText) }
-                )
+                with(getImageView() ?: return@doOnLayout) {
+                    val previewPrismUrl = createPrismPreviewImageUrl(item.previewUrl, measuredWidth)
+                    transitionName = id.toString()
+                    setOnClickListener {
+                        listener.onGifMediaClick(
+                            previewUrl = item.previewUrl,
+                            errorText = item.errorText,
+                            collectibleImageView = this,
+                            mediaType = item.itemType,
+                            previewPrismUrl = previewPrismUrl
+                        )
+                    }
+                    loadGif(
+                        uri = previewPrismUrl,
+                        onResourceReady = { gifDrawable ->
+                            showImage(gifDrawable)
+                            gifDrawable.start()
+                        },
+                        onLoadFailed = { showText(item.errorText) }
+                    )
+                }
             }
         }
     }
 
+    fun interface CollectibleGifMediaViewHolderListener {
+        fun onGifMediaClick(
+            previewUrl: String?,
+            errorText: String,
+            collectibleImageView: View,
+            mediaType: ItemType,
+            previewPrismUrl: String
+        )
+    }
+
     companion object {
-        fun create(parent: ViewGroup): CollectibleGifMediaViewHolder {
+        fun create(parent: ViewGroup, listener: CollectibleGifMediaViewHolderListener): CollectibleGifMediaViewHolder {
             val binding = ItemCollectibleGifMediaBinding
                 .inflate(LayoutInflater.from(parent.context), parent, false)
-            return CollectibleGifMediaViewHolder(binding)
+            return CollectibleGifMediaViewHolder(binding, listener)
         }
     }
 }

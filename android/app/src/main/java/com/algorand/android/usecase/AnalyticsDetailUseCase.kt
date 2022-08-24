@@ -18,13 +18,14 @@ import com.algorand.android.models.AssetPriceHistory
 import com.algorand.android.models.ChartEntryData
 import com.algorand.android.models.ChartInterval
 import com.algorand.android.models.Result
+import com.algorand.android.modules.currency.domain.usecase.CurrencyUseCase
+import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
 import com.algorand.android.repository.PriceRepository
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.awaitOrdered
 import com.algorand.android.utils.createChartEntryList
 import com.algorand.android.utils.getCurrencyConvertedHistoryList
 import java.math.BigDecimal
-import java.math.BigDecimal.ZERO
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
@@ -34,16 +35,24 @@ import kotlinx.coroutines.flow.map
 
 class AnalyticsDetailUseCase @Inject constructor(
     private val priceRepository: PriceRepository,
-    private val algoPriceUseCase: AlgoPriceUseCase,
+    private val parityUseCase: ParityUseCase,
+    private val currencyUseCase: CurrencyUseCase
 ) : BaseUseCase() {
 
     fun getAlgoExchangeValueFlow(): Flow<BigDecimal> {
-        return algoPriceUseCase.getAlgoPriceCacheFlow()
-            .map { algoPriceUseCase.getAlgoToCachedCurrencyConversionRate() ?: ZERO }
+        return with(parityUseCase) {
+            getSelectedCurrencyDetailCacheFlow().map {
+                if (currencyUseCase.isPrimaryCurrencyAlgo()) {
+                    getAlgoToSecondaryCurrencyConversionRate()
+                } else {
+                    getAlgoToPrimaryCurrencyConversionRate()
+                }
+            }
+        }
     }
 
     suspend fun getAlgoPriceHistory(
-        cachedCurrencyValueOfPerAlgo: BigDecimal,
+        algoToDisplayCurrencyConversionRate: BigDecimal,
         selectedInterval: ChartInterval,
         coroutineScope: CoroutineScope
     ) = flow {
@@ -54,11 +63,11 @@ class AnalyticsDetailUseCase @Inject constructor(
                 priceRepository.getAlgoPriceHistoryByTimeFrame(ChartInterval.FiveMinInterval.getDefaultInstance())
             }
         )
-        emit(getAlgoPriceHistoryResource(cachedCurrencyValueOfPerAlgo, resultList))
+        emit(getAlgoPriceHistoryResource(algoToDisplayCurrencyConversionRate, resultList))
     }
 
     private suspend fun getAlgoPriceHistoryResource(
-        cachedCurrencyValueOfPerAlgo: BigDecimal,
+        algoToDisplayCurrencyConversionRate: BigDecimal,
         resultList: List<Result<AssetPriceHistory>>
     ): Resource<ChartEntryData> {
         val usdSelectedIntervalHistory = (resultList.firstOrNull() as? Result.Success)?.data?.candleHistory
@@ -68,7 +77,7 @@ class AnalyticsDetailUseCase @Inject constructor(
         }
 
         val currencyConvertedHistoryList = getCurrencyConvertedHistoryList(
-            cachedCurrencyValueOfPerAlgo,
+            algoToDisplayCurrencyConversionRate,
             usdSelectedIntervalHistory,
             usdLastFiveMinInterval
         )
@@ -76,7 +85,13 @@ class AnalyticsDetailUseCase @Inject constructor(
         return Resource.Success(chartEntryData)
     }
 
-    fun getSelectedCurrencyId(): String {
-        return algoPriceUseCase.getCachedCurrencyId()
+    fun getDisplayedCurrencyId(): String {
+        with(parityUseCase) {
+            return if (currencyUseCase.isPrimaryCurrencyAlgo()) {
+                getSecondaryCurrencySymbol()
+            } else {
+                getPrimaryCurrencySymbolOrName()
+            }
+        }
     }
 }

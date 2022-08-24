@@ -13,7 +13,7 @@
 
 package com.algorand.android.mapper
 
-import com.algorand.android.models.BaseTransactionItem
+import com.algorand.android.modules.transactionhistory.ui.model.BaseTransactionItem
 import javax.inject.Inject
 
 class AccountHistoryHeaderMapper @Inject constructor() {

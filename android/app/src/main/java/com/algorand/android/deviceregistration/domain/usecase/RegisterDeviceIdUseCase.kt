@@ -52,11 +52,11 @@ class RegisterDeviceIdUseCase @Inject constructor(
 
     private fun getDeviceRegistrationDTO(token: String): DeviceRegistrationDTO {
         return deviceRegisterDTOMapper.mapToDeviceRegistrationDTO(
-            token,
-            getAccountPublicKeys(),
-            getApplicationName(),
-            PLATFORM_NAME,
-            getLocaleLanguageCode()
+            token = token,
+            accountPublicKeyList = getAccountPublicKeys(),
+            application = getApplicationName(),
+            platform = PLATFORM_NAME,
+            locale = getLocaleLanguageCode()
         )
     }
 }

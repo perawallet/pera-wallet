@@ -32,7 +32,6 @@ import com.algorand.android.models.TargetUser
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.models.TransactionData
 import com.algorand.android.ui.common.warningconfirmation.BaseMaximumBalanceWarningBottomSheet
-import com.algorand.android.utils.ALGOS_SHORT_NAME
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.PrismUrlBuilder
 import com.algorand.android.utils.Resource
@@ -43,10 +42,10 @@ import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import java.math.BigInteger
 import kotlin.properties.Delegates
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 // TODO: 17.08.2021 We will update this fragment when input format finalized,
 // TODO: 29.09.2021 `handleError` function will be updated when this branch merge with `send-asset-amount-input`
@@ -96,8 +95,8 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
             binding.amountTextView.onBackspaceEntered()
         }
 
-        override fun onDotClick() {
-            binding.amountTextView.onDotEntered()
+        override fun onDecimalSeparatorClicked() {
+            binding.amountTextView.onDecimalSeparatorClicked()
         }
     }
 
@@ -161,7 +160,7 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
             updateEnteredAmountCurrencyValue(enteredAmountSelectedCurrencyValue, isAmountInSelectedCurrencyVisible)
             setAmountView(decimals)
             setAmountCurrencyValueView(formattedSelectedCurrencyValue, isAmountInSelectedCurrencyVisible)
-            setAssetBalanceView(isAlgo, formattedAmount)
+            setAssetBalanceView(formattedAmount)
             setAssetNameView(
                 isVerified,
                 fullName.getName(binding.root.resources),
@@ -170,6 +169,7 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
                 collectiblePrismUrl,
                 isCollectibleOwnedByUser
             )
+            binding.dialpadView.setSeparator(decimalSeparator)
         }
     }
 
@@ -206,12 +206,8 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
             .build()
     }
 
-    private fun setAssetBalanceView(isAlgo: Boolean, formattedAmount: String) {
-        binding.assetBalanceTextView.text = if (isAlgo) {
-            getString(R.string.pair_value_format, formattedAmount, ALGOS_SHORT_NAME)
-        } else {
-            formattedAmount
-        }
+    private fun setAssetBalanceView(formattedAmount: String) {
+        binding.assetBalanceTextView.text = formattedAmount
     }
 
     private fun setAmountCurrencyValueView(
@@ -267,7 +263,7 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
     }
 
     private fun onMaxButtonClick() {
-        val formattedMaximumAmount = assetTransferAmountViewModel.getMaximumAmountOfAsset().orEmpty()
+        val formattedMaximumAmount = assetTransferAmountViewModel.getMaximumAmountOfAsset()
         binding.amountTextView.updateBalance(formattedMaximumAmount)
     }
 

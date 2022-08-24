@@ -31,7 +31,6 @@ class CollectibleReceiverAccountSelectionPreviewUseCase @Inject constructor(
     fun getAccountListItems() = flow<CollectibleReceiverAccountSelectionPreview> {
         emit(previewMapper.mapToLoadingPreview())
         val accountListItems = accountSelectionUseCase.createAccountSelectionListAccountItems(
-            showAssetCount = false,
             showHoldings = false,
             shouldIncludeWatchAccounts = false,
             showFailedAccounts = true

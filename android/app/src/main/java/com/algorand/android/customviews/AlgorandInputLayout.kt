@@ -25,7 +25,7 @@ import androidx.core.view.updatePadding
 import androidx.core.widget.addTextChangedListener
 import com.algorand.android.R
 import com.algorand.android.databinding.CustomInputLayoutBinding
-import com.algorand.android.models.CustomInputState
+import com.algorand.android.models.CustomInputSavedState
 import com.algorand.android.utils.addByteLimiter
 import com.algorand.android.utils.extensions.setTextAndVisibility
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -67,11 +67,11 @@ class AlgorandInputLayout @JvmOverloads constructor(
             binding.helperTextView.setTextAndVisibility(value)
         }
 
-    private var isSingleLine by Delegates.observable(false, { _, _, newValue ->
+    private var isSingleLine by Delegates.observable(false) { _, _, newValue ->
         binding.textInputEditText.isSingleLine = newValue
-    })
+    }
 
-    private var maxCharacter by Delegates.observable(-1, { _, _, newValue ->
+    private var maxCharacter by Delegates.observable(-1) { _, _, newValue ->
         if (newValue != -1) {
             with(binding.textInputEditText) {
                 val newFilters = filters.toMutableList()
@@ -79,7 +79,7 @@ class AlgorandInputLayout @JvmOverloads constructor(
                 filters = newFilters.toTypedArray()
             }
         }
-    })
+    }
 
     init {
         loadAttrs()
@@ -118,12 +118,12 @@ class AlgorandInputLayout @JvmOverloads constructor(
     }
 
     override fun onSaveInstanceState(): Parcelable {
-        return CustomInputState(super.onSaveInstanceState(), text)
+        return CustomInputSavedState(super.onSaveInstanceState(), text)
     }
 
     override fun onRestoreInstanceState(state: Parcelable?) {
-        (state as? CustomInputState)?.run {
-            super.onRestoreInstanceState(superState)
+        super.onRestoreInstanceState(state)
+        (state as? CustomInputSavedState)?.run {
             this@AlgorandInputLayout.text = text
         }
     }

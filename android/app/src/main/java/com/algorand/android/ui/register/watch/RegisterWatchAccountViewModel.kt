@@ -12,18 +12,25 @@
 
 package com.algorand.android.ui.register.watch
 
+import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.AccountManager
 import com.algorand.android.core.BaseViewModel
+import com.algorand.android.modules.tracking.onboarding.register.OnboardingWatchAccountVerifyEventTracker
+import com.algorand.android.utils.getOrElse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class RegisterWatchAccountViewModel @ViewModelInject constructor(
-    private val accountManager: AccountManager
+    private val accountManager: AccountManager,
+    @Assisted private val savedStateHandle: SavedStateHandle,
+    private val onboardingWatchAccountVerifyEventTracker: OnboardingWatchAccountVerifyEventTracker
 ) : BaseViewModel() {
 
+    private val accountAddress: String? = savedStateHandle.getOrElse(ACCOUNT_ADDRESS_KEY, null)
     private val _copiedMessageFlow = MutableStateFlow<String?>(null)
     val copiedMessageFlow: StateFlow<String?> = _copiedMessageFlow
 
@@ -37,7 +44,19 @@ class RegisterWatchAccountViewModel @ViewModelInject constructor(
         return copiedMessageFlow.value.orEmpty()
     }
 
+    fun getAccountAddress(): String? = accountAddress
+
     fun isThereAccountWithAddress(address: String): Boolean {
         return accountManager.getAccount(address) != null
+    }
+
+    fun logOnboardingVerifyWatchAccountClickEvent() {
+        viewModelScope.launch {
+            onboardingWatchAccountVerifyEventTracker.logOnboardingWatchAccountVerifyEvent()
+        }
+    }
+
+    companion object {
+        private const val ACCOUNT_ADDRESS_KEY = "accountAddress"
     }
 }

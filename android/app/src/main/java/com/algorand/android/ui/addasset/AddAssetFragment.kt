@@ -55,8 +55,7 @@ class AddAssetFragment : BaseAddAssetFragment(R.layout.fragment_add_asset) {
     private val toolbarConfiguration = ToolbarConfiguration(
         titleResId = R.string.add_new_asset,
         startIconResId = R.drawable.ic_left_arrow,
-        startIconClick = ::onBackPressed,
-        showNodeStatus = true
+        startIconClick = ::onBackPressed
     )
 
     override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
@@ -93,7 +92,7 @@ class AddAssetFragment : BaseAddAssetFragment(R.layout.fragment_add_asset) {
     }
 
     override fun onSendTransactionSuccess() {
-        nav(AddAssetFragmentDirections.actionAddAssetFragmentToAccountsFragment())
+        navBack()
     }
 
     override fun navigateToAssetAdditionBottomSheet(assetAdditionAssetAction: AssetAction) {

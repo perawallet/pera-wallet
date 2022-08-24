@@ -18,6 +18,7 @@ import com.algorand.android.network.AlgodInterceptor
 import com.algorand.android.network.IndexerInterceptor
 import com.algorand.android.network.MobileHeaderInterceptor
 import com.algorand.android.repository.NodeRepository
+import com.algorand.android.utils.TESTNET_NETWORK_SLUG
 import com.algorand.android.utils.defaultNodeList
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -35,6 +36,10 @@ class NodeSettingsUseCase @Inject constructor(
 
     fun getAllNodeAsFlow(): Flow<List<Node>> {
         return nodeRepository.getAllNodesAsFlow()
+    }
+
+    suspend fun isSelectedNodeTestnet(): Boolean {
+        return getActiveNodeOrDefault().networkSlug == TESTNET_NETWORK_SLUG
     }
 
     fun setSelectedNode(nodeList: List<Node>?, selectedItem: Node): List<Node> {

@@ -16,17 +16,16 @@ import com.algorand.android.mapper.AccountAssetDataMapper
 import com.algorand.android.models.AssetDetail
 import com.algorand.android.models.AssetHolding
 import com.algorand.android.models.BaseAccountAssetData
-import com.algorand.android.models.BaseAssetDetail
+import com.algorand.android.modules.parity.domain.usecase.PrimaryCurrencyParityCalculationUseCase
+import com.algorand.android.modules.parity.domain.usecase.SecondaryCurrencyParityCalculationUseCase
 import com.algorand.android.utils.DEFAULT_ASSET_DECIMAL
 import com.algorand.android.utils.formatAmount
-import com.algorand.android.utils.formatAsCurrency
-import java.math.BigDecimal
-import java.math.BigDecimal.ZERO
 import javax.inject.Inject
 
 class AccountAssetAmountUseCase @Inject constructor(
-    private val algoPriceUseCase: AlgoPriceUseCase,
-    private val accountAssetDataMapper: AccountAssetDataMapper
+    private val accountAssetDataMapper: AccountAssetDataMapper,
+    private val primaryCurrencyParityCalculationUseCase: PrimaryCurrencyParityCalculationUseCase,
+    private val secondaryCurrencyParityCalculationUseCase: SecondaryCurrencyParityCalculationUseCase
 ) {
 
     // TODO: 16.03.2022 Find a better name since it returns OwnedAssetData but not amount
@@ -34,35 +33,22 @@ class AccountAssetAmountUseCase @Inject constructor(
         assetHolding: AssetHolding,
         assetItem: AssetDetail
     ): BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData {
-        val selectedCurrencySymbol = algoPriceUseCase.getSelectedCurrencySymbolOrEmpty()
         val safeDecimal = assetItem.fractionDecimals ?: DEFAULT_ASSET_DECIMAL
-        val assetAmountInSelectedCurrency = getAssetAmountInSelectedCurrency(assetHolding, assetItem)
+        val assetParityValueInSelectedCurrency = primaryCurrencyParityCalculationUseCase.getAssetParityValue(
+            assetHolding,
+            assetItem
+        )
+        val assetParityValueInSecondaryCurrency = secondaryCurrencyParityCalculationUseCase.getAssetParityValue(
+            assetHolding,
+            assetItem
+        )
         return accountAssetDataMapper.mapToOwnedAssetData(
             assetDetail = assetItem,
             amount = assetHolding.amount,
             formattedAmount = assetHolding.amount.formatAmount(safeDecimal),
             formattedCompactAmount = assetHolding.amount.formatAmount(safeDecimal, isCompact = true),
-            amountInSelectedCurrency = assetAmountInSelectedCurrency,
-            formattedSelectedCurrencyValue = assetAmountInSelectedCurrency.formatAsCurrency(
-                selectedCurrencySymbol,
-                false
-            ),
-            formattedSelectedCurrencyCompactValue = assetAmountInSelectedCurrency.formatAsCurrency(
-                selectedCurrencySymbol,
-                true
-            )
+            parityValueInSelectedCurrency = assetParityValueInSelectedCurrency,
+            parityValueInSecondaryCurrency = assetParityValueInSecondaryCurrency
         )
-    }
-
-    fun getAssetAmountInSelectedCurrency(
-        assetHolding: AssetHolding,
-        assetItem: BaseAssetDetail
-    ): BigDecimal {
-        val selectedCurrencyUsdConversionRate = algoPriceUseCase.getUsdToSelectedCurrencyConversionRate()
-        val safeAssetUsdValue = assetItem.usdValue ?: ZERO
-        val safeDecimal = assetItem.fractionDecimals ?: DEFAULT_ASSET_DECIMAL
-        return assetHolding.amount.toBigDecimal().movePointLeft(safeDecimal)
-            .multiply(selectedCurrencyUsdConversionRate)
-            .multiply(safeAssetUsdValue)
     }
 }

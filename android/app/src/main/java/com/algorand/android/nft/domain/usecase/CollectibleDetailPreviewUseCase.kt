@@ -118,11 +118,13 @@ open class CollectibleDetailPreviewUseCase @Inject constructor(
         val isNftExplorerVisible = !baseCollectibleDetail.nftExplorerUrl.isNullOrBlank()
         val ownerAccountAddress = accountAddressUseCase.createAccountAddress(ownerAccountPublicKey)
         val creatorAccountAddress = getCreatorAccountAddress(baseCollectibleDetail.assetCreator?.publicKey)
+        val isCreatedByTheUser = creatorAccountAddress?.publicKey == ownerAccountPublicKey
         val collectibleDetail = when (baseCollectibleDetail) {
             is BaseCollectibleDetail.ImageCollectibleDetail -> {
                 collectibleDetailMapper.mapToCollectibleImage(
                     imageCollectibleDetail = baseCollectibleDetail,
                     isOwnedByTheUser = isOwnedByTheUser,
+                    isCreatedByTheUser = isCreatedByTheUser,
                     ownerAccountAddress = ownerAccountAddress,
                     errorDisplayText = errorDisplayText,
                     isHoldingByWatchAccount = isHoldingByWatchAccount,
@@ -135,6 +137,7 @@ open class CollectibleDetailPreviewUseCase @Inject constructor(
                 collectibleDetailMapper.mapToCollectibleVideo(
                     videoCollectibleDetail = baseCollectibleDetail,
                     isOwnedByTheUser = isOwnedByTheUser,
+                    isCreatedByTheUser = isCreatedByTheUser,
                     ownerAccountAddress = ownerAccountAddress,
                     errorDisplayText = errorDisplayText,
                     isHoldingByWatchAccount = isHoldingByWatchAccount,
@@ -147,6 +150,7 @@ open class CollectibleDetailPreviewUseCase @Inject constructor(
                 collectibleDetailMapper.mapToCollectibleMixed(
                     mixedCollectibleDetail = baseCollectibleDetail,
                     isOwnedByTheUser = isOwnedByTheUser,
+                    isCreatedByTheUser = isCreatedByTheUser,
                     ownerAccountAddress = ownerAccountAddress,
                     isHoldingByWatchAccount = isHoldingByWatchAccount,
                     isNftExplorerVisible = isNftExplorerVisible,
@@ -159,6 +163,7 @@ open class CollectibleDetailPreviewUseCase @Inject constructor(
                 collectibleDetailMapper.mapToUnsupportedCollectible(
                     unsupportedCollectible = baseCollectibleDetail,
                     isOwnedByTheUser = isOwnedByTheUser,
+                    isCreatedByTheUser = isCreatedByTheUser,
                     ownerAccountAddress = ownerAccountAddress,
                     errorDisplayText = errorDisplayText,
                     isHoldingByWatchAccount = isHoldingByWatchAccount,
@@ -170,11 +175,16 @@ open class CollectibleDetailPreviewUseCase @Inject constructor(
             }
         }
 
+        val isOptOutButtonVisible = !collectibleDetail.isOwnedByTheUser &&
+            !collectibleDetail.isHoldingByWatchAccount &&
+            collectibleDetail.creatorWalletAddress != collectibleDetail.ownerAccountAddress
+
         return collectibleDetailPreviewMapper.mapTo(
             isLoadingVisible = false,
             isSendButtonVisible = isOwnedByTheUser,
             isErrorVisible = false,
-            collectibleDetail = collectibleDetail
+            collectibleDetail = collectibleDetail,
+            isOptOutButtonVisible = isOptOutButtonVisible
         )
     }
 

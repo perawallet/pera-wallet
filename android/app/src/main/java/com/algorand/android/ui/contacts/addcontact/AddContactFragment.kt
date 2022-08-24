@@ -14,23 +14,22 @@
 package com.algorand.android.ui.contacts.addcontact
 
 import android.content.Context
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
-import com.algorand.android.customviews.AccountIconImageView
 import com.algorand.android.customviews.AlgorandInputLayout
-import com.algorand.android.models.DecodedQrCode
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.OperationState
-import com.algorand.android.models.QrScanner
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.models.User
 import com.algorand.android.ui.contacts.BaseAddEditContactFragment
-import com.algorand.android.ui.qr.QrCodeScannerFragment
+import com.algorand.android.ui.contacts.addcontact.AddContactQrScannerFragment.Companion.ACCOUNT_ADDRESS_QR_SCAN_RESULT_KEY
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.alertDialog
+import com.algorand.android.utils.extensions.setContactIconDrawable
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.isValidAddress
 import com.algorand.android.utils.startSavedStateListener
@@ -94,16 +93,14 @@ class AddContactFragment : BaseAddEditContactFragment() {
 
     override fun initDialogSavedStateListener() {
         startSavedStateListener(R.id.addContactFragment) {
-            useSavedStateValue<DecodedQrCode>(QrCodeScannerFragment.QR_SCAN_RESULT_KEY) { decodedQrCode ->
-                if (!decodedQrCode.address.isNullOrBlank()) {
-                    setContactAddressInputLayoutText(decodedQrCode.address)
-                }
+            useSavedStateValue<String>(ACCOUNT_ADDRESS_QR_SCAN_RESULT_KEY) { accountAddress ->
+                setContactAddressInputLayoutText(accountAddress)
             }
         }
     }
 
-    override fun setProfileImageView(accountIconImageView: AccountIconImageView) {
-        accountIconImageView.loadAccountPlaceHolder(padding = R.dimen.spacing_normal)
+    override fun setProfileImageView(imageView: ImageView) {
+        imageView.setContactIconDrawable(null, R.dimen.account_icon_size_xlarge)
     }
 
     override fun setEditProfilePhotoButton(materialButton: MaterialButton) {
@@ -127,16 +124,12 @@ class AddContactFragment : BaseAddEditContactFragment() {
         if (!args.contactPublicKey.isNullOrEmpty()) {
             algorandInputLayout.text = args.contactPublicKey!!
         }
-        algorandInputLayout.addTrailingIcon(R.drawable.ic_scan_qr, ::onScanQRClick)
+        algorandInputLayout.addTrailingIcon(R.drawable.ic_qr_scan, ::onScanQRClick)
     }
 
     override fun openQrScannerForAlgorandAddress(context: Context) {
         hideKeyboard(context, requireView())
-        nav(
-            AddContactFragmentDirections.actionAddContactFragmentToQrCodeScannerNavigation(
-                QrScanner(scanTypes = arrayOf(QrCodeScannerFragment.ScanReturnType.ADDRESS_NAVIGATE_BACK))
-            )
-        )
+        nav(AddContactFragmentDirections.actionAddContactFragmentToAddContactQrScannerFragment())
     }
 
     override fun setAddContactButton(materialButton: MaterialButton) {

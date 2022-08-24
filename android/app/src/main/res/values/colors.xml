@@ -17,34 +17,21 @@
     <color name="transparent">#00000000</color>
 
     <color name="white">#FFFFFF</color>
-    <color name="white_1F">#1FFFFFFF</color> <!-- White Alpha %12 -->
+    <color name="white_alpha_12">#1FFFFFFF</color>
     <color name="white_alpha_16">#29FFFFFF</color>
+    <color name="white_alpha_60">#99FFFFFF</color>
     <color name="white_alpha_84">#D6FFFFFF</color>
 
     <color name="black">#000000</color>
-    <color name="black_alpha_64">#A3000000</color> <!-- black with 64% alpha -->
-
-    <!-- Gray -->
-    <color name="gray_900">#18181B</color>
-    <color name="gray_900_alpha_20">#3318181B</color>
-    <color name="gray_900_alpha_60">#9918181B</color>
-    <color name="gray_900_alpha_84">#D618181B</color>
-    <color name="gray_900_alpha_90">#E518181B</color>
-    <color name="gray_800">#27272A</color>
-    <color name="gray_700">#3F3F46</color>
-    <color name="gray_600">#525252</color>
-    <color name="gray_500">#71717A</color>
-    <color name="gray_400">#A1A1AA</color>
-    <color name="gray_300">#D4D4D8</color>
-    <color name="gray_200">#E4E4E7</color>
-    <color name="gray_100">#F1F1F2</color>
-    <color name="gray_50">#FAFAFA</color>
+    <color name="black_alpha_64">#A3000000</color>
 
     <!-- Turquoise -->
     <color name="turquoise_900">#0B4D68</color>
     <color name="turquoise_800">#136880</color>
     <color name="turquoise_700">#1F8E9D</color>
+    <color name="turquoise_700_alpha_12">#1F2CB7BC</color>
     <color name="turquoise_700_alpha_20">#331F8E9D</color>
+    <color name="turquoise_700_alpha_28">#472CB7BC</color>
     <color name="turquoise_600">#2CB7BC</color>
     <color name="turquoise_500">#3EDBD2</color>
     <color name="turquoise_500_alpha_12">#1F3EDBD2</color>
@@ -53,8 +40,6 @@
     <color name="turquoise_200">#B2FBE3</color>
     <color name="turquoise_100">#D8FDEE</color>
     <color name="turquoise_50">#EBFEF7</color>
-    <color name="turquoise_1A">#1A2CB7BC</color><!--  turquoise_600 with alpha10  -->
-    <color name="turquoise_4D">#4D2CB7BC</color><!--  turquoise_600 with alpha30  -->
 
     <!-- Purple -->
     <color name="purple_900">#231566</color>
@@ -76,7 +61,7 @@
     <color name="salmon_500">#FF6D5F</color>
     <color name="salmon_500_alpha_12">#1FFF6D5F</color>
     <color name="salmon_400">#FF9B86</color>
-    <color name="salmon_300">#FFB3BE</color>
+    <color name="salmon_300">#FFB69F</color>
     <color name="salmon_200">#FFD3BE</color>
     <color name="salmon_100">#FFECDF</color>
     <color name="salmon_50">#FFF5EF</color>
@@ -93,10 +78,31 @@
     <color name="blush_100">#FEF3F1</color>
     <color name="blush_50">#FFF9F8</color>
 
+    <!-- Gray -->
+    <color name="gray_900">#18181B</color>
+    <color name="gray_900_alpha_60">#9918181B</color>
+    <color name="gray_900_alpha_90">#E518181B</color>
+    <color name="gray_800">#27272A</color>
+    <color name="gray_700">#3F3F46</color>
+    <color name="gray_600">#52525B</color>
+    <color name="gray_600_alpha_92">#EB52525B</color>
+    <color name="gray_500">#71717A</color>
+    <color name="gray_500_alpha_50">#8071717A</color>
+    <color name="gray_400">#A1A1AA</color>
+    <color name="gray_400_alpha_50">#80A1A1AA</color>
+    <color name="gray_300">#D4D4D8</color>
+    <color name="gray_200">#E4E4E7</color>
+    <color name="gray_100">#F1F1F2</color>
+    <color name="gray_50">#FAFAFA</color>
+
     <!-- Yellow -->
     <color name="yellow_600">#C77700</color>
     <color name="yellow_500">#EDB21C</color>
     <color name="yellow_400">#FFEE55</color>
+    <color name="yellow_400_alpha_50">#80FFEE55</color>
+    <color name="yellow_400_alpha_20">#33FFEE55</color>
+    <color name="yellow_400_alpha_10">#1AFFEE55</color>
+    <color name="yellow_400_alpha_5">#0DFFEE55</color>
     <color name="yellow_300">#FFF387</color>
     <color name="yellow_200">#FFF8BA</color>
     <color name="yellow_100">#FFFBD4</color>
@@ -110,17 +116,12 @@
     <color name="text_gray">@color/gray_500</color>
     <color name="text_gray_lighter">@color/gray_400</color>
 
-    <!-- Text Field -->
-    <color name="text_field_default_bg">@color/gray_200</color>
-    <color name="text_field_typing_bg">@color/gray_800</color>
-    <color name="text_field_error_bg">@color/salmon_600</color>
-
-    <!-- Layers -->
-    <color name="layer_gray">@color/gray_200</color>
-    <color name="layer_gray_lighter">@color/gray_100</color>
+    <!-- Layer -->
     <color name="layer_gray_lightest">@color/gray_50</color>
+    <color name="layer_gray_lighter">@color/gray_100</color>
+    <color name="layer_gray">@color/gray_200</color>
 
-    <!-- Links -->
+    <!-- Link -->
     <color name="link_primary">@color/turquoise_700</color>
     <color name="link_icon">@color/turquoise_600</color>
 
@@ -145,6 +146,27 @@
     <color name="button_ghost_text">@color/gray_900</color>
     <color name="button_ghost_disabled_text">@color/gray_500</color>
 
+    <!-- Float Button -->
+    <color name="button_float_bg">@color/white</color>
+    <color name="button_float_focus_bg">@color/gray_100</color>
+    <color name="button_float_icon_main">@color/gray_900</color>
+    <color name="button_float_icon_lighter">@color/white</color>
+
+    <!-- Helper Button -->
+    <color name="button_helper_bg">@color/gray_800</color>
+    <color name="button_helper_focus_bg">@color/gray_700</color>
+    <color name="button_helper_disabled_bg">@color/gray_100</color>
+    <color name="button_helper_icon">@color/white</color>
+    <color name="button_helper_disabled_icon">@color/gray_500</color>
+    <color name="button_helper_pera_icon">@color/yellow_400</color>
+
+    <!-- Square Button -->
+    <color name="button_square_bg">@color/turquoise_700_alpha_12</color>
+    <color name="button_square_focus_bg">@color/turquoise_700_alpha_28</color>
+    <color name="button_square_secondary_bg">@color/gray_100</color>
+    <color name="button_square_icon">@color/turquoise_700</color>
+    <color name="button_square_secondary_icon">@color/gray_500</color>
+
     <!-- Helpers -->
     <color name="negative">@color/salmon_600</color>
     <color name="negative_lighter">@color/salmon_100</color>
@@ -152,14 +174,13 @@
     <color name="positive_lighter">@color/turquoise_100</color>
     <color name="success">@color/turquoise_600</color>
     <color name="success_checkmark">@color/white</color>
-    <color name="testnet">@color/yellow_500</color>
+    <color name="hero_bg">@color/gray_50</color>
 
     <!-- Banner -->
     <color name="banner_bg">@color/turquoise_600</color>
+    <color name="banner_button">@color/white_alpha_12</color>
     <color name="banner_icon_bg">@color/turquoise_700_alpha_20</color>
     <color name="banner_text">@color/white</color>
-    <color name="banner_bg_governance">@color/purple_500</color>
-    <color name="banner_action_button_bg">@color/white_1F</color>
 
     <!-- Wallets -->
     <color name="wallet_1">@color/blush_600</color>
@@ -173,25 +194,55 @@
     <color name="wallet_5">@color/salmon_400</color>
     <color name="wallet_5_icon">#424F76</color>
 
-    <!-- Dapp -->
-    <color name="moonpay">#7D01FF</color>
-
-    <!-- Bottom Sheet -->
-    <color name="bottom_sheet_line">#E6E7E9</color>
+    <!--  Governor  -->
+    <color name="wallet_1_icon_governor">#9B1F69</color>
+    <color name="wallet_3_icon_governor">@color/purple_500</color>
+    <color name="wallet_4_icon_governor">@color/turquoise_700</color>
 
     <!-- Tab Bar -->
     <color name="tab_bar_button">@color/gray_800</color>
-    <color name="tab_bar_background">@color/white_alpha_84</color>
+    <color name="tab_bar_background">@color/white</color>
+    <color name="tab_bar_icon_active">@color/gray_900</color>
+    <color name="tab_bar_icon_non_active">@color/gray_400</color>
+    <color name="tab_bar_icon_disabled">@color/gray_400_alpha_50</color>
 
-    <!-- Tab -->
-    <color name="tab_bottom_line">@color/gray_100</color>
+    <!-- Bottom Sheet -->
+    <color name="bottom_sheet_line">#E6E7E9</color>
 
     <!-- Modality -->
     <color name="modality_bg">@color/gray_900</color>
 
     <!-- Switches -->
     <color name="switch_bg">@color/turquoise_600</color>
-    <color name="switch_bg_off">@color/gray_400</color>
+    <color name="switch_off_bg">@color/gray_400</color>
+
+    <!-- NFT Icons -->
+    <color name="nft_icon_bg">@color/gray_900_alpha_60</color>
+    <color name="nft_icon">@color/white</color>
+
+    <!-- Moonpay -->
+    <color name="moonpay">#7D01FF</color>
+
+    <!-- Algorand Standart Assets (ASA) Tiers -->
+    <color name="trusted_icon_bg">@color/turquoise_600</color>
+    <color name="trusted_icon_inline">@color/white</color>
+    <color name="verified_icon_bg">#CEEEFE</color>
+    <color name="verified_icon_inline">#0D7FFF</color>
+    <color name="suspicious_icon_bg">@color/salmon_500</color>
+    <color name="suspicious_icon_inline">@color/white</color>
+
+    <!-- Toast Message -->
+    <color name="toast_background">@color/gray_900</color>
+    <color name="toast_title">@color/white</color>
+    <color name="toast_description">@color/white_alpha_60</color>
+
+    <!-- Testnet Badge -->
+    <color name="testnet_bg">@color/yellow_500</color>
+    <color name="testnet_text">@color/gray_900</color>
+
+    <!-- Algo Icon -->
+    <color name="algo_icon_bg">@color/turquoise_600</color>
+    <color name="algo_icon">@color/white</color>
 
     <!-- endregion App Color Palette -->
 
@@ -217,7 +268,6 @@
 
     <!--   Icon Tint Color  -->
     <color name="algo_default_icon_tint_color">@color/gray_500</color>
-    <color name="qr_icon_tint_color">@color/text_main</color>
 
     <color name="divider_color">@color/layer_gray_lighter</color>
 
@@ -273,14 +323,15 @@
     <color name="transaction_amount_negative_color">@color/salmon_600</color>
     <color name="search_bar_view_icon_color">@color/gray_400</color>
 
-    <color name="bottom_nav_icon_selected_color">@color/gray_900</color>
-    <color name="bottom_nav_icon_default_color">@color/gray_400</color>
-    <color name="send_receiver_tab_bar_icon_background_color">@color/gray_100</color>
-    <color name="send_receiver_tab_bar_icon_tint_color">@color/gray_900</color>
-
     <color name="progress_bar_tint">@color/link_primary</color>
 
     <color name="badge_background_color">@color/gray_900_alpha_60</color>
 
-    <color name="toast_background_color">@color/gray_900_alpha_90</color>
+    <color name="tooltip_background_color">@color/gray_900_alpha_90</color>
+
+    <!--   Background Gradient View  -->
+    <color name="gradient_bg_view_end_color">#00FFFFFF</color>
+    <color name="gradient_bg_view_start_color">@color/white</color>
+
+
 </resources>

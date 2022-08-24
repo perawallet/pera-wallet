@@ -15,8 +15,10 @@ package com.algorand.android.ui.accountselection.viewholder
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.algorand.android.R
 import com.algorand.android.databinding.ItemContactSimpleBinding
 import com.algorand.android.models.BaseAccountSelectionListItem
+import com.algorand.android.utils.extensions.setContactIconDrawable
 
 class AccountSelectionContactItemViewHolder(
     private val binding: ItemContactSimpleBinding
@@ -25,7 +27,7 @@ class AccountSelectionContactItemViewHolder(
     fun bind(item: BaseAccountSelectionListItem.BaseAccountItem.ContactItem) {
         with(binding) {
             contactDisplayNameTextView.text = item.displayName
-            contactImageView.loadAccountImage(item.imageUri)
+            contactImageView.setContactIconDrawable(item.imageUri, R.dimen.account_icon_size_large)
         }
     }
 

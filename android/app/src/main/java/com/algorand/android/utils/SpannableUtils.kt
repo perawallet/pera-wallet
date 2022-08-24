@@ -70,7 +70,7 @@ fun SpannableStringBuilder.addAssetName(
 }
 
 fun SpannableStringBuilder.addAssetId(context: Context, assetId: Long?, textColor: Int? = null) {
-    if (assetId != null && assetId != AssetInformation.ALGORAND_ID) {
+    if (assetId != null && assetId != AssetInformation.ALGO_ID) {
         append("  ") // Tried to put \t but it's broken for SpannedString.
         color(ContextCompat.getColor(context, textColor ?: R.color.gray_500)) {
             append(assetId.toString())

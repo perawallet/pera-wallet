@@ -14,6 +14,7 @@
 package com.algorand.android.mapper
 
 import com.algorand.android.models.Account
+import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.TransactionTargetUser
 import com.algorand.android.models.User
 import javax.inject.Inject
@@ -31,7 +32,7 @@ class TransactionTargetUserMapper @Inject constructor() {
             displayName = displayName,
             contact = contact,
             accountName = account?.name.takeIf { it.isNullOrEmpty() },
-            accountIcon = account?.createAccountIcon()
+            accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(account?.type)
         )
     }
 }

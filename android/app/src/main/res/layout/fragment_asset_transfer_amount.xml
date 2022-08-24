@@ -100,7 +100,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_percent=".4"
             app:layout_constraintStart_toStartOf="parent"
-            app:showDotButton="true" />
+            app:showSeparatorButton="true" />
 
         <!--  TODO missing shadow  -->
         <androidx.constraintlayout.widget.ConstraintLayout

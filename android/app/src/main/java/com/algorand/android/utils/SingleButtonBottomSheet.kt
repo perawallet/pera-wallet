@@ -37,7 +37,7 @@ class SingleButtonBottomSheet : BaseSingleButtonBottomSheet() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (args.isResultNeeded) {
+        if (args.isResultNeeded || !args.isDraggable) {
             isCancelable = false
             setDraggableEnabled(false)
         }

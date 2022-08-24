@@ -13,11 +13,15 @@
 package com.algorand.android.nft.ui.nfsdetail
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.algorand.android.BuildConfig
 import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.R
@@ -34,6 +38,7 @@ import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.models.TransactionManagerResult
 import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem
+import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem.ItemType
 import com.algorand.android.nft.ui.model.CollectibleDetail
 import com.algorand.android.nft.ui.model.CollectibleDetailPreview
 import com.algorand.android.nft.ui.model.CollectibleTraitItem
@@ -51,11 +56,13 @@ import com.algorand.android.utils.openUrl
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
+import com.google.android.material.transition.platform.MaterialElevationScale
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.properties.Delegates
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@Suppress("TooManyFunctions")
 @AndroidEntryPoint
 class CollectibleDetailFragment : TransactionBaseFragment(R.layout.fragment_collectible_detail) {
 
@@ -81,12 +88,34 @@ class CollectibleDetailFragment : TransactionBaseFragment(R.layout.fragment_coll
     }
 
     private val collectibleMediaItemClickListener = object : CollectibleMediaPager.MediaPagerListener {
-        override fun onVideoMediaClick(videoUrl: String?) {
+        override fun onVideoMediaClick(videoUrl: String?, collectibleImageView: View) {
             if (videoUrl.isNullOrBlank()) return
             navToVideoPlayerFragment(videoUrl)
         }
 
-        override fun onImageMediaClick(imageUrl: String?) {
+        override fun onImageMediaClick(
+            imageUrl: String?,
+            errorDisplayText: String,
+            collectibleImageView: View,
+            mediaType: ItemType,
+            previewPrismUrl: String
+        ) {
+            if (imageUrl.isNullOrBlank()) return
+            navToImagePreviewFragment(imageUrl, errorDisplayText, collectibleImageView, mediaType, previewPrismUrl)
+        }
+
+        override fun onGifMediaClick(
+            previewUrl: String?,
+            errorDisplayText: String,
+            collectibleImageView: View,
+            mediaType: ItemType,
+            previewPrismUrl: String
+        ) {
+            if (previewUrl.isNullOrBlank()) return
+            navToImagePreviewFragment(previewUrl, errorDisplayText, collectibleImageView, mediaType, previewPrismUrl)
+        }
+
+        override fun on3dModeClick(imageUrl: String?) {
             if (imageUrl.isNullOrBlank()) return
             context?.openUrl(getImage3DViewUrl(imageUrl))
         }
@@ -124,6 +153,8 @@ class CollectibleDetailFragment : TransactionBaseFragment(R.layout.fragment_coll
 
     override fun onResume() {
         super.onResume()
+        clearTransitions()
+        getAppToolbar()?.configure(toolbarConfiguration)
         startSavedStateListener(R.id.collectibleDetailFragment) {
             useSavedStateValue<Boolean>(COLLECTIBLE_OPT_OUT_KEY) { isOptOutApproved ->
                 if (isOptOutApproved) optOutFromCollectible()
@@ -139,10 +170,16 @@ class CollectibleDetailFragment : TransactionBaseFragment(R.layout.fragment_coll
         sendTransaction(transactionData)
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        postponeEnterTransition()
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
         initUi()
+        view.doOnPreDraw { startPostponedEnterTransition() }
     }
 
     private fun initUi() {
@@ -170,7 +207,7 @@ class CollectibleDetailFragment : TransactionBaseFragment(R.layout.fragment_coll
                 setCollectibleCreatorNameView(creatorName)
                 setCollectibleCreatorWalletAddressView(creatorWalletAddress)
                 setCollectibleTraits(collectibleTraits)
-                setOptedInAccountGroupVisibilitiesAndViews(collectibleDetail)
+                setOptedInAccountGroupVisibilitiesAndViews(isOptOutButtonVisible, collectibleDetail)
                 setShowOnPeraExplorerGroup(collectibleDetail)
                 optOutSuccessEvent?.consume()?.run { onOptOutSuccess(collectibleDetailPreview.collectibleDetail) }
                 globalErrorEvent?.consume()?.run { if (this.isNotBlank()) showGlobalError(this) }
@@ -204,6 +241,34 @@ class CollectibleDetailFragment : TransactionBaseFragment(R.layout.fragment_coll
 
     private fun navToVideoPlayerFragment(videoUrl: String) {
         nav(CollectibleDetailFragmentDirections.actionCollectibleDetailFragmentToVideoPlayerFragment(videoUrl))
+    }
+
+    private fun navToImagePreviewFragment(
+        imageUrl: String,
+        errorDisplayText: String,
+        view: View,
+        mediaType: ItemType,
+        previewPrismUrl: String
+    ) {
+        exitTransition = getImageDetailTransitionAnimation(isGrowing = false)
+        reenterTransition = getImageDetailTransitionAnimation(isGrowing = true)
+        val transitionName = view.transitionName
+        nav(
+            directions = CollectibleDetailFragmentDirections
+                .actionCollectibleDetailFragmentToCollectibleImagePreviewFragment(
+                    imageUrl,
+                    errorDisplayText,
+                    transitionName,
+                    mediaType,
+                    previewPrismUrl
+                ),
+            extras = FragmentNavigatorExtras(view to transitionName)
+        )
+    }
+
+    private fun clearTransitions() {
+        exitTransition = null
+        reenterTransition = null
     }
 
     private fun setCollectionTitleView(collectionName: String?) {
@@ -241,8 +306,8 @@ class CollectibleDetailFragment : TransactionBaseFragment(R.layout.fragment_coll
         with(binding) {
             collectibleOwnerAccountUserView.apply {
                 ownerAddress?.run {
-                    if (accountIcon != null) {
-                        setAccount(getDisplayAddress(), accountIcon, publicKey)
+                    if (accountIconResource != null) {
+                        setAccount(getDisplayAddress(), accountIconResource, publicKey)
                     } else {
                         setAddress(
                             displayAddress = ownerAddress.getDisplayAddress(),
@@ -289,23 +354,26 @@ class CollectibleDetailFragment : TransactionBaseFragment(R.layout.fragment_coll
                     setOnClickListener { collectibleDetailViewModel.checkSendingCollectibleIsFractional() }
                 }
                 collectibleShareButton.apply {
-                    isVisible = isOwnedByTheUser || isHoldingByWatchAccount
+                    isVisible = isOwnedByTheUser || isHoldingByWatchAccount || isCreatedByTheUser
                     setOnClickListener { onShareButtonClick(collectibleDetail) }
                 }
             }
         }
     }
 
-    private fun setOptedInAccountGroupVisibilitiesAndViews(collectibleDetail: CollectibleDetail) {
+    private fun setOptedInAccountGroupVisibilitiesAndViews(
+        isOptOutButtonVisible: Boolean,
+        collectibleDetail: CollectibleDetail
+    ) {
         with(binding) {
             with(collectibleDetail) {
                 optOutButton.apply {
-                    isVisible = !isOwnedByTheUser && !isHoldingByWatchAccount
+                    isVisible = isOptOutButtonVisible
                     setOnClickListener { navToOptOutConfirmationBottomSheet(collectibleDetail) }
                 }
-                optedInViewsGroup.isVisible = !isOwnedByTheUser
+                optedInViewsGroup.isVisible = !isOwnedByTheUser && !isCreatedByTheUser
                 optedInAccountQrView.apply {
-                    setAccountIcon(ownerAccountAddress.accountIcon)
+                    setAccountIcon(ownerAccountAddress.accountIconResource)
                     setAccountName(ownerAccountAddress.getDisplayAddress())
                     setListener(accountQrViewListener)
                 }
@@ -390,6 +458,12 @@ class CollectibleDetailFragment : TransactionBaseFragment(R.layout.fragment_coll
                 isVisible = isNftExplorerVisible
             }
             showOnAlgoExplorerDivider.isVisible = isNftExplorerVisible
+        }
+    }
+
+    private fun getImageDetailTransitionAnimation(isGrowing: Boolean): MaterialElevationScale {
+        return MaterialElevationScale(isGrowing).apply {
+            duration = resources.getInteger(R.integer.shared_fragment_transition_delay_ms).toLong()
         }
     }
 

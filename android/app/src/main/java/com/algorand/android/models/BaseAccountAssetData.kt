@@ -13,9 +13,11 @@
 package com.algorand.android.models
 
 import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import com.algorand.android.modules.currency.domain.model.Currency
+import com.algorand.android.modules.parity.domain.model.ParityValue
 import java.math.BigDecimal
 import java.math.BigInteger
+import kotlinx.parcelize.Parcelize
 
 sealed class BaseAccountAssetData : Parcelable {
 
@@ -32,10 +34,17 @@ sealed class BaseAccountAssetData : Parcelable {
         abstract val amount: BigInteger
         abstract val formattedAmount: String
         abstract val formattedCompactAmount: String
-        abstract val amountInSelectedCurrency: BigDecimal
-        abstract val formattedSelectedCurrencyValue: String
-        abstract val formattedSelectedCurrencyCompactValue: String
+        abstract val parityValueInSelectedCurrency: ParityValue
+        abstract val parityValueInSecondaryCurrency: ParityValue
         abstract val isAmountInSelectedCurrencyVisible: Boolean
+
+        fun getSelectedCurrencyParityValue(): ParityValue {
+            return if (isAlgo && parityValueInSelectedCurrency.selectedCurrencySymbol == Currency.ALGO.symbol) {
+                parityValueInSecondaryCurrency
+            } else {
+                parityValueInSelectedCurrency
+            }
+        }
 
         @Parcelize
         data class OwnedAssetData(
@@ -50,10 +59,9 @@ sealed class BaseAccountAssetData : Parcelable {
             override val amount: BigInteger,
             override val formattedAmount: String,
             override val formattedCompactAmount: String,
-            override val amountInSelectedCurrency: BigDecimal,
-            override val formattedSelectedCurrencyValue: String,
-            override val formattedSelectedCurrencyCompactValue: String,
             override val isAmountInSelectedCurrencyVisible: Boolean,
+            override val parityValueInSelectedCurrency: ParityValue,
+            override val parityValueInSecondaryCurrency: ParityValue
         ) : BaseOwnedAssetData()
 
         sealed class BaseOwnedCollectibleData : BaseOwnedAssetData() {
@@ -77,12 +85,11 @@ sealed class BaseAccountAssetData : Parcelable {
                 override val amount: BigInteger,
                 override val formattedAmount: String,
                 override val formattedCompactAmount: String,
-                override val amountInSelectedCurrency: BigDecimal,
-                override val formattedSelectedCurrencyValue: String,
-                override val formattedSelectedCurrencyCompactValue: String,
                 override val isAmountInSelectedCurrencyVisible: Boolean,
                 override val collectibleName: String?,
                 override val collectionName: String?,
+                override val parityValueInSelectedCurrency: ParityValue,
+                override val parityValueInSecondaryCurrency: ParityValue,
                 val prismUrl: String?
             ) : BaseOwnedCollectibleData()
 
@@ -99,12 +106,11 @@ sealed class BaseAccountAssetData : Parcelable {
                 override val amount: BigInteger,
                 override val formattedAmount: String,
                 override val formattedCompactAmount: String,
-                override val amountInSelectedCurrency: BigDecimal,
-                override val formattedSelectedCurrencyValue: String,
-                override val formattedSelectedCurrencyCompactValue: String,
                 override val isAmountInSelectedCurrencyVisible: Boolean,
                 override val collectibleName: String?,
                 override val collectionName: String?,
+                override val parityValueInSelectedCurrency: ParityValue,
+                override val parityValueInSecondaryCurrency: ParityValue,
                 val thumbnailPrismUrl: String?
             ) : BaseOwnedCollectibleData()
 
@@ -121,12 +127,11 @@ sealed class BaseAccountAssetData : Parcelable {
                 override val amount: BigInteger,
                 override val formattedAmount: String,
                 override val formattedCompactAmount: String,
-                override val amountInSelectedCurrency: BigDecimal,
-                override val formattedSelectedCurrencyValue: String,
-                override val formattedSelectedCurrencyCompactValue: String,
                 override val isAmountInSelectedCurrencyVisible: Boolean,
                 override val collectibleName: String?,
                 override val collectionName: String?,
+                override val parityValueInSelectedCurrency: ParityValue,
+                override val parityValueInSecondaryCurrency: ParityValue,
                 val thumbnailPrismUrl: String?
             ) : BaseOwnedCollectibleData()
 
@@ -143,12 +148,11 @@ sealed class BaseAccountAssetData : Parcelable {
                 override val amount: BigInteger,
                 override val formattedAmount: String,
                 override val formattedCompactAmount: String,
-                override val amountInSelectedCurrency: BigDecimal,
-                override val formattedSelectedCurrencyValue: String,
-                override val formattedSelectedCurrencyCompactValue: String,
                 override val isAmountInSelectedCurrencyVisible: Boolean,
                 override val collectibleName: String?,
                 override val collectionName: String?,
+                override val parityValueInSelectedCurrency: ParityValue,
+                override val parityValueInSecondaryCurrency: ParityValue
             ) : BaseOwnedCollectibleData()
         }
     }

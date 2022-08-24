@@ -23,10 +23,10 @@ import com.algorand.android.nft.domain.mapper.SimpleCollectibleDetailMapper
 import com.algorand.android.repository.AssetRepository
 import com.algorand.android.repository.FailedAssetRepository
 import com.algorand.android.utils.CacheResult
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import javax.inject.Inject
 
 class AssetFetchAndCacheUseCase @Inject constructor(
     private val assetRepository: AssetRepository,
@@ -36,16 +36,23 @@ class AssetFetchAndCacheUseCase @Inject constructor(
     private val simpleCollectibleDetailMapper: SimpleCollectibleDetailMapper
 ) : BaseUseCase() {
 
-    suspend fun processFilteredAssetIdList(assetIdLists: List<List<Long>>, coroutineScope: CoroutineScope) {
+    suspend fun processFilteredAssetIdList(
+        assetIdLists: List<List<Long>>,
+        coroutineScope: CoroutineScope,
+        includeDeleted: Boolean? = null
+    ) {
         val assetCacheResultList = assetIdLists.map { assetIdList ->
-            coroutineScope.async { fetchAndCacheAssets(assetIdList) }
+            coroutineScope.async { fetchAndCacheAssets(assetIdList, includeDeleted) }
         }.awaitAll()
         cacheFetchResult(assetCacheResultList)
     }
 
-    private suspend fun fetchAndCacheAssets(assetIdList: List<Long>): AssetCacheResultData {
+    private suspend fun fetchAndCacheAssets(
+        assetIdList: List<Long>,
+        includeDeleted: Boolean? = null
+    ): AssetCacheResultData {
         lateinit var result: AssetCacheResultData
-        assetRepository.fetchAssetsById(assetIdList).use(
+        assetRepository.fetchAssetsById(assetIdList, includeDeleted).use(
             onSuccess = {
                 result = onGetAssetsSuccess(it.results, assetIdList)
             },

@@ -13,6 +13,7 @@
 package com.algorand.android.mapper
 
 import com.algorand.android.models.Account
+import com.algorand.android.models.AccountIconResource
 import com.algorand.android.models.BaseAccountAddress
 import javax.inject.Inject
 
@@ -21,7 +22,7 @@ class AccountAddressMapper @Inject constructor() {
     fun createAccountAddress(account: Account): BaseAccountAddress.AccountAddress {
         return BaseAccountAddress.AccountAddress(
             publicKey = account.address,
-            accountIcon = account.createAccountIcon(),
+            accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(account.type),
             displayName = account.name
         )
     }
@@ -29,7 +30,7 @@ class AccountAddressMapper @Inject constructor() {
     fun createAccountAddress(publicKey: String): BaseAccountAddress.AccountAddress {
         return BaseAccountAddress.AccountAddress(
             publicKey = publicKey,
-            accountIcon = null,
+            accountIconResource = null,
             displayName = null
         )
     }

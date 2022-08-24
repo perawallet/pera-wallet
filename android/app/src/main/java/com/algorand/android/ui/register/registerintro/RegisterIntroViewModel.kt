@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.models.RegisterIntroPreview
 import com.algorand.android.usecase.RegisterIntroPreviewUseCase
+import com.algorand.android.usecase.RegistrationUseCase
 import com.algorand.android.utils.getOrElse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,13 +28,16 @@ import kotlinx.coroutines.launch
 
 class RegisterIntroViewModel @ViewModelInject constructor(
     private val registerIntroPreviewUseCase: RegisterIntroPreviewUseCase,
-    @Assisted private val savedStateHandle: SavedStateHandle
+    @Assisted private val savedStateHandle: SavedStateHandle,
+    private val registrationUseCase: RegistrationUseCase
 ) : ViewModel() {
 
+    private val accountAddress: String? = savedStateHandle.getOrElse(ACCOUNT_ADDRESS_KEY, null)
     private val isShowingCloseButton = savedStateHandle.getOrElse(IS_SHOWING_CLOSE_BUTTON_KEY, false)
     private val shouldNavToRegisterWatchAccount = savedStateHandle.getOrElse(
         SHOULD_NAV_TO_REGISTER_WATCH_ACCOUNT, false
     )
+    private val mnemonic: String? = savedStateHandle.getOrElse(MNEMONIC_KEY, null)
 
     private val _registerIntroPreviewFlow = MutableStateFlow<RegisterIntroPreview?>(null)
     val registerIntroPreviewFlow: StateFlow<RegisterIntroPreview?> = _registerIntroPreviewFlow
@@ -43,12 +47,20 @@ class RegisterIntroViewModel @ViewModelInject constructor(
     }
 
     fun setRegisterSkip() {
-        registerIntroPreviewUseCase.setRegistrationSkipPreferenceAsSkipped()
+        registrationUseCase.setRegistrationSkipPreferenceAsSkipped()
     }
 
-    fun getShouldNavToRegisterWatchAccount(): Boolean {
+    fun shouldNavToRegisterWatchAccount(): Boolean {
         return shouldNavToRegisterWatchAccount
     }
+
+    fun shouldNavToRecoverWithPassphrase(): Boolean {
+        return !mnemonic.isNullOrBlank()
+    }
+
+    fun getMnemonic(): String? = mnemonic
+
+    fun getAccountAddress(): String? = accountAddress
 
     private fun getRegisterIntroPreview() {
         viewModelScope.launch {
@@ -58,8 +70,28 @@ class RegisterIntroViewModel @ViewModelInject constructor(
         }
     }
 
+    fun logOnboardingWelcomeAccountCreateClickEvent() {
+        viewModelScope.launch {
+            registerIntroPreviewUseCase.logOnboardingWelcomeAccountCreateClickEvent()
+        }
+    }
+
+    fun logOnboardingWelcomeAccountRecoverClickEvent() {
+        viewModelScope.launch {
+            registerIntroPreviewUseCase.logOnboardingWelcomeAccountRecoverClickEvent()
+        }
+    }
+
+    fun logOnboardingCreateAccountSkipClickEvent() {
+        viewModelScope.launch {
+            registerIntroPreviewUseCase.logOnboardingCreateAccountSkipClickEvent()
+        }
+    }
+
     companion object {
         private const val IS_SHOWING_CLOSE_BUTTON_KEY = "isShowingCloseButton"
         private const val SHOULD_NAV_TO_REGISTER_WATCH_ACCOUNT = "shouldNavToRegisterWatchAccount"
+        private const val ACCOUNT_ADDRESS_KEY = "accountAddress"
+        private const val MNEMONIC_KEY = "mnemonic"
     }
 }

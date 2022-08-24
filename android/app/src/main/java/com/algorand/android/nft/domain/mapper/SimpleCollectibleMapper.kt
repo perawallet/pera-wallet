@@ -26,8 +26,7 @@ class SimpleCollectibleMapper @Inject constructor(
             mediaType = collectibleMediaTypeMapper.mapToCollectibleMediaType(collectibleResponse.mediaType),
             primaryImageUrl = collectibleResponse.primaryImageUrl,
             title = collectibleResponse.title,
-            collectionName = collectibleResponse.collectionName,
-            explorerUrl = collectibleResponse.explorerUrl
+            collectionName = collectibleResponse.collectionName
         )
     }
 }

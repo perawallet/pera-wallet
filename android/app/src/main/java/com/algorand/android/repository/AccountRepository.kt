@@ -15,7 +15,7 @@ package com.algorand.android.repository
 import com.algorand.android.cache.AccountLocalCache
 import com.algorand.android.models.AccountDetail
 import com.algorand.android.models.AccountInformationResponsePayload
-import com.algorand.android.models.PendingTransactionsResponse
+import com.algorand.android.modules.transactionhistory.data.model.PendingTransactionsResponse
 import com.algorand.android.models.Result
 import com.algorand.android.network.AlgodApi
 import com.algorand.android.network.IndexerApi

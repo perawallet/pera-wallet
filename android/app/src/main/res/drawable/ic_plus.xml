@@ -15,9 +15,7 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
-    <path
-        android:fillColor="#00000000"
-        android:pathData="M12,3V21M21,12L3,12"
-        android:strokeWidth="2"
-        android:strokeColor="@color/primary_icon_tint_color" />
+  <path
+      android:fillColor="@color/text_main"
+      android:pathData="M13,4C13,3.448 12.552,3 12,3C11.448,3 11,3.448 11,4H13ZM11,20C11,20.552 11.448,21 12,21C12.552,21 13,20.552 13,20H11ZM20,13C20.552,13 21,12.552 21,12C21,11.448 20.552,11 20,11V13ZM4,11C3.448,11 3,11.448 3,12C3,12.552 3.448,13 4,13L4,11ZM11,4V20H13V4H11ZM20,11L4,11L4,13L20,13V11Z"/>
 </vector>

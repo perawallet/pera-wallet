@@ -19,8 +19,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.algorand.android.R
 import com.algorand.android.databinding.CustomWalletConnectTransactionShortDetailViewBinding
 import com.algorand.android.models.WalletConnectTransactionShortDetail
-import com.algorand.android.utils.ALGOS_SHORT_NAME
 import com.algorand.android.utils.ALGO_DECIMALS
+import com.algorand.android.utils.ALGO_SHORT_NAME
+import com.algorand.android.utils.extensions.setAccountIconDrawable
 import com.algorand.android.utils.extensions.setTextAndVisibility
 import com.algorand.android.utils.formatAmount
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -41,12 +42,12 @@ class WalletConnectSingleTransactionShortDetailView @JvmOverloads constructor(
                 val feeText = resources.getString(
                     R.string.pair_value_format,
                     fee.formatAmount(ALGO_DECIMALS),
-                    ALGOS_SHORT_NAME
+                    ALGO_SHORT_NAME
                 )
                 networkFeeTextView.text = feeText
                 accountNameTextView.text = accountName
-                if (accountIcon != null) {
-                    accountTypeImageView.setAccountIcon(accountIcon, R.dimen.spacing_xxsmall)
+                if (accountIconResource != null) {
+                    accountTypeImageView.setAccountIconDrawable(accountIconResource, R.dimen.account_icon_size_small)
                 }
                 showTransactionDetailButton.setOnClickListener { listener.onShowTransactionDetailClick() }
                 if (warningCount != null) {

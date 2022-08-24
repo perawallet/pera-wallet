@@ -12,9 +12,14 @@
 
 package com.algorand.android.nft.ui.nftlisting.collectibles
 
+import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.algorand.android.CoreMainActivity
 import com.algorand.android.R
+import com.algorand.android.core.BackPressedControllerComponent
+import com.algorand.android.core.BottomNavigationBackPressedDelegate
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.IconButton
 import com.algorand.android.models.ToolbarConfiguration
@@ -25,7 +30,8 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 
 @AndroidEntryPoint
-class CollectiblesFragment : BaseCollectiblesListingFragment() {
+class CollectiblesFragment : BaseCollectiblesListingFragment(),
+    BackPressedControllerComponent by BottomNavigationBackPressedDelegate() {
 
     private val toolbarConfiguration = ToolbarConfiguration(backgroundColor = R.color.primary_background)
 
@@ -43,6 +49,11 @@ class CollectiblesFragment : BaseCollectiblesListingFragment() {
 
     private val toolbarReceiveButtonVisibilityCollector: suspend (Boolean?) -> Unit = { isReceiveButtonVisible ->
         updateUiWithReceiveButtonVisibility(isReceiveButtonVisible)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (activity as? CoreMainActivity)?.let { initBackPressedControllerComponent(it, viewLifecycleOwner) }
     }
 
     override fun initUi() {
@@ -96,6 +107,7 @@ class CollectiblesFragment : BaseCollectiblesListingFragment() {
     }
 
     override fun onReceiveCollectibleClick() {
+        super.onReceiveCollectibleClick()
         nav(CollectiblesFragmentDirections.actionCollectiblesFragmentToCollectibleReceiverAccountSelectionFragment())
     }
 

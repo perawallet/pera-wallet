@@ -16,7 +16,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import com.algorand.android.assetsearch.ui.model.BaseAssetSearchListItem
-import com.algorand.android.customviews.CollectibleImageView
+import com.algorand.android.customviews.collectibleimageview.CollectibleImageView
 import com.algorand.android.databinding.ItemSearchCollectibleBinding
 import com.algorand.android.models.BaseViewHolder
 import com.algorand.android.utils.PrismUrlBuilder

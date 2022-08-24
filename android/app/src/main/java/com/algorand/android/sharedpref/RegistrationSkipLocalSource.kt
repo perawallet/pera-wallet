@@ -36,6 +36,6 @@ class RegistrationSkipLocalSource @Inject constructor(
 
     companion object {
         private const val REGISTER_SKIP_KEY = "register_skip_key"
-        private const val defaultRegisterSkipPreference = false
+        const val defaultRegisterSkipPreference = false
     }
 }

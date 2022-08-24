@@ -19,7 +19,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.algorand.android.R
 import com.algorand.android.databinding.CustomAccountViewBinding
 import com.algorand.android.models.AccountCacheData
-import com.algorand.android.models.AccountIcon
+import com.algorand.android.models.AccountIconResource
+import com.algorand.android.utils.extensions.setAccountIconDrawable
 import com.algorand.android.utils.viewbinding.viewBinding
 
 class AlgorandAccountView @JvmOverloads constructor(
@@ -32,8 +33,12 @@ class AlgorandAccountView @JvmOverloads constructor(
     fun setAccount(accountCacheData: AccountCacheData) {
         with(accountCacheData) {
             val assetCount = assetsInformation.count()
+            val accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(account.type)
             with(binding) {
-                accountIconImageView.setAccountIcon(account.createAccountIcon())
+                accountIconImageView.setAccountIconDrawable(
+                    accountIconResource,
+                    R.dimen.account_icon_size_large
+                )
                 mainTextView.text = account.name
                 subTextView.text = resources.getQuantityString(
                     R.plurals.account_asset_count,
@@ -44,9 +49,9 @@ class AlgorandAccountView @JvmOverloads constructor(
         }
     }
 
-    fun setAccount(name: String, assetCount: Int, accountIcon: AccountIcon) {
+    fun setAccount(name: String, assetCount: Int, accountIconResource: AccountIconResource) {
         with(binding) {
-            accountIconImageView.setAccountIcon(accountIcon)
+            accountIconImageView.setAccountIconDrawable(accountIconResource, R.dimen.account_icon_size_large)
             mainTextView.text = name
             subTextView.text = resources.getQuantityString(
                 R.plurals.account_asset_count,
@@ -57,8 +62,8 @@ class AlgorandAccountView @JvmOverloads constructor(
         }
     }
 
-    fun setAccountIcon(accountIcon: AccountIcon) {
-        binding.accountIconImageView.setAccountIcon(accountIcon)
+    fun setAccountIcon(accountIconResource: AccountIconResource) {
+        binding.accountIconImageView.setAccountIconDrawable(accountIconResource, R.dimen.account_icon_size_large)
     }
 
     fun setAccountAddress(address: String) {

@@ -61,6 +61,7 @@ class CreateAccountResultInfoFragment : BaseInfoFragment() {
     }
 
     private fun onStartUsingPeraClick() {
+        createAccountResultInfoViewModel.logOnboardingStartUsingPeraClickEvent()
         if (createAccountResultInfoViewModel.shouldForceLockNavigation()) {
             navToForceLockNavigation()
         } else {
@@ -77,6 +78,7 @@ class CreateAccountResultInfoFragment : BaseInfoFragment() {
     }
 
     private fun navToMoonpayNavigation() {
+        createAccountResultInfoViewModel.logOnboardingBuyAlgoClickEvent()
         nav(CreateAccountResultInfoFragmentDirections.actionCreateAccountResultInfoFragmentToMoonpayNavigation())
     }
 }
