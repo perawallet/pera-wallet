@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.multidex.MultiDex
 import com.akexorcist.localizationactivity.core.LocalizationApplicationDelegate
 import com.algorand.android.BuildConfig
+import com.algorand.android.migration.MigrationManager
 import com.algorand.android.utils.preference.getSavedThemePreference
 import com.google.android.play.core.missingsplits.MissingSplitsManagerFactory
 import dagger.hilt.android.HiltAndroidApp
@@ -36,6 +37,9 @@ open class PeraApp : Application() {
     @Inject
     lateinit var sharedPref: SharedPreferences
 
+    @Inject
+    lateinit var migrationManager: MigrationManager
+
     private val localizationDelegate = LocalizationApplicationDelegate()
 
     override fun attachBaseContext(base: Context) {
@@ -48,6 +52,8 @@ open class PeraApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        migrationManager.makeMigrations()
+
         // https://developer.android.com/guide/app-bundle/sideload-check
         if (MissingSplitsManagerFactory.create(this).disableAppIfMissingRequiredSplits()) {
             // Skip app initialization because missing required drawables.

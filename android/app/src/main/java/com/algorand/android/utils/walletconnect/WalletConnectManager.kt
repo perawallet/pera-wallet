@@ -44,6 +44,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -300,7 +301,12 @@ class WalletConnectManager @Inject constructor(
                     // TODO Add invalid url message here
                     _sessionResultFlow.emit(Event(Resource.OnLoadingFinished))
                 }
-                is EOFException -> reconnectToDisconnectedSession(sessionId)
+                is EOFException -> {
+                    // TODO: According to this issue, this is a [OkHttp] related issue.
+                    //  So, I applied the recommended solution [https://github.com/square/okhttp/issues/7381] here.
+                    delay(RECONNECTION_DELAY)
+                    reconnectToDisconnectedSession(sessionId)
+                }
             }
         }
     }
@@ -337,5 +343,9 @@ class WalletConnectManager @Inject constructor(
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     private fun onDestroy() {
         coroutineScope?.cancel()
+    }
+
+    companion object {
+        private const val RECONNECTION_DELAY = 100L
     }
 }

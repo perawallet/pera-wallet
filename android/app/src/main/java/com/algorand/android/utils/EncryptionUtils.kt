@@ -32,7 +32,7 @@ fun Aead.encryptString(value: String?): String? {
     }
 }
 
-fun Aead.decrpytString(value: String?): String? {
+fun Aead.decryptString(value: String?): String? {
     return try {
         if (value == null) {
             null

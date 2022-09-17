@@ -55,11 +55,10 @@ class AssetRepository @Inject constructor(
         mobileAlgorandApi.getAssets(assetQuery = queryText.takeIf { it.isNotEmpty() }, status = queryType.apiName)
     }
 
-    suspend fun fetchAssetsById(assetIdList: List<Long>, includeDeleted: Boolean? = null) = safeApiCall {
+    suspend fun fetchAssetsById(assetIdList: List<Long>, includeDeleted: Boolean? = null) =
         requestWithHipoErrorHandler(hipoApiErrorHandler) {
             mobileAlgorandApi.getAssetsByIds(assetIdList.toQueryString(), includeDeleted)
         }
-    }
 
     suspend fun postAssetSupportRequest(assetSupportRequest: AssetSupportRequest): Result<Unit> {
         return safeApiCall { requestPostAssetSupportRequest(assetSupportRequest) }

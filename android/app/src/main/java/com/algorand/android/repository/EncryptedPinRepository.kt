@@ -8,27 +8,30 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  *  limitations under the License
+ *
  */
 
-package com.algorand.android.usecase
+package com.algorand.android.repository
 
-import com.algorand.android.repository.SecurityRepository
+import com.algorand.android.sharedpref.EncryptedPinLocalSource
 import javax.inject.Inject
 
-class ViewPassphrasesUseCase @Inject constructor(
-    private val securityRepository: SecurityRepository,
-    private val encryptedPinUseCase: EncryptedPinUseCase
+class EncryptedPinRepository @Inject constructor(
+    private val encryptedPinLocalSource: EncryptedPinLocalSource
 ) {
-
-    fun isBiometricActive(): Boolean {
-        return securityRepository.isBiometricActive()
+    fun isPinSet(): Boolean {
+        return encryptedPinLocalSource.getDataOrNull() != null
     }
 
-    fun getPassword(): String? {
-        return encryptedPinUseCase.getEncryptedPin()
+    fun clearPin() {
+        encryptedPinLocalSource.saveData(null)
     }
 
-    fun isNotPasswordChosen(): Boolean {
-        return encryptedPinUseCase.isEncryptedPinSet().not()
+    fun getCurrentPin(): String? {
+        return encryptedPinLocalSource.getDataOrNull()
+    }
+
+    fun setPin(pin: String?) {
+        encryptedPinLocalSource.saveData(pin)
     }
 }

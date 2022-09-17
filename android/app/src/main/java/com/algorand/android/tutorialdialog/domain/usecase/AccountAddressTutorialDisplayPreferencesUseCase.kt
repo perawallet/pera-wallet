@@ -59,7 +59,7 @@ class AccountAddressTutorialDisplayPreferencesUseCase @Inject constructor(
     }
 
     private fun isThereAnyNormalLocalAccount(): Boolean {
-        val localAccounts = getLocalAccountsUseCase.getLocalAccounts()
+        val localAccounts = getLocalAccountsUseCase.getLocalAccountsFromAccountManagerCache()
         return localAccounts.any { account -> account.type != Account.Type.WATCH }
     }
 

@@ -12,14 +12,23 @@
 
 package com.algorand.android.usecase
 
-import com.algorand.android.models.Account
+import com.algorand.android.repository.EncryptedPinRepository
 import javax.inject.Inject
 
-class GetSortedLocalAccountsUseCase @Inject constructor(
-    private val getLocalAccountsUseCase: GetLocalAccountsUseCase
-) {
+class EncryptedPinUseCase @Inject constructor(private val encryptedPinRepository: EncryptedPinRepository) {
+    fun isEncryptedPinSet(): Boolean {
+        return encryptedPinRepository.isPinSet()
+    }
 
-    fun getSortedLocalAccounts(): List<Account> {
-        return getLocalAccountsUseCase.getLocalAccountsFromAccountManagerCache().sortedBy { it.index }
+    fun clearEncryptedPin() {
+        encryptedPinRepository.clearPin()
+    }
+
+    fun getEncryptedPin(): String? {
+        return encryptedPinRepository.getCurrentPin()
+    }
+
+    fun setPin(pin: String?) {
+        encryptedPinRepository.setPin(pin)
     }
 }

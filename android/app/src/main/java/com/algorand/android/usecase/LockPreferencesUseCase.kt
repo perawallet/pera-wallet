@@ -17,12 +17,13 @@ import com.algorand.android.repository.SecurityRepository
 import javax.inject.Inject
 
 class LockPreferencesUseCase @Inject constructor(
-    private val securityRepository: SecurityRepository
+    private val securityRepository: SecurityRepository,
+    private val encryptedPinUseCase: EncryptedPinUseCase
 ) {
 
     fun shouldNavigateLockNavigation(): Boolean {
         val canAskLockPreferences = securityRepository.canAskLockPreferences()
-        val isPinCodeChosenBefore = securityRepository.isPinCodeEnabled()
+        val isPinCodeChosenBefore = encryptedPinUseCase.isEncryptedPinSet()
         return canAskLockPreferences && !isPinCodeChosenBefore
     }
 }

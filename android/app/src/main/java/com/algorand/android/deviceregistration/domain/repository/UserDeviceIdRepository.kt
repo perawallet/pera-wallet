@@ -25,7 +25,7 @@ interface UserDeviceIdRepository {
 
     fun setTestnetDeviceId(deviceId: String?)
 
-    fun getTestnetDevideId(): String?
+    fun getTestnetDeviceId(): String?
 
     suspend fun registerDeviceId(deviceRegistrationDTO: DeviceRegistrationDTO): Flow<Result<String>>
 

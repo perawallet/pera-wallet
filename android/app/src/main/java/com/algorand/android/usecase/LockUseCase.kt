@@ -16,11 +16,12 @@ import com.algorand.android.repository.SecurityRepository
 import javax.inject.Inject
 
 class LockUseCase @Inject constructor(
-    private val securityRepository: SecurityRepository
+    private val securityRepository: SecurityRepository,
+    private val encryptedPinUseCase: EncryptedPinUseCase
 ) {
 
     fun getCurrentPassword(): String? {
-        return securityRepository.getCurrentPassword()
+        return encryptedPinUseCase.getEncryptedPin()
     }
 
     fun getLockPenaltyRemainingTime(): Long {
@@ -40,7 +41,7 @@ class LockUseCase @Inject constructor(
     }
 
     fun isPinCodeEnabled(): Boolean {
-        return securityRepository.isPinCodeEnabled()
+        return encryptedPinUseCase.isEncryptedPinSet()
     }
 
     fun shouldShowBiometricDialog(): Boolean {

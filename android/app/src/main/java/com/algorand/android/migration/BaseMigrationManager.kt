@@ -10,16 +10,20 @@
  * limitations under the License
  */
 
-package com.algorand.android.usecase
+package com.algorand.android.migration
 
-import com.algorand.android.models.Account
-import javax.inject.Inject
+abstract class BaseMigrationManager<T> {
 
-class GetSortedLocalAccountsUseCase @Inject constructor(
-    private val getLocalAccountsUseCase: GetLocalAccountsUseCase
-) {
+    protected abstract fun isMigrationNeeded(): Boolean
+    protected abstract fun getDataToBeMigrated(): T
+    protected abstract fun createMigratedData(data: T): T
+    protected abstract fun handleMigratedData(migratedData: T)
 
-    fun getSortedLocalAccounts(): List<Account> {
-        return getLocalAccountsUseCase.getLocalAccountsFromAccountManagerCache().sortedBy { it.index }
+    fun makeMigrationIfNeeded() {
+        if (isMigrationNeeded()) {
+            val dataToBeMigrated = getDataToBeMigrated()
+            val migratedData = createMigratedData(dataToBeMigrated)
+            handleMigratedData(migratedData)
+        }
     }
 }

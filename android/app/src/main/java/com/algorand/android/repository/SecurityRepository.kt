@@ -20,12 +20,10 @@ import com.algorand.android.sharedpref.LockAttemptCountLocalSource.Companion.def
 import com.algorand.android.sharedpref.LockPenaltyRemainingTimeLocalSource
 import com.algorand.android.sharedpref.LockPenaltyRemainingTimeLocalSource.Companion.defaultLockPenaltyRemainingTimePreference
 import com.algorand.android.sharedpref.LockPreferencesLocalSource
-import com.algorand.android.sharedpref.PinRegistrationLocalSource
 import javax.inject.Inject
 
 class SecurityRepository @Inject constructor(
     private val lockPreferencesLocalSource: LockPreferencesLocalSource,
-    private val pinRegistrationLocalSource: PinRegistrationLocalSource,
     private val biometricRegistrationLocalSource: BiometricRegistrationLocalSource,
     private val lockPenaltyRemainingTimeLocalSource: LockPenaltyRemainingTimeLocalSource,
     private val lockAttemptCountLocalSource: LockAttemptCountLocalSource
@@ -37,24 +35,12 @@ class SecurityRepository @Inject constructor(
         ) != LockPreferencesLocalSource.DONT_SHOW_AGAIN_COUNT
     }
 
-    fun isPinCodeEnabled(): Boolean {
-        return pinRegistrationLocalSource.isPinCodeEnabled()
-    }
-
     fun setBiometricRegistrationPreference(isEnabled: Boolean) {
         biometricRegistrationLocalSource.saveData(isEnabled)
     }
 
-    fun setPinCodePreferencesAsDisabled() {
-        pinRegistrationLocalSource.saveData(null)
-    }
-
     fun isBiometricActive(): Boolean {
         return biometricRegistrationLocalSource.getData(defaultBiometricRegistrationPreference)
-    }
-
-    fun getCurrentPassword(): String? {
-        return pinRegistrationLocalSource.getDataOrNull()
     }
 
     fun setLockPenaltyRemainingTime(penaltyRemainingTime: Long) {

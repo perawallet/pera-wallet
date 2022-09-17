@@ -12,7 +12,6 @@
 
 package com.algorand.android.ui.password
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
@@ -23,7 +22,7 @@ import com.algorand.android.customviews.SixDigitPasswordView
 import com.algorand.android.databinding.FragmentBasePasswordBinding
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
-import com.algorand.android.utils.preference.savePassword
+import com.algorand.android.usecase.EncryptedPinUseCase
 import com.algorand.android.utils.viewbinding.viewBinding
 import javax.inject.Inject
 import kotlin.properties.Delegates
@@ -35,8 +34,10 @@ abstract class BasePasswordFragment : DaggerBaseFragment(R.layout.fragment_base_
     abstract val initialTitleResId: Int
     abstract val nextTitleResId: Int
 
+    // TODO: Fragment, viewmodel, usecase flow is already implemented in 5.4.0
+    // TODO: So remove this usecase when 5.4.0 is merged
     @Inject
-    lateinit var sharedPref: SharedPreferences
+    lateinit var encryptedPinUseCase: EncryptedPinUseCase
 
     private var chosenPassword by Delegates.observable<String?>(null) { _, _, newValue ->
         binding.passwordView.clear()
@@ -95,7 +96,7 @@ abstract class BasePasswordFragment : DaggerBaseFragment(R.layout.fragment_base_
 
     private fun verifyPassword(enteredPassword: String) {
         if (chosenPassword == enteredPassword) {
-            sharedPref.savePassword(enteredPassword)
+            encryptedPinUseCase.setPin(enteredPassword)
             handleNextNavigation()
         } else {
             showPasswordDidNotMatchError()

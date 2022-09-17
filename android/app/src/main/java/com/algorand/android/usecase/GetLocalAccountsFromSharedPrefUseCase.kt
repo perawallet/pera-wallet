@@ -12,14 +12,24 @@
 
 package com.algorand.android.usecase
 
+import android.content.SharedPreferences
 import com.algorand.android.models.Account
+import com.algorand.android.utils.decryptString
+import com.algorand.android.utils.fromJson
+import com.algorand.android.utils.preference.getEncryptedAlgorandAccounts
+import com.google.crypto.tink.Aead
+import com.google.gson.Gson
 import javax.inject.Inject
 
-class GetSortedLocalAccountsUseCase @Inject constructor(
-    private val getLocalAccountsUseCase: GetLocalAccountsUseCase
+class GetLocalAccountsFromSharedPrefUseCase @Inject constructor(
+    private val aead: Aead,
+    private val gson: Gson,
+    private val sharedPref: SharedPreferences
 ) {
-
-    fun getSortedLocalAccounts(): List<Account> {
-        return getLocalAccountsUseCase.getLocalAccountsFromAccountManagerCache().sortedBy { it.index }
+    fun getLocalAccountsFromSharedPref(): List<Account>? {
+        val accountJson = aead.decryptString(sharedPref.getEncryptedAlgorandAccounts())
+        return accountJson?.let {
+            gson.fromJson(accountJson)
+        }
     }
 }

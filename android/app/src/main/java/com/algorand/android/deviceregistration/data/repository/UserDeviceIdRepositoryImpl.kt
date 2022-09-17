@@ -48,7 +48,7 @@ class UserDeviceIdRepositoryImpl @Inject constructor(
         testnetDeviceIdLocalSource.saveData(deviceId)
     }
 
-    override fun getTestnetDevideId(): String? {
+    override fun getTestnetDeviceId(): String? {
         return testnetDeviceIdLocalSource.getDataOrNull()
     }
 

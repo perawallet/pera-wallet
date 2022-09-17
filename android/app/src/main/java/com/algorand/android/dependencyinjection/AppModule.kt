@@ -32,10 +32,10 @@ import com.algorand.android.database.WalletConnectTypeConverters
 import com.algorand.android.ledger.LedgerBleConnectionManager
 import com.algorand.android.notification.PeraNotificationManager
 import com.algorand.android.usecase.AccountDetailUseCase
+import com.algorand.android.usecase.GetLocalAccountsFromSharedPrefUseCase
 import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import com.algorand.android.utils.ALGORAND_KEYSTORE_URI
 import com.algorand.android.utils.AccountCacheManager
-import com.algorand.android.utils.AccountMigrationHelper
 import com.algorand.android.utils.AutoLockManager
 import com.algorand.android.utils.ENCRYPTED_SHARED_PREF_NAME
 import com.algorand.android.utils.KEYSET_HANDLE
@@ -141,9 +141,9 @@ object AppModule {
         aead: Aead,
         gson: Gson,
         sharedPref: SharedPreferences,
-        migrationHelper: AccountMigrationHelper
+        getLocalAccountsFromSharedPrefUseCase: GetLocalAccountsFromSharedPrefUseCase
     ): AccountManager {
-        return AccountManager(aead, gson, sharedPref, migrationHelper)
+        return AccountManager(aead, gson, sharedPref, getLocalAccountsFromSharedPrefUseCase)
     }
 
     @Singleton

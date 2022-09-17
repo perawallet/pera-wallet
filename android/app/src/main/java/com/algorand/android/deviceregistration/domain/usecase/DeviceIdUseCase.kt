@@ -29,7 +29,7 @@ class DeviceIdUseCase @Inject constructor(
     suspend fun getSelectedNodeDeviceId(): String? {
         return when (getSelectedNetworkSlug()) {
             MAINNET_NETWORK_SLUG -> userDeviceIdRepository.getMainnetDeviceId()
-            TESTNET_NETWORK_SLUG -> userDeviceIdRepository.getTestnetDevideId()
+            TESTNET_NETWORK_SLUG -> userDeviceIdRepository.getTestnetDeviceId()
             else -> null
         }
     }
@@ -37,7 +37,7 @@ class DeviceIdUseCase @Inject constructor(
     fun getNodeDeviceId(node: Node): String? {
         return when (node.networkSlug) {
             MAINNET_NETWORK_SLUG -> userDeviceIdRepository.getMainnetDeviceId()
-            TESTNET_NETWORK_SLUG -> userDeviceIdRepository.getTestnetDevideId()
+            TESTNET_NETWORK_SLUG -> userDeviceIdRepository.getTestnetDeviceId()
             else -> null
         }
     }

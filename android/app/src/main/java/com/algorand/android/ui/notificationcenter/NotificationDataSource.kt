@@ -25,10 +25,12 @@ import com.algorand.android.models.User
 import com.algorand.android.repository.NotificationRepository
 import com.algorand.android.utils.ALGO_DECIMALS
 import com.algorand.android.utils.PeraPagingSource
+import com.algorand.android.utils.exceptions.MissingNotificationUserIdException
 import com.algorand.android.utils.formatAmount
 import com.algorand.android.utils.getAlgorandMobileDateFormatter
 import com.algorand.android.utils.getUserIfSavedLocally
 import com.algorand.android.utils.parseFormattedDate
+import com.algorand.android.utils.recordException
 import java.time.ZonedDateTime
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -49,8 +51,15 @@ class NotificationDataSource(
     private var notificationUserId: String? = null
 
     override suspend fun initializeData(): LoadResult<String, NotificationListItem> {
-        val result = notificationRepository.getNotifications(getNotificationUserId())
-        return parseResult(result)
+        val notificationUserId = getNotificationUserId()
+        return if (notificationUserId.isNullOrBlank()) {
+            val exception = MissingNotificationUserIdException()
+            recordException(exception)
+            LoadResult.Error<String, NotificationListItem>(exception)
+        } else {
+            val result = notificationRepository.getNotifications(notificationUserId)
+            parseResult(result)
+        }
     }
 
     override suspend fun loadMore(loadUrl: String): LoadResult<String, NotificationListItem> {
@@ -73,10 +82,10 @@ class NotificationDataSource(
         }
     }
 
-    private suspend fun getNotificationUserId(): String {
+    private suspend fun getNotificationUserId(): String? {
         return notificationUserId ?: (deviceIdUseCase.getSelectedNodeDeviceId()?.also { newNotificationUserId ->
             notificationUserId = newNotificationUserId
-        } ?: throw Exception("Notification User ID couldn't found"))
+        })
     }
 
     private suspend fun getCachedContacts(): List<User> {

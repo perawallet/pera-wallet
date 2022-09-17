@@ -10,16 +10,6 @@
  * limitations under the License
  */
 
-package com.algorand.android.usecase
+package com.algorand.android.utils.exceptions
 
-import com.algorand.android.models.Account
-import javax.inject.Inject
-
-class GetSortedLocalAccountsUseCase @Inject constructor(
-    private val getLocalAccountsUseCase: GetLocalAccountsUseCase
-) {
-
-    fun getSortedLocalAccounts(): List<Account> {
-        return getLocalAccountsUseCase.getLocalAccountsFromAccountManagerCache().sortedBy { it.index }
-    }
-}
+class MissingNotificationUserIdException : Exception()

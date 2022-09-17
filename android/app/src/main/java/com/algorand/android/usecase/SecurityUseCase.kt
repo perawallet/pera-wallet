@@ -16,7 +16,8 @@ import com.algorand.android.repository.SecurityRepository
 import javax.inject.Inject
 
 class SecurityUseCase @Inject constructor(
-    private val securityRepository: SecurityRepository
+    private val securityRepository: SecurityRepository,
+    private val encryptedPinUseCase: EncryptedPinUseCase
 ) {
 
     fun setBiometricRegistrationPreference(isEnabled: Boolean) {
@@ -24,11 +25,11 @@ class SecurityUseCase @Inject constructor(
     }
 
     fun setPasswordPreferencesAsDisabled() {
-        securityRepository.setPinCodePreferencesAsDisabled()
+        encryptedPinUseCase.clearEncryptedPin()
     }
 
     fun isPinCodeEnabled(): Boolean {
-        return securityRepository.isPinCodeEnabled()
+        return encryptedPinUseCase.isEncryptedPinSet()
     }
 
     fun isBiometricActive(): Boolean {

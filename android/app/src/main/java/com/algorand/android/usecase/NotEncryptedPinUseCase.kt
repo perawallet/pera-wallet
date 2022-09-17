@@ -7,19 +7,25 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License
+ *  limitations under the License
+ *
  */
 
 package com.algorand.android.usecase
 
-import com.algorand.android.models.Account
+import com.algorand.android.repository.NotEncryptedPinRepository
 import javax.inject.Inject
 
-class GetSortedLocalAccountsUseCase @Inject constructor(
-    private val getLocalAccountsUseCase: GetLocalAccountsUseCase
-) {
+class NotEncryptedPinUseCase @Inject constructor(private val notEncryptedPinRepository: NotEncryptedPinRepository) {
+    fun isNotEncryptedPinSet(): Boolean {
+        return notEncryptedPinRepository.isNotEncryptedPinSet()
+    }
 
-    fun getSortedLocalAccounts(): List<Account> {
-        return getLocalAccountsUseCase.getLocalAccountsFromAccountManagerCache().sortedBy { it.index }
+    fun clearNotEncryptedPin() {
+        notEncryptedPinRepository.clearNotEncryptedPin()
+    }
+
+    fun getNotEncryptedPin(): String? {
+        return notEncryptedPinRepository.getNotEncryptedPin()
     }
 }

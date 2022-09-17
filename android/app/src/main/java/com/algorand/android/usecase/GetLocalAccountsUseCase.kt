@@ -19,8 +19,7 @@ import javax.inject.Inject
 class GetLocalAccountsUseCase @Inject constructor(
     private val accountManager: AccountManager
 ) {
-
-    fun getLocalAccounts(): List<Account> {
+    fun getLocalAccountsFromAccountManagerCache(): List<Account> {
         return accountManager.getAccounts()
     }
 }

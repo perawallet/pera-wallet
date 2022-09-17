@@ -10,16 +10,18 @@
  * limitations under the License
  */
 
-package com.algorand.android.usecase
+package com.algorand.android.migration
 
-import com.algorand.android.models.Account
 import javax.inject.Inject
+import javax.inject.Singleton
 
-class GetSortedLocalAccountsUseCase @Inject constructor(
-    private val getLocalAccountsUseCase: GetLocalAccountsUseCase
+@Singleton
+class MigrationManager @Inject constructor(
+    private val accountMigrationManager: AccountMigrationManager,
+    private val encryptedPinMigrationManager: EncryptedPinMigrationManager
 ) {
-
-    fun getSortedLocalAccounts(): List<Account> {
-        return getLocalAccountsUseCase.getLocalAccountsFromAccountManagerCache().sortedBy { it.index }
+    fun makeMigrations() {
+        encryptedPinMigrationManager.makeMigrationIfNeeded()
+        accountMigrationManager.makeMigrationIfNeeded()
     }
 }

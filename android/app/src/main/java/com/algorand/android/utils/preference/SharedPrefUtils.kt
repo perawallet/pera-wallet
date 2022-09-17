@@ -13,9 +13,9 @@
 
 package com.algorand.android.utils.preference
 
-import android.content.Context
 import android.content.SharedPreferences
 import com.algorand.android.models.Account
+import com.algorand.android.sharedpref.EncryptedPinLocalSource.Companion.ENCRYPTED_PIN_KEY
 import com.algorand.android.utils.encryptString
 import com.google.crypto.tink.Aead
 import com.google.gson.Gson
@@ -29,16 +29,12 @@ private const val NOTIFICATION_ACTIVATED_KEY = "notification_activated"
 private const val QR_TUTORIAL_SHOWN_KEY = "qr_tutorial_shown_key"
 private const val TD_COPY_TUTORIAL_SHOWN_KEY = "transaction_detail_copy_shown_key"
 private const val FILTER_TUTORIAL_SHOWN_KEY = "filter_tutorial_shown_key"
-private const val NOTIFICATION_REFRESH_DATE_KEY = "notification_refresh_date_key"
-private const val CURRENCY_PREFERENCE_KEY = "currency_preference_key"
 private const val APP_REVIEW_START_COUNT_KEY = "app_review_start_count_key"
 private const val REGISTER_SKIP_KEY = "register_skip_key"
 private const val FIRST_REQUEST_WALLET_CONNECT_REQUEST_KEY = "first_request_wallet_connect_request"
 const val SETTINGS = "algorand_settings"
 
 // </editor-fold>
-
-fun Context.getSettingsSharedPref(): SharedPreferences = getSharedPreferences(SETTINGS, Context.MODE_PRIVATE)
 
 fun SharedPreferences.removeAll() {
     edit()
@@ -61,11 +57,8 @@ fun SharedPreferences.getEncryptedAlgorandAccounts() = getString(ALGORAND_ACCOUN
 
 // <editor-fold defaultstate="collapsed" desc="Password">
 
-fun SharedPreferences.savePassword(newPassword: String?) = edit().putString(LOCK_PASSWORD, newPassword).apply()
-
-fun SharedPreferences.getPassword() = getString(LOCK_PASSWORD, null)
-
-fun SharedPreferences.isPasswordChosen() = getString(LOCK_PASSWORD, null) != null
+// Use EncryptedPinUseCase instead and remove this extension function
+fun SharedPreferences.isPasswordChosen() = getString(ENCRYPTED_PIN_KEY, null) != null
 
 // </editor-fold>
 

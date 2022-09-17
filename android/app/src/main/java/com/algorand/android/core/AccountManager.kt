@@ -14,10 +14,7 @@ package com.algorand.android.core
 
 import android.content.SharedPreferences
 import com.algorand.android.models.Account
-import com.algorand.android.utils.AccountMigrationHelper
-import com.algorand.android.utils.decrpytString
-import com.algorand.android.utils.fromJson
-import com.algorand.android.utils.preference.getEncryptedAlgorandAccounts
+import com.algorand.android.usecase.GetLocalAccountsFromSharedPrefUseCase
 import com.algorand.android.utils.preference.removeAll
 import com.algorand.android.utils.preference.saveAlgorandAccounts
 import com.google.crypto.tink.Aead
@@ -31,7 +28,7 @@ class AccountManager(
     private val aead: Aead,
     private val gson: Gson,
     private val sharedPref: SharedPreferences,
-    private val accountMigrationHelper: AccountMigrationHelper
+    private val getLocalAccountsFromSharedPrefUseCase: GetLocalAccountsFromSharedPrefUseCase
 ) {
 
     val accounts = MutableStateFlow<List<Account>>(listOf())
@@ -39,9 +36,7 @@ class AccountManager(
     private val accountTypeChangeMutex = Mutex()
 
     fun initAccounts() {
-        checkForMigrations()
-
-        val localAccounts = getLocalAccounts()
+        val localAccounts = getLocalAccountsFromSharedPrefUseCase.getLocalAccountsFromSharedPref()
         if (localAccounts != null) {
             accounts.value = localAccounts
         }
@@ -127,20 +122,5 @@ class AccountManager(
 
     fun getAccounts(): List<Account> {
         return accounts.value
-    }
-
-    private fun checkForMigrations() {
-        val localAccounts = getLocalAccounts() ?: return
-        if (accountMigrationHelper.isMigrationNeed(localAccounts)) {
-            val migratedAccountList = accountMigrationHelper.migrateAccounts(localAccounts)
-            sharedPref.saveAlgorandAccounts(gson, migratedAccountList, aead)
-        }
-    }
-
-    private fun getLocalAccounts(): List<Account>? {
-        val accountJson = aead.decrpytString(sharedPref.getEncryptedAlgorandAccounts())
-        return accountJson?.let {
-            gson.fromJson(accountJson)
-        }
     }
 }

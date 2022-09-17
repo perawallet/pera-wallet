@@ -18,9 +18,9 @@ import com.algorand.android.modules.transactionhistory.data.mapper.PaginatedTran
 import com.algorand.android.modules.transactionhistory.domain.model.PaginatedTransactionsDTO
 import com.algorand.android.modules.transactionhistory.domain.repository.TransactionHistoryRepository
 import com.algorand.android.network.IndexerApi
+import com.algorand.android.network.request
 import com.algorand.android.utils.recordException
 import javax.inject.Inject
-import retrofit2.HttpException
 
 class TransactionHistoryRepositoryImpl @Inject constructor(
     private val indexerApi: IndexerApi,
@@ -35,14 +35,24 @@ class TransactionHistoryRepositoryImpl @Inject constructor(
         limit: Int?,
         txnType: String?
     ): Result<PaginatedTransactionsDTO> {
-        val safeAssetId = if (assetId == AssetInformation.ALGO_ID) null else assetId
-        with(indexerApi.getTransactions(publicKey, safeAssetId, fromDate, toDate, nextToken, limit, txnType)) {
-            return if (isSuccessful && body() != null) {
-                body()?.let { Result.Success(paginatedTransactionsMapper.mapToPaginatedTransactionsDTO(it)) }
-                    ?: Result.Error(HttpException(this))
-            } else {
-                recordException(HttpException(this))
-                Result.Error(HttpException(this))
+        return request {
+            val safeAssetId = if (assetId == AssetInformation.ALGO_ID) null else assetId
+            indexerApi.getTransactions(
+                publicKey = publicKey,
+                assetId = safeAssetId,
+                afterTime = fromDate,
+                beforeTime = toDate,
+                nextToken = nextToken,
+                limit = limit,
+                transactionType = txnType
+            )
+        }.run {
+            when (this) {
+                is Result.Success -> Result.Success(paginatedTransactionsMapper.mapToPaginatedTransactionsDTO(data))
+                is Result.Error -> {
+                    recordException(exception)
+                    Result.Error(exception)
+                }
             }
         }
     }
