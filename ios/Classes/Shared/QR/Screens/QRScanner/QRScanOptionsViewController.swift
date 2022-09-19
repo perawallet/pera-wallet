@@ -21,7 +21,7 @@ import UIKit
 
 final class QRScanOptionsViewController:
     BaseScrollViewController,
-    BottomSheetPresentable,
+    BottomSheetScrollPresentable,
     UIContextMenuInteractionDelegate {
     typealias EventHandler = (Event) -> Void
 
@@ -49,10 +49,6 @@ final class QRScanOptionsViewController:
         super.init(configuration: configuration)
     }
 
-    override func configureNavigationBarAppearance() {
-        addBarButtons()
-    }
-
     override func configureAppearance() {
         super.configureAppearance()
         configureBackground()
@@ -71,15 +67,6 @@ final class QRScanOptionsViewController:
 }
 
 extension QRScanOptionsViewController {
-    private func addBarButtons() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
-            [weak self] in
-            self?.dismissScreen()
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
-    }
-
     private func configureBackground() {
         view.customizeAppearance(theme.background)
         title = "qr-scan-option-title".localized
@@ -141,7 +128,7 @@ extension QRScanOptionsViewController {
             )
         }
 
-        let sendTransactionOptionView = addAction(
+        let sendTransactionOptionView = addButton(
             QRSendTransactionOptionViewModel(),
             #selector(sendTransaction)
         )
@@ -150,7 +137,7 @@ extension QRScanOptionsViewController {
             padding: theme.separatorPadding
         )
 
-        let addWatchAccountOptionView =  addAction(
+        let addWatchAccountOptionView = addButton(
             QRAddWatchAccountOptionViewModel(),
             #selector(addWatchAccount)
         )
@@ -159,30 +146,30 @@ extension QRScanOptionsViewController {
             padding: theme.separatorPadding
         )
 
-        addAction(
+        addButton(
             QRAddContactOptionViewModel(),
             #selector(addContact)
         )
     }
 
     @discardableResult
-    private func addAction(
-        _ viewModel: ListActionViewModel,
+    private func addButton(
+        _ viewModel: ListItemButtonViewModel,
         _ selector: Selector
-    ) -> ListActionView {
-        let actionView = ListActionView()
+    ) -> ListItemButton {
+        let button = ListItemButton()
 
-        actionView.customize(theme.action)
-        actionView.bindData(viewModel)
+        button.customize(theme.button)
+        button.bindData(viewModel)
 
-        optionContextView.addArrangedSubview(actionView)
+        optionContextView.addArrangedSubview(button)
 
-        actionView.addTouch(
+        button.addTouch(
             target: self,
             action: selector
         )
 
-        return actionView
+        return button
     }
 }
 
@@ -242,7 +229,7 @@ extension QRScanOptionsViewController {
 
         return UITargetedPreview(
             view: view,
-            backgroundColor: AppColors.Shared.System.background.uiColor
+            backgroundColor: Colors.Defaults.background.uiColor
         )
     }
 
@@ -256,7 +243,7 @@ extension QRScanOptionsViewController {
 
         return UITargetedPreview(
             view: view,
-            backgroundColor: AppColors.Shared.System.background.uiColor
+            backgroundColor: Colors.Defaults.background.uiColor
         )
     }
 }

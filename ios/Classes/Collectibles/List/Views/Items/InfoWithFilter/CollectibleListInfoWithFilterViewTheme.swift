@@ -31,18 +31,18 @@ struct CollectibleListInfoWithFilterViewTheme:
     init(
         _ family: LayoutFamily
     ) {
-        backgroundColor = AppColors.Shared.System.background
+        backgroundColor = Colors.Defaults.background
         minimumHorizontalSpacing = 8
 
         info = [
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
         ]
         infoMinWidthRatio = 0.5
 
         filterAction = [
             .title(Self.getFilterActionTitle()),
-            .titleColor([ .normal(AppColors.Components.Link.primary) ]),
+            .titleColor([ .normal(Colors.Link.primary) ]),
             .icon([.normal("icon-filter-unselected"), .selected("icon-filter-selected") ])
         ]
     }
@@ -50,21 +50,12 @@ struct CollectibleListInfoWithFilterViewTheme:
 
 extension CollectibleListInfoWithFilterViewTheme {
     private static func getFilterActionTitle() -> EditText {
-        let font = Fonts.DMSans.medium.make(15)
-        let lineHeightMultiplier = 1.23
-
         return .attributedString(
             "collectible-filter-selection-title"
                 .localized
-                .attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(.left),
-                    .lineBreakMode(.byTruncatingTail),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ])
+                .bodyMedium(
+                    lineBreakMode: .byTruncatingTail
+                )
         )
     }
 }

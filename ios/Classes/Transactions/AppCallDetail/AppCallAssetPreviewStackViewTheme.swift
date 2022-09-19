@@ -30,7 +30,7 @@ struct AppCallAssetPreviewStackViewTheme:
     ) {
         spacing = 12
         action = [
-            .titleColor([.normal(AppColors.Shared.Helpers.positive.uiColor)]),
+            .titleColor([.normal(Colors.Helpers.positive.uiColor)]),
         ]
         additionalSpacingBetweenActionAndAssets = 4
     }

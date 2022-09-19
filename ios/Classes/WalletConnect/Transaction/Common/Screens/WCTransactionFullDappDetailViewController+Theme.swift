@@ -25,7 +25,7 @@ extension WCTransactionFullDappDetailViewController {
 
         init(_ family: LayoutFamily) {
             detailViewTheme = WCTransactionFullDappDetailViewTheme()
-            backgroundColor = AppColors.Shared.System.background
+            backgroundColor = Colors.Defaults.background
         }
     }
 }

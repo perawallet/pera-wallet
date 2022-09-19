@@ -33,15 +33,15 @@ extension WCAppCallTransactionView {
         init(_ family: LayoutFamily) {
             self.rawTransactionButtonStyle = [
                 .title("wallet-connect-raw-transaction-title".localized),
-                .titleColor([.normal(AppColors.Components.Button.Secondary.text)]),
+                .titleColor([.normal(Colors.Button.Secondary.text)]),
                 .font(Fonts.DMSans.medium.make(13)),
-                .backgroundColor(AppColors.Components.Button.Secondary.background)
+                .backgroundColor(Colors.Button.Secondary.background)
             ]
             self.algoExplorerButtonStyle = [
                 .title("wallet-connect-transaction-detail-explorer".localized),
-                .titleColor([.normal(AppColors.Components.Button.Secondary.text)]),
+                .titleColor([.normal(Colors.Button.Secondary.text)]),
                 .font(Fonts.DMSans.medium.make(13)),
-                .backgroundColor(AppColors.Components.Button.Secondary.background)
+                .backgroundColor(Colors.Button.Secondary.background)
             ]
             self.buttonsCorner = Corner(radius: 18)
             self.buttonEdgeInsets = (8, 12, 8, 12)

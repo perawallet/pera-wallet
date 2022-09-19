@@ -87,6 +87,12 @@ extension WCAssetReconfigurationTransactionViewController: WCAssetReconfiguratio
     ) {
         openInExplorer(asset)
     }
+
+    func wcAssetReconfigurationTransactionViewDidOpenAssetDiscovery(
+        _ wcAssetReconfigurationTransactionView: WCAssetReconfigurationTransactionView
+    ) {
+        openAssetDiscovery(asset)
+    }
 }
 
 extension WCAssetReconfigurationTransactionViewController: WCSingleTransactionViewControllerAssetManagable { }

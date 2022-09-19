@@ -88,18 +88,10 @@ extension TransactionListItemViewModel {
             return
         }
 
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-
         self.title = .attributedString(
-            title.attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineBreakMode(.byTruncatingTail),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ])
+            title.bodyRegular(
+                lineBreakMode: .byTruncatingTail
+            )
         )
     }
 
@@ -111,18 +103,10 @@ extension TransactionListItemViewModel {
             return
         }
 
-        let font = Fonts.DMSans.regular.make(13)
-        let lineHeightMultiplier = 1.18
-
         self.subtitle = .attributedString(
-            subtitle.attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineBreakMode(.byTruncatingTail),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ])
+            subtitle.footnoteRegular(
+                lineBreakMode: .byTruncatingTail
+            )
         )
     }
 }

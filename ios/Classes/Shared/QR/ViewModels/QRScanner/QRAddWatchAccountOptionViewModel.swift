@@ -17,7 +17,7 @@
 import Foundation
 import MacaroonUIKit
 
-struct QRAddWatchAccountOptionViewModel: QRScanOptionListActionViewModel {
+struct QRAddWatchAccountOptionViewModel: QRScanOptionListItemButtonViewModel {
     let icon: Image?
     let title: EditText?
     let subtitle: EditText?

@@ -27,11 +27,11 @@ struct SingleGrayTitleHeaderViewTheme: LayoutSheet, StyleSheet {
     let horizontalInset: LayoutMetric
     
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.title = [
             .textAlignment(.left),
             .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(13))
         ]
         

@@ -33,18 +33,18 @@ extension TransactionResultScreen {
         let subtitleLeadingInset: LayoutMetric
 
         init(_ family: LayoutFamily) {
-            backgroundColor = AppColors.Shared.System.background
+            backgroundColor = Colors.Defaults.background
             successIcon = [
                 .image("icon-approval-check")
             ]
             titleLabel = [
-                .textColor(AppColors.Components.Text.main),
+                .textColor(Colors.Text.main),
                 .font(Fonts.DMSans.medium.make(19)),
                 .textAlignment(.center),
                 .textOverflow(FittingText())
             ]
             subtitleLabel = [
-                .textColor(AppColors.Components.Text.gray),
+                .textColor(Colors.Text.gray),
                 .font(Fonts.DMSans.regular.make(15)),
                 .textAlignment(.center),
                 .textOverflow(FittingText())

@@ -35,16 +35,16 @@ struct WCTransactionFullDappDetailViewTheme: StyleSheet, LayoutSheet {
     let bottomInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.title = [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.medium.make(19)),
             .textAlignment(.left),
             .textOverflow(FittingText()),
             .text("screenshot-title".localized)
         ]
         self.description = [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),
             .textOverflow(FittingText()),

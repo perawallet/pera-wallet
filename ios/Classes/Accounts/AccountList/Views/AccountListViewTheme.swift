@@ -24,7 +24,7 @@ struct AccountListViewTheme: LayoutSheet, StyleSheet {
     let contentInset: LayoutPaddings
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.cellSpacing = 0
         self.contentInset = (12, 24, 32 + UIApplication.shared.safeAreaBottom, 24)
     }

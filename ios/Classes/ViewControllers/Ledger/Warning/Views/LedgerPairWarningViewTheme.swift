@@ -39,25 +39,25 @@ struct LedgerPairWarningViewTheme: StyleSheet, LayoutSheet {
     let instructionSpacing: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.image = [
             .image("icon-info-red")
         ]
         self.title = [
             .text(Self.getTitle()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .textOverflow(FittingText()),
         ]
         self.subtitle = [
             .text(Self.getSubtitle()),
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .textOverflow(FittingText()),
         ]
         self.actionButton = [
             .title("title-close".localized),
-            .titleColor([ .normal(AppColors.Components.Button.Secondary.text) ]),
+            .titleColor([ .normal(Colors.Button.Secondary.text) ]),
             .font(Fonts.DMSans.medium.make(15)),
-            .backgroundColor(AppColors.Components.Button.Secondary.background)
+            .backgroundColor(Colors.Button.Secondary.background)
         ]
         self.largerInstuctionViewTheme = LargerInstructionItemViewTheme()
         self.actionButtonContentEdgeInsets = (14, 0, 14, 0)
@@ -76,40 +76,22 @@ struct LedgerPairWarningViewTheme: StyleSheet, LayoutSheet {
 
 extension LedgerPairWarningViewTheme {
     private static func getTitle() -> EditText {
-        let font = Fonts.DMSans.medium.make(19)
-        let lineHeightMultiplier = 1.13
-
         return .attributedString(
             "ledger-pairing-first-warning-title"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .textAlignment(.center),
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .bodyLargeMedium(
+                    alignment: .center
+                )
         )
     }
 
     private static func getSubtitle()  -> EditText {
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-
         return .attributedString(
             "ledger-pairing-first-warning-description"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .textAlignment(.center),
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ]),
-                ])
+                .bodyRegular(
+                    alignment: .center
+                )
         )
     }
 }

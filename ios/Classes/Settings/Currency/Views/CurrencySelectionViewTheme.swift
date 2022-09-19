@@ -41,16 +41,16 @@ struct CurrencySelectionViewTheme:
         self.horizontalPadding = 24
 
         self.header = [
-            .backgroundColor(AppColors.Shared.System.background)
+            .backgroundColor(Colors.Defaults.background)
         ]
 
         self.title = [
-            .textColor(AppColors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
         self.titleTopPadding = 28
 
         self.description = [
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .textOverflow(FittingText())
         ]
         self.descriptionTopPadding = 8

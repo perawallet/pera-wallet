@@ -23,7 +23,7 @@ extension EditAccountViewController {
         let editAccountViewTheme: EditAccountViewTheme
 
         init(_ family: LayoutFamily) {
-            backgroundColor = AppColors.Shared.System.background
+            backgroundColor = Colors.Defaults.background
             editAccountViewTheme = EditAccountViewTheme()
         }
     }

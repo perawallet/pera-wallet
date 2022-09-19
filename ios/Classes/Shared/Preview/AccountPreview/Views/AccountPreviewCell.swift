@@ -35,7 +35,7 @@ final class AccountPreviewCell:
         contextView.customize(Self.theme)
 
         let separator = Separator(
-            color: AppColors.Shared.Layer.grayLighter,
+            color: Colors.Layer.grayLighter,
             size: 1,
             position: .bottom((56, 0))
         )

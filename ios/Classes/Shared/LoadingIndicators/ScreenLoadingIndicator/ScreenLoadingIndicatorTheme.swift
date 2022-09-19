@@ -30,11 +30,11 @@ struct ScreenLoadingIndicatorTheme: StyleSheet, LayoutSheet {
         self.contentEdgeInsets = (20, 40, 20, 40)
         self.background =
             MacaroonUIKit.Shadow(
-                color: AppColors.Shared.System.background.uiColor,
+                color: Colors.Defaults.background.uiColor,
+                fillColor: Colors.Defaults.background.uiColor,
                 opacity: 0.16,
                 offset: (0, 20),
                 radius: 80,
-                fillColor: AppColors.Shared.System.background.uiColor,
                 cornerRadii: (8, 8),
                 corners: .allCorners
             )
@@ -45,7 +45,7 @@ struct ScreenLoadingIndicatorTheme: StyleSheet, LayoutSheet {
         self.title = [
             .textAlignment(.center),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(15))
         ]
         self.titleTopMargin = 20

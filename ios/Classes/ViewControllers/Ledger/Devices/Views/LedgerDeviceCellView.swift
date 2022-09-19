@@ -18,14 +18,22 @@
 import MacaroonUIKit
 import UIKit
 
-final class LedgerDeviceCellView: View {
+final class LedgerDeviceCellView: View, TripleShadowDrawable {
+    var thirdShadow: MacaroonUIKit.Shadow?
+    var thirdShadowLayer: CAShapeLayer = CAShapeLayer()
+
+    var secondShadow: MacaroonUIKit.Shadow?
+    var secondShadowLayer: CAShapeLayer = CAShapeLayer()
+
     private lazy var ledgerImageView = UIImageView()
     private lazy var deviceNameLabel = UILabel()
     private lazy var arrowImageView = UIImageView()
 
     func customize(_ theme: LedgerDeviceCellViewTheme) {
         drawAppearance(corner: theme.corner)
-        drawAppearance(shadow: theme.shadow)
+        drawAppearance(shadow: theme.firstShadow)
+        drawAppearance(secondShadow: theme.secondShadow)
+        drawAppearance(thirdShadow: theme.thirdShadow)
 
         addDeviceImageView(theme)
         addArrowImageView(theme)

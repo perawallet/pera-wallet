@@ -36,10 +36,13 @@ final class TutorialViewController: BaseScrollViewController {
         switch tutorial {
         case .passphraseVerified,
              .localAuthentication,
-             .accountVerified:
+             .accountVerified,
+             .biometricAuthenticationEnabled,
+             .collectibleTransferConfirmed,
+             .accountSuccessfullyRekeyed,
+             .ledgerSuccessfullyConnected:
             hidesCloseBarButtonItem = true
-        default:
-            hidesCloseBarButtonItem = false
+        default: break
         }
     }
 
@@ -140,22 +143,27 @@ extension TutorialViewController: TutorialViewDelegate {
     func tutorialViewDidTapPrimaryActionButton(_ tutorialView: TutorialView) {
         switch tutorial {
         case .backUp:
+            analytics.track(.onboardCreateAccountPassphrase(type: .understand))
             open(.tutorial(flow: flow, tutorial: .writePassphrase), by: .push)
         case .writePassphrase:
+            analytics.track(.onboardCreateAccountPassphrase(type: .begin))
             open(.passphraseView(flow: flow, address: "temp"), by: .push)
         case .watchAccount:
             open(.watchAccountAddition(flow: flow), by: .push)
         case .recoverWithPassphrase:
             open(.accountRecover(flow: flow), by: .push)
         case .passcode:
+            analytics.track(.onboardSetPinCode(type: .create))
             open(.choosePassword(mode: .setup, flow: flow), by: .push)
         case .localAuthentication:
             askLocalAuthentication()
         case .biometricAuthenticationEnabled:
             uiHandlers.didTapButtonPrimaryActionButton?(self)
         case let .passphraseVerified(account):
+            analytics.track(.onboardCreateAccountPassphrase(type: .verify))
             open(.accountNameSetup(flow: flow, mode: .add(type: .create), accountAddress: account.address), by: .push)
         case .accountVerified(let flow):
+            analytics.track(.onboardCreateAccountVerified(type: .buyAlgo))
             routeBuyAlgo(for: flow)
         case .ledgerSuccessfullyConnected:
             uiHandlers.didTapButtonPrimaryActionButton?(self)
@@ -181,7 +189,15 @@ extension TutorialViewController: TutorialViewDelegate {
                 ),
                 by: .present
             )
-        case .accountVerified:
+        case .accountVerified(let flow):
+            if case .initializeAccount(mode: .add(type: .watch)) = flow {
+                analytics.track(.onboardWatchAccount(type: .verified))
+            } else if case .addNewAccount(mode: .add(type: .watch)) = flow {
+                analytics.track(.onboardWatchAccount(type: .verified))
+            } else {
+                analytics.track(.onboardCreateAccountVerified(type: .start))
+            }
+
             launchMain()
         default:
             break

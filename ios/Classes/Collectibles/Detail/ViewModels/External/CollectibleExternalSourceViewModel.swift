@@ -51,18 +51,9 @@ extension CollectibleExternalSourceViewModel {
     private mutating func bindTitle(
         _ source: CollectibleExternalSource
     ) {
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-
         title = .attributedString(
-            source.title.attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineBreakMode(.byWordWrapping),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ])
+            source.title
+                .bodyRegular()
         )
     }
 

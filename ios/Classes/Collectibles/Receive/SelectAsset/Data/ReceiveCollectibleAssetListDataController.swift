@@ -21,12 +21,15 @@ protocol ReceiveCollectibleAssetListDataController: AnyObject {
 
     var eventHandler: ((ReceiveCollectibleAssetListDataControllerEvent) -> Void)? { get set }
 
+    var account: Account { get }
+
     func load()
     func loadNextPageIfNeeded(for indexPath: IndexPath)
     func search(for query: String?)
-    func resetSearch()
     
     subscript(index: Int) -> AssetDecoration? { get }
+
+    func hasOptedIn(_ asset: AssetDecoration) -> OptInStatus
 }
 
 enum ReceiveCollectibleAssetListSection:
@@ -42,7 +45,7 @@ enum ReceiveCollectibleAssetListItem: Hashable {
     case empty(ReceiveCollectibleAssetListEmptyItem)
     case info
     case search
-    case collectible(AssetPreviewViewModel)
+    case collectible(OptInAssetListItem)
 }
 
 enum ReceiveCollectibleAssetListEmptyItem: Hashable {
@@ -52,11 +55,12 @@ enum ReceiveCollectibleAssetListEmptyItem: Hashable {
 
 enum ReceiveCollectibleAssetListDataControllerEvent {
     case didUpdate(ReceiveCollectibleAssetListDataController.Snapshot)
+    case didOptInAssets([OptInAssetListItem])
 
     var snapshot: ReceiveCollectibleAssetListDataController.Snapshot {
         switch self {
-        case .didUpdate(let snapshot):
-            return snapshot
+        case .didUpdate(let snapshot): return snapshot
+        case .didOptInAssets: return .init()
         }
     }
 }

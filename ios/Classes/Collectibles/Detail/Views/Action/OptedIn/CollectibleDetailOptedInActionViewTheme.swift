@@ -45,17 +45,17 @@ struct CollectibleDetailOptedInActionViewTheme:
         title = [
             .textOverflow(FittingText()),
             .textAlignment(.left),
-            .textColor(AppColors.Components.Text.gray)
+            .textColor(Colors.Text.gray)
         ]
         subtitle = [
             .textOverflow(FittingText()),
             .textAlignment(.left),
-            .textColor(AppColors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
         optedInTitle = [
             .textOverflow(FittingText()),
             .textAlignment(.left),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .text(Self.getOptedInTitle("collectible-detail-opted-in"))
         ]
 
@@ -65,14 +65,14 @@ struct CollectibleDetailOptedInActionViewTheme:
         optOut = [
             .title(Self.getActionTitle("collectible-detail-opt-out")),
             .titleColor(
-                [ .normal(AppColors.Components.Button.Secondary.text)]
+                [ .normal(Colors.Button.Secondary.text)]
             ),
-            .backgroundColor(AppColors.Components.Button.Secondary.background),
+            .backgroundColor(Colors.Button.Secondary.background),
             .icon([.normal("icon-trash-24")])
         ]
 
         separator = [
-            .backgroundColor(AppColors.Shared.Layer.grayLighter)
+            .backgroundColor(Colors.Layer.grayLighter)
         ]
 
         topInset = 24
@@ -93,39 +93,19 @@ extension CollectibleDetailOptedInActionViewTheme {
     private static func getOptedInTitle(
         _ aTitle: String
     ) -> EditText {
-        let font = Fonts.DMSans.medium.make(19)
-        let lineHeightMultiplier = 1.13
-
         return .attributedString(
             aTitle
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .bodyLargeMedium()
         )
     }
     private static func getActionTitle(
         _ aTitle: String
     ) -> EditText {
-        let font = Fonts.DMSans.medium.make(15)
-        let lineHeightMultiplier = 1.23
-
         return .attributedString(
             aTitle
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .bodyMedium()
         )
     }
 }

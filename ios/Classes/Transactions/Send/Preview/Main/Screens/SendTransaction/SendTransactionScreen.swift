@@ -33,7 +33,7 @@ final class SendTransactionScreen: BaseViewController {
 
     private lazy var nextButton = Button()
     private lazy var accountContainerView = TripleShadowView()
-    private lazy var accountView = AssetPreviewView()
+    private lazy var accountView = PrimaryListItemView()
     private lazy var numpadView = NumpadView(mode: .decimal)
     private lazy var noteButton = Button()
     private lazy var maxButton = Button()
@@ -71,16 +71,18 @@ final class SendTransactionScreen: BaseViewController {
         guard let decimalAmount = amount.decimalAmount else {
             return false
         }
-        return draft.from.amount == decimalAmount.toMicroAlgos
+        return draft.from.algo.amount == decimalAmount.toMicroAlgos
     }
-
-    private var isViewFirstAppeared = true
 
     private lazy var transactionController: TransactionController = {
         guard let api = api else {
             fatalError("API should be set.")
         }
-        return TransactionController(api: api, bannerController: bannerController)
+        return TransactionController(
+            api: api,
+            bannerController: bannerController,
+            analytics: analytics
+        )
     }()
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
@@ -99,7 +101,7 @@ final class SendTransactionScreen: BaseViewController {
         case .algo:
             self.amount = amount.toNumberStringWithSeparatorForLabel ?? "0"
         case .asset(let asset):
-            self.amount = amount.toNumberStringWithSeparatorForLabel(fraction: asset.presentation.decimals) ?? "0"
+            self.amount = amount.toNumberStringWithSeparatorForLabel(fraction: asset.decimals) ?? "0"
         }
     }
 
@@ -113,7 +115,6 @@ final class SendTransactionScreen: BaseViewController {
 
         if isViewFirstAppeared {
             presentTransactionTutorialIfNeeded()
-            isViewFirstAppeared = false
         }
     }
 
@@ -124,7 +125,7 @@ final class SendTransactionScreen: BaseViewController {
 
         switch draft.transactionMode {
         case .asset(let asset):
-            title = "send-transaction-title".localized(asset.presentation.displayNames.primaryName)
+            title = "send-transaction-title".localized(asset.naming.displayNames.primaryName)
         case .algo:
             title = "send-transaction-title".localized("asset-algos-title".localized)
         }
@@ -190,37 +191,25 @@ extension SendTransactionScreen {
     private func bindAssetPreview() {
         let currency = sharedDataController.currency
 
-        let viewModel: AssetPreviewViewModel
+        let viewModel: PrimaryListItemViewModel
 
         switch draft.transactionMode {
         case .algo:
-            let algoAssetItem = AlgoAssetItem(
-                account: draft.from,
+            let algoAssetItem = AssetItem(
+                asset: draft.from.algo,
+                currency: sharedDataController.currency,
+                currencyFormatter: currencyFormatter,
+                currencyFormattingContext: .standalone()
+            )
+            viewModel = AssetListItemViewModel(algoAssetItem)
+        case .asset(let asset):
+            let assetItem = AssetItem(
+                asset: asset,
                 currency: currency,
                 currencyFormatter: currencyFormatter,
                 currencyFormattingContext: .standalone()
             )
-            let algoAssetPreview = AssetPreviewModelAdapter.adapt(algoAssetItem)
-            viewModel = AssetPreviewViewModel(algoAssetPreview)
-        case .asset(let asset):
-            if let collectibleAsset = asset as? CollectibleAsset {
-                let draft = CollectibleAssetPreviewSelectionDraft(
-                    asset: collectibleAsset,
-                    currency: currency,
-                    currencyFormatter: currencyFormatter,
-                    currencyFormattingContext: .standalone()
-                )
-                viewModel = AssetPreviewViewModel(draft)
-            } else {
-                let assetItem = AssetItem(
-                    asset: asset,
-                    currency: currency,
-                    currencyFormatter: currencyFormatter,
-                    currencyFormattingContext: .standalone()
-                )
-                let assetPreview = AssetPreviewModelAdapter.adaptAssetSelection(assetItem)
-                viewModel = AssetPreviewViewModel(assetPreview)
-            }
+            viewModel = AssetListItemViewModel(assetItem)
         }
 
         accountView.bindData(viewModel)
@@ -240,7 +229,7 @@ extension SendTransactionScreen {
                     .appending(decimalStrings)
             case .asset(let asset):
                 showingValue = (amountValue.replacingOccurrences(of: decimalStrings, with: "")
-                    .decimalAmount?.toNumberStringWithSeparatorForLabel(fraction: asset.presentation.decimals) ?? amountValue)
+                    .decimalAmount?.toNumberStringWithSeparatorForLabel(fraction: asset.decimals) ?? amountValue)
                     .appending(decimalStrings)
             }
         } else {
@@ -347,7 +336,7 @@ extension SendTransactionScreen {
     }
 
     private func addAccountView() {
-        accountView.customize(AssetPreviewViewTheme())
+        accountView.customize(AssetListItemTheme())
 
         accountContainerView.draw(corner: theme.accountContainerCorner)
         accountContainerView.drawAppearance(border: theme.accountContainerBorder)
@@ -396,10 +385,17 @@ extension SendTransactionScreen {
         maxButton.setTitle("send-transaction-max-button-title".localized, for: .normal)
 
         maxButton.customize(TransactionShadowButtonTheme())
-        noteButton.customize(TransactionShadowButtonTheme())
-
         maxButton.drawAppearance(border: theme.accountContainerBorder)
+        maxButton.draw(shadow: theme.accountContainerFirstShadow)
+        maxButton.draw(secondShadow: theme.accountContainerSecondShadow)
+        maxButton.draw(thirdShadow: theme.accountContainerThirdShadow)
+
+        noteButton.customize(TransactionShadowButtonTheme())
         noteButton.drawAppearance(border: theme.accountContainerBorder)
+        noteButton.draw(shadow: theme.accountContainerFirstShadow)
+        noteButton.draw(secondShadow: theme.accountContainerSecondShadow)
+        noteButton.draw(thirdShadow: theme.accountContainerThirdShadow)
+
         stackView.addArrangedSubview(noteButton)
         stackView.addArrangedSubview(maxButton)
     }
@@ -448,7 +444,7 @@ extension SendTransactionScreen: TransactionSignChecking {
 
         switch draft.transactionMode {
         case .algo:
-            self.amount = draft.from.amount.toAlgos.toNumberStringWithSeparatorForLabel ?? "0"
+            self.amount = draft.from.algo.amount.toAlgos.toNumberStringWithSeparatorForLabel ?? "0"
         case .asset(let asset):
             self.amount = asset.amountWithFraction.toNumberStringWithSeparatorForLabel(fraction: asset.decimals) ?? "0"
         }
@@ -471,7 +467,8 @@ extension SendTransactionScreen: TransactionSignChecking {
 
         transactionSendController = TransactionSendController(
             draft: draft,
-            api: api!
+            api: api!,
+            analytics: analytics
         )
 
         transactionSendController?.delegate = self
@@ -588,7 +585,7 @@ extension SendTransactionScreen {
                     return
                 }
 
-                self.amount = self.draft.from.amount.toAlgos.toNumberStringWithSeparatorForLabel ?? "0"
+                self.amount = self.draft.from.algo.amount.toAlgos.toNumberStringWithSeparatorForLabel ?? "0"
                 self.handleSuccessAmountValidation()
             }
         )
@@ -805,11 +802,24 @@ extension SendTransactionScreen: TransactionControllerDelegate {
     }
 
     func transactionController(_ transactionController: TransactionController, didRequestUserApprovalFrom ledger: String) {
-        let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: self)
+        let ledgerApprovalTransition = BottomSheetTransition(
+            presentingViewController: self,
+            interactable: false
+        )
         ledgerApprovalViewController = ledgerApprovalTransition.perform(
             .ledgerApproval(mode: .approve, deviceName: ledger),
             by: .present
         )
+
+        ledgerApprovalViewController?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .didCancel:
+                self.ledgerApprovalViewController?.dismissScreen()
+                self.loadingController?.stopLoading()
+            }
+        }
     }
     func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {
         ledgerApprovalViewController?.dismissScreen()
@@ -950,8 +960,8 @@ extension SendTransactionScreen {
             toAccount: draft.toAccount,
             amount: draft.amount,
             assetIndex: asset.id,
-            assetDecimalFraction: asset.presentation.decimals,
-            isVerifiedAsset: asset.presentation.isVerified,
+            assetDecimalFraction: asset.decimals,
+            isVerifiedAsset: asset.verificationTier.isVerified,
             note: draft.note
         )
         transactionDraft.toContact = draft.toContact

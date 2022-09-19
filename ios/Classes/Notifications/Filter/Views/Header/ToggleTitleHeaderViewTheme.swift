@@ -28,7 +28,7 @@ struct ToggleTitleHeaderViewTheme: StyleSheet, LayoutSheet {
         self.titleLabel = [
             .textOverflow(SingleLineFittingText()),
             .textAlignment(.left),
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(13)),
             .text("notification-filter-show-for".localized)
         ]

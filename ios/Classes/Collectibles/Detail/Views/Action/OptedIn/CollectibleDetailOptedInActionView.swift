@@ -21,10 +21,9 @@ final class CollectibleDetailOptedInActionView:
     View,
     ListReusable,
     ViewModelBindable,
-    UIInteractionObservable,
-    UIControlInteractionPublisher {
+    UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .performOptOut: UIControlInteraction(),
+        .performOptOut: TargetActionInteraction(),
         .performCopy: UIBlockInteraction(),
         .performShareQR: UIBlockInteraction()
     ]
@@ -66,20 +65,20 @@ final class CollectibleDetailOptedInActionView:
             for: optOutButton
         )
 
-        accountShareView.observe(event: .performCopy) {
+        accountShareView.startObserving(event: .performCopy) {
             [weak self] in
             guard let self = self else { return }
 
-            let interaction = self.uiInteractions[.performCopy] as? UIBlockInteraction
-            interaction?.notify()
+            let interaction = self.uiInteractions[.performCopy]
+            interaction?.publish()
         }
 
-        accountShareView.observe(event: .performShareQR) {
+        accountShareView.startObserving(event: .performShareQR) {
             [weak self] in
             guard let self = self else { return }
 
-            let interaction = self.uiInteractions[.performShareQR] as? UIBlockInteraction
-            interaction?.notify()
+            let interaction = self.uiInteractions[.performShareQR]
+            interaction?.publish()
         }
     }
 }

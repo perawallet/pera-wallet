@@ -110,8 +110,8 @@ extension TransactionFilterView {
             )
         )
 
-        let color0 = AppColors.Shared.System.background.uiColor.withAlphaComponent(0).cgColor
-        let color1 = AppColors.Shared.System.background.uiColor.cgColor
+        let color0 = Colors.Defaults.background.uiColor.withAlphaComponent(0).cgColor
+        let color1 = Colors.Defaults.background.uiColor.cgColor
 
         layer.colors = [color0, color1]
         closeButtonContainer.layer.insertSublayer(layer, at: 0)

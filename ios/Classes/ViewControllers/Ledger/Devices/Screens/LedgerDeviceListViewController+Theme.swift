@@ -24,7 +24,7 @@ extension LedgerDeviceListViewController {
         let cellSize: LayoutSize
 
         init(_ family: LayoutFamily) {
-            backgroundColor = AppColors.Shared.System.background
+            backgroundColor = Colors.Defaults.background
             cellSize = (UIScreen.main.bounds.width - 48, 76)
         }
     }

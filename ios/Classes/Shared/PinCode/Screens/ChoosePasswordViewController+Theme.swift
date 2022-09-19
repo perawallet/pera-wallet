@@ -25,7 +25,7 @@ extension ChoosePasswordViewController {
 
         init(_ family: LayoutFamily) {
             choosePasswordViewTheme = ChoosePasswordViewTheme()
-            backgroundColor = AppColors.Shared.System.background
+            backgroundColor = Colors.Defaults.background
         }
     }
 }

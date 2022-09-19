@@ -35,6 +35,8 @@ protocol SharedDataController: AnyObject {
 
     var currency: CurrencyProvider { get }
 
+    var blockchainUpdatesMonitor: BlockchainUpdatesMonitor { get }
+
     var lastRound: BlockRound? { get }
     
     /// <note>
@@ -54,6 +56,15 @@ protocol SharedDataController: AnyObject {
     func resetPollingAfterPreferredCurrencyWasChanged()
 
     func getPreferredOrderForNewAccount() -> Int
+
+    func hasOptedIn(
+        assetID: AssetID,
+        for account: Account
+    ) -> OptInStatus
+    func hasOptedOut(
+        assetID: AssetID,
+        for account: Account
+    ) -> OptOutStatus
     
     func add(
         _ observer: SharedDataControllerObserver
@@ -93,4 +104,16 @@ enum SharedDataControllerEvent {
     case didBecomeIdle
     case didStartRunning(first: Bool)
     case didFinishRunning
+}
+
+enum OptInStatus {
+    case pending
+    case optedIn
+    case rejected
+}
+
+enum OptOutStatus {
+    case pending
+    case optedOut
+    case rejected
 }

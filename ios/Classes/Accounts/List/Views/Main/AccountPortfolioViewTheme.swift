@@ -33,16 +33,16 @@ struct AccountPortfolioViewTheme:
         _ family: LayoutFamily
     ) {
         self.title = [
-            .textColor(AppColors.Components.Text.gray)
+            .textColor(Colors.Text.gray)
         ]
         self.titleTopPadding = 8
         self.value = [
-            .textColor(AppColors.Components.Text.main.uiColor),
+            .textColor(Colors.Text.main),
             .textOverflow(SingleLineFittingText()),
             .textAlignment(.center)
         ]
         self.secondaryValue = [
-            .textColor(AppColors.Components.Text.gray.uiColor),
+            .textColor(Colors.Text.gray),
             .textOverflow(SingleLineFittingText()),
             .textAlignment(.center)
         ]

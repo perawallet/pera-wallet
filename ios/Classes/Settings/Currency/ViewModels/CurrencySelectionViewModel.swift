@@ -32,11 +32,10 @@ struct CurrencySelectionViewModel: ViewModel {
 
 extension CurrencySelectionViewModel {
     private mutating func bindTitle() {
-        self.title = "settings-currency-title"
+        self.title =
+        "settings-currency-title"
             .localized
-            .bodyMedium(
-                hasMultilines: false
-            )
+            .bodyMedium()
     }
 
     private mutating func bindDescription(
@@ -60,7 +59,7 @@ extension CurrencySelectionViewModel {
         )
         descriptionAttributedText.addAttribute(
             NSAttributedString.Key.foregroundColor,
-            value: AppColors.Components.Text.main.uiColor,
+            value: Colors.Text.main.uiColor,
             range: primaryCurrencyRange
         )
 
@@ -70,7 +69,7 @@ extension CurrencySelectionViewModel {
         )
         descriptionAttributedText.addAttribute(
             NSAttributedString.Key.foregroundColor,
-            value: AppColors.Components.Text.main.uiColor,
+            value: Colors.Text.main.uiColor,
             range: secondaryCurrencyRange
         )
 

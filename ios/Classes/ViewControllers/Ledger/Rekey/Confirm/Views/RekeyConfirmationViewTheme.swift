@@ -35,12 +35,12 @@ struct RekeyConfirmationViewTheme: StyleSheet, LayoutSheet {
     let loadingImageVerticalPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.title = [
             .textOverflow(FittingText()),
             .textAlignment(.left),
             .font(Fonts.DMSans.medium.make(32)),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .text("ledger-rekey-confirm-title".localized)
         ]
         if let i = img("icon-info-gray") {
@@ -51,7 +51,7 @@ struct RekeyConfirmationViewTheme: StyleSheet, LayoutSheet {
             self.infoImage = []
         }
         self.feeTitle = [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.medium.make(13)),
             .textAlignment(.left),
             .textOverflow(FittingText())

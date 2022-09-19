@@ -49,12 +49,12 @@ final class ChoosePasswordViewController: BaseViewController {
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
 
-        if case .confirm(let flow) = mode,
-           flow == .viewPassphrase {
-            addBarButtons()
+        if case .login = mode {
+            hidesCloseBarButtonItem = true
+            return
         }
     }
-    
+
     override func configureAppearance() {
         super.configureAppearance()
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
@@ -85,16 +85,6 @@ extension ChoosePasswordViewController {
         choosePasswordView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-    }
-}
-
-extension ChoosePasswordViewController {
-    private func addBarButtons() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
-            self?.closeScreen(by: .dismiss, animated: true)
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
     }
 }
 
@@ -202,6 +192,7 @@ extension ChoosePasswordViewController {
                 return
             }
             configuration.session?.savePassword(password)
+            self.analytics.track(.onboardSetPinCode(type: .verify))
             let controller = open(
                 .tutorial(flow: flow, tutorial: .localAuthentication),
                 by: .push

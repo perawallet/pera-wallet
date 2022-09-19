@@ -1,4 +1,7 @@
 /* (No Comment) */
+"about" = "Über";
+
+/* (No Comment) */
 "account-detail-assets-search" = "Assets durchsuchen";
 
 /* (No Comment) */
@@ -11,7 +14,7 @@
 "account-listing-error-message" = "Leider können wir die Details zu diesem Portfolio nicht anzeigen. Es sieht so aus, als ob wir Probleme mit der Berechnung haben.\n\nBitte beachten Sie, dass einige Assets möglicherweise nicht verfügbar sind. Der Gesamtwert des Portfolios sollte daher als Schätzung betrachtet werden.";
 
 /* (No Comment) */
-"account-name-setup-description" = "Benennen Sie Ihr Konto, um es bei der Verwendung der Pera-Wallet leicht zu identifizieren. Diese Namen werden lokal gespeichert und können nur von Ihnen gesehen werden.";
+"account-name-setup-description" = "Benennen Sie Ihr Konto, um es bei der Verwendung der Pera Wallet leicht zu identifizieren. Diese Namen werden lokal gespeichert und können nur von Ihnen gesehen werden.";
 
 /* (No Comment) */
 "account-name-setup-explanation" = "Kontoname";
@@ -107,28 +110,31 @@
 "accounts-title" = "Konten";
 
 /* (No Comment) */
-"accounts-title-assets" = "Assets";
-
-/* (No Comment) */
 "accounts-title-collectibles" = "Collectibles";
 
 /* (No Comment) */
 "accounts-title-history" = "Verlauf";
 
 /* (No Comment) */
-"accounts-tranaction-empty-detail" = "Mit diesem Asset wurden keine Transaktionen durchgeführt";
-
-/* MARK: Accounts */
-"accounts-tranaction-empty-text" = "Noch keine Transaktionen";
+"accounts-title-overview" = "Übersicht";
 
 /* (No Comment) */
-"accounts-transaction-history-title" = "Transaktionsverlauf";
+"accounts-tranaction-empty-detail" = "Für den ausgewählten Zeitraum sind keine Transaktionen anzuzeigen.";
+
+/* MARK: Accounts */
+"accounts-tranaction-empty-text" = "Keine Transaktionen";
 
 /* (No Comment) */
 "accounts-transaction-value" = "Wert";
 
 /* (No Comment) */
 "accounts-transaction-your-balance" = "Guthaben";
+
+/* (No Comment) */
+"accounts-transactions-title" = "Transaktionen";
+
+/* (No Comment) */
+"activity" = "Aktivität";
 
 /* (No Comment) */
 "add-node-title" = "Knoten hinzufügen";
@@ -152,10 +158,64 @@
 "algo-statistics-title" = "Statistik";
 
 /* (No Comment) */
+"asa-about-asa-creator" = "Ersteller";
+
+/* MARK: ASA About */
+"asa-about-asa-id" = "ASA-ID";
+
+/* (No Comment) */
+"asa-about-asa-project-website" = "Projekt-Website";
+
+/* (No Comment) */
+"asa-about-asa-show-on" = "Anzeigen auf";
+
+/* (No Comment) */
+"asa-about-asa-show-on-pera-explorer" = "Pera-Explorer";
+
+/* (No Comment) */
+"asa-about-asa-url" = "ASA-URL";
+
+/* (No Comment) */
+"asa-verification-detail-suspicious" = "Wir haben Berichte erhalten, dass dieses ASA in einen Betrugsversuch verwickelt war. Seien Sie vorsichtig, wenn Sie mit ihm interagieren.";
+
+/* (No Comment) */
+"asa-verification-detail-suspicious-bold" = "Betrugsversuch";
+
+/* (No Comment) */
+"asa-verification-detail-trusted" = "Dies ist ein bekanntes und etabliertes Projekt im Algorand-Ökosystem.";
+
+/* (No Comment) */
+"asa-verification-detail-trusted-bold" = "bekannt";
+
+/* (No Comment) */
+"asa-verification-detail-verified" = "Dieses ASA wurde automatisch durch das Pera ASA Verifizierungsprogramm verifiziert.";
+
+/* (No Comment) */
+"asa-verification-detail-verified-bold" = "automatisch verifiziert";
+
+/* (No Comment) */
+"asa-verification-learn-more" = "Erfahren Sie mehr über die ASA-Verifizierung";
+
+/* (No Comment) */
+"asa-verification-suspicious-report" = "Melden %@";
+
+/* (No Comment) */
+"asa-verification-title-suspicious" = "Verdächtig";
+
+/* MARK: ASA Verification */
+"asa-verification-title-trusted" = "Vertrauenswürdiges ASA";
+
+/* (No Comment) */
+"asa-verification-title-verified" = "Verifiziertes ASA";
+
+/* (No Comment) */
 "asset-add-confirmation-title" = "Asset wird hinzugefügt";
 
 /* (No Comment) */
 "asset-add-warning" = "Um ein Asset hinzuzufügen, müssen Sie eine Transaktion mit der Mindesttransaktionsgebühr tätigen. Dies wird in Ihrem Transaktionsverlauf angezeigt.";
+
+/* (No Comment) */
+"asset-algos-description" = "Der Algo ist die offizielle Kryptowährung der Algorand-Blockchain. Die Algorand-Blockchain wurde entwickelt, um eine offene, grenzenlose Wirtschaft zu schaffen, an der jeder teilnehmen kann. Diese neue Art der digitalen Wirtschaft kann nur mit einer wirklich digitalen Währung funktionieren, die sofort und für jeden funktioniert. Dies ist der Algo.";
 
 /* (No Comment) */
 "asset-algos-title" = "Algo";
@@ -198,6 +258,30 @@
 
 /* (No Comment) */
 "asset-not-found-title" = "Kein Asset gefunden";
+
+/* (No Comment) */
+"asset-opt-in-successful-message" = "%@ erfolgreich zu Ihrem Konto hinzugefügt.";
+
+/* (No Comment) */
+"asset-opt-out-successful-message" = "%@ erfolgreich von Ihrem Konto entfernt.";
+
+/* (No Comment) */
+"asset-quick-action-button-add" = "Asset hinzufügen";
+
+/* (No Comment) */
+"asset-quick-action-title-add" = "Sie können dieses Asset hinzufügen zu";
+
+/* (No Comment) */
+"asset-quick-action-title-add-asset-without-account" = "Sie können sich über eines Ihrer Konten das Opt-in für dieses Asset durchführen.";
+
+/* (No Comment) */
+"asset-quick-action-title-add-nft-without-account" = "Sie können sich über eines Ihrer Konten das Opt-in für dieses NFT durchführen.";
+
+/* (No Comment) */
+"asset-quick-action-title-opt-in" = "Sie können dieses NFT hinzufügen zu";
+
+/* (No Comment) */
+"asset-quick-action-title-remove" = "Opt-in für";
 
 /* (No Comment) */
 "asset-remove-confirmation-title" = "Asset entfernen";
@@ -247,6 +331,9 @@
 /* MARK: Asset */
 "asset-title" = "Asset";
 
+/* MARK: Total Supply */
+"asset-total-supply-body" = "Das Gesamtangebot eines Assets wird zum Zeitpunkt der Erstellung festgelegt und entspricht den gesamten erstellten Einheiten des Assets.";
+
 /* (No Comment) */
 "asset-transfer-balance" = "Guthaben übertragen";
 
@@ -287,7 +374,7 @@
 "ble-error-fail-ble-connection-unauthorized" = "Um nach Ledger-Geräten in Ihrer Nähe zu suchen, müssen Sie eine Bluetooth-Berechtigung erteilen.";
 
 /* (No Comment) */
-"ble-error-fail-ble-connection-unsupported" = "Das Gerät, das Sie verbinden möchten, wird von der Pera-Wallet nicht unterstützt.";
+"ble-error-fail-ble-connection-unsupported" = "Das Gerät, das Sie verbinden möchten, wird von der Pera Wallet nicht unterstützt.";
 
 /* (No Comment) */
 "ble-error-fail-connect-peripheral" = "Es konnte keine Verbindung zum Ledger-Gerät hergestellt werden. Stellen Sie sicher, dass sich das Gerät in der Nähe befindet und entsperrt ist und dass Bluetooth aktiviert ist.";
@@ -464,10 +551,10 @@
 "collectible-opt-out-info-title" = "Opt-out für NFT ";
 
 /* (No Comment) */
-"collectible-receive-account-list-info" = "Ihr Konto muss das Opt-in für das NFT durchführen, bevor Sie es erhalten können. Achten Sie bei der Bestätigung darauf, die Asset-ID zu überprüfen.";
+"collectible-receive-account-list-info" = "Sie müssen das Opt-in für die NFT ASA ID durchführen, um es in Ihre Wallet übertragen zu können.";
 
 /* (No Comment) */
-"collectible-receive-asset-list-info" = "Sie können das NFT, für das Sie das Opt-in durchführen möchten, suchen, indem Sie den Namen oder die Asset-ID in die Suchleiste unten einfügen.";
+"collectible-receive-asset-list-info" = "Sie müssen das Opt-in für die NFT ASA ID durchführen, um es in Ihre Wallet übertragen zu können. Fügen Sie die ASA-ID in die Suchleiste ein.";
 
 /* (No Comment) */
 "collectible-receive-asset-list-selected-account" = "Ausgewähltes Konto";
@@ -746,7 +833,7 @@
 "ledger-account-fetct-error" = "Beim Abrufen der Kontodetails ist ein Netzwerkfehler aufgetreten. Bitte starten Sie den Vorgang erneut.";
 
 /* (No Comment) */
-"ledger-account-selection-detail" = "Dieses Ledger-Gerät kann für folgende Konten Transaktionen signieren. Wählen Sie die Konten, die Sie Ihrer Pera-Wallet hinzufügen möchten.";
+"ledger-account-selection-detail" = "Dieses Ledger-Gerät kann für folgende Konten Transaktionen signieren. Wählen Sie die Konten, die Sie Ihrer Pera Wallet hinzufügen möchten.";
 
 /* (No Comment) */
 "ledger-account-selection-detail-rekey" = "Wählen Sie das Konto, mit dem Sie dieses Konto signieren möchten.";
@@ -824,7 +911,7 @@
 "ledger-pairing-first-warning-title" = "Ledger mit Ihrem Gerät koppeln";
 
 /* (No Comment) */
-"ledger-pairing-issue-error-message" = "Stellen Sie sicher, dass das Gerät entsperrt ist, sich in der Nähe befindet und Bluetooth aktiviert ist. Sollten die Probleme weiterhin bestehen, entfernen Sie bitte das Gerät aus den Bluetooth-Einstellungen Ihres Telefons, löschen Sie das Ledger-Konto und koppeln Sie Ihren Ledger erneut, indem Sie den Anweisungen der Pera-Wallet folgen.";
+"ledger-pairing-issue-error-message" = "Stellen Sie sicher, dass das Gerät entsperrt ist, sich in der Nähe befindet und Bluetooth aktiviert ist. Sollten die Probleme weiterhin bestehen, entfernen Sie bitte das Gerät aus den Bluetooth-Einstellungen Ihres Telefons, löschen Sie das Ledger-Konto und koppeln Sie Ihren Ledger erneut, indem Sie den Anweisungen der Pera Wallet folgen.";
 
 /* (No Comment) */
 "ledger-pairing-issue-error-title" = "Haben Sie Verbindungsprobleme mit dem Ledger Nano X?";
@@ -969,6 +1056,12 @@
 
 /* MARK: Login */
 "login-title" = "Entsperren";
+
+/* MARK: Mail */
+"mail-report-address" = "verification@perawallet.app";
+
+/* (No Comment) */
+"mail-report-subject" = "ASA-Bericht: %d";
 
 /* (No Comment) */
 "maximum-balance-standard-account-warning-description" = "Basierend auf Ihrer Kontokonfiguration beträgt Ihr Mindestguthaben %@.\n\nWenn Sie auf \"Weiter\" klicken, wird Ihr Transaktionsbetrag aktualisiert, um das erforderliche Mindestguthaben der Algorand-Blockchain beizubehalten. Sie können diese Änderung im nächsten Schritt in der Vorschau sehen.";
@@ -1146,6 +1239,12 @@
 
 /* (No Comment) */
 "opitons-collectibles-filter" = "NFTs filtern";
+
+/* (No Comment) */
+"opt-in-description-adding-nft" = "Das Opt-in für ein NFT erfordert, dass Sie eine Transaktion mit der Mindesttransaktionsgebühr tätigen. Dies wird in Ihrem Transaktionsverlauf angezeigt.";
+
+/* MARK: Opt In Asset */
+"opt-in-title-adding-nft" = "Opt-in für NFT";
 
 /* (No Comment) */
 "options-auth-account" = "Adresse des authentifizierten Kontos";
@@ -1739,7 +1838,7 @@
 "settings-rate-modal-title" = "Bewerten Sie Ihre Erfahrung";
 
 /* (No Comment) */
-"settings-rate-title" = "Pera-Wallet bewerten";
+"settings-rate-title" = "Pera Wallet bewerten";
 
 /* MARK: Settings */
 "settings-sections-account" = "Konto";
@@ -1789,6 +1888,18 @@
 /* MARK: SingleTransactionRequestMARK: SingleTransactionRequest */
 "single-transaction-request-show-detail-title" = "Transaktionsdetails anzeigen";
 
+/* (No Comment) */
+"social-media-platform-discord" = "Discord";
+
+/* (No Comment) */
+"social-media-platform-telegram" = "Telegram";
+
+/* MARK: Social Media Platforms */
+"social-media-platform-title" = "SOZIALE MEDIEN";
+
+/* (No Comment) */
+"social-media-platform-twitter" = "Twitter";
+
 /* MARK: Sort Account List */
 "sort-account-list-manually-header-title" = "Konten manuell reorganisieren";
 
@@ -1800,6 +1911,9 @@
 
 /* MARK: Terms and Services */
 "terms-and-services-title" = "Nutzungsbedingungen";
+
+/* (No Comment) */
+"title-about-with-param" = "ÜBER %@";
 
 /* (No Comment) */
 "title-accept" = "Akzeptieren";
@@ -1863,6 +1977,9 @@
 
 /* (No Comment) */
 "title-copy" = "Kopieren";
+
+/* (No Comment) */
+"title-csv" = "CSV";
 
 /* (No Comment) */
 "title-decline" = "Ablehnen";
@@ -2036,6 +2153,12 @@
 "title-show-all-detail" = "Alle Details anzeigen";
 
 /* (No Comment) */
+"title-show-less" = "Weniger anzeigen";
+
+/* (No Comment) */
+"title-show-more" = "Mehr anzeigen";
+
+/* (No Comment) */
 "title-show-more-assets" = "+%@ weitere Assets anzeigen";
 
 /* (No Comment) */
@@ -2064,6 +2187,9 @@
 
 /* (No Comment) */
 "title-testnet" = "TESTNET";
+
+/* (No Comment) */
+"title-total-supply" = "Gesamtangebot";
 
 /* (No Comment) */
 "title-unknown" = "Unbenannt";
@@ -2242,6 +2368,12 @@
 /* (No Comment) */
 "transaction-menu-copy-note" = "Notiz kopieren";
 
+/* (No Comment) */
+"transaction-option-list-add-asset-subtitle" = "Opt-in für ein ASA oder NFT";
+
+/* (No Comment) */
+"transaction-option-list-add-asset-title" = "Asset hinzufügen";
+
 /* MARK: Transaction Options */
 "transaction-option-list-buy-algo-subtitle" = "Krypto mit Kreditkarte oder per Banküberweisung kaufen";
 
@@ -2309,13 +2441,13 @@
 "tutorial-description-ledger" = "Vergewissern Sie sich, dass Ihr Ledger freigeschaltet und Bluetooth aktiviert ist.";
 
 /* (No Comment) */
-"tutorial-description-ledger-connected" = "Welcome bei Algorand! Ihr Konto kann jetzt verwendet werden.";
+"tutorial-description-ledger-connected" = "Welcome bei Pera Wallet! Ihr Konto kann jetzt verwendet werden.";
 
 /* (No Comment) */
 "tutorial-description-local" = "Ihre FaceID oder TouchID wird für die Verwendung der App benötigt. Wir empfehlen, die biometrische Authentifizierung zu aktivieren, um die Sicherheit der Wallet im Falle eines Diebstahls Ihres Telefons zu erhöhen.";
 
 /* (No Comment) */
-"tutorial-description-passcode" = "Diese 6-stellige PIN wird benötigt, um die Pera-Wallet zu verwenden. Wir empfehlen dringend, eine PIN zu erstellen, um die Sicherheit der Wallet zu erhöhen, falls Ihr Telefon gestohlen wird.";
+"tutorial-description-passcode" = "Diese 6-stellige PIN wird benötigt, um die Pera Wallet zu verwenden. Wir empfehlen dringend, eine PIN zu erstellen, um die Sicherheit der Wallet zu erhöhen, falls Ihr Telefon gestohlen wird.";
 
 /* (No Comment) */
 "tutorial-description-recover" = "In den folgenden Schritten geben Sie Ihre 25 Worte umfassende Wiederherstellungs-Passphrase ein, um ein Algorand-Konto wiederherzustellen. Halten Sie Ihre Wiederherstellungsphrase bereit, bevor Sie beginnen.";
@@ -2339,7 +2471,7 @@
 "tutorial-main-title-back-up" = "Ich verstehe";
 
 /* (No Comment) */
-"tutorial-main-title-ledger-connected" = "Algorand jetzt verwenden";
+"tutorial-main-title-ledger-connected" = "Pera Wallet jetzt verwenden";
 
 /* (No Comment) */
 "tutorial-main-title-passcode" = "PIN-Code festlegen";
@@ -2364,6 +2496,24 @@
 
 /* (No Comment) */
 "tutorial-title-write" = "Bereiten Sie sich darauf vor, \nIhre Wiederherstellungs-Passphrase aufzuschreiben";
+
+/* (No Comment) */
+"url-copied" = "URL in die Zwischenablage kopiert";
+
+/* (No Comment) */
+"verification-info-body" = "Das Algorand Standard Asset (ASA) Verifizierungsprogramm von Pera Wallet ermöglicht es ASA-Erstellern, sich automatisch verifizieren zu lassen, indem bestätigt wird, dass sie die Eigentümer des Assets sind.\nDer Hauptzweck der ASA-Verifizierung ist es, zu verhindern, dass ein ASA vorgibt, mit einem Projekt verbunden zu sein und als Token für ein Projekt zu fungieren, mit dem es nicht verbunden ist.\nDie ASA-Verifizierung ist keine Befürwortung des Projekts. Weder Algorand noch Pera würden den Verifizierungsprozess jemals nutzen, um ein Projekt zu unterstützen.";
+
+/* (No Comment) */
+"verification-info-body-first-highlight" = "automatisch";
+
+/* (No Comment) */
+"verification-info-body-second-highlight" = "um zu verhindern, dass ein ASA vorgibt, mit einem Projekt verbunden zu sein und als Token für ein Projekt zu fungieren, mit dem er nicht verbunden ist.";
+
+/* (No Comment) */
+"verification-info-body-third-highlight" = "Die ASA-Verifizierung ist keine Befürwortung des Projekts.";
+
+/* MARK: Verification Information */
+"verification-info-title" = "ASA-Verifizierung";
 
 /* (No Comment) */
 "verified-asset-double-check" = "Unbedingt immer überprüfen";
@@ -2507,6 +2657,9 @@
 "wallet-connect-transaction-error-invalid-asset" = "Ungültige Eingabe: Ungültiges Asset";
 
 /* (No Comment) */
+"wallet-connect-transaction-error-invalid-group" = "Anscheinend enthält diese Transaktionsgruppe eine oder mehrere fehlende Transaktionen. Zu Ihrer Sicherheit erlaubt Ihnen Pera Wallet nicht, Transaktionsgruppen mit verschleierten Details zu signieren. Bitte wenden Sie sich an die dApp, die diese Transaktion gesendet hat, damit sie dieses Problem beheben können.";
+
+/* (No Comment) */
 "wallet-connect-transaction-error-invalid-key" = "Ungültige Eingabe: Ungültiger öffentlicher Schlüssel";
 
 /* (No Comment) */
@@ -2529,6 +2682,9 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-error-transaction-size" = "Ungültige Eingabe: Transaktionsanforderung enthält mehr als 16 Transaktionen";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unable-fetch-asset" = "Wir konnten die Asset-Details nicht abrufen und die Transaktion wurde abgebrochen. Bitte überprüfen Sie Ihre Netzwerkverbindung und versuchen Sie es erneut.";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-unable-sign" = "Ungültige Eingabe: Kann nicht signiert werden";
@@ -2713,4 +2869,3 @@
 /* (No Comment) */
 "wc-transaction-request-signed-warning-title" = "Ihre Transaktion wird bearbeitet!";
 
-"wallet-connect-transaction-error-invalid-group" = "It looks like this transaction group contains one or more missing transactions. For your security, Pera Wallet won’t allow you to sign transaction groups that have obscured details. Please contact the dApp that sent this transaction so they can rectify this problem.";

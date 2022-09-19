@@ -24,7 +24,7 @@ struct PassphraseDisplayViewTheme: StyleSheet, LayoutSheet {
     let horizontalInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.topInset = 20
         self.collectionViewHeight = 456
         self.horizontalInset = 24

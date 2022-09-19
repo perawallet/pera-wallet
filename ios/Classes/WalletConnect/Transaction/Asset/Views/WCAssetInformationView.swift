@@ -18,15 +18,19 @@
 import UIKit
 import MacaroonUIKit
 
-final class WCAssetInformationView: View {
+final class WCAssetInformationView:
+    View,
+    UIInteractable {
+    private(set) var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
+        .performAction: TargetActionInteraction(),
+    ]
+    
     private lazy var titleLabel = UILabel()
-    private lazy var detailStackView = HStackView()
-    private lazy var verifiedIcon = UIImageView()
-    private lazy var assetLabel = UILabel()
+    private lazy var assetView = MacaroonUIKit.Button(.imageAtLeft(spacing: 8))
 
     func customize(_ theme: WCAssetInformationViewTheme) {
-        addTitleLabel(theme)
-        addDetail(theme)
+        addTitle(theme)
+        addAsset(theme)
     }
 
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
@@ -35,35 +39,41 @@ final class WCAssetInformationView: View {
 }
 
 extension WCAssetInformationView {
-    private func addTitleLabel(_ theme: WCAssetInformationViewTheme) {
+    private func addTitle(
+        _ theme: WCAssetInformationViewTheme
+    ) {
         titleLabel.customizeAppearance(theme.title)
 
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
-            $0.top.leading.equalToSuperview()
+            $0.top.bottom.leading.equalToSuperview()
         }
     }
     
-    private func addDetail(_ theme: WCAssetInformationViewTheme) {
-        detailStackView.spacing = theme.spacing
+    private func addAsset(
+        _ theme: WCAssetInformationViewTheme
+    ) {
+        assetView.customizeAppearance(theme.asset)
 
-        addSubview(detailStackView)
-        detailStackView.snp.makeConstraints {
+        addSubview(assetView)
+        assetView.fitToIntrinsicSize()
+        assetView.snp.makeConstraints {
             $0.top.bottom.equalToSuperview()
             $0.leading.equalToSuperview().offset(theme.detailLabelLeadingPadding)
             $0.trailing.lessThanOrEqualToSuperview()
         }
 
-        verifiedIcon.customizeAppearance(theme.verifiedIcon)
-        assetLabel.customizeAppearance(theme.asset)
-
-        detailStackView.addArrangedSubview(verifiedIcon)
-        detailStackView.addArrangedSubview(assetLabel)
+        startPublishing(
+            event: .performAction,
+            for: assetView
+        )
     }
 }
 
 extension WCAssetInformationView: ViewModelBindable {
-    func bindData(_ viewModel: WCAssetInformationViewModel?) {
+    func bindData(
+        _ viewModel: WCAssetInformationViewModel?
+    ) {
         guard let viewModel = viewModel else {
             return
         }
@@ -74,17 +84,24 @@ extension WCAssetInformationView: ViewModelBindable {
 
         if let name = viewModel.name {
             if let assetId = viewModel.assetId {
-                assetLabel.text = "\(name) \(assetId)"
+                assetView.setTitle("\(name) \(assetId)", for: .normal)
             } else {
-                assetLabel.text = name
+                assetView.setTitle(name, for: .normal)
             }
         }
 
+        assetView.setTitleColor(viewModel.nameColor?.uiColor, for: .normal)
+        assetView.setImage(viewModel.verificationTierIcon, for: .normal)
 
-        if viewModel.isVerified {
-            verifiedIcon.showViewInStack()
-        } else {
-            verifiedIcon.hideViewInStack()
+        if viewModel.verificationTierIcon == nil {
+            assetView.layout = .none
+            invalidateIntrinsicContentSize()
         }
+    }
+}
+
+extension WCAssetInformationView {
+    enum Event {
+        case performAction
     }
 }

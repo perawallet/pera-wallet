@@ -36,21 +36,12 @@ final class TransactionTutorialViewModel: ViewModel {
 
 extension TransactionTutorialViewModel {
     private func bindTitle() {
-        let font = Fonts.DMSans.medium.make(19)
-        let lineHeightMultiplier = 1.13
-
         title = .attributedString(
             "transaction-tutorial-title"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .textAlignment(.center),
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .bodyLargeMedium(
+                    alignment: .center
+                )
         )
     }
 
@@ -62,93 +53,69 @@ extension TransactionTutorialViewModel {
             subtitle = "transaction-tutorial-subtitle-other".localized
         }
 
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-
         self.subtitle = .attributedString(
             subtitle
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .textAlignment(.center),
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ]),
-                ])
+                .bodyRegular(
+                    alignment: .center
+                )
         )
     }
 
     private func bindFirstTip() {
-        let font = Fonts.DMSans.regular.make(13)
-        let lineHeightMultiplier = 1.18
-
         firstTip = .attributedString(
             "transaction-tutorial-tip-first"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .footnoteRegular()
         )
     }
 
     private func bindSecondTip() {
-        let font = Fonts.DMSans.regular.make(13)
-        let lineHeightMultiplier = 1.18
+        let text = "transaction-tutorial-tip-second".localized
+        let highlightedText = "transaction-tutorial-tip-second-highlighted".localized
 
-        // <todo>: `appendAttributesToRange` range functionality should be added to Macaroon.
-        let attributedString =
-        "transaction-tutorial-tip-second"
-            .localized
-            .attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineBreakMode(.byWordWrapping),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ]),
-            ])
-            .appendAttributesToRange(
-                [
-                    .foregroundColor: AppColors.Shared.Helpers.negative.uiColor,
-                    .font: Fonts.DMSans.regular.make(13).uiFont,
-                ],
-                of: "transaction-tutorial-tip-second-highlighted".localized
-            )
+        let textAttributes = NSMutableAttributedString(
+            attributedString: text.footnoteRegular()
+        )
+
+        let highlightedTextAttributes: TextAttributeGroup = [
+            .textColor(Colors.Helpers.negative),
+            .font(Fonts.DMSans.regular.make(13).uiFont)
+        ]
+
+        let highlightedTextRange = (textAttributes.string as NSString).range(of: highlightedText)
+
+        textAttributes.addAttributes(
+            highlightedTextAttributes.asSystemAttributes(),
+            range: highlightedTextRange
+        )
 
         secondTip = .attributedString(
-            attributedString
+            textAttributes
         )
     }
 
     private func bindTapToMoreText() {
-        let font = Fonts.DMSans.regular.make(13)
-        let lineHeightMultiplier = 1.18
+        let text = "transaction-tutorial-tap-to-more".localized
+        let highlightedText = "transaction-tutorial-tap-to-more-highlighted".localized
 
-        // <todo>:
-        // `appendAttributesToRange` range functionality should be added to Macaroon.
+        let textAttributes = NSMutableAttributedString(
+            attributedString: text.footnoteRegular()
+        )
+
+        let highlightedTextAttributes: TextAttributeGroup = [
+            .textColor(Colors.Link.primary),
+            .font(Fonts.DMSans.regular.make(13).uiFont)
+        ]
+
+        let highlightedTextRange = (textAttributes.string as NSString).range(of: highlightedText)
+
+        textAttributes.addAttributes(
+            highlightedTextAttributes.asSystemAttributes(),
+            range: highlightedTextRange
+        )
+
         tapToMoreText = .attributedString(
-            "transaction-tutorial-tap-to-more"
-                .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ]),
-                ])
-                .appendAttributesToRange(
-                    [
-                        .foregroundColor: AppColors.Components.Link.primary.uiColor,
-                        .font: Fonts.DMSans.regular.make(13).uiFont
-                    ],
-                    of: "transaction-tutorial-tap-to-more-highlighted".localized
-                )
+            textAttributes
         )
     }
 }

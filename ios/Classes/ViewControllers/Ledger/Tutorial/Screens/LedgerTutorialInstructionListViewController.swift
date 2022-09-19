@@ -27,11 +27,6 @@ final class LedgerTutorialInstructionListViewController: BaseScrollViewControlle
         self.accountSetupFlow = accountSetupFlow
         super.init(configuration: configuration)
     }
-
-    override func configureNavigationBarAppearance() {
-        super.configureNavigationBarAppearance()
-        addBarButtons()
-    }
     
     override func configureAppearance() {
         super.configureAppearance()
@@ -58,20 +53,6 @@ final class LedgerTutorialInstructionListViewController: BaseScrollViewControlle
         ledgerTutorialInstructionListView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-    }
-}
-
-extension LedgerTutorialInstructionListViewController {
-    private func addBarButtons() {
-        addCloseBarButton()
-    }
-
-    private func addCloseBarButton() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
-            self?.dismissScreen()
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
     }
 }
 

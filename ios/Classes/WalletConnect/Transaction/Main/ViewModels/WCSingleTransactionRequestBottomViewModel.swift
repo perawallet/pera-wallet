@@ -73,7 +73,7 @@ extension WCSingleTransactionRequestBottomViewModel {
         if let asset = asset as? StandardAsset {
             balance = "\(asset.amountWithFraction) \(asset.unitNameRepresentation)"
         } else {
-            guard let amount = account?.amount else {
+            guard let amount = account?.algo.amount else {
                 balance = nil
                 return
             }

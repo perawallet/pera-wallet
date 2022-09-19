@@ -27,9 +27,9 @@ struct SettingsToggleViewTheme: LayoutSheet, StyleSheet {
     let horizontalInset: LayoutMetric
     
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.name = [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .textOverflow(FittingText()),
             .font(Fonts.DMSans.regular.make(15))
         ]

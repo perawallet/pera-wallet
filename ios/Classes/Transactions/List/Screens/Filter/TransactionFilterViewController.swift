@@ -32,9 +32,12 @@ final class TransactionFilterViewController: BaseViewController {
         self.selectedOption = filterOption
         super.init(configuration: configuration)
     }
-    
-    override func configureAppearance() {
-        title = "transaction-filter-title-sort".localized
+
+    override func configureNavigationBarAppearance() {
+        super.configureNavigationBarAppearance()
+
+        title = "collectible-filter-selection-title".localized
+        hidesCloseBarButtonItem = true
     }
     
     override func linkInteractors() {

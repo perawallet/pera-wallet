@@ -42,25 +42,15 @@ extension SortAccountListOrderTitleViewModel {
     mutating func bindTitle(
         _ title: String
     ) {
-        let font = Fonts.DMSans.regular.make(13)
-        let lineHeightMultiplier = 1.18
-
         self.title = .attributedString(
             title
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .footnoteRegular()
         )
     }
 
     mutating func bindTitleStyle() {
         titleStyle = [
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .textOverflow(FittingText())
         ]
     }

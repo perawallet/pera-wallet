@@ -23,7 +23,6 @@ struct LedgerAccountVerificationStatusViewTheme: StyleSheet, LayoutSheet {
     let statusLabel: TextStyle
     let addressLabel: TextStyle
     let corner: Corner
-    let shadow: MacaroonUIKit.Shadow
     let indicator: ImageStyle
 
     let horizontalInset: LayoutMetric
@@ -36,22 +35,15 @@ struct LedgerAccountVerificationStatusViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.left),
             .textOverflow(FittingText()),
             .font(Fonts.DMSans.regular.make(15)),
-            .textColor(AppColors.Shared.Helpers.negative)
+            .textColor(Colors.Helpers.negative)
         ]
         self.addressLabel = [
             .textAlignment(.left),
             .textOverflow(FittingText()),
             .font(Fonts.DMMono.regular.make(13)),
-            .textColor(AppColors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
         self.corner = Corner(radius: 4)
-        self.shadow = MacaroonUIKit.Shadow(
-            color: UIColor(red: 0, green: 0, blue: 0, alpha: 0.08),
-            opacity: 1,
-            offset: (0, 2),
-            radius: 4,
-            fillColor: AppColors.Shared.System.background.uiColor
-        )
 
         self.indicator = [
             .image("red-loading-indicator"),

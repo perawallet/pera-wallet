@@ -19,32 +19,43 @@ import Foundation
 import MacaroonUIKit
 
 struct TransactionHistoryLoadingViewCommonTheme: TransactionHistoryLoadingViewTheme {
-    var titleViewCorner: LayoutMetric
-    var titleViewSize: LayoutSize
-    var titleMargin: LayoutMargins
+    var filterViewHeight: LayoutMetric
+    var filterViewMargin: LayoutHorizontalMargins
 
     var sectionCorner: LayoutMetric
     var sectionSize: LayoutSize
     var sectionMargin: LayoutMargins
 
+    var sectionLineStyle: ViewStyle
+    var sectionLinePaddings: LayoutHorizontalPaddings
+    var sectionLineHeight: LayoutMetric
+
     var itemCorner: LayoutMetric
     var itemSize: LayoutSize
     var itemMargin: LayoutMargins
+    var itemSeparator: Separator
 
     init(
         _ family: LayoutFamily
     ) {
 
-        self.titleViewCorner = 4
-        self.titleMargin = (24, 24, .noMetric, .noMetric)
-        self.titleViewSize = (138, 24)
+
+        self.filterViewHeight = 40
+        self.filterViewMargin = (-24, -24)
 
         self.sectionCorner = 4
         self.sectionMargin = (32, 24, .noMetric, .noMetric)
         self.sectionSize = (60, 20)
 
+        self.sectionLineStyle = [
+            .backgroundColor(Colors.Layer.grayLighter)
+        ]
+        self.sectionLinePaddings = (20, 20)
+        self.sectionLineHeight = 1
+
         self.itemCorner = 4
         self.itemMargin = (32, 24, .noMetric, .noMetric)
         self.itemSize = (.noMetric, 72)
+        self.itemSeparator = Separator(color: Colors.Layer.grayLighter)
     }
 }

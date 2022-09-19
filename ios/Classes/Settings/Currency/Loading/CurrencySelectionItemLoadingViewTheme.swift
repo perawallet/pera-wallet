@@ -43,7 +43,7 @@ struct CurrencySelectionItemLoadingViewTheme:
         self.titleCorner = 4
 
         self.separator = Separator(
-            color: AppColors.Shared.Layer.grayLighter,
+            color: Colors.Layer.grayLighter,
             size: 1,
             position: .bottom((0, 0))
         )

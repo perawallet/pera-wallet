@@ -32,7 +32,15 @@ class WalletConnector {
 
     weak var delegate: WalletConnectorDelegate?
 
-    init() {
+    private let analytics: ALGAnalytics
+
+    private var ongoingConnections: [String: Bool] = [:]
+
+    init(
+        analytics: ALGAnalytics
+    ) {
+        self.analytics = analytics
+
         walletConnectBridge.delegate = self
     }
 }
@@ -49,9 +57,17 @@ extension WalletConnector {
             return
         }
 
+        let key = url.absoluteString
+
+        if ongoingConnections[key] != nil {
+            return
+        }
+
         do {
+            ongoingConnections[key] = true
             try walletConnectBridge.connect(to: url)
         } catch {
+            ongoingConnections.removeValue(forKey: key)
             delegate?.walletConnector(self, didFailWith: .failedToConnect(url: url))
         }
     }
@@ -110,27 +126,8 @@ extension WalletConnector {
             WCSessionHistory.create(
                 entity: WCSessionHistory.entityName,
                 with: [WCSessionHistory.DBKeys.sessionHistory.rawValue: sessionData]
-            ) { result in
-                switch result {
-                case .error:
-                    asyncMain(afterDuration: 0) { [weak self] in
-                        guard let self = self else {
-                            return
-                        }
-
-                        self.logWCSessionSavingError(session)
-                    }
-                default:
-                    break
-                }
-            }
+            )
         }
-    }
-
-    private func logWCSessionSavingError(_ session: WCSession) {
-        UIApplication.shared.firebaseAnalytics?.record(
-            WCSessionSaveErrorLog(dappURL: session.urlMeta.wcURL.absoluteString)
-        )
     }
 }
 
@@ -145,6 +142,8 @@ extension WalletConnector: WalletConnectBridgeDelegate {
     }
 
     func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didFailToConnect url: WalletConnectURL) {
+        let key = url.absoluteString
+        ongoingConnections.removeValue(forKey: key)
         delegate?.walletConnector(self, didFailWith: .failedToConnect(url: url))
     }
 
@@ -156,6 +155,8 @@ extension WalletConnector: WalletConnectBridgeDelegate {
 
             let wcSession = session.toWCSession()
             self.addToSavedSessions(wcSession)
+            let key = session.url.absoluteString
+            self.ongoingConnections.removeValue(forKey: key)
             self.delegate?.walletConnector(self, didConnectTo: wcSession)
         }
     }

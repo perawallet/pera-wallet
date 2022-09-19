@@ -25,7 +25,7 @@ final class CurrencySelectionCell: SingleSelectionCell {
         super.init(frame: frame)
 
         let separator = Separator(
-            color: AppColors.Shared.Layer.grayLighter,
+            color: Colors.Layer.grayLighter,
             size: 1,
             position: .bottom((0, 0))
         )

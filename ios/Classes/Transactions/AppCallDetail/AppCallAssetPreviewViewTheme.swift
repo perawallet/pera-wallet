@@ -31,14 +31,14 @@ struct AppCallAssetPreviewViewTheme:
         _ family: LayoutFamily
     ) {
         title = [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
         ]
         icon = [
             .contentMode(.right),
         ]
         iconContentEdgeInsets = (6, 0)
         subtitle = [
-            .textColor(AppColors.Components.Text.grayLighter)
+            .textColor(Colors.Text.grayLighter)
         ]
         spacingBetweenTitleAndSubtitle = 2
     }

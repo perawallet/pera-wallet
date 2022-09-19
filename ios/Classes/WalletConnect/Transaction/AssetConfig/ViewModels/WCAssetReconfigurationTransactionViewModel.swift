@@ -248,7 +248,7 @@ class WCAssetReconfigurationTransactionViewModel {
     }
 
     private func setAssetURLInformationViewModel(from asset: Asset?) {
-        if let url = asset?.presentation.url,
+        if let url = asset?.url,
            !url.isEmpty {
             assetURLInformationViewModel = WCTransactionActionableInformationViewModel(information: .assetUrl, isLastElement: false)
         }

@@ -36,13 +36,11 @@ final class AccountCollectibleListViewController: BaseViewController {
             sharedDataController: sharedDataController
         ),
         copyToClipboardController: copyToClipboardController,
-        theme: account.value.isWatchAccount() ? .common : CollectibleListViewControllerTheme(
-            .current,
-            listContentBottomInset: 88
-        ),
         configuration: configuration
     )
-    
+
+    private lazy var optInActionView = FloatingActionItemButton(hasTitleLabel: false)
+
     private var account: AccountHandle
 
     private let copyToClipboardController: CopyToClipboardController
@@ -58,9 +56,20 @@ final class AccountCollectibleListViewController: BaseViewController {
         super.init(configuration: configuration)
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        analytics.track(.recordAccountDetailScreen(type: .tapCollectibles))
+    }
+
     override func prepareLayout() {
         super.prepareLayout()
         add(collectibleListScreen)
+
+        if !account.value.isWatchAccount() {
+            addOptInAction()
+            updateSafeAreaWhenOptInActionWasAdded()
+        }
     }
 
     override func linkInteractors() {
@@ -85,9 +94,14 @@ extension AccountCollectibleListViewController {
                     return
                 }
 
+                self.analytics.track(.tapNFTReceive())
                 self.openReceiveCollectible()
             case .didUpdate(let accounts):
                 self.account = accounts.first!
+            case .willDisplayListHeader:
+                self.setOptInActionHidden(true)
+            case .didEndDisplayingListHeader:
+                self.setOptInActionHidden(false)
             case .didFinishRunning(let hasError):
                 if hasError {
                     self.bottomBannerController.presentFetchError(
@@ -108,86 +122,53 @@ extension AccountCollectibleListViewController {
     }
 }
 
-extension AccountCollectibleListViewController: TransactionFloatingActionButtonViewControllerDelegate {
-    func transactionFloatingActionButtonViewControllerDidSend(
-        _ viewController: TransactionFloatingActionButtonViewController
-    ) {
-        let account = account.value
+extension AccountCollectibleListViewController {
+    private func addOptInAction() {
+        optInActionView.image = theme.optInActionIcon
 
-        log(SendAssetDetailEvent(address: account.address))
+        view.addSubview(optInActionView)
 
-        let controller = open(
-            .assetSelection(
-                filter: nil,
-                account: account
-            ),
-            by: .present
-        ) as? SelectAssetViewController
+        optInActionView.snp.makeConstraints {
+            let safeAreaBottom = view.compactSafeAreaInsets.bottom
+            let bottom = safeAreaBottom + theme.optInActionBottomPadding
 
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak controller] in
-            controller?.closeScreen(
-                by: .dismiss,
-                animated: true
-            )
+            $0.fitToSize(theme.optInActionSize)
+            $0.trailing == theme.optInActionTrailingPadding
+            $0.bottom == bottom
         }
 
-        controller?.leftBarButtonItems = [closeBarButtonItem]
-    }
-
-    func transactionFloatingActionButtonViewControllerDidReceive(
-        _ viewController: TransactionFloatingActionButtonViewController
-    ) {
-        let account = account.value
-
-        log(ReceiveAssetDetailEvent(address: account.address))
-
-        let draft = QRCreationDraft(
-            address: account.address,
-            mode: .address,
-            title: account.name
+        optInActionView.addTouch(
+            target: self,
+            action: #selector(openReceiveCollectible)
         )
-        
-        open(
-            .qrGenerator(
-                title: account.name ?? account.address.shortAddressDisplay,
-                draft: draft,
-                isTrackable: true
-            ),
-            by: .present
-        )
+
+        setOptInActionHidden(true)
     }
 
-    func transactionFloatingActionButtonViewControllerDidBuy(
-        _ viewController: TransactionFloatingActionButtonViewController
-    ) {
-        openBuyAlgo()
+    private func setOptInActionHidden(_ hidden: Bool) {
+        optInActionView.isHidden = hidden
     }
 
-    private func openBuyAlgo() {
-        let draft = BuyAlgoDraft()
-        draft.address = account.value.address
-
-        launchBuyAlgo(draft: draft)
+    private func updateSafeAreaWhenOptInActionWasAdded() {
+        let listSafeAreaBottom =
+            theme.spacingBetweenListAndAOptInAction +
+            theme.optInActionSize.h +
+            theme.optInActionBottomPadding
+            additionalSafeAreaInsets.bottom = listSafeAreaBottom
     }
 }
 
 extension AccountCollectibleListViewController {
+    @objc
     private func openReceiveCollectible() {
+        view.endEditing(true)
+
         let controller = open(
-            .receiveCollectibleAssetList(
-                account: account,
-                dataController: ReceiveCollectibleAssetListAPIDataController(api!)
-            ),
+            .receiveCollectibleAssetList(account: account),
             by: .present
         ) as? ReceiveCollectibleAssetListViewController
 
         controller?.delegate = self
-
-        let close = ALGBarButtonItem(kind: .close) { [weak controller] in
-            controller?.dismissScreen()
-        }
-
-        controller?.leftBarButtonItems = [close]
     }
 }
 
@@ -196,36 +177,23 @@ extension AccountCollectibleListViewController: ReceiveCollectibleAssetListViewC
         _ controller: ReceiveCollectibleAssetListViewController,
         didCompleteTransaction account: Account
     ) {
-        controller.dismissScreen {
-            let draft = QRCreationDraft(
-                address: account.address,
-                mode: .address,
-                title: account.name
-            )
-
-            self.open(
-                .qrGenerator(
-                    title: account.name ?? account.address.shortAddressDisplay,
-                    draft: draft,
-                    isTrackable: true
-                ),
-                by: .present
-            )
-        }
     }
 }
 
 extension AccountCollectibleListViewController {
     struct Theme: LayoutSheet, StyleSheet {
-        let transactionActionButtonPaddings: LayoutPaddings
+        let optInActionIcon: UIImage
+        let optInActionSize: LayoutSize
+        let optInActionTrailingPadding: LayoutMetric
+        let optInActionBottomPadding: LayoutMetric
+        let spacingBetweenListAndAOptInAction: LayoutMetric
 
         init(_ family: LayoutFamily) {
-            self.transactionActionButtonPaddings = (
-                .noMetric,
-                .noMetric,
-                UIApplication.shared.safeAreaBottom + 24,
-                24
-            )
+            optInActionIcon = "icon-circle-plus-64".uiImage
+            optInActionSize = (64, 64)
+            optInActionTrailingPadding = 24
+            optInActionBottomPadding = 8
+            spacingBetweenListAndAOptInAction = 4
         }
     }
 }

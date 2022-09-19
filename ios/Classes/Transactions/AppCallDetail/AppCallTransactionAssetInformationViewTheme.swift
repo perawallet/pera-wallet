@@ -32,7 +32,7 @@ struct AppCallTransactionAssetInformationViewTheme:
         contentPaddings = (12, 24, 12, 24)
         title = [
             .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
         ]
         minimumSpacingBetweenTitleAndAssetInfo = 16
         assetInfo = AppCallAssetPreviewStackViewTheme()

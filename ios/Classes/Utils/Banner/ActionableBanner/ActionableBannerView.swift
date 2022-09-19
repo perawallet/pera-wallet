@@ -20,10 +20,9 @@ import MacaroonUIKit
 final class ActionableBannerView:
     View,
     ViewModelBindable,
-    UIInteractionObservable,
-    UIControlInteractionPublisher {
+    UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .performAction: UIControlInteraction()
+        .performAction: TargetActionInteraction()
     ]
 
     private lazy var contentView = UIView()

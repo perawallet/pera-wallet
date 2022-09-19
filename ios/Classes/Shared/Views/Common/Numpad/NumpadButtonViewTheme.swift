@@ -31,9 +31,9 @@ struct NumpadButtonViewTheme: StyleSheet, LayoutSheet {
             .image("icon-delete-number")
         ]
         self.button = [
-            .backgroundColor(AppColors.Shared.System.background),
+            .backgroundColor(Colors.Defaults.background),
             .font(Fonts.DMMono.regular.make(24).uiFont),
-            .titleColor([.normal(AppColors.Components.Button.Ghost.text.uiColor)])
+            .titleColor([.normal(Colors.Button.Ghost.text.uiColor)])
         ]
         self.buttonBackgroundHighlightedImage = [
             .image("bg-passcode-number-selected")

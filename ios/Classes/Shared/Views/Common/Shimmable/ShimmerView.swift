@@ -44,7 +44,7 @@ final class ShimmerView:
         self.configuration = configuration
         super.init(frame: .zero)
 
-        backgroundColor = AppColors.Shared.Layer.gray.uiColor
+        backgroundColor = Colors.Layer.gray.uiColor
 
         observeWhenApplicationWillEnterForeground {
             [weak self] _ in

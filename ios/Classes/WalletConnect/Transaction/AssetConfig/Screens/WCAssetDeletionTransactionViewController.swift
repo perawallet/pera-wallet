@@ -70,12 +70,22 @@ extension WCAssetDeletionTransactionViewController {
 }
 
 extension WCAssetDeletionTransactionViewController: WCAssetDeletionTransactionViewDelegate {
-    func wcAssetDeletionTransactionViewDidOpenRawTransaction(_ wcAssetDeletionTransactionView: WCAssetDeletionTransactionView) {
+    func wcAssetDeletionTransactionViewDidOpenRawTransaction(
+        _ wcAssetDeletionTransactionView: WCAssetDeletionTransactionView
+    ) {
         displayRawTransaction()
     }
 
-    func wcAssetDeletionTransactionViewDidOpenAlgoExplorer(_ wcAssetDeletionTransactionView: WCAssetDeletionTransactionView) {
+    func wcAssetDeletionTransactionViewDidOpenAlgoExplorer(
+        _ wcAssetDeletionTransactionView: WCAssetDeletionTransactionView
+    ) {
         openInExplorer(asset)
+    }
+
+    func wcAssetDeletionTransactionViewDidOpenAssetDiscovery(
+        _ wcAssetDeletionTransactionView: WCAssetDeletionTransactionView
+    ) {
+        openAssetDiscovery(asset)
     }
 }
 

@@ -38,7 +38,7 @@ final class HomePortfolioNavigationView: View {
             make.centerX.equalToSuperview()
         }
 
-        subtitleView.customizeBaseAppearance(textColor: AppColors.Components.Text.gray)
+        subtitleView.customizeBaseAppearance(textColor: Colors.Text.gray)
 
         addSubview(subtitleView)
         subtitleView.snp.makeConstraints { make in

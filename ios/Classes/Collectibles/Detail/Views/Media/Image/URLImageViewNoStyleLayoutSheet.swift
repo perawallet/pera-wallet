@@ -31,7 +31,29 @@ struct URLImageViewNoStyleLayoutSheet: URLImageViewStyleLayoutSheet {
     ) {
         background = []
         content = []
-        placeholderStyleSheet = nil
-        placeholderLayoutSheet = nil
+        placeholderStyleSheet = URLImagePlaceholderDefaultStyleSheet()
+        placeholderLayoutSheet = URLImagePlaceholderDefaultLayoutSheet(family)
+    }
+}
+
+struct URLImagePlaceholderDefaultStyleSheet: URLImagePlaceholderViewStyleSheet {
+    var background: ViewStyle
+    var image: ImageStyle
+    var text: TextStyle
+
+    init() {
+        self.background = []
+        self.image = [
+            .contentMode(.scaleAspectFit)
+        ]
+        self.text = []
+    }
+}
+
+struct URLImagePlaceholderDefaultLayoutSheet: URLImagePlaceholderViewLayoutSheet {
+    var textPaddings: LayoutPaddings
+
+    init(_ family: LayoutFamily) {
+        self.textPaddings = (0, 0, 0, 0)
     }
 }

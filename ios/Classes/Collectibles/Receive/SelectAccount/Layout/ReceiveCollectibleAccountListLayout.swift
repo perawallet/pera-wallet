@@ -179,16 +179,16 @@ extension ReceiveCollectibleAccountListLayout {
         layout listViewLayout: UICollectionViewLayout,
         sizeForInfoItem item: ReceiveCollectibleAccountListInfoViewModel
     )-> CGSize {
-        let sizeCacheIdentifier = InfoCell.reuseIdentifier
+        let sizeCacheIdentifier = ReceiveCollectibleInfoBoxCell.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
         }
 
         let width = calculateContentWidth(for: listView)
-        let newSize = InfoCell.calculatePreferredSize(
+        let newSize = ReceiveCollectibleInfoBoxCell.calculatePreferredSize(
             item,
-            for: InfoCell.theme,
+            for: ReceiveCollectibleInfoBoxCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 

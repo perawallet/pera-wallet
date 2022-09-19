@@ -38,3 +38,28 @@ final class NoContentCell:
         contextView.customize(Self.theme)
     }
 }
+
+final class NoContentTopAlignedCell:
+    CollectionCell<NoContentView>,
+    ViewModelBindable {
+    static let theme = NoContentViewTopAttachedTheme()
+
+    override init(
+        frame: CGRect
+    ) {
+        super.init(
+            frame: frame
+        )
+
+        customize()
+    }
+
+    func customize() {
+        contextView.customize(Self.theme)
+    }
+}
+
+enum NoContentCellType {
+    case topAligned
+    case centered
+}

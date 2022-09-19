@@ -17,7 +17,7 @@
 import Foundation
 import MacaroonUIKit
 
-struct QRSendTransactionOptionViewModel: QRScanOptionListActionViewModel {
+struct QRSendTransactionOptionViewModel: QRScanOptionListItemButtonViewModel {
     let icon: Image?
     let title: EditText?
     let subtitle: EditText?

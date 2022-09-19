@@ -1,4 +1,7 @@
 /* (No Comment) */
+"about" = "关于";
+
+/* (No Comment) */
 "account-detail-assets-search" = "搜索资产";
 
 /* (No Comment) */
@@ -107,28 +110,31 @@
 "accounts-title" = "账户";
 
 /* (No Comment) */
-"accounts-title-assets" = "资产";
-
-/* (No Comment) */
 "accounts-title-collectibles" = "收藏品";
 
 /* (No Comment) */
 "accounts-title-history" = "历史";
 
 /* (No Comment) */
-"accounts-tranaction-empty-detail" = "没有发起与该资产相关的交易";
-
-/* MARK: Accounts */
-"accounts-tranaction-empty-text" = "尚未有交易";
+"accounts-title-overview" = "概述";
 
 /* (No Comment) */
-"accounts-transaction-history-title" = "交易记录";
+"accounts-tranaction-empty-detail" = "所选期间没有可显示的交易";
+
+/* MARK: Accounts */
+"accounts-tranaction-empty-text" = "无交易";
 
 /* (No Comment) */
 "accounts-transaction-value" = "价值";
 
 /* (No Comment) */
 "accounts-transaction-your-balance" = "余额";
+
+/* (No Comment) */
+"accounts-transactions-title" = "交易";
+
+/* (No Comment) */
+"activity" = "活动";
 
 /* (No Comment) */
 "add-node-title" = "添加备注";
@@ -152,10 +158,64 @@
 "algo-statistics-title" = "数据";
 
 /* (No Comment) */
+"asa-about-asa-creator" = "创作者";
+
+/* MARK: ASA About */
+"asa-about-asa-id" = "ASA ID";
+
+/* (No Comment) */
+"asa-about-asa-project-website" = "项目网站";
+
+/* (No Comment) */
+"asa-about-asa-show-on" = "显示在";
+
+/* (No Comment) */
+"asa-about-asa-show-on-pera-explorer" = "Pera浏览器";
+
+/* (No Comment) */
+"asa-about-asa-url" = "ASA URL";
+
+/* (No Comment) */
+"asa-verification-detail-suspicious" = "我们收到了有关该ASA涉及诈骗企图的举报。在与其交互时，请保持警惕。";
+
+/* (No Comment) */
+"asa-verification-detail-suspicious-bold" = "诈骗企图";
+
+/* (No Comment) */
+"asa-verification-detail-trusted" = "这是Algorand生态系统中的一个知名且成熟完善的项目。";
+
+/* (No Comment) */
+"asa-verification-detail-trusted-bold" = "知名";
+
+/* (No Comment) */
+"asa-verification-detail-verified" = "该ASA已通过Pera的ASA验证计划进行自动验证。";
+
+/* (No Comment) */
+"asa-verification-detail-verified-bold" = "已自动验证";
+
+/* (No Comment) */
+"asa-verification-learn-more" = "了解更多关于ASA验证的信息";
+
+/* (No Comment) */
+"asa-verification-suspicious-report" = "报告%@";
+
+/* (No Comment) */
+"asa-verification-title-suspicious" = "可疑的";
+
+/* MARK: ASA Verification */
+"asa-verification-title-trusted" = "可信赖的ASA";
+
+/* (No Comment) */
+"asa-verification-title-verified" = "已验证的ASA";
+
+/* (No Comment) */
 "asset-add-confirmation-title" = "添加资产";
 
 /* (No Comment) */
 "asset-add-warning" = "添加资产前，需要发送一笔产生最低交易费用的交易。交易记录中将会显示该笔交易。";
+
+/* (No Comment) */
+"asset-algos-description" = "ALGO是Algorand区块链的官方代币。Algorand区块链创建的目标是建立无国界的开放经济，让人人都能参与其中。这种新型的数字经济只能在真正数字化货币上运行。ALGO是即时生效，为所有人服务的数字货币。";
 
 /* (No Comment) */
 "asset-algos-title" = "ALGO";
@@ -198,6 +258,30 @@
 
 /* (No Comment) */
 "asset-not-found-title" = "未找到资产";
+
+/* (No Comment) */
+"asset-opt-in-successful-message" = "%@已成功添加到您的账户中。";
+
+/* (No Comment) */
+"asset-opt-out-successful-message" = "%@已成功从您的账户中移除。";
+
+/* (No Comment) */
+"asset-quick-action-button-add" = "添加资产";
+
+/* (No Comment) */
+"asset-quick-action-title-add" = "您可以将此资产添加到";
+
+/* (No Comment) */
+"asset-quick-action-title-add-asset-without-account" = "您可以从您的一个帐户中选择加入该资产。";
+
+/* (No Comment) */
+"asset-quick-action-title-add-nft-without-account" = "您可以从您的一个帐户中选择加入此NFT。";
+
+/* (No Comment) */
+"asset-quick-action-title-opt-in" = "您可以将此NFT添加到";
+
+/* (No Comment) */
+"asset-quick-action-title-remove" = "选择加入至";
 
 /* (No Comment) */
 "asset-remove-confirmation-title" = "移除资产";
@@ -246,6 +330,9 @@
 
 /* MARK: Asset */
 "asset-title" = "资产";
+
+/* MARK: Total Supply */
+"asset-total-supply-body" = "一项资产的总供应量是在创建时设定的，它与该资产的总创建单位相对应。";
 
 /* (No Comment) */
 "asset-transfer-balance" = "余额转账";
@@ -464,10 +551,10 @@
 "collectible-opt-out-info-title" = "选择退出NFT ";
 
 /* (No Comment) */
-"collectible-receive-account-list-info" = "您的账户需要先选择加入NFT，才能接受NFT。请在确认过程中，检查资产ID。";
+"collectible-receive-account-list-info" = "您需要选择加入NFT ASA ID才能转移到您的钱包里。";
 
 /* (No Comment) */
-"collectible-receive-asset-list-info" = "您可以通过在下面的搜索栏中粘贴其名称或资产ID来搜索您想要选择加入的 NFT。";
+"collectible-receive-asset-list-info" = "您需要选择加入NFT ASA ID才能转移到您的钱包里。在搜索栏粘贴ASA ID。";
 
 /* (No Comment) */
 "collectible-receive-asset-list-selected-account" = "已选账户";
@@ -970,6 +1057,12 @@
 /* MARK: Login */
 "login-title" = "解锁";
 
+/* MARK: Mail */
+"mail-report-address" = "verification@perawallet.app";
+
+/* (No Comment) */
+"mail-report-subject" = "ASA报告: %d";
+
 /* (No Comment) */
 "maximum-balance-standard-account-warning-description" = "基于您的账户设置，您的最低余额为%@\n\n点击继续，您的交易金河将会自动更新，以维持Algorand区块链所要求的的最低余额值。您将可以在下一步中预览此变化。";
 
@@ -1146,6 +1239,12 @@
 
 /* (No Comment) */
 "opitons-collectibles-filter" = "筛选NFT";
+
+/* (No Comment) */
+"opt-in-description-adding-nft" = "若选择加入NFT，您需要发送一笔有最低交易费的交易。这笔交易将出现在交易历史记录中。";
+
+/* MARK: Opt In Asset */
+"opt-in-title-adding-nft" = "选择加入NFT";
 
 /* (No Comment) */
 "options-auth-account" = "授权账户地址";
@@ -1789,6 +1888,18 @@
 /* MARK: SingleTransactionRequestMARK: SingleTransactionRequest */
 "single-transaction-request-show-detail-title" = "显示交易细节";
 
+/* (No Comment) */
+"social-media-platform-discord" = "Discord";
+
+/* (No Comment) */
+"social-media-platform-telegram" = "Telegram";
+
+/* MARK: Social Media Platforms */
+"social-media-platform-title" = "社会媒体";
+
+/* (No Comment) */
+"social-media-platform-twitter" = "推特";
+
 /* MARK: Sort Account List */
 "sort-account-list-manually-header-title" = "手动重新整理帐户";
 
@@ -1800,6 +1911,9 @@
 
 /* MARK: Terms and Services */
 "terms-and-services-title" = "服务条款";
+
+/* (No Comment) */
+"title-about-with-param" = "关于%@";
 
 /* (No Comment) */
 "title-accept" = "接受";
@@ -1863,6 +1977,9 @@
 
 /* (No Comment) */
 "title-copy" = "复制";
+
+/* (No Comment) */
+"title-csv" = "CSV";
 
 /* (No Comment) */
 "title-decline" = "拒绝";
@@ -2036,6 +2153,12 @@
 "title-show-all-detail" = "显示全部细节";
 
 /* (No Comment) */
+"title-show-less" = "隐藏部分";
+
+/* (No Comment) */
+"title-show-more" = "显示更多";
+
+/* (No Comment) */
 "title-show-more-assets" = "显示+%@ 更多的资产";
 
 /* (No Comment) */
@@ -2064,6 +2187,9 @@
 
 /* (No Comment) */
 "title-testnet" = "测试网";
+
+/* (No Comment) */
+"title-total-supply" = "总供应量";
 
 /* (No Comment) */
 "title-unknown" = "未命名";
@@ -2242,6 +2368,12 @@
 /* (No Comment) */
 "transaction-menu-copy-note" = "复制备注";
 
+/* (No Comment) */
+"transaction-option-list-add-asset-subtitle" = "选择加入ASA或NFT";
+
+/* (No Comment) */
+"transaction-option-list-add-asset-title" = "添加资产";
+
 /* MARK: Transaction Options */
 "transaction-option-list-buy-algo-subtitle" = "用信用卡或银行转账方式购买加密货币";
 
@@ -2364,6 +2496,24 @@
 
 /* (No Comment) */
 "tutorial-title-write" = "请准备写下您的恢复助记词";
+
+/* (No Comment) */
+"url-copied" = "URL已复制到剪贴板";
+
+/* (No Comment) */
+"verification-info-body" = "Pera钱包的Algorand标准资产（ASA）验证计划让ASA创建者证明他们是该资产的持有者后得到自动验证。\nASA验证的主要目的是防止ASA假装附属于一个与之无关的项目并充当其代币。\nASA验证并不代表对项目的背书。Algorand和Pera都不会使用验证过程来背书项目。";
+
+/* (No Comment) */
+"verification-info-body-first-highlight" = "自动";
+
+/* (No Comment) */
+"verification-info-body-second-highlight" = "为防止ASA假装与一个与之无关的项目有关联，并充当其代币。";
+
+/* (No Comment) */
+"verification-info-body-third-highlight" = "ASA验证并不代表对项目的背书。";
+
+/* MARK: Verification Information */
+"verification-info-title" = "ASA验证";
 
 /* (No Comment) */
 "verified-asset-double-check" = "请再次确认";
@@ -2507,6 +2657,9 @@
 "wallet-connect-transaction-error-invalid-asset" = "无效输入：资产无效";
 
 /* (No Comment) */
+"wallet-connect-transaction-error-invalid-group" = "该交易似乎组包含一笔或多笔丢失的交易。为保障您的安全，Pera钱包不允许您签署细节模糊的交易组。请联系发送此交易的DApp，让他们纠正该问题。";
+
+/* (No Comment) */
 "wallet-connect-transaction-error-invalid-key" = "无效输入：公钥无效";
 
 /* (No Comment) */
@@ -2529,6 +2682,9 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-error-transaction-size" = "无效输入：交易请求含有超过 16 笔交易";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unable-fetch-asset" = "我们无法获取资产详细信息，因此交易被取消。请您在检查网络连接后再重试。";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-unable-sign" = "无效输入：无法签署";
@@ -2713,4 +2869,3 @@
 /* (No Comment) */
 "wc-transaction-request-signed-warning-title" = "您的交易正在处理中！";
 
-"wallet-connect-transaction-error-invalid-group" = "It looks like this transaction group contains one or more missing transactions. For your security, Pera Wallet won’t allow you to sign transaction groups that have obscured details. Please contact the dApp that sent this transaction so they can rectify this problem.";

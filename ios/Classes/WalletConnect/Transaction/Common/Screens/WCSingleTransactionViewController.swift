@@ -46,7 +46,7 @@ class WCSingleTransactionViewController: BaseScrollViewController {
     override func configureAppearance() {
         super.configureAppearance()
 
-        view.backgroundColor = AppColors.Shared.System.background.uiColor
+        view.backgroundColor = Colors.Defaults.background.uiColor
     }
 
     override func prepareLayout() {

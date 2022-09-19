@@ -38,13 +38,13 @@ struct CollectiblesFilterSelectionViewControllerTheme:
     ) {
         minimumHorizontalSpacing = 8
         background = [
-            .backgroundColor(AppColors.Shared.System.background)
+            .backgroundColor(Colors.Defaults.background)
         ]
         contentEdgeInsets = (24, 24, 16, 24)
 
         title = [
             .text(Self.getTitle()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .textOverflow(FittingText())
         ]
         titleTopPadding = 20
@@ -53,7 +53,7 @@ struct CollectiblesFilterSelectionViewControllerTheme:
 
         description = [
             .text(Self.getDescription()),
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .textOverflow(FittingText())
 
         ]
@@ -63,38 +63,18 @@ struct CollectiblesFilterSelectionViewControllerTheme:
 
 extension CollectiblesFilterSelectionViewControllerTheme {
     private static func getTitle() -> EditText {
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-
         return .attributedString(
             "collectible-filter-selection-toggle-title"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .bodyRegular()
         )
     }
 
     private static func getDescription() -> EditText {
-        let font = Fonts.DMSans.regular.make(13)
-        let lineHeightMultiplier = 1.18
-
         return .attributedString(
             "collectible-filter-selection-toggle-description"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .footnoteRegular()
         )
     }
 }

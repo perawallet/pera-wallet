@@ -21,8 +21,9 @@ import UIKit
 
 final class WCSingleTransactionRequestMiddleViewModel {
     private(set) var title: String?
+    private(set) var titleColor: Color?
     private(set) var subtitle: String?
-    private(set) var isAssetIconHidden: Bool = true
+    private(set) var verificationTierIcon: UIImage?
 
     var asset: Asset? {
         didSet {
@@ -73,7 +74,8 @@ final class WCSingleTransactionRequestMiddleViewModel {
                 title = ""
             }
 
-            self.isAssetIconHidden = true
+            self.titleColor = getTitleColor(.trusted)
+            self.verificationTierIcon = getVerificationTierIcon(.trusted)
             self.setUsdValue(transaction: transaction, asset: nil)
         case .asset:
             guard
@@ -98,23 +100,24 @@ final class WCSingleTransactionRequestMiddleViewModel {
             let finalAmountText = currencyFormatter.format(finalAmount)
             let text = finalAmountText.someString
 
-            if let assetCode = asset.presentation.hasOnlyAssetName ?
-                    asset.presentation.displayNames.primaryName :
-                    asset.presentation.displayNames.secondaryName {
+            if let assetCode = asset.naming.hasOnlyAssetName ?
+                    asset.naming.displayNames.primaryName :
+                    asset.naming.displayNames.secondaryName {
                 self.title = "\(text) \(assetCode)"
+                self.titleColor = getTitleColor(asset.verificationTier)
             }
 
-            self.isAssetIconHidden = !asset.presentation.isVerified
-
+            self.verificationTierIcon = getVerificationTierIcon(asset.verificationTier)
             self.setUsdValue(transaction: transaction, asset: asset)
         case .assetAddition,
                 .possibleAssetAddition:
             guard let asset = asset else {
                 return
             }
-            self.title = asset.presentation.displayNames.primaryName
+            self.title = asset.naming.displayNames.primaryName
+            self.titleColor = getTitleColor(asset.verificationTier)
             self.subtitle = "\(asset.id)"
-            self.isAssetIconHidden = !asset.presentation.isVerified
+            self.verificationTierIcon = getVerificationTierIcon(asset.verificationTier)
             return
         case .appCall:
             let appCallOncomplete = transaction.transactionDetail?.appCallOnComplete ?? .noOp
@@ -125,11 +128,11 @@ final class WCSingleTransactionRequestMiddleViewModel {
             case .update:
                 break
             default:
-
                 if (transaction.transactionDetail?.isAppCreateTransaction ?? false) {
                     self.title = "single-transaction-request-opt-in-title".localized
+                    self.titleColor = getTitleColor(nil)
                     self.subtitle = appCallOncomplete.representation
-                    self.isAssetIconHidden = true
+                    self.verificationTierIcon = nil
                     return
                 }
             }
@@ -139,31 +142,34 @@ final class WCSingleTransactionRequestMiddleViewModel {
             }
 
             self.title = "#\(id)"
+            self.titleColor = getTitleColor(nil)
             self.subtitle = "wallet-connect-transaction-title-app-id".localized
-            self.isAssetIconHidden = true
+            self.verificationTierIcon = nil
         case .assetConfig(let type):
             switch type {
             case .create:
                 if let assetConfigParams = transaction.transactionDetail?.assetConfigParams {
                     self.title = "\(assetConfigParams.name ?? assetConfigParams.unitName ?? "title-unknown".localized)"
-
-                    self.isAssetIconHidden = assetConfigParams.name.isNilOrEmpty && assetConfigParams.unitName.isNilOrEmpty
+                    /// <note> Newly created asset should be unverified.
+                    self.titleColor = getTitleColor(.unverified)
+                    self.verificationTierIcon = getVerificationTierIcon(.unverified)
                 }
             case .reconfig:
                 if let asset = asset {
-                    self.title = "\(asset.presentation.name ?? asset.presentation.unitName ?? "title-unknown".localized)"
+                    self.title = "\(asset.naming.name ?? asset.naming.unitName ?? "title-unknown".localized)"
+                    self.titleColor = getTitleColor(asset.verificationTier)
                     self.subtitle = "#\(asset.id)"
-                    self.isAssetIconHidden = !asset.presentation.isVerified
+                    self.verificationTierIcon = getVerificationTierIcon(asset.verificationTier)
                 }
             case .delete:
                 if let asset = asset {
-                    self.title = "\(asset.presentation.name ?? asset.presentation.unitName ?? "title-unknown".localized)"
+                    self.title = "\(asset.naming.name ?? asset.naming.unitName ?? "title-unknown".localized)"
+                    self.titleColor = getTitleColor(asset.verificationTier)
                     self.subtitle = "#\(asset.id)"
-                    self.isAssetIconHidden = !asset.presentation.isVerified
+                    self.verificationTierIcon = getVerificationTierIcon(asset.verificationTier)
                 }
             }
         }
-
     }
 
     private func setUsdValue(
@@ -200,6 +206,29 @@ final class WCSingleTransactionRequestMiddleViewModel {
             subtitle = currencyFormatter.format(amountInCurrency)
         } catch {
             subtitle = nil
+        }
+    }
+
+    private func getTitleColor(
+        _ verificationTier: AssetVerificationTier?
+    ) -> Color {
+        let isSuspicious = verificationTier?.isSuspicious ?? false
+
+        if isSuspicious {
+            return Colors.Helpers.negative
+        }
+
+        return Colors.Text.main
+    }
+
+    private func getVerificationTierIcon(
+        _ verificationTier: AssetVerificationTier
+    ) -> UIImage? {
+        switch verificationTier {
+        case .trusted: return "icon-trusted".uiImage
+        case .verified: return "icon-verified".uiImage
+        case .unverified: return nil
+        case .suspicious: return "icon-suspicious".uiImage
         }
     }
 }

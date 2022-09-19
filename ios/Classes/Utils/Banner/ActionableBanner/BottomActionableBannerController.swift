@@ -238,7 +238,7 @@ extension BottomActionableBannerController {
         view.bindData(FetchErrorActionableBannerViewModel(draft))
 
         if let actionHandler = actionHandler {
-            view.observe(event: .performAction, handler: actionHandler)
+            view.startObserving(event: .performAction, using: actionHandler)
         }
 
         return view

@@ -44,6 +44,8 @@ final class CollectibleListViewController:
     private lazy var listLayout = CollectibleListLayout(listDataSource: listDataSource)
     private lazy var listDataSource = CollectibleListDataSource(listView)
 
+    private var positionYForDisplayingListHeader: CGFloat?
+
     private let dataController: CollectibleListDataController
     private let copyToClipboardController: CopyToClipboardController
 
@@ -52,7 +54,7 @@ final class CollectibleListViewController:
     init(
         dataController: CollectibleListDataController,
         copyToClipboardController: CopyToClipboardController,
-        theme: CollectibleListViewControllerTheme,
+        theme: CollectibleListViewControllerTheme = .common,
         configuration: ViewControllerConfiguration
     ) {
         self.dataController = dataController
@@ -199,6 +201,7 @@ extension CollectibleListViewController {
 
         switch itemIdentifier {
         case .header:
+            positionYForDisplayingListHeader = cell.frame.maxY
             linkInteractors(cell as! ManagementItemWithSecondaryActionCell)
         case .watchAccountHeader:
             linkInteractors(cell as! ManagementItemCell)
@@ -355,11 +358,24 @@ extension CollectibleListViewController {
     }
 }
 
+/// <mark>
+/// UIScrollViewDelegate
+extension CollectibleListViewController {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard let positionY = positionYForDisplayingListHeader else { return }
+
+        let currentContentOffset = listView.contentOffset
+        let isDisplayingListHeader = currentContentOffset.y < positionY
+        let event: Event = isDisplayingListHeader ? .willDisplayListHeader : .didEndDisplayingListHeader
+        eventHandler?(event)
+    }
+}
+
 extension CollectibleListViewController {
     private func linkInteractors(
         _ cell: NoContentWithActionIllustratedCell
     ) {
-        cell.observe(event: .performPrimaryAction) {
+        cell.startObserving(event: .performPrimaryAction) {
             [weak self] in
             guard let self = self else {
                 return
@@ -379,7 +395,7 @@ extension CollectibleListViewController {
             self.openReceiveCollectibleAccountList()
         }
 
-        cell.observe(event: .performSecondaryAction) {
+        cell.startObserving(event: .performSecondaryAction) {
             [weak self] in
             guard let self = self else {
                 return
@@ -394,7 +410,7 @@ extension CollectibleListViewController {
     private func linkInteractors(
         _ cell: ManagementItemWithSecondaryActionCell
     ) {
-        cell.observe(event: .primaryAction) {
+        cell.startObserving(event: .primaryAction) {
             [weak self] in
             guard let self = self else {
                 return
@@ -405,7 +421,7 @@ extension CollectibleListViewController {
             self.openCollectiblesManagementScreen()
         }
 
-        cell.observe(event: .secondaryAction) {
+        cell.startObserving(event: .secondaryAction) {
             [weak self] in
             guard let self = self else {
                 return
@@ -420,7 +436,7 @@ extension CollectibleListViewController {
     private func linkInteractors(
         _ cell: ManagementItemCell
     ) {
-        cell.observe(event: .primaryAction) {
+        cell.startObserving(event: .primaryAction) {
             [weak self] in
             guard let self = self else {
                 return
@@ -452,17 +468,25 @@ extension CollectibleListViewController {
         asset: CollectibleAsset,
         thumbnailImage: UIImage?
     ) {
-        let controller = open(
-            .collectibleDetail(
-                asset: asset,
-                account: account,
-                thumbnailImage: thumbnailImage
-            ),
-            by: .push
-        ) as? CollectibleDetailViewController
-        controller?.eventHandlers.didOptOutAssetFromAccount = { [weak controller] in
-            controller?.popScreen()
+        let screen = Screen.collectibleDetail(
+            asset: asset,
+            account: account,
+            thumbnailImage: thumbnailImage,
+            quickAction: nil
+        ) { [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didOptOutAssetFromAccount: self.popScreen()
+            case .didOptOutFromAssetWithQuickAction: break
+            case .didOptInToAsset: break
+            }
         }
+
+        open(
+            screen,
+            by: .push
+        )
     }
 
     private func openReceiveCollectibleAccountList() {
@@ -585,6 +609,8 @@ extension CollectibleListViewController {
     enum Event {
         case didUpdate([AccountHandle])
         case didTapReceive
+        case willDisplayListHeader
+        case didEndDisplayingListHeader
         case didFinishRunning(hasError: Bool)
     }
 }

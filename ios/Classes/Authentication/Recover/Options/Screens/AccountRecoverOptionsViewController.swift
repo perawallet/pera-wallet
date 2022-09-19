@@ -21,7 +21,7 @@ import MacaroonUIKit
 
 final class AccountRecoverOptionsViewController:
     BaseScrollViewController,
-    BottomSheetPresentable {
+    BottomSheetScrollPresentable {
     weak var delegate: AccountRecoverOptionsViewControllerDelegate?
 
     private lazy var contextView = VStackView()
@@ -44,7 +44,7 @@ final class AccountRecoverOptionsViewController:
     private func build() {
         addBackground()
         addContext()
-        addActions()
+        addButtons()
     }
 }
 
@@ -70,45 +70,45 @@ extension AccountRecoverOptionsViewController {
         }
     }
     
-    private func addActions() {
-        addPastePassphraseAction()
-        addScanQRAction()
-        addLearnAction()
+    private func addButtons() {
+        addPastePassphraseButton()
+        addScanQRButton()
+        addLearnButton()
     }
     
-    private func addPastePassphraseAction() {
-        addAction(
-            PasteFullPassphraseListActionViewModel(),
+    private func addPastePassphraseButton() {
+        addButton(
+            PasteFullPassphraseListItemButtonViewModel(),
             #selector(pasteFullPassphrase)
         )
     }
     
-    private func addScanQRAction() {
-        addAction(
-            ScanQRCodeListActionViewModel(),
+    private func addScanQRButton() {
+        addButton(
+            ScanQRCodeListItemButtonViewModel(),
             #selector(scanQRCode)
         )
     }
     
-    private func addLearnAction() {
-        addAction(
-            LearnMoreListActionViewModel(),
+    private func addLearnButton() {
+        addButton(
+            LearnMoreListItemButtonViewModel(),
             #selector(learnMore)
         )
     }
     
-    private func addAction(
-        _ viewModel: ListActionViewModel,
+    private func addButton(
+        _ viewModel: ListItemButtonViewModel,
         _ selector: Selector
     ) {
-        let actionView = ListActionView()
+        let button = ListItemButton()
         
-        actionView.customize(theme.action)
-        actionView.bindData(viewModel)
+        button.customize(theme.button)
+        button.bindData(viewModel)
         
-        contextView.addArrangedSubview(actionView)
+        contextView.addArrangedSubview(button)
         
-        actionView.addTouch(
+        button.addTouch(
             target: self,
             action: selector
         )

@@ -119,20 +119,12 @@ extension BottomWarningViewConfigurator {
         guard let aTitle = aTitle else {
             return nil
         }
-        let font = Fonts.DMSans.medium.make(19)
-        let lineHeightMultiplier = 1.13
-
+        
         return .attributedString(
             aTitle
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .textAlignment(.center),
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .bodyLargeMedium(
+                    alignment: .center
+                )
         )
     }
 
@@ -143,29 +135,34 @@ extension BottomWarningViewConfigurator {
             return nil
         }
 
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
+        var attributes = Typography.bodyRegularAttributes(
+            alignment: .center
+        )
+
+        attributes.insert(.textColor(Colors.Text.gray))
 
         let attributedString =
         aDescription
             .underlyingDescription
-            .attributed([
-                .textColor(AppColors.Components.Text.gray.uiColor),
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(.center),
-                    .lineBreakMode(.byWordWrapping),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ])
+            .attributed(
+                attributes
+            )
 
         let mutableAttributedString = NSMutableAttributedString(
             attributedString: attributedString
         )
 
         aDescription.params?.forEach {
-            mutableAttributedString.addColor(AppColors.Components.Text.main.uiColor, to: $0)
+            let paramRange = (mutableAttributedString.string as NSString).range(of: $0)
+
+            let paramAttributes: TextAttributeGroup = [
+                .textColor(Colors.Text.main)
+            ]
+
+            mutableAttributedString.addAttributes(
+                paramAttributes.asSystemAttributes(),
+                range: paramRange
+            )
         }
 
         return .attributedString(
@@ -180,39 +177,23 @@ extension BottomWarningViewConfigurator {
             return nil
         }
 
-        let font = Fonts.DMSans.medium.make(15)
-        let lineHeightMultiplier = 1.23
-
         return .attributedString(
             aTitle
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .textAlignment(.center),
-                        .lineBreakMode(.byTruncatingTail),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .bodyMedium(
+                    alignment: .center,
+                    lineBreakMode: .byTruncatingTail
+                )
         )
     }
 }
 
 extension BottomWarningViewConfigurator {
     func getLinkAttributes() -> Dictionary<NSAttributedString.Key, Any> {
-        let font = Fonts.DMSans.medium.make(15).uiFont
-        let lineHeightMultiplier = 1.23
+        var attributes = Typography.bodyMediumAttributes(
+            alignment: .center
+        )
 
-        let attributes: TextAttributeGroup = [
-            .textColor(AppColors.Components.Link.primary.uiColor),
-            .font(font),
-            .lineHeightMultiplier(lineHeightMultiplier, font),
-            .paragraph([
-                .textAlignment(.center),
-                .lineBreakMode(.byWordWrapping),
-                .lineHeightMultiple(lineHeightMultiplier)
-            ])
-        ]
+        attributes.insert(.textColor(Colors.Link.primary))
 
         return attributes.asSystemAttributes()
     }

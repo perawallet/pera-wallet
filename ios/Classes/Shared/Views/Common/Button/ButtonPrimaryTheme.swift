@@ -35,12 +35,12 @@ struct ButtonPrimaryTheme: ButtonTheme {
             .textOverflow(SingleLineFittingText())
         ]
         self.titleColorSet = [
-            .normal(AppColors.Components.Button.Primary.text),
-            .disabled(AppColors.Components.Button.Primary.disabledText)
+            .normal(Colors.Button.Primary.text),
+            .disabled(Colors.Button.Primary.disabledText)
         ]
         self.backgroundColorSet = [
-            .normal(AppColors.Components.Button.Primary.background),
-            .disabled(AppColors.Components.Button.Primary.disabledBackground)
+            .normal(Colors.Button.Primary.background),
+            .disabled(Colors.Button.Primary.disabledBackground)
         ]
         self.corner = Corner(radius: 4)
         self.icon = [

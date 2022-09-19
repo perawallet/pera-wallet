@@ -27,7 +27,7 @@ extension LedgerAccountVerificationViewController {
         let bottomInset: LayoutMetric
 
         init(_ family: LayoutFamily) {
-            backgroundColor = AppColors.Shared.System.background
+            backgroundColor = Colors.Defaults.background
             verifyButtonTheme = ButtonPrimaryTheme()
             ledgerAccountVerificationViewTheme = LedgerAccountVerificationViewTheme()
             

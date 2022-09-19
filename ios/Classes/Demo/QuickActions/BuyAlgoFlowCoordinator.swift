@@ -30,7 +30,7 @@ final class BuyAlgoFlowCoordinator {
 }
 
 extension BuyAlgoFlowCoordinator {
-    func launch() {
-        presentingScreen.launchBuyAlgo()
+    func launch(draft: BuyAlgoDraft = .init()) {
+        presentingScreen.launchBuyAlgo(draft: draft)
     }
 }

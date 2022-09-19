@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol Asset {
+protocol Asset: AnyObject {
     /// Mimics ALGAsset in general so that it can be passed to different asset types as base.
     var id: AssetID { get }
     var amount: UInt64 { get }
@@ -25,6 +25,14 @@ protocol Asset {
     var optedInAtRound: UInt64? { get }
     var creator: AssetCreator? { get }
     var decimals: Int { get }
+    var total: UInt64? {get}
+
+    var url: String? { get }
+    var verificationTier: AssetVerificationTier { get }
+    var projectURL: URL? { get }
+    var explorerURL: URL? { get }
+    var logoURL: URL? { get }
+    var description: String? { get }
 
     /// <todo>
     /// Switch decimalAmount -> amount
@@ -37,8 +45,17 @@ protocol Asset {
     var state: AssetState { get set }
 
     /// Asset presentation
-    var presentation: AssetPresentation { get }
+    /// /// <todo> AssetNaming implementation structure should be changed.
+    var naming: AssetNaming { get }
     var amountWithFraction: Decimal { get }
+
+    var discordURL: URL? { get }
+    var telegramURL: URL? { get }
+    var twitterURL: URL? { get }
+
+    var isAlgo: Bool { get }
+
+    var isFault: Bool { get }
 }
 
 enum AssetState: Codable {
@@ -60,13 +77,10 @@ enum AssetOperation: Codable {
     case add
 }
 
-struct AssetPresentation {
+struct AssetNaming {
     let id: AssetID
-    let decimals: Int
     let name: String?
     let unitName: String?
-    let isVerified: Bool
-    let url: String?
 
     var displayNames: (primaryName: String, secondaryName: String?) {
         if let name = name,

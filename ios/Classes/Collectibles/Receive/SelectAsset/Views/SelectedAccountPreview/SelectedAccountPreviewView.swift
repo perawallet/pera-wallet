@@ -20,11 +20,10 @@ import MacaroonUIKit
 final class SelectedAccountPreviewView:
     View,
     ViewModelBindable,
-    UIInteractionObservable,
-    UIControlInteractionPublisher {
+    UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .performCopyAction: UIControlInteraction(),
-        .performQRAction: UIControlInteraction()
+        .performCopyAction: TargetActionInteraction(),
+        .performQRAction: TargetActionInteraction()
     ]
 
     private lazy var iconView = ImageView()

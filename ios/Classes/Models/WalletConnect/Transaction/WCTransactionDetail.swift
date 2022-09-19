@@ -26,7 +26,7 @@ final class WCTransactionDetail: Codable {
     let note: Data?
 
     private(set) var sender: String?
-    let type: Transaction.TransferType?
+    let type: TransactionType?
 
     private let algosAmount: UInt64?
     private let assetAmount: UInt64?
@@ -73,7 +73,7 @@ final class WCTransactionDetail: Codable {
         }
         genesisId = try container.decodeIfPresent(String.self, forKey: .genesisId)
         note = try container.decodeIfPresent(Data.self, forKey: .note)
-        type = try container.decodeIfPresent(Transaction.TransferType.self, forKey: .type)
+        type = try container.decodeIfPresent(TransactionType.self, forKey: .type)
         assetAmount = try container.decodeIfPresent(UInt64.self, forKey: .assetAmount)
         algosAmount = try container.decodeIfPresent(UInt64.self, forKey: .algosAmount)
         assetId = try container.decodeIfPresent(Int64.self, forKey: .assetId)

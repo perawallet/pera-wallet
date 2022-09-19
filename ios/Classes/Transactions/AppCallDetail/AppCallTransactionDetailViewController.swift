@@ -17,12 +17,8 @@
 import UIKit
 
 final class AppCallTransactionDetailViewController: BaseScrollViewController {
-    typealias EventHandler = (Event) -> Void
-
-    var eventHandler: EventHandler?
-    
-    override var name: AnalyticsScreenName? {
-        return .transactionDetail
+    override var analyticsScreen: ALGAnalyticsScreen? {
+        return .init(name: .transactionDetail)
     }
 
     private lazy var appCallTransactionDetailView = AppCallTransactionDetailView()
@@ -66,8 +62,6 @@ final class AppCallTransactionDetailViewController: BaseScrollViewController {
         super.configureNavigationBarAppearance()
 
         title = "title-app-call".localized
-
-        addBarButtons()
     }
 
     override func prepareLayout() {
@@ -101,15 +95,6 @@ extension AppCallTransactionDetailViewController {
         appCallTransactionDetailView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-    }
-
-    private func addBarButtons() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
-            [unowned self] in
-            self.eventHandler?(.performClose)
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
     }
 }
 
@@ -238,33 +223,13 @@ extension AppCallTransactionDetailViewController: AppCallTransactionDetailViewDe
             return
         }
 
-        let eventHandler: AppCallAssetListViewController.EventHandler = {
-            [weak self] event in
-            guard let self = self else {
-                return
-
-            }
-
-            switch event {
-            case .performClose:
-                self.dismiss(animated: true)
-            }
-        }
-
         bottomSheetTransition.perform(
             .appCallAssetList(
                 dataController: AppCallAssetListLocalDataController(
                     assets: assets
-                ),
-                eventHandler: eventHandler
+                )
             ),
             by: .present
         )
-    }
-}
-
-extension AppCallTransactionDetailViewController {
-    enum Event {
-        case performClose
     }
 }

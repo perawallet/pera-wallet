@@ -22,10 +22,6 @@ final class AppCallAssetListViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout,
     BottomSheetPresentable {
-    typealias EventHandler = (Event) -> Void
-
-    var eventHandler: EventHandler?
-
     private(set) lazy var listView: UICollectionView = {
         let collectionViewLayout = AppCallAssetListLayout.build()
         let collectionView =
@@ -63,8 +59,6 @@ final class AppCallAssetListViewController:
 
     override func configureNavigationBarAppearance() {
         title = "assets-title".localized
-
-        addBarButtons()
     }
 
     override func prepareLayout() {
@@ -137,7 +131,7 @@ final class AppCallAssetListViewController:
 
         return UITargetedPreview(
             view: cell,
-            backgroundColor: AppColors.Shared.System.background.uiColor
+            backgroundColor: Colors.Defaults.background.uiColor
         )
     }
 
@@ -154,7 +148,7 @@ final class AppCallAssetListViewController:
 
         return UITargetedPreview(
             view: cell,
-            backgroundColor: AppColors.Shared.System.background.uiColor
+            backgroundColor: Colors.Defaults.background.uiColor
         )
     }
 }
@@ -170,15 +164,6 @@ extension AppCallAssetListViewController {
             $0.setPaddings()
         }
     }
-
-    private func addBarButtons() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
-            [weak self] in
-            self?.eventHandler?(.performClose)
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
-    }
 }
 
 extension AppCallAssetListViewController {
@@ -192,11 +177,5 @@ extension AppCallAssetListViewController {
             layout: collectionViewLayout,
             sizeForItemAt: indexPath
         )
-    }
-}
-
-extension AppCallAssetListViewController {
-    enum Event {
-        case performClose
     }
 }

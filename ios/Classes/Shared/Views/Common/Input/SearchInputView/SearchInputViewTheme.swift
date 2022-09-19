@@ -54,17 +54,17 @@ struct SearchInputViewCommonTheme: SearchInputViewTheme {
         self.placeholder = placeholder
 
         self.textInput = [
-            .tintColor(AppColors.Components.Text.main),
+            .tintColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(13)),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .placeholder(placeholder),
-            .placeholderColor(AppColors.Components.Text.gray),
+            .placeholderColor(Colors.Text.gray),
             .returnKeyType(.search),
             .autocorrectionType(.no),
             .autocapitalizationType(.none)
         ]
         self.textInputBackground = [
-            .backgroundColor(AppColors.Shared.Layer.grayLighter)
+            .backgroundColor(Colors.Layer.grayLighter)
         ]
         self.textLeftInputAccessory = [
             .image("icon-field-search")
@@ -106,18 +106,18 @@ struct QRSearchInputViewTheme: SearchInputViewTheme {
         self.placeholder = placeholder
 
         self.textInput = [
-            .tintColor(AppColors.Components.Text.main),
+            .tintColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(13)),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .placeholder(placeholder),
-            .placeholderColor(AppColors.Components.Text.gray),
+            .placeholderColor(Colors.Text.gray),
             .autocorrectionType(.no),
             .textContentType(.username),
             .returnKeyType(.done),
             .autocapitalizationType(.none)
         ]
         self.textInputBackground = [
-            .backgroundColor(AppColors.Shared.Layer.grayLighter)
+            .backgroundColor(Colors.Layer.grayLighter)
         ]
         self.textLeftInputAccessory = [
             .image("icon-field-search")

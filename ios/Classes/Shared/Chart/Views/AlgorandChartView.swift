@@ -27,7 +27,7 @@ final class AlgorandChartView: BaseView {
 
     private lazy var lineChartView: AlgorandLineChartView = {
         let lineChartView = AlgorandLineChartView()
-        lineChartView.chartDescription?.enabled = chartCustomizer.isDescriptionEnabled
+        lineChartView.chartDescription.enabled = chartCustomizer.isDescriptionEnabled
         lineChartView.dragEnabled = chartCustomizer.isDragEnabled
         lineChartView.setScaleEnabled(chartCustomizer.isScaleEnabled)
         lineChartView.pinchZoomEnabled = chartCustomizer.isPinchZoomEnabled
@@ -143,7 +143,7 @@ extension AlgorandChartView {
     }
 
     private func addMarkerForHighlightedValue(with color: UIColor) {
-        let marker = ChartCircleMarker(outsideColor: AppColors.Shared.System.background.uiColor, insideColor: color.withAlphaComponent(1.0))
+        let marker = ChartCircleMarker(outsideColor: Colors.Defaults.background.uiColor, insideColor: color.withAlphaComponent(1.0))
         marker.size = CGSize(width: 10, height: 10)
         lineChartView.marker = marker
     }

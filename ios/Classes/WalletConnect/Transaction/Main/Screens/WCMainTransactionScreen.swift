@@ -68,7 +68,7 @@ final class WCMainTransactionScreen: BaseViewController, Container {
         guard let api = api else {
             fatalError("API should be set.")
         }
-        return WCTransactionSigner(api: api)
+        return WCTransactionSigner(api: api, analytics: analytics)
     }()
 
     private var transactionParams: TransactionParams?
@@ -158,6 +158,13 @@ final class WCMainTransactionScreen: BaseViewController, Container {
         dataSource.load()
 
         super.viewDidLoad()
+
+        guard dataSource.hasValidGroupTransaction else {
+            /// <note>: This check prevents to show multiple reject sheet
+            /// When data source load function called, it will call delegate function to let us know if group transaction is not validated
+            /// We could remove group validation in `validateTransactions` function but it also has another logic in it.s
+            return
+        }
 
         validateTransactions(transactions, with: dataSource.groupedTransactions)
         getAssetDetailsIfNeeded()
@@ -303,8 +310,8 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
             if let transactionData = transaction.unparsedTransactionDetail,
                let session = wcSession {
                 let transactionID = AlgorandSDK().getTransactionID(for: transactionData)
-                log(
-                    WCTransactionConfirmedEvent(
+                analytics.track(
+                    .wcTransactionConfirmed(
                         transactionID: transactionID,
                         dappName: session.peerMeta.name,
                         dappURL: session.peerMeta.url.absoluteString
@@ -327,11 +334,24 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
         _ wcTransactionSigner: WCTransactionSigner,
         didRequestUserApprovalFrom ledger: String
     ) {
-        let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: self)
+        let ledgerApprovalTransition = BottomSheetTransition(
+            presentingViewController: self,
+            interactable: false
+        )
         ledgerApprovalViewController = ledgerApprovalTransition.perform(
             .ledgerApproval(mode: .approve, deviceName: ledger),
             by: .present
         )
+
+        ledgerApprovalViewController?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .didCancel:
+                self.ledgerApprovalViewController?.dismissScreen()
+                self.loadingController?.stopLoading()
+            }
+        }
     }
 
     func wcTransactionSignerDidFinishTimingOperation(_ wcTransactionSigner: WCTransactionSigner) {
@@ -454,14 +474,45 @@ extension WCMainTransactionScreen: WCUnsignedRequestScreenDelegate {
 extension WCMainTransactionScreen {
 
     private func rejectSigning(reason: WCTransactionErrorResponse = .rejected(.user)) {
-        rejectTransactionRequest(with: reason)
+        switch reason {
+        case .rejected(let rejection):
+            if rejection == .user {
+                rejectTransaction(with: reason)
+            }
+        default:
+            showRejectionReasonBottomSheet(reason)
+        }
+    }
+
+    private func showRejectionReasonBottomSheet(_ reason: WCTransactionErrorResponse) {
+        let configurator = BottomWarningViewConfigurator(
+            image: "icon-info-red".uiImage,
+            title: "title-error".localized,
+            description: .plain(reason.message),
+            secondaryActionButtonTitle: "title-ok".localized,
+            secondaryAction: { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                self.rejectTransaction(with: reason)
+            }
+        )
+
+        modalTransition.perform(
+            .bottomWarning(configurator: configurator),
+            by: .presentWithoutNavigationController
+        )
+    }
+
+    private func rejectTransaction(with reason: WCTransactionErrorResponse) {
+        dataSource.rejectTransaction(reason: reason)
+        delegate?.wcMainTransactionScreen(self, didRejected: transactionRequest)
     }
 }
 
 extension WCMainTransactionScreen: WCTransactionValidator {
     func rejectTransactionRequest(with error: WCTransactionErrorResponse) {
-        dataSource.rejectTransaction(reason: error)
-        delegate?.wcMainTransactionScreen(self, didRejected: transactionRequest)
+        rejectSigning(reason: error)
     }
 }
 
@@ -483,7 +534,7 @@ extension WCMainTransactionScreen: AssetCachable {
         for (index, transaction) in assetTransactions.enumerated() {
             guard let assetId = transaction.transactionDetail?.currentAssetId else {
                 loadingController?.stopLoading()
-                self.rejectTransactionRequest(with: .invalidInput(.asset))
+                self.rejectSigning(reason: .invalidInput(.asset))
                 return
             }
 
@@ -494,7 +545,7 @@ extension WCMainTransactionScreen: AssetCachable {
 
                 if assetDetail == nil {
                     self.loadingController?.stopLoading()
-                    self.rejectTransactionRequest(with: .invalidInput(.asset))
+                    self.rejectSigning(reason: .invalidInput(.unableToFetchAsset))
                     return
                 }
 
@@ -529,7 +580,7 @@ extension WCMainTransactionScreen {
 
     private func rejectIfTheNetworkIsInvalid() {
          if !hasValidNetwork(for: transactions) {
-             rejectTransactionRequest(with: .unauthorized(.nodeMismatch))
+             rejectSigning(reason: .unauthorized(.nodeMismatch))
              return
          }
      }
@@ -571,7 +622,7 @@ extension WCMainTransactionScreen: WCMainTransactionDataSourceDelegate {
             description: .plain("wallet-connect-transaction-error-invalid-group".localized),
             secondaryActionButtonTitle: "title-ok".localized,
             secondaryAction: { [weak self] in
-                self?.rejectSigning(reason: .rejected(.failedValidation))
+                self?.rejectTransaction(with: .rejected(.failedValidation))
             }
         )
 

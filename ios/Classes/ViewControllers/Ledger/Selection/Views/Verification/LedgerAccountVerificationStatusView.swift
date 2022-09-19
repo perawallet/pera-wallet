@@ -10,7 +10,7 @@
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
-// limitations under the License.
+// limitations under the License.QRScannerOverlayViewTheme
 
 //
 //   LedgerAccountVerificationStatusView.swift
@@ -18,7 +18,13 @@
 import UIKit
 import MacaroonUIKit
 
-final class LedgerAccountVerificationStatusView: View {
+final class LedgerAccountVerificationStatusView: View, TripleShadowDrawable {
+    var thirdShadow: MacaroonUIKit.Shadow?
+    var thirdShadowLayer: CAShapeLayer = CAShapeLayer()
+
+    var secondShadow: MacaroonUIKit.Shadow?
+    var secondShadowLayer: CAShapeLayer = CAShapeLayer()
+    
     private lazy var indicatorView = ViewLoadingIndicator()
     private lazy var imageView = UIImageView()
     private lazy var verticalStackView = UIStackView()

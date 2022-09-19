@@ -21,6 +21,7 @@ import MacaroonUIKit
 
 extension SendTransactionPreviewScreen {
     struct Theme: LayoutSheet, StyleSheet {
+        let background: Color
         let nextButtonStyle: ButtonPrimaryTheme
         let nextButtonTopPadding: LayoutMetric
         let nextButtonLeadingInset: LayoutMetric
@@ -29,6 +30,7 @@ extension SendTransactionPreviewScreen {
         let linearGradientHeight: LayoutMetric
 
         init(_ family: LayoutFamily) {
+            self.background = Colors.Defaults.background
             self.nextButtonStyle = ButtonPrimaryTheme(family)
             self.nextButtonTopPadding = -24
             self.nextButtonLeadingInset = 24

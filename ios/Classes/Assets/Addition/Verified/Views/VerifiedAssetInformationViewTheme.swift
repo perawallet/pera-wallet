@@ -32,13 +32,13 @@ struct VerifiedAssetInformationViewTheme: StyleSheet, LayoutSheet {
     let bottomInset: LayoutMetric
     
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         
         self.title = [
             .textAlignment(.left),
             .text("verified-asset-information-title".localized),
             .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.medium.make(15))
         ]
         
@@ -50,19 +50,19 @@ struct VerifiedAssetInformationViewTheme: StyleSheet, LayoutSheet {
         
         let fullTextRange = (fullText as NSString).range(of: fullText)
         fullAttributedText.addAttributes(
-            [.foregroundColor: AppColors.Components.Text.main.uiColor,
+            [.foregroundColor: Colors.Text.main.uiColor,
              .font: Fonts.DMSans.regular.make(15).uiFont],
             range: fullTextRange)
         
         let doubleCheckTextRange = (fullText as NSString).range(of: doubleCheckText)
         fullAttributedText.addAttributes(
-            [.foregroundColor: AppColors.Shared.Helpers.negative.uiColor,
+            [.foregroundColor: Colors.Helpers.negative.uiColor,
              .font: Fonts.DMSans.medium.make(15).uiFont],
             range: doubleCheckTextRange)
         
         let contactTextRange = (fullText as NSString).range(of: contactText)
         fullAttributedText.addAttributes(
-            [.foregroundColor: AppColors.Components.Link.primary.uiColor,
+            [.foregroundColor: Colors.Link.primary.uiColor,
              .font: Fonts.DMSans.medium.make(15).uiFont],
             range: contactTextRange)
         

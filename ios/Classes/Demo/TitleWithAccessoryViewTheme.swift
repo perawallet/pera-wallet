@@ -30,7 +30,7 @@ struct TitleWithAccessoryViewTheme:
     ) {
         self.title = [
             .font(Fonts.DMSans.medium.make(15)),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .textOverflow(FittingText())
         ]
         self.titleVerticalPaddings = (4, 4)

@@ -25,10 +25,10 @@ struct SingleSelectionViewTheme: StyleSheet, LayoutSheet {
     let imageSize: LayoutSize
     
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.title = [
             .font(Fonts.DMSans.regular.make(15)),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText())
         ]

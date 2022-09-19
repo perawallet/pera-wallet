@@ -120,7 +120,7 @@ extension TransactionCurrencyAmountViewModel {
         let text = [ amountText, assetSymbol ].compound(" ")
 
         amountLabelText = .string(text)
-        amountLabelColor = AppColors.Components.Text.main.uiColor
+        amountLabelColor = Colors.Text.main.uiColor
         currencyLabelText = .string(currencySymbol)
     }
 }

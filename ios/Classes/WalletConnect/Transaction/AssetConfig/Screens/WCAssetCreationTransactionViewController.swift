@@ -67,6 +67,12 @@ extension WCAssetCreationTransactionViewController: WCAssetCreationTransactionVi
             open(url)
         }
     }
+
+    func wcAssetCreationTransactionViewDidOpenAssetDiscovery(
+        _ wcAssetCreationTransactionView: WCAssetCreationTransactionView
+    ) {
+        openAssetDiscovery(asset)
+    }
 }
 
 extension WCAssetCreationTransactionViewController: WCSingleTransactionViewControllerAssetManagable { }

@@ -27,7 +27,7 @@ struct LedgerTutorialInstructionListViewTheme: StyleSheet, LayoutSheet {
     let listTopInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
 
         self.instructionHeight = 64
         self.instructionOffset = 12

@@ -81,14 +81,14 @@ extension AlgoPriceAttributeViewModel {
         case .increased(let value):
             bindTitle(
                 value,
-                AppColors.Shared.Helpers.positive
+                Colors.Helpers.positive
             )
         case .same:
             title = nil
         case .decreased(let value):
             bindTitle(
                 value,
-                AppColors.Shared.Helpers.negative
+                Colors.Helpers.negative
             )
         }
     }
@@ -117,7 +117,7 @@ extension AlgoPriceAttributeViewModel {
             date.toFormat("MMMM dd, yyyy - HH:mm")
                 .attributed([
                     .font(Fonts.DMSans.regular.make(13)),
-                    .textColor(AppColors.Components.Text.gray)
+                    .textColor(Colors.Text.gray)
                 ])
         )
     }

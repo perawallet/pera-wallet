@@ -70,8 +70,16 @@ extension WCAssetTransactionViewController {
 }
 
 extension WCAssetTransactionViewController: WCAssetTransactionViewDelegate {
-    func wcAssetTransactionViewDidOpenRawTransaction(_ wcAssetTransactionView: WCAssetTransactionView) {
+    func wcAssetTransactionViewDidOpenRawTransaction(
+        _ wcAssetTransactionView: WCAssetTransactionView
+    ) {
         displayRawTransaction()
+    }
+
+    func wcAssetTransactionViewDidOpenAssetDiscovery(
+        _ wcAssetTransactionView: WCAssetTransactionView
+    ) {
+        openAssetDiscovery(asset)
     }
 }
 

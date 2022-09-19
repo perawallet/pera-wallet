@@ -23,7 +23,7 @@ struct LedgerAccountDetailViewTheme: LayoutSheet, StyleSheet {
     let contentInset: LayoutPaddings
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.cellSpacing = 0
         self.contentInset = (40, 0, 0, 0)
     }

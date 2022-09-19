@@ -26,15 +26,19 @@ final class ALGBlockRequest {
 
     let cachedCurrency: CurrencyProvider
 
+    let blockchainRequests: BlockchainBatchRequest
+
     init(
         localAccounts: [AccountInformation],
         cachedAccounts: AccountCollection,
         cachedAssetDetails: AssetDetailCollection,
-        cachedCurrency: CurrencyProvider
+        cachedCurrency: CurrencyProvider,
+        blockchainRequests: BlockchainBatchRequest
     ) {
         self.localAccounts = localAccounts
         self.cachedAccounts = cachedAccounts
         self.cachedAssetDetails = cachedAssetDetails
         self.cachedCurrency = cachedCurrency
+        self.blockchainRequests = blockchainRequests
     }
 }

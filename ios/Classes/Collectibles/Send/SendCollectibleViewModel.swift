@@ -115,20 +115,12 @@ extension SendCollectibleViewModel {
             return nil
         }
 
-        let font = Fonts.DMSans.regular.make(13)
-        let lineHeightMultiplier = 1.18
-
         return .attributedString(
             collectionName
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byTruncatingTail),
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.center)
-                    ])
-                ])
+                .footnoteRegular(
+                    alignment: .center,
+                    lineBreakMode: .byTruncatingTail
+                )
         )
     }
     
@@ -137,39 +129,22 @@ extension SendCollectibleViewModel {
     ) -> EditText? {
         let subtitle = asset.title.fallback(asset.name.fallback(("#\(String(asset.id))")))
 
-        let font = Fonts.DMSans.medium.make(19)
-        let lineHeightMultiplier = 1.13
-
         return .attributedString(
             subtitle
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.center)
-                    ])
-                ])
+                .bodyLargeMedium(
+                    alignment: .center
+                )
         )
     }
 
     private func getPlaceholder(
         _ aPlaceholder: String
     ) -> ImagePlaceholder {
-        let font = Fonts.DMSans.regular.make(19)
-        let lineHeightMultiplier = 1.13
-
         let placeholderText: EditText = .attributedString(
-            aPlaceholder.attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(.center),
-                    .lineBreakMode(.byWordWrapping),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ])
+            aPlaceholder
+                .bodyLargeRegular(
+                    alignment: .center
+                )
         )
 
         return ImagePlaceholder(

@@ -21,37 +21,29 @@ import MacaroonUIKit
 struct TransactionHistoryFilterViewModel:
     PairedViewModel,
     Hashable {
-    private(set) var image: UIImage?
+    private(set) var hasBadge: Bool = false
     private(set) var title: String?
 
     init(_ filterOption: TransactionFilterViewController.FilterOption) {
-        bindImage(from: filterOption)
+        bindBadge(from: filterOption)
         bindTitle(from: filterOption)
     }
 }
 
 extension TransactionHistoryFilterViewModel {
-    private mutating func bindImage(from filterOption: TransactionFilterViewController.FilterOption) {
+    private mutating func bindBadge(from filterOption: TransactionFilterViewController.FilterOption) {
         switch filterOption {
         case .allTime:
-            image = img("icon-transaction-filter-gray")
-        case .today:
-            image = img("icon-transaction-filter-badge")
-        case .yesterday:
-            image = img("icon-transaction-filter-badge")
-        case .lastWeek:
-            image = img("icon-transaction-filter-badge")
-        case .lastMonth:
-            image = img("icon-transaction-filter-badge")
-        case .customRange:
-            image = img("icon-transaction-filter-badge")
+            hasBadge = false
+        case .today, .yesterday, .lastWeek, .lastMonth, .customRange:
+            hasBadge = true
         }
     }
 
     private mutating func bindTitle(from filterOption: TransactionFilterViewController.FilterOption) {
         switch filterOption {
         case .allTime:
-            title = "contacts-transactions-title".localized
+            title = "accounts-transactions-title".localized
         case .today:
             title = "transaction-filter-option-today".localized
         case .yesterday:

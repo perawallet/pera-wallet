@@ -71,7 +71,7 @@ struct CollectibleDetailLoadingViewTheme:
 
         corner = Corner(radius: 4)
 
-        separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
+        separator = Separator(color: Colors.Layer.grayLighter, size: 1)
 
         spacingBetweenDescriptionAndSeparator = 32
 

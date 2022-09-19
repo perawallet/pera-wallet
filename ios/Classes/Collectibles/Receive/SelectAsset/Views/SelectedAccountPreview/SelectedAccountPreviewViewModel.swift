@@ -87,19 +87,11 @@ extension SelectedAccountPreviewViewModel {
             return nil
         }
 
-        let font = Fonts.DMSans.regular.make(13)
-        let lineHeightMultiplier = 1.18
-
         return .attributedString(
-            aTitle.attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(.left),
-                    .lineBreakMode(.byTruncatingTail),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ])
+            aTitle
+                .footnoteRegular(
+                    lineBreakMode: .byTruncatingTail
+                )
         )
     }
 
@@ -110,19 +102,11 @@ extension SelectedAccountPreviewViewModel {
             return nil
         }
 
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-
         return .attributedString(
-            aValue.attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(.left),
-                    .lineBreakMode(.byTruncatingTail),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ])
+            aValue
+                .bodyRegular(
+                    lineBreakMode: .byTruncatingTail
+                )
         )
     }
 }

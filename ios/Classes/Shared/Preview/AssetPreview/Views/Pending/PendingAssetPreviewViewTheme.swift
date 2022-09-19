@@ -20,36 +20,40 @@ import MacaroonUIKit
 struct PendingAssetPreviewViewTheme: StyleSheet, LayoutSheet {
     let primaryAssetTitle: TextStyle
     let secondaryAssetTitle: TextStyle
+    let secondaryImage: ImageStyle
     let assetStatus: TextStyle
 
     let imageSize: LayoutSize
     let horizontalPadding: LayoutMetric
     let verticalPadding: LayoutMetric
-    let secondaryImageLeadingPadding: LayoutMetric
+    let secondaryImageOffset: LayoutOffset
 
     init(_ family: LayoutFamily) {
         self.primaryAssetTitle = [
             .textAlignment(.left),
-            .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textOverflow(SingleLineText()),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(15))
         ]
         self.secondaryAssetTitle = [
             .textAlignment(.left),
-            .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.grayLighter),
+            .textOverflow(SingleLineText()),
+            .textColor(Colors.Text.grayLighter),
             .font(Fonts.DMSans.regular.make(13))
         ]
+        self.secondaryImage = [
+            .contentMode(.right)
+        ]
+        self.secondaryImageOffset = (8, 0)
         self.assetStatus = [
             .textAlignment(.right),
-            .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textOverflow(SingleLineText()),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(15))
         ]
 
         self.imageSize = (40, 40)
         self.horizontalPadding = 16
-        self.secondaryImageLeadingPadding = 8
         self.verticalPadding = 16
     }
 }

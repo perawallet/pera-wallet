@@ -23,6 +23,7 @@ protocol AccountAssetListDataController: AnyObject {
 
     func load()
     func reload()
+    func reloadIfThereIsPendingUpdates()
 }
 
 enum AccountAssetsSection:
@@ -38,8 +39,7 @@ enum AccountAssetsItem: Hashable {
     case portfolio(AccountPortfolioViewModel)
     case watchPortfolio(AccountPortfolioViewModel)
     case search
-    case algo(AssetPreviewViewModel)
-    case asset(AssetPreviewViewModel)
+    case asset(AssetListItemViewModel)
     case pendingAsset(PendingAssetPreviewViewModel)
     case assetManagement(ManagementItemViewModel)
     case watchAccountAssetManagement(ManagementItemViewModel)

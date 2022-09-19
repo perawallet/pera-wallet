@@ -52,19 +52,11 @@ extension CollectibleListInfoWithFilterViewModel {
             return nil
         }
 
-        let font = Fonts.DMSans.medium.make(15)
-        let lineHeightMultiplier = 1.23
-
         return .attributedString(
-            anInfo.attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(.left),
-                    .lineBreakMode(.byTruncatingTail),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ])
+            anInfo
+                .bodyMedium(
+                    lineBreakMode: .byTruncatingTail
+                )
         )
     }
 }

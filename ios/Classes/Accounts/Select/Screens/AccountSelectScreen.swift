@@ -45,7 +45,11 @@ final class AccountSelectScreen: BaseViewController {
         guard let api = api else {
             fatalError("API should be set.")
         }
-        return TransactionController(api: api, bannerController: bannerController)
+        return TransactionController(
+            api: api,
+            bannerController: bannerController,
+            analytics: analytics
+        )
     }()
 
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
@@ -116,7 +120,8 @@ final class AccountSelectScreen: BaseViewController {
 
         transactionSendController = TransactionSendController(
             draft: draft,
-            api: api!
+            api: api!,
+            analytics: analytics
         )
 
         transactionSendController?.delegate = self
@@ -186,8 +191,8 @@ final class AccountSelectScreen: BaseViewController {
             toAccount: draft.toAccount,
             amount: draft.amount,
             assetIndex: asset.id,
-            assetDecimalFraction: asset.presentation.decimals,
-            isVerifiedAsset: asset.presentation.isVerified,
+            assetDecimalFraction: asset.decimals,
+            isVerifiedAsset: asset.verificationTier.isVerified,
             note: draft.note
         )
         transactionDraft.toContact = draft.toContact
@@ -311,11 +316,24 @@ extension AccountSelectScreen: TransactionControllerDelegate {
     }
 
     func transactionController(_ transactionController: TransactionController, didRequestUserApprovalFrom ledger: String) {
-        let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: self)
+        let ledgerApprovalTransition = BottomSheetTransition(
+            presentingViewController: self,
+            interactable: false
+        )
         ledgerApprovalViewController = ledgerApprovalTransition.perform(
             .ledgerApproval(mode: .approve, deviceName: ledger),
             by: .present
         )
+
+        ledgerApprovalViewController?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .didCancel:
+                self.ledgerApprovalViewController?.dismissScreen()
+                self.loadingController?.stopLoading()
+            }
+        }
     }
 
     func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {

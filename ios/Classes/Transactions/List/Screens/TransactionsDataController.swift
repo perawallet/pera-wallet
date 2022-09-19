@@ -34,15 +34,12 @@ protocol TransactionsDataController: AnyObject {
 enum TransactionsSection:
     Int,
     Hashable {
-    case info
     case transactionHistory
     case nextList
     case empty
 }
 
 enum TransactionsItem: Hashable {
-    case algosInfo(AlgosDetailInfoViewModel)
-    case assetInfo(AssetDetailInfoViewModel)
     case filter(TransactionHistoryFilterViewModel)
     case algoTransaction(AlgoTransactionItemViewModel)
     case assetTransaction(AssetTransactionItemViewModel)
@@ -57,8 +54,6 @@ enum TransactionsItem: Hashable {
 enum EmptyState: Hashable {
     case noContent
     case transactionHistoryLoading
-    case algoTransactionHistoryLoading
-    case assetTransactionHistoryLoading
 }
 
 enum TransactionsDataControllerEvent {

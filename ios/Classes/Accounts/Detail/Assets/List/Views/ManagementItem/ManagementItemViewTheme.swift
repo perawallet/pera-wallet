@@ -27,10 +27,10 @@ struct ManagementItemViewTheme:
     
     init(_ family: LayoutFamily) {
         self.primaryButton = [
-            .titleColor([.normal(AppColors.Shared.Helpers.positive)])
+            .titleColor([.normal(Colors.Helpers.positive)])
         ]
         self.secondaryButton = [
-            .titleColor([.normal(AppColors.Shared.Helpers.positive)])
+            .titleColor([.normal(Colors.Helpers.positive)])
         ]
         self.buttonHeight = 40
         self.spacing = 16

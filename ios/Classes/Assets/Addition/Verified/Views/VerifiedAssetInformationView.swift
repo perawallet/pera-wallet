@@ -32,7 +32,7 @@ final class VerifiedAssetInformationView: View {
     
     func customize(_ theme: VerifiedAssetInformationViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
-        
+
         addTitle(theme)
         addImage(theme)
         addInformation(theme)

@@ -27,43 +27,43 @@ struct ALGBarButtonItem: BarButtonItem {
         case .save:
             return BarButtonItemTitleContent(
                 text: "title-save".localized,
-                textColor: AppColors.Components.Text.main.uiColor,
+                textColor: Colors.Text.main.uiColor,
                 font: UIFont.font(withWeight: .bold(size: 12.0))
             )
         case .closeTitle:
             return BarButtonItemTitleContent(
                 text: "title-close".localized,
-                textColor: AppColors.Components.Link.primary.uiColor,
+                textColor: Colors.Link.primary.uiColor,
                 font: Fonts.DMSans.medium.make(15).uiFont
             )
         case .done:
             return BarButtonItemTitleContent(
                 text: "title-done".localized,
-                textColor: AppColors.Components.Text.main.uiColor,
+                textColor: Colors.Text.main.uiColor,
                 font: Fonts.DMSans.medium.make(15).uiFont
             )
         case .doneGreen:
             return BarButtonItemTitleContent(
                 text: "title-done".localized,
-                textColor: AppColors.Components.Link.primary.uiColor,
+                textColor: Colors.Link.primary.uiColor,
                 font: Fonts.DMSans.medium.make(15).uiFont
             )
         case .skip:
             return BarButtonItemTitleContent(
                 text: "title-skip".localized,
-                textColor: AppColors.Components.Text.main.uiColor,
+                textColor: Colors.Text.main.uiColor,
                 font: Fonts.DMSans.medium.make(15).uiFont
             )
         case .dontAskAgain:
             return BarButtonItemTitleContent(
                 text: "title-dont-ask".localized,
-                textColor: AppColors.Components.Text.main.uiColor,
+                textColor: Colors.Text.main.uiColor,
                 font: Fonts.DMSans.medium.make(15).uiFont
             )
         case .copy:
             return BarButtonItemTitleContent(
                 text: "title-copy".localized,
-                textColor: AppColors.Components.Link.primary.uiColor,
+                textColor: Colors.Link.primary.uiColor,
                 font: UIFont.font(withWeight: .medium(size: 16.0))
             )
         default:
@@ -258,6 +258,10 @@ struct ALGBarButtonItem: BarButtonItem {
     
     static func back() -> ALGBarButtonItem? {
         return ALGBarButtonItem(kind: .back)
+    }
+
+    static func dismiss() -> ALGBarButtonItem? {
+        return ALGBarButtonItem(kind: .close)
     }
 }
 

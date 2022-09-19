@@ -21,10 +21,9 @@ final class CollectibleListInfoWithFilterView:
     View,
     ViewModelBindable,
     ListReusable,
-    UIInteractionObservable,
-    UIControlInteractionPublisher {
+    UIInteractable {
     private(set) var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
-        .showFilterSelection: UIControlInteraction()
+        .showFilterSelection: TargetActionInteraction()
     ]
 
     private lazy var infoView = Label()

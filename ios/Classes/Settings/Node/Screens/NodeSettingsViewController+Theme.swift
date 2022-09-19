@@ -25,7 +25,7 @@ extension NodeSettingsViewController {
         let cellSize: LayoutSize
         
         init(_ family: LayoutFamily) {
-            self.backgroundColor = AppColors.Shared.System.background
+            self.backgroundColor = Colors.Defaults.background
             self.cellSize = (UIScreen.main.bounds.width - 48, 64)
         }
     }

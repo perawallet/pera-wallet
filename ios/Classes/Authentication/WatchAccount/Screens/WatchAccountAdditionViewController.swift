@@ -42,11 +42,6 @@ final class WatchAccountAdditionViewController: BaseScrollViewController {
         self.address = address
         super.init(configuration: configuration)
     }
-
-    override func configureNavigationBarAppearance() {
-        super.configureNavigationBarAppearance()
-        addBarButtons()
-    }
     
     override func setListeners() {
         super.setListeners()
@@ -103,19 +98,6 @@ final class WatchAccountAdditionViewController: BaseScrollViewController {
 }
 
 extension WatchAccountAdditionViewController {
-    private func addBarButtons() {
-        // Add dismiss option if presented from the QR or deeplink
-        if address.isNilOrEmpty {
-            return
-        }
-
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
-            self?.closeScreen(by: .dismiss, animated: true)
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
-    }
-    
     @objc
     func pasteFromClipboard() {
         watchAccountAdditionView.bindData(WatchAccountAdditionViewModel(UIPasteboard.general.string))
@@ -151,7 +133,7 @@ extension WatchAccountAdditionViewController: WatchAccountAdditionViewDelegate {
         
         view.endEditing(true)
         let account = createAccount(from: address, with: address.shortAddressDisplay)
-        log(RegistrationEvent(type: .watch))
+        analytics.track(.registerAccount(registrationType: .watch))
         open(.accountNameSetup(flow: accountSetupFlow, mode: .add(type: .watch), accountAddress: account.address), by: .push)
     }
     

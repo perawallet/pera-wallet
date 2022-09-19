@@ -36,22 +36,31 @@ extension AppCallAssetPreviewViewModel {
     mutating func bindTitle(
         _ asset: StandardAsset
     ) {
-        let name = asset.presentation.name
+        let name = asset.naming.name
 
-        title =  .attributedString(
-            (name.isNilOrEmpty ? "title-unknown".localized : name!)
-                .bodyRegular(
-                    lineBreakMode: .byTruncatingTail
-                )
+        var attributes = Typography.bodyRegularAttributes(lineBreakMode: .byTruncatingTail)
+
+        if asset.verificationTier.isSuspicious {
+            attributes.insert(.textColor(Colors.Helpers.negative))
+        } else {
+            attributes.insert(.textColor(Colors.Text.main))
+        }
+
+        let aTitle = name.isNilOrEmpty ? "title-unknown".localized : name!
+
+        title = .attributedString(
+            aTitle.attributed(attributes)
         )
     }
 
     mutating func bindAccessoryIcon(
         _ asset: StandardAsset
     ) {
-        if asset.presentation.isVerified {
-            accessoryIcon = "icon-verified-shield"
-            return
+        switch asset.verificationTier {
+        case .trusted: accessoryIcon = "icon-trusted"
+        case .verified: accessoryIcon = "icon-verified"
+        case .unverified: accessoryIcon = nil
+        case .suspicious: accessoryIcon = "icon-suspicious"
         }
     }
 

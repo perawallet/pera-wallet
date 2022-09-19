@@ -38,7 +38,7 @@ struct CopyAddressStoryScreenTheme:
         _ family: LayoutFamily
     ) {
         self.background = [
-            .backgroundColor(AppColors.Shared.System.background)
+            .backgroundColor(Colors.Defaults.background)
         ]
         self.image = [
             .image("copy-address-story")
@@ -46,7 +46,7 @@ struct CopyAddressStoryScreenTheme:
         self.imageTopInset = 32
         self.imageMinHorizontalInsets = (32, 32)
         self.title = [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.medium.make(19)),
             .text("story-copy-address-title".localized),
             .textOverflow(FittingText()),
@@ -54,7 +54,7 @@ struct CopyAddressStoryScreenTheme:
         ]
         self.titleTopInset = 32
         self.description = [
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(13)),
             .text("story-copy-address-description".localized),
             .textOverflow(FittingText()),

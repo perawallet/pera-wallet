@@ -38,7 +38,7 @@ struct AccountShareViewTheme:
         name = [
             .textOverflow(SingleLineFittingText()),
             .textAlignment(.left),
-            .textColor(AppColors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
         copy = [
             .icon([.normal("icon-copy-24")]),

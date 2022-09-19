@@ -25,10 +25,6 @@ final class VerifiedAssetInformationViewController: BaseViewController {
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         title = "verified-assets-title".localized
     }
-    
-    override func configureNavigationBarAppearance() {
-        addBackBarButtonItem()
-    }
 
     override func prepareLayout() {
         verifiedAssetInformationView.customize(theme.verifiedAssetInformationViewTheme)
@@ -41,16 +37,6 @@ final class VerifiedAssetInformationViewController: BaseViewController {
     
     override func linkInteractors() {
         verifiedAssetInformationView.delegate = self
-    }
-}
-
-extension VerifiedAssetInformationViewController {
-    private func addBackBarButtonItem() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
-            self.closeScreen(by: .dismiss, animated: true)
-        }
-        
-        leftBarButtonItems = [closeBarButtonItem]
     }
 }
 

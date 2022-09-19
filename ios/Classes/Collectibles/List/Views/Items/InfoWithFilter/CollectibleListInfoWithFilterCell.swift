@@ -20,7 +20,7 @@ import MacaroonUIKit
 final class CollectibleListInfoWithFilterCell:
     CollectionCell<CollectibleListInfoWithFilterView>,
     ViewModelBindable,
-    UIInteractionObservable {
+    UIInteractable {
     var isFilterSelected: Bool = false {
         didSet {
             contextView.recustomizeAppearanceWhenFilterChanged(

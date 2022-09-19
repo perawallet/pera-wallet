@@ -56,9 +56,20 @@ extension CollectibleFullScreenImageViewModel {
             expectedImageSize: expectedImageSize
         )
 
-        imageSource = getImageSource(
-            from: url,
-            for: media
+        let shape: ImageShape
+        switch media.mediaExtension {
+        case .gif: shape = .original
+        case .webp: shape = .rounded(4)
+        default: shape = .rounded(4)
+        }
+
+        let asset = AssetImageSource(asset: draft.image)
+        let placeholder = ImagePlaceholder(image: asset, text: nil)
+
+        imageSource = PNGImageSource(
+            url: url,
+            shape: shape,
+            placeholder: placeholder
         )
     }
 }
@@ -76,32 +87,5 @@ extension CollectibleFullScreenImageViewModel {
             .setExpectedImageSize(expectedImageSize)
             .setImageQuality(.normal)
             .build()
-    }
-
-    private func getImageSource(
-        from url: URL?,
-        for media: Media
-    ) -> URLImageSource {
-        let radius: CGFloat = 4
-
-        switch media.mediaExtension {
-        case .gif:
-            return PNGImageSource(
-                url: url,
-                placeholder: nil
-            )
-        case .webp:
-            return PNGImageSource(
-                url: url,
-                shape: .rounded(radius),
-                placeholder: nil
-            )
-        default:
-            return PNGImageSource(
-                url: url,
-                shape: .rounded(radius),
-                placeholder: nil
-            )
-        }
     }
 }

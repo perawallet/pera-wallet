@@ -39,7 +39,7 @@ struct SendCollectibleViewControllerTheme:
         ]
 
         backgroundEnd = [
-            .backgroundColor(AppColors.Shared.Modality.background)
+            .backgroundColor(Colors.Modality.background)
         ]
 
         sendCollectibleViewTheme = SendCollectibleViewTheme()

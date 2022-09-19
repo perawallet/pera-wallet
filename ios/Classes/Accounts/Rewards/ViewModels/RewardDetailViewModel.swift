@@ -42,20 +42,10 @@ struct RewardDetailViewModel:
 
 extension RewardDetailViewModel {
     private mutating func bindTitle() {
-        let font = Fonts.DMSans.regular.make(13)
-        let lineHeightMultiplier = 1.18
-
         title = .attributedString(
             "rewards-title"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.left)
-                    ])
-                ])
+                .footnoteRegular()
         )
     }
 
@@ -87,53 +77,35 @@ extension RewardDetailViewModel {
     }
 
     private mutating func bindDescription() {
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-
         description = .attributedString(
             "rewards-detail-subtitle"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.left)
-                    ])
-                ])
+                .bodyRegular()
         )
     }
 
     private mutating func bindFAQLabel() {
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
+        let title = "total-rewards-faq-title".localized
+        let FAQ = "total-rewards-faq".localized
 
-        let totalString = "total-rewards-faq-title"
-        let FAQString = "total-rewards-faq"
+        let titleAttributes = NSMutableAttributedString(
+            attributedString: title.bodyRegular()
+        )
 
-        let attributedString =
-        totalString
-            .localized
-            .attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineBreakMode(.byWordWrapping),
-                    .lineHeightMultiple(lineHeightMultiplier),
-                    .textAlignment(.left)
-                ]),
-            ])
-            .appendAttributesToRange(
-                [
-                    .foregroundColor: AppColors.Components.Link.primary.uiColor,
-                    .font: Fonts.DMSans.regular.make(15).uiFont,
-                ],
-                of: FAQString.localized
-            )
+        let FAQAttributes: TextAttributeGroup = [
+            .textColor(Colors.Link.primary.uiColor),
+            .font(Fonts.DMSans.medium.make(15).uiFont)
+        ]
+
+        let FAQRange = (titleAttributes.string as NSString).range(of: FAQ)
+
+        titleAttributes.addAttributes(
+            FAQAttributes.asSystemAttributes(),
+            range: FAQRange
+        )
 
         FAQLabel = .attributedString(
-            attributedString
+            titleAttributes
         )
     }
 }

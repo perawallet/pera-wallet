@@ -74,6 +74,8 @@ final class WCUnsignedRequestScreen: BaseViewController {
         super.configureNavigationBarAppearance()
 
         title = "wallet-connect-transaction-title-unsigned".localized
+
+        hidesCloseBarButtonItem = true
     }
 
     override func prepareLayout() {

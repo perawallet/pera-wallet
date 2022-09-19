@@ -31,7 +31,7 @@ struct SendCollectibleAccountListViewControllerTheme:
         _ family: LayoutFamily
     ) {
         background = [
-            .backgroundColor(AppColors.Shared.System.background)
+            .backgroundColor(Colors.Defaults.background)
         ]
         horizontalPadding = 24
         searchInputViewTopPadding = 16

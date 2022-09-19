@@ -15,8 +15,10 @@
 //
 //  NSAttributedString+Additions.swift
 
-import Foundation
 import CoreGraphics
+import Foundation
+import MacaroonUIKit
+import UIKit
 
 extension NSAttributedString {
     static func + (lhs: NSAttributedString, rhs: NSAttributedString) -> NSAttributedString {
@@ -38,5 +40,65 @@ extension NSAttributedString {
         )
 
         return ceil(rect.size.height)
+    }
+
+    func addAttributes(
+        to attributedText: String,
+        newAttributes: TextAttributeGroup
+    ) -> NSMutableAttributedString {
+        let selfMutableString = NSMutableAttributedString(
+            attributedString: self
+        )
+
+        let attributedRange = (selfMutableString.string as NSString).range(of: attributedText)
+
+        selfMutableString.addAttributes(
+            newAttributes.asSystemAttributes(),
+            range: attributedRange
+        )
+
+        return selfMutableString
+    }
+
+    func add(
+        _ newAttributes: TextAttributeGroup
+    ) -> NSMutableAttributedString {
+        let selfMutableString = NSMutableAttributedString(
+            attributedString: self
+        )
+        let fullRange = NSRange(
+            location: 0,
+            length: length
+        )
+
+        selfMutableString.addAttributes(
+            newAttributes.asSystemAttributes(),
+            range: fullRange
+        )
+
+        return selfMutableString
+    }
+
+    func calculateNumberOfLines(
+        toFitIn width: CGFloat,
+        font: UIFont
+    ) -> Int {
+        let size = CGSize(
+            width: width,
+            height: .greatestFiniteMagnitude
+        )
+        let characterHeight = font.lineHeight
+        let text = string as NSString
+
+        let fullTextSize = text.boundingRect(
+            with: size,
+            options: .usesLineFragmentOrigin,
+            attributes: [
+                .font: font
+            ],
+            context: nil
+        )
+        let numberOfLines = Int(ceil(fullTextSize.height / characterHeight))
+        return numberOfLines
     }
 }

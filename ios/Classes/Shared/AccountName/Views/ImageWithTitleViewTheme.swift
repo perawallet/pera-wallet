@@ -30,7 +30,7 @@ extension ImageWithTitleViewTheme {
         return [
             .textOverflow(SingleLineFittingText()),
             .textAlignment(.left),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(15))
         ]
     }
@@ -54,7 +54,7 @@ struct AccountNameViewSmallTheme: ImageWithTitleViewTheme {
         return [
             .textOverflow(SingleLineText()),
             .textAlignment(.left),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(15))
         ]
     }
@@ -73,7 +73,7 @@ struct SwitchAccountNameViewTheme: ImageWithTitleViewTheme {
         return [
             .textOverflow(SingleLineText()),
             .textAlignment(.left),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(15))
         ]
     }
@@ -92,7 +92,7 @@ struct WCAccountNameViewSmallTheme: ImageWithTitleViewTheme {
         return [
             .textOverflow(FittingText()),
             .textAlignment(.left),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(15))
         ]
     }

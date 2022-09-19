@@ -58,7 +58,7 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
 
    override func configureAppearance() {
       super.configureAppearance()
-      view.customizeBaseAppearance(backgroundColor: AppColors.Shared.System.background)
+      view.customizeBaseAppearance(backgroundColor: theme.background)
       title = "send-transaction-preview-title".localized
    }
 
@@ -136,8 +136,8 @@ extension SendTransactionPreviewScreen {
            )
        )
 
-       let color0 = AppColors.Shared.System.background.uiColor.withAlphaComponent(0).cgColor
-       let color1 = AppColors.Shared.System.background.uiColor.cgColor
+       let color0 = Colors.Defaults.background.uiColor.withAlphaComponent(0).cgColor
+       let color1 = Colors.Defaults.background.uiColor.cgColor
 
        layer.colors = [color0, color1]
        nextButtonContainer.layer.insertSublayer(layer, at: 0)
@@ -165,27 +165,9 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
          }
       }
 
-      if let algoDraft = draft as? AlgosTransactionSendDraft, let amount = algoDraft.amount {
-         log(
-            TransactionEvent(
-               accountType: draft.from.type,
-               assetId: nil,
-               isMaxTransaction: draft.isMaxTransaction,
-               amount: amount.toMicroAlgos,
-               transactionId: id.identifier
-            )
-         )
-      } else if let assetDraft = draft as? AssetTransactionSendDraft,
-                  let assetId = assetDraft.assetIndex,
-                  let amount = assetDraft.amount {
-         log(
-            TransactionEvent(
-               accountType: draft.from.type,
-               assetId: String(assetId),
-               isMaxTransaction: draft.isMaxTransaction,
-               amount: amount.toFraction(of: assetDraft.assetDecimalFraction),
-               transactionId: id.identifier
-            )
+      if draft is AlgosTransactionSendDraft || draft is AssetTransactionSendDraft {
+         analytics.track(
+            .completeStandardTransaction(draft: draft, transactionId: id)
          )
       }
    }

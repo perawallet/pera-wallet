@@ -25,12 +25,12 @@ class JSONDisplayView: BaseView {
         UILabel()
             .withAlignment(.left)
             .withLine(.contained)
-            .withTextColor(AppColors.Components.Text.main.uiColor)
+            .withTextColor(Colors.Text.main.uiColor)
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
     }()
 
     override func configureAppearance() {
-        backgroundColor = AppColors.Shared.System.background.uiColor
+        backgroundColor = Colors.Defaults.background.uiColor
     }
 
     override func prepareLayout() {

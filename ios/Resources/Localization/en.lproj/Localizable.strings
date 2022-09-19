@@ -72,6 +72,14 @@
 "title-more" = "More";
 "title-app-call" = "App Call";
 "title-show-more-assets" = "Show +%@ more assets";
+"title-show-more" = "Show more";
+"title-show-less" = "Show less";
+"title-total-supply" = "Total Supply";
+"title-about-with-param" = "ABOUT %@";
+"title-csv" = "CSV";
+"activity" = "Activity";
+"about" = "About";
+"url-copied" = "URL copied to clipboard";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -203,12 +211,12 @@
 "login-subtitle" = "Enter your\n6-digit pin";
 
 // MARK: Accounts
-"accounts-tranaction-empty-text" = "No Transactions Yet";
-"accounts-tranaction-empty-detail" = "No transactions have been made with this asset.";
+"accounts-tranaction-empty-text" = "No Transactions";
+"accounts-tranaction-empty-detail" = "There are no transactions to be displayed for selected period";
 "tranaction-empty-text" = "No Transactions Found";
 "accounts-algos-available-title" = "Algo";
 "accounts-dollar-value-title" = "Dollar Value";
-"accounts-transaction-history-title" = "Transaction History";
+"accounts-transactions-title" = "Transactions";
 "accounts-add-account" = "+ ADD ACCOUNT";
 "accounts-title" = "Accounts";
 "accounts-qr-tooltip" = "Your account's address QR can be found here";
@@ -226,6 +234,7 @@
 "asset-not-found-title" = "No asset found";
 "asset-not-found-detail" = "Try different asset name or asset id";
 "asset-algos-title" = "Algo";
+"asset-algos-description" = "The Algo is the official cryptocurrency of the Algorand blockchain. The Algorand blockchain has been built to help create an open, borderless economy where everybody can participate. This new type of digital economy can only run on a truly digital currency that works instantly, for everybody. This is the Algo.";
 "asset-remove-title" = "Remove Assets";
 "asset-remove-subtitle" = "To remove an asset, you must first transfer any remaining balance to another account.";
 "asset-search-placeholder" = "Search Assets ID or Name";
@@ -260,6 +269,14 @@
 "asset-all-title" = "All";
 "asset-detail-id-title" = "ID %@";
 "asset-no-value" = "N/A";
+"asset-quick-action-button-add" = "Add Asset";
+"asset-quick-action-title-opt-in" = "You can add this NFT to";
+"asset-quick-action-title-add" = "You can add this asset to";
+"asset-quick-action-title-add-asset-without-account" = "You can opt-in to this asset from one of your accounts.";
+"asset-quick-action-title-add-nft-without-account" = "You can opt-in to this NFT from one of your accounts.";
+"asset-quick-action-title-remove" = "Opted in to";
+"asset-opt-in-successful-message" = "%@ successfully added to your account.";
+"asset-opt-out-successful-message" = "%@ successfully removed from your account.";
 
 // MARK: Algos Send
 "send-algos-title" = "Send Algo";
@@ -339,7 +356,7 @@
 "contacts-delete-contact-alert-explanation" = "Are you sure you want to delete this contact?";
 "contacts-close-warning-title" = "Are you sure?";
 "contacts-close-warning-subtitle" = "Your unsaved progress will be lost. Are you sure?";
-"accounts-title-assets" = "Assets";
+"accounts-title-overview" = "Overview";
 "accounts-title-collectibles" = "Collectibles";
 "accounts-title-history" = "History";
 "contacts-title-assets" = "Assets";
@@ -852,6 +869,7 @@
 "wallet-connect-transaction-error-invalid-asset" = "Invalid Input: Invalid Asset";
 "wallet-connect-transaction-error-multisig" = "The transaction request contains an Unsupported Transaction Type: Multi-sig";
 "wallet-connect-transaction-error-unable-sign" = "Invalid Input: Unable to be signed";
+"wallet-connect-transaction-error-unable-fetch-asset" = "We couldn't fetch asset details and the transaction was cancelled. Please check your network connection and try again.";
 
 "wallet-connect-transaction-group-algos-title" = "Payment to %@";
 "wallet-connect-transaction-group-asset-title" = "Asset Transfer to %@";
@@ -987,12 +1005,12 @@
 // MARK: Collectible Receive
 "collectibles-receive-action" = "Receive an NFT";
 "collectibles-receive-account-list-header-description" = "Select the wallet account you would like to receive to:";
-"collectible-receive-account-list-info" = "Your account needs to be opt in to the NFT before you can receive it. Make sure to check the Asset ID while confirming.";
+"collectible-receive-account-list-info" = "You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet.";
 "collectibles-receive-asset-title" = "Opt-in to NFT";
 "collectibles-receive-asset-list-search-placeholder" = "Search Asset ID or NFT name";
 "collectibles-receive-asset-list-header-description" = "You need to opt in to the ASA ID of the NFT to be able to receive it. Paste the ASA ID or scan it below.";
 "collectibles-receive-asset-list-search-no-content" = "No NFT Found";
-"collectible-receive-asset-list-info" = "You can search the NFT you want to opt in to by pasting its name or Asset ID in the search bar below.";
+"collectible-receive-asset-list-info" = "You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet. Paste the ASA ID in the search bar.";
 "collectible-receive-asset-list-selected-account" = "Selected account";
 
 // MARK: Collectible Send
@@ -1097,6 +1115,8 @@
 "transaction-option-list-receive-subtitle" = "View or copy your account address";
 "transaction-option-list-scan-qr-code-subtitle" = "Use WalletConnect or scan an account address";
 "transaction-option-list-more-subtitle" = "Show more actions";
+"transaction-option-list-add-asset-title" = "Add Asset";
+"transaction-option-list-add-asset-subtitle" = "Opt-in for an ASA or NFT";
 
 // MARK: Sort Account List
 "sort-account-list-manually-header-title" = "Reorganize Accounts Manually";
@@ -1107,3 +1127,48 @@
 "inner-txns-plural-count" = "%@ inner txns";
 "inner-transaction-singular-count" = "1 Inner Transaction";
 "inner-transaction-plural-count" = "%@ Inner Transactions";
+
+// MARK: Opt In Asset
+"opt-in-title-adding-nft" = "Opt-in to NFT";
+"opt-in-description-adding-nft" = "Opting in to an NFT requires requires sending a transaction with a minimum transaction fee. This will appear on your transaction history.";
+
+// MARK: ASA Verification
+"asa-verification-title-trusted" = "Trusted ASA";
+"asa-verification-title-verified" = "Verified ASA";
+"asa-verification-title-suspicious" = "Suspicious";
+"asa-verification-detail-trusted" = "This is a well-known and established project in the Algorand ecosystem.";
+"asa-verification-detail-trusted-bold" = "well-known";
+"asa-verification-detail-verified" = "This ASA was automatically verified through the Pera ASA Verification program.";
+"asa-verification-detail-verified-bold" = "automatically verified";
+"asa-verification-detail-suspicious" = "We’ve received reports that this ASA was involved in a scam attempt. Be cautious when interacting with it.";
+"asa-verification-detail-suspicious-bold" = "scam attempt";
+"asa-verification-learn-more" = "Learn more about ASA verification";
+"asa-verification-suspicious-report" = "Report %@";
+
+// MARK: Social Media Platforms
+"social-media-platform-title" = "SOCIAL MEDIA";
+"social-media-platform-discord" = "Discord";
+"social-media-platform-twitter" = "Twitter";
+"social-media-platform-telegram" = "Telegram";
+
+// MARK: Mail
+"mail-report-address" = "verification@perawallet.app";
+"mail-report-subject" = "ASA Report: %d";
+
+// MARK: Verification Information
+"verification-info-title" = "ASA Verification";
+"verification-info-body" = "Pera Wallet's Algorand Standard Asset (ASA) Verification Program allows ASA creators to get automatically verified by validating that they are the owners of the asset.\nThe main purpose of ASA Verification is to prevent an ASA from pretending to be affiliated with and acting as the token for a project it’s not connected to.\nASA Verification is not an endorsement of the project. Neither Algorand nor Pera would ever use the verification process to endorse a project.";
+"verification-info-body-first-highlight" = "automatically";
+"verification-info-body-second-highlight" = "to prevent an ASA from pretending to be affiliated with and acting as the token for a project it’s not connected to.";
+"verification-info-body-third-highlight" = "ASA Verification is not an endorsement of the project.";
+
+// MARK: Total Supply
+"asset-total-supply-body" = "The total supply of an asset is set at creation time and it corresponds to the asset’s total created units.";
+
+// MARK: ASA About
+"asa-about-asa-id" = "ASA ID";
+"asa-about-asa-url" = "ASA URL";
+"asa-about-asa-creator" = "Creator";
+"asa-about-asa-show-on" = "Show on";
+"asa-about-asa-show-on-pera-explorer" = "Pera Explorer";
+"asa-about-asa-project-website" = "Project website";

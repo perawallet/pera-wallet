@@ -38,40 +38,22 @@ extension HomeNoContentViewModel {
     }
 
     private mutating func bindTitle() {
-        let font = Fonts.DMSans.medium.make(19)
-        let lineHeightMultiplier = 1.13
-        
         title = .attributedString(
             "empty-accounts-title"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.center)
-                    ])
-                ])
+                .bodyLargeMedium(
+                    alignment: .center
+                )
         )
     }
 
     private mutating func bindBody() {
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-        
         body = .attributedString(
             "empty-accounts-detail"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.center)
-                    ])
-                ])
+                .bodyRegular(
+                    alignment: .center
+                )
         )
     }
 

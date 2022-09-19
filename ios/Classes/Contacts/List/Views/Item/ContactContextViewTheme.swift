@@ -41,18 +41,18 @@ struct ContactContextViewTheme: StyleSheet, LayoutSheet {
         self.nameLabel = [
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(15))
         ]
         self.addressLabel = [
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.grayLighter),
+            .textColor(Colors.Text.grayLighter),
             .font(Fonts.DMMono.regular.make(13))
         ]
         self.qrButton = [
             .icon([.normal("icon-qr")]),
-            .tintColor(AppColors.Components.Text.main)
+            .tintColor(Colors.Text.main)
         ]
         self.horizontalPadding = 24
         self.imageSize = (40, 40)

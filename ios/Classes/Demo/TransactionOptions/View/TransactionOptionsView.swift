@@ -22,14 +22,13 @@ import UIKit
 
 final class TransactionOptionsView:
     View,
-    UIInteractionObservable,
-    UIControlInteractionPublisher {
+    UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .buyAlgo: UIControlInteraction(),
-        .send: UIControlInteraction(),
-        .receive: UIControlInteraction(),
-        .scanQRCode: UIControlInteraction(),
-        .close: UIViewTapInteraction()
+        .buyAlgo: TargetActionInteraction(),
+        .send: TargetActionInteraction(),
+        .receive: TargetActionInteraction(),
+        .scanQRCode: TargetActionInteraction(),
+        .close: GestureInteraction()
     ]
 
     private lazy var backgroundView = MacaroonUIKit.BaseView()
@@ -186,57 +185,57 @@ extension TransactionOptionsView {
             $0.trailing == 0
         }
         
-        addActions(theme)
+        addButtons(theme)
     }
 
-    private func addActions(
+    private func addButtons(
         _ theme: TransactionOptionsViewTheme
     ) {
         actions.forEach {
             switch $0 {
             case .buyAlgo:
-                addAction(
-                    theme: theme.action,
-                    viewModel: BuyAlgoTransactionOptionListActionViewModel(),
+                addButton(
+                    theme: theme.button,
+                    viewModel: BuyAlgoTransactionOptionListItemButtonViewModel(),
                     event: .buyAlgo
                 )
             case .send:
-                addAction(
-                    theme: theme.action,
-                    viewModel: SendTransactionOptionListActionViewModel(),
+                addButton(
+                    theme: theme.button,
+                    viewModel: SendTransactionOptionListItemButtonViewModel(),
                     event: .send
                 )
             case .receive:
-                addAction(
-                    theme: theme.action,
-                    viewModel: ReceiveTransactionOptionListActionViewModel(),
+                addButton(
+                    theme: theme.button,
+                    viewModel: ReceiveTransactionOptionListItemButtonViewModel(),
                     event: .receive
                 )
             case .scanQRCode:
-                addAction(
-                    theme: theme.action,
-                    viewModel: ScanQRCodeTransactionOptionListActionViewModel(),
+                addButton(
+                    theme: theme.button,
+                    viewModel: ScanQRCodeTransactionOptionListItemButtonViewModel(),
                     event: .scanQRCode
                 )
             }
         }
     }
 
-    private func addAction(
-        theme: ListActionViewTheme,
-        viewModel: TransactionOptionListActionViewModel,
+    private func addButton(
+        theme: ListItemButtonTheme,
+        viewModel: TransactionOptionListItemButtonViewModel,
         event: Event
     ) {
-        let actionView = ListActionView()
+        let button = ListItemButton()
         
-        actionView.customize(theme)
-        actionView.bindData(viewModel)
+        button.customize(theme)
+        button.bindData(viewModel)
 
-        contextView.addArrangedSubview(actionView)
+        contextView.addArrangedSubview(button)
 
         startPublishing(
             event: event,
-            for: actionView
+            for: button
         )
     }
 }

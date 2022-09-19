@@ -27,7 +27,7 @@ struct SendTransactionDraft: TransactionSendDraft {
         get {
             switch transactionMode {
             case .algo:
-                return self.amount == from.amount.toAlgos
+                return self.amount == from.algo.amount.toAlgos
             case .asset(let asset):
                 return self.amount == asset.amountWithFraction
             }
@@ -44,7 +44,7 @@ struct SendTransactionDraft: TransactionSendDraft {
         case .algo:
             return algosFraction
         case .asset(let asset):
-            return asset.presentation.decimals
+            return asset.decimals
         }
     }
     var toContact: Contact?

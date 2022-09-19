@@ -42,23 +42,23 @@ struct FloatingTextInputFieldViewCommonTheme: FloatingTextInputFieldViewTheme {
         self.placeholder = [
             .font(Fonts.DMSans.regular.make(15, .body)),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.grayLighter),
+            .textColor(Colors.Text.grayLighter),
             .text(placeholder)
         ]
         self.floatingPlaceholder = [
-            .textColor(AppColors.Components.Text.grayLighter),
+            .textColor(Colors.Text.grayLighter),
             .text(
-                (floatingPlaceholder ?? placeholder).body(hasMultilines: false)
+                (floatingPlaceholder ?? placeholder).footnoteRegular()
             )
         ]
         self.focusIndicator = [
-            .backgroundColor(AppColors.Components.TextField.indicatorDeactive)
+            .backgroundColor(Colors.Shadows.TextField.defaultBackground)
         ]
         self.focusIndicatorActive = [
-            .backgroundColor(AppColors.Components.TextField.indicatorActive)
+            .backgroundColor(Colors.Shadows.TextField.typingBackground)
         ]
         self.errorFocusIndicator = [
-            .backgroundColor(AppColors.Shared.Helpers.negative)
+            .backgroundColor(Colors.Shadows.TextField.errorBackground)
         ]
         self.assistive = FormInputFieldAssistiveViewCommonTheme()
     }
@@ -70,28 +70,6 @@ struct FloatingTextInputFieldViewCommonTheme: FloatingTextInputFieldViewTheme {
             textInput: [],
             placeholder: "",
             family
-        )
-    }
-}
-
-extension String {
-    func body(
-        alignment: NSTextAlignment = .left,
-        lineBreakMode: NSLineBreakMode = .byWordWrapping,
-        hasMultilines: Bool = true
-    ) -> NSAttributedString {
-        return attributed(
-            [
-                .font(Fonts.DMSans.regular.make(13, .body).uiFont),
-                .letterSpacing(0.4),
-                .paragraph(
-                    [
-                        .alignment(alignment),
-                        .lineBreakMode(lineBreakMode),
-                        .lineHeightMultiple(hasMultilines ? 0.67 : 0)
-                    ]
-                )
-            ]
         )
     }
 }

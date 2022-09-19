@@ -20,9 +20,9 @@ final class CollectiblesViewController: BaseViewController {
     override var prefersLargeTitle: Bool {
         return true
     }
-    
-    override var name: AnalyticsScreenName? {
-        return .collectibles
+
+    override var analyticsScreen: ALGAnalyticsScreen? {
+        return .init(name: .collectibleList)
     }
 
     private lazy var bottomBannerController = BottomActionableBannerController(
@@ -39,7 +39,6 @@ final class CollectiblesViewController: BaseViewController {
             sharedDataController: sharedDataController
         ),
         copyToClipboardController: copyToClipboardController,
-        theme: .common,
         configuration: configuration
     )
 
@@ -54,8 +53,8 @@ final class CollectiblesViewController: BaseViewController {
     }
 
     override func configureNavigationBarAppearance() {
-        addBarButtons()
         bindNavigationItemTitle()
+        setOptInBarButtonHidden(true)
     }
 
     override func customizeTabBarAppearence() {
@@ -75,18 +74,21 @@ final class CollectiblesViewController: BaseViewController {
 }
 
 extension CollectiblesViewController {
-    private func addBarButtons() {
-        let addBarButtonItem = ALGBarButtonItem(kind: .add) { [weak self] in
-            guard let self = self else {
-                return
+    private func setOptInBarButtonHidden(_ hidden: Bool) {
+        if hidden {
+            rightBarButtonItems = []
+        } else {
+            let addBarButtonItem = ALGBarButtonItem(kind: .add) {
+                [unowned self] in
+
+                self.endEditing()
+                self.openReceiveCollectible()
             }
 
-            self.endEditing()
-
-            self.openReceiveCollectible()
+            rightBarButtonItems = [ addBarButtonItem ]
         }
 
-        rightBarButtonItems = [addBarButtonItem]
+        setNeedsNavigationBarAppearanceUpdate()
     }
 
     private func bindNavigationItemTitle() {
@@ -107,6 +109,10 @@ extension CollectiblesViewController {
             switch event {
             case .didTapReceive:
                 self.openReceiveCollectible()
+            case .willDisplayListHeader:
+                self.setOptInBarButtonHidden(true)
+            case .didEndDisplayingListHeader:
+                self.setOptInBarButtonHidden(false)
             case .didFinishRunning(let hasError):
                 if hasError {
                     self.bottomBannerController.presentFetchError(
@@ -149,21 +155,5 @@ extension CollectiblesViewController: ReceiveCollectibleAccountListViewControlle
         _ controller: ReceiveCollectibleAccountListViewController,
         didCompleteTransaction account: Account
     ) {
-        controller.dismissScreen() {
-            let draft = QRCreationDraft(
-                address: account.address,
-                mode: .address,
-                title: account.name
-            )
-
-            self.open(
-                .qrGenerator(
-                    title: account.name ?? account.address.shortAddressDisplay,
-                    draft: draft,
-                    isTrackable: true
-                ),
-                by: .present
-            )
-        }
     }
 }

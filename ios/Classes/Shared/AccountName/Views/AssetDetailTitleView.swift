@@ -21,7 +21,7 @@ import MacaroonUIKit
 final class AssetDetailTitleView:
     View,
     ViewModelBindable {
-    private lazy var imageView = AssetImageView()
+    private lazy var imageView = PrimaryImageView()
     private lazy var titleLabel = UILabel()
 
     func customize(_ theme: AssetDetailTitleViewTheme) {

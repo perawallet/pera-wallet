@@ -152,7 +152,7 @@ extension Account {
 
 extension Account {
     func update(with account: Account) {
-        amount = account.amount
+        algo.amount = account.algo.amount
         status = account.status
         rewards = account.rewards
         pendingRewards = account.pendingRewards

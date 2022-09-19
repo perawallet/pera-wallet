@@ -44,20 +44,9 @@ extension AccountShareViewModel {
     ) {
         let nameValue = account.name.unwrap(or: account.address.shortAddressDisplay)
 
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-
         name = .attributedString(
             nameValue
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.left)
-                    ])
-                ])
+                .bodyRegular()
         )
     }
 }

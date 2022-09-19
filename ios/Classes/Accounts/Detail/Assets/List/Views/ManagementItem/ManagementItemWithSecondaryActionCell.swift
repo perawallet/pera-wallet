@@ -21,7 +21,7 @@ import UIKit
 final class ManagementItemWithSecondaryActionCell:
     CollectionCell<ManagementItemView>,
     ViewModelBindable,
-    UIInteractionObservable {
+    UIInteractable {
     static let theme = ManagementItemViewTheme()
     
     override init(frame: CGRect) {

@@ -46,7 +46,7 @@ final class ReceiveCollectibleAccountListDataSource:
                 }
             case .info:
                 let cell = collectionView.dequeue(
-                    InfoCell.self,
+                    ReceiveCollectibleInfoBoxCell.self,
                     at: indexPath
                 )
                 cell.bindData(
@@ -77,7 +77,7 @@ final class ReceiveCollectibleAccountListDataSource:
         [
             PreviewLoadingCell.self,
             NoContentCell.self,
-            InfoCell.self,
+            ReceiveCollectibleInfoBoxCell.self,
             TitleSupplementaryCell.self,
             AccountPreviewCell.self,
         ].forEach {

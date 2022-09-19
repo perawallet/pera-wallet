@@ -50,7 +50,7 @@ extension WCConnectionApprovalViewModel {
             string: fullText,
             attributes: [
                 .font: UIFont.font(withWeight: .regular(size: 18)),
-                .foregroundColor: AppColors.Components.Text.main.uiColor
+                .foregroundColor: Colors.Text.main.uiColor
             ]
         )
 

@@ -34,13 +34,13 @@ struct AccountNameSetupViewTheme: StyleSheet, LayoutSheet {
         self.title = [
             .textAlignment(.left),
             .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.medium.make(32)),
             .text("account-details-title".localized)
         ]
 
         self.description = [
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),
             .textOverflow(FittingText()),

@@ -73,7 +73,7 @@ extension CollectibleTransactionInfoViewModel {
             valueStyle = [
                 .textOverflow(FittingText()),
                 .textAlignment(.right),
-                .textColor(AppColors.Components.Link.primary)
+                .textColor(Colors.Link.primary)
             ]
             return
         }
@@ -81,7 +81,7 @@ extension CollectibleTransactionInfoViewModel {
         valueStyle = [
             .textOverflow(FittingText()),
             .textAlignment(.right),
-            .textColor(AppColors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
     }
 }
@@ -90,47 +90,30 @@ extension CollectibleTransactionInfoViewModel {
     private func getTitle(
         _ aTitle: String
     ) -> EditText {
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-
         return .attributedString(
             aTitle
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .textAlignment(.left),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .bodyRegular()
         )
     }
 
     private func getValue(
         _ information: CollectibleTransactionInformation
     ) -> EditText {
-        let font: CustomFont
+        let value = information.value
+
+        let attributedString: NSAttributedString
+        let alignment: NSTextAlignment = .right
 
         if information.isCollectibleSpecificValue {
-            font = Fonts.DMSans.medium.make(15)
+            attributedString = value
+                .bodyMedium(alignment: alignment)
         } else {
-            font = Fonts.DMSans.regular.make(15)
+            attributedString = value
+                .bodyRegular(alignment: alignment)
         }
 
-        let lineHeightMultiplier = 1.23
-
         return .attributedString(
-            information.value
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .textAlignment(.right),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+            attributedString
         )
     }
 }

@@ -39,12 +39,12 @@ struct HomePortfolioViewTheme:
             .icon([ .normal("icon-info-20".templateImage) ])
         ]
         self.value = [
-            .textColor(AppColors.Components.Text.main.uiColor),
+            .textColor(Colors.Text.main),
             .textOverflow(SingleLineFittingText()),
             .textAlignment(.center)
         ]
         self.secondaryValue = [
-            .textColor(AppColors.Components.Text.gray.uiColor),
+            .textColor(Colors.Text.gray),
             .textOverflow(SingleLineFittingText()),
             .textAlignment(.center)
         ]

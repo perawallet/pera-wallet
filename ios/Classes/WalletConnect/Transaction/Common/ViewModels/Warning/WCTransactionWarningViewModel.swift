@@ -31,7 +31,7 @@ class WCTransactionWarningViewModel {
         case .closeAlgos:
             title = "wallet-connect-transaction-warning-close-algos".localized
         case let .closeAsset(asset):
-            let assetDisplayName = asset.presentation.displayNames.primaryName
+            let assetDisplayName = asset.naming.displayNames.primaryName
             title = "wallet-connect-transaction-warning-close-asset".localized(params: assetDisplayName, assetDisplayName)
         case .fee:
             title = "wallet-connect-transaction-warning-high-fee".localized

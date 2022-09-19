@@ -35,15 +35,8 @@ struct ShimmerAnimationConfiguration {
 
     struct Gradient {
         let direction: Direction = .leftToRight
-        let colorOne: CGColor =
-        AppColors.Shared.Layer.gray
-            .uiColor
-            .cgColor
-        let colorTwo: CGColor =
-        AppColors.Shared.Layer.grayLighter
-            .uiColor
-            .withAlphaComponent(0.5)
-            .cgColor
+        let colorOne: CGColor = Colors.Other.loadingGradient1.uiColor.cgColor
+        let colorTwo: CGColor = Colors.Other.loadingGradient2.uiColor.cgColor
         let locations: [NSNumber] = [0, 0.5, 1]
 
         var colors: [CGColor] {

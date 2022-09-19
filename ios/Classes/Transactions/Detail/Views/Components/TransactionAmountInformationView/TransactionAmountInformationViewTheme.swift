@@ -35,7 +35,7 @@ struct TransactionAmountInformationViewTheme:
         self.title = [
             .textAlignment(.left),
             .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(15))
         ]
         self.minimumSpacingBetweenTitleAndAmount = 16

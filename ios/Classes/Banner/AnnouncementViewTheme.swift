@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+	// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -57,7 +57,7 @@ struct GenericAnnouncementViewTheme: AnnouncementViewTheme {
         _ family: LayoutFamily
     ) {
         self.background = [
-            .backgroundColor(AppColors.Components.Banner.background)
+            .backgroundColor(Colors.Banner.background)
         ]
         self.corner = Corner(radius: 4)
         self.stackViewEdgeInset = (24, 24, 28, 24)
@@ -67,12 +67,12 @@ struct GenericAnnouncementViewTheme: AnnouncementViewTheme {
         self.title = [
             .font(Fonts.DMSans.medium.make(15)),
             .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Banner.text)
+            .textColor(Colors.Banner.text)
         ]
         self.subtitle = [
             .font(Fonts.DMSans.regular.make(13)),
             .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Banner.text)
+            .textColor(Colors.Banner.text)
         ]
         self.action = [
             .backgroundImage([.normal("banner-cta-background")]),
@@ -109,7 +109,7 @@ struct GovernanceAnnouncementViewTheme: AnnouncementViewTheme {
         _ family: LayoutFamily
     ) {
         self.background = [
-            .backgroundColor(AppColors.Components.Banner.governanceBackground)
+            .backgroundColor(Colors.Wallet.wallet3)
         ]
         self.backgroundImage = AssetImageSource(asset: UIImage(named: "background-governance-image"))
         self.corner = Corner(radius: 4)
@@ -120,12 +120,12 @@ struct GovernanceAnnouncementViewTheme: AnnouncementViewTheme {
         self.title = [
             .font(Fonts.DMSans.medium.make(15)),
             .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Banner.governanceText)
+            .textColor(Colors.Banner.text)
         ]
         self.subtitle = [
             .font(Fonts.DMSans.regular.make(13)),
             .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Banner.governanceText)
+            .textColor(Colors.Banner.text)
         ]
         self.action = [
             .backgroundImage([.normal("banner-cta-background")]),

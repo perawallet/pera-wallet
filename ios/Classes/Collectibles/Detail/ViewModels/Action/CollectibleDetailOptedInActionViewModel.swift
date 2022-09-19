@@ -43,20 +43,9 @@ extension CollectibleDetailOptedInActionViewModel {
                   return
               }
 
-        let font = Fonts.DMSans.regular.make(13)
-        let lineHeightMultiplier = 1.18
-
         title = .attributedString(
             collectionName
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.left)
-                    ])
-                ])
+                .footnoteRegular()
         )
     }
 
@@ -65,20 +54,9 @@ extension CollectibleDetailOptedInActionViewModel {
     ) {
         let aSubtitle = asset.title.fallback(asset.name.fallback(asset.id.stringWithHashtag))
 
-        let font = Fonts.DMSans.medium.make(19)
-        let lineHeightMultiplier = 1.13
-
         subtitle = .attributedString(
             aSubtitle
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.left)
-                    ])
-                ])
+                .bodyLargeMedium()
         )
     }
 

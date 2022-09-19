@@ -57,7 +57,7 @@ class WCTransactionDappMessageView: BaseView {
         UILabel()
             .withAlignment(.left)
             .withLine(.single)
-            .withTextColor(AppColors.Shared.Global.white.uiColor)
+            .withTextColor(Colors.Text.white.uiColor)
             .withFont(Fonts.DMSans.medium.make(19).uiFont)
     }()
 
@@ -65,7 +65,7 @@ class WCTransactionDappMessageView: BaseView {
         UILabel()
             .withAlignment(.left)
             .withLine(.single)
-            .withTextColor(AppColors.Shared.Global.gray400.uiColor)
+            .withTextColor(Colors.Other.Global.gray400.uiColor)
             .withFont(Fonts.DMSans.regular.make(13).uiFont)
     }()
 
@@ -73,7 +73,7 @@ class WCTransactionDappMessageView: BaseView {
         UILabel()
             .withAlignment(.left)
             .withLine(.single)
-            .withTextColor(AppColors.Shared.Helpers.positive.uiColor)
+            .withTextColor(Colors.Helpers.positive.uiColor)
             .withFont(Fonts.DMSans.medium.make(13).uiFont)
             .withText("wallet-connect-transaction-dapp-show-more".localized)
     }()

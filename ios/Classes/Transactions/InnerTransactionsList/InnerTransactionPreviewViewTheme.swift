@@ -32,7 +32,7 @@ struct InnerTransactionPreviewViewTheme:
         _ family: LayoutFamily
     ) {
         title = [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .textOverflow(SingleLineText()),
         ]
         titleMinWidthRatio = 0.25

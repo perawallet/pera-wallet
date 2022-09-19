@@ -130,6 +130,7 @@ extension PassphraseBackUpViewController: UICollectionViewDelegateFlowLayout {
 
 extension PassphraseBackUpViewController: PassphraseBackUpViewDelegate {
     func passphraseBackUpViewDidTapActionButton(_ passphraseView: PassphraseBackUpView) {
+        analytics.track(.onboardCreateAccountPassphrase(type: .copy))
         open(.passphraseVerify(flow: flow), by: .push)
     }
 }

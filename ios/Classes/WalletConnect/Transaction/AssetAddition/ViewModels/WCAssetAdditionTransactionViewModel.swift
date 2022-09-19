@@ -234,7 +234,7 @@ class WCAssetAdditionTransactionViewModel {
 
     private func setUrlInformationViewModel(from asset: Asset?) {
         guard let asset = asset,
-              asset.presentation.url != nil else {
+              asset.url != nil else {
             return
         }
 

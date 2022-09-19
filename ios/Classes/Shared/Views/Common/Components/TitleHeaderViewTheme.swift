@@ -26,7 +26,7 @@ struct TitleHeaderViewTheme: StyleSheet, LayoutSheet {
 
     init(_ family: LayoutFamily) {
         self.titleLabel = [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.medium.make(15)),
             .textOverflow(SingleLineFittingText())
         ]

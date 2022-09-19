@@ -60,13 +60,13 @@ final class BuyAlgoHomeScreen: BaseViewController, NotificationObserver {
     override func linkInteractors() {
         super.linkInteractors()
 
-        contentView.observe(event: .close) {
+        contentView.startObserving(event: .close) {
             [weak self] in
             guard let self = self else { return }
             self.dismissScreen()
         }
 
-        contentView.observe(event: .buyAlgo) { [weak self] in
+        contentView.startObserving(event: .buyAlgo) { [weak self] in
             guard let self = self else {
                 return
             }
@@ -75,6 +75,8 @@ final class BuyAlgoHomeScreen: BaseViewController, NotificationObserver {
                 self.presentTestNetAlert()
                 return
             }
+
+            self.analytics.track(.moonpay(type: .tapBuy))
 
             if self.buyAlgoDraft.hasValidAddress() {
                 self.openMoonPay(for: self.buyAlgoDraft)
@@ -103,6 +105,7 @@ extension BuyAlgoHomeScreen {
             return
         }
 
+        analytics.track(.moonpay(type: .completed))
         delegate?.buyAlgoHomeScreen(self, didCompletedTransaction: buyAlgoParams)
     }
 }

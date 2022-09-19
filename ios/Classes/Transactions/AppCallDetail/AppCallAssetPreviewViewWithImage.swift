@@ -22,7 +22,7 @@ final class AppCallAssetPreviewViewWithImage:
     View,
     ViewModelBindable,
     ListReusable {
-    private lazy var iconView = AssetImageView()
+    private lazy var iconView = PrimaryImageView()
     private lazy var contentView = AppCallAssetPreviewView()
 
     func customize(

@@ -22,12 +22,22 @@ import UIKit
 extension AccountAssetListViewController {
     struct Theme: LayoutSheet, StyleSheet {
         let listBackgroundColor: Color
+        let accountActionsMenuActionIcon: UIImage
+        let accountActionsMenuActionSize: LayoutSize
+        let accountActionsMenuActionTrailingPadding: LayoutMetric
+        let accountActionsMenuActionBottomPadding: LayoutMetric
+        let spacingBetweenListAndAccountActionsMenuAction: LayoutMetric
         let minSpacingBetweenSearchInputFieldAndKeyboard: LayoutMetric
 
         init(
             _ family: LayoutFamily
         ) {
-            self.listBackgroundColor = AppColors.Shared.System.background.uiColor
+            self.listBackgroundColor = Colors.Defaults.background
+            self.accountActionsMenuActionIcon = "fab-swap".uiImage
+            self.accountActionsMenuActionSize = (64, 64)
+            self.accountActionsMenuActionTrailingPadding = 24
+            self.accountActionsMenuActionBottomPadding = 8
+            self.spacingBetweenListAndAccountActionsMenuAction = 4
             self.minSpacingBetweenSearchInputFieldAndKeyboard = 8
         }
     }

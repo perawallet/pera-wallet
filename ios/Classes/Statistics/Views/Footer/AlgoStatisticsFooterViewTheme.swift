@@ -26,12 +26,12 @@ struct AlgoStatisticsFooterViewTheme: LayoutSheet, StyleSheet {
         self.title = [
             .text("algo-statistics-title".localized),
             .font(Fonts.DMSans.medium.make(15)),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .textOverflow(SingleLineFittingText()),
             .textAlignment(.left)
         ]
 
         self.topPadding = 4
-        self.separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
+        self.separator = Separator(color: Colors.Layer.grayLighter, size: 1)
     }
 }

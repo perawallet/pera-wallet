@@ -138,7 +138,7 @@ extension SettingsViewController {
         case .contacts:
             open(.contacts, by: .push)
         case .notifications:
-            open(.notificationFilter(flow: .settings), by: .push)
+            open(.notificationFilter, by: .push)
         case .walletConnect:
             open(.walletConnectSessionList, by: .push)
         }

@@ -41,19 +41,11 @@ extension CollectibleMediaImagePreviewViewModel {
     func getPlaceholder(
         _ aPlaceholder: String
     ) -> ImagePlaceholder {
-        let font = Fonts.DMSans.regular.make(19)
-        let lineHeightMultiplier = 1.13
-
         let placeholderText: EditText = .attributedString(
-            aPlaceholder.attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(.center),
-                    .lineBreakMode(.byWordWrapping),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ])
+            aPlaceholder
+                .bodyLargeRegular(
+                    alignment: .center
+                )
         )
 
         return ImagePlaceholder(

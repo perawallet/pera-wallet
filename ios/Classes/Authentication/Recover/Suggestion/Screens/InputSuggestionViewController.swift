@@ -30,7 +30,7 @@ final class InputSuggestionViewController: BaseViewController {
         collectionViewLayout.minimumInteritemSpacing = 0
         collectionViewLayout.scrollDirection = .horizontal
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
-        collectionView.backgroundColor = AppColors.Components.TextField.inputSuggestionBackground.uiColor
+        collectionView.backgroundColor = Colors.Keyboard.accessoryBackground.uiColor
         collectionView.register(InputSuggestionCell.self)
         return collectionView
     }()

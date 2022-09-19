@@ -34,7 +34,7 @@ struct ResultViewIllustratedTheme: ResultViewTheme {
             .textAlignment(.center),
             .adjustsFontForContentSizeCategory(true),
             .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
         self.titleTopMargin = 40
         self.body = [
@@ -42,7 +42,7 @@ struct ResultViewIllustratedTheme: ResultViewTheme {
             .textAlignment(.center),
             .adjustsFontForContentSizeCategory(true),
             .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.gray)
+            .textColor(Colors.Text.gray)
         ]
         self.bodyTopMargin = 16
     }

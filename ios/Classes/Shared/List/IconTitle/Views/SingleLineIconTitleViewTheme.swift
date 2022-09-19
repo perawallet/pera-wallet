@@ -29,7 +29,7 @@ struct SingleLineIconTitleViewTheme: StyleSheet, LayoutSheet {
     let titleHorizontalPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.icon = [
             .contentMode(.scaleAspectFit)
         ]
@@ -37,7 +37,7 @@ struct SingleLineIconTitleViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(FittingText()),
             .textAlignment(.left),
             .font(Fonts.DMSans.medium.make(15)),
-            .textColor(AppColors.Components.Text.main.uiColor)
+            .textColor(Colors.Text.main)
         ]
 
         self.iconSize = LayoutSize(w: 24, h: 24)

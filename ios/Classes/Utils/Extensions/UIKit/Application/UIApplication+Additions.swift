@@ -75,14 +75,6 @@ extension UIApplication {
         return windowScene?.windows.first(where: \.isKeyWindow)
     }
     
-    var firebaseAnalytics: FirebaseAnalytics? {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return nil
-        }
-        
-        return appDelegate.firebaseAnalytics
-    }
-    
     var appConfiguration: AppConfiguration? {
         guard let rootViewController = rootViewController() else {
             return nil
@@ -117,5 +109,9 @@ extension UIApplication {
         }
         
         return rootViewController.traitCollection.userInterfaceStyle == .dark
+    }
+
+    var authStatus: AppAuthStatus {
+        appDelegate?.authStatus() ?? .ready
     }
 }

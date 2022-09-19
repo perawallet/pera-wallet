@@ -21,7 +21,7 @@ import UIKit
 struct AppCallAssetPreviewViewWithImageTheme:
     StyleSheet,
     LayoutSheet {
-    var icon: AssetImageViewTheme
+    var icon: PrimaryImageViewTheme
     var iconSize: LayoutSize
     
     var spacingBetweenIconAndContent: LayoutMetric

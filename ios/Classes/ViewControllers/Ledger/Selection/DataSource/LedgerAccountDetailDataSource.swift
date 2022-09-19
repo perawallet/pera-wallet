@@ -19,6 +19,9 @@ import MacaroonUIKit
 import UIKit
 
 final class LedgerAccountDetailDataSource: NSObject {
+    typealias EventHandler = (Event) -> Void
+    var eventHandler: EventHandler?
+
     private lazy var currencyFormatter = CurrencyFormatter()
 
     private let api: ALGAPI
@@ -27,7 +30,7 @@ final class LedgerAccountDetailDataSource: NSObject {
     private let account: Account
     private let rekeyedAccounts: [Account]
 
-    private var assetPreviews: [AssetPreviewModel] = []
+    private var assetItems: [AssetItem] = []
 
     init(
         api: ALGAPI,
@@ -42,15 +45,13 @@ final class LedgerAccountDetailDataSource: NSObject {
         self.account = account
         self.rekeyedAccounts = rekeyedAccounts
         super.init()
-
-        self.fetchAssets(for: account)
     }
 }
 
 extension LedgerAccountDetailDataSource: UICollectionViewDataSource {
     private var sections: [Section] {
         var sections: [Section] = [.ledgerAccount]
-        if !assetPreviews.isEmpty { sections.append(.assets) }
+        if !assetItems.isEmpty { sections.append(.assets) }
         if !rekeyedAccounts.isEmpty { sections.append(.rekeyedAccounts) }
         return sections
     }
@@ -64,7 +65,7 @@ extension LedgerAccountDetailDataSource: UICollectionViewDataSource {
         case .ledgerAccount:
             return 1
         case .assets:
-            return assetPreviews.count
+            return assetItems.count
         case .rekeyedAccounts:
             return account.isRekeyed() ? 1 : rekeyedAccounts.count
         }
@@ -108,8 +109,8 @@ extension LedgerAccountDetailDataSource {
     }
 
     func cellForAsset(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeue(AssetPreviewCell.self, at: indexPath)
-        cell.bindData(AssetPreviewViewModel(assetPreviews[indexPath.row]))
+        let cell = collectionView.dequeue(AssetListItemCell.self, at: indexPath)
+        cell.bindData(AssetListItemViewModel(assetItems[indexPath.item]))
         return cell
     }
 
@@ -145,14 +146,17 @@ extension LedgerAccountDetailDataSource {
 }
 
 extension LedgerAccountDetailDataSource {
-    private func fetchAssets(for account: Account) {
-        let algoAssetItem = AlgoAssetItem(
-            account: account,
-            currency: sharedDataController.currency,
+    func fetchAssets() {
+        let currency = sharedDataController.currency
+        let currencyFormatter = currencyFormatter
+
+        let algoAssetItem = AssetItem(
+            asset: account.algo,
+            currency: currency,
             currencyFormatter: currencyFormatter
         )
-        let algoAssetPreview = AssetPreviewModelAdapter.adapt(algoAssetItem)
-        assetPreviews.append(algoAssetPreview)
+
+        assetItems.append(algoAssetItem)
 
         guard let assets = account.assets,
               !assets.isEmpty else {
@@ -178,9 +182,6 @@ extension LedgerAccountDetailDataSource {
 
             self.loadingController?.stopLoading()
 
-            let currency = self.sharedDataController.currency
-            let currencyFormatter = self.currencyFormatter
-
             switch assetResponse {
             case let .success(assetDetailResponse):
                 assetDetailResponse.results.forEach {
@@ -190,25 +191,40 @@ extension LedgerAccountDetailDataSource {
                 for asset in assets {
                     if let assetDetail = self.sharedDataController.assetDetailCollection[asset.id] {
                         if assetDetail.isCollectible {
-                            let collectible = CollectibleAsset(asset: asset, decoration: assetDetail)
-                            account.append(collectible)
+                            let collectibleAsset = CollectibleAsset(asset: asset, decoration: assetDetail)
+                            self.account.append(collectibleAsset)
+
+                            let collectibleAssetItem = AssetItem(
+                                asset: collectibleAsset,
+                                currency: currency,
+                                currencyFormatter: currencyFormatter
+                            )
+                            self.assetItems.append(collectibleAssetItem)
                         } else {
                             let standardAsset = StandardAsset(asset: asset, decoration: assetDetail)
-                            account.append(standardAsset)
+                            self.account.append(standardAsset)
 
                             let standardAssetItem = AssetItem(
                                 asset: standardAsset,
                                 currency: currency,
                                 currencyFormatter: currencyFormatter
                             )
-                            let preview = AssetPreviewModelAdapter.adapt(standardAssetItem)
-                            self.assetPreviews.append(preview)
+                            self.assetItems.append(standardAssetItem)
                         }
                     }
                 }
+
+                self.eventHandler?(.didLoadData)
             case .failure:
-                break
+                self.eventHandler?(.didFailLoadingData)
             }
         }
+    }
+}
+
+extension LedgerAccountDetailDataSource {
+    enum Event {
+        case didLoadData
+        case didFailLoadingData
     }
 }

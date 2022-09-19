@@ -137,8 +137,8 @@ class WCAssetTransactionViewModel {
             .normal(
                 amount: amount,
                 isAlgos: false,
-                fraction: asset.presentation.decimals,
-                assetSymbol: asset.presentation.unitName
+                fraction: asset.decimals,
+                assetSymbol: asset.naming.unitName
             ),
             currency: currency,
             currencyFormatter: currencyFormatter
@@ -209,7 +209,7 @@ class WCAssetTransactionViewModel {
     ) {
         guard
             let asset = asset,
-            let amount = transaction.transactionDetail?.amount.assetAmount(fromFraction: asset.presentation.decimals) else {
+            let amount = transaction.transactionDetail?.amount.assetAmount(fromFraction: asset.decimals) else {
                 return
         }
 
@@ -217,8 +217,8 @@ class WCAssetTransactionViewModel {
             .normal(
                 amount: amount,
                 isAlgos: false,
-                fraction: asset.presentation.decimals,
-                assetSymbol: asset.presentation.unitName
+                fraction: asset.decimals,
+                assetSymbol: asset.naming.unitName
             ),
             currency: currency,
             currencyFormatter: currencyFormatter

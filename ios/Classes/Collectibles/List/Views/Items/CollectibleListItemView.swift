@@ -183,7 +183,7 @@ extension CollectibleListItemView {
         bottomLeftBadge.layer.draw(corner: theme.corner)
         bottomLeftBadge.layer.draw(
             border: Border(
-                color: AppColors.SendTransaction.Shadow.first.uiColor,
+                color: Colors.Shadows.Cards.shadow1.uiColor,
                 width: 1
             )
         ) /// <todo> Add proper shadow when shadow & borders are refactored.
@@ -218,7 +218,7 @@ extension CollectibleListItemView {
         pendingContentView.layer.draw(corner: theme.corner)
         pendingContentView.layer.draw(
             border: Border(
-                color: AppColors.SendTransaction.Shadow.first.uiColor,
+                color: Colors.Shadows.Cards.shadow1.uiColor,
                 width: 1
             )
         ) /// <todo> Add proper shadow when shadow & borders are refactored.
@@ -281,7 +281,7 @@ extension CollectibleListItemView {
     func getTargetedPreview() -> UITargetedPreview {
         return UITargetedPreview(
             view: image.imageContainer,
-            backgroundColor: AppColors.Shared.System.background.uiColor
+            backgroundColor: Colors.Defaults.background.uiColor
         )
     }
 }

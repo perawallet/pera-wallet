@@ -46,13 +46,13 @@ struct SendCollectibleViewTheme:
 
         title = [
             .textAlignment(.center),
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .textOverflow(SingleLineText()),
         ]
 
         subtitle = [
             .textAlignment(.center),
-            .textColor(AppColors.Shared.Global.white),
+            .textColor(Colors.Text.white),
             .textOverflow(MultilineText(numberOfLines: 2)),
         ]
 

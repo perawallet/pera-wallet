@@ -23,7 +23,7 @@ class AccountPortfolioCell:
     CollectionCell<AccountPortfolioView>,
     ViewModelBindable {
     override class var contextPaddings: LayoutPaddings {
-        return (16, 24, 8, 24)
+        return (45, 24, 8, 24)
     }
     
     static let theme = AccountPortfolioViewTheme()
@@ -33,7 +33,7 @@ class AccountPortfolioCell:
     ) {
         super.init(frame: frame)
 
-        contentView.backgroundColor = AppColors.Shared.Helpers.heroBackground.uiColor
+        contentView.backgroundColor = Colors.Helpers.heroBackground.uiColor
         contextView.customize(Self.theme)
     }
 }

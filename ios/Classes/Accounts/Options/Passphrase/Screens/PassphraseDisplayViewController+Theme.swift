@@ -27,7 +27,7 @@ extension PassphraseDisplayViewController {
 
         init(_ family: LayoutFamily) {
             passphraseDisplayViewTheme = PassphraseDisplayViewTheme()
-            backgroundColor = AppColors.Shared.System.background
+            backgroundColor = Colors.Defaults.background
             cellHeight = 24
             let screenHeight = UIScreen.main.bounds.height
             modalHeight = screenHeight <= 606 ? screenHeight - 20 : 598

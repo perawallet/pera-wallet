@@ -95,7 +95,7 @@ class WCAssetConfigTransactionItemViewModel {
                 }
             case .reconfig:
                 if let asset = asset {
-                    detail = "\(asset.presentation.name ?? asset.presentation.unitName ?? "title-unknown".localized)"
+                    detail = "\(asset.naming.name ?? asset.naming.unitName ?? "title-unknown".localized)"
                 }
             case .delete:
                 if let assetId = transactionDetail.assetIdBeingConfigured {

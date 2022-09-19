@@ -23,5 +23,5 @@ struct TransactionFetchDraft {
     let nextToken: String?
     let assetId: String?
     let limit: Int?
-    let transactionType: Transaction.TransferType?
+    let transactionType: TransactionType?
 }

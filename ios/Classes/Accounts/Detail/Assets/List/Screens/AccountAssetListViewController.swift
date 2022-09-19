@@ -39,7 +39,7 @@ final class AccountAssetListViewController:
     private lazy var dataController = AccountAssetListAPIDataController(accountHandle, sharedDataController)
 
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
-    
+
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = AccountAssetListLayout.build()
         let collectionView = UICollectionView(
@@ -59,6 +59,9 @@ final class AccountAssetListViewController:
         scrollView: listView,
         screen: self
     )
+
+    private lazy var accountActionsMenuActionView = FloatingActionItemButton(hasTitleLabel: false)
+    private var positionYForVisibleAccountActionsMenuAction: CGFloat?
 
     private var accountHandle: AccountHandle
 
@@ -122,6 +125,19 @@ final class AccountAssetListViewController:
         }
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        reloadDataIfThereIsPendingUpdates()
+
+        analytics.track(.recordAccountDetailScreen(type: .tapAssets))
+    }
+
+    override func viewDidAppearAfterInteractiveDismiss() {
+        super.viewDidAppearAfterInteractiveDismiss()
+        reloadDataIfThereIsPendingUpdates()
+    }
+
     override func prepareLayout() {
         super.prepareLayout()
         
@@ -134,8 +150,13 @@ final class AccountAssetListViewController:
         listView.delegate = self
     }
 
-    func reload() {
+    func reloadData() {
         dataController.reload()
+    }
+
+    func reloadDataIfThereIsPendingUpdates() {
+        if isViewFirstAppeared { return }
+        dataController.reloadIfThereIsPendingUpdates()
     }
 }
 
@@ -143,21 +164,30 @@ extension AccountAssetListViewController {
     private func addUI() {
         addListBackground()
         addList()
+
+        if !accountHandle.value.isWatchAccount() {
+            addAccountActionsMenuAction()
+            updateSafeAreaWhenViewDidLayoutSubviews()
+        }
     }
 
     private func updateUIWhenViewDidLayoutSubviews() {
-        updateListBackgroundWhenViewDidLayoutSubviews()
         updateListWhenViewDidLayoutSubviews()
+        updateListBackgroundWhenViewDidLayoutSubviews()
+        updateAccountActionsMenuActionWhenViewDidLayoutSubviews()
+        updateSafeAreaWhenViewDidLayoutSubviews()
     }
 
     private func updateUIWhenListDidScroll() {
         updateListBackgroundWhenListDidScroll()
+        updateAccountActionsMenuActionWhenListDidScroll()
+        updateSafeAreaWhenListDidScroll()
     }
 
     private func addListBackground() {
         listBackgroundView.customizeAppearance(
             [
-                .backgroundColor(AppColors.Shared.Helpers.heroBackground)
+                .backgroundColor(Colors.Helpers.heroBackground)
             ]
         )
 
@@ -218,6 +248,69 @@ extension AccountAssetListViewController {
         let bottom = bottomInsetWhenKeyboardDidHide(keyboardController)
         listView.setContentInset(bottom: bottom)
     }
+
+    private func updateSafeAreaWhenListDidScroll() {
+        updateSafeAreaWhenViewDidLayoutSubviews()
+    }
+
+    private func updateSafeAreaWhenViewDidLayoutSubviews() {
+        if !canAccessAccountActionsMenu() {
+            additionalSafeAreaInsets.bottom = 0
+            return
+        }
+
+        let listSafeAreaBottom =
+            theme.spacingBetweenListAndAccountActionsMenuAction +
+            theme.accountActionsMenuActionSize.h +
+            theme.accountActionsMenuActionBottomPadding
+            additionalSafeAreaInsets.bottom = listSafeAreaBottom
+    }
+}
+
+extension AccountAssetListViewController {
+    private func addAccountActionsMenuAction() {
+        accountActionsMenuActionView.image = theme.accountActionsMenuActionIcon
+
+        view.addSubview(accountActionsMenuActionView)
+
+        accountActionsMenuActionView.snp.makeConstraints {
+            let safeAreaBottom = view.compactSafeAreaInsets.bottom
+            let bottom = safeAreaBottom + theme.accountActionsMenuActionBottomPadding
+
+            $0.fitToSize(theme.accountActionsMenuActionSize)
+            $0.trailing == theme.accountActionsMenuActionTrailingPadding
+            $0.bottom == bottom
+        }
+
+        accountActionsMenuActionView.addTouch(
+            target: self,
+            action: #selector(openAccountActionsMenu)
+        )
+
+        updateAccountActionsMenuActionWhenViewDidLayoutSubviews()
+    }
+
+    private func updateAccountActionsMenuActionWhenListDidScroll() {
+        updateAccountActionsMenuActionWhenViewDidLayoutSubviews()
+    }
+
+    private func updateAccountActionsMenuActionWhenViewDidLayoutSubviews() {
+        accountActionsMenuActionView.isHidden = !canAccessAccountActionsMenu()
+    }
+
+    @objc
+    private func openAccountActionsMenu() {
+        eventHandler?(.transactionOption)
+    }
+
+    private func canAccessAccountActionsMenu() -> Bool {
+        guard let positionY = positionYForVisibleAccountActionsMenuAction else {
+            return false
+        }
+
+        let currentContentOffset = listView.contentOffset
+        return currentContentOffset.y >= positionY
+    }
 }
 
 extension AccountAssetListViewController {
@@ -250,7 +343,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                     return
                 }
                 
-                item.observe(event: .primaryAction) {
+                item.startObserving(event: .primaryAction) {
                     [weak self] in
                     guard let self = self else {
                         return
@@ -262,7 +355,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                         )
                     )
                 }
-                item.observe(event: .secondaryAction) {
+                item.startObserving(event: .secondaryAction) {
                     [weak self] in
                     guard let self = self else {
                         return
@@ -273,7 +366,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             case .watchAccountAssetManagement:
                 let item = cell as! ManagementItemCell
 
-                item.observe(event: .primaryAction) {
+                item.startObserving(event: .primaryAction) {
                     [weak self] in
                     guard let self = self else {
                         return
@@ -296,7 +389,9 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                 return
             }
 
-            item.observe(event: .buyAlgo) {
+            positionYForVisibleAccountActionsMenuAction = cell.frame.maxY
+
+            item.startObserving(event: .buyAlgo) {
                 [weak self] in
                 guard let self = self else {
                     return
@@ -305,7 +400,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                 self.eventHandler?(.buyAlgo)
             }
 
-            item.observe(event: .send) {
+            item.startObserving(event: .send) {
                 [weak self] in
                 guard let self = self else {
                     return
@@ -314,7 +409,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                 self.eventHandler?(.send)
             }
 
-            item.observe(event: .address) {
+            item.startObserving(event: .address) {
                 [weak self] in
                 guard let self = self else {
                     return
@@ -323,7 +418,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                 self.eventHandler?(.address)
             }
 
-            item.observe(event: .more) {
+            item.startObserving(event: .more) {
                 [weak self] in
                 guard let self = self else {
                     return
@@ -374,13 +469,27 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             }
 
             switch itemIdentifier {
-            case .algo:
-                openAlgoDetail()
-            case .asset:
-                let assetIndex = indexPath.item
-                
-                if let assetDetail = dataController[assetIndex] {
-                    self.openAssetDetail(assetDetail, on: self)
+            case .asset(let item):
+                /// <todo>
+                /// Normally, we should handle account error or asset error here even if it is
+                /// impossible to have an error. Either we should refactor the flow, or we should
+                /// handle the errors.
+                if let asset = item.asset {
+                    let screen = Screen.asaDetail(
+                        account: accountHandle.value,
+                        asset: asset
+                    ) { [weak self] event in
+                        guard let self = self else { return }
+
+                        switch event {
+                        case .didRenameAccount: self.eventHandler?(.didRenameAccount)
+                        case .didRemoveAccount: self.eventHandler?(.didRemoveAccount)
+                        }
+                    }
+                    open(
+                        screen,
+                        by: .push
+                    )
                 }
             default:
                 break
@@ -423,7 +532,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
 
         return UITargetedPreview(
             view: cell,
-            backgroundColor: AppColors.Shared.System.background.uiColor
+            backgroundColor: Colors.Defaults.background.uiColor
         )
     }
 
@@ -440,35 +549,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
 
         return UITargetedPreview(
             view: cell,
-            backgroundColor: AppColors.Shared.System.background.uiColor
-        )
-    }
-}
-
-extension AccountAssetListViewController {
-    private func openAlgoDetail() {
-        open(
-            .algosDetail(
-                draft: AlgoTransactionListing(
-                    accountHandle: accountHandle
-                )
-            ),
-            by: .push
-        )
-    }
-
-    private func openAssetDetail(
-        _ asset: StandardAsset,
-        on screen: UIViewController
-    ) {
-        screen.open(
-            .assetDetail(
-                draft: AssetTransactionListing(
-                    accountHandle: accountHandle,
-                    asset: asset
-                )
-            ),
-            by: .push
+            backgroundColor: Colors.Defaults.background.uiColor
         )
     }
 }
@@ -514,16 +595,6 @@ extension AccountAssetListViewController {
     func searchBarItemCellDidEndEditing(
         _ cell: SearchBarItemCell
     ) {}
-}
-
-extension AccountAssetListViewController {
-    func addAsset(_ assetDetail: StandardAsset) {
-        dataController.addedAssetDetails.append(assetDetail)
-    }
-
-    func removeAsset(_ assetDetail: StandardAsset) {
-        dataController.removedAssetDetails.append(assetDetail)
-    }
 }
 
 extension AccountAssetListViewController {
@@ -650,11 +721,14 @@ extension AccountAssetListViewController {
 extension AccountAssetListViewController {
     enum Event {
         case didUpdate(AccountHandle)
+        case didRenameAccount
+        case didRemoveAccount
         case manageAssets(isWatchAccount: Bool)
         case addAsset
         case buyAlgo
         case send
         case address
         case more
+        case transactionOption
     }
 }

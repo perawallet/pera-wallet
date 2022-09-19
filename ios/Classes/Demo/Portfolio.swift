@@ -33,7 +33,7 @@ struct Portfolio {
         var totalUSDValueOfAssets: Decimal = 0
 
         accounts.forEach {
-            totalAlgoValue += $0.amount.toAlgos
+            totalAlgoValue += $0.algo.amount.toAlgos
             totalUSDValueOfAssets += $0.totalUSDValueOfAssets ?? 0
         }
 

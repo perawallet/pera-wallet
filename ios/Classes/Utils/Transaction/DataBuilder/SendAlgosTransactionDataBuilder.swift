@@ -149,6 +149,6 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
             return false
         }
 
-        return transactionAmount == algosTransactionDraft.from.amount
+        return transactionAmount == algosTransactionDraft.from.algo.amount
     }
 }

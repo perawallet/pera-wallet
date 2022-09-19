@@ -38,7 +38,7 @@ extension AssetDisplayViewModel {
     private func bindVerified(
         _ assetDetail: AssetDecoration
     ) {
-        isVerified = assetDetail.isVerified
+        isVerified = assetDetail.verificationTier.isVerified
     }
 
     private func bindName(

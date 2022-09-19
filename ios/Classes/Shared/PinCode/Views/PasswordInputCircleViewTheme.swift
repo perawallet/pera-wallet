@@ -29,7 +29,7 @@ struct PasswordInputCircleViewTheme: StyleSheet, LayoutSheet {
     let corner: Corner
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         let filledButtonImage: Image = "black-button-filled"
         self.imageSet = [
             .normal("gray-button-border"),
@@ -37,7 +37,7 @@ struct PasswordInputCircleViewTheme: StyleSheet, LayoutSheet {
             .selected(filledButtonImage),
             .disabled(filledButtonImage)
         ]
-        self.negativeTintColor = AppColors.Shared.Helpers.negative
+        self.negativeTintColor = Colors.Helpers.negative
         self.contentMode = .center
 
         self.size = (16, 16)

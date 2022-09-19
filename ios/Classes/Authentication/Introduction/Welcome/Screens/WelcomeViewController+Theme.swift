@@ -25,7 +25,7 @@ extension WelcomeViewController {
 
         init(_ family: LayoutFamily) {
             welcomeViewTheme = WelcomeViewTheme()
-            backgroundColor = AppColors.Shared.System.background
+            backgroundColor = Colors.Defaults.background
         }
     }
 }

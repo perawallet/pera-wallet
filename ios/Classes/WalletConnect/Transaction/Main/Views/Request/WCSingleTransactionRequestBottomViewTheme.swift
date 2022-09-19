@@ -41,33 +41,33 @@ struct WCSingleTransactionRequestBottomViewTheme: LayoutSheet, StyleSheet {
     init(_ family: LayoutFamily) {
         showTransactionDetailsButton = [
             .title("single-transaction-request-show-detail-title".localized),
-            .titleColor([.normal(AppColors.Components.Link.primary)]),
+            .titleColor([.normal(Colors.Link.primary)]),
             .font(Fonts.DMSans.bold.make(13))
         ]
         warningLabel = [
-            .textColor(AppColors.Shared.Helpers.negative),
+            .textColor(Colors.Helpers.negative),
             .font(Fonts.DMSans.medium.make(13))
         ]
         warningIcon = [
             .image("icon-red-warning")
         ]
         networkFeeTitleLabel = [
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(13)),
             .text("single-transaction-request-network-fee-title".localized)
         ]
         networkFeeLabel = [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMMono.regular.make(13))
         ]
         assetIcon = []
         assetTitleLabel = [
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(13)),
             .textOverflow(SingleLineText())
         ]
         assetAmountLabel = [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMMono.regular.make(13))
         ]
 

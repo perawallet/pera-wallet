@@ -25,7 +25,7 @@ class WCAccountInformationNameView: BaseView {
 
     private lazy var nameLabel: UILabel = {
         UILabel()
-            .withTextColor(AppColors.Components.Text.gray.uiColor)
+            .withTextColor(Colors.Text.gray.uiColor)
             .withLine(.single)
             .withAlignment(.left)
             .withFont(Fonts.DMSans.regular.make(13).uiFont)

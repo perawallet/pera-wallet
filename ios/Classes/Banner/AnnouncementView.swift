@@ -21,12 +21,11 @@ import UIKit
 final class AnnouncementView:
     View,
     ViewModelBindable,
-    UIInteractionObservable,
-    UIControlInteractionPublisher,
+    UIInteractable,
     ListReusable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .action: UIControlInteraction(),
-        .close: UIControlInteraction()
+        .action: TargetActionInteraction(),
+        .close: TargetActionInteraction()
     ]
 
     private lazy var stackView = VStackView()

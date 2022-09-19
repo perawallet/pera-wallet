@@ -31,6 +31,10 @@ final class LedgerAccountDetailLayoutBuilder: NSObject, UICollectionViewDelegate
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
+        if indexPath.section == 1 {
+            return CGSize(theme.assetCellSize)
+        }
+        
         return CGSize(theme.cellSize)
     }
 

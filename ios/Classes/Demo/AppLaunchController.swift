@@ -38,4 +38,6 @@ protocol AppLaunchController: AnyObject {
     func receive(
         deeplinkWithSource src: DeeplinkSource
     )
+
+    func authStatus() -> AppAuthStatus
 }

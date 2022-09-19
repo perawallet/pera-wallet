@@ -201,6 +201,10 @@ final class ALGAppLaunchController:
             suspend(deeplinkWithSource: src)
         }
     }
+
+    func authStatus() -> AppAuthStatus {
+        return authChecker.status
+    }
 }
 
 extension ALGAppLaunchController {

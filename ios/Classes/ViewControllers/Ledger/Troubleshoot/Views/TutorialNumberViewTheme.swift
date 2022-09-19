@@ -28,7 +28,7 @@ struct TutorialNumberViewTheme: StyleSheet, LayoutSheet {
         self.label = [
             .textOverflow(SingleLineFittingText()),
             .font(Fonts.DMSans.regular.make(15)),
-            .textColor(AppColors.Components.Text.main.uiColor)
+            .textColor(Colors.Text.main)
         ]
     }
 }

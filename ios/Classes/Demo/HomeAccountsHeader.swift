@@ -21,7 +21,7 @@ import UIKit
 final class HomeAccountsHeader:
     CollectionCell<ManagementItemView>,
     ViewModelBindable,
-    UIInteractionObservable {
+    UIInteractable {
     override class var contextPaddings: LayoutPaddings {
         return (0, 24, 0, 24)
     }

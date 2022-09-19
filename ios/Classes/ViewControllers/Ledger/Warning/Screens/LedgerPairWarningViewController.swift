@@ -39,7 +39,7 @@ extension LedgerPairWarningViewController {
             $0.edges.equalToSuperview()
         }
 
-        ledgerPairWarningView.observe(event: .close) {
+        ledgerPairWarningView.startObserving(event: .close) {
             [weak self] in
             guard let self = self else { return }
             self.dismissScreen()
@@ -48,7 +48,7 @@ extension LedgerPairWarningViewController {
     }
 }
 
-extension LedgerPairWarningViewController: BottomSheetPresentable {
+extension LedgerPairWarningViewController: BottomSheetScrollPresentable {
     var modalHeight: ModalHeight {
         return .compressed
     }

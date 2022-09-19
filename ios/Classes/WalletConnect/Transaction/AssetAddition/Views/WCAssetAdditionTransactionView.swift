@@ -48,7 +48,7 @@ class WCAssetAdditionTransactionView: WCSingleTransactionView {
     override func configureAppearance() {
         super.configureAppearance()
 
-        backgroundColor = AppColors.Shared.System.background.uiColor
+        backgroundColor = Colors.Defaults.background.uiColor
     }
 
     override func prepareLayout() {
@@ -64,6 +64,12 @@ class WCAssetAdditionTransactionView: WCSingleTransactionView {
         algoExplorerButton.addTarget(self, action: #selector(notifyDelegateToOpenAlgoExplorer), for: .touchUpInside)
         showUrlButton.addTarget(self, action: #selector(notifyDelegateToOpenAssetURL), for: .touchUpInside)
         showMetaDataButton.addTarget(self, action: #selector(notifyDelegateToOpenAssetMetadata), for: .touchUpInside)
+
+        assetInformationView.startObserving(event: .performAction) {
+            [weak self] in
+            guard let self = self else { return }
+            self.delegate?.wcAssetAdditionTransactionViewDidOpenAssetDiscovery(self)
+        }
     }
 }
 
@@ -273,8 +279,19 @@ extension WCAssetAdditionTransactionView {
 }
 
 protocol WCAssetAdditionTransactionViewDelegate: AnyObject {
-    func wcAssetAdditionTransactionViewDidOpenRawTransaction(_ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView)
-    func wcAssetAdditionTransactionViewDidOpenAlgoExplorer(_ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView)
-    func wcAssetAdditionTransactionViewDidOpenAssetURL(_ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView)
-    func wcAssetAdditionTransactionViewDidOpenAssetMetadata(_ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView)
+    func wcAssetAdditionTransactionViewDidOpenRawTransaction(
+        _ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView
+    )
+    func wcAssetAdditionTransactionViewDidOpenAlgoExplorer(
+        _ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView
+    )
+    func wcAssetAdditionTransactionViewDidOpenAssetURL(
+        _ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView
+    )
+    func wcAssetAdditionTransactionViewDidOpenAssetMetadata(
+        _ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView
+    )
+    func wcAssetAdditionTransactionViewDidOpenAssetDiscovery(
+        _ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView
+    )
 }

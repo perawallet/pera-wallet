@@ -105,11 +105,11 @@ extension UIViewController {
 extension UIViewController {
     @discardableResult
     func open(_ url: URL?) -> SFSafariViewController? {
-        guard let url = url else {
+        guard let vURL = url?.straightened() else {
             return nil
         }
         
-        let safariViewController = SFSafariViewController(url: url)
+        let safariViewController = SFSafariViewController(url: vURL)
         present(safariViewController, animated: true)
 
         return safariViewController
@@ -118,14 +118,16 @@ extension UIViewController {
     public func openInBrowser(
         _ url: URL
     ) {
-        if !UIApplication.shared.canOpenURL(
-            url
-        ) {
+        guard let vURL = url.straightened() else {
+            return
+        }
+
+        if !UIApplication.shared.canOpenURL(vURL) {
             return
         }
 
         UIApplication.shared.open(
-            url,
+            vURL,
             options: [:],
             completionHandler: nil
         )

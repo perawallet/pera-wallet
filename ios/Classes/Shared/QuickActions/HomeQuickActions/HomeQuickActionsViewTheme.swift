@@ -78,7 +78,7 @@ struct HomeQuickActionViewTheme:
         self.width = 64
         self.style = [
             .font(Fonts.DMSans.regular.make(13)),
-            .titleColor([ .normal(AppColors.Components.Text.main) ])
+            .titleColor([ .normal(Colors.Text.main) ])
         ]
     }
 }

@@ -142,8 +142,8 @@ extension AddContactView {
         let view = FloatingTextInputFieldView()
         let textInputBaseStyle: TextInputStyle = [
             .font(Fonts.DMSans.regular.make(15)),
-            .tintColor(AppColors.Components.Text.main),
-            .textColor(AppColors.Components.Text.main),
+            .tintColor(Colors.Text.main),
+            .textColor(Colors.Text.main),
             .clearButtonMode(.whileEditing),
             .returnKeyType(.next)
         ]
@@ -169,8 +169,8 @@ extension AddContactView {
         let view = MultilineTextInputFieldView()
         let textInputBaseStyle: TextInputStyle = [
             .font(Fonts.DMSans.regular.make(15)),
-            .tintColor(AppColors.Components.Text.main),
-            .textColor(AppColors.Components.Text.main),
+            .tintColor(Colors.Text.main),
+            .textColor(Colors.Text.main),
             .returnKeyType(.done)
         ]
 

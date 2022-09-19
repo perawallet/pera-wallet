@@ -103,7 +103,7 @@ extension TutorialStepsView {
         attributedString.addAttributes(
             [
                 NSAttributedString.Key.font: Fonts.DMSans.regular.make(15).uiFont,
-                NSAttributedString.Key.foregroundColor: AppColors.Components.Text.main.uiColor
+                NSAttributedString.Key.foregroundColor: Colors.Text.main.uiColor
             ],
             range: NSRange(location: 0, length: attributedString.string.count)
         )

@@ -130,21 +130,10 @@ extension CollectibleListItemViewModel {
     }
 
     private mutating func bindPendingTitle() {
-        let font = Fonts.DMSans.medium.make(13)
-        let lineHeightMultiplier = 1.18
-
         pendingTitle = .attributedString(
             "collectible-list-item-pending-title"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byTruncatingTail),
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.left)
-                    ])
-                ])
+                .footnoteMedium(lineBreakMode: .byTruncatingTail)
         )
     }
 }
@@ -191,20 +180,9 @@ extension CollectibleListItemViewModel {
                   return nil
               }
 
-        let font = Fonts.DMSans.regular.make(13)
-        let lineHeightMultiplier = 1.18
-
         return .attributedString(
             collectionName
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.left)
-                    ])
-                ])
+                .footnoteRegular()
         )
     }
 
@@ -213,20 +191,9 @@ extension CollectibleListItemViewModel {
     ) -> EditText? {
         let subtitle = asset.title.fallback(asset.name.fallback(asset.id.stringWithHashtag))
 
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-
         return .attributedString(
             subtitle
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.left)
-                    ])
-                ])
+                .bodyRegular()
         )
     }
 
@@ -254,19 +221,11 @@ extension CollectibleListItemViewModel {
     private func getPlaceholder(
         _ aPlaceholder: String
     ) -> ImagePlaceholder {
-        let font = Fonts.DMSans.regular.make(13)
-        let lineHeightMultiplier = 1.18
-
         let placeholderText: EditText = .attributedString(
-            aPlaceholder.attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(.center),
-                    .lineBreakMode(.byWordWrapping),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ])
+            aPlaceholder
+                .footnoteRegular(
+                    alignment: .center
+                )
         )
 
         return ImagePlaceholder(

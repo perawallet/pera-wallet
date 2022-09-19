@@ -31,9 +31,10 @@ extension TooltipViewModel {
         _ aTitle: String
     ) -> EditText {
         return .attributedString(
-            aTitle.bodyMedium(
-                alignment: .center
-            )
+            aTitle
+                .bodyMedium(
+                    alignment: .center
+                )
         )
     }
 }

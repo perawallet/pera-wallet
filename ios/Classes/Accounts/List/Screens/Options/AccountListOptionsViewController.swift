@@ -23,7 +23,7 @@ import UIKit
 
 final class AccountListOptionsViewController:
     BaseScrollViewController,
-    BottomSheetPresentable {
+    BottomSheetScrollPresentable {
     typealias EventHandler = (Event) -> Void
     
     var eventHandler: EventHandler?
@@ -53,7 +53,7 @@ final class AccountListOptionsViewController:
     private func build() {
         addBackground()
         addContext()
-        addActions()
+        addButtons()
     }
 }
 
@@ -79,37 +79,37 @@ extension AccountListOptionsViewController {
         }
     }
     
-    private func addActions() {
-        addAddAccountAction()
-        addArrangeAccountsAction()
+    private func addButtons() {
+        addAddAccountButton()
+        addArrangeAccountsButton()
     }
     
-    private func addAddAccountAction() {
-        addAction(
-            AddAccountListActionViewModel(),
+    private func addAddAccountButton() {
+        addButton(
+            AddAccountListItemButtonViewModel(),
             #selector(addAccount)
         )
     }
     
-    private func addArrangeAccountsAction() {
-        addAction(
-            ArrangeListListActionVIewModel(),
+    private func addArrangeAccountsButton() {
+        addButton(
+            ArrangeListListItemButtonViewModel(),
             #selector(arrangeAccounts)
         )
     }
     
-    private func addAction(
-        _ viewModel: ListActionViewModel,
+    private func addButton(
+        _ viewModel: ListItemButtonViewModel,
         _ selector: Selector
     ) {
-        let actionView = ListActionView()
+        let button = ListItemButton()
         
-        actionView.customize(theme.action)
-        actionView.bindData(viewModel)
+        button.customize(theme.button)
+        button.bindData(viewModel)
         
-        contextView.addArrangedSubview(actionView)
+        contextView.addArrangedSubview(button)
         
-        actionView.addTouch(
+        button.addTouch(
             target: self,
             action: selector
         )

@@ -20,6 +20,8 @@ import UIKit
 
 class TransactionController {
     weak var delegate: TransactionControllerDelegate?
+
+    private(set) var currentTransactionType: TransactionType?
     
     private var api: ALGAPI
     private let bannerController: BannerController?
@@ -30,19 +32,25 @@ class TransactionController {
     
     private let transactionData = TransactionData()
     
-    private lazy var ledgerTransactionOperation = LedgerTransactionOperation(api: api)
+    private lazy var ledgerTransactionOperation =
+        LedgerTransactionOperation(api: api, analytics: analytics)
 
     private lazy var transactionAPIConnector = TransactionAPIConnector(api: api)
-    
-    private var currentTransactionType: TransactionType?
 
     private var isLedgerRequiredTransaction: Bool {
         return transactionDraft?.from.requiresLedgerConnection() ?? false
     }
+
+    private let analytics: ALGAnalytics
     
-    init(api: ALGAPI, bannerController: BannerController?) {
+    init(
+        api: ALGAPI,
+        bannerController: BannerController?,
+        analytics: ALGAnalytics
+    ) {
         self.api = api
         self.bannerController = bannerController
+        self.analytics = analytics
     }
 }
 
@@ -51,15 +59,15 @@ extension TransactionController {
         return transactionDraft?.from
     }
 
-    private var assetTransactionDraft: AssetTransactionSendDraft? {
+    var assetTransactionDraft: AssetTransactionSendDraft? {
         return transactionDraft as? AssetTransactionSendDraft
     }
 
-    private var algosTransactionDraft: AlgosTransactionSendDraft? {
+    var algosTransactionDraft: AlgosTransactionSendDraft? {
         return transactionDraft as? AlgosTransactionSendDraft
     }
 
-    private var rekeyTransactionDraft: RekeyTransactionSendDraft? {
+    var rekeyTransactionDraft: RekeyTransactionSendDraft? {
         return transactionDraft as? RekeyTransactionSendDraft
     }
 
@@ -152,7 +160,7 @@ extension TransactionController {
         transactionAPIConnector.uploadTransaction(transactionData) { transactionId, error in
             guard let id = transactionId else {
                 self.resetLedgerOperationIfNeeded()
-                self.logLedgerTransactionError()
+                self.logLedgerTransactionNonAcceptanceError()
                 if let error = error {
                     self.delegate?.transactionController(self, didFailedTransaction: .network(.unexpected(error)))
                 }
@@ -432,14 +440,14 @@ extension TransactionController {
 }
 
 extension TransactionController {
-    private func logLedgerTransactionError() {
+    private func logLedgerTransactionNonAcceptanceError() {
         guard let account = fromAccount,
               account.requiresLedgerConnection() else {
             return
         }
         
-        UIApplication.shared.firebaseAnalytics?.record(
-            LedgerTransactionErrorLog(account: account, transactionData: transactionData)
+        analytics.record(
+            .nonAcceptanceLedgerTransaction(account: account, transactionData: transactionData)
         )
     }
 }

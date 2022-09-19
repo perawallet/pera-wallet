@@ -24,14 +24,14 @@ enum AssetPreviewModelAdapter {
     ) -> AssetPreviewModel {
         let assetViewModel = AssetViewModel(item)
         let asset = item.asset
-        let title = asset.presentation.name.isNilOrEmpty
+        let title = asset.naming.name.isNilOrEmpty
             ? "title-unknown".localized
-            : asset.presentation.name
+            : asset.naming.name
         return AssetPreviewModel(
             icon: .url(nil, title: title),
-            verifiedIcon: asset.presentation.isVerified ? img("icon-verified-shield") : nil,
+            verificationTier: asset.verificationTier,
             title: title,
-            subtitle: asset.presentation.unitName,
+            subtitle: asset.naming.unitName,
             primaryAccessory: assetViewModel.amount,
             secondaryAccessory: assetViewModel.valueInCurrency,
             currencyAmount: assetViewModel.valueInUSD,
@@ -45,66 +45,13 @@ enum AssetPreviewModelAdapter {
         let algoAssetViewModel = AlgoAssetViewModel(item)
         return AssetPreviewModel(
             icon: .algo,
-            verifiedIcon: img("icon-verified-shield"),
+            verificationTier: .trusted,
             title: "Algo",
             subtitle: "ALGO",
             primaryAccessory: algoAssetViewModel.amount,
             secondaryAccessory: algoAssetViewModel.valueInCurrency,
             currencyAmount: algoAssetViewModel.valueInUSD,
             asset: nil
-        )
-    }
-
-    static func adaptAssetSelection(
-        _ item: AssetItem
-    ) -> AssetPreviewModel {
-        let assetViewModel = AssetViewModel(item)
-        let asset = item.asset
-        let title = asset.presentation.name.isNilOrEmpty
-            ? "title-unknown".localized
-            : asset.presentation.name
-        return AssetPreviewModel(
-            icon: .url(nil, title: asset.presentation.name),
-            verifiedIcon: asset.presentation.isVerified ? img("icon-verified-shield") : nil,
-            title: title,
-            subtitle: "ID \(asset.id)",
-            primaryAccessory: assetViewModel.amount,
-            secondaryAccessory: assetViewModel.valueInCurrency,
-            currencyAmount: assetViewModel.valueInUSD,
-            asset: asset
-        )
-    }
-
-    static func adaptPendingAsset(_ asset: StandardAsset) -> PendingAssetPreviewModel {
-        let status: String
-        switch asset.state {
-        case let .pending(operation):
-            switch operation {
-            case .add:
-                status = "asset-add-confirmation-title".localized
-            case .remove:
-                status = "asset-removing-status".localized
-            }
-        case .ready:
-            status = ""
-        }
-
-        return PendingAssetPreviewModel(
-            secondaryImage: asset.isVerified ? img("icon-verified-shield") : nil,
-            assetPrimaryTitle: asset.name,
-            assetSecondaryTitle: "ID \(asset.id)",
-            assetStatus: status
-        )
-    }
-
-    static func adaptRemovingAsset(_ asset: Asset) -> PendingAssetPreviewModel {
-        return PendingAssetPreviewModel(
-            secondaryImage: asset.presentation.isVerified
-                ? img("icon-verified-shield")
-                : nil,
-            assetPrimaryTitle: asset.presentation.name,
-            assetSecondaryTitle: "ID \(asset.id)",
-            assetStatus: "asset-removing-status".localized
         )
     }
 }

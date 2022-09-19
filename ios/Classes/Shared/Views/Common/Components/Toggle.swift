@@ -47,8 +47,8 @@ extension Toggle {
 
         init(_ family: LayoutFamily) {
             cornerRadius = 16
-            backgroundColor = AppColors.Components.Switch.backgroundOff
-            onTintColor = AppColors.Components.Switch.background
+            backgroundColor = Colors.Switches.offBackground
+            onTintColor = Colors.Switches.background
         }
     }
 }

@@ -22,11 +22,10 @@ import UIKit
 final class TitleWithAccessoryView:
     View,
     ViewModelBindable,
-    UIInteractionObservable,
-    UIControlInteractionPublisher,
+    UIInteractable,
     ListReusable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .performAccessory: UIControlInteraction()
+        .performAccessory: TargetActionInteraction()
     ]
     
     /// TODO: Used UILabel instead Label because it causes that text shrinks when you change tab and go back multiple times

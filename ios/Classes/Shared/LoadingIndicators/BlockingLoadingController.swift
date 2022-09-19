@@ -31,7 +31,7 @@ final class BlockingLoadingController: MacaroonUIKit.BlockingLoadingController, 
         super.init(presentingView: presentingView)
 
         configuration.chromeStyle = [
-            .backgroundColor(AppColors.Shared.System.chrome.uiColor)
+            .backgroundColor(Colors.Backdrop.modalBackground.uiColor)
         ]
         configuration.loadingIndicatorClass = ScreenLoadingIndicator.self
     }

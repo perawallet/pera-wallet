@@ -172,26 +172,12 @@ extension InnerTransactionListViewController {
         let draft = dataController.draft
         let account = draft.account
 
-        let eventHandler: AppCallTransactionDetailViewController.EventHandler = {
-            [weak self] event in
-            guard let self = self else {
-                return
-
-            }
-
-            switch event {
-            case .performClose:
-                self.dismiss(animated: true)
-            }
-        }
-
         open(
             .appCallTransactionDetail(
                 account: account,
                 transaction: transaction,
                 transactionTypeFilter: draft.type,
-                assets: getAssetDetailForTransactionType(transaction),
-                eventHandler: eventHandler
+                assets: getAssetDetailForTransactionType(transaction)
             ),
             by: .present
         )

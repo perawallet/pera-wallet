@@ -24,15 +24,15 @@ struct AccountListOptionsViewControllerTheme:
     LayoutSheet {
     var background: ViewStyle
     var contentPaddings: LayoutPaddings
-    var action: ListActionViewTheme
+    var button: ListItemButtonTheme
 
     init(
         _ family: LayoutFamily
     ) {
         self.background = [
-            .backgroundColor(AppColors.Shared.System.background)
+            .backgroundColor(Colors.Defaults.background)
         ]
         self.contentPaddings = (12, 24, 12, 24)
-        self.action = ListActionViewTheme(family)
+        self.button = ListItemButtonTheme(family)
     }
 }

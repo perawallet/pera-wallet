@@ -37,7 +37,7 @@ extension AssetDetailTitleViewModel {
     ) {
         if let asset = asset {
             image = AssetImageSmallViewModel(
-                image: .url(nil, title: asset.presentation.name)
+                image: .url(nil, title: asset.naming.name)
             )
             return
         }
@@ -49,7 +49,7 @@ extension AssetDetailTitleViewModel {
         _ asset: Asset?
     ) {
         if let asset = asset {
-            if let assetName = asset.presentation.name,
+            if let assetName = asset.naming.name,
                !assetName.isEmptyOrBlank {
                 title = getTitle(assetName)
             } else {
@@ -71,19 +71,9 @@ extension AssetDetailTitleViewModel {
             return nil
         }
 
-        let font = Fonts.DMSans.medium.make(15)
-        let lineHeightMultiplier = 1.23
-
         return .attributedString(
-            aTitle.attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(.left),
-                    .lineBreakMode(.byWordWrapping),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ])
+            aTitle
+                .bodyMedium()
         )
     }
 }

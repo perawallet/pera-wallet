@@ -21,7 +21,7 @@ import UIKit
 final class CollectibleExternalSourceCell:
     CollectionCell<CollectibleExternalSourceView>,
     ViewModelBindable,
-    UIInteractionObservable {
+    UIInteractable {
     static let theme = CollectibleExternalSourceViewTheme()
 
     override init(

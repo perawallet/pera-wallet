@@ -37,34 +37,34 @@ struct BottomWarningViewTheme: StyleSheet, LayoutSheet {
     let bottomInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.image = [
             .contentMode(.top)
         ]
         self.imageContentInsets = (0, 20)
         self.title = [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .textOverflow(FittingText()),
         ]
         self.description = [
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .textOverflow(FittingText()),
         ]
         self.actionContentEdgeInsets = (14, 24, 14, 24)
         self.actionCorner = Corner(radius: 4)
         self.primaryAction = [
             .titleColor(
-                [.normal(AppColors.Components.Button.Primary.text)]
+                [.normal(Colors.Button.Primary.text)]
             ),
             .font(Fonts.DMSans.medium.make(15)),
-            .backgroundColor(AppColors.Components.Button.Primary.background)
+            .backgroundColor(Colors.Button.Primary.background)
         ]
         self.secondaryAction = [
             .titleColor(
-                [.normal(AppColors.Components.Button.Secondary.text)]
+                [.normal(Colors.Button.Secondary.text)]
             ),
             .font(Fonts.DMSans.medium.make(15)),
-            .backgroundColor(AppColors.Components.Button.Secondary.background)
+            .backgroundColor(Colors.Button.Secondary.background)
         ]
         self.buttonInset = 16
         self.verticalInset = 32

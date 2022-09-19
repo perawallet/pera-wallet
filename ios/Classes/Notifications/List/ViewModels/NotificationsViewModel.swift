@@ -223,7 +223,7 @@ extension NotificationsViewModel {
             string: message,
             attributes: [
                 .font: Fonts.DMSans.regular.make(15).uiFont,
-                .foregroundColor: AppColors.Components.Text.main.uiColor
+                .foregroundColor: Colors.Text.main.uiColor
             ]
         )
         parameters.forEach { parameter in

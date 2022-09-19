@@ -24,7 +24,7 @@ extension RecoverAccountViewController {
 
         init(_ family: LayoutFamily) {
             recoverAccountViewTheme = RecoverAccountViewTheme()
-            backgroundColor = AppColors.Shared.System.background
+            backgroundColor = Colors.Defaults.background
         }
     }
 }

@@ -30,18 +30,18 @@ struct AccountTypeViewTheme: StyleSheet, LayoutSheet {
     let minimumInset: LayoutMetric
     
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.title = [
             .textOverflow(FittingText()),
             .font(Fonts.DMSans.medium.make(15)),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .textAlignment(.left),
             .isInteractable(false)
         ]
         self.detail = [
             .textOverflow(FittingText()),
             .font(Fonts.DMSans.regular.make(13)),
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .textAlignment(.left),
             .isInteractable(false)
         ]

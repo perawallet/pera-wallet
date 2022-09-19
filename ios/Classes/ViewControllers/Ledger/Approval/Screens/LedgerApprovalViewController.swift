@@ -20,6 +20,9 @@ import MacaroonBottomSheet
 import MacaroonUIKit
 
 final class LedgerApprovalViewController: BaseViewController {
+    typealias EventHandler = (Event) -> Void
+    var eventHandler: EventHandler?
+
     private lazy var ledgerApprovalView = LedgerApprovalView()
     private lazy var theme = Theme()
 
@@ -30,6 +33,11 @@ final class LedgerApprovalViewController: BaseViewController {
         self.mode = mode
         self.deviceName = deviceName
         super.init(configuration: configuration)
+    }
+
+    override func configureNavigationBarAppearance() {
+        super.configureNavigationBarAppearance()
+        hidesCloseBarButtonItem = true
     }
 
     override func configureAppearance() {
@@ -77,7 +85,7 @@ extension LedgerApprovalViewController: BottomSheetPresentable {
 
 extension LedgerApprovalViewController: LedgerApprovalViewDelegate {
     func ledgerApprovalViewDidTapCancelButton(_ ledgerApprovalView: LedgerApprovalView) {
-        dismissScreen()
+        eventHandler?(.didCancel)
     }
 }
 
@@ -85,5 +93,11 @@ extension LedgerApprovalViewController {
     enum Mode {
         case connection
         case approve
+    }
+}
+
+extension LedgerApprovalViewController {
+    enum Event {
+        case didCancel
     }
 }

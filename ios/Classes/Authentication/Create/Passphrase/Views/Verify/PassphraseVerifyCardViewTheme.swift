@@ -42,41 +42,41 @@ struct PassphraseVerifyCardViewTheme:
     
     init(_ family: LayoutFamily) {
         self.background = [
-            .backgroundColor(AppColors.Shared.System.background)
+            .backgroundColor(Colors.Defaults.background)
         ]
         self.horizontalPadding = 24
         
         self.headerLabel = [
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.gray)
+            .textColor(Colors.Text.gray)
         ]
         
         self.containerViewTopPadding = 12
         self.containerViewCorner = Corner(radius: 4)
         self.containerViewFirstShadow = MacaroonUIKit.Shadow(
-            color: AppColors.SendTransaction.Shadow.first.uiColor,
+            color: Colors.Shadows.Cards.shadow1.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
             offset: (0, 2),
             radius: 4,
-            fillColor: AppColors.Shared.System.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
         )
         self.containerViewSecondShadow = MacaroonUIKit.Shadow(
-            color: AppColors.SendTransaction.Shadow.second.uiColor,
+            color: Colors.Shadows.Cards.shadow2.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
             offset: (0, 2),
             radius: 4,
-            fillColor: AppColors.Shared.System.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
         )
         self.containerViewThirdShadow = MacaroonUIKit.Shadow(
-            color: AppColors.SendTransaction.Shadow.third.uiColor,
+            color: Colors.Shadows.Cards.shadow3.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
             offset: (0, 0),
             radius: 0,
-            fillColor: AppColors.Shared.System.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
         )
@@ -87,10 +87,10 @@ struct PassphraseVerifyCardViewTheme:
         self.mnemonicLabelContentInset = (10, 0, 10, 0)
         self.mnemonicLabel = [
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
         ]
         
-        self.activeColor = AppColors.Shared.Layer.grayLighter.uiColor
-        self.deactiveColor = AppColors.Shared.System.background.uiColor
+        self.activeColor = Colors.Layer.grayLighter.uiColor
+        self.deactiveColor = Colors.Defaults.background.uiColor
     }
 }

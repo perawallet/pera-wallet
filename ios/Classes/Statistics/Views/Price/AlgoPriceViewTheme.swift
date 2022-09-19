@@ -37,7 +37,7 @@ struct AlgoPriceViewTheme:
     ) {
         self.contentHorizontalPaddings = (24, 24)
         self.price = [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .textOverflow(SingleLineFittingText())
         ]
         self.priceLoadingCorner = 4

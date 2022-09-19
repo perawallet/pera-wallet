@@ -29,12 +29,12 @@ struct AccountNamePreviewViewTheme:
     ) {
         title = [
             .textOverflow(SingleLineText()),
-            .textColor(AppColors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
         titleContentEdgeInsets = (2, 0, 2, 0)
         subtitle = [
             .textOverflow(SingleLineText()),
-            .textColor(AppColors.Components.Text.grayLighter)
+            .textColor(Colors.Text.grayLighter)
         ]
         subtitleContentEdgeInsets = (0, 0, 2, 0)
     }

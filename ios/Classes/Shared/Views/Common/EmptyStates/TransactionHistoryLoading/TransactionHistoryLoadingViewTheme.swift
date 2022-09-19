@@ -22,15 +22,19 @@ protocol TransactionHistoryLoadingViewTheme:
     StyleSheet,
     LayoutSheet {
 
-    var titleViewCorner: LayoutMetric { get }
-    var titleViewSize: LayoutSize { get }
-    var titleMargin: LayoutMargins { get }
+    var filterViewHeight: LayoutMetric { get }
+    var filterViewMargin: LayoutHorizontalMargins { get }
 
     var sectionCorner: LayoutMetric { get }
     var sectionSize: LayoutSize { get }
     var sectionMargin: LayoutMargins { get }
 
+    var sectionLineStyle: ViewStyle { get }
+    var sectionLinePaddings: LayoutHorizontalPaddings { get }
+    var sectionLineHeight: LayoutMetric { get }
+
     var itemCorner: LayoutMetric { get }
     var itemSize: LayoutSize { get }
     var itemMargin: LayoutMargins { get }
+    var itemSeparator: Separator { get }
 }

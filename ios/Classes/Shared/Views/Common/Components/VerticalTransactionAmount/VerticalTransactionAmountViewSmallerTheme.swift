@@ -26,14 +26,14 @@ struct VerticalTransactionAmountViewSmallerTheme: VerticalTransactionAmountViewT
         self.amountLabel = [
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMMono.regular.make(15))
         ]
 
         self.usdLabel = [
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.grayLighter),
+            .textColor(Colors.Text.grayLighter),
             .font(Fonts.DMMono.regular.make(13))
         ]
     }

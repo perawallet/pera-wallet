@@ -29,17 +29,17 @@ struct SettingsFooterViewTheme: LayoutSheet, StyleSheet {
     let horizontalInset: LayoutMetric
     
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.button = [
             .title("settings-logout-title".localized),
-            .titleColor([.normal(AppColors.Components.Text.main)]),
-            .backgroundColor(AppColors.Components.Button.Primary.disabledBackground),
+            .titleColor([.normal(Colors.Button.Secondary.text)]),
+            .backgroundColor(Colors.Button.Secondary.background),
             .font(Fonts.DMSans.medium.make(15))
         ]
         self.subTitle = [
             .textAlignment(.center),
             .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(13))
         ]
         

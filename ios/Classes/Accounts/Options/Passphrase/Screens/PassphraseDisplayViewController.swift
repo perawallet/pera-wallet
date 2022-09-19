@@ -40,10 +40,6 @@ final class PassphraseDisplayViewController: BaseScrollViewController {
         self.address = address
         super.init(configuration: configuration)
     }
-    
-    override func configureNavigationBarAppearance() {
-        addBarButtons()
-    }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
@@ -89,7 +85,7 @@ final class PassphraseDisplayViewController: BaseScrollViewController {
     }
 }
 
-extension PassphraseDisplayViewController: BottomSheetPresentable {
+extension PassphraseDisplayViewController: BottomSheetScrollPresentable {
     var modalHeight: ModalHeight {
         return .preferred(theme.modalHeight)
     }
@@ -104,16 +100,6 @@ extension PassphraseDisplayViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeue(PassphraseCell.self, at: indexPath)
         cell.bindData(PassphraseCellViewModel(Passphrase(index: indexPath.item, mnemonics: mnemonics)))
         return cell
-    }
-}
-
-extension PassphraseDisplayViewController {
-    private func addBarButtons() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
-            self?.closeScreen(by: .dismiss, animated: true)
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
     }
 }
 

@@ -24,7 +24,7 @@ extension TransactionsViewController {
         let contentInset: LayoutPaddings
 
         init(_ family: LayoutFamily) {
-            self.backgroundColor = AppColors.Shared.System.background
+            self.backgroundColor = Colors.Defaults.background
             self.contentInset = (32, 0, 0, 0)
         }
     }

@@ -36,15 +36,15 @@ struct AlgoPriceChartTimeFrameSelectionViewTheme:
             .font(Fonts.DMSans.medium.make(13)),
             .titleColor(
                 [
-                    .normal(AppColors.Components.Text.grayLighter),
-                    .highlighted(AppColors.Components.Text.main),
-                    .selected(AppColors.Components.Text.main),
+                    .normal(Colors.Text.grayLighter),
+                    .highlighted(Colors.Text.main),
+                    .selected(Colors.Text.main),
                 ]
             )
         ]
         self.spacingBetweenOptions = 16
         self.selection = [
-            .backgroundColor(AppColors.Shared.Layer.grayLighter)
+            .backgroundColor(Colors.Layer.grayLighter)
         ]
         self.selectionCorner = 4
         self.selectionMaxWidth = 52

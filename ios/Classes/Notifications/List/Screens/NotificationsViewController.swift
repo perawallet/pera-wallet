@@ -20,7 +20,6 @@ import MagpieCore
 
 final class NotificationsViewController:
     BaseViewController,
-    AssetActionConfirmationViewControllerDelegate,
     TransactionSignChecking,
     TransactionControllerDelegate {
     private var isInitialFetchCompleted = false
@@ -40,10 +39,14 @@ final class NotificationsViewController:
         guard let api = api else {
             fatalError("API should be set.")
         }
-        return TransactionController(api: api, bannerController: bannerController)
+        return TransactionController(
+            api: api,
+            bannerController: bannerController,
+            analytics: analytics
+        )
     }()
 
-    private lazy var assetActionConfirmationTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToOptInAsset = BottomSheetTransition(presentingViewController: self)
 
     private lazy var currencyFormatter = CurrencyFormatter()
     
@@ -178,7 +181,7 @@ extension NotificationsViewController {
     }
 
     private func openNotificationFilters() {
-        open(.notificationFilter(flow: .notifications), by: .present)
+        open(.notificationFilter, by: .present)
     }
 }
 
@@ -207,9 +210,9 @@ extension NotificationsViewController {
                 to: assetId,
                 for: receiverAccount
             ) {
-                openAssetAddition(
-                    account: receiverAccount,
-                    asset: asset
+                openOptInAsset(
+                    asset: asset,
+                    account: receiverAccount
                 )
                 return
             }
@@ -234,13 +237,43 @@ extension NotificationsViewController {
 
             switch assetMode {
             case .algo:
-                screen = .algosDetail(draft: AlgoTransactionListing(accountHandle: accountHandle))
+                let account = accountHandle.value
+                screen = .asaDetail(
+                    account: account,
+                    asset: account.algo
+                ) { [weak self] event in
+                    guard let self = self else { return }
+
+                    switch event {
+                    case .didRemoveAccount:
+                        self.dataController.reload()
+                        self.navigationController?.popToViewController(
+                            self,
+                            animated: true
+                        )
+                    case .didRenameAccount:
+                        self.dataController.reload()
+                    }
+                }
             case .asset(let asset):
                 if let asset = asset as? StandardAsset {
-                    screen = .assetDetail(draft: AssetTransactionListing(
-                        accountHandle: accountHandle,
+                    screen = .asaDetail(
+                        account: accountHandle.value,
                         asset: asset
-                    ))
+                    ) { [weak self] event in
+                        guard let self = self else { return }
+
+                        switch event {
+                        case .didRemoveAccount:
+                            self.dataController.reload()
+                            self.navigationController?.popToViewController(
+                                self,
+                                animated: true
+                            )
+                        case .didRenameAccount:
+                            self.dataController.reload()
+                        }
+                    }
                 } else if let collectibleAsset = asset as? CollectibleAsset {
                     openCollectible(
                         asset: collectibleAsset,
@@ -257,47 +290,109 @@ extension NotificationsViewController {
         }
     }
 
-    private func openAssetAddition(
-        account: Account,
-        asset: NotificationAsset
+    private func openOptInAsset(
+        asset: NotificationAsset,
+        account: Account
     ) {
-        guard let assetId = asset.id else {
+        guard let assetID = asset.id else {
             return
         }
 
-        let assetAlertDraft = AssetAlertDraft(
-            account: account,
-            assetId: assetId,
-            asset: nil,
-            transactionFee: Transaction.Constant.minimumFee,
-            title: "asset-add-confirmation-title".localized,
-            detail: "asset-add-warning".localized,
-            actionTitle: "title-approve".localized,
-            cancelTitle: "title-cancel".localized
-        )
+        if let asset = sharedDataController.assetDetailCollection[assetID] {
+            openOptInAsset(
+                asset: asset,
+                account: account
+            )
+            return
+        }
 
-        assetActionConfirmationTransition.perform(
-            .assetActionConfirmation(
-                assetAlertDraft: assetAlertDraft,
-                delegate: self
-            ),
-            by: .presentWithoutNavigationController
+        loadingController?.startLoadingWithMessage("title-loading".localized)
+
+        api?.fetchAssetDetails(
+            AssetFetchQuery(ids: [assetID]),
+            queue: .main,
+            ignoreResponseOnCancelled: false
+        ) { [weak self] response in
+            guard let self = self else {
+                return
+            }
+
+            self.loadingController?.stopLoading()
+
+            switch response {
+            case let .success(assetResponse):
+                if assetResponse.results.isEmpty {
+                    self.bannerController?.presentErrorBanner(
+                        title: "title-error".localized,
+                        message: "asset-confirmation-not-found".localized
+                    )
+                    return
+                }
+
+                if let asset = assetResponse.results.first {
+                    self.openOptInAsset(
+                        asset: asset,
+                        account: account
+                    )
+                }
+            case .failure:
+                self.bannerController?.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: "asset-confirmation-not-fetched".localized
+                )
+            }
+        }
+    }
+
+    private func openOptInAsset(
+        asset: AssetDecoration,
+        account: Account
+    ) {
+        let draft = OptInAssetDraft(
+            account: account,
+            asset: asset
+        )
+        let screen = Screen.optInAsset(draft: draft) {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .performApprove:
+                self.continueToOptInAsset(
+                    asset: asset,
+                    account: account
+                )
+            case .performClose:
+                self.cancelOptInAsset()
+            }
+        }
+        transitionToOptInAsset.perform(
+            screen,
+            by: .present
         )
     }
     
-    private func openCollectible(asset: CollectibleAsset, with account: Account) {
-        let controller = open(
-            .collectibleDetail(
-                asset: asset,
-                account: account,
-                thumbnailImage: nil
-            ),
-            by: .push
-        ) as? CollectibleDetailViewController
-        
-        controller?.eventHandlers.didOptOutAssetFromAccount = { [weak controller] in
-            controller?.popScreen()
+    private func openCollectible(
+        asset: CollectibleAsset,
+        with account: Account
+    ) {
+        let screen = Screen.collectibleDetail(
+            asset: asset,
+            account: account,
+            thumbnailImage: nil,
+            quickAction: nil
+        ) { [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didOptOutAssetFromAccount: self.popScreen()
+            case .didOptOutFromAssetWithQuickAction: break
+            case .didOptInToAsset: break
+            }
         }
+        open(
+            screen,
+            by: .push
+        )
     }
     
     private func presentAssetNotFoundError() {
@@ -307,31 +402,36 @@ extension NotificationsViewController {
         )
     }
 
-    func assetActionConfirmationViewController(
-        _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
-        didConfirmAction asset: AssetDecoration
+    private func continueToOptInAsset(
+        asset: AssetDecoration,
+        account: Account
     ) {
-        if let receiverAccount = dataController.getReceiverAccount(from: currentNotification) {
-            var account = receiverAccount
+        dismiss(animated: true) {
+            [weak self] in
+            guard let self = self else { return }
 
-            if !canSignTransaction(for: &account) {
-                return
-            }
+            var account = account
+
+            if !self.canSignTransaction(for: &account) { return }
 
             let assetTransactionDraft = AssetTransactionSendDraft(
                 from: account,
                 assetIndex: asset.id
             )
-            transactionController.setTransactionDraft(assetTransactionDraft)
-            transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+            self.transactionController.setTransactionDraft(assetTransactionDraft)
+            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
 
-            loadingController?.startLoadingWithMessage("title-loading".localized)
+            self.loadingController?.startLoadingWithMessage("title-loading".localized)
 
             if account.requiresLedgerConnection() {
-                transactionController.initializeLedgerTransactionAccount()
-                transactionController.startTimer()
+                self.transactionController.initializeLedgerTransactionAccount()
+                self.transactionController.startTimer()
             }
         }
+    }
+
+    private func cancelOptInAsset() {
+        dismiss(animated: true)
     }
 
     func transactionController(
@@ -424,7 +524,10 @@ extension NotificationsViewController {
         _ transactionController: TransactionController,
         didRequestUserApprovalFrom ledger: String
     ) {
-        let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: self)
+        let ledgerApprovalTransition = BottomSheetTransition(
+            presentingViewController: self,
+            interactable: false
+        )
         ledgerApprovalViewController = ledgerApprovalTransition.perform(
             .ledgerApproval(
                 mode: .approve,
@@ -432,6 +535,16 @@ extension NotificationsViewController {
             ),
             by: .present
         )
+
+        ledgerApprovalViewController?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .didCancel:
+                self.ledgerApprovalViewController?.dismissScreen()
+                self.loadingController?.stopLoading()
+            }
+        }
     }
 
     func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {

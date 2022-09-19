@@ -20,7 +20,7 @@ import MacaroonBottomSheet
 
 final class ApproveCollectibleTransactionViewController:
     BaseScrollViewController,
-    BottomSheetPresentable {
+    BottomSheetScrollPresentable {
 
     var eventHandler: ((ApproveCollectibleTransactionViewControllerEvent) -> Void)?
 

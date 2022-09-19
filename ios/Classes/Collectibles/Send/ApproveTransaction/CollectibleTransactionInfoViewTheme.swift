@@ -41,13 +41,13 @@ struct CollectibleTransactionInfoViewTheme:
         title = [
             .textAlignment(.left),
             .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.gray)
+            .textColor(Colors.Text.gray)
         ]
         titleContentEdgeInsets = (0, 0, 0, 8)
         value = [
             .textAlignment(.right),
             .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
         icon = [
             .contentMode(.topLeft),
@@ -60,6 +60,6 @@ struct CollectibleTransactionInfoViewTheme:
         valueWidthRatio = 0.50
         verticalPadding = 16
 
-        separator = Separator(color: AppColors.Shared.Layer.grayLighter)
+        separator = Separator(color: Colors.Layer.grayLighter)
     }
 }

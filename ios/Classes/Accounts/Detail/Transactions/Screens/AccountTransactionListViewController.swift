@@ -31,4 +31,10 @@ final class AccountTransactionListViewController: TransactionsViewController {
             configuration: configuration
         )
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        analytics.track(.recordAccountDetailScreen(type: .tapHistory))
+    }
 }

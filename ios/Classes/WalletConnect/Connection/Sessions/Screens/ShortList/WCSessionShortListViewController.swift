@@ -103,8 +103,8 @@ extension WCSessionShortListViewController {
                 return
             }
 
-            self.log(
-                WCSessionDisconnectedEvent(
+            self.analytics.track(
+                .wcSessionDisconnected(
                     dappName: session.peerMeta.name,
                     dappURL: session.peerMeta.url.absoluteString,
                     address: session.walletMeta?.accounts?.first

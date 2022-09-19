@@ -30,15 +30,21 @@ final class CollectibleDetailAPIDataController: CollectibleDetailDataController 
     private let api: ALGAPI
     private var asset: CollectibleAsset
     private let account: Account
+    private let quickAction: AssetQuickAction?
+    private let sharedDataController: SharedDataController
 
     init(
         api: ALGAPI,
         asset: CollectibleAsset,
-        account: Account
+        account: Account,
+        quickAction: AssetQuickAction?,
+        sharedDataController: SharedDataController
     ) {
         self.api = api
         self.asset = asset
         self.account = account
+        self.quickAction = quickAction
+        self.sharedDataController = sharedDataController
     }
 }
 
@@ -64,7 +70,7 @@ extension CollectibleDetailAPIDataController {
             switch response {
             case .success(let asset):
                 self.asset = CollectibleAsset(
-                    asset: ALGAsset(collectibleAsset: self.asset),
+                    asset: ALGAsset(asset: self.asset),
                     decoration: asset
                 )
 
@@ -91,6 +97,22 @@ extension CollectibleDetailAPIDataController {
 }
 
 extension CollectibleDetailAPIDataController {
+    func hasOptedIn() -> OptInStatus {
+        return sharedDataController.hasOptedIn(
+            assetID: asset.id,
+            for: account
+        )
+    }
+
+    func hasOptedOut() -> OptOutStatus {
+        return sharedDataController.hasOptedOut(
+            assetID: asset.id,
+            for: account
+        )
+    }
+}
+
+extension CollectibleDetailAPIDataController {
     private func deliverLoadingSnapshot() {
         deliverSnapshot {
             var snapshot = Snapshot()
@@ -111,7 +133,7 @@ extension CollectibleDetailAPIDataController {
             var snapshot = Snapshot()
 
             self.addMediaContent(&snapshot)
-            self.addActionContent(&snapshot)
+            self.addActionContentIfNeeded(&snapshot)
             self.addDescriptionContent(&snapshot)
             self.addPropertiesContent(&snapshot)
 
@@ -124,26 +146,24 @@ extension CollectibleDetailAPIDataController {
     ) {
         var mediaItems: [CollectibleDetailItem] = [.media(asset)]
 
-        guard let asset = account[asset.id] as? CollectibleAsset else {
-            return
-        }
-
-        if !asset.isOwned {
-            mediaItems.append(
-                .error(
-                    CollectibleMediaErrorViewModel(
-                        .notOwner(isWatchAccount: account.isWatchAccount())
+        if let asset = account[asset.id] as? CollectibleAsset {
+            if !asset.isOwned {
+                mediaItems.append(
+                    .error(
+                        CollectibleMediaErrorViewModel(
+                            .notOwner(isWatchAccount: account.isWatchAccount())
+                        )
                     )
                 )
-            )
-        } else if !asset.mediaType.isSupported {
-            mediaItems.append(
-                .error(
-                    CollectibleMediaErrorViewModel(
-                        .unsupported
+            } else if !asset.mediaType.isSupported {
+                mediaItems.append(
+                    .error(
+                        CollectibleMediaErrorViewModel(
+                            .unsupported
+                        )
                     )
                 )
-            )
+            }
         }
 
         snapshot.appendSections([.media])
@@ -153,9 +173,14 @@ extension CollectibleDetailAPIDataController {
         )
     }
 
-    private func addActionContent(
+    private func addActionContentIfNeeded(
         _ snapshot: inout Snapshot
     ) {
+        if quickAction != nil {
+            addWatchAccountActionContent(&snapshot)
+            return
+        }
+
         if account.isWatchAccount() {
             addWatchAccountActionContent(&snapshot)
             return
@@ -172,7 +197,9 @@ extension CollectibleDetailAPIDataController {
             return
         }
 
-        addOptedInActionContent(&snapshot)
+        if account[asset.id] != nil {
+            addOptedInActionContent(&snapshot)
+        }
     }
 
     private func addWatchAccountActionContent(

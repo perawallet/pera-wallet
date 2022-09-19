@@ -39,18 +39,11 @@ extension CollectiblePropertyViewModel {
             return
         }
 
-        let font = Fonts.DMSans.regular.make(11)
-        let lineHeightMultiplier = 1.12
-
         name = .attributedString(
-            aName.attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineBreakMode(.byTruncatingTail),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ])
+            aName
+                .captionRegular(
+                    lineBreakMode: .byTruncatingTail
+                )
         )
     }
 
@@ -61,18 +54,11 @@ extension CollectiblePropertyViewModel {
             return
         }
 
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-
         value = .attributedString(
-            aValue.attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineBreakMode(.byTruncatingTail),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ])
+            aValue
+                .bodyRegular(
+                    lineBreakMode: .byTruncatingTail
+                )
         )
     }
 }

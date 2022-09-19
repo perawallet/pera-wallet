@@ -49,10 +49,10 @@ struct SelectedAccountPreviewViewTheme: LayoutSheet, StyleSheet {
         contentMinWidthRatio = 0.5
 
         background = [
-            .backgroundColor(AppColors.Shared.System.background)
+            .backgroundColor(Colors.Defaults.background)
         ]
 
-        separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1, position: .top((0, 0)))
+        separator = Separator(color: Colors.Layer.grayLighter, size: 1, position: .top((0, 0)))
 
         icon = [
             .contentMode(.scaleAspectFit)
@@ -62,11 +62,11 @@ struct SelectedAccountPreviewViewTheme: LayoutSheet, StyleSheet {
 
         title = [
             .textOverflow(SingleLineText()),
-            .textColor(AppColors.Components.Text.gray)
+            .textColor(Colors.Text.gray)
         ]
         value = [
             .textOverflow(SingleLineText()),
-            .textColor(AppColors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
 
         actionHorizontalPaddings = (8, horizontalPadding)

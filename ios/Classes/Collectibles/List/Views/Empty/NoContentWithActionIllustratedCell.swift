@@ -21,7 +21,7 @@ import MacaroonUIKit
 final class NoContentWithActionIllustratedCell:
     CollectionCell<NoContentWithActionView>,
     ViewModelBindable,
-    UIInteractionObservable {
+    UIInteractable {
     static let theme: NoContentWithActionViewIllustratedTheme = {
         var theme = NoContentWithActionViewIllustratedTheme()
         theme.configureForCollectiblesNoContentWithAction()

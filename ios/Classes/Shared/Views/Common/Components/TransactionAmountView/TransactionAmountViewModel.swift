@@ -65,10 +65,10 @@ extension TransactionAmountViewModel {
                 isAlgos: isAlgos,
                 assetSymbol: assetSymbol
             )
-            amountLabelColor = AppColors.Components.Text.main.uiColor
+            amountLabelColor = Colors.Text.main.uiColor
         case let .positive(amount, isAlgos, assetFraction, assetSymbol, _):
             signLabelText = "+"
-            signLabelColor = AppColors.Shared.Helpers.positive.uiColor
+            signLabelColor = Colors.Helpers.positive.uiColor
             bindAmount(
                 amount,
                 currency: currency,
@@ -78,10 +78,10 @@ extension TransactionAmountViewModel {
                 isAlgos: isAlgos,
                 assetSymbol: assetSymbol
             )
-            amountLabelColor = AppColors.Shared.Helpers.positive.uiColor
+            amountLabelColor = Colors.Helpers.positive.uiColor
         case let .negative(amount, isAlgos, assetFraction, assetSymbol, _):
             signLabelText = "-"
-            signLabelColor = AppColors.Shared.Helpers.negative.uiColor
+            signLabelColor = Colors.Helpers.negative.uiColor
             bindAmount(
                 amount,
                 currency: currency,
@@ -91,7 +91,7 @@ extension TransactionAmountViewModel {
                 isAlgos: isAlgos,
                 assetSymbol: assetSymbol
             )
-            amountLabelColor = AppColors.Shared.Helpers.negative.uiColor
+            amountLabelColor = Colors.Helpers.negative.uiColor
         }
     }
 
@@ -138,7 +138,7 @@ extension TransactionAmountViewModel {
 /// <mark> Inner Transaction Binding
 extension TransactionAmountViewModel {
     private mutating func bindInnerTransaction(count: Int, showInList: Bool) {
-        amountLabelColor = AppColors.Shared.Helpers.positive.uiColor
+        amountLabelColor = Colors.Helpers.positive.uiColor
 
         if showInList {
             let aText = count == 1

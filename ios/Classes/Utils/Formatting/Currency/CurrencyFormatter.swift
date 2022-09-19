@@ -17,6 +17,8 @@
 import Foundation
 import MacaroonUtils
 
+/// <todo>
+/// Maybe, we should rename it as NumberFormatter since we are using it for non-currency values.
 final class CurrencyFormatter {
     static let shared: CurrencyFormatter = .init()
 

@@ -37,7 +37,7 @@ class WCGroupTransactionAccountInformationView: BaseView {
 
     private lazy var balanceLabel: UILabel = {
         UILabel()
-            .withTextColor(AppColors.Components.Text.gray.uiColor)
+            .withTextColor(Colors.Text.gray.uiColor)
             .withLine(.single)
             .withAlignment(.left)
             .withFont(Fonts.DMMono.regular.make(13).uiFont)
@@ -45,7 +45,7 @@ class WCGroupTransactionAccountInformationView: BaseView {
 
     private lazy var assetNameLabel: UILabel = {
         UILabel()
-            .withTextColor(AppColors.Components.Text.gray.uiColor)
+            .withTextColor(Colors.Text.gray.uiColor)
             .withLine(.single)
             .withAlignment(.left)
             .withFont(Fonts.DMMono.regular.make(13).uiFont)

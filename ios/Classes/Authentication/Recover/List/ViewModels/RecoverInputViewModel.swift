@@ -40,11 +40,11 @@ final class RecoverInputViewModel {
         switch state {
         case .wrong,
              .filledWrongly:
-            numberColor = AppColors.Shared.Helpers.negative.uiColor
+            numberColor = Colors.Helpers.negative.uiColor
         case .active,
              .empty,
              .filled:
-            numberColor = AppColors.Components.Text.main.uiColor
+            numberColor = Colors.Text.main.uiColor
         }
     }
 
@@ -52,11 +52,11 @@ final class RecoverInputViewModel {
         switch state {
         case .wrong,
              .filledWrongly:
-            passphraseColor = AppColors.Shared.Helpers.negative.uiColor
+            passphraseColor = Colors.Helpers.negative.uiColor
         case .active,
              .empty,
              .filled:
-            passphraseColor = AppColors.Components.Text.main.uiColor
+            passphraseColor = Colors.Text.main.uiColor
         }
     }
 
@@ -64,12 +64,12 @@ final class RecoverInputViewModel {
         switch state {
         case .wrong,
              .filledWrongly:
-            focusIndicatorColor = AppColors.Shared.Helpers.negative.uiColor
+            focusIndicatorColor = Colors.Helpers.negative.uiColor
         case .active:
-            focusIndicatorColor = AppColors.Components.Text.main.uiColor
+            focusIndicatorColor = Colors.Text.main.uiColor
         case .empty,
              .filled:
-            focusIndicatorColor = AppColors.Shared.Layer.gray.uiColor
+            focusIndicatorColor = Colors.Layer.gray.uiColor
         }
     }
 

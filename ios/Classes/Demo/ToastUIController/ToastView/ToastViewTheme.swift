@@ -31,18 +31,18 @@ struct ToastViewTheme:
         _ family: LayoutFamily
     ) {
         self.background = [
-            .backgroundColor(AppColors.Components.Toast.background)
+            .backgroundColor(Colors.Toast.background)
         ]
         self.contentPaddings = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
         self.title = [
             .font(Fonts.DMSans.medium.make(15)),
-            .textColor(AppColors.Components.Toast.title),
+            .textColor(Colors.Toast.title),
             .textAlignment(.center),
             .textOverflow(FittingText(lineBreakMode: .byWordWrapping))
         ]
         self.body = [
             .font(Fonts.DMSans.regular.make(13)),
-            .textColor(AppColors.Components.Toast.description),
+            .textColor(Colors.Toast.description),
             .textAlignment(.center),
             .textOverflow(FittingText(lineBreakMode: .byWordWrapping))
         ]

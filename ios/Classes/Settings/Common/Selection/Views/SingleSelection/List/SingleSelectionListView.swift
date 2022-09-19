@@ -59,7 +59,7 @@ final class SingleSelectionListView: View {
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
     
     func linkInteractors() {
-        errorView.observe(event: .performPrimaryAction) {
+        errorView.startObserving(event: .performPrimaryAction) {
             [weak self] in
             guard let self = self else {
                 return

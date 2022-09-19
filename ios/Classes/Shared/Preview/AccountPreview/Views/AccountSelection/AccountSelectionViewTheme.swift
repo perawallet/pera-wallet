@@ -34,12 +34,12 @@ struct AccountSelectionViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
             .font(Fonts.DMSans.regular.make(15)),
-            .textColor(AppColors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
         self.secondaryTitle = [
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.grayLighter),
+            .textColor(Colors.Text.grayLighter),
             .font(Fonts.DMSans.regular.make(13))
         ]
         self.checkmarkImage = [

@@ -22,13 +22,12 @@ import UIKit
 final class HomeQuickActionsView:
     View,
     ListReusable,
-    UIInteractionObservable,
-    UIControlInteractionPublisher {
+    UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .buyAlgo: UIControlInteraction(),
-        .send: UIControlInteraction(),
-        .receive: UIControlInteraction(),
-        .scanQR: UIControlInteraction()
+        .buyAlgo: TargetActionInteraction(),
+        .send: TargetActionInteraction(),
+        .receive: TargetActionInteraction(),
+        .scanQR: TargetActionInteraction()
     ]
 
     private lazy var contentView = MacaroonUIKit.BaseView()

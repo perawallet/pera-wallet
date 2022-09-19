@@ -61,7 +61,7 @@ struct BuyAlgoHomeViewTheme:
             .tintColor(UIColor.white)
         ]
         header = [
-            .backgroundColor(AppColors.Dapp.moonpay)
+            .backgroundColor(Colors.Dapp.moonpay)
         ]
         headerBackgroundView = [
             .contentMode(.bottomLeft),
@@ -73,26 +73,26 @@ struct BuyAlgoHomeViewTheme:
             .textColor(UIColor.white)
         ]
         subtitleLabel = [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .textOverflow(FittingText())
         ]
         descriptionLabel = [
             .font(Fonts.DMSans.regular.make(15)),
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .textOverflow(FittingText())
         ]
         securityLabel = [
             .font(Fonts.DMSans.regular.make(15)),
-            .textColor(AppColors.Shared.Helpers.positive),
+            .textColor(Colors.Helpers.positive),
             .textOverflow(FittingText())
         ]
         buyAlgoButton = [
             .title("moonpay-introduction-title".localized),
             .titleColor([
-                .normal(AppColors.Components.Button.Primary.text)
+                .normal(Colors.Button.Primary.text)
             ]),
             .font(Fonts.DMSans.medium.make(15)),
-            .backgroundColor(AppColors.Components.Button.Primary.background)
+            .backgroundColor(Colors.Button.Primary.background)
         ]
         buttonContentEdgeInsets = (14, 0, 14, 0)
         buttonCorner = Corner(radius: 4)

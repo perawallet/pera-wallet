@@ -35,7 +35,7 @@ struct PortfolioCalculationInfoViewControllerTheme:
         _ family: LayoutFamily
     ) {
         self.background = [
-            .backgroundColor(AppColors.Shared.System.background)
+            .backgroundColor(Colors.Defaults.background)
         ]
         self.contentTopPadding = 32
         self.contentHorizontalPaddings = (24, 24)

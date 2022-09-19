@@ -37,38 +37,38 @@ struct ContactInformationViewTheme: StyleSheet, LayoutSheet {
     let imageViewSize: LayoutSize
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.nameLabel = [
             .textOverflow(FittingText()),
             .textAlignment(.center),
             .font(Fonts.DMSans.medium.make(19)),
-            .textColor(AppColors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
         self.accountShortAddressLabel = [
             .textOverflow(FittingText()),
             .textAlignment(.center),
             .font(Fonts.DMMono.regular.make(13)),
-            .textColor(AppColors.Components.Text.grayLighter)
+            .textColor(Colors.Text.grayLighter)
         ]
         self.accountAddressTitleLabel = [
             .textOverflow(FittingText()),
             .textAlignment(.left),
             .font(Fonts.DMSans.medium.make(15)),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .text("contacts-info-address".localized)
         ]
         self.accountAddressValueLabel = [
             .textOverflow(FittingText()),
             .textAlignment(.left),
             .font(Fonts.DMMono.regular.make(15)),
-            .textColor(AppColors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
         self.qrCode = [
             .icon([.normal("icon-qr")]),
-            .tintColor(AppColors.Components.Text.main)
+            .tintColor(Colors.Text.main)
         ]
         self.divider = [
-            .backgroundColor(AppColors.Shared.Layer.grayLighter)
+            .backgroundColor(Colors.Layer.grayLighter)
         ]
         self.imageViewCorner = Corner(radius: 40)
 

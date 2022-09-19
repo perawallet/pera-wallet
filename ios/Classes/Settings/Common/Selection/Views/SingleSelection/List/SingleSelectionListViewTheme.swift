@@ -27,7 +27,7 @@ struct SingleSelectionListViewTheme: StyleSheet, LayoutSheet {
     let collectionViewEdgeInsets: LayoutPaddings
     
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         
         self.collectionViewMinimumLineSpacing = 0.0
         self.collectionViewMinimumInteritemSpacing = 0.0

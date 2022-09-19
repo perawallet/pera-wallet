@@ -21,10 +21,9 @@ final class CollectibleTransactionInfoView:
     View,
     ViewModelBindable,
     ListReusable,
-    UIInteractionObservable,
-    UIControlInteractionPublisher {
+    UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .performAction: UIViewTapInteraction()
+        .performAction: GestureInteraction()
     ]
 
     private lazy var titleView = Label()

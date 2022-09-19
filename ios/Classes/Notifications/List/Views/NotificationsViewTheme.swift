@@ -27,7 +27,7 @@ struct NotificationsViewTheme: StyleSheet, LayoutSheet {
     let contentInset: LayoutPaddings
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.noContentViewCommonTheme = NoContentViewCommonTheme()
         self.noContentWithActionViewCommonTheme = NoContentWithActionViewCommonTheme()
 

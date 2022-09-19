@@ -34,7 +34,7 @@ final class PendingTransaction:
     private let assetReceiver: String?
     private let algosReceiver: String?
     let sender: String?
-    let type: Transaction.TransferType?
+    let type: TransactionType?
     let assetID: Int64?
     
     var amount: UInt64 {
@@ -235,7 +235,7 @@ extension PendingTransaction.APIModel {
         var arcv: String?
         var snd: String?
         var xaid: Int64?
-        var type: Transaction.TransferType?
+        var type: TransactionType?
 
         init() {
             self.amt = nil

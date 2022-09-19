@@ -42,21 +42,13 @@ extension PassphraseVerifyCardViewModel {
         guard let index = index else {
             return
         }
-
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
         
         headerText = .attributedString(
             "passphrase-verify-select-word"
                 .localized(params: "\(index + 1)")
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .textAlignment(.center),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .bodyRegular(
+                    alignment: .center
+                )
         )
     }
     
@@ -65,25 +57,14 @@ extension PassphraseVerifyCardViewModel {
             return
         }
 
-        let font = Fonts.DMSans.medium.make(15)
-        let lineHeightMultiplier = 1.23
-        let attributeGroup: TextAttributeGroup = [
-            .font(font),
-            .lineHeightMultiplier(lineHeightMultiplier, font),
-            .paragraph([
-                .textAlignment(.center),
-                .lineHeightMultiple(lineHeightMultiplier)
-            ])
-        ]
-        
         for (index, word) in mnemonics.enumerated() {
             switch index {
             case 0:
-                firstMnemonic = .attributedString(word.attributed(attributeGroup))
+                firstMnemonic = .attributedString(word.bodyMedium(alignment: .center))
             case 1:
-                secondMnemonic = .attributedString(word.attributed(attributeGroup))
+                secondMnemonic = .attributedString(word.bodyMedium(alignment: .center))
             case 2:
-                thirdMnemonic = .attributedString(word.attributed(attributeGroup))
+                thirdMnemonic = .attributedString(word.bodyMedium(alignment: .center))
             default:
                 break
             }

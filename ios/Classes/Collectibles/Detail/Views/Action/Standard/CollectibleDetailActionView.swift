@@ -21,11 +21,10 @@ final class CollectibleDetailActionView:
     View,
     ListReusable,
     ViewModelBindable,
-    UIInteractionObservable,
-    UIControlInteractionPublisher {
+    UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .performSend: UIControlInteraction(),
-        .performShare: UIControlInteraction()
+        .performSend: TargetActionInteraction(),
+        .performShare: TargetActionInteraction()
     ]
 
     private lazy var labelStackView = VStackView()

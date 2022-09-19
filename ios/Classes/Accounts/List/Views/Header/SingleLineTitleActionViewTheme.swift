@@ -33,7 +33,7 @@ struct SingleLineTitleActionViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(SingleLineFittingText()),
             .textAlignment(.left),
             .font(Fonts.DMSans.medium.make(15)),
-            .textColor(AppColors.Components.Text.main.uiColor)
+            .textColor(Colors.Text.main)
         ]
         self.action = [
             .icon([.normal("icon-options")])

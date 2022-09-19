@@ -36,7 +36,7 @@ struct SelectContactViewTheme: StyleSheet, LayoutSheet {
         self.nameLabel = [
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(15))
         ]
         self.imageSize = (40, 40)

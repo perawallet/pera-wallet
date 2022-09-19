@@ -16,15 +16,9 @@
 //   WCSingleTransactionRequestView.swift
 
 import Foundation
-import UIKit
-import MacaroonUIKit
 import MacaroonBottomOverlay
-
-protocol WCSingleTransactionRequestViewDelegate: AnyObject {
-    func wcSingleTransactionRequestViewDidTapCancel(_ requestView: WCSingleTransactionRequestView)
-    func wcSingleTransactionRequestViewDidTapConfirm(_ requestView: WCSingleTransactionRequestView)
-    func wcSingleTransactionRequestViewDidTapShowTransaction(_ requestView: WCSingleTransactionRequestView)
-}
+import MacaroonUIKit
+import UIKit
 
 final class WCSingleTransactionRequestView: BaseView {
     private lazy var confirmButton = Button()
@@ -42,6 +36,12 @@ final class WCSingleTransactionRequestView: BaseView {
         backgroundColor = theme.backgroundColor.uiColor
         bottomView.backgroundColor = theme.backgroundColor.uiColor
         middleView.backgroundColor = theme.backgroundColor.uiColor
+
+        middleView.startObserving(event: .didOpenASADiscovery) {
+            [weak self] in
+            guard let self = self else { return }
+            self.delegate?.wcSingleTransactionRequestViewDidOpenASADiscovery(self)
+        }
 
         confirmButton.customize(theme.confirmButton)
         confirmButton.setTitle("title-confirm".localized, for: .normal)
@@ -126,4 +126,19 @@ extension WCSingleTransactionRequestView {
 
         middleView.addSeparator(theme.separator)
     }
+}
+
+protocol WCSingleTransactionRequestViewDelegate: AnyObject {
+    func wcSingleTransactionRequestViewDidTapCancel(
+        _ requestView: WCSingleTransactionRequestView
+    )
+    func wcSingleTransactionRequestViewDidTapConfirm(
+        _ requestView: WCSingleTransactionRequestView
+    )
+    func wcSingleTransactionRequestViewDidTapShowTransaction(
+        _ requestView: WCSingleTransactionRequestView
+    )
+    func wcSingleTransactionRequestViewDidOpenASADiscovery(
+        _ requestView: WCSingleTransactionRequestView
+    )
 }

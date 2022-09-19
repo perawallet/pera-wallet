@@ -35,15 +35,15 @@ extension TransactionStatusViewModel {
         switch status {
         case .completed:
             statusLabelTitle = "transaction-detail-completed".localized
-            statusLabelTextColor = AppColors.Shared.Helpers.positive
-            backgroundColor = AppColors.Shared.Global.turquoise600
+            statusLabelTextColor = Colors.Helpers.positive
+            backgroundColor = Colors.Helpers.positive.uiColor.withAlphaComponent(0.1)
         case .pending:
             statusLabelTitle = "transaction-detail-pending".localized
-            statusLabelTextColor = AppColors.Components.Text.main
+            statusLabelTextColor = Colors.Text.gray
         case .failed:
             statusLabelTitle = "transaction-detail-failed".localized
-            statusLabelTextColor = AppColors.Shared.Helpers.negative
-            backgroundColor = AppColors.Shared.Helpers.negative
+            statusLabelTextColor = Colors.Helpers.negative
+            backgroundColor = Colors.Helpers.negative.uiColor.withAlphaComponent(0.1)
         }
     }
 }

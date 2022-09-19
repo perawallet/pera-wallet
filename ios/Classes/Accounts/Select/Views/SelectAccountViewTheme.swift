@@ -35,7 +35,7 @@ struct SelectAccountViewTheme: StyleSheet, LayoutSheet {
     let bottomInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.searchInputViewTheme = QRSearchInputViewTheme(
             placeholder: "account-select-header-search-title".localized,
             family: family

@@ -21,7 +21,7 @@ import UIKit
 
 struct RecoverInputViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
-    let title: TextStyle
+
     let number: TextStyle
     let inputTextField: TextInputStyle
     let focusIndicator: ViewStyle
@@ -33,22 +33,16 @@ struct RecoverInputViewTheme: StyleSheet, LayoutSheet {
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = UIColor.clear
-        self.title = [
-            .textAlignment(.left),
-            .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMSans.medium.make(32)),
-            .text("account-details-title".localized)
-        ]
+
         self.number = [
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left)
         ]
         self.inputTextField = [
             .backgroundColor(UIColor.clear),
-            .textColor(AppColors.Components.Text.main),
-            .tintColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
+            .tintColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(15)),
             .autocorrectionType(.no),
             .clearButtonMode(.whileEditing),
@@ -56,7 +50,7 @@ struct RecoverInputViewTheme: StyleSheet, LayoutSheet {
         ]
         
         self.focusIndicator = [
-            .backgroundColor(AppColors.Shared.Layer.gray)
+            .backgroundColor(Colors.Layer.gray)
         ]
 
         self.size = (158, 48)

@@ -46,7 +46,7 @@ extension WCSingleTransactionViewControllerAssetManagable where Self: WCSingleTr
             }
 
             guard let assetDetail = assetDetail else {
-                self.walletConnector.rejectTransactionRequest(self.transactionRequest, with: .invalidInput(.asset))
+                self.walletConnector.rejectTransactionRequest(self.transactionRequest, with: .invalidInput(.unableToFetchAsset))
                 completion()
                 return
             }

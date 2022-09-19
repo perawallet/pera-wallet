@@ -37,10 +37,10 @@ struct TabBarButtonItem: MacaroonUIKit.TabBarButtonItem {
         if let title = title {
             style.title = title
             style.titleColor = [
-                .normal(AppColors.Components.Text.grayLighter.uiColor),
-                .selected(AppColors.Components.Text.main.uiColor),
+                .normal(Colors.Text.grayLighter.uiColor),
+                .selected(Colors.Text.main.uiColor),
                 .disabled(
-                    AppColors.Components.Text.grayLighter.uiColor.withAlphaComponent(0.5)
+                    Colors.Text.grayLighter.uiColor.withAlphaComponent(0.5)
                 )
             ]
             style.font =  Fonts.DMSans.medium.make(11).uiFont

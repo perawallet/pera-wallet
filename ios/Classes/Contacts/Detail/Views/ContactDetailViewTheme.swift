@@ -30,12 +30,12 @@ struct ContactDetailViewTheme: StyleSheet, LayoutSheet {
     let contactInformationViewTheme: ContactInformationViewTheme
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.assetsTitle = [
             .textOverflow(FittingText()),
             .textAlignment(.left),
             .font(Fonts.DMSans.medium.make(15)),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .text("contacts-title-assets".localized)
         ]
         self.contactInformationViewTheme = ContactInformationViewTheme()

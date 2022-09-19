@@ -25,7 +25,7 @@ struct NotificationFilterViewTheme: StyleSheet, LayoutSheet {
     let contentInset: LayoutPaddings
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
 
         self.cellSpacing = 0
         self.contentInset = (20, 0, 0, 0)

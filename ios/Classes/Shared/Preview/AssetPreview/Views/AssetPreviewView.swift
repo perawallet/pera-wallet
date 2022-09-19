@@ -15,14 +15,15 @@
 //
 //   AssetPreviewView.swift
 
-import UIKit
 import MacaroonUIKit
+import MacaroonURLImage
+import UIKit
 
 final class AssetPreviewView:
     View,
     ViewModelBindable,
     ListReusable {
-    private lazy var iconView = AssetImageView()
+    private lazy var iconView = URLImageView()
     private lazy var contentAndAccessoryContextView = UIView()
     private lazy var contentView = UIView()
     private lazy var titleView = Label()
@@ -50,9 +51,9 @@ final class AssetPreviewView:
     func bindData(
         _ viewModel: AssetPreviewViewModel?
     ) {
-        iconView.bindData(viewModel?.assetImageViewModel)
+        iconView.load(from: viewModel?.imageSource)
         titleView.editText = viewModel?.title
-        verifiedIconView.image = viewModel?.verifiedIcon
+        verifiedIconView.image = viewModel?.verificationTierIcon
         subtitleView.editText = viewModel?.subtitle
         primaryAccessoryView.editText = viewModel?.primaryAccessory
         secondaryAccessoryView.editText = viewModel?.secondaryAccessory
@@ -94,7 +95,7 @@ final class AssetPreviewView:
             multiline: false,
             fittingSize: CGSize((width, .greatestFiniteMagnitude))
         )
-        let accessoryIconSize = viewModel.verifiedIcon?.size ?? .zero
+        let accessoryIconSize = viewModel.verificationTierIcon?.size ?? .zero
         let contentHeight = max(titleSize.height, accessoryIconSize.height) + subtitleSize.height
         let accessoryHeight = primaryAccessorySize.height + secondaryAccessorySize.height
         let preferredHeight = max(iconSize.h, max(contentHeight, accessoryHeight))
@@ -106,7 +107,8 @@ extension AssetPreviewView {
     private func addIconView(
         _ theme: AssetPreviewViewTheme
     ) {
-        iconView.customize(theme.icon)
+        iconView.build(theme.icon)
+        iconView.customizeAppearance(theme.icon)
 
         addSubview(iconView)
         iconView.fitToIntrinsicSize()

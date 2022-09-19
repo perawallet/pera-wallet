@@ -40,6 +40,6 @@ final class SendCollectibleAccountPreviewCell:
     }
 
     private func recustomizeAppearanceWhenSelectedStateDidChange() {
-        backgroundColor = isPreviouslySelected ? AppColors.Shared.Layer.grayLighter.uiColor : .clear
+        backgroundColor = isPreviouslySelected ? Colors.Layer.grayLighter.uiColor : .clear
     }
 }

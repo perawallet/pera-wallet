@@ -20,7 +20,6 @@ import MacaroonUIKit
 
 final class TransactionsListLayout: NSObject {
     private lazy var theme = Theme()
-    lazy var handlers = Handlers()
 
     private var sizeCache: [String: CGSize] = [:]
 
@@ -34,7 +33,7 @@ final class TransactionsListLayout: NSObject {
     }
 }
 
-extension TransactionsListLayout: UICollectionViewDelegateFlowLayout {
+extension TransactionsListLayout {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -46,18 +45,6 @@ extension TransactionsListLayout: UICollectionViewDelegateFlowLayout {
 
         func cellSize() -> CGSize {
             switch itemIdentifier {
-            case .algosInfo(let item):
-                return listView(
-                    collectionView,
-                    layout: collectionViewLayout,
-                    sizeForAlgosDetailInfo: item
-                )
-            case .assetInfo(let item):
-                return listView(
-                    collectionView,
-                    layout: collectionViewLayout,
-                    sizeForAssetDetailInfo: item
-                )
             case .filter:
                 return CGSize(theme.transactionHistoryFilterCellSize)
             case .algoTransaction, .assetTransaction, .appCallTransaction, .assetConfigTransaction, .pendingTransaction:
@@ -66,19 +53,6 @@ extension TransactionsListLayout: UICollectionViewDelegateFlowLayout {
                 return CGSize(theme.transactionHistoryTitleCellSize)
             case .empty(let emptyState):
                 switch emptyState {
-                case .algoTransactionHistoryLoading:
-                    var theme = AlgoTransactionHistoryLoadingViewCommonTheme()
-                    theme.buyAlgoVisible = !draft.accountHandle.value.isWatchAccount()
-
-                    let cellHeight = AlgoTransactionHistoryLoadingCell.height(
-                        for: theme
-                    )
-                    return CGSize(width: collectionView.bounds.width - 48, height: cellHeight)
-                case .assetTransactionHistoryLoading:
-                    let cellHeight = AssetTransactionHistoryLoadingCell.height(
-                        for: AssetTransactionHistoryLoadingViewCommonTheme()
-                    )
-                    return CGSize(width: collectionView.bounds.width - 48, height: cellHeight)
                 case .transactionHistoryLoading:
                     return CGSize(width: collectionView.bounds.width - 48, height: 500)
                 case .noContent:
@@ -95,110 +69,10 @@ extension TransactionsListLayout: UICollectionViewDelegateFlowLayout {
         }
 
         return cellSize().nonNegativeSize
-
-    }
-
-    func collectionView(
-        _ collectionView: UICollectionView,
-        willDisplay cell: UICollectionViewCell,
-        forItemAt indexPath: IndexPath
-    ) {
-        handlers.willDisplay?(cell, indexPath)
-    }
-
-    func collectionView(
-        _ collectionView: UICollectionView,
-        didEndDisplaying cell: UICollectionViewCell,
-        forItemAt indexPath: IndexPath
-    ) {
-        guard let itemIdentifier = transactionsDataSource?.itemIdentifier(for: indexPath) else {
-            return
-        }
-
-        switch itemIdentifier {
-        case .nextList:
-            let loadingCell = cell as! LoadingCell
-            loadingCell.stopAnimating()
-        case .empty(let emptyState):
-            switch emptyState {
-            case .algoTransactionHistoryLoading:
-                let loadingCell = cell as! AlgoTransactionHistoryLoadingCell
-                loadingCell.stopAnimating()
-            case .assetTransactionHistoryLoading:
-                let loadingCell = cell as! AssetTransactionHistoryLoadingCell
-                loadingCell.stopAnimating()
-            case .transactionHistoryLoading:
-                let loadingCell = cell as? TransactionHistoryLoadingCell
-                loadingCell?.stopAnimating()
-            default:
-                break
-            }
-        case .pendingTransaction:
-            guard let pendingTransactionCell = cell as? PendingTransactionCell else {
-                return
-            }
-            
-            pendingTransactionCell.stopAnimating()
-        default:
-            break
-        }
-    }
-
-    func collectionView(
-        _ collectionView: UICollectionView,
-        didSelectItemAt indexPath: IndexPath
-    ) {
-        handlers.didSelect?(indexPath)
     }
 }
 
 extension TransactionsListLayout {
-    private func listView(
-        _ listView: UICollectionView,
-        layout listViewLayout: UICollectionViewLayout,
-        sizeForAssetDetailInfo item: AssetDetailInfoViewModel
-    ) -> CGSize {
-        let sizeCacheIdentifier = AssetDetailInfoViewCell.reuseIdentifier
-
-        if let cachedSize = sizeCache[sizeCacheIdentifier] {
-            return cachedSize
-        }
-
-        let width = calculateContentWidth(for: listView)
-        let size = AssetDetailInfoViewCell.calculatePreferredSize(
-            item,
-            for: AssetDetailInfoViewCell.theme,
-            fittingIn: CGSize((width, .greatestFiniteMagnitude))
-        )
-
-        sizeCache[sizeCacheIdentifier] = size
-
-        return size
-    }
-
-    private func listView(
-        _ listView: UICollectionView,
-        layout listViewLayout: UICollectionViewLayout,
-        sizeForAlgosDetailInfo item: AlgosDetailInfoViewModel
-    ) -> CGSize {
-        let sizeCacheIdentifier = AlgosDetailInfoViewCell.reuseIdentifier
-
-        if let cachedSize = sizeCache[sizeCacheIdentifier] {
-            return cachedSize
-        }
-
-        let width = calculateContentWidth(for: listView)
-        let size = AlgosDetailInfoViewCell.calculatePreferredSize(
-            item,
-            for: AlgosDetailInfoViewCell.theme,
-            fittingIn: CGSize((width, .greatestFiniteMagnitude))
-        )
-
-        sizeCache[sizeCacheIdentifier] = size
-
-        return size
-    }
-
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
@@ -222,35 +96,38 @@ extension TransactionsListLayout {
         _ listView: UICollectionView,
         _ item: TransactionHistoryNoContentViewModel
     ) -> CGSize {
-        return NoContentCell.calculatePreferredSize(
-            item,
-            for: NoContentCell.theme,
-            fittingIn: CGSize((
-                listView.bounds.width,
-                .greatestFiniteMagnitude
-            ))
-        )
+
+        let noContentType = transactionsDataSource?.noContentType ?? .centered
+
+        switch noContentType {
+        case .topAligned:
+            return NoContentTopAlignedCell.calculatePreferredSize(
+                item,
+                for: NoContentTopAlignedCell.theme,
+                fittingIn: CGSize((
+                    listView.bounds.width,
+                    .greatestFiniteMagnitude
+                ))
+            )
+        case .centered:
+            return NoContentCell.calculatePreferredSize(
+                item,
+                for: NoContentCell.theme,
+                fittingIn: CGSize((
+                    listView.bounds.width,
+                    .greatestFiniteMagnitude
+                ))
+            )
+        }
     }
 
     private func calculateSizeWithAvailableSpace(
         _ listView: UICollectionView
     ) -> CGSize {
-        var calculatedSpaceHeight = listView.bounds.height -
+        let calculatedSpaceHeight = listView.bounds.height -
         listView.adjustedContentInset.bottom -
         listView.contentInset.top -
         theme.transactionHistoryTitleCellSize.h
-
-        if draft.type != .all {
-            let sizeCacheIdentifier = draft.type == .algos
-                ? AlgosDetailInfoViewCell.reuseIdentifier
-                : AssetDetailInfoViewCell.reuseIdentifier
-            let cachedInfoSize = sizeCache[sizeCacheIdentifier]
-
-            if let cachedInfoSize = cachedInfoSize {
-                calculatedSpaceHeight -= cachedInfoSize.height
-            }
-        }
-
         return CGSize((
             listView.bounds.width,
             calculatedSpaceHeight
@@ -263,12 +140,5 @@ extension TransactionsListLayout {
         for listView: UICollectionView
     ) -> LayoutMetric {
         return listView.bounds.width - listView.contentInset.horizontal
-    }
-}
-
-extension TransactionsListLayout {
-    struct Handlers {
-        var willDisplay: ((UICollectionViewCell, IndexPath) -> Void)?
-        var didSelect: ((IndexPath) -> Void)?
     }
 }

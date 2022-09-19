@@ -35,7 +35,7 @@ extension CollectibleMediaPreviewViewController {
             self.tap3DActionViewTopPadding = 16
             self.tap3DActionView = [
                 .icon([.normal("icon-3d"), .highlighted("icon-3d")]),
-                .titleColor([ .normal(AppColors.Components.Text.grayLighter) ]),
+                .titleColor([ .normal(Colors.Text.grayLighter) ]),
                 .title(Self.getTitle())
             ]
         }
@@ -44,21 +44,10 @@ extension CollectibleMediaPreviewViewController {
 
 extension CollectibleMediaPreviewViewController.Theme {
     private static func getTitle() -> EditText {
-        let font = Fonts.DMSans.medium.make(13)
-        let lineHeightMultiplier = 1.18
-
         return .attributedString(
             "collectible-detail-tap-3D"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .textAlignment(.left),
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .footnoteMedium()
         )
     }
 }

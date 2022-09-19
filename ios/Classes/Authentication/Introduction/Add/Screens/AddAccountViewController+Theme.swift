@@ -25,7 +25,7 @@ extension AddAccountViewController {
 
         init(_ family: LayoutFamily) {
             addAccountViewTheme = AddAccountViewTheme()
-            backgroundColor = AppColors.Shared.System.background
+            backgroundColor = Colors.Defaults.background
         }
     }
 }

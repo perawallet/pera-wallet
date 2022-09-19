@@ -19,14 +19,16 @@ import UIKit
 import MagpieCore
 import MacaroonUIKit
 
-class TransactionsViewController: BaseViewController {
+class TransactionsViewController:
+    BaseViewController,
+    UICollectionViewDelegateFlowLayout {
     private lazy var theme = Theme()
-    private lazy var bottomSheetTransition = BottomSheetTransition(presentingViewController: self)
-    private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
 
     private lazy var filterOptionsTransition = BottomSheetTransition(presentingViewController: self)
 
     private(set) var accountHandle: AccountHandle
+    /// <todo>
+    /// This should work with `Asset` type.
     private(set) var asset: StandardAsset?
     private(set) var filterOption = TransactionFilterViewController.FilterOption.allTime
 
@@ -44,7 +46,7 @@ class TransactionsViewController: BaseViewController {
         sharedDataController
     )
 
-    private lazy var transactionsDataSource = TransactionsDataSource(listView)
+    lazy var transactionsDataSource = TransactionsDataSource(listView)
 
     private(set) lazy var listView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
@@ -110,17 +112,6 @@ class TransactionsViewController: BaseViewController {
             case is LoadingCell:
                 let loadingCell = cell as! LoadingCell
                 loadingCell.startAnimating()
-            case is AlgoTransactionHistoryLoadingCell:
-                let loadingCell = cell as! AlgoTransactionHistoryLoadingCell
-                var theme = AlgoTransactionHistoryLoadingViewCommonTheme()
-                theme.buyAlgoVisible = !accountHandle.value.isWatchAccount()
-                loadingCell.contextView.customize(
-                    theme
-                )
-                loadingCell.startAnimating()
-            case is AssetTransactionHistoryLoadingCell:
-                let loadingCell = cell as! AssetTransactionHistoryLoadingCell
-                loadingCell.startAnimating()
             case is TransactionHistoryLoadingCell:
                 let loadingCell = cell as! TransactionHistoryLoadingCell
                 loadingCell.startAnimating()
@@ -137,12 +128,6 @@ class TransactionsViewController: BaseViewController {
             switch cell {
             case is LoadingCell:
                 let loadingCell = cell as! LoadingCell
-                loadingCell.stopAnimating()
-            case is AlgoTransactionHistoryLoadingCell:
-                let loadingCell = cell as! AlgoTransactionHistoryLoadingCell
-                loadingCell.stopAnimating()
-            case is AssetTransactionHistoryLoadingCell:
-                let loadingCell = cell as! AssetTransactionHistoryLoadingCell
                 loadingCell.stopAnimating()
             case is TransactionHistoryLoadingCell:
                 let loadingCell = cell as! TransactionHistoryLoadingCell
@@ -165,7 +150,6 @@ class TransactionsViewController: BaseViewController {
     
     override func setListeners() {
         setNotificationObservers()
-        setListLayoutListeners()
     }
 
     override func prepareLayout() {
@@ -173,7 +157,115 @@ class TransactionsViewController: BaseViewController {
     }
 
     override func linkInteractors() {
-        listView.delegate = listLayout
+        listView.delegate = self
+    }
+
+    /// <mark>
+    /// UICollectionViewDelegateFlowLayout
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        return listLayout.collectionView(
+            collectionView,
+            layout: collectionViewLayout,
+            sizeForItemAt: indexPath
+        )
+    }
+
+    /// <mark>
+    /// UICollectionViewDelegate
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        if dataController.shouldSendPaginatedRequest(at: indexPath.item) {
+            dataController.loadNextTransactions()
+        }
+
+        guard let itemIdentifier = transactionsDataSource.itemIdentifier(for: indexPath) else { return }
+
+        switch itemIdentifier {
+        case .nextList:
+            let loadingCell = cell as! LoadingCell
+            loadingCell.startAnimating()
+        case .filter:
+            let filterCell = cell as! TransactionHistoryFilterCell
+            filterCell.delegate = self
+        case .empty(let emptyState):
+            switch emptyState {
+            case .transactionHistoryLoading:
+                let loadingCell = cell as! TransactionHistoryLoadingCell
+                loadingCell.startAnimating()
+            default:
+                break
+            }
+        case .pendingTransaction:
+            let pendingCell = cell as! PendingTransactionCell
+            pendingCell.startAnimating()
+        default:
+            break
+        }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didEndDisplaying cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        guard let itemIdentifier = transactionsDataSource.itemIdentifier(for: indexPath) else { return }
+
+        switch itemIdentifier {
+        case .nextList:
+            let loadingCell = cell as! LoadingCell
+            loadingCell.stopAnimating()
+        case .empty(let emptyState):
+            switch emptyState {
+            case .transactionHistoryLoading:
+                let loadingCell = cell as? TransactionHistoryLoadingCell
+                loadingCell?.stopAnimating()
+            default:
+                break
+            }
+        case .pendingTransaction:
+            guard let pendingTransactionCell = cell as? PendingTransactionCell else {
+                return
+            }
+
+            pendingTransactionCell.stopAnimating()
+        default:
+            break
+        }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        guard let itemIdentifier = transactionsDataSource.itemIdentifier(for: indexPath) else { return }
+
+        switch itemIdentifier {
+        case .algoTransaction(let item):
+            if let transaction = dataController[item.id] {
+                openTransactionDetail(transaction)
+            }
+        case .assetTransaction(let item):
+            if let transaction = dataController[item.id] {
+                openTransactionDetail(transaction)
+            }
+        case .appCallTransaction(let item):
+            if let transaction = dataController[item.id] {
+                openTransactionDetail(transaction)
+            }
+        case .assetConfigTransaction(let item):
+            if let transaction = dataController[item.id] {
+                openTransactionDetail(transaction)
+            }
+        default:
+            break
+        }
     }
 }
 
@@ -204,133 +296,13 @@ extension TransactionsViewController {
             object: nil
         )
     }
-
-    private func setListLayoutListeners() {
-        listLayout.handlers.didSelect = { [weak self] indexPath in
-            guard let self = self,
-                  let itemIdentifier = self.transactionsDataSource.itemIdentifier(for: indexPath) else {
-                return
-            }
-
-            switch itemIdentifier {
-            case .algoTransaction(let item):
-                if let transaction = self.dataController[item.id] {
-                    self.openTransactionDetail(transaction)
-                }
-            case .assetTransaction(let item):
-                if let transaction = self.dataController[item.id] {
-                    self.openTransactionDetail(transaction)
-                }
-            case .appCallTransaction(let item):
-                if let transaction = self.dataController[item.id] {
-                    self.openTransactionDetail(transaction)
-                }
-            case .assetConfigTransaction(let item):
-                if let transaction = self.dataController[item.id] {
-                    self.openTransactionDetail(transaction)
-                }
-            default:
-                break
-            }
-        }
-
-        listLayout.handlers.willDisplay = { [weak self] cell, indexPath in
-            guard let self = self else {
-                return
-            }
-
-            if self.dataController.shouldSendPaginatedRequest(at: indexPath.item) {
-                self.dataController.loadNextTransactions()
-            }
-
-            guard let itemIdentifier = self.transactionsDataSource.itemIdentifier(for: indexPath) else {
-                return
-            }
-
-            switch itemIdentifier {
-            case .nextList:
-                let loadingCell = cell as! LoadingCell
-                loadingCell.startAnimating()
-            case .algosInfo:
-                let infoCell = cell as! AlgosDetailInfoViewCell
-                infoCell.delegate = self
-            case .assetInfo:
-                let infoCell = cell as! AssetDetailInfoViewCell
-                infoCell.delegate = self
-            case .filter:
-                let filterCell = cell as! TransactionHistoryFilterCell
-                filterCell.delegate = self
-            case .empty(let emptyState):
-                switch emptyState {
-                case .algoTransactionHistoryLoading:
-                    let loadingCell = cell as! AlgoTransactionHistoryLoadingCell
-                    var theme = AlgoTransactionHistoryLoadingViewCommonTheme()
-                    theme.buyAlgoVisible = !self.accountHandle.value.isWatchAccount()
-                    loadingCell.contextView.customize(
-                        theme
-                    )
-                    loadingCell.startAnimating()
-                case .assetTransactionHistoryLoading:
-                    let loadingCell = cell as! AssetTransactionHistoryLoadingCell
-                    loadingCell.startAnimating()
-                case .transactionHistoryLoading:
-                    let loadingCell = cell as! TransactionHistoryLoadingCell
-                    loadingCell.startAnimating()
-                default:
-                    break
-                }
-            case .pendingTransaction:
-                let pendingCell = cell as! PendingTransactionCell
-                pendingCell.startAnimating()
-            default:
-                break
-            }
-        }
-    }
-}
-
-extension TransactionsViewController: AlgosDetailInfoViewCellDelegate {
-    func algosDetailInfoViewCellDidTapInfoButton(_ algosDetailInfoViewCell: AlgosDetailInfoViewCell) {
-        bottomSheetTransition.perform(
-            .rewardDetail(
-                account: accountHandle.value
-            ),
-            by: .presentWithoutNavigationController
-        )
-    }
-
-    func algosDetailInfoViewCellDidTapBuyButton(_ algosDetailInfoViewCell: AlgosDetailInfoViewCell) {
-        openBuyAlgo()
-    }
-
-    private func openBuyAlgo() {
-        let draft = BuyAlgoDraft()
-        draft.address = accountHandle.value.address
-        
-        launchBuyAlgo(draft: draft)
-    }
-}
-
-extension TransactionsViewController: AssetDetailInfoViewCellDelegate {
-    func contextMenuInteractionForAssetID(
-        _ assetDetailInfoViewCell: AssetDetailInfoViewCell
-    ) -> UIContextMenuConfiguration? {
-        guard let asset = draft.asset else {
-            return nil
-        }
-
-        return UIContextMenuConfiguration { _ in
-            let copyActionItem = UIAction(item: .copyAssetID) {
-                [unowned self] _ in
-                self.copyToClipboardController?.copyID(asset)
-            }
-            return UIMenu(children: [ copyActionItem ])
-        }
-    }
 }
 
 extension TransactionsViewController: TransactionHistoryFilterCellDelegate {
     func transactionHistoryFilterCellDidOpenFilterOptions(_ transactionHistoryFilterCell: TransactionHistoryFilterCell) {
+
+        analytics.track(.recordAccountDetailScreen(type: .tapTransactionFilter))
+
         filterOptionsTransition.perform(
             .transactionFilter(filterOption: filterOption, delegate: self),
             by: .present
@@ -338,6 +310,8 @@ extension TransactionsViewController: TransactionHistoryFilterCellDelegate {
     }
 
     func transactionHistoryFilterCellDidShareHistory(_ transactionHistoryFilterCell: TransactionHistoryFilterCell) {
+        analytics.track(.recordAccountDetailScreen(type: .tapTransactionDownload))
+        
         fetchAllTransactionsForCSV()
     }
 }
@@ -352,26 +326,12 @@ extension TransactionsViewController {
 extension TransactionsViewController {
     private func openTransactionDetail(_ transaction: Transaction) {
         if transaction.applicationCall != nil {
-            let eventHandler: AppCallTransactionDetailViewController.EventHandler = {
-                [weak self] event in
-                guard let self = self else {
-                    return
-
-                }
-
-                switch event {
-                case .performClose:
-                    self.dismiss(animated: true)
-                }
-            }
-
             open(
                 .appCallTransactionDetail(
                     account: accountHandle.value,
                     transaction: transaction,
                     transactionTypeFilter: draft.type,
-                    assets: getAssetDetailForTransactionType(transaction),
-                    eventHandler: eventHandler
+                    assets: getAssetDetailForTransactionType(transaction)
                 ),
                 by: .present
             )

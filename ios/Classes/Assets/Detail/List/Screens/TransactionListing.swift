@@ -18,6 +18,8 @@
 import MacaroonUIKit
 import UIKit
 
+/// <todo>
+/// Get rid of this object.
 protocol TransactionListing {
     var type: TransactionTypeFilter { get }
     var accountHandle: AccountHandle { get set }
@@ -60,7 +62,7 @@ enum TransactionTypeFilter {
     case asset
     case all
 
-    var currentTransactionType: Transaction.TransferType? {
+    var currentTransactionType: TransactionType? {
         switch self {
         case .algos:
             return .payment

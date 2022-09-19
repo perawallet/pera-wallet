@@ -21,14 +21,13 @@ import MacaroonUIKit
 
 final class TransactionAmountInformationView:
     View,
-    UIInteractionObservable,
-    UIControlInteractionPublisher {
+    UIInteractable {
 
     private lazy var titleLabel = UILabel()
     private lazy var transactionAmountView = TransactionAmountView()
 
     private(set) var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
-        .touch: UIViewTapInteraction()
+        .touch: GestureInteraction()
     ]
 
     func customize(_ theme: TransactionAmountInformationViewTheme) {

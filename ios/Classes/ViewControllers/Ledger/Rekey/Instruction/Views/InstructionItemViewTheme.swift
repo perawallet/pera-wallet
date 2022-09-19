@@ -42,7 +42,7 @@ struct SmallerInstructionItemViewTheme: InstructionItemViewTheme {
             .textOverflow(FittingText()),
             .textAlignment(.left),
             .font(Fonts.DMSans.regular.make(13)),
-            .textColor(AppColors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
 
         self.infoImageSize = (40, 40)
@@ -64,7 +64,7 @@ struct LargerInstructionItemViewTheme: InstructionItemViewTheme {
             .textOverflow(FittingText()),
             .textAlignment(.left),
             .font(Fonts.DMSans.regular.make(15)),
-            .textColor(AppColors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
 
         self.infoImageSize = (40, 40)

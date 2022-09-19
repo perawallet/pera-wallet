@@ -22,7 +22,9 @@ import UIKit
 final class ViewLoadingIndicator:
     BaseView,
     MacaroonUIKit.LoadingIndicator {
-    private(set) var isAnimating = false
+    var isAnimating: Bool {
+        return indicatorView.layer.animation(forKey: loadingAnimationKey) != nil
+    }
 
     private lazy var loadingAnimation: CABasicAnimation = {
         let animation = CABasicAnimation(keyPath: "transform.rotation.z")
@@ -64,8 +66,6 @@ extension ViewLoadingIndicator {
             return
         }
 
-        isAnimating = true
-
         indicatorView.layer.add(
             loadingAnimation, forKey: loadingAnimationKey
         )
@@ -79,8 +79,6 @@ extension ViewLoadingIndicator {
         indicatorView.layer.removeAnimation(
             forKey: loadingAnimationKey
         )
-
-        isAnimating = false
     }
 }
 

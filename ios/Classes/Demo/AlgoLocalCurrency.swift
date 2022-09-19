@@ -16,6 +16,8 @@
 
 import Foundation
 
+/// <todo>
+/// Maybe the model support all assets, not just Algo.
 struct AlgoLocalCurrency: LocalCurrency {
     let id: CurrencyID
     let name: String?

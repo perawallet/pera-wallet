@@ -22,7 +22,7 @@ extension QRCreationViewController {
         let backgroundColor: Color
         
         init(_ family: LayoutFamily) {
-            backgroundColor = AppColors.Shared.System.background
+            backgroundColor = Colors.Defaults.background
         }
     }
 }

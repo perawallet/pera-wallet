@@ -27,7 +27,7 @@ extension ALGAPI {
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(.mobile)
-            .path(.assets)
+            .path(.assetSearch)
             .method(.get)
             .query(draft)
             .ignoreResponseWhenEndpointCancelled(ignoreResponseOnCancelled)

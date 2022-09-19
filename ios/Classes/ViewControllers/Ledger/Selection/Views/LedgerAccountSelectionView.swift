@@ -81,7 +81,7 @@ final class LedgerAccountSelectionView: View {
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
     func setListeners() {
-        errorView.observe(event: .performPrimaryAction) {
+        errorView.startObserving(event: .performPrimaryAction) {
             [weak self] in
             guard let self = self else {
                 return
@@ -172,8 +172,8 @@ extension LedgerAccountSelectionView {
             )
         )
 
-        let color0 = AppColors.Shared.System.background.uiColor.withAlphaComponent(0).cgColor
-        let color1 = AppColors.Shared.System.background.uiColor.cgColor
+        let color0 = Colors.Defaults.background.uiColor.withAlphaComponent(0).cgColor
+        let color1 = Colors.Defaults.background.uiColor.cgColor
 
         layer.colors = [color0, color1]
         verifyButtonContainer.layer.insertSublayer(layer, at: 0)

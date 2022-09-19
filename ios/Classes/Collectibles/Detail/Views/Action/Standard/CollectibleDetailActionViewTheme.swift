@@ -43,12 +43,12 @@ struct CollectibleDetailActionViewTheme:
         title = [
             .textOverflow(FittingText()),
             .textAlignment(.left),
-            .textColor(AppColors.Components.Text.gray)
+            .textColor(Colors.Text.gray)
         ]
         subtitle = [
             .textOverflow(FittingText()),
             .textAlignment(.left),
-            .textColor(AppColors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
 
         actionContentEdgeInsets = (14, 0, 14, 0)
@@ -57,23 +57,23 @@ struct CollectibleDetailActionViewTheme:
         sendAction = [
             .title(Self.getActionTitle("title-send")),
             .titleColor(
-                [ .normal(AppColors.Components.Button.Secondary.text)]
+                [ .normal(Colors.Button.Secondary.text)]
             ),
-            .backgroundColor(AppColors.Components.Button.Secondary.background),
+            .backgroundColor(Colors.Button.Secondary.background),
             .icon([.normal("icon-arrow-up")])
         ]
 
         shareAction = [
             .title(Self.getActionTitle("collectible-detail-share")),
             .titleColor(
-                [ .normal(AppColors.Components.Button.Secondary.text) ]
+                [ .normal(Colors.Button.Secondary.text) ]
             ),
-            .backgroundColor(AppColors.Components.Button.Secondary.background),
+            .backgroundColor(Colors.Button.Secondary.background),
             .icon([ .normal("icon-share-24") ])
         ]
 
         separator = [
-            .backgroundColor(AppColors.Shared.Layer.grayLighter)
+            .backgroundColor(Colors.Layer.grayLighter)
         ]
 
         topInset = 16
@@ -91,20 +91,10 @@ extension CollectibleDetailActionViewTheme {
     private static func getActionTitle(
         _ aTitle: String
     ) -> EditText {
-        let font = Fonts.DMSans.medium.make(15)
-        let lineHeightMultiplier = 1.23
-
         return .attributedString(
             aTitle
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .bodyMedium()
         )
     }
 }

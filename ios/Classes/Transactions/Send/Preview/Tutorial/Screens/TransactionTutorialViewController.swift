@@ -56,7 +56,7 @@ extension TransactionTutorialViewController {
     }
 }
 
-extension TransactionTutorialViewController: BottomSheetPresentable {
+extension TransactionTutorialViewController: BottomSheetScrollPresentable {
     var modalHeight: ModalHeight {
         return .compressed
     }

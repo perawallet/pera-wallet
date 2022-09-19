@@ -37,9 +37,7 @@ final class AlgoStatisticsViewController:
 
     private var chartEntries: [AlgoUSDPrice]?
     private var selectedTimeInterval: AlgoPriceTimeFrameSelection = .lastDay
-    
-    private var isViewFirstAppeared = true
-    
+        
     private let dataController: AlgoStatisticsDataController
     
     init(
@@ -166,9 +164,7 @@ final class AlgoStatisticsViewController:
         if !isViewFirstAppeared {
             restartAnimating()
             reloadData()
-        }
-        
-        isViewFirstAppeared = false
+        }        
     }
 
     override func viewDidDisappear(_ animated: Bool) {

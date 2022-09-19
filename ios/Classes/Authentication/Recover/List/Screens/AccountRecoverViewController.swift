@@ -418,7 +418,7 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
         _ accountRecoverDataController: AccountRecoverDataController,
         didRecover account: AccountInformation
     ) {
-        log(RegistrationEvent(type: .recover))
+        analytics.track(.registerAccount(registrationType: .recover))
         open(
             .accountNameSetup(
                 flow: accountSetupFlow,

@@ -22,8 +22,12 @@ final class TransactionHistoryFilterView: View {
     weak var delegate: TransactionHistoryFilterViewDelegate?
 
     private lazy var titleLabel = UILabel()
-    private lazy var shareButton = UIButton()
-    private(set) lazy var filterButton = UIButton()
+
+    private lazy var shareButton = MacaroonUIKit.Button(.imageAtLeft(spacing: 8))
+    private lazy var filterButton = BadgeButton(
+        badgePosition: .topTrailing(NSDirectionalEdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 4)),
+        .imageAtLeft(spacing: 8)
+    )
 
     func setListeners() {
         filterButton.addTarget(self, action: #selector(notifyDelegateToOpenFilterOptions), for: .touchUpInside)
@@ -58,21 +62,26 @@ extension TransactionHistoryFilterView {
 extension TransactionHistoryFilterView {
     private func addShareButton(_ theme: TransactionHistoryHeaderViewTheme) {
         shareButton.customizeAppearance(theme.shareButton)
+        shareButton.contentEdgeInsets = theme.buttonContentInset
 
         addSubview(shareButton)
         shareButton.snp.makeConstraints {
-            $0.fitToSize(theme.buttonSize)
             $0.trailing.equalToSuperview().inset(theme.horizontalInset)
             $0.centerY.equalToSuperview()
+            $0.height.equalTo(theme.buttonHeight)
         }
     }
     
     private func addFilterButton(_ theme: TransactionHistoryHeaderViewTheme) {
+        filterButton.customize(theme: BadgeButtonTheme())
+        filterButton.customizeAppearance(theme.filterButton)
+        filterButton.contentEdgeInsets = theme.buttonContentInset
+
         addSubview(filterButton)
         filterButton.snp.makeConstraints {
-            $0.fitToSize(theme.buttonSize)
             $0.trailing.equalTo(shareButton.snp.leading).offset(-theme.buttonInset)
             $0.centerY.equalToSuperview()
+            $0.height.equalTo(theme.buttonHeight)
         }
     }
     
@@ -82,7 +91,7 @@ extension TransactionHistoryFilterView {
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(theme.horizontalInset)
-            $0.trailing.equalTo(filterButton.snp.leading).offset(-theme.horizontalInset)
+            $0.trailing.lessThanOrEqualTo(filterButton.snp.leading).offset(-theme.horizontalInset)
             $0.centerY.equalToSuperview()
         }
     }
@@ -90,8 +99,12 @@ extension TransactionHistoryFilterView {
 
 extension TransactionHistoryFilterView: ViewModelBindable {
     func bindData(_ viewModel: TransactionHistoryFilterViewModel?) {
-        titleLabel.text = viewModel?.title
-        filterButton.setImage(viewModel?.image, for: .normal)
+        guard let viewModel = viewModel else {
+            return
+        }
+
+        titleLabel.text = viewModel.title
+        filterButton.isBadgeVisible = viewModel.hasBadge
     }
 }
 

@@ -27,13 +27,13 @@ struct InputSuggestionViewTheme: StyleSheet, LayoutSheet {
     let separatorVerticalInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Components.TextField.inputSuggestionBackground
-        self.separator = Separator(color: AppColors.Components.TextField.inputSuggestionSeparator)
+        self.backgroundColor = Colors.Keyboard.accessoryBackground
+        self.separator = Separator(color: Colors.Keyboard.accessoryLine)
         self.suggestionTitle = [
             .textOverflow(SingleLineFittingText(minimumScaleFactor: 0.7)),
             .textAlignment(.center),
             .font(UIFont.systemFont(ofSize: 16, weight: .regular)),
-            .textColor(AppColors.Components.TextField.inputSuggestionText),
+            .textColor(Colors.Defaults.systemElements),
         ]
 
         self.suggestionTrailingInset = 2

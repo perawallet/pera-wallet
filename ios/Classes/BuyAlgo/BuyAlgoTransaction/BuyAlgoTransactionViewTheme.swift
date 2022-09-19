@@ -45,36 +45,36 @@ struct BuyAlgoTransactionViewTheme:
     
     init(_ family: LayoutFamily) {
         titleLabel = [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .textOverflow(FittingText())
         ]
         descriptionLabel = [
             .font(Fonts.DMSans.regular.make(15)),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .textOverflow(FittingText())
         ]
         accountLabel = [
             .text("title-account".localized),
             .font(Fonts.DMSans.regular.make(15)),
-            .textColor(AppColors.Components.Text.grayLighter),
+            .textColor(Colors.Text.grayLighter),
             .textOverflow(FittingText())
         ]
         addressLabel = [
             .font(Fonts.DMSans.regular.make(15)),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .textOverflow(SingleLineText(lineBreakMode: .byTruncatingMiddle))
         ]
         doneButton = [
             .title("title-done".localized),
             .titleColor([
-                .normal(AppColors.Components.Button.Primary.text)
+                .normal(Colors.Button.Primary.text)
             ]),
             .font(Fonts.DMSans.medium.make(15)),
-            .backgroundColor(AppColors.Components.Button.Primary.background)
+            .backgroundColor(Colors.Button.Primary.background)
         ]
         buttonContentEdgeInsets = (14, 0, 14, 0)
         buttonCorner = Corner(radius: 4)
-        separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
+        separator = Separator(color: Colors.Layer.grayLighter, size: 1)
         
         topPadding = 56
         titleTopPadding = 16

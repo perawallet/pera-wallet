@@ -23,7 +23,7 @@ class WCSingleTransactionView: BaseView {
     
     private lazy var mainStackView: VStackView = {
         let stackView = VStackView()
-        stackView.backgroundColor = AppColors.Shared.System.background.uiColor
+        stackView.backgroundColor = Colors.Defaults.background.uiColor
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.distribution = .equalSpacing
         stackView.spacing = layout.current.spacing
@@ -34,9 +34,10 @@ class WCSingleTransactionView: BaseView {
 
     private lazy var participantInformationStackView: WrappedStackView = {
         let participantInformationStackView = WrappedStackView()
-        participantInformationStackView.backgroundColor = AppColors.Shared.System.background.uiColor
+        participantInformationStackView.backgroundColor = Colors.Defaults.background.uiColor
         participantInformationStackView.stackView.distribution = .equalSpacing
         participantInformationStackView.stackView.spacing = 20
+        participantInformationStackView.stackView.isUserInteractionEnabled = true
         return participantInformationStackView
     }()
 
@@ -44,7 +45,7 @@ class WCSingleTransactionView: BaseView {
 
     private lazy var transactionInformationStackView: WrappedStackView = {
         let balanceInformationStackView = WrappedStackView()
-        balanceInformationStackView.backgroundColor = AppColors.Shared.System.background.uiColor
+        balanceInformationStackView.backgroundColor = Colors.Defaults.background.uiColor
         balanceInformationStackView.stackView.distribution = .equalSpacing
         balanceInformationStackView.stackView.spacing = 20
         return balanceInformationStackView
@@ -54,7 +55,7 @@ class WCSingleTransactionView: BaseView {
 
     private lazy var detailedInformationStackView: WrappedStackView = {
         let detailedInformationStackView = WrappedStackView()
-        detailedInformationStackView.backgroundColor = AppColors.Shared.System.background.uiColor
+        detailedInformationStackView.backgroundColor = Colors.Defaults.background.uiColor
         detailedInformationStackView.stackView.distribution = .equalSpacing
         detailedInformationStackView.stackView.spacing = 20
         detailedInformationStackView.isUserInteractionEnabled = true
@@ -66,7 +67,7 @@ class WCSingleTransactionView: BaseView {
 
     private lazy var buttonsStackView: WrappedStackView = {
         let buttonsStackView = WrappedStackView()
-        buttonsStackView.backgroundColor = AppColors.Shared.System.background.uiColor
+        buttonsStackView.backgroundColor = Colors.Defaults.background.uiColor
         buttonsStackView.stackView.distribution = .equalSpacing
         buttonsStackView.stackView.spacing = 20
         buttonsStackView.isUserInteractionEnabled = true

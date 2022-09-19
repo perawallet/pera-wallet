@@ -137,6 +137,7 @@ extension ALGBlockProcessor {
                     input.account = account
                     input.cachedAccounts = newBlockRequest.cachedAccounts
                     input.cachedAssetDetails = newBlockRequest.cachedAssetDetails
+                    input.blockchainRequests = newBlockRequest.blockchainRequests[account.address] ?? .init()
                     
                     self.publish(blockEvent: .willFetchAssetDetails(account))
                 case .failure(let error):
@@ -161,7 +162,8 @@ extension ALGBlockProcessor {
                     self.publish(
                         blockEvent: .didFetchAssetDetails(
                             account: output.account,
-                            assetDetails: output.newAssetDetails
+                            assetDetails: output.newAssetDetails,
+                            blockchainUpdates: output.blockchainUpdates
                         )
                     )
                 case .failure(let error):

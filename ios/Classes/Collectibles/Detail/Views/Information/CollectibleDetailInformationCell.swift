@@ -21,7 +21,7 @@ import UIKit
 final class CollectibleDetailInformationCell:
     CollectionCell<CollectibleTransactionInfoView>,
     ViewModelBindable,
-    UIInteractionObservable {
+    UIInteractable {
     static let theme = CollectibleTransactionInfoViewTheme()
     
     override init(

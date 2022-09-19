@@ -25,7 +25,7 @@ extension AddContactViewController {
         let addContactViewTheme: AddContactViewTheme
 
         init(_ family: LayoutFamily) {
-            backgroundColor = AppColors.Shared.System.background
+            backgroundColor = Colors.Defaults.background
             modalSize = (UIScreen.main.bounds.width, 382)
             addContactViewTheme = AddContactViewTheme()
         }

@@ -18,33 +18,32 @@
 import Foundation
 import MacaroonUIKit
 
-struct WCSingleTransactionRequestMiddleViewTheme: LayoutSheet, StyleSheet {
-    let checkmarkIcon: ImageStyle
-    let titleLabel: TextStyle
-    let subtitleLabel: TextStyle
-
+struct WCSingleTransactionRequestMiddleViewTheme:
+    LayoutSheet,
+    StyleSheet {
     let verticalStackViewSpacing: LayoutMetric
     let horizontalStackViewHeight: LayoutMetric
     let horizontalStackViewSpacing: LayoutMetric
+    let titleLabel: TextStyle
+    let subtitleLabel: TextStyle
     let iconHeight: LayoutMetric
 
-    init(_ family: LayoutFamily) {
-        checkmarkIcon = [
-            .image("icon-shield-small")
-        ]
-        titleLabel = [
+    init(
+        _ family: LayoutFamily
+    ) {
+        self.verticalStackViewSpacing = 4
+        self.horizontalStackViewHeight = 50
+        self.horizontalStackViewSpacing = 8
+        self.iconHeight = 24
+        self.titleLabel = [
             .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(36))
         ]
-        subtitleLabel = [
-            .textColor(AppColors.Components.Text.gray),
+        self.subtitleLabel = [
+            .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(15))
         ]
 
-        verticalStackViewSpacing = 4
-        horizontalStackViewHeight = 50
-        horizontalStackViewSpacing = 8
-        iconHeight = 24
     }
 }

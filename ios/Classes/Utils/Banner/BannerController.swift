@@ -77,7 +77,7 @@ final class BannerController: MacaroonBanner.BannerController {
         let view = makeNotificationBanner()
         view.bindData(BannerInfoViewModel(title))
 
-        view.observe(event: .performAction) {
+        view.startObserving(event: .performAction) {
             completion?()
         }
 
@@ -91,7 +91,7 @@ final class BannerController: MacaroonBanner.BannerController {
         let view = makeInfoBanner()
         view.bindData(BannerInfoViewModel(title))
 
-        view.observe(event: .performAction) {
+        view.startObserving(event: .performAction) {
             completion?()
         }
 

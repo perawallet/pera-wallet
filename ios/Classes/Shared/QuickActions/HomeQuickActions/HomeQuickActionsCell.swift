@@ -20,7 +20,7 @@ import UIKit
 
 final class HomeQuickActionsCell:
     CollectionCell<HomeQuickActionsView>,
-    UIInteractionObservable {
+    UIInteractable {
     override class var contextPaddings: LayoutPaddings {
         return (36, 24, 36, 24)
     }
@@ -32,7 +32,7 @@ final class HomeQuickActionsCell:
     ) {
         super.init(frame: frame)
 
-        contentView.backgroundColor = AppColors.Shared.Helpers.heroBackground.uiColor
+        contentView.backgroundColor = Colors.Helpers.heroBackground.uiColor
         contextView.customize(Self.theme)
     }
     

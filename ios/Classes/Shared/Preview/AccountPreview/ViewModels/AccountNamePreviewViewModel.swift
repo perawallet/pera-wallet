@@ -115,8 +115,7 @@ extension AccountNamePreviewViewModel {
         return .attributedString(
             aTitle.bodyRegular(
                 alignment: alignment,
-                lineBreakMode: .byTruncatingTail,
-                hasMultilines: false
+                lineBreakMode: .byTruncatingTail
             )
         )
     }
@@ -132,8 +131,7 @@ extension AccountNamePreviewViewModel {
         return .attributedString(
             aTitle.footnoteRegular(
                 alignment: alignment,
-                lineBreakMode: .byTruncatingTail,
-                hasMultilines: false
+                lineBreakMode: .byTruncatingTail
             )
         )
     }

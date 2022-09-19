@@ -52,8 +52,6 @@ extension BuyAlgoTransactionViewModel {
     }
     
     private mutating func bindTitle(_ type: BuyAlgoParams.TransactionStatus) {
-        let font = Fonts.DMSans.medium.make(32).uiFont
-        let lineHeightMultiplier = 0.96
         let titleString: String
         
         switch type {
@@ -73,22 +71,11 @@ extension BuyAlgoTransactionViewModel {
         title = .attributedString(
             titleString
                 .localized
-                .attributed(
-                    [
-                        .font(font),
-                        .lineHeightMultiplier(lineHeightMultiplier, font),
-                        .paragraph([
-                            .textAlignment(.left),
-                            .lineHeightMultiple(lineHeightMultiplier)
-                        ]),
-                    ]
-                )
+                .titleMedium()
         )
     }
     
     private mutating func bindDescription(_ type: BuyAlgoParams.TransactionStatus) {
-        let font = Fonts.DMSans.regular.make(15).uiFont
-        let lineHeightMultiplier = 1.23
         let descriptionString: String
         
         switch type {
@@ -107,38 +94,17 @@ extension BuyAlgoTransactionViewModel {
         description = .attributedString(
             descriptionString
                 .localized
-                .attributed(
-                    [
-                        .font(font),
-                        .lineHeightMultiplier(lineHeightMultiplier, font),
-                        .paragraph([
-                            .textAlignment(.left),
-                            .lineBreakMode(.byWordWrapping),
-                            .lineHeightMultiple(lineHeightMultiplier)
-                        ]),
-                    ]
-                )
+                .bodyRegular()
         )
     }
     
     private mutating func bindAccountName(_ account: Account) {
         let name = account.name ?? account.address.shortAddressDisplay
         
-        let font = Fonts.DMSans.regular.make(15).uiFont
-        let lineHeightMultiplier = 1.23
-        
-        accountName = .attributedString(name
-            .attributed(
-                [
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .textAlignment(.left),
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ]),
-                ]
-            )
+
+        accountName = .attributedString(
+            name
+                .bodyRegular()
         )
     }
     

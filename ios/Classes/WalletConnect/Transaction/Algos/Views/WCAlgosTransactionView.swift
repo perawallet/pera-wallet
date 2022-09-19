@@ -46,7 +46,7 @@ class WCAlgosTransactionView: WCSingleTransactionView {
     override func configureAppearance() {
         super.configureAppearance()
 
-        backgroundColor = AppColors.Shared.System.background.uiColor
+        backgroundColor = Colors.Defaults.background.uiColor
     }
     override func prepareLayout() {
         super.prepareLayout()

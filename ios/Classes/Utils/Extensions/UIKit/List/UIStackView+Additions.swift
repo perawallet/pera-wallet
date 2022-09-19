@@ -18,6 +18,24 @@
 import UIKit
 
 extension UIStackView {
+    /// <todo>
+    /// Move it to 'Macaroon' later.
+    func insertArrangedSubview(
+        _ view: UIView,
+        preferredAt index: Int?
+    ) {
+        if let index = index {
+            insertArrangedSubview(
+                view,
+                at: index
+            )
+        } else {
+            addArrangedSubview(view)
+        }
+    }
+}
+
+extension UIStackView {
     func deleteAllArrangedSubviews() {
         arrangedSubviews.forEach { deleteArrangedSubview($0) }
     }

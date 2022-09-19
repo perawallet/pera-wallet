@@ -24,7 +24,9 @@ struct LedgerAccountCellViewTheme: StyleSheet, LayoutSheet {
     let assetInfoLabel: TextStyle
     let backgroundColor: Color
     let corner: Corner
-    let shadow: MacaroonUIKit.Shadow
+    let firstShadow: MacaroonUIKit.Shadow
+    let secondShadow: MacaroonUIKit.Shadow
+    let thirdShadow: MacaroonUIKit.Shadow
     let infoButtonStyle: ButtonStyle
 
     let selectedStateBorder: Border
@@ -43,26 +45,40 @@ struct LedgerAccountCellViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.left),
             .textOverflow(FittingText()),
             .font(Fonts.DMMono.regular.make(15)),
-            .textColor(AppColors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
         self.assetInfoLabel = [
             .textAlignment(.left),
             .textOverflow(FittingText()),
             .font(Fonts.DMSans.regular.make(13)),
-            .textColor(AppColors.Components.Text.grayLighter)
+            .textColor(Colors.Text.grayLighter)
         ]
         self.corner = Corner(radius: 4)
-        self.shadow = MacaroonUIKit.Shadow(
-            color: UIColor(red: 0, green: 0, blue: 0, alpha: 0.08),
+        self.firstShadow = MacaroonUIKit.Shadow(
+            color: Colors.Shadows.Cards.shadow1.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
             offset: (0, 2),
-            radius: 4,
-            fillColor: AppColors.Shared.System.background.uiColor
+            radius: 4
+        )
+        self.secondShadow = MacaroonUIKit.Shadow(
+            color: Colors.Shadows.Cards.shadow2.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
+            opacity: 1,
+            offset: (0, 2),
+            radius: 4
+        )
+        self.thirdShadow = MacaroonUIKit.Shadow(
+            color: Colors.Shadows.Cards.shadow3.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
+            opacity: 1,
+            offset: (0, 0),
+            radius: 0
         )
         self.infoButtonStyle = [
             .backgroundImage([.normal("icon-info-gray")])
         ]
-        self.selectedStateBorder = Border(color: AppColors.Shared.Global.turquoise600.uiColor, width: 2)
+        self.selectedStateBorder = Border(color: Colors.Helpers.success.uiColor, width: 2)
         self.selectedStateCheckbox = [
             .image("icon-checkbox-selected")
         ]

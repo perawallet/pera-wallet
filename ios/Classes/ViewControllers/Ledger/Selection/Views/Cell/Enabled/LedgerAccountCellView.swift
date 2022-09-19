@@ -18,7 +18,13 @@
 import MacaroonUIKit
 import UIKit
 
-final class LedgerAccountCellView: View {
+final class LedgerAccountCellView: View, TripleShadowDrawable {
+    var thirdShadow: MacaroonUIKit.Shadow?
+    var thirdShadowLayer: CAShapeLayer = CAShapeLayer()
+
+    var secondShadow: MacaroonUIKit.Shadow?
+    var secondShadowLayer: CAShapeLayer = CAShapeLayer()
+
     weak var delegate: LedgerAccountViewDelegate?
 
     private lazy var theme = LedgerAccountCellViewTheme()
@@ -37,7 +43,9 @@ final class LedgerAccountCellView: View {
 
     func customize(_ theme: LedgerAccountCellViewTheme) {
         drawAppearance(corner: theme.corner)
-        drawAppearance(shadow: theme.shadow)
+        drawAppearance(shadow: theme.firstShadow)
+        drawAppearance(secondShadow: theme.secondShadow)
+        drawAppearance(thirdShadow: theme.thirdShadow)
 
         addCheckboxImageView(theme)
         addInfo(theme)

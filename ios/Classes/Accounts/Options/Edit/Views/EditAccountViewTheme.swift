@@ -28,12 +28,12 @@ struct EditAccountViewTheme: StyleSheet, LayoutSheet {
     let horizontalPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.doneButton = [
             .title("title-done".localized),
-            .titleColor([ .normal(AppColors.Components.Button.Primary.text) ]),
+            .titleColor([ .normal(Colors.Button.Primary.text) ]),
             .font(Fonts.DMSans.medium.make(15)),
-            .backgroundColor(AppColors.Components.Button.Primary.background)
+            .backgroundColor(Colors.Button.Primary.background)
         ]
         self.doneButtonContentEdgeInsets = (14, 0, 14, 0)
         self.doneButtonCorner = Corner(radius: 4)

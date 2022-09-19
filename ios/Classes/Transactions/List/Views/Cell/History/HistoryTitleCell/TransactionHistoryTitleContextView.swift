@@ -19,10 +19,13 @@ import MacaroonUIKit
 import UIKit
 
 final class TransactionHistoryTitleContextView: View {
+    private lazy var leadingLine = UIView()
     private lazy var titleLabel = UILabel()
+    private lazy var trailingLine = UIView()
 
     func customize(_ theme: TransactionHistoryTitleContextViewTheme) {
         addTitleLabel(theme)
+        addLines(theme)
     }
 
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
@@ -37,8 +40,29 @@ extension TransactionHistoryTitleContextView {
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(theme.paddings.top)
-            $0.leading.trailing.equalToSuperview().inset(theme.paddings.leading)
+            $0.centerX.equalToSuperview()
             $0.bottom.equalToSuperview().inset(theme.paddings.bottom)
+        }
+    }
+
+    private func addLines(_ theme: TransactionHistoryTitleContextViewTheme) {
+        leadingLine.customizeAppearance(theme.lineStyle)
+        trailingLine.customizeAppearance(theme.lineStyle)
+
+        addSubview(leadingLine)
+        leadingLine.snp.makeConstraints {
+            $0.centerY.equalTo(titleLabel)
+            $0.leading.equalToSuperview().inset(theme.paddings.leading)
+            $0.trailing.equalTo(titleLabel.snp.leading).offset(-theme.linePaddings.leading)
+            $0.height.equalTo(theme.lineHeight)
+        }
+
+        addSubview(trailingLine)
+        trailingLine.snp.makeConstraints {
+            $0.centerY.equalTo(titleLabel)
+            $0.trailing.equalToSuperview().inset(theme.paddings.trailing)
+            $0.leading.equalTo(titleLabel.snp.trailing).offset(theme.linePaddings.trailing)
+            $0.height.equalTo(theme.lineHeight)
         }
     }
 }

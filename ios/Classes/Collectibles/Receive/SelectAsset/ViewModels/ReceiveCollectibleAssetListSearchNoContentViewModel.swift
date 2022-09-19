@@ -29,21 +29,12 @@ struct ReceiveCollectibleAssetListSearchNoContentViewModel: NoContentViewModel {
 
 extension ReceiveCollectibleAssetListSearchNoContentViewModel {
     private mutating func bindTitle() {
-        let font = Fonts.DMSans.medium.make(19)
-        let lineHeightMultiplier = 1.13
-
         title = .attributedString(
             "collectibles-receive-asset-list-search-no-content"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .textAlignment(.center),
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .bodyLargeMedium(
+                    alignment: .center
+                )
         )
     }
 }

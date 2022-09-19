@@ -33,7 +33,7 @@ struct TransactionStatusInformationViewTheme: LayoutSheet, StyleSheet {
             .text("transaction-detail-status".localized),
             .textAlignment(.left),
             .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(15))
         ]
         self.minimumSpacingBetweenTitleAndStatus = 16

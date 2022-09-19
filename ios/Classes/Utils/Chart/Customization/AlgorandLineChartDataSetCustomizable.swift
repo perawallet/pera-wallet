@@ -27,7 +27,7 @@ protocol AlgorandLineChartDataSetCustomizable {
     var isDrawingCirclesEnabled: Bool { get }
     var highlightColor: UIColor { get }
     var highlightLineWidth: CGFloat { get }
-    func valueFormatter(from entries: [ChartDataEntry]) -> IValueFormatter
+    func valueFormatter(from entries: [ChartDataEntry]) -> ValueFormatter
     var valueColor: UIColor { get }
     var font: UIFont { get }
     var fillAlpha: CGFloat? { get }

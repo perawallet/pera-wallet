@@ -41,7 +41,6 @@ final class CollectiblesFilterSelectionViewController: BaseScrollViewController 
     }
 
     override func configureNavigationBarAppearance() {
-        addBarButtons()
         bindNavigationItemTitle()
     }
 
@@ -63,19 +62,6 @@ final class CollectiblesFilterSelectionViewController: BaseScrollViewController 
 }
 
 extension CollectiblesFilterSelectionViewController {
-    private func addBarButtons() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
-            [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.dismissScreen()
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
-    }
-
     private func bindNavigationItemTitle() {
         title = "collectible-filter-selection-title".localized
     }

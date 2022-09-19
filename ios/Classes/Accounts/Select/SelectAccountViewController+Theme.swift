@@ -29,7 +29,7 @@ extension SelectAccountViewController {
         let horizontalPadding: LayoutMetric
 
         init(_ family: LayoutFamily) {
-            listBackgroundColor = AppColors.Shared.System.background.uiColor
+            listBackgroundColor = Colors.Defaults.background.uiColor
             listMinimumLineSpacing = 0
             listItemHeight = 72
             listContentInsetTop = 28

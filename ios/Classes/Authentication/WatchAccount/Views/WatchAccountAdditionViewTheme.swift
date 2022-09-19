@@ -45,20 +45,20 @@ struct WatchAccountAdditionViewTheme: StyleSheet, LayoutSheet {
         self.title = [
             .textAlignment(.left),
             .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.medium.make(32)),
             .text("watch-account-create".localized)
         ]
 
         self.description = [
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),
             .textOverflow(FittingText()),
             .text("watch-account-explanation-title".localized)
         ]
         self.pasteButton = [
-            .backgroundColor(AppColors.Shared.Global.gray800),
+            .backgroundColor(Colors.Other.Global.gray800),
             .font(Fonts.DMMono.regular.make(15))
         ]
         self.pasteButtonCorner = Corner(radius: 20)
@@ -69,12 +69,12 @@ struct WatchAccountAdditionViewTheme: StyleSheet, LayoutSheet {
         self.mainButtonTheme = ButtonPrimaryTheme()
         self.pasteTextAttributes = [
             .font(Fonts.DMSans.regular.make(15).uiFont),
-            .textColor(AppColors.Shared.Global.white.uiColor)
+            .textColor(Colors.Text.white.uiColor)
         ]
 
         self.copiedTextAttributes = [
             .font(Fonts.DMMono.regular.make(11).uiFont),
-            .textColor(AppColors.Components.Text.gray.uiColor)
+            .textColor(Colors.Text.grayLighter.uiColor)
         ]
 
         self.textInputVerticalInset = 40

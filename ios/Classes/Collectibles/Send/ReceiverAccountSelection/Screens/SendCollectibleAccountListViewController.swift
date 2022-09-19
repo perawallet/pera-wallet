@@ -72,8 +72,6 @@ final class SendCollectibleAccountListViewController:
     }
 
     override func configureNavigationBarAppearance() {
-        addBarButtons()
-
         navigationItem.title = "collectible-send-account-list-title".localized
     }
 
@@ -193,14 +191,6 @@ extension SendCollectibleAccountListViewController {
 
             $0.setPaddings((.noMetric, 0, 0, 0))
         }
-    }
-
-    private func addBarButtons() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
-            self?.dismissScreen()
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
     }
 }
 

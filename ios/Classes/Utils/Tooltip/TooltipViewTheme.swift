@@ -36,7 +36,7 @@ struct TooltipViewTheme:
     init(
         _ family: LayoutFamily
     ) {
-        backgroundColor = AppColors.Components.Toast.background
+        backgroundColor = Colors.Toast.background
 
         contentHorizontalMargins = (24, 24)
         contentBottomMargin = 8
@@ -44,7 +44,7 @@ struct TooltipViewTheme:
         corner = Corner(radius: 12)
 
         title = [
-            .textColor(AppColors.Components.Toast.title),
+            .textColor(Colors.Toast.title),
             .textOverflow(FittingText()),
         ]
         titleContentEdgeInsets = (8, 16, 8, 16)

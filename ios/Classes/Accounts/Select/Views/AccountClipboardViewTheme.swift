@@ -40,48 +40,48 @@ struct AccountClipboardViewTheme: StyleSheet, LayoutSheet {
     let copyIconSize: LayoutSize
 
     init(_ family: LayoutFamily) {
-        backgroundColor = AppColors.Shared.System.background.uiColor
+        backgroundColor = Colors.Defaults.background.uiColor
 
         containerCorner = Corner(radius: 4)
-        containerBorder = Border(color: AppColors.SendTransaction.Shadow.first.uiColor, width: 1)
+        containerBorder = Border(color: Colors.Shadows.Cards.shadow1.uiColor, width: 1)
 
         containerFirstShadow = MacaroonUIKit.Shadow(
-            color: AppColors.SendTransaction.Shadow.first.uiColor,
+            color: Colors.Shadows.Cards.shadow1.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
             offset: (0, 2),
             radius: 4,
-            fillColor: AppColors.Shared.System.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
         )
 
         containerSecondShadow = MacaroonUIKit.Shadow(
-            color: AppColors.SendTransaction.Shadow.second.uiColor,
+            color: Colors.Shadows.Cards.shadow2.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
             offset: (0, 2),
             radius: 4,
-            fillColor: AppColors.Shared.System.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
         )
 
         containerThirdShadow = MacaroonUIKit.Shadow(
-            color: AppColors.SendTransaction.Shadow.third.uiColor,
+            color: Colors.Shadows.Cards.shadow3.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
             offset: (0, 0),
             radius: 0,
-            fillColor: AppColors.Shared.System.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
         )
         titleLabel = [
-            .textColor(AppColors.Components.Text.grayLighter),
+            .textColor(Colors.Text.grayLighter),
             .font(Fonts.DMSans.regular.make(13)),
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText())
         ]
         addressLabel = [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMMono.regular.make(13)),
             .textAlignment(.left),
             .textOverflow(FittingText())

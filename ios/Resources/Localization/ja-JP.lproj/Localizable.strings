@@ -1,4 +1,7 @@
 /* (No Comment) */
+"about" = "About";
+
+/* (No Comment) */
 "account-detail-assets-search" = "資産の検索";
 
 /* (No Comment) */
@@ -107,28 +110,31 @@
 "accounts-title" = "アカウント";
 
 /* (No Comment) */
-"accounts-title-assets" = "資産";
-
-/* (No Comment) */
 "accounts-title-collectibles" = "コレクティブル";
 
 /* (No Comment) */
 "accounts-title-history" = "履歴";
 
 /* (No Comment) */
-"accounts-tranaction-empty-detail" = "この資産を使ったトランザクションは行われていません。";
-
-/* MARK: Accounts */
-"accounts-tranaction-empty-text" = "まだトランザクションはありません";
+"accounts-title-overview" = "概要";
 
 /* (No Comment) */
-"accounts-transaction-history-title" = "取引履歴";
+"accounts-tranaction-empty-detail" = "選択した期間のトランザクションはありません";
+
+/* MARK: Accounts */
+"accounts-tranaction-empty-text" = "トランザクション無し";
 
 /* (No Comment) */
 "accounts-transaction-value" = "価値";
 
 /* (No Comment) */
 "accounts-transaction-your-balance" = "残高";
+
+/* (No Comment) */
+"accounts-transactions-title" = "トランザクション";
+
+/* (No Comment) */
+"activity" = "アクティビティ";
 
 /* (No Comment) */
 "add-node-title" = "ノードの追加";
@@ -152,10 +158,64 @@
 "algo-statistics-title" = "統計情報";
 
 /* (No Comment) */
+"asa-about-asa-creator" = "作成者";
+
+/* MARK: ASA About */
+"asa-about-asa-id" = "ASA ID";
+
+/* (No Comment) */
+"asa-about-asa-project-website" = "プロジェクトウェブサイト";
+
+/* (No Comment) */
+"asa-about-asa-show-on" = "表示する";
+
+/* (No Comment) */
+"asa-about-asa-show-on-pera-explorer" = "Pera Explorer";
+
+/* (No Comment) */
+"asa-about-asa-url" = "ASA URL";
+
+/* (No Comment) */
+"asa-verification-detail-suspicious" = "このASAが詐欺の試みに関与したいう報告を受けています。交流する際はご注意ください。";
+
+/* (No Comment) */
+"asa-verification-detail-suspicious-bold" = "詐欺の試み";
+
+/* (No Comment) */
+"asa-verification-detail-trusted" = "Algorandのエコシステムで有名な、確立されたプロジェクトです。";
+
+/* (No Comment) */
+"asa-verification-detail-trusted-bold" = "有名";
+
+/* (No Comment) */
+"asa-verification-detail-verified" = "このASAは、Pera ASA認証プログラムによって自動的に認証されました。";
+
+/* (No Comment) */
+"asa-verification-detail-verified-bold" = "自動認証済";
+
+/* (No Comment) */
+"asa-verification-learn-more" = "ASA認証について詳しく知る";
+
+/* (No Comment) */
+"asa-verification-suspicious-report" = "%@を報告する";
+
+/* (No Comment) */
+"asa-verification-title-suspicious" = "疑わしい";
+
+/* MARK: ASA Verification */
+"asa-verification-title-trusted" = "信頼できるASA";
+
+/* (No Comment) */
+"asa-verification-title-verified" = "認証済ASA";
+
+/* (No Comment) */
 "asset-add-confirmation-title" = "資産の追加";
 
 /* (No Comment) */
 "asset-add-warning" = "資産を追加するには、最小の取引手数料でトランザクションを送信する必要があります。これは取引履歴に表示されます。";
+
+/* (No Comment) */
+"asset-algos-description" = "Algoは、Algorandブロックチェーンの公式暗号通貨です。Algorandブロックチェーンは、誰もが参加でき、オープンで、ボーダーレスな経済の構築を支援するために作成されました。この新しいタイプのデジタル経済は、誰にとってもすぐに使える、真のデジタル通貨でなければ機能しません。それがAlgoなのです。";
 
 /* (No Comment) */
 "asset-algos-title" = "Algo";
@@ -198,6 +258,30 @@
 
 /* (No Comment) */
 "asset-not-found-title" = "資産が見つかりません";
+
+/* (No Comment) */
+"asset-opt-in-successful-message" = "%@がアカウントに正常に追加されました。";
+
+/* (No Comment) */
+"asset-opt-out-successful-message" = "%@がアカウントから正常に削除されました。";
+
+/* (No Comment) */
+"asset-quick-action-button-add" = "資産を追加する";
+
+/* (No Comment) */
+"asset-quick-action-title-add" = "資産のオプトイン先";
+
+/* (No Comment) */
+"asset-quick-action-title-add-asset-without-account" = "お使いのアカウントのいずれかから、この資産をオプトインできます。";
+
+/* (No Comment) */
+"asset-quick-action-title-add-nft-without-account" = "お使いのアカウントのいずれかから、このNFTをオプトインできます。";
+
+/* (No Comment) */
+"asset-quick-action-title-opt-in" = "NFTのオプトイン先";
+
+/* (No Comment) */
+"asset-quick-action-title-remove" = "オプトインする";
 
 /* (No Comment) */
 "asset-remove-confirmation-title" = "資産の削除";
@@ -246,6 +330,9 @@
 
 /* MARK: Asset */
 "asset-title" = "資産";
+
+/* MARK: Total Supply */
+"asset-total-supply-body" = "資産の総供給量は作成時に設定され、その資産の総作成ユニットと合致します。";
 
 /* (No Comment) */
 "asset-transfer-balance" = "転送残高";
@@ -464,10 +551,10 @@
 "collectible-opt-out-info-title" = "NFTをオプトアウトする ";
 
 /* (No Comment) */
-"collectible-receive-account-list-info" = "NFTを受け取るには、お客様のアカウントにオプトインする必要があります。必ず資産IDをご確認ください。";
+"collectible-receive-account-list-info" = "NFT ASA IDをウォレットに転送するには、オプトインする必要があります。";
 
 /* (No Comment) */
-"collectible-receive-asset-list-info" = "オプトインしたいNFTの名前または資産IDを、下の検索バーに貼り付けて検索できます。";
+"collectible-receive-asset-list-info" = "NFT ASA IDをウォレットに転送するには、オプトインする必要があります。検索バーにASA IDをペーストしてください。";
 
 /* (No Comment) */
 "collectible-receive-asset-list-selected-account" = "選択したアカウント";
@@ -970,6 +1057,12 @@
 /* MARK: Login */
 "login-title" = "ロック解除";
 
+/* MARK: Mail */
+"mail-report-address" = "verification@perawallet.app";
+
+/* (No Comment) */
+"mail-report-subject" = "ASAレポート: %d";
+
 /* (No Comment) */
 "maximum-balance-standard-account-warning-description" = "お客様のアカウント設定に基づく、最低残高は%@です。\n\n続行を押すと、Algorand Blockchainの最低必要残高を維持するために、取引が区が更新されます。次のステップでこの変更をプレビューできます。";
 
@@ -1146,6 +1239,12 @@
 
 /* (No Comment) */
 "opitons-collectibles-filter" = "NFTのフィルタリング";
+
+/* (No Comment) */
+"opt-in-description-adding-nft" = "NFTをオプトインするには、最低トランザクション手数料の発生するトランザクションを送信する必要があります。これはお客様の取引履歴に表示されます。";
+
+/* MARK: Opt In Asset */
+"opt-in-title-adding-nft" = "NFTをオプトインする";
 
 /* (No Comment) */
 "options-auth-account" = "Authアカウントアドレス";
@@ -1789,6 +1888,18 @@
 /* MARK: SingleTransactionRequestMARK: SingleTransactionRequest */
 "single-transaction-request-show-detail-title" = "トランザクションの詳細を表示";
 
+/* (No Comment) */
+"social-media-platform-discord" = "Discord";
+
+/* (No Comment) */
+"social-media-platform-telegram" = "Telegram";
+
+/* MARK: Social Media Platforms */
+"social-media-platform-title" = "ソーシャルメディア";
+
+/* (No Comment) */
+"social-media-platform-twitter" = "Twitter";
+
 /* MARK: Sort Account List */
 "sort-account-list-manually-header-title" = "アカウントを手動で整理する";
 
@@ -1800,6 +1911,9 @@
 
 /* MARK: Terms and Services */
 "terms-and-services-title" = "利用規約とサービス";
+
+/* (No Comment) */
+"title-about-with-param" = "%@について";
 
 /* (No Comment) */
 "title-accept" = "承認";
@@ -1863,6 +1977,9 @@
 
 /* (No Comment) */
 "title-copy" = "コピー";
+
+/* (No Comment) */
+"title-csv" = "CSV";
 
 /* (No Comment) */
 "title-decline" = "拒否";
@@ -2036,6 +2153,12 @@
 "title-show-all-detail" = "すべての詳細を表示";
 
 /* (No Comment) */
+"title-show-less" = "少なく表示する";
+
+/* (No Comment) */
+"title-show-more" = "さらに表示する";
+
+/* (No Comment) */
 "title-show-more-assets" = "さらに+%@トランザクションを表示する";
 
 /* (No Comment) */
@@ -2064,6 +2187,9 @@
 
 /* (No Comment) */
 "title-testnet" = "テストネット";
+
+/* (No Comment) */
+"title-total-supply" = "総供給量";
 
 /* (No Comment) */
 "title-unknown" = "無名";
@@ -2242,6 +2368,12 @@
 /* (No Comment) */
 "transaction-menu-copy-note" = "備考をコピー";
 
+/* (No Comment) */
+"transaction-option-list-add-asset-subtitle" = "ASAまたはNFTをオプトインする";
+
+/* (No Comment) */
+"transaction-option-list-add-asset-title" = "資産の追加";
+
 /* MARK: Transaction Options */
 "transaction-option-list-buy-algo-subtitle" = "クレジットカードまたは銀行振込で暗号通貨を購入する";
 
@@ -2364,6 +2496,24 @@
 
 /* (No Comment) */
 "tutorial-title-write" = "回復用パスフレーズを\nメモする準備をお願いします";
+
+/* (No Comment) */
+"url-copied" = "URLがクリップボードにコピーされました";
+
+/* (No Comment) */
+"verification-info-body" = "Pera WalletのAlgorand Standard Asset (ASA) Verification Programは、ASA作成者が資産の所有者であることを検証することで、自動的に認証を受けることができるようにするものです。\nASA認証の主な目的は、ASAが関連性のないプロジェクトと提携し、そのトークンとして機能することを防ぐことです。\nASA認証によって、プロジェクトを推奨するものではありません。AlgorandとPeraのどちらも、認証プロセスを利用してプロジェクトを支持することはありません。";
+
+/* (No Comment) */
+"verification-info-body-first-highlight" = "自動";
+
+/* (No Comment) */
+"verification-info-body-second-highlight" = "ASAが関連性のないプロジェクトと提携し、そのトークンとして機能することを防止します。";
+
+/* (No Comment) */
+"verification-info-body-third-highlight" = "ASA認証によって、プロジェクトを推奨するものではありません。";
+
+/* MARK: Verification Information */
+"verification-info-title" = "ASA認証";
 
 /* (No Comment) */
 "verified-asset-double-check" = "常に再確認してください";
@@ -2507,6 +2657,9 @@
 "wallet-connect-transaction-error-invalid-asset" = "無効な入力：無効な資産です";
 
 /* (No Comment) */
+"wallet-connect-transaction-error-invalid-group" = "このトランザクショングループには、1つまたは複数の不明なトランザクションが含まれているようです。セキュリティ上、Pera Walletは詳細が不明なトランザクショングループへの署名を許可していません。この問題を修正するには、このトランザクションを送信したdAppに連絡してください。";
+
+/* (No Comment) */
 "wallet-connect-transaction-error-invalid-key" = "無効な入力：公開鍵が無効です";
 
 /* (No Comment) */
@@ -2529,6 +2682,9 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-error-transaction-size" = "無効な入力：トランザクションリクエストに16を超えるトランザクションが含まれています";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unable-fetch-asset" = "資産の詳細を取得できないため、トランザクションはキャンセルされました。ネットワーク接続を確認し、もう一度お試しください。";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-unable-sign" = "無効な入力：署名できません";
@@ -2713,4 +2869,3 @@
 /* (No Comment) */
 "wc-transaction-request-signed-warning-title" = "トランザクションを処理しています！";
 
-"wallet-connect-transaction-error-invalid-group" = "It looks like this transaction group contains one or more missing transactions. For your security, Pera Wallet won’t allow you to sign transaction groups that have obscured details. Please contact the dApp that sent this transaction so they can rectify this problem.";

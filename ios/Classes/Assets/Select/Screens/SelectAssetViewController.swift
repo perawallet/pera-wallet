@@ -21,97 +21,107 @@ import MacaroonUIKit
 final class SelectAssetViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout {
-
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = SelectAssetViewControllerListLayout.build()
         let collectionView =
-        UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
+            UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .clear
-        collectionView.register(AssetPreviewCell.self)
+        collectionView.register(PreviewLoadingCell.self)
+        collectionView.register(AssetListItemCell.self)
         return collectionView
     }()
 
-    private lazy var listLayout = SelectAssetViewControllerListLayout()
-
-    private lazy var accountListDataSource = SelectAssetViewControllerDataSource(
-        filter: filter,
+    private lazy var listDataSource = SelectAssetViewControllerDataSource(
         account: account,
         sharedDataController: sharedDataController
     )
+    private lazy var listLayout =
+        SelectAssetViewControllerListLayout(listDataSource: listDataSource)
     
-    private let filter: AssetType?
     private let account: Account
-    private let receiver: String?
+    private let receiverAccount: Account?
     private let theme: SelectAssetViewControllerTheme
 
     init(
-        filter: AssetType?,
         account: Account,
         receiver: String?,
         theme: SelectAssetViewControllerTheme = .init(),
         configuration: ViewControllerConfiguration
     ) {
-        self.filter = filter
         self.account = account
-        self.receiver = receiver
+        self.receiverAccount = receiver.unwrap { Account(address: $0, type: .standard) }
         self.theme = theme
+
         super.init(configuration: configuration)
     }
 
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
-
         navigationItem.title = "send-select-asset".localized
     }
-    
-    override func setListeners() {
-        listView.delegate = self
-        listView.dataSource = accountListDataSource
-    }
 
-    override func prepareLayout() {
-        build()
-    }
-
-    private func build() {
-        addBackground()
-        addListView()
-    }
-
-    /// <todo>: It will be moved to configureNavigationBarAppearance method
-    /// currently if we do in configure method, both back and dismiss buttons will be visible
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        addBarButtons()
+        addUI()
+        loadData()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        startLoading()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        stopLoading()
     }
 }
 
 extension SelectAssetViewController {
+    private func addUI() {
+        addBackground()
+        addList()
+    }
+
     private func addBackground() {
         view.customizeAppearance(theme.background)
     }
 
-    private func addListView() {
+    private func addList() {
         view.addSubview(listView)
         listView.snp.makeConstraints {
             $0.setPaddings()
         }
+
+        listView.delegate = self
+        listView.dataSource = listDataSource
+    }
+}
+
+extension SelectAssetViewController {
+    private func startLoading() {
+        let loadingCell = findVisibleLoadingCell()
+        loadingCell?.startAnimating()
     }
 
-    private func addBarButtons() {
-        if canGoBack() {
-            return
+    private func loadData() {
+        listDataSource.loadData {
+            [weak self] in
+            guard let self = self else { return }
+            self.listView.reloadData()
         }
-        
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
-            [unowned self] in
-            self.closeScreen(by: .dismiss, animated: true)
-        }
-        leftBarButtonItems = [closeBarButtonItem]
-        setNeedsNavigationBarAppearanceUpdate()
+    }
+
+    private func stopLoading() {
+        let loadingCell = findVisibleLoadingCell()
+        loadingCell?.stopAnimating()
+    }
+
+    private func findVisibleLoadingCell() -> PreviewLoadingCell? {
+        return listView.visibleCells.first { $0 is PreviewLoadingCell } as? PreviewLoadingCell
     }
 }
 
@@ -144,46 +154,49 @@ extension SelectAssetViewController {
 extension SelectAssetViewController {
     func collectionView(
         _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        if let loadingCell = cell as? PreviewLoadingCell {
+            loadingCell.startAnimating()
+        }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didEndDisplaying cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        if let loadingCell = cell as? PreviewLoadingCell {
+            loadingCell.stopAnimating()
+        }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
-        var receiverAccount: Account?
-        if let receiver = receiver {
-            receiverAccount = Account(
-                address: receiver,
-                type: .standard
-            )
-        }
-
-        if filter != .collectible,
-           indexPath.item == .zero {
-
-            let draft = SendTransactionDraft(
-                from: account,
-                toAccount: receiverAccount,
-                transactionMode: .algo
-            )
-
-            open(.sendTransaction(draft: draft), by: .push)
+        guard let item = listDataSource[indexPath] else {
             return
         }
 
-        guard let asset = accountListDataSource[indexPath] else {
+        let asset = item.model
+
+        if let collectibleAsset = asset as? CollectibleAsset, collectibleAsset.isPure {
+            openSendCollectible(collectibleAsset)
             return
         }
 
-        if let collectibleAsset = asset as? CollectibleAsset {
-            if collectibleAsset.isPure {
-                openSendCollectible(collectibleAsset)
-                return
-            }
-        }
-
+        let mode: TransactionMode = asset.isAlgo ? .algo : .asset(asset)
         let draft = SendTransactionDraft(
             from: account,
             toAccount: receiverAccount,
-            transactionMode: .asset(asset)
+            transactionMode: mode
         )
-        open(.sendTransaction(draft: draft), by: .push)
+        open(
+            .sendTransaction(draft: draft),
+            by: .push
+        )
     }
 
     private func openSendCollectible(

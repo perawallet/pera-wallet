@@ -34,7 +34,7 @@ struct ContactDisplayViewTheme: LayoutSheet, StyleSheet {
             .isInteractable(true),
             .textAlignment(.left),
             .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMMono.regular.make(15))
         ]
         self.contactImage = [
@@ -43,9 +43,9 @@ struct ContactDisplayViewTheme: LayoutSheet, StyleSheet {
         self.contactImageSize = (24, 24)
         self.contactImageCorner = Corner(radius: contactImageSize.h / 2)
         self.addContactButton = [
-            .backgroundColor(AppColors.Shared.Layer.grayLighter),
+            .backgroundColor(Colors.Layer.grayLighter),
             .font(Fonts.DMSans.regular.make(15)),
-            .titleColor([.normal(AppColors.Components.Text.gray)]),
+            .titleColor([.normal(Colors.Text.gray)]),
             .title("transaction-detail-add".localized)
         ]
         self.addContactButtonEdgeInsets = (4, 12, 4, 12)

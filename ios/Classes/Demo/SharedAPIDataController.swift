@@ -42,6 +42,8 @@ final class SharedAPIDataController:
 
     private(set) var currency: CurrencyProvider
 
+    private(set) var blockchainUpdatesMonitor: BlockchainUpdatesMonitor = .init()
+
     private(set) var lastRound: BlockRound?
 
     private(set) lazy var accountSortingAlgorithms: [AccountSortingAlgorithm] = [
@@ -167,6 +169,44 @@ extension SharedAPIDataController {
 }
 
 extension SharedAPIDataController {
+    func hasOptedIn(
+        assetID: AssetID,
+        for account: Account
+    ) -> OptInStatus {
+        let hasPendingOptedIn = blockchainUpdatesMonitor.hasPendingOptInRequest(
+            assetID: assetID,
+            for: account
+        )
+        let hasAlreadyOptedIn = account[assetID] != nil
+
+        switch (hasPendingOptedIn, hasAlreadyOptedIn) {
+        case (true, false): return .pending
+        case (true, true): return .optedIn
+        case (false, true): return .optedIn
+        case (false, false): return .rejected
+        }
+    }
+
+    func hasOptedOut(
+        assetID: AssetID,
+        for account: Account
+    ) -> OptOutStatus {
+        let hasPendingOptedOut = blockchainUpdatesMonitor.hasPendingOptOutRequest(
+            assetID: assetID,
+            for: account
+        )
+        let hasAlreadyOptedOut = account[assetID] == nil
+
+        switch (hasPendingOptedOut, hasAlreadyOptedOut) {
+        case (true, false): return .pending
+        case (true, true): return .optedOut
+        case (false, true): return .optedOut
+        case (false, false): return .rejected
+        }
+    }
+}
+
+extension SharedAPIDataController {
     func add(
         _ observer: SharedDataControllerObserver
     ) {
@@ -188,11 +228,14 @@ extension SharedAPIDataController {
 extension SharedAPIDataController {
     private func createBlockProcessor() -> BlockProcessor {
         let request: ALGBlockProcessor.BlockRequest = { [unowned self] in
+            self.blockchainUpdatesMonitor.removeUnmonitoredUpdates()
+
             return ALGBlockRequest(
                 localAccounts: self.session.authenticatedUser?.accounts ?? [],
                 cachedAccounts: self.accountCollection,
                 cachedAssetDetails: self.assetDetailCollection,
-                cachedCurrency: self.currency
+                cachedCurrency: self.currency,
+                blockchainRequests: self.blockchainUpdatesMonitor.makeBatchRequest()
             )
         }
         let cycle = ALGBlockCycle(api: api)
@@ -216,9 +259,10 @@ extension SharedAPIDataController {
                 )
             case .willFetchAssetDetails(let account):
                 self.blockProcessorWillFetchAssetDetails(for: account)
-            case .didFetchAssetDetails(let account, let assetDetails):
+            case .didFetchAssetDetails(let account, let assetDetails, let blockchainUpdates):
                 self.blockProcessorDidFetchAssetDetails(
-                    assetDetails,
+                    assetDetails: assetDetails,
+                    blockchainUpdates: blockchainUpdates,
                     for: account
                 )
             case .didFailToFetchAssetDetails(let account, let error):
@@ -291,18 +335,29 @@ extension SharedAPIDataController {
     }
     
     private func blockProcessorDidFetchAssetDetails(
-        _ assetDetails: [AssetID: AssetDecoration],
+        assetDetails: [AssetID: AssetDecoration],
+        blockchainUpdates: BlockchainAccountBatchUpdates,
         for account: Account
     ) {
         let updatedAccount = AccountHandle(account: account, status: .ready)
         nextAccountCollection[account.address] = updatedAccount
-        
-        if assetDetails.isEmpty {
-            return
+
+        for assetDetail in assetDetails {
+            assetDetailCollection[assetDetail.key] = assetDetail.value
         }
-        
-        assetDetails.forEach {
-            assetDetailCollection[$0.key] = $0.value
+
+        for assetID in blockchainUpdates.optedInAssets {
+            blockchainUpdatesMonitor.stopMonitoringOptInUpdates(
+                forAssetID: assetID,
+                for: account
+            )
+        }
+
+        for assetID in blockchainUpdates.optedOutAssets {
+            blockchainUpdatesMonitor.stopMonitoringOptOutUpdates(
+                forAssetID: assetID,
+                for: account
+            )
         }
     }
     

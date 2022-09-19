@@ -69,7 +69,7 @@ final class AppCallTransactionDetailView:
             action: #selector(notifyDelegateToOpenGoalSeaker)
         )
 
-        innerTransactionView.observe(event: .touch) {
+        innerTransactionView.startObserving(event: .touch) {
             [weak self] in
             guard let self = self else {
                 return
@@ -368,7 +368,7 @@ extension AppCallTransactionDetailView {
 
         return UITargetedPreview(
             view: view,
-            backgroundColor: AppColors.Shared.System.background.uiColor
+            backgroundColor: Colors.Defaults.background.uiColor
         )
     }
 
@@ -382,7 +382,7 @@ extension AppCallTransactionDetailView {
 
         return UITargetedPreview(
             view: view,
-            backgroundColor: AppColors.Shared.System.background.uiColor
+            backgroundColor: Colors.Defaults.background.uiColor
         )
     }
 }

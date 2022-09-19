@@ -21,10 +21,9 @@ import MacaroonUIKit
 final class PinLimitView:
     View,
     ViewModelBindable,
-    UIInteractionObservable,
-    UIControlInteractionPublisher {
+    UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .resetAllData: UIControlInteraction(),
+        .resetAllData: TargetActionInteraction(),
     ]
 
     private lazy var lockImageView = UIImageView()

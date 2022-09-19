@@ -31,11 +31,11 @@ struct CollectibleMediaErrorViewTheme:
     ) {
         self.message = [
             .textAlignment(.left),
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .textOverflow(FittingText())
         ]
         self.icon = [
-            .tintColor(AppColors.Components.Text.gray)
+            .tintColor(Colors.Text.gray)
         ]
 
         self.iconSize = (24, 24)

@@ -38,6 +38,12 @@ class Router:
 
     private unowned let appConfiguration: AppConfiguration
 
+    private lazy var transactionController = TransactionController(
+        api: appConfiguration.api,
+        bannerController: appConfiguration.bannerController,
+        analytics: appConfiguration.analytics
+    )
+
     /// <todo>
     /// Change after refactoring routing
     private var ledgerApprovalViewController: LedgerApprovalViewController?
@@ -183,12 +189,25 @@ class Router:
             )
 
             ongoingTransitions.append(transition)
-        case .algosDetail(let draft, let preferences):
+        case .asaDetail(let account, let asset):
             launch(tab: .home)
 
+            let visibleScreen = findVisibleScreen(over: rootViewController)
+            let screen = Screen.asaDetail(
+                account: account,
+                asset: asset
+            ) { [weak visibleScreen] event in
+                switch event {
+                case .didRemoveAccount:
+                    visibleScreen?.dismiss(animated: true)
+                case .didRenameAccount:
+                    break
+                }
+            }
+
             route(
-                to: .algosDetail(draft: draft, preferences: preferences),
-                from: findVisibleScreen(over: rootViewController),
+                to: screen,
+                from: visibleScreen,
                 by: .present
             )
         case .assetActionConfirmation(let draft, let theme):
@@ -205,15 +224,6 @@ class Router:
             )
             
             ongoingTransitions.append(transition)
-        case .assetDetail(let draft, let preferences):
-            launch(tab: .home)
-            
-            route(
-                to: .assetDetail(draft: draft, preferences: preferences),
-                from: findVisibleScreen(over: rootViewController),
-                by: .present
-            )
-
         case .sendTransaction(let draft, let shouldFilterAccount):
             launch(tab: .home)
 
@@ -444,6 +454,44 @@ class Router:
         let viewController: UIViewController
         
         switch screen {
+        case .asaDetail(let account, let asset, let eventHandler):
+            let dataController = ASADetailScreenAPIDataController(
+                account: account,
+                asset: asset,
+                api: appConfiguration.api,
+                sharedDataController: appConfiguration.sharedDataController
+            )
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
+            let aViewController = ASADetailScreen(
+                dataController: dataController,
+                copyToClipboardController: copyToClipboardController,
+                configuration: configuration
+            )
+            aViewController.eventHandler = eventHandler
+
+            viewController = aViewController
+        case .asaDiscovery(let account, let quickAction, let asset, let eventHandler):
+            let dataController =
+                ASADiscoveryScreenAPIDataController(
+                    account: account,
+                    asset: asset,
+                    api: appConfiguration.api,
+                    sharedDataController: appConfiguration.sharedDataController
+                )
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
+            let aViewController = ASADiscoveryScreen(
+                quickAction: quickAction,
+                dataController: dataController,
+                copyToClipboardController: copyToClipboardController,
+                configuration: configuration
+            )
+            aViewController.eventHandler = eventHandler
+
+            viewController = aViewController
         case let .welcome(flow):
             viewController = WelcomeViewController(flow: flow, configuration: configuration)
         case let .addAccount(flow):
@@ -506,7 +554,7 @@ class Router:
         case let .transactionDetail(account, transaction, assetDetail):
             let transactionType =
             transaction.sender == account.address
-            ? TransactionType.sent
+            ? TransferType.sent
             : .received
 
             viewController = TransactionDetailViewController(
@@ -523,10 +571,9 @@ class Router:
             account,
             transaction,
             transactionTypeFilter,
-            assets,
-            eventHandler
+            assets
         ):
-            let aViewController = AppCallTransactionDetailViewController(
+            viewController = AppCallTransactionDetailViewController(
                 account: account,
                 transaction: transaction,
                 transactionTypeFilter: transactionTypeFilter,
@@ -536,32 +583,12 @@ class Router:
                 ),
                 configuration: configuration
             )
-            aViewController.eventHandler = eventHandler
-            viewController = aViewController
-        case .appCallAssetList(let dataController, let eventHandler):
-            let aViewController = AppCallAssetListViewController(
+        case .appCallAssetList(let dataController):
+            viewController = AppCallAssetListViewController(
                 dataController: dataController,
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
                 ),
-                configuration: configuration
-            )
-            aViewController.eventHandler = eventHandler
-            viewController = aViewController
-        case let .assetDetail(draft, preferences):
-            viewController = AssetDetailViewController(
-                draft: draft,
-                preferences: preferences,
-                copyToClipboardController: ALGCopyToClipboardController(
-                    toastPresentationController: appConfiguration.toastPresentationController
-                ),
-                configuration: configuration
-            )
-        case let .algosDetail(draft, preferences):
-            viewController = AlgosDetailViewController(
-                draft: draft,
-                preferences: preferences,
-                copyToClipboardController: nil,
                 configuration: configuration
             )
         case let .accountDetail(accountHandle, eventHandler):
@@ -574,14 +601,16 @@ class Router:
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
-        case let .assetSearch(accountHandle, dataController):
-            viewController = AssetSearchViewController(
-                accountHandle: accountHandle,
+        case let .addAsset(account):
+            let dataController = AssetListViewAPIDataController(
+                account: account,
+                api: appConfiguration.api,
+                sharedDataController: appConfiguration.sharedDataController
+            )
+            viewController = AssetAdditionViewController(
                 dataController: dataController,
                 configuration: configuration
             )
-        case let .addAsset(account):
-            viewController = AssetAdditionViewController(account: account, configuration: configuration)
         case .notifications:
             viewController = NotificationsViewController(configuration: configuration)
         case let .removeAsset(dataController):
@@ -599,7 +628,9 @@ class Router:
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
                 ),
-                configuration: configuration,
+                api: appConfiguration.api,
+                sharedDataController: appConfiguration.sharedDataController,
+                bannerController: appConfiguration.bannerController,
                 theme: theme
             )
             aViewController.delegate = delegate
@@ -609,8 +640,6 @@ class Router:
                 account: account,
                 configuration: configuration
             )
-        case .verifiedAssetInformation:
-            viewController = VerifiedAssetInformationViewController(configuration: configuration)
         case let .ledgerTutorial(flow):
             viewController = LedgerTutorialInstructionListViewController(accountSetupFlow: flow, configuration: configuration)
         case let .ledgerDeviceList(flow):
@@ -679,8 +708,8 @@ class Router:
                 rekeyedAccounts: rekeyedAccounts,
                 configuration: configuration
             )
-        case let .notificationFilter(flow):
-            viewController = NotificationFilterViewController(flow: flow, configuration: configuration)
+        case .notificationFilter:
+            viewController = NotificationFilterViewController(configuration: configuration)
         case let .bottomWarning(viewModel):
             viewController = BottomWarningViewController(viewModel, configuration: configuration)
         case let .tutorial(flow, tutorial):
@@ -796,9 +825,8 @@ class Router:
             )
             selectAccountViewController.delegate = delegate
             viewController = selectAccountViewController
-        case .assetSelection(let filter, let account, let receiver):
+        case .assetSelection(let account, let receiver):
             viewController = SelectAssetViewController(
-                filter: filter,
                 account: account,
                 receiver: receiver,
                 configuration: configuration
@@ -861,6 +889,10 @@ class Router:
                 configuration: configuration,
                 currencyFormatter: currencyFormatter
             )
+        case .asaVerificationInfo(let eventHandler):
+            let aViewController = AsaVerificationInfoScreen()
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
         case let .sortCollectibleList(dataController, eventHandler):
             let aViewController = SortCollectibleListViewController(
                 dataController: dataController,
@@ -878,25 +910,33 @@ class Router:
                 dataController: dataController,
                 configuration: configuration
             )
-        case let .receiveCollectibleAssetList(account, dataController):
+        case let .receiveCollectibleAssetList(account):
+            let dataController = ReceiveCollectibleAssetListAPIDataController(
+                account: account.value,
+                api: appConfiguration.api,
+                sharedDataController: appConfiguration.sharedDataController
+            )
             viewController = ReceiveCollectibleAssetListViewController(
-                account: account,
                 dataController: dataController,
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
                 ),
                 configuration: configuration
             )
-        case let .collectibleDetail(asset, account, thumbnailImage):
-            viewController = CollectibleDetailViewController(
+        case .collectibleDetail(let asset, let account, let thumbnailImage,  let quickAction, let eventHandler):
+            let aViewController = CollectibleDetailViewController(
                 asset: asset,
                 account: account,
+                quickAction: quickAction,
                 thumbnailImage: thumbnailImage,
                 copyToClipboardController: ALGCopyToClipboardController(
                     toastPresentationController: appConfiguration.toastPresentationController
                 ),
                 configuration: configuration
             )
+            aViewController.eventHandler = eventHandler
+
+            viewController = aViewController
         case let .sendCollectible(draft):
             let aViewController = SendCollectibleViewController(
                 draft: draft,
@@ -986,6 +1026,38 @@ class Router:
             )
             aViewController.eventHandler = eventHandler
             viewController = aViewController
+        case .optInAsset(let draft, let eventHandler):
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
+            viewController = OptInAssetScreen(
+                draft: draft,
+                copyToClipboardController: copyToClipboardController,
+                eventHandler: eventHandler
+            )
+        case .optOutAsset(let draft, let theme, let eventHandler):
+            viewController = OptOutAssetScreen(
+                theme: theme,
+                draft: draft,
+                eventHandler: eventHandler,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                )
+            )
+        case .transferAssetBalance(let draft, let theme, let eventHandler):
+            viewController = TransferAssetBalanceScreen(
+                theme: theme,
+                draft: draft,
+                eventHandler: eventHandler,
+                copyToClipboardController: ALGCopyToClipboardController(
+                    toastPresentationController: appConfiguration.toastPresentationController
+                )
+            )
+        case .sheetAction(let sheet, let theme):
+            viewController = UISheetActionScreen(
+                sheet: sheet,
+                theme: theme
+            )
         }
 
         return viewController as? T
@@ -1060,27 +1132,32 @@ extension Router {
 }
 
 extension Router {
+    /// <todo>:
+    /// Remove this after all asset action confirmation screen transformations to new componants (e.g `OptInAssetScreen`) are completed.
     func assetActionConfirmationViewController(
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
         didConfirmAction asset: AssetDecoration
     ) {
         let draft = assetActionConfirmationViewController.draft
-        
+
         guard let account = draft.account,
               !account.isWatchAccount() else {
             return
         }
-        
-        let assetTransactionDraft =
-        AssetTransactionSendDraft(from: account, assetIndex: Int64(draft.assetId))
-        let transactionController = TransactionController(
-            api: appConfiguration.api,
-            bannerController: appConfiguration.bannerController
+
+        let assetTransactionDraft = AssetTransactionSendDraft(
+            from: account,
+            assetIndex: Int64(draft.assetId)
         )
 
         transactionController.delegate = self
         transactionController.setTransactionDraft(assetTransactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+
+        if account.requiresLedgerConnection() {
+            transactionController.initializeLedgerTransactionAccount()
+            transactionController.startTimer()
+        }
     }
 }
 
@@ -1277,33 +1354,81 @@ extension Router {
     }
 
     private func requestOptingInToAsset(
-        _ asset: AssetID,
+        _ assetID: AssetID,
         to account: Account
     ) {
-        if account.containsAsset(asset) {
+        if account.containsAsset(assetID) {
             appConfiguration.bannerController.presentInfoBanner("asset-you-already-own-message".localized)
             return
         }
 
-        let assetAlertDraft = AssetAlertDraft(
+        appConfiguration.loadingController.startLoadingWithMessage("title-loading".localized)
+
+        appConfiguration.api.fetchAssetDetails(
+            AssetFetchQuery(ids: [assetID]),
+            queue: .main,
+            ignoreResponseOnCancelled: false
+        ) { [weak self] response in
+            guard let self = self else {
+                return
+            }
+            self.appConfiguration.loadingController.stopLoading()
+            switch response {
+            case let .success(assetResponse):
+                if assetResponse.results.isEmpty {
+                    self.appConfiguration.bannerController.presentErrorBanner(
+                        title: "title-error".localized,
+                        message: "asset-confirmation-not-found".localized
+                    )
+                    return
+                }
+
+                if let asset = assetResponse.results.first {
+                    self.openOptInAsset(
+                        asset: asset,
+                        account: account
+                    )
+                }
+            case .failure:
+                self.appConfiguration.bannerController.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: "asset-confirmation-not-fetched".localized
+                )
+            }
+        }
+    }
+
+    private func openOptInAsset(
+        asset: AssetDecoration,
+        account: Account
+    ) {
+        let draft = OptInAssetDraft(
             account: account,
-            assetId: asset,
-            asset: nil,
-            transactionFee: Transaction.Constant.minimumFee,
-            title: "asset-add-confirmation-title".localized,
-            detail: "asset-add-warning".localized,
-            actionTitle: "title-approve".localized,
-            cancelTitle: "title-cancel".localized
+            asset: asset
         )
 
-        let visibleScreen = findVisibleScreen(over: rootViewController)
+        let screen = Screen.optInAsset(draft: draft) {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .performApprove:
+                self.continueToOptInAsset(
+                    asset: asset,
+                    account: account
+                )
+            case .performClose:
+                self.cancelOptInAsset()
+            }
+        }
+
+        let visibleScreen = findVisibleScreen()
         let transition = BottomSheetTransition(presentingViewController: visibleScreen)
 
         ongoingTransitions.append(transition)
 
         transition.perform(
-            .assetActionConfirmation(assetAlertDraft: assetAlertDraft, delegate: self),
-            by: .presentWithoutNavigationController
+            screen,
+            by: .present
         )
     }
 
@@ -1313,7 +1438,6 @@ extension Router {
         receiver: String?
     ) {
         let assetSelectionScreen: Screen = .assetSelection(
-            filter: nil,
             account: account,
             receiver: receiver
         )
@@ -1324,6 +1448,46 @@ extension Router {
         )
     }
 }
+
+extension Router {
+    private func continueToOptInAsset(
+        asset: AssetDecoration,
+        account: Account
+    ) {
+        let visibleScreen = findVisibleScreen()
+
+        visibleScreen.dismiss(animated: true) {
+            [weak self] in
+            guard let self = self else { return }
+
+            guard !account.isWatchAccount() else {
+                return
+            }
+
+            let assetTransactionDraft = AssetTransactionSendDraft(
+                from: account,
+                assetIndex: asset.id
+            )
+
+            self.appConfiguration.loadingController.startLoadingWithMessage("title-loading".localized)
+
+            self.transactionController.delegate = self
+            self.transactionController.setTransactionDraft(assetTransactionDraft)
+            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+
+            if account.requiresLedgerConnection() {
+                self.transactionController.initializeLedgerTransactionAccount()
+                self.transactionController.startTimer()
+            }
+        }
+    }
+
+    private func cancelOptInAsset() {
+        let visibleScreen = findVisibleScreen()
+        visibleScreen.dismiss(animated: true)
+    }
+}
+
 
 extension Router: BuyAlgoHomeScreenDelegate {
     func buyAlgoHomeScreenDidFailedTransaction(_ screen: BuyAlgoHomeScreen) {
@@ -1356,6 +1520,8 @@ extension Router {
         _ transactionController: TransactionController,
         didFailedComposing error: HIPTransactionError
     ) {
+        appConfiguration.loadingController.stopLoading()
+
         switch error {
         case let .inapp(transactionError):
             displayTransactionError(from: transactionError)
@@ -1368,6 +1534,8 @@ extension Router {
         _ transactionController: TransactionController,
         didFailedTransaction error: HIPTransactionError
     ) {
+        appConfiguration.loadingController.stopLoading()
+
         switch error {
         case let .network(apiError):
             appConfiguration.bannerController.presentErrorBanner(
@@ -1386,6 +1554,8 @@ extension Router {
         _ transactionController: TransactionController,
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
+        appConfiguration.loadingController.stopLoading()
+
         let visibleScreen = findVisibleScreen(over: rootViewController)
         visibleScreen.dismissScreen()
     }
@@ -1442,7 +1612,10 @@ extension Router {
         didRequestUserApprovalFrom ledger: String
     ) {
         let visibleScreen = findVisibleScreen(over: rootViewController)
-        let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: visibleScreen)
+        let ledgerApprovalTransition = BottomSheetTransition(
+            presentingViewController: visibleScreen,
+            interactable: false
+        )
 
         ongoingTransitions.append(ledgerApprovalTransition)
 
@@ -1450,6 +1623,16 @@ extension Router {
             .ledgerApproval(mode: .approve, deviceName: ledger),
             by: .present
         )
+
+        ledgerApprovalViewController?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .didCancel:
+                self.ledgerApprovalViewController?.dismissScreen()
+                self.appConfiguration.loadingController.stopLoading()
+            }
+        }
     }
 
     func transactionControllerDidResetLedgerOperation(

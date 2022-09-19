@@ -22,7 +22,7 @@ import UIKit
 final class NoContentWithActionCell:
     CollectionCell<NoContentWithActionView>,
     ViewModelBindable,
-    UIInteractionObservable {
+    UIInteractable {
     
     override init(
         frame: CGRect

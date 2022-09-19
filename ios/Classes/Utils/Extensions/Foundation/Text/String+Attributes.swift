@@ -18,52 +18,6 @@
 import UIKit
 
 extension String {
-    enum Attribute {
-        case textColor(UIColor)
-        case font(UIFont)
-        case letterSpacing(CGFloat)
-        case lineSpacing(CGFloat)
-    }
-    
-    func attributed(_ attributes: [Attribute] = []) -> NSAttributedString {
-        var theAttributes: [NSAttributedString.Key: Any] = [:]
-        
-        for attribute in attributes {
-            switch attribute {
-            case .textColor(let color):
-                theAttributes[.foregroundColor] = color
-            case .font(let font):
-                theAttributes[.font] = font
-            case .letterSpacing(let spacing):
-                theAttributes[.kern] = spacing
-            case .lineSpacing(let spacing):
-                let paragraphStyle = NSMutableParagraphStyle()
-                paragraphStyle.lineHeightMultiple = spacing
-                theAttributes[.paragraphStyle] = paragraphStyle
-            }
-        }
-        
-        return NSAttributedString(string: self, attributes: theAttributes)
-    }
-    
-    // MARK: - Size
-    func width(usingFont font: UIFont) -> CGFloat {
-        let fontAttributes = [NSAttributedString.Key.font: font]
-        let size = self.size(withAttributes: fontAttributes)
-        return size.width
-    }
-    
-    func height(usingFont font: UIFont) -> CGFloat {
-        let fontAttributes = [NSAttributedString.Key.font: font]
-        let size = self.size(withAttributes: fontAttributes)
-        return size.height
-    }
-    
-    func size(usingFont font: UIFont) -> CGSize {
-        let fontAttributes = [NSAttributedString.Key.font: font]
-        return self.size(withAttributes: fontAttributes)
-    }
-    
     func height(withConstrained width: CGFloat, font: UIFont) -> CGFloat {
         let constraintRect = CGSize(width: width, height: .greatestFiniteMagnitude)
         
@@ -75,32 +29,5 @@ extension String {
         )
         
         return ceil(boundingBox.height)
-    }
-}
-
-extension String {
-    typealias StringAttribute = [NSAttributedString.Key: Any]
-
-    func addAttributes(_ attributes: StringAttribute, to targetString: String) -> NSAttributedString {
-        let range = (self as NSString).range(of: targetString)
-        let attributedText = NSMutableAttributedString(string: self)
-        attributes.forEach { key, value in
-            attributedText.addAttribute(key, value: value, range: range)
-        }
-        return attributedText
-    }
-}
-
-extension NSAttributedString {
-    func appendAttributesToRange(
-        _ attributes: [NSAttributedString.Key: Any],
-        of targetString: String
-    ) -> NSAttributedString {
-        let range = (string as NSString).range(of: targetString)
-        let attributedText = NSMutableAttributedString(string: string)
-        attributes.forEach { key, value in
-            attributedText.addAttribute(key, value: value, range: range)
-        }
-        return attributedText
     }
 }

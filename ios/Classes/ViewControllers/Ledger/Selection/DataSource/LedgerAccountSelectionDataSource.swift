@@ -55,7 +55,9 @@ extension LedgerAccountSelectionDataSource {
     private func fetchRekeyedAccounts(of account: Account) {
         accountsFetchGroup.enter()
         
-        api.fetchRekeyedAccounts(account.address) { response in
+        api.fetchRekeyedAccounts(account.address) {
+            [weak self] response in
+            guard let self = self else { return }
             switch response {
             case let .success(rekeyedAccountsResponse):
                 let rekeyedAccounts = rekeyedAccountsResponse.accounts.filter { $0.authAddress != $0.address }
@@ -63,11 +65,20 @@ extension LedgerAccountSelectionDataSource {
                 rekeyedAccounts.forEach { rekeyedAccount in
                     rekeyedAccount.assets = rekeyedAccount.nonDeletedAssets()
                     rekeyedAccount.type = .rekeyed
-                    if let authAddress = rekeyedAccount.authAddress,
-                       let ledgerDetail = account.ledgerDetail {
-                        rekeyedAccount.addRekeyDetail(ledgerDetail, for: authAddress)
+
+                    /// <note> If a rekeyed account is already in the ledger accounts on the same ledger device, it should not be added to the list again.
+                    if let ledgerAccount = self.authenticatedAccountOnTheSameLedgerDevice(rekeyedAccount) {
+                        if let authAddress = ledgerAccount.authAddress,
+                           let ledgerDetail = account.ledgerDetail {
+                            ledgerAccount.addRekeyDetail(ledgerDetail, for: authAddress)
+                        }
+                    } else {
+                        if let authAddress = rekeyedAccount.authAddress,
+                           let ledgerDetail = account.ledgerDetail {
+                            rekeyedAccount.addRekeyDetail(ledgerDetail, for: authAddress)
+                        }
+                        self.accounts.append(rekeyedAccount)
                     }
-                    self.accounts.append(rekeyedAccount)
                 }
             case .failure:
                 self.delegate?.ledgerAccountSelectionDataSourceDidFailToFetch(self)
@@ -75,6 +86,10 @@ extension LedgerAccountSelectionDataSource {
             
             self.accountsFetchGroup.leave()
         }
+    }
+
+    private func authenticatedAccountOnTheSameLedgerDevice(_ rekeyedAccount: Account) -> Account? {
+        return ledgerAccounts.first { $0.address == rekeyedAccount.address }
     }
 }
 

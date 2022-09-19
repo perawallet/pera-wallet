@@ -42,11 +42,11 @@ extension ButtonStyles {
             return [
                 .title(title),
                 .titleColor([
-                    .normal(AppColors.Components.Button.Primary.text),
-                    .disabled(AppColors.Components.Button.Primary.disabledText)
+                    .normal(Colors.Button.Primary.text),
+                    .disabled(Colors.Button.Primary.disabledText)
                 ]),
                 .font(Fonts.DMSans.medium.make(15)),
-                .backgroundColor(AppColors.Components.Button.Primary.background)
+                .backgroundColor(Colors.Button.Primary.background)
             ]
         }
     }
@@ -58,11 +58,11 @@ extension ButtonStyles {
             return [
                 .title(title),
                 .titleColor([
-                    .normal(AppColors.Components.Button.Secondary.text),
-                    .disabled(AppColors.Components.Button.Secondary.disabledText)
+                    .normal(Colors.Button.Secondary.text),
+                    .disabled(Colors.Button.Secondary.disabledText)
                 ]),
                 .font(Fonts.DMSans.medium.make(15)),
-                .backgroundColor(AppColors.Components.Button.Secondary.background)
+                .backgroundColor(Colors.Button.Secondary.background)
             ]
         }
     }

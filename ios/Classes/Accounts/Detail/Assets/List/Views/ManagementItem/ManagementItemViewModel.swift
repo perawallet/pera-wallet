@@ -45,17 +45,15 @@ extension ManagementItemViewModel {
                 "accounts-title"
                     .localized
                     .bodyMedium(
-                        lineBreakMode: .byTruncatingTail,
-                        hasMultilines: false
+                        lineBreakMode: .byTruncatingTail
                     )
             )
         case .asset:
             self.title = .attributedString(
-                "accounts-title-assets"
+                "assets-title"
                     .localized
                     .bodyMedium(
-                        lineBreakMode: .byTruncatingTail,
-                        hasMultilines: false
+                        lineBreakMode: .byTruncatingTail
                     )
             )
         case .collectible(let count, _):
@@ -64,8 +62,7 @@ extension ManagementItemViewModel {
                     "title-plus-collectible-singular-count"
                         .localized(params: "\(count)")
                         .bodyMedium(
-                            lineBreakMode: .byTruncatingTail,
-                            hasMultilines: false
+                            lineBreakMode: .byTruncatingTail
                         )
                 )
                 return
@@ -75,8 +72,7 @@ extension ManagementItemViewModel {
                 "title-plus-collectible-count"
                     .localized(params: "\(count)")
                     .bodyMedium(
-                        lineBreakMode: .byTruncatingTail,
-                        hasMultilines: false
+                        lineBreakMode: .byTruncatingTail
                     )
             )
         }

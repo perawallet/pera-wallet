@@ -22,18 +22,24 @@ class WCTransactionSigner {
 
     weak var delegate: WCTransactionSignerDelegate?
 
-    private lazy var ledgerTransactionOperation = LedgerTransactionOperation(api: api)
+    private lazy var ledgerTransactionOperation =
+        LedgerTransactionOperation(api: api, analytics: analytics)
 
     private var timer: Timer?
 
     private let api: ALGAPI
+    private let analytics: ALGAnalytics
 
     private var account: Account?
     private var transaction: WCTransaction?
     private var transactionRequest: WalletConnectRequest?
 
-    init(api: ALGAPI) {
+    init(
+        api: ALGAPI,
+        analytics: ALGAnalytics
+    ) {
         self.api = api
+        self.analytics = analytics
     }
 
     func signTransaction(_ transaction: WCTransaction, with transactionRequest: WalletConnectRequest, for account: Account) {

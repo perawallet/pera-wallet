@@ -37,19 +37,19 @@ struct LedgerDeviceListViewTheme: StyleSheet, LayoutSheet {
     let horizontalInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.title = [
             .textAlignment(.center),
             .textOverflow(FittingText()),
             .font(Fonts.DMSans.medium.make(19)),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .text("ledger-device-list-looking".localized)
         ]
         self.description = [
             .textAlignment(.center),
             .textOverflow(FittingText()),
             .font(Fonts.DMSans.regular.make(15)),
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .text("tutorial-description-ledger".localized)
         ]
         if let i = img("loading-indicator") {

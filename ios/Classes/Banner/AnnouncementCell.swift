@@ -21,7 +21,7 @@ import UIKit
 class AnnouncementCell:
     CollectionCell<AnnouncementView>,
     ViewModelBindable,
-    UIInteractionObservable {
+    UIInteractable {
     private lazy var topBackgroundView = UIView()
 
     override class var contextPaddings: LayoutPaddings {
@@ -38,7 +38,7 @@ class AnnouncementCell:
 
 extension AnnouncementCell {
     private func addTopBackgroundView() {
-        topBackgroundView.backgroundColor = AppColors.Shared.Helpers.heroBackground.uiColor
+        topBackgroundView.backgroundColor = Colors.Helpers.heroBackground.uiColor
 
         contentView.insertSubview(
             topBackgroundView,

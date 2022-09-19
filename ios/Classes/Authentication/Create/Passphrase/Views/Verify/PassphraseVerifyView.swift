@@ -21,12 +21,11 @@ import MacaroonUIKit
 final class PassphraseVerifyView:
     View,
     ViewModelBindable,
-    UIInteractionObservable,
-    UIControlInteractionPublisher {
+    UIInteractable {
     weak var delegate: PassphraseVerifyViewDelegate?
     
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .next: UIControlInteraction()
+        .next: TargetActionInteraction()
     ]
 
     private lazy var titleLabel = Label()

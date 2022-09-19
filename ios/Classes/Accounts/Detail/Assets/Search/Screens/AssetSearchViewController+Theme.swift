@@ -28,7 +28,7 @@ extension AssetSearchViewController {
 
         init(_ family: LayoutFamily) {
             background = [
-                .backgroundColor(AppColors.Shared.System.background)
+                .backgroundColor(Colors.Defaults.background)
             ]
             searchInputViewTheme = SearchInputViewCommonTheme(
                 placeholder: "asset-search-placeholder".localized,

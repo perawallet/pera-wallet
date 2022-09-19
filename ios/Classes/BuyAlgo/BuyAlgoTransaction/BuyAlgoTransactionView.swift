@@ -21,11 +21,10 @@ import UIKit
 final class BuyAlgoTransactionView:
     View,
     ViewModelBindable,
-    UIInteractionObservable,
-    UIControlInteractionPublisher {
+    UIInteractable {
 
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .close: UIControlInteraction()
+        .close: TargetActionInteraction()
     ]
 
     private lazy var imageView = ImageView()

@@ -34,14 +34,14 @@ struct TransactionTextInformationViewTheme:
         self.title = [
             .textAlignment(.left),
             .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(15))
         ]
         self.minimumSpacingBetweenTitleAndDetail = 16
         self.detail = [
             .textAlignment(.left),
             .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(15))
         ]
         self.detailLabelLeadingPadding = 137

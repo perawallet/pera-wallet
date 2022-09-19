@@ -37,7 +37,7 @@ struct AddContactViewTheme: StyleSheet, LayoutSheet {
             .text("contacts-add-photo".localized),
             .textAlignment(.center),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.medium.make(18))
         ]
         self.qrButton = [

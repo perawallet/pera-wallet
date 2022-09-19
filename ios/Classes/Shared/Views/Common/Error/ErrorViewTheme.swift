@@ -34,10 +34,10 @@ struct ErrorViewTheme:
         ]
         self.iconContentEdgeInsets = (8, 0)
         self.message = [
-            .textColor(AppColors.Shared.Helpers.negative.uiColor),
+            .textColor(Colors.Helpers.negative),
             .textOverflow(FittingText())
         ]
-        self.separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
+        self.separator = Separator(color: Colors.Layer.grayLighter, size: 1)
         self.spacingBetweenMessageAndSeparator = 28
     }
 }

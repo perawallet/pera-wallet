@@ -27,12 +27,12 @@ class WCTransactionWarningView: BaseView {
         UILabel()
             .withAlignment(.left)
             .withLine(.contained)
-            .withTextColor(AppColors.Shared.Helpers.negative.uiColor)
+            .withTextColor(Colors.Helpers.negative.uiColor)
             .withFont(Fonts.DMSans.medium.make(13).uiFont)
     }()
 
     override func configureAppearance() {
-        backgroundColor = AppColors.Shared.Helpers.negativeLighter.uiColor
+        backgroundColor = Colors.Helpers.negativeLighter.uiColor
         layer.cornerRadius = 12.0
     }
 

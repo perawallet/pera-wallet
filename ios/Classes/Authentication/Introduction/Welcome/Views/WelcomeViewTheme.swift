@@ -31,21 +31,21 @@ struct WelcomeViewTheme: StyleSheet, LayoutSheet {
     let verticalInset: LayoutMetric
     
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.title = [
             .textAlignment(.left),
             .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.medium.make(32))
         ]
 
         self.termsOfConditionsLinkAttributes = [
-            .textColor(AppColors.Components.Link.primary.uiColor),
+            .textColor(Colors.Link.primary.uiColor),
             .underline(UIColor.clear),
             .font(Fonts.DMSans.medium.make(13).uiFont),
         ]
         self.termsOfConditionsAttributes = [
-            .textColor(AppColors.Components.Text.gray.uiColor),
+            .textColor(Colors.Text.gray.uiColor),
             .font(Fonts.DMSans.medium.make(13).uiFont),
             .paragraph([
                 .alignment(.center)

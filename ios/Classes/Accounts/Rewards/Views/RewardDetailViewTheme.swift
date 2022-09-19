@@ -38,24 +38,24 @@ struct RewardDetailViewTheme: StyleSheet, LayoutSheet {
     let bottomInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
-        self.separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
+        self.backgroundColor = Colors.Defaults.background
+        self.separator = Separator(color: Colors.Layer.grayLighter, size: 1)
         self.rewardsLabel = [
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
         ]
         self.rewardsValueLabel = [
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
         ]
         self.descriptionLabel = [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .isInteractable(true),
             .textOverflow(FittingText())
         ]
         self.FAQLabel = [
             .font(Fonts.DMSans.regular.make(15)),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .isInteractable(true),
             .textOverflow(FittingText())
         ]

@@ -20,12 +20,11 @@ import UIKit
 
 final class ManagementItemView:
     View,
-    UIInteractionObservable,
-    UIControlInteractionPublisher,
+    UIInteractable,
     ListReusable {
     private(set) var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
-        .primaryAction: UIControlInteraction(),
-        .secondaryAction: UIControlInteraction()
+        .primaryAction: TargetActionInteraction(),
+        .secondaryAction: TargetActionInteraction()
     ]
     
     private lazy var titleView = Label()

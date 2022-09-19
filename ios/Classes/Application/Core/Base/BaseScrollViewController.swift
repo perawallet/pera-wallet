@@ -72,15 +72,17 @@ extension BaseScrollViewController {
     }
 }
 
-extension BottomSheetPresentable where Self: BaseScrollViewController {
+extension BottomSheetScrollPresentable where Self: BaseScrollViewController {
     var modalHeight: ModalHeight {
         return .compressed
     }
 
-    var presentedScrollView: UIScrollView? {
-        return scrollView
-    }
-    var presentedScrollContentView: UIView? {
-        return contentView
+    func calculateContentAreaHeightFitting(_ targetSize: CGSize) -> CGFloat {
+        let contentSize = contentView.systemLayoutSizeFitting(
+            targetSize,
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .defaultLow
+        )
+        return contentSize.height
     }
 }

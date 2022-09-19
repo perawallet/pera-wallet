@@ -55,10 +55,6 @@ final class ReceiveCollectibleAccountListViewController:
         super.init(configuration: configuration)
     }
 
-    override func configureNavigationBarAppearance() {
-        addBarButtons()
-    }
-
     override func prepareLayout() {
         super.prepareLayout()
         build()
@@ -114,14 +110,6 @@ extension ReceiveCollectibleAccountListViewController {
 
             $0.setPaddings((.noMetric, 0, 0, 0))
         }
-    }
-
-    private func addBarButtons() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
-            self?.dismissScreen()
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
     }
 }
 
@@ -216,10 +204,7 @@ extension ReceiveCollectibleAccountListViewController {
                   }
 
             let controller = open(
-                .receiveCollectibleAssetList(
-                    account: account,
-                    dataController: ReceiveCollectibleAssetListAPIDataController(api!)
-                ),
+                .receiveCollectibleAssetList(account: account),
                 by: .push
             ) as? ReceiveCollectibleAssetListViewController
 

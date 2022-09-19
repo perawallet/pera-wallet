@@ -25,7 +25,7 @@ struct QRViewTheme: LayoutSheet, StyleSheet {
     let outputWidth: LayoutMetric
     
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.outputWidth = 240.0
     }
 }

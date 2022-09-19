@@ -23,7 +23,7 @@ struct WCSessionListViewTheme: LayoutSheet, StyleSheet {
     let contentInset: LayoutPaddings
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.cellSpacing = 32
         self.contentInset = (32, 0, 0, 0)
     }

@@ -28,7 +28,7 @@ struct CollectibleDescriptionViewTheme:
         self.paddings = (0, 0, 12, 0)
         self.description = [
             .textAlignment(.left),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .textOverflow(FittingText())
         ]
     }

@@ -281,8 +281,7 @@ extension AccountPreviewViewModel {
         primaryAccessory = .attributedString(
             accessory.bodyMedium(
                 alignment: .right,
-                lineBreakMode: .byTruncatingTail,
-                hasMultilines: false
+                lineBreakMode: .byTruncatingTail
             )
         )
     }
@@ -298,8 +297,7 @@ extension AccountPreviewViewModel {
         secondaryAccessory = .attributedString(
             accessory.footnoteRegular(
                 alignment: .right,
-                lineBreakMode: .byTruncatingTail,
-                hasMultilines: false
+                lineBreakMode: .byTruncatingTail
             )
         )
     }

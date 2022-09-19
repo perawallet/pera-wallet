@@ -22,7 +22,7 @@ import UIKit
 
 final class InvalidAccountOptionsViewController:
     BaseScrollViewController,
-    BottomSheetPresentable {
+    BottomSheetScrollPresentable {
     var uiInteractions = InvalidAccountOptionsUIInteractions()
 
     private lazy var contextView = VStackView()
@@ -51,7 +51,7 @@ final class InvalidAccountOptionsViewController:
         addBackground()
         addContext()
         addError()
-        addActions()
+        addButtons()
     }
 }
 
@@ -90,45 +90,45 @@ extension InvalidAccountOptionsViewController {
         )
     }
     
-    private func addActions() {
-        addCopyAddressAction()
-        addViewPassphraseAction()
-        addShowQrCodeAction()
+    private func addButtons() {
+        addCopyAddressButton()
+        addViewPassphraseButton()
+        addShowQrCodeButton()
     }
     
-    private func addCopyAddressAction() {
-        addAction(
-            CopyAddressListActionViewModel(account.value),
+    private func addCopyAddressButton() {
+        addButton(
+            CopyAddressListItemButtonViewModel(account.value),
             #selector(copyAddress)
         )
     }
     
-    private func addViewPassphraseAction() {
-        addAction(
-            ViewPassphraseListActionViewModel(),
+    private func addViewPassphraseButton() {
+        addButton(
+            ViewPassphraseListItemButtonViewModel(),
             #selector(viewPassphrase)
         )
     }
     
-    private func addShowQrCodeAction() {
-        addAction(
-            ShowQrCodeListActionViewModel(),
+    private func addShowQrCodeButton() {
+        addButton(
+            ShowQrCodeListItemButtonViewModel(),
             #selector(showQrCode)
         )
     }
     
-    private func addAction(
-        _ viewModel: ListActionViewModel,
+    private func addButton(
+        _ viewModel: ListItemButtonViewModel,
         _ selector: Selector
     ) {
-        let actionView = ListActionView()
+        let button = ListItemButton()
         
-        actionView.customize(theme.action)
-        actionView.bindData(viewModel)
+        button.customize(theme.action)
+        button.bindData(viewModel)
+
+        contextView.addArrangedSubview(button)
         
-        contextView.addArrangedSubview(actionView)
-        
-        actionView.addTouch(
+        button.addTouch(
             target: self,
             action: selector
         )

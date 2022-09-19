@@ -38,11 +38,11 @@ struct BannerViewTheme: LayoutSheet, StyleSheet {
 
         backgroundShadow =
         MacaroonUIKit.Shadow(
-            color: AppColors.Shared.Helpers.negative.uiColor,
+            color: Colors.Alert.negative.uiColor,
+            fillColor: Colors.Alert.negative.uiColor,
             opacity: 0.2,
             offset: (0, 8),
             radius: 20,
-            fillColor: AppColors.Shared.Helpers.negative.uiColor,
             cornerRadii: (12, 12),
             corners: .allCorners
         )
@@ -55,11 +55,11 @@ struct BannerViewTheme: LayoutSheet, StyleSheet {
         
         title = [
             .textOverflow(FittingText()),
-            .textColor(AppColors.Shared.System.background)
+            .textColor(Colors.Alert.content)
         ]
         message = [
             .textOverflow(FittingText()),
-            .textColor(AppColors.Shared.System.background)
+            .textColor(Colors.Alert.content)
         ]
         messageContentEdgeInsets = (4, 0, 0, 0)
     }
@@ -69,46 +69,46 @@ extension BannerViewTheme {
     mutating func configureForInfo() {
         backgroundShadow =
         MacaroonUIKit.Shadow(
-            color: rgba(0.0, 0.0, 0.0, 0.1),
-            opacity: 1,
+            color: Colors.Toast.background.uiColor,
+            fillColor: Colors.Toast.background.uiColor,
+            opacity: 0.2,
             offset: (0, 8),
             radius: 20,
-            fillColor: AppColors.Components.Banner.infoBackground.uiColor,
             cornerRadii: (12, 12),
             corners: .allCorners
         )
 
-        title = title.modify([ .textColor(AppColors.Shared.Global.white) ])
-        message = message.modify([ .textColor(AppColors.Shared.Global.white) ])
+        title = title.modify([ .textColor(Colors.Toast.title) ])
+        message = message.modify([ .textColor(Colors.Toast.description) ])
     }
 
     mutating func configureForNotification() {
         backgroundShadow = MacaroonUIKit.Shadow(
-            color: rgba(0.0, 0.0, 0.0, 0.1),
-            opacity: 1,
+            color: UIColor.black,
+            fillColor: Colors.Defaults.background.uiColor,
+            opacity: 0.08,
             offset: (0, 8),
             radius: 20,
-            fillColor: AppColors.Shared.System.background.uiColor,
             cornerRadii: (12, 12),
             corners: .allCorners
         )
 
-        title = title.modify([ .textColor(AppColors.Components.Text.main) ])
-        message = message.modify([ .textColor(AppColors.Components.Text.main) ])
+        title = title.modify([ .textColor(Colors.Text.main) ])
+        message = message.modify([ .textColor(Colors.Text.gray) ])
     }
 
     mutating func configureForSuccess() {
         backgroundShadow = MacaroonUIKit.Shadow(
-            color: rgba(0.0, 0.0, 0.0, 0.1),
-            opacity: 1,
+            color: Colors.Alert.positive.uiColor,
+            fillColor: Colors.Alert.positive.uiColor,
+            opacity: 0.2,
             offset: (0, 8),
             radius: 20,
-            fillColor: AppColors.Components.Link.icon.uiColor,
             cornerRadii: (12, 12),
             corners: .allCorners
         )
 
-        title = title.modify([ .textColor(AppColors.Shared.System.background) ])
-        message = message.modify([ .textColor(AppColors.Shared.System.background) ])
+        title = title.modify([ .textColor(Colors.Alert.content) ])
+        message = message.modify([ .textColor(Colors.Alert.content) ])
     }
 }

@@ -24,18 +24,18 @@ struct InvalidAccountOptionsViewControllerTheme:
     var background: ViewStyle
     var contentPaddings: LayoutPaddings
     var error: ErrorViewTheme
-    var action: ListActionViewTheme
+    var action: ListItemButtonTheme
     var spacingBetweenErrorAndAction: LayoutMetric
 
     init(
         _ family: LayoutFamily
     ) {
         self.background = [
-            .backgroundColor(AppColors.Shared.System.background)
+            .backgroundColor(Colors.Defaults.background)
         ]
         self.contentPaddings = (24, 24, 16, 24)
         self.error = ErrorViewTheme(family)
-        self.action = ListActionViewTheme(family)
+        self.action = ListItemButtonTheme(family)
         self.spacingBetweenErrorAndAction = 16
     }
 }

@@ -123,7 +123,7 @@ class WCAlgosTransactionViewModel {
 
         let amountViewModel = TransactionAmountViewModel(
             .normal(
-                amount: senderAccount.amount.toAlgos,
+                amount: senderAccount.algo.amount.toAlgos,
                 isAlgos: true,
                 fraction: algosFraction,
                 assetSymbol: "ALGO"

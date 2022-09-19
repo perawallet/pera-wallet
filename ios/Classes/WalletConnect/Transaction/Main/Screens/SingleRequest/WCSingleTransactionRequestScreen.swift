@@ -19,21 +19,13 @@ import Foundation
 import UIKit
 import MacaroonUIKit
 
-protocol WCSingleTransactionRequestScreenDelegate: AnyObject {
-    func wcSingleTransactionRequestScreenDidConfirm(
-        _ wcSingleTransactionRequestScreen: WCSingleTransactionRequestScreen
-    )
-    func wcSingleTransactionRequestScreenDidReject(
-        _ wcSingleTransactionRequestScreen: WCSingleTransactionRequestScreen
-    )
-}
-
-final class WCSingleTransactionRequestScreen:
-    BaseViewController {
-    
+final class WCSingleTransactionRequestScreen: BaseViewController {
     weak var delegate: WCSingleTransactionRequestScreenDelegate?
     var isScrollEnabled: Bool = true
     lazy var scrollView: UIScrollView = UIScrollView()
+
+    /// <todo> This should be refactored while this screen is on refactor process.
+    private var assetDecoration: AssetDecoration?
 
     private lazy var requestView = WCSingleTransactionRequestView()
     private lazy var viewModel: WCSingleTransactionRequestViewModel? = {
@@ -120,6 +112,8 @@ final class WCSingleTransactionRequestScreen:
         super.configureNavigationBarAppearance()
 
         title = viewModel?.title
+
+        hidesCloseBarButtonItem = true
     }
 
     override func prepareLayout() {
@@ -161,6 +155,7 @@ extension WCSingleTransactionRequestScreen {
             return
         }
 
+        self.assetDecoration = assetDecoration
         if assetDecoration.isCollectible {
             let asset = CollectibleAsset(asset: ALGAsset(id: assetId), decoration: assetDecoration)
             self.viewModel?.middleView?.asset = asset
@@ -202,22 +197,63 @@ extension WCSingleTransactionRequestScreen {
 }
 
 extension WCSingleTransactionRequestScreen: WCSingleTransactionRequestViewDelegate {
-    func wcSingleTransactionRequestViewDidTapCancel(_ requestView: WCSingleTransactionRequestView) {
+    func wcSingleTransactionRequestViewDidTapCancel(
+        _ requestView: WCSingleTransactionRequestView
+    ) {
         delegate?.wcSingleTransactionRequestScreenDidReject(self)
     }
 
-    func wcSingleTransactionRequestViewDidTapConfirm(_ requestView: WCSingleTransactionRequestView) {
+    func wcSingleTransactionRequestViewDidTapConfirm(
+        _ requestView: WCSingleTransactionRequestView
+    ) {
         delegate?.wcSingleTransactionRequestScreenDidConfirm(self)
     }
 
-    func wcSingleTransactionRequestViewDidTapShowTransaction(_ requestView: WCSingleTransactionRequestView) {
+    func wcSingleTransactionRequestViewDidTapShowTransaction(
+        _ requestView: WCSingleTransactionRequestView
+    ) {
         guard let transaction = transactions.first else {
             return
         }
 
         presentSingleWCTransaction(transaction, with: dataSource.transactionRequest)
+    }
 
+    func wcSingleTransactionRequestViewDidOpenASADiscovery(
+        _ requestView: WCSingleTransactionRequestView
+    ) {
+        openASADiscovery()
+    }
+
+    private func openASADiscovery() {
+        guard let asset = assetDecoration else {
+            return
+        }
+
+        let screen = Screen.asaDiscovery(
+            account: nil,
+            quickAction: nil,
+            asset: asset
+        ) { event in
+            switch event {
+            case .didOptInToAsset: break
+            case .didOptOutFromAsset: break
+            }
+        }
+        open(
+            screen,
+            by: .present
+        )
     }
 }
 
 extension WCSingleTransactionRequestScreen: WalletConnectSingleTransactionRequestPresentable { }
+
+protocol WCSingleTransactionRequestScreenDelegate: AnyObject {
+    func wcSingleTransactionRequestScreenDidConfirm(
+        _ wcSingleTransactionRequestScreen: WCSingleTransactionRequestScreen
+    )
+    func wcSingleTransactionRequestScreenDidReject(
+        _ wcSingleTransactionRequestScreen: WCSingleTransactionRequestScreen
+    )
+}

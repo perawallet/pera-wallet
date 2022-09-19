@@ -44,7 +44,7 @@ final class TransactionDetailViewModel: ViewModel {
     private(set) var rewardViewMode: TransactionAmountView.Mode?
 
     init(
-        transactionType: TransactionType,
+        transactionType: TransferType,
         transaction: Transaction,
         account: Account,
         assetDetail: StandardAsset?

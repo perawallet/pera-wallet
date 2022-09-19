@@ -47,56 +47,56 @@ extension SendTransactionScreen {
         let labelsContainerBottomInset: LayoutMetric
 
         init(_ family: LayoutFamily) {
-            backgroundColor = AppColors.Shared.System.background.uiColor
+            backgroundColor = Colors.Defaults.background.uiColor
             nextButtonStyle = ButtonPrimaryTheme(family)
             valueLabelStyle = [
-                .textColor(AppColors.Components.Text.main),
+                .textColor(Colors.Text.main),
                 .font(Fonts.DMMono.regular.make(36)),
                 .textAlignment(.center),
                 .textOverflow(SingleLineFittingText())
             ]
             currencyValueLabelStyle = [
-                .textColor(AppColors.Components.Button.TransactionShadow.text),
+                .textColor(Colors.Text.gray),
                 .font(Fonts.DMMono.regular.make(15)),
                 .textAlignment(.center),
                 .textOverflow(SingleLineFittingText())
             ]
             disabledValueLabelStyle = [
-                .textColor(AppColors.Components.Text.grayLighter),
+                .textColor(Colors.Text.grayLighter),
                 .font(Fonts.DMMono.regular.make(36)),
                 .textAlignment(.center),
                 .textOverflow(SingleLineFittingText())
             ]
 
             accountContainerCorner = Corner(radius: 4)
-            accountContainerBorder = Border(color: AppColors.SendTransaction.Shadow.first.uiColor, width: 1)
+            accountContainerBorder = Border(color: Colors.Shadows.Cards.shadow1.uiColor, width: 1)
 
             accountContainerFirstShadow = MacaroonUIKit.Shadow(
-                color: AppColors.SendTransaction.Shadow.first.uiColor,
+                color: Colors.Shadows.Cards.shadow1.uiColor,
+                fillColor: Colors.Defaults.background.uiColor,
                 opacity: 1,
                 offset: (0, 2),
                 radius: 4,
-                fillColor: AppColors.Shared.System.background.uiColor,
                 cornerRadii: (4, 4),
                 corners: .allCorners
             )
 
             accountContainerSecondShadow = MacaroonUIKit.Shadow(
-                color: AppColors.SendTransaction.Shadow.second.uiColor,
+                color: Colors.Shadows.Cards.shadow2.uiColor,
+                fillColor: Colors.Defaults.background.uiColor,
                 opacity: 1,
                 offset: (0, 2),
                 radius: 4,
-                fillColor: AppColors.Shared.System.background.uiColor,
                 cornerRadii: (4, 4),
                 corners: .allCorners
             )
 
             accountContainerThirdShadow = MacaroonUIKit.Shadow(
-                color: AppColors.SendTransaction.Shadow.third.uiColor,
+                color: Colors.Shadows.Cards.shadow3.uiColor,
+                fillColor: Colors.Defaults.background.uiColor,
                 opacity: 1,
                 offset: (0, 0),
                 radius: 0,
-                fillColor: AppColors.Shared.System.background.uiColor,
                 cornerRadii: (4, 4),
                 corners: .allCorners
             )

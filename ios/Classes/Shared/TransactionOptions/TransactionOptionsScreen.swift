@@ -22,7 +22,7 @@ import UIKit
 
 final class TransactionOptionsScreen:
     BaseScrollViewController,
-    BottomSheetPresentable {
+    BottomSheetScrollPresentable {
 
     weak var delegate: TransactionOptionsScreenDelegate?
 
@@ -30,7 +30,7 @@ final class TransactionOptionsScreen:
         return false
     }
 
-    private lazy var contextView = TransactionOptionsContextView(actions: [.buyAlgo, .send, .receive, .more])
+    private lazy var contextView = TransactionOptionsContextView(actions: [.buyAlgo, .send, .receive, .addAsset, .more])
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,7 +40,7 @@ final class TransactionOptionsScreen:
     override func configureAppearance() {
         super.configureAppearance()
 
-        view.customizeAppearance([.backgroundColor(AppColors.Shared.System.background)])
+        view.customizeAppearance([.backgroundColor(Colors.Defaults.background)])
     }
 
     private func build() {
@@ -50,7 +50,7 @@ final class TransactionOptionsScreen:
     override func linkInteractors() {
         super.linkInteractors()
 
-        contextView.observe(event: .buyAlgo) {
+        contextView.startObserving(event: .buyAlgo) {
             [weak self] in
             guard let self = self else {
                 return
@@ -59,7 +59,7 @@ final class TransactionOptionsScreen:
             self.delegate?.transactionOptionsScreenDidBuyAlgo(self)
         }
 
-        contextView.observe(event: .send) {
+        contextView.startObserving(event: .send) {
             [weak self] in
             guard let self = self else {
                 return
@@ -68,7 +68,7 @@ final class TransactionOptionsScreen:
             self.delegate?.transactionOptionsScreenDidSend(self)
         }
 
-        contextView.observe(event: .receive) {
+        contextView.startObserving(event: .receive) {
             [weak self] in
             guard let self = self else {
                 return
@@ -77,7 +77,13 @@ final class TransactionOptionsScreen:
             self.delegate?.transactionOptionsScreenDidReceive(self)
         }
 
-        contextView.observe(event: .more) {
+        contextView.startObserving(event: .addAsset) {
+            [unowned self] in
+
+            self.delegate?.transactionOptionsScreenDidAddAsset(self)
+        }
+
+        contextView.startObserving(event: .more) {
             [weak self] in
             guard let self = self else {
                 return
@@ -109,7 +115,6 @@ protocol TransactionOptionsScreenDelegate: AnyObject {
     func transactionOptionsScreenDidBuyAlgo(
         _ transactionOptionsScreen: TransactionOptionsScreen
     )
-
     func transactionOptionsScreenDidSend(
         _ transactionOptionsScreen: TransactionOptionsScreen
     )
@@ -117,7 +122,9 @@ protocol TransactionOptionsScreenDelegate: AnyObject {
     func transactionOptionsScreenDidReceive(
         _ transactionOptionsScreen: TransactionOptionsScreen
     )
-
+    func transactionOptionsScreenDidAddAsset(
+        _ transactionOptionsScreen: TransactionOptionsScreen
+    )
     func transactionOptionsScreenDidMore(
         _ transactionOptionsScreen: TransactionOptionsScreen
     )

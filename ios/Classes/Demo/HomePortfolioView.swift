@@ -22,11 +22,10 @@ import UIKit
 final class HomePortfolioView:
     View,
     ViewModelBindable,
-    UIInteractionObservable,
-    UIControlInteractionPublisher,
+    UIInteractable,
     ListReusable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .showInfo: UIControlInteraction()
+        .showInfo: TargetActionInteraction()
     ]
 
     private(set) lazy var titleView = Label()

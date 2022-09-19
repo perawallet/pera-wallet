@@ -58,6 +58,6 @@ extension AlgoAccountViewModel {
         currencyFormatter.formattingContext = .listItem
         currencyFormatter.currency = AlgoLocalCurrency()
 
-        amount = currencyFormatter.format(account.amount.toAlgos)
+        amount = currencyFormatter.format(account.algo.amount.toAlgos)
     }
 }

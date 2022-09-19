@@ -38,22 +38,22 @@ struct RangeSelectionViewTheme: StyleSheet, LayoutSheet {
             .isInteractable(false),
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.grayLighter),
             .font(Fonts.DMSans.regular.make(13)),
         ]
         self.dateLabel = [
             .isInteractable(false),
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMSans.medium.make(15)),
+            .textColor(Colors.Text.main),
+            .font(Fonts.DMSans.regular.make(15)),
         ]
         self.focusIndicator = [
             .isInteractable(false),
-            .backgroundColor(AppColors.Components.Text.main)
+            .backgroundColor(Colors.Text.main)
         ]
-        self.focusIndicatorViewSelectedColor = AppColors.Components.Text.main
-        self.focusIndicatorViewDefaultColor = AppColors.Shared.Layer.gray
+        self.focusIndicatorViewSelectedColor = Colors.Text.main
+        self.focusIndicatorViewDefaultColor = Colors.Layer.gray
 
         self.intrinsicContentSize = (UIView.noIntrinsicMetric, 53.5)
         self.imageViewSize = (24, 24)

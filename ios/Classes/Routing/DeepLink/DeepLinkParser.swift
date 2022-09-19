@@ -62,15 +62,9 @@ extension DeepLinkParser {
         else {
             return .failure(.waitingForAccountsToBeAvailable)
         }
-        
-        let draft = AlgoTransactionListing(
-            accountHandle: account
-        )
 
-        var preferences = BaseAssetDetailViewController.Preferences()
-        preferences.showsAccountActionsMenu = false
-
-        return .success(.algosDetail(draft: draft, preferences: preferences))
+        let rawAccount = account.value
+        return .success(.asaDetail(account: rawAccount, asset: rawAccount.algo))
     }
     
     private func makeAssetTransactionDetailScreen(
@@ -94,16 +88,8 @@ extension DeepLinkParser {
         guard let asset = account.value[assetId] as? StandardAsset else {
             return .failure(.waitingForAssetsToBeAvailable)
         }
-        
-        let draft = AssetTransactionListing(
-            accountHandle: account,
-            asset: asset
-        )
 
-        var preferences = BaseAssetDetailViewController.Preferences()
-        preferences.showsAccountActionsMenu = false
-
-        return .success(.assetDetail(draft: draft, preferences: preferences))
+        return .success(.asaDetail(account: account.value, asset: asset))
     }
     
     private func makeAssetTransactionRequestScreen(
@@ -124,7 +110,7 @@ extension DeepLinkParser {
             return .failure(.waitingForAccountsToBeAvailable)
         }
         
-        let accountName = account.value.name.someString
+        let accountName = account.value.name ?? accountAddress
         let draft = AssetAlertDraft(
             account: account.value,
             assetId: assetId,
@@ -318,14 +304,7 @@ extension DeepLinkParser {
             draft: AssetAlertDraft,
             theme: AssetActionConfirmationViewControllerTheme = .init()
         )
-        case algosDetail(
-            draft: TransactionListing,
-            preferences: BaseAssetDetailViewController.Preferences
-        )
-        case assetDetail(
-            draft: TransactionListing,
-            preferences: BaseAssetDetailViewController.Preferences
-        )
+        case asaDetail(account: Account, asset: Asset)
         case sendTransaction(
             draft: QRSendTransactionDraft,
             shouldFilterAccount: ((Account) -> Bool)? = nil

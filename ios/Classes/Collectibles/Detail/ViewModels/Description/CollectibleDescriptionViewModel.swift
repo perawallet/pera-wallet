@@ -37,18 +37,9 @@ extension CollectibleDescriptionViewModel {
             return
         }
 
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-
         description = .attributedString(
-            aDescription.attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineBreakMode(.byWordWrapping),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ])
+            aDescription
+                .bodyRegular()
         )
     }
 }

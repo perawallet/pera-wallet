@@ -24,7 +24,7 @@ extension AccountNameSetupViewController {
 
         init(_ family: LayoutFamily) {
             self.accountNameSetupViewViewTheme = AccountNameSetupViewTheme()
-            self.backgroundColor = AppColors.Shared.System.background
+            self.backgroundColor = Colors.Defaults.background
         }
     }
 }

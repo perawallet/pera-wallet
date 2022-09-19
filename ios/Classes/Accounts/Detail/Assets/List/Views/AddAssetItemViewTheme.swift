@@ -29,7 +29,7 @@ struct AddAssetItemViewTheme: StyleSheet, LayoutSheet {
             .icon([.normal("add-icon-40")]),
             .font(Fonts.DMSans.regular.make(15)),
             .title("title-add-asset".localized),
-            .titleColor([.normal(AppColors.Components.Text.main)])
+            .titleColor([.normal(Colors.Text.main)])
         ]
 
         self.iconLeadingInset = 24

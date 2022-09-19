@@ -20,22 +20,23 @@ import MacaroonUIKit
 struct AssetActionConfirmationViewControllerTheme:
     LayoutSheet,
     StyleSheet {
-    let backgroundColor: Color
-    var assetActionConfirmationViewTheme: AssetActionConfirmationViewTheme
+    var loading: AssetActionConfirmationLoadingViewTheme
+    var context: AssetActionConfirmationViewTheme
+
+    let background: ViewStyle
 
     init(_ family: LayoutFamily) {
-        backgroundColor = AppColors.Shared.System.background
-        assetActionConfirmationViewTheme = AssetActionConfirmationViewTheme()
+        self.background = [
+            .backgroundColor(Colors.Defaults.background)
+        ]
+        self.loading = AssetActionConfirmationLoadingViewTheme()
+        self.context = AssetActionConfirmationViewTheme()
     }
 
     static let secondaryActionOnly: AssetActionConfirmationViewControllerTheme = {
         var theme = AssetActionConfirmationViewControllerTheme()
-
-        var viewTheme = AssetActionConfirmationViewTheme()
-        viewTheme.configureForSecondaryActionOnly()
-
-        theme.assetActionConfirmationViewTheme = viewTheme
-
+        theme.loading.spacingBetweenPrimaryAndSecondaryAction = 0
+        theme.context.buttonInset = 0
         return theme
     }()
 }

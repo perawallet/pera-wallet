@@ -32,7 +32,7 @@ struct WCSingleTransactionRequestViewTheme: StyleSheet, LayoutSheet {
     let separator: Separator
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.confirmButton = ButtonPrimaryTheme(family)
         self.cancelButton = ButtonSecondaryTheme(family)
         self.buttonPadding = 20
@@ -41,6 +41,6 @@ struct WCSingleTransactionRequestViewTheme: StyleSheet, LayoutSheet {
         self.buttonHeight = 52
         self.bottomHeight = 109
         self.bottomViewBottomOffset = -35
-        self.separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
+        self.separator = Separator(color: Colors.Layer.grayLighter.uiColor, size: 1)
     }
 }

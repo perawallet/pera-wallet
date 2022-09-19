@@ -24,12 +24,14 @@ extension LedgerAccountDetailViewController {
         let sectionInset: LayoutPaddings
         let headerSize: LayoutSize
         let cellSize: LayoutSize
+        let assetCellSize: LayoutSize
 
         init(_ family: LayoutFamily) {
-            backgroundColor = AppColors.Shared.System.background
+            backgroundColor = Colors.Defaults.background
             sectionInset = (0, 24, 32, 24)
             headerSize = (UIScreen.main.bounds.width, 24)
             cellSize = (UIScreen.main.bounds.width - 48, 72)
+            assetCellSize = (UIScreen.main.bounds.width, 72)
         }
     }
 }

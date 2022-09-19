@@ -43,34 +43,34 @@ struct TransactionTutorialViewTheme: StyleSheet, LayoutSheet {
     let spacingBetweenSecondInstructionViewAndSeparator: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.image = [
             .image("icon-info-green")
         ]
         self.title = [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .textOverflow(FittingText()),
         ]
         self.subtitle = [
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .textOverflow(FittingText()),
         ]
         self.tapToMore = [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(13)),
             .textAlignment(.center),
             .textOverflow(FittingText()),
         ]
         self.actionButton = [
             .title("title-i-understand".localized),
-            .titleColor([ .normal(AppColors.Components.Button.Secondary.text) ]),
+            .titleColor([ .normal(Colors.Button.Secondary.text) ]),
             .font(Fonts.DMSans.medium.make(15)),
-            .backgroundColor(AppColors.Components.Button.Secondary.background)
+            .backgroundColor(Colors.Button.Secondary.background)
         ]
         self.smallerInstuctionViewTheme = SmallerInstructionItemViewTheme()
         self.actionButtonContentEdgeInsets = (14, 0, 14, 0)
         self.actionButtonCorner = Corner(radius: 4)
-        self.separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
+        self.separator = Separator(color: Colors.Layer.grayLighter, size: 1)
 
         self.buttonTopInset = 20
         self.horizontalInset = 24

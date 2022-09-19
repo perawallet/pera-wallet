@@ -28,7 +28,7 @@ extension PassphraseBackUpViewController {
 
         init(_ family: LayoutFamily) {
             passphraseBackUpViewTheme = PassphraseBackUpViewTheme()
-            backgroundColor = AppColors.Shared.System.background
+            backgroundColor = Colors.Defaults.background
             modalSize = (UIScreen.main.bounds.width, 338)
             cellHeight = 24
         }

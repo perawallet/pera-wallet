@@ -35,40 +35,22 @@ extension NoInternetConnectionViewModel {
     }
     
     private mutating func bindTitle() {
-        let font = Fonts.DMSans.medium.make(19)
-        let lineHeightMultiplier = 1.13
-
         title = .attributedString(
             "internet-connection-error-title"
                 .localized
-                .attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(.center),
-                    .lineBreakMode(.byWordWrapping),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ])
+                .bodyLargeMedium(
+                    alignment: .center
+                )
         )
     }
 
     private mutating func bindBody() {
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-
         body = .attributedString(
             "internet-connection-error-detail"
                 .localized
-                .attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(.center),
-                    .lineBreakMode(.byWordWrapping),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ])
+                .bodyRegular(
+                    alignment: .center
+                )
         )
     }
 }

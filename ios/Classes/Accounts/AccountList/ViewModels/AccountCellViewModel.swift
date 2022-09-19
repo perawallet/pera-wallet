@@ -66,7 +66,7 @@ extension AccountCellViewModel {
             currencyFormatter.formattingContext = .listItem
             currencyFormatter.currency = AlgoLocalCurrency()
 
-            detail = currencyFormatter.format(account.amount.toAlgos)
+            detail = currencyFormatter.format(account.algo.amount.toAlgos)
         case let .transactionSender(assetDetail),
             let .transactionReceiver(assetDetail),
             let .contact(assetDetail):
@@ -78,13 +78,13 @@ extension AccountCellViewModel {
                 let amountText = currencyFormatter.format(amount)
                 let amountAttributedText = amountText.someString.attributed(
                     [
-                        .textColor(AppColors.Components.Text.main.uiColor),
+                        .textColor(Colors.Text.main),
                         .font(Fonts.DMMono.regular.make(15).uiFont)
                     ]
                 )
                 let codeText = " (\(assetDetail.unitNameRepresentation))".attributed(
                     [
-                        .textColor(AppColors.Components.Text.grayLighter.uiColor),
+                        .textColor(Colors.Text.grayLighter),
                         .font(Fonts.DMSans.regular.make(13).uiFont)
                     ]
                 )
@@ -93,7 +93,7 @@ extension AccountCellViewModel {
                 currencyFormatter.formattingContext = .listItem
                 currencyFormatter.currency = AlgoLocalCurrency()
 
-                detail = currencyFormatter.format(account.amount.toAlgos)
+                detail = currencyFormatter.format(account.algo.amount.toAlgos)
             }
         }
     }

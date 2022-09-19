@@ -21,7 +21,7 @@ import UIKit
 final class CollectibleDetailActionCell:
     CollectionCell<CollectibleDetailActionView>,
     ViewModelBindable,
-    UIInteractionObservable {
+    UIInteractable {
     static let theme = CollectibleDetailActionViewTheme()
 
     override init(

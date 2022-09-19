@@ -33,12 +33,12 @@ struct CollectibleMediaImagePreviewViewTheme:
     ) {
         image = URLImageViewCollectibleMediaTheme()
         overlay = [
-            .backgroundColor(AppColors.Shared.System.background)
+            .backgroundColor(Colors.Defaults.background)
         ]
 
         fullScreenBadge = [
             .image("icon-full-screen"),
-            .backgroundColor(UIColor(red: 0.09, green: 0.09, blue: 0.11, alpha: 0.6)),
+            .backgroundColor(Colors.NFTIcon.iconBackground),
             .contentMode(.center)
         ]
         fullScreenBadgeContentEdgeInsets = (8, 8)
@@ -68,11 +68,11 @@ struct URLImageViewCollectibleMediaTheme:
 
         init() {
             background = [
-                .backgroundColor(AppColors.Shared.Layer.grayLighter)
+                .backgroundColor(Colors.Layer.grayLighter)
             ]
             image = []
             text = [
-                .textColor(AppColors.Components.Text.gray),
+                .textColor(Colors.Text.gray),
                 .textOverflow(FittingText())
             ]
         }

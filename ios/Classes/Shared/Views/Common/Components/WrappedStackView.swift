@@ -36,7 +36,7 @@ class WrappedStackView: BaseView {
     
     override func configureAppearance() {
         super.configureAppearance()
-        containerView.backgroundColor = AppColors.Shared.System.background.uiColor
+        containerView.backgroundColor = Colors.Defaults.background.uiColor
     }
     
     override func prepareLayout() {

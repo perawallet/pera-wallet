@@ -31,14 +31,14 @@ struct RekeyTransitionItemViewTheme: StyleSheet, LayoutSheet {
             .contentMode(.scaleAspectFit)
         ]
         self.title = [
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.center),
             .textOverflow(FittingText()),
             .text("ledger-approval-title".localized)
         ]
         self.value = [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.medium.make(19)),
             .textAlignment(.center),
             .textOverflow(FittingText())

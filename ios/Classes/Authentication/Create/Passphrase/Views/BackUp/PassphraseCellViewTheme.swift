@@ -30,13 +30,13 @@ struct PassphraseCellViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = UIColor.clear
         self.numberLabel = [
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .font(Fonts.DMMono.regular.make(13)),
             .textAlignment(.right),
             .textOverflow(SingleLineFittingText())
         ]
         self.phraseLabel = [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),
             .textOverflow(FittingText())

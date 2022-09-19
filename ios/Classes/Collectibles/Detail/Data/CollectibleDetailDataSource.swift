@@ -106,9 +106,9 @@ final class CollectibleDetailDataSource: UICollectionViewDiffableDataSource<Coll
             }
         }
 
-        supplementaryViewProvider = { collectionView, kind, indexPath in
-            guard let section = CollectibleDetailSection(rawValue: indexPath.section),
-                  kind == UICollectionView.elementKindSectionHeader else {
+        supplementaryViewProvider = {
+            [weak self] collectionView, kind, indexPath in
+            guard let section = self?.snapshot().sectionIdentifiers[safe: indexPath.section] else {
                 return nil
             }
 

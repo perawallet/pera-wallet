@@ -27,7 +27,7 @@ final class NavigationContainer: MacaroonUIKit.NavigationContainer {
     override func customizeViewAppearance() {
         view.customizeAppearance(
             [
-                .backgroundColor(AppColors.Shared.System.background)
+                .backgroundColor(Colors.Defaults.background)
             ]
         )
     }
@@ -37,22 +37,22 @@ extension NavigationContainer {
     func customizeNavigationBarDefaultAppearance() {
         let titleAttributeGroup: TextAttributeGroup = [
             .font(Fonts.DMSans.medium.make(15)),
-            .textColor(AppColors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
         let largeTitleAttributeGroup: TextAttributeGroup = [
             .font(Fonts.DMSans.medium.make(32)),
-            .textColor(AppColors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
 
         navigationBar.customizeAppearance(
             [
-                .backgroundColor(AppColors.Shared.System.background),
+                .backgroundColor(Colors.Defaults.background),
                 .backImage("icon-back"),
                 .isOpaque(true),
                 .largeTitleAttributes(largeTitleAttributeGroup.asSystemAttributes()),
                 .shadowImage(UIImage()),
                 .shadowColor(nil),
-                .tintColor(AppColors.Components.Text.main),
+                .tintColor(Colors.Text.main),
                 .titleAttributes(titleAttributeGroup.asSystemAttributes())
             ]
         )
@@ -61,22 +61,22 @@ extension NavigationContainer {
     func customizeNavigationBarHighlightedAppearance() {
         let titleAttributeGroup: TextAttributeGroup = [
             .font(Fonts.DMSans.medium.make(15)),
-            .textColor(AppColors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
         let largeTitleAttributeGroup: TextAttributeGroup = [
             .font(Fonts.DMSans.medium.make(32)),
-            .textColor(AppColors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
 
         navigationBar.customizeAppearance(
             [
-                .backgroundColor(AppColors.Shared.Helpers.heroBackground),
+                .backgroundColor(Colors.Helpers.heroBackground),
                 .backImage("icon-back"),
                 .isOpaque(true),
                 .largeTitleAttributes(largeTitleAttributeGroup.asSystemAttributes()),
                 .shadowImage(UIImage()),
                 .shadowColor(nil),
-                .tintColor(AppColors.Components.Text.main),
+                .tintColor(Colors.Text.main),
                 .titleAttributes(titleAttributeGroup.asSystemAttributes())
             ]
         )

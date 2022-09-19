@@ -32,17 +32,6 @@ final class NotificationFilterViewController: BaseViewController {
 
     private lazy var listLayout = NotificationFilterListLayout(dataSource: dataSource)
 
-    private let flow: Flow
-
-    init(flow: Flow, configuration: ViewControllerConfiguration) {
-        self.flow = flow
-        super.init(configuration: configuration)
-    }
-
-    override func configureNavigationBarAppearance() {
-        addBarButtons()
-    }
-
     override func configureAppearance() {
         super.configureAppearance()
         title = "notifications-title".localized
@@ -60,20 +49,6 @@ final class NotificationFilterViewController: BaseViewController {
             $0.top.safeEqualToTop(of: self)
             $0.leading.trailing.bottom.equalToSuperview()
         }
-    }
-}
-
-extension NotificationFilterViewController {
-    private func addBarButtons() {
-        if flow != .notifications {
-            return
-        }
-
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
-            self.closeScreen(by: .dismiss, animated: true)
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
     }
 }
 
@@ -100,11 +75,8 @@ extension NotificationFilterViewController: NotificationFilterDataSourceDelegate
     ) {
         loadingController?.stopLoading()
         updateAccount(account)
-        log(
-            NotificationFilterChangeEvent(
-                isReceivingNotifications: account.value.receivesNotification,
-                address: account.value.address
-            )
+        analytics.track(
+            .changeNotificationFilter(account: account.value)
         )
     }
 
@@ -180,12 +152,5 @@ extension NotificationFilterViewController {
               }
 
         cell.bindData(AccountNameSwitchViewModel(account.value))
-    }
-}
-
-extension NotificationFilterViewController {
-    enum Flow {
-        case notifications
-        case settings
     }
 }

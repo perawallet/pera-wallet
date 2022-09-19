@@ -42,18 +42,9 @@ extension CollectibleMediaErrorViewModel {
     private mutating func bindMessage(
         _ error: CollectibleMediaError
     ) {
-        let font = Fonts.DMSans.medium.make(13)
-        let lineHeightMultiplier = 1.18
-
         message = .attributedString(
-            error.message.attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineBreakMode(.byWordWrapping),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ])
+            error.message
+                .footnoteMedium()
         )
     }
 }

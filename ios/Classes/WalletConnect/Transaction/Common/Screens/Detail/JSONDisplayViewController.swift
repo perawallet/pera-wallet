@@ -35,13 +35,12 @@ class JSONDisplayViewController: BaseScrollViewController {
     }
 
     override func configureNavigationBarAppearance() {
-        addCloseBarButtonItem()
         addCopyBarButtonItem()
     }
 
     override func configureAppearance() {
         super.configureAppearance()
-        view.backgroundColor = AppColors.Shared.System.background.uiColor
+        view.backgroundColor = Colors.Defaults.background.uiColor
         title = screenTitle
     }
 
@@ -57,14 +56,6 @@ class JSONDisplayViewController: BaseScrollViewController {
 }
 
 extension JSONDisplayViewController {
-    private func addCloseBarButtonItem() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
-            self.closeScreen(by: .dismiss, animated: true)
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
-    }
-
     private func addCopyBarButtonItem() {
         let copyBarButtonItem = ALGBarButtonItem(kind: .copy) { [unowned self] in
             self.copyJSON()

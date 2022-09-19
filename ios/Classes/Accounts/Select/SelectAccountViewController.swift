@@ -56,21 +56,8 @@ final class SelectAccountViewController: BaseViewController {
         sharedDataController.remove(self)
     }
 
-    override func configureNavigationBarAppearance() {
-        super.configureNavigationBarAppearance()
-
-        switch draft.transactionAction {
-        case .send,
-            .receive,
-            .optIn:
-            addBarButtons()
-        default:
-            break
-        }
-    }
-
     override func configureAppearance() {
-        view.backgroundColor = AppColors.Shared.System.background.uiColor
+        view.backgroundColor = Colors.Defaults.background.uiColor
         navigationItem.title = "send-algos-select".localized
     }
 
@@ -134,14 +121,6 @@ final class SelectAccountViewController: BaseViewController {
 }
 
 extension SelectAccountViewController {
-    private func addBarButtons() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
-            self?.closeScreen(by: .dismiss, animated: true)
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
-    }
-
     private func addListView() {
         view.addSubview(listView)
         listView.snp.makeConstraints {

@@ -25,10 +25,10 @@ struct PageBarCommonStyleSheet: PageBarStyleSheet {
 
     init() {
         self.offIndicator = [
-            .backgroundColor(AppColors.Shared.Layer.grayLighter)
+            .backgroundColor(Colors.Layer.grayLighter)
         ]
         self.onIndicator = [
-            .backgroundColor(AppColors.Components.Text.main)
+            .backgroundColor(Colors.Text.main)
         ]
     }
 }

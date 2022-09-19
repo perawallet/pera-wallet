@@ -30,7 +30,7 @@ struct TestNetTitleViewTheme:
         titleLabel = [
             .textOverflow(SingleLineFittingText()),
             .font(Fonts.DMSans.regular.make(15)),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .textAlignment(.left),
         ]
         testNetLabel = [
@@ -38,8 +38,8 @@ struct TestNetTitleViewTheme:
             .text("title-testnet".localized),
             .font(Fonts.DMSans.bold.make(11)),
             .textAlignment(.center),
-            .textColor(AppColors.Components.Button.Primary.text.uiColor),
-            .backgroundColor(AppColors.Shared.Helpers.testnet.uiColor)
+            .textColor(Colors.Testnet.text),
+            .backgroundColor(Colors.Testnet.background)
         ]
         
         titleOffset = -8

@@ -63,26 +63,26 @@ struct CollectibleListItemViewTheme:
         overlayAlpha = 0
 
         title = [
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .textOverflow(SingleLineText()),
         ]
         titleAndSubtitleContentTopPadding = 12
 
         subtitle = [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .textOverflow(MultilineText(numberOfLines: 2)),
         ]
 
         bottomLeftBadge = [
-            .backgroundColor(AppColors.Shared.System.background),
+            .backgroundColor(Colors.Defaults.background),
             .contentMode(.center),
-            .tintColor(AppColors.Components.Text.gray)
+            .tintColor(Colors.Text.gray)
         ]
         bottomLeftBadgeContentEdgeInsets = (8, 8)
         bottomLeftBadgePaddings = (.noMetric, 8, 8, .noMetric)
 
         topLeftBadge = [
-            .backgroundColor(UIColor(red: 0.09, green: 0.09, blue: 0.11, alpha: 0.6)),
+            .backgroundColor(Colors.NFTIcon.iconBackground),
             .contentMode(.center)
         ]
 
@@ -91,7 +91,7 @@ struct CollectibleListItemViewTheme:
 
         pendingContentPaddings = (.noMetric, 8, 8, .noMetric)
         pendingContent = [
-            .backgroundColor(AppColors.Shared.System.background)
+            .backgroundColor(Colors.Defaults.background)
         ]
         indicator = [
             .image("loading-indicator"),
@@ -101,10 +101,10 @@ struct CollectibleListItemViewTheme:
         indicatorLeadingPadding = 8
 
         pendingOverlay = [
-            .backgroundColor(AppColors.Shared.System.background.uiColor.withAlphaComponent(0.4))
+            .backgroundColor(Colors.Defaults.background.uiColor.withAlphaComponent(0.4))
         ]
         pendingLabel = [
-            .textColor(AppColors.Shared.Helpers.positive),
+            .textColor(Colors.Helpers.positive),
             .textOverflow(SingleLineFittingText()),
         ]
         pendingLabelPaddings = (4, 8, 4, 8)
@@ -131,11 +131,11 @@ struct URLImageViewCollectibleListTheme: URLImageViewStyleLayoutSheet {
 
         init() {
             background = [
-                .backgroundColor(AppColors.Shared.Layer.grayLighter)
+                .backgroundColor(Colors.Layer.grayLighter)
             ]
             image = []
             text = [
-                .textColor(AppColors.Components.Text.gray),
+                .textColor(Colors.Text.gray),
                 .textOverflow(FittingText())
             ]
         }
@@ -158,7 +158,7 @@ struct URLImageViewCollectibleListTheme: URLImageViewStyleLayoutSheet {
 
 extension CollectibleListItemViewTheme {
     mutating func configureOverlayForOptedInCell() {
-        overlay = overlay.modify([ .backgroundColor(AppColors.Shared.System.background) ])
+        overlay = overlay.modify([ .backgroundColor(Colors.Defaults.background) ])
         overlayAlpha = 0.4
     }
 }

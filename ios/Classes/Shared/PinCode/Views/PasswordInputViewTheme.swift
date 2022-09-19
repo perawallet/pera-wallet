@@ -24,7 +24,7 @@ struct PasswordInputViewTheme: StyleSheet, LayoutSheet {
     let stackViewSpacing: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.stackViewSpacing = 24
     }
 }

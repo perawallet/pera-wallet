@@ -40,14 +40,14 @@ final class BuyAlgoTransactionViewController: BaseViewController {
         super.linkInteractors()
         dataController.delegate = self
 
-        transactionView.observe(event: .close) { [weak self] in
+        transactionView.startObserving(event: .close) { [weak self] in
             self?.dismissScreen()
         }
     }
     
     override func prepareLayout() {
         super.prepareLayout()
-        view.customizeBaseAppearance(backgroundColor: AppColors.Shared.System.background)
+        view.customizeBaseAppearance(backgroundColor: Colors.Defaults.background)
         addTransactionView()
     }
     

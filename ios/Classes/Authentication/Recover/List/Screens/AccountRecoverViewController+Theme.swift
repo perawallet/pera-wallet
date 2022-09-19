@@ -31,7 +31,7 @@ extension AccountRecoverViewController {
 
         init(_ family: LayoutFamily) {
             self.accountRecoverViewTheme = AccountRecoverViewTheme()
-            self.backgroundColor = AppColors.Shared.System.background
+            self.backgroundColor = Colors.Defaults.background
 
             self.horizontalPadding = 24
             self.bottomInset = 16

@@ -49,18 +49,18 @@ struct NoContentWithActionViewIllustratedTheme: NoContentViewWithActionTheme {
         primaryActionTopMargin = 52
         primaryAction = [
             .titleColor(
-                [.normal(AppColors.Components.Button.Primary.text)]
+                [.normal(Colors.Button.Primary.text)]
             ),
             .font(Fonts.DMSans.medium.make(15)),
-            .backgroundColor(AppColors.Components.Button.Primary.background)
+            .backgroundColor(Colors.Button.Primary.background)
         ]
         secondaryActionTopMargin = 16
         secondaryAction = [
             .titleColor(
-                [.normal(AppColors.Components.Button.Secondary.text)]
+                [.normal(Colors.Button.Secondary.text)]
             ),
             .font(Fonts.DMSans.medium.make(15)),
-            .backgroundColor(AppColors.Components.Button.Secondary.background)
+            .backgroundColor(Colors.Button.Secondary.background)
         ]
         actionAlignment = .aligned(left: 0, right: 0)
     }

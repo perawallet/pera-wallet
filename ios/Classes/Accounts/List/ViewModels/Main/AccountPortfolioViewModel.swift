@@ -53,8 +53,7 @@ extension AccountPortfolioViewModel {
             .localized
             .bodyRegular(
                 alignment: .center,
-                lineBreakMode: .byTruncatingTail,
-                hasMultilines: false
+                lineBreakMode: .byTruncatingTail
             )
     }
     
@@ -68,8 +67,7 @@ extension AccountPortfolioViewModel {
         ) ?? CurrencyConstanst.unavailable
         primaryValue = text.largeTitleMedium(
             alignment: .center,
-            lineBreakMode: .byTruncatingTail,
-            hasMultilines: false
+            lineBreakMode: .byTruncatingTail
         )
     }
 
@@ -83,8 +81,7 @@ extension AccountPortfolioViewModel {
         ) ?? CurrencyConstanst.unavailable
         secondaryValue = "≈ \(text)".bodyMedium(
             alignment: .center,
-            lineBreakMode: .byTruncatingTail,
-            hasMultilines: false
+            lineBreakMode: .byTruncatingTail
         )
     }
 }

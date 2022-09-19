@@ -33,7 +33,7 @@ struct NumpadViewCommonTheme: NumpadViewTheme {
     let stackViewTopPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
 
         self.stackViewTopPadding = 20 * verticalScale
         self.stackViewSpacing = 40 * verticalScale
@@ -48,7 +48,7 @@ struct TransactionNumpadViewTheme: NumpadViewTheme {
     let stackViewTopPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
 
         self.stackViewTopPadding = 0
         self.stackViewSpacing = 40 * verticalScale

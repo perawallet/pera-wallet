@@ -15,23 +15,26 @@
 //
 //  AssetActionConfirmationViewModel.swift
 
-import UIKit
 import MacaroonUIKit
+import UIKit
 
 final class AssetActionConfirmationViewModel: ViewModel {
-    private(set) var title: String?
+    private(set) var title: NSAttributedString?
+    private(set) var titleColor: Color?
+    private(set) var name: PrimaryTitleViewModel?
     private(set) var id: String?
     private(set) var transactionFee: String?
     private(set) var actionTitle: String?
     private(set) var cancelTitle: String?
     private(set) var detail: NSAttributedString?
-    private(set) var assetDisplayViewModel: AssetDisplayViewModel?
 
     init(
         _ model: AssetAlertDraft,
         currencyFormatter: CurrencyFormatter
     ) {
         bindTitle(model)
+        bindTitleColor(model)
+        bindName(model)
         bindID(model)
         bindTransactionFee(
             model,
@@ -40,13 +43,25 @@ final class AssetActionConfirmationViewModel: ViewModel {
         bindActionTitle(model)
         bindCancelTitle(model)
         bindDetail(model)
-        bindAssetDisplayViewModel(model)
     }
 }
 
 extension AssetActionConfirmationViewModel {
     private func bindTitle(_ draft: AssetAlertDraft) {
-        title = draft.title
+        title = draft.title?.bodyMedium(alignment: .center)
+    }
+
+    private func bindTitleColor(_ draft: AssetAlertDraft) {
+        if let asset = draft.asset,
+            asset.verificationTier.isSuspicious {
+            titleColor = Colors.Helpers.negative
+        } else {
+            titleColor = Colors.Text.main
+        }
+    }
+
+    private func bindName(_ draft: AssetAlertDraft) {
+        name = draft.asset.unwrap(OptInAssetNameViewModel.init)
     }
 
     private func bindID(_ draft: AssetAlertDraft) {
@@ -61,7 +76,7 @@ extension AssetActionConfirmationViewModel {
             return
         }
 
-        currencyFormatter.formattingContext = .listItem
+        currencyFormatter.formattingContext = .standalone()
         currencyFormatter.currency = AlgoLocalCurrency()
 
         transactionFee = currencyFormatter.format(fee)
@@ -80,7 +95,9 @@ extension AssetActionConfirmationViewModel {
             return
         }
 
-        let attributedDetailText = NSMutableAttributedString(attributedString: detailText.attributed([.lineSpacing(1.2)]))
+        let attributedDetailText = NSMutableAttributedString(
+            attributedString: detailText.footnoteMedium()
+        )
 
         guard let asset = draft.asset,
               let unitName = asset.unitName,
@@ -90,12 +107,7 @@ extension AssetActionConfirmationViewModel {
               }
 
         let range = (detailText as NSString).range(of: unitName)
-        attributedDetailText.addAttribute(NSAttributedString.Key.foregroundColor, value: AppColors.Components.Link.icon.uiColor, range: range)
-        attributedDetailText.addAttribute(NSAttributedString.Key.foregroundColor, value: AppColors.Components.Link.icon.uiColor, range: range)
+        attributedDetailText.addAttribute(NSAttributedString.Key.foregroundColor, value: Colors.Link.icon.uiColor, range: range)
         detail = attributedDetailText
-    }
-
-    private func bindAssetDisplayViewModel(_ draft: AssetAlertDraft) {
-        assetDisplayViewModel = AssetDisplayViewModel(draft.asset)
     }
 }

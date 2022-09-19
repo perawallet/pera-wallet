@@ -33,12 +33,12 @@ struct TransactionHistoryContextViewTheme: StyleSheet, LayoutSheet {
     let subtitleTopInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
 
         self.titleLabel = [
             .textAlignment(.left),
             .textOverflow(SingleLineText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(15)),
         ]
         self.titleMinWidthRatio = 0.2
@@ -47,7 +47,7 @@ struct TransactionHistoryContextViewTheme: StyleSheet, LayoutSheet {
         self.subtitleLabel = [
             .textAlignment(.left),
             .textOverflow(SingleLineText()),
-            .textColor(AppColors.Components.Text.grayLighter),
+            .textColor(Colors.Text.grayLighter),
             .font(Fonts.DMSans.regular.make(13)),
         ]
 

@@ -70,7 +70,7 @@ final class TransactionCustomRangeSelectionViewController: BaseViewController {
 
 extension TransactionCustomRangeSelectionViewController {
     private func addBarButtons() {
-        let doneBarButtonItem = ALGBarButtonItem(kind: .done) { [weak self] in
+        let doneBarButtonItem = ALGBarButtonItem(kind: .doneGreen) { [weak self] in
             guard let strongSelf = self else {
                 return
             }

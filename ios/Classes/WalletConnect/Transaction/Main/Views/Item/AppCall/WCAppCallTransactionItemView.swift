@@ -26,7 +26,7 @@ class WCAppCallTransactionItemView: TripleShadowView {
 
     private lazy var titleLabel: UILabel = {
         UILabel()
-            .withTextColor(AppColors.Components.Text.main.uiColor)
+            .withTextColor(Colors.Text.main.uiColor)
             .withLine(.single)
             .withAlignment(.left)
             .withFont(Fonts.DMSans.regular.make(19).uiFont)
@@ -34,7 +34,7 @@ class WCAppCallTransactionItemView: TripleShadowView {
 
     private lazy var showDetailLabel: UILabel = {
         UILabel()
-            .withTextColor(AppColors.Components.Link.primary.uiColor)
+            .withTextColor(Colors.Link.primary.uiColor)
             .withLine(.single)
             .withAlignment(.left)
             .withFont(Fonts.DMSans.bold.make(13).uiFont)
@@ -50,38 +50,38 @@ class WCAppCallTransactionItemView: TripleShadowView {
     }
 
     func configureAppearance() {
-        backgroundColor = AppColors.Shared.System.background.uiColor
+        backgroundColor = Colors.Defaults.background.uiColor
         layer.cornerRadius = 12.0
 
         let accountContainerCorner = Corner(radius: 4)
-        let accountContainerBorder = Border(color: AppColors.SendTransaction.Shadow.first.uiColor, width: 1)
+        let accountContainerBorder = Border(color: Colors.Shadows.Cards.shadow1.uiColor, width: 1)
 
         let accountContainerFirstShadow = MacaroonUIKit.Shadow(
-            color: AppColors.SendTransaction.Shadow.first.uiColor,
+            color: Colors.Shadows.Cards.shadow1.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
             offset: (0, 2),
             radius: 4,
-            fillColor: AppColors.Shared.System.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
         )
 
         let accountContainerSecondShadow = MacaroonUIKit.Shadow(
-            color: AppColors.SendTransaction.Shadow.second.uiColor,
+            color: Colors.Shadows.Cards.shadow2.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
             offset: (0, 2),
             radius: 4,
-            fillColor: AppColors.Shared.System.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
         )
 
         let accountContainerThirdShadow = MacaroonUIKit.Shadow(
-            color: AppColors.SendTransaction.Shadow.third.uiColor,
+            color: Colors.Shadows.Cards.shadow3.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
             offset: (0, 0),
             radius: 0,
-            fillColor: AppColors.Shared.System.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
         )

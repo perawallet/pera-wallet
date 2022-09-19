@@ -19,117 +19,163 @@ import UIKit
 import MacaroonBottomSheet
 import MacaroonUIKit
 
-final class AssetActionConfirmationViewController: BaseViewController {
+final class AssetActionConfirmationViewController:
+    ScrollScreen,
+    BottomSheetScrollPresentable {
     weak var delegate: AssetActionConfirmationViewControllerDelegate?
     
     private(set) var draft: AssetAlertDraft
 
+    let modalHeight: ModalHeight = .compressed
+
     private let theme: AssetActionConfirmationViewControllerTheme
-    private lazy var assetActionConfirmationView = AssetActionConfirmationView()
+
+    private lazy var loadingView = AssetActionConfirmationLoadingView()
+    private lazy var contextView = AssetActionConfirmationView()
 
     private lazy var currencyFormatter = CurrencyFormatter()
 
+    private let api: ALGAPI
+    private let sharedDataController: SharedDataController
+    private let bannerController: BannerController
     private let copyToClipboardController: CopyToClipboardController
     
     init(
         draft: AssetAlertDraft,
         copyToClipboardController: CopyToClipboardController,
-        configuration: ViewControllerConfiguration,
+        api: ALGAPI,
+        sharedDataController: SharedDataController,
+        bannerController: BannerController,
         theme: AssetActionConfirmationViewControllerTheme
     ) {
         self.draft = draft
         self.copyToClipboardController = copyToClipboardController
+        self.api = api
+        self.sharedDataController = sharedDataController
+        self.bannerController = bannerController
         self.theme = theme
-        super.init(configuration: configuration)
+
+        super.init()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.fetchAssetDetailIfNeeded()
-    }
-    
-    override func setListeners() {
-        assetActionConfirmationView.setListeners()
-        assetActionConfirmationView.delegate = self
+
+        addBackground()
+        fetchAssetDetailIfNeeded()
     }
 
-    override func configureAppearance() {
-        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
-    }
-    
-    override func prepareLayout() {
-        assetActionConfirmationView.customize(theme.assetActionConfirmationViewTheme)
-        view.addSubview(assetActionConfirmationView)
-        assetActionConfirmationView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-    }
-
-    override func bindData() {
-        currencyFormatter.formattingContext = .standalone()
-        currencyFormatter.currency = AlgoLocalCurrency()
-
-        let viewModel = AssetActionConfirmationViewModel(
-            draft,
-            currencyFormatter: currencyFormatter
-        )
-        assetActionConfirmationView.bindData(viewModel)
-    }
-}
-
-extension AssetActionConfirmationViewController: BottomSheetPresentable {
-    var modalHeight: ModalHeight {
-        return .compressed
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        startLoadingIfNeeded()
     }
 }
 
 extension AssetActionConfirmationViewController {
     private func fetchAssetDetailIfNeeded() {
-        if !draft.hasValidAsset {
-            if let asset = sharedDataController.assetDetailCollection[draft.assetId] {
-                handleAssetDetailSetup(with: asset)
-            } else {
-                loadingController?.startLoadingWithMessage("title-loading".localized)
+        if draft.hasValidAsset {
+            addContext()
+            return
+        }
 
-                api?.fetchAssetDetails(
-                    AssetFetchQuery(ids: [draft.assetId]),
-                    queue: .main,
-                    ignoreResponseOnCancelled: false
-                ) { [weak self] response in
-                    guard let self = self else {
-                        return
-                    }
+        if let cachedAsset = sharedDataController.assetDetailCollection[draft.assetId] {
+            draft.asset = cachedAsset
+            addContext()
+            return
+        }
 
-                    switch response {
-                    case let .success(assetResponse):
-                        if assetResponse.results.isEmpty {
-                            self.bannerController?.presentErrorBanner(title: "asset-confirmation-not-found".localized, message: "")
-                            self.closeScreen()
-                            return
-                        }
+        addLoading()
 
-                        if let result = assetResponse.results[safe: 0] {
-                            self.handleAssetDetailSetup(with: result)
-                        }
-                    case .failure:
-                        self.bannerController?.presentErrorBanner(title: "asset-confirmation-not-fetched".localized, message: "")
-                        self.closeScreen()
-                    }
+        api.fetchAssetDetails(
+            AssetFetchQuery(ids: [draft.assetId]),
+            queue: .main,
+            ignoreResponseOnCancelled: false
+        ) { [weak self] response in
+            guard let self = self else { return }
+
+            switch response {
+            case let .success(assetResponse):
+                if assetResponse.results.isEmpty {
+                    self.bannerController.presentErrorBanner(title: "asset-confirmation-not-found".localized, message: "")
+                    self.closeScreen()
+                    return
                 }
+
+                if let asset = assetResponse.results[safe: 0] {
+                    self.draft.asset = asset
+
+                    self.removeLoading()
+                    self.addContext()
+
+                    self.performLayoutUpdates(animated: self.isViewAppeared)
+                }
+            case .failure:
+                self.bannerController.presentErrorBanner(title: "asset-confirmation-not-fetched".localized, message: "")
+                self.closeScreen()
             }
         }
     }
-    
-    private func handleAssetDetailSetup(with asset: AssetDecoration) {
-        self.loadingController?.stopLoading()
-        draft.asset = asset
-
-        bindData()
-    }
 
     private func closeScreen() {
-        loadingController?.stopLoading()
         dismissScreen()
+    }
+}
+
+extension AssetActionConfirmationViewController {
+    private func addBackground() {
+        view.customizeAppearance(theme.background)
+    }
+
+    private func addContext() {
+        contextView.customize(theme.context)
+
+        contentView.addSubview(contextView)
+        contextView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+
+        let viewModel = AssetActionConfirmationViewModel(
+            draft,
+            currencyFormatter: currencyFormatter
+        )
+        contextView.bindData(viewModel)
+
+        contextView.delegate = self
+    }
+
+    private func addLoading() {
+        loadingView.customize(theme.loading)
+
+        contentView.addSubview(loadingView)
+        loadingView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+
+        let viewModel = AssetActionConfirmationLoadingViewModel(draft: draft)
+        loadingView.bindData(viewModel)
+
+        startLoadingIfNeeded()
+    }
+
+    private func startLoadingIfNeeded() {
+        if !isViewAppeared { return }
+
+        /// <todo>
+        /// Normally, it should be a data-driven, not ui-driven, checkpoint.
+        if !loadingView.isDescendant(of: view) { return }
+
+        loadingView.startAnimating()
+    }
+
+    private func removeLoading() {
+        loadingView.removeFromSuperview()
+        loadingView.stopAnimating()
     }
 }
 

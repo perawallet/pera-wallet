@@ -25,12 +25,18 @@ final class AssetDecoration: ALGEntityModel {
     let unitName: String?
     let decimals: Int
     let usdValue: Decimal?
-    let total: Int64?
-    let isVerified: Bool
+    let total: UInt64?
     let creator: AssetCreator?
     let collectible: Collectible?
+    let projectURL: URL?
     let explorerURL: URL?
     let url: String?
+    let verificationTier: AssetVerificationTier
+    let logoURL: URL?
+    let description: String?
+    let discordURL: URL?
+    let telegramURL: URL?
+    let twitterURL: URL?
 
     var state: AssetState = .ready
 
@@ -46,12 +52,26 @@ final class AssetDecoration: ALGEntityModel {
         self.unitName = apiModel.unitName
         self.decimals = apiModel.fractionDecimals ?? 0
         self.usdValue = apiModel.usdValue.unwrap { Decimal(string: $0) }
-        self.total = apiModel.total.unwrap { Int64($0) }
-        self.isVerified = apiModel.isVerified ?? false
+        self.total = apiModel.total.unwrap { UInt64($0) }
         self.creator = apiModel.creator.unwrap(AssetCreator.init)
+        self.projectURL = apiModel.projectURL
+            .unwrapNonEmptyString()
+            .unwrap(URL.init)
         self.explorerURL = apiModel.explorerURL
         self.collectible = apiModel.collectible.unwrap(Collectible.init)
         self.url = apiModel.url
+        self.verificationTier = apiModel.verificationTier ?? .unverified
+        self.logoURL = apiModel.logo
+        self.description = apiModel.description
+        self.discordURL = apiModel.discordURL
+            .unwrapNonEmptyString()
+            .unwrap(URL.init)
+        self.telegramURL = apiModel.telegramURL
+            .unwrapNonEmptyString()
+            .unwrap(URL.init)
+        self.twitterURL = apiModel.twitterUsername
+            .unwrapNonEmptyString()
+            .unwrap(URL.twitterURL(username:))
     }
     
     init(assetDetail: AssetDetail) {
@@ -60,12 +80,18 @@ final class AssetDecoration: ALGEntityModel {
         self.unitName = assetDetail.unitName
         self.decimals = assetDetail.fractionDecimals
         self.usdValue = nil
-        self.total = nil
-        self.isVerified = assetDetail.isVerified
+        self.total = assetDetail.total
         self.creator = AssetCreator(address: assetDetail.creator)
+        self.projectURL = nil
         self.explorerURL = nil
         self.collectible = nil
         self.url = assetDetail.url
+        self.verificationTier = .unverified
+        self.logoURL = nil
+        self.description = nil
+        self.discordURL = nil
+        self.telegramURL = nil
+        self.twitterURL = nil
     }
 
     func encode() -> APIModel {
@@ -76,26 +102,38 @@ final class AssetDecoration: ALGEntityModel {
         apiModel.fractionDecimals = decimals
         apiModel.usdValue = usdValue.unwrap { String(describing: $0) }
         apiModel.total = total.unwrap { String(describing: $0) }
-        apiModel.isVerified = isVerified
         apiModel.creator = creator?.encode()
+        apiModel.projectURL = projectURL?.absoluteString
         apiModel.explorerURL = explorerURL
         apiModel.collectible = collectible?.encode()
         apiModel.url = url
+        apiModel.verificationTier = verificationTier
+        apiModel.logo = logoURL
+        apiModel.description = description
+        apiModel.discordURL = discordURL?.absoluteString
+        apiModel.telegramURL = telegramURL?.absoluteString
+        apiModel.twitterUsername = twitterURL?.pathComponents.last
         return apiModel
     }
 
     init(asset: Asset) {
         self.id = asset.id
-        self.name = asset.presentation.name
-        self.unitName = asset.presentation.unitName
-        self.decimals = asset.presentation.decimals
-        self.usdValue = nil
-        self.total = nil
-        self.isVerified = asset.presentation.isVerified
+        self.name = asset.naming.name
+        self.unitName = asset.naming.unitName
+        self.decimals = asset.decimals
+        self.usdValue = asset.usdValue
+        self.total = asset.total
         self.creator = asset.creator
-        self.explorerURL = nil
+        self.projectURL = asset.projectURL
+        self.explorerURL = asset.explorerURL
         self.collectible = nil
-        self.url = asset.presentation.url
+        self.url = asset.url
+        self.verificationTier = asset.verificationTier
+        self.logoURL = asset.logoURL
+        self.description = asset.description
+        self.discordURL = asset.discordURL
+        self.telegramURL = asset.telegramURL
+        self.twitterURL = asset.twitterURL
     }
 }
 
@@ -106,25 +144,22 @@ extension AssetDecoration {
         var unitName: String?
         var fractionDecimals: Int?
         var usdValue: String?
-        var isVerified: Bool?
         var creator: AssetCreator.APIModel?
+        var projectURL: String?
         var explorerURL: URL?
         var collectible: Collectible.APIModel?
         var url: String?
         var total: String?
+        var verificationTier: AssetVerificationTier?
+        var logo: URL?
+        var description: String?
+        var discordURL: String?
+        var telegramURL: String?
+        var twitterUsername: String?
 
         init() {
             self.assetId = 0
-            self.name = nil
-            self.unitName = nil
-            self.fractionDecimals = nil
-            self.usdValue = nil
-            self.isVerified = nil
-            self.creator = nil
-            self.explorerURL = nil
-            self.collectible = nil
-            self.url = nil
-            self.total = nil
+            self.verificationTier = .init()
         }
 
         private enum CodingKeys: String, CodingKey {
@@ -133,12 +168,18 @@ extension AssetDecoration {
             case unitName = "unit_name"
             case fractionDecimals = "fraction_decimals"
             case usdValue = "usd_value"
-            case isVerified = "is_verified"
             case creator
+            case projectURL = "project_url"
             case explorerURL = "explorer_url"
             case collectible
             case url
             case total
+            case verificationTier = "verification_tier"
+            case logo
+            case description
+            case discordURL = "discord_url"
+            case telegramURL = "telegram_url"
+            case twitterUsername = "twitter_username"
         }
     }
 }
@@ -168,9 +209,9 @@ extension AssetDecoration: Comparable {
     static func == (lhs: AssetDecoration, rhs: AssetDecoration) -> Bool {
         return lhs.id == rhs.id &&
             lhs.decimals == rhs.decimals &&
-            lhs.isVerified == rhs.isVerified &&
             lhs.name == rhs.name &&
-            lhs.unitName == rhs.unitName
+            lhs.unitName == rhs.unitName &&
+            lhs.verificationTier == rhs.verificationTier
     }
 
     static func < (lhs: AssetDecoration, rhs: AssetDecoration) -> Bool {

@@ -22,6 +22,7 @@ final class TransactionSendController {
 
     private let draft: SendTransactionDraft
     private let api: ALGAPI
+    private let analytics: ALGAnalytics
 
     var isClosingToSameAccount: Bool {
         if let receiverAddress = draft.toAccount?.address {
@@ -37,10 +38,12 @@ final class TransactionSendController {
 
     init(
         draft: SendTransactionDraft,
-        api: ALGAPI
+        api: ALGAPI,
+        analytics: ALGAnalytics
     ) {
         self.draft = draft
         self.api = api
+        self.analytics = analytics
     }
     
 
@@ -105,15 +108,12 @@ extension TransactionSendController {
                     }
                 case let .success(accountWrapper):
                     if !accountWrapper.account.isSameAccount(with: receiverAddress) {
-                        UIApplication.shared.firebaseAnalytics?.record(
-                            MismatchAccountErrorLog(requestedAddress: receiverAddress, receivedAddress: accountWrapper.account.address)
-                        )
                         self.delegate?.transactionSendController(self, didFailValidation: .mismatchReceiverAddress)
                         return
                     }
 
                     accountWrapper.account.assets = accountWrapper.account.nonDeletedAssets()
-                    if accountWrapper.account.amount == 0 {
+                    if accountWrapper.account.algo.amount == 0 {
                         self.delegate?.transactionSendController(self, didFailValidation: .algo(.minimumAmount))
                     } else {
                         self.delegate?.transactionSendControllerDidValidate(self)
@@ -156,9 +156,6 @@ extension TransactionSendController {
             switch fetchAccountResponse {
             case let .success(receiverAccountWrapper):
                 if !receiverAccountWrapper.account.isSameAccount(with: address) {
-                    UIApplication.shared.firebaseAnalytics?.record(
-                        MismatchAccountErrorLog(requestedAddress: address, receivedAddress: receiverAccountWrapper.account.address)
-                    )
                     self.delegate?.transactionSendController(self, didFailValidation: .mismatchReceiverAddress)
                     return
                 }

@@ -26,7 +26,7 @@ final class LedgerDeviceListViewController: BaseViewController {
         guard let api = api else {
             fatalError("Api must be set before accessing this view controller.")
         }
-        return LedgerAccountFetchOperation(api: api)
+        return LedgerAccountFetchOperation(api: api, analytics: analytics)
     }()
 
     private lazy var initialPairingWarningTransition = BottomSheetTransition(presentingViewController: self)
@@ -82,7 +82,7 @@ final class LedgerDeviceListViewController: BaseViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
-        view.customizeBaseAppearance(backgroundColor: AppColors.Shared.System.background)
+        view.customizeBaseAppearance(backgroundColor: Colors.Defaults.background)
     }
     
     override func prepareLayout() {
@@ -276,11 +276,23 @@ extension LedgerDeviceListViewController: LedgerAccountFetchOperationDelegate {
         _ ledgerAccountFetchOperation: LedgerAccountFetchOperation,
         didRequestUserApprovalFor ledger: String
     ) {
-        let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: self)
+        let ledgerApprovalTransition = BottomSheetTransition(
+            presentingViewController: self,
+            interactable: false
+        )
         ledgerApprovalViewController = ledgerApprovalTransition.perform(
             .ledgerApproval(mode: .approve, deviceName: ledger),
             by: .present
         )
+
+        ledgerApprovalViewController?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .didCancel:
+                self.ledgerApprovalViewController?.dismissScreen()
+            }
+        }
     }
 
     func ledgerAccountFetchOperationDidFinishTimingOperation(_ ledgerAccountFetchOperation: LedgerAccountFetchOperation) {

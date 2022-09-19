@@ -33,7 +33,7 @@ struct WalletRatingViewTheme: StyleSheet, LayoutSheet {
     let bottomInset: LayoutMetric
     
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.likeButton = [
             .backgroundImage([.normal("icon-settings-like")])
         ]
@@ -41,13 +41,13 @@ struct WalletRatingViewTheme: StyleSheet, LayoutSheet {
             .icon([.normal("icon-settings-dislike")])
         ]
         self.title = [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.medium.make(19)),
             .textAlignment(.center),
             .text("settings-rate-modal-title".localized)
         ]
         self.description = [
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.center),
             .text("settings-rate-modal-description".localized)

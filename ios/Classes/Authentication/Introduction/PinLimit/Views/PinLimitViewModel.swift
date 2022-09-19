@@ -29,23 +29,14 @@ extension PinLimitViewModel {
     private mutating func bindRemainingTime(_ remainingTimeInSeconds: Int) {
         guard let remainingTimeInSeconds =
                 remainingTimeInSeconds.convertSecondsToHoursMinutesSeconds() else {
-                    return
-                }
-
-        let font = Fonts.DMMono.regular.make(36)
-        let lineHeightMultiplier = 1.02
+            return
+        }
 
         remainingTime = .attributedString(
             remainingTimeInSeconds
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .textAlignment(.center),
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .largeTitleMonoRegular(
+                    alignment: .center
+                )
         )
     }
 }

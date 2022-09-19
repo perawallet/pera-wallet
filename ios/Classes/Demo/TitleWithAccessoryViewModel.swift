@@ -33,18 +33,9 @@ extension TitleWithAccessoryViewModel {
             return nil
         }
         
-        let font = Fonts.DMSans.medium.make(15)
-        let lineHeightMultiplier = 1.23
-        
         return .attributedString(
-            aTitle.attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineBreakMode(.byWordWrapping),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ])
+            aTitle
+                .bodyMedium()
         )
     }
 }

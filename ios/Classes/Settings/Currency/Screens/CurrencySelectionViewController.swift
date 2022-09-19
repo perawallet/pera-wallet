@@ -86,7 +86,7 @@ final class CurrencySelectionViewController: BaseViewController {
             [weak self] cell in
             
             let noContentCell = cell as! NoContentWithActionCell
-            noContentCell.observe(event: .performPrimaryAction) {
+            noContentCell.startObserving(event: .performPrimaryAction) {
                 [weak self] in
                 guard let self = self else { return }
                 self.dataController.loadData()
@@ -106,7 +106,7 @@ final class CurrencySelectionViewController: BaseViewController {
             self.sharedDataController.currency.setAsPrimaryCurrency(selectedCurrencyID)
             self.sharedDataController.resetPollingAfterPreferredCurrencyWasChanged()
 
-            self.log(CurrencyChangeEvent(currencyId: selectedCurrencyID.localValue))
+            self.analytics.track(.changeCurrency(currencyId: selectedCurrencyID))
             
             NotificationCenter.default.post(
                 name: Self.didChangePreferredCurrency,

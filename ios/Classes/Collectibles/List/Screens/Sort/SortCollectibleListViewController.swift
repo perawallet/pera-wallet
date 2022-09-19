@@ -96,17 +96,6 @@ final class SortCollectibleListViewController:
 
 extension SortCollectibleListViewController {
     private func addBarButtons() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
-            [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.dismissScreen()
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
-
         let doneBarButtonItem = ALGBarButtonItem(kind: .doneGreen) {
             [weak self] in
             guard let self = self else {

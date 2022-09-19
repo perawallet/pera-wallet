@@ -25,6 +25,7 @@ final class AppConfiguration {
     let loadingController: LoadingController
     let bannerController: BannerController
     let toastPresentationController: ToastPresentationController
+    let analytics: ALGAnalytics
     
     init(
         api: ALGAPI,
@@ -33,7 +34,8 @@ final class AppConfiguration {
         walletConnector: WalletConnector,
         loadingController: LoadingController,
         bannerController: BannerController,
-        toastPresentationController: ToastPresentationController
+        toastPresentationController: ToastPresentationController,
+        analytics: ALGAnalytics
     ) {
         self.api = api
         self.session = session
@@ -42,6 +44,7 @@ final class AppConfiguration {
         self.loadingController = loadingController
         self.bannerController = bannerController
         self.toastPresentationController = toastPresentationController
+        self.analytics = analytics
     }
     
     func all() -> ViewControllerConfiguration {
@@ -52,7 +55,8 @@ final class AppConfiguration {
             walletConnector: walletConnector,
             loadingControlller: loadingController,
             bannerController: bannerController,
-            toastPresentationController: toastPresentationController
+            toastPresentationController: toastPresentationController,
+            analytics: analytics
         )
         return configuration
     }

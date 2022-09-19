@@ -23,11 +23,10 @@ final class NoContentWithActionView:
     View,
     ViewModelBindable,
     ListReusable,
-    UIInteractionObservable,
-    UIControlInteractionPublisher {
+    UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .performPrimaryAction: UIControlInteraction(),
-        .performSecondaryAction: UIControlInteraction()
+        .performPrimaryAction: TargetActionInteraction(),
+        .performSecondaryAction: TargetActionInteraction()
     ]
 
     private lazy var contentView = UIView()

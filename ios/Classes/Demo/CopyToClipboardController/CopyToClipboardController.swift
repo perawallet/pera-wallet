@@ -30,6 +30,17 @@ extension CopyToClipboardController {
         copyAddress(account.address)
     }
 
+    func copyURL(
+        _ url: String
+    ) {
+        let interaction = CopyToClipboardInteraction(
+            title: "url-copied".localized,
+            body: url
+        )
+        let item = ClipboardItem(copy: url, interaction: interaction)
+        copy(item)
+    }
+
     func copyAddress(
         _ address: String
     ) {
@@ -43,6 +54,18 @@ extension CopyToClipboardController {
 
     func copyID(
         _ asset: Asset
+    ) {
+        let idCopy = String(asset.id)
+        let interaction = CopyToClipboardInteraction(
+            title: "asset-id-copied-title".localized,
+            body: "#\(idCopy)"
+        )
+        let item = ClipboardItem(copy: idCopy, interaction: interaction)
+        return copy(item)
+    }
+
+    func copyID(
+        _ asset: AssetDecoration
     ) {
         let idCopy = String(asset.id)
         let interaction = CopyToClipboardInteraction(

@@ -66,40 +66,18 @@ extension CollectiblesNoContentWithActionViewModel {
     }
 
     private mutating func bindTitle() {
-        let font = Fonts.DMSans.medium.make(32)
-        let lineHeightMultiplier = 0.96
-
         title = .attributedString(
             "collectibles-empty-title"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.center)
-                    ])
-                ])
+                .titleMedium(alignment: .center)
         )
     }
 
     private mutating func bindBody() {
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-
         body = .attributedString(
             "collectibles-empty-body"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.center)
-                    ])
-                ])
+                .bodyRegular(alignment: .center)
         )
     }
 }
@@ -107,7 +85,7 @@ extension CollectiblesNoContentWithActionViewModel {
 extension CollectiblesNoContentWithActionViewModel {
     private mutating func bindPrimaryActionTitle() {
         primaryAction = Action(
-            title: .string("collectibles-receive-action".localized),
+            title: .string("collectibles-receive-asset-title".localized),
             image: "icon-plus".uiImage
         )
     }

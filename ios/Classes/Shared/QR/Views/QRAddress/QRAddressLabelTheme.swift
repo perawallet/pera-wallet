@@ -26,17 +26,17 @@ struct QRAddressLabelTheme: StyleSheet, LayoutSheet {
     let spacing: LayoutMetric
     
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.title = [
             .textAlignment(.center),
             .textOverflow(SingleLineFittingText(lineBreakMode: .byTruncatingMiddle)),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.medium.make(19))
         ]
         self.address = [
             .textAlignment(.center),
             .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(15))
         ]
 

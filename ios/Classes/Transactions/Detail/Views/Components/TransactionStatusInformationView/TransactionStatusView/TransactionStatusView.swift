@@ -48,7 +48,7 @@ extension TransactionStatusView: ViewModelBindable {
 
         if viewModel?.status == .pending {
             backgroundColor = .clear
-            draw(border: Border(color: AppColors.Components.Text.grayLighter.uiColor, width: 1))
+            draw(border: Border(color: Colors.Text.grayLighter.uiColor, width: 1))
         } else {
             backgroundColor = viewModel?.backgroundColor?.uiColor.withAlphaComponent(0.1)
         }

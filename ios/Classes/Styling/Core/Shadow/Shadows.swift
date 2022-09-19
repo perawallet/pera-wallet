@@ -35,10 +35,10 @@ extension Shadows {
         func create() -> MacaroonUIKit.Shadow {
             return MacaroonUIKit.Shadow(
                 color: UIColor.black,
+                fillColor: Colors.Defaults.background.uiColor,
                 opacity: 0.08,
                 offset: (0, 2),
                 radius: 4,
-                fillColor: AppColors.Shared.System.background.uiColor,
                 cornerRadii: (4, 4),
                 corners: .allCorners
             )

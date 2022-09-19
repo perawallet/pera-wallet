@@ -75,3 +75,10 @@ extension UILabel {
         case contained
     }
 }
+
+extension UILabel {
+    func clearText() {
+        text = nil
+        attributedText = nil
+    }
+}

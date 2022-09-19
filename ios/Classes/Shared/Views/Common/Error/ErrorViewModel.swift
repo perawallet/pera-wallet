@@ -35,19 +35,9 @@ extension ErrorViewModel {
             return nil
         }
         
-        let font = Fonts.DMSans.medium.make(15)
-        let lineHeightMultiplier = 1.23
-        
         return .attributedString(
-            aMessage.attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineBreakMode(.byWordWrapping),
-                    .lineHeightMultiple(lineHeightMultiplier),
-                    .textAlignment(.left)
-                ])
-            ])
+            aMessage
+                .bodyMedium()
         )
     }
 }

@@ -18,15 +18,13 @@
 import MagpieCore
 
 struct AssetSearchQuery: ObjectQuery {
-    let status: AssetSearchFilter
-    let query: String?
-    let paginator: Paginator = .cursor
-    let cursor: String?
+    var query: String?
+    var cursor: String?
     var type: AssetType?
     
     var queryParams: [APIQueryParam] {
         var params: [APIQueryParam] = []
-        params.append(.init(.paginator, paginator.rawValue))
+        params.append(.init(.paginator, "cursor"))
 
         if let cursor = cursor {
             params.append(.init(.cursor, cursor))
@@ -41,21 +39,7 @@ struct AssetSearchQuery: ObjectQuery {
             params.append(.init(.hasCollectible, hasCollectible))
         }
 
-        switch status {
-        case .all:
-            return params
-        default:
-            if let statusValue = status.stringValue {
-                params.append(.init(.status, statusValue))
-            }
-            return params
-        }
-    }
-}
-
-extension AssetSearchQuery {
-    enum Paginator: String {
-        case cursor = "cursor"
+        return params
     }
 }
 

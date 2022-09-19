@@ -27,7 +27,7 @@ struct TitledToggleViewTheme: StyleSheet, LayoutSheet {
         self.titleLabel = [
             .textOverflow(SingleLineFittingText()),
             .textAlignment(.left),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(15)),
             .text("notification-filter-show-title".localized)
         ]

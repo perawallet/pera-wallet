@@ -24,7 +24,7 @@ extension CurrencySelectionViewController {
         let contextViewTheme: CurrencySelectionViewTheme
 
         init(_ family: LayoutFamily) {
-            self.backgroundColor = AppColors.Shared.System.background
+            self.backgroundColor = Colors.Defaults.background
             self.contextViewTheme = CurrencySelectionViewTheme()
         }
     }

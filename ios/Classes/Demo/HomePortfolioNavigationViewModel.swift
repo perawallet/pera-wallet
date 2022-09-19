@@ -50,8 +50,7 @@ extension HomePortfolioNavigationViewModel {
         )
         primaryValue = text?.bodyMedium(
             alignment: .center,
-            lineBreakMode: .byTruncatingTail,
-            hasMultilines: false
+            lineBreakMode: .byTruncatingTail
         )
     }
 
@@ -65,8 +64,7 @@ extension HomePortfolioNavigationViewModel {
         )
         secondaryValue = text?.captionMedium(
             alignment: .center,
-            lineBreakMode: .byTruncatingTail,
-            hasMultilines: false
+            lineBreakMode: .byTruncatingTail
         )
     }
 }

@@ -25,7 +25,7 @@ struct DeveloperSettingsViewTheme: LayoutSheet, StyleSheet {
     let topInset: LayoutMetric
     
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.cellSpacing = 0
         self.topInset = 16
     }

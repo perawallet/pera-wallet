@@ -68,6 +68,7 @@ extension AddAccountViewController {
     private func addSkipBarButtonItem() {
         let skipBarButtonItem = ALGBarButtonItem(kind: .skip) { [unowned self] in
             self.session?.createUser()
+            self.analytics.track(.onboardCreateAccount(type: .skip))
             self.launchMain()
         }
 
@@ -83,7 +84,9 @@ extension AddAccountViewController: AddAccountViewDelegate {
         switch type {
         case .create:
             tutorial = .backUp
+            analytics.track(.onboardCreateAccount(type: .new))
         default:
+            analytics.track(.onboardCreateAccount(type: .watch))
             tutorial = .watchAccount
         }
         

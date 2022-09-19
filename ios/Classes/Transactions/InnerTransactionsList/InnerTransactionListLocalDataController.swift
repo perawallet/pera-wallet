@@ -96,11 +96,7 @@ extension InnerTransactionListLocalDataController {
     private func makeInnerTransactionListItem(
         _ transaction: Transaction
     ) -> InnerTransactionListItem? {
-        guard let transactionType = transaction.type else {
-            return nil
-        }
-
-        switch transactionType {
+        switch transaction.type {
         case .payment:
             let viewModel = AlgoInnerTransactionPreviewViewModel(
                 transaction: transaction,

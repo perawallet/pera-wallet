@@ -93,6 +93,7 @@ extension AccountNameSetupViewController {
 
 extension AccountNameSetupViewController: AccountNameSetupViewDelegate {
     func accountNameSetupViewDidFinishAccountCreation(_ accountNameSetupView: AccountNameSetupView) {
+        analytics.track(.onboardWatchAccount(type: .create))
         setupAccountName()
     }
     

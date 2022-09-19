@@ -21,13 +21,13 @@ extension NoContentWithActionViewIllustratedTheme {
         contentHorizontalPaddings = (0, 0)
         primaryAction = primaryAction.modify(
             [
-                .tintColor(AppColors.Components.Button.Primary.text)
+                .tintColor(Colors.Button.Primary.text)
             ]
         )
 
         secondaryAction = secondaryAction.modify(
             [
-                .tintColor(AppColors.Components.Button.Secondary.text)
+                .tintColor(Colors.Button.Secondary.text)
             ]
         )
     }

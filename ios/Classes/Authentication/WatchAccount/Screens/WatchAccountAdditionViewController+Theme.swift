@@ -22,7 +22,7 @@ extension WatchAccountAdditionViewController {
         let backgroundColor: Color
 
         init(_ family: LayoutFamily) {
-            self.backgroundColor = AppColors.Shared.System.background
+            self.backgroundColor = Colors.Defaults.background
         }
     }
 }

@@ -39,18 +39,18 @@ struct AppCallTransactionDetailViewTheme: LayoutSheet, StyleSheet {
     let bottomInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        backgroundColor = AppColors.Shared.System.background
+        backgroundColor = Colors.Defaults.background
         openInAlgoExplorerButton = [
             .title("transaction-id-open-algoexplorer".localized),
-            .titleColor([.normal(AppColors.Components.Button.Secondary.text)]),
+            .titleColor([.normal(Colors.Button.Secondary.text)]),
             .font(Fonts.DMSans.medium.make(13)),
-            .backgroundColor(AppColors.Components.Button.Secondary.background)
+            .backgroundColor(Colors.Button.Secondary.background)
         ]
         openInGoalSeekerButton = [
             .title("transaction-id-open-goalseeker".localized),
-            .titleColor([.normal(AppColors.Components.Button.Secondary.text)]),
+            .titleColor([.normal(Colors.Button.Secondary.text)]),
             .font(Fonts.DMSans.medium.make(13)),
-            .backgroundColor(AppColors.Components.Button.Secondary.background)
+            .backgroundColor(Colors.Button.Secondary.background)
 
         ]
         senderViewTheme = TransactionTextInformationViewTheme().configuredForInteraction()
@@ -70,7 +70,7 @@ struct AppCallTransactionDetailViewTheme: LayoutSheet, StyleSheet {
         spacingBetweenPropertiesAndActions = 64
         bottomInset = 24
         horizontalPadding = 24
-        let separatorColor = AppColors.Shared.Layer.grayLighter
+        let separatorColor = Colors.Layer.grayLighter
         let separatorSize: LayoutMetric = 1
         let separatorHorizontalPaddings = (horizontalPadding, horizontalPadding)
         topSeparator = Separator(
@@ -79,7 +79,7 @@ struct AppCallTransactionDetailViewTheme: LayoutSheet, StyleSheet {
             position: .top(separatorHorizontalPaddings)
         )
         bottomSeparator = Separator(
-            color: AppColors.Shared.Layer.grayLighter,
+            color: Colors.Layer.grayLighter,
             size: separatorSize,
             position: .bottom(separatorHorizontalPaddings)
         )

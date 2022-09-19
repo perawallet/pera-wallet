@@ -25,6 +25,9 @@ protocol CollectibleDetailDataController: AnyObject {
 
     func load()
     func retry()
+
+    func hasOptedIn() -> OptInStatus
+    func hasOptedOut() -> OptOutStatus
 }
 
 enum CollectibleDetailSection:

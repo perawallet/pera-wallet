@@ -27,7 +27,7 @@ struct PassphraseViewTheme: StyleSheet, LayoutSheet {
 
     init(_ family: LayoutFamily) {
         self.passphraseContainerView = [
-            .backgroundColor(AppColors.Shared.Layer.grayLightest)
+            .backgroundColor(Colors.Layer.grayLightest)
         ]
         self.passphraseContainerCorner = Corner(radius: 12)
         self.collectionViewHorizontalInset = 24 * horizontalScale

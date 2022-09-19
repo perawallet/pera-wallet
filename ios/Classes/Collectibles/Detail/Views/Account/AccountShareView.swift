@@ -20,11 +20,10 @@ import MacaroonUIKit
 final class AccountShareView:
     View,
     ViewModelBindable,
-    UIInteractionObservable,
-    UIControlInteractionPublisher {
+    UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .performCopy: UIControlInteraction(),
-        .performShareQR: UIControlInteraction()
+        .performCopy: TargetActionInteraction(),
+        .performShareQR: TargetActionInteraction()
     ]
 
     private lazy var imageView = UIImageView()

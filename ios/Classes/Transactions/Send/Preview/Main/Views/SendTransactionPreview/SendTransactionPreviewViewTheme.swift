@@ -34,8 +34,8 @@ struct SendTransactionPreviewViewTheme: LayoutSheet, StyleSheet {
     let bottomInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
-        self.separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
+        self.backgroundColor = Colors.Defaults.background
+        self.separator = Separator(color: Colors.Layer.grayLighter, size: 1)
         self.commonTransactionAmountInformationViewTheme = TransactionAmountInformationViewTheme()
         self.transactionTextInformationViewCommonTheme = TransactionTextInformationViewTheme()
         self.transactionAccountInformationViewCommonTheme = TitledTransactionAccountNameViewTheme(family)

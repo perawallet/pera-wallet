@@ -19,29 +19,48 @@ import MacaroonUtils
 import MagpieCore
 
 final class ReceiveCollectibleAssetListAPIDataController:
-    ReceiveCollectibleAssetListDataController {
+    ReceiveCollectibleAssetListDataController,
+    SharedDataControllerObserver {
     var eventHandler: ((ReceiveCollectibleAssetListDataControllerEvent) -> Void)?
 
-    private lazy var searchThrottler = Throttler(intervalInSeconds: 0.3)
-    private var ongoingEndpoint: EndpointOperatable?
+    private(set) var account: Account
 
     private var assets: [AssetDecoration] = []
 
     private var lastSnapshot: Snapshot?
 
+    private lazy var searchThrottler = Throttler(intervalInSeconds: 0.3)
+
+    private var draft = AssetSearchQuery(query: nil, cursor: nil, type: .collectible)
+
+    private var ongoingEndpoint: EndpointOperatable?
+    private var ongoingEndpointToLoadNextPage: EndpointOperatable?
+
+    private var hasNextPage: Bool {
+        return draft.cursor != nil
+    }
+
     private let api: ALGAPI
+    private let sharedDataController: SharedDataController
+
     private let snapshotQueue = DispatchQueue(
         label: "com.algorand.queue.receiveCollectibleAssetListAPIDataController"
     )
 
-    private var nextCursor: String?
+    init(
+        account: Account,
+        api: ALGAPI,
+        sharedDataController: SharedDataController
+    ) {
+        self.account = account
+        self.api = api
+        self.sharedDataController = sharedDataController
 
-    private var hasNext: Bool {
-        return nextCursor != nil
+        sharedDataController.add(self)
     }
 
-    init(_ api: ALGAPI) {
-        self.api = api
+    deinit {
+        sharedDataController.remove(self)
     }
 
     subscript(index: Int) -> AssetDecoration? {
@@ -52,77 +71,144 @@ final class ReceiveCollectibleAssetListAPIDataController:
 extension ReceiveCollectibleAssetListAPIDataController {
     func load() {
         deliverLoadingSnapshot()
-
-        load(with: nil)
+        loadData()
     }
 
     func search(for query: String?) {
         searchThrottler.performNext {
             [weak self] in
+            guard let self = self else { return }
 
-            guard let self = self else {
-                return
-            }
+            self.draft.query = query
+            self.draft.cursor = nil
 
-            self.resetSearch()
-
-            self.load(with: query)
+            self.loadData()
         }
     }
 
-    func resetSearch() {
-        nextCursor = nil
-    }
-
     func loadNextPageIfNeeded(for indexPath: IndexPath) {
-        guard indexPath.item == assets.count - 3,
-              hasNext else {
-                  return
-              }
+        if ongoingEndpointToLoadNextPage != nil { return }
 
-        load(with: nil, isPaginated: true)
-    }
+        if !hasNextPage { return }
 
-    private func load(with query: String?, isPaginated: Bool = false) {
-        cancelOngoingEndpoint()
+        if indexPath.item < assets.count - 3 { return }
 
-        let searchDraft = AssetSearchQuery(
-            status: .all,
-            query: query,
-            cursor: nextCursor,
-            type: .collectible
-        )
-
-        ongoingEndpoint =
-        api.searchAssets(
-            searchDraft,
+        ongoingEndpointToLoadNextPage = api.searchAssets(
+            draft,
             ignoreResponseOnCancelled: false
         ) { [weak self] response in
+            guard let self = self else { return }
+
+            self.ongoingEndpointToLoadNextPage = nil
+
             switch response {
             case let .success(searchResults):
-                guard let self = self else {
-                    return
-                }
-
-                if isPaginated {
-                    let results = self.assets + searchResults.results
-                    self.assets = results.uniqued()
-                } else {
-                    self.assets = searchResults.results.uniqued()
-                }
+                let results = self.assets + searchResults.results
+                self.assets = results
+                self.draft.cursor = searchResults.nextCursor
 
                 self.deliverContentSnapshot()
-                self.nextCursor = searchResults.nextCursor
             case .failure:
-                /// <todo> Handle failure case.
+                /// <todo>
+                /// Handle error properly.
                 break
             }
         }
     }
-    
+
+    private func loadData() {
+        cancelOngoingEndpoint()
+
+        ongoingEndpoint = api.searchAssets(
+            draft,
+            ignoreResponseOnCancelled: false
+        ) { [weak self] response in
+            guard let self = self else { return }
+
+            self.ongoingEndpoint = nil
+
+            switch response {
+            case let .success(searchResults):
+                self.assets = searchResults.results
+                self.draft.cursor = searchResults.nextCursor
+
+                self.deliverContentSnapshot()
+            case .failure:
+                /// <todo>
+                /// Handle error properly.
+                break
+            }
+        }
+    }
+
     private func cancelOngoingEndpoint() {
+        ongoingEndpointToLoadNextPage?.cancel()
+        ongoingEndpointToLoadNextPage = nil
+
         ongoingEndpoint?.cancel()
         ongoingEndpoint = nil
+    }
+}
+
+extension ReceiveCollectibleAssetListAPIDataController {
+    func hasOptedIn(_ asset: AssetDecoration) -> OptInStatus {
+        let monitor = sharedDataController.blockchainUpdatesMonitor
+        let hasPendingOptedIn = monitor.hasPendingOptInRequest(
+            assetID: asset.id,
+            for: account
+        )
+        let hasAlreadyOptedIn = account[asset.id] != nil
+
+        switch (hasPendingOptedIn, hasAlreadyOptedIn) {
+        case (true, false): return .pending
+        case (true, true): return .optedIn
+        case (false, true): return .optedIn
+        case (false, false): return .rejected
+        }
+    }
+}
+
+/// <mark>
+/// SharedDataControllerObserver
+extension ReceiveCollectibleAssetListAPIDataController {
+    func sharedDataController(
+        _ sharedDataController: SharedDataController,
+        didPublish event: SharedDataControllerEvent
+    ) {
+        if case .didFinishRunning = event {
+            updateAccountIfNeeded()
+            deliverOptedInAssetsIfNeeded()
+        }
+    }
+
+    private func updateAccountIfNeeded() {
+        let updatedAccount = sharedDataController.accountCollection[account.address]
+
+        guard let account = updatedAccount else { return }
+
+        if !account.isAvailable { return }
+
+        self.account = account.value
+    }
+
+    private func deliverOptedInAssetsIfNeeded() {
+        snapshotQueue.async {
+            [weak self] in
+            guard let self = self else { return }
+
+            let monitor = self.sharedDataController.blockchainUpdatesMonitor
+            let optedInAssetUpdates = monitor.filterOptedInAssetUpdates(for: self.account)
+
+            var optedInAssetItems: [OptInAssetListItem] = []
+            for update in optedInAssetUpdates {
+                if let asset = self.assets.first(matching: ((\.id, update.key))) {
+                    let item = OptInAssetListItem(asset: asset)
+                    optedInAssetItems.append(item)
+                }
+            }
+
+            self.publish(.didOptInAssets(optedInAssetItems))
+        }
     }
 }
 
@@ -149,21 +235,13 @@ extension ReceiveCollectibleAssetListAPIDataController {
             [weak self] in
             guard let self = self else { return Snapshot() }
 
-            var assetItems: [ReceiveCollectibleAssetListItem] = []
-
             var snapshot = Snapshot()
 
             snapshot.appendSections([.info, .search, .collectibles])
 
-            for asset in self.assets {
-                let collectibleAsset = CollectibleAsset(asset: ALGAsset(id: asset.id), decoration: asset)
-                let assetItem: ReceiveCollectibleAssetListItem = .collectible(
-                    AssetPreviewViewModel(
-                        CollectibleAssetPreviewAdditionDraft(asset: collectibleAsset)
-                    )
-                )
-
-                assetItems.append(assetItem)
+            let assetItems: [ReceiveCollectibleAssetListItem] = self.assets.map {
+                let item = OptInAssetListItem(asset: $0)
+                return ReceiveCollectibleAssetListItem.collectible(item)
             }
 
             if !self.assets.isEmpty {

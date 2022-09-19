@@ -19,9 +19,9 @@ import UIKit
 
 class ContactsViewController: BaseViewController {
     weak var delegate: ContactsViewControllerDelegate?
-    
-    override var name: AnalyticsScreenName? {
-        return .contacts
+
+    override var analyticsScreen: ALGAnalyticsScreen? {
+        return .init(name: .contactList)
     }
     
     private lazy var contactsView = ContactsView()
@@ -35,7 +35,7 @@ class ContactsViewController: BaseViewController {
     override func setListeners() {
         super.setListeners()
         
-        noContentWithActionView.observe(event: .performPrimaryAction) {
+        noContentWithActionView.startObserving(event: .performPrimaryAction) {
             [weak self] in
             guard let self = self else {
                 return

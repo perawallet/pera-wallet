@@ -20,7 +20,7 @@ import MacaroonUtils
 
 final class Collectible: ALGEntityModel {
     let standard: CollectibleStandard?
-    let mediaType: MediaType
+    let mediaType: MediaType?
     let thumbnailImage: URL?
     let title: String?
     let collectionName: String?
@@ -58,7 +58,7 @@ final class Collectible: ALGEntityModel {
 extension Collectible {
     struct APIModel: ALGAPIModel {
         var standard: CollectibleStandard?
-        var mediaType: MediaType
+        var mediaType: MediaType?
         var primaryImage: URL?
         var title: String?
         var collectionName: String?
@@ -68,7 +68,7 @@ extension Collectible {
 
         init() {
             self.standard = nil
-            self.mediaType = .init()
+            self.mediaType = nil
             self.primaryImage = nil
             self.title = nil
             self.collectionName = nil

@@ -26,7 +26,7 @@ struct SecuritySettingsViewTheme: LayoutSheet, StyleSheet {
     let sectionInset: LayoutPaddings
     
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.cellSpacing = 0
         self.topInset = 16
         self.sectionInset = (8, 0, 36, 0)

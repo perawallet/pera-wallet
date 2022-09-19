@@ -93,12 +93,6 @@ final class EditNoteScreen: BaseViewController {
     }
 
     private func addBarButtons() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
-            self?.dismissScreen()
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
-
         let doneBarButtonItem = ALGBarButtonItem(kind: .done) {
             [weak self] in
 

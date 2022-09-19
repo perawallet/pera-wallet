@@ -19,21 +19,18 @@ import UIKit
 import MacaroonUIKit
 
 final class TransactionsDataSource: UICollectionViewDiffableDataSource<TransactionsSection, TransactionsItem> {
+    let noContentType: NoContentCellType
+
     init(
-        _ collectionView: UICollectionView
+        _ collectionView: UICollectionView,
+        noContentType: NoContentCellType = .centered
     ) {
+        self.noContentType = noContentType
+        
         super.init(collectionView: collectionView) {
             collectionView, indexPath, itemIdentifier in
 
             switch itemIdentifier {
-            case let .algosInfo(item):
-                let cell = collectionView.dequeue(AlgosDetailInfoViewCell.self, at: indexPath)
-                cell.bindData(item)
-                return cell
-            case let .assetInfo(item):
-                let cell = collectionView.dequeue(AssetDetailInfoViewCell.self, at: indexPath)
-                cell.bindData(item)
-                return cell
             case let .filter(item):
                 let cell = collectionView.dequeue(TransactionHistoryFilterCell.self, at: indexPath)
                 cell.bindData(item)
@@ -65,15 +62,19 @@ final class TransactionsDataSource: UICollectionViewDiffableDataSource<Transacti
             case let .empty(state):
                 switch state {
                 case .noContent:
-                    let cell = collectionView.dequeue(NoContentCell.self, at: indexPath)
-                    cell.bindData(TransactionHistoryNoContentViewModel())
-                    return cell
+                    switch noContentType {
+                    case .topAligned:
+                        let cell = collectionView.dequeue(NoContentTopAlignedCell.self, at: indexPath)
+                        cell.bindData(TransactionHistoryNoContentViewModel())
+                        return cell
+                    case .centered:
+                        let cell = collectionView.dequeue(NoContentCell.self, at: indexPath)
+                        cell.bindData(TransactionHistoryNoContentViewModel())
+                        return cell
+                    }
+
                 case .transactionHistoryLoading:
                     return collectionView.dequeue(TransactionHistoryLoadingCell.self, at: indexPath)
-                case .algoTransactionHistoryLoading:
-                    return collectionView.dequeue(AlgoTransactionHistoryLoadingCell.self, at: indexPath)
-                case .assetTransactionHistoryLoading:
-                    return collectionView.dequeue(AssetTransactionHistoryLoadingCell.self, at: indexPath)
                 }
             case .nextList:
                 return collectionView.dequeue(LoadingCell.self, at: indexPath)
@@ -85,13 +86,10 @@ final class TransactionsDataSource: UICollectionViewDiffableDataSource<Transacti
             PendingTransactionCell.self,
             TransactionHistoryTitleCell.self,
             TransactionHistoryFilterCell.self,
-            AlgosDetailInfoViewCell.self,
-            AssetDetailInfoViewCell.self,
             NoContentCell.self,
+            NoContentTopAlignedCell.self,
             LoadingCell.self,
-            TransactionHistoryLoadingCell.self,
-            AlgoTransactionHistoryLoadingCell.self,
-            AssetTransactionHistoryLoadingCell.self
+            TransactionHistoryLoadingCell.self
         ].forEach {
             collectionView.register($0)
         }

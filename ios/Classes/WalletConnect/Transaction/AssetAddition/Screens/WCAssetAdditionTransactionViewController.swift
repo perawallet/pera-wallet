@@ -70,20 +70,34 @@ extension WCAssetAdditionTransactionViewController {
 }
 
 extension WCAssetAdditionTransactionViewController: WCAssetAdditionTransactionViewDelegate {
-    func wcAssetAdditionTransactionViewDidOpenRawTransaction(_ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView) {
+    func wcAssetAdditionTransactionViewDidOpenRawTransaction(
+        _ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView
+    ) {
         displayRawTransaction()
     }
 
-    func wcAssetAdditionTransactionViewDidOpenAlgoExplorer(_ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView) {
+    func wcAssetAdditionTransactionViewDidOpenAlgoExplorer(
+        _ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView
+    ) {
         openInExplorer(asset)
     }
 
-    func wcAssetAdditionTransactionViewDidOpenAssetURL(_ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView) {
+    func wcAssetAdditionTransactionViewDidOpenAssetURL(
+        _ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView
+    ) {
         openAssetURL(asset)
     }
 
-    func wcAssetAdditionTransactionViewDidOpenAssetMetadata(_ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView) {
+    func wcAssetAdditionTransactionViewDidOpenAssetMetadata(
+        _ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView
+    ) {
         displayAssetMetadata(asset)
+    }
+
+    func wcAssetAdditionTransactionViewDidOpenAssetDiscovery(
+        _ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView
+    ) {
+        openAssetDiscovery(asset)
     }
 }
 

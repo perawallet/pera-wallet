@@ -38,15 +38,15 @@ struct TutorialViewTheme: StyleSheet, LayoutSheet {
     let warningTitlePaddings: LayoutPaddings
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.title = [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.medium.make(32)),
             .textAlignment(.left),
             .textOverflow(FittingText())
         ]
         self.description = [
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),
             .textOverflow(FittingText())
@@ -55,7 +55,7 @@ struct TutorialViewTheme: StyleSheet, LayoutSheet {
             .image("icon-red-warning")
         ]
         self.warningTitle = [
-            .textColor(AppColors.Shared.Helpers.negative),
+            .textColor(Colors.Helpers.negative),
             .font(Fonts.DMSans.medium.make(13)),
             .textAlignment(.left),
             .textOverflow(FittingText())

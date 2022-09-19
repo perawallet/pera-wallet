@@ -27,7 +27,7 @@ protocol NavigationBarConfigurable: AnyObject {
     var rightBarButtonItems: [BarButtonItemRef] { get set }
     /// Return true if pop/dismiss should be hidden.
     var hidesCloseBarButtonItem: Bool { get }
-    
+
     func setNeedsNavigationBarAppearanceUpdate()
     
     /// Return true if pop/dismiss should be performed.
@@ -40,7 +40,7 @@ extension NavigationBarConfigurable where Self: UIViewController {
     var hidesCloseBarButtonItem: Bool {
         return false
     }
-    
+
     func setNeedsNavigationBarAppearanceUpdate() {
         navigationItem.hidesBackButton = hidesCloseBarButtonItem
         

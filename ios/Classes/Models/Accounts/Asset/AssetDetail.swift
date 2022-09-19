@@ -58,7 +58,7 @@ extension AssetDetailResponse {
 final class AssetDetail: ALGEntityModel {
     let id: Int64
     let creator: String
-    let total: UInt64
+    let total: UInt64?
     let isDefaultFrozen: Bool?
     let unitName: String?
     let assetName: String?
@@ -77,7 +77,7 @@ final class AssetDetail: ALGEntityModel {
     ) {
         self.id = apiModel.index ?? -1
         self.creator = apiModel.params?.creator ?? ""
-        self.total = apiModel.params?.total ?? 0
+        self.total = apiModel.params?.total
         self.isDefaultFrozen = apiModel.params?.defaultFrozen
         self.unitName = apiModel.params?.unitName
         self.assetName = apiModel.params?.name
@@ -94,7 +94,7 @@ final class AssetDetail: ALGEntityModel {
         self.id = assetDecoration.id
         self.assetName = assetDecoration.name
         self.unitName = assetDecoration.unitName
-        self.isVerified = assetDecoration.isVerified
+        self.isVerified = assetDecoration.verificationTier.isVerified
         self.fractionDecimals = assetDecoration.decimals
         self.total = 0
         self.creator = assetDecoration.creator?.address ?? ""

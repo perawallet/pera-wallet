@@ -28,9 +28,13 @@ final class SendCollectibleViewController:
     KeyboardControllerDataSource {
     var eventHandler: ((SendCollectibleViewControllerEvent) -> Void)?
 
-    private lazy var bottomTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var bottomTransition = BottomSheetTransition(
+        presentingViewController: self,
+        interactable: false
+    )
     private lazy var approveModalTransition = BottomSheetTransition(
-        presentingViewController: approveCollectibleTransactionViewController!
+        presentingViewController: approveCollectibleTransactionViewController!,
+        interactable: false
     )
 
     private(set) lazy var sendCollectibleView = SendCollectibleView()
@@ -54,7 +58,8 @@ final class SendCollectibleViewController:
     private var draft: SendCollectibleDraft
     private lazy var transactionController = TransactionController(
         api: api!,
-        bannerController: bannerController
+        bannerController: bannerController,
+        analytics: analytics
     )
 
     private lazy var currencyFormatter = CurrencyFormatter()
@@ -162,22 +167,22 @@ extension SendCollectibleViewController {
             self?.handleActionViewHeightChange(bottomSheetNewHeight)
         }
 
-        sendCollectibleActionView.observe(event: .performTransfer) {
+        sendCollectibleActionView.startObserving(event: .performTransfer) {
             [weak self] in
             self?.makeTransfer()
         }
 
-        sendCollectibleActionView.observe(event: .performSelectReceiverAccount) {
+        sendCollectibleActionView.startObserving(event: .performSelectReceiverAccount) {
             [weak self] in
             self?.openSelectReceiver()
         }
 
-        sendCollectibleActionView.observe(event: .performScanQR) {
+        sendCollectibleActionView.startObserving(event: .performScanQR) {
             [weak self] in
             self?.openScanQR()
         }
 
-        sendCollectibleActionView.observe(event: .performClose) {
+        sendCollectibleActionView.startObserving(event: .performClose) {
             [weak self] in
             self?.dismissWithAnimation()
         }
@@ -248,13 +253,6 @@ extension SendCollectibleViewController {
                 let fetchedAccount = accountResponse.account
 
                 if !fetchedAccount.isSameAccount(with: recipientAddress) {
-                    UIApplication.shared.firebaseAnalytics?.record(
-                        MismatchAccountErrorLog(
-                            requestedAddress: recipientAddress,
-                            receivedAddress: fetchedAccount.address
-                        )
-                    )
-
                     self.bannerController?.presentErrorBanner(
                         title: "title-error".localized,
                         message: "send-algos-receiver-address-validation".localized
@@ -621,6 +619,16 @@ extension SendCollectibleViewController {
             .ledgerApproval(mode: .approve, deviceName: ledger),
             by: .present
         )
+
+        ledgerApprovalViewController?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .didCancel:
+                self.ledgerApprovalViewController?.dismissScreen()
+                self.loadingController?.stopLoading()
+            }
+        }
     }
 
     func transactionControllerDidResetLedgerOperation(
@@ -639,15 +647,7 @@ extension SendCollectibleViewController {
         _ transactionController: TransactionController,
         didCompletedTransaction id: TransactionID
     ) {
-        log(
-            TransactionEvent(
-                accountType: draft.fromAccount.type,
-                assetId: String(draft.collectibleAsset.id),
-                isMaxTransaction: false,
-                amount: draft.collectibleAsset.amount,
-                transactionId: id.identifier
-            )
-        )
+        analytics.track(.completeCollectibleTransaction(draft: draft, transactionId: id))
 
         NotificationCenter.default.post(
             name: CollectibleListLocalDataController.didSendCollectible,

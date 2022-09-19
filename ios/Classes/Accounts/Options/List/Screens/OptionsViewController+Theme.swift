@@ -26,23 +26,23 @@ struct OptionsViewControllerTheme:
     var primaryContextPaddings: LayoutPaddings
     var secondaryContextPaddings: LayoutPaddings
     var separator: Separator
-    var action: ListActionViewTheme
+    var button: ListItemButtonTheme
 
     init(
         _ family: LayoutFamily
     ) {
         background = [
-            .backgroundColor(AppColors.Shared.System.background)
+            .backgroundColor(Colors.Defaults.background)
         ]
         verticalPadding = 20
         let horizontalPadding: LayoutMetric = 24
         primaryContextPaddings = (verticalPadding, horizontalPadding, 0, horizontalPadding)
         secondaryContextPaddings = (verticalPadding, horizontalPadding, verticalPadding, horizontalPadding)
         separator = Separator(
-            color: AppColors.Shared.Layer.grayLighter,
+            color: Colors.Layer.grayLighter,
             size: 1,
             position: .bottom((horizontalPadding, horizontalPadding))
         )
-        action = ListActionViewTheme(family)
+        button = ListItemButtonTheme(family)
     }
 }

@@ -98,7 +98,7 @@ class WCGroupTransactionAccountInformationViewModel {
         currencyFormatter.formattingContext = .standalone()
         currencyFormatter.currency = AlgoLocalCurrency()
 
-        balance = currencyFormatter.format(account.amount.toAlgos)
+        balance = currencyFormatter.format(account.algo.amount.toAlgos)
     }
 
     private func setAssetName(
@@ -114,7 +114,7 @@ class WCGroupTransactionAccountInformationViewModel {
         }
 
         if let asset = asset {
-            assetName = asset.presentation.displayNames.secondaryName
+            assetName = asset.naming.displayNames.secondaryName
         } else {
             assetName = "ALGO"
         }
@@ -125,7 +125,7 @@ class WCGroupTransactionAccountInformationViewModel {
         for asset: Asset?
     ) -> Bool {
         guard let asset = asset else {
-            return account.amount > 0
+            return account.algo.amount > 0
         }
 
         return !asset.amountWithFraction.isZero

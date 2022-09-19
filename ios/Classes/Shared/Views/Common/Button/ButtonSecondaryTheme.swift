@@ -35,12 +35,12 @@ struct ButtonSecondaryTheme: ButtonTheme {
             .textOverflow(SingleLineFittingText())
         ]
         self.titleColorSet = [
-            .normal(AppColors.Components.Button.Secondary.text),
-            .disabled(AppColors.Components.Button.Secondary.disabledText)
+            .normal(Colors.Button.Secondary.text),
+            .disabled(Colors.Button.Secondary.disabledText)
         ]
         self.backgroundColorSet = [
-            .normal(AppColors.Components.Button.Secondary.background),
-            .disabled(AppColors.Components.Button.Secondary.disabledBackground)
+            .normal(Colors.Button.Secondary.background),
+            .disabled(Colors.Button.Secondary.disabledBackground)
         ]
         self.corner = Corner(radius: 4)
         self.icon = [

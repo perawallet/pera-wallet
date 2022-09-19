@@ -25,7 +25,7 @@ struct TransactionCustomRangeSelectionViewTheme: LayoutSheet, StyleSheet {
     let pickerBottomInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
 
         self.horizontalInset = 24
         self.topInset = 8

@@ -18,8 +18,11 @@
 import UIKit
 
 class WCMainTransactionDataSource: NSObject {
-
     weak var delegate: WCMainTransactionDataSourceDelegate?
+
+    var hasValidGroupTransaction: Bool {
+        groupedTransactions.count == transactions.count
+    }
 
     private let walletConnector: WalletConnector
     private(set) var transactionRequest: WalletConnectRequest

@@ -24,7 +24,6 @@ final class Account: ALGEntityModel {
     typealias CollectibleAssetIndexer = [AssetID: Int] /// asset id -> collectible asset index
     
     let address: String
-    var amount: UInt64
     var amountWithoutRewards: UInt64
     var rewardsBase: UInt64?
     var round: UInt64?
@@ -53,6 +52,7 @@ final class Account: ALGEntityModel {
     var rekeyDetail: RekeyDetail?
     var preferredOrder: Int
 
+    var algo: Algo
     private(set) var standardAssets: [StandardAsset]?
     private(set) var collectibleAssets: [CollectibleAsset]?
 
@@ -73,7 +73,6 @@ final class Account: ALGEntityModel {
         _ apiModel: APIModel = APIModel()
     ) {
         address = apiModel.address
-        amount = apiModel.amount
         amountWithoutRewards = apiModel.amountWithoutPendingRewards
         rewardsBase = apiModel.rewardBase
         round = apiModel.round
@@ -94,6 +93,7 @@ final class Account: ALGEntityModel {
         receivesNotification = true
         preferredOrder = AccountInformation.invalidOrder
         totalCreatedApps = apiModel.totalCreatedApps
+        algo = Algo(amount: apiModel.amount)
     }
 
     init(
@@ -107,7 +107,6 @@ final class Account: ALGEntityModel {
         accountImage: String? = nil
     ) {
         self.address = address
-        self.amount = 0
         self.amountWithoutRewards = 0
         self.pendingRewards = 0
         self.status = .offline
@@ -118,13 +117,13 @@ final class Account: ALGEntityModel {
         self.rekeyDetail = rekeyDetail
         self.preferredOrder = preferredOrder
         self.totalCreatedApps = 0
+        self.algo = Algo(amount: 0)
     }
     
     init(
         localAccount: AccountInformation
     ) {
         self.address = localAccount.address
-        self.amount = 0
         self.amountWithoutRewards = 0
         self.pendingRewards = 0
         self.status = .offline
@@ -135,12 +134,13 @@ final class Account: ALGEntityModel {
         self.rekeyDetail = localAccount.rekeyDetail
         self.preferredOrder = localAccount.preferredOrder
         self.totalCreatedApps = 0
+        self.algo = Algo(amount: 0)
     }
 
     func encode() -> APIModel {
         var apiModel = APIModel()
         apiModel.address = address
-        apiModel.amount = amount
+        apiModel.amount = algo.amount
         apiModel.amountWithoutPendingRewards = amountWithoutRewards
         apiModel.createdAtRound = rewardsBase
         apiModel.sigType = signatureType
@@ -179,6 +179,12 @@ extension Account {
         let arr1 = standardAssets.someArray
         let arr2 = collectibleAssets.someArray
         return arr1 + arr2
+    }
+
+    func setAlgo(
+        _ algo: Algo
+    ) {
+        self.algo = algo
     }
 
     /// <todo>

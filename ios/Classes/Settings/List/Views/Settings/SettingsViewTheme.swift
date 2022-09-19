@@ -26,7 +26,7 @@ struct SettingsViewTheme: LayoutSheet, StyleSheet {
     let sectionInset: LayoutPaddings
     
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.cellSpacing = 0
         self.collectionViewEdgeInsets = (36, 0, 0, 0)
         self.sectionInset = (8, 0, 36, 0)

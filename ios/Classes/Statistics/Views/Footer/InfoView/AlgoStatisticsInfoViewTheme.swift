@@ -26,13 +26,13 @@ struct AlgoStatisticsInfoViewTheme: LayoutSheet, StyleSheet {
     init(_ family: LayoutFamily) {
         self.title = [
             .font(Fonts.DMSans.regular.make(13)),
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .textOverflow(SingleLineFittingText()),
             .textAlignment(.left)
         ]
         self.value = [
             .font(Fonts.DMMono.regular.make(15)),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .textOverflow(SingleLineFittingText()),
             .textAlignment(.right)
         ]

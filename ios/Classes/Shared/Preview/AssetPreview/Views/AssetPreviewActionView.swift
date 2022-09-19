@@ -16,16 +16,17 @@
 //   AssetPreviewActionView.swift
 
 import MacaroonUIKit
+import MacaroonURLImage
 import UIKit
 
 final class AssetPreviewActionView: View {
     weak var delegate: AssetPreviewActionViewDelegate?
 
-    private lazy var imageView = AssetImageView()
+    private lazy var imageView = URLImageView()
     private lazy var assetNameVerticalStackView = UIStackView()
     private lazy var assetNameHorizontalStackView = UIStackView()
     private lazy var assetNameLabel = UILabel()
-    private lazy var secondaryImageView = UIImageView()
+    private lazy var secondaryImageView = ImageView()
     private lazy var assetShortNameLabel = UILabel()
     private lazy var actionButton = UIButton()
 
@@ -59,14 +60,13 @@ extension AssetPreviewActionView {
 
 extension AssetPreviewActionView {
     private func addImage(_ theme: AssetPreviewActionViewTheme) {
-        imageView.customize(AssetImageViewTheme())
-        addSubview(imageView)
+        imageView.build(theme.image)
 
+        addSubview(imageView)
         imageView.snp.makeConstraints {
             $0.leading.equalToSuperview()
             $0.fitToSize(theme.imageSize)
             $0.centerY.equalToSuperview()
-            $0.top.bottom.equalToSuperview().inset(theme.verticalPadding)
         }
     }
 
@@ -75,9 +75,10 @@ extension AssetPreviewActionView {
         assetNameVerticalStackView.axis = .vertical
 
         assetNameVerticalStackView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(theme.verticalPadding)
             $0.leading.equalTo(imageView.snp.trailing).offset(theme.horizontalPadding)
-            $0.trailing.lessThanOrEqualToSuperview().inset(theme.assetNameVerticalStackViewTrailingPadding)
-            $0.centerY.equalTo(imageView.snp.centerY)
+            $0.bottom.equalToSuperview().inset(theme.verticalPadding)
+            $0.centerY.equalToSuperview()
         }
 
         addAssetNameHorizontalStackView(theme)
@@ -86,7 +87,6 @@ extension AssetPreviewActionView {
 
     private func addAssetNameHorizontalStackView(_ theme: AssetPreviewActionViewTheme) {
         assetNameVerticalStackView.addArrangedSubview(assetNameHorizontalStackView)
-        assetNameHorizontalStackView.spacing = theme.secondaryImageLeadingPadding
 
         addAssetNameLabel(theme)
         addSecondaryImage(theme)
@@ -99,6 +99,10 @@ extension AssetPreviewActionView {
     }
 
     private func addSecondaryImage(_ theme: AssetPreviewActionViewTheme) {
+        secondaryImageView.customizeAppearance(theme.secondaryImage)
+
+        secondaryImageView.contentEdgeInsets = theme.secondaryImageOffset
+        secondaryImageView.fitToHorizontalIntrinsicSize()
         assetNameHorizontalStackView.addArrangedSubview(secondaryImageView)
     }
 
@@ -113,6 +117,7 @@ extension AssetPreviewActionView {
 
         addSubview(actionButton)
         actionButton.snp.makeConstraints {
+            $0.leading >= assetNameHorizontalStackView.snp.trailing + theme.horizontalPadding
             $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
             $0.centerY.equalTo(imageView.snp.centerY)
         }
@@ -121,9 +126,9 @@ extension AssetPreviewActionView {
 
 extension AssetPreviewActionView: ViewModelBindable {
     func bindData(_ viewModel: AssetPreviewViewModel?) {
-        imageView.bindData(viewModel?.assetImageViewModel)
+        imageView.load(from: viewModel?.imageSource)
         assetNameLabel.editText = viewModel?.title
-        secondaryImageView.image = viewModel?.verifiedIcon
+        secondaryImageView.image = viewModel?.verificationTierIcon
         assetShortNameLabel.editText = viewModel?.subtitle
     }
 

@@ -102,7 +102,7 @@ extension Collectible3DVideoViewController {
                     [weak self] in
                     guard let self = self else { return }
 
-                    self.view.backgroundColor = AppColors.Shared.System.background.uiColor
+                    self.view.backgroundColor = Colors.Defaults.background.uiColor
                 }
             }
 

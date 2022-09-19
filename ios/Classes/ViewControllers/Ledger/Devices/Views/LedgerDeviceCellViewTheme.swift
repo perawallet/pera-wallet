@@ -25,7 +25,9 @@ struct LedgerDeviceCellViewTheme: StyleSheet, LayoutSheet {
     let ledgerImage: ImageStyle
     let arrowImage: ImageStyle
     let corner: Corner
-    let shadow: MacaroonUIKit.Shadow
+    let firstShadow: MacaroonUIKit.Shadow
+    let secondShadow: MacaroonUIKit.Shadow
+    let thirdShadow: MacaroonUIKit.Shadow
 
     let horizontalInset: LayoutMetric
     let ledgerIconSize: LayoutSize
@@ -37,7 +39,7 @@ struct LedgerDeviceCellViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.left),
             .textOverflow(FittingText()),
             .font(Fonts.DMSans.regular.make(15)),
-            .textColor(AppColors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
         self.arrowImage = [
             .image("icon-arrow-gray-24")
@@ -46,12 +48,26 @@ struct LedgerDeviceCellViewTheme: StyleSheet, LayoutSheet {
             .image("icon-pair-ledger-account")
         ]
         self.corner = Corner(radius: 4)
-        self.shadow = MacaroonUIKit.Shadow(
-            color: UIColor(red: 0, green: 0, blue: 0, alpha: 0.08),
+        self.firstShadow = MacaroonUIKit.Shadow(
+            color: Colors.Shadows.Cards.shadow1.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
             offset: (0, 2),
-            radius: 4,
-            fillColor: AppColors.Shared.System.background.uiColor
+            radius: 4
+        )
+        self.secondShadow = MacaroonUIKit.Shadow(
+            color: Colors.Shadows.Cards.shadow2.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
+            opacity: 1,
+            offset: (0, 2),
+            radius: 4
+        )
+        self.thirdShadow = MacaroonUIKit.Shadow(
+            color: Colors.Shadows.Cards.shadow3.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
+            opacity: 1,
+            offset: (0, 0),
+            radius: 0
         )
 
         self.horizontalInset = 16

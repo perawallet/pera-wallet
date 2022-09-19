@@ -22,8 +22,7 @@ import SnapKit
 
 final class SendCollectibleActionView:
     View,
-    UIInteractionObservable,
-    UIControlInteractionPublisher {
+    UIInteractable {
     weak var delegate: SendCollectibleActionViewDelegate?
 
     lazy var handlers = Handlers()
@@ -38,10 +37,10 @@ final class SendCollectibleActionView:
     }
 
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .performTransfer: UIControlInteraction(),
-        .performSelectReceiverAccount: UIControlInteraction(),
-        .performScanQR: UIControlInteraction(),
-        .performClose: UIControlInteraction()
+        .performTransfer: TargetActionInteraction(),
+        .performSelectReceiverAccount: TargetActionInteraction(),
+        .performScanQR: TargetActionInteraction(),
+        .performClose: TargetActionInteraction()
     ]
 
     private lazy var contentView = MacaroonUIKit.BaseView()

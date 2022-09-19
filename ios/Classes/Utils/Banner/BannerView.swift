@@ -22,7 +22,7 @@ import UIKit
 final class BannerView:
     View,
     ViewModelBindable,
-    UIInteractionObservable {
+    UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
         .performAction: UIBlockInteraction()
     ]
@@ -75,8 +75,8 @@ extension BannerView {
 
     @objc
     private func didTapBanner() {
-        let interaction = uiInteractions[.performAction] as? UIBlockInteraction
-        interaction?.notify()
+        let interaction = uiInteractions[.performAction]
+        interaction?.publish()
     }
 }
 

@@ -21,11 +21,10 @@ import UIKit
 final class BuyAlgoHomeView:
     View,
     ViewModelBindable,
-    UIInteractionObservable,
-    UIControlInteractionPublisher {
+    UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .close: UIControlInteraction(),
-        .buyAlgo: UIControlInteraction()
+        .close: TargetActionInteraction(),
+        .buyAlgo: TargetActionInteraction()
     ]
     
     private var theme: BuyAlgoHomeViewTheme?
@@ -259,8 +258,8 @@ extension BuyAlgoHomeView {
             size: CGSize(width: bounds.width, height: theme.linearGradientHeight + safeAreaBottom)
         )
 
-        let color0 = AppColors.Shared.System.background.uiColor.withAlphaComponent(0).cgColor
-        let color1 = AppColors.Shared.System.background.uiColor.cgColor
+        let color0 = Colors.Defaults.background.uiColor.withAlphaComponent(0).cgColor
+        let color1 = Colors.Defaults.background.uiColor.cgColor
 
         layer.colors = [color0, color1]
         buyAlgoButtonContainer.layer.insertSublayer(layer, at: 0)

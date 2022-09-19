@@ -44,7 +44,7 @@ final class Transaction:
     let receiverRewards: UInt64?
     let sender: String?
     let senderRewards: UInt64?
-    let type: TransferType?
+    let type: TransactionType
     let createdAssetId: Int64?
     let assetFreeze: AssetFreezeTransaction?
     let assetConfig: AssetConfigTransaction?
@@ -77,7 +77,7 @@ final class Transaction:
         self.receiverRewards = apiModel.receiverRewards
         self.sender = apiModel.sender
         self.senderRewards = apiModel.senderRewards
-        self.type = apiModel.txType
+        self.type = apiModel.txType.unwrap(TransactionType.init(rawValue:)) ?? .random()
         self.createdAssetId = apiModel.createdAssetIndex
         self.assetFreeze = apiModel.assetFreezeTransaction
         self.assetConfig = apiModel.assetConfigTransaction
@@ -102,7 +102,7 @@ final class Transaction:
         apiModel.receiverRewards = receiverRewards
         apiModel.sender = sender
         apiModel.senderRewards = senderRewards
-        apiModel.txType = type
+        apiModel.txType = type.rawValue
         apiModel.createdAssetIndex = createdAssetId
         apiModel.assetFreezeTransaction = assetFreeze
         apiModel.assetConfigTransaction = assetConfig
@@ -231,21 +231,6 @@ extension Transaction {
 }
 
 extension Transaction {
-    enum TransferType: String, ALGAPIModel {
-        case payment = "pay"
-        case keyreg = "keyreg"
-        case assetConfig = "acfg"
-        case assetTransfer = "axfer"
-        case assetFreeze = "afrz"
-        case applicationCall = "appl"
-
-        init() {
-            self = .payment
-        }
-    }
-}
-
-extension Transaction {
     enum Constant {
         static let minimumFee: UInt64 = 1000
     }
@@ -265,7 +250,7 @@ extension Transaction {
         var receiverRewards: UInt64?
         var sender: String?
         var senderRewards: UInt64?
-        var txType: TransferType?
+        var txType: String?
         var createdAssetIndex: Int64?
         var assetFreezeTransaction: AssetFreezeTransaction?
         var assetConfigTransaction: AssetConfigTransaction?

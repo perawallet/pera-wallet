@@ -46,17 +46,17 @@ struct HomeLoadingViewTheme:
         _ family: LayoutFamily
     ) {
         self.background = [
-            .backgroundColor(AppColors.Shared.Helpers.heroBackground)
+            .backgroundColor(Colors.Helpers.heroBackground)
         ]
         self.contentEdgeInsets = (16, 24, 0, 24)
         self.portfolioTitle = [
             .text("portfolio-title".localized.bodyRegular()),
-            .textColor(AppColors.Components.Text.gray)
+            .textColor(Colors.Text.gray)
         ]
         self.portfolioTitleTopPadding = 8
         self.portfolioInfoAction = [
             .icon([ .normal("icon-info-20".templateImage) ]),
-            .tintColor(AppColors.Components.Text.grayLighter)
+            .tintColor(Colors.Text.grayLighter)
         ]
         self.spacingBetweenPortfolioTitleAndPortfolioInfoAction = 8
         self.primaryPortfolioValueSize = (181, 44)

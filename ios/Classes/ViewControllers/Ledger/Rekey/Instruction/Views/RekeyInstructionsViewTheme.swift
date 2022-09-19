@@ -38,20 +38,20 @@ struct RekeyInstructionsViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(FittingText()),
             .textAlignment(.left),
             .font(Fonts.DMSans.medium.make(32)),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .text("rekey-instruction-title".localized)
         ]
         self.subtitle = [
             .textOverflow(FittingText()),
             .textAlignment(.left),
             .font(Fonts.DMSans.regular.make(15)),
-            .textColor(AppColors.Components.Text.gray)
+            .textColor(Colors.Text.gray)
         ]
         self.headerTitle = [
             .textOverflow(FittingText()),
             .textAlignment(.left),
             .font(Fonts.DMSans.medium.make(19)),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .text("rekey-instruction-header".localized)
         ]
         self.startButtonTheme = ButtonPrimaryTheme()

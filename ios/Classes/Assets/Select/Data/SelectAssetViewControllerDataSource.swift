@@ -17,46 +17,78 @@
 
 import Foundation
 import UIKit
+import MacaroonUtils
 
 final class SelectAssetViewControllerDataSource:
     NSObject,
     UICollectionViewDataSource {
+    var isEmpty: Bool {
+        return items.isEmpty
+    }
+
     private lazy var currencyFormatter = CurrencyFormatter()
 
-    private let sharedDataController: SharedDataController
+    private var items: [SelectAssetListItem] = []
+
     private let account: Account
 
-    private let filter: AssetType?
-    private let assets: [Asset]
+    private let sharedDataController: SharedDataController
 
     init(
-        filter: AssetType?,
         account: Account,
         sharedDataController: SharedDataController
     ) {
-        self.filter = filter
         self.account = account
         self.sharedDataController = sharedDataController
-
-        switch filter {
-        case .collectible:
-            assets = account.collectibleAssets.someArray.filter(\.isOwned)
-        case .standard:
-            assets = account.standardAssets.someArray
-        default:
-            assets = account.standardAssets.someArray + account.collectibleAssets.someArray.filter(\.isOwned)
-        }
 
         super.init()
     }
     
-    subscript(indexPath: IndexPath) -> Asset? {
-        switch filter {
-        case .collectible:
-            return assets[safe: indexPath.item]
-        default:
-            return assets[safe: indexPath.item.advanced(by: -1)]
+    subscript(indexPath: IndexPath) -> SelectAssetListItem? {
+        return items[safe: indexPath.item]
+    }
+}
+
+extension SelectAssetViewControllerDataSource {
+    func loadData(completion: @escaping () -> Void) {
+        asyncBackground {
+            [weak self] in
+            guard let self = self else { return }
+
+            var items: [SelectAssetListItem] = []
+
+            let algoItem = self.makeAssetItem(self.account.algo)
+            items.append(algoItem)
+
+            for blockchainAsset in self.account.assets.someArray {
+                let asset = self.account[blockchainAsset.id]
+
+                switch asset {
+                case let standardAsset as StandardAsset:
+                    let assetItem = self.makeAssetItem(standardAsset)
+                    items.append(assetItem)
+                case let collectibleAsset as CollectibleAsset where collectibleAsset.isOwned:
+                    let assetItem = self.makeAssetItem(collectibleAsset)
+                    items.append(assetItem)
+                default:
+                    break
+                }
+            }
+
+            self.items = items
+
+            asyncMain(execute: completion)
         }
+    }
+
+    private func makeAssetItem(_ asset: Asset) -> SelectAssetListItem {
+        let item = AssetItem(
+            asset: asset,
+            currency: sharedDataController.currency,
+            currencyFormatter: currencyFormatter,
+            currencyFormattingContext: .listItem
+        )
+        return SelectAssetListItem(item: item)
     }
 }
 
@@ -65,11 +97,10 @@ extension SelectAssetViewControllerDataSource {
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        switch filter {
-        case .collectible:
-            return assets.count
-        default:
-            return assets.count.advanced(by: 1)
+        if items.isEmpty {
+            return 2
+        } else {
+            return items.count
         }
     }
 
@@ -77,52 +108,28 @@ extension SelectAssetViewControllerDataSource {
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        let cell = collectionView.dequeue(AssetPreviewCell.self, at: indexPath)
-
-        let currency = sharedDataController.currency
-
-        if  filter != .collectible,
-            indexPath.item == .zero {
-            let algoAssetItem = AlgoAssetItem(
-                account: account,
-                currency: currency,
-                currencyFormatter: currencyFormatter
+        if let item = self[indexPath] {
+            let cell = collectionView.dequeue(
+                AssetListItemCell.self,
+                at: indexPath
             )
-            let preview = AssetPreviewModelAdapter.adapt(algoAssetItem)
-            let previewViewModel = AssetPreviewViewModel(preview)
-
-            cell.bindData(previewViewModel)
-
+            cell.bindData(item.viewModel)
             return cell
-        }
-
-        guard let asset = self[indexPath] else {
-            fatalError("Index path is out of bounds")
-        }
-
-        if let collectibleAsset = asset as? CollectibleAsset {
-            let draft = CollectibleAssetPreviewSelectionDraft(
-                asset: collectibleAsset,
-                currency: currency,
-                currencyFormatter: currencyFormatter
+        } else {
+            return collectionView.dequeue(
+                PreviewLoadingCell.self,
+                at: indexPath
             )
-            let viewModel = AssetPreviewViewModel(draft)
-
-            cell.bindData(viewModel)
-
-            return cell
         }
+    }
+}
 
-        let assetItem = AssetItem(
-            asset: asset,
-            currency: currency,
-            currencyFormatter: currencyFormatter
-        )
-        let preview = AssetPreviewModelAdapter.adaptAssetSelection(assetItem)
-        let previewViewModel = AssetPreviewViewModel(preview)
+struct SelectAssetListItem {
+    let model: Asset
+    let viewModel: AssetListItemViewModel
 
-        cell.bindData(previewViewModel)
-
-        return cell
+    init(item: AssetItem) {
+        self.model = item.asset
+        self.viewModel = AssetListItemViewModel(item)
     }
 }

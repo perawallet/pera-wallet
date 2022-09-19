@@ -85,7 +85,7 @@ extension AccountAssetListLayout {
             return CGSize(theme.assetManagementItemSize)
         case .search:
             return CGSize(theme.searchItemSize)
-        case let .asset(item), let .algo(item):
+        case let .asset(item):
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
@@ -192,10 +192,10 @@ extension AccountAssetListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForAssetCellItem item: AssetPreviewViewModel,
+        sizeForAssetCellItem item: AssetListItemViewModel,
         atSection section: Int
     ) -> CGSize {
-        let sizeCacheIdentifier = AccountAssetCell.reuseIdentifier
+        let sizeCacheIdentifier = AssetListItemCell.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
@@ -205,9 +205,9 @@ extension AccountAssetListLayout {
             listView,
             forSectionAt: section
         )
-        let newSize = AccountAssetCell.calculatePreferredSize(
+        let newSize = AssetListItemCell.calculatePreferredSize(
             item,
-            for: AccountAssetCell.theme,
+            for: AssetListItemCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 

@@ -113,8 +113,8 @@ extension AccountNameSetupView {
         let view = FloatingTextInputFieldView()
         let textInputBaseStyle: TextInputStyle = [
             .font(Fonts.DMSans.regular.make(15, .body)),
-            .tintColor(AppColors.Components.Text.main),
-            .textColor(AppColors.Components.Text.main),
+            .tintColor(Colors.Text.main),
+            .textColor(Colors.Text.main),
             .clearButtonMode(.whileEditing),
             .returnKeyType(.done),
             .autocapitalizationType(.words),

@@ -43,23 +43,26 @@ struct MultilineTextInputFieldViewCommonTheme: MultilineTextInputFieldViewTheme 
         self.placeholder = [
             .font(Fonts.DMSans.regular.make(15, .body)),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.grayLighter),
+            .textColor(Colors.Text.grayLighter),
             .text(placeholder)
         ]
         self.floatingPlaceholder = [
-            .textColor(AppColors.Components.Text.grayLighter),
-            .text((floatingPlaceholder ?? placeholder).body(hasMultilines: false))
+            .textColor(Colors.Text.grayLighter),
+            .text(
+                (floatingPlaceholder ?? placeholder)
+                    .footnoteRegular()
+            )
         ]
         self.topInset = 24.0
         self.focusIndicator = [
-            .backgroundColor(AppColors.Components.TextField.indicatorDeactive)
+            .backgroundColor(Colors.Shadows.TextField.defaultBackground)
         ]
         self.focusIndicatorTopInset = 3
         self.focusIndicatorActive = [
-            .backgroundColor(AppColors.Components.TextField.indicatorActive)
+            .backgroundColor(Colors.Shadows.TextField.typingBackground)
         ]
         self.errorFocusIndicator = [
-            .backgroundColor(AppColors.Shared.Helpers.negative)
+            .backgroundColor(Colors.Shadows.TextField.errorBackground)
         ]
         self.assistive = FormInputFieldAssistiveViewCommonTheme()
     }

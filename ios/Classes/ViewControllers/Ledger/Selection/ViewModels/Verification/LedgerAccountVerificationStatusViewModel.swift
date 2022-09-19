@@ -59,18 +59,18 @@ final class LedgerAccountVerificationStatusViewModel: ViewModel {
     var statusColor: Color {
         switch status {
         case .awaiting:
-            return AppColors.Shared.Helpers.negative
+            return Colors.Helpers.negative
         case .pending:
-            return AppColors.Components.Text.gray
+            return Colors.Text.gray
         case .verified:
-            return AppColors.Components.Link.primary
+            return Colors.Link.primary
         case .unverified:
-            return AppColors.Shared.Helpers.negative
+            return Colors.Helpers.negative
         }
     }
 
     var borderColor: Color {
-        status == .awaiting ? AppColors.Shared.Helpers.negative : UIColor.clear
+        status == .awaiting ? Colors.Helpers.negative : UIColor.clear
     }
 
     init(account: Account, status: LedgerVerificationStatus) {

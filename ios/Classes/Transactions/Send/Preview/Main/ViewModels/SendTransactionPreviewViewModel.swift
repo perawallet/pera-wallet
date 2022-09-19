@@ -67,7 +67,7 @@ final class SendTransactionPreviewViewModel: ViewModel {
 
             let exchanger = CurrencyExchanger(currency: rawCurrency)
             let amountInCurrency = try exchanger.exchangeAlgo(amount: amount)
-            let totalAmount = draft.from.amount.toAlgos
+            let totalAmount = draft.from.algo.amount.toAlgos
             let totalAmountInCurrency = try exchanger.exchangeAlgo(amount: totalAmount)
 
             currencyFormatter.formattingContext = .standalone()
@@ -117,7 +117,7 @@ final class SendTransactionPreviewViewModel: ViewModel {
         do {
             let rawCurrency = try currencyValue.unwrap()
             let assetFraction = asset.decimals
-            let assetSymbol = asset.presentation.name
+            let assetSymbol = asset.naming.name
 
             let exchanger = CurrencyExchanger(currency: rawCurrency)
             let amountInCurrency = try exchanger.exchange(

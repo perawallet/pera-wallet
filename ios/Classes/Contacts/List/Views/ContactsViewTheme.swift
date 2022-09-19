@@ -29,7 +29,7 @@ struct ContactsViewTheme: StyleSheet, LayoutSheet {
     let bottomInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.searchInputViewTheme = SearchInputViewCommonTheme(
             placeholder: "contacts-search".localized,
             family: family

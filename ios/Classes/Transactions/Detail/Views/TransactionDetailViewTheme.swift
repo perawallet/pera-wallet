@@ -42,19 +42,19 @@ struct TransactionDetailViewTheme: LayoutSheet, StyleSheet {
     let bottomInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
-        self.separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
+        self.backgroundColor = Colors.Defaults.background
+        self.separator = Separator(color: Colors.Layer.grayLighter, size: 1)
         self.openInAlgoExplorerButton = [
             .title("transaction-id-open-algoexplorer".localized),
-            .titleColor([.normal(AppColors.Components.Button.Secondary.text)]),
+            .titleColor([.normal(Colors.Button.Secondary.text)]),
             .font(Fonts.DMSans.medium.make(13)),
-            .backgroundColor(AppColors.Components.Button.Secondary.background)
+            .backgroundColor(Colors.Button.Secondary.background)
         ]
         self.openInGoalSeekerButton = [
             .title("transaction-id-open-goalseeker".localized),
-            .titleColor([.normal(AppColors.Components.Button.Secondary.text)]),
+            .titleColor([.normal(Colors.Button.Secondary.text)]),
             .font(Fonts.DMSans.medium.make(13)),
-            .backgroundColor(AppColors.Components.Button.Secondary.background)
+            .backgroundColor(Colors.Button.Secondary.background)
         ]
         self.transactionAmountInformationViewTheme = TransactionAmountInformationViewTheme(
             transactionAmountViewTheme: TransactionAmountViewBiggerTheme()

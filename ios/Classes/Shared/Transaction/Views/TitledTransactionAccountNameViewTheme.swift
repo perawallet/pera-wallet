@@ -23,7 +23,7 @@ final class TitledTransactionAccountNameViewTheme: LayoutSheet, StyleSheet {
         return [
             .textAlignment(.left),
             .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(15))
         ]
     }

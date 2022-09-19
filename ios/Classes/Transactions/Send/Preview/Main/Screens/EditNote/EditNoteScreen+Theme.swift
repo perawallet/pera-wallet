@@ -26,7 +26,7 @@ extension EditNoteScreen {
         let modalHeight: LayoutMetric
 
         init(_ family: LayoutFamily) {
-            backgroundColor = AppColors.Shared.System.background
+            backgroundColor = Colors.Defaults.background
             editNoteViewTheme = EditNoteViewTheme()
             modalHeight = 462
         }

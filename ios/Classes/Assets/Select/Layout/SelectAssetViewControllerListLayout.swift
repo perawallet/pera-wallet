@@ -20,9 +20,15 @@ import UIKit
 
 final class SelectAssetViewControllerListLayout: NSObject {
     private var sizeCache: [String: CGSize] = [:]
-    
-    private let sectionHorizontalInsets: LayoutHorizontalPaddings = (24, 24)
 
+    private let listDataSource: SelectAssetViewControllerDataSource
+
+    init(listDataSource: SelectAssetViewControllerDataSource) {
+        self.listDataSource = listDataSource
+    }
+}
+
+extension SelectAssetViewControllerListLayout {
     class func build() -> UICollectionViewLayout {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.minimumLineSpacing = 0
@@ -36,13 +42,16 @@ extension SelectAssetViewControllerListLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         insetForSectionAt section: Int
     ) -> UIEdgeInsets {
-        var insets = UIEdgeInsets(
-            (0, sectionHorizontalInsets.leading, 0, sectionHorizontalInsets.trailing)
-        )
+        var inset = UIEdgeInsets()
+        inset.top = 28
+        inset.bottom = 16
 
-        insets.top = 28
+        if listDataSource.isEmpty {
+            inset.left = 24
+            inset.right = 24
+        }
 
-        return insets
+        return inset
     }
 
     func collectionView(
@@ -50,42 +59,55 @@ extension SelectAssetViewControllerListLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return sizeForAssetCellItem(
-            collectionView,
-            layout: collectionViewLayout
-        )
+        if let item = listDataSource[indexPath] {
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForAssetItem: item,
+                atSection: indexPath.section
+            )
+        } else {
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForLoadingItemAtSection: indexPath.section
+            )
+        }
     }
 }
 
 extension SelectAssetViewControllerListLayout {
-    private func sizeForAssetCellItem(
+    private func listView(
         _ listView: UICollectionView,
-        layout listViewLayout: UICollectionViewLayout
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForLoadingItemAtSection section: Int
     ) -> CGSize {
-        let sizeCacheIdentifier = AssetPreviewCell.reuseIdentifier
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: section
+        )
+        return CGSize(width: width, height: 72)
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForAssetItem item: SelectAssetListItem,
+        atSection section: Int
+    ) -> CGSize {
+        let sizeCacheIdentifier = AssetListItemCell.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
         }
 
-        let width = calculateContentWidth(for: listView)
-
-        let sampleAssetPreview = AssetPreviewModel(
-            icon: .algo,
-            verifiedIcon: img("icon-verified-shield"),
-            title: "title-unknown".localized,
-            subtitle: "title-unknown".localized,
-            primaryAccessory: "title-unknown".localized,
-            secondaryAccessory: "title-unknown".localized,
-            currencyAmount: 0,
-            asset: nil
+        let width = calculateContentWidth(
+            listView,
+            forSectionAt: section
         )
-
-        let sampleAssetItem = AssetPreviewViewModel(sampleAssetPreview)
-
-        let newSize = AssetPreviewCell.calculatePreferredSize(
-            sampleAssetItem,
-            for: AssetPreviewCell.theme,
+        let newSize = AssetListItemCell.calculatePreferredSize(
+            item.viewModel,
+            for: AssetListItemCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 
@@ -97,11 +119,18 @@ extension SelectAssetViewControllerListLayout {
 
 extension SelectAssetViewControllerListLayout {
     private func calculateContentWidth(
-        for listView: UICollectionView
-    ) -> LayoutMetric {
-        return listView.bounds.width -
-        listView.contentInset.horizontal -
-        sectionHorizontalInsets.leading -
-        sectionHorizontalInsets.trailing
+        _ collectionView: UICollectionView,
+        forSectionAt section: Int
+    ) -> CGFloat {
+        let sectionInset = self.collectionView(
+            collectionView,
+            layout: collectionView.collectionViewLayout,
+            insetForSectionAt: section
+        )
+        return
+            collectionView.bounds.width -
+            collectionView.contentInset.horizontal -
+            sectionInset.left -
+            sectionInset.right
     }
 }

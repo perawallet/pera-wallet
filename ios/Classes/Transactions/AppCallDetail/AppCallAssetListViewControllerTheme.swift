@@ -28,7 +28,7 @@ struct AppCallAssetListViewControllerTheme:
         _ family: LayoutFamily
     ) {
         background = [
-            .backgroundColor(AppColors.Shared.System.background)
+            .backgroundColor(Colors.Defaults.background)
         ]
         listContentInset = (20, 0, 20, 0)
     }

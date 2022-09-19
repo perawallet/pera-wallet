@@ -45,10 +45,10 @@ struct AccountPreviewViewTheme:
         namePreviewViewTheme.configureForAccountPreviewView()
         self.namePreviewView = namePreviewViewTheme
         self.primaryAccessory = [
-            .textColor(AppColors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
         self.secondaryAccessory = [
-            .textColor(AppColors.Components.Text.grayLighter)
+            .textColor(Colors.Text.grayLighter)
         ]
         self.accessoryIcon = [
             .contentMode(.right)

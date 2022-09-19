@@ -25,7 +25,7 @@ extension TutorialViewController {
 
         init(_ family: LayoutFamily) {
             tutorialViewTheme = TutorialViewTheme()
-            backgroundColor = AppColors.Shared.System.background
+            backgroundColor = Colors.Defaults.background
         }
     }
 }

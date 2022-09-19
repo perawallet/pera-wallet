@@ -46,7 +46,7 @@ struct ActionableBannerViewTheme: LayoutSheet, StyleSheet {
         contentPaddings = (20, 24, contentBottomPadding, .noMetric)
 
         background = [
-            .backgroundColor(AppColors.Shared.Helpers.negative)
+            .backgroundColor(Colors.Helpers.negative)
         ]
 
         icon = [
@@ -57,17 +57,17 @@ struct ActionableBannerViewTheme: LayoutSheet, StyleSheet {
 
         title = [
             .textOverflow(FittingText()),
-            .textColor(AppColors.Shared.System.background)
+            .textColor(Colors.Defaults.background)
         ]
         message = [
             .textOverflow(FittingText()),
-            .textColor(AppColors.Shared.System.background)
+            .textColor(Colors.Defaults.background)
         ]
         messageContentEdgeInsets = (4, 0, 0, 0)
 
         actionHorizontalPaddings = (20, 24)
         action = [
-            .titleColor([.normal(AppColors.Components.Button.Primary.text)]),
+            .titleColor([.normal(Colors.Button.Primary.text)]),
             .backgroundColor(UIColor(red: 1, green: 1, blue: 1, alpha: 0.12))
         ]
         actionCorner = Corner(radius: 4)

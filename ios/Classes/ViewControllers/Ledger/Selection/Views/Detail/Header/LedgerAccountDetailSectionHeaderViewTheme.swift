@@ -25,7 +25,7 @@ struct LedgerAccountDetailSectionHeaderViewTheme: LayoutSheet, StyleSheet {
         self.title = [
             .textAlignment(.left),
             .font(Fonts.DMSans.medium.make(15)),
-            .textColor(AppColors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
         self.horizontalPadding = 24
     }

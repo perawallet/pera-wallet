@@ -25,7 +25,7 @@ extension LedgerApprovalViewController {
 
         init(_ family: LayoutFamily) {
             ledgerApprovalViewTheme = LedgerApprovalViewTheme()
-            backgroundColor = AppColors.Shared.System.background
+            backgroundColor = Colors.Defaults.background
             modalHeight = 362
         }
     }

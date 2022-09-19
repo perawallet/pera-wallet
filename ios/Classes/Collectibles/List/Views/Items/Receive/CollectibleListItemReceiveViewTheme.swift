@@ -36,34 +36,34 @@ struct CollectibleListItemReceiveViewTheme:
         _ family: LayoutFamily
     ) {
         containerCorner = Corner(radius: 4)
-        containerBorder = Border(color: AppColors.SendTransaction.Shadow.first.uiColor, width: 1)
+        containerBorder = Border(color: Colors.Shadows.Cards.shadow1.uiColor, width: 1)
         
         containerFirstShadow = MacaroonUIKit.Shadow(
-            color: AppColors.SendTransaction.Shadow.first.uiColor,
+            color: Colors.Shadows.Cards.shadow1.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
             offset: (0, 2),
             radius: 4,
-            fillColor: AppColors.Shared.System.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
         )
 
         containerSecondShadow = MacaroonUIKit.Shadow(
-            color: AppColors.SendTransaction.Shadow.second.uiColor,
+            color: Colors.Shadows.Cards.shadow2.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
             offset: (0, 2),
             radius: 4,
-            fillColor: AppColors.Shared.System.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
         )
 
         containerThirdShadow = MacaroonUIKit.Shadow(
-            color: AppColors.SendTransaction.Shadow.third.uiColor,
+            color: Colors.Shadows.Cards.shadow3.uiColor,
+            fillColor: Colors.Defaults.background.uiColor,
             opacity: 1,
             offset: (0, 0),
             radius: 0,
-            fillColor: AppColors.Shared.System.background.uiColor,
             cornerRadii: (4, 4),
             corners: .allCorners
         )
@@ -72,25 +72,16 @@ struct CollectibleListItemReceiveViewTheme:
             .image("icon-plus-24")
         ]
 
-        let font = Fonts.DMSans.medium.make(15)
-        let lineHeightMultiplier = 1.23
-
         let titleText: EditText = .attributedString(
             "collectibles-receive-action"
                 .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.center)
-                    ])
-                ])
+                .bodyMedium(
+                    alignment: .center
+                )
         )
 
         title = [
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .textOverflow(FittingText()),
             .text(titleText)
         ]

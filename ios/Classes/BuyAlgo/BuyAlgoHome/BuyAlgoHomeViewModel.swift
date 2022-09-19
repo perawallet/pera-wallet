@@ -51,88 +51,39 @@ extension BuyAlgoHomeViewModel {
         headerBackgroundImage = "img-moonpay-background"
     }
     
-    private mutating func bindTitle() {
-        let font = Fonts.DMSans.regular.make(15).uiFont
-        let lineHeightMultiplier = 1.23
-        
+    private mutating func bindTitle() {        
         title = .attributedString(
             "moonpay-introduction-title"
                 .localized
-                .attributed(
-                    [
-                        .font(font),
-                        .lineHeightMultiplier(lineHeightMultiplier, font),
-                        .paragraph([
-                            .textAlignment(.center),
-                            .lineHeightMultiple(lineHeightMultiplier)
-                        ]),
-                    ]
+                .bodyRegular(
+                    alignment: .center
                 )
         )
     }
     
     private mutating func bindSubtitle() {
-        let font = Fonts.DMSans.medium.make(32).uiFont
-        let lineHeightMultiplier = 0.96
-
         subtitle = .attributedString(
             "moonpay-buy-button-title"
                 .localized
-                .attributed(
-                    [
-                        .font(font),
-                        .lineHeightMultiplier(lineHeightMultiplier, font),
-                        .paragraph([
-                            .textAlignment(.left),
-                            .lineBreakMode(.byWordWrapping),
-                            .lineHeightMultiple(lineHeightMultiplier)
-                        ]),
-                    ]
-                )
+                .titleMedium()
         )
     }
     
     private mutating func bindDescription() {
-        let font = Fonts.DMSans.regular.make(15).uiFont
-        let lineHeightMultiplier = 1.23
-
         description = .attributedString(
             "moonpay-introduction-description"
                 .localized
-                .attributed(
-                    [
-                        .font(font),
-                        .lineHeightMultiplier(lineHeightMultiplier, font),
-                        .paragraph([
-                            .textAlignment(.left),
-                            .lineBreakMode(.byWordWrapping),
-                            .lineHeightMultiple(lineHeightMultiplier)
-                        ]),
-                    ]
-                )
+                .bodyRegular()
         )
     }
     
     private mutating func bindSecurity() {
         securityImage = "icon-payment-security"
-        
-        let font = Fonts.DMSans.medium.make(15).uiFont
-        let lineHeightMultiplier = 1.23
 
         security = .attributedString(
             "moonpay-introduction-security"
                 .localized
-                .attributed(
-                    [
-                        .font(font),
-                        .lineHeightMultiplier(lineHeightMultiplier, font),
-                        .paragraph([
-                            .textAlignment(.left),
-                            .lineBreakMode(.byWordWrapping),
-                            .lineHeightMultiple(lineHeightMultiplier)
-                        ]),
-                    ]
-                )
+                .bodyMedium()
         )
     }
     

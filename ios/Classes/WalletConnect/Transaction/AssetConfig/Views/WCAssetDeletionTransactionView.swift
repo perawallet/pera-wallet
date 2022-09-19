@@ -45,7 +45,7 @@ class WCAssetDeletionTransactionView: WCSingleTransactionView {
     override func configureAppearance() {
         super.configureAppearance()
 
-        backgroundColor = AppColors.Shared.System.background.uiColor
+        backgroundColor = Colors.Defaults.background.uiColor
     }
 
     override func prepareLayout() {
@@ -59,6 +59,12 @@ class WCAssetDeletionTransactionView: WCSingleTransactionView {
     override func setListeners() {
         rawTransactionButton.addTarget(self, action: #selector(notifyDelegateToOpenRawTransaction), for: .touchUpInside)
         algoExplorerButton.addTarget(self, action: #selector(notifyDelegateToOpenAlgoExplorer), for: .touchUpInside)
+
+        assetInformationView.startObserving(event: .performAction) {
+            [weak self] in
+            guard let self = self else { return }
+            self.delegate?.wcAssetDeletionTransactionViewDidOpenAssetDiscovery(self)
+        }
     }
 }
 
@@ -213,6 +219,13 @@ extension WCAssetDeletionTransactionView {
 }
 
 protocol WCAssetDeletionTransactionViewDelegate: AnyObject {
-    func wcAssetDeletionTransactionViewDidOpenRawTransaction(_ wcAssetDeletionTransactionView: WCAssetDeletionTransactionView)
-    func wcAssetDeletionTransactionViewDidOpenAlgoExplorer(_ wcAssetDeletionTransactionView: WCAssetDeletionTransactionView)
+    func wcAssetDeletionTransactionViewDidOpenRawTransaction(
+        _ wcAssetDeletionTransactionView: WCAssetDeletionTransactionView
+    )
+    func wcAssetDeletionTransactionViewDidOpenAlgoExplorer(
+        _ wcAssetDeletionTransactionView: WCAssetDeletionTransactionView
+    )
+    func wcAssetDeletionTransactionViewDidOpenAssetDiscovery(
+        _ wcAssetDeletionTransactionView: WCAssetDeletionTransactionView
+    )
 }

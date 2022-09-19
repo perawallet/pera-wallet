@@ -37,16 +37,16 @@ struct WCConnectionApprovalViewTheme: StyleSheet, LayoutSheet {
     let bottomInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.title = [
             .textAlignment(.center),
             .textOverflow(MultilineText(numberOfLines: 0)),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .font(Fonts.DMSans.regular.make(19))
         ]
         self.URLButton = [
             .font(Fonts.DMSans.bold.make(15)),
-            .titleColor([.normal(AppColors.Shared.Helpers.positive)])
+            .titleColor([.normal(Colors.Helpers.positive)])
         ]
         self.cancelButton = ButtonStyles.secondaryButton(title: "title-cancel".localized).create()
         self.connectButton = ButtonStyles.primaryButton(title: "title-connect".localized).create()

@@ -1,4 +1,7 @@
 /* (No Comment) */
+"about" = "소개";
+
+/* (No Comment) */
 "account-detail-assets-search" = "자산 검색";
 
 /* (No Comment) */
@@ -107,28 +110,31 @@
 "accounts-title" = "계정";
 
 /* (No Comment) */
-"accounts-title-assets" = "자산";
-
-/* (No Comment) */
 "accounts-title-collectibles" = "수집품";
 
 /* (No Comment) */
 "accounts-title-history" = "내역";
 
 /* (No Comment) */
-"accounts-tranaction-empty-detail" = "이 자산으로 진행된 트랜잭션이 없습니다.";
+"accounts-title-overview" = "개요";
+
+/* (No Comment) */
+"accounts-tranaction-empty-detail" = "선택한 기간에 표시할 트랜잭션이 없습니다";
 
 /* MARK: Accounts */
 "accounts-tranaction-empty-text" = "트랜잭션 없음";
-
-/* (No Comment) */
-"accounts-transaction-history-title" = "트랜잭션 내역";
 
 /* (No Comment) */
 "accounts-transaction-value" = "가치";
 
 /* (No Comment) */
 "accounts-transaction-your-balance" = "잔액";
+
+/* (No Comment) */
+"accounts-transactions-title" = "트랜잭션";
+
+/* (No Comment) */
+"activity" = "활동";
 
 /* (No Comment) */
 "add-node-title" = "노드 추가";
@@ -152,10 +158,64 @@
 "algo-statistics-title" = "통계";
 
 /* (No Comment) */
+"asa-about-asa-creator" = "생성자";
+
+/* MARK: ASA About */
+"asa-about-asa-id" = "ASA ID";
+
+/* (No Comment) */
+"asa-about-asa-project-website" = "프로젝트 웹사이트";
+
+/* (No Comment) */
+"asa-about-asa-show-on" = "주목받은 기록:";
+
+/* (No Comment) */
+"asa-about-asa-show-on-pera-explorer" = "Pera Explorer";
+
+/* (No Comment) */
+"asa-about-asa-url" = "ASA URL";
+
+/* (No Comment) */
+"asa-verification-detail-suspicious" = "본 ASA가 스캠(사기) 시도에 연루되었다는 신고를 받았습니다. 이용하실 때 각별히 유의하시기 바랍니다.";
+
+/* (No Comment) */
+"asa-verification-detail-suspicious-bold" = "스캠 시도";
+
+/* (No Comment) */
+"asa-verification-detail-trusted" = "알고랜드 생태계에서 유명하며 확고히 자리 잡은 프로젝트입니다.";
+
+/* (No Comment) */
+"asa-verification-detail-trusted-bold" = "유명";
+
+/* (No Comment) */
+"asa-verification-detail-verified" = "Pera ASA 인증 프로그램을 통해 자동 인증된 ASA입니다.";
+
+/* (No Comment) */
+"asa-verification-detail-verified-bold" = "자동 인증 완료";
+
+/* (No Comment) */
+"asa-verification-learn-more" = "ASA 인증에 대해 자세히 알아보기";
+
+/* (No Comment) */
+"asa-verification-suspicious-report" = "%@ 신고";
+
+/* (No Comment) */
+"asa-verification-title-suspicious" = "의심스러움";
+
+/* MARK: ASA Verification */
+"asa-verification-title-trusted" = "신뢰할 수 있는 ASA";
+
+/* (No Comment) */
+"asa-verification-title-verified" = "인증된 ASA";
+
+/* (No Comment) */
 "asset-add-confirmation-title" = "자산 추가 중";
 
 /* (No Comment) */
 "asset-add-warning" = "자산 추가 시 최소 트랜잭션 수수료의 트랜잭션을 전송해야 합니다. 해당 정보는 트랜잭션 내역에 표시됩니다.";
+
+/* (No Comment) */
+"asset-algos-description" = "알고(Algo)는 알고랜드 블록체인의 공식 암호화폐입니다. 알고랜드 블록체인은 누구나 참여할 수 있는, 국경 없이 개방된 경제를 만들기 위해 설계되었습니다. 새로운 유형의 디지털 경제는 모두가 즉시 사용할 수 있는 진정한 디지털 통화가 있어야 실현할 수 있습니다. 그것이 바로 알고입니다.";
 
 /* (No Comment) */
 "asset-algos-title" = "알고";
@@ -198,6 +258,30 @@
 
 /* (No Comment) */
 "asset-not-found-title" = "자산을 찾을 수 없습니다";
+
+/* (No Comment) */
+"asset-opt-in-successful-message" = "%@이(가) 계정에 추가되었습니다.";
+
+/* (No Comment) */
+"asset-opt-out-successful-message" = "%@이(가) 계정에서 제거되었습니다.";
+
+/* (No Comment) */
+"asset-quick-action-button-add" = "자산 추가";
+
+/* (No Comment) */
+"asset-quick-action-title-add" = "자산 추가 가능 대상:";
+
+/* (No Comment) */
+"asset-quick-action-title-add-asset-without-account" = "계정에서 자산을 옵트인할 수있습니다.";
+
+/* (No Comment) */
+"asset-quick-action-title-add-nft-without-account" = "계정에서 NFT를 옵트인할 수있습니다.";
+
+/* (No Comment) */
+"asset-quick-action-title-opt-in" = "NFT 추가 가능 대상:";
+
+/* (No Comment) */
+"asset-quick-action-title-remove" = "다음을 옵트인:";
 
 /* (No Comment) */
 "asset-remove-confirmation-title" = "자산 삭제";
@@ -246,6 +330,9 @@
 
 /* MARK: Asset */
 "asset-title" = "자산";
+
+/* MARK: Total Supply */
+"asset-total-supply-body" = "자산의 총 공급량은 생성 시 설정되며, 자산의 총 생성 단위에 해당합니다.";
 
 /* (No Comment) */
 "asset-transfer-balance" = "보내는 금액";
@@ -464,10 +551,10 @@
 "collectible-opt-out-info-title" = "NFT 옵트아웃";
 
 /* (No Comment) */
-"collectible-receive-account-list-info" = "계정에서 NFT를 옵트인해야 수신이 가능합니다. 확인할 때 자산 ID를 체크하시기 바랍니다.";
+"collectible-receive-account-list-info" = "NFT ASA ID를 옵트인해야 지갑으로 전송할 수 있습니다.";
 
 /* (No Comment) */
-"collectible-receive-asset-list-info" = "아래의 검색창에 NFT 이름이나 자산 ID를 붙여넣어 옵트인할 NFT를 찾을 수 있습니다.";
+"collectible-receive-asset-list-info" = "NFT ASA ID를 옵트인해야 지갑으로 전송할 수 있습니다. 검색 창에 ASA ID를 붙여넣으세요.";
 
 /* (No Comment) */
 "collectible-receive-asset-list-selected-account" = "선택한 계정";
@@ -970,6 +1057,12 @@
 /* MARK: Login */
 "login-title" = "잠금 해제";
 
+/* MARK: Mail */
+"mail-report-address" = "verification@perawallet.app";
+
+/* (No Comment) */
+"mail-report-subject" = "ASA 보고서: %d";
+
 /* (No Comment) */
 "maximum-balance-standard-account-warning-description" = "계정 설정에 따라, 최소 잔액 기준은 %@알고입니다.\n\n계속을 누르시면 알고랜드 블록체인의 필수 잔액을 유지하기 위해 트랜잭션 금액이 업데이트됩니다. 다음 단계에서 변경 내용을 미리 볼 수 있습니다.";
 
@@ -1146,6 +1239,12 @@
 
 /* (No Comment) */
 "opitons-collectibles-filter" = "NFT 필터링";
+
+/* (No Comment) */
+"opt-in-description-adding-nft" = "NFT 옵트인 시 최소 트랜잭션 수수료의 트랜잭션을 전송해야 합니다. 해당 정보는 트랜잭션 내역에 표시됩니다.";
+
+/* MARK: Opt In Asset */
+"opt-in-title-adding-nft" = "NFT 옵트인";
 
 /* (No Comment) */
 "options-auth-account" = "계정 주소 인증";
@@ -1789,6 +1888,18 @@
 /* MARK: SingleTransactionRequestMARK: SingleTransactionRequest */
 "single-transaction-request-show-detail-title" = "트랜잭션 정보 보기";
 
+/* (No Comment) */
+"social-media-platform-discord" = "디스코드";
+
+/* (No Comment) */
+"social-media-platform-telegram" = "텔레그램";
+
+/* MARK: Social Media Platforms */
+"social-media-platform-title" = "소셜 미디어";
+
+/* (No Comment) */
+"social-media-platform-twitter" = "트위터";
+
 /* MARK: Sort Account List */
 "sort-account-list-manually-header-title" = "수동으로 계정 재구성";
 
@@ -1800,6 +1911,9 @@
 
 /* MARK: Terms and Services */
 "terms-and-services-title" = "이용 약관";
+
+/* (No Comment) */
+"title-about-with-param" = "%@ 소개";
 
 /* (No Comment) */
 "title-accept" = "동의";
@@ -1863,6 +1977,9 @@
 
 /* (No Comment) */
 "title-copy" = "복사";
+
+/* (No Comment) */
+"title-csv" = "CSV";
 
 /* (No Comment) */
 "title-decline" = "거부";
@@ -2036,6 +2153,12 @@
 "title-show-all-detail" = "정보 전체 보기";
 
 /* (No Comment) */
+"title-show-less" = "줄이기";
+
+/* (No Comment) */
+"title-show-more" = "더 보기";
+
+/* (No Comment) */
 "title-show-more-assets" = "자산 %@개 더 보기";
 
 /* (No Comment) */
@@ -2064,6 +2187,9 @@
 
 /* (No Comment) */
 "title-testnet" = "테스트넷";
+
+/* (No Comment) */
+"title-total-supply" = "총 공급량";
 
 /* (No Comment) */
 "title-unknown" = "이름 없음";
@@ -2242,6 +2368,12 @@
 /* (No Comment) */
 "transaction-menu-copy-note" = "메모 복사";
 
+/* (No Comment) */
+"transaction-option-list-add-asset-subtitle" = "계정에서 ASA 또는 NFT에 옵트인";
+
+/* (No Comment) */
+"transaction-option-list-add-asset-title" = "자산 추가";
+
 /* MARK: Transaction Options */
 "transaction-option-list-buy-algo-subtitle" = "신용카드 또는 은행 계좌 이체로 암호화폐 구매";
 
@@ -2364,6 +2496,24 @@
 
 /* (No Comment) */
 "tutorial-title-write" = "복구 비밀문구를\n받아적을 준비를 해주세요";
+
+/* (No Comment) */
+"url-copied" = "URL을 클립보드로 복사 완료";
+
+/* (No Comment) */
+"verification-info-body" = "Pera Wallet의 ASA(Algorand Standard Asset, 알고랜드 표준 자산) 인증 프로그램을 통해 ASA 작성자가 자산 소유자임을 확인하여 자동으로 검증할 수 있습니다.\nASA 인증의 주요 목적은 ASA가 연결되지 않은 프로젝트에서 토큰 역할을 하는 것처럼 위장할 수 없도록 방지하는 것입니다.\nASA 인증은 프로젝트에 대한 보증이 아닙니다. 알고랜드와 Pera는 프로젝트를 승인하기 위해 검증 프로세스를 사용하지 않을 것입니다.";
+
+/* (No Comment) */
+"verification-info-body-first-highlight" = "자동";
+
+/* (No Comment) */
+"verification-info-body-second-highlight" = "ASA가 연결되지 않은 프로젝트에서 토큰 역할을 하는 것처럼 위장할 수 없도록 방지합니다.";
+
+/* (No Comment) */
+"verification-info-body-third-highlight" = "ASA 인증은 프로젝트에 대한 보증이 아닙니다.";
+
+/* MARK: Verification Information */
+"verification-info-title" = "ASA 인증";
 
 /* (No Comment) */
 "verified-asset-double-check" = "확인하신 다음";
@@ -2507,6 +2657,9 @@
 "wallet-connect-transaction-error-invalid-asset" = "잘못된 입력: 잘못된 자산입니다";
 
 /* (No Comment) */
+"wallet-connect-transaction-error-invalid-group" = "트랜잭션 그룹에 하나 이상의 누락된 트랜잭션이 포함된 것 같습니다. 보안을 위해 Pera Wallet은 상세 정보가 모호한 트랜잭션 그룹에 서명하는 것을 허용하지 않습니다. 트랜잭션을 보낸 디앱(dApp) 측에 문의하여 문제를 해결하시기 바랍니다.";
+
+/* (No Comment) */
 "wallet-connect-transaction-error-invalid-key" = "잘못된 입력: 잘못된 공개 키입니다";
 
 /* (No Comment) */
@@ -2529,6 +2682,9 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-error-transaction-size" = "잘못된 입력: 트랜잭션 요청에 64개 이상의 트랜잭션이 포함되었습니다.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unable-fetch-asset" = "자산 정보를 가져올 수 없어 트랜잭션이 취소되었습니다. 네트워크 연결을 확인하고 다시 시도해주세요.";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-unable-sign" = "잘못된 입력: 서명할 수 없습니다";
@@ -2713,4 +2869,3 @@
 /* (No Comment) */
 "wc-transaction-request-signed-warning-title" = "트랜잭션이 처리 중입니다!";
 
-"wallet-connect-transaction-error-invalid-group" = "It looks like this transaction group contains one or more missing transactions. For your security, Pera Wallet won’t allow you to sign transaction groups that have obscured details. Please contact the dApp that sent this transaction so they can rectify this problem.";

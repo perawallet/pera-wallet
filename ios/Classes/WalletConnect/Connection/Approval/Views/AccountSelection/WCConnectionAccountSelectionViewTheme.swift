@@ -34,20 +34,20 @@ struct WCConnectionAccountSelectionViewTheme: StyleSheet, LayoutSheet {
     let iconVerticalInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.title = [
             .isInteractable(false),
             .text("wallet-connect-session-select-account".localized),
             .textAlignment(.left),
             .textOverflow(FittingText()),
             .font(Fonts.DMSans.regular.make(15)),
-            .textColor(AppColors.Components.Text.main)
+            .textColor(Colors.Text.main)
         ]
         self.secondaryTitle = [
             .isInteractable(false),
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.grayLighter),
+            .textColor(Colors.Text.grayLighter),
             .font(Fonts.DMSans.regular.make(13))
         ]
 

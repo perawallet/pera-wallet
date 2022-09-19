@@ -68,13 +68,13 @@ extension TransactionAmountValidator {
             on: nil
         )
 
-        if algoAmount > account.amount {
+        if algoAmount > account.algo.amount {
             return .failure(.algo(.exceededLimit))
         }
 
         let requiredMinimumAmount = calculateMininmumAmount(using: transactionParams)
 
-        if account.amount < requiredMinimumAmount &+ minimumFee {
+        if account.algo.amount < requiredMinimumAmount &+ minimumFee {
             return .failure(.algo(.lowBalance))
         }
 
@@ -107,7 +107,7 @@ extension TransactionAmountValidator {
 
         let requiredMinimumAmount = calculateMininmumAmount(using: transactionParams)
 
-        if requiredMinimumAmount &+ minimumFee > account.amount  {
+        if requiredMinimumAmount &+ minimumFee > account.algo.amount  {
             return .failure(.algo(.lowBalance))
         }
 
@@ -124,7 +124,7 @@ extension TransactionAmountValidator {
     ) -> Bool {
         guard let asset = asset else {
             let requiredMinimumAmount = calculateMininmumAmount(using: transactionParams)
-            return Int(account.amount) - Int(amount.toMicroAlgos) - Int(minimumFee) < Int(requiredMinimumAmount)
+            return Int(account.algo.amount) - Int(amount.toMicroAlgos) - Int(minimumFee) < Int(requiredMinimumAmount)
         }
 
         return asset.amount == amount.uint64Value

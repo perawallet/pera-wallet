@@ -24,7 +24,7 @@ extension BottomWarningViewController {
 
         init(_ family: LayoutFamily) {
             bottomWarningViewTheme = BottomWarningViewTheme()
-            backgroundColor = AppColors.Shared.System.background
+            backgroundColor = Colors.Defaults.background
         }
     }
 }

@@ -29,9 +29,9 @@ struct TutorialStepsViewTheme: StyleSheet, LayoutSheet {
     let topPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
+        self.backgroundColor = Colors.Defaults.background
         self.textViewLinkAttributes = [
-            .textColor(AppColors.Components.Link.primary.uiColor),
+            .textColor(Colors.Link.primary.uiColor),
             .underline(UIColor.clear),
             .font(Fonts.DMSans.medium.make(15).uiFont),
         ]

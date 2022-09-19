@@ -47,13 +47,13 @@ final class ALGAsset:
         self.optedInAtRound = nil
     }
 
-    init(collectibleAsset: CollectibleAsset) {
-        self.id = collectibleAsset.id
-        self.creator = collectibleAsset.creator?.address
-        self.amount = collectibleAsset.amount
-        self.isFrozen = collectibleAsset.isFrozen
-        self.isDeleted = collectibleAsset.isDeleted
-        self.optedInAtRound = collectibleAsset.optedInAtRound
+    init(asset: Asset) {
+        self.id = asset.id
+        self.creator = asset.creator?.address
+        self.amount = asset.amount
+        self.isFrozen = asset.isFrozen
+        self.isDeleted = asset.isDeleted
+        self.optedInAtRound = asset.optedInAtRound
     }
 }
 

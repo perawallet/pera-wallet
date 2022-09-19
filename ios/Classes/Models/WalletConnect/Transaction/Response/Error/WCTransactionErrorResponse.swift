@@ -66,6 +66,8 @@ enum WCTransactionErrorResponse: Error {
                 return "wallet-connect-transaction-error-invalid-key".localized
             case .asset:
                 return "wallet-connect-transaction-error-invalid-asset".localized
+            case .unableToFetchAsset:
+                return "wallet-connect-transaction-error-unable-fetch-asset".localized
             case .unsignable:
                 return "wallet-connect-transaction-error-unable-sign".localized
             case .group:
@@ -137,6 +139,7 @@ extension WCTransactionErrorResponse {
         case parse
         case publicKey
         case asset
+        case unableToFetchAsset
         case unsignable
         case group
         case signer

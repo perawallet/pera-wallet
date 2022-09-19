@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "icon-external-link.pdf",
+      "filename" : "external-link.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "icon-external-link-1.pdf",
+      "filename" : "external-link (1).pdf",
       "idiom" : "universal"
     }
   ],

@@ -172,7 +172,7 @@ class WCGroupTransactionItemViewModel {
             return
         }
 
-        assetName = asset.presentation.displayNames.secondaryName
+        assetName = asset.naming.displayNames.secondaryName
     }
 
     private func setUsdValue(

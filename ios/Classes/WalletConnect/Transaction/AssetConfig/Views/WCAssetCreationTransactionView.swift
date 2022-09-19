@@ -52,7 +52,7 @@ class WCAssetCreationTransactionView: WCSingleTransactionView {
     override func configureAppearance() {
         super.configureAppearance()
 
-        backgroundColor = AppColors.Shared.System.background.uiColor
+        backgroundColor = Colors.Defaults.background.uiColor
     }
 
     override func prepareLayout() {
@@ -67,6 +67,12 @@ class WCAssetCreationTransactionView: WCSingleTransactionView {
     override func setListeners() {
         rawTransactionButton.addTarget(self, action: #selector(notifyDelegateToOpenRawTransaction), for: .touchUpInside)
         showUrlButton.addTarget(self, action: #selector(notifyDelegateToOpenAssetURL), for: .touchUpInside)
+
+        assetInformationView.startObserving(event: .performAction) {
+            [weak self] in
+            guard let self = self else { return }
+            self.delegate?.wcAssetCreationTransactionViewDidOpenAssetDiscovery(self)
+        }
     }
 }
 
@@ -275,6 +281,13 @@ extension WCAssetCreationTransactionView {
 }
 
 protocol WCAssetCreationTransactionViewDelegate: AnyObject {
-    func wcAssetCreationTransactionViewDidOpenRawTransaction(_ wcAssetCreationTransactionView: WCAssetCreationTransactionView)
-    func wcAssetCreationTransactionViewDidOpenAssetURL(_ wcAssetCreationTransactionView: WCAssetCreationTransactionView)
+    func wcAssetCreationTransactionViewDidOpenRawTransaction(
+        _ wcAssetCreationTransactionView: WCAssetCreationTransactionView
+    )
+    func wcAssetCreationTransactionViewDidOpenAssetURL(
+        _ wcAssetCreationTransactionView: WCAssetCreationTransactionView
+    )
+    func wcAssetCreationTransactionViewDidOpenAssetDiscovery(
+        _ wcAssetCreationTransactionView: WCAssetCreationTransactionView
+    )
 }

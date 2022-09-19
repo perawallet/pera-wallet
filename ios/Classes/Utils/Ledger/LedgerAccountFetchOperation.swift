@@ -32,9 +32,15 @@ final class LedgerAccountFetchOperation: LedgerOperation, BLEConnectionManagerDe
     weak var delegate: LedgerAccountFetchOperationDelegate?
     
     private let api: ALGAPI
+    private let analytics: ALGAnalytics
 
-    init(api: ALGAPI) {
+    init(
+        api: ALGAPI,
+        analytics: ALGAnalytics
+    ) {
         self.api = api
+        self.analytics = analytics
+
         self.bleConnectionManager.delegate = self
         self.ledgerBleController.delegate = self
     }
@@ -98,14 +104,13 @@ extension LedgerAccountFetchOperation {
             includesClosedAccounts: true,
             queue: .main,
             ignoreResponseOnCancelled: true
-        ) { response in
+        ) { [weak self] response in
+            guard let self = self else { return }
+
             switch response {
             case .success(let accountWrapper):
                 if !accountWrapper.account.isSameAccount(with: address) {
                     self.delegate?.ledgerAccountFetchOperation(self, didFailed: .failedToFetchAccountFromIndexer)
-                    UIApplication.shared.firebaseAnalytics?.record(
-                        MismatchAccountErrorLog(requestedAddress: address, receivedAddress: accountWrapper.account.address)
-                    )
                     self.returnAccounts()
                     return
                 }

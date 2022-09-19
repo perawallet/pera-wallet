@@ -72,7 +72,7 @@ extension PinLimitViewController {
             $0.edges.equalToSuperview()
         }
 
-        pinLimitView.observe(event: .resetAllData) {
+        pinLimitView.startObserving(event: .resetAllData) {
             [weak self] in
             guard let self = self else { return }
             self.presentLogoutAlert()

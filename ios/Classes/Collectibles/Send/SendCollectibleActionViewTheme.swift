@@ -47,7 +47,7 @@ struct SendCollectibleActionViewTheme:
         _ family: LayoutFamily
     ) {
         content = [
-            .backgroundColor(AppColors.Shared.System.background)
+            .backgroundColor(Colors.Defaults.background)
         ]
 
         contentCorner = Corner(
@@ -69,7 +69,7 @@ struct SendCollectibleActionViewTheme:
 
         title = [
             .text(Self.getTitle("collectible-send-title".localized)),
-            .textColor(AppColors.Components.Text.main),
+            .textColor(Colors.Text.main),
             .textOverflow(SingleLineFittingText()),
         ]
 
@@ -79,8 +79,8 @@ struct SendCollectibleActionViewTheme:
 
         let textInputBaseStyle: TextInputStyle = [
             .font(Fonts.DMSans.regular.make(15)),
-            .tintColor(AppColors.Components.Text.main),
-            .textColor(AppColors.Components.Text.main),
+            .tintColor(Colors.Text.main),
+            .textColor(Colors.Text.main),
             .returnKeyType(.done)
         ]
 
@@ -112,17 +112,17 @@ struct SendCollectibleActionViewTheme:
         actionButton = [
             .title(Self.getTitle("collectible-send-action".localized)),
             .titleColor([
-                .normal(AppColors.Components.Button.Primary.text),
+                .normal(Colors.Button.Primary.text),
             ]),
-            .backgroundColor(AppColors.Components.Button.Primary.background)
+            .backgroundColor(Colors.Button.Primary.background)
         ]
 
         actionButtonDisabled = [
             .title(Self.getTitle("collectible-send-action".localized)),
             .titleColor([
-                .normal(AppColors.Components.Button.Primary.disabledText),
+                .normal(Colors.Button.Primary.disabledText),
             ]),
-            .backgroundColor(AppColors.Components.Button.Primary.disabledBackground)
+            .backgroundColor(Colors.Button.Primary.disabledBackground)
         ]
 
         actionButtonContentEdgeInsets = (14, 0, 14, 0)
@@ -136,19 +136,9 @@ extension SendCollectibleActionViewTheme {
     private static func getTitle(
         _ title: String
     ) -> EditText {
-        let font = Fonts.DMSans.medium.make(15)
-        let lineHeightMultiplier = 1.23
-
         return .attributedString(
             title
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byWordWrapping),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
+                .bodyMedium()
         )
     }
 }

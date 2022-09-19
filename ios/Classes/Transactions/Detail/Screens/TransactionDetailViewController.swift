@@ -18,8 +18,8 @@
 import UIKit
 
 final class TransactionDetailViewController: BaseScrollViewController {
-    override var name: AnalyticsScreenName? {
-        return .transactionDetail
+    override var analyticsScreen: ALGAnalyticsScreen? {
+        return .init(name: .transactionDetail)
     }
     
     private lazy var transactionDetailView = TransactionDetailView(transactionType: transactionType)
@@ -29,7 +29,7 @@ final class TransactionDetailViewController: BaseScrollViewController {
     private var transaction: Transaction
     private let account: Account
     private var assetDetail: StandardAsset?
-    private let transactionType: TransactionType
+    private let transactionType: TransferType
 
     private lazy var transactionDetailViewModel = TransactionDetailViewModel(
         transactionType: transactionType,
@@ -47,7 +47,7 @@ final class TransactionDetailViewController: BaseScrollViewController {
     init(
         account: Account,
         transaction: Transaction,
-        transactionType: TransactionType,
+        transactionType: TransferType,
         assetDetail: StandardAsset?,
         copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
@@ -59,11 +59,6 @@ final class TransactionDetailViewController: BaseScrollViewController {
         self.copyToClipboardController = copyToClipboardController
 
         super.init(configuration: configuration)
-    }
-    
-    override func configureNavigationBarAppearance() {
-        super.configureNavigationBarAppearance()
-        addBarButtons()
     }
     
     override func linkInteractors() {
@@ -100,7 +95,7 @@ final class TransactionDetailViewController: BaseScrollViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        scrollView.customizeBaseAppearance(backgroundColor: AppColors.Shared.System.background)
+        scrollView.customizeBaseAppearance(backgroundColor: Colors.Defaults.background)
         title = "transaction-detail-title".localized
         configureTransactionDetail()
     }
@@ -108,16 +103,6 @@ final class TransactionDetailViewController: BaseScrollViewController {
     override func prepareLayout() {
         super.prepareLayout()
         addTransactionDetailView()
-    }
-}
-
-extension TransactionDetailViewController {
-    private func addBarButtons() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
-            self.closeScreen(by: .dismiss, animated: true)
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
     }
 }
 
@@ -185,7 +170,7 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
 
     private func getUserAddress(
         transaction: Transaction,
-        type: TransactionType
+        type: TransferType
     ) -> String? {
         switch type {
         case .received:
@@ -254,7 +239,7 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
     }
 }
 
-enum TransactionType {
+enum TransferType {
     case sent
     case received
 }

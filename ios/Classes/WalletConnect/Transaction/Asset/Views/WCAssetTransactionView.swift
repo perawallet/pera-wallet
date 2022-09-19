@@ -54,12 +54,18 @@ class WCAssetTransactionView: WCSingleTransactionView {
 
     override func setListeners() {
         rawTransactionButton.addTarget(self, action: #selector(notifyDelegateToOpenRawTransaction), for: .touchUpInside)
+
+        assetInformationView.startObserving(event: .performAction) {
+            [weak self] in
+            guard let self = self else { return }
+            self.delegate?.wcAssetTransactionViewDidOpenAssetDiscovery(self)
+        }
     }
 
     override func configureAppearance() {
         super.configureAppearance()
 
-        backgroundColor = AppColors.Shared.System.background.uiColor
+        backgroundColor = Colors.Defaults.background.uiColor
     }
 }
 
@@ -220,5 +226,10 @@ extension WCAssetTransactionView {
 }
 
 protocol WCAssetTransactionViewDelegate: AnyObject {
-    func wcAssetTransactionViewDidOpenRawTransaction(_ wcAssetTransactionView: WCAssetTransactionView)
+    func wcAssetTransactionViewDidOpenRawTransaction(
+        _ wcAssetTransactionView: WCAssetTransactionView
+    )
+    func wcAssetTransactionViewDidOpenAssetDiscovery(
+        _ wcAssetTransactionView: WCAssetTransactionView
+    )
 }
