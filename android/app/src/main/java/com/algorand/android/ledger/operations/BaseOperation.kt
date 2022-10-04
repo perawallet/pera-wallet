@@ -33,9 +33,7 @@ data class AccountFetchAllOperation(
     val accounts: MutableList<AccountInformation> = mutableListOf()
 ) : BaseOperation()
 
-sealed class BaseTransactionOperation(
-    override val bluetoothDevice: BluetoothDevice
-) : BaseOperation() {
+sealed class BaseTransactionOperation(override val bluetoothDevice: BluetoothDevice) : BaseOperation() {
 
     abstract val transactionByteArray: ByteArray?
 
@@ -44,6 +42,8 @@ sealed class BaseTransactionOperation(
     abstract val accountAddress: String
 
     abstract val accountAuthAddress: String?
+
+    var isAddressVerified: Boolean = false
 }
 
 data class TransactionOperation(

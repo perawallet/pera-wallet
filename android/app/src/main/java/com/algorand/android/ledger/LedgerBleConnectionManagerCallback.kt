@@ -19,11 +19,7 @@ import no.nordicsemi.android.ble.BleManagerCallbacks
 
 interface LedgerBleConnectionManagerCallback : BleManagerCallbacks {
 
-    fun onTransactionSignatureReceived(device: BluetoothDevice, transactionSignature: ByteArray) {
-        // override when needed
-    }
-
-    fun onPublicKeyReceived(device: BluetoothDevice, publicKey: String) {
+    fun onDataReceived(device: BluetoothDevice, byteArray: ByteArray) {
         // override when needed
     }
 

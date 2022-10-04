@@ -21,7 +21,7 @@ import android.util.Log
 import com.algorand.android.BuildConfig
 import com.algorand.android.R
 import com.algorand.android.utils.getAccountIndexAsByteArray
-import com.algorand.android.utils.getPublicKey
+import com.algorand.android.utils.recordException
 import com.algorand.android.utils.removeExcessBytes
 import com.algorand.android.utils.shiftOneByteLeft
 import java.io.ByteArrayOutputStream
@@ -162,17 +162,16 @@ class LedgerBleConnectionManager(appContext: Context) : BleManager<LedgerBleConn
                         }
                     }
                 }
-                data.size == PUBLIC_KEY_RESPONSE_DATA_SIZE -> {
-                    val accountPublicKey = getPublicKey(data.dropLast(RETURN_CODE_BYTE_COUNT).toByteArray())
-                    if (!accountPublicKey.isNullOrEmpty()) {
-                        mCallbacks.onPublicKeyReceived(ledgerDevice, accountPublicKey)
-                    }
-                }
-                data.size > PUBLIC_KEY_RESPONSE_DATA_SIZE -> {
-                    val signature = data.dropLast(RETURN_CODE_BYTE_COUNT).toByteArray()
-                    mCallbacks.onTransactionSignatureReceived(ledgerDevice, signature)
+                data.size > ERROR_DATA_SIZE -> {
+                    mCallbacks?.onDataReceived(
+                        device = ledgerDevice,
+                        byteArray = data.dropLast(RETURN_CODE_BYTE_COUNT).toByteArray()
+                    )
                 }
                 else -> {
+                    recordException(
+                        Exception("LedgerBleConnectionManager::handleSuccessfulData:: {data.size} is lower than 2")
+                    )
                     disconnect().enqueue()
                     mCallbacks.onManagerError(R.string.unknown_error)
                 }

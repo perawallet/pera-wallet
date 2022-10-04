@@ -28,6 +28,7 @@ import com.algorand.android.models.LedgerBleResult
 import com.algorand.android.usecase.AccountInformationUseCase
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.LifecycleScopedCoroutineOwner
+import com.algorand.android.utils.getPublicKey
 import com.algorand.android.utils.recordException
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -106,8 +107,26 @@ class LedgerBleOperationManager @Inject constructor(
         }
     }
 
+    override fun onDataReceived(device: BluetoothDevice, byteArray: ByteArray) {
+        currentOperation?.run {
+            when {
+                this is BaseTransactionOperation && isAddressVerified -> {
+                    onTransactionSignatureReceived(byteArray)
+                }
+                else -> {
+                    val accountPublicKey = getPublicKey(byteArray)
+                    if (!accountPublicKey.isNullOrBlank()) {
+                        onPublicKeyReceived(device, accountPublicKey)
+                    }
+                }
+            }
+        } ?: run {
+            recordException(Exception("LedgerBleOperationManager::onDataReceived::currentOperation is null "))
+        }
+    }
+
     @SuppressLint("MissingPermission")
-    override fun onPublicKeyReceived(device: BluetoothDevice, publicKey: String) {
+    private fun onPublicKeyReceived(device: BluetoothDevice, publicKey: String) {
         currentScope.launch(Dispatchers.IO) {
             currentOperation?.run {
                 if (this is VerifyAddressOperation) {
@@ -123,6 +142,7 @@ class LedgerBleOperationManager @Inject constructor(
                 if (this is BaseTransactionOperation &&
                     (publicKey == accountAddress || publicKey == accountAuthAddress)
                 ) {
+                    isAddressVerified = true
                     sendTransactionRequest()
                     return@launch
                 } else {
@@ -164,7 +184,7 @@ class LedgerBleOperationManager @Inject constructor(
         }
     }
 
-    override fun onTransactionSignatureReceived(device: BluetoothDevice, transactionSignature: ByteArray) {
+    private fun onTransactionSignatureReceived(transactionSignature: ByteArray) {
         currentScope.launch {
             try {
                 (currentOperation as? BaseTransactionOperation)?.run {
