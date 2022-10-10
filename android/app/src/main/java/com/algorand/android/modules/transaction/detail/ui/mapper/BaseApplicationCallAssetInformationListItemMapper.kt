@@ -12,14 +12,14 @@
 
 package com.algorand.android.modules.transaction.detail.ui.mapper
 
-import com.algorand.android.models.BaseItemConfiguration
+import com.algorand.android.customviews.accountandassetitem.model.BaseItemConfiguration
 import com.algorand.android.modules.transaction.detail.ui.model.BaseApplicationCallAssetInformationListItem
 import javax.inject.Inject
 
 class BaseApplicationCallAssetInformationListItemMapper @Inject constructor() {
 
     fun mapToAssetInformationItem(
-        assetItemConfiguration: BaseItemConfiguration.AssetItemConfiguration
+        assetItemConfiguration: BaseItemConfiguration.BaseAssetItemConfiguration.AssetItemConfiguration
     ): BaseApplicationCallAssetInformationListItem.AssetInformationItem {
         return BaseApplicationCallAssetInformationListItem.AssetInformationItem(assetItemConfiguration)
     }

@@ -12,14 +12,16 @@
 
 package com.algorand.android.ui.settings.developersettings
 
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.network.AlgodInterceptor
 import com.algorand.android.utils.TESTNET_NETWORK_SLUG
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 
-class DeveloperSettingsViewModel @ViewModelInject constructor(
+@HiltViewModel
+class DeveloperSettingsViewModel @Inject constructor(
     private val algodInterceptor: AlgodInterceptor,
     private val developerSettingsPreviewUseCase: DeveloperSettingsPreviewUseCase
 ) : BaseViewModel() {

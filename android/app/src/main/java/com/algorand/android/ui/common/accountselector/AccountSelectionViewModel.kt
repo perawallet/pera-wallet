@@ -13,21 +13,22 @@
 
 package com.algorand.android.ui.common.accountselector
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.models.AccountSelection
 import com.algorand.android.usecase.AccountSelectionUseCase
 import com.algorand.android.utils.getOrThrow
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class AccountSelectionViewModel @ViewModelInject constructor(
+@HiltViewModel
+class AccountSelectionViewModel @Inject constructor(
     private val accountSelectionUseCase: AccountSelectionUseCase,
-    @Assisted private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val assetId = savedStateHandle.getOrThrow<Long>(ASSET_ID_KEY)

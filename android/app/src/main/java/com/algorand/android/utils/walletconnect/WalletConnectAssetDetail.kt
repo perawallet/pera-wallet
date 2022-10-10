@@ -12,9 +12,9 @@
 
 package com.algorand.android.utils.walletconnect
 
-import com.algorand.android.models.AssetParams
+import com.algorand.android.models.WalletConnectTransactionAssetDetail
 
 interface WalletConnectAssetDetail {
     val assetId: Long
-    var assetParams: AssetParams?
+    var walletConnectTransactionAssetDetail: WalletConnectTransactionAssetDetail?
 }

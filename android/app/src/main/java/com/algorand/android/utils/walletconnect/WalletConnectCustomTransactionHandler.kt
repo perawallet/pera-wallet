@@ -12,34 +12,37 @@
 
 package com.algorand.android.utils.walletconnect
 
+import com.algorand.android.mapper.WalletConnectTransactionAssetDetailMapper
 import com.algorand.android.mapper.WalletConnectTransactionMapper
-import com.algorand.android.models.AssetParams
 import com.algorand.android.models.BaseAssetTransferTransaction
 import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.models.WalletConnectSigner
 import com.algorand.android.models.WalletConnectTransaction
-import com.algorand.android.repository.AssetRepository
+import com.algorand.android.models.WalletConnectTransactionAssetDetail
+import com.algorand.android.modules.assets.profile.about.domain.usecase.GetAssetDetailUseCase
 import com.algorand.android.repository.TransactionsRepository
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.groupWalletConnectTransactions
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionResult.Error
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionResult.Success
 import javax.inject.Inject
+import kotlinx.coroutines.flow.collect
 
 class WalletConnectCustomTransactionHandler @Inject constructor(
     private val transactionsRepository: TransactionsRepository,
     private val walletConnectTransactionMapper: WalletConnectTransactionMapper,
     private val errorProvider: WalletConnectTransactionErrorProvider,
     private val accountCacheManager: AccountCacheManager,
-    private val assetRepository: AssetRepository
+    private val getAssetDetailUseCase: GetAssetDetailUseCase,
+    private val walletConnectTransactionAssetDetailMapper: WalletConnectTransactionAssetDetailMapper
 ) {
 
     /**
      * Stores asset detail that wallet connect request contains
      * to fasten the process for requests that contains same asset
      */
-    private val assetCacheMap = mutableMapOf<Long, AssetParams>()
+    private val assetCacheMap = mutableMapOf<Long, WalletConnectTransactionAssetDetail>()
 
     @SuppressWarnings("ReturnCount")
     suspend fun handleCustomTransaction(
@@ -86,7 +89,7 @@ class WalletConnectCustomTransactionHandler @Inject constructor(
             val groupedWalletConnectTxnList = groupWalletConnectTransactions(walletConnectTxnList)
 
             if (groupedWalletConnectTxnList == null) {
-                onResult(Error(sessionId, requestId, errorProvider.invalidInput.missingTransactionFromGroup))
+                onResult(Error(sessionId, requestId, errorProvider.rejected.failedGroupTransaction))
                 return
             }
 
@@ -152,7 +155,7 @@ class WalletConnectCustomTransactionHandler @Inject constructor(
             false
         } else {
             baseAssetTransferList.any {
-                it.assetParams == null
+                it.walletConnectTransactionAssetDetail == null
             }
         }
     }
@@ -168,17 +171,28 @@ class WalletConnectCustomTransactionHandler @Inject constructor(
     private suspend fun getAssetParams(assetTransaction: WalletConnectAssetDetail) {
         val cachedAsset = assetCacheMap.getOrDefault(assetTransaction.assetId, null)
         if (cachedAsset != null) {
-            assetTransaction.assetParams = cachedAsset
+            assetTransaction.walletConnectTransactionAssetDetail = cachedAsset
         } else {
-            assetRepository.getAssetDescription(assetTransaction.assetId).use(
-                onSuccess = {
-                    assetCacheMap[assetTransaction.assetId] = it.assetParams
-                    assetTransaction.assetParams = it.assetParams
-                },
-                onFailed = { _, _ ->
-                    // TODO Handle fail case
-                }
-            )
+            getAssetDetailUseCase.getAssetDetail(assetTransaction.assetId).collect { result ->
+                result.useSuspended(
+                    onSuccess = { assetDetail ->
+                        val walletConnectTransactionAssetDetail = with(assetDetail) {
+                            walletConnectTransactionAssetDetailMapper.mapToWalletConnectTransactionAssetDetail(
+                                assetId = assetId,
+                                fullName = fullName,
+                                shortName = shortName,
+                                fractionDecimals = fractionDecimals,
+                                verificationTier = verificationTier
+                            )
+                        }
+                        assetCacheMap[assetTransaction.assetId] = walletConnectTransactionAssetDetail
+                        assetTransaction.walletConnectTransactionAssetDetail = walletConnectTransactionAssetDetail
+                    },
+                    onFailed = {
+                        // TODO Handle fail case
+                    }
+                )
+            }
         }
     }
 

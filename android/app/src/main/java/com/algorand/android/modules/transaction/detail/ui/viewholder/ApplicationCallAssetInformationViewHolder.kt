@@ -14,6 +14,7 @@ package com.algorand.android.modules.transaction.detail.ui.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.algorand.android.R
 import com.algorand.android.databinding.ItemApplicationCallAssetInformationBinding
 import com.algorand.android.models.BaseViewHolder
 import com.algorand.android.modules.transaction.detail.ui.model.BaseApplicationCallAssetInformationListItem
@@ -24,7 +25,30 @@ class ApplicationCallAssetInformationViewHolder(
 
     override fun bind(item: BaseApplicationCallAssetInformationListItem) {
         if (item !is BaseApplicationCallAssetInformationListItem.AssetInformationItem) return
-        binding.assetItemView.initItemView(item.assetItemConfiguration)
+        with(item.assetItemConfiguration) {
+            with(binding.root) {
+                setAssetTitleText(accountTitleText = primaryAssetName?.getName(resources))
+                setAssetDescriptionText(
+                    assetShortName = secondaryAssetName?.getName(resources),
+                    assetId = assetId
+                )
+            }
+        }
+    }
+
+    private fun setAssetTitleText(accountTitleText: String?) {
+        binding.assetItemView.setTitleText(accountTitleText)
+    }
+
+    private fun setAssetDescriptionText(assetShortName: String?, assetId: Long) {
+        binding.assetItemView.apply {
+            val descriptionText = resources.getString(
+                R.string.pair_value_format_with_coma,
+                assetShortName,
+                assetId
+            )
+            binding.assetItemView.setDescriptionText(descriptionText)
+        }
     }
 
     companion object {

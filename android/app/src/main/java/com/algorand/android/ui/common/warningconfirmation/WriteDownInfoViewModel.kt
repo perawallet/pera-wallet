@@ -12,13 +12,15 @@
 
 package com.algorand.android.ui.common.warningconfirmation
 
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.modules.tracking.onboarding.register.OnboardingCreateAccountReadyEventTracker
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 
-class WriteDownInfoViewModel @ViewModelInject constructor(
+@HiltViewModel
+class WriteDownInfoViewModel @Inject constructor(
     private val onboardingCreateAccountReadyEventTracker: OnboardingCreateAccountReadyEventTracker
 ) : BaseViewModel() {
 

@@ -12,14 +12,15 @@
 
 package com.algorand.android.nft.ui.videoplayer
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.algorand.android.utils.getOrThrow
+import dagger.hilt.android.lifecycle.HiltViewModel
 
-class VideoPlayerViewModel @ViewModelInject constructor(
-    @Assisted savedStateHandle: SavedStateHandle
+@HiltViewModel
+class VideoPlayerViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val collectibleVideoUrl: String = savedStateHandle.getOrThrow(COLLECTIBLE_VIDEO_URL_KEY)

@@ -15,10 +15,14 @@ package com.algorand.android.ui.common
 import android.app.Activity.RESULT_OK
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
+import android.bluetooth.BluetoothManager
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -41,9 +45,9 @@ import com.algorand.android.ui.ledgersearch.LedgerPairInstructionsBottomSheet.Co
 import com.algorand.android.ui.ledgersearch.LedgerSearchAdapter
 import com.algorand.android.ui.ledgersearch.LedgerSearchViewModel
 import com.algorand.android.utils.Event
-import com.algorand.android.utils.LOCATION_PERMISSION
+import com.algorand.android.utils.areBluetoothPermissionsGranted
 import com.algorand.android.utils.isLocationEnabled
-import com.algorand.android.utils.isPermissionGranted
+import com.algorand.android.utils.sendErrorLog
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -51,7 +55,6 @@ import java.util.Timer
 import java.util.TimerTask
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -69,6 +72,7 @@ abstract class BaseLedgerSearchFragment :
 
     private var isBluetoothEnableRequestFailed = false
     private var isLocationPermissionRequestFailed = false
+    private var isBluetoothScanConnectPermissionRequestFailed = false
     private var loadingDialogFragment: LoadingDialogFragment? = null
 
     private val toolbarConfiguration = ToolbarConfiguration(
@@ -102,6 +106,17 @@ abstract class BaseLedgerSearchFragment :
         }
     }
 
+    private val bluetoothScanConnectRequestLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+            if (it.all { entry -> entry.value }) {
+                startBluetoothSearch()
+            } else {
+                isBluetoothScanConnectPermissionRequestFailed = true
+                showError(getString(R.string.error_bluetooth_permission_message), R.string.error_permission_title)
+                navBack()
+            }
+        }
+
     // <editor-fold defaultstate="collapsed" desc="Observers">
 
     private val ledgerDevicesObserver = Observer<List<LedgerBaseItem>> { ledgerDevices ->
@@ -126,6 +141,9 @@ abstract class BaseLedgerSearchFragment :
                 }
                 is LedgerBleResult.OnMissingBytes -> {
                     connectToLatestLedgerDelayed(device)
+                }
+                else -> {
+                    sendErrorLog("Unhandled else case in BaseLedgerSearchFragment.ledgerResultObserver")
                 }
             }
         }
@@ -178,7 +196,7 @@ abstract class BaseLedgerSearchFragment :
     private fun initObservers() {
         ledgerSearchViewModel.ledgerDevicesLiveData.observe(viewLifecycleOwner, ledgerDevicesObserver)
         viewLifecycleOwner.lifecycle.coroutineScope.launch {
-            ledgerBleOperationManager.ledgerBleResultFlow.collect(ledgerResultObserver)
+            ledgerBleOperationManager.ledgerBleResultFlow.collect { ledgerResultObserver.invoke(it) }
         }
     }
 
@@ -199,15 +217,18 @@ abstract class BaseLedgerSearchFragment :
     }
 
     private fun connectToLatestLedgerDelayed(device: BluetoothDevice) {
-        Timer().schedule(object : TimerTask() {
-            override fun run() {
-                try {
-                    runBlocking(Dispatchers.Main) { connectLedger(device) }
-                } catch (exception: Exception) {
-                    showError(getString(R.string.an_error_occured))
+        Timer().schedule(
+            object : TimerTask() {
+                override fun run() {
+                    try {
+                        runBlocking(Dispatchers.Main) { connectLedger(device) }
+                    } catch (exception: Exception) {
+                        showError(getString(R.string.an_error_occured))
+                    }
                 }
-            }
-        }, MISSING_BYTE_RETRY_DELAY)
+            },
+            MISSING_BYTE_RETRY_DELAY
+        )
     }
 
     private fun connectLedger(bluetoothDevice: BluetoothDevice) {
@@ -240,9 +261,14 @@ abstract class BaseLedgerSearchFragment :
     }
 
     private fun arePermissionsTaken(): Boolean {
-        val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter() ?: return false
-        if (context?.isPermissionGranted(LOCATION_PERMISSION) != true) {
-            requestLocationPermission()
+        val bluetoothManager = context?.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+        val bluetoothAdapter = bluetoothManager.adapter
+        if (context?.areBluetoothPermissionsGranted() != true) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                requestBluetoothScanConnectPermission()
+            } else {
+                requestLocationPermission()
+            }
             return false
         }
         if (bluetoothAdapter.isEnabled.not()) {
@@ -263,6 +289,16 @@ abstract class BaseLedgerSearchFragment :
 
     private fun requestLocationPermission() {
         locationRequestLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.S)
+    private fun requestBluetoothScanConnectPermission() {
+        bluetoothScanConnectRequestLauncher.launch(
+            arrayOf(
+                android.Manifest.permission.BLUETOOTH_SCAN,
+                android.Manifest.permission.BLUETOOTH_CONNECT
+            )
+        )
     }
 
     companion object {

@@ -16,6 +16,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.ViewTreeObserver
+import android.widget.TextView
 import androidx.core.view.isVisible
 import com.algorand.android.R
 import com.algorand.android.core.BaseFragment
@@ -36,6 +37,10 @@ abstract class BaseAccountSelectionFragment : BaseFragment(R.layout.fragment_bas
     protected abstract fun initObservers()
 
     protected open fun onCopiedItemHandled(copiedMessage: String?) {}
+
+    protected open fun setTitleTextView(textView: TextView) {}
+
+    protected open fun setDescriptionTextView(textView: TextView) {}
 
     protected open val isSearchBarVisible: Boolean = false
 
@@ -73,7 +78,7 @@ abstract class BaseAccountSelectionFragment : BaseFragment(R.layout.fragment_bas
         initObservers()
     }
 
-    private fun initUi() {
+    protected open fun initUi() {
         with(binding) {
             accountsRecyclerView.adapter = accountAdapter
             searchView.apply {
@@ -82,6 +87,8 @@ abstract class BaseAccountSelectionFragment : BaseFragment(R.layout.fragment_bas
                 setOnCustomButtonClick(onSearchBarCustomButtonClickListener)
             }
             transferButton.setOnClickListener { onAccountSelected(binding.searchView.text) }
+            setTitleTextView(titleTextView)
+            setDescriptionTextView(descriptionTextView)
         }
     }
 

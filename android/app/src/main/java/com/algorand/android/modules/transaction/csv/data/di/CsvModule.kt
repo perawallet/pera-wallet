@@ -14,23 +14,24 @@ package com.algorand.android.modules.transaction.csv.data.di
 
 import com.algorand.android.modules.transaction.csv.data.repository.CsvRepositoryImpl
 import com.algorand.android.modules.transaction.csv.domain.repository.CsvRepository
-import com.algorand.android.modules.transactionhistory.domain.repository.TransactionHistoryRepository
+import com.algorand.android.network.MobileAlgorandApi
+import com.hipo.hipoexceptionsandroid.RetrofitErrorHandler
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Named
 
 @Module
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 object CsvModule {
 
     @Provides
     @Named(CsvRepository.INJECTION_NAME)
     fun provideCsvRepository(
-        @Named(TransactionHistoryRepository.INJECTION_NAME)
-        transactionHistoryRepository: TransactionHistoryRepository
+        hipoApiErrorHandler: RetrofitErrorHandler,
+        mobileAlgorandApi: MobileAlgorandApi
     ): CsvRepository {
-        return CsvRepositoryImpl(transactionHistoryRepository)
+        return CsvRepositoryImpl(hipoApiErrorHandler, mobileAlgorandApi)
     }
 }

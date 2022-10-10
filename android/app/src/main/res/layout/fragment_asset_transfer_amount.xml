@@ -96,77 +96,22 @@
             android:layout_height="0dp"
             android:layout_marginHorizontal="@dimen/spacing_normal"
             android:layout_marginBottom="@dimen/spacing_normal"
-            app:layout_constraintBottom_toTopOf="@+id/assetInformationContainer"
+            app:layout_constraintBottom_toTopOf="@+id/assetItemView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_percent=".4"
             app:layout_constraintStart_toStartOf="parent"
             app:showSeparatorButton="true" />
 
         <!--  TODO missing shadow  -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/assetInformationContainer"
+        <com.algorand.android.customviews.accountandassetitem.assetitem.AssetItemView
+            android:id="@+id/assetItemView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/spacing_xlarge"
             android:layout_marginBottom="@dimen/spacing_large"
             android:paddingHorizontal="@dimen/spacing_large"
             app:layout_constraintBottom_toTopOf="@id/nextButton"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <include layout="@layout/include_list_item_guidelines" />
-
-            <androidx.constraintlayout.widget.Barrier
-                android:id="@+id/firstColumnBarrier"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:barrierDirection="start"
-                app:constraint_referenced_ids="endGuideline,assetBalanceTextView,assetCurrencyTextView" />
-
-            <com.algorand.android.customviews.AlgorandAssetNameTextView
-                android:id="@+id/assetNameTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/firstColumnBarrier"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/assetBalanceTextView"
-                style="@style/TextAppearance.Body.Mono"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="end"
-                android:maxLines="1"
-                app:layout_constrainedWidth="true"
-                app:layout_constraintBottom_toTopOf="@id/assetCurrencyTextView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1"
-                app:layout_constraintStart_toEndOf="@id/startGuideline"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="packed"
-                tools:text="5.112342342 ALGO" />
-
-            <TextView
-                android:id="@+id/assetCurrencyTextView"
-                style="@style/TextAppearance.Footnote.Mono"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="end"
-                android:maxLines="1"
-                android:textColor="@color/tertiary_text_color"
-                android:visibility="gone"
-                app:layout_constrainedWidth="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1"
-                app:layout_constraintStart_toEndOf="@id/startGuideline"
-                app:layout_constraintTop_toBottomOf="@id/assetBalanceTextView"
-                tools:text="$6.066.066.06"
-                tools:visibility="visible" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintStart_toStartOf="parent" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/nextButton"
@@ -182,9 +127,8 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <include
-            android:id="@+id/progressBar"
-            layout="@layout/layout_loading_blocker"
-            android:visibility="gone" />
+            android:id="@+id/blockerProgressBar"
+            layout="@layout/layout_loading_blocker" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

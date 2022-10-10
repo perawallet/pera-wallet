@@ -12,14 +12,23 @@
 
 package com.algorand.android.ui.register.recover
 
+import androidx.fragment.app.viewModels
 import com.algorand.android.R
 import com.algorand.android.modules.qrscanning.BaseQrScannerFragment
 import com.algorand.android.utils.setNavigationResult
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RecoverWithPassphraseQrScannerFragment : BaseQrScannerFragment(R.id.recoverWithPassphraseQrScannerFragment) {
 
+    private val recoverWithPassphraseQrScannerViewModel: RecoverWithPassphraseQrScannerViewModel by viewModels()
+
     override fun onImportAccountDeepLink(mnemonic: String): Boolean {
-        setNavigationResult(MNEMONIC_QR_SCAN_RESULT_KEY, mnemonic)
+        if (recoverWithPassphraseQrScannerViewModel.isAccountLimitExceed()) {
+            showMaxAccountLimitExceededError()
+        } else {
+            setNavigationResult(MNEMONIC_QR_SCAN_RESULT_KEY, mnemonic)
+        }
         return true.also { navBack() }
     }
 

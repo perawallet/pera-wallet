@@ -16,40 +16,63 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.models.BaseDiffUtil
+import com.algorand.android.models.BaseViewHolder
 import com.algorand.android.nft.ui.model.BaseCollectibleListItem
 import com.algorand.android.nft.ui.model.BaseCollectibleListItem.BaseCollectibleItem
 import com.algorand.android.nft.ui.model.BaseCollectibleListItem.ItemType.GIF_ITEM
 import com.algorand.android.nft.ui.model.BaseCollectibleListItem.ItemType.IMAGE_ITEM
+import com.algorand.android.nft.ui.model.BaseCollectibleListItem.ItemType.INFO_VIEW_ITEM
 import com.algorand.android.nft.ui.model.BaseCollectibleListItem.ItemType.MIXED_ITEM
 import com.algorand.android.nft.ui.model.BaseCollectibleListItem.ItemType.NOT_SUPPORTED_ITEM
 import com.algorand.android.nft.ui.model.BaseCollectibleListItem.ItemType.PENDING_ADDITION_ITEM
 import com.algorand.android.nft.ui.model.BaseCollectibleListItem.ItemType.PENDING_REMOVAL_ITEM
 import com.algorand.android.nft.ui.model.BaseCollectibleListItem.ItemType.PENDING_SENDING_ITEM
 import com.algorand.android.nft.ui.model.BaseCollectibleListItem.ItemType.RECEIVE_ITEM
+import com.algorand.android.nft.ui.model.BaseCollectibleListItem.ItemType.SEARCH_VIEW_ITEM
 import com.algorand.android.nft.ui.model.BaseCollectibleListItem.ItemType.SOUND_ITEM
+import com.algorand.android.nft.ui.model.BaseCollectibleListItem.ItemType.TITLE_TEXT_VIEW_ITEM
 import com.algorand.android.nft.ui.model.BaseCollectibleListItem.ItemType.VIDEO_ITEM
-import com.algorand.android.nft.ui.nftlisting.viewholder.BaseCollectibleListViewHolder
 import com.algorand.android.nft.ui.nftlisting.viewholder.CollectibleImageViewHolder
 import com.algorand.android.nft.ui.nftlisting.viewholder.CollectibleMixedViewHolder
 import com.algorand.android.nft.ui.nftlisting.viewholder.CollectibleNotSupportedViewHolder
 import com.algorand.android.nft.ui.nftlisting.viewholder.CollectiblePendingAdditionViewHolder
 import com.algorand.android.nft.ui.nftlisting.viewholder.CollectiblePendingRemovalViewHolder
 import com.algorand.android.nft.ui.nftlisting.viewholder.CollectiblePendingSendingViewHolder
+import com.algorand.android.nft.ui.nftlisting.viewholder.InfoItemViewHolder
+import com.algorand.android.nft.ui.nftlisting.viewholder.InfoItemViewHolder.InfoItemListener
 import com.algorand.android.nft.ui.nftlisting.viewholder.NftGifViewHolder
 import com.algorand.android.nft.ui.nftlisting.viewholder.NftSoundViewHolder
 import com.algorand.android.nft.ui.nftlisting.viewholder.NftVideoViewHolder
 import com.algorand.android.nft.ui.nftlisting.viewholder.ReceiveNftViewHolder
+import com.algorand.android.nft.ui.nftlisting.viewholder.SearchViewItemViewHolder
+import com.algorand.android.nft.ui.nftlisting.viewholder.SearchViewItemViewHolder.SearchViewTextChangedListener
+import com.algorand.android.nft.ui.nftlisting.viewholder.TitleTextItemViewHolder
+import com.algorand.android.utils.hideKeyboard
 
 class CollectibleListAdapter(
     private val listener: CollectibleListAdapterListener
-) : ListAdapter<BaseCollectibleListItem, RecyclerView.ViewHolder>(BaseDiffUtil<BaseCollectibleListItem>()) {
+) : ListAdapter<BaseCollectibleListItem, BaseViewHolder<BaseCollectibleListItem>>(
+    BaseDiffUtil<BaseCollectibleListItem>()
+) {
+
+    private val infoItemListener = object : InfoItemListener {
+        override fun primaryButtonOnClickListener() = listener.onManageCollectiblesClick()
+        override fun secondaryButtonClickListener() = listener.onReceiveCollectibleItemClick()
+    }
+
+    private val searchViewTextChangedListener = SearchViewTextChangedListener { query ->
+        listener.onSearchQueryUpdated(query)
+    }
 
     override fun getItemViewType(position: Int): Int {
         return getItem(position).itemType.ordinal
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<BaseCollectibleListItem> {
         return when (viewType) {
+            TITLE_TEXT_VIEW_ITEM.ordinal -> createTitleViewHolder(parent)
+            INFO_VIEW_ITEM.ordinal -> createInfoViewHolder(parent)
+            SEARCH_VIEW_ITEM.ordinal -> createSearchViewHolder(parent)
             IMAGE_ITEM.ordinal -> createImageViewHolder(parent)
             SOUND_ITEM.ordinal -> createSoundViewHolder(parent)
             VIDEO_ITEM.ordinal -> createVideoViewHolder(parent)
@@ -64,7 +87,19 @@ class CollectibleListAdapter(
         }
     }
 
-    private fun createImageViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
+    private fun createTitleViewHolder(parent: ViewGroup): BaseViewHolder<BaseCollectibleListItem> {
+        return TitleTextItemViewHolder.create(parent)
+    }
+
+    private fun createInfoViewHolder(parent: ViewGroup): BaseViewHolder<BaseCollectibleListItem> {
+        return InfoItemViewHolder.create(parent, infoItemListener = infoItemListener)
+    }
+
+    private fun createSearchViewHolder(parent: ViewGroup): BaseViewHolder<BaseCollectibleListItem> {
+        return SearchViewItemViewHolder.create(parent, searchViewTextChangedListener = searchViewTextChangedListener)
+    }
+
+    private fun createImageViewHolder(parent: ViewGroup): BaseViewHolder<BaseCollectibleListItem> {
         return CollectibleImageViewHolder.create(parent).apply {
             setNftItemClickListener(this) { nftItem ->
                 listener.onImageItemClick(nftItem.collectibleId, nftItem.optedInAccountAddress)
@@ -72,7 +107,7 @@ class CollectibleListAdapter(
         }
     }
 
-    private fun createSoundViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
+    private fun createSoundViewHolder(parent: ViewGroup): BaseViewHolder<BaseCollectibleListItem> {
         return NftSoundViewHolder.create(parent).apply {
             setNftItemClickListener(this) { nftItem ->
                 listener.onSoundItemClick(nftItem.collectibleId, nftItem.optedInAccountAddress)
@@ -80,7 +115,7 @@ class CollectibleListAdapter(
         }
     }
 
-    private fun createVideoViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
+    private fun createVideoViewHolder(parent: ViewGroup): BaseViewHolder<BaseCollectibleListItem> {
         return NftVideoViewHolder.create(parent).apply {
             setNftItemClickListener(this) { nftItem ->
                 listener.onVideoItemClick(nftItem.collectibleId, nftItem.optedInAccountAddress)
@@ -88,7 +123,7 @@ class CollectibleListAdapter(
         }
     }
 
-    private fun createGifViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
+    private fun createGifViewHolder(parent: ViewGroup): BaseViewHolder<BaseCollectibleListItem> {
         return NftGifViewHolder.create(parent).apply {
             setNftItemClickListener(this) { nftItem ->
                 listener.onGifItemClick(nftItem.collectibleId, nftItem.optedInAccountAddress)
@@ -96,7 +131,7 @@ class CollectibleListAdapter(
         }
     }
 
-    private fun createNotSupportedViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
+    private fun createNotSupportedViewHolder(parent: ViewGroup): BaseViewHolder<BaseCollectibleListItem> {
         return CollectibleNotSupportedViewHolder.create(parent).apply {
             setNftItemClickListener(this) { nftItem ->
                 listener.onNotSupportedItemClick(nftItem.collectibleId, nftItem.optedInAccountAddress)
@@ -104,7 +139,7 @@ class CollectibleListAdapter(
         }
     }
 
-    private fun createReceiveViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
+    private fun createReceiveViewHolder(parent: ViewGroup): BaseViewHolder<BaseCollectibleListItem> {
         return ReceiveNftViewHolder.create(parent).apply {
             itemView.setOnClickListener {
                 if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
@@ -114,19 +149,19 @@ class CollectibleListAdapter(
         }
     }
 
-    private fun createPendingAdditionViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
+    private fun createPendingAdditionViewHolder(parent: ViewGroup): BaseViewHolder<BaseCollectibleListItem> {
         return CollectiblePendingAdditionViewHolder.create(parent)
     }
 
-    private fun createPendingRemovalViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
+    private fun createPendingRemovalViewHolder(parent: ViewGroup): BaseViewHolder<BaseCollectibleListItem> {
         return CollectiblePendingRemovalViewHolder.create(parent)
     }
 
-    private fun createPendingSendingViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
+    private fun createPendingSendingViewHolder(parent: ViewGroup): BaseViewHolder<BaseCollectibleListItem> {
         return CollectiblePendingSendingViewHolder.create(parent)
     }
 
-    private fun createMixedViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
+    private fun createMixedViewHolder(parent: ViewGroup): BaseViewHolder<BaseCollectibleListItem> {
         return CollectibleMixedViewHolder.create(parent).apply {
             setNftItemClickListener(this) { nftItem ->
                 listener.onMixedItemClick(nftItem.collectibleId, nftItem.optedInAccountAddress)
@@ -147,8 +182,15 @@ class CollectibleListAdapter(
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is BaseCollectibleListViewHolder) holder.bind(getItem(position) as BaseCollectibleItem)
+    override fun onBindViewHolder(holder: BaseViewHolder<BaseCollectibleListItem>, position: Int) {
+        holder.bind(getItem(position))
+    }
+
+    override fun onViewDetachedFromWindow(holder: BaseViewHolder<BaseCollectibleListItem>) {
+        super.onViewDetachedFromWindow(holder)
+        if (holder is SearchViewItemViewHolder) {
+            holder.itemView.hideKeyboard()
+        }
     }
 
     interface CollectibleListAdapterListener {
@@ -159,6 +201,8 @@ class CollectibleListAdapter(
         fun onNotSupportedItemClick(collectibleAssetId: Long, publicKey: String)
         fun onMixedItemClick(collectibleAssetId: Long, publicKey: String)
         fun onReceiveCollectibleItemClick()
+        fun onSearchQueryUpdated(query: String)
+        fun onManageCollectiblesClick()
     }
 
     companion object {

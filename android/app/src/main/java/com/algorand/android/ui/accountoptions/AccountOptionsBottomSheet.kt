@@ -15,21 +15,17 @@ package com.algorand.android.ui.accountoptions
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseBottomSheet
 import com.algorand.android.databinding.BottomSheetAccountDetailAccountsOptionsBinding
 import com.algorand.android.models.Account
 import com.algorand.android.utils.Resource
-import com.algorand.android.utils.copyToClipboard
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
+import com.algorand.android.utils.extensions.collectOnLifecycle
 import com.algorand.android.utils.extensions.show
-import com.algorand.android.utils.toShortenedAddress
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AccountOptionsBottomSheet : DaggerBaseBottomSheet(
@@ -68,16 +64,19 @@ class AccountOptionsBottomSheet : DaggerBaseBottomSheet(
     }
 
     private fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            accountOptionsViewModel.notificationFilterOperationFlow.collectLatest(notificationObserverCollector)
-        }
-        viewLifecycleOwner.lifecycleScope.launch {
-            accountOptionsViewModel.notificationFilterCheckFlow.collect(notificationFilterCheckCollector)
-        }
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            accountOptionsViewModel.notificationFilterOperationFlow,
+            notificationObserverCollector
+        )
+        viewLifecycleOwner.collectOnLifecycle(
+            accountOptionsViewModel.notificationFilterCheckFlow,
+            notificationFilterCheckCollector
+        )
     }
 
     private fun setupRekeyOptionButton() {
-        if (accountOptionsViewModel.getAccountType() != Account.Type.WATCH) {
+        val accountType = accountOptionsViewModel.getAccountType()
+        if (accountType != Account.Type.WATCH && accountType != null) {
             binding.rekeyButton.apply {
                 show()
                 setOnClickListener { navToRekeyAccountFragment() }
@@ -125,7 +124,7 @@ class AccountOptionsBottomSheet : DaggerBaseBottomSheet(
     }
 
     private fun navToRekeyAccountFragment() {
-        nav(AccountOptionsBottomSheetDirections.actionAccountOptionsBottomSheetToRekeyAccountFragment(publicKey))
+        nav(AccountOptionsBottomSheetDirections.actionAccountOptionsBottomSheetToRekeyLedgerNavigation(publicKey))
     }
 
     private fun navToDisconnectAccountConfirmationBottomSheet() {
@@ -138,22 +137,22 @@ class AccountOptionsBottomSheet : DaggerBaseBottomSheet(
 
     private fun navToRenameAccountBottomSheet() {
         nav(
-            AccountOptionsBottomSheetDirections.actionAccountOptionsBottomSheetToRenameAccountBottomSheet(
-                accountOptionsViewModel.getAccountName(),
-                publicKey
+            AccountOptionsBottomSheetDirections.actionAccountOptionsBottomSheetToRenameAccountNavigation(
+                name = accountOptionsViewModel.getAccountName(),
+                publicKey = publicKey
             )
         )
     }
 
     private fun navToShowQrBottomSheet(title: String, publicKey: String) {
-        nav(AccountOptionsBottomSheetDirections.actionAccountOptionsBottomSheetToShowQrBottomSheet(title, publicKey))
+        nav(AccountOptionsBottomSheetDirections.actionAccountOptionsBottomSheetToShowQrNavigation(title, publicKey))
     }
 
     private fun setupViewPassphraseButton() {
         if (accountOptionsViewModel.getAccountType() == Account.Type.STANDARD) {
             binding.viewPassphraseButton.apply {
-                show()
                 setOnClickListener { navToViewPassphraseBottomSheet() }
+                show()
             }
         }
     }
@@ -161,9 +160,8 @@ class AccountOptionsBottomSheet : DaggerBaseBottomSheet(
     private fun setupCopyButton() {
         with(binding) {
             copyAddressLayout.setOnClickListener {
-                val publicKey = accountOptionsViewModel.getAccountAddress() ?: return@setOnClickListener
-                context?.copyToClipboard(publicKey, ADDRESS_COPY_LABEL, false)
-                showTopToast(getString(R.string.address_copied_to_clipboard), publicKey.toShortenedAddress())
+                val accountAddress = accountOptionsViewModel.getAccountAddress() ?: return@setOnClickListener
+                onAccountAddressCopied(accountAddress)
                 navBack()
             }
             addressTextView.text = accountOptionsViewModel.getAccountAddress()
@@ -171,16 +169,11 @@ class AccountOptionsBottomSheet : DaggerBaseBottomSheet(
     }
 
     private fun setupShowQrButton() {
-        binding.showQrButton.setOnClickListener {
-            navToShowQrBottomSheet(getString(R.string.qr_code), publicKey)
-        }
+        binding.showQrButton.setOnClickListener { navToShowQrBottomSheet(getString(R.string.qr_code), publicKey) }
     }
 
     private fun navToViewPassphraseBottomSheet() {
-        nav(
-            AccountOptionsBottomSheetDirections
-                .actionAccountOptionsBottomSheetToViewPassphraseLockBottomSheet(publicKey)
-        )
+        nav(AccountOptionsBottomSheetDirections.actionAccountOptionsBottomSheetToViewPassphraseNavigation(publicKey))
     }
 
     companion object {

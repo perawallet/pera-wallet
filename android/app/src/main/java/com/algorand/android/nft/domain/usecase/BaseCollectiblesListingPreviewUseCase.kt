@@ -12,6 +12,8 @@
 
 package com.algorand.android.nft.domain.usecase
 
+import androidx.annotation.StringRes
+import com.algorand.android.R
 import com.algorand.android.models.BaseAccountAssetData
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData
 import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingAdditionCollectibleData
@@ -116,5 +118,33 @@ open class BaseCollectiblesListingPreviewUseCase(
         with(pendingCollectibleData) {
             return collectibleListingItemMapper.mapToPendingSendingItem(this, optedInAccountAddress)
         }
+    }
+
+    protected fun createTitleTextViewItem(isVisible: Boolean): BaseCollectibleListItem.TitleTextViewItem {
+        return collectibleListingItemMapper.mapToTitleTextItem(isVisible = isVisible)
+    }
+
+    protected fun createSearchViewItem(
+        isVisible: Boolean,
+        @StringRes searchViewHintResId: Int = R.string.search_your_nfts
+    ): BaseCollectibleListItem.SearchViewItem {
+        return collectibleListingItemMapper.mapToSearchViewItem(
+            searchViewHintResId = searchViewHintResId,
+            isVisible = isVisible
+        )
+    }
+
+    protected fun createInfoViewItem(
+        displayedCollectibleCount: Int,
+        isVisible: Boolean,
+        isFilterActive: Boolean,
+        isAddButtonVisible: Boolean
+    ): BaseCollectibleListItem.InfoViewItem {
+        return collectibleListingItemMapper.mapToInfoViewItem(
+            displayedCollectibleCount = displayedCollectibleCount,
+            isVisible = isVisible,
+            isFilterActive = isFilterActive,
+            isAddButtonVisible = isAddButtonVisible
+        )
     }
 }

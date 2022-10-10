@@ -13,20 +13,20 @@
 
 package com.algorand.android.models
 
-import com.algorand.android.utils.AssetName
+import com.algorand.android.utils.Event
+import java.math.BigDecimal
+import java.math.BigInteger
 
 data class AssetTransferAmountPreview(
-    val assetId: Long,
-    val fullName: AssetName,
-    val shortName: AssetName,
-    val isAlgo: Boolean,
-    val isVerified: Boolean,
-    val decimals: Int,
-    val enteredAmountSelectedCurrencyValue: String?,
-    val formattedAmount: String,
-    val formattedSelectedCurrencyValue: String,
-    val isAmountInSelectedCurrencyVisible: Boolean,
-    val collectiblePrismUrl: String?,
-    val isCollectibleOwnedByUser: Boolean,
-    val decimalSeparator: String
+    val assetPreview: AssetTransferAmountAssetPreview? = null,
+    val senderAddress: String? = null,
+    val enteredAmountSelectedCurrencyValue: String? = null,
+    val decimalSeparator: String? = null,
+    val selectedAmount: BigDecimal? = null,
+    val onPopulateAmountWithMaxEvent: Event<Unit>? = null,
+    val amountIsValidEvent: Event<BigInteger?>? = null,
+    val amountIsMoreThanBalanceEvent: Event<Unit>? = null,
+    val insufficientBalanceToPayFeeEvent: Event<Unit>? = null,
+    val minimumBalanceIsViolatedResultEvent: Event<String?>? = null,
+    val assetNotFoundErrorEvent: Event<Unit>? = null
 )

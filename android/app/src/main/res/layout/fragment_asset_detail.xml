@@ -9,218 +9,158 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License
   -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<com.algorand.android.customviews.ProgressSaverMotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/assetDetailMotionLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/hero_bg"
+    app:layoutDescription="@xml/scene_fragment_asset_detail">
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/rootScrollView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <com.algorand.android.customviews.CustomToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/default_toolbar_height"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/spacing_xlarge"
-            android:paddingTop="@dimen/spacing_xlarge">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/assetLogoImageView"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
-            <TextView
-                android:id="@+id/yourBalanceTextView"
-                style="@style/TextAppearance.Description"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/balance"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/assetNameAndBadgeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:layout_marginEnd="@dimen/spacing_xsmall"
+        android:drawablePadding="@dimen/spacing_xxsmall"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.Footnote.Sans"
+        android:textColor="@color/text_gray"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@id/assetPrimaryValueTextView"
+        app:layout_constraintEnd_toStartOf="@id/assetIdTextView"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/assetLogoImageView"
+        app:layout_goneMarginEnd="@dimen/spacing_xlarge"
+        tools:drawableEndCompat="@drawable/ic_asa_verified"
+        tools:text="@tools:sample/lorem[1]" />
 
-            <TextView
-                android:id="@+id/balanceTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xsmall"
-                android:maxLines="1"
-                android:textAppearance="@style/TextAppearance.Title.Mono"
-                app:autoSizeTextType="uniform"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/yourBalanceTextView"
-                tools:text="4.21229722" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/assetIdTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/spacing_xlarge"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.Footnote.Sans"
+        android:textColor="@color/text_gray"
+        app:layout_constraintBottom_toBottomOf="@id/assetNameAndBadgeTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/assetNameAndBadgeTextView"
+        app:layout_constraintTop_toTopOf="@id/assetNameAndBadgeTextView"
+        tools:text="@tools:sample/lorem[2]" />
 
-            <TextView
-                android:id="@+id/balanceInCurrencyTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xxsmall"
-                android:gravity="end|center_vertical"
-                android:maxLines="1"
-                android:textAppearance="@style/TextAppearance.Body.Mono"
-                app:autoSizeTextType="uniform"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/balanceTextView"
-                tools:text="$6.06" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/assetPrimaryValueTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_xsmall"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.Title2.Sans.Medium"
+        app:autoSizeMaxTextSize="@dimen/text_size_28"
+        app:autoSizeMinTextSize="@dimen/text_size_13"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/assetNameAndBadgeTextView"
+        tools:text="@tools:sample/lorem[1]" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/buyAlgoButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xxlarge"
-                android:text="@string/buy_algo"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/balanceInCurrencyTextView"
-                tools:visibility="visible" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/assetSecondaryValueTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_xsmall"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.Body.Sans"
+        android:textColor="@color/text_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/assetPrimaryValueTextView"
+        tools:text="@tools:sample/lorem[2]" />
 
-            <View
-                android:id="@+id/assetInfoDividerLine"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="@dimen/spacing_xxxlarge"
-                android:background="@color/divider_color"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/buyAlgoButton" />
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/quickActionButtons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_xxxxlarge"
+        app:constraint_referenced_ids="buyAlgoButton, sendButton, receiveButton"
+        app:flow_horizontalGap="@dimen/spacing_xxlarge"
+        app:flow_maxElementsWrap="3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/assetSecondaryValueTextView" />
 
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/algoAssetGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:constraint_referenced_ids="assetInfoDividerLine" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buyAlgoButton"
+        style="@style/IconButton.Transparent.QuickAction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/buy_algo"
+        android:visibility="gone"
+        app:icon="@drawable/ic_algo_helper_button"
+        tools:visibility="visible" />
 
-            <View
-                android:id="@+id/otherAssetBalanceDividerLine"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="@dimen/spacing_xxlarge"
-                android:background="@color/divider_color"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/balanceTextView" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/sendButton"
+        style="@style/IconButton.Transparent.QuickAction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/send"
+        app:icon="@drawable/ic_send_helper_button_bg_ghost" />
 
-            <TextView
-                android:id="@+id/otherAssetFullNameTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xxlarge"
-                android:drawablePadding="@dimen/spacing_small"
-                android:textAppearance="@style/TextAppearance.Body.Sans.Medium"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/otherAssetBalanceDividerLine"
-                tools:text="Micro-Netflix 1/10,000 Share " />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/receiveButton"
+        style="@style/IconButton.Transparent.QuickAction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/receive"
+        app:icon="@drawable/ic_receive_helper_button_bg_ghost" />
 
-            <TextView
-                android:id="@+id/otherAssetIdTextView"
-                style="@style/TextAppearance.Description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_small"
-                android:drawablePadding="@dimen/spacing_xxsmall"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/otherAssetFullNameTextView"
-                tools:text="ID 312769" />
+    <com.algorand.android.customviews.AlgorandTabLayout
+        android:id="@+id/algorandTabLayout"
+        style="@style/TabLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_xxxlarge"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/quickActionButtons"
+        app:leftTabText="@string/activity"
+        app:rightTabText="@string/about" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/assetIdCopyButton"
-                style="@style/IconButton.Transparent"
-                android:layout_width="@dimen/asset_id_copy_button_size"
-                android:layout_height="@dimen/asset_id_copy_button_size"
-                android:layout_marginStart="@dimen/spacing_xsmall"
-                app:icon="@drawable/ic_copy_20dp"
-                app:layout_constraintBottom_toBottomOf="@id/otherAssetIdTextView"
-                app:layout_constraintStart_toEndOf="@id/otherAssetIdTextView"
-                app:layout_constraintTop_toTopOf="@id/otherAssetIdTextView" />
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/assetDetailViewPager"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/algorandTabLayout" />
 
-            <View
-                android:id="@+id/otherAssetIdDividerLine"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="@dimen/spacing_xxlarge"
-                android:background="@color/divider_color"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/otherAssetIdTextView" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/otherAssetGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:constraint_referenced_ids="
-            otherAssetBalanceDividerLine,
-            otherAssetFullNameTextView,
-            otherAssetIdTextView,
-            otherAssetIdDividerLine,
-            assetIdCopyButton"
-                tools:visibility="visible" />
-
-            <androidx.constraintlayout.widget.Barrier
-                android:id="@+id/dividerBarrier"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:barrierDirection="bottom"
-                app:constraint_referenced_ids="assetInfoDividerLine,otherAssetIdDividerLine" />
-
-            <com.algorand.android.customviews.TransactionHistoryToolbarView
-                android:id="@+id/transactionHistoryToolbar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xxxlarge"
-                android:gravity="center"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dividerBarrier" />
-
-            <com.algorand.android.customviews.ViewPortHeightRecyclerView
-                android:id="@+id/transactionListRecyclerView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:clipToPadding="false"
-                android:nestedScrollingEnabled="true"
-                android:paddingBottom="100dp"
-                app:heightOffset="@dimen/transaction_view_height_offset"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/transactionHistoryToolbar"
-                tools:listitem="@layout/item_transaction"
-                tools:visibility="gone" />
-
-            <com.algorand.android.customviews.ScreenStateView
-                android:id="@+id/screenStateView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xxlarge"
-                android:layout_marginBottom="@dimen/bottom_safe_area_margin"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/transactionHistoryToolbar"
-                tools:visibility="visible" />
-
-            <ProgressBar
-                android:id="@+id/loadingProgressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_normal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/transactionHistoryToolbar" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.core.widget.NestedScrollView>
-
-    <com.algorand.android.customviews.AlgorandFloatingActionButton
-        android:id="@+id/assetDetailSendReceiveFab"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutDescription="@xml/algorand_fab_motion_scene" />
-
-    <include
-        android:id="@+id/csvProgressBar"
-        layout="@layout/layout_full_screen_progress_description" />
-
-</FrameLayout>
+</com.algorand.android.customviews.ProgressSaverMotionLayout>

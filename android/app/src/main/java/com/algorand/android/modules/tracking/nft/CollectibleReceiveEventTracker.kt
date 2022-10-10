@@ -25,6 +25,6 @@ class CollectibleReceiveEventTracker @Inject constructor(
     }
 
     companion object {
-        private const val COLLECTIBLE_RECEIVE_EVENT_KEY = "nftscreen_nft_receive"
+        private const val COLLECTIBLE_RECEIVE_EVENT_KEY = "nftscr_nft_receive"
     }
 }

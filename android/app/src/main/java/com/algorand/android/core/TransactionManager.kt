@@ -52,6 +52,7 @@ import com.algorand.android.utils.makeSendAndRemoveAssetTx
 import com.algorand.android.utils.makeTx
 import com.algorand.android.utils.minBalancePerAssetAsBigInteger
 import com.algorand.android.utils.recordException
+import com.algorand.android.utils.sendErrorLog
 import com.algorand.android.utils.signTx
 import com.algorand.android.utils.toBytesArray
 import java.math.BigInteger
@@ -59,7 +60,6 @@ import java.net.ConnectException
 import java.net.SocketException
 import javax.inject.Inject
 import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 // TODO: 26.06.2022 Refactor and use AccountDetail instead of AccountCacheData in transaction flow
@@ -112,6 +112,9 @@ class TransactionManager @Inject constructor(
                 is LedgerBleResult.OnMissingBytes -> setSignFailed(
                     Defined(AnnotatedString(R.string.error_sending_message), R.string.error_bluetooth_title)
                 )
+                else -> {
+                    sendErrorLog("Unhandled else case in operationManagerCollectorAction")
+                }
             }
         }
     }
@@ -178,7 +181,9 @@ class TransactionManager @Inject constructor(
     private fun setupLedgerOperationManager(lifecycle: Lifecycle) {
         ledgerBleOperationManager.setup(lifecycle)
         lifecycle.coroutineScope.launch {
-            ledgerBleOperationManager.ledgerBleResultFlow.collect(action = operationManagerCollectorAction)
+            ledgerBleOperationManager.ledgerBleResultFlow.collect {
+                operationManagerCollectorAction.invoke(it)
+            }
         }
     }
 
@@ -254,6 +259,7 @@ class TransactionManager @Inject constructor(
                 projectedFee = calculatedFee ?: transactionParams.getTxFee()
                 // calculate isMax before calculating real amount because while isMax true fee will be deducted.
                 isMax = isTransactionMax(amount, accountCacheData.account.address, assetInformation.assetId)
+                // TODO: 10.08.2022 Get all those calculations from a single AmountTransactionValidationUseCase
                 amount = calculateAmount(amount, isMax, accountCacheData, assetInformation.assetId, projectedFee)
                     ?: return null
 
@@ -406,6 +412,9 @@ class TransactionManager @Inject constructor(
                 minBalance += minBalancePerAssetAsBigInteger
             is TransactionData.RemoveAsset -> {
                 minBalance -= minBalancePerAssetAsBigInteger
+            }
+            else -> {
+                sendErrorLog("Unhandled else case in isMinimumLimitViolated")
             }
         }
 

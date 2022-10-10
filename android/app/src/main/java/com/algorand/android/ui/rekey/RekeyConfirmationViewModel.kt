@@ -12,7 +12,7 @@
 
 package com.algorand.android.ui.rekey
 
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.AccountManager
@@ -27,12 +27,14 @@ import com.algorand.android.utils.MIN_FEE
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.analytics.logRekeyEvent
 import com.google.firebase.analytics.FirebaseAnalytics
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlin.math.max
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class RekeyConfirmationViewModel @ViewModelInject constructor(
+@HiltViewModel
+class RekeyConfirmationViewModel @Inject constructor(
     private val firebaseAnalytics: FirebaseAnalytics,
     private val accountManager: AccountManager,
     private val accountCacheManager: AccountCacheManager,

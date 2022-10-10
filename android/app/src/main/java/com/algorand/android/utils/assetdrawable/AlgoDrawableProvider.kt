@@ -22,7 +22,14 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 class AlgoDrawableProvider : BaseAssetDrawableProvider() {
 
-    override fun getAssetDrawable(context: Context, assetName: AssetName): Drawable? {
-        return AppCompatResources.getDrawable(context, R.drawable.ic_algo_green_round)
+    override fun getAssetDrawable(
+        context: Context,
+        assetName: AssetName,
+        logoUri: String?,
+        width: Int,
+        onResourceReady: (Drawable?) -> Unit
+    ) {
+        val algoDrawable = AppCompatResources.getDrawable(context, R.drawable.ic_algo_green_round)
+        onResourceReady(algoDrawable)
     }
 }

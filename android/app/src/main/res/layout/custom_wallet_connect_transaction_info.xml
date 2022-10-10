@@ -35,6 +35,7 @@
         android:layout_width="@dimen/account_icon_size_normal"
         android:layout_height="@dimen/account_icon_size_normal"
         android:layout_marginStart="@dimen/spacing_normal"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/fromAccountNameTextView"
         app:layout_constraintEnd_toStartOf="@id/fromAccountNameTextView"
         app:layout_constraintHorizontal_bias="0"
@@ -192,13 +193,12 @@
         android:layout_marginTop="@dimen/spacing_large"
         android:drawablePadding="@dimen/spacing_small"
         android:gravity="center_vertical"
-        app:drawableTint="@color/verified_icon_color"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toTopOf="@id/assetDeletionRequestWarningTextView"
         app:layout_constraintEnd_toStartOf="@id/assetDotView"
         app:layout_constraintStart_toEndOf="@id/labelGuideline"
         app:layout_constraintTop_toBottomOf="@id/accountBalanceTextView"
-        tools:drawableStart="@drawable/ic_shield"
+        tools:drawableStart="@drawable/ic_asa_trusted"
         tools:text="ALGO" />
 
     <ImageView
@@ -429,8 +429,7 @@
         android:visibility="gone"
         app:constraint_referenced_ids="
         fromLabelTextView,
-        fromAccountNameTextView,
-		fromAccountTypeImageView"
+        fromAccountNameTextView"
         tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.Group

@@ -20,7 +20,6 @@ import com.algorand.android.modules.transaction.csv.ui.mapper.CsvStatusPreviewMa
 import com.algorand.android.modules.transaction.csv.ui.model.CsvStatusPreview
 import java.io.File
 import javax.inject.Inject
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -33,15 +32,13 @@ class CsvStatusPreviewUseCase @Inject constructor(
         cacheDir: File,
         dateRange: DateRange?,
         publicKey: String,
-        scope: CoroutineScope,
         assetId: Long? = null
     ): Flow<CsvStatusPreview> {
         return createCsvUseCase.createTransactionHistoryCsvFile(
             cacheDirectory = cacheDir,
             publicKey = publicKey,
             dateRange = dateRange,
-            assetId = assetId,
-            scope = scope
+            assetId = assetId
         ).map { csvStatusPreviewMapper.mapToCsvStatus(it) }
     }
 }

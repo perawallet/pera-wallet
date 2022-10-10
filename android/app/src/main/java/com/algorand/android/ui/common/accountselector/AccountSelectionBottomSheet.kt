@@ -15,18 +15,16 @@ package com.algorand.android.ui.common.accountselector
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseBottomSheet
 import com.algorand.android.databinding.BottomSheetAccountSelectionBinding
 import com.algorand.android.models.AccountSelection
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.setNavigationResult
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AccountSelectionBottomSheet : DaggerBaseBottomSheet(
@@ -67,9 +65,10 @@ class AccountSelectionBottomSheet : DaggerBaseBottomSheet(
     }
 
     private fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            accountSelectionViewModel.cachedAccountFlow.collectLatest(cachedAccountCollector)
-        }
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            accountSelectionViewModel.cachedAccountFlow,
+            cachedAccountCollector
+        )
     }
 
     private fun setupRecyclerView() {

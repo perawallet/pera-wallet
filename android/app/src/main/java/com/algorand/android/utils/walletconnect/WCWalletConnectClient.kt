@@ -72,9 +72,13 @@ class WCWalletConnectClient(
         connectToSession(session)
     }
 
-    override fun connect(sessionId: Long, sessionMeta: WalletConnectSessionMeta) {
+    override fun connect(
+        sessionId: Long,
+        sessionMeta: WalletConnectSessionMeta,
+        fallbackBrowserGroupResponse: String?
+    ) {
         if (sessionCachedDataHandler.isSessionCached(sessionMeta.topic)) return
-        val session = sessionBuilder.createSession(sessionId, sessionMeta) ?: return
+        val session = sessionBuilder.createSession(sessionId, sessionMeta, fallbackBrowserGroupResponse) ?: return
         connectToSession(session)
     }
 
@@ -120,7 +124,7 @@ class WCWalletConnectClient(
 
     override fun getWalletConnectSession(sessionId: Long): WalletConnectSession? {
         val sessionCacheData = sessionCachedDataHandler.getCachedDataById(sessionId) ?: return null
-        return walletConnectMapper.createWalletConnectSession(sessionCacheData)
+        return walletConnectMapper.createWalletConnectSession(sessionCacheData, accountName = null)
     }
 
     private fun getSessionById(id: Long): WCSession? {

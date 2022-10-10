@@ -12,16 +12,18 @@
 
 package com.algorand.android.ui.wcconnection
 
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.models.AccountSelection
 import com.algorand.android.usecase.WalletConnectConnectionUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class WalletConnectConnectionViewModel @ViewModelInject constructor(
+@HiltViewModel
+class WalletConnectConnectionViewModel @Inject constructor(
     private val walletConnectConnectionUseCase: WalletConnectConnectionUseCase
 ) : BaseViewModel() {
 

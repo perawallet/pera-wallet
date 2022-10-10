@@ -9,43 +9,24 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License
   -->
+
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
-    <group>
-        <clip-path android:pathData="M0,0h24v24h-24z" />
-        <path
-            android:fillColor="#18181B"
-            android:pathData="M12.5,0H2.5V12.101C3.0741,11.5151 3.7504,11.0297 4.5,10.6736V2H10.5V10.6736C11.2496,11.0297 11.9259,11.5151 12.5,12.101V0Z" />
-        <path
-            android:fillColor="#00000000"
-            android:pathData="M3.5,17C3.5,14.7909 5.2909,13 7.5,13V13C9.7091,13 11.5,14.7909 11.5,17V23H3.5V17Z"
-            android:strokeWidth="2"
-            android:strokeColor="@color/primary_icon_tint_color" />
-        <path
-            android:fillColor="@color/primary_icon_tint_color"
-            android:pathData="M7.5,17m-1,0a1,1 0,1 1,2 0a1,1 0,1 1,-2 0" />
-        <path
-            android:fillColor="#00000000"
-            android:pathData="M21.8818,16L20.3818,14L18.8818,16"
-            android:strokeWidth="2"
-            android:strokeColor="@color/primary_icon_tint_color" />
-        <path
-            android:fillColor="#00000000"
-            android:pathData="M20.54,15.2955L20.54,20.3289C20.54,20.6995 20.2396,21 19.8689,21L14.4999,21"
-            android:strokeWidth="2"
-            android:strokeColor="@color/primary_icon_tint_color" />
-        <path
-            android:fillColor="#00000000"
-            android:pathData="M16.8818,8L18.3818,10L19.8818,8"
-            android:strokeWidth="2"
-            android:strokeColor="@color/primary_icon_tint_color" />
-        <path
-            android:fillColor="#00000000"
-            android:pathData="M18.1445,8.7045V3.6711C18.1445,3.3005 18.445,3 18.8157,3H24.1846"
-            android:strokeWidth="2"
-            android:strokeColor="@color/primary_icon_tint_color" />
-    </group>
+    <path
+        android:fillColor="@color/text_main"
+        android:fillType="evenOdd"
+        android:pathData="M19,10L23,15H15L19,10Z" />
+    <path
+        android:fillColor="@color/text_main"
+        android:pathData="M18,14L18,20.3289L20,20.3289L20,14L18,14ZM18.3289,20L10,20L10,22L18.3289,22L18.3289,20ZM18,20.3289C18,20.1472 18.1472,20 18.3289,20L18.3289,22C19.2518,22 20,21.2518 20,20.3289L18,20.3289Z" />
+    <path
+        android:fillColor="@color/text_main"
+        android:fillType="evenOdd"
+        android:pathData="M1,9H9L5,14L1,9Z" />
+    <path
+        android:fillColor="@color/text_main"
+        android:pathData="M6,10V3.6711H4V10H6ZM5.6711,4H14V2H5.6711V4ZM6,3.6711C6,3.8528 5.8528,4 5.6711,4V2C4.7482,2 4,2.7482 4,3.6711H6Z" />
 </vector>

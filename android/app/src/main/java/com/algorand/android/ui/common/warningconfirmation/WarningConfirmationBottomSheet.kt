@@ -21,7 +21,9 @@ import com.algorand.android.databinding.BottomSheetWarningConfirmationBinding
 import com.algorand.android.utils.setNavigationResult
 import com.algorand.android.utils.viewbinding.viewBinding
 
-class WarningConfirmationBottomSheet : BaseBottomSheet(R.layout.bottom_sheet_warning_confirmation) {
+class WarningConfirmationBottomSheet : BaseBottomSheet(
+    layoutResId = R.layout.bottom_sheet_warning_confirmation
+) {
 
     private val args: WarningConfirmationBottomSheetArgs by navArgs()
 

@@ -52,7 +52,11 @@ sealed class TransactionData {
         val assetInformation: AssetInformation
     ) : TransactionData() {
         override fun getSignedTransactionDetail(signedTransactionData: ByteArray): SignedTransactionDetail {
-            return SignedTransactionDetail.AssetOperation(signedTransactionData, accountCacheData, assetInformation)
+            return SignedTransactionDetail.AssetOperation.AssetAddition(
+                signedTransactionData = signedTransactionData,
+                accountCacheData = accountCacheData,
+                assetInformation = assetInformation
+            )
         }
     }
 
@@ -62,7 +66,11 @@ sealed class TransactionData {
         val creatorPublicKey: String
     ) : TransactionData() {
         override fun getSignedTransactionDetail(signedTransactionData: ByteArray): SignedTransactionDetail {
-            return SignedTransactionDetail.AssetOperation(signedTransactionData, accountCacheData, assetInformation)
+            return SignedTransactionDetail.AssetOperation.AssetRemoval(
+                signedTransactionData = signedTransactionData,
+                accountCacheData = accountCacheData,
+                assetInformation = assetInformation
+            )
         }
     }
 

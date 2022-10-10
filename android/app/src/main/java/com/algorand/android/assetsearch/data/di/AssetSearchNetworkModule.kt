@@ -12,7 +12,7 @@
 
 package com.algorand.android.assetsearch.data.di
 
-import com.algorand.android.assetsearch.data.mapper.AssetDetailDTOMapper
+import com.algorand.android.assetsearch.data.mapper.AssetSearchDTOMapper
 import com.algorand.android.assetsearch.data.repository.AssetSearchRepositoryImpl
 import com.algorand.android.assetsearch.domain.repository.AssetSearchRepository
 import com.algorand.android.assetsearch.domain.repository.AssetSearchRepository.Companion.REPOSITORY_INJECTION_NAME
@@ -21,11 +21,11 @@ import com.hipo.hipoexceptionsandroid.RetrofitErrorHandler
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Named
 
 @Module
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 object AssetSearchNetworkModule {
 
     @Provides
@@ -33,8 +33,8 @@ object AssetSearchNetworkModule {
     fun provideAssetSearchRepository(
         mobileAlgorandApi: MobileAlgorandApi,
         retrofitErrorHandler: RetrofitErrorHandler,
-        assetDetailDTOMapper: AssetDetailDTOMapper
+        assetSearchDTOMapper: AssetSearchDTOMapper
     ): AssetSearchRepository {
-        return AssetSearchRepositoryImpl(mobileAlgorandApi, retrofitErrorHandler, assetDetailDTOMapper)
+        return AssetSearchRepositoryImpl(mobileAlgorandApi, retrofitErrorHandler, assetSearchDTOMapper)
     }
 }

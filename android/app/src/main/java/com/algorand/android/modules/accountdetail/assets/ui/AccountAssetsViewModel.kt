@@ -13,8 +13,7 @@
 
 package com.algorand.android.modules.accountdetail.assets.ui
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -23,6 +22,7 @@ import com.algorand.android.modules.accountdetail.assets.ui.AccountAssetsFragmen
 import com.algorand.android.modules.tracking.accountdetail.accountassets.AccountAssetsFragmentEventTracker
 import com.algorand.android.usecase.AccountAssetsPreviewUseCase
 import com.algorand.android.utils.getOrThrow
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -32,9 +32,10 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 
-class AccountAssetsViewModel @ViewModelInject constructor(
+@HiltViewModel
+class AccountAssetsViewModel @Inject constructor(
     private val accountAssetsPreviewUseCase: AccountAssetsPreviewUseCase,
-    @Assisted private val savedStateHandle: SavedStateHandle,
+    private val savedStateHandle: SavedStateHandle,
     private val accountAssetsFragmentEventTracker: AccountAssetsFragmentEventTracker
 ) : ViewModel() {
 
@@ -62,6 +63,10 @@ class AccountAssetsViewModel @ViewModelInject constructor(
     fun updateSearchQuery(query: String) {
         updateQueryJob?.cancel()
         updateQueryJob = viewModelScope.launch { searchQueryFlow.emit(query) }
+    }
+
+    fun resetSearchQuery() {
+        updateSearchQuery("")
     }
 
     fun logAccountAssetsAddAssetEvent() {

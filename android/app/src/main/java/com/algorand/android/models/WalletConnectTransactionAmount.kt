@@ -12,11 +12,9 @@
 
 package com.algorand.android.models
 
-import android.os.Parcelable
+import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration
 import java.math.BigInteger
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
 data class WalletConnectTransactionAmount(
     val transactionAmount: BigInteger? = null,
     val assetDecimal: Int? = null,
@@ -24,9 +22,10 @@ data class WalletConnectTransactionAmount(
     val assetName: String? = null,
     val assetId: Long? = null,
     val applicationId: Long? = null,
-    val isVerified: Boolean? = null,
     val isNeedCurrencyValue: Boolean = false,
     val appOnComplete: BaseAppCallTransaction.AppOnComplete? = null,
     val isAssetUnnamed: Boolean = false,
-    val formattedSelectedCurrencyValue: String? = null
-) : Parcelable
+    val formattedSelectedCurrencyValue: String? = null,
+    val verificationTierConfiguration: VerificationTierConfiguration? = null,
+    val fromDisplayedAddress: BaseWalletConnectDisplayedAddress? = null,
+)

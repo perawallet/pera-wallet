@@ -12,13 +12,15 @@
 
 package com.algorand.android.ui.settings.security
 
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.algorand.android.usecase.SecurityUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 
-class SecurityViewModel @ViewModelInject constructor(
+@HiltViewModel
+class SecurityViewModel @Inject constructor(
     private val securityUseCase: SecurityUseCase
 ) : ViewModel() {
 

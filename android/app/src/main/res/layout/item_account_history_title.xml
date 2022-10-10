@@ -11,12 +11,46 @@
   ~
   -->
 
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/titleTextView"
-    style="@style/TextAppearance.Body.Sans.Medium"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/spacing_xxxxlarge"
-    android:layout_marginBottom="@dimen/spacing_small"
-    tools:text="@tools:sample/lorem[2]" />
+    android:paddingVertical="@dimen/spacing_normal">
+
+    <View
+        android:id="@+id/firstDividerLineView"
+        style="@style/Divider"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/divider_height"
+        android:layout_marginEnd="@dimen/spacing_large"
+        app:layout_constraintBottom_toBottomOf="@id/titleTextView"
+        app:layout_constraintEnd_toStartOf="@id/titleTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/titleTextView" />
+
+    <TextView
+        android:id="@+id/titleTextView"
+        style="@style/TextAppearance.Description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/secondDividerLineView"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@id/firstDividerLineView"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@tools:sample/lorem[2]" />
+
+    <View
+        android:id="@+id/secondDividerLineView"
+        style="@style/Divider"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/divider_height"
+        android:layout_marginStart="@dimen/spacing_large"
+        app:layout_constraintBottom_toBottomOf="@id/titleTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/titleTextView"
+        app:layout_constraintTop_toTopOf="@id/titleTextView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

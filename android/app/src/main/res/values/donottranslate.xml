@@ -22,6 +22,7 @@
     <string name="pair_value_format_packed">%1$s%2$s</string>
     <string name="pair_value_format">%1$s %2$s</string>
     <string name="pair_value_format_with_coma">%1$s, %2$d</string>
+    <string name="pair_value_format_with_interpunct">%1$s · %2$d</string>
     <string name="algo">Algo</string>
     <string name="pera_explorer">Pera Explorer</string>
     <string name="testnet">TESTNET</string>
@@ -44,4 +45,43 @@
 
     <string name="formatted_amount_with_asset_name_txn"><annotation replacement="asset_amount">assetAmountPlaceholder</annotation> <annotation replacement="asset_short_name"><annotation custom="text_size"><annotation font="dmsans_medium">assetShortNamePlaceholder</annotation></annotation></annotation></string>
     <string name="approximate_currency_value">≈ %1$s</string>
+    <string name="interpunct">·</string>
+    <string name="discord">Discord</string>
+    <string name="twitter">Twitter</string>
+    <string name="telegram">Telegram</string>
+    <string name="interpunct_asset_id">· %1$d</string>
+
+    <!-- Fallback Browser Names -->
+    <string name="chrome">Chrome</string>
+    <string name="chrome_dev">Chrome Dev</string>
+    <string name="chrome_beta">Chrome Beta</string>
+    <string name="chrome_canary">Chrome Canary</string>
+    <string name="google_search">Google Search</string>
+    <string name="opera">Opera</string>
+    <string name="opera_touch">Opera Touch</string>
+    <string name="opera_gx">Opera GX</string>
+    <string name="yandex">Yandex</string>
+    <string name="yandex_lite">Yandex Lite</string>
+    <string name="microsoft_edge">Microsoft Edge</string>
+    <string name="firefox">Firefox</string>
+    <string name="firefox_nightly">Firefox Nightly</string>
+    <string name="firefox_beta">Firefox Beta</string>
+    <string name="firefox_focus">Firefox Focus</string>
+    <string name="duckduckgo">DucDuckGo</string>
+    <string name="brave">Brave</string>
+    <string name="brave_beta">Brave Beta</string>
+    <string name="brave_nightly">Brave Nightly</string>
+    <string name="blackberry">Blackberry</string>
+    <string name="vivaldi">Vivaldi</string>
+    <string name="vivaldi_snapshot">Vivaldi Snapshot</string>
+    <string name="we_chat">We Chat</string>
+    <string name="uc_browser">UC Browser</string>
+    <string name="maxthon">Maxthon</string>
+    <string name="puffin">Puffin</string>
+    <string name="sleipnir">Sleipnir</string>
+    <string name="samsung_internet">Samsung Internet</string>
+    <string name="naver_whale_browser">Naver Whale Browser</string>
+    <string name="qq_browser">QQ Browser</string>
+    <string name="miui">Miui</string>
+
 </resources>

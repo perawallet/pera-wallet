@@ -90,7 +90,6 @@
     <string name="you_are_about_to_receive">您将要收到一项资产！</string>
     <string name="min_transaction_error">最小交易错误！</string>
     <string name="you_need_at_least">您需要至少 <annotation replacement="min_balance"> </annotation> ALGO来添加这项资产</string>
-    <string name="your_accounts_do_not">您的账户不包含此项资产</string>
     <string name="please_add_this">请添加该资产，并再次尝试。</string>
     <string name="key_not_valid">密钥无效，请确保您拥有正确的密钥。</string>
     <string name="scanned_qr_is_not_valid">所扫二维码无效。</string>
@@ -102,7 +101,7 @@
     <string name="bluetooth_is_enabled">蓝牙功能已开启。</string>
     <string name="all">全部</string>
     <string name="verified_assets">已验证的资产</string>
-    <string name="what_does_asset">资产验证是什么意思？<annotation type="verified-icon"> </annotation></string>
+    <string name="what_does_asset">资产验证是什么意思？<annotation type="verified-icon"></annotation></string>
     <string name="verified_assets_first_paragraph">通过我们验证过程的资产是已知的项目，其网站和公开信息已对这个特定的ASA进行了验证。验证状态并不是对该资产的背书。</string>
     <string name="verified_assets_second_paragraph">Pera钱包与经验证的ASA持有者没有任何关系。此徽章仅供参考。</string>
     <string name="verified_assets_third_paragraph">也就是说，在进行交易资产之前，您应当<annotation type="color">反复核实</annotation> 该资产编号是否是您想要选择的。</string>
@@ -294,7 +293,9 @@
     <string name="minimum_balance_required">最低余额要求</string>
     <string name="you_have_not_connected">尚未添加任何APP。</string>
     <string name="wallet_connect_sessions">WalletConnect 会话</string>
-    <string name="wallet_wants_to_connect"><annotation type="bold"><annotation replacement="app_name">APP名称</annotation>想要连接到您的账户</annotation></string>
+    <string name="wallet_wants_to_connect">
+    <annotation type="bold"><annotation replacement="app_name">APP名称</annotation>想要连接到您的账户</annotation>
+  </string>
     <string name="you_do_not_have_any">您没有 WalletConnect 可以连接的帐户。</string>
     <string name="disconnect">断开</string>
     <string name="remainder_close_to">剩余部分\n接近于</string>
@@ -495,7 +496,7 @@
     <string name="welcome_to_pera">欢迎使用\nPera钱包</string>
     <string name="start_using_pera">开始使用Pera钱包</string>
     <string name="is_your_ledger_paired">您的Ledger与该设备配对了吗？\n如尚未配对，请根据以下指示操作：</string>
-    <string name="you_are_about_to_delete">您即将删除钱包中的所有数据，包括您的存储账户。在您确认删除之前，请确保您的账户密码已存储在其他地方。否则，您将无法恢复账户。您确定要继续吗？</string>
+    <string name="you_are_about_to_delete">您即将删除钱包中的所有数据，包括您的存储账户。在您确认删除之前，请确保您的账户密码已存储在其他地方。否则，您将无法恢复账户。\n\n 您确定要继续吗？</string>
     <string name="your_data_has_been">成功删除您的数据</string>
     <string name="you_are_connected">您已连接到<annotation replacement="peer_name">peerNamePlaceholder</annotation></string>
     <string name="please_return_to">请返回<annotation replacement="peer_name">peerNamePlaceholder</annotation>继续完成您的操作。您可以在专门的设置页面中找到所有连接的会话。</string>
@@ -515,7 +516,6 @@
     <string name="sorry_we_cant_show_portfolio">抱歉，我们无法显示该投资组合的详细信息。我们似乎遇到了计算方面的问题。\n\n 请注意，部分资产价值可能不可用，因此，投资组合总价值应当做估值。</string>
     <string name="transaction_request_faq">交易请求常见问题</string>
     <string name="external_applications_also">外部应用程序，也称为dApps，可以不受Pera Wallet限制发起交易请求。请确保您在批准和签署这些交易之前有进行仔细审查。由于这些请求不在Pera Wallet的控制范围内，所以不要批准来自您不认识的dApp的交易。</string>
-    <string name="notification_algo_received_message"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> 已发送至 <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> ，发送人是 <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>。</string>
     <string name="minimum_amount_required">所需最低余额</string>
     <string name="this_is_the_first_transaction">这是所选账户的首笔交易。首笔交易的最低金额要求为0.1ALGO。请输入有效金额，并再重试。</string>
     <string name="i_want_to_create">我想要创建一个账户</string>
@@ -612,8 +612,6 @@
     <string name="your_nft_transfer_has_failed">您的NFT转移失败了!</string>
     <string name="please_try_again">请再试一次。</string>
     <string name="opt_out">选择退出</string>
-    <string name="opt_out_from">从\"%1$s \"中选择退出</string>
-    <string name="you_are_about_to_opt_out">您即将退出此NFT的%1$s。在您再次选择加入之前，您将无法与该资产进行交易。</string>
     <string name="nft_successfully_opted_out">%1$s NFT成功选择退出</string>
     <string name="opted_in_to">已选择加入</string>
     <string name="show_on">显示于</string>
@@ -625,19 +623,22 @@
     <string name="filter">筛选</string>
     <string name="show_filtered_nfts_formatted">显示筛选后的NFT（%1$d）</string>
     <string name="search_your_nfts">搜索您的NFT</string>
-    <string name="enter_your_old">输入您旧的6位数PIN码</string>
-    <string name="ledger_info_power_first_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">关于Ledger蓝牙功能的一般使用方法，请参考Ledger的官方指南。 <annotation type="bold"><annotation type="color">蓝牙连接指南。</annotation></annotation></annotation></string>
-    <string name="ledger_info_power_second_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">关于更高级的故障排除，请参考Ledger官方的 <annotation type="bold"><annotation type="color">蓝牙故障排除指南。</annotation></annotation></annotation></string>
-    <string name="ledger_info_ledger_first_paragraph"><annotation url="https://www.ledger.com/start">按照Ledger的综合<annotation type="bold"><annotation type="color">入门</annotation></annotation>教程开始使用。</annotation></string>
+    <string name="enter_your_old">输入您的旧\n6位数PIN码</string>
+    <string name="ledger_info_power_first_paragraph">
+    <annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">关于Ledger蓝牙功能的一般使用方法，请参考Ledger的官方指南。 <annotation type="bold"><annotation type="color">蓝牙连接指南。</annotation></annotation></annotation>
+  </string>
+    <string name="ledger_info_power_second_paragraph">
+    <annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">关于更高级的故障排除，请参考Ledger官方的 <annotation type="bold"><annotation type="color">蓝牙故障排除指南。</annotation></annotation></annotation>
+  </string>
+    <string name="ledger_info_ledger_first_paragraph">
+    <annotation url="https://www.ledger.com/start">按照Ledger的综合<annotation type="bold"><annotation type="color">入门</annotation></annotation>教程开始使用。</annotation>
+  </string>
     <string name="no_nft_found">未发现NFT</string>
     <string name="welcome_to_pera_wallet_your_watch">欢迎使用Pear钱包！您已成功添加Watch账户。</string>
     <string name="congratulations_your_watch_account_has">恭喜，您已成功添加Watch账户。</string>
     <string name="passphrase_verified">助记词已验证</string>
     <string name="keep_this_recovery">请将恢复助记词保存在仅您能访问的安全位置，请勿丢失恢复助记词。</string>
-    <string name="search_your_assets">搜索您的资产</string>
     <string name="search">搜索</string>
-    <string name="wrong_pin">错误的针脚</string>
-    <string name="pin_does_not">引脚与前一个引脚不匹配</string>
     <string name="no_transactions">没有交易</string>
     <string name="there_are_no">所选日期内并无交易可供显示。</string>
     <string name="filter_by_date">按日期筛选</string>
@@ -664,7 +665,6 @@
     <string name="algo_wallet">ALGO钱包</string>
     <string name="address_copied_to_clipboard">地址已复制到剪贴板</string>
     <string name="main_currency">主要货币</string>
-    <string name="your_main_currency_is">您的主要货币是<annotation font="dmsans_regular"><annotation type="primaryCurrencyColor"><annotation type="bold"><annotation replacement="primaryCurrencyId">primaryCurrencyPlaceholder</annotation></annotation></annotation></annotation>，次要货币为<annotation font="dmsans_regular"><annotation type="secondaryCurrencyColor"><annotation type="bold"><annotation replacement="secondaryCurrencyId">secondaryCurrencyPlaceholder</annotation></annotation></annotation></annotation></string>
     <string name="the_scanned_qr_is_not">所扫二维码不是有效的Algorand公共地址。对于其他类型的QR（如WalletConnect会话），请使用主页上的扫描二维码按钮。</string>
     <string name="buy_crypto_with_credit">用信用卡或通过银行转账购买加密货币</string>
     <string name="algo_or_any_asa">ALOG或任意ASA转到另一个账户</string>
@@ -704,4 +704,100 @@
     </plurals>
     <string name="invalid_asset_id">资产ID无效</string>
     <string name="asset_successfully_added_formatted">%1$s已成功添加到您的账户。</string>
+    <string name="notification_algo_received_message"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation><annotation replacement="asset">assetPlaceholder</annotation>已发送至<annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>，发送人为<annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>。</string>
+    <string name="opt_in_to">从该账户选择加入一个ASA或NFT</string>
+    <string name="add_new_asa">添加新的ASA</string>
+    <string name="show_more_actions">显示更多行动</string>
+    <string name="asset_not_found_please_make">未找到该资产。请确保您在使用正确的网络。</string>
+    <string name="parent_transaction_id">父\n交易ID</string>
+    <string name="it_looks_like">该交易疏忽保护一个或多个丢失的交易。为了保障您的安全，Pera钱包不允许您签署有模糊细节的交易组。请联系发送该交易的dApp，让他们解决这个问题。</string>
+    <string name="self_transfer">自行转移</string>
+    <string name="opt_in_self_transfer">选择加入/自行转移</string>
+    <string name="thousand">千</string>
+    <string name="thousand_abbreviation">千</string>
+    <string name="million">百万</string>
+    <string name="million_abbreviation">百万</string>
+    <string name="billion">十亿</string>
+    <string name="billion_abbreviation">十亿</string>
+    <string name="trillion">万亿</string>
+    <string name="trillion_abbreviation">万亿</string>
+    <string name="quadrillion">千万亿</string>
+    <string name="quadrillion_abbreviation">千万亿</string>
+    <string name="quintillion">千亿</string>
+    <string name="quintillion_abbreviation">千亿</string>
+    <string name="account_related_to_this_notification">与此通知相关的账户已从该设备中删除。如需查看该通知的详细信息，请再次添加该账户。</string>
+    <string name="account_asset_count_zero">0 资产</string>
+    <string name="pin_code_did_not_match">PIN码不匹配。请重试。</string>
+    <string name="your_main_currency_is_placeholder">您的主要货币是<annotation font="dmsans_regular"><annotation custom="primaryCurrencyColor"><annotation replacement="primaryCurrencyId">primaryCurrencyPlaceholder</annotation></annotation></annotation>，次要货币为<annotation font="dmsans_regular"><annotation custom="secondaryCurrencyColor"><annotation replacement="secondaryCurrencyId">secondaryCurrencyPlaceholder</annotation></annotation></annotation></string>
+    <string name="disconnect_all_sessions">断开全部对话</string>
+    <string name="would_disconnect_all_sessions">您想要断开全部对话吗？</string>
+    <string name="missing_asset">缺失的资产</string>
+    <string name="you_are_already">您已从该账户选择加入<annotation replacement="asset_name"> assetNamePlaceholder </annotation> 。</string>
+    <string name="too_many_accounts">账户太多了！</string>
+    <string name="looks_like_already_have_accounts">您的钱包里似乎已经有%1$d或多个账户。为了保证APP的表现性能，我们尚未支持超过%1$d个账户。如需添加另一个账户，请先移除现有账户。</string>
+    <string name="error_bluetooth_permission_message">需要授予蓝牙扫描权限后才能扫描附近的Ledger。</string>
+    <string name="select_the_receiver_account">选择接受者账户</string>
+    <string name="transaction_submitted">交易已提交</string>
+    <string name="your_transaction_sub">您的交易已成功提交到Algorand网络。</string>
+    <string name="search_assets">检索资产</string>
+    <string name="manage_collectibles">管理收藏品</string>
+    <string name="asa_verification">ASA验证</string>
+    <string name="pera_wallet_s_algorand">Pera钱包的Algorand标准资产（ASA）验证计划让ASA创建者验证他们对该资产的所有权，从而获取<annotation type="bold">自动</annotation>验证。</string>
+    <string name="the_main_purpose">ASA验证的主要目的是<annotation type="bold">为了防止ASA假装隶属于另一个无关的项目，并充当该项目的代币。</annotation></string>
+    <string name="asa_verification_is"><annotation type="bold">ASA验证并不代表对项目的背书。</annotation>Algorand和Pera都不会使用验证过程进行项目背书。</string>
+    <string name="overview">概述</string>
+    <string name="activity">活动</string>
+    <string name="about">关于</string>
+    <string name="csv">CSV</string>
+    <string name="transactions">交易</string>
+    <string name="this_asa_was_automatically_verified">该ASA是通过Pera ASA验证程序<annotation type="bold">自动验证的</annotation>。</string>
+    <string name="this_is_a_well_known">这是Algorand生态系统中<annotation type="bold">广为人知</annotation>的成熟项目。</string>
+    <string name="we_ve_received_reports_that">我们收到了有关此 ASA 参与<annotation type="bold">诈骗企图的举报。 </annotation>与该ASA交互时需谨慎。</string>
+    <string name="verified_asa">已验证的ASA</string>
+    <string name="trusted_asa">可信任的ASA</string>
+    <string name="suspicious">可疑的</string>
+    <string name="total_supply">供应总量</string>
+    <string name="asa_id">ASA ID</string>
+    <string name="creator">创作者</string>
+    <string name="asa_url">ASA URL</string>
+    <string name="project_website">项目网站</string>
+    <string name="open_with_browser">用浏览器打开</string>
+    <string name="show_more">显示更多</string>
+    <string name="show_less">显示更少</string>
+    <string name="learn_more_about_asa_verification">了解更多关于ASA验证的信息</string>
+    <string name="social_media">社交媒体</string>
+    <string name="report_asset_name">举报%1$s</string>
+    <string name="about_asset_name">关于%1$s</string>
+    <string name="total_supply_info">资产的总供应量是在创建时所设定的，并与该资产的总创建单位相对应。</string>
+    <string name="asa_report_asset_id">ASA报告: %1$d</string>
+    <string name="report_an_asa">举报一个ASA</string>
+    <string name="you_can_send_us_an">您可以给我们发送电子邮件来举报该ASA，地址是 <annotation custom="verification_mail_click"><annotation replacement="verification_mail"><annotation font="dmsans_medium">verificationMailPlaceholder</annotation></annotation></annotation></string>
+    <string name="you_can_add_this_asset">您可以添加该资产到</string>
+    <string name="add_asset">添加资产</string>
+    <string name="this_account_doesn_t_have_the">此账户没有支持这项交易的最低ALGO余额。请添加更多ALGO以继续操作。\n\nALGO最低余额随着所选的每种资产、NFT和智能合约而增加%1$s ALGO。您可以选择不使用资产和智能合约，从而降低ALGO的最低余额。</string>
+    <string name="insufficient_algo_balance">ALGO余额不足</string>
+    <string name="you_can_opt_in_to_this">您可以从您的账户中选择加入此资产。</string>
+    <string name="please_select_an_account_to">请选择账户以添加%1$s</string>
+    <string name="asset_successfully_added_to_your">%1$s已成功添加到您的账户。</string>
+    <string name="asset_successfully_removed_from_your">%1$s已成功移除出您的账户。</string>
+    <string name="filter_nfts">筛选NFT</string>
+    <string name="newest_to_oldest">从最新到最早</string>
+    <string name="oldest_to_newest">从最早到最新</string>
+    <string name="you_can_add_this_nft">您可以将该NFT添加到</string>
+    <string name="opt_dash_in">选择加入</string>
+    <string name="sorry_there_was">抱歉，获取您的账户出错。投资组合价值仅是根据成功获取的账户来计算。</string>
+    <string name="we_couldn_t_find_any_assets">我们找不到任何需要移除的资产。</string>
+    <string name="the_algo_is_the_official_cryptocurrency">ALGO是Algorand区块链的官方加密货币。Algorand区块链的建立是为了推动创建一个无国界的开放经济，让每个人都可以参与其中。这种新型的数字经济只能在一种即时生效、真正的数字货币上运行，而这种货币就是ALGO。</string>
+    <string name="opt_out_nft">选择退出NFT</string>
+    <string name="you_are_about_to_opt">您即将选择退出%1$s。除非您重新添加，否则您将无法在这个账户中与该NFT进行交易。</string>
+    <string name="opt_in_to_nft">选择加入 NFT</string>
+    <string name="opting_in_to_an_nft">选择加入NFT需要发送一笔带有最低交易费的交易。该交易将显示在您的交易历史上。</string>
+    <string name="this_account_doesn_t">该账户没有足够余额用于该交易。</string>
+    <string name="we_couldn_t">我们无法自动检测您用于启动 WalletConnection 会话的浏览器。请选择浏览器并返回到%1$s：</string>
+    <string name="select_a_browser">选择浏览器</string>
+    <string name="switch_back_to">切换回<annotation iconReplacement="browserIconResId">[browser_icon_placeholder]</annotation> <annotation replacement="browser_name">browser_name_placeholder</annotation></string>
+    <string name="account_connected">账户已连接！</string>
+    <string name="you_ve_connected">您已将账户连接到%1$s了。返回到您的网络浏览器完成操作。</string>
+    <string name="transaction_signed">交易已签署！</string>
+    <string name="transaction_was_sent">交易已发送至%1$s。返回到您的网络浏览器完成操作。</string>
 </resources>

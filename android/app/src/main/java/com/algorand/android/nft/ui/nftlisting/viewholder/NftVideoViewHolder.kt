@@ -16,11 +16,12 @@ import android.view.ViewGroup
 import androidx.core.view.doOnLayout
 import com.algorand.android.databinding.ItemBaseCollectibleListBinding
 import com.algorand.android.nft.ui.model.BaseCollectibleListItem
+import com.algorand.android.utils.createPrismUrl
 import com.algorand.android.utils.loadImage
 
 class NftVideoViewHolder(binding: ItemBaseCollectibleListBinding) : BaseCollectibleListViewHolder(binding) {
 
-    override fun bind(item: BaseCollectibleListItem.BaseCollectibleItem) {
+    override fun bind(item: BaseCollectibleListItem) {
         super.bind(item)
         if (item !is BaseCollectibleListItem.BaseCollectibleItem.CollectibleVideoItem) return
         loadThumbnail(item)
@@ -30,7 +31,7 @@ class NftVideoViewHolder(binding: ItemBaseCollectibleListBinding) : BaseCollecti
         binding.collectibleImageView.run {
             doOnLayout {
                 context.loadImage(
-                    createPrismUrl(item.thumbnailPrismUrl.orEmpty(), measuredWidth),
+                    uri = createPrismUrl(item.thumbnailPrismUrl.orEmpty(), measuredWidth),
                     onResourceReady = { showImage(it, !item.isOwnedByTheUser) },
                     onLoadFailed = { showText(item.avatarDisplayText) }
                 )

@@ -15,14 +15,14 @@
     android:height="16dp"
     android:viewportWidth="16"
     android:viewportHeight="16">
-  <path
-      android:pathData="M8,8m-8,0a8,8 0,1 1,16 0a8,8 0,1 1,-16 0"
-      android:fillColor="@color/verified_icon_bg"/>
-  <path
-      android:pathData="M5,8.753L6.635,11L11,5"
-      android:strokeLineJoin="round"
-      android:strokeWidth="1.5"
-      android:fillColor="#00000000"
-      android:strokeColor="@color/verified_icon_inline"
-      android:strokeLineCap="round"/>
+    <path
+        android:fillColor="@color/verified_icon_bg"
+        android:pathData="M8,8m-8,0a8,8 0,1 1,16 0a8,8 0,1 1,-16 0" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M5,8.753L6.635,11L11,5"
+        android:strokeWidth="1.5"
+        android:strokeColor="@color/verified_icon_inline"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
 </vector>

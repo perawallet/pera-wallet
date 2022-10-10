@@ -16,6 +16,7 @@ import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.Intent
 import android.location.LocationManager
+import android.os.Build
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.location.LocationManagerCompat
 import androidx.fragment.app.Fragment
@@ -28,9 +29,15 @@ import com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionRequ
 fun BaseFragment.isBluetoothEnabled(): Boolean {
     val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter() ?: return false
 
-    if (context?.isPermissionGranted(LOCATION_PERMISSION) != true) {
-        requestPermissionFromUser(LOCATION_PERMISSION, LOCATION_PERMISSION_REQUEST_CODE, true)
-        return false
+    if (context?.areBluetoothPermissionsGranted() != true) {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            requestPermissionFromUser(BLUETOOTH_SCAN_PERMISSION, BLUETOOTH_SCAN_PERMISSION_REQUEST_CODE, true)
+            requestPermissionFromUser(BLUETOOTH_CONNECT_PERMISSION, BLUETOOTH_CONNECT_PERMISSION_REQUEST_CODE, true)
+            false
+        } else {
+            requestPermissionFromUser(LOCATION_PERMISSION, LOCATION_PERMISSION_REQUEST_CODE, true)
+            false
+        }
     }
     if (bluetoothAdapter.isEnabled.not()) {
         showEnableBluetoothPopup()

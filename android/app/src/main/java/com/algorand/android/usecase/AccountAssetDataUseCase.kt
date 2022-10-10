@@ -22,7 +22,6 @@ import com.algorand.android.models.AssetStatus.PENDING_FOR_REMOVAL
 import com.algorand.android.models.AssetStatus.PENDING_FOR_SENDING
 import com.algorand.android.models.BaseAccountAssetData
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData
-import com.algorand.android.modules.assets.assetsort.domain.usecase.AssetSortUseCase
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -33,8 +32,7 @@ class AccountAssetDataUseCase @Inject constructor(
     private val assetDetailUseCase: SimpleAssetDetailUseCase,
     private val accountAssetAmountUseCase: AccountAssetAmountUseCase,
     private val accountAlgoAmountUseCase: AccountAlgoAmountUseCase,
-    private val accountAssetDataMapper: AccountAssetDataMapper,
-    private val assetSortUseCase: AssetSortUseCase
+    private val accountAssetDataMapper: AccountAssetDataMapper
 ) {
 
     fun getAccountOwnedAssetDataFlow(publicKey: String, includeAlgo: Boolean): Flow<List<OwnedAssetData>> {
@@ -93,7 +91,7 @@ class AccountAssetDataUseCase @Inject constructor(
                 assetDataList.add(accountAssetData)
             }
         }
-        return assetSortUseCase.sortAssets(assetDataList)
+        return assetDataList
     }
 
     private fun getAccountOwnedCachedAssetList(account: AccountDetail): List<AssetDetail> {

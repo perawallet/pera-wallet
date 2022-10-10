@@ -115,8 +115,8 @@ class ApplicationCallTransactionDetailPreviewUseCase @Inject constructor(
                         applicationCallAssetInformationMapper.mapToApplicationCallAssetInformation(
                             assetFullName = AssetName.create(fullName),
                             assetShortName = AssetName.create(shortName),
-                            isVerified = isVerified,
-                            assetId = assetId
+                            assetId = assetId,
+                            verificationTier = verificationTier
                         )
                     }
                 }.orEmpty()

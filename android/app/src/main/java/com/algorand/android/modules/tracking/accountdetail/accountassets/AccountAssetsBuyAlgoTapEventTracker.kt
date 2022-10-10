@@ -25,6 +25,6 @@ class AccountAssetsBuyAlgoTapEventTracker @Inject constructor(
     }
 
     companion object {
-        private const val ACCOUNT_ASSETS_BUY_ALGO_EVENT = "accountscreen_tapmenu_algo_buy_tap"
+        private const val ACCOUNT_ASSETS_BUY_ALGO_EVENT = "accountscr_tapmenu_algo_buy_tap"
     }
 }

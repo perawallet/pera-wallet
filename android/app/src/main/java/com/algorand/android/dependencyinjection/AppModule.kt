@@ -24,12 +24,14 @@ import com.algorand.android.database.AlgorandDatabase.Companion.MIGRATION_4_5
 import com.algorand.android.database.AlgorandDatabase.Companion.MIGRATION_5_6
 import com.algorand.android.database.AlgorandDatabase.Companion.MIGRATION_6_7
 import com.algorand.android.database.AlgorandDatabase.Companion.MIGRATION_7_8
+import com.algorand.android.database.AlgorandDatabase.Companion.MIGRATION_8_9
 import com.algorand.android.database.ContactDao
 import com.algorand.android.database.NodeDao
 import com.algorand.android.database.NotificationFilterDao
 import com.algorand.android.database.WalletConnectDao
 import com.algorand.android.database.WalletConnectTypeConverters
 import com.algorand.android.ledger.LedgerBleConnectionManager
+import com.algorand.android.ledger.LedgerBleSearchManager
 import com.algorand.android.notification.PeraNotificationManager
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.usecase.GetLocalAccountsFromSharedPrefUseCase
@@ -39,25 +41,25 @@ import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.AutoLockManager
 import com.algorand.android.utils.ENCRYPTED_SHARED_PREF_NAME
 import com.algorand.android.utils.KEYSET_HANDLE
+import com.algorand.android.utils.KEY_TEMPLATE_AES256_GCM
 import com.algorand.android.utils.preference.SETTINGS
 import com.google.crypto.tink.Aead
+import com.google.crypto.tink.KeyTemplates
 import com.google.crypto.tink.KeysetHandle
-import com.google.crypto.tink.aead.AeadFactory
-import com.google.crypto.tink.aead.AeadKeyTemplates
-import com.google.crypto.tink.config.TinkConfig
+import com.google.crypto.tink.aead.AeadConfig
 import com.google.crypto.tink.integration.android.AndroidKeysetManager
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.components.SingletonComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Singleton
 
 @Suppress("TooManyFunctions")
 @Module
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 object AppModule {
 
     @Singleton
@@ -69,7 +71,7 @@ object AppModule {
         return Room
             .databaseBuilder(appContext, AlgorandDatabase::class.java, AlgorandDatabase.DATABASE_NAME)
             .fallbackToDestructiveMigration()
-            .addMigrations(MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_7_8)
+            .addMigrations(MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_7_8, MIGRATION_8_9)
             .addTypeConverter(walletConnectTypeConverters)
             .build()
     }
@@ -77,16 +79,16 @@ object AppModule {
     @Singleton
     @Provides
     fun getEncryptionAead(@ApplicationContext appContext: Context): Aead {
-        TinkConfig.register()
+        AeadConfig.register()
 
         val algorandKeysetHandle: KeysetHandle = AndroidKeysetManager.Builder()
             .withSharedPref(appContext, KEYSET_HANDLE, ENCRYPTED_SHARED_PREF_NAME)
-            .withKeyTemplate(AeadKeyTemplates.AES256_GCM)
+            .withKeyTemplate(KeyTemplates.get(KEY_TEMPLATE_AES256_GCM))
             .withMasterKeyUri(ALGORAND_KEYSTORE_URI)
             .build()
             .keysetHandle
 
-        return AeadFactory.getPrimitive(algorandKeysetHandle)
+        return algorandKeysetHandle.getPrimitive(Aead::class.java)
     }
 
     @Singleton
@@ -150,6 +152,16 @@ object AppModule {
     @Provides
     fun provideLedgerBleConnectionManager(@ApplicationContext appContext: Context): LedgerBleConnectionManager {
         return LedgerBleConnectionManager(appContext)
+    }
+
+    @Singleton
+    @Provides
+    fun provideLedgerBleSearchManager(
+        @ApplicationContext appContext: Context,
+        bluetoothManager: BluetoothManager?,
+        ledgerBleConnectionManager: LedgerBleConnectionManager
+    ): LedgerBleSearchManager {
+        return LedgerBleSearchManager(appContext, bluetoothManager, ledgerBleConnectionManager)
     }
 
     @Singleton

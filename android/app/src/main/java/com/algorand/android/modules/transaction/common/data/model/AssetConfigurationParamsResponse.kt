@@ -29,7 +29,7 @@ data class AssetConfigurationParamsResponse(
     @SerializedName("name-b64")
     val nameB64: String?,
     @SerializedName("total")
-    val total: BigInteger?,
+    val maxSupply: BigInteger?,
     @SerializedName("unit-name")
     val unitName: String?,
     @SerializedName("unit-name-b64")

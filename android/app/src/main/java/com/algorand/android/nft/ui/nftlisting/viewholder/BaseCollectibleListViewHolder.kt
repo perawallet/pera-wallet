@@ -16,19 +16,19 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.DrawableRes
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.R
 import com.algorand.android.databinding.ItemBaseCollectibleListBinding
+import com.algorand.android.models.BaseViewHolder
 import com.algorand.android.nft.ui.model.BaseCollectibleListItem
-import com.algorand.android.utils.PrismUrlBuilder
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
 
 abstract class BaseCollectibleListViewHolder(
     protected val binding: ItemBaseCollectibleListBinding
-) : RecyclerView.ViewHolder(binding.root) {
+) : BaseViewHolder<BaseCollectibleListItem>(binding.root) {
 
-    open fun bind(item: BaseCollectibleListItem.BaseCollectibleItem) {
+    override fun bind(item: BaseCollectibleListItem) {
+        if (item !is BaseCollectibleListItem.BaseCollectibleItem) return
         initCollectionAndCollectibleName(item)
         if (!item.isOwnedByTheUser) showWarningIcon(R.drawable.ic_error) else hideWarningIcon()
         showCollectibleBadge(item.badgeImageResId)
@@ -65,20 +65,11 @@ abstract class BaseCollectibleListViewHolder(
         binding.warningImageView.hide()
     }
 
-    protected fun createPrismUrl(url: String, width: Int): String {
-        return PrismUrlBuilder.create(url)
-            .addWidth(width)
-            .addQuality(PrismUrlBuilder.DEFAULT_IMAGE_QUALITY)
-            .build()
-    }
-
     protected interface NftListViewHolderCreator {
         fun create(parent: ViewGroup): BaseCollectibleListViewHolder
     }
 
     protected companion object {
-
-        private const val IMAGE_WIDTH_QUERY_VALUE = 150
 
         fun createItemNftListBinding(parent: ViewGroup): ItemBaseCollectibleListBinding {
             return ItemBaseCollectibleListBinding.inflate(LayoutInflater.from(parent.context), parent, false)

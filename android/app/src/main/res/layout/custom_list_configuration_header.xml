@@ -41,7 +41,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/primaryButton"
-        style="@style/TextButton"
+        style="@style/Button.Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/spacing_xsmall"
@@ -50,6 +50,7 @@
         android:textColor="@color/positive"
         app:icon="@drawable/ic_customize"
         app:iconPadding="@dimen/spacing_xsmall"
+        app:iconSize="@dimen/spacing_large"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/secondaryButton"
@@ -61,13 +62,15 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/secondaryButton"
-        style="@style/TextButton"
+        style="@style/Button.Text"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:textColor="@color/button_square_icon"
+        android:textSize="@dimen/text_size_13"
         app:backgroundTint="@color/button_square_bg"
         app:cornerRadius="8dp"
         app:icon="@drawable/ic_plus"
+        app:iconPadding="@dimen/spacing_xsmall"
         app:iconTint="@color/button_square_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

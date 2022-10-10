@@ -29,7 +29,7 @@ class BaseAppCallSingleTransactionUiBuilder @Inject constructor() :
         return with(txn) {
             WalletConnectTransactionShortDetail(
                 accountIconResource = createAccountIconResource(),
-                accountName = account?.name,
+                accountName = fromAccount?.name,
                 warningCount = warningCount,
                 decimal = assetDecimal,
                 fee = fee

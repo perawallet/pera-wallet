@@ -12,8 +12,7 @@
 
 package com.algorand.android.modules.transaction.detail.ui.applicationcalltransaction
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.modules.transaction.detail.domain.model.BaseTransactionDetail
@@ -21,16 +20,18 @@ import com.algorand.android.modules.transaction.detail.domain.usecase.Applicatio
 import com.algorand.android.modules.transaction.detail.ui.BaseTransactionDetailViewModel
 import com.algorand.android.utils.getOrElse
 import com.algorand.android.utils.getOrThrow
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class ApplicationCallTransactionDetailViewModel @ViewModelInject constructor(
+@HiltViewModel
+class ApplicationCallTransactionDetailViewModel @Inject constructor(
     override val baseTransactionDetailPreviewUseCase: ApplicationCallTransactionDetailPreviewUseCase,
-    @Assisted savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : BaseTransactionDetailViewModel() {
 
     val transactionId = savedStateHandle.getOrThrow<String>(TRANSACTION_ID_KEY)
-    val publicKey = savedStateHandle.getOrThrow<String>(PUBLIC_KEY)
+    val accountAddress = savedStateHandle.getOrThrow<String>(ACCOUNT_ADDRESS_KEY)
     private val transaction = savedStateHandle.getOrElse<BaseTransactionDetail.ApplicationCallTransaction?>(
         TRANSACTION_KEY,
         null

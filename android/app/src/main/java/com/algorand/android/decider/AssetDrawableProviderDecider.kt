@@ -12,17 +12,46 @@
 
 package com.algorand.android.decider
 
-import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
+import com.algorand.android.assetsearch.domain.model.BaseSearchedAsset
+import com.algorand.android.models.AssetInformation
+import com.algorand.android.nft.domain.usecase.SimpleCollectibleUseCase
+import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import com.algorand.android.utils.assetdrawable.AlgoDrawableProvider
 import com.algorand.android.utils.assetdrawable.AssetDrawableProvider
 import com.algorand.android.utils.assetdrawable.BaseAssetDrawableProvider
+import com.algorand.android.utils.assetdrawable.CollectibleDrawableProvider
 import javax.inject.Inject
 
-class AssetDrawableProviderDecider @Inject constructor() {
+class AssetDrawableProviderDecider @Inject constructor(
+    private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase,
+    private val simpleCollectibleUseCase: SimpleCollectibleUseCase
+) {
 
     fun getAssetDrawableProvider(assetId: Long): BaseAssetDrawableProvider {
-        return when (assetId) {
-            ALGO_ID -> AlgoDrawableProvider()
+        val isAlgo = assetId == AssetInformation.ALGO_ID
+        val isAsset = simpleAssetDetailUseCase.isAssetCached(assetId)
+        val isCollectible = simpleCollectibleUseCase.isCollectibleCached(assetId)
+        return when {
+            isAlgo -> AlgoDrawableProvider()
+            isAsset -> AssetDrawableProvider()
+            isCollectible -> CollectibleDrawableProvider()
+            else -> AssetDrawableProvider()
+        }
+    }
+
+    /**
+     * Since the all assets are not cached in local, we should check by domain model if it's ASA or NFT in listed ASAs
+     * and NFTs in searching screens
+     */
+    fun getAssetDrawableProvider(searchedAsset: BaseSearchedAsset): BaseAssetDrawableProvider {
+        // This is unnecessary check but to keep consistency, I added this check, too
+        val isAlgo = searchedAsset.assetId == AssetInformation.ALGO_ID
+        val isAsset = searchedAsset is BaseSearchedAsset.SearchedAsset
+        val isCollectible = searchedAsset is BaseSearchedAsset.SearchedCollectible
+        return when {
+            isAlgo -> AlgoDrawableProvider()
+            isAsset -> AssetDrawableProvider()
+            isCollectible -> CollectibleDrawableProvider()
             else -> AssetDrawableProvider()
         }
     }

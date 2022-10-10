@@ -14,14 +14,12 @@ package com.algorand.android.ui.notificationfilter
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentNotificationFilterBinding
 import com.algorand.android.utils.Resource
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.viewbinding.viewBinding
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 abstract class BaseNotificationFilterFragment : DaggerBaseFragment(R.layout.fragment_notification_filter) {
 
@@ -71,13 +69,14 @@ abstract class BaseNotificationFilterFragment : DaggerBaseFragment(R.layout.frag
     }
 
     private fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            notificationFilterViewModel.notificationFilterListStateFlow.collectLatest(listCollector)
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            notificationFilterViewModel.notificationFilterOperation.collectLatest(notificationObserverCollector)
-        }
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            notificationFilterViewModel.notificationFilterListStateFlow,
+            listCollector
+        )
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            notificationFilterViewModel.notificationFilterOperation,
+            notificationObserverCollector
+        )
     }
 
     private fun accountOptionChanged(publicKey: String, newFilterOption: Boolean) {

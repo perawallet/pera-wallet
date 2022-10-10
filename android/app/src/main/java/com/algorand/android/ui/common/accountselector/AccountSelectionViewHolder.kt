@@ -21,6 +21,7 @@ import com.algorand.android.R
 import com.algorand.android.databinding.ItemAccountOptionBinding
 import com.algorand.android.models.AccountSelection
 import com.algorand.android.utils.extensions.setAccountIconDrawable
+import com.algorand.android.utils.extensions.setTextAndVisibility
 
 class AccountSelectionViewHolder(
     private val binding: ItemAccountOptionBinding
@@ -34,7 +35,19 @@ class AccountSelectionViewHolder(
                     typeImageView.setAccountIconDrawable(accountIconResource, R.dimen.account_icon_size_large)
                 }
                 checkImageView.isVisible = accountAddress == defaultSelectedAccountAddress
-                balanceTextView.text = accountDisplayName?.getAccountShortenedAddressOrAccountType(root.resources)
+                setupAssetCount(accountAssetCount ?: 0)
+            }
+        }
+    }
+
+    private fun setupAssetCount(assetCount: Int) {
+        with(binding) {
+            if (assetCount > 0) {
+                accountAssetCountTextView.setTextAndVisibility(
+                    root.resources.getQuantityString(R.plurals.account_asset_count, assetCount, assetCount)
+                )
+            } else {
+                accountAssetCountTextView.setText(R.string.account_asset_count_zero)
             }
         }
     }

@@ -22,7 +22,9 @@ import com.algorand.android.utils.getXmlStyledString
 import com.algorand.android.utils.viewbinding.viewBinding
 
 // TODO find a way to put into home_navigation
-class LedgerLoadingDialog : BaseBottomSheet(R.layout.dialog_ledger_loading) {
+class LedgerLoadingDialog : BaseBottomSheet(
+    layoutResId = R.layout.dialog_ledger_loading
+) {
 
     private var listener: Listener? = null
 

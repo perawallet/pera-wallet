@@ -13,15 +13,14 @@
 package com.algorand.android.modules.dapp.moonpay.ui.accountselection
 
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.algorand.android.R
 import com.algorand.android.models.BaseAccountSelectionListItem
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.ui.accountselection.BaseAccountSelectionFragment
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.setNavigationResult
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class MoonpayAccountSelectionFragment : BaseAccountSelectionFragment() {
@@ -46,9 +45,10 @@ class MoonpayAccountSelectionFragment : BaseAccountSelectionFragment() {
     }
 
     override fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            moonpayAccountSelectionViewModel.accountItemsFlow.collectLatest(accountItemsCollector)
-        }
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            moonpayAccountSelectionViewModel.accountItemsFlow,
+            accountItemsCollector
+        )
     }
 
     companion object {

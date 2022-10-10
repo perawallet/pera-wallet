@@ -20,6 +20,7 @@ import com.algorand.android.modules.deeplink.DeepLinkParser
 import com.algorand.android.modules.deeplink.domain.model.BaseDeepLink
 import com.algorand.android.modules.deeplink.domain.model.BaseDeepLink.WalletConnectConnectionDeepLink
 import com.algorand.android.usecase.AccountDetailUseCase
+import com.algorand.android.utils.toShortenedAddress
 import javax.inject.Inject
 
 class DeeplinkHandler @Inject constructor(
@@ -29,7 +30,7 @@ class DeeplinkHandler @Inject constructor(
 
     private var listener: Listener? = null
 
-    fun setListener(listener: Listener) {
+    fun setListener(listener: Listener?) {
         this.listener = listener
     }
 
@@ -66,7 +67,9 @@ class DeeplinkHandler @Inject constructor(
     }
 
     private fun handleWalletConnectConnectionDeepLink(wcConnectionDeeplink: WalletConnectConnectionDeepLink): Boolean {
-        return triggerListener { it.onWalletConnectConnectionDeeplink(wcConnectionDeeplink.url) }
+        return triggerListener {
+            it.onWalletConnectConnectionDeeplink(wcUrl = wcConnectionDeeplink.url)
+        }
     }
 
     private fun handleUndefinedDeepLink(undefinedDeeplink: BaseDeepLink.UndefinedDeepLink): Boolean {
@@ -99,7 +102,7 @@ class DeeplinkHandler @Inject constructor(
                     amount = amount,
                     receiverUser = User(
                         publicKey = receiverAccountAddress,
-                        name = label ?: receiverAccountAddress,
+                        name = label ?: receiverAccountAddress.toShortenedAddress(),
                         imageUriAsString = null
                     )
                 )

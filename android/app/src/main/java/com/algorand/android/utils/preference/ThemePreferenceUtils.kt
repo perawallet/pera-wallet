@@ -33,8 +33,8 @@ enum class ThemePreference(
     @StringRes val visibleNameResId: Int
 ) {
     SYSTEM_DEFAULT(R.string.system_default),
-    DARK(R.string.dark),
-    LIGHT(R.string.light);
+    LIGHT(R.string.light),
+    DARK(R.string.dark);
 
     fun convertToSystemAbbr(): Int {
         return when (this) {

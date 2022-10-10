@@ -13,7 +13,7 @@
 package com.algorand.android.mapper
 
 import com.algorand.android.models.BaseAccountAndAssetListItem
-import com.algorand.android.models.BaseItemConfiguration
+import com.algorand.android.customviews.accountandassetitem.model.BaseItemConfiguration
 import javax.inject.Inject
 
 class BaseAccountAndAssetListItemMapper @Inject constructor() {

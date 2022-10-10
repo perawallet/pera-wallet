@@ -16,6 +16,7 @@ import com.algorand.android.nft.mapper.RequestOptInConfirmationMapper
 import com.algorand.android.nft.ui.model.RequestOptInConfirmationPreview
 import com.algorand.android.utils.DataResource
 import com.algorand.android.utils.Event
+import com.algorand.android.utils.sendErrorLog
 import javax.inject.Inject
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
@@ -44,6 +45,9 @@ class RequestOptInConfirmationPreviewUseCase @Inject constructor(
                 when (it) {
                     is DataResource.Success -> emit(getSuccessStateOfOptInRequest(previousState))
                     is DataResource.Error -> emit(getErrorStateOfOptInRequest(previousState, it.exception))
+                    else -> {
+                        sendErrorLog("Unhandled else case in RequestOptInConfirmationPreviewUseCase.sendOptInRequest")
+                    }
                 }
             }
         }

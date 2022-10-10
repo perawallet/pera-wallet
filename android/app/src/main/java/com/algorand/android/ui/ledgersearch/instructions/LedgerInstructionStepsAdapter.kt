@@ -14,13 +14,14 @@
 package com.algorand.android.ui.ledgersearch.instructions
 
 import android.view.ViewGroup
-import androidx.annotation.StringRes
 import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.utils.extensions.clearAndAddAll
 
 class LedgerInstructionStepsAdapter : RecyclerView.Adapter<LedgerInstructionStepViewHolder>() {
 
-    private val stepsResIdList = mutableListOf<@StringRes Int>()
+    // Related: https://issuetracker.google.com/issues/209843426
+    // private val stepsResIdList = mutableListOf<@StringRes Int>()
+    private val stepsResIdList = mutableListOf<Int>()
 
     fun setItems(newStepsList: List<Int>) {
         stepsResIdList.clearAndAddAll(newStepsList)

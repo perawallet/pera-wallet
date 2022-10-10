@@ -18,26 +18,24 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.models.BaseDiffUtil
 import com.algorand.android.models.BaseSelectAssetItem
-import com.algorand.android.models.BaseSelectAssetItem.BaseSelectCollectibleItem.SelectCollectibleImageItem
-import com.algorand.android.models.BaseSelectAssetItem.BaseSelectCollectibleItem.SelectMixedCollectibleItem
-import com.algorand.android.models.BaseSelectAssetItem.BaseSelectCollectibleItem.SelectNotSupportedCollectibleItem
-import com.algorand.android.models.BaseSelectAssetItem.BaseSelectCollectibleItem.SelectVideoCollectibleItem
 import com.algorand.android.models.BaseSelectAssetItem.ItemType.SELECT_ASSET_TEM
 import com.algorand.android.models.BaseSelectAssetItem.ItemType.SELECT_COLLECTIBLE_IMAGE_ITEM
 import com.algorand.android.models.BaseSelectAssetItem.ItemType.SELECT_COLLECTIBLE_MIXED_ITEM
 import com.algorand.android.models.BaseSelectAssetItem.ItemType.SELECT_COLLECTIBLE_NOT_SUPPORTED_ITEM
 import com.algorand.android.models.BaseSelectAssetItem.ItemType.SELECT_COLLECTIBLE_VIDEO_ITEM
-import com.algorand.android.models.BaseSelectAssetItem.SelectAssetItem
+import com.algorand.android.models.BaseViewHolder
 
-class SelectSendingAssetAdapter(
-    private val onAssetClick: (Long) -> Unit
-) : ListAdapter<BaseSelectAssetItem, RecyclerView.ViewHolder>(BaseDiffUtil()) {
+class SelectSendingAssetAdapter(onAssetClick: (Long) -> Unit) :
+    ListAdapter<BaseSelectAssetItem, BaseViewHolder<BaseSelectAssetItem>>(BaseDiffUtil()) {
+
+    private val assetListener = SelectAssetItemViewHolder.SelectAssetItemListener(onAssetClick)
+    private val collectibleListener = BaseSelectCollectibleItemViewHolder.SelectCollectibleItemListener(onAssetClick)
 
     override fun getItemViewType(position: Int): Int {
         return getItem(position)?.itemType?.ordinal ?: RecyclerView.NO_POSITION
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<BaseSelectAssetItem> {
         return when (viewType) {
             SELECT_ASSET_TEM.ordinal -> createAssetItemViewHolder(parent)
             SELECT_COLLECTIBLE_IMAGE_ITEM.ordinal -> createCollectibleImageItemViewHolder(parent)
@@ -49,76 +47,29 @@ class SelectSendingAssetAdapter(
     }
 
     private fun createAssetItemViewHolder(parent: ViewGroup): SelectAssetItemViewHolder {
-        return SelectAssetItemViewHolder.create(parent).apply {
-            itemView.setOnClickListener {
-                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                    getItem(bindingAdapterPosition).id.let(onAssetClick)
-                }
-            }
-        }
+        return SelectAssetItemViewHolder.create(parent, assetListener)
     }
 
     private fun createCollectibleImageItemViewHolder(parent: ViewGroup): SelectCollectableImageItemViewHolder {
-        return SelectCollectableImageItemViewHolder.create(parent).apply {
-            itemView.setOnClickListener {
-                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                    getItem(bindingAdapterPosition).id.let(onAssetClick)
-                }
-            }
-        }
+        return SelectCollectableImageItemViewHolder.create(parent, collectibleListener)
     }
 
     private fun createCollectibleVideoItemViewHolder(parent: ViewGroup): SelectCollectibleVideoItemViewHolder {
-        return SelectCollectibleVideoItemViewHolder.create(parent).apply {
-            itemView.setOnClickListener {
-                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                    getItem(bindingAdapterPosition).id.let(onAssetClick)
-                }
-            }
-        }
+        return SelectCollectibleVideoItemViewHolder.create(parent, collectibleListener)
     }
 
     private fun createCollectibleMixedItemViewHolder(parent: ViewGroup): SelectCollectibleMixedItemViewHolder {
-        return SelectCollectibleMixedItemViewHolder.create(parent).apply {
-            itemView.setOnClickListener {
-                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                    getItem(bindingAdapterPosition).id.let(onAssetClick)
-                }
-            }
-        }
+        return SelectCollectibleMixedItemViewHolder.create(parent, collectibleListener)
     }
 
     private fun createCollectibleNotSupportedItemViewHolder(
         parent: ViewGroup
     ): SelectCollectibleNotSupportedItemViewHolder {
-        return SelectCollectibleNotSupportedItemViewHolder.create(parent).apply {
-            itemView.setOnClickListener {
-                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                    getItem(bindingAdapterPosition).id.let(onAssetClick)
-                }
-            }
-        }
+        return SelectCollectibleNotSupportedItemViewHolder.create(parent, collectibleListener)
     }
 
-    override fun onBindViewHolder(holderSelect: RecyclerView.ViewHolder, position: Int) {
-        when (holderSelect) {
-            is SelectAssetItemViewHolder -> {
-                holderSelect.bind(getItem(position) as SelectAssetItem)
-            }
-            is SelectCollectibleNotSupportedItemViewHolder -> {
-                holderSelect.bind(getItem(position) as SelectNotSupportedCollectibleItem)
-            }
-            is SelectCollectibleVideoItemViewHolder -> {
-                holderSelect.bind(getItem(position) as SelectVideoCollectibleItem)
-            }
-            is SelectCollectableImageItemViewHolder -> {
-                holderSelect.bind(getItem(position) as SelectCollectibleImageItem)
-            }
-            is SelectCollectibleMixedItemViewHolder -> {
-                holderSelect.bind(getItem(position) as SelectMixedCollectibleItem)
-            }
-            else -> throw IllegalArgumentException("$logTag : Item View Type is Unknown.")
-        }
+    override fun onBindViewHolder(holder: BaseViewHolder<BaseSelectAssetItem>, position: Int) {
+        holder.bind(getItem(position))
     }
 
     companion object {

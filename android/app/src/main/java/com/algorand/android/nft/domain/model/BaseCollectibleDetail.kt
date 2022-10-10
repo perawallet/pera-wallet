@@ -12,6 +12,7 @@
 
 package com.algorand.android.nft.domain.model
 
+import com.algorand.android.assetsearch.domain.model.VerificationTier
 import com.algorand.android.models.AssetCreator
 import com.algorand.android.models.BaseAssetDetail
 import java.math.BigDecimal
@@ -21,30 +22,31 @@ sealed class BaseCollectibleDetail(
     override val assetId: Long,
     override val fullName: String?,
     override val shortName: String?,
-    override val isVerified: Boolean,
     override val fractionDecimals: Int?,
     override val usdValue: BigDecimal?,
     override val assetCreator: AssetCreator?
-) : BaseAssetDetail(assetId, fullName, shortName, isVerified, fractionDecimals, usdValue, assetCreator) {
+) : BaseAssetDetail() {
 
     abstract val title: String?
     abstract val collectionName: String?
     abstract val description: String?
     abstract val traits: List<CollectibleTrait>?
     abstract val nftExplorerUrl: String?
-    abstract val totalSupply: BigInteger?
 
     abstract val collectibleMedias: List<BaseCollectibleMedia>?
 
     fun isPure(): Boolean {
-        return if (totalSupply == null) false else totalSupply == BigInteger.ONE && fractionDecimals == 0
+        return if (maxSupply == null) false else maxSupply == BigInteger.ONE && fractionDecimals == 0
+    }
+
+    fun getErrorDisplayText(): String {
+        return title ?: fullName ?: shortName ?: assetId.toString()
     }
 
     data class ImageCollectibleDetail(
         override val assetId: Long,
         override val fullName: String?,
         override val shortName: String?,
-        override val isVerified: Boolean,
         override val fractionDecimals: Int?,
         override val usdValue: BigDecimal?,
         override val assetCreator: AssetCreator?,
@@ -54,15 +56,26 @@ sealed class BaseCollectibleDetail(
         override val traits: List<CollectibleTrait>?,
         override val nftExplorerUrl: String?,
         override val collectibleMedias: List<BaseCollectibleMedia>?,
-        override val totalSupply: BigInteger?,
-        val prismUrl: String?
-    ) : BaseCollectibleDetail(assetId, fullName, shortName, isVerified, fractionDecimals, usdValue, assetCreator)
+        override val totalSupply: BigDecimal?,
+        override val verificationTier: VerificationTier,
+        override val logoUri: String?,
+        override val logoSvgUri: String?,
+        override val explorerUrl: String?,
+        override val projectUrl: String?,
+        override val projectName: String?,
+        override val discordUrl: String?,
+        override val telegramUrl: String?,
+        override val twitterUsername: String?,
+        override val assetDescription: String?,
+        override val url: String?,
+        override val maxSupply: BigInteger?,
+        val prismUrl: String?,
+    ) : BaseCollectibleDetail(assetId, fullName, shortName, fractionDecimals, usdValue, assetCreator)
 
     data class NotSupportedCollectibleDetail(
         override val assetId: Long,
         override val fullName: String?,
         override val shortName: String?,
-        override val isVerified: Boolean,
         override val fractionDecimals: Int?,
         override val usdValue: BigDecimal?,
         override val assetCreator: AssetCreator?,
@@ -72,14 +85,25 @@ sealed class BaseCollectibleDetail(
         override val traits: List<CollectibleTrait>?,
         override val nftExplorerUrl: String?,
         override val collectibleMedias: List<BaseCollectibleMedia>?,
-        override val totalSupply: BigInteger?
-    ) : BaseCollectibleDetail(assetId, fullName, shortName, isVerified, fractionDecimals, usdValue, assetCreator)
+        override val totalSupply: BigDecimal?,
+        override val verificationTier: VerificationTier,
+        override val logoUri: String?,
+        override val logoSvgUri: String?,
+        override val explorerUrl: String?,
+        override val projectUrl: String?,
+        override val projectName: String?,
+        override val discordUrl: String?,
+        override val telegramUrl: String?,
+        override val twitterUsername: String?,
+        override val url: String?,
+        override val assetDescription: String?,
+        override val maxSupply: BigInteger?
+    ) : BaseCollectibleDetail(assetId, fullName, shortName, fractionDecimals, usdValue, assetCreator)
 
     data class VideoCollectibleDetail(
         override val assetId: Long,
         override val fullName: String?,
         override val shortName: String?,
-        override val isVerified: Boolean,
         override val fractionDecimals: Int?,
         override val usdValue: BigDecimal?,
         override val assetCreator: AssetCreator?,
@@ -89,15 +113,26 @@ sealed class BaseCollectibleDetail(
         override val traits: List<CollectibleTrait>?,
         override val nftExplorerUrl: String?,
         override val collectibleMedias: List<BaseCollectibleMedia>?,
-        override val totalSupply: BigInteger?,
-        val thumbnailPrismUrl: String?,
-    ) : BaseCollectibleDetail(assetId, fullName, shortName, isVerified, fractionDecimals, usdValue, assetCreator)
+        override val totalSupply: BigDecimal?,
+        override val verificationTier: VerificationTier,
+        override val logoUri: String?,
+        override val logoSvgUri: String?,
+        override val explorerUrl: String?,
+        override val projectUrl: String?,
+        override val projectName: String?,
+        override val discordUrl: String?,
+        override val telegramUrl: String?,
+        override val twitterUsername: String?,
+        override val assetDescription: String?,
+        override val url: String?,
+        override val maxSupply: BigInteger?,
+        val thumbnailPrismUrl: String?
+    ) : BaseCollectibleDetail(assetId, fullName, shortName, fractionDecimals, usdValue, assetCreator)
 
     data class MixedCollectibleDetail(
         override val assetId: Long,
         override val fullName: String?,
         override val shortName: String?,
-        override val isVerified: Boolean,
         override val fractionDecimals: Int?,
         override val usdValue: BigDecimal?,
         override val assetCreator: AssetCreator?,
@@ -107,7 +142,19 @@ sealed class BaseCollectibleDetail(
         override val traits: List<CollectibleTrait>?,
         override val nftExplorerUrl: String?,
         override val collectibleMedias: List<BaseCollectibleMedia>?,
-        override val totalSupply: BigInteger?,
+        override val totalSupply: BigDecimal?,
+        override val verificationTier: VerificationTier,
+        override val logoUri: String?,
+        override val logoSvgUri: String?,
+        override val explorerUrl: String?,
+        override val projectUrl: String?,
+        override val projectName: String?,
+        override val discordUrl: String?,
+        override val telegramUrl: String?,
+        override val twitterUsername: String?,
+        override val assetDescription: String?,
+        override val maxSupply: BigInteger?,
+        override val url: String?,
         val thumbnailPrismUrl: String?
-    ) : BaseCollectibleDetail(assetId, fullName, shortName, isVerified, fractionDecimals, usdValue, assetCreator)
+    ) : BaseCollectibleDetail(assetId, fullName, shortName, fractionDecimals, usdValue, assetCreator)
 }

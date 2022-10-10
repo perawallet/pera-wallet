@@ -21,7 +21,7 @@ import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentDeveloperSettingsBinding
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
-import com.algorand.android.utils.openDispenserUrl
+import com.algorand.android.utils.browser.openDispenserUrl
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 

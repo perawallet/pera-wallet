@@ -172,27 +172,6 @@
             app:destination="@id/installAlgorandOntoLedgerBottomSheet" />
     </fragment>
     <dialog
-        android:id="@+id/warningConfirmationBottomSheet"
-        android:name="com.algorand.android.ui.common.warningconfirmation.WarningConfirmationBottomSheet"
-        android:label="RemoveConfirmationBottomSheet"
-        tools:layout="@layout/bottom_sheet_warning_confirmation">
-        <argument
-            android:name="drawableResId"
-            app:argType="reference" />
-        <argument
-            android:name="titleTextResId"
-            app:argType="reference" />
-        <argument
-            android:name="descriptionTextResId"
-            app:argType="reference" />
-        <argument
-            android:name="positiveButtonTextResId"
-            app:argType="reference" />
-        <argument
-            android:name="negativeButtonTextResId"
-            app:argType="reference" />
-    </dialog>
-    <dialog
         android:id="@+id/ledgerInformationBottomSheet"
         android:name="com.algorand.android.ui.ledgersearch.ledgerinformation.LedgerInformationBottomSheet"
         android:label="LedgerInformationFragment"

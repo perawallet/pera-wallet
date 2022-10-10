@@ -38,7 +38,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/mainCurrencyTitleText"
-        tools:text="@string/your_main_currency_is" />
+        tools:text="@string/your_main_currency_is_placeholder" />
 
     <com.algorand.android.customviews.AlgorandSearchView
         android:id="@+id/searchView"
@@ -56,14 +56,17 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/currencyRecyclerView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="@dimen/spacing_small"
+        android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/searchView"
         tools:itemCount="10"
-        tools:listitem="@layout/item_selection" />
+        tools:listitem="@layout/item_selection"
+        tools:visibility="visible" />
 
     <com.algorand.android.customviews.ScreenStateView
         android:id="@+id/screenStateView"
@@ -87,16 +90,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/successContentGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="
-            mainCurrencyTitleText,
-            currencyDescriptionTextView,
-            currencyRecyclerView"
-        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

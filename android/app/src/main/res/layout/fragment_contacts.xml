@@ -18,18 +18,6 @@
     android:background="@color/primary_background"
     tools:context="ui.contacts.ContactsFragment">
 
-    <TextView
-        android:id="@+id/titleTextView"
-        style="@style/TextAppearance.Title.Sans.Medium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_xlarge"
-        android:layout_marginTop="@dimen/spacing_xxxsmall"
-        android:text="@string/contacts"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <com.algorand.android.customviews.AlgorandSearchView
         android:id="@+id/searchBar"
         android:layout_width="match_parent"
@@ -37,11 +25,13 @@
         android:layout_marginHorizontal="@dimen/spacing_xlarge"
         android:layout_marginTop="@dimen/spacing_large"
         android:hint="@string/search_contacts_or_name"
+        android:visibility="gone"
         app:endIconTintColor="@color/secondary_icon_tint_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/titleTextView"
-        app:startIconTintColor="@color/search_bar_view_icon_color" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:startIconTintColor="@color/search_bar_view_icon_color"
+        tools:visibility="visible" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/contactsRecyclerView"
@@ -49,12 +39,14 @@
         android:layout_height="0dp"
         android:layout_marginTop="28dp"
         android:clipToPadding="false"
+        android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/searchBar"
-        tools:listitem="@layout/item_user" />
+        tools:listitem="@layout/item_user"
+        tools:visibility="visible" />
 
     <com.algorand.android.customviews.ScreenStateView
         android:id="@+id/screenStateView"

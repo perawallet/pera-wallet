@@ -22,7 +22,9 @@ import com.algorand.android.modules.transactionhistory.domain.model.BaseTransact
 import com.algorand.android.repository.TransactionsRepository.Companion.DEFAULT_TRANSACTION_COUNT
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.shareIn
 
 class TransactionHistoryPaginationHelper @Inject constructor() {
 
@@ -30,19 +32,19 @@ class TransactionHistoryPaginationHelper @Inject constructor() {
 
     private val pagerConfig = PagingConfig(pageSize = DEFAULT_TRANSACTION_COUNT)
 
-    var transactionPaginationFlow: Flow<PagingData<BaseTransaction.Transaction>>? = null
+    var transactionPaginationFlow: SharedFlow<PagingData<BaseTransaction.Transaction>>? = null
         private set
 
     fun fetchTransactionHistory(
-        cacheInScope: CoroutineScope,
-        onLoad: suspend (
-            nextKey: String?
-        ) -> PagingSource.LoadResult<String, BaseTransaction.Transaction>
+        scope: CoroutineScope,
+        onLoad: suspend (nextKey: String?) -> PagingSource.LoadResult<String, BaseTransaction.Transaction>
     ) {
         if (transactionPaginationFlow == null) {
             transactionPaginationFlow = Pager(pagerConfig) {
                 TransactionHistoryDataSource(onLoad).also { transactionHistoryDataSource = it }
-            }.flow.cachedIn(cacheInScope)
+            }.flow
+                .cachedIn(scope)
+                .shareIn(scope, SharingStarted.Lazily)
         } else {
             refreshTransactionHistoryData()
         }

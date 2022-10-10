@@ -19,6 +19,7 @@ import androidx.core.view.doOnLayout
 import com.algorand.android.databinding.ItemCollectibleImageMediaBinding
 import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem
 import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem.ItemType
+import com.algorand.android.utils.createPrismUrl
 import com.algorand.android.utils.loadImage
 
 class CollectibleImageMediaViewHolder(
@@ -31,9 +32,9 @@ class CollectibleImageMediaViewHolder(
         with(binding.collectibleImageCollectibleImageView) {
             transitionName = id.toString()
             doOnLayout {
-                val previewPrismUrl = createPrismPreviewImageUrl(item.previewUrl, measuredWidth)
+                val previewPrismUrl = createPrismUrl(item.previewUrl.orEmpty(), measuredWidth)
                 context.loadImage(
-                    previewPrismUrl,
+                    uri = previewPrismUrl,
                     onResourceReady = { showImage(it) },
                     onLoadFailed = { showText(item.errorText) }
                 )

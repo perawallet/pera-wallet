@@ -20,7 +20,7 @@ import javax.inject.Inject
 abstract class DaggerBaseFragment(@LayoutRes layoutResId: Int) : BaseFragment(layoutResId) {
 
     @Inject
-    lateinit var firebaseAnalytics: dagger.Lazy<FirebaseAnalytics>
+    lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onResume() {
         super.onResume()
@@ -29,7 +29,7 @@ abstract class DaggerBaseFragment(@LayoutRes layoutResId: Int) : BaseFragment(la
 
     private fun logScreen() {
         fragmentConfiguration.firebaseEventScreenId?.let {
-            firebaseAnalytics.get().logScreen(it)
+            firebaseAnalytics.logScreen(it)
         }
     }
 }

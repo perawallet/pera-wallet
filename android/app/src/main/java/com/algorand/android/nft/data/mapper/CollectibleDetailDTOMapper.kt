@@ -12,6 +12,8 @@
 
 package com.algorand.android.nft.data.mapper
 
+import com.algorand.android.assetsearch.data.mapper.VerificationTierDTODecider
+import com.algorand.android.assetsearch.domain.mapper.VerificationTierDecider
 import com.algorand.android.models.AssetDetailResponse
 import com.algorand.android.nft.domain.mapper.CollectibleMediaMapper
 import com.algorand.android.nft.domain.mapper.CollectibleMediaTypeMapper
@@ -22,15 +24,21 @@ import javax.inject.Inject
 class CollectibleDetailDTOMapper @Inject constructor(
     private val collectibleMediaTypeMapper: CollectibleMediaTypeMapper,
     private val collectibleTraitMapper: CollectibleTraitMapper,
-    private val collectibleMediaMapper: CollectibleMediaMapper
+    private val collectibleMediaMapper: CollectibleMediaMapper,
+    private val verificationTierDTODecider: VerificationTierDTODecider,
+    private val verificationTierDecider: VerificationTierDecider
 ) {
 
     fun mapToCollectibleDetail(response: AssetDetailResponse): CollectibleDetailDTO {
+        // TODO Remove this after updating AssetFetchAndCacheUseCase TODOs
+        val verificationTier = with(response) {
+            val verificationTierDto = verificationTierDTODecider.decideVerificationTierDTO(verificationTier)
+            verificationTierDecider.decideVerificationTier(verificationTierDto)
+        }
         return CollectibleDetailDTO(
             collectibleAssetId = response.assetId,
             fullName = response.fullName,
             shortName = response.shortName,
-            isVerified = response.isVerified,
             fractionDecimals = response.fractionDecimals ?: DEFAULT_ASSET_DECIMAL,
             usdValue = response.usdValue,
             assetCreator = response.assetCreator,
@@ -44,7 +52,18 @@ class CollectibleDetailDTOMapper @Inject constructor(
             medias = response.collectible?.collectibleMedias?.map {
                 collectibleMediaMapper.mapToCollectibleMedia(it)
             }.orEmpty(),
-            totalSupply = response.totalSupply
+            totalSupply = response.totalSupply,
+            verificationTier = verificationTier,
+            logoUri = response.logoUri,
+            logoSvgUri = response.logoSvgUri,
+            projectName = response.projectName,
+            projectUrl = response.projectUrl,
+            discordUrl = response.discordUrl,
+            telegramUrl = response.telegramUrl,
+            twitterUsername = response.twitterUsername,
+            assetDescription = response.description,
+            url = response.url,
+            maxSupply = response.maxSupply
         )
     }
 }

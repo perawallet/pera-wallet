@@ -19,11 +19,14 @@ import com.algorand.android.models.TransactionRequestAssetInformation
 import com.algorand.android.models.TransactionRequestExtrasInfo
 import com.algorand.android.models.TransactionRequestNoteInfo
 import com.algorand.android.models.TransactionRequestTransactionInfo
+import com.algorand.android.modules.verificationtier.ui.decider.VerificationTierConfigurationDecider
 import com.algorand.android.utils.MIN_FEE
 import com.algorand.android.utils.decodeBase64IfUTF8
 import javax.inject.Inject
 
-class BaseAssetConfigurationTransactionDetailUiBuilder @Inject constructor() :
+class BaseAssetConfigurationTransactionDetailUiBuilder @Inject constructor(
+    private val verificationTierConfigurationDecider: VerificationTierConfigurationDecider
+) :
     WalletConnectTransactionDetailBuilder<BaseAssetConfigurationTransaction> {
 
     override fun buildTransactionRequestNoteInfo(txn: BaseAssetConfigurationTransaction): TransactionRequestNoteInfo? {
@@ -74,18 +77,19 @@ class BaseAssetConfigurationTransactionDetailUiBuilder @Inject constructor() :
     ): TransactionRequestTransactionInfo {
         return with(txn) {
             TransactionRequestTransactionInfo(
-                fromDisplayedAddress = getProvidedAddressAsDisplayAddress(senderAddress.decodedAddress.orEmpty()),
+                fromDisplayedAddress = getFromAddressAsDisplayAddress(senderAddress.decodedAddress.orEmpty()),
                 fromAccountIcon = createAccountIconResource(),
                 reconfigurationAsset = TransactionRequestAssetInformation(
                     assetId = assetId,
-                    isVerified = isVerified,
                     fullName = assetName,
-                    shortName = shortName
+                    shortName = shortName,
+                    verificationTierConfiguration =
+                    verificationTierConfigurationDecider.decideVerificationTierConfiguration(verificationTier)
                 ),
-                rekeyToAccountAddress = getProvidedAddressAsDisplayAddress(
+                rekeyToAccountAddress = getFromAddressAsDisplayAddress(
                     getRekeyToAccountAddress()?.decodedAddress.orEmpty()
                 ),
-                closeToAccountAddress = getProvidedAddressAsDisplayAddress(
+                closeToAccountAddress = getFromAddressAsDisplayAddress(
                     getCloseToAccountAddress()?.decodedAddress.orEmpty()
                 )
             )
@@ -97,15 +101,15 @@ class BaseAssetConfigurationTransactionDetailUiBuilder @Inject constructor() :
     ): TransactionRequestTransactionInfo {
         return with(txn) {
             TransactionRequestTransactionInfo(
-                fromDisplayedAddress = getProvidedAddressAsDisplayAddress(senderAddress.decodedAddress.orEmpty()),
+                fromDisplayedAddress = getFromAddressAsDisplayAddress(senderAddress.decodedAddress.orEmpty()),
                 fromAccountIcon = createAccountIconResource(),
                 assetName = assetName,
                 assetUnitName = unitName,
                 isAssetUnnamed = assetName == null,
-                rekeyToAccountAddress = getProvidedAddressAsDisplayAddress(
+                rekeyToAccountAddress = getFromAddressAsDisplayAddress(
                     getRekeyToAccountAddress()?.decodedAddress.orEmpty()
                 ),
-                closeToAccountAddress = getProvidedAddressAsDisplayAddress(
+                closeToAccountAddress = getFromAddressAsDisplayAddress(
                     getCloseToAccountAddress()?.decodedAddress.orEmpty()
                 )
             )
@@ -117,19 +121,20 @@ class BaseAssetConfigurationTransactionDetailUiBuilder @Inject constructor() :
     ): TransactionRequestTransactionInfo {
         return with(txn) {
             TransactionRequestTransactionInfo(
-                fromDisplayedAddress = getProvidedAddressAsDisplayAddress(senderAddress.decodedAddress.orEmpty()),
+                fromDisplayedAddress = getFromAddressAsDisplayAddress(senderAddress.decodedAddress.orEmpty()),
                 fromAccountIcon = createAccountIconResource(),
                 assetInformation = TransactionRequestAssetInformation(
                     assetId = assetId,
-                    isVerified = isVerified,
                     fullName = assetName,
-                    shortName = shortName
+                    shortName = shortName,
+                    verificationTierConfiguration =
+                    verificationTierConfigurationDecider.decideVerificationTierConfiguration(verificationTier)
                 ),
                 showDeletionWarning = true,
-                rekeyToAccountAddress = getProvidedAddressAsDisplayAddress(
+                rekeyToAccountAddress = getFromAddressAsDisplayAddress(
                     getRekeyToAccountAddress()?.decodedAddress.orEmpty()
                 ),
-                closeToAccountAddress = getProvidedAddressAsDisplayAddress(
+                closeToAccountAddress = getFromAddressAsDisplayAddress(
                     getCloseToAccountAddress()?.decodedAddress.orEmpty()
                 )
             )
@@ -143,10 +148,10 @@ class BaseAssetConfigurationTransactionDetailUiBuilder @Inject constructor() :
             TransactionRequestAmountInfo(
                 fee = fee,
                 shouldShowFeeWarning = fee > MIN_FEE,
-                managerAccount = getProvidedAddressAsDisplayAddress(managerAddress?.decodedAddress.orEmpty()),
-                reserveAccount = getProvidedAddressAsDisplayAddress(reserveAddress?.decodedAddress.orEmpty()),
-                freezeAccount = getProvidedAddressAsDisplayAddress(frozenAddress?.decodedAddress.orEmpty()),
-                clawbackAccount = getProvidedAddressAsDisplayAddress(clawbackAddress?.decodedAddress.orEmpty())
+                managerAccount = getFromAddressAsDisplayAddress(managerAddress?.decodedAddress.orEmpty()),
+                reserveAccount = getFromAddressAsDisplayAddress(reserveAddress?.decodedAddress.orEmpty()),
+                freezeAccount = getFromAddressAsDisplayAddress(frozenAddress?.decodedAddress.orEmpty()),
+                clawbackAccount = getFromAddressAsDisplayAddress(clawbackAddress?.decodedAddress.orEmpty())
             )
         }
     }
@@ -162,10 +167,10 @@ class BaseAssetConfigurationTransactionDetailUiBuilder @Inject constructor() :
                 decimalPlaces = decimals,
                 assetDecimal = assetDecimal,
                 defaultFrozen = isFrozen,
-                managerAccount = getProvidedAddressAsDisplayAddress(managerAddress?.decodedAddress.orEmpty()),
-                reserveAccount = getProvidedAddressAsDisplayAddress(reserveAddress?.decodedAddress.orEmpty()),
-                freezeAccount = getProvidedAddressAsDisplayAddress(frozenAddress?.decodedAddress.orEmpty()),
-                clawbackAccount = getProvidedAddressAsDisplayAddress(clawbackAddress?.decodedAddress.orEmpty())
+                managerAccount = getFromAddressAsDisplayAddress(managerAddress?.decodedAddress.orEmpty()),
+                reserveAccount = getFromAddressAsDisplayAddress(reserveAddress?.decodedAddress.orEmpty()),
+                freezeAccount = getFromAddressAsDisplayAddress(frozenAddress?.decodedAddress.orEmpty()),
+                clawbackAccount = getFromAddressAsDisplayAddress(clawbackAddress?.decodedAddress.orEmpty())
             )
         }
     }
@@ -199,7 +204,7 @@ class BaseAssetConfigurationTransactionDetailUiBuilder @Inject constructor() :
             TransactionRequestExtrasInfo(
                 rawTransaction = rawTransactionPayload,
                 assetUrl = url,
-                assetMetadata = assetParams?.appendAssetId(assetId)
+                assetMetadata = walletConnectTransactionAssetDetail
             )
         }
     }

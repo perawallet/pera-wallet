@@ -65,6 +65,10 @@
             android:name="assetTransaction"
             app:argType="com.algorand.android.models.AssetTransaction"
             app:nullable="true" />
+        <argument
+            android:name="shouldPopulateAmountWithMax"
+            android:defaultValue="false"
+            app:argType="boolean" />
         <action
             android:id="@+id/action_sendAlgoFragment_to_senderAccountSelectionFragment"
             app:destination="@id/senderAccountSelectionFragment"
@@ -152,6 +156,10 @@
         <argument
             android:name="assetTransaction"
             app:argType="com.algorand.android.models.AssetTransaction" />
+        <argument
+            android:name="shouldPopulateAmountWithMax"
+            android:defaultValue="false"
+            app:argType="boolean" />
         <action
             android:id="@+id/action_assetTransferAmountFragment_to_receiverAccountSelectionFragment"
             app:destination="@id/receiverAccountSelectionFragment" />
@@ -170,6 +178,9 @@
         <action
             android:id="@+id/action_assetTransferAmountFragment_to_transactionTipsBottomSheet"
             app:destination="@id/transactionTipsBottomSheet" />
+        <action
+            android:id="@+id/action_assetTransferAmountFragment_to_balanceWarningBottomSheet"
+            app:destination="@id/balanceWarningBottomSheet" />
     </fragment>
 
     <fragment
@@ -210,7 +221,7 @@
 
     <fragment
         android:id="@+id/transactionConfirmationFragment"
-        android:name="com.algorand.android.ui.send.confirmation.TransactionConfirmationFragment"
+        android:name="com.algorand.android.ui.send.confirmation.ui.TransactionConfirmationFragment"
         android:label="TransactionConfirmationFragment"
         tools:layout="@layout/fragment_transaction_confirmation" />
 
@@ -262,5 +273,15 @@
         <argument
             android:name="requestOptInConfirmationArgs"
             app:argType="com.algorand.android.nft.ui.model.RequestOptInConfirmationArgs" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/balanceWarningBottomSheet"
+        android:name="com.algorand.android.ui.send.transferamount.BalanceWarningBottomSheet"
+        android:label="BalanceWarningBottomSheet"
+        tools:layout="@layout/bottom_sheet_balance_warning">
+        <argument
+            android:name="accountAddress"
+            app:argType="string" />
     </dialog>
 </navigation>

@@ -16,10 +16,9 @@ import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.models.WalletConnectSessionHistoryEntity
 import javax.inject.Inject
 
-class WalletConnectSessionHistoryEntityMapper @Inject constructor() :
-    EntityMapper<WalletConnectSessionHistoryEntity, WalletConnectSession> {
+class WalletConnectSessionHistoryEntityMapper @Inject constructor() {
 
-    override fun mapFromEntity(entity: WalletConnectSessionHistoryEntity): WalletConnectSession {
+    fun mapFromEntity(entity: WalletConnectSessionHistoryEntity, accountName: String?): WalletConnectSession {
         return with(entity) {
             WalletConnectSession(
                 id = id,
@@ -28,18 +27,21 @@ class WalletConnectSessionHistoryEntityMapper @Inject constructor() :
                 dateTimeStamp = creationDateTimeStamp,
                 isConnected = false,
                 connectedAccountPublicKey = connectedAccountPublicKey,
+                accountName = accountName,
+                fallbackBrowserGroupResponse = fallbackBrowserGroupResponse
             )
         }
     }
 
-    override fun mapToEntity(model: WalletConnectSession): WalletConnectSessionHistoryEntity {
+    fun mapToEntity(model: WalletConnectSession): WalletConnectSessionHistoryEntity {
         return with(model) {
             WalletConnectSessionHistoryEntity(
                 id = id,
                 peerMeta = peerMeta,
                 creationDateTimeStamp = dateTimeStamp,
                 wcSession = sessionMeta,
-                connectedAccountPublicKey = connectedAccountPublicKey
+                connectedAccountPublicKey = connectedAccountPublicKey,
+                fallbackBrowserGroupResponse = fallbackBrowserGroupResponse.orEmpty()
             )
         }
     }

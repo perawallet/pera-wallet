@@ -16,12 +16,16 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.annotation.IdRes
 import androidx.annotation.NonNull
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
@@ -31,6 +35,7 @@ import com.algorand.android.CoreMainActivity
 import com.algorand.android.MainActivity
 import com.algorand.android.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.launch
 
 fun BottomNavigationView.setupWithNavController(
     navController: NavController,
@@ -63,7 +68,7 @@ fun <T> NavBackStackEntry.useSavedStateValue(key: String, handler: (T) -> Unit) 
 
 // Used for transferring data from dialog.
 fun Fragment.startSavedStateListener(fragmentId: Int, savedStateListener: NavBackStackEntry.() -> Unit) {
-    var navBackStackEntry: NavBackStackEntry? = null
+    val navBackStackEntry: NavBackStackEntry?
     try {
         navBackStackEntry = (activity as? CoreMainActivity)?.navController?.getBackStackEntry(fragmentId)
     } catch (exception: Exception) {
@@ -72,21 +77,17 @@ fun Fragment.startSavedStateListener(fragmentId: Int, savedStateListener: NavBac
     }
 
     if (navBackStackEntry != null) {
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_RESUME) {
-                // coroutine launch is added to wait for layout to be laid out.
-                viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-                    savedStateListener(navBackStackEntry)
-                }
+        // TODO need to have an extensive check on this one
+        val job = lifecycleScope.launch {
+            navBackStackEntry.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                savedStateListener(navBackStackEntry)
             }
         }
-
-        navBackStackEntry.lifecycle.addObserver(observer)
 
         viewLifecycleOwner.lifecycle.addObserver(object : LifecycleEventObserver {
             override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
                 if (event == Lifecycle.Event.ON_DESTROY) {
-                    navBackStackEntry.lifecycle.removeObserver(observer)
+                    job.cancel()
                 }
             }
         })
@@ -124,4 +125,26 @@ fun NavController.navigateSafe(directions: NavDirections, extras: FragmentNaviga
     } catch (exception: IllegalArgumentException) {
         recordException(exception)
     }
+}
+
+fun <T> Fragment.setFragmentNavigationResult(key: String, value: T) {
+    setFragmentResult(
+        requestKey = key,
+        result = bundleOf(key to value)
+    )
+}
+
+fun <T> Fragment.useFragmentResultListenerValue(key: String, result: (T) -> Unit) {
+    setFragmentResultListener(
+        requestKey = key,
+        listener = { requestKey, bundle ->
+            try {
+                val value = bundle.get(requestKey) as T
+                result.invoke(value)
+            } catch (classCastException: ClassCastException) {
+                // TODO: We may have better exception handling in this case
+                recordException(classCastException)
+            }
+        }
+    )
 }

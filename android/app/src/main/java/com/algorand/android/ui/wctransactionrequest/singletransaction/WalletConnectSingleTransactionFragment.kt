@@ -20,6 +20,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
 import com.algorand.android.core.BaseFragment
+import com.algorand.android.customviews.WalletConnectSingleTransactionAssetInfoView
 import com.algorand.android.customviews.WalletConnectSingleTransactionShortDetailView
 import com.algorand.android.databinding.FragmentWalletConnectSingleTransactionBinding
 import com.algorand.android.models.FragmentConfiguration
@@ -53,6 +54,11 @@ class WalletConnectSingleTransactionFragment : BaseFragment(
 
     private var listener: TransactionRequestAction? = null
 
+    private val walletConnectSingleTransactionAssetInfoViewListener = WalletConnectSingleTransactionAssetInfoView
+        .WalletConnectSingleTransactionAssetInfoViewListener { assetId, accountAddress ->
+            if (assetId != null) navToAsaDetailNavigation(assetId = assetId, accountAddress = accountAddress)
+        }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         listener = parentFragment?.parentFragment as? TransactionRequestAction
@@ -75,7 +81,10 @@ class WalletConnectSingleTransactionFragment : BaseFragment(
         val transactionShortAmount = walletConnectSingleTransactionViewModel.buildTransactionAmount(
             args.transaction.transaction
         )
-        binding.transactionAssetInfoView.setTransactionShortAmount(transactionShortAmount)
+        binding.transactionAssetInfoView.apply {
+            setTransactionShortAmount(transactionShortAmount)
+            setWalletConnectSingleTransactionAssetInfoViewListener(walletConnectSingleTransactionAssetInfoViewListener)
+        }
     }
 
     private fun initTransactionAbstraction() {
@@ -86,5 +95,22 @@ class WalletConnectSingleTransactionFragment : BaseFragment(
             transactionShortDetail,
             showTransactionDetailListener
         )
+    }
+
+    private fun navToAsaDetailNavigation(
+        assetId: Long,
+        accountAddress: String?
+    ) {
+        listener?.run {
+            hideButtons()
+            motionTransitionToEnd()
+            onNavigate(
+                WalletConnectSingleTransactionFragmentDirections
+                    .actionWalletConnectSingleTransactionFragmentToWalletConnectAsaProfileNavigation(
+                        assetId = assetId,
+                        accountAddress = accountAddress
+                    )
+            )
+        }
     }
 }

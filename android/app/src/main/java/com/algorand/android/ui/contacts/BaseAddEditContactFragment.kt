@@ -15,7 +15,6 @@ package com.algorand.android.ui.contacts
 
 import android.Manifest
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore
@@ -47,7 +46,7 @@ abstract class BaseAddEditContactFragment : DaggerBaseFragment(R.layout.fragment
             if (result.resultCode == Activity.RESULT_OK) {
                 contactImageUri = result.data?.data.toString()
                 with(binding.editProfilePhotoButton) {
-                    setIconResource(R.drawable.ic_pen)
+                    setIconResource(R.drawable.ic_pen_solid)
                     setIconTintResource(R.color.primary_background)
                 }
             }
@@ -85,7 +84,7 @@ abstract class BaseAddEditContactFragment : DaggerBaseFragment(R.layout.fragment
     open fun setAddPhotoTextView(textView: TextView) {}
     open fun setDeleteContactButton(materialButton: MaterialButton) {}
 
-    abstract fun openQrScannerForAlgorandAddress(context: Context)
+    abstract fun openQrScannerForAlgorandAddress()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -144,7 +143,7 @@ abstract class BaseAddEditContactFragment : DaggerBaseFragment(R.layout.fragment
 
     protected fun onScanQRClick() {
         removeAllInputLayoutFocuses()
-        openQrScannerForAlgorandAddress(binding.root.context)
+        openQrScannerForAlgorandAddress()
     }
 
     private fun startImagePicker() {

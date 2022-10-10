@@ -25,6 +25,9 @@ import androidx.navigation.NavDirections
 import com.algorand.android.CoreMainActivity
 import com.algorand.android.MainActivity
 import com.algorand.android.R
+import com.algorand.android.models.NotificationMetadata
+import com.algorand.android.utils.copyToClipboard
+import com.algorand.android.utils.toShortenedAddress
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
@@ -34,6 +37,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 abstract class BaseBottomSheet(@LayoutRes private val layoutResId: Int) : BottomSheetDialogFragment() {
 
     open val fullPageNeeded: Boolean = false
+
+    private val bottomSheetTag: String = this::class.simpleName.orEmpty()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
@@ -93,8 +98,36 @@ abstract class BaseBottomSheet(@LayoutRes private val layoutResId: Int) : Bottom
         (activity as? CoreMainActivity)?.navBack()
     }
 
-    fun showGlobalError(errorMessage: CharSequence?, title: String? = null) {
-        (activity as? MainActivity)?.showGlobalError(errorMessage, title)
+    fun showGlobalError(
+        errorMessage: CharSequence?,
+        title: String? = null,
+        tag: String = bottomSheetTag
+    ) {
+        (activity as? MainActivity)?.showGlobalError(errorMessage, title, tag)
+    }
+
+    fun showAlertSuccess(
+        title: String,
+        successMessage: String? = null,
+        tag: String = bottomSheetTag
+    ) {
+        (activity as? MainActivity)?.showAlertSuccess(title, successMessage, tag)
+    }
+
+    fun showForegroundNotification(
+        notificationMetadata: NotificationMetadata,
+        tag: String = bottomSheetTag
+    ) {
+        (activity as? MainActivity)?.showForegroundNotification(notificationMetadata, tag)
+    }
+
+    fun showMaxAccountLimitExceededError() {
+        (activity as? MainActivity)?.showMaxAccountLimitExceededError()
+    }
+
+    fun onAccountAddressCopied(accountAddress: String) {
+        context?.copyToClipboard(textToCopy = accountAddress, showToast = false)
+        showTopToast(getString(R.string.address_copied_to_clipboard), accountAddress.toShortenedAddress())
     }
 
     companion object {

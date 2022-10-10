@@ -21,7 +21,7 @@ class DateFilterTitleResIdDecider @Inject constructor() {
 
     fun decideDateFilterTitleResId(dateFilter: DateFilter): Int? {
         return when (dateFilter) {
-            DateFilter.AllTime -> R.string.transaction_history
+            DateFilter.AllTime -> R.string.transactions
             is DateFilter.CustomRange -> null
             else -> dateFilter.titleResId
         }

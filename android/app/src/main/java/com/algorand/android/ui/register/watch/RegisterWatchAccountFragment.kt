@@ -20,7 +20,6 @@ import android.view.View
 import android.view.ViewTreeObserver
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentRegisterWatchAccountBinding
@@ -30,6 +29,7 @@ import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.ui.register.watch.RegisterWatchAccountQrScannerFragment.Companion.ACCOUNT_ADDRESS_SCAN_RESULT_KEY
 import com.algorand.android.utils.analytics.CreationType.WATCH
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.getTextFromClipboard
@@ -42,8 +42,6 @@ import com.algorand.android.utils.toShortenedAddress
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class RegisterWatchAccountFragment : DaggerBaseFragment(R.layout.fragment_register_watch_account) {
@@ -93,9 +91,10 @@ class RegisterWatchAccountFragment : DaggerBaseFragment(R.layout.fragment_regist
     }
 
     private fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            registerWatchAccountViewModel.copiedMessageFlow.collectLatest(copiedMessageCollector)
-        }
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            registerWatchAccountViewModel.copiedMessageFlow,
+            copiedMessageCollector
+        )
     }
 
     override fun onStart() {
@@ -132,7 +131,8 @@ class RegisterWatchAccountFragment : DaggerBaseFragment(R.layout.fragment_regist
                     tempAccount = Account.create(
                         publicKey = enteredAddress,
                         detail = Account.Detail.Watch
-                    ), creationType = WATCH
+                    ),
+                    creationType = WATCH
                 )
                 navToNameRegistrationFragment(newAccount)
             } else {

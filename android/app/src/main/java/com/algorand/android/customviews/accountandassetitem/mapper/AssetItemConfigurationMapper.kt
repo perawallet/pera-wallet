@@ -12,45 +12,60 @@
 
 package com.algorand.android.customviews.accountandassetitem.mapper
 
+import com.algorand.android.assetsearch.domain.model.VerificationTier
+import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration
+import com.algorand.android.customviews.accountandassetitem.model.BaseItemConfiguration
 import com.algorand.android.decider.AssetDrawableProviderDecider
-import com.algorand.android.models.BaseAccountAssetData
-import com.algorand.android.models.BaseItemConfiguration
+import com.algorand.android.modules.verificationtier.ui.decider.VerificationTierConfigurationDecider
 import com.algorand.android.utils.AssetName
+import java.math.BigDecimal
 import javax.inject.Inject
 
 class AssetItemConfigurationMapper @Inject constructor(
-    private val assetDrawableProviderDecider: AssetDrawableProviderDecider
+    private val assetDrawableProviderDecider: AssetDrawableProviderDecider,
+    private val verificationTierConfigurationDecider: VerificationTierConfigurationDecider
 ) {
 
     fun mapTo(
-        accountAssetData: BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData
-    ): BaseItemConfiguration.AssetItemConfiguration {
-        return with(accountAssetData) {
-            BaseItemConfiguration.AssetItemConfiguration(
-                assetId = id,
-                assetIconDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(id),
-                primaryAssetName = AssetName.create(name),
-                secondaryAssetName = AssetName.createShortName(shortName),
-                primaryValueText = formattedCompactAmount,
-                secondaryValueText = parityValueInSelectedCurrency.getFormattedValue()
-            )
-        }
+        isAmountInSelectedCurrencyVisible: Boolean,
+        secondaryValueText: String,
+        assetId: Long,
+        name: String?,
+        shortName: String?,
+        formattedCompactAmount: String,
+        prismUrl: String?,
+        verificationTier: VerificationTier,
+        primaryValue: BigDecimal?
+    ): BaseItemConfiguration.BaseAssetItemConfiguration.AssetItemConfiguration {
+        return BaseItemConfiguration.BaseAssetItemConfiguration.AssetItemConfiguration(
+            assetId = assetId,
+            assetIconDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(assetId),
+            primaryAssetName = AssetName.create(name),
+            secondaryAssetName = AssetName.createShortName(shortName),
+            primaryValueText = formattedCompactAmount,
+            secondaryValueText = secondaryValueText.takeIf { isAmountInSelectedCurrencyVisible },
+            prismUrl = prismUrl,
+            verificationTierConfiguration = verificationTierConfigurationDecider.decideVerificationTierConfiguration(
+                verificationTier
+            ),
+            primaryValue = primaryValue
+        )
     }
 
     fun mapTo(
         assetId: Long,
         assetFullName: AssetName,
         assetShortName: AssetName,
-        isVerified: Boolean,
-        showWithAssetId: Boolean
-    ): BaseItemConfiguration.AssetItemConfiguration {
-        return BaseItemConfiguration.AssetItemConfiguration(
+        showWithAssetId: Boolean,
+        verificationTierConfiguration: VerificationTierConfiguration
+    ): BaseItemConfiguration.BaseAssetItemConfiguration.AssetItemConfiguration {
+        return BaseItemConfiguration.BaseAssetItemConfiguration.AssetItemConfiguration(
             assetId = assetId,
             assetIconDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(assetId),
             primaryAssetName = assetFullName,
             secondaryAssetName = assetShortName,
-            isVerified = isVerified,
-            showWithAssetId = showWithAssetId
+            showWithAssetId = showWithAssetId,
+            verificationTierConfiguration = verificationTierConfiguration
         )
     }
 }

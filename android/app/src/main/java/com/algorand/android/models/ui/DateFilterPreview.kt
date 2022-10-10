@@ -21,4 +21,5 @@ data class DateFilterPreview(
     val title: String? = null,
     @StringRes
     val titleResId: Int? = null,
+    val useFilterIconsOwnTint: Boolean
 )

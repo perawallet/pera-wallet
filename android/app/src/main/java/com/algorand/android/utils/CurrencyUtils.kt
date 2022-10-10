@@ -25,6 +25,7 @@ const val ALGO_DECIMALS = 6
 const val DEFAULT_ASSET_DECIMAL = 0
 const val POSITIVE_SIGN = "+"
 const val NEGATIVE_SIGN = "-"
+const val NO_PRICE_SIGN = "-"
 private const val FIAT_MAX_DECIMAL = 6
 private const val FIAT_MIN_DECIMAL = 2
 

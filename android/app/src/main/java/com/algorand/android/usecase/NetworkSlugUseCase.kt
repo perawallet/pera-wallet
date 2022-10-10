@@ -12,14 +12,13 @@
 
 package com.algorand.android.usecase
 
-import com.algorand.android.network.IndexerInterceptor
 import javax.inject.Inject
 
 class NetworkSlugUseCase @Inject constructor(
-    private val indexerInterceptor: IndexerInterceptor
+    private val getActiveNodeUseCase: GetActiveNodeUseCase
 ) {
 
     fun getActiveNodeSlug(): String? {
-        return indexerInterceptor.currentActiveNode?.networkSlug
+        return getActiveNodeUseCase.getActiveNode()?.networkSlug
     }
 }

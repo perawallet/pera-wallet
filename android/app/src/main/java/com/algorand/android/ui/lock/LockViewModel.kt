@@ -13,14 +13,16 @@
 package com.algorand.android.ui.lock
 
 import android.app.NotificationManager
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.usecase.DeleteAllDataUseCase
 import com.algorand.android.usecase.LockUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 
-class LockViewModel @ViewModelInject constructor(
+@HiltViewModel
+class LockViewModel @Inject constructor(
     private val deleteAllDataUseCase: DeleteAllDataUseCase,
     private val lockUseCase: LockUseCase
 ) : BaseViewModel() {

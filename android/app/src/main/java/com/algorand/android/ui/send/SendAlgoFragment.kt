@@ -40,7 +40,10 @@ class SendAlgoFragment : BaseFragment(R.layout.fragment_send_algo) {
                 SendAlgoFragmentDirections.actionSendAlgoFragmentToAssetSelectionFragment(assetTransaction)
             }
             assetTransaction.amount isEqualTo BigInteger.ZERO -> {
-                SendAlgoFragmentDirections.actionSendAlgoFragmentToAssetTransferAmountFragment(assetTransaction)
+                SendAlgoFragmentDirections.actionSendAlgoFragmentToAssetTransferAmountFragment(
+                    assetTransaction = assetTransaction,
+                    shouldPopulateAmountWithMax = args.shouldPopulateAmountWithMax
+                )
             }
             assetTransaction.receiverUser == null -> {
                 SendAlgoFragmentDirections.actionSendAlgoFragmentToReceiverAccountSelectionFragment(assetTransaction)

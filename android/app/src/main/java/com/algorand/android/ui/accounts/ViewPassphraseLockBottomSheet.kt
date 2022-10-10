@@ -15,7 +15,6 @@ package com.algorand.android.ui.accounts
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
 import com.algorand.android.ui.lock.BasePasscodeVerificationBottomSheet
-import com.algorand.android.utils.setNavigationResult
 import com.algorand.android.utils.showAlertDialog
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -35,8 +34,11 @@ class ViewPassphraseLockBottomSheet : BasePasscodeVerificationBottomSheet() {
     }
 
     override fun onPasscodeSuccess() {
-        setNavigationResult(VIEW_PASSPHRASE_ADDRESS_KEY, args.publicKey)
-        navBack()
+        nav(
+            ViewPassphraseLockBottomSheetDirections.actionViewPassphraseLockBottomSheetToViewPassphraseBottomSheet(
+                args.publicKey
+            )
+        )
     }
 
     companion object {

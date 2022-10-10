@@ -15,16 +15,11 @@ package com.algorand.android.usecase
 import com.algorand.android.core.BaseUseCase
 import com.algorand.android.mapper.AssetDetailMapper
 import com.algorand.android.models.AssetDetail
-import com.algorand.android.models.AssetQueryType
-import com.algorand.android.models.BaseAssetDetail
-import com.algorand.android.models.Pagination
-import com.algorand.android.models.Result
 import com.algorand.android.repository.AssetRepository
 import com.algorand.android.usecase.AssetFetchAndCacheUseCase.Companion.MAX_ASSET_FETCH_COUNT
 import com.algorand.android.utils.CacheResult
 import com.algorand.android.utils.DataResource
 import com.algorand.android.utils.exception.AssetNotFoundException
-import com.algorand.android.utils.mapResult
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
@@ -141,21 +136,5 @@ class SimpleAssetDetailUseCase @Inject constructor(
 
     companion object {
         private const val CACHED_ASSET_EXPIRATION_THRESHOLD = 600_000 // 10 min
-    }
-
-    suspend fun searchAssets(queryText: String, queryType: AssetQueryType): Result<Pagination<BaseAssetDetail>> {
-        return assetRepository.getAssets(queryText, queryType).map { assetDetailResponsePagination ->
-            assetDetailResponsePagination.mapResult { assetDetailResponseList ->
-                assetDetailResponseList.map { assetDetailMapper.mapToAssetDetail(it) }
-            }
-        }
-    }
-
-    suspend fun getAssetsByUrl(url: String): Result<Pagination<BaseAssetDetail>> {
-        return assetRepository.getAssetsMore(url).map { assetDetailResponsePagination ->
-            assetDetailResponsePagination.mapResult { assetDetailResponseList ->
-                assetDetailResponseList.map { assetDetailMapper.mapToAssetDetail(it) }
-            }
-        }
     }
 }

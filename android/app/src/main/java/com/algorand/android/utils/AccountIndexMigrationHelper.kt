@@ -13,8 +13,8 @@
 package com.algorand.android.utils
 
 import com.algorand.android.models.Account
-import com.algorand.android.modules.sorting.accountsorting.domain.usecase.AccountSortingPreviewUseCase.Companion.LOCAL_ACCOUNT_START_INDEX
-import com.algorand.android.modules.sorting.accountsorting.domain.usecase.AccountSortingPreviewUseCase.Companion.NOT_INITIALIZED_ACCOUNT_INDEX
+import com.algorand.android.modules.sorting.accountsorting.util.LOCAL_ACCOUNT_START_INDEX
+import com.algorand.android.modules.sorting.accountsorting.util.NOT_INITIALIZED_ACCOUNT_INDEX
 import javax.inject.Inject
 
 class AccountIndexMigrationHelper @Inject constructor() : BaseMigrationHelper<List<Account>> {

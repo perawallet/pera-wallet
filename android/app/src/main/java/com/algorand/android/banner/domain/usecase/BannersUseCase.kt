@@ -20,6 +20,7 @@ import com.algorand.android.banner.domain.repository.BannerRepository
 import com.algorand.android.deviceregistration.domain.usecase.DeviceIdUseCase
 import javax.inject.Inject
 import javax.inject.Named
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class BannersUseCase @Inject constructor(
@@ -28,15 +29,22 @@ class BannersUseCase @Inject constructor(
     private val deviceIdUseCase: DeviceIdUseCase
 ) {
 
-    suspend fun getBanners() = bannerRepository.getCachedBanners().map { bannerDetailDtoList ->
-        val dismissedBannerIdList = bannerRepository.getDismissedBannerIdList()
-        val filteredList = bannerDetailDtoList.filterNot { dismissedBannerIdList.contains(it.bannerId) }
-        getMappedAndFilteredBanners(filteredList)
+    suspend fun initializeBanner(deviceId: String? = null) {
+        val safeDeviceId = deviceId ?: deviceIdUseCase.getSelectedNodeDeviceId() ?: return
+        with(bannerRepository) {
+            clearBannerCache()
+            getBanners(deviceId = safeDeviceId).use(
+                onSuccess = { bannerDetailDtoList ->
+                    val dismissedBannerIdList = getDismissedBannerIdList()
+                    bannerDetailDtoList.firstOrNull { !dismissedBannerIdList.contains(it.bannerId) }
+                        ?.let { firstBanner -> cacheBanner(bannerDetailDto = firstBanner) }
+                }
+            )
+        }
     }
 
-    suspend fun cacheBanners(deviceId: String? = null) {
-        val safeDeviceId = deviceId ?: deviceIdUseCase.getSelectedNodeDeviceId() ?: return
-        bannerRepository.cacheBanners(safeDeviceId)
+    suspend fun getBanner(): Flow<BaseBanner?> = bannerRepository.getCachedBanner().map { cachedBanner ->
+        cachedBanner?.let { getMappedAndFilteredBanner(bannerDto = it) }
     }
 
     suspend fun dismissBanner(bannerId: Long) {
@@ -57,13 +65,11 @@ class BannersUseCase @Inject constructor(
         bannerRepository.clearBannerCache()
     }
 
-    private fun getMappedAndFilteredBanners(bannerDtoList: List<BannerDetailDTO>): List<BaseBanner> {
-        return bannerDtoList.map {
-            when (it.type) {
-                BannerType.GOVERNANCE -> bannerMapper.mapToGovernanceBanner(it)
-                BannerType.GENERIC -> bannerMapper.mapToGenericBanner(it)
-                else -> bannerMapper.mapToGenericBanner(it)
-            }
+    private fun getMappedAndFilteredBanner(bannerDto: BannerDetailDTO): BaseBanner {
+        return when (bannerDto.type) {
+            BannerType.GOVERNANCE -> bannerMapper.mapToGovernanceBanner(bannerDto)
+            BannerType.GENERIC -> bannerMapper.mapToGenericBanner(bannerDto)
+            else -> bannerMapper.mapToGenericBanner(bannerDto)
         }
     }
 }

@@ -89,7 +89,6 @@
     <string name="you_are_about_to_receive">Varlık almak üzeresiniz!</string>
     <string name="min_transaction_error">Min İşlem Hatası!</string>
     <string name="you_need_at_least">Bu varlığı eklemek için en az <annotation replacement="min_balance"> </annotation> Algo\'ya ihtiyacınız var</string>
-    <string name="your_accounts_do_not">Bu varlık hesabınızda bulunmuyor</string>
     <string name="please_add_this">Lütfen bu varlığı ekleyin ve tekrar deneyin.</string>
     <string name="key_not_valid">Anahtar geçersiz. Lütfen doğru anahtara sahip olduğunuzdan emin olun.</string>
     <string name="scanned_qr_is_not_valid">Taranan QR Kodu geçersiz.</string>
@@ -504,7 +503,7 @@
     <string name="welcome_to_pera">Pera Wallet\'a Hoş Geldiniz</string>
     <string name="start_using_pera">Pera Wallet\'yı Kullanmaya Başlayın</string>
     <string name="is_your_ledger_paired">Ledger\'ınız bu cihazla eşleşti mi?\nEşleşmediyse lütfen şu adımları izleyin:</string>
-    <string name="you_are_about_to_delete">Saklanan hesaplarınız dahil olmak üzere cüzdandaki tüm verileri silmek üzeresiniz. Bu işlemi onaylamadan önce hesap parolalarınızı başka bir yerde sakladığınızdan emin olun. Aksi takdirde hesaplarınızı geri yükleyemezsiniz. Devam etmek istediğinizden emin misiniz?</string>
+    <string name="you_are_about_to_delete">Saklanan hesaplarınız dahil olmak üzere cüzdandaki tüm verileri silmek üzeresiniz. Bu işlemi onaylamadan önce hesap parolalarınızı başka bir yerde sakladığınızdan emin olun. Aksi takdirde hesaplarınızı geri yükleyemezsiniz.\n\nDevam etmek istediğinizden emin misiniz?</string>
     <string name="your_data_has_been">Verileriniz başarıyla silindi</string>
     <string name="you_are_connected"><annotation replacement="peer_name">peerNamePlaceholder</annotation> bağlantınız yapıldı</string>
     <string name="please_return_to">İşleminize devam etmek ve işleminizi tamamlamak için lütfen <annotation replacement="peer_name">peerNamePlaceholder</annotation> öğesine dönün. Tüm bağlanan Oturumları özel Ayarlar sayfasında bulabilirsiniz.</string>
@@ -524,7 +523,6 @@
     <string name="sorry_we_cant_show_portfolio">Üzgünüz, bu portföyün ayrıntılarını gösteremiyoruz. Hesaplama konusunda bazı sorunlar var gibi görünüyor.\n\nBazı varlıkların fiyat bilgisinin bulunmayabileceğini lütfen dikkate alın. Bu nedenle, toplam portföy değerinin bir tahmin olarak düşünülmesi gerekmektedir.</string>
     <string name="transaction_request_faq">İşlem İsteği İle İlgili SSS</string>
     <string name="external_applications_also">dApp\'ler olarak da adlandırılan harici uygulamalar, Pera Wallet\'tan bağımsız olarak işlem başlatabilirler. Bu tür işlemleri onaylamadan ve imzalamadan önce dikkatlice incelediğinizden lütfen emin olun.\n\nİşlemler geri alınamazdır. Bu istekler Pera Wallet\'ın kontrolü dışında olduğundan, tanımadığınız dApp\'ten gelen işlemleri hiçbir zaman onaylamayın.</string>
-    <string name="notification_algo_received_message"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation>, <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> adresine <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> tarafından gönderildi.</string>
     <string name="minimum_amount_required">Minimum Miktar Gerekli</string>
     <string name="this_is_the_first_transaction">Bu, seçili hesabın ilk işlemidir. İlk işlemler için en az 0,1 Algo\'luk minimum miktar gereklidir. Lütfen geçerli bir miktar girerek tekrar deneyin.</string>
     <string name="i_want_to_create">Bir hesap oluşturmak istiyorum</string>
@@ -583,7 +581,7 @@
     <string name="view_transaction">İşlemi Görüntüle</string>
     <string name="show_on_algoexplorer">Algoexplorer\'da Göster</string>
     <string name="show_on_nftexplorer">NFTExplorer\'da Göster</string>
-    <string name="you_are_not_the_owner">Henüz bu NFT\'nin sahibi değilsiniz ancak katılmayı seçtiniz. Artık cüzdanınıza transfer edebilirsiniz.</string>
+    <string name="you_are_not_the_owner">Henüz bu NFT\'nin sahibi değilsiniz ancak katılmayı seçtiniz. Artık cüzdanınıza hesabınıza edebilirsiniz.</string>
     <string name="we_don_t_support">Bu NFT medya türünü henüz desteklemiyoruz.</string>
     <string name="we_can_t_display">Görseli geçici olarak görüntüleyemiyoruz.</string>
     <string name="transfer">Transfer</string>
@@ -607,7 +605,8 @@
     <string name="receive_an_nft">Bir NFT Alın</string>
     <string name="the_account_name"><annotation font="dmsans_bold">\"<annotation replacement="account_name"> </annotation>\"</annotation> hesabı, başarıyla yeniden anahtarlandı.</string>
     <string name="asset_support_success"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>, hesabına <annotation replacement="asset">assetPlaceholder</annotation> ekledi.  <annotation replacement="asset">assetPlaceholder</annotation> gönderebilirsiniz.</string>
-    <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation>, size <annotation replacement="asset">assetPlaceholder</annotation> göndermek istiyor. Ancak, siz bu varlığı desteklemiyorsunuz. Bu varlığı hesabınıza eklemek için buraya dokunun.</annotation></string>
+    <string name="asset_support_request">
+<annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation>, size <annotation replacement="asset">assetPlaceholder</annotation> göndermek istiyor. Ancak, siz bu varlığı desteklemiyorsunuz. Bu varlığı hesabınıza eklemek için buraya dokunun.</annotation></string>
     <string name="transaction_send_successful"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> işleminiz, <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> adresinden <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> adresine gönderilerek tamamlandı.</string>
     <string name="transaction_send_failed"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> işleminiz, <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> adresinden <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> adresine gönderilemeyerek başarısız oldu.</string>
     <string name="the_only_way_to">Bir Algorand hesabını kurtarmanın tek yolu bu kurtarma parolasıdır.</string>
@@ -621,8 +620,6 @@
     <string name="your_nft_transfer_has_failed">NFT transferiniz başarısız oldu!</string>
     <string name="please_try_again">Lütfen tekrar deneyin.</string>
     <string name="opt_out">Katılımdan Çık</string>
-    <string name="opt_out_from">\"%1$s\" öğesi katılımından çıkıldı</string>
-    <string name="you_are_about_to_opt_out">%1$s ile bu NFT katılımından çıkmak üzeresiniz. Tekrar katılım sağlayana kadar bu varlıkla işlem yapamayacaksınız.</string>
     <string name="nft_successfully_opted_out">%1$s NFT katılımından başarıyla çıkıldı</string>
     <string name="opted_in_to">Katılım sağlanan:</string>
     <string name="show_on">Göster</string>
@@ -634,19 +631,22 @@
     <string name="filter">Filtrele</string>
     <string name="show_filtered_nfts_formatted">Filtrelenmiş NFT\'leri Göster (%1$d)</string>
     <string name="search_your_nfts">NFT\'lerinizi arayın</string>
-    <string name="enter_your_old">6 haneli eski PIN\'inizi girin</string>
-    <string name="ledger_info_power_first_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">Ledger\'ınızın Bluetooth özelliğinin kullanımı için lütfen Ledger\'ın resmi <annotation type="bold"><annotation type="color">Bluetooth Bağlantısı Kılavuzu</annotation></annotation>\'na başvurun.</annotation></string>
-    <string name="ledger_info_power_second_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">Daha kapsamlı sorun giderme için lütfen Ledger\'ın resmi <annotation type="bold"><annotation type="color">Bluetooth Sorun Giderme Kılavuzu</annotation></annotation>\'na başvurun.</annotation></string>
-    <string name="ledger_info_ledger_first_paragraph"><annotation url="https://www.ledger.com/start">Ledger\'ın kapsamlı <annotation type="bold"><annotation type="color">Kullanmaya Başlama</annotation></annotation> öğreticisini izleyerek başlayın.</annotation></string>
+    <string name="enter_your_old">6 haneli eski\nPIN\'inizi girin</string>
+    <string name="ledger_info_power_first_paragraph">
+    <annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">Ledger\'ınızın Bluetooth özelliğinin kullanımı için lütfen Ledger\'ın resmi <annotation type="bold"><annotation type="color">Bluetooth Bağlantısı Kılavuzu</annotation></annotation>\'na başvurun.</annotation>
+  </string>
+    <string name="ledger_info_power_second_paragraph">
+    <annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">Daha kapsamlı sorun giderme için lütfen Ledger\'ın resmi <annotation type="bold"><annotation type="color">Bluetooth Sorun Giderme Kılavuzu</annotation></annotation>\'na başvurun.</annotation>
+  </string>
+    <string name="ledger_info_ledger_first_paragraph">
+    <annotation url="https://www.ledger.com/start">Ledger\'ın kapsamlı <annotation type="bold"><annotation type="color">Kullanmaya Başlama</annotation></annotation> öğreticisini izleyerek başlayın.</annotation>
+  </string>
     <string name="no_nft_found">NFT Bulunamadı</string>
     <string name="welcome_to_pera_wallet_your_watch">Pera Wallet\'a hoş geldiniz! İzleme Hesabınız başarıyla eklendi.</string>
     <string name="congratulations_your_watch_account_has">Tebrikler, İzleme Hesabınız başarıyla eklendi.</string>
     <string name="passphrase_verified">Parola Doğrulandı</string>
     <string name="keep_this_recovery">Bu kurtarma parolasını yalnızca sizin ulaşabileceğiniz güvenli bir yerde saklayın. Bu kurtarma parolasını kaybetmeyin.</string>
-    <string name="search_your_assets">Varlıklarınızı arayın</string>
     <string name="search">Ara</string>
-    <string name="wrong_pin">Hatalı PIN</string>
-    <string name="pin_does_not">PIN, önceki PIN ile eşleşmiyor.</string>
     <string name="no_transactions">İşlem yok</string>
     <string name="there_are_no">Seçili dönem için gösterilecek hiçbir işlem bulunmuyor</string>
     <string name="filter_by_date">Tarihe Göre Filtrele</string>
@@ -673,7 +673,6 @@
     <string name="algo_wallet">Algo Wallet</string>
     <string name="address_copied_to_clipboard">Adres panoya kopyalandı</string>
     <string name="main_currency">Ana Para Birimi</string>
-    <string name="your_main_currency_is">Ana para biriminiz <annotation font="dmsans_regular"><annotation type="primaryCurrencyColor"><annotation type="bold"><annotation replacement="primaryCurrencyId">primaryCurrencyPlaceholder</annotation></annotation></annotation></annotation>, ikinci para biriminiz ise <annotation font="dmsans_regular"><annotation type="secondaryCurrencyColor"><annotation type="bold"><annotation replacement="secondaryCurrencyId">secondaryCurrencyPlaceholder</annotation></annotation></annotation></annotation></string>
     <string name="the_scanned_qr_is_not">Taranan QR, geçerli bir herkese açık Algorand adresi değildir. Diğer QR türleri (WalletConnect oturumları gibi) için lütfen ana sayfada bulunan QR düğmesini taramayı kullanın.</string>
     <string name="buy_crypto_with_credit">Kredi kartıyla veya banka transferiyle kripto alın</string>
     <string name="algo_or_any_asa">Başka bir hesaba Algo veya diğer ASA</string>
@@ -717,4 +716,100 @@
     </plurals>
     <string name="invalid_asset_id">Geçersiz Varlık Kimliği.</string>
     <string name="asset_successfully_added_formatted">%1$s, hesabınıza başarıyla eklendi.</string>
+    <string name="notification_algo_received_message"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation>, <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> adresine <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> tarafından gönderildi.</string>
+    <string name="opt_in_to">Bu hesaptan bir ASA\'ya veya NFT\'ye dahil ol</string>
+    <string name="add_new_asa">Yeni ASA ekle</string>
+    <string name="show_more_actions">Daha fazla işlem göster</string>
+    <string name="asset_not_found_please_make">Varlık bulunamadı. Lütfen doğru ağı kullandığınızdan emin olun.</string>
+    <string name="parent_transaction_id">Üst İşlem Numarası</string>
+    <string name="it_looks_like">Görünüşe göre bu işlem grubundan bir veya daha fazla işlem eksik. Güvenliğiniz için Pera Wallet belirsiz bilgileri olan işlem gruplarını imzalamanıza izin vermeyecek. Lütfen bu işlemi gönderen dApp ile iletişime geçin ve bu sorunu düzeltmesini isteyin.</string>
+    <string name="self_transfer">Kendine Transfer</string>
+    <string name="opt_in_self_transfer">Dahil Olma / Kendine Transfer</string>
+    <string name="thousand">Bin</string>
+    <string name="thousand_abbreviation">K</string>
+    <string name="million">Milyon</string>
+    <string name="million_abbreviation">M</string>
+    <string name="billion">Milyar</string>
+    <string name="billion_abbreviation">B</string>
+    <string name="trillion">Trilyon</string>
+    <string name="trillion_abbreviation">T</string>
+    <string name="quadrillion">Katrilyon</string>
+    <string name="quadrillion_abbreviation">Qa</string>
+    <string name="quintillion">Kentilyon</string>
+    <string name="quintillion_abbreviation">Qi</string>
+    <string name="account_related_to_this_notification">Bu bildirimle ilgili olan hesap bu cihazdan kaldırıldı. Bu bildirimin ayrıntılarını görüntülemek için lütfen hesabı tekrar ekleyin.</string>
+    <string name="account_asset_count_zero">0 Varlık</string>
+    <string name="pin_code_did_not_match">PIN kodu eşleşmedi. Tekrar Deneyin</string>
+    <string name="your_main_currency_is_placeholder">Ana para biriminiz <annotation font="dmsans_regular"><annotation custom="primaryCurrencyColor"><annotation replacement="primaryCurrencyId">primaryCurrencyPlaceholder</annotation></annotation></annotation>, ikinci para biriminiz ise <annotation font="dmsans_regular"><annotation custom="secondaryCurrencyColor"><annotation replacement="secondaryCurrencyId">secondaryCurrencyPlaceholder</annotation></annotation></annotation>.</string>
+    <string name="disconnect_all_sessions">Tüm Oturumların Bağlantısını Kes</string>
+    <string name="would_disconnect_all_sessions">Tüm oturumların bağlantısınız kesmek ister misiniz?</string>
+    <string name="missing_asset">Varlık Eksik</string>
+    <string name="you_are_already">Bu hesaptan zaten <annotation replacement="asset_name">assetNamePlaceholder</annotation> için katılımda bulunmuşsunuz.</string>
+    <string name="too_many_accounts">Çok Fazla Hesap</string>
+    <string name="looks_like_already_have_accounts">Görünüşe göre cüzdanınızda zaten %1$d veya daha fazla hesap var. Uygulamanın iyi bir performans göstermeye devam etmesini sağlamak için %1$d hesaptan fazlasını şu anda desteklemiyoruz. Başka bir hesap eklemek için lütfen önce mevcut hesaplardan birini kaldırın.</string>
+    <string name="error_bluetooth_permission_message">Yakındaki Ledger/\'ları aramak için Bluetooth tarama izninin verilmesi gerekir.</string>
+    <string name="select_the_receiver_account">Alıcı hesabı seçin</string>
+    <string name="transaction_submitted">İşlem Gönderildi</string>
+    <string name="your_transaction_sub">İşleminiz Algorand ağına başarıyla gönderildi.</string>
+    <string name="search_assets">Varlıkları ara</string>
+    <string name="manage_collectibles">Koleksiyonları Yönet</string>
+    <string name="asa_verification">ASA Doğrulaması</string>
+    <string name="pera_wallet_s_algorand">Pera Wallet kapsamındaki Algorand Standard Asset (Algorand Standart Varlık - ASA) Doğrulama Programı, ASA oluşturucularının varlığın sahibi olduklarını doğrulamak suretiyle <annotation type="bold">otomatik olarak</annotation> doğrulanmalarını sağlar.</string>
+    <string name="the_main_purpose">ASA Doğrulamasının temel amacı, <annotation type="bold">bir ASA\'nın bağlantılı olmadığı bir projeyle bağlıymış ve söz konusu projenin tokeniymiş gibi hareket etmesinin önüne geçmektir.</annotation></string>
+    <string name="asa_verification_is"><annotation type="bold">ASA Doğrulaması, projenin onaylandığı anlamına gelmez.</annotation> Algorand ve Pera, bir projeyi onaylamak için hiçbir zaman doğrulama sürecini kullanmaz.</string>
+    <string name="overview">Genel Bakış</string>
+    <string name="activity">Etkinlik</string>
+    <string name="about">Hakkında</string>
+    <string name="csv">CSV</string>
+    <string name="transactions">İşlemler</string>
+    <string name="this_asa_was_automatically_verified">Bu ASA, Pera ASA Doğrulama programı kapsamında <annotation type="bold">otomatik olarak doğrulanmıştır</annotation>.</string>
+    <string name="this_is_a_well_known">Bu ASA, Algorand ekosistemi içerisinde <annotation type="bold">tanınmış</annotation> ve kabul görmüş bir projedir.</string>
+    <string name="we_ve_received_reports_that">Bu ASA\'nın bir <annotation type="bold">dolandırıcılık girişimi</annotation> içerisinde yer aldığına yönelik bildirimler aldık. Etkileşimde bulunurken dikkatli olun.</string>
+    <string name="verified_asa">Doğrulanmış ASA</string>
+    <string name="trusted_asa">Güvenilir ASA</string>
+    <string name="suspicious">Şüpheli</string>
+    <string name="total_supply">Toplam Arz</string>
+    <string name="asa_id">ASA Kimliği</string>
+    <string name="creator">Oluşturan</string>
+    <string name="asa_url">ASA URL\'si</string>
+    <string name="project_website">Projenin web sitesi</string>
+    <string name="open_with_browser">Tarayıcı ile Aç</string>
+    <string name="show_more">Daha fazla göster</string>
+    <string name="show_less">Daha az göster</string>
+    <string name="learn_more_about_asa_verification">ASA doğrulaması hakkında daha fazla bilgi alın</string>
+    <string name="social_media">Sosyal Medya</string>
+    <string name="report_asset_name">Bildir: %1$s</string>
+    <string name="about_asset_name">%1$s Hakkında</string>
+    <string name="total_supply_info">Varlığın toplam arzı, varlık oluşturulduğunda belirlenir ve varlığın çıkarılan toplam birimlerine karşılık gelir.</string>
+    <string name="asa_report_asset_id">ASA Raporu: %1$d</string>
+    <string name="report_an_asa">Bir ASA/\'yı Bildirin</string>
+    <string name="you_can_send_us_an">Bu ASA/\'yı bildirmek için <annotation custom="verification_mail_click"><annotation replacement="verification_mail"><annotation font="dmsans_medium">verificationMailPlaceholder</annotation></annotation></annotation> adresinden bize e-posta gönderebilirsiniz.</string>
+    <string name="you_can_add_this_asset">Bu varlığı şuraya ekleyebilirsiniz:</string>
+    <string name="add_asset">Varlık Ekle</string>
+    <string name="this_account_doesn_t_have_the">Hesapta bu işlemi desteklemek için gereken minimum Algo bakiyesi bulunmuyor. Devam etmeden önce lütfen hesaba Algo ekleyin.\n\nKatılım sağladığınız varlık, NFT ve akıllı sözleşme başına gereken minimum Algo bakiyesi %1$s artar. Gereken minimum Algo bakiyesini azaltmak için varlıkların ve akıllı sözleşmelerin katılımından çıkabilirsiniz.</string>
+    <string name="insufficient_algo_balance">Algo Bakiyesi Yetersiz</string>
+    <string name="you_can_opt_in_to_this">Bu varlığa hesaplarınızın biriyle katılabilirsiniz.</string>
+    <string name="please_select_an_account_to">Lütfen %1$s ögesinin ekleneceği hesabı seçin</string>
+    <string name="asset_successfully_added_to_your">%1$s, hesabınıza başarıyla eklendi.</string>
+    <string name="asset_successfully_removed_from_your">%1$s, hesabınızdan başarıyla kaldırıldı.</string>
+    <string name="filter_nfts">NFT/\'leri Filtrele</string>
+    <string name="newest_to_oldest">Yeniden eskiye</string>
+    <string name="oldest_to_newest">Eskiden yeniye</string>
+    <string name="you_can_add_this_nft">Bu NFT/\'yi şuraya ekleyebilirsiniz:</string>
+    <string name="opt_dash_in">Katılım</string>
+    <string name="sorry_there_was">Üzgünüz, hesaplarınızdan bazılarını getirirken bir hata meydana geldi. Portföyünüzün değeri yalnızca başarıyla getirilen hesaplara göre hesaplandı.</string>
+    <string name="we_couldn_t_find_any_assets">Kaldırılacak varlık bulamadık.</string>
+    <string name="the_algo_is_the_official_cryptocurrency">Algo, Algorand blok zincirinin resmi kripto para birimidir. Algorand blok zinciri, herkesin katılım sağlayabileceği, açık ve sınırların olmadığı bir ekonomi modeli oluşturmaya yardımcı olmak için tasarlanmıştır. Bu yeni dijital ekonomi türü, herkes için anında çalışan ve gerçek anlamda dijital olan bir para birimiyle mümkündür. Algo, tam olarak böyle bir para birimidir.</string>
+    <string name="opt_out_nft">NFT Katılımdan Çık</string>
+    <string name="you_are_about_to_opt">%1$s NTF/\'sinin katılımdan çıkmak üzeresiniz. Tekrar eklemediğiniz sürece, bu NFT ile bu hesapta işlem yapamayacaksınız.</string>
+    <string name="opt_in_to_nft">NFT/\'ye Katılım</string>
+    <string name="opting_in_to_an_nft">Bir NFT/\'ye katılmak, işlemin minimum işlem ücretiyle gönderilmesini gerektirir. Bu, işlem geçmişinizde görünür.</string>
+    <string name="this_account_doesn_t">Hesapta bu işlem için yeterli bakiye bulunmuyor.</string>
+    <string name="we_couldn_t">WalletConnect oturumunu başlattığınız tarayıcıyı otomatik olarak algılayamadık. Lütfen %1$s konumuna geri dönün:</string>
+    <string name="select_a_browser">Bir Tarayıcı Seçin</string>
+    <string name="switch_back_to"><annotation iconReplacement="browserIconResId">[browser_icon_placeholder]</annotation> <annotation replacement="browser_name">browser_name_placeholder</annotation> tarayıcısına dönün</string>
+    <string name="account_connected">Hesap bağlandı!</string>
+    <string name="you_ve_connected">Hesabınızın %1$s ile bağlantısını kurduk. İşlemi tamamlamak için web tarayıcınıza dönün.</string>
+    <string name="transaction_signed">İşlem imzalandı!</string>
+    <string name="transaction_was_sent">İşlem %1$s alıcısına gönderildi. İşlemi tamamlamak için web tarayıcınıza dönün.</string>
 </resources>

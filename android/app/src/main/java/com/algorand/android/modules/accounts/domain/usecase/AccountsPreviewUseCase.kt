@@ -25,12 +25,12 @@ import com.algorand.android.models.Account
 import com.algorand.android.models.AccountDetail
 import com.algorand.android.models.AccountIconResource
 import com.algorand.android.modules.accounts.domain.mapper.AccountListItemMapper
-import com.algorand.android.modules.accounts.domain.mapper.BasePortfolioValueMapper
+import com.algorand.android.modules.accounts.domain.mapper.PortfolioValueItemMapper
 import com.algorand.android.modules.accounts.domain.model.AccountPreview
 import com.algorand.android.modules.accounts.domain.model.AccountValue
 import com.algorand.android.modules.accounts.domain.model.BaseAccountListItem
 import com.algorand.android.modules.accounts.domain.model.BaseAccountListItem.HeaderItem
-import com.algorand.android.modules.accounts.domain.model.BasePortfolioValue
+import com.algorand.android.modules.accounts.domain.model.BasePortfolioValueItem
 import com.algorand.android.modules.currency.domain.usecase.CurrencyUseCase
 import com.algorand.android.modules.parity.domain.model.SelectedCurrencyDetail
 import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
@@ -63,13 +63,14 @@ class AccountsPreviewUseCase @Inject constructor(
     private val bannersUseCase: BannersUseCase,
     private val baseBannerItemMapper: BaseBannerItemMapper,
     private val nodeSettingsUseCase: NodeSettingsUseCase,
-    private val basePortfolioValueMapper: BasePortfolioValueMapper,
+    private val portfolioValueItemMapper: PortfolioValueItemMapper,
     private val accountItemConfigurationMapper: AccountItemConfigurationMapper,
     private val accountAddressTutorialDisplayPreferencesUseCase: AccountAddressTutorialDisplayPreferencesUseCase,
     private val getSortedAccountsByPreferenceUseCase: GetSortedAccountsByPreferenceUseCase,
     private val getAccountValueUseCase: GetAccountValueUseCase,
     private val accountSortPreferenceUseCase: AccountSortPreferenceUseCase,
-    private val currencyUseCase: CurrencyUseCase
+    private val currencyUseCase: CurrencyUseCase,
+    private val notificationStatusUseCase: NotificationStatusUseCase
 ) {
 
     suspend fun getInitialAccountPreview(): AccountPreview {
@@ -81,10 +82,10 @@ class AccountsPreviewUseCase @Inject constructor(
         return combine(
             parityUseCase.getSelectedCurrencyDetailCacheFlow(),
             accountDetailUseCase.getAccountDetailCacheFlow(),
-            bannersUseCase.getBanners(),
+            bannersUseCase.getBanner(),
             nodeSettingsUseCase.getAllNodeAsFlow(),
             assetDetailUseCase.getCachedAssetsFlow()
-        ) { selectedCurrencyParityCache, accountDetailCache, banners, _, _ ->
+        ) { selectedCurrencyParityCache, accountDetailCache, banner, _, _ ->
             val isTestnetBadgeVisible = nodeSettingsUseCase.isSelectedNodeTestnet()
             val localAccounts = accountManager.getAccounts()
             if (localAccounts.isEmpty()) {
@@ -92,7 +93,7 @@ class AccountsPreviewUseCase @Inject constructor(
             }
             when (selectedCurrencyParityCache) {
                 is CacheResult.Success -> {
-                    processAccountsAndAssets(accountDetailCache, banners, isTestnetBadgeVisible)
+                    processAccountsAndAssets(accountDetailCache, banner, isTestnetBadgeVisible)
                 }
                 is CacheResult.Error -> getAlgoPriceErrorState(
                     selectedCurrencyDetailCache = selectedCurrencyParityCache,
@@ -116,23 +117,23 @@ class AccountsPreviewUseCase @Inject constructor(
         val hasPreviousCachedValue = selectedCurrencyDetailCache?.data != null
         if (hasPreviousCachedValue) return previousState
         val accountErrorListItems = createAccountErrorItemList()
-        val portfolioValuesError = basePortfolioValueMapper.mapToPortfolioValuesInitializationError()
+        val portfolioValuesError = portfolioValueItemMapper.mapToPortfolioValuesErrorItem()
         return accountPreviewMapper.getAlgoPriceInitialErrorState(
             accountListItems = accountErrorListItems,
             errorCode = selectedCurrencyDetailCache?.code,
             isTestnetBadgeVisible = isTestnetBadgeVisible,
-            portfolioValuesError = portfolioValuesError
+            errorPortfolioValueItem = portfolioValuesError
         )
     }
 
     private suspend fun processAccountsAndAssets(
         accountDetailCache: HashMap<String, CacheResult<AccountDetail>>,
-        banners: List<BaseBanner>,
+        banner: BaseBanner?,
         isTestnetBadgeVisible: Boolean
     ): AccountPreview {
         val areAllAccountsAreCached = accountDetailUseCase.areAllAccountsCached()
         return if (areAllAccountsAreCached) {
-            processSuccessAccountCacheAndOthers(accountDetailCache, banners, isTestnetBadgeVisible)
+            processSuccessAccountCacheAndOthers(accountDetailCache, banner, isTestnetBadgeVisible)
         } else {
             accountPreviewMapper.getFullScreenLoadingState(isTestnetBadgeVisible)
         }
@@ -140,7 +141,7 @@ class AccountsPreviewUseCase @Inject constructor(
 
     private suspend fun processSuccessAccountCacheAndOthers(
         accountDetailCache: HashMap<String, CacheResult<AccountDetail>>,
-        banners: List<BaseBanner>,
+        banner: BaseBanner?,
         isTestnetBadgeVisible: Boolean
     ): AccountPreview {
         val isThereAnyAssetNeedsToBeCached = accountDetailCache.values.any {
@@ -153,13 +154,13 @@ class AccountsPreviewUseCase @Inject constructor(
         ) {
             accountPreviewMapper.getFullScreenLoadingState(isTestnetBadgeVisible)
         } else {
-            prepareAccountPreview(accountDetailCache, banners, isTestnetBadgeVisible)
+            prepareAccountPreview(accountDetailCache, banner, isTestnetBadgeVisible)
         }
     }
 
     private suspend fun prepareAccountPreview(
         accountDetailCache: HashMap<String, CacheResult<AccountDetail>>,
-        banners: List<BaseBanner>,
+        banner: BaseBanner?,
         isTestnetBadgeVisible: Boolean
     ): AccountPreview {
         return withContext(Dispatchers.Default) {
@@ -170,31 +171,31 @@ class AccountsPreviewUseCase @Inject constructor(
                 primaryAccountValue += it.primaryAccountValue
                 secondaryAccountValue += it.secondaryAccountValue
             }).apply {
-                val banner = getBannerItemOrNull(banners)
+                val bannerItem = getBannerItemOrNull(baseBanner = banner)
                 insertQuickActionsItem(this)
-                if (banner != null) add(BANNER_ITEM_INDEX, banner)
+                if (bannerItem != null) add(BANNER_ITEM_INDEX, bannerItem)
             }
             val isThereAnyErrorInAccountCache = accountDetailCache.any {
                 it.value is CacheResult.Error<*> && it.value.data == null
             }
-            val portfolioValueErrorItem = if (isThereAnyErrorInAccountCache) {
-                basePortfolioValueMapper.mapToPortfolioValuesPartialError()
-            } else {
-                null
+            val isThereAnySuccessInAccountCache = accountDetailCache.any {
+                it.value is CacheResult.Success<*> && it.value.data != null
             }
             val portfolioValueItem = if (!isThereAnyErrorInAccountCache) {
-                getPortfolioValueItem(primaryAccountValue, secondaryAccountValue)
+                getPortfolioValueSuccessItem(primaryAccountValue, secondaryAccountValue)
+            } else if (isThereAnySuccessInAccountCache) {
+                getPortfolioValuePartialErrorItem(primaryAccountValue, secondaryAccountValue)
             } else {
-                null
+                portfolioValueItemMapper.mapToPortfolioValuesErrorItem()
             }
             val shouldShowTutorialDialog = accountAddressTutorialDisplayPreferencesUseCase.shouldShowTutorialDialog()
-
+            val hasNewNotification = notificationStatusUseCase.hasNewNotification()
             accountPreviewMapper.getSuccessAccountPreview(
                 accountListItems = baseAccountListItems,
                 isTestnetBadgeVisible = isTestnetBadgeVisible,
-                portfolioValues = portfolioValueItem,
-                portfolioValuesError = portfolioValueErrorItem,
-                shouldShowDialog = shouldShowTutorialDialog
+                portfolioValueItem = portfolioValueItem,
+                shouldShowDialog = shouldShowTutorialDialog,
+                hasNewNotification = hasNewNotification
             )
         }
     }
@@ -207,8 +208,8 @@ class AccountsPreviewUseCase @Inject constructor(
         accountsList.add(QUICK_ACTIONS_ITEM_INDEX, accountListItemMapper.mapToQuickActionsItem())
     }
 
-    private fun getBannerItemOrNull(bannerList: List<BaseBanner>): BaseAccountListItem.BaseBannerItem? {
-        return bannerList.firstOrNull()?.let { banner ->
+    private fun getBannerItemOrNull(baseBanner: BaseBanner?): BaseAccountListItem.BaseBannerItem? {
+        return baseBanner?.let { banner ->
             val isButtonVisible = !banner.buttonTitle.isNullOrBlank() && !banner.buttonUrl.isNullOrBlank()
             val isTitleVisible = !banner.title.isNullOrBlank()
             val isDescriptionVisible = !banner.description.isNullOrBlank()
@@ -225,6 +226,7 @@ class AccountsPreviewUseCase @Inject constructor(
         }
     }
 
+    @SuppressWarnings("LongMethod")
     private suspend fun getBaseAccountListItems(
         onAccountValueCalculated: (AccountValue) -> Unit
     ): MutableList<BaseAccountListItem> {
@@ -290,13 +292,25 @@ class AccountsPreviewUseCase @Inject constructor(
         }
     }
 
-    private fun getPortfolioValueItem(
+    private fun getPortfolioValueSuccessItem(
         primaryAccountValue: BigDecimal,
         secondaryAccountValue: BigDecimal
-    ): BasePortfolioValue.PortfolioValues {
+    ): BasePortfolioValueItem.SuccessPortfolioValueItem {
         val selectedCurrencySymbol = parityUseCase.getPrimaryCurrencySymbolOrName()
         val secondaryCurrencySymbol = parityUseCase.getSecondaryCurrencySymbol()
-        return basePortfolioValueMapper.mapToPortfolioValuesSuccess(
+        return portfolioValueItemMapper.mapToPortfolioValuesSuccessItem(
+            formattedPrimaryAccountValue = primaryAccountValue.formatAsCurrency(selectedCurrencySymbol),
+            formattedSecondaryAccountValue = secondaryAccountValue.formatAsCurrency(secondaryCurrencySymbol)
+        )
+    }
+
+    private fun getPortfolioValuePartialErrorItem(
+        primaryAccountValue: BigDecimal,
+        secondaryAccountValue: BigDecimal
+    ): BasePortfolioValueItem.PartialErrorPortfolioValueItem {
+        val selectedCurrencySymbol = parityUseCase.getPrimaryCurrencySymbolOrName()
+        val secondaryCurrencySymbol = parityUseCase.getSecondaryCurrencySymbol()
+        return portfolioValueItemMapper.mapToPortfolioValuesPartialErrorItem(
             formattedPrimaryAccountValue = primaryAccountValue.formatAsCurrency(selectedCurrencySymbol),
             formattedSecondaryAccountValue = secondaryAccountValue.formatAsCurrency(secondaryCurrencySymbol)
         )

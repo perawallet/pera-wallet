@@ -73,7 +73,7 @@ class NotificationRepository @Inject constructor(
         }
     }
 
-    private fun addFilterToDatabase(publicKey: String, isFiltered: Boolean) {
+    private suspend fun addFilterToDatabase(publicKey: String, isFiltered: Boolean) {
         if (isFiltered) {
             notificationFilterDao.insert(NotificationFilter(publicKey))
         } else {
@@ -81,7 +81,7 @@ class NotificationRepository @Inject constructor(
         }
     }
 
-    fun deleteFilterFromDatabase(publicKey: String) {
+    suspend fun deleteFilterFromDatabase(publicKey: String) {
         notificationFilterDao.deleteByPublicKey(publicKey)
     }
 

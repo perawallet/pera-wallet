@@ -18,6 +18,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import androidx.annotation.LayoutRes
+import androidx.core.view.children
 import androidx.core.view.marginBottom
 import androidx.core.view.marginStart
 import androidx.core.view.marginTop
@@ -28,13 +29,17 @@ class ToolbarButtonContainerView(context: Context, attrs: AttributeSet? = null) 
 
     fun addButton(baseButton: BaseToolbarButton) {
         getInflatedButton(baseButton.layoutResId).apply {
-            id = generateViewId()
+            id = baseButton.id
             setOnClickListener { baseButton.onClick() }
             addEndMargin(this)
             baseButton.initAttributes(this)
         }.also {
             addView(it)
         }
+    }
+
+    fun removeClickListeners() {
+        children.forEach { it.setOnClickListener(null) }
     }
 
     private fun addEndMargin(button: View) {

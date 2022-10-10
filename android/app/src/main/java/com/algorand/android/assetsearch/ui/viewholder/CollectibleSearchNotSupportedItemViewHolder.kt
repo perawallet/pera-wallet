@@ -13,24 +13,19 @@
 package com.algorand.android.assetsearch.ui.viewholder
 
 import android.view.ViewGroup
-import com.algorand.android.assetsearch.ui.model.BaseAssetSearchListItem
-import com.algorand.android.customviews.collectibleimageview.CollectibleImageView
 import com.algorand.android.databinding.ItemSearchCollectibleBinding
 
 class CollectibleSearchNotSupportedItemViewHolder(
-    binding: ItemSearchCollectibleBinding
-) : BaseCollectibleSearchItemViewHolder(binding) {
-
-    override fun bindImage(collectibleImageView: CollectibleImageView, item: BaseAssetSearchListItem) {
-        super.bindImage(collectibleImageView, item)
-        with(collectibleImageView) {
-            showText(item.avatarDisplayText.getAsAvatarNameOrDefault(resources))
-        }
-    }
+    binding: ItemSearchCollectibleBinding,
+    listener: CollectibleSearchItemListener
+) : BaseCollectibleSearchItemViewHolder(binding, listener) {
 
     companion object : CollectibleSearchItemViewHolderCreator {
-        override fun create(parent: ViewGroup): CollectibleSearchNotSupportedItemViewHolder {
-            return CollectibleSearchNotSupportedItemViewHolder(createItemSearchCollectibleBinding(parent))
+        override fun create(
+            parent: ViewGroup,
+            listener: CollectibleSearchItemListener
+        ): CollectibleSearchNotSupportedItemViewHolder {
+            return CollectibleSearchNotSupportedItemViewHolder(createItemSearchCollectibleBinding(parent), listener)
         }
     }
 }

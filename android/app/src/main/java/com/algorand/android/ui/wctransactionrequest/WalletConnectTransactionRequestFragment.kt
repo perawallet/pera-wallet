@@ -1,3 +1,4 @@
+@file:Suppress("TooManyFunctions") // TODO: We should remove this after function count decrease under 25
 /*
  * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,14 +36,19 @@ import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.TransactionRequestAction
 import com.algorand.android.models.WalletConnectSignResult
 import com.algorand.android.models.WalletConnectTransaction
+import com.algorand.android.modules.walletconnect.transactionrequest.ui.model.WalletConnectTransactionRequestPreview
+import com.algorand.android.modules.walletconnectfallbackbrowser.ui.model.FallbackBrowserListItem
 import com.algorand.android.ui.common.walletconnect.WalletConnectAppPreviewCardView
+import com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionRequestFragmentDirections.Companion.actionWalletConnectTransactionRequestFragmentToWalletConnectTransactionConfirmedSingleBrowserBottomSheet
 import com.algorand.android.utils.BaseDoubleButtonBottomSheet.Companion.RESULT_KEY
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.isBluetoothEnabled
 import com.algorand.android.utils.navigateSafe
+import com.algorand.android.utils.sendErrorLog
 import com.algorand.android.utils.showWithStateCheck
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
@@ -51,9 +57,12 @@ import com.algorand.android.utils.walletconnect.isFutureTransaction
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class WalletConnectTransactionRequestFragment : DaggerBaseFragment(
-    R.layout.fragment_wallet_connect_transaction_request
-), LedgerLoadingDialog.Listener, TransactionRequestAction {
+class WalletConnectTransactionRequestFragment :
+    DaggerBaseFragment(
+        R.layout.fragment_wallet_connect_transaction_request
+    ),
+    LedgerLoadingDialog.Listener,
+    TransactionRequestAction {
 
     override val fragmentConfiguration = FragmentConfiguration()
 
@@ -72,14 +81,13 @@ class WalletConnectTransactionRequestFragment : DaggerBaseFragment(
 
     private val requestResultObserver = Observer<Event<Resource<AnnotatedString>>> {
         it.consume()?.use(
-            onSuccess = {
-                navBack()
-                navToSuccessfulTransactionDialog()
-            },
-            onFailed = {
-                navBack()
-            }
+            onSuccess = { handleSuccessfulTransaction() },
+            onFailed = { navBack() }
         )
+    }
+
+    private val walletConnectTransactionRequestPreviewCollector: (WalletConnectTransactionRequestPreview) -> Unit = {
+        updateUiWithPreview(it)
     }
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
@@ -126,8 +134,9 @@ class WalletConnectTransactionRequestFragment : DaggerBaseFragment(
         with(walletConnectNavController) {
             setGraph(
                 navInflater.inflate(R.navigation.transaction_request_navigation).apply {
-                    startDestination = startDestinationId
-                }, startDestinationArgs
+                    setStartDestination(startDestinationId)
+                },
+                startDestinationArgs
             )
         }
     }
@@ -138,10 +147,10 @@ class WalletConnectTransactionRequestFragment : DaggerBaseFragment(
             when (destination.id) {
                 R.id.walletConnectSingleTransactionFragment -> {
                     binding.transactionRequestMotionLayout.transitionToStart()
-                    motionTransaction.setEnable(false)
+                    motionTransaction.isEnabled = false
                 }
                 else -> {
-                    motionTransaction.setEnable(true)
+                    motionTransaction.isEnabled = true
                 }
             }
         }
@@ -160,6 +169,10 @@ class WalletConnectTransactionRequestFragment : DaggerBaseFragment(
         with(transactionRequestViewModel) {
             requestResultLiveData.observe(viewLifecycleOwner, requestResultObserver)
             signResultLiveData.observe(viewLifecycleOwner, signResultObserver)
+            viewLifecycleOwner.collectLatestOnLifecycle(
+                walletConnectTransactionRequestPreviewFlow,
+                walletConnectTransactionRequestPreviewCollector
+            )
         }
     }
 
@@ -253,6 +266,9 @@ class WalletConnectTransactionRequestFragment : DaggerBaseFragment(
             is WalletConnectSignResult.Error -> showSigningError(result)
             is WalletConnectSignResult.TransactionCancelled -> rejectRequest()
             is WalletConnectSignResult.LedgerScanFailed -> showLedgerNotFoundDialog()
+            else -> {
+                sendErrorLog("Unhandled else case in WalletConnectTransactionRequestFragment.handleSignResult")
+            }
         }
     }
 
@@ -327,7 +343,16 @@ class WalletConnectTransactionRequestFragment : DaggerBaseFragment(
         }
     }
 
-    private fun navToSuccessfulTransactionDialog() {
+    override fun motionTransitionToEnd() {
+        binding.transactionRequestMotionLayout.transitionToEnd()
+    }
+
+    private fun handleSuccessfulTransaction() {
+        transactionRequestViewModel.updatePreviewWithBrowserList(context?.packageManager)
+    }
+
+    private fun navToSuccessfulTransactionDialog(peerMetaName: String) {
+        navBack()
         nav(
             HomeNavigationDirections.actionGlobalSingleButtonBottomSheet(
                 titleAnnotatedString = AnnotatedString(R.string.your_transaction_is_being_processed),
@@ -338,11 +363,28 @@ class WalletConnectTransactionRequestFragment : DaggerBaseFragment(
                     replacementList = listOf(
                         Pair(
                             "peer_name",
-                            walletConnectTransaction?.session?.peerMeta?.name.orEmpty()
+                            peerMetaName
                         )
                     )
                 )
             )
         )
+    }
+
+    private fun navToSingleBrowserBottomSheet(browser: FallbackBrowserListItem, peerMetaName: String) {
+        nav(
+            actionWalletConnectTransactionRequestFragmentToWalletConnectTransactionConfirmedSingleBrowserBottomSheet(
+                browserItem = browser,
+                peerMetaName = peerMetaName
+            )
+        )
+    }
+
+    private fun updateUiWithPreview(preview: WalletConnectTransactionRequestPreview) {
+        with(preview) {
+            multipleFallbackBrowserFoundEvent?.consume()?.let { navToSuccessfulTransactionDialog(peerMetaName) }
+            singleFallbackBrowserFoundEvent?.consume()?.let { navToSingleBrowserBottomSheet(it, peerMetaName) }
+            noFallbackBrowserFoundEvent?.consume()?.let { navToSuccessfulTransactionDialog(peerMetaName) }
+        }
     }
 }

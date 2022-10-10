@@ -15,7 +15,6 @@ package com.algorand.android.nft.domain.usecase
 import com.algorand.android.R
 import com.algorand.android.models.Account
 import com.algorand.android.models.BaseAccountAddress
-import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.nft.domain.model.BaseCollectibleDetail
 import com.algorand.android.nft.domain.model.BaseCollectibleMedia.GifCollectibleMedia
 import com.algorand.android.nft.domain.model.BaseCollectibleMedia.ImageCollectibleMedia
@@ -34,9 +33,7 @@ import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.usecase.SendSignedTransactionUseCase
 import com.algorand.android.utils.Event
 import javax.inject.Inject
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 
 open class CollectibleDetailPreviewUseCase @Inject constructor(
     private val accountDetailUseCase: AccountDetailUseCase,
@@ -79,30 +76,7 @@ open class CollectibleDetailPreviewUseCase @Inject constructor(
         }
     }
 
-    suspend fun sendSignedTransaction(
-        signedTransactionDetail: SignedTransactionDetail.AssetOperation,
-        previousState: CollectibleDetailPreview
-    ) = flow<CollectibleDetailPreview> {
-        sendSignedTransactionUseCase.sendSignedTransaction(signedTransactionDetail).map {
-            it.useSuspended(
-                onSuccess = {
-                    accountAssetRemovalUseCase.addAssetDeletionToAccountCache(
-                        publicKey = signedTransactionDetail.accountCacheData.account.address,
-                        assetId = signedTransactionDetail.assetInformation.assetId
-                    )
-                    emit(previousState.copy(optOutSuccessEvent = Event(Unit)))
-                },
-                onFailed = {
-                    val errorMessage = it.exception?.message.orEmpty()
-                    emit(previousState.copy(isLoadingVisible = false, globalErrorEvent = Event(errorMessage)))
-                },
-                onLoading = {
-                    emit(previousState.copy(isLoadingVisible = true))
-                }
-            )
-        }.collect()
-    }
-
+    @SuppressWarnings("LongMethod")
     private fun onCollectibleDetailFetchedSuccessfully(
         baseCollectibleDetail: BaseCollectibleDetail,
         isOwnedByTheUser: Boolean,
@@ -111,10 +85,7 @@ open class CollectibleDetailPreviewUseCase @Inject constructor(
         isHoldingByWatchAccount: Boolean
     ): CollectibleDetailPreview {
         // TODO: 4.03.2022 Is error display text correct?
-        val errorDisplayText = baseCollectibleDetail.title
-            ?: baseCollectibleDetail.fullName
-            ?: baseCollectibleDetail.shortName
-            ?: baseCollectibleDetail.assetId.toString()
+        val errorDisplayText = baseCollectibleDetail.getErrorDisplayText()
         val isNftExplorerVisible = !baseCollectibleDetail.nftExplorerUrl.isNullOrBlank()
         val ownerAccountAddress = accountAddressUseCase.createAccountAddress(ownerAccountPublicKey)
         val creatorAccountAddress = getCreatorAccountAddress(baseCollectibleDetail.assetCreator?.publicKey)

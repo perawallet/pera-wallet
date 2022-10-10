@@ -20,7 +20,6 @@ import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.modules.transaction.detail.ui.BaseTransactionDetailFragment
 import com.algorand.android.modules.transaction.detail.ui.adapter.TransactionDetailAdapter
 import com.algorand.android.utils.copyToClipboard
-import com.algorand.android.utils.toShortenedAddress
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -40,8 +39,7 @@ class StandardTransactionDetailFragment : BaseTransactionDetailFragment() {
 
     private val transactionDetailLongClickListener = object : TransactionDetailAdapter.LongPressListener {
         override fun onAddressLongClick(publicKey: String) {
-            context?.copyToClipboard(publicKey, showToast = false)
-            showTopToast(getString(R.string.address_copied_to_clipboard), publicKey.toShortenedAddress())
+            onAccountAddressCopied(publicKey)
         }
 
         override fun onTransactionIdLongClick(transactionId: String) {
@@ -51,16 +49,6 @@ class StandardTransactionDetailFragment : BaseTransactionDetailFragment() {
 
     private val accountItemClickListener = TransactionDetailAdapter.AccountItemListener {
         onAddButtonClicked(it)
-    }
-
-    private fun navToInnerTransactionFragment() {
-        nav(
-            StandardTransactionDetailFragmentDirections
-                .actionStandardTransactionDetailFragmentToInnerTransactionDetailFragment(
-                    transactionId = transactionDetailViewModel.transactionId,
-                    publicKey = transactionDetailViewModel.publicKey
-                )
-        )
     }
 
     override val transactionDetailAdapter = TransactionDetailAdapter(

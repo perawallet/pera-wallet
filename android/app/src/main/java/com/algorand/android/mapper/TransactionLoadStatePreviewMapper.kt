@@ -16,8 +16,8 @@ package com.algorand.android.mapper
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.LoadState.Loading
-import com.algorand.android.decider.TransactionsScreenStateViewVisibilityDecider
 import com.algorand.android.decider.TransactionScreenStateViewTypeDecider
+import com.algorand.android.decider.TransactionsScreenStateViewVisibilityDecider
 import com.algorand.android.models.ui.TransactionLoadStatePreview
 import javax.inject.Inject
 
@@ -33,7 +33,8 @@ class TransactionLoadStatePreviewMapper @Inject constructor(
     ): TransactionLoadStatePreview {
         return TransactionLoadStatePreview(
             isTransactionListVisible = (combinedLoadStates.refresh is LoadState.Error).not() &&
-                (isLastStateError && combinedLoadStates.refresh is Loading).not(),
+                (isLastStateError && combinedLoadStates.refresh is Loading).not() &&
+                itemCount != 0,
             isScreenStateViewVisible = transactionsScreenStateVisibilityDecider.decideScreenStateViewVisibility(
                 combinedLoadStates,
                 itemCount,

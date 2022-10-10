@@ -26,21 +26,22 @@ import com.algorand.android.utils.walletconnect.WalletConnectSessionBuilder
 import com.algorand.android.utils.walletconnect.WalletConnectSessionCachedDataHandler
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionErrorProvider
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.gson.Gson
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import org.walletconnect.impls.FileWCSessionStore
 import java.io.File
 import javax.inject.Named
 import javax.inject.Singleton
-import okhttp3.OkHttpClient
-import org.walletconnect.impls.FileWCSessionStore
 
 @Module
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 object WalletConnectModule {
 
     @Singleton
@@ -67,11 +68,13 @@ object WalletConnectModule {
     fun provideWalletConnectSessionBuilder(
         @Named("walletConnectHttpClient") okHttpClient: OkHttpClient,
         @ApplicationContext appContext: Context,
+        gson: Gson,
         moshi: Moshi,
         walletConnectMapper: WCWalletConnectMapper
     ): WalletConnectSessionBuilder {
         val storageFile = File(appContext.cacheDir, WCWalletConnectClient.CACHE_STORAGE_NAME).apply { createNewFile() }
         return WalletConnectSessionBuilder(
+            gson,
             moshi,
             okHttpClient,
             FileWCSessionStore(storageFile, moshi),
@@ -95,7 +98,7 @@ object WalletConnectModule {
         return with(appContext) {
             val rejectedErrorProvider = BaseWalletConnectErrorProvider.RequestRejectedErrorProvider(
                 userRejectionErrorMessage = getString(R.string.transaction_request_rejected_user_rejected),
-                failedGroupTransactionErrorMessage = getString(R.string.transaction_request_rejected_transaction_group),
+                failedGroupTransactionErrorMessage = getString(R.string.it_looks_like),
                 pendingTransactionErrorMessage = getString(R.string.transaction_request_rejected_user_currently)
             )
 
@@ -120,7 +123,6 @@ object WalletConnectModule {
                 unableToSignErrorMessage = getString(R.string.invalid_input_unable_to_be),
                 atomicTxnNoNeedToBeSignedErrorMessage = getString(R.string.invalid_input_group_transaction),
                 invalidSignerErrorMessage = getString(R.string.invalid_input_requested_signer),
-                missingTransactionFromGroupErrorMessage = getString(R.string.it_looks_like)
             )
 
             WalletConnectTransactionErrorProvider(

@@ -43,14 +43,18 @@
         <TextView
             android:id="@+id/assetShortNameTextView"
             style="@style/TextAppearance.Title.Sans.Medium"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/spacing_xlarge"
             android:layout_marginTop="@dimen/spacing_xxxlarge"
+            android:drawablePadding="@dimen/spacing_xsmall"
+            app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/customToolbar"
-            tools:text="STBLC2" />
+            tools:drawableEnd="@drawable/ic_asa_trusted"
+            tools:text="@tools:sample/lorem[2]" />
 
         <TextView
             android:id="@+id/assetFullNameTextView"
@@ -75,28 +79,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/assetFullNameTextView" />
 
-        <ImageView
-            android:id="@+id/verifiedImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@id/assetIdTextView"
-            app:layout_constraintStart_toStartOf="@id/assetNameDivider"
-            app:layout_constraintTop_toTopOf="@id/assetIdTextView"
-            app:srcCompat="@drawable/ic_shield_check_small"
-            tools:visibility="visible" />
-
         <TextView
             android:id="@+id/assetIdTextView"
             style="@style/TextAppearance.Description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/spacing_xxsmall"
+            android:layout_marginStart="@dimen/spacing_xlarge"
             android:layout_marginTop="@dimen/spacing_xlarge"
             android:layout_marginEnd="@dimen/spacing_normal"
             app:layout_constraintEnd_toStartOf="@id/copyIDButton"
             app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toEndOf="@id/verifiedImageView"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/assetNameDivider"
             app:layout_goneMarginStart="0dp"
             tools:text="7182SJUW7123" />
@@ -128,6 +121,43 @@
             app:layout_constraintTop_toBottomOf="@id/assetIdTextView" />
 
         <TextView
+            android:id="@+id/accountLabel"
+            style="@style/TextAppearance.Description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_xlarge"
+            android:text="@string/account"
+            app:layout_constraintBottom_toBottomOf="@id/accountTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/accountTextView" />
+
+        <TextView
+            android:id="@+id/accountTextView"
+            style="@style/TextAppearance.Body.Sans"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_xlarge"
+            android:layout_marginEnd="@dimen/spacing_xlarge"
+            android:drawablePadding="@dimen/spacing_small"
+            android:gravity="end|center_vertical"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toEndOf="@id/accountLabel"
+            app:layout_constraintTop_toBottomOf="@id/assetCodeDivider"
+            tools:drawableStart="@drawable/ic_wallet"
+            tools:text="@tools:sample/lorem[2]" />
+
+        <View
+            android:id="@+id/accountDivider"
+            style="@style/Divider.Horizontal"
+            android:layout_marginTop="@dimen/spacing_xlarge"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/accountTextView" />
+
+        <TextView
             android:id="@+id/transactionFeeLabel"
             style="@style/TextAppearance.Description"
             android:layout_width="wrap_content"
@@ -136,21 +166,22 @@
             android:layout_marginTop="@dimen/spacing_xlarge"
             android:text="@string/transacting_fee"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/assetCodeDivider" />
+            app:layout_constraintTop_toBottomOf="@id/accountDivider" />
 
         <TextView
             android:id="@+id/transactionFeeTextView"
-            style="@style/TextAppearance.Body.Sans.Medium"
+            style="@style/TextAppearance.Body.Sans"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_normal"
             android:layout_marginEnd="@dimen/spacing_xlarge"
+            android:ellipsize="end"
             android:gravity="end"
-            android:textColor="@color/negative"
+            android:maxLines="2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/transactionFeeLabel"
             app:layout_constraintTop_toTopOf="@id/transactionFeeLabel"
-            tools:text="@tools:sample/lorem[2]" />
+            tools:text="@tools:sample/lorem[42]" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/warningIconImageView"
@@ -222,6 +253,14 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             app:constraint_referenced_ids="transactionFeeLabel, transactionFeeTextView"
+            tools:visibility="visible" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/accountGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="accountLabel, accountTextView, accountDivider"
             tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

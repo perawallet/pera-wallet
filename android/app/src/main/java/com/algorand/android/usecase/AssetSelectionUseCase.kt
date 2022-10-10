@@ -13,6 +13,7 @@
 
 package com.algorand.android.usecase
 
+import com.algorand.android.customviews.accountandassetitem.mapper.AssetItemConfigurationMapper
 import com.algorand.android.mapper.AssetSelectionMapper
 import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.models.AssetTransaction
@@ -23,6 +24,7 @@ import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseO
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedUnsupportedCollectibleData
 import com.algorand.android.models.BaseSelectAssetItem
 import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
+import com.algorand.android.modules.sorting.assetsorting.ui.usecase.AssetItemSortUseCase
 import com.algorand.android.nft.mapper.AssetSelectionPreviewMapper
 import com.algorand.android.nft.ui.model.AssetSelectionPreview
 import com.algorand.android.utils.Event
@@ -30,6 +32,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flow
 
 class AssetSelectionUseCase @Inject constructor(
@@ -39,22 +42,39 @@ class AssetSelectionUseCase @Inject constructor(
     private val accountAssetDataUseCase: AccountAssetDataUseCase,
     private val accountCollectibleDataUseCase: AccountCollectibleDataUseCase,
     private val assetSelectionPreviewMapper: AssetSelectionPreviewMapper,
-    private val accountInformationUseCase: AccountInformationUseCase
+    private val accountInformationUseCase: AccountInformationUseCase,
+    private val assetItemConfigurationMapper: AssetItemConfigurationMapper,
+    private val assetItemSortUseCase: AssetItemSortUseCase
 ) {
     fun getAssetSelectionListFlow(publicKey: String): Flow<List<BaseSelectAssetItem>> {
         return combine(
             accountAssetDataUseCase.getAccountAllAssetDataFlow(publicKey = publicKey, includeAlgo = true),
             parityUseCase.getSelectedCurrencyDetailCacheFlow()
         ) { accountAssetData, _ ->
-            mutableListOf<BaseSelectAssetItem>().apply {
-                accountAssetData.forEach { baseAccountAssetData ->
-                    (baseAccountAssetData as? BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData)
-                        ?.let { ownedAsset -> add(assetSelectionMapper.mapToAssetItem(ownedAsset)) }
-                }
+            val assetList = mutableListOf<BaseSelectAssetItem>().apply {
+                accountAssetData.filterIsInstance<BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData>()
+                    .forEach { baseAccountAssetData ->
+                        val assetItemConfiguration = with(baseAccountAssetData) {
+                            assetItemConfigurationMapper.mapTo(
+                                isAmountInSelectedCurrencyVisible = isAmountInSelectedCurrencyVisible,
+                                secondaryValueText =
+                                getSelectedCurrencyParityValue().getFormattedValue(isCompact = true),
+                                formattedCompactAmount = formattedCompactAmount,
+                                assetId = id,
+                                name = name,
+                                shortName = shortName,
+                                prismUrl = prismUrl,
+                                verificationTier = verificationTier,
+                                primaryValue = parityValueInSelectedCurrency.amountAsCurrency
+                            )
+                        }
+                        add(assetSelectionMapper.mapToAssetItem(assetItemConfiguration))
+                    }
                 val collectibleSelectionItems = createCollectibleSelectionItems(publicKey)
                 addAll(collectibleSelectionItems)
             }
-        }
+            assetItemSortUseCase.sortAssets(assetList)
+        }.distinctUntilChanged()
     }
 
     private fun createCollectibleSelectionItems(

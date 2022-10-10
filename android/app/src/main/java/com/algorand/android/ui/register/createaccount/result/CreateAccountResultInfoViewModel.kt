@@ -12,15 +12,17 @@
 
 package com.algorand.android.ui.register.createaccount.result
 
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.modules.tracking.onboarding.register.createaccountresultinfo.CreateAccountResultInfoFragmentEventTracker
 import com.algorand.android.usecase.CreateAccountResultInfoUseCase
 import com.algorand.android.usecase.LockPreferencesUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 
-class CreateAccountResultInfoViewModel @ViewModelInject constructor(
+@HiltViewModel
+class CreateAccountResultInfoViewModel @Inject constructor(
     createAccountResultInfoUseCase: CreateAccountResultInfoUseCase,
     private val lockPreferencesUseCase: LockPreferencesUseCase,
     private val createAccountResultInfoFragmentEventTracker: CreateAccountResultInfoFragmentEventTracker

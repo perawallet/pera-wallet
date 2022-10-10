@@ -28,7 +28,7 @@ class CollectibleDetailRepositoryImpl @Inject constructor(
 ) : CollectibleDetailRepository {
 
     override suspend fun getCollectibleDetail(collectibleAssetId: Long): Flow<Result<CollectibleDetailDTO>> = flow {
-        request { mobileAlgorandApi.getCollectibleDetail(collectibleAssetId) }.use(
+        request { mobileAlgorandApi.getAssetDetail(collectibleAssetId) }.use(
             onSuccess = { assetDetailResponse ->
                 val collectibleDetail = collectibleDetailDTOMapper.mapToCollectibleDetail(assetDetailResponse)
                 emit(Result.Success(collectibleDetail))

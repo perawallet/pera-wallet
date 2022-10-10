@@ -13,8 +13,7 @@
 
 package com.algorand.android.ui.ledgersearch.ledgerinformation
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,13 +21,15 @@ import com.algorand.android.models.AccountSelectionListItem
 import com.algorand.android.models.LedgerInformationListItem
 import com.algorand.android.usecase.LedgerInformationUseCase
 import com.algorand.android.utils.getOrThrow
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class LedgerInformationViewModel @ViewModelInject constructor(
+@HiltViewModel
+class LedgerInformationViewModel @Inject constructor(
     private val ledgerInformationUseCase: LedgerInformationUseCase,
-    @Assisted savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val selectedLedger =

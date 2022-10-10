@@ -14,7 +14,7 @@ package com.algorand.android.ui.notificationcenter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.net.toUri
+import androidx.core.view.doOnLayout
 import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.R
@@ -23,7 +23,8 @@ import com.algorand.android.models.NotificationListItem
 import com.algorand.android.models.NotificationMetadata
 import com.algorand.android.models.NotificationType
 import com.algorand.android.models.User
-import com.algorand.android.utils.extensions.setContactIconDrawable
+import com.algorand.android.utils.AssetName
+import com.algorand.android.utils.assetdrawable.BaseAssetDrawableProvider
 import com.algorand.android.utils.getRelativeTimeDifference
 import com.algorand.android.utils.setupAlgoReceivedMessage
 import com.algorand.android.utils.setupAlgoSentMessage
@@ -39,40 +40,53 @@ class NotificationItemViewHolder(
 
     fun bind(notificationItem: NotificationListItem?, lastRefreshedDateTime: ZonedDateTime?) {
         notificationItem?.run {
-            setDescriptionText(type, formattedAmount, metadata, senderUser, receiverUser, fallbackMessage)
-            setAvatar(type, senderUser, receiverUser)
-            setDate(creationDateTime, timeDifference)
-            setReadStatus(creationDateTime, lastRefreshedDateTime)
+            setDescriptionText(
+                type = type,
+                formattedAmount = formattedAmount,
+                metadata = metadata,
+                senderUser = senderUser,
+                receiverUser = receiverUser,
+                fallbackMessage = fallbackMessage
+            )
+            setAvatar(
+                type = type,
+                assetDrawableProvider = assetDrawableProvider,
+                assetName = assetName,
+                prismUrl = prismUrl
+            )
+            setDate(
+                time = creationDateTime,
+                timeDifference = timeDifference
+            )
+            setReadStatus(
+                creationDate = creationDateTime,
+                lastRefreshedDateTime = lastRefreshedDateTime
+            )
         }
     }
 
     private fun setAvatar(
         type: NotificationType,
-        senderUser: User?,
-        receiverUser: User?
+        assetDrawableProvider: BaseAssetDrawableProvider,
+        assetName: AssetName,
+        prismUrl: String?
     ) {
-        if (type == NotificationType.ASSET_TRANSACTION_FAILED || type == NotificationType.ASSET_TRANSACTION_FAILED) {
-            binding.avatarImageView.setImageResource(R.drawable.ic_default_failed_notification)
-            return
-        }
+        with(binding.avatarImageView) {
+            if (type == NotificationType.ASSET_TRANSACTION_FAILED) {
+                setImageResource(R.drawable.ic_default_failed_notification)
+                return@with
+            }
 
-        val avatarUser = when (type) {
-            NotificationType.TRANSACTION_RECEIVED, NotificationType.ASSET_TRANSACTION_RECEIVED,
-            NotificationType.ASSET_SUPPORT_REQUEST, NotificationType.ASSET_SUPPORT_SUCCESS -> {
-                senderUser
+            setImageDrawable(null)
+            doOnLayout {
+                assetDrawableProvider.provideAssetDrawable(
+                    context = context,
+                    assetName = assetName,
+                    logoUri = prismUrl,
+                    width = it.measuredWidth,
+                    onResourceReady = ::setImageDrawable
+                )
             }
-            NotificationType.TRANSACTION_SENT, NotificationType.ASSET_TRANSACTION_SENT -> {
-                receiverUser
-            }
-            else -> null
-        }
-        if (avatarUser != null) {
-            binding.avatarImageView.setContactIconDrawable(
-                uri = avatarUser.imageUriAsString?.toUri(),
-                iconSize = R.dimen.account_icon_size_large
-            )
-        } else {
-            binding.avatarImageView.setImageResource(R.drawable.ic_algo_green_round)
         }
     }
 

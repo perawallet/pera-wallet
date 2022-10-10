@@ -28,10 +28,10 @@ import com.algorand.android.models.TransactionRequestAssetInformation
 import com.algorand.android.models.TransactionRequestTransactionInfo
 import com.algorand.android.utils.ALGO_DECIMALS
 import com.algorand.android.utils.addUnnamedAssetName
-import com.algorand.android.utils.enableClickToCopy
 import com.algorand.android.utils.extensions.setAccountIconDrawable
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.formatAmount
+import com.algorand.android.utils.setAssetNameTextColorByVerificationTier
 import com.algorand.android.utils.setDrawable
 import com.algorand.android.utils.viewbinding.viewBinding
 import java.math.BigInteger
@@ -43,8 +43,14 @@ class WalletConnectTransactionInfoCardView(
 
     private val binding = viewBinding(CustomWalletConnectTransactionInfoBinding::inflate)
 
+    private var listener: WalletConnectTransactionInfoCardViewListener? = null
+
     init {
         initRootLayout()
+    }
+
+    fun setListener(listener: WalletConnectTransactionInfoCardViewListener) {
+        this.listener = listener
     }
 
     fun initTransactionInfo(transactionInfo: TransactionRequestTransactionInfo?) {
@@ -53,7 +59,7 @@ class WalletConnectTransactionInfoCardView(
             binding.assetDeletionRequestWarningTextView.isVisible = showDeletionWarning
             initFromAddress(fromDisplayedAddress, fromAccountIcon)
             initToAddress(toDisplayedAddress)
-            initAssetInformation(assetInformation)
+            initAssetInformation(assetInformation, fromDisplayedAddress?.fullAddress)
             initAccountBalance(accountBalance, assetInformation)
             initRekeyToAddress(rekeyToAccountAddress, isLocalAccountSigner)
             initCloseToAddress(closeToAccountAddress, isLocalAccountSigner)
@@ -61,6 +67,10 @@ class WalletConnectTransactionInfoCardView(
             initAssetName(assetName, isAssetUnnamed)
             initUnitName(assetUnitName, isAssetUnnamed)
         }
+    }
+
+    fun setWalletConnectTransactionInfoCardViewListener(listener: WalletConnectTransactionInfoCardViewListener) {
+        this.listener = listener
     }
 
     private fun initAssetName(assetName: String?, isAssetUnnamed: Boolean) {
@@ -106,34 +116,60 @@ class WalletConnectTransactionInfoCardView(
                 fromAccountNameTextView.apply {
                     text = displayedAddress.displayValue
                     isSingleLine = displayedAddress.isSingleLine == true
+                    setOnLongClickListener {
+                        listener?.onAccountAddressLongPressed(displayedAddress.fullAddress)
+                        return@setOnLongClickListener true
+                    }
                 }
                 if (accountIconResource != null) {
                     fromAccountTypeImageView.setAccountIconDrawable(
                         accountIconResource,
                         R.dimen.account_icon_size_normal
                     )
+                    fromAccountTypeImageView.show()
                 }
                 fromGroup.show()
             }
         }
     }
 
-    private fun initToAddress(displayedAddress: String?) {
-        if (!displayedAddress.isNullOrBlank()) {
-            binding.toAccountNameTextView.text = displayedAddress
-            binding.toAccountNameTextView.enableClickToCopy(displayedAddress)
-            binding.toGroup.show()
+    private fun initToAddress(displayedAddress: BaseWalletConnectDisplayedAddress?) {
+        if (displayedAddress != null) {
+            with(binding) {
+                toAccountNameTextView.apply {
+                    text = displayedAddress.displayValue
+                    setOnLongClickListener {
+                        listener?.onAccountAddressLongPressed(displayedAddress.fullAddress)
+                        return@setOnLongClickListener true
+                    }
+                }
+                toGroup.show()
+            }
         }
     }
 
-    private fun initAssetInformation(assetInformation: TransactionRequestAssetInformation?) {
+    private fun initAssetInformation(
+        assetInformation: TransactionRequestAssetInformation?,
+        accountAddress: String?
+    ) {
         assetInformation?.let {
             with(binding) {
-                if (assetInformation.isVerified == true) {
-                    assetNameTextView.setDrawable(start = AppCompatResources.getDrawable(context, R.drawable.ic_shield))
+                it.verificationTierConfiguration.drawableResId?.run {
+                    assetNameTextView.setDrawable(start = AppCompatResources.getDrawable(context, this))
                 }
-                assetNameTextView.text = assetInformation.shortName
-                assetIdTextView.text = assetInformation.assetId.toString()
+                assetNameTextView.apply {
+                    text = assetInformation.shortName
+                    setAssetNameTextColorByVerificationTier(it.verificationTierConfiguration)
+                    setOnClickListener {
+                        listener?.onAssetItemClick(assetId = assetInformation.assetId, accountAddress = accountAddress)
+                    }
+                }
+                assetIdTextView.apply {
+                    text = assetInformation.assetId.toString()
+                    setOnClickListener {
+                        listener?.onAssetItemClick(assetId = assetInformation.assetId, accountAddress = accountAddress)
+                    }
+                }
                 assetGroup.show()
             }
         }
@@ -160,6 +196,10 @@ class WalletConnectTransactionInfoCardView(
                 rekeyToTextView.apply {
                     text = address?.displayValue
                     isSingleLine = address?.isSingleLine == true
+                    setOnLongClickListener {
+                        address?.fullAddress?.let { fullAddress -> listener?.onAccountAddressLongPressed(fullAddress) }
+                        return@setOnLongClickListener true
+                    }
                 }
                 rekeyGroup.show()
                 rekeyToWarningTextView.isVisible = isLocalAccountSigner
@@ -173,6 +213,10 @@ class WalletConnectTransactionInfoCardView(
                 remainderCloseToTextView.apply {
                     text = address?.displayValue
                     isSingleLine = address?.isSingleLine == true
+                    setOnLongClickListener {
+                        address?.fullAddress?.let { fullAddress -> listener?.onAccountAddressLongPressed(fullAddress) }
+                        return@setOnLongClickListener true
+                    }
                 }
                 remainderGroup.show()
                 remainderCloseToWarningTextView.isVisible = isLocalAccountSigner
@@ -190,6 +234,10 @@ class WalletConnectTransactionInfoCardView(
                 closeAssetToTextView.apply {
                     text = address?.displayValue
                     isSingleLine = address?.isSingleLine == true
+                    setOnLongClickListener {
+                        address?.fullAddress?.let { fullAddress -> listener?.onAccountAddressLongPressed(fullAddress) }
+                        return@setOnLongClickListener true
+                    }
                 }
                 closeAssetToGroup.show()
             }
@@ -198,5 +246,10 @@ class WalletConnectTransactionInfoCardView(
 
     private fun initRootLayout() {
         setPadding(resources.getDimensionPixelSize(R.dimen.spacing_large))
+    }
+
+    interface WalletConnectTransactionInfoCardViewListener {
+        fun onAssetItemClick(assetId: Long?, accountAddress: String?)
+        fun onAccountAddressLongPressed(accountAddress: String)
     }
 }

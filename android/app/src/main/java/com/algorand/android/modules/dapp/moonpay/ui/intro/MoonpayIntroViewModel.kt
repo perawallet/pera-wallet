@@ -12,7 +12,7 @@
 
 package com.algorand.android.modules.dapp.moonpay.ui.intro
 
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.modules.dapp.moonpay.data.remote.model.SignMoonpayUrlResponse
@@ -20,11 +20,13 @@ import com.algorand.android.modules.dapp.moonpay.domain.usecase.MoonpaySignUrlUs
 import com.algorand.android.modules.tracking.moonpay.MoonpayAlgoBuyTapEventTracker
 import com.algorand.android.network.AlgodInterceptor
 import com.algorand.android.utils.MAINNET_NETWORK_SLUG
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class MoonpayIntroViewModel @ViewModelInject constructor(
+@HiltViewModel
+class MoonpayIntroViewModel @Inject constructor(
     private val algodInterceptor: AlgodInterceptor,
     private val moonpaySignUrlUseCase: MoonpaySignUrlUseCase,
     private val moonpayAlgoBuyTapEventTracker: MoonpayAlgoBuyTapEventTracker

@@ -5,10 +5,12 @@ import android.view.View
 import com.algorand.android.R
 import com.algorand.android.core.BaseBottomSheet
 import com.algorand.android.databinding.BottomSheetRateExperienceBinding
-import com.algorand.android.utils.openApplicationPageOnStore
+import com.algorand.android.utils.browser.openApplicationPageOnStore
 import com.algorand.android.utils.viewbinding.viewBinding
 
-class RateExperienceBottomSheet : BaseBottomSheet(R.layout.bottom_sheet_rate_experience) {
+class RateExperienceBottomSheet : BaseBottomSheet(
+    layoutResId = R.layout.bottom_sheet_rate_experience
+) {
 
     private val binding by viewBinding(BottomSheetRateExperienceBinding::bind)
 

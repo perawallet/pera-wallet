@@ -23,12 +23,14 @@ class AccountSelectionMapper @Inject constructor() {
     fun mapToAccountSelection(
         accountDisplayName: AccountDisplayName?,
         accountIconResource: AccountIconResource?,
+        accountAssetCount: Int?,
         accountAddress: String,
     ): AccountSelection {
         return AccountSelection(
             accountDisplayName = accountDisplayName,
             accountIconResource = accountIconResource,
-            accountAddress = accountAddress
+            accountAddress = accountAddress,
+            accountAssetCount = accountAssetCount
         )
     }
 }

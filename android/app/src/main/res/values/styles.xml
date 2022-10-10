@@ -102,6 +102,12 @@
         <item name="android:textColor">@color/text_button_text</item>
     </style>
 
+    <style name="TextButton.Positive" parent="TextButton">
+        <item name="android:backgroundTint">@color/button_square_bg</item>
+        <item name="android:textColor">@color/button_square_icon</item>
+        <item name="iconTint">@color/button_square_icon</item>
+    </style>
+
     <!--  TODO Remove after implementing new banner item design  -->
     <style name="TextButton.Icon">
         <item name="android:minWidth">@null</item>
@@ -270,6 +276,19 @@
     </style>
 
     <style name="TextAppearance.Title.Small.Sans.Medium">
+        <item name="fontFamily">@font/dmsans_medium</item>
+    </style>
+
+    <style name="TextAppearance.Title2">
+        <item name="android:textSize">@dimen/text_size_28</item>
+        <item name="lineHeight">36sp</item>
+    </style>
+
+    <style name="TextAppearance.Title2.Sans">
+        <item name="fontFamily">@font/dmsans_regular</item>
+    </style>
+
+    <style name="TextAppearance.Title2.Sans.Medium">
         <item name="fontFamily">@font/dmsans_medium</item>
     </style>
 
@@ -453,7 +472,8 @@
     <style name="Button.Text.Link">
         <item name="android:textAppearance">@style/TextAppearance.Footnote.Sans.Medium</item>
         <item name="android:textColor">@color/link_primary</item>
-        <item name="android:minHeight">0dp</item>
+        <item name="android:minHeight">44dp</item>
+        <item name="android:minWidth">44dp</item>
         <item name="android:padding">0dp</item>
     </style>
 
@@ -493,10 +513,16 @@
     </style>
 
     <style name="Button.Transparent.Icon">
-        <item name="android:gravity">center_vertical</item>
-        <item name="iconPadding">@dimen/spacing_xlarge</item>
-        <item name="iconGravity">start</item>
+        <item name="android:gravity">center</item>
+        <item name="iconPadding">0dp</item>
+        <item name="iconSize">20dp</item>
+        <item name="iconGravity">textStart</item>
         <item name="iconTint">@color/primary_text_color</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="rippleColor">@color/primary_background</item>
     </style>
 
     <style name="Button.DialPad">
@@ -708,9 +734,9 @@
         <item name="elevationOverlayEnabled">false</item>
     </style>
 
-    <style name="BottomViewGradient">
+    <style name="BottomFadeGradient">
         <item name="android:layout_height">@dimen/bottom_fade_gradient_height</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:background">@drawable/bg_gradient_view</item>
+        <item name="android:background">@drawable/bg_bottom_fade_gradient</item>
     </style>
 </resources>

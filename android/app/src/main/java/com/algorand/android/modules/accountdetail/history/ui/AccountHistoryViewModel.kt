@@ -13,8 +13,7 @@
 
 package com.algorand.android.modules.accountdetail.history.ui
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -29,6 +28,7 @@ import com.algorand.android.modules.transaction.csv.ui.usecase.CsvStatusPreviewU
 import com.algorand.android.modules.transactionhistory.ui.model.BaseTransactionItem
 import com.algorand.android.usecase.AccountHistoryUseCase
 import com.algorand.android.utils.getOrThrow
+import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.File
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -42,11 +42,12 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
-class AccountHistoryViewModel @ViewModelInject constructor(
+@HiltViewModel
+class AccountHistoryViewModel @Inject constructor(
     private val accountHistoryUseCase: AccountHistoryUseCase,
     private val csvStatusPreviewUseCase: CsvStatusPreviewUseCase,
     private val accountHistoryFragmentEventTracker: AccountHistoryFragmentEventTracker,
-    @Assisted savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val dateFilterFlow = MutableStateFlow<DateFilter>(DateFilter.AllTime)
@@ -114,8 +115,7 @@ class AccountHistoryViewModel @ViewModelInject constructor(
             csvStatusPreviewUseCase.createCsvFile(
                 cacheDir = cacheDirectory,
                 dateRange = dateRange,
-                publicKey = accountAddress,
-                scope = this
+                publicKey = accountAddress
             ).collectLatest {
                 _csvStatusPreviewFlow.emit(it)
             }

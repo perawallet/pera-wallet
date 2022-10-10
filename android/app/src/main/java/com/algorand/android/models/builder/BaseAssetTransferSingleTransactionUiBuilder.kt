@@ -17,10 +17,12 @@ import com.algorand.android.R
 import com.algorand.android.models.BaseAssetTransferTransaction
 import com.algorand.android.models.WalletConnectTransactionAmount
 import com.algorand.android.models.WalletConnectTransactionShortDetail
+import com.algorand.android.modules.verificationtier.ui.decider.VerificationTierConfigurationDecider
 import javax.inject.Inject
 
-class BaseAssetTransferSingleTransactionUiBuilder @Inject constructor() :
-    WalletConnectSingleTransactionUiBuilder<BaseAssetTransferTransaction> {
+class BaseAssetTransferSingleTransactionUiBuilder @Inject constructor(
+    private val verificationTierConfigurationDecider: VerificationTierConfigurationDecider
+) : WalletConnectSingleTransactionUiBuilder<BaseAssetTransferTransaction> {
 
     override fun buildToolbarTitleRes(txn: BaseAssetTransferTransaction): Int {
         return when (txn) {
@@ -33,10 +35,10 @@ class BaseAssetTransferSingleTransactionUiBuilder @Inject constructor() :
         return with(txn) {
             WalletConnectTransactionShortDetail(
                 accountIconResource = createAccountIconResource(),
-                accountName = account?.name,
+                accountName = fromAccount?.name,
                 accountBalance = assetBalance,
                 warningCount = warningCount,
-                assetShortName = assetParams?.shortName,
+                assetShortName = walletConnectTransactionAssetDetail?.shortName,
                 decimal = assetDecimal,
                 fee = fee
             )
@@ -46,12 +48,15 @@ class BaseAssetTransferSingleTransactionUiBuilder @Inject constructor() :
     override fun buildTransactionAmount(txn: BaseAssetTransferTransaction): WalletConnectTransactionAmount {
         return with(txn) {
             WalletConnectTransactionAmount(
-                assetName = assetParams?.fullName,
+                assetName = walletConnectTransactionAssetDetail?.fullName,
                 assetId = assetId,
                 transactionAmount = transactionAmount,
                 assetDecimal = assetDecimal,
-                assetShortName = assetParams?.shortName,
-                formattedSelectedCurrencyValue = assetInformation?.formattedSelectedCurrencyValue
+                assetShortName = walletConnectTransactionAssetDetail?.shortName,
+                formattedSelectedCurrencyValue = assetInformation?.formattedSelectedCurrencyValue,
+                verificationTierConfiguration =
+                verificationTierConfigurationDecider.decideVerificationTierConfiguration(verificationTier),
+                fromDisplayedAddress = getFromAddressAsDisplayAddress(assetReceiverAddress.decodedAddress.orEmpty())
             )
         }
     }

@@ -24,17 +24,28 @@ import com.algorand.android.utils.getAccountIndexAsByteArray
 import com.algorand.android.utils.recordException
 import com.algorand.android.utils.removeExcessBytes
 import com.algorand.android.utils.shiftOneByteLeft
-import java.io.ByteArrayOutputStream
-import java.util.UUID
 import no.nordicsemi.android.ble.BleManager
 import no.nordicsemi.android.ble.callback.DataReceivedCallback
 import no.nordicsemi.android.ble.data.Data
+import java.io.ByteArrayOutputStream
+import java.util.UUID
 
 // Use with dagger.
-class LedgerBleConnectionManager(appContext: Context) : BleManager<LedgerBleConnectionManagerCallback>(appContext) {
+// https://github.com/NordicSemiconductor/Android-BLE-Library/blob/master/MIGRATION.md
+class LedgerBleConnectionManager(appContext: Context) : BleManager(appContext) {
 
     private var characteristicWrite: BluetoothGattCharacteristic? = null
     private var characteristicNotify: BluetoothGattCharacteristic? = null
+
+    private val receivedDataHandler = ReceivedDataHandler()
+
+    private lateinit var ledgerBleObserver: LedgerBleObserver
+
+    fun setObserver(observer: LedgerBleObserver) {
+        connectionObserver = observer
+        bondingObserver = observer
+        ledgerBleObserver = observer
+    }
 
     override fun getGattCallback(): BleManagerGattCallback {
         return object : BleManagerGattCallback() {
@@ -46,21 +57,23 @@ class LedgerBleConnectionManager(appContext: Context) : BleManager<LedgerBleConn
                 return characteristicWrite != null && characteristicNotify != null
             }
 
-            override fun onDeviceDisconnected() {
+            override fun onServicesInvalidated() {
                 characteristicWrite = null
                 characteristicNotify = null
             }
 
             override fun initialize() {
                 beginAtomicRequestQueue()
-                    .add(requestMtu(DEFAULT_MTU)
+                    .add(
+                        requestMtu(DEFAULT_MTU)
                         .with { _, mtu -> log(Log.INFO, "MTU set to $mtu") }
-                        .fail { _, status -> log(Log.WARN, "Requested MTU not supported: $status") })
+                        .fail { _, status -> log(Log.WARN, "Requested MTU not supported: $status") }
+                    )
                     .add(enableNotifications(characteristicNotify))
                     .done { log(Log.INFO, "Target initialized") }
                     .enqueue()
                 setNotificationCallback(characteristicNotify)
-                    .with(object : ReceivedDataHandler() {})
+                    .with(receivedDataHandler)
             }
         }
     }
@@ -72,7 +85,7 @@ class LedgerBleConnectionManager(appContext: Context) : BleManager<LedgerBleConn
         }
     }
 
-    abstract inner class ReceivedDataHandler : DataReceivedCallback {
+    inner class ReceivedDataHandler : DataReceivedCallback {
         private var currentSequence = 0
         private var remainingBytes = 0
         private var actionBytesOutputStream = ByteArrayOutputStream()
@@ -114,12 +127,12 @@ class LedgerBleConnectionManager(appContext: Context) : BleManager<LedgerBleConn
                     if (bytesToCopy == 0) {
                         resetReceiver("bytes to copy can't be 0.")
                         disconnect().done {
-                            mCallbacks.onMissingBytes(device)
+                            ledgerBleObserver.onMissingBytes(device)
                         }.enqueue()
                         return
                     }
 
-                    actionBytesOutputStream.write(data.value, offset, bytesToCopy)
+                    data.value?.let { actionBytesOutputStream.write(it, offset, bytesToCopy) }
 
                     when {
                         remainingBytes == 0 -> {
@@ -152,20 +165,21 @@ class LedgerBleConnectionManager(appContext: Context) : BleManager<LedgerBleConn
             when {
                 data.size == ERROR_DATA_SIZE -> {
                     when {
-                        data.contentEquals(OPERATION_CANCELLED_CODE) -> mCallbacks.onOperationCancelled()
+                        data.contentEquals(OPERATION_CANCELLED_CODE) -> ledgerBleObserver.onOperationCancelled()
                         data.contentEquals(NEXT_PAGE_CODE) -> return
                         else -> {
                             disconnect().enqueue()
-                            mCallbacks.onManagerError(
-                                R.string.error_app_closed_message, R.string.error_app_closed_title
+                            ledgerBleObserver.onManagerError(
+                                R.string.error_app_closed_message,
+                                R.string.error_app_closed_title
                             )
                         }
                     }
                 }
                 data.size > ERROR_DATA_SIZE -> {
-                    mCallbacks?.onDataReceived(
+                    ledgerBleObserver?.onDataReceived(
                         device = ledgerDevice,
-                        byteArray = data.dropLast(RETURN_CODE_BYTE_COUNT).toByteArray()
+                        data = data.dropLast(RETURN_CODE_BYTE_COUNT).toByteArray()
                     )
                 }
                 else -> {
@@ -173,7 +187,7 @@ class LedgerBleConnectionManager(appContext: Context) : BleManager<LedgerBleConn
                         Exception("LedgerBleConnectionManager::handleSuccessfulData:: {data.size} is lower than 2")
                     )
                     disconnect().enqueue()
-                    mCallbacks.onManagerError(R.string.unknown_error)
+                    ledgerBleObserver.onManagerError(R.string.unknown_error)
                 }
             }
         }
@@ -192,7 +206,9 @@ class LedgerBleConnectionManager(appContext: Context) : BleManager<LedgerBleConn
         val atomicRequest = beginAtomicRequestQueue()
         val verifyPublicKeyRequestInstruction = VERIFY_PUBLIC_KEY_WITH_INDEX + getAccountIndexAsByteArray(index)
         packetizeData(verifyPublicKeyRequestInstruction).forEach { packet ->
-            atomicRequest.add(writeCharacteristic(characteristicWrite, packet))
+            atomicRequest.add(writeCharacteristic(characteristicWrite, packet)).fail { device, status ->
+                ledgerBleObserver.onError(device, "", status)
+            }
         }
         atomicRequest.enqueue()
     }
@@ -202,7 +218,7 @@ class LedgerBleConnectionManager(appContext: Context) : BleManager<LedgerBleConn
             .timeout(CONNECTION_TIMEOUT)
             .retry(RETRY_COUNT, RETRY_DELAY)
             .fail { _, _ ->
-                mCallbacks.onManagerError(R.string.error_connection_message, R.string.error_connection_title)
+                ledgerBleObserver.onManagerError(R.string.error_connection_message, R.string.error_connection_title)
             }
             .enqueue()
     }
@@ -311,8 +327,10 @@ class LedgerBleConnectionManager(appContext: Context) : BleManager<LedgerBleConn
     }
 
     fun isTryingToConnect(): Boolean {
-        return (connectionState == BluetoothProfile.STATE_DISCONNECTED ||
-            connectionState == BluetoothProfile.STATE_DISCONNECTING).not()
+        return (
+            connectionState == BluetoothProfile.STATE_DISCONNECTED ||
+            connectionState == BluetoothProfile.STATE_DISCONNECTING
+        ).not()
     }
 
     fun isDeviceConnected(deviceAddress: String): Boolean {

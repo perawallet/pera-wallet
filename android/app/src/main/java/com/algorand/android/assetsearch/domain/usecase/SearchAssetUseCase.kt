@@ -14,13 +14,14 @@ package com.algorand.android.assetsearch.domain.usecase
 
 import androidx.paging.PagingData
 import androidx.paging.map
+import com.algorand.android.assetsearch.domain.mapper.SearchedAssetMapper
+import com.algorand.android.assetsearch.domain.model.AssetSearchDTO
 import com.algorand.android.assetsearch.domain.model.AssetSearchQuery
+import com.algorand.android.assetsearch.domain.model.BaseSearchedAsset
 import com.algorand.android.assetsearch.domain.pagination.AssetSearchPagerBuilder
 import com.algorand.android.assetsearch.domain.pagination.AssetSearchPagination
 import com.algorand.android.assetsearch.domain.repository.AssetSearchRepository
 import com.algorand.android.assetsearch.domain.repository.AssetSearchRepository.Companion.REPOSITORY_INJECTION_NAME
-import com.algorand.android.models.BaseAssetDetail
-import com.algorand.android.usecase.AssetDetailDTOParseUseCase
 import javax.inject.Inject
 import javax.inject.Named
 import kotlinx.coroutines.CoroutineScope
@@ -30,24 +31,32 @@ import kotlinx.coroutines.flow.map
 class SearchAssetUseCase @Inject constructor(
     @Named(REPOSITORY_INJECTION_NAME) private val assetSearchRepository: AssetSearchRepository,
     private val assetSearchPagination: AssetSearchPagination,
-    private val assetDetailDTOParseUseCase: AssetDetailDTOParseUseCase
+    private val searchedAssetMapper: SearchedAssetMapper
 ) {
 
     fun createPaginationFlow(
         builder: AssetSearchPagerBuilder,
         scope: CoroutineScope,
         defaultQuery: AssetSearchQuery
-    ): Flow<PagingData<BaseAssetDetail>> {
+    ): Flow<PagingData<BaseSearchedAsset>> {
         return assetSearchPagination
             .initPagination(builder, scope, assetSearchRepository, defaultQuery)
-            .map { pagingData -> pagingData.map { assetDetailDTOParseUseCase.parseAssetDetail(it) } }
+            .map { pagingData -> pagingData.map { createBaseSearchedAsset(it) } }
     }
 
-    fun searchAsset(query: AssetSearchQuery) {
+    suspend fun searchAsset(query: AssetSearchQuery) {
         assetSearchPagination.searchAsset(query)
     }
 
     fun invalidateDataSource() {
         assetSearchPagination.invalidateDataSource()
+    }
+
+    private fun createBaseSearchedAsset(assetSearchDTO: AssetSearchDTO): BaseSearchedAsset {
+        return if (assetSearchDTO.collectible != null) {
+            searchedAssetMapper.mapToSearchedCollectible(assetSearchDTO)
+        } else {
+            searchedAssetMapper.mapToSearchedAsset(assetSearchDTO)
+        }
     }
 }

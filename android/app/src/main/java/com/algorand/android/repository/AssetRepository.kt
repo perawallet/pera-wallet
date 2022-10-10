@@ -15,11 +15,8 @@ package com.algorand.android.repository
 import com.algorand.android.cache.SimpleAssetLocalCache
 import com.algorand.android.models.Asset
 import com.algorand.android.models.AssetDetail
-import com.algorand.android.models.AssetDetailResponse
 import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
-import com.algorand.android.models.AssetQueryType
 import com.algorand.android.models.AssetSupportRequest
-import com.algorand.android.models.Pagination
 import com.algorand.android.models.Result
 import com.algorand.android.network.IndexerApi
 import com.algorand.android.network.MobileAlgorandApi
@@ -38,23 +35,6 @@ class AssetRepository @Inject constructor(
     private val simpleAssetLocalCache: SimpleAssetLocalCache,
     private val algoAssetInformationProvider: AlgoAssetInformationProvider
 ) {
-    suspend fun getAssetsMore(url: String): Result<Pagination<AssetDetailResponse>> =
-        safeApiCall { requestGetAssetsMore(url) }
-
-    private suspend fun requestGetAssetsMore(url: String) = requestWithHipoErrorHandler(hipoApiErrorHandler) {
-        mobileAlgorandApi.getAssetsMore(url)
-    }
-
-    suspend fun getAssets(queryText: String, queryType: AssetQueryType): Result<Pagination<AssetDetailResponse>> =
-        safeApiCall { requestGetAssets(queryText, queryType) }
-
-    private suspend fun requestGetAssets(
-        queryText: String,
-        queryType: AssetQueryType
-    ): Result<Pagination<AssetDetailResponse>> = requestWithHipoErrorHandler(hipoApiErrorHandler) {
-        mobileAlgorandApi.getAssets(assetQuery = queryText.takeIf { it.isNotEmpty() }, status = queryType.apiName)
-    }
-
     suspend fun fetchAssetsById(assetIdList: List<Long>, includeDeleted: Boolean? = null) =
         requestWithHipoErrorHandler(hipoApiErrorHandler) {
             mobileAlgorandApi.getAssetsByIds(assetIdList.toQueryString(), includeDeleted)

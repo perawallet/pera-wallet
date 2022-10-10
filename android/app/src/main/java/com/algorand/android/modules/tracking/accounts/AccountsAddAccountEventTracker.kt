@@ -25,6 +25,6 @@ class AccountsAddAccountEventTracker @Inject constructor(
     }
 
     companion object {
-        private const val ADD_ACCOUNT_EVENT_KEY = "homescreen_account_add"
+        private const val ADD_ACCOUNT_EVENT_KEY = "homescr_account_add"
     }
 }

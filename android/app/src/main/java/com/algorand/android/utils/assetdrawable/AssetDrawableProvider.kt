@@ -15,12 +15,31 @@ package com.algorand.android.utils.assetdrawable
 import android.content.Context
 import android.graphics.drawable.Drawable
 import com.algorand.android.utils.AssetName
+import com.algorand.android.utils.createPrismUrl
+import com.algorand.android.utils.loadImage
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 class AssetDrawableProvider : BaseAssetDrawableProvider() {
 
-    override fun getAssetDrawable(context: Context, assetName: AssetName): Drawable {
+    override fun getAssetDrawable(
+        context: Context,
+        assetName: AssetName,
+        logoUri: String?,
+        width: Int,
+        onResourceReady: (Drawable?) -> Unit
+    ) {
+        onResourceReady(createAssetShortNameDrawable(context, assetName))
+        if (!logoUri.isNullOrBlank()) {
+            context.loadImage(
+                uri = createPrismUrl(url = logoUri, width = width),
+                onResourceReady = { onResourceReady(it) },
+                onLoadFailed = { onResourceReady(createAssetShortNameDrawable(context, assetName)) }
+            )
+        }
+    }
+
+    private fun createAssetShortNameDrawable(context: Context, assetName: AssetName): Drawable {
         return ShortAssetNameDrawable(assetName.getAsAvatarNameOrDefault(context.resources)).toDrawable(context)
     }
 }

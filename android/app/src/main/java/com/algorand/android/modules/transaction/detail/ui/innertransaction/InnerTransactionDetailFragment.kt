@@ -79,7 +79,7 @@ class InnerTransactionDetailFragment : BaseTransactionDetailFragment() {
             InnerTransactionDetailFragmentDirections
                 .actionInnerTransactionDetailFragmentToApplicationCallTransactionDetailFragment(
                     transactionId = transactionDetailViewModel.transactionId,
-                    publicKey = transactionDetailViewModel.publicKey,
+                    accountAddress = transactionDetailViewModel.accountAddress,
                     showCloseButton = true,
                     transaction = transaction
                 )
@@ -91,7 +91,7 @@ class InnerTransactionDetailFragment : BaseTransactionDetailFragment() {
             InnerTransactionDetailFragmentDirections
                 .actionInnerTransactionDetailFragmentToStandardTransactionDetailFragment(
                     transactionId = transactionDetailViewModel.transactionId,
-                    publicKey = transactionDetailViewModel.publicKey,
+                    accountAddress = transactionDetailViewModel.accountAddress,
                     showCloseButton = true,
                     transaction = transaction
                 )

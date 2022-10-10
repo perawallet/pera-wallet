@@ -12,6 +12,7 @@
 
 package com.algorand.android.nft.mapper
 
+import androidx.annotation.StringRes
 import com.algorand.android.models.BaseAccountAssetData
 import com.algorand.android.nft.domain.decider.CollectibleBadgeDecider
 import com.algorand.android.nft.ui.model.BaseCollectibleListData
@@ -35,7 +36,8 @@ class CollectibleListingItemMapper @Inject constructor(
             avatarDisplayText = collectible.avatarDisplayText,
             isOwnedByTheUser = isOwnedByTheUser,
             badgeImageResId = collectibleBadgeDecider.decideCollectibleBadgeResId(collectible),
-            optedInAccountAddress = optedInAccountAddress
+            optedInAccountAddress = optedInAccountAddress,
+            optedInAtRound = collectible.optedInAtRound
         )
     }
 
@@ -52,7 +54,8 @@ class CollectibleListingItemMapper @Inject constructor(
             avatarDisplayText = collectible.avatarDisplayText,
             badgeImageResId = collectibleBadgeDecider.decideCollectibleBadgeResId(collectible),
             prismUrl = collectible.prismUrl,
-            optedInAccountAddress = optedInAccountAddress
+            optedInAccountAddress = optedInAccountAddress,
+            optedInAtRound = collectible.optedInAtRound
         )
     }
 
@@ -68,8 +71,9 @@ class CollectibleListingItemMapper @Inject constructor(
             isOwnedByTheUser = isOwnedByTheUser,
             avatarDisplayText = collectible.avatarDisplayText,
             badgeImageResId = collectibleBadgeDecider.decideCollectibleBadgeResId(collectible),
-            thumbnailPrismUrl = collectible.thumbnailPrismUrl,
-            optedInAccountAddress = optedInAccountAddress
+            thumbnailPrismUrl = collectible.prismUrl,
+            optedInAccountAddress = optedInAccountAddress,
+            optedInAtRound = collectible.optedInAtRound
         )
     }
 
@@ -85,22 +89,23 @@ class CollectibleListingItemMapper @Inject constructor(
             isOwnedByTheUser = isOwnedByTheUser,
             avatarDisplayText = collectible.avatarDisplayText,
             badgeImageResId = collectibleBadgeDecider.decideCollectibleBadgeResId(collectible),
-            thumbnailPrismUrl = collectible.thumbnailPrismUrl,
-            optedInAccountAddress = optedInAccountAddress
+            thumbnailPrismUrl = collectible.prismUrl,
+            optedInAccountAddress = optedInAccountAddress,
+            optedInAtRound = collectible.optedInAtRound
         )
     }
 
+    @SuppressWarnings("LongParameterList")
     fun mapToPreviewItem(
         isLoadingVisible: Boolean,
         isEmptyStateVisible: Boolean,
         isErrorVisible: Boolean,
         isReceiveButtonVisible: Boolean,
-        isFilterActive: Boolean,
-        displayedCollectibleCount: Int,
         filteredCollectibleCount: Int,
         isClearFilterButtonVisible: Boolean,
         itemList: List<BaseCollectibleListItem>,
-        isAccountFabVisible: Boolean
+        isAccountFabVisible: Boolean,
+        isAddCollectibleFloatingActionButtonVisible: Boolean
     ): CollectiblesListingPreview {
         return CollectiblesListingPreview(
             isLoadingVisible = isLoadingVisible,
@@ -108,11 +113,10 @@ class CollectibleListingItemMapper @Inject constructor(
             isErrorVisible = isErrorVisible,
             isReceiveButtonVisible = isReceiveButtonVisible,
             baseCollectibleListItems = itemList,
-            isFilterActive = isFilterActive,
             isClearFilterButtonVisible = isClearFilterButtonVisible,
-            displayedCollectibleCount = displayedCollectibleCount,
             filteredCollectibleCount = filteredCollectibleCount,
-            isAccountFabVisible = isAccountFabVisible
+            isAccountFabVisible = isAccountFabVisible,
+            isAddCollectibleFloatingActionButtonVisible = isAddCollectibleFloatingActionButtonVisible
         )
     }
 
@@ -128,7 +132,8 @@ class CollectibleListingItemMapper @Inject constructor(
             avatarDisplayText = collectible.avatarDisplayText,
             primaryImageUrl = collectible.primaryImageUrl,
             badgeImageResId = collectibleBadgeDecider.decidePendingCollectibleBadgeResId(collectible),
-            optedInAccountAddress = optedInAccountAddress
+            optedInAccountAddress = optedInAccountAddress,
+            optedInAtRound = null
         )
     }
 
@@ -144,7 +149,8 @@ class CollectibleListingItemMapper @Inject constructor(
             avatarDisplayText = collectible.avatarDisplayText,
             primaryImageUrl = collectible.primaryImageUrl,
             badgeImageResId = collectibleBadgeDecider.decidePendingCollectibleBadgeResId(collectible),
-            optedInAccountAddress = optedInAccountAddress
+            optedInAccountAddress = optedInAccountAddress,
+            optedInAtRound = null
         )
     }
 
@@ -160,7 +166,8 @@ class CollectibleListingItemMapper @Inject constructor(
             avatarDisplayText = collectible.avatarDisplayText,
             primaryImageUrl = collectible.primaryImageUrl,
             badgeImageResId = collectibleBadgeDecider.decidePendingCollectibleBadgeResId(collectible),
-            optedInAccountAddress = optedInAccountAddress
+            optedInAccountAddress = optedInAccountAddress,
+            optedInAtRound = null
         )
     }
 
@@ -175,6 +182,34 @@ class CollectibleListingItemMapper @Inject constructor(
             isFilterActive = isFilterActive,
             displayedCollectibleCount = displayedCollectibleCount,
             filteredOutCollectibleCount = filteredOutCollectibleCount
+        )
+    }
+
+    fun mapToTitleTextItem(isVisible: Boolean): BaseCollectibleListItem.TitleTextViewItem {
+        return BaseCollectibleListItem.TitleTextViewItem(isVisible = isVisible)
+    }
+
+    fun mapToSearchViewItem(
+        @StringRes searchViewHintResId: Int,
+        isVisible: Boolean
+    ): BaseCollectibleListItem.SearchViewItem {
+        return BaseCollectibleListItem.SearchViewItem(
+            searchViewHintResId = searchViewHintResId,
+            isVisible = isVisible
+        )
+    }
+
+    fun mapToInfoViewItem(
+        displayedCollectibleCount: Int,
+        isVisible: Boolean,
+        isFilterActive: Boolean,
+        isAddButtonVisible: Boolean
+    ): BaseCollectibleListItem.InfoViewItem {
+        return BaseCollectibleListItem.InfoViewItem(
+            displayedCollectibleCount = displayedCollectibleCount,
+            isVisible = isVisible,
+            isFilterActive = isFilterActive,
+            isAddButtonVisible = isAddButtonVisible
         )
     }
 }

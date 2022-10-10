@@ -12,8 +12,7 @@
 
 package com.algorand.android.nft.ui.nftapprovetransaction
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
@@ -21,14 +20,16 @@ import com.algorand.android.models.ui.CollectibleTransactionApprovePreview
 import com.algorand.android.nft.domain.usecase.CollectibleTransactionApprovePreviewUseCase
 import com.algorand.android.nft.ui.model.CollectibleDetail
 import com.algorand.android.utils.getOrThrow
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class CollectibleTransactionApproveViewModel @ViewModelInject constructor(
+@HiltViewModel
+class CollectibleTransactionApproveViewModel @Inject constructor(
     private val collectibleTransactionApprovePreviewUseCase: CollectibleTransactionApprovePreviewUseCase,
-    @Assisted savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
     private val senderPublicKey = savedStateHandle.getOrThrow<String>(SENDER_PUBLIC_KEY_KEY)

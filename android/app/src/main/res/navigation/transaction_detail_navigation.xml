@@ -31,7 +31,7 @@
             android:name="transactionId"
             app:argType="string" />
         <argument
-            android:name="publicKey"
+            android:name="accountAddress"
             app:argType="string" />
         <action
             android:id="@+id/action_navigationDetailEntryFragment_to_standardTransactionDetailFragment"
@@ -57,7 +57,7 @@
             android:name="transactionId"
             app:argType="string" />
         <argument
-            android:name="publicKey"
+            android:name="accountAddress"
             app:argType="string" />
         <argument
             android:name="showCloseButton"
@@ -86,9 +86,6 @@
                 android:defaultValue="false"
                 app:argType="boolean" />
         </action>
-        <action
-            android:id="@+id/action_standardTransactionDetailFragment_to_innerTransactionDetailFragment"
-            app:destination="@id/innerTransactionDetailFragment" />
     </fragment>
 
     <fragment
@@ -100,7 +97,7 @@
             android:name="transactionId"
             app:argType="string" />
         <argument
-            android:name="publicKey"
+            android:name="accountAddress"
             app:argType="string" />
         <action
             android:id="@+id/action_innerTransactionDetailFragment_to_applicationCallTransactionDetailFragment"
@@ -119,7 +116,7 @@
             android:name="transactionId"
             app:argType="string" />
         <argument
-            android:name="publicKey"
+            android:name="accountAddress"
             app:argType="string" />
         <argument
             android:name="showCloseButton"
@@ -142,7 +139,7 @@
         android:id="@+id/applicationCallAssetsBottomSheet"
         android:name="com.algorand.android.modules.transaction.detail.ui.applicationcallassets.ApplicationCallAssetsBottomSheet"
         android:label="ApplicationCallAssetsBottomSheet"
-        tools:layout="@layout/bottom_sheet_application_call_assets" >
+        tools:layout="@layout/bottom_sheet_application_call_assets">
         <argument
             android:name="assetInformationList"
             app:argType="com.algorand.android.modules.transaction.detail.ui.model.ApplicationCallAssetInformation[]" />

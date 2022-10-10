@@ -16,7 +16,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseBottomSheet
@@ -24,10 +23,10 @@ import com.algorand.android.databinding.BottomSheetCollectibleTransactionApprove
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.CollectibleSendApproveResult
 import com.algorand.android.models.ui.CollectibleTransactionApprovePreview
+import com.algorand.android.utils.extensions.collectOnLifecycle
 import com.algorand.android.utils.setNavigationResult
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class CollectibleTransactionApproveBottomSheet :
@@ -52,7 +51,8 @@ class CollectibleTransactionApproveBottomSheet :
         with(binding) {
             positiveButton.setOnClickListener {
                 setNavigationResult(
-                    COLLECTIBLE_TXN_APPROVE_KEY, CollectibleSendApproveResult(
+                    COLLECTIBLE_TXN_APPROVE_KEY,
+                    CollectibleSendApproveResult(
                         isApproved = true,
                         isOptOutChecked = optOutCheckbox.isChecked && optOutCheckbox.isVisible
                     )
@@ -65,11 +65,10 @@ class CollectibleTransactionApproveBottomSheet :
     }
 
     private fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-            collectibleTransactionApproveViewModel.collectibleTransactionApprovePreviewFlow.collect(
-                collectibleTransactionApprovePreviewCollector
-            )
-        }
+        viewLifecycleOwner.collectOnLifecycle(
+            collectibleTransactionApproveViewModel.collectibleTransactionApprovePreviewFlow,
+            collectibleTransactionApprovePreviewCollector
+        )
     }
 
     private fun updateUiWithCollectibleTransactionApprovePreview(preview: CollectibleTransactionApprovePreview?) {

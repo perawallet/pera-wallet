@@ -23,6 +23,10 @@ class AddContactQrScannerFragment : BaseQrScannerFragment(R.id.addContactQrScann
         showGlobalError(getString(R.string.the_scanned_qr_is_not))
     }
 
+    override fun onDeepLinkNotHandled(deepLink: BaseDeepLink) {
+        showGlobalError(getString(R.string.the_scanned_qr_is_not))
+    }
+
     override fun onAccountAddressDeeplink(accountAddress: String, label: String?): Boolean {
         setNavigationResult(ACCOUNT_ADDRESS_QR_SCAN_RESULT_KEY, accountAddress)
         return true.also { navBack() }

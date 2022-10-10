@@ -10,60 +10,8 @@
   ~ limitations under the License
   -->
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.algorand.android.customviews.accountassetitem.StatefulButtonAccountAssetItemView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:id="@+id/assetItemView"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/spacing_xlarge"
-    android:gravity="center_vertical"
-    android:orientation="horizontal">
-
-    <com.algorand.android.customviews.AlgorandAssetNameTextView
-        android:id="@+id/assetNameTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/assetBalanceTextView"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/assetBalanceTextView"
-        style="@style/TextAppearance.Body.Mono"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_large"
-        android:gravity="end"
-        app:layout_constraintBottom_toTopOf="@id/assetBalanceInCurrencyTextView"
-        app:layout_constraintEnd_toStartOf="@id/removeAssetButton"
-        app:layout_constraintStart_toEndOf="@id/assetNameTextView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
-        tools:text="3,123,123.1232" />
-
-    <TextView
-        android:id="@+id/assetBalanceInCurrencyTextView"
-        style="@style/TextAppearance.Footnote.Description.Mono"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_large"
-        android:gravity="end"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/removeAssetButton"
-        app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintStart_toEndOf="@id/assetNameTextView"
-        app:layout_constraintTop_toBottomOf="@id/assetBalanceTextView"
-        tools:text="$23,123.99" />
-
-    <!--  TODO Missing shadow  -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/removeAssetButton"
-        style="@style/IconButton.Negative"
-        app:icon="@drawable/ic_trash"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    android:paddingHorizontal="@dimen/spacing_xlarge" />

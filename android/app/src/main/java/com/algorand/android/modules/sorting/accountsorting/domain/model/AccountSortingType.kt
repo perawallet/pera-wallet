@@ -15,7 +15,7 @@ package com.algorand.android.modules.sorting.accountsorting.domain.model
 import com.algorand.android.R
 import com.algorand.android.models.Account
 import com.algorand.android.models.BaseAccountAndAssetListItem
-import com.algorand.android.modules.sorting.accountsorting.domain.usecase.AccountSortingPreviewUseCase
+import com.algorand.android.modules.sorting.accountsorting.util.LOCAL_ACCOUNT_START_INDEX
 
 sealed class AccountSortingType {
 
@@ -51,7 +51,7 @@ sealed class AccountSortingType {
         ): List<Account> {
             return currentList.mapIndexedNotNull { index, accountSortItem ->
                 accounts.firstOrNull { it.address == accountSortItem.itemConfiguration.accountAddress }
-                    ?.copy(index = index + AccountSortingPreviewUseCase.LOCAL_ACCOUNT_START_INDEX)
+                    ?.copy(index = index + LOCAL_ACCOUNT_START_INDEX)
             }
         }
     }

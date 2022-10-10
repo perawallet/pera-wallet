@@ -20,34 +20,37 @@ import com.algorand.android.models.TransactionRequestAssetInformation
 import com.algorand.android.models.TransactionRequestExtrasInfo
 import com.algorand.android.models.TransactionRequestNoteInfo
 import com.algorand.android.models.TransactionRequestTransactionInfo
+import com.algorand.android.modules.verificationtier.ui.decider.VerificationTierConfigurationDecider
 import com.algorand.android.utils.ALGO_FULL_NAME
 import com.algorand.android.utils.ALGO_SHORT_NAME
 import com.algorand.android.utils.MIN_FEE
 import javax.inject.Inject
 
-class BasePaymentTransactionDetailUiBuilder @Inject constructor() :
-    WalletConnectTransactionDetailBuilder<BasePaymentTransaction> {
+class BasePaymentTransactionDetailUiBuilder @Inject constructor(
+    private val verificationTierConfigurationDecider: VerificationTierConfigurationDecider
+) : WalletConnectTransactionDetailBuilder<BasePaymentTransaction> {
 
     override fun buildTransactionRequestTransactionInfo(
         txn: BasePaymentTransaction
     ): TransactionRequestTransactionInfo {
         return with(txn) {
             TransactionRequestTransactionInfo(
-                fromDisplayedAddress = getProvidedAddressAsDisplayAddress(senderAddress.decodedAddress.orEmpty()),
+                fromDisplayedAddress = getFromAddressAsDisplayAddress(senderAddress.decodedAddress.orEmpty()),
                 fromAccountIcon = createAccountIconResource(),
-                toDisplayedAddress = receiverAddress.decodedAddress,
+                toDisplayedAddress = getToAddressAsDisplayAddress(receiverAddress.decodedAddress.orEmpty()),
                 accountBalance = assetInformation?.amount,
                 assetInformation = TransactionRequestAssetInformation(
                     assetId = ALGO_ID,
-                    isVerified = true,
                     shortName = ALGO_SHORT_NAME,
                     fullName = ALGO_FULL_NAME,
-                    decimals = assetDecimal
+                    decimals = assetDecimal,
+                    verificationTierConfiguration =
+                    verificationTierConfigurationDecider.decideVerificationTierConfiguration(verificationTier)
                 ),
-                rekeyToAccountAddress = getProvidedAddressAsDisplayAddress(
+                rekeyToAccountAddress = getFromAddressAsDisplayAddress(
                     getRekeyToAccountAddress()?.decodedAddress.orEmpty()
                 ),
-                closeToAccountAddress = getProvidedAddressAsDisplayAddress(
+                closeToAccountAddress = getFromAddressAsDisplayAddress(
                     getCloseToAccountAddress()?.decodedAddress.orEmpty()
                 )
             )

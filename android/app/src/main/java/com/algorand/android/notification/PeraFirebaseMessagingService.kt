@@ -91,8 +91,16 @@ class PeraFirebaseMessagingService : FirebaseMessagingService() {
             else -> Intent(this, LauncherActivity::class.java)
         }
 
-        val pendingIntent: PendingIntent =
+        val pendingIntent: PendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.getActivity(
+                this,
+                0,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+        } else {
             PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        }
 
         val notificationBuilder = NotificationCompat.Builder(this, DEFAULT_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notification_small)

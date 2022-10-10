@@ -27,6 +27,6 @@ class OnboardingWatchAccountCreateWatchEventTracker @Inject constructor(
     }
 
     companion object {
-        private const val ONBOARDING_WATCH_ACCOUNT_CREATE_EVENT_KEY = "onboarding_watchaccount_createawatchaccount"
+        private const val ONBOARDING_WATCH_ACCOUNT_CREATE_EVENT_KEY = "onb_watchacc_create"
     }
 }

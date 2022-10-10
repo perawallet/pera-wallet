@@ -26,35 +26,40 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@drawable/ic_wallet" />
 
-
     <TextView
         android:id="@+id/nameTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_normal"
+        android:layout_marginHorizontal="@dimen/spacing_normal"
         android:ellipsize="end"
+        android:gravity="center_vertical"
         android:maxLines="1"
         android:textAppearance="@style/TextAppearance.Body.Sans"
+        app:layout_constraintBottom_toTopOf="@id/accountAssetCountTextView"
         app:layout_constraintEnd_toStartOf="@id/checkImageView"
         app:layout_constraintStart_toEndOf="@id/typeImageView"
-        app:layout_constraintTop_toTopOf="@id/typeImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_goneMarginEnd="0dp"
         tools:text="@tools:sample/lorem/random[10]" />
 
     <TextView
-        android:id="@+id/balanceTextView"
+        android:id="@+id/accountAssetCountTextView"
         style="@style/TextAppearance.Footnote.Description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_normal"
+        android:layout_marginHorizontal="@dimen/spacing_normal"
         android:ellipsize="end"
+        android:gravity="center_vertical"
         android:maxLines="1"
         android:textAppearance="@style/TextAppearance.Footnote.Description"
-        app:layout_constraintBottom_toBottomOf="@id/typeImageView"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/checkImageView"
         app:layout_constraintStart_toEndOf="@id/typeImageView"
         app:layout_constraintTop_toBottomOf="@id/nameTextView"
-        app:layout_constraintVertical_bias="0"
-        tools:text="$6.06 available balance" />
+        app:layout_goneMarginEnd="0dp"
+        tools:text="5 assets"
+        tools:visibility="visible" />
 
     <ImageView
         android:id="@+id/checkImageView"
@@ -68,4 +73,3 @@
         tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-

@@ -17,6 +17,7 @@ import com.algorand.android.deviceregistration.data.model.DeviceRegistrationRequ
 import com.algorand.android.deviceregistration.data.model.DeviceRegistrationResponse
 import com.algorand.android.deviceregistration.data.model.DeviceUpdateRequest
 import com.algorand.android.models.AssetDetailResponse
+import com.algorand.android.models.AssetSearchResponse
 import com.algorand.android.models.AssetSupportRequest
 import com.algorand.android.models.Feedback
 import com.algorand.android.models.FeedbackCategory
@@ -26,11 +27,15 @@ import com.algorand.android.models.Pagination
 import com.algorand.android.models.PushTokenDeleteRequest
 import com.algorand.android.models.TrackTransactionRequest
 import com.algorand.android.models.VerifiedAssetDetail
+import com.algorand.android.modules.accounts.data.model.LastSeenNotificationRequest
+import com.algorand.android.modules.accounts.data.model.LastSeenNotificationResponse
+import com.algorand.android.modules.accounts.data.model.NotificationStatusResponse
 import com.algorand.android.modules.currency.data.model.CurrencyOptionResponse
 import com.algorand.android.modules.nftdomain.data.model.NftDomainSearchResponse
 import com.algorand.android.modules.parity.data.model.CurrencyDetailResponse
 import com.algorand.android.network.MobileHeaderInterceptor.Companion.ALGORAND_NETWORK_KEY
-import com.algorand.android.ui.addasset.BaseAddAssetViewModel.Companion.SEARCH_RESULT_LIMIT
+import com.algorand.android.modules.assets.addition.base.ui.BaseAddAssetViewModel.Companion.SEARCH_RESULT_LIMIT
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -41,6 +46,7 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.Streaming
 import retrofit2.http.Url
 
 interface MobileAlgorandApi {
@@ -83,18 +89,29 @@ interface MobileAlgorandApi {
         @Path("device_id") deviceId: String
     ): Response<Pagination<NotificationItem>>
 
+    @GET("devices/{device_id}/notification-status/")
+    suspend fun getNotificationStatus(
+        @Path("device_id") deviceId: String
+    ): Response<NotificationStatusResponse>
+
+    @PUT("devices/{device_id}/update-last-seen-notification/")
+    suspend fun putLastSeenNotification(
+        @Path("device_id") deviceId: String,
+        @Body lastSeenRequest: LastSeenNotificationRequest,
+        @Header(ALGORAND_NETWORK_KEY) networkSlug: String?
+    ): Response<LastSeenNotificationResponse>
+
     @GET
     suspend fun getNotificationsMore(@Url url: String): Response<Pagination<NotificationItem>>
 
-    @GET("assets/")
+    @GET("assets/search/")
     suspend fun getAssets(
         @Query("paginator") paginator: String? = "cursor",
         @Query("q") assetQuery: String?,
-        @Query("status") status: String? = null,
         @Query("offset") offset: Long = 0,
         @Query("limit") limit: Int = SEARCH_RESULT_LIMIT,
         @Query("has_collectible") hasCollectible: Boolean? = null
-    ): Response<Pagination<AssetDetailResponse>>
+    ): Response<Pagination<AssetSearchResponse>>
 
     @GET("assets/")
     suspend fun getAssetsByIds(
@@ -103,12 +120,12 @@ interface MobileAlgorandApi {
     ): Response<Pagination<AssetDetailResponse>>
 
     @GET("assets/{asset_id}/")
-    suspend fun getCollectibleDetail(
+    suspend fun getAssetDetail(
         @Path("asset_id") nftAssetId: Long
     ): Response<AssetDetailResponse>
 
     @GET
-    suspend fun getAssetsMore(@Url url: String): Response<Pagination<AssetDetailResponse>>
+    suspend fun getAssetsMore(@Url url: String): Response<Pagination<AssetSearchResponse>>
 
     @GET("currencies/")
     suspend fun getCurrencies(): Response<List<CurrencyOptionResponse>>
@@ -134,4 +151,12 @@ interface MobileAlgorandApi {
     suspend fun getNftDomainAccountAddresses(
         @Query("name") name: String
     ): Response<NftDomainSearchResponse>
+
+    @Streaming
+    @GET("accounts/{address}/export-history/")
+    suspend fun getExportHistory(
+        @Path("address") address: String,
+        @Query("start_date") startDate: String?,
+        @Query("end_date") endDate: String?
+    ): Response<ResponseBody>
 }

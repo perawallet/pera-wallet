@@ -13,7 +13,7 @@
 package com.algorand.android.ui.notificationfilter
 
 import android.content.SharedPreferences
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.customviews.accountandassetitem.mapper.AccountItemConfigurationMapper
@@ -26,12 +26,14 @@ import com.algorand.android.repository.NotificationRepository
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.preference.isNotificationActivated
 import com.algorand.android.utils.preference.setNotificationPreference
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class NotificationFilterViewModel @ViewModelInject constructor(
+@HiltViewModel
+class NotificationFilterViewModel @Inject constructor(
     private val sharedPref: SharedPreferences,
     private val notificationRepository: NotificationRepository,
     private val notificationFilterDao: NotificationFilterDao,

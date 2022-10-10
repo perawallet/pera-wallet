@@ -34,6 +34,8 @@ enum class AccountIconResource(
     UNDEFINED(R.drawable.ic_wallet, R.color.transparent, R.color.transparent);
 
     companion object {
+        val DEFAULT_ACCOUNT_ICON_RESOURCE = UNDEFINED
+
         fun getAccountIconResourceByAccountType(accountType: Account.Type?): AccountIconResource {
             return when (accountType) {
                 Account.Type.STANDARD -> STANDARD
@@ -46,7 +48,7 @@ enum class AccountIconResource(
         }
 
         fun getByName(name: String?): AccountIconResource {
-            return values().firstOrNull { it.name == name } ?: UNDEFINED
+            return values().firstOrNull { it.name == name } ?: DEFAULT_ACCOUNT_ICON_RESOURCE
         }
     }
 }

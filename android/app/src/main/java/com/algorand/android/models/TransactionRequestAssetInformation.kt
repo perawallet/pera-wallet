@@ -13,10 +13,12 @@
 
 package com.algorand.android.models
 
+import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration
+
 data class TransactionRequestAssetInformation(
     val assetId: Long?,
-    val isVerified: Boolean? = false,
     val shortName: String? = null,
     val fullName: String? = null,
-    val decimals: Int? = 0
+    val decimals: Int? = 0,
+    val verificationTierConfiguration: VerificationTierConfiguration
 )

@@ -12,30 +12,42 @@
 
 package com.algorand.android.nft.ui.receivenftasset
 
-import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.algorand.android.models.AccountIconResource
-import com.algorand.android.repository.TransactionsRepository
-import com.algorand.android.ui.addasset.BaseAddAssetViewModel
-import com.algorand.android.usecase.AccountDetailUseCase
-import com.algorand.android.usecase.AssetAdditionUseCase
-import kotlin.properties.Delegates
+import com.algorand.android.modules.assets.addition.base.ui.BaseAddAssetViewModel
+import com.algorand.android.modules.assets.addition.base.ui.domain.BaseAddAssetPreviewUseCase
+import com.algorand.android.utils.getOrThrow
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
-class ReceiveCollectibleViewModel @ViewModelInject constructor(
+@HiltViewModel
+class ReceiveCollectibleViewModel @Inject constructor(
     private val receiveCollectiblePreviewUseCase: ReceiveCollectiblePreviewUseCase,
-    transactionsRepository: TransactionsRepository,
-    assetAdditionUseCase: AssetAdditionUseCase,
-    accountDetailUseCase: AccountDetailUseCase
-) : BaseAddAssetViewModel(transactionsRepository, assetAdditionUseCase, accountDetailUseCase) {
+    baseAddAssetPreviewUseCase: BaseAddAssetPreviewUseCase,
+    savedStateHandle: SavedStateHandle
+) : BaseAddAssetViewModel(baseAddAssetPreviewUseCase) {
 
-    var queryText: String by Delegates.observable("") { _, _, newValue ->
-        receiveCollectiblePreviewUseCase.searchAsset(newValue)
+    private val accountAddress = savedStateHandle.getOrThrow<String>(ACCOUNT_ADDRESS_KEY)
+
+    private val queryTextFlow = MutableStateFlow("")
+
+    override val searchPaginationFlow = receiveCollectiblePreviewUseCase.getSearchPaginationFlow(
+        searchPagerBuilder = assetSearchPagerBuilder,
+        scope = viewModelScope,
+        queryText = queryTextFlow.value,
+        accountAddress = accountAddress
+    ).cachedIn(viewModelScope)
+
+    init {
+        initQueryTextFlow()
     }
-
-    override val searchPaginationFlow = receiveCollectiblePreviewUseCase
-        .getSearchPaginationFlow(assetSearchPagerBuilder, viewModelScope, queryText)
-        .cachedIn(viewModelScope)
 
     fun refreshTransactionHistory() {
         receiveCollectiblePreviewUseCase.invalidateDataSource()
@@ -43,5 +55,22 @@ class ReceiveCollectibleViewModel @ViewModelInject constructor(
 
     fun getReceiverAccountDisplayTextAndIcon(publicKey: String): Pair<String, AccountIconResource?> {
         return receiveCollectiblePreviewUseCase.getReceiverAccountDisplayTextAndIcon(publicKey)
+    }
+
+    fun updateQuery(query: String) {
+        viewModelScope.launch {
+            queryTextFlow.emit(query)
+        }
+    }
+
+    private fun initQueryTextFlow() {
+        queryTextFlow
+            .onEach { receiveCollectiblePreviewUseCase.searchAsset(it) }
+            .distinctUntilChanged()
+            .launchIn(viewModelScope)
+    }
+
+    companion object {
+        private const val ACCOUNT_ADDRESS_KEY = "accountAddress"
     }
 }

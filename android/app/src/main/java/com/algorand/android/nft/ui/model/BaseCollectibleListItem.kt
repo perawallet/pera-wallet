@@ -12,12 +12,18 @@
 
 package com.algorand.android.nft.ui.model
 
+import androidx.annotation.StringRes
 import com.algorand.android.R
 import com.algorand.android.models.RecyclerListItem
+import com.algorand.android.modules.sorting.core.SortableItemPriority
+import com.algorand.android.modules.sorting.nftsorting.ui.model.CollectibleSortableItem
 
-sealed class BaseCollectibleListItem : RecyclerListItem {
+sealed class BaseCollectibleListItem : RecyclerListItem, CollectibleSortableItem {
 
     enum class ItemType {
+        TITLE_TEXT_VIEW_ITEM,
+        SEARCH_VIEW_ITEM,
+        INFO_VIEW_ITEM,
         RECEIVE_ITEM,
         GIF_ITEM,
         VIDEO_ITEM,
@@ -32,9 +38,64 @@ sealed class BaseCollectibleListItem : RecyclerListItem {
 
     abstract val itemType: ItemType
 
+    override val collectibleSortingOptedInAtRoundField: Long?
+        get() = null
+    override val collectibleSortingNameField: String?
+        get() = null
+
+    data class TitleTextViewItem(val isVisible: Boolean) : BaseCollectibleListItem() {
+
+        override val itemType: ItemType = ItemType.TITLE_TEXT_VIEW_ITEM
+
+        override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+            return other is TitleTextViewItem && other.isVisible == isVisible
+        }
+
+        override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+            return other is TitleTextViewItem
+        }
+    }
+
+    data class InfoViewItem(
+        val displayedCollectibleCount: Int,
+        val isVisible: Boolean,
+        val isFilterActive: Boolean,
+        val isAddButtonVisible: Boolean
+    ) : BaseCollectibleListItem() {
+
+        override val itemType: ItemType = ItemType.INFO_VIEW_ITEM
+
+        override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+            return other is InfoViewItem && other.displayedCollectibleCount == displayedCollectibleCount
+        }
+
+        override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+            return other is InfoViewItem && other == this
+        }
+    }
+
+    data class SearchViewItem(
+        @StringRes val searchViewHintResId: Int,
+        val isVisible: Boolean
+    ) : BaseCollectibleListItem() {
+
+        override val itemType: ItemType = ItemType.SEARCH_VIEW_ITEM
+
+        override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+            return other is SearchViewItem && other.searchViewHintResId == searchViewHintResId
+        }
+
+        override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+            return other is SearchViewItem && other == this
+        }
+    }
+
     object ReceiveNftItem : BaseCollectibleListItem() {
 
         override val itemType: ItemType = ItemType.RECEIVE_ITEM
+
+        override val sortableItemPriority: SortableItemPriority
+            get() = SortableItemPriority.PLACE_LAST
 
         override fun areItemsTheSame(other: RecyclerListItem): Boolean {
             return other is ReceiveNftItem
@@ -54,6 +115,12 @@ sealed class BaseCollectibleListItem : RecyclerListItem {
         abstract val avatarDisplayText: String
         abstract val badgeImageResId: Int?
         abstract val optedInAccountAddress: String
+        abstract val optedInAtRound: Long?
+
+        override val collectibleSortingNameField: String?
+            get() = collectibleName
+        override val collectibleSortingOptedInAtRoundField: Long?
+            get() = optedInAtRound
 
         data class CollectibleGifItem(
             override val collectibleId: Long,
@@ -62,7 +129,8 @@ sealed class BaseCollectibleListItem : RecyclerListItem {
             override val isOwnedByTheUser: Boolean,
             override val avatarDisplayText: String,
             override val badgeImageResId: Int?,
-            override val optedInAccountAddress: String
+            override val optedInAccountAddress: String,
+            override val optedInAtRound: Long?
         ) : BaseCollectibleItem() {
 
             override val itemType: ItemType = ItemType.GIF_ITEM
@@ -84,6 +152,7 @@ sealed class BaseCollectibleListItem : RecyclerListItem {
             override val avatarDisplayText: String,
             override val badgeImageResId: Int?,
             override val optedInAccountAddress: String,
+            override val optedInAtRound: Long?,
             val thumbnailPrismUrl: String?
         ) : BaseCollectibleItem() {
 
@@ -106,6 +175,7 @@ sealed class BaseCollectibleListItem : RecyclerListItem {
             override val avatarDisplayText: String,
             override val badgeImageResId: Int?,
             override val optedInAccountAddress: String,
+            override val optedInAtRound: Long?,
             val prismUrl: String?
         ) : BaseCollectibleItem() {
 
@@ -128,6 +198,7 @@ sealed class BaseCollectibleListItem : RecyclerListItem {
             override val avatarDisplayText: String,
             override val badgeImageResId: Int?,
             override val optedInAccountAddress: String,
+            override val optedInAtRound: Long?,
             val thumbnailPrismUrl: String?
         ) : BaseCollectibleItem() {
 
@@ -149,7 +220,8 @@ sealed class BaseCollectibleListItem : RecyclerListItem {
             override val isOwnedByTheUser: Boolean,
             override val avatarDisplayText: String,
             override val badgeImageResId: Int?,
-            override val optedInAccountAddress: String
+            override val optedInAccountAddress: String,
+            override val optedInAtRound: Long?
         ) : BaseCollectibleItem() {
 
             override val itemType: ItemType = ItemType.SOUND_ITEM
@@ -170,7 +242,8 @@ sealed class BaseCollectibleListItem : RecyclerListItem {
             override val isOwnedByTheUser: Boolean,
             override val avatarDisplayText: String,
             override val badgeImageResId: Int?,
-            override val optedInAccountAddress: String
+            override val optedInAccountAddress: String,
+            override val optedInAtRound: Long?
         ) : BaseCollectibleItem() {
 
             override val itemType: ItemType = ItemType.NOT_SUPPORTED_ITEM
@@ -190,6 +263,9 @@ sealed class BaseCollectibleListItem : RecyclerListItem {
 
             val actionDescriptionResId: Int = R.string.pending
 
+            override val sortableItemPriority: SortableItemPriority
+                get() = SortableItemPriority.PLACE_FIRST
+
             data class PendingAdditionItem(
                 override val collectibleId: Long,
                 override val collectibleName: String?,
@@ -198,7 +274,8 @@ sealed class BaseCollectibleListItem : RecyclerListItem {
                 override val avatarDisplayText: String,
                 override val primaryImageUrl: String?,
                 override val badgeImageResId: Int?,
-                override val optedInAccountAddress: String
+                override val optedInAccountAddress: String,
+                override val optedInAtRound: Long?
             ) : BasePendingCollectibleItem() {
 
                 override val itemType: ItemType = ItemType.PENDING_ADDITION_ITEM
@@ -220,7 +297,8 @@ sealed class BaseCollectibleListItem : RecyclerListItem {
                 override val avatarDisplayText: String,
                 override val primaryImageUrl: String?,
                 override val badgeImageResId: Int?,
-                override val optedInAccountAddress: String
+                override val optedInAccountAddress: String,
+                override val optedInAtRound: Long?
             ) : BasePendingCollectibleItem() {
 
                 override val itemType: ItemType = ItemType.PENDING_REMOVAL_ITEM
@@ -242,7 +320,8 @@ sealed class BaseCollectibleListItem : RecyclerListItem {
                 override val avatarDisplayText: String,
                 override val primaryImageUrl: String?,
                 override val badgeImageResId: Int?,
-                override val optedInAccountAddress: String
+                override val optedInAccountAddress: String,
+                override val optedInAtRound: Long?
             ) : BasePendingCollectibleItem() {
 
                 override val itemType: ItemType = ItemType.PENDING_SENDING_ITEM

@@ -14,6 +14,7 @@ package com.algorand.android.nft.domain.usecase
 
 import com.algorand.android.models.AccountDetail
 import com.algorand.android.models.BaseAccountAssetData
+import com.algorand.android.modules.sorting.nftsorting.ui.usecase.CollectibleItemSortUseCase
 import com.algorand.android.nft.mapper.CollectibleListingItemMapper
 import com.algorand.android.nft.ui.model.BaseCollectibleListData
 import com.algorand.android.nft.ui.model.BaseCollectibleListItem
@@ -33,7 +34,8 @@ class AccountCollectiblesListingPreviewUseCase @Inject constructor(
     private val failedAssetRepository: FailedAssetRepository,
     private val collectibleUtils: CollectibleUtils,
     private val accountCollectibleDataUseCase: AccountCollectibleDataUseCase,
-    private val collectibleFilterUseCase: CollectibleFilterUseCase
+    private val collectibleFilterUseCase: CollectibleFilterUseCase,
+    private val collectibleItemSortUseCase: CollectibleItemSortUseCase
 ) : BaseCollectiblesListingPreviewUseCase(collectibleListingItemMapper, collectibleFilterUseCase) {
 
     fun getCollectiblesListingPreviewFlow(searchKeyword: String, publicKey: String): Flow<CollectiblesListingPreview> {
@@ -51,22 +53,31 @@ class AccountCollectiblesListingPreviewUseCase @Inject constructor(
             )
             val isAllCollectiblesFilteredOut = isAllCollectiblesFilteredOut(collectibleListData)
             val isEmptyStateVisible = accountCollectibleData.isEmpty() || isAllCollectiblesFilteredOut
+            val itemList = mutableListOf<BaseCollectibleListItem>(
+                createSearchViewItem(isVisible = !isEmptyStateVisible),
+            ).apply { addAll(collectibleListData.baseCollectibleItemList) }
+            val infoViewItem = createInfoViewItem(
+                displayedCollectibleCount = collectibleListData.displayedCollectibleCount,
+                isVisible = !isEmptyStateVisible,
+                isFilterActive = collectibleListData.isFilterActive,
+                isAddButtonVisible = canAccountSignTransaction
+            )
+            itemList.add(ACCOUNT_COLLECTIBLES_LIST_CONFIGURATION_HEADER_ITEM_INDEX, infoViewItem)
             collectibleListingItemMapper.mapToPreviewItem(
                 isLoadingVisible = false,
                 isEmptyStateVisible = isEmptyStateVisible,
                 isErrorVisible = failedAssets.isNotEmpty(),
-                itemList = collectibleListData.baseCollectibleItemList,
+                itemList = itemList,
                 isReceiveButtonVisible = isEmptyStateVisible && canAccountSignTransaction,
-                isFilterActive = collectibleListData.isFilterActive,
-                displayedCollectibleCount = collectibleListData.displayedCollectibleCount,
                 filteredCollectibleCount = collectibleListData.filteredOutCollectibleCount,
                 isClearFilterButtonVisible = isAllCollectiblesFilteredOut,
-                isAccountFabVisible = canAccountSignTransaction
+                isAccountFabVisible = canAccountSignTransaction,
+                isAddCollectibleFloatingActionButtonVisible = canAccountSignTransaction
             )
         }
     }
 
-    private fun prepareCollectiblesListItems(
+    private suspend fun prepareCollectiblesListItems(
         searchKeyword: String,
         accountDetail: CacheResult<AccountDetail>?,
         canAccountSignTransaction: Boolean,
@@ -99,8 +110,10 @@ class AccountCollectiblesListingPreviewUseCase @Inject constructor(
             }
         }
 
+        val sortedCollectibleItemList = collectibleItemSortUseCase.sortCollectibles(collectibleList)
+
         return collectibleListingItemMapper.mapToBaseCollectibleListData(
-            collectibleList,
+            sortedCollectibleItemList,
             isFilterActive,
             displayedCollectibleCount,
             filteredOutCollectibleCount
@@ -110,5 +123,9 @@ class AccountCollectiblesListingPreviewUseCase @Inject constructor(
     private fun canAccountSignTransaction(accountDetail: CacheResult<AccountDetail>?): Boolean {
         val publicKey = accountDetail?.data?.account?.address ?: return false
         return accountDetailUseCase.canAccountSignTransaction(publicKey)
+    }
+
+    companion object {
+        const val ACCOUNT_COLLECTIBLES_LIST_CONFIGURATION_HEADER_ITEM_INDEX = 0
     }
 }

@@ -54,6 +54,10 @@
             android:name="isDraggable"
             android:defaultValue="true"
             app:argType="boolean" />
+        <argument
+            android:name="shouldDescriptionHasLinkMovementMethod"
+            android:defaultValue="false"
+            app:argType="boolean" />
     </dialog>
 
 </navigation>

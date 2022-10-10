@@ -16,6 +16,7 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.ViewGroup
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.use
@@ -41,6 +42,10 @@ class ListConfigurationHeaderView(context: Context, attrs: AttributeSet? = null)
         binding.primaryButton.setOnClickListener { onClick() }
     }
 
+    fun setPrimaryButtonState(isActive: Boolean) {
+        binding.primaryButton.isActivated = isActive
+    }
+
     fun setSecondaryButtonVisibility(isVisible: Boolean) {
         binding.secondaryButton.isVisible = isVisible
     }
@@ -57,6 +62,15 @@ class ListConfigurationHeaderView(context: Context, attrs: AttributeSet? = null)
         binding.titleTextView.setText(titleResId)
     }
 
+    fun setPrimaryButtonIcon(@DrawableRes icon: Int, useIconsOwnTint: Boolean = false) {
+        binding.primaryButton.setIconResource(icon)
+        if (useIconsOwnTint) {
+            binding.primaryButton.iconTint = null
+        } else {
+            binding.primaryButton.setIconTintResource(PRIMARY_BUTTON_ICON_DEFAULT_TINT)
+        }
+    }
+
     private fun initAttributes(attrs: AttributeSet?) {
         context?.obtainStyledAttributes(attrs, R.styleable.ListConfigurationHeaderView)?.use {
             val title = it.getString(R.styleable.ListConfigurationHeaderView_title)
@@ -64,7 +78,9 @@ class ListConfigurationHeaderView(context: Context, attrs: AttributeSet? = null)
 
             val primaryButtonText = it.getString(R.styleable.ListConfigurationHeaderView_primaryButtonText)
             val primaryButtonIcon = it.getDrawable(R.styleable.ListConfigurationHeaderView_primaryButtonIcon)
-            initPrimaryButton(primaryButtonText, primaryButtonIcon)
+            val isPrimaryButtonActive =
+                it.getBoolean(R.styleable.ListConfigurationHeaderView_primaryButtonActive, false)
+            initPrimaryButton(primaryButtonText, primaryButtonIcon, isPrimaryButtonActive)
 
             val secondaryButtonText = it.getString(R.styleable.ListConfigurationHeaderView_secondaryButtonText)
             val secondaryButtonIcon = it.getDrawable(R.styleable.ListConfigurationHeaderView_secondaryButtonIcon)
@@ -76,11 +92,17 @@ class ListConfigurationHeaderView(context: Context, attrs: AttributeSet? = null)
         if (title != null) binding.titleTextView.text = title
     }
 
-    private fun initPrimaryButton(primaryButtonText: String?, primaryButtonIcon: Drawable?) {
+    private fun initPrimaryButton(
+        primaryButtonText: String?,
+        primaryButtonIcon: Drawable?,
+        isPrimaryButtonActive: Boolean?
+    ) {
         with(binding.primaryButton) {
             isVisible = !primaryButtonText.isNullOrBlank() || primaryButtonIcon != null
             if (!primaryButtonText.isNullOrBlank()) text = primaryButtonText
             if (primaryButtonIcon != null) icon = primaryButtonIcon
+            if (isPrimaryButtonActive != null) isActivated = isPrimaryButtonActive
+            setIconTintResource(PRIMARY_BUTTON_ICON_DEFAULT_TINT)
         }
     }
 
@@ -94,6 +116,12 @@ class ListConfigurationHeaderView(context: Context, attrs: AttributeSet? = null)
                 }
             }
             if (secondaryButtonIcon != null) icon = secondaryButtonIcon
+            setIconTintResource(SECONDARY_BUTTON_ICON_DEFAULT_TINT)
         }
+    }
+
+    companion object {
+        private const val PRIMARY_BUTTON_ICON_DEFAULT_TINT = R.color.positive
+        private const val SECONDARY_BUTTON_ICON_DEFAULT_TINT = R.color.positive
     }
 }

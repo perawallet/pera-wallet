@@ -136,7 +136,6 @@
     <!-- Testnet Badge-->
     <dimen name="testnet_badge_height">26dp</dimen>
     <dimen name="testnet_badge_width">60dp</dimen>
-    <dimen name="testnet_badge_radius">13dp</dimen>
 
     <!--  Account Icon  -->
     <dimen name="account_icon_size_xlarge">80dp</dimen>
@@ -151,8 +150,19 @@
     <dimen name="governor_icon_size_small">12dp</dimen>
 
     <!--  Button Background Gradient  -->
+    <!--Before merging to 5.3.0 remove one of "bottom_fade_gradient_height" -->
     <dimen name="bottom_fade_gradient_height">144dp</dimen>
 
     <dimen name="custom_fab_size">64dp</dimen>
+
+    <!-- Button Stroke Width -->
+    <dimen name="button_stroke_width">1dp</dimen>
+
+    <dimen name="asa_action_layout_height">130dp</dimen>
+
+    <dimen name="collectible_image_view_radius">4dp</dimen>
+    <dimen name="collectible_image_size">40dp</dimen>
+    <dimen name="divider_margin">56dp</dimen>
+    <dimen name="fab_bottom_padding">100dp</dimen>
 
 </resources>

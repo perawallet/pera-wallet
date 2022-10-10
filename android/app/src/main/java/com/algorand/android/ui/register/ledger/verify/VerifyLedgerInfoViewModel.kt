@@ -13,18 +13,19 @@
 
 package com.algorand.android.ui.register.ledger.verify
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.algorand.android.usecase.LedgerAccountAdditionResultInfoUseCase
 import com.algorand.android.usecase.LockPreferencesUseCase
 import com.algorand.android.utils.getOrElse
+import dagger.hilt.android.lifecycle.HiltViewModel
 
-class VerifyLedgerInfoViewModel @ViewModelInject constructor(
+@HiltViewModel
+class VerifyLedgerInfoViewModel @Inject constructor(
     ledgerAccountAdditionResultInfoUseCase: LedgerAccountAdditionResultInfoUseCase,
     private val lockPreferencesUseCase: LockPreferencesUseCase,
-    @Assisted private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val numberOfAccountsAdded = savedStateHandle.getOrElse(NUMBER_OF_ACCOUNTS, 0)

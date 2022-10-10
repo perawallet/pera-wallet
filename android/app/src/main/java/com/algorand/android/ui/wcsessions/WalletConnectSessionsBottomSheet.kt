@@ -15,15 +15,14 @@ package com.algorand.android.ui.wcsessions
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import com.algorand.android.R
 import com.algorand.android.core.BaseBottomSheet
 import com.algorand.android.databinding.BottomSheetWalletConnectSessionsBinding
 import com.algorand.android.models.WalletConnectSession
+import com.algorand.android.utils.extensions.collectOnLifecycle
 import com.algorand.android.utils.viewbinding.viewBinding
 import com.algorand.android.utils.walletconnect.WalletConnectViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class WalletConnectSessionsBottomSheet : BaseBottomSheet(
@@ -53,9 +52,10 @@ class WalletConnectSessionsBottomSheet : BaseBottomSheet(
     }
 
     private fun initObserver() {
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            walletConnectViewModel.localSessionsFlow.collect(::onGetLocalSessionsSuccess)
-        }
+        viewLifecycleOwner.collectOnLifecycle(
+            walletConnectViewModel.localSessionsFlow,
+            ::onGetLocalSessionsSuccess
+        )
     }
 
     private fun initUi() {

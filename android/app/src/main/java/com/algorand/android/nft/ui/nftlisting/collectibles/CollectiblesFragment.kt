@@ -15,22 +15,26 @@ package com.algorand.android.nft.ui.nftlisting.collectibles
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.Lifecycle
+import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.CoreMainActivity
 import com.algorand.android.R
 import com.algorand.android.core.BackPressedControllerComponent
 import com.algorand.android.core.BottomNavigationBackPressedDelegate
 import com.algorand.android.models.FragmentConfiguration
-import com.algorand.android.models.IconButton
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.nft.domain.usecase.CollectiblesListingPreviewUseCase.Companion.COLLECTIBLES_LIST_CONFIGURATION_HEADER_ITEM_INDEX
 import com.algorand.android.nft.ui.base.BaseCollectibleListingViewModel
 import com.algorand.android.nft.ui.nftlisting.BaseCollectiblesListingFragment
+import com.algorand.android.utils.addItemVisibilityChangeListener
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
 @AndroidEntryPoint
-class CollectiblesFragment : BaseCollectiblesListingFragment(),
+class CollectiblesFragment :
+    BaseCollectiblesListingFragment(),
     BackPressedControllerComponent by BottomNavigationBackPressedDelegate() {
 
     private val toolbarConfiguration = ToolbarConfiguration(backgroundColor = R.color.primary_background)
@@ -40,26 +44,14 @@ class CollectiblesFragment : BaseCollectiblesListingFragment(),
         isBottomBarNeeded = true
     )
 
-    override val isTitleVisible: Boolean
-        get() = true
     private val collectiblesViewModel by viewModels<CollectiblesViewModel>()
 
     override val baseCollectibleListingViewModel: BaseCollectibleListingViewModel
         get() = collectiblesViewModel
 
-    private val toolbarReceiveButtonVisibilityCollector: suspend (Boolean?) -> Unit = { isReceiveButtonVisible ->
-        updateUiWithReceiveButtonVisibility(isReceiveButtonVisible)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as? CoreMainActivity)?.let { initBackPressedControllerComponent(it, viewLifecycleOwner) }
-    }
-
-    override fun initUi() {
-        super.initUi()
-        val receiveCollectibleButton = IconButton(R.drawable.ic_plus, onClick = ::onReceiveCollectibleClick)
-        getAppToolbar()?.addButtonToEnd(receiveCollectibleButton)
     }
 
     override fun onVideoItemClick(collectibleAssetId: Long, publicKey: String) {
@@ -111,22 +103,31 @@ class CollectiblesFragment : BaseCollectiblesListingFragment(),
         nav(CollectiblesFragmentDirections.actionCollectiblesFragmentToCollectibleReceiverAccountSelectionFragment())
     }
 
-    override fun onFilterClick() {
-        nav(CollectiblesFragmentDirections.actionCollectiblesFragmentToCollectibleFiltersFragment())
+    override fun onManageCollectiblesClick() {
+        nav(CollectiblesFragmentDirections.actionCollectiblesFragmentToManageCollectiblesBottomSheet())
     }
 
     override fun initCollectiblesListingPreviewCollector() {
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            with(collectiblesViewModel.collectiblesListingPreviewFlow) {
-                collect(collectibleListingPreviewCollector)
-                map { it?.isReceiveButtonVisible }.collect(toolbarReceiveButtonVisibilityCollector)
-            }
-        }
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            collectiblesViewModel.collectiblesListingPreviewFlow,
+            collectibleListingPreviewCollector
+        )
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            flow = collectiblesViewModel.collectiblesListingPreviewFlow
+                .map { it?.isAddCollectibleFloatingActionButtonVisible }
+                .distinctUntilChanged(),
+            collection = addCollectibleFloatingActionButtonVisibilityCollector,
+            state = Lifecycle.State.STARTED
+        )
     }
 
-    private fun updateUiWithReceiveButtonVisibility(isVisible: Boolean?) {
-        if (isVisible == true) {
-            getAppToolbar()?.addButtonToEnd(IconButton(R.drawable.ic_plus, onClick = ::onReceiveCollectibleClick))
-        }
+    override fun addItemVisibilityChangeListenerToRecyclerView(recyclerView: RecyclerView) {
+        recyclerView.addItemVisibilityChangeListener(
+            COLLECTIBLES_LIST_CONFIGURATION_HEADER_ITEM_INDEX
+        ) { isVisible -> onListItemConfigurationHeaderItemVisibilityChange(isVisible) }
+    }
+
+    override fun onAddCollectibleFloatingActionButtonClicked() {
+        nav(CollectiblesFragmentDirections.actionCollectiblesFragmentToCollectibleReceiverAccountSelectionFragment())
     }
 }

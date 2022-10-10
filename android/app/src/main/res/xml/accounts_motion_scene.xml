@@ -60,12 +60,12 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/notificationImageButton" />
-            <PropertySet
-                android:alpha="1"
-                android:visibility="visible" />
+            <PropertySet android:alpha="1" />
         </Constraint>
 
-        <Constraint android:id="@id/primaryPortfolioValue">
+        <Constraint
+            android:id="@id/primaryPortfolioValue"
+            app:visibilityMode="ignore">
             <Layout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -81,7 +81,9 @@
                 android:scaleY="1" />
         </Constraint>
 
-        <Constraint android:id="@id/secondaryPortfolioValue">
+        <Constraint
+            android:id="@id/secondaryPortfolioValue"
+            app:visibilityMode="ignore">
             <Layout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -137,19 +139,9 @@
                 app:layout_constraintTop_toBottomOf="@id/toolbarLayout" />
         </Constraint>
 
-        <Constraint
+        <ConstraintOverride
             android:id="@id/notificationImageButton"
-            app:visibilityMode="ignore">
-            <Layout
-                style="?attr/toolbarNavigationButtonStyle"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="@dimen/spacing_xxxsmall"
-                android:layout_marginEnd="@dimen/spacing_xlarge"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_notification" />
-        </Constraint>
+            app:visibilityMode="ignore" />
 
     </ConstraintSet>
 
@@ -191,7 +183,9 @@
                 android:visibility="invisible" />
         </Constraint>
 
-        <Constraint android:id="@id/primaryPortfolioValue">
+        <Constraint
+            android:id="@id/primaryPortfolioValue"
+            app:visibilityMode="ignore">
             <Layout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -208,7 +202,9 @@
                 android:translationY="@dimen/spacing_small" />
         </Constraint>
 
-        <Constraint android:id="@id/secondaryPortfolioValue">
+        <Constraint
+            android:id="@id/secondaryPortfolioValue"
+            app:visibilityMode="ignore">
             <Layout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -264,19 +260,9 @@
                 app:layout_constraintTop_toBottomOf="@id/toolbarLayout" />
         </Constraint>
 
-        <Constraint
+        <ConstraintOverride
             android:id="@id/notificationImageButton"
-            app:visibilityMode="ignore">
-            <Layout
-                style="?attr/toolbarNavigationButtonStyle"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="@dimen/spacing_xxxsmall"
-                android:layout_marginEnd="@dimen/spacing_xlarge"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_notification" />
-        </Constraint>
+            app:visibilityMode="ignore" />
 
     </ConstraintSet>
 

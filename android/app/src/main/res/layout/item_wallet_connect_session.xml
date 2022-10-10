@@ -89,6 +89,7 @@
         android:maxLines="1"
         app:autoSizeMaxTextSize="14sp"
         app:autoSizeMinTextSize="10sp"
+        android:ellipsize="end"
         app:autoSizeTextType="uniform"
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="parent"

@@ -12,19 +12,21 @@
 
 package com.algorand.android.ui.wcrawtransaction
 
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import com.algorand.android.core.BaseViewModel
-import com.algorand.android.models.AssetParams
 import com.algorand.android.models.DecodedWalletConnectTransactionRequest
 import com.algorand.android.models.WCAlgoTransactionRequest
 import com.algorand.android.models.WalletConnectRawTransaction
+import com.algorand.android.models.WalletConnectTransactionAssetDetail
 import com.algorand.android.models.WalletConnectTransactionRequest
 import com.algorand.android.utils.decodeBase64DecodedMsgPackToJsonString
 import com.algorand.android.utils.getBase64DecodedPublicKey
 import com.algorand.android.utils.getFormattedJsonArrayString
 import com.google.gson.Gson
+import dagger.hilt.android.lifecycle.HiltViewModel
 
-class WalletConnectRawMessageViewModel @ViewModelInject constructor(
+@HiltViewModel
+class WalletConnectRawMessageViewModel @Inject constructor(
     private val gson: Gson
 ) : BaseViewModel() {
 
@@ -39,8 +41,8 @@ class WalletConnectRawMessageViewModel @ViewModelInject constructor(
         return getFormattedJsonArrayString(gson.toJson(rawTxn))
     }
 
-    fun formatAssetMetadata(assetParams: AssetParams?): String {
-        val jsonObject = gson.toJson(assetParams)
+    fun formatAssetMetadata(walletConnectTransactionAssetDetail: WalletConnectTransactionAssetDetail?): String {
+        val jsonObject = gson.toJson(walletConnectTransactionAssetDetail)
         return getFormattedJsonArrayString(jsonObject)
     }
 }

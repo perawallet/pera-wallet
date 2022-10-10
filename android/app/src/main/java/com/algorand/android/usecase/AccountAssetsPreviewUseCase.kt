@@ -22,6 +22,7 @@ import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.Owned
 import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.AdditionAssetData
 import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.DeletionAssetData
 import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
+import com.algorand.android.modules.sorting.assetsorting.ui.usecase.AssetItemSortUseCase
 import com.algorand.android.utils.extensions.addFirst
 import com.algorand.android.utils.formatAsCurrency
 import java.math.BigDecimal
@@ -33,7 +34,8 @@ class AccountAssetsPreviewUseCase @Inject constructor(
     private val accountDetailUseCase: AccountDetailUseCase,
     private val accountAssetDataUseCase: AccountAssetDataUseCase,
     private val accountDetailAssetItemMapper: AccountDetailAssetItemMapper,
-    private val parityUseCase: ParityUseCase
+    private val parityUseCase: ParityUseCase,
+    private val assetItemSortUseCase: AssetItemSortUseCase
 ) {
 
     fun fetchAccountDetail(publicKey: String, query: String): Flow<List<AccountDetailAssetsItem>> {
@@ -43,10 +45,7 @@ class AccountAssetsPreviewUseCase @Inject constructor(
         ) { accountAssetData, _ ->
             var primaryAccountValue = BigDecimal.ZERO
             var secondaryAccountValue = BigDecimal.ZERO
-            mutableListOf<AccountDetailAssetsItem>().apply {
-                val isAddAssetButtonVisible = accountDetailUseCase.canAccountSignTransaction(publicKey)
-                add(AccountDetailAssetsItem.TitleItem(R.string.assets, isAddAssetButtonVisible))
-                add(AccountDetailAssetsItem.SearchViewItem)
+            val assetItemList = mutableListOf<AccountDetailAssetsItem.BaseAssetItem>().apply {
                 accountAssetData.forEach { accountAssetData ->
                     (accountAssetData as? OwnedAssetData)?.let { assetData ->
                         primaryAccountValue += assetData.parityValueInSelectedCurrency.amountAsCurrency
@@ -56,13 +55,20 @@ class AccountAssetsPreviewUseCase @Inject constructor(
                         add(createAssetListItem(accountAssetData) ?: return@forEach)
                     }
                 }
-                if (accountAssetData.none { shouldDisplayAsset(it, query) }) {
-                    add(AccountDetailAssetsItem.NoAssetFoundViewItem)
+            }
+            mutableListOf<AccountDetailAssetsItem>().apply {
+                val isAddAssetButtonVisible = accountDetailUseCase.canAccountSignTransaction(publicKey)
+                add(accountDetailAssetItemMapper.mapToTitleItem(R.string.assets, isAddAssetButtonVisible))
+                add(accountDetailAssetItemMapper.mapToSearchViewItem())
+                addAll(assetItemSortUseCase.sortAssets(assetItemList))
+                if (assetItemList.isEmpty()) {
+                    add(accountDetailAssetItemMapper.mapToNoAssetFoundViewItem())
                 }
                 val accountPortfolioItem = createAccountPortfolioItem(primaryAccountValue, secondaryAccountValue)
                 addFirst(accountPortfolioItem)
+
                 if (accountDetailUseCase.canAccountSignTransaction(publicKey)) {
-                    add(QUICK_ACTIONS_INDEX, AccountDetailAssetsItem.QuickActionsItem)
+                    add(QUICK_ACTIONS_INDEX, accountDetailAssetItemMapper.mapToQuickActionsItem())
                 }
             }
         }
@@ -88,7 +94,9 @@ class AccountAssetsPreviewUseCase @Inject constructor(
         return AccountPortfolioItem(formattedPrimaryAccountValue, formattedSecondaryAccountValue)
     }
 
-    private fun createAssetListItem(assetData: BaseAccountAssetData): AccountDetailAssetsItem.BaseAssetItem? {
+    private fun createAssetListItem(
+        assetData: BaseAccountAssetData
+    ): AccountDetailAssetsItem.BaseAssetItem? {
         return with(accountDetailAssetItemMapper) {
             when (assetData) {
                 is OwnedAssetData -> mapToOwnedAssetItem(assetData)

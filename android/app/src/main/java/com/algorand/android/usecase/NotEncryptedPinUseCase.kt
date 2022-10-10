@@ -16,7 +16,10 @@ package com.algorand.android.usecase
 import com.algorand.android.repository.NotEncryptedPinRepository
 import javax.inject.Inject
 
-class NotEncryptedPinUseCase @Inject constructor(private val notEncryptedPinRepository: NotEncryptedPinRepository) {
+// Do NOT INJECT this use case to a class other than EncryptedPinMigrationManager
+class NotEncryptedPinUseCase @Inject constructor(
+    private val notEncryptedPinRepository: NotEncryptedPinRepository
+) {
     fun isNotEncryptedPinSet(): Boolean {
         return notEncryptedPinRepository.isNotEncryptedPinSet()
     }

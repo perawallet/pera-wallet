@@ -12,16 +12,18 @@
 
 package com.algorand.android.modules.dapp.moonpay.ui.accountselection
 
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.models.BaseAccountSelectionListItem
 import com.algorand.android.modules.dapp.moonpay.domain.usecase.MoonpayAccountSelectionPreviewUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class MoonpayAccountSelectionViewModel @ViewModelInject constructor(
+@HiltViewModel
+class MoonpayAccountSelectionViewModel @Inject constructor(
     private val moonpayAccountSelectionPreviewUseCase: MoonpayAccountSelectionPreviewUseCase
 ) : ViewModel() {
 

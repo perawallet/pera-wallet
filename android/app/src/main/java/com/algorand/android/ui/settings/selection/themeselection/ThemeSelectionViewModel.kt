@@ -13,14 +13,16 @@
 package com.algorand.android.ui.settings.selection.themeselection
 
 import android.content.SharedPreferences
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.ui.settings.selection.ThemeListItem
 import com.algorand.android.utils.preference.ThemePreference
 import com.algorand.android.utils.preference.getSavedThemePreference
 import com.algorand.android.utils.preference.saveThemePreference
+import dagger.hilt.android.lifecycle.HiltViewModel
 
-class ThemeSelectionViewModel @ViewModelInject constructor(
+@HiltViewModel
+class ThemeSelectionViewModel @Inject constructor(
     private val sharedPref: SharedPreferences
 ) : BaseViewModel() {
 

@@ -12,14 +12,28 @@
 
 package com.algorand.android.modules.tracking.core
 
+import com.algorand.android.usecase.NodeSettingsUseCase
+import javax.inject.Inject
+
 abstract class BaseEventTracker(private val peraEventTracker: PeraEventTracker) {
     // TODO handle event tracking permission level in this class
 
+    @Inject
+    lateinit var nodeSettingsUseCase: NodeSettingsUseCase
+
     protected suspend fun logEvent(eventName: String) {
-        peraEventTracker.logEvent(eventName)
+        peraEventTracker.logEvent(getFormattedEventName(eventName))
     }
 
     protected suspend fun logEvent(eventName: String, payloadMap: Map<String, Any>) {
         peraEventTracker.logEvent(eventName, payloadMap)
+    }
+
+    private suspend fun getFormattedEventName(eventName: String): String {
+        return if (nodeSettingsUseCase.isSelectedNodeTestnet()) "$TESTNET_EVENT_NAME_PREFIX$eventName" else eventName
+    }
+
+    companion object {
+        private const val TESTNET_EVENT_NAME_PREFIX = "t_"
     }
 }

@@ -27,6 +27,6 @@ class OnboardingCreateNewAccountEventTracker @Inject constructor(
     }
 
     companion object {
-        private const val ONBOARDING_CREATE_NEW_ACCOUNT_EVENT_KEY = "onboarding_createaccount_new"
+        private const val ONBOARDING_CREATE_NEW_ACCOUNT_EVENT_KEY = "onb_createacc_recover"
     }
 }

@@ -13,8 +13,7 @@
 
 package com.algorand.android.ui.send.receiveraccount
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -30,6 +29,7 @@ import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.isValidAddress
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlin.properties.Delegates
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,10 +41,11 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
-class ReceiverAccountSelectionViewModel @ViewModelInject constructor(
+@HiltViewModel
+class ReceiverAccountSelectionViewModel @Inject constructor(
     private val receiverAccountSelectionUseCase: ReceiverAccountSelectionUseCase,
     private val accountCacheManager: AccountCacheManager,
-    @Assisted savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     val assetTransaction = savedStateHandle.get<AssetTransaction>(ASSET_TRANSACTION_KEY)!!

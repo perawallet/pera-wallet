@@ -23,7 +23,9 @@ import com.algorand.android.databinding.BottomSheetDoubleButtonBinding
 import com.algorand.android.utils.viewbinding.viewBinding
 import com.google.android.material.button.MaterialButton
 
-abstract class BaseDoubleButtonBottomSheet : BaseBottomSheet(R.layout.bottom_sheet_double_button) {
+abstract class BaseDoubleButtonBottomSheet : BaseBottomSheet(
+    layoutResId = R.layout.bottom_sheet_double_button
+) {
 
     private val binding by viewBinding(BottomSheetDoubleButtonBinding::bind)
 

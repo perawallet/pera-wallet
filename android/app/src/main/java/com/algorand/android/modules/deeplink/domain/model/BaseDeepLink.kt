@@ -195,9 +195,7 @@ sealed class BaseDeepLink {
      * wc://wc:b562a118-0cbd-4f4f-92af-e58bf0a9dfb8@1?bridge=https%3A%2F%2Fwallet-connect-d.perawallet.app&key=672a4fbd212bfdbf6e0c8a858d9ab1577df169e7eac74c7175b9a3fd0faea889
      * perawallet-wc://wc:b562a118-0cbd-4f4f-92af-e58bf0a9dfb8@1?bridge=https%3A%2F%2Fwallet-connect-d.perawallet.app&key=672a4fbd212bfdbf6e0c8a858d9ab1577df169e7eac74c7175b9a3fd0faea889
      */
-    class WalletConnectConnectionDeepLink private constructor(
-        val url: String
-    ) : BaseDeepLink() {
+    class WalletConnectConnectionDeepLink private constructor(val url: String) : BaseDeepLink() {
 
         override fun equals(other: Any?): Boolean {
             return other is WalletConnectConnectionDeepLink && other.url == url
@@ -209,9 +207,7 @@ sealed class BaseDeepLink {
 
         companion object : DeepLinkCreator {
             override fun createDeepLink(rawDeeplink: RawDeepLink): BaseDeepLink {
-                return WalletConnectConnectionDeepLink(
-                    url = rawDeeplink.walletConnectUrl ?: DEFAULT_WALLET_CONNECT_URL
-                )
+                return WalletConnectConnectionDeepLink(url = rawDeeplink.walletConnectUrl ?: DEFAULT_WALLET_CONNECT_URL)
             }
 
             override fun doesDeeplinkMeetTheRequirements(rawDeepLink: RawDeepLink): Boolean {

@@ -15,16 +15,15 @@ package com.algorand.android.modules.transaction.detail.ui.applicationcallassets
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseBottomSheet
 import com.algorand.android.databinding.BottomSheetApplicationCallAssetsBinding
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.modules.transaction.detail.domain.model.ApplicationCallAssetInformationPreview
 import com.algorand.android.modules.transaction.detail.ui.adapter.ApplicationCallAssetInformationAdapter
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class ApplicationCallAssetsBottomSheet : DaggerBaseBottomSheet(
@@ -64,8 +63,9 @@ class ApplicationCallAssetsBottomSheet : DaggerBaseBottomSheet(
     }
 
     private fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-            applicationCallAssetsViewModel.assetItemConfigurationFlow.collectLatest(assetItemConfigurationCollector)
-        }
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            applicationCallAssetsViewModel.assetItemConfigurationFlow,
+            assetItemConfigurationCollector
+        )
     }
 }

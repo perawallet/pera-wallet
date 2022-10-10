@@ -12,7 +12,7 @@
 
 package com.algorand.android.modules.currency.ui
 
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.models.ui.CurrencySelectionPreview
@@ -21,17 +21,21 @@ import com.algorand.android.modules.currency.domain.usecase.CurrencyUseCase
 import com.algorand.android.modules.currency.ui.usecase.CurrencySelectionPreviewUseCase
 import com.algorand.android.ui.settings.selection.CurrencyListItem
 import com.algorand.android.utils.analytics.logCurrencyChange
+import com.algorand.android.utils.coremanager.ParityManager
 import com.google.firebase.analytics.FirebaseAnalytics
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class CurrencySelectionViewModel @ViewModelInject constructor(
+@HiltViewModel
+class CurrencySelectionViewModel @Inject constructor(
     private val firebaseAnalytics: FirebaseAnalytics,
     private val currencyUseCase: CurrencyUseCase,
-    private val currencySelectionPreviewUseCase: CurrencySelectionPreviewUseCase
+    private val currencySelectionPreviewUseCase: CurrencySelectionPreviewUseCase,
+    private val parityManager: ParityManager
 ) : BaseViewModel() {
 
     val currencySelectionPreviewFlow: Flow<CurrencySelectionPreview?>
@@ -76,6 +80,9 @@ class CurrencySelectionViewModel @ViewModelInject constructor(
         currencyUseCase.setPrimaryCurrency(currencyListItem.currencyId)
         logCurrencyChange(currencyListItem.currencyId)
         _selectedCurrencyFlow.value = currencyUseCase.getSelectedCurrency()
+        viewModelScope.launch {
+            parityManager.refreshSelectedCurrencyDetailCache()
+        }
     }
 
     private fun logCurrencyChange(newCurrencyId: String) {

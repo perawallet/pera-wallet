@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.R
 import com.algorand.android.databinding.ItemLedgerInstructionStepBinding
 import com.algorand.android.utils.getXmlStyledString
-import com.algorand.android.utils.openUrl
+import com.algorand.android.utils.browser.openUrl
 import com.algorand.android.utils.setXmlStyledString
 
 class LedgerInstructionStepViewHolder(

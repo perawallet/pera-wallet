@@ -22,7 +22,7 @@ data class AssetConfigurationDTO(
     val metadataHash: String?,
     val name: String?,
     val nameB64: String?,
-    val total: BigInteger?,
+    val maxSupply: BigInteger?,
     val unitName: String?,
     val unitNameB64: String?,
     val url: String?,

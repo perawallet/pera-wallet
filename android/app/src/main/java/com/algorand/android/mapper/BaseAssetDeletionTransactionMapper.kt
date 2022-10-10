@@ -70,7 +70,7 @@ class BaseAssetDeletionTransactionMapper @Inject constructor(
                 rawTransactionPayload = rawTxn,
                 signer = WalletConnectSigner.create(rawTxn, senderWalletConnectAddress, errorProvider),
                 authAddress = accountCacheData?.authAddress,
-                account = WalletConnectAccount.create(accountCacheData?.account),
+                fromAccount = WalletConnectAccount.create(accountCacheData?.account),
                 assetInformation = WalletConnectAssetInformation.create(
                     accountCacheData?.assetsInformation?.find { it.assetId == assetIdBeingConfigured }
                 ),
@@ -97,7 +97,7 @@ class BaseAssetDeletionTransactionMapper @Inject constructor(
                 rawTransactionPayload = rawTxn,
                 signer = WalletConnectSigner.create(rawTxn, senderWalletConnectAddress, errorProvider),
                 authAddress = accountCacheData?.authAddress,
-                account = WalletConnectAccount.create(accountCacheData?.account),
+                fromAccount = WalletConnectAccount.create(accountCacheData?.account),
                 assetInformation = WalletConnectAssetInformation.create(
                     accountCacheData?.assetsInformation?.find { it.assetId == assetIdBeingConfigured }
                 ),
@@ -125,7 +125,7 @@ class BaseAssetDeletionTransactionMapper @Inject constructor(
                 rawTransactionPayload = rawTxn,
                 signer = WalletConnectSigner.create(rawTxn, senderWalletConnectAddress, errorProvider),
                 authAddress = accountCacheData?.authAddress,
-                account = WalletConnectAccount.create(accountCacheData?.account),
+                fromAccount = WalletConnectAccount.create(accountCacheData?.account),
                 assetInformation = WalletConnectAssetInformation.create(
                     accountCacheData?.assetsInformation?.find { it.assetId == assetIdBeingConfigured }
                 ),
@@ -153,7 +153,7 @@ class BaseAssetDeletionTransactionMapper @Inject constructor(
                 rawTransactionPayload = rawTxn,
                 signer = WalletConnectSigner.create(rawTxn, senderWalletConnectAddress, errorProvider),
                 authAddress = accountCacheData?.authAddress,
-                account = WalletConnectAccount.create(accountCacheData?.account),
+                fromAccount = WalletConnectAccount.create(accountCacheData?.account),
                 assetInformation = WalletConnectAssetInformation.create(
                     accountCacheData?.assetsInformation?.find { it.assetId == assetIdBeingConfigured }
                 ),

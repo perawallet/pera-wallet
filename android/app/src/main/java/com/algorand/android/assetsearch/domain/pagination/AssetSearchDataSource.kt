@@ -12,7 +12,7 @@
 
 package com.algorand.android.assetsearch.domain.pagination
 
-import com.algorand.android.assetsearch.domain.model.AssetDetailDTO
+import com.algorand.android.assetsearch.domain.model.AssetSearchDTO
 import com.algorand.android.assetsearch.domain.model.AssetSearchQuery
 import com.algorand.android.assetsearch.domain.repository.AssetSearchRepository
 import com.algorand.android.models.Pagination
@@ -24,44 +24,40 @@ import kotlinx.coroutines.withContext
 class AssetSearchDataSource(
     private val assetSearchRepository: AssetSearchRepository,
     private val currentQuery: AssetSearchQuery?
-) : PeraPagingSource<String, AssetDetailDTO>() {
+) : PeraPagingSource<String, AssetSearchDTO>() {
 
     override val logTag: String = AssetSearchDataSource::class.java.simpleName
 
-    override suspend fun loadMore(loadUrl: String): LoadResult<String, AssetDetailDTO> {
+    override suspend fun loadMore(loadUrl: String): LoadResult<String, AssetSearchDTO> {
         return withContext(Dispatchers.IO) {
             try {
                 parseResult(getAssetsByUrl(loadUrl))
             } catch (exception: Exception) {
-                LoadResult.Error<String, AssetDetailDTO>(exception)
+                LoadResult.Error<String, AssetSearchDTO>(exception)
             }
         }
     }
 
-    override suspend fun initializeData(): LoadResult<String, AssetDetailDTO> {
+    override suspend fun initializeData(): LoadResult<String, AssetSearchDTO> {
         return parseResult(searchAssets())
     }
 
-    private suspend fun getAssetsByUrl(currentUrlToFetch: String): Result<Pagination<AssetDetailDTO>> {
+    private suspend fun getAssetsByUrl(currentUrlToFetch: String): Result<Pagination<AssetSearchDTO>> {
         return assetSearchRepository.getAssetsByUrl(currentUrlToFetch)
     }
 
-    private suspend fun searchAssets(): Result<Pagination<AssetDetailDTO>> {
-        val (queryText, queryType) = currentQuery ?: DEFAULT_ASSET_QUERY
+    private suspend fun searchAssets(): Result<Pagination<AssetSearchDTO>> {
+        val queryText = currentQuery?.queryText ?: DEFAULT_ASSET_QUERY.queryText
         val hasCollectibles = currentQuery?.hasCollectibles
-        return assetSearchRepository.searchAsset(
-            queryText = queryText,
-            queryType = queryType,
-            hasCollectible = hasCollectibles
-        )
+        return assetSearchRepository.searchAsset(queryText, hasCollectibles)
     }
 
-    private fun parseResult(result: Result<Pagination<AssetDetailDTO>>): LoadResult<String, AssetDetailDTO> {
+    private fun parseResult(result: Result<Pagination<AssetSearchDTO>>): LoadResult<String, AssetSearchDTO> {
         return when (result) {
             is Result.Success -> {
                 LoadResult.Page(data = result.data.results, prevKey = null, nextKey = result.data.next)
             }
-            is Result.Error -> LoadResult.Error<String, AssetDetailDTO>(result.exception)
+            is Result.Error -> LoadResult.Error<String, AssetSearchDTO>(result.exception)
         }
     }
 

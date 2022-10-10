@@ -12,11 +12,10 @@
 
 package com.algorand.android.assetsearch.data.repository
 
-import com.algorand.android.assetsearch.data.mapper.AssetDetailDTOMapper
-import com.algorand.android.assetsearch.domain.model.AssetDetailDTO
+import com.algorand.android.assetsearch.data.mapper.AssetSearchDTOMapper
+import com.algorand.android.assetsearch.domain.model.AssetSearchDTO
 import com.algorand.android.assetsearch.domain.repository.AssetSearchRepository
-import com.algorand.android.models.AssetDetailResponse
-import com.algorand.android.models.AssetQueryType
+import com.algorand.android.models.AssetSearchResponse
 import com.algorand.android.models.Pagination
 import com.algorand.android.models.Result
 import com.algorand.android.network.MobileAlgorandApi
@@ -27,32 +26,30 @@ import javax.inject.Inject
 class AssetSearchRepositoryImpl @Inject constructor(
     private val mobileAlgorandApi: MobileAlgorandApi,
     private val hipoApiErrorHandler: RetrofitErrorHandler,
-    private val assetDetailDTOMapper: AssetDetailDTOMapper
+    private val assetSearchDTOMapper: AssetSearchDTOMapper
 ) : AssetSearchRepository {
 
     override suspend fun searchAsset(
         queryText: String,
-        queryType: AssetQueryType,
         hasCollectible: Boolean?
-    ): Result<Pagination<AssetDetailDTO>> {
+    ): Result<Pagination<AssetSearchDTO>> {
         return requestWithHipoErrorHandler(hipoApiErrorHandler) {
             val assetQuery = queryText.takeIf { it.isNotBlank() }
             mobileAlgorandApi.getAssets(
                 assetQuery = assetQuery,
-                status = queryType.apiName,
                 hasCollectible = hasCollectible
             )
-        }.map { paginationData -> mapToAssetDetailDTO(paginationData) }
+        }.map { paginationData -> mapToAssetSearchDTO(paginationData) }
     }
 
-    override suspend fun getAssetsByUrl(url: String): Result<Pagination<AssetDetailDTO>> {
+    override suspend fun getAssetsByUrl(url: String): Result<Pagination<AssetSearchDTO>> {
         return requestWithHipoErrorHandler(hipoApiErrorHandler) {
             mobileAlgorandApi.getAssetsMore(url)
-        }.map { paginationData -> mapToAssetDetailDTO(paginationData) }
+        }.map { paginationData -> mapToAssetSearchDTO(paginationData) }
     }
 
-    private fun mapToAssetDetailDTO(paginationData: Pagination<AssetDetailResponse>): Pagination<AssetDetailDTO> {
-        val assetDetailDTOResult = paginationData.results.map { assetDetailDTOMapper.mapToAssetDetailDTO(it) }
+    private fun mapToAssetSearchDTO(paginationData: Pagination<AssetSearchResponse>): Pagination<AssetSearchDTO> {
+        val assetDetailDTOResult = paginationData.results.map { assetSearchDTOMapper.mapToAssetSearchDTO(it) }
         return Pagination(paginationData.next, assetDetailDTOResult)
     }
 }

@@ -159,6 +159,7 @@
         <attr name="bottomButtonText" format="string" />
         <attr name="bottomButtonIcon" format="reference" />
         <attr name="isBottomButtonVisible" format="boolean" />
+        <attr name="isFullScreenIconVisible" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="AccountCopyQrView">
@@ -181,12 +182,17 @@
         <attr name="title" />
         <attr name="primaryButtonIcon" format="reference" />
         <attr name="primaryButtonText" format="string" />
+        <attr name="primaryButtonActive" format="boolean" />
         <attr name="secondaryButtonIcon" format="reference" />
         <attr name="secondaryButtonText" format="string" />
     </declare-styleable>
 
     <declare-styleable name="GradientButtonView">
         <attr name="buttonText" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="PeraMaterialButton">
+        <attr name="text" />
     </declare-styleable>
 
 </resources>

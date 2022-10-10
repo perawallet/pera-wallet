@@ -12,7 +12,7 @@
 
 package com.algorand.android.mapper
 
-import com.algorand.android.models.AssetDetail
+import com.algorand.android.assetsearch.domain.model.VerificationTier
 import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.models.BaseAccountAssetData
 import com.algorand.android.models.BaseAssetDetail
@@ -31,12 +31,13 @@ import javax.inject.Inject
 class AccountAssetDataMapper @Inject constructor() {
 
     fun mapToOwnedAssetData(
-        assetDetail: AssetDetail,
+        assetDetail: BaseAssetDetail,
         amount: BigInteger,
         formattedAmount: String,
         formattedCompactAmount: String,
         parityValueInSelectedCurrency: ParityValue,
-        parityValueInSecondaryCurrency: ParityValue
+        parityValueInSecondaryCurrency: ParityValue,
+        optedInAtRound: Long?
     ): BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData {
         return BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData(
             id = assetDetail.assetId,
@@ -45,40 +46,46 @@ class AccountAssetDataMapper @Inject constructor() {
             amount = amount,
             formattedAmount = formattedAmount,
             formattedCompactAmount = formattedCompactAmount,
-            isVerified = assetDetail.isVerified,
             isAlgo = false,
             decimals = assetDetail.fractionDecimals ?: DEFAULT_ASSET_DECIMAL,
             creatorPublicKey = assetDetail.assetCreator?.publicKey,
             usdValue = assetDetail.usdValue,
             isAmountInSelectedCurrencyVisible = assetDetail.usdValue != null && amount isNotEqualTo BigInteger.ZERO,
             parityValueInSelectedCurrency = parityValueInSelectedCurrency,
-            parityValueInSecondaryCurrency = parityValueInSecondaryCurrency
+            parityValueInSecondaryCurrency = parityValueInSecondaryCurrency,
+            prismUrl = assetDetail.logoUri,
+            verificationTier = assetDetail.verificationTier,
+            optedInAtRound = optedInAtRound
         )
     }
 
-    fun mapToPendingAdditionAssetData(assetDetail: BaseAssetDetail): BaseAccountAssetData {
+    fun mapToPendingAdditionAssetData(
+        assetDetail: BaseAssetDetail
+    ): BaseAccountAssetData.PendingAssetData.AdditionAssetData {
         return BaseAccountAssetData.PendingAssetData.AdditionAssetData(
             id = assetDetail.assetId,
             name = assetDetail.fullName,
             shortName = assetDetail.shortName,
-            isVerified = assetDetail.isVerified,
             isAlgo = false,
             decimals = assetDetail.fractionDecimals ?: DEFAULT_ASSET_DECIMAL,
             creatorPublicKey = assetDetail.assetCreator?.publicKey,
-            usdValue = assetDetail.usdValue
+            usdValue = assetDetail.usdValue,
+            verificationTier = assetDetail.verificationTier
         )
     }
 
-    fun mapToPendingRemovalAssetData(assetDetail: BaseAssetDetail): BaseAccountAssetData {
+    fun mapToPendingRemovalAssetData(
+        assetDetail: BaseAssetDetail
+    ): BaseAccountAssetData.PendingAssetData.DeletionAssetData {
         return BaseAccountAssetData.PendingAssetData.DeletionAssetData(
             id = assetDetail.assetId,
             name = assetDetail.fullName,
             shortName = assetDetail.shortName,
-            isVerified = assetDetail.isVerified,
             isAlgo = false,
             decimals = assetDetail.fractionDecimals ?: DEFAULT_ASSET_DECIMAL,
             creatorPublicKey = assetDetail.assetCreator?.publicKey,
-            usdValue = assetDetail.usdValue
+            usdValue = assetDetail.usdValue,
+            verificationTier = assetDetail.verificationTier
         )
     }
 
@@ -95,14 +102,16 @@ class AccountAssetDataMapper @Inject constructor() {
             amount = amount,
             formattedAmount = amount.formatAmount(ALGO_DECIMALS).formatAsAlgoAmount(),
             formattedCompactAmount = amount.formatAmount(ALGO_DECIMALS, isCompact = true).formatAsAlgoAmount(),
-            isVerified = true,
             isAlgo = true,
             decimals = ALGO_DECIMALS,
             creatorPublicKey = "",
             usdValue = usdValue,
             isAmountInSelectedCurrencyVisible = true, // Algo always has a currency value
             parityValueInSelectedCurrency = parityValueInSelectedCurrency,
-            parityValueInSecondaryCurrency = parityValueInSecondaryCurrency
+            parityValueInSecondaryCurrency = parityValueInSecondaryCurrency,
+            prismUrl = null, // Algo does not have prism url
+            verificationTier = VerificationTier.TRUSTED,
+            optedInAtRound = null
         )
     }
 }

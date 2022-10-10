@@ -25,6 +25,6 @@ class MoonpayAlgoBuyTapEventTracker @Inject constructor(
     }
 
     companion object {
-        private const val MOONPAY_BUY_ALGO_EVENT_KEY = "moonpayscreen_algo_buy_tap"
+        private const val MOONPAY_BUY_ALGO_EVENT_KEY = "moonpayscr_algo_buy_tap"
     }
 }

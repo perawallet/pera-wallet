@@ -19,9 +19,9 @@ import androidx.annotation.DimenRes
 import androidx.annotation.StringRes
 import androidx.core.view.setPadding
 import com.algorand.android.R
-import com.algorand.android.models.AssetParams
 import com.algorand.android.models.TransactionRequestExtrasInfo
 import com.algorand.android.models.WCAlgoTransactionRequest
+import com.algorand.android.models.WalletConnectTransactionAssetDetail
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.resources.TextAppearance
@@ -97,10 +97,10 @@ class WalletConnectExtrasChipGroupView(
         }
     }
 
-    private fun createAssetMetadataChip(assetParams: AssetParams?) {
-        if (assetParams != null) {
+    private fun createAssetMetadataChip(walletConnectTransactionAssetDetail: WalletConnectTransactionAssetDetail?) {
+        if (walletConnectTransactionAssetDetail != null) {
             val assetMetadataChip = createChip(R.string.show_asset_metadata)
-            assetMetadataChip.setOnClickListener { listener?.onAssetMetadataClick(assetParams) }
+            assetMetadataChip.setOnClickListener { listener?.onAssetMetadataClick(walletConnectTransactionAssetDetail) }
             addView(assetMetadataChip)
         }
     }
@@ -134,7 +134,7 @@ class WalletConnectExtrasChipGroupView(
         fun onShowAssetInAlgoExplorerClick(assetId: Long) {}
         fun onShowAppInAlgoExplorerClick(appId: Long) {}
         fun onAssetUrlClick(url: String) {}
-        fun onAssetMetadataClick(assetParams: AssetParams) {}
+        fun onAssetMetadataClick(walletConnectTransactionAssetDetail: WalletConnectTransactionAssetDetail) {}
 
         fun onOpenInAlgoExplorerClick(url: String) {}
         fun onOpenInGoalSeekerClick(url: String) {}

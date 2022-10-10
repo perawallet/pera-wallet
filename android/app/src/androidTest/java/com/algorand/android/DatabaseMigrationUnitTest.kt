@@ -29,7 +29,8 @@ class DatabaseMigrationUnitTest {
         AlgorandDatabase.MIGRATION_4_5,
         AlgorandDatabase.MIGRATION_5_6,
         AlgorandDatabase.MIGRATION_6_7,
-        AlgorandDatabase.MIGRATION_7_8
+        AlgorandDatabase.MIGRATION_7_8,
+        AlgorandDatabase.MIGRATION_8_9
     )
     private var migratedDb: SupportSQLiteDatabase? = null
     private lateinit var gson: Gson
@@ -109,6 +110,7 @@ class DatabaseMigrationUnitTest {
         val peerMetaJson = gson.toJson(WalletConnectPeerMeta("name", "url", "description", listOf("icon_url")))
         val sessionMetaJson = gson.toJson(WalletConnectSessionMeta("bridge", "key", "topic", "version"))
         val address = "KFQMT4AK4ASIPAN23X36T3REP6D26LQDMAQNSAZM3DIEG2HTVKXEF76AP4"
+        val fallbackBrowserGroupResponse = "chrome"
         execSQL(
             """
                 INSERT INTO WalletConnectSessionEntity (
@@ -117,7 +119,8 @@ class DatabaseMigrationUnitTest {
                     wc_session,
                     date_time_stamp, 
                     connected_account_public_key,
-                    is_connected
+                    is_connected,
+                    fallback_browser_group_response
                 )
                 VALUES (
                     1625574947350,
@@ -125,7 +128,8 @@ class DatabaseMigrationUnitTest {
                     '$sessionMetaJson',
                     1625574947350,
                     '$address', 
-                    0
+                    0,
+                    '$fallbackBrowserGroupResponse'
                 )
             """.trimIndent()
         )
@@ -135,6 +139,7 @@ class DatabaseMigrationUnitTest {
         val peerMetaJson = gson.toJson(WalletConnectPeerMeta("name", "url", "description", listOf("icon_url")))
         val sessionMetaJson = gson.toJson(WalletConnectSessionMeta("bridge", "key", "topic", "version"))
         val address = "KFQMT4AK4ASIPAN23X36T3REP6D26LQDMAQNSAZM3DIEG2HTVKXEF76AP4"
+        val fallbackBrowserGroupResponse = "chrome"
         execSQL(
             """
                 INSERT INTO WalletConnectSessionHistoryEntity (
@@ -142,14 +147,16 @@ class DatabaseMigrationUnitTest {
                     peer_meta,
                     wc_session,
                     creation_date_time_stamp, 
-                    connected_account_public_key
+                    connected_account_public_key,
+                    fallback_browser_group_response
                 )
                 VALUES (
                     1625574947350,
                     '$peerMetaJson',
                     '$sessionMetaJson', 
                     1625574947350,
-                    '$address'
+                    '$address',
+                    '$fallbackBrowserGroupResponse'
                 )
             """.trimIndent()
         )

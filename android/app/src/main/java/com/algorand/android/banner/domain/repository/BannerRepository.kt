@@ -13,13 +13,16 @@
 package com.algorand.android.banner.domain.repository
 
 import com.algorand.android.banner.domain.model.BannerDetailDTO
+import com.algorand.android.models.Result
 import kotlinx.coroutines.flow.Flow
 
 interface BannerRepository {
 
-    suspend fun cacheBanners(deviceId: String)
+    suspend fun cacheBanner(bannerDetailDto: BannerDetailDTO)
 
-    suspend fun getCachedBanners(): Flow<List<BannerDetailDTO>>
+    suspend fun getBanners(deviceId: String): Result<List<BannerDetailDTO>>
+
+    suspend fun getCachedBanner(): Flow<BannerDetailDTO?>
 
     suspend fun setBannerDismissed(bannerId: Long)
 

@@ -12,20 +12,19 @@
 
 package com.algorand.android.modules.transaction.csv.domain.repository
 
+import com.algorand.android.models.DateRange
 import com.algorand.android.models.Result
-import com.algorand.android.modules.transaction.common.domain.model.TransactionDTO
+import java.io.File
+import java.io.InputStream
 
 interface CsvRepository {
 
-    suspend fun getCompleteTransactions(
-        assetId: Long? = null,
+    suspend fun getCsv(
+        cacheDirectory: File,
         publicKey: String,
-        fromDate: String? = null,
-        toDate: String? = null,
-        nextToken: String? = null,
-        limit: Int? = MAX_TXN_REQUEST_COUNT,
-        txnType: String? = null
-    ): Result<MutableList<TransactionDTO>>
+        dateRange: DateRange?,
+        assetId: Long?
+    ): Result<InputStream>
 
     companion object {
         const val INJECTION_NAME = "csvRepositoryInjectionName"

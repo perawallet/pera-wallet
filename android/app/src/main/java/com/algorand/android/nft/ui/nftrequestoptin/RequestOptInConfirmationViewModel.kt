@@ -12,8 +12,7 @@
 
 package com.algorand.android.nft.ui.nftrequestoptin
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
@@ -21,14 +20,16 @@ import com.algorand.android.nft.domain.usecase.RequestOptInConfirmationPreviewUs
 import com.algorand.android.nft.ui.model.RequestOptInConfirmationArgs
 import com.algorand.android.nft.ui.model.RequestOptInConfirmationPreview
 import com.algorand.android.utils.getOrThrow
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class RequestOptInConfirmationViewModel @ViewModelInject constructor(
+@HiltViewModel
+class RequestOptInConfirmationViewModel @Inject constructor(
     private val requestOptInConfirmationPreviewUseCase: RequestOptInConfirmationPreviewUseCase,
-    @Assisted savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
     private val requestOptInConfirmationArgs =

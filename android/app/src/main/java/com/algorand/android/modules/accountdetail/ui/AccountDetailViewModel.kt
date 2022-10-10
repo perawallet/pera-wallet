@@ -13,8 +13,7 @@
 
 package com.algorand.android.modules.accountdetail.ui
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -25,15 +24,17 @@ import com.algorand.android.usecase.AccountDeletionUseCase
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.getOrThrow
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class AccountDetailViewModel @ViewModelInject constructor(
+@HiltViewModel
+class AccountDetailViewModel @Inject constructor(
     private val accountDetailUseCase: AccountDetailUseCase,
     private val accountDeletionUseCase: AccountDeletionUseCase,
-    @Assisted savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
     private val accountDetailFragmentEventTracker: AccountDetailFragmentEventTracker
 ) : ViewModel() {
 

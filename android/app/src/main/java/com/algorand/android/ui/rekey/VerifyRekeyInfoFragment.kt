@@ -18,6 +18,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
+import com.algorand.android.RekeyLedgerNavigationDirections
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.ui.common.BaseInfoFragment
 import com.algorand.android.utils.getXmlStyledString
@@ -51,9 +52,7 @@ class VerifyRekeyInfoFragment : BaseInfoFragment() {
     override fun setFirstButton(materialButton: MaterialButton) {
         with(materialButton) {
             text = getString(R.string.go_to_home)
-            setOnClickListener {
-                nav(VerifyRekeyInfoFragmentDirections.actionVerifyRekeyInfoFragmentToHomeNavigation())
-            }
+            setOnClickListener { nav(RekeyLedgerNavigationDirections.actionRekeyLedgerNavigationPop()) }
         }
     }
 }

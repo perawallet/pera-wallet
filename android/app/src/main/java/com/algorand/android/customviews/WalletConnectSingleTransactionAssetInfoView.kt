@@ -17,9 +17,10 @@ import android.content.Context
 import android.text.SpannableStringBuilder
 import android.text.style.AbsoluteSizeSpan
 import android.util.AttributeSet
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import com.algorand.android.R
+import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration
 import com.algorand.android.databinding.CustomWalletConnectTransactionShortAmountViewBinding
 import com.algorand.android.models.BaseAppCallTransaction
 import com.algorand.android.models.WalletConnectTransactionAmount
@@ -29,6 +30,7 @@ import com.algorand.android.utils.extensions.setTextAndVisibility
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.formatAmount
 import com.algorand.android.utils.getXmlStyledString
+import com.algorand.android.utils.setAssetNameTextColorByVerificationTier
 import com.algorand.android.utils.setDrawable
 import com.algorand.android.utils.viewbinding.viewBinding
 import java.math.BigInteger
@@ -40,23 +42,38 @@ class WalletConnectSingleTransactionAssetInfoView @JvmOverloads constructor(
 
     private val binding = viewBinding(CustomWalletConnectTransactionShortAmountViewBinding::inflate)
 
+    private var listener: WalletConnectSingleTransactionAssetInfoViewListener? = null
+
     fun setTransactionShortAmount(walletConnectTransactionAmount: WalletConnectTransactionAmount) {
         with(walletConnectTransactionAmount) {
             when {
                 transactionAmount != null -> {
                     setTransactionAmountGroup(
-                        transactionAmount,
-                        assetDecimal,
-                        assetShortName,
-                        formattedSelectedCurrencyValue
+                        transactionAmount = transactionAmount,
+                        assetDecimal = assetDecimal,
+                        assetShortName = assetShortName,
+                        formattedSelectedCurrencyValue = formattedSelectedCurrencyValue
                     )
                 }
-                assetName != null -> setAssetNameAndIdGroup(assetName, isVerified, assetId)
+                assetName != null -> {
+                    setAssetNameAndIdGroup(
+                        assetName = assetName,
+                        assetId = assetId,
+                        verificationTierConfiguration = verificationTierConfiguration,
+                        accountAddress = fromDisplayedAddress?.fullAddress
+                    )
+                }
                 isAssetUnnamed -> setAssetNameAsUnnamed()
-                applicationId != null -> setAppIdGroup(applicationId)
-                appOnComplete != null -> setAppOnCompleteGroup(appOnComplete)
+                applicationId != null -> setAppIdGroup(applicationId = applicationId)
+                appOnComplete != null -> setAppOnCompleteGroup(appOnComplete = appOnComplete)
             }
         }
+    }
+
+    fun setWalletConnectSingleTransactionAssetInfoViewListener(
+        listener: WalletConnectSingleTransactionAssetInfoViewListener
+    ) {
+        this.listener = listener
     }
 
     private fun setTransactionAmountGroup(
@@ -86,16 +103,27 @@ class WalletConnectSingleTransactionAssetInfoView @JvmOverloads constructor(
 
     private fun setAssetNameAndIdGroup(
         assetName: String?,
-        isVerified: Boolean?,
         assetId: Long?,
+        verificationTierConfiguration: VerificationTierConfiguration?,
+        accountAddress: String?
     ) {
         with(binding) {
-            assetNameTextView.text = assetName
-            if (isVerified == true) {
-                val verifiedIcon = ContextCompat.getDrawable(context, R.drawable.ic_shield)
-                assetNameTextView.setDrawable(start = verifiedIcon)
+            verificationTierConfiguration?.run {
+                with(assetNameTextView) {
+                    drawableResId?.run { setDrawable(start = AppCompatResources.getDrawable(context, this)) }
+                    text = assetName
+                    setAssetNameTextColorByVerificationTier(this@run)
+                }
+                setOnClickListener {
+                    listener?.onAssetItemClick(assetId = assetId, accountAddress = accountAddress)
+                }
             }
-            if (assetId != null) assetIdTextView.text = assetId.toString()
+            if (assetId != null) assetIdTextView.apply {
+                text = assetId.toString()
+                setOnClickListener {
+                    listener?.onAssetItemClick(assetId = assetId, accountAddress = accountAddress)
+                }
+            }
             assetNameAndIdGroup.show()
         }
     }
@@ -119,5 +147,9 @@ class WalletConnectSingleTransactionAssetInfoView @JvmOverloads constructor(
             appOnCompleteTextView.setText(appOnComplete.displayTextResId)
             appOnCompleteGroup.show()
         }
+    }
+
+    fun interface WalletConnectSingleTransactionAssetInfoViewListener {
+        fun onAssetItemClick(assetId: Long?, accountAddress: String?)
     }
 }

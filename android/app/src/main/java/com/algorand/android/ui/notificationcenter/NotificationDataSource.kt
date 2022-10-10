@@ -14,8 +14,10 @@ package com.algorand.android.ui.notificationcenter
 
 import com.algorand.android.core.AccountManager
 import com.algorand.android.database.ContactDao
+import com.algorand.android.decider.AssetDrawableProviderDecider
 import com.algorand.android.deviceregistration.domain.usecase.DeviceIdUseCase
 import com.algorand.android.models.Account
+import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.models.NotificationItem
 import com.algorand.android.models.NotificationListItem
 import com.algorand.android.models.NotificationType
@@ -23,7 +25,9 @@ import com.algorand.android.models.Pagination
 import com.algorand.android.models.Result
 import com.algorand.android.models.User
 import com.algorand.android.repository.NotificationRepository
+import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import com.algorand.android.utils.ALGO_DECIMALS
+import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.PeraPagingSource
 import com.algorand.android.utils.exceptions.MissingNotificationUserIdException
 import com.algorand.android.utils.formatAmount
@@ -33,12 +37,15 @@ import com.algorand.android.utils.parseFormattedDate
 import com.algorand.android.utils.recordException
 import java.time.ZonedDateTime
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 
 class NotificationDataSource(
     private val notificationRepository: NotificationRepository,
     private val deviceIdUseCase: DeviceIdUseCase,
     private val contactDao: ContactDao,
+    private val assetDrawableProviderDecider: AssetDrawableProviderDecider,
+    private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase,
     accountManager: AccountManager
 ) : PeraPagingSource<String, NotificationListItem>() {
 
@@ -72,9 +79,19 @@ class NotificationDataSource(
     ): LoadResult<String, NotificationListItem> {
         return when (result) {
             is Result.Success -> {
-                val list = result.data.results.toListItems(getCachedContacts(), accountList)
+                val assetIds = result.data.results.mapNotNull { it.metadata?.getAssetDescription()?.assetId }.toSet()
+                if (assetIds.isNotEmpty()) {
+                    coroutineScope {
+                        simpleAssetDetailUseCase.cacheIfThereIsNonCachedAsset(
+                            assetIdList = assetIds,
+                            coroutineScope = this,
+                            includeDeleted = true
+                        )
+                    }
+                }
+                val notificationListItems = result.data.results.toListItems(getCachedContacts(), accountList)
                 val nextKey = result.data.next
-                LoadResult.Page(data = list, prevKey = null, nextKey = nextKey)
+                LoadResult.Page(data = notificationListItems, prevKey = null, nextKey = nextKey)
             }
             is Result.Error -> {
                 LoadResult.Error<String, NotificationListItem>(result.exception)
@@ -131,7 +148,12 @@ class NotificationDataSource(
                 fallbackMessage = notificationItem.message.orEmpty(),
                 senderUser = senderUser,
                 receiverUser = receiverUser,
-                metadata = notificationItem.metadata
+                metadata = notificationItem.metadata,
+                assetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(
+                    assetId = notificationItem.metadata?.getAssetDescription()?.assetId ?: ALGO_ID
+                ),
+                prismUrl = notificationItem.metadata?.getAssetDescription()?.logoUri,
+                assetName = AssetName.create(notificationItem.metadata?.getAssetDescription()?.fullName)
             )
         }
     }

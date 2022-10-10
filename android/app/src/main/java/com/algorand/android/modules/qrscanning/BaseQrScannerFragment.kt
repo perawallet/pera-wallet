@@ -18,7 +18,6 @@ import android.view.ViewTreeObserver
 import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.core.BaseFragment
@@ -33,6 +32,8 @@ import com.algorand.android.modules.deeplink.ui.DeeplinkHandler
 import com.algorand.android.utils.CAMERA_PERMISSION
 import com.algorand.android.utils.CAMERA_PERMISSION_REQUEST_CODE
 import com.algorand.android.utils.SingleButtonBottomSheet
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
+import com.algorand.android.utils.extensions.collectOnLifecycle
 import com.algorand.android.utils.isPermissionGranted
 import com.algorand.android.utils.requestPermissionFromUser
 import com.algorand.android.utils.startSavedStateListener
@@ -44,8 +45,6 @@ import com.google.zxing.ResultPoint
 import com.journeyapps.barcodescanner.BarcodeCallback
 import com.journeyapps.barcodescanner.BarcodeResult
 import com.journeyapps.barcodescanner.DefaultDecoderFactory
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 
 /**
  * Base class for qr scanning
@@ -97,6 +96,11 @@ abstract class BaseQrScannerFragment(
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        qrScannerViewModel.removeDeeplinkHandlerListener()
+    }
+
     private fun initUi() {
         with(binding) {
             titleTextView.text = getString(titleTextResId)
@@ -107,13 +111,15 @@ abstract class BaseQrScannerFragment(
 
     private fun initObserver() {
         if (shouldShowWcSessionsButton) {
-            viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-                walletConnectViewModel.localSessionsFlow.collect(::onGetLocalSessionsSuccess)
-            }
+            viewLifecycleOwner.collectOnLifecycle(
+                walletConnectViewModel.localSessionsFlow,
+                ::onGetLocalSessionsSuccess
+            )
         }
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            qrScannerViewModel.isQrCodeInProgressFlow.collectLatest(::onQrCodeProgressChanged)
-        }
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            qrScannerViewModel.isQrCodeInProgressFlow,
+            ::onQrCodeProgressChanged
+        )
     }
 
     private fun onLeftArrowButtonClicked() {

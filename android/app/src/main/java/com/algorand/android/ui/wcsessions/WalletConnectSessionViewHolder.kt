@@ -68,10 +68,11 @@ class WalletConnectSessionViewHolder(
     private fun setConnectionIndicatorTextView(session: WalletConnectSession) {
         with(binding.connectionIndicatorTextView) {
             val shortenedAddress = session.connectedAccountPublicKey.toShortenedAddress()
+            val accountName = session.accountName
             text = if (session.isConnected) {
                 setBackgroundResource(R.drawable.bg_connected_session_indicator)
                 setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.link_primary)))
-                context.getString(R.string.connected_with_formatted, shortenedAddress)
+                context.getString(R.string.connected_with_formatted, accountName ?: shortenedAddress)
             } else {
                 background = null
                 setPadding(0, 0, 0, 0)

@@ -12,60 +12,38 @@
 
 package com.algorand.android.modules.transaction.csv.data.repository
 
+import com.algorand.android.models.DateRange
 import com.algorand.android.models.Result
 import com.algorand.android.modules.transaction.csv.domain.repository.CsvRepository
-import com.algorand.android.modules.transaction.csv.domain.repository.CsvRepository.Companion.MAX_TXN_REQUEST_COUNT
-import com.algorand.android.modules.transaction.common.domain.model.TransactionDTO
-import com.algorand.android.modules.transactionhistory.domain.repository.TransactionHistoryRepository
+import com.algorand.android.network.MobileAlgorandApi
+import com.algorand.android.network.requestWithHipoErrorHandler
+import com.algorand.android.utils.CSV_API_REQUEST_PATTERN
+import com.hipo.hipoexceptionsandroid.RetrofitErrorHandler
 import javax.inject.Inject
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.withContext
+import java.io.File
+import java.io.InputStream
+import java.time.format.DateTimeFormatter
 
 class CsvRepositoryImpl @Inject constructor(
-    private val transactionHistoryRepository: TransactionHistoryRepository
+    private val hipoApiErrorHandler: RetrofitErrorHandler,
+    private val mobileAlgorandApi: MobileAlgorandApi
 ) : CsvRepository {
 
-    override suspend fun getCompleteTransactions(
-        assetId: Long?,
+    override suspend fun getCsv(
+        cacheDirectory: File,
         publicKey: String,
-        fromDate: String?,
-        toDate: String?,
-        nextToken: String?,
-        limit: Int?,
-        txnType: String?
-    ): Result<MutableList<TransactionDTO>> {
-        return withContext(Dispatchers.IO) {
-            var nextToken: String? = null
-            var exception: Exception? = null
-            var errorCode: Int? = null
-            val transactionList = mutableListOf<TransactionDTO>()
-            while (isActive) {
-                transactionHistoryRepository.getTransactionHistory(
-                    assetId,
-                    publicKey,
-                    fromDate,
-                    toDate,
-                    nextToken,
-                    MAX_TXN_REQUEST_COUNT,
-                    txnType
-                ).use(
-                    onSuccess = {
-                        transactionList.addAll(it.transactionList)
-                        nextToken = it.nextToken
-                    }, onFailed = { excp, code ->
-                        exception = excp
-                        errorCode = code
-                        nextToken = null
-                    }
-                )
-                if (nextToken == null) break
-            }
-            if (transactionList.isEmpty() && exception != null) {
-                Result.Error(exception!!, errorCode)
-            } else {
-                Result.Success(transactionList)
-            }
-        }
+        dateRange: DateRange?,
+        assetId: Long?
+    ): Result<InputStream> {
+        val csvFormatter = DateTimeFormatter.ofPattern(CSV_API_REQUEST_PATTERN)
+        val fromFormatted = dateRange?.from?.format(csvFormatter)
+        val toFormatted = dateRange?.to?.format(csvFormatter)
+        return requestWithHipoErrorHandler(hipoApiErrorHandler) {
+            mobileAlgorandApi.getExportHistory(
+                address = publicKey,
+                startDate = fromFormatted,
+                endDate = toFormatted
+            )
+        }.map { it.byteStream() }
     }
 }

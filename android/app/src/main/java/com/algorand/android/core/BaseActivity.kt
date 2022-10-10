@@ -17,6 +17,8 @@ import com.algorand.android.customviews.TopToast
 
 abstract class BaseActivity : LocalizationActivity() {
 
+    protected val activityTag: String = this::class.simpleName.orEmpty()
+
     private var topToast: TopToast? = null
 
     fun showTopToast(title: String? = null, description: String? = null) {

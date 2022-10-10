@@ -26,10 +26,9 @@ import com.algorand.android.models.BaseAppCallTransaction
 import com.algorand.android.models.BaseWalletConnectDisplayedAddress
 import com.algorand.android.models.TransactionRequestAssetInformation
 import com.algorand.android.models.TransactionRequestSenderInfo
-import com.algorand.android.utils.enableClickToCopy
 import com.algorand.android.utils.extensions.show
+import com.algorand.android.utils.setAssetNameTextColorByVerificationTier
 import com.algorand.android.utils.setDrawable
-import com.algorand.android.utils.toShortenedAddress
 import com.algorand.android.utils.viewbinding.viewBinding
 
 class WalletConnectSenderCardView(
@@ -39,14 +38,20 @@ class WalletConnectSenderCardView(
 
     private val binding = viewBinding(CustomWalletConnectSenderViewBinding::inflate)
 
+    private var listener: WalletConnectSenderCardViewListener? = null
+
     init {
         initRootLayout()
+    }
+
+    fun setListener(listener: WalletConnectSenderCardViewListener) {
+        this.listener = listener
     }
 
     fun initSender(senderInfo: TransactionRequestSenderInfo?) {
         if (senderInfo == null) return
         with(senderInfo) {
-            initSenderAddress(senderDisplayedAddress.toShortenedAddress())
+            initSenderAddress(senderDisplayedAddress)
             initOnComplete(onCompletion)
             initRekeyToAddress(rekeyToAccountAddress, warningCount)
             initApplicationId(appId)
@@ -55,13 +60,27 @@ class WalletConnectSenderCardView(
             initAppExtraPages(appExtraPages)
             initApprovalHash(approvalHash)
             initClearStateHash(clearStateHash)
-            initAssetInformation(assetInformation)
+            initAssetInformation(assetInformation, toDisplayedAddress?.fullAddress)
             initToAccount(toDisplayedAddress)
         }
     }
 
+    private fun initSenderAddress(address: BaseWalletConnectDisplayedAddress?) {
+        if (address != null) {
+            binding.senderNameTextView.text = address.displayValue
+        }
+    }
+
     private fun initSenderAddress(address: String?) {
-        binding.senderNameTextView.text = address
+        if (address != null) {
+            with(binding) {
+                senderNameTextView.setOnLongClickListener {
+                    listener?.onAccountAddressLongPressed(address)
+                    return@setOnLongClickListener true
+                }
+                senderNameTextView.text = address
+            }
+        }
     }
 
     private fun initAppGlobalSchema(appGlobalSchema: ApplicationCallStateSchema?) {
@@ -143,20 +162,38 @@ class WalletConnectSenderCardView(
         if (!address.isNullOrBlank()) {
             with(binding) {
                 rekeyToTextView.text = address
+                rekeyToTextView.setOnLongClickListener {
+                    listener?.onAccountAddressLongPressed(address)
+                    return@setOnLongClickListener true
+                }
                 rekeyGroup.show()
                 rekeyToWarningTextView.isVisible = warningCount != null
             }
         }
     }
 
-    private fun initAssetInformation(assetInformation: TransactionRequestAssetInformation?) {
+    private fun initAssetInformation(
+        assetInformation: TransactionRequestAssetInformation?,
+        accountAddress: String?
+    ) {
         assetInformation?.let {
             with(binding) {
-                if (assetInformation.isVerified == true) {
-                    assetNameTextView.setDrawable(start = AppCompatResources.getDrawable(context, R.drawable.ic_shield))
+                it.verificationTierConfiguration.drawableResId?.run {
+                    assetNameTextView.setDrawable(start = AppCompatResources.getDrawable(context, this))
                 }
-                assetNameTextView.text = assetInformation.shortName
-                assetIdTextView.text = assetInformation.assetId.toString()
+                assetNameTextView.apply {
+                    text = assetInformation.shortName
+                    setAssetNameTextColorByVerificationTier(it.verificationTierConfiguration)
+                    setOnClickListener {
+                        listener?.onAssetItemClick(assetId = assetInformation.assetId, accountAddress = accountAddress)
+                    }
+                }
+                assetIdTextView.apply {
+                    text = assetInformation.assetId.toString()
+                    setOnClickListener {
+                        listener?.onAssetItemClick(assetId = assetInformation.assetId, accountAddress = accountAddress)
+                    }
+                }
                 assetGroup.show()
             }
         }
@@ -167,7 +204,10 @@ class WalletConnectSenderCardView(
             with(binding) {
                 toNameTextView.text = toDisplayedAddress.displayValue
                 toNameTextView.isSingleLine = toDisplayedAddress.isSingleLine
-                toNameTextView.enableClickToCopy(toDisplayedAddress.fullAddress)
+                toNameTextView.setOnLongClickListener {
+                    listener?.onAccountAddressLongPressed(toDisplayedAddress.fullAddress)
+                    return@setOnLongClickListener true
+                }
                 toGroup.show()
             }
         }
@@ -175,5 +215,10 @@ class WalletConnectSenderCardView(
 
     private fun initRootLayout() {
         setPadding(resources.getDimensionPixelSize(R.dimen.spacing_xlarge))
+    }
+
+    interface WalletConnectSenderCardViewListener {
+        fun onAccountAddressLongPressed(fullAddress: String)
+        fun onAssetItemClick(assetId: Long?, accountAddress: String?)
     }
 }

@@ -23,7 +23,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="28dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_sender_account" />
+        tools:listitem="@layout/item_account_simple" />
 
     <com.algorand.android.customviews.ScreenStateView
         android:id="@+id/screenStateView"
@@ -37,6 +37,6 @@
 
     <include
         android:id="@+id/progressBar"
-        layout="@layout/layout_loading_blocker" />
+        layout="@layout/layout_full_screen_progress" />
 
 </FrameLayout>

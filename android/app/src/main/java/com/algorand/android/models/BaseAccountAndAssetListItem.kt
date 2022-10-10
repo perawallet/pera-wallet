@@ -12,6 +12,7 @@
 
 package com.algorand.android.models
 
+import com.algorand.android.customviews.accountandassetitem.model.BaseItemConfiguration
 import com.algorand.android.modules.sorting.accountsorting.domain.model.BaseSortingField
 import java.math.BigDecimal
 

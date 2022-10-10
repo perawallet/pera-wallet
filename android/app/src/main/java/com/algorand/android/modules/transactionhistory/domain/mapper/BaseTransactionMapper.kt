@@ -27,11 +27,11 @@ class BaseTransactionMapper @Inject constructor() {
             BaseTransaction.Transaction.Pay.Send(
                 id = id,
                 signature = signature?.signatureKey,
-                senderAddress = getSenderAddressOrEmpty(),
-                receiverAddress = getReceiverAddressOrEmpty(),
+                senderAddress = senderAddress.orEmpty(),
+                receiverAddress = payment?.receiverAddress,
                 zonedDateTime = roundTimeAsTimestamp?.getZonedDateTimeFromTimeStamp(),
-                isPending = isPending(),
-                amount = getAmount(false) ?: BigInteger.ZERO
+                isPending = false,
+                amount = payment?.amount ?: BigInteger.ZERO
             )
         }
     }
@@ -43,11 +43,11 @@ class BaseTransactionMapper @Inject constructor() {
             BaseTransaction.Transaction.Pay.Receive(
                 id = id,
                 signature = signature?.signatureKey,
-                senderAddress = getSenderAddressOrEmpty(),
-                receiverAddress = getReceiverAddressOrEmpty(),
+                senderAddress = senderAddress.orEmpty(),
+                receiverAddress = payment?.receiverAddress,
                 zonedDateTime = roundTimeAsTimestamp?.getZonedDateTimeFromTimeStamp(),
-                isPending = isPending(),
-                amount = getAmount(false) ?: BigInteger.ZERO
+                isPending = false,
+                amount = payment?.amount ?: BigInteger.ZERO
             )
         }
     }
@@ -59,11 +59,11 @@ class BaseTransactionMapper @Inject constructor() {
             BaseTransaction.Transaction.Pay.Self(
                 id = id,
                 signature = signature?.signatureKey,
-                senderAddress = getSenderAddressOrEmpty(),
-                receiverAddress = getReceiverAddressOrEmpty(),
+                senderAddress = senderAddress.orEmpty(),
+                receiverAddress = payment?.receiverAddress,
                 zonedDateTime = roundTimeAsTimestamp?.getZonedDateTimeFromTimeStamp(),
-                isPending = isPending(),
-                amount = getAmount(false) ?: BigInteger.ZERO
+                isPending = false,
+                amount = payment?.amount ?: BigInteger.ZERO
             )
         }
     }
@@ -76,11 +76,11 @@ class BaseTransactionMapper @Inject constructor() {
             BaseTransaction.Transaction.AssetTransfer.Send(
                 id = id,
                 signature = signature?.signatureKey,
-                senderAddress = getSenderAddressOrEmpty(),
-                receiverAddress = getReceiverAddressOrEmpty(),
+                senderAddress = senderAddress.orEmpty(),
+                receiverAddress = assetTransfer.receiverAddress,
                 zonedDateTime = roundTimeAsTimestamp?.getZonedDateTimeFromTimeStamp(),
-                isPending = isPending(),
-                amount = getAmount(false) ?: BigInteger.ZERO,
+                isPending = false,
+                amount = assetTransfer.amount ?: BigInteger.ZERO,
                 assetId = assetId
             )
         }
@@ -94,11 +94,11 @@ class BaseTransactionMapper @Inject constructor() {
             BaseTransaction.Transaction.AssetTransfer.BaseReceive.Receive(
                 id = id,
                 signature = signature?.signatureKey,
-                senderAddress = getSenderAddressOrEmpty(),
-                receiverAddress = getReceiverAddressOrEmpty(),
+                senderAddress = senderAddress.orEmpty(),
+                receiverAddress = assetTransfer.receiverAddress,
                 zonedDateTime = roundTimeAsTimestamp?.getZonedDateTimeFromTimeStamp(),
-                isPending = isPending(),
-                amount = getAmount(false) ?: BigInteger.ZERO,
+                isPending = false,
+                amount = assetTransfer.amount ?: BigInteger.ZERO,
                 assetId = assetId
             )
         }
@@ -112,11 +112,11 @@ class BaseTransactionMapper @Inject constructor() {
             BaseTransaction.Transaction.AssetTransfer.BaseReceive.ReceiveOptOut(
                 id = id,
                 signature = signature?.signatureKey,
-                senderAddress = getSenderAddressOrEmpty(),
-                receiverAddress = getReceiverAddressOrEmpty(),
+                senderAddress = senderAddress.orEmpty(),
+                receiverAddress = assetTransfer.receiverAddress,
                 zonedDateTime = roundTimeAsTimestamp?.getZonedDateTimeFromTimeStamp(),
-                isPending = isPending(),
-                amount = getAmount(false) ?: BigInteger.ZERO,
+                isPending = false,
+                amount = assetTransfer.amount ?: BigInteger.ZERO,
                 assetId = assetId
             )
         }
@@ -131,11 +131,11 @@ class BaseTransactionMapper @Inject constructor() {
             BaseTransaction.Transaction.AssetTransfer.OptOut(
                 id = id,
                 signature = signature?.signatureKey,
-                senderAddress = getSenderAddressOrEmpty(),
-                receiverAddress = getReceiverAddressOrEmpty(),
+                senderAddress = senderAddress.orEmpty(),
+                receiverAddress = assetTransfer.receiverAddress,
                 zonedDateTime = roundTimeAsTimestamp?.getZonedDateTimeFromTimeStamp(),
-                isPending = isPending(),
-                amount = getAmount(includeCloseAmount = false) ?: BigInteger.ZERO,
+                isPending = false,
+                amount = assetTransfer.amount ?: BigInteger.ZERO,
                 assetId = assetId,
                 closeToAddress = closeToAddress
             )
@@ -150,10 +150,10 @@ class BaseTransactionMapper @Inject constructor() {
             BaseTransaction.Transaction.AssetTransfer.BaseSelf.Self(
                 id = id,
                 signature = signature?.signatureKey,
-                senderAddress = getSenderAddressOrEmpty(),
-                receiverAddress = getReceiverAddressOrEmpty(),
+                senderAddress = senderAddress.orEmpty(),
+                receiverAddress = assetTransfer.receiverAddress,
                 zonedDateTime = roundTimeAsTimestamp?.getZonedDateTimeFromTimeStamp(),
-                isPending = isPending(),
+                isPending = false,
                 amount = assetTransfer.amount ?: BigInteger.ZERO,
                 assetId = assetId
             )
@@ -168,10 +168,10 @@ class BaseTransactionMapper @Inject constructor() {
             BaseTransaction.Transaction.AssetTransfer.BaseSelf.SelfOptIn(
                 id = id,
                 signature = signature?.signatureKey,
-                senderAddress = getSenderAddressOrEmpty(),
-                receiverAddress = getReceiverAddressOrEmpty(),
+                senderAddress = senderAddress.orEmpty(),
+                receiverAddress = assetTransfer.receiverAddress,
                 zonedDateTime = roundTimeAsTimestamp?.getZonedDateTimeFromTimeStamp(),
-                isPending = isPending(),
+                isPending = false,
                 amount = assetTransfer.amount ?: BigInteger.ZERO,
                 assetId = assetId
             )
@@ -185,10 +185,10 @@ class BaseTransactionMapper @Inject constructor() {
             BaseTransaction.Transaction.AssetConfiguration(
                 id = id,
                 signature = signature?.signatureKey,
-                senderAddress = getSenderAddressOrEmpty(),
-                receiverAddress = getReceiverAddressOrEmpty(),
+                senderAddress = senderAddress.orEmpty(),
+                receiverAddress = null, // Asset Configuration Transaction does not contain receiver address
                 zonedDateTime = roundTimeAsTimestamp?.getZonedDateTimeFromTimeStamp(),
-                isPending = isPending(),
+                isPending = false,
                 assetId = createdAssetIndex ?: assetConfiguration?.assetId
             )
         }
@@ -201,12 +201,13 @@ class BaseTransactionMapper @Inject constructor() {
             BaseTransaction.Transaction.ApplicationCall(
                 id = id,
                 signature = signature?.signatureKey,
-                senderAddress = getSenderAddressOrEmpty(),
-                receiverAddress = getReceiverAddressOrEmpty(),
+                senderAddress = senderAddress.orEmpty(),
+                receiverAddress = null, // Application Call Transaction does not contain receiver address
                 zonedDateTime = roundTimeAsTimestamp?.getZonedDateTimeFromTimeStamp(),
-                isPending = isPending(),
+                isPending = false,
                 applicationId = applicationCall?.applicationId,
-                innerTransactionCount = getAllNestedTransactions(this).count()
+                innerTransactionCount = getAllNestedTransactions(this).count(),
+                foreignAssetIds = applicationCall?.foreignAssets
             )
         }
     }
@@ -218,10 +219,10 @@ class BaseTransactionMapper @Inject constructor() {
             BaseTransaction.Transaction.Undefined(
                 id = id,
                 signature = signature?.signatureKey,
-                senderAddress = getSenderAddressOrEmpty(),
-                receiverAddress = getReceiverAddressOrEmpty(),
+                senderAddress = senderAddress.orEmpty(),
+                receiverAddress = null, // Undefined Transaction does not contain receiver address
                 zonedDateTime = roundTimeAsTimestamp?.getZonedDateTimeFromTimeStamp(),
-                isPending = isPending()
+                isPending = false
             )
         }
     }

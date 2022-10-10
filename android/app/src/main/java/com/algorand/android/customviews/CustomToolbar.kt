@@ -15,6 +15,8 @@ package com.algorand.android.customviews
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.view.View
+import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -156,11 +158,16 @@ class CustomToolbar @JvmOverloads constructor(
         setGuidelinePosition()
     }
 
+    fun setButtonVisibilityById(@IdRes buttonId: Int, isVisible: Boolean) {
+        binding.buttonContainerView.findViewById<View>(buttonId)?.isVisible = isVisible
+    }
+
     fun setEndDrawable(drawable: Drawable?) {
         binding.textEndImageView.apply {
             isVisible = drawable != null
             setImageDrawable(drawable ?: return)
         }
+        setGuidelinePosition()
     }
 
     fun setStartDrawable(drawable: Drawable?) {
@@ -168,6 +175,7 @@ class CustomToolbar @JvmOverloads constructor(
             isVisible = drawable != null
             setImageDrawable(drawable ?: return)
         }
+        setGuidelinePosition()
     }
 
     fun setCenterDrawable(drawable: Drawable?) {
@@ -177,12 +185,17 @@ class CustomToolbar @JvmOverloads constructor(
         }
     }
 
+    fun removeClickListeners() {
+        binding.startImageButton.setOnClickListener(null)
+        binding.buttonContainerView.removeClickListeners()
+    }
+
     private fun setGuidelinePosition() {
         doOnPreDraw {
             with(binding) {
                 val viewWidthToCalculate = max(startImageButton.measuredWidth, buttonContainerView.measuredWidth).run {
                     plus(if (textStartImageView.isVisible) textStartImageView.width else textEndImageView.width)
-                    plus(resources.getDimension(R.dimen.spacing_small).toInt())
+                        .plus(resources.getDimension(R.dimen.spacing_small).toInt())
                 }.toFloat()
                 val screenWidth = context.getDisplaySize().x
                 val percentage = viewWidthToCalculate / screenWidth

@@ -21,7 +21,9 @@ import com.algorand.android.databinding.BottomSheetLedgerPairInstructionsBinding
 import com.algorand.android.utils.setNavigationResult
 import com.algorand.android.utils.viewbinding.viewBinding
 
-class LedgerPairInstructionsBottomSheet : BaseBottomSheet(R.layout.bottom_sheet_ledger_pair_instructions) {
+class LedgerPairInstructionsBottomSheet : BaseBottomSheet(
+    layoutResId = R.layout.bottom_sheet_ledger_pair_instructions
+) {
 
     private val binding by viewBinding(BottomSheetLedgerPairInstructionsBinding::bind)
 

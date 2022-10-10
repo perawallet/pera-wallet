@@ -144,14 +144,15 @@ class AccountCollectibleDataUseCase @Inject constructor(
             .getAssetParityValue(assetHolding, collectibleItem)
         val parityValueInSecondaryCurrency = secondaryCurrencyParityCalculationUseCase
             .getAssetParityValue(assetHolding, collectibleItem)
-        return when (collectibleItem.collectible.mediaType) {
+        return when (collectibleItem.collectible?.mediaType) {
             CollectibleMediaType.IMAGE -> accountCollectibleDataMapper.mapToOwnedCollectibleImageData(
                 collectibleDetail = collectibleItem,
                 amount = assetHolding.amount,
                 formattedAmount = assetHolding.amount.formatAmount(safeDecimal),
                 formattedCompactAmount = assetHolding.amount.formatAmount(safeDecimal, isCompact = true),
                 parityValueInSelectedCurrency = parityValueInSelectedCurrency,
-                parityValueInSecondaryCurrency = parityValueInSecondaryCurrency
+                parityValueInSecondaryCurrency = parityValueInSecondaryCurrency,
+                optedInAtRound = assetHolding.optedInAtRound
             )
             CollectibleMediaType.VIDEO -> accountCollectibleDataMapper.mapToOwnedCollectibleVideoData(
                 collectibleDetail = collectibleItem,
@@ -159,7 +160,8 @@ class AccountCollectibleDataUseCase @Inject constructor(
                 formattedAmount = assetHolding.amount.formatAmount(safeDecimal),
                 formattedCompactAmount = assetHolding.amount.formatAmount(safeDecimal, isCompact = true),
                 parityValueInSelectedCurrency = parityValueInSelectedCurrency,
-                parityValueInSecondaryCurrency = parityValueInSecondaryCurrency
+                parityValueInSecondaryCurrency = parityValueInSecondaryCurrency,
+                optedInAtRound = assetHolding.optedInAtRound
             )
             CollectibleMediaType.MIXED -> accountCollectibleDataMapper.mapToOwnedCollectibleMixedData(
                 collectibleDetail = collectibleItem,
@@ -167,16 +169,20 @@ class AccountCollectibleDataUseCase @Inject constructor(
                 formattedAmount = assetHolding.amount.formatAmount(safeDecimal),
                 formattedCompactAmount = assetHolding.amount.formatAmount(safeDecimal, isCompact = true),
                 parityValueInSelectedCurrency = parityValueInSelectedCurrency,
-                parityValueInSecondaryCurrency = parityValueInSecondaryCurrency
+                parityValueInSecondaryCurrency = parityValueInSecondaryCurrency,
+                optedInAtRound = assetHolding.optedInAtRound
             )
-            CollectibleMediaType.NOT_SUPPORTED -> accountCollectibleDataMapper.mapToNotSupportedOwnedCollectibleData(
-                collectibleDetail = collectibleItem,
-                amount = assetHolding.amount,
-                formattedAmount = assetHolding.amount.formatAmount(safeDecimal),
-                formattedCompactAmount = assetHolding.amount.formatAmount(safeDecimal, isCompact = true),
-                parityValueInSelectedCurrency = parityValueInSelectedCurrency,
-                parityValueInSecondaryCurrency = parityValueInSecondaryCurrency
-            )
+            CollectibleMediaType.NOT_SUPPORTED, null -> {
+                accountCollectibleDataMapper.mapToNotSupportedOwnedCollectibleData(
+                    collectibleDetail = collectibleItem,
+                    amount = assetHolding.amount,
+                    formattedAmount = assetHolding.amount.formatAmount(safeDecimal),
+                    formattedCompactAmount = assetHolding.amount.formatAmount(safeDecimal, isCompact = true),
+                    parityValueInSelectedCurrency = parityValueInSelectedCurrency,
+                    parityValueInSecondaryCurrency = parityValueInSecondaryCurrency,
+                    optedInAtRound = assetHolding.optedInAtRound
+                )
+            }
         }
     }
 
@@ -184,11 +190,13 @@ class AccountCollectibleDataUseCase @Inject constructor(
         collectibleItem: SimpleCollectibleDetail
     ): BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData {
         return with(accountCollectibleDataMapper) {
-            when (collectibleItem.collectible.mediaType) {
+            when (collectibleItem.collectible?.mediaType) {
                 CollectibleMediaType.IMAGE -> mapToPendingRemovalImageCollectibleData(collectibleItem)
                 CollectibleMediaType.VIDEO -> mapToPendingRemovalVideoCollectibleData(collectibleItem)
-                CollectibleMediaType.NOT_SUPPORTED -> mapToPendingRemovalUnsupportedCollectibleData(collectibleItem)
                 CollectibleMediaType.MIXED -> mapToPendingRemovalMixedCollectibleData(collectibleItem)
+                CollectibleMediaType.NOT_SUPPORTED, null -> {
+                    mapToPendingRemovalUnsupportedCollectibleData(collectibleItem)
+                }
             }
         }
     }
@@ -197,11 +205,13 @@ class AccountCollectibleDataUseCase @Inject constructor(
         collectibleItem: SimpleCollectibleDetail
     ): BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData {
         return with(accountCollectibleDataMapper) {
-            when (collectibleItem.collectible.mediaType) {
+            when (collectibleItem.collectible?.mediaType) {
                 CollectibleMediaType.IMAGE -> mapToPendingAdditionImageCollectibleData(collectibleItem)
                 CollectibleMediaType.VIDEO -> mapToPendingAdditionVideoCollectibleData(collectibleItem)
-                CollectibleMediaType.NOT_SUPPORTED -> mapToPendingAdditionUnsupportedCollectibleData(collectibleItem)
                 CollectibleMediaType.MIXED -> mapToPendingAdditionMixedCollectibleData(collectibleItem)
+                CollectibleMediaType.NOT_SUPPORTED, null -> {
+                    mapToPendingAdditionUnsupportedCollectibleData(collectibleItem)
+                }
             }
         }
     }
@@ -210,11 +220,13 @@ class AccountCollectibleDataUseCase @Inject constructor(
         collectibleItem: SimpleCollectibleDetail
     ): BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData {
         return with(accountCollectibleDataMapper) {
-            when (collectibleItem.collectible.mediaType) {
+            when (collectibleItem.collectible?.mediaType) {
                 CollectibleMediaType.IMAGE -> mapToPendingSendingImageCollectibleData(collectibleItem)
                 CollectibleMediaType.VIDEO -> mapToPendingSendingVideoCollectibleData(collectibleItem)
-                CollectibleMediaType.NOT_SUPPORTED -> mapToPendingSendingUnsupportedCollectibleData(collectibleItem)
                 CollectibleMediaType.MIXED -> mapToPendingSendingMixedCollectibleData(collectibleItem)
+                CollectibleMediaType.NOT_SUPPORTED, null -> {
+                    mapToPendingSendingUnsupportedCollectibleData(collectibleItem)
+                }
             }
         }
     }

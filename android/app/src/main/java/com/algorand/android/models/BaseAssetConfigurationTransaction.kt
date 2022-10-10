@@ -12,6 +12,7 @@
 
 package com.algorand.android.models
 
+import com.algorand.android.assetsearch.domain.model.VerificationTier
 import com.algorand.android.utils.walletconnect.WalletConnectAssetDetail
 import java.math.BigInteger
 import kotlinx.parcelize.Parcelize
@@ -20,8 +21,8 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
 
     abstract val assetId: Long?
     abstract val assetName: String?
-    abstract val isVerified: Boolean?
     abstract val url: String?
+    abstract val verificationTier: VerificationTier?
 
     sealed class BaseAssetCreationTransaction : BaseAssetConfigurationTransaction() {
 
@@ -42,10 +43,10 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             return listOf(senderAddress) + signerAddressList.orEmpty()
         }
 
-        override val isVerified: Boolean
-            get() = false
-
         override val assetId: Long?
+            get() = null
+
+        override val verificationTier: VerificationTier?
             get() = null
 
         @Parcelize
@@ -57,7 +58,7 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val rawTransactionPayload: WCAlgoTransactionRequest,
             override val signer: WalletConnectSigner,
             override val authAddress: String?,
-            override val account: WalletConnectAccount?,
+            override val fromAccount: WalletConnectAccount?,
             override val totalAmount: BigInteger? = null,
             override val decimals: Long? = null,
             override val isFrozen: Boolean? = null,
@@ -85,7 +86,7 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val rawTransactionPayload: WCAlgoTransactionRequest,
             override val signer: WalletConnectSigner,
             override val authAddress: String?,
-            override val account: WalletConnectAccount?,
+            override val fromAccount: WalletConnectAccount?,
             override val totalAmount: BigInteger? = null,
             override val decimals: Long? = null,
             override val isFrozen: Boolean? = null,
@@ -119,7 +120,7 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val rawTransactionPayload: WCAlgoTransactionRequest,
             override val signer: WalletConnectSigner,
             override val authAddress: String?,
-            override val account: WalletConnectAccount?,
+            override val fromAccount: WalletConnectAccount?,
             override val totalAmount: BigInteger? = null,
             override val decimals: Long? = null,
             override val isFrozen: Boolean? = null,
@@ -153,7 +154,7 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val rawTransactionPayload: WCAlgoTransactionRequest,
             override val signer: WalletConnectSigner,
             override val authAddress: String?,
-            override val account: WalletConnectAccount?,
+            override val fromAccount: WalletConnectAccount?,
             override val totalAmount: BigInteger? = null,
             override val decimals: Long? = null,
             override val isFrozen: Boolean? = null,
@@ -203,20 +204,20 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
         abstract val frozenAddress: WalletConnectAddress?
         abstract val clawbackAddress: WalletConnectAddress?
 
-        override var assetParams: AssetParams? = null
+        override var walletConnectTransactionAssetDetail: WalletConnectTransactionAssetDetail? = null
 
         override fun getAllAddressPublicKeysTxnIncludes(): List<WalletConnectAddress> {
             return listOf(senderAddress) + signerAddressList.orEmpty()
         }
 
         override val assetName: String?
-            get() = assetParams?.fullName
-
-        override val isVerified: Boolean?
-            get() = assetParams?.isVerified
+            get() = walletConnectTransactionAssetDetail?.fullName
 
         val shortName: String?
-            get() = assetParams?.shortName
+            get() = walletConnectTransactionAssetDetail?.shortName
+
+        override val verificationTier: VerificationTier?
+            get() = walletConnectTransactionAssetDetail?.verificationTier
 
         @Parcelize
         data class AssetReconfigurationTransaction(
@@ -228,7 +229,7 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val signer: WalletConnectSigner,
             override val authAddress: String?,
             override val assetInformation: WalletConnectAssetInformation?,
-            override val account: WalletConnectAccount?,
+            override val fromAccount: WalletConnectAccount?,
             override val assetId: Long,
             override val url: String? = null,
             override val managerAddress: WalletConnectAddress? = null,
@@ -252,7 +253,7 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val signer: WalletConnectSigner,
             override val authAddress: String?,
             override val assetInformation: WalletConnectAssetInformation?,
-            override val account: WalletConnectAccount?,
+            override val fromAccount: WalletConnectAccount?,
             override val assetId: Long,
             override val url: String? = null,
             override val managerAddress: WalletConnectAddress? = null,
@@ -282,7 +283,7 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val signer: WalletConnectSigner,
             override val authAddress: String?,
             override val assetInformation: WalletConnectAssetInformation?,
-            override val account: WalletConnectAccount?,
+            override val fromAccount: WalletConnectAccount?,
             override val assetId: Long,
             override val url: String? = null,
             override val managerAddress: WalletConnectAddress? = null,
@@ -312,7 +313,7 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val signer: WalletConnectSigner,
             override val authAddress: String?,
             override val assetInformation: WalletConnectAssetInformation?,
-            override val account: WalletConnectAccount?,
+            override val fromAccount: WalletConnectAccount?,
             override val assetId: Long,
             override val url: String? = null,
             override val managerAddress: WalletConnectAddress? = null,
@@ -352,20 +353,20 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
 
     sealed class BaseAssetDeletionTransaction : BaseAssetConfigurationTransaction(), WalletConnectAssetDetail {
 
-        override var assetParams: AssetParams? = null
+        override var walletConnectTransactionAssetDetail: WalletConnectTransactionAssetDetail? = null
 
         override fun getAllAddressPublicKeysTxnIncludes(): List<WalletConnectAddress> {
             return listOf(senderAddress) + signerAddressList.orEmpty()
         }
 
         override val assetName: String?
-            get() = assetParams?.fullName
-
-        override val isVerified: Boolean?
-            get() = assetParams?.isVerified
+            get() = walletConnectTransactionAssetDetail?.fullName
 
         val shortName: String?
-            get() = assetParams?.shortName
+            get() = walletConnectTransactionAssetDetail?.shortName
+
+        override val verificationTier: VerificationTier?
+            get() = walletConnectTransactionAssetDetail?.verificationTier
 
         @Parcelize
         data class AssetDeletionTransaction(
@@ -377,7 +378,7 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val signer: WalletConnectSigner,
             override val authAddress: String?,
             override val assetInformation: WalletConnectAssetInformation?,
-            override val account: WalletConnectAccount?,
+            override val fromAccount: WalletConnectAccount?,
             override val assetId: Long,
             override val url: String? = null,
             override val groupId: String?
@@ -400,7 +401,7 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val signer: WalletConnectSigner,
             override val authAddress: String?,
             override val assetInformation: WalletConnectAssetInformation?,
-            override val account: WalletConnectAccount?,
+            override val fromAccount: WalletConnectAccount?,
             override val assetId: Long,
             override val url: String? = null,
             override val groupId: String?,
@@ -426,7 +427,7 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val signer: WalletConnectSigner,
             override val authAddress: String?,
             override val assetInformation: WalletConnectAssetInformation?,
-            override val account: WalletConnectAccount?,
+            override val fromAccount: WalletConnectAccount?,
             override val assetId: Long,
             override val url: String? = null,
             override val groupId: String?,
@@ -452,7 +453,7 @@ sealed class BaseAssetConfigurationTransaction : BaseWalletConnectTransaction() 
             override val signer: WalletConnectSigner,
             override val authAddress: String?,
             override val assetInformation: WalletConnectAssetInformation?,
-            override val account: WalletConnectAccount?,
+            override val fromAccount: WalletConnectAccount?,
             override val assetId: Long,
             override val url: String? = null,
             override val groupId: String?,

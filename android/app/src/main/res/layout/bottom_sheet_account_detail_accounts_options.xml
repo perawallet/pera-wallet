@@ -127,7 +127,7 @@
             android:layout_height="wrap_content"
             android:text="@string/rename_account"
             android:visibility="gone"
-            app:icon="@drawable/ic_pen_with_underline"
+            app:icon="@drawable/ic_pen"
             tools:visibility="visible" />
 
         <com.google.android.material.button.MaterialButton

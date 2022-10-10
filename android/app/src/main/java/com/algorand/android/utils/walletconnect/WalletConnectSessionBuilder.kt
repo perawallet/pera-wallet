@@ -13,20 +13,22 @@
 package com.algorand.android.utils.walletconnect
 
 import com.algorand.android.models.WalletConnectSessionMeta
-import com.algorand.android.utils.HTTPS_PROTOCOL
-import com.algorand.android.utils.HTTP_PROTOCOL
+import com.algorand.android.utils.browser.HTTPS_PROTOCOL
+import com.algorand.android.utils.browser.HTTP_PROTOCOL
 import com.algorand.android.utils.walletconnect.peermeta.WalletConnectPeerMetaBuilder
 import com.algorand.android.utils.walletconnect.peermeta.WalletConnectPeraPeerMeta
+import com.google.gson.Gson
 import com.squareup.moshi.Moshi
 import javax.inject.Inject
 import okhttp3.OkHttpClient
 import org.walletconnect.Session.Config
 import org.walletconnect.impls.FileWCSessionStore
-import org.walletconnect.impls.MoshiPayloadAdapter
+import org.walletconnect.impls.GsonPayloadAdapter
 import org.walletconnect.impls.OkHttpTransport
 import org.walletconnect.impls.WCSession
 
 class WalletConnectSessionBuilder @Inject constructor(
+    private val gson: Gson,
     private val moshi: Moshi,
     private val okHttpClient: OkHttpClient,
     private val storage: FileWCSessionStore,
@@ -35,22 +37,38 @@ class WalletConnectSessionBuilder @Inject constructor(
 
     fun createSession(url: String): WalletConnectSessionCachedData? {
         val sessionConfig = createSessionConfigFromUrl(url) ?: return null
-        return createWCSession(sessionConfig)
+        val fallbackBrowserGroupResponse = url.getFallBackBrowserFromWCUrlOrNull()
+        return createWCSession(
+            sessionConfig = sessionConfig,
+            fallbackBrowserGroupResponse = fallbackBrowserGroupResponse
+        )
     }
 
-    fun createSession(sessionId: Long, sessionMeta: WalletConnectSessionMeta): WalletConnectSessionCachedData? {
+    fun createSession(
+        sessionId: Long,
+        sessionMeta: WalletConnectSessionMeta,
+        fallbackBrowserGroupResponse: String?
+    ): WalletConnectSessionCachedData? {
         val sessionConfig = walletConnectMapper.createSessionConfig(sessionMeta)
-        return createWCSession(sessionConfig, sessionId)
+        return createWCSession(
+            sessionConfig = sessionConfig,
+            sessionId = sessionId,
+            fallbackBrowserGroupResponse = fallbackBrowserGroupResponse
+        )
     }
 
-    private fun createWCSession(sessionConfig: Config, sessionId: Long? = null): WalletConnectSessionCachedData? {
+    private fun createWCSession(
+        sessionConfig: Config,
+        sessionId: Long? = null,
+        fallbackBrowserGroupResponse: String? = null
+    ): WalletConnectSessionCachedData? {
         val fullyQualifiedConfig = createFullyQualifiedSessionConfig(sessionConfig) ?: return null
 
         if (checkIfWalletConnectConfigHasInvalidBridgeProtocol(fullyQualifiedConfig.bridge)) return null
 
         val session = WCSession(
             config = fullyQualifiedConfig,
-            payloadAdapter = MoshiPayloadAdapter(moshi),
+            payloadAdapter = GsonPayloadAdapter(gson),
             sessionStore = storage,
             transportBuilder = OkHttpTransport.Builder(okHttpClient, moshi),
             clientMeta = WalletConnectPeerMetaBuilder.createPeerMeta(WalletConnectPeraPeerMeta)
@@ -58,7 +76,12 @@ class WalletConnectSessionBuilder @Inject constructor(
             init()
         }
 
-        return WalletConnectSessionCachedData.create(session, sessionConfig, sessionId)
+        return WalletConnectSessionCachedData.create(
+            session = session,
+            sessionConfig = sessionConfig,
+            sessionId = sessionId,
+            fallbackBrowserGroupResponse = fallbackBrowserGroupResponse
+        )
     }
 
     private fun checkIfWalletConnectConfigHasInvalidBridgeProtocol(bridge: String): Boolean {

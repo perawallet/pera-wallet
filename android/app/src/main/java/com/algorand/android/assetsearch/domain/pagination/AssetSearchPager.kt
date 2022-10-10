@@ -14,9 +14,13 @@ package com.algorand.android.assetsearch.domain.pagination
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import com.algorand.android.assetsearch.domain.model.AssetDetailDTO
+import androidx.paging.cachedIn
+import com.algorand.android.assetsearch.domain.model.AssetSearchDTO
 import com.algorand.android.assetsearch.domain.model.AssetSearchQuery
 import com.algorand.android.assetsearch.domain.repository.AssetSearchRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.shareIn
 
 class AssetSearchPager private constructor(
     pagingConfig: PagingConfig,
@@ -24,13 +28,13 @@ class AssetSearchPager private constructor(
     private val defaultQuery: AssetSearchQuery?
 ) {
 
-    private val searchPager: Pager<String, AssetDetailDTO>
+    private val searchPager: Pager<String, AssetSearchDTO>
     private var searchDataSource: AssetSearchDataSource? = null
 
     private var searchQuery = defaultQuery
 
     init {
-        searchPager = Pager<String, AssetDetailDTO>(pagingConfig) {
+        searchPager = Pager<String, AssetSearchDTO>(pagingConfig) {
             AssetSearchDataSource(assetSearchRepository, searchQuery).also {
                 searchDataSource = it
             }
@@ -50,7 +54,7 @@ class AssetSearchPager private constructor(
         searchDataSource?.invalidate()
     }
 
-    fun toFlow() = searchPager.flow
+    fun toFlow(scope: CoroutineScope) = searchPager.flow.cachedIn(scope).shareIn(scope, SharingStarted.Lazily)
 
     companion object {
         fun create(

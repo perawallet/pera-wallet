@@ -86,6 +86,8 @@ class CollectibleMediaPager(context: Context, attrs: AttributeSet? = null) : Con
 
     private var isBottomButtonVisible: Boolean = false
 
+    private var isFullScreenIconVisible: Boolean = true
+
     private val pageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {
             super.onPageSelected(position)
@@ -102,7 +104,10 @@ class CollectibleMediaPager(context: Context, attrs: AttributeSet? = null) : Con
         context.obtainStyledAttributes(attributeSet, R.styleable.CollectibleMediaPager).use { attrs ->
             bottomButtonIcon = attrs.getDrawable(R.styleable.CollectibleMediaPager_bottomButtonIcon)
             bottomButtonText = attrs.getString(R.styleable.CollectibleMediaPager_bottomButtonText)
-            isBottomButtonVisible = attrs.getBoolean(R.styleable.CollectibleMediaPager_isBottomButtonVisible, false)
+            isBottomButtonVisible =
+                attrs.getBoolean(R.styleable.CollectibleMediaPager_isBottomButtonVisible, isBottomButtonVisible)
+            isFullScreenIconVisible =
+                attrs.getBoolean(R.styleable.CollectibleMediaPager_isFullScreenIconVisible, isFullScreenIconVisible)
         }
     }
 
@@ -134,7 +139,7 @@ class CollectibleMediaPager(context: Context, attrs: AttributeSet? = null) : Con
     private fun onCollectiblePageSelected(position: Int) {
         val selectedItem = adapter.currentList.getOrNull(position)
         val isSelectedMediaHas3dSupport = selectedItem?.has3dSupport ?: false
-        binding.fullScreenImageView.isVisible = selectedItem?.hasFullScreenSupport ?: false
+        binding.fullScreenImageView.isVisible = isFullScreenIconVisible && selectedItem?.hasFullScreenSupport ?: false
         binding.collectibleMediaBottomButton.apply {
             isInvisible = !isSelectedMediaHas3dSupport || !isBottomButtonVisible || selectedItem?.previewUrl == null
             if (isSelectedMediaHas3dSupport) {

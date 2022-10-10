@@ -18,26 +18,17 @@ import android.os.Parcelable
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.doOnLayout
 import com.algorand.android.R
-import com.algorand.android.models.BalanceInput
+import com.algorand.android.models.AmountInput
 import com.algorand.android.models.CustomInputSavedState
-import com.algorand.android.utils.BalanceInputFormatter
-import com.algorand.android.utils.isEqualTo
-import java.math.BigDecimal
+import com.algorand.android.utils.AmountInputFormatter
 import kotlin.properties.Delegates
 
 class AlgorandAmountInputTextView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
 ) : AppCompatTextView(context, attrs) {
-
-    var decimalLimit: Int? by Delegates.observable(null) { _, oldValue, newValue ->
-        if (oldValue != newValue && newValue != null) {
-            algorandAmountFormatter.setOnInputChangeListener(inputChangeListener)
-            algorandAmountFormatter.maxDecimalLimit = newValue
-            text = algorandAmountFormatter.amountInitialPlaceholder
-        }
-    }
 
     private var amountTextColor: Int by Delegates.observable(R.color.tertiary_text_color) { _, oldValue, newValue ->
         if (oldValue != newValue) {
@@ -47,20 +38,33 @@ class AlgorandAmountInputTextView @JvmOverloads constructor(
 
     private var listener: Listener? = null
 
-    private val inputChangeListener = BalanceInputFormatter.Listener {
-        updateTextColor(it.formattedBalanceInBigDecimal)
-        updateText(it.formattedBalanceString)
-        listener?.onBalanceChanged(it)
+    private val inputChangeListener = AmountInputFormatter.Listener {
+        listener?.onAmountChanged(it)
+        text = it.formattedAmount
+        updateTextColor(it.isAmountValid)
     }
 
-    private val algorandAmountFormatter = BalanceInputFormatter()
+    private val algorandAmountFormatter = AmountInputFormatter()
 
-    fun updateBalance(amount: String) {
-        algorandAmountFormatter.updateAmount(amount)
+    init {
+        algorandAmountFormatter.setOnInputChangeListener(inputChangeListener)
     }
 
     fun setOnBalanceChangeListener(listener: Listener) {
         this.listener = listener
+    }
+
+    fun setFractionDecimalLimit(setFractionDecimals: Int) {
+        doOnLayout {
+            with(algorandAmountFormatter) {
+                fractionDecimalLimit = setFractionDecimals
+                hint = amountInitialPlaceholder
+            }
+        }
+    }
+
+    fun setAmount(amount: String) {
+        algorandAmountFormatter.setAmount(amount)
     }
 
     fun onNumberEntered(number: Int) {
@@ -75,16 +79,8 @@ class AlgorandAmountInputTextView @JvmOverloads constructor(
         algorandAmountFormatter.onBackspaceClick()
     }
 
-    private fun updateTextColor(amount: BigDecimal) {
-        amountTextColor = if (amount isEqualTo BigDecimal.ZERO) {
-            R.color.tertiary_text_color
-        } else {
-            R.color.primary_text_color
-        }
-    }
-
-    private fun updateText(amountAsString: String) {
-        text = amountAsString
+    private fun updateTextColor(isAmountValid: Boolean) {
+        amountTextColor = if (isAmountValid) R.color.primary_text_color else R.color.tertiary_text_color
     }
 
     override fun onSaveInstanceState(): Parcelable {
@@ -94,11 +90,11 @@ class AlgorandAmountInputTextView @JvmOverloads constructor(
     override fun onRestoreInstanceState(state: Parcelable?) {
         super.onRestoreInstanceState(state)
         (state as? CustomInputSavedState)?.run {
-            updateBalance(text)
+            setAmount(text)
         }
     }
 
     fun interface Listener {
-        fun onBalanceChanged(balanceInput: BalanceInput)
+        fun onAmountChanged(amountInput: AmountInput)
     }
 }

@@ -19,7 +19,6 @@ import android.view.View
 import android.view.ViewTreeObserver
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.algorand.android.R
 import com.algorand.android.core.TransactionBaseFragment
 import com.algorand.android.databinding.FragmentReceiverAccountSelectionBinding
@@ -32,19 +31,18 @@ import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.models.TransactionData
 import com.algorand.android.ui.accountselection.AccountSelectionAdapter
 import com.algorand.android.ui.send.receiveraccount.ReceiverAccountSelectionQrScannerFragment.Companion.ACCOUNT_ADDRESS_SCAN_RESULT_KEY
-import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.getTextFromClipboard
 import com.algorand.android.utils.isValidAddress
+import com.algorand.android.utils.sendErrorLog
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 // TODO: 18.03.2022 Use BaseAccountSelectionFragment after refactoring TransactionBaseFragment
 @AndroidEntryPoint
@@ -54,7 +52,8 @@ class ReceiverAccountSelectionFragment : TransactionBaseFragment(R.layout.fragme
 
     private val toolbarConfiguration = ToolbarConfiguration(
         startIconClick = ::navBack,
-        startIconResId = R.drawable.ic_left_arrow
+        startIconResId = R.drawable.ic_left_arrow,
+        titleResId = R.string.select_the_receiver_account
     )
 
     override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
@@ -132,6 +131,9 @@ class ReceiverAccountSelectionFragment : TransactionBaseFragment(R.layout.fragme
                             )
                     )
                 }
+                else -> {
+                    sendErrorLog("Unhandled else case in ReceiverAccountSelectionFragment.transactionFragmentListener")
+                }
             }
         }
     }
@@ -160,7 +162,6 @@ class ReceiverAccountSelectionFragment : TransactionBaseFragment(R.layout.fragme
     }
 
     private fun initUi() {
-        initToolbarAssetDetails()
         with(binding) {
             listRecyclerView.adapter = receiverAccountSelectionAdapter
             searchView.setOnTextChanged(::onTextChangeListener)
@@ -169,34 +170,23 @@ class ReceiverAccountSelectionFragment : TransactionBaseFragment(R.layout.fragme
         }
     }
 
-    private fun initToolbarAssetDetails() {
-        receiverAccountSelectionViewModel.getSelectedAssetInformation()?.let { assetInformation ->
-            val assetName = AssetName.create(assetInformation.fullName)
-            val assetDrawable = assetInformation.assetDrawableProvider?.provideAssetDrawable(context, assetName)
-            getAppToolbar()?.apply {
-                setStartDrawable(assetDrawable)
-                changeTitle(assetName.getName(resources))
-            }
-        }
-    }
-
     private fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            receiverAccountSelectionViewModel.selectableAccountFlow.collectLatest(listCollector)
-        }
-        viewLifecycleOwner.lifecycleScope.launch {
-            receiverAccountSelectionViewModel.toAccountAddressValidationFlow.collectLatest(
-                toAccountAddressValidationCollector
-            )
-        }
-        viewLifecycleOwner.lifecycleScope.launch {
-            receiverAccountSelectionViewModel.toAccountInformationFlow.collectLatest(toAccountInformationCollector)
-        }
-        viewLifecycleOwner.lifecycleScope.launch {
-            receiverAccountSelectionViewModel.toAccountTransactionRequirementsFlow.collectLatest(
-                toAccountTransactionRequirementsCollector
-            )
-        }
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            receiverAccountSelectionViewModel.selectableAccountFlow,
+            listCollector
+        )
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            receiverAccountSelectionViewModel.toAccountAddressValidationFlow,
+            toAccountAddressValidationCollector
+        )
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            receiverAccountSelectionViewModel.toAccountInformationFlow,
+            toAccountInformationCollector
+        )
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            receiverAccountSelectionViewModel.toAccountTransactionRequirementsFlow,
+            toAccountTransactionRequirementsCollector
+        )
     }
 
     override fun onResume() {

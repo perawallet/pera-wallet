@@ -40,11 +40,7 @@ class AccountOptionsUseCase @Inject constructor(
         return accountDetailUseCase.getAuthAddress(publicKey)
     }
 
-    fun getAccountAddress(publicKey: String): String? {
-        return accountDetailUseCase.getAccountAddress(publicKey)
-    }
-
-    fun getAccountType(publicKey: String): Account.Type {
+    fun getAccountType(publicKey: String): Account.Type? {
         return accountDetailUseCase.getAccountType(publicKey)
     }
 
@@ -58,6 +54,7 @@ class AccountOptionsUseCase @Inject constructor(
                 R.string.you_are_about_to_remove_main_account
             }
             Account.Type.WATCH -> R.string.you_are_about_to_remove_watch_account
+            else -> R.string.you_are_about_to_remove_main_account
         }
         return warningConfirmationMapper.mapToAccountWarningConfirmation(
             drawableRes = R.drawable.ic_trash,

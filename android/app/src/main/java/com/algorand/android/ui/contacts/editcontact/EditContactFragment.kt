@@ -13,10 +13,8 @@
 
 package com.algorand.android.ui.contacts.editcontact
 
-import android.content.Context
 import android.widget.ImageView
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
 import com.algorand.android.customviews.AlgorandInputLayout
@@ -31,15 +29,15 @@ import com.algorand.android.ui.common.warningconfirmation.WarningConfirmationBot
 import com.algorand.android.ui.contacts.BaseAddEditContactFragment
 import com.algorand.android.ui.contacts.editcontact.EditContactQrScannerFragment.Companion.ACCOUNT_ADDRESS_QR_SCAN_RESULT_KEY
 import com.algorand.android.utils.Event
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.show
+import com.algorand.android.utils.hideKeyboard
 import com.algorand.android.utils.isValidAddress
+import com.algorand.android.utils.sendErrorLog
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.google.android.material.button.MaterialButton
-import com.google.firebase.crashlytics.internal.common.CommonUtils.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class EditContactFragment : BaseAddEditContactFragment() {
@@ -59,6 +57,9 @@ class EditContactFragment : BaseAddEditContactFragment() {
             when (operationState) {
                 is OperationState.Update -> navigateBackWithResult(operationState.data)
                 OperationState.Delete -> navBack()
+                else -> {
+                    sendErrorLog("Unhandled else case in contactOperationCollector")
+                }
             }
         }
     }
@@ -79,20 +80,23 @@ class EditContactFragment : BaseAddEditContactFragment() {
     }
 
     override fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            editContactViewModel.contactOperationFlow.collectLatest(contactOperationCollector)
-        }
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            editContactViewModel.contactOperationFlow,
+            contactOperationCollector
+        )
     }
 
-    override fun openQrScannerForAlgorandAddress(context: Context) {
-        hideKeyboard(context, requireView())
+    override fun openQrScannerForAlgorandAddress() {
+        view?.hideKeyboard()
         nav(EditContactFragmentDirections.actionEditContactFragmentToEditContactQrScannerFragment())
     }
 
     override fun setToolbar(customToolbar: CustomToolbar?) {
-        customToolbar?.addButtonToEnd(TextButton(R.string.done) {
-            onContactEdit(customToolbar.context)
-        })
+        customToolbar?.addButtonToEnd(
+            TextButton(R.string.done) {
+                onContactEdit()
+            }
+        )
     }
 
     override fun setProfileImageView(imageView: ImageView) {
@@ -136,8 +140,8 @@ class EditContactFragment : BaseAddEditContactFragment() {
         nav(EditContactFragmentDirections.actionEditContactFragmentToWarningConfirmationNavigation(warningConfirmation))
     }
 
-    private fun onContactEdit(context: Context) {
-        hideKeyboard(context, requireView())
+    private fun onContactEdit() {
+        view?.hideKeyboard()
         if (contactAddress.isValidAddress().not()) {
             showGlobalError(getString(R.string.entered_address_is_not_valid), getString(R.string.warning))
             return

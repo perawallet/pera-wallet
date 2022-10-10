@@ -12,8 +12,7 @@
 
 package com.algorand.android.modules.transaction.detail.ui.standardtransaction
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.modules.transaction.detail.domain.model.BaseTransactionDetail
@@ -21,16 +20,18 @@ import com.algorand.android.modules.transaction.detail.domain.usecase.StandardTr
 import com.algorand.android.modules.transaction.detail.ui.BaseTransactionDetailViewModel
 import com.algorand.android.utils.getOrElse
 import com.algorand.android.utils.getOrThrow
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class StandardTransactionDetailViewModel @ViewModelInject constructor(
+@HiltViewModel
+class StandardTransactionDetailViewModel @Inject constructor(
     override val baseTransactionDetailPreviewUseCase: StandardTransactionDetailPreviewUseCase,
-    @Assisted savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : BaseTransactionDetailViewModel() {
 
     val transactionId = savedStateHandle.getOrThrow<String>(TRANSACTION_ID_KEY)
-    val publicKey = savedStateHandle.getOrThrow<String>(PUBLIC_KEY)
+    val accountAddress = savedStateHandle.getOrThrow<String>(ACCOUNT_ADDRESS_KEY)
     private val transaction = savedStateHandle.getOrElse<BaseTransactionDetail?>(TRANSACTION_KEY, null)
     val shouldShowCloseButton = savedStateHandle.getOrElse(SHOW_CLOSE_BUTTON_KEY, false)
 
@@ -46,7 +47,7 @@ class StandardTransactionDetailViewModel @ViewModelInject constructor(
         viewModelScope.launch {
             baseTransactionDetailPreviewUseCase.getTransactionDetailPreview(
                 transactionId = transactionId,
-                publicKey = publicKey,
+                publicKey = accountAddress,
                 isInnerTransaction = false
             ).collect {
                 updateTransactionDetailFlow(it)
@@ -59,7 +60,7 @@ class StandardTransactionDetailViewModel @ViewModelInject constructor(
             updateTransactionDetailFlow(
                 baseTransactionDetailPreviewUseCase.createTransactionDetailListItems(
                     baseTransactionDetail = transaction,
-                    publicKey = publicKey,
+                    publicKey = accountAddress,
                     transactionId = transactionId,
                     isInnerTransaction = true
                 )

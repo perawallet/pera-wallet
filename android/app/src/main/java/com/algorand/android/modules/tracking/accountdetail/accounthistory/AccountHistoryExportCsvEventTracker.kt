@@ -25,6 +25,6 @@ class AccountHistoryExportCsvEventTracker @Inject constructor(
     }
 
     companion object {
-        private const val ACCOUNT_HISTORY_EXPORT_CSV_EVENT_KEY = "historyscreen_transactions_download"
+        private const val ACCOUNT_HISTORY_EXPORT_CSV_EVENT_KEY = "historyscr_transactions_download"
     }
 }

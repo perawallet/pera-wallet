@@ -19,10 +19,28 @@ import com.algorand.android.utils.AssetName
 
 abstract class BaseAssetDrawableProvider : Parcelable {
 
-    fun provideAssetDrawable(context: Context?, assetName: AssetName): Drawable? {
-        if (context == null) return null
-        return getAssetDrawable(context, assetName)
+    fun provideAssetDrawable(
+        context: Context?,
+        assetName: AssetName,
+        logoUri: String? = null,
+        width: Int,
+        onResourceReady: (Drawable?) -> Unit
+    ) {
+        if (context == null) return
+        getAssetDrawable(
+            context = context,
+            assetName = assetName,
+            logoUri = logoUri,
+            width = width,
+            onResourceReady = onResourceReady
+        )
     }
 
-    protected abstract fun getAssetDrawable(context: Context, assetName: AssetName): Drawable?
+    protected abstract fun getAssetDrawable(
+        context: Context,
+        assetName: AssetName,
+        logoUri: String?,
+        width: Int,
+        onResourceReady: (Drawable?) -> Unit
+    )
 }

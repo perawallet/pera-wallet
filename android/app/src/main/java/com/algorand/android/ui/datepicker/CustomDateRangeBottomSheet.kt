@@ -16,17 +16,16 @@ import android.os.Bundle
 import android.view.View
 import android.widget.DatePicker
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.algorand.android.R
 import com.algorand.android.core.BaseBottomSheet
 import com.algorand.android.databinding.BottomSheetCustomDateRangeBinding
 import com.algorand.android.models.TextButton
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.models.ui.CustomDateRangePreview
+import com.algorand.android.utils.extensions.collectOnLifecycle
 import com.algorand.android.utils.setNavigationResult
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class CustomDateRangeBottomSheet : BaseBottomSheet(R.layout.bottom_sheet_custom_date_range) {
@@ -68,9 +67,10 @@ class CustomDateRangeBottomSheet : BaseBottomSheet(R.layout.bottom_sheet_custom_
     }
 
     private fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-            customDateRangeViewModel.getCustomDateRangePreviewFlow().collect(customDateRangePreviewFlowCollector)
-        }
+        viewLifecycleOwner.collectOnLifecycle(
+            customDateRangeViewModel.getCustomDateRangePreviewFlow(),
+            customDateRangePreviewFlowCollector
+        )
     }
 
     private fun configureToolbar() {

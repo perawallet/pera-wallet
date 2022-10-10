@@ -16,16 +16,15 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.algorand.android.R
 import com.algorand.android.core.BaseFragment
 import com.algorand.android.databinding.FragmentCollectibleFiltersBinding
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.nft.ui.model.CollectibleFiltersPreview
+import com.algorand.android.utils.extensions.collectOnLifecycle
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class CollectibleFiltersFragment : BaseFragment(R.layout.fragment_collectible_filters) {
@@ -60,9 +59,10 @@ class CollectibleFiltersFragment : BaseFragment(R.layout.fragment_collectible_fi
     }
 
     private fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-            collectibleFiltersViewModel.collectibleFiltersPreviewFlow.collect(collectibleFiltersPreviewCollector)
-        }
+        viewLifecycleOwner.collectOnLifecycle(
+            collectibleFiltersViewModel.collectibleFiltersPreviewFlow,
+            collectibleFiltersPreviewCollector
+        )
     }
 
     private fun saveChangesAndNavBack() {

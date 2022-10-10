@@ -15,6 +15,7 @@ package com.algorand.android.ui.ledgersearch.ledgerinformation
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.doOnLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.databinding.ItemLedgerInformationAssetBinding
 import com.algorand.android.models.LedgerInformationListItem
@@ -24,11 +25,24 @@ class AssetInformationItemViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(assetInformationItem: LedgerInformationListItem.AssetInformationItem) {
-        with(binding) {
-            with(assetInformationItem.accountAssetData) {
-                assetNameTextView.setupUI(isVerified, shortName, name, id, isAlgo)
-                assetBalanceTextView.text = formattedCompactAmount
-                currencyBalanceTextView.text = assetInformationItem.formattedCurrencyBalanceText
+        with(assetInformationItem) {
+            with(binding.assetItemView) {
+                setStartIconDrawable(drawable = null, forceShow = true)
+                getStartIconImageView().doOnLayout {
+                    baseAssetDrawableProvider.provideAssetDrawable(
+                        context = context,
+                        assetName = name,
+                        logoUri = prismUrl,
+                        width = it.measuredWidth,
+                        onResourceReady = ::setStartIconDrawable
+                    )
+                }
+                setTitleText(name.getName(resources))
+                setDescriptionText(shortName.getName(resources))
+                setPrimaryValueText(formattedAmount)
+                setSecondaryValueText(if (isAmountInDisplayedCurrencyVisible) formattedDisplayedCurrencyValue else null)
+                setTitleTextColor(verificationTierConfiguration.textColorResId)
+                setTrailingIconOfTitleText(verificationTierConfiguration.drawableResId)
             }
         }
     }

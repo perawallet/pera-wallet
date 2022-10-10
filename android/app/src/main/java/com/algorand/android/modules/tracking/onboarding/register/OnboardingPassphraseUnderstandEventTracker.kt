@@ -27,6 +27,6 @@ class OnboardingPassphraseUnderstandEventTracker @Inject constructor(
     }
 
     companion object {
-        private const val ONBOARDING_PASSPHRASE_UNDERSTAND_EVENT_KEY = "onboarding_createaccount_passphrase_understand"
+        private const val ONBOARDING_PASSPHRASE_UNDERSTAND_EVENT_KEY = "onb_createacc_pass_understand"
     }
 }

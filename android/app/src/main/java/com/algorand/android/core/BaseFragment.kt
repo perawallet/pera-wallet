@@ -20,12 +20,15 @@ import androidx.navigation.NavDirections
 import androidx.navigation.fragment.FragmentNavigator
 import com.algorand.android.CoreMainActivity
 import com.algorand.android.MainActivity
+import com.algorand.android.R
 import com.algorand.android.customviews.CustomToolbar
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.NotificationMetadata
 import com.algorand.android.models.StatusBarConfiguration
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.utils.copyToClipboard
 import com.algorand.android.utils.hideKeyboard
+import com.algorand.android.utils.toShortenedAddress
 
 abstract class BaseFragment(
     @LayoutRes private val layoutResId: Int,
@@ -33,9 +36,19 @@ abstract class BaseFragment(
 
     abstract val fragmentConfiguration: FragmentConfiguration
 
+    private val fragmentTag: String = this::class.simpleName.orEmpty()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // When navigating from Fragment A->B, 'onViewCreated()' of B is called prior to 'onDestroyView()' of A
+        // So, we remove previous fragment's click listeners on 'onViewCreated()' of B
+        getAppToolbar()?.removeClickListeners()
         customizeFragment()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        removeAlertsWithTag(fragmentTag)
     }
 
     private fun customizeFragment() {
@@ -89,12 +102,40 @@ abstract class BaseFragment(
         return (activity as? CoreMainActivity)?.getToolbar()
     }
 
-    fun showGlobalError(errorMessage: CharSequence?, title: String? = null) {
-        (activity as? MainActivity)?.showGlobalError(errorMessage, title)
+    fun showGlobalError(
+        errorMessage: CharSequence?,
+        title: String? = null,
+        tag: String = fragmentTag
+    ) {
+        (activity as? MainActivity)?.showGlobalError(errorMessage, title, tag)
     }
 
-    fun showForegroundNotification(notificationMetadata: NotificationMetadata) {
-        (activity as? MainActivity)?.showForegroundNotification(notificationMetadata)
+    fun showAlertSuccess(
+        title: String,
+        successMessage: String? = null,
+        tag: String = fragmentTag
+    ) {
+        (activity as? MainActivity)?.showAlertSuccess(title, successMessage, tag)
+    }
+
+    fun showForegroundNotification(
+        notificationMetadata: NotificationMetadata,
+        tag: String = fragmentTag
+    ) {
+        (activity as? MainActivity)?.showForegroundNotification(notificationMetadata, tag)
+    }
+
+    fun showMaxAccountLimitExceededError() {
+        (activity as? MainActivity)?.showMaxAccountLimitExceededError()
+    }
+
+    fun onAccountAddressCopied(accountAddress: String) {
+        context?.copyToClipboard(textToCopy = accountAddress, showToast = false)
+        showTopToast(getString(R.string.address_copied_to_clipboard), accountAddress.toShortenedAddress())
+    }
+
+    private fun removeAlertsWithTag(tag: String) {
+        (activity as? MainActivity)?.removeAlertsWithTag(tag)
     }
 
     protected fun handleWalletConnectUrl(url: String) {

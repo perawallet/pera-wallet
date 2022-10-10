@@ -25,6 +25,6 @@ class BottomNavigationAccountsTapEventTracker @Inject constructor(
     }
 
     companion object {
-        private const val ACCOUNTS_TAP_EVENT_KEY = "homescreen_accounts_tap"
+        private const val ACCOUNTS_TAP_EVENT_KEY = "homesc_accounts_tap"
     }
 }

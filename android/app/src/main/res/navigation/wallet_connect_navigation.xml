@@ -11,71 +11,88 @@
   -->
 
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:id="@+id/walletConnectRequestNavigation"
-	app:startDestination="@id/walletConnectTransactionRequestFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/walletConnectRequestNavigation"
+    app:startDestination="@id/walletConnectTransactionRequestFragment">
 
-	<!--  Transaction Request Graph  -->
+    <!--  Transaction Request Graph  -->
 
-	<include app:graph="@navigation/transaction_request_navigation" />
+    <include app:graph="@navigation/transaction_request_navigation" />
 
-	<action
-		android:id="@+id/action_walletConnectRequestNavigation_pop"
-		app:popUpTo="@id/walletConnectRequestNavigation"
-		app:popUpToInclusive="true" />
+    <action
+        android:id="@+id/action_walletConnectRequestNavigation_pop"
+        app:popUpTo="@id/walletConnectRequestNavigation"
+        app:popUpToInclusive="true" />
 
-	<action
-		android:id="@+id/action_global_to_requestNavigation"
-		app:destination="@id/transactionRequestNavigation" />
+    <action
+        android:id="@+id/action_global_to_requestNavigation"
+        app:destination="@id/transactionRequestNavigation" />
 
-	<!--  Bottom Sheet Actions  -->
+    <!--  Bottom Sheet Actions  -->
 
-	<action
-		android:id="@+id/action_global_walletConnectDappMessageBottomSheet"
-		app:destination="@id/walletConnectDappMessageBottomSheet" />
+    <action
+        android:id="@+id/action_global_walletConnectDappMessageBottomSheet"
+        app:destination="@id/walletConnectDappMessageBottomSheet" />
 
-	<action
-		android:id="@+id/action_global_walletConnectRawTransactionBottomSheet"
-		app:destination="@id/walletConnectRawTransactionBottomSheet" />
+    <action
+        android:id="@+id/action_global_walletConnectRawTransactionBottomSheet"
+        app:destination="@id/walletConnectRawTransactionBottomSheet" />
 
-	<action
-		android:id="@+id/action_global_walletConnectAssetMetadataBottomSheet"
-		app:destination="@id/walletConnectAssetMetadataBottomSheet" />
+    <action
+        android:id="@+id/action_global_walletConnectAssetMetadataBottomSheet"
+        app:destination="@id/walletConnectAssetMetadataBottomSheet" />
 
-	<action
-		android:id="@+id/action_walletConnectTransactionRequestFragment_to_walletConnectDappMessageBottomSheet"
-		app:destination="@id/walletConnectDappMessageBottomSheet" />
+    <action
+        android:id="@+id/action_walletConnectTransactionRequestFragment_to_walletConnectDappMessageBottomSheet"
+        app:destination="@id/walletConnectDappMessageBottomSheet" />
 
-	<!--  Transaction Type Fragments  -->
+    <!--  Transaction Type Fragments  -->
 
-	<fragment
-		android:id="@+id/walletConnectTransactionRequestFragment"
-		android:name="com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionRequestFragment"
-		android:label="WalletConnectTransactionRequestFragment"
-		tools:layout="@layout/fragment_wallet_connect_transaction_request">
+    <fragment
+        android:id="@+id/walletConnectTransactionRequestFragment"
+        android:name="com.algorand.android.ui.wctransactionrequest.WalletConnectTransactionRequestFragment"
+        android:label="WalletConnectTransactionRequestFragment"
+        tools:layout="@layout/fragment_wallet_connect_transaction_request">
 
-		<argument
-			android:name="transaction"
-			app:argType="com.algorand.android.models.WalletConnectTransaction" />
-		<action
-			android:id="@+id/action_walletConnectTransactionRequestFragment_to_walletConnectAtomicTransactionsFragment"
-			app:destination="@id/walletConnectAtomicTransactionsFragment" />
-	</fragment>
+        <argument
+            android:name="transaction"
+            app:argType="com.algorand.android.models.WalletConnectTransaction" />
+        <action
+            android:id="@+id/action_walletConnectTransactionRequestFragment_to_walletConnectAtomicTransactionsFragment"
+            app:destination="@id/walletConnectAtomicTransactionsFragment" />
+        <action
+            android:id="@+id/action_walletConnectTransactionRequestFragment_to_walletConnectTransactionConfirmedSingleBrowserBottomSheet"
+            app:destination="@id/walletConnectTransactionConfirmedSingleBrowserBottomSheet"
+            app:popUpTo="@id/walletConnectTransactionRequestFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 
-	<!--  Bottom Sheets  -->
+    <!--  Bottom Sheets  -->
 
-	<dialog
-		android:id="@+id/walletConnectDappMessageBottomSheet"
-		android:name="com.algorand.android.ui.common.walletconnect.WalletConnectDappMessageBottomSheet"
-		android:label="WalletConnectDappMessageBottomSheet"
-		tools:layout="@layout/bottom_sheet_wallet_connect_dapp_message">
-		<argument
-			android:name="message"
-			app:argType="string" />
-		<argument
-			android:name="peerMeta"
-			app:argType="com.algorand.android.models.WalletConnectPeerMeta" />
-	</dialog>
+    <dialog
+        android:id="@+id/walletConnectDappMessageBottomSheet"
+        android:name="com.algorand.android.ui.common.walletconnect.WalletConnectDappMessageBottomSheet"
+        android:label="WalletConnectDappMessageBottomSheet"
+        tools:layout="@layout/bottom_sheet_wallet_connect_dapp_message">
+        <argument
+            android:name="message"
+            app:argType="string" />
+        <argument
+            android:name="peerMeta"
+            app:argType="com.algorand.android.models.WalletConnectPeerMeta" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/walletConnectTransactionConfirmedSingleBrowserBottomSheet"
+        android:name="com.algorand.android.modules.walletconnectfallbackbrowser.ui.WalletConnectTransactionConfirmedSingleBrowserBottomSheet"
+        android:label="WalletConnectTransactionConfirmedSingleBrowserBottomSheet">
+        <argument
+            android:name="browserItem"
+            app:argType="com.algorand.android.modules.walletconnectfallbackbrowser.ui.model.FallbackBrowserListItem" />
+        <argument
+            android:name="peerMetaName"
+            app:argType="string" />
+    </dialog>
 
 </navigation>

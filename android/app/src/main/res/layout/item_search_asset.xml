@@ -10,25 +10,7 @@
   ~ limitations under the License
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.algorand.android.customviews.accountassetitem.StatefulButtonAccountAssetItemView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/statefulAssetItemView"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical">
-
-    <com.algorand.android.customviews.AlgorandAssetNameTextView
-        android:id="@+id/nameTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/spacing_normal"
-        android:layout_weight="1"
-        tools:text="@tools:sample/lorem/random" />
-
-    <TextView
-        android:id="@+id/idTextView"
-        style="@style/TextAppearance.Footnote.Mono"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="11711" />
-
-</LinearLayout>
+    android:layout_height="wrap_content" />

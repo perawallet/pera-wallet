@@ -12,6 +12,7 @@
 
 package com.algorand.android.nft.domain.model
 
+import com.algorand.android.assetsearch.domain.model.VerificationTier
 import com.algorand.android.models.AssetCreator
 import java.math.BigDecimal
 import java.math.BigInteger
@@ -20,7 +21,6 @@ data class CollectibleDetailDTO(
     val collectibleAssetId: Long,
     val fullName: String?,
     val shortName: String?,
-    val isVerified: Boolean,
     val fractionDecimals: Int,
     val usdValue: BigDecimal?,
     val assetCreator: AssetCreator?,
@@ -32,5 +32,16 @@ data class CollectibleDetailDTO(
     val traits: List<CollectibleTrait>,
     val medias: List<BaseCollectibleMedia>,
     val explorerUrl: String?,
-    val totalSupply: BigInteger?
+    val totalSupply: BigDecimal?,
+    val verificationTier: VerificationTier,
+    val logoUri: String?,
+    val logoSvgUri: String?,
+    val projectUrl: String?,
+    val projectName: String?,
+    val discordUrl: String?,
+    val telegramUrl: String?,
+    val twitterUsername: String?,
+    val assetDescription: String?,
+    val url: String?,
+    val maxSupply: BigInteger?
 )

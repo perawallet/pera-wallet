@@ -25,6 +25,6 @@ class AccountAssetsManageAssetsEventTracker @Inject constructor(
     }
 
     companion object {
-        private const val ACCOUNT_ASSETS_MANAGE_ASSETS_FRAGMENT = "assetscreen_assets_manage"
+        private const val ACCOUNT_ASSETS_MANAGE_ASSETS_FRAGMENT = "assetscr_assets_manage"
     }
 }

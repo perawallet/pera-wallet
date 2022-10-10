@@ -12,7 +12,7 @@
 
 package com.algorand.android.modules.transaction.detail.ui.model
 
-import com.algorand.android.models.BaseItemConfiguration
+import com.algorand.android.customviews.accountandassetitem.model.BaseItemConfiguration
 import com.algorand.android.models.RecyclerListItem
 
 sealed class BaseApplicationCallAssetInformationListItem : RecyclerListItem {
@@ -24,7 +24,7 @@ sealed class BaseApplicationCallAssetInformationListItem : RecyclerListItem {
     abstract val itemType: ItemType
 
     data class AssetInformationItem(
-        val assetItemConfiguration: BaseItemConfiguration.AssetItemConfiguration
+        val assetItemConfiguration: BaseItemConfiguration.BaseAssetItemConfiguration.AssetItemConfiguration
     ) : BaseApplicationCallAssetInformationListItem() {
 
         override val itemType: ItemType = ItemType.ASSET_INFORMATION

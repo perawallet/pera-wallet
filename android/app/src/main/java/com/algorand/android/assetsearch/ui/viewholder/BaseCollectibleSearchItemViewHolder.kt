@@ -14,42 +14,84 @@ package com.algorand.android.assetsearch.ui.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
+import androidx.core.view.doOnLayout
+import com.algorand.android.R
 import com.algorand.android.assetsearch.ui.model.BaseAssetSearchListItem
-import com.algorand.android.customviews.collectibleimageview.CollectibleImageView
 import com.algorand.android.databinding.ItemSearchCollectibleBinding
 import com.algorand.android.models.BaseViewHolder
-import com.algorand.android.utils.PrismUrlBuilder
+import com.algorand.android.models.ui.AccountAssetItemButtonState
+import com.algorand.android.utils.AssetName
+import com.algorand.android.utils.assetdrawable.BaseAssetDrawableProvider
 
 abstract class BaseCollectibleSearchItemViewHolder(
-    private val binding: ItemSearchCollectibleBinding
+    private val binding: ItemSearchCollectibleBinding,
+    private val listener: CollectibleSearchItemListener
 ) : BaseViewHolder<BaseAssetSearchListItem>(binding.root) {
 
-    protected open fun bindImage(collectibleImageView: CollectibleImageView, item: BaseAssetSearchListItem) {
-        with(collectibleImageView) {
-            showText(item.avatarDisplayText.getAsAvatarNameOrDefault(resources))
+    protected open fun bindImage(
+        prismUrl: String?,
+        assetName: AssetName,
+        baseAssetDrawableProvider: BaseAssetDrawableProvider
+    ) {
+        binding.collectibleItemView.apply {
+            setStartIconDrawable(drawable = null, forceShow = true)
+            getStartIconImageView().doOnLayout {
+                baseAssetDrawableProvider.provideAssetDrawable(
+                    context = context,
+                    assetName = assetName,
+                    logoUri = prismUrl,
+                    width = it.measuredWidth,
+                    onResourceReady = ::setStartIconDrawable
+                )
+            }
         }
     }
 
     override fun bind(item: BaseAssetSearchListItem) {
-        with(binding) {
-            mainTextView.text = item.fullName.getName(root.resources)
-            subTextView.text = item.shortName.getName(root.resources)
-            collectibleIdTextView.text = item.assetId.toString()
-            verifiedImageView.isVisible = item.isVerified
-            bindImage(collectibleImageView, item)
+        if (item !is BaseAssetSearchListItem.AssetListItem.BaseCollectibleSearchListItem) return
+        with(binding.collectibleItemView) {
+            with(item) {
+                setTitleText(fullName.getName(resources))
+                bindImage(prismUrl, fullName, baseAssetDrawableProvider)
+                setAssetDescriptionText(shortName.getName(resources), assetId)
+                setButtonState(accountAssetItemButtonState)
+                setAssetItemViewClickListeners(this)
+            }
         }
     }
 
-    protected fun createPrismUrl(url: String, width: Int): String {
-        return PrismUrlBuilder.create(url)
-            .addWidth(width)
-            .addQuality(PrismUrlBuilder.DEFAULT_IMAGE_QUALITY)
-            .build()
+    private fun setAssetDescriptionText(assetShortName: String?, assetId: Long) {
+        val assetDescriptionText = binding.root.resources.getString(
+            R.string.pair_value_format_with_interpunct,
+            assetShortName,
+            assetId
+        )
+        binding.collectibleItemView.setDescriptionText(assetDescriptionText)
+    }
+
+    private fun setAssetItemViewClickListeners(
+        collectibleSearchItem: BaseAssetSearchListItem.AssetListItem.BaseCollectibleSearchListItem
+    ) {
+        binding.collectibleItemView.apply {
+            if (collectibleSearchItem.accountAssetItemButtonState != AccountAssetItemButtonState.PROGRESS) {
+                setActionButtonClickListener { listener.onCollectibleItemActionButtonClick(collectibleSearchItem) }
+                setOnClickListener { listener.onCollectibleItemClick(collectibleSearchItem.assetId) }
+            } else {
+                setActionButtonClickListener(null)
+                setOnClickListener(null)
+            }
+        }
+    }
+
+    interface CollectibleSearchItemListener {
+        fun onCollectibleItemClick(collectibleId: Long)
+        fun onCollectibleItemActionButtonClick(
+            assetSearchItem: BaseAssetSearchListItem.AssetListItem.BaseCollectibleSearchListItem
+        )
     }
 
     protected interface CollectibleSearchItemViewHolderCreator {
-        fun create(parent: ViewGroup): BaseCollectibleSearchItemViewHolder
+        fun create(parent: ViewGroup, listener: CollectibleSearchItemListener): BaseCollectibleSearchItemViewHolder
     }
 
     companion object {

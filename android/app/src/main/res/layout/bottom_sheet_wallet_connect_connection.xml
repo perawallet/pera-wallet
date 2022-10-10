@@ -111,7 +111,7 @@
             android:textAppearance="@style/TextAppearance.Body.Sans"
             android:visibility="gone"
             app:layout_constrainedWidth="true"
-            app:layout_constraintBottom_toTopOf="@id/accountBalanceTextView"
+            app:layout_constraintBottom_toTopOf="@id/accountAssetCountTextView"
             app:layout_constraintEnd_toStartOf="@id/arrowImageView"
             app:layout_constraintStart_toEndOf="@id/accountIconImageView"
             app:layout_constraintTop_toTopOf="parent"
@@ -119,7 +119,7 @@
             tools:visibility="visible" />
 
         <TextView
-            android:id="@+id/accountBalanceTextView"
+            android:id="@+id/accountAssetCountTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_normal"

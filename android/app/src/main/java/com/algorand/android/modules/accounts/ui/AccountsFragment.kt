@@ -19,7 +19,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.algorand.android.CoreMainActivity
 import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.MainActivity
@@ -30,32 +29,25 @@ import com.algorand.android.core.BottomNavigationBackPressedDelegate
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentAccountsBinding
 import com.algorand.android.models.AnnotatedString
-import com.algorand.android.models.AssetActionResult
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ScreenState
 import com.algorand.android.modules.accounts.domain.model.BaseAccountListItem
-import com.algorand.android.modules.accounts.domain.model.BasePortfolioValue
+import com.algorand.android.modules.accounts.domain.model.BasePortfolioValueItem
 import com.algorand.android.modules.accounts.ui.adapter.AccountAdapter
 import com.algorand.android.tutorialdialog.util.showCopyAccountAddressTutorialDialog
-import com.algorand.android.ui.assetaction.AddAssetActionBottomSheet.Companion.ADD_ASSET_ACTION_RESULT
 import com.algorand.android.utils.TestnetBadgeDrawable
-import com.algorand.android.utils.copyToClipboard
+import com.algorand.android.utils.browser.openUrl
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.setDrawableTintColor
-import com.algorand.android.utils.extensions.show
-import com.algorand.android.utils.openUrl
-import com.algorand.android.utils.startSavedStateListener
-import com.algorand.android.utils.toShortenedAddress
-import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
 @Suppress("TooManyFunctions")
 @AndroidEntryPoint
-class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts),
+class AccountsFragment :
+    DaggerBaseFragment(R.layout.fragment_accounts),
     BackPressedControllerComponent by BottomNavigationBackPressedDelegate() {
 
     override val fragmentConfiguration = FragmentConfiguration(
@@ -86,14 +78,15 @@ class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts),
         }
 
         override fun onAccountItemLongPressed(publicKey: String) {
-            copyPublicKeyToClipboard(publicKey)
+            onAccountAddressCopied(publicKey)
         }
 
         override fun onBannerCloseButtonClick(bannerId: Long) {
             accountsViewModel.onCloseBannerClick(bannerId)
         }
 
-        override fun onBannerActionButtonClick(url: String) {
+        override fun onBannerActionButtonClick(url: String, isGovernance: Boolean) {
+            accountsViewModel.onBannerActionButtonClick(isGovernance)
             context?.openUrl(url)
         }
 
@@ -126,10 +119,6 @@ class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts),
 
     private val accountAdapter: AccountAdapter = AccountAdapter(accountAdapterListener = accountAdapterListener)
 
-    private val motionLayoutTransition by lazy {
-        binding.accountsFragmentMotionLayout.getTransition(R.id.accountsFragmentTransition)
-    }
-
     private val accountListCollector: suspend (List<BaseAccountListItem>?) -> Unit = { accountList ->
         accountList?.let { safeList ->
             loadAccountsAndBalancePreview(safeList)
@@ -144,6 +133,7 @@ class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts),
 
     private val emptyStateVisibilityCollector: suspend (Boolean?) -> Unit = { isEmptyStateVisible ->
         binding.emptyScreenStateView.isVisible = isEmptyStateVisible == true
+        binding.notificationImageButton.isInvisible = isEmptyStateVisible == true
     }
 
     private val fullScreenLoadingCollector: suspend (Boolean?) -> Unit = { isFullScreenLoadingVisible ->
@@ -154,33 +144,34 @@ class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts),
         initToolbarTestnetBadge(isTestnetBadgeVisible)
     }
 
-    private val accountsPortfolioValuesCollector: suspend (BasePortfolioValue.PortfolioValues?) -> Unit = {
+    private val accountsPortfolioValuesCollector: suspend (BasePortfolioValueItem?) -> Unit = {
         if (it != null) setPortfolioValues(it)
-    }
-
-    private val accountsPortfolioValuesErrorCollector: suspend (BasePortfolioValue.PortfolioValuesError?) -> Unit = {
-        if (it != null) setPortfolioValuesError(it)
     }
 
     private val copyAccountAddressTutorialCollector: suspend (Boolean?) -> Unit = { event ->
         event.let { shouldShow -> if (shouldShow == true) showTutorialDialog() }
     }
 
-    private val motionLayoutAbilityCollector: suspend (Boolean?) -> Unit = {
-        motionLayoutTransition.isEnabled = it == true
-    }
-
     private val portfolioValuesBackgroundColorCollector: suspend (Int?) -> Unit = {
         if (it != null) binding.toolbarLayout.setBackgroundColor(ContextCompat.getColor(binding.root.context, it))
     }
 
-    private val portfolioValueVisibilityCollector: suspend (Boolean?) -> Unit = { isVisible ->
+    private val successStateVisibilityCollector: suspend (Boolean?) -> Unit = { isVisible ->
         if (isVisible != null) {
             with(binding) {
                 portfolioValueTitleTextView.isInvisible = !isVisible
                 primaryPortfolioValue.isInvisible = !isVisible
                 secondaryPortfolioValue.isInvisible = !isVisible
+                accountsRecyclerView.isInvisible = !isVisible
+                if (isVisible.not()) binding.accountsFragmentMotionLayout.transitionToState(R.id.start)
+                accountsFragmentMotionLayout.getTransition(R.id.accountsFragmentTransition).isEnabled = isVisible
             }
+        }
+    }
+
+    private val notificationStateCollector: suspend (Boolean?) -> Unit = { isActive ->
+        if (isActive != null) {
+            binding.notificationImageButton.isActivated = isActive
         }
     }
 
@@ -190,31 +181,14 @@ class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts),
         )
     }
 
-    private fun setPortfolioValues(portfolioValues: BasePortfolioValue.PortfolioValues) {
+    private fun setPortfolioValues(portfolioValues: BasePortfolioValueItem) {
         with(binding) {
-            primaryPortfolioValue.text = portfolioValues.formattedPrimaryAccountValue
-            secondaryPortfolioValue.text = root.resources.getString(
-                R.string.approximate_currency_value,
-                portfolioValues.formattedSecondaryAccountValue
-            )
+            primaryPortfolioValue.apply { text = portfolioValues.getPrimaryAccountValue(context) }
+            secondaryPortfolioValue.apply { text = portfolioValues.getSecondaryAccountValue(context) }
             portfolioValueTitleTextView.apply {
-                setTextColor(ContextCompat.getColor(root.context, R.color.secondary_text_color))
-                setDrawableTintColor(R.color.secondary_text_color)
+                setTextColor(ContextCompat.getColor(root.context, portfolioValues.titleColorResId))
+                setDrawableTintColor(portfolioValues.titleColorResId)
                 setOnClickListener { navToPortfolioInfoBottomSheet(portfolioValues) }
-            }
-        }
-    }
-
-    private fun setPortfolioValuesError(portfolioValuesError: BasePortfolioValue.PortfolioValuesError) {
-        with(binding) {
-            val notAvailableText = root.resources.getString(R.string.not_available_shortened)
-            primaryPortfolioValue.text = notAvailableText
-            secondaryPortfolioValue.text = notAvailableText
-            portfolioValueTitleTextView.apply {
-                setTextColor(ContextCompat.getColor(root.context, portfolioValuesError.titleColorResId))
-                setDrawableTintColor(portfolioValuesError.titleColorResId)
-                setOnClickListener { navToPortfolioInfoBottomSheet(portfolioValuesError) }
-                show()
             }
         }
     }
@@ -232,7 +206,6 @@ class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts),
         (activity as? CoreMainActivity)?.let { initBackPressedControllerComponent(it, viewLifecycleOwner) }
         (activity as MainActivity).isAppUnlocked = true
         initObservers()
-        initSavedStateListener()
         initUi()
     }
 
@@ -255,58 +228,47 @@ class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts),
 
     private fun initObservers() {
         with(accountsViewModel) {
-            viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-                accountPreviewFlow.map { it?.accountListItems }.collectLatest(accountListCollector)
-            }
-            viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-                accountPreviewFlow.map { it?.isFullScreenAnimatedLoadingVisible }
-                    .collectLatest(fullScreenLoadingCollector)
-            }
-            viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-                accountPreviewFlow.map { it?.isEmptyStateVisible }.collect(emptyStateVisibilityCollector)
-            }
-            viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-                accountPreviewFlow.map { it?.isTestnetBadgeVisible }.collectLatest(testnetBadgeVisibilityCollector)
-            }
-            viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-                accountPreviewFlow.map { it?.portfolioValues }.collectLatest(accountsPortfolioValuesCollector)
-            }
-            viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-                accountPreviewFlow.map { it?.portfolioValuesError }.collectLatest(accountsPortfolioValuesErrorCollector)
-            }
-            viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-                accountPreviewFlow.map { it?.shouldShowDialog }
-                    .distinctUntilChanged()
-                    .collectLatest(copyAccountAddressTutorialCollector)
-            }
-            viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-                accountPreviewFlow.map { it?.isMotionLayoutTransitionEnabled }
-                    .distinctUntilChanged()
-                    .collectLatest(motionLayoutAbilityCollector)
-            }
-            viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-                accountPreviewFlow.map { it?.portfolioValuesBackgroundRes }
-                    .distinctUntilChanged()
-                    .collectLatest(portfolioValuesBackgroundColorCollector)
-            }
-            viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-                accountPreviewFlow.map { it?.isPortfolioValueGroupVisible }
-                    .distinctUntilChanged()
-                    .collectLatest(portfolioValueVisibilityCollector)
-            }
+            viewLifecycleOwner.collectLatestOnLifecycle(
+                accountPreviewFlow.map { it?.accountListItems },
+                accountListCollector
+            )
+            viewLifecycleOwner.collectLatestOnLifecycle(
+                accountPreviewFlow.map { it?.isFullScreenAnimatedLoadingVisible },
+                fullScreenLoadingCollector
+            )
+            viewLifecycleOwner.collectLatestOnLifecycle(
+                accountPreviewFlow.map { it?.isEmptyStateVisible },
+                emptyStateVisibilityCollector
+            )
+            viewLifecycleOwner.collectLatestOnLifecycle(
+                accountPreviewFlow.map { it?.isTestnetBadgeVisible },
+                testnetBadgeVisibilityCollector
+            )
+            viewLifecycleOwner.collectLatestOnLifecycle(
+                accountPreviewFlow.map { it?.portfolioValueItem }.distinctUntilChanged(),
+                accountsPortfolioValuesCollector
+            )
+            viewLifecycleOwner.collectLatestOnLifecycle(
+                accountPreviewFlow.map { it?.shouldShowDialog }.distinctUntilChanged(),
+                copyAccountAddressTutorialCollector
+            )
+            viewLifecycleOwner.collectLatestOnLifecycle(
+                accountPreviewFlow.map { it?.portfolioValuesBackgroundRes }.distinctUntilChanged(),
+                portfolioValuesBackgroundColorCollector
+            )
+            viewLifecycleOwner.collectLatestOnLifecycle(
+                accountPreviewFlow.map { it?.isSuccessStateVisible }.distinctUntilChanged(),
+                successStateVisibilityCollector
+            )
+            viewLifecycleOwner.collectLatestOnLifecycle(
+                accountPreviewFlow.map { it?.hasNewNotification }.distinctUntilChanged(),
+                notificationStateCollector
+            )
         }
     }
 
     private fun loadAccountsAndBalancePreview(accountListItems: List<BaseAccountListItem>) {
         accountAdapter.submitList(accountListItems)
-    }
-
-    private fun initSavedStateListener() {
-        startSavedStateListener(R.id.accountsFragment) {
-            useSavedStateValue<AssetActionResult>(ADD_ASSET_ACTION_RESULT) { assetActionResult ->
-                (activity as? MainActivity)?.signAddAssetTransaction(assetActionResult)
-            }
-        }
     }
 
     private fun navToQrScanFragment() {
@@ -319,6 +281,11 @@ class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts),
 
     private fun onAddAccountClick() {
         accountsViewModel.logAddAccountTapEvent()
+        // TODO: Handle this in error with an event inside preview
+        if (accountsViewModel.isAccountLimitExceed()) {
+            showMaxAccountLimitExceededError()
+            return
+        }
         nav(MainNavigationDirections.actionNewAccount(shouldNavToRegisterWatchAccount = false))
     }
 
@@ -326,7 +293,7 @@ class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts),
         nav(AccountsFragmentDirections.actionAccountsFragmentToStandardAccountOrderFragment())
     }
 
-    private fun navToPortfolioInfoBottomSheet(portfolio: BasePortfolioValue) {
+    private fun navToPortfolioInfoBottomSheet(portfolio: BasePortfolioValueItem) {
         nav(
             MainNavigationDirections.actionGlobalSingleButtonBottomSheet(
                 titleAnnotatedString = AnnotatedString(R.string.how_we_calculate_portfolio),
@@ -346,11 +313,6 @@ class AccountsFragment : DaggerBaseFragment(R.layout.fragment_accounts),
 
     private fun navToReceiveAccountSelectionFragment() {
         nav(AccountsFragmentDirections.actionGlobalReceiveAccountSelectionFragment())
-    }
-
-    private fun copyPublicKeyToClipboard(publicKey: String) {
-        context?.copyToClipboard(publicKey, showToast = false)
-        showTopToast(getString(R.string.address_copied_to_clipboard), publicKey.toShortenedAddress())
     }
 
     companion object {

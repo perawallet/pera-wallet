@@ -17,7 +17,7 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import com.algorand.android.R
 import com.algorand.android.models.ScreenState
-import com.algorand.android.ui.addasset.AssetAdditionType
+import com.algorand.android.modules.assets.addition.ui.model.AssetAdditionType
 import java.io.IOException
 import javax.inject.Inject
 

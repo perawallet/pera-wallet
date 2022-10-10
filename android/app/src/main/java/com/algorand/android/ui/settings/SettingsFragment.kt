@@ -29,9 +29,9 @@ import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.WarningConfirmation
 import com.algorand.android.ui.common.warningconfirmation.WarningConfirmationBottomSheet.Companion.WARNING_CONFIRMATION_KEY
-import com.algorand.android.utils.openPrivacyPolicyUrl
-import com.algorand.android.utils.openSupportCenterUrl
-import com.algorand.android.utils.openTermsAndServicesUrl
+import com.algorand.android.utils.browser.openPrivacyPolicyUrl
+import com.algorand.android.utils.browser.openSupportCenterUrl
+import com.algorand.android.utils.browser.openTermsAndServicesUrl
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -94,11 +94,13 @@ class SettingsFragment : DaggerBaseFragment(R.layout.fragment_settings),
 
     private fun initDialogSavedStateListener() {
         startSavedStateListener(R.id.settingsFragment) {
-            useSavedStateValue<Boolean>(WARNING_CONFIRMATION_KEY) {
-                settingsViewModel.deleteAllData(
-                    context?.getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager,
-                    ::onDeleteAllDataCompleted
-                )
+            useSavedStateValue<Boolean>(WARNING_CONFIRMATION_KEY) { isConfirmed ->
+                if (isConfirmed) {
+                    settingsViewModel.deleteAllData(
+                        context?.getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager,
+                        ::onDeleteAllDataCompleted
+                    )
+                }
             }
         }
     }

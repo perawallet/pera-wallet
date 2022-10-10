@@ -16,19 +16,26 @@ package com.algorand.android.ui.ledgersearch.ledgerinformation
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.algorand.android.databinding.ItemLedgerInformationCanSignBinding
+import com.algorand.android.R
+import com.algorand.android.databinding.ItemLedgerInformationAccountBinding
 import com.algorand.android.models.LedgerInformationListItem
+import com.algorand.android.utils.AccountIconDrawable
 import com.algorand.android.utils.toShortenedAddress
 
 class CanSignedByItemViewHolder(
-    private val binding: ItemLedgerInformationCanSignBinding
+    private val binding: ItemLedgerInformationAccountBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(canSignedByItem: LedgerInformationListItem.CanSignedByItem) {
-        with(binding.accountView) {
-            with(canSignedByItem) {
-                setAccountAddress(accountPublicKey.toShortenedAddress())
-                setAccountIcon(accountIconResource)
+        with(canSignedByItem) {
+            with(binding.accountItemView) {
+                val accountIconDrawable = AccountIconDrawable.create(
+                    context = context,
+                    accountIconResource = accountIconResource,
+                    size = resources.getDimensionPixelSize(R.dimen.account_icon_size_large)
+                )
+                setStartIconDrawable(accountIconDrawable)
+                setTitleText(accountPublicKey.toShortenedAddress())
             }
         }
     }
@@ -36,7 +43,7 @@ class CanSignedByItemViewHolder(
     companion object {
         fun create(parent: ViewGroup): CanSignedByItemViewHolder {
             val binding =
-                ItemLedgerInformationCanSignBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                ItemLedgerInformationAccountBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             return CanSignedByItemViewHolder(binding)
         }
     }

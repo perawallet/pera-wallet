@@ -30,11 +30,17 @@ class WalletConnectMapper @Inject constructor(
         return wcSessionHistoryEntityMapper.mapToEntity(wcSession)
     }
 
-    fun createWalletConnectSession(sessionHistoryEntity: WalletConnectSessionHistoryEntity): WalletConnectSession {
-        return wcSessionHistoryEntityMapper.mapFromEntity(sessionHistoryEntity)
+    fun createWalletConnectSession(
+        sessionHistoryEntity: WalletConnectSessionHistoryEntity,
+        accountName: String? = null
+    ): WalletConnectSession {
+        return wcSessionHistoryEntityMapper.mapFromEntity(sessionHistoryEntity, accountName)
     }
 
-    fun createWalletConnectSession(sessionEntity: WalletConnectSessionEntity): WalletConnectSession {
-        return wcSessionEntityMapper.mapFromEntity(sessionEntity)
+    fun createWalletConnectSession(
+        sessionEntity: WalletConnectSessionEntity,
+        accountName: String? = null
+    ): WalletConnectSession {
+        return wcSessionEntityMapper.mapFromEntity(sessionEntity, accountName)
     }
 }

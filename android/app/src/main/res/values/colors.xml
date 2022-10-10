@@ -226,10 +226,15 @@
     <!-- Algorand Standart Assets (ASA) Tiers -->
     <color name="trusted_icon_bg">@color/turquoise_600</color>
     <color name="trusted_icon_inline">@color/white</color>
+    <color name="trusted_icon_bg_opacity_16">#292CB7BC</color>
+
     <color name="verified_icon_bg">#CEEEFE</color>
     <color name="verified_icon_inline">#0D7FFF</color>
+    <color name="verified_icon_bg_opacity_80">#CCCEEEFE</color>
+
     <color name="suspicious_icon_bg">@color/salmon_500</color>
     <color name="suspicious_icon_inline">@color/white</color>
+    <color name="suspicious_icon_bg_opacity_16">#29FF6D5F</color>
 
     <!-- Toast Message -->
     <color name="toast_background">@color/gray_900</color>
@@ -243,6 +248,8 @@
     <!-- Algo Icon -->
     <color name="algo_icon_bg">@color/turquoise_600</color>
     <color name="algo_icon">@color/white</color>
+
+    <color name="button_stroke_color">@color/gray_100</color>
 
     <!-- endregion App Color Palette -->
 
@@ -329,9 +336,11 @@
 
     <color name="tooltip_background_color">@color/gray_900_alpha_90</color>
 
-    <!--   Background Gradient View  -->
-    <color name="gradient_bg_view_end_color">#00FFFFFF</color>
-    <color name="gradient_bg_view_start_color">@color/white</color>
+    <!--  Verification Info Badge  -->
+    <color name="verification_badge_bg_gradient_start_color">#E9F8F7</color>
 
+    <!--  Bottom Fade Gradient View  -->
+    <!--Before merging to 5.3.0 let's remove "gradient_bg_view_start_color" and use this one-->
+    <color name="bottom_fade_gradient_start_color">@color/white</color>
 
 </resources>

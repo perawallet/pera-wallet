@@ -28,6 +28,9 @@ import org.walletconnect.Session
 
 const val WALLET_CONNECT_URL_PREFIX = "wc:"
 private const val FUTURE_TRANSACTION_WARNING_THRESHOLD = 500L
+private const val WALLET_CONNECT_FALLBACK_BROWSER_KEY = "browser"
+private const val PARAMETER_SEPARATOR = "&"
+private const val EQUAL_SIGN = "="
 
 private val placeholderIconResIdList = listOf(
     R.drawable.ic_peer_meta_placeholder_1,
@@ -98,5 +101,17 @@ fun WalletConnectTransaction.isFutureTransaction(): Boolean {
         val warningThreshold = it.requestedBlockCurrentRound + FUTURE_TRANSACTION_WARNING_THRESHOLD
         val firstValidRound = it.walletConnectTransactionParams.firstValidRound
         return if (firstValidRound == null) false else firstValidRound > warningThreshold
+    }
+}
+
+fun String.getFallBackBrowserFromWCUrlOrNull(): String? {
+    return if (contains(WALLET_CONNECT_FALLBACK_BROWSER_KEY)) {
+        split(WALLET_CONNECT_FALLBACK_BROWSER_KEY)
+            .lastOrNull()
+            ?.split(PARAMETER_SEPARATOR)
+            ?.firstOrNull()
+            ?.removePrefix(EQUAL_SIGN)
+    } else {
+        null
     }
 }

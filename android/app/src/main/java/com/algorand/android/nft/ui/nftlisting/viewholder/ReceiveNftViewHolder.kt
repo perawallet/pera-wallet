@@ -14,10 +14,14 @@ package com.algorand.android.nft.ui.nftlisting.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.databinding.ItemReceiveCollectibleBinding
+import com.algorand.android.models.BaseViewHolder
+import com.algorand.android.nft.ui.model.BaseCollectibleListItem
 
-class ReceiveNftViewHolder(binding: ItemReceiveCollectibleBinding) : RecyclerView.ViewHolder(binding.root) {
+class ReceiveNftViewHolder(binding: ItemReceiveCollectibleBinding) :
+    BaseViewHolder<BaseCollectibleListItem>(binding.root) {
+
+    override fun bind(item: BaseCollectibleListItem) = Unit
 
     companion object {
         fun create(parent: ViewGroup): ReceiveNftViewHolder {

@@ -14,15 +14,17 @@
 package com.algorand.android.ui.register.addaccounttypeselection
 
 import android.content.SharedPreferences
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.AccountManager
 import com.algorand.android.modules.tracking.onboarding.register.addaccounttypeselection.AddAccountTypeSelectionFragmentEventTracker
 import com.algorand.android.utils.preference.setRegisterSkip
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 
-class AddAccountTypeSelectionViewModel @ViewModelInject constructor(
+@HiltViewModel
+class AddAccountTypeSelectionViewModel @Inject constructor(
     private val sharedPref: SharedPreferences,
     private val accountManager: AccountManager,
     private val addAccountTypeSelectionFragmentEventTracker: AddAccountTypeSelectionFragmentEventTracker

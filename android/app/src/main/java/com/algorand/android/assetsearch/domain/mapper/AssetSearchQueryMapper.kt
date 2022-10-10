@@ -13,19 +13,16 @@
 package com.algorand.android.assetsearch.domain.mapper
 
 import com.algorand.android.assetsearch.domain.model.AssetSearchQuery
-import com.algorand.android.models.AssetQueryType
 import javax.inject.Inject
 
 class AssetSearchQueryMapper @Inject constructor() {
 
     fun mapToAssetSearchQuery(
         queryText: String,
-        queryType: AssetQueryType,
         hasCollectibles: Boolean?
     ): AssetSearchQuery {
         return AssetSearchQuery(
             queryText = queryText,
-            queryType = queryType,
             hasCollectibles = hasCollectibles
         )
     }

@@ -16,13 +16,14 @@ import android.view.ViewGroup
 import androidx.core.view.doOnLayout
 import com.algorand.android.databinding.ItemBaseCollectibleListBinding
 import com.algorand.android.nft.ui.model.BaseCollectibleListItem
+import com.algorand.android.utils.createPrismUrl
 import com.algorand.android.utils.loadImage
 
 class CollectibleImageViewHolder(
     binding: ItemBaseCollectibleListBinding
 ) : BaseCollectibleListViewHolder(binding) {
 
-    override fun bind(item: BaseCollectibleListItem.BaseCollectibleItem) {
+    override fun bind(item: BaseCollectibleListItem) {
         super.bind(item)
         if (item !is BaseCollectibleListItem.BaseCollectibleItem.CollectibleImageItem) return
         loadImage(item)

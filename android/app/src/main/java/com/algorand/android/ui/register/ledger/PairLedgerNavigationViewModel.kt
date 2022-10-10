@@ -13,11 +13,13 @@
 package com.algorand.android.ui.register.ledger
 
 import android.bluetooth.BluetoothDevice
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.models.Account
+import dagger.hilt.android.lifecycle.HiltViewModel
 
-class PairLedgerNavigationViewModel @ViewModelInject constructor() : BaseViewModel() {
+@HiltViewModel
+class PairLedgerNavigationViewModel @Inject constructor() : BaseViewModel() {
 
     var selectedAccounts = listOf<Account>()
 

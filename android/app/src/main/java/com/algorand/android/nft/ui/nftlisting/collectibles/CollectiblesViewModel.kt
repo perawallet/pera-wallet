@@ -12,15 +12,17 @@
 
 package com.algorand.android.nft.ui.nftlisting.collectibles
 
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import com.algorand.android.modules.tracking.nft.CollectibleEventTracker
 import com.algorand.android.nft.domain.usecase.CollectiblesListingPreviewUseCase
 import com.algorand.android.nft.ui.base.BaseCollectibleListingViewModel
 import com.algorand.android.nft.ui.model.CollectiblesListingPreview
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 
-class CollectiblesViewModel @ViewModelInject constructor(
+@HiltViewModel
+class CollectiblesViewModel @Inject constructor(
     private val collectiblesListingPreviewUseCase: CollectiblesListingPreviewUseCase,
     collectibleEventTracker: CollectibleEventTracker
 ) : BaseCollectibleListingViewModel(collectiblesListingPreviewUseCase, collectibleEventTracker) {

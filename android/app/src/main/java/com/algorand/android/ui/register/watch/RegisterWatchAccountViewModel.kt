@@ -12,21 +12,22 @@
 
 package com.algorand.android.ui.register.watch
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.AccountManager
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.modules.tracking.onboarding.register.OnboardingWatchAccountVerifyEventTracker
 import com.algorand.android.utils.getOrElse
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class RegisterWatchAccountViewModel @ViewModelInject constructor(
+@HiltViewModel
+class RegisterWatchAccountViewModel @Inject constructor(
     private val accountManager: AccountManager,
-    @Assisted private val savedStateHandle: SavedStateHandle,
+    private val savedStateHandle: SavedStateHandle,
     private val onboardingWatchAccountVerifyEventTracker: OnboardingWatchAccountVerifyEventTracker
 ) : BaseViewModel() {
 

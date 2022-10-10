@@ -16,7 +16,7 @@ import androidx.paging.CombinedLoadStates
 import com.algorand.android.decider.AssetAdditionScreenStateViewTypeDecider
 import com.algorand.android.decider.AssetAdditionScreenStateViewVisibilityDecider
 import com.algorand.android.models.ui.AssetAdditionLoadStatePreview
-import com.algorand.android.ui.addasset.AssetAdditionType
+import com.algorand.android.modules.assets.addition.ui.model.AssetAdditionType
 import com.algorand.android.utils.Event
 import javax.inject.Inject
 

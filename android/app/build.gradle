@@ -1,6 +1,7 @@
 plugins {
-    id "io.gitlab.arturbosch.detekt" version "1.14.1"
+    id "io.gitlab.arturbosch.detekt" version "1.21.0"
     id "com.android.application"
+    id "com.google.gms.google-services"
     id "com.google.firebase.crashlytics"
     id "kotlin-android"
     id "kotlin-parcelize"
@@ -12,8 +13,12 @@ plugins {
 apply from: 'https://raw.githubusercontent.com/Hipo/macaron/master/config/quality/quality.gradle'
 
 def flavorsGradlePath = 'flavors.gradle'
+def browsersGradlePath = 'browsers.gradle'
 if (project.file(flavorsGradlePath).exists()) {
     apply from: flavorsGradlePath
+}
+if (project.file(browsersGradlePath).exists()) {
+    apply from: browsersGradlePath
 }
 
 android {
@@ -139,15 +144,17 @@ dependencies {
     implementation "com.google.android:flexbox:${libVersions.flexbox}"
     implementation "androidx.appcompat:appcompat:${libVersions.appCompat}"
     implementation "androidx.legacy:legacy-support-v4:${libVersions.legacySupport}"
-    implementation "androidx.lifecycle:lifecycle-extensions:${libVersions.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-extensions:${libVersions.lifecycleExt}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${libVersions.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-common-java8:${libVersions.lifecycle}"
     implementation "androidx.constraintlayout:constraintlayout:${libVersions.constraintLayout}"
     implementation "androidx.core:core-ktx:${libVersions.coreKtx}"
 
-    implementation "com.google.firebase:firebase-analytics-ktx:${libVersions.firebase}"
-    implementation "com.google.firebase:firebase-messaging:${libVersions.firebasemessaging}"
-    implementation "com.google.firebase:firebase-crashlytics:${libVersions.crashlytics}"
+    implementation platform("com.google.firebase:firebase-bom:${libVersions.firebaseBom}")
+
+    implementation "com.google.firebase:firebase-analytics-ktx"
+    implementation "com.google.firebase:firebase-messaging-ktx"
+    implementation "com.google.firebase:firebase-crashlytics-ktx"
 
     implementation "androidx.biometric:biometric:${libVersions.biometric}"
 
@@ -177,8 +184,7 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$dagger_gradle_version"
     kapt "com.google.dagger:hilt-android-compiler:$dagger_gradle_version"
 
-    implementation "androidx.hilt:hilt-lifecycle-viewmodel:${libVersions.daggerViewModel}"
-    kapt "androidx.hilt:hilt-compiler:${libVersions.daggerViewModel}"
+    kapt "androidx.hilt:hilt-compiler:${libVersions.hiltCompiler}"
 
     implementation "com.github.bumptech.glide:glide:${libVersions.glide}"
     kapt "com.github.bumptech.glide:compiler:${libVersions.glide}"
@@ -213,6 +219,4 @@ dependencies {
     androidTestImplementation "androidx.room:room-testing:${libVersions.room}"
     androidTestImplementation "androidx.test:runner:${testLibVersions.runner}"
     androidTestImplementation "androidx.test.espresso:espresso-core:${testLibVersions.espresso}"
-
-    apply plugin: 'com.google.gms.google-services'
 }

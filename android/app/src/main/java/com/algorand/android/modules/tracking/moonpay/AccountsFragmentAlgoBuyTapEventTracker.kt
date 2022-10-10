@@ -25,6 +25,6 @@ class AccountsFragmentAlgoBuyTapEventTracker @Inject constructor(
     }
 
     companion object {
-        private const val ACCOUNTS_FRAGMENT_BUY_ALGO_EVENT_KEY = "homescreen_algo_buy_tap"
+        private const val ACCOUNTS_FRAGMENT_BUY_ALGO_EVENT_KEY = "homescr_algo_buy_tap"
     }
 }

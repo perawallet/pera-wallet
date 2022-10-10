@@ -17,6 +17,7 @@ import com.algorand.android.banner.data.cache.BannerLocalCache
 import com.algorand.android.banner.data.mapper.BannerDetailDTOMapper
 import com.algorand.android.banner.domain.model.BannerDetailDTO
 import com.algorand.android.banner.domain.repository.BannerRepository
+import com.algorand.android.models.Result
 import com.algorand.android.network.MobileAlgorandApi
 import com.algorand.android.network.requestWithHipoErrorHandler
 import com.algorand.android.utils.CacheResult
@@ -33,17 +34,17 @@ class BannerRepositoryImpl @Inject constructor(
     private val bannerIdsLocalSource: BannerIdsLocalSource
 ) : BannerRepository {
 
-    override suspend fun cacheBanners(deviceId: String) {
-        requestWithHipoErrorHandler(hipoApiErrorHandler) { mobileAlgorandApi.getDeviceBanners(deviceId) }.use(
-            onSuccess = { bannerListResponseList ->
-                val bannerList = bannerListResponseList.bannerDetailResponseList?.mapNotNull { bannerDetailResponse ->
-                    val bannerDto = bannerDetailDTOMapper
-                        .mapToBannerDetailDTO(bannerDetailResponse) ?: return@mapNotNull null
-                    CacheResult.Success.create(bannerDto)
-                }.orEmpty()
-                if (bannerList.isNotEmpty()) bannerLocalCache.put(bannerList)
+    override suspend fun cacheBanner(bannerDetailDto: BannerDetailDTO) {
+        bannerLocalCache.put(CacheResult.Success.create(bannerDetailDto))
+    }
+
+    override suspend fun getBanners(deviceId: String): Result<List<BannerDetailDTO>> {
+        return requestWithHipoErrorHandler(hipoApiErrorHandler) { mobileAlgorandApi.getDeviceBanners(deviceId) }
+            .map { bannerListResponse ->
+                bannerListResponse.bannerDetailResponseList?.mapNotNull { bannerDetailResponse ->
+                    bannerDetailDTOMapper.mapToBannerDetailDTO(bannerDetailResponse)
+                } ?: emptyList()
             }
-        )
     }
 
     override suspend fun setBannerDismissed(bannerId: Long) {
@@ -66,7 +67,9 @@ class BannerRepositoryImpl @Inject constructor(
         bannerIdsLocalSource.clear()
     }
 
-    override suspend fun getCachedBanners(): Flow<List<BannerDetailDTO>> {
-        return bannerLocalCache.cacheMapFlow.map { it.mapNotNull { it.value.data } }
+    override suspend fun getCachedBanner(): Flow<BannerDetailDTO?> {
+        return bannerLocalCache.cacheMapFlow.map { cacheResultHashMap ->
+            cacheResultHashMap.mapNotNull { it.value.data }.firstOrNull()
+        }
     }
 }

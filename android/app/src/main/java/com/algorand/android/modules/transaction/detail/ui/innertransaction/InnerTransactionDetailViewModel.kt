@@ -12,22 +12,22 @@
 
 package com.algorand.android.modules.transaction.detail.ui.innertransaction
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.modules.transaction.detail.domain.usecase.InnerTransactionDetailPreviewUseCase
 import com.algorand.android.modules.transaction.detail.ui.BaseTransactionDetailViewModel
 import com.algorand.android.utils.getOrThrow
-import kotlinx.coroutines.flow.collect
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 
-class InnerTransactionDetailViewModel @ViewModelInject constructor(
+@HiltViewModel
+class InnerTransactionDetailViewModel @Inject constructor(
     override val baseTransactionDetailPreviewUseCase: InnerTransactionDetailPreviewUseCase,
-    @Assisted savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : BaseTransactionDetailViewModel() {
 
-    val publicKey = savedStateHandle.getOrThrow<String>(PUBLIC_KEY)
+    val accountAddress = savedStateHandle.getOrThrow<String>(ACCOUNT_ADDRESS_KEY)
     val transactionId = savedStateHandle.getOrThrow<String>(TRANSACTION_ID_KEY)
 
     init {
@@ -43,7 +43,7 @@ class InnerTransactionDetailViewModel @ViewModelInject constructor(
     override fun initTransactionDetailPreview() {
         viewModelScope.launch {
             baseTransactionDetailPreviewUseCase.getTransactionDetailPreview(
-                publicKey = publicKey,
+                publicKey = accountAddress,
                 transactions = baseTransactionDetailPreviewUseCase.peekInnerTransactionFromCache()
             ).collect {
                 updateTransactionDetailFlow(it)

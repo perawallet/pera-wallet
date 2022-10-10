@@ -28,6 +28,6 @@ class OnboardingWatchAccountVerifyEventTracker @Inject constructor(
 
     companion object {
         private const val ONBOARDING_WATCH_ACCOUNT_VERIFY_EVENT_KEY =
-            "onboarding_watchaccount_createawatchaccount_verified"
+            "onb_watchacc_create_verified"
     }
 }

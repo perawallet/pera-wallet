@@ -57,12 +57,10 @@
         android:layout_height="wrap_content"
         android:drawablePadding="@dimen/spacing_small"
         android:gravity="center"
-        app:drawableTint="@color/verified_icon_color"
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:drawableStartCompat="@drawable/ic_shield"
         tools:text="MOSAIC" />
 
     <TextView

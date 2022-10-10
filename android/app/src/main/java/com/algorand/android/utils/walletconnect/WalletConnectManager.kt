@@ -81,7 +81,10 @@ class WalletConnectManager @Inject constructor(
 
     val localSessionsFlow: Flow<List<WalletConnectSession>>
         get() = walletConnectRepository.getAllWCSession().map { entityList ->
-            entityList.map { entity -> walletConnectMapper.createWalletConnectSession(entity) }
+            entityList.map { entity ->
+                val accountName = accountCacheManager.getAccountName(entity.connectedAccountPublicKey)
+                walletConnectMapper.createWalletConnectSession(entity, accountName)
+            }
         }
 
     val transaction: WalletConnectTransaction?
@@ -156,7 +159,11 @@ class WalletConnectManager @Inject constructor(
 
     fun connectToExistingSession(session: WalletConnectSession) {
         with(walletConnectClient) {
-            connect(session.id, session.sessionMeta)
+            connect(
+                sessionId = session.id,
+                sessionMeta = session.sessionMeta,
+                fallbackBrowserGroupResponse = session.fallbackBrowserGroupResponse
+            )
         }
     }
 
@@ -312,8 +319,13 @@ class WalletConnectManager @Inject constructor(
     }
 
     private suspend fun reconnectToDisconnectedSession(sessionId: Long) {
-        val disconnectedSessionMeta = walletConnectRepository.getSessionById(sessionId)?.wcSession ?: return
-        walletConnectClient.connect(sessionId, disconnectedSessionMeta)
+        val sessionEntity = walletConnectRepository.getSessionById(sessionId) ?: return
+        val disconnectedSessionMeta = sessionEntity.wcSession
+        walletConnectClient.connect(
+            sessionId = sessionId,
+            sessionMeta = disconnectedSessionMeta,
+            fallbackBrowserGroupResponse = sessionEntity.fallbackBrowserGroupResponse
+        )
     }
 
     private fun startSessionConnectionTimer() {

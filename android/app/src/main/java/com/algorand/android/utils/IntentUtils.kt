@@ -12,6 +12,7 @@
 
 package com.algorand.android.utils
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -80,4 +81,16 @@ fun Fragment.shareFile(file: File, type: String, activityResultLauncher: Activit
     }
 
     return file
+}
+
+fun Context.startActivityWithPackageNameIfPossible(packageName: String): Boolean {
+    try {
+        packageManager.getLaunchIntentForPackage(packageName)?.let {
+            startActivity(it)
+            return true
+        }
+    } catch (activityNotFoundException: ActivityNotFoundException) {
+        recordException(activityNotFoundException)
+    }
+    return false
 }

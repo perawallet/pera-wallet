@@ -17,7 +17,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.core.BaseFragment
@@ -33,6 +32,7 @@ import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.extensions.capitalize
 import com.algorand.android.utils.extensions.changeTextAppearance
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.setTextAndVisibility
 import com.algorand.android.utils.extensions.show
@@ -43,8 +43,6 @@ import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.math.BigDecimal
 import java.math.BigInteger
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AssetTransferPreviewFragment : BaseFragment(R.layout.fragment_transfer_asset_preview) {
@@ -85,12 +83,14 @@ class AssetTransferPreviewFragment : BaseFragment(R.layout.fragment_transfer_ass
     }
 
     private fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            assetTransferPreviewViewModel.assetTransferPreviewFlow.collectLatest(assetTransferPreviewCollector)
-        }
-        viewLifecycleOwner.lifecycleScope.launch {
-            assetTransferPreviewViewModel.sendAlgoResponseFlow.collectLatest(sendAlgoResponseCollector)
-        }
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            assetTransferPreviewViewModel.assetTransferPreviewFlow,
+            assetTransferPreviewCollector
+        )
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            assetTransferPreviewViewModel.sendAlgoResponseFlow,
+            sendAlgoResponseCollector
+        )
     }
 
     private fun onNextButtonClick() {

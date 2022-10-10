@@ -12,7 +12,7 @@
 
 package com.algorand.android.models
 
-import com.algorand.android.modules.sorting.accountsorting.domain.usecase.AccountSortingPreviewUseCase.Companion.NOT_INITIALIZED_ACCOUNT_INDEX
+import com.algorand.android.modules.sorting.accountsorting.util.NOT_INITIALIZED_ACCOUNT_INDEX
 import com.algorand.android.utils.recordException
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer

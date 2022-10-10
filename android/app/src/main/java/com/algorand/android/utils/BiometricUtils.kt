@@ -13,23 +13,26 @@
 package com.algorand.android.utils
 
 import android.content.Context
-import androidx.biometric.BiometricConstants.ERROR_CANCELED
-import androidx.biometric.BiometricConstants.ERROR_HW_NOT_PRESENT
-import androidx.biometric.BiometricConstants.ERROR_HW_UNAVAILABLE
-import androidx.biometric.BiometricConstants.ERROR_LOCKOUT
-import androidx.biometric.BiometricConstants.ERROR_LOCKOUT_PERMANENT
-import androidx.biometric.BiometricConstants.ERROR_NEGATIVE_BUTTON
-import androidx.biometric.BiometricConstants.ERROR_NO_BIOMETRICS
-import androidx.biometric.BiometricConstants.ERROR_TIMEOUT
-import androidx.biometric.BiometricConstants.ERROR_UNABLE_TO_PROCESS
-import androidx.biometric.BiometricConstants.ERROR_USER_CANCELED
 import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK
 import androidx.biometric.BiometricManager.BIOMETRIC_SUCCESS
 import androidx.biometric.BiometricPrompt
+import androidx.biometric.BiometricPrompt.ERROR_CANCELED
+import androidx.biometric.BiometricPrompt.ERROR_HW_NOT_PRESENT
+import androidx.biometric.BiometricPrompt.ERROR_HW_UNAVAILABLE
+import androidx.biometric.BiometricPrompt.ERROR_LOCKOUT
+import androidx.biometric.BiometricPrompt.ERROR_LOCKOUT_PERMANENT
+import androidx.biometric.BiometricPrompt.ERROR_NEGATIVE_BUTTON
+import androidx.biometric.BiometricPrompt.ERROR_NO_BIOMETRICS
+import androidx.biometric.BiometricPrompt.ERROR_TIMEOUT
+import androidx.biometric.BiometricPrompt.ERROR_UNABLE_TO_PROCESS
+import androidx.biometric.BiometricPrompt.ERROR_USER_CANCELED
 import androidx.fragment.app.FragmentActivity
 
+const val BIOMETRIC_AUTH_LEVEL = BIOMETRIC_WEAK
+
 fun Context.isBiometricAvailable(): Boolean {
-    return BiometricManager.from(this).canAuthenticate() == BIOMETRIC_SUCCESS
+    return BiometricManager.from(this).canAuthenticate(BIOMETRIC_AUTH_LEVEL) == BIOMETRIC_SUCCESS
 }
 
 fun FragmentActivity.showBiometricAuthentication(
@@ -44,7 +47,9 @@ fun FragmentActivity.showBiometricAuthentication(
     userCancelledErrorCallback: (() -> Unit)? = null
 
 ) {
-    if (BiometricManager.from(this).canAuthenticate() == BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE) {
+    if (BiometricManager.from(this)
+            .canAuthenticate(BIOMETRIC_AUTH_LEVEL) == BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE
+    ) {
         hardwareErrorCallback?.invoke()
         return
     }
@@ -67,6 +72,9 @@ fun FragmentActivity.showBiometricAuthentication(
                 ERROR_CANCELED, ERROR_USER_CANCELED, ERROR_NEGATIVE_BUTTON -> userCancelledErrorCallback?.invoke()
                 ERROR_LOCKOUT -> lockedOutErrorCallback?.invoke()
                 ERROR_TIMEOUT -> timeOutErrorCallback?.invoke()
+                else -> {
+                    sendErrorLog("Unhandled else case in biometricAuthenticationCallback")
+                }
             }
         }
 

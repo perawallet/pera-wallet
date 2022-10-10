@@ -12,8 +12,7 @@
 
 package com.algorand.android.ui.register.registerintro
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,21 +20,24 @@ import com.algorand.android.models.RegisterIntroPreview
 import com.algorand.android.usecase.RegisterIntroPreviewUseCase
 import com.algorand.android.usecase.RegistrationUseCase
 import com.algorand.android.utils.getOrElse
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class RegisterIntroViewModel @ViewModelInject constructor(
+@HiltViewModel
+class RegisterIntroViewModel @Inject constructor(
     private val registerIntroPreviewUseCase: RegisterIntroPreviewUseCase,
-    @Assisted private val savedStateHandle: SavedStateHandle,
+    private val savedStateHandle: SavedStateHandle,
     private val registrationUseCase: RegistrationUseCase
 ) : ViewModel() {
 
     private val accountAddress: String? = savedStateHandle.getOrElse(ACCOUNT_ADDRESS_KEY, null)
     private val isShowingCloseButton = savedStateHandle.getOrElse(IS_SHOWING_CLOSE_BUTTON_KEY, false)
     private val shouldNavToRegisterWatchAccount = savedStateHandle.getOrElse(
-        SHOULD_NAV_TO_REGISTER_WATCH_ACCOUNT, false
+        SHOULD_NAV_TO_REGISTER_WATCH_ACCOUNT,
+        false
     )
     private val mnemonic: String? = savedStateHandle.getOrElse(MNEMONIC_KEY, null)
 

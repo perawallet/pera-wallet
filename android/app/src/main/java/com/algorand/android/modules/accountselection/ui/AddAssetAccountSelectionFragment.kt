@@ -13,14 +13,13 @@
 package com.algorand.android.modules.accountselection.ui
 
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.algorand.android.R
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.modules.accountselection.ui.model.AddAssetAccountSelectionPreview
 import com.algorand.android.ui.accountselection.BaseAccountSelectionFragment
+import com.algorand.android.utils.extensions.collectOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class AddAssetAccountSelectionFragment : BaseAccountSelectionFragment() {
@@ -43,15 +42,14 @@ class AddAssetAccountSelectionFragment : BaseAccountSelectionFragment() {
         val addAssetAction = addAssetAccountSelectionViewModel.getAddAssetAction(publicKey)
         nav(
             AddAssetAccountSelectionFragmentDirections
-                .actionAddAssetAccountSelectionFragmentToAddAssetActionBottomSheet(addAssetAction)
+                .actionAddAssetAccountSelectionFragmentToAssetAdditionActionNavigation(addAssetAction)
         )
     }
 
     override fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-            addAssetAccountSelectionViewModel.addAssetAccountSelectionPreviewFlow.collect(
-                addAssetAccountSelectionPreviewCollector
-            )
-        }
+        viewLifecycleOwner.collectOnLifecycle(
+            addAssetAccountSelectionViewModel.addAssetAccountSelectionPreviewFlow,
+            addAssetAccountSelectionPreviewCollector
+        )
     }
 }

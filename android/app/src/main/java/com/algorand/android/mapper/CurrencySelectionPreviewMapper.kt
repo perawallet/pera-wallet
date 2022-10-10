@@ -31,7 +31,7 @@ class CurrencySelectionPreviewMapper @Inject constructor(
             isLoading = isLoading,
             isScreenStateViewVisible = isError,
             screenStateViewType = currencySelectionScreenStateViewTypeDecider.decideScreenStateViewType(dataResource),
-            isContentVisible = isError.not() && isLoading.not(),
+            isCurrencyListVisible = isError.not() && isLoading.not(),
             currencyList = (dataResource as? DataResource.Success)?.data
         )
     }

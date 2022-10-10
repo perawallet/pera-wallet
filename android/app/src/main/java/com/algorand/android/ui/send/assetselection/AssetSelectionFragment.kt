@@ -17,7 +17,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.algorand.android.R
 import com.algorand.android.core.TransactionBaseFragment
 import com.algorand.android.databinding.FragmentAssetSelectionBinding
@@ -27,12 +26,12 @@ import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.nft.ui.model.AssetSelectionPreview
 import com.algorand.android.nft.ui.model.RequestOptInConfirmationArgs
 import com.algorand.android.ui.send.assetselection.adapter.SelectSendingAssetAdapter
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
+import com.algorand.android.utils.sendErrorLog
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AssetSelectionFragment : TransactionBaseFragment(R.layout.fragment_asset_selection) {
@@ -73,6 +72,9 @@ class AssetSelectionFragment : TransactionBaseFragment(R.layout.fragment_asset_s
                             .actionAssetSelectionFragmentToAssetTransferPreviewFragment(signedTransactionDetail)
                     )
                 }
+                else -> {
+                    sendErrorLog("Unhandled else case in AssetSelectionFragment.transactionFragmentListener")
+                }
             }
         }
     }
@@ -85,9 +87,10 @@ class AssetSelectionFragment : TransactionBaseFragment(R.layout.fragment_asset_s
     }
 
     private fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            assetSelectionViewModel.assetSelectionPreview.collectLatest(assetSelectionPreviewCollector)
-        }
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            assetSelectionViewModel.assetSelectionPreview,
+            assetSelectionPreviewCollector
+        )
     }
 
     private fun updateUiWithPreview(assetSelectionPreview: AssetSelectionPreview) {

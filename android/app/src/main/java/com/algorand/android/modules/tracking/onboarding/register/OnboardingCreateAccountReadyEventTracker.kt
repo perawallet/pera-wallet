@@ -27,6 +27,6 @@ class OnboardingCreateAccountReadyEventTracker @Inject constructor(
     }
 
     companion object {
-        private const val ONBOARDING_CREATE_ACCOUNT_READY_EVENT_KEY = "onboarding_createaccount_passphrase_begin"
+        private const val ONBOARDING_CREATE_ACCOUNT_READY_EVENT_KEY = "onb_createacc_pass_begin"
     }
 }

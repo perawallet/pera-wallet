@@ -14,6 +14,7 @@ package com.algorand.android
 
 import com.algorand.android.models.Account
 import com.algorand.android.models.AccountDeserializer
+import com.algorand.android.modules.sorting.accountsorting.util.NOT_INITIALIZED_ACCOUNT_INDEX
 import com.algorand.android.utils.AccountIndexMigrationHelper
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
@@ -38,7 +39,7 @@ class AccountIndexMigrationTest {
     @Test
     fun checkMigrationHelperNeedForAccountIndexWhenItsNotAssigned() {
         @Language("JSON") val standardJson =
-            "[\n  {\n    \"secretKey\": [\n      0,\n      0,\n      0,\n      0,\n      3,\n      0,\n      2,\n      0,\n      0,\n      0\n    ],\n    \"publicKey\": \"X2...\",\n    \"accountName\": \"test\" \n,    \"index\": -1  }]"
+            "[\n  {\n    \"secretKey\": [\n      0,\n      0,\n      0,\n      0,\n      3,\n      0,\n      2,\n      0,\n      0,\n      0\n    ],\n    \"publicKey\": \"X2...\",\n    \"accountName\": \"test\" \n,    \"index\": $NOT_INITIALIZED_ACCOUNT_INDEX  }]"
         val listType = object : TypeToken<List<Account>>() {}.type
         val accountList = gson.fromJson<List<Account>>(standardJson, listType)
 

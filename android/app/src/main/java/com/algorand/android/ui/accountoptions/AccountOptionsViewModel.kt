@@ -12,8 +12,7 @@
 
 package com.algorand.android.ui.accountoptions
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
@@ -21,17 +20,21 @@ import com.algorand.android.database.NotificationFilterDao
 import com.algorand.android.models.Account
 import com.algorand.android.models.WarningConfirmation
 import com.algorand.android.repository.NotificationRepository
+import com.algorand.android.usecase.AccountDeletionUseCase
 import com.algorand.android.usecase.AccountOptionsUseCase
 import com.algorand.android.utils.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class AccountOptionsViewModel @ViewModelInject constructor(
+@HiltViewModel
+class AccountOptionsViewModel @Inject constructor(
     private val notificationFilterDao: NotificationFilterDao,
     private val notificationRepository: NotificationRepository,
     private val accountOptionsUseCase: AccountOptionsUseCase,
-    @Assisted savedStateHandle: SavedStateHandle
+    private val accountDeletionUseCase: AccountDeletionUseCase,
+    savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
     private val publicKey by lazy { savedStateHandle.get<String>(ACCOUNT_PUBLIC_KEY).orEmpty() }
@@ -69,11 +72,11 @@ class AccountOptionsViewModel @ViewModelInject constructor(
         return accountOptionsUseCase.getAuthAddress(publicKey)
     }
 
-    fun getAccountAddress(): String? {
-        return accountOptionsUseCase.getAccountAddress(publicKey)
+    fun getAccountAddress(): String {
+        return publicKey
     }
 
-    fun getAccountType(): Account.Type {
+    fun getAccountType(): Account.Type? {
         return accountOptionsUseCase.getAccountType(publicKey)
     }
 
@@ -83,6 +86,12 @@ class AccountOptionsViewModel @ViewModelInject constructor(
 
     fun getRemovingAccountWarningConfirmationModel(): WarningConfirmation {
         return accountOptionsUseCase.getRemovingAccountWarningConfirmationModel(publicKey)
+    }
+
+    fun removeAccount(address: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            accountDeletionUseCase.removeAccount(address)
+        }
     }
 
     companion object {

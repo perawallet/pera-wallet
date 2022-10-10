@@ -26,6 +26,13 @@ fun View.hideKeyboard() {
     imm.hideSoftInputFromWindow(windowToken, 0)
 }
 
+fun View.requestFocusAndShowKeyboard() {
+    post {
+        requestFocus()
+        showKeyboard()
+    }
+}
+
 fun addKeyboardToggleListener(
     rootView: View,
     onKeyboardToggleAction: (shown: Boolean) -> Unit

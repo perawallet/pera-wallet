@@ -18,7 +18,7 @@ import com.algorand.android.nft.ui.model.BaseCollectibleListItem
 
 class NftGifViewHolder(binding: ItemBaseCollectibleListBinding) : BaseCollectibleListViewHolder(binding) {
 
-    override fun bind(item: BaseCollectibleListItem.BaseCollectibleItem) {
+    override fun bind(item: BaseCollectibleListItem) {
         super.bind(item)
         if (item !is BaseCollectibleListItem.BaseCollectibleItem.CollectibleGifItem) return
         // TODO init gif details

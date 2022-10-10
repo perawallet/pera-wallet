@@ -35,19 +35,20 @@ abstract class BaseWalletConnectTransaction : Parcelable {
     open val warningCount: Int? = null
 
     open val authAddress: String? = null
-    open val account: WalletConnectAccount? = null
+    open val fromAccount: WalletConnectAccount? = null
+    open val toAccount: WalletConnectAccount? = null
     open val assetInformation: WalletConnectAssetInformation? = null
 
     fun isRekeyedToAnotherAccount(): Boolean {
-        return isRekeyedToAnotherAccount(authAddress, account?.address)
+        return isRekeyedToAnotherAccount(authAddress, fromAccount?.address)
     }
 
     fun createAccountIconResource(): AccountIconResource? {
-        return account?.accountIconResource
+        return fromAccount?.accountIconResource
     }
 
     fun getAccountImageResource(): Int {
-        return account?.accountIconResource?.iconResId
+        return fromAccount?.accountIconResource?.iconResId
             ?: AccountIconResource.getAccountIconResourceByAccountType(Account.defaultAccountType).iconResId
     }
 
@@ -82,7 +83,11 @@ abstract class BaseWalletConnectTransaction : Parcelable {
     open fun getRekeyToAccountAddress(): WalletConnectAddress? = null
     open fun getCloseToAccountAddress(): WalletConnectAddress? = null
 
-    fun getProvidedAddressAsDisplayAddress(address: String): BaseWalletConnectDisplayedAddress {
-        return BaseWalletConnectDisplayedAddress.create(address, account)
+    fun getFromAddressAsDisplayAddress(address: String): BaseWalletConnectDisplayedAddress {
+        return BaseWalletConnectDisplayedAddress.create(address, fromAccount)
+    }
+
+    fun getToAddressAsDisplayAddress(address: String): BaseWalletConnectDisplayedAddress {
+        return BaseWalletConnectDisplayedAddress.create(address, toAccount)
     }
 }

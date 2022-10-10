@@ -29,11 +29,14 @@ fun RecyclerView.addDivider(@DrawableRes dividerResId: Int) {
 
 fun RecyclerView.addCustomDivider(
     @DrawableRes drawableResId: Int,
-    showLastDivider: Boolean = true,
-    orientation: Int = RecyclerView.VERTICAL
+    showLast: Boolean = true,
+    divider: BaseCustomDividerItemDecoration
 ) {
     AppCompatResources.getDrawable(context, drawableResId)?.let { dividerDrawable ->
-        addItemDecoration(CustomDividerItemDecoration(orientation, dividerDrawable, showLastDivider))
+        addItemDecoration(divider.apply {
+            drawable = dividerDrawable
+            showLastDivider = showLast
+        })
     }
 }
 
@@ -42,9 +45,9 @@ fun RecyclerView.addItemVisibilityChangeListener(
     onItemVisibilityChange: ((isVisible: Boolean) -> Unit)
 ) {
     addOnScrollListener(object : RecyclerView.OnScrollListener() {
-        var isVisible: Boolean? by Delegates.observable(null, { _, oldValue, newValue ->
+        var isVisible: Boolean? by Delegates.observable(null) { _, oldValue, newValue ->
             if (newValue != oldValue && newValue != null) onItemVisibilityChange.invoke(newValue)
-        })
+        }
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)

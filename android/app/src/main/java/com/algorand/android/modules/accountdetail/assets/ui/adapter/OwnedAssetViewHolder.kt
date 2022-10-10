@@ -15,7 +15,7 @@ package com.algorand.android.modules.accountdetail.assets.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
+import androidx.core.view.doOnLayout
 import com.algorand.android.databinding.ItemAccountAssetViewBinding
 import com.algorand.android.models.AccountDetailAssetsItem
 import com.algorand.android.models.BaseViewHolder
@@ -26,14 +26,24 @@ class OwnedAssetViewHolder(
 
     override fun bind(item: AccountDetailAssetsItem) {
         if (item !is AccountDetailAssetsItem.BaseAssetItem.OwnedAssetItem) return
-        with(binding) {
-            with(item) {
-                val formattedShortName = shortName.getName(root.resources)
-                val formattedFullName = name.getName(root.resources)
-                assetNameTextView.setupUI(isVerified, formattedShortName, formattedFullName, id, isAlgo)
-                amountTextView.text = formattedAmount
-                currencyTextView.text = formattedDisplayedCurrencyValue
-                currencyTextView.isVisible = isAmountInDisplayedCurrencyVisible
+        with(item) {
+            with(binding.assetItemView) {
+                setStartIconDrawable(drawable = null, forceShow = true)
+                getStartIconImageView().doOnLayout {
+                    baseAssetDrawableProvider.provideAssetDrawable(
+                        context = context,
+                        assetName = name,
+                        logoUri = prismUrl,
+                        width = it.measuredWidth,
+                        onResourceReady = ::setStartIconDrawable
+                    )
+                }
+                setTitleText(name.getName(resources))
+                setDescriptionText(shortName.getName(resources))
+                setPrimaryValueText(formattedAmount)
+                setSecondaryValueText(if (isAmountInDisplayedCurrencyVisible) formattedDisplayedCurrencyValue else null)
+                setTitleTextColor(verificationTierConfiguration.textColorResId)
+                setTrailingIconOfTitleText(verificationTierConfiguration.drawableResId)
             }
         }
     }

@@ -12,18 +12,46 @@
 
 package com.algorand.android.models
 
+import com.algorand.android.assetsearch.domain.model.VerificationTier
+import com.algorand.android.utils.DEFAULT_ASSET_DECIMAL
 import java.math.BigDecimal
+import java.math.BigInteger
 
-open class BaseAssetDetail(
-    open val assetId: Long,
-    open val fullName: String?,
-    open val shortName: String?,
-    open val isVerified: Boolean = false,
-    open val fractionDecimals: Int?,
-    open val usdValue: BigDecimal?,
-    open val assetCreator: AssetCreator?
-) {
+abstract class BaseAssetDetail {
+
+    abstract val assetId: Long
+    abstract val fullName: String?
+    abstract val shortName: String?
+    abstract val fractionDecimals: Int?
+    abstract val usdValue: BigDecimal?
+    abstract val assetCreator: AssetCreator?
+    abstract val verificationTier: VerificationTier
+    abstract val logoUri: String?
+    abstract val logoSvgUri: String?
+    abstract val explorerUrl: String?
+    abstract val projectUrl: String?
+    abstract val projectName: String?
+    abstract val discordUrl: String?
+    abstract val telegramUrl: String?
+    abstract val twitterUsername: String?
+    abstract val assetDescription: String?
+    abstract val totalSupply: BigDecimal?
+    abstract val maxSupply: BigInteger?
+    abstract val url: String?
+
     fun hasUsdValue(): Boolean {
         return usdValue != null
+    }
+
+    // TODO remove this function after deleting AssetInformation
+    fun convertToAssetInformation(): AssetInformation {
+        return AssetInformation(
+            assetId = assetId,
+            creatorPublicKey = assetCreator?.publicKey,
+            shortName = shortName,
+            fullName = fullName,
+            verificationTier = verificationTier,
+            decimals = fractionDecimals ?: DEFAULT_ASSET_DECIMAL
+        )
     }
 }

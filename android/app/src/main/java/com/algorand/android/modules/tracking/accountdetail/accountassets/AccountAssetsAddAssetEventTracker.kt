@@ -25,6 +25,6 @@ class AccountAssetsAddAssetEventTracker @Inject constructor(
     }
 
     companion object {
-        private const val ACCOUNT_ASSETS_ADD_ASSET_EVENT_KEY = "assetscreen_asset_add"
+        private const val ACCOUNT_ASSETS_ADD_ASSET_EVENT_KEY = "assetscr_asset_add"
     }
 }

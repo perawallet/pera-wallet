@@ -12,18 +12,29 @@
 
 package com.algorand.android.modules.transaction.detail.ui.mapper
 
+import com.algorand.android.assetsearch.domain.model.VerificationTier
 import com.algorand.android.modules.transaction.detail.ui.model.ApplicationCallAssetInformation
+import com.algorand.android.modules.verificationtier.ui.decider.VerificationTierConfigurationDecider
 import com.algorand.android.utils.AssetName
 import javax.inject.Inject
 
-class ApplicationCallAssetInformationMapper @Inject constructor() {
+class ApplicationCallAssetInformationMapper @Inject constructor(
+    private val verificationTierConfigurationDecider: VerificationTierConfigurationDecider
+) {
 
     fun mapToApplicationCallAssetInformation(
         assetFullName: AssetName,
         assetShortName: AssetName,
-        isVerified: Boolean,
-        assetId: Long
+        assetId: Long,
+        verificationTier: VerificationTier
     ): ApplicationCallAssetInformation {
-        return ApplicationCallAssetInformation(assetFullName, assetShortName, isVerified, assetId)
+        return ApplicationCallAssetInformation(
+            assetFullName = assetFullName,
+            assetShortName = assetShortName,
+            assetId = assetId,
+            verificationTierConfiguration = verificationTierConfigurationDecider.decideVerificationTierConfiguration(
+                verificationTier
+            )
+        )
     }
 }

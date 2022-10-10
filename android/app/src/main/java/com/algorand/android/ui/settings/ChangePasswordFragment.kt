@@ -14,21 +14,21 @@ package com.algorand.android.ui.settings
 
 import com.algorand.android.R
 import com.algorand.android.ui.password.BasePasswordFragment
-import com.algorand.android.utils.setNavigationResult
+import com.algorand.android.ui.password.model.PasswordScreenType
+import com.algorand.android.ui.password.model.PasswordScreenType.ReEnterScreenType
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ChangePasswordFragment : BasePasswordFragment() {
 
-    override val initialTitleResId = R.string.enter_your_new_six_digit_pin
-    override val nextTitleResId = R.string.re_enter_your_new_six_digit_pin
+    override val titleResId: Int = R.string.enter_your_new_six_digit_pin
 
-    override fun handleNextNavigation() {
-        setNavigationResult(IS_PASSWORD_CHOSEN_KEY, true)
-        navBack()
-    }
+    override val screenType: PasswordScreenType = ReEnterScreenType(
+        nextScreenTitleResId = R.string.re_enter_your_new_six_digit_pin,
+        navigationResultKey = CHANGE_PASSWORD_RE_ENTER_RESULT_KEY
+    )
 
     companion object {
-        const val IS_PASSWORD_CHOSEN_KEY = "isPasswordChosen"
+        const val CHANGE_PASSWORD_RE_ENTER_RESULT_KEY = "change_password_result"
     }
 }

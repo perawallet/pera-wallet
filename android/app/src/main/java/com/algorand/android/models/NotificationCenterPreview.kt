@@ -18,8 +18,11 @@ import com.algorand.android.utils.Event
 data class NotificationCenterPreview(
     val onGoingCollectibleDetailEvent: Event<Pair<String, Long>>?,
     val onGoingAssetDetailEvent: Event<Pair<String, Long>>?,
+    val onGoingCollectibleProfileEvent: Event<Pair<String, Long>>?,
+    val onGoingAssetProfileEvent: Event<Pair<String, Long>>?,
     val onHistoryNotAvailableEvent: Event<String>?,
     val onTransactionReceivedEvent: Event<Pair<String, Long>>?,
     val onTransactionSentEvent: Event<Pair<String, Long>>?,
-    val onAssetSupportRequestEvent: Event<AssetAction>?
+    val onAssetSupportRequestEvent: Event<Pair<String, Long>>?,
+    val errorMessageResId: Event<Int>?
 )

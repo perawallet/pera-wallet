@@ -26,10 +26,12 @@ class AccountDetailPagerAdapter(
     address: String
 ) : FragmentStateAdapter(fragment) {
 
+    // TODO: 9.08.2022 Since all fragment instance references are kept inside the list, they may cause memory leak
+    // TODO: 9.08.2022 Since this issue is not observed through Profiler or LeakCanary, I will leave this to investigate
     private val pagerItemList = listOf(
         AccountDetailPagerAdapterItem(
             fragmentInstance = AccountAssetsFragment.newInstance(address),
-            titleResId = R.string.assets
+            titleResId = R.string.overview
         ),
         AccountDetailPagerAdapterItem(
             fragmentInstance = AccountCollectiblesFragment.newInstance(address),

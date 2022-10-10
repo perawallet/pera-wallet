@@ -15,7 +15,6 @@ package com.algorand.android.utils
 import android.content.Intent
 import androidx.navigation.NavController
 import com.algorand.android.HomeNavigationDirections
-import com.algorand.android.modules.accounts.ui.AccountsFragmentDirections
 import com.algorand.android.models.Account
 import com.algorand.android.models.AssetAction
 import com.algorand.android.models.AssetInformation
@@ -23,6 +22,7 @@ import com.algorand.android.models.AssetTransaction
 import com.algorand.android.models.DecodedQrCode
 import com.algorand.android.models.NotificationType
 import com.algorand.android.models.User
+import com.algorand.android.modules.accounts.ui.AccountsFragmentDirections
 import com.algorand.android.modules.dapp.moonpay.domain.model.MoonpayTransactionStatus
 
 const val SELECTED_ACCOUNT_KEY = "selectedAccountKey"
@@ -41,7 +41,7 @@ private fun NavController.handleSelectedAssetNavigation(
     val selectedAccountCacheData = accountCacheManager.getCacheData(selectedAccountKey)
     if (selectedAccountCacheData != null) {
         navigateSafe(
-            AccountsFragmentDirections.actionAccountsFragmentToAssetDetailFragment(
+            AccountsFragmentDirections.actionAccountsFragmentToAssetProfileNavigation(
                 selectedAssetId, selectedAccountCacheData.account.address
             )
         )

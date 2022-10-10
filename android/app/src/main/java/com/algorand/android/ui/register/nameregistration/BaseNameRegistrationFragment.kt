@@ -14,27 +14,31 @@ package com.algorand.android.ui.register.nameregistration
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import com.algorand.android.MainViewModel
+import androidx.lifecycle.lifecycleScope
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentNameRegistrationBinding
 import com.algorand.android.models.AccountCreation
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.models.ui.NameRegistrationPreview
 import com.algorand.android.utils.KeyboardToggleListener
 import com.algorand.android.utils.addKeyboardToggleListener
 import com.algorand.android.utils.hideKeyboard
 import com.algorand.android.utils.removeKeyboardToggleListener
+import com.algorand.android.utils.requestFocusAndShowKeyboard
 import com.algorand.android.utils.showAlertDialog
-import com.algorand.android.utils.showKeyboard
 import com.algorand.android.utils.toShortenedAddress
 import com.algorand.android.utils.viewbinding.viewBinding
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 abstract class BaseNameRegistrationFragment : DaggerBaseFragment(R.layout.fragment_name_registration) {
 
-    private val mainViewModel: MainViewModel by activityViewModels()
+    abstract val accountCreation: AccountCreation?
+    abstract fun navToNextFragment()
+
     private val nameRegistrationViewModel: NameRegistrationViewModel by viewModels()
 
     private val binding by viewBinding(FragmentNameRegistrationBinding::bind)
@@ -46,8 +50,6 @@ abstract class BaseNameRegistrationFragment : DaggerBaseFragment(R.layout.fragme
 
     private var keyboardToggleListener: KeyboardToggleListener? = null
 
-    override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
-
     private val onKeyboardToggleAction: (shown: Boolean) -> Unit = { keyboardShown ->
         if (keyboardShown) {
             with(binding) {
@@ -56,25 +58,32 @@ abstract class BaseNameRegistrationFragment : DaggerBaseFragment(R.layout.fragme
         }
     }
 
-    abstract val accountCreation: AccountCreation?
-    abstract fun navToNextFragment()
+    private val nameRegistrationPreviewCollector: suspend (NameRegistrationPreview) -> Unit = { preview ->
+        updateUiWithNameRegistrationPreview(preview)
+    }
+
+    override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUi()
+        initObservers()
     }
 
     private fun initUi() {
         with(binding) {
             nextButton.setOnClickListener { onNextButtonClick() }
             nameInputLayout.apply {
-                text = nameRegistrationViewModel.accountPublicKey.toShortenedAddress()
+                text = nameRegistrationViewModel.accountAddress.toShortenedAddress()
                 addTrailingIcon(drawableRes = R.drawable.ic_close, onIconClick = { text = "" })
-                post {
-                    requestFocus()
-                    showKeyboard()
-                }
+                requestFocusAndShowKeyboard()
             }
+        }
+    }
+
+    private fun initObservers() {
+        lifecycleScope.launch {
+            nameRegistrationViewModel.nameRegistrationPreviewFlow.collectLatest(nameRegistrationPreviewCollector)
         }
     }
 
@@ -90,17 +99,24 @@ abstract class BaseNameRegistrationFragment : DaggerBaseFragment(R.layout.fragme
     }
 
     private fun onNextButtonClick() {
-        binding.nextButton.setOnClickListener(null)
-        accountCreation?.tempAccount?.let { registeredAccount ->
-            if (nameRegistrationViewModel.isThereAnyAccountWithThisPublicKey(registeredAccount.address).not()) {
-                registeredAccount.name = binding.nameInputLayout.text.ifBlank {
-                    registeredAccount.address.toShortenedAddress()
-                }
-                mainViewModel.addAccount(registeredAccount, accountCreation?.creationType)
-                navToNextFragment()
-            } else {
+        if (nameRegistrationViewModel.isAccountLimitExceed()) {
+            showMaxAccountLimitExceededError()
+            return
+        }
+        val inputName = binding.nameInputLayout.text
+        nameRegistrationViewModel.updatePreviewWithAccountCreation(accountCreation, inputName)
+    }
+
+    private fun updateUiWithNameRegistrationPreview(preview: NameRegistrationPreview) {
+        with(preview) {
+            getAccountAlreadyExistsEvent()?.consume()?.let {
                 context?.showAlertDialog(getString(R.string.error), getString(R.string.this_account_already_exists))
             }
+            getCreateAccountEvent()?.consume()
+                ?.let { nameRegistrationViewModel.addNewAccount(it.tempAccount, it.creationType) }
+            getUpdateWatchAccountEvent()?.consume()
+                ?.let { nameRegistrationViewModel.updateWatchAccount(it) }
+            handleNextNavigationEvent?.consume()?.let { navToNextFragment() }
         }
     }
 }

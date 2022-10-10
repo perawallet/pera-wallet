@@ -21,5 +21,6 @@ data class AssetHolding(
     val assetId: Long,
     val amount: BigInteger,
     val isDeleted: Boolean,
+    val optedInAtRound: Long?,
     var status: AssetStatus = AssetStatus.OWNED_BY_ACCOUNT
 ) : Parcelable

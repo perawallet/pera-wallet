@@ -17,18 +17,18 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import androidx.core.widget.NestedScrollView
 
-class NonScrollableNestedScrollView @JvmOverloads constructor(
+class NonScrollableNestedScrollView constructor(
     context: Context,
     attributeSet: AttributeSet?
 ) : NestedScrollView(context, attributeSet) {
 
     var isScrollEnable: Boolean = true
 
-    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
+    override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
         return if (isScrollEnable) super.onInterceptTouchEvent(ev) else false
     }
 
-    override fun onTouchEvent(ev: MotionEvent?): Boolean {
+    override fun onTouchEvent(ev: MotionEvent): Boolean {
         return if (isScrollEnable) super.onTouchEvent(ev) else false
     }
 }

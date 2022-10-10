@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/assetDetailNavigation"
+    app:startDestination="@id/assetDetailFragment">
+
+    <include app:graph="@navigation/send_algo_navigation" />
+
+    <include app:graph="@navigation/moonpay_navigation" />
+
+    <include app:graph="@navigation/account_options_navigation" />
+
+    <include app:graph="@navigation/show_qr_navigation" />
+
+    <include app:graph="@navigation/asset_total_supply_navigation" />
+
+    <include app:graph="@navigation/date_filter_navigation" />
+
+    <include app:graph="@navigation/transaction_detail_navigation" />
+
+    <include app:graph="@navigation/single_button_bottom_sheet_navigation" />
+
+    <fragment
+        android:id="@+id/assetDetailFragment"
+        android:name="com.algorand.android.modules.assets.profile.detail.ui.AssetDetailFragment"
+        android:label="AssetDetailFragment"
+        tools:layout="@layout/fragment_asset_detail">
+        <argument
+            android:name="assetId"
+            app:argType="long" />
+        <argument
+            android:name="accountAddress"
+            app:argType="string" />
+        <argument
+            android:name="isQuickActionButtonsVisible"
+            android:defaultValue="true"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_assetDetailFragment_to_moonpayNavigation"
+            app:destination="@id/moonpayNavigation">
+            <argument
+                android:name="walletAddress"
+                app:argType="string" />
+        </action>
+        <action
+            android:id="@+id/action_assetDetailFragment_to_sendAlgoNavigation"
+            app:destination="@id/sendAlgoNavigation">
+            <argument
+                android:name="assetTransaction"
+                app:argType="com.algorand.android.models.AssetTransaction"
+                app:nullable="true" />
+        </action>
+        <action
+            android:id="@+id/action_assetDetailFragment_to_accountOptionsNavigation"
+            app:destination="@id/accountOptionsNavigation">
+            <argument
+                android:name="publicKey"
+                app:argType="string" />
+        </action>
+        <action
+            android:id="@+id/action_assetDetailFragment_to_showQrNavigation"
+            app:destination="@id/showQrNavigation">
+            <argument
+                android:name="title"
+                app:argType="string" />
+            <argument
+                android:name="qrText"
+                app:argType="string" />
+        </action>
+        <action
+            android:id="@+id/action_assetDetailFragment_to_homeNavigation"
+            app:destination="@id/homeNavigation"
+            app:popUpTo="@id/assetDetailNavigation"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_assetDetailFragment_to_dateFilterNavigation"
+            app:destination="@id/dateFilterNavigation">
+            <argument
+                android:name="selectedDateFilter"
+                app:argType="com.algorand.android.models.DateFilter" />
+        </action>
+        <action
+            android:id="@+id/action_assetDetailFragment_to_transactionDetailNavigation"
+            app:destination="@id/transactionDetailNavigation">
+            <argument
+                android:name="transactionId"
+                app:argType="string" />
+            <argument
+                android:name="accountAddress"
+                app:argType="string" />
+            <argument
+                android:name="entryPoint"
+                app:argType="com.algorand.android.modules.transaction.detail.ui.model.TransactionDetailEntryPoint" />
+        </action>
+        <action
+            android:id="@+id/action_assetDetailFragment_to_assetTotalSupplyNavigation"
+            app:destination="@id/assetTotalSupplyNavigation" />
+        <action
+            android:id="@+id/action_assetDetailFragment_to_singleButtonBottomSheetNavigation"
+            app:destination="@id/singleButtonBottomSheetNavigation">
+            <argument
+                android:name="titleAnnotatedString"
+                app:argType="com.algorand.android.models.AnnotatedString" />
+            <argument
+                android:name="descriptionAnnotatedString"
+                android:defaultValue="@null"
+                app:argType="com.algorand.android.models.AnnotatedString"
+                app:nullable="true" />
+            <argument
+                android:name="buttonStringResId"
+                android:defaultValue="@string/close"
+                app:argType="reference" />
+            <argument
+                android:name="drawableResId"
+                android:defaultValue="0"
+                app:argType="reference" />
+            <argument
+                android:name="drawableTintResId"
+                android:defaultValue="0"
+                app:argType="reference" />
+            <argument
+                android:name="shouldDescriptionHasLinkMovementMethod"
+                android:defaultValue="false"
+                app:argType="boolean" />
+        </action>
+    </fragment>
+
+</navigation>

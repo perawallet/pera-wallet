@@ -15,14 +15,5 @@ package com.algorand.android.nft.ui.nfsdetail
 import android.view.View
 import com.algorand.android.models.BaseViewHolder
 import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem
-import com.algorand.android.utils.PrismUrlBuilder
 
-abstract class BaseCollectibleMediaViewHolder(rootView: View) : BaseViewHolder<BaseCollectibleMediaItem>(rootView) {
-
-    protected fun createPrismPreviewImageUrl(rawUrl: String?, width: Int): String {
-        return PrismUrlBuilder.create(rawUrl.orEmpty())
-            .addWidth(width)
-            .addQuality(PrismUrlBuilder.DEFAULT_IMAGE_QUALITY)
-            .build()
-    }
-}
+abstract class BaseCollectibleMediaViewHolder(rootView: View) : BaseViewHolder<BaseCollectibleMediaItem>(rootView)

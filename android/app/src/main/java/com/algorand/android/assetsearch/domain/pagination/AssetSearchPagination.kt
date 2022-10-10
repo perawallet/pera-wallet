@@ -13,15 +13,14 @@
 package com.algorand.android.assetsearch.domain.pagination
 
 import androidx.paging.PagingData
-import com.algorand.android.assetsearch.domain.model.AssetDetailDTO
+import com.algorand.android.assetsearch.domain.model.AssetSearchDTO
 import com.algorand.android.assetsearch.domain.model.AssetSearchQuery
 import com.algorand.android.assetsearch.domain.repository.AssetSearchRepository
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
@@ -29,7 +28,7 @@ import kotlinx.coroutines.flow.onEach
 
 class AssetSearchPagination @Inject constructor() {
 
-    private val queryChannel = ConflatedBroadcastChannel<AssetSearchQuery>()
+    private val querySharedFlow = MutableSharedFlow<AssetSearchQuery>()
     private lateinit var assetSearchPager: AssetSearchPager
 
     fun initPagination(
@@ -38,19 +37,18 @@ class AssetSearchPagination @Inject constructor() {
         repository: AssetSearchRepository,
         defaultQuery: AssetSearchQuery,
         queryDebounce: Long = DEFAULT_QUERY_DEBOUNCE
-    ): Flow<PagingData<AssetDetailDTO>> {
+    ): Flow<PagingData<AssetSearchDTO>> {
         assetSearchPager = assetSearchPagerBuilder.build(repository, defaultQuery)
-        queryChannel
-            .asFlow()
+        querySharedFlow
             .debounce(queryDebounce)
             .onEach { assetSearchPager.updateQuery(it) }
             .flowOn(Dispatchers.Default)
             .launchIn(scope)
-        return assetSearchPager.toFlow()
+        return assetSearchPager.toFlow(scope)
     }
 
-    fun searchAsset(query: AssetSearchQuery) {
-        queryChannel.offer(query)
+    suspend fun searchAsset(query: AssetSearchQuery) {
+        querySharedFlow.emit(query)
     }
 
     fun invalidateDataSource() {

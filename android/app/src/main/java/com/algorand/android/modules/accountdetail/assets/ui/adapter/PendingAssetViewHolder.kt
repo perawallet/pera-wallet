@@ -14,32 +14,33 @@ package com.algorand.android.modules.accountdetail.assets.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.algorand.android.databinding.ItemAccountPendingAssetViewBinding
+import com.algorand.android.R
+import com.algorand.android.databinding.ItemAccountAssetViewBinding
 import com.algorand.android.models.AccountDetailAssetsItem
 import com.algorand.android.models.BaseViewHolder
 
 class PendingAssetViewHolder(
-    private val binding: ItemAccountPendingAssetViewBinding
+    private val binding: ItemAccountAssetViewBinding
 ) : BaseViewHolder<AccountDetailAssetsItem>(binding.root) {
 
     override fun bind(item: AccountDetailAssetsItem) {
         if (item !is AccountDetailAssetsItem.BaseAssetItem.BasePendingAssetItem) return
-        with(binding) {
-            with(item) {
-                val formattedShortName = shortName.getName(root.resources)
-                val formattedFullName = name.getName(root.resources)
-                actionDescriptionTextView.setText(actionDescriptionResId)
-                assetNameTextView.apply {
-                    setupUI(isVerified, formattedShortName, formattedFullName, item.id, isAlgo)
-                    showProgressBar()
-                }
+        with(item) {
+            with(binding.assetItemView) {
+                setStartIconResource(R.drawable.bg_asset_avatar_border)
+                setStartIconProgressBarVisibility(isVisible = true)
+                setTitleText(name.getName(resources))
+                setDescriptionText(shortName.getName(resources))
+                setPrimaryValueText(resources.getString(item.actionDescriptionResId))
+                setTitleTextColor(verificationTierConfiguration.textColorResId)
+                setTrailingIconOfTitleText(verificationTierConfiguration.drawableResId)
             }
         }
     }
 
     companion object {
         fun create(parent: ViewGroup): PendingAssetViewHolder {
-            val binding = ItemAccountPendingAssetViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            val binding = ItemAccountAssetViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             return PendingAssetViewHolder(binding)
         }
     }

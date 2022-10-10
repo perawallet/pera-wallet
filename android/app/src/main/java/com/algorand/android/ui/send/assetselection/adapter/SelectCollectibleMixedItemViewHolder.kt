@@ -13,37 +13,19 @@
 package com.algorand.android.ui.send.assetselection.adapter
 
 import android.view.ViewGroup
-import androidx.core.view.doOnLayout
-import com.algorand.android.customviews.collectibleimageview.CollectibleImageView
 import com.algorand.android.databinding.ItemSelectCollectibleBinding
-import com.algorand.android.models.BaseSelectAssetItem
-import com.algorand.android.utils.loadImage
 
 class SelectCollectibleMixedItemViewHolder(
-    binding: ItemSelectCollectibleBinding
-) : BaseSelectCollectibleItemViewHolder(binding) {
-
-    override fun bindImage(
-        collectibleImageView: CollectibleImageView,
-        item: BaseSelectAssetItem.BaseSelectCollectibleItem
-    ) {
-        super.bindImage(collectibleImageView, item)
-        if (item is BaseSelectAssetItem.BaseSelectCollectibleItem.SelectMixedCollectibleItem) {
-            with(collectibleImageView) {
-                doOnLayout {
-                    context.loadImage(
-                        createPrismUrl(item.thumbnailPrismUrl.orEmpty(), measuredWidth),
-                        onResourceReady = { showImage(it) },
-                        onLoadFailed = { showText(item.avatarDisplayText.getAsAvatarNameOrDefault(resources)) }
-                    )
-                }
-            }
-        }
-    }
+    binding: ItemSelectCollectibleBinding,
+    listener: SelectCollectibleItemListener
+) : BaseSelectCollectibleItemViewHolder(binding, listener) {
 
     companion object : SelectCollectibleItemViewHolderCreator {
-        override fun create(parent: ViewGroup): SelectCollectibleMixedItemViewHolder {
-            return SelectCollectibleMixedItemViewHolder(createItemSelectCollectibleBinding(parent))
+        override fun create(
+            parent: ViewGroup,
+            listener: SelectCollectibleItemListener
+        ): SelectCollectibleMixedItemViewHolder {
+            return SelectCollectibleMixedItemViewHolder(createItemSelectCollectibleBinding(parent), listener)
         }
     }
 }

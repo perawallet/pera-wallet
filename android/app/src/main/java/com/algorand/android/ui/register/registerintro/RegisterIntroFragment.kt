@@ -5,7 +5,6 @@ import android.text.method.LinkMovementMethod
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.algorand.android.LoginNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
@@ -16,15 +15,14 @@ import com.algorand.android.models.RegisterIntroPreview
 import com.algorand.android.models.StatusBarConfiguration
 import com.algorand.android.models.TextButton
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.getCustomClickableSpan
 import com.algorand.android.utils.getXmlStyledString
-import com.algorand.android.utils.openPrivacyPolicyUrl
-import com.algorand.android.utils.openTermsAndServicesUrl
+import com.algorand.android.utils.browser.openPrivacyPolicyUrl
+import com.algorand.android.utils.browser.openTermsAndServicesUrl
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.launch
 
 // TODO: 16.02.2022 login_navigation graph should be separated into multiple graphs
 @AndroidEntryPoint
@@ -81,9 +79,10 @@ class RegisterIntroFragment : DaggerBaseFragment(R.layout.fragment_register_type
     }
 
     fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            registerIntroViewModel.registerIntroPreviewFlow.filterNotNull().collectLatest(registerIntroPreviewCollector)
-        }
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            registerIntroViewModel.registerIntroPreviewFlow.filterNotNull(),
+            registerIntroPreviewCollector
+        )
     }
 
     private fun navToAddAccountTypeSelectionFragment() {

@@ -16,7 +16,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentWalletConnectSessionsBinding
@@ -24,10 +23,14 @@ import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.IconButton
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.models.WalletConnectSession
+import com.algorand.android.models.WarningConfirmation
+import com.algorand.android.ui.common.warningconfirmation.WarningConfirmationBottomSheet
+import com.algorand.android.utils.extensions.collectOnLifecycle
+import com.algorand.android.utils.startSavedStateListener
+import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import com.algorand.android.utils.walletconnect.WalletConnectViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class WalletConnectSessionsFragment : DaggerBaseFragment(R.layout.fragment_wallet_connect_sessions) {
@@ -58,19 +61,22 @@ class WalletConnectSessionsFragment : DaggerBaseFragment(R.layout.fragment_walle
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initDialogSavedStateListener()
         initObserver()
         initUi()
     }
 
     private fun initObserver() {
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            walletConnectViewModel.localSessionsFlow.collect(::onGetLocalSessionsSuccess)
-        }
+        viewLifecycleOwner.collectOnLifecycle(
+            walletConnectViewModel.localSessionsFlow,
+            ::onGetLocalSessionsSuccess
+        )
     }
 
     private fun initUi() {
         with(binding) {
             scanQrButton.setOnClickListener { onScanQrClick() }
+            disconnectAllSessionsButton.setOnClickListener { onDisconnectAllSessionsClick() }
             sessionRecyclerView.adapter = walletConnectSessionAdapter
             initAddMoreSessionsButton()
         }
@@ -79,6 +85,7 @@ class WalletConnectSessionsFragment : DaggerBaseFragment(R.layout.fragment_walle
     private fun onGetLocalSessionsSuccess(wcSessions: List<WalletConnectSession>) {
         walletConnectSessionAdapter.submitList(wcSessions)
         binding.emptyStateGroup.isVisible = wcSessions.isEmpty()
+        binding.disconnectAllSessionsButton.isVisible = wcSessions.isNotEmpty()
     }
 
     private fun onScanQrClick() {
@@ -90,5 +97,30 @@ class WalletConnectSessionsFragment : DaggerBaseFragment(R.layout.fragment_walle
 
     private fun initAddMoreSessionsButton() {
         getAppToolbar()?.addButtonToEnd(IconButton(R.drawable.ic_qr_scan, onClick = ::onScanQrClick))
+    }
+
+    private fun onDisconnectAllSessionsClick() {
+        val warningConfirmation = WarningConfirmation(
+            titleRes = R.string.disconnect_all_sessions,
+            descriptionRes = R.string.would_disconnect_all_sessions,
+            drawableRes = R.drawable.ic_trash,
+            positiveButtonTextRes = R.string.disconnect,
+            negativeButtonTextRes = R.string.cancel
+        )
+        nav(
+            WalletConnectSessionsFragmentDirections.actionWalletConnectSessionsFragmentToWarningConfirmationNavigation(
+                warningConfirmation
+            )
+        )
+    }
+
+    private fun initDialogSavedStateListener() {
+        startSavedStateListener(R.id.walletConnectSessionsFragment) {
+            useSavedStateValue<Boolean>(WarningConfirmationBottomSheet.WARNING_CONFIRMATION_KEY) { isConfirmed ->
+                if (isConfirmed) {
+                    walletConnectViewModel.killAllWalletConnectSessions()
+                }
+            }
+        }
     }
 }

@@ -90,7 +90,6 @@
     <string name="you_are_about_to_receive">Stai per ricevere un attivo!</string>
     <string name="min_transaction_error">Errore transazione minima!</string>
     <string name="you_need_at_least">Occorrono  almeno <annotation replacement="min_balance"> </annotation> Algo per aggiungere questo attivo</string>
-    <string name="your_accounts_do_not">I tuoi conti non contengono questo attivo</string>
     <string name="please_add_this">Aggiungi questo attivo e riprova.</string>
     <string name="key_not_valid">Chiave non valida, assicurati di avere la chiave giusta.</string>
     <string name="scanned_qr_is_not_valid">Il QR scansionato non è valido.</string>
@@ -493,7 +492,7 @@
     <string name="welcome_to_pera">Benvenuto in \n Pera Wallet</string>
     <string name="start_using_pera">Iniziare a usare Pera Wallet</string>
     <string name="is_your_ledger_paired">Il tuo Ledger è associato a questo dispositivo?\n In caso contrario, segui questi passaggi:</string>
-    <string name="you_are_about_to_delete">Stai per cancellare tutti i dati nel wallet, compresi i tuoi conti memorizzati. Assicurati di avere le passphrase dei tuoi conti memorizzati altrove prima di confermare. Altrimenti non sarai in grado di ripristinare i tuoi conti. Sei sicuro di voler continuare?</string>
+    <string name="you_are_about_to_delete">Stai per cancellare tutti i dati nel wallet, compresi i tuoi conti memorizzati. Assicurati di avere le passphrase dei tuoi conti memorizzati altrove prima di confermare. Altrimenti non sarai in grado di ripristinare i tuoi conti.\n\nSei sicuro di voler continuare?</string>
     <string name="your_data_has_been">I tuoi dati sono stati cancellati correttamente</string>
     <string name="you_are_connected">Sei connesso a <annotation replacement="peer_name"> peerNamePlaceholder</annotation></string>
     <string name="please_return_to">Torna a <annotation replacement="peer_name">peerNamePlaceholder</annotation> per continuare e completare l\'operazione. Puoi trovare tutte le Sessioni collegate nella pagina Impostazioni dedicata.</string>
@@ -610,8 +609,6 @@
     <string name="your_nft_transfer_has_failed">Il tuo trasferimento NFT non è riuscito!</string>
     <string name="please_try_again">Riprova.</string>
     <string name="opt_out">Disattivato  (Opt Out)</string>
-    <string name="opt_out_from">Disattivato (opt out) da \"%1$s\"</string>
-    <string name="you_are_about_to_opt_out">Stai per rimuovere (opt-out) questo NFT con %1$s. Non potrai effettuare transazioni con questo attivo fino a quando non lo riattivi (opt-in).</string>
     <string name="nft_successfully_opted_out">%1$s NFT è stato disattivato correttamente</string>
     <string name="opted_in_to">Attivato (opt-in) in</string>
     <string name="show_on">Mostra su</string>
@@ -623,7 +620,6 @@
     <string name="filter">Filtro</string>
     <string name="show_filtered_nfts_formatted">Mostra NFT filtrati (%1$d)</string>
     <string name="search_your_nfts">Cerca i tuoi NFT</string>
-    <string name="enter_your_old">Inserisci il vecchio PIN a sei cifre</string>
     <string name="ledger_info_power_first_paragraph">
     <annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">Per l\'utilizzo generale della funzione Bluetooth del tuo Ledger, fai riferimento alla <annotation type="bold"> <annotation type="color"> Guida ufficiale di Ledger alla connessione Bluetooth. </annotation> </annotation> </annotation>
   </string>
@@ -638,10 +634,7 @@
     <string name="congratulations_your_watch_account_has">Congratulazioni, il tuo conto Watch è stato aggiunto con successo.</string>
     <string name="passphrase_verified">Passphrase verificata</string>
     <string name="keep_this_recovery">Conserva questa passphrase di ripristino in un luogo sicuro accessibile solo a te. Non perdere questa passphrase di ripristino.</string>
-    <string name="search_your_assets">Cerca i tuoi attivi</string>
     <string name="search">Cerca</string>
-    <string name="wrong_pin">Pin sbagliato</string>
-    <string name="pin_does_not">Il pin non corrisponde al pin precedente</string>
     <string name="no_transactions">Nessuna transazione</string>
     <string name="there_are_no">Non ci sono transazioni da visualizzare per il periodo selezionato</string>
     <string name="filter_by_date">Filtra per data</string>
@@ -668,7 +661,6 @@
     <string name="algo_wallet">Algo Wallet</string>
     <string name="address_copied_to_clipboard">Indirizzo copiato negli Appunti</string>
     <string name="main_currency">Valuta principale</string>
-    <string name="your_main_currency_is">La tua valuta principale è <annotation font="dmsans_regular"> <annotation type="primaryCurrencyColor"> <annotation type="bold"> <annotation replacement="primaryCurrencyId"> primaryCurrencyPlaceholder </annotation> </annotation> </annotation> </annotation> e la valuta secondaria è <annotation font="dmsans_regular"> <annotation type="secondaryCurrencyColor"> <annotation type="bold"> <annotation replacement="secondaryCurrencyId"> secondaryCurrencyPlaceholder </annotation> </annotation> </annotation> </annotation></string>
     <string name="the_scanned_qr_is_not">Il QR scansionato non è un indirizzo pubblico Algorand valido. Per altri tipi di QR (come le sessioni WalletConnect), usa il pulsante di scansione QR sulla homepage.</string>
     <string name="buy_crypto_with_credit">Acquista criptovalute con carta di credito o bonifici bancari</string>
     <string name="algo_or_any_asa">Algo o qualsiasi ASA su un altro conto</string>

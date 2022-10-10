@@ -22,7 +22,9 @@ import com.algorand.android.databinding.BottomSheetAccountQuickActionsBinding
 import com.algorand.android.models.AssetTransaction
 import com.algorand.android.utils.viewbinding.viewBinding
 
-class AccountQuickActionsBottomSheet : BaseBottomSheet(R.layout.bottom_sheet_account_quick_actions) {
+class AccountQuickActionsBottomSheet : BaseBottomSheet(
+    layoutResId = R.layout.bottom_sheet_account_quick_actions
+) {
     private val args by navArgs<AccountQuickActionsBottomSheetArgs>()
 
     private val binding by viewBinding(BottomSheetAccountQuickActionsBinding::bind)
@@ -36,7 +38,7 @@ class AccountQuickActionsBottomSheet : BaseBottomSheet(R.layout.bottom_sheet_acc
         with(binding) {
             buyAlgoButton.setOnClickListener { navToMoonpayNavigation() }
             sendButton.setOnClickListener { navToGlobalSendAlgoNavigation() }
-            receiveButton.setOnClickListener { navToShowQrBottomSheet() }
+            receiveButton.setOnClickListener { navToShowQrFragment() }
             addNewAssetButton.setOnClickListener { navToAddAssetFragment() }
             moreButton.setOnClickListener { navToAccountOptionsBottomSheet() }
         }
@@ -58,9 +60,9 @@ class AccountQuickActionsBottomSheet : BaseBottomSheet(R.layout.bottom_sheet_acc
         )
     }
 
-    private fun navToShowQrBottomSheet() {
+    private fun navToShowQrFragment() {
         nav(
-            AccountQuickActionsBottomSheetDirections.actionAccountQuickActionsBottomSheetToShowQrBottomSheet(
+            HomeNavigationDirections.actionGlobalShowQrNavigation(
                 title = getString(R.string.qr_code),
                 qrText = args.publicKey
             )
@@ -69,16 +71,16 @@ class AccountQuickActionsBottomSheet : BaseBottomSheet(R.layout.bottom_sheet_acc
 
     private fun navToAddAssetFragment() {
         nav(
-            AccountQuickActionsBottomSheetDirections.actionAccountQuickActionsBottomSheetToAddAssetFragment(
-                args.publicKey
+            AccountQuickActionsBottomSheetDirections.actionAccountQuickActionsBottomSheetToAssetAdditionNavigation(
+                accountAddress = args.publicKey
             )
         )
     }
 
     private fun navToAccountOptionsBottomSheet() {
         nav(
-            AccountQuickActionsBottomSheetDirections.actionAccountQuickActionsBottomSheetToAccountOptionsBottomSheet(
-                args.publicKey
+            AccountQuickActionsBottomSheetDirections.actionAccountQuickActionsBottomSheetToAccountOptionsNavigation(
+                publicKey = args.publicKey
             )
         )
     }

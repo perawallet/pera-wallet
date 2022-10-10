@@ -13,18 +13,33 @@
 
 package com.algorand.android.mapper
 
+import com.algorand.android.decider.AssetDrawableProviderDecider
 import com.algorand.android.models.BaseAccountAssetData
 import com.algorand.android.models.LedgerInformationListItem
+import com.algorand.android.modules.verificationtier.ui.decider.VerificationTierConfigurationDecider
+import com.algorand.android.utils.AssetName
 import javax.inject.Inject
 
-class LedgerInformationAssetItemMapper @Inject constructor() {
+class LedgerInformationAssetItemMapper @Inject constructor(
+    private val verificationTierConfigurationDecider: VerificationTierConfigurationDecider,
+    private val assetDrawableProviderDecider: AssetDrawableProviderDecider
+) {
 
     fun mapTo(
         accountAssetData: BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData
     ): LedgerInformationListItem.AssetInformationItem {
         return LedgerInformationListItem.AssetInformationItem(
-            accountAssetData = accountAssetData,
-            formattedCurrencyBalanceText = accountAssetData.parityValueInSelectedCurrency.getFormattedValue()
+            id = accountAssetData.id,
+            name = AssetName.create(accountAssetData.name),
+            shortName = AssetName.createShortName(accountAssetData.shortName),
+            isAmountInDisplayedCurrencyVisible = accountAssetData.isAmountInSelectedCurrencyVisible,
+            verificationTierConfiguration = verificationTierConfigurationDecider.decideVerificationTierConfiguration(
+                accountAssetData.verificationTier
+            ),
+            baseAssetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(accountAssetData.id),
+            formattedDisplayedCurrencyValue = accountAssetData.getSelectedCurrencyParityValue().getFormattedValue(),
+            formattedAmount = accountAssetData.formattedAmount,
+            prismUrl = accountAssetData.prismUrl
         )
     }
 }

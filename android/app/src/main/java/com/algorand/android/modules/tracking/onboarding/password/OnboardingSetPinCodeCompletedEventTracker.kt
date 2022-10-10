@@ -27,6 +27,6 @@ class OnboardingSetPinCodeCompletedEventTracker @Inject constructor(
     }
 
     companion object {
-        private const val ONBOARDING_SET_PIN_CODE_COMPLETED_EVENT_KEY = "onboarding_verified_setpincode_completed"
+        private const val ONBOARDING_SET_PIN_CODE_COMPLETED_EVENT_KEY = "onb_verified_setpincode_completed"
     }
 }

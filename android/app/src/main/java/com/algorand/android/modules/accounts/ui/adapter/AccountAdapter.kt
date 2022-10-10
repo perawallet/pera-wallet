@@ -67,7 +67,17 @@ class AccountAdapter(
 
     private val baseBannerListener = object : BaseBannerViewHolder.BannerListener {
         override fun onActionButtonClick(url: String) {
-            accountAdapterListener.onBannerActionButtonClick(url)
+            accountAdapterListener.onBannerActionButtonClick(url = url, isGovernance = false)
+        }
+
+        override fun onCloseBannerClick(bannerId: Long) {
+            accountAdapterListener.onBannerCloseButtonClick(bannerId)
+        }
+    }
+
+    private val governanceBaseBannerListener = object : BaseBannerViewHolder.BannerListener {
+        override fun onActionButtonClick(url: String) {
+            accountAdapterListener.onBannerActionButtonClick(url = url, isGovernance = true)
         }
 
         override fun onCloseBannerClick(bannerId: Long) {
@@ -102,7 +112,7 @@ class AccountAdapter(
             HEADER.ordinal -> HeaderViewHolder.create(parent, optionsClickListener)
             ACCOUNT_SUCCESS.ordinal -> AccountItemViewHolder.create(parent, accountClickListener)
             ACCOUNT_ERROR.ordinal -> AccountErrorItemViewHolder.create(parent, accountErrorClickListener)
-            GOVERNANCE_BANNER.ordinal -> GovernanceBannerViewHolder.create(baseBannerListener, parent)
+            GOVERNANCE_BANNER.ordinal -> GovernanceBannerViewHolder.create(governanceBaseBannerListener, parent)
             GENERIC_BANNER.ordinal -> GenericBannerViewHolder.create(baseBannerListener, parent)
             QUICK_ACTIONS.ordinal -> AccountsQuickActionsViewHolder.create(parent, accountsQuickActionsListener)
             else -> throw Exception("$logTag: Item View Type is Unknown.")
@@ -118,7 +128,7 @@ class AccountAdapter(
         fun onFailedAccountClick(publicKey: String)
         fun onAccountItemLongPressed(publicKey: String)
         fun onBannerCloseButtonClick(bannerId: Long)
-        fun onBannerActionButtonClick(url: String)
+        fun onBannerActionButtonClick(url: String, isGovernance: Boolean)
         fun onBuyAlgoClick()
         fun onSendClick()
         fun onReceiveClick()

@@ -12,7 +12,7 @@
 
 package com.algorand.android.ui.settings.node
 
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -21,10 +21,12 @@ import com.algorand.android.core.BaseViewModel
 import com.algorand.android.models.Node
 import com.algorand.android.usecase.CoreCacheUseCase
 import com.algorand.android.usecase.NodeSettingsUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class NodeSettingsViewModel @ViewModelInject constructor(
+@HiltViewModel
+class NodeSettingsViewModel @Inject constructor(
     private val coreCacheUseCase: CoreCacheUseCase,
     private val nodeSettingsUseCase: NodeSettingsUseCase,
     private val bannersUseCase: BannersUseCase

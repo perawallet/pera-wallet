@@ -25,6 +25,6 @@ class AccountsQrScanEventTracker @Inject constructor(
     }
 
     companion object {
-        private const val QR_SCAN_TAP_EVENT_KEY = "homescreen_qr_scan"
+        private const val QR_SCAN_TAP_EVENT_KEY = "homescr_qr_scan"
     }
 }

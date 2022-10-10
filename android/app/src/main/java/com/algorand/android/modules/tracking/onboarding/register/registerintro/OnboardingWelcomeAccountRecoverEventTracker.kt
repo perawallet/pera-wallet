@@ -27,6 +27,6 @@ class OnboardingWelcomeAccountRecoverEventTracker @Inject constructor(
     }
 
     companion object {
-        private const val ONBOARDING_ACCOUNT_RECOVER_EVENT_KEY = "onboarding_welcomescreen_account_recover"
+        private const val ONBOARDING_ACCOUNT_RECOVER_EVENT_KEY = "onb_welcome_account_recover"
     }
 }

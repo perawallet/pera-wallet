@@ -29,7 +29,8 @@ class AccountSelectionNftDomainAccountItemViewHolder(
         with(binding) {
             accountAddressTextView.text = item.publicKey.toShortenedAddress()
             nftDomainTextview.text = item.displayName
-            serviceLogoImageView.context.loadImage(item.serviceLogoUrl.orEmpty(),
+            serviceLogoImageView.context.loadImage(
+                uri = item.serviceLogoUrl.orEmpty(),
                 onResourceReady = { serviceLogoImageView.setImageDrawable(it) },
                 onLoadFailed = { serviceLogoImageView.setImageResource(R.drawable.ic_nfd_round) }
             )

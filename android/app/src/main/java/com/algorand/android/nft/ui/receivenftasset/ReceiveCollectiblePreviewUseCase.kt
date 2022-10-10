@@ -13,51 +13,78 @@
 package com.algorand.android.nft.ui.receivenftasset
 
 import androidx.paging.PagingData
+import androidx.paging.insertHeaderItem
 import androidx.paging.map
+import com.algorand.android.R
 import com.algorand.android.assetsearch.domain.mapper.AssetSearchQueryMapper
+import com.algorand.android.assetsearch.domain.model.BaseSearchedAsset
 import com.algorand.android.assetsearch.domain.pagination.AssetSearchPagerBuilder
 import com.algorand.android.assetsearch.domain.usecase.SearchAssetUseCase
 import com.algorand.android.assetsearch.ui.mapper.BaseAssetSearchItemMapper
 import com.algorand.android.assetsearch.ui.model.BaseAssetSearchListItem
 import com.algorand.android.models.AccountIconResource
-import com.algorand.android.models.AssetQueryType
-import com.algorand.android.models.BaseAssetDetail
-import com.algorand.android.nft.domain.model.BaseSimpleCollectible.ImageSimpleCollectibleDetail
-import com.algorand.android.nft.domain.model.BaseSimpleCollectible.MixedSimpleCollectibleDetail
-import com.algorand.android.nft.domain.model.BaseSimpleCollectible.VideoSimpleCollectibleDetail
+import com.algorand.android.models.ui.AccountAssetItemButtonState
+import com.algorand.android.modules.assets.addition.domain.usecase.AssetItemActionButtonStateDecider
+import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.usecase.AccountNameIconUseCase
-import com.algorand.android.utils.AssetName
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 class ReceiveCollectiblePreviewUseCase @Inject constructor(
     private val searchAssetUseCase: SearchAssetUseCase,
     private val assetSearchQueryMapper: AssetSearchQueryMapper,
     private val assetSearchItemMapper: BaseAssetSearchItemMapper,
-    private val accountNameIconUseCase: AccountNameIconUseCase
+    private val accountNameIconUseCase: AccountNameIconUseCase,
+    private val accountDetailUseCase: AccountDetailUseCase,
+    private val assetItemActionButtonStateDecider: AssetItemActionButtonStateDecider
 ) {
 
     fun getSearchPaginationFlow(
         searchPagerBuilder: AssetSearchPagerBuilder,
         scope: CoroutineScope,
-        queryText: String
+        queryText: String,
+        accountAddress: String
     ): Flow<PagingData<BaseAssetSearchListItem>> {
         val assetSearchQuery = assetSearchQueryMapper.mapToAssetSearchQuery(
             queryText = queryText,
-            queryType = AssetQueryType.ALL,
             hasCollectibles = true
         )
-        return searchAssetUseCase.createPaginationFlow(searchPagerBuilder, scope, assetSearchQuery).mapNotNull {
-            it.map { baseAssetDetail -> getSearchItemMappedAssetDetail(baseAssetDetail) }
-        }
+        val searchedAssetsFlow = searchAssetUseCase.createPaginationFlow(
+            builder = searchPagerBuilder,
+            scope = scope,
+            defaultQuery = assetSearchQuery
+        ).distinctUntilChanged()
+
+        val accountCollectiblesFlow = accountDetailUseCase.getAccountDetailCacheFlow(
+            publicKey = accountAddress
+        ).distinctUntilChanged()
+
+        val searchViewItem = assetSearchItemMapper.mapToSearchViewItem(
+            searchViewHintResId = R.string.search_asset_id_or_nft
+        )
+
+        val infoViewItem = assetSearchItemMapper.mapToInfoViewItem(infoViewTextResId = R.string.you_can_search_the_nft)
+
+        return combine(searchedAssetsFlow, accountCollectiblesFlow) { searchedAssets, accountDetail ->
+            searchedAssets.map { baseSearchedAsset ->
+                val accountInformation = accountDetail?.data?.accountInformation
+                val assetHolding = accountInformation?.assetHoldingList?.firstOrNull {
+                    it.assetId == baseSearchedAsset.assetId
+                }
+                val assetActionButtonState = assetItemActionButtonStateDecider.decideAssetItemActionButtonState(
+                    assetHolding = assetHolding
+                )
+                getSearchItemMappedAssetDetail(baseSearchedAsset, assetActionButtonState)
+            }.insertHeaderItem(item = searchViewItem).insertHeaderItem(item = infoViewItem)
+        }.distinctUntilChanged()
     }
 
-    fun searchAsset(queryText: String) {
+    suspend fun searchAsset(queryText: String) {
         val assetSearchQuery = assetSearchQueryMapper.mapToAssetSearchQuery(
             queryText = queryText,
-            queryType = AssetQueryType.ALL,
             hasCollectibles = true
         )
         searchAssetUseCase.searchAsset(assetSearchQuery)
@@ -67,14 +94,24 @@ class ReceiveCollectiblePreviewUseCase @Inject constructor(
         searchAssetUseCase.invalidateDataSource()
     }
 
-    private fun getSearchItemMappedAssetDetail(baseAssetDetail: BaseAssetDetail): BaseAssetSearchListItem {
-        val avatarDisplayText = AssetName.create(baseAssetDetail.fullName)
+    private fun getSearchItemMappedAssetDetail(
+        baseSearchedAsset: BaseSearchedAsset,
+        assetActionButtonState: AccountAssetItemButtonState
+    ): BaseAssetSearchListItem {
         return with(assetSearchItemMapper) {
-            when (baseAssetDetail) {
-                is ImageSimpleCollectibleDetail -> mapToImageCollectibleSearchItem(baseAssetDetail, avatarDisplayText)
-                is VideoSimpleCollectibleDetail -> mapToVideoCollectibleSearchItem(baseAssetDetail, avatarDisplayText)
-                is MixedSimpleCollectibleDetail -> mapToMixedCollectibleSearchItem(baseAssetDetail, avatarDisplayText)
-                else -> mapToNotSupportedCollectibleSearchItem(baseAssetDetail, avatarDisplayText)
+            when (baseSearchedAsset) {
+                is BaseSearchedAsset.SearchedAsset -> {
+                    mapToAssetSearchItem(
+                        searchedAsset = baseSearchedAsset,
+                        accountAssetItemButtonState = assetActionButtonState
+                    )
+                }
+                is BaseSearchedAsset.SearchedCollectible -> {
+                    mapToCollectibleSearchItem(
+                        searchedCollectible = baseSearchedAsset,
+                        accountAssetItemButtonState = assetActionButtonState
+                    )
+                }
             }
         }
     }

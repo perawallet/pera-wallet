@@ -13,11 +13,13 @@
 
 package com.algorand.android.ui.accounts
 
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.ViewModel
 import com.algorand.android.usecase.ViewPassphrasesUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 
-class ViewPassphraseLockViewModel @ViewModelInject constructor(
+@HiltViewModel
+class ViewPassphraseLockViewModel @Inject constructor(
     private val viewPassphrasesUseCase: ViewPassphrasesUseCase
 ) : ViewModel() {
 

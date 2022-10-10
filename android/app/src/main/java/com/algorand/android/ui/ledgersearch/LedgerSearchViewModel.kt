@@ -13,13 +13,15 @@
 package com.algorand.android.ui.ledgersearch
 
 import android.bluetooth.BluetoothDevice
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.MutableLiveData
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.ledger.CustomScanCallback
 import com.algorand.android.ledger.LedgerBleSearchManager
+import dagger.hilt.android.lifecycle.HiltViewModel
 
-class LedgerSearchViewModel @ViewModelInject constructor(
+@HiltViewModel
+class LedgerSearchViewModel @Inject constructor(
     private val ledgerBleSearchManager: LedgerBleSearchManager
 ) : BaseViewModel() {
 

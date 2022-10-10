@@ -82,7 +82,7 @@ class ApplicationCallTransactionDetailFragment : BaseTransactionDetailFragment()
         nav(
             ApplicationCallTransactionDetailFragmentDirections
                 .actionApplicationCallTransactionDetailFragmentToInnerTransactionDetailFragment(
-                    publicKey = transactionDetailViewModel.publicKey,
+                    accountAddress = transactionDetailViewModel.accountAddress,
                     transactionId = transactionDetailViewModel.transactionId
                 )
         )

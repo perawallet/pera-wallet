@@ -22,7 +22,9 @@ import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.ui.ledgersearch.instructions.LedgerInstructionStepsAdapter
 import com.algorand.android.utils.viewbinding.viewBinding
 
-abstract class BaseLedgerPairInfoBottomSheet : BaseBottomSheet(R.layout.bottom_sheet_ledger_pair_info) {
+abstract class BaseLedgerPairInfoBottomSheet : BaseBottomSheet(
+    layoutResId = R.layout.bottom_sheet_ledger_pair_info
+) {
 
     private val ledgerInstructionStepsAdapter = LedgerInstructionStepsAdapter()
 

@@ -17,7 +17,7 @@ import com.algorand.android.models.Account
 import com.algorand.android.models.AccountDetail
 import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.models.BaseAccountAndAssetListItem
-import com.algorand.android.models.BaseItemConfiguration
+import com.algorand.android.customviews.accountandassetitem.model.BaseItemConfiguration
 import com.algorand.android.modules.sorting.accountsorting.domain.model.AccountSortingType
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.usecase.GetSortedLocalAccountsUseCase

@@ -24,7 +24,7 @@ import com.algorand.android.models.IconButton
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.ui.common.BaseInfoFragment
 import com.algorand.android.ui.common.warningconfirmation.BackupInfoFragmentDirections.Companion.actionBackupInfoFragmentToWriteDownInfoFragment
-import com.algorand.android.utils.openRecoveryPassphraseSupportUrl
+import com.algorand.android.utils.browser.openRecoveryPassphraseSupportUrl
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 

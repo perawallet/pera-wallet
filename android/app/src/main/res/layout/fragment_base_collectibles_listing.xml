@@ -10,81 +10,27 @@
   ~ limitations under the License
   -->
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/baseCollectiblesListingMotionLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    app:layoutDescription="@xml/fragment_base_collectible_listing_scene">
 
     <!-- Nft Listing Group -->
-
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_xlarge"
-        android:layout_marginTop="2dp"
-        android:text="@string/collectibles"
-        android:textAppearance="@style/TextAppearance.Title.Sans.Medium"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.algorand.android.customviews.AlgorandSearchView
-        android:id="@+id/collectibleSearchView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_xlarge"
-        android:layout_marginTop="@dimen/spacing_xxlarge"
-        android:hint="@string/search_your_nfts"
-        android:inputType="text"
-        android:visibility="gone"
-        app:endIconTintColor="@color/secondary_icon_tint_color"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/titleTextView"
-        app:startIconTintColor="@color/search_bar_view_icon_color"
-        tools:visibility="visible" />
-
-    <TextView
-        android:id="@+id/collectibleCountTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_xlarge"
-        android:textAppearance="@style/TextAppearance.Body.Sans.Medium"
-        app:layout_constraintBottom_toBottomOf="@id/filterButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/filterButton"
-        tools:text="3 NFTs" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/filterButton"
-        style="@style/IconButton.Transparent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_normal"
-        android:layout_marginEnd="@dimen/spacing_xlarge"
-        android:minHeight="0dp"
-        android:text="@string/filter"
-        android:textAppearance="@style/TextAppearance.Body.Sans.Medium"
-        android:textColor="@color/positive"
-        app:icon="@drawable/selector_filter_button"
-        app:iconPadding="@dimen/spacing_xxsmall"
-        app:iconSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/collectibleSearchView" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/collectiblesRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clipToPadding="false"
-        android:paddingTop="@dimen/spacing_xlarge"
-        android:paddingHorizontal="@dimen/spacing_xlarge"
-        android:paddingBottom="100dp"
+        android:paddingHorizontal="@dimen/spacing_small"
+        android:paddingBottom="@dimen/fab_bottom_padding"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/filterButton" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Empty State Group -->
 
@@ -158,6 +104,19 @@
         </LinearLayout>
     </ScrollView>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addCollectibleFloatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/spacing_xlarge"
+        android:layout_marginBottom="@dimen/bottom_safe_area_margin"
+        app:backgroundTint="@color/button_primary_bg"
+        app:fabCustomSize="@dimen/custom_fab_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_plus"
+        app:tint="@color/button_primary_text" />
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
@@ -169,4 +128,4 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.motion.widget.MotionLayout>

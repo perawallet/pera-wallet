@@ -13,7 +13,7 @@
 package com.algorand.android.models
 
 import android.os.Parcelable
-import com.algorand.android.utils.DEFAULT_ASSET_DECIMAL
+import com.algorand.android.assetsearch.domain.model.VerificationTier
 import com.google.gson.annotations.SerializedName
 import java.math.BigInteger
 import kotlinx.parcelize.Parcelize
@@ -35,39 +35,14 @@ data class AssetParams(
     @SerializedName("freeze")
     val freeze: String? = null,
     @SerializedName("total")
-    val total: BigInteger? = null,
+    val maxSupply: BigInteger? = null,
     @SerializedName("reserve")
     val reserve: String? = null,
     @SerializedName("clawback")
     val clawback: String? = null,
     var id: Long? = null,
-    var isVerified: Boolean = false
+    val verificationTier: VerificationTier? = null
 ) : Parcelable {
-
-    fun convertToAssetInformation(
-        assetId: Long
-    ): AssetInformation {
-        return AssetInformation(
-            assetId = assetId,
-            isVerified = isVerified,
-            creatorPublicKey = creatorPublicKey,
-            shortName = shortName,
-            fullName = fullName,
-            url = url
-        )
-    }
-
-    fun convertToWalletConnectAssetInformation(
-        assetId: Long
-    ): WalletConnectAssetInformation {
-        return WalletConnectAssetInformation(
-            assetId = assetId,
-            isVerified = isVerified,
-            shortName = shortName,
-            fullName = fullName,
-            decimal = decimals ?: DEFAULT_ASSET_DECIMAL
-        )
-    }
 
     fun appendAssetId(assetId: Long): AssetParams {
         id = assetId

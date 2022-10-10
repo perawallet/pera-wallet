@@ -12,19 +12,17 @@
 
 package com.algorand.android.assetsearch.domain.repository
 
-import com.algorand.android.assetsearch.domain.model.AssetDetailDTO
-import com.algorand.android.models.AssetQueryType
+import com.algorand.android.assetsearch.domain.model.AssetSearchDTO
 import com.algorand.android.models.Pagination
 import com.algorand.android.models.Result
 
 interface AssetSearchRepository {
     suspend fun searchAsset(
         queryText: String,
-        queryType: AssetQueryType,
         hasCollectible: Boolean?
-    ): Result<Pagination<AssetDetailDTO>>
+    ): Result<Pagination<AssetSearchDTO>>
 
-    suspend fun getAssetsByUrl(url: String): Result<Pagination<AssetDetailDTO>>
+    suspend fun getAssetsByUrl(url: String): Result<Pagination<AssetSearchDTO>>
 
     companion object {
         const val REPOSITORY_INJECTION_NAME = "assetSearchRepositoryInjection"

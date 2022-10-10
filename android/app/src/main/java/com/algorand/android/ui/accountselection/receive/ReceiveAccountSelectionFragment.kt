@@ -14,14 +14,13 @@ package com.algorand.android.ui.accountselection.receive
 
 import android.content.Context
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.algorand.android.R
 import com.algorand.android.models.BaseAccountSelectionListItem
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.ui.accountselection.BaseAccountSelectionFragment
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class ReceiveAccountSelectionFragment : BaseAccountSelectionFragment() {
@@ -53,9 +52,10 @@ class ReceiveAccountSelectionFragment : BaseAccountSelectionFragment() {
     }
 
     override fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            receiveAccountSelectionViewModel.accountItemsFlow.collectLatest(accountItemsCollector)
-        }
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            receiveAccountSelectionViewModel.accountItemsFlow,
+            accountItemsCollector
+        )
     }
 
     interface ReceiveAccountSelectionFragmentListener {

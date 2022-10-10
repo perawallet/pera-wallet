@@ -16,7 +16,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.algorand.android.R
 import com.algorand.android.core.TransactionBaseFragment
 import com.algorand.android.databinding.FragmentCollectibleSendBinding
@@ -30,6 +29,7 @@ import com.algorand.android.nft.ui.model.RequestOptInConfirmationArgs
 import com.algorand.android.nft.ui.nftapprovetransaction.CollectibleTransactionApproveBottomSheet.Companion.COLLECTIBLE_TXN_APPROVE_KEY
 import com.algorand.android.nft.ui.nftsend.CollectibleSendQrScannerFragment.Companion.ACCOUNT_ADDRESS_SCAN_RESULT_KEY
 import com.algorand.android.utils.SingleButtonBottomSheet
+import com.algorand.android.utils.extensions.collectOnLifecycle
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.isValidAddress
@@ -37,7 +37,6 @@ import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class CollectibleSendFragment : TransactionBaseFragment(R.layout.fragment_collectible_send) {
@@ -99,12 +98,14 @@ class CollectibleSendFragment : TransactionBaseFragment(R.layout.fragment_collec
     }
 
     private fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-            collectibleSendViewModel.collectibleSendPreview.collect(collectibleSendPreviewCollector)
-        }
-        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-            collectibleSendViewModel.selectedAccountAddressFlow.collect(selectedAddressCollector)
-        }
+        viewLifecycleOwner.collectOnLifecycle(
+            collectibleSendViewModel.collectibleSendPreview,
+            collectibleSendPreviewCollector
+        )
+        viewLifecycleOwner.collectOnLifecycle(
+            collectibleSendViewModel.selectedAccountAddressFlow,
+            selectedAddressCollector
+        )
     }
 
     private fun initSavedStateListeners() {

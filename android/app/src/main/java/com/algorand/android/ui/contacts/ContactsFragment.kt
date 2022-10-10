@@ -33,10 +33,13 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ContactsFragment : DaggerBaseFragment(R.layout.fragment_contacts) {
 
+    private val endPlusIconButton by lazy { IconButton(R.drawable.ic_plus, onClick = ::addContactClick) }
+
     private val toolbarConfiguration = ToolbarConfiguration(
         backgroundColor = R.color.primary_background,
         startIconResId = R.drawable.ic_left_arrow,
-        startIconClick = ::navBack
+        startIconClick = ::navBack,
+        titleResId = R.string.contacts
     )
 
     override val fragmentConfiguration = FragmentConfiguration(
@@ -52,6 +55,7 @@ class ContactsFragment : DaggerBaseFragment(R.layout.fragment_contacts) {
 
     private val contactListObserver = Observer<List<User>> { contactList ->
         userAdapter?.submitList(contactList)
+        setEndButtonVisibility(isVisible = contactList.isNotEmpty())
         with(binding) {
             searchBar.isVisible = contactList.isNotEmpty() || searchBar.text.isNotEmpty()
             contactsRecyclerView.isVisible = contactList.isNotEmpty() || searchBar.text.isNotEmpty()
@@ -65,7 +69,7 @@ class ContactsFragment : DaggerBaseFragment(R.layout.fragment_contacts) {
     }
 
     private val onContactQrClick: (contact: User) -> Unit = { contact ->
-        nav(ContactsFragmentDirections.actionContactsFragmentToShowQrBottomSheet(contact.name, contact.publicKey))
+        nav(ContactsFragmentDirections.actionGlobalShowQrNavigation(contact.name, contact.publicKey))
     }
 
     private val emptyScreenState by lazy {
@@ -89,11 +93,17 @@ class ContactsFragment : DaggerBaseFragment(R.layout.fragment_contacts) {
         setupSearchQueryEditTextWatcher()
         initObservers()
         setupToolbar()
-        binding.titleTextView.requestFocus()
     }
 
     private fun setupToolbar() {
-        getAppToolbar()?.addButtonToEnd(IconButton(R.drawable.ic_plus, onClick = ::addContactClick))
+        getAppToolbar()?.run {
+            addButtonToEnd(endPlusIconButton)
+            setButtonVisibilityById(buttonId = endPlusIconButton.id, isVisible = false)
+        }
+    }
+
+    private fun setEndButtonVisibility(isVisible: Boolean) {
+        getAppToolbar()?.setButtonVisibilityById(buttonId = endPlusIconButton.id, isVisible = isVisible)
     }
 
     private fun initObservers() {

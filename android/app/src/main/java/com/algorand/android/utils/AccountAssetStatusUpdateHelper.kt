@@ -81,6 +81,9 @@ class AccountAssetStatusUpdateHelper @Inject constructor(
                 AssetStatus.PENDING_FOR_ADDITION -> pendingAssetAdditions.add(assetHolding)
                 AssetStatus.PENDING_FOR_REMOVAL -> pendingAssetRemovals.add(assetHolding)
                 AssetStatus.PENDING_FOR_SENDING -> pendingAssetSendings.add(assetHolding)
+                else -> {
+                    sendErrorLog("Unhandled else case in AccountAssetStatusUpdateHelper.getPendingAssetHoldings")
+                }
             }
         }
         return PendingAssetHoldings(

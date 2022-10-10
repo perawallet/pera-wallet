@@ -12,8 +12,6 @@
 
 package com.algorand.android.nft.ui.nftsend
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
@@ -27,18 +25,20 @@ import com.algorand.android.nft.ui.model.CollectibleSendPreview
 import com.algorand.android.usecase.AccountAssetRemovalUseCase
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.getOrThrow
+import dagger.hilt.android.lifecycle.HiltViewModel
 import java.math.BigInteger
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class CollectibleSendViewModel @ViewModelInject constructor(
+@HiltViewModel
+class CollectibleSendViewModel @Inject constructor(
     private val collectibleSendPreviewUseCase: CollectibleSendPreviewUseCase,
     private val accountCacheManager: AccountCacheManager,
     private val accountAssetRemovalUseCase: AccountAssetRemovalUseCase,
-    @Assisted savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
     private val collectibleDetail = savedStateHandle.getOrThrow<CollectibleDetail>(COLLECTIBLE_DETAIL_ARG_KEY)
@@ -85,7 +85,7 @@ class CollectibleSendViewModel @ViewModelInject constructor(
         return TransactionData.Send(
             accountCacheData = senderAccountCacheData,
             amount = BigInteger.ONE,
-            assetInformation = AssetInformation(assetId = collectibleDetail.collectibleId, false),
+            assetInformation = AssetInformation(assetId = collectibleDetail.collectibleId, verificationTier = null),
             targetUser = targetUser
         )
     }
@@ -97,7 +97,7 @@ class CollectibleSendViewModel @ViewModelInject constructor(
         return TransactionData.SendAndRemoveAsset(
             accountCacheData = senderAccountCacheData,
             amount = BigInteger.ONE,
-            assetInformation = AssetInformation(assetId = collectibleDetail.collectibleId, false),
+            assetInformation = AssetInformation(assetId = collectibleDetail.collectibleId, verificationTier = null),
             targetUser = targetUser
         )
     }

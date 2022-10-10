@@ -1,3 +1,4 @@
+@file:Suppress("TooManyFunctions") // TODO: We should remove this after function count decrease under 25
 /*
  * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,14 +20,17 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.core.view.forEach
 import androidx.lifecycle.Observer
+import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
 import com.algorand.android.core.TransactionManager
+import com.algorand.android.customviews.AlertView
 import com.algorand.android.customviews.CoreActionsTabBarView
-import com.algorand.android.customviews.ForegroundNotificationView
+import com.algorand.android.customviews.LedgerLoadingDialog
 import com.algorand.android.models.AccountCacheStatus
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.AssetAction
 import com.algorand.android.models.AssetActionResult
+import com.algorand.android.models.AssetOperationResult
 import com.algorand.android.models.AssetTransaction
 import com.algorand.android.models.Node
 import com.algorand.android.models.NotificationMetadata
@@ -43,9 +47,10 @@ import com.algorand.android.modules.deeplink.ui.DeeplinkHandler
 import com.algorand.android.modules.qrscanning.QrScannerViewModel
 import com.algorand.android.tutorialdialog.util.showCopyAccountAddressTutorialDialog
 import com.algorand.android.ui.accountselection.receive.ReceiveAccountSelectionFragment
-import com.algorand.android.ui.assetaction.UnsupportedAssetNotificationRequestActionBottomSheet
+import com.algorand.android.modules.assets.action.optin.UnsupportedAssetNotificationRequestActionBottomSheet
 import com.algorand.android.ui.lockpreference.AutoLockSuggestionManager
 import com.algorand.android.ui.wcconnection.WalletConnectConnectionBottomSheet
+import com.algorand.android.usecase.IsAccountLimitExceedUseCase.Companion.MAX_NUMBER_OF_ACCOUNTS
 import com.algorand.android.utils.DEEPLINK_AND_NAVIGATION_INTENT
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
@@ -57,6 +62,8 @@ import com.algorand.android.utils.inappreview.InAppReviewManager
 import com.algorand.android.utils.isNotificationCanBeShown
 import com.algorand.android.utils.navigateSafe
 import com.algorand.android.utils.preference.isPasswordChosen
+import com.algorand.android.utils.sendErrorLog
+import com.algorand.android.utils.showWithStateCheck
 import com.algorand.android.utils.walletconnect.WalletConnectManager
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionErrorProvider
 import com.algorand.android.utils.walletconnect.WalletConnectUrlHandler
@@ -65,14 +72,14 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlin.properties.Delegates
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MainActivity : CoreMainActivity(),
-    ForegroundNotificationView.ForegroundNotificationViewListener,
+class MainActivity :
+    CoreMainActivity(),
+    AlertView.AlertViewListener,
     UnsupportedAssetNotificationRequestActionBottomSheet.RequestAssetConfirmationListener,
     WalletConnectConnectionBottomSheet.Callback,
     ReceiveAccountSelectionFragment.ReceiveAccountSelectionFragmentListener {
@@ -82,6 +89,8 @@ class MainActivity : CoreMainActivity(),
     private val qrScannerViewModel: QrScannerViewModel by viewModels()
 
     private var pendingIntent: Intent? = null
+
+    private var ledgerLoadingDialog: LedgerLoadingDialog? = null
 
     @Inject
     lateinit var transactionManager: TransactionManager
@@ -113,9 +122,10 @@ class MainActivity : CoreMainActivity(),
         }
     }
 
-    private val addAssetResultObserver = Observer<Event<Resource<String?>>> {
+    private val addAssetResultObserver = Observer<Event<Resource<AssetOperationResult>>> {
         it.consume()?.use(
-            onSuccess = { assetName -> showAssetAdditionForegroundNotification(assetName) }
+            onSuccess = { assetOperationResult -> showAssetOperationForegroundNotification(assetOperationResult) },
+            onFailed = { error -> showGlobalError(errorMessage = error.parse(this), tag = activityTag) }
         )
     }
 
@@ -141,7 +151,7 @@ class MainActivity : CoreMainActivity(),
                 }
                 when (notificationType) {
                     NotificationType.ASSET_SUPPORT_REQUEST -> handleAssetSupportRequest(this)
-                    else -> binding.foregroundNotificationView.addNotification(this)
+                    else -> binding.alertView.addAlertNotification(this)
                 }
             }
         }
@@ -163,7 +173,7 @@ class MainActivity : CoreMainActivity(),
 
         override fun onInvalidWalletConnectUrl(errorResId: Int) {
             qrScannerViewModel.setQrCodeInProgress(false)
-            showGlobalError(getString(errorResId))
+            showGlobalError(errorMessage = getString(errorResId), tag = activityTag)
         }
     }
 
@@ -184,7 +194,9 @@ class MainActivity : CoreMainActivity(),
         }
 
         override fun onWalletConnectConnectionDeeplink(wcUrl: String): Boolean {
-            return true.also { handleWalletConnectUrl(wcUrl) }
+            return true.also {
+                handleWalletConnectUrl(wcUrl)
+            }
         }
 
         override fun onAssetTransferWithNotOptInDeepLink(assetId: Long): Boolean {
@@ -225,6 +237,34 @@ class MainActivity : CoreMainActivity(),
         }
     }
 
+    private val transactionManagerResultObserver = Observer<Event<TransactionManagerResult>?> {
+        it?.consume()?.let { result ->
+            when (result) {
+                is TransactionManagerResult.Success -> {
+                    hideLedgerLoadingDialog()
+                    val signedTransactionDetail = result.signedTransactionDetail
+                    if (signedTransactionDetail is SignedTransactionDetail.AssetOperation) {
+                        mainViewModel.sendAssetOperationSignedTransaction(signedTransactionDetail)
+                    }
+                }
+                is TransactionManagerResult.Error -> {
+                    hideLedgerLoadingDialog()
+                    val (title, errorMessage) = result.getMessage(this)
+                    showGlobalError(title = title, errorMessage = errorMessage, tag = activityTag)
+                }
+                is TransactionManagerResult.LedgerWaitingForApproval -> showLedgerLoadingDialog(result.bluetoothName)
+                is TransactionManagerResult.Loading -> showProgress()
+                is TransactionManagerResult.LedgerScanFailed -> {
+                    hideLedgerLoadingDialog()
+                    navigateToConnectionIssueBottomSheet()
+                }
+                else -> {
+                    sendErrorLog("Unhandled else case in transactionManagerResultLiveData")
+                }
+            }
+        }
+    }
+
     private fun onNewSessionEvent(sessionEvent: Event<Resource<WalletConnectSession>>) {
         sessionEvent.consume()?.use(
             onSuccess = ::onSessionConnected,
@@ -241,7 +281,7 @@ class MainActivity : CoreMainActivity(),
     private fun onSessionFailed(error: Resource.Error) {
         qrScannerViewModel.setQrCodeInProgress(false)
         val errorMessage = error.parse(this)
-        showGlobalError(errorMessage)
+        showGlobalError(errorMessage = errorMessage, tag = activityTag)
     }
 
     private fun handleAssetSupportRequest(notificationMetadata: NotificationMetadata) {
@@ -264,7 +304,8 @@ class MainActivity : CoreMainActivity(),
         setupCoreActionsTabBarView()
         setupWalletConnectManager()
 
-        binding.foregroundNotificationView.apply {
+        binding.alertView.apply {
+            setScope(lifecycle.coroutineScope)
             setListener(this@MainActivity)
             accounts = accountManager.getAccounts()
         }
@@ -289,73 +330,51 @@ class MainActivity : CoreMainActivity(),
         }
     }
 
-    override fun onNotificationClick(publicKeyToActivate: String?, assetIdToActivate: Long?) {
+    override fun onAlertNotificationClick(publicKeyToActivate: String?, assetIdToActivate: Long?) {
         if (publicKeyToActivate != null && assetIdToActivate != null) {
             val accountCacheData = accountCacheManager.getCacheData(publicKeyToActivate)
             val assetInformation = accountCacheManager.getAssetInformation(publicKeyToActivate, assetIdToActivate)
             if (accountCacheData != null && assetInformation != null) {
                 nav(
                     HomeNavigationDirections
-                        .actionGlobalAssetDetailFragment(assetInformation.assetId, accountCacheData.account.address)
+                        .actionGlobalAssetProfileNavigation(assetInformation.assetId, accountCacheData.account.address)
                 )
             }
         }
     }
 
-    // TODO Use new notification view when ForegroundNotification and SlidingTopErrorView are refactored
-    private fun showAssetAdditionForegroundNotification(assetName: String?) {
-        val safeAssetName = assetName ?: getString(R.string.asset)
-        val messageDescription = getString(R.string.asset_successfully_added_formatted, safeAssetName)
-        val metadata = NotificationMetadata(
-            alertMessage = messageDescription,
-            notificationType = NotificationType.BROADCAST
-        )
-        showForegroundNotification(metadata)
+    private fun showAssetOperationForegroundNotification(assetOperationResult: AssetOperationResult) {
+        val safeAssetName = assetOperationResult.assetName.getName(resources)
+        val messageDescription = getString(assetOperationResult.resultTitleResId, safeAssetName)
+        showAlertSuccess(title = messageDescription, successMessage = null, tag = activityTag)
     }
 
     override fun onAccountSelected(publicKey: String) {
         val qrCodeTitle = getString(R.string.qr_code)
-        nav(HomeNavigationDirections.actionGlobalShowQrBottomSheet(qrCodeTitle, publicKey))
+        nav(HomeNavigationDirections.actionGlobalShowQrNavigation(qrCodeTitle, publicKey))
     }
 
     private fun initObservers() {
         peraNotificationManager.newNotificationLiveData.observe(this, newNotificationObserver)
 
-        mainViewModel.addAssetResultLiveData.observe(this, addAssetResultObserver)
+        mainViewModel.assetOperationResultLiveData.observe(this, addAssetResultObserver)
 
         lifecycleScope.launch {
             // Drop 1 added to get any list changes.
             accountManager.accounts.drop(1).collect { accounts ->
                 mainViewModel.refreshFirebasePushToken(null)
-                binding.foregroundNotificationView.accounts = accounts
+                binding.alertView.accounts = accounts
             }
         }
 
-        contactsDao.getAllLiveData().observe(this, Observer { contactList ->
-            binding.foregroundNotificationView.contacts = contactList
-        })
-
-        transactionManager.transactionManagerResultLiveData.observe(this, Observer {
-            it?.consume()?.let { result ->
-                when (result) {
-                    is TransactionManagerResult.Success -> {
-                        val signedTransactionDetail = result.signedTransactionDetail
-                        if (signedTransactionDetail is SignedTransactionDetail.AssetOperation) {
-                            mainViewModel.sendSignedTransaction(
-                                signedTransactionDetail.signedTransactionData,
-                                signedTransactionDetail.assetInformation,
-                                signedTransactionDetail.accountCacheData.account.address
-                            )
-                        }
-                    }
-                    is TransactionManagerResult.Error -> {
-                        val (title, errorMessage) = result.getMessage(this)
-                        showGlobalError(title = title, errorMessage = errorMessage)
-                    }
-                    is TransactionManagerResult.LedgerScanFailed -> navigateToConnectionIssueBottomSheet()
-                }
+        contactsDao.getAllLiveData().observe(
+            this,
+            Observer { contactList ->
+                binding.alertView.contacts = contactList
             }
-        })
+        )
+
+        transactionManager.transactionManagerResultLiveData.observe(this, transactionManagerResultObserver)
 
         mainViewModel.autoLockLiveData.observe(this, autoLockManagerObserver)
 
@@ -452,7 +471,10 @@ class MainActivity : CoreMainActivity(),
     }
 
     fun handleWalletConnectUrl(walletConnectUrl: String) {
-        walletConnectViewModel.handleWalletConnectUrl(walletConnectUrl, walletConnectUrlHandlerListener)
+        walletConnectViewModel.handleWalletConnectUrl(
+            url = walletConnectUrl,
+            listener = walletConnectUrlHandlerListener
+        )
     }
 
     private fun setupCoreActionsTabBarView() {
@@ -509,25 +531,22 @@ class MainActivity : CoreMainActivity(),
     private fun handleSessionConnectionResult(result: WCSessionRequestResult) {
         with(walletConnectViewModel) {
             when (result) {
-                is WCSessionRequestResult.ApproveRequest -> {
-                    approveSession(result)
-                    showConnectedDappInfoBottomSheet(result.wcSessionRequest.peerMeta.name)
-                }
+                is WCSessionRequestResult.ApproveRequest -> approveSession(result)
                 is WCSessionRequestResult.RejectRequest -> rejectSession(result.session)
             }
         }
     }
 
-    private fun showConnectedDappInfoBottomSheet(pearName: String) {
+    fun showConnectedDappInfoBottomSheet(peerName: String) {
         nav(
             MainNavigationDirections.actionGlobalSingleButtonBottomSheet(
                 titleAnnotatedString = AnnotatedString(
                     stringResId = R.string.you_are_connected,
-                    replacementList = listOf("peer_name" to pearName)
+                    replacementList = listOf("peer_name" to peerName)
                 ),
                 descriptionAnnotatedString = AnnotatedString(
                     stringResId = R.string.please_return_to,
-                    replacementList = listOf("peer_name" to pearName)
+                    replacementList = listOf("peer_name" to peerName)
                 ),
                 drawableResId = R.drawable.ic_check_72dp,
                 isResultNeeded = true
@@ -546,6 +565,20 @@ class MainActivity : CoreMainActivity(),
             transactionManager.initSigningTransactions(
                 isGroupTransaction = false,
                 TransactionData.AddAsset(accountCacheData, assetActionResult.asset)
+            )
+        }
+    }
+
+    fun signRemoveAssetTransaction(assetActionResult: AssetActionResult) {
+        if (!assetActionResult.publicKey.isNullOrBlank()) {
+            val accountCacheData = accountCacheManager.getCacheData(assetActionResult.publicKey) ?: return
+            val transactionData = with(assetActionResult) {
+                TransactionData.RemoveAsset(accountCacheData, asset, asset.creatorPublicKey.orEmpty())
+            }
+            transactionManager.setup(lifecycle)
+            transactionManager.initSigningTransactions(
+                isGroupTransaction = false,
+                transactionData
             )
         }
     }
@@ -572,6 +605,27 @@ class MainActivity : CoreMainActivity(),
 
     private fun navToQRCodeScannerNavigation() {
         nav(HomeNavigationDirections.actionGlobalAccountsQrScannerFragment())
+    }
+
+    fun showMaxAccountLimitExceededError() {
+        showGlobalError(
+            title = getString(R.string.too_many_accounts),
+            errorMessage = getString(R.string.looks_like_already_have_accounts, MAX_NUMBER_OF_ACCOUNTS),
+            tag = activityTag
+        )
+    }
+
+    private fun hideLedgerLoadingDialog() {
+        hideProgress()
+        ledgerLoadingDialog?.dismissAllowingStateLoss()
+        ledgerLoadingDialog = null
+    }
+
+    private fun showLedgerLoadingDialog(ledgerName: String?) {
+        if (ledgerLoadingDialog == null) {
+            ledgerLoadingDialog = LedgerLoadingDialog.createLedgerLoadingDialog(ledgerName)
+            ledgerLoadingDialog?.showWithStateCheck(supportFragmentManager)
+        }
     }
 
     companion object {

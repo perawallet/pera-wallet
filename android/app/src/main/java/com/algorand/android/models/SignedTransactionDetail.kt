@@ -32,12 +32,25 @@ sealed class SignedTransactionDetail : Parcelable {
         val note: String? = null
     ) : SignedTransactionDetail()
 
-    @Parcelize
-    data class AssetOperation(
-        override val signedTransactionData: ByteArray,
-        val accountCacheData: AccountCacheData,
-        val assetInformation: AssetInformation
-    ) : SignedTransactionDetail()
+    sealed class AssetOperation : SignedTransactionDetail() {
+
+        abstract val accountCacheData: AccountCacheData
+        abstract val assetInformation: AssetInformation
+
+        @Parcelize
+        data class AssetAddition(
+            override val signedTransactionData: ByteArray,
+            override val accountCacheData: AccountCacheData,
+            override val assetInformation: AssetInformation
+        ) : AssetOperation()
+
+        @Parcelize
+        data class AssetRemoval(
+            override val signedTransactionData: ByteArray,
+            override val accountCacheData: AccountCacheData,
+            override val assetInformation: AssetInformation
+        ) : AssetOperation()
+    }
 
     @Parcelize
     data class RekeyOperation(

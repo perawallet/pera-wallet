@@ -19,6 +19,6 @@ data class CurrencySelectionPreview(
     val isLoading: Boolean,
     val isScreenStateViewVisible: Boolean,
     val screenStateViewType: ScreenState?,
-    val isContentVisible: Boolean,
+    val isCurrencyListVisible: Boolean,
     val currencyList: List<CurrencyListItem>?
 )

@@ -15,16 +15,18 @@ package com.algorand.android.ui.send.transferamount
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.algorand.android.R
+import com.algorand.android.SendAlgoNavigationDirections
+import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration
 import com.algorand.android.core.TransactionBaseFragment
 import com.algorand.android.customviews.DialPadView
 import com.algorand.android.customviews.algorandamountinput.AlgorandAmountInputTextView
 import com.algorand.android.databinding.FragmentAssetTransferAmountBinding
+import com.algorand.android.models.AmountInput
 import com.algorand.android.models.AssetTransferAmountPreview
-import com.algorand.android.models.BalanceInput
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.IconButton
 import com.algorand.android.models.SignedTransactionDetail
@@ -32,25 +34,37 @@ import com.algorand.android.models.TargetUser
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.models.TransactionData
 import com.algorand.android.ui.common.warningconfirmation.BaseMaximumBalanceWarningBottomSheet
-import com.algorand.android.utils.Event
-import com.algorand.android.utils.PrismUrlBuilder
-import com.algorand.android.utils.Resource
+import com.algorand.android.utils.ALGO_SHORT_NAME
+import com.algorand.android.utils.AssetName
+import com.algorand.android.utils.assetdrawable.BaseAssetDrawableProvider
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
-import com.algorand.android.utils.loadImage
+import com.algorand.android.utils.sendErrorLog
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.math.BigInteger
 import kotlin.properties.Delegates
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 // TODO: 17.08.2021 We will update this fragment when input format finalized,
 // TODO: 29.09.2021 `handleError` function will be updated when this branch merge with `send-asset-amount-input`
 // TODO: 27.01.2022 We have to get initial Ui State model from UseCase then we won't need to create initial placeholder
 //  etc.
+
+// TODO: We should refactor the flow that is explained below :/
+/**
+ * Current entering amount flow;
+ * -> Enter digit and Trigger [DialPadView]
+ * -> Trigger [AlgorandAmountInputTextView]
+ * -> Trigger [AmountFormatter]
+ * -> Format Amount
+ * -> Invoke all chained listeners and update UI
+ *
+ * We should keep whole this flow into UseCase or we should make those operations cleaner
+ */
+@SuppressWarnings("TooManyFunctions")
 @AndroidEntryPoint
 class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_asset_transfer_amount) {
 
@@ -82,6 +96,9 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
                             .actionAssetTransferAmountFragmentToAssetTransferPreviewFragment(signedTransactionDetail)
                     )
                 }
+                else -> {
+                    sendErrorLog("Unhandled else case in AssetTransferAmountFragment.transactionFragmentListener")
+                }
             }
         }
     }
@@ -100,20 +117,11 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
         }
     }
 
-    private val amountCollector: suspend (Event<Resource<BigInteger>>?) -> Unit = {
-        it?.consume()?.use(
-            onSuccess = ::handleNextNavigation,
-            onFailed = { handleError(it, binding.root) },
-            onLoading = ::showProgress,
-            onLoadingFinished = ::hideProgress
-        )
-    }
-
     private val assetTransferAmountPreview: suspend (AssetTransferAmountPreview?) -> Unit = {
-        it?.let { initUi(it) }
+        it?.let { updateUIWithPreview(it) }
     }
 
-    private var latestAmountInput by Delegates.observable(BalanceInput.createDefaultBalanceInput()) { _, _, newValue ->
+    private var latestAmountInput by Delegates.observable(AmountInput.getDefaultAmountInput()) { _, _, newValue ->
         onAmountChanged(newValue)
     }
 
@@ -153,70 +161,100 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
         getAppToolbar()?.addButtonToEnd(transactionTipButton)
     }
 
-    private fun initUi(assetTransferAmountPreview: AssetTransferAmountPreview) {
+    private fun updateUIWithPreview(assetTransferAmountPreview: AssetTransferAmountPreview) {
         with(assetTransferAmountPreview) {
-            getAppToolbar()?.changeTitle(getString(R.string.send_format, shortName.getName()))
-            binding.algorandApproximateValueTextView.isVisible = isAmountInSelectedCurrencyVisible
-            updateEnteredAmountCurrencyValue(enteredAmountSelectedCurrencyValue, isAmountInSelectedCurrencyVisible)
-            setAmountView(decimals)
-            setAmountCurrencyValueView(formattedSelectedCurrencyValue, isAmountInSelectedCurrencyVisible)
-            setAssetBalanceView(formattedAmount)
-            setAssetNameView(
-                isVerified,
-                fullName.getName(binding.root.resources),
-                assetId,
-                isAlgo,
-                collectiblePrismUrl,
-                isCollectibleOwnedByUser
-            )
-            binding.dialpadView.setSeparator(decimalSeparator)
+            assetPreview?.let {
+                getAppToolbar()?.changeTitle(getString(R.string.send_format, it.shortName.getName()))
+                binding.algorandApproximateValueTextView.isVisible = it.isAmountInSelectedCurrencyVisible
+                updateEnteredAmountCurrencyValue(
+                    enteredAmountSelectedCurrencyValue,
+                    it.isAmountInSelectedCurrencyVisible
+                )
+                setAmountView(it.decimals)
+                setAssetNameView(
+                    fullName = it.fullName,
+                    assetId = it.assetId,
+                    isAlgo = it.isAlgo,
+                    prismUrl = it.prismUrl,
+                    assetDrawableProvider = it.assetDrawableProvider,
+                    verificationTierConfiguration = it.verificationTierConfiguration,
+                    formattedAmount = it.formattedAmount,
+                    formattedDisplayedCurrencyValue = it.formattedSelectedCurrencyValue,
+                    isAmountInSelectedCurrencyVisible = it.isAmountInSelectedCurrencyVisible
+                )
+            }
+            decimalSeparator?.let { binding.dialpadView.setSeparator(decimalSeparator) }
+            onPopulateAmountWithMaxEvent?.consume()?.run { onMaxButtonClick() }
+            amountIsValidEvent?.consume()?.let { onAmountIsValid(it) }
+            amountIsMoreThanBalanceEvent?.consume()?.let { onAmountMoreThanBalance() }
+            insufficientBalanceToPayFeeEvent?.consume()?.let { onInsufficientBalanceToPayFee() }
+            minimumBalanceIsViolatedResultEvent?.consume()?.let { onMinimumBalanceViolated(it) }
+            assetNotFoundErrorEvent?.consume()?.let { onAssetNotFound() }
         }
+    }
+
+    private fun onAmountIsValid(amount: BigInteger) {
+        handleNextNavigation(amount)
+    }
+
+    private fun onAmountMoreThanBalance() {
+        showGlobalError(getString(R.string.transaction_amount_cannot))
+    }
+
+    private fun onInsufficientBalanceToPayFee() {
+        nav(
+            AssetTransferAmountFragmentDirections
+                .actionAssetTransferAmountFragmentToBalanceWarningBottomSheet(
+                    assetTransferAmountViewModel.assetTransaction.senderAddress
+                )
+        )
+    }
+
+    private fun onMinimumBalanceViolated(senderAddress: String) {
+        nav(
+            AssetTransferAmountFragmentDirections
+                .actionAssetTransferAmountFragmentToTransactionMaximumBalanceWarningBottomSheet(senderAddress)
+        )
     }
 
     private fun setAssetNameView(
-        isVerified: Boolean,
-        fullName: String?,
+        fullName: AssetName,
         assetId: Long,
         isAlgo: Boolean,
-        collectiblePrismUrl: String?,
-        isOwnedByUser: Boolean
-    ) {
-        with(binding.assetNameTextView) {
-            if (collectiblePrismUrl != null) {
-                context?.loadImage(
-                    uri = createPrismUrlForCollectibleDrawable(collectiblePrismUrl),
-                    onResourceReady = {
-                        setupUiWithDrawable(isVerified, fullName, assetId, it, isOwnedByUser)
-                    },
-                    onLoadFailed = {
-                        setupUIWithId(isVerified, fullName, assetId, isAlgo)
-                    }
-                )
-            } else {
-                setupUIWithId(isVerified, fullName, assetId, isAlgo)
-            }
-        }
-    }
-
-    private fun createPrismUrlForCollectibleDrawable(collectiblePrismUrl: String): String {
-        val collectibleImageViewWidth = resources.getDimension(R.dimen.asset_avatar_image_size).toInt()
-        return PrismUrlBuilder.create(collectiblePrismUrl)
-            .addWidth(collectibleImageViewWidth)
-            .addQuality(PrismUrlBuilder.DEFAULT_IMAGE_QUALITY)
-            .build()
-    }
-
-    private fun setAssetBalanceView(formattedAmount: String) {
-        binding.assetBalanceTextView.text = formattedAmount
-    }
-
-    private fun setAmountCurrencyValueView(
+        prismUrl: String?,
+        assetDrawableProvider: BaseAssetDrawableProvider,
+        verificationTierConfiguration: VerificationTierConfiguration,
+        formattedAmount: String,
         formattedDisplayedCurrencyValue: String,
         isAmountInSelectedCurrencyVisible: Boolean
     ) {
-        binding.assetCurrencyTextView.apply {
-            text = formattedDisplayedCurrencyValue
-            isVisible = isAmountInSelectedCurrencyVisible
+        with(binding.assetItemView) {
+            setStartIconDrawable(drawable = null, forceShow = true)
+            getStartIconImageView().doOnLayout {
+                assetDrawableProvider.provideAssetDrawable(
+                    context = context,
+                    assetName = fullName,
+                    logoUri = prismUrl,
+                    width = it.measuredWidth,
+                    onResourceReady = { drawable ->
+                        getStartIconImageView().alpha = 1f
+                        setStartIconDrawable(drawable)
+                    }
+                )
+            }
+            setTitleText(fullName.getName(resources))
+            val descriptionText = if (isAlgo) {
+                ALGO_SHORT_NAME
+            } else {
+                getString(R.string.asset_id_formatted, assetId.toString())
+            }
+            setDescriptionText(descriptionText)
+            setTitleTextColor(verificationTierConfiguration.textColorResId)
+            setTrailingIconOfTitleText(verificationTierConfiguration.drawableResId)
+            setPrimaryValueText(formattedAmount)
+            if (isAmountInSelectedCurrencyVisible) {
+                setSecondaryValueText(formattedDisplayedCurrencyValue)
+            }
         }
     }
 
@@ -225,16 +263,14 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
             amountTextView.apply {
                 setOnBalanceChangeListener(onBalanceChangeListener)
                 dialpadView.setDialPadListener(keyboardListener)
-                decimalLimit = decimal
+                setFractionDecimalLimit(decimal)
             }
         }
     }
 
-    private fun onAmountChanged(balanceInput: BalanceInput) {
-        assetTransferAmountViewModel.updateAssetTransferAmountPreviewAccordingToAmount(
-            balanceInput.formattedBalanceInBigDecimal
-        )
-        binding.nextButton.isEnabled = balanceInput.isAmountValid
+    private fun onAmountChanged(amountInput: AmountInput) {
+        assetTransferAmountViewModel.updateAssetTransferAmountPreviewAccordingToAmount(amountInput.amount)
+        binding.nextButton.isEnabled = amountInput.isAmountValid
     }
 
     private fun updateEnteredAmountCurrencyValue(
@@ -248,23 +284,19 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
     }
 
     private fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            assetTransferAmountViewModel.amountValidationFlow.collectLatest(amountCollector)
-        }
-        viewLifecycleOwner.lifecycleScope.launch {
-            assetTransferAmountViewModel.assetTransferAmountPreviewFlow.collectLatest(
-                assetTransferAmountPreview
-            )
-        }
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            assetTransferAmountViewModel.assetTransferAmountPreviewFlow,
+            assetTransferAmountPreview
+        )
     }
 
     private fun onNextButtonClick() {
-        assetTransferAmountViewModel.onAmountSelected(latestAmountInput.formattedBalanceInBigDecimal)
+        assetTransferAmountViewModel.onAmountSelected(latestAmountInput.amount)
     }
 
     private fun onMaxButtonClick() {
         val formattedMaximumAmount = assetTransferAmountViewModel.getMaximumAmountOfAsset()
-        binding.amountTextView.updateBalance(formattedMaximumAmount)
+        binding.amountTextView.setAmount(formattedMaximumAmount)
     }
 
     private fun onAddButtonClick() {
@@ -285,13 +317,18 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
             useSavedStateValue<Boolean>(BaseMaximumBalanceWarningBottomSheet.MAX_BALANCE_WARNING_RESULT) {
                 if (it) {
                     showProgress()
-                    assetTransferAmountViewModel.calculateAmount(latestAmountInput.formattedBalanceInBigDecimal)
+                    sendWithCalculatedSendableAmount()
                 }
             }
             useSavedStateValue<String>(AddNoteBottomSheet.ADD_NOTE_RESULT_KEY) {
                 if (lockedNote != null) lockedNote = it else transactionNote = it
+                assetTransferAmountViewModel.updateTransactionNotes(lockedNote, transactionNote)
             }
         }
+    }
+
+    private fun sendWithCalculatedSendableAmount() {
+        assetTransferAmountViewModel.getCalculatedSendableAmount()?.let { handleNextNavigation(it) }
     }
 
     private fun showTransactionTipsIfNeed() {
@@ -352,10 +389,14 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
     }
 
     private fun showProgress() {
-        binding.progressBar.root.show()
+        binding.blockerProgressBar.root.show()
     }
 
     private fun hideProgress() {
-        binding.progressBar.root.hide()
+        binding.blockerProgressBar.root.hide()
+    }
+
+    private fun onAssetNotFound() {
+        nav(SendAlgoNavigationDirections.actionSendAlgoNavigationPop())
     }
 }

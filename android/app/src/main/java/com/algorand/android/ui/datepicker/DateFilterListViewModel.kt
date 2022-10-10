@@ -13,8 +13,7 @@
 
 package com.algorand.android.ui.datepicker
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
@@ -24,17 +23,20 @@ import com.algorand.android.models.DateFilter
 import com.algorand.android.models.DateFilter.Companion.DEFAULT_DATE_FILTER
 import com.algorand.android.usecase.DateFilterListUseCase
 import com.algorand.android.utils.getOrElse
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class DateFilterListViewModel @ViewModelInject constructor(
+@HiltViewModel
+class DateFilterListViewModel @Inject constructor(
     private val dateFilterListUseCase: DateFilterListUseCase,
-    @Assisted savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val selectedDateFilter: DateFilter = savedStateHandle.getOrElse(
-        SELECTED_DATE_FILTER_KEY, DEFAULT_DATE_FILTER
+        SELECTED_DATE_FILTER_KEY,
+        DEFAULT_DATE_FILTER
     )
 
     private val dateFilterList = DateFilter.getDateFilterList()

@@ -42,7 +42,8 @@ class WalletConnectConnectionUseCase @Inject constructor(
                         accountAddress = account.address,
                         accountType = account.type,
                         accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(account.type),
-                        accountPrimaryValue = accountValue.primaryAccountValue
+                        accountPrimaryValue = accountValue.primaryAccountValue,
+                        accountAssetCount = this.accountInformation.getOptedInAssetsCount()
                     )
                 },
                 onFailedAccountConfiguration = {
@@ -61,7 +62,8 @@ class WalletConnectConnectionUseCase @Inject constructor(
             accountSelectionMapper.mapToAccountSelection(
                 accountDisplayName = accountListItem.itemConfiguration.accountDisplayName,
                 accountIconResource = accountListItem.itemConfiguration.accountIconResource,
-                accountAddress = accountListItem.itemConfiguration.accountAddress
+                accountAddress = accountListItem.itemConfiguration.accountAddress,
+                accountAssetCount = accountListItem.itemConfiguration.accountAssetCount
             )
         }
     }

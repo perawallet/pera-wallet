@@ -54,7 +54,10 @@ class WCWalletConnectMapper @Inject constructor() {
         }
     }
 
-    fun createWalletConnectSession(sessionCachedData: WalletConnectSessionCachedData): WalletConnectSession? {
+    fun createWalletConnectSession(
+        sessionCachedData: WalletConnectSessionCachedData,
+        accountName: String?
+    ): WalletConnectSession? {
         with(sessionCachedData) {
             val peerMeta = createWalletConnectPeerMeta(session.peerMeta() ?: return null)
             val sessionMeta = createWalletConnectSessionMeta(sessionConfig)
@@ -64,7 +67,9 @@ class WCWalletConnectMapper @Inject constructor() {
                 sessionMeta = sessionMeta,
                 dateTimeStamp = getZonedDateTimeAsSec(),
                 connectedAccountPublicKey = approvedAccount,
-                isConnected = true
+                isConnected = true,
+                accountName = accountName,
+                fallbackBrowserGroupResponse = fallbackBrowserGroupResponse
             )
         }
     }

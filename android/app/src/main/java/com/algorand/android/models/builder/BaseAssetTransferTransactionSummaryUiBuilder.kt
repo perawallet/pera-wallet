@@ -32,10 +32,10 @@ class BaseAssetTransferTransactionSummaryUiBuilder @Inject constructor() :
     private fun buildGeneralTransactionSummary(txn: BaseAssetTransferTransaction): WalletConnectTransactionSummary {
         return with(txn) {
             WalletConnectTransactionSummary(
-                accountName = account?.name,
+                accountName = fromAccount?.name,
                 accountIconResource = createAccountIconResource(),
                 accountBalance = assetInformation?.amount,
-                assetShortName = assetParams?.shortName,
+                assetShortName = walletConnectTransactionAssetDetail?.shortName,
                 assetDecimal = assetDecimal,
                 transactionAmount = transactionAmount,
                 showWarning = warningCount != null,
@@ -53,7 +53,7 @@ class BaseAssetTransferTransactionSummaryUiBuilder @Inject constructor() :
                 replacementList = listOf("asset_id" to assetId.toString())
             )
             WalletConnectTransactionSummary(
-                accountName = account?.name,
+                accountName = fromAccount?.name,
                 accountIconResource = createAccountIconResource(),
                 summaryTitle = titleText,
                 showWarning = warningCount != null,

@@ -24,10 +24,10 @@ import com.algorand.android.databinding.FragmentReceiveCollectibleBinding
 import com.algorand.android.models.AssetAction
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
-import com.algorand.android.ui.addasset.AssetAdditionType
-import com.algorand.android.ui.addasset.BaseAddAssetFragment
-import com.algorand.android.ui.addasset.BaseAddAssetViewModel
-import com.algorand.android.utils.copyToClipboard
+import com.algorand.android.modules.assets.addition.base.ui.BaseAddAssetFragment
+import com.algorand.android.modules.assets.addition.base.ui.BaseAddAssetFragment.BaseAddAssetFragmentListener
+import com.algorand.android.modules.assets.addition.base.ui.BaseAddAssetViewModel
+import com.algorand.android.modules.assets.addition.ui.model.AssetAdditionType
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -44,7 +44,7 @@ class ReceiveCollectibleFragment : BaseAddAssetFragment(R.layout.fragment_receiv
         get() = R.id.receiveCollectibleFragment
 
     override val accountPublicKey: String
-        get() = args.publicKey
+        get() = args.accountAddress
 
     override val loadingProgressBar: ContentLoadingProgressBar
         get() = binding.loadingProgressBar
@@ -61,6 +61,10 @@ class ReceiveCollectibleFragment : BaseAddAssetFragment(R.layout.fragment_receiv
     override val assetAdditionType: AssetAdditionType
         get() = AssetAdditionType.COLLECTIBLE
 
+    override val baseAddAssetFragmentListener = BaseAddAssetFragmentListener {
+        receiveCollectibleViewModel.updateQuery(it)
+    }
+
     private val toolbarConfiguration = ToolbarConfiguration(
         titleResId = R.string.receive_an_nft,
         startIconResId = R.drawable.ic_left_arrow,
@@ -71,12 +75,12 @@ class ReceiveCollectibleFragment : BaseAddAssetFragment(R.layout.fragment_receiv
 
     private val accountCopyQrViewListener = object : AccountCopyQrView.Listener {
         override fun onCopyClick() {
-            context?.copyToClipboard(accountPublicKey)
+            onAccountAddressCopied(accountPublicKey)
         }
 
         override fun onQrClick() {
             nav(
-                HomeNavigationDirections.actionGlobalShowQrBottomSheet(
+                HomeNavigationDirections.actionGlobalShowQrNavigation(
                     title = getString(R.string.qr_code),
                     qrText = accountPublicKey
                 )
@@ -86,7 +90,6 @@ class ReceiveCollectibleFragment : BaseAddAssetFragment(R.layout.fragment_receiv
 
     override fun initUi() {
         with(binding) {
-            searchView.setOnTextChanged { receiveCollectibleViewModel.queryText = it }
             collectiblesRecyclerView.adapter = assetSearchAdapter
             accountCopyQrView.apply {
                 setListener(accountCopyQrViewListener)
@@ -101,25 +104,16 @@ class ReceiveCollectibleFragment : BaseAddAssetFragment(R.layout.fragment_receiv
     override fun navigateToAssetAdditionBottomSheet(assetAdditionAssetAction: AssetAction) {
         nav(
             ReceiveCollectibleFragmentDirections
-                .actionReceiveCollectibleFragmentToAddAssetActionBottomSheet(assetAdditionAssetAction)
+                .actionReceiveCollectibleFragmentToAssetAdditionActionNavigation(assetAdditionAssetAction)
         )
     }
 
-    override fun onSendTransactionSuccess() {
-        navigateToShowQrBottomSheet()
-    }
-
-    override fun onAssetAlreadyOwned() {
-        navigateToShowQrBottomSheet()
-    }
-
-    private fun navigateToShowQrBottomSheet() {
+    override fun onNavigateCollectibleDetail(collectibleId: Long) {
         nav(
-            ReceiveCollectibleFragmentDirections
-                .actionReceiveCollectibleFragmentToShowQrBottomSheet(
-                    context?.getString(R.string.qr_code).orEmpty(),
-                    accountPublicKey
-                )
+            ReceiveCollectibleFragmentDirections.actionReceiveCollectibleFragmentToCollectibleProfileNavigation(
+                accountAddress = accountPublicKey,
+                collectibleId = collectibleId
+            )
         )
     }
 }

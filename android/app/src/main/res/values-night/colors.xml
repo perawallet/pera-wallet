@@ -70,13 +70,13 @@
     <color name="button_square_bg">@color/turquoise_700_alpha_12</color>
     <color name="button_square_focus_bg">@color/turquoise_700_alpha_28</color>
     <color name="button_square_secondary_bg">@color/gray_800</color>
-    <color name="button_square_icon">@color/turquoise_500</color>
+    <color name="button_square_icon">@color/turquoise_600</color>
     <color name="button_square_secondary_icon">@color/gray_500</color>
 
     <!-- Helpers -->
     <color name="negative">@color/salmon_500</color>
     <color name="negative_lighter">@color/salmon_500_alpha_12</color>
-    <color name="positive">@color/turquoise_500</color>
+    <color name="positive">@color/turquoise_600</color>
     <color name="positive_lighter">@color/turquoise_500_alpha_12</color>
     <color name="success">@color/yellow_400</color>
     <color name="success_checkmark">@color/gray_900</color>
@@ -131,10 +131,15 @@
     <!-- Algorand Standart Assets (ASA) Tiers -->
     <color name="trusted_icon_bg">@color/turquoise_600</color>
     <color name="trusted_icon_inline">@color/gray_900</color>
+    <color name="trusted_icon_bg_opacity_16">#291A304A</color>
+
     <color name="verified_icon_bg">#1A304A</color>
-    <color name="verified_icon_inline">#0D7FFF</color>
+    <color name="verified_icon_inline">#48A7FE</color>
+    <color name="verified_icon_bg_opacity_80">#CC1A304A</color>
+
     <color name="suspicious_icon_bg">@color/salmon_500</color>
     <color name="suspicious_icon_inline">@color/gray_900</color>
+    <color name="suspicious_icon_bg_opacity_16">#29FF6D5F</color>
 
     <!-- Toast Message -->
     <color name="toast_background">@color/gray_600_alpha_92</color>
@@ -149,8 +154,9 @@
     <color name="algo_icon_bg">@color/turquoise_600</color>
     <color name="algo_icon">@color/gray_900</color>
 
-    <!-- endregion App Color Palette -->
+    <color name="button_stroke_color">@color/gray_800</color>
 
+    <!-- endregion App Color Palette -->
     <color name="colorPrimary">@color/turquoise_700</color>
     <color name="colorPrimaryVariant">@color/turquoise_800</color>
 
@@ -208,8 +214,10 @@
 
     <color name="governance_banner_icon_color">@color/white</color>
 
-    <!--  Background Gradient View  -->
-    <color name="gradient_bg_view_end_color">@color/transparent</color>
-    <color name="gradient_bg_view_start_color">@color/gray_900</color>
+    <!--  Verification Info Badge  -->
+    <color name="verification_badge_bg_gradient_start_color">#252529</color>
 
+    <!--  Bottom Fade Gradient View  -->
+    <!--Before merging to 5.3.0 let's remove "gradient_bg_view_start_color" and use this one-->
+    <color name="bottom_fade_gradient_start_color">@color/gray_900</color>
 </resources>

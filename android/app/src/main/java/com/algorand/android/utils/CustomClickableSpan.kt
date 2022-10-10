@@ -28,3 +28,16 @@ fun getCustomClickableSpan(clickableColor: Int, onClick: (View) -> Unit): Clicka
         }
     }
 }
+
+fun getCustomLongClickableSpan(clickableColor: Int, onLongClick: (View) -> Unit): LongClickableSpan {
+    return object : LongClickableSpan() {
+        override fun updateDrawState(ds: TextPaint) {
+            ds.color = clickableColor
+            ds.isUnderlineText = false
+        }
+
+        override fun onLongClick(widget: View) {
+            onLongClick.invoke(widget)
+        }
+    }
+}

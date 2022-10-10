@@ -134,9 +134,8 @@ class AccountDetailUseCase @Inject constructor(
         return accountSummaryMapper.mapTo(accountDetail, canAccountSignTransaction(publicKey))
     }
 
-    fun getAccountType(publicKey: String): Account.Type {
-        val account = accountRepository.getCachedAccountDetail(publicKey)?.data?.account
-        return account?.type ?: Account.Type.STANDARD
+    fun getAccountType(publicKey: String): Account.Type? {
+        return accountManager.getAccount(publicKey)?.type
     }
 
     fun getAccountName(publicKey: String): String {
@@ -149,11 +148,6 @@ class AccountDetailUseCase @Inject constructor(
     fun getAuthAddress(publicKey: String): String? {
         val accountInformation = accountRepository.getCachedAccountDetail(publicKey)?.data?.accountInformation
         return accountInformation?.rekeyAdminAddress
-    }
-
-    fun getAccountAddress(publicKey: String): String? {
-        val accountInformation = accountRepository.getCachedAccountDetail(publicKey)?.data?.accountInformation
-        return accountInformation?.address
     }
 
     fun getAccountIcon(publicKey: String): AccountIconResource? {

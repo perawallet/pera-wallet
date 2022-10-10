@@ -28,7 +28,7 @@ interface NotificationFilterDao {
     fun getNotificationFilterForUser(publicKey: String): List<NotificationFilter>
 
     @Query("DELETE FROM notificationfilter WHERE public_key = :publicKey")
-    fun deleteByPublicKey(publicKey: String)
+    suspend fun deleteByPublicKey(publicKey: String)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(notificationFilter: NotificationFilter)

@@ -16,19 +16,16 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentBaseCollectiblesListingBinding
 import com.algorand.android.nft.ui.base.BaseCollectibleListingViewModel
 import com.algorand.android.nft.ui.model.CollectiblesListingPreview
-import com.algorand.android.utils.GridSpacingItemDecoration
 import com.algorand.android.utils.viewbinding.viewBinding
 
 abstract class BaseCollectiblesListingFragment : DaggerBaseFragment(R.layout.fragment_base_collectibles_listing),
     CollectibleListAdapter.CollectibleListAdapterListener {
-
-    abstract val isTitleVisible: Boolean
 
     abstract val baseCollectibleListingViewModel: BaseCollectibleListingViewModel
 
@@ -40,8 +37,13 @@ abstract class BaseCollectiblesListingFragment : DaggerBaseFragment(R.layout.fra
         if (preview != null) initCollectibleListingPreview(preview)
     }
 
+    protected val addCollectibleFloatingActionButtonVisibilityCollector: suspend (Boolean?) -> Unit = { isVisible ->
+        updateUiWithAddCollectibleFloatingActionButtonVisibility(isVisible)
+    }
+
     abstract fun initCollectiblesListingPreviewCollector()
-    abstract fun onFilterClick()
+    abstract fun addItemVisibilityChangeListenerToRecyclerView(recyclerView: RecyclerView)
+    abstract fun onAddCollectibleFloatingActionButtonClicked()
 
     override fun onResume() {
         super.onResume()
@@ -50,6 +52,7 @@ abstract class BaseCollectiblesListingFragment : DaggerBaseFragment(R.layout.fra
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        baseCollectibleListingViewModel.resetSearchQuery()
         initUi()
         initCollectiblesListingPreviewCollector()
     }
@@ -58,18 +61,18 @@ abstract class BaseCollectiblesListingFragment : DaggerBaseFragment(R.layout.fra
         onReceiveCollectibleClick()
     }
 
+    override fun onSearchQueryUpdated(query: String) {
+        baseCollectibleListingViewModel.updateSearchKeyword(query)
+    }
+
     protected open fun initUi() {
         initializeCollectibleListAdapter()
         with(binding) {
             collectiblesRecyclerView.apply {
                 adapter = collectibleListAdapter
-                val itemSpacing = resources.getDimensionPixelSize(R.dimen.spacing_xlarge)
-                addItemDecoration(GridSpacingItemDecoration(RECYCLER_SPAN_COUNT, itemSpacing, false))
-                layoutManager = GridLayoutManager(context, RECYCLER_SPAN_COUNT)
+                layoutManager = CollectibleListGridLayoutManager(context, collectibleListAdapter)
             }
             receiveCollectiblesButton.setOnClickListener { onReceiveCollectibleClick() }
-            filterButton.setOnClickListener { onFilterClick() }
-            collectibleSearchView.setOnTextChanged { baseCollectibleListingViewModel.updateSearchKeyword(it) }
         }
     }
 
@@ -82,27 +85,13 @@ abstract class BaseCollectiblesListingFragment : DaggerBaseFragment(R.layout.fra
             with(binding) {
                 emptyStateScrollView.isVisible = isEmptyStateVisible
                 receiveCollectiblesButton.isVisible = isReceiveButtonVisible
-                titleTextView.isVisible = !isEmptyStateVisible && isTitleVisible
                 collectiblesRecyclerView.isVisible = !isEmptyStateVisible
                 progressBar.isVisible = isLoadingVisible
-                collectibleSearchView.isVisible = !isEmptyStateVisible
                 collectibleListAdapter.submitList(baseCollectibleListItems)
-                filterButton.apply {
-                    isActivated = isFilterActive
-                    isVisible = !isEmptyStateVisible
-                }
                 clearFiltersButton.apply {
                     setOnClickListener { baseCollectibleListingViewModel.clearFilters() }
                     text = resources.getString(R.string.show_filtered_nfts_formatted, filteredCollectibleCount)
                     isVisible = isClearFilterButtonVisible
-                }
-                collectibleCountTextView.apply {
-                    isVisible = !isEmptyStateVisible
-                    text = resources.getQuantityString(
-                        R.plurals.collectible_count,
-                        displayedCollectibleCount,
-                        displayedCollectibleCount
-                    )
                 }
                 if (isAccountFabVisible) {
                     val paddingBottom = resources.getDimensionPixelSize(R.dimen.safe_padding_for_floating_action_button)
@@ -111,6 +100,7 @@ abstract class BaseCollectiblesListingFragment : DaggerBaseFragment(R.layout.fra
                         clipToPadding = false
                     }
                 }
+                addCollectibleFloatingActionButton.setOnClickListener { onAddCollectibleFloatingActionButtonClicked() }
             }
         }
     }
@@ -121,7 +111,17 @@ abstract class BaseCollectiblesListingFragment : DaggerBaseFragment(R.layout.fra
         }
     }
 
-    companion object {
-        private const val RECYCLER_SPAN_COUNT = 2
+    protected fun onListItemConfigurationHeaderItemVisibilityChange(isVisible: Boolean) {
+        with(binding.baseCollectiblesListingMotionLayout) {
+            if (isVisible) {
+                transitionToStart()
+            } else {
+                transitionToEnd()
+            }
+        }
+    }
+
+    private fun updateUiWithAddCollectibleFloatingActionButtonVisibility(isVisible: Boolean?) {
+        if (isVisible == true) addItemVisibilityChangeListenerToRecyclerView(binding.collectiblesRecyclerView)
     }
 }

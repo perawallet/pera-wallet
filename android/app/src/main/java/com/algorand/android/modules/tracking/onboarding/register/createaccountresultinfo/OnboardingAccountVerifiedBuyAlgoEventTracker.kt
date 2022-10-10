@@ -27,6 +27,6 @@ class OnboardingAccountVerifiedBuyAlgoEventTracker @Inject constructor(
     }
 
     companion object {
-        private const val ONBOARDING_BUY_ALGO_EVENT_KEY = "onboarding_createaccount_verified_buyalgo"
+        private const val ONBOARDING_BUY_ALGO_EVENT_KEY = "onb_createacc_verified_buyalgo"
     }
 }

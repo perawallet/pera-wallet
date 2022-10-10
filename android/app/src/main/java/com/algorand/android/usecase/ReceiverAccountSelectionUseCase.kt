@@ -36,13 +36,11 @@ import com.algorand.android.utils.exceptions.GlobalException
 import com.algorand.android.utils.exceptions.NavigationException
 import com.algorand.android.utils.exceptions.WarningException
 import com.algorand.android.utils.formatAsAlgoString
-import com.algorand.android.utils.getUserIfSavedLocally
 import com.algorand.android.utils.validator.AccountTransactionValidator
 import java.math.BigInteger
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 
 @Suppress("LongParameterList")
@@ -191,7 +189,7 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
         }
 
         val toAccountPublicKey = accountInformation.address
-        val contact = handleIfToAccountPublicKeyIntoLocal(toAccountPublicKey)
+        val contact = getContactByAddressIfExists(toAccountPublicKey)
         val toAccountCacheData = accountCacheManager.getCacheData(toAccountPublicKey)
         val targetUser =
             TargetUser(contact, toAccountPublicKey, toAccountCacheData, nftDomainAddress, nftDomainServiceLogoUrl)
@@ -203,19 +201,15 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
         assetRepository.postAssetSupportRequest(AssetSupportRequest(fromAddress, requestedAddress, assetId))
     }
 
-    private suspend fun handleIfToAccountPublicKeyIntoLocal(publicKey: String): User? {
-        return getUserIfSavedLocally(
-            contactList = contactRepository.getContacts().first(),
-            accountList = accountManager.getAccounts(),
-            nonOwnerPublicKey = publicKey
-        )
+    private suspend fun getContactByAddressIfExists(accountAddress: String): User? {
+        return contactRepository.getAllContacts().firstOrNull { it.publicKey == accountAddress }
     }
 
     fun getAssetInformation(assetId: Long, publicKey: String): AssetInformation? {
         val ownedAssetData = getBaseOwnedAssetDataUseCase.getBaseOwnedAssetData(assetId, publicKey)
         return AssetInformation.createAssetInformation(
-            ownedAssetData ?: return null,
-            assetDataProviderDecider.getAssetDrawableProvider(assetId)
+            baseOwnedAssetData = ownedAssetData ?: return null,
+            assetDrawableProvider = assetDataProviderDecider.getAssetDrawableProvider(assetId)
         )
     }
 

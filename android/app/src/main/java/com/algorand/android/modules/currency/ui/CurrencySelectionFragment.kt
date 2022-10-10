@@ -18,7 +18,6 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentCurrencySelectionBinding
@@ -28,11 +27,10 @@ import com.algorand.android.models.ui.CurrencySelectionPreview
 import com.algorand.android.modules.currency.domain.model.SelectedCurrency
 import com.algorand.android.ui.settings.selection.CurrencyListItem
 import com.algorand.android.ui.settings.selection.SelectionAdapter
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.getXmlStyledString
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CurrencySelectionFragment : DaggerBaseFragment(R.layout.fragment_currency_selection) {
@@ -63,7 +61,7 @@ class CurrencySelectionFragment : DaggerBaseFragment(R.layout.fragment_currency_
         currencySelectionPreview?.let { preview ->
             with(binding) {
                 preview.currencyList?.let { currencySelectionAdapter.setItems(it) }
-                successContentGroup.isVisible = preview.isContentVisible
+                currencyRecyclerView.isVisible = preview.isCurrencyListVisible
                 loadingProgressBar.isVisible = preview.isLoading
                 screenStateView.isVisible = preview.isScreenStateViewVisible
                 preview.screenStateViewType?.let { screenStateView.setupUi(it) }
@@ -80,7 +78,7 @@ class CurrencySelectionFragment : DaggerBaseFragment(R.layout.fragment_currency_
         }
     }
 
-    private fun getCurrencyDescriptionText(primaryCurrencyId: String, secondaryCurrencyId: String): String {
+    private fun getCurrencyDescriptionText(primaryCurrencyId: String, secondaryCurrencyId: String): CharSequence {
         return context?.run {
             val currencyIdTextColor = ContextCompat.getColor(this, R.color.text_main)
             val primaryColorAnnotationPair = "primaryCurrencyColor" to ForegroundColorSpan(currencyIdTextColor)
@@ -88,11 +86,11 @@ class CurrencySelectionFragment : DaggerBaseFragment(R.layout.fragment_currency_
             val primaryCurrencyIdReplacementPair = "primaryCurrencyId" to primaryCurrencyId
             val secondaryCurrencyIdReplacementPair = "secondaryCurrencyId" to secondaryCurrencyId
             getXmlStyledString(
-                stringResId = R.string.your_main_currency_is,
+                stringResId = R.string.your_main_currency_is_placeholder,
                 customAnnotations = listOf(primaryColorAnnotationPair, secondaryColorAnnotationPair),
                 replacementList = listOf(primaryCurrencyIdReplacementPair, secondaryCurrencyIdReplacementPair)
-            ).toString()
-        }.orEmpty()
+            )
+        } ?: ""
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -116,12 +114,14 @@ class CurrencySelectionFragment : DaggerBaseFragment(R.layout.fragment_currency_
     }
 
     private fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            currencySelectionViewModel.currencySelectionPreviewFlow.collectLatest(currencySelectionPreviewCollector)
-        }
-        viewLifecycleOwner.lifecycleScope.launch {
-            currencySelectionViewModel.selectedCurrencyFlow.collectLatest(selectedCurrencyObserver)
-        }
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            currencySelectionViewModel.currencySelectionPreviewFlow,
+            currencySelectionPreviewCollector
+        )
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            currencySelectionViewModel.selectedCurrencyFlow,
+            selectedCurrencyObserver
+        )
     }
 
     private fun onDifferentCurrencyListItemClick(currencyListItem: CurrencyListItem) {

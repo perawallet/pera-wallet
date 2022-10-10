@@ -13,21 +13,22 @@
 
 package com.algorand.android.repository
 
-import com.algorand.android.sharedpref.PinRegistrationLocalSource
+import com.algorand.android.sharedpref.NotEncryptedPinLocalSource
 import javax.inject.Inject
 
+// Do NOT INJECT this repository to a class other than NotEncryptedPinUseCase
 class NotEncryptedPinRepository @Inject constructor(
-    private val pinRegistrationLocalSource: PinRegistrationLocalSource
+    private val notEncryptedPinLocalSource: NotEncryptedPinLocalSource
 ) {
     fun isNotEncryptedPinSet(): Boolean {
-        return pinRegistrationLocalSource.getDataOrNull() != null
+        return notEncryptedPinLocalSource.getDataOrNull() != null
     }
 
     fun clearNotEncryptedPin() {
-        pinRegistrationLocalSource.saveData(null)
+        notEncryptedPinLocalSource.saveData(null)
     }
 
     fun getNotEncryptedPin(): String? {
-        return pinRegistrationLocalSource.getDataOrNull()
+        return notEncryptedPinLocalSource.getDataOrNull()
     }
 }

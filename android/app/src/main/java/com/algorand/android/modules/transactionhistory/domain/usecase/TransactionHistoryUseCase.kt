@@ -33,6 +33,7 @@ import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import com.algorand.android.utils.formatAsDate
 import com.algorand.android.utils.formatAsRFC3339Version
 import com.algorand.android.utils.getZonedDateTimeFromTimeStamp
+import com.algorand.android.utils.sendErrorLog
 import java.math.BigInteger
 import javax.inject.Inject
 import javax.inject.Named
@@ -99,14 +100,6 @@ class TransactionHistoryUseCase @Inject constructor(
                         transactionList = response.data.transactionList,
                         dateRange = dateFilterQuery.value.getDateRange()
                     )
-                    val assetIds = dateFilteredTransactionList.map { it.getAllAssetIds() }.flatten().toSet()
-                    if (assetIds.isNotEmpty()) {
-                        simpleAssetDetailUseCase.cacheIfThereIsNonCachedAsset(
-                            assetIdList = assetIds,
-                            coroutineScope = coroutineScope,
-                            includeDeleted = true
-                        )
-                    }
                     val baseTransactionList = dateFilteredTransactionList.mapNotNull { txn ->
                         when (txn.transactionType) {
                             PAY_TRANSACTION -> createPayTransaction(txn, publicKey)
@@ -115,6 +108,14 @@ class TransactionHistoryUseCase @Inject constructor(
                             APP_TRANSACTION -> baseTransactionMapper.mapToApplicationCall(txn)
                             else -> baseTransactionMapper.mapToUndefined(txn)
                         }
+                    }
+                    val assetIds = getAssetIdsFromTransactions(baseTransactionList)
+                    if (assetIds.isNotEmpty()) {
+                        simpleAssetDetailUseCase.cacheIfThereIsNonCachedAsset(
+                            assetIdList = assetIds,
+                            coroutineScope = coroutineScope,
+                            includeDeleted = true
+                        )
                     }
                     PagingSource.LoadResult.Page(
                         data = baseTransactionList,
@@ -125,6 +126,21 @@ class TransactionHistoryUseCase @Inject constructor(
             }
         } catch (exception: Exception) {
             PagingSource.LoadResult.Error(exception)
+        }
+    }
+
+    private fun getAssetIdsFromTransactions(transactionList: List<BaseTransaction.Transaction>): Set<Long> {
+        return mutableSetOf<Long>().apply {
+            transactionList.forEach {
+                when (it) {
+                    is BaseTransaction.Transaction.ApplicationCall -> addAll(it.foreignAssetIds.orEmpty())
+                    is BaseTransaction.Transaction.AssetConfiguration -> it.assetId?.let { safeId -> add(safeId) }
+                    is BaseTransaction.Transaction.AssetTransfer -> add(it.assetId)
+                    else -> {
+                        sendErrorLog("Unhandled else case in TransactionHistoryUseCase.getAssetIdsFromTransactions")
+                    }
+                }
+            }
         }
     }
 
@@ -150,21 +166,25 @@ class TransactionHistoryUseCase @Inject constructor(
         refreshTransactionHistory()
     }
 
-    private fun isReceiveTransaction(transaction: TransactionDTO, accountPublicKey: String): Boolean {
-        return with(transaction) {
-            getReceiverAddressOrEmpty() == accountPublicKey || getCloseToAddress() == accountPublicKey
-        }
+    private fun isReceiveTransaction(
+        accountPublicKey: String,
+        closeToAddress: String?,
+        receiverAddress: String?
+    ): Boolean {
+        return receiverAddress == accountPublicKey || closeToAddress == accountPublicKey
     }
 
-    private fun isSelfOptInTransaction(transaction: TransactionDTO, accountPublicKey: String): Boolean {
-        return isSelfTransaction(transaction, accountPublicKey) &&
-            transaction.getAmount(false) == BigInteger.ZERO
+    private fun isSelfOptInTransaction(
+        accountPublicKey: String,
+        senderAddress: String?,
+        receiverAddress: String?,
+        amount: BigInteger
+    ): Boolean {
+        return isSelfTransaction(accountPublicKey, senderAddress, receiverAddress) && amount == BigInteger.ZERO
     }
 
-    private fun isSelfTransaction(transaction: TransactionDTO, accountPublicKey: String): Boolean {
-        return with(transaction) {
-            senderAddress == accountPublicKey && getReceiverAddressOrEmpty() == accountPublicKey
-        }
+    private fun isSelfTransaction(accountPublicKey: String, senderAddress: String?, receiverAddress: String?): Boolean {
+        return senderAddress == accountPublicKey && receiverAddress == accountPublicKey
     }
 
     private fun shouldAddDateSeparator(
@@ -183,11 +203,14 @@ class TransactionHistoryUseCase @Inject constructor(
         transactionDTO: TransactionDTO,
         publicKey: String
     ): BaseTransaction.Transaction.Pay {
+        val closeToAddress = transactionDTO.payment?.closeToAddress
+        val receiverAddress = transactionDTO.payment?.receiverAddress
+        val senderAddress = transactionDTO.senderAddress
         return when {
-            isSelfTransaction(transactionDTO, publicKey) -> {
+            isSelfTransaction(publicKey, senderAddress, receiverAddress) -> {
                 baseTransactionMapper.mapToPayTransactionSelf(transaction = transactionDTO)
             }
-            isReceiveTransaction(transactionDTO, publicKey) -> {
+            isReceiveTransaction(publicKey, closeToAddress, receiverAddress) -> {
                 baseTransactionMapper.mapToPayTransactionReceive(transaction = transactionDTO)
             }
             else -> {
@@ -200,7 +223,10 @@ class TransactionHistoryUseCase @Inject constructor(
         transactionDTO: TransactionDTO,
         publicKey: String
     ): BaseTransaction.Transaction.AssetTransfer? {
-        val closeToAddress = transactionDTO.getCloseToAddress()
+        val closeToAddress = transactionDTO.assetTransfer?.closeTo
+        val receiverAddress = transactionDTO.assetTransfer?.receiverAddress
+        val senderAddress = transactionDTO.senderAddress
+        val amount = transactionDTO.assetTransfer?.amount ?: BigInteger.ZERO
         return with(baseTransactionMapper) {
             when {
                 !closeToAddress.isNullOrBlank() && closeToAddress == publicKey -> {
@@ -209,9 +235,15 @@ class TransactionHistoryUseCase @Inject constructor(
                 !closeToAddress.isNullOrBlank() -> {
                     mapToAssetTransactionOptOut(closeToAddress = closeToAddress, transaction = transactionDTO)
                 }
-                isSelfOptInTransaction(transactionDTO, publicKey) -> mapToAssetTransactionSelfOptIn(transactionDTO)
-                isSelfTransaction(transactionDTO, publicKey) -> mapToAssetTransactionSelf(transactionDTO)
-                isReceiveTransaction(transactionDTO, publicKey) -> mapToAssetTransactionReceive(transactionDTO)
+                isSelfOptInTransaction(publicKey, senderAddress, receiverAddress, amount) -> {
+                    mapToAssetTransactionSelfOptIn(transaction = transactionDTO)
+                }
+                isSelfTransaction(publicKey, senderAddress, receiverAddress) -> {
+                    mapToAssetTransactionSelf(transaction = transactionDTO)
+                }
+                isReceiveTransaction(publicKey, closeToAddress, receiverAddress) -> {
+                    mapToAssetTransactionReceive(transaction = transactionDTO)
+                }
                 else -> mapToAssetTransactionSend(transactionDTO)
             }
         }

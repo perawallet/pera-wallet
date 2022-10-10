@@ -65,11 +65,9 @@ class CenteredImageSpan(context: Context, @DrawableRes drawableRes: Int) : Image
         paint: Paint
     ) {
         canvas.save()
-        val drawableHeight = cachedDrawable.intrinsicHeight
-        val fontAscent = paint.fontMetricsInt.ascent
-        val fontDescent = paint.fontMetricsInt.descent
-        val transY = bottom - cachedDrawable.bounds.bottom + ((drawableHeight - fontDescent + fontAscent) / 2)
-        canvas.translate(x, transY.toFloat())
+        val fontHeight = paint.fontMetricsInt.descent - paint.fontMetricsInt.ascent
+        cachedDrawable.setBounds(0, 0, fontHeight, fontHeight)
+        canvas.translate(x, 0F)
         cachedDrawable.draw(canvas)
         canvas.restore()
     }

@@ -12,11 +12,13 @@
 
 package com.algorand.android.ui.common.transactiontips
 
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.usecase.TransactionTipsUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 
-class TransactionTipsViewModel @ViewModelInject constructor(
+@HiltViewModel
+class TransactionTipsViewModel @Inject constructor(
     private val transactionTipsUseCase: TransactionTipsUseCase
 ) : BaseViewModel() {
 

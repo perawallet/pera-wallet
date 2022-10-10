@@ -12,7 +12,7 @@
 
 package com.algorand.android.utils.walletconnect
 
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.LiveData
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.models.WCSessionRequestResult
@@ -20,12 +20,12 @@ import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.models.WalletConnectTransaction
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
-import javax.inject.Singleton
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharedFlow
 
-@Singleton
-class WalletConnectViewModel @ViewModelInject constructor(
+@HiltViewModel
+class WalletConnectViewModel @Inject constructor(
     private val walletConnectManager: WalletConnectManager,
     private val walletConnectUrlHandler: WalletConnectUrlHandler
 ) : BaseViewModel() {
@@ -70,5 +70,9 @@ class WalletConnectViewModel @ViewModelInject constructor(
 
     fun setWalletConnectSessionTimeoutListener(onSessionTimedOut: () -> Unit) {
         walletConnectManager.onSessionTimedOut = onSessionTimedOut
+    }
+
+    fun killAllWalletConnectSessions() {
+        walletConnectManager.killAllSessions()
     }
 }

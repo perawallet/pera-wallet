@@ -13,6 +13,7 @@
 package com.algorand.android.models
 
 import android.view.View
+import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import com.google.android.material.button.MaterialButton
 
@@ -22,6 +23,9 @@ abstract class BaseToolbarButton {
     abstract val backgroundTintResId: Int?
     abstract val onClick: () -> Unit
     abstract fun initAttributes(button: View)
+
+    @IdRes
+    val id = View.generateViewId()
 
     protected fun setBackgroundTint(button: MaterialButton) {
         backgroundTintResId?.let { tintResId ->

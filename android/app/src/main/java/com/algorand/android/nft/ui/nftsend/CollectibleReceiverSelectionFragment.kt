@@ -13,19 +13,17 @@
 package com.algorand.android.nft.ui.nftsend
 
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.algorand.android.R
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.nft.ui.model.CollectibleReceiverSelectionPreview
 import com.algorand.android.nft.ui.nftsend.CollectibleReceiverSelectionQrScannerFragment.Companion.ACCOUNT_ADDRESS_SCAN_RESULT_KEY
 import com.algorand.android.ui.accountselection.BaseAccountSelectionFragment
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.setNavigationResult
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CollectibleReceiverSelectionFragment : BaseAccountSelectionFragment() {
@@ -64,11 +62,10 @@ class CollectibleReceiverSelectionFragment : BaseAccountSelectionFragment() {
     }
 
     override fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            collectibleReceiverSelectionViewModel.collectibleReceiverSelectionPreviewFlow.collectLatest(
-                collectibleReceiverSelectionPreviewCollector
-            )
-        }
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            collectibleReceiverSelectionViewModel.collectibleReceiverSelectionPreviewFlow,
+            collectibleReceiverSelectionPreviewCollector
+        )
     }
 
     override fun onCopiedItemHandled(copiedMessage: String?) {

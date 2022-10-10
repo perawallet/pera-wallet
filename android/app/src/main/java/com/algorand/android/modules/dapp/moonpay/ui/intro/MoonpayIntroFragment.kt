@@ -15,7 +15,6 @@ package com.algorand.android.modules.dapp.moonpay.ui.intro
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
 import com.algorand.android.core.BaseFragment
@@ -25,14 +24,12 @@ import com.algorand.android.models.StatusBarConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.modules.dapp.moonpay.data.remote.model.SignMoonpayUrlResponse
 import com.algorand.android.modules.dapp.moonpay.ui.accountselection.MoonpayAccountSelectionFragment
-import com.algorand.android.utils.Event
-import com.algorand.android.utils.Resource
-import com.algorand.android.utils.openUrl
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
+import com.algorand.android.utils.browser.openUrl
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class MoonpayIntroFragment : BaseFragment(R.layout.fragment_moonpay_intro) {
@@ -54,13 +51,8 @@ class MoonpayIntroFragment : BaseFragment(R.layout.fragment_moonpay_intro) {
 
     private val statusBarConfiguration = StatusBarConfiguration(backgroundColor = R.color.moonpay)
 
-    private val signMoonpayUrlResponseCollector: suspend (Event<Resource<SignMoonpayUrlResponse>>?) -> Unit = {
-        it?.consume()?.use(
-            onSuccess = {
-                openSignedMoonpayUrl(it.moonpayUrl)
-            },
-            onFailed = { showGlobalError(it.parse(requireContext())) }
-        )
+    private val signMoonpayUrlCollector: suspend (SignMoonpayUrlResponse?) -> Unit = {
+        openSignedMoonpayUrl(it?.moonpayUrl)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -76,11 +68,10 @@ class MoonpayIntroFragment : BaseFragment(R.layout.fragment_moonpay_intro) {
     }
 
     private fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-            moonpayIntroViewModel.signMoonpayUrlFlow?.collectLatest {
-                openSignedMoonpayUrl(it?.moonpayUrl)
-            }
-        }
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            moonpayIntroViewModel.signMoonpayUrlFlow,
+            signMoonpayUrlCollector
+        )
     }
 
     private fun initSavedStateListener() {

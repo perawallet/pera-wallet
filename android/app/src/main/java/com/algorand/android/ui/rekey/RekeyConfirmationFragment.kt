@@ -29,6 +29,7 @@ import com.algorand.android.models.TransactionData
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.formatAsAlgoString
+import com.algorand.android.utils.sendErrorLog
 import com.algorand.android.utils.toShortenedAddress
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -115,6 +116,9 @@ class RekeyConfirmationFragment : TransactionBaseFragment(R.layout.fragment_reke
                 }
                 is Account.Detail.Rekeyed, is Account.Detail.RekeyedAuth -> {
                     setupTransferViewForRekeyedAccount(account.name)
+                }
+                else -> {
+                    sendErrorLog("Unhandled else case in RekeyConfirmationFragment.setupTransferView")
                 }
             }
         } else {

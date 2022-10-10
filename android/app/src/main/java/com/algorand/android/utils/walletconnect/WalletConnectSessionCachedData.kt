@@ -13,6 +13,7 @@
 package com.algorand.android.utils.walletconnect
 
 import android.util.Log
+import com.algorand.android.utils.sendErrorLog
 import org.walletconnect.Session
 import org.walletconnect.Session.Config
 import org.walletconnect.impls.WCSession
@@ -20,7 +21,8 @@ import org.walletconnect.impls.WCSession
 class WalletConnectSessionCachedData(
     var sessionId: Long,
     val session: WCSession,
-    val sessionConfig: Config
+    val sessionConfig: Config,
+    val fallbackBrowserGroupResponse: String?
 ) : Session.Callback {
 
     val approvedAccount: String
@@ -46,6 +48,9 @@ class WalletConnectSessionCachedData(
             is Session.MethodCall.SessionRequest -> callback?.onSessionRequest(sessionId, call.id, call)
             is Session.MethodCall.SessionUpdate -> callback?.onSessionUpdate(sessionId, call)
             is Session.MethodCall.Custom -> callback?.onCustomRequest(sessionId, call)
+            else -> {
+                sendErrorLog("Unhandled else case in WalletConnectSessionCachedData")
+            }
         }
     }
 
@@ -56,6 +61,9 @@ class WalletConnectSessionCachedData(
             Session.Status.Disconnected -> callback?.onSessionDisconnected(sessionId)
             Session.Status.Approved -> callback?.onSessionApproved(sessionId)
             is Session.Status.Error -> callback?.onSessionError(sessionId, status)
+            else -> {
+                sendErrorLog("Unhandled else case in WalletConnectSessionCachedData")
+            }
         }
     }
 
@@ -63,9 +71,14 @@ class WalletConnectSessionCachedData(
 
         private val logTag = WalletConnectSessionCachedData::class.java.simpleName
 
-        fun create(session: WCSession, sessionConfig: Config, sessionId: Long? = null): WalletConnectSessionCachedData {
+        fun create(
+            session: WCSession,
+            sessionConfig: Config,
+            sessionId: Long? = null,
+            fallbackBrowserGroupResponse: String? = null
+        ): WalletConnectSessionCachedData {
             val id = sessionId ?: System.currentTimeMillis()
-            return WalletConnectSessionCachedData(id, session, sessionConfig)
+            return WalletConnectSessionCachedData(id, session, sessionConfig, fallbackBrowserGroupResponse)
         }
     }
 

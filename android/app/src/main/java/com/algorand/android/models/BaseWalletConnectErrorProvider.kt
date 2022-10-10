@@ -98,8 +98,7 @@ sealed class BaseWalletConnectErrorProvider {
         private val invalidAssetErrorMessage: String,
         private val unableToSignErrorMessage: String,
         private val atomicTxnNoNeedToBeSignedErrorMessage: String,
-        private val invalidSignerErrorMessage: String,
-        private val missingTransactionFromGroupErrorMessage: String
+        private val invalidSignerErrorMessage: String
     ) : BaseWalletConnectErrorProvider() {
 
         override fun getError(errorMessage: String): WalletConnectTransactionErrorResponse {
@@ -147,11 +146,5 @@ sealed class BaseWalletConnectErrorProvider {
          */
         val invalidSigner
             get() = getError(invalidSignerErrorMessage)
-
-        /**
-         *  The request does not contain all the transactions which are in the same group
-         */
-        val missingTransactionFromGroup
-            get() = getError(missingTransactionFromGroupErrorMessage)
     }
 }

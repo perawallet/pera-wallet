@@ -19,7 +19,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
+import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import com.algorand.android.HomeNavigationDirections
@@ -33,12 +33,11 @@ import com.algorand.android.models.NotificationCenterPreview
 import com.algorand.android.models.NotificationListItem
 import com.algorand.android.models.ScreenState
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.IOException
 import java.time.ZonedDateTime
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class NotificationCenterFragment : DaggerBaseFragment(R.layout.fragment_notification_center) {
@@ -76,6 +75,25 @@ class NotificationCenterFragment : DaggerBaseFragment(R.layout.fragment_notifica
         notificationAdapter.submitData(pagingData)
     }
 
+    private val loadStateFlowCollector: suspend (CombinedLoadStates) -> Unit = { combinedLoadStates ->
+        val isNotificationListEmpty = notificationAdapter.itemCount == 0
+        val isCurrentStateError = combinedLoadStates.refresh is LoadState.Error
+        val isLoading = combinedLoadStates.refresh is LoadState.Loading
+        binding.swipeRefreshLayout.isRefreshing = isLoading
+        when {
+            isCurrentStateError -> {
+                enableNotificationsErrorState((combinedLoadStates.refresh as LoadState.Error).error)
+            }
+            isLoading.not() && isNotificationListEmpty -> {
+                binding.screenStateView.setupUi(emptyState)
+            }
+        }
+        binding.notificationsRecyclerView.isInvisible =
+            isCurrentStateError || isNotificationListEmpty
+        binding.screenStateView.isVisible =
+            (isCurrentStateError || isNotificationListEmpty) && isLoading.not()
+    }
+
     private val isRefreshNeededObserver = Observer<Boolean> { isRefreshNeeded ->
         if (isRefreshNeeded) {
             refreshList(changeRefreshTime = true)
@@ -96,14 +114,21 @@ class NotificationCenterFragment : DaggerBaseFragment(R.layout.fragment_notifica
 
     private fun initPreview(notificationCenterPreview: NotificationCenterPreview) {
         with(notificationCenterPreview) {
+            errorMessageResId?.consume()?.run { showGlobalError(errorMessage = getString(this)) }
             onGoingAssetDetailEvent?.consume()?.run {
                 navToAssetDetail(publicKey = first, assetId = second)
             }
             onGoingCollectibleDetailEvent?.consume()?.run {
                 navToCollectibleDetail(publicKey = first, assetId = second)
             }
+            onGoingAssetProfileEvent?.consume()?.run {
+                navToAsaProfile(accountAddress = first, assetId = second)
+            }
+            onGoingCollectibleProfileEvent?.consume()?.run {
+                navToCollectibleProfile(accountAddress = first, collectibleId = second)
+            }
             onAssetSupportRequestEvent?.consume()?.run {
-                nav(HomeNavigationDirections.actionGlobalUnsupportedAssetNotificationRequestActionBottomSheet(this))
+                notificationCenterViewModel.checkRequestedAssetType(accountAddress = first, assetId = second)
             }
             onHistoryNotAvailableEvent?.consume()?.run {
                 onHistoryNotAvailable(publicKey = this)
@@ -136,12 +161,14 @@ class NotificationCenterFragment : DaggerBaseFragment(R.layout.fragment_notifica
     }
 
     private fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            notificationCenterViewModel.notificationPaginationFlow.collectLatest(notificationPaginationCollector)
-        }
-        viewLifecycleOwner.lifecycleScope.launch {
-            notificationCenterViewModel.notificationCenterPreviewFlow.collectLatest(notificationCenterPreviewCollector)
-        }
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            notificationCenterViewModel.notificationPaginationFlow,
+            notificationPaginationCollector
+        )
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            notificationCenterViewModel.notificationCenterPreviewFlow,
+            notificationCenterPreviewCollector
+        )
         notificationCenterViewModel.isRefreshNeededLiveData().observe(viewLifecycleOwner, isRefreshNeededObserver)
     }
 
@@ -151,24 +178,10 @@ class NotificationCenterFragment : DaggerBaseFragment(R.layout.fragment_notifica
     }
 
     private fun handleLoadState() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            notificationAdapter.loadStateFlow.collectLatest { combinedLoadStates ->
-                val isNotificationListEmpty = notificationAdapter.itemCount == 0
-                val isCurrentStateError = combinedLoadStates.refresh is LoadState.Error
-                val isLoading = combinedLoadStates.refresh is LoadState.Loading
-                binding.swipeRefreshLayout.isRefreshing = isLoading
-                when {
-                    isCurrentStateError -> {
-                        enableNotificationsErrorState((combinedLoadStates.refresh as LoadState.Error).error)
-                    }
-                    isLoading.not() && isNotificationListEmpty -> {
-                        binding.screenStateView.setupUi(emptyState)
-                    }
-                }
-                binding.notificationsRecyclerView.isInvisible = isCurrentStateError || isNotificationListEmpty
-                binding.screenStateView.isVisible = (isCurrentStateError || isNotificationListEmpty) && isLoading.not()
-            }
-        }
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            notificationAdapter.loadStateFlow,
+            loadStateFlowCollector
+        )
     }
 
     private fun enableNotificationsErrorState(throwable: Throwable) {
@@ -199,6 +212,9 @@ class NotificationCenterFragment : DaggerBaseFragment(R.layout.fragment_notifica
     private fun onNewItemAddedToTop() {
         if (lifecycle.currentState.isAtLeast(Lifecycle.State.INITIALIZED)) {
             binding.notificationsRecyclerView.scrollToPosition(0)
+            notificationCenterViewModel.updateLastSeenNotification(
+                notificationListItem = notificationAdapter.snapshot().firstOrNull()
+            )
         }
     }
 
@@ -225,7 +241,25 @@ class NotificationCenterFragment : DaggerBaseFragment(R.layout.fragment_notifica
     }
 
     private fun navToAssetDetail(publicKey: String, assetId: Long) {
-        nav(HomeNavigationDirections.actionGlobalAssetDetailFragment(address = publicKey, assetId = assetId))
+        nav(HomeNavigationDirections.actionGlobalAssetProfileNavigation(accountAddress = publicKey, assetId = assetId))
+    }
+
+    private fun navToAsaProfile(accountAddress: String, assetId: Long) {
+        nav(
+            NotificationCenterFragmentDirections.actionNotificationCenterFragmentToAsaProfileNavigation(
+                accountAddress = accountAddress,
+                assetId = assetId
+            )
+        )
+    }
+
+    private fun navToCollectibleProfile(accountAddress: String, collectibleId: Long) {
+        nav(
+            NotificationCenterFragmentDirections.actionNotificationCenterFragmentToCollectibleProfileNavigation(
+                accountAddress = accountAddress,
+                collectibleId = collectibleId
+            )
+        )
     }
 
     private fun onHistoryNotAvailable(publicKey: String) {

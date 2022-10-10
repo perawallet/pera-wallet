@@ -57,7 +57,7 @@ class ContactInfoFragment : DaggerBaseFragment(R.layout.fragment_contact_info) {
     private fun customizeToolbar() {
         getAppToolbar()?.apply {
             addButtonToEnd(IconButton(R.drawable.ic_share, onClick = ::onShareClick))
-            addButtonToEnd(IconButton(R.drawable.ic_pen, onClick = ::onEditClick))
+            addButtonToEnd(IconButton(R.drawable.ic_pen_solid, onClick = ::onEditClick))
         }
     }
 
@@ -80,9 +80,9 @@ class ContactInfoFragment : DaggerBaseFragment(R.layout.fragment_contact_info) {
     private fun onShowQrClick() {
         binding.showQrButton.hideKeyboard()
         nav(
-            ContactInfoFragmentDirections.actionContactInfoFragmentToShowQrBottomSheet(
-                args.contact.name,
-                args.contact.publicKey
+            ContactInfoFragmentDirections.actionGlobalShowQrNavigation(
+                title = args.contact.name,
+                qrText = args.contact.publicKey
             )
         )
     }

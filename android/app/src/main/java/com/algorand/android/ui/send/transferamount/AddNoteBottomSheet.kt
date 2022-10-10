@@ -24,7 +24,9 @@ import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.utils.setNavigationResult
 import com.algorand.android.utils.viewbinding.viewBinding
 
-class AddNoteBottomSheet : BaseBottomSheet(R.layout.bottom_sheet_add_note) {
+class AddNoteBottomSheet : BaseBottomSheet(
+    layoutResId = R.layout.bottom_sheet_add_note
+) {
 
     private val binding by viewBinding(BottomSheetAddNoteBinding::bind)
 

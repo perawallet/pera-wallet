@@ -12,7 +12,7 @@
 
 package com.algorand.android.ui.ledgeraccountselection
 
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -22,11 +22,13 @@ import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.AccountSelectionListItem
 import com.algorand.android.usecase.LedgerAccountSelectionUseCase
 import com.algorand.android.utils.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class LedgerAccountSelectionViewModel @ViewModelInject constructor(
+@HiltViewModel
+class LedgerAccountSelectionViewModel @Inject constructor(
     private val ledgerAccountSelectionUseCase: LedgerAccountSelectionUseCase
 ) : BaseViewModel() {
 

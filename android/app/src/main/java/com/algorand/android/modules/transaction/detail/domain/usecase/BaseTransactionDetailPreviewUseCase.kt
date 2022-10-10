@@ -31,8 +31,8 @@ import com.algorand.android.utils.decodeBase64IfUTF8
 import com.algorand.android.utils.formatAmount
 import com.algorand.android.utils.formatAsAlgoAmount
 import com.algorand.android.utils.formatAsTxString
-import com.algorand.android.utils.getAlgoExplorerUrl
-import com.algorand.android.utils.getGoalSeekerUrl
+import com.algorand.android.utils.browser.getAlgoExplorerUrl
+import com.algorand.android.utils.browser.getGoalSeekerUrl
 import com.algorand.android.utils.getZonedDateTimeFromTimeStamp
 import com.algorand.android.utils.isNotEqualTo
 import java.math.BigInteger

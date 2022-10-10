@@ -13,6 +13,7 @@
 package com.algorand.android.models
 
 import android.os.Parcelable
+import com.algorand.android.assetsearch.domain.model.VerificationTier
 import com.algorand.android.modules.currency.domain.model.Currency
 import com.algorand.android.modules.parity.domain.model.ParityValue
 import java.math.BigDecimal
@@ -24,11 +25,12 @@ sealed class BaseAccountAssetData : Parcelable {
     abstract val id: Long
     abstract val name: String?
     abstract val shortName: String?
-    abstract val isVerified: Boolean
     abstract val isAlgo: Boolean
     abstract val decimals: Int
     abstract val creatorPublicKey: String?
     abstract val usdValue: BigDecimal?
+    abstract val verificationTier: VerificationTier?
+    abstract val optedInAtRound: Long?
 
     sealed class BaseOwnedAssetData : BaseAccountAssetData() {
         abstract val amount: BigInteger
@@ -37,6 +39,7 @@ sealed class BaseAccountAssetData : Parcelable {
         abstract val parityValueInSelectedCurrency: ParityValue
         abstract val parityValueInSecondaryCurrency: ParityValue
         abstract val isAmountInSelectedCurrencyVisible: Boolean
+        abstract val prismUrl: String?
 
         fun getSelectedCurrencyParityValue(): ParityValue {
             return if (isAlgo && parityValueInSelectedCurrency.selectedCurrencySymbol == Currency.ALGO.symbol) {
@@ -51,7 +54,6 @@ sealed class BaseAccountAssetData : Parcelable {
             override val id: Long,
             override val name: String?,
             override val shortName: String?,
-            override val isVerified: Boolean,
             override val isAlgo: Boolean,
             override val decimals: Int,
             override val creatorPublicKey: String?,
@@ -61,7 +63,10 @@ sealed class BaseAccountAssetData : Parcelable {
             override val formattedCompactAmount: String,
             override val isAmountInSelectedCurrencyVisible: Boolean,
             override val parityValueInSelectedCurrency: ParityValue,
-            override val parityValueInSecondaryCurrency: ParityValue
+            override val parityValueInSecondaryCurrency: ParityValue,
+            override val prismUrl: String?,
+            override val verificationTier: VerificationTier,
+            override val optedInAtRound: Long?
         ) : BaseOwnedAssetData()
 
         sealed class BaseOwnedCollectibleData : BaseOwnedAssetData() {
@@ -72,12 +77,14 @@ sealed class BaseAccountAssetData : Parcelable {
             val avatarDisplayText: String
                 get() = collectibleName ?: name ?: shortName ?: id.toString()
 
+            override val verificationTier: VerificationTier?
+                get() = null
+
             @Parcelize
             data class OwnedCollectibleImageData(
                 override val id: Long,
                 override val name: String?,
                 override val shortName: String?,
-                override val isVerified: Boolean,
                 override val isAlgo: Boolean,
                 override val decimals: Int,
                 override val creatorPublicKey: String?,
@@ -90,7 +97,8 @@ sealed class BaseAccountAssetData : Parcelable {
                 override val collectionName: String?,
                 override val parityValueInSelectedCurrency: ParityValue,
                 override val parityValueInSecondaryCurrency: ParityValue,
-                val prismUrl: String?
+                override val prismUrl: String?,
+                override val optedInAtRound: Long?
             ) : BaseOwnedCollectibleData()
 
             @Parcelize
@@ -98,7 +106,6 @@ sealed class BaseAccountAssetData : Parcelable {
                 override val id: Long,
                 override val name: String?,
                 override val shortName: String?,
-                override val isVerified: Boolean,
                 override val isAlgo: Boolean,
                 override val decimals: Int,
                 override val creatorPublicKey: String?,
@@ -111,7 +118,8 @@ sealed class BaseAccountAssetData : Parcelable {
                 override val collectionName: String?,
                 override val parityValueInSelectedCurrency: ParityValue,
                 override val parityValueInSecondaryCurrency: ParityValue,
-                val thumbnailPrismUrl: String?
+                override val prismUrl: String?,
+                override val optedInAtRound: Long?,
             ) : BaseOwnedCollectibleData()
 
             @Parcelize
@@ -119,7 +127,6 @@ sealed class BaseAccountAssetData : Parcelable {
                 override val id: Long,
                 override val name: String?,
                 override val shortName: String?,
-                override val isVerified: Boolean,
                 override val isAlgo: Boolean,
                 override val decimals: Int,
                 override val creatorPublicKey: String?,
@@ -132,7 +139,8 @@ sealed class BaseAccountAssetData : Parcelable {
                 override val collectionName: String?,
                 override val parityValueInSelectedCurrency: ParityValue,
                 override val parityValueInSecondaryCurrency: ParityValue,
-                val thumbnailPrismUrl: String?
+                override val prismUrl: String?,
+                override val optedInAtRound: Long?,
             ) : BaseOwnedCollectibleData()
 
             @Parcelize
@@ -140,7 +148,6 @@ sealed class BaseAccountAssetData : Parcelable {
                 override val id: Long,
                 override val name: String?,
                 override val shortName: String?,
-                override val isVerified: Boolean,
                 override val isAlgo: Boolean,
                 override val decimals: Int,
                 override val creatorPublicKey: String?,
@@ -152,23 +159,27 @@ sealed class BaseAccountAssetData : Parcelable {
                 override val collectibleName: String?,
                 override val collectionName: String?,
                 override val parityValueInSelectedCurrency: ParityValue,
-                override val parityValueInSecondaryCurrency: ParityValue
+                override val parityValueInSecondaryCurrency: ParityValue,
+                override val prismUrl: String?,
+                override val optedInAtRound: Long?
             ) : BaseOwnedCollectibleData()
         }
     }
 
     sealed class PendingAssetData : BaseAccountAssetData() {
 
+        override val optedInAtRound: Long? = null
+
         @Parcelize
         data class DeletionAssetData(
             override val id: Long,
             override val name: String?,
             override val shortName: String?,
-            override val isVerified: Boolean,
             override val isAlgo: Boolean,
             override val decimals: Int,
             override val creatorPublicKey: String?,
-            override val usdValue: BigDecimal?
+            override val usdValue: BigDecimal?,
+            override val verificationTier: VerificationTier
         ) : PendingAssetData()
 
         @Parcelize
@@ -176,14 +187,14 @@ sealed class BaseAccountAssetData : Parcelable {
             override val id: Long,
             override val name: String?,
             override val shortName: String?,
-            override val isVerified: Boolean,
             override val isAlgo: Boolean,
             override val decimals: Int,
             override val creatorPublicKey: String?,
-            override val usdValue: BigDecimal?
+            override val usdValue: BigDecimal?,
+            override val verificationTier: VerificationTier
         ) : PendingAssetData()
 
-        sealed class BasePendingCollectibleData : BaseAccountAssetData() {
+        sealed class BasePendingCollectibleData : PendingAssetData() {
 
             abstract val collectibleName: String?
             abstract val collectionName: String?
@@ -192,6 +203,9 @@ sealed class BaseAccountAssetData : Parcelable {
             val avatarDisplayText: String
                 get() = collectibleName ?: name ?: shortName ?: id.toString()
 
+            override val verificationTier: VerificationTier?
+                get() = null
+
             sealed class PendingAdditionCollectibleData : BasePendingCollectibleData() {
 
                 @Parcelize
@@ -199,7 +213,6 @@ sealed class BaseAccountAssetData : Parcelable {
                     override val id: Long,
                     override val name: String?,
                     override val shortName: String?,
-                    override val isVerified: Boolean,
                     override val isAlgo: Boolean,
                     override val decimals: Int,
                     override val creatorPublicKey: String?,
@@ -214,7 +227,6 @@ sealed class BaseAccountAssetData : Parcelable {
                     override val id: Long,
                     override val name: String?,
                     override val shortName: String?,
-                    override val isVerified: Boolean,
                     override val isAlgo: Boolean,
                     override val decimals: Int,
                     override val creatorPublicKey: String?,
@@ -229,7 +241,6 @@ sealed class BaseAccountAssetData : Parcelable {
                     override val id: Long,
                     override val name: String?,
                     override val shortName: String?,
-                    override val isVerified: Boolean,
                     override val isAlgo: Boolean,
                     override val decimals: Int,
                     override val creatorPublicKey: String?,
@@ -244,7 +255,6 @@ sealed class BaseAccountAssetData : Parcelable {
                     override val id: Long,
                     override val name: String?,
                     override val shortName: String?,
-                    override val isVerified: Boolean,
                     override val isAlgo: Boolean,
                     override val decimals: Int,
                     override val creatorPublicKey: String?,
@@ -262,7 +272,6 @@ sealed class BaseAccountAssetData : Parcelable {
                     override val id: Long,
                     override val name: String?,
                     override val shortName: String?,
-                    override val isVerified: Boolean,
                     override val isAlgo: Boolean,
                     override val decimals: Int,
                     override val creatorPublicKey: String?,
@@ -277,7 +286,6 @@ sealed class BaseAccountAssetData : Parcelable {
                     override val id: Long,
                     override val name: String?,
                     override val shortName: String?,
-                    override val isVerified: Boolean,
                     override val isAlgo: Boolean,
                     override val decimals: Int,
                     override val creatorPublicKey: String?,
@@ -292,7 +300,6 @@ sealed class BaseAccountAssetData : Parcelable {
                     override val id: Long,
                     override val name: String?,
                     override val shortName: String?,
-                    override val isVerified: Boolean,
                     override val isAlgo: Boolean,
                     override val decimals: Int,
                     override val creatorPublicKey: String?,
@@ -307,7 +314,6 @@ sealed class BaseAccountAssetData : Parcelable {
                     override val id: Long,
                     override val name: String?,
                     override val shortName: String?,
-                    override val isVerified: Boolean,
                     override val isAlgo: Boolean,
                     override val decimals: Int,
                     override val creatorPublicKey: String?,
@@ -325,7 +331,6 @@ sealed class BaseAccountAssetData : Parcelable {
                     override val id: Long,
                     override val name: String?,
                     override val shortName: String?,
-                    override val isVerified: Boolean,
                     override val isAlgo: Boolean,
                     override val decimals: Int,
                     override val creatorPublicKey: String?,
@@ -340,7 +345,6 @@ sealed class BaseAccountAssetData : Parcelable {
                     override val id: Long,
                     override val name: String?,
                     override val shortName: String?,
-                    override val isVerified: Boolean,
                     override val isAlgo: Boolean,
                     override val decimals: Int,
                     override val creatorPublicKey: String?,
@@ -355,7 +359,6 @@ sealed class BaseAccountAssetData : Parcelable {
                     override val id: Long,
                     override val name: String?,
                     override val shortName: String?,
-                    override val isVerified: Boolean,
                     override val isAlgo: Boolean,
                     override val decimals: Int,
                     override val creatorPublicKey: String?,
@@ -370,7 +373,6 @@ sealed class BaseAccountAssetData : Parcelable {
                     override val id: Long,
                     override val name: String?,
                     override val shortName: String?,
-                    override val isVerified: Boolean,
                     override val isAlgo: Boolean,
                     override val decimals: Int,
                     override val creatorPublicKey: String?,

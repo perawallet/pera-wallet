@@ -14,6 +14,10 @@
 package com.algorand.android.models
 
 import androidx.annotation.StringRes
+import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration
+import com.algorand.android.utils.AccountDisplayName
+import com.algorand.android.utils.AssetName
+import com.algorand.android.utils.assetdrawable.BaseAssetDrawableProvider
 
 sealed class LedgerInformationListItem {
 
@@ -21,7 +25,7 @@ sealed class LedgerInformationListItem {
     abstract infix fun areContentsTheSame(other: LedgerInformationListItem): Boolean
 
     data class AccountItem(
-        val name: String,
+        val accountDisplayName: AccountDisplayName,
         val address: String,
         val assetCount: Int,
         val accountIconResource: AccountIconResource,
@@ -36,13 +40,19 @@ sealed class LedgerInformationListItem {
         }
     }
 
-    // TODO refactor this item. Don't pass owned asset data completely
     data class AssetInformationItem(
-        val accountAssetData: BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData,
-        val formattedCurrencyBalanceText: String
+        val id: Long,
+        val name: AssetName,
+        val shortName: AssetName,
+        val isAmountInDisplayedCurrencyVisible: Boolean,
+        val verificationTierConfiguration: VerificationTierConfiguration,
+        val baseAssetDrawableProvider: BaseAssetDrawableProvider,
+        val formattedDisplayedCurrencyValue: String,
+        val formattedAmount: String,
+        val prismUrl: String?
     ) : LedgerInformationListItem() {
         override fun areItemsTheSame(other: LedgerInformationListItem): Boolean {
-            return other is AssetInformationItem && accountAssetData.id == other.accountAssetData.id
+            return other is AssetInformationItem && id == other.id
         }
 
         override fun areContentsTheSame(other: LedgerInformationListItem): Boolean {

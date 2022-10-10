@@ -12,13 +12,15 @@
 
 package com.algorand.android.ui.register.watch
 
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.modules.tracking.onboarding.register.OnboardingWatchAccountCreateWatchEventTracker
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 
-class WatchAccountInfoViewModel @ViewModelInject constructor(
+@HiltViewModel
+class WatchAccountInfoViewModel @Inject constructor(
     private val onboardingWatchAccountCreateWatchEventTracker: OnboardingWatchAccountCreateWatchEventTracker
 ) : BaseViewModel() {
 

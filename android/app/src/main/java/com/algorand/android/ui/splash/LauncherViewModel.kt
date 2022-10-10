@@ -13,7 +13,7 @@
 package com.algorand.android.ui.splash
 
 import android.content.SharedPreferences
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
@@ -22,10 +22,12 @@ import com.algorand.android.network.AlgodInterceptor
 import com.algorand.android.network.IndexerInterceptor
 import com.algorand.android.network.MobileHeaderInterceptor
 import com.algorand.android.utils.findAllNodes
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class LauncherViewModel @ViewModelInject constructor(
+@HiltViewModel
+class LauncherViewModel @Inject constructor(
     private val sharedPreferences: SharedPreferences,
     private val mobileHeaderInterceptor: MobileHeaderInterceptor,
     private val algodInterceptor: AlgodInterceptor,

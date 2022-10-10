@@ -42,8 +42,6 @@ sealed class CollectibleDetail : Parcelable {
 
     abstract val collectibleMedias: List<BaseCollectibleMediaItem>
 
-    abstract val isVerified: Boolean
-
     abstract val collectibleFractionDecimals: Int?
 
     abstract val isPure: Boolean
@@ -65,7 +63,6 @@ sealed class CollectibleDetail : Parcelable {
         override val isPeraExplorerVisible: Boolean,
         override val peraExplorerUrl: String?,
         override val collectibleMedias: List<BaseCollectibleMediaItem>,
-        override val isVerified: Boolean,
         override val optedInWarningTextRes: Int?,
         override val collectibleFractionDecimals: Int?,
         override val isPure: Boolean,
@@ -89,7 +86,6 @@ sealed class CollectibleDetail : Parcelable {
         override val isPeraExplorerVisible: Boolean,
         override val peraExplorerUrl: String?,
         override val collectibleMedias: List<BaseCollectibleMediaItem.VideoCollectibleMediaItem>,
-        override val isVerified: Boolean,
         override val optedInWarningTextRes: Int?,
         override val collectibleFractionDecimals: Int?,
         override val isPure: Boolean,
@@ -113,7 +109,6 @@ sealed class CollectibleDetail : Parcelable {
         override val isPeraExplorerVisible: Boolean,
         override val peraExplorerUrl: String?,
         override val collectibleMedias: List<BaseCollectibleMediaItem>,
-        override val isVerified: Boolean,
         override val optedInWarningTextRes: Int?,
         override val collectibleFractionDecimals: Int?,
         override val isPure: Boolean,
@@ -138,7 +133,6 @@ sealed class CollectibleDetail : Parcelable {
         override val peraExplorerUrl: String?,
         override val collectibleMedias: List<BaseCollectibleMediaItem>,
         override val optedInWarningTextRes: Int?,
-        override val isVerified: Boolean,
         override val collectibleFractionDecimals: Int?,
         override val isPure: Boolean,
     ) : CollectibleDetail()

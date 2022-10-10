@@ -14,9 +14,9 @@ package com.algorand.android.utils
 
 import com.algorand.android.models.AccountInformation
 
+const val MIN_BALANCE_TO_KEEP_PER_OPTED_IN_APPS = 100000
 private const val MIN_BALANCE_TO_KEEP_PER_OPTED_IN_ASSET = 100000
 private const val MIN_BALANCE_TO_KEEP_PER_CREATED_APPS = 100000
-private const val MIN_BALANCE_TO_KEEP_PER_OPTED_IN_APPS = 100000
 private const val MIN_BALANCE_TO_KEEP_PER_APP_TOTAL_SCHEMA_INT = 28500
 private const val MIN_BALANCE_TO_KEEP_PER_APP_TOTAL_SCHEMA_BYTE_SLICE = 50000
 private const val MIN_BALANCE_TO_KEEP_PER_APP_EXTRA_PAGES = 100000

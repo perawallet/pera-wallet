@@ -23,10 +23,10 @@ import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentSecurityBinding
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
-import com.algorand.android.ui.lock.ChangePasscodeVerificationBottomSheet.Companion.CHANGE_PASSCODE_VERIFICATION_RESULT_KEY
-import com.algorand.android.ui.lock.DisableBiometricAuthVerificationBottomSheet.Companion.DISABLE_BIOMETRIC_AUTH_VERIFICATION_RESULT_KEY
-import com.algorand.android.ui.lock.DisablePasscodeVerificationBottomSheet.Companion.DISABLE_VERIFICATION_RESULT_KEY
-import com.algorand.android.ui.settings.ChangePasswordFragment
+import com.algorand.android.ui.lock.ChangePasswordVerificationFragment.Companion.CHANGE_PASSWORD_VERIFICATION_RESULT_KEY
+import com.algorand.android.ui.lock.DisableBiometricAuthPasswordVerificationFragment.Companion.DISABLE_BIOMETRIC_AUTH_VERIFICATION_RESULT_KEY
+import com.algorand.android.ui.lock.DisablePasswordVerificationFragment.Companion.DISABLE_PASSWORD_VERIFICATION_RESULT_KEY
+import com.algorand.android.ui.settings.ChangePasswordFragment.Companion.CHANGE_PASSWORD_RE_ENTER_RESULT_KEY
 import com.algorand.android.utils.isBiometricAvailable
 import com.algorand.android.utils.showBiometricAuthentication
 import com.algorand.android.utils.startSavedStateListener
@@ -71,11 +71,11 @@ class SecurityFragment : DaggerBaseFragment(R.layout.fragment_security) {
     }
 
     private fun initUi() {
-        binding.setChangePasswordListItem.setOnClickListener { navToChangePasscodeVerificationBottomSheet() }
+        binding.setChangePasswordListItem.setOnClickListener { navToChangePasswordVerificationFragment() }
     }
 
-    private fun navToChangePasscodeVerificationBottomSheet() {
-        nav(SecurityFragmentDirections.actionSecurityFragmentToChangePasscodeVerificationBottomSheet())
+    private fun navToChangePasswordVerificationFragment() {
+        nav(SecurityFragmentDirections.actionSecurityFragmentToChangePasswordVerificationFragment())
     }
 
     private fun initObservers() {
@@ -102,7 +102,7 @@ class SecurityFragment : DaggerBaseFragment(R.layout.fragment_security) {
 
     private fun onEnableBiometricCodeTouch() {
         if (securityViewModel.isBiometricAuthEnabled()) {
-            nav(SecurityFragmentDirections.actionSecurityFragmentToDisableBiometricAuthVerificationBottomSheet())
+            nav(SecurityFragmentDirections.actionSecurityFragmentToDisableBiometricAuthPasswordVerificationFragment())
         } else {
             checkBiometricAuthentication()
         }
@@ -110,25 +110,25 @@ class SecurityFragment : DaggerBaseFragment(R.layout.fragment_security) {
 
     private fun onEnablePinCodeTouch() {
         if (securityViewModel.isPasscodeSet()) {
-            nav(SecurityFragmentDirections.actionSecurityFragmentToDisablePasscodeVerificationBottomSheet())
+            nav(SecurityFragmentDirections.actionSecurityFragmentToDisablePasswordVerificationFragment())
         } else {
-            navToSetChangePasscodeFragment()
+            navToSetChangePasswordFragment()
         }
     }
 
     private fun initDialogSavedStateListener() {
         startSavedStateListener(R.id.securityFragment) {
-            useSavedStateValue<Boolean>(ChangePasswordFragment.IS_PASSWORD_CHOSEN_KEY) {
-                securityViewModel.updatePinCodeEnabledFlow(it)
+            useSavedStateValue<Boolean>(CHANGE_PASSWORD_RE_ENTER_RESULT_KEY) {
+                securityViewModel.updatePinCodeEnabledFlow(isChecked = it)
             }
-            useSavedStateValue<Boolean>(CHANGE_PASSCODE_VERIFICATION_RESULT_KEY) { isPasscodeVerified ->
-                handleChangePasscodeVerificationResult(isPasscodeVerified)
+            useSavedStateValue<Boolean>(CHANGE_PASSWORD_VERIFICATION_RESULT_KEY) {
+                handleChangePasscodeVerificationResult(isPasscodeVerified = it)
             }
-            useSavedStateValue<Boolean>(DISABLE_VERIFICATION_RESULT_KEY) { isPasscodeVerified ->
-                handleDisablePasscodeVerificationResult(isPasscodeVerified)
+            useSavedStateValue<Boolean>(DISABLE_PASSWORD_VERIFICATION_RESULT_KEY) {
+                handleDisablePasscodeVerificationResult(isPasscodeVerified = it)
             }
-            useSavedStateValue<Boolean>(DISABLE_BIOMETRIC_AUTH_VERIFICATION_RESULT_KEY) { isPasscodeVerified ->
-                handleDisableBiometricAuthVerificationResult(isPasscodeVerified)
+            useSavedStateValue<Boolean>(DISABLE_BIOMETRIC_AUTH_VERIFICATION_RESULT_KEY) {
+                handleDisableBiometricAuthVerificationResult(isPasscodeVerified = it)
             }
         }
     }
@@ -141,7 +141,7 @@ class SecurityFragment : DaggerBaseFragment(R.layout.fragment_security) {
     }
 
     private fun handleChangePasscodeVerificationResult(isPasscodeVerified: Boolean) {
-        if (isPasscodeVerified) navToSetChangePasscodeFragment()
+        if (isPasscodeVerified) navToSetChangePasswordFragment()
     }
 
     private fun handleDisableBiometricAuthVerificationResult(isPasscodeVerified: Boolean) {
@@ -169,7 +169,7 @@ class SecurityFragment : DaggerBaseFragment(R.layout.fragment_security) {
         securityViewModel.updateBiometricEnabledFlow(isChecked)
     }
 
-    private fun navToSetChangePasscodeFragment() {
+    private fun navToSetChangePasswordFragment() {
         nav(SecurityFragmentDirections.actionSecurityFragmentToChangePasswordFragment())
     }
 

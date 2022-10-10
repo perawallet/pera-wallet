@@ -27,7 +27,6 @@ class CollectibleDetailMapper @Inject constructor() {
             assetId = collectibleDetailDTO.collectibleAssetId,
             fullName = collectibleDetailDTO.fullName,
             shortName = collectibleDetailDTO.shortName,
-            isVerified = collectibleDetailDTO.isVerified,
             fractionDecimals = collectibleDetailDTO.fractionDecimals,
             usdValue = collectibleDetailDTO.usdValue,
             assetCreator = collectibleDetailDTO.assetCreator,
@@ -38,7 +37,19 @@ class CollectibleDetailMapper @Inject constructor() {
             prismUrl = collectibleDetailDTO.primaryImageUrl,
             nftExplorerUrl = collectibleDetailDTO.explorerUrl,
             collectibleMedias = collectibleDetailDTO.medias,
-            totalSupply = collectibleDetailDTO.totalSupply
+            totalSupply = collectibleDetailDTO.totalSupply,
+            verificationTier = collectibleDetailDTO.verificationTier,
+            logoUri = collectibleDetailDTO.logoUri,
+            logoSvgUri = collectibleDetailDTO.logoSvgUri,
+            explorerUrl = collectibleDetailDTO.explorerUrl,
+            projectName = collectibleDetailDTO.projectName,
+            projectUrl = collectibleDetailDTO.projectUrl,
+            discordUrl = collectibleDetailDTO.discordUrl,
+            telegramUrl = collectibleDetailDTO.telegramUrl,
+            twitterUsername = collectibleDetailDTO.twitterUsername,
+            assetDescription = collectibleDetailDTO.description,
+            url = collectibleDetailDTO.url,
+            maxSupply = collectibleDetailDTO.maxSupply
         )
     }
 
@@ -52,7 +63,6 @@ class CollectibleDetailMapper @Inject constructor() {
             assetId = collectibleDetailDTO.collectibleAssetId,
             fullName = collectibleDetailDTO.fullName,
             shortName = collectibleDetailDTO.shortName,
-            isVerified = collectibleDetailDTO.isVerified,
             fractionDecimals = collectibleDetailDTO.fractionDecimals,
             usdValue = collectibleDetailDTO.usdValue,
             assetCreator = collectibleDetailDTO.assetCreator,
@@ -62,7 +72,19 @@ class CollectibleDetailMapper @Inject constructor() {
             traits = collectibleDetailDTO.traits,
             nftExplorerUrl = collectibleDetailDTO.explorerUrl,
             collectibleMedias = collectibleMedias,
-            totalSupply = collectibleDetailDTO.totalSupply
+            totalSupply = collectibleDetailDTO.totalSupply,
+            verificationTier = collectibleDetailDTO.verificationTier,
+            logoUri = collectibleDetailDTO.logoUri,
+            logoSvgUri = collectibleDetailDTO.logoSvgUri,
+            explorerUrl = collectibleDetailDTO.explorerUrl,
+            projectName = collectibleDetailDTO.projectName,
+            projectUrl = collectibleDetailDTO.projectUrl,
+            discordUrl = collectibleDetailDTO.discordUrl,
+            telegramUrl = collectibleDetailDTO.telegramUrl,
+            twitterUsername = collectibleDetailDTO.twitterUsername,
+            assetDescription = collectibleDetailDTO.description,
+            url = collectibleDetailDTO.url,
+            maxSupply = collectibleDetailDTO.maxSupply
         )
     }
 
@@ -74,7 +96,6 @@ class CollectibleDetailMapper @Inject constructor() {
             assetId = collectibleDetailDTO.collectibleAssetId,
             fullName = collectibleDetailDTO.fullName,
             shortName = collectibleDetailDTO.shortName,
-            isVerified = collectibleDetailDTO.isVerified,
             fractionDecimals = collectibleDetailDTO.fractionDecimals,
             usdValue = collectibleDetailDTO.usdValue,
             assetCreator = collectibleDetailDTO.assetCreator,
@@ -85,7 +106,19 @@ class CollectibleDetailMapper @Inject constructor() {
             thumbnailPrismUrl = thumbnailPrismUrl,
             nftExplorerUrl = collectibleDetailDTO.explorerUrl,
             collectibleMedias = collectibleDetailDTO.medias,
-            totalSupply = collectibleDetailDTO.totalSupply
+            totalSupply = collectibleDetailDTO.totalSupply,
+            verificationTier = collectibleDetailDTO.verificationTier,
+            logoUri = collectibleDetailDTO.logoUri,
+            logoSvgUri = collectibleDetailDTO.logoSvgUri,
+            explorerUrl = collectibleDetailDTO.explorerUrl,
+            projectName = collectibleDetailDTO.projectName,
+            projectUrl = collectibleDetailDTO.projectUrl,
+            discordUrl = collectibleDetailDTO.discordUrl,
+            telegramUrl = collectibleDetailDTO.telegramUrl,
+            twitterUsername = collectibleDetailDTO.twitterUsername,
+            assetDescription = collectibleDetailDTO.description,
+            url = collectibleDetailDTO.url,
+            maxSupply = collectibleDetailDTO.maxSupply
         )
     }
 
@@ -94,7 +127,6 @@ class CollectibleDetailMapper @Inject constructor() {
             assetId = collectibleDetailDTO.collectibleAssetId,
             fullName = collectibleDetailDTO.fullName,
             shortName = collectibleDetailDTO.shortName,
-            isVerified = collectibleDetailDTO.isVerified,
             fractionDecimals = collectibleDetailDTO.fractionDecimals,
             usdValue = collectibleDetailDTO.usdValue,
             assetCreator = collectibleDetailDTO.assetCreator,
@@ -105,7 +137,19 @@ class CollectibleDetailMapper @Inject constructor() {
             thumbnailPrismUrl = collectibleDetailDTO.primaryImageUrl,
             nftExplorerUrl = collectibleDetailDTO.explorerUrl,
             collectibleMedias = collectibleDetailDTO.medias,
-            totalSupply = collectibleDetailDTO.totalSupply
+            totalSupply = collectibleDetailDTO.totalSupply,
+            verificationTier = collectibleDetailDTO.verificationTier,
+            logoUri = collectibleDetailDTO.logoUri,
+            logoSvgUri = collectibleDetailDTO.logoSvgUri,
+            explorerUrl = collectibleDetailDTO.explorerUrl,
+            projectName = collectibleDetailDTO.projectName,
+            projectUrl = collectibleDetailDTO.projectUrl,
+            discordUrl = collectibleDetailDTO.discordUrl,
+            telegramUrl = collectibleDetailDTO.telegramUrl,
+            twitterUsername = collectibleDetailDTO.twitterUsername,
+            assetDescription = collectibleDetailDTO.description,
+            url = collectibleDetailDTO.url,
+            maxSupply = collectibleDetailDTO.maxSupply
         )
     }
 }

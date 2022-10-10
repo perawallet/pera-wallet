@@ -23,7 +23,9 @@ import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.viewbinding.viewBinding
 
-abstract class BaseSingleButtonBottomSheet : BaseBottomSheet(R.layout.bottom_sheet_single_button) {
+abstract class BaseSingleButtonBottomSheet : BaseBottomSheet(
+    layoutResId = R.layout.bottom_sheet_single_button
+) {
 
     private val binding by viewBinding(BottomSheetSingleButtonBinding::bind)
 
@@ -33,6 +35,7 @@ abstract class BaseSingleButtonBottomSheet : BaseBottomSheet(R.layout.bottom_she
     protected abstract val descriptionAnnotatedString: AnnotatedString?
     protected open val buttonStringResId: Int = R.string.close
     protected open val errorAnnotatedString: AnnotatedString? = null
+    protected open val shouldDescriptionHasLinkMovementMethod: Boolean = false
 
     abstract fun onConfirmationButtonClick()
 
@@ -52,8 +55,14 @@ abstract class BaseSingleButtonBottomSheet : BaseBottomSheet(R.layout.bottom_she
     private fun initDescription() {
         with(binding) {
             descriptionAnnotatedString
-                ?.let { descriptionTextView.text = context?.getXmlStyledString(it) }
-                ?: descriptionTextView.hide()
+                ?.let {
+                    descriptionTextView.apply {
+                        text = context?.getXmlStyledString(it)
+                        if (shouldDescriptionHasLinkMovementMethod) {
+                            movementMethod = LongClickLinkMovementMethod.getInstance()
+                        }
+                    }
+                } ?: descriptionTextView.hide()
         }
     }
 

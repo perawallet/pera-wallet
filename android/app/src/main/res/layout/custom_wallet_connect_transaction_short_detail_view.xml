@@ -76,7 +76,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spacing_xlarge"
-        android:layout_marginBottom="@dimen/spacing_small"
+        android:layout_marginBottom="@dimen/spacing_xxsmall"
         android:text="@string/network_fee"
         app:layout_constraintBottom_toTopOf="@id/showTransactionDetailButton"
         app:layout_constraintEnd_toStartOf="@id/networkFeeTextView"
@@ -101,7 +101,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spacing_xlarge"
-        android:layout_marginBottom="@dimen/spacing_xxxlarge"
         android:text="@string/show_transaction_details"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

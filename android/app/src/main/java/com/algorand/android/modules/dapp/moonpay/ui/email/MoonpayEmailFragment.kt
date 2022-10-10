@@ -20,7 +20,7 @@ import com.algorand.android.databinding.FragmentMoonpayEmailBinding
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.utils.hideKeyboard
-import com.algorand.android.utils.showKeyboard
+import com.algorand.android.utils.requestFocusAndShowKeyboard
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -45,12 +45,7 @@ class MoonpayEmailFragment : DaggerBaseFragment(R.layout.fragment_moonpay_email)
     private fun initUi() {
         with(binding) {
             continueWithMoonpayButton.setOnClickListener { }
-            emailInputLayout.apply {
-                post {
-                    requestFocus()
-                    showKeyboard()
-                }
-            }
+            emailInputLayout.requestFocusAndShowKeyboard()
         }
     }
 

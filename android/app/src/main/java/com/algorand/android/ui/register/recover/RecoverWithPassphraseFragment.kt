@@ -36,17 +36,17 @@ import com.algorand.android.ui.register.recover.RecoverWithPassphraseQrScannerFr
 import com.algorand.android.utils.KeyboardToggleListener
 import com.algorand.android.utils.addKeyboardToggleListener
 import com.algorand.android.utils.analytics.CreationType
-import com.algorand.android.utils.splitMnemonic
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.getTextFromClipboard
 import com.algorand.android.utils.hideKeyboard
 import com.algorand.android.utils.removeKeyboardToggleListener
+import com.algorand.android.utils.splitMnemonic
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.toShortenedAddress
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -77,10 +77,17 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
         }
     }
 
+    private val suggestionWordsCollector: suspend (Pair<Int, List<String>>) -> Unit = { (index, suggestedWords) ->
+        binding.passphraseWordSuggestor.setSuggestedWords(index, suggestedWords)
+    }
+
+    private val validationCollector: suspend (Pair<Int, Boolean>) -> Unit = { (index, isValidated) ->
+        binding.passphraseInputGroup.setValidation(index, isValidated)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
-        initSavedStateListener()
         customizeToolbar()
         recoverMnemonicFromViewModel()
         binding.recoverButton.setOnClickListener { onRecoverClick() }
@@ -122,21 +129,20 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
 
         initInputGroupListener()
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            recoverWithPassphraseViewModel.suggestionWordsFlow.collectLatest { (index, suggestedWords) ->
-                binding.passphraseWordSuggestor.setSuggestedWords(index, suggestedWords)
-            }
-        }
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            recoverWithPassphraseViewModel.suggestionWordsFlow,
+            suggestionWordsCollector
+        )
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            recoverWithPassphraseViewModel.validationFlow.collectLatest { (index, isValidated) ->
-                binding.passphraseInputGroup.setValidation(index, isValidated)
-            }
-        }
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            recoverWithPassphraseViewModel.validationFlow,
+            validationCollector
+        )
     }
 
     override fun onResume() {
         super.onResume()
+        initSavedStateListener()
         keyboardToggleListener = addKeyboardToggleListener(binding.root, onKeyboardToggleAction)
     }
 
@@ -193,7 +199,8 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
 
     private fun scrollToPassphraseInput(passphraseInput: PassphraseInput) {
         binding.scrollView.smoothScrollTo(
-            0, (passphraseInput.y - passphraseInput.height + recoverPassphraseTitleHeight).toInt()
+            0,
+            (passphraseInput.y - passphraseInput.height + recoverPassphraseTitleHeight).toInt()
         )
     }
 
@@ -216,7 +223,9 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
                     return
                 }
                 val recoveredAccount = Account.create(
-                    publicKey, Account.Detail.Standard(privateKey), publicKey.toShortenedAddress()
+                    publicKey,
+                    Account.Detail.Standard(privateKey),
+                    publicKey.toShortenedAddress()
                 )
                 accountCreation = AccountCreation(recoveredAccount, CreationType.RECOVER)
                 navigateToSuccess()
@@ -230,7 +239,7 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
         val pastedPassphrase = context?.getTextFromClipboard().toString()
         val keywords = pastedPassphrase.splitMnemonic()
         if (keywords.count() == WORD_COUNT) {
-            binding.passphraseInputGroup.setMnemonic(pastedPassphrase.toString())
+            binding.passphraseInputGroup.setMnemonic(pastedPassphrase)
         } else {
             showGlobalError(getString(R.string.the_last_copied_text))
         }

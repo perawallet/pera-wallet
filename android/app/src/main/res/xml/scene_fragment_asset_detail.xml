@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~  limitations under the License
+  ~
+  -->
+
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <Transition
+        android:id="@+id/assetDetailMotionScene"
+        app:constraintSetEnd="@id/end"
+        app:constraintSetStart="@id/start">
+
+        <OnSwipe
+            app:dragDirection="dragUp"
+            app:moveWhenScrollAtTop="true"
+            app:touchAnchorId="@id/assetDetailViewPager"
+            app:touchAnchorSide="top" />
+
+    </Transition>
+
+    <ConstraintSet android:id="@+id/start">
+
+        <Constraint android:id="@id/toolbar">
+            <Layout
+                android:layout_width="0dp"
+                android:layout_height="@dimen/default_toolbar_height"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </Constraint>
+
+        <Constraint android:id="@id/assetLogoImageView">
+            <Layout
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="@dimen/spacing_xxxxlarge"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolbar" />
+        </Constraint>
+
+        <Constraint
+            android:id="@id/assetNameAndBadgeTextView"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toTopOf="@id/assetPrimaryValueTextView"
+            app:layout_constraintEnd_toStartOf="@id/assetIdTextView"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/assetLogoImageView">
+            <Layout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_xlarge"
+                android:layout_marginTop="@dimen/spacing_large"
+                android:layout_marginEnd="@dimen/spacing_xxsmall"
+                app:layout_goneMarginEnd="@dimen/spacing_xlarge" />
+        </Constraint>
+
+        <Constraint
+            android:id="@id/assetIdTextView"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="@id/assetNameAndBadgeTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/assetNameAndBadgeTextView"
+            app:layout_constraintTop_toTopOf="@id/assetNameAndBadgeTextView"
+            app:visibilityMode="ignore">
+            <Layout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_xlarge" />
+        </Constraint>
+
+        <Constraint
+            android:id="@id/assetPrimaryValueTextView"
+            app:visibilityMode="ignore">
+            <Layout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_xlarge"
+                android:layout_marginTop="@dimen/spacing_xsmall"
+                android:gravity="center"
+                app:autoSizeMaxTextSize="@dimen/text_size_28"
+                app:autoSizeMinTextSize="@dimen/text_size_13"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/assetNameAndBadgeTextView" />
+            <PropertySet
+                android:alpha="1"
+                android:visibility="visible" />
+        </Constraint>
+
+        <Constraint
+            android:id="@id/assetSecondaryValueTextView"
+            app:visibilityMode="ignore">
+            <Layout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_xlarge"
+                android:layout_marginTop="@dimen/spacing_xsmall"
+                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/assetPrimaryValueTextView" />
+            <PropertySet
+                android:alpha="1"
+                android:visibility="visible" />
+        </Constraint>
+
+        <Constraint
+            android:id="@id/quickActionButtons"
+            app:visibilityMode="ignore">
+            <Layout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_xlarge"
+                android:layout_marginTop="@dimen/spacing_xxxxlarge"
+                app:constraint_referenced_ids="buyAlgoButton, sendButton, receiveButton"
+                app:flow_horizontalGap="@dimen/spacing_xxlarge"
+                app:flow_maxElementsWrap="3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/assetSecondaryValueTextView" />
+            <PropertySet
+                android:alpha="1"
+                android:visibility="visible" />
+        </Constraint>
+
+        <Constraint
+            android:id="@id/buyAlgoButton"
+            app:visibilityMode="ignore">
+            <Layout
+                style="@style/IconButton.Transparent.QuickAction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/buy_algo"
+                android:visibility="gone"
+                app:icon="@drawable/ic_algo_helper_button"
+                tools:visibility="visible" />
+            <PropertySet
+                android:alpha="1"
+                android:visibility="visible" />
+        </Constraint>
+
+        <Constraint
+            android:id="@id/sendButton"
+            app:visibilityMode="ignore">
+            <Layout
+                style="@style/IconButton.Transparent.QuickAction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/send"
+                app:icon="@drawable/ic_send_helper_button_bg_ghost" />
+            <PropertySet
+                android:alpha="1"
+                android:visibility="visible" />
+        </Constraint>
+
+        <Constraint
+            android:id="@id/receiveButton"
+            app:visibilityMode="ignore">
+            <Layout
+                style="@style/IconButton.Transparent.QuickAction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/receive"
+                app:icon="@drawable/ic_receive_helper_button_bg_ghost" />
+            <PropertySet
+                android:alpha="1"
+                android:visibility="visible" />
+        </Constraint>
+
+        <Constraint android:id="@id/algorandTabLayout">
+            <Layout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xxxlarge"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/quickActionButtons" />
+        </Constraint>
+
+        <Constraint android:id="@id/assetDetailViewPager">
+            <Layout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/algorandTabLayout" />
+        </Constraint>
+
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+
+        <Constraint android:id="@id/toolbar">
+            <Layout
+                android:layout_width="0dp"
+                android:layout_height="@dimen/default_toolbar_height"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </Constraint>
+
+        <Constraint android:id="@id/assetLogoImageView">
+            <Layout
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="@dimen/spacing_xlarge"
+                app:layout_constraintBottom_toBottomOf="@id/assetNameAndBadgeTextView"
+                app:layout_constraintEnd_toStartOf="@id/assetNameAndBadgeTextView"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/assetNameAndBadgeTextView" />
+        </Constraint>
+
+        <Constraint
+            android:id="@id/assetNameAndBadgeTextView"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toTopOf="@id/algorandTabLayout"
+            app:layout_constraintEnd_toStartOf="@id/assetIdTextView"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@id/assetLogoImageView"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
+            <Layout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_xsmall"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:layout_marginEnd="@dimen/spacing_xxsmall"
+                app:layout_goneMarginEnd="@dimen/spacing_xlarge" />
+        </Constraint>
+
+        <Constraint
+            android:id="@id/assetIdTextView"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="@id/assetNameAndBadgeTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@id/assetNameAndBadgeTextView"
+            app:layout_constraintTop_toTopOf="@id/assetNameAndBadgeTextView"
+            app:visibilityMode="ignore">
+            <Layout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_xlarge" />
+        </Constraint>
+
+        <Constraint
+            android:id="@id/assetPrimaryValueTextView"
+            app:visibilityMode="ignore">
+            <Layout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_xlarge"
+                android:layout_marginTop="@dimen/spacing_xsmall"
+                android:gravity="center"
+                app:autoSizeMaxTextSize="@dimen/text_size_28"
+                app:autoSizeMinTextSize="@dimen/text_size_13"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/assetNameAndBadgeTextView" />
+            <PropertySet
+                android:alpha="0"
+                android:visibility="invisible" />
+        </Constraint>
+
+        <Constraint
+            android:id="@id/assetSecondaryValueTextView"
+            app:visibilityMode="ignore">
+            <Layout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_xlarge"
+                android:layout_marginTop="@dimen/spacing_xsmall"
+                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/assetPrimaryValueTextView" />
+            <PropertySet
+                android:alpha="0"
+                android:visibility="invisible" />
+        </Constraint>
+
+        <Constraint
+            android:id="@id/quickActionButtons"
+            app:visibilityMode="ignore">
+            <Layout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_xlarge"
+                android:layout_marginTop="@dimen/spacing_xxxxlarge"
+                app:constraint_referenced_ids="buyAlgoButton, sendButton, receiveButton"
+                app:flow_horizontalGap="@dimen/spacing_xxlarge"
+                app:flow_maxElementsWrap="3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/assetSecondaryValueTextView" />
+            <PropertySet
+                android:alpha="0"
+                android:visibility="invisible" />
+        </Constraint>
+
+        <Constraint
+            android:id="@id/buyAlgoButton"
+            app:visibilityMode="ignore">
+            <Layout
+                style="@style/IconButton.Transparent.QuickAction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/buy_algo"
+                android:visibility="gone"
+                app:icon="@drawable/ic_algo_helper_button"
+                tools:visibility="visible" />
+            <PropertySet
+                android:alpha="0"
+                android:visibility="invisible" />
+        </Constraint>
+
+        <Constraint
+            android:id="@id/sendButton"
+            app:visibilityMode="ignore">
+            <Layout
+                style="@style/IconButton.Transparent.QuickAction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/send"
+                app:icon="@drawable/ic_send_helper_button_bg_ghost" />
+            <PropertySet
+                android:alpha="0"
+                android:visibility="invisible" />
+        </Constraint>
+
+        <Constraint
+            android:id="@id/receiveButton"
+            app:visibilityMode="ignore">
+            <Layout
+                style="@style/IconButton.Transparent.QuickAction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/receive"
+                app:icon="@drawable/ic_receive_helper_button_bg_ghost" />
+            <PropertySet
+                android:alpha="0"
+                android:visibility="invisible" />
+        </Constraint>
+
+        <Constraint android:id="@id/algorandTabLayout">
+            <Layout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_large"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/assetNameAndBadgeTextView" />
+        </Constraint>
+
+        <Constraint android:id="@id/assetDetailViewPager">
+            <Layout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/algorandTabLayout" />
+        </Constraint>
+
+    </ConstraintSet>
+
+</MotionScene>

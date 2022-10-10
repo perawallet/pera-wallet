@@ -21,7 +21,7 @@ const val ALGO_CHAIN_ID = 4160L
 interface WalletConnectClient {
 
     fun connect(uri: String)
-    fun connect(sessionId: Long, sessionMeta: WalletConnectSessionMeta)
+    fun connect(sessionId: Long, sessionMeta: WalletConnectSessionMeta, fallbackBrowserGroupResponse: String?)
 
     fun setListener(listener: WalletConnectClientListener)
 

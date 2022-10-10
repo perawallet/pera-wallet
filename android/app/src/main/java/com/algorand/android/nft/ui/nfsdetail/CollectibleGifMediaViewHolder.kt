@@ -19,6 +19,7 @@ import androidx.core.view.doOnLayout
 import com.algorand.android.databinding.ItemCollectibleGifMediaBinding
 import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem
 import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem.ItemType
+import com.algorand.android.utils.createPrismUrl
 import com.algorand.android.utils.loadGif
 
 class CollectibleGifMediaViewHolder(
@@ -31,7 +32,7 @@ class CollectibleGifMediaViewHolder(
         with(binding.collectibleGifCollectibleImageView) {
             doOnLayout {
                 with(getImageView() ?: return@doOnLayout) {
-                    val previewPrismUrl = createPrismPreviewImageUrl(item.previewUrl, measuredWidth)
+                    val previewPrismUrl = createPrismUrl(item.previewUrl.orEmpty(), measuredWidth)
                     transitionName = id.toString()
                     setOnClickListener {
                         listener.onGifMediaClick(

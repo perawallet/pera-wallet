@@ -12,7 +12,6 @@
 
 package com.algorand.android.ui.notificationcenter
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
@@ -22,39 +21,56 @@ import androidx.paging.cachedIn
 import com.algorand.android.core.AccountManager
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.database.ContactDao
+import com.algorand.android.decider.AssetDrawableProviderDecider
 import com.algorand.android.deviceregistration.domain.usecase.DeviceIdUseCase
 import com.algorand.android.models.NotificationCenterPreview
 import com.algorand.android.models.NotificationListItem
+import com.algorand.android.modules.accounts.domain.usecase.NotificationStatusUseCase
 import com.algorand.android.notification.PeraNotificationManager
 import com.algorand.android.repository.NotificationRepository
 import com.algorand.android.usecase.NotificationCenterUseCase
+import com.algorand.android.usecase.SimpleAssetDetailUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.ZonedDateTime
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 
-class NotificationCenterViewModel @ViewModelInject constructor(
+@HiltViewModel
+class NotificationCenterViewModel @Inject constructor(
     private val peraNotificationManager: PeraNotificationManager,
     private val contactDao: ContactDao,
     private val accountManager: AccountManager,
     private val deviceIdUseCase: DeviceIdUseCase,
     private val notificationRepository: NotificationRepository,
-    private val notificationCenterUseCase: NotificationCenterUseCase
+    private val notificationCenterUseCase: NotificationCenterUseCase,
+    private val assetDrawableProviderDecider: AssetDrawableProviderDecider,
+    private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase,
+    private val notificationStatusUseCase: NotificationStatusUseCase
 ) : BaseViewModel() {
 
     private var notificationDataSource: NotificationDataSource? = null
 
-    val notificationPaginationFlow = Pager(PagingConfig(pageSize = DEFAULT_NOTIFICATION_COUNT)) {
-        NotificationDataSource(
-            notificationRepository = notificationRepository,
-            contactDao = contactDao,
-            accountManager = accountManager,
-            deviceIdUseCase = deviceIdUseCase
-        ).also { notificationDataSource ->
-            this.notificationDataSource = notificationDataSource
+    val notificationPaginationFlow = Pager(
+        config = PagingConfig(
+            pageSize = DEFAULT_NOTIFICATION_COUNT
+        ),
+        pagingSourceFactory = {
+            NotificationDataSource(
+                notificationRepository = notificationRepository,
+                contactDao = contactDao,
+                accountManager = accountManager,
+                deviceIdUseCase = deviceIdUseCase,
+                assetDrawableProviderDecider = assetDrawableProviderDecider,
+                simpleAssetDetailUseCase = simpleAssetDetailUseCase
+            ).also { notificationDataSource = it }
         }
-    }.flow.cachedIn(viewModelScope)
+    ).flow
+        .cachedIn(viewModelScope)
+        .shareIn(viewModelScope, SharingStarted.Lazily)
 
     private val _notificationCenterPreviewFlow = MutableStateFlow<NotificationCenterPreview?>(null)
     val notificationCenterPreviewFlow: StateFlow<NotificationCenterPreview?> get() = _notificationCenterPreviewFlow
@@ -82,6 +98,14 @@ class NotificationCenterViewModel @ViewModelInject constructor(
         }
     }
 
+    fun checkRequestedAssetType(accountAddress: String, assetId: Long) {
+        viewModelScope.launch {
+            notificationCenterUseCase.checkRequestedAssetType(assetId, accountAddress).collect {
+                _notificationCenterPreviewFlow.emit(it)
+            }
+        }
+    }
+
     fun onNotificationClickEvent(notificationListItem: NotificationListItem) {
         viewModelScope.launch {
             notificationCenterUseCase.onNotificationClickEvent(notificationListItem).collect {
@@ -95,6 +119,14 @@ class NotificationCenterViewModel @ViewModelInject constructor(
         return Transformations.map(peraNotificationManager.newNotificationLiveData) {
             newNotificationCount++
             return@map newNotificationCount > 1
+        }
+    }
+
+    fun updateLastSeenNotification(notificationListItem: NotificationListItem?) {
+        viewModelScope.launch {
+            notificationStatusUseCase.updateLastSeenNotificationId(
+                notificationListItem = notificationListItem ?: return@launch
+            )
         }
     }
 

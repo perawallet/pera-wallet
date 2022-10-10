@@ -20,8 +20,8 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class ParityValue(val amountAsCurrency: BigDecimal, val selectedCurrencySymbol: String) : Parcelable {
 
-    fun getFormattedValue(): String {
-        return amountAsCurrency.formatAsCurrency(selectedCurrencySymbol, isCompact = false)
+    fun getFormattedValue(isCompact: Boolean = false): String {
+        return amountAsCurrency.formatAsCurrency(selectedCurrencySymbol, isCompact = isCompact)
     }
 
     fun getFormattedCompactValue(): String {

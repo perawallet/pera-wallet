@@ -54,7 +54,6 @@ class CollectibleDetailMapper @Inject constructor(
             warningTextRes = collectibleDetailDecider.decideWarningTextRes(imageCollectibleDetail.prismUrl),
             isPeraExplorerVisible = isNftExplorerVisible,
             peraExplorerUrl = imageCollectibleDetail.nftExplorerUrl,
-            isVerified = imageCollectibleDetail.isVerified,
             collectibleMedias = imageCollectibleDetail.collectibleMedias?.map {
                 when (it) {
                     is BaseCollectibleMedia.GifCollectibleMedia -> {
@@ -111,7 +110,6 @@ class CollectibleDetailMapper @Inject constructor(
             prismUrl = videoCollectibleDetail.thumbnailPrismUrl,
             isPeraExplorerVisible = isNftExplorerVisible,
             peraExplorerUrl = videoCollectibleDetail.nftExplorerUrl,
-            isVerified = videoCollectibleDetail.isVerified,
             collectibleMedias = videoCollectibleDetail.collectibleMedias?.map {
                 collectibleMediaItemMapper.mapToVideoCollectibleMediaItem(
                     videoCollectibleDetail.assetId,
@@ -158,7 +156,6 @@ class CollectibleDetailMapper @Inject constructor(
             isPeraExplorerVisible = isNftExplorerVisible,
             peraExplorerUrl = mixedCollectibleDetail.nftExplorerUrl,
             collectibleMedias = collectibleMedias,
-            isVerified = mixedCollectibleDetail.isVerified,
             optedInWarningTextRes = collectibleDetailDecider.decideOptedInWarningTextRes(
                 isOwnedByTheUser = isOwnedByTheUser,
                 accountType = ownerAccountType
@@ -195,7 +192,6 @@ class CollectibleDetailMapper @Inject constructor(
             warningTextRes = warningTextRes,
             isPeraExplorerVisible = isNftExplorerVisible,
             peraExplorerUrl = unsupportedCollectible.nftExplorerUrl,
-            isVerified = unsupportedCollectible.isVerified,
             collectibleMedias = unsupportedCollectible.collectibleMedias?.map {
                 collectibleMediaItemMapper.mapToUnsupportedCollectibleMediaItem(
                     unsupportedCollectible.assetId,

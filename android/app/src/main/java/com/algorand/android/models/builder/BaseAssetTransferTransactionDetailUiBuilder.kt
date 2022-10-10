@@ -20,11 +20,13 @@ import com.algorand.android.models.TransactionRequestExtrasInfo
 import com.algorand.android.models.TransactionRequestNoteInfo
 import com.algorand.android.models.TransactionRequestSenderInfo
 import com.algorand.android.models.TransactionRequestTransactionInfo
+import com.algorand.android.modules.verificationtier.ui.decider.VerificationTierConfigurationDecider
 import com.algorand.android.utils.MIN_FEE
 import javax.inject.Inject
 
-class BaseAssetTransferTransactionDetailUiBuilder @Inject constructor() :
-    WalletConnectTransactionDetailBuilder<BaseAssetTransferTransaction> {
+class BaseAssetTransferTransactionDetailUiBuilder @Inject constructor(
+    private val verificationTierConfigurationDecider: VerificationTierConfigurationDecider
+) : WalletConnectTransactionDetailBuilder<BaseAssetTransferTransaction> {
 
     override fun buildTransactionRequestSenderInfo(txn: BaseAssetTransferTransaction): TransactionRequestSenderInfo? {
         return when (txn) {
@@ -68,15 +70,16 @@ class BaseAssetTransferTransactionDetailUiBuilder @Inject constructor() :
     ): TransactionRequestSenderInfo {
         return with(txn) {
             TransactionRequestSenderInfo(
-                senderDisplayedAddress = senderAddress.decodedAddress,
+                senderDisplayedAddress = getFromAddressAsDisplayAddress(senderAddress.decodedAddress.orEmpty()),
                 toAccountTypeImageResId = getAccountImageResource(),
-                toDisplayedAddress = getProvidedAddressAsDisplayAddress(assetReceiverAddress.decodedAddress.orEmpty()),
+                toDisplayedAddress = getToAddressAsDisplayAddress(assetReceiverAddress.decodedAddress.orEmpty()),
                 rekeyToAccountAddress = getRekeyToAccountAddress()?.decodedAddress,
                 assetInformation = TransactionRequestAssetInformation(
                     assetId = assetId,
-                    isVerified = assetParams?.isVerified,
-                    fullName = assetParams?.fullName,
-                    shortName = assetParams?.shortName
+                    verificationTierConfiguration =
+                    verificationTierConfigurationDecider.decideVerificationTierConfiguration(verificationTier),
+                    fullName = walletConnectTransactionAssetDetail?.fullName,
+                    shortName = walletConnectTransactionAssetDetail?.shortName
                 )
             )
         }
@@ -85,21 +88,22 @@ class BaseAssetTransferTransactionDetailUiBuilder @Inject constructor() :
     private fun buildGeneralTransactionInfo(txn: BaseAssetTransferTransaction): TransactionRequestTransactionInfo {
         return with(txn) {
             TransactionRequestTransactionInfo(
-                fromDisplayedAddress = getProvidedAddressAsDisplayAddress(senderAddress.decodedAddress.orEmpty()),
+                fromDisplayedAddress = getFromAddressAsDisplayAddress(senderAddress.decodedAddress.orEmpty()),
                 fromAccountIcon = createAccountIconResource(),
-                toDisplayedAddress = assetReceiverAddress.decodedAddress,
+                toDisplayedAddress = getToAddressAsDisplayAddress(assetReceiverAddress.decodedAddress.orEmpty()),
                 accountBalance = assetInformation?.amount,
                 assetInformation = TransactionRequestAssetInformation(
                     assetId = assetId,
-                    isVerified = assetParams?.isVerified,
-                    shortName = assetParams?.shortName,
-                    fullName = assetParams?.fullName,
+                    verificationTierConfiguration =
+                    verificationTierConfigurationDecider.decideVerificationTierConfiguration(verificationTier),
+                    shortName = walletConnectTransactionAssetDetail?.shortName,
+                    fullName = walletConnectTransactionAssetDetail?.fullName,
                     decimals = assetDecimal
                 ),
-                rekeyToAccountAddress = getProvidedAddressAsDisplayAddress(
+                rekeyToAccountAddress = getFromAddressAsDisplayAddress(
                     getRekeyToAccountAddress()?.decodedAddress.orEmpty()
                 ),
-                closeToAccountAddress = getProvidedAddressAsDisplayAddress(
+                closeToAccountAddress = getFromAddressAsDisplayAddress(
                     getCloseToAccountAddress()?.decodedAddress.orEmpty()
                 ),
                 isLocalAccountSigner = warningCount != null
@@ -114,7 +118,7 @@ class BaseAssetTransferTransactionDetailUiBuilder @Inject constructor() :
                 fee = fee,
                 shouldShowFeeWarning = fee > MIN_FEE,
                 assetDecimal = assetDecimal,
-                assetShortName = assetParams?.shortName
+                assetShortName = walletConnectTransactionAssetDetail?.shortName
             )
         }
     }
@@ -132,7 +136,7 @@ class BaseAssetTransferTransactionDetailUiBuilder @Inject constructor() :
             TransactionRequestExtrasInfo(
                 rawTransaction = rawTransactionPayload,
                 assetId = assetId,
-                assetMetadata = assetParams?.appendAssetId(assetId)
+                assetMetadata = walletConnectTransactionAssetDetail
             )
         }
     }

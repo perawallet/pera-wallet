@@ -19,7 +19,6 @@ import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseBottomSheet
 import com.algorand.android.databinding.BottomSheetAccountsOptionsBinding
 import com.algorand.android.models.Account
-import com.algorand.android.utils.copyToClipboard
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.viewbinding.viewBinding
 
@@ -35,7 +34,7 @@ abstract class BaseAccountOptionsBottomSheet : DaggerBaseBottomSheet(
 
     abstract val publicKey: String
 
-    abstract fun navToShowQrBottomSheet(title: String, publicKey: String)
+    abstract fun navToShowQrFragment(title: String, publicKey: String)
 
     abstract fun navToViewPassphraseBottomSheet()
 
@@ -49,7 +48,7 @@ abstract class BaseAccountOptionsBottomSheet : DaggerBaseBottomSheet(
     private fun setupCopyButton() {
         with(binding) {
             copyAddressLayout.setOnClickListener {
-                context?.copyToClipboard(accountOptionsViewModel.getAccountAddress().orEmpty(), ADDRESS_COPY_LABEL)
+                onAccountAddressCopied(accountOptionsViewModel.getAccountAddress())
                 navBack()
             }
             addressTextView.text = accountOptionsViewModel.getAccountAddress()
@@ -58,7 +57,7 @@ abstract class BaseAccountOptionsBottomSheet : DaggerBaseBottomSheet(
 
     private fun setupShowQrButton() {
         binding.showQrButton.setOnClickListener {
-            navToShowQrBottomSheet(getString(R.string.qr_code), publicKey)
+            navToShowQrFragment(getString(R.string.qr_code), publicKey)
         }
     }
 

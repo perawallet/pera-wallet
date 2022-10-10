@@ -12,38 +12,20 @@
 
 package com.algorand.android.modules.transaction.csv.domain.usecase
 
-import com.algorand.android.core.AccountManager
-import com.algorand.android.mapper.TransactionCsvDetailMapper
-import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.models.DateRange
-import com.algorand.android.modules.transaction.csv.domain.model.TransactionCsvDetail
 import com.algorand.android.modules.transaction.csv.domain.repository.CsvRepository
-import com.algorand.android.modules.transaction.common.domain.model.TransactionDTO
-import com.algorand.android.modules.transaction.common.domain.model.TransactionTypeDTO
-import com.algorand.android.usecase.SimpleAssetDetailUseCase
-import com.algorand.android.utils.ALGO_DECIMALS
-import com.algorand.android.utils.DATE_AND_TIME_SEC_PATTERN
-import com.algorand.android.utils.DEFAULT_ASSET_DECIMAL
 import com.algorand.android.utils.DataResource
-import com.algorand.android.utils.TransactionCsvFileCreator
-import com.algorand.android.utils.decodeBase64IfUTF8
-import com.algorand.android.utils.format
-import com.algorand.android.utils.formatAmount
-import com.algorand.android.utils.formatAsAlgoString
-import com.algorand.android.utils.formatAsRFC3339Version
-import com.algorand.android.utils.getZonedDateTimeFromTimeStamp
+import com.algorand.android.utils.recordException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.withContext
 import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Named
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.flow
 
 class CreateCsvUseCase @Inject constructor(
-    private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase,
-    private val accountManager: AccountManager,
-    private val transactionCsvDetailMapper: TransactionCsvDetailMapper,
-    private val transactionCsvFileCreator: TransactionCsvFileCreator,
     @Named(CsvRepository.INJECTION_NAME)
     private val csvRepository: CsvRepository
 ) {
@@ -52,80 +34,58 @@ class CreateCsvUseCase @Inject constructor(
         cacheDirectory: File,
         publicKey: String,
         dateRange: DateRange?,
-        assetId: Long?,
-        scope: CoroutineScope
+        assetId: Long?
     ) = flow<DataResource<File>> {
         emit(DataResource.Loading())
-        val accountName = accountManager.getAccount(publicKey)?.name.orEmpty()
-        val fromDate = dateRange?.from.formatAsRFC3339Version()
-        val toDate = dateRange?.to.formatAsRFC3339Version()
-        val transactionType = TransactionTypeDTO.PAY_TRANSACTION.takeIf { assetId == ALGO_ID }?.value
-        csvRepository.getCompleteTransactions(
-            assetId = assetId,
-            publicKey = publicKey,
-            fromDate = fromDate,
-            toDate = toDate,
-            txnType = transactionType
+        csvRepository.getCsv(
+            cacheDirectory,
+            publicKey,
+            dateRange,
+            assetId
         ).use(
-            onSuccess = { transactionListDTO ->
-                cacheNotCachedAssets(transactionListDTO, scope)
-                val transactionCsvDetailList = createTransactionCsvDetailList(publicKey, transactionListDTO)
-                val csvFile = transactionCsvFileCreator.createCSVFile(
-                    transactionCsvDetailList,
-                    cacheDirectory,
-                    assetId,
-                    accountName,
-                    dateRange
-                )
-                if (csvFile == null) {
-                    emit(DataResource.Error.Local(IOException()))
-                } else {
-                    emit(DataResource.Success(csvFile))
+            onSuccess = { inputStream ->
+                val csvDirectory = File(cacheDirectory, CSV_FILES_FOLDER)
+                val tempCSVFile = File(csvDirectory, "$publicKey.csv")
+                var csvFile: File? = null
+                try {
+                    csvDirectory.mkdirs()
+                    try {
+                        withContext(Dispatchers.IO) {
+                            val outputStream = FileOutputStream(tempCSVFile)
+                            outputStream.use { output ->
+                                val buffer = ByteArray(BYTEARRAY_SIZE)
+                                var readData: Int
+                                readData = inputStream.read(buffer)
+                                while (readData != -1) {
+                                    output.write(buffer, 0, readData)
+                                    readData = inputStream.read(buffer)
+                                }
+                                output.flush()
+                            }
+                            csvFile = tempCSVFile
+                        }
+                    } catch (exception: Exception) {
+                        recordException(exception)
+                    } finally {
+                        withContext(Dispatchers.IO) {
+                            inputStream.close()
+                        }
+                    }
+                } catch (exception: Exception) {
+                    tempCSVFile.delete()
+                    recordException(exception)
                 }
+                csvFile?.let {
+                    emit(DataResource.Success(it))
+                } ?: emit(DataResource.Error.Local(IOException()))
             },
             onFailed = { exception, code ->
                 emit(DataResource.Error.Api(exception, code))
             }
         )
     }
-
-    private fun createTransactionCsvDetailList(
-        publicKey: String,
-        transactionList: List<TransactionDTO>
-    ): List<TransactionCsvDetail> {
-        return transactionList.map { txn ->
-            val txnAssetDecimal = getTransactionAssetDecimals(txn)
-            transactionCsvDetailMapper.createTransactionCsvDetail(
-                transactionId = txn.id.orEmpty(),
-                formattedAmount = txn.getAmount(false)?.formatAmount(txnAssetDecimal, true).orEmpty(),
-                formattedFee = (txn.fee ?: 0).formatAsAlgoString(),
-                closeAmount = txn.closeAmount.toString(),
-                closeToAddress = txn.payment?.closeToAddress.orEmpty(),
-                receiverAddress = txn.getReceiverAddressOrEmpty(),
-                senderAddress = txn.senderAddress.orEmpty(),
-                confirmedRound = if (txn.confirmedRound != null) txn.confirmedRound.toString() else "",
-                noteAsString = txn.noteInBase64?.decodeBase64IfUTF8().orEmpty(),
-                assetId = txn.assetTransfer?.assetId,
-                formattedDate = txn.roundTimeAsTimestamp?.getZonedDateTimeFromTimeStamp()
-                    ?.format(DATE_AND_TIME_SEC_PATTERN).orEmpty()
-            )
-        }
-    }
-
-    private fun getTransactionAssetDecimals(transaction: TransactionDTO): Int {
-        val txnAssetId = transaction.assetTransfer?.assetId
-        return when {
-            txnAssetId != null -> {
-                simpleAssetDetailUseCase.getCachedAssetDetail(txnAssetId)
-                    ?.data?.fractionDecimals ?: DEFAULT_ASSET_DECIMAL
-            }
-            transaction.isAlgorand() -> ALGO_DECIMALS
-            else -> DEFAULT_ASSET_DECIMAL
-        }
-    }
-
-    private suspend fun cacheNotCachedAssets(transactionList: List<TransactionDTO>, scope: CoroutineScope) {
-        val assetIds = transactionList.mapNotNull { it.assetTransfer?.assetId }.toSet()
-        simpleAssetDetailUseCase.cacheIfThereIsNonCachedAsset(assetIds, scope)
+    companion object {
+        private const val BYTEARRAY_SIZE = 4 * 1024
+        private const val CSV_FILES_FOLDER = "csvFiles"
     }
 }

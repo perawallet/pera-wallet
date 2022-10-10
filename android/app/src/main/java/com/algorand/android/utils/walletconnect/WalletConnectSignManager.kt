@@ -41,13 +41,13 @@ import com.algorand.android.models.WalletConnectSignResult.TransactionCancelled
 import com.algorand.android.models.WalletConnectSigner
 import com.algorand.android.models.WalletConnectTransaction
 import com.algorand.android.utils.AccountCacheManager
-import com.algorand.android.utils.ListQueuingHelper
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.LifecycleScopedCoroutineOwner
+import com.algorand.android.utils.ListQueuingHelper
+import com.algorand.android.utils.sendErrorLog
 import com.algorand.android.utils.signTx
 import javax.inject.Inject
 import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class WalletConnectSignManager @Inject constructor(
@@ -105,6 +105,9 @@ class WalletConnectSignManager @Inject constructor(
                 is LedgerErrorResult -> postResult(Api(errorMessage))
                 is AppErrorResult -> postResult(Defined(AnnotatedString(errorMessageId), titleResId))
                 is OperationCancelledResult -> postResult(TransactionCancelled())
+                else -> {
+                    sendErrorLog("Unhandled else case in WalletConnectSignManager.operationManagerCollectorAction")
+                }
             }
         }
     }
@@ -123,6 +126,9 @@ class WalletConnectSignManager @Inject constructor(
                 is WalletConnectSignResult.CanBeSigned ->
                     signHelper.initItemsToBeEnqueued(transactionList.flatten())
                 is WalletConnectSignResult.Error -> postResult(result)
+                else -> {
+                    sendErrorLog("Unhandled else case in WalletConnectSignManager.signTransaction")
+                }
             }
         }
     }
@@ -201,7 +207,7 @@ class WalletConnectSignManager @Inject constructor(
     private fun setupLedgerOperationManager(lifecycle: Lifecycle) {
         ledgerBleOperationManager.setup(lifecycle)
         lifecycle.coroutineScope.launch {
-            ledgerBleOperationManager.ledgerBleResultFlow.collect(action = operationManagerCollectorAction)
+            ledgerBleOperationManager.ledgerBleResultFlow.collect { operationManagerCollectorAction.invoke(it) }
         }
     }
 

@@ -24,8 +24,8 @@ import androidx.core.widget.doOnTextChanged
 import com.algorand.android.R
 import com.algorand.android.databinding.CustomSearchBarBinding
 import com.algorand.android.utils.extensions.setIconAndVisibility
+import com.algorand.android.utils.requestFocusAndShowKeyboard
 import com.algorand.android.utils.setDrawable
-import com.algorand.android.utils.showKeyboard
 import com.algorand.android.utils.viewbinding.viewBinding
 
 class AlgorandSearchView @JvmOverloads constructor(
@@ -45,6 +45,12 @@ class AlgorandSearchView @JvmOverloads constructor(
             }
         }
         get() = binding.searchEditText.text.toString()
+
+    var hint: String
+        set(value) {
+            binding.searchEditText.hint = value
+        }
+        get() = binding.searchEditText.hint.toString()
 
     init {
         loadAttrs()
@@ -75,7 +81,7 @@ class AlgorandSearchView @JvmOverloads constructor(
                 binding.deleteTextButton.setIconTintResource(color)
             }
             attrs.getResourceId(R.styleable.AlgorandSearchBarView_android_hint, -1).let { hint ->
-                binding.searchEditText.hint = resources.getString(hint)
+                if (hint != -1) binding.searchEditText.hint = resources.getString(hint)
             }
             val customButtonIconTintColor = attrs.getResourceId(
                 R.styleable.AlgorandSearchBarView_customButtonIconColor,
@@ -112,12 +118,7 @@ class AlgorandSearchView @JvmOverloads constructor(
     }
 
     fun setFocusAndOpenKeyboard() {
-        with(binding.searchEditText) {
-            post {
-                requestFocus()
-                showKeyboard()
-            }
-        }
+        binding.searchEditText.requestFocusAndShowKeyboard()
     }
 
     private fun setOnDeleteButtonClick() {

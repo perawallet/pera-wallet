@@ -12,8 +12,7 @@
 
 package com.algorand.android.ui.accounts
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
@@ -21,13 +20,17 @@ import com.algorand.android.decider.TransactionUserUseCase
 import com.algorand.android.models.AssetTransaction
 import com.algorand.android.models.TransactionTargetUser
 import com.algorand.android.models.User
+import com.algorand.android.usecase.IsAccountLimitExceedUseCase
 import com.algorand.android.utils.getOrElse
 import com.algorand.android.utils.getOrThrow
 import kotlinx.coroutines.launch
+import dagger.hilt.android.lifecycle.HiltViewModel
 
-class AccountsAddressScanActionViewModel @ViewModelInject constructor(
+@HiltViewModel
+class AccountsAddressScanActionViewModel @Inject constructor(
     private val transactionUserUseCase: TransactionUserUseCase,
-    @Assisted savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
+    private val isAccountLimitExceedUseCase: IsAccountLimitExceedUseCase
 ) : BaseViewModel() {
 
     private val accountAddress = savedStateHandle.getOrThrow<String>(ACCOUNT_ADDRESS_KEY)
@@ -50,6 +53,10 @@ class AccountsAddressScanActionViewModel @ViewModelInject constructor(
                 imageUriAsString = null
             )
         )
+    }
+
+    fun isAccountLimitExceed(): Boolean {
+        return isAccountLimitExceedUseCase.isAccountLimitExceed()
     }
 
     private fun initTransactionTargetUser() {

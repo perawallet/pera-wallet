@@ -41,7 +41,7 @@ class WriteDownInfoFragment : BaseInfoFragment() {
     private val writeDownInfoViewModel: WriteDownInfoViewModel by viewModels()
 
     override fun setImageView(imageView: ImageView) {
-        val icon = R.drawable.ic_pen_with_underline
+        val icon = R.drawable.ic_pen
         imageView.setImageResource(icon)
         imageView.setColorFilter(ContextCompat.getColor(requireContext(), R.color.info_image_color))
     }

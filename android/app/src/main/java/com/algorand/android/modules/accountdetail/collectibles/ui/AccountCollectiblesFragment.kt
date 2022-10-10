@@ -16,21 +16,22 @@ package com.algorand.android.modules.accountdetail.collectibles.ui
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.Lifecycle
+import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.models.FragmentConfiguration
+import com.algorand.android.nft.domain.usecase.AccountCollectiblesListingPreviewUseCase.Companion.ACCOUNT_COLLECTIBLES_LIST_CONFIGURATION_HEADER_ITEM_INDEX
 import com.algorand.android.nft.ui.base.BaseCollectibleListingViewModel
 import com.algorand.android.nft.ui.nftlisting.BaseCollectiblesListingFragment
-import com.algorand.android.utils.extensions.hide
+import com.algorand.android.utils.addItemVisibilityChangeListener
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 
 @AndroidEntryPoint
 class AccountCollectiblesFragment : BaseCollectiblesListingFragment() {
 
     override val fragmentConfiguration = FragmentConfiguration()
-
-    override val isTitleVisible: Boolean
-        get() = false
 
     private val accountCollectiblesViewModel by viewModels<AccountCollectiblesViewModel>()
 
@@ -73,19 +74,32 @@ class AccountCollectiblesFragment : BaseCollectiblesListingFragment() {
         listener = parentFragment as? Listener
     }
 
-    override fun initUi() {
-        super.initUi()
-        binding.titleTextView.hide()
-    }
-
     override fun initCollectiblesListingPreviewCollector() {
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            accountCollectiblesViewModel.collectiblesListingPreviewFlow.collect(collectibleListingPreviewCollector)
-        }
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            accountCollectiblesViewModel.collectiblesListingPreviewFlow,
+            collectibleListingPreviewCollector
+        )
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            flow = accountCollectiblesViewModel.collectiblesListingPreviewFlow
+                .map { it?.isAddCollectibleFloatingActionButtonVisible }
+                .distinctUntilChanged(),
+            collection = addCollectibleFloatingActionButtonVisibilityCollector,
+            state = Lifecycle.State.STARTED
+        )
     }
 
-    override fun onFilterClick() {
-        listener?.onFilterClick()
+    override fun addItemVisibilityChangeListenerToRecyclerView(recyclerView: RecyclerView) {
+        recyclerView.addItemVisibilityChangeListener(
+            ACCOUNT_COLLECTIBLES_LIST_CONFIGURATION_HEADER_ITEM_INDEX
+        ) { isVisible -> onListItemConfigurationHeaderItemVisibilityChange(isVisible) }
+    }
+
+    override fun onAddCollectibleFloatingActionButtonClicked() {
+        listener?.onReceiveCollectibleClick()
+    }
+
+    override fun onManageCollectiblesClick() {
+        listener?.onManageCollectiblesClick()
     }
 
     interface Listener {
@@ -96,7 +110,7 @@ class AccountCollectiblesFragment : BaseCollectiblesListingFragment() {
         fun onNotSupportedItemClick(nftAssetId: Long)
         fun onMixedItemClick(nftAssetId: Long)
         fun onReceiveCollectibleClick()
-        fun onFilterClick()
+        fun onManageCollectiblesClick()
     }
 
     companion object {

@@ -25,6 +25,6 @@ class AccountHistoryFilterEventTracker @Inject constructor(
     }
 
     companion object {
-        private const val ACCOUNT_HISTORY_FILTER_EVENT_KEY = "historyscreen_transactions_filter"
+        private const val ACCOUNT_HISTORY_FILTER_EVENT_KEY = "historyscr_transactions_filter"
     }
 }

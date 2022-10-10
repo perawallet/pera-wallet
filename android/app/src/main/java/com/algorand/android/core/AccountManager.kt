@@ -94,16 +94,20 @@ class AccountManager(
         }
     }
 
-    suspend fun changeAccountType(accountPublicKey: String, newType: Account.Type) {
+    suspend fun changeAccountType(accountPublicKey: String, newType: Account.Type, newDetail: Account.Detail? = null) {
         accountTypeChangeMutex.withLock {
             val updatedAccountList = getAccounts().map { accountFromList ->
                 if (accountFromList.address == accountPublicKey) {
-                    accountFromList.copy(type = newType)
+                    accountFromList.copy(
+                        type = newType,
+                        detail = newDetail ?: accountFromList.detail
+                    )
                 } else {
                     accountFromList
                 }
             }
             sharedPref.saveAlgorandAccounts(gson, updatedAccountList, aead)
+            accounts.value = updatedAccountList
         }
     }
 

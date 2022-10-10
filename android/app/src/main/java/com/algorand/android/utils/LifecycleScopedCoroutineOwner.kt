@@ -40,6 +40,7 @@ abstract class LifecycleScopedCoroutineOwner {
                 if (event == Lifecycle.Event.ON_DESTROY) {
                     stopAllResources()
                     lifecycle?.removeObserver(this)
+                    lifecycle = null
                 }
             }
         })

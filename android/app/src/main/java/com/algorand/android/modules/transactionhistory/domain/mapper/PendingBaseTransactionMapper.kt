@@ -117,6 +117,7 @@ class PendingBaseTransactionMapper @Inject constructor() {
         }
     }
 
+    // We're not receiving app call from pending transaction endpoint
     fun mapToApplicationCall(
         transaction: PendingTransactionDTO,
         senderAddress: String?,
@@ -131,7 +132,8 @@ class PendingBaseTransactionMapper @Inject constructor() {
                 zonedDateTime = ZonedDateTime.now(),
                 isPending = true,
                 applicationId = null,
-                innerTransactionCount = 0 // todo check this after implementing pending state for app call
+                innerTransactionCount = 0,
+                foreignAssetIds = null
             )
         }
     }

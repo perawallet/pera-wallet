@@ -12,79 +12,56 @@
 
 package com.algorand.android.assetsearch.ui.mapper
 
+import androidx.annotation.StringRes
+import com.algorand.android.assetsearch.domain.model.BaseSearchedAsset
 import com.algorand.android.assetsearch.ui.model.BaseAssetSearchListItem
-import com.algorand.android.models.BaseAssetDetail
-import com.algorand.android.nft.domain.model.BaseSimpleCollectible
+import com.algorand.android.decider.AssetDrawableProviderDecider
+import com.algorand.android.models.ui.AccountAssetItemButtonState
+import com.algorand.android.modules.verificationtier.ui.decider.VerificationTierConfigurationDecider
 import com.algorand.android.utils.AssetName
 import javax.inject.Inject
 
-class BaseAssetSearchItemMapper @Inject constructor() {
+class BaseAssetSearchItemMapper @Inject constructor(
+    private val verificationTierConfigurationDecider: VerificationTierConfigurationDecider,
+    private val assetDrawableProviderDecider: AssetDrawableProviderDecider
+) {
 
     fun mapToAssetSearchItem(
-        baseAssetDetail: BaseAssetDetail,
-        avatarDisplayText: AssetName
-    ): BaseAssetSearchListItem.AssetSearchItem {
-        return BaseAssetSearchListItem.AssetSearchItem(
-            assetId = baseAssetDetail.assetId,
-            fullName = AssetName.create(baseAssetDetail.fullName),
-            shortName = AssetName.createShortName(baseAssetDetail.shortName),
-            avatarDisplayText = avatarDisplayText,
-            isVerified = baseAssetDetail.isVerified
+        searchedAsset: BaseSearchedAsset.SearchedAsset,
+        accountAssetItemButtonState: AccountAssetItemButtonState
+    ): BaseAssetSearchListItem.AssetListItem.AssetSearchItem {
+        return BaseAssetSearchListItem.AssetListItem.AssetSearchItem(
+            assetId = searchedAsset.assetId,
+            fullName = AssetName.create(searchedAsset.fullName),
+            shortName = AssetName.createShortName(searchedAsset.shortName),
+            verificationTierConfiguration = verificationTierConfigurationDecider.decideVerificationTierConfiguration(
+                searchedAsset.verificationTier
+            ),
+            baseAssetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(searchedAsset),
+            prismUrl = searchedAsset.logo,
+            accountAssetItemButtonState = accountAssetItemButtonState
         )
     }
 
-    fun mapToImageCollectibleSearchItem(
-        baseSimpleCollectible: BaseSimpleCollectible.ImageSimpleCollectibleDetail,
-        avatarDisplayText: AssetName
-    ): BaseAssetSearchListItem.BaseCollectibleSearchListItem.ImageCollectibleSearchItem {
-        return BaseAssetSearchListItem.BaseCollectibleSearchListItem.ImageCollectibleSearchItem(
-            assetId = baseSimpleCollectible.assetId,
-            fullName = AssetName.create(baseSimpleCollectible.fullName),
-            shortName = AssetName.createShortName(baseSimpleCollectible.shortName),
-            avatarDisplayText = avatarDisplayText,
-            prismUrl = baseSimpleCollectible.prismUrl,
-            isVerified = baseSimpleCollectible.isVerified
+    fun mapToCollectibleSearchItem(
+        searchedCollectible: BaseSearchedAsset.SearchedCollectible,
+        accountAssetItemButtonState: AccountAssetItemButtonState
+    ): BaseAssetSearchListItem.AssetListItem.BaseCollectibleSearchListItem.ImageCollectibleSearchItem {
+        return BaseAssetSearchListItem.AssetListItem.BaseCollectibleSearchListItem.ImageCollectibleSearchItem(
+            assetId = searchedCollectible.assetId,
+            fullName = AssetName.create(searchedCollectible.fullName),
+            shortName = AssetName.createShortName(searchedCollectible.shortName),
+            prismUrl = searchedCollectible.collectible?.primaryImageUrl,
+            accountAssetItemButtonState = accountAssetItemButtonState,
+            baseAssetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(searchedCollectible)
         )
     }
 
-    fun mapToVideoCollectibleSearchItem(
-        baseSimpleCollectible: BaseSimpleCollectible.VideoSimpleCollectibleDetail,
-        avatarDisplayText: AssetName
-    ): BaseAssetSearchListItem.BaseCollectibleSearchListItem.VideoCollectibleSearchItem {
-        return BaseAssetSearchListItem.BaseCollectibleSearchListItem.VideoCollectibleSearchItem(
-            assetId = baseSimpleCollectible.assetId,
-            fullName = AssetName.create(baseSimpleCollectible.fullName),
-            shortName = AssetName.createShortName(baseSimpleCollectible.shortName),
-            avatarDisplayText = avatarDisplayText,
-            thumbnailUrl = baseSimpleCollectible.thumbnailPrismUrl,
-            isVerified = baseSimpleCollectible.isVerified
-        )
+    fun mapToInfoViewItem(@StringRes infoViewTextResId: Int): BaseAssetSearchListItem.InfoViewItem {
+        return BaseAssetSearchListItem.InfoViewItem(infoViewTextResId = infoViewTextResId)
     }
 
-    fun mapToMixedCollectibleSearchItem(
-        baseSimpleCollectible: BaseSimpleCollectible.MixedSimpleCollectibleDetail,
-        avatarDisplayText: AssetName
-    ): BaseAssetSearchListItem.BaseCollectibleSearchListItem.MixedCollectibleSearchItem {
-        return BaseAssetSearchListItem.BaseCollectibleSearchListItem.MixedCollectibleSearchItem(
-            assetId = baseSimpleCollectible.assetId,
-            fullName = AssetName.create(baseSimpleCollectible.fullName),
-            shortName = AssetName.createShortName(baseSimpleCollectible.shortName),
-            avatarDisplayText = avatarDisplayText,
-            prismUrl = baseSimpleCollectible.thumbnailPrismUrl,
-            isVerified = baseSimpleCollectible.isVerified
-        )
-    }
-
-    fun mapToNotSupportedCollectibleSearchItem(
-        baseAssetDetail: BaseAssetDetail,
-        avatarDisplayText: AssetName
-    ): BaseAssetSearchListItem.BaseCollectibleSearchListItem.NotSupportedCollectibleSearchItem {
-        return BaseAssetSearchListItem.BaseCollectibleSearchListItem.NotSupportedCollectibleSearchItem(
-            assetId = baseAssetDetail.assetId,
-            fullName = AssetName.create(baseAssetDetail.fullName),
-            shortName = AssetName.createShortName(baseAssetDetail.shortName),
-            avatarDisplayText = avatarDisplayText,
-            isVerified = baseAssetDetail.isVerified
-        )
+    fun mapToSearchViewItem(@StringRes searchViewHintResId: Int): BaseAssetSearchListItem.SearchViewItem {
+        return BaseAssetSearchListItem.SearchViewItem(searchViewHintResId = searchViewHintResId)
     }
 }

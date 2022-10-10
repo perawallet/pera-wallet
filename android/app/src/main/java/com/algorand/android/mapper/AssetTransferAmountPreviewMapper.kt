@@ -13,35 +13,43 @@
 
 package com.algorand.android.mapper
 
+import com.algorand.android.models.AssetTransferAmountAssetPreview
 import com.algorand.android.models.AssetTransferAmountPreview
-import com.algorand.android.models.BaseAccountAssetData
-import com.algorand.android.utils.AssetName
+import com.algorand.android.utils.Event
+import java.math.BigDecimal
+import java.math.BigInteger
 import javax.inject.Inject
 
 class AssetTransferAmountPreviewMapper @Inject constructor() {
 
-    fun mapTo(
-        accountAssetData: BaseAccountAssetData.BaseOwnedAssetData,
+    @SuppressWarnings("LongParameterList")
+    fun mapToSuccessPreview(
+        assetTransferAmountAssetPreview: AssetTransferAmountAssetPreview,
         enteredAmountSelectedCurrencyValue: String?,
-        collectiblePrismUrl: String?,
-        isCollectibleOwnedByUser: Boolean,
-        decimalSeparator: String
+        decimalSeparator: String,
+        selectedAmount: BigDecimal?,
+        senderAddress: String,
+        onMaxAmountEvent: Event<Unit>? = null,
+        amountIsValidEvent: Event<BigInteger?>? = null,
+        amountIsMoreThanBalanceEvent: Event<Unit>? = null,
+        insufficientBalanceToPayFeeEvent: Event<Unit>? = null,
+        minimumBalanceIsViolatedResultEvent: Event<String?>? = null,
+        assetNotFoundErrorEvent: Event<Unit>? = null
     ): AssetTransferAmountPreview {
         return AssetTransferAmountPreview(
-            shortName = AssetName.createShortName(accountAssetData.shortName),
-            decimals = accountAssetData.decimals,
-            formattedSelectedCurrencyValue = accountAssetData.getSelectedCurrencyParityValue()
-                .getFormattedCompactValue(),
-            assetId = accountAssetData.id,
-            fullName = AssetName.create(accountAssetData.name),
-            isAlgo = accountAssetData.isAlgo,
-            isVerified = accountAssetData.isVerified,
-            formattedAmount = accountAssetData.formattedCompactAmount,
-            isAmountInSelectedCurrencyVisible = accountAssetData.isAmountInSelectedCurrencyVisible,
+            assetPreview = assetTransferAmountAssetPreview,
             enteredAmountSelectedCurrencyValue = enteredAmountSelectedCurrencyValue,
-            collectiblePrismUrl = collectiblePrismUrl,
-            isCollectibleOwnedByUser = isCollectibleOwnedByUser,
-            decimalSeparator = decimalSeparator
+            decimalSeparator = decimalSeparator,
+            selectedAmount = selectedAmount,
+            senderAddress = senderAddress,
+            onPopulateAmountWithMaxEvent = onMaxAmountEvent,
+            amountIsValidEvent = amountIsValidEvent,
+            amountIsMoreThanBalanceEvent = amountIsMoreThanBalanceEvent,
+            insufficientBalanceToPayFeeEvent = insufficientBalanceToPayFeeEvent,
+            minimumBalanceIsViolatedResultEvent = minimumBalanceIsViolatedResultEvent,
+            assetNotFoundErrorEvent = assetNotFoundErrorEvent
         )
     }
+
+    fun mapToAssetNotFoundStatePreview() = AssetTransferAmountPreview(assetNotFoundErrorEvent = Event(Unit))
 }

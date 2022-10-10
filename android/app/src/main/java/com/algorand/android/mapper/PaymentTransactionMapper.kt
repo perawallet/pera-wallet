@@ -12,7 +12,7 @@
 
 package com.algorand.android.mapper
 
-import com.algorand.android.models.AssetInformation
+import com.algorand.android.models.AssetDetail
 import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.models.BasePaymentTransaction
 import com.algorand.android.models.BaseWalletConnectTransaction
@@ -22,8 +22,10 @@ import com.algorand.android.models.WalletConnectAssetInformation
 import com.algorand.android.models.WalletConnectPeerMeta
 import com.algorand.android.models.WalletConnectSigner
 import com.algorand.android.models.WalletConnectTransactionRequest
+import com.algorand.android.modules.currency.domain.usecase.CurrencyUseCase
 import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
-import com.algorand.android.utils.AccountCacheManager
+import com.algorand.android.usecase.AccountDetailUseCase
+import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import com.algorand.android.utils.toAlgoDisplayValue
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionErrorProvider
 import java.math.BigDecimal
@@ -33,9 +35,11 @@ import javax.inject.Inject
 // TODO: 19.01.2022 Mappers shouldn't inject use case
 @SuppressWarnings("ReturnCount")
 class PaymentTransactionMapper @Inject constructor(
-    private val accountCacheManager: AccountCacheManager,
+    private val accountDetailUseCase: AccountDetailUseCase,
+    private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase,
     private val errorProvider: WalletConnectTransactionErrorProvider,
     private val parityUseCase: ParityUseCase,
+    private val currencyUseCase: CurrencyUseCase,
     private val walletConnectAssetInformationMapper: WalletConnectAssetInformationMapper
 ) : BaseWalletConnectTransactionMapper() {
 
@@ -66,27 +70,26 @@ class PaymentTransactionMapper @Inject constructor(
         rawTransaction: WCAlgoTransactionRequest
     ): BasePaymentTransaction.PaymentTransactionWithRekeyAndClose? {
         return with(transactionRequest) {
-            val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
-            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
+            val senderWCAddress = createWalletConnectAddress(senderAddress)
+            val senderAccountData =
+                accountDetailUseCase.getCachedAccountDetail(senderWCAddress?.decodedAddress.toString())?.data
             val amount = amount ?: BigInteger.ZERO
-            val assetInformation = accountCacheData?.assetsInformation?.firstOrNull {
-                it.assetId == ALGO_ID
-            }
-            val walletConnectAssetInformation = createWalletConnectAssetInformation(assetInformation, amount)
+            val assetDetail = simpleAssetDetailUseCase.getCachedAssetDetail(ALGO_ID)?.data
+            val walletConnectAssetInformation = createWalletConnectAssetInformation(assetDetail, amount)
 
             BasePaymentTransaction.PaymentTransactionWithRekeyAndClose(
                 rawTransactionPayload = rawTransaction,
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 note = decodedNote,
                 amount = amount,
-                senderAddress = senderWalletConnectAddress ?: return null,
+                senderAddress = senderWCAddress ?: return null,
                 receiverAddress = createWalletConnectAddress(receiverAddress) ?: return null,
                 peerMeta = peerMeta,
                 closeToAddress = createWalletConnectAddress(closeToAddress) ?: return null,
                 rekeyToAddress = createWalletConnectAddress(rekeyAddress) ?: return null,
-                signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
-                authAddress = accountCacheData?.authAddress,
-                account = WalletConnectAccount.create(accountCacheData?.account),
+                signer = WalletConnectSigner.create(rawTransaction, senderWCAddress, errorProvider),
+                authAddress = senderAccountData?.accountInformation?.rekeyAdminAddress,
+                fromAccount = WalletConnectAccount.create(senderAccountData?.account),
                 assetInformation = walletConnectAssetInformation,
                 groupId = groupId
             )
@@ -99,26 +102,25 @@ class PaymentTransactionMapper @Inject constructor(
         rawTransaction: WCAlgoTransactionRequest
     ): BasePaymentTransaction.PaymentTransactionWithRekey? {
         return with(transactionRequest) {
-            val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
-            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
+            val senderWCAddress = createWalletConnectAddress(senderAddress)
+            val senderAccountData =
+                accountDetailUseCase.getCachedAccountDetail(senderWCAddress?.decodedAddress.toString())?.data
             val amount = amount ?: BigInteger.ZERO
-            val assetInformation = accountCacheData?.assetsInformation?.firstOrNull {
-                it.assetId == ALGO_ID
-            }
-            val walletConnectAssetInformation = createWalletConnectAssetInformation(assetInformation, amount)
+            val assetDetail = simpleAssetDetailUseCase.getCachedAssetDetail(ALGO_ID)?.data
+            val walletConnectAssetInformation = createWalletConnectAssetInformation(assetDetail, amount)
 
             BasePaymentTransaction.PaymentTransactionWithRekey(
                 rawTransactionPayload = rawTransaction,
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 note = decodedNote,
                 amount = amount,
-                senderAddress = senderWalletConnectAddress ?: return null,
+                senderAddress = senderWCAddress ?: return null,
                 receiverAddress = createWalletConnectAddress(receiverAddress) ?: return null,
                 peerMeta = peerMeta,
                 rekeyToAddress = createWalletConnectAddress(rekeyAddress) ?: return null,
-                signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
-                authAddress = accountCacheData?.authAddress,
-                account = WalletConnectAccount.create(accountCacheData?.account),
+                signer = WalletConnectSigner.create(rawTransaction, senderWCAddress, errorProvider),
+                authAddress = senderAccountData?.accountInformation?.rekeyAdminAddress,
+                fromAccount = WalletConnectAccount.create(senderAccountData?.account),
                 assetInformation = walletConnectAssetInformation,
                 groupId = groupId
             )
@@ -131,74 +133,83 @@ class PaymentTransactionMapper @Inject constructor(
         rawTransaction: WCAlgoTransactionRequest
     ): BasePaymentTransaction.PaymentTransactionWithClose? {
         return with(transactionRequest) {
-            val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
-            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
+            val senderWCAddress = createWalletConnectAddress(senderAddress)
+            val senderAccountData =
+                accountDetailUseCase.getCachedAccountDetail(senderWCAddress?.decodedAddress.toString())?.data
             val amount = amount ?: BigInteger.ZERO
-            val assetInformation = accountCacheData?.assetsInformation?.firstOrNull {
-                it.assetId == ALGO_ID
-            }
-            val walletConnectAssetInformation = createWalletConnectAssetInformation(assetInformation, amount)
+            val assetDetail = simpleAssetDetailUseCase.getCachedAssetDetail(ALGO_ID)?.data
+            val walletConnectAssetInformation = createWalletConnectAssetInformation(assetDetail, amount)
 
             BasePaymentTransaction.PaymentTransactionWithClose(
                 rawTransactionPayload = rawTransaction,
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 note = decodedNote,
                 amount = amount,
-                senderAddress = senderWalletConnectAddress ?: return null,
+                senderAddress = senderWCAddress ?: return null,
                 receiverAddress = createWalletConnectAddress(receiverAddress) ?: return null,
                 peerMeta = peerMeta,
                 closeToAddress = createWalletConnectAddress(closeToAddress) ?: return null,
-                signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
-                authAddress = accountCacheData?.authAddress,
-                account = WalletConnectAccount.create(accountCacheData?.account),
+                signer = WalletConnectSigner.create(rawTransaction, senderWCAddress, errorProvider),
+                authAddress = senderAccountData?.accountInformation?.rekeyAdminAddress,
+                fromAccount = WalletConnectAccount.create(senderAccountData?.account),
                 assetInformation = walletConnectAssetInformation,
                 groupId = groupId
             )
         }
     }
 
+    // TODO: 05.08.2022 After use BaseAccountAssetData instead of AssetInformation get rid of AccountCacheManager
+    // TODO: 17.08.2022 Use SimpleAssetDetailUseCase instead
     private fun createPaymentTransaction(
         peerMeta: WalletConnectPeerMeta,
         transactionRequest: WalletConnectTransactionRequest,
         rawTransaction: WCAlgoTransactionRequest
     ): BasePaymentTransaction.PaymentTransaction? {
         return with(transactionRequest) {
-            val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
-            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
+            val senderWCAddress = createWalletConnectAddress(senderAddress)
+            val senderAccountData =
+                accountDetailUseCase.getCachedAccountDetail(senderWCAddress?.decodedAddress.toString())?.data
+            val receiverWCAddress = createWalletConnectAddress(receiverAddress)
+            val receiverAccountData =
+                accountDetailUseCase.getCachedAccountDetail(receiverWCAddress?.decodedAddress.toString())?.data
             val amount = amount ?: BigInteger.ZERO
-            val assetInformation = accountCacheData?.assetsInformation?.firstOrNull {
-                it.assetId == ALGO_ID
-            }
-            val walletConnectAssetInformation = createWalletConnectAssetInformation(assetInformation, amount)
+            val assetDetail = simpleAssetDetailUseCase.getCachedAssetDetail(ALGO_ID)?.data
+            val walletConnectAssetInformation = createWalletConnectAssetInformation(assetDetail, amount)
 
             BasePaymentTransaction.PaymentTransaction(
                 rawTransactionPayload = rawTransaction,
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 note = decodedNote,
                 amount = amount,
-                senderAddress = senderWalletConnectAddress ?: return null,
+                senderAddress = senderWCAddress ?: return null,
                 receiverAddress = createWalletConnectAddress(receiverAddress) ?: return null,
                 peerMeta = peerMeta,
-                signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
-                authAddress = accountCacheData?.authAddress,
-                account = WalletConnectAccount.create(accountCacheData?.account),
+                signer = WalletConnectSigner.create(rawTransaction, senderWCAddress, errorProvider),
+                authAddress = senderAccountData?.accountInformation?.rekeyAdminAddress,
+                fromAccount = WalletConnectAccount.create(senderAccountData?.account),
+                toAccount = WalletConnectAccount.create(receiverAccountData?.account),
                 assetInformation = walletConnectAssetInformation,
                 groupId = groupId
             )
         }
     }
 
+    // TODO: 05.08.2022 Refactor use BaseAccountAssetData instead of AssetInformation.
     private fun createWalletConnectAssetInformation(
-        assetInformation: AssetInformation?,
+        assetDetail: AssetDetail?,
         amount: BigInteger
     ): WalletConnectAssetInformation? {
-
-        val algoPrice = parityUseCase.getAlgoToPrimaryCurrencyConversionRate()
-            ?: BigDecimal.ZERO
-        val currencySymbol = parityUseCase.getPrimaryCurrencySymbolOrName()
-
+        lateinit var algoPrice: BigDecimal
+        lateinit var currencySymbol: String
+        if (currencyUseCase.isPrimaryCurrencyAlgo()) {
+            algoPrice = parityUseCase.getAlgoToUsdConversionRate()
+            currencySymbol = parityUseCase.getSecondaryCurrencySymbol()
+        } else {
+            algoPrice = parityUseCase.getAlgoToPrimaryCurrencyConversionRate()
+            currencySymbol = parityUseCase.getPrimaryCurrencySymbolOrName()
+        }
         return walletConnectAssetInformationMapper.algorandMapToWalletConnectAssetInformation(
-            assetInformation,
+            assetDetail,
             amount.toAlgoDisplayValue().multiply(algoPrice),
             currencySymbol
         )

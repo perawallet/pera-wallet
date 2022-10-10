@@ -13,15 +13,16 @@
 
 package com.algorand.android.ui.accounts
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.algorand.android.core.AccountManager
+import dagger.hilt.android.lifecycle.HiltViewModel
 
-class RenameAccountNameViewModel @ViewModelInject constructor(
+@HiltViewModel
+class RenameAccountNameViewModel @Inject constructor(
     private val accountManager: AccountManager,
-    @Assisted private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     // TODO: 16.08.2021 Find the way to use safeArgs in viewModel.

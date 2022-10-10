@@ -12,34 +12,43 @@
 
 package com.algorand.android.mapper
 
-import com.algorand.android.assetsearch.domain.model.AssetDetailDTO
+import com.algorand.android.assetsearch.data.mapper.VerificationTierDTODecider
+import com.algorand.android.assetsearch.domain.mapper.VerificationTierDecider
 import com.algorand.android.models.AssetDetail
 import com.algorand.android.models.AssetDetailResponse
 import javax.inject.Inject
 
-class AssetDetailMapper @Inject constructor() {
+class AssetDetailMapper @Inject constructor(
+    private val verificationTierDTODecider: VerificationTierDTODecider,
+    private val verificationTierDecider: VerificationTierDecider
+) {
 
     fun mapToAssetDetail(assetDetailResponse: AssetDetailResponse): AssetDetail {
+        // TODO Remove this after updating AssetFetchAndCacheUseCase TODOs
+        val verificationTier = with(assetDetailResponse) {
+            val verificationTierDto = verificationTierDTODecider.decideVerificationTierDTO(verificationTier)
+            verificationTierDecider.decideVerificationTier(verificationTierDto)
+        }
         return AssetDetail(
             assetId = assetDetailResponse.assetId,
             fullName = assetDetailResponse.fullName,
             shortName = assetDetailResponse.shortName,
-            isVerified = assetDetailResponse.isVerified,
             fractionDecimals = assetDetailResponse.fractionDecimals,
             usdValue = assetDetailResponse.usdValue,
-            assetCreator = assetDetailResponse.assetCreator
-        )
-    }
-
-    fun mapToAssetDetail(assetDetailDTO: AssetDetailDTO): AssetDetail {
-        return AssetDetail(
-            assetId = assetDetailDTO.assetId,
-            fullName = assetDetailDTO.fullName,
-            shortName = assetDetailDTO.shortName,
-            isVerified = assetDetailDTO.isVerified,
-            fractionDecimals = assetDetailDTO.fractionDecimals,
-            usdValue = assetDetailDTO.usdValue,
-            assetCreator = assetDetailDTO.assetCreator
+            assetCreator = assetDetailResponse.assetCreator,
+            verificationTier = verificationTier,
+            logoUri = assetDetailResponse.logoUri,
+            logoSvgUri = assetDetailResponse.logoSvgUri,
+            explorerUrl = assetDetailResponse.explorerUrl,
+            projectName = assetDetailResponse.projectName,
+            projectUrl = assetDetailResponse.projectUrl,
+            discordUrl = assetDetailResponse.discordUrl,
+            telegramUrl = assetDetailResponse.telegramUrl,
+            twitterUsername = assetDetailResponse.twitterUsername,
+            assetDescription = assetDetailResponse.description,
+            totalSupply = assetDetailResponse.totalSupply,
+            url = assetDetailResponse.url,
+            maxSupply = assetDetailResponse.maxSupply
         )
     }
 }

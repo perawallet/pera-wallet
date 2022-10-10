@@ -13,11 +13,9 @@
 
 package com.algorand.android.ui.contacts.addcontact
 
-import android.content.Context
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
 import com.algorand.android.customviews.AlgorandInputLayout
@@ -29,16 +27,16 @@ import com.algorand.android.ui.contacts.BaseAddEditContactFragment
 import com.algorand.android.ui.contacts.addcontact.AddContactQrScannerFragment.Companion.ACCOUNT_ADDRESS_QR_SCAN_RESULT_KEY
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.alertDialog
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.setContactIconDrawable
 import com.algorand.android.utils.extensions.show
+import com.algorand.android.utils.hideKeyboard
 import com.algorand.android.utils.isValidAddress
+import com.algorand.android.utils.sendErrorLog
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.google.android.material.button.MaterialButton
-import com.google.firebase.crashlytics.internal.common.CommonUtils.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AddContactFragment : BaseAddEditContactFragment() {
@@ -64,6 +62,9 @@ class AddContactFragment : BaseAddEditContactFragment() {
                         onContactSave()
                     }
                 }
+                else -> {
+                    sendErrorLog("Unhandled else case in contractSearchingCollector")
+                }
             }
         }
     }
@@ -78,17 +79,22 @@ class AddContactFragment : BaseAddEditContactFragment() {
                         navBack()
                     }
                 }
+                else -> {
+                    sendErrorLog("Unhandled else case in contactOperationCollector")
+                }
             }
         }
     }
 
     override fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            addContactViewModel.contactOperationFlow.collectLatest(contactOperationCollector)
-        }
-        viewLifecycleOwner.lifecycleScope.launch {
-            addContactViewModel.contractSearchingFlow.collectLatest(contractSearchingCollector)
-        }
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            addContactViewModel.contactOperationFlow,
+            contactOperationCollector
+        )
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            addContactViewModel.contractSearchingFlow,
+            contractSearchingCollector
+        )
     }
 
     override fun initDialogSavedStateListener() {
@@ -127,14 +133,14 @@ class AddContactFragment : BaseAddEditContactFragment() {
         algorandInputLayout.addTrailingIcon(R.drawable.ic_qr_scan, ::onScanQRClick)
     }
 
-    override fun openQrScannerForAlgorandAddress(context: Context) {
-        hideKeyboard(context, requireView())
+    override fun openQrScannerForAlgorandAddress() {
+        view?.hideKeyboard()
         nav(AddContactFragmentDirections.actionAddContactFragmentToAddContactQrScannerFragment())
     }
 
     override fun setAddContactButton(materialButton: MaterialButton) {
         materialButton.show()
-        materialButton.setOnClickListener { checkContactNameAndAddress(materialButton.context) }
+        materialButton.setOnClickListener { checkContactNameAndAddress() }
     }
 
     private fun onContactSave() {
@@ -142,8 +148,8 @@ class AddContactFragment : BaseAddEditContactFragment() {
         addContactViewModel.insertContactToDatabase(contact)
     }
 
-    private fun checkContactNameAndAddress(context: Context) {
-        hideKeyboard(context, requireView())
+    private fun checkContactNameAndAddress() {
+        view?.hideKeyboard()
         if (contactAddress.isValidAddress().not()) {
             showGlobalError(getString(R.string.entered_address_is_not_valid), getString(R.string.warning))
             return

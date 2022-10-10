@@ -12,16 +12,18 @@
 
 package com.algorand.android.ui.accountselection.receive
 
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.models.BaseAccountSelectionListItem
 import com.algorand.android.usecase.ReceiveAccountSelectionPreviewUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class ReceiveAccountSelectionViewModel @ViewModelInject constructor(
+@HiltViewModel
+class ReceiveAccountSelectionViewModel @Inject constructor(
     private val receiveAccountSelectionPreviewUseCase: ReceiveAccountSelectionPreviewUseCase
 ) : ViewModel() {
 

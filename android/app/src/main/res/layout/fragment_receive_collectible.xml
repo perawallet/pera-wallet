@@ -16,40 +16,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/infoTextView"
-        style="@style/CollectibleOptInInfoTextStyle"
-        android:layout_marginTop="@dimen/spacing_small"
-        android:text="@string/you_can_search_the_nft"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.algorand.android.customviews.AlgorandSearchView
-        android:id="@+id/searchView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacing_xlarge"
-        android:layout_marginTop="@dimen/spacing_large"
-        android:hint="@string/search_asset_id_or_nft"
-        android:inputType="text"
-        app:endIconTintColor="@color/secondary_icon_tint_color"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/infoTextView"
-        app:startIconTintColor="@color/search_bar_view_icon_color" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/collectiblesRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clipToPadding="false"
-        android:padding="@dimen/spacing_xlarge"
+        android:paddingBottom="@dimen/spacing_xlarge"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@id/accountDividerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchView" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/accountDividerView"
@@ -68,7 +45,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
 
     <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/loadingProgressBar"
@@ -90,7 +66,7 @@
         app:layout_constraintBottom_toTopOf="@id/accountCopyQrView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchView"
+        app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

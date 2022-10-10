@@ -15,14 +15,19 @@ package com.algorand.android.ui.lockpreference
 import androidx.fragment.app.viewModels
 import com.algorand.android.R
 import com.algorand.android.ui.password.BasePasswordFragment
+import com.algorand.android.ui.password.model.PasswordScreenType
+import com.algorand.android.ui.password.model.PasswordScreenType.ReEnterScreenType
 import com.algorand.android.utils.isBiometricAvailable
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ChoosePasswordFragment : BasePasswordFragment() {
 
-    override val initialTitleResId = R.string.choose_your_six_digit_pin
-    override val nextTitleResId = R.string.re_enter_your_six_digit_pin
+    override val titleResId: Int = R.string.choose_your_six_digit_pin
+
+    override val screenType: PasswordScreenType = ReEnterScreenType(
+        nextScreenTitleResId = R.string.re_enter_your_six_digit_pin
+    )
 
     private val choosePasswordViewModel: ChoosePasswordViewModel by viewModels()
 

@@ -12,8 +12,7 @@
 
 package com.algorand.android.modules.transaction.detail.ui.applicationcallassets
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,13 +20,15 @@ import com.algorand.android.modules.transaction.detail.ui.model.ApplicationCallA
 import com.algorand.android.modules.transaction.detail.domain.model.ApplicationCallAssetInformationPreview
 import com.algorand.android.modules.transaction.detail.domain.usecase.ApplicationCallAssetsPreviewUseCase
 import com.algorand.android.utils.getOrThrow
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class ApplicationCallAssetsViewModel @ViewModelInject constructor(
+@HiltViewModel
+class ApplicationCallAssetsViewModel @Inject constructor(
     private val applicationCallAssetsPreviewUseCase: ApplicationCallAssetsPreviewUseCase,
-    @Assisted savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val assetInformationList = savedStateHandle.getOrThrow<Array<ApplicationCallAssetInformation>>(

@@ -28,7 +28,7 @@ import com.hipo.hipoexceptionsandroid.RetrofitErrorHandler
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.components.SingletonComponent
 import java.util.concurrent.TimeUnit
 import javax.inject.Named
 import javax.inject.Singleton
@@ -40,10 +40,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 /**
  * Module which provides all required dependencies about network
  */
+// Safe here as we are dealing with a Dagger 2 module
 @Suppress("TooManyFunctions")
 @Module
-@InstallIn(ApplicationComponent::class)
-// Safe here as we are dealing with a Dagger 2 module
+@InstallIn(SingletonComponent::class)
 object NetworkModule {
 
     private const val TIMEOUT_CONSTANT = 60L

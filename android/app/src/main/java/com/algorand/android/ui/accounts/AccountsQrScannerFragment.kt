@@ -62,6 +62,10 @@ class AccountsQrScannerFragment : BaseQrScannerFragment(R.id.accountsQrScannerFr
     @SuppressWarnings("MaxLineLength")
     override fun onImportAccountDeepLink(mnemonic: String): Boolean {
         return true.also {
+            if (accountsQrScannerViewModel.isAccountLimitExceed()) {
+                showMaxAccountLimitExceededError()
+                return@also
+            }
             nav(AccountsQrScannerFragmentDirections.actionAccountsQrScannerFragmentToLoginNavigation(mnemonic = mnemonic))
         }
     }

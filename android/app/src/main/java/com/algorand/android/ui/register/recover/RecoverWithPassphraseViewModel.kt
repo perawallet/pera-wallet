@@ -12,8 +12,7 @@
 
 package com.algorand.android.ui.register.recover
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.AccountManager
@@ -21,15 +20,17 @@ import com.algorand.android.core.BaseViewModel
 import com.algorand.android.models.Account
 import com.algorand.android.utils.PassphraseKeywordUtils
 import com.algorand.android.utils.getOrElse
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class RecoverWithPassphraseViewModel @ViewModelInject constructor(
+@HiltViewModel
+class RecoverWithPassphraseViewModel @Inject constructor(
     private val accountManager: AccountManager,
-    @Assisted savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
     private val passphraseKeywordUtils = PassphraseKeywordUtils()

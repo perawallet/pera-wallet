@@ -32,5 +32,8 @@ data class WalletConnectSessionHistoryEntity(
     val creationDateTimeStamp: Long,
 
     @ColumnInfo(name = "connected_account_public_key")
-    val connectedAccountPublicKey: String
+    val connectedAccountPublicKey: String,
+
+    @ColumnInfo(name = "fallback_browser_group_response")
+    val fallbackBrowserGroupResponse: String? = null
 )

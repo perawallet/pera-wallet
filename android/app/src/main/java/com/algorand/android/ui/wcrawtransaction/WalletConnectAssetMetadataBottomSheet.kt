@@ -25,6 +25,6 @@ class WalletConnectAssetMetadataBottomSheet : BaseWalletConnectRawMessageBottomS
     private val rawMessageViewModel: WalletConnectRawMessageViewModel by viewModels()
 
     override fun setRawMessage(textView: TextView) {
-        textView.text = rawMessageViewModel.formatAssetMetadata(args.assetParams)
+        textView.text = rawMessageViewModel.formatAssetMetadata(args.walletConnectTransactionAssetDetail)
     }
 }

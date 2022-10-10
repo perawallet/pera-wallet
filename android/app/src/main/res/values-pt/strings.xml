@@ -90,7 +90,6 @@
     <string name="you_are_about_to_receive">Você está prestes a receber um ativo!</string>
     <string name="min_transaction_error">Erro de Transação Mín.!</string>
     <string name="you_need_at_least">Você precisa de ao menos <annotation replacement="min_balance"> </annotation> Algos para adicionar este ativo</string>
-    <string name="your_accounts_do_not">Suas contas não contêm este ativo</string>
     <string name="please_add_this">Adicione este ativo e tente novamente.</string>
     <string name="key_not_valid">Chave inválida, certifique-se de que tem a chave certa.</string>
     <string name="scanned_qr_is_not_valid">QR inválido</string>
@@ -104,7 +103,7 @@
     <string name="verified_assets">Ativos Confirmados</string>
     <string name="what_does_asset">O que significa Verificação de Ativo? <annotation type="verified-icon"> </annotation></string>
     <string name="verified_assets_first_paragraph">Ativos que pasam por nosso processo de verificação são projetos conhecidos que têm seus sites e informações públicas verificados quanto a este ASA específico. O estatus de verificação não é um endosso ao ativo.</string>
-    <string name="verified_assets_second_paragraph">A Carteira Pera não possui qualquer relação com os proprietários dos ativos verificados. Este distintivo é para fins de informação apenas.</string>
+    <string name="verified_assets_second_paragraph">A Pera Wallet não possui qualquer relação com os proprietários dos ativos verificados. Este distintivo é para fins de informação apenas.</string>
     <string name="verified_assets_third_paragraph">Dito isto, você precisa <annotation type="color">sempre conferir</annotation> se a ID dos ativos é a que você deseja escolher antes de transacionar com o ativo.</string>
     <string name="verified_assets_fourth_paragraph">Caso tenha dúvidas sobre o processo de confirmação ou algum comentário sobre o aplicativo, visite:</string>
     <string name="advanced_troubleshooting">Soluções Avançadas</string>
@@ -128,7 +127,7 @@
     <string name="error_cancelled_title">Transação Cancelada</string>
     <string name="error_cancelled_message">O dispositivo ledger pareado cancelou o pedido de transação.</string>
     <string name="error_unsupported_title">Dispositivo Não Suportado</string>
-    <string name="error_unsupported_message">O dispositivo ao qual você tenta conectar-se não é suportado com a Carteira Pera.</string>
+    <string name="error_unsupported_message">O dispositivo ao qual você tenta conectar-se não é suportado com a Pera Wallet.</string>
     <string name="bluetooth_location_services">Erro de Serviços de Localização Bluetooth</string>
     <string name="please_ensure">Certifique-se de ter os serviços de localização habilitados.</string>
     <string name="terms_and_services">Termos e Serviços</string>
@@ -185,7 +184,7 @@
     <string name="just_now">Agora</string>
     <string name="transaction_received">Transação Recebida</string>
     <string name="too_many_pin_attempts">Muitas tentativas de senha</string>
-    <string name="this_ledger_device">Este dispositivo ledger pode assinar transações para as seguintes contas. Selecione as contas para adicionar à sua Carteira Pera.</string>
+    <string name="this_ledger_device">Este dispositivo ledger pode assinar transações para as seguintes contas. Selecione as contas para adicionar à sua Pera Wallet.</string>
     <string name="this_account_has">Esta conta foi rechaveada. Para assinar transações, recupere esta conta com uma frase senha ou dispositivo Ledger.</string>
     <string name="auth_account_address">Autenticar Endereço de Conta</string>
     <string name="rekeying_account">Rechavando Conta…</string>
@@ -194,7 +193,7 @@
     <string name="developer_settings">Configurações para Desenvolvedores</string>
     <string name="currency">Moeda</string>
     <string name="algorand_dispenser">Dispensador Algorand</string>
-    <string name="by_creating_account">Ao criar uma conta, você concorda com os <annotation font="dmsans_medium"><annotation custom="terms_click">Termos e Condições</annotation></annotation> e <annotation font="dmsans_medium"><annotation custom="privacy_click">Política de Privacidade</annotation></annotation> da Carteira Pera</string>
+    <string name="by_creating_account">Ao criar uma conta, você concorda com os <annotation font="dmsans_medium"><annotation custom="terms_click">Termos e Condições</annotation></annotation> e <annotation font="dmsans_medium"><annotation custom="privacy_click">Política de Privacidade</annotation></annotation> da Pera Wallet</string>
     <string name="create_new_account">Criar nova Conta</string>
     <string name="watch_account">Conta de Monitoração</string>
     <string name="receive">Receber</string>
@@ -252,7 +251,7 @@
     <string name="recover">Recuperar</string>
     <string name="the_last_copied_text">O último texto copiado não é uma frase secreta válida de 25 palavras. Copie a senha longa válida e tente novamente.</string>
     <string name="make_sure_to_record">Certifique-se de guardar essas palavras na ordem correta, usando os números correspondentes.</string>
-    <string name="this_6_digit_pin">Esta senha de 6 dígitos será necessária para a utilização da Carteira Pera. A criação de uma senha é altamente recomendável para aumentar a segurança da carteira para o caso de seu telefone ser roubado.</string>
+    <string name="this_6_digit_pin">Esta senha de 6 dígitos será necessária para a utilização da Pera Wallet. A criação de uma senha é altamente recomendável para aumentar a segurança da carteira para o caso de seu telefone ser roubado.</string>
     <string name="increase_your_security">Aumente sua segurança com uma senha</string>
     <string name="name_your_account">Dê um nome à sua conta</string>
     <string name="please_use_biometric">Utilize a Biometria para prosseguir.</string>
@@ -268,7 +267,7 @@
     <string name="verify_recovery_passphrase">Confirmar gravação de frase senha de recuperação</string>
     <string name="transacting_tips">Dicas para Transações</string>
     <string name="i_want_to_monitor">Quero monitorar uma conta mantida em armazenamento frio.</string>
-    <string name="name_your_account_to">Nomeie sua conta para identificá-la facilmente enquanto utiliza a Carteira Pera. Esses nomes são armazenados localmente e podem ser vistos apenas por você.</string>
+    <string name="name_your_account_to">Nomeie sua conta para identificá-la facilmente enquanto utiliza a Pera Wallet. Esses nomes são armazenados localmente e podem ser vistos apenas por você.</string>
     <string name="learn_more">Saiba Mais</string>
     <string name="no_contact_found">Nenhum Contato Encontrado</string>
     <string name="you_can_make_the">Você pode acelerar o processo de envio de ativos adicionando novos contatos.</string>
@@ -374,13 +373,13 @@
     <string name="once_pairing_is_confirmed">Uma vez confirmado o pareamento, abra o aplicativo Ledger da Algorand.</string>
     <string name="pairing_failed">Pareamento falhou!</string>
     <string name="having_ledger_nano_x">Problemas de conexão com seu Ledger Nano X?</string>
-    <string name="make_sure_the_device_is">Certifique-se de que o dispositivo esteja desbloqueado, próximo e com o bluetooth ativado. Caso o problema persista, remova o dispositivo das configurações de bluetooth do seu telefone, remova a conta ledger e refaça o pareamento do seu ledger segundo instruções da Carteira Pera.</string>
+    <string name="make_sure_the_device_is">Certifique-se de que o dispositivo esteja desbloqueado, próximo e com o bluetooth ativado. Caso o problema persista, remova o dispositivo das configurações de bluetooth do seu telefone, remova a conta ledger e refaça o pareamento do seu ledger segundo instruções da Pera Wallet.</string>
     <string name="you_are_creating_a_read_only">Você está criando uma Conta Algorand para visualização apenas</string>
     <string name="enter_your_recovery_passphrase">Insira sua Frase Senha de Recuperação</string>
     <string name="create_a_watch_account">Criar uma conta de\nobservação</string>
     <string name="paste_with_account">Colar (<annotation custom="account_text_size"><annotation custom="account_color"><annotation font="dmmono_regular"><annotation replacement="account">accountPlaceholder</annotation></annotation></annotation></annotation>)</string>
     <string name="transfer_from_another_phone">Transferir de Outro Telefone</string>
-    <string name="i_already_have_an">Já tenho uma Carteira Pera, porém em um telefone diferente.</string>
+    <string name="i_already_have_an">Já tenho uma Pera Wallet, porém em um telefone diferente.</string>
     <string name="set_pin_code">Configurar SENHA</string>
     <string name="your_faceid_or_fingerprintid">Para utilizar este aplicativo, será necessária sua ID facial ou impressão digital. Recomendamos a habilitação da autenticação biométrica para aumentar a segurança de sua carteira para o caso de seu telefone ser roubado.</string>
     <string name="do_not_use">Não utilizar</string>
@@ -488,12 +487,12 @@
     <string name="how_we_calculate_portfolio">Como calculamos o valor do portfolio</string>
     <string name="the_total_portfolio_value">O Valor Total do Portfolio é calculado somando-se os valores de todos os ativos e Algos disponíveis em suas contas, excluindo-se as Contas de Observação.\n\nOs preços dos ativos são estimados com base nos valores diários colhidos de vários parceiros do ecossistema. Como alguns valores de ativos não estão disponíveis, o Valor Total do Portfolio deve ser considerado como uma estimativa.</string>
     <string name="undefined">Indefinido</string>
-    <string name="pera_app_is_locked">O aplicativo Carteira Pera está bloqueado</string>
-    <string name="rate_pera_wallet">Avalie a Carteira Pera</string>
-    <string name="welcome_to_pera">Bem vindo à\nCarteira Pera</string>
-    <string name="start_using_pera">Comece a utilizar a Carteira Pera </string>
+    <string name="pera_app_is_locked">O aplicativo Pera Wallet está bloqueado</string>
+    <string name="rate_pera_wallet">Avalie a Pera Wallet</string>
+    <string name="welcome_to_pera">Bem vindo à\nPera Wallet</string>
+    <string name="start_using_pera">Comece a utilizar a Pera Wallet</string>
     <string name="is_your_ledger_paired">Seu Ledger está pareado com este dispositivo?\nCaso não, siga estes passos:</string>
-    <string name="you_are_about_to_delete">Você está prestes a excluir todos os dados da carteira, inclusive suas contas armazenadas. Antes de confirmar, certifique-se de ter as senhas de sua conta armazenadas em outro lugar. Caso contrário, você não poderá restaurar suas contas. Tem certeza de que deseja continuar?</string>
+    <string name="you_are_about_to_delete">Você está prestes a excluir todos os dados da carteira, inclusive suas contas armazenadas. Antes de confirmar, certifique-se de que tem as frases senha de sua conta armazenadas em outro lugar. Caso contrário, você não poderá restaurar suas contas.\n\nTem certeza de que deseja prosseguir?</string>
     <string name="your_data_has_been">Seus dados foram excluídos com sucesso</string>
     <string name="you_are_connected">Você está Conectado ao <annotation replacement="peer_name">peerNamePlaceholder</annotation></string>
     <string name="please_return_to">Volte ao<annotation replacement="peer_name">peerNamePlaceholder</annotation> para continuar e concluir sua operação. Você pode encontrar todas as Sessões conectadas na página de Configurações.</string>
@@ -503,17 +502,16 @@
     <string name="create_a_passphrase_backup">Crie uma frase senha para sua conta</string>
     <string name="creating_a_passphrase_backup">Criar uma frase senha permite que você recupere sua conta. Sem esta frase senha, caso perca seu dispositivo, remova a conta ou exclua o aplicativo, perderá de forma permanente o acesso à sua conta Algorand!</string>
     <string name="congratulations_your_account">Parabéns! Sua conta está pronta para ser utilizada.</string>
-    <string name="welcome_to_pera_your_account">Bem vindo à Carteira Pera! Sua conta está pronta para ser utilizada.</string>
+    <string name="welcome_to_pera_your_account">Bem vindo à Pera Wallet! Sua conta está pronta para ser utilizada.</string>
     <string name="loading">Carregando</string>
-    <string name="we_are_very_excited">Estamos muito empolgados em anunciar que a Carteira Algorand agora é chamada Carteira Pera. Isso é muito mais do que um novo nome e logotipo. Estamos relançando a carteira mais popular do Ecossistema Algorand com foco renovado em nosso roteiro, integrações de parceiros e comunidade.\n\nNão se preocupe, a Carteira Pera é construída e mantida pela mesma equipe, e todas as características que você conhece e adora continuam aqui – com muitas outras chegando nos próximos meses.\n\nPara saber mais sobre o relançamento e nosso roteiro, acesse o <annotation type="color"><annotation url="peraBlogUrl">blog da Carteira Pera</annotation></annotation></string>
+    <string name="we_are_very_excited">Estamos muito empolgados em anunciar que a Carteira Algorand agora é chamada Pera Wallet. Isso é muito mais do que um novo nome e logotipo. Estamos relançando a carteira mais popular do Ecossistema Algorand com foco renovado em nosso roteiro, integrações de parceiros e comunidade.\n\nNão se preocupe, a Pera Wallet é construída e mantida pela mesma equipe, e todas as características que você conhece e adora continuam aqui – com muitas outras chegando nos próximos meses.\n\nPara saber mais sobre o relançamento e nosso roteiro, acesse o <annotation type="color"><annotation url="peraBlogUrl">blog da Pera Wallet</annotation></annotation></string>
     <string name="remove_all_accounts_and_logout">Remover todas as Contas e Sair</string>
     <string name="yes_remove_all_accounts">Sim. Remover todas as Contas e Sair</string>
     <string name="i_want_to_recover">Quero recuperar uma conta Algorand utilizando minha frase senha de 25 palavras</string>
     <string name="sorry_we_cant_show_account">Não podemos exibir detalhes desta conta. Parece que estamos com problemas com o cálculo.\n\nOs valores de alguns ativos podem não estar disponíveis. Portanto, o valor total do portfolio deve ser considerado como estimativa apenas.  </string>
     <string name="sorry_we_cant_show_portfolio">Não podemos exibir detalhes deste portfolio. Parece que estamos com problemas com o cálculo.\n\nOs valores de alguns ativos podem não estar disponíveis. Portanto, o valor total do portfolio deve ser considerado como estimativa apenas.  </string>
     <string name="transaction_request_faq">Perguntas Frequentes sobre Solicitações de Transação</string>
-    <string name="external_applications_also">Aplicativos externos, também conhecidos como DApps, podem iniciar solicitações de transação de forma independente da Carteira Pera. Certifique-se de revisar cuidadosamente essas transações antes de aprová-las e assiná-las.\n\nTodas as transações serão irreversíveis. Como estas solicitações estão fora do controle da Carteira Pera, jamais aprove transações de uma DApp que você não conheça.</string>
-    <string name="notification_algo_received_message"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> foram enviados a <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> por <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>.</string>
+    <string name="external_applications_also">Aplicativos externos, também conhecidos como DApps, podem iniciar solicitações de transação de forma independente da Pera Wallet. Certifique-se de revisar cuidadosamente essas transações antes de aprová-las e assiná-las.\n\nTodas as transações serão irreversíveis. Como estas solicitações estão fora do controle da Pera Wallet, jamais aprove transações de uma DApp que você não conheça.</string>
     <string name="minimum_amount_required">Quantia Mínima Exigida</string>
     <string name="this_is_the_first_transaction">Esta é a primeira transação para a conta selecionada. As primeiras transações exigem uma quantia mínima de 0,1 Algo. Insira uma quantia válida e tente novamente.</string>
     <string name="i_want_to_create">Quero criar uma conta</string>
@@ -610,8 +608,6 @@
     <string name="your_nft_transfer_has_failed">A transferência de seu NFT não ocorreu!</string>
     <string name="please_try_again">Tente novamente.</string>
     <string name="opt_out">Excluir Opção</string>
-    <string name="opt_out_from">Excluir opção de \"%1$s\"</string>
-    <string name="you_are_about_to_opt_out">Você está prestes a excluir a opção por este NFT com %1$s. Não será mais possível transacionar com este ativo até que você opte por ele novamente.</string>
     <string name="nft_successfully_opted_out">%1$s Opção por NFT excluída com sucesso</string>
     <string name="opted_in_to">Opção feita por</string>
     <string name="show_on">Exibir em</string>
@@ -623,19 +619,22 @@
     <string name="filter">Filtro</string>
     <string name="show_filtered_nfts_formatted">Mostrar NFTs Filtrados (%1$d)</string>
     <string name="search_your_nfts">Busque seus NFTs</string>
-    <string name="enter_your_old">Insira sua velha senha de 6 dígitos</string>
-    <string name="ledger_info_power_first_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">Para uso geral do Bluetooth do seu Ledger, confira o guia para conexão Bluetooth <annotation type="bold"><annotation type="color">oficial do Ledger.</annotation></annotation></annotation></string>
-    <string name="ledger_info_power_second_paragraph"><annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">Para soluções mais avançadas, confira o Guia para Soluções Bluetooth <annotation type="bold"><annotation type="color">oficial do Ledger.</annotation></annotation></annotation></string>
-    <string name="ledger_info_ledger_first_paragraph"><annotation url="https://www.ledger.com/start">Iniciar com o abrangente tutorial para <annotation type="bold"><annotation type="color">Iniciar</annotation></annotation> do Ledger.</annotation></string>
+    <string name="enter_your_old">Insira sua antiga\nsenha de 6 dígitos</string>
+    <string name="ledger_info_power_first_paragraph">
+    <annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">Para uso geral do Bluetooth do seu Ledger, confira o guia para conexão Bluetooth <annotation type="bold"><annotation type="color">oficial do Ledger.</annotation></annotation></annotation>
+  </string>
+    <string name="ledger_info_power_second_paragraph">
+    <annotation url="https://support.ledger.com/hc/en-us/articles/360025864773">Para soluções mais avançadas, confira o Guia para Soluções Bluetooth <annotation type="bold"><annotation type="color">oficial do Ledger.</annotation></annotation></annotation>
+  </string>
+    <string name="ledger_info_ledger_first_paragraph">
+    <annotation url="https://www.ledger.com/start">Iniciar com o abrangente tutorial para <annotation type="bold"><annotation type="color">Iniciar</annotation></annotation> do Ledger.</annotation>
+  </string>
     <string name="no_nft_found">Nenhum NFT Encontrado</string>
-    <string name="welcome_to_pera_wallet_your_watch">Bem vindo à Carteira Pera! Sua Conta de Observação foi adicionada com sucesso.</string>
+    <string name="welcome_to_pera_wallet_your_watch">Bem vindo à Pera Wallet! Sua Conta de Observação foi adicionada com sucesso.</string>
     <string name="congratulations_your_watch_account_has">Parabéns! Sua Conta de Observação foi adicionada com sucesso.</string>
     <string name="passphrase_verified">Frase Senha Confirmada</string>
     <string name="keep_this_recovery">Guarde esta frase senha de recuperação em um local seguro que seja acessível apenas por você. Não perca esta frase senha longa de recuperação.</string>
-    <string name="search_your_assets">Buscar seus ativos</string>
     <string name="search">Buscar</string>
-    <string name="wrong_pin">Senha Incorreta</string>
-    <string name="pin_does_not">Senha não coincide com a senha anterior</string>
     <string name="no_transactions">Não há transações</string>
     <string name="there_are_no">Não há transações a serem exibidas para o período selecionado</string>
     <string name="filter_by_date">Filtrar por Data</string>
@@ -662,7 +661,6 @@
     <string name="algo_wallet">Algo Wallet</string>
     <string name="address_copied_to_clipboard">Endereço copiado</string>
     <string name="main_currency">Moeda Principal</string>
-    <string name="your_main_currency_is">Sua moeda principal é <annotation font="dmsans_regular"><annotation type="primaryCurrencyColor"><annotation type="bold"><annotation replacement="primaryCurrencyId">primaryCurrencyPlaceholder</annotation></annotation></annotation></annotation>, sua moeda secundária é <annotation font="dmsans_regular"><annotation type="secondaryCurrencyColor"><annotation type="bold"><annotation replacement="secondaryCurrencyId">secondaryCurrencyPlaceholder</annotation></annotation></annotation></annotation></string>
     <string name="the_scanned_qr_is_not">O QR escaneado não é um endereço público Algorand válido. Para outros tipos de QR (como sessões WalletConnect), use o botão de QR na página inicial.</string>
     <string name="buy_crypto_with_credit">Compre criptomoedas com cartão de crédito ou transferência bancária</string>
     <string name="algo_or_any_asa">Algo ou qualquer ASA a uma outra conta</string>
@@ -706,4 +704,100 @@
     </plurals>
     <string name="invalid_asset_id">ID de Ativo Inválida.</string>
     <string name="asset_successfully_added_formatted">%1$s adicionado à sua conta com sucesso.</string>
+    <string name="notification_algo_received_message"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> foram enviados a <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> por <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>.</string>
+    <string name="opt_in_to">Optar por um ASA ou NFT desta conta</string>
+    <string name="add_new_asa">Adicionar Novo ASA</string>
+    <string name="show_more_actions">Exibir mais ações</string>
+    <string name="asset_not_found_please_make">Ativo não encontrado. Verifique se está utilizando a rede correta.</string>
+    <string name="parent_transaction_id">ID de Transação\nMatriz</string>
+    <string name="it_looks_like">Parece que o grupo de transações não inclui uma ou mais transações. Para sua segurança, a Pera Wallet não permitirá que você assine grupos de transações que tenham dados obscuros. Contate a DApp que enviou esta transação para que retifiquem o problema.</string>
+    <string name="self_transfer">Autotransferência</string>
+    <string name="opt_in_self_transfer">Optar / Autotransferência</string>
+    <string name="thousand">Mil</string>
+    <string name="thousand_abbreviation">K</string>
+    <string name="million">Milhão</string>
+    <string name="million_abbreviation">M</string>
+    <string name="billion">Bilhão</string>
+    <string name="billion_abbreviation">B</string>
+    <string name="trillion">Trilhão</string>
+    <string name="trillion_abbreviation">T</string>
+    <string name="quadrillion">Quadrilhão</string>
+    <string name="quadrillion_abbreviation">Qa</string>
+    <string name="quintillion">Quintilhão</string>
+    <string name="quintillion_abbreviation">Qi</string>
+    <string name="account_related_to_this_notification">A conta relacionada a esta notificação foi removida deste dispositivo. Para ver os detalhes desta notificação, adicione novamente a conta.</string>
+    <string name="account_asset_count_zero">0 Ativos</string>
+    <string name="pin_code_did_not_match">Senha não combina. Tente Novamente</string>
+    <string name="your_main_currency_is_placeholder">Sua moeda principal é <annotation font="dmsans_regular"><annotation custom="primaryCurrencyColor"><annotation replacement="primaryCurrencyId">primaryCurrencyPlaceholder</annotation></annotation></annotation> e sua moeda secundária é <annotation font="dmsans_regular"><annotation custom="secondaryCurrencyColor"><annotation replacement="secondaryCurrencyId">secondaryCurrencyPlaceholder</annotation></annotation></annotation></string>
+    <string name="disconnect_all_sessions">Desconectar TODAS as Sessões</string>
+    <string name="would_disconnect_all_sessions">Gostaria de desconectar todas as sessões?</string>
+    <string name="missing_asset">Ativo Ausente</string>
+    <string name="you_are_already">Você já optou por <annotation replacement="asset_name">assetNamePlaceholder</annotation> a partir desta conta.</string>
+    <string name="too_many_accounts">Contas Demais!</string>
+    <string name="looks_like_already_have_accounts">Parece que você já tem %1$d ou mais contas em sua carteira. Para manter o desempenho do aplicativo ágil, atualmente não oferecemos suporte a mais de %1$d contas. Para adicionar outra, remova primeiro uma conta existente.</string>
+    <string name="error_bluetooth_permission_message">É preciso permitir a busca Bluetooth a fim de buscar Ledgers próximos.</string>
+    <string name="select_the_receiver_account">Selecione a conta destinatária</string>
+    <string name="transaction_submitted">Transação Enviada</string>
+    <string name="your_transaction_sub">Sua transação foi enviada à rede Algorand com sucesso.</string>
+    <string name="search_assets">Buscar ativos</string>
+    <string name="manage_collectibles">Gerir Colecionáveis</string>
+    <string name="asa_verification">Verificação de ASA</string>
+    <string name="pera_wallet_s_algorand">O Programa de Verificação de Ativos Padrão Algorand (ASA) da Carteira Pera permite que os criadores de ASA sejam <annotation type="bold">automaticamente</annotation> verificados ao serem validados como donos do ativo.</string>
+    <string name="the_main_purpose">O principal propósito da Verificação de ASA é o de <annotation type="bold">evitar que um ASA finja estar afiliado ou agindo como um token de um projeto ao qual não está conectado.</annotation></string>
+    <string name="asa_verification_is"><annotation type="bold">A verificação de ASA não é um endosso do projeto.</annotation> Nem Algorand ou Pera usarão este processo de verificação a fim de endossar um projeto.</string>
+    <string name="overview">Panorama</string>
+    <string name="activity">Atividade</string>
+    <string name="about">Sobre</string>
+    <string name="csv">CSV</string>
+    <string name="transactions">Transações</string>
+    <string name="this_asa_was_automatically_verified">Este ASA foi <annotation type="bold">automaticamente verificado</annotation> pelo programa Pera de Verificação de ASA.</string>
+    <string name="this_is_a_well_known">Este é um projeto <annotation type="bold">bem conhecido</annotation> e estabelecido no Ecossistema Algorand.</string>
+    <string name="we_ve_received_reports_that">Recebemos denúncias de que este ASA está envolvido com algum tipo de <annotation type="bold">tentativa de golpe.</annotation> Tenha cuidado ao interagir com ele.</string>
+    <string name="verified_asa">ASA verificado</string>
+    <string name="trusted_asa">ASA confiável</string>
+    <string name="suspicious">Suspeito</string>
+    <string name="total_supply">Suprimento Total</string>
+    <string name="asa_id">ID do ASA</string>
+    <string name="creator">Criador</string>
+    <string name="asa_url">URL do ASA</string>
+    <string name="project_website">Site do projeto</string>
+    <string name="open_with_browser">Abrir com Navegador</string>
+    <string name="show_more">Exibir mais</string>
+    <string name="show_less">Exibir menos</string>
+    <string name="learn_more_about_asa_verification">Saiba mais sobre a verificação do ASA</string>
+    <string name="social_media">Mídias Sociais</string>
+    <string name="report_asset_name">Denunciar %1$s</string>
+    <string name="about_asset_name">Sobre %1$s</string>
+    <string name="total_supply_info">O suprimento total de um ativo é estabelecido no momento da criação e corresponde ao total de unidades criadas do ativo.</string>
+    <string name="asa_report_asset_id">Denúncia de ASA: %1$d</string>
+    <string name="report_an_asa">Denunciar um ASA</string>
+    <string name="you_can_send_us_an">Você pode enviar-nos um e-mail denunciando este ASA em <annotation custom="verification_mail_click"><annotation replacement="verification_mail"><annotation font="dmsans_medium">verificationMailPlaceholder</annotation></annotation></annotation></string>
+    <string name="you_can_add_this_asset">Você pode adicionar este ativo a</string>
+    <string name="add_asset">Adicionar Ativo</string>
+    <string name="this_account_doesn_t_have_the">Esta conta não possui o saldo mínimo de Algos exigido para suportar esta transação. Adicione mais Algos à conta antes de prosseguir.\n\nO saldo mínimo aumenta em %1$s Algo para cada ativo, NFT e contrato inteligente utilizado para optar. A fim de diminuir o saldo de Algos exigido, você pode excluir ativos e contratos inteligentes.</string>
+    <string name="insufficient_algo_balance">Saldo de Algos Insuficiente</string>
+    <string name="you_can_opt_in_to_this">Você pode optar por este ativo a partir de uma de suas contas.</string>
+    <string name="please_select_an_account_to">Selecione uma conta para adicionar %1$s</string>
+    <string name="asset_successfully_added_to_your">%1$s adicionado à sua conta com sucesso.</string>
+    <string name="asset_successfully_removed_from_your">%1$s removido de sua conta com sucesso.</string>
+    <string name="filter_nfts">Filtrar NFTs</string>
+    <string name="newest_to_oldest">Mais novo para mais velho</string>
+    <string name="oldest_to_newest">Mais velho para mais novo</string>
+    <string name="you_can_add_this_nft">Você pode adicionar este NFT a</string>
+    <string name="opt_dash_in">Optar</string>
+    <string name="sorry_there_was">Houve um erro ao buscar algumas de suas contas. O valor do portfolio é calculado com base apenas nos valores obtidos com sucesso.</string>
+    <string name="we_couldn_t_find_any_assets">Não encontramos qualquer ativo para remover.</string>
+    <string name="the_algo_is_the_official_cryptocurrency">O Algo é a criptomoeda oficial da blockchain da Algorand. A blockchain da Algorand foi construída para ajudar a criar uma economia aberta e sem fronteiras onde todos podem participar. Esse novo tipo de economia digital só pode ser executado em uma moeda verdadeiramente digital que funcione instantaneamente e para todos. Este é o Algo.</string>
+    <string name="opt_out_nft">Remover NFT</string>
+    <string name="you_are_about_to_opt">Você está prestes a remover %1$s e não poderá mais transacionar com este NFT antes de readicioná-lo.</string>
+    <string name="opt_in_to_nft">Optar por NFT</string>
+    <string name="opting_in_to_an_nft">Optar por um NFT exige o envio de uma transação com uma tarifa mínima de transação. Isto vai aparecer no seu histórico de transações.</string>
+    <string name="this_account_doesn_t">Esta conta não possui saldo suficiente para esta transação.</string>
+    <string name="we_couldn_t">Não podemos detectar automaticamente o navegador do qual você iniciou sua sessão WalletConnect. Selecione-o para voltar ao %1$s:</string>
+    <string name="select_a_browser">Selecione um Navegador</string>
+    <string name="switch_back_to">Retornar ao <annotation iconReplacement="browserIconResId">[browser_icon_placeholder]</annotation> <annotation replacement="browser_name">browser_name_placeholder</annotation></string>
+    <string name="account_connected">Conta conectada!</string>
+    <string name="you_ve_connected">Você conectou sua conta a %1$s. Volte ao navegador para concluir a operação.</string>
+    <string name="transaction_signed">Transação assinada!</string>
+    <string name="transaction_was_sent">A transação foi enviada a %1$s. Volte ao navegador para concluir a operação.</string>
 </resources>

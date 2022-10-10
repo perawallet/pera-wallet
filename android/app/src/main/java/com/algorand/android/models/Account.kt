@@ -15,7 +15,7 @@ package com.algorand.android.models
 import android.os.Parcelable
 import com.algorand.android.models.Account.Type.LEDGER
 import com.algorand.android.models.Account.Type.STANDARD
-import com.algorand.android.modules.sorting.accountsorting.domain.usecase.AccountSortingPreviewUseCase.Companion.NOT_INITIALIZED_ACCOUNT_INDEX
+import com.algorand.android.modules.sorting.accountsorting.util.NOT_INITIALIZED_ACCOUNT_INDEX
 import com.algorand.android.utils.toShortenedAddress
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize

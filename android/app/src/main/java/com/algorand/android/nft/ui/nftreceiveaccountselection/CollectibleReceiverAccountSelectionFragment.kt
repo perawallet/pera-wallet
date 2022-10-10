@@ -16,7 +16,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentCollectibleReceiverAccountSelectionBinding
@@ -24,9 +23,9 @@ import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.nft.ui.model.CollectibleReceiverAccountSelectionPreview
 import com.algorand.android.ui.accountselection.AccountSelectionAdapter
+import com.algorand.android.utils.extensions.collectOnLifecycle
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class CollectibleReceiverAccountSelectionFragment :
@@ -66,10 +65,10 @@ class CollectibleReceiverAccountSelectionFragment :
     }
 
     private fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-            accountSelectionViewModel.collectibleReceiverAccountSelectionPreviewFlow
-                .collect(accountSelectionPreviewCollector)
-        }
+        viewLifecycleOwner.collectOnLifecycle(
+            accountSelectionViewModel.collectibleReceiverAccountSelectionPreviewFlow,
+            accountSelectionPreviewCollector
+        )
     }
 
     private fun updateUi(preview: CollectibleReceiverAccountSelectionPreview) {

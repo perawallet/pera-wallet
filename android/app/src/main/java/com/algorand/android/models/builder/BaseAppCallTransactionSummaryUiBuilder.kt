@@ -29,7 +29,7 @@ class BaseAppCallTransactionSummaryUiBuilder @Inject constructor() :
                 replacementList = listOf("app_id" to appId.toString())
             )
             WalletConnectTransactionSummary(
-                accountName = account?.name,
+                accountName = fromAccount?.name,
                 accountIconResource = createAccountIconResource(),
                 summaryTitle = titleText,
                 showWarning = warningCount != null,

@@ -30,17 +30,19 @@ import com.algorand.android.utils.Event
 import com.algorand.android.utils.LifecycleScopedCoroutineOwner
 import com.algorand.android.utils.getPublicKey
 import com.algorand.android.utils.recordException
+import com.algorand.android.utils.sendErrorLog
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import no.nordicsemi.android.ble.observer.ConnectionObserver
 
 class LedgerBleOperationManager @Inject constructor(
     private val accountInformationUseCase: AccountInformationUseCase,
     private val ledgerBleConnectionManager: LedgerBleConnectionManager
-) : LifecycleScopedCoroutineOwner(), LedgerBleConnectionManagerCallback {
+) : LifecycleScopedCoroutineOwner(), LedgerBleObserver {
 
     val connectedBluetoothDevice: BluetoothDevice?
         get() = ledgerBleConnectionManager.bluetoothDevice
@@ -49,7 +51,7 @@ class LedgerBleOperationManager @Inject constructor(
     private var currentOperation: BaseOperation? = null
 
     fun setup(lifecycle: Lifecycle) {
-        ledgerBleConnectionManager.setGattCallbacks(this)
+        ledgerBleConnectionManager.setObserver(this)
         assignToLifecycle(lifecycle)
     }
 
@@ -206,6 +208,22 @@ class LedgerBleOperationManager @Inject constructor(
         postResult(LedgerBleResult.OnMissingBytes(device))
     }
 
+    override fun onDeviceFailedToConnect(device: BluetoothDevice, reason: Int) {
+        when (reason) {
+            ConnectionObserver.REASON_NOT_SUPPORTED -> {
+                postResult(
+                    LedgerBleResult.AppErrorResult(
+                        R.string.error_unsupported_message,
+                        R.string.error_unsupported_title
+                    )
+                )
+            }
+            else -> {
+                sendErrorLog("Unhandled else case in LedgerBleOperationManager.onDeviceFailedToConnect")
+            }
+        }
+    }
+
     override fun onOperationCancelled() {
         postResult(LedgerBleResult.OperationCancelledResult)
     }
@@ -214,7 +232,7 @@ class LedgerBleOperationManager @Inject constructor(
         postResult(LedgerBleResult.AppErrorResult(errorResId, titleResId))
     }
 
-    override fun onDeviceDisconnected(device: BluetoothDevice) {
+    override fun onDeviceDisconnected(device: BluetoothDevice, reason: Int) {
         postResult(LedgerBleResult.OnLedgerDisconnected)
     }
 
@@ -226,10 +244,6 @@ class LedgerBleOperationManager @Inject constructor(
                 LedgerBleResult.LedgerErrorResult(message)
             }
         )
-    }
-
-    override fun onDeviceNotSupported(device: BluetoothDevice) {
-        postResult(LedgerBleResult.AppErrorResult(R.string.error_unsupported_message, R.string.error_unsupported_title))
     }
 
     private fun postResult(ledgerBleResult: LedgerBleResult) {

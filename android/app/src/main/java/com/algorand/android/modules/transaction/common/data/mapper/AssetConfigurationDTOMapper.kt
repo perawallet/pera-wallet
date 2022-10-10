@@ -28,7 +28,7 @@ class AssetConfigurationDTOMapper @Inject constructor() {
                 metadataHash = params?.metadataHash,
                 name = params?.name,
                 nameB64 = params?.nameB64,
-                total = params?.total,
+                maxSupply = params?.maxSupply,
                 unitName = params?.unitName,
                 unitNameB64 = params?.unitNameB64,
                 url = params?.url,

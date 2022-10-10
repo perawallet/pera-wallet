@@ -21,15 +21,18 @@ import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentTransactionRequestDetailBinding
-import com.algorand.android.models.AssetParams
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.models.TransactionRequestAction
 import com.algorand.android.models.WCAlgoTransactionRequest
+import com.algorand.android.models.WalletConnectTransactionAssetDetail
+import com.algorand.android.ui.common.walletconnect.WalletConnectAmountInfoCardView
 import com.algorand.android.ui.common.walletconnect.WalletConnectExtrasChipGroupView
-import com.algorand.android.utils.openApplicationInAlgoExplorer
-import com.algorand.android.utils.openAssetInAlgoExplorer
-import com.algorand.android.utils.openAssetUrl
+import com.algorand.android.ui.common.walletconnect.WalletConnectSenderCardView
+import com.algorand.android.ui.common.walletconnect.WalletConnectTransactionInfoCardView
+import com.algorand.android.utils.browser.openApplicationInAlgoExplorer
+import com.algorand.android.utils.browser.openAssetInAlgoExplorer
+import com.algorand.android.utils.browser.openAssetUrl
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -73,13 +76,46 @@ class TransactionRequestDetailFragment : DaggerBaseFragment(
             context?.openAssetUrl(url)
         }
 
-        override fun onAssetMetadataClick(assetParams: AssetParams) {
+        override fun onAssetMetadataClick(walletConnectTransactionAssetDetail: WalletConnectTransactionAssetDetail) {
             transactionRequestListener?.onNavigate(
                 TransactionRequestDetailFragmentDirections
-                    .actionTransactionRequestDetailFragmentToWalletConnectAssetMetadataBottomSheet(assetParams)
+                    .actionTransactionRequestDetailFragmentToWalletConnectAssetMetadataBottomSheet(
+                        walletConnectTransactionAssetDetail = walletConnectTransactionAssetDetail
+                    )
             )
         }
     }
+
+    private val walletConnectTransactionCardListener =
+        object : WalletConnectTransactionInfoCardView.WalletConnectTransactionInfoCardViewListener {
+            override fun onAssetItemClick(assetId: Long?, accountAddress: String?) {
+                assetId?.let {
+                    navToAsaProfileNavigation(assetId = it, accountAddress = accountAddress)
+                }
+            }
+
+            override fun onAccountAddressLongPressed(accountAddress: String) {
+                onAccountAddressCopied(accountAddress)
+            }
+        }
+
+    private val walletConnectSenderCardListener =
+        object : WalletConnectSenderCardView.WalletConnectSenderCardViewListener {
+            override fun onAccountAddressLongPressed(fullAddress: String) {
+                onAccountAddressCopied(fullAddress)
+            }
+
+            override fun onAssetItemClick(assetId: Long?, accountAddress: String?) {
+                assetId?.let {
+                    navToAsaProfileNavigation(assetId = it, accountAddress = accountAddress)
+                }
+            }
+        }
+
+    private val walletConnectAmountInfoCardListener =
+        WalletConnectAmountInfoCardView.WalletConnectAmountInfoCardListener { accountAddress ->
+            onAccountAddressCopied(accountAddress)
+        }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -107,12 +143,14 @@ class TransactionRequestDetailFragment : DaggerBaseFragment(
             transactionInfoDivider.isVisible = transactionInfo != null
             transactionInfoCardView.isVisible = transactionInfo != null
             transactionInfoCardView.initTransactionInfo(transactionInfo)
+            transactionInfoCardView.setListener(walletConnectTransactionCardListener)
         }
     }
 
     private fun initAmountInfoViews() {
         val amountInfo = transactionDetailViewModel.buildTransactionRequestAmountInfo(args.transaction)
         binding.amountInfoCardView.initAmountInfo(amountInfo)
+        binding.amountInfoCardView.setListener(walletConnectAmountInfoCardListener)
     }
 
     private fun initSenderInfoViews() {
@@ -121,6 +159,7 @@ class TransactionRequestDetailFragment : DaggerBaseFragment(
             senderInfoDivider.isVisible = senderInfo != null
             senderInfoCardView.isVisible = senderInfo != null
             senderInfoCardView.initSender(senderInfo)
+            senderInfoCardView.setListener(walletConnectSenderCardListener)
         }
     }
 
@@ -138,6 +177,20 @@ class TransactionRequestDetailFragment : DaggerBaseFragment(
         with(binding.extrasChipGroupView) {
             initExtrasButtons(extrasInfo, R.dimen.spacing_xlarge)
             setChipGroupListener(extrasChipGroupViewListener)
+        }
+    }
+
+    private fun navToAsaProfileNavigation(assetId: Long, accountAddress: String?) {
+        transactionRequestListener?.run {
+            hideButtons()
+            motionTransitionToEnd()
+            onNavigate(
+                TransactionRequestDetailFragmentDirections
+                    .actionTransactionRequestDetailFragmentToWalletConnectAsaProfileNavigation(
+                        assetId = assetId,
+                        accountAddress = accountAddress
+                    )
+            )
         }
     }
 }

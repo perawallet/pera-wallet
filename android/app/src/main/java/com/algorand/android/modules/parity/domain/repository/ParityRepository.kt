@@ -19,10 +19,7 @@ import com.algorand.android.utils.CacheResult
 import kotlinx.coroutines.flow.StateFlow
 
 interface ParityRepository {
-    fun cacheSelectedCurrencyDetail(
-        selectedCurrencyDetail: CacheResult<SelectedCurrencyDetail>
-    )
-
+    fun cacheSelectedCurrencyDetail(selectedCurrencyDetail: CacheResult<SelectedCurrencyDetail>)
     fun clearSelectedCurrencyDetailCache()
     fun getCachedSelectedCurrencyDetail(): CacheResult<SelectedCurrencyDetail>?
     fun getSelectedCurrencyDetailCacheFlow(): StateFlow<CacheResult<SelectedCurrencyDetail>?>

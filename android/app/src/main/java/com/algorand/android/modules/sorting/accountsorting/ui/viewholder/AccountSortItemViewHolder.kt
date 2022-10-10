@@ -14,9 +14,14 @@ package com.algorand.android.modules.sorting.accountsorting.ui.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.algorand.android.R
 import com.algorand.android.databinding.ItemAccountSortBinding
+import com.algorand.android.models.AccountIconResource
+import com.algorand.android.models.AccountIconResource.Companion.DEFAULT_ACCOUNT_ICON_RESOURCE
 import com.algorand.android.models.BaseViewHolder
+import com.algorand.android.models.ui.AccountAssetItemButtonState
 import com.algorand.android.modules.sorting.accountsorting.domain.model.BaseAccountSortingListItem
+import com.algorand.android.utils.AccountIconDrawable
 
 class AccountSortItemViewHolder(
     private val binding: ItemAccountSortBinding,
@@ -25,9 +30,40 @@ class AccountSortItemViewHolder(
 
     override fun bind(item: BaseAccountSortingListItem) {
         if (item !is BaseAccountSortingListItem.AccountSortListItem) return
+        with(binding) {
+            with(item.accountListItem.itemConfiguration) {
+                setAccountStartIconDrawable(accountIconResource)
+                setAccountTitleText(accountDisplayName?.getDisplayTextOrAccountShortenedAddress())
+                setAccountDescriptionText(accountDisplayName?.getAccountShortenedAddressOrAccountType(root.resources))
+                setAccountItemDragButton()
+            }
+        }
+    }
+
+    private fun setAccountStartIconDrawable(accountIconResource: AccountIconResource?) {
         with(binding.accountItemView) {
-            initItemView(item.accountListItem.itemConfiguration)
-            setDragButtonListener { listener.onPressed(this@AccountSortItemViewHolder) }
+            val accountIconSize = resources.getDimension(R.dimen.account_icon_size_large).toInt()
+            val accountIconDrawable = AccountIconDrawable.create(
+                context = context,
+                accountIconResource = accountIconResource ?: DEFAULT_ACCOUNT_ICON_RESOURCE,
+                size = accountIconSize
+            )
+            setStartIconDrawable(accountIconDrawable)
+        }
+    }
+
+    private fun setAccountTitleText(accountTitleText: String?) {
+        binding.accountItemView.setTitleText(accountTitleText)
+    }
+
+    private fun setAccountDescriptionText(accountDescriptionText: String?) {
+        binding.accountItemView.setDescriptionText(accountDescriptionText)
+    }
+
+    private fun setAccountItemDragButton() {
+        binding.accountItemView.apply {
+            setButtonState(AccountAssetItemButtonState.DRAGGABLE)
+            setActionButtonOnTouchClickListener { listener.onPressed(this@AccountSortItemViewHolder) }
         }
     }
 

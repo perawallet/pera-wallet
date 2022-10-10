@@ -17,16 +17,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.algorand.android.customviews.TransactionHistoryToolbarView
+    <com.algorand.android.customviews.ListConfigurationHeaderView
         android:id="@+id/transactionHistoryToolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/spacing_xlarge"
         android:layout_marginTop="@dimen/spacing_xlarge"
-        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:primaryButtonText="@string/filter"
+        app:secondaryButtonIcon="@drawable/ic_document"
+        app:secondaryButtonText="@string/csv"
+        app:title="@string/transactions" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/accountHistoryRecyclerView"
@@ -34,6 +37,7 @@
         android:layout_height="0dp"
         android:clipToPadding="false"
         android:paddingHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_large"
         android:paddingBottom="100dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"

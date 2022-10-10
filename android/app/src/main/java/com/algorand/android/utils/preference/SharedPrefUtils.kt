@@ -23,7 +23,6 @@ import com.google.gson.Gson
 // <editor-fold defaultstate="collapsed" desc="Constants">
 
 private const val ALGORAND_ACCOUNTS_KEY = "algorand_accounts"
-const val LOCK_PASSWORD = "lock_password"
 private const val DEFAULT_NODE_LIST_VERSION = "default_node_list_version"
 private const val NOTIFICATION_ACTIVATED_KEY = "notification_activated"
 private const val QR_TUTORIAL_SHOWN_KEY = "qr_tutorial_shown_key"

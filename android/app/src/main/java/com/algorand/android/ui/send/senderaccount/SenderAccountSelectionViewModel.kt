@@ -13,40 +13,36 @@
 
 package com.algorand.android.ui.send.senderaccount
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.models.AccountCacheData
-import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.models.AssetTransaction
-import com.algorand.android.models.BaseAccountSelectionListItem
-import com.algorand.android.models.Result
+import com.algorand.android.models.SenderAccountSelectionPreview
 import com.algorand.android.usecase.SenderAccountSelectionPreviewUseCase
 import com.algorand.android.usecase.SenderAccountSelectionUseCase
-import com.algorand.android.utils.Event
-import com.algorand.android.utils.Resource
 import com.algorand.android.utils.getOrElse
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class SenderAccountSelectionViewModel @ViewModelInject constructor(
+@HiltViewModel
+class SenderAccountSelectionViewModel @Inject constructor(
     private val senderAccountSelectionUseCase: SenderAccountSelectionUseCase,
     private val senderAccountSelectionPreviewUseCase: SenderAccountSelectionPreviewUseCase,
-    @Assisted savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     val assetTransaction: AssetTransaction = savedStateHandle.getOrElse(ASSET_TRANSACTION_KEY, AssetTransaction())
 
-    private val _fromAccountListFlow = MutableStateFlow<List<BaseAccountSelectionListItem>>(emptyList())
-    val fromAccountListFlow: StateFlow<List<BaseAccountSelectionListItem>> = _fromAccountListFlow
-
-    private val _fromAccountInformationFlow = MutableStateFlow<Event<Resource<AccountInformation>>?>(null)
-    val fromAccountInformationFlow: StateFlow<Event<Resource<AccountInformation>>?> = _fromAccountInformationFlow
+    private val _senderAccountSelectionPreviewFlow =
+        MutableStateFlow(senderAccountSelectionPreviewUseCase.getInitialPreview())
+    val senderAccountSelectionPreviewFlow: StateFlow<SenderAccountSelectionPreview> = _senderAccountSelectionPreviewFlow
 
     init {
         // If user came with deeplink or qr code then we have to filter accounts that have incoming asset id
@@ -59,25 +55,33 @@ class SenderAccountSelectionViewModel @ViewModelInject constructor(
 
     private fun getAccounts() {
         viewModelScope.launch {
-            _fromAccountListFlow.emit(senderAccountSelectionPreviewUseCase.getBaseNormalAccountListItems())
+            _senderAccountSelectionPreviewFlow.emit(
+                senderAccountSelectionPreviewUseCase.getUpdatedPreviewWithAccountList(
+                    preview = _senderAccountSelectionPreviewFlow.value
+                )
+            )
         }
     }
 
     private fun getAccountCacheWithSpecificAsset(assetId: Long) {
         viewModelScope.launch {
-            _fromAccountListFlow.emit(
-                senderAccountSelectionPreviewUseCase.getBaseNormalAccountListItemsFilteredByAssetId(assetId)
+            _senderAccountSelectionPreviewFlow.emit(
+                senderAccountSelectionPreviewUseCase.getUpdatedPreviewWithAccountListAndSpecificAsset(
+                    assetId = assetId,
+                    preview = _senderAccountSelectionPreviewFlow.value
+                )
             )
         }
     }
 
-    fun fetchFromAccountInformation(fromAccountPublicKey: String) {
+    fun fetchFromAccountInformation(fromAccountAddress: String) {
         viewModelScope.launch {
-            _fromAccountInformationFlow.emit(Event(Resource.Loading))
-            val result = senderAccountSelectionUseCase.fetchAccountInformation(fromAccountPublicKey, viewModelScope)
-            when (result) {
-                is Result.Error -> _fromAccountInformationFlow.emit(Event(result.getAsResourceError()))
-                is Result.Success -> _fromAccountInformationFlow.emit(Event(Resource.Success(result.data)))
+            senderAccountSelectionPreviewUseCase.getUpdatedPreviewFlowWithAccountInformation(
+                fromAccountAddress = fromAccountAddress,
+                viewModelScope = viewModelScope,
+                preview = _senderAccountSelectionPreviewFlow.value
+            ).collectLatest {
+                _senderAccountSelectionPreviewFlow.emit(it)
             }
         }
     }
@@ -92,6 +96,18 @@ class SenderAccountSelectionViewModel @ViewModelInject constructor(
 
     fun getAccountCachedData(senderAddress: String): AccountCacheData? {
         return senderAccountSelectionUseCase.getAccountInformation(senderAddress)
+    }
+
+    fun signTransaction(senderAddress: String) {
+        viewModelScope.launch {
+            senderAccountSelectionPreviewUseCase.getUpdatedPreviewFlowWithSignResult(
+                fromAccountAddress = senderAddress,
+                assetTransaction = assetTransaction,
+                preview = _senderAccountSelectionPreviewFlow.value
+            ).collectLatest {
+                _senderAccountSelectionPreviewFlow.emit(it)
+            }
+        }
     }
 
     companion object {

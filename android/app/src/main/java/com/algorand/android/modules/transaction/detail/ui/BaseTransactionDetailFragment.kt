@@ -15,17 +15,15 @@ package com.algorand.android.modules.transaction.detail.ui
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentTransactionDetailBinding
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.modules.transaction.detail.domain.model.TransactionDetailPreview
 import com.algorand.android.modules.transaction.detail.ui.adapter.TransactionDetailAdapter
-import com.algorand.android.utils.openUrl
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
+import com.algorand.android.utils.browser.openUrl
 import com.algorand.android.utils.viewbinding.viewBinding
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 abstract class BaseTransactionDetailFragment : DaggerBaseFragment(R.layout.fragment_transaction_detail) {
 
@@ -70,9 +68,10 @@ abstract class BaseTransactionDetailFragment : DaggerBaseFragment(R.layout.fragm
     }
 
     private fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            transactionDetailViewModel.transactionDetailPreviewFlow.collectLatest(transactionDetailPreviewCollector)
-        }
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            transactionDetailViewModel.transactionDetailPreviewFlow,
+            transactionDetailPreviewCollector
+        )
     }
 
     private fun initTransactionDetailPreview(transactionDetailPreview: TransactionDetailPreview?) {

@@ -19,17 +19,16 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.algorand.android.MainNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.models.AnnotatedString
 import com.algorand.android.nft.ui.model.RequestOptInConfirmationPreview
 import com.algorand.android.utils.BaseDoubleButtonBottomSheet
+import com.algorand.android.utils.extensions.collectOnLifecycle
 import com.algorand.android.utils.getCustomClickableSpan
 import com.algorand.android.utils.getXmlStyledString
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class RequestOptInConfirmationBottomSheet : BaseDoubleButtonBottomSheet() {
@@ -98,9 +97,10 @@ class RequestOptInConfirmationBottomSheet : BaseDoubleButtonBottomSheet() {
     }
 
     private fun initObserver() {
-        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-            requestOptInConfirmationViewModel.requestOptInPreviewFlow.collect(requestOptInConfirmationPreviewCollector)
-        }
+        viewLifecycleOwner.collectOnLifecycle(
+            requestOptInConfirmationViewModel.requestOptInPreviewFlow,
+            requestOptInConfirmationPreviewCollector
+        )
     }
 
     private fun updateUi(requestOptInConfirmationPreview: RequestOptInConfirmationPreview) {

@@ -17,10 +17,12 @@ import com.algorand.android.R
 import com.algorand.android.models.BaseAssetConfigurationTransaction
 import com.algorand.android.models.WalletConnectTransactionAmount
 import com.algorand.android.models.WalletConnectTransactionShortDetail
+import com.algorand.android.modules.verificationtier.ui.decider.VerificationTierConfigurationDecider
 import javax.inject.Inject
 
-class BaseAssetConfigurationSingleTransactionUiBuilder @Inject constructor() :
-    WalletConnectSingleTransactionUiBuilder<BaseAssetConfigurationTransaction> {
+class BaseAssetConfigurationSingleTransactionUiBuilder @Inject constructor(
+    private val verificationTierConfigurationDecider: VerificationTierConfigurationDecider
+) : WalletConnectSingleTransactionUiBuilder<BaseAssetConfigurationTransaction> {
 
     override fun buildToolbarTitleRes(txn: BaseAssetConfigurationTransaction): Int {
         return when (txn) {
@@ -42,7 +44,7 @@ class BaseAssetConfigurationSingleTransactionUiBuilder @Inject constructor() :
         return with(txn) {
             WalletConnectTransactionShortDetail(
                 accountIconResource = createAccountIconResource(),
-                accountName = account?.name,
+                accountName = fromAccount?.name,
                 warningCount = warningCount,
                 decimal = assetDecimal,
                 fee = fee
@@ -67,17 +69,21 @@ class BaseAssetConfigurationSingleTransactionUiBuilder @Inject constructor() :
             WalletConnectTransactionAmount(
                 assetId = assetId,
                 assetName = assetName,
-                isVerified = isVerified,
-                isAssetUnnamed = assetName == null
+                isAssetUnnamed = assetName == null,
+                verificationTierConfiguration =
+                verificationTierConfigurationDecider.decideVerificationTierConfiguration(verificationTier)
             )
         }
     }
 
-    private fun buildGeneralAmountInfo(
-        txn: BaseAssetConfigurationTransaction
-    ): WalletConnectTransactionAmount {
+    private fun buildGeneralAmountInfo(txn: BaseAssetConfigurationTransaction): WalletConnectTransactionAmount {
         return with(txn) {
-            WalletConnectTransactionAmount(assetId = assetId, assetName = assetName, isVerified = isVerified)
+            WalletConnectTransactionAmount(
+                assetId = assetId,
+                assetName = assetName,
+                verificationTierConfiguration =
+                verificationTierConfigurationDecider.decideVerificationTierConfiguration(verificationTier)
+            )
         }
     }
 }

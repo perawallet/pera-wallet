@@ -13,10 +13,10 @@
 
 package com.algorand.android.mapper
 
-import com.algorand.android.models.AssetHolding
-import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.AssetDetail
+import com.algorand.android.models.AssetHolding
 import com.algorand.android.models.WalletConnectAssetInformation
+import com.algorand.android.utils.ALGO_DECIMALS
 import com.algorand.android.utils.DEFAULT_ASSET_DECIMAL
 import com.algorand.android.utils.formatAsCurrency
 import java.math.BigDecimal
@@ -26,19 +26,19 @@ import javax.inject.Inject
 class WalletConnectAssetInformationMapper @Inject constructor() {
 
     fun algorandMapToWalletConnectAssetInformation(
-        assetInformation: AssetInformation?,
+        assetDetail: AssetDetail?,
         amount: BigDecimal,
         currencySymbol: String
     ): WalletConnectAssetInformation? {
-        if (assetInformation == null) return null
+        if (assetDetail == null) return null
         return WalletConnectAssetInformation(
-            assetInformation.assetId,
-            assetInformation.isVerified,
-            assetInformation.shortName,
-            assetInformation.fullName,
-            assetInformation.decimals,
-            assetInformation.amount,
-            amount.formatAsCurrency(currencySymbol)
+            assetId = assetDetail.assetId,
+            shortName = assetDetail.shortName,
+            fullName = assetDetail.fullName,
+            decimal = assetDetail.fractionDecimals ?: ALGO_DECIMALS,
+            amount = amount.toBigInteger(),
+            formattedSelectedCurrencyValue = amount.formatAsCurrency(currencySymbol),
+            verificationTier = assetDetail.verificationTier
         )
     }
 
@@ -61,12 +61,12 @@ class WalletConnectAssetInformationMapper @Inject constructor() {
         if (assetDetail == null) return null
         return WalletConnectAssetInformation(
             assetId = assetDetail.assetId,
-            isVerified = assetDetail.isVerified,
             shortName = assetDetail.shortName,
             fullName = assetDetail.fullName,
             decimal = assetDetail.fractionDecimals ?: DEFAULT_ASSET_DECIMAL,
             amount = assetHolding?.amount,
-            formattedSelectedCurrencyValue = formattedSelectedCurrencyValue?.formatAsCurrency(currencySymbol)
+            formattedSelectedCurrencyValue = formattedSelectedCurrencyValue?.formatAsCurrency(currencySymbol),
+            verificationTier = assetDetail.verificationTier
         )
     }
 }

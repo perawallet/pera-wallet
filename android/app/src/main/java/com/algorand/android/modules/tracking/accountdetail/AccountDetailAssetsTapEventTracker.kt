@@ -25,6 +25,6 @@ class AccountDetailAssetsTapEventTracker @Inject constructor(
     }
 
     companion object {
-        private const val ACCOUNT_DETAIL_ASSETS_TAP_EVENT_KEY = "accountscreen_assets_tap"
+        private const val ACCOUNT_DETAIL_ASSETS_TAP_EVENT_KEY = "accountscr_assets_tap"
     }
 }

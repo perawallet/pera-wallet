@@ -30,7 +30,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class DateFilterListBottomSheet : DaggerBaseBottomSheet(R.layout.bottom_sheet_date_filter_list, false, null) {
 
-    private val toolbarConfiguration = ToolbarConfiguration(R.string.filter_by_date)
+    private val toolbarConfiguration = ToolbarConfiguration(R.string.filter)
 
     private val dateFilterListViewModel: DateFilterListViewModel by viewModels()
 

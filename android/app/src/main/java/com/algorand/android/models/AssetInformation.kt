@@ -12,11 +12,13 @@
 
 package com.algorand.android.models
 
+import android.content.res.Resources
 import android.os.Parcelable
+import com.algorand.android.assetsearch.domain.model.VerificationTier
 import com.algorand.android.nft.ui.model.CollectibleDetail
+import com.algorand.android.utils.ALGO_DECIMALS
 import com.algorand.android.utils.ALGO_FULL_NAME
 import com.algorand.android.utils.ALGO_SHORT_NAME
-import com.algorand.android.utils.ALGO_DECIMALS
 import com.algorand.android.utils.assetdrawable.BaseAssetDrawableProvider
 import com.algorand.android.utils.formatAmount
 import java.math.BigInteger
@@ -26,15 +28,15 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class AssetInformation(
     val assetId: Long,
-    val isVerified: Boolean,
     val creatorPublicKey: String? = null,
     val shortName: String? = null,
     val fullName: String? = null,
     val amount: BigInteger? = null,
     val decimals: Int = 0,
     var assetStatus: AssetStatus = AssetStatus.OWNED_BY_ACCOUNT,
-    val url: String? = null,
-    val assetDrawableProvider: BaseAssetDrawableProvider? = null
+    val prismUrl: String? = null,
+    val assetDrawableProvider: BaseAssetDrawableProvider? = null,
+    val verificationTier: VerificationTier?
 ) : Parcelable {
 
     @IgnoredOnParcel
@@ -47,42 +49,48 @@ data class AssetInformation(
     companion object {
         const val ALGO_ID = -7L
 
-        fun getAlgorandAsset(
-            amount: BigInteger = BigInteger.ZERO
-        ): AssetInformation {
+        fun getAlgorandAsset(amount: BigInteger = BigInteger.ZERO): AssetInformation {
             return AssetInformation(
                 assetId = ALGO_ID,
                 fullName = ALGO_FULL_NAME,
                 shortName = ALGO_SHORT_NAME,
                 decimals = ALGO_DECIMALS,
                 amount = amount,
-                isVerified = true,
+                verificationTier = VerificationTier.TRUSTED
             )
         }
 
-        fun createAssetInformation(assetHolding: AssetHolding, assetParams: AssetDetail): AssetInformation {
+        fun createAssetInformation(
+            assetHolding: AssetHolding,
+            assetParams: AssetDetail
+        ): AssetInformation {
             return AssetInformation(
                 assetId = assetHolding.assetId,
-                isVerified = assetParams.isVerified,
                 creatorPublicKey = assetParams.assetCreator?.publicKey,
                 shortName = assetParams.shortName,
                 fullName = assetParams.fullName,
                 amount = assetHolding.amount,
-                decimals = assetParams.fractionDecimals ?: 0
+                decimals = assetParams.fractionDecimals ?: 0,
+                verificationTier = assetParams.verificationTier
             )
         }
 
         // TODO Remove this function after changing RemoveAssetFlow
-        fun createAssetInformation(removeAssetItem: BaseRemoveAssetItem): AssetInformation {
+        fun createAssetInformation(
+            removeAssetItem: BaseRemoveAssetItem.BaseRemovableItem,
+            resources: Resources
+        ): AssetInformation {
             return with(removeAssetItem) {
                 AssetInformation(
                     assetId = id,
-                    isVerified = isVerified,
                     creatorPublicKey = creatorPublicKey,
-                    shortName = shortName,
-                    fullName = name,
+                    shortName = shortName.getName(resources),
+                    fullName = name.getName(resources),
                     amount = amount,
-                    decimals = decimals
+                    decimals = decimals,
+                    verificationTier = (removeAssetItem as? BaseRemoveAssetItem.BaseRemovableItem.RemoveAssetItem)
+                        ?.verificationTierConfiguration
+                        ?.toVerificationTier()
                 )
             }
         }
@@ -95,13 +103,14 @@ data class AssetInformation(
             return with(baseOwnedAssetData) {
                 AssetInformation(
                     assetId = id,
-                    isVerified = isVerified,
                     creatorPublicKey = creatorPublicKey,
                     shortName = shortName,
                     fullName = name,
                     amount = amount,
                     decimals = decimals,
-                    assetDrawableProvider = assetDrawableProvider
+                    assetDrawableProvider = assetDrawableProvider,
+                    verificationTier = verificationTier,
+                    prismUrl = prismUrl
                 )
             }
         }
@@ -111,9 +120,9 @@ data class AssetInformation(
             return with(collectibleDetail) {
                 AssetInformation(
                     assetId = collectibleId,
-                    isVerified = collectibleDetail.isVerified,
                     creatorPublicKey = creatorWalletAddress?.publicKey,
-                    fullName = collectibleName
+                    fullName = collectibleName,
+                    verificationTier = null
                 )
             }
         }

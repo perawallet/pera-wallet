@@ -18,5 +18,5 @@ data class TransactionRequestExtrasInfo(
     val assetId: Long? = null,
     val appId: Long? = null,
     val assetUrl: String? = null,
-    val assetMetadata: AssetParams? = null
+    val assetMetadata: WalletConnectTransactionAssetDetail? = null
 )

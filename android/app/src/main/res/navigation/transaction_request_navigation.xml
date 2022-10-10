@@ -16,6 +16,8 @@
     android:id="@+id/transactionRequestNavigation"
     app:startDestination="@id/walletConnectSingleTransactionFragment">
 
+    <include app:graph="@navigation/wallet_connect_asa_profile_navigation" />
+
     <action
         android:id="@+id/action_global_walletConnectMultipleTransactionFragment"
         app:destination="@id/walletConnectMultipleTransactionFragment" />
@@ -36,6 +38,17 @@
         <action
             android:id="@+id/action_walletConnectSingleTransactionFragment_to_transactionRequestDetailFragment"
             app:destination="@id/transactionRequestDetailFragment" />
+        <action
+            android:id="@+id/action_walletConnectSingleTransactionFragment_to_walletConnectAsaProfileNavigation"
+            app:destination="@id/walletConnectAsaProfileNavigation">
+            <argument
+                android:name="assetId"
+                app:argType="long" />
+            <argument
+                android:name="accountAddress"
+                app:argType="string"
+                app:nullable="true" />
+        </action>
 
     </fragment>
 
@@ -86,6 +99,17 @@
         <action
             android:id="@+id/action_transactionRequestDetailFragment_to_walletConnectAssetMetadataBottomSheet"
             app:destination="@id/walletConnectAssetMetadataBottomSheet" />
+        <action
+            android:id="@+id/action_transactionRequestDetailFragment_to_walletConnectAsaProfileNavigation"
+            app:destination="@id/walletConnectAsaProfileNavigation">
+            <argument
+                android:name="assetId"
+                app:argType="long" />
+            <argument
+                android:name="accountAddress"
+                app:argType="string"
+                app:nullable="true" />
+        </action>
     </fragment>
 
     <dialog
@@ -104,8 +128,8 @@
         android:label="WalletConnectAssetMetadataBottomSheet"
         tools:layout="@layout/bottom_sheet_wallet_connect_raw_message">
         <argument
-            android:name="assetParams"
-            app:argType="com.algorand.android.models.AssetParams"
+            android:name="walletConnectTransactionAssetDetail"
+            app:argType="com.algorand.android.models.WalletConnectTransactionAssetDetail"
             app:nullable="true" />
     </dialog>
 </navigation>

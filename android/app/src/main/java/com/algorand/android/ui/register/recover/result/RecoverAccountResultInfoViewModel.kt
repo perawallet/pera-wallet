@@ -12,12 +12,14 @@
 
 package com.algorand.android.ui.register.recover.result
 
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.ViewModel
 import com.algorand.android.usecase.LockPreferencesUseCase
 import com.algorand.android.usecase.RecoverAccountResultInfoUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 
-class RecoverAccountResultInfoViewModel @ViewModelInject constructor(
+@HiltViewModel
+class RecoverAccountResultInfoViewModel @Inject constructor(
     recoverAccountResultInfoUseCase: RecoverAccountResultInfoUseCase,
     private val lockPreferencesUseCase: LockPreferencesUseCase
 ) : ViewModel() {

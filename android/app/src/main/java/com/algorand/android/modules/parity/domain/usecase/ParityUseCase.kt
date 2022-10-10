@@ -19,7 +19,6 @@ import com.algorand.android.modules.parity.domain.mapper.SelectedCurrencyDetailM
 import com.algorand.android.modules.parity.domain.model.CurrencyDetailDTO
 import com.algorand.android.modules.parity.domain.model.SelectedCurrencyDetail
 import com.algorand.android.modules.parity.domain.repository.ParityRepository
-import com.algorand.android.utils.ALGO_DECIMALS
 import com.algorand.android.utils.CacheResult
 import com.algorand.android.utils.DataResource
 import java.math.BigDecimal
@@ -58,8 +57,8 @@ class ParityUseCase @Inject constructor(
             } else {
                 it.usdToSelectedCurrencyConversionRate?.divide(
                     it.algoToSelectedCurrencyConversionRate,
-                    ALGO_DECIMALS,
-                    RoundingMode.HALF_UP
+                    SAFE_PARITY_DIVISION_DECIMALS,
+                    RoundingMode.UP
                 )
             }
         } ?: BigDecimal.ZERO
@@ -67,7 +66,7 @@ class ParityUseCase @Inject constructor(
 
     fun getAlgoToUsdConversionRate(): BigDecimal {
         return if (getUsdToAlgoConversionRate() != BigDecimal.ZERO) {
-            BigDecimal.ONE.divide(getUsdToAlgoConversionRate(), ALGO_DECIMALS, RoundingMode.HALF_UP)
+            BigDecimal.ONE.divide(getUsdToAlgoConversionRate(), SAFE_PARITY_DIVISION_DECIMALS, RoundingMode.UP)
         } else {
             BigDecimal.ZERO
         }
@@ -187,7 +186,7 @@ class ParityUseCase @Inject constructor(
                 if (algoToCurrencyConversionRate == BigDecimal.ZERO || algoToCurrencyConversionRate == null) {
                     BigDecimal.ZERO
                 } else {
-                    usdValue?.divide(algoToCurrencyConversionRate, ALGO_DECIMALS, RoundingMode.HALF_UP)
+                    usdValue?.divide(algoToCurrencyConversionRate, SAFE_PARITY_DIVISION_DECIMALS, RoundingMode.UP)
                 }
             } else {
                 currencyDetailDTO.usdValue
@@ -197,5 +196,12 @@ class ParityUseCase @Inject constructor(
 
     companion object {
         private val CURRENCY_TO_FETCH_WHEN_ALGO_IS_SELECTED = Currency.USD.id
+
+        // ALGO is not returned as a currency from API so all calculations are done locally when ALGO is selected
+        // SAFE_PARITY_DIVISION_DECIMALS constant is ONLY used in ALGO/USD, USD/ALGO conversion calculations
+        // The bigger the constant is, the more accurate we are calculating the conversion rate
+        // Currently it is set to 10 which means results will accurate only until 10th decimal
+        // This is acceptable for now, because we do not show after 6th decimals in the UI
+        private const val SAFE_PARITY_DIVISION_DECIMALS = 10
     }
 }

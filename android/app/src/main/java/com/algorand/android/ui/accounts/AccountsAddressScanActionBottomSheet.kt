@@ -21,7 +21,6 @@ import com.algorand.android.R
 import com.algorand.android.core.BaseBottomSheet
 import com.algorand.android.databinding.BottomSheetAccountsAddressScanActionBinding
 import com.algorand.android.models.ToolbarConfiguration
-import com.algorand.android.utils.copyToClipboard
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -56,10 +55,7 @@ class AccountsAddressScanActionBottomSheet : BaseBottomSheet(
             addWatchAccountButton.setOnClickListener { onAddWatchAccountClick() }
             addNewContactButton.setOnClickListener { onAddContactClick() }
             accountAddressTextView.text = accountAddress
-            accountAddressContainerView.setOnLongClickListener {
-                context?.copyToClipboard(accountAddress, showToast = false)
-                showTopToast(getString(R.string.address_copied_to_clipboard)); true
-            }
+            accountAddressContainerView.setOnLongClickListener { onAccountAddressCopied(accountAddress); true }
         }
     }
 
@@ -69,6 +65,11 @@ class AccountsAddressScanActionBottomSheet : BaseBottomSheet(
     }
 
     private fun onAddWatchAccountClick() {
+        if (accountsAddressScanActionViewModel.isAccountLimitExceed()) {
+            showMaxAccountLimitExceededError()
+            navBack()
+            return
+        }
         nav(
             MainNavigationDirections.actionNewAccount(
                 shouldNavToRegisterWatchAccount = true,

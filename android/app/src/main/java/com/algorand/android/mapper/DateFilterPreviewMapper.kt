@@ -23,14 +23,15 @@ import javax.inject.Inject
 class DateFilterPreviewMapper @Inject constructor(
     private val dateFilterImageResourceDecider: DateFilterImageResourceDecider,
     private val dateFilterTitleDecider: DateFilterTitleDecider,
-    private val dateFilterTitleResIdDecider: DateFilterTitleResIdDecider,
+    private val dateFilterTitleResIdDecider: DateFilterTitleResIdDecider
 ) {
 
     fun mapToDateFilterPreview(dateFilter: DateFilter): DateFilterPreview {
         return DateFilterPreview(
-            dateFilterImageResourceDecider.decideDateFilterImageRes(dateFilter),
-            dateFilterTitleDecider.decideDateFilterTitle(dateFilter),
-            dateFilterTitleResIdDecider.decideDateFilterTitleResId(dateFilter)
+            filterButtonIconResId = dateFilterImageResourceDecider.decideDateFilterImageRes(dateFilter),
+            title = dateFilterTitleDecider.decideDateFilterTitle(dateFilter),
+            titleResId = dateFilterTitleResIdDecider.decideDateFilterTitleResId(dateFilter),
+            useFilterIconsOwnTint = dateFilter != DateFilter.AllTime
         )
     }
 }

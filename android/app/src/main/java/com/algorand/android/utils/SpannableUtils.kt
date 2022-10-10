@@ -17,6 +17,7 @@ import android.graphics.Typeface
 import android.graphics.Typeface.BOLD
 import android.text.Annotation
 import android.text.SpannableStringBuilder
+import android.text.Spanned
 import android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 import android.text.SpannedString
 import android.text.style.AbsoluteSizeSpan
@@ -182,6 +183,13 @@ fun Context.getXmlStyledString(
                     spannableString.replaceAnnotation(annotation, replacementValue)
                 }
             }
+            "iconReplacement" -> {
+                replacementList.find { (key, _) ->
+                    key == annotation.value
+                }?.let { (_, replacementValue) ->
+                    spannableString.replaceIconAnnotation(this, annotation, replacementValue)
+                }
+            }
             "custom" -> {
                 val customAnnotation = customAnnotations.find { it.first == annotation.value }
                 if (customAnnotation != null) {
@@ -201,6 +209,19 @@ private fun SpannableStringBuilder.replaceAnnotation(
         getSpanStart(annotation),
         getSpanEnd(annotation),
         replacementValue
+    )
+}
+
+private fun SpannableStringBuilder.replaceIconAnnotation(
+    context: Context,
+    annotation: Annotation,
+    replacementIconResIdValue: CharSequence
+) {
+    setSpan(
+        CenteredImageSpan(context, replacementIconResIdValue.toString().toInt()),
+        getSpanStart(annotation),
+        getSpanEnd(annotation),
+        Spanned.SPAN_INCLUSIVE_EXCLUSIVE
     )
 }
 

@@ -27,6 +27,6 @@ class OnboardingAccountVerifiedStartPeraEventTracker @Inject constructor(
     }
 
     companion object {
-        private const val ONBOARDING_START_USING_PERA_EVENT_KEY = "onboarding_createaccount_verified_start"
+        private const val ONBOARDING_START_USING_PERA_EVENT_KEY = "onb_createacc_verified_start"
     }
 }

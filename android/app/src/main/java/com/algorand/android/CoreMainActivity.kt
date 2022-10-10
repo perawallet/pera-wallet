@@ -137,7 +137,7 @@ abstract class CoreMainActivity : BaseActivity() {
     private fun startNavigation() {
         with(navController) {
             graph = navInflater.inflate(R.navigation.main_navigation).apply {
-                startDestination = getStartDestinationFragmentId()
+                setStartDestination(getStartDestinationFragmentId())
             }
             binding.bottomNavigationView.setupWithNavController(this, ::onMenuItemClicked)
         }
@@ -210,14 +210,44 @@ abstract class CoreMainActivity : BaseActivity() {
         return binding.toolbar
     }
 
-    fun showGlobalError(errorMessage: CharSequence?, title: String? = null) {
+    fun showGlobalError(
+        errorMessage: CharSequence?,
+        title: String? = null,
+        tag: String = activityTag
+    ) {
         val safeTitle = title ?: getString(R.string.error_default_title)
-        val safeErrorMessage = errorMessage ?: getString(R.string.unknown_error)
-        binding.slidingTopErrorView?.addErrorMessage(safeTitle, safeErrorMessage)
+        val safeErrorMessage = errorMessage?.toString() ?: getString(R.string.unknown_error)
+        binding.alertView.addAlertError(
+            title = safeTitle,
+            description = safeErrorMessage,
+            tag = tag
+        )
     }
 
-    fun showForegroundNotification(notificationMetadata: NotificationMetadata) {
-        binding.foregroundNotificationView?.addNotification(notificationMetadata)
+    fun showForegroundNotification(
+        notificationMetadata: NotificationMetadata,
+        tag: String = activityTag
+    ) {
+        binding.alertView.addAlertNotification(
+            notificationMetadata = notificationMetadata,
+            tag = tag
+        )
+    }
+
+    fun showAlertSuccess(
+        title: String,
+        successMessage: String?,
+        tag: String
+    ) {
+        binding.alertView.addAlertSuccess(
+            title = title,
+            description = successMessage,
+            tag = tag
+        )
+    }
+
+    fun removeAlertsWithTag(tag: String) {
+        binding.alertView.removeAlertsWithTag(tag)
     }
 
     fun showProgress() {

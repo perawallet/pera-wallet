@@ -92,13 +92,12 @@
         android:layout_marginTop="@dimen/spacing_large"
         android:drawablePadding="@dimen/spacing_small"
         android:gravity="center_vertical"
-        app:drawableTint="@color/verified_icon_color"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toTopOf="@id/applicationIdTextView"
         app:layout_constraintEnd_toStartOf="@id/assetDotView"
         app:layout_constraintStart_toEndOf="@id/labelGuideline"
         app:layout_constraintTop_toBottomOf="@id/toNameTextView"
-        tools:drawableStart="@drawable/ic_shield"
+        tools:drawableStart="@drawable/ic_asa_trusted"
         tools:text="ALGO" />
 
     <ImageView

@@ -17,7 +17,6 @@ import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.algorand.android.CoreMainActivity
 import com.algorand.android.R
 import com.algorand.android.core.BackPressedControllerComponent
@@ -32,6 +31,7 @@ import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.utils.PERCENT_FORMAT
 import com.algorand.android.utils.Resource
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.setTextAndVisibility
 import com.algorand.android.utils.formatAsTwoDecimals
@@ -47,12 +47,11 @@ import com.github.mikephil.charting.highlight.Highlight
 import dagger.hilt.android.AndroidEntryPoint
 import java.math.BigDecimal.ZERO
 import kotlin.properties.Delegates
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 // TODO Refactor AlgoPriceFragment line by line and rename is as AnalyticsDetailFragment
 @AndroidEntryPoint
-class AlgoPriceFragment : DaggerBaseFragment(R.layout.fragment_algo_price),
+class AlgoPriceFragment :
+    DaggerBaseFragment(R.layout.fragment_algo_price),
     BackPressedControllerComponent by BottomNavigationBackPressedDelegate() {
 
     private val toolbarConfiguration = ToolbarConfiguration()
@@ -123,9 +122,10 @@ class AlgoPriceFragment : DaggerBaseFragment(R.layout.fragment_algo_price),
     }
 
     private fun initObserver() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            analyticsDetailViewModel.algoPriceHistoryFlow.collectLatest(algoPriceHistoryCollector)
-        }
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            analyticsDetailViewModel.algoPriceHistoryFlow,
+            algoPriceHistoryCollector
+        )
     }
 
     private fun onGetAlgoPriceHistorySuccess(chartEntryData: ChartEntryData) {

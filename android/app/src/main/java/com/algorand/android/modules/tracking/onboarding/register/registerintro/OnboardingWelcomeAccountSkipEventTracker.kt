@@ -27,6 +27,6 @@ class OnboardingWelcomeAccountSkipEventTracker @Inject constructor(
     }
 
     companion object {
-        private const val ONBOARDING_CREATE_ACCOUNT_SKIP_EVENT_KEY = "onboarding_createaccount_skip"
+        private const val ONBOARDING_CREATE_ACCOUNT_SKIP_EVENT_KEY = "onb_createacc_skip"
     }
 }

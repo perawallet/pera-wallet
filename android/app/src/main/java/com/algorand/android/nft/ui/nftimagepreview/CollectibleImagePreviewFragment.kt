@@ -31,6 +31,7 @@ import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem
 import com.algorand.android.utils.PrismUrlBuilder
+import com.algorand.android.utils.createPrismUrl
 import com.algorand.android.utils.loadGif
 import com.algorand.android.utils.loadImageWithCachedFirst
 import com.algorand.android.utils.recordException
@@ -104,7 +105,7 @@ class CollectibleImagePreviewFragment : BaseFragment(R.layout.fragment_collectib
     }
 
     private fun loadCollectiblePreview() {
-        val prismUrl = createPrismPreviewImageUrl(args.imageUrl)
+        val prismUrl = createPrismUrl(args.imageUrl, PrismUrlBuilder.DEFAULT_IMAGE_SIZE)
         val isImageTypeGif = args.mediaType.name == BaseCollectibleMediaItem.ItemType.GIF.name
         if (isImageTypeGif) loadGif(prismUrl) else loadCollectibleImage(prismUrl)
     }
@@ -132,13 +133,6 @@ class CollectibleImagePreviewFragment : BaseFragment(R.layout.fragment_collectib
                 onLoadFailed = { showText(args.errorDisplayText) }
             )
         }
-    }
-
-    private fun createPrismPreviewImageUrl(rawUrl: String?): String {
-        return PrismUrlBuilder.create(rawUrl.orEmpty())
-            .addWidth(PrismUrlBuilder.DEFAULT_IMAGE_SIZE)
-            .addQuality(PrismUrlBuilder.DEFAULT_IMAGE_QUALITY)
-            .build()
     }
 
     private fun animateBackgroundColor(@ColorRes fromColorRes: Int, @ColorRes toColorRes: Int) {

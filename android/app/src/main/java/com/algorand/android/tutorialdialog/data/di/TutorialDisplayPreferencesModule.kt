@@ -18,12 +18,12 @@ import com.algorand.android.tutorialdialog.domain.repository.TutorialDisplayPref
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 object TutorialDisplayPreferencesModule {
 
     @Singleton

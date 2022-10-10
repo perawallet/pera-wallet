@@ -25,7 +25,8 @@ class AssetHoldingsMapper @Inject constructor() {
         return AssetHolding(
             assetId = assetHoldingResponse.assetId ?: 0L,
             amount = assetHoldingResponse.amount ?: BigInteger.ZERO,
-            isDeleted = assetHoldingResponse.isDeleted
+            isDeleted = assetHoldingResponse.isDeleted,
+            optedInAtRound = assetHoldingResponse.optedInAtRound
         )
     }
 
@@ -34,7 +35,21 @@ class AssetHoldingsMapper @Inject constructor() {
             assetId = assetInformation.assetId,
             amount = BigInteger.ZERO,
             isDeleted = false,
+            optedInAtRound = null,
             status = AssetStatus.PENDING_FOR_ADDITION
+        )
+    }
+
+    fun mapToAssetHoldings(
+        assetId: Long,
+        amount: BigInteger,
+        isDeleted: Boolean
+    ): AssetHolding {
+        return AssetHolding(
+            assetId = assetId,
+            amount = amount,
+            isDeleted = isDeleted,
+            optedInAtRound = null
         )
     }
 }

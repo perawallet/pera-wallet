@@ -12,17 +12,19 @@
 
 package com.algorand.android.ui.contacts
 
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.database.ContactDao
 import com.algorand.android.models.User
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ContactsViewModel @ViewModelInject constructor(
+@HiltViewModel
+class ContactsViewModel @Inject constructor(
     private val contractsDao: ContactDao
 ) : BaseViewModel() {
     val contactsListLiveData = MutableLiveData<List<User>>()

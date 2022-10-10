@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import com.algorand.android.R
+import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration
 import com.algorand.android.databinding.ItemTransactionApplicationCallAssetInformationBinding
 import com.algorand.android.models.BaseViewHolder
 import com.algorand.android.modules.transaction.detail.domain.usecase.ApplicationCallTransactionDetailPreviewUseCase.Companion.MAX_ASSET_COUNT_TO_SHOW
@@ -27,12 +28,15 @@ import com.algorand.android.modules.transaction.detail.ui.model.ApplicationCallA
 import com.algorand.android.modules.transaction.detail.ui.model.TransactionDetailItem
 import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.extensions.changeTextAppearance
+import com.algorand.android.utils.setAssetNameTextColorByVerificationTier
 import com.algorand.android.utils.setDrawable
 
 class ApplicationCallTransactionAssetInformationViewHolder(
     private val binding: ItemTransactionApplicationCallAssetInformationBinding,
     private val listener: ApplicationCallTransactionAssetInformationListener
 ) : BaseViewHolder<TransactionDetailItem>(binding.root) {
+
+    private val assetIdsOfCreatedViews = mutableSetOf<Long>()
 
     override fun bind(item: TransactionDetailItem) {
         if (item !is TransactionDetailItem.ApplicationCallItem.AppCallAssetInformationItem) return
@@ -49,28 +53,36 @@ class ApplicationCallTransactionAssetInformationViewHolder(
         showMoreButton: Boolean,
         showMoreAssetCount: Int
     ) {
-        assetInformationList.take(MAX_ASSET_COUNT_TO_SHOW).forEach {
-            binding.assetInformationLinearLayout.addView(
-                inflatePrimaryTextView(it.assetFullName, it.isVerified),
-                ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                )
-            )
-            binding.assetInformationLinearLayout.addView(inflateSecondaryTextView(it.assetId, it.assetShortName))
+        with(binding.assetInformationLinearLayout) {
+            assetInformationList.take(MAX_ASSET_COUNT_TO_SHOW)
+                .filterNot { assetIdsOfCreatedViews.contains(it.assetId) }
+                .forEach {
+                    addView(
+                        inflatePrimaryTextView(it.assetFullName, it.verificationTierConfiguration),
+                        ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT
+                        )
+                    )
+                    addView(inflateSecondaryTextView(it.assetId, it.assetShortName))
+                    assetIdsOfCreatedViews.add(it.assetId)
+                }
         }
         initShowMoreButton(assetInformationList, showMoreButton, showMoreAssetCount)
     }
 
-    private fun inflatePrimaryTextView(assetName: AssetName, isVerified: Boolean): AppCompatTextView {
+    private fun inflatePrimaryTextView(
+        assetName: AssetName,
+        verificationTierConfiguration: VerificationTierConfiguration
+    ): AppCompatTextView {
         return AppCompatTextView(binding.root.context).apply {
             text = assetName.getName(resources)
             changeTextAppearance(R.style.TextAppearance_Body_Sans)
             updatePadding(top = resources.getDimensionPixelSize(R.dimen.spacing_small))
-            if (isVerified) {
-                val assetNameEndDrawable = AppCompatResources.getDrawable(context, R.drawable.ic_asa_verified)
-                compoundDrawablePadding = resources.getDimensionPixelSize(R.dimen.spacing_xsmall)
-                setDrawable(end = assetNameEndDrawable)
+            compoundDrawablePadding = resources.getDimensionPixelSize(R.dimen.spacing_xsmall)
+            with(verificationTierConfiguration) {
+                setDrawable(end = drawableResId?.run { AppCompatResources.getDrawable(context, this) })
+                setAssetNameTextColorByVerificationTier(this)
             }
         }
     }

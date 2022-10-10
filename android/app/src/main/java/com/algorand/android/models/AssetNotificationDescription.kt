@@ -12,8 +12,8 @@
 
 package com.algorand.android.models
 
-import com.algorand.android.utils.ALGO_FULL_NAME
 import com.algorand.android.utils.ALGO_DECIMALS
+import com.algorand.android.utils.ALGO_FULL_NAME
 import com.google.gson.annotations.SerializedName
 
 // this data class will be only used in notification. (HIPO back-end stores asset like this)
@@ -28,16 +28,17 @@ data class AssetNotificationDescription(
     val url: String? = null,
     @SerializedName("fraction_decimals")
     val decimals: Int?,
-    val isVerified: Boolean = false
+    @SerializedName("logo")
+    val logoUri: String? = null
 ) {
 
     fun convertToAssetInformation(): AssetInformation {
         return AssetInformation(
             assetId = assetId,
-            isVerified = isVerified,
             shortName = shortName,
             fullName = fullName,
-            decimals = decimals ?: 0
+            decimals = decimals ?: 0,
+            verificationTier = null
         )
     }
 
@@ -45,7 +46,6 @@ data class AssetNotificationDescription(
         fun getAlgorandNotificationDescription(): AssetNotificationDescription {
             return AssetNotificationDescription(
                 assetId = AssetInformation.ALGO_ID,
-                isVerified = true,
                 fullName = ALGO_FULL_NAME,
                 decimals = ALGO_DECIMALS
             )

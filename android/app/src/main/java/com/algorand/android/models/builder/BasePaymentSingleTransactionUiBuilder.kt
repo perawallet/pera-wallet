@@ -17,11 +17,13 @@ import com.algorand.android.R
 import com.algorand.android.models.BasePaymentTransaction
 import com.algorand.android.models.WalletConnectTransactionAmount
 import com.algorand.android.models.WalletConnectTransactionShortDetail
+import com.algorand.android.modules.verificationtier.ui.decider.VerificationTierConfigurationDecider
 import com.algorand.android.utils.ALGO_SHORT_NAME
 import javax.inject.Inject
 
-class BasePaymentSingleTransactionUiBuilder @Inject constructor() :
-    WalletConnectSingleTransactionUiBuilder<BasePaymentTransaction> {
+class BasePaymentSingleTransactionUiBuilder @Inject constructor(
+    private val verificationTierConfigurationDecider: VerificationTierConfigurationDecider
+) : WalletConnectSingleTransactionUiBuilder<BasePaymentTransaction> {
 
     override fun buildToolbarTitleRes(txn: BasePaymentTransaction): Int {
         return R.string.transaction_request
@@ -31,7 +33,7 @@ class BasePaymentSingleTransactionUiBuilder @Inject constructor() :
         return with(txn) {
             WalletConnectTransactionShortDetail(
                 accountIconResource = createAccountIconResource(),
-                accountName = account?.name,
+                accountName = fromAccount?.name,
                 accountBalance = assetInformation?.amount,
                 assetShortName = assetInformation?.shortName,
                 warningCount = warningCount,
@@ -48,7 +50,9 @@ class BasePaymentSingleTransactionUiBuilder @Inject constructor() :
                 assetDecimal = assetDecimal,
                 assetShortName = ALGO_SHORT_NAME,
                 isNeedCurrencyValue = true,
-                formattedSelectedCurrencyValue = assetInformation?.formattedSelectedCurrencyValue
+                formattedSelectedCurrencyValue = assetInformation?.formattedSelectedCurrencyValue,
+                verificationTierConfiguration =
+                verificationTierConfigurationDecider.decideVerificationTierConfiguration(verificationTier)
             )
         }
     }

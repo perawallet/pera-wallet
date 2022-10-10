@@ -35,9 +35,14 @@ class WalletConnectAmountInfoCardView(
 ) : ConstraintLayout(context, attrs) {
 
     private val binding = viewBinding(CustomWalletConnectAmountInfoCardBinding::inflate)
+    private var listener: WalletConnectAmountInfoCardListener? = null
 
     init {
         initRootLayout()
+    }
+
+    fun setListener(listener: WalletConnectAmountInfoCardListener) {
+        this.listener = listener
     }
 
     fun initAmountInfo(amountInfo: TransactionRequestAmountInfo?) {
@@ -102,6 +107,12 @@ class WalletConnectAmountInfoCardView(
                 reserveAccountTextView.apply {
                     text = reserveAddress?.displayValue
                     isSingleLine = reserveAddress?.isSingleLine == true
+                    if (reserveAddress?.fullAddress != null) {
+                        setOnLongClickListener {
+                            listener?.onAccountAddressLongPressed(reserveAddress.fullAddress)
+                            return@setOnLongClickListener true
+                        }
+                    }
                 }
                 reserveAccountGroup.show()
             }
@@ -114,6 +125,12 @@ class WalletConnectAmountInfoCardView(
                 clawbackAccountTextView.apply {
                     text = clawbackAddress?.displayValue
                     isSingleLine = clawbackAddress?.isSingleLine == true
+                    if (clawbackAddress?.fullAddress != null) {
+                        setOnLongClickListener {
+                            listener?.onAccountAddressLongPressed(clawbackAddress.fullAddress)
+                            return@setOnLongClickListener true
+                        }
+                    }
                 }
                 clawbackAccountGroup.show()
             }
@@ -126,6 +143,12 @@ class WalletConnectAmountInfoCardView(
                 freezeAccountTextView.apply {
                     text = frozenAddress?.displayValue
                     isSingleLine = frozenAddress?.isSingleLine == true
+                    if (frozenAddress?.fullAddress != null) {
+                        setOnLongClickListener {
+                            listener?.onAccountAddressLongPressed(frozenAddress.fullAddress)
+                            return@setOnLongClickListener true
+                        }
+                    }
                 }
                 freezeAccountGroup.show()
             }
@@ -138,6 +161,12 @@ class WalletConnectAmountInfoCardView(
                 managerAccountNameTextView.apply {
                     text = managerAddress?.displayValue
                     isSingleLine = managerAddress?.isSingleLine == true
+                    if (managerAddress?.fullAddress != null) {
+                        setOnLongClickListener {
+                            listener?.onAccountAddressLongPressed(managerAddress.fullAddress)
+                            return@setOnLongClickListener true
+                        }
+                    }
                 }
                 managerAccountGroup.show()
             }
@@ -146,5 +175,9 @@ class WalletConnectAmountInfoCardView(
 
     private fun initRootLayout() {
         setPadding(resources.getDimensionPixelSize(R.dimen.spacing_large))
+    }
+
+    fun interface WalletConnectAmountInfoCardListener {
+        fun onAccountAddressLongPressed(accountAddress: String)
     }
 }

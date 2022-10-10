@@ -12,7 +12,7 @@
 
 package com.algorand.android.ui.analyticsdetail
 
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.models.ChartEntryData
@@ -21,6 +21,7 @@ import com.algorand.android.models.ChartTimeFrame
 import com.algorand.android.usecase.AnalyticsDetailUseCase
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.coremanager.ParityManager
+import dagger.hilt.android.lifecycle.HiltViewModel
 import java.math.BigDecimal
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,7 +33,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 
 // TODO Refactor AnalyticsDetailViewModel line by line and update it based on new architecture
-class AnalyticsDetailViewModel @ViewModelInject constructor(
+@HiltViewModel
+class AnalyticsDetailViewModel @Inject constructor(
     private val analyticsDetailUseCase: AnalyticsDetailUseCase,
     private val parityManager: ParityManager
 ) : BaseViewModel() {
@@ -65,7 +67,18 @@ class AnalyticsDetailViewModel @ViewModelInject constructor(
     }
 
     fun getCurrencyFormattedPrice(price: String): String {
-        return "$price ${analyticsDetailUseCase.getDisplayedCurrencyId()}"
+        val currencySymbolOrId = analyticsDetailUseCase.getDisplayedCurrencyId()
+        return if (isCurrencySymbolExists(currencySymbolOrId)) {
+            "$currencySymbolOrId$price"
+        } else {
+            "$currencySymbolOrId $price"
+        }
+    }
+
+    // We do this check because some currencies have same symbol as it's name.
+    // For example AED has a symbol AED. If it's like that we show it with one space
+    private fun isCurrencySymbolExists(currencyInfo: String): Boolean {
+        return currencyInfo.length <= 1
     }
 
     fun refreshCachedAlgoPrice() {

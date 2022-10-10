@@ -12,13 +12,14 @@
 
 package com.algorand.android.nft.ui.nftsend
 
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.models.BaseAccountSelectionListItem
 import com.algorand.android.nft.domain.usecase.CollectibleReceiverSelectionPreviewUseCase
 import com.algorand.android.nft.ui.model.CollectibleReceiverSelectionPreview
 import com.algorand.android.utils.isValidAddress
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlin.properties.Delegates
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,7 +29,8 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 
-class CollectibleReceiverSelectionViewModel @ViewModelInject constructor(
+@HiltViewModel
+class CollectibleReceiverSelectionViewModel @Inject constructor(
     private val collectibleReceiverSelectionPreviewUseCase: CollectibleReceiverSelectionPreviewUseCase
 ) : ViewModel() {
 

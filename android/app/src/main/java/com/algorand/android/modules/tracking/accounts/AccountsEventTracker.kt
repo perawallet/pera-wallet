@@ -17,7 +17,8 @@ import javax.inject.Inject
 class AccountsEventTracker @Inject constructor(
     private val accountsAddAccountEventTracker: AccountsAddAccountEventTracker,
     private val accountsQrScanEventTracker: AccountsQrScanEventTracker,
-    private val accountsQrConnectEventTracker: AccountsQrConnectEventTracker
+    private val accountsQrConnectEventTracker: AccountsQrConnectEventTracker,
+    private val visitGovernanceEventTracker: VisitGovernanceEventTracker
 ) {
 
     suspend fun logAddAccountTapEvent() {
@@ -30,5 +31,9 @@ class AccountsEventTracker @Inject constructor(
 
     suspend fun logAccountsQrConnectEvent() {
         accountsQrConnectEventTracker.logAccountsQrConnectEvent()
+    }
+
+    suspend fun logVisitGovernanceEvent() {
+        visitGovernanceEventTracker.logVisitGovernanceEvent()
     }
 }

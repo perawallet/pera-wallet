@@ -17,8 +17,8 @@ import android.view.View
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseBottomSheet
 import com.algorand.android.databinding.BottomSheetRecoverOptionsBinding
-import com.algorand.android.utils.RECOVER_INFO_URL
-import com.algorand.android.utils.openUrl
+import com.algorand.android.utils.browser.RECOVER_INFO_URL
+import com.algorand.android.utils.browser.openUrl
 import com.algorand.android.utils.setNavigationResult
 import com.algorand.android.utils.viewbinding.viewBinding
 

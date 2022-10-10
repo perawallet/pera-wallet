@@ -53,6 +53,7 @@ class AccountSelectionUseCase @Inject constructor(
                             isCompact = true,
                             isFiat = true
                         ),
+                        accountAssetCount = this.accountInformation.getOptedInAssetsCount()
                     )
                 },
                 onFailedAccountConfiguration = {
@@ -71,7 +72,8 @@ class AccountSelectionUseCase @Inject constructor(
             accountSelectionMapper.mapToAccountSelection(
                 accountDisplayName = accountListItem.itemConfiguration.accountDisplayName,
                 accountIconResource = accountListItem.itemConfiguration.accountIconResource,
-                accountAddress = accountListItem.itemConfiguration.accountAddress
+                accountAddress = accountListItem.itemConfiguration.accountAddress,
+                accountAssetCount = accountListItem.itemConfiguration.accountAssetCount
             )
         }
     }

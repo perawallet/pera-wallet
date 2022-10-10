@@ -45,7 +45,7 @@ abstract class AlgorandDatabase : RoomDatabase() {
     abstract fun walletConnectSessionHistoryDao(): WalletConnectSessionHistoryDao
 
     companion object {
-        const val LATEST_DB_VERSION = 8
+        const val LATEST_DB_VERSION = 9
 
         val MIGRATION_3_4 = object : Migration(3, 4) {
             override fun migrate(database: SupportSQLiteDatabase) {
@@ -109,6 +109,13 @@ abstract class AlgorandDatabase : RoomDatabase() {
         val MIGRATION_7_8 = object : Migration(7, 8) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("ALTER TABLE Node ADD COLUMN mobile_algorand_address TEXT NOT NULL DEFAULT ''")
+            }
+        }
+
+        val MIGRATION_8_9 = object : Migration(8, 9) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE WalletConnectSessionEntity ADD COLUMN fallback_browser_group_response TEXT")
+                database.execSQL("ALTER TABLE WalletConnectSessionHistoryEntity ADD COLUMN fallback_browser_group_response TEXT")
             }
         }
 

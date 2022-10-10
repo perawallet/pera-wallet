@@ -21,6 +21,7 @@ import kotlinx.parcelize.Parcelize
 data class AccountSelection(
     val accountDisplayName: AccountDisplayName?,
     val accountIconResource: AccountIconResource?,
+    val accountAssetCount: Int?,
     val accountAddress: String,
 ) : Parcelable, RecyclerListItem {
     override fun areItemsTheSame(other: RecyclerListItem): Boolean {

@@ -12,12 +12,14 @@
 
 package com.algorand.android.ui.common.warningconfirmation
 
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.utils.AccountCacheManager
+import dagger.hilt.android.lifecycle.HiltViewModel
 import java.math.BigInteger
 
-class MaximumBalanceWarningViewModel @ViewModelInject constructor(
+@HiltViewModel
+class MaximumBalanceWarningViewModel @Inject constructor(
     private val accountCacheManager: AccountCacheManager
 ) : BaseViewModel() {
 

@@ -12,11 +12,13 @@
 
 package com.algorand.android.nft.ui.nftreceiveaccountselection
 
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.nft.domain.usecase.CollectibleReceiverAccountSelectionPreviewUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 
-class CollectibleReceiverAccountSelectionViewModel @ViewModelInject constructor(
+@HiltViewModel
+class CollectibleReceiverAccountSelectionViewModel @Inject constructor(
     private val collectibleReceiverAccountSelectionPreviewUseCase: CollectibleReceiverAccountSelectionPreviewUseCase
 ) : BaseViewModel() {
 

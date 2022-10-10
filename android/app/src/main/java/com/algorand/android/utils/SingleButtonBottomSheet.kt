@@ -34,6 +34,8 @@ class SingleButtonBottomSheet : BaseSingleButtonBottomSheet() {
         get() = args.errorAnnotatedString
     override val buttonStringResId: Int
         get() = args.buttonStringResId
+    override val shouldDescriptionHasLinkMovementMethod: Boolean
+        get() = args.shouldDescriptionHasLinkMovementMethod
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

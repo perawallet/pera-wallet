@@ -13,18 +13,20 @@
 
 package com.algorand.android.ui.contacts.editcontact
 
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.database.ContactDao
 import com.algorand.android.models.OperationState
 import com.algorand.android.models.User
 import com.algorand.android.utils.Event
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class EditContactViewModel @ViewModelInject constructor(
+@HiltViewModel
+class EditContactViewModel @Inject constructor(
     private val contactDao: ContactDao
 ) : ViewModel() {
 

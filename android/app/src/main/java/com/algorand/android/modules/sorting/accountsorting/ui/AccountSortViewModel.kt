@@ -12,19 +12,21 @@
 
 package com.algorand.android.modules.sorting.accountsorting.ui
 
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.modules.sorting.accountsorting.domain.model.AccountSortingPreview
 import com.algorand.android.modules.sorting.accountsorting.domain.model.AccountSortingType
 import com.algorand.android.modules.sorting.accountsorting.domain.model.BaseAccountSortingListItem
-import com.algorand.android.modules.sorting.accountsorting.domain.usecase.AccountSortingPreviewUseCase
+import com.algorand.android.modules.sorting.accountsorting.ui.usecase.AccountSortingPreviewUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class AccountSortViewModel @ViewModelInject constructor(
+@HiltViewModel
+class AccountSortViewModel @Inject constructor(
     private val accountSortingPreviewUseCase: AccountSortingPreviewUseCase
 ) : ViewModel() {
 

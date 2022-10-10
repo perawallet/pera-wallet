@@ -15,12 +15,10 @@ package com.algorand.android.ui.register.ledger.verify
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.navGraphViewModels
-import com.algorand.android.MainViewModel
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentVerifyLedgerAddressBinding
@@ -33,12 +31,12 @@ import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.ui.register.ledger.PairLedgerNavigationViewModel
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.analytics.CreationType
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.sendErrorLog
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -55,8 +53,6 @@ class VerifyLedgerAddressFragment : DaggerBaseFragment(R.layout.fragment_verify_
     override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
 
     private val binding by viewBinding(FragmentVerifyLedgerAddressBinding::bind)
-
-    private val mainViewModel: MainViewModel by activityViewModels()
 
     private val adapter = VerifiableLedgerAddressesAdapter()
 
@@ -102,6 +98,9 @@ class VerifyLedgerAddressFragment : DaggerBaseFragment(R.layout.fragment_verify_
                 }
                 is LedgerBleResult.VerifyPublicKeyResult -> {
                     verifyLedgerAddressViewModel.onCurrentOperationDone(isVerified = ledgerBleResult.isVerified)
+                }
+                else -> {
+                    sendErrorLog("Unhandled else case in ledgerResultCollector")
                 }
             }
         }
@@ -165,9 +164,10 @@ class VerifyLedgerAddressFragment : DaggerBaseFragment(R.layout.fragment_verify_
             isAllOperationDoneObserver
         )
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            ledgerBleOperationManager.ledgerBleResultFlow.collectLatest(ledgerResultCollector)
-        }
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            ledgerBleOperationManager.ledgerBleResultFlow,
+            ledgerResultCollector
+        )
 
         verifyLedgerAddressViewModel.awaitingLedgerAccountLiveData.observe(viewLifecycleOwner) {
             startVerifyOperation(it)
@@ -184,7 +184,7 @@ class VerifyLedgerAddressFragment : DaggerBaseFragment(R.layout.fragment_verify_
             } else {
                 CreationType.LEDGER
             }
-            mainViewModel.addAccount(selectedAccount, creationType)
+            verifyLedgerAddressViewModel.addNewAccount(selectedAccount, creationType)
         }
         nav(
             VerifyLedgerAddressFragmentDirections.actionVerifyLedgerAddressFragmentToVerifyLedgerInfoFragment(

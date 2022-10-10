@@ -23,7 +23,10 @@ data class AssetHoldingResponse(
     val amount: BigInteger?,
 
     @SerializedName("deleted")
-    private val deleted: Boolean?
+    private val deleted: Boolean?,
+
+    @SerializedName("opted-in-at-round")
+    val optedInAtRound: Long?
 ) {
 
     val isDeleted: Boolean

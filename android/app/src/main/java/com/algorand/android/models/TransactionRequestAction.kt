@@ -24,4 +24,6 @@ interface TransactionRequestAction {
     fun showButtons()
 
     fun hideButtons()
+
+    fun motionTransitionToEnd()
 }

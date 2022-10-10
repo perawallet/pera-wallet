@@ -24,7 +24,6 @@ import com.algorand.android.models.WalletConnectTransactionRequest
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
 import com.algorand.android.usecase.SimpleAssetDetailUseCase
-import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.walletconnect.WalletConnectTransactionErrorProvider
 import java.math.BigInteger
 import java.math.BigInteger.ZERO
@@ -33,7 +32,6 @@ import javax.inject.Inject
 // TODO: 19.01.2022 Mappers shouldn't inject use case
 @SuppressWarnings("ReturnCount")
 class AssetTransferTransactionMapper @Inject constructor(
-    private val accountCacheManager: AccountCacheManager,
     private val errorProvider: WalletConnectTransactionErrorProvider,
     private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase,
     private val parityUseCase: ParityUseCase,
@@ -73,8 +71,9 @@ class AssetTransferTransactionMapper @Inject constructor(
         rawTransaction: WCAlgoTransactionRequest
     ): BaseAssetTransferTransaction.AssetTransferTransactionWithClose? {
         return with(transactionRequest) {
-            val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
-            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
+            val senderWCAddress = createWalletConnectAddress(senderAddress)
+            val accountData =
+                accountDetailUseCase.getCachedAccountDetail(senderWCAddress?.decodedAddress.toString())?.data
             val assetId = assetId ?: return null
             val amount = assetAmount ?: ZERO
             val accountDetail = accountDetailUseCase.getCachedAccountDetail(senderAddress ?: return null)?.data
@@ -85,14 +84,14 @@ class AssetTransferTransactionMapper @Inject constructor(
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 note = decodedNote,
                 assetReceiverAddress = createWalletConnectAddress(assetReceiverAddress) ?: return null,
-                senderAddress = senderWalletConnectAddress ?: return null,
+                senderAddress = senderWCAddress ?: return null,
                 assetId = assetId,
                 peerMeta = peerMeta,
                 assetCloseToAddress = createWalletConnectAddress(assetCloseToAddress) ?: return null,
-                signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
+                signer = WalletConnectSigner.create(rawTransaction, senderWCAddress, errorProvider),
                 assetAmount = amount,
-                authAddress = accountCacheData?.authAddress,
-                account = WalletConnectAccount.create(accountCacheData?.account),
+                authAddress = accountData?.accountInformation?.rekeyAdminAddress,
+                fromAccount = WalletConnectAccount.create(accountData?.account),
                 assetInformation = assetInformation,
                 groupId = groupId
             )
@@ -105,8 +104,9 @@ class AssetTransferTransactionMapper @Inject constructor(
         rawTransaction: WCAlgoTransactionRequest
     ): BaseAssetTransferTransaction.AssetTransferTransactionWithRekey? {
         return with(transactionRequest) {
-            val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
-            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
+            val senderWCAddress = createWalletConnectAddress(senderAddress)
+            val accountData =
+                accountDetailUseCase.getCachedAccountDetail(senderWCAddress?.decodedAddress.toString())?.data
             val assetId = assetId ?: return null
             val amount = assetAmount ?: ZERO
             val accountDetail = accountDetailUseCase.getCachedAccountDetail(senderAddress ?: return null)?.data
@@ -117,14 +117,14 @@ class AssetTransferTransactionMapper @Inject constructor(
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 note = decodedNote,
                 assetReceiverAddress = createWalletConnectAddress(assetReceiverAddress) ?: return null,
-                senderAddress = senderWalletConnectAddress ?: return null,
+                senderAddress = senderWCAddress ?: return null,
                 assetId = assetId,
                 peerMeta = peerMeta,
                 rekeyAddress = createWalletConnectAddress(rekeyAddress) ?: return null,
-                signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
+                signer = WalletConnectSigner.create(rawTransaction, senderWCAddress, errorProvider),
                 assetAmount = amount,
-                authAddress = accountCacheData?.authAddress,
-                account = WalletConnectAccount.create(accountCacheData?.account),
+                authAddress = accountData?.accountInformation?.rekeyAdminAddress,
+                fromAccount = WalletConnectAccount.create(accountData?.account),
                 assetInformation = assetInformation,
                 groupId = groupId
             )
@@ -137,8 +137,9 @@ class AssetTransferTransactionMapper @Inject constructor(
         rawTransaction: WCAlgoTransactionRequest
     ): BaseAssetTransferTransaction.AssetTransferTransactionWithRekeyAndClose? {
         return with(transactionRequest) {
-            val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
-            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
+            val senderWCAddress = createWalletConnectAddress(senderAddress)
+            val accountData =
+                accountDetailUseCase.getCachedAccountDetail(senderWCAddress?.decodedAddress.toString())?.data
             val assetId = assetId ?: return null
             val amount = assetAmount ?: ZERO
             val accountDetail = accountDetailUseCase.getCachedAccountDetail(senderAddress ?: return null)?.data
@@ -149,14 +150,14 @@ class AssetTransferTransactionMapper @Inject constructor(
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 note = decodedNote,
                 assetReceiverAddress = createWalletConnectAddress(assetReceiverAddress) ?: return null,
-                senderAddress = senderWalletConnectAddress ?: return null,
+                senderAddress = senderWCAddress ?: return null,
                 assetId = assetId,
                 peerMeta = peerMeta,
                 rekeyAddress = createWalletConnectAddress(rekeyAddress) ?: return null,
-                signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
+                signer = WalletConnectSigner.create(rawTransaction, senderWCAddress, errorProvider),
                 assetAmount = amount,
-                authAddress = accountCacheData?.authAddress,
-                account = WalletConnectAccount.create(accountCacheData?.account),
+                authAddress = accountData?.accountInformation?.rekeyAdminAddress,
+                fromAccount = WalletConnectAccount.create(accountData?.account),
                 assetInformation = assetInformation,
                 closeAddress = createWalletConnectAddress(assetCloseToAddress) ?: return null,
                 groupId = groupId
@@ -170,8 +171,12 @@ class AssetTransferTransactionMapper @Inject constructor(
         rawTransaction: WCAlgoTransactionRequest
     ): BaseAssetTransferTransaction.AssetTransferTransaction? {
         return with(transactionRequest) {
-            val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
-            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
+            val senderWCAddress = createWalletConnectAddress(senderAddress)
+            val senderAccountData =
+                accountDetailUseCase.getCachedAccountDetail(senderWCAddress?.decodedAddress.toString())?.data
+            val receiverWCAddress = createWalletConnectAddress(assetReceiverAddress)
+            val receiverAccountData =
+                accountDetailUseCase.getCachedAccountDetail(receiverWCAddress?.decodedAddress.toString())?.data
             val assetId = assetId ?: return null
             val amount = assetAmount ?: ZERO
             val accountDetail = accountDetailUseCase.getCachedAccountDetail(senderAddress ?: return null)?.data
@@ -182,13 +187,14 @@ class AssetTransferTransactionMapper @Inject constructor(
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 note = decodedNote,
                 assetReceiverAddress = createWalletConnectAddress(assetReceiverAddress) ?: return null,
-                senderAddress = senderWalletConnectAddress ?: return null,
+                senderAddress = senderWCAddress ?: return null,
                 assetId = assetId,
                 peerMeta = peerMeta,
                 assetAmount = amount,
-                signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
-                authAddress = accountCacheData?.authAddress,
-                account = WalletConnectAccount.create(accountCacheData?.account),
+                signer = WalletConnectSigner.create(rawTransaction, senderWCAddress, errorProvider),
+                authAddress = senderAccountData?.accountInformation?.rekeyAdminAddress,
+                fromAccount = WalletConnectAccount.create(senderAccountData?.account),
+                toAccount = WalletConnectAccount.create(receiverAccountData?.account),
                 assetInformation = assetInformation,
                 groupId = groupId
             )
@@ -201,24 +207,28 @@ class AssetTransferTransactionMapper @Inject constructor(
         rawTransaction: WCAlgoTransactionRequest
     ): BaseAssetTransferTransaction.AssetOptInTransaction? {
         return with(transactionRequest) {
-            val senderWalletConnectAddress = createWalletConnectAddress(senderAddress)
-            val accountCacheData = accountCacheManager.getCacheData(senderWalletConnectAddress?.decodedAddress)
+            val senderWCAddress = createWalletConnectAddress(senderAddress)
+            val receiverWCAddress = createWalletConnectAddress(assetReceiverAddress)
+            val fromAccountData =
+                accountDetailUseCase.getCachedAccountDetail(senderWCAddress?.decodedAddress.toString())?.data
             val assetId = assetId ?: return null
             val amount = assetAmount ?: ZERO
             val accountDetail = accountDetailUseCase.getCachedAccountDetail(senderAddress ?: return null)?.data
             val assetInformation = createWalletConnectAssetInformation(assetId, accountDetail, amount)
-
+            val toAccountData =
+                accountDetailUseCase.getCachedAccountDetail(receiverWCAddress?.decodedAddress.toString())?.data
             BaseAssetTransferTransaction.AssetOptInTransaction(
                 rawTransactionPayload = rawTransaction,
                 walletConnectTransactionParams = createTransactionParams(transactionRequest),
                 note = decodedNote,
                 assetReceiverAddress = createWalletConnectAddress(assetReceiverAddress) ?: return null,
-                senderAddress = senderWalletConnectAddress ?: return null,
+                senderAddress = senderWCAddress ?: return null,
                 assetId = assetId,
                 peerMeta = peerMeta,
-                signer = WalletConnectSigner.create(rawTransaction, senderWalletConnectAddress, errorProvider),
-                authAddress = accountCacheData?.authAddress,
-                account = WalletConnectAccount.create(accountCacheData?.account),
+                signer = WalletConnectSigner.create(rawTransaction, senderWCAddress, errorProvider),
+                authAddress = fromAccountData?.accountInformation?.rekeyAdminAddress,
+                fromAccount = WalletConnectAccount.create(fromAccountData?.account),
+                toAccount = WalletConnectAccount.create(toAccountData?.account),
                 assetInformation = assetInformation,
                 groupId = groupId
             )
@@ -230,7 +240,6 @@ class AssetTransferTransactionMapper @Inject constructor(
         accountDetail: AccountDetail?,
         amount: BigInteger
     ): WalletConnectAssetInformation? {
-
         val assetQueryItem = simpleAssetDetailUseCase.getCachedAssetDetail(assetId)?.data
         val assetHolding = accountDetail?.accountInformation?.assetHoldingList?.firstOrNull {
             it.assetId == assetId
@@ -240,9 +249,9 @@ class AssetTransferTransactionMapper @Inject constructor(
         return walletConnectAssetInformationMapper.otherAssetMapToWalletConnectAssetInformation(
             assetDetail = assetQueryItem,
             assetHolding = assetHolding,
-            amount,
-            selectedCurrencyUsdConversionRate,
-            currencySymbol
+            amount = amount,
+            selectedCurrencyUsdConversionRate = selectedCurrencyUsdConversionRate,
+            currencySymbol = currencySymbol
         )
     }
 }

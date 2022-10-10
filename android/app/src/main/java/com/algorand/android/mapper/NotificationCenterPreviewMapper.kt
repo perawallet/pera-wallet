@@ -12,7 +12,6 @@
 
 package com.algorand.android.mapper
 
-import com.algorand.android.models.AssetAction
 import com.algorand.android.models.NotificationCenterPreview
 import com.algorand.android.utils.Event
 import javax.inject.Inject
@@ -25,7 +24,10 @@ class NotificationCenterPreviewMapper @Inject constructor() {
         onHistoryNotAvailableEvent: Event<String>? = null,
         onTransactionReceivedEvent: Event<Pair<String, Long>>? = null,
         onTransactionSentEvent: Event<Pair<String, Long>>? = null,
-        onAssetSupportRequestEvent: Event<AssetAction>? = null
+        onAssetSupportRequestEvent: Event<Pair<String, Long>>? = null,
+        onGoingCollectibleProfileEvent: Event<Pair<String, Long>>? = null,
+        onGoingAssetProfileEvent: Event<Pair<String, Long>>? = null,
+        errorMessageResId: Event<Int>? = null
     ): NotificationCenterPreview {
         return NotificationCenterPreview(
             onGoingCollectibleDetailEvent = onGoingCollectibleDetailEvent,
@@ -33,7 +35,10 @@ class NotificationCenterPreviewMapper @Inject constructor() {
             onHistoryNotAvailableEvent = onHistoryNotAvailableEvent,
             onTransactionReceivedEvent = onTransactionReceivedEvent,
             onTransactionSentEvent = onTransactionSentEvent,
-            onAssetSupportRequestEvent = onAssetSupportRequestEvent
+            onAssetSupportRequestEvent = onAssetSupportRequestEvent,
+            errorMessageResId = errorMessageResId,
+            onGoingCollectibleProfileEvent = onGoingCollectibleProfileEvent,
+            onGoingAssetProfileEvent = onGoingAssetProfileEvent
         )
     }
 }

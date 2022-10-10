@@ -12,24 +12,28 @@
 
 package com.algorand.android.modules.accounts.ui
 
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.modules.accounts.domain.model.AccountPreview
 import com.algorand.android.modules.accounts.domain.usecase.AccountsPreviewUseCase
 import com.algorand.android.modules.tracking.accounts.AccountsEventTracker
 import com.algorand.android.modules.tracking.moonpay.AccountsFragmentAlgoBuyTapEventTracker
+import com.algorand.android.usecase.IsAccountLimitExceedUseCase
 import com.algorand.android.utils.coremanager.ParityManager
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class AccountsViewModel @ViewModelInject constructor(
+@HiltViewModel
+class AccountsViewModel @Inject constructor(
     private val accountsPreviewUseCase: AccountsPreviewUseCase,
     private val accountsEventTracker: AccountsEventTracker,
     private val parityManager: ParityManager,
-    private val accountsFragmentAlgoBuyTapEventTracker: AccountsFragmentAlgoBuyTapEventTracker
+    private val accountsFragmentAlgoBuyTapEventTracker: AccountsFragmentAlgoBuyTapEventTracker,
+    private val isAccountLimitExceedUseCase: IsAccountLimitExceedUseCase
 ) : BaseViewModel() {
 
     private val _accountPreviewFlow = MutableStateFlow<AccountPreview?>(null)
@@ -59,6 +63,7 @@ class AccountsViewModel @ViewModelInject constructor(
     private fun initializeAccountPreviewFlow() {
         viewModelScope.launch {
             val initialAccountPreview = accountsPreviewUseCase.getInitialAccountPreview()
+            _accountPreviewFlow.emit(initialAccountPreview)
             accountsPreviewUseCase.getAccountsPreview(initialAccountPreview).collectLatest {
                 _accountPreviewFlow.emit(it)
             }
@@ -81,5 +86,17 @@ class AccountsViewModel @ViewModelInject constructor(
         viewModelScope.launch {
             accountsFragmentAlgoBuyTapEventTracker.logAccountsFragmentAlgoBuyTapEvent()
         }
+    }
+
+    fun onBannerActionButtonClick(isGovernance: Boolean) {
+        if (isGovernance) {
+            viewModelScope.launch {
+                accountsEventTracker.logVisitGovernanceEvent()
+            }
+        }
+    }
+
+    fun isAccountLimitExceed(): Boolean {
+        return isAccountLimitExceedUseCase.isAccountLimitExceed()
     }
 }

@@ -40,7 +40,7 @@ class BaseAssetConfigurationTransactionSummaryUiBuilder @Inject constructor() :
                 replacementList = listOf("asset_name" to assetName.orEmpty())
             )
             WalletConnectTransactionSummary(
-                accountName = account?.name,
+                accountName = fromAccount?.name,
                 accountIconResource = createAccountIconResource(),
                 summaryTitle = titleText,
                 showWarning = warningCount != null,
@@ -58,7 +58,7 @@ class BaseAssetConfigurationTransactionSummaryUiBuilder @Inject constructor() :
                 replacementList = listOf("asset_name" to assetName.orEmpty())
             )
             WalletConnectTransactionSummary(
-                accountName = account?.name,
+                accountName = fromAccount?.name,
                 accountIconResource = createAccountIconResource(),
                 summaryTitle = titleText,
                 showWarning = warningCount != null,
@@ -74,7 +74,7 @@ class BaseAssetConfigurationTransactionSummaryUiBuilder @Inject constructor() :
                 replacementList = listOf("asset_name" to assetName.orEmpty())
             )
             WalletConnectTransactionSummary(
-                accountName = account?.name,
+                accountName = fromAccount?.name,
                 accountIconResource = createAccountIconResource(),
                 summaryTitle = titleText,
                 showWarning = warningCount != null,

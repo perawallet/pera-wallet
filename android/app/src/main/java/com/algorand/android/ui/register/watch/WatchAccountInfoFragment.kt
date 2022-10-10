@@ -24,7 +24,7 @@ import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.IconButton
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.ui.common.BaseInfoFragment
-import com.algorand.android.utils.openWatchAccountSupportUrl
+import com.algorand.android.utils.browser.openWatchAccountSupportUrl
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 

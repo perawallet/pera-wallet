@@ -13,10 +13,17 @@
 package com.algorand.android.modules.accounts.ui.viewholder
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
+import com.algorand.android.R
 import com.algorand.android.databinding.ItemAccountErrorBinding
+import com.algorand.android.models.AccountIconResource
+import com.algorand.android.models.AccountIconResource.Companion.DEFAULT_ACCOUNT_ICON_RESOURCE
 import com.algorand.android.models.BaseViewHolder
 import com.algorand.android.modules.accounts.domain.model.BaseAccountListItem
+import com.algorand.android.utils.AccountIconDrawable
 
 class AccountErrorItemViewHolder(
     val binding: ItemAccountErrorBinding,
@@ -26,13 +33,52 @@ class AccountErrorItemViewHolder(
     override fun bind(item: BaseAccountListItem) {
         if (item !is BaseAccountListItem.BaseAccountItem.AccountErrorItem) return
         with(binding) {
-            accountItemView.initItemView(item.accountListItem.itemConfiguration)
-            root.setOnClickListener { listener.onAccountClick(item.accountListItem.itemConfiguration.accountAddress) }
-            if (item.canCopyable) {
-                root.setOnLongClickListener {
-                    listener.onAccountLongPress(item.accountListItem.itemConfiguration.accountAddress); true
-                }
+            with(item.accountListItem.itemConfiguration) {
+                setAccountStartIconDrawable(accountIconResource)
+                setAccountTitleText(accountDisplayName?.getDisplayTextOrAccountShortenedAddress())
+                setAccountDescriptionText(accountDisplayName?.getAccountShortenedAddressOrAccountType(root.resources))
+                setAccountEndIconDrawable()
+                root.setOnClickListener { listener.onAccountClick(accountAddress) }
+                root.setOnLongClickListener(getOnLongClickListener(item.canCopyable, accountAddress))
             }
+        }
+    }
+
+    private fun setAccountStartIconDrawable(accountIconResource: AccountIconResource?) {
+        with(binding.accountItemView) {
+            val accountIconSize = resources.getDimension(R.dimen.account_icon_size_large).toInt()
+            val accountIconDrawable = AccountIconDrawable.create(
+                context = context,
+                accountIconResource = accountIconResource ?: DEFAULT_ACCOUNT_ICON_RESOURCE,
+                size = accountIconSize
+            )
+            setStartIconDrawable(accountIconDrawable)
+        }
+    }
+
+    private fun setAccountTitleText(accountTitleText: String?) {
+        binding.accountItemView.setTitleText(accountTitleText)
+    }
+
+    private fun setAccountDescriptionText(accountDescriptionText: String?) {
+        binding.accountItemView.setDescriptionText(accountDescriptionText)
+    }
+
+    private fun setAccountEndIconDrawable() {
+        with(binding) {
+            val tintColor = ContextCompat.getColor(root.context, R.color.negative)
+            val endIconDrawable = AppCompatResources.getDrawable(root.context, R.drawable.ic_info)?.apply {
+                setTint(tintColor)
+            }
+            accountItemView.setEndIconDrawable(endIconDrawable)
+        }
+    }
+
+    private fun getOnLongClickListener(canCopyable: Boolean, accountAddress: String): View.OnLongClickListener? {
+        return if (canCopyable) {
+            View.OnLongClickListener { listener.onAccountLongPress(accountAddress); true }
+        } else {
+            null
         }
     }
 

@@ -48,6 +48,20 @@ class AssetName private constructor(
         }
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (other !is AssetName) return false
+        if (assetName != other.assetName) return false
+        if (assetNameResId != other.assetNameResId) return false
+        return true
+    }
+
+    @Suppress("MagicNumber")
+    override fun hashCode(): Int {
+        var result = assetName?.hashCode() ?: 0
+        result = 31 * result + assetNameResId
+        return result
+    }
+
     companion object {
 
         const val DEFAULT_ASSET_NAME_RES_ID = R.string.unnamed

@@ -20,9 +20,8 @@ import com.algorand.android.models.MotionLayoutProgressSavedState
 
 class ProgressSaverMotionLayout @JvmOverloads constructor(
     context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
-) : MotionLayout(context, attrs, defStyleAttr) {
+    attrs: AttributeSet? = null
+) : MotionLayout(context, attrs) {
 
     override fun onSaveInstanceState(): Parcelable {
         return MotionLayoutProgressSavedState(super.onSaveInstanceState(), targetPosition)

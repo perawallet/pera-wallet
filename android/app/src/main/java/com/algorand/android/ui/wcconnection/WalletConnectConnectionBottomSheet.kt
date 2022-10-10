@@ -16,7 +16,6 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
 import com.algorand.android.core.BaseBottomSheet
@@ -27,17 +26,18 @@ import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.models.WCSessionRequestResult
 import com.algorand.android.models.WCSessionRequestResult.ApproveRequest
 import com.algorand.android.ui.common.accountselector.AccountSelectionBottomSheet.Companion.ACCOUNT_SELECTION_KEY
+import com.algorand.android.utils.SingleButtonBottomSheet
+import com.algorand.android.utils.browser.openUrl
+import com.algorand.android.utils.extensions.collectOnLifecycle
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.setAccountIconDrawable
 import com.algorand.android.utils.extensions.setTextAndVisibility
 import com.algorand.android.utils.getXmlStyledString
 import com.algorand.android.utils.loadPeerMetaIcon
-import com.algorand.android.utils.openUrl
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class WalletConnectConnectionBottomSheet :
@@ -76,9 +76,10 @@ class WalletConnectConnectionBottomSheet :
     }
 
     private fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launchWhenResumed {
-            walletConnectConnectionViewModel.selectedAccountFlow.collect(selectedAccountCollector)
-        }
+        viewLifecycleOwner.collectOnLifecycle(
+            walletConnectConnectionViewModel.selectedAccountFlow,
+            selectedAccountCollector
+        )
     }
 
     override fun onResume() {
@@ -86,6 +87,9 @@ class WalletConnectConnectionBottomSheet :
         startSavedStateListener(R.id.walletConnectConnectionBottomSheet) {
             useSavedStateValue<AccountSelection>(ACCOUNT_SELECTION_KEY) { result ->
                 walletConnectConnectionViewModel.setSelectedAccount(result)
+            }
+            useSavedStateValue<Boolean>(SingleButtonBottomSheet.CLOSE_KEY) { isBrowserBottomSheetClosed ->
+                if (isBrowserBottomSheetClosed) navBack()
             }
         }
     }
@@ -119,8 +123,40 @@ class WalletConnectConnectionBottomSheet :
                     wcSessionRequest = args.sessionRequest
                 )
             )
-            navBack()
+            args.sessionRequest.fallbackBrowserGroupResponse?.let {
+                navigateToFallbackBrowserSelectionBottomSheet(it, args.sessionRequest.peerMeta.name)
+            } ?: showConnectedDappInfoBottomSheet()
         }
+    }
+
+    private fun navigateToFallbackBrowserSelectionBottomSheet(
+        fallbackBrowserGroupResponse: String,
+        peerMetaName: String
+    ) {
+        nav(
+            WalletConnectConnectionBottomSheetDirections
+                .actionWalletConnectConnectionBottomSheetToFallbackBrowserSelectionBottomSheet(
+                    browserGroup = fallbackBrowserGroupResponse,
+                    peerMetaName = peerMetaName
+                )
+        )
+    }
+
+    private fun showConnectedDappInfoBottomSheet() {
+        nav(
+            WalletConnectConnectionBottomSheetDirections
+                .actionWalletConnectConnectionBottomSheetToSingleButtonBottomSheetNavigation(
+                    titleAnnotatedString = AnnotatedString(
+                        stringResId = R.string.you_are_connected,
+                        replacementList = listOf("peer_name" to args.sessionRequest.peerMeta.name)
+                    ),
+                    descriptionAnnotatedString = AnnotatedString(
+                        stringResId = R.string.please_return_to,
+                        replacementList = listOf("peer_name" to args.sessionRequest.peerMeta.name)
+                    ),
+                    drawableResId = R.drawable.ic_check_72dp
+                )
+        )
     }
 
     private fun onAccountClick() {
@@ -149,11 +185,17 @@ class WalletConnectConnectionBottomSheet :
                 accountNameTextView.setTextAndVisibility(
                     accountDisplayName?.getDisplayTextOrAccountShortenedAddress()
                 )
-                accountBalanceTextView.setTextAndVisibility(
-                    accountDisplayName?.getAccountShortenedAddressOrAccountType(resources)
-                )
+                accountAssetCountTextView.setTextAndVisibility(setupAssetCount(accountAssetCount ?: 0))
                 selectAccountTextView.hide()
             }
+        }
+    }
+
+    private fun setupAssetCount(assetCount: Int): String {
+        return if (assetCount > 0) {
+            resources.getQuantityString(R.plurals.account_asset_count, assetCount, assetCount)
+        } else {
+            getString(R.string.account_asset_count_zero)
         }
     }
 

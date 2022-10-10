@@ -19,7 +19,7 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.paging.CombinedLoadStates
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.ConcatAdapter
 import com.algorand.android.R
@@ -35,14 +35,13 @@ import com.algorand.android.modules.transactionhistory.ui.PendingTransactionAdap
 import com.algorand.android.modules.transactionhistory.ui.model.BaseTransactionItem
 import com.algorand.android.ui.datepicker.DateFilterListBottomSheet
 import com.algorand.android.utils.CSV_FILE_MIME_TYPE
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
+import com.algorand.android.utils.extensions.collectOnLifecycle
 import com.algorand.android.utils.shareFile
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AccountHistoryFragment : BaseFragment(R.layout.fragment_account_history) {
@@ -97,6 +96,16 @@ class AccountHistoryFragment : BaseFragment(R.layout.fragment_account_history) {
         updateCsvStatusPreview(it)
     }
 
+    private val loadStateFlowCollector: suspend (CombinedLoadStates) -> Unit = { combinedLoadStates ->
+        updateUiWithTransactionLoadStatePreview(
+            accountHistoryViewModel.createTransactionLoadStatePreview(
+                combinedLoadStates,
+                concatAdapter.itemCount,
+                binding.screenStateView.isVisible
+            )
+        )
+    }
+
     private val sharingActivityResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             // Nothing to do
@@ -137,8 +146,8 @@ class AccountHistoryFragment : BaseFragment(R.layout.fragment_account_history) {
         with(binding) {
             accountHistoryRecyclerView.adapter = concatAdapter
             transactionHistoryToolbar.apply {
-                setOnFilterClickListener(::onFilterClick)
-                setOnExportClickListener(::onExportClick)
+                setPrimaryButtonClickListener(::onFilterClick)
+                setSecondaryButtonClickListener(::onExportClick)
             }
             screenStateView.setOnNeutralButtonClickListener { accountHistoryViewModel.refreshTransactionHistory() }
         }
@@ -146,33 +155,30 @@ class AccountHistoryFragment : BaseFragment(R.layout.fragment_account_history) {
 
     private fun initObserver() {
         with(accountHistoryViewModel) {
-            viewLifecycleOwner.lifecycleScope.launch {
-                getAccountHistoryFlow()?.collectLatest(transactionHistoryCollector)
-            }
-            viewLifecycleOwner.lifecycleScope.launch {
-                pendingTransactionsFlow.collectLatest(pendingTransactionCollector)
-            }
-            viewLifecycleOwner.lifecycleScope.launch {
-                dateFilterPreviewFlow.collectLatest(dateFilterPreviewCollector)
-            }
-            viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-                accountHistoryViewModel.csvStatusPreview.collect(csvStatusPreviewCollector)
-            }
+            viewLifecycleOwner.collectLatestOnLifecycle(
+                getAccountHistoryFlow(),
+                transactionHistoryCollector
+            )
+            viewLifecycleOwner.collectLatestOnLifecycle(
+                pendingTransactionsFlow,
+                pendingTransactionCollector
+            )
+            viewLifecycleOwner.collectLatestOnLifecycle(
+                dateFilterPreviewFlow,
+                dateFilterPreviewCollector
+            )
+            viewLifecycleOwner.collectOnLifecycle(
+                accountHistoryViewModel.csvStatusPreview,
+                csvStatusPreviewCollector
+            )
         }
     }
 
     private fun handleLoadState() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            accountHistoryAdapter.loadStateFlow.collectLatest { combinedLoadStates ->
-                updateUiWithTransactionLoadStatePreview(
-                    accountHistoryViewModel.createTransactionLoadStatePreview(
-                        combinedLoadStates,
-                        concatAdapter.itemCount,
-                        binding.screenStateView.isVisible
-                    )
-                )
-            }
-        }
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            accountHistoryAdapter.loadStateFlow,
+            loadStateFlowCollector
+        )
     }
 
     private fun updateUiWithTransactionLoadStatePreview(loadStatePreview: TransactionLoadStatePreview) {
@@ -215,7 +221,7 @@ class AccountHistoryFragment : BaseFragment(R.layout.fragment_account_history) {
         with(dateFilterPreview) {
             with(binding) {
                 transactionHistoryToolbar.apply {
-                    setFilterIcon(filterButtonIconResId)
+                    setPrimaryButtonIcon(icon = filterButtonIconResId, useIconsOwnTint = useFilterIconsOwnTint)
                     if (titleResId != null) setTitle(titleResId) else if (title != null) setTitle(title)
                 }
             }

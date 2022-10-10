@@ -35,6 +35,7 @@ import com.algorand.android.utils.LOCATION_PERMISSION_REQUEST_CODE
 import com.algorand.android.utils.Resource
 import com.algorand.android.utils.getXmlStyledString
 import com.algorand.android.utils.isBluetoothEnabled
+import com.algorand.android.utils.sendErrorLog
 import com.algorand.android.utils.showAlertDialog
 import com.algorand.android.utils.showSnackbar
 import com.algorand.android.utils.showWithStateCheck
@@ -156,6 +157,9 @@ abstract class TransactionBaseFragment(
                     bleWaitingTransactionData = transactionData
                     return
                 }
+            }
+            else -> {
+                sendErrorLog("Unhandled else case in TransactionBaseFragment.sendTransaction")
             }
         }
         transactionManager.initSigningTransactions(false, transactionData)

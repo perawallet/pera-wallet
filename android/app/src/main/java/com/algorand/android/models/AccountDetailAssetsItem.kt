@@ -15,7 +15,12 @@ package com.algorand.android.models
 
 import android.os.Parcelable
 import androidx.annotation.StringRes
+import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration
+import com.algorand.android.modules.sorting.assetsorting.ui.model.AssetSortableItem
+import com.algorand.android.modules.sorting.core.SortableItemPriority
 import com.algorand.android.utils.AssetName
+import com.algorand.android.utils.assetdrawable.BaseAssetDrawableProvider
+import java.math.BigDecimal
 import kotlinx.parcelize.Parcelize
 
 sealed class AccountDetailAssetsItem : RecyclerListItem, Parcelable {
@@ -99,14 +104,15 @@ sealed class AccountDetailAssetsItem : RecyclerListItem, Parcelable {
         }
     }
 
-    sealed class BaseAssetItem : AccountDetailAssetsItem() {
+    sealed class BaseAssetItem : AccountDetailAssetsItem(), AssetSortableItem {
         abstract val id: Long
         abstract val name: AssetName
         abstract val shortName: AssetName
-        abstract val isVerified: Boolean
-        abstract val isAlgo: Boolean
         abstract val isAmountInDisplayedCurrencyVisible: Boolean
+        abstract val verificationTierConfiguration: VerificationTierConfiguration
+        abstract val baseAssetDrawableProvider: BaseAssetDrawableProvider
 
+        // TODO: Move this under [OwnedAssetItem]
         override val itemType: ItemType
             get() = ItemType.ASSET
 
@@ -115,12 +121,19 @@ sealed class AccountDetailAssetsItem : RecyclerListItem, Parcelable {
             override val id: Long,
             override val name: AssetName,
             override val shortName: AssetName,
-            override val isAlgo: Boolean,
-            override val isVerified: Boolean,
             override val isAmountInDisplayedCurrencyVisible: Boolean,
+            override val verificationTierConfiguration: VerificationTierConfiguration,
+            override val baseAssetDrawableProvider: BaseAssetDrawableProvider,
             val formattedDisplayedCurrencyValue: String,
-            val formattedAmount: String
+            val formattedAmount: String,
+            val prismUrl: String?,
+            val amountInSelectedCurrency: BigDecimal?
         ) : BaseAssetItem() {
+
+            override val assetSortingNameField: String?
+                get() = name.getName()
+            override val assetSortingBalanceField: BigDecimal
+                get() = amountInSelectedCurrency ?: BigDecimal.ZERO
 
             override fun areItemsTheSame(other: RecyclerListItem): Boolean {
                 return other is OwnedAssetItem && other.id == id
@@ -143,13 +156,20 @@ sealed class AccountDetailAssetsItem : RecyclerListItem, Parcelable {
                 override val id: Long,
                 override val name: AssetName,
                 override val shortName: AssetName,
-                override val isVerified: Boolean,
-                override val isAlgo: Boolean,
-                @StringRes override val actionDescriptionResId: Int
+                @StringRes override val actionDescriptionResId: Int,
+                override val verificationTierConfiguration: VerificationTierConfiguration,
+                override val baseAssetDrawableProvider: BaseAssetDrawableProvider
             ) : BasePendingAssetItem() {
 
                 override val isAmountInDisplayedCurrencyVisible: Boolean
                     get() = false
+
+                override val assetSortingNameField: String?
+                    get() = name.getName()
+                override val assetSortingBalanceField: BigDecimal?
+                    get() = null
+                override val sortableItemPriority: SortableItemPriority
+                    get() = SortableItemPriority.PLACE_FIRST
 
                 override fun areItemsTheSame(other: RecyclerListItem): Boolean {
                     return other is PendingAdditionItem && other.id == id
@@ -165,13 +185,20 @@ sealed class AccountDetailAssetsItem : RecyclerListItem, Parcelable {
                 override val id: Long,
                 override val name: AssetName,
                 override val shortName: AssetName,
-                override val isVerified: Boolean,
-                override val isAlgo: Boolean,
-                @StringRes override val actionDescriptionResId: Int
+                @StringRes override val actionDescriptionResId: Int,
+                override val verificationTierConfiguration: VerificationTierConfiguration,
+                override val baseAssetDrawableProvider: BaseAssetDrawableProvider
             ) : BasePendingAssetItem() {
 
                 override val isAmountInDisplayedCurrencyVisible: Boolean
                     get() = false
+
+                override val assetSortingNameField: String?
+                    get() = name.getName()
+                override val assetSortingBalanceField: BigDecimal?
+                    get() = null
+                override val sortableItemPriority: SortableItemPriority
+                    get() = SortableItemPriority.PLACE_FIRST
 
                 override fun areItemsTheSame(other: RecyclerListItem): Boolean {
                     return other is PendingRemovalItem && other.id == id

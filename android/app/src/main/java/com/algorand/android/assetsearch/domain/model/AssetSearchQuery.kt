@@ -12,16 +12,13 @@
 
 package com.algorand.android.assetsearch.domain.model
 
-import com.algorand.android.models.AssetQueryType
-
 data class AssetSearchQuery(
     val queryText: String,
-    val queryType: AssetQueryType,
     val hasCollectibles: Boolean? = null
 ) {
     companion object {
         fun createDefaultQuery(): AssetSearchQuery {
-            return AssetSearchQuery("", AssetQueryType.ALL)
+            return AssetSearchQuery("")
         }
     }
 }

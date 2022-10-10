@@ -12,7 +12,14 @@
 
 package com.algorand.android.models
 
+import androidx.annotation.StringRes
+import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration
+import com.algorand.android.models.ui.AccountAssetItemButtonState
+import com.algorand.android.modules.sorting.assetsorting.ui.model.AssetSortableItem
+import com.algorand.android.modules.sorting.nftsorting.ui.model.CollectibleSortableItem
 import com.algorand.android.utils.AssetName
+import com.algorand.android.utils.assetdrawable.BaseAssetDrawableProvider
+import java.math.BigDecimal
 import java.math.BigInteger
 
 sealed class BaseRemoveAssetItem : RecyclerListItem {
@@ -22,64 +29,79 @@ sealed class BaseRemoveAssetItem : RecyclerListItem {
         REMOVE_COLLECTIBLE_IMAGE_ITEM,
         REMOVE_COLLECTIBLE_VIDEO_ITEM,
         REMOVE_COLLECTIBLE_MIXED_ITEM,
-        REMOVE_COLLECTIBLE_NOT_SUPPORTED_ITEM
+        REMOVE_COLLECTIBLE_NOT_SUPPORTED_ITEM,
+        SEARCH_VIEW_ITEM,
+        TITLE_VIEW_ITEM,
+        DESCRIPTION_VIEW_ITEM
     }
 
-    abstract val id: Long
-    abstract val name: String?
-    abstract val shortName: String?
-    abstract val avatarDisplayText: AssetName
-    abstract val isVerified: Boolean
-    abstract val isAlgo: Boolean
-    abstract val decimals: Int
-    abstract val creatorPublicKey: String?
-    abstract val amount: BigInteger
-    abstract val formattedAmount: String
-    abstract val formattedCompactAmount: String
-    abstract val formattedSelectedCurrencyValue: String
-    abstract val formattedSelectedCurrencyCompactValue: String
-    abstract val isAmountInSelectedCurrencyVisible: Boolean
     abstract val itemType: ItemType
 
-    override fun areItemsTheSame(other: RecyclerListItem): Boolean {
-        return other is BaseRemoveAssetItem && id == other.id
-    }
-
-    override fun areContentsTheSame(other: RecyclerListItem): Boolean {
-        return other is BaseRemoveAssetItem &&
-            shortName == other.shortName &&
-            name == other.name &&
-            amount == other.amount
-    }
-
-    data class RemoveAssetItem(
-        override val id: Long,
-        override val name: String?,
-        override val shortName: String?,
-        override val avatarDisplayText: AssetName,
-        override val isVerified: Boolean,
-        override val isAlgo: Boolean,
-        override val decimals: Int,
-        override val creatorPublicKey: String?,
-        override val amount: BigInteger,
-        override val formattedAmount: String,
-        override val formattedCompactAmount: String,
-        override val formattedSelectedCurrencyValue: String,
-        override val formattedSelectedCurrencyCompactValue: String,
-        override val isAmountInSelectedCurrencyVisible: Boolean
+    data class TitleViewItem(
+        @StringRes val titleTextRes: Int
     ) : BaseRemoveAssetItem() {
-        override val itemType = ItemType.REMOVE_ASSET_ITEM
+
+        override val itemType = ItemType.TITLE_VIEW_ITEM
+
+        override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+            return other is TitleViewItem && other.titleTextRes == titleTextRes
+        }
+
+        override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+            return other is TitleViewItem && this == other
+        }
     }
 
-    sealed class BaseRemoveCollectibleItem : BaseRemoveAssetItem() {
+    data class DescriptionViewItem(
+        @StringRes val descriptionTextRes: Int
+    ) : BaseRemoveAssetItem() {
 
-        data class RemoveCollectibleImageItem(
+        override val itemType = ItemType.DESCRIPTION_VIEW_ITEM
+
+        override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+            return other is DescriptionViewItem && other.descriptionTextRes == descriptionTextRes
+        }
+
+        override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+            return other is DescriptionViewItem && this == other
+        }
+    }
+
+    data class SearchViewItem(@StringRes val searchViewHintResId: Int) : BaseRemoveAssetItem() {
+
+        override val itemType: ItemType = ItemType.SEARCH_VIEW_ITEM
+
+        override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+            return other is SearchViewItem && other.searchViewHintResId == searchViewHintResId
+        }
+
+        override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+            return other is SearchViewItem && other == this
+        }
+    }
+
+    sealed class BaseRemovableItem : BaseRemoveAssetItem(), AssetSortableItem {
+
+        abstract val id: Long
+        abstract val name: AssetName
+        abstract val shortName: AssetName
+        abstract val decimals: Int
+        abstract val creatorPublicKey: String?
+        abstract val amount: BigInteger
+        abstract val formattedAmount: String
+        abstract val formattedCompactAmount: String
+        abstract val formattedSelectedCurrencyValue: String
+        abstract val formattedSelectedCurrencyCompactValue: String
+        abstract val isAmountInSelectedCurrencyVisible: Boolean
+        abstract val prismUrl: String?
+        abstract val baseAssetDrawableProvider: BaseAssetDrawableProvider
+        abstract val actionItemButtonState: AccountAssetItemButtonState
+        abstract val amountInPrimaryCurrency: BigDecimal?
+
+        data class RemoveAssetItem(
             override val id: Long,
-            override val name: String?,
-            override val shortName: String?,
-            override val avatarDisplayText: AssetName,
-            override val isVerified: Boolean,
-            override val isAlgo: Boolean,
+            override val name: AssetName,
+            override val shortName: AssetName,
             override val decimals: Int,
             override val creatorPublicKey: String?,
             override val amount: BigInteger,
@@ -88,68 +110,149 @@ sealed class BaseRemoveAssetItem : RecyclerListItem {
             override val formattedSelectedCurrencyValue: String,
             override val formattedSelectedCurrencyCompactValue: String,
             override val isAmountInSelectedCurrencyVisible: Boolean,
-            val prismUrl: String?,
-        ) : BaseRemoveCollectibleItem() {
-            override val itemType = ItemType.REMOVE_COLLECTIBLE_IMAGE_ITEM
+            override val prismUrl: String?,
+            override val baseAssetDrawableProvider: BaseAssetDrawableProvider,
+            override val actionItemButtonState: AccountAssetItemButtonState,
+            val verificationTierConfiguration: VerificationTierConfiguration,
+            override val amountInPrimaryCurrency: BigDecimal?
+        ) : BaseRemovableItem() {
+
+            override val itemType = ItemType.REMOVE_ASSET_ITEM
+
+            override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+                return other is RemoveAssetItem && id == other.id
+            }
+
+            override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+                return other is RemoveAssetItem && this == other
+            }
+
+            override val assetSortingNameField: String? = name.getName()
+            override val assetSortingBalanceField: BigDecimal? = amountInPrimaryCurrency
         }
 
-        data class RemoveCollectibleVideoItem(
-            override val id: Long,
-            override val name: String?,
-            override val shortName: String?,
-            override val avatarDisplayText: AssetName,
-            override val isVerified: Boolean,
-            override val isAlgo: Boolean,
-            override val decimals: Int,
-            override val creatorPublicKey: String?,
-            override val amount: BigInteger,
-            override val formattedAmount: String,
-            override val formattedCompactAmount: String,
-            override val formattedSelectedCurrencyValue: String,
-            override val formattedSelectedCurrencyCompactValue: String,
-            override val isAmountInSelectedCurrencyVisible: Boolean,
-            val prismUrl: String?,
-        ) : BaseRemoveCollectibleItem() {
-            override val itemType = ItemType.REMOVE_COLLECTIBLE_VIDEO_ITEM
-        }
+        sealed class BaseRemoveCollectibleItem : BaseRemovableItem(), CollectibleSortableItem {
 
-        data class RemoveCollectibleMixedItem(
-            override val id: Long,
-            override val name: String?,
-            override val shortName: String?,
-            override val avatarDisplayText: AssetName,
-            override val isVerified: Boolean,
-            override val isAlgo: Boolean,
-            override val decimals: Int,
-            override val creatorPublicKey: String?,
-            override val amount: BigInteger,
-            override val formattedAmount: String,
-            override val formattedCompactAmount: String,
-            override val formattedSelectedCurrencyValue: String,
-            override val formattedSelectedCurrencyCompactValue: String,
-            override val isAmountInSelectedCurrencyVisible: Boolean,
-            val prismUrl: String?,
-        ) : BaseRemoveCollectibleItem() {
-            override val itemType = ItemType.REMOVE_COLLECTIBLE_MIXED_ITEM
-        }
+            abstract val optedInAtRound: Long?
 
-        data class RemoveNotSupportedCollectibleItem(
-            override val id: Long,
-            override val name: String?,
-            override val shortName: String?,
-            override val avatarDisplayText: AssetName,
-            override val isVerified: Boolean,
-            override val isAlgo: Boolean,
-            override val decimals: Int,
-            override val creatorPublicKey: String?,
-            override val amount: BigInteger,
-            override val formattedAmount: String,
-            override val formattedCompactAmount: String,
-            override val formattedSelectedCurrencyValue: String,
-            override val formattedSelectedCurrencyCompactValue: String,
-            override val isAmountInSelectedCurrencyVisible: Boolean
-        ) : BaseRemoveCollectibleItem() {
-            override val itemType = ItemType.REMOVE_COLLECTIBLE_NOT_SUPPORTED_ITEM
+            override val collectibleSortingOptedInAtRoundField: Long?
+                get() = optedInAtRound
+
+            override val collectibleSortingNameField: String?
+                get() = name.getName()
+
+            override val assetSortingNameField: String?
+                get() = name.getName()
+
+            override val assetSortingBalanceField: BigDecimal?
+                get() = amountInPrimaryCurrency
+
+            override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+                return other is BaseRemoveCollectibleItem && id == other.id
+            }
+
+            override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+                return other is BaseRemoveCollectibleItem &&
+                    shortName == other.shortName &&
+                    name == other.name &&
+                    amount == other.amount &&
+                    prismUrl == other.prismUrl
+            }
+
+            data class RemoveCollectibleImageItem(
+                override val id: Long,
+                override val name: AssetName,
+                override val shortName: AssetName,
+                override val decimals: Int,
+                override val creatorPublicKey: String?,
+                override val amount: BigInteger,
+                override val formattedAmount: String,
+                override val formattedCompactAmount: String,
+                override val formattedSelectedCurrencyValue: String,
+                override val formattedSelectedCurrencyCompactValue: String,
+                override val isAmountInSelectedCurrencyVisible: Boolean,
+                override val prismUrl: String?,
+                override val baseAssetDrawableProvider: BaseAssetDrawableProvider,
+                override val actionItemButtonState: AccountAssetItemButtonState,
+                override val optedInAtRound: Long?,
+                override val amountInPrimaryCurrency: BigDecimal?,
+            ) : BaseRemoveCollectibleItem() {
+                override val itemType = ItemType.REMOVE_COLLECTIBLE_IMAGE_ITEM
+            }
+
+            data class RemoveCollectibleVideoItem(
+                override val id: Long,
+                override val name: AssetName,
+                override val shortName: AssetName,
+                override val decimals: Int,
+                override val creatorPublicKey: String?,
+                override val amount: BigInteger,
+                override val formattedAmount: String,
+                override val formattedCompactAmount: String,
+                override val formattedSelectedCurrencyValue: String,
+                override val formattedSelectedCurrencyCompactValue: String,
+                override val isAmountInSelectedCurrencyVisible: Boolean,
+                override val prismUrl: String?,
+                override val baseAssetDrawableProvider: BaseAssetDrawableProvider,
+                override val actionItemButtonState: AccountAssetItemButtonState,
+                override val optedInAtRound: Long?,
+                override val amountInPrimaryCurrency: BigDecimal?,
+            ) : BaseRemoveCollectibleItem() {
+                override val itemType = ItemType.REMOVE_COLLECTIBLE_VIDEO_ITEM
+            }
+
+            data class RemoveCollectibleMixedItem(
+                override val id: Long,
+                override val name: AssetName,
+                override val shortName: AssetName,
+                override val decimals: Int,
+                override val creatorPublicKey: String?,
+                override val amount: BigInteger,
+                override val formattedAmount: String,
+                override val formattedCompactAmount: String,
+                override val formattedSelectedCurrencyValue: String,
+                override val formattedSelectedCurrencyCompactValue: String,
+                override val isAmountInSelectedCurrencyVisible: Boolean,
+                override val prismUrl: String?,
+                override val baseAssetDrawableProvider: BaseAssetDrawableProvider,
+                override val actionItemButtonState: AccountAssetItemButtonState,
+                override val optedInAtRound: Long?,
+                override val amountInPrimaryCurrency: BigDecimal?,
+            ) : BaseRemoveCollectibleItem() {
+                override val itemType = ItemType.REMOVE_COLLECTIBLE_MIXED_ITEM
+            }
+
+            data class RemoveNotSupportedCollectibleItem(
+                override val id: Long,
+                override val name: AssetName,
+                override val shortName: AssetName,
+                override val decimals: Int,
+                override val creatorPublicKey: String?,
+                override val amount: BigInteger,
+                override val formattedAmount: String,
+                override val formattedCompactAmount: String,
+                override val formattedSelectedCurrencyValue: String,
+                override val formattedSelectedCurrencyCompactValue: String,
+                override val isAmountInSelectedCurrencyVisible: Boolean,
+                override val baseAssetDrawableProvider: BaseAssetDrawableProvider,
+                override val actionItemButtonState: AccountAssetItemButtonState,
+                override val optedInAtRound: Long?,
+                override val amountInPrimaryCurrency: BigDecimal?
+            ) : BaseRemoveCollectibleItem() {
+
+                override val prismUrl: String?
+                    get() = null
+
+                override val itemType = ItemType.REMOVE_COLLECTIBLE_NOT_SUPPORTED_ITEM
+            }
         }
+    }
+
+    companion object {
+        val excludedItemFromDivider = listOf(
+            ItemType.SEARCH_VIEW_ITEM.ordinal,
+            ItemType.TITLE_VIEW_ITEM.ordinal,
+            ItemType.DESCRIPTION_VIEW_ITEM.ordinal
+        )
     }
 }

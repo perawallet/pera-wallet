@@ -25,7 +25,7 @@ class BasePaymentTransactionSummaryUiBuilder @Inject constructor() :
     override fun buildTransactionSummary(txn: BasePaymentTransaction): WalletConnectTransactionSummary {
         return with(txn) {
             WalletConnectTransactionSummary(
-                accountName = account?.name,
+                accountName = fromAccount?.name,
                 accountIconResource = createAccountIconResource(),
                 accountBalance = assetInformation?.amount,
                 assetShortName = ALGO_SHORT_NAME,

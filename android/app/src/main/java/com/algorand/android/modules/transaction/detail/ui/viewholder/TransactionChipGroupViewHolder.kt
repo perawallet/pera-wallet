@@ -25,8 +25,11 @@ class TransactionChipGroupViewHolder(
     private val listener: WalletConnectExtrasChipGroupView.Listener
 ) : BaseViewHolder<TransactionDetailItem>(binding.root) {
 
+    private val transactionIdsOfCreatedViews = mutableSetOf<String>()
+
     override fun bind(item: TransactionDetailItem) {
         if (item !is TransactionDetailItem.ChipGroupItem) return
+        if (transactionIdsOfCreatedViews.contains(item.transactionId)) return
         binding.chipGroupView.apply {
             initOpenInExplorerChips(
                 algoExplorerUrl = item.algoExplorerUrl,
@@ -35,6 +38,7 @@ class TransactionChipGroupViewHolder(
             )
             setChipGroupListener(listener)
         }
+        transactionIdsOfCreatedViews.add(item.transactionId)
     }
 
     companion object {

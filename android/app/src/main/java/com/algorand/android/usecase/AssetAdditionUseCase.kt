@@ -18,7 +18,7 @@ import com.algorand.android.mapper.AssetAdditionLoadStatePreviewMapper
 import com.algorand.android.mapper.AssetHoldingsMapper
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.ui.AssetAdditionLoadStatePreview
-import com.algorand.android.ui.addasset.AssetAdditionType
+import com.algorand.android.modules.assets.addition.ui.model.AssetAdditionType
 import com.algorand.android.utils.CacheResult
 import com.algorand.android.utils.Event
 import javax.inject.Inject

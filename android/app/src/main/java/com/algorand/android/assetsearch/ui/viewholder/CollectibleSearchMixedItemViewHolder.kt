@@ -13,34 +13,19 @@
 package com.algorand.android.assetsearch.ui.viewholder
 
 import android.view.ViewGroup
-import androidx.core.view.doOnLayout
-import com.algorand.android.assetsearch.ui.model.BaseAssetSearchListItem
-import com.algorand.android.assetsearch.ui.model.BaseAssetSearchListItem.BaseCollectibleSearchListItem
-import com.algorand.android.customviews.collectibleimageview.CollectibleImageView
 import com.algorand.android.databinding.ItemSearchCollectibleBinding
-import com.algorand.android.utils.loadImage
 
 class CollectibleSearchMixedItemViewHolder(
-    binding: ItemSearchCollectibleBinding
-) : BaseCollectibleSearchItemViewHolder(binding) {
-
-    override fun bindImage(collectibleImageView: CollectibleImageView, item: BaseAssetSearchListItem) {
-        super.bindImage(collectibleImageView, item)
-        if (item !is BaseCollectibleSearchListItem.MixedCollectibleSearchItem) return
-        with(collectibleImageView) {
-            doOnLayout {
-                context.loadImage(
-                    createPrismUrl(item.prismUrl.orEmpty(), it.measuredWidth),
-                    onResourceReady = { showImage(it) },
-                    onLoadFailed = { showText(item.avatarDisplayText.getAsAvatarNameOrDefault(resources)) }
-                )
-            }
-        }
-    }
+    binding: ItemSearchCollectibleBinding,
+    listener: CollectibleSearchItemListener
+) : BaseCollectibleSearchItemViewHolder(binding, listener) {
 
     companion object : CollectibleSearchItemViewHolderCreator {
-        override fun create(parent: ViewGroup): CollectibleSearchMixedItemViewHolder {
-            return CollectibleSearchMixedItemViewHolder(createItemSearchCollectibleBinding(parent))
+        override fun create(
+            parent: ViewGroup,
+            listener: CollectibleSearchItemListener
+        ): CollectibleSearchMixedItemViewHolder {
+            return CollectibleSearchMixedItemViewHolder(createItemSearchCollectibleBinding(parent), listener)
         }
     }
 }

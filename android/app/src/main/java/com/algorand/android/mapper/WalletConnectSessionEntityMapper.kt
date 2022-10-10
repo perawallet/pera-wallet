@@ -16,10 +16,9 @@ import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.models.WalletConnectSessionEntity
 import javax.inject.Inject
 
-class WalletConnectSessionEntityMapper @Inject constructor() :
-    EntityMapper<WalletConnectSessionEntity, WalletConnectSession> {
+class WalletConnectSessionEntityMapper @Inject constructor() {
 
-    override fun mapFromEntity(entity: WalletConnectSessionEntity): WalletConnectSession {
+    fun mapFromEntity(entity: WalletConnectSessionEntity, accountName: String?): WalletConnectSession {
         return with(entity) {
             WalletConnectSession(
                 id = id,
@@ -27,19 +26,22 @@ class WalletConnectSessionEntityMapper @Inject constructor() :
                 sessionMeta = wcSession,
                 dateTimeStamp = dateTimeStamp,
                 isConnected = isConnected,
-                connectedAccountPublicKey = connectedAccountPublicKey
+                connectedAccountPublicKey = connectedAccountPublicKey,
+                accountName = accountName,
+                fallbackBrowserGroupResponse = fallbackBrowserGroupResponse
             )
         }
     }
 
-    override fun mapToEntity(model: WalletConnectSession): WalletConnectSessionEntity {
+    fun mapToEntity(model: WalletConnectSession): WalletConnectSessionEntity {
         return with(model) {
             WalletConnectSessionEntity(
                 id = id,
                 peerMeta = peerMeta,
                 wcSession = sessionMeta,
                 dateTimeStamp = dateTimeStamp,
-                connectedAccountPublicKey = connectedAccountPublicKey
+                connectedAccountPublicKey = connectedAccountPublicKey,
+                fallbackBrowserGroupResponse = fallbackBrowserGroupResponse
             )
         }
     }

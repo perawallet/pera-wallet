@@ -16,19 +16,27 @@ package com.algorand.android.ui.ledgersearch.ledgerinformation
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.algorand.android.R
 import com.algorand.android.databinding.ItemLedgerInformationAccountBinding
 import com.algorand.android.models.LedgerInformationListItem
-import com.algorand.android.utils.extensions.setTextAndVisibility
+import com.algorand.android.utils.AccountIconDrawable
 
 class AccountItemViewHolder(
     private val binding: ItemLedgerInformationAccountBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(accountItem: LedgerInformationListItem.AccountItem) {
-        with(binding) {
-            with(accountItem) {
-                accountView.setAccount(name, assetCount, accountIconResource)
-                currencyBalanceTextView.setTextAndVisibility(portfolioValue)
+        with(accountItem) {
+            with(binding.accountItemView) {
+                val accountIconDrawable = AccountIconDrawable.create(
+                    context = context,
+                    accountIconResource = accountIconResource,
+                    size = resources.getDimensionPixelSize(R.dimen.account_icon_size_large)
+                )
+                setStartIconDrawable(accountIconDrawable)
+                setPrimaryValueText(portfolioValue)
+                setTitleText(accountDisplayName.getDisplayTextOrAccountShortenedAddress())
+                setDescriptionText(accountDisplayName.getAccountShortenedAddressOrAccountType(resources))
             }
         }
     }

@@ -20,12 +20,11 @@ data class AccountPreview(
     val isFullScreenAnimatedLoadingVisible: Boolean,
     val isBlockingLoadingVisible: Boolean,
     val accountListItems: List<BaseAccountListItem> = emptyList(),
-    val portfolioValues: BasePortfolioValue.PortfolioValues? = null,
-    val portfolioValuesError: BasePortfolioValue.PortfolioValuesError? = null,
+    val portfolioValueItem: BasePortfolioValueItem? = null,
     val bottomGlobalError: BottomGlobalError? = null,
     val isTestnetBadgeVisible: Boolean,
     val shouldShowDialog: Boolean,
-    val isMotionLayoutTransitionEnabled: Boolean,
     @ColorRes val portfolioValuesBackgroundRes: Int,
-    val isPortfolioValueGroupVisible: Boolean
+    val isSuccessStateVisible: Boolean,
+    val hasNewNotification: Boolean
 )

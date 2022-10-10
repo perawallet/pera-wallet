@@ -20,6 +20,7 @@ import com.algorand.android.repository.TransactionsRepository
 import com.algorand.android.utils.DataResource
 import com.algorand.android.utils.MAINNET_NETWORK_SLUG
 import com.algorand.android.utils.analytics.logTransactionEvent
+import com.algorand.android.utils.exception.AccountAlreadyOptedIntoAssetException
 import com.google.firebase.analytics.FirebaseAnalytics
 import javax.inject.Inject
 import kotlinx.coroutines.flow.flow
@@ -27,7 +28,10 @@ import kotlinx.coroutines.flow.flow
 class SendSignedTransactionUseCase @Inject constructor(
     private val transactionsRepository: TransactionsRepository,
     private val algodInterceptor: AlgodInterceptor,
-    private val firebaseAnalytics: FirebaseAnalytics
+    private val firebaseAnalytics: FirebaseAnalytics,
+    private val accountDetailUseCase: AccountDetailUseCase,
+    private val assetAdditionUseCase: AssetAdditionUseCase,
+    private val accountAssetRemovalUseCase: AccountAssetRemovalUseCase
 ) {
 
     suspend fun sendSignedTransaction(
@@ -35,20 +39,28 @@ class SendSignedTransactionUseCase @Inject constructor(
         shouldLogTransaction: Boolean = true
     ) = flow<DataResource<String>> {
         emit(DataResource.Loading())
-        transactionsRepository.sendSignedTransaction(signedTransactionDetail.signedTransactionData).use(
-            onSuccess = { sendTransactionResponse ->
-                sendTransactionResponse.taxId?.let { transactionId ->
-                    transactionsRepository.postTrackTransaction(TrackTransactionRequest(transactionId))
-                    if (shouldLogTransaction && signedTransactionDetail is SignedTransactionDetail.Send) {
-                        logTransactionEvent(signedTransactionDetail, transactionId)
+        if (
+            signedTransactionDetail is SignedTransactionDetail.AssetOperation.AssetAddition &&
+            isAccountAlreadyOptedIntoAsset(signedTransactionDetail)
+        ) {
+            emit(DataResource.Error.Local(AccountAlreadyOptedIntoAssetException()))
+        } else {
+            transactionsRepository.sendSignedTransaction(signedTransactionDetail.signedTransactionData).use(
+                onSuccess = { sendTransactionResponse ->
+                    sendTransactionResponse.taxId?.let { transactionId ->
+                        transactionsRepository.postTrackTransaction(TrackTransactionRequest(transactionId))
+                        if (shouldLogTransaction && signedTransactionDetail is SignedTransactionDetail.Send) {
+                            logTransactionEvent(signedTransactionDetail, transactionId)
+                        }
                     }
+                    cacheAssetIfAssetOperationTransaction(signedTransactionDetail)
+                    emit(DataResource.Success(sendTransactionResponse.taxId.orEmpty()))
+                },
+                onFailed = { exception, code ->
+                    emit(DataResource.Error.Api(exception, code))
                 }
-                emit(DataResource.Success(sendTransactionResponse.taxId.orEmpty()))
-            },
-            onFailed = { exception, code ->
-                emit(DataResource.Error.Api(exception, code))
-            }
-        )
+            )
+        }
     }
 
     private fun logTransactionEvent(signedTransactionDetail: SignedTransactionDetail.Send, taxId: String?) {
@@ -62,6 +74,33 @@ class SendSignedTransactionUseCase @Inject constructor(
                     transactionId = taxId
                 )
             }
+        }
+    }
+
+    private fun isAccountAlreadyOptedIntoAsset(
+        transaction: SignedTransactionDetail.AssetOperation.AssetAddition
+    ): Boolean {
+        return accountDetailUseCase.isAssetOwnedByAccount(
+            publicKey = transaction.accountCacheData.account.address,
+            assetId = transaction.assetInformation.assetId
+        )
+    }
+
+    private suspend fun cacheAssetIfAssetOperationTransaction(signedTransactionDetail: SignedTransactionDetail) {
+        when (signedTransactionDetail) {
+            is SignedTransactionDetail.AssetOperation.AssetAddition -> {
+                assetAdditionUseCase.addAssetAdditionToAccountCache(
+                    publicKey = signedTransactionDetail.accountCacheData.account.address,
+                    assetInformation = signedTransactionDetail.assetInformation
+                )
+            }
+            is SignedTransactionDetail.AssetOperation.AssetRemoval -> {
+                accountAssetRemovalUseCase.addAssetDeletionToAccountCache(
+                    publicKey = signedTransactionDetail.accountCacheData.account.address,
+                    assetId = signedTransactionDetail.assetInformation.assetId
+                )
+            }
+            else -> Unit
         }
     }
 }

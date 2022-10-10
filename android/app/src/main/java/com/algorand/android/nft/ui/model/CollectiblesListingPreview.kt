@@ -17,10 +17,9 @@ data class CollectiblesListingPreview(
     val isEmptyStateVisible: Boolean,
     val isReceiveButtonVisible: Boolean,
     val isErrorVisible: Boolean,
-    val isFilterActive: Boolean,
     val isClearFilterButtonVisible: Boolean,
-    val displayedCollectibleCount: Int,
     val filteredCollectibleCount: Int,
     val baseCollectibleListItems: List<BaseCollectibleListItem>,
-    val isAccountFabVisible: Boolean
+    val isAccountFabVisible: Boolean,
+    val isAddCollectibleFloatingActionButtonVisible: Boolean
 )

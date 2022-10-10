@@ -12,16 +12,20 @@
 
 package com.algorand.android.ledger
 
+import android.annotation.SuppressLint
 import android.bluetooth.BluetoothManager
 import android.bluetooth.le.ScanFilter
 import android.bluetooth.le.ScanSettings
+import android.content.Context
 import android.os.Handler
 import android.os.ParcelUuid
 import com.algorand.android.R
 import com.algorand.android.ledger.LedgerBleConnectionManager.Companion.SERVICE_UUID
-import javax.inject.Inject
+import com.algorand.android.utils.areBluetoothPermissionsGranted
+import com.algorand.android.utils.sendErrorLog
 
-class LedgerBleSearchManager @Inject constructor(
+class LedgerBleSearchManager(
+    private val context: Context,
     private val bluetoothManager: BluetoothManager?,
     private val ledgerBleConnectionManager: LedgerBleConnectionManager
 ) {
@@ -30,6 +34,7 @@ class LedgerBleSearchManager @Inject constructor(
     private var scanCallback: CustomScanCallback? = null
     private var connectionTimeoutHandler: Handler? = null
 
+    @SuppressLint("MissingPermission")
     fun scan(newScanCallback: CustomScanCallback, filteredAddress: String? = null) {
         if (filteredAddress != null && isLedgerConnected(filteredAddress)) {
             // Don't need to scan any ledger devices because it has already connected.
@@ -49,12 +54,16 @@ class LedgerBleSearchManager @Inject constructor(
         )
 
         val scanSettings = ScanSettings.Builder().build()
-        bluetoothManager?.adapter?.bluetoothLeScanner?.startScan(scanFilters, scanSettings, scanCallback)
 
-        if (filteredAddress != null) {
-            startTimeout()
+        if (context.areBluetoothPermissionsGranted()) {
+            bluetoothManager?.adapter?.bluetoothLeScanner?.startScan(scanFilters, scanSettings, scanCallback)
+            if (filteredAddress != null) {
+                startTimeout()
+            } else {
+                provideConnectedLedger()
+            }
         } else {
-            provideConnectedLedger()
+            return
         }
     }
 
@@ -74,19 +83,25 @@ class LedgerBleSearchManager @Inject constructor(
     }
 
     private fun isLedgerConnected(deviceAddress: String): Boolean {
-        val connectedDevice = ledgerBleConnectionManager.bluetoothDevice
-        if (connectedDevice != null && connectedDevice.address == deviceAddress) {
-            scanCallback?.onLedgerScanned(connectedDevice)
-            return true
+        if (ledgerBleConnectionManager.isDeviceConnected(deviceAddress)) {
+            ledgerBleConnectionManager.bluetoothDevice?.let {
+                scanCallback?.onLedgerScanned(it)
+                return true
+            } ?: return false
         }
-
         return false
     }
 
+    @SuppressLint("MissingPermission")
     fun stop() {
         connectionTimeoutHandler?.removeCallbacksAndMessages(null)
         scanCallback?.run {
-            bluetoothManager?.adapter?.bluetoothLeScanner?.stopScan(this)
+            if (context.areBluetoothPermissionsGranted()) {
+                bluetoothManager?.adapter?.bluetoothLeScanner?.stopScan(this)
+            } else {
+                sendErrorLog("Bluetooth permission revoked before scanning could stop.")
+                return
+            }
         }
         isScanning = false
     }

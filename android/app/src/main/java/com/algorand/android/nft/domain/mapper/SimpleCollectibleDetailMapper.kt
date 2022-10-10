@@ -12,93 +12,45 @@
 
 package com.algorand.android.nft.domain.mapper
 
-import com.algorand.android.assetsearch.domain.model.AssetDetailDTO
+import com.algorand.android.assetsearch.data.mapper.VerificationTierDTODecider
+import com.algorand.android.assetsearch.domain.mapper.VerificationTierDecider
 import com.algorand.android.models.AssetDetailResponse
 import com.algorand.android.models.SimpleCollectibleDetail
-import com.algorand.android.nft.domain.model.BaseSimpleCollectible
 import javax.inject.Inject
 
 class SimpleCollectibleDetailMapper @Inject constructor(
-    private val simpleCollectibleMapper: SimpleCollectibleMapper
+    private val simpleCollectibleMapper: SimpleCollectibleMapper,
+    private val verificationTierDecider: VerificationTierDecider,
+    private val verificationTierDTODecider: VerificationTierDTODecider
 ) {
 
     fun mapToCollectibleDetail(assetDetailResponse: AssetDetailResponse): SimpleCollectibleDetail {
+        // TODO Remove this after updating AssetFetchAndCacheUseCase TODOs
+        val verificationTier = with(assetDetailResponse) {
+            val verificationTierDto = verificationTierDTODecider.decideVerificationTierDTO(verificationTier)
+            verificationTierDecider.decideVerificationTier(verificationTierDto)
+        }
         return SimpleCollectibleDetail(
             assetId = assetDetailResponse.assetId,
             fullName = assetDetailResponse.fullName,
             shortName = assetDetailResponse.shortName,
-            isVerified = assetDetailResponse.isVerified,
             fractionDecimals = assetDetailResponse.fractionDecimals,
             usdValue = assetDetailResponse.usdValue,
             assetCreator = assetDetailResponse.assetCreator,
-            collectible = simpleCollectibleMapper.mapToSimpleCollectible(assetDetailResponse.collectible)!! // TODO
-        )
-    }
-
-    fun mapToImageSimpleCollectibleDetail(
-        assetDetailDTO: AssetDetailDTO
-    ): BaseSimpleCollectible.ImageSimpleCollectibleDetail {
-        return BaseSimpleCollectible.ImageSimpleCollectibleDetail(
-            assetId = assetDetailDTO.assetId,
-            fullName = assetDetailDTO.fullName,
-            shortName = assetDetailDTO.shortName,
-            isVerified = assetDetailDTO.isVerified,
-            fractionDecimals = assetDetailDTO.fractionDecimals,
-            usdValue = assetDetailDTO.usdValue,
-            assetCreator = assetDetailDTO.assetCreator,
-            title = assetDetailDTO.collectible?.title,
-            collectionName = assetDetailDTO.collectible?.collectionName,
-            prismUrl = assetDetailDTO.collectible?.primaryImageUrl
-        )
-    }
-
-    fun mapToVideoSimpleCollectibleDetail(
-        assetDetailDTO: AssetDetailDTO
-    ): BaseSimpleCollectible.VideoSimpleCollectibleDetail {
-        return BaseSimpleCollectible.VideoSimpleCollectibleDetail(
-            assetId = assetDetailDTO.assetId,
-            fullName = assetDetailDTO.fullName,
-            shortName = assetDetailDTO.shortName,
-            isVerified = assetDetailDTO.isVerified,
-            fractionDecimals = assetDetailDTO.fractionDecimals,
-            usdValue = assetDetailDTO.usdValue,
-            assetCreator = assetDetailDTO.assetCreator,
-            title = assetDetailDTO.collectible?.title,
-            collectionName = assetDetailDTO.collectible?.collectionName,
-            thumbnailPrismUrl = assetDetailDTO.collectible?.primaryImageUrl
-        )
-    }
-
-    fun mapToMixedSimpleCollectibleDetail(
-        assetDetailDTO: AssetDetailDTO
-    ): BaseSimpleCollectible.MixedSimpleCollectibleDetail {
-        return BaseSimpleCollectible.MixedSimpleCollectibleDetail(
-            assetId = assetDetailDTO.assetId,
-            fullName = assetDetailDTO.fullName,
-            shortName = assetDetailDTO.shortName,
-            isVerified = assetDetailDTO.isVerified,
-            fractionDecimals = assetDetailDTO.fractionDecimals,
-            usdValue = assetDetailDTO.usdValue,
-            assetCreator = assetDetailDTO.assetCreator,
-            title = assetDetailDTO.collectible?.title,
-            collectionName = assetDetailDTO.collectible?.collectionName,
-            thumbnailPrismUrl = assetDetailDTO.collectible?.primaryImageUrl
-        )
-    }
-
-    fun mapToNotSupportedSimpleCollectibleDetail(
-        assetDetailDTO: AssetDetailDTO
-    ): BaseSimpleCollectible.NotSupportedSimpleCollectibleDetail {
-        return BaseSimpleCollectible.NotSupportedSimpleCollectibleDetail(
-            assetId = assetDetailDTO.assetId,
-            fullName = assetDetailDTO.fullName,
-            shortName = assetDetailDTO.shortName,
-            isVerified = assetDetailDTO.isVerified,
-            fractionDecimals = assetDetailDTO.fractionDecimals,
-            usdValue = assetDetailDTO.usdValue,
-            assetCreator = assetDetailDTO.assetCreator,
-            title = assetDetailDTO.collectible?.title,
-            collectionName = assetDetailDTO.collectible?.collectionName
+            collectible = simpleCollectibleMapper.mapToSimpleCollectible(assetDetailResponse.collectible),
+            verificationTier = verificationTier,
+            logoUri = assetDetailResponse.logoUri,
+            logoSvgUri = assetDetailResponse.logoSvgUri,
+            explorerUrl = assetDetailResponse.explorerUrl,
+            projectUrl = assetDetailResponse.projectUrl,
+            projectName = assetDetailResponse.projectName,
+            discordUrl = assetDetailResponse.discordUrl,
+            assetDescription = assetDetailResponse.description,
+            telegramUrl = assetDetailResponse.telegramUrl,
+            twitterUsername = assetDetailResponse.twitterUsername,
+            totalSupply = assetDetailResponse.totalSupply,
+            url = assetDetailResponse.url,
+            maxSupply = assetDetailResponse.maxSupply
         )
     }
 }

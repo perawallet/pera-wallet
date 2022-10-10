@@ -14,53 +14,62 @@ package com.algorand.android.ui.send.assetselection.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
-import androidx.recyclerview.widget.RecyclerView
-import com.algorand.android.customviews.collectibleimageview.CollectibleImageView
+import androidx.core.view.doOnLayout
 import com.algorand.android.databinding.ItemSelectCollectibleBinding
 import com.algorand.android.models.BaseSelectAssetItem
-import com.algorand.android.utils.PrismUrlBuilder
+import com.algorand.android.models.BaseViewHolder
 
 abstract class BaseSelectCollectibleItemViewHolder(
-    val binding: ItemSelectCollectibleBinding
-) : RecyclerView.ViewHolder(binding.root) {
+    private val binding: ItemSelectCollectibleBinding,
+    private val listener: SelectCollectibleItemListener
+) : BaseViewHolder<BaseSelectAssetItem>(binding.root) {
 
-    protected open fun bindImage(
-        collectibleImageView: CollectibleImageView,
-        item: BaseSelectAssetItem.BaseSelectCollectibleItem
-    ) {
-        with(collectibleImageView) {
-            showText(item.avatarDisplayText.getAsAvatarNameOrDefault(resources))
-        }
-    }
-
-    fun bind(item: BaseSelectAssetItem.BaseSelectCollectibleItem) {
-        with(item) {
-            with(binding) {
-                mainTextView.text = name
-                subTextView.text = shortName
-                verifiedImageView.isVisible = isVerified
-                assetBalanceTextView.text = formattedCompactAmount
-                assetBalanceInCurrencyTextView.isVisible = isAmountInSelectedCurrencyVisible
-                assetBalanceInCurrencyTextView.text = formattedSelectedCurrencyCompactValue
-                bindImage(collectibleImageView, item)
+    protected open fun bindImage(item: BaseSelectAssetItem.BaseSelectCollectibleItem) {
+        binding.collectibleItemView.apply {
+            setStartIconDrawable(drawable = null, forceShow = true)
+            getStartIconImageView().doOnLayout {
+                item.baseAssetDrawableProvider.provideAssetDrawable(
+                    context = context,
+                    assetName = item.avatarDisplayText,
+                    logoUri = item.prismUrl,
+                    width = it.measuredWidth,
+                    onResourceReady = ::setStartIconDrawable
+                )
             }
         }
     }
 
-    protected fun createPrismUrl(url: String, width: Int): String {
-        return PrismUrlBuilder.create(url)
-            .addWidth(width)
-            .addQuality(PrismUrlBuilder.DEFAULT_IMAGE_QUALITY)
-            .build()
+    override fun bind(item: BaseSelectAssetItem) {
+        if (item !is BaseSelectAssetItem.BaseSelectCollectibleItem) return
+        with(item) {
+            with(binding.collectibleItemView) {
+                setTitleText(name)
+                setDescriptionText(shortName)
+                setPrimaryValueText(formattedCompactAmount)
+                setSecondaryValueText(
+                    if (isAmountInSelectedCurrencyVisible) formattedSelectedCurrencyCompactValue else null
+                )
+                bindImage(item)
+                setOnClickListener { listener.onCollectibleItemClick(item.id) }
+            }
+        }
+    }
+
+    fun interface SelectCollectibleItemListener {
+        fun onCollectibleItemClick(assetId: Long)
     }
 
     protected interface SelectCollectibleItemViewHolderCreator {
-        fun create(parent: ViewGroup): BaseSelectCollectibleItemViewHolder
+        fun create(
+            parent: ViewGroup,
+            listener: SelectCollectibleItemListener
+        ): BaseSelectCollectibleItemViewHolder
     }
 
     companion object {
-        fun createItemSelectCollectibleBinding(parent: ViewGroup): ItemSelectCollectibleBinding {
+        fun createItemSelectCollectibleBinding(
+            parent: ViewGroup
+        ): ItemSelectCollectibleBinding {
             return ItemSelectCollectibleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         }
     }

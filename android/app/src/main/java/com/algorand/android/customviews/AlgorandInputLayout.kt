@@ -28,6 +28,7 @@ import com.algorand.android.databinding.CustomInputLayoutBinding
 import com.algorand.android.models.CustomInputSavedState
 import com.algorand.android.utils.addByteLimiter
 import com.algorand.android.utils.extensions.setTextAndVisibility
+import com.algorand.android.utils.requestFocusAndShowKeyboard
 import com.algorand.android.utils.viewbinding.viewBinding
 import kotlin.properties.Delegates
 
@@ -134,5 +135,9 @@ class AlgorandInputLayout @JvmOverloads constructor(
 
     override fun dispatchRestoreInstanceState(container: SparseArray<Parcelable>?) {
         super.dispatchThawSelfOnly(container)
+    }
+
+    fun requestFocusAndShowKeyboard() {
+        editText.requestFocusAndShowKeyboard()
     }
 }

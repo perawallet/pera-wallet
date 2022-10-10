@@ -12,13 +12,15 @@
 
 package com.algorand.android.ui.rekey
 
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.models.Account
 import com.algorand.android.models.AccountCacheData
 import com.algorand.android.utils.AccountCacheManager
+import dagger.hilt.android.lifecycle.HiltViewModel
 
-class RekeyInstructionViewModel @ViewModelInject constructor(
+@HiltViewModel
+class RekeyInstructionViewModel @Inject constructor(
     private val accountCacheManager: AccountCacheManager
 ) : BaseViewModel() {
 

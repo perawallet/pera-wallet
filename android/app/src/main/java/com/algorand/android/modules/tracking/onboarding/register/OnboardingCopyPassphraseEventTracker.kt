@@ -27,6 +27,6 @@ class OnboardingCopyPassphraseEventTracker @Inject constructor(
     }
 
     companion object {
-        private const val ONBOARDING_COPY_PASSPHRASE_EVENT_KEY = "onboarding_createaccount_passphrase_copypassphrase"
+        private const val ONBOARDING_COPY_PASSPHRASE_EVENT_KEY = "onb_createacc_pass_copy"
     }
 }

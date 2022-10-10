@@ -17,28 +17,25 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.algorand.android.R
 import com.algorand.android.core.TransactionBaseFragment
 import com.algorand.android.databinding.FragmentSenderAccountSelectionBinding
 import com.algorand.android.models.AccountInformation
 import com.algorand.android.models.AssetTransaction
-import com.algorand.android.models.BaseAccountSelectionListItem
 import com.algorand.android.models.FragmentConfiguration
+import com.algorand.android.models.SenderAccountSelectionPreview
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.TargetUser
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.models.TransactionData
 import com.algorand.android.ui.accountselection.AccountSelectionAdapter
-import com.algorand.android.utils.Event
-import com.algorand.android.utils.Resource
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
+import com.algorand.android.utils.sendErrorLog
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.math.BigInteger
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SenderAccountSelectionFragment : TransactionBaseFragment(R.layout.fragment_sender_account_selection) {
@@ -63,17 +60,8 @@ class SenderAccountSelectionFragment : TransactionBaseFragment(R.layout.fragment
 
     private val senderAccountSelectionAdapter = AccountSelectionAdapter(listener)
 
-    private val fromAccountCollector: suspend (List<BaseAccountSelectionListItem>) -> Unit = {
-        onGetAccountsSuccess(it)
-    }
-
-    private val fromAccountInformationCollector: suspend (Event<Resource<AccountInformation>>?) -> Unit = {
-        it?.consume()?.use(
-            onSuccess = ::handleNextNavigation,
-            onLoadingFinished = ::hideProgress,
-            onFailed = { handleError(it, binding.root) },
-            onLoading = ::showProgress
-        )
+    private val senderAccountSelectionPreviewCollector: suspend (SenderAccountSelectionPreview) -> Unit = {
+        updateUiWithPreview(it)
     }
 
     override val transactionFragmentListener = object : TransactionFragmentListener {
@@ -94,6 +82,9 @@ class SenderAccountSelectionFragment : TransactionBaseFragment(R.layout.fragment
                             .actionSenderAccountSelectionFragmentToAssetTransferPreviewFragment(signedTransactionDetail)
                     )
                 }
+                else -> {
+                    sendErrorLog("Unhandled else case in SenderAccountSelectionFragment.transactionFragmentListener")
+                }
             }
         }
     }
@@ -106,12 +97,10 @@ class SenderAccountSelectionFragment : TransactionBaseFragment(R.layout.fragment
     }
 
     private fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            senderAccountSelectionViewModel.fromAccountListFlow.collectLatest(fromAccountCollector)
-        }
-        viewLifecycleOwner.lifecycleScope.launch {
-            senderAccountSelectionViewModel.fromAccountInformationFlow.collectLatest(fromAccountInformationCollector)
-        }
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            flow = senderAccountSelectionViewModel.senderAccountSelectionPreviewFlow,
+            collection = senderAccountSelectionPreviewCollector
+        )
     }
 
     // If user enter Send Algo flow via deeplink or qr code, then we have to check asset transaction params then
@@ -120,6 +109,7 @@ class SenderAccountSelectionFragment : TransactionBaseFragment(R.layout.fragment
         val assetTransaction = senderAccountSelectionViewModel.assetTransaction.copy(
             senderAddress = accountInformation.address
         )
+        // TODO: 26.08.2022 Remove all those checks from Fragment, and handle them in usecase, only call events here
         when {
             assetTransaction.assetId == -1L -> {
                 SenderAccountSelectionFragmentDirections
@@ -134,7 +124,7 @@ class SenderAccountSelectionFragment : TransactionBaseFragment(R.layout.fragment
                     .actionSenderAccountSelectionFragmentToReceiverAccountSelectionFragment(assetTransaction)
             }
             else -> {
-                signTransaction(assetTransaction, accountInformation.address)
+                senderAccountSelectionViewModel.signTransaction(accountInformation.address)
                 return
             }
         }.apply { nav(this) }
@@ -160,17 +150,30 @@ class SenderAccountSelectionFragment : TransactionBaseFragment(R.layout.fragment
         )
     }
 
+    private fun updateUiWithPreview(preview: SenderAccountSelectionPreview) {
+        with(preview) {
+            binding.progressBar.root.isVisible = isLoading
+            senderAccountSelectionAdapter.submitList(accountList)
+            binding.screenStateView.isVisible = isEmptyStateVisible
+
+            fromAccountInformationSuccessEvent?.consume()?.let { handleNextNavigation(it) }
+            fromAccountInformationErrorEvent?.consume()?.let { handleError(it.getAsResourceError(), binding.root) }
+            signTransactionSuccessEvent?.consume()?.let {
+                signTransaction(
+                    senderAddress = it.first,
+                    assetTransaction = it.second
+                )
+            }
+            signTransactionErrorEvent?.consume()?.let { showGlobalError(getString(it.second), getString(it.first)) }
+        }
+    }
+
     private fun showProgress() {
         binding.progressBar.root.show()
     }
 
     private fun hideProgress() {
         binding.progressBar.root.hide()
-    }
-
-    private fun onGetAccountsSuccess(accountList: List<BaseAccountSelectionListItem>) {
-        senderAccountSelectionAdapter.submitList(accountList)
-        binding.screenStateView.isVisible = accountList.isEmpty()
     }
 
     private fun showTransactionTipsIfNeed() {

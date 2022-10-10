@@ -43,7 +43,7 @@ class NavigationDetailEntryFragment : BaseFragment(R.layout.fragment_navigation_
         return NavigationDetailEntryFragmentDirections
             .actionNavigationDetailEntryFragmentToApplicationCallTransactionDetailFragment(
                 transactionId = args.transactionId,
-                publicKey = args.publicKey
+                accountAddress = args.accountAddress
             )
     }
 
@@ -51,7 +51,7 @@ class NavigationDetailEntryFragment : BaseFragment(R.layout.fragment_navigation_
         return NavigationDetailEntryFragmentDirections
             .actionNavigationDetailEntryFragmentToStandardTransactionDetailFragment(
                 transactionId = args.transactionId,
-                publicKey = args.publicKey
+                accountAddress = args.accountAddress
             )
     }
 }

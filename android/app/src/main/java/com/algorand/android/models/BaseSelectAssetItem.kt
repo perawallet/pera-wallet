@@ -13,10 +13,14 @@
 
 package com.algorand.android.models
 
+import com.algorand.android.customviews.accountandassetitem.model.BaseItemConfiguration
+import com.algorand.android.modules.sorting.assetsorting.ui.model.AssetSortableItem
 import com.algorand.android.utils.AssetName
+import com.algorand.android.utils.assetdrawable.BaseAssetDrawableProvider
+import java.math.BigDecimal
 import java.math.BigInteger
 
-sealed class BaseSelectAssetItem : RecyclerListItem {
+sealed class BaseSelectAssetItem : RecyclerListItem, AssetSortableItem {
 
     enum class ItemType {
         SELECT_ASSET_TEM,
@@ -26,53 +30,59 @@ sealed class BaseSelectAssetItem : RecyclerListItem {
         SELECT_COLLECTIBLE_MIXED_ITEM
     }
 
-    abstract val id: Long
-    abstract val name: String?
-    abstract val shortName: String?
-    abstract val avatarDisplayText: AssetName
-    abstract val isVerified: Boolean
-    abstract val isAlgo: Boolean
-    abstract val amount: BigInteger
-    abstract val formattedAmount: String
-    abstract val formattedCompactAmount: String
-    abstract val formattedSelectedCurrencyValue: String
-    abstract val formattedSelectedCurrencyCompactValue: String
-    abstract val isAmountInSelectedCurrencyVisible: Boolean
     abstract val itemType: ItemType
 
-    override fun areItemsTheSame(other: RecyclerListItem): Boolean {
-        return other is BaseSelectAssetItem && id == other.id
-    }
-
-    override fun areContentsTheSame(other: RecyclerListItem): Boolean {
-        return other is BaseSelectAssetItem && shortName == other.shortName && name == other.name
-    }
-
     data class SelectAssetItem(
-        override val id: Long,
-        override val isAlgo: Boolean,
-        override val isVerified: Boolean,
-        override val shortName: String?,
-        override val name: String?,
-        override val formattedAmount: String,
-        override val formattedCompactAmount: String,
-        override val formattedSelectedCurrencyValue: String,
-        override val formattedSelectedCurrencyCompactValue: String,
-        override val isAmountInSelectedCurrencyVisible: Boolean,
-        override val avatarDisplayText: AssetName,
-        override val amount: BigInteger
+        val assetItemConfiguration: BaseItemConfiguration.BaseAssetItemConfiguration.AssetItemConfiguration
     ) : BaseSelectAssetItem() {
+
         override val itemType: ItemType = ItemType.SELECT_ASSET_TEM
+
+        override val assetSortingNameField
+            get() = assetItemConfiguration.primaryAssetName?.getName()
+
+        override val assetSortingBalanceField
+            get() = assetItemConfiguration.primaryValue
+
+        override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+            return other is SelectAssetItem && assetItemConfiguration.assetId == other.assetItemConfiguration.assetId
+        }
+
+        override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+            return other is SelectAssetItem && this == other
+        }
     }
 
     sealed class BaseSelectCollectibleItem : BaseSelectAssetItem() {
+
+        abstract val id: Long
+        abstract val name: String?
+        abstract val shortName: String?
+        abstract val avatarDisplayText: AssetName
+        abstract val isAlgo: Boolean
+        abstract val amount: BigInteger
+        abstract val formattedAmount: String
+        abstract val formattedCompactAmount: String
+        abstract val formattedSelectedCurrencyValue: String
+        abstract val formattedSelectedCurrencyCompactValue: String
+        abstract val isAmountInSelectedCurrencyVisible: Boolean
+        abstract val baseAssetDrawableProvider: BaseAssetDrawableProvider
+        abstract val prismUrl: String?
+
+        abstract val optedInAtRound: Long?
+        abstract val amountInSelectedCurrency: BigDecimal?
+
+        override val assetSortingNameField
+            get() = name
+
+        override val assetSortingBalanceField
+            get() = amountInSelectedCurrency
 
         data class SelectCollectibleImageItem(
             override val id: Long,
             override val name: String?,
             override val shortName: String?,
             override val avatarDisplayText: AssetName,
-            override val isVerified: Boolean,
             override val isAlgo: Boolean,
             override val amount: BigInteger,
             override val formattedAmount: String,
@@ -80,9 +90,20 @@ sealed class BaseSelectAssetItem : RecyclerListItem {
             override val formattedSelectedCurrencyValue: String,
             override val formattedSelectedCurrencyCompactValue: String,
             override val isAmountInSelectedCurrencyVisible: Boolean,
-            val prismUrl: String?
+            override val baseAssetDrawableProvider: BaseAssetDrawableProvider,
+            override val prismUrl: String?,
+            override val optedInAtRound: Long?,
+            override val amountInSelectedCurrency: BigDecimal
         ) : BaseSelectCollectibleItem() {
             override val itemType: ItemType = ItemType.SELECT_COLLECTIBLE_IMAGE_ITEM
+
+            override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+                return other is SelectCollectibleImageItem && id == other.id
+            }
+
+            override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+                return other is SelectCollectibleImageItem && this == other
+            }
         }
 
         data class SelectVideoCollectibleItem(
@@ -90,7 +111,6 @@ sealed class BaseSelectAssetItem : RecyclerListItem {
             override val name: String?,
             override val shortName: String?,
             override val avatarDisplayText: AssetName,
-            override val isVerified: Boolean,
             override val isAlgo: Boolean,
             override val amount: BigInteger,
             override val formattedAmount: String,
@@ -98,9 +118,21 @@ sealed class BaseSelectAssetItem : RecyclerListItem {
             override val formattedSelectedCurrencyValue: String,
             override val formattedSelectedCurrencyCompactValue: String,
             override val isAmountInSelectedCurrencyVisible: Boolean,
-            val thumbnailPrismUrl: String?
+            override val baseAssetDrawableProvider: BaseAssetDrawableProvider,
+            override val prismUrl: String?,
+            override val optedInAtRound: Long?,
+            override val amountInSelectedCurrency: BigDecimal
         ) : BaseSelectCollectibleItem() {
+
             override val itemType: ItemType = ItemType.SELECT_COLLECTIBLE_VIDEO_ITEM
+
+            override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+                return other is SelectVideoCollectibleItem && id == other.id
+            }
+
+            override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+                return other is SelectVideoCollectibleItem && this == other
+            }
         }
 
         data class SelectMixedCollectibleItem(
@@ -108,7 +140,6 @@ sealed class BaseSelectAssetItem : RecyclerListItem {
             override val name: String?,
             override val shortName: String?,
             override val avatarDisplayText: AssetName,
-            override val isVerified: Boolean,
             override val isAlgo: Boolean,
             override val amount: BigInteger,
             override val formattedAmount: String,
@@ -116,9 +147,21 @@ sealed class BaseSelectAssetItem : RecyclerListItem {
             override val formattedSelectedCurrencyValue: String,
             override val formattedSelectedCurrencyCompactValue: String,
             override val isAmountInSelectedCurrencyVisible: Boolean,
-            val thumbnailPrismUrl: String?
+            override val baseAssetDrawableProvider: BaseAssetDrawableProvider,
+            override val prismUrl: String?,
+            override val optedInAtRound: Long?,
+            override val amountInSelectedCurrency: BigDecimal
         ) : BaseSelectCollectibleItem() {
+
             override val itemType: ItemType = ItemType.SELECT_COLLECTIBLE_MIXED_ITEM
+
+            override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+                return other is SelectMixedCollectibleItem && id == other.id
+            }
+
+            override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+                return other is SelectMixedCollectibleItem && this == other
+            }
         }
 
         data class SelectNotSupportedCollectibleItem(
@@ -126,16 +169,30 @@ sealed class BaseSelectAssetItem : RecyclerListItem {
             override val name: String?,
             override val shortName: String?,
             override val avatarDisplayText: AssetName,
-            override val isVerified: Boolean,
             override val isAlgo: Boolean,
             override val amount: BigInteger,
             override val formattedAmount: String,
             override val formattedCompactAmount: String,
             override val formattedSelectedCurrencyValue: String,
             override val formattedSelectedCurrencyCompactValue: String,
-            override val isAmountInSelectedCurrencyVisible: Boolean
+            override val isAmountInSelectedCurrencyVisible: Boolean,
+            override val baseAssetDrawableProvider: BaseAssetDrawableProvider,
+            override val optedInAtRound: Long?,
+            override val amountInSelectedCurrency: BigDecimal
         ) : BaseSelectCollectibleItem() {
+
             override val itemType: ItemType = ItemType.SELECT_COLLECTIBLE_NOT_SUPPORTED_ITEM
+
+            override val prismUrl: String?
+                get() = null
+
+            override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+                return other is SelectNotSupportedCollectibleItem && id == other.id
+            }
+
+            override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+                return other is SelectNotSupportedCollectibleItem && this == other
+            }
         }
     }
 }

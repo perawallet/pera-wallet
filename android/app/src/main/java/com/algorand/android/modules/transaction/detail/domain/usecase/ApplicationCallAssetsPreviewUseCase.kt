@@ -13,10 +13,10 @@
 package com.algorand.android.modules.transaction.detail.domain.usecase
 
 import com.algorand.android.customviews.accountandassetitem.mapper.AssetItemConfigurationMapper
+import com.algorand.android.modules.transaction.detail.domain.model.ApplicationCallAssetInformationPreview
 import com.algorand.android.modules.transaction.detail.ui.mapper.ApplicationCallAssetInformationPreviewMapper
 import com.algorand.android.modules.transaction.detail.ui.mapper.BaseApplicationCallAssetInformationListItemMapper
 import com.algorand.android.modules.transaction.detail.ui.model.ApplicationCallAssetInformation
-import com.algorand.android.modules.transaction.detail.domain.model.ApplicationCallAssetInformationPreview
 import javax.inject.Inject
 
 class ApplicationCallAssetsPreviewUseCase @Inject constructor(
@@ -33,8 +33,8 @@ class ApplicationCallAssetsPreviewUseCase @Inject constructor(
                 assetId = it.assetId,
                 assetFullName = it.assetFullName,
                 assetShortName = it.assetShortName,
-                isVerified = it.isVerified,
-                showWithAssetId = true
+                showWithAssetId = true,
+                verificationTierConfiguration = it.verificationTierConfiguration
             )
             baseApplicationCallAssetInformationListItemMapper.mapToAssetInformationItem(assetItemConfiguration)
         }

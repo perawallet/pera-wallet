@@ -22,4 +22,6 @@
     <integer name="shared_fragment_transition_delay_ms">500</integer>
 
     <integer name="governor_icon_angle">135</integer>
+
+    <integer name="asset_description_max_lines_count">4</integer>
 </resources>

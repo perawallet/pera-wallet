@@ -13,15 +13,16 @@
 
 package com.algorand.android.ui.accounts
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.algorand.android.core.AccountManager
+import dagger.hilt.android.lifecycle.HiltViewModel
 
-class ViewPassphraseViewModel @ViewModelInject constructor(
+@HiltViewModel
+class ViewPassphraseViewModel @Inject constructor(
     private val accountManager: AccountManager,
-    @Assisted private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val accountPublicKeyArg by lazy { savedStateHandle.get<String>(ACCOUNT_PUBLIC_KEY).orEmpty() }

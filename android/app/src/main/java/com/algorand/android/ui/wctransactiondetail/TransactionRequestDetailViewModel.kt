@@ -13,7 +13,7 @@
 
 package com.algorand.android.ui.wctransactiondetail
 
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.ViewModel
 import com.algorand.android.models.BaseWalletConnectTransaction
 import com.algorand.android.models.TransactionRequestAmountInfo
@@ -23,8 +23,10 @@ import com.algorand.android.models.TransactionRequestSenderInfo
 import com.algorand.android.models.TransactionRequestTransactionInfo
 import com.algorand.android.models.decider.WalletConnectTransactionDetailUiDecider
 import com.algorand.android.network.AlgodInterceptor
+import dagger.hilt.android.lifecycle.HiltViewModel
 
-class TransactionRequestDetailViewModel @ViewModelInject constructor(
+@HiltViewModel
+class TransactionRequestDetailViewModel @Inject constructor(
     private val algodInterceptor: AlgodInterceptor,
     private val walletConnectTransactionDetailUiDecider: WalletConnectTransactionDetailUiDecider
 ) : ViewModel() {

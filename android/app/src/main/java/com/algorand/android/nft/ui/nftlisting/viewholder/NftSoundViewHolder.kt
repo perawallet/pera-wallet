@@ -18,7 +18,7 @@ import com.algorand.android.nft.ui.model.BaseCollectibleListItem
 
 class NftSoundViewHolder(binding: ItemBaseCollectibleListBinding) : BaseCollectibleListViewHolder(binding) {
 
-    override fun bind(item: BaseCollectibleListItem.BaseCollectibleItem) {
+    override fun bind(item: BaseCollectibleListItem) {
         super.bind(item)
         if (item !is BaseCollectibleListItem.BaseCollectibleItem.CollectibleSoundItem) return
         // TODO init sound details

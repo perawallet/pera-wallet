@@ -24,11 +24,12 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.algorand.android.modules.currency.domain.model.Currency
 import com.google.android.material.snackbar.Snackbar
-import dagger.hilt.android.internal.managers.ViewComponentManager
+import java.math.BigDecimal
 import java.math.BigInteger
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
 
+val algoTotalSupply: BigDecimal = BigDecimal.valueOf(10_000_000_000)
 private const val MIN_BALANCE_PER_ASSET = 100000L
 val minBalancePerAssetAsBigInteger: BigInteger = BigInteger.valueOf(MIN_BALANCE_PER_ASSET)
 const val MIN_FEE = 1000L
@@ -107,10 +108,6 @@ fun EditText.addFilterNotLetters() {
             null
         }
     )
-}
-
-fun Context.finishAffinityFromFragment() {
-    ((this as? ViewComponentManager.FragmentContextWrapper)?.fragment?.activity)?.finishAffinity()
 }
 
 fun String.decodeBase64(): ByteArray? {

@@ -16,7 +16,6 @@ package com.algorand.android.ui.ledgersearch.ledgerinformation
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.algorand.android.R
 import com.algorand.android.core.BaseBottomSheet
@@ -24,11 +23,11 @@ import com.algorand.android.databinding.BottomSheetLedgerInformationBinding
 import com.algorand.android.models.Account
 import com.algorand.android.models.LedgerInformationListItem
 import com.algorand.android.models.ToolbarConfiguration
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.getXmlStyledString
+import com.algorand.android.utils.sendErrorLog
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LedgerInformationBottomSheet(
@@ -65,9 +64,10 @@ class LedgerInformationBottomSheet(
     }
 
     private fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            ledgerInformationViewModel.ledgerInformationFlow.collectLatest(ledgerInformationCollector)
-        }
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            ledgerInformationViewModel.ledgerInformationFlow,
+            ledgerInformationCollector
+        )
     }
 
     private fun setupRecyclerView() {
@@ -87,6 +87,9 @@ class LedgerInformationBottomSheet(
             }
             is Account.Detail.RekeyedAuth -> {
                 binding.toolbar.changeTitle(account.address)
+            }
+            else -> {
+                sendErrorLog("Unhandled else case in LedgerInformationBottomSheet.setupToolbarTitle")
             }
         }
     }

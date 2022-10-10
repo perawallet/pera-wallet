@@ -150,7 +150,8 @@ sealed class BaseTransaction {
             override val zonedDateTime: ZonedDateTime?,
             override val isPending: Boolean,
             val applicationId: Long?,
-            val innerTransactionCount: Int
+            val innerTransactionCount: Int,
+            val foreignAssetIds: List<Long>?
         ) : Transaction()
 
         data class Undefined(

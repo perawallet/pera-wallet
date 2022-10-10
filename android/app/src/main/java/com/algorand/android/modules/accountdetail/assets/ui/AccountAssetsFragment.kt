@@ -17,7 +17,6 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.algorand.android.R
 import com.algorand.android.core.BaseFragment
 import com.algorand.android.databinding.FragmentAccountAssetsBinding
@@ -25,11 +24,12 @@ import com.algorand.android.models.AccountDetailAssetsItem
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.modules.accountdetail.assets.ui.adapter.AccountAssetsAdapter
 import com.algorand.android.usecase.AccountAssetsPreviewUseCase.Companion.QUICK_ACTIONS_INDEX
+import com.algorand.android.utils.AccountAssetsDividerItemDecoration
+import com.algorand.android.utils.addCustomDivider
 import com.algorand.android.utils.addItemVisibilityChangeListener
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AccountAssetsFragment : BaseFragment(R.layout.fragment_account_assets) {
@@ -92,6 +92,7 @@ class AccountAssetsFragment : BaseFragment(R.layout.fragment_account_assets) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        accountAssetsViewModel.resetSearchQuery()
         initUi()
         initObservers()
     }
@@ -103,17 +104,28 @@ class AccountAssetsFragment : BaseFragment(R.layout.fragment_account_assets) {
 
     private fun initUi() {
         binding.accountAssetsRecyclerView.adapter = accountAssetsAdapter
+        binding.accountAssetsRecyclerView.addCustomDivider(
+            drawableResId = R.drawable.horizontal_divider_80_24dp,
+            showLast = false,
+            divider = AccountAssetsDividerItemDecoration()
+        )
         if (accountAssetsViewModel.canAccountSignTransactions()) {
+            binding.accountQuickActionsFloatingActionButton.setOnClickListener {
+                listener?.onAccountQuickActionsFloatingActionButtonClicked()
+            }
             binding.accountAssetsRecyclerView.addItemVisibilityChangeListener(QUICK_ACTIONS_INDEX) { isVisible ->
-                listener?.onQuickActionsBarVisibilityChange(isVisible)
+                with(binding.accountAssetsMotionLayout) {
+                    if (isVisible) transitionToStart() else transitionToEnd()
+                }
             }
         }
     }
 
     private fun initObservers() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            accountAssetsViewModel.accountAssetsFlow.collectLatest(accountAssetsCollector)
-        }
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            accountAssetsViewModel.accountAssetsFlow,
+            accountAssetsCollector
+        )
     }
 
     interface Listener {
@@ -124,7 +136,7 @@ class AccountAssetsFragment : BaseFragment(R.layout.fragment_account_assets) {
         fun onAddressClick()
         fun onMoreClick()
         fun onManageAssetsClick()
-        fun onQuickActionsBarVisibilityChange(isVisible: Boolean)
+        fun onAccountQuickActionsFloatingActionButtonClicked()
     }
 
     companion object {

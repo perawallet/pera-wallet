@@ -13,8 +13,7 @@
 
 package com.algorand.android.ui.send.assetselection
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -24,17 +23,19 @@ import com.algorand.android.nft.ui.model.AssetSelectionPreview
 import com.algorand.android.usecase.AssetSelectionUseCase
 import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import com.algorand.android.utils.getOrThrow
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class AssetSelectionViewModel @ViewModelInject constructor(
+@HiltViewModel
+class AssetSelectionViewModel @Inject constructor(
     private val assetSelectionUseCase: AssetSelectionUseCase,
     private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase,
     private val simpleCollectibleUseCase: SimpleCollectibleUseCase,
-    @Assisted savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     val assetTransaction = savedStateHandle.getOrThrow<AssetTransaction>(ASSET_TRANSACTION_KEY)

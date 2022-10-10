@@ -20,12 +20,22 @@ import java.math.BigInteger
 data class AssetDetailResponse(
     @SerializedName("asset_id") val assetId: Long,
     @SerializedName("name") val fullName: String?,
+    @SerializedName("logo") val logoUri: String?,
     @SerializedName("unit_name") val shortName: String?,
-    @SerializedName("is_verified") val isVerified: Boolean = false,
     @SerializedName("fraction_decimals") val fractionDecimals: Int?,
     @SerializedName("usd_value") val usdValue: BigDecimal?,
     @SerializedName("creator") val assetCreator: AssetCreator?,
     @SerializedName("collectible") val collectible: CollectibleResponse?,
-    @SerializedName("total") val totalSupply: BigInteger?,
-    @SerializedName("explorer_url") val explorerUrl: String?
+    @SerializedName("total") val maxSupply: BigInteger?,
+    @SerializedName("explorer_url") val explorerUrl: String?,
+    @SerializedName("verification_tier") val verificationTier: VerificationTierResponse,
+    @SerializedName("project_url") val projectUrl: String?,
+    @SerializedName("project_name") val projectName: String?,
+    @SerializedName("logo_svg") val logoSvgUri: String?,
+    @SerializedName("discord_url") val discordUrl: String?,
+    @SerializedName("telegram_url") val telegramUrl: String?,
+    @SerializedName("twitter_username") val twitterUsername: String?,
+    @SerializedName("description") val description: String?,
+    @SerializedName("url") val url: String?,
+    @SerializedName("total_supply") val totalSupply: BigDecimal?
 )

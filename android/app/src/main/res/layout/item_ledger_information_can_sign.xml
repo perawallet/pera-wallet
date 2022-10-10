@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -12,15 +11,8 @@
   ~
   -->
 
-<com.algorand.android.customviews.AlgorandAccountView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/accountView"
+<com.algorand.android.customviews.accountandassetitem.accountitem.AccountItemView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/accountItemView"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/spacing_xlarge"
-    android:layout_marginVertical="@dimen/spacing_normal"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    android:layout_height="wrap_content" />
 

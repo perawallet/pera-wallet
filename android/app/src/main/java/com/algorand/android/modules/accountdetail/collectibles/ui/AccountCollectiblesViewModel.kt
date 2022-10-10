@@ -12,21 +12,22 @@
 
 package com.algorand.android.modules.accountdetail.collectibles.ui
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
+import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
+import com.algorand.android.modules.accountdetail.collectibles.ui.AccountCollectiblesFragment.Companion.PUBLIC_KEY
 import com.algorand.android.modules.tracking.nft.CollectibleEventTracker
 import com.algorand.android.nft.domain.usecase.AccountCollectiblesListingPreviewUseCase
 import com.algorand.android.nft.ui.base.BaseCollectibleListingViewModel
 import com.algorand.android.nft.ui.model.CollectiblesListingPreview
-import com.algorand.android.modules.accountdetail.collectibles.ui.AccountCollectiblesFragment.Companion.PUBLIC_KEY
 import com.algorand.android.utils.getOrThrow
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 
-class AccountCollectiblesViewModel @ViewModelInject constructor(
+@HiltViewModel
+class AccountCollectiblesViewModel @Inject constructor(
     private val collectiblesPreviewUseCase: AccountCollectiblesListingPreviewUseCase,
-    @Assisted private val savedStateHandle: SavedStateHandle,
+    private val savedStateHandle: SavedStateHandle,
     collectibleEventTracker: CollectibleEventTracker
 ) : BaseCollectibleListingViewModel(collectiblesPreviewUseCase, collectibleEventTracker) {
 
