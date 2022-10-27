@@ -28,7 +28,7 @@ final class AppCallTransactionDetailViewController: BaseScrollViewController {
     private let account: Account
     private let transaction: Transaction
     private let transactionTypeFilter: TransactionTypeFilter
-    private let assets: [StandardAsset]?
+    private let assets: [Asset]?
     private let copyToClipboardController: CopyToClipboardController
 
     private lazy var bottomSheetTransition = BottomSheetTransition(
@@ -45,7 +45,7 @@ final class AppCallTransactionDetailViewController: BaseScrollViewController {
         account: Account,
         transaction: Transaction,
         transactionTypeFilter: TransactionTypeFilter,
-        assets: [StandardAsset]?,
+        assets: [Asset]?,
         copyToClipboardController: CopyToClipboardController,
         configuration: ViewControllerConfiguration
     ) {

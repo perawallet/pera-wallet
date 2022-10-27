@@ -17,7 +17,7 @@
 import Foundation
 
 protocol BlockCycle: AnyObject {
-    typealias NotificationHandler = (BlockRound?) -> Void
+    typealias NotificationHandler = () -> Void
 
     func notify(
         queue: DispatchQueue,

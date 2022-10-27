@@ -14,6 +14,9 @@
 "account-listing-error-message" = "很抱歉，我们无法显示该投资组合的细节信息。我们似乎出现了一些计算方面的问题。\n\n请注意，一些资产价值可能不可用，因此，投资组合的总价值应被视为一种估计。";
 
 /* (No Comment) */
+"account-listing-partial-error-message" = "抱歉，在提取您的某些帐户时出错。投资组合价值仅基于成功获取的价值来计算的。";
+
+/* (No Comment) */
 "account-name-setup-description" = "在使用Pera钱包时，请为账户取一个容易识别的名称。名称储存在本地，仅个人可见。";
 
 /* (No Comment) */
@@ -68,7 +71,7 @@
 "account-type-selection-ledger" = "配对Ledger账户";
 
 /* (No Comment) */
-"account-type-selection-ledger-detail" = "我想创建由我的Ledger硬件钱包支持的Algorand账户";
+"account-type-selection-ledger-detail" = "我想要恢复由我的Ledger硬件钱包所支持的Algorand账户。";
 
 /* (No Comment) */
 "account-type-selection-passphrase" = "恢复Algorand账户";
@@ -812,7 +815,7 @@
 "introduction-recover-account-text" = "我已有一个账户了";
 
 /* (No Comment) */
-"introduction-title-terms-and-services" = "创建账户表明您同意Pera钱包的条款与条件及隐私政策<br><a href=\"%@\">Terms and Conditions</a> and <a href=\"%@\">Privacy Policy</a>";
+"introduction-title-terms-and-services" = "创建账户代表您同意Pera钱包的<br><a href=\"%@\">条款与条件</a>与<a href=\"%@\">隐私政策</a>";
 
 /* (No Comment) */
 "ledger-account-detail-assets" = "资产";
@@ -962,22 +965,22 @@
 "ledger-troubleshooting-app-support" = "在设备上安装Algorand Ledger应用时，若需要任何帮助，请访问 %@";
 
 /* (No Comment) */
-"ledger-troubleshooting-bluetooth-connection-html" = "关闭或开启iOS设备上的蓝牙。\n<br /> <br />\n<ul>\n<li>Tap on <b>Settings</b></li>\n<li>Select <b>“General”</b></li>\n<li>Tap on <b>“Bluetooth”</b></li>\n<li>Flip the <b>On/Off button</b> to toggle</li>\n<li>Bluetooth <b>On or Off</b></li>\n</ul>";
+"ledger-troubleshooting-bluetooth-connection-html" = "关闭或开启苹果手机上的蓝牙。 <br /> <br />\n<ul>\n<li>点击 <b>设置</b></li>\n<li>选择 <b>“通用”</b></li>\n<li>点击 <b>“蓝牙”</b></li>\n<li>翻转 <b>开启/关闭 按钮</b> 来切换</li>\n<li>蓝牙 <b>开启或关闭</b></li>\n</ul>";
 
 /* (No Comment) */
 "ledger-troubleshooting-close-others" = "关闭其他应用（Ledger、加密钱包或其他尝试与Ledger配对的应用。）";
 
 /* (No Comment) */
-"ledger-troubleshooting-install-app-first-html" = "开始遵循Ledger的完整教程<a href=\"https://www.ledger.com/start\">Getting Started</a>";
+"ledger-troubleshooting-install-app-first-html" = "开始遵循Ledger完整的<a href=\"https://www.ledger.com/start\">开始使用</a>教程。";
 
 /* (No Comment) */
-"ledger-troubleshooting-install-app-second-html" = "当教程指导您“选择想在设备上安装的应用”，请在搜索栏输入<b>Algorand</b> 并进行安装。";
+"ledger-troubleshooting-install-app-second-html" = "当教程指导您“选择想在设备上安装的APP”，请在搜索栏输入<b>Algorand</b>并进行安装。";
 
 /* (No Comment) */
-"ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "关于更多高级故障排除功能，请查阅Ledger的官方的蓝牙故障排除指南<a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">Bluetooth Troubleshooting Guide</a>.";
+"ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "关于更多高级故障排除功能，请查阅Ledger的官方 <a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">蓝牙故障排除指南</a>。";
 
 /* (No Comment) */
-"ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "关于Ledger的蓝牙功能的一般使用方法，请参考Ledger的官方蓝牙连接指南<a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">Bluetooth Connection Guide</a>。";
+"ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "请查阅Ledger的官方 <a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">蓝牙连接指南</a>，了解如何使用Ledger的蓝牙功能。";
 
 /* (No Comment) */
 "ledger-troubleshooting-ledger-support" = "更多关于Ledger设备的故障排除，请访问";
@@ -986,10 +989,10 @@
 "ledger-troubleshooting-ledger-support-title" = "Ledger支持";
 
 /* (No Comment) */
-"ledger-troubleshooting-open-app-first-html" = "继续查看Ledger的完整教程<a href=\"https://www.ledger.com/start\">Getting Started</a>开始使用将指导您在账户设备上安装和打开应用。";
+"ledger-troubleshooting-open-app-first-html" = "Ledger的完整<a href=\"https://www.ledger.com/start\">开始使用</a>教程将继续指导您在账户设备上安装和打开APP。";
 
 /* (No Comment) */
-"ledger-troubleshooting-open-app-second-html" = "若您尚未在Ledger设备上安装 <b>Algorand</b> 应用，当教程指导您“选择想在设备上安装的应用”，请在搜索栏输入<b>Algorand</b>并进行安装。";
+"ledger-troubleshooting-open-app-second-html" = "若您尚未在Ledger设备上安装 <b>Algorand</b> 应用，当教程指导您“选择想在设备上安装的应用”，请在搜索栏输入<b>Algorand</b> 并进行安装。";
 
 /* (No Comment) */
 "ledger-troubleshooting-restart" = "重启Algorand钱包以及/或您的设备。";
@@ -1052,7 +1055,7 @@
 "local-authentication-reason-touch-id-title" = "使用触控解锁";
 
 /* (No Comment) */
-"login-subtitle" = "请输入您的\n6位数PIN码";
+"login-subtitle" = "输入PIN码";
 
 /* MARK: Login */
 "login-title" = "解锁";
@@ -1601,10 +1604,10 @@
 "request-title" = "请求";
 
 /* (No Comment) */
-"required-min-balance-description" = "您没有足够的余额来作交易费用。Algorand区块链需要 0.001ALGO来支持交易。您可以通过增加ALGO余额来支持此项交易费用。 \n\n如果您选择加入与您账户关联的dApp和智能合约（来自不同的生态系统APP），每项资产会增加0.1 Algo的所需最低余额。若要降低该帐户的所需最低余额，您必须选择退出提高最低余额的资产或 dApp。";
+"required-min-balance-description" = "该账户ALGO余额未达到能够支持此项交易的最低额度。请充值更多ALGO之后再继续。\n\n每当您选择加入一项资产、NFT和智能合约时，最低ALGO余额要求会增加0.1ALGO。您可以选择退出资产、智能合约来降低最低ALGO余额。";
 
 /* (No Comment) */
-"required-min-balance-title" = "余额低";
+"required-min-balance-title" = "ALGO余额不足";
 
 /* (No Comment) */
 "reward-list-title" = "奖励";
@@ -1988,6 +1991,9 @@
 "title-decline-all" = "全部拒绝";
 
 /* (No Comment) */
+"title-disclaimer" = "免责声明";
+
+/* (No Comment) */
 "title-disconnect" = "断开连接";
 
 /* (No Comment) */
@@ -2099,6 +2105,12 @@
 "title-paste-passphrase" = "粘贴完整的助记词";
 
 /* (No Comment) */
+"title-plus-account-count" = "%@账户";
+
+/* (No Comment) */
+"title-plus-account-singular-count" = "账户";
+
+/* (No Comment) */
 "title-plus-asset-count" = "%@资产";
 
 /* (No Comment) */
@@ -2139,6 +2151,9 @@
 
 /* (No Comment) */
 "title-save" = "保存";
+
+/* (No Comment) */
+"title-select-all" = "全选";
 
 /* (No Comment) */
 "title-select-asset" = "选择资产";
@@ -2193,6 +2208,9 @@
 
 /* (No Comment) */
 "title-unknown" = "未命名";
+
+/* (No Comment) */
+"title-unselect-all" = "取消全选";
 
 /* (No Comment) */
 "title-verify" = "验证";
@@ -2585,6 +2603,12 @@
 "wallet-connect-session-connection-description" = "%@想要连接您的账户";
 
 /* (No Comment) */
+"wallet-connect-session-disconnect-all-action" = "断开所有会话";
+
+/* (No Comment) */
+"wallet-connect-session-disconnect-all-message" = "您想要断开所有会话吗？";
+
+/* (No Comment) */
 "wallet-connect-session-disconnect-fail-message" = "与会话%@断开连接失败。";
 
 /* (No Comment) */
@@ -2868,4 +2892,64 @@
 
 /* (No Comment) */
 "wc-transaction-request-signed-warning-title" = "您的交易正在处理中！";
+
+/* (No Comment) */
+"web-export-accoounts-domain-confirmation-disclaimer-body" = "为确保您能将账户导出到安全的位置上，请始终确认您是在Pera官网URL上：";
+
+/* (No Comment) */
+"web-export-accoounts-domain-confirmation-disclaimer-body-singular" = "为确保您能将账户导出到安全的位置上，请始终确认您是在Pera官网URL上：";
+
+/* (No Comment) */
+"web-export-account-confirmation-list-description" = "您即将把这些账户安全导出到Pera网络上：";
+
+/* (No Comment) */
+"web-export-account-confirmation-list-description-singular" = "您即将把该账户安全导出到Pera网络上：";
+
+/* (No Comment) */
+"web-export-account-list-description" = "您即将分享并导入您的密码到Pera网络钱包上！\n请勿接受未受到您邀请的请求。";
+
+/* (No Comment) */
+"web-export-account-list-description-highlighted" = "您即将分享并导入您的密码到Pera网络钱包上！";
+
+/* (No Comment) */
+"web-export-account-list-no-content-body" = "我们无法找到任何符合导出条件的账户。";
+
+/* MARK: Web Export */
+"web-export-account-list-title" = "导出至Pera网络";
+
+/* (No Comment) */
+"web-export-accounts-confirmation-list-title" = "确认账户";
+
+/* (No Comment) */
+"web-export-accounts-confirmation-list-title-singular" = "确认账户";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-body" = "为了您的安全，请确认您是通过输入在您的电脑上看到的域名来把账户导出到Pera网络上的。";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-body-singular" = "为了您的安全，请确认您是通过输入在您的电脑上看到的域名来把账户导出到Pera网络上的。";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-input-floating-placeholder" = "网络钱包的URL";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-input-placeholder" = "输入网络钱包的URL";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-title" = "确认导出域名";
+
+/* (No Comment) */
+"web-export-encryption-error-message" = "解密传入数据时出错。请再次扫码重试。";
+
+/* (No Comment) */
+"web-export-result-body" = "您现在可以在 Pera网络钱包上使用这些账户了。";
+
+/* (No Comment) */
+"web-export-result-body-singular" = "您现在可以在Pera网络钱包上使用该账户了。";
+
+/* (No Comment) */
+"web-export-result-title" = "成功导出账户！";
+
+/* (No Comment) */
+"web-export-result-title-singular" = "成功导出账户！";
 

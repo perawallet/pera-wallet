@@ -27,3 +27,13 @@ struct PortfolioCalculationErrorViewModel: ErrorViewModel {
         message = getMessage("account-listing-error-message".localized)
     }
 }
+
+struct PortfolioCalculationPartialErrorViewModel: ErrorViewModel {
+    private(set) var icon: Image?
+    private(set) var message: EditText?
+
+    init() {
+        icon = getIcon()
+        message = getMessage("account-listing-partial-error-message".localized)
+    }
+}

@@ -15,67 +15,45 @@
 //
 //   WCSessionListDataSource.swift
 
+import Foundation
 import UIKit
+import MacaroonUIKit
 
-final class WCSessionListDataSource: NSObject {
-    weak var delegate: WCSessionListDataSourceDelegate?
+final class WCSessionListDataSource:
+    UICollectionViewDiffableDataSource<WCSessionListSection, WCSessionListItem> {
+    init(
+        _ collectionView: UICollectionView
+    ) {
+        super.init(collectionView: collectionView) {
+            collectionView, indexPath, itemIdentifier in
 
-    private let walletConnector: WalletConnector
-
-    private var sessions: [WCSession]
-
-    init(walletConnector: WalletConnector) {
-        self.walletConnector = walletConnector
-        self.sessions = walletConnector.allWalletConnectSessions
-        super.init()
-    }
-}
-
-extension WCSessionListDataSource: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return sessions.count
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeue(WCSessionItemCell.self, at: indexPath)
-
-        if let session = sessions[safe: indexPath.item] {
-            cell.bindData(WCSessionItemViewModel(session))
+            switch itemIdentifier {
+            case .empty:
+                let cell = collectionView.dequeue(
+                    NoContentWithActionCell.self,
+                    at: indexPath
+                )
+                cell.bindData(
+                    WCSessionListNoContentViewModel()
+                )
+                return cell
+            case .session(let item):
+                let cell = collectionView.dequeue(
+                    WCSessionItemCell.self,
+                    at: indexPath
+                )
+                cell.bindData(
+                    item.viewModel
+                )
+                return cell
+            }
         }
 
-        cell.delegate = self
-        return cell
+        [
+            NoContentWithActionCell.self,
+            WCSessionItemCell.self,
+        ].forEach {
+            collectionView.register($0)
+        }
     }
-}
-
-extension WCSessionListDataSource {
-    func session(at index: Int) -> WCSession? {
-        return sessions[safe: index]
-    }
-
-    func index(of wcSession: WCSession) -> Int? {
-        return sessions.firstIndex { $0.urlMeta.topic == wcSession.urlMeta.topic }
-    }
-
-    func disconnectFromSession(_ session: WCSession) {
-        walletConnector.disconnectFromSession(session)
-    }
-
-    var isEmpty: Bool {
-        return sessions.isEmpty
-    }
-
-    func updateSessions(_ updatedSessions: [WCSession]) {
-        sessions = updatedSessions
-    }
-}
-
-extension WCSessionListDataSource: WCSessionItemCellDelegate {
-    func wcSessionItemCellDidOpenDisconnectionMenu(_ wcSessionItemCell: WCSessionItemCell) {
-        delegate?.wSessionListDataSource(self, didOpenDisconnectMenuFrom: wcSessionItemCell)
-    }
-}
-
-protocol WCSessionListDataSourceDelegate: AnyObject {
-    func wSessionListDataSource(_ wcSessionListDataSource: WCSessionListDataSource, didOpenDisconnectMenuFrom cell: WCSessionItemCell)
 }

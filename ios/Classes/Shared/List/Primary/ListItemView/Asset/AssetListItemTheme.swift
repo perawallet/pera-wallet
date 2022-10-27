@@ -24,7 +24,7 @@ struct AssetListItemTheme: PrimaryListItemViewTheme {
     let contentHorizontalPadding: LayoutMetric
     let contentMinWidthRatio: LayoutMetric
     let title: PrimaryTitleViewTheme
-    let primaryValue: TextStyle
+    var primaryValue: TextStyle
     let secondaryValue: TextStyle
     let minSpacingBetweenTitleAndValue: LayoutMetric
 

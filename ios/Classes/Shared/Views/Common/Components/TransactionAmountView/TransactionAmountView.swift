@@ -63,6 +63,7 @@ extension TransactionAmountView {
         signLabel.customizeAppearance(theme.signLabel)
 
         addSubview(signLabel)
+        signLabel.fitToHorizontalIntrinsicSize()
         signLabel.snp.makeConstraints {
             $0.leading.centerY.equalToSuperview()
         }

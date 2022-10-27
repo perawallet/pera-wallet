@@ -23,14 +23,14 @@ final class PendingTransactionView: TransactionHistoryContextView {
 
     func customize(_ theme: PendingTransactionViewTheme) {
         super.customize(theme.transactionHistoryContextViewTheme)
-        adjustTitleLabel(theme)
+        adjustContent(theme)
         addIndicatorView(theme)
     }
 }
 
 extension PendingTransactionView {
-    private func adjustTitleLabel(_ theme: PendingTransactionViewTheme) {
-        titleLabel.snp.updateConstraints {
+    private func adjustContent(_ theme: PendingTransactionViewTheme) {
+        contentView.snp.updateConstraints {
             $0.leading.equalToSuperview().inset(theme.transactionHistoryContextLeadingPadding)
         }
     }

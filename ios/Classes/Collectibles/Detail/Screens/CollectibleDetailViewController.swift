@@ -392,6 +392,8 @@ extension CollectibleDetailViewController {
                     for: item
                 )
             }
+        case .assetID:
+            linkInteractors(cell as! CollectibleDetailAssetIDItemCell)
         case .external(let item):
             linkInteractors(
                 cell as! CollectibleExternalSourceCell,
@@ -575,7 +577,6 @@ extension CollectibleDetailViewController {
             }
 
             self.copyToClipboardController.copyAddress(self.account)
-            UIPasteboard.general.string = self.account.address
         }
 
         cell.startObserving(event: .performShareQR) {
@@ -616,6 +617,68 @@ extension CollectibleDetailViewController {
 
             self.open(actionURL)
         }
+    }
+
+    private func linkInteractors(
+        _ cell: CollectibleDetailAssetIDItemCell
+    ) {
+        cell.startObserving(event: .didTapAccessory) {
+            [unowned self] in
+
+            let optInStatus = dataController.hasOptedIn()
+
+            if optInStatus == .rejected {
+                openASADiscovery()
+                return
+            }
+
+            openASADetail()
+        }
+
+        cell.startObserving(event: .didLongPressAccessory) {
+            [unowned self] in
+            self.copyToClipboardController.copyID(self.asset)
+            return
+        }
+    }
+
+    private func openASADiscovery() {
+        let screen = Screen.asaDiscovery(
+            account: account,
+            quickAction: nil,
+            asset: AssetDecoration(asset: asset)
+        ) { event in
+            switch event {
+            case .didOptInToAsset: break
+            case .didOptOutFromAsset: break
+            }
+        }
+
+        open(
+            screen,
+            by: .push
+        )
+    }
+
+    private func openASADetail() {
+        let screen = Screen.asaDetail(
+            account: account,
+            asset: asset,
+            configuration: ASADetailScreenConfiguration(
+                shouldDisplayAccountActionsBarButtonItem: false,
+                shouldDisplayQuickActions: false
+            )
+        ) { event in
+            switch event {
+            case .didRemoveAccount: break
+            case .didRenameAccount: break
+            }
+        }
+
+        open(
+            screen,
+            by: .push
+        )
     }
 
     private func linkInteractors(

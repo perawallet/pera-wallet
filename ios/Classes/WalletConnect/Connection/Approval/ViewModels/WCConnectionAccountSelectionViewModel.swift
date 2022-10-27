@@ -19,21 +19,15 @@ import MacaroonUIKit
 
 struct WCConnectionAccountSelectionViewModel: ViewModel {
     private(set) var icon: UIImage?
-    private var namePreviewViewModel: AccountNamePreviewViewModel?
-
-    var title: String? {
-        namePreviewViewModel?.title?.string
-    }
-
-    var subtitle: String? {
-        namePreviewViewModel?.subtitle?.string
-    }
+    private(set) var title: String?
+    private(set) var subtitle: String?
 
     init(
         _ account: Account
     ) {
         bindIcon(account)
-        bindNamePreviewViewModel(account)
+        bindTitle(account)
+        bindSubtitle(account)
     }
 }
 
@@ -44,12 +38,15 @@ extension WCConnectionAccountSelectionViewModel {
         icon = account.typeImage
     }
 
-    private mutating func bindNamePreviewViewModel(
+    private mutating func bindTitle(
         _ account: Account
     ) {
-        namePreviewViewModel = AccountNamePreviewViewModel(
-            account: account,
-            with: .left
-        )
+        title = AccountNaming.getPrimaryName(for: account)
+    }
+
+    private mutating func bindSubtitle(
+        _ account: Account
+    ) {
+        subtitle = AccountNaming.getSecondaryName(for: account)
     }
 }

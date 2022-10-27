@@ -22,6 +22,7 @@ final class ASADetailScreenAPIDataController:
     SharedDataControllerObserver {
     var eventHandler: EventHandler?
 
+    private(set) var configuration: ASADetailScreenConfiguration
     private(set) var account: Account
     private(set) var asset: Asset
 
@@ -34,12 +35,19 @@ final class ASADetailScreenAPIDataController:
         account: Account,
         asset: Asset,
         api: ALGAPI,
-        sharedDataController: SharedDataController
+        sharedDataController: SharedDataController,
+        configuration: ASADetailScreenConfiguration?
     ) {
         self.account = account
         self.asset = asset
         self.api = api
         self.sharedDataController = sharedDataController
+
+        let defaultConfiguration = ASADetailScreenConfiguration(
+            shouldDisplayAccountActionsBarButtonItem: true,
+            shouldDisplayQuickActions: !account.isWatchAccount()
+        )
+        self.configuration = configuration ?? defaultConfiguration
     }
 
     deinit {

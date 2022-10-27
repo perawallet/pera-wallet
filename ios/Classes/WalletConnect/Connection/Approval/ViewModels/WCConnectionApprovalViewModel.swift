@@ -60,6 +60,6 @@ extension WCConnectionApprovalViewModel {
     }
 
     private func bindUrlString(_ session: WalletConnectSession) {
-        urlString = session.dAppInfo.peerMeta.url.absoluteString
+        urlString = session.dAppInfo.peerMeta.url.presentationString
     }
 }

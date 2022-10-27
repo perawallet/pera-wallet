@@ -136,6 +136,12 @@ extension OptionsViewController {
                     #selector(copyAddress),
                     to: stackView
                 )
+            case .showAddress:
+                addButton(
+                    ShowQrCodeListItemButtonViewModel(),
+                    #selector(showQRCode),
+                    to: stackView
+                )
             case .rekey:
                 addButton(
                     RekeyAccountListItemButtonViewModel(),
@@ -144,8 +150,8 @@ extension OptionsViewController {
                 )
             case .rekeyInformation:
                 addButton(
-                    ShowQrCodeListItemButtonViewModel(),
-                    #selector(showQRCode),
+                    RekeyAccountInformationListActionViewModel(),
+                    #selector(showRekeyInformation),
                     to: stackView
                 )
             case .viewPassphrase:
@@ -221,6 +227,16 @@ extension OptionsViewController {
             [weak self] in
             guard let self = self else { return }
             
+            self.delegate?.optionsViewControllerDidShowQR(self)
+        }
+    }
+
+    @objc
+    private func showRekeyInformation() {
+        closeScreen(by: .dismiss) {
+            [weak self] in
+            guard let self = self else { return }
+
             self.delegate?.optionsViewControllerDidViewRekeyInformation(self)
         }
     }
@@ -333,7 +349,8 @@ extension OptionsViewController {
             forWatchAccount account: Account
         ) -> OptionGroup {
             let primaryOptions: [Option] = [
-                .copyAddress
+                .copyAddress,
+                .showAddress
             ]
 
             let secondaryOptions: [Option] = [
@@ -353,6 +370,7 @@ extension OptionsViewController {
             var primaryOptions: [Option] = []
 
             primaryOptions.append(.copyAddress)
+            primaryOptions.append(.showAddress)
 
             if account.isRekeyed() {
                 primaryOptions.append(.rekeyInformation)
@@ -365,8 +383,8 @@ extension OptionsViewController {
             primaryOptions.append(.rekey)
 
             let secondaryOptions: [Option] = [
-                .muteNotifications,
                 .renameAccount,
+                .muteNotifications,
                 .removeAccount
             ]
 
@@ -379,6 +397,7 @@ extension OptionsViewController {
 
     enum Option {
         case copyAddress
+        case showAddress
         case rekey
         case rekeyInformation
         case viewPassphrase
@@ -390,6 +409,9 @@ extension OptionsViewController {
 
 protocol OptionsViewControllerDelegate: AnyObject {
     func optionsViewControllerDidCopyAddress(
+        _ optionsViewController: OptionsViewController
+    )
+    func optionsViewControllerDidShowQR(
         _ optionsViewController: OptionsViewController
     )
     func optionsViewControllerDidOpenRekeying(

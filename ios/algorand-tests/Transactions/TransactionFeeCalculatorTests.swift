@@ -33,7 +33,7 @@ class TransactionFeeCalculatorTests: XCTestCase {
 
     private lazy var notValidTransactionFeeCalculator: TransactionFeeCalculator = {
         let minAccountBalanceAccount = Bundle.main.decode(response: Account.self, from: "AccountA.json")
-        minAccountBalanceAccount.amount = 600000
+//        minAccountBalanceAccount.amount = 600000
 
         transactionData.setSignedTransaction(Data(count: 250))
 
@@ -46,7 +46,7 @@ class TransactionFeeCalculatorTests: XCTestCase {
         super.setUp()
 
         let minAccountBalanceAccount = Bundle.main.decode(response: Account.self, from: "AccountA.json")
-        minAccountBalanceAccount.amount = 600000
+//        minAccountBalanceAccount.amount = 600000
         let minBalanceTransactionSendDraft = AlgosTransactionSendDraft(from: minAccountBalanceAccount)
         notValidTransactionFeeCalculator = TransactionFeeCalculator(
             transactionDraft: minBalanceTransactionSendDraft,

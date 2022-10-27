@@ -50,9 +50,26 @@ enum CollectibleDetailItem: Hashable {
     case collectibleCreatorAccountAction(CollectibleDetailActionViewModel)
     case optedInAction(CollectibleDetailOptedInActionViewModel)
     case description(CollectibleDescriptionViewModel)
+    case assetID(CollectibleDetailAssetIDItemIdentifier)
     case information(CollectibleTransactionInformation)
     case properties(CollectiblePropertyViewModel)
     case external(CollectibleExternalSourceViewModel)
+}
+
+struct CollectibleDetailAssetIDItemIdentifier: Hashable {
+    private let id = UUID()
+    let viewModel: CollectibleDetailAssetIDItemViewModel
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+
+    static func == (
+        lhs: Self,
+        rhs: Self
+    ) -> Bool {
+        return lhs.id == rhs.id
+    }
 }
 
 enum CollectibleDetailDataControllerEvent {

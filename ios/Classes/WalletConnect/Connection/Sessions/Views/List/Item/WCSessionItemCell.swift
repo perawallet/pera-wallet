@@ -15,40 +15,25 @@
 //
 //   WCSessionItemCell.swift
 
+import Foundation
+import MacaroonUIKit
 import UIKit
 
-final class WCSessionItemCell: BaseCollectionViewCell<WCSessionItemView> {
-    weak var delegate: WCSessionItemCellDelegate?
-
-    override func prepareLayout() {
-        super.prepareLayout()
-        contextView.customize(WCSessionItemViewTheme())
+final class WCSessionItemCell:
+    CollectionCell<WCSessionItemView>,
+    ViewModelBindable,
+    UIInteractable {
+    override class var contextPaddings: LayoutPaddings {
+        return (20, 24, 20, 24)
     }
 
-    override func linkInteractors() {
-        super.linkInteractors()
-        contextView.setListeners()
-        contextView.delegate = self
-    }
+    static let theme = WCSessionItemViewTheme()
 
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        contextView.prepareForReuse()
-    }
-}
+    override init(
+        frame: CGRect
+    ) {
+        super.init(frame: frame)
 
-extension WCSessionItemCell {
-    func bindData(_ viewModel: WCSessionItemViewModel) {
-        contextView.bindData(viewModel)
+        contextView.customize(Self.theme)
     }
-}
-
-extension WCSessionItemCell: WCSessionItemViewDelegate {
-    func wcSessionItemViewDidOpenDisconnectionMenu(_ wcSessionItemView: WCSessionItemView) {
-        delegate?.wcSessionItemCellDidOpenDisconnectionMenu(self)
-    }
-}
-
-protocol WCSessionItemCellDelegate: AnyObject {
-    func wcSessionItemCellDidOpenDisconnectionMenu(_ wcSessionItemCell: WCSessionItemCell)
 }

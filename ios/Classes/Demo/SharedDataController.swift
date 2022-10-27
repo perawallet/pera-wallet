@@ -36,8 +36,6 @@ protocol SharedDataController: AnyObject {
     var currency: CurrencyProvider { get }
 
     var blockchainUpdatesMonitor: BlockchainUpdatesMonitor { get }
-
-    var lastRound: BlockRound? { get }
     
     /// <note>
     /// Returns true if the shared data is ready to use.

@@ -23,7 +23,7 @@ struct AppCallAssetPreviewWithImageViewModel:
     private(set) var content: AppCallAssetPreviewViewModel?
 
     init(
-        asset: StandardAsset
+        asset: Asset
     ) {
         bindIcon(asset)
         bindContent(asset)
@@ -32,7 +32,7 @@ struct AppCallAssetPreviewWithImageViewModel:
 
 extension AppCallAssetPreviewWithImageViewModel {
     mutating func bindIcon(
-        _ asset: StandardAsset
+        _ asset: Asset
     ) {
         let title = asset.naming.name.isNilOrEmpty ?
         "title-unknown".localized
@@ -47,7 +47,7 @@ extension AppCallAssetPreviewWithImageViewModel {
     }
 
     mutating func bindContent(
-        _ asset: StandardAsset
+        _ asset: Asset
     ) {
         content = AppCallAssetPreviewViewModel(
             asset: asset

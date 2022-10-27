@@ -25,15 +25,15 @@ class AccountTests: XCTestCase {
     private let accountB = Bundle.main.decode(response: Account.self, from: "AccountB.json")
     private let assetDetail = Bundle.main.decode(response: AssetDetail.self, from: "HipoCoinAsset.json")
 
-    func testAmount() {
-        let amount = account.amount(for: assetDetail)
-        XCTAssertEqual(amount, 2759.49)
-    }
+//    func testAmount() {
+//        let amount = account.amount(for: assetDetail)
+//        XCTAssertEqual(amount, 2759.49)
+//    }
 
-    func testAmountDisplayWithFraction() {
-        let amountDisplayWithFraction = account.amountDisplayWithFraction(for: assetDetail)
-        XCTAssertEqual(amountDisplayWithFraction, "2,759.49")
-    }
+//    func testAmountDisplayWithFraction() {
+//        let amountDisplayWithFraction = account.amountDisplayWithFraction(for: assetDetail)
+//        XCTAssertEqual(amountDisplayWithFraction, "2,759.49")
+//    }
 
 //    func testIsThereAnyDifferentAsset() {
 //        let isThereAnyDifferentAsset = account.isThereAnyDifferentAsset()

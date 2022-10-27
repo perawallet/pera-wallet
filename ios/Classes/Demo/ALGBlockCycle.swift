@@ -22,11 +22,9 @@ import MagpieCore
 import MagpieHipo
 
 final class ALGBlockCycle: BlockCycle {
-    private var lastRound: BlockRound?
     private var notificationQueue: DispatchQueue?
     private var notificationHandler: NotificationHandler?
-    
-    private var ongoingEndpointToFetchTransactionParams: EndpointOperatable?
+
     private var ongoingEndpointToWaitForNextBlock: EndpointOperatable?
 
     private let api: ALGAPI
@@ -48,87 +46,53 @@ extension ALGBlockCycle {
     }
     
     func startListening() {
-        if let lastRound = lastRound {
-            watchNextBlock(after: lastRound)
-        } else {
-            watchNextBlock()
-        }
+        sendNotification()
+        watchNextBlock(notifyForUpdate: false)
     }
 
     func stopListening() {
-        ongoingEndpointToFetchTransactionParams?.cancel()
-        ongoingEndpointToFetchTransactionParams = nil
-
         ongoingEndpointToWaitForNextBlock?.cancel()
         ongoingEndpointToWaitForNextBlock = nil
     }
     
     func cancelListening() {
         stopListening()
-        lastRound = nil
     }
 }
 
 extension ALGBlockCycle {
-    private func watchNextBlock() {
-        self.fetchTransactionParams { [weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-            case .success(let round):
-                self.watchNextBlock(after: round)
-            case .failure:
-                /// <todo>
-                /// How to handle network/server errors?
-                self.watchNextBlock(after: 0)
-            }
-        }
+    private func watchNextBlock(
+        notifyForUpdate: Bool
+    ) {
+        watchNextBlock(
+            after: 0,
+            notifyForUpdate: notifyForUpdate
+        )
     }
     
     private func watchNextBlock(
-        after round: BlockRound
+        after round: BlockRound,
+        notifyForUpdate: Bool
     ) {
         waitForNextBlock(after: round) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
             case .success(let roundDetail):
-                let lastRound = roundDetail.lastRound
-                
-                self.lastRound = lastRound
-                self.sendNotification()
-                
-                self.watchNextBlock(after: lastRound)
+                if notifyForUpdate {
+                    self.sendNotification()
+                }
+
+                self.watchNextBlock(
+                    after: roundDetail.lastRound,
+                    notifyForUpdate: true
+                )
             case .failure:
                 /// <todo>
                 /// How to handle network/server errors?
-                self.watchNextBlock()
+                self.watchNextBlock(notifyForUpdate: true)
             }
         }
-    }
-}
-
-extension ALGBlockCycle {
-    private typealias FetchTransactionParamsCompletionHandler = (Result<BlockRound, HIPNetworkError<NoAPIModel>>) -> Void
-    
-    private func fetchTransactionParams(
-        onCompletion handler: @escaping FetchTransactionParamsCompletionHandler
-    ) {
-        ongoingEndpointToFetchTransactionParams?.cancel()
-        ongoingEndpointToFetchTransactionParams =
-            api.getTransactionParams { [weak self] result in
-                guard let self = self else { return }
-            
-                self.ongoingEndpointToFetchTransactionParams = nil
-            
-                switch result {
-                case .success(let params):
-                    handler(.success(params.lastRound))
-                case .failure(let apiError, let apiErrorDetail):
-                    let error = HIPNetworkError(apiError: apiError, apiErrorDetail: apiErrorDetail)
-                    handler(.failure(error))
-                }
-            }
     }
 }
 
@@ -163,7 +127,7 @@ extension ALGBlockCycle {
     private func sendNotification() {
         notificationQueue?.async { [weak self] in
             guard let self = self else { return }
-            self.notificationHandler?(self.lastRound)
+            self.notificationHandler?()
         }
     }
 }

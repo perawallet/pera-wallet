@@ -39,7 +39,7 @@ final class HomePortfolioCell:
     }
 }
 
-extension HomePortfolioCell: NavigationBarLargeTitleView {
+extension HomePortfolioCell: MacaroonUIKit.NavigationBarLargeTitleView {
     var title: EditText? {
         get { contextView.titleView.editText }
         set { contextView.titleView.editText = newValue }

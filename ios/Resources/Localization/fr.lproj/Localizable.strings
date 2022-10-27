@@ -14,6 +14,9 @@
 "account-listing-error-message" = "Désolé, nous ne pouvons pas afficher les détails de ce portefeuille. Il semble que nous ayons des problèmes pour le calcul. \n\n Veuillez noter que certaines valeurs d'actifs peuvent ne pas être disponibles, par conséquent la valeur totale du portefeuille doit être considérée comme une estimation.";
 
 /* (No Comment) */
+"account-listing-partial-error-message" = "Nous sommes désolés, une erreur s'est produite lors de la récupération de certains de vos comptes. La valeur du portefeuille est calculée uniquement sur la base de ceux récupérés avec succès.";
+
+/* (No Comment) */
 "account-name-setup-description" = "Nommez votre compte pour l'identifier facilement lorsque vous utilisez Pera Wallet. Ces noms sont stockés localement et ne peuvent être vus que par vous.";
 
 /* (No Comment) */
@@ -68,7 +71,7 @@
 "account-type-selection-ledger" = "Associer avec Ledger";
 
 /* (No Comment) */
-"account-type-selection-ledger-detail" = "Je souhaite créer un compte Algorand en utilisant mon portefeuille physique Ledger";
+"account-type-selection-ledger-detail" = "Je souhaite récupérer un compte Algorand en utilisant mon portefeuille physique Ledger";
 
 /* (No Comment) */
 "account-type-selection-passphrase" = "Récupérer un compte";
@@ -812,7 +815,7 @@
 "introduction-recover-account-text" = "J'ai déjà un compte";
 
 /* (No Comment) */
-"introduction-title-terms-and-services" = "En créant un compte, vous acceptez les <br><a href=\"%@\">Conditions d'utilisation</a> et la <a href=\"%@\">Politique de confidentialité</a> de Pera Wallet";
+"introduction-title-terms-and-services" = "En créant un compte, vous acceptez les <br> <a href=\"%@\"> Termes et Conditions </a> et la <a href=\"%@\"> Politique de confidentialité </a> de Pera Wallet";
 
 /* (No Comment) */
 "ledger-account-detail-assets" = "Actifs";
@@ -962,22 +965,22 @@
 "ledger-troubleshooting-app-support" = "Pour obtenir de l'aide sur l'installation de l'application Algorand Ledger sur votre appareil, visitez %@";
 
 /* (No Comment) */
-"ledger-troubleshooting-bluetooth-connection-html" = "Désactiver ou activer Bluetooth pour un appareil iOS. <br /> <br />\n<ul>\n<li>Appuyez sur <b>Réglages</b></li>\n<li>Sélectionnez <b>«Général»</b></li>\n<li>Appuyez sur <b>«Bluetooth»</b></li>\n<li>Utilisez le bouton <b&gt:Activé / Désactivé</b> pour changer le réglage</li>\n<li>Bluetooth <b>Activé ou Désactivé</b></li>\n</ul>";
+"ledger-troubleshooting-bluetooth-connection-html" = "Désactivez ou activez Bluetooth pour un appareil iOS. <br /> <br />\n <ul>\n <li> Appuyez sur <b> Paramètres </b> </li>\n <li> Sélectionnez <b> «Général» </b> </li>\n <li> Appuyez sur <b> «Bluetooth» </b> </li>\n <li> Appuyez sur le <b> bouton Marche/Arrêt </b> pour basculer entre </li>\n <li> Bluetooth <b> activé ou désactivé </b> </li>\n </ul>";
 
 /* (No Comment) */
 "ledger-troubleshooting-close-others" = "Fermez les autres applications (applications Ledger, portefeuilles cryptographiques ou tout ce qui pourrait essayer de s'associer au Ledger.)";
 
 /* (No Comment) */
-"ledger-troubleshooting-install-app-first-html" = "Commencez par suivre les étapes détaillées de Ledger <a href=\"https://www.ledger.com/start\">Getting Started</a>.";
+"ledger-troubleshooting-install-app-first-html" = "Commencez par suivre le didacticiel complet <a href=\"https://www.ledger.com/start\">Getting Started</a> de Ledger.";
 
 /* (No Comment) */
-"ledger-troubleshooting-install-app-second-html" = "Lorsque le tutoriel arrive au point où il vous dirige vers «Sélectionnez les applications que vous souhaitez installer sur votre appareil», tapez <b>Algorand</b> dans la barre de recherche et installez l'application.";
+"ledger-troubleshooting-install-app-second-html" = "Lorsque le didacticiel arrive au point où il vous demande de «sélectionner la ou les applications que vous souhaitez installer sur votre appareil», tapez <b>Algorand</b> dans la barre de recherche et installez l'application.";
 
 /* (No Comment) */
-"ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "Pour un dépannage plus avancé, veuillez consulter le site officiel de Ledger <a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">Bluetooth Troubleshooting Guide</a>.";
+"ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "Pour un dépannage plus avancé, veuillez consulter le <a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">Guide de dépannage Bluetooth</a>.";
 
 /* (No Comment) */
-"ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "Pour l’utilisation générale de la fonction Bluetooth de votre Ledger, veuillez consulter le guide officiel de Ledger <a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">Bluetooth Connection Guide</a>.";
+"ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "Pour une utilisation générale de la fonction Bluetooth de votre Ledger, veuillez vous référer au <a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">Guide de connexion Bluetooth</a>.";
 
 /* (No Comment) */
 "ledger-troubleshooting-ledger-support" = "Pour le dépannage général du Ledger, veuillez visiter";
@@ -986,10 +989,10 @@
 "ledger-troubleshooting-ledger-support-title" = "Support Ledger.";
 
 /* (No Comment) */
-"ledger-troubleshooting-open-app-first-html" = "Commencez par suivre les étapes détaillées du tutoriel <a href=\"https://www.ledger.com/start\">Getting Started</a>, qui vous expliqueront comment installer et ouvrir des applications sur votre appareil Ledger.";
+"ledger-troubleshooting-open-app-first-html" = "Commencez par suivre le tutoriel <a href=\"https://www.ledger.com/start\">Getting Started</a> de Ledger, qui vous expliquera comment installer et ouvrir des applications sur votre appareil Ledger.";
 
 /* (No Comment) */
-"ledger-troubleshooting-open-app-second-html" = "Si vous n'avez pas installé l'application <b>Algorand</b> sur votre appareil Ledger, lorsque le tutoriel arrive au point où il vous dirige vers «Sélectionnez les applications que vous souhaitez installer sur votre appareil», tapez <b>Algorand</b> dans la barre de recherche et installez l'application.";
+"ledger-troubleshooting-open-app-second-html" = "Si vous n'avez pas encore installé l'application <b>Algorand</b> sur votre appareil Ledger, lorsque le didacticiel arrive au point où il vous dirige vers «sélectionnez la ou les applications que vous souhaitez installer sur votre appareil», tapez <b>Algorand</b> dans la barre de recherche et installez l'application.";
 
 /* (No Comment) */
 "ledger-troubleshooting-restart" = "Redémarrez le portefeuille Algorand et / ou votre appareil.";
@@ -1052,7 +1055,7 @@
 "local-authentication-reason-touch-id-title" = "Utiliser Touch ID pour déverrouiller";
 
 /* (No Comment) */
-"login-subtitle" = "Entrez le code\nPIN à 6 chiffres";
+"login-subtitle" = "Saisissez votre code PIN";
 
 /* MARK: Login */
 "login-title" = "Déverrouiller";
@@ -1601,10 +1604,10 @@
 "request-title" = "Demande";
 
 /* (No Comment) */
-"required-min-balance-description" = "Votre solde est insuffisant pour prendre en charge les frais de transaction. La blockchain Algorand nécessite 0,001 Algo pour prendre en charge une transaction. Vous pouvez augmenter votre solde d'Algos pour prendre en charge ces frais de transaction. \n\nSi vous avez activé les dApps et les contrats intelligents associés à votre compte (à partir de différentes applications de l'écosystème), chaque actif augmente le solde minimum requis de 0,1 Algo. Pour réduire le solde minimum requis pour ce compte, vous devez désactiver les actifs ou les dApps qui entraînent cette augmentation du solde minimum.";
+"required-min-balance-description" = "Ce compte ne dispose pas du solde Algo minimum requis pour cette transaction. Veuillez ajouter plus d'Algo au compte avant de continuer.\n\nLe solde minimum d'Algo requis augmente de 0.1 Algo avec chaque actif, NFT et contrat intelligent que vous ajoutez. Vous pouvez désactiver les actifs et les contrats intelligents pour réduire le solde minimum d'Algo requis.";
 
 /* (No Comment) */
-"required-min-balance-title" = "Solde faible";
+"required-min-balance-title" = "Solde Algo insuffisant";
 
 /* (No Comment) */
 "reward-list-title" = "Récompense";
@@ -1988,6 +1991,9 @@
 "title-decline-all" = "Tout refuser";
 
 /* (No Comment) */
+"title-disclaimer" = "CLAUSE DE NON-RESPONSABILITÉ";
+
+/* (No Comment) */
 "title-disconnect" = "Déconnecter";
 
 /* (No Comment) */
@@ -2099,6 +2105,12 @@
 "title-paste-passphrase" = "Coller la phrase de passe complète";
 
 /* (No Comment) */
+"title-plus-account-count" = "%@ comptes";
+
+/* (No Comment) */
+"title-plus-account-singular-count" = "Compte";
+
+/* (No Comment) */
 "title-plus-asset-count" = "%@ Actifs";
 
 /* (No Comment) */
@@ -2139,6 +2151,9 @@
 
 /* (No Comment) */
 "title-save" = "Sauvegarder";
+
+/* (No Comment) */
+"title-select-all" = "Sélectionner tout";
 
 /* (No Comment) */
 "title-select-asset" = "Sélectionner l'actif";
@@ -2193,6 +2208,9 @@
 
 /* (No Comment) */
 "title-unknown" = "Sans nom";
+
+/* (No Comment) */
+"title-unselect-all" = "Tout déselectionner";
 
 /* (No Comment) */
 "title-verify" = "Vérifier";
@@ -2585,6 +2603,12 @@
 "wallet-connect-session-connection-description" = "%@ veut se connecter à votre compte";
 
 /* (No Comment) */
+"wallet-connect-session-disconnect-all-action" = "Déconnecter toutes les sessions";
+
+/* (No Comment) */
+"wallet-connect-session-disconnect-all-message" = "Souhaitez-vous déconnecter toutes les sessions?";
+
+/* (No Comment) */
 "wallet-connect-session-disconnect-fail-message" = "Échec de la déconnexion de la session %@ .";
 
 /* (No Comment) */
@@ -2868,4 +2892,64 @@
 
 /* (No Comment) */
 "wc-transaction-request-signed-warning-title" = "Votre transaction est en cours de traitement !";
+
+/* (No Comment) */
+"web-export-accoounts-domain-confirmation-disclaimer-body" = "Pour vous assurer que vous exportez vos comptes vers un emplacement sûr, vérifiez toujours que vous êtes sur l'URL officielle de Pera Web:";
+
+/* (No Comment) */
+"web-export-accoounts-domain-confirmation-disclaimer-body-singular" = "Pour vous assurer que vous exportez votre compte vers un emplacement sûr, vérifiez toujours que vous êtes sur l'URL  officielle de Pera Web:";
+
+/* (No Comment) */
+"web-export-account-confirmation-list-description" = "Vous êtes sur le point d'exporter ces comptes vers Pera Web en toute sécurité:";
+
+/* (No Comment) */
+"web-export-account-confirmation-list-description-singular" = "Vous êtes sur le point d'exporter ce compte vers Pera Web en toute sécurité:";
+
+/* (No Comment) */
+"web-export-account-list-description" = "Vous êtes sur le point de partager et d'importer votre phrase secrète sur Pera Web Wallet!\n N'acceptez jamais une demande que vous n'avez pas initiée.";
+
+/* (No Comment) */
+"web-export-account-list-description-highlighted" = "Vous êtes sur le point de partager et d'importer votre phrase secrète dans Pera Web Wallet!";
+
+/* (No Comment) */
+"web-export-account-list-no-content-body" = "Nous n'avons trouvé aucun compte éligible à l'exportation.";
+
+/* MARK: Web Export */
+"web-export-account-list-title" = "Exporter vers Pera Web";
+
+/* (No Comment) */
+"web-export-accounts-confirmation-list-title" = "Confirmer les comptes";
+
+/* (No Comment) */
+"web-export-accounts-confirmation-list-title-singular" = "Confirmer le compte";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-body" = "Pour votre sécurité, veuillez confirmer que vous exportez vos comptes vers Pera Web en saisissant le nom de domaine que vous voyez sur votre ordinateur.";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-body-singular" = "Pour votre sécurité, veuillez confirmer que vous exportez votre compte vers Pera Web en saisissant le nom de domaine que vous voyez sur votre ordinateur.";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-input-floating-placeholder" = "URL du Web Wallet";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-input-placeholder" = "Entrez l'URL du Web Wallet";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-title" = "Confirmer le domaine d'exportation";
+
+/* (No Comment) */
+"web-export-encryption-error-message" = "Une erreur s'est produite lors du décryptage des données entrantes. Veuillez réessayer en scannant à nouveau le code QR.";
+
+/* (No Comment) */
+"web-export-result-body" = "Vous pouvez maintenant utiliser ces comptes sur Pera Web Wallet.";
+
+/* (No Comment) */
+"web-export-result-body-singular" = "Vous pouvez maintenant utiliser ce compte sur Pera Web Wallet.";
+
+/* (No Comment) */
+"web-export-result-title" = "Comptes exportés avec succès!";
+
+/* (No Comment) */
+"web-export-result-title-singular" = "Compte exporté avec succès!";
 

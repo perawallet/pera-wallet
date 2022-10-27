@@ -22,9 +22,11 @@ import UIKit
 extension AccountDetailViewController {
     struct Theme: LayoutSheet, StyleSheet {
         let backgroundColor: Color
+        let navigationTitle: AccountNameTitleViewTheme
 
         init(_ family: LayoutFamily) {
             self.backgroundColor = Colors.Defaults.background
+            self.navigationTitle = AccountNameTitleViewTheme(family)
         }
     }
 }

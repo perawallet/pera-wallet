@@ -112,3 +112,15 @@ struct NetworkHeader: Header {
         self.value = network?.rawValue
     }
 }
+
+struct ModificationHeader: Header {
+    let key: String
+    let value: String?
+
+    init(
+        _ modificationKey: String
+    ) {
+        self.key = "X-Modification-Key"
+        self.value = modificationKey
+    }
+}

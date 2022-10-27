@@ -14,6 +14,9 @@
 "account-listing-error-message" = "죄송합니다. 포트폴리오의 세부정보를 표시할 수 없습니다. 계산에 문제가 있는 것 같습니다. \n\n일부 자산 가치는 사용이 불가능할 수 있습니다. 따라서 총 포트폴리오 가치는 추정치로만 간주하시기 바랍니다.";
 
 /* (No Comment) */
+"account-listing-partial-error-message" = "죄송합니다. 일부 계정을 가져오는 중에 오류가 발생했습니다. 포트폴리오 가치는 가져오는 데 성공한 계정을 기반으로만 계산됩니다.";
+
+/* (No Comment) */
 "account-name-setup-description" = "Pera Wallet을 사용하는 동안 쉽게 알아볼 수 있도록 계정 이름을 지정하세요. 계정 이름은 로컬에 저장되며, 사용자만 볼 수 있습니다.";
 
 /* (No Comment) */
@@ -68,7 +71,7 @@
 "account-type-selection-ledger" = "Ledger 기기 페어링";
 
 /* (No Comment) */
-"account-type-selection-ledger-detail" = "Ledger 하드웨어 지갑을 사용하는\n알고랜드 계정을 만들고 싶습니다";
+"account-type-selection-ledger-detail" = "Ledger 하드웨어 지갑을 사용하는\n알고랜드 계정을 복원하고 싶습니다";
 
 /* (No Comment) */
 "account-type-selection-passphrase" = "계정 복구";
@@ -812,7 +815,7 @@
 "introduction-recover-account-text" = "이미 계정이 있습니다";
 
 /* (No Comment) */
-"introduction-title-terms-and-services" = "계정을 만드시면 Pera Wallet의<br><a href=\"%@\">이용약관</a>과 <a href=\"%@\">개인정보 보호 정책</a>에 동의하신 것으로 간주합니다";
+"introduction-title-terms-and-services" = "계정을 만드시면 Pera Wallet의 <br><a href=\"%@\">이용약관</a>과 <a href=\"%@\">개인정보 보호 정책</a>에 동의하신 것으로 간주합니다";
 
 /* (No Comment) */
 "ledger-account-detail-assets" = "자산";
@@ -962,22 +965,22 @@
 "ledger-troubleshooting-app-support" = "알고랜드 Ledger 앱의 기기 설치와 관련해 도움이 필요하신 경우 %@를 참조하세요.";
 
 /* (No Comment) */
-"ledger-troubleshooting-bluetooth-connection-html" = "iOS 기기의 Bluetooth 켜기/끄기 <br /> <br />\n<ul>\n<li><b>설정</b>을 누릅니다</li>\n<li><b>“일반”</b>을 선택합니다</li>\n<li><b>“Bluetooth”</b>를 누릅니다</li>\n<li><b>켬/끔 버튼</b>을 토글 전환합니다</li>\n<li>Bluetooth<b>가 켜지거나 꺼집니다</b></li>\n</ul>";
+"ledger-troubleshooting-bluetooth-connection-html" = "iOS 기기의 Bluetooth 켜기/끄기 <br /> <br />\n<ul>\n<li><b>설정</b>을 누릅니다</li>\n<li><b>“일반”</b>을 선택합니다</li>\n<li> <b>“Bluetooth”</b>를 누릅니다</li>\n<li><b>켬/끔 버튼</b>을 토글 전환합니다</li>\n<li>Bluetooth가<b>켜지거나 꺼집니다</b></li>\n</ul>";
 
 /* (No Comment) */
 "ledger-troubleshooting-close-others" = "다른 애플리케이션(Ledger 앱, 암호화폐 지갑 또는 기타 Ledger에 페어링을 시도할 수 있는 모든 앱)을 종료합니다.";
 
 /* (No Comment) */
-"ledger-troubleshooting-install-app-first-html" = "Ledger의 종합적인 <a href=\"https://www.ledger.com/start\">Getting Started</a> (시작하기) 튜토리얼부터 따라서 시작해보세요.";
+"ledger-troubleshooting-install-app-first-html" = "Ledger의 종합적인 <a href=\"https://www.ledger.com/start\">시작하기</a> 튜토리얼부터 따라서 시작해보세요.";
 
 /* (No Comment) */
 "ledger-troubleshooting-install-app-second-html" = "튜토리얼에서 “기기에 설치하고자 하는 애플리케이션 선택(Select the application(s) you want to install on your device)” 단계까지 진행하셨다면 검색창에 <b>알고랜드(Algorand)</b>를 입력하고 설치해 주세요.";
 
 /* (No Comment) */
-"ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "고급 문제 해결 안내가 필요하신 경우 Ledger의 공식 <a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">Bluetooth Troubleshooting Guide</a> (Bluetooth 문제 해결 가이드) 페이지를 참조하세요.";
+"ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "고급 문제 해결 안내가 필요하신 경우 Ledger의 공식 <a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">Bluetooth 문제 해결 가이드</a>를 참조하세요.";
 
 /* (No Comment) */
-"ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "Ledger의 Bluetooth 기능 사용법은 Ledger의 공식 <a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">Bluetooth Connection Guide</a> (Bluetooth 연결 가이드) 페이지에서 찾아보실 수 있습니다.";
+"ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "Ledger의 Bluetooth 기능 사용법은 Ledger의 공식 <a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">Bluetooth 연결 가이드</a>에서 찾아보실 수 있습니다.";
 
 /* (No Comment) */
 "ledger-troubleshooting-ledger-support" = "Ledger 기기의 일반적인 문제 해결에 도움이 필요한 경우에는 ";
@@ -986,10 +989,10 @@
 "ledger-troubleshooting-ledger-support-title" = "Ledger 지원을 방문해 주세요.";
 
 /* (No Comment) */
-"ledger-troubleshooting-open-app-first-html" = "Ledger의 종합적인 <a href=\"https://www.ledger.com/start\">Getting Started</a> (시작하기) 튜토리얼부터 따라서 계속 진행하세요. Ledger 기기에서 앱을 설치하고 실행하는 방법을 안내해 드립니다.";
+"ledger-troubleshooting-open-app-first-html" = "Ledger의 종합적인 <a href=\"https://www.ledger.com/start\">시작하기</a> 튜토리얼부터 따라서 시작해보세요. Ledger 기기에서 앱을 설치하고 실행하는 방법을 안내해 드립니다.";
 
 /* (No Comment) */
-"ledger-troubleshooting-open-app-second-html" = "아직 Ledger 기기에 <b>알고랜드</b> 앱을 설치하지 않으신 경우, 튜토리얼에서 “기기에 설치하고자 하는 애플리케이션 선택(Select the application(s) you want to install on your device)” 단계까지 진행하시고 검색창에 <b>알고랜드(Algorand)</b>를 입력해 설치해 주세요.";
+"ledger-troubleshooting-open-app-second-html" = "아직 Ledger 기기에 <b>알고랜드</b>앱을 설치하지 않으신 경우, 튜토리얼에서 “기기에 설치하고자 하는 애플리케이션 선택(Select the application(s) you want to install on your device)” 단계까지 진행하시고 검색창에 <b>알고랜드(Algorand)</b>를 입력해 설치해 주세요.";
 
 /* (No Comment) */
 "ledger-troubleshooting-restart" = "알고랜드 지갑 및/또는 내 기기를 재시작합니다.";
@@ -1052,7 +1055,7 @@
 "local-authentication-reason-touch-id-title" = "Touch ID로 잠금 해제";
 
 /* (No Comment) */
-"login-subtitle" = "6자리 PIN 번호를\n입력하세요";
+"login-subtitle" = "PIN을 입력하세요";
 
 /* MARK: Login */
 "login-title" = "잠금 해제";
@@ -1601,10 +1604,10 @@
 "request-title" = "요청";
 
 /* (No Comment) */
-"required-min-balance-description" = "잔액이 부족해 트랜잭션 수수료를 충당할 수 없습니다. 알고랜드 블록체인은 트랜잭션을 지원하기 위해 0.001 알고의 수수료를 부과합니다. 알고 잔액을 늘려 트랜잭션 수수료를 충당할 수 있습니다. \n\n계정과 연결된 디앱 및 스마트 컨트랙트를 (다른 생태계 앱에서)옵트인하면, 각 자산은 0.1 알고씩 필수 잔액 최소 기준을 증가시킵니다. 계정에 필요한 최소 잔액을 줄이려면 최소 잔액 기준을 올리는 자산이나 디앱에서 옵트아웃해야 합니다.";
+"required-min-balance-description" = "계정에 트랜잭션을 수행하는 데 필요한 최소 알고 잔액이 부족합니다. 계속하기 전에 계정에 알고를 추가하세요.\n\n필요한 최소 알고 잔액은 옵트인한 각 자산, NFT 및 스마트 컨트랙트에 따라 0.1알고씩 증가합니다. 자산 및 스마트 컨트랙트를 옵트아웃하면 최소 알고 잔액 기준을 낮출 수 있습니다.";
 
 /* (No Comment) */
-"required-min-balance-title" = "잔액 부족";
+"required-min-balance-title" = "알고 잔액 부족";
 
 /* (No Comment) */
 "reward-list-title" = "보상";
@@ -1988,6 +1991,9 @@
 "title-decline-all" = "모두 거부";
 
 /* (No Comment) */
+"title-disclaimer" = "고지사항";
+
+/* (No Comment) */
 "title-disconnect" = "연결 해제";
 
 /* (No Comment) */
@@ -2099,6 +2105,12 @@
 "title-paste-passphrase" = "비밀문구 전체 붙여넣기";
 
 /* (No Comment) */
+"title-plus-account-count" = "계정 %@개";
+
+/* (No Comment) */
+"title-plus-account-singular-count" = "계정";
+
+/* (No Comment) */
 "title-plus-asset-count" = "자산 %@개";
 
 /* (No Comment) */
@@ -2139,6 +2151,9 @@
 
 /* (No Comment) */
 "title-save" = "저장";
+
+/* (No Comment) */
+"title-select-all" = "전체 선택";
 
 /* (No Comment) */
 "title-select-asset" = "자산 선택";
@@ -2193,6 +2208,9 @@
 
 /* (No Comment) */
 "title-unknown" = "이름 없음";
+
+/* (No Comment) */
+"title-unselect-all" = "전체 선택 해제";
 
 /* (No Comment) */
 "title-verify" = "확인";
@@ -2585,6 +2603,12 @@
 "wallet-connect-session-connection-description" = "%@에서 계정 연결을 요청합니다";
 
 /* (No Comment) */
+"wallet-connect-session-disconnect-all-action" = "모든 세션 연결 해제";
+
+/* (No Comment) */
+"wallet-connect-session-disconnect-all-message" = "모든 세션을 연결 해제하시겠습니까?";
+
+/* (No Comment) */
 "wallet-connect-session-disconnect-fail-message" = "%@ 세션에서 연결을 끊지 못했습니다.";
 
 /* (No Comment) */
@@ -2868,4 +2892,64 @@
 
 /* (No Comment) */
 "wc-transaction-request-signed-warning-title" = "트랜잭션이 처리 중입니다!";
+
+/* (No Comment) */
+"web-export-accoounts-domain-confirmation-disclaimer-body" = "계정을 안전한 위치로 내보내기 위해, 항상 공식 Pera Web URL에 접속 중인지 확인하세요:";
+
+/* (No Comment) */
+"web-export-accoounts-domain-confirmation-disclaimer-body-singular" = "계정을 안전한 위치로 내보내기 위해, 항상 공식 Pera Web URL에 접속 중인지 확인하세요:";
+
+/* (No Comment) */
+"web-export-account-confirmation-list-description" = "계정을 Pera Web으로 안전하게 내보내려고 합니다:";
+
+/* (No Comment) */
+"web-export-account-confirmation-list-description-singular" = "계정을 Pera Web으로 안전하게 내보내려고 합니다:";
+
+/* (No Comment) */
+"web-export-account-list-description" = "Pera Web Wallet으로 비밀문구를 공유하고 가져오려고 합니다!\n요청한 적이 없다면 요청을 수락하지 마세요.";
+
+/* (No Comment) */
+"web-export-account-list-description-highlighted" = "Pera Web Wallet으로 비밀문구를 공유하고 가져오려고 합니다!";
+
+/* (No Comment) */
+"web-export-account-list-no-content-body" = "내보낼 수 있는 계정을 찾을 수 없습니다.";
+
+/* MARK: Web Export */
+"web-export-account-list-title" = "Pera Web으로 내보내기";
+
+/* (No Comment) */
+"web-export-accounts-confirmation-list-title" = "계정 확인";
+
+/* (No Comment) */
+"web-export-accounts-confirmation-list-title-singular" = "계정 확인";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-body" = "보안을 위해 컴퓨터에 표시되는 도메인 이름을 입력하여 계정을 Pera Web으로 내보내고 있는지 확인해주세요.";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-body-singular" = "보안을 위해 컴퓨터에 표시되는 도메인 이름을 입력하여 계정을 Pera Web으로 내보내고 있는지 확인해주세요.";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-input-floating-placeholder" = "웹 지갑의 URL";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-input-placeholder" = "웹 지갑의 URL을 입력하세요";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-title" = "도메인 내보내기 확인";
+
+/* (No Comment) */
+"web-export-encryption-error-message" = "수신 데이터를 해독하는 동안 오류가 발생했습니다. QR 코드를 한 번 더 스캔하여 다시 시도해주세요.";
+
+/* (No Comment) */
+"web-export-result-body" = "이제 계정을 Pera Web Wallet에서 사용할 수 있습니다.";
+
+/* (No Comment) */
+"web-export-result-body-singular" = "이제 계정을 Pera Web Wallet에서 사용할 수 있습니다.";
+
+/* (No Comment) */
+"web-export-result-title" = "계정을 내보냈습니다!";
+
+/* (No Comment) */
+"web-export-result-title-singular" = "계정을 내보냈습니다!";
 

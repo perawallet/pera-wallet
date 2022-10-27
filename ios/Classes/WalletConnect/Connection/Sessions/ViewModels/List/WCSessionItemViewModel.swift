@@ -15,29 +15,29 @@
 //
 //   WCSessionItemViewModel.swift
 
-import UIKit
+import CoreGraphics
 import MacaroonUIKit
 import SwiftDate
 import MacaroonURLImage
 
-final class WCSessionItemViewModel: PairedViewModel {
+struct WCSessionItemViewModel: PairedViewModel {
     private(set) var image: ImageSource?
-    private(set) var name: String?
-    private(set) var description: String?
-    private(set) var status: String?
-    private(set) var date: String?
+    private(set) var name: EditText?
+    private(set) var description: EditText?
+    private(set) var date: EditText?
+    private(set) var status: EditText?
 
     init(_ session: WCSession) {
         bindImage(session)
         bindName(session)
         bindDescription(session)
-        bindStatus(session)
         bindDate(session)
+        bindStatus(session)
     }
 }
 
 extension WCSessionItemViewModel {
-    private func bindImage(_ session: WCSession) {
+    private mutating func bindImage(_ session: WCSession) {
         let placeholderImages: [Image] = [
             "icon-session-placeholder-1",
             "icon-session-placeholder-2",
@@ -45,34 +45,66 @@ extension WCSessionItemViewModel {
             "icon-session-placeholder-4"
         ]
 
+        let placeholder = ImagePlaceholder(
+            image: AssetImageSource(asset: placeholderImages.randomElement()!.uiImage)
+        )
+
         image = PNGImageSource(
             url: session.peerMeta.icons.first,
-            color: nil,
             size: .resize(CGSize(width: 40, height: 40), .aspectFit),
             shape: .circle,
-            placeholder: ImagePlaceholder(image: AssetImageSource(asset:  placeholderImages.randomElement()?.uiImage), text: nil),
-            forceRefresh: false
+            placeholder: placeholder
         )
     }
 
-    private func bindName(_ session: WCSession) {
-        name = session.peerMeta.name
+    private mutating func bindName(_ session: WCSession) {
+        name = .attributedString(
+            session.peerMeta.name
+                .bodyMedium(
+                    lineBreakMode: .byTruncatingTail
+                )
+        )
     }
 
-    private func bindDescription(_ session: WCSession) {
-        description = session.peerMeta.description
-    }
-
-    private func bindStatus(_ session: WCSession) {
-        if let connectedAccount = session.walletMeta?.accounts?.first {
-            status = "wallet-connect-session-connected-with-account".localized(params: connectedAccount.shortAddressDisplay)
+    private mutating func bindDescription(_ session: WCSession) {
+        guard let aDescription = session.peerMeta.description,
+              !aDescription.isEmptyOrBlank else {
             return
         }
 
-        status = "wallet-connect-session-connected".localized
+        description = .attributedString(
+            aDescription
+                .footnoteRegular()
+        )
     }
 
-    private func bindDate(_ session: WCSession) {
-        date = session.date.toFormat("MMMM dd, yyyy - HH:mm")
+    private mutating func bindDate(_ session: WCSession) {
+        let formattedDate = session.date.toFormat("MMMM dd, yyyy - HH:mm")
+
+        date = .attributedString(
+            formattedDate
+                .footnoteRegular(
+                    lineBreakMode: .byTruncatingTail
+                )
+        )
+    }
+
+    private mutating func bindStatus(_ session: WCSession) {
+        let aStatus: String
+
+        if let connectedAccount = session.walletMeta?.accounts?.first {
+            aStatus =
+            "wallet-connect-session-connected-with-account".localized(params: connectedAccount.shortAddressDisplay)
+        } else {
+            aStatus = "wallet-connect-session-connected".localized
+        }
+
+        status = .attributedString(
+            aStatus
+                .footnoteMedium(
+                    alignment: .center,
+                    lineBreakMode: .byTruncatingTail
+                )
+        )
     }
 }

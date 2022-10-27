@@ -17,7 +17,9 @@
 
 import Foundation
 
-final class WCSession: Codable {
+final class WCSession:
+    Codable,
+    Hashable {
     let urlMeta: WCURLMeta
     let peerMeta: WCPeerMeta
     let walletMeta: WCWalletMeta?
@@ -32,5 +34,18 @@ final class WCSession: Codable {
 
     var sessionBridgeValue: WalletConnectSession {
         WalletConnectSession(url: urlMeta.wcURL, dAppInfo: peerMeta.dappInfo, walletInfo: walletMeta?.walletInfo)
+    }
+
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(urlMeta.topic)
+    }
+
+    static func == (
+        lhs: WCSession,
+        rhs: WCSession
+    ) -> Bool {
+        return lhs.urlMeta.topic == rhs.urlMeta.topic
     }
 }

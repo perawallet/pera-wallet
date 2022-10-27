@@ -79,6 +79,11 @@ extension HomeAPIDataController {
 
         announcementDataController.hideAnnouncement(visibleAnnouncement)
     }
+
+    func removeAccount(_ account: Account) {
+        sharedDataController.resetPollingAfterRemoving(account)
+        reload()
+    }
 }
 
 extension HomeAPIDataController {

@@ -21,9 +21,9 @@ import XCTest
 
 class AssetDetailCardViewModelTests: XCTestCase {
 
-    private let account = Bundle.main.decode(response: Account.self, from: "AccountA.json")
-    private let currency = Bundle.main.decode(response: Currency.self, from: "Currency.json")
-    private let assetDetail = Bundle.main.decode(response: AssetDetail.self, from: "HipoCoinAsset.json")
+//    private let account = Bundle.main.decode(response: Account.self, from: "AccountA.json")
+//    private let currency = Bundle.main.decode(response: Currency.self, from: "Currency.json")
+//    private let assetDetail = Bundle.main.decode(response: AssetDetail.self, from: "HipoCoinAsset.json")
 
 //    func testAlgosCardAmount() {
 //        let viewModel = AlgosCardViewModel(account: account, currency: currency)

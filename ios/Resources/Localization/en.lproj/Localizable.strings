@@ -77,6 +77,9 @@
 "title-total-supply" = "Total Supply";
 "title-about-with-param" = "ABOUT %@";
 "title-csv" = "CSV";
+"title-select-all" = "Select all";
+"title-unselect-all" = "Unselect all";
+"title-disclaimer" = "DISCLAIMER";
 "activity" = "Activity";
 "about" = "About";
 "url-copied" = "URL copied to clipboard";
@@ -91,7 +94,7 @@
 "account-type-selection-recover" = "I already have an account";
 "account-type-selection-recover-detail" = "Import an existing Algorand account\nvia recovery passphrase or pair your Ledger";
 "account-type-selection-ledger" = "Pair Ledger Device";
-"account-type-selection-ledger-detail" = "I want to create an Algorand account\nthat is backed by my Ledger hardware wallet";
+"account-type-selection-ledger-detail" = "I want to recover an Algorand account\nthat is backed by my Ledger hardware wallet";
 "account-welcome-wallet-title" = "Welcome to\nPera Wallet";
 "account-type-selection-passphrase" = "Recover an account";
 "account-type-selection-passphrase-detail" = "I want to recover an Algorand account using my 25-word passphrase";
@@ -208,7 +211,7 @@
 
 // MARK: Login
 "login-title" = "Unlock";
-"login-subtitle" = "Enter your\n6-digit pin";
+"login-subtitle" = "Enter your PIN";
 
 // MARK: Accounts
 "accounts-tranaction-empty-text" = "No Transactions";
@@ -679,6 +682,8 @@
 "title-plus-asset-singular-count" = "%@ Asset";
 "title-plus-collectible-count" = "%@ NFTs";
 "title-plus-collectible-singular-count" = "%@ NFT";
+"title-plus-account-count" = "%@ Accounts";
+"title-plus-account-singular-count" = "Account";
 
 "ledger-account-detail-name" = "Ledger #%@";
 "ledger-account-detail-title" = "Ledger Account";
@@ -691,8 +696,8 @@
 "min-balance-title" = "Minimum Balance Required";
 "title-continue" = "Continue";
 "title-dont-show-again" = "Don’t Show This Again";
-"required-min-balance-title" = "Low Balance";
-"required-min-balance-description" = "You don't have enough balance to support the transaction fees. The Algorand blockchain requires 0.001 Algos to support a transaction. You can increase your Algo balance to support this transaction fee.\n\nIf you opted-in for dApps and smart contracts associated with your account (from different ecosystem apps), each asset increases the minimum balance required by 0.1 Algo. To reduce the minimum balance required for this account, you must opt-out from the assets or dApps causing that increased minimum balance.";
+"required-min-balance-title" = "Insufficient Algo Balance";
+"required-min-balance-description" = "This account doesn't have the minimum required Algo balance to support this transaction. Please add more Algo to the account before continuing.\n\nMinimum required Algo balance increases by 0.1 Algo with each asset, NFT and smart contract you opt-in with. You can opt-out of assets and smart contracts to decrease the minimum required Algo balance.";
 
 "screenshot-title" = "Screenshot Detected";
 "screenshot-description" = "Do not backup your recovery passphrase by taking a screenshot. Having an image containing your passphrase is a security risk.";
@@ -787,6 +792,8 @@
 "wallet-connect-session-error-no-account" = "You don't have any account that WalletConnect can connect.";
 "wallet-connect-session-list-empty" = "You haven't connected any apps yet.";
 "wallet-connect-session-disconnect-message" = "Would you like to disconnect from %@?";
+"wallet-connect-session-disconnect-all-action" = "Disconnect All Sessions";
+"wallet-connect-session-disconnect-all-message" = "Would you like to disconnect all sessions?";
 "wallet-connect-session-connected" = "Connected";
 "wallet-connect-session-connected-with-account" = "Connected with %@";
 "wallet-connect-session-disconnect-fail-message" = "Failed to disconnect from Session %@.";
@@ -935,6 +942,7 @@
 "account-options-add-account-title" = "Add Account";
 "account-options-arrange-list-title" = "Arrange List";
 "account-listing-error-message" = "Sorry, we can't show the details of this portfolio. It looks like we are having issues for the calculation.\n\nPlease note that some asset values might not be available, therefore the total portfolio value should be considered an estimation.";
+"account-listing-partial-error-message" = "Sorry, there was an error fetching some of your accounts. The portfolio value is calculated based only on successfully fetched ones.";
 
 "account-detail-portfolio-title" = "Account Value";
 "account-detail-assets-search" = "Search assets";
@@ -1172,3 +1180,26 @@
 "asa-about-asa-show-on" = "Show on";
 "asa-about-asa-show-on-pera-explorer" = "Pera Explorer";
 "asa-about-asa-project-website" = "Project website";
+
+// MARK: Web Export
+"web-export-account-list-title" = "Export to Pera Web";
+"web-export-account-list-description" = "You’re about to share and import your passphrase into Pera Web Wallet!\nNever accept a request that hasn’t been requested by you.";
+"web-export-account-list-description-highlighted" = "You’re about to share and import your passphrase into Pera Web Wallet!";
+"web-export-account-list-no-content-body" = "We couldn't find any accounts eligible for export.";
+"web-export-accounts-domain-confirmation-title" = "Confirm Export Domain";
+"web-export-accounts-domain-confirmation-body" = "For your security, please confirm that you are exporting your accounts to Pera Web by entering the domain name you see on your computer.";
+"web-export-accounts-domain-confirmation-body-singular" = "For your security, please confirm that you are exporting your account to Pera Web by entering the domain name you see on your computer.";
+"web-export-accounts-domain-confirmation-input-floating-placeholder" = "URL of the Web Wallet";
+"web-export-accounts-domain-confirmation-input-placeholder" = "Enter URL of the Web Wallet";
+"web-export-accoounts-domain-confirmation-disclaimer-body" = "To make sure that you are exporting your accounts to a safe location, always verify you are on the official Pera Web URL:";
+"web-export-accoounts-domain-confirmation-disclaimer-body-singular" = "To make sure that you are exporting your account to a safe location, always verify you are on the official Pera Web URL:";
+"web-export-accounts-confirmation-list-title" = "Confirm Accounts";
+"web-export-accounts-confirmation-list-title-singular" = "Confirm Account";
+"web-export-account-confirmation-list-description" = "You’re about to export these accounts to Pera Web securely:";
+"web-export-result-title" = "Accounts exported successfully!";
+"web-export-account-confirmation-list-description-singular" = "You’re about to export this account to Pera Web securely:";
+"web-export-result-title" = "Accounts exported successfully!";
+"web-export-result-title-singular" = "Account exported successfully!";
+"web-export-result-body" = "You can now use these accounts on Pera Web Wallet.";
+"web-export-result-body-singular" = "You can now use this account on Pera Web Wallet.";
+"web-export-encryption-error-message" = "There was an error decrypting incoming data. Please try again by scanning the QR code once more.";

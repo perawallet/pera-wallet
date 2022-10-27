@@ -27,10 +27,10 @@ final class AppCallAssetListLocalDataController:
         label: "com.algorand.queue.appCallAssetListLocalDataController"
     )
 
-    private(set) var assets: [StandardAsset]
+    private(set) var assets: [Asset]
 
     init(
-        assets: [StandardAsset]
+        assets: [Asset]
     ) {
         self.assets = assets
     }
@@ -73,7 +73,7 @@ extension AppCallAssetListLocalDataController {
     }
 
     private func makeAssetItem(
-        _ asset: StandardAsset
+        _ asset: Asset
     ) -> AppCallAssetListItem {
         let viewModel = AppCallAssetPreviewWithImageViewModel(
             asset: asset

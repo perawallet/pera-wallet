@@ -114,11 +114,14 @@ enum AlgorandWeb: String {
     case governence = "https://governance.algorand.foundation/"
     case peraBlogLaunchAnnouncement = "https://perawallet.app/blog/launch-announcement/"
     case asaVerificationSupport = "https://explorer.perawallet.app/asa-verification/"
+    case peraWebApp = "https://web.perawallet.app"
 
     var presentation: String {
         switch self {
         case .support:
             return "www.perawallet.app/support/"
+        case .peraWebApp:
+            return "web.perawallet.app"
         default:
             return self.rawValue
         }

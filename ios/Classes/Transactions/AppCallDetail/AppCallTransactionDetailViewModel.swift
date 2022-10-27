@@ -32,7 +32,7 @@ final class AppCallTransactionDetailViewModel: ViewModel {
     init(
         transaction: Transaction,
         account: Account,
-        assets: [StandardAsset]?
+        assets: [Asset]?
     ) {
         bindSender(
             transaction: transaction,
@@ -74,7 +74,7 @@ extension AppCallTransactionDetailViewModel {
     }
 
     private func bindAssets(
-        _ assets: [StandardAsset]?
+        _ assets: [Asset]?
     ) {
         if let assets = assets,
            !assets.isEmpty {

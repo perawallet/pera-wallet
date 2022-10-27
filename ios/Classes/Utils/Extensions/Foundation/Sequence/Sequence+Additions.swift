@@ -23,3 +23,9 @@ extension Sequence where Element: Hashable {
         return filter { set.insert($0).inserted }
     }
 }
+
+extension Sequence {
+    var isSingular: Bool {
+        underestimatedCount == 1
+    }
+}

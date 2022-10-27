@@ -196,7 +196,7 @@ extension InnerTransactionListViewController {
         )
     }
 
-    private func getAssetDetailForTransactionType(_ transaction: Transaction) -> [StandardAsset]? {
+    private func getAssetDetailForTransactionType(_ transaction: Transaction) -> [Asset]? {
         let draft = dataController.draft
 
         switch draft.type {

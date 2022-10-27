@@ -14,6 +14,9 @@
 "account-listing-error-message" = "申し訳ありませんが、このポートフォリオの詳細を表示することはできません。計算に問題が発生しているようです。\n\n一部の資産価格が公開されていない場合があり、ポートフォリオの合計値は推定値としてお考え下さい。";
 
 /* (No Comment) */
+"account-listing-partial-error-message" = "一部のアカウントの取得に失敗しました。ポートフォリオ値は、正常に取得されたもののみに基づいて計算されます。";
+
+/* (No Comment) */
 "account-name-setup-description" = "Pera Walletを使用する際、簡単に識別できるようにアカウントに名前を付けてください。これらの名前はローカルに保存され、ユーザーだけが見ることができます。";
 
 /* (No Comment) */
@@ -68,7 +71,7 @@
 "account-type-selection-ledger" = "Ledgerデバイスのペアリング";
 
 /* (No Comment) */
-"account-type-selection-ledger-detail" = "Ledgerハードウェアウォレットと紐づけされた\nAlgorandアカウントを作成したい";
+"account-type-selection-ledger-detail" = "Ledgerハードウェアウォレットと紐づけされた\nAlgorandアカウントを復元したい";
 
 /* (No Comment) */
 "account-type-selection-passphrase" = "アカウントを復元する";
@@ -812,7 +815,7 @@
 "introduction-recover-account-text" = "すでにアカウントを持っている";
 
 /* (No Comment) */
-"introduction-title-terms-and-services" = "アカウントを作成することにより、お客様はPera Walletの<br><a href=\"%@\">Terms and Conditions</a>および<a href=\"%@\">Privacy Policy</a>に同意したとみなされます";
+"introduction-title-terms-and-services" = "アカウントを作成することで、お客様はPera Walletの<br><a href=\"%@\">利用規約</a>と<a href=\"%@\">プライバシーポリシー</a>に同意したとみなされます";
 
 /* (No Comment) */
 "ledger-account-detail-assets" = "資産";
@@ -962,22 +965,22 @@
 "ledger-troubleshooting-app-support" = "Algorand Ledgerアプリをデバイスにインストールする方法については、%@ をご覧ください。";
 
 /* (No Comment) */
-"ledger-troubleshooting-bluetooth-connection-html" = "iOSデバイスのBluetoothを無効または有効にします。 <br /> <br />\n<ul>\n<li>設定を<b>タップ</b></li>\n<li>「一般」を<b>選択</b></li>\n<li>「Bluetooth」を<b>タップ</b></li>\n<li>On/Offボタンを<b>切り替えて</b> Bluetoothの</li>\n<li>OnまたはOffを<b>切り替えます</b></li>\n</ul>";
+"ledger-troubleshooting-bluetooth-connection-html" = "iOSデバイスのBluetoothを無効または有効にします。<br /> <br />\n<ul>\n<li><b>設定</b>をタップします</li>\n<li><b>「一般」</b>を選択します</li>\n<li><b>「Bluetooth」</b>をタップします</li>\n<li><b>On/Offボタン</b>を切り替えて</li>\n<li>Bluetoothを<b>OnまたはOff</b>にします</li>\n</ul>";
 
 /* (No Comment) */
 "ledger-troubleshooting-close-others" = "他のアプリケーション（Ledgerアプリ、暗号通貨ウォレット、Ledgerとペアリングしようとする可能性のあるもの）を閉じます。";
 
 /* (No Comment) */
-"ledger-troubleshooting-install-app-first-html" = "まず、Ledgerの包括的な <a href=\"https://www.ledger.com/start\">Getting Started</a> チュートリアルに従ってください。";
+"ledger-troubleshooting-install-app-first-html" = "まず、Ledgerの包括的な<a href=\"https://www.ledger.com/start\">Getting Started</a>チュートリアルに従ってください。";
 
 /* (No Comment) */
-"ledger-troubleshooting-install-app-second-html" = "チュートリアルで「デバイスにインストールするアプリケーションを選択してください」という指示が出たら、検索バーに <b>Algorand</b> と入力してインストールしてください。";
+"ledger-troubleshooting-install-app-second-html" = "チュートリアルで「デバイスにインストールするアプリケーションを選択してください」という指示が出たら、検索バーに<b>Algorand</b>と入力してインストールしてください。";
 
 /* (No Comment) */
-"ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "より高度なトラブルシューティングについては、Ledgerの公式 <a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">Bluetooth Troubleshooting Guide</a> をご覧ください。";
+"ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html" = "より高度なトラブルシューティングについては、Ledgerの公式<a href=\"https://support.ledger.com/hc/en-us/articles/360025864773\">Bluetooth Troubleshooting Guide</a>をご覧ください。";
 
 /* (No Comment) */
-"ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "LedgerのBluetooth機能の一般的な使用法については、ledgerの公式 <a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">Bluetooth Connection Guide</a> をご覧ください。";
+"ledger-troubleshooting-ledger-bluetooth-connection-guide-html" = "LedgerのBluetooth機能の一般的な使用法については、Ledgerの公式<a href=\"https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection\">Bluetooth Connection Guide</a>をご覧ください。";
 
 /* (No Comment) */
 "ledger-troubleshooting-ledger-support" = "Ledgerデバイスの一般的なトラブルシューティングについては、次のWebサイトをご覧ください。";
@@ -986,7 +989,7 @@
 "ledger-troubleshooting-ledger-support-title" = "Ledgerサポート";
 
 /* (No Comment) */
-"ledger-troubleshooting-open-app-first-html" = "Ledgerの包括的な <a href=\"https://www.ledger.com/start\">Getting Started</a> チュートリアルで、Ledgerデバイスにアプリをインストールし、開く方法を説明します。";
+"ledger-troubleshooting-open-app-first-html" = "Ledgerの包括的な<a href=\"https://www.ledger.com/start\">Getting Started</a>チュートリアルに従ってください。このチュートリアルでは、Ledgerデバイスにアプリケーションをインストールして開く方法を説明しています。";
 
 /* (No Comment) */
 "ledger-troubleshooting-open-app-second-html" = "まだLedgerデバイスに<b>Algorand</b>アプリをインストールしていない場合、チュートリアルで「デバイスにインストールするアプリケーションを選択してください」という指示が出たら、検索バーに<b>Algorand</b>と入力してインストールしてください。";
@@ -1052,7 +1055,7 @@
 "local-authentication-reason-touch-id-title" = "Touch IDによるロック解除";
 
 /* (No Comment) */
-"login-subtitle" = "6桁のPINを\n入力してください";
+"login-subtitle" = "PINを入力してください";
 
 /* MARK: Login */
 "login-title" = "ロック解除";
@@ -1601,10 +1604,10 @@
 "request-title" = "リクエスト";
 
 /* (No Comment) */
-"required-min-balance-description" = "トランザクション手数料をまかなうために十分な残高がありません。Algorandブロックチェーンでは、トランザクションをサポートするために0.001 Algosを必要とします。トランザクション手数料をサポートするために、Algo残高を増やしてください。\n\nアカウントに関連するdAppsとスマートコントラクト（別のエコシステムのアプリオプトインした場合、各資産によって必要な最低残高が0.1 Algo増加します。このアカウントに必要な最低残高を減らすには、最低残高を増加させている資産またはdAppsをオプトアウトする必要があります。";
+"required-min-balance-description" = "このアカウントには、このトランザクションをサポートするために最低限必要なAlgo残高がありません。続行する前に、アカウントにAlgoを追加してください。\n\n最低限必要なAlgo残高は、オプトインした資産、NFT、スマートコントラクトごとに0.1 Algo上昇します。資産やスマートコントラクトをオプトアウトすることで、最低限必要なAlgo残高を減らすことができます。";
 
 /* (No Comment) */
-"required-min-balance-title" = "残高が低いです";
+"required-min-balance-title" = "Algo残高が不足しています";
 
 /* (No Comment) */
 "reward-list-title" = "リワード";
@@ -1988,6 +1991,9 @@
 "title-decline-all" = "すべて拒否";
 
 /* (No Comment) */
+"title-disclaimer" = "免責事項";
+
+/* (No Comment) */
 "title-disconnect" = "接続解除";
 
 /* (No Comment) */
@@ -2099,6 +2105,12 @@
 "title-paste-passphrase" = "パスフレーズ全体の貼り付け";
 
 /* (No Comment) */
+"title-plus-account-count" = "%@アカウント";
+
+/* (No Comment) */
+"title-plus-account-singular-count" = "アカウント";
+
+/* (No Comment) */
 "title-plus-asset-count" = "%@ 資産";
 
 /* (No Comment) */
@@ -2139,6 +2151,9 @@
 
 /* (No Comment) */
 "title-save" = "保存";
+
+/* (No Comment) */
+"title-select-all" = "すべて選択";
 
 /* (No Comment) */
 "title-select-asset" = "資産の選択";
@@ -2193,6 +2208,9 @@
 
 /* (No Comment) */
 "title-unknown" = "無名";
+
+/* (No Comment) */
+"title-unselect-all" = "すべて選択解除";
 
 /* (No Comment) */
 "title-verify" = "検証";
@@ -2585,6 +2603,12 @@
 "wallet-connect-session-connection-description" = "%@ がお客様の\nアカウントへの接続を要求しています";
 
 /* (No Comment) */
+"wallet-connect-session-disconnect-all-action" = "すべてのセッションを切断する";
+
+/* (No Comment) */
+"wallet-connect-session-disconnect-all-message" = "すべてのセッションを切断しますか？";
+
+/* (No Comment) */
 "wallet-connect-session-disconnect-fail-message" = "セッション%@からの切断に失敗しました。";
 
 /* (No Comment) */
@@ -2868,4 +2892,64 @@
 
 /* (No Comment) */
 "wc-transaction-request-signed-warning-title" = "トランザクションを処理しています！";
+
+/* (No Comment) */
+"web-export-accoounts-domain-confirmation-disclaimer-body" = "アカウントを安全な場所にエクスポートしていることを確認するために、常に公式のPera Web URL上にいることをご確認ください:";
+
+/* (No Comment) */
+"web-export-accoounts-domain-confirmation-disclaimer-body-singular" = "アカウントを安全な場所にエクスポートしていることを確認するために、常に公式のPera Web URL上にいることをご確認ください:";
+
+/* (No Comment) */
+"web-export-account-confirmation-list-description" = "これらのアカウントをPera Webに安全にエクスポートしようとしています:";
+
+/* (No Comment) */
+"web-export-account-confirmation-list-description-singular" = "このアカウントをPera Webに安全にエクスポートしようとしています:";
+
+/* (No Comment) */
+"web-export-account-list-description" = "Pera Web Walletとパスフレーズを共有し、インポートしようとしています！ご自身のものでないリクエストは決して受け入れないでください。";
+
+/* (No Comment) */
+"web-export-account-list-description-highlighted" = "Pera Web Walletとパスフレーズを共有し、インポートしようとしています！";
+
+/* (No Comment) */
+"web-export-account-list-no-content-body" = "エクスポートの対象となるアカウントが見つかりませんでした。";
+
+/* MARK: Web Export */
+"web-export-account-list-title" = "Pera Webにエクスポート";
+
+/* (No Comment) */
+"web-export-accounts-confirmation-list-title" = "アカウントの確認";
+
+/* (No Comment) */
+"web-export-accounts-confirmation-list-title-singular" = "アカウントの確認";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-body" = "セキュリティのため、パソコンに表示されているドメイン名を入力して、Pera Webにアカウントをエクスポートしていることをご確認ください。";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-body-singular" = "セキュリティのため、パソコンに表示されているドメイン名を入力して、Pera Webにアカウントをエクスポートしていることをご確認ください。";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-input-floating-placeholder" = "Web WalletのURL";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-input-placeholder" = "Web WalletのURLを入力してください";
+
+/* (No Comment) */
+"web-export-accounts-domain-confirmation-title" = "ドメインエクスポートの確認";
+
+/* (No Comment) */
+"web-export-encryption-error-message" = "受信データの復号化の際にエラーが発生しました。QRコードをもう一度スキャンしてください。";
+
+/* (No Comment) */
+"web-export-result-body" = "これらのアカウントは、Pera Web Walletで利用できるようになりました。";
+
+/* (No Comment) */
+"web-export-result-body-singular" = "このアカウントは、Pera Web Walletで利用できるようになりました。";
+
+/* (No Comment) */
+"web-export-result-title" = "アカウントは正常にエクスポートされました！";
+
+/* (No Comment) */
+"web-export-result-title-singular" = "アカウントは正常にエクスポートされました！";
 

@@ -94,6 +94,7 @@ extension InvalidAccountOptionsViewController {
         addCopyAddressButton()
         addViewPassphraseButton()
         addShowQrCodeButton()
+        addRemoveAccountButton()
     }
     
     private func addCopyAddressButton() {
@@ -104,6 +105,10 @@ extension InvalidAccountOptionsViewController {
     }
     
     private func addViewPassphraseButton() {
+        guard !account.value.isWatchAccount() else {
+            return
+        }
+
         addButton(
             ViewPassphraseListItemButtonViewModel(),
             #selector(viewPassphrase)
@@ -114,6 +119,13 @@ extension InvalidAccountOptionsViewController {
         addButton(
             ShowQrCodeListItemButtonViewModel(),
             #selector(showQrCode)
+        )
+    }
+
+    private func addRemoveAccountButton() {
+        addButton(
+            RemoveAccountListItemButtonViewModel(),
+            #selector(removeAccount)
         )
     }
     
@@ -156,6 +168,13 @@ extension InvalidAccountOptionsViewController {
             self?.uiInteractions.didTapShowQRCode?()
         }
     }
+
+    @objc
+    private func removeAccount() {
+        closeScreen(by: .dismiss, animated: true) { [weak self] in
+            self?.uiInteractions.didTapRemoveAccount?()
+        }
+    }
 }
 
 extension InvalidAccountOptionsViewController {
@@ -163,5 +182,6 @@ extension InvalidAccountOptionsViewController {
         var didTapCopyAddress: EmptyHandler?
         var didTapViewPassphrase: EmptyHandler?
         var didTapShowQRCode: EmptyHandler?
+        var didTapRemoveAccount: EmptyHandler?
     }
 }

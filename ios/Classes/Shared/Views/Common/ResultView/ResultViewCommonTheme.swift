@@ -30,7 +30,8 @@ struct ResultViewCommonTheme: ResultViewTheme {
         _ family: LayoutFamily
     ) {
         self.icon = [
-            .adjustsImageForContentSizeCategory(true)
+            .adjustsImageForContentSizeCategory(true),
+            .contentMode(.center)
         ]
         self.title = [
             .font(Fonts.DMSans.medium.make(19)),

@@ -139,42 +139,43 @@ extension AssetListItemViewModel {
     mutating private func bindSecondaryValue(
         _ item: AssetItem
     ) {
+        let amount: Decimal
+
         let asset = item.asset
-        valueInUSD = asset.totalUSDValue ?? 0
+
         let formatter = item.currencyFormatter
         formatter.formattingContext = item.currencyFormattingContext ?? .listItem
+
+        valueInUSD = 0
 
         do {
             let exchanger: CurrencyExchanger
             if asset.isAlgo {
-                guard let fiatRawCurrency = try item.currency.fiatValue?.unwrap() else {
+                guard let fiatCurrencyValue = item.currency.fiatValue else {
                     secondaryValue = nil
-                    valueInUSD = 0
                     return
                 }
 
-                exchanger = CurrencyExchanger(currency: fiatRawCurrency)
-                valueInUSD = fiatRawCurrency.algoToUSDValue ?? 0
+                let rawFiatCurrency = try fiatCurrencyValue.unwrap()
+                exchanger = CurrencyExchanger(currency: rawFiatCurrency)
+                amount = try exchanger.exchangeAlgo(amount: asset.decimalAmount)
 
-                formatter.currency = fiatRawCurrency
+                valueInUSD = try exchanger.exchangeAlgoToUSD(amount: asset.decimalAmount)
+
+                formatter.currency = rawFiatCurrency
             } else {
                 guard let currencyValue = item.currency.primaryValue else {
                     secondaryValue = nil
-                    valueInUSD = 0
                     return
                 }
 
                 let rawCurrency = try currencyValue.unwrap()
                 exchanger = CurrencyExchanger(currency: rawCurrency)
+                amount = try exchanger.exchange(asset)
+
+                valueInUSD = asset.totalUSDValue ?? 0
 
                 formatter.currency = rawCurrency
-            }
-
-            let amount: Decimal
-            if asset.isAlgo {
-                amount = try exchanger.exchangeAlgo(amount: asset.decimalAmount)
-            } else {
-                amount = try exchanger.exchange(asset)
             }
 
             let text = formatter.format(amount)

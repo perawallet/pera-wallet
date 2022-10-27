@@ -44,7 +44,7 @@ final class ASAActivityScreen:
         } else {
             draft = AssetTransactionListing(
                 accountHandle: accountHandle,
-                asset: asset as? StandardAsset
+                asset: asset
             )
         }
 

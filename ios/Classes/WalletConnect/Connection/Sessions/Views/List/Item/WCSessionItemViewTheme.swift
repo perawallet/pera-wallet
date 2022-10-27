@@ -19,73 +19,55 @@ import MacaroonUIKit
 import UIKit
 
 struct WCSessionItemViewTheme: LayoutSheet, StyleSheet {
-    let backgroundColor: Color
-    let nameLabel: TextStyle
-    let disconnectOptionsButton: ButtonStyle
-    let descriptionLabel: TextStyle
-    let statusLabel: TextStyle
-    let dateLabel: TextStyle
-
+    let horizontalPadding: LayoutMetric
+    let image: URLImageViewStyleLayoutSheet
+    let imageSize: LayoutSize
     let imageBorder: Border
     let imageCorner: Corner
-    let dateLabelTopInset: LayoutMetric
-    let descriptionTopInset: LayoutMetric
-    let nameLabelHorizontalInset: LayoutMetric
-    let imageTopInset: LayoutMetric
-    let imageSize: LayoutSize
-    let disconnectOptionsButtonSize: LayoutSize
-    let horizontalInset: LayoutMetric
-    let statusLabelSize: LayoutSize
-    let statusLabelCorner: Corner
-    let statusLabelTopInset: LayoutMetric
+    let name: TextStyle
+    let nameHorizontalPadding: LayoutMetric
+    let optionsAction: ButtonStyle
+    let descriptionTopPadding: LayoutMetric
+    let description: TextStyle
+    let dateTopPadding: LayoutMetric
+    let date: TextStyle
+    let statusTopPadding: LayoutMetric
+    let status: TextStyle
+    let statusContentEdgeInsets: LayoutPaddings
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = Colors.Defaults.background
-        self.nameLabel = [
-            .isInteractable(false),
-            .text("wallet-connect-session-select-account".localized),
-            .textAlignment(.left),
-            .textOverflow(SingleLineFittingText()),
-            .font(Fonts.DMSans.medium.make(15)),
+        self.horizontalPadding = 24
+        self.image = URLImageViewNoStyleLayoutSheet()
+        self.imageSize = (40, 40)
+        self.imageBorder = Border(
+            color: Colors.Layer.grayLighter.uiColor,
+            width: 1
+        )
+        self.imageCorner = Corner(radius: imageSize.h / 2)
+        self.name = [
+            .textOverflow(SingleLineText()),
             .textColor(Colors.Text.main)
         ]
-        self.descriptionLabel = [
-            .isInteractable(false),
-            .textAlignment(.left),
-            .textOverflow(MultilineText(numberOfLines: 0)),
+        self.nameHorizontalPadding = 16
+        self.description = [
+            .textOverflow(FittingText()),
             .textColor(Colors.Text.gray),
-            .font(Fonts.DMSans.regular.make(13))
         ]
-        self.disconnectOptionsButton = [
-            .icon([.normal("icon-options")])
+        self.descriptionTopPadding = 8
+        self.optionsAction = [
+            .icon([ .normal("icon-options") ])
         ]
-        self.statusLabel = [
-            .isInteractable(false),
-            .textAlignment(.center),
-            .textOverflow(SingleLineFittingText()),
-            .font(Fonts.DMSans.regular.make(13)),
+        self.date = [
+            .textOverflow(SingleLineText()),
+            .textColor(Colors.Text.grayLighter)
+        ]
+        self.dateTopPadding = 12
+        self.status = [
+            .textOverflow(SingleLineText()),
             .textColor(Colors.Helpers.positive),
             .backgroundColor(Colors.Helpers.positive.uiColor.withAlphaComponent(0.1))
         ]
-        self.dateLabel = [
-            .isInteractable(false),
-            .textAlignment(.left),
-            .textOverflow(SingleLineFittingText()),
-            .font(Fonts.DMSans.regular.make(13)),
-            .textColor(Colors.Text.grayLighter)
-        ]
-        self.imageBorder = Border(color: Colors.Layer.grayLighter.uiColor, width: 1)
-
-        self.horizontalInset = 24
-        self.statusLabelSize = (226, 24)
-        self.statusLabelCorner = Corner(radius: statusLabelSize.h / 2)
-        self.imageSize = (40, 40)
-        self.imageCorner = Corner(radius: imageSize.h / 2)
-        self.imageTopInset = 4
-        self.disconnectOptionsButtonSize = (32, 32)
-        self.nameLabelHorizontalInset = 16
-        self.descriptionTopInset = 8
-        self.dateLabelTopInset = 12
-        self.statusLabelTopInset = 8
+        self.statusTopPadding = 10
+        self.statusContentEdgeInsets = (2, 8, 2, 8)
     }
 }

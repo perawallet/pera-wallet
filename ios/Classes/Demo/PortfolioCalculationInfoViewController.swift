@@ -76,6 +76,9 @@ final class PortfolioCalculationInfoViewController:
              .failure:
             addError()
             addInfo(topPadding: theme.spacingBetweenErrorAndInfo)
+        case .partialFailure:
+            addPartialAccountError()
+            addInfo(topPadding: theme.spacingBetweenErrorAndInfo)
         }
         
         addCloseAction()
@@ -110,6 +113,15 @@ extension PortfolioCalculationInfoViewController {
         errorView.customize(theme.error)
         errorView.bindData(PortfolioCalculationErrorViewModel())
         
+        contextView.addArrangedSubview(errorView)
+    }
+
+    private func addPartialAccountError() {
+        let errorView = ErrorView()
+
+        errorView.customize(theme.error)
+        errorView.bindData(PortfolioCalculationPartialErrorViewModel())
+
         contextView.addArrangedSubview(errorView)
     }
     

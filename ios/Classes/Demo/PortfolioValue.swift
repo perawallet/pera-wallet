@@ -18,6 +18,7 @@ import Foundation
 
 enum PortfolioValue {
     case available(Portfolio)
+    case partialFailure(Portfolio, PortfolioError)
     case failure(PortfolioError)
 
     init(
@@ -32,20 +33,26 @@ enum PortfolioValue {
         let availableAccountValues = accountValues.compactMap {
             $0.isAvailable ? $0.value : nil
         }
+        let portfolio = Portfolio(accounts: availableAccountValues)
 
         if accountValues.count == availableAccountValues.count {
-            let portfolio = Portfolio(accounts: availableAccountValues)
             self = .available(portfolio)
         } else {
-            self = .failure(.unavailableAccountsFound)
+            if availableAccountValues.isEmpty {
+                self = .failure(.unavailableAccountsFound)
+            } else {
+                self = .partialFailure(portfolio, .unavailableAccountsFound)
+            }
         }
     }
 }
 
 extension PortfolioValue {
     var isAvailable: Bool {
-        let portfolio = try? unwrap()
-        return portfolio != nil
+        switch self {
+        case .available: return true
+        default: return false
+        }
     }
 }
 
@@ -53,6 +60,7 @@ extension PortfolioValue {
     func unwrap() throws -> Portfolio {
         switch self {
         case .available(let portfolio): return portfolio
+        case .partialFailure(let portfolio, _): return portfolio
         case .failure(let error): throw error
         }
     }

@@ -23,6 +23,7 @@ protocol ASADetailScreenDataController: AnyObject {
     typealias Error = HIPNetworkError<NoAPIModel>
 
     var eventHandler: EventHandler? { get set }
+    var configuration: ASADetailScreenConfiguration { get }
 
     var account: Account { get }
     var asset: Asset { get }
@@ -34,4 +35,9 @@ enum ASADetailScreenDataControllerEvent {
     case willLoadData
     case didLoadData
     case didFailToLoadData(ASADiscoveryScreenDataController.Error)
+}
+
+struct ASADetailScreenConfiguration {
+    let shouldDisplayAccountActionsBarButtonItem: Bool
+    let shouldDisplayQuickActions: Bool
 }

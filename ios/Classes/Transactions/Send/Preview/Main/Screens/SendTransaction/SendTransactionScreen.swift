@@ -30,7 +30,9 @@ final class SendTransactionScreen: BaseViewController {
     var eventHandler: EventHandler?
 
     private(set) lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var transitionToInsufficientAlgoBalance = BottomSheetTransition(presentingViewController: self)
 
+    private lazy var navigationTitleView = AccountNameTitleView()
     private lazy var nextButton = Button()
     private lazy var accountContainerView = TripleShadowView()
     private lazy var accountView = PrimaryListItemView()
@@ -44,6 +46,7 @@ final class SendTransactionScreen: BaseViewController {
 
     private let theme = Theme()
     private var draft: SendTransactionDraft
+    private let copyToClipboardController: CopyToClipboardController
 
     private var transactionParams: TransactionParams?
 
@@ -89,8 +92,13 @@ final class SendTransactionScreen: BaseViewController {
 
     private var transactionSendController: TransactionSendController?
 
-    init(draft: SendTransactionDraft, configuration: ViewControllerConfiguration) {
+    init(
+        draft: SendTransactionDraft,
+        copyToClipboardController: CopyToClipboardController,
+        configuration: ViewControllerConfiguration
+    ) {
         self.draft = draft
+        self.copyToClipboardController = copyToClipboardController
         super.init(configuration: configuration)
 
         guard let amount = draft.amount else {
@@ -123,21 +131,14 @@ final class SendTransactionScreen: BaseViewController {
 
         view.backgroundColor = theme.backgroundColor
 
-        switch draft.transactionMode {
-        case .asset(let asset):
-            title = "send-transaction-title".localized(asset.naming.displayNames.primaryName)
-        case .algo:
-            title = "send-transaction-title".localized("asset-algos-title".localized)
-        }
-
         if draft.fractionCount <= 0 {
             numpadView.leftButtonIsHidden = true
         }
     }
 
     override func configureNavigationBarAppearance() {
-        super.configureNavigationBarAppearance()
-        addBarButtons()
+        addNavigationTitle()
+        addNavigationActions()
     }
 
     override func prepareLayout() {
@@ -315,12 +316,36 @@ extension SendTransactionScreen {
 
 // MARK: - Layout
 extension SendTransactionScreen {
-    private func addBarButtons() {
-        let infoBarButtonItem = ALGBarButtonItem(kind: .info) { [weak self] in
-            self?.displayTransactionTutorial(isInitialDisplay: false)
+    private func addNavigationTitle() {
+        navigationTitleView.customize(theme.navigationTitle)
+
+        navigationItem.titleView = navigationTitleView
+
+        let recognizer = UILongPressGestureRecognizer(
+            target: self,
+            action: #selector(copyAccountAddress(_:))
+        )
+        navigationTitleView.addGestureRecognizer(recognizer)
+
+        bindNavigationTitle()
+    }
+
+    private func bindNavigationTitle() {
+        let draft = SendTransactionAccountNameTitleDraft(
+            transactionMode: draft.transactionMode,
+            account: draft.from
+        )
+        let viewModel = AccountNameTitleViewModel(draft)
+        navigationTitleView.bindData(viewModel)
+    }
+
+    private func addNavigationActions() {
+        let infoBarButtonItem = ALGBarButtonItem(kind: .info) {
+            [unowned self] in
+            self.displayTransactionTutorial(isInitialDisplay: false)
         }
 
-        rightBarButtonItems = [infoBarButtonItem]
+        rightBarButtonItems = [ infoBarButtonItem ]
     }
 
     private func addNextButton() {
@@ -474,6 +499,13 @@ extension SendTransactionScreen: TransactionSignChecking {
         transactionSendController?.delegate = self
         transactionSendController?.validate()
     }
+
+    @objc
+    private func copyAccountAddress(_ recognizer: UILongPressGestureRecognizer) {
+        if recognizer.state == .began {
+            copyToClipboardController.copyAddress(draft.from)
+        }
+    }
 }
 
 // MARK: - Validation
@@ -544,22 +576,30 @@ extension SendTransactionScreen {
     }
 }
 
-// MARK: - Warning Sheets
 extension SendTransactionScreen {
     private func displayRequiredMinAlgoWarning() {
-        let configurator = BottomWarningViewConfigurator(
-            image: "icon-info-red".uiImage,
-            title: "required-min-balance-title".localized,
-            description: .plain("required-min-balance-description".localized),
-            secondaryActionButtonTitle: "title-got-it".localized
+        let algoAssetItem = AssetItem(
+            asset: draft.from.algo,
+            currency: sharedDataController.currency,
+            currencyFormatter: currencyFormatter,
+            currencyFormattingContext: .standalone()
         )
 
-        self.modalTransition.perform(
-            .bottomWarning(configurator: configurator),
+        let draft = InsufficientAlgoBalanceDraft(algoAssetItem: algoAssetItem)
+
+        let screen = Screen.insufficientAlgoBalance(draft: draft) {
+            [unowned self] event in
+            self.dismiss(animated: true)
+        }
+
+        transitionToInsufficientAlgoBalance.perform(
+            screen,
             by: .presentWithoutNavigationController
         )
     }
+}
 
+extension SendTransactionScreen {
     private func displayMaxTransactionWarning() {
         guard let transactionParams = transactionParams else {
             return

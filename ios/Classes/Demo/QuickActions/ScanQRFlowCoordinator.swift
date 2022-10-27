@@ -24,6 +24,11 @@ final class ScanQRFlowCoordinator:
     SelectAccountViewControllerDelegate,
     TransactionControllerDelegate {
     private lazy var currencyFormatter = CurrencyFormatter()
+    private lazy var accountExportCoordinator = AccountExportFlowCoordinator(
+        presentingScreen: presentingScreen,
+        api: api,
+        session: session
+    )
 
     private lazy var transactionController = TransactionController(
         api: api,
@@ -38,26 +43,30 @@ final class ScanQRFlowCoordinator:
     private var ledgerApprovalViewController: LedgerApprovalViewController?
 
     private unowned let presentingScreen: UIViewController
-    private let sharedDataController: SharedDataController
-    private var api: ALGAPI
+
+    private let analytics: ALGAnalytics
+    private let api: ALGAPI
     private let bannerController: BannerController
     private let loadingController: LoadingController
-    private let analytics: ALGAnalytics
+    private let session: Session
+    private let sharedDataController: SharedDataController
 
     init(
-        sharedDataController: SharedDataController,
-        presentingScreen: UIViewController,
+        analytics: ALGAnalytics,
         api: ALGAPI,
         bannerController: BannerController,
         loadingController: LoadingController,
-        analytics: ALGAnalytics
+        presentingScreen: UIViewController,
+        session: Session,
+        sharedDataController: SharedDataController
     ) {
-        self.sharedDataController = sharedDataController
-        self.presentingScreen = presentingScreen
+        self.analytics = analytics
         self.api = api
         self.bannerController = bannerController
         self.loadingController = loadingController
-        self.analytics = analytics
+        self.presentingScreen = presentingScreen
+        self.session = session
+        self.sharedDataController = sharedDataController
     }
 }
 
@@ -123,6 +132,15 @@ extension ScanQRFlowCoordinator {
                 handler()
             }
         }
+    }
+
+    func qrScannerViewController(
+        _ controller: QRScannerViewController,
+        didRead qrExportInformations: QRExportInformations,
+        completionHandler: EmptyHandler?
+    ) {
+        accountExportCoordinator.populate(qrExportInformations: qrExportInformations)
+        accountExportCoordinator.launch()
     }
 }
 

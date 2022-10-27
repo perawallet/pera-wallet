@@ -24,7 +24,7 @@ struct AppCallAssetPreviewViewModel:
     private(set) var subtitle: EditText?
 
     init(
-        asset: StandardAsset
+        asset: Asset
     ) {
         bindTitle(asset)
         bindAccessoryIcon(asset)
@@ -34,7 +34,7 @@ struct AppCallAssetPreviewViewModel:
 
 extension AppCallAssetPreviewViewModel {
     mutating func bindTitle(
-        _ asset: StandardAsset
+        _ asset: Asset
     ) {
         let name = asset.naming.name
 
@@ -54,7 +54,7 @@ extension AppCallAssetPreviewViewModel {
     }
 
     mutating func bindAccessoryIcon(
-        _ asset: StandardAsset
+        _ asset: Asset
     ) {
         switch asset.verificationTier {
         case .trusted: accessoryIcon = "icon-trusted"
@@ -65,7 +65,7 @@ extension AppCallAssetPreviewViewModel {
     }
 
     mutating func bindSubtitle(
-        _ asset: StandardAsset
+        _ asset: Asset
     ) {
         subtitle = .attributedString(
             String(asset.id)

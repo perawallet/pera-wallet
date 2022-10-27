@@ -17,6 +17,8 @@
 
 import Foundation
 import MagpieCore
+import MagpieHipo
+import MagpieExceptions
 
 extension ALGAPI {
     @discardableResult
@@ -48,6 +50,23 @@ extension ALGAPI {
             .path(.accounts)
             .method(.get)
             .query(RekeyedAccountQuery(authAddress: account))
+            .completionHandler(handler)
+            .execute()
+    }
+
+    @discardableResult
+    func exportAccounts(
+        _ draft: EncryptedExportAccountDraft,
+        onCompleted handler: @escaping (Response.Result<NoAPIModel, HIPAPIError>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobile)
+            .path(.backups, args: draft.qrExportInformations.backupIdentifier)
+            .method(.put)
+            .headers([
+                ModificationHeader(draft.qrExportInformations.modificationKey)
+            ])
+            .body(draft)
             .completionHandler(handler)
             .execute()
     }

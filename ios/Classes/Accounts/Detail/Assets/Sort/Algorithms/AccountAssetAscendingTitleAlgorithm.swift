@@ -32,23 +32,24 @@ extension AccountAssetAscendingTitleAlgorithm {
         viewModel: AssetListItemViewModel,
         otherViewModel: AssetListItemViewModel
     ) -> Bool {
-        let firstAssetTitle =
+        let assetTitle =
             viewModel.title?.primaryTitle?.string ??
-            viewModel.title?.secondaryTitle?.string
-
-        let secondAssetTitle =
+            viewModel.title?.secondaryTitle?.string ??
+            viewModel.asset.unwrap { String($0.id) }
+        let otherAssetTitle =
             otherViewModel.title?.primaryTitle?.string ??
-            otherViewModel.title?.secondaryTitle?.string
+            otherViewModel.title?.secondaryTitle?.string ??
+            viewModel.asset.unwrap { String($0.id) }
 
-        guard let assetTitle = firstAssetTitle.unwrapNonEmptyString() else {
+        guard let anAssetTitle = assetTitle.unwrapNonEmptyString() else {
             return false
         }
 
-        guard let otherAssetTitle = secondAssetTitle.unwrapNonEmptyString() else {
+        guard let anOtherAssetTitle = otherAssetTitle.unwrapNonEmptyString() else {
             return true
         }
 
-        let comparison = assetTitle.localizedCaseInsensitiveCompare(otherAssetTitle)
-        return comparison == .orderedAscending
+        let result = anAssetTitle.localizedCaseInsensitiveCompare(anOtherAssetTitle)
+        return result == .orderedAscending
     }
 }

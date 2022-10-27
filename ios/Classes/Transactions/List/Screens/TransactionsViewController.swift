@@ -29,7 +29,7 @@ class TransactionsViewController:
     private(set) var accountHandle: AccountHandle
     /// <todo>
     /// This should work with `Asset` type.
-    private(set) var asset: StandardAsset?
+    private(set) var asset: Asset?
     private(set) var filterOption = TransactionFilterViewController.FilterOption.allTime
 
     lazy var csvTransactions = [Transaction]()
@@ -351,7 +351,7 @@ extension TransactionsViewController {
 
     private func getAssetDetailForTransactionType(
         _ transaction: Transaction
-    ) -> [StandardAsset]? {
+    ) -> [Asset]? {
         switch draft.type {
         case .all:
             let assetID =
@@ -360,22 +360,42 @@ extension TransactionsViewController {
 
             if let assetID = assetID,
                 let decoration = sharedDataController.assetDetailCollection[assetID] {
-                let standardAsset = StandardAsset(
-                    asset: ALGAsset(id: assetID),
-                    decoration: decoration
-                )
-                return [standardAsset]
+                let asset: Asset
+
+                if decoration.isCollectible {
+                    asset = CollectibleAsset(
+                        asset: ALGAsset(id: assetID),
+                        decoration: decoration
+                    )
+                } else {
+                    asset = StandardAsset(
+                        asset: ALGAsset(id: assetID),
+                        decoration: decoration
+                    )
+                }
+
+                return [asset]
             }
 
             if let applicationCall = transaction.applicationCall,
                let foreignAssets = applicationCall.foreignAssets {
-                let assets: [StandardAsset] = foreignAssets.compactMap { ID in
+                let assets: [Asset] = foreignAssets.compactMap { ID in
                     if let decoration = sharedDataController.assetDetailCollection[ID] {
-                        let standardAsset = StandardAsset(
-                            asset: ALGAsset(id: ID),
-                            decoration: decoration
-                        )
-                        return standardAsset
+                        let asset: Asset
+
+                        if decoration.isCollectible {
+                            asset = CollectibleAsset(
+                                asset: ALGAsset(id: ID),
+                                decoration: decoration
+                            )
+                        } else {
+                            asset = StandardAsset(
+                                asset: ALGAsset(id: ID),
+                                decoration: decoration
+                            )
+                        }
+
+                        return asset
                     }
                     
                     return nil

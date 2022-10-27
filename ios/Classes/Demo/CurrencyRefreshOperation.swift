@@ -41,6 +41,7 @@ final class CurrencyRefreshOperation: MacaroonUtils.AsyncOperation {
     deinit {
         stopObservingCurrencyEvents()
     }
+
     
     override func main() {
         if finishIfCancelled() {
@@ -52,8 +53,10 @@ final class CurrencyRefreshOperation: MacaroonUtils.AsyncOperation {
     }
     
     override func cancel() {
-        stopObservingCurrencyEvents()
         super.cancel()
+
+        stopObservingCurrencyEvents()
+        finish()
     }
 }
 

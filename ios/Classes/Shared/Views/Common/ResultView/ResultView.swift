@@ -99,10 +99,9 @@ extension ResultView {
         addSubview(iconView)
         iconView.fitToIntrinsicSize()
         iconView.snp.makeConstraints {
-            $0.centerHorizontally(
-                offset: 0,
-                verticalPaddings: (0, .noMetric)
-            )
+            $0.top == 0
+            $0.leading == 0
+            $0.trailing == 0
         }
     }
 

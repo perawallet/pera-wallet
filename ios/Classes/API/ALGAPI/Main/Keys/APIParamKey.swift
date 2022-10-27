@@ -76,4 +76,7 @@ enum APIParamKey: String, CodingKey {
     case exclude = "exclude"
     case includeDeleted = "include_deleted"
     case name = "name"
+    case deviceId = "device_id"
+    case privateKey = "private_key"
+    case encryptedContent = "encrypted_content"
 }

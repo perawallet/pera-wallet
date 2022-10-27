@@ -44,6 +44,5 @@ struct WCSingleTransactionRequestMiddleViewTheme:
             .textColor(Colors.Text.gray),
             .font(Fonts.DMSans.regular.make(15))
         ]
-
     }
 }

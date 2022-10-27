@@ -120,7 +120,7 @@ extension WCSingleTransactionRequestView {
         addSubview(middleView)
         middleView.snp.makeConstraints { make in
             make.top.equalToSuperview()
-            make.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
             make.bottom.equalTo(bottomView.snp.top)
         }
 

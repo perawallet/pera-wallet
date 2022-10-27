@@ -21,7 +21,7 @@ import UIKit
 
 final class TabBarController: TabBarContainer {
     var route: Screen?
-    
+
     var selectedTab: TabBarItemID? {
         get {
             let item = items[safe: selectedIndex]
@@ -45,12 +45,13 @@ final class TabBarController: TabBarContainer {
         ReceiveTransactionFlowCoordinator(presentingScreen: self)
     private lazy var scanQRFlowCoordinator =
         ScanQRFlowCoordinator(
-            sharedDataController: sharedDataController,
-            presentingScreen: self,
+            analytics: analytics,
             api: api,
             bannerController: bannerController,
             loadingController: loadingController,
-            analytics: analytics
+            presentingScreen: self,
+            session: session,
+            sharedDataController: sharedDataController
         )
 
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
@@ -58,36 +59,44 @@ final class TabBarController: TabBarContainer {
     private var isTransactionOptionsVisible: Bool = false
     private var currentTransactionOptionsAnimator: UIViewPropertyAnimator?
 
-    private let sharedDataController: SharedDataController
+    private let analytics: ALGAnalytics
     private let api: ALGAPI
     private let bannerController: BannerController
     private let loadingController: LoadingController
-    private let analytics: ALGAnalytics
+    private let session: Session
+    private let sharedDataController: SharedDataController
 
     init(
-        sharedDataController: SharedDataController,
+        analytics: ALGAnalytics,
         api: ALGAPI,
         bannerController: BannerController,
         loadingController: LoadingController,
-        analytics: ALGAnalytics
+        session: Session,
+        sharedDataController: SharedDataController
     ) {
-        self.sharedDataController = sharedDataController
+        self.analytics = analytics
         self.api = api
         self.bannerController = bannerController
         self.loadingController = loadingController
-        self.analytics = analytics
+        self.session = session
+        self.sharedDataController = sharedDataController
+        super.init()
     }
-    
+
+    deinit {
+        sharedDataController.remove(self)
+    }
+
     override func addTabBar() {
         super.addTabBar()
-        
+
         tabBar.customizeAppearance(
             [
                 .backgroundColor(Colors.Defaults.background)
             ]
         )
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         build()
@@ -95,31 +104,37 @@ final class TabBarController: TabBarContainer {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         navigationController?.setNavigationBarHidden(true, animated: true)
         UIApplication.shared.appConfiguration?.session.isValid = true
     }
-    
+
     override func updateLayoutWhenItemsDidChange() {
         super.updateLayoutWhenItemsDidChange()
-        
+
         if items.isEmpty {
             removeShowTransactionOptionsAction()
         } else {
             addShowTransactionOptionsAction()
         }
     }
+
+    override func setListeners() {
+        super.setListeners()
+
+        self.sharedDataController.add(self)
+    }
 }
 
 extension TabBarController {
     private func build() {
         addBackground()
-        
+
         if !items.isEmpty {
             addShowTransactionOptionsAction()
         }
     }
-    
+
     private func addBackground() {
         customizeViewAppearance(
             [
@@ -127,7 +142,7 @@ extension TabBarController {
             ]
         )
     }
-    
+
     private func addShowTransactionOptionsAction() {
         toggleTransactionOptionsActionView.customizeAppearance(
             [
@@ -137,28 +152,30 @@ extension TabBarController {
                 ])
             ]
         )
-        
+
         tabBar.addSubview(toggleTransactionOptionsActionView)
         toggleTransactionOptionsActionView.fitToIntrinsicSize()
         toggleTransactionOptionsActionView.snp.makeConstraints {
             $0.centerX == 0
             $0.top == 0
         }
-        
+
         toggleTransactionOptionsActionView.addTouch(
             target: self,
             action: #selector(toggleTransactionOptions))
+
+        toggleTransactionOptionsActionView.isUserInteractionEnabled = false
     }
-    
+
     private func removeShowTransactionOptionsAction() {
         toggleTransactionOptionsActionView.removeFromSuperview()
     }
-    
+
     private func createTransactionOptions() -> TransactionOptionsView {
         var theme = TransactionOptionsViewTheme()
         theme.contentSafeAreaInsets =
             UIEdgeInsets(top: 0, left: 0, bottom: tabBar.bounds.height, right: 0)
-        
+
         let aView = TransactionOptionsView()
         aView.customize(theme)
         aView.startObserving(event: .buyAlgo) {
@@ -188,12 +205,12 @@ extension TabBarController {
         }
         return aView
     }
-    
+
     private func addTransactionOptions() {
         if transactionOptionsView.isDescendant(of: view) {
             return
         }
-        
+
         view.insertSubview(
             transactionOptionsView,
             belowSubview: tabBar
@@ -205,7 +222,7 @@ extension TabBarController {
             $0.trailing == 0
         }
     }
-    
+
     private func removeTransactionOptions() {
         transactionOptionsView.removeFromSuperview()
     }
@@ -216,28 +233,28 @@ extension TabBarController {
     private func toggleTransactionOptions() {
         toggleTransactionOptionsActionView.isSelected.toggle()
         setTabBarItemsEnabled(!toggleTransactionOptionsActionView.isSelected)
-        
+
         if let currentTransactionOptionsAnimator = currentTransactionOptionsAnimator,
            currentTransactionOptionsAnimator.isRunning {
             currentTransactionOptionsAnimator.isReversed.toggle()
             return
         }
-        
+
         if isTransactionOptionsVisible {
             hideTransactionOptionsAnimated()
         } else {
             showTransactionOptionsAnimated()
         }
     }
-    
+
     private func showTransactionOptionsAnimated() {
         addTransactionOptions()
         view.layoutIfNeeded()
-        
+
         currentTransactionOptionsAnimator = makeTransactionOptionsAnimator(for: .end)
         currentTransactionOptionsAnimator?.addCompletion { [weak self] position in
             guard let self = self else { return }
-            
+
             switch position {
             case .start:
                 self.transactionOptionsView.updateBeforeAnimations(for: .start)
@@ -249,12 +266,12 @@ extension TabBarController {
         }
         currentTransactionOptionsAnimator?.startAnimation()
     }
-    
+
     private func hideTransactionOptionsAnimated() {
         currentTransactionOptionsAnimator = makeTransactionOptionsAnimator(for: .start)
         currentTransactionOptionsAnimator?.addCompletion { [weak self] position in
             guard let self = self else { return }
-            
+
             switch position {
             case .start:
                 self.transactionOptionsView.updateBeforeAnimations(for: .end)
@@ -267,7 +284,7 @@ extension TabBarController {
         }
         currentTransactionOptionsAnimator?.startAnimation()
     }
-    
+
     private func makeTransactionOptionsAnimator(
         for position: TransactionOptionsView.Position
     ) -> UIViewPropertyAnimator {
@@ -275,7 +292,7 @@ extension TabBarController {
 
         return UIViewPropertyAnimator(duration: 0.5, dampingRatio: 0.8) {
             [unowned self] in
-            
+
             self.transactionOptionsView.updateAlongsideAnimations(for: position)
             self.view.layoutIfNeeded()
         }
@@ -293,7 +310,7 @@ extension TabBarController {
     private func navigateToReceiveTransaction() {
         toggleTransactionOptions()
         receiveTransactionFlowCoordinator.launch()
-        
+
         analytics.track(.tapReceiveTab())
     }
 
@@ -329,6 +346,20 @@ extension TabBarContainer {
             if $1.isSelectable {
                 tabBar.barButtons[$0].isEnabled = isEnabled
             }
+        }
+    }
+}
+
+extension TabBarController: SharedDataControllerObserver {
+    func sharedDataController(
+        _ sharedDataController: SharedDataController,
+        didPublish event: SharedDataControllerEvent
+    ) {
+        switch event {
+        case .didFinishRunning:
+            toggleTransactionOptionsActionView.isUserInteractionEnabled = sharedDataController.isAvailable
+        default:
+            break
         }
     }
 }

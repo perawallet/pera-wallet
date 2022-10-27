@@ -25,7 +25,7 @@ struct AssetInnerTransactionPreviewViewModel:
     init(
         transaction: Transaction,
         account: Account,
-        asset: StandardAsset?,
+        asset: Asset?,
         currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
     ) {
@@ -52,7 +52,7 @@ extension AssetInnerTransactionPreviewViewModel {
     private mutating func bindAmount(
         transaction: Transaction,
         account: Account,
-        asset: StandardAsset?,
+        asset: Asset?,
         currency: CurrencyProvider,
         currencyFormatter: CurrencyFormatter
     ) {

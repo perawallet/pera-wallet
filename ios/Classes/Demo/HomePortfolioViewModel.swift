@@ -96,6 +96,7 @@ extension HomePortfolioViewModel {
     ) {
         hasher.combine(primaryValue?.string)
         hasher.combine(secondaryValue?.string)
+        hasher.combine(titleColor?.hex)
     }
     
     static func == (
@@ -104,6 +105,7 @@ extension HomePortfolioViewModel {
     ) -> Bool {
         return
             lhs.primaryValue?.string == rhs.primaryValue?.string &&
-            lhs.secondaryValue?.string == rhs.secondaryValue?.string
+            lhs.secondaryValue?.string == rhs.secondaryValue?.string &&
+            lhs.titleColor?.hex == rhs.titleColor?.hex
     }
 }

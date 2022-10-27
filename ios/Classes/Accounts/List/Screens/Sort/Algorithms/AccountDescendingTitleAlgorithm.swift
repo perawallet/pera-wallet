@@ -35,7 +35,7 @@ extension AccountDescendingTitleAlgorithm {
     ) -> Bool {
         let accountTitle = account.value.name ?? account.value.address
         let otherAccountTitle = otherAccount.value.name ?? account.value.address
-        let comparison = accountTitle.localizedCaseInsensitiveCompare(otherAccountTitle)
-        return comparison == .orderedDescending
+        let result = accountTitle.localizedCaseInsensitiveCompare(otherAccountTitle)
+        return result == .orderedDescending
     }
 }

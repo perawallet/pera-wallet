@@ -22,7 +22,7 @@ struct ASADetailScreenTheme:
     StyleSheet,
     LayoutSheet {
     var background: ViewStyle
-    var navigationTitle: AccountNamePreviewViewTheme
+    var navigationTitle: AccountNameTitleViewTheme
     var loading: ASADetailLoadingViewTheme
     var error: NoContentWithActionViewCommonTheme
     var errorBackground: ViewStyle
@@ -38,7 +38,7 @@ struct ASADetailScreenTheme:
         self.background = [
             .backgroundColor(Colors.Helpers.heroBackground)
         ]
-        self.navigationTitle = AccountNamePreviewViewTheme(family)
+        self.navigationTitle = AccountNameTitleViewTheme(family)
         self.loading = ASADetailLoadingViewTheme()
         self.error = NoContentWithActionViewCommonTheme()
         self.errorBackground = [

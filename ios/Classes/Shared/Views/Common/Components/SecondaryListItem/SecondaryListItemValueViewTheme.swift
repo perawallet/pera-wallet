@@ -27,13 +27,6 @@ protocol SecondaryListItemValueViewTheme:
     var title: TextStyle { get }
 }
 
-extension SecondaryListItemValueViewTheme {
-    var supportsMultiline: Bool {
-        let numberOfLines = title.textOverflow?.numberOfLines ?? 1
-        return numberOfLines > 1 || numberOfLines == 0
-    }
-}
-
 struct SecondaryListItemValueCommonViewTheme: SecondaryListItemValueViewTheme {
     var view: ViewStyle
     var backgroundImage: ImageStyle

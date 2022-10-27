@@ -12,19 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   WCSessionListViewTheme.swift
+//   ExportAccountsConfirmationListItemHeader.swift
 
+import UIKit
 import MacaroonUIKit
 
-struct WCSessionListViewTheme: LayoutSheet, StyleSheet {
-    let backgroundColor: Color
-    let cellSpacing: LayoutMetric
-    let contentInset: LayoutPaddings
+final class ExportAccountsConfirmationListItemHeader:
+    CollectionSupplementaryView<TitleView>,
+    ViewModelBindable {
+    override class var contextPaddings: LayoutPaddings {
+        return (0, 24, 0, 24)
+    }
 
-    init(_ family: LayoutFamily) {
-        self.backgroundColor = Colors.Defaults.background
-        self.cellSpacing = 32
-        self.contentInset = (32, 0, 0, 0)
+    static let theme = TitleViewTheme()
+
+    override init(
+        frame: CGRect
+    ) {
+        super.init(frame: frame)
+
+        contextView.customize(Self.theme)
     }
 }

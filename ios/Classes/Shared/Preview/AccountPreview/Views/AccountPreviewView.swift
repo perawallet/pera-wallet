@@ -26,9 +26,7 @@ final class AccountPreviewView:
     private lazy var iconView = ImageView()
     private lazy var contentAndAccessoryContextView = UIView()
     private lazy var contentView = UIView()
-    private lazy var namePreviewView = AccountNamePreviewView()
-    private lazy var titleView = Label()
-    private lazy var subtitleView = Label()
+    private lazy var titleView = PrimaryTitleView()
     private lazy var accessoryView = UIView()
     private lazy var primaryAccessoryView = Label()
     private lazy var secondaryAccessoryView = Label()
@@ -54,7 +52,7 @@ final class AccountPreviewView:
         _ viewModel: AccountPreviewViewModel?
     ) {
         iconView.load(from: viewModel?.icon)
-        namePreviewView.bindData(viewModel?.namePreviewViewModel)
+        titleView.bindData(viewModel?.title)
         primaryAccessoryView.editText = viewModel?.primaryAccessory
         secondaryAccessoryView.editText = viewModel?.secondaryAccessory
         accessoryIconView.image = viewModel?.accessoryIcon
@@ -74,9 +72,9 @@ final class AccountPreviewView:
         /// none of them has the multi-line texts.
         let width = size.width
         let iconSize = viewModel.icon?.iconSize ?? .zero
-        let namePreviewView = AccountNamePreviewView.calculatePreferredSize(
-            viewModel.namePreviewViewModel,
-            for: theme.namePreviewView,
+        let titleSize = PrimaryTitleView.calculatePreferredSize(
+            viewModel.title,
+            for: theme.title,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
         let primaryAccessorySize = viewModel.primaryAccessory.boundingSize(
@@ -88,7 +86,7 @@ final class AccountPreviewView:
             fittingSize: CGSize((width, .greatestFiniteMagnitude))
         )
         let accessoryIconSize = viewModel.accessoryIcon?.size ?? .zero
-        let contentHeight = namePreviewView.height
+        let contentHeight = titleSize.height
         let accessoryTextHeight = primaryAccessorySize.height + secondaryAccessorySize.height
         let accessoryHeight = max(accessoryTextHeight, accessoryIconSize.height)
         let preferredHeight = max(iconSize.height, max(contentHeight, accessoryHeight))
@@ -136,17 +134,17 @@ extension AccountPreviewView {
             $0.bottom == 0
         }
 
-        addNamePreview(theme)
+        addTitle(theme)
     }
 
-    private func addNamePreview(
+    private func addTitle(
         _ theme: AccountPreviewViewTheme
     ) {
-        namePreviewView.customize(theme.namePreviewView)
+        titleView.customize(theme.title)
 
-        contentView.addSubview(namePreviewView)
+        contentView.addSubview(titleView)
         
-        namePreviewView.snp.makeConstraints {
+        titleView.snp.makeConstraints {
             $0.top == 0
             $0.leading == 0
             $0.bottom == 0

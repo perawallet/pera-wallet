@@ -108,7 +108,8 @@ class AppDelegate:
     ) -> Bool {
         setupAppTarget()
         setupAppLibs()
-        
+        runMigrations()
+
         prepareForLaunch()
 
         makeWindow()
@@ -402,6 +403,14 @@ extension AppDelegate {
             zone: TimeZone.autoupdatingCurrent,
             locale: Locales.autoUpdating
         )
+    }
+
+    private func runMigrations() {
+        /// <todo> To run all migrations, `Migrator` class should be implemented
+        /// All migrations should conform `Migration` protocol
+
+        let passwordMigration = PasswordMigration(session: session)
+        passwordMigration.migratePasswordToKeychain()
     }
 }
 

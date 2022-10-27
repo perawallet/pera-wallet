@@ -30,7 +30,7 @@ struct AppCallAssetPreviewViewStackViewModel:
     private let maxAssetsCountToDisplay = 2
 
     init(
-        assets: [StandardAsset]
+        assets: [Asset]
     ) {
         bindAssets(assets)
         bindShowMoreActionTitle(assets)
@@ -39,14 +39,14 @@ struct AppCallAssetPreviewViewStackViewModel:
 
 extension AppCallAssetPreviewViewStackViewModel {
     mutating func bindAssets(
-        _ assets: [StandardAsset]
+        _ assets: [Asset]
     ) {
         self.assets =
         assets.prefix(maxAssetsCountToDisplay).map(AppCallAssetPreviewViewModel.init)
     }
 
     mutating func bindShowMoreActionTitle(
-        _ assets: [StandardAsset]
+        _ assets: [Asset]
     ) {
         let moreAssetCount = assets.count.advanced(by: -maxAssetsCountToDisplay)
 

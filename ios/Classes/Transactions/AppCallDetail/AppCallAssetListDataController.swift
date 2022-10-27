@@ -21,7 +21,7 @@ protocol AppCallAssetListDataController: AnyObject {
 
     var eventHandler: ((AppCallAssetListDataControllerEvent) -> Void)? { get set }
 
-    var assets: [StandardAsset] { get }
+    var assets: [Asset] { get }
 
     func load()
 }

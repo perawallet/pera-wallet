@@ -32,7 +32,13 @@ struct WCSessionListNoContentViewModel: NoContentWithActionViewModel {
 
 extension WCSessionListNoContentViewModel {
     private mutating func bindTitle() {
-        title = .string("wallet-connect-session-list-empty".localized)
+        title =  .attributedString(
+            "wallet-connect-session-list-empty"
+                .localized
+                .bodyLargeMedium(
+                    alignment: .center
+                )
+        )
     }
 
     private mutating func bindActionTitle() {

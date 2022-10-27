@@ -308,13 +308,8 @@ extension CollectibleDetailAPIDataController {
         }
 
         descriptionItems.append(
-            .information(
-                CollectibleTransactionInformation(
-                    icon: nil,
-                    title: "title-asset-id".localized,
-                    value: String(asset.id),
-                    isCollectibleSpecificValue: false
-                )
+            .assetID(
+                CollectibleDetailAssetIDItemIdentifier(viewModel: CollectibleDetailAssetIDItemViewModel(asset: asset))
             )
         )
 

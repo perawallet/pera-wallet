@@ -1,3 +1,3 @@
 source "https://rubygems.org"
 
-gem 'fastlane', '2.204.1'
+gem 'fastlane', '2.210.1'

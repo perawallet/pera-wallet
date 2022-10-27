@@ -24,7 +24,7 @@ struct AppCallTransactionAssetInformationViewModel:
     private(set) var assetInfo: AppCallAssetPreviewViewStackViewModel?
 
     init(
-        assets: [StandardAsset]
+        assets: [Asset]
     ) {
         bindTitle(assets)
         bindAssetInfo(assets)
@@ -33,7 +33,7 @@ struct AppCallTransactionAssetInformationViewModel:
 
 extension AppCallTransactionAssetInformationViewModel {
     mutating func bindTitle(
-        _ assets: [StandardAsset]
+        _ assets: [Asset]
     ) {
         let aText: String = assets.count == 1
         ? "asset-title".localized
@@ -46,7 +46,7 @@ extension AppCallTransactionAssetInformationViewModel {
     }
 
     mutating func bindAssetInfo(
-        _ assets: [StandardAsset]
+        _ assets: [Asset]
     ) {
         assetInfo = AppCallAssetPreviewViewStackViewModel(
             assets: assets

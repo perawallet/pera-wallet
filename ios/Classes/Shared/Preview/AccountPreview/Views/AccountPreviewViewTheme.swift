@@ -26,24 +26,20 @@ struct AccountPreviewViewTheme:
     var iconSize: LayoutSize
     var horizontalPadding: LayoutMetric
     var contentMinWidthRatio: LayoutMetric
-    var namePreviewView: AccountNamePreviewViewTheme
+    var title: PrimaryTitleViewTheme
     var primaryAccessory: TextStyle
     var secondaryAccessory: TextStyle
     var accessoryIcon: ImageStyle
     var accessoryIconContentEdgeInsets: LayoutOffset
 
-    init(
-        _ family: LayoutFamily
-    ) {
+    init(_ family: LayoutFamily) {
         self.icon = [
             .contentMode(.scaleAspectFit)
         ]
         self.iconSize = (40, 40)
         self.horizontalPadding = 16
         self.contentMinWidthRatio = 0.25
-        var namePreviewViewTheme = AccountNamePreviewViewTheme()
-        namePreviewViewTheme.configureForAccountPreviewView()
-        self.namePreviewView = namePreviewViewTheme
+        self.title = AccountPreviewPrimaryTitleViewTheme(family)
         self.primaryAccessory = [
             .textColor(Colors.Text.main)
         ]
@@ -54,5 +50,27 @@ struct AccountPreviewViewTheme:
             .contentMode(.right)
         ]
         self.accessoryIconContentEdgeInsets = (8, 0)
+    }
+}
+
+fileprivate struct AccountPreviewPrimaryTitleViewTheme: PrimaryTitleViewTheme {
+    let primaryTitle: TextStyle
+    let primaryTitleAccessory: ImageStyle
+    let primaryTitleAccessoryContentEdgeInsets: LayoutOffset
+    let secondaryTitle: TextStyle
+    let spacingBetweenPrimaryAndSecondaryTitles: LayoutMetric
+
+    init(_ family: LayoutFamily) {
+        self.primaryTitle = [
+            .textOverflow(SingleLineText()),
+            .textColor(Colors.Text.main)
+        ]
+        self.primaryTitleAccessory = []
+        self.primaryTitleAccessoryContentEdgeInsets = (0, 0)
+        self.secondaryTitle = [
+            .textOverflow(SingleLineText()),
+            .textColor(Colors.Text.grayLighter)
+        ]
+        self.spacingBetweenPrimaryAndSecondaryTitles = 0
     }
 }

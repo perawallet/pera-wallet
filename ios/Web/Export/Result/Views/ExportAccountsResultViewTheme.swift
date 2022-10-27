@@ -12,37 +12,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AccountNamePreviewViewTheme.swift
+//   ExportAccountsResultViewTheme.swift
 
+import Foundation
 import MacaroonUIKit
 
-struct AccountNamePreviewViewTheme:
-    LayoutSheet,
-    StyleSheet {
-    var title: TextStyle
-    var titleContentEdgeInsets: LayoutPaddings
-    var subtitle: TextStyle
-    var subtitleContentEdgeInsets: LayoutPaddings
+struct ExportAccountsResultViewTheme: ResultViewTheme {
+    let icon: ImageStyle
+    let iconLeadingMargin: LayoutMetric
+    let title: TextStyle
+    var titleTopMargin: MacaroonUIKit.LayoutMetric
+    var bodyTopMargin: MacaroonUIKit.LayoutMetric
+    let body: TextStyle
 
     init(
         _ family: LayoutFamily
     ) {
-        title = [
-            .textOverflow(SingleLineText()),
+        self.icon = [
+            .adjustsImageForContentSizeCategory(false),
+            .contentMode(.left)
+        ]
+        self.iconLeadingMargin = 10
+        self.title = [
+            .textOverflow(FittingText()),
             .textColor(Colors.Text.main)
         ]
-        titleContentEdgeInsets = (2, 0, 2, 0)
-        subtitle = [
-            .textOverflow(SingleLineText()),
-            .textColor(Colors.Text.grayLighter)
+        self.titleTopMargin = 40
+        self.body = [
+            .textOverflow(FittingText()),
+            .textColor(Colors.Text.gray)
         ]
-        subtitleContentEdgeInsets = (0, 0, 2, 0)
-    }
-}
-
-extension AccountNamePreviewViewTheme {
-    mutating func configureForAccountPreviewView() {
-        titleContentEdgeInsets = (0, 0, 0, 0)
-        subtitleContentEdgeInsets = (0, 0, 0, 0)
+        self.bodyTopMargin = 22
     }
 }

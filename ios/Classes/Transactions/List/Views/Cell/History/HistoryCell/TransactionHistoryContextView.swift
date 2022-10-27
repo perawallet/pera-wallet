@@ -21,15 +21,15 @@ import MacaroonUIKit
 class TransactionHistoryContextView:
     View,
     ViewModelBindable {
-    private(set) lazy var titleLabel = Label()
-    private(set) lazy var subtitleLabel = Label()
-    private(set) lazy var transactionAmountView = TransactionAmountView()
+    private(set) lazy var contentView = UIView()
+    private lazy var titleLabel = Label()
+    private lazy var subtitleLabel = Label()
+    private lazy var transactionAmountView = TransactionAmountView()
 
     func customize(
         _ theme: TransactionHistoryContextViewTheme
     ) {
-        addTitleLabel(theme)
-        addSubtitleLabel(theme)
+        addContent(theme)
         addTransactionAmountView(theme)
     }
 
@@ -43,23 +43,39 @@ class TransactionHistoryContextView:
 }
 
 extension TransactionHistoryContextView {
+    private func addContent(
+        _ theme: TransactionHistoryContextViewTheme
+    ) {
+        addSubview(contentView)
+        contentView.snp.makeConstraints {
+            $0.width >= (self - theme.minSpacingBetweenTitleAndAmount) * theme.titleMinWidthRatio
+            $0.top == theme.verticalInset
+            $0.leading == theme.horizontalInset
+            $0.bottom == theme.verticalInset
+        }
+
+        addTitleLabel(theme)
+        addSubtitleLabel(theme)
+    }
+
     private func addTitleLabel(
         _ theme: TransactionHistoryContextViewTheme
     ) {
         titleLabel.customizeAppearance(theme.titleLabel)
 
-        addSubview(titleLabel)
-
         titleLabel.fitToHorizontalIntrinsicSize(
             hugging: .required,
             compression: .defaultLow
         )
-        titleLabel.contentEdgeInsets.trailing = theme.minSpacingBetweenTitleAndAmount
+
+        contentView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
-            $0.width.greaterThanOrEqualToSuperview().multipliedBy(theme.titleMinWidthRatio)
-            $0.leading.equalToSuperview().inset(theme.horizontalInset)
-            $0.top.equalToSuperview().inset(theme.verticalInset)
-            $0.centerY.equalToSuperview().priority(.low)
+            $0.centerY
+                .equalToSuperview()
+                .priority(.low)
+            $0.top == 0
+            $0.leading == 0
+            $0.trailing <= 0
         }
     }
     
@@ -68,31 +84,36 @@ extension TransactionHistoryContextView {
     ) {
         subtitleLabel.customizeAppearance(theme.subtitleLabel)
 
-        addSubview(subtitleLabel)
-        subtitleLabel.snp.makeConstraints {
-            $0.leading.equalTo(titleLabel.snp.leading)
-            $0.top.equalTo(titleLabel.snp.bottom)
-            $0.bottom.equalToSuperview().inset(theme.verticalInset)
-        }
+        subtitleLabel.fitToHorizontalIntrinsicSize(
+            hugging: .required,
+            compression: .defaultLow
+        )
 
-        subtitleLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        contentView.addSubview(subtitleLabel)
+        subtitleLabel.snp.makeConstraints {
+            $0.top == titleLabel.snp.bottom
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing <= 0
+        }
     }
 
     private func addTransactionAmountView(
         _ theme: TransactionHistoryContextViewTheme
     ) {
-        transactionAmountView.customize(TransactionAmountViewSmallerTheme())
-
-        transactionAmountView.setContentHuggingPriority(.required, for: .horizontal)
-        transactionAmountView.setContentCompressionResistancePriority(.required, for: .horizontal)
+        transactionAmountView.customize(theme.amount)
 
         addSubview(transactionAmountView)
+        transactionAmountView.fitToHorizontalIntrinsicSize(
+            hugging: .defaultLow,
+            compression: .required
+        )
         transactionAmountView.snp.makeConstraints {
-            $0.trailing.equalToSuperview().inset(theme.horizontalInset)
-            $0.top.equalToSuperview().inset(theme.verticalInset)
-            $0.centerY.equalToSuperview()
-            $0.bottom.equalToSuperview().inset(theme.verticalInset)
-            $0.leading.greaterThanOrEqualTo(titleLabel.snp.trailing)
+            $0.centerY == 0
+            $0.top == theme.verticalInset
+            $0.leading == contentView.snp.trailing + theme.minSpacingBetweenTitleAndAmount
+            $0.bottom == theme.verticalInset
+            $0.trailing == theme.horizontalInset
         }
     }
 }

@@ -31,9 +31,12 @@ protocol CollectibleListDataController: AnyObject {
     func reload()
     func search(for query: String)
     func resetSearch()
-    var currentFilter: CollectiblesFilterSelectionViewController.Filter { get }
+
+    typealias Filter = CollectiblesFilterSelectionViewController.Filter
+    var currentFilter: Filter { get }
+
     func filter(
-        by filter: CollectiblesFilterSelectionViewController.Filter
+        by filter: Filter
     )
 }
 

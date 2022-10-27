@@ -41,14 +41,14 @@ extension InnerTransactionPreviewViewModel {
     }
 
     func getAssetSymbol(
-        from asset: StandardAsset
+        from asset: Asset
     ) -> String {
-        if let unitName = asset.unitName,
+        if let unitName = asset.naming.unitName,
            !unitName.isEmptyOrBlank {
             return unitName
         }
 
-        if let name = asset.name,
+        if let name = asset.naming.name,
            !name.isEmptyOrBlank {
             return name
         }

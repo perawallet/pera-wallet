@@ -79,8 +79,8 @@ final class AssetDetail: ALGEntityModel {
         self.creator = apiModel.params?.creator ?? ""
         self.total = apiModel.params?.total
         self.isDefaultFrozen = apiModel.params?.defaultFrozen
-        self.unitName = apiModel.params?.unitName
-        self.assetName = apiModel.params?.name
+        self.unitName = apiModel.params?.unitName ?? apiModel.params?.unitNameBase64?.utf8String
+        self.assetName = apiModel.params?.name ?? apiModel.params?.nameBase64?.utf8String
         self.url = apiModel.params?.url
         self.managerKey = apiModel.params?.manager
         self.reserveAddress = apiModel.params?.reserve
@@ -131,7 +131,7 @@ final class AssetDetail: ALGEntityModel {
 extension AssetDetail {
     func getDisplayNames() -> (String, String?) {
         if let name = assetName, !name.isEmptyOrBlank,
-            let code = unitName, !code.isEmptyOrBlank {
+           let code = unitName, !code.isEmptyOrBlank {
             return (name, "\(code.uppercased())")
         } else if let name = assetName, !name.isEmptyOrBlank {
             return (name, nil)
@@ -228,7 +228,9 @@ extension AssetDetail.APIModel {
         var total: UInt64?
         var defaultFrozen: Bool?
         var unitName: String?
+        var unitNameBase64: Data?
         var name: String?
+        var nameBase64: Data?
         var url: String?
         var manager: String?
         var reserve: String?
@@ -242,7 +244,9 @@ extension AssetDetail.APIModel {
             self.total = nil
             self.defaultFrozen = nil
             self.unitName = nil
+            self.unitNameBase64 = nil
             self.name = nil
+            self.nameBase64 = nil
             self.url = nil
             self.manager = nil
             self.reserve = nil
@@ -251,20 +255,22 @@ extension AssetDetail.APIModel {
             self.decimals = nil
             self.deleted = nil
         }
-    }
 
-    private enum ParamsCodingKeys: String, CodingKey {
-        case creator
-        case total
-        case defaultFrozen = "default-frozen"
-        case unitName = "unit-name"
-        case name
-        case url
-        case manager
-        case reserve
-        case freeze
-        case clawback
-        case decimals
-        case deleted
+        private enum CodingKeys: String, CodingKey {
+            case creator
+            case total
+            case defaultFrozen = "default-frozen"
+            case unitName = "unit-name"
+            case unitNameBase64 = "unit-name-b64"
+            case name
+            case nameBase64 = "name-b64"
+            case url
+            case manager
+            case reserve
+            case freeze
+            case clawback
+            case decimals
+            case deleted
+        }
     }
 }

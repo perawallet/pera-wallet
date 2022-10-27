@@ -19,41 +19,106 @@ import UIKit
 import MacaroonUIKit
 
 final class WCSessionListLayout: NSObject {
-    private lazy var theme = Theme()
+    private let listDataSource: WCSessionListDataSource
 
-    private weak var dataSource: WCSessionListDataSource?
+    private var sizeCache: [String: CGSize] = [:]
 
-    init(dataSource: WCSessionListDataSource) {
-        self.dataSource = dataSource
+    init(
+        listDataSource: WCSessionListDataSource
+    ) {
+        self.listDataSource = listDataSource
         super.init()
+    }
+
+    class func build() -> UICollectionViewLayout {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.minimumLineSpacing = 0
+        return flowLayout
     }
 }
 
-extension WCSessionListLayout: UICollectionViewDelegateFlowLayout {
+extension WCSessionListLayout {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
+        let sectionIdentifiers = listDataSource.snapshot().sectionIdentifiers
+
+        guard let listSection = sectionIdentifiers[safe: section] else {
+            return .zero
+        }
+
+        var insets: UIEdgeInsets = .zero
+
+        switch listSection {
+        case .empty:
+            return insets
+        case .sessions:
+            insets.top = 32
+            return insets
+        }
+    }
+
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        guard let session = dataSource?.session(at: indexPath.item) else {
-            return .zero
+        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+            return CGSize((collectionView.bounds.width, 0))
         }
 
-        var descriptionHeight: CGFloat = 0
-
-        if let description = session.peerMeta.description {
-            descriptionHeight = description.height(
-                withConstrained: UIScreen.main.bounds.width - theme.horizontalInset,
-                font: Fonts.DMSans.regular.make(13).uiFont
+        switch itemIdentifier {
+        case .empty:
+            return sizeForEmptyItem(
+                collectionView
+            )
+        case .session(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForSessionCellItem: item.viewModel
             )
         }
-        return CGSize(width: UIScreen.main.bounds.width, height: descriptionHeight + theme.constantHeight)
     }
 }
 
 extension WCSessionListLayout {
-    private struct Theme  {
-        let constantHeight: LayoutMetric = 93
-        let horizontalInset: LayoutMetric = 104
+    private func sizeForEmptyItem(
+        _ listView: UICollectionView
+    ) -> CGSize {
+        let sizeCacheIdentifier = NoContentWithActionCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = listView.bounds.width
+        let height =
+            listView.bounds.height -
+            listView.safeAreaTop -
+            listView.safeAreaBottom
+
+        let newSize = CGSize((width, height))
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForSessionCellItem item: WCSessionItemViewModel?
+    ) -> CGSize {
+        let width = listView.bounds.width
+        let newSize = WCSessionItemCell.calculatePreferredSize(
+            item,
+            for: WCSessionItemCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+
+        return newSize
     }
 }

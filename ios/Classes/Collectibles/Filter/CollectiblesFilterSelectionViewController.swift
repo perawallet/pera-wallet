@@ -123,8 +123,8 @@ extension CollectiblesFilterSelectionViewController {
 }
 
 extension CollectiblesFilterSelectionViewController {
-    enum Filter {
-        case all
+    enum Filter: Int {
+        case all = 1
         case owned
     }
 }

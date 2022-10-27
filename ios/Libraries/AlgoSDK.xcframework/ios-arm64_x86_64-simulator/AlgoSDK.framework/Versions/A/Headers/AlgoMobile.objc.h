@@ -12,6 +12,7 @@
 
 
 @class AlgoMobileBytesArray;
+@class AlgoMobileEncryption;
 @class AlgoMobileInt64Array;
 @class AlgoMobileStringArray;
 @class AlgoMobileSuggestedParams;
@@ -29,6 +30,17 @@
 - (NSData* _Nullable)get:(long)index;
 - (long)length;
 - (void)set:(long)index value:(NSData* _Nullable)value;
+@end
+
+@interface AlgoMobileEncryption : NSObject <goSeqRefInterface> {
+}
+@property(strong, readonly) _Nonnull id _ref;
+
+- (nonnull instancetype)initWithRef:(_Nonnull id)ref;
+- (nonnull instancetype)init;
+@property (nonatomic) NSData* _Nullable encryptedData;
+@property (nonatomic) NSData* _Nullable decryptedData;
+@property (nonatomic) long errorCode;
 @end
 
 @interface AlgoMobileInt64Array : NSObject <goSeqRefInterface> {
@@ -125,6 +137,10 @@ FOUNDATION_EXPORT NSData* _Nullable AlgoMobileAttachSignature(NSData* _Nullable 
  * AttachSignatureWithSigner accepts a signature, a transaction, and a signer address and returns the bytes of a the signed transaction
  */
 FOUNDATION_EXPORT NSData* _Nullable AlgoMobileAttachSignatureWithSigner(NSData* _Nullable signature, NSData* _Nullable encodedTx, NSString* _Nullable signer, NSError* _Nullable* _Nullable error);
+
+FOUNDATION_EXPORT AlgoMobileEncryption* _Nullable AlgoMobileDecrypt(NSData* _Nullable data, NSData* _Nullable sk);
+
+FOUNDATION_EXPORT AlgoMobileEncryption* _Nullable AlgoMobileEncrypt(NSData* _Nullable data, NSData* _Nullable sk);
 
 /**
  * FindAndVerifyTxnGroups takes an array of encoded transactions and finds and verifies consecutive

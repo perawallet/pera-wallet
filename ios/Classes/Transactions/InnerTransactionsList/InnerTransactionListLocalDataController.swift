@@ -184,7 +184,7 @@ extension InnerTransactionListLocalDataController {
 
 struct InnerTransactionListDraft {
     let type: TransactionTypeFilter
-    let asset: StandardAsset?
+    let asset: Asset?
     let account: Account
     let innerTransactions: [Transaction]
 }

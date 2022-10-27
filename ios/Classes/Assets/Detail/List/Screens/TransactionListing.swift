@@ -23,11 +23,11 @@ import UIKit
 protocol TransactionListing {
     var type: TransactionTypeFilter { get }
     var accountHandle: AccountHandle { get set }
-    var asset: StandardAsset? { get }
+    var asset: Asset? { get }
 }
 
 extension TransactionListing {
-    var asset: StandardAsset? {
+    var asset: Asset? {
         return nil
     }
 }
@@ -46,7 +46,7 @@ struct AssetTransactionListing: TransactionListing {
     }
 
     var accountHandle: AccountHandle
-    var asset: StandardAsset?
+    var asset: Asset?
 }
 
 struct AccountTransactionListing: TransactionListing {

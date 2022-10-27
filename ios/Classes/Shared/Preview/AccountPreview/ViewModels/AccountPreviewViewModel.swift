@@ -27,7 +27,7 @@ struct AccountPreviewViewModel:
 
     private(set) var address: String?
     private(set) var icon: ImageSource?
-    private(set) var namePreviewViewModel: AccountNamePreviewViewModel?
+    private(set) var title: AccountPreviewTitleViewModel?
     private(set) var primaryAccessory: EditText?
     private(set) var secondaryAccessory: EditText?
     private(set) var accessoryIcon: UIImage?
@@ -50,7 +50,7 @@ extension AccountPreviewViewModel {
             currencyFormatter = accountPortfolioItem.currencyFormatter
 
             bindIcon(accountPortfolioItem)
-            bindNamePreviewViewModel(accountPortfolioItem)
+            bindTitle(accountPortfolioItem)
             bindPrimaryAccessory(accountPortfolioItem)
             bindSecondaryAccessory(accountPortfolioItem)
             bindAccessoryIcon(accountPortfolioItem)
@@ -62,7 +62,7 @@ extension AccountPreviewViewModel {
             address = account.address
             
             bindIcon(account)
-            bindNamePreviewViewModel(account)
+            bindTitle(account)
             bindPrimaryAccessory(account)
             bindSecondaryAccessory(account)
             bindAccessoryIcon(account)
@@ -74,7 +74,7 @@ extension AccountPreviewViewModel {
             address = customAccountPreview.address
 
             bindIcon(customAccountPreview)
-            bindNamePreviewViewModel(customAccountPreview)
+            bindTitle(customAccountPreview)
             bindPrimaryAccessory(customAccountPreview)
             bindSecondaryAccessory(customAccountPreview)
             bindAccessoryIcon(customAccountPreview)
@@ -86,7 +86,7 @@ extension AccountPreviewViewModel {
             address = accountOrderingDraft.account.address
 
             bindIcon(accountOrderingDraft)
-            bindNamePreviewViewModel(accountOrderingDraft)
+            bindTitle(accountOrderingDraft)
             bindAccessoryIcon(accountOrderingDraft)
         }
 
@@ -94,7 +94,7 @@ extension AccountPreviewViewModel {
             address = iconWithShortAddressDraft.account.address
 
             bindIcon(iconWithShortAddressDraft)
-            bindNamePreviewViewModel(iconWithShortAddressDraft)
+            bindTitle(iconWithShortAddressDraft)
 
             return
         }
@@ -103,7 +103,7 @@ extension AccountPreviewViewModel {
             address = nameServiceAccountPreview.address
 
             bindIcon(nameServiceAccountPreview)
-            bindNamePreviewViewModel(nameServiceAccountPreview)
+            bindTitle(nameServiceAccountPreview)
         }
     }
 }
@@ -115,10 +115,10 @@ extension AccountPreviewViewModel {
         bindIcon(accountPortfolioItem.accountValue.value)
     }
     
-    mutating func bindNamePreviewViewModel(
+    mutating func bindTitle(
         _ accountPortfolioItem: AccountPortfolioItem
     ) {
-        bindNamePreviewViewModel(
+        bindTitle(
             accountPortfolioItem.accountValue.value
         )
     }
@@ -195,13 +195,12 @@ extension AccountPreviewViewModel {
         icon = customAccountPreview.icon
     }
     
-    mutating func bindNamePreviewViewModel(
+    mutating func bindTitle(
         _ customAccountPreview: CustomAccountPreview
     ) {
-        namePreviewViewModel = AccountNamePreviewViewModel(
-            title: customAccountPreview.title,
-            subtitle: customAccountPreview.subtitle,
-            with: .left
+        title = AccountPreviewTitleViewModel(
+            primaryTitle: customAccountPreview.title,
+            secondaryTitle: customAccountPreview.subtitle
         )
     }
     
@@ -231,10 +230,10 @@ extension AccountPreviewViewModel {
         icon = iconWithShortAddressDraft.account.typeImage
     }
 
-    mutating func bindNamePreviewViewModel(
+    mutating func bindTitle(
         _ iconWithShortAddressDraft: IconWithShortAddressDraft
     ) {
-        bindNamePreviewViewModel(
+        bindTitle(
             iconWithShortAddressDraft.account
         )
     }
@@ -247,10 +246,10 @@ extension AccountPreviewViewModel {
         icon = accountOrderingDraft.account.typeImage
     }
 
-    mutating func bindNamePreviewViewModel(
+    mutating func bindTitle(
         _ accountOrderingDraft: AccountOrderingDraft
     ) {
-        bindNamePreviewViewModel(accountOrderingDraft.account)
+        bindTitle(accountOrderingDraft.account)
     }
 
     mutating func bindAccessoryIcon(
@@ -261,13 +260,10 @@ extension AccountPreviewViewModel {
 }
 
 extension AccountPreviewViewModel {
-    mutating func bindNamePreviewViewModel(
+    mutating func bindTitle(
         _ account: Account
     ) {
-        namePreviewViewModel = AccountNamePreviewViewModel(
-            account: account,
-            with: .left
-        )
+        title = AccountPreviewTitleViewModel(account: account)
     }
     
     mutating func bindPrimaryAccessory(
@@ -316,13 +312,12 @@ extension AccountPreviewViewModel {
         icon = nameServiceAccountPreview.icon
     }
 
-    mutating func bindNamePreviewViewModel(
+    mutating func bindTitle(
         _ nameServiceAccountPreview: NameServiceAccountPreview
     ) {
-        namePreviewViewModel = AccountNamePreviewViewModel(
-            title: nameServiceAccountPreview.title,
-            subtitle: nameServiceAccountPreview.subtitle,
-            with: .left
+        title = AccountPreviewTitleViewModel(
+            primaryTitle: nameServiceAccountPreview.title,
+            secondaryTitle: nameServiceAccountPreview.subtitle
         )
     }
 }
@@ -332,7 +327,7 @@ extension AccountPreviewViewModel {
         into hasher: inout Hasher
     ) {
         hasher.combine(address)
-        hasher.combine(namePreviewViewModel)
+        hasher.combine(title)
         hasher.combine(primaryAccessory)
         hasher.combine(secondaryAccessory)
     }
@@ -343,7 +338,7 @@ extension AccountPreviewViewModel {
     ) -> Bool {
         return
             lhs.address == rhs.address &&
-            lhs.namePreviewViewModel == rhs.namePreviewViewModel &&
+            lhs.title == rhs.title &&
             lhs.primaryAccessory == rhs.primaryAccessory &&
             lhs.secondaryAccessory == rhs.secondaryAccessory
     }
