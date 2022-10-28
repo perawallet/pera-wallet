@@ -101,7 +101,7 @@ class RegisterIntroFragment : DaggerBaseFragment(R.layout.fragment_register_type
                 toolbar.configureStartButton(R.drawable.ic_close, ::navBack)
             }
             if (isSkipButtonVisible) {
-                toolbar.addButtonToEnd(TextButton(R.string.skip, onClick = ::onSkipClick))
+                toolbar.setEndButton(button = TextButton(R.string.skip, onClick = ::onSkipClick))
             }
         }
     }

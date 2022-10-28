@@ -25,14 +25,18 @@ import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseO
 import com.algorand.android.models.BaseSelectAssetItem
 import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
 import com.algorand.android.modules.sorting.assetsorting.ui.usecase.AssetItemSortUseCase
+import com.algorand.android.nft.domain.usecase.CollectibleDetailItemUseCase
+import com.algorand.android.nft.domain.usecase.SimpleCollectibleUseCase
 import com.algorand.android.nft.mapper.AssetSelectionPreviewMapper
 import com.algorand.android.nft.ui.model.AssetSelectionPreview
 import com.algorand.android.utils.Event
+import com.algorand.android.utils.isGreaterThan
+import java.math.BigInteger
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 
 class AssetSelectionUseCase @Inject constructor(
@@ -44,50 +48,61 @@ class AssetSelectionUseCase @Inject constructor(
     private val assetSelectionPreviewMapper: AssetSelectionPreviewMapper,
     private val accountInformationUseCase: AccountInformationUseCase,
     private val assetItemConfigurationMapper: AssetItemConfigurationMapper,
-    private val assetItemSortUseCase: AssetItemSortUseCase
+    private val assetItemSortUseCase: AssetItemSortUseCase,
+    private val simpleCollectibleUseCase: SimpleCollectibleUseCase,
+    private val collectibleDetailItemUseCase: CollectibleDetailItemUseCase
 ) {
     fun getAssetSelectionListFlow(publicKey: String): Flow<List<BaseSelectAssetItem>> {
         return combine(
-            accountAssetDataUseCase.getAccountAllAssetDataFlow(publicKey = publicKey, includeAlgo = true),
+            accountAssetDataUseCase.getAccountOwnedAssetDataFlow(publicKey = publicKey, includeAlgo = true),
+            accountCollectibleDataUseCase.getAccountOwnedCollectibleDataFlow(publicKey),
             parityUseCase.getSelectedCurrencyDetailCacheFlow()
-        ) { accountAssetData, _ ->
+        ) { accountAssetData, accountCollectibleData, _ ->
             val assetList = mutableListOf<BaseSelectAssetItem>().apply {
-                accountAssetData.filterIsInstance<BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData>()
-                    .forEach { baseAccountAssetData ->
-                        val assetItemConfiguration = with(baseAccountAssetData) {
-                            assetItemConfigurationMapper.mapTo(
-                                isAmountInSelectedCurrencyVisible = isAmountInSelectedCurrencyVisible,
-                                secondaryValueText =
-                                getSelectedCurrencyParityValue().getFormattedValue(isCompact = true),
-                                formattedCompactAmount = formattedCompactAmount,
-                                assetId = id,
-                                name = name,
-                                shortName = shortName,
-                                prismUrl = prismUrl,
-                                verificationTier = verificationTier,
-                                primaryValue = parityValueInSelectedCurrency.amountAsCurrency
-                            )
-                        }
-                        add(assetSelectionMapper.mapToAssetItem(assetItemConfiguration))
-                    }
-                val collectibleSelectionItems = createCollectibleSelectionItems(publicKey)
-                addAll(collectibleSelectionItems)
+                addAll(createAssetSelectionItems(accountAssetData))
+                addAll(createCollectibleSelectionItems(accountCollectibleData))
             }
             assetItemSortUseCase.sortAssets(assetList)
         }.distinctUntilChanged()
     }
 
+    private fun createAssetSelectionItems(
+        accountAssetData: List<BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData>
+    ): List<BaseSelectAssetItem> {
+        return accountAssetData.map { baseAccountAssetData ->
+            val assetItemConfiguration = with(baseAccountAssetData) {
+                assetItemConfigurationMapper.mapTo(
+                    isAmountInSelectedCurrencyVisible = isAmountInSelectedCurrencyVisible,
+                    secondaryValueText = getSelectedCurrencyParityValue().getFormattedValue(isCompact = true),
+                    formattedCompactAmount = formattedCompactAmount,
+                    assetId = id,
+                    name = name,
+                    shortName = shortName,
+                    prismUrl = prismUrl,
+                    verificationTier = verificationTier,
+                    primaryValue = parityValueInSelectedCurrency.amountAsCurrency
+                )
+            }
+            assetSelectionMapper.mapToAssetItem(assetItemConfiguration)
+        }
+    }
+
     private fun createCollectibleSelectionItems(
-        publicKey: String
+        accountCollectibleData: List<BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData>
     ): List<BaseSelectAssetItem.BaseSelectCollectibleItem> {
-        return accountCollectibleDataUseCase.getAccountOwnedCollectibleDataList(publicKey).map { ownedCollectibleData ->
-            when (ownedCollectibleData) {
-                is OwnedCollectibleImageData -> assetSelectionMapper.mapToCollectibleImageItem(ownedCollectibleData)
-                is OwnedCollectibleVideoData -> assetSelectionMapper.mapToCollectibleVideoItem(ownedCollectibleData)
-                is OwnedCollectibleMixedData -> assetSelectionMapper.mapToCollectibleMixedItem(ownedCollectibleData)
-                is OwnedUnsupportedCollectibleData -> {
-                    assetSelectionMapper.mapToCollectibleNotSupportedItem(ownedCollectibleData)
+        return accountCollectibleData.mapNotNull { ownedCollectibleData ->
+            val isOwnedByTheUser = ownedCollectibleData.amount isGreaterThan BigInteger.ZERO
+            if (isOwnedByTheUser) {
+                when (ownedCollectibleData) {
+                    is OwnedCollectibleImageData -> assetSelectionMapper.mapToCollectibleImageItem(ownedCollectibleData)
+                    is OwnedCollectibleVideoData -> assetSelectionMapper.mapToCollectibleVideoItem(ownedCollectibleData)
+                    is OwnedCollectibleMixedData -> assetSelectionMapper.mapToCollectibleMixedItem(ownedCollectibleData)
+                    is OwnedUnsupportedCollectibleData -> {
+                        assetSelectionMapper.mapToCollectibleNotSupportedItem(ownedCollectibleData)
+                    }
                 }
+            } else {
+                null
             }
         }
     }
@@ -100,35 +115,65 @@ class AssetSelectionUseCase @Inject constructor(
         return assetSelectionPreviewMapper.mapToInitialState(assetTransaction)
     }
 
-    fun checkIfSelectedAccountReceiveAsset(
-        publicKey: String,
+    fun getUpdatedPreviewFlowWithSelectedAsset(
         assetId: Long,
         previousState: AssetSelectionPreview
     ) = flow<AssetSelectionPreview> {
         emit(previousState.copy(isReceiverAccountOptInCheckLoadingVisible = true))
-        val loadingFinishedState = previousState.copy(isReceiverAccountOptInCheckLoadingVisible = false)
-        accountInformationUseCase.getAccountInformation(publicKey).collect {
-            it.useSuspended(
-                onSuccess = { accountInformation ->
-                    val isReceiverOptedInToAsset = accountInformation.assetHoldingList.any { assetHolding ->
-                        assetHolding.assetId == assetId
-                    } || assetId == ALGO_ID
-                    if (!isReceiverOptedInToAsset) {
-                        emit(loadingFinishedState.copy(navigateToOptInEvent = Event(assetId)))
-                    } else {
-                        emit(loadingFinishedState.copy(navigateToAssetTransferAmountFragmentEvent = Event(assetId)))
+        val receiverAddress = previousState.assetTransaction.receiverUser?.publicKey
+        val loadingFinishedStatePreview = previousState.copy(isReceiverAccountOptInCheckLoadingVisible = false)
+        receiverAddress?.let {
+            accountInformationUseCase.getAccountInformation(it).collect {
+                it.useSuspended(
+                    onSuccess = { accountInformation ->
+                        val isReceiverOptedInToAsset = accountInformation.assetHoldingList.any { assetHolding ->
+                            assetHolding.assetId == assetId
+                        } || assetId == ALGO_ID
+                        if (!isReceiverOptedInToAsset) {
+                            emit(loadingFinishedStatePreview.copy(navigateToOptInEvent = Event(assetId)))
+                        } else {
+                            emitAll(getSendAssetNavigationUpdatedPreviewFlow(assetId, loadingFinishedStatePreview))
+                        }
+                    },
+                    onFailed = { errorDataResource ->
+                        val exceptionMessage = errorDataResource.exception?.message
+                        if (exceptionMessage != null) {
+                            emit(loadingFinishedStatePreview.copy(globalErrorTextEvent = Event(exceptionMessage)))
+                        } else {
+                            // TODO Show default error message
+                            emit(loadingFinishedStatePreview)
+                        }
                     }
-                },
-                onFailed = { errorDataResource ->
-                    val exceptionMessage = errorDataResource.exception?.message
-                    if (exceptionMessage != null) {
-                        emit(loadingFinishedState.copy(globalErrorTextEvent = Event(exceptionMessage)))
-                    } else {
-                        // TODO Show default error message
-                        emit(loadingFinishedState)
+                )
+            }
+        } ?: emitAll(getSendAssetNavigationUpdatedPreviewFlow(assetId, loadingFinishedStatePreview))
+    }
+
+    private suspend fun getSendAssetNavigationUpdatedPreviewFlow(
+        assetId: Long,
+        loadingFinishedStatePreview: AssetSelectionPreview
+    ) = flow {
+        val senderAddress = loadingFinishedStatePreview.assetTransaction.senderAddress
+        val isPureCollectible = simpleCollectibleUseCase.isCachedCollectiblePureIfExists(assetId)
+        if (isPureCollectible == true) {
+            collectibleDetailItemUseCase.getCollectibleDetailItemFlow(assetId, senderAddress).collect {
+                it.useSuspended(
+                    onSuccess = {
+                        emit(loadingFinishedStatePreview.copy(navigateToCollectibleSendFragmentEvent = Event(it)))
+                    },
+                    onFailed = {
+                        emit(
+                            loadingFinishedStatePreview.copy(
+                                navigateToAssetTransferAmountFragmentEvent = Event(
+                                    assetId
+                                )
+                            )
+                        )
                     }
-                }
-            )
+                )
+            }
+        } else {
+            emit(loadingFinishedStatePreview.copy(navigateToAssetTransferAmountFragmentEvent = Event(assetId)))
         }
     }
 }

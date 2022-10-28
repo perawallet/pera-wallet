@@ -48,6 +48,10 @@ class AccountDetailUseCase @Inject constructor(
 
     fun getCachedAccountDetails() = getAccountDetailCacheFlow().value.values
 
+    fun getCachedStandardAccountDetails() = getAccountDetailCacheFlow().value.values.filter {
+        it.data?.account?.detail is Account.Detail.Standard
+    }
+
     fun getCachedAccountDetail(publicKey: String): CacheResult<AccountDetail>? {
         return accountRepository.getCachedAccountDetail(publicKey)
     }

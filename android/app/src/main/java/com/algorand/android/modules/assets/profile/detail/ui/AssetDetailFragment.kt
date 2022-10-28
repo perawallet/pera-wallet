@@ -203,8 +203,8 @@ class AssetDetailFragment : BaseFragment(R.layout.fragment_asset_detail), AssetA
     private fun setToolbarEndButton(accountIconResource: AccountIconResource) {
         val drawableWidth = resources.getDimension(R.dimen.toolbar_title_drawable_size).toInt()
         AccountIconDrawable.create(binding.root.context, accountIconResource, drawableWidth)?.run {
-            binding.toolbar.addButtonToEnd(
-                ToolbarImageButton(drawable = this, onClick = ::navToAccountOptionsNavigation)
+            binding.toolbar.setEndButton(
+                button = ToolbarImageButton(drawable = this, onClick = ::navToAccountOptionsNavigation)
             )
         }
     }

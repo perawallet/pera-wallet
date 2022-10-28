@@ -519,7 +519,6 @@
     <string name="i_already_have_nan_account">すでにアカウントを\n持っています</string>
     <string name="recover_an_account">アカウントの復元</string>
     <string name="pair_Ledger_device">Ledgerデバイスのペアリング</string>
-    <string name="i_want_to_create_algorand">Ledgerハードウェアウォレットに紐づけされたAlgorandアカウントを作成したい</string>
     <string name="confirm_transaction">トランザクションの確認</string>
     <string name="your_transaction_was">トランザクションはAlgorandネットワークによって正常に受信されました。</string>
     <string name="buy_algo">ALGOを購入する</string>
@@ -588,7 +587,6 @@
     <string name="receive_an_nft">NFTを受け取る</string>
     <string name="the_account_name"><annotation font="dmsans_bold">\"<annotation replacement="account_name"> </annotation>\"</annotation>のアカウントは正常に再キー化されました。</string>
     <string name="asset_support_success"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>は<annotation replacement="asset">assetPlaceholder</annotation>をアカウントに追加しました。<annotation replacement="asset">assetPlaceholder</annotation>を送信可能です。</string>
-    <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>はあなたに<annotation replacement="asset">assetPlaceholder</annotation>を送信しようとしていますが、こちらはサポートされていません。こちらの資産をアカウントに追加するには、ここをタップしてください。</string>
     <string name="transaction_send_successful"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>から<annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>への、<annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation>のトランザクションが完了しました。</string>
     <string name="transaction_send_failed"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>から<annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>への、<annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation>のトランザクションが失敗しました。</string>
     <string name="the_only_way_to">Algorandアカウントを回復させる唯一の方法は、このリカバリーパスフレーズです。</string>

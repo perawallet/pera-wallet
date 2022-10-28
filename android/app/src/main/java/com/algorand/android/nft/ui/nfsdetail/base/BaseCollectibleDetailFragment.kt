@@ -258,6 +258,13 @@ abstract class BaseCollectibleDetailFragment : BaseFragment(R.layout.fragment_co
         }
     }
 
+    protected fun setTotalOwnedViewGroup(formattedAmount: String, isAmountVisible: Boolean) {
+        with(binding) {
+            totalOwnedGroup.isVisible = isAmountVisible
+            totalOwnedTextView.text = formattedAmount
+        }
+    }
+
     protected fun getImageDetailTransitionAnimation(isGrowing: Boolean): MaterialElevationScale {
         return MaterialElevationScale(isGrowing).apply {
             duration = resources.getInteger(R.integer.shared_fragment_transition_delay_ms).toLong()

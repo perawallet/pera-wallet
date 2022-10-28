@@ -14,6 +14,7 @@ package com.algorand.android.ui.register.recover
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.doOnLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.algorand.algosdk.mobile.Mobile
@@ -117,10 +118,12 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
 
     private fun recoverMnemonicFromViewModel() {
         val mnemonic = recoverWithPassphraseViewModel.mnemonic.takeIf { it.isNotEmpty() }
-        if (mnemonic != null) {
-            binding.passphraseInputGroup.setMnemonic(mnemonic)
-        } else {
-            binding.passphraseInputGroup.focusTo(0, shouldShowKeyboard = true)
+        binding.passphraseInputGroup.run {
+            if (mnemonic != null) {
+                doOnLayout { setMnemonic(mnemonic) }
+            } else {
+                focusTo(0, shouldShowKeyboard = true)
+            }
         }
     }
 
@@ -153,7 +156,7 @@ class RecoverWithPassphraseFragment : DaggerBaseFragment(R.layout.fragment_recov
     }
 
     private fun customizeToolbar() {
-        getAppToolbar()?.addButtonToEnd(IconButton(R.drawable.ic_more, onClick = ::onOptionsClick))
+        getAppToolbar()?.setEndButton(button = IconButton(R.drawable.ic_more, onClick = ::onOptionsClick))
     }
 
     private fun initWordSuggestorListener() {

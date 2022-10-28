@@ -32,7 +32,7 @@ class GetSelectedAssetExchangeValueUseCase @Inject constructor(
     private val currencyUseCase: CurrencyUseCase
 ) {
 
-    fun getSelectedAssetExchangeValue(assetDetail: AssetDetail): ParityValue {
+    fun getSelectedAssetExchangeValue(assetDetail: AssetDetail): ParityValue? {
         return if (assetDetail.assetId == ALGO_ID) {
             getAlgoExchangeParityValue()
         } else {
@@ -50,7 +50,8 @@ class GetSelectedAssetExchangeValueUseCase @Inject constructor(
         }
     }
 
-    private fun getAssetExchangeParityValue(assetDetail: AssetDetail): ParityValue {
+    private fun getAssetExchangeParityValue(assetDetail: AssetDetail): ParityValue? {
+        if (assetDetail.usdValue == null) return null
         val assetHolding = assetHoldingsMapper.mapToAssetHoldings(
             assetId = assetDetail.assetId,
             amount = createOneSelectedAssetInBigInteger(assetDetail.fractionDecimals),

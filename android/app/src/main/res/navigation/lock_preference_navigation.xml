@@ -41,11 +41,21 @@
         android:name="com.algorand.android.ui.lockpreference.ChoosePasswordFragment"
         android:label="ChoosePasswordFragment"
         tools:layout="@layout/fragment_base_password">
+        <argument
+            android:name="shouldNavigateHome"
+            android:defaultValue="false"
+            app:argType="boolean" />
         <action
             android:id="@+id/action_choosePasswordFragment_to_biometricRegistrationFragment"
             app:destination="@id/biometricRegistrationFragment" />
         <action
             android:id="@+id/action_pop_lockPreferenceNavigation"
+            app:popUpTo="@id/lockPreferenceNavigation"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_choosePasswordFragment_to_homeNavigation"
+            app:destination="@id/homeNavigation"
+            app:launchSingleTop="true"
             app:popUpTo="@id/lockPreferenceNavigation"
             app:popUpToInclusive="true" />
     </fragment>

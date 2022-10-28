@@ -12,20 +12,11 @@
 
 package com.algorand.android.modules.assets.profile.asaprofile.base
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
-import com.algorand.android.models.Account
 import com.algorand.android.models.AssetAction
-import com.algorand.android.models.AssetInformation
-import com.algorand.android.models.AssetOperationResult
 import com.algorand.android.modules.assets.profile.asaprofile.ui.model.AsaProfilePreview
 import com.algorand.android.modules.assets.profile.asaprofile.ui.usecase.AsaProfilePreviewUseCase
-import com.algorand.android.utils.Event
-import com.algorand.android.utils.Resource
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -37,37 +28,11 @@ abstract class BaseAsaProfileViewModel(
     abstract val accountAddress: String?
     abstract val assetId: Long
 
-    private var sendTransactionJob: Job? = null
-
-    private val _sendTransactionResultLiveData = MutableLiveData<Event<Resource<AssetOperationResult>>>()
-    val sendTransactionResultLiveData: LiveData<Event<Resource<AssetOperationResult>>>
-        get() = _sendTransactionResultLiveData
-
     private val _asaProfilePreviewFlow = MutableStateFlow<AsaProfilePreview?>(null)
     val asaProfilePreviewFlow: StateFlow<AsaProfilePreview?> get() = _asaProfilePreviewFlow
 
     fun getAssetAction(): AssetAction {
         return asaProfilePreviewUseCase.createAssetAction(assetId = assetId, accountAddress = accountAddress)
-    }
-
-    fun sendSignedTransaction(
-        signedTransactionData: ByteArray,
-        assetInformation: AssetInformation,
-        account: Account
-    ) {
-        if (sendTransactionJob?.isActive == true) {
-            return
-        }
-
-        sendTransactionJob = viewModelScope.launch(Dispatchers.IO) {
-            asaProfilePreviewUseCase.sendTransaction(
-                signedTransactionData = signedTransactionData,
-                assetInformation = assetInformation,
-                account = account
-            ).collect {
-                _sendTransactionResultLiveData.postValue(it)
-            }
-        }
     }
 
     protected fun initAsaPreviewFlow() {

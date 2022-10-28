@@ -67,16 +67,13 @@ class AssetSelectionViewModel @Inject constructor(
         return assetTransaction.receiverUser != null
     }
 
-    fun checkIfSelectedAccountReceiveAsset(assetId: Long) {
+    fun updatePreviewWithSelectedAsset(assetId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
-            assetTransaction.receiverUser?.publicKey?.let {
-                assetSelectionUseCase.checkIfSelectedAccountReceiveAsset(
-                    publicKey = it,
-                    assetId = assetId,
-                    previousState = _assetSelectionPreview.value
-                ).collectLatest { assetSelectionPreview ->
-                    _assetSelectionPreview.emit(assetSelectionPreview)
-                }
+            assetSelectionUseCase.getUpdatedPreviewFlowWithSelectedAsset(
+                assetId = assetId,
+                previousState = _assetSelectionPreview.value
+            ).collectLatest { assetSelectionPreview ->
+                _assetSelectionPreview.emit(assetSelectionPreview)
             }
         }
     }

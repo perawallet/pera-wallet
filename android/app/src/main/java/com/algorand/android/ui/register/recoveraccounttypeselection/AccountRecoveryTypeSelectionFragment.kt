@@ -69,7 +69,7 @@ class AccountRecoveryTypeSelectionFragment : BaseFragment(R.layout.fragment_acco
 
     private fun setupToolbar() {
         if (accountRecoveryTypeSelectionViewModel.hasAccount().not()) {
-            getAppToolbar()?.addButtonToEnd(TextButton(R.string.skip, onClick = ::onSkipClick))
+            getAppToolbar()?.setEndButton(button = TextButton(R.string.skip, onClick = ::onSkipClick))
         }
     }
 

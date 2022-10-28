@@ -27,6 +27,8 @@ import com.algorand.android.models.WalletConnectSignResult
 import com.algorand.android.models.WalletConnectTransaction
 import com.algorand.android.models.WalletConnectTransactionErrorResponse
 import com.algorand.android.repository.WalletConnectRepository
+import com.algorand.android.usecase.AccountCacheStatusUseCase
+import com.algorand.android.usecase.GetActiveNodeChainIdUseCase
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
@@ -61,7 +63,9 @@ class WalletConnectManager @Inject constructor(
     private val walletConnectCustomTransactionHandler: WalletConnectCustomTransactionHandler,
     private val errorProvider: WalletConnectTransactionErrorProvider,
     private val eventLogger: WalletConnectEventLogger,
-    private val accountCacheManager: AccountCacheManager
+    private val accountCacheManager: AccountCacheManager,
+    private val getActiveNodeChainIdUseCase: GetActiveNodeChainIdUseCase,
+    private val accountCacheStatusUseCase: AccountCacheStatusUseCase
 ) : LifecycleObserver {
 
     val sessionResultFlow: SharedFlow<Event<Resource<WalletConnectSession>>>
@@ -94,7 +98,7 @@ class WalletConnectManager @Inject constructor(
 
     private var coroutineScope: CoroutineScope? = null
 
-    private val accountCacheStatusFlow = accountCacheManager.getCacheStatusFlow()
+    private val accountCacheStatusFlow = accountCacheStatusUseCase.getAccountCacheStatusFlow()
     private val sessionConnectionTimer by lazy { WalletConnectSessionTimer(onSessionTimedOut) }
 
     // TODO Find better solution for multiple transaction request
@@ -103,12 +107,19 @@ class WalletConnectManager @Inject constructor(
     private var latestRequestIdIsBeingHandled: Long? = null
     private var latestTransactionRequestId: Long? = null
     private var sessionEvent: Event<WalletConnectSession>? = null
+    private var latestActiveChainId: Long? = null
 
     private val walletConnectClientListener = object : WalletConnectClientListener {
-        override fun onSessionRequest(sessionId: Long, requestId: Long, session: WalletConnectSession) {
+        override fun onSessionRequest(sessionId: Long, requestId: Long, session: WalletConnectSession, chainId: Long?) {
             stopSessionConnectionTimer()
+            latestActiveChainId = chainId
             sessionEvent = Event(session)
             handleSessionRequest()
+        }
+
+        override fun onSessionUpdate(sessionId: Long, accounts: List<String>?, chainId: Long?) {
+            latestActiveChainId = chainId
+            updateSession(sessionId, accounts)
         }
 
         override fun onCustomRequest(sessionId: Long, requestId: Long, payloadList: List<*>) {
@@ -168,8 +179,12 @@ class WalletConnectManager @Inject constructor(
     }
 
     fun approveSession(session: WalletConnectSession, address: String) {
-        walletConnectClient.approveSession(session.id, address)
+        walletConnectClient.approveSession(session.id, address, latestActiveChainId)
         eventLogger.logSessionConfirmation(session, address)
+    }
+
+    fun updateSession(sessionId: Long, accounts: List<String>?) {
+        walletConnectClient.updateSession(sessionId, accounts, latestActiveChainId)
     }
 
     fun rejectSession(session: WalletConnectSession) {
@@ -216,9 +231,28 @@ class WalletConnectManager @Inject constructor(
             accountCacheStatusFlow.collectLatest {
                 if (it == AccountCacheStatus.DONE && sessionEvent?.consumed == false) {
                     val cachedSession = sessionEvent?.consume() ?: return@collectLatest
-                    _sessionResultFlow.emit(Event(Resource.Success(cachedSession)))
+                    checkIfRequestedSessionIdMatchWithActiveNode(
+                        cachedSession = cachedSession,
+                        onFailed = { errorResource -> _sessionResultFlow.emit(Event(errorResource)) },
+                        onMatched = { cachedSessionResource -> _sessionResultFlow.emit(Event(cachedSessionResource)) }
+                    )
                 }
             }
+        }
+    }
+
+    private suspend fun checkIfRequestedSessionIdMatchWithActiveNode(
+        cachedSession: WalletConnectSession,
+        onMatched: suspend (Resource.Success<WalletConnectSession>) -> Unit,
+        onFailed: suspend (Resource.Error) -> Unit
+    ) {
+        val activeNodeChainId = getActiveNodeChainIdUseCase.getActiveNodeChainId()
+        val safeChainId = latestActiveChainId ?: DEFAULT_CHAIN_ID
+        if (activeNodeChainId == safeChainId || DEFAULT_CHAIN_ID == safeChainId) {
+            onMatched.invoke(Resource.Success(cachedSession))
+        } else {
+            val annotatedString = AnnotatedString(stringResId = R.string.signing_error_network_mismatch)
+            onFailed.invoke(Annotated(annotatedString))
         }
     }
 

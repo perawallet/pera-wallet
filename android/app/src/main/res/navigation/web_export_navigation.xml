@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~  Copyright 2022 Pera Wallet, LDA
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~  limitations under the License
+  -->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/webExportNavigation"
+    app:startDestination="@id/webExportAccountSelectionFragment">
+
+    <action
+        android:id="@+id/action_webExportNavigation_pop"
+        app:popUpTo="@id/accountsQrScannerFragment"
+        app:popUpToInclusive="true" />
+
+    <fragment
+        android:id="@+id/webExportAccountSelectionFragment"
+        android:name="com.algorand.android.modules.webexport.accountselection.ui.WebExportAccountSelectionFragment"
+        android:label="fragment_webexport_account_selection">
+        <argument
+            android:name="backupId"
+            app:argType="string" />
+        <argument
+            android:name="modificationKey"
+            app:argType="string" />
+        <argument
+            android:name="encryptionKey"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_webExportAccountSelectionFragment_to_webExportDomainNameConfirmationFragment"
+            app:destination="@id/webExportDomainNameConfirmationFragment">
+            <argument
+                android:name="backupId"
+                app:argType="string" />
+            <argument
+                android:name="modificationKey"
+                app:argType="string" />
+            <argument
+                android:name="encryptionKey"
+                app:argType="string" />
+            <argument
+                android:name="accountList"
+                app:argType="string[]"/>
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/webExportDomainNameConfirmationFragment"
+        android:name="com.algorand.android.modules.webexport.domainnameconfirmation.ui.WebExportDomainNameConfirmationFragment"
+        android:label="fragment_webexport_domainname_confirmation">
+        <argument
+            android:name="backupId"
+            app:argType="string" />
+        <argument
+            android:name="modificationKey"
+            app:argType="string" />
+        <argument
+            android:name="encryptionKey"
+            app:argType="string" />
+        <argument
+            android:name="accountList"
+            app:argType="string[]" />
+        <action
+            android:id="@+id/action_webExportDomainNameConfirmationFragment_to_webExportAccountConfirmationFragment"
+            app:destination="@id/webExportAccountConfirmationFragment">
+            <argument
+                android:name="backupId"
+                app:argType="string" />
+            <argument
+                android:name="modificationKey"
+                app:argType="string" />
+            <argument
+                android:name="encryptionKey"
+                app:argType="string" />
+            <argument
+                android:name="accountList"
+                app:argType="string[]" />
+        </action>
+        <action
+            android:id="@+id/action_webExportDomainNameConfirmationFragment_to_webExportPasswordFragment"
+            app:destination="@id/webExportPasswordFragment">
+            <argument
+                android:name="backupId"
+                app:argType="string"
+                app:nullable="false" />
+            <argument
+                android:name="modificationKey"
+                app:argType="string"
+                app:nullable="false" />
+            <argument
+                android:name="encryptionKey"
+                app:argType="string"
+                app:nullable="false" />
+            <argument
+                android:name="accountList"
+                app:argType="string[]" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/webExportPasswordFragment"
+        android:name="com.algorand.android.modules.webexport.pinentry.ui.WebExportPasswordFragment"
+        android:label="fragment_webexport_password">
+        <argument
+            android:name="backupId"
+            app:argType="string"
+            app:nullable="false" />
+        <argument
+            android:name="modificationKey"
+            app:argType="string"
+            app:nullable="false" />
+        <argument
+            android:name="encryptionKey"
+            app:argType="string"
+            app:nullable="false" />
+        <argument
+            android:name="accountList"
+            app:argType="string[]" />
+        <action
+            android:id="@+id/action_webExportPasswordFragment_to_webExportAccountConfirmationFragment"
+            app:destination="@id/webExportAccountConfirmationFragment"
+            app:popUpTo="@id/webExportDomainNameConfirmationFragment">
+            <argument
+                android:name="backupId"
+                app:argType="string"
+                app:nullable="false" />
+            <argument
+                android:name="modificationKey"
+                app:argType="string"
+                app:nullable="false" />
+            <argument
+                android:name="encryptionKey"
+                app:argType="string"
+                app:nullable="false" />
+            <argument
+                android:name="accountList"
+                app:argType="string[]" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/webExportAccountConfirmationFragment"
+        android:name="com.algorand.android.modules.webexport.accountconfirmation.ui.WebExportAccountConfirmationFragment"
+        android:label="fragment_webexport_account_confirmation">
+        <argument
+            android:name="backupId"
+            app:argType="string" />
+        <argument
+            android:name="modificationKey"
+            app:argType="string" />
+        <argument
+            android:name="encryptionKey"
+            app:argType="string" />
+        <argument
+            android:name="accountList"
+            app:argType="string[]" />
+        <action
+            android:id="@+id/action_webExportAccountConfirmationFragment_to_webExportSuccessResultFragment"
+            app:destination="@id/webExportSuccessResultFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/webExportSuccessResultFragment"
+        android:name="com.algorand.android.modules.webexport.exportresult.ui.WebExportSuccessResultFragment"
+        android:label="WebExportSuccessResultFragment" />
+
+</navigation>

@@ -38,7 +38,7 @@
         android:clipToPadding="false"
         android:paddingHorizontal="@dimen/spacing_xlarge"
         android:layout_marginTop="@dimen/spacing_large"
-        android:paddingBottom="100dp"
+        android:paddingBottom="@dimen/bottom_padding_for_screen_with_floating_button"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -58,7 +58,7 @@ sealed class BaseCollectibleListItem : RecyclerListItem, CollectibleSortableItem
 
     data class InfoViewItem(
         val displayedCollectibleCount: Int,
-        val isVisible: Boolean,
+        val isVisible: Boolean, // TODO: We should create an instance if it's not visible
         val isFilterActive: Boolean,
         val isAddButtonVisible: Boolean
     ) : BaseCollectibleListItem() {
@@ -76,7 +76,8 @@ sealed class BaseCollectibleListItem : RecyclerListItem, CollectibleSortableItem
 
     data class SearchViewItem(
         @StringRes val searchViewHintResId: Int,
-        val isVisible: Boolean
+        val isVisible: Boolean, // TODO: We should create an instance if it's not visible
+        val query: String
     ) : BaseCollectibleListItem() {
 
         override val itemType: ItemType = ItemType.SEARCH_VIEW_ITEM
@@ -86,7 +87,9 @@ sealed class BaseCollectibleListItem : RecyclerListItem, CollectibleSortableItem
         }
 
         override fun areContentsTheSame(other: RecyclerListItem): Boolean {
-            return other is SearchViewItem && other == this
+            return other is SearchViewItem &&
+                other.searchViewHintResId == searchViewHintResId &&
+                other.isVisible == isVisible
         }
     }
 
@@ -116,6 +119,8 @@ sealed class BaseCollectibleListItem : RecyclerListItem, CollectibleSortableItem
         abstract val badgeImageResId: Int?
         abstract val optedInAccountAddress: String
         abstract val optedInAtRound: Long?
+        abstract val isAmountVisible: Boolean
+        abstract val formattedCollectibleAmount: String?
 
         override val collectibleSortingNameField: String?
             get() = collectibleName
@@ -130,7 +135,9 @@ sealed class BaseCollectibleListItem : RecyclerListItem, CollectibleSortableItem
             override val avatarDisplayText: String,
             override val badgeImageResId: Int?,
             override val optedInAccountAddress: String,
-            override val optedInAtRound: Long?
+            override val optedInAtRound: Long?,
+            override val formattedCollectibleAmount: String,
+            override val isAmountVisible: Boolean
         ) : BaseCollectibleItem() {
 
             override val itemType: ItemType = ItemType.GIF_ITEM
@@ -153,7 +160,9 @@ sealed class BaseCollectibleListItem : RecyclerListItem, CollectibleSortableItem
             override val badgeImageResId: Int?,
             override val optedInAccountAddress: String,
             override val optedInAtRound: Long?,
-            val thumbnailPrismUrl: String?
+            override val formattedCollectibleAmount: String,
+            val thumbnailPrismUrl: String?,
+            override val isAmountVisible: Boolean
         ) : BaseCollectibleItem() {
 
             override val itemType: ItemType = ItemType.VIDEO_ITEM
@@ -176,7 +185,9 @@ sealed class BaseCollectibleListItem : RecyclerListItem, CollectibleSortableItem
             override val badgeImageResId: Int?,
             override val optedInAccountAddress: String,
             override val optedInAtRound: Long?,
-            val prismUrl: String?
+            override val formattedCollectibleAmount: String,
+            val prismUrl: String?,
+            override val isAmountVisible: Boolean
         ) : BaseCollectibleItem() {
 
             override val itemType: ItemType = ItemType.IMAGE_ITEM
@@ -199,6 +210,8 @@ sealed class BaseCollectibleListItem : RecyclerListItem, CollectibleSortableItem
             override val badgeImageResId: Int?,
             override val optedInAccountAddress: String,
             override val optedInAtRound: Long?,
+            override val formattedCollectibleAmount: String,
+            override val isAmountVisible: Boolean,
             val thumbnailPrismUrl: String?
         ) : BaseCollectibleItem() {
 
@@ -221,7 +234,9 @@ sealed class BaseCollectibleListItem : RecyclerListItem, CollectibleSortableItem
             override val avatarDisplayText: String,
             override val badgeImageResId: Int?,
             override val optedInAccountAddress: String,
-            override val optedInAtRound: Long?
+            override val optedInAtRound: Long?,
+            override val formattedCollectibleAmount: String,
+            override val isAmountVisible: Boolean
         ) : BaseCollectibleItem() {
 
             override val itemType: ItemType = ItemType.SOUND_ITEM
@@ -243,7 +258,9 @@ sealed class BaseCollectibleListItem : RecyclerListItem, CollectibleSortableItem
             override val avatarDisplayText: String,
             override val badgeImageResId: Int?,
             override val optedInAccountAddress: String,
-            override val optedInAtRound: Long?
+            override val optedInAtRound: Long?,
+            override val formattedCollectibleAmount: String,
+            override val isAmountVisible: Boolean
         ) : BaseCollectibleItem() {
 
             override val itemType: ItemType = ItemType.NOT_SUPPORTED_ITEM
@@ -265,6 +282,9 @@ sealed class BaseCollectibleListItem : RecyclerListItem, CollectibleSortableItem
 
             override val sortableItemPriority: SortableItemPriority
                 get() = SortableItemPriority.PLACE_FIRST
+
+            override val isAmountVisible: Boolean = false
+            override val formattedCollectibleAmount: String? = null
 
             data class PendingAdditionItem(
                 override val collectibleId: Long,

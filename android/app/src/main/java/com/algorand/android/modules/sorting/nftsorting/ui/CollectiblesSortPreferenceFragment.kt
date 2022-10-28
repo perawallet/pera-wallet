@@ -56,7 +56,7 @@ class CollectiblesSortPreferenceFragment : BaseFragment(R.layout.fragment_collec
     }
 
     private fun initToolbar() {
-        getAppToolbar()?.addButtonToEnd(TextButton(R.string.done, R.color.link_primary, ::onDoneClick))
+        getAppToolbar()?.setEndButton(button = TextButton(R.string.done, R.color.link_primary, ::onDoneClick))
     }
 
     private fun initUi() {

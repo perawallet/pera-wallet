@@ -12,6 +12,7 @@
 
 package com.algorand.android.modules.deeplink.domain.model
 
+import com.algorand.android.modules.webexport.model.WebExportQrCode
 import java.math.BigInteger
 
 data class RawDeepLink(
@@ -24,5 +25,6 @@ data class RawDeepLink(
     val mnemonic: String? = null,
     val label: String? = null,
     val transactionStatus: String? = null,
-    val transactionId: String? = null
+    val transactionId: String? = null,
+    val webExportQrCode: WebExportQrCode? = null
 )

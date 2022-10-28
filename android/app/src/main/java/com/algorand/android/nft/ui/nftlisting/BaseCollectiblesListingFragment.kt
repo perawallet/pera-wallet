@@ -52,7 +52,6 @@ abstract class BaseCollectiblesListingFragment : DaggerBaseFragment(R.layout.fra
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        baseCollectibleListingViewModel.resetSearchQuery()
         initUi()
         initCollectiblesListingPreviewCollector()
     }

@@ -54,7 +54,10 @@ class AccountCollectiblesListingPreviewUseCase @Inject constructor(
             val isAllCollectiblesFilteredOut = isAllCollectiblesFilteredOut(collectibleListData)
             val isEmptyStateVisible = accountCollectibleData.isEmpty() || isAllCollectiblesFilteredOut
             val itemList = mutableListOf<BaseCollectibleListItem>(
-                createSearchViewItem(isVisible = !isEmptyStateVisible),
+                createSearchViewItem(
+                    isVisible = !isEmptyStateVisible,
+                    query = searchKeyword
+                ),
             ).apply { addAll(collectibleListData.baseCollectibleItemList) }
             val infoViewItem = createInfoViewItem(
                 displayedCollectibleCount = collectibleListData.displayedCollectibleCount,

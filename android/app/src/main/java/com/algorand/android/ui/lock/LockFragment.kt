@@ -21,6 +21,7 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import com.algorand.android.MainActivity
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.customviews.DialPadView
@@ -106,6 +107,7 @@ class LockFragment : DaggerBaseFragment(R.layout.fragment_lock) {
     }
 
     private fun handleNextNavigation() {
+        (activity as? MainActivity)?.isAppUnlocked = true
         if (activity?.getNavigationBackStackCount() == 0) {
             nav(LockFragmentDirections.actionLockFragmentToHomeNavigation())
         } else {

@@ -16,6 +16,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.core.TransactionBaseFragment
 import com.algorand.android.databinding.FragmentCollectibleSendBinding
@@ -162,7 +163,7 @@ class CollectibleSendFragment : TransactionBaseFragment(R.layout.fragment_collec
 
     private fun navToNetworkErrorRetryBottomSheet() {
         nav(
-            CollectibleSendFragmentDirections.actionGlobalSingleButtonBottomSheet(
+            HomeNavigationDirections.actionGlobalSingleButtonBottomSheet(
                 titleAnnotatedString = AnnotatedString(R.string.your_nft_transfer_has_failed),
                 descriptionAnnotatedString = AnnotatedString(R.string.please_try_again),
                 drawableResId = R.drawable.ic_error,
@@ -178,7 +179,7 @@ class CollectibleSendFragment : TransactionBaseFragment(R.layout.fragment_collec
 
     private fun navToRequestOptInBottomSheet(collectibleName: String?, collectibleId: Long, receiverPublicKey: String) {
         nav(
-            CollectibleSendFragmentDirections.actionCollectibleSendFragmentToRequestOptInConfirmationBottomSheet(
+            CollectibleSendFragmentDirections.actionCollectibleSendFragmentToRequestOptInConfirmationNavigation(
                 RequestOptInConfirmationArgs(
                     senderPublicKey = collectibleSendViewModel.getSenderPublicKey().publicKey,
                     receiverPublicKey = receiverPublicKey,

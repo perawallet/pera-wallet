@@ -56,8 +56,12 @@ class ContactInfoFragment : DaggerBaseFragment(R.layout.fragment_contact_info) {
 
     private fun customizeToolbar() {
         getAppToolbar()?.apply {
-            addButtonToEnd(IconButton(R.drawable.ic_share, onClick = ::onShareClick))
-            addButtonToEnd(IconButton(R.drawable.ic_pen_solid, onClick = ::onEditClick))
+            setEndButtons(
+                buttons = listOf(
+                    IconButton(R.drawable.ic_share, onClick = ::onShareClick),
+                    IconButton(R.drawable.ic_pen_solid, onClick = ::onEditClick)
+                )
+            )
         }
     }
 

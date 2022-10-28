@@ -115,13 +115,15 @@ fun Context.setupAssetSupportSuccessMessage(
 
 fun Context.setupAssetSupportRequestMessage(
     senderName: String?,
+    receiverName: String?,
     asset: AssetNotificationDescription?
 ): CharSequence {
     return getXmlStyledString(
         stringResId = R.string.asset_support_request,
         replacementList = listOf(
             "sender" to senderName.orEmpty(),
-            "asset" to getAssetNameCharSequence(this, asset)
+            "asset" to getAssetNameCharSequence(this, asset),
+            "receiver" to receiverName.orEmpty()
         )
     )
 }

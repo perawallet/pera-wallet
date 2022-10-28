@@ -59,7 +59,7 @@ class AccountAssetsPreviewUseCase @Inject constructor(
             mutableListOf<AccountDetailAssetsItem>().apply {
                 val isAddAssetButtonVisible = accountDetailUseCase.canAccountSignTransaction(publicKey)
                 add(accountDetailAssetItemMapper.mapToTitleItem(R.string.assets, isAddAssetButtonVisible))
-                add(accountDetailAssetItemMapper.mapToSearchViewItem())
+                add(accountDetailAssetItemMapper.mapToSearchViewItem(query))
                 addAll(assetItemSortUseCase.sortAssets(assetItemList))
                 if (assetItemList.isEmpty()) {
                     add(accountDetailAssetItemMapper.mapToNoAssetFoundViewItem())

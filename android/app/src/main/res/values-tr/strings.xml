@@ -536,7 +536,6 @@
     <string name="i_already_have_nan_account">Zaten bir\nhesabım var</string>
     <string name="recover_an_account">Bir hesabı kurtarın</string>
     <string name="pair_Ledger_device">Ledger cihazı eşleştirin</string>
-    <string name="i_want_to_create_algorand">Ledger donanım cüzdanım ile desteklenen bir Algorand hesabı oluşturmak istiyorum</string>
     <string name="confirm_transaction">İşlemi Onayla</string>
     <string name="your_transaction_was">İşleminiz Algorand ağı tarafından başarıyla alındı.</string>
     <string name="buy_algo">ALGO Alın</string>
@@ -605,8 +604,7 @@
     <string name="receive_an_nft">Bir NFT Alın</string>
     <string name="the_account_name"><annotation font="dmsans_bold">\"<annotation replacement="account_name"> </annotation>\"</annotation> hesabı, başarıyla yeniden anahtarlandı.</string>
     <string name="asset_support_success"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>, hesabına <annotation replacement="asset">assetPlaceholder</annotation> ekledi.  <annotation replacement="asset">assetPlaceholder</annotation> gönderebilirsiniz.</string>
-    <string name="asset_support_request">
-<annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation>, size <annotation replacement="asset">assetPlaceholder</annotation> göndermek istiyor. Ancak, siz bu varlığı desteklemiyorsunuz. Bu varlığı hesabınıza eklemek için buraya dokunun.</annotation></string>
+    <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation>, size <annotation replacement="asset">assetPlaceholder</annotation> göndermek istiyor. Ancak, siz bu varlığı desteklemiyorsunuz. Bu varlığı hesabınıza eklemek için buraya dokunun.</annotation></string>
     <string name="transaction_send_successful"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> işleminiz, <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> adresinden <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> adresine gönderilerek tamamlandı.</string>
     <string name="transaction_send_failed"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> işleminiz, <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> adresinden <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> adresine gönderilemeyerek başarısız oldu.</string>
     <string name="the_only_way_to">Bir Algorand hesabını kurtarmanın tek yolu bu kurtarma parolasıdır.</string>

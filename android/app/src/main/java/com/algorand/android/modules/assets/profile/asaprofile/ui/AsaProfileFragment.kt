@@ -13,19 +13,47 @@
 package com.algorand.android.modules.assets.profile.asaprofile.ui
 
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
+import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.models.AnnotatedString
-import androidx.fragment.app.viewModels
+import com.algorand.android.models.AssetActionResult
+import com.algorand.android.models.AssetTransaction
+import com.algorand.android.modules.assets.action.transferbalance.TransferBalanceActionBottomSheet.Companion.TRANSFER_ASSET_ACTION_RESULT
 import com.algorand.android.modules.assets.profile.asaprofile.base.BaseAsaProfileFragment
 import com.algorand.android.utils.PERA_VERIFICATION_MAIL_ADDRESS
 import com.algorand.android.utils.copyToClipboard
 import com.algorand.android.utils.getCustomLongClickableSpan
+import com.algorand.android.utils.useFragmentResultListenerValue
 import dagger.hilt.android.AndroidEntryPoint
+import java.math.BigInteger
 
 @AndroidEntryPoint
 class AsaProfileFragment : BaseAsaProfileFragment() {
 
     override val asaProfileViewModel by viewModels<AsaProfileViewModel>()
+
+    override fun onStart() {
+        super.onStart()
+        startSavedStateListener()
+    }
+
+    private fun startSavedStateListener() {
+        useFragmentResultListenerValue<AssetActionResult>(TRANSFER_ASSET_ACTION_RESULT) { assetActionResult ->
+            navToSendAlgoFlow(assetActionResult)
+        }
+    }
+
+    private fun navToSendAlgoFlow(assetActionResult: AssetActionResult) {
+        val assetId = assetActionResult.asset.assetId
+        val assetTransaction = AssetTransaction(
+            assetId = assetId,
+            senderAddress = asaProfileViewModel.accountAddress.orEmpty(),
+            amount = BigInteger.ZERO
+        )
+        // TODO: Don't use HomeNavigationDirection in here, create a distinct direction for this fragment
+        nav(HomeNavigationDirections.actionGlobalSendAlgoNavigation(assetTransaction))
+    }
 
     override fun onBackButtonClick() {
         navBack()
@@ -72,10 +100,16 @@ class AsaProfileFragment : BaseAsaProfileFragment() {
 
     override fun navToAssetAdditionFlow() {
         val assetAction = asaProfileViewModel.getAssetAction()
-        nav(
-            AsaProfileFragmentDirections.actionAsaProfileFragmentToAssetAdditionActionNavigation(
-                assetAction = assetAction
-            )
-        )
+        nav(AsaProfileFragmentDirections.actionAsaProfileFragmentToAssetAdditionActionNavigation(assetAction))
+    }
+
+    override fun navToAssetRemovalFlow() {
+        val assetAction = asaProfileViewModel.getAssetAction()
+        nav(AsaProfileFragmentDirections.actionAsaProfileFragmentToAssetRemovalActionNavigation(assetAction))
+    }
+
+    override fun navToAssetTransferFlow() {
+        val assetAction = asaProfileViewModel.getAssetAction()
+        nav(AsaProfileFragmentDirections.actionAsaProfileFragmentToAssetTransferBalanceActionNavigation(assetAction))
     }
 }

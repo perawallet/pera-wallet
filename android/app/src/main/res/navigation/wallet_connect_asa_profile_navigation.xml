@@ -14,7 +14,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/walletConnectAsaProfileNavigation"
-    app:startDestination="@id/asaProfileFragment">
+    app:startDestination="@id/walletConnectAsaProfileFragment">
 
     <include app:graph="@navigation/asset_total_supply_navigation" />
 
@@ -22,9 +22,13 @@
 
     <include app:graph="@navigation/single_button_bottom_sheet_navigation" />
 
+    <include app:graph="@navigation/asset_removal_action_navigation" />
+
+    <include app:graph="@navigation/asset_transfer_balance_action_navigation" />
+
     <fragment
-        android:id="@+id/asaProfileFragment"
-        android:name="com.algorand.android.ui.wctransactionrequest.WalletConnectBaseAsaProfileFragment"
+        android:id="@+id/walletConnectAsaProfileFragment"
+        android:name="com.algorand.android.ui.wctransactionrequest.WalletConnectAsaProfileFragment"
         android:label="AsaProfileFragment"
         tools:layout="@layout/fragment_asa_profile">
         <argument
@@ -35,20 +39,20 @@
             app:argType="string"
             app:nullable="true" />
         <action
-            android:id="@+id/action_asaProfileFragment_to_assetTotalSupplyNavigation"
+            android:id="@+id/action_walletConnectAsaProfileFragment_to_assetTotalSupplyNavigation"
             app:destination="@id/assetTotalSupplyNavigation" />
         <action
-            android:id="@+id/action_asaProfileFragment_to_assetAdditionActionNavigation"
+            android:id="@+id/action_walletConnectAsaProfileFragment_to_assetAdditionActionNavigation"
             app:destination="@id/assetAdditionActionNavigation">
             <argument
                 android:name="assetAction"
                 app:argType="com.algorand.android.models.AssetAction" />
         </action>
         <action
-            android:id="@+id/action_asaProfileFragment_to_asaProfileAccountSelectionFragment"
+            android:id="@+id/action_walletConnectAsaProfileFragment_to_asaProfileAccountSelectionFragment"
             app:destination="@id/asaProfileAccountSelectionFragment" />
         <action
-            android:id="@+id/action_asaProfileFragment_to_singleButtonBottomSheetNavigation"
+            android:id="@+id/action_walletConnectAsaProfileFragment_to_singleButtonBottomSheetNavigation"
             app:destination="@id/singleButtonBottomSheetNavigation">
             <argument
                 android:name="titleAnnotatedString"
@@ -74,6 +78,20 @@
                 android:name="shouldDescriptionHasLinkMovementMethod"
                 android:defaultValue="false"
                 app:argType="boolean" />
+        </action>
+        <action
+            android:id="@+id/action_walletConnectAsaProfileFragment_to_assetTransferBalanceActionNavigation"
+            app:destination="@id/assetTransferBalanceActionNavigation">
+            <argument
+                android:name="assetAction"
+                app:argType="com.algorand.android.models.AssetAction" />
+        </action>
+        <action
+            android:id="@+id/action_walletConnectAsaProfileFragment_to_assetRemovalActionNavigation"
+            app:destination="@id/assetRemovalActionNavigation">
+            <argument
+                android:name="assetAction"
+                app:argType="com.algorand.android.models.AssetAction" />
         </action>
     </fragment>
 

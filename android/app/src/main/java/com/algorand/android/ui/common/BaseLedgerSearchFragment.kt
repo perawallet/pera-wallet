@@ -162,7 +162,7 @@ abstract class BaseLedgerSearchFragment :
     }
 
     private fun configureToolbar() {
-        getAppToolbar()?.addButtonToEnd(IconButton(R.drawable.ic_question_mark, onClick = ::onTroubleshootClick))
+        getAppToolbar()?.setEndButton(button = IconButton(R.drawable.ic_question_mark, onClick = ::onTroubleshootClick))
     }
 
     private fun setupLedgerBleOperationManager() {

@@ -68,7 +68,7 @@ class DatabaseMigrationUnitTest {
         val cursor: Cursor = migratedDb!!.query(queryString, null)
         Log.d(TAG, "Node DB: ${DatabaseUtils.dumpCursorToString(cursor)}")
         Log.d(TAG, "Node Count in Database: ${cursor.count}")
-        Assert.assertTrue("Nodes Count After Migration Not Successful", cursor.count == 2)
+        Assert.assertTrue("Nodes Count After Migration Not Successful", cursor.count == defaultNodeList.count())
     }
 
     @Test

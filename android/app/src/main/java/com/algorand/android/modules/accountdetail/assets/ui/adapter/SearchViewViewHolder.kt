@@ -27,6 +27,7 @@ class SearchViewViewHolder(
     override fun bind(item: AccountDetailAssetsItem) {
         if (item !is AccountDetailAssetsItem.SearchViewItem) return
         with(binding.assetSearchView) {
+            text = item.query
             setOnTextChanged { listener.onSearchQueryChanged(it) }
         }
     }

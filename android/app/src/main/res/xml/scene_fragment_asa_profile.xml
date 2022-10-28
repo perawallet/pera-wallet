@@ -117,7 +117,7 @@
         </Constraint>
 
         <Constraint
-            android:id="@id/assetStatusLabelTextView"
+            android:id="@id/statusLabelTextView"
             app:visibilityMode="ignore">
             <Layout
                 android:layout_width="0dp"
@@ -130,7 +130,7 @@
         </Constraint>
 
         <Constraint
-            android:id="@id/accountTextView"
+            android:id="@id/statusValueTextView"
             app:visibilityMode="ignore">
             <Layout
                 android:layout_width="0dp"
@@ -141,7 +141,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/assetStatusActionButton"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/assetStatusLabelTextView" />
+                app:layout_constraintTop_toBottomOf="@id/statusLabelTextView" />
         </Constraint>
 
         <Constraint
@@ -258,7 +258,7 @@
         </Constraint>
 
         <Constraint
-            android:id="@id/assetStatusLabelTextView"
+            android:id="@id/statusLabelTextView"
             app:visibilityMode="ignore">
             <Layout
                 android:layout_width="0dp"
@@ -271,7 +271,7 @@
         </Constraint>
 
         <Constraint
-            android:id="@id/accountTextView"
+            android:id="@id/statusValueTextView"
             app:visibilityMode="ignore">
             <Layout
                 android:layout_width="0dp"
@@ -282,7 +282,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/assetStatusActionButton"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/assetStatusLabelTextView" />
+                app:layout_constraintTop_toBottomOf="@id/statusLabelTextView" />
         </Constraint>
 
         <Constraint

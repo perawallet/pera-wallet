@@ -92,11 +92,7 @@ class EditContactFragment : BaseAddEditContactFragment() {
     }
 
     override fun setToolbar(customToolbar: CustomToolbar?) {
-        customToolbar?.addButtonToEnd(
-            TextButton(R.string.done) {
-                onContactEdit()
-            }
-        )
+        customToolbar?.setEndButton(button = TextButton(R.string.done, onClick = ::onContactEdit))
     }
 
     override fun setProfileImageView(imageView: ImageView) {

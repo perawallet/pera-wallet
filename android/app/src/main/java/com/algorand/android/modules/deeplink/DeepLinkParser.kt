@@ -1,4 +1,5 @@
 @file:Suppress("MaxLineLength", "TooManyFunctions")
+
 /*
  * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +17,7 @@ package com.algorand.android.modules.deeplink
 import android.net.Uri
 import com.algorand.android.models.RawMnemonicPayload
 import com.algorand.android.modules.deeplink.domain.model.RawDeepLink
+import com.algorand.android.modules.webexport.model.WebExportQrCode
 import com.algorand.android.utils.fromJson
 import com.algorand.android.utils.isValidAddress
 import com.google.gson.Gson
@@ -36,7 +38,8 @@ class DeepLinkParser @Inject constructor() {
             mnemonic = getMnemonic(parsedUri),
             label = getLabel(parsedUri),
             transactionId = getTransactionId(parsedUri),
-            transactionStatus = getTransactionStatus(parsedUri)
+            transactionStatus = getTransactionStatus(parsedUri),
+            webExportQrCode = getWebExportData(parsedUri)
         )
     }
 
@@ -99,6 +102,14 @@ class DeepLinkParser @Inject constructor() {
     private fun getMnemonic(uri: Uri): String? {
         return try {
             Gson().fromJson<RawMnemonicPayload>(uri.toString())?.mnemonic
+        } catch (exception: Exception) {
+            null
+        }
+    }
+
+    private fun getWebExportData(uri: Uri): WebExportQrCode? {
+        return try {
+            Gson().fromJson<WebExportQrCode>(uri.toString())
         } catch (exception: Exception) {
             null
         }

@@ -14,6 +14,7 @@ package com.algorand.android.modules.collectibles.profile.ui
 
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -21,7 +22,6 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.algorand.android.R
 import com.algorand.android.models.AccountIconResource
 import com.algorand.android.modules.assets.action.removal.RemoveAssetActionBottomSheet.Companion.REMOVE_ASSET_ACTION_RESULT_KEY
-import com.algorand.android.modules.assets.profile.asaprofile.ui.model.AsaStatusActionType
 import com.algorand.android.modules.assets.profile.asaprofile.ui.model.AsaStatusPreview
 import com.algorand.android.modules.collectibles.action.optin.CollectibleOptInActionBottomSheet.Companion.OPT_IN_COLLECTIBLE_ACTION_RESULT_KEY
 import com.algorand.android.modules.collectibles.profile.ui.model.CollectibleProfilePreview
@@ -102,46 +102,84 @@ class CollectibleProfileFragment : BaseCollectibleDetailFragment() {
     }
 
     private fun setAsaStatusPreview(collectibleStatusPreview: AsaStatusPreview?) {
-        with(binding.collectibleStatusConstraintLayout) {
-            with(collectibleStatusPreview) {
-                root.isVisible = this != null
-                if (this == null) return
-                updateBottomPadding()
-                assetStatusLabelTextView.setText(statusLabelTextResId)
-                accountTextView.apply {
-                    isVisible = accountName != null
-                    text = accountName?.getDisplayAddress()
+        with(collectibleStatusPreview ?: return) {
+            binding.collectibleStatusConstraintLayout.root.show()
+            updateBottomPadding()
+            initAsaStatusValue(this)
+            initAsaStatusLabel(statusLabelTextResId)
+            initAsaStatusActionButton(this)
+        }
+    }
+
+    private fun initAsaStatusLabel(@StringRes statusLabelTextResId: Int) {
+        binding.collectibleStatusConstraintLayout.statusLabelTextView.setText(statusLabelTextResId)
+    }
+
+    private fun initAsaStatusValue(asaStatusPreview: AsaStatusPreview) {
+        binding.collectibleStatusConstraintLayout.statusValueTextView.apply {
+            when (asaStatusPreview) {
+                is AsaStatusPreview.AdditionStatus -> {
+                    isVisible = asaStatusPreview.accountName != null
+                    text = asaStatusPreview.accountName?.getDisplayAddress()
                     setDrawable(
                         start = AccountIconDrawable.create(
                             context = context,
-                            accountIconResource = accountName?.accountIconResource
+                            accountIconResource = asaStatusPreview.accountName?.accountIconResource
                                 ?: AccountIconResource.DEFAULT_ACCOUNT_ICON_RESOURCE,
                             size = resources.getDimension(R.dimen.account_icon_size_small).toInt()
                         )
                     )
                 }
-
-                with(peraButtonState) {
-                    with(assetStatusActionButton) {
-                        setIconDrawable(iconResourceId = iconDrawableResId)
-                        setBackgroundColor(colorResId = backgroundColorResId)
-                        setIconTint(iconTintResId = iconTintColorResId)
-                        setText(textResId = actionButtonTextResId)
-                        setButtonStroke(colorResId = strokeColorResId)
-                        setButtonTextColor(colorResId = textColor)
-                        setOnClickListener { onAsaActionButtonClick(asaStatusActionType) }
-                    }
+                is AsaStatusPreview.RemovalStatus.CollectibleRemovalStatus -> {
+                    isVisible = asaStatusPreview.accountName != null
+                    text = asaStatusPreview.accountName?.getDisplayAddress()
+                    setDrawable(
+                        start = AccountIconDrawable.create(
+                            context = context,
+                            accountIconResource = asaStatusPreview.accountName?.accountIconResource
+                                ?: AccountIconResource.DEFAULT_ACCOUNT_ICON_RESOURCE,
+                            size = resources.getDimension(R.dimen.account_icon_size_small).toInt()
+                        )
+                    )
+                }
+                is AsaStatusPreview.AccountSelectionStatus -> {
+                    // Account should be already selected in this fragment. Nothing to do until a flow change
+                }
+                is AsaStatusPreview.TransferStatus -> {
+                    // No transfer action for collectible profile screen
+                }
+                is AsaStatusPreview.RemovalStatus.AssetRemovalStatus -> {
+                    // No action for asset removal status case
                 }
             }
         }
     }
 
-    private fun onAsaActionButtonClick(asaStatusActionType: AsaStatusActionType) {
-        when (asaStatusActionType) {
-            AsaStatusActionType.ADDITION -> navToAssetAdditionFlow()
-            AsaStatusActionType.REMOVAL -> navToAssetRemovalFlow()
-            AsaStatusActionType.ACCOUNT_SELECTION -> {
+    private fun initAsaStatusActionButton(
+        asaStatusPreview: AsaStatusPreview
+    ) {
+        with(asaStatusPreview.peraButtonState) {
+            with(binding.collectibleStatusConstraintLayout.assetStatusActionButton) {
+                setIconDrawable(iconResourceId = iconDrawableResId)
+                setBackgroundColor(colorResId = backgroundColorResId)
+                setIconTint(iconTintResId = iconTintColorResId)
+                setText(textResId = asaStatusPreview.actionButtonTextResId)
+                setButtonStroke(colorResId = strokeColorResId)
+                setButtonTextColor(colorResId = textColor)
+                setOnClickListener { onAsaActionButtonClick(asaStatusPreview) }
+            }
+        }
+    }
+
+    private fun onAsaActionButtonClick(asaStatusPreview: AsaStatusPreview) {
+        when (asaStatusPreview) {
+            is AsaStatusPreview.AdditionStatus -> navToAssetAdditionFlow()
+            is AsaStatusPreview.RemovalStatus -> navToAssetRemovalFlow()
+            is AsaStatusPreview.AccountSelectionStatus -> {
                 // Account should be already selected in this fragment. Nothing to do until a flow change
+            }
+            is AsaStatusPreview.TransferStatus -> {
+                // No transfer action for collectible profile screen
             }
         }
     }

@@ -97,7 +97,7 @@ class ContactsFragment : DaggerBaseFragment(R.layout.fragment_contacts) {
 
     private fun setupToolbar() {
         getAppToolbar()?.run {
-            addButtonToEnd(endPlusIconButton)
+            setEndButton(button = endPlusIconButton)
             setButtonVisibilityById(buttonId = endPlusIconButton.id, isVisible = false)
         }
     }

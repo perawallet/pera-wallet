@@ -16,7 +16,8 @@ import com.algorand.android.models.WalletConnectSession
 import com.algorand.android.models.WalletConnectSessionMeta
 import com.algorand.android.models.WalletConnectTransactionErrorResponse
 
-const val ALGO_CHAIN_ID = 4160L
+const val LEGACY_ALGO_CHAIN_ID = 4160L
+const val DEFAULT_CHAIN_ID = LEGACY_ALGO_CHAIN_ID
 
 interface WalletConnectClient {
 
@@ -25,7 +26,8 @@ interface WalletConnectClient {
 
     fun setListener(listener: WalletConnectClientListener)
 
-    fun approveSession(id: Long, accountAddress: String)
+    fun approveSession(id: Long, accountAddress: String, chainId: Long?)
+    fun updateSession(id: Long, accounts: List<String>?, chainId: Long?)
     fun rejectSession(id: Long)
 
     fun disconnectFromSession(id: Long)

@@ -7,7 +7,7 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- *  limitations under the License
+ * limitations under the License
  */
 
 package com.algorand.android.nft.ui.nfsdetail
@@ -81,6 +81,7 @@ class CollectibleDetailFragment : BaseCollectibleDetailFragment() {
                 setCollectibleTraits(collectibleTraits)
                 setOptedInAccountGroupVisibilitiesAndViews(isOptOutButtonVisible, collectibleDetail)
                 setShowOnPeraExplorerGroup(isPeraExplorerVisible, peraExplorerUrl)
+                setTotalOwnedViewGroup(formattedCollectibleAmount, isAmountVisible)
                 globalErrorEvent?.consume()?.run { if (this.isNotBlank()) showGlobalError(this) }
                 fractionalCollectibleSendEvent?.consume()?.run { navToSendAlgoNavigation(collectibleDetail) }
                 pureCollectibleSendEvent?.consume()?.run { navToCollectibleSendFragment(collectibleDetail) }
@@ -112,7 +113,7 @@ class CollectibleDetailFragment : BaseCollectibleDetailFragment() {
 
     private fun navToCollectibleSendFragment(collectibleDetail: CollectibleDetail) {
         nav(
-            CollectibleDetailFragmentDirections.actionCollectibleDetailFragmentToCollectibleSendFragment(
+            HomeNavigationDirections.actionGlobalSendCollectibleNavigation(
                 collectibleDetail
             )
         )

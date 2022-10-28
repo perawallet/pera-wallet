@@ -16,7 +16,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.core.BaseFragment
@@ -31,14 +30,9 @@ import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.modules.assets.action.transferbalance.TransferBalanceActionBottomSheet.Companion.TRANSFER_ASSET_ACTION_RESULT
 import com.algorand.android.modules.assets.remove.ui.adapter.RemoveAssetAdapter
 import com.algorand.android.modules.assets.remove.ui.model.RemoveAssetsPreview
-import com.algorand.android.utils.AssetName
-import com.algorand.android.utils.Event
 import com.algorand.android.utils.ExcludedViewTypesDividerItemDecoration
-import com.algorand.android.utils.Resource
 import com.algorand.android.utils.addCustomDivider
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
-import com.algorand.android.utils.extensions.hide
-import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.isGreaterThan
 import com.algorand.android.utils.useFragmentResultListenerValue
 import com.algorand.android.utils.viewbinding.viewBinding
@@ -85,15 +79,6 @@ class RemoveAssetsFragment : BaseFragment(R.layout.fragment_remove_assets) {
 
     private val removeAssetAdapter = RemoveAssetAdapter(removeAssetAdapterListener)
 
-    private val isAssetRemovedObserver = Observer<Event<Resource<AssetName>>> { event ->
-        event.consume()?.use(
-            onSuccess = { assetName -> showAssetSuccessfullyRemovedDialog(assetName) },
-            onFailed = { error -> showGlobalError(error.parse(requireContext())) },
-            onLoading = { binding.removeAssetsLoadingLayout.root.show() },
-            onLoadingFinished = { binding.removeAssetsLoadingLayout.root.hide() }
-        )
-    }
-
     private val removeAssetsPreviewCollector: suspend (RemoveAssetsPreview?) -> Unit = { preview ->
         if (preview != null) updatePreview(preview)
     }
@@ -133,7 +118,6 @@ class RemoveAssetsFragment : BaseFragment(R.layout.fragment_remove_assets) {
             removeAssetsViewModel.removeAssetsPreviewFlow,
             removeAssetsPreviewCollector
         )
-        removeAssetsViewModel.removeAssetLiveData.observe(viewLifecycleOwner, isAssetRemovedObserver)
     }
 
     private fun onRemoveAssetClick(removeAssetItem: BaseRemoveAssetItem.BaseRemovableItem) {
@@ -250,15 +234,6 @@ class RemoveAssetsFragment : BaseFragment(R.layout.fragment_remove_assets) {
                     shouldPopulateAmountWithMax = true
                 )
             }
-        )
-    }
-
-    private fun showAssetSuccessfullyRemovedDialog(assetName: AssetName) {
-        showAlertSuccess(
-            title = getString(
-                R.string.asset_successfully_removed_from_your,
-                assetName.getName(resources)
-            )
         )
     }
 }

@@ -157,8 +157,9 @@ class AssetTransferAmountFragment : TransactionBaseFragment(R.layout.fragment_as
     }
 
     private fun initToolbar() {
-        val transactionTipButton = IconButton(iconResId = R.drawable.ic_info, onClick = ::navToTransactionTips)
-        getAppToolbar()?.addButtonToEnd(transactionTipButton)
+        getAppToolbar()?.setEndButton(
+            button = IconButton(iconResId = R.drawable.ic_info, onClick = ::navToTransactionTips)
+        )
     }
 
     private fun updateUIWithPreview(assetTransferAmountPreview: AssetTransferAmountPreview) {

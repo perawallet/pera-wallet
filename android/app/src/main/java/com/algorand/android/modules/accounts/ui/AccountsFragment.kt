@@ -21,7 +21,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.algorand.android.CoreMainActivity
 import com.algorand.android.HomeNavigationDirections
-import com.algorand.android.MainActivity
 import com.algorand.android.MainNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.core.BackPressedControllerComponent
@@ -204,7 +203,6 @@ class AccountsFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as? CoreMainActivity)?.let { initBackPressedControllerComponent(it, viewLifecycleOwner) }
-        (activity as MainActivity).isAppUnlocked = true
         initObservers()
         initUi()
     }

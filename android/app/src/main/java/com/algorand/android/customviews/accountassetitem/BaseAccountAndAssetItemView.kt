@@ -138,7 +138,7 @@ abstract class BaseAccountAndAssetItemView @JvmOverloads constructor(
     private fun initRootView() {
         val horizontalPadding = resources.getDimension(R.dimen.spacing_xlarge).toInt()
         updatePadding(left = horizontalPadding, right = horizontalPadding)
-        minHeight = resources.getDimensionPixelSize(R.dimen.asset_item_view_min_height)
+        minHeight = resources.getDimensionPixelSize(R.dimen.account_asset_item_view_min_height)
     }
 
     fun setPrimaryValueTextColor(@ColorRes colorResId: Int) {

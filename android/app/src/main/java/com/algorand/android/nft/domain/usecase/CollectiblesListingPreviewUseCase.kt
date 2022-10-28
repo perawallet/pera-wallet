@@ -60,7 +60,10 @@ class CollectiblesListingPreviewUseCase @Inject constructor(
                     accountsAllCollectibles.all { it.second.isEmpty() } || isAllCollectiblesFilteredOut
                 val itemList = mutableListOf(
                     createTitleTextViewItem(isVisible = !isEmptyStateVisible),
-                    createSearchViewItem(isVisible = !isEmptyStateVisible),
+                    createSearchViewItem(
+                        isVisible = !isEmptyStateVisible,
+                        query = searchKeyword
+                    ),
                 ).apply { addAll(collectibleListData.baseCollectibleItemList) }
                 val infoViewItem = createInfoViewItem(
                     displayedCollectibleCount = collectibleListData.displayedCollectibleCount,
@@ -94,7 +97,10 @@ class CollectiblesListingPreviewUseCase @Inject constructor(
                             isFilterActive = false,
                             isAddButtonVisible = canUserSignTransaction
                         ),
-                        createSearchViewItem(isVisible = true)
+                        createSearchViewItem(
+                            isVisible = true,
+                            query = searchKeyword
+                        )
                     ),
                     filteredCollectibleCount = 0,
                     isClearFilterButtonVisible = false,

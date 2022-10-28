@@ -1,4 +1,5 @@
 @file:Suppress("TooManyFunctions")
+
 /*
  * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +16,7 @@ package com.algorand.android.utils
 
 import android.util.Base64
 import com.algorand.algosdk.mobile.BytesArray
+import com.algorand.algosdk.mobile.Encryption
 import com.algorand.algosdk.mobile.Mobile
 import com.algorand.algosdk.mobile.SuggestedParams
 import com.algorand.algosdk.mobile.Uint64
@@ -35,7 +37,6 @@ fun TransactionParams.makeAssetTx(
     assetId: Long,
     noteInByteArray: ByteArray? = null
 ): ByteArray {
-
     return Mobile.makeAssetTransferTxn(
         senderAddress,
         receiverAddress,
@@ -270,4 +271,12 @@ fun List<ByteArray?>.flatten(): ByteArray {
     return ByteArrayOutputStream().apply {
         this@flatten.forEach { write(it) }
     }.toByteArray()
+}
+
+fun ByteArray.encrypt(secretKey: ByteArray): Encryption {
+    return Mobile.encrypt(this, secretKey)
+}
+
+fun ByteArray.decrypt(secretKey: ByteArray): Encryption {
+    return Mobile.decrypt(this, secretKey)
 }

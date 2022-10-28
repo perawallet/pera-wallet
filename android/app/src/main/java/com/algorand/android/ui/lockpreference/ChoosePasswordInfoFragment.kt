@@ -17,6 +17,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -47,10 +48,11 @@ class ChoosePasswordInfoFragment : BaseInfoFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar()
+        navigateToHomeNavigationOnBackPressed()
     }
 
     private fun setupToolbar() {
-        getAppToolbar()?.addButtonToEnd(TextButton(R.string.do_not_ask_again, onClick = ::onDontAskAgainClick))
+        getAppToolbar()?.setEndButton(button = TextButton(R.string.do_not_ask_again, onClick = ::onDontAskAgainClick))
     }
 
     override fun setImageView(imageView: ImageView) {
@@ -95,7 +97,11 @@ class ChoosePasswordInfoFragment : BaseInfoFragment() {
 
     private fun navigateToChoosePasswordFragment() {
         choosePasswordInfoViewModel.logOnboardingSetPinCodeClickEvent()
-        nav(ChoosePasswordInfoFragmentDirections.actionChoosePasswordInfoFragmentToChoosePasswordFragment())
+        nav(
+            ChoosePasswordInfoFragmentDirections.actionChoosePasswordInfoFragmentToChoosePasswordFragment(
+                args.shouldNavigateHome
+            )
+        )
     }
 
     private fun onCancelClick() {
@@ -104,5 +110,17 @@ class ChoosePasswordInfoFragment : BaseInfoFragment() {
         } else {
             navBack()
         }
+    }
+
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            if (args.shouldNavigateHome) {
+                nav(ChoosePasswordInfoFragmentDirections.actionChoosePasswordInfoFragmentToHomeNavigation())
+            }
+        }
+    }
+
+    private fun navigateToHomeNavigationOnBackPressed() {
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, onBackPressedCallback)
     }
 }

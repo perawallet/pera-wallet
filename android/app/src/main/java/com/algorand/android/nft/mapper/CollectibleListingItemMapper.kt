@@ -27,7 +27,8 @@ class CollectibleListingItemMapper @Inject constructor(
     fun mapToNotSupportedItem(
         collectible: BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedUnsupportedCollectibleData,
         isOwnedByTheUser: Boolean,
-        optedInAccountAddress: String
+        optedInAccountAddress: String,
+        isAmountVisible: Boolean
     ): BaseCollectibleListItem.BaseCollectibleItem.NotSupportedCollectibleItem {
         return BaseCollectibleListItem.BaseCollectibleItem.NotSupportedCollectibleItem(
             collectibleId = collectible.id,
@@ -37,14 +38,17 @@ class CollectibleListingItemMapper @Inject constructor(
             isOwnedByTheUser = isOwnedByTheUser,
             badgeImageResId = collectibleBadgeDecider.decideCollectibleBadgeResId(collectible),
             optedInAccountAddress = optedInAccountAddress,
-            optedInAtRound = collectible.optedInAtRound
+            optedInAtRound = collectible.optedInAtRound,
+            formattedCollectibleAmount = collectible.formattedCompactAmount,
+            isAmountVisible = isAmountVisible
         )
     }
 
     fun mapToImageItem(
         collectible: BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleImageData,
         isOwnedByTheUser: Boolean,
-        optedInAccountAddress: String
+        optedInAccountAddress: String,
+        isAmountVisible: Boolean
     ): BaseCollectibleListItem.BaseCollectibleItem.CollectibleImageItem {
         return BaseCollectibleListItem.BaseCollectibleItem.CollectibleImageItem(
             collectibleId = collectible.id,
@@ -55,14 +59,17 @@ class CollectibleListingItemMapper @Inject constructor(
             badgeImageResId = collectibleBadgeDecider.decideCollectibleBadgeResId(collectible),
             prismUrl = collectible.prismUrl,
             optedInAccountAddress = optedInAccountAddress,
-            optedInAtRound = collectible.optedInAtRound
+            optedInAtRound = collectible.optedInAtRound,
+            formattedCollectibleAmount = collectible.formattedCompactAmount,
+            isAmountVisible = isAmountVisible
         )
     }
 
     fun mapToVideoItem(
         collectible: BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleVideoData,
         isOwnedByTheUser: Boolean,
-        optedInAccountAddress: String
+        optedInAccountAddress: String,
+        isAmountVisible: Boolean
     ): BaseCollectibleListItem.BaseCollectibleItem.CollectibleVideoItem {
         return BaseCollectibleListItem.BaseCollectibleItem.CollectibleVideoItem(
             collectibleId = collectible.id,
@@ -73,14 +80,17 @@ class CollectibleListingItemMapper @Inject constructor(
             badgeImageResId = collectibleBadgeDecider.decideCollectibleBadgeResId(collectible),
             thumbnailPrismUrl = collectible.prismUrl,
             optedInAccountAddress = optedInAccountAddress,
-            optedInAtRound = collectible.optedInAtRound
+            optedInAtRound = collectible.optedInAtRound,
+            formattedCollectibleAmount = collectible.formattedCompactAmount,
+            isAmountVisible = isAmountVisible
         )
     }
 
     fun mapToMixedItem(
         collectible: BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleMixedData,
         isOwnedByTheUser: Boolean,
-        optedInAccountAddress: String
+        optedInAccountAddress: String,
+        isAmountVisible: Boolean
     ): BaseCollectibleListItem.BaseCollectibleItem.CollectibleMixedItem {
         return BaseCollectibleListItem.BaseCollectibleItem.CollectibleMixedItem(
             collectibleId = collectible.id,
@@ -91,7 +101,9 @@ class CollectibleListingItemMapper @Inject constructor(
             badgeImageResId = collectibleBadgeDecider.decideCollectibleBadgeResId(collectible),
             thumbnailPrismUrl = collectible.prismUrl,
             optedInAccountAddress = optedInAccountAddress,
-            optedInAtRound = collectible.optedInAtRound
+            optedInAtRound = collectible.optedInAtRound,
+            formattedCollectibleAmount = collectible.formattedCompactAmount,
+            isAmountVisible = isAmountVisible
         )
     }
 
@@ -191,11 +203,13 @@ class CollectibleListingItemMapper @Inject constructor(
 
     fun mapToSearchViewItem(
         @StringRes searchViewHintResId: Int,
-        isVisible: Boolean
+        isVisible: Boolean,
+        query: String
     ): BaseCollectibleListItem.SearchViewItem {
         return BaseCollectibleListItem.SearchViewItem(
             searchViewHintResId = searchViewHintResId,
-            isVisible = isVisible
+            isVisible = isVisible,
+            query = query
         )
     }
 

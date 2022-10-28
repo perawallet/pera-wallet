@@ -60,7 +60,7 @@ class AddNoteBottomSheet : BaseBottomSheet(
     private fun configureToolbar() {
         binding.toolbar.apply {
             configure(toolbarConfiguration)
-            addButtonToEnd(TextButton(stringResId = R.string.done, onClick = ::onDoneClick))
+            setEndButton(button = TextButton(stringResId = R.string.done, onClick = ::onDoneClick))
         }
     }
 

@@ -12,6 +12,7 @@
 
 package com.algorand.android.ui.lockpreference
 
+import androidx.navigation.fragment.navArgs
 import androidx.fragment.app.viewModels
 import com.algorand.android.R
 import com.algorand.android.ui.password.BasePasswordFragment
@@ -31,12 +32,18 @@ class ChoosePasswordFragment : BasePasswordFragment() {
 
     private val choosePasswordViewModel: ChoosePasswordViewModel by viewModels()
 
+    private val args by navArgs<ChoosePasswordFragmentArgs>()
+
     override fun handleNextNavigation() {
         choosePasswordViewModel.logOnboardingSetPinCodeCompletedEvent()
         if (context?.isBiometricAvailable() == true) {
             nav(ChoosePasswordFragmentDirections.actionChoosePasswordFragmentToBiometricRegistrationFragment())
         } else {
-            nav(ChoosePasswordFragmentDirections.actionPopLockPreferenceNavigation())
+            if (args.shouldNavigateHome) {
+                nav(ChoosePasswordFragmentDirections.actionChoosePasswordFragmentToHomeNavigation())
+            } else {
+                nav(ChoosePasswordFragmentDirections.actionPopLockPreferenceNavigation())
+            }
         }
     }
 }

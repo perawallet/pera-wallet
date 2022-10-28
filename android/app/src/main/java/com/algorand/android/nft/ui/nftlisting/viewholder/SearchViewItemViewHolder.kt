@@ -29,6 +29,7 @@ class SearchViewItemViewHolder(
         with(binding.collectibleSearchView) {
             setOnTextChanged(searchViewTextChangedListener::onSearchViewTextChanged)
             isVisible = item.isVisible
+            text = item.query
         }
     }
 

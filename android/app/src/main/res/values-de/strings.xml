@@ -526,7 +526,6 @@
     <string name="i_already_have_nan_account">Ich habe bereits\nein Konto</string>
     <string name="recover_an_account">Ein Konto wiederherstellen</string>
     <string name="pair_Ledger_device">Ledger-Gerät koppeln</string>
-    <string name="i_want_to_create_algorand">Ich möchte ein Algorand-Konto erstellen, das durch meine Ledger-Hardware-Wallet gesichert ist.</string>
     <string name="confirm_transaction">Transaktion bestätigen</string>
     <string name="your_transaction_was">Ihre Transaktion wurde erfolgreich vom Algorand-Netzwerk empfangen.</string>
     <string name="buy_algo">ALGO kaufen</string>
@@ -595,7 +594,6 @@
     <string name="receive_an_nft">NFT empfangen</string>
     <string name="the_account_name">Für das Konto <annotation font="dmsans_bold">„<annotation replacement="account_name"> </annotation>“</annotation> wurde ein erfolgreiches Rekeying durchgeführt.</string>
     <string name="asset_support_success"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> hat seinem Konto <annotation replacement="asset">assetPlaceholder</annotation> hinzugefügt. Sie können <annotation replacement="asset">assetPlaceholder</annotation> senden.</string>
-    <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> versucht, Ihnen <annotation replacement="asset">assetPlaceholder</annotation> zu senden, jedoch unterstützen Sie dieses Asset nicht. Tippen Sie hier, um das Asset Ihrem Konto hinzuzufügen.</string>
     <string name="transaction_send_successful">Ihre Transaktion in Höhe von <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> von <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> an <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> wurde erfolgreich ausgeführt.</string>
     <string name="transaction_send_failed">Ihre Transaktion in Höhe von <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> von <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> an <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> ist fehlgeschlagen.</string>
     <string name="the_only_way_to">Die einzige Möglichkeit, ein Algorand-Konto wiederherzustellen, ist diese Wiederherstellungs-Passphrase.</string>

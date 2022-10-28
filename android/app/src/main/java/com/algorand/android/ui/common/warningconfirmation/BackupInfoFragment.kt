@@ -73,7 +73,7 @@ class BackupInfoFragment : BaseInfoFragment() {
     }
 
     private fun configureToolbar() {
-        getAppToolbar()?.addButtonToEnd(IconButton(R.drawable.ic_info, onClick = ::onInfoClick))
+        getAppToolbar()?.setEndButton(button = IconButton(R.drawable.ic_info, onClick = ::onInfoClick))
     }
 
     private fun onInfoClick() {

@@ -81,8 +81,8 @@ class AccountDetailAssetItemMapper @Inject constructor(
         return AccountDetailAssetsItem.QuickActionsItem
     }
 
-    fun mapToSearchViewItem(): AccountDetailAssetsItem.SearchViewItem {
-        return AccountDetailAssetsItem.SearchViewItem
+    fun mapToSearchViewItem(query: String): AccountDetailAssetsItem.SearchViewItem {
+        return AccountDetailAssetsItem.SearchViewItem(query = query)
     }
 
     fun mapToTitleItem(titleRes: Int, isAddAssetButtonVisible: Boolean): AccountDetailAssetsItem.TitleItem {

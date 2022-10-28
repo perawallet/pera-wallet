@@ -27,7 +27,6 @@ import com.algorand.android.modules.assets.profile.about.domain.usecase.GetSelec
 import com.algorand.android.modules.assets.profile.asaprofile.ui.mapper.AsaProfilePreviewMapper
 import com.algorand.android.modules.assets.profile.asaprofile.ui.mapper.AsaStatusPreviewMapper
 import com.algorand.android.modules.assets.profile.asaprofile.ui.model.AsaProfilePreview
-import com.algorand.android.modules.assets.profile.asaprofile.ui.model.AsaStatusActionType
 import com.algorand.android.modules.assets.profile.asaprofile.ui.model.AsaStatusPreview
 import com.algorand.android.modules.assets.profile.asaprofile.ui.model.PeraButtonState
 import com.algorand.android.modules.verificationtier.ui.decider.VerificationTierConfigurationDecider
@@ -35,11 +34,14 @@ import com.algorand.android.repository.TransactionsRepository
 import com.algorand.android.usecase.AccountAddressUseCase
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.usecase.AssetAdditionUseCase
+import com.algorand.android.usecase.GetBaseOwnedAssetDataUseCase
 import com.algorand.android.usecase.SimpleAssetDetailUseCase
+import com.algorand.android.utils.ALGO_SHORT_NAME
 import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.Event
-import com.algorand.android.utils.NO_PRICE_SIGN
 import com.algorand.android.utils.Resource
+import com.algorand.android.utils.isGreaterThan
+import java.math.BigInteger
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -60,7 +62,8 @@ class AsaProfilePreviewUseCase @Inject constructor(
     private val assetAdditionUseCase: AssetAdditionUseCase,
     private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase,
     private val assetActionMapper: AssetActionMapper,
-    private val assetOperationResultMapper: AssetOperationResultMapper
+    private val assetOperationResultMapper: AssetOperationResultMapper,
+    private val getBaseOwnedAssetDataUseCase: GetBaseOwnedAssetDataUseCase
 ) {
     // TODO: Use SendSignedTransactionUseCase instead of transactionsRepository
     suspend fun sendTransaction(
@@ -98,7 +101,7 @@ class AsaProfilePreviewUseCase @Inject constructor(
         return when {
             accountAddress.isNullOrBlank() -> createAsaProfilePreviewWithoutAccountInformation()
             assetId == ALGO_ID -> createAlgoProfilePreviewWithAccountInformation(accountAddress)
-            else -> createAsaProfilePreviewWithAccountInformation(accountAddress)
+            else -> createAsaProfilePreviewWithAccountInformation(accountAddress, assetId)
         }
     }
 
@@ -106,8 +109,11 @@ class AsaProfilePreviewUseCase @Inject constructor(
         simpleAssetDetailUseCase.getCachedAssetDetail(ALGO_ID)?.useSuspended(
             onSuccess = { cachedAlgoDetail ->
                 val asaStatusPreview = createAsaStatusPreview(
+                    isAlgo = true,
                     isUserOptedInAsset = true,
-                    accountAddress = accountAddress
+                    accountAddress = accountAddress,
+                    hasUserAmount = true,
+                    assetShortName = AssetName.createShortName(ALGO_SHORT_NAME)
                 )
                 val asaProfilePreview = cachedAlgoDetail.data?.run {
                     createAsaProfilePreviewFromAssetDetail(assetDetail = this, asaStatusPreview = asaStatusPreview)
@@ -117,20 +123,24 @@ class AsaProfilePreviewUseCase @Inject constructor(
         )
     }.distinctUntilChanged()
 
-    private fun createAsaProfilePreviewWithAccountInformation(accountAddress: String): Flow<AsaProfilePreview?> {
+    private fun createAsaProfilePreviewWithAccountInformation(
+        accountAddress: String,
+        assetId: Long
+    ): Flow<AsaProfilePreview?> {
         return combine(
             getAssetDetailFlowFromAsaProfileLocalCache.getAssetDetailFlowFromAsaProfileLocalCache(),
             accountDetailUseCase.getAccountDetailCacheFlow(accountAddress)
         ) { cachedAssetDetailResult, _ ->
-            val assetId = cachedAssetDetailResult?.data?.assetId
-            val isUserOptedInAsset = if (assetId != null) {
-                accountDetailUseCase.isAssetOwnedByAccount(publicKey = accountAddress, assetId = assetId)
-            } else {
-                false
-            }
+            val ownedAssetData = getBaseOwnedAssetDataUseCase.getBaseOwnedAssetData(assetId, accountAddress)
+            val hasUserAmount = ownedAssetData?.amount isGreaterThan BigInteger.ZERO
+            val isUserOptedInAsset = accountDetailUseCase.isAssetOwnedByAccount(accountAddress, assetId)
             val asaStatusPreview = createAsaStatusPreview(
+                isAlgo = false,
                 isUserOptedInAsset = isUserOptedInAsset,
-                accountAddress = accountAddress
+                accountAddress = accountAddress,
+                hasUserAmount = hasUserAmount,
+                formattedAccountBalance = ownedAssetData?.formattedAmount,
+                assetShortName = AssetName.createShortName(ownedAssetData?.shortName)
             )
             cachedAssetDetailResult?.data?.run {
                 createAsaProfilePreviewFromAssetDetail(assetDetail = this, asaStatusPreview = asaStatusPreview)
@@ -141,7 +151,13 @@ class AsaProfilePreviewUseCase @Inject constructor(
     private fun createAsaProfilePreviewWithoutAccountInformation() = flow {
         getAssetDetailFlowFromAsaProfileLocalCache.getAssetDetailFlowFromAsaProfileLocalCache()
             .collect { cachedAssetDetailResult ->
-                val asaStatusPreview = createAsaStatusPreview(false, null)
+                val asaStatusPreview = createAsaStatusPreview(
+                    isAlgo = false,
+                    isUserOptedInAsset = false,
+                    accountAddress = null,
+                    hasUserAmount = false,
+                    assetShortName = null
+                )
                 val preview = cachedAssetDetailResult?.data?.run {
                     createAsaProfilePreviewFromAssetDetail(assetDetail = this, asaStatusPreview = asaStatusPreview)
                 }
@@ -154,11 +170,9 @@ class AsaProfilePreviewUseCase @Inject constructor(
         asaStatusPreview: AsaStatusPreview?
     ): AsaProfilePreview {
         return with(assetDetail) {
-            val formattedAssetPrice = if (usdValue != null || assetId == ALGO_ID) {
-                getSelectedAssetExchangeValueUseCase.getSelectedAssetExchangeValue(this).getFormattedValue()
-            } else {
-                NO_PRICE_SIGN
-            }
+            val formattedAssetPrice = getSelectedAssetExchangeValueUseCase
+                .getSelectedAssetExchangeValue(assetDetail = this)
+                ?.getFormattedValue()
             val verificationTierConfiguration = verificationTierConfigurationDecider
                 .decideVerificationTierConfiguration(verificationTier)
             val assetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(assetId)
@@ -176,24 +190,47 @@ class AsaProfilePreviewUseCase @Inject constructor(
         }
     }
 
-    private fun createAsaStatusPreview(isUserOptedInAsset: Boolean, accountAddress: String?): AsaStatusPreview? {
+    private fun createAsaStatusPreview(
+        isAlgo: Boolean,
+        isUserOptedInAsset: Boolean,
+        accountAddress: String?,
+        hasUserAmount: Boolean,
+        formattedAccountBalance: String? = null,
+        assetShortName: AssetName?
+    ): AsaStatusPreview? {
         return when {
+            isAlgo -> null
             accountAddress.isNullOrBlank() -> {
-                asaStatusPreviewMapper.mapToAsaStatusPreview(
-                    accountAddress = null,
+                asaStatusPreviewMapper.mapToAsaAccountSelectionStatusPreview(
                     statusLabelTextResId = R.string.you_can_opt_in_to_this,
                     peraButtonState = PeraButtonState.ADDITION,
-                    actionButtonTextResId = R.string.add_asset,
-                    asaStatusActionType = AsaStatusActionType.ACCOUNT_SELECTION
+                    actionButtonTextResId = R.string.add_asset
                 )
             }
             !isUserOptedInAsset -> {
-                asaStatusPreviewMapper.mapToAsaStatusPreview(
+                asaStatusPreviewMapper.mapToAsaAdditionStatusPreview(
                     accountAddress = accountAddressUseCase.createAccountAddress(accountAddress),
                     statusLabelTextResId = R.string.you_can_add_this_asset,
                     peraButtonState = PeraButtonState.ADDITION,
-                    actionButtonTextResId = R.string.add_asset,
-                    asaStatusActionType = AsaStatusActionType.ADDITION
+                    actionButtonTextResId = R.string.add_asset
+                )
+            }
+            isUserOptedInAsset && hasUserAmount -> {
+                asaStatusPreviewMapper.mapToAsaTransferStatusPreview(
+                    statusLabelTextResId = R.string.balance,
+                    peraButtonState = PeraButtonState.REMOVAL,
+                    actionButtonTextResId = R.string.remove,
+                    formattedAccountBalance = formattedAccountBalance.orEmpty(),
+                    assetShortName = assetShortName
+                )
+            }
+            isUserOptedInAsset -> {
+                asaStatusPreviewMapper.mapToAsaRemovalStatusPreview(
+                    statusLabelTextResId = R.string.balance,
+                    peraButtonState = PeraButtonState.REMOVAL,
+                    actionButtonTextResId = R.string.remove,
+                    formattedAccountBalance = formattedAccountBalance.orEmpty(),
+                    assetShortName = assetShortName
                 )
             }
             else -> null

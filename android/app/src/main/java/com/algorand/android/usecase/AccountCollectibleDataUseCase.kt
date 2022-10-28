@@ -230,4 +230,12 @@ class AccountCollectibleDataUseCase @Inject constructor(
             }
         }
     }
+
+    fun getAccountCollectibleDetail(accountAddress: String, collectibleId: Long): BaseOwnedCollectibleData? {
+        val accountDetail = accountDetailUseCase.getCachedAccountDetail(accountAddress)?.data ?: return null
+        val assetHolding = accountDetail.accountInformation.assetHoldingList.firstOrNull { it.assetId == collectibleId }
+        val collectibleDetail = simpleCollectibleUseCase.getCachedCollectibleById(collectibleId)?.data
+        if (assetHolding == null || collectibleDetail == null) return null
+        return createCollectibleData(assetHolding, collectibleDetail)
+    }
 }

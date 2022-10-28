@@ -105,6 +105,8 @@
         <attr name="helper" format="string" />
         <attr name="singleLine" format="boolean" />
         <attr name="maxCharacter" format="integer" />
+        <attr name="android:imeOptions" />
+        <attr name="android:inputType" />
     </declare-styleable>
 
     <declare-styleable name="AlgorandAssetAvatarView">

@@ -7,67 +7,35 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- *  limitations under the License
+ * limitations under the License
  */
 
 package com.algorand.android.nft.domain.usecase
 
-import com.algorand.android.R
-import com.algorand.android.models.Account
 import com.algorand.android.models.BaseAccountAddress
-import com.algorand.android.nft.domain.model.BaseCollectibleDetail
-import com.algorand.android.nft.domain.model.BaseCollectibleMedia.GifCollectibleMedia
-import com.algorand.android.nft.domain.model.BaseCollectibleMedia.ImageCollectibleMedia
-import com.algorand.android.nft.domain.model.BaseCollectibleMedia.NoMediaCollectibleMedia
-import com.algorand.android.nft.domain.model.BaseCollectibleMedia.UnsupportedCollectibleMedia
-import com.algorand.android.nft.domain.model.BaseCollectibleMedia.VideoCollectibleMedia
-import com.algorand.android.nft.mapper.CollectibleDetailMapper
 import com.algorand.android.nft.mapper.CollectibleDetailPreviewMapper
-import com.algorand.android.nft.mapper.CollectibleMediaItemMapper
-import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem
+import com.algorand.android.nft.ui.model.CollectibleDetail
 import com.algorand.android.nft.ui.model.CollectibleDetailPreview
-import com.algorand.android.nft.utils.CollectibleUtils
 import com.algorand.android.usecase.AccountAddressUseCase
-import com.algorand.android.usecase.AccountAssetRemovalUseCase
-import com.algorand.android.usecase.AccountDetailUseCase
-import com.algorand.android.usecase.SendSignedTransactionUseCase
 import com.algorand.android.utils.Event
 import javax.inject.Inject
 import kotlinx.coroutines.flow.flow
 
+@SuppressWarnings("LongParameterList")
 open class CollectibleDetailPreviewUseCase @Inject constructor(
-    private val accountDetailUseCase: AccountDetailUseCase,
-    private val collectibleDetailMapper: CollectibleDetailMapper,
     private val collectibleDetailPreviewMapper: CollectibleDetailPreviewMapper,
-    private val collectibleUtils: CollectibleUtils,
-    private val collectibleDetailUseCase: GetCollectibleDetailUseCase,
-    private val collectibleMediaItemMapper: CollectibleMediaItemMapper,
-    private val sendSignedTransactionUseCase: SendSignedTransactionUseCase,
-    private val accountAssetRemovalUseCase: AccountAssetRemovalUseCase,
-    private val accountAddressUseCase: AccountAddressUseCase
+    private val accountAddressUseCase: AccountAddressUseCase,
+    private val collectibleDetailItemUseCase: CollectibleDetailItemUseCase
 ) {
-
-    suspend fun getCollectableDetailPreviewFlow(collectibleAssetId: Long, publicKey: String) = flow {
+    suspend fun getCollectibleDetailPreviewFlow(collectibleAssetId: Long, selectedAccountAddress: String) = flow {
         emit(collectibleDetailPreviewMapper.mapToLoading())
-        val accountDetailList = accountDetailUseCase.getCachedAccountDetails()
-        val ownerAccount = collectibleUtils
-            .getCollectibleOwnerAccountOrNull(accountDetailList, collectibleAssetId, publicKey)
-        val isHoldingByWatchAccount = ownerAccount?.type == Account.Type.WATCH
-        val isOwnedByTheUser = collectibleUtils.isCollectibleOwnedByTheUser(
-            accountDetailUseCase.getCachedAccountDetail(publicKey),
-            collectibleAssetId
-        )
-        collectibleDetailUseCase.getCollectibleDetail(collectibleAssetId).collect { collectibleDetailResource ->
-            collectibleDetailResource.useSuspended(
-                onSuccess = { baseCollectibleDetail ->
-                    val collectibleDetailPreview = onCollectibleDetailFetchedSuccessfully(
-                        baseCollectibleDetail = baseCollectibleDetail,
-                        isOwnedByTheUser = isOwnedByTheUser,
-                        ownerAccount = ownerAccount,
-                        isHoldingByWatchAccount = isHoldingByWatchAccount,
-                        ownerAccountPublicKey = publicKey
-                    )
-                    emit(collectibleDetailPreview)
+        collectibleDetailItemUseCase.getCollectibleDetailItemFlow(
+            collectibleAssetId = collectibleAssetId,
+            selectedAccountAddress = selectedAccountAddress
+        ).collect {
+            it.useSuspended(
+                onSuccess = { collectibleDetail ->
+                    emit(createCollectibleDetailPreviewWithCollectibleDetail(collectibleDetail = collectibleDetail))
                 },
                 onFailed = {
                     // TODO Show error
@@ -77,117 +45,21 @@ open class CollectibleDetailPreviewUseCase @Inject constructor(
     }
 
     @SuppressWarnings("LongMethod")
-    private fun onCollectibleDetailFetchedSuccessfully(
-        baseCollectibleDetail: BaseCollectibleDetail,
-        isOwnedByTheUser: Boolean,
-        ownerAccountPublicKey: String,
-        ownerAccount: Account?,
-        isHoldingByWatchAccount: Boolean
+    private fun createCollectibleDetailPreviewWithCollectibleDetail(
+        collectibleDetail: CollectibleDetail
     ): CollectibleDetailPreview {
         // TODO: 4.03.2022 Is error display text correct?
-        val errorDisplayText = baseCollectibleDetail.getErrorDisplayText()
-        val isNftExplorerVisible = !baseCollectibleDetail.nftExplorerUrl.isNullOrBlank()
-        val ownerAccountAddress = accountAddressUseCase.createAccountAddress(ownerAccountPublicKey)
-        val creatorAccountAddress = getCreatorAccountAddress(baseCollectibleDetail.assetCreator?.publicKey)
-        val isCreatedByTheUser = creatorAccountAddress?.publicKey == ownerAccountPublicKey
-        val collectibleDetail = when (baseCollectibleDetail) {
-            is BaseCollectibleDetail.ImageCollectibleDetail -> {
-                collectibleDetailMapper.mapToCollectibleImage(
-                    imageCollectibleDetail = baseCollectibleDetail,
-                    isOwnedByTheUser = isOwnedByTheUser,
-                    isCreatedByTheUser = isCreatedByTheUser,
-                    ownerAccountAddress = ownerAccountAddress,
-                    errorDisplayText = errorDisplayText,
-                    isHoldingByWatchAccount = isHoldingByWatchAccount,
-                    isNftExplorerVisible = isNftExplorerVisible,
-                    ownerAccountType = ownerAccount?.type,
-                    creatorAddress = creatorAccountAddress
-                )
-            }
-            is BaseCollectibleDetail.VideoCollectibleDetail -> {
-                collectibleDetailMapper.mapToCollectibleVideo(
-                    videoCollectibleDetail = baseCollectibleDetail,
-                    isOwnedByTheUser = isOwnedByTheUser,
-                    isCreatedByTheUser = isCreatedByTheUser,
-                    ownerAccountAddress = ownerAccountAddress,
-                    errorDisplayText = errorDisplayText,
-                    isHoldingByWatchAccount = isHoldingByWatchAccount,
-                    isNftExplorerVisible = isNftExplorerVisible,
-                    ownerAccountType = ownerAccount?.type,
-                    creatorAddress = creatorAccountAddress
-                )
-            }
-            is BaseCollectibleDetail.MixedCollectibleDetail -> {
-                collectibleDetailMapper.mapToCollectibleMixed(
-                    mixedCollectibleDetail = baseCollectibleDetail,
-                    isOwnedByTheUser = isOwnedByTheUser,
-                    isCreatedByTheUser = isCreatedByTheUser,
-                    ownerAccountAddress = ownerAccountAddress,
-                    isHoldingByWatchAccount = isHoldingByWatchAccount,
-                    isNftExplorerVisible = isNftExplorerVisible,
-                    collectibleMedias = mapToMixedMediaItem(baseCollectibleDetail, isOwnedByTheUser, errorDisplayText),
-                    ownerAccountType = ownerAccount?.type,
-                    creatorAddress = creatorAccountAddress
-                )
-            }
-            is BaseCollectibleDetail.NotSupportedCollectibleDetail -> {
-                collectibleDetailMapper.mapToUnsupportedCollectible(
-                    unsupportedCollectible = baseCollectibleDetail,
-                    isOwnedByTheUser = isOwnedByTheUser,
-                    isCreatedByTheUser = isCreatedByTheUser,
-                    ownerAccountAddress = ownerAccountAddress,
-                    errorDisplayText = errorDisplayText,
-                    isHoldingByWatchAccount = isHoldingByWatchAccount,
-                    warningTextRes = R.string.we_don_t_support,
-                    isNftExplorerVisible = isNftExplorerVisible,
-                    ownerAccountType = ownerAccount?.type,
-                    creatorAddress = creatorAccountAddress
-                )
-            }
-        }
-
         val isOptOutButtonVisible = !collectibleDetail.isOwnedByTheUser &&
             !collectibleDetail.isHoldingByWatchAccount &&
             collectibleDetail.creatorWalletAddress != collectibleDetail.ownerAccountAddress
 
         return collectibleDetailPreviewMapper.mapTo(
             isLoadingVisible = false,
-            isSendButtonVisible = isOwnedByTheUser,
+            isSendButtonVisible = collectibleDetail.isOwnedByTheUser,
             isErrorVisible = false,
             collectibleDetail = collectibleDetail,
             isOptOutButtonVisible = isOptOutButtonVisible
         )
-    }
-
-    private fun mapToMixedMediaItem(
-        collectibleDetail: BaseCollectibleDetail,
-        isOwnedByTheUser: Boolean,
-        errorDisplayText: String
-    ): List<BaseCollectibleMediaItem> {
-        return collectibleDetail.collectibleMedias?.map {
-            with(collectibleDetail) {
-                with(collectibleMediaItemMapper) {
-                    when (it) {
-                        is ImageCollectibleMedia -> {
-                            mapToImageCollectibleMediaItem(assetId, isOwnedByTheUser, errorDisplayText, it)
-                        }
-                        is UnsupportedCollectibleMedia -> {
-                            mapToUnsupportedCollectibleMediaItem(assetId, isOwnedByTheUser, errorDisplayText, it)
-                        }
-                        is VideoCollectibleMedia -> {
-                            val previewUrl = (it.previewUrl ?: it.downloadUrl).orEmpty()
-                            mapToVideoCollectibleMediaItem(assetId, isOwnedByTheUser, errorDisplayText, it, previewUrl)
-                        }
-                        is GifCollectibleMedia -> {
-                            mapToGifCollectibleMediaItem(assetId, isOwnedByTheUser, errorDisplayText, it)
-                        }
-                        is NoMediaCollectibleMedia -> {
-                            mapToNoMediaCollectibleMediaItem(assetId, isOwnedByTheUser, errorDisplayText, it)
-                        }
-                    }
-                }
-            }
-        }.orEmpty()
     }
 
     fun checkSendingCollectibleIsFractional(

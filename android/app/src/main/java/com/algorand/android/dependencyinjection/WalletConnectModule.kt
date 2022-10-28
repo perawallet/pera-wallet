@@ -60,7 +60,11 @@ object WalletConnectModule {
         walletConnectMapper: WCWalletConnectMapper,
         cachedDataHandler: WalletConnectSessionCachedDataHandler
     ): WalletConnectClient {
-        return WCWalletConnectClient(walletConnectSessionBuilder, walletConnectMapper, cachedDataHandler)
+        return WCWalletConnectClient(
+            sessionBuilder = walletConnectSessionBuilder,
+            walletConnectMapper = walletConnectMapper,
+            sessionCachedDataHandler = cachedDataHandler
+        )
     }
 
     @Singleton

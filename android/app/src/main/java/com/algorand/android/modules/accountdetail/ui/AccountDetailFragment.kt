@@ -258,7 +258,7 @@ class AccountDetailFragment :
             setOnTitleLongClickListener { onAccountAddressCopied(accountDetailSummary.publicKey) }
             val drawableWidth = resources.getDimension(R.dimen.toolbar_title_drawable_size).toInt()
             AccountIconDrawable.create(context, accountDetailSummary.accountIconResource, drawableWidth)?.run {
-                addButtonToEnd(ToolbarImageButton(this, onClick = ::navToAccountOptionsBottomSheet))
+                setEndButton(button = ToolbarImageButton(this, onClick = ::navToAccountOptionsBottomSheet))
             }
         }
     }

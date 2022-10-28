@@ -21,9 +21,12 @@ data class AsaProfilePreview(
     val assetFullName: AssetName,
     val assetShortName: AssetName,
     val assetId: Long,
-    val formattedAssetPrice: String,
+    val formattedAssetPrice: String?,
     val verificationTierConfiguration: VerificationTierConfiguration,
     val baseAssetDrawableProvider: BaseAssetDrawableProvider,
     val assetPrismUrl: String?,
     val asaStatusPreview: AsaStatusPreview?
-)
+) {
+    val hasFormattedPrice: Boolean
+        get() = formattedAssetPrice.isNullOrBlank().not()
+}

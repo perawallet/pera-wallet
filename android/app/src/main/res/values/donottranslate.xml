@@ -84,4 +84,7 @@
     <string name="qq_browser">QQ Browser</string>
     <string name="miui">Miui</string>
 
+    <string name="asset_amount_with_x">x%1$s</string>
+
+    <string name="web_dot_perawallet_dot_app">https://web.perawallet.app</string>
 </resources>

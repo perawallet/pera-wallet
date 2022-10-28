@@ -49,8 +49,6 @@ abstract class BaseCollectibleListingViewModel(
         startCollectibleListingPreviewFlow()
     }
 
-    fun resetSearchQuery() = updateSearchKeyword("")
-
     fun startCollectibleListingPreviewFlow() {
         if (collectCollectibleListingPreviewJob?.isActive == true) {
             collectCollectibleListingPreviewJob?.cancelChildren()

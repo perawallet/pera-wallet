@@ -332,7 +332,7 @@
 
     <color name="progress_bar_tint">@color/link_primary</color>
 
-    <color name="badge_background_color">@color/gray_900_alpha_60</color>
+    <color name="nft_icon_background">@color/gray_900_alpha_60</color>
 
     <color name="tooltip_background_color">@color/gray_900_alpha_90</color>
 

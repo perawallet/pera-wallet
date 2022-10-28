@@ -153,8 +153,17 @@ class CustomToolbar @JvmOverloads constructor(
         }
     }
 
-    fun addButtonToEnd(button: BaseToolbarButton) {
-        binding.buttonContainerView.addButton(button)
+    fun setEndButtons(buttons: List<BaseToolbarButton>) {
+        setButtons { buttons.forEach { button -> binding.buttonContainerView.addButton(button) } }
+    }
+
+    fun setEndButton(button: BaseToolbarButton) {
+        setButtons { binding.buttonContainerView.addButton(button) }
+    }
+
+    private fun setButtons(initButtons: () -> Unit) {
+        binding.buttonContainerView.removeAllViews()
+        initButtons()
         setGuidelinePosition()
     }
 

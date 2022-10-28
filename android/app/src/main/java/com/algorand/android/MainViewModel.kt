@@ -18,6 +18,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.banner.domain.usecase.BannersUseCase
+import com.algorand.android.core.AccountManager
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.database.NodeDao
 import com.algorand.android.deviceregistration.domain.usecase.DeviceIdMigrationUseCase
@@ -36,6 +37,8 @@ import com.algorand.android.network.AlgodInterceptor
 import com.algorand.android.network.IndexerInterceptor
 import com.algorand.android.network.MobileHeaderInterceptor
 import com.algorand.android.tutorialdialog.domain.usecase.AccountAddressTutorialDisplayPreferencesUseCase
+import com.algorand.android.usecase.EncryptedPinUseCase
+import com.algorand.android.usecase.AccountCacheStatusUseCase
 import com.algorand.android.usecase.SendSignedTransactionUseCase
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.AssetName
@@ -79,7 +82,10 @@ class MainViewModel @Inject constructor(
     private val deepLinkHandler: DeeplinkHandler,
     private val moonpayEventTracker: MoonpayEventTracker,
     private val accountAddressTutorialDisplayPreferencesUseCase: AccountAddressTutorialDisplayPreferencesUseCase,
-    private val sendSignedTransactionUseCase: SendSignedTransactionUseCase
+    private val sendSignedTransactionUseCase: SendSignedTransactionUseCase,
+    private val encryptedPinUseCase: EncryptedPinUseCase,
+    private val accountManager: AccountManager,
+    private val accountCacheStatusUseCase: AccountCacheStatusUseCase
 ) : BaseViewModel() {
 
     // TODO: Replace this with Flow whenever have time
@@ -90,14 +96,10 @@ class MainViewModel @Inject constructor(
         get() = _shouldShowAccountAddressCopyTutorialDialogFlow
 
     // TODO I'll change after checking usage of flow in activity.
-    val accountBalanceSyncStatus = accountCacheManager.getCacheStatusFlow().asLiveData()
+    val accountBalanceSyncStatus = accountCacheStatusUseCase.getAccountCacheStatusFlow().asLiveData()
 
     val autoLockLiveData
         get() = autoLockManager.autoLockLiveData
-
-    fun checkLockState() {
-        autoLockManager.checkLockState()
-    }
 
     private var sendTransactionJob: Job? = null
     var refreshBalanceJob: Job? = null
@@ -251,6 +253,12 @@ class MainViewModel @Inject constructor(
             _shouldShowAccountAddressCopyTutorialDialogFlow.value =
                 accountAddressTutorialDisplayPreferencesUseCase.shouldShowDialogByApplicationOpeningCount()
         }
+    }
+
+    fun isLockNeeded(): Boolean {
+        return autoLockManager.isAutoLockNeeded() &&
+            encryptedPinUseCase.isEncryptedPinSet() &&
+            accountManager.isThereAnyRegisteredAccount()
     }
 
     private fun getAssetOperationResult(transaction: SignedTransactionDetail.AssetOperation): AssetOperationResult {

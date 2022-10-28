@@ -46,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/spacing_xlarge"
-            android:paddingBottom="120dp">
+            android:paddingBottom="@dimen/bottom_padding_for_screen_with_floating_button">
 
             <TextView
                 android:id="@+id/buyAlgoTextView"

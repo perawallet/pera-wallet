@@ -26,7 +26,7 @@ class AsaProfilePreviewMapper @Inject constructor() {
         assetFullName: String?,
         assetShortName: String?,
         assetId: Long,
-        formattedAssetPrice: String,
+        formattedAssetPrice: String?,
         verificationTierConfiguration: VerificationTierConfiguration,
         baseAssetDrawableProvider: BaseAssetDrawableProvider,
         assetPrismUrl: String?,

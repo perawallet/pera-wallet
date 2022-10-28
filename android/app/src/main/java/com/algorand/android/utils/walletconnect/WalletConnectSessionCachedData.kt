@@ -45,7 +45,7 @@ class WalletConnectSessionCachedData(
     override fun onMethodCall(call: Session.MethodCall) {
         Log.e(logTag, "onMethodCall -> $call")
         when (call) {
-            is Session.MethodCall.SessionRequest -> callback?.onSessionRequest(sessionId, call.id, call)
+            is Session.MethodCall.SessionRequest -> callback?.onSessionRequest(sessionId, call.id, call, call.chainId)
             is Session.MethodCall.SessionUpdate -> callback?.onSessionUpdate(sessionId, call)
             is Session.MethodCall.Custom -> callback?.onCustomRequest(sessionId, call)
             else -> {
@@ -83,7 +83,7 @@ class WalletConnectSessionCachedData(
     }
 
     interface Callback {
-        fun onSessionRequest(sessionId: Long, requestId: Long, call: Session.MethodCall.SessionRequest)
+        fun onSessionRequest(sessionId: Long, requestId: Long, call: Session.MethodCall.SessionRequest, chainId: Long?)
         fun onSessionUpdate(sessionId: Long, call: Session.MethodCall.SessionUpdate)
         fun onCustomRequest(sessionId: Long, call: Session.MethodCall.Custom)
 

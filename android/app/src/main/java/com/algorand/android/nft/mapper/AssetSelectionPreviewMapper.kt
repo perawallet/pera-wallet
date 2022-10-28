@@ -28,7 +28,8 @@ class AssetSelectionPreviewMapper @Inject constructor() {
             globalErrorTextEvent = null,
             navigateToAssetTransferAmountFragmentEvent = null,
             isAssetListLoadingVisible = true,
-            isReceiverAccountOptInCheckLoadingVisible = false
+            isReceiverAccountOptInCheckLoadingVisible = false,
+            navigateToCollectibleSendFragmentEvent = null
         )
     }
 }

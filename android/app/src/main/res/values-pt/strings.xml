@@ -525,7 +525,6 @@
     <string name="i_already_have_nan_account">Já possuo\numa conta</string>
     <string name="recover_an_account">Recuperar uma conta</string>
     <string name="pair_Ledger_device">Parear dispositivo Ledger</string>
-    <string name="i_want_to_create_algorand">Quero criar uma conta Algorand apoiada por minha carteira Ledger hardware.</string>
     <string name="confirm_transaction">Confirmar Transação</string>
     <string name="your_transaction_was">Sua transação foi recebida pela rede Algorand com sucesso.</string>
     <string name="buy_algo">Comprar ALGO</string>
@@ -594,7 +593,6 @@
     <string name="receive_an_nft">Receba um NFT</string>
     <string name="the_account_name">A conta <annotation font="dmsans_bold">\"<annotation replacement="account_name"> </annotation>\"</annotation> foi rechaveada com sucesso.</string>
     <string name="asset_support_success"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> foi adicionado <annotation replacement="asset">assetPlaceholder</annotation> à conta. Você pode enviá-los <annotation replacement="asset">assetPlaceholder</annotation>.</string>
-    <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> está tentando enviar <annotation replacement="asset">assetPlaceholder</annotation> a você, mas você não suporta este ativo. Toque aqui para adicionar este ativo à sua conta.</string>
     <string name="transaction_send_successful">Sua transação de <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> de <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> para <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> foi concluída.</string>
     <string name="transaction_send_failed">Sua transação de <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> de <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> para <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> não foi concluída.</string>
     <string name="the_only_way_to">O único meio de recuperar uma conta Algorand é com esta frase senha de recuperação.</string>

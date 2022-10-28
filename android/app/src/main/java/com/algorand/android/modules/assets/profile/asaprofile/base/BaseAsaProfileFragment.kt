@@ -14,43 +14,34 @@ package com.algorand.android.modules.assets.profile.asaprofile.base
 
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.StringRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import com.algorand.android.R
 import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration
 import com.algorand.android.core.BaseFragment
 import com.algorand.android.databinding.FragmentAsaProfileBinding
 import com.algorand.android.models.AccountIconResource.Companion.DEFAULT_ACCOUNT_ICON_RESOURCE
-import com.algorand.android.models.AssetOperationResult
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.modules.assets.action.addition.AddAssetActionBottomSheet
 import com.algorand.android.modules.assets.action.removal.RemoveAssetActionBottomSheet
 import com.algorand.android.modules.assets.profile.about.ui.AssetAboutFragment
 import com.algorand.android.modules.assets.profile.asaprofile.ui.model.AsaProfilePreview
-import com.algorand.android.modules.assets.profile.asaprofile.ui.model.AsaStatusActionType
-import com.algorand.android.modules.assets.profile.asaprofile.ui.model.AsaStatusActionType.ACCOUNT_SELECTION
-import com.algorand.android.modules.assets.profile.asaprofile.ui.model.AsaStatusActionType.ADDITION
-import com.algorand.android.modules.assets.profile.asaprofile.ui.model.AsaStatusActionType.REMOVAL
 import com.algorand.android.modules.assets.profile.asaprofile.ui.model.AsaStatusPreview
 import com.algorand.android.modules.assets.profile.asaprofileaccountselection.ui.AsaProfileAccountSelectionFragment.Companion.ASA_PROFILE_ACCOUNT_SELECTION_RESULT_KEY
 import com.algorand.android.modules.collectibles.action.optin.CollectibleOptInActionBottomSheet
 import com.algorand.android.utils.AccountIconDrawable
 import com.algorand.android.utils.AssetName
-import com.algorand.android.utils.Event
-import com.algorand.android.utils.Resource
 import com.algorand.android.utils.assetdrawable.BaseAssetDrawableProvider
 import com.algorand.android.utils.copyToClipboard
-import com.algorand.android.utils.extensions.hide
+import com.algorand.android.utils.extensions.collectOnLifecycle
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.setDrawable
 import com.algorand.android.utils.useFragmentResultListenerValue
 import com.algorand.android.utils.viewbinding.viewBinding
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
@@ -86,7 +77,8 @@ abstract class BaseAsaProfileFragment : BaseFragment(R.layout.fragment_asa_profi
                 assetId = assetId,
                 verificationTierConfiguration = verificationTierConfiguration,
                 baseAssetDrawableProvider = baseAssetDrawableProvider,
-                assetPrismUrl = assetPrismUrl
+                assetPrismUrl = assetPrismUrl,
+                hasFormattedPrice = hasFormattedPrice
             )
         }
     }
@@ -95,22 +87,13 @@ abstract class BaseAsaProfileFragment : BaseFragment(R.layout.fragment_asa_profi
         setAsaStatusPreview(it)
     }
 
-    private val sendTransactionObserver = Observer<Event<Resource<AssetOperationResult>>> {
-        it.consume()?.use(
-            onSuccess = {
-                onSendTransactionSuccess(it)
-                onBackButtonClick()
-            },
-            onFailed = { error -> showGlobalError(error.parse(requireContext())) },
-            onLoadingFinished = { binding.loadingLayout.root.hide() }
-        )
-    }
-
     protected val assetShortName: String?
         get() = asaProfileViewModel.asaProfilePreviewFlow.value?.assetShortName?.getName(resources)
 
     abstract fun navToAccountSelection()
     abstract fun navToAssetAdditionFlow()
+    abstract fun navToAssetRemovalFlow()
+    abstract fun navToAssetTransferFlow()
     abstract fun onBackButtonClick()
     abstract fun onAccountSelected(selectedAccountAddress: String)
 
@@ -126,15 +109,15 @@ abstract class BaseAsaProfileFragment : BaseFragment(R.layout.fragment_asa_profi
         }
         useFragmentResultListenerValue<Boolean>(
             key = RemoveAssetActionBottomSheet.REMOVE_ASSET_ACTION_RESULT_KEY,
-            result = { isConfirmed -> if (isConfirmed) navBack() }
+            result = { isConfirmed -> if (isConfirmed) onBackButtonClick() }
         )
         useFragmentResultListenerValue<Boolean>(
             key = CollectibleOptInActionBottomSheet.OPT_IN_COLLECTIBLE_ACTION_RESULT_KEY,
-            result = { isConfirmed -> if (isConfirmed) navBack() }
+            result = { isConfirmed -> if (isConfirmed) onBackButtonClick() }
         )
         useFragmentResultListenerValue<Boolean>(
             key = AddAssetActionBottomSheet.ADD_ASSET_ACTION_RESULT_KEY,
-            result = { isConfirmed -> if (isConfirmed) navBack() }
+            result = { isConfirmed -> if (isConfirmed) onBackButtonClick() }
         )
     }
 
@@ -148,31 +131,32 @@ abstract class BaseAsaProfileFragment : BaseFragment(R.layout.fragment_asa_profi
         binding.toolbar.configure(toolbarConfiguration)
     }
 
-    private fun initAboutAssetContainer(isBottomPaddingNeeded: Boolean) {
+    private fun initAboutAssetContainer() {
         childFragmentManager.beginTransaction().add(
             binding.assetAboutFragmentContainerView.id,
-            AssetAboutFragment.newInstance(asaProfileViewModel.assetId, isBottomPaddingNeeded)
+            AssetAboutFragment.newInstance(asaProfileViewModel.assetId, true)
         ).commit()
     }
 
     private fun initObservers() {
-        with(viewLifecycleOwner.lifecycleScope) {
-            with(asaProfileViewModel.asaProfilePreviewFlow) {
-                launchWhenResumed {
-                    map { it?.formattedAssetPrice }.distinctUntilChanged().collectLatest(formattedAssetPriceCollector)
-                }
-                launchWhenResumed {
-                    map { it?.assetShortName }.distinctUntilChanged().collectLatest(assetShortNameCollector)
-                }
-                launchWhenResumed {
-                    collectLatest(asaDetailCollector)
-                }
-                launchWhenResumed {
-                    map { it?.asaStatusPreview }.distinctUntilChanged().collectLatest(asaStatusPreviewCollector)
-                }
-            }
+        with(asaProfileViewModel.asaProfilePreviewFlow) {
+            collectOnLifecycle(
+                flow = this,
+                collection = asaDetailCollector
+            )
+            collectOnLifecycle(
+                flow = map { it?.formattedAssetPrice }.distinctUntilChanged(),
+                collection = formattedAssetPriceCollector
+            )
+            collectOnLifecycle(
+                flow = map { it?.assetShortName }.distinctUntilChanged(),
+                collection = assetShortNameCollector
+            )
+            collectOnLifecycle(
+                flow = map { it?.asaStatusPreview }.distinctUntilChanged(),
+                collection = asaStatusPreviewCollector
+            )
         }
-        asaProfileViewModel.sendTransactionResultLiveData.observe(viewLifecycleOwner, sendTransactionObserver)
     }
 
     private fun setAsaDetail(
@@ -181,7 +165,8 @@ abstract class BaseAsaProfileFragment : BaseFragment(R.layout.fragment_asa_profi
         assetId: Long,
         verificationTierConfiguration: VerificationTierConfiguration,
         baseAssetDrawableProvider: BaseAssetDrawableProvider,
-        assetPrismUrl: String?
+        assetPrismUrl: String?,
+        hasFormattedPrice: Boolean
     ) {
         with(binding) {
             assetNameAndBadgeTextView.apply {
@@ -209,18 +194,29 @@ abstract class BaseAsaProfileFragment : BaseFragment(R.layout.fragment_asa_profi
                     )
                 }
             }
+            assetPriceTextView.isVisible = hasFormattedPrice
         }
     }
 
     private fun setAsaStatusPreview(asaStatusPreview: AsaStatusPreview?) {
-        with(binding.assetStatusConstraintLayout) {
-            with(asaStatusPreview) {
-                root.isVisible = this != null
-                initAboutAssetContainer(isBottomPaddingNeeded = this != null)
-                if (this == null) return
-                assetStatusLabelTextView.setText(statusLabelTextResId)
-                accountTextView.apply {
-                    accountName?.run {
+        initAboutAssetContainer()
+        with(asaStatusPreview ?: return) {
+            binding.assetStatusConstraintLayout.root.show()
+            initAsaStatusLabel(statusLabelTextResId)
+            initAsaStatusValue(this)
+            initAsaStatusActionButton(this)
+        }
+    }
+
+    private fun initAsaStatusLabel(@StringRes statusLabelTextResId: Int) {
+        binding.assetStatusConstraintLayout.statusLabelTextView.setText(statusLabelTextResId)
+    }
+
+    private fun initAsaStatusValue(asaStatusPreview: AsaStatusPreview) {
+        binding.assetStatusConstraintLayout.statusValueTextView.apply {
+            when (asaStatusPreview) {
+                is AsaStatusPreview.AdditionStatus -> {
+                    asaStatusPreview.accountName?.run {
                         text = getDisplayAddress()
                         setDrawable(
                             start = AccountIconDrawable.create(
@@ -233,42 +229,55 @@ abstract class BaseAsaProfileFragment : BaseFragment(R.layout.fragment_asa_profi
                             onAccountAddressCopied(publicKey)
                             true
                         }
-                        show()
                     }
                 }
+                is AsaStatusPreview.RemovalStatus.AssetRemovalStatus -> {
+                    text = getString(
+                        R.string.pair_value_format,
+                        asaStatusPreview.formattedAccountBalance,
+                        asaStatusPreview.assetShortName?.getName(resources)
+                    )
+                }
+                is AsaStatusPreview.TransferStatus -> {
+                    text = getString(
+                        R.string.pair_value_format,
+                        asaStatusPreview.formattedAccountBalance,
+                        asaStatusPreview.assetShortName?.getName(resources)
+                    )
+                }
+                is AsaStatusPreview.AccountSelectionStatus -> {
+                    // no value text for account selection case
+                }
+                is AsaStatusPreview.RemovalStatus.CollectibleRemovalStatus -> {
+                    // no value text for  collectible removal status case
+                }
+            }
+            show()
+        }
+    }
 
-                with(peraButtonState) {
-                    with(assetStatusActionButton) {
-                        setIconDrawable(iconResourceId = iconDrawableResId)
-                        setBackgroundColor(colorResId = backgroundColorResId)
-                        setIconTint(iconTintResId = iconTintColorResId)
-                        setText(textResId = actionButtonTextResId)
-                        setButtonStroke(colorResId = strokeColorResId)
-                        setButtonTextColor(colorResId = textColor)
-                        setOnClickListener { onAsaActionButtonClick(asaStatusActionType) }
-                    }
-                }
+    private fun initAsaStatusActionButton(
+        asaStatusPreview: AsaStatusPreview
+    ) {
+        with(asaStatusPreview.peraButtonState) {
+            with(binding.assetStatusConstraintLayout.assetStatusActionButton) {
+                setIconDrawable(iconResourceId = iconDrawableResId)
+                setBackgroundColor(colorResId = backgroundColorResId)
+                setIconTint(iconTintResId = iconTintColorResId)
+                setText(textResId = asaStatusPreview.actionButtonTextResId)
+                setButtonStroke(colorResId = strokeColorResId)
+                setButtonTextColor(colorResId = textColor)
+                setOnClickListener { onAsaActionButtonClick(asaStatusPreview) }
             }
         }
     }
 
-    private fun onAsaActionButtonClick(asaStatusActionType: AsaStatusActionType) {
-        when (asaStatusActionType) {
-            ADDITION -> navToAssetAdditionFlow()
-            ACCOUNT_SELECTION -> navToAccountSelection()
-            REMOVAL -> {
-                // Currently, asset removal is not supported in BaseProfileFragment. If account is opted in
-                // we only show information of the asset. Add removal case if the flow changes
-            }
+    private fun onAsaActionButtonClick(asaStatusPreview: AsaStatusPreview) {
+        when (asaStatusPreview) {
+            is AsaStatusPreview.AccountSelectionStatus -> navToAccountSelection()
+            is AsaStatusPreview.AdditionStatus -> navToAssetAdditionFlow()
+            is AsaStatusPreview.RemovalStatus -> navToAssetRemovalFlow()
+            is AsaStatusPreview.TransferStatus -> navToAssetTransferFlow()
         }
-    }
-
-    private fun onSendTransactionSuccess(assetOperationResult: AssetOperationResult) {
-        showAlertSuccess(
-            title = getString(
-                assetOperationResult.resultTitleResId,
-                assetOperationResult.assetName.getName(resources)
-            )
-        )
     }
 }

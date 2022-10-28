@@ -18,7 +18,6 @@ import com.algorand.android.models.Account
 import com.algorand.android.models.AssetAction
 import com.algorand.android.models.BaseAccountAddress
 import com.algorand.android.modules.assets.profile.asaprofile.ui.mapper.AsaStatusPreviewMapper
-import com.algorand.android.modules.assets.profile.asaprofile.ui.model.AsaStatusActionType
 import com.algorand.android.modules.assets.profile.asaprofile.ui.model.AsaStatusPreview
 import com.algorand.android.modules.assets.profile.asaprofile.ui.model.PeraButtonState
 import com.algorand.android.modules.collectibles.profile.ui.mapper.CollectibleProfileMapper
@@ -138,21 +137,19 @@ class CollectibleProfilePreviewUseCase @Inject constructor(
     ): AsaStatusPreview? {
         return when {
             !isCollectibleOwnedByAccount -> {
-                asaStatusPreviewMapper.mapToAsaStatusPreview(
+                asaStatusPreviewMapper.mapToAsaAdditionStatusPreview(
                     accountAddress = accountAddressUseCase.createAccountAddress(accountAddress),
                     statusLabelTextResId = R.string.you_can_add_this_nft,
                     peraButtonState = PeraButtonState.ADDITION,
-                    actionButtonTextResId = R.string.opt_dash_in,
-                    asaStatusActionType = AsaStatusActionType.ADDITION
+                    actionButtonTextResId = R.string.opt_dash_in
                 )
             }
             !isUserHasCollectibleBalance && creatorWalletAddress != accountAddress -> {
-                asaStatusPreviewMapper.mapToAsaStatusPreview(
-                    accountAddress = accountAddressUseCase.createAccountAddress(accountAddress),
+                asaStatusPreviewMapper.mapToCollectibleRemovalStatusPreview(
                     statusLabelTextResId = R.string.opted_in_to,
                     peraButtonState = PeraButtonState.REMOVAL,
                     actionButtonTextResId = R.string.remove,
-                    asaStatusActionType = AsaStatusActionType.REMOVAL
+                    accountAddress = accountAddressUseCase.createAccountAddress(accountAddress)
                 )
             }
             else -> null

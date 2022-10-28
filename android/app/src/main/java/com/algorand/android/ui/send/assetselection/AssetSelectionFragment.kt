@@ -17,6 +17,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.core.TransactionBaseFragment
 import com.algorand.android.databinding.FragmentAssetSelectionBinding
@@ -24,6 +25,7 @@ import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.models.SignedTransactionDetail
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.nft.ui.model.AssetSelectionPreview
+import com.algorand.android.nft.ui.model.CollectibleDetail
 import com.algorand.android.nft.ui.model.RequestOptInConfirmationArgs
 import com.algorand.android.ui.send.assetselection.adapter.SelectSendingAssetAdapter
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
@@ -106,15 +108,14 @@ class AssetSelectionFragment : TransactionBaseFragment(R.layout.fragment_asset_s
             navigateToAssetTransferAmountFragmentEvent?.consume()?.run {
                 navToAssetTransferAmountFragment(this)
             }
+            navigateToCollectibleSendFragmentEvent?.consume()?.let {
+                navToCollectibleSendFragment(it)
+            }
         }
     }
 
     private fun onAssetClick(assetId: Long) {
-        if (assetSelectionViewModel.isReceiverAccountSet()) {
-            assetSelectionViewModel.checkIfSelectedAccountReceiveAsset(assetId)
-        } else {
-            navToAssetTransferAmountFragment(assetId)
-        }
+        assetSelectionViewModel.updatePreviewWithSelectedAsset(assetId)
     }
 
     private fun navToAssetTransferAmountFragment(assetId: Long) {
@@ -146,13 +147,21 @@ class AssetSelectionFragment : TransactionBaseFragment(R.layout.fragment_asset_s
         senderPublicKey: String
     ) {
         nav(
-            AssetSelectionFragmentDirections.actionAssetSelectionFragmentToRequestOptInConfirmationBottomSheet(
+            AssetSelectionFragmentDirections.actionAssetSelectionFragmentToRequestOptInConfirmationNavigation(
                 RequestOptInConfirmationArgs(
                     senderPublicKey = senderPublicKey,
                     receiverPublicKey = receiverPublicKey,
                     assetId = assetId,
                     assetName = assetSelectionViewModel.getAssetOrCollectibleNameOrNull(assetId)
                 )
+            )
+        )
+    }
+
+    private fun navToCollectibleSendFragment(collectibleDetail: CollectibleDetail) {
+        nav(
+            HomeNavigationDirections.actionGlobalSendCollectibleNavigation(
+                collectibleDetail
             )
         )
     }

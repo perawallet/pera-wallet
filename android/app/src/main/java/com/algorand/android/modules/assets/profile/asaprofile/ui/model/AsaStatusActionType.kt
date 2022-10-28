@@ -15,5 +15,6 @@ package com.algorand.android.modules.assets.profile.asaprofile.ui.model
 enum class AsaStatusActionType {
     ADDITION,
     ACCOUNT_SELECTION,
-    REMOVAL
+    REMOVAL,
+    TRANSFER
 }

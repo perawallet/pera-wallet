@@ -42,7 +42,7 @@
             android:layout_height="match_parent"
             android:clipToPadding="false"
             android:paddingHorizontal="@dimen/spacing_xlarge"
-            android:paddingBottom="100dp"
+            android:paddingBottom="@dimen/bottom_padding_for_screen_with_floating_button"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="5"
             tools:listitem="@layout/item_account_history_transaction" />

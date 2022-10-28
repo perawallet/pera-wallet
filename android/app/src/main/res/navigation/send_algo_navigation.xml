@@ -17,6 +17,8 @@
     android:id="@+id/sendAlgoNavigation"
     app:startDestination="@id/sendAlgoFragment">
 
+    <include app:graph="@navigation/request_opt_in_confirmation_navigation" />
+
     <action
         android:id="@+id/action_sendAlgoNavigation_pop"
         app:popUpTo="@id/sendAlgoNavigation"
@@ -145,8 +147,12 @@
             android:id="@+id/action_assetSelectionFragment_to_receiverAccountSelectionFragment"
             app:destination="@id/receiverAccountSelectionFragment" />
         <action
-            android:id="@+id/action_assetSelectionFragment_to_requestOptInConfirmationBottomSheet"
-            app:destination="@id/requestOptInConfirmationBottomSheet" />
+            android:id="@+id/action_assetSelectionFragment_to_requestOptInConfirmationNavigation"
+            app:destination="@id/requestOptInConfirmationNavigation">
+            <argument
+                android:name="requestOptInConfirmationArgs"
+                app:argType="com.algorand.android.nft.ui.model.RequestOptInConfirmationArgs" />
+        </action>
     </fragment>
 
     <fragment
@@ -199,6 +205,13 @@
         <action
             android:id="@+id/action_receiverAccountSelectionFragment_to_transactionTipsBottomSheet"
             app:destination="@id/transactionTipsBottomSheet" />
+        <action
+            android:id="@+id/action_receiverAccountSelectionFragment_to_requestOptInConfirmationNavigation"
+            app:destination="@id/requestOptInConfirmationNavigation">
+            <argument
+                android:name="requestOptInConfirmationArgs"
+                app:argType="com.algorand.android.nft.ui.model.RequestOptInConfirmationArgs" />
+        </action>
     </fragment>
 
     <fragment
@@ -265,15 +278,6 @@
         android:name="com.algorand.android.ui.common.transactiontips.TransactionTipsBottomSheet"
         android:label="TransactionTipsBottomSheet"
         tools:layout="@layout/bottom_sheet_transaction_tips" />
-
-    <dialog
-        android:id="@+id/requestOptInConfirmationBottomSheet"
-        android:name="com.algorand.android.nft.ui.nftrequestoptin.RequestOptInConfirmationBottomSheet"
-        android:label="RequestOptInConfirmationBottomSheet">
-        <argument
-            android:name="requestOptInConfirmationArgs"
-            app:argType="com.algorand.android.nft.ui.model.RequestOptInConfirmationArgs" />
-    </dialog>
 
     <dialog
         android:id="@+id/balanceWarningBottomSheet"

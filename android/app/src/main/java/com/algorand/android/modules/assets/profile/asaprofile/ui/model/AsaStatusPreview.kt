@@ -12,13 +12,51 @@
 
 package com.algorand.android.modules.assets.profile.asaprofile.ui.model
 
-import androidx.annotation.StringRes
 import com.algorand.android.models.BaseAccountAddress
+import com.algorand.android.utils.AssetName
 
-data class AsaStatusPreview(
-    @StringRes val statusLabelTextResId: Int,
-    val accountName: BaseAccountAddress.AccountAddress?,
-    val peraButtonState: PeraButtonState,
-    @StringRes val actionButtonTextResId: Int,
-    val asaStatusActionType: AsaStatusActionType
-)
+sealed class AsaStatusPreview {
+
+    abstract val statusLabelTextResId: Int
+    abstract val peraButtonState: PeraButtonState
+    abstract val actionButtonTextResId: Int
+
+    data class AccountSelectionStatus(
+        override val statusLabelTextResId: Int,
+        override val peraButtonState: PeraButtonState,
+        override val actionButtonTextResId: Int
+    ) : AsaStatusPreview()
+
+    data class AdditionStatus(
+        override val statusLabelTextResId: Int,
+        override val peraButtonState: PeraButtonState,
+        override val actionButtonTextResId: Int,
+        val accountName: BaseAccountAddress.AccountAddress?
+    ) : AsaStatusPreview()
+
+    sealed class RemovalStatus : AsaStatusPreview() {
+
+        data class AssetRemovalStatus(
+            override val statusLabelTextResId: Int,
+            override val peraButtonState: PeraButtonState,
+            override val actionButtonTextResId: Int,
+            val formattedAccountBalance: String?,
+            val assetShortName: AssetName?
+        ) : RemovalStatus()
+
+        data class CollectibleRemovalStatus(
+            override val statusLabelTextResId: Int,
+            override val peraButtonState: PeraButtonState,
+            override val actionButtonTextResId: Int,
+            val accountName: BaseAccountAddress.AccountAddress?
+        ) : RemovalStatus()
+    }
+
+    data class TransferStatus(
+        override val statusLabelTextResId: Int,
+        override val peraButtonState: PeraButtonState,
+        override val actionButtonTextResId: Int,
+        val formattedAccountBalance: String,
+        val assetShortName: AssetName?
+    ) : AsaStatusPreview()
+}

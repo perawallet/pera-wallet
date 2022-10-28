@@ -143,7 +143,7 @@ class NotificationCenterFragment : DaggerBaseFragment(R.layout.fragment_notifica
     }
 
     private fun setupToolbar() {
-        getAppToolbar()?.addButtonToEnd(IconButton(R.drawable.ic_filter, onClick = ::onFilterClick))
+        getAppToolbar()?.setEndButton(button = IconButton(R.drawable.ic_filter, onClick = ::onFilterClick))
     }
 
     private fun setupRecyclerView() {

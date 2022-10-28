@@ -31,7 +31,19 @@ abstract class BaseCollectibleListViewHolder(
         if (item !is BaseCollectibleListItem.BaseCollectibleItem) return
         initCollectionAndCollectibleName(item)
         if (!item.isOwnedByTheUser) showWarningIcon(R.drawable.ic_error) else hideWarningIcon()
+        if (item.isAmountVisible) showCollectibleAmount(item.formattedCollectibleAmount) else hideCollectibleAmount()
         showCollectibleBadge(item.badgeImageResId)
+    }
+
+    private fun hideCollectibleAmount() {
+        binding.collectibleAmountTextView.hide()
+    }
+
+    private fun showCollectibleAmount(formattedCollectibleAmount: String?) {
+        binding.collectibleAmountTextView.apply {
+            text = resources.getString(R.string.asset_amount_with_x, formattedCollectibleAmount)
+            show()
+        }
     }
 
     private fun initCollectionAndCollectibleName(nftListItem: BaseCollectibleListItem.BaseCollectibleItem) {

@@ -14,6 +14,7 @@ package com.algorand.android.utils.walletconnect
 
 import javax.inject.Inject
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.models.WCSessionRequestResult
 import com.algorand.android.models.WalletConnectSession
@@ -23,6 +24,7 @@ import com.algorand.android.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class WalletConnectViewModel @Inject constructor(
@@ -52,7 +54,9 @@ class WalletConnectViewModel @Inject constructor(
 
     fun approveSession(result: WCSessionRequestResult.ApproveRequest) {
         with(result) {
-            walletConnectManager.approveSession(wcSessionRequest, address)
+            viewModelScope.launch {
+                walletConnectManager.approveSession(wcSessionRequest, address)
+            }
         }
     }
 

@@ -53,7 +53,7 @@ class AssetSortPreferenceFragment : BaseFragment(R.layout.fragment_asset_sort_pr
     }
 
     private fun initToolbar() {
-        getAppToolbar()?.addButtonToEnd(TextButton(R.string.done, R.color.link_primary, ::onDoneClick))
+        getAppToolbar()?.setEndButton(button = TextButton(R.string.done, R.color.link_primary, ::onDoneClick))
     }
 
     private fun initUi() {

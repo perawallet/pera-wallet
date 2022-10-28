@@ -198,7 +198,7 @@
     <string name="the_account_name">The account <annotation font="dmsans_bold">\"<annotation replacement="account_name"> </annotation>\"</annotation> has been successfully rekeyed.</string>
     <string name="just_now">Just Now</string>
     <string name="asset_support_success"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> has added <annotation replacement="asset">assetPlaceholder</annotation> to their account. You can send them <annotation replacement="asset">assetPlaceholder</annotation>.</string>
-    <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> is trying to send you <annotation replacement="asset">assetPlaceholder</annotation> however, you do not support this. Tap here to add this asset to your account.</string>
+    <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> is trying to send <annotation replacement="asset">assetPlaceholder</annotation> at your account <annotation font="dmsans_medium"><annotation replacement="receiver">receiverPlaceholder</annotation></annotation>. Tap to opt-in to this asset so the transaction can be processed.</string>
     <string name="transaction_send_successful">Your transaction of <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> from <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> to <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> is complete.</string>
     <string name="transaction_send_failed">Your transaction of <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> from <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> to <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> has failed.</string>
     <string name="notification_algo_received_message"><annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> were sent to <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> by <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>.</string>
@@ -596,7 +596,6 @@
     <string name="recover_an_account">Recover an account</string>
     <string name="i_want_to_recover">I want to recover an Algorand account using my 25-word passphrase</string>
     <string name="pair_Ledger_device">Pair Ledger device</string>
-    <string name="i_want_to_create_algorand">I want to create an Algorand account that is backed by my Ledger hardware wallet</string>
     <string name="transaction_received">Transaction Received</string>
     <string name="transaction_submitted">Transaction Submitted</string>
     <string name="your_transaction_was">Your transaction was successfully received by the Algorand network.</string>
@@ -880,4 +879,32 @@
     <string name="transaction_signed">Transaction signed!</string>
     <string name="transaction_was_sent">Transaction was sent to %1$s. Return to your web browser to finish the operation.</string>
 
+    <string name="select_all">Select all</string>
+    <string name="unselect_all">Unselect all</string>
+    <string name="disclaimer">DISCLAIMER</string>
+
+    <string name="export_to_pera_web">Export to Pera Web</string>
+    <string name="you_re_about_to_share">You\'re about to share and import your passphrase into Pera Web Wallet!</string>
+    <string name="never_accept_a">Never accept a request that hasn\'t been requested by you.</string>
+
+    <string name="confirm_export_domain">Confirm Export Domain</string>
+    <string name="for_your_security_please_confirm">For your security, please confirm that you are exporting your accounts to Pera Web by entering the domain name you see on your computer.</string>
+    <string name="enter_url_of_web_wallet">Enter URL of the Web Wallet</string>
+    <string name="url_of_web_wallet">URL of the Web Wallet</string>
+    <string name="to_make_sure_that_you">To make sure that you are exporting your accounts to a safe location, always verify you are on the official Pera Web URL:</string>
+
+    <string name="confirm_accounts">Confirm Accounts</string>
+    <string name="you_re_about_to_export">You\'re about to export these accounts to Pera Web securely:</string>
+
+    <string name="accounts_exported_successfully">Accounts exported successfully!</string>
+    <string name="you_can_now_use_these">You can now use these accounts on Pera Web Wallet.</string>
+
+    <string name="we_couldn_t_find">We couldn\'t find any accounts eligible for export.</string>
+
+    <plurals name="account_count">
+        <item quantity="one">Account</item>
+        <item quantity="other">%1$d Accounts</item>
+    </plurals>
+    <string name="i_want_to_recover_an">I want to recover an Algorand account that is backed by my Ledger hardware wallet.</string>
+    <string name="total_owned">Total owned</string>
 </resources>

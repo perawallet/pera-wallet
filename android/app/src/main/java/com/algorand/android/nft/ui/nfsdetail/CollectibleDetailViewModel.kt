@@ -56,7 +56,7 @@ class CollectibleDetailViewModel @Inject constructor(
     private fun getCollectibleDetailPreview() {
         viewModelScope.launch {
             collectibleDetailPreviewUseCase
-                .getCollectableDetailPreviewFlow(collectibleAssetId, selectedAccountPublicKey)
+                .getCollectibleDetailPreviewFlow(collectibleAssetId, selectedAccountPublicKey)
                 .collectLatest { _collectibleDetailPreviewFlow.emit(it) }
         }
     }

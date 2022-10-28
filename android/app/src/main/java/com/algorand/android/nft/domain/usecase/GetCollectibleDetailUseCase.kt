@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.flow
 
 class GetCollectibleDetailUseCase @Inject constructor(
     private val collectibleRepository: CollectibleDetailRepositoryImpl,
-    private val collectibleDetailMapper: CollectibleDetailMapper,
+    private val collectibleDetailMapper: CollectibleDetailMapper
 ) {
 
     fun getCollectibleDetail(collectibleAssetId: Long) = flow<DataResource<BaseCollectibleDetail>> {

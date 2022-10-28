@@ -16,7 +16,8 @@ import com.algorand.android.models.WalletConnectSession
 import org.walletconnect.Session
 
 interface WalletConnectClientListener {
-    fun onSessionRequest(sessionId: Long, requestId: Long, session: WalletConnectSession)
+    fun onSessionRequest(sessionId: Long, requestId: Long, session: WalletConnectSession, chainId: Long?)
+    fun onSessionUpdate(sessionId: Long, accounts: List<String>?, chainId: Long?)
     fun onCustomRequest(sessionId: Long, requestId: Long, payloadList: List<*>)
     fun onFailure(sessionId: Long, error: Session.Status.Error)
     fun onDisconnected(sessionId: Long)

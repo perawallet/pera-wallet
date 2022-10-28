@@ -13,26 +13,82 @@
 package com.algorand.android.modules.assets.profile.asaprofile.ui.mapper
 
 import com.algorand.android.models.BaseAccountAddress
-import com.algorand.android.modules.assets.profile.asaprofile.ui.model.PeraButtonState
-import com.algorand.android.modules.assets.profile.asaprofile.ui.model.AsaStatusActionType
 import com.algorand.android.modules.assets.profile.asaprofile.ui.model.AsaStatusPreview
+import com.algorand.android.modules.assets.profile.asaprofile.ui.model.PeraButtonState
+import com.algorand.android.utils.AssetName
 import javax.inject.Inject
 
 class AsaStatusPreviewMapper @Inject constructor() {
 
-    fun mapToAsaStatusPreview(
+    fun mapToAsaAccountSelectionStatusPreview(
         statusLabelTextResId: Int,
-        accountAddress: BaseAccountAddress.AccountAddress?,
+        actionButtonTextResId: Int,
+        peraButtonState: PeraButtonState
+    ): AsaStatusPreview.AccountSelectionStatus {
+        return AsaStatusPreview.AccountSelectionStatus(
+            statusLabelTextResId = statusLabelTextResId,
+            peraButtonState = peraButtonState,
+            actionButtonTextResId = actionButtonTextResId,
+        )
+    }
+
+    fun mapToAsaAdditionStatusPreview(
+        statusLabelTextResId: Int,
         actionButtonTextResId: Int,
         peraButtonState: PeraButtonState,
-        asaStatusActionType: AsaStatusActionType
-    ): AsaStatusPreview {
-        return AsaStatusPreview(
+        accountAddress: BaseAccountAddress.AccountAddress?
+    ): AsaStatusPreview.AdditionStatus {
+        return AsaStatusPreview.AdditionStatus(
             statusLabelTextResId = statusLabelTextResId,
-            accountName = accountAddress,
-            actionButtonTextResId = actionButtonTextResId,
             peraButtonState = peraButtonState,
-            asaStatusActionType = asaStatusActionType
+            actionButtonTextResId = actionButtonTextResId,
+            accountName = accountAddress
+        )
+    }
+
+    fun mapToAsaRemovalStatusPreview(
+        statusLabelTextResId: Int,
+        actionButtonTextResId: Int,
+        peraButtonState: PeraButtonState,
+        formattedAccountBalance: String?,
+        assetShortName: AssetName?
+    ): AsaStatusPreview.RemovalStatus.AssetRemovalStatus {
+        return AsaStatusPreview.RemovalStatus.AssetRemovalStatus(
+            statusLabelTextResId = statusLabelTextResId,
+            peraButtonState = peraButtonState,
+            actionButtonTextResId = actionButtonTextResId,
+            formattedAccountBalance = formattedAccountBalance,
+            assetShortName = assetShortName
+        )
+    }
+
+    fun mapToCollectibleRemovalStatusPreview(
+        statusLabelTextResId: Int,
+        actionButtonTextResId: Int,
+        peraButtonState: PeraButtonState,
+        accountAddress: BaseAccountAddress.AccountAddress?
+    ): AsaStatusPreview.RemovalStatus.CollectibleRemovalStatus {
+        return AsaStatusPreview.RemovalStatus.CollectibleRemovalStatus(
+            statusLabelTextResId = statusLabelTextResId,
+            peraButtonState = peraButtonState,
+            actionButtonTextResId = actionButtonTextResId,
+            accountName = accountAddress
+        )
+    }
+
+    fun mapToAsaTransferStatusPreview(
+        statusLabelTextResId: Int,
+        actionButtonTextResId: Int,
+        peraButtonState: PeraButtonState,
+        formattedAccountBalance: String,
+        assetShortName: AssetName?
+    ): AsaStatusPreview.TransferStatus {
+        return AsaStatusPreview.TransferStatus(
+            statusLabelTextResId = statusLabelTextResId,
+            peraButtonState = peraButtonState,
+            actionButtonTextResId = actionButtonTextResId,
+            formattedAccountBalance = formattedAccountBalance,
+            assetShortName = assetShortName
         )
     }
 }

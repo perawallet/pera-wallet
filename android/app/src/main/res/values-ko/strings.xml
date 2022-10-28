@@ -517,7 +517,6 @@
     <string name="i_already_have_nan_account">이미 계정이\n있습니다</string>
     <string name="recover_an_account">계정 복구</string>
     <string name="pair_Ledger_device">Ledger 기기 페어링</string>
-    <string name="i_want_to_create_algorand">Ledger 하드웨어 지갑을 사용하는 알고랜드 계정을 만들고 싶습니다</string>
     <string name="confirm_transaction">트랜잭션 확정</string>
     <string name="your_transaction_was">알고랜드 네트워크에서 트랜잭션을 성공적으로 수신했습니다.</string>
     <string name="buy_algo">알고 구매</string>
@@ -586,7 +585,6 @@
     <string name="receive_an_nft">NFT 받기</string>
     <string name="the_account_name"><annotation font="dmsans_bold">\"<annotation replacement="account_name"></annotation>\"</annotation> 계정의 키가 재지정되었습니다.</string>
     <string name="asset_support_success"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>에서 <annotation replacement="asset">assetPlaceholder</annotation> 자산을 계정에 추가했습니다. 해당 주소로 <annotation replacement="asset">assetPlaceholder</annotation> 자산을 보낼 수 있습니다.</string>
-    <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>에서 <annotation replacement="asset">assetPlaceholder</annotation> 자산을 전송하려 했으나, 내 계정에서 지원되지 않습니다. 여기를 눌러 계정에 이 자산을 추가하세요.</string>
     <string name="transaction_send_successful">내 <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> 트랜잭션이(보내는 주소: <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>, 받으시는 주소: <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>) 완료되었습니다.</string>
     <string name="transaction_send_failed">내 <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> 트랜잭션이(보내는 주소: <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>, 받으시는 주소: <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>) 실패했습니다.</string>
     <string name="the_only_way_to">알고랜드 계정을 복원하는 유일한 방법은 이 복구 비밀문구를 사용하는 것뿐입니다.</string>

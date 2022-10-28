@@ -15,10 +15,9 @@ package com.algorand.android.utils
 import com.algorand.android.core.AccountManager
 import com.algorand.android.models.Account
 import com.algorand.android.models.AccountCacheData
-import com.algorand.android.models.AccountCacheStatus
 import com.algorand.android.models.AccountDetail
-import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.AssetDetail
+import com.algorand.android.models.AssetInformation
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import java.math.BigInteger
@@ -26,10 +25,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.withContext
 
 class AccountCacheManager(
@@ -69,20 +66,6 @@ class AccountCacheManager(
                     }
                 } else {
                     removeCacheData(account.address)
-                }
-            }
-        }
-    }
-
-    fun getCacheStatusFlow(): Flow<AccountCacheStatus> {
-        val cacheSizeFlow = accountCacheMap.transformLatest { emit(it.size) }.distinctUntilChanged()
-        return accountManager.accounts.combine(cacheSizeFlow) { accounts, cachedAccountSize ->
-            return@combine when {
-                cachedAccountSize < accounts.size -> {
-                    AccountCacheStatus.LOADING
-                }
-                else -> {
-                    AccountCacheStatus.DONE
                 }
             }
         }

@@ -281,6 +281,39 @@
                 app:layout_constraintTop_toBottomOf="@id/assetIdTextView" />
 
             <TextView
+                android:id="@+id/totalOwnedLabelTextView"
+                style="@style/TextAppearance.Description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/total_owned"
+                app:layout_constraintBottom_toBottomOf="@id/totalOwnedTextView"
+                app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                app:layout_constraintTop_toTopOf="@id/totalOwnedTextView" />
+
+            <TextView
+                android:id="@+id/totalOwnedTextView"
+                style="@style/TextAppearance.Body.Sans"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_xlarge"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:gravity="end"
+                app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                app:layout_constraintStart_toEndOf="@id/totalOwnedLabelTextView"
+                app:layout_constraintTop_toBottomOf="@id/assetIdDividerView"
+                tools:text="@tools:sample/lorem[2]" />
+
+            <View
+                android:id="@+id/totalOwnedDividerView"
+                style="@style/Divider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/spacing_normal"
+                app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                app:layout_constraintTop_toBottomOf="@id/totalOwnedTextView" />
+
+            <TextView
                 android:id="@+id/collectionNameLabelTextView"
                 style="@style/TextAppearance.Description"
                 android:layout_width="wrap_content"
@@ -301,7 +334,7 @@
                 android:textColor="@color/link_primary"
                 app:layout_constraintEnd_toEndOf="@id/endGuideLine"
                 app:layout_constraintStart_toEndOf="@id/collectionNameLabelTextView"
-                app:layout_constraintTop_toBottomOf="@id/assetIdDividerView"
+                app:layout_constraintTop_toBottomOf="@id/totalOwnedDividerView"
                 tools:text="@tools:sample/lorem[4]" />
 
             <View
@@ -574,6 +607,13 @@
                 app:constraint_referenced_ids="collectibleDescriptionDivider, collectibleDescriptionLabelTextView, collectibleDescriptionTextView"
                 tools:visibility="visible" />
 
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/totalOwnedGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="totalOwnedDividerView, totalOwnedLabelTextView, totalOwnedTextView"
+                tools:visibility="visible" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/startGuideLine"
@@ -590,6 +630,7 @@
                 app:layout_constraintGuide_end="@dimen/spacing_xlarge" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </ScrollView>
 
     <include

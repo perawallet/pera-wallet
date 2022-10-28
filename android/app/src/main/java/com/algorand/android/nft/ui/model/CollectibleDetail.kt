@@ -7,7 +7,7 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- *  limitations under the License
+ * limitations under the License
  */
 
 package com.algorand.android.nft.ui.model
@@ -16,6 +16,7 @@ import android.os.Parcelable
 import com.algorand.android.models.BaseAccountAddress.AccountAddress
 import kotlinx.parcelize.Parcelize
 
+// TODO: Rename to CollectibleDetailItem since this is UI model
 sealed class CollectibleDetail : Parcelable {
 
     abstract val isOwnedByTheUser: Boolean
@@ -46,6 +47,9 @@ sealed class CollectibleDetail : Parcelable {
 
     abstract val isPure: Boolean
 
+    abstract val formattedCollectibleAmount: String
+    abstract val isAmountVisible: Boolean
+
     @Parcelize
     data class ImageCollectibleDetail(
         override val isOwnedByTheUser: Boolean,
@@ -66,6 +70,8 @@ sealed class CollectibleDetail : Parcelable {
         override val optedInWarningTextRes: Int?,
         override val collectibleFractionDecimals: Int?,
         override val isPure: Boolean,
+        override val formattedCollectibleAmount: String,
+        override val isAmountVisible: Boolean,
         val prismUrl: String?
     ) : CollectibleDetail()
 
@@ -89,6 +95,8 @@ sealed class CollectibleDetail : Parcelable {
         override val optedInWarningTextRes: Int?,
         override val collectibleFractionDecimals: Int?,
         override val isPure: Boolean,
+        override val formattedCollectibleAmount: String,
+        override val isAmountVisible: Boolean,
         val prismUrl: String?
     ) : CollectibleDetail()
 
@@ -112,6 +120,8 @@ sealed class CollectibleDetail : Parcelable {
         override val optedInWarningTextRes: Int?,
         override val collectibleFractionDecimals: Int?,
         override val isPure: Boolean,
+        override val formattedCollectibleAmount: String,
+        override val isAmountVisible: Boolean,
         val prismUrl: String?
     ) : CollectibleDetail()
 
@@ -135,5 +145,7 @@ sealed class CollectibleDetail : Parcelable {
         override val optedInWarningTextRes: Int?,
         override val collectibleFractionDecimals: Int?,
         override val isPure: Boolean,
+        override val formattedCollectibleAmount: String,
+        override val isAmountVisible: Boolean
     ) : CollectibleDetail()
 }

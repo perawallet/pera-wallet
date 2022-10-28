@@ -64,7 +64,7 @@
         app:layout_constraintStart_toStartOf="@id/collectibleImageView"
         app:tint="@color/text_gray"
         tools:src="@drawable/ic_error"
-        tools:visibility="visible" />
+        tools:visibility="gone" />
 
     <ImageView
         android:id="@+id/collectibleBadgeImageView"
@@ -95,7 +95,7 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/collectibleImageView"
         app:layout_constraintStart_toStartOf="@id/collectibleImageView"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
         <ProgressBar
             android:layout_width="20dp"
@@ -111,5 +111,23 @@
             android:textColor="@color/positive"
             tools:text="@tools:sample/lorem[1]" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/collectibleAmountTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_xsmall"
+        android:layout_marginBottom="@dimen/spacing_xsmall"
+        android:background="@drawable/bg_rectangle_radius_8"
+        android:backgroundTint="@color/nft_icon_background"
+        android:paddingHorizontal="@dimen/spacing_xsmall"
+        android:paddingVertical="@dimen/spacing_xxsmall"
+        android:textAppearance="@style/TextAppearance.Footnote.Sans.Bold"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/collectibleImageView"
+        app:layout_constraintStart_toStartOf="@id/collectibleImageView"
+        tools:text="@tools:sample/lorem[2]"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

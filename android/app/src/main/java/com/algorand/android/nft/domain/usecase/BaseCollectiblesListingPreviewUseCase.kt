@@ -22,6 +22,7 @@ import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.BasePen
 import com.algorand.android.nft.mapper.CollectibleListingItemMapper
 import com.algorand.android.nft.ui.model.BaseCollectibleListData
 import com.algorand.android.nft.ui.model.BaseCollectibleListItem
+import java.math.BigInteger
 
 open class BaseCollectiblesListingPreviewUseCase(
     private val collectibleListingItemMapper: CollectibleListingItemMapper,
@@ -75,18 +76,19 @@ open class BaseCollectiblesListingPreviewUseCase(
     ): BaseCollectibleListItem.BaseCollectibleItem {
         with(collectibleListingItemMapper) {
             with(accountAssetData) {
+                val isAmountVisible = accountAssetData.amount > BigInteger.ONE
                 return when (this) {
                     is BaseOwnedCollectibleData.OwnedCollectibleImageData -> {
-                        mapToImageItem(this, isOwnedByTheUser, optedInAccountAddress)
+                        mapToImageItem(this, isOwnedByTheUser, optedInAccountAddress, isAmountVisible)
                     }
                     is BaseOwnedCollectibleData.OwnedCollectibleVideoData -> {
-                        mapToVideoItem(this, isOwnedByTheUser, optedInAccountAddress)
+                        mapToVideoItem(this, isOwnedByTheUser, optedInAccountAddress, isAmountVisible)
                     }
                     is BaseOwnedCollectibleData.OwnedUnsupportedCollectibleData -> {
-                        mapToNotSupportedItem(this, isOwnedByTheUser, optedInAccountAddress)
+                        mapToNotSupportedItem(this, isOwnedByTheUser, optedInAccountAddress, isAmountVisible)
                     }
                     is BaseOwnedCollectibleData.OwnedCollectibleMixedData -> {
-                        mapToMixedItem(this, isOwnedByTheUser, optedInAccountAddress)
+                        mapToMixedItem(this, isOwnedByTheUser, optedInAccountAddress, isAmountVisible)
                     }
                 }
             }
@@ -126,11 +128,13 @@ open class BaseCollectiblesListingPreviewUseCase(
 
     protected fun createSearchViewItem(
         isVisible: Boolean,
-        @StringRes searchViewHintResId: Int = R.string.search_your_nfts
+        @StringRes searchViewHintResId: Int = R.string.search_your_nfts,
+        query: String
     ): BaseCollectibleListItem.SearchViewItem {
         return collectibleListingItemMapper.mapToSearchViewItem(
             searchViewHintResId = searchViewHintResId,
-            isVisible = isVisible
+            isVisible = isVisible,
+            query = query
         )
     }
 

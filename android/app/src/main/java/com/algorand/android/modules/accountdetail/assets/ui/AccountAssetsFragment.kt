@@ -92,7 +92,6 @@ class AccountAssetsFragment : BaseFragment(R.layout.fragment_account_assets) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        accountAssetsViewModel.resetSearchQuery()
         initUi()
         initObservers()
     }

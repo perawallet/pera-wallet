@@ -15,6 +15,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.algorand.android.R
+import com.algorand.android.SendCollectibleNavigationDirections
 import com.algorand.android.models.FragmentConfiguration
 import com.algorand.android.ui.common.BaseInfoFragment
 import com.google.android.material.button.MaterialButton
@@ -38,6 +39,8 @@ class CollectibleTransferConfirmedFragment : BaseInfoFragment() {
 
     override fun setFirstButton(materialButton: MaterialButton) {
         materialButton.setText(R.string.got_it)
-        materialButton.setOnClickListener { navBack() }
+        materialButton.setOnClickListener {
+            nav(SendCollectibleNavigationDirections.actionSendCollectibleNavigationPop())
+        }
     }
 }

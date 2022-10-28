@@ -98,6 +98,9 @@ class ReceiveCollectibleFragment : BaseAddAssetFragment(R.layout.fragment_receiv
                 setAccountName(senderDisplayText)
                 setAccountIcon(senderAccountIcon)
             }
+            screenStateView.setOnNeutralButtonClickListener {
+                receiveCollectibleViewModel.refreshReceiveCollectiblePreview()
+            }
         }
     }
 

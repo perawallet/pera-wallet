@@ -28,21 +28,22 @@ class AutoLockManager : LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun onApplicationComesForeground() {
-        checkLockState()
-    }
-
-    fun checkLockState() {
-        appAtBackground?.let { safeAppAtBackground ->
-            val timeInBackground = System.currentTimeMillis() - safeAppAtBackground
-            if (timeInBackground > AUTO_LOCK_THRESHOLD) {
-                autoLockLiveData.value = Event(Any())
-            }
+        if (isAutoLockNeeded()) {
+            autoLockLiveData.value = Event(Any())
+            appAtBackground = null
         }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     fun onApplicationGoesBackground() {
         appAtBackground = System.currentTimeMillis()
+    }
+
+    fun isAutoLockNeeded(): Boolean {
+        appAtBackground?.let { safeAppAtBackground ->
+            val timeInBackground = System.currentTimeMillis() - safeAppAtBackground
+            return timeInBackground > AUTO_LOCK_THRESHOLD
+        } ?: return false
     }
 
     companion object {

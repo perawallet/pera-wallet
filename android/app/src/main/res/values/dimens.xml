@@ -130,8 +130,8 @@
     <!-- PeraRadioButton -->
     <dimen name="pera_radio_button_min_height">56dp</dimen>
 
-    <!-- Asset Item View -->
-    <dimen name="asset_item_view_min_height">76dp</dimen>
+    <!-- Account/Asset Item View -->
+    <dimen name="account_asset_item_view_min_height">76dp</dimen>
 
     <!-- Testnet Badge-->
     <dimen name="testnet_badge_height">26dp</dimen>
@@ -164,5 +164,10 @@
     <dimen name="collectible_image_size">40dp</dimen>
     <dimen name="divider_margin">56dp</dimen>
     <dimen name="fab_bottom_padding">100dp</dimen>
+
+    <dimen name="bottom_padding_for_screen_with_floating_button">100dp</dimen>
+    <dimen name="bottom_padding_for_screen_with_double_floating_button">180dp</dimen>
+
+    <dimen name="webexport_bottom_padding">120dp</dimen>
 
 </resources>

@@ -75,17 +75,17 @@ sealed class AccountDetailAssetsItem : RecyclerListItem, Parcelable {
     }
 
     @Parcelize
-    object SearchViewItem : AccountDetailAssetsItem() {
+    data class SearchViewItem(val query: String) : AccountDetailAssetsItem() {
 
         override val itemType: ItemType
             get() = ItemType.SEARCH
 
         override fun areItemsTheSame(other: RecyclerListItem): Boolean {
-            return other is SearchViewItem && this == other
+            return other is SearchViewItem
         }
 
         override fun areContentsTheSame(other: RecyclerListItem): Boolean {
-            return other is SearchViewItem && this == other
+            return other is SearchViewItem
         }
     }
 

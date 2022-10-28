@@ -19,6 +19,7 @@ import com.algorand.android.models.User
 import com.algorand.android.modules.deeplink.DeepLinkParser
 import com.algorand.android.modules.deeplink.domain.model.BaseDeepLink
 import com.algorand.android.modules.deeplink.domain.model.BaseDeepLink.WalletConnectConnectionDeepLink
+import com.algorand.android.modules.webexport.model.WebExportQrCode
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.utils.toShortenedAddress
 import javax.inject.Inject
@@ -49,6 +50,7 @@ class DeeplinkHandler @Inject constructor(
             is WalletConnectConnectionDeepLink -> handleWalletConnectConnectionDeepLink(baseDeeplink)
             is BaseDeepLink.UndefinedDeepLink -> handleUndefinedDeepLink(baseDeeplink)
             is BaseDeepLink.MoonpayResultDeepLink -> handleMoonpayResultDeepLink(baseDeeplink)
+            is BaseDeepLink.WebExportQrCodeDeepLink -> handleWebExportQrCodeDeepLink(baseDeeplink)
         }
         if (!isDeeplinkHandled) listener?.onDeepLinkNotHandled(baseDeeplink)
     }
@@ -82,6 +84,14 @@ class DeeplinkHandler @Inject constructor(
                 accountAddress = moonpayResultDeepLink.accountAddress,
                 txnStatus = moonpayResultDeepLink.transactionStatus,
                 txnId = moonpayResultDeepLink.transactionId
+            )
+        }
+    }
+
+    private fun handleWebExportQrCodeDeepLink(webExportQrCodeDeepLink: BaseDeepLink.WebExportQrCodeDeepLink): Boolean {
+        return triggerListener {
+            it.onWebExportQrCodeDeepLink(
+                webExportQrCode = webExportQrCodeDeepLink.webExportQrCode
             )
         }
     }
@@ -125,6 +135,7 @@ class DeeplinkHandler @Inject constructor(
         fun onWalletConnectConnectionDeeplink(wcUrl: String): Boolean = false
         fun onAssetTransferWithNotOptInDeepLink(assetId: Long): Boolean = false
         fun onMoonpayResultDeepLink(accountAddress: String, txnStatus: String, txnId: String?): Boolean = false
+        fun onWebExportQrCodeDeepLink(webExportQrCode: WebExportQrCode): Boolean = false
         fun onUndefinedDeepLink(undefinedDeeplink: BaseDeepLink.UndefinedDeepLink)
         fun onDeepLinkNotHandled(deepLink: BaseDeepLink)
     }

@@ -52,7 +52,7 @@ class AddAccountTypeSelectionFragment : DaggerBaseFragment(R.layout.fragment_add
 
     private fun setupToolbar() {
         if (addAccountTypeSelectionViewModel.hasAccount().not()) {
-            getAppToolbar()?.addButtonToEnd(TextButton(R.string.skip, onClick = ::onSkipClick))
+            getAppToolbar()?.setEndButton(button = TextButton(R.string.skip, onClick = ::onSkipClick))
         }
     }
 

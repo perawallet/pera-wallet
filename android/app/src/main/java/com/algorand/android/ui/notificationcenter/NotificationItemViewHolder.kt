@@ -136,6 +136,7 @@ class NotificationItemViewHolder(
                 NotificationType.ASSET_SUPPORT_REQUEST -> {
                     context?.setupAssetSupportRequestMessage(
                         senderName = senderName,
+                        receiverName = receiverName,
                         asset = assetDescription
                     )
                 }

@@ -65,10 +65,6 @@ class AccountAssetsViewModel @Inject constructor(
         updateQueryJob = viewModelScope.launch { searchQueryFlow.emit(query) }
     }
 
-    fun resetSearchQuery() {
-        updateSearchQuery("")
-    }
-
     fun logAccountAssetsAddAssetEvent() {
         viewModelScope.launch {
             accountAssetsFragmentEventTracker.logAccountAssetsAddAssetEvent()

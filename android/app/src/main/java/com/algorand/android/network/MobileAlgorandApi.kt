@@ -33,6 +33,8 @@ import com.algorand.android.modules.accounts.data.model.NotificationStatusRespon
 import com.algorand.android.modules.currency.data.model.CurrencyOptionResponse
 import com.algorand.android.modules.nftdomain.data.model.NftDomainSearchResponse
 import com.algorand.android.modules.parity.data.model.CurrencyDetailResponse
+import com.algorand.android.modules.webexport.model.WebBackupRequestBody
+import com.algorand.android.modules.webexport.accountconfirmation.data.model.ExportBackupResponse
 import com.algorand.android.network.MobileHeaderInterceptor.Companion.ALGORAND_NETWORK_KEY
 import com.algorand.android.modules.assets.addition.base.ui.BaseAddAssetViewModel.Companion.SEARCH_RESULT_LIMIT
 import okhttp3.ResponseBody
@@ -151,6 +153,13 @@ interface MobileAlgorandApi {
     suspend fun getNftDomainAccountAddresses(
         @Query("name") name: String
     ): Response<NftDomainSearchResponse>
+
+    @PUT("backups/{id}/")
+    suspend fun putBackup(
+        @Path("id") id: String,
+        @Body body: WebBackupRequestBody,
+        @Header("X-Modification-Key") modificationKey: String
+    ): Response<ExportBackupResponse>
 
     @Streaming
     @GET("accounts/{address}/export-history/")

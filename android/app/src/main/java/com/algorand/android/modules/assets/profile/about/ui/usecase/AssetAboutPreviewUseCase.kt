@@ -33,10 +33,8 @@ import com.algorand.android.modules.assets.profile.about.ui.model.BaseAssetAbout
 import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import com.algorand.android.utils.AssetName
 import com.algorand.android.utils.DEFAULT_ASSET_DECIMAL
-import com.algorand.android.utils.NO_PRICE_SIGN
 import com.algorand.android.utils.browser.addProtocolIfNeed
 import com.algorand.android.utils.browser.removeProtocolIfNeed
-import com.algorand.android.utils.formatAmount
 import com.algorand.android.utils.formatAmount
 import javax.inject.Inject
 import kotlinx.coroutines.flow.flow
@@ -169,11 +167,9 @@ class AssetAboutPreviewUseCase @Inject constructor(
 
     private fun createStatisticsItem(assetDetail: AssetDetail): BaseAssetAboutListItem.StatisticsItem {
         with(assetDetail) {
-            val formattedAssetPrice = if (usdValue != null || assetId == ALGO_ID) {
-                getSelectedAssetExchangeValueUseCase.getSelectedAssetExchangeValue(this).getFormattedValue()
-            } else {
-                NO_PRICE_SIGN
-            }
+            val formattedAssetPrice = getSelectedAssetExchangeValueUseCase
+                .getSelectedAssetExchangeValue(assetDetail = this)
+                ?.getFormattedValue()
             return baseAssetAboutListItemMapper.mapToStatisticsItem(
                 formattedPriceText = formattedAssetPrice,
                 formattedCompactTotalSupplyText = totalSupply?.formatAmount(

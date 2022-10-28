@@ -529,7 +529,6 @@
     <string name="i_already_have_nan_account">我已经有\n一个账户了</string>
     <string name="recover_an_account">恢复帐户</string>
     <string name="pair_Ledger_device">Ledger设备配对</string>
-    <string name="i_want_to_create_algorand">我想创建由Ledger硬件钱包支持的Algorand账户。</string>
     <string name="confirm_transaction">确认交易</string>
     <string name="your_transaction_was">Algorand网络已成功收到您的交易。</string>
     <string name="buy_algo">购买ALGO</string>
@@ -598,7 +597,6 @@
     <string name="receive_an_nft">接收NFT</string>
     <string name="the_account_name">帐户<annotation font="dmsans_bold">\"<annotation replacement="account_name"> </annotation>\"</annotation>已经成功更新密钥。</string>
     <string name="asset_support_success"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>已将<annotation replacement="asset">assetPlaceholder</annotation>添加到他们的账户。您可以向他们发送<annotation replacement="asset">assetPlaceholder</annotation>。</string>
-    <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>正试图向你发送<annotation replacement="asset">assetPlaceholder</annotation>，但您并不支持该行动。点击此处将该资产添加到您的账户中。</string>
     <string name="transaction_send_successful">您的交易的 <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation><annotation replacement="asset">assetPlaceholder</annotation>从 <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>到 <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>的交易已完成。</string>
     <string name="transaction_send_failed">您的交易的 <annotation font="dmsans_medium"><annotation replacement="amount">amountNamePlaceholder</annotation></annotation><annotation replacement="asset">assetNamePlaceholder</annotation>从 <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>到 <annotation font="dmsans_medium"><annotation replacement="receiver">addressNamePlaceholder</annotation></annotation>的交易已经失败。</string>
     <string name="the_only_way_to">恢复Algorand账户的唯一途径是使用恢复助记词。</string>

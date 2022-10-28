@@ -85,7 +85,7 @@ class AccountSortFragment : BaseFragment(R.layout.fragment_account_sort) {
     }
 
     private fun initUi() {
-        getAppToolbar()?.addButtonToEnd(TextButton(R.string.done, onClick = ::onDoneClick))
+        getAppToolbar()?.setEndButton(button = TextButton(R.string.done, onClick = ::onDoneClick))
         binding.accountRecyclerView.apply {
             adapter = concatAdapter
             dragDropItemTouchHelper.attachToRecyclerView(this)

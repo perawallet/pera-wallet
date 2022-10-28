@@ -21,7 +21,7 @@
         android:layout_height="0dp"
         android:clipToPadding="true"
         android:fillViewport="false"
-        android:paddingBottom="100dp"
+        android:paddingBottom="@dimen/bottom_padding_for_screen_with_floating_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +30,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="100dp"
+            android:paddingBottom="@dimen/bottom_padding_for_screen_with_floating_button"
             tools:context=".ui.rekey.RekeyInstructionFragment">
 
             <TextView

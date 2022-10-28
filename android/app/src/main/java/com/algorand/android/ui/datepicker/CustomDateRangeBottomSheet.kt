@@ -60,7 +60,7 @@ class CustomDateRangeBottomSheet : BaseBottomSheet(R.layout.bottom_sheet_custom_
         configureToolbar()
         configureDatePicker()
         with(binding) {
-            toolbar.addButtonToEnd(TextButton(stringResId = R.string.done, onClick = ::onDoneClick))
+            toolbar.setEndButton(button = TextButton(stringResId = R.string.done, onClick = ::onDoneClick))
             fromTextView.setOnClickListener { customDateRangeViewModel.setIsFromFocused(true) }
             toTextView.setOnClickListener { customDateRangeViewModel.setIsFromFocused(false) }
         }

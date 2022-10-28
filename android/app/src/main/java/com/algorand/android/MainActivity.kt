@@ -1,4 +1,5 @@
 @file:Suppress("TooManyFunctions") // TODO: We should remove this after function count decrease under 25
+
 /*
  * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -45,6 +46,7 @@ import com.algorand.android.modules.dapp.moonpay.domain.model.MoonpayTransaction
 import com.algorand.android.modules.deeplink.domain.model.BaseDeepLink
 import com.algorand.android.modules.deeplink.ui.DeeplinkHandler
 import com.algorand.android.modules.qrscanning.QrScannerViewModel
+import com.algorand.android.modules.webexport.model.WebExportQrCode
 import com.algorand.android.tutorialdialog.util.showCopyAccountAddressTutorialDialog
 import com.algorand.android.ui.accountselection.receive.ReceiveAccountSelectionFragment
 import com.algorand.android.modules.assets.action.optin.UnsupportedAssetNotificationRequestActionBottomSheet
@@ -215,6 +217,18 @@ class MainActivity :
                     HomeNavigationDirections.actionGlobalMoonpayResultNavigation(
                         walletAddress = accountAddress,
                         transactionStatus = MoonpayTransactionStatus.getByValueOrDefault(txnStatus)
+                    )
+                )
+            }
+        }
+
+        override fun onWebExportQrCodeDeepLink(webExportQrCode: WebExportQrCode): Boolean {
+            return true.also {
+                nav(
+                    HomeNavigationDirections.actionGlobalWebExportNavigation(
+                        backupId = webExportQrCode.backupId,
+                        modificationKey = webExportQrCode.modificationKey,
+                        encryptionKey = webExportQrCode.encryptionKey
                     )
                 )
             }
@@ -450,14 +464,13 @@ class MainActivity :
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        mainViewModel.checkLockState()
         pendingIntent = intent?.getParcelableExtra(DEEPLINK_AND_NAVIGATION_INTENT)
         handlePendingIntent()
     }
 
     private fun handlePendingIntent(): Boolean {
         return pendingIntent?.run {
-            val canPendingBeHandled = isAssetSetupCompleted && isAppUnlocked
+            val canPendingBeHandled = isAssetSetupCompleted && isAppUnlocked && mainViewModel.isLockNeeded().not()
             if (canPendingBeHandled) {
                 if (dataString != null) {
                     mainViewModel.handleDeepLink(dataString.orEmpty())

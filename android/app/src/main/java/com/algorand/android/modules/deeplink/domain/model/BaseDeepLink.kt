@@ -1,4 +1,5 @@
 @file:Suppress("MaxLineLength", "MagicNumber")
+
 /*
  * Copyright 2022 Pera Wallet, LDA
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,6 +15,7 @@
 package com.algorand.android.modules.deeplink.domain.model
 
 import com.algorand.android.models.AssetInformation
+import com.algorand.android.modules.webexport.model.WebExportQrCode
 import com.algorand.android.utils.isEqualTo
 import java.math.BigInteger
 import kotlin.reflect.full.companionObjectInstance
@@ -37,6 +39,9 @@ sealed class BaseDeepLink {
         protected const val DEFAULT_AMOUNT = 0L
         protected const val DEFAULT_MNEMONIC = ""
         protected const val DEFAULT_TRANSACTION_STATUS = ""
+        protected const val DEFAULT_WEBEXPORT_BACKUPID = ""
+        protected const val DEFAULT_WEBEXPORT_MODIFICATIONKEY = ""
+        protected const val DEFAULT_WEBEXPORT_ENCRYPTIONKEY = ""
 
         fun create(rawDeepLink: RawDeepLink): BaseDeepLink {
             return BaseDeepLink::class.sealedSubclasses.firstNotNullOfOrNull {
@@ -277,6 +282,29 @@ sealed class BaseDeepLink {
             override fun doesDeeplinkMeetTheRequirements(rawDeepLink: RawDeepLink): Boolean {
                 return with(rawDeepLink) {
                     accountAddress != null && transactionStatus != null
+                }
+            }
+        }
+    }
+
+    class WebExportQrCodeDeepLink(
+        val webExportQrCode: WebExportQrCode
+    ) : BaseDeepLink() {
+
+        companion object : DeepLinkCreator {
+            override fun createDeepLink(rawDeeplink: RawDeepLink): BaseDeepLink {
+                return WebExportQrCodeDeepLink(
+                    webExportQrCode = rawDeeplink.webExportQrCode ?: WebExportQrCode(
+                        DEFAULT_WEBEXPORT_BACKUPID,
+                        DEFAULT_WEBEXPORT_MODIFICATIONKEY,
+                        DEFAULT_WEBEXPORT_ENCRYPTIONKEY
+                    )
+                )
+            }
+
+            override fun doesDeeplinkMeetTheRequirements(rawDeepLink: RawDeepLink): Boolean {
+                return with(rawDeepLink) {
+                    webExportQrCode != null
                 }
             }
         }

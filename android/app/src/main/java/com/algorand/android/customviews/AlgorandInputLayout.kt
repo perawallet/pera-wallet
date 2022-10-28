@@ -7,8 +7,7 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- *  limitations under the License
- *
+ * limitations under the License
  */
 
 package com.algorand.android.customviews
@@ -16,8 +15,10 @@ package com.algorand.android.customviews
 import android.content.Context
 import android.os.Parcelable
 import android.text.InputFilter
+import android.text.InputType
 import android.util.AttributeSet
 import android.util.SparseArray
+import android.view.inputmethod.EditorInfo
 import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.use
@@ -28,6 +29,7 @@ import com.algorand.android.databinding.CustomInputLayoutBinding
 import com.algorand.android.models.CustomInputSavedState
 import com.algorand.android.utils.addByteLimiter
 import com.algorand.android.utils.extensions.setTextAndVisibility
+import com.algorand.android.utils.onAction
 import com.algorand.android.utils.requestFocusAndShowKeyboard
 import com.algorand.android.utils.viewbinding.viewBinding
 import kotlin.properties.Delegates
@@ -39,21 +41,21 @@ class AlgorandInputLayout @JvmOverloads constructor(
 
     private val binding = viewBinding(CustomInputLayoutBinding::inflate)
 
-    private val editText = binding.textInputEditText
+    private val editText get() = binding.textInputEditText
 
     var text: String
         get() = editText.text.toString()
         set(value) {
-            binding.textInputEditText.apply {
+            editText.apply {
                 setText(value)
                 setSelection(length())
             }
         }
 
     var hint: String?
-        get() = binding.textInputLayout.hint.toString()
+        get() = editText.hint.toString()
         set(value) {
-            binding.textInputLayout.hint = value
+            editText.hint = value
         }
 
     var error: String?
@@ -69,16 +71,28 @@ class AlgorandInputLayout @JvmOverloads constructor(
         }
 
     private var isSingleLine by Delegates.observable(false) { _, _, newValue ->
-        binding.textInputEditText.isSingleLine = newValue
+        editText.isSingleLine = newValue
     }
 
     private var maxCharacter by Delegates.observable(-1) { _, _, newValue ->
         if (newValue != -1) {
-            with(binding.textInputEditText) {
+            with(editText) {
                 val newFilters = filters.toMutableList()
                 newFilters.add(InputFilter.LengthFilter(newValue))
                 filters = newFilters.toTypedArray()
             }
+        }
+    }
+
+    private var inputType by Delegates.observable(InputType.TYPE_CLASS_TEXT) { _, oldValue, newValue ->
+        if (oldValue != newValue) {
+            editText.inputType = newValue
+        }
+    }
+
+    private var imeOptions by Delegates.observable(EditorInfo.IME_ACTION_DONE) { _, oldValue, newValue ->
+        if (oldValue != newValue) {
+            editText.imeOptions = newValue
         }
     }
 
@@ -87,7 +101,25 @@ class AlgorandInputLayout @JvmOverloads constructor(
     }
 
     fun setOnTextChangeListener(listener: (text: String) -> Unit) {
-        binding.textInputEditText.addTextChangedListener { listener.invoke(text) }
+        editText.addTextChangedListener { listener.invoke(text) }
+    }
+
+    fun setImeOptionsNext(callback: () -> Unit) {
+        with(editText) {
+            imeOptions = EditorInfo.IME_ACTION_NEXT
+            onAction(EditorInfo.IME_ACTION_NEXT, callback)
+        }
+    }
+
+    fun setImeOptionsDone(callback: () -> Unit) {
+        with(editText) {
+            imeOptions = EditorInfo.IME_ACTION_DONE
+            onAction(EditorInfo.IME_ACTION_DONE, callback)
+        }
+    }
+
+    fun setInputTypeText() {
+        editText.inputType = InputType.TYPE_CLASS_TEXT
     }
 
     private fun loadAttrs() {
@@ -98,6 +130,8 @@ class AlgorandInputLayout @JvmOverloads constructor(
             helper = attrs.getString(R.styleable.CustomInputLayout_helper).orEmpty()
             isSingleLine = attrs.getBoolean(R.styleable.CustomInputLayout_singleLine, false)
             maxCharacter = attrs.getInteger(R.styleable.CustomInputLayout_maxCharacter, -1)
+            inputType = attrs.getInt(R.styleable.CustomInputLayout_android_inputType, InputType.TYPE_CLASS_TEXT)
+            imeOptions = attrs.getInt(R.styleable.CustomInputLayout_android_imeOptions, EditorInfo.IME_ACTION_DONE)
         }
     }
 

@@ -15,8 +15,8 @@ package com.algorand.android.modules.assets.profile.about.ui.model
 import androidx.annotation.StringRes
 import com.algorand.android.R
 import com.algorand.android.models.RecyclerListItem
-import com.algorand.android.utils.browser.ASA_VERIFICATION_URL
 import com.algorand.android.utils.AssetName
+import com.algorand.android.utils.browser.ASA_VERIFICATION_URL
 
 sealed class BaseAssetAboutListItem : RecyclerListItem {
 
@@ -39,6 +39,9 @@ sealed class BaseAssetAboutListItem : RecyclerListItem {
     ) : BaseAssetAboutListItem() {
 
         override val itemType = ItemType.STATISTICS_ITEM
+
+        val hasPriceInfo: Boolean
+            get() = formattedPriceText.isNullOrBlank().not()
 
         override fun areItemsTheSame(other: RecyclerListItem): Boolean {
             return other is StatisticsItem &&

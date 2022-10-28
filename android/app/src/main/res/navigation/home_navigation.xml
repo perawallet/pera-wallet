@@ -58,6 +58,8 @@
 
     <include app:graph="@navigation/video_player_navigation" />
 
+    <include app:graph="@navigation/send_collectible_navigation" />
+
     <action
         android:id="@+id/action_global_showQrNavigation"
         app:destination="@id/showQrNavigation">
@@ -79,6 +81,8 @@
             android:name="accountAddress"
             app:argType="string" />
     </action>
+
+    <include app:graph="@navigation/web_export_navigation" />
 
     <action
         android:id="@+id/action_global_send_algo_navigation"
@@ -149,6 +153,20 @@
         app:destination="@id/moonpayNavigation" />
 
     <action
+        android:id="@+id/action_global_webExportNavigation"
+        app:destination="@id/webExportNavigation">
+        <argument
+            android:name="backupId"
+            app:argType="string" />
+        <argument
+            android:name="modificationKey"
+            app:argType="string" />
+        <argument
+            android:name="encryptionKey"
+            app:argType="string" />
+    </action>
+
+    <action
         android:id="@+id/action_global_walletConnectSessionsBottomSheet"
         app:destination="@id/walletConnectSessionsBottomSheet" />
 
@@ -198,8 +216,12 @@
     </action>
 
     <action
-        android:id="@+id/action_global_requestOptInConfirmationBottomSheet"
-        app:destination="@id/requestOptInConfirmationBottomSheet" />
+        android:id="@+id/action_global_sendCollectibleNavigation"
+        app:destination="@id/sendCollectibleNavigation">
+        <argument
+            android:name="collectibleDetail"
+            app:argType="com.algorand.android.nft.ui.model.CollectibleDetail" />
+    </action>
 
     <fragment
         android:id="@+id/collectiblesFragment"
@@ -240,9 +262,6 @@
                 app:argType="string" />
         </action>
         <action
-            android:id="@+id/action_collectibleDetailFragment_to_collectibleSendFragment"
-            app:destination="@id/collectibleSendFragment" />
-        <action
             android:id="@+id/action_collectibleDetailFragment_to_collectibleOptOutConfirmationBottomSheet"
             app:destination="@id/collectibleOptOutConfirmationBottomSheet" />
         <action
@@ -279,56 +298,6 @@
                 app:argType="string" />
         </action>
     </fragment>
-
-    <fragment
-        android:id="@+id/collectibleSendFragment"
-        android:name="com.algorand.android.nft.ui.nftsend.CollectibleSendFragment"
-        android:label="CollectibleSendFragment"
-        tools:layout="@layout/fragment_collectible_send">
-        <action
-            android:id="@+id/action_collectibleSendFragment_to_collectibleSendQrScannerFragment"
-            app:destination="@id/collectibleSendQrScannerFragment" />
-        <action
-            android:id="@+id/action_collectibleSendFragment_to_requestOptInConfirmationBottomSheet"
-            app:destination="@id/requestOptInConfirmationBottomSheet" />
-        <action
-            android:id="@+id/action_collectibleSendFragment_to_collectibleReceiverSelectionFragment"
-            app:destination="@id/collectibleReceiverSelectionFragment" />
-        <argument
-            android:name="collectibleDetail"
-            app:argType="com.algorand.android.nft.ui.model.CollectibleDetail" />
-        <action
-            android:id="@+id/action_collectibleSendFragment_to_collectibleTransactionApproveBottomSheet"
-            app:destination="@id/collectibleTransactionApproveBottomSheet" />
-        <action
-            android:id="@+id/action_collectibleSendFragment_to_collectibleTransferConfirmedFragment"
-            app:destination="@id/collectibleTransferConfirmedFragment"
-            app:popUpTo="@id/collectibleDetailFragment"
-            app:popUpToInclusive="true" />
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/collectibleSendQrScannerFragment"
-        android:name="com.algorand.android.nft.ui.nftsend.CollectibleSendQrScannerFragment"
-        android:label="CollectibleSendQrScannerFragment"
-        tools:layout="@layout/fragment_qr_code_scanner" />
-
-    <fragment
-        android:id="@+id/collectibleReceiverSelectionFragment"
-        android:name="com.algorand.android.nft.ui.nftsend.CollectibleReceiverSelectionFragment"
-        android:label="CollectibleReceiverSelectionFragment"
-        tools:layout="@layout/fragment_base_account_selection">
-        <action
-            android:id="@+id/action_collectibleReceiverSelectionFragment_to_collectibleReceiverSelectionQrScannerFragment"
-            app:destination="@id/collectibleReceiverSelectionQrScannerFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/collectibleReceiverSelectionQrScannerFragment"
-        android:name="com.algorand.android.nft.ui.nftsend.CollectibleReceiverSelectionQrScannerFragment"
-        android:label="CollectibleReceiverSelectionQrScannerFragment"
-        tools:layout="@layout/fragment_qr_code_scanner" />
 
     <fragment
         android:id="@+id/contactsFragment"
@@ -958,6 +927,16 @@
                 app:argType="string"
                 app:nullable="true" />
         </action>
+        <action
+            android:id="@+id/action_accountsQrScannerFragment_to_webExportNavigation"
+            app:destination="@id/webExportNavigation"
+            app:popUpTo="@id/accountsQrScannerFragment"
+            app:popUpToInclusive="true">
+            <argument
+                android:name="privateKey"
+                app:argType="string"
+                app:nullable="true" />
+        </action>
     </fragment>
 
     <dialog
@@ -1052,11 +1031,6 @@
         android:name="com.algorand.android.modules.sorting.accountsorting.ui.AccountSortFragment"
         android:label="StandardAccountOrderFragment" />
 
-    <fragment
-        android:id="@+id/collectibleTransferConfirmedFragment"
-        android:name="com.algorand.android.nft.ui.nfttransferconfirmed.CollectibleTransferConfirmedFragment"
-        android:label="CollectibleTransferConfirmedFragment" />
-
     <dialog
         android:id="@+id/accountErrorOptionsBottomSheet"
         android:name="com.algorand.android.ui.accountoptions.AccountErrorOptionsBottomSheet"
@@ -1092,15 +1066,6 @@
         android:id="@+id/changePasswordVerificationFragment"
         android:name="com.algorand.android.ui.lock.ChangePasswordVerificationFragment"
         android:label="ChangePasswordVerificationFragment" />
-
-    <dialog
-        android:id="@+id/requestOptInConfirmationBottomSheet"
-        android:name="com.algorand.android.nft.ui.nftrequestoptin.RequestOptInConfirmationBottomSheet"
-        android:label="RequestOptInConfirmationBottomSheet">
-        <argument
-            android:name="requestOptInConfirmationArgs"
-            app:argType="com.algorand.android.nft.ui.model.RequestOptInConfirmationArgs" />
-    </dialog>
 
     <dialog
         android:id="@+id/collectibleTransactionApproveBottomSheet"

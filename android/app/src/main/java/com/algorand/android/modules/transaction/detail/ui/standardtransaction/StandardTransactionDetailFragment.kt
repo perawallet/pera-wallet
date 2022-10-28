@@ -65,7 +65,7 @@ class StandardTransactionDetailFragment : BaseTransactionDetailFragment() {
     private fun configureToolbar() {
         if (transactionDetailViewModel.shouldShowCloseButton) {
             getAppToolbar()?.apply {
-                addButtonToEnd(button = TextButton(R.string.close, onClick = ::onTransactionDetailClose))
+                setEndButton(button = TextButton(R.string.close, onClick = ::onTransactionDetailClose))
                 configureStartButton(resId = R.drawable.ic_left_arrow, clickAction = ::navBack)
             }
         }

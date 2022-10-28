@@ -7,7 +7,7 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- *  limitations under the License
+ * limitations under the License
  */
 
 package com.algorand.android.nft.mapper
@@ -21,12 +21,13 @@ import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem
 import com.algorand.android.nft.ui.model.CollectibleDetail
 import javax.inject.Inject
 
-class CollectibleDetailMapper @Inject constructor(
+class CollectibleDetailItemMapper @Inject constructor(
     private val collectibleDetailDecider: CollectibleDetailDecider,
     private val collectibleTraitItemMapper: CollectibleTraitItemMapper,
     private val collectibleMediaItemMapper: CollectibleMediaItemMapper
 ) {
 
+    @SuppressWarnings("LongParameterList")
     fun mapToCollectibleImage(
         imageCollectibleDetail: BaseCollectibleDetail.ImageCollectibleDetail,
         isOwnedByTheUser: Boolean,
@@ -36,7 +37,9 @@ class CollectibleDetailMapper @Inject constructor(
         errorDisplayText: String,
         isHoldingByWatchAccount: Boolean,
         isNftExplorerVisible: Boolean,
-        creatorAddress: BaseAccountAddress.AccountAddress?
+        creatorAddress: BaseAccountAddress.AccountAddress?,
+        formattedCollectibleAmount: String,
+        isAmountVisible: Boolean
     ): CollectibleDetail.ImageCollectibleDetail {
         return CollectibleDetail.ImageCollectibleDetail(
             isOwnedByTheUser = isOwnedByTheUser,
@@ -79,10 +82,13 @@ class CollectibleDetailMapper @Inject constructor(
                 accountType = ownerAccountType
             ),
             collectibleFractionDecimals = imageCollectibleDetail.fractionDecimals,
-            isPure = imageCollectibleDetail.isPure()
+            isPure = imageCollectibleDetail.isPure(),
+            formattedCollectibleAmount = formattedCollectibleAmount,
+            isAmountVisible = isAmountVisible
         )
     }
 
+    @SuppressWarnings("LongParameterList")
     fun mapToCollectibleVideo(
         videoCollectibleDetail: BaseCollectibleDetail.VideoCollectibleDetail,
         isOwnedByTheUser: Boolean,
@@ -92,7 +98,9 @@ class CollectibleDetailMapper @Inject constructor(
         errorDisplayText: String,
         isHoldingByWatchAccount: Boolean,
         isNftExplorerVisible: Boolean,
-        creatorAddress: BaseAccountAddress.AccountAddress?
+        creatorAddress: BaseAccountAddress.AccountAddress?,
+        formattedCollectibleAmount: String,
+        isAmountVisible: Boolean
     ): CollectibleDetail.VideoCollectibleDetail {
         return CollectibleDetail.VideoCollectibleDetail(
             isOwnedByTheUser = isOwnedByTheUser,
@@ -124,10 +132,13 @@ class CollectibleDetailMapper @Inject constructor(
                 accountType = ownerAccountType
             ),
             collectibleFractionDecimals = videoCollectibleDetail.fractionDecimals,
-            isPure = videoCollectibleDetail.isPure()
+            isPure = videoCollectibleDetail.isPure(),
+            formattedCollectibleAmount = formattedCollectibleAmount,
+            isAmountVisible = isAmountVisible
         )
     }
 
+    @SuppressWarnings("LongParameterList")
     fun mapToCollectibleMixed(
         mixedCollectibleDetail: BaseCollectibleDetail.MixedCollectibleDetail,
         isOwnedByTheUser: Boolean,
@@ -137,7 +148,9 @@ class CollectibleDetailMapper @Inject constructor(
         isHoldingByWatchAccount: Boolean,
         isNftExplorerVisible: Boolean,
         collectibleMedias: List<BaseCollectibleMediaItem>,
-        creatorAddress: BaseAccountAddress.AccountAddress?
+        creatorAddress: BaseAccountAddress.AccountAddress?,
+        formattedCollectibleAmount: String,
+        isAmountVisible: Boolean
     ): CollectibleDetail.MixedCollectibleDetail {
         return CollectibleDetail.MixedCollectibleDetail(
             isOwnedByTheUser = isOwnedByTheUser,
@@ -161,10 +174,13 @@ class CollectibleDetailMapper @Inject constructor(
                 accountType = ownerAccountType
             ),
             collectibleFractionDecimals = mixedCollectibleDetail.fractionDecimals,
-            isPure = mixedCollectibleDetail.isPure()
+            isPure = mixedCollectibleDetail.isPure(),
+            formattedCollectibleAmount = formattedCollectibleAmount,
+            isAmountVisible = isAmountVisible
         )
     }
 
+    @SuppressWarnings("LongParameterList")
     fun mapToUnsupportedCollectible(
         unsupportedCollectible: BaseCollectibleDetail.NotSupportedCollectibleDetail,
         isOwnedByTheUser: Boolean,
@@ -175,7 +191,9 @@ class CollectibleDetailMapper @Inject constructor(
         isHoldingByWatchAccount: Boolean,
         warningTextRes: Int?,
         isNftExplorerVisible: Boolean,
-        creatorAddress: BaseAccountAddress.AccountAddress?
+        creatorAddress: BaseAccountAddress.AccountAddress?,
+        formattedCollectibleAmount: String,
+        isAmountVisible: Boolean
     ): CollectibleDetail.NotSupportedCollectibleDetail {
         return CollectibleDetail.NotSupportedCollectibleDetail(
             isOwnedByTheUser = isOwnedByTheUser,
@@ -205,7 +223,9 @@ class CollectibleDetailMapper @Inject constructor(
                 accountType = ownerAccountType
             ),
             collectibleFractionDecimals = unsupportedCollectible.fractionDecimals,
-            isPure = unsupportedCollectible.isPure()
+            isPure = unsupportedCollectible.isPure(),
+            formattedCollectibleAmount = formattedCollectibleAmount,
+            isAmountVisible = isAmountVisible
         )
     }
 }

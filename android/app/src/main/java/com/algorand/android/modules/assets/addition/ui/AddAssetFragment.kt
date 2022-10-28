@@ -84,7 +84,7 @@ class AddAssetFragment : BaseAddAssetFragment(R.layout.fragment_add_asset) {
     }
 
     private fun setupToolbar() {
-        getAppToolbar()?.addButtonToEnd(IconButton(R.drawable.ic_info, onClick = ::onInfoClick))
+        getAppToolbar()?.setEndButton(button = IconButton(R.drawable.ic_info, onClick = ::onInfoClick))
     }
 
     override fun navigateToAssetAdditionBottomSheet(assetAdditionAssetAction: AssetAction) {

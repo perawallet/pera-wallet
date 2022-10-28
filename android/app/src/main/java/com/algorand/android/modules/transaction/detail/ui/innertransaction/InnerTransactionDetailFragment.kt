@@ -71,7 +71,7 @@ class InnerTransactionDetailFragment : BaseTransactionDetailFragment() {
     }
 
     private fun configureToolbar() {
-        getAppToolbar()?.addButtonToEnd(TextButton(R.string.close, onClick = ::onTransactionDetailClose))
+        getAppToolbar()?.setEndButton(button = TextButton(R.string.close, onClick = ::onTransactionDetailClose))
     }
 
     private fun navToApplicationCallTransactionDetail(transaction: BaseTransactionDetail.ApplicationCallTransaction) {

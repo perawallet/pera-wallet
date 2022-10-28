@@ -31,11 +31,17 @@ class WCWalletConnectClient(
     private var listener: WalletConnectClientListener? = null
 
     private val sessionCacheDataCallback = object : WalletConnectSessionCachedData.Callback {
-        override fun onSessionRequest(sessionId: Long, requestId: Long, call: SessionRequest) {
-            listener?.onSessionRequest(sessionId, requestId, getWalletConnectSession(sessionId) ?: return)
+        override fun onSessionRequest(sessionId: Long, requestId: Long, call: SessionRequest, chainId: Long?) {
+            listener?.onSessionRequest(
+                sessionId = sessionId,
+                requestId = requestId,
+                session = getWalletConnectSession(sessionId) ?: return,
+                chainId = chainId
+            )
         }
 
         override fun onSessionUpdate(sessionId: Long, call: SessionUpdate) {
+            listener?.onSessionUpdate(sessionId, call.params.accounts, call.params.chainId)
             if (!call.params.approved) {
                 listener?.onSessionKilled(sessionId)
             }
@@ -86,8 +92,12 @@ class WCWalletConnectClient(
         this.listener = listener
     }
 
-    override fun approveSession(id: Long, accountAddress: String) {
-        getSessionById(id)?.approve(listOf(accountAddress), ALGO_CHAIN_ID)
+    override fun approveSession(id: Long, accountAddress: String, chainId: Long?) {
+        getSessionById(id)?.approve(listOf(accountAddress), chainId ?: DEFAULT_CHAIN_ID)
+    }
+
+    override fun updateSession(id: Long, accounts: List<String>?, chainId: Long?) {
+        getSessionById(id)?.update(accounts.orEmpty(), chainId ?: DEFAULT_CHAIN_ID)
     }
 
     override fun rejectSession(id: Long) {

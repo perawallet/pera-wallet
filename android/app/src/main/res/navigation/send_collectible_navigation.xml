@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~  limitations under the License
+  ~
+  -->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sendCollectibleNavigation"
+    app:startDestination="@id/collectibleSendFragment">
+
+    <include app:graph="@navigation/request_opt_in_confirmation_navigation" />
+
+    <action
+        android:id="@+id/action_sendCollectibleNavigation_pop"
+        app:popUpTo="@id/sendCollectibleNavigation"
+        app:popUpToInclusive="true" />
+
+    <fragment
+        android:id="@+id/collectibleSendFragment"
+        android:name="com.algorand.android.nft.ui.nftsend.CollectibleSendFragment"
+        android:label="CollectibleSendFragment"
+        tools:layout="@layout/fragment_collectible_send">
+        <argument
+            android:name="collectibleDetail"
+            app:argType="com.algorand.android.nft.ui.model.CollectibleDetail" />
+        <action
+            android:id="@+id/action_collectibleSendFragment_to_collectibleSendQrScannerFragment"
+            app:destination="@id/collectibleSendQrScannerFragment" />
+        <action
+            android:id="@+id/action_collectibleSendFragment_to_collectibleReceiverSelectionFragment"
+            app:destination="@id/collectibleReceiverSelectionFragment" />
+        <action
+            android:id="@+id/action_collectibleSendFragment_to_collectibleTransactionApproveBottomSheet"
+            app:destination="@id/collectibleTransactionApproveBottomSheet" />
+        <action
+            android:id="@+id/action_collectibleSendFragment_to_collectibleTransferConfirmedFragment"
+            app:destination="@id/collectibleTransferConfirmedFragment"
+            app:popUpTo="@id/collectibleDetailFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_collectibleSendFragment_to_requestOptInConfirmationNavigation"
+            app:destination="@id/requestOptInConfirmationNavigation">
+            <argument
+                android:name="requestOptInConfirmationArgs"
+                app:argType="com.algorand.android.nft.ui.model.RequestOptInConfirmationArgs" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/collectibleSendQrScannerFragment"
+        android:name="com.algorand.android.nft.ui.nftsend.CollectibleSendQrScannerFragment"
+        android:label="CollectibleSendQrScannerFragment"
+        tools:layout="@layout/fragment_qr_code_scanner" />
+
+    <fragment
+        android:id="@+id/collectibleReceiverSelectionFragment"
+        android:name="com.algorand.android.nft.ui.nftsend.CollectibleReceiverSelectionFragment"
+        android:label="CollectibleReceiverSelectionFragment"
+        tools:layout="@layout/fragment_base_account_selection">
+        <action
+            android:id="@+id/action_collectibleReceiverSelectionFragment_to_collectibleReceiverSelectionQrScannerFragment"
+            app:destination="@id/collectibleReceiverSelectionQrScannerFragment" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/collectibleTransactionApproveBottomSheet"
+        android:name="com.algorand.android.nft.ui.nftapprovetransaction.CollectibleTransactionApproveBottomSheet"
+        android:label="CollectibleTransactionApproveBottomSheet">
+        <argument
+            android:name="senderPublicKey"
+            app:argType="string" />
+        <argument
+            android:name="receiverPublicKey"
+            app:argType="string" />
+        <argument
+            android:name="fee"
+            app:argType="float" />
+        <argument
+            android:name="collectibleDetail"
+            app:argType="com.algorand.android.nft.ui.model.CollectibleDetail" />
+    </dialog>
+
+    <fragment
+        android:id="@+id/collectibleTransferConfirmedFragment"
+        android:name="com.algorand.android.nft.ui.nfttransferconfirmed.CollectibleTransferConfirmedFragment"
+        android:label="CollectibleTransferConfirmedFragment" />
+
+    <fragment
+        android:id="@+id/collectibleReceiverSelectionQrScannerFragment"
+        android:name="com.algorand.android.nft.ui.nftsend.CollectibleReceiverSelectionQrScannerFragment"
+        android:label="CollectibleReceiverSelectionQrScannerFragment"
+        tools:layout="@layout/fragment_qr_code_scanner" />
+</navigation>

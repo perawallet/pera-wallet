@@ -13,7 +13,6 @@
 
 package com.algorand.android.usecase
 
-import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.SendAlgoNavigationDirections
 import com.algorand.android.core.AccountManager
@@ -31,6 +30,7 @@ import com.algorand.android.nft.domain.usecase.SimpleCollectibleUseCase
 import com.algorand.android.nft.ui.model.RequestOptInConfirmationArgs
 import com.algorand.android.repository.AssetRepository
 import com.algorand.android.repository.ContactRepository
+import com.algorand.android.ui.send.receiveraccount.ReceiverAccountSelectionFragmentDirections
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.exceptions.GlobalException
 import com.algorand.android.utils.exceptions.NavigationException
@@ -128,14 +128,15 @@ class ReceiverAccountSelectionUseCase @Inject constructor(
         val selectedAsset = accountCacheManager.getAssetInformation(fromAccountPublicKey, assetId)
 
         if (!isSelectedAssetSupported) {
-            val nextDirection = HomeNavigationDirections.actionGlobalRequestOptInConfirmationBottomSheet(
-                RequestOptInConfirmationArgs(
-                    fromAccountPublicKey,
-                    accountInformation.address,
-                    assetId,
-                    getAssetOrCollectibleNameOrNull(assetId)
+            val nextDirection = ReceiverAccountSelectionFragmentDirections
+                .actionReceiverAccountSelectionFragmentToRequestOptInConfirmationNavigation(
+                    RequestOptInConfirmationArgs(
+                        fromAccountPublicKey,
+                        accountInformation.address,
+                        assetId,
+                        getAssetOrCollectibleNameOrNull(assetId)
+                    )
                 )
-            )
             return Result.Error(NavigationException(nextDirection))
         }
 

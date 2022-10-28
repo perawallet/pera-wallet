@@ -84,6 +84,18 @@ fun EditText.addByteLimiter(maximumLimitInByte: Int) {
     }
 }
 
+fun EditText.onAction(action: Int, runAction: () -> Unit) {
+    this.setOnEditorActionListener { _, actionId, _ ->
+        return@setOnEditorActionListener when (actionId) {
+            action -> {
+                runAction.invoke()
+                true
+            }
+            else -> false
+        }
+    }
+}
+
 fun String.decodeBase64IfUTF8(): String {
     val stringInByteArray = Base64.decode(this, Base64.DEFAULT)
     val decodedString = String(stringInByteArray, charset = Charsets.UTF_8)

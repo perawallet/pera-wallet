@@ -49,7 +49,7 @@ class ReceiveCollectibleViewModel @Inject constructor(
         initQueryTextFlow()
     }
 
-    fun refreshTransactionHistory() {
+    fun refreshReceiveCollectiblePreview() {
         receiveCollectiblePreviewUseCase.invalidateDataSource()
     }
 
