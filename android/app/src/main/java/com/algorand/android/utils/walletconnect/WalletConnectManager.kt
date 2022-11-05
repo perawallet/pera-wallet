@@ -301,6 +301,7 @@ class WalletConnectManager @Inject constructor(
         latestSessionIdIsBeingHandled = sessionId
         latestRequestIdIsBeingHandled = requestId
         requestHandlingJob = coroutineScope?.launch(Dispatchers.IO) {
+            delay(1000)
             accountCacheStatusFlow.collectLatest {
                 if (it == AccountCacheStatus.DONE && latestTransactionRequestId != requestId) {
                     latestTransactionRequestId = requestId

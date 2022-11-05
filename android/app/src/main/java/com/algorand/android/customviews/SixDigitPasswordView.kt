@@ -59,7 +59,7 @@ class SixDigitPasswordView @JvmOverloads constructor(
     }
 
     fun onNewDigit(digit: Int) {
-        if (isWrongPinAnimatorRunning) return
+        if (isWrongPinAnimatorRunning || password.size >= PASSWORD_LENGTH) return
         password.add(digit)
         listener?.onNewPinAdded()
         when {
@@ -72,8 +72,8 @@ class SixDigitPasswordView @JvmOverloads constructor(
     }
 
     fun removeLastDigit() {
-        if (password.size > 0) {
-            password.removeLast()
+        password.removeLastOrNull()
+        if (password.size in 0..PASSWORD_LENGTH - 1) {
             digitViewList[password.size].setImageResource(R.drawable.unfilled_password_digit)
         }
     }
