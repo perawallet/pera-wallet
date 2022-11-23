@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/spacing_xlarge"
+    android:paddingBottom="@dimen/bottom_safe_area_margin"
+    tools:context=".modules.swap.ledger.signwithledger.ui.SignWithLedgerBottomSheet">
+
+    <View
+        style="@style/BottomSheetModalityLine"
+        android:layout_marginTop="@dimen/spacing_small" />
+
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="@dimen/spacing_xxlarge"
+        app:srcCompat="@drawable/ic_ledger"
+        app:tint="@color/positive" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:text="@string/sign_with_ledger"
+        android:textAppearance="@style/TextAppearance.Body.Large.Sans.Medium" />
+
+    <TextView
+        android:id="@+id/transactionDescriptionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:gravity="center"
+        android:textColor="@color/text_gray"
+        tools:text="@string/we_ve_detected_that_you" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/signTransactionButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_xxlarge"
+        tools:text="@tools:sample/lorem[1]" />
+
+</LinearLayout>

@@ -21,6 +21,7 @@ import com.algorand.android.models.BaseRemoveAssetItem.BaseRemovableItem.BaseRem
 import com.algorand.android.models.BaseRemoveAssetItem.BaseRemovableItem.RemoveAssetItem
 import com.algorand.android.models.BaseRemoveAssetItem.ItemType.DESCRIPTION_VIEW_ITEM
 import com.algorand.android.models.BaseRemoveAssetItem.ItemType.REMOVE_ASSET_ITEM
+import com.algorand.android.models.BaseRemoveAssetItem.ItemType.REMOVE_COLLECTIBLE_AUDIO_ITEM
 import com.algorand.android.models.BaseRemoveAssetItem.ItemType.REMOVE_COLLECTIBLE_IMAGE_ITEM
 import com.algorand.android.models.BaseRemoveAssetItem.ItemType.REMOVE_COLLECTIBLE_MIXED_ITEM
 import com.algorand.android.models.BaseRemoveAssetItem.ItemType.REMOVE_COLLECTIBLE_NOT_SUPPORTED_ITEM
@@ -70,6 +71,7 @@ class RemoveAssetAdapter(
             REMOVE_COLLECTIBLE_IMAGE_ITEM.ordinal -> createRemoveCollectibleImageItemViewHolder(parent)
             REMOVE_COLLECTIBLE_NOT_SUPPORTED_ITEM.ordinal -> createRemoveNotSupportedCollectibleItemViewHolder(parent)
             REMOVE_COLLECTIBLE_VIDEO_ITEM.ordinal -> createRemoveCollectibleVideoItemViewHolder(parent)
+            REMOVE_COLLECTIBLE_AUDIO_ITEM.ordinal -> createRemoveCollectibleAudioItemViewHolder(parent)
             REMOVE_COLLECTIBLE_MIXED_ITEM.ordinal -> createRemoveCollectibleMixedItemViewHolder(parent)
             SEARCH_VIEW_ITEM.ordinal -> crateSearchItemViewHolder(parent)
             TITLE_VIEW_ITEM.ordinal -> createTitleItemViewHolder(parent)
@@ -98,6 +100,10 @@ class RemoveAssetAdapter(
 
     private fun createRemoveCollectibleVideoItemViewHolder(parent: ViewGroup): RemoveCollectibleVideoItemViewHolder {
         return RemoveCollectibleVideoItemViewHolder.create(parent, collectibleRemovalItemListener)
+    }
+
+    private fun createRemoveCollectibleAudioItemViewHolder(parent: ViewGroup): BaseViewHolder<BaseRemoveAssetItem> {
+        return RemoveCollectibleAudioItemViewHolder.create(parent, collectibleRemovalItemListener)
     }
 
     private fun createTitleItemViewHolder(parent: ViewGroup): TitleViewItemViewHolder {

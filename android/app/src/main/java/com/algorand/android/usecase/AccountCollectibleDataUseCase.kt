@@ -27,7 +27,7 @@ import com.algorand.android.modules.parity.domain.usecase.SecondaryCurrencyParit
 import com.algorand.android.nft.domain.model.CollectibleMediaType
 import com.algorand.android.nft.domain.usecase.SimpleCollectibleUseCase
 import com.algorand.android.utils.DEFAULT_ASSET_DECIMAL
-import com.algorand.android.utils.formatAmount
+import com.algorand.android.utils.formatAmountByCollectibleFractionalDigit
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -148,8 +148,11 @@ class AccountCollectibleDataUseCase @Inject constructor(
             CollectibleMediaType.IMAGE -> accountCollectibleDataMapper.mapToOwnedCollectibleImageData(
                 collectibleDetail = collectibleItem,
                 amount = assetHolding.amount,
-                formattedAmount = assetHolding.amount.formatAmount(safeDecimal),
-                formattedCompactAmount = assetHolding.amount.formatAmount(safeDecimal, isCompact = true),
+                formattedAmount = assetHolding.amount.formatAmountByCollectibleFractionalDigit(safeDecimal),
+                formattedCompactAmount = assetHolding.amount.formatAmountByCollectibleFractionalDigit(
+                    decimals = safeDecimal,
+                    isCompact = true
+                ),
                 parityValueInSelectedCurrency = parityValueInSelectedCurrency,
                 parityValueInSecondaryCurrency = parityValueInSecondaryCurrency,
                 optedInAtRound = assetHolding.optedInAtRound
@@ -157,8 +160,11 @@ class AccountCollectibleDataUseCase @Inject constructor(
             CollectibleMediaType.VIDEO -> accountCollectibleDataMapper.mapToOwnedCollectibleVideoData(
                 collectibleDetail = collectibleItem,
                 amount = assetHolding.amount,
-                formattedAmount = assetHolding.amount.formatAmount(safeDecimal),
-                formattedCompactAmount = assetHolding.amount.formatAmount(safeDecimal, isCompact = true),
+                formattedAmount = assetHolding.amount.formatAmountByCollectibleFractionalDigit(safeDecimal),
+                formattedCompactAmount = assetHolding.amount.formatAmountByCollectibleFractionalDigit(
+                    decimals = safeDecimal,
+                    isCompact = true
+                ),
                 parityValueInSelectedCurrency = parityValueInSelectedCurrency,
                 parityValueInSecondaryCurrency = parityValueInSecondaryCurrency,
                 optedInAtRound = assetHolding.optedInAtRound
@@ -166,8 +172,11 @@ class AccountCollectibleDataUseCase @Inject constructor(
             CollectibleMediaType.MIXED -> accountCollectibleDataMapper.mapToOwnedCollectibleMixedData(
                 collectibleDetail = collectibleItem,
                 amount = assetHolding.amount,
-                formattedAmount = assetHolding.amount.formatAmount(safeDecimal),
-                formattedCompactAmount = assetHolding.amount.formatAmount(safeDecimal, isCompact = true),
+                formattedAmount = assetHolding.amount.formatAmountByCollectibleFractionalDigit(safeDecimal),
+                formattedCompactAmount = assetHolding.amount.formatAmountByCollectibleFractionalDigit(
+                    decimals = safeDecimal,
+                    isCompact = true
+                ),
                 parityValueInSelectedCurrency = parityValueInSelectedCurrency,
                 parityValueInSecondaryCurrency = parityValueInSecondaryCurrency,
                 optedInAtRound = assetHolding.optedInAtRound
@@ -176,13 +185,28 @@ class AccountCollectibleDataUseCase @Inject constructor(
                 accountCollectibleDataMapper.mapToNotSupportedOwnedCollectibleData(
                     collectibleDetail = collectibleItem,
                     amount = assetHolding.amount,
-                    formattedAmount = assetHolding.amount.formatAmount(safeDecimal),
-                    formattedCompactAmount = assetHolding.amount.formatAmount(safeDecimal, isCompact = true),
+                    formattedAmount = assetHolding.amount.formatAmountByCollectibleFractionalDigit(safeDecimal),
+                    formattedCompactAmount = assetHolding.amount.formatAmountByCollectibleFractionalDigit(
+                        decimals = safeDecimal,
+                        isCompact = true
+                    ),
                     parityValueInSelectedCurrency = parityValueInSelectedCurrency,
                     parityValueInSecondaryCurrency = parityValueInSecondaryCurrency,
                     optedInAtRound = assetHolding.optedInAtRound
                 )
             }
+            CollectibleMediaType.AUDIO -> accountCollectibleDataMapper.mapToOwnedCollectibleAudioData(
+                collectibleDetail = collectibleItem,
+                amount = assetHolding.amount,
+                formattedAmount = assetHolding.amount.formatAmountByCollectibleFractionalDigit(safeDecimal),
+                formattedCompactAmount = assetHolding.amount.formatAmountByCollectibleFractionalDigit(
+                    decimals = safeDecimal,
+                    isCompact = true
+                ),
+                parityValueInSelectedCurrency = parityValueInSelectedCurrency,
+                parityValueInSecondaryCurrency = parityValueInSecondaryCurrency,
+                optedInAtRound = assetHolding.optedInAtRound
+            )
         }
     }
 
@@ -197,6 +221,7 @@ class AccountCollectibleDataUseCase @Inject constructor(
                 CollectibleMediaType.NOT_SUPPORTED, null -> {
                     mapToPendingRemovalUnsupportedCollectibleData(collectibleItem)
                 }
+                CollectibleMediaType.AUDIO -> mapToPendingRemovalAudioCollectibleData(collectibleItem)
             }
         }
     }
@@ -212,6 +237,7 @@ class AccountCollectibleDataUseCase @Inject constructor(
                 CollectibleMediaType.NOT_SUPPORTED, null -> {
                     mapToPendingAdditionUnsupportedCollectibleData(collectibleItem)
                 }
+                CollectibleMediaType.AUDIO -> mapToPendingAdditionAudioCollectibleData(collectibleItem)
             }
         }
     }
@@ -227,6 +253,7 @@ class AccountCollectibleDataUseCase @Inject constructor(
                 CollectibleMediaType.NOT_SUPPORTED, null -> {
                     mapToPendingSendingUnsupportedCollectibleData(collectibleItem)
                 }
+                CollectibleMediaType.AUDIO -> mapToPendingSendingAudioCollectibleData(collectibleItem)
             }
         }
     }

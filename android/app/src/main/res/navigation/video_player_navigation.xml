@@ -18,9 +18,9 @@
 
     <fragment
         android:id="@+id/videoPlayerFragment"
-        android:name="com.algorand.android.nft.ui.videoplayer.VideoPlayerFragment"
+        android:name="com.algorand.android.nft.ui.mediaplayer.videoplayer.VideoPlayerFragment"
         android:label="VideoPlayerFragment"
-        tools:layout="@layout/fragment_video_player">
+        tools:layout="@layout/fragment_media_player">
         <argument
             android:name="collectibleVideoUrl"
             app:argType="string" />

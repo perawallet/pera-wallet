@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 10,
-    "identityHash": "aece4e4d420da583c7f786a3e5439201",
+    "identityHash": "3adab7914f643b7acf18ca2988a18977",
     "entities": [
       {
         "tableName": "User",
@@ -148,7 +148,7 @@
       },
       {
         "tableName": "WalletConnectSessionEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `peer_meta` TEXT NOT NULL, `wc_session` TEXT NOT NULL, `date_time_stamp` INTEGER NOT NULL, `connected_account_public_key` TEXT NOT NULL, `is_connected` INTEGER NOT NULL, `fallback_browser_group_response` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `peer_meta` TEXT NOT NULL, `wc_session` TEXT NOT NULL, `date_time_stamp` INTEGER NOT NULL, `is_connected` INTEGER NOT NULL, `fallback_browser_group_response` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -175,12 +175,6 @@
             "notNull": true
           },
           {
-            "fieldPath": "connectedAccountPublicKey",
-            "columnName": "connected_account_public_key",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
             "fieldPath": "isConnected",
             "columnName": "is_connected",
             "affinity": "INTEGER",
@@ -203,8 +197,8 @@
         "foreignKeys": []
       },
       {
-        "tableName": "WalletConnectSessionHistoryEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `peer_meta` TEXT NOT NULL, `wc_session` TEXT NOT NULL, `creation_date_time_stamp` INTEGER NOT NULL, `connected_account_public_key` TEXT NOT NULL, `fallback_browser_group_response` TEXT, PRIMARY KEY(`id`))",
+        "tableName": "WalletConnectSessionAccountEntity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `session_id` INTEGER NOT NULL, `connected_account_address` TEXT NOT NULL, FOREIGN KEY(`session_id`) REFERENCES `WalletConnectSessionEntity`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -213,50 +207,44 @@
             "notNull": true
           },
           {
-            "fieldPath": "peerMeta",
-            "columnName": "peer_meta",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "wcSession",
-            "columnName": "wc_session",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "creationDateTimeStamp",
-            "columnName": "creation_date_time_stamp",
+            "fieldPath": "sessionId",
+            "columnName": "session_id",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "connectedAccountPublicKey",
-            "columnName": "connected_account_public_key",
+            "fieldPath": "connectedAccountsAddress",
+            "columnName": "connected_account_address",
             "affinity": "TEXT",
             "notNull": true
-          },
-          {
-            "fieldPath": "fallbackBrowserGroupResponse",
-            "columnName": "fallback_browser_group_response",
-            "affinity": "TEXT",
-            "notNull": false
           }
         ],
         "primaryKey": {
           "columnNames": [
             "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [],
-        "foreignKeys": []
+        "foreignKeys": [
+          {
+            "table": "WalletConnectSessionEntity",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "session_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'aece4e4d420da583c7f786a3e5439201')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3adab7914f643b7acf18ca2988a18977')"
     ]
   }
 }

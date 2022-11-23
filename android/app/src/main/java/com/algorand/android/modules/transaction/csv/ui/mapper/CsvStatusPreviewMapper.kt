@@ -27,7 +27,7 @@ class CsvStatusPreviewMapper @Inject constructor(
             isCsvProgressBarVisible = (dataResource is DataResource.Loading),
             csvFile = (dataResource as? DataResource.Success)?.let { Event(it.data) },
             isErrorShown = (dataResource is DataResource.Error),
-            errorResId = csvErrorResIdDecider.decideCsvErrorResId(dataResource)
+            errorResource = csvErrorResIdDecider.decideCsvErrorResId(dataResource)
         )
     }
 }

@@ -6,6 +6,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import com.algorand.android.LoginNavigationDirections
+import com.algorand.android.MainActivity
 import com.algorand.android.R
 import com.algorand.android.core.DaggerBaseFragment
 import com.algorand.android.databinding.FragmentRegisterTypeSelectionBinding
@@ -48,6 +49,7 @@ class RegisterIntroFragment : DaggerBaseFragment(R.layout.fragment_register_type
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as? MainActivity)?.isAppUnlocked = true
         checkNavDestinations()
         initUi()
         initObservers()

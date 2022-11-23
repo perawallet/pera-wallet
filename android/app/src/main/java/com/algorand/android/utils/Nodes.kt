@@ -58,5 +58,5 @@ val betaNetNode = Node(
     isActive = false,
     isAddedDefault = true,
     networkSlug = BETANET_NETWORK_SLUG,
-    mobileAlgorandAddress = "https://betanet.staging.api.perawallet.app/v1/"
+    mobileAlgorandAddress = "https://betanet.staging.api.perawallet.app/"
 )

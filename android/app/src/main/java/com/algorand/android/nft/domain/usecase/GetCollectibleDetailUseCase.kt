@@ -19,7 +19,6 @@ import com.algorand.android.nft.domain.model.CollectibleDetailDTO
 import com.algorand.android.nft.domain.model.CollectibleMediaType
 import com.algorand.android.utils.DataResource
 import javax.inject.Inject
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 
 class GetCollectibleDetailUseCase @Inject constructor(
@@ -54,6 +53,12 @@ class GetCollectibleDetailUseCase @Inject constructor(
                 }
                 CollectibleMediaType.MIXED -> mapToMixedCollectibleDetail(collectibleDetailDTO)
                 CollectibleMediaType.NOT_SUPPORTED -> mapToNotSupportedCollectibleDetail(collectibleDetailDTO)
+                CollectibleMediaType.AUDIO -> {
+                    val thumbnailPrismUrl = with(collectibleDetailDTO) {
+                        primaryImageUrl ?: medias.firstOrNull()?.previewUrl ?: medias.firstOrNull()?.downloadUrl
+                    }.orEmpty()
+                    mapToAudioCollectibleDetail(collectibleDetailDTO, thumbnailPrismUrl)
+                }
             }
         }
     }

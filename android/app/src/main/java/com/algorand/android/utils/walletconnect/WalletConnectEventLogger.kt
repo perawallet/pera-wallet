@@ -42,7 +42,7 @@ interface WalletConnectEventLogger {
      *
      * PARAMS dapp_name, dapp_url, topic, address
      */
-    fun logSessionConfirmation(session: WalletConnectSession, connectedAccountPublicKey: String)
+    fun logSessionConfirmation(session: WalletConnectSession, connectedAccountAddresses: List<String>)
 
     /**
      * After the user rejects the session

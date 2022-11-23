@@ -64,6 +64,21 @@ data class TransactionOperation(
         get() = transactionData.accountCacheData.isRekeyedToAnotherAccount()
 }
 
+data class ExternalTransactionOperation(
+    override val bluetoothDevice: BluetoothDevice,
+    val transaction: ExternalTransaction
+) : BaseTransactionOperation(bluetoothDevice) {
+
+    override val transactionByteArray: ByteArray?
+        get() = transaction.transactionByteArray
+    override val isRekeyedToAnotherAccount: Boolean
+        get() = transaction.isRekeyedToAnotherAccount
+    override val accountAddress: String
+        get() = transaction.accountAddress
+    override val accountAuthAddress: String?
+        get() = transaction.accountAuthAddress
+}
+
 data class WalletConnectTransactionOperation(
     override val bluetoothDevice: BluetoothDevice,
     val transaction: BaseWalletConnectTransaction

@@ -12,12 +12,14 @@
 
 package com.algorand.android.modules.tracking.accountdetail
 
+import com.algorand.android.modules.tracking.swap.accountdetail.AccountDetailSwapButtonClickEventTracker
 import javax.inject.Inject
 
 class AccountDetailFragmentEventTracker @Inject constructor(
     private val accountDetailAssetsTapEventTracker: AccountDetailAssetsTapEventTracker,
     private val accountDetailCollectiblesTapEventTracker: AccountDetailCollectiblesTapEventTracker,
-    private val accountDetailTransactionHistoryTapEventTracker: AccountDetailTransactionHistoryTapEventTracker
+    private val accountDetailTransactionHistoryTapEventTracker: AccountDetailTransactionHistoryTapEventTracker,
+    private val accountDetailSwapButtonClickEventTracker: AccountDetailSwapButtonClickEventTracker
 ) {
 
     suspend fun logAccountDetailAssetsTapEvent() {
@@ -30,5 +32,9 @@ class AccountDetailFragmentEventTracker @Inject constructor(
 
     suspend fun logAccountDetailTransactionHistoryTapEvent() {
         accountDetailTransactionHistoryTapEventTracker.logAccountDetailTransactionHistoryTapEvent()
+    }
+
+    suspend fun logAccountDetailSwapButtonClickEvent() {
+        accountDetailSwapButtonClickEventTracker.logSwapButtonClickEvent()
     }
 }

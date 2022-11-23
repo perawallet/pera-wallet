@@ -38,7 +38,6 @@ import com.algorand.android.utils.BETANET_NETWORK_SLUG
 import com.algorand.android.utils.TESTNET_NETWORK_SLUG
 import com.algorand.android.utils.coremanager.AccountDetailCacheManager
 import com.algorand.android.utils.coremanager.AssetCacheManager
-import com.algorand.android.utils.coremanager.BlockPollingManager
 import com.algorand.android.utils.coremanager.ParityManager
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
@@ -77,9 +76,6 @@ abstract class CoreMainActivity : BaseActivity() {
 
     @Inject
     lateinit var parityManager: ParityManager
-
-    @Inject
-    lateinit var blockPollingManager: BlockPollingManager
 
     @Inject
     lateinit var accountDetailCacheManager: AccountDetailCacheManager
@@ -128,7 +124,6 @@ abstract class CoreMainActivity : BaseActivity() {
     private fun initializeCoreManagers() {
         with(lifecycle) {
             addObserver(parityManager)
-            addObserver(blockPollingManager)
             addObserver(accountDetailCacheManager)
             addObserver(assetCacheManager)
         }
@@ -137,7 +132,7 @@ abstract class CoreMainActivity : BaseActivity() {
     private fun startNavigation() {
         with(navController) {
             graph = navInflater.inflate(R.navigation.main_navigation).apply {
-                setStartDestination(getStartDestinationFragmentId())
+                startDestination = getStartDestinationFragmentId()
             }
             binding.bottomNavigationView.setupWithNavController(this, ::onMenuItemClicked)
         }

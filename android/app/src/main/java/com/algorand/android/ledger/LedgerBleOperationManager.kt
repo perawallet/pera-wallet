@@ -21,6 +21,7 @@ import com.algorand.android.R
 import com.algorand.android.ledger.operations.AccountFetchAllOperation
 import com.algorand.android.ledger.operations.BaseOperation
 import com.algorand.android.ledger.operations.BaseTransactionOperation
+import com.algorand.android.ledger.operations.ExternalTransactionOperation
 import com.algorand.android.ledger.operations.TransactionOperation
 import com.algorand.android.ledger.operations.VerifyAddressOperation
 import com.algorand.android.ledger.operations.WalletConnectTransactionOperation
@@ -50,6 +51,9 @@ class LedgerBleOperationManager @Inject constructor(
     val ledgerBleResultFlow = MutableStateFlow<Event<LedgerBleResult>?>(null)
     private var currentOperation: BaseOperation? = null
 
+    private var currentTransactionIndex: Int? = null
+    private var totalTransactionCount: Int? = null
+
     fun setup(lifecycle: Lifecycle) {
         ledgerBleConnectionManager.setObserver(this)
         assignToLifecycle(lifecycle)
@@ -65,11 +69,22 @@ class LedgerBleOperationManager @Inject constructor(
         }
     }
 
-    fun startLedgerOperation(newOperation: BaseOperation) {
+    fun startLedgerOperation(
+        newOperation: BaseOperation,
+        currentTransactionIndex: Int? = null,
+        totalTransactionCount: Int? = null
+    ) {
         currentOperation = newOperation
         currentScope.launch {
             when (newOperation) {
-                is TransactionOperation, is AccountFetchAllOperation, is WalletConnectTransactionOperation -> {
+                is TransactionOperation,
+                is AccountFetchAllOperation,
+                is WalletConnectTransactionOperation,
+                is ExternalTransactionOperation -> {
+                    if (currentTransactionIndex != null && totalTransactionCount != null) {
+                        this@LedgerBleOperationManager.currentTransactionIndex = currentTransactionIndex
+                        this@LedgerBleOperationManager.totalTransactionCount = totalTransactionCount
+                    }
                     sendPublicKeyRequest()
                 }
                 is VerifyAddressOperation -> {
@@ -94,7 +109,16 @@ class LedgerBleOperationManager @Inject constructor(
             if (currentTransactionData != null) {
                 if (connectToLedger(bluetoothDevice)) {
                     ledgerBleConnectionManager.sendSignTransactionRequest(currentTransactionData, nextIndex - 1)
-                    postResult(LedgerBleResult.LedgerWaitingForApproval(bluetoothDevice.name))
+                    val ledgerBleResult = LedgerBleResult.LedgerWaitingForApproval(
+                        bluetoothName = bluetoothDevice.name,
+                        currentTransactionIndex = currentTransactionIndex,
+                        totalTransactionCount = totalTransactionCount
+                    )
+                    postResult(ledgerBleResult).also {
+                        // After sending [LedgerWaitingForApproval] modal to ui, we need to clear value of indexes
+                        currentTransactionIndex = null
+                        totalTransactionCount = null
+                    }
                 }
             }
         }
@@ -162,7 +186,9 @@ class LedgerBleOperationManager @Inject constructor(
                                         is AccountFetchAllOperation -> {
                                             LedgerBleResult.AccountResult(accounts, device)
                                         }
-                                        is TransactionOperation, is WalletConnectTransactionOperation -> {
+                                        is TransactionOperation,
+                                        is WalletConnectTransactionOperation,
+                                        is ExternalTransactionOperation -> {
                                             LedgerBleResult.AppErrorResult(R.string.it_appears_this, R.string.error)
                                         }
                                         is VerifyAddressOperation -> {

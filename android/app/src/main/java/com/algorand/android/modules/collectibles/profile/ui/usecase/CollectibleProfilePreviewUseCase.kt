@@ -168,6 +168,7 @@ class CollectibleProfilePreviewUseCase @Inject constructor(
                 is BaseCollectibleDetail.MixedCollectibleDetail -> thumbnailPrismUrl
                 is BaseCollectibleDetail.NotSupportedCollectibleDetail -> null
                 is BaseCollectibleDetail.VideoCollectibleDetail -> thumbnailPrismUrl
+                is BaseCollectibleDetail.AudioCollectibleDetail -> thumbnailPrismUrl
             }
         }
     }

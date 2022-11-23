@@ -318,8 +318,6 @@
     <string name="unsigned_transactions">Unsignierte Transaktionen</string>
     <string name="application_id">Anwendungs-ID</string>
     <string name="this_transaction_will_transfer">Mit dieser Transaktion wird das Eigentum an diesem Konto übertragen. Ihre derzeitige Passphrase für die Wiederherstellung gewährt keinen Zugriff mehr auf diese Vermögenswerte.</string>
-    <string name="once_confirmed_the_connected_application">Nach der Bestätigung kann die angeschlossene Anwendung diese Transaktionen nach eigenem Ermessen versenden. Bitte überprüfen Sie die Transaktionen sorgfältig, da dieser Vorgang unumkehrbar ist.</string>
-    <string name="are_you_sure_question_mark">Sind Sie sicher, dass Sie fortfahren möchten?</string>
     <string name="this_transaction_is_sending">Mit dieser Transaktion wird Ihr gesamtes Algo-Guthaben gesendet.</string>
     <string name="close_asset_to">Schließen und Asset senden an</string>
     <string name="this_transaction_is_sending_asset">Mit dieser Transaktion wird Ihr gesamtes %1$s-Guthaben gesendet und %1$s wird vom Ihrem Konto entfernt.</string>
@@ -594,6 +592,7 @@
     <string name="receive_an_nft">NFT empfangen</string>
     <string name="the_account_name">Für das Konto <annotation font="dmsans_bold">„<annotation replacement="account_name"> </annotation>“</annotation> wurde ein erfolgreiches Rekeying durchgeführt.</string>
     <string name="asset_support_success"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> hat seinem Konto <annotation replacement="asset">assetPlaceholder</annotation> hinzugefügt. Sie können <annotation replacement="asset">assetPlaceholder</annotation> senden.</string>
+    <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> versucht <annotation replacement="asset">assetPlaceholder</annotation> an Ihr Konto <annotation font="dmsans_medium"><annotation replacement="receiver">receiverPlaceholder</annotation></annotation> zu senden. Tippen Sie auf hier zum Opt-in, damit die Transaktion verarbeitet werden kann.</string>
     <string name="transaction_send_successful">Ihre Transaktion in Höhe von <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> von <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> an <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> wurde erfolgreich ausgeführt.</string>
     <string name="transaction_send_failed">Ihre Transaktion in Höhe von <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> von <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> an <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> ist fehlgeschlagen.</string>
     <string name="the_only_way_to">Die einzige Möglichkeit, ein Algorand-Konto wiederherzustellen, ist diese Wiederherstellungs-Passphrase.</string>
@@ -724,7 +723,6 @@
     <string name="quadrillion_abbreviation">Qa</string>
     <string name="quintillion">Trillionen</string>
     <string name="quintillion_abbreviation">Qi</string>
-    <string name="account_related_to_this_notification">Das mit dieser Benachrichtigung verbundene Konto wurde von diesem Gerät entfernt. Um die Details dieser Benachrichtigung anzuzeigen, fügen Sie das Konto bitte erneut hinzu.</string>
     <string name="account_asset_count_zero">0 Asset</string>
     <string name="pin_code_did_not_match">Der PIN-Code stimmt nicht überein. Versuchen Sie es erneut.</string>
     <string name="your_main_currency_is_placeholder">Ihre Hauptwährung ist <annotation font="dmsans_regular"><annotation custom="primaryCurrencyColor"><annotation replacement="primaryCurrencyId">primaryCurrencyPlaceholder</annotation></annotation></annotation> und die Sekundärwährung ist <annotation font="dmsans_regular"><annotation custom="secondaryCurrencyColor"><annotation replacement="secondaryCurrencyId">secondaryCurrencyPlaceholder</annotation></annotation></annotation></string>
@@ -799,4 +797,95 @@
     <string name="you_ve_connected">Sie haben Ihr Konto mit %1$s verbunden. Kehren Sie zu Ihrem Webbrowser zurück, um den Vorgang abzuschließen.</string>
     <string name="transaction_signed">Transaktion signiert</string>
     <string name="transaction_was_sent">Die Transaktion wurde an %1$s gesendet. Kehren Sie zu Ihrem Webbrowser zurück, um den Vorgang abzuschließen.</string>
+    <string name="max_all_caps">MAX</string>
+    <string name="asset_successfully_removed_to_your">%1$s erfolgreich von Ihrem Konto entfernt.</string>
+    <string name="swap">Tauschen</string>
+    <string name="convert_between_popular_asa_pairs">Konvertieren zwischen beliebten ASA-Paaren</string>
+    <string name="swap_to">Tauschen in</string>
+    <string name="swap_from">Tauschen von</string>
+    <string name="we_can_not_show_assets">Wir können im Moment keine Assets anzeigen. Bitte versuchen Sie es erneut.</string>
+    <string name="choose_an_asset">Asset wählen</string>
+    <string name="balance_formatted">Guthaben: %1$s</string>
+    <string name="select_an_account_to_make">Wählen Sie ein Konto aus, um den Tausch durchzuführen</string>
+    <string name="price_impact_is_the_influence">Preisauswirkung ist der Einfluss Ihres Handels auf den Marktpreis des Asset-Paars. Sie korreliert direkt mit der Höhe der Liquidität im Pool.</string>
+    <string name="slippage_tolerance">Slippage-Toleranz</string>
+    <string name="slippage_is_the_price_difference">Slippage ist die Preisdifferenz zwischen dem Zeitpunkt, an dem Sie eine Transaktion einreichen, und dem Zeitpunkt, an dem die Transaktion in der Blockchain bestätigt wird. Wenn die Slippage-Rate über den hier eingestellten Toleranzprozentsatz hinausgeht, wird die Transaktion automatisch abgebrochen, um Sie vor Wertverlust zu schützen.</string>
+    <string name="swap_in_pera">In Pera tauschen</string>
+    <string name="pera_wallet_now_provides_an">Pera Wallet bietet jetzt eine einfache und schnelle Möglichkeit, Assets zu tauschen.</string>
+    <string name="try_swap">Tauschen ausprobieren</string>
+    <string name="later">Später</string>
+    <string name="set_custom_slippage">Benutzerdefinierten Slippage einstellen</string>
+    <string name="auto">Auto</string>
+    <string name="slippage_tolerance_must_be_between">Die Slippage-Toleranz muss zwischen %1$.1f%% und %2$.1f%% liegen</string>
+    <string name="balance_percentage_must_be_between">Der Guthaben-Prozentsatz muss zwischen %1$d%% und %2$d%% liegen</string>
+    <string name="set_custom_percentage">Benutzerdefinierten Prozentsatz einstellen</string>
+    <string name="balance_percentage">Guthaben-Prozentsatz</string>
+    <string name="pera_wallet_provides_an_easy">Pera Wallet bietet eine einfache und schnelle Möglichkeit, Assets zu tauschen. Der Tausch ermöglicht den Austausch einer ASA gegen ein anderes mit Hilfe eines Smart Contracts zu Marktgebühren.</string>
+    <string name="by_continuing_you_agree_to">Wenn Sie fortfahren, stimmen Sie den <annotation url="tinymanTermsOfServiceUrl"><annotation type="bold"><annotation type="color">Nutzungsbedingungen</annotation></annotation></annotation> unseres Tausch-Partners zu.</string>
+    <string name="start_swapping">Tausch beginnen</string>
+    <string name="powered_by">Unterstützt von</string>
+    <string name="new_text">Neu</string>
+    <string name="this_account_doesn_t_have">Dieses Konto verfügt nicht über das erforderliche Mindestguthaben von <annotation replacement="minimum_balance">minimumBalancePlaceholder</annotation> für einen Tauschvorgang.</string>
+    <string name="minimum_balance">Mindestguthaben</string>
+    <string name="account_does_not_have">Das Konto hat nicht genügend Guthaben für diese Transaktion.</string>
+    <string name="account_does_not_have_algo">Das Konto verfügt nicht über genügend Algo-Guthaben, um die Transaktionsgebühren zu decken.</string>
+    <string name="confirm_swap">Tausch bestätigen</string>
+    <string name="price_impact">Preisauswirkung</string>
+    <string name="minimum_received">Mindestens erhalten</string>
+    <string name="total_swap_fee">Tauschgebühr insgesamt</string>
+    <string name="view_swap_summary">Tausch-Zusammenfassung anzeigen</string>
+    <string name="from_to_to_asset_ratio"><annotation replacement="ratio">ratio</annotation> <annotation replacement="firstAssetShortName">assetShortName</annotation> pro <annotation replacement="secondAssetShortName">secondAssetShortName</annotation></string>
+    <string name="slippage_tolerance_value_updated">Slippage-Toleranzwert aktualisiert!</string>
+    <string name="sign_with_ledger">Mit Ledger signieren</string>
+    <string name="we_ve_detected_that_you">Wir haben festgestellt, dass Sie ein Ledger-Gerät mit diesem Konto verwenden. <annotation font="dmsans_medium">Sie müssen die <annotation replacement="transaction_count">transactionCountPlaceholder</annotation>-Transaktionen einzeln</annotation> mit Ihrem Hardware-Token signieren.</string>
+    <plurals name="sign_transaction">
+        <item quantity="one">Transaktion signieren</item>
+        <item quantity="other">Transaktionen signieren</item>
+    </plurals>
+    <string name="signing_index_out_of_count">Abmeldung von %1$d von %2$d…</string>
+    <string name="view_transaction_detail_in_algoexplorer">Transaktionsdetails im AlgoExplorer anzeigen</string>
+    <string name="go_to_homepage">Zu Startseite gehen</string>
+    <string name="sending_the_transaction">Die Transaktion wird gesendet</string>
+    <string name="you_will_receive_at_least">Sie erhalten mindestens <annotation replacement="amount_and_asset_name">amountAndAssetNamePlaceholder</annotation> oder die Transaktion wird rückgängig gemacht.</string>
+    <string name="asset_pair_swap_completed">Tausch von <annotation replacement="to_asset_name">toAssetNamePlaceholder</annotation> / <annotation replacement="from_asset_name">fromAssetNamePlaceholder</annotation> abgeschlossen</string>
+    <string name="you_received_amount_asset_name_in">Sie haben <annotation replacement="to_amount_and_asset_name"><annotation custom="received_asset_color">toAmountAndAssetNamePlaceholder</annotation></annotation> für <annotation replacement="from_amount_and_asset_name"><annotation custom="paid_asset_color">fromAmountAndAssetNamePlaceholder</annotation></annotation> erhalten</string>
+    <string name="asset_pair_swap_has_failed">Tausch von <annotation replacement="to_asset_name">toAssetNamePlaceholder</annotation> / <annotation replacement="from_asset_name">fromAssetNamePlaceholder</annotation> fehlgeschlagen</string>
+    <string name="because_of_error_message">Aufgrund von <annotation replacement="error_message">errorMessagePlaceholder</annotation>.\nBitte versuchen Sie es erneut.</string>
+    <string name="exchange_fee">Börsengebühr</string>
+    <string name="pera_fee">Pera-Gebühr</string>
+    <string name="total_swap_fee_asterisk">Tauschgebühr insgesamt*</string>
+    <string name="amount_displayed_in_the">Der in der Gesamt-Tauschgebühr angezeigte Betrag ist im Tausch enthalten. Die Gebühren des Algorand-Netzwerks werden extra berechnet.</string>
+    <string name="swap_summary">Tausch-Zusammenfassung</string>
+    <string name="received">Empfangen</string>
+    <string name="paid">Bezahlt</string>
+    <string name="algorand_fees">Algorand-Gebühren</string>
+    <string name="opt_in_fees">Opt-in-Gebühren</string>
+    <string name="exchange_fees">Börsengebühren</string>
+    <string name="pera_fees">Pera-Gebühren</string>
+    <string name="an_unexpected_error_mismatched_txn">Es ist ein unerwarteter Fehler aufgetreten: Fehlercode: Nicht übereinstimmende Transaktionen.</string>
+    <string name="custom">Benutzerdefiniert</string>
+    <string name="select_all">Alle auswählen</string>
+    <string name="unselect_all">Auswahl für alle aufheben</string>
+    <string name="disclaimer">HAFTUNGSAUSSCHLUSS</string>
+    <string name="export_to_pera_web">Zu Pera Web exportieren</string>
+    <string name="you_re_about_to_share">Sie sind dabei, Ihre Passphrase zu teilen und in Pera Web Wallet zu importieren!</string>
+    <string name="never_accept_a">Nehmen Sie niemals eine Anfrage an, die nicht von Ihnen gestellt wurde.</string>
+    <string name="confirm_export_domain">Export-Domain bestätigen</string>
+    <string name="for_your_security_please_confirm">Zu Ihrer Sicherheit bestätigen Sie bitte, dass Sie Ihre Konten zu Pera Web exportieren, indem Sie den Domainnamen eingeben, den Sie auf Ihrem Computer sehen.</string>
+    <string name="enter_url_of_web_wallet">URL der Web-Wallet eingeben</string>
+    <string name="url_of_web_wallet">URL der Web-Wallet</string>
+    <string name="to_make_sure_that_you">Um sicherzugehen, dass Sie Ihre Konten an einen sicheren Ort exportieren, vergewissern Sie sich immer, dass Sie sich auf der offiziellen Pera-Web-URL befinden:</string>
+    <string name="confirm_accounts">Konten bestätigen</string>
+    <string name="you_re_about_to_export">Sie sind dabei, diese Konten sicher zu Pera Web zu exportieren:</string>
+    <string name="accounts_exported_successfully">Konten erfolgreich exportiert!</string>
+    <string name="you_can_now_use_these">Sie können diese Konten jetzt auf Pera Web Wallet verwenden.</string>
+    <string name="we_couldn_t_find">Wir konnten keine für den Export geeigneten Konten finden.</string>
+    <plurals name="account_count">
+        <item quantity="one">Konto</item>
+        <item quantity="other">%1$d Konten</item>
+    </plurals>
+    <string name="i_want_to_recover_an">Ich möchte ein Algorand-Konto wiederherstellen, das durch meine Ledger-Hardware-Wallet gesichert ist.</string>
+    <string name="total_owned">Gesamtbesitz</string>
+    <string name="this_is_the_fee_charged">Dies ist die Gebühr, die Ihnen von der dezentralen Börse berechnet wird. Sie wird automatisch von dem Betrag, den Sie senden, abgezogen und in den Mindestbetrag, den Sie erhalten, eingerechnet. Es handelt sich nicht um eine zusätzliche Gebühr, die aufgeschlagen wird.</string>
+    <string name="we_encountered_an_unexpected">Es ist ein unerwarteter Fehler aufgetreten. Versuchen Sie es später erneut.</string>
 </resources>

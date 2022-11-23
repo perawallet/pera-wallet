@@ -30,7 +30,8 @@ class DatabaseMigrationUnitTest {
         AlgorandDatabase.MIGRATION_5_6,
         AlgorandDatabase.MIGRATION_6_7,
         AlgorandDatabase.MIGRATION_7_8,
-        AlgorandDatabase.MIGRATION_8_9
+        AlgorandDatabase.MIGRATION_8_9,
+        AlgorandDatabase.MIGRATION_9_10
     )
     private var migratedDb: SupportSQLiteDatabase? = null
     private lateinit var gson: Gson
@@ -92,13 +93,13 @@ class DatabaseMigrationUnitTest {
     }
 
     @Test
-    fun insertWalletConnectSessionHistoryToDatabase() {
-        migratedDb!!.insertWalletConnectSessionHistory()
-        val queryString = "SELECT * FROM WalletConnectSessionHistoryEntity"
+    fun insertWalletConnectSessionAccountToDatabase() {
+        migratedDb!!.insertWalletConnectSessionAccount()
+        val queryString = "SELECT * FROM WalletConnectSessionAccountEntity"
         val cursor = migratedDb!!.query(queryString, null)
-        Log.d(TAG, "WalletConnectSessionHistoryEntity DB :${DatabaseUtils.dumpCursorToString(cursor)}")
-        Log.d(TAG, "Session count in Database: ${cursor.count}")
-        Assert.assertTrue("WalletConnectSessionHistory Count After Migration Not Successful", cursor.count == 1)
+        Log.d(TAG, "WalletConnectSessionAccountEntity DB :${DatabaseUtils.dumpCursorToString(cursor)}")
+        Log.d(TAG, "Connected account count in Database: ${cursor.count}")
+        Assert.assertTrue("WalletConnectSession Count After Migration Not Successful", cursor.count == 1)
     }
 
     @After
@@ -109,7 +110,6 @@ class DatabaseMigrationUnitTest {
     private fun SupportSQLiteDatabase.insertWalletConnectSession() {
         val peerMetaJson = gson.toJson(WalletConnectPeerMeta("name", "url", "description", listOf("icon_url")))
         val sessionMetaJson = gson.toJson(WalletConnectSessionMeta("bridge", "key", "topic", "version"))
-        val address = "KFQMT4AK4ASIPAN23X36T3REP6D26LQDMAQNSAZM3DIEG2HTVKXEF76AP4"
         val fallbackBrowserGroupResponse = "chrome"
         execSQL(
             """
@@ -118,7 +118,6 @@ class DatabaseMigrationUnitTest {
                     peer_meta,
                     wc_session,
                     date_time_stamp, 
-                    connected_account_public_key,
                     is_connected,
                     fallback_browser_group_response
                 )
@@ -127,7 +126,6 @@ class DatabaseMigrationUnitTest {
                     '$peerMetaJson',
                     '$sessionMetaJson',
                     1625574947350,
-                    '$address', 
                     0,
                     '$fallbackBrowserGroupResponse'
                 )
@@ -135,28 +133,19 @@ class DatabaseMigrationUnitTest {
         )
     }
 
-    private fun SupportSQLiteDatabase.insertWalletConnectSessionHistory() {
-        val peerMetaJson = gson.toJson(WalletConnectPeerMeta("name", "url", "description", listOf("icon_url")))
-        val sessionMetaJson = gson.toJson(WalletConnectSessionMeta("bridge", "key", "topic", "version"))
+    private fun SupportSQLiteDatabase.insertWalletConnectSessionAccount() {
         val address = "KFQMT4AK4ASIPAN23X36T3REP6D26LQDMAQNSAZM3DIEG2HTVKXEF76AP4"
-        val fallbackBrowserGroupResponse = "chrome"
         execSQL(
             """
-                INSERT INTO WalletConnectSessionHistoryEntity (
+                INSERT INTO WalletConnectSessionAccountEntity (
                     id, 
-                    peer_meta,
-                    wc_session,
-                    creation_date_time_stamp, 
-                    connected_account_public_key,
-                    fallback_browser_group_response
+                    session_id,
+                    connected_account_address
                 )
                 VALUES (
+                    1,
                     1625574947350,
-                    '$peerMetaJson',
-                    '$sessionMetaJson', 
-                    1625574947350,
-                    '$address',
-                    '$fallbackBrowserGroupResponse'
+                    '$address'
                 )
             """.trimIndent()
         )

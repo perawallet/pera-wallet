@@ -47,7 +47,8 @@ ext {
             moshi            : '1.14.0',
             bcprov           : '1.70',
             exoPlayer        : '2.18.1',
-            firebaseBom      : '30.4.0'
+            firebaseBom      : '30.4.0',
+            algoSdk          : '1.19.0'
     ]
 
     testLibVersions = [

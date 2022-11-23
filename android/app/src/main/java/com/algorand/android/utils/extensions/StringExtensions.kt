@@ -15,6 +15,7 @@ package com.algorand.android.utils.extensions
 
 import com.algorand.android.utils.recordException
 import java.math.BigDecimal
+import java.net.URLEncoder
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.Locale
@@ -80,4 +81,8 @@ fun String.capitalize(): String {
 
 fun String.addHashtagToStart(): String {
     return "#$this"
+}
+
+fun String.encodeToURL(charset: String = Charsets.UTF_8.name()): String {
+    return URLEncoder.encode(this, charset)
 }

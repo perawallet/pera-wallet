@@ -13,6 +13,7 @@
 package com.algorand.android.modules.tracking.core
 
 import android.os.Bundle
+import com.algorand.android.utils.recordException
 import com.google.firebase.analytics.FirebaseAnalytics
 
 internal class FirebaseEventTracker(
@@ -31,8 +32,40 @@ internal class FirebaseEventTracker(
     private fun getPayloadBundle(payloadMap: Map<String, Any>): Bundle {
         return Bundle().apply {
             payloadMap.forEach { payload ->
-                putString(payload.key, payload.value.toString())
+                with(payload) {
+                    when (value) {
+                        is Bundle -> putBundle(key, value as Bundle)
+                        is CharSequence -> putCharSequence(key, value as CharSequence)
+                        is String -> putString(key, value as String)
+                        is Char -> putChar(key, value as Char)
+                        is CharArray -> putCharArray(key, value as CharArray)
+                        is Boolean -> putBoolean(key, value as Boolean)
+                        is BooleanArray -> putBooleanArray(key, value as BooleanArray)
+                        is Short -> putShort(key, value as Short)
+                        is ShortArray -> putShortArray(key, value as ShortArray)
+                        is Double -> putDouble(key, value as Double)
+                        is DoubleArray -> putDoubleArray(key, value as DoubleArray)
+                        is Int -> putInt(key, value as Int)
+                        is IntArray -> putIntArray(key, value as IntArray)
+                        is Byte -> putByte(key, value as Byte)
+                        is ByteArray -> putByteArray(key, value as ByteArray)
+                        is Float -> putFloat(key, value as Float)
+                        is FloatArray -> putFloatArray(key, value as FloatArray)
+                        is Long -> putLong(key, value as Long)
+                        is LongArray -> putLongArray(key, value as LongArray)
+                        else -> recordIllegalArgumentException(value)
+                    }
+                }
             }
         }
+    }
+
+    private fun recordIllegalArgumentException(value: Any) {
+        val errorMessage = "$logTag: Not handled bundle payload type: ${value::class.java}"
+        recordException(IllegalArgumentException(errorMessage))
+    }
+
+    companion object {
+        private val logTag = FirebaseEventTracker::class.java.simpleName
     }
 }

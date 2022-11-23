@@ -33,7 +33,8 @@ class AssetDetailPreviewMapper @Inject constructor(
         accountName: String,
         accountType: Account.Type?,
         canAccountSignTransaction: Boolean,
-        isQuickActionButtonsVisible: Boolean
+        isQuickActionButtonsVisible: Boolean,
+        isSwapButtonSelected: Boolean
     ): AssetDetailPreview {
         return with(baseOwnedAssetDetail) {
             AssetDetailPreview(
@@ -48,7 +49,8 @@ class AssetDetailPreviewMapper @Inject constructor(
                 assetPrismUrl = prismUrl,
                 verificationTierConfiguration =
                 verificationTierConfigurationDecider.decideVerificationTierConfiguration(verificationTier),
-                isQuickActionButtonsVisible = canAccountSignTransaction && isQuickActionButtonsVisible
+                isQuickActionButtonsVisible = canAccountSignTransaction && isQuickActionButtonsVisible,
+                isSwapButtonSelected = isSwapButtonSelected
             )
         }
     }

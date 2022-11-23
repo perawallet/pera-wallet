@@ -16,17 +16,20 @@ import com.google.gson.annotations.SerializedName
 
 data class NotificationItem(
     @SerializedName("id")
-    val id: Long,
+    val id: Long?,
 
-    @SerializedName("type")
-    val type: NotificationType?,
-
-    @SerializedName("creation_datetime")
-    val creationDate: String?,
+    @SerializedName("account_address")
+    val accountAddress: String?,
 
     @SerializedName("message")
     val message: String?,
 
-    @SerializedName("metadata")
-    val metadata: NotificationMetadata?
+    @SerializedName("url")
+    val url: String?,
+
+    @SerializedName("creation_datetime")
+    val creationDatetime: String?,
+
+    @SerializedName("is_unread")
+    val isUnread: Boolean?
 )

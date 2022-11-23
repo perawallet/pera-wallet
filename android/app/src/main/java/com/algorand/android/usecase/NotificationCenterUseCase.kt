@@ -12,18 +12,18 @@
 
 package com.algorand.android.usecase
 
+import androidx.annotation.StringRes
 import com.algorand.android.R
 import com.algorand.android.mapper.NotificationCenterPreviewMapper
 import com.algorand.android.models.BaseAccountAssetData
 import com.algorand.android.models.NotificationCenterPreview
+import com.algorand.android.models.NotificationGroupType
 import com.algorand.android.models.NotificationListItem
-import com.algorand.android.models.NotificationType
 import com.algorand.android.nft.domain.usecase.SimpleCollectibleUseCase
 import com.algorand.android.repository.NotificationRepository
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.orNow
 import com.algorand.android.utils.parseFormattedDate
-import com.algorand.android.utils.sendErrorLog
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -35,7 +35,8 @@ class NotificationCenterUseCase @Inject constructor(
     private val notificationRepository: NotificationRepository,
     private val isThereAnyAccountWithPublicKeyUseCase: IsThereAnyAccountWithPublicKeyUseCase,
     private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase,
-    private val simpleCollectibleUseCase: SimpleCollectibleUseCase
+    private val simpleCollectibleUseCase: SimpleCollectibleUseCase,
+    private val accountDetailUseCase: AccountDetailUseCase
 ) {
 
     fun setLastRefreshedDateTime(zonedDateTime: ZonedDateTime) {
@@ -49,8 +50,10 @@ class NotificationCenterUseCase @Inject constructor(
     }
 
     fun checkClickedNotificationItemType(assetId: Long, publicKey: String) = flow {
-        // TODO: What if the related account does not exist anymore on the device?
-        if (!checkIfAccountIsStillExist(publicKey)) return@flow
+        if (!checkIfAccountStillExists(publicKey)) {
+            emit(getNotificationPreviewWithErrorMessage(ACCOUNT_DOESN_T_EXIST_ERROR_RES_ID))
+            return@flow
+        }
         when (getBaseOwnedAssetDataUseCase.getBaseOwnedAssetData(assetId, publicKey)) {
             is BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData -> {
                 emit(
@@ -67,9 +70,14 @@ class NotificationCenterUseCase @Inject constructor(
     }
 
     fun checkRequestedAssetType(assetId: Long, accountAddress: String) = flow {
-        // TODO: What if the related account does not exist anymore on the device?
-        // TODO: Why dont we navigate to Confirm Asset Optin BottomSheet anymore
-        if (!checkIfAccountIsStillExist(accountAddress)) return@flow
+        if (!checkIfAccountStillExists(accountAddress)) {
+            emit(getNotificationPreviewWithErrorMessage(ACCOUNT_DOESN_T_EXIST_ERROR_RES_ID))
+            return@flow
+        }
+        if (!accountDetailUseCase.canAccountSignTransaction(accountAddress)) {
+            emit(getNotificationPreviewWithErrorMessage(R.string.you_cannot_optin))
+            return@flow
+        }
         val isAsset = simpleAssetDetailUseCase.isAssetCached(assetId)
         val isCollectible = simpleCollectibleUseCase.isCollectibleCached(assetId)
         when {
@@ -91,45 +99,50 @@ class NotificationCenterUseCase @Inject constructor(
     }
 
     fun onNotificationClickEvent(notificationListItem: NotificationListItem) = flow {
-        val notificationMetadata = notificationListItem.metadata ?: return@flow
-        val assetInformation = notificationMetadata.getAssetDescription().convertToAssetInformation()
-        val assetId = assetInformation.assetId
+        if (notificationListItem.isFailed) return@flow
+        if (!checkIfAccountStillExists(notificationListItem.address)) {
+            emit(getNotificationPreviewWithErrorMessage(ACCOUNT_DOESN_T_EXIST_ERROR_RES_ID))
+            return@flow
+        }
         when (notificationListItem.type) {
-            NotificationType.TRANSACTION_RECEIVED, NotificationType.ASSET_TRANSACTION_RECEIVED -> {
-                if (notificationListItem.receiverUser == null) {
-                    emit(getNotificationPreviewWithErrorMessage())
-                    return@flow
-                }
-                val publicKey = notificationMetadata.receiverPublicKey.orEmpty()
+            NotificationGroupType.TRANSACTIONS -> {
                 emit(
-                    notificationCenterPreviewMapper.mapTo(onTransactionReceivedEvent = Event(Pair(publicKey, assetId)))
+                    notificationCenterPreviewMapper.mapTo(
+                        onTransactionEvent = Event(
+                            Pair(
+                                notificationListItem.address,
+                                notificationListItem.assetId
+                            )
+                        )
+                    )
                 )
             }
-            NotificationType.TRANSACTION_SENT, NotificationType.ASSET_TRANSACTION_SENT -> {
-                if (notificationListItem.senderUser == null) {
-                    emit(getNotificationPreviewWithErrorMessage())
-                    return@flow
-                }
-                val publicKey = notificationMetadata.senderPublicKey.orEmpty()
-                emit(notificationCenterPreviewMapper.mapTo(onTransactionSentEvent = Event(Pair(publicKey, assetId))))
-            }
-            NotificationType.ASSET_SUPPORT_REQUEST -> {
-                val publicKey = notificationMetadata.receiverPublicKey.orEmpty()
-                emit(notificationCenterPreviewMapper.mapTo(onAssetSupportRequestEvent = Event(publicKey to assetId)))
-            }
-            else -> {
-                sendErrorLog("Unhandled else case in NotificationCenterUseCase.onNotificationClickEvent")
+            NotificationGroupType.OPTIN -> {
+                emit(
+                    notificationCenterPreviewMapper.mapTo(
+                        onAssetSupportRequestEvent = Event(
+                            Pair(
+                                notificationListItem.address,
+                                notificationListItem.assetId
+                            )
+                        )
+                    )
+                )
             }
         }
     }
 
-    private fun checkIfAccountIsStillExist(accountAddress: String): Boolean {
+    private fun checkIfAccountStillExists(accountAddress: String): Boolean {
         return isThereAnyAccountWithPublicKeyUseCase.isThereAnyAccountWithPublicKey(accountAddress)
     }
 
-    private fun getNotificationPreviewWithErrorMessage(): NotificationCenterPreview {
+    private fun getNotificationPreviewWithErrorMessage(@StringRes errorStringRes: Int): NotificationCenterPreview {
         return notificationCenterPreviewMapper.mapTo(
-            errorMessageResId = Event(R.string.account_related_to_this_notification)
+            errorMessageResId = Event(errorStringRes)
         )
+    }
+
+    companion object {
+        private const val ACCOUNT_DOESN_T_EXIST_ERROR_RES_ID = R.string.you_cannot_take
     }
 }

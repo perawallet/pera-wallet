@@ -54,6 +54,15 @@
             app:title="@string/buy_algo" />
 
         <com.algorand.android.customviews.ListMenuItemView
+            android:id="@+id/swapButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_large"
+            app:description="@string/convert_between_popular_asa_pairs"
+            app:icon="@drawable/ic_swap_helper_button_bg_gray"
+            app:title="@string/swap" />
+
+        <com.algorand.android.customviews.ListMenuItemView
             android:id="@+id/sendButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

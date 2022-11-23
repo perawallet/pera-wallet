@@ -36,6 +36,12 @@
     <dimen name="text_size_32">32sp</dimen>
     <dimen name="text_size_36">36sp</dimen>
 
+    <!--  Action Button Sizes  -->
+    <dimen name="action_button_small">20dp</dimen>
+    <dimen name="action_button_normal">24dp</dimen>
+    <dimen name="action_button_large">36dp</dimen>
+    <dimen name="action_button_xlarge">40dp</dimen>
+
     <dimen name="button_corner_radius">4dp</dimen>
     <dimen name="button_min_height">52dp</dimen>
     <dimen name="button_small_min_height">40dp</dimen>
@@ -142,6 +148,7 @@
     <dimen name="account_icon_size_large">40dp</dimen>
     <dimen name="account_icon_size_normal">24dp</dimen>
     <dimen name="account_icon_size_small">20dp</dimen>
+    <dimen name="account_icon_size_xsmall">16dp</dimen>
 
     <!--  Governor Icon (governor icon size is %60 of account icon size) -->
     <dimen name="governor_icon_size_xlarge">48dp</dimen>
@@ -169,5 +176,9 @@
     <dimen name="bottom_padding_for_screen_with_double_floating_button">180dp</dimen>
 
     <dimen name="webexport_bottom_padding">120dp</dimen>
+
+    <!-- Swap Fragment -->
+    <dimen name="swap_quick_action_button_stroke_width">1dp</dimen>
+    <dimen name="swap_quick_action_button_radius">16dp</dimen>
 
 </resources>

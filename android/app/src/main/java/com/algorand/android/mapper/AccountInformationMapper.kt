@@ -22,21 +22,25 @@ class AccountInformationMapper @Inject constructor(
     private val assetHoldingsMapper: AssetHoldingsMapper
 ) {
 
-    fun mapToAccountInformation(accountInformationPayload: AccountInformationResponsePayload): AccountInformation {
-        val assetHoldingList = accountInformationPayload.allAssetHoldingList
+    fun mapToAccountInformation(
+        accountInformationPayload: AccountInformationResponsePayload?,
+        currentRound: Long?
+    ): AccountInformation {
+        val assetHoldingList = accountInformationPayload?.allAssetHoldingList
             ?.map { assetHoldingsMapper.mapToAssetHoldings(it) }
             ?.toMutableSet()
         return AccountInformation(
-            address = accountInformationPayload.address.orEmpty(),
-            amount = accountInformationPayload.amount ?: BigInteger.ZERO,
-            participation = accountInformationPayload.participation,
-            rekeyAdminAddress = accountInformationPayload.rekeyAdminAddress,
+            address = accountInformationPayload?.address.orEmpty(),
+            amount = accountInformationPayload?.amount ?: BigInteger.ZERO,
+            participation = accountInformationPayload?.participation,
+            rekeyAdminAddress = accountInformationPayload?.rekeyAdminAddress,
             allAssetHoldingList = assetHoldingList,
-            createdAtRound = accountInformationPayload.createdAtRound,
-            appsLocalState = accountInformationPayload.appsLocalState,
-            appsTotalSchema = accountInformationPayload.appsTotalSchema,
-            appsTotalExtraPages = accountInformationPayload.appsTotalExtraPages,
-            totalCreatedApps = accountInformationPayload.totalCreatedApps ?: 0
+            createdAtRound = accountInformationPayload?.createdAtRound,
+            appsLocalState = accountInformationPayload?.appsLocalState,
+            appsTotalSchema = accountInformationPayload?.appsTotalSchema,
+            appsTotalExtraPages = accountInformationPayload?.appsTotalExtraPages,
+            totalCreatedApps = accountInformationPayload?.totalCreatedApps ?: 0,
+            lastFetchedRound = currentRound
         )
     }
 
@@ -48,6 +52,7 @@ class AccountInformationMapper @Inject constructor(
             rekeyAdminAddress = null,
             allAssetHoldingList = mutableSetOf(),
             createdAtRound = null,
+            lastFetchedRound = null
         )
     }
 }

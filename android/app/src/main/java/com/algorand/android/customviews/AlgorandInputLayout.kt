@@ -152,6 +152,20 @@ class AlgorandInputLayout @JvmOverloads constructor(
         }
     }
 
+    fun setInputFilter(inputFilter: InputFilter) {
+        editText.filters += inputFilter
+    }
+
+    fun setOnEditorEnterClickListener(onClick: () -> Unit) {
+        editText.setOnEditorActionListener { _, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                onClick()
+                return@setOnEditorActionListener true
+            }
+            false
+        }
+    }
+
     override fun onSaveInstanceState(): Parcelable {
         return CustomInputSavedState(super.onSaveInstanceState(), text)
     }

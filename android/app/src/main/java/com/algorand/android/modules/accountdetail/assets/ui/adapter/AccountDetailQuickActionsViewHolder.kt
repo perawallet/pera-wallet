@@ -28,7 +28,10 @@ class AccountDetailQuickActionsViewHolder(
         with(binding) {
             buyAlgoButton.setOnClickListener { listener.onBuyAlgoClick() }
             sendButton.setOnClickListener { listener.onSendClick() }
-            addressButton.setOnClickListener { listener.onAddressClick() }
+            swapButton.apply {
+                isSelected = item.isSwapButtonSelected
+                setOnClickListener { listener.onSwapClick() }
+            }
             moreButton.setOnClickListener { listener.onMoreClick() }
         }
     }
@@ -36,7 +39,7 @@ class AccountDetailQuickActionsViewHolder(
     interface AccountDetailQuickActionsListener {
         fun onBuyAlgoClick()
         fun onSendClick()
-        fun onAddressClick()
+        fun onSwapClick()
         fun onMoreClick()
     }
 

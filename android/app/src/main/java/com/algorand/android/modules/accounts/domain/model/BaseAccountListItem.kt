@@ -29,17 +29,19 @@ sealed class BaseAccountListItem : RecyclerListItem {
         GENERIC_BANNER
     }
 
-    object QuickActionsItem : BaseAccountListItem() {
+    data class QuickActionsItem(
+        val isSwapButtonSelected: Boolean
+    ) : BaseAccountListItem() {
 
         override val itemType: ItemType
             get() = ItemType.QUICK_ACTIONS
 
         override fun areItemsTheSame(other: RecyclerListItem): Boolean {
-            return other is QuickActionsItem
+            return other is QuickActionsItem && isSwapButtonSelected == other.isSwapButtonSelected
         }
 
         override fun areContentsTheSame(other: RecyclerListItem): Boolean {
-            return other is QuickActionsItem
+            return other is QuickActionsItem && other == this
         }
     }
 

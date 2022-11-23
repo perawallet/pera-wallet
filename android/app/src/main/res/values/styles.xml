@@ -39,6 +39,7 @@
         <item name="android:progressBarStyle">@style/ProgressBarStyle</item>
         <item name="switchStyle">@style/SwitchStyle</item>
         <item name="checkboxStyle">@style/CheckBoxStyle</item>
+        <item name="peraChipStyle">@style/PeraChip</item>
     </style>
 
     <style name="AppTheme" parent="BaseTheme" />
@@ -438,6 +439,15 @@
         <item name="autoSizeTextType">uniform</item>
     </style>
 
+    <style name="TextView.SwapSummaryLabelStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd">@dimen/spacing_large</item>
+        <item name="android:textColor">@color/text_gray</item>
+        <item name="android:textAppearance">@style/TextAppearance.Body.Sans</item>
+        <item name="android:maxLines">2</item>
+        <item name="autoSizeTextType">uniform</item>
+    </style>
 
     <style name="Button" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:letterSpacing">0</item>
@@ -739,4 +749,42 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:background">@drawable/bg_bottom_fade_gradient</item>
     </style>
+
+    <style name="Tag">
+        <item name="android:background">@drawable/bg_rectangle_radius_16dp</item>
+        <item name="android:paddingTop">@dimen/spacing_xxsmall</item>
+        <item name="android:paddingBottom">@dimen/spacing_xxsmall</item>
+        <item name="android:paddingStart">@dimen/spacing_xsmall</item>
+        <item name="android:paddingEnd">@dimen/spacing_xsmall</item>
+        <item name="textAllCaps">true</item>
+        <item name="android:textAppearance">@style/TextAppearance.Footnote.Sans.Bold</item>
+    </style>
+
+    <style name="Tag.Positive">
+        <item name="android:backgroundTint">@color/positive_lighter</item>
+        <item name="android:textColor">@color/positive</item>
+    </style>
+
+    <style name="PeraChip" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="android:textAppearance">@style/TextAppearance.Footnote.Sans</item>
+        <item name="android:textColor">@color/pera_chip_text_color</item>
+        <item name="chipBackgroundColor">@color/pera_chip_background_color</item>
+        <item name="chipEndPadding">@dimen/spacing_xsmall</item>
+        <item name="chipStartPadding">@dimen/spacing_xsmall</item>
+        <item name="chipCornerRadius">48dp</item>
+        <item name="chipMinHeight">36dp</item>
+    </style>
+
+    <style name="SwapAssetShortNameChipStyle">
+        <item name="android:background">@drawable/bg_swap_asset_input_asset_container</item>
+        <item name="android:drawablePadding">6dp</item>
+        <item name="android:maxLength">4</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:minWidth">90dp</item>
+        <item name="android:paddingEnd">@dimen/spacing_normal</item>
+        <item name="android:paddingStart">@dimen/spacing_normal</item>
+        <item name="android:paddingTop">@dimen/spacing_small</item>
+        <item name="android:paddingBottom">@dimen/spacing_small</item>
+    </style>
+
 </resources>

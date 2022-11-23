@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 9,
-    "identityHash": "aece4e4d420da583c7f786a3e5439201",
+    "identityHash": "3c7ecf3f2093b5bdf5ad0519ac910602",
     "entities": [
       {
         "tableName": "User",
@@ -148,7 +148,7 @@
       },
       {
         "tableName": "WalletConnectSessionEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `peer_meta` TEXT NOT NULL, `wc_session` TEXT NOT NULL, `date_time_stamp` INTEGER NOT NULL, `connected_account_public_key` TEXT NOT NULL, `is_connected` INTEGER NOT NULL, `fallback_browser_group_response` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `peer_meta` TEXT NOT NULL, `wc_session` TEXT NOT NULL, `date_time_stamp` INTEGER NOT NULL, `connected_accounts_addresses` TEXT NOT NULL, `is_connected` INTEGER NOT NULL, `fallback_browser_group_response` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -175,8 +175,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "connectedAccountPublicKey",
-            "columnName": "connected_account_public_key",
+            "fieldPath": "connectedAccountsAddresses",
+            "columnName": "connected_accounts_addresses",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -204,7 +204,7 @@
       },
       {
         "tableName": "WalletConnectSessionHistoryEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `peer_meta` TEXT NOT NULL, `wc_session` TEXT NOT NULL, `creation_date_time_stamp` INTEGER NOT NULL, `connected_account_public_key` TEXT NOT NULL, `fallback_browser_group_response` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `peer_meta` TEXT NOT NULL, `wc_session` TEXT NOT NULL, `creation_date_time_stamp` INTEGER NOT NULL, `connected_accounts_addresses` TEXT NOT NULL, `fallback_browser_group_response` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -231,8 +231,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "connectedAccountPublicKey",
-            "columnName": "connected_account_public_key",
+            "fieldPath": "connectedAccountsAddresses",
+            "columnName": "connected_accounts_addresses",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -256,7 +256,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'aece4e4d420da583c7f786a3e5439201')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3c7ecf3f2093b5bdf5ad0519ac910602')"
     ]
   }
 }

@@ -22,6 +22,8 @@
 
     <include app:graph="@navigation/video_player_navigation" />
 
+    <include app:graph="@navigation/audio_player_navigation" />
+
     <include app:graph="@navigation/show_qr_navigation" />
 
     <include app:graph="@navigation/collectible_opt_in_action_navigation" />
@@ -70,6 +72,13 @@
             app:destination="@id/videoPlayerNavigation">
             <argument
                 android:name="collectibleVideoUrl"
+                app:argType="string" />
+        </action>
+        <action
+            android:id="@+id/action_collectibleProfileFragment_to_audioPlayerNavigation"
+            app:destination="@id/audioPlayerNavigation">
+            <argument
+                android:name="collectibleAudioUrl"
                 app:argType="string" />
         </action>
         <action

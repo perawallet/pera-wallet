@@ -13,15 +13,30 @@
 package com.algorand.android.nft.ui.nftlisting.viewholder
 
 import android.view.ViewGroup
+import androidx.core.view.doOnLayout
 import com.algorand.android.databinding.ItemBaseCollectibleListBinding
 import com.algorand.android.nft.ui.model.BaseCollectibleListItem
+import com.algorand.android.utils.createPrismUrl
+import com.algorand.android.utils.loadImage
 
 class NftSoundViewHolder(binding: ItemBaseCollectibleListBinding) : BaseCollectibleListViewHolder(binding) {
 
     override fun bind(item: BaseCollectibleListItem) {
         super.bind(item)
         if (item !is BaseCollectibleListItem.BaseCollectibleItem.CollectibleSoundItem) return
-        // TODO init sound details
+        loadThumbnail(item)
+    }
+
+    private fun loadThumbnail(item: BaseCollectibleListItem.BaseCollectibleItem.CollectibleSoundItem) {
+        binding.collectibleImageView.run {
+            doOnLayout {
+                context.loadImage(
+                    uri = createPrismUrl(item.thumbnailPrismUrl.orEmpty(), measuredWidth),
+                    onResourceReady = { showImage(it, !item.isOwnedByTheUser) },
+                    onLoadFailed = { showText(item.avatarDisplayText) }
+                )
+            }
+        }
     }
 
     companion object : NftListViewHolderCreator {

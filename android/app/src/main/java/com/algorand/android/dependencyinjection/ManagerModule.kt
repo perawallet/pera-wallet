@@ -13,18 +13,19 @@
 package com.algorand.android.dependencyinjection
 
 import com.algorand.android.core.AccountManager
+import com.algorand.android.modules.currency.domain.usecase.CurrencyUseCase
+import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
 import com.algorand.android.usecase.AccountCacheStatusUseCase
 import com.algorand.android.usecase.AccountDetailUseCase
-import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
 import com.algorand.android.usecase.AssetFetchAndCacheUseCase
-import com.algorand.android.usecase.BlockPollingUseCase
-import com.algorand.android.modules.currency.domain.usecase.CurrencyUseCase
+import com.algorand.android.modules.accountblockpolling.domain.usecase.ClearLastKnownBlockForAccountsUseCase
+import com.algorand.android.modules.accountblockpolling.domain.usecase.GetResultWhetherAccountsUpdateIsRequiredUseCase
 import com.algorand.android.usecase.SimpleAssetDetailUseCase
+import com.algorand.android.modules.accountblockpolling.domain.usecase.UpdateLastKnownBlockUseCase
 import com.algorand.android.utils.AccountDetailUpdateHelper
 import com.algorand.android.utils.coremanager.AccountDetailCacheManager
-import com.algorand.android.utils.coremanager.ParityManager
 import com.algorand.android.utils.coremanager.AssetCacheManager
-import com.algorand.android.utils.coremanager.BlockPollingManager
+import com.algorand.android.utils.coremanager.ParityManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,15 +35,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object ManagerModule {
-
-    @Singleton
-    @Provides
-    fun provideBlockPollingManager(
-        blockPollingUseCase: BlockPollingUseCase,
-        accountManager: AccountManager
-    ): BlockPollingManager {
-        return BlockPollingManager(blockPollingUseCase, accountManager)
-    }
 
     @Singleton
     @Provides
@@ -56,13 +48,17 @@ object ManagerModule {
     @Singleton
     @Provides
     fun provideAccountDetailCacheManager(
-        blockPollingUseCase: BlockPollingUseCase,
+        getResultWhetherAccountsUpdateIsRequiredUseCase: GetResultWhetherAccountsUpdateIsRequiredUseCase,
+        updateLastKnownBlockUseCase: UpdateLastKnownBlockUseCase,
+        clearLastKnownBlockForAccountsUseCase: ClearLastKnownBlockForAccountsUseCase,
         accountDetailUseCase: AccountDetailUseCase,
         accountManager: AccountManager,
         accountDetailUpdateHelper: AccountDetailUpdateHelper
     ): AccountDetailCacheManager {
         return AccountDetailCacheManager(
-            blockPollingUseCase,
+            getResultWhetherAccountsUpdateIsRequiredUseCase,
+            updateLastKnownBlockUseCase,
+            clearLastKnownBlockForAccountsUseCase,
             accountDetailUseCase,
             accountManager,
             accountDetailUpdateHelper

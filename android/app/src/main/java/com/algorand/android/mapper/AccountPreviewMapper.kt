@@ -16,6 +16,7 @@ import com.algorand.android.R
 import com.algorand.android.modules.accounts.domain.model.AccountPreview
 import com.algorand.android.modules.accounts.domain.model.BaseAccountListItem
 import com.algorand.android.modules.accounts.domain.model.BasePortfolioValueItem
+import com.algorand.android.utils.Event
 import javax.inject.Inject
 
 class AccountPreviewMapper @Inject constructor(
@@ -28,7 +29,7 @@ class AccountPreviewMapper @Inject constructor(
             isFullScreenAnimatedLoadingVisible = false,
             isBlockingLoadingVisible = false,
             isTestnetBadgeVisible = isTestnetBadgeVisible,
-            shouldShowDialog = false,
+            isMotionLayoutTransitionEnabled = false,
             portfolioValuesBackgroundRes = R.color.transparent,
             isSuccessStateVisible = false,
             hasNewNotification = false
@@ -41,7 +42,7 @@ class AccountPreviewMapper @Inject constructor(
             isFullScreenAnimatedLoadingVisible = true,
             isBlockingLoadingVisible = false,
             isTestnetBadgeVisible = isTestnetBadgeVisible,
-            shouldShowDialog = false,
+            isMotionLayoutTransitionEnabled = false,
             portfolioValuesBackgroundRes = R.color.transparent,
             isSuccessStateVisible = false,
             hasNewNotification = false
@@ -62,7 +63,7 @@ class AccountPreviewMapper @Inject constructor(
             bottomGlobalError = bottomGlobalErrorMapper.mapToBottomGlobalError(errorCode),
             isTestnetBadgeVisible = isTestnetBadgeVisible,
             portfolioValueItem = errorPortfolioValueItem,
-            shouldShowDialog = false,
+            isMotionLayoutTransitionEnabled = true,
             portfolioValuesBackgroundRes = R.color.hero_bg,
             isSuccessStateVisible = true,
             hasNewNotification = false
@@ -72,9 +73,10 @@ class AccountPreviewMapper @Inject constructor(
     fun getSuccessAccountPreview(
         accountListItems: List<BaseAccountListItem>,
         isTestnetBadgeVisible: Boolean,
-        shouldShowDialog: Boolean,
         portfolioValueItem: BasePortfolioValueItem?,
-        hasNewNotification: Boolean
+        hasNewNotification: Boolean,
+        onSwapTutorialDisplayEvent: Event<Int>? = null,
+        onAccountAddressCopyTutorialDisplayEvent: Event<Int>? = null
     ): AccountPreview {
         return AccountPreview(
             isEmptyStateVisible = false,
@@ -83,10 +85,12 @@ class AccountPreviewMapper @Inject constructor(
             accountListItems = accountListItems,
             isTestnetBadgeVisible = isTestnetBadgeVisible,
             portfolioValueItem = portfolioValueItem,
-            shouldShowDialog = shouldShowDialog,
+            isMotionLayoutTransitionEnabled = true,
             portfolioValuesBackgroundRes = R.color.hero_bg,
             isSuccessStateVisible = true,
-            hasNewNotification = hasNewNotification
+            hasNewNotification = hasNewNotification,
+            onSwapTutorialDisplayEvent = onSwapTutorialDisplayEvent,
+            onAccountAddressCopyTutorialDisplayEvent = onAccountAddressCopyTutorialDisplayEvent
         )
     }
 }

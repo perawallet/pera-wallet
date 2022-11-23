@@ -15,6 +15,7 @@ package com.algorand.android.nft.domain.model
 enum class CollectibleMediaType {
     IMAGE,
     VIDEO,
+    AUDIO,
     MIXED,
     NOT_SUPPORTED
 }

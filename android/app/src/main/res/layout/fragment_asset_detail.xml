@@ -108,9 +108,9 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/spacing_xlarge"
         android:layout_marginTop="@dimen/spacing_xxxxlarge"
-        app:constraint_referenced_ids="buyAlgoButton, sendButton, receiveButton"
+        app:constraint_referenced_ids="buyAlgoButton,swapButton, sendButton, receiveButton"
         app:flow_horizontalGap="@dimen/spacing_xxlarge"
-        app:flow_maxElementsWrap="3"
+        app:flow_maxElementsWrap="4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/assetSecondaryValueTextView" />
@@ -123,6 +123,16 @@
         android:text="@string/buy_algo"
         android:visibility="gone"
         app:icon="@drawable/ic_algo_helper_button"
+        tools:visibility="visible" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/swapButton"
+        style="@style/IconButton.Transparent.QuickAction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/swap"
+        android:visibility="gone"
+        app:icon="@drawable/ic_swap_helper_button_bg_ghost"
         tools:visibility="visible" />
 
     <com.google.android.material.button.MaterialButton

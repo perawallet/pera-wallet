@@ -12,21 +12,50 @@
 
 package com.algorand.android.modules.assets.profile.detail.ui.usecase
 
+import androidx.navigation.NavDirections
 import com.algorand.android.modules.assets.profile.detail.domain.usecase.GetAccountAssetDetailUseCase
+import com.algorand.android.modules.assets.profile.detail.ui.AssetDetailFragmentDirections
 import com.algorand.android.modules.assets.profile.detail.ui.mapper.AssetDetailPreviewMapper
 import com.algorand.android.modules.assets.profile.detail.ui.model.AssetDetailPreview
+import com.algorand.android.modules.swap.reddot.domain.usecase.GetSwapFeatureRedDotVisibilityUseCase
+import com.algorand.android.modules.swap.utils.SwapNavigationDestinationHelper
 import com.algorand.android.usecase.AccountDetailUseCase
+import com.algorand.android.utils.Event
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flow
 
 class AssetDetailPreviewUseCase @Inject constructor(
     private val getAccountAssetDetailUseCase: GetAccountAssetDetailUseCase,
     private val accountDetailUseCase: AccountDetailUseCase,
-    private val assetDetailPreviewMapper: AssetDetailPreviewMapper
+    private val assetDetailPreviewMapper: AssetDetailPreviewMapper,
+    private val getSwapFeatureRedDotVisibilityUseCase: GetSwapFeatureRedDotVisibilityUseCase,
+    private val swapNavigationDestinationHelper: SwapNavigationDestinationHelper
 ) {
+
+    suspend fun updatePreviewForNavigatingSwap(
+        currentPreview: AssetDetailPreview,
+        accountAddress: String
+    ): Flow<AssetDetailPreview> = flow {
+        var swapNavDirection: NavDirections? = null
+        swapNavigationDestinationHelper.getSwapNavigationDestination(
+            accountAddress = accountAddress,
+            onNavToSwap = { address ->
+                swapNavDirection = AssetDetailFragmentDirections.actionAssetDetailFragmentToSwapNavigation(address)
+            },
+            onNavToIntroduction = {
+                swapNavDirection = AssetDetailFragmentDirections
+                    .actionAssetDetailFragmentToSwapIntroductionNavigation(accountAddress)
+            }
+        )
+        val newState = swapNavDirection?.let { direction ->
+            currentPreview.copy(swapNavigationDirectionEvent = Event(direction))
+        } ?: currentPreview
+        emit(newState)
+    }
 
     suspend fun initAssetDetailPreview(
         accountAddress: String,
@@ -38,14 +67,20 @@ class AssetDetailPreviewUseCase @Inject constructor(
             accountDetailUseCase.getAccountDetailCacheFlow(accountAddress).filterNotNull()
         ) { baseOwnedAssetDetail, cachedAccountDetail ->
             val account = cachedAccountDetail.data?.account
+            val isSwapButtonSelected = getRedDotVisibility(baseOwnedAssetDetail.isAlgo)
             assetDetailPreviewMapper.mapToAssetDetailPreview(
                 baseOwnedAssetDetail = baseOwnedAssetDetail,
                 accountAddress = accountAddress,
                 accountName = account?.name.orEmpty(),
                 accountType = account?.type,
                 canAccountSignTransaction = accountDetailUseCase.canAccountSignTransaction(accountAddress),
-                isQuickActionButtonsVisible = isQuickActionButtonsVisible
+                isQuickActionButtonsVisible = isQuickActionButtonsVisible,
+                isSwapButtonSelected = isSwapButtonSelected
             )
         }.distinctUntilChanged()
+    }
+
+    private suspend fun getRedDotVisibility(isAlgo: Boolean): Boolean {
+        return getSwapFeatureRedDotVisibilityUseCase.getSwapFeatureRedDotVisibility() && isAlgo
     }
 }

@@ -21,6 +21,7 @@ import androidx.core.view.isVisible
 import com.algorand.android.R
 import com.algorand.android.core.BaseFragment
 import com.algorand.android.databinding.FragmentBaseAccountSelectionBinding
+import com.algorand.android.models.ScreenState
 import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
@@ -31,6 +32,8 @@ import com.algorand.android.utils.viewbinding.viewBinding
 abstract class BaseAccountSelectionFragment : BaseFragment(R.layout.fragment_base_account_selection) {
 
     protected abstract val toolbarConfiguration: ToolbarConfiguration
+
+    protected open val willCopiedItemBeHandled: Boolean = false
 
     protected abstract fun onAccountSelected(publicKey: String)
 
@@ -69,7 +72,7 @@ abstract class BaseAccountSelectionFragment : BaseFragment(R.layout.fragment_bas
     protected val accountAdapter = AccountSelectionAdapter(accountSelectionListener)
 
     private val windowFocusChangeListener = ViewTreeObserver.OnWindowFocusChangeListener { hasFocus ->
-        if (hasFocus) onCopiedItemHandled(context?.getTextFromClipboard()?.toString())
+        if (hasFocus) handleCopiedItemIfNeed()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -97,7 +100,7 @@ abstract class BaseAccountSelectionFragment : BaseFragment(R.layout.fragment_bas
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             view?.viewTreeObserver?.addOnWindowFocusChangeListener(windowFocusChangeListener)
         }
-        onCopiedItemHandled(context?.getTextFromClipboard()?.toString())
+        handleCopiedItemIfNeed()
     }
 
     override fun onPause() {
@@ -117,5 +120,19 @@ abstract class BaseAccountSelectionFragment : BaseFragment(R.layout.fragment_bas
 
     protected fun hideProgress() {
         binding.progressBar.root.hide()
+    }
+
+    protected fun setScreenStateViewVisibility(isVisible: Boolean) {
+        binding.screenStateView.isVisible = isVisible
+    }
+
+    protected fun setScreenStateView(screenState: ScreenState) {
+        binding.screenStateView.setupUi(screenState)
+    }
+
+    private fun handleCopiedItemIfNeed() {
+        if (willCopiedItemBeHandled) {
+            onCopiedItemHandled(context?.getTextFromClipboard()?.toString())
+        }
     }
 }

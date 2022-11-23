@@ -31,7 +31,11 @@ class AccountInformationUseCase @Inject constructor(
     suspend fun getAccountInformation(publicKey: String, includeClosedAccounts: Boolean = false) = flow {
         accountRepository.getAccountInformation(publicKey, includeClosedAccounts).use(
             onSuccess = {
-                emit(DataResource.Success(accountInformationMapper.mapToAccountInformation(it)))
+                val accountInformation = accountInformationMapper.mapToAccountInformation(
+                    accountInformationPayload = it.accountInformation,
+                    currentRound = it.currentRound
+                )
+                emit(DataResource.Success(accountInformation))
             },
             onFailed = { exception, code ->
                 val dataResource = if (code == ACCOUNT_NOT_FOUND_ERROR_CODE) {
@@ -53,9 +57,17 @@ class AccountInformationUseCase @Inject constructor(
         lateinit var accountInformationResult: Result<AccountInformation>
         accountRepository.getAccountInformation(publicKey, includeClosedAccounts).use(
             onSuccess = {
-                val assetIds = it.allAssetHoldingList?.mapNotNull { it.assetId }?.toSet().orEmpty()
+                val accountInformationResponse = it.accountInformation
+                val assetIds = accountInformationResponse?.allAssetHoldingList
+                    ?.mapNotNull { it.assetId }
+                    ?.toSet()
+                    .orEmpty()
                 assetDetailUseCase.cacheIfThereIsNonCachedAsset(assetIds, coroutineScope)
-                accountInformationResult = Result.Success(accountInformationMapper.mapToAccountInformation(it))
+                val accountInformation = accountInformationMapper.mapToAccountInformation(
+                    accountInformationPayload = accountInformationResponse,
+                    currentRound = it.currentRound
+                )
+                accountInformationResult = Result.Success(accountInformation)
             },
             onFailed = { exception, code ->
                 accountInformationResult = if (code == ACCOUNT_NOT_FOUND_ERROR_CODE) {

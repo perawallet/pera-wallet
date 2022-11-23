@@ -16,5 +16,8 @@ import com.google.gson.annotations.SerializedName
 
 data class AccountInformationResponse(
     @SerializedName("account")
-    val accountInformation: AccountInformationResponsePayload?
+    val accountInformation: AccountInformationResponsePayload?,
+
+    @SerializedName("current-round")
+    val currentRound: Long?
 )

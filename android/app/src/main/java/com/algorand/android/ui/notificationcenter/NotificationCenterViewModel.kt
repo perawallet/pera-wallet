@@ -18,18 +18,15 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
-import com.algorand.android.core.AccountManager
 import com.algorand.android.core.BaseViewModel
-import com.algorand.android.database.ContactDao
-import com.algorand.android.decider.AssetDrawableProviderDecider
 import com.algorand.android.deviceregistration.domain.usecase.DeviceIdUseCase
 import com.algorand.android.models.NotificationCenterPreview
 import com.algorand.android.models.NotificationListItem
 import com.algorand.android.modules.accounts.domain.usecase.NotificationStatusUseCase
+import com.algorand.android.modules.deeplink.DeepLinkParser
 import com.algorand.android.notification.PeraNotificationManager
 import com.algorand.android.repository.NotificationRepository
 import com.algorand.android.usecase.NotificationCenterUseCase
-import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.ZonedDateTime
 import javax.inject.Inject
@@ -42,14 +39,11 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class NotificationCenterViewModel @Inject constructor(
     private val peraNotificationManager: PeraNotificationManager,
-    private val contactDao: ContactDao,
-    private val accountManager: AccountManager,
     private val deviceIdUseCase: DeviceIdUseCase,
     private val notificationRepository: NotificationRepository,
     private val notificationCenterUseCase: NotificationCenterUseCase,
-    private val assetDrawableProviderDecider: AssetDrawableProviderDecider,
-    private val simpleAssetDetailUseCase: SimpleAssetDetailUseCase,
-    private val notificationStatusUseCase: NotificationStatusUseCase
+    private val notificationStatusUseCase: NotificationStatusUseCase,
+    private val deepLinkParser: DeepLinkParser
 ) : BaseViewModel() {
 
     private var notificationDataSource: NotificationDataSource? = null
@@ -61,11 +55,8 @@ class NotificationCenterViewModel @Inject constructor(
         pagingSourceFactory = {
             NotificationDataSource(
                 notificationRepository = notificationRepository,
-                contactDao = contactDao,
-                accountManager = accountManager,
                 deviceIdUseCase = deviceIdUseCase,
-                assetDrawableProviderDecider = assetDrawableProviderDecider,
-                simpleAssetDetailUseCase = simpleAssetDetailUseCase
+                deepLinkParser = deepLinkParser
             ).also { notificationDataSource = it }
         }
     ).flow

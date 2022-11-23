@@ -123,6 +123,27 @@ sealed class BaseAccountAssetData : Parcelable {
             ) : BaseOwnedCollectibleData()
 
             @Parcelize
+            data class OwnedCollectibleAudioData(
+                override val id: Long,
+                override val name: String?,
+                override val shortName: String?,
+                override val isAlgo: Boolean,
+                override val decimals: Int,
+                override val creatorPublicKey: String?,
+                override val usdValue: BigDecimal?,
+                override val amount: BigInteger,
+                override val formattedAmount: String,
+                override val formattedCompactAmount: String,
+                override val isAmountInSelectedCurrencyVisible: Boolean,
+                override val collectibleName: String?,
+                override val collectionName: String?,
+                override val parityValueInSelectedCurrency: ParityValue,
+                override val parityValueInSecondaryCurrency: ParityValue,
+                override val prismUrl: String?,
+                override val optedInAtRound: Long?,
+            ) : BaseOwnedCollectibleData()
+
+            @Parcelize
             data class OwnedCollectibleMixedData(
                 override val id: Long,
                 override val name: String?,
@@ -237,6 +258,20 @@ sealed class BaseAccountAssetData : Parcelable {
                 ) : PendingAdditionCollectibleData()
 
                 @Parcelize
+                data class AdditionAudioCollectibleData(
+                    override val id: Long,
+                    override val name: String?,
+                    override val shortName: String?,
+                    override val isAlgo: Boolean,
+                    override val decimals: Int,
+                    override val creatorPublicKey: String?,
+                    override val usdValue: BigDecimal?,
+                    override val collectibleName: String?,
+                    override val collectionName: String?,
+                    override val primaryImageUrl: String?
+                ) : PendingAdditionCollectibleData()
+
+                @Parcelize
                 data class AdditionUnsupportedCollectibleData(
                     override val id: Long,
                     override val name: String?,
@@ -296,6 +331,20 @@ sealed class BaseAccountAssetData : Parcelable {
                 ) : PendingDeletionCollectibleData()
 
                 @Parcelize
+                data class DeletionAudioCollectibleData(
+                    override val id: Long,
+                    override val name: String?,
+                    override val shortName: String?,
+                    override val isAlgo: Boolean,
+                    override val decimals: Int,
+                    override val creatorPublicKey: String?,
+                    override val usdValue: BigDecimal?,
+                    override val collectibleName: String?,
+                    override val collectionName: String?,
+                    override val primaryImageUrl: String?
+                ) : PendingDeletionCollectibleData()
+
+                @Parcelize
                 data class DeletionUnsupportedCollectibleData(
                     override val id: Long,
                     override val name: String?,
@@ -342,6 +391,20 @@ sealed class BaseAccountAssetData : Parcelable {
 
                 @Parcelize
                 data class SendingVideoCollectibleData(
+                    override val id: Long,
+                    override val name: String?,
+                    override val shortName: String?,
+                    override val isAlgo: Boolean,
+                    override val decimals: Int,
+                    override val creatorPublicKey: String?,
+                    override val usdValue: BigDecimal?,
+                    override val collectibleName: String?,
+                    override val collectionName: String?,
+                    override val primaryImageUrl: String?
+                ) : PendingSendingCollectibleData()
+
+                @Parcelize
+                data class SendingAudioCollectibleData(
                     override val id: Long,
                     override val name: String?,
                     override val shortName: String?,

@@ -18,7 +18,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class WalletConnectSessionEntity(
-    @ColumnInfo(name = "id")
+    @ColumnInfo(name = WALLET_CONNECT_SESSION_TABLE_SESSION_ID_COLUMN_NAME)
     @PrimaryKey
     val id: Long,
 
@@ -31,12 +31,14 @@ data class WalletConnectSessionEntity(
     @ColumnInfo(name = "date_time_stamp")
     val dateTimeStamp: Long,
 
-    @ColumnInfo(name = "connected_account_public_key")
-    val connectedAccountPublicKey: String,
-
     @ColumnInfo(name = "is_connected")
     val isConnected: Boolean = false,
 
     @ColumnInfo(name = "fallback_browser_group_response")
     val fallbackBrowserGroupResponse: String? = null
-)
+) {
+
+    companion object {
+        const val WALLET_CONNECT_SESSION_TABLE_SESSION_ID_COLUMN_NAME = "id"
+    }
+}

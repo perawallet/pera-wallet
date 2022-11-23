@@ -101,7 +101,7 @@
     <string name="bluetooth_is_enabled">蓝牙功能已开启。</string>
     <string name="all">全部</string>
     <string name="verified_assets">已验证的资产</string>
-    <string name="what_does_asset">资产验证是什么意思？<annotation type="verified-icon"></annotation></string>
+    <string name="what_does_asset">资产验证是什么意思？<annotation type="verified-icon"> </annotation></string>
     <string name="verified_assets_first_paragraph">通过我们验证过程的资产是已知的项目，其网站和公开信息已对这个特定的ASA进行了验证。验证状态并不是对该资产的背书。</string>
     <string name="verified_assets_second_paragraph">Pera钱包与经验证的ASA持有者没有任何关系。此徽章仅供参考。</string>
     <string name="verified_assets_third_paragraph">也就是说，在进行交易资产之前，您应当<annotation type="color">反复核实</annotation> 该资产编号是否是您想要选择的。</string>
@@ -314,8 +314,6 @@
     <string name="unsigned_transactions">未签署的交易</string>
     <string name="application_id">应用程序ID</string>
     <string name="this_transaction_will_transfer">这项交易将转移该账户的所有权。您当前的恢复密码将不再可以访问这些资产。</string>
-    <string name="once_confirmed_the_connected_application">一经确认，连接的外部程序可以自行发送交易。至由于交易发生后不可逆转，在交易前请仔细检查。</string>
-    <string name="are_you_sure_question_mark">确定吗？</string>
     <string name="this_transaction_is_sending">此交易将发送您的全部ALGO余额。</string>
     <string name="close_asset_to">资产抄送至</string>
     <string name="this_transaction_is_sending_asset">此交易将发送您的全部%1$s余额，并将从您的账户中扣除%1$s。</string>
@@ -597,6 +595,7 @@
     <string name="receive_an_nft">接收NFT</string>
     <string name="the_account_name">帐户<annotation font="dmsans_bold">\"<annotation replacement="account_name"> </annotation>\"</annotation>已经成功更新密钥。</string>
     <string name="asset_support_success"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>已将<annotation replacement="asset">assetPlaceholder</annotation>添加到他们的账户。您可以向他们发送<annotation replacement="asset">assetPlaceholder</annotation>。</string>
+    <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>正尝试发送<annotation replacement="asset">assetPlaceholder</annotation>到您的账户<annotation font="dmsans_medium"><annotation replacement="receiver">receiverPlaceholder</annotation></annotation>。点击选择加入该资产，以处理该交易。</string>
     <string name="transaction_send_successful">您的交易的 <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation><annotation replacement="asset">assetPlaceholder</annotation>从 <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>到 <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>的交易已完成。</string>
     <string name="transaction_send_failed">您的交易的 <annotation font="dmsans_medium"><annotation replacement="amount">amountNamePlaceholder</annotation></annotation><annotation replacement="asset">assetNamePlaceholder</annotation>从 <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>到 <annotation font="dmsans_medium"><annotation replacement="receiver">addressNamePlaceholder</annotation></annotation>的交易已经失败。</string>
     <string name="the_only_way_to">恢复Algorand账户的唯一途径是使用恢复助记词。</string>
@@ -723,7 +722,6 @@
     <string name="quadrillion_abbreviation">千万亿</string>
     <string name="quintillion">千亿</string>
     <string name="quintillion_abbreviation">千亿</string>
-    <string name="account_related_to_this_notification">与此通知相关的账户已从该设备中删除。如需查看该通知的详细信息，请再次添加该账户。</string>
     <string name="account_asset_count_zero">0 资产</string>
     <string name="pin_code_did_not_match">PIN码不匹配。请重试。</string>
     <string name="your_main_currency_is_placeholder">您的主要货币是<annotation font="dmsans_regular"><annotation custom="primaryCurrencyColor"><annotation replacement="primaryCurrencyId">primaryCurrencyPlaceholder</annotation></annotation></annotation>，次要货币为<annotation font="dmsans_regular"><annotation custom="secondaryCurrencyColor"><annotation replacement="secondaryCurrencyId">secondaryCurrencyPlaceholder</annotation></annotation></annotation></string>
@@ -798,4 +796,93 @@
     <string name="you_ve_connected">您已将账户连接到%1$s了。返回到您的网络浏览器完成操作。</string>
     <string name="transaction_signed">交易已签署！</string>
     <string name="transaction_was_sent">交易已发送至%1$s。返回到您的网络浏览器完成操作。</string>
+    <string name="max_all_caps">最大额度</string>
+    <string name="asset_successfully_removed_to_your">%1$s已成功移除到您的账户上。</string>
+    <string name="swap">交换</string>
+    <string name="convert_between_popular_asa_pairs">在受欢迎的ASA配对之间转换</string>
+    <string name="swap_to">调换到</string>
+    <string name="swap_from">调换源于</string>
+    <string name="we_can_not_show_assets">我们现在无法显示资产。请再次尝试。</string>
+    <string name="choose_an_asset">选择一项资产</string>
+    <string name="balance_formatted">余额：%1$s</string>
+    <string name="select_an_account_to_make">选择一个账户进行交换</string>
+    <string name="price_impact_is_the_influence">价格影响是指您的交易对资产对的市场价格的影响。它与资金池中的流动量直接相关。</string>
+    <string name="slippage_tolerance">滑点公差</string>
+    <string name="slippage_is_the_price_difference">滑点是您提交交易和交易在区块链上确认之间的价格差异。如果滑点率超过您在此处设置的容差百分比，交易将自动取消以保护您免受价值损失。</string>
+    <string name="swap_in_pera">在Pera中交换</string>
+    <string name="pera_wallet_now_provides_an">Pera钱包现提供一种简单而快速的资产交换方式。</string>
+    <string name="try_swap">尝试交换</string>
+    <string name="later">稍后</string>
+    <string name="set_custom_slippage">设置自定义滑点</string>
+    <string name="auto">自动</string>
+    <string name="slippage_tolerance_must_be_between">滑点公差必须介于%1$.1f%%和%2$.1f%%之间。</string>
+    <string name="balance_percentage_must_be_between">余额百分比必须介于%1$d%%和%2$d%%之间。</string>
+    <string name="set_custom_percentage">设置自定义百分比</string>
+    <string name="balance_percentage">余额百分比</string>
+    <string name="pera_wallet_provides_an_easy">Pera钱包提供简单快捷的交换资产方式。该交换功能允许一项ASA与另一项使用智能合约的ASA进行交换，并收取市场费用。</string>
+    <string name="by_continuing_you_agree_to">继续表明您同意我们的\n 交换伙伴<annotation url="tinymanTermsOfServiceUrl"><annotation type="bold"><annotation type="color">服务条款</annotation></annotation></annotation></string>
+    <string name="start_swapping">开始交换</string>
+    <string name="powered_by">提供者为</string>
+    <string name="new_text">全新</string>
+    <string name="this_account_doesn_t_have">该账户不具备所要求的<annotation replacement="minimum_balance">minimumBalancePlaceholder</annotation>最低交换操作余额。</string>
+    <string name="minimum_balance">最低余额</string>
+    <string name="account_does_not_have">账户中没有足够的余额支付此交易。</string>
+    <string name="account_does_not_have_algo">账户中的ALGO余额不足以支付交易费用。</string>
+    <string name="confirm_swap">确认交换</string>
+    <string name="price_impact">价格影响</string>
+    <string name="minimum_received">已接收的最低额度</string>
+    <string name="total_swap_fee">总交换费用</string>
+    <string name="view_swap_summary">查看交换摘要</string>
+    <string name="from_to_to_asset_ratio">每<annotation replacement="secondAssetShortName">AssetShortName</annotation>的<annotation replacement="ratio">比率</annotation> <annotation replacement="firstAssetShortName">assetShortName</annotation></string>
+    <string name="slippage_tolerance_value_updated">滑点公差值更新了！</string>
+    <string name="sign_with_ledger">使用Ledger登录</string>
+    <string name="we_ve_detected_that_you">我们已检测到您在用这个账户使用Ledger设备。 您需要使用您的安全令牌硬件逐一<annotation font="dmsans_medium">签署<annotation replacement="transaction_count">transactionCountPlaceholder</annotation>交易</annotation>。</string>
+    <plurals name="sign_transaction">
+        <item quantity="other">签署交易</item>
+    </plurals>
+    <string name="signing_index_out_of_count">从%2$d中签出 % %1$d …</string>
+    <string name="view_transaction_detail_in_algoexplorer">在Algo浏览器中查看交易细节</string>
+    <string name="go_to_homepage">转到主页</string>
+    <string name="sending_the_transaction">发送交易</string>
+    <string name="you_will_receive_at_least">你将收到至少<annotation replacement="amount_and_asset_name">AssetNamePlaceholder</annotation>，否则交易将被退回。</string>
+    <string name="asset_pair_swap_completed"><annotation replacement="to_asset_name">toAssetNamePlaceholder</annotation> / <annotation replacement="from_asset_name">fromAssetNamePlaceholder</annotation>交换已完成。</string>
+    <string name="you_received_amount_asset_name_in">您收到 <annotation replacement="to_amount_and_asset_name"><annotation custom="received_asset_color">toAmount AndAssetNamePlaceholder</annotation></annotation>以换取 <annotation replacement="from_amount_and_asset_name"><annotation custom="paid_asset_color">fromAmount andAssetNamePlaceholder</annotation></annotation></string>
+    <string name="asset_pair_swap_has_failed"><annotation replacement="to_asset_name">toAssetNamePlaceholder</annotation> / <annotation replacement="from_asset_name">fromAssetNamePlaceholder</annotation>交换失败了。</string>
+    <string name="because_of_error_message">由于<annotation replacement="error_message">errorMessagePlaceholder</annotation>。\n请重试。</string>
+    <string name="exchange_fee">兑换费用</string>
+    <string name="pera_fee">Pera费用</string>
+    <string name="total_swap_fee_asterisk">总交换费用*</string>
+    <string name="amount_displayed_in_the">总交换费用中说显示的额度将会包含在交换中。Algorand网络费用将会额外收取。</string>
+    <string name="swap_summary">交换摘要</string>
+    <string name="received">已接收的</string>
+    <string name="paid">已支付的</string>
+    <string name="algorand_fees">Algorand费用</string>
+    <string name="opt_in_fees">选择加入费用</string>
+    <string name="exchange_fees">兑换费用</string>
+    <string name="pera_fees">Pera费用</string>
+    <string name="an_unexpected_error_mismatched_txn">出生意外错误：代码错误：交易不匹配。</string>
+    <string name="custom">自定义</string>
+    <string name="select_all">全选</string>
+    <string name="unselect_all">取消全选</string>
+    <string name="disclaimer">免责声明</string>
+    <string name="export_to_pera_web">导出到Pera网络</string>
+    <string name="you_re_about_to_share">您将会分享您的密码，并将密码导入到Pera网络钱包上！</string>
+    <string name="never_accept_a">请不要接受任何您未提出的请求。</string>
+    <string name="confirm_export_domain">确认导出域名</string>
+    <string name="for_your_security_please_confirm">为了您的安全，请通过输入您在电脑上所看到的的域名，以确认您在把账户导出到Pera网络上。</string>
+    <string name="enter_url_of_web_wallet">输入网络钱包地址</string>
+    <string name="url_of_web_wallet">网络钱包地址</string>
+    <string name="to_make_sure_that_you">为确保您能够将账户导出到安全的位置，请始终确认您是在Pera的官网上。</string>
+    <string name="confirm_accounts">确认账户</string>
+    <string name="you_re_about_to_export">您将会安全地把这些账户导出到Pera网络上：</string>
+    <string name="accounts_exported_successfully">账户导出成功！</string>
+    <string name="you_can_now_use_these">您现在可以在Pera网络钱包上使用这些账户。</string>
+    <string name="we_couldn_t_find">我们无法找到任何符合导出条件的账户。</string>
+    <plurals name="account_count">
+        <item quantity="other">%1$d 账户</item>
+    </plurals>
+    <string name="i_want_to_recover_an">我希望恢复一个由我的Ledger硬件钱包所支持的Algorand账户。</string>
+    <string name="total_owned">总拥有量</string>
+    <string name="this_is_the_fee_charged">这是由去中心化交易所向您收取的费用。这笔费用将自动在您发送的金额中扣除，并计入最低收款金额之中。此笔给用不会成为额外的费用。</string>
+    <string name="we_encountered_an_unexpected">我们遇到了意料之外的错误，请稍后重试。</string>
 </resources>

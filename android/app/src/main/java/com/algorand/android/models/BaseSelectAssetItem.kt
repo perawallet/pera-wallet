@@ -7,8 +7,7 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- *  limitations under the License
- *
+ * limitations under the License
  */
 
 package com.algorand.android.models
@@ -26,6 +25,7 @@ sealed class BaseSelectAssetItem : RecyclerListItem, AssetSortableItem {
         SELECT_ASSET_TEM,
         SELECT_COLLECTIBLE_IMAGE_ITEM,
         SELECT_COLLECTIBLE_VIDEO_ITEM,
+        SELECT_COLLECTIBLE_AUDIO_ITEM,
         SELECT_COLLECTIBLE_NOT_SUPPORTED_ITEM,
         SELECT_COLLECTIBLE_MIXED_ITEM
     }
@@ -125,6 +125,35 @@ sealed class BaseSelectAssetItem : RecyclerListItem, AssetSortableItem {
         ) : BaseSelectCollectibleItem() {
 
             override val itemType: ItemType = ItemType.SELECT_COLLECTIBLE_VIDEO_ITEM
+
+            override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+                return other is SelectVideoCollectibleItem && id == other.id
+            }
+
+            override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+                return other is SelectVideoCollectibleItem && this == other
+            }
+        }
+
+        data class SelectAudioCollectibleItem(
+            override val id: Long,
+            override val name: String?,
+            override val shortName: String?,
+            override val avatarDisplayText: AssetName,
+            override val isAlgo: Boolean,
+            override val amount: BigInteger,
+            override val formattedAmount: String,
+            override val formattedCompactAmount: String,
+            override val formattedSelectedCurrencyValue: String,
+            override val formattedSelectedCurrencyCompactValue: String,
+            override val isAmountInSelectedCurrencyVisible: Boolean,
+            override val baseAssetDrawableProvider: BaseAssetDrawableProvider,
+            override val prismUrl: String?,
+            override val optedInAtRound: Long?,
+            override val amountInSelectedCurrency: BigDecimal
+        ) : BaseSelectCollectibleItem() {
+
+            override val itemType: ItemType = ItemType.SELECT_COLLECTIBLE_AUDIO_ITEM
 
             override fun areItemsTheSame(other: RecyclerListItem): Boolean {
                 return other is SelectVideoCollectibleItem && id == other.id

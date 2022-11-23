@@ -133,10 +133,7 @@ class NotificationCenterFragment : DaggerBaseFragment(R.layout.fragment_notifica
             onHistoryNotAvailableEvent?.consume()?.run {
                 onHistoryNotAvailable(publicKey = this)
             }
-            onTransactionReceivedEvent?.consume()?.run {
-                notificationCenterViewModel.isAssetAvailableOnAccount(publicKey = first, assetId = second)
-            }
-            onTransactionSentEvent?.consume()?.run {
+            onTransactionEvent?.consume()?.run {
                 notificationCenterViewModel.isAssetAvailableOnAccount(publicKey = first, assetId = second)
             }
         }

@@ -13,7 +13,9 @@
 package com.algorand.android.modules.accounts.domain.model
 
 import androidx.annotation.ColorRes
+import androidx.navigation.NavDirections
 import com.algorand.android.models.BottomGlobalError
+import com.algorand.android.utils.Event
 
 data class AccountPreview(
     val isEmptyStateVisible: Boolean,
@@ -23,8 +25,11 @@ data class AccountPreview(
     val portfolioValueItem: BasePortfolioValueItem? = null,
     val bottomGlobalError: BottomGlobalError? = null,
     val isTestnetBadgeVisible: Boolean,
-    val shouldShowDialog: Boolean,
+    val isMotionLayoutTransitionEnabled: Boolean,
     @ColorRes val portfolioValuesBackgroundRes: Int,
     val isSuccessStateVisible: Boolean,
-    val hasNewNotification: Boolean
+    val hasNewNotification: Boolean,
+    val onAccountAddressCopyTutorialDisplayEvent: Event<Int>? = null,
+    val onSwapTutorialDisplayEvent: Event<Int>? = null,
+    val swapNavigationDestinationEvent: Event<NavDirections>? = null
 )

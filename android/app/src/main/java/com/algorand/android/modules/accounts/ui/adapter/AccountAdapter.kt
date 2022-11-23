@@ -94,8 +94,8 @@ class AccountAdapter(
             accountAdapterListener.onSendClick()
         }
 
-        override fun onReceiveClick() {
-            accountAdapterListener.onReceiveClick()
+        override fun onSwapClick() {
+            accountAdapterListener.onSwapClick()
         }
 
         override fun onScanQrClick() {
@@ -131,7 +131,7 @@ class AccountAdapter(
         fun onBannerActionButtonClick(url: String, isGovernance: Boolean)
         fun onBuyAlgoClick()
         fun onSendClick()
-        fun onReceiveClick()
+        fun onSwapClick()
         fun onScanQrClick()
         fun onSortClick()
         fun onAddAccountClick()

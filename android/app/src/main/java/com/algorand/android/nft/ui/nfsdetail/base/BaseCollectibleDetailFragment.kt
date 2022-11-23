@@ -67,6 +67,11 @@ abstract class BaseCollectibleDetailFragment : BaseFragment(R.layout.fragment_co
             navToVideoPlayerFragment(videoUrl)
         }
 
+        override fun onAudioMediaClick(audioUrl: String?, collectibleImageView: View) {
+            if (audioUrl.isNullOrBlank()) return
+            navToAudioPlayerFragment(audioUrl)
+        }
+
         override fun onImageMediaClick(
             imageUrl: String?,
             errorDisplayText: String,
@@ -102,6 +107,8 @@ abstract class BaseCollectibleDetailFragment : BaseFragment(R.layout.fragment_co
     abstract fun navToShowQrBottomSheet()
 
     abstract fun navToVideoPlayerFragment(videoUrl: String)
+
+    abstract fun navToAudioPlayerFragment(audioUrl: String)
 
     abstract fun copyOptedInAccountAddress()
 

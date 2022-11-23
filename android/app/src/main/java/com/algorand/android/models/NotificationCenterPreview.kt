@@ -21,8 +21,7 @@ data class NotificationCenterPreview(
     val onGoingCollectibleProfileEvent: Event<Pair<String, Long>>?,
     val onGoingAssetProfileEvent: Event<Pair<String, Long>>?,
     val onHistoryNotAvailableEvent: Event<String>?,
-    val onTransactionReceivedEvent: Event<Pair<String, Long>>?,
-    val onTransactionSentEvent: Event<Pair<String, Long>>?,
+    val onTransactionEvent: Event<Pair<String, Long>>?,
     val onAssetSupportRequestEvent: Event<Pair<String, Long>>?,
     val errorMessageResId: Event<Int>?
 )

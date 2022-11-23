@@ -17,8 +17,10 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import com.algorand.android.models.WalletConnectSessionAccountEntity
+import com.algorand.android.models.WalletConnectSessionByAccountsAddress
 import com.algorand.android.models.WalletConnectSessionEntity
-import com.algorand.android.models.WalletConnectSessionHistoryEntity
+import com.algorand.android.models.WalletConnectSessionWithAccountsAddresses
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -28,20 +30,17 @@ interface WalletConnectDao {
     @Transaction
     suspend fun insertWalletConnectSessionAndHistory(
         wcSessionEntity: WalletConnectSessionEntity,
-        wcSessionEntityHistory: WalletConnectSessionHistoryEntity
+        wcSessionAccountList: List<WalletConnectSessionAccountEntity>
     ) {
         insertWalletConnectSession(wcSessionEntity)
-        insertWalletConnectSessionHistory(wcSessionEntityHistory)
+        wcSessionAccountList.forEach { insertWalletConnectSessionAccount(it) }
     }
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWalletConnectSession(wcSessionEntity: WalletConnectSessionEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertWalletConnectSessionHistory(wcSessionEntity: WalletConnectSessionHistoryEntity)
-
-    @Query("SELECT * FROM WalletConnectSessionEntity")
-    fun getAllWCSessions(): Flow<List<WalletConnectSessionEntity>>
+    suspend fun insertWalletConnectSessionAccount(walletConnectSessionAccountEntity: WalletConnectSessionAccountEntity)
 
     @Query("SELECT * FROM WalletConnectSessionEntity WHERE id = :sessionId")
     suspend fun getSessionById(sessionId: Long): WalletConnectSessionEntity?
@@ -64,6 +63,18 @@ interface WalletConnectDao {
     @Query("SELECT * FROM WalletConnectSessionEntity")
     suspend fun getWCSessionList(): List<WalletConnectSessionEntity>
 
-    @Query("SELECT * FROM WalletConnectSessionEntity WHERE connected_account_public_key == :publicKey")
-    suspend fun getWCSessionListByPublicKey(publicKey: String): List<WalletConnectSessionEntity>
+    @Transaction
+    @Query("SELECT * FROM WalletConnectSessionAccountEntity WHERE connected_account_address = :accountAddress")
+    suspend fun getWCSessionListByAccountAddress(accountAddress: String): List<WalletConnectSessionByAccountsAddress>?
+
+    @Transaction
+    @Query("SELECT * FROM WalletConnectSessionAccountEntity WHERE session_id = :sessionId")
+    suspend fun getConnectedAccountsOfSession(sessionId: Long): List<WalletConnectSessionAccountEntity>?
+
+    @Transaction
+    @Query("SELECT * FROM WalletConnectSessionEntity")
+    fun getAllWalletConnectSessionWithAccountAddresses(): Flow<List<WalletConnectSessionWithAccountsAddresses>?>
+
+    @Query("DELETE FROM WalletConnectSessionAccountEntity WHERE session_id = :sessionId AND connected_account_address = :accountAddress")
+    suspend fun deleteWalletConnectAccountBySession(sessionId: Long, accountAddress: String)
 }

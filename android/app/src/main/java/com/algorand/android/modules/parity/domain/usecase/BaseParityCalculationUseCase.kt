@@ -26,6 +26,7 @@ abstract class BaseParityCalculationUseCase(
 ) : BaseUseCase() {
 
     abstract fun getAssetParityValue(assetHolding: AssetHolding, assetItem: BaseAssetDetail): ParityValue
+    abstract fun getAssetParityValue(assetAmount: BigInteger, assetUsdValue: BigDecimal, assetDecimal: Int): ParityValue
     abstract fun getAlgoParityValue(algoAmount: BigInteger): ParityValue
 
     protected fun calculateParityValue(

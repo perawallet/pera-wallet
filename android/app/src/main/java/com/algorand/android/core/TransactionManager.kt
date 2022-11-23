@@ -79,11 +79,19 @@ class TransactionManager @Inject constructor(
     var transactionDataList: List<TransactionData>? = null
 
     private val scanCallback = object : CustomScanCallback() {
-        override fun onLedgerScanned(device: BluetoothDevice) {
+        override fun onLedgerScanned(
+            device: BluetoothDevice,
+            currentTransactionIndex: Int?,
+            totalTransactionCount: Int?
+        ) {
             ledgerBleSearchManager.stop()
             currentScope.launch {
                 signHelper.currentItem?.run {
-                    ledgerBleOperationManager.startLedgerOperation(TransactionOperation(device, this))
+                    ledgerBleOperationManager.startLedgerOperation(
+                        newOperation = TransactionOperation(device, this),
+                        currentTransactionIndex = currentTransactionIndex,
+                        totalTransactionCount = totalTransactionCount
+                    )
                 }
             }
         }
@@ -132,11 +140,16 @@ class TransactionManager @Inject constructor(
             }
         }
 
-        override fun onNextItemToBeDequeued(transaction: TransactionData) {
+        override fun onNextItemToBeDequeued(
+            transaction: TransactionData,
+            currentItemIndex: Int,
+            totalItemCount: Int
+        ) {
             val accountDetail = transaction.accountCacheData.account.detail
             if (accountDetail == null) {
                 setSignFailed(Defined(AnnotatedString(stringResId = R.string.an_error_occured)))
             } else {
+                // TODO: add [currentItemIndex] and [totalItemCount] after merging this core swap screens
                 transaction.signTxn(accountDetail)
             }
         }
@@ -464,7 +477,7 @@ class TransactionManager @Inject constructor(
     }
 
     private fun searchForDevice(ledgerAddress: String) {
-        ledgerBleSearchManager.scan(scanCallback, ledgerAddress)
+        ledgerBleSearchManager.scan(newScanCallback = scanCallback, filteredAddress = ledgerAddress)
     }
 
     // this also stops LedgerBleOperationManager.

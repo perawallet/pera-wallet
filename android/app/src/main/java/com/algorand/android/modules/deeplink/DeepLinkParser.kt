@@ -15,16 +15,19 @@
 package com.algorand.android.modules.deeplink
 
 import android.net.Uri
+import com.algorand.android.models.NotificationGroupType
 import com.algorand.android.models.RawMnemonicPayload
 import com.algorand.android.modules.deeplink.domain.model.RawDeepLink
 import com.algorand.android.modules.webexport.model.WebExportQrCode
 import com.algorand.android.utils.fromJson
 import com.algorand.android.utils.isValidAddress
-import com.google.gson.Gson
+import com.squareup.moshi.Moshi
 import java.math.BigInteger
 import javax.inject.Inject
 
-class DeepLinkParser @Inject constructor() {
+class DeepLinkParser @Inject constructor(
+    private val moshi: Moshi
+) {
 
     fun parseDeepLink(deepLink: String): RawDeepLink {
         val parsedUri = Uri.parse(deepLink)
@@ -39,7 +42,8 @@ class DeepLinkParser @Inject constructor() {
             label = getLabel(parsedUri),
             transactionId = getTransactionId(parsedUri),
             transactionStatus = getTransactionStatus(parsedUri),
-            webExportQrCode = getWebExportData(parsedUri)
+            webExportQrCode = getWebExportData(parsedUri),
+            notificationGroupType = getNotificationGroupType(parsedUri)
         )
     }
 
@@ -78,7 +82,7 @@ class DeepLinkParser @Inject constructor() {
             if (isApplink(this)) {
                 path?.split(PATH_SEPARATOR)?.firstOrNull { it.isValidAddress() }
             } else {
-                authority
+                parseQueryIfExist(ACCOUNT_ID_QUERY_KEY, this) ?: authority
             }.takeIf { it.isValidAddress() } ?: uri.toString().takeIf { it.isValidAddress() }
         }
     }
@@ -101,7 +105,7 @@ class DeepLinkParser @Inject constructor() {
 
     private fun getMnemonic(uri: Uri): String? {
         return try {
-            Gson().fromJson<RawMnemonicPayload>(uri.toString())?.mnemonic
+            moshi.fromJson<RawMnemonicPayload>(uri.toString())?.mnemonic
         } catch (exception: Exception) {
             null
         }
@@ -109,9 +113,19 @@ class DeepLinkParser @Inject constructor() {
 
     private fun getWebExportData(uri: Uri): WebExportQrCode? {
         return try {
-            Gson().fromJson<WebExportQrCode>(uri.toString())
+            moshi.fromJson<WebExportQrCode>(uri.toString())
         } catch (exception: Exception) {
             null
+        }
+    }
+
+    private fun getNotificationGroupType(uri: Uri): NotificationGroupType? {
+        return with(uri) {
+            when (authority + path) {
+                NOTIFICATION_ACTION_ASSET_TRANSACTIONS -> NotificationGroupType.TRANSACTIONS
+                NOTIFICATION_ACTION_ASSET_OPTIN -> NotificationGroupType.OPTIN
+                else -> null
+            }
         }
     }
 
@@ -137,11 +151,14 @@ class DeepLinkParser @Inject constructor() {
 
         private const val AMOUNT_QUERY_KEY = "amount"
         private const val ASSET_ID_QUERY_KEY = "asset"
+        private const val ACCOUNT_ID_QUERY_KEY = "account"
         private const val NOTE_QUERY_KEY = "note"
         private const val XNOTE_QUERY_KEY = "xnote"
         private const val LABEL_QUERY_KEY = "label"
         private const val TRANSACTION_ID_KEY = "transactionId"
         private const val TRANSACTION_STATUS_KEY = "transactionStatus"
+        private const val NOTIFICATION_ACTION_ASSET_TRANSACTIONS = "asset/transactions"
+        private const val NOTIFICATION_ACTION_ASSET_OPTIN = "asset/opt-in"
 
         private const val AUTH_SEPARATOR = "//"
         private const val PATH_SEPARATOR = "/"

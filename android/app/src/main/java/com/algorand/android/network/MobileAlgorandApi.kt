@@ -25,18 +25,28 @@ import com.algorand.android.models.NotificationFilterRequest
 import com.algorand.android.models.NotificationItem
 import com.algorand.android.models.Pagination
 import com.algorand.android.models.PushTokenDeleteRequest
+import com.algorand.android.modules.accountblockpolling.data.model.ShouldRefreshRequestBody
+import com.algorand.android.modules.accountblockpolling.data.model.ShouldRefreshResponse
 import com.algorand.android.models.TrackTransactionRequest
 import com.algorand.android.models.VerifiedAssetDetail
+import com.algorand.android.models.WalletConnectSessionSubscriptionBody
+import com.algorand.android.modules.assets.addition.base.ui.BaseAddAssetViewModel.Companion.SEARCH_RESULT_LIMIT
 import com.algorand.android.modules.accounts.data.model.LastSeenNotificationRequest
 import com.algorand.android.modules.accounts.data.model.LastSeenNotificationResponse
 import com.algorand.android.modules.accounts.data.model.NotificationStatusResponse
 import com.algorand.android.modules.currency.data.model.CurrencyOptionResponse
 import com.algorand.android.modules.nftdomain.data.model.NftDomainSearchResponse
 import com.algorand.android.modules.parity.data.model.CurrencyDetailResponse
+import com.algorand.android.modules.swap.assetselection.toasset.data.model.AvailableSwapAssetListResponse
+import com.algorand.android.modules.swap.confirmswap.data.model.CreateSwapQuoteTransactionsRequestBody
+import com.algorand.android.modules.swap.confirmswap.data.model.CreateSwapQuoteTransactionsResponse
+import com.algorand.android.modules.swap.assetswap.data.model.PeraFeeRequestBody
+import com.algorand.android.modules.swap.assetswap.data.model.PeraFeeResponse
+import com.algorand.android.modules.swap.assetswap.data.model.SwapQuoteRequestBody
+import com.algorand.android.modules.swap.assetswap.data.model.SwapQuoteResultResponse
 import com.algorand.android.modules.webexport.model.WebBackupRequestBody
 import com.algorand.android.modules.webexport.accountconfirmation.data.model.ExportBackupResponse
 import com.algorand.android.network.MobileHeaderInterceptor.Companion.ALGORAND_NETWORK_KEY
-import com.algorand.android.modules.assets.addition.base.ui.BaseAddAssetViewModel.Companion.SEARCH_RESULT_LIMIT
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -53,50 +63,50 @@ import retrofit2.http.Url
 
 interface MobileAlgorandApi {
 
-    @POST("feedback/")
+    @POST("v1/feedback/")
     suspend fun postFeedback(@Body feedback: Feedback): Response<Unit>
 
-    @GET("feedback/categories/")
+    @GET("v1/feedback/categories/")
     suspend fun getFeedbackCategories(): Response<List<FeedbackCategory>>
 
-    @POST("devices/")
+    @POST("v1/devices/")
     suspend fun postRegisterDevice(
         @Body deviceRegistrationRequest: DeviceRegistrationRequest
     ): Response<DeviceRegistrationResponse>
 
-    @PUT("devices/{device_id}/")
+    @PUT("v1/devices/{device_id}/")
     suspend fun putUpdateDevice(
         @Path("device_id") deviceId: String,
         @Body deviceUpdateRequest: DeviceUpdateRequest,
         @Header(ALGORAND_NETWORK_KEY) networkSlug: String?
     ): Response<DeviceRegistrationResponse>
 
-    @HTTP(method = "DELETE", path = "devices/", hasBody = true)
+    @HTTP(method = "DELETE", path = "v1/devices/", hasBody = true)
     suspend fun deletePushToken(
         @Header(ALGORAND_NETWORK_KEY) networkSlug: String,
         @Body pushTokenDeleteRequest: PushTokenDeleteRequest
     ): Response<Unit>
 
-    @POST("transactions/")
+    @POST("v1/transactions/")
     suspend fun trackTransaction(@Body trackTransactionRequest: TrackTransactionRequest): Response<Unit>
 
-    @POST("asset-requests/")
+    @POST("v1/asset-requests/")
     suspend fun postAssetSupportRequest(@Body assetSupportRequest: AssetSupportRequest): Response<Unit>
 
-    @GET("verified-assets/?limit=all")
+    @GET("v1/verified-assets/?limit=all")
     suspend fun getVerifiedAssets(): Response<Pagination<VerifiedAssetDetail>>
 
-    @GET("devices/{device_id}/notifications/")
+    @GET("v2/devices/{device_id}/notifications/")
     suspend fun getNotifications(
         @Path("device_id") deviceId: String
     ): Response<Pagination<NotificationItem>>
 
-    @GET("devices/{device_id}/notification-status/")
+    @GET("v1/devices/{device_id}/notification-status/")
     suspend fun getNotificationStatus(
         @Path("device_id") deviceId: String
     ): Response<NotificationStatusResponse>
 
-    @PUT("devices/{device_id}/update-last-seen-notification/")
+    @PUT("v1/devices/{device_id}/update-last-seen-notification/")
     suspend fun putLastSeenNotification(
         @Path("device_id") deviceId: String,
         @Body lastSeenRequest: LastSeenNotificationRequest,
@@ -106,7 +116,7 @@ interface MobileAlgorandApi {
     @GET
     suspend fun getNotificationsMore(@Url url: String): Response<Pagination<NotificationItem>>
 
-    @GET("assets/search/")
+    @GET("v1/assets/search/")
     suspend fun getAssets(
         @Query("paginator") paginator: String? = "cursor",
         @Query("q") assetQuery: String?,
@@ -115,13 +125,13 @@ interface MobileAlgorandApi {
         @Query("has_collectible") hasCollectible: Boolean? = null
     ): Response<Pagination<AssetSearchResponse>>
 
-    @GET("assets/")
+    @GET("v1/assets/")
     suspend fun getAssetsByIds(
         @Query("asset_ids", encoded = true) assetIdsList: String,
         @Query("include_deleted") includeDeleted: Boolean? = null
     ): Response<Pagination<AssetDetailResponse>>
 
-    @GET("assets/{asset_id}/")
+    @GET("v1/assets/{asset_id}/")
     suspend fun getAssetDetail(
         @Path("asset_id") nftAssetId: Long
     ): Response<AssetDetailResponse>
@@ -129,32 +139,32 @@ interface MobileAlgorandApi {
     @GET
     suspend fun getAssetsMore(@Url url: String): Response<Pagination<AssetSearchResponse>>
 
-    @GET("currencies/")
+    @GET("v1/currencies/")
     suspend fun getCurrencies(): Response<List<CurrencyOptionResponse>>
 
-    @GET("currencies/{currency_id}/")
+    @GET("v1/currencies/{currency_id}/")
     suspend fun getCurrencyDetail(
         @Path("currency_id") currencyId: String
     ): Response<CurrencyDetailResponse>
 
-    @PATCH("devices/{device_id}/accounts/{address}/")
+    @PATCH("v1/devices/{device_id}/accounts/{address}/")
     suspend fun putNotificationFilter(
         @Path("device_id") deviceId: String,
         @Path("address") address: String,
         @Body notificationFilterRequest: NotificationFilterRequest
     ): Response<Unit>
 
-    @GET("devices/{device_id}/banners/")
+    @GET("v1/devices/{device_id}/banners/")
     suspend fun getDeviceBanners(
         @Path("device_id") deviceId: String
     ): Response<BannerListResponse>
 
-    @GET("name-services/search/")
+    @GET("v1/name-services/search/")
     suspend fun getNftDomainAccountAddresses(
         @Query("name") name: String
     ): Response<NftDomainSearchResponse>
 
-    @PUT("backups/{id}/")
+    @PUT("v1/backups/{id}/")
     suspend fun putBackup(
         @Path("id") id: String,
         @Body body: WebBackupRequestBody,
@@ -162,10 +172,42 @@ interface MobileAlgorandApi {
     ): Response<ExportBackupResponse>
 
     @Streaming
-    @GET("accounts/{address}/export-history/")
+    @GET("v1/accounts/{address}/export-history/")
     suspend fun getExportHistory(
         @Path("address") address: String,
         @Query("start_date") startDate: String?,
         @Query("end_date") endDate: String?
     ): Response<ResponseBody>
+
+    @GET("v1/dex-swap/available-assets/")
+    suspend fun getAvailableSwapAssetList(
+        @Query("asset_in_id") assetId: Long,
+        @Query("providers") providersAsCsv: String,
+        @Query("q") query: String?
+    ): Response<AvailableSwapAssetListResponse>
+
+    @POST("v1/dex-swap/quotes/")
+    suspend fun getSwapQuote(
+        @Body requestBody: SwapQuoteRequestBody
+    ): Response<SwapQuoteResultResponse>
+
+    @POST("v1/dex-swap/calculate-pera-fee/")
+    suspend fun getPeraFee(
+        @Body requestBody: PeraFeeRequestBody
+    ): Response<PeraFeeResponse>
+
+    @POST("v1/dex-swap/prepare-transactions/")
+    suspend fun getQuoteTransactions(
+        @Body requestBody: CreateSwapQuoteTransactionsRequestBody
+    ): Response<CreateSwapQuoteTransactionsResponse>
+
+    @POST("v1/devices/wallet-connect-subscriptions/")
+    suspend fun subscribeWalletConnectSession(
+        @Body body: WalletConnectSessionSubscriptionBody
+    ): Response<Void>
+
+    @POST("v1/algorand-indexer/should-refresh/")
+    suspend fun shouldRefresh(
+        @Body shouldRefreshAccountInformationRequestBody: ShouldRefreshRequestBody
+    ): Response<ShouldRefreshResponse>
 }

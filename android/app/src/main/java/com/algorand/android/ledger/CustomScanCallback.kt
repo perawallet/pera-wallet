@@ -20,16 +20,21 @@ import androidx.annotation.StringRes
 abstract class CustomScanCallback : ScanCallback() {
 
     var filteredAddress: String? = null
-
+    var currentTransactionIndex: Int? = null
+    var totalTransactionCount: Int? = null
     override fun onScanResult(callbackType: Int, result: ScanResult?) {
         super.onScanResult(callbackType, result)
         result?.device?.let { foundedDevice ->
             if (filteredAddress == null || foundedDevice.address == filteredAddress) {
-                onLedgerScanned(foundedDevice)
+                onLedgerScanned(
+                    device = foundedDevice,
+                    currentTransactionIndex = currentTransactionIndex,
+                    totalTransactionCount = totalTransactionCount
+                )
             }
         }
     }
 
-    abstract fun onLedgerScanned(device: BluetoothDevice)
+    abstract fun onLedgerScanned(device: BluetoothDevice, currentTransactionIndex: Int?, totalTransactionCount: Int?)
     abstract fun onScanError(@StringRes errorMessageResId: Int, @StringRes titleResId: Int)
 }

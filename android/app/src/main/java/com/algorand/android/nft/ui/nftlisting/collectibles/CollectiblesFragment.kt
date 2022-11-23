@@ -73,7 +73,12 @@ class CollectiblesFragment :
     }
 
     override fun onSoundItemClick(collectibleAssetId: Long, publicKey: String) {
-        // TODO "Not yet implemented"
+        nav(
+            CollectiblesFragmentDirections.actionCollectiblesFragmentToCollectibleDetailFragment(
+                collectibleAssetId = collectibleAssetId,
+                publicKey = publicKey
+            )
+        )
     }
 
     override fun onGifItemClick(collectibleAssetId: Long, publicKey: String) {

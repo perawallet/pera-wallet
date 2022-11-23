@@ -17,5 +17,6 @@ import com.algorand.android.utils.AssetName
 
 data class AssetOperationResult(
     @StringRes val resultTitleResId: Int,
-    val assetName: AssetName
+    val assetName: AssetName,
+    val assetId: Long
 )

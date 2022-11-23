@@ -22,6 +22,7 @@ class CollectibleMediaTypeMapper @Inject constructor() {
         return when (typeResponse) {
             CollectibleMediaTypeResponse.IMAGE -> CollectibleMediaType.IMAGE
             CollectibleMediaTypeResponse.VIDEO -> CollectibleMediaType.VIDEO
+            CollectibleMediaTypeResponse.AUDIO -> CollectibleMediaType.AUDIO
             CollectibleMediaTypeResponse.MIXED -> CollectibleMediaType.MIXED
             CollectibleMediaTypeResponse.UNKNOWN -> CollectibleMediaType.NOT_SUPPORTED
             else -> CollectibleMediaType.NOT_SUPPORTED

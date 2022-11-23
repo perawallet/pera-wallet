@@ -70,8 +70,8 @@ class AccountAssetsFragment : BaseFragment(R.layout.fragment_account_assets) {
             listener?.onSendClick()
         }
 
-        override fun onAddressClick() {
-            listener?.onAddressClick()
+        override fun onSwapClick() {
+            listener?.onSwapClick()
         }
 
         override fun onMoreClick() {
@@ -132,7 +132,7 @@ class AccountAssetsFragment : BaseFragment(R.layout.fragment_account_assets) {
         fun onAssetClick(assetItem: AccountDetailAssetsItem.BaseAssetItem)
         fun onBuyAlgoClick()
         fun onSendClick()
-        fun onAddressClick()
+        fun onSwapClick()
         fun onMoreClick()
         fun onManageAssetsClick()
         fun onAccountQuickActionsFloatingActionButtonClicked()

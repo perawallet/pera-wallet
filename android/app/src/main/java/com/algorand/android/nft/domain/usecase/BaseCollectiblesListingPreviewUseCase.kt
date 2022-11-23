@@ -90,6 +90,9 @@ open class BaseCollectiblesListingPreviewUseCase(
                     is BaseOwnedCollectibleData.OwnedCollectibleMixedData -> {
                         mapToMixedItem(this, isOwnedByTheUser, optedInAccountAddress, isAmountVisible)
                     }
+                    is BaseOwnedCollectibleData.OwnedCollectibleAudioData -> {
+                        mapToAudioItem(this, isOwnedByTheUser, optedInAccountAddress, isAmountVisible)
+                    }
                 }
             }
         }

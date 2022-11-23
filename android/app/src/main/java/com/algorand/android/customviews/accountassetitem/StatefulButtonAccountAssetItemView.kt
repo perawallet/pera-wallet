@@ -20,6 +20,7 @@ import android.view.MotionEvent
 import androidx.annotation.ColorRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
+import androidx.core.view.updateLayoutParams
 import com.algorand.android.R
 import com.algorand.android.models.ui.AccountAssetItemButtonState
 import com.algorand.android.utils.extensions.hide
@@ -44,6 +45,7 @@ class StatefulButtonAccountAssetItemView(
                 setButtonBackgroundColor(state.backgroundColorResId)
                 setButtonStroke(state.strokeColorResId)
                 setButtonIcon(state.iconTintColorResId, state.iconDrawableResId)
+                setActionButtonSize(state.actionButtonSizeDimenResId, state.actionButtonIconSizeDimenResId)
                 setButtonEnable(state.isEnabled)
                 actionButton.show()
             }
@@ -90,6 +92,18 @@ class StatefulButtonAccountAssetItemView(
     private fun setButtonBackgroundColor(backgroundColorResId: Int?) {
         val color = getColorOrTransparent(backgroundColorResId)
         actionButton.setBackgroundColor(color)
+    }
+
+    private fun setActionButtonSize(iconSizeDimenRes: Int?, actionButtonIconSizeDimenResId: Int?) {
+        actionButton.run {
+            val buttonSize = resources.getDimensionPixelOffset(iconSizeDimenRes ?: return)
+            val iconSize = resources.getDimensionPixelOffset(actionButtonIconSizeDimenResId ?: return)
+            updateLayoutParams<LayoutParams> {
+                width = buttonSize
+                height = buttonSize
+            }
+            this.iconSize = iconSize
+        }
     }
 
     private fun getColorOrTransparent(@ColorRes colorResId: Int?): Int {

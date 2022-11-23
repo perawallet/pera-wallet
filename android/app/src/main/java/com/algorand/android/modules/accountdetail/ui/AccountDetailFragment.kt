@@ -1,3 +1,15 @@
+/*
+ * Copyright 2022 Pera Wallet, LDA
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License
+ */
+
 @file:Suppress("TooManyFunctions")
 
 /*
@@ -18,6 +30,7 @@ package com.algorand.android.modules.accountdetail.ui
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.algorand.android.HomeNavigationDirections
@@ -40,12 +53,15 @@ import com.algorand.android.ui.accounts.RenameAccountBottomSheet
 import com.algorand.android.ui.common.warningconfirmation.WarningConfirmationBottomSheet
 import com.algorand.android.utils.AccountIconDrawable
 import com.algorand.android.utils.Event
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.collectOnLifecycle
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
 import com.algorand.android.utils.viewbinding.viewBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 
 @AndroidEntryPoint
 class AccountDetailFragment :
@@ -80,6 +96,10 @@ class AccountDetailFragment :
 
     private val accountDetailTabArgCollector: suspend (Event<Int>?) -> Unit = {
         it?.consume()?.run { updateViewPagerBySelectedTab(this) }
+    }
+
+    private val swapNavigationDirectionEventCollector: suspend (Event<NavDirections>?) -> Unit = {
+        it?.consume()?.run { nav(this) }
     }
 
     private lateinit var accountDetailPagerAdapter: AccountDetailPagerAdapter
@@ -132,8 +152,8 @@ class AccountDetailFragment :
         navToSendNavigation()
     }
 
-    override fun onAddressClick() {
-        navToShowQrFragment()
+    override fun onSwapClick() {
+        accountDetailViewModel.onSwapClick()
     }
 
     override fun onMoreClick() {
@@ -157,7 +177,7 @@ class AccountDetailFragment :
     }
 
     override fun onSoundItemClick(nftAssetId: Long) {
-        // TODO "Not yet implemented"
+        navToCollectibleDetailFragment(nftAssetId)
     }
 
     override fun onGifItemClick(nftAssetId: Long) {
@@ -231,6 +251,11 @@ class AccountDetailFragment :
             accountDetailViewModel.accountDetailTabArgFlow,
             accountDetailTabArgCollector
         )
+        viewLifecycleOwner.collectLatestOnLifecycle(
+            accountDetailViewModel.accountDetailPreviewFlow
+                .map { it?.swapNavigationDirectionEvent }.distinctUntilChanged(),
+            swapNavigationDirectionEventCollector
+        )
     }
 
     private fun setupTabLayout() {
@@ -296,15 +321,6 @@ class AccountDetailFragment :
         nav(
             HomeNavigationDirections.actionGlobalSendAlgoNavigation(
                 assetTransaction = AssetTransaction(senderAddress = args.publicKey)
-            )
-        )
-    }
-
-    private fun navToShowQrFragment() {
-        nav(
-            AccountDetailFragmentDirections.actionGlobalShowQrNavigation(
-                title = getString(R.string.qr_code),
-                qrText = args.publicKey
             )
         )
     }

@@ -14,6 +14,7 @@ package com.algorand.android.utils
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.squareup.moshi.Moshi
 import org.json.JSONObject
 
 private const val JSON_INDENT = 4
@@ -30,6 +31,14 @@ fun getFormattedJsonArrayString(json: String): String {
 inline fun <reified T> Gson.fromJson(json: String): T? {
     return try {
         fromJson<T>(json, object : TypeToken<T>() {}.type)
+    } catch (exception: Exception) {
+        null
+    }
+}
+
+inline fun <reified T> Moshi.fromJson(json: String): T? {
+    return try {
+        with(adapter(T::class.java)) { fromJson(json) }
     } catch (exception: Exception) {
         null
     }

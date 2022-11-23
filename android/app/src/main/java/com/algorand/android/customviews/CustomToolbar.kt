@@ -29,6 +29,7 @@ import com.algorand.android.models.ToolbarConfiguration
 import com.algorand.android.utils.extensions.hide
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.getDisplaySize
+import com.algorand.android.utils.setDrawable
 import com.algorand.android.utils.viewbinding.viewBinding
 import kotlin.math.max
 
@@ -144,6 +145,10 @@ class CustomToolbar @JvmOverloads constructor(
             setText(subtitleResId)
             show()
         }
+    }
+
+    fun setSubtitleStartDrawable(drawable: Drawable) {
+        binding.toolbarSubtitleTextView.setDrawable(start = drawable)
     }
 
     fun setOnTitleLongClickListener(action: () -> Unit) {

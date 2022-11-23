@@ -32,6 +32,11 @@ sealed class BaseCollectibleMedia {
         override val previewUrl: String?
     ) : BaseCollectibleMedia()
 
+    data class AudioCollectibleMedia(
+        override val downloadUrl: String?,
+        override val previewUrl: String?
+    ) : BaseCollectibleMedia()
+
     data class UnsupportedCollectibleMedia(
         override val downloadUrl: String?,
         override val previewUrl: String?

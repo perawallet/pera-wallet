@@ -36,9 +36,13 @@ class CollectibleMediaPager(context: Context, attrs: AttributeSet? = null) : Con
 
     private var pagerListener: MediaPagerListener? = null
 
-    private var adapterListener = object : CollectibleMediaAdapter.MediaClickListener {
+    private val adapterListener = object : CollectibleMediaAdapter.MediaClickListener {
         override fun onVideoMediaClick(videoUrl: String?, collectibleImageView: View) {
             pagerListener?.onVideoMediaClick(videoUrl, collectibleImageView)
+        }
+
+        override fun onAudioMediaClick(audioUrl: String?, collectibleImageView: View) {
+            pagerListener?.onAudioMediaClick(audioUrl, collectibleImageView)
         }
 
         override fun onImageMediaClick(
@@ -154,7 +158,11 @@ class CollectibleMediaPager(context: Context, attrs: AttributeSet? = null) : Con
     }
 
     interface MediaPagerListener {
+
         fun onVideoMediaClick(videoUrl: String?, collectibleImageView: View)
+
+        fun onAudioMediaClick(audioUrl: String?, collectibleImageView: View)
+
         fun onImageMediaClick(
             imageUrl: String?,
             errorDisplayText: String,

@@ -92,12 +92,12 @@ class WCWalletConnectClient(
         this.listener = listener
     }
 
-    override fun approveSession(id: Long, accountAddress: String, chainId: Long?) {
-        getSessionById(id)?.approve(listOf(accountAddress), chainId ?: DEFAULT_CHAIN_ID)
+    override fun approveSession(id: Long, accountAddresses: List<String>, chainId: Long?) {
+        getSessionById(id)?.approve(accountAddresses, chainId ?: DEFAULT_CHAIN_ID)
     }
 
-    override fun updateSession(id: Long, accounts: List<String>?, chainId: Long?) {
-        getSessionById(id)?.update(accounts.orEmpty(), chainId ?: DEFAULT_CHAIN_ID)
+    override fun updateSession(id: Long, accountAddresses: List<String>?, chainId: Long?) {
+        getSessionById(id)?.update(accountAddresses.orEmpty(), chainId ?: DEFAULT_CHAIN_ID)
     }
 
     override fun rejectSession(id: Long) {
@@ -134,7 +134,7 @@ class WCWalletConnectClient(
 
     override fun getWalletConnectSession(sessionId: Long): WalletConnectSession? {
         val sessionCacheData = sessionCachedDataHandler.getCachedDataById(sessionId) ?: return null
-        return walletConnectMapper.createWalletConnectSession(sessionCacheData, accountName = null)
+        return walletConnectMapper.createWalletConnectSession(sessionCacheData)
     }
 
     private fun getSessionById(id: Long): WCSession? {

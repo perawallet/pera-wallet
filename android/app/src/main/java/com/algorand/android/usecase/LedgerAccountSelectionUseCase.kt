@@ -101,11 +101,13 @@ class LedgerAccountSelectionUseCase @Inject constructor(
     ): List<AccountSelectionListItem.AccountItem> {
         val deferredAccountSelectionListItems = mutableListOf<AccountSelectionListItem.AccountItem>()
         accountRepository.getRekeyedAccounts(rekeyAdminAddress).use(
-            onSuccess = { rekeyedAccountsList ->
-                val rekeyedAccounts = rekeyedAccountsList
-                    .filterNot { it.address == rekeyAdminAddress }
-                    .map { accountInformationMapper.mapToAccountInformation(it) }
-                    .map { accountInformation ->
+            onSuccess = { rekeyedAccountsListResponse ->
+                val rekeyedAccounts = rekeyedAccountsListResponse.accountInformationList
+                    ?.filterNot { it.address == rekeyAdminAddress }
+                    ?.map {
+                        accountInformationMapper.mapToAccountInformation(it, rekeyedAccountsListResponse.currentRound)
+                    }
+                    ?.map { accountInformation ->
 
                         // Cache rekeyed accounts assets
                         cacheLedgerAccountAssets(accountInformation, coroutineScope)
@@ -117,6 +119,7 @@ class LedgerAccountSelectionUseCase @Inject constructor(
                             accountCacheManager = accountCacheManager
                         )
                     }
+                    .orEmpty()
                 deferredAccountSelectionListItems.addAll(rekeyedAccounts)
             }
         )

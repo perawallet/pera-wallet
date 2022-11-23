@@ -37,6 +37,7 @@ class CoreActionsTabBarView @JvmOverloads constructor(
         binding.receiveButton.setOnClickListener { listener?.onReceiveClick() }
         binding.buyAlgoButton.setOnClickListener { listener?.onBuyAlgoClick() }
         binding.scanQrButton.setOnClickListener { listener?.onScanQRClick() }
+        binding.swapButton.setOnClickListener { listener?.onSwapClick() }
     }
 
     fun hideWithoutAnimation() {
@@ -93,5 +94,6 @@ class CoreActionsTabBarView @JvmOverloads constructor(
         fun onBuyAlgoClick()
         fun onScanQRClick()
         fun onCoreActionsClick(isCoreActionsOpen: Boolean)
+        fun onSwapClick()
     }
 }

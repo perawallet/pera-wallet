@@ -22,6 +22,7 @@ import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.Owned
 import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.AdditionAssetData
 import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.DeletionAssetData
 import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
+import com.algorand.android.modules.swap.reddot.domain.usecase.GetSwapFeatureRedDotVisibilityUseCase
 import com.algorand.android.modules.sorting.assetsorting.ui.usecase.AssetItemSortUseCase
 import com.algorand.android.utils.extensions.addFirst
 import com.algorand.android.utils.formatAsCurrency
@@ -35,7 +36,8 @@ class AccountAssetsPreviewUseCase @Inject constructor(
     private val accountAssetDataUseCase: AccountAssetDataUseCase,
     private val accountDetailAssetItemMapper: AccountDetailAssetItemMapper,
     private val parityUseCase: ParityUseCase,
-    private val assetItemSortUseCase: AssetItemSortUseCase
+    private val assetItemSortUseCase: AssetItemSortUseCase,
+    private val getSwapFeatureRedDotVisibilityUseCase: GetSwapFeatureRedDotVisibilityUseCase
 ) {
 
     fun fetchAccountDetail(publicKey: String, query: String): Flow<List<AccountDetailAssetsItem>> {
@@ -68,7 +70,10 @@ class AccountAssetsPreviewUseCase @Inject constructor(
                 addFirst(accountPortfolioItem)
 
                 if (accountDetailUseCase.canAccountSignTransaction(publicKey)) {
-                    add(QUICK_ACTIONS_INDEX, accountDetailAssetItemMapper.mapToQuickActionsItem())
+                    val quickActionsItem = accountDetailAssetItemMapper.mapToQuickActionsItem(
+                        isSwapButtonSelected = getSwapFeatureRedDotVisibilityUseCase.getSwapFeatureRedDotVisibility()
+                    )
+                    add(QUICK_ACTIONS_INDEX, quickActionsItem)
                 }
             }
         }

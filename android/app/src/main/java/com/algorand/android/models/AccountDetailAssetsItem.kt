@@ -90,17 +90,19 @@ sealed class AccountDetailAssetsItem : RecyclerListItem, Parcelable {
     }
 
     @Parcelize
-    object QuickActionsItem : AccountDetailAssetsItem() {
+    data class QuickActionsItem(
+        val isSwapButtonSelected: Boolean
+    ) : AccountDetailAssetsItem() {
 
         override val itemType: ItemType
             get() = ItemType.QUICK_ACTIONS
 
         override fun areItemsTheSame(other: RecyclerListItem): Boolean {
-            return other is QuickActionsItem
+            return other is QuickActionsItem && isSwapButtonSelected == other.isSwapButtonSelected
         }
 
         override fun areContentsTheSame(other: RecyclerListItem): Boolean {
-            return other is QuickActionsItem
+            return other is QuickActionsItem && this == other
         }
     }
 

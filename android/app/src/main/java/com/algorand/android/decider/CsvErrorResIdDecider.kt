@@ -14,16 +14,21 @@
 package com.algorand.android.decider
 
 import com.algorand.android.R
+import com.algorand.android.models.AnnotatedString
 import com.algorand.android.utils.DataResource
+import com.algorand.android.utils.Resource
+import com.algorand.android.utils.Resource.Error.GlobalWarning
+import com.algorand.android.utils.Resource.Error.Local
 import java.io.File
 import javax.inject.Inject
 
 class CsvErrorResIdDecider @Inject constructor() {
-    fun decideCsvErrorResId(dataResource: DataResource<File>): Int {
+    fun decideCsvErrorResId(dataResource: DataResource<File>): Resource.Error {
+        // TODO: Use ErrorResource whenever merge this with [swap-feature]
         return when (dataResource) {
-            is DataResource.Error.Api -> R.string.error_connection_title
-            is DataResource.Error.Local -> R.string.an_error_occured
-            else -> R.string.unknown_error
+            is DataResource.Error.Api -> Local(dataResource.exception.message.orEmpty())
+            is DataResource.Error.Local -> GlobalWarning(annotatedString = AnnotatedString(R.string.an_error_occured))
+            else -> GlobalWarning(annotatedString = AnnotatedString(R.string.an_error_occured))
         }
     }
 }

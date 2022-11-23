@@ -30,12 +30,9 @@ class CollectibleVideoMediaViewHolder(
             setOnClickListener { listener.onVideoClick(item.previewUrl, this) }
             context.loadImage(
                 item.previewUrl.orEmpty(),
-                onResourceReady = {
-                    showImage(it)
-                    showVideoPlayButton()
-                },
+                onResourceReady = ::showImage,
                 onLoadFailed = { showText(item.errorText) }
-            )
+            ).also { showVideoPlayButton() }
         }
     }
 

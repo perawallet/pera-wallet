@@ -139,11 +139,12 @@ class WalletConnectTransactionRequestViewModel @Inject constructor(
     fun updatePreviewWithBrowserList(packageManager: PackageManager?) {
         viewModelScope.launch {
             _walletConnectTransactionRequestPreviewFlow.emit(
-                walletConnectTransactionRequestPreviewUseCase.getWalletConnectTransactionRequestPreviewByBrowserResponse(
-                    preview = _walletConnectTransactionRequestPreviewFlow.value,
-                    fallbackBrowserGroupResponse = transaction?.session?.fallbackBrowserGroupResponse,
-                    packageManager = packageManager
-                )
+                walletConnectTransactionRequestPreviewUseCase
+                    .getWalletConnectTransactionRequestPreviewByBrowserResponse(
+                        preview = _walletConnectTransactionRequestPreviewFlow.value,
+                        fallbackBrowserGroupResponse = transaction?.session?.fallbackBrowserGroupResponse,
+                        packageManager = packageManager
+                    )
             )
         }
     }

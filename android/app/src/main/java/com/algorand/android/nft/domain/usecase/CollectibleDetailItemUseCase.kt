@@ -163,6 +163,21 @@ class CollectibleDetailItemUseCase @Inject constructor(
                     isAmountVisible = isAmountVisible
                 )
             }
+            is BaseCollectibleDetail.AudioCollectibleDetail -> {
+                collectibleDetailItemMapper.mapToCollectibleAudio(
+                    audioCollectibleDetail = baseCollectibleDetail,
+                    isOwnedByTheUser = isOwnedByTheUser,
+                    isCreatedByTheUser = isCreatedByTheUser,
+                    ownerAccountAddress = ownerAccountAddress,
+                    errorDisplayText = errorDisplayText,
+                    isHoldingByWatchAccount = isHoldingByWatchAccount,
+                    isNftExplorerVisible = isNftExplorerVisible,
+                    ownerAccountType = ownerAccount?.type,
+                    creatorAddress = creatorAccountAddress,
+                    formattedCollectibleAmount = formattedCollectibleAmount,
+                    isAmountVisible = isAmountVisible
+                )
+            }
         }
     }
 
@@ -190,6 +205,10 @@ class CollectibleDetailItemUseCase @Inject constructor(
                         }
                         is BaseCollectibleMedia.NoMediaCollectibleMedia -> {
                             mapToNoMediaCollectibleMediaItem(assetId, isOwnedByTheUser, errorDisplayText, it)
+                        }
+                        is BaseCollectibleMedia.AudioCollectibleMedia -> {
+                            val previewUrl = (it.previewUrl ?: it.downloadUrl).orEmpty()
+                            mapToAudioCollectibleMediaItem(assetId, isOwnedByTheUser, errorDisplayText, it, previewUrl)
                         }
                     }
                 }

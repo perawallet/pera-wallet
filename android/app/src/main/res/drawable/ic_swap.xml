@@ -16,6 +16,10 @@
     android:viewportWidth="24"
     android:viewportHeight="24">
     <path
-        android:fillColor="@color/text_main"
-        android:pathData="M7,3.67L7.707,2.963L7,2.256L6.293,2.963L7,3.67ZM17,20.67L16.293,21.377L17,22.085L17.707,21.377L17,20.67ZM8,14.333V3.67H6V14.333H8ZM6.293,2.963L1.293,7.959L2.707,9.374L7.707,4.377L6.293,2.963ZM6.293,4.377L11.293,9.374L12.707,7.959L7.707,2.963L6.293,4.377ZM16,10V20.67H18V10H16ZM17.707,21.377L22.707,16.374L21.293,14.96L16.293,19.963L17.707,21.377ZM17.707,19.963L12.707,14.96L11.293,16.374L16.293,21.377L17.707,19.963Z" />
+        android:fillColor="#00000000"
+        android:pathData="M3.58,18.84H17.42C19.08,18.84 20.42,17.5 20.42,15.84V12.52M3.58,18.84L6.74,22M3.58,18.84L6.74,15.679M20.42,5.159H6.58C4.92,5.159 3.58,6.499 3.58,8.159V11.479M17.262,1.999L20.422,5.159L17.262,8.319"
+        android:strokeWidth="2"
+        android:strokeColor="@color/text_main"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
 </vector>

@@ -26,8 +26,8 @@ interface WalletConnectClient {
 
     fun setListener(listener: WalletConnectClientListener)
 
-    fun approveSession(id: Long, accountAddress: String, chainId: Long?)
-    fun updateSession(id: Long, accounts: List<String>?, chainId: Long?)
+    fun approveSession(id: Long, accountAddresses: List<String>, chainId: Long?)
+    fun updateSession(id: Long, accountAddresses: List<String>?, chainId: Long?)
     fun rejectSession(id: Long)
 
     fun disconnectFromSession(id: Long)

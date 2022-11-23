@@ -59,6 +59,13 @@ class LockFragment : DaggerBaseFragment(R.layout.fragment_lock) {
 
     private var biometricHandler: Handler? = null
 
+    /**
+     *  TODO: Handle this case with a more solid approach.
+     *  This is added to fix lock screen is appearing two times.
+     *  https://linear.app/hipo/issue/PER-2744/android-wallet-connect-transaction-is-lost-after-enter-pin-screen-is
+     **/
+    private var enteredCorrectPin: Boolean = false
+
     private val pinCodeListener = object : SixDigitPasswordView.Listener {
         override fun onPinCodeCompleted(pinCode: String) {
             if (lockViewModel.getCurrentPassword() == pinCode) {
@@ -107,7 +114,7 @@ class LockFragment : DaggerBaseFragment(R.layout.fragment_lock) {
     }
 
     private fun handleNextNavigation() {
-        (activity as? MainActivity)?.isAppUnlocked = true
+        enteredCorrectPin = true
         if (activity?.getNavigationBackStackCount() == 0) {
             nav(LockFragmentDirections.actionLockFragmentToHomeNavigation())
         } else {
@@ -121,6 +128,11 @@ class LockFragment : DaggerBaseFragment(R.layout.fragment_lock) {
         setRemainingTime(lockViewModel.getLockPenaltyRemainingTime())
         setLockAttemptCount(lockViewModel.getLockAttemptCount())
         showShowBiometricAuthenticationIfNeed()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (enteredCorrectPin) (activity as? MainActivity)?.isAppUnlocked = true
     }
 
     private fun initDialogSavedStateListener() {

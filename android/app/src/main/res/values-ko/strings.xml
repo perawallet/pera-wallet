@@ -312,8 +312,6 @@
     <string name="unsigned_transactions">미서명 트랜잭션</string>
     <string name="application_id">애플리케이션 ID</string>
     <string name="this_transaction_will_transfer">이번 트랜잭션으로 계정의 소유권을 이전합니다. 현재의 복원 비밀문구는 이러한 자산에 대한 접근 권한을 상실하게 됩니다.</string>
-    <string name="once_confirmed_the_connected_application">확정하신 후에는 연동된 애플리케이션에서 재량에 따라 트랜잭션을 전송할 수 있게 됩니다. 트랜잭션을 실행한 후에는 되돌릴 수 없으므로, 서명하기 전에 트랜잭션의 상세 정보를 신중히 검토하시기 바랍니다.</string>
-    <string name="are_you_sure_question_mark">계속 진행하시겠습니까?</string>
     <string name="this_transaction_is_sending">이번 트랜잭션으로 알고 잔액 전체를 송금합니다.</string>
     <string name="close_asset_to">계정 삭제 - 자산을 받으시는 분</string>
     <string name="this_transaction_is_sending_asset">이번 트랜잭션으로 %1$s 잔액 전체를 송금하고, 계정에서 %1$s이(가) 삭제됩니다.</string>
@@ -485,6 +483,7 @@
     <string name="welcome_to_pera">Pera Wallet에 오신 것을\n환영합니다</string>
     <string name="start_using_pera">Pera Wallet 사용 시작</string>
     <string name="is_your_ledger_paired">Ledger가 이 기기와 페어링되어 있나요?\n그렇지 않은 경우 다음 절차를 따라주세요.</string>
+    <string name="you_are_about_to_delete">저장된 계정을 포함하여 지갑의 모든 데이터를 삭제하려고 합니다. 확인하기 전에 계정 암호를 다른 곳에 저장했는지 확인하십시오. 그렇지 않은 경우 계정을 복원할 수 없습니다.\n\n계속하시겠습니까?</string>
     <string name="your_data_has_been">데이터가 삭제되었습니다</string>
     <string name="you_are_connected"><annotation replacement="peer_name">peerNamePlaceholder</annotation>에 연결되었습니다</string>
     <string name="please_return_to"><annotation replacement="peer_name">peerNamePlaceholder</annotation>(으)로 돌아가셔서 작업을 계속하고 완료하십시오. 전용 설정 페이지에서 연결된 모든 세션을 찾아볼 수 있습니다.</string>
@@ -583,8 +582,9 @@
     <string name="confirm_transfer">전송 확인</string>
     <string name="search_asset_id_or_nft">자산 ID 또는 NFT 이름 검색</string>
     <string name="receive_an_nft">NFT 받기</string>
-    <string name="the_account_name"><annotation font="dmsans_bold">\"<annotation replacement="account_name"></annotation>\"</annotation> 계정의 키가 재지정되었습니다.</string>
+    <string name="the_account_name"><annotation font="dmsans_bold">\"<annotation replacement="account_name">accountNamePlaceholder</annotation>\"</annotation> 계정의 키가 재지정되었습니다.</string>
     <string name="asset_support_success"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>에서 <annotation replacement="asset">assetPlaceholder</annotation> 자산을 계정에 추가했습니다. 해당 주소로 <annotation replacement="asset">assetPlaceholder</annotation> 자산을 보낼 수 있습니다.</string>
+    <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>에서 <annotation font="dmsans_medium"><annotation replacement="receiver">receiverPlaceholder</annotation></annotation> 계정으로 <annotation replacement="asset">assetPlaceholder</annotation> 자산을 전송하려고 합니다. 탭하여 이 자산에 옵트인하면 트랜잭션이 처리됩니다.</string>
     <string name="transaction_send_successful">내 <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> 트랜잭션이(보내는 주소: <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>, 받으시는 주소: <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>) 완료되었습니다.</string>
     <string name="transaction_send_failed">내 <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> 트랜잭션이(보내는 주소: <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>, 받으시는 주소: <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>) 실패했습니다.</string>
     <string name="the_only_way_to">알고랜드 계정을 복원하는 유일한 방법은 이 복구 비밀문구를 사용하는 것뿐입니다.</string>
@@ -609,6 +609,7 @@
     <string name="filter">필터</string>
     <string name="show_filtered_nfts_formatted">필터링된 NFT 표시( %1$d )</string>
     <string name="search_your_nfts">NFT 검색</string>
+    <string name="enter_your_old">기존 6자리 PIN 번호를\n입력하세요</string>
     <string name="ledger_info_power_first_paragraph">
     <annotation url="https://support.ledger.com/hc/en-us/articles/360019138694-Set-up-Bluetooth-connection">Ledger의 Bluetooth 기능 사용법은 Ledger의 공식 <annotation type="bold"><annotation type="color">Bluetooth 연결 가이드에서 찾아보실 수 있습니다.</annotation></annotation></annotation>
   </string>
@@ -710,6 +711,20 @@
     <string name="quadrillion_abbreviation">1000조</string>
     <string name="quintillion">100경</string>
     <string name="quintillion_abbreviation">100경</string>
+    <string name="account_asset_count_zero">자산 0개</string>
+    <string name="pin_code_did_not_match">PIN 코드가 일치하지 않습니다. 다시 시도해주세요.</string>
+    <string name="your_main_currency_is_placeholder">기본 통화는 <annotation font="dmsans_regular"><annotation custom="primaryCurrencyColor"><annotation replacement="primaryCurrencyId">primaryCurrencyPlaceholder</annotation></annotation></annotation>, 보조 통화는 <annotation font="dmsans_regular"><annotation custom="secondaryCurrencyColor"><annotation replacement="secondaryCurrencyId">secondaryCurrencyPlaceholder</annotation></annotation></annotation>입니다.</string>
+    <string name="disconnect_all_sessions">모든 세션 연결 해제</string>
+    <string name="would_disconnect_all_sessions">모든 세션을 연결 해제하시겠습니까?</string>
+    <string name="missing_asset">자산 누락</string>
+    <string name="you_are_already">계정에서 이미 <annotation replacement="asset_name">assetNamePlaceholder</annotation>에 옵트인하셨습니다.</string>
+    <string name="too_many_accounts">계정이 너무 많습니다!</string>
+    <string name="looks_like_already_have_accounts">지갑에 이미 %1$d개 이상의 계정이 있는 것 같습니다. 앱 작동 속도를 빠르게 유지하기 위해, 현재 %1$d개 이상의 계정을 지원하지 않습니다. 다른 계정을 추가하려면 먼저 기존 계정을 삭제하세요.</string>
+    <string name="error_bluetooth_permission_message">근처 Ledger 기기를 찾으려면 Bluetooth 스캔을 허용해 주셔야 합니다.</string>
+    <string name="select_the_receiver_account">받는 분의 계정 선택</string>
+    <string name="transaction_submitted">트랜잭션 제출 완료</string>
+    <string name="your_transaction_sub">트랜잭션이 알고랜드 네트워크로 제출되었습니다.</string>
+    <string name="search_assets">자산 검색</string>
     <string name="manage_collectibles">수집품 관리</string>
     <string name="asa_verification">ASA 인증</string>
     <string name="pera_wallet_s_algorand">Pera Wallet의 ASA(Algorand Standard Asset, 알고랜드 표준 자산) 인증 프로그램을 통해 ASA 작성자가 자산 소유자임을 확인하여 <annotation type="bold">자동으로</annotation> 검증할 수 있습니다.</string>
@@ -770,4 +785,93 @@
     <string name="you_ve_connected">계정을 %1$s에 연결했습니다. 작업을 완료하려면 웹 브라우저로 돌아가세요.</string>
     <string name="transaction_signed">트랜잭션 서명 완료!</string>
     <string name="transaction_was_sent">트랜잭션이 %1$s 측으로 전송되었습니다. 작업을 완료하려면 웹 브라우저로 돌아가세요.</string>
+    <string name="max_all_caps">최대</string>
+    <string name="asset_successfully_removed_to_your">%1$s이(가) 계정으로 제거되었습니다.</string>
+    <string name="swap">스왑</string>
+    <string name="convert_between_popular_asa_pairs">인기 ASA 쌍 사이의 전환</string>
+    <string name="swap_to">스왑해서 받을 자산</string>
+    <string name="swap_from">스왑으로 보낼 자산</string>
+    <string name="we_can_not_show_assets">현재 자산을 표시할 수 없습니다. 다시 시도해 주세요.</string>
+    <string name="choose_an_asset">자산을 선택하세요</string>
+    <string name="balance_formatted">잔액: %1$s</string>
+    <string name="select_an_account_to_make">스왑할 계정을 선택하세요</string>
+    <string name="price_impact_is_the_influence">가격 영향(Price impact)은 자산 쌍의 시장 가격에 사용자의 거래가 미치는 영향을 말합니다. 이는 풀의 유동성과 직접적인 관련이 있습니다.</string>
+    <string name="slippage_tolerance">슬리피지 허용</string>
+    <string name="slippage_is_the_price_difference">슬리피지(Slippage)는 트랜잭션을 제출한 시점과 블록체인에서 트랜잭션이 확정된 시점의 가격 차이를 말합니다. 슬리피지 비율이 여기에서 설정한 허용 범위를 초과하면 트랜잭션을 자동 취소하여 가치 손실을 방지합니다.</string>
+    <string name="swap_in_pera">Pera에서 스왑</string>
+    <string name="pera_wallet_now_provides_an">Pera Wallet은 자산을 쉽고 빠르게 스왑할 수 있는 방법을 제공합니다.</string>
+    <string name="try_swap">스왑해보기</string>
+    <string name="later">나중에 하기</string>
+    <string name="set_custom_slippage">사용자 지정 슬리피지 설정</string>
+    <string name="auto">자동</string>
+    <string name="slippage_tolerance_must_be_between">슬리피지 허용값은 %1$.1f%% - %2$.1f%% 사이여야 합니다.</string>
+    <string name="balance_percentage_must_be_between">잔액 백분율은 %1$d%% - %2$d%% 사이여야 합니다.</string>
+    <string name="set_custom_percentage">사용자 지정 백분율 설정</string>
+    <string name="balance_percentage">잔액 백분율</string>
+    <string name="pera_wallet_provides_an_easy">Pera Wallet은 자산을 쉽고 빠르게 스왑할 수 있는 방법을 제공합니다. 스왑을 통해 시장 수수료만 내고 스마트 컨트랙트를 사용하여 ASA와 다른 ASA와 교환할 수 있습니다.</string>
+    <string name="by_continuing_you_agree_to">계속하면 스왑 파트너의\n<annotation url="tinymanTermsOfServiceUrl"><annotation type="bold"><annotation type="color">서비스 약관</annotation></annotation></annotation>에 동의하시게 됩니다.</string>
+    <string name="start_swapping">스왑 시작</string>
+    <string name="powered_by">제공:</string>
+    <string name="new_text">신규</string>
+    <string name="this_account_doesn_t_have">계정에 스왑 작업에 필요한 최소 잔액이(<annotation replacement="minimum_balance"> minimumBalancePlaceholder</annotation>) 없습니다.</string>
+    <string name="minimum_balance">최소 잔액</string>
+    <string name="account_does_not_have">계정에 트랜잭션을 수행할 잔액이 부족합니다.</string>
+    <string name="account_does_not_have_algo">계정에 트랜잭션 수수료를 충당할 알고 잔액이 부족합니다.</string>
+    <string name="confirm_swap">스왑 확인</string>
+    <string name="price_impact">가격 영향</string>
+    <string name="minimum_received">최소 수령</string>
+    <string name="total_swap_fee">총 스왑 수수료</string>
+    <string name="view_swap_summary">스왑 요약 보기</string>
+    <string name="from_to_to_asset_ratio"><annotation replacement="ratio">비율</annotation> <annotation replacement="secondAssetShortName">secondAssetShortName</annotation> 당 <annotation replacement="firstAssetShortName">assetShortName</annotation></string>
+    <string name="slippage_tolerance_value_updated">슬리피지 허용 값이 업데이트되었습니다!</string>
+    <string name="sign_with_ledger">Ledger로 서명하기</string>
+    <string name="we_ve_detected_that_you">계정에서 Ledger 기기를 사용 중이신 것으로 나타났습니다.  <annotation font="dmsans_medium">하드웨어 코튼을 사용하여 트랜잭션 <annotation replacement="transaction_count">transactionCountPlaceholder</annotation>건에 하나하나 서명하셔야 합니다</annotation>.</string>
+    <plurals name="sign_transaction">
+        <item quantity="other">트랜잭션 서명</item>
+    </plurals>
+    <string name="signing_index_out_of_count">%1$d/%2$d 서명 중…</string>
+    <string name="view_transaction_detail_in_algoexplorer">AlgoExplorer에서 트랜잭션 정보 보기</string>
+    <string name="go_to_homepage">홈페이지로 이동</string>
+    <string name="sending_the_transaction">트랜잭션 전송 중</string>
+    <string name="you_will_receive_at_least">최소 <annotation replacement="amount_and_asset_name">amountAndAssetNamePlaceholder</annotation> 이상 수신해야 합니다, 그렇지 않는 경우 트랜잭션이 취소됩니다.</string>
+    <string name="asset_pair_swap_completed"><annotation replacement="to_asset_name">toAssetNamePlaceholder</annotation> / <annotation replacement="from_asset_name">fromAssetNamePlaceholder</annotation> 스왑을 완료했습니다.</string>
+    <string name="you_received_amount_asset_name_in"><annotation replacement="from_amount_and_asset_name"><annotation custom="paid_asset_color">fromAmountAndAssetNamePlaceholder</annotation></annotation>을(를) 교환하여 <annotation replacement="to_amount_and_asset_name"><annotation custom="received_asset_color">toAmountAndAssetNamePlaceholder</annotation></annotation>을(를) 받습니다.</string>
+    <string name="asset_pair_swap_has_failed"><annotation replacement="to_asset_name">toAssetNamePlaceholder</annotation> / <annotation replacement="from_asset_name">fromAssetNamePlaceholder</annotation> 스왑이 실패했습니다.</string>
+    <string name="because_of_error_message"><annotation replacement="error_message">errorMessagePlaceholder</annotation> 오류가 발생했습니다.\n다시 시도해 주세요.</string>
+    <string name="exchange_fee">거래소 수수료</string>
+    <string name="pera_fee">Pera 수수료</string>
+    <string name="total_swap_fee_asterisk">총 스왑 수수료*</string>
+    <string name="amount_displayed_in_the">총 스왑 수수료에 표시된 금액은 스왑에 포함됩니다. 알고랜드 네트워크 수수료는 별도로 추가됩니다.</string>
+    <string name="swap_summary">스왑 요약</string>
+    <string name="received">수신 완료</string>
+    <string name="paid">지급 완료</string>
+    <string name="algorand_fees">알고랜드 수수료</string>
+    <string name="opt_in_fees">옵트인 수수료</string>
+    <string name="exchange_fees">거래소 수수료</string>
+    <string name="pera_fees">Pera 수수료</string>
+    <string name="an_unexpected_error_mismatched_txn">예기치 않은 오류가 발생했습니다. 오류 코드: 일치하지 않는 트랜잭션.</string>
+    <string name="custom">사용자 설정</string>
+    <string name="select_all">전체 선택</string>
+    <string name="unselect_all">전체 선택 해제</string>
+    <string name="disclaimer">고지사항</string>
+    <string name="export_to_pera_web">Pera Web으로 내보내기</string>
+    <string name="you_re_about_to_share">Pera Web Wallet으로 비밀문구를 공유하고 가져오려고 합니다!</string>
+    <string name="never_accept_a">요청한 적이 없다면 요청을 수락하지 마세요.</string>
+    <string name="confirm_export_domain">도메인 내보내기 확인</string>
+    <string name="for_your_security_please_confirm">보안을 위해 컴퓨터에 표시되는 도메인 이름을 입력하여 계정을 Pera Web으로 내보내고 있는지 확인해주세요.</string>
+    <string name="enter_url_of_web_wallet">웹 지갑의 URL을 입력하세요</string>
+    <string name="url_of_web_wallet">웹 지갑의 URL</string>
+    <string name="to_make_sure_that_you">계정을 안전한 위치로 내보내기 위해, 항상 공식 Pera Web URL에 접속 중인지 확인하세요:</string>
+    <string name="confirm_accounts">계정 확인</string>
+    <string name="you_re_about_to_export">계정을 Pera Web으로 안전하게 내보내려고 합니다:</string>
+    <string name="accounts_exported_successfully">계정을 내보냈습니다!</string>
+    <string name="you_can_now_use_these">이제 계정을 Pera Web Wallet에서 사용할 수 있습니다.</string>
+    <string name="we_couldn_t_find">내보낼 수 있는 계정을 찾을 수 없습니다.</string>
+    <plurals name="account_count">
+        <item quantity="other">계정 %1$d개</item>
+    </plurals>
+    <string name="i_want_to_recover_an">Ledger 하드웨어 지갑을 사용하는 알고랜드 계정을 복원하고 싶습니다.</string>
+    <string name="total_owned">총 소유</string>
+    <string name="this_is_the_fee_charged">이것은 탈중앙화 거래소에서 부과하는 수수료입니다. 보내는 금액에서 자동으로 차감되어 최소 수신 금액에 반영됩니다. 여기에서 추가 비용이 더 청구되지 않습니다.</string>
+    <string name="we_encountered_an_unexpected">예상치 못한 오류가 발생했습니다. 나중에 다시 시도해 주세요.</string>
 </resources>

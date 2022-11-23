@@ -29,3 +29,7 @@ infix fun BigInteger?.isEqualTo(other: BigInteger): Boolean {
 infix fun BigInteger?.isNotEqualTo(other: BigInteger): Boolean {
     return this?.compareTo(other) != 0
 }
+
+fun String?.toBigIntegerOrZero(): BigInteger {
+    return this?.toBigIntegerOrNull() ?: BigInteger.ZERO
+}

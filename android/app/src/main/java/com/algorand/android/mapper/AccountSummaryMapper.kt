@@ -13,6 +13,7 @@
 
 package com.algorand.android.mapper
 
+import com.algorand.android.models.Account
 import com.algorand.android.models.AccountDetail
 import com.algorand.android.models.AccountDetailSummary
 import com.algorand.android.models.AccountIconResource
@@ -30,5 +31,14 @@ class AccountSummaryMapper @Inject constructor() {
                 canSignTransaction = canSignTransaction
             )
         }
+    }
+
+    fun mapToAccountDetailSummary(account: Account, canSignTransaction: Boolean): AccountDetailSummary {
+        return AccountDetailSummary(
+            accountIconResource = AccountIconResource.getAccountIconResourceByAccountType(account.type),
+            accountDisplayName = AccountDisplayName.create(account.address, account.name, account.type),
+            publicKey = account.address,
+            canSignTransaction = canSignTransaction
+        )
     }
 }

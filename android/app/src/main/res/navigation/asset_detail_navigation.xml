@@ -32,6 +32,10 @@
 
     <include app:graph="@navigation/single_button_bottom_sheet_navigation" />
 
+    <include app:graph="@navigation/swap_navigation" />
+
+    <include app:graph="@navigation/swap_introduction_navigation" />
+
     <fragment
         android:id="@+id/assetDetailFragment"
         android:name="com.algorand.android.modules.assets.profile.detail.ui.AssetDetailFragment"
@@ -134,6 +138,21 @@
                 android:name="shouldDescriptionHasLinkMovementMethod"
                 android:defaultValue="false"
                 app:argType="boolean" />
+        </action>
+        <action
+            android:id="@+id/action_assetDetailFragment_to_swapIntroductionNavigation"
+            app:destination="@id/swapIntroductionNavigation">
+            <argument
+                android:name="accountAddress"
+                app:argType="string"
+                app:nullable="true" />
+        </action>
+        <action
+            android:id="@+id/action_assetDetailFragment_to_swapNavigation"
+            app:destination="@id/swapNavigation">
+            <argument
+                android:name="accountAddress"
+                app:argType="string" />
         </action>
     </fragment>
 

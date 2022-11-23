@@ -236,7 +236,8 @@ sealed class BaseCollectibleListItem : RecyclerListItem, CollectibleSortableItem
             override val optedInAccountAddress: String,
             override val optedInAtRound: Long?,
             override val formattedCollectibleAmount: String,
-            override val isAmountVisible: Boolean
+            override val isAmountVisible: Boolean,
+            val thumbnailPrismUrl: String?
         ) : BaseCollectibleItem() {
 
             override val itemType: ItemType = ItemType.SOUND_ITEM

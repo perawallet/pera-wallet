@@ -15,6 +15,7 @@
 package com.algorand.android.modules.deeplink.domain.model
 
 import com.algorand.android.models.AssetInformation
+import com.algorand.android.models.NotificationGroupType
 import com.algorand.android.modules.webexport.model.WebExportQrCode
 import com.algorand.android.utils.isEqualTo
 import java.math.BigInteger
@@ -42,6 +43,7 @@ sealed class BaseDeepLink {
         protected const val DEFAULT_WEBEXPORT_BACKUPID = ""
         protected const val DEFAULT_WEBEXPORT_MODIFICATIONKEY = ""
         protected const val DEFAULT_WEBEXPORT_ENCRYPTIONKEY = ""
+        protected val DEFAULT_NOTIFICATION_GROUP_TYPE = NotificationGroupType.TRANSACTIONS
 
         fun create(rawDeepLink: RawDeepLink): BaseDeepLink {
             return BaseDeepLink::class.sealedSubclasses.firstNotNullOfOrNull {
@@ -88,7 +90,9 @@ sealed class BaseDeepLink {
                         assetId == null &&
                         amount == null &&
                         note == null &&
-                        xnote == null
+                        xnote == null &&
+                        webExportQrCode == null &&
+                        notificationGroupType == null
                 }
             }
         }
@@ -126,7 +130,9 @@ sealed class BaseDeepLink {
                         walletConnectUrl == null &&
                         note == null &&
                         xnote == null &&
-                        label == null
+                        label == null &&
+                        webExportQrCode == null &&
+                        notificationGroupType == null
                 }
             }
         }
@@ -189,7 +195,9 @@ sealed class BaseDeepLink {
             override fun doesDeeplinkMeetTheRequirements(rawDeepLink: RawDeepLink): Boolean {
                 return with(rawDeepLink) {
                     val doesDeeplinkHaveAssetTransferQueries = accountAddress != null && amount != null
-                    doesDeeplinkHaveAssetTransferQueries && walletConnectUrl == null
+                    doesDeeplinkHaveAssetTransferQueries && walletConnectUrl == null &&
+                        webExportQrCode == null &&
+                        notificationGroupType == null
                 }
             }
         }
@@ -223,7 +231,9 @@ sealed class BaseDeepLink {
                         amount == null &&
                         note == null &&
                         xnote == null &&
-                        label == null
+                        label == null &&
+                        webExportQrCode == null &&
+                        notificationGroupType == null
                 }
             }
         }
@@ -258,7 +268,9 @@ sealed class BaseDeepLink {
                         walletConnectUrl == null &&
                         note == null &&
                         xnote == null &&
-                        label == null
+                        label == null &&
+                        webExportQrCode == null &&
+                        notificationGroupType == null
                 }
             }
         }
@@ -281,7 +293,9 @@ sealed class BaseDeepLink {
 
             override fun doesDeeplinkMeetTheRequirements(rawDeepLink: RawDeepLink): Boolean {
                 return with(rawDeepLink) {
-                    accountAddress != null && transactionStatus != null
+                    accountAddress != null && transactionStatus != null &&
+                        webExportQrCode == null &&
+                        notificationGroupType == null
                 }
             }
         }
@@ -304,7 +318,64 @@ sealed class BaseDeepLink {
 
             override fun doesDeeplinkMeetTheRequirements(rawDeepLink: RawDeepLink): Boolean {
                 return with(rawDeepLink) {
-                    webExportQrCode != null
+                    webExportQrCode != null &&
+                        accountAddress == null &&
+                        assetId == null &&
+                        amount == null &&
+                        walletConnectUrl == null &&
+                        note == null &&
+                        xnote == null &&
+                        label == null &&
+                        notificationGroupType == null &&
+                        mnemonic == null
+                }
+            }
+        }
+    }
+
+    class NotificationDeepLink(
+        val address: String,
+        val assetId: Long,
+        val notificationGroupType: NotificationGroupType,
+    ) : BaseDeepLink() {
+
+        override fun equals(other: Any?): Boolean {
+            return other is NotificationDeepLink &&
+                other.address == address &&
+                other.assetId == assetId &&
+                other.notificationGroupType == notificationGroupType
+        }
+
+        override fun hashCode(): Int {
+            var result = address.hashCode()
+            result = 31 * result + assetId.hashCode()
+            result = 31 * result + notificationGroupType.hashCode()
+            return result
+        }
+
+        companion object : DeepLinkCreator {
+
+            private const val DEFAULT_ASSET_ID = AssetInformation.ALGO_ID
+
+            override fun createDeepLink(rawDeeplink: RawDeepLink): BaseDeepLink {
+                return NotificationDeepLink(
+                    address = rawDeeplink.accountAddress.orEmpty(),
+                    assetId = rawDeeplink.assetId ?: DEFAULT_ASSET_ID,
+                    notificationGroupType = rawDeeplink.notificationGroupType ?: DEFAULT_NOTIFICATION_GROUP_TYPE
+                )
+            }
+
+            override fun doesDeeplinkMeetTheRequirements(rawDeepLink: RawDeepLink): Boolean {
+                return with(rawDeepLink) {
+                    accountAddress != null &&
+                        assetId != null &&
+                        notificationGroupType != null &&
+                        amount == null &&
+                        walletConnectUrl == null &&
+                        note == null &&
+                        xnote == null &&
+                        label == null &&
+                        webExportQrCode == null
                 }
             }
         }

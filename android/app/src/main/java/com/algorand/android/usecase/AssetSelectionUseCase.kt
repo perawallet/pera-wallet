@@ -7,8 +7,7 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- *  limitations under the License
- *
+ * limitations under the License
  */
 
 package com.algorand.android.usecase
@@ -18,6 +17,7 @@ import com.algorand.android.mapper.AssetSelectionMapper
 import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.models.AssetTransaction
 import com.algorand.android.models.BaseAccountAssetData
+import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleAudioData
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleImageData
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleMixedData
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleVideoData
@@ -39,6 +39,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 
+@SuppressWarnings("LongParameterList")
 class AssetSelectionUseCase @Inject constructor(
     private val transactionTipsUseCase: TransactionTipsUseCase,
     private val assetSelectionMapper: AssetSelectionMapper,
@@ -100,6 +101,7 @@ class AssetSelectionUseCase @Inject constructor(
                     is OwnedUnsupportedCollectibleData -> {
                         assetSelectionMapper.mapToCollectibleNotSupportedItem(ownedCollectibleData)
                     }
+                    is OwnedCollectibleAudioData -> assetSelectionMapper.mapToCollectibleAudioItem(ownedCollectibleData)
                 }
             } else {
                 null

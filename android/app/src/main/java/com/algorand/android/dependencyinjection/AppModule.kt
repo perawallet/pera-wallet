@@ -25,6 +25,7 @@ import com.algorand.android.database.AlgorandDatabase.Companion.MIGRATION_5_6
 import com.algorand.android.database.AlgorandDatabase.Companion.MIGRATION_6_7
 import com.algorand.android.database.AlgorandDatabase.Companion.MIGRATION_7_8
 import com.algorand.android.database.AlgorandDatabase.Companion.MIGRATION_8_9
+import com.algorand.android.database.AlgorandDatabase.Companion.MIGRATION_9_10
 import com.algorand.android.database.ContactDao
 import com.algorand.android.database.NodeDao
 import com.algorand.android.database.NotificationFilterDao
@@ -77,7 +78,8 @@ object AppModule {
                 MIGRATION_5_6,
                 MIGRATION_6_7,
                 MIGRATION_7_8,
-                MIGRATION_8_9
+                MIGRATION_8_9,
+                MIGRATION_9_10
             )
             .addTypeConverter(walletConnectTypeConverters)
             .build()

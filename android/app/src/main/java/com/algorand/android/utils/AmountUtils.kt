@@ -14,6 +14,7 @@ package com.algorand.android.utils
 
 import android.icu.text.NumberFormat
 import com.mitsinsar.peracompactdecimalformat.utils.fractionaldigit.AssetFractionalDigit
+import com.mitsinsar.peracompactdecimalformat.utils.fractionaldigit.CollectibleFractionalDigit
 import com.mitsinsar.peracompactdecimalformat.utils.fractionaldigit.FiatFractionalDigit
 import com.mitsinsar.peracompactdecimalformat.utils.fractionaldigit.FractionalDigit
 import java.math.BigDecimal
@@ -80,6 +81,33 @@ fun BigInteger?.formatAmount(
 ): String {
     return (this ?: BigInteger.ZERO).toBigDecimal(decimals)
         .formatAmount(decimals, isDecimalFixed, isCompact, isFiat = isFiat)
+}
+
+fun BigInteger?.formatAmountByCollectibleFractionalDigit(
+    decimals: Int,
+    isDecimalFixed: Boolean = false,
+    isCompact: Boolean = false
+): String {
+    return (this ?: BigInteger.ZERO).toBigDecimal(decimals).formatAmount(
+        decimals = decimals,
+        isDecimalFixed = isDecimalFixed,
+        isCompact = isCompact,
+        fractionalDigit = CollectibleFractionalDigit
+    )
+}
+
+fun BigDecimal.formatAmount(
+    decimals: Int,
+    isDecimalFixed: Boolean,
+    isCompact: Boolean = false,
+    minDecimals: Int? = null,
+    fractionalDigit: FractionalDigit.FractionalDigitCreator
+): String {
+    return if (isCompact) {
+        formatCompactNumber(this, fractionalDigit)
+    } else {
+        getNumberFormat(decimals, isDecimalFixed, minDecimals).format(this)
+    }
 }
 
 fun BigDecimal.formatAmountAsBigInteger(decimal: Int, isFiat: Boolean = false): BigInteger {

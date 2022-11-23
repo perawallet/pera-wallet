@@ -16,7 +16,11 @@ import android.bluetooth.BluetoothDevice
 import androidx.annotation.StringRes
 
 sealed class LedgerBleResult {
-    data class LedgerWaitingForApproval(val bluetoothName: String?) : LedgerBleResult()
+    data class LedgerWaitingForApproval(
+        val bluetoothName: String?,
+        val currentTransactionIndex: Int?,
+        val totalTransactionCount: Int?
+    ) : LedgerBleResult()
 
     data class SignedTransactionResult(
         val transactionByteArray: ByteArray

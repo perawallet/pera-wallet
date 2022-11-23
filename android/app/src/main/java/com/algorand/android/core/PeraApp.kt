@@ -18,11 +18,12 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.multidex.MultiDex
 import com.akexorcist.localizationactivity.core.LocalizationApplicationDelegate
-import com.algorand.android.BuildConfig
 import com.algorand.android.migration.MigrationManager
 import com.algorand.android.utils.preference.getSavedThemePreference
+import com.algorand.android.utils.walletconnect.WalletConnectManager
 import com.google.android.play.core.missingsplits.MissingSplitsManagerFactory
 import dagger.hilt.android.HiltAndroidApp
 import java.util.Locale
@@ -40,14 +41,15 @@ open class PeraApp : Application() {
     @Inject
     lateinit var migrationManager: MigrationManager
 
+    @Inject
+    lateinit var walletConnectManager: WalletConnectManager
+
     private val localizationDelegate = LocalizationApplicationDelegate()
 
     override fun attachBaseContext(base: Context) {
         localizationDelegate.setDefaultLanguage(base, Locale.getDefault())
         super.attachBaseContext(localizationDelegate.attachBaseContext(base))
-        if (BuildConfig.DEBUG) {
-            MultiDex.install(this)
-        }
+        MultiDex.install(this)
     }
 
     override fun onCreate() {
@@ -61,6 +63,14 @@ open class PeraApp : Application() {
         }
         AppCompatDelegate.setDefaultNightMode(sharedPref.getSavedThemePreference().convertToSystemAbbr())
         accountManager.initAccounts()
+
+        bindWalletConnectManager()
+    }
+
+    private fun bindWalletConnectManager() {
+        with(ProcessLifecycleOwner.get().lifecycle) {
+            addObserver(walletConnectManager)
+        }
     }
 
     // https://issuetracker.google.com/issues/141726323

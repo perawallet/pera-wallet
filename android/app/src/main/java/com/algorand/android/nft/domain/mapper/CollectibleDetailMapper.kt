@@ -12,6 +12,7 @@
 
 package com.algorand.android.nft.domain.mapper
 
+import com.algorand.android.nft.domain.model.BaseCollectibleDetail.AudioCollectibleDetail
 import com.algorand.android.nft.domain.model.BaseCollectibleDetail.ImageCollectibleDetail
 import com.algorand.android.nft.domain.model.BaseCollectibleDetail.MixedCollectibleDetail
 import com.algorand.android.nft.domain.model.BaseCollectibleDetail.NotSupportedCollectibleDetail
@@ -93,6 +94,40 @@ class CollectibleDetailMapper @Inject constructor() {
         thumbnailPrismUrl: String
     ): VideoCollectibleDetail {
         return VideoCollectibleDetail(
+            assetId = collectibleDetailDTO.collectibleAssetId,
+            fullName = collectibleDetailDTO.fullName,
+            shortName = collectibleDetailDTO.shortName,
+            fractionDecimals = collectibleDetailDTO.fractionDecimals,
+            usdValue = collectibleDetailDTO.usdValue,
+            assetCreator = collectibleDetailDTO.assetCreator,
+            collectionName = collectibleDetailDTO.collectionName,
+            title = collectibleDetailDTO.title,
+            description = collectibleDetailDTO.description,
+            traits = collectibleDetailDTO.traits,
+            thumbnailPrismUrl = thumbnailPrismUrl,
+            nftExplorerUrl = collectibleDetailDTO.explorerUrl,
+            collectibleMedias = collectibleDetailDTO.medias,
+            totalSupply = collectibleDetailDTO.totalSupply,
+            verificationTier = collectibleDetailDTO.verificationTier,
+            logoUri = collectibleDetailDTO.logoUri,
+            logoSvgUri = collectibleDetailDTO.logoSvgUri,
+            explorerUrl = collectibleDetailDTO.explorerUrl,
+            projectName = collectibleDetailDTO.projectName,
+            projectUrl = collectibleDetailDTO.projectUrl,
+            discordUrl = collectibleDetailDTO.discordUrl,
+            telegramUrl = collectibleDetailDTO.telegramUrl,
+            twitterUsername = collectibleDetailDTO.twitterUsername,
+            assetDescription = collectibleDetailDTO.description,
+            url = collectibleDetailDTO.url,
+            maxSupply = collectibleDetailDTO.maxSupply
+        )
+    }
+
+    fun mapToAudioCollectibleDetail(
+        collectibleDetailDTO: CollectibleDetailDTO,
+        thumbnailPrismUrl: String
+    ): AudioCollectibleDetail {
+        return AudioCollectibleDetail(
             assetId = collectibleDetailDTO.collectibleAssetId,
             fullName = collectibleDetailDTO.fullName,
             shortName = collectibleDetailDTO.shortName,

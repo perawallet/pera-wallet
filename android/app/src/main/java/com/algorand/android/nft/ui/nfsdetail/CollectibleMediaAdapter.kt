@@ -18,11 +18,13 @@ import androidx.recyclerview.widget.ListAdapter
 import com.algorand.android.models.BaseDiffUtil
 import com.algorand.android.models.BaseViewHolder
 import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem
+import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem.ItemType.AUDIO
 import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem.ItemType.GIF
 import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem.ItemType.IMAGE
 import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem.ItemType.NO_MEDIA
 import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem.ItemType.UNSUPPORTED
 import com.algorand.android.nft.ui.model.BaseCollectibleMediaItem.ItemType.VIDEO
+import com.algorand.android.nft.ui.nfsdetail.CollectibleAudioMediaViewHolder.CollectibleAudioMediaViewHolderListener
 import com.algorand.android.nft.ui.nfsdetail.CollectibleGifMediaViewHolder.CollectibleGifMediaViewHolderListener
 import com.algorand.android.nft.ui.nfsdetail.CollectibleImageMediaViewHolder.CollectibleImageMediaViewHolderListener
 import com.algorand.android.nft.ui.nfsdetail.CollectibleVideoMediaViewHolder.CollectibleVideoMediaViewHolderListener
@@ -38,6 +40,10 @@ class CollectibleMediaAdapter(
 
     private val videoClickListener = CollectibleVideoMediaViewHolderListener { imageUrl, collectibleImageView ->
         listener.onVideoMediaClick(imageUrl, collectibleImageView)
+    }
+
+    private val audioClickListener = CollectibleAudioMediaViewHolderListener { imageUrl, collectibleImageView ->
+        listener.onAudioMediaClick(imageUrl, collectibleImageView)
     }
 
     private val gifClickListener =
@@ -56,6 +62,7 @@ class CollectibleMediaAdapter(
             UNSUPPORTED.ordinal -> createUnsupportedMediaViewHolder(parent)
             GIF.ordinal -> createGifMediaViewHolder(parent)
             NO_MEDIA.ordinal -> createNoMediaViewHolder(parent)
+            AUDIO.ordinal -> createAudioMediaViewHolder(parent)
             else -> throw IllegalArgumentException("$logTag : Unknown view type")
         }
     }
@@ -84,8 +91,13 @@ class CollectibleMediaAdapter(
         return CollectibleGifMediaViewHolder.create(parent, gifClickListener)
     }
 
+    private fun createAudioMediaViewHolder(parent: ViewGroup): CollectibleAudioMediaViewHolder {
+        return CollectibleAudioMediaViewHolder.create(parent, audioClickListener)
+    }
+
     interface MediaClickListener {
         fun onVideoMediaClick(videoUrl: String?, collectibleImageView: View)
+        fun onAudioMediaClick(audioUrl: String?, collectibleImageView: View)
         fun onImageMediaClick(
             imageUrl: String?,
             errorDisplayText: String,

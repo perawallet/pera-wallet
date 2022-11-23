@@ -139,6 +139,56 @@ class CollectibleDetailItemMapper @Inject constructor(
     }
 
     @SuppressWarnings("LongParameterList")
+    fun mapToCollectibleAudio(
+        audioCollectibleDetail: BaseCollectibleDetail.AudioCollectibleDetail,
+        isOwnedByTheUser: Boolean,
+        isCreatedByTheUser: Boolean,
+        ownerAccountType: Account.Type?,
+        ownerAccountAddress: BaseAccountAddress.AccountAddress,
+        errorDisplayText: String,
+        isHoldingByWatchAccount: Boolean,
+        isNftExplorerVisible: Boolean,
+        creatorAddress: BaseAccountAddress.AccountAddress?,
+        formattedCollectibleAmount: String,
+        isAmountVisible: Boolean
+    ): CollectibleDetail.AudioCollectibleDetail {
+        return CollectibleDetail.AudioCollectibleDetail(
+            isOwnedByTheUser = isOwnedByTheUser,
+            isCreatedByTheUser = isCreatedByTheUser,
+            collectionName = audioCollectibleDetail.collectionName,
+            collectibleName = audioCollectibleDetail.title,
+            collectibleDescription = audioCollectibleDetail.description,
+            ownerAccountAddress = ownerAccountAddress,
+            collectibleId = audioCollectibleDetail.assetId,
+            creatorName = "", // todo it's an optional field and we don't know json field name yet
+            creatorWalletAddress = creatorAddress,
+            collectibleTraits = audioCollectibleDetail.traits?.map { collectibleTraitItemMapper.mapToTraitItem(it) },
+            isHoldingByWatchAccount = isHoldingByWatchAccount,
+            warningTextRes = collectibleDetailDecider.decideWarningTextRes(audioCollectibleDetail.thumbnailPrismUrl),
+            prismUrl = audioCollectibleDetail.thumbnailPrismUrl,
+            isPeraExplorerVisible = isNftExplorerVisible,
+            peraExplorerUrl = audioCollectibleDetail.nftExplorerUrl,
+            collectibleMedias = audioCollectibleDetail.collectibleMedias?.map {
+                collectibleMediaItemMapper.mapToAudioCollectibleMediaItem(
+                    audioCollectibleDetail.assetId,
+                    isOwnedByTheUser,
+                    errorDisplayText,
+                    it,
+                    audioCollectibleDetail.thumbnailPrismUrl.orEmpty()
+                )
+            }.orEmpty(),
+            optedInWarningTextRes = collectibleDetailDecider.decideOptedInWarningTextRes(
+                isOwnedByTheUser = isOwnedByTheUser,
+                accountType = ownerAccountType
+            ),
+            collectibleFractionDecimals = audioCollectibleDetail.fractionDecimals,
+            isPure = audioCollectibleDetail.isPure(),
+            formattedCollectibleAmount = formattedCollectibleAmount,
+            isAmountVisible = isAmountVisible
+        )
+    }
+
+    @SuppressWarnings("LongParameterList")
     fun mapToCollectibleMixed(
         mixedCollectibleDetail: BaseCollectibleDetail.MixedCollectibleDetail,
         isOwnedByTheUser: Boolean,

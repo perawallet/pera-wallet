@@ -101,6 +101,31 @@ sealed class CollectibleDetail : Parcelable {
     ) : CollectibleDetail()
 
     @Parcelize
+    data class AudioCollectibleDetail(
+        override val isOwnedByTheUser: Boolean,
+        override val isCreatedByTheUser: Boolean,
+        override val collectionName: String?,
+        override val collectibleName: String?,
+        override val collectibleDescription: String?,
+        override val ownerAccountAddress: AccountAddress,
+        override val collectibleId: Long,
+        override val creatorName: String?,
+        override val creatorWalletAddress: AccountAddress?,
+        override val isHoldingByWatchAccount: Boolean,
+        override val warningTextRes: Int?,
+        override val collectibleTraits: List<CollectibleTraitItem>?,
+        override val isPeraExplorerVisible: Boolean,
+        override val peraExplorerUrl: String?,
+        override val collectibleMedias: List<BaseCollectibleMediaItem.AudioCollectibleMediaItem>,
+        override val optedInWarningTextRes: Int?,
+        override val collectibleFractionDecimals: Int?,
+        override val isPure: Boolean,
+        override val formattedCollectibleAmount: String,
+        override val isAmountVisible: Boolean,
+        val prismUrl: String?
+    ) : CollectibleDetail()
+
+    @Parcelize
     data class MixedCollectibleDetail(
         override val isOwnedByTheUser: Boolean,
         override val isCreatedByTheUser: Boolean,

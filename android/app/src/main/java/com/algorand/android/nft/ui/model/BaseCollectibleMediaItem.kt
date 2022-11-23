@@ -31,6 +31,7 @@ sealed class BaseCollectibleMediaItem : Parcelable, RecyclerListItem {
     enum class ItemType {
         IMAGE,
         VIDEO,
+        AUDIO,
         UNSUPPORTED,
         GIF,
         NO_MEDIA
@@ -101,6 +102,32 @@ sealed class BaseCollectibleMediaItem : Parcelable, RecyclerListItem {
     ) : BaseCollectibleMediaItem() {
 
         override val itemType: ItemType = ItemType.VIDEO
+
+        override val hasFullScreenSupport: Boolean
+            get() = true
+
+        override fun areItemsTheSame(other: RecyclerListItem): Boolean {
+            return other is VideoCollectibleMediaItem &&
+                other.previewUrl == previewUrl &&
+                other.downloadUrl == downloadUrl &&
+                other.isOwnedByTheUser == isOwnedByTheUser
+        }
+
+        override fun areContentsTheSame(other: RecyclerListItem): Boolean {
+            return other is VideoCollectibleMediaItem && other == this
+        }
+    }
+
+    @Parcelize
+    data class AudioCollectibleMediaItem(
+        override val collectibleId: Long,
+        override val errorText: String,
+        override val downloadUrl: String?,
+        override val previewUrl: String?,
+        override val isOwnedByTheUser: Boolean
+    ) : BaseCollectibleMediaItem() {
+
+        override val itemType: ItemType = ItemType.AUDIO
 
         override val hasFullScreenSupport: Boolean
             get() = true

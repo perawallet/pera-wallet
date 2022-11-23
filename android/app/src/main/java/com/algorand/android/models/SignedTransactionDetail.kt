@@ -65,4 +65,9 @@ sealed class SignedTransactionDetail : Parcelable {
         override val signedTransactionData: ByteArray,
         val transactions: List<SignedTransactionDetail>?
     ) : SignedTransactionDetail()
+
+    @Parcelize
+    data class ExternalTransaction(
+        override val signedTransactionData: ByteArray
+    ) : SignedTransactionDetail()
 }

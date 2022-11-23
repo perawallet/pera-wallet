@@ -55,6 +55,7 @@ android {
         releaseLocal {
             signingConfig signingConfigs.releaseLocal
 
+            multiDexEnabled true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             manifestPlaceholders = [enableCrashReporting: "true"]
@@ -87,7 +88,8 @@ android {
             buildConfigField "String", "ALGORAND_BASE_URL", '"https://node-testnet.chain.perawallet.app/"'
             buildConfigField "String", "ALGORAND_API_KEY", apiKeyProps["ALGORAND_API_KEY"]
             buildConfigField "String", "INDEXER_API_KEY", apiKeyProps["INDEXER_API_KEY"]
-            buildConfigField "String", "MOBILE_ALGORAND_BASE_URL", '"https://staging.api.perawallet.app/v1/"'
+            buildConfigField "String", "MOBILE_API_KEY", apiKeyProps["MOBILE_API_KEY"]
+            buildConfigField "String", "MOBILE_ALGORAND_BASE_URL", '"https://staging.api.perawallet.app/"'
             buildConfigField "String", "ALGO_EXPLORER_BASE_URL", '"https://price.algoexplorerapi.io/price/"'
             buildConfigField "String", "PERA_3D_EXPLORER_BASE_URL", '"https://static-hosting.perawallet.app/3dviewer/index.html"'
         }
@@ -98,7 +100,8 @@ android {
             buildConfigField "String", "ALGORAND_BASE_URL", '"https://node-mainnet.chain.perawallet.app/"'
             buildConfigField "String", "ALGORAND_API_KEY", apiKeyProps["ALGORAND_API_KEY"]
             buildConfigField "String", "INDEXER_API_KEY", apiKeyProps["INDEXER_API_KEY"]
-            buildConfigField "String", "MOBILE_ALGORAND_BASE_URL", '"https://api.perawallet.app/v1/"'
+            buildConfigField "String", "MOBILE_API_KEY", apiKeyProps["MOBILE_API_KEY"]
+            buildConfigField "String", "MOBILE_ALGORAND_BASE_URL", '"https://api.perawallet.app/"'
             buildConfigField "String", "ALGO_EXPLORER_BASE_URL", '"https://price.algoexplorerapi.io/price/"'
             buildConfigField "String", "PERA_3D_EXPLORER_BASE_URL", '"https://static-hosting.perawallet.app/3dviewer/index.html"'
         }
@@ -213,6 +216,8 @@ dependencies {
 
     // ExoPlayer
     implementation "com.google.android.exoplayer:exoplayer:${libVersions.exoPlayer}"
+
+    implementation "com.algorand:algosdk:${libVersions.algoSdk}"
 
     // Test
     testImplementation "junit:junit:${testLibVersions.junit}"

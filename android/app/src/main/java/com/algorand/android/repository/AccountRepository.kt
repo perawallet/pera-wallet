@@ -14,9 +14,10 @@ package com.algorand.android.repository
 
 import com.algorand.android.cache.AccountLocalCache
 import com.algorand.android.models.AccountDetail
-import com.algorand.android.models.AccountInformationResponsePayload
-import com.algorand.android.modules.transactionhistory.data.model.PendingTransactionsResponse
+import com.algorand.android.models.AccountInformationResponse
+import com.algorand.android.models.AccountsResponse
 import com.algorand.android.models.Result
+import com.algorand.android.modules.transactionhistory.data.model.PendingTransactionsResponse
 import com.algorand.android.network.AlgodApi
 import com.algorand.android.network.IndexerApi
 import com.algorand.android.network.safeApiCall
@@ -34,16 +35,16 @@ class AccountRepository @Inject constructor(
     suspend fun getAccountInformation(
         publicKey: String,
         includeClosedAccounts: Boolean = false
-    ): Result<AccountInformationResponsePayload> = safeApiCall {
+    ): Result<AccountInformationResponse> = safeApiCall {
         requestAccountInformation(publicKey, includeClosedAccounts)
     }
 
     private suspend fun requestAccountInformation(
         publicKey: String,
         includeClosedAccounts: Boolean
-    ): Result<AccountInformationResponsePayload> {
+    ): Result<AccountInformationResponse> {
         with(indexerApi.getAccountInformation(publicKey, includeClosedAccounts)) {
-            val accountInformation = body()?.accountInformation
+            val accountInformation = body()
             return if (isSuccessful && accountInformation != null) {
                 Result.Success(accountInformation)
             } else {
@@ -65,16 +66,16 @@ class AccountRepository @Inject constructor(
         }
     }
 
-    suspend fun getRekeyedAccounts(rekeyAdminAddress: String): Result<List<AccountInformationResponsePayload>> =
+    suspend fun getRekeyedAccounts(rekeyAdminAddress: String): Result<AccountsResponse> =
         safeApiCall { requestGetRekeyedAccounts(rekeyAdminAddress) }
 
     private suspend fun requestGetRekeyedAccounts(
         rekeyAdminAddress: String
-    ): Result<List<AccountInformationResponsePayload>> {
+    ): Result<AccountsResponse> {
         with(indexerApi.getRekeyedAccounts(rekeyAdminAddress)) {
-            val accountInformationList = body()?.accountInformationList
-            return if (isSuccessful && accountInformationList != null) {
-                Result.Success(accountInformationList)
+            val accountInformationResponse = body()
+            return if (isSuccessful && accountInformationResponse != null) {
+                Result.Success(accountInformationResponse)
             } else {
                 Result.Error(Exception())
             }

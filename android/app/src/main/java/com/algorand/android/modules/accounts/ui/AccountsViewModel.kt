@@ -12,16 +12,15 @@
 
 package com.algorand.android.modules.accounts.ui
 
-import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
 import com.algorand.android.modules.accounts.domain.model.AccountPreview
 import com.algorand.android.modules.accounts.domain.usecase.AccountsPreviewUseCase
 import com.algorand.android.modules.tracking.accounts.AccountsEventTracker
-import com.algorand.android.modules.tracking.moonpay.AccountsFragmentAlgoBuyTapEventTracker
 import com.algorand.android.usecase.IsAccountLimitExceedUseCase
 import com.algorand.android.utils.coremanager.ParityManager
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -32,7 +31,6 @@ class AccountsViewModel @Inject constructor(
     private val accountsPreviewUseCase: AccountsPreviewUseCase,
     private val accountsEventTracker: AccountsEventTracker,
     private val parityManager: ParityManager,
-    private val accountsFragmentAlgoBuyTapEventTracker: AccountsFragmentAlgoBuyTapEventTracker,
     private val isAccountLimitExceedUseCase: IsAccountLimitExceedUseCase
 ) : BaseViewModel() {
 
@@ -54,10 +52,6 @@ class AccountsViewModel @Inject constructor(
         viewModelScope.launch {
             accountsPreviewUseCase.onCloseBannerClick(bannerId)
         }
-    }
-
-    fun onTutorialDialogClosed() {
-        accountsPreviewUseCase.setTutorialPreferences(true)
     }
 
     private fun initializeAccountPreviewFlow() {
@@ -84,7 +78,7 @@ class AccountsViewModel @Inject constructor(
 
     fun logAccountsFragmentAlgoBuyTapEvent() {
         viewModelScope.launch {
-            accountsFragmentAlgoBuyTapEventTracker.logAccountsFragmentAlgoBuyTapEvent()
+            accountsEventTracker.logAccountsFragmentAlgoBuyTapEvent()
         }
     }
 
@@ -98,5 +92,38 @@ class AccountsViewModel @Inject constructor(
 
     fun isAccountLimitExceed(): Boolean {
         return isAccountLimitExceedUseCase.isAccountLimitExceed()
+    }
+
+    fun dismissTutorial(tutorialId: Int) {
+        viewModelScope.launch {
+            accountsPreviewUseCase.dismissTutorial(tutorialId)
+        }
+    }
+
+    fun onSwapClick() {
+        viewModelScope.launch {
+            accountsEventTracker.logSwapClickEvent()
+            updatePreviewForSwapNavigation()
+        }
+    }
+
+    fun onSwapClickFromTutorialDialog() {
+        viewModelScope.launch {
+            accountsEventTracker.logSwapTutorialTrySwapClickEvent()
+            updatePreviewForSwapNavigation()
+        }
+    }
+
+    fun onSwapLaterClick() {
+        viewModelScope.launch {
+            accountsEventTracker.logSwapLaterClickEvent()
+        }
+    }
+
+    private suspend fun updatePreviewForSwapNavigation() {
+        with(_accountPreviewFlow) {
+            val newState = accountsPreviewUseCase.getSwapNavigationUpdatedPreview(value ?: return@with)
+            emit(newState)
+        }
     }
 }

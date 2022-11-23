@@ -134,7 +134,7 @@ class WalletConnectTransactionRequestFragment :
         with(walletConnectNavController) {
             setGraph(
                 navInflater.inflate(R.navigation.transaction_request_navigation).apply {
-                    setStartDestination(startDestinationId)
+                    startDestination = startDestinationId
                 },
                 startDestinationArgs
             )
@@ -181,7 +181,7 @@ class WalletConnectTransactionRequestFragment :
         with(binding) {
             declineButton.setOnClickListener { rejectRequest() }
             confirmButton.apply {
-                setOnClickListener { showConfirmationBottomSheet() }
+                setOnClickListener { onConfirmClick() }
                 val transactionCount = walletConnectTransaction?.transactionList?.size ?: 0
                 text = resources.getQuantityString(R.plurals.confirm_transactions, transactionCount)
             }
@@ -209,35 +209,41 @@ class WalletConnectTransactionRequestFragment :
         transactionRequestViewModel.processWalletConnectSignResult(result)
     }
 
-    private fun showLedgerWaitingForApprovalBottomSheet(ledgerName: String?) {
+    private fun showLedgerWaitingForApprovalBottomSheet(
+        ledgerName: String?,
+        currentTransactionIndex: Int?,
+        totalTransactionCount: Int?,
+        isTransactionIndicatorVisible: Boolean
+    ) {
         if (ledgerLoadingDialog == null) {
-            ledgerLoadingDialog = LedgerLoadingDialog.createLedgerLoadingDialog(ledgerName)
+            ledgerLoadingDialog = LedgerLoadingDialog.createLedgerLoadingDialog(
+                ledgerName = ledgerName,
+                currentTransactionIndex = currentTransactionIndex,
+                totalTransactionCount = totalTransactionCount,
+                isTransactionIndicatorVisible = isTransactionIndicatorVisible
+            )
             ledgerLoadingDialog?.showWithStateCheck(childFragmentManager, ledgerName.orEmpty())
         } else {
-            ledgerLoadingDialog?.onDismissDialog(false)
-            ledgerLoadingDialog = null
-            showLedgerWaitingForApprovalBottomSheet(ledgerName)
+            ledgerLoadingDialog?.updateTransactionIndicator(transactionIndex = currentTransactionIndex)
         }
     }
 
-    private fun showConfirmationBottomSheet() {
-        val confirmationText = getString(R.string.once_confirmed_the_connected_application)
-        transactionRequestViewModel.transaction?.let { transaction ->
-            val descriptionText = if (transaction.isFutureTransaction()) {
-                StringBuilder(getString(R.string.this_transaction_will_be))
-                    .append(" ")
-                    .append(confirmationText)
-                    .toString()
-            } else {
-                confirmationText
-            }
-            val confirmationParams = ConfirmationBottomSheetParameters(
-                titleResId = R.string.are_you_sure_question_mark,
-                descriptionText = descriptionText,
-                confirmationIdentifier = transaction.requestId
-            )
-            nav(MainNavigationDirections.actionGlobalConfirmationBottomSheet(confirmationParams))
+    private fun onConfirmClick() {
+        val currentTransaction = transactionRequestViewModel.transaction ?: return
+        if (currentTransaction.isFutureTransaction()) {
+            showFutureTransactionConfirmationBottomSheet(currentTransaction.requestId)
+        } else {
+            confirmTransaction()
         }
+    }
+
+    private fun showFutureTransactionConfirmationBottomSheet(requestId: Long) {
+        val confirmationParams = ConfirmationBottomSheetParameters(
+            titleResId = R.string.future_transaction_detected,
+            descriptionText = getString(R.string.this_transaction_will_be),
+            confirmationIdentifier = requestId
+        )
+        nav(MainNavigationDirections.actionGlobalConfirmationBottomSheet(confirmationParams))
     }
 
     private fun checkIfShouldShowFirstRequestBottomSheet() {
@@ -260,7 +266,14 @@ class WalletConnectTransactionRequestFragment :
         when (result) {
             WalletConnectSignResult.Loading -> showLoading()
             is WalletConnectSignResult.LedgerWaitingForApproval -> {
-                showLedgerWaitingForApprovalBottomSheet(result.ledgerName)
+                with(result) {
+                    showLedgerWaitingForApprovalBottomSheet(
+                        ledgerName = ledgerName,
+                        currentTransactionIndex = currentTransactionIndex,
+                        totalTransactionCount = totalTransactionCount,
+                        isTransactionIndicatorVisible = isTransactionIndicatorVisible
+                    )
+                }
             }
             is WalletConnectSignResult.Success -> onSigningSuccess(result)
             is WalletConnectSignResult.Error -> showSigningError(result)

@@ -20,6 +20,7 @@ import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavDirections
 import com.algorand.android.R
 import com.algorand.android.assetsearch.ui.model.VerificationTierConfiguration
 import com.algorand.android.core.BaseFragment
@@ -41,11 +42,13 @@ import com.algorand.android.ui.common.warningconfirmation.WarningConfirmationBot
 import com.algorand.android.utils.AccountDisplayName
 import com.algorand.android.utils.AccountIconDrawable
 import com.algorand.android.utils.AssetName
+import com.algorand.android.utils.Event
 import com.algorand.android.utils.PERA_VERIFICATION_MAIL_ADDRESS
 import com.algorand.android.utils.assetdrawable.BaseAssetDrawableProvider
 import com.algorand.android.utils.copyToClipboard
 import com.algorand.android.utils.extensions.show
 import com.algorand.android.utils.getCustomLongClickableSpan
+import com.algorand.android.utils.getXmlStyledString
 import com.algorand.android.utils.setDrawable
 import com.algorand.android.utils.startSavedStateListener
 import com.algorand.android.utils.useSavedStateValue
@@ -84,6 +87,20 @@ class AssetDetailFragment : BaseFragment(R.layout.fragment_asset_detail), AssetA
 
     private val accountIconResourceCollector: suspend (AccountIconResource?) -> Unit = { accountIconResource ->
         if (accountIconResource != null) setToolbarEndButton(accountIconResource)
+    }
+
+    private val onGlobalErrorEventCollector: suspend (Event<Pair<Int, AnnotatedString>>?) -> Unit = {
+        it?.consume()?.run {
+            val (titleResId, description) = this
+            showGlobalError(
+                title = getString(titleResId),
+                errorMessage = context?.getXmlStyledString(description)
+            )
+        }
+    }
+
+    private val swapNavigationDirectionEventCollector: suspend (Event<NavDirections>?) -> Unit = {
+        it?.consume()?.run { nav(this) }
     }
 
     override fun onDateFilterClick(currentFilter: DateFilter) {
@@ -148,6 +165,14 @@ class AssetDetailFragment : BaseFragment(R.layout.fragment_asset_detail), AssetA
                 launchWhenResumed {
                     map { it?.accountIconResource }.distinctUntilChanged().collectLatest(accountIconResourceCollector)
                 }
+                launchWhenResumed {
+                    map { it?.swapNavigationDirectionEvent }.distinctUntilChanged()
+                        .collectLatest(swapNavigationDirectionEventCollector)
+                }
+                launchWhenResumed {
+                    map { it?.onShowGlobalErrorEvent }.distinctUntilChanged()
+                        .collectLatest(onGlobalErrorEventCollector)
+                }
             }
         }
     }
@@ -188,7 +213,11 @@ class AssetDetailFragment : BaseFragment(R.layout.fragment_asset_detail), AssetA
                 formattedPrimaryValue = formattedPrimaryValue,
                 formattedSecondaryValue = formattedSecondaryValue
             )
-            setQuickActionsButtons(isAlgo = isAlgo, isQuickActionButtonsVisible = isQuickActionButtonsVisible)
+            setQuickActionsButtons(
+                isAlgo = isAlgo,
+                isQuickActionButtonsVisible = isQuickActionButtonsVisible,
+                isSwapButtonSelected = isSwapButtonSelected
+            )
         }
     }
 
@@ -246,16 +275,29 @@ class AssetDetailFragment : BaseFragment(R.layout.fragment_asset_detail), AssetA
         }
     }
 
-    private fun setQuickActionsButtons(isAlgo: Boolean, isQuickActionButtonsVisible: Boolean) {
+    private fun setQuickActionsButtons(
+        isAlgo: Boolean,
+        isQuickActionButtonsVisible: Boolean,
+        isSwapButtonSelected: Boolean
+    ) {
         with(binding) {
+            quickActionButtons.isVisible = isQuickActionButtonsVisible
+            swapButton.apply {
+                isVisible = isAlgo
+                isSelected = isSwapButtonSelected
+                setOnClickListener { assetDetailViewModel.onSwapButtonClick() }
+            }
             sendButton.setOnClickListener { navToSendAlgoNavigation() }
             receiveButton.setOnClickListener { navToShowQRBottomSheet() }
-            quickActionButtons.isVisible = isQuickActionButtonsVisible
             buyAlgoButton.apply {
                 isVisible = isAlgo && isQuickActionButtonsVisible
                 setOnClickListener { navToMoonpayNavigation() }
             }
         }
+    }
+
+    private fun navToSwapNavigation() {
+        // nav to swap navigation
     }
 
     private fun navToMoonpayNavigation() {

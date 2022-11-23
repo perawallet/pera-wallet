@@ -13,18 +13,20 @@
 
 package com.algorand.android.modules.accountdetail.ui
 
-import javax.inject.Inject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.models.AccountDetailSummary
 import com.algorand.android.models.AccountDetailTab
+import com.algorand.android.modules.accountdetail.ui.model.AccountDetailPreview
+import com.algorand.android.modules.accountdetail.ui.usecase.AccountDetailPreviewUseCase
 import com.algorand.android.modules.tracking.accountdetail.AccountDetailFragmentEventTracker
 import com.algorand.android.usecase.AccountDeletionUseCase
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.getOrThrow
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -35,7 +37,8 @@ class AccountDetailViewModel @Inject constructor(
     private val accountDetailUseCase: AccountDetailUseCase,
     private val accountDeletionUseCase: AccountDeletionUseCase,
     savedStateHandle: SavedStateHandle,
-    private val accountDetailFragmentEventTracker: AccountDetailFragmentEventTracker
+    private val accountDetailFragmentEventTracker: AccountDetailFragmentEventTracker,
+    private val accountDetailPreviewUseCase: AccountDetailPreviewUseCase
 ) : ViewModel() {
 
     val accountPublicKey: String = savedStateHandle.getOrThrow(ACCOUNT_PUBLIC_KEY)
@@ -47,8 +50,14 @@ class AccountDetailViewModel @Inject constructor(
     private val _accountDetailTabArgFlow = MutableStateFlow<Event<Int>?>(null)
     val accountDetailTabArgFlow: StateFlow<Event<Int>?> get() = _accountDetailTabArgFlow
 
+    // TODO Combine accountDetailSummaryFlow and accountDetailPreviewFlow
+    private val _accountDetailPreviewFlow = MutableStateFlow<AccountDetailPreview?>(null)
+    val accountDetailPreviewFlow: StateFlow<AccountDetailPreview?>
+        get() = _accountDetailPreviewFlow
+
     init {
         initAccountDetailSummary()
+        initAccountDetailPreview()
         checkAccountDetailTabArg()
     }
 
@@ -64,6 +73,10 @@ class AccountDetailViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             accountDeletionUseCase.removeAccount(publicKey)
         }
+    }
+
+    private fun initAccountDetailPreview() {
+        _accountDetailPreviewFlow.value = accountDetailPreviewUseCase.getInitialPreview()
     }
 
     fun initAccountDetailSummary() {
@@ -92,6 +105,18 @@ class AccountDetailViewModel @Inject constructor(
 
     fun getCanSignTransaction(): Boolean {
         return accountDetailSummaryFlow.value?.canSignTransaction ?: false
+    }
+
+    fun onSwapClick() {
+        viewModelScope.launch {
+            with(_accountDetailPreviewFlow) {
+                accountDetailFragmentEventTracker.logAccountDetailSwapButtonClickEvent()
+                val newState = accountDetailPreviewUseCase.getSwapNavigationUpdatedPreview(
+                    accountPublicKey, value ?: return@with
+                )
+                emit(newState)
+            }
+        }
     }
 
     companion object {

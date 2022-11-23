@@ -12,13 +12,21 @@
 
 package com.algorand.android.modules.tracking.accounts
 
+import com.algorand.android.modules.tracking.moonpay.AccountsFragmentAlgoBuyTapEventTracker
+import com.algorand.android.modules.tracking.swap.accounts.AccountsSwapClickEventTracker
+import com.algorand.android.modules.tracking.swap.swaptutorial.SwapTutorialLaterClickEventTracker
+import com.algorand.android.modules.tracking.swap.swaptutorial.SwapTutorialTrySwapClickEventTracker
 import javax.inject.Inject
 
 class AccountsEventTracker @Inject constructor(
     private val accountsAddAccountEventTracker: AccountsAddAccountEventTracker,
     private val accountsQrScanEventTracker: AccountsQrScanEventTracker,
     private val accountsQrConnectEventTracker: AccountsQrConnectEventTracker,
-    private val visitGovernanceEventTracker: VisitGovernanceEventTracker
+    private val visitGovernanceEventTracker: VisitGovernanceEventTracker,
+    private val trySwapClickEventTracker: SwapTutorialTrySwapClickEventTracker,
+    private val laterClickEventTracker: SwapTutorialLaterClickEventTracker,
+    private val accountsFragmentAlgoBuyTapEventTracker: AccountsFragmentAlgoBuyTapEventTracker,
+    private val accountsSwapClickEventTracker: AccountsSwapClickEventTracker
 ) {
 
     suspend fun logAddAccountTapEvent() {
@@ -35,5 +43,21 @@ class AccountsEventTracker @Inject constructor(
 
     suspend fun logVisitGovernanceEvent() {
         visitGovernanceEventTracker.logVisitGovernanceEvent()
+    }
+
+    suspend fun logSwapTutorialTrySwapClickEvent() {
+        trySwapClickEventTracker.logSwapTutorialTrySwapClickEvent()
+    }
+
+    suspend fun logSwapClickEvent() {
+        accountsSwapClickEventTracker.logSwapButtonClickEvent()
+    }
+
+    suspend fun logSwapLaterClickEvent() {
+        laterClickEventTracker.logSwapLaterClickEvent()
+    }
+
+    suspend fun logAccountsFragmentAlgoBuyTapEvent() {
+        accountsFragmentAlgoBuyTapEventTracker.logAccountsFragmentAlgoBuyTapEvent()
     }
 }

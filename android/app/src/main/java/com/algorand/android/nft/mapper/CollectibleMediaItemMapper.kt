@@ -64,6 +64,22 @@ class CollectibleMediaItemMapper @Inject constructor() {
         )
     }
 
+    fun mapToAudioCollectibleMediaItem(
+        collectibleId: Long,
+        isOwnedByTheUser: Boolean,
+        errorText: String,
+        collectibleMedia: BaseCollectibleMedia,
+        previewUrl: String
+    ): BaseCollectibleMediaItem.AudioCollectibleMediaItem {
+        return BaseCollectibleMediaItem.AudioCollectibleMediaItem(
+            downloadUrl = collectibleMedia.downloadUrl,
+            previewUrl = previewUrl,
+            collectibleId = collectibleId,
+            errorText = errorText,
+            isOwnedByTheUser = isOwnedByTheUser
+        )
+    }
+
     fun mapToUnsupportedCollectibleMediaItem(
         collectibleId: Long,
         isOwnedByTheUser: Boolean,

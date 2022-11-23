@@ -14,6 +14,7 @@ package com.algorand.android.modules.transaction.csv.ui.model
 
 import com.algorand.android.R
 import com.algorand.android.utils.Event
+import com.algorand.android.utils.Resource
 import java.io.File
 
 data class CsvStatusPreview(
@@ -21,5 +22,5 @@ data class CsvStatusPreview(
     val descriptionResId: Int = R.string.loading,
     val csvFile: Event<File>? = null,
     val isErrorShown: Boolean,
-    val errorResId: Int
+    val errorResource: Resource.Error
 )

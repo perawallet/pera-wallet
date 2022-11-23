@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2022 Pera Wallet, LDA
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -11,11 +10,13 @@
   ~ limitations under the License
   -->
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
 
     <View
         android:id="@+id/modalityLineView"
@@ -24,6 +25,30 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/ledgerTransactionIndicatorLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginVertical="@dimen/spacing_large"
+        android:textAppearance="@style/TextAppearance.Body.Sans.Medium"
+        android:visibility="gone"
+        tools:text="@tools:sample/lorem[3]"
+        tools:visibility="visible" />
+
+    <ProgressBar
+        android:id="@+id/ledgerTransactionIndicator"
+        style="@android:style/Widget.DeviceDefault.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:indeterminate="false"
+        android:progressBackgroundTint="@color/layer_gray_lighter"
+        android:progressTint="@color/positive"
+        android:visibility="gone"
+        tools:max="3"
+        tools:progress="1"
+        tools:visibility="visible" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/loadingAnimationLottieView"
@@ -34,8 +59,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/modalityLineView"
         app:lottie_autoPlay="true"
-        app:lottie_rawRes="@raw/bluetooth_loading_animation"
-        app:lottie_loop="true" />
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/bluetooth_loading_animation" />
 
     <TextView
         android:id="@+id/titleTextView"
@@ -51,7 +76,7 @@
     <TextView
         android:id="@+id/descriptionTextView"
         style="@style/TextAppearance.Description"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="60dp"
         android:layout_marginTop="@dimen/spacing_small"
@@ -64,7 +89,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/cancelButton"
         style="@style/Button.Secondary"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/spacing_xlarge"
         android:layout_marginTop="@dimen/spacing_xxxlarge"
@@ -75,4 +100,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/descriptionTextView" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

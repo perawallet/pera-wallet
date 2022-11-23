@@ -12,21 +12,15 @@
 
 package com.algorand.android.models
 
-import com.algorand.android.utils.AssetName
-import com.algorand.android.utils.assetdrawable.BaseAssetDrawableProvider
 import java.time.ZonedDateTime
 
 data class NotificationListItem(
     val id: Long,
-    val type: NotificationType,
+    val type: NotificationGroupType,
+    val isFailed: Boolean,
     val timeDifference: Long,
     val creationDateTime: ZonedDateTime,
-    val formattedAmount: String,
-    val fallbackMessage: String,
-    val senderUser: User?,
-    val receiverUser: User?,
-    val metadata: NotificationMetadata?,
-    val assetDrawableProvider: BaseAssetDrawableProvider,
-    val assetName: AssetName,
-    val prismUrl: String?
+    val message: String,
+    val address: String,
+    val assetId: Long
 )

@@ -12,6 +12,7 @@
 
 package com.algorand.android.modules.accounts.domain.usecase
 
+import androidx.navigation.NavDirections
 import com.algorand.android.R
 import com.algorand.android.banner.domain.model.BaseBanner
 import com.algorand.android.banner.domain.model.BaseBanner.GenericBanner
@@ -31,23 +32,30 @@ import com.algorand.android.modules.accounts.domain.model.AccountValue
 import com.algorand.android.modules.accounts.domain.model.BaseAccountListItem
 import com.algorand.android.modules.accounts.domain.model.BaseAccountListItem.HeaderItem
 import com.algorand.android.modules.accounts.domain.model.BasePortfolioValueItem
+import com.algorand.android.modules.accounts.ui.AccountsFragmentDirections
 import com.algorand.android.modules.currency.domain.usecase.CurrencyUseCase
 import com.algorand.android.modules.parity.domain.model.SelectedCurrencyDetail
 import com.algorand.android.modules.parity.domain.usecase.ParityUseCase
 import com.algorand.android.modules.sorting.accountsorting.domain.usecase.AccountSortPreferenceUseCase
 import com.algorand.android.modules.sorting.accountsorting.domain.usecase.GetSortedAccountsByPreferenceUseCase
+import com.algorand.android.modules.swap.reddot.domain.usecase.GetSwapFeatureRedDotVisibilityUseCase
+import com.algorand.android.modules.swap.utils.SwapNavigationDestinationHelper
+import com.algorand.android.modules.tutorialdialog.data.model.Tutorial
+import com.algorand.android.modules.tutorialdialog.data.model.Tutorial.ACCOUNT_ADDRESS_COPY
+import com.algorand.android.modules.tutorialdialog.data.model.Tutorial.SWAP
+import com.algorand.android.modules.tutorialdialog.domain.usecase.TutorialUseCase
 import com.algorand.android.nft.domain.usecase.SimpleCollectibleUseCase
-import com.algorand.android.tutorialdialog.domain.usecase.AccountAddressTutorialDisplayPreferencesUseCase
 import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.usecase.NodeSettingsUseCase
 import com.algorand.android.usecase.SimpleAssetDetailUseCase
 import com.algorand.android.utils.CacheResult
+import com.algorand.android.utils.Event
+import com.algorand.android.utils.combine
 import com.algorand.android.utils.formatAsCurrency
 import java.math.BigDecimal
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.withContext
 
 // TODO Refactor this class for performance and code quality
@@ -65,13 +73,19 @@ class AccountsPreviewUseCase @Inject constructor(
     private val nodeSettingsUseCase: NodeSettingsUseCase,
     private val portfolioValueItemMapper: PortfolioValueItemMapper,
     private val accountItemConfigurationMapper: AccountItemConfigurationMapper,
-    private val accountAddressTutorialDisplayPreferencesUseCase: AccountAddressTutorialDisplayPreferencesUseCase,
     private val getSortedAccountsByPreferenceUseCase: GetSortedAccountsByPreferenceUseCase,
     private val getAccountValueUseCase: GetAccountValueUseCase,
     private val accountSortPreferenceUseCase: AccountSortPreferenceUseCase,
     private val currencyUseCase: CurrencyUseCase,
-    private val notificationStatusUseCase: NotificationStatusUseCase
+    private val notificationStatusUseCase: NotificationStatusUseCase,
+    private val getSwapFeatureRedDotVisibilityUseCase: GetSwapFeatureRedDotVisibilityUseCase,
+    private val tutorialUseCase: TutorialUseCase,
+    private val swapNavigationDestinationHelper: SwapNavigationDestinationHelper
 ) {
+
+    suspend fun dismissTutorial(tutorialId: Int) {
+        tutorialUseCase.dismissTutorial(tutorialId)
+    }
 
     suspend fun getInitialAccountPreview(): AccountPreview {
         val isTestnetBadgeVisible = nodeSettingsUseCase.isSelectedNodeTestnet()
@@ -83,9 +97,10 @@ class AccountsPreviewUseCase @Inject constructor(
             parityUseCase.getSelectedCurrencyDetailCacheFlow(),
             accountDetailUseCase.getAccountDetailCacheFlow(),
             bannersUseCase.getBanner(),
+            tutorialUseCase.getTutorial(),
             nodeSettingsUseCase.getAllNodeAsFlow(),
             assetDetailUseCase.getCachedAssetsFlow()
-        ) { selectedCurrencyParityCache, accountDetailCache, banner, _, _ ->
+        ) { selectedCurrencyParityCache, accountDetailCache, banner, tutorial, _, _ ->
             val isTestnetBadgeVisible = nodeSettingsUseCase.isSelectedNodeTestnet()
             val localAccounts = accountManager.getAccounts()
             if (localAccounts.isEmpty()) {
@@ -93,7 +108,7 @@ class AccountsPreviewUseCase @Inject constructor(
             }
             when (selectedCurrencyParityCache) {
                 is CacheResult.Success -> {
-                    processAccountsAndAssets(accountDetailCache, banner, isTestnetBadgeVisible)
+                    processAccountsAndAssets(accountDetailCache, banner, isTestnetBadgeVisible, tutorial)
                 }
                 is CacheResult.Error -> getAlgoPriceErrorState(
                     selectedCurrencyDetailCache = selectedCurrencyParityCache,
@@ -107,6 +122,24 @@ class AccountsPreviewUseCase @Inject constructor(
 
     suspend fun onCloseBannerClick(bannerId: Long) {
         bannersUseCase.dismissBanner(bannerId)
+    }
+
+    suspend fun getSwapNavigationUpdatedPreview(previousState: AccountPreview): AccountPreview {
+        var swapNavDirection: NavDirections? = null
+        swapNavigationDestinationHelper.getSwapNavigationDestination(
+            onNavToIntroduction = {
+                swapNavDirection = AccountsFragmentDirections.actionAccountsFragmentToSwapIntroductionNavigation()
+            },
+            onNavToAccountSelection = {
+                swapNavDirection = AccountsFragmentDirections.actionAccountsFragmentToSwapAccountSelectionNavigation()
+            },
+            onNavToSwap = { accountAddress ->
+                swapNavDirection = AccountsFragmentDirections.actionAccountsFragmentToSwapNavigation(accountAddress)
+            }
+        )
+        return swapNavDirection?.let { direction ->
+            previousState.copy(swapNavigationDestinationEvent = Event(direction))
+        } ?: previousState
     }
 
     private suspend fun getAlgoPriceErrorState(
@@ -129,11 +162,12 @@ class AccountsPreviewUseCase @Inject constructor(
     private suspend fun processAccountsAndAssets(
         accountDetailCache: HashMap<String, CacheResult<AccountDetail>>,
         banner: BaseBanner?,
-        isTestnetBadgeVisible: Boolean
+        isTestnetBadgeVisible: Boolean,
+        tutorial: Tutorial?
     ): AccountPreview {
         val areAllAccountsAreCached = accountDetailUseCase.areAllAccountsCached()
         return if (areAllAccountsAreCached) {
-            processSuccessAccountCacheAndOthers(accountDetailCache, banner, isTestnetBadgeVisible)
+            processSuccessAccountCacheAndOthers(accountDetailCache, banner, isTestnetBadgeVisible, tutorial)
         } else {
             accountPreviewMapper.getFullScreenLoadingState(isTestnetBadgeVisible)
         }
@@ -142,7 +176,8 @@ class AccountsPreviewUseCase @Inject constructor(
     private suspend fun processSuccessAccountCacheAndOthers(
         accountDetailCache: HashMap<String, CacheResult<AccountDetail>>,
         banner: BaseBanner?,
-        isTestnetBadgeVisible: Boolean
+        isTestnetBadgeVisible: Boolean,
+        tutorial: Tutorial?
     ): AccountPreview {
         val isThereAnyAssetNeedsToBeCached = accountDetailCache.values.any {
             !it.data?.accountInformation?.assetHoldingList.isNullOrEmpty()
@@ -154,14 +189,15 @@ class AccountsPreviewUseCase @Inject constructor(
         ) {
             accountPreviewMapper.getFullScreenLoadingState(isTestnetBadgeVisible)
         } else {
-            prepareAccountPreview(accountDetailCache, banner, isTestnetBadgeVisible)
+            prepareAccountPreview(accountDetailCache, banner, isTestnetBadgeVisible, tutorial)
         }
     }
 
     private suspend fun prepareAccountPreview(
         accountDetailCache: HashMap<String, CacheResult<AccountDetail>>,
         banner: BaseBanner?,
-        isTestnetBadgeVisible: Boolean
+        isTestnetBadgeVisible: Boolean,
+        tutorial: Tutorial?
     ): AccountPreview {
         return withContext(Dispatchers.Default) {
             var primaryAccountValue = BigDecimal.ZERO
@@ -188,24 +224,32 @@ class AccountsPreviewUseCase @Inject constructor(
             } else {
                 portfolioValueItemMapper.mapToPortfolioValuesErrorItem()
             }
-            val shouldShowTutorialDialog = accountAddressTutorialDisplayPreferencesUseCase.shouldShowTutorialDialog()
+
+            val swapTutorialDisplayEvent = with(tutorial) {
+                if (this == SWAP) Event(id) else null
+            }
+            val accountAddressCopyDisplayEvent = with(tutorial) {
+                if (this == ACCOUNT_ADDRESS_COPY) Event(id) else null
+            }
             val hasNewNotification = notificationStatusUseCase.hasNewNotification()
             accountPreviewMapper.getSuccessAccountPreview(
                 accountListItems = baseAccountListItems,
                 isTestnetBadgeVisible = isTestnetBadgeVisible,
                 portfolioValueItem = portfolioValueItem,
-                shouldShowDialog = shouldShowTutorialDialog,
-                hasNewNotification = hasNewNotification
+                hasNewNotification = hasNewNotification,
+                onSwapTutorialDisplayEvent = swapTutorialDisplayEvent,
+                onAccountAddressCopyTutorialDisplayEvent = accountAddressCopyDisplayEvent,
             )
         }
     }
 
-    fun setTutorialPreferences(isShown: Boolean) {
-        accountAddressTutorialDisplayPreferencesUseCase.setTutorialPreferences(isShown)
-    }
-
-    private fun insertQuickActionsItem(accountsList: MutableList<BaseAccountListItem>) {
-        accountsList.add(QUICK_ACTIONS_ITEM_INDEX, accountListItemMapper.mapToQuickActionsItem())
+    private suspend fun insertQuickActionsItem(accountsList: MutableList<BaseAccountListItem>) {
+        accountsList.add(
+            index = QUICK_ACTIONS_ITEM_INDEX,
+            element = accountListItemMapper.mapToQuickActionsItem(
+                isSwapButtonSelected = getSwapFeatureRedDotVisibilityUseCase.getSwapFeatureRedDotVisibility()
+            )
+        )
     }
 
     private fun getBannerItemOrNull(baseBanner: BaseBanner?): BaseAccountListItem.BaseBannerItem? {

@@ -313,8 +313,6 @@
     <string name="unsigned_transactions">未署名のトランザクション</string>
     <string name="application_id">アプリケーションID</string>
     <string name="this_transaction_will_transfer">このトランザクションにより、このアカウントの所有権が移転します。あなたの現在の復旧用パスフレーズでは、これらの資産へのアクセスができなくなります。</string>
-    <string name="once_confirmed_the_connected_application">確認後、接続されたアプリケーションは、自由にこれらのトランザクションを送信することができます。このプロセスは元に戻すことができないため、トランザクションの内容を慎重に確認してください。</string>
-    <string name="are_you_sure_question_mark">よろしいですか？</string>
     <string name="this_transaction_is_sending">このトランザクションは、お客様のすべてのAlgo残高を送信します。</string>
     <string name="close_asset_to">資産をクローズする</string>
     <string name="this_transaction_is_sending_asset">このトランザクションは、お客様のすべての%1$s残高を送信し、アカウントから%1$sを削除します。</string>
@@ -587,8 +585,9 @@
     <string name="receive_an_nft">NFTを受け取る</string>
     <string name="the_account_name"><annotation font="dmsans_bold">\"<annotation replacement="account_name"> </annotation>\"</annotation>のアカウントは正常に再キー化されました。</string>
     <string name="asset_support_success"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>は<annotation replacement="asset">assetPlaceholder</annotation>をアカウントに追加しました。<annotation replacement="asset">assetPlaceholder</annotation>を送信可能です。</string>
+    <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>が<annotation replacement="asset">assetPlaceholder</annotation>をお客様のアカウント<annotation font="dmsans_medium"><annotation replacement="receiver">receiverPlaceholder</annotation></annotation>に送信しようとしています。トランザクションを処理するには、タップしてこの資産をオプトインしてください。</string>
     <string name="transaction_send_successful"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>から<annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>への、<annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation>のトランザクションが完了しました。</string>
-    <string name="transaction_send_failed"><annotation font="publicsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>から<annotation font="publicsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>への、<annotation font="publicsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation>のトランザクションが失敗しました。</string>
+    <string name="transaction_send_failed"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation>から<annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>への、<annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation>のトランザクションが失敗しました。</string>
     <string name="the_only_way_to">Algorandアカウントを回復させる唯一の方法は、このリカバリーパスフレーズです。</string>
     <string name="monitor_activity_of">リカバリーパスフレーズを必要とすることなく、アカウントのアクティビティを監視できます。コールドストレージに保管されている資産の監視に役立ちます。</string>
     <string name="this_transaction_fee_is_higher">このトランザクション手数料は、通常の手数料である0.001 Algoよりも高くなっています。</string>
@@ -713,7 +712,6 @@
     <string name="quadrillion_abbreviation">千兆</string>
     <string name="quintillion">京</string>
     <string name="quintillion_abbreviation">京</string>
-    <string name="account_related_to_this_notification">この通知に関連するアカウントは、このデバイスから削除されました。この通知の詳細を表示するには、アカウントを再度追加してください。</string>
     <string name="account_asset_count_zero">0資産</string>
     <string name="pin_code_did_not_match">PINコードが一致しません。再試行する</string>
     <string name="your_main_currency_is_placeholder">ご利用のメイン通貨は<annotation font="dmsans_regular"><annotation custom="primaryCurrencyColor"><annotation replacement="primaryCurrencyId">primaryCurrencyPlaceholder</annotation></annotation></annotation>、サブ通貨は<annotation font="dmsans_regular"><annotation custom="secondaryCurrencyColor"><annotation replacement="secondaryCurrencyId">secondaryCurrencyPlaceholder</annotation></annotation></annotation>です</string>
@@ -788,4 +786,93 @@
     <string name="you_ve_connected">お客様のアカウントを%1$sに接続しました。操作を終了するには、ウェブブラウザに戻ってください。</string>
     <string name="transaction_signed">トランザクションに署名されました！</string>
     <string name="transaction_was_sent">トランザクションが%1$sに送信されました。操作を終了するには、ウェブブラウザに戻ってください。</string>
+    <string name="max_all_caps">最大</string>
+    <string name="asset_successfully_removed_to_your">%1$sがアカウントから正常に削除されました。</string>
+    <string name="swap">スワップ</string>
+    <string name="convert_between_popular_asa_pairs">人気のASAペア間で交換する</string>
+    <string name="swap_to">スワップ先</string>
+    <string name="swap_from">スワップ元</string>
+    <string name="we_can_not_show_assets">現在資産を表示できません。もう一度お試しください。</string>
+    <string name="choose_an_asset">資産を選択する</string>
+    <string name="balance_formatted">残高: %1$s</string>
+    <string name="select_an_account_to_make">スワップを行うアカウントを選択してください</string>
+    <string name="price_impact_is_the_influence">価格への影響とは、資産ペアの市場価格に対する取引の影響です。これは、プール内の流動性の量と直接相関しています。</string>
+    <string name="slippage_tolerance">スリッページ許容額</string>
+    <string name="slippage_is_the_price_difference">スリッページとは、トランザクション送信時と、ブロックチェーンでトランザクションが確認された時の価格差のことです。スリッページ率がここで設定した許容率を超えると、価値の損失を防ぐために取引が自動的にキャンセルされます。</string>
+    <string name="swap_in_pera">Peraでスワップする</string>
+    <string name="pera_wallet_now_provides_an">Pera Walletは、簡単かつ迅速に資産をスワップする方法を提供します。</string>
+    <string name="try_swap">スワップを試す</string>
+    <string name="later">後で</string>
+    <string name="set_custom_slippage">カスタムスリッページを設定する</string>
+    <string name="auto">自動</string>
+    <string name="slippage_tolerance_must_be_between">スリッページ許容範囲は%1$.1f%%から%2$.1f%%の間でなければなりません。</string>
+    <string name="balance_percentage_must_be_between">残高パーセンテージは%1$d%%と%2$d%%の間でなければなりません。</string>
+    <string name="set_custom_percentage">カスタムパーセンテージを設定する</string>
+    <string name="balance_percentage">残高パーセンテージ</string>
+    <string name="pera_wallet_provides_an_easy">Pera Walletは、簡単かつ迅速に資産をスワップする方法を提供します。スワップでは、スマートコントラクトを利用して、ASAを別のASAと市場価格で交換することができます。</string>
+    <string name="by_continuing_you_agree_to">続行することで、あなたは当社スワップパートナーの<annotation url="tinymanTermsOfServiceUrl"><annotation type="bold"><annotation type="color">利用規約</annotation></annotation></annotation>に同意したとみなされます</string>
+    <string name="start_swapping">スワップ開始</string>
+    <string name="powered_by">Powered by</string>
+    <string name="new_text">新規</string>
+    <string name="this_account_doesn_t_have">このアカウントには、スワップ操作に必要な最小残高<annotation replacement="minimum_balance">minimumBalancePlaceholder</annotation>がありません。</string>
+    <string name="minimum_balance">最小残高</string>
+    <string name="account_does_not_have">このトランザクションに十分な残高がアカウントにありません。</string>
+    <string name="account_does_not_have_algo">トランザクション手数料をカバーするために十分なAlgo残高がアカウントにありません。</string>
+    <string name="confirm_swap">スワップの確認</string>
+    <string name="price_impact">価格への影響</string>
+    <string name="minimum_received">最小受取額</string>
+    <string name="total_swap_fee">合計スワップ手数料</string>
+    <string name="view_swap_summary">スワップの概要を表示する</string>
+    <string name="from_to_to_asset_ratio"><annotation replacement="secondAssetShortName">secondAssetShortName</annotation>あたりの<annotation replacement="firstAssetShortName">assetShortName</annotation><annotation replacement="ratio">比率</annotation></string>
+    <string name="slippage_tolerance_value_updated">スリッページ許容額が更新されました！</string>
+    <string name="sign_with_ledger">Ledgerで署名する</string>
+    <string name="we_ve_detected_that_you">このアカウントでLedgerデバイスを使用していることが検出されました。<annotation font="dmsans_medium">ハードウェアトークンを使って<annotation replacement="transaction_count">transactionCountPlaceholder</annotation>トランザクションに１つずつ</annotation>署名する必要があります。</string>
+    <plurals name="sign_transaction">
+        <item quantity="other">トランザクションに署名</item>
+    </plurals>
+    <string name="signing_index_out_of_count">%2$dのうち%1$dに署名しています…</string>
+    <string name="view_transaction_detail_in_algoexplorer">トランザクションの詳細をAlgoExplorerで見る</string>
+    <string name="go_to_homepage">ホームページに移動</string>
+    <string name="sending_the_transaction">トランザクションの送信中</string>
+    <string name="you_will_receive_at_least">少なくとも<annotation replacement="amount_and_asset_name">amountAndAssetNamePlaceholder</annotation>を受け取れなければ、トランザクションは元に戻されます。</string>
+    <string name="asset_pair_swap_completed"><annotation replacement="to_asset_name">toAssetNamePlaceholder</annotation> / <annotation replacement="from_asset_name">fromAssetNamePlaceholder</annotation> スワップが完了しました</string>
+    <string name="you_received_amount_asset_name_in"><annotation replacement="to_amount_and_asset_name"><annotation custom="received_asset_color">toAmountAndAssetNamePlaceholder</annotation></annotation>を<annotation replacement="from_amount_and_asset_name"><annotation custom="paid_asset_color">fromAmountAndAssetNamePlaceholder</annotation></annotation>と引き換えに受け取りました</string>
+    <string name="asset_pair_swap_has_failed"><annotation replacement="to_asset_name">toAssetNamePlaceholder</annotation> / <annotation replacement="from_asset_name">fromAssetNamePlaceholder</annotation> スワップに失敗しました</string>
+    <string name="because_of_error_message"><annotation replacement="error_message">errorMessagePlaceholder</annotation>によるものです。\nもう一度やり直してください。</string>
+    <string name="exchange_fee">取引所手数料</string>
+    <string name="pera_fee">Pera手数料</string>
+    <string name="total_swap_fee_asterisk">合計スワップ手数料*</string>
+    <string name="amount_displayed_in_the">合計スワップ手数料に表示されている金額がスワップに含まれます。Algorandネットワーク手数料が追加料金として加算されます。</string>
+    <string name="swap_summary">スワップの概要</string>
+    <string name="received">受け取り済</string>
+    <string name="paid">支払い済</string>
+    <string name="algorand_fees">Algorand手数料</string>
+    <string name="opt_in_fees">オプトイン手数料</string>
+    <string name="exchange_fees">取引所手数料</string>
+    <string name="pera_fees">Pera手数料</string>
+    <string name="an_unexpected_error_mismatched_txn">予期しないエラーが発生しました: エラーコード: 一致しないトランザクション。</string>
+    <string name="custom">カスタム</string>
+    <string name="select_all">すべて選択</string>
+    <string name="unselect_all">すべて選択解除</string>
+    <string name="disclaimer">免責事項</string>
+    <string name="export_to_pera_web">Pera Webにエクスポートする</string>
+    <string name="you_re_about_to_share">Pera Web Walletとパスフレーズを共有し、インポートしようとしています！</string>
+    <string name="never_accept_a">ご自身のものでないリクエストは絶対に受け入れないでください。</string>
+    <string name="confirm_export_domain">ドメインエクスポートの確認</string>
+    <string name="for_your_security_please_confirm">セキュリティのため、パソコンに表示されているドメイン名を入力して、Pera Webにアカウントをエクスポートしていることをご確認ください。</string>
+    <string name="enter_url_of_web_wallet">Web WalletのURLを入力してください</string>
+    <string name="url_of_web_wallet">Web WalletのURL</string>
+    <string name="to_make_sure_that_you">アカウントを安全な場所にエクスポートしていることを確認するために、常に公式のPera Web URL上にいることをご確認ください:</string>
+    <string name="confirm_accounts">アカウントの確認</string>
+    <string name="you_re_about_to_export">これらのアカウントをPera Webに安全にエクスポートしようとしています:</string>
+    <string name="accounts_exported_successfully">アカウントは正常にエクスポートされました！</string>
+    <string name="you_can_now_use_these">これらのアカウントは、Pera Web Walletで利用できるようになりました。</string>
+    <string name="we_couldn_t_find">エクスポートの対象となるアカウントが見つかりませんでした。</string>
+    <plurals name="account_count">
+        <item quantity="other">%1$d アカウント</item>
+    </plurals>
+    <string name="i_want_to_recover_an">Ledgerハードウェアウォレットに紐づけされたアカウントを復元したい。</string>
+    <string name="total_owned">所有総数</string>
+    <string name="this_is_the_fee_charged">これは、分散型取引所によって請求される手数料です。送金金額から自動的に差し引かれ、最低受取金額に加算されます。それ以上の追加料金はかかりません。</string>
+    <string name="we_encountered_an_unexpected">予期しないエラーが発生しました。後でもう一度やり直してください。</string>
 </resources>

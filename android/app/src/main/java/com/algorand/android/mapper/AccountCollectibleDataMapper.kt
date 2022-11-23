@@ -12,21 +12,25 @@
 
 package com.algorand.android.mapper
 
+import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleAudioData
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleImageData
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleMixedData
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleVideoData
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedUnsupportedCollectibleData
 import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingAdditionCollectibleData
+import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingAdditionCollectibleData.AdditionAudioCollectibleData
 import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingAdditionCollectibleData.AdditionImageCollectibleData
 import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingAdditionCollectibleData.AdditionMixedCollectibleData
 import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingAdditionCollectibleData.AdditionUnsupportedCollectibleData
 import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingAdditionCollectibleData.AdditionVideoCollectibleData
 import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingDeletionCollectibleData
+import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingDeletionCollectibleData.DeletionAudioCollectibleData
 import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingDeletionCollectibleData.DeletionImageCollectibleData
 import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingDeletionCollectibleData.DeletionMixedCollectibleData
 import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingDeletionCollectibleData.DeletionUnsupportedCollectibleData
 import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingDeletionCollectibleData.DeletionVideoCollectibleData
 import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingSendingCollectibleData
+import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingSendingCollectibleData.SendingAudioCollectibleData
 import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingSendingCollectibleData.SendingImageCollectibleData
 import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingSendingCollectibleData.SendingMixedCollectibleData
 import com.algorand.android.models.BaseAccountAssetData.PendingAssetData.BasePendingCollectibleData.PendingSendingCollectibleData.SendingUnsupportedCollectibleData
@@ -79,6 +83,36 @@ class AccountCollectibleDataMapper @Inject constructor() {
         optedInAtRound: Long?
     ): OwnedCollectibleVideoData {
         return OwnedCollectibleVideoData(
+            id = collectibleDetail.assetId,
+            name = collectibleDetail.fullName,
+            shortName = collectibleDetail.shortName,
+            amount = amount,
+            formattedAmount = formattedAmount,
+            formattedCompactAmount = formattedCompactAmount,
+            parityValueInSelectedCurrency = parityValueInSelectedCurrency,
+            parityValueInSecondaryCurrency = parityValueInSecondaryCurrency,
+            isAlgo = false,
+            decimals = collectibleDetail.fractionDecimals ?: DEFAULT_ASSET_DECIMAL,
+            creatorPublicKey = collectibleDetail.assetCreator?.publicKey,
+            usdValue = collectibleDetail.usdValue,
+            isAmountInSelectedCurrencyVisible = collectibleDetail.hasUsdValue(),
+            prismUrl = collectibleDetail.collectible?.primaryImageUrl,
+            collectibleName = collectibleDetail.collectible?.title,
+            collectionName = collectibleDetail.collectible?.collectionName,
+            optedInAtRound = optedInAtRound
+        )
+    }
+
+    fun mapToOwnedCollectibleAudioData(
+        collectibleDetail: SimpleCollectibleDetail,
+        amount: BigInteger,
+        formattedAmount: String,
+        formattedCompactAmount: String,
+        parityValueInSelectedCurrency: ParityValue,
+        parityValueInSecondaryCurrency: ParityValue,
+        optedInAtRound: Long?
+    ): OwnedCollectibleAudioData {
+        return OwnedCollectibleAudioData(
             id = collectibleDetail.assetId,
             name = collectibleDetail.fullName,
             shortName = collectibleDetail.shortName,
@@ -193,6 +227,23 @@ class AccountCollectibleDataMapper @Inject constructor() {
         )
     }
 
+    fun mapToPendingRemovalAudioCollectibleData(
+        collectibleDetail: SimpleCollectibleDetail
+    ): PendingDeletionCollectibleData {
+        return DeletionAudioCollectibleData(
+            id = collectibleDetail.assetId,
+            name = collectibleDetail.fullName,
+            shortName = collectibleDetail.shortName,
+            isAlgo = false,
+            decimals = collectibleDetail.fractionDecimals ?: DEFAULT_ASSET_DECIMAL,
+            creatorPublicKey = collectibleDetail.assetCreator?.publicKey,
+            usdValue = collectibleDetail.usdValue,
+            primaryImageUrl = collectibleDetail.collectible?.primaryImageUrl,
+            collectionName = collectibleDetail.collectible?.collectionName,
+            collectibleName = collectibleDetail.collectible?.title
+        )
+    }
+
     fun mapToPendingRemovalUnsupportedCollectibleData(
         collectibleDetail: SimpleCollectibleDetail
     ): PendingDeletionCollectibleData {
@@ -261,6 +312,23 @@ class AccountCollectibleDataMapper @Inject constructor() {
         )
     }
 
+    fun mapToPendingAdditionAudioCollectibleData(
+        collectibleDetail: SimpleCollectibleDetail
+    ): PendingAdditionCollectibleData {
+        return AdditionAudioCollectibleData(
+            id = collectibleDetail.assetId,
+            name = collectibleDetail.fullName,
+            shortName = collectibleDetail.shortName,
+            isAlgo = false,
+            decimals = collectibleDetail.fractionDecimals ?: DEFAULT_ASSET_DECIMAL,
+            creatorPublicKey = collectibleDetail.assetCreator?.publicKey,
+            usdValue = collectibleDetail.usdValue,
+            primaryImageUrl = collectibleDetail.collectible?.primaryImageUrl,
+            collectionName = collectibleDetail.collectible?.collectionName,
+            collectibleName = collectibleDetail.collectible?.title
+        )
+    }
+
     fun mapToPendingAdditionUnsupportedCollectibleData(
         collectibleDetail: SimpleCollectibleDetail
     ): PendingAdditionCollectibleData {
@@ -316,6 +384,23 @@ class AccountCollectibleDataMapper @Inject constructor() {
         collectibleDetail: SimpleCollectibleDetail
     ): PendingSendingCollectibleData {
         return SendingVideoCollectibleData(
+            id = collectibleDetail.assetId,
+            name = collectibleDetail.fullName,
+            shortName = collectibleDetail.shortName,
+            isAlgo = false,
+            decimals = collectibleDetail.fractionDecimals ?: DEFAULT_ASSET_DECIMAL,
+            creatorPublicKey = collectibleDetail.assetCreator?.publicKey,
+            usdValue = collectibleDetail.usdValue,
+            primaryImageUrl = collectibleDetail.collectible?.primaryImageUrl,
+            collectionName = collectibleDetail.collectible?.collectionName,
+            collectibleName = collectibleDetail.collectible?.title
+        )
+    }
+
+    fun mapToPendingSendingAudioCollectibleData(
+        collectibleDetail: SimpleCollectibleDetail
+    ): PendingSendingCollectibleData {
+        return SendingAudioCollectibleData(
             id = collectibleDetail.assetId,
             name = collectibleDetail.fullName,
             shortName = collectibleDetail.shortName,

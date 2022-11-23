@@ -35,8 +35,19 @@ class LedgerBleSearchManager(
     private var connectionTimeoutHandler: Handler? = null
 
     @SuppressLint("MissingPermission")
-    fun scan(newScanCallback: CustomScanCallback, filteredAddress: String? = null) {
-        if (filteredAddress != null && isLedgerConnected(filteredAddress)) {
+    fun scan(
+        newScanCallback: CustomScanCallback,
+        currentTransactionIndex: Int? = null,
+        totalTransactionCount: Int? = null,
+        filteredAddress: String? = null
+    ) {
+        if (filteredAddress != null &&
+            isLedgerConnected(
+                deviceAddress = filteredAddress,
+                currentTransactionIndex = currentTransactionIndex,
+                totalTransactionCount = totalTransactionCount
+            )
+        ) {
             // Don't need to scan any ledger devices because it has already connected.
             return
         }
@@ -45,6 +56,8 @@ class LedgerBleSearchManager(
         isScanning = true
         this.scanCallback = newScanCallback.apply {
             this.filteredAddress = filteredAddress
+            this.currentTransactionIndex = currentTransactionIndex
+            this.totalTransactionCount = totalTransactionCount
         }
 
         val scanFilters = listOf(
@@ -60,7 +73,10 @@ class LedgerBleSearchManager(
             if (filteredAddress != null) {
                 startTimeout()
             } else {
-                provideConnectedLedger()
+                provideConnectedLedger(
+                currentTransactionIndex = currentTransactionIndex,
+                totalTransactionCount = totalTransactionCount
+            )
             }
         } else {
             return
@@ -75,19 +91,30 @@ class LedgerBleSearchManager(
         }, MAX_SCAN_DURATION)
     }
 
-    private fun provideConnectedLedger() {
+    private fun provideConnectedLedger(currentTransactionIndex: Int?, totalTransactionCount: Int?) {
         val connectedDevice = ledgerBleConnectionManager.bluetoothDevice
         if (connectedDevice != null) {
-            scanCallback?.onLedgerScanned(connectedDevice)
+            scanCallback?.onLedgerScanned(
+                device = connectedDevice,
+                currentTransactionIndex = currentTransactionIndex,
+                totalTransactionCount = totalTransactionCount
+            )
         }
     }
 
-    private fun isLedgerConnected(deviceAddress: String): Boolean {
-        if (ledgerBleConnectionManager.isDeviceConnected(deviceAddress)) {
-            ledgerBleConnectionManager.bluetoothDevice?.let {
-                scanCallback?.onLedgerScanned(it)
-                return true
-            } ?: return false
+    private fun isLedgerConnected(
+        deviceAddress: String,
+        currentTransactionIndex: Int?,
+        totalTransactionCount: Int?
+    ): Boolean {
+        val connectedDevice = ledgerBleConnectionManager.bluetoothDevice
+        if (connectedDevice != null && connectedDevice.address == deviceAddress) {
+            scanCallback?.onLedgerScanned(
+                device = connectedDevice,
+                currentTransactionIndex = currentTransactionIndex,
+                totalTransactionCount = totalTransactionCount
+            )
+            return true
         }
         return false
     }

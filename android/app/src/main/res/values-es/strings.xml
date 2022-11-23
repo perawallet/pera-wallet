@@ -62,7 +62,7 @@
     <string name="note">Nota</string>
     <string name="rewards">Recompensas</string>
     <string name="show_rewards">Mostrar recompensas</string>
-    <string name="max">Máximo</string>
+    <string name="max">Máx</string>
     <string name="you_earn_rewards_just">¡Consigues recompensas solo por poseer Algo! Aquí tienes un historial de recompensas desde la última transacción. Estas recompensas siempre se incluyen en tu saldo.</string>
     <string name="for_more_information">Para obtener más información sobre las recompensas de Algorand, visita <annotation custom="faq_color"><annotation type="bold">Preguntas Frecuentes</annotation></annotation></string>
     <string name="reward">Recompensa</string>
@@ -318,8 +318,6 @@
     <string name="unsigned_transactions">Transacciones sin firmar</string>
     <string name="application_id">ID de aplicación</string>
     <string name="this_transaction_will_transfer">Esta transacción transferirá la propiedad de esta cuenta. Tu frase de recuperación actual ya no otorgará acceso a estos activos.</string>
-    <string name="once_confirmed_the_connected_application">Una vez confirmada, la aplicación conectada puede enviar estas transacciones a su criterio.  Asegúrate de revisar estas transacciones detenidamente, ya que este proceso es irreversible.</string>
-    <string name="are_you_sure_question_mark">¿Estás seguro?</string>
     <string name="this_transaction_is_sending">Esta transacción envía la totalidad de tu saldo en Algo.</string>
     <string name="close_asset_to">Cierre de activo para</string>
     <string name="this_transaction_is_sending_asset">Esta transacción envía la totalidad de tu saldo %1$s y eliminará %1$s de su cuenta.</string>
@@ -591,8 +589,9 @@
     <string name="confirm_transfer">Confirmar transferencia</string>
     <string name="search_asset_id_or_nft">Buscar por ID de activo o nombre del NFT</string>
     <string name="receive_an_nft">Recibir un NFT</string>
-    <string name="the_account_name">Se cambió con éxito la clave de la cuenta <annotation font="dmsans_bold">\"<annotation replacement="account_name"></annotation>\"</annotation>.</string>
+    <string name="the_account_name">Se cambió con éxito la clave de la cuenta <annotation font="dmsans_bold">\"<annotation replacement="account_name">accountNamePlaceholder</annotation>\"</annotation>.</string>
     <string name="asset_support_success"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> agregó <annotation replacement="asset">assetPlaceholder</annotation> a su cuenta. Puedes enviarle <annotation replacement="asset">assetPlaceholder</annotation>.</string>
+    <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> está intentando enviar <annotation replacement="asset">assetPlaceholder</annotation> a tu cuenta <annotation font="dmsans_medium"><annotation replacement="receiver">receptorPlaceholder</annotation></annotation>. Toca para suscribirte a este activo para que la transacción pueda ser procesada.</string>
     <string name="transaction_send_successful">Se completó la transacción de <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> de <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> para <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>.</string>
     <string name="transaction_send_failed">Falló la transacción de <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> de <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> para <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation>.</string>
     <string name="the_only_way_to">La única manera de recuperar una cuenta de Algorand es con esta frase de recuperación.</string>
@@ -727,7 +726,6 @@
     <string name="quadrillion_abbreviation">MB</string>
     <string name="quintillion">Trillón</string>
     <string name="quintillion_abbreviation">T</string>
-    <string name="account_related_to_this_notification">Se eliminó del dispositivo la cuenta relacionada con esta notificación. Agrega la cuenta nuevamente para ver los detalles de esta notificación.</string>
     <string name="account_asset_count_zero">0 Activo</string>
     <string name="pin_code_did_not_match">El PIN no coincide. Inténtalo nuevamente.</string>
     <string name="your_main_currency_is_placeholder">Tu moneda principal es <annotation font="dmsans_regular"><annotation custom="primaryCurrencyColor"><annotation replacement="primaryCurrencyId">primaryCurrencyPlaceholder</annotation></annotation></annotation> y tu moneda secundaria es <annotation font="dmsans_regular"><annotation custom="secondaryCurrencyColor"><annotation replacement="secondaryCurrencyId">secondaryCurrencyPlaceholder</annotation></annotation></annotation></string>
@@ -793,7 +791,7 @@
     <string name="opt_out_nft">Dar de baja el NFT</string>
     <string name="you_are_about_to_opt">Estás a punto de dar de baja %1$s. No podrás realizar transacciones con este NFT desde esta cuenta a menos que vuelvas a agregarlo.</string>
     <string name="opt_in_to_nft">Suscribirse a un NFT</string>
-    <string name="opting_in_to_an_nft">Suscribirse a un NFT requiere que se envíe una transacción con una tarifa mínima. Esto aparecerá en tu historial de transacciones.</string>
+    <string name="opting_in_to_an_nft">Suscribirse a un NFT requiere enviar una transacción con una tarifa de transacción mínima. Esto aparecerá en tu historial de transacciones.</string>
     <string name="this_account_doesn_t">Esta cuenta no tiene saldo suficiente para esta transacción.</string>
     <string name="we_couldn_t">No pudimos detectar automáticamente el navegador con el que iniciaste la sesión de WalletConnect. Selecciónalo para volver a %1$s</string>
     <string name="select_a_browser">Elige un navegador</string>
@@ -802,4 +800,95 @@
     <string name="you_ve_connected">Conectaste tu cuenta a %1$s. Regresa al navegador para terminar la operación.</string>
     <string name="transaction_signed">Transacción firmada</string>
     <string name="transaction_was_sent">Se envió la transacción a %1$s. Regresa al navegador para terminar la operación.</string>
+    <string name="max_all_caps">MÁX</string>
+    <string name="asset_successfully_removed_to_your">Se eliminó %1$s correctamente a tu cuenta.</string>
+    <string name="swap">Intercambiar</string>
+    <string name="convert_between_popular_asa_pairs">Convertir entre pares de ASA populares</string>
+    <string name="swap_to">Intercambiar a</string>
+    <string name="swap_from">Intercambiar desde</string>
+    <string name="we_can_not_show_assets">No podemos mostrar los activos en este momento. Inténtalo de nuevo.</string>
+    <string name="choose_an_asset">Elige un activo</string>
+    <string name="balance_formatted">Saldo: %1$s</string>
+    <string name="select_an_account_to_make">Selecciona una cuenta para realizar el intercambio</string>
+    <string name="price_impact_is_the_influence">El impacto del precio es la influencia de tu operación sobre el precio de mercado del par de activos. Está directamente correlacionado con la cantidad de liquidez en la reserva.</string>
+    <string name="slippage_tolerance">Tolerancia al movimiento de precios</string>
+    <string name="slippage_is_the_price_difference">El movimiento de precios es la diferencia de precio entre el momento en que se envía una transacción y el momento en que la transacción se confirma en la blockchain. Si la tasa de movimiento supera el porcentaje de tolerancia que estableces aquí, la transacción se cancelará automáticamente para protegerte de una pérdida de valor.</string>
+    <string name="swap_in_pera">Intercambio en Pera</string>
+    <string name="pera_wallet_now_provides_an">Pera Wallet ahora brinda una manera fácil y rápida de intercambiar activos.</string>
+    <string name="try_swap">Prueba el intercambio</string>
+    <string name="later">Más tarde</string>
+    <string name="set_custom_slippage">Establecer movimiento de precios personalizado</string>
+    <string name="auto">Auto</string>
+    <string name="slippage_tolerance_must_be_between">La tolerancia al movimiento de precios debe ser entre %1$.1f%% y %2$.1f%%.</string>
+    <string name="balance_percentage_must_be_between">El porcentaje de saldo debe ser entre %1$d%% y %2$d%%</string>
+    <string name="set_custom_percentage">Establecer porcentaje personalizado</string>
+    <string name="balance_percentage">Porcentaje de saldo</string>
+    <string name="pera_wallet_provides_an_easy">Pera Wallet proporciona una manera fácil y rápida de intercambiar activos. El intercambio permite intercambiar un ASA con otro mediante un contrato inteligente, a tarifas de mercado.</string>
+    <string name="by_continuing_you_agree_to">Al continuar, aceptas las <annotation url="tinymanTermsOfServiceUrl"><annotation type="bold"><annotation type="color">Condiciones de servicio</annotation></annotation></annotation> de nuestro\n socio de intercambios</string>
+    <string name="start_swapping">Comienza a intercambiar</string>
+    <string name="powered_by">Desarrollado por</string>
+    <string name="new_text">Nuevo</string>
+    <string name="this_account_doesn_t_have">Esta cuenta no tiene el saldo mínimo requerido de <annotation replacement="minimum_balance">minimumBalancePlaceholder</annotation> para realizar operaciones de intercambio.</string>
+    <string name="minimum_balance">Saldo mínimo</string>
+    <string name="account_does_not_have">La cuenta no tiene saldo suficiente para esta transacción.</string>
+    <string name="account_does_not_have_algo">La cuenta no tiene suficiente saldo en Algo para cubrir las tarifas de transacción.</string>
+    <string name="confirm_swap">Confirmar intercambio</string>
+    <string name="price_impact">Impacto en el precio</string>
+    <string name="minimum_received">Mínimo recibido</string>
+    <string name="total_swap_fee">Tarifa de intercambio total</string>
+    <string name="view_swap_summary">Ver resumen de intercambio</string>
+    <string name="from_to_to_asset_ratio"><annotation replacement="ratio">ratio</annotation> <annotation replacement="firstAssetShortName">assetShortName</annotation> cada <annotation replacement="secondAssetShortName">SecondAssetShortName</annotation></string>
+    <string name="slippage_tolerance_value_updated">¡Valor de tolerancia al movimiento de precios actualizado!</string>
+    <string name="sign_with_ledger">Firma con Ledger</string>
+    <string name="we_ve_detected_that_you">Hemos detectado que estás usando un dispositivo Ledger con esta cuenta.  <annotation font="dmsans_medium">Deberás firmar <annotation replacement="transaction_count">transactionCountPlaceholder</annotation> transacciones, una por una</annotation> usando tu token de hardware.</string>
+    <plurals name="sign_transaction">
+        <item quantity="one">Firmar transacción</item>
+        <item quantity="other">Firmar transacciones</item>
+    </plurals>
+    <string name="signing_index_out_of_count">Firmando %1$d de %2$d …</string>
+    <string name="view_transaction_detail_in_algoexplorer">Ver detalles de la transacción en AlgoExplorer</string>
+    <string name="go_to_homepage">Ir a la página de inicio</string>
+    <string name="sending_the_transaction">Enviando la transacción</string>
+    <string name="you_will_receive_at_least">Recibirás al menos <annotation replacement="amount_and_asset_name">amountAndAssetNamePlaceholder</annotation> o la transacción se revertirá.</string>
+    <string name="asset_pair_swap_completed">Intercambio <annotation replacement="to_asset_name">toAssetNamePlaceholder</annotation> / <annotation replacement="from_asset_name">fromAssetNamePlaceholder</annotation> completado</string>
+    <string name="you_received_amount_asset_name_in">Recibiste <annotation replacement="to_amount_and_asset_name"><annotation custom="received_asset_color">toAmountAndAssetNamePlaceholder</annotation></annotation> a cambio de <annotation replacement="from_amount_and_asset_name"><annotation custom="paid_asset_color">fromAmountAndAssetNamePlaceholder</annotation></annotation></string>
+    <string name="asset_pair_swap_has_failed">El intercambio <annotation replacement="to_asset_name">toAssetNamePlaceholder</annotation> / <annotation replacement="from_asset_name">fromAssetNamePlaceholder</annotation> falló</string>
+    <string name="because_of_error_message">Debido a <annotation replacement="error_message">errorMessagePlaceholder</annotation>.\nInténtalo de nuevo.</string>
+    <string name="exchange_fee">Tarifa de intercambio</string>
+    <string name="pera_fee">Tarifa de Pera</string>
+    <string name="total_swap_fee_asterisk">Tarifa de intercambio total*</string>
+    <string name="amount_displayed_in_the">La cantidad mostrada en la tarifa de intercambio total se incluirá en el intercambio. Las tarifas de la red Algorand se añadirán como un adicional.</string>
+    <string name="swap_summary">Resumen del intercambio</string>
+    <string name="received">Recibido</string>
+    <string name="paid">Pagado</string>
+    <string name="algorand_fees">Tarifas de Algorand</string>
+    <string name="opt_in_fees">Tarifas de suscripción</string>
+    <string name="exchange_fees">Tarifas de intercambio</string>
+    <string name="pera_fees">Tarifas de Pera</string>
+    <string name="an_unexpected_error_mismatched_txn">Ocurrió un error inesperado: Código de error: transacciones que no coinciden.</string>
+    <string name="custom">Personalizado</string>
+    <string name="select_all">Seleccionar todo</string>
+    <string name="unselect_all">Anular la selección de todo</string>
+    <string name="disclaimer">DESCARGO DE RESPONSABILIDAD</string>
+    <string name="export_to_pera_web">Exportar a Pera Web</string>
+    <string name="you_re_about_to_share">¡Estás a punto de compartir e importar tu frase secreta a Pera Web Wallet!</string>
+    <string name="never_accept_a">No aceptes nunca una solicitud que no haya sido solicitada por ti.</string>
+    <string name="confirm_export_domain">Confirmar dominio de exportación</string>
+    <string name="for_your_security_please_confirm">Para tu seguridad, confirma que estás exportando tus cuentas a Pera Web ingresando el nombre de dominio que ves en tu computadora.</string>
+    <string name="enter_url_of_web_wallet">Ingresa la URL del monedero web</string>
+    <string name="url_of_web_wallet">URL del monedero web</string>
+    <string name="to_make_sure_that_you">Para asegurarte de que estás exportando tus cuentas a una ubicación segura, verifica siempre que estés en la URL oficial de Pera Web:</string>
+    <string name="confirm_accounts">Confirmar cuentas</string>
+    <string name="you_re_about_to_export">Estás a punto de exportar estas cuentas a Pera Web de forma segura:</string>
+    <string name="accounts_exported_successfully">¡Se exportaron las cuentas correctamente!</string>
+    <string name="you_can_now_use_these">Ahora puedes usar estas cuentas en Pera Web Wallet.</string>
+    <string name="we_couldn_t_find">No pudimos encontrar ninguna cuenta apta para la exportación.</string>
+    <plurals name="account_count">
+        <item quantity="one">Cuenta</item>
+        <item quantity="other">%1$d cuentas</item>
+    </plurals>
+    <string name="i_want_to_recover_an">Quiero recuperar una cuenta de Algorand respaldada por mi monedero físico Ledger.</string>
+    <string name="total_owned">Total en posesión</string>
+    <string name="this_is_the_fee_charged">Esta es la tarifa que te cobra el intercambio descentralizado. Se deduce automáticamente de la cantidad que envías y se tiene en cuenta en la cantidad mínima recibida. No habrá cargos adicionales.</string>
+    <string name="we_encountered_an_unexpected">Encontramos un error inesperado, inténtalo de nuevo más tarde.</string>
 </resources>

@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavDirections
 import com.algorand.android.CoreMainActivity
 import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.MainNavigationDirections
@@ -33,11 +34,15 @@ import com.algorand.android.models.ScreenState
 import com.algorand.android.modules.accounts.domain.model.BaseAccountListItem
 import com.algorand.android.modules.accounts.domain.model.BasePortfolioValueItem
 import com.algorand.android.modules.accounts.ui.adapter.AccountAdapter
-import com.algorand.android.tutorialdialog.util.showCopyAccountAddressTutorialDialog
+import com.algorand.android.modules.tutorialdialog.util.showCopyAccountAddressTutorialDialog
+import com.algorand.android.modules.tutorialdialog.util.showSwapFeatureTutorialDialog
+import com.algorand.android.utils.Event
 import com.algorand.android.utils.TestnetBadgeDrawable
 import com.algorand.android.utils.browser.openUrl
+import com.algorand.android.utils.copyToClipboard
 import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.extensions.setDrawableTintColor
+import com.algorand.android.utils.toShortenedAddress
 import com.algorand.android.utils.viewbinding.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -56,7 +61,7 @@ class AccountsFragment :
 
     private val binding by viewBinding(FragmentAccountsBinding::bind)
 
-    private val accountsViewModel: AccountsViewModel by viewModels()
+    private val accountsViewModel: AccountsViewModel by viewModels<AccountsViewModel>()
 
     private val accountsEmptyState by lazy {
         ScreenState.CustomState(
@@ -98,8 +103,8 @@ class AccountsFragment :
             navToSendAlgoNavigation()
         }
 
-        override fun onReceiveClick() {
-            navToReceiveAccountSelectionFragment()
+        override fun onSwapClick() {
+            accountsViewModel.onSwapClick()
         }
 
         override fun onScanQrClick() {
@@ -147,8 +152,12 @@ class AccountsFragment :
         if (it != null) setPortfolioValues(it)
     }
 
-    private val copyAccountAddressTutorialCollector: suspend (Boolean?) -> Unit = { event ->
-        event.let { shouldShow -> if (shouldShow == true) showTutorialDialog() }
+    private val onAccountAddressCopyTutorialDisplayEventCollector: suspend (Event<Int>?) -> Unit = { event ->
+        event?.consume()?.run(::showAccountAddressCopyTutorialDialog)
+    }
+
+    private val onSwapTutorialDisplayEventCollector: suspend (Event<Int>?) -> Unit = { event ->
+        event?.consume()?.run(::showSwapTutorialDialog)
     }
 
     private val portfolioValuesBackgroundColorCollector: suspend (Int?) -> Unit = {
@@ -173,11 +182,23 @@ class AccountsFragment :
             binding.notificationImageButton.isActivated = isActive
         }
     }
+    private val swapNavigationDirectionEventCollector: suspend (Event<NavDirections>?) -> Unit = {
+        it?.consume()?.run { nav(this) }
+    }
 
-    private fun showTutorialDialog() {
-        binding.root.context.showCopyAccountAddressTutorialDialog(
-            onDismiss = { accountsViewModel.onTutorialDialogClosed() }
-        )
+    private fun showAccountAddressCopyTutorialDialog(tutorialId: Int) {
+        accountsViewModel.dismissTutorial(tutorialId)
+        binding.root.context.showCopyAccountAddressTutorialDialog()
+    }
+
+    private fun showSwapTutorialDialog(tutorialId: Int) {
+        with(accountsViewModel) {
+            accountsViewModel.dismissTutorial(tutorialId)
+            binding.root.context.showSwapFeatureTutorialDialog(
+                onTrySwap = ::onSwapClickFromTutorialDialog,
+                onLater = ::onSwapLaterClick
+            )
+        }
     }
 
     private fun setPortfolioValues(portfolioValues: BasePortfolioValueItem) {
@@ -224,6 +245,7 @@ class AccountsFragment :
         accountsViewModel.refreshCachedAlgoPrice()
     }
 
+    @Suppress("LongMethod")
     private fun initObservers() {
         with(accountsViewModel) {
             viewLifecycleOwner.collectLatestOnLifecycle(
@@ -247,8 +269,13 @@ class AccountsFragment :
                 accountsPortfolioValuesCollector
             )
             viewLifecycleOwner.collectLatestOnLifecycle(
-                accountPreviewFlow.map { it?.shouldShowDialog }.distinctUntilChanged(),
-                copyAccountAddressTutorialCollector
+                accountPreviewFlow.map { it?.onAccountAddressCopyTutorialDisplayEvent }
+                    .distinctUntilChanged(),
+                onAccountAddressCopyTutorialDisplayEventCollector
+            )
+            viewLifecycleOwner.collectLatestOnLifecycle(
+                accountPreviewFlow.map { it?.onSwapTutorialDisplayEvent }.distinctUntilChanged(),
+                onSwapTutorialDisplayEventCollector
             )
             viewLifecycleOwner.collectLatestOnLifecycle(
                 accountPreviewFlow.map { it?.portfolioValuesBackgroundRes }.distinctUntilChanged(),
@@ -261,6 +288,10 @@ class AccountsFragment :
             viewLifecycleOwner.collectLatestOnLifecycle(
                 accountPreviewFlow.map { it?.hasNewNotification }.distinctUntilChanged(),
                 notificationStateCollector
+            )
+            viewLifecycleOwner.collectLatestOnLifecycle(
+                accountPreviewFlow.map { it?.swapNavigationDestinationEvent }.distinctUntilChanged(),
+                swapNavigationDirectionEventCollector
             )
         }
     }
@@ -309,8 +340,9 @@ class AccountsFragment :
         nav(AccountsFragmentDirections.actionGlobalSendAlgoNavigation(null))
     }
 
-    private fun navToReceiveAccountSelectionFragment() {
-        nav(AccountsFragmentDirections.actionGlobalReceiveAccountSelectionFragment())
+    private fun copyPublicKeyToClipboard(publicKey: String) {
+        context?.copyToClipboard(publicKey, showToast = false)
+        showTopToast(getString(R.string.address_copied_to_clipboard), publicKey.toShortenedAddress())
     }
 
     companion object {

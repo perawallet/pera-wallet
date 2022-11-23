@@ -48,21 +48,22 @@ class WalletConnectFirebaseEventLogger(
             bundleOf(
                 DAPP_NAME_PARAM to session.peerMeta.name,
                 DAPP_URL_PARAM to session.peerMeta.url,
-                CONNECTED_ACCOUNT_ADDRESS_PARAM to session.connectedAccountPublicKey,
+                CONNECTED_ACCOUNT_ADDRESS_PARAM to session.connectedAccountsAddresses.toAccountAddressesString(),
                 TRANSACTION_COUNT_PARAM to getTransactionCount()
             )
         }
         firebaseAnalytics.logEvent(REQUEST_REJECTION_EVENT_KEY, bundle)
     }
 
-    override fun logSessionConfirmation(session: WalletConnectSession, connectedAccountPublicKey: String) {
+    override fun logSessionConfirmation(session: WalletConnectSession, connectedAccountAddresses: List<String>) {
         if (!isCurrentNetworkMainNet) return
         val bundle = with(session) {
             bundleOf(
                 DAPP_NAME_PARAM to peerMeta.name,
                 DAPP_URL_PARAM to peerMeta.url,
                 SESSION_TOPIC_PARAM to sessionMeta.topic,
-                CONNECTED_ACCOUNT_ADDRESS_PARAM to connectedAccountPublicKey
+                CONNECTED_ACCOUNT_ADDRESS_PARAM to connectedAccountAddresses.toAccountAddressesString(),
+                TOTAL_ACCOUNT_ACCOUNT_PARAM to connectedAccountAddresses.count()
             )
         }
         firebaseAnalytics.logEvent(SESSION_CONFIRMATION_EVENT_KEY, bundle)
@@ -87,10 +88,19 @@ class WalletConnectFirebaseEventLogger(
             bundleOf(
                 DAPP_NAME_PARAM to peerMeta.name,
                 DAPP_URL_PARAM to peerMeta.url,
-                CONNECTED_ACCOUNT_ADDRESS_PARAM to connectedAccountPublicKey
+                CONNECTED_ACCOUNT_ADDRESS_PARAM to connectedAccountsAddresses.toAccountAddressesString()
             )
         }
         firebaseAnalytics.logEvent(SESSION_DISCONNECTION_EVENT_KEY, bundle)
+    }
+
+    /**
+     * Takes account address list and returns Firebase Crashlytics compatible string for array queries
+     * @param [accountaddress1, accountaddress2, accountaddress3]
+     * @return accountaddress1, accountaddress2, accountaddress3
+     */
+    private fun List<String>.toAccountAddressesString(): String {
+        return joinToString(",")
     }
 
     companion object {
@@ -112,5 +122,6 @@ class WalletConnectFirebaseEventLogger(
         private const val CONNECTED_ACCOUNT_ADDRESS_PARAM = "address"
         private const val TRANSACTION_COUNT_PARAM = "transaction_count"
         private const val SESSION_TOPIC_PARAM = "topic"
+        private const val TOTAL_ACCOUNT_ACCOUNT_PARAM = "total_account"
     }
 }

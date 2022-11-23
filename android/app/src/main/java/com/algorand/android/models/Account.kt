@@ -14,7 +14,9 @@ package com.algorand.android.models
 
 import android.os.Parcelable
 import com.algorand.android.models.Account.Type.LEDGER
+import com.algorand.android.models.Account.Type.REKEYED
 import com.algorand.android.models.Account.Type.STANDARD
+import com.algorand.android.models.Account.Type.WATCH
 import com.algorand.android.modules.sorting.accountsorting.util.NOT_INITIALIZED_ACCOUNT_INDEX
 import com.algorand.android.utils.toShortenedAddress
 import com.google.gson.annotations.SerializedName
@@ -40,6 +42,10 @@ data class Account constructor(
             is Detail.Standard -> detail.secretKey
             else -> null // TODO may throw exception later.
         }
+    }
+
+    fun canSignTransaction(): Boolean {
+        return type != null && type != WATCH && type != REKEYED
     }
 
     // TODO Combine Detail class with Account.Type class

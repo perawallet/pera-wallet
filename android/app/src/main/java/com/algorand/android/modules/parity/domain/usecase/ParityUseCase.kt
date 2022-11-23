@@ -48,7 +48,7 @@ class ParityUseCase @Inject constructor(
 
     fun getSelectedCurrencyDetailCacheFlow() = parityRepository.getSelectedCurrencyDetailCacheFlow()
 
-    private fun getUsdToAlgoConversionRate(): BigDecimal {
+    fun getUsdToAlgoConversionRate(): BigDecimal {
         return parityRepository.getCachedSelectedCurrencyDetail()?.data?.let {
             if (it.algoToSelectedCurrencyConversionRate == BigDecimal.ZERO ||
                 it.algoToSelectedCurrencyConversionRate == null
@@ -112,6 +112,30 @@ class ParityUseCase @Inject constructor(
 
     fun getSecondaryCurrencySymbol(): String {
         return if (currencyUseCase.isPrimaryCurrencyAlgo()) Currency.USD.symbol else Currency.ALGO.symbol
+    }
+
+    /**
+     * When we display currency, if ALGO is primary currency we use secondary currency ratio and symbol
+     * If primary currency is not ALGO, then we use primary currency ratio and symbol
+     */
+    fun getDisplayedCurrencyRatio(): BigDecimal {
+        return if (currencyUseCase.isPrimaryCurrencyAlgo()) {
+            getUsdToSecondaryCurrencyConversionRate()
+        } else {
+            getUsdToPrimaryCurrencyConversionRate()
+        }
+    }
+
+    /**
+     * When we display currency, if ALGO is primary currency we use secondary currency ratio and symbol
+     * If primary currency is not ALGO, then we use primary currency ratio and symbol
+     */
+    fun getDisplayedCurrencySymbol(): String {
+        return if (currencyUseCase.isPrimaryCurrencyAlgo()) {
+            getSecondaryCurrencySymbol()
+        } else {
+            getPrimaryCurrencySymbolOrName()
+        }
     }
 
     private fun getCurrencyToFetch(): String {

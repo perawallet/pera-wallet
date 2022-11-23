@@ -86,6 +86,27 @@ class CollectibleListingItemMapper @Inject constructor(
         )
     }
 
+    fun mapToAudioItem(
+        collectible: BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleAudioData,
+        isOwnedByTheUser: Boolean,
+        optedInAccountAddress: String,
+        isAmountVisible: Boolean
+    ): BaseCollectibleListItem.BaseCollectibleItem.CollectibleSoundItem {
+        return BaseCollectibleListItem.BaseCollectibleItem.CollectibleSoundItem(
+            collectibleId = collectible.id,
+            collectibleName = collectible.collectibleName,
+            collectionName = collectible.collectionName,
+            isOwnedByTheUser = isOwnedByTheUser,
+            avatarDisplayText = collectible.avatarDisplayText,
+            badgeImageResId = collectibleBadgeDecider.decideCollectibleBadgeResId(collectible),
+            thumbnailPrismUrl = collectible.prismUrl,
+            optedInAccountAddress = optedInAccountAddress,
+            optedInAtRound = collectible.optedInAtRound,
+            formattedCollectibleAmount = collectible.formattedCompactAmount,
+            isAmountVisible = isAmountVisible
+        )
+    }
+
     fun mapToMixedItem(
         collectible: BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleMixedData,
         isOwnedByTheUser: Boolean,

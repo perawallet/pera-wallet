@@ -89,6 +89,11 @@ class PeraFirebaseMessagingService : FirebaseMessagingService() {
                 )
             }
             else -> Intent(this, LauncherActivity::class.java)
+        }.apply {
+            // Set intent action to keep extras as it is, otherwise if there are another notification intent coming
+            // the existing intents extras will drop
+            // https://stackoverflow.com/a/44688505
+            action = System.currentTimeMillis().toString()
         }
 
         val pendingIntent: PendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {

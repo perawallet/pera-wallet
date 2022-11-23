@@ -24,15 +24,6 @@
         android:scaleType="fitCenter"
         app:shapeAppearance="@style/CollectibleImageShapeAppearance" />
 
-    <ImageView
-        android:id="@+id/videoPlayButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        app:srcCompat="@drawable/ic_play"
-        tools:visibility="visible" />
-
     <TextView
         android:id="@+id/collectibleNameTextView"
         android:layout_width="match_parent"
@@ -45,6 +36,15 @@
         android:textColor="@color/secondary_text_color"
         android:visibility="gone"
         tools:text="@tools:sample/lorem/random"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/videoPlayButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_play"
         tools:visibility="visible" />
 
 </merge>

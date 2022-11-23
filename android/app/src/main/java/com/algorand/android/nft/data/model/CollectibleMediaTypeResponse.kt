@@ -24,6 +24,9 @@ enum class CollectibleMediaTypeResponse {
     @SerializedName("mixed")
     MIXED,
 
+    @SerializedName("audio")
+    AUDIO,
+
     @SerializedName("unknown")
     UNKNOWN
 }

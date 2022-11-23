@@ -7,18 +7,20 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- *  limitations under the License
+ * limitations under the License
  */
 
 package com.algorand.android.mapper
 
 import androidx.annotation.StringRes
 import com.algorand.android.decider.AssetDrawableProviderDecider
+import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleAudioData
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleImageData
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleMixedData
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedCollectibleVideoData
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.BaseOwnedCollectibleData.OwnedUnsupportedCollectibleData
 import com.algorand.android.models.BaseAccountAssetData.BaseOwnedAssetData.OwnedAssetData
+import com.algorand.android.models.BaseRemoveAssetItem.BaseRemovableItem.BaseRemoveCollectibleItem.RemoveCollectibleAudioItem
 import com.algorand.android.models.BaseRemoveAssetItem.BaseRemovableItem.BaseRemoveCollectibleItem.RemoveCollectibleImageItem
 import com.algorand.android.models.BaseRemoveAssetItem.BaseRemovableItem.BaseRemoveCollectibleItem.RemoveCollectibleMixedItem
 import com.algorand.android.models.BaseRemoveAssetItem.BaseRemovableItem.BaseRemoveCollectibleItem.RemoveCollectibleVideoItem
@@ -96,6 +98,32 @@ class RemoveAssetItemMapper @Inject constructor(
     ): RemoveCollectibleVideoItem {
         return with(ownedCollectibleImageData) {
             RemoveCollectibleVideoItem(
+                id = id,
+                name = AssetName.create(name),
+                shortName = AssetName.create(shortName),
+                amount = amount,
+                creatorPublicKey = creatorPublicKey,
+                decimals = decimals,
+                formattedAmount = formattedAmount,
+                formattedCompactAmount = formattedCompactAmount,
+                formattedSelectedCurrencyValue = parityValueInSelectedCurrency.getFormattedValue(),
+                formattedSelectedCurrencyCompactValue = parityValueInSelectedCurrency.getFormattedCompactValue(),
+                isAmountInSelectedCurrencyVisible = isAmountInSelectedCurrencyVisible,
+                prismUrl = prismUrl,
+                baseAssetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(id),
+                actionItemButtonState = actionItemButtonState,
+                optedInAtRound = optedInAtRound,
+                amountInPrimaryCurrency = parityValueInSelectedCurrency.amountAsCurrency
+            )
+        }
+    }
+
+    fun mapTo(
+        ownedCollectibleAudioData: OwnedCollectibleAudioData,
+        actionItemButtonState: AccountAssetItemButtonState
+    ): RemoveCollectibleAudioItem {
+        return with(ownedCollectibleAudioData) {
+            RemoveCollectibleAudioItem(
                 id = id,
                 name = AssetName.create(name),
                 shortName = AssetName.create(shortName),

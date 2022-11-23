@@ -318,8 +318,6 @@
     <string name="unsigned_transactions">Transactions non signées</string>
     <string name="application_id">ID d\'application</string>
     <string name="this_transaction_will_transfer">Cette transaction transférera la propriété de ce compte. Votre mot de passe de récupération actuel n\'autorisera plus l\'accès à ces actifs.</string>
-    <string name="once_confirmed_the_connected_application">Une fois confirmées, l\'application connectée peut envoyer ces transactions à sa discrétion. Veuillez vous assurer d\'examiner attentivement les transactions car ce processus est irréversible.</string>
-    <string name="are_you_sure_question_mark">Êtes-vous sûr?</string>
     <string name="this_transaction_is_sending">Cette transaction envoie votre solde complet d\'Algo.</string>
     <string name="close_asset_to">Fermer l’actif pour</string>
     <string name="this_transaction_is_sending_asset">Cette transaction envoie votre %1$s et supprimera %1$s de votre compte.</string>
@@ -363,7 +361,7 @@
     <string name="invalid_input_unable_to_parse">Entrée non valide : impossible d\'analyser la transaction</string>
     <string name="invalid_input_invalid_public_key">Entrée non valide : clé publique non valide</string>
     <string name="invalid_input_invalid_asset">Entrée non valide : actif non valide</string>
-    <string name="invalid_input_unable_to_be">Entrée invalide : Impossible à signer</string>
+    <string name="invalid_input_unable_to_be">Entrée invalide: Impossible à signer</string>
     <string name="invalid_input_group_transaction">Entrée non valide : la transaction de groupe n\'a pas besoin d\'être signée par l\'utilisateur du portefeuille.</string>
     <string name="invalid_input_requested_signer">Entrée non valide : le signataire demandé n\'est pas dans le portefeuille utilisateur</string>
     <string name="pairing_ledger_with_your">Jumelage de Ledger avec votre appareil</string>
@@ -371,8 +369,8 @@
     <string name="close_the_algorand_app">Fermez l\'application Algorand sur l\'appareil Ledger.</string>
     <string name="on_the_ledger_home_screen">Sur l\'écran d\'accueil du Ledger, confirmez le jumelage.</string>
     <string name="once_pairing_is_confirmed">Une fois le jumelage confirmé, ouvrez l\'application Algorand sur le Ledger.</string>
-    <string name="pairing_failed">Le jumelage a échoué !</string>
-    <string name="having_ledger_nano_x">Vous avez des problèmes de connexion au Ledger Nano X ?</string>
+    <string name="pairing_failed">Le jumelage a échoué!</string>
+    <string name="having_ledger_nano_x">Vous avez des problèmes de connexion au Ledger Nano X?</string>
     <string name="make_sure_the_device_is">Assurez-vous que l\'appareil est déverrouillé, à proximité et que le Bluetooth est activé. Si les problèmes persistent, veuillez supprimer l\'appareil des paramètres Bluetooth de votre téléphone, supprimez le compte Ledger, puis associez à nouveau votre Ledger en suivant les instructions d\'Pera Wallet.</string>
     <string name="you_are_creating_a_read_only">Vous créez une vue en lecture seule d\'un compte Algorand.</string>
     <string name="enter_your_recovery_passphrase">Entrez votre phrase secrète de récupération</string>
@@ -412,7 +410,7 @@
     <string name="theme">Thème</string>
     <string name="support">Support</string>
     <string name="rate_your_experience">Évaluez votre expérience</string>
-    <string name="tell_us_how_was_your_experience">Dites-nous comment a été votre expérience ?</string>
+    <string name="tell_us_how_was_your_experience">Dites-nous comment a été votre expérience?</string>
     <string name="become_a_governor">Devenez gouverneur.\nVotez pour l\'avenir d\'Algorand.\nGagnez des récompenses.</string>
     <string name="the_registration_window_for">La fenêtre d\'inscription pour la période de gouvernance #2 est du 25 décembre au 7 janvier, 16h00 UTC</string>
     <string name="connection_failed">La connexion a échoué</string>
@@ -425,7 +423,7 @@
     <string name="my_accounts">Mes comptes</string>
     <string name="no_account_found">Aucun compte trouvé</string>
     <string name="try_different_account_name">Essayez un nom de compte différent</string>
-    <string name="add_note_with_plus">+ Ajouter une note</string>
+    <string name="add_note_with_plus">+ Ajouter une note</string>
     <string name="enter_your_note">Entrez votre note</string>
     <string name="do_not_share">Ne partagez cette phrase secrète avec personne, car elle vous donne un accès complet à votre compte.</string>
     <string name="if_you_do_not">Si vous ne disposez pas de la phrase secrète de récupération correspondante, n\'envoyez pas d\'actifs à ce compte.</string>
@@ -434,7 +432,7 @@
     <string name="all_time_high">Record absolu</string>
     <string name="market_cap">Capitalisation</string>
     <string name="please_make_sure_your_ledger_is">Veuillez vous assurer que votre Ledger est déverrouillé avec Bluetooth activé</string>
-    <string name="how_does_it_work">Comment cela fonctionne-t-il ?</string>
+    <string name="how_does_it_work">Comment cela fonctionne-t-il?</string>
     <string name="install_the_algorand_app_onto_your_ledger">Installez l\'application Algorand sur votre Ledger</string>
     <string name="step_one">Étape 1</string>
     <string name="step_two">Étape 2</string>
@@ -491,7 +489,7 @@
     <string name="rate_pera_wallet">Évaluez Pera Wallet</string>
     <string name="welcome_to_pera">Bienvenue sur\nPera Wallet</string>
     <string name="start_using_pera">Commencez à utiliser Pera Wallet</string>
-    <string name="is_your_ledger_paired">Votre Ledger est-il associé à cet appareil ?\nSi ce n\'est pas le cas, veuillez suivre les étapes suivantes :</string>
+    <string name="is_your_ledger_paired">Votre Ledger est-il associé à cet appareil?\nSi ce n\'est pas le cas, veuillez suivre les étapes suivantes:</string>
     <string name="you_are_about_to_delete">Vous êtes sur le point de supprimer toutes les données du portefeuille, y compris vos comptes stockés. Assurez-vous que les phrases de passe de vos comptes sont stockées ailleurs avant de confirmer. Sinon, vous ne pourrez pas restaurer vos comptes.\n\N Êtes-vous sûr(e) de vouloir continuer ?</string>
     <string name="your_data_has_been">Vos données ont été supprimées avec succès</string>
     <string name="you_are_connected">Vous êtes connecté à <annotation replacement="peer_name">peerNamePlaceholder</annotation></string>
@@ -593,6 +591,7 @@
     <string name="receive_an_nft">Recevoir un NFT</string>
     <string name="the_account_name">Le compte <annotation font="dmsans_bold">\"<annotation replacement="account_name"> </annotation>\"</annotation> a été rétabli avec succès.</string>
     <string name="asset_support_success"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> a ajouté <annotation replacement="asset">assetPlaceholder</annotation> à son compte. Vous pouvez lui envoyer <annotation replacement="asset">assetPlaceholder</annotation>.</string>
+    <string name="asset_support_request"><annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> tente d\'envoyer <annotation replacement="asset">assetPlaceholder</annotation> sur votre compte <annotation font="dmsans_medium"><annotation replacement="receiver">receiverPlaceholder</annotation></annotation>. Appuyez pour ajouter à cet actif afin que la transaction puisse être traitée.</string>
     <string name="transaction_send_successful">Votre transaction de <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> depuis <annotation font="dmsans_medium"><annotation replacement="sender">addressPlaceholder</annotation></annotation> vers <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> est terminée.</string>
     <string name="transaction_send_failed">Votre transaction de <annotation font="dmsans_medium"><annotation replacement="amount">amountPlaceholder</annotation></annotation> <annotation replacement="asset">assetPlaceholder</annotation> depuis <annotation font="dmsans_medium"><annotation replacement="sender">addressplaceholder</annotation></annotation> vers <annotation font="dmsans_medium"><annotation replacement="receiver">addressPlaceholder</annotation></annotation> a échoué.</string>
     <string name="the_only_way_to">La seule façon de récupérer un compte Algorand est d\'utiliser cette phrase secrète de récupération.</string>
@@ -723,7 +722,6 @@
     <string name="quadrillion_abbreviation">Bd</string>
     <string name="quintillion">Trillion</string>
     <string name="quintillion_abbreviation">T</string>
-    <string name="account_related_to_this_notification">Le compte lié à cette notification a été supprimé de cet appareil. Pour afficher les détails de cette notification, veuillez ajouter le compte à nouveau.</string>
     <string name="account_asset_count_zero">0 actif</string>
     <string name="pin_code_did_not_match">Le code PIN ne correspond pas. Veuillez réessayer</string>
     <string name="your_main_currency_is_placeholder">Votre devise principale est <annotation font="dmsans_regular"><annotation custom="primaryCurrencyColor"><annotation replacement="primaryCurrencyId">primaryCurrencyPlaceholder</annotation></annotation></annotation>, et votre devise secondaire est <annotation font="dmsans_regular"><annotation custom="secondaryCurrencyColor"><annotation replacement="secondaryCurrencyId">secondaryCurrencyPlaceholder</annotation></annotation></annotation></string>
@@ -777,7 +775,7 @@
     <string name="you_can_opt_in_to_this">Vous pouvez activer cet actif à partir de l\'un de vos comptes.</string>
     <string name="please_select_an_account_to">Veuillez sélectionner un compte pour ajouter %1$s</string>
     <string name="asset_successfully_added_to_your">%1$s a été ajouté avec succès à votre compte.</string>
-    <string name="asset_successfully_removed_from_your">%@ a été supprimé avec succès de votre compte.</string>
+    <string name="asset_successfully_removed_from_your">%1$s a été supprimé avec succès de votre compte.</string>
     <string name="filter_nfts">Filtrer les NFT</string>
     <string name="newest_to_oldest">Du plus récent au plus ancien</string>
     <string name="oldest_to_newest">Du plus ancien au plus récent</string>
@@ -798,4 +796,95 @@
     <string name="you_ve_connected">Vous avez connecté votre compte à %1$s. Revenez sur votre navigateur web pour terminer l\'opération.</string>
     <string name="transaction_signed">Transaction signée!</string>
     <string name="transaction_was_sent">La transaction a été envoyée à %1$s. Revenez sur votre navigateur web pour terminer l\'opération.</string>
+    <string name="max_all_caps">MAX</string>
+    <string name="asset_successfully_removed_to_your">%1$s a été supprimé avec succès de votre compte.</string>
+    <string name="swap">Swap</string>
+    <string name="convert_between_popular_asa_pairs">Convertir entre les paires ASA populaires</string>
+    <string name="swap_to">Swap Vers</string>
+    <string name="swap_from">Swap Depuis</string>
+    <string name="we_can_not_show_assets">Nous ne pouvons pas afficher les actifs pour le moment. Veuillez réessayer.</string>
+    <string name="choose_an_asset">Choisir un actif</string>
+    <string name="balance_formatted">Solde: %1$s</string>
+    <string name="select_an_account_to_make">Sélectionnez un compte pour réaliser le swap</string>
+    <string name="price_impact_is_the_influence">L\'impact sur le prix est l\'influence de votre transaction sur le prix du marché de la paire d\'actifs. Il est directement corrélé à la quantité de liquidité dans la pool.</string>
+    <string name="slippage_tolerance">Tolérance Glissement</string>
+    <string name="slippage_is_the_price_difference">Le glissement est la différence de prix entre le moment où vous soumettez une transaction et le moment où la transaction est confirmée sur la blockchain. Si le taux de glissement dépasse le pourcentage de tolérance que vous avez défini ici, alors la transaction sera automatiquement annulée pour vous protéger contre la perte de valeur.</string>
+    <string name="swap_in_pera">Swap dans Pera</string>
+    <string name="pera_wallet_now_provides_an">Pera Wallet offre désormais un moyen simple et rapide d\'échanger des actifs.</string>
+    <string name="try_swap">Essayer Swap</string>
+    <string name="later">Plus tard</string>
+    <string name="set_custom_slippage">Définir un glissement personnalisé</string>
+    <string name="auto">Auto</string>
+    <string name="slippage_tolerance_must_be_between">La tolérance de glissement doit être comprise entre %1$.1f%% et %2$.1f%%</string>
+    <string name="balance_percentage_must_be_between">Le pourcentage du solde doit être compris entre %1$d%% et %2$d%%</string>
+    <string name="set_custom_percentage">Définir un pourcentage personnalisé</string>
+    <string name="balance_percentage">Pourcentage Solde</string>
+    <string name="pera_wallet_provides_an_easy">Pera Wallet offre un moyen simple et rapide d\'échanger des actifs. Vous pouvez échanger un ASA avec un autre à l\'aide d\'un contrat intelligent, en payant les frais du marché.</string>
+    <string name="by_continuing_you_agree_to">En continuant, vous acceptez les<annotation url="tinymanTermsOfServiceUrl">\n<annotation type="bold"><annotation type="color"> Conditions d\'utilisation </annotation></annotation></annotation>de notre partenaire de swap</string>
+    <string name="start_swapping">Commencer Swap</string>
+    <string name="powered_by">Fourni par</string>
+    <string name="new_text">Nouveau</string>
+    <string name="this_account_doesn_t_have">Ce compte ne dispose pas du solde minimum requis de <annotation replacement="minimum_balance">minimumBalancePlaceholder</annotation> pour réaliser un swap.</string>
+    <string name="minimum_balance">Solde Minimum</string>
+    <string name="account_does_not_have">Le compte dispose d\'un solde insuffisant pour cette transaction.</string>
+    <string name="account_does_not_have_algo">Le compte dispose d\'un solde Algo insuffisant pour couvrir les frais de transaction.</string>
+    <string name="confirm_swap">Confirmer Swap</string>
+    <string name="price_impact">Impact Prix</string>
+    <string name="minimum_received">Minimum Reçu</string>
+    <string name="total_swap_fee">Frais Totaux du Swap</string>
+    <string name="view_swap_summary">Afficher Résumé Swap</string>
+    <string name="from_to_to_asset_ratio"><annotation replacement="ratio"> ratio </annotation> <annotation replacement="firstAssetShortName"> assetShortName </annotation> par <annotation replacement="secondAssetShortName"> secondAssetShortName </annotation></string>
+    <string name="slippage_tolerance_value_updated">Valeur de tolérance au glissement mise à jour!</string>
+    <string name="sign_with_ledger">Signer avec le Ledger</string>
+    <string name="we_ve_detected_that_you">Nous avons détecté que vous utilisez un appareil Ledger avec ce compte. <annotation font="dmsans_medium">Vous devrez signer<annotation replacement="transaction_count"> transactionCountPlaceholder </annotation> transactions une par une</annotation> à l\'aide de votre jeton physique.</string>
+    <plurals name="sign_transaction">
+        <item quantity="one">Signer Transaction</item>
+        <item quantity="other">Signer Transactions</item>
+    </plurals>
+    <string name="signing_index_out_of_count">Signature de %1$d sur %2$d …</string>
+    <string name="view_transaction_detail_in_algoexplorer">Afficher les détails de la transaction dans AlgoExplorer</string>
+    <string name="go_to_homepage">Aller à l\'accueil</string>
+    <string name="sending_the_transaction">Envoi de la transaction</string>
+    <string name="you_will_receive_at_least">Vous recevrez au moins <annotation replacement="amount_and_asset_name">amountAndAssetNamePlaceholder</annotation> ou la transaction sera annulée.</string>
+    <string name="asset_pair_swap_completed">Le swap <annotation replacement="to_asset_name">toAssetNamePlaceholder</annotation> / <annotation replacement="from_asset_name"> fromAssetNamePlaceholder</annotation> est terminé</string>
+    <string name="you_received_amount_asset_name_in">Vous avez reçu <annotation replacement="to_amount_and_asset_name"><annotation custom="received_asset_color">toAmountAndAssetNamePlaceholder</annotation></annotation> en échange de <annotation replacement="from_amount_and_asset_name"><annotation custom="paid_asset_color">fromAmountAndAssetNamePlaceholder</annotation></annotation></string>
+    <string name="asset_pair_swap_has_failed">Le swap <annotation replacement="to_asset_name">toAssetNamePlaceholder</annotation> / <annotation replacement="from_asset_name">fromAssetNamePlaceholder</annotation> a échoué</string>
+    <string name="because_of_error_message">En raison de <annotation replacement="error_message">errorMessagePlaceholder</annotation>.\nVeuillez réessayer.</string>
+    <string name="exchange_fee">Frais Échange</string>
+    <string name="pera_fee">Frais Pera</string>
+    <string name="total_swap_fee_asterisk">Frais Totaux du Swap*</string>
+    <string name="amount_displayed_in_the">Le montant affiché dans les Frais Totaux du Swap sera inclus dans le swap. Les frais du réseau Algorand seront ajoutés en plus.</string>
+    <string name="swap_summary">Résumé Swap</string>
+    <string name="received">Reçu</string>
+    <string name="paid">Payé</string>
+    <string name="algorand_fees">Frais Algorand</string>
+    <string name="opt_in_fees">Frais Ajout</string>
+    <string name="exchange_fees">Frais Échange</string>
+    <string name="pera_fees">Frais Pera</string>
+    <string name="an_unexpected_error_mismatched_txn">Une erreur inattendue s\'est produite: code d\'erreur: transactions non concordantes.</string>
+    <string name="custom">Personnalisé</string>
+    <string name="select_all">Sélectionner tout</string>
+    <string name="unselect_all">Tout déselectionner</string>
+    <string name="disclaimer">CLAUSE DE NON-RESPONSABILITÉ</string>
+    <string name="export_to_pera_web">Exporter vers Pera Web</string>
+    <string name="you_re_about_to_share">Vous êtes sur le point de partager et d\'importer votre phrase secrète vers Pera Web Wallet!</string>
+    <string name="never_accept_a">N\'acceptez jamais une demande que vous n\'avez pas initiée.</string>
+    <string name="confirm_export_domain">Confirmer Exportation Domaine</string>
+    <string name="for_your_security_please_confirm">Pour votre sécurité, veuillez confirmer que vous exportez vos comptes vers Pera Web en saisissant le nom de domaine que vous voyez sur votre ordinateur.</string>
+    <string name="enter_url_of_web_wallet">Entrez l\'URL du Web Wallet</string>
+    <string name="url_of_web_wallet">URL du Web Wallet</string>
+    <string name="to_make_sure_that_you">Pour vous assurer que vous exportez vos comptes vers un emplacement sûr, vérifiez toujours que vous êtes sur l\'URL officielle de Pera Web:</string>
+    <string name="confirm_accounts">Confirmer Comptes</string>
+    <string name="you_re_about_to_export">Vous êtes sur le point d\'exporter ces comptes vers Pera Web en toute sécurité:</string>
+    <string name="accounts_exported_successfully">Comptes exportés avec succès!</string>
+    <string name="you_can_now_use_these">Vous pouvez maintenant utiliser ces comptes sur Pera Web Wallet.</string>
+    <string name="we_couldn_t_find">Nous n\'avons trouvé aucun compte éligible à l\'exportation.</string>
+    <plurals name="account_count">
+        <item quantity="one">Compte</item>
+        <item quantity="other">%1$d Comptes</item>
+    </plurals>
+    <string name="i_want_to_recover_an">Je souhaite récupérer un compte Algorand qui utilise mon portefeuille physique Ledger.</string>
+    <string name="total_owned">Total détenu</string>
+    <string name="this_is_the_fee_charged">Il s\'agit des frais qui vous sont prélevés par l\'échange décentralisé. Ils sont automatiquement déduits du montant que vous envoyez et pris en compte dans le montant minimum reçu. Il n\'y aura pas de frais supplémentaires en plus.</string>
+    <string name="we_encountered_an_unexpected">Nous avons rencontré une erreur inattendue, réessayez plus tard.</string>
 </resources>

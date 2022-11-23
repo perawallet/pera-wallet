@@ -51,7 +51,14 @@ sealed class WalletConnectSignResult {
     ) : WalletConnectSignResult()
 
     object Loading : WalletConnectSignResult()
-    data class LedgerWaitingForApproval(val ledgerName: String?) : WalletConnectSignResult()
+
+    data class LedgerWaitingForApproval(
+        val ledgerName: String?,
+        val currentTransactionIndex: Int?,
+        val totalTransactionCount: Int?,
+        val isTransactionIndicatorVisible: Boolean
+    ) : WalletConnectSignResult()
+
     object LedgerScanFailed : WalletConnectSignResult()
     object CanBeSigned : WalletConnectSignResult()
 }

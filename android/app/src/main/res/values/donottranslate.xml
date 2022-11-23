@@ -20,7 +20,9 @@
     <string name="minus">-</string>
     <string name="ticker_asset_format">(%1$s)</string>
     <string name="pair_value_format_packed">%1$s%2$s</string>
+    <string name="pair_value_format_packed_annotated"><annotation replacement="first">first</annotation><annotation replacement="second">second</annotation></string>
     <string name="pair_value_format">%1$s %2$s</string>
+    <string name="pair_value_format_annotated"><annotation replacement="first">first</annotation> <annotation replacement="second">second</annotation></string>
     <string name="pair_value_format_with_coma">%1$s, %2$d</string>
     <string name="pair_value_format_with_interpunct">%1$s · %2$d</string>
     <string name="algo">Algo</string>
@@ -87,4 +89,13 @@
     <string name="asset_amount_with_x">x%1$s</string>
 
     <string name="web_dot_perawallet_dot_app">https://web.perawallet.app</string>
+    <string name="swap_amount_hint">0.00</string>
+    <string name="formatted_percentage">%1$s%%</string>
+
+    <string name="zero_point_one_percent">0.1%</string>
+    <string name="zero_point_five_percent">0.5%</string>
+    <string name="one_percent">1%</string>
+    <string name="twenty_five_percent">25%</string>
+    <string name="fifty_percent">50%</string>
+    <string name="seventy_five_percent">75%</string>
 </resources>

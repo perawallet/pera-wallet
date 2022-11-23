@@ -14,9 +14,9 @@ package com.algorand.android.modules.accounts.ui.viewholder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.algorand.android.modules.accounts.domain.model.BaseAccountListItem
 import com.algorand.android.databinding.ItemAccountsQuickActionsBinding
 import com.algorand.android.models.BaseViewHolder
+import com.algorand.android.modules.accounts.domain.model.BaseAccountListItem
 
 class AccountsQuickActionsViewHolder(
     private val binding: ItemAccountsQuickActionsBinding,
@@ -28,7 +28,10 @@ class AccountsQuickActionsViewHolder(
         with(binding) {
             buyAlgoButton.setOnClickListener { listener.onBuyAlgoClick() }
             sendButton.setOnClickListener { listener.onSendClick() }
-            receiveButton.setOnClickListener { listener.onReceiveClick() }
+            swapButton.apply {
+                isSelected = item.isSwapButtonSelected
+                setOnClickListener { listener.onSwapClick() }
+            }
             scanQrButton.setOnClickListener { listener.onScanQrClick() }
         }
     }
@@ -36,7 +39,7 @@ class AccountsQuickActionsViewHolder(
     interface AccountsQuickActionsListener {
         fun onBuyAlgoClick()
         fun onSendClick()
-        fun onReceiveClick()
+        fun onSwapClick()
         fun onScanQrClick()
     }
 

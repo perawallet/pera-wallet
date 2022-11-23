@@ -30,7 +30,11 @@ class LedgerSearchViewModel @Inject constructor(
     private val addressLedgerDeviceMap = HashMap<String, BluetoothDevice>()
 
     private val scanCallback = object : CustomScanCallback() {
-        override fun onLedgerScanned(device: BluetoothDevice) {
+        override fun onLedgerScanned(
+            device: BluetoothDevice,
+            currentTransactionIndex: Int?,
+            totalTransactionCount: Int?
+        ) {
             if (!addressLedgerDeviceMap.containsKey(device.address)) {
                 addressLedgerDeviceMap[device.address] = device
                 val ledgerDeviceSet = addressLedgerDeviceMap.values.toSet()

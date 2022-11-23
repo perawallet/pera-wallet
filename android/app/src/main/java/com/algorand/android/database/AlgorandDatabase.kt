@@ -21,8 +21,8 @@ import com.algorand.android.database.AlgorandDatabase.Companion.LATEST_DB_VERSIO
 import com.algorand.android.models.Node
 import com.algorand.android.models.NotificationFilter
 import com.algorand.android.models.User
+import com.algorand.android.models.WalletConnectSessionAccountEntity
 import com.algorand.android.models.WalletConnectSessionEntity
-import com.algorand.android.models.WalletConnectSessionHistoryEntity
 
 @Suppress("MagicNumber", "MaxLineLength")
 @Database(
@@ -31,7 +31,7 @@ import com.algorand.android.models.WalletConnectSessionHistoryEntity
         Node::class,
         NotificationFilter::class,
         WalletConnectSessionEntity::class,
-        WalletConnectSessionHistoryEntity::class
+        WalletConnectSessionAccountEntity::class
     ],
     version = LATEST_DB_VERSION,
     exportSchema = true
@@ -42,10 +42,9 @@ abstract class AlgorandDatabase : RoomDatabase() {
     abstract fun nodeDao(): NodeDao
     abstract fun notificationFilterDao(): NotificationFilterDao
     abstract fun walletConnect(): WalletConnectDao
-    abstract fun walletConnectSessionHistoryDao(): WalletConnectSessionHistoryDao
 
     companion object {
-        const val LATEST_DB_VERSION = 9
+        const val LATEST_DB_VERSION = 10
 
         val MIGRATION_3_4 = object : Migration(3, 4) {
             override fun migrate(database: SupportSQLiteDatabase) {
@@ -116,6 +115,68 @@ abstract class AlgorandDatabase : RoomDatabase() {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("ALTER TABLE WalletConnectSessionEntity ADD COLUMN fallback_browser_group_response TEXT")
                 database.execSQL("ALTER TABLE WalletConnectSessionHistoryEntity ADD COLUMN fallback_browser_group_response TEXT")
+            }
+        }
+
+        val MIGRATION_9_10 = object : Migration(9, 10) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL(
+                    """
+                        CREATE TABLE IF NOT EXISTS WalletConnectSessionAccountEntity (
+                            id INTEGER NOT NULL,
+                            session_id INTEGER NOT NULL,
+                            connected_account_address TEXT NOT NULL,
+                            PRIMARY KEY(id),
+                            FOREIGN KEY(session_id) REFERENCES WalletConnectSessionEntity(id)
+                            ON DELETE CASCADE
+                            ON UPDATE CASCADE 
+                        )
+                    """.trimIndent()
+                )
+                with(database.query("SELECT * FROM WalletConnectSessionEntity") ?: return) {
+                    while (moveToNext()) {
+                        // Get session id
+                        val sessionIdIndex = getColumnIndexOrThrow("id")
+                        val sessionId = getLong(sessionIdIndex)
+                        // Get account address that connected by session
+                        val connectedAccountPublicKeyIndex = getColumnIndexOrThrow("connected_account_public_key")
+                        val connectedAccountPublicKey = getString(connectedAccountPublicKeyIndex)
+                        // Insert the new account address into new table
+                        database.execSQL(
+                            """
+                            INSERT INTO WalletConnectSessionAccountEntity (session_id, connected_account_address) 
+                            VALUES ($sessionId, '$connectedAccountPublicKey')
+                            """.trimIndent()
+                        )
+                    }
+                }
+
+                // Drop connected_account_public_key column in WalletConnectSessionEntity table
+                database.execSQL(
+                    """
+                        CREATE TABLE WalletConnectSessionEntity_backup (
+                            id INTEGER NOT NULL,
+                            peer_meta TEXT NOT NULL,
+                            wc_session TEXT NOT NULL,
+                            date_time_stamp INTEGER NOT NULL,
+                            is_connected INTEGER NOT NULL,
+                            fallback_browser_group_response TEXT,
+                            PRIMARY KEY(id)
+                        )
+                    """.trimIndent()
+                )
+                database.execSQL(
+                    """
+                    INSERT INTO WalletConnectSessionEntity_backup
+                    SELECT id, peer_meta, wc_session, date_time_stamp, is_connected, fallback_browser_group_response
+                    FROM WalletConnectSessionEntity
+                    """.trimIndent()
+                )
+                database.execSQL("DROP TABLE WalletConnectSessionEntity")
+                database.execSQL("ALTER TABLE WalletConnectSessionEntity_backup RENAME TO WalletConnectSessionEntity")
+
+                // // Drop WalletConnectSessionHistoryEntity table, no need to keep it
+                database.execSQL("DROP TABLE WalletConnectSessionHistoryEntity")
             }
         }
 

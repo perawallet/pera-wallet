@@ -16,7 +16,7 @@ import com.google.gson.annotations.SerializedName
 
 data class RawMnemonicPayload(
     @SerializedName("version")
-    val version: Double,
+    val version: Double?,
     @SerializedName("mnemonic")
     val mnemonic: String
 )

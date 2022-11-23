@@ -13,15 +13,25 @@
 package com.algorand.android.repository
 
 import com.algorand.android.database.WalletConnectDao
+import com.algorand.android.deviceregistration.domain.repository.FirebasePushTokenRepository
+import com.algorand.android.deviceregistration.domain.usecase.DeviceIdUseCase
+import com.algorand.android.models.WalletConnectSessionAccountEntity
+import com.algorand.android.models.WalletConnectSessionByAccountsAddress
 import com.algorand.android.models.WalletConnectSessionEntity
-import com.algorand.android.models.WalletConnectSessionHistoryEntity
+import com.algorand.android.models.WalletConnectSessionSubscriptionBody
+import com.algorand.android.models.WalletConnectSessionWithAccountsAddresses
+import com.algorand.android.network.MobileAlgorandApi
 import javax.inject.Inject
+import javax.inject.Named
+import kotlinx.coroutines.flow.Flow
 
 class WalletConnectRepository @Inject constructor(
-    private val walletConnectDao: WalletConnectDao
+    private val walletConnectDao: WalletConnectDao,
+    private val deviceIdUseCase: DeviceIdUseCase,
+    private val mobileAlgorandApi: MobileAlgorandApi,
+    @Named(FirebasePushTokenRepository.FIREBASE_PUSH_TOKEN_REPOSITORY_INJECTION_NAME)
+    private val firebasePushTokenRepository: FirebasePushTokenRepository
 ) {
-
-    fun getAllWCSession() = walletConnectDao.getAllWCSessions()
 
     suspend fun getAllDisconnectedSessions(): List<WalletConnectSessionEntity> {
         return walletConnectDao.getAllDisconnectedWCSessions()
@@ -45,11 +55,25 @@ class WalletConnectRepository @Inject constructor(
 
     suspend fun insertConnectedWalletConnectSession(
         wcSessionEntity: WalletConnectSessionEntity,
-        wcSessionHistoryEntity: WalletConnectSessionHistoryEntity
+        wcSessionAccountList: List<WalletConnectSessionAccountEntity>
     ) {
         walletConnectDao.insertWalletConnectSessionAndHistory(
             wcSessionEntity = wcSessionEntity,
-            wcSessionEntityHistory = wcSessionHistoryEntity
+            wcSessionAccountList = wcSessionAccountList
+        )
+    }
+
+    suspend fun subscribeWalletConnectSession(
+        wcSessionEntity: WalletConnectSessionEntity
+    ) {
+        mobileAlgorandApi.subscribeWalletConnectSession(
+            WalletConnectSessionSubscriptionBody(
+                device = deviceIdUseCase.getSelectedNodeDeviceId() ?: "",
+                bridgeUrl = wcSessionEntity.wcSession.bridge,
+                topicId = wcSessionEntity.wcSession.topic,
+                dappName = wcSessionEntity.peerMeta.name,
+                pushToken = firebasePushTokenRepository.getPushTokenOrNull()?.data ?: ""
+            )
         )
     }
 
@@ -61,7 +85,19 @@ class WalletConnectRepository @Inject constructor(
         return walletConnectDao.getWCSessionList()
     }
 
-    suspend fun getWCSessionListByPublicKey(publicKey: String): List<WalletConnectSessionEntity> {
-        return walletConnectDao.getWCSessionListByPublicKey(publicKey)
+    suspend fun getWCSessionListByAccountAddress(accountAddress: String): List<WalletConnectSessionByAccountsAddress>? {
+        return walletConnectDao.getWCSessionListByAccountAddress(accountAddress)
+    }
+
+    suspend fun getConnectedAccountsOfSession(sessionId: Long): List<WalletConnectSessionAccountEntity>? {
+        return walletConnectDao.getConnectedAccountsOfSession(sessionId)
+    }
+
+    fun getAllWalletConnectSessionWithAccountAddresses(): Flow<List<WalletConnectSessionWithAccountsAddresses>?> {
+        return walletConnectDao.getAllWalletConnectSessionWithAccountAddresses()
+    }
+
+    suspend fun deleteWalletConnectAccountBySession(sessionId: Long, accountAddress: String) {
+        return walletConnectDao.deleteWalletConnectAccountBySession(sessionId, accountAddress)
     }
 }

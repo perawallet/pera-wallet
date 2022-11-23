@@ -14,24 +14,42 @@ package com.algorand.android.modules.accountdetail.ui
 
 import android.os.Bundle
 import android.view.View
-import androidx.navigation.fragment.navArgs
+import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
+import androidx.navigation.NavDirections
 import com.algorand.android.HomeNavigationDirections
 import com.algorand.android.R
 import com.algorand.android.core.BaseBottomSheet
 import com.algorand.android.databinding.BottomSheetAccountQuickActionsBinding
 import com.algorand.android.models.AssetTransaction
+import com.algorand.android.utils.Event
+import com.algorand.android.utils.extensions.collectLatestOnLifecycle
 import com.algorand.android.utils.viewbinding.viewBinding
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 
+@AndroidEntryPoint
 class AccountQuickActionsBottomSheet : BaseBottomSheet(
     layoutResId = R.layout.bottom_sheet_account_quick_actions
 ) {
-    private val args by navArgs<AccountQuickActionsBottomSheetArgs>()
+
+    private val accountQuickActionsViewModel by viewModels<AccountQuickActionsViewModel>()
 
     private val binding by viewBinding(BottomSheetAccountQuickActionsBinding::bind)
+
+    private val swapButtonVisibilityCollector: suspend (Boolean) -> Unit = { isSwapButtonVisible ->
+        binding.swapButton.isVisible = isSwapButtonVisible
+    }
+
+    private val swapNavigationDirectionEventCollector: suspend (Event<NavDirections>?) -> Unit = {
+        it?.consume()?.run { nav(this) }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUi()
+        initObservers()
     }
 
     private fun initUi() {
@@ -41,13 +59,27 @@ class AccountQuickActionsBottomSheet : BaseBottomSheet(
             receiveButton.setOnClickListener { navToShowQrFragment() }
             addNewAssetButton.setOnClickListener { navToAddAssetFragment() }
             moreButton.setOnClickListener { navToAccountOptionsBottomSheet() }
+            swapButton.setOnClickListener { navToSwapNavigation() }
+        }
+    }
+
+    private fun initObservers() {
+        with(accountQuickActionsViewModel.accountQuickActionsPreviewFlow) {
+            viewLifecycleOwner.collectLatestOnLifecycle(
+                map { it.isSwapButtonVisible }.distinctUntilChanged(),
+                swapButtonVisibilityCollector
+            )
+            viewLifecycleOwner.collectLatestOnLifecycle(
+                map { it.swapNavigationDirectionEvent }.distinctUntilChanged(),
+                swapNavigationDirectionEventCollector
+            )
         }
     }
 
     private fun navToMoonpayNavigation() {
         nav(
             AccountQuickActionsBottomSheetDirections.actionAccountQuickActionsBottomSheetToMoonpayNavigation(
-                args.publicKey
+                walletAddress = accountQuickActionsViewModel.accountAddress
             )
         )
     }
@@ -55,7 +87,7 @@ class AccountQuickActionsBottomSheet : BaseBottomSheet(
     private fun navToGlobalSendAlgoNavigation() {
         nav(
             HomeNavigationDirections.actionGlobalSendAlgoNavigation(
-                assetTransaction = AssetTransaction(senderAddress = args.publicKey)
+                assetTransaction = AssetTransaction(senderAddress = accountQuickActionsViewModel.accountAddress)
             )
         )
     }
@@ -64,7 +96,7 @@ class AccountQuickActionsBottomSheet : BaseBottomSheet(
         nav(
             HomeNavigationDirections.actionGlobalShowQrNavigation(
                 title = getString(R.string.qr_code),
-                qrText = args.publicKey
+                qrText = accountQuickActionsViewModel.accountAddress
             )
         )
     }
@@ -72,7 +104,7 @@ class AccountQuickActionsBottomSheet : BaseBottomSheet(
     private fun navToAddAssetFragment() {
         nav(
             AccountQuickActionsBottomSheetDirections.actionAccountQuickActionsBottomSheetToAssetAdditionNavigation(
-                accountAddress = args.publicKey
+                accountAddress = accountQuickActionsViewModel.accountAddress
             )
         )
     }
@@ -80,8 +112,12 @@ class AccountQuickActionsBottomSheet : BaseBottomSheet(
     private fun navToAccountOptionsBottomSheet() {
         nav(
             AccountQuickActionsBottomSheetDirections.actionAccountQuickActionsBottomSheetToAccountOptionsNavigation(
-                publicKey = args.publicKey
+                publicKey = accountQuickActionsViewModel.accountAddress
             )
         )
+    }
+
+    private fun navToSwapNavigation() {
+        accountQuickActionsViewModel.onSwapClick()
     }
 }

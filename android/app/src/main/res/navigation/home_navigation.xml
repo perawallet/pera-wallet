@@ -58,7 +58,19 @@
 
     <include app:graph="@navigation/video_player_navigation" />
 
+    <include app:graph="@navigation/audio_player_navigation" />
+
+    <!-- Swap -->
+    <include app:graph="@navigation/swap_account_selection_navigation" />
+
+    <include app:graph="@navigation/swap_introduction_navigation" />
+
+    <include app:graph="@navigation/swap_navigation" />
+    <!-- Swap End -->
+
     <include app:graph="@navigation/send_collectible_navigation" />
+
+    <include app:graph="@navigation/wallet_connect_connection_navigation" />
 
     <action
         android:id="@+id/action_global_showQrNavigation"
@@ -98,8 +110,28 @@
     </action>
 
     <action
-        android:id="@+id/action_global_walletConnectConnectionBottomSheet"
-        app:destination="@id/walletConnectConnectionBottomSheet" />
+        android:id="@+id/action_global_walletConnectConnectionNavigation"
+        app:destination="@id/walletConnectConnectionNavigation">
+        <argument
+            android:name="sessionRequest"
+            app:argType="com.algorand.android.models.WalletConnectSession" />
+    </action>
+
+    <action
+        android:id="@+id/action_global_swap_introduction_navigation"
+        app:destination="@id/swapIntroductionNavigation" />
+
+    <action
+        android:id="@+id/action_global_swapAccountSelectionNavigation"
+        app:destination="@id/swapAccountSelectionNavigation" />
+
+    <action
+        android:id="@+id/action_global_swapNavigation"
+        app:destination="@id/swapNavigation">
+        <argument
+            android:name="accountAddress"
+            app:argType="string" />
+    </action>
 
     <action
         android:id="@+id/action_global_unsupportedAssetNotificationRequestActionBottomSheet"
@@ -262,6 +294,13 @@
                 app:argType="string" />
         </action>
         <action
+            android:id="@+id/action_collectibleDetailFragment_to_audioPlayerNavigation"
+            app:destination="@+id/audioPlayerNavigation">
+            <argument
+                android:name="collectibleAudioUrl"
+                app:argType="string" />
+        </action>
+        <action
             android:id="@+id/action_collectibleDetailFragment_to_collectibleOptOutConfirmationBottomSheet"
             app:destination="@id/collectibleOptOutConfirmationBottomSheet" />
         <action
@@ -338,6 +377,19 @@
         <action
             android:id="@+id/action_accountsFragment_to_removeAssetsFragment"
             app:destination="@id/removeAssetsFragment" />
+        <action
+            android:id="@+id/action_accountsFragment_to_swapIntroductionNavigation"
+            app:destination="@id/swapIntroductionNavigation" />
+        <action
+            android:id="@+id/action_accountsFragment_to_swapNavigation"
+            app:destination="@id/swapNavigation">
+            <argument
+                android:name="accountAddress"
+                app:argType="string" />
+        </action>
+        <action
+            android:id="@+id/action_accountsFragment_to_swapAccountSelectionNavigation"
+            app:destination="@id/swapAccountSelectionNavigation" />
         <action
             android:id="@+id/action_accountsFragment_to_accountErrorOptionsBottomSheet"
             app:destination="@id/accountErrorOptionsBottomSheet" />
@@ -598,7 +650,7 @@
 
     <fragment
         android:id="@+id/walletConnectSessionsFragment"
-        android:name="com.algorand.android.ui.wcsessions.WalletConnectSessionsFragment"
+        android:name="com.algorand.android.modules.walletconnect.sessions.ui.WalletConnectSessionsFragment"
         android:label="WalletConnectSessionsFragment"
         tools:layout="@layout/fragment_wallet_connect_sessions">
         <action
@@ -617,7 +669,7 @@
 
     <fragment
         android:id="@+id/walletConnectSessionsQrScannerFragment"
-        android:name="com.algorand.android.ui.wcsessions.WalletConnectSessionsQrScannerFragment"
+        android:name="com.algorand.android.modules.walletconnect.sessions.ui.WalletConnectSessionsQrScannerFragment"
         android:label="WalletConnectSessionsQrScannerFragment"
         tools:layout="@layout/fragment_qr_code_scanner" />
 
@@ -712,6 +764,20 @@
         <action
             android:id="@+id/action_accountDetailFragment_to_manageCollectiblesBottomSheet"
             app:destination="@id/manageCollectiblesBottomSheet" />
+        <action
+            android:id="@+id/action_accountDetailFragment_to_swapIntroductionNavigation"
+            app:destination="@id/swapIntroductionNavigation">
+            <argument
+                android:name="accountAddress"
+                app:argType="string" />
+        </action>
+        <action
+            android:id="@+id/action_accountDetailFragment_to_swapNavigation"
+            app:destination="@id/swapNavigation">
+            <argument
+                android:name="accountAddress"
+                app:argType="string" />
+        </action>
     </fragment>
 
     <fragment
@@ -805,44 +871,6 @@
         android:name="com.algorand.android.ui.analyticsdetail.AlgoPriceFragment"
         android:label="AnalyticsDetailBottomSheet"
         tools:layout="@layout/fragment_algo_price" />
-
-    <dialog
-        android:id="@+id/walletConnectConnectionBottomSheet"
-        android:name="com.algorand.android.ui.wcconnection.WalletConnectConnectionBottomSheet"
-        android:label="WalletConnectConnectionBottomSheet"
-        tools:layout="@layout/bottom_sheet_wallet_connect_connection">
-        <argument
-            android:name="sessionRequest"
-            app:argType="com.algorand.android.models.WalletConnectSession" />
-        <action
-            android:id="@+id/action_walletConnectConnectionBottomSheet_to_accountSelectionBottomSheet"
-            app:destination="@id/accountSelectionBottomSheet" />
-        <action
-            android:id="@+id/action_walletConnectConnectionBottomSheet_to_singleButtonBottomSheetNavigation"
-            app:destination="@id/singleButtonBottomSheetNavigation"
-            app:popUpTo="@id/walletConnectConnectionBottomSheet"
-            app:popUpToInclusive="true">
-            <argument
-                android:name="titleAnnotatedString"
-                app:argType="com.algorand.android.models.AnnotatedString" />
-            <argument
-                android:name="descriptionAnnotatedString"
-                app:argType="com.algorand.android.models.AnnotatedString" />
-            <argument
-                android:name="drawableResId"
-                android:defaultValue="0"
-                app:argType="reference" />
-            <argument
-                android:name="drawableTintResId"
-                android:defaultValue="0"
-                app:argType="reference" />
-        </action>
-        <action
-            android:id="@+id/action_walletConnectConnectionBottomSheet_to_fallbackBrowserSelectionBottomSheet"
-            app:destination="@id/fallbackBrowserSelectionBottomSheet"
-            app:popUpTo="@id/walletConnectConnectionBottomSheet"
-            app:popUpToInclusive="true" />
-    </dialog>
 
     <dialog
         android:id="@+id/ledgerConnectionIssueBottomSheet"
@@ -941,7 +969,7 @@
 
     <dialog
         android:id="@+id/walletConnectSessionsBottomSheet"
-        android:name="com.algorand.android.ui.wcsessions.WalletConnectSessionsBottomSheet"
+        android:name="com.algorand.android.modules.walletconnect.connectedapps.ui.WalletConnectConnectedAppsBottomSheet"
         android:label="WalletConnectSessionsBottomSheet" />
 
     <fragment
@@ -1163,10 +1191,19 @@
                 app:argType="string" />
         </action>
         <argument
-            android:name="publicKey"
+            android:name="accountAddress"
             app:argType="string" />
+        <action
+            android:id="@+id/action_accountQuickActionsBottomSheet_to_swapIntroductionNavigation"
+            app:destination="@id/swapIntroductionNavigation" />
+        <action
+            android:id="@+id/action_accountQuickActionsBottomSheet_to_swapNavigation"
+            app:destination="@id/swapNavigation">
+            <argument
+                android:name="accountAddress"
+                app:argType="string" />
+        </action>
     </dialog>
-
 
     <dialog
         android:id="@+id/manageCollectiblesBottomSheet"
@@ -1187,55 +1224,4 @@
         android:label="CollectiblesSortPreferenceFragment"
         tools:layout="@layout/fragment_collectible_sort_preference" />
 
-    <dialog
-        android:id="@+id/fallbackBrowserSelectionBottomSheet"
-        android:name="com.algorand.android.modules.walletconnectfallbackbrowser.ui.FallbackBrowserSelectionBottomSheet"
-        android:label="FallbackBrowserSelectionBottomSheet"
-        tools:layout="@layout/bottom_sheet_fallback_browser_selection">
-        <action
-            android:id="@+id/action_fallbackBrowserSelectionBottomSheet_to_walletConnectConnectedSingleBrowserBottomSheet"
-            app:destination="@id/walletConnectConnectedSingleBrowserBottomSheet"
-            app:popUpTo="@id/fallbackBrowserSelectionBottomSheet"
-            app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_fallbackBrowserSelectionBottomSheet_to_singleButtonBottomSheet"
-            app:destination="@id/singleButtonBottomSheetNavigation"
-            app:popUpTo="@id/fallbackBrowserSelectionBottomSheet"
-            app:popUpToInclusive="true">
-            <argument
-                android:name="titleAnnotatedString"
-                app:argType="com.algorand.android.models.AnnotatedString" />
-            <argument
-                android:name="descriptionAnnotatedString"
-                android:defaultValue="@null"
-                app:argType="com.algorand.android.models.AnnotatedString"
-                app:nullable="true" />
-            <argument
-                android:name="drawableResId"
-                android:defaultValue="0"
-                app:argType="reference" />
-            <argument
-                android:name="isResultNeeded"
-                android:defaultValue="false"
-                app:argType="boolean" />
-        </action>
-        <argument
-            android:name="browserGroup"
-            app:argType="string" />
-        <argument
-            android:name="peerMetaName"
-            app:argType="string" />
-    </dialog>
-
-    <dialog
-        android:id="@+id/walletConnectConnectedSingleBrowserBottomSheet"
-        android:name="com.algorand.android.modules.walletconnectfallbackbrowser.ui.WalletConnectConnectedSingleBrowserBottomSheet"
-        android:label="WalletConnectConnectedSingleBrowserBottomSheet">
-        <argument
-            android:name="browserItem"
-            app:argType="com.algorand.android.modules.walletconnectfallbackbrowser.ui.model.FallbackBrowserListItem" />
-        <argument
-            android:name="peerMetaName"
-            app:argType="string" />
-    </dialog>
 </navigation>

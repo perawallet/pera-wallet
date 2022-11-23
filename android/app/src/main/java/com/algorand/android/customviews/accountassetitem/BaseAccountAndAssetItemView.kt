@@ -115,9 +115,23 @@ abstract class BaseAccountAndAssetItemView @JvmOverloads constructor(
         }
     }
 
+    fun setPrimaryValueText(primaryValue: String?, isPrimaryValueVisible: Boolean) {
+        binding.primaryValueTextView.apply {
+            isVisible = isPrimaryValueVisible
+            text = primaryValue
+        }
+    }
+
     fun setSecondaryValueText(secondaryValue: String?) {
         binding.secondaryValueTextView.apply {
             isVisible = !secondaryValue.isNullOrBlank()
+            text = secondaryValue
+        }
+    }
+
+    fun setSecondaryValueText(secondaryValue: String?, isSecondaryValueVisible: Boolean) {
+        binding.secondaryValueTextView.apply {
+            isVisible = isSecondaryValueVisible
             text = secondaryValue
         }
     }

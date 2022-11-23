@@ -25,8 +25,8 @@ class WalletConnectSessionCachedData(
     val fallbackBrowserGroupResponse: String?
 ) : Session.Callback {
 
-    val approvedAccount: String
-        get() = session.approvedAccounts()?.firstOrNull().orEmpty()
+    val approvedAccounts: List<String>
+        get() = session.approvedAccounts().orEmpty()
 
     private var callback: Callback? = null
 

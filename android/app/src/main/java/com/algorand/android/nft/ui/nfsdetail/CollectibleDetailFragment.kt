@@ -171,6 +171,10 @@ class CollectibleDetailFragment : BaseCollectibleDetailFragment() {
         nav(CollectibleDetailFragmentDirections.actionCollectibleDetailFragmentToVideoPlayerNavigation(videoUrl))
     }
 
+    override fun navToAudioPlayerFragment(audioUrl: String) {
+        nav(CollectibleDetailFragmentDirections.actionCollectibleDetailFragmentToAudioPlayerNavigation(audioUrl))
+    }
+
     override fun navToOptOutConfirmationBottomSheet(collectibleDetail: CollectibleDetail) {
         nav(
             CollectibleDetailFragmentDirections

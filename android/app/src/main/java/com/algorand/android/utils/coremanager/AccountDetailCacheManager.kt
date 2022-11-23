@@ -15,44 +15,66 @@ package com.algorand.android.utils.coremanager
 import com.algorand.android.core.AccountManager
 import com.algorand.android.models.Account
 import com.algorand.android.models.AccountDetail
+import com.algorand.android.modules.accountblockpolling.domain.usecase.ClearLastKnownBlockForAccountsUseCase
+import com.algorand.android.modules.accountblockpolling.domain.usecase.GetResultWhetherAccountsUpdateIsRequiredUseCase
+import com.algorand.android.modules.accountblockpolling.domain.usecase.UpdateLastKnownBlockUseCase
 import com.algorand.android.usecase.AccountDetailUseCase
-import com.algorand.android.usecase.BlockPollingUseCase
 import com.algorand.android.utils.AccountDetailUpdateHelper
 import com.algorand.android.utils.CacheResult
 import com.algorand.android.utils.DataResource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 
 class AccountDetailCacheManager(
-    private val blockPollingUseCase: BlockPollingUseCase,
+    private val getResultWhetherAccountsUpdateIsRequiredUseCase: GetResultWhetherAccountsUpdateIsRequiredUseCase,
+    private val updateLastKnownBlockUseCase: UpdateLastKnownBlockUseCase,
+    private val clearLastKnownBlockForAccountsUseCase: ClearLastKnownBlockForAccountsUseCase,
     private val accountDetailUseCase: AccountDetailUseCase,
     private val accountManager: AccountManager,
     private val accountDetailUpdateHelper: AccountDetailUpdateHelper
 ) : BaseCacheManager() {
 
-    private var accountBlockCollector: suspend (CacheResult<Long>?, List<Account>) -> Unit = { blockCache, accounts ->
-        onAccountAndBlockCacheUpdate(blockCache, accounts)
-    }
-
     override suspend fun initialize(coroutineScope: CoroutineScope) {
-        blockPollingUseCase.getBlockNumberFlow()
-            .combine(accountManager.accounts, accountBlockCollector)
-            .launchIn(coroutineScope)
-    }
-
-    private suspend fun onAccountAndBlockCacheUpdate(blockCache: CacheResult<Long>?, accounts: List<Account>) {
-        when {
-            blockCache == null -> accountDetailUseCase.clearAccountDetailCache()
-            accounts.isEmpty() -> stopCurrentJob()
-            accounts.isNotEmpty() -> startJob()
+        accountManager.accounts.collectLatest {
+            if (it.isNotEmpty()) startJob() else stopCurrentJob()
         }
     }
 
+    override fun doBeforeJobStarts() {
+        super.doBeforeJobStarts()
+        clearLastKnownBlockForAccountsUseCase.invoke()
+        if (isCurrentJobActive) stopCurrentJob()
+    }
+
     override suspend fun doJob(coroutineScope: CoroutineScope) {
+        updateAccountDetailsAndLastKnownBlockForAccounts(coroutineScope)
+        while (true) {
+            checkIfNeedUpdatingAccountInformation(coroutineScope)
+            delay(NEXT_BLOCK_DELAY_AFTER)
+        }
+    }
+
+    private suspend fun checkIfNeedUpdatingAccountInformation(coroutineScope: CoroutineScope) {
+        getResultWhetherAccountsUpdateIsRequiredUseCase.invoke().collect { dataResource ->
+            dataResource.useSuspended(
+                onSuccess = { shouldRefresh ->
+                    if (shouldRefresh) {
+                        updateAccountDetailsAndLastKnownBlockForAccounts(coroutineScope)
+                    }
+                }
+            )
+        }
+    }
+
+    private suspend fun updateAccountDetailsAndLastKnownBlockForAccounts(coroutineScope: CoroutineScope) {
+        getAndCacheAccountDetails(coroutineScope)
+        updateLastKnownBlockUseCase.invoke()
+    }
+
+    private suspend fun getAndCacheAccountDetails(coroutineScope: CoroutineScope) {
         val accountCacheResultList = accountManager.accounts.value.map { account ->
             coroutineScope.async {
                 getAccountCacheResult(account)
@@ -91,5 +113,9 @@ class AccountDetailCacheManager(
         val previousCachedAccount = accountDetailUseCase.getCachedAccountDetail(accountPublicKey)
         val cacheResult = CacheResult.Error.create(error.exception, error.code, previousCachedAccount)
         return accountPublicKey to cacheResult
+    }
+
+    companion object {
+        private const val NEXT_BLOCK_DELAY_AFTER = 3500L
     }
 }

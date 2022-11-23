@@ -18,7 +18,11 @@ import javax.inject.Inject
 
 class WalletConnectSessionEntityMapper @Inject constructor() {
 
-    fun mapFromEntity(entity: WalletConnectSessionEntity, accountName: String?): WalletConnectSession {
+    fun mapFromEntity(
+        entity: WalletConnectSessionEntity,
+        accountsNames: List<String?>,
+        connectedAccountsAddresses: List<String>
+    ): WalletConnectSession {
         return with(entity) {
             WalletConnectSession(
                 id = id,
@@ -26,8 +30,8 @@ class WalletConnectSessionEntityMapper @Inject constructor() {
                 sessionMeta = wcSession,
                 dateTimeStamp = dateTimeStamp,
                 isConnected = isConnected,
-                connectedAccountPublicKey = connectedAccountPublicKey,
-                accountName = accountName,
+                connectedAccountsAddresses = connectedAccountsAddresses,
+                accountsNames = accountsNames,
                 fallbackBrowserGroupResponse = fallbackBrowserGroupResponse
             )
         }
@@ -40,7 +44,6 @@ class WalletConnectSessionEntityMapper @Inject constructor() {
                 peerMeta = peerMeta,
                 wcSession = sessionMeta,
                 dateTimeStamp = dateTimeStamp,
-                connectedAccountPublicKey = connectedAccountPublicKey,
                 fallbackBrowserGroupResponse = fallbackBrowserGroupResponse
             )
         }

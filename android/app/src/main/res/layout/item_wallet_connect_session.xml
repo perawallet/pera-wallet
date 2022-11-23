@@ -37,9 +37,9 @@
         android:minHeight="0dp"
         android:padding="@dimen/spacing_xsmall"
         app:icon="@drawable/ic_more"
+        app:layout_constraintBottom_toBottomOf="@id/connectedTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/appNameTextView"
-        app:layout_constraintBottom_toBottomOf="@id/connectedTextView" />
+        app:layout_constraintTop_toTopOf="@id/appNameTextView" />
 
     <TextView
         android:id="@+id/appNameTextView"
@@ -58,10 +58,10 @@
 
     <TextView
         android:id="@+id/appDescriptionTextView"
+        style="@style/TextAppearance.Footnote.Description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_xsmall"
-        style="@style/TextAppearance.Footnote.Description"
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
@@ -71,47 +71,40 @@
 
     <TextView
         android:id="@+id/dateTextView"
+        style="@style/TextAppearance.Footnote.Description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_small"
-        style="@style/TextAppearance.Footnote.Description"
         android:textColor="@color/text_gray_lighter"
         app:layout_constraintStart_toStartOf="@id/appDescriptionTextView"
         app:layout_constraintTop_toBottomOf="@id/appDescriptionTextView"
         app:layout_goneMarginStart="0dp"
         tools:text="24 April at 7:35 PM" />
 
-    <TextView
-        android:id="@+id/connectionIndicatorTextView"
+
+    <LinearLayout
+        android:id="@+id/connectionsIndicatorLinearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_xsmall"
-        android:maxLines="1"
-        app:autoSizeMaxTextSize="14sp"
-        app:autoSizeMinTextSize="10sp"
-        android:ellipsize="end"
-        app:autoSizeTextType="uniform"
+        android:orientation="vertical"
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="@id/dateTextView"
         app:layout_constraintTop_toBottomOf="@id/dateTextView"
-        app:layout_goneMarginTop="@dimen/spacing_xsmall"
-        android:textAppearance="@style/TextAppearance.Footnote.Sans.Medium"
-        tools:background="@drawable/bg_connected_session_indicator"
-        tools:text="Connected with C2AWQ_21XQS"
-        tools:textColor="@color/link_primary" />
+        app:layout_goneMarginTop="@dimen/spacing_xsmall" />
+
 
     <TextView
         android:id="@+id/connectedTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="@dimen/spacing_xxsmall"
         android:text="@string/connected"
         android:textAppearance="@style/TextAppearance.Footnote.Sans"
         android:textColor="@color/tertiary_text_color"
         app:layout_constraintStart_toStartOf="@id/appNameTextView"
         app:layout_constraintTop_toBottomOf="@id/appNameTextView"
-        android:paddingTop="@dimen/spacing_xxsmall"
         tools:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

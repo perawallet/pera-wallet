@@ -13,34 +13,30 @@
 package com.algorand.android.mapper
 
 import com.algorand.android.models.WalletConnectSession
+import com.algorand.android.models.WalletConnectSessionAccountEntity
 import com.algorand.android.models.WalletConnectSessionEntity
-import com.algorand.android.models.WalletConnectSessionHistoryEntity
 import javax.inject.Inject
 
 class WalletConnectMapper @Inject constructor(
     private val wcSessionEntityMapper: WalletConnectSessionEntityMapper,
-    private val wcSessionHistoryEntityMapper: WalletConnectSessionHistoryEntityMapper
+    private val walletConnectSessionAccountEntityMapper: WalletConnectSessionAccountEntityMapper
 ) {
 
     fun createWCSessionEntity(wcSession: WalletConnectSession): WalletConnectSessionEntity {
         return wcSessionEntityMapper.mapToEntity(wcSession)
     }
 
-    fun createWCSessionHistoryEntity(wcSession: WalletConnectSession): WalletConnectSessionHistoryEntity {
-        return wcSessionHistoryEntityMapper.mapToEntity(wcSession)
-    }
-
-    fun createWalletConnectSession(
-        sessionHistoryEntity: WalletConnectSessionHistoryEntity,
-        accountName: String? = null
-    ): WalletConnectSession {
-        return wcSessionHistoryEntityMapper.mapFromEntity(sessionHistoryEntity, accountName)
-    }
-
     fun createWalletConnectSession(
         sessionEntity: WalletConnectSessionEntity,
-        accountName: String? = null
+        connectedAccountsAddresses: List<String> = emptyList(),
+        accountsNames: List<String?> = emptyList(),
     ): WalletConnectSession {
-        return wcSessionEntityMapper.mapFromEntity(sessionEntity, accountName)
+        return wcSessionEntityMapper.mapFromEntity(sessionEntity, accountsNames, connectedAccountsAddresses)
+    }
+
+    fun createWalletConnectSessionAccountList(
+        walletConnectSession: WalletConnectSession
+    ): List<WalletConnectSessionAccountEntity> {
+        return walletConnectSessionAccountEntityMapper.mapToWalletConnectSessionAccountEntity(walletConnectSession)
     }
 }

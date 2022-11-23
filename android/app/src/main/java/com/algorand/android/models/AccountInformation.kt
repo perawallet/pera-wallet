@@ -32,7 +32,8 @@ data class AccountInformation(
     val appsLocalState: List<CreatedAppLocalState>? = null,
     val appsTotalSchema: CreatedAppStateScheme? = null,
     val appsTotalExtraPages: Int? = null,
-    val totalCreatedApps: Int = 0
+    val totalCreatedApps: Int = 0,
+    val lastFetchedRound: Long?
 ) : Parcelable {
 
     val assetHoldingList: List<AssetHolding>

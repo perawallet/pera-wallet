@@ -38,9 +38,8 @@ import com.algorand.android.models.WalletConnectSignResult.Error.Defined
 import com.algorand.android.models.WalletConnectSignResult.LedgerWaitingForApproval
 import com.algorand.android.models.WalletConnectSignResult.Success
 import com.algorand.android.models.WalletConnectSignResult.TransactionCancelled
-import com.algorand.android.models.WalletConnectSigner
 import com.algorand.android.models.WalletConnectTransaction
-import com.algorand.android.utils.AccountCacheManager
+import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.LifecycleScopedCoroutineOwner
 import com.algorand.android.utils.ListQueuingHelper
@@ -51,11 +50,11 @@ import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 
 class WalletConnectSignManager @Inject constructor(
-    private val accountCacheManager: AccountCacheManager,
     private val walletConnectSignValidator: WalletConnectSignValidator,
     private val ledgerBleSearchManager: LedgerBleSearchManager,
     private val ledgerBleOperationManager: LedgerBleOperationManager,
-    private val signHelper: WalletConnectSigningHelper
+    private val signHelper: WalletConnectSigningHelper,
+    private val accountDetailUseCase: AccountDetailUseCase
 ) : LifecycleScopedCoroutineOwner() {
 
     val signResultLiveData: LiveData<WalletConnectSignResult>
@@ -71,22 +70,40 @@ class WalletConnectSignManager @Inject constructor(
             }
         }
 
-        override fun onNextItemToBeDequeued(transaction: BaseWalletConnectTransaction) {
-            val accountType = transaction.signer.getSignerAccountType()
+        override fun onNextItemToBeDequeued(
+            transaction: BaseWalletConnectTransaction,
+            currentItemIndex: Int,
+            totalItemCount: Int
+        ) {
+            val accountType = getSignerAccountType(transaction.signer.address?.decodedAddress)
             if (accountType == null) {
                 signHelper.cacheDequeuedItem(null)
             } else {
-                transaction.signTransaction(accountType)
+                transaction.signTransaction(
+                    accountDetail = accountType,
+                    currentTransactionIndex = currentItemIndex,
+                    totalTransactionCount = totalItemCount
+                )
             }
         }
     }
 
     private val scanCallback = object : CustomScanCallback() {
-        override fun onLedgerScanned(device: BluetoothDevice) {
+
+        override fun onLedgerScanned(
+            device: BluetoothDevice,
+            currentTransactionIndex: Int?,
+            totalTransactionCount: Int?
+        ) {
             ledgerBleSearchManager.stop()
             currentScope.launch {
                 signHelper.currentItem?.run {
-                    ledgerBleOperationManager.startLedgerOperation(WalletConnectTransactionOperation(device, this))
+                    val walletConnectTransactionOperation = WalletConnectTransactionOperation(device, this)
+                    ledgerBleOperationManager.startLedgerOperation(
+                        walletConnectTransactionOperation,
+                        currentTransactionIndex,
+                        totalTransactionCount
+                    )
                 }
             }
         }
@@ -100,7 +117,16 @@ class WalletConnectSignManager @Inject constructor(
         ledgerBleResultEvent?.consume()?.run {
             if (transaction == null) return@run
             when (this) {
-                is LedgerBleResult.LedgerWaitingForApproval -> postResult(LedgerWaitingForApproval(bluetoothName))
+                is LedgerBleResult.LedgerWaitingForApproval -> {
+                    LedgerWaitingForApproval(
+                        ledgerName = bluetoothName,
+                        currentTransactionIndex = currentTransactionIndex,
+                        totalTransactionCount = totalTransactionCount,
+                        isTransactionIndicatorVisible = totalTransactionCount != null &&
+                            currentTransactionIndex != null &&
+                            totalTransactionCount > 1
+                    ).apply(::postResult)
+                }
                 is SignedTransactionResult -> signHelper.cacheDequeuedItem(transactionByteArray)
                 is LedgerErrorResult -> postResult(Api(errorMessage))
                 is AppErrorResult -> postResult(Defined(AnnotatedString(errorMessageId), titleResId))
@@ -123,8 +149,12 @@ class WalletConnectSignManager @Inject constructor(
         this.transaction = transaction
         with(transaction) {
             when (val result = walletConnectSignValidator.canTransactionBeSigned(this)) {
-                is WalletConnectSignResult.CanBeSigned ->
-                    signHelper.initItemsToBeEnqueued(transactionList.flatten())
+                is WalletConnectSignResult.CanBeSigned -> {
+                    val signableTransactions = transactionList.flatten().filter {
+                        getSignerAccountType(it.signer.address?.decodedAddress) != null
+                    }
+                    signHelper.initItemsToBeEnqueued(signableTransactions)
+                }
                 is WalletConnectSignResult.Error -> postResult(result)
                 else -> {
                     sendErrorLog("Unhandled else case in WalletConnectSignManager.signTransaction")
@@ -135,6 +165,8 @@ class WalletConnectSignManager @Inject constructor(
 
     private fun BaseWalletConnectTransaction.signTransaction(
         accountDetail: Account.Detail,
+        currentTransactionIndex: Int?,
+        totalTransactionCount: Int?,
         checkIfRekeyed: Boolean = true
     ) {
         if (checkIfRekeyed && isRekeyedToAnotherAccount()) {
@@ -142,20 +174,44 @@ class WalletConnectSignManager @Inject constructor(
                 is RekeyedAuth -> {
                     accountDetail.rekeyedAuthDetail[authAddress].let { rekeyedAuthDetail ->
                         if (rekeyedAuthDetail != null) {
-                            signTransaction(rekeyedAuthDetail, false)
+                            signTransaction(
+                                accountDetail = rekeyedAuthDetail,
+                                checkIfRekeyed = false,
+                                currentTransactionIndex = currentTransactionIndex,
+                                totalTransactionCount = totalTransactionCount
+                            )
                         } else {
-                            processWithCheckingOtherAccounts()
+                            processWithCheckingOtherAccounts(
+                                currentTransactionIndex = currentTransactionIndex,
+                                totalTransactionCount = totalTransactionCount
+                            )
                         }
                     }
                 }
-                else -> processWithCheckingOtherAccounts()
+                else -> {
+                    processWithCheckingOtherAccounts(
+                        currentTransactionIndex = currentTransactionIndex,
+                        totalTransactionCount = totalTransactionCount
+                    )
+                }
             }
         } else {
             when (accountDetail) {
-                is Ledger -> sendTransactionWithLedger(accountDetail)
+                is Ledger -> {
+                    sendTransactionWithLedger(
+                        ledgerDetail = accountDetail,
+                        currentTransactionIndex = currentTransactionIndex,
+                        totalTransactionCount = totalTransactionCount
+                    )
+                }
                 is RekeyedAuth -> {
                     if (accountDetail.authDetail != null) {
-                        signTransaction(accountDetail.authDetail, checkIfRekeyed = false)
+                        signTransaction(
+                            accountDetail = accountDetail.authDetail,
+                            checkIfRekeyed = false,
+                            currentTransactionIndex = currentTransactionIndex,
+                            totalTransactionCount = totalTransactionCount
+                        )
                     } else {
                         signHelper.cacheDequeuedItem(null)
                     }
@@ -166,38 +222,81 @@ class WalletConnectSignManager @Inject constructor(
         }
     }
 
-    private fun sendTransactionWithLedger(ledgerDetail: Ledger) {
+    private fun sendTransactionWithLedger(
+        ledgerDetail: Ledger,
+        currentTransactionIndex: Int?,
+        totalTransactionCount: Int?
+    ) {
         val bluetoothAddress = ledgerDetail.bluetoothAddress
         val currentConnectedDevice = ledgerBleOperationManager.connectedBluetoothDevice
         if (currentConnectedDevice != null && currentConnectedDevice.address == bluetoothAddress) {
-            sendCurrentTransaction(currentConnectedDevice)
+            sendCurrentTransaction(
+                bluetoothDevice = currentConnectedDevice,
+                currentTransactionIndex = currentTransactionIndex,
+                totalTransactionCount = totalTransactionCount
+            )
         } else {
-            searchForDevice(bluetoothAddress)
+            searchForDevice(
+                ledgerAddress = bluetoothAddress,
+                currentTransactionIndex = currentTransactionIndex,
+                totalTransactionCount = totalTransactionCount
+            )
         }
     }
 
-    private fun sendCurrentTransaction(bluetoothDevice: BluetoothDevice) {
+    private fun sendCurrentTransaction(
+        bluetoothDevice: BluetoothDevice,
+        currentTransactionIndex: Int?,
+        totalTransactionCount: Int?
+    ) {
         signHelper.currentItem?.run {
-            ledgerBleOperationManager.startLedgerOperation(WalletConnectTransactionOperation(bluetoothDevice, this))
+            val walletConnectTransactionOperation = WalletConnectTransactionOperation(bluetoothDevice, this)
+            ledgerBleOperationManager.startLedgerOperation(
+                newOperation = walletConnectTransactionOperation,
+                currentTransactionIndex = currentTransactionIndex,
+                totalTransactionCount = totalTransactionCount
+            )
         }
     }
 
-    private fun searchForDevice(ledgerAddress: String) {
-        ledgerBleSearchManager.scan(scanCallback, ledgerAddress)
+    private fun searchForDevice(
+        ledgerAddress: String,
+        currentTransactionIndex: Int?,
+        totalTransactionCount: Int?
+    ) {
+        ledgerBleSearchManager.scan(
+            newScanCallback = scanCallback,
+            currentTransactionIndex = currentTransactionIndex,
+            totalTransactionCount = totalTransactionCount,
+            filteredAddress = ledgerAddress
+        )
     }
 
-    private fun BaseWalletConnectTransaction.processWithCheckingOtherAccounts() {
+    private fun BaseWalletConnectTransaction.processWithCheckingOtherAccounts(
+        currentTransactionIndex: Int?,
+        totalTransactionCount: Int?
+    ) {
         when (
-            val authAccountDetail = accountCacheManager.getCacheData(authAddress)?.account?.detail
+            val authAccountDetail = accountDetailUseCase.getCachedAccountDetail(authAddress.orEmpty())
+                ?.data
+                ?.account
+                ?.detail
         ) {
             is Standard -> signHelper.cacheDequeuedItem(decodedTransaction?.signTx(authAccountDetail.secretKey))
-            is Ledger -> sendTransactionWithLedger(authAccountDetail)
+            is Ledger -> {
+                sendTransactionWithLedger(
+                    ledgerDetail = authAccountDetail,
+                    currentTransactionIndex = currentTransactionIndex,
+                    totalTransactionCount = totalTransactionCount
+                )
+            }
             else -> signHelper.cacheDequeuedItem(null)
         }
     }
 
-    private fun WalletConnectSigner.getSignerAccountType(): Account.Detail? {
-        return accountCacheManager.getCacheData(address?.decodedAddress)?.account?.detail
+    private fun getSignerAccountType(signerAccountAddress: String?): Account.Detail? {
+        if (signerAccountAddress.isNullOrBlank()) return null
+        return accountDetailUseCase.getCachedAccountDetail(signerAccountAddress)?.data?.account?.detail
     }
 
     private fun postResult(walletConnectSignResult: WalletConnectSignResult) {

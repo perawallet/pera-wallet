@@ -39,11 +39,10 @@ class AccountDetailAssetItemMapper @Inject constructor(
                 shortName = AssetName.createShortName(shortName),
                 formattedAmount = formattedCompactAmount,
                 formattedDisplayedCurrencyValue = getSelectedCurrencyParityValue()
-                .getFormattedCompactValue(),
+                    .getFormattedCompactValue(),
                 isAmountInDisplayedCurrencyVisible = isAmountInSelectedCurrencyVisible,
-                verificationTierConfiguration = verificationTierConfigurationDecider.decideVerificationTierConfiguration(
-                    verificationTier
-                ),
+                verificationTierConfiguration = verificationTierConfigurationDecider
+                    .decideVerificationTierConfiguration(verificationTier),
                 baseAssetDrawableProvider = assetDrawableProviderDecider.getAssetDrawableProvider(id),
                 prismUrl = prismUrl,
                 amountInSelectedCurrency = parityValueInSelectedCurrency.amountAsCurrency
@@ -77,8 +76,8 @@ class AccountDetailAssetItemMapper @Inject constructor(
         )
     }
 
-    fun mapToQuickActionsItem(): AccountDetailAssetsItem.QuickActionsItem {
-        return AccountDetailAssetsItem.QuickActionsItem
+    fun mapToQuickActionsItem(isSwapButtonSelected: Boolean): AccountDetailAssetsItem.QuickActionsItem {
+        return AccountDetailAssetsItem.QuickActionsItem(isSwapButtonSelected = isSwapButtonSelected)
     }
 
     fun mapToSearchViewItem(query: String): AccountDetailAssetsItem.SearchViewItem {

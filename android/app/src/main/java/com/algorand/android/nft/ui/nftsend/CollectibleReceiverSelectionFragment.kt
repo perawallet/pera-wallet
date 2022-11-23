@@ -36,6 +36,9 @@ class CollectibleReceiverSelectionFragment : BaseAccountSelectionFragment() {
 
     override val fragmentConfiguration = FragmentConfiguration(toolbarConfiguration = toolbarConfiguration)
 
+    override val willCopiedItemBeHandled: Boolean
+        get() = true
+
     private val collectibleReceiverSelectionViewModel by viewModels<CollectibleReceiverSelectionViewModel>()
 
     private val collectibleReceiverSelectionPreviewCollector: suspend (CollectibleReceiverSelectionPreview?) -> Unit = {

@@ -15,6 +15,7 @@ package com.algorand.android.utils
 import android.content.Intent
 import androidx.navigation.NavController
 import com.algorand.android.HomeNavigationDirections
+import com.algorand.android.R
 import com.algorand.android.models.Account
 import com.algorand.android.models.AssetAction
 import com.algorand.android.models.AssetInformation
@@ -22,7 +23,6 @@ import com.algorand.android.models.AssetTransaction
 import com.algorand.android.models.DecodedQrCode
 import com.algorand.android.models.NotificationType
 import com.algorand.android.models.User
-import com.algorand.android.modules.accounts.ui.AccountsFragmentDirections
 import com.algorand.android.modules.dapp.moonpay.domain.model.MoonpayTransactionStatus
 
 const val SELECTED_ACCOUNT_KEY = "selectedAccountKey"
@@ -41,8 +41,9 @@ private fun NavController.handleSelectedAssetNavigation(
     val selectedAccountCacheData = accountCacheManager.getCacheData(selectedAccountKey)
     if (selectedAccountCacheData != null) {
         navigateSafe(
-            AccountsFragmentDirections.actionAccountsFragmentToAssetProfileNavigation(
-                selectedAssetId, selectedAccountCacheData.account.address
+            HomeNavigationDirections.actionGlobalAssetProfileNavigation(
+                assetId = selectedAssetId,
+                accountAddress = selectedAccountCacheData.account.address
             )
         )
     }
@@ -116,7 +117,8 @@ fun NavController.handleDeeplink(
 fun NavController.handleIntent(
     intentToHandle: Intent,
     accountCacheManager: AccountCacheManager,
-    onWalletConnectResult: (String) -> Unit
+    onWalletConnectResult: (String) -> Unit,
+    onIntentHandlingFailed: (Int) -> Unit
 ): Boolean {
     with(intentToHandle) {
         return when {
@@ -124,14 +126,15 @@ fun NavController.handleIntent(
                 val decodedDeeplink = decodeDeeplink(dataString) ?: return false
                 handleDeeplink(decodedDeeplink, accountCacheManager, onWalletConnectResult)
             }
-            else -> handleIntentWithBundle(this, accountCacheManager)
+            else -> handleIntentWithBundle(this, accountCacheManager, onIntentHandlingFailed)
         }
     }
 }
 
 fun NavController.handleIntentWithBundle(
     intentToHandle: Intent,
-    accountCacheManager: AccountCacheManager
+    accountCacheManager: AccountCacheManager,
+    onIntentHandlingFailed: (Int) -> Unit
 ): Boolean {
     with(intentToHandle) {
         // TODO change your architecture for the bug here. https://issuetracker.google.com/issues/37053389
@@ -152,8 +155,7 @@ fun NavController.handleIntentWithBundle(
         }
 
         val assetSupportRequestedPublicKey = getStringExtra(ASSET_SUPPORT_REQUESTED_PUBLIC_KEY)
-        val assetSupportRequestedAsset =
-            getParcelableExtra<AssetInformation>(ASSET_SUPPORT_REQUESTED_ASSET_KEY)
+        val assetSupportRequestedAsset = getParcelableExtra<AssetInformation>(ASSET_SUPPORT_REQUESTED_ASSET_KEY)
 
         if (!assetSupportRequestedPublicKey.isNullOrBlank() && assetSupportRequestedAsset != null) {
             val assetAction = AssetAction(
@@ -161,9 +163,19 @@ fun NavController.handleIntentWithBundle(
                 publicKey = assetSupportRequestedPublicKey,
                 asset = assetSupportRequestedAsset
             )
-            navigateSafe(
-                HomeNavigationDirections.actionGlobalUnsupportedAssetNotificationRequestActionBottomSheet(assetAction)
-            )
+            val accountType = accountCacheManager.getCacheData(assetSupportRequestedPublicKey)?.account?.type
+            val isAccountExist = accountCacheManager.getCacheData(assetSupportRequestedPublicKey) != null
+            when {
+                !isAccountExist -> onIntentHandlingFailed.invoke(R.string.you_cannot_take)
+                !canSignTransaction(accountType) -> onIntentHandlingFailed.invoke(R.string.you_cannot_optin)
+                else -> {
+                    navigateSafe(
+                        HomeNavigationDirections.actionGlobalUnsupportedAssetNotificationRequestActionBottomSheet(
+                            assetAction
+                        )
+                    )
+                }
+            }
             return true
         }
     }

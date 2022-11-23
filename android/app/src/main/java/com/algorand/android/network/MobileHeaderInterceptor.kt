@@ -15,6 +15,7 @@ package com.algorand.android.network
 import android.os.Build
 import com.algorand.android.BuildConfig
 import com.algorand.android.models.Node
+import java.util.Locale
 import javax.inject.Singleton
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.Interceptor
@@ -24,12 +25,16 @@ import okhttp3.Response
 class MobileHeaderInterceptor(
     private val packageName: String = BuildConfig.APPLICATION_ID,
     private val appVersion: String = BuildConfig.VERSION_NAME,
+    private val mobileApiKey: String = BuildConfig.MOBILE_API_KEY,
     private vararg val otherHeaders: Pair<String, String>,
     private val appName: String? = null,
     private val clientType: String = DEFAULT_CLIENT_TYPE,
     private val osVersion: String = Build.VERSION.SDK_INT.toString(),
     private val deviceModel: String = Build.MODEL
 ) : Interceptor {
+
+    private val localLanguageTag: String
+        get() = Locale.getDefault().language ?: Locale.ENGLISH.language
 
     private val defaultAppName = packageName.split('.')
         .run { elementAtOrNull(THIRD_ITEM_INDEX) ?: elementAtOrNull(SECOND_ITEM_INDEX).orEmpty() }
@@ -65,6 +70,8 @@ class MobileHeaderInterceptor(
             .addHeader(KEY_APP_PACKAGE_NAME, packageName)
             .addHeader(KEY_APP_VERSION, appVersion)
             .addHeader(KEY_DEVICE_MODEL, deviceModel)
+            .addHeader(MOBILE_API_KEY_HEADER, mobileApiKey)
+            .addHeader(KEY_ACCEPT_LANGUAGE, localLanguageTag)
             .apply {
                 otherHeaders.forEach { header ->
                     addHeader(header.first, header.second)
@@ -84,5 +91,7 @@ class MobileHeaderInterceptor(
         private const val DEFAULT_CLIENT_TYPE = "android"
         private const val SECOND_ITEM_INDEX = 1
         private const val THIRD_ITEM_INDEX = 2
+        private const val MOBILE_API_KEY_HEADER = "X-API-Key"
+        private const val KEY_ACCEPT_LANGUAGE = "Accept-Language"
     }
 }

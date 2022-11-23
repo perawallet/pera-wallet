@@ -14,24 +14,12 @@ package com.algorand.android.ui.notificationcenter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.doOnLayout
 import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.R
 import com.algorand.android.databinding.ItemNotificationBinding
 import com.algorand.android.models.NotificationListItem
-import com.algorand.android.models.NotificationMetadata
-import com.algorand.android.models.NotificationType
-import com.algorand.android.models.User
-import com.algorand.android.utils.AssetName
-import com.algorand.android.utils.assetdrawable.BaseAssetDrawableProvider
 import com.algorand.android.utils.getRelativeTimeDifference
-import com.algorand.android.utils.setupAlgoReceivedMessage
-import com.algorand.android.utils.setupAlgoSentMessage
-import com.algorand.android.utils.setupAssetSupportRequestMessage
-import com.algorand.android.utils.setupAssetSupportSuccessMessage
-import com.algorand.android.utils.setupFailedMessage
-import com.algorand.android.utils.toShortenedAddress
 import java.time.ZonedDateTime
 
 class NotificationItemViewHolder(
@@ -41,18 +29,10 @@ class NotificationItemViewHolder(
     fun bind(notificationItem: NotificationListItem?, lastRefreshedDateTime: ZonedDateTime?) {
         notificationItem?.run {
             setDescriptionText(
-                type = type,
-                formattedAmount = formattedAmount,
-                metadata = metadata,
-                senderUser = senderUser,
-                receiverUser = receiverUser,
-                fallbackMessage = fallbackMessage
+                message = message
             )
             setAvatar(
-                type = type,
-                assetDrawableProvider = assetDrawableProvider,
-                assetName = assetName,
-                prismUrl = prismUrl
+                isFailed = isFailed
             )
             setDate(
                 time = creationDateTime,
@@ -66,82 +46,20 @@ class NotificationItemViewHolder(
     }
 
     private fun setAvatar(
-        type: NotificationType,
-        assetDrawableProvider: BaseAssetDrawableProvider,
-        assetName: AssetName,
-        prismUrl: String?
+        isFailed: Boolean
     ) {
         with(binding.avatarImageView) {
-            if (type == NotificationType.ASSET_TRANSACTION_FAILED) {
+            if (isFailed) {
                 setImageResource(R.drawable.ic_default_failed_notification)
-                return@with
-            }
-
-            setImageDrawable(null)
-            doOnLayout {
-                assetDrawableProvider.provideAssetDrawable(
-                    context = context,
-                    assetName = assetName,
-                    logoUri = prismUrl,
-                    width = it.measuredWidth,
-                    onResourceReady = ::setImageDrawable
-                )
+            } else {
+                setImageResource(R.drawable.ic_algo_green_round)
             }
         }
     }
 
-    private fun setDescriptionText(
-        type: NotificationType,
-        formattedAmount: String?,
-        metadata: NotificationMetadata?,
-        senderUser: User?,
-        receiverUser: User?,
-        fallbackMessage: String
-    ) {
-        val senderName = senderUser?.name ?: metadata?.senderPublicKey.toShortenedAddress()
-        val receiverName = receiverUser?.name ?: metadata?.receiverPublicKey.toShortenedAddress()
-        val assetDescription = metadata?.getAssetDescription()
+    private fun setDescriptionText(message: String) {
         binding.descriptionTextView.apply {
-            text = when (type) {
-                NotificationType.TRANSACTION_RECEIVED, NotificationType.ASSET_TRANSACTION_RECEIVED -> {
-                    context?.setupAlgoReceivedMessage(
-                        formattedAmount = formattedAmount,
-                        senderName = senderName,
-                        receiverName = receiverName,
-                        asset = assetDescription
-                    )
-                }
-                NotificationType.TRANSACTION_SENT, NotificationType.ASSET_TRANSACTION_SENT -> {
-                    context?.setupAlgoSentMessage(
-                        formattedAmount = formattedAmount,
-                        senderName = senderName,
-                        receiverName = receiverName,
-                        asset = assetDescription
-                    )
-                }
-                NotificationType.TRANSACTION_FAILED, NotificationType.ASSET_TRANSACTION_FAILED -> {
-                    context?.setupFailedMessage(
-                        formattedAmount = formattedAmount,
-                        senderName = senderName,
-                        receiverName = receiverName,
-                        asset = assetDescription
-                    )
-                }
-                NotificationType.ASSET_SUPPORT_SUCCESS -> {
-                    context?.setupAssetSupportSuccessMessage(
-                        senderName = senderName,
-                        asset = assetDescription
-                    )
-                }
-                NotificationType.ASSET_SUPPORT_REQUEST -> {
-                    context?.setupAssetSupportRequestMessage(
-                        senderName = senderName,
-                        receiverName = receiverName,
-                        asset = assetDescription
-                    )
-                }
-                NotificationType.UNKNOWN, NotificationType.BROADCAST -> fallbackMessage
-            }
+            text = message
         }
     }
 

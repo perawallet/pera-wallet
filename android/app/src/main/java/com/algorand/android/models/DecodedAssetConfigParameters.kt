@@ -12,9 +12,13 @@
 
 package com.algorand.android.models
 
+import android.os.Parcelable
 import com.algorand.android.utils.getBase64DecodedPublicKey
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+// TODO Remove Parcelize after refactoring parsing transaction
+@Parcelize
 data class DecodedAssetConfigParameters(
     @SerializedName("t") val totalSupply: String? = null,
     @SerializedName("dc") val decimal: Long? = null,
@@ -28,7 +32,7 @@ data class DecodedAssetConfigParameters(
     @SerializedName("r") val reserveAddress: String? = null,
     @SerializedName("f") val frozenAddress: String? = null,
     @SerializedName("c") val clawbackAddress: String? = null
-) {
+) : Parcelable {
 
     companion object {
         fun create(assetConfigParameters: AssetConfigParameters?): DecodedAssetConfigParameters? {

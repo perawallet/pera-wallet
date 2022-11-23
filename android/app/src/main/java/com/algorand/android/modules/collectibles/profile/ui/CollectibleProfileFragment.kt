@@ -206,6 +206,10 @@ class CollectibleProfileFragment : BaseCollectibleDetailFragment() {
         nav(CollectibleProfileFragmentDirections.actionCollectibleProfileFragmentToVideoPlayerNavigation(videoUrl))
     }
 
+    override fun navToAudioPlayerFragment(audioUrl: String) {
+        nav(CollectibleProfileFragmentDirections.actionCollectibleProfileFragmentToAudioPlayerNavigation(audioUrl))
+    }
+
     override fun copyOptedInAccountAddress() {
         onAccountAddressCopied(baseCollectibleDetailViewModel.accountAddress)
     }

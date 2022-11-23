@@ -61,21 +61,34 @@ data class NotificationMetadata(
 enum class NotificationType {
     @SerializedName("asset-support-request")
     ASSET_SUPPORT_REQUEST,
+
     @SerializedName("asset-support-success")
     ASSET_SUPPORT_SUCCESS,
+
     @SerializedName("asset-transaction-received")
     ASSET_TRANSACTION_RECEIVED,
+
     @SerializedName("asset-transaction-sent")
     ASSET_TRANSACTION_SENT,
+
     @SerializedName("asset-transaction-failed")
     ASSET_TRANSACTION_FAILED,
+
     @SerializedName("transaction-received")
     TRANSACTION_RECEIVED,
+
     @SerializedName("transaction-sent")
     TRANSACTION_SENT,
+
     @SerializedName("transaction-failed")
     TRANSACTION_FAILED,
+
     @SerializedName("broadcast")
     BROADCAST,
     UNKNOWN
+}
+
+enum class NotificationGroupType {
+    TRANSACTIONS,
+    OPTIN
 }

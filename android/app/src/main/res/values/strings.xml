@@ -63,6 +63,7 @@
     <string name="rewards">Rewards</string>
     <string name="show_rewards">Show Rewards</string>
     <string name="max">Max</string>
+    <string name="max_all_caps">MAX</string>
     <string name="you_earn_rewards_just">You earn rewards just by owning Algo! Here’s a summary of your rewards activity since your last transaction. These rewards are always included in your balance.</string>
     <string name="for_more_information">For more information on Algorand\nRewards, visit our <annotation custom="faq_color"><annotation type="bold">FAQ</annotation></annotation></string>
     <string name="reward">Reward</string>
@@ -173,7 +174,6 @@
     <string name="sorry_something_went">Sorry, something went wrong there.</string>
     <string name="try_again">Try Again</string>
     <string name="no_current_notifications">No current notifications</string>
-    <string name="account_related_to_this_notification">Account related to this notification was removed from this device. To view this notification\'s details, please add the account again.</string>
     <string name="your_recent_transactions">Your recent transactions, asset requests and other notifications will appear here</string>
     <string name="to_remove_an_asset">To remove an asset, you must first transfer that asset\'s balance to another account.</string>
     <string name="connect_to_internet">Connect to the Internet</string>
@@ -351,14 +351,12 @@
     <string name="unsigned_transactions">Unsigned Transactions</string>
     <string name="application_id">Application ID</string>
     <string name="this_transaction_will_transfer">This transaction will transfer ownership of this account. Your current recovery passphrase will no longer grant access to these assets.</string>
-    <string name="once_confirmed_the_connected_application">Once confirmed, the connected application can send these transactions out at their discretion. Please make sure you review the transactions carefully as this process is irreversible.</string>
-    <string name="are_you_sure_question_mark">Are you sure?</string>
     <string name="this_transaction_is_sending">This transaction is sending your full Algo balance.</string>
     <string name="this_transaction_is_sending_asset">This transaction is sending your full %1$s balance and will remove %1$s from your account.</string>
     <string name="this_transaction_fee_is_higher">This transaction fee is higher than the usual fee of 0.001 Algo.</string>
     <string name="wallet_connect_is_not_reachable">WalletConnect is not reachable at the moment. Please try again later.</string>
     <string name="connected_with_formatted">Connected with %1$s</string>
-    <string name="this_transaction_will_be">This transaction will be submitted in the future.</string>
+    <string name="this_transaction_will_be">This transaction will be submitted in the future. Once confirmed, the connected application can send these transactions out at their discretion. Please make sure you review the transactions carefully as this process is irreversible.</string>
     <plurals name="confirm_transactions">
         <item quantity="one">Confirm</item>
         <item quantity="other">Confirm all</item>
@@ -864,10 +862,85 @@
     <string name="we_couldn_t_find_any_assets">We couldn\'t find any assets for remove.</string>
 
     <string name="the_algo_is_the_official_cryptocurrency">The Algo is the official cryptocurrency of the Algorand blockchain. The Algorand blockchain has been built to help create an open, borderless economy where everybody can participate. This new type of digital economy can only run on a truly digital currency that works instantly, for everybody. This is the Algo.</string>
+    <string name="asset_successfully_removed_to_your">%1$s successfully removed to your account.</string>
+    <string name="swap">Swap</string>
+    <string name="convert_between_popular_asa_pairs">Convert between popular ASA pairs</string>
+
+    <string name="swap_to">Swap To</string>
+    <string name="swap_from">Swap From</string>
+    <string name="we_can_not_show_assets">We can\'t show assets right now. Please try again.</string>
+    <string name="choose_an_asset">Choose an asset</string>
+    <string name="balance_formatted">Balance: %1$s</string>
+
+    <string name="select_an_account_to_make">Select an account to make the swap</string>
+    <string name="price_impact_is_the_influence">Price impact is the influence of your trade over the market price of the asset pair. It is directly correlated with the amount of liquidity in the pool.</string>
+    <string name="slippage_tolerance">Slippage Tolerance</string>
+    <string name="slippage_is_the_price_difference">Slippage is the price difference between when you submit a transaction and when the transaction is confirmed on the blockchain. If slippage rate goes over the tolerance percentage you set here, transaction will be cancelled automatically to protect you from value loss.</string>
+    <string name="swap_in_pera">Swap in Pera</string>
+    <string name="pera_wallet_now_provides_an">Pera Wallet now provides an easy and fast way to swap assets.</string>
+    <string name="try_swap">Try Swap</string>
+    <string name="later">Later</string>
+
+    <string name="set_custom_slippage">Set custom slippage</string>
+    <string name="auto">Auto</string>
+    <string name="slippage_tolerance_must_be_between">Slippage tolerance must be between %1$.1f%% and %2$.1f%%</string>
+    <string name="balance_percentage_must_be_between">Balance percentage must be between %1$d%% and %2$d%%</string>
+    <string name="set_custom_percentage">Set custom percentage</string>
+    <string name="balance_percentage">Balance Percentage</string>
+    <string name="pera_wallet_provides_an_easy">Pera Wallet provides an easy and fast way to swap assets. Swapping allows an ASA to be exchanged with another one using a smart contract, at market fees.</string>
+    <string name="by_continuing_you_agree_to">By continuing, you agree to our\nswap partner\'s <annotation url="tinymanTermsOfServiceUrl"><annotation type="bold"><annotation type="color">Terms of Service</annotation></annotation></annotation></string>
+    <string name="start_swapping">Start Swapping</string>
+    <string name="powered_by">Powered by</string>
+    <string name="new_text">New</string>
+
+    <string name="this_account_doesn_t_have">This account doesn\'t have the required minimum balance of <annotation replacement="minimum_balance">minimumBalancePlaceholder</annotation> for a swap operation.</string>
+    <string name="minimum_balance">Minimum Balance</string>
+    <string name="account_does_not_have">Account doesn\'t have enough balance for this transaction.</string>
+    <string name="account_does_not_have_algo">Account doesn\'t have enough Algo balance to cover transaction fees.</string>
+    <string name="asa_balance_is_not_sufficient_formatted"><annotation replacement="asa_short_name">asaShortNamePlaceholder</annotation> balance is not sufficient.</string>
+    <string name="asa_balance_is_not_sufficient">Balance is not sufficient.</string>
+    <string name="confirm_swap">Confirm Swap</string>
+    <string name="price_impact">Price Impact</string>
+    <string name="minimum_received">Minimum Received</string>
+    <string name="total_swap_fee">Total Swap Fee</string>
+    <string name="view_swap_summary">View Swap Summary</string>
+    <string name="from_to_to_asset_ratio"><annotation replacement="ratio">ratio</annotation> <annotation replacement="firstAssetShortName">assetShortName</annotation> per <annotation replacement="secondAssetShortName">secondAssetShortName</annotation></string>
+    <string name="slippage_tolerance_value_updated">Slippage Tolerance value updated!</string>
+    <string name="sign_with_ledger">Sign with Ledger</string>
+    <string name="we_ve_detected_that_you">We\'ve detected that you are using a Ledger device with this account.  <annotation font="dmsans_medium">You will need to sign <annotation replacement="transaction_count">transactionCountPlaceholder</annotation> transactions one by one</annotation> using your hardware token.</string>
+    <plurals name="sign_transaction">
+        <item quantity="one">Sign Transaction</item>
+        <item quantity="other">Sign Transactions</item>
+    </plurals>
+    <string name="signing_index_out_of_count">Signing %1$d out of %2$d…</string>
+    <string name="view_transaction_detail_in_algoexplorer">View Transaction detail in AlgoExplorer</string>
+    <string name="go_to_homepage">Go to Homepage</string>
+
+    <string name="sending_the_transaction">Sending the transaction</string>
+    <string name="you_will_receive_at_least">You will receive at least <annotation replacement="amount_and_asset_name">amountAndAssetNamePlaceholder</annotation> or the transaction will revert.</string>
+
+    <string name="asset_pair_swap_completed"><annotation replacement="to_asset_name">toAssetNamePlaceholder</annotation> / <annotation replacement="from_asset_name">fromAssetNamePlaceholder</annotation> swap completed</string>
+    <string name="you_received_amount_asset_name_in">You received <annotation replacement="to_amount_and_asset_name"><annotation custom="received_asset_color">toAmountAndAssetNamePlaceholder</annotation></annotation> in exchange for <annotation replacement="from_amount_and_asset_name"><annotation custom="paid_asset_color">fromAmountAndAssetNamePlaceholder</annotation></annotation></string>
+
+    <string name="asset_pair_swap_has_failed"><annotation replacement="to_asset_name">toAssetNamePlaceholder</annotation> / <annotation replacement="from_asset_name">fromAssetNamePlaceholder</annotation> swap has failed</string>
+    <string name="because_of_error_message">Because of <annotation replacement="error_message">errorMessagePlaceholder</annotation>.\nPlease try again.</string>
+    <string name="exchange_fee">Exchange Fee</string>
+    <string name="pera_fee">Pera Fee</string>
+    <string name="total_swap_fee_asterisk">Total Swap Fee&#42;</string>
+    <string name="amount_displayed_in_the">Amount displayed in the Total Swap Fee will be included in the swap. Algorand Network fees will be added as extra.</string>
+    <string name="swap_summary">Swap Summary</string>
+    <string name="received">Received</string>
+    <string name="paid">Paid</string>
+    <string name="algorand_fees">Algorand Fees</string>
+    <string name="opt_in_fees">Opt-in Fees</string>
+    <string name="exchange_fees">Exchange Fees</string>
+    <string name="pera_fees">Pera Fees</string>
+    <string name="an_unexpected_error_mismatched_txn">An unexpected error happened: Error code: mismatched-transactions.</string>
+    <string name="custom">Custom</string>
     <string name="opt_out_nft">Opt out NFT</string>
     <string name="you_are_about_to_opt">You are about to opt out %1$s. You will not be able to transact with this NFT from this account unless you re-add it.</string>
     <string name="opt_in_to_nft">Opt-in to NFT</string>
-    <string name="opting_in_to_an_nft">Opting in to an NFT requires requires sending a transaction with a minimum transaction fee. This will appear on your transaction history.</string>
+    <string name="opting_in_to_an_nft">Opting in to an NFT requires sending a transaction with a minimum transaction fee. This will appear on your transaction history.</string>
 
     <string name="this_account_doesn_t">This account doesn\'t have enough balance for this transaction.</string>
 
@@ -907,4 +980,15 @@
     </plurals>
     <string name="i_want_to_recover_an">I want to recover an Algorand account that is backed by my Ledger hardware wallet.</string>
     <string name="total_owned">Total owned</string>
+    <string name="future_transaction_detected">Future Transaction Detected</string>
+    <plurals name="select_accounts">
+        <item quantity="one">Select Account</item>
+        <item quantity="other">Select Accounts</item>
+    </plurals>
+
+    <string name="you_cannot_optin">You cannot opt-in for this account: It\'s a read-only Watch Account.</string>
+    <string name="you_cannot_take">You cannot take actions for this account: It was removed from this device.</string>
+    <string name="this_is_the_fee_charged">This is the fee charged to you by the decentralized exchange. It\'s automatically deducted from the amount you send and factored into the minimum received amount. It won\'t be an additional charge on top.</string>
+    <string name="we_encountered_an_unexpected">We encountered an unexpected error, try again later.</string>
+    <string name="caution_price_impact">Caution! Price impact is greater than 5%, meaning there might be low liquidity with this pool. Please make sure you understand the consequences before confirming the swap.</string>
 </resources>

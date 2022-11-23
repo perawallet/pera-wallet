@@ -116,6 +116,12 @@ class RemoveAssetsPreviewUseCase @Inject constructor(
                             actionItemButtonState = AccountAssetItemButtonState.REMOVAL
                         )
                     }
+                    is BaseOwnedCollectibleData.OwnedCollectibleAudioData -> {
+                        removeAssetItemMapper.mapTo(
+                            ownedCollectibleAudioData = it,
+                            actionItemButtonState = AccountAssetItemButtonState.REMOVAL
+                        )
+                    }
                 }
             } else {
                 null

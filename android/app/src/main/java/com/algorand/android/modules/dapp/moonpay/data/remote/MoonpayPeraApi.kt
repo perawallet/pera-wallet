@@ -20,7 +20,7 @@ import retrofit2.http.POST
 
 interface MoonpayPeraApi {
 
-    @POST("moonpay/sign-url/")
+    @POST("v1/moonpay/sign-url/")
     suspend fun signMoonpayUrl(
         @Body signMoonpayUrlRequest: SignMoonpayUrlRequest
     ): Response<SignMoonpayUrlResponse>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/bottom_safe_area_margin"
+    tools:context=".modules.swap.slippagetolerance.ui.SlippageToleranceBottomSheet">
+
+    <View
+        style="@style/BottomSheetModalityLine"
+        android:layout_marginTop="@dimen/spacing_small" />
+
+    <com.algorand.android.customviews.CustomToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_toolbar_height"
+        android:layout_marginTop="@dimen/spacing_xsmall" />
+
+    <com.algorand.android.customviews.AlgorandInputLayout
+        android:id="@+id/customPercentageInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_xxlarge"
+        android:imeOptions="actionDone"
+        android:inputType="numberDecimal"
+        tools:hint="@tools:sample/lorem[2]"
+        app:singleLine="true" />
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginTop="@dimen/spacing_xlarge">
+
+        <com.algorand.android.customviews.PeraChipGroup
+            android:id="@+id/predefinedPercentageChipGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipSpacingHorizontal="@dimen/spacing_small"
+            app:selectionRequired="true"
+            app:singleLine="true"
+            app:singleSelection="true" />
+
+    </HorizontalScrollView>
+
+</LinearLayout>

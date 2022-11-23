@@ -188,7 +188,7 @@ class AssetActivityFragment : BaseFragment(R.layout.fragment_asset_activity) {
     private fun updateCsvStatusPreview(csvStatusPreview: CsvStatusPreview?) {
         if (csvStatusPreview == null) return
         if (csvStatusPreview.isErrorShown) {
-            showGlobalError(getString(csvStatusPreview.errorResId))
+            showGlobalError(csvStatusPreview.errorResource.parse(binding.root.context))
         }
         with(binding.csvProgressBar) {
             descriptionTextView.setText(csvStatusPreview.descriptionResId)

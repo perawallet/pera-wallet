@@ -35,3 +35,7 @@ infix fun BigDecimal.isLesserThan(other: BigDecimal): Boolean {
 infix fun BigDecimal.isEqualTo(other: BigDecimal): Boolean {
     return this.compareTo(other) == 0
 }
+
+fun String?.toBigDecimalOrZero(): BigDecimal {
+    return this?.toBigDecimalOrNull() ?: BigDecimal.ZERO
+}

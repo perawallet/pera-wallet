@@ -129,6 +129,35 @@ sealed class BaseCollectibleDetail(
         val thumbnailPrismUrl: String?
     ) : BaseCollectibleDetail(assetId, fullName, shortName, fractionDecimals, usdValue, assetCreator)
 
+    data class AudioCollectibleDetail(
+        override val assetId: Long,
+        override val fullName: String?,
+        override val shortName: String?,
+        override val fractionDecimals: Int?,
+        override val usdValue: BigDecimal?,
+        override val assetCreator: AssetCreator?,
+        override val title: String?,
+        override val collectionName: String?,
+        override val description: String?,
+        override val traits: List<CollectibleTrait>?,
+        override val nftExplorerUrl: String?,
+        override val collectibleMedias: List<BaseCollectibleMedia>?,
+        override val totalSupply: BigDecimal?,
+        override val verificationTier: VerificationTier,
+        override val logoUri: String?,
+        override val logoSvgUri: String?,
+        override val explorerUrl: String?,
+        override val projectUrl: String?,
+        override val projectName: String?,
+        override val discordUrl: String?,
+        override val telegramUrl: String?,
+        override val twitterUsername: String?,
+        override val assetDescription: String?,
+        override val url: String?,
+        override val maxSupply: BigInteger?,
+        val thumbnailPrismUrl: String?
+    ) : BaseCollectibleDetail(assetId, fullName, shortName, fractionDecimals, usdValue, assetCreator)
+
     data class MixedCollectibleDetail(
         override val assetId: Long,
         override val fullName: String?,

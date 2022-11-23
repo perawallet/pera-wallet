@@ -76,7 +76,8 @@ class AsaProfilePreviewUseCase @Inject constructor(
                 assetAdditionUseCase.addAssetAdditionToAccountCache(account.address, assetInformation)
                 val assetOperationResult = assetOperationResultMapper.mapTo(
                     resultTitleResId = R.string.asset_successfully_added_formatted,
-                    assetName = AssetName.create(assetInformation.fullName)
+                    assetName = AssetName.create(assetInformation.fullName),
+                    assetId = assetInformation.assetId
                 )
                 emit(Event(Resource.Success(assetOperationResult)))
             }

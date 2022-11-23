@@ -22,6 +22,7 @@ import com.algorand.android.models.AccountIconResource
 import com.algorand.android.repository.AccountRepository
 import com.algorand.android.utils.CacheResult
 import com.algorand.android.utils.DataResource
+import com.algorand.android.utils.canSignTransaction
 import com.algorand.android.utils.isRekeyedToAnotherAccount
 import com.algorand.android.utils.toShortenedAddress
 import java.math.BigInteger
@@ -107,7 +108,7 @@ class AccountDetailUseCase @Inject constructor(
 
     fun canAccountSignTransaction(publicKey: String): Boolean {
         val account = accountManager.getAccount(publicKey)
-        return account?.type != null && account.type != Account.Type.WATCH
+        return canSignTransaction(account?.type)
     }
 
     suspend fun fetchAccountDetail(account: Account): Flow<DataResource<AccountDetail>> {
@@ -154,7 +155,7 @@ class AccountDetailUseCase @Inject constructor(
         return accountInformation?.rekeyAdminAddress
     }
 
-    fun getAccountIcon(publicKey: String): AccountIconResource? {
+    fun getAccountIcon(publicKey: String): AccountIconResource {
         return AccountIconResource.getAccountIconResourceByAccountType(accountManager.getAccount(publicKey)?.type)
     }
 

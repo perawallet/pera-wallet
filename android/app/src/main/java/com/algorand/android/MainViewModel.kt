@@ -17,6 +17,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavDirections
 import com.algorand.android.banner.domain.usecase.BannersUseCase
 import com.algorand.android.core.AccountManager
 import com.algorand.android.core.BaseViewModel
@@ -30,15 +31,17 @@ import com.algorand.android.models.AnnotatedString
 import com.algorand.android.models.AssetOperationResult
 import com.algorand.android.models.Node
 import com.algorand.android.models.SignedTransactionDetail
+import com.algorand.android.modules.appopencount.domain.usecase.IncreaseAppOpeningCountUseCase
 import com.algorand.android.modules.deeplink.ui.DeeplinkHandler
-import com.algorand.android.modules.tracking.bottomnavigation.BottomNavigationEventTracker
-import com.algorand.android.modules.tracking.moonpay.MoonpayEventTracker
+import com.algorand.android.modules.swap.utils.SwapNavigationDestinationHelper
+import com.algorand.android.modules.tracking.main.MainActivityEventTracker
+import com.algorand.android.modules.tutorialdialog.domain.usecase.TutorialUseCase
 import com.algorand.android.network.AlgodInterceptor
 import com.algorand.android.network.IndexerInterceptor
 import com.algorand.android.network.MobileHeaderInterceptor
-import com.algorand.android.tutorialdialog.domain.usecase.AccountAddressTutorialDisplayPreferencesUseCase
-import com.algorand.android.usecase.EncryptedPinUseCase
 import com.algorand.android.usecase.AccountCacheStatusUseCase
+import com.algorand.android.usecase.EncryptedPinUseCase
+import com.algorand.android.usecase.AccountDetailUseCase
 import com.algorand.android.usecase.SendSignedTransactionUseCase
 import com.algorand.android.utils.AccountCacheManager
 import com.algorand.android.utils.AssetName
@@ -46,7 +49,7 @@ import com.algorand.android.utils.AutoLockManager
 import com.algorand.android.utils.DataResource
 import com.algorand.android.utils.Event
 import com.algorand.android.utils.Resource
-import com.algorand.android.utils.coremanager.BlockPollingManager
+import com.algorand.android.utils.coremanager.AccountDetailCacheManager
 import com.algorand.android.utils.exception.AccountAlreadyOptedIntoAssetException
 import com.algorand.android.utils.findAllNodes
 import com.algorand.android.utils.sendErrorLog
@@ -71,32 +74,34 @@ class MainViewModel @Inject constructor(
     private val mobileHeaderInterceptor: MobileHeaderInterceptor,
     private val algodInterceptor: AlgodInterceptor,
     private val accountCacheManager: AccountCacheManager,
-    private val blockPollingManager: BlockPollingManager,
     private val bannersUseCase: BannersUseCase,
     private val deviceRegistrationUseCase: DeviceRegistrationUseCase,
     private val deviceIdMigrationUseCase: DeviceIdMigrationUseCase,
     private val firebasePushTokenUseCase: FirebasePushTokenUseCase,
     private val updatePushTokenUseCase: UpdatePushTokenUseCase,
     private val deviceIdUseCase: DeviceIdUseCase,
-    private val bottomNavigationEventTracker: BottomNavigationEventTracker,
+    private val mainActivityEventTracker: MainActivityEventTracker,
     private val deepLinkHandler: DeeplinkHandler,
-    private val moonpayEventTracker: MoonpayEventTracker,
-    private val accountAddressTutorialDisplayPreferencesUseCase: AccountAddressTutorialDisplayPreferencesUseCase,
+    private val increaseAppOpeningCountUseCase: IncreaseAppOpeningCountUseCase,
+    private val tutorialUseCase: TutorialUseCase,
+    private val swapNavigationDestinationHelper: SwapNavigationDestinationHelper,
     private val sendSignedTransactionUseCase: SendSignedTransactionUseCase,
     private val encryptedPinUseCase: EncryptedPinUseCase,
     private val accountManager: AccountManager,
-    private val accountCacheStatusUseCase: AccountCacheStatusUseCase
+    private val accountCacheStatusUseCase: AccountCacheStatusUseCase,
+    private val accountDetailUseCase: AccountDetailUseCase,
+    private val accountDetailCacheManager: AccountDetailCacheManager
 ) : BaseViewModel() {
 
     // TODO: Replace this with Flow whenever have time
     val assetOperationResultLiveData = MutableLiveData<Event<Resource<AssetOperationResult>>>()
 
-    private val _shouldShowAccountAddressCopyTutorialDialogFlow = MutableStateFlow(false)
-    val shouldShowAccountAddressCopyTutorialDialogFlow: StateFlow<Boolean>
-        get() = _shouldShowAccountAddressCopyTutorialDialogFlow
-
     // TODO I'll change after checking usage of flow in activity.
     val accountBalanceSyncStatus = accountCacheStatusUseCase.getAccountCacheStatusFlow().asLiveData()
+
+    private val _swapNavigationResultFlow = MutableStateFlow<Event<NavDirections>?>(null)
+    val swapNavigationResultFlow: StateFlow<Event<NavDirections>?>
+        get() = _swapNavigationResultFlow
 
     val autoLockLiveData
         get() = autoLockManager.autoLockLiveData
@@ -110,6 +115,7 @@ class MainViewModel @Inject constructor(
         initializeNodeInterceptor()
         observeFirebasePushToken()
         refreshFirebasePushToken(null)
+        initializeTutorial()
     }
 
     private fun observeFirebasePushToken() {
@@ -165,9 +171,13 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    /**
+     * If we are going to re-enable block polling manager again, we should enable this job here.
+     */
     fun resetBlockPolling() {
         refreshBalanceJob?.cancel()
-        blockPollingManager.startJob()
+        accountDetailCacheManager.startJob()
+        // blockPollingManager.startJob()
     }
 
     fun sendAssetOperationSignedTransaction(transaction: SignedTransactionDetail.AssetOperation) {
@@ -226,32 +236,58 @@ class MainViewModel @Inject constructor(
 
     fun logBottomNavAlgoPriceTapEvent() {
         viewModelScope.launch {
-            bottomNavigationEventTracker.logAlgoPriceTapEvent()
+            mainActivityEventTracker.logAlgoPriceTapEvent()
         }
     }
 
     fun logBottomNavAccountsTapEvent() {
         viewModelScope.launch {
-            bottomNavigationEventTracker.logAccountsTapEvent()
+            mainActivityEventTracker.logAccountsTapEvent()
         }
     }
 
     fun logBottomNavigationBuyAlgoEvent() {
         viewModelScope.launch {
-            bottomNavigationEventTracker.logBottomNavigationAlgoBuyTapEvent()
+            mainActivityEventTracker.logBottomNavigationAlgoBuyTapEvent()
         }
     }
 
     fun logMoonpayAlgoBuyCompletedEvent() {
         viewModelScope.launch {
-            moonpayEventTracker.logMoonpayAlgoBuyCompletedEvent()
+            mainActivityEventTracker.logMoonpayAlgoBuyCompletedEvent()
         }
     }
 
-    fun checkAccountAddressCopyTutorialDialogState() {
+    fun increseAppOpeningCount() {
         viewModelScope.launch {
-            _shouldShowAccountAddressCopyTutorialDialogFlow.value =
-                accountAddressTutorialDisplayPreferencesUseCase.shouldShowDialogByApplicationOpeningCount()
+            increaseAppOpeningCountUseCase.increaseAppOpeningCount()
+        }
+    }
+
+    fun onSwapActionButtonClick() {
+        viewModelScope.launch {
+            mainActivityEventTracker.logQuickActionSwapButtonClickEvent()
+            var swapNavDirection: NavDirections? = null
+            swapNavigationDestinationHelper.getSwapNavigationDestination(
+                onNavToIntroduction = {
+                    swapNavDirection = HomeNavigationDirections.actionGlobalSwapIntroductionNavigation()
+                },
+                onNavToAccountSelection = {
+                    swapNavDirection = HomeNavigationDirections.actionGlobalSwapAccountSelectionNavigation()
+                },
+                onNavToSwap = { accountAddress ->
+                    swapNavDirection = HomeNavigationDirections.actionGlobalSwapNavigation(accountAddress)
+                }
+            )
+            swapNavDirection?.let { direction ->
+                _swapNavigationResultFlow.emit(Event(direction))
+            }
+        }
+    }
+
+    private fun initializeTutorial() {
+        viewModelScope.launch {
+            tutorialUseCase.initializeTutorial()
         }
     }
 
@@ -259,6 +295,12 @@ class MainViewModel @Inject constructor(
         return autoLockManager.isAutoLockNeeded() &&
             encryptedPinUseCase.isEncryptedPinSet() &&
             accountManager.isThereAnyRegisteredAccount()
+    }
+
+    fun canAccountSignTransaction(accountAddress: String?): Boolean {
+        return accountAddress?.let {
+            accountDetailUseCase.canAccountSignTransaction(accountAddress)
+        } ?: false
     }
 
     private fun getAssetOperationResult(transaction: SignedTransactionDetail.AssetOperation): AssetOperationResult {
@@ -269,7 +311,8 @@ class MainViewModel @Inject constructor(
         }
         return AssetOperationResult(
             resultTitleResId = resultTitleResId,
-            assetName = AssetName.create(assetName)
+            assetName = AssetName.create(assetName),
+            assetId = transaction.assetInformation.assetId
         )
     }
 }

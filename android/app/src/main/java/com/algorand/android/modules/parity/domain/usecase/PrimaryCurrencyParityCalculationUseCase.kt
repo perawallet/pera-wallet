@@ -17,6 +17,7 @@ import com.algorand.android.models.BaseAssetDetail
 import com.algorand.android.modules.parity.domain.mapper.ParityValueMapper
 import com.algorand.android.modules.parity.domain.model.ParityValue
 import com.algorand.android.utils.ALGO_DECIMALS
+import java.math.BigDecimal
 import java.math.BigInteger
 import javax.inject.Inject
 
@@ -36,6 +37,22 @@ class PrimaryCurrencyParityCalculationUseCase @Inject constructor(
             assetUsdValue = assetItem.usdValue,
             assetDecimals = assetItem.fractionDecimals,
             amount = assetHolding.amount,
+            conversionRate = usdToSelectedCurrencyConversionRate,
+            currencySymbol = selectedCurrencySymbol
+        )
+    }
+
+    override fun getAssetParityValue(
+        assetAmount: BigInteger,
+        assetUsdValue: BigDecimal,
+        assetDecimal: Int
+    ): ParityValue {
+        val usdToSelectedCurrencyConversionRate = parityUseCase.getUsdToPrimaryCurrencyConversionRate()
+        val selectedCurrencySymbol = parityUseCase.getPrimaryCurrencySymbolOrEmpty()
+        return calculateParityValue(
+            assetUsdValue = assetUsdValue,
+            assetDecimals = assetDecimal,
+            amount = assetAmount,
             conversionRate = usdToSelectedCurrencyConversionRate,
             currencySymbol = selectedCurrencySymbol
         )

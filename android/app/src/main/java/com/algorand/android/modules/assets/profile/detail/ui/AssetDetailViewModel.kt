@@ -15,8 +15,10 @@ package com.algorand.android.modules.assets.profile.detail.ui
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.algorand.android.core.BaseViewModel
+import com.algorand.android.models.AssetInformation.Companion.ALGO_ID
 import com.algorand.android.modules.assets.profile.detail.ui.model.AssetDetailPreview
 import com.algorand.android.modules.assets.profile.detail.ui.usecase.AssetDetailPreviewUseCase
+import com.algorand.android.modules.tracking.swap.assetdetail.AssetDetailAlgoSwapClickEventTracker
 import com.algorand.android.usecase.AccountDeletionUseCase
 import com.algorand.android.utils.getOrThrow
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,6 +32,7 @@ import kotlinx.coroutines.launch
 class AssetDetailViewModel @Inject constructor(
     private val assetDetailPreviewUseCase: AssetDetailPreviewUseCase,
     private val accountDeletionUseCase: AccountDeletionUseCase,
+    private val algoSwapClickEventTracker: AssetDetailAlgoSwapClickEventTracker,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
@@ -42,6 +45,19 @@ class AssetDetailViewModel @Inject constructor(
 
     init {
         initAssetDetailPreview()
+    }
+
+    fun onSwapButtonClick() {
+        val currentPreview = _assetDetailPreviewFlow.value ?: return
+        viewModelScope.launch {
+            if (assetId == ALGO_ID) algoSwapClickEventTracker.logAlgoSwapClickEvent()
+            assetDetailPreviewUseCase.updatePreviewForNavigatingSwap(
+                currentPreview = currentPreview,
+                accountAddress = accountAddress
+            ).collect {
+                _assetDetailPreviewFlow.emit(it)
+            }
+        }
     }
 
     fun removeAccount() {

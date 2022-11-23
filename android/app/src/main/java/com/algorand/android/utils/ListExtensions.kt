@@ -27,3 +27,7 @@ inline fun FloatArray.partitionIndexed(predicate: (Int, Float) -> Boolean): Pair
 fun List<Number>.toQueryString(): String {
     return toString().replace(Regex("([^0-9,])"), "")
 }
+
+fun List<*>.toCsvString(): String {
+    return joinToString(",")
+}

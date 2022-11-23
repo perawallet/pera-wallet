@@ -134,3 +134,10 @@
 -dontwarn com.google.errorprone.annotations.*
 
 # ---------------- END Dagger -------------------
+
+
+# ---------------- BEGIN AlgoSDK -------------------
+
+-keep class org.msgpack.core.buffer.** { *; }
+
+# ---------------- END AlgoSDK -------------------

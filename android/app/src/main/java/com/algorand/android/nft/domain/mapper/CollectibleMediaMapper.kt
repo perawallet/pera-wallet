@@ -24,6 +24,7 @@ class CollectibleMediaMapper @Inject constructor() {
         return when (mediaResponse.mediaType) {
             CollectibleMediaTypeResponse.IMAGE -> getCollectibleMediaForImage(mediaResponse)
             CollectibleMediaTypeResponse.VIDEO -> mapToVideoCollectibleMedia(mediaResponse)
+            CollectibleMediaTypeResponse.AUDIO -> mapToAudioCollectibleMedia(mediaResponse)
             CollectibleMediaTypeResponse.UNKNOWN -> mapToUnsupportedCollectibleMedia(mediaResponse)
             else -> mapToUnsupportedCollectibleMedia(mediaResponse)
         }
@@ -59,6 +60,15 @@ class CollectibleMediaMapper @Inject constructor() {
         mediaResponse: CollectibleMediaResponse
     ): BaseCollectibleMedia.VideoCollectibleMedia {
         return BaseCollectibleMedia.VideoCollectibleMedia(
+            downloadUrl = mediaResponse.downloadUrl,
+            previewUrl = mediaResponse.previewUrl
+        )
+    }
+
+    private fun mapToAudioCollectibleMedia(
+        mediaResponse: CollectibleMediaResponse
+    ): BaseCollectibleMedia.AudioCollectibleMedia {
+        return BaseCollectibleMedia.AudioCollectibleMedia(
             downloadUrl = mediaResponse.downloadUrl,
             previewUrl = mediaResponse.previewUrl
         )

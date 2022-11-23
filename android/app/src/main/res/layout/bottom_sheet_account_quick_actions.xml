@@ -13,6 +13,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bottom_sheet_dialog_fragment_primary_background"
@@ -34,6 +35,17 @@
         app:description="@string/buy_crypto_with_credit"
         app:icon="@drawable/ic_algo_helper_button"
         app:title="@string/buy_algo" />
+
+    <com.algorand.android.customviews.ListMenuItemView
+        android:id="@+id/swapButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_large"
+        android:visibility="gone"
+        app:description="@string/convert_between_popular_asa_pairs"
+        app:icon="@drawable/ic_swap_helper_button_bg_gray"
+        app:title="@string/swap"
+        tools:visibility="visible" />
 
     <com.algorand.android.customviews.ListMenuItemView
         android:id="@+id/sendButton"

@@ -21,24 +21,30 @@ class AssetItemSortUseCase @Inject constructor(
     private val assetSortTypeUseCase: AssetSortTypeUseCase
 ) {
     suspend fun <T : AssetSortableItem> sortAssets(assets: List<T>): List<T> {
+        var sortedList = assets
+        val alphabeticalSortComparator =
+            compareBy<AssetSortableItem, String?>(nullsLast()) { it.assetSortingNameField?.uppercase() }
+
         val preferenceComparator = when (assetSortTypeUseCase.getSortPreferenceType()) {
             AssetSortPreference.ALPHABETICALLY_ASCENDING -> {
-                compareBy<AssetSortableItem, String?>(nullsLast()) { it.assetSortingNameField?.uppercase() }
+                alphabeticalSortComparator
             }
             AssetSortPreference.ALPHABETICALLY_DESCENDING -> {
                 compareBy(nullsLast(reverseOrder())) { it.assetSortingNameField?.uppercase() }
             }
             AssetSortPreference.BALANCE_ASCENDING -> {
+                sortedList = assets.sortedWith(alphabeticalSortComparator)
                 compareBy(nullsLast()) { it.assetSortingBalanceField }
             }
             AssetSortPreference.BALANCE_DESCENDING -> {
+                sortedList = assets.sortedWith(alphabeticalSortComparator)
                 compareBy(nullsLast(reverseOrder())) { it.assetSortingBalanceField }
             }
         }
         val sortableItemPriorityComparator = compareBy<AssetSortableItem, Int>(nullsLast()) {
             it.sortableItemPriority.value
         }
-        return assets
+        return sortedList
             .sortedWith(preferenceComparator)
             .sortedWith(sortableItemPriorityComparator)
     }

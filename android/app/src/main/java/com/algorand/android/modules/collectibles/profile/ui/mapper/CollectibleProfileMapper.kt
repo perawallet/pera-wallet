@@ -81,8 +81,42 @@ class CollectibleProfileMapper @Inject constructor(
                         collectibleMedia = it
                     )
                 }
-                else -> {
+                is BaseCollectibleMedia.ImageCollectibleMedia -> {
                     collectibleMediaItemMapper.mapToImageCollectibleMediaItem(
+                        collectibleId = assetId,
+                        isOwnedByTheUser = isOwnedByTheUser,
+                        errorText = errorDisplayText,
+                        collectibleMedia = it
+                    )
+                }
+                is BaseCollectibleMedia.AudioCollectibleMedia -> {
+                    collectibleMediaItemMapper.mapToAudioCollectibleMediaItem(
+                        collectibleId = assetId,
+                        isOwnedByTheUser = isOwnedByTheUser,
+                        errorText = errorDisplayText,
+                        collectibleMedia = it,
+                        previewUrl = it.downloadUrl.orEmpty()
+                    )
+                }
+                is BaseCollectibleMedia.VideoCollectibleMedia -> {
+                    collectibleMediaItemMapper.mapToVideoCollectibleMediaItem(
+                        collectibleId = assetId,
+                        isOwnedByTheUser = isOwnedByTheUser,
+                        errorText = errorDisplayText,
+                        collectibleMedia = it,
+                        previewUrl = it.downloadUrl.orEmpty()
+                    )
+                }
+                is BaseCollectibleMedia.NoMediaCollectibleMedia -> {
+                    collectibleMediaItemMapper.mapToNoMediaCollectibleMediaItem(
+                        collectibleId = assetId,
+                        isOwnedByTheUser = isOwnedByTheUser,
+                        errorText = errorDisplayText,
+                        collectibleMedia = it
+                    )
+                }
+                is BaseCollectibleMedia.UnsupportedCollectibleMedia -> {
+                    collectibleMediaItemMapper.mapToUnsupportedCollectibleMediaItem(
                         collectibleId = assetId,
                         isOwnedByTheUser = isOwnedByTheUser,
                         errorText = errorDisplayText,

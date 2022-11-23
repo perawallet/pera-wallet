@@ -50,8 +50,8 @@ class AccountAssetsAdapter(
             listener.onSendClick()
         }
 
-        override fun onAddressClick() {
-            listener.onAddressClick()
+        override fun onSwapClick() {
+            listener.onSwapClick()
         }
 
         override fun onMoreClick() {
@@ -138,7 +138,7 @@ class AccountAssetsAdapter(
         fun onManageAssetsClick()
         fun onBuyAlgoClick()
         fun onSendClick()
-        fun onAddressClick()
+        fun onSwapClick()
         fun onMoreClick()
     }
 

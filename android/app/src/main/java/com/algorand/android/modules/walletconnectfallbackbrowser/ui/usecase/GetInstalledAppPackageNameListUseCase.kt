@@ -17,9 +17,12 @@ import com.algorand.android.core.BaseUseCase
 import javax.inject.Inject
 
 class GetInstalledAppPackageNameListUseCase @Inject constructor() : BaseUseCase() {
+
     fun getInstalledAppsPackageNameListOrEmpty(packageManager: PackageManager?): List<String> {
-        return packageManager?.let {
-            it.getInstalledApplications(PackageManager.GET_META_DATA).map { it.packageName }
+        return packageManager?.let { safePackageManager ->
+            safePackageManager.getInstalledApplications(PackageManager.GET_META_DATA).mapNotNull { applicationInfo ->
+                applicationInfo?.packageName
+            }
         } ?: emptyList()
     }
 }

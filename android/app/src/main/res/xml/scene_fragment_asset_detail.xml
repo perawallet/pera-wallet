@@ -125,9 +125,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/spacing_xlarge"
                 android:layout_marginTop="@dimen/spacing_xxxxlarge"
-                app:constraint_referenced_ids="buyAlgoButton, sendButton, receiveButton"
+                app:constraint_referenced_ids="buyAlgoButton,swapButton, sendButton, receiveButton"
                 app:flow_horizontalGap="@dimen/spacing_xxlarge"
-                app:flow_maxElementsWrap="3"
+                app:flow_maxElementsWrap="4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/assetSecondaryValueTextView" />
@@ -147,6 +147,20 @@
                 android:visibility="gone"
                 app:icon="@drawable/ic_algo_helper_button"
                 tools:visibility="visible" />
+            <PropertySet
+                android:alpha="1"
+                android:visibility="visible" />
+        </Constraint>
+
+        <Constraint
+            android:id="@id/swapButton"
+            app:visibilityMode="ignore">
+            <Layout
+                style="@style/IconButton.Transparent.QuickAction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/swap"
+                app:icon="@drawable/ic_swap_helper_button_bg_ghost" />
             <PropertySet
                 android:alpha="1"
                 android:visibility="visible" />
@@ -302,9 +316,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/spacing_xlarge"
                 android:layout_marginTop="@dimen/spacing_xxxxlarge"
-                app:constraint_referenced_ids="buyAlgoButton, sendButton, receiveButton"
+                app:constraint_referenced_ids="buyAlgoButton,swapButton, sendButton, receiveButton"
                 app:flow_horizontalGap="@dimen/spacing_xxlarge"
-                app:flow_maxElementsWrap="3"
+                app:flow_maxElementsWrap="4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/assetSecondaryValueTextView" />
@@ -324,6 +338,20 @@
                 android:visibility="gone"
                 app:icon="@drawable/ic_algo_helper_button"
                 tools:visibility="visible" />
+            <PropertySet
+                android:alpha="0"
+                android:visibility="invisible" />
+        </Constraint>
+
+        <Constraint
+            android:id="@id/swapButton"
+            app:visibilityMode="ignore">
+            <Layout
+                style="@style/IconButton.Transparent.QuickAction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/swap"
+                app:icon="@drawable/ic_swap_helper_button_bg_ghost" />
             <PropertySet
                 android:alpha="0"
                 android:visibility="invisible" />

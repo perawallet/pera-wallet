@@ -157,6 +157,10 @@ fun getZonedDateTimeFromSec(sec: Long): ZonedDateTime? {
     return ZonedDateTime.ofInstant(Instant.ofEpochSecond(sec), ZoneId.systemDefault())
 }
 
+fun getUTCZonedDateTime(): ZonedDateTime {
+    return ZonedDateTime.ofInstant(Instant.now(), ZoneId.of(UTC_ZONE_ID))
+}
+
 fun createBeginningOfDayZonedDateTime(year: Int, month: Int, day: Int): ZonedDateTime {
     return ZonedDateTime.of(
         year,

@@ -7,7 +7,7 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- *  limitations under the License
+ * limitations under the License
  */
 
 package com.algorand.android.models
@@ -28,6 +28,7 @@ sealed class BaseRemoveAssetItem : RecyclerListItem {
         REMOVE_ASSET_ITEM,
         REMOVE_COLLECTIBLE_IMAGE_ITEM,
         REMOVE_COLLECTIBLE_VIDEO_ITEM,
+        REMOVE_COLLECTIBLE_AUDIO_ITEM,
         REMOVE_COLLECTIBLE_MIXED_ITEM,
         REMOVE_COLLECTIBLE_NOT_SUPPORTED_ITEM,
         SEARCH_VIEW_ITEM,
@@ -199,6 +200,27 @@ sealed class BaseRemoveAssetItem : RecyclerListItem {
                 override val amountInPrimaryCurrency: BigDecimal?,
             ) : BaseRemoveCollectibleItem() {
                 override val itemType = ItemType.REMOVE_COLLECTIBLE_VIDEO_ITEM
+            }
+
+            data class RemoveCollectibleAudioItem(
+                override val id: Long,
+                override val name: AssetName,
+                override val shortName: AssetName,
+                override val decimals: Int,
+                override val creatorPublicKey: String?,
+                override val amount: BigInteger,
+                override val formattedAmount: String,
+                override val formattedCompactAmount: String,
+                override val formattedSelectedCurrencyValue: String,
+                override val formattedSelectedCurrencyCompactValue: String,
+                override val isAmountInSelectedCurrencyVisible: Boolean,
+                override val prismUrl: String?,
+                override val baseAssetDrawableProvider: BaseAssetDrawableProvider,
+                override val actionItemButtonState: AccountAssetItemButtonState,
+                override val optedInAtRound: Long?,
+                override val amountInPrimaryCurrency: BigDecimal?,
+            ) : BaseRemoveCollectibleItem() {
+                override val itemType = ItemType.REMOVE_COLLECTIBLE_AUDIO_ITEM
             }
 
             data class RemoveCollectibleMixedItem(

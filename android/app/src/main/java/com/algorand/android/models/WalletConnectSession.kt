@@ -22,7 +22,7 @@ data class WalletConnectSession(
     val sessionMeta: WalletConnectSessionMeta,
     val dateTimeStamp: Long,
     val isConnected: Boolean = false,
-    val connectedAccountPublicKey: String,
-    val accountName: String?,
+    val connectedAccountsAddresses: List<String>,
+    val accountsNames: List<String?>,
     val fallbackBrowserGroupResponse: String? = null
 ) : Parcelable

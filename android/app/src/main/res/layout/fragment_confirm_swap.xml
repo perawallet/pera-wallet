@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2022 Pera Wallet, LDA
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/bottom_padding_for_screen_with_floating_button">
+
+            <com.algorand.android.customviews.SwapAssetInputView
+                android:id="@+id/fromAssetInputView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                app:isAssetChipClickable="false"
+                app:isBalanceVisible="false"
+                app:isInputEnabled="false"
+                app:layout_constraintBottom_toTopOf="@id/assetDividerView"
+                app:layout_constraintEnd_toStartOf="@id/endGuideline"
+                app:layout_constraintStart_toEndOf="@id/startGuideLine"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <View
+                android:id="@+id/assetDividerView"
+                style="@style/Divider.Horizontal"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="0dp"
+                android:layout_marginTop="28dp"
+                app:layout_constraintBottom_toTopOf="@id/toAssetInputView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fromAssetInputView" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/background"
+                android:paddingHorizontal="@dimen/spacing_normal"
+                android:text="@string/to"
+                android:textAllCaps="true"
+                android:textAppearance="@style/TextAppearance.Caption.Medium"
+                android:textColor="@color/text_gray_lighter"
+                app:layout_constraintBottom_toBottomOf="@id/assetDividerView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/assetDividerView" />
+
+            <com.algorand.android.customviews.SwapAssetInputView
+                android:id="@+id/toAssetInputView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:layout_marginBottom="28dp"
+                app:isAssetChipClickable="false"
+                app:isBalanceVisible="false"
+                app:isInputEnabled="false"
+                app:layout_constraintBottom_toTopOf="@id/priceImpactErrorTextView"
+                app:layout_constraintEnd_toStartOf="@id/endGuideline"
+                app:layout_constraintStart_toEndOf="@id/startGuideLine"
+                app:layout_constraintTop_toBottomOf="@id/assetDividerView" />
+
+            <ImageView
+                android:id="@+id/priceImpactErrorImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                app:layout_constraintTop_toTopOf="@id/priceImpactErrorTextView"
+                app:srcCompat="@drawable/ic_error_negative"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/priceImpactErrorTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/spacing_xxlarge"
+                android:layout_marginStart="@dimen/spacing_xsmall"
+                android:layout_marginTop="@dimen/spacing_xxlarge"
+                android:text="@string/caution_price_impact"
+                android:textAppearance="@style/TextAppearance.Footnote.Sans.Medium"
+                android:textColor="@color/negative"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/detailDividerView"
+                app:layout_constraintEnd_toEndOf="@id/endGuideline"
+                app:layout_constraintStart_toEndOf="@id/priceImpactErrorImageView"
+                app:layout_constraintTop_toBottomOf="@id/toAssetInputView"
+                tools:visibility="visible" />
+
+            <View
+                android:id="@+id/detailDividerView"
+                style="@style/Divider.Horizontal"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="0dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="@dimen/spacing_xlarge"
+                app:layout_constraintBottom_toTopOf="@id/priceRatioTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/priceRatioLabelTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/price"
+                android:textAppearance="@style/TextAppearance.Footnote.Sans"
+                android:textColor="@color/text_gray"
+                app:layout_constraintBottom_toBottomOf="@id/priceRatioTextView"
+                app:layout_constraintStart_toEndOf="@id/startGuideLine"
+                app:layout_constraintTop_toTopOf="@id/priceRatioTextView" />
+
+            <TextView
+                android:id="@+id/priceRatioTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_xsmall"
+                android:layout_marginTop="@dimen/spacing_xxlarge"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:drawablePadding="@dimen/spacing_xxsmall"
+                android:gravity="end"
+                android:maxLines="2"
+                android:textAppearance="@style/TextAppearance.Footnote.Sans"
+                app:autoSizeTextType="uniform"
+                app:drawableEndCompat="@drawable/ic_repeat"
+                app:drawableTint="@color/text_gray"
+                app:layout_constrainedHeight="true"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toTopOf="@id/slippageToleranceTextView"
+                app:layout_constraintEnd_toStartOf="@id/endGuideline"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintStart_toEndOf="@id/priceRatioLabelTextView"
+                tools:text="0.001809 ALGO per AKTA" />
+
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/priceBarrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="priceRatioLabelTextView, priceRatioTextView" />
+
+            <TextView
+                android:id="@+id/slippageToleranceLabelTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/spacing_xsmall"
+                android:gravity="center_vertical"
+                android:text="@string/slippage_tolerance"
+                android:textAppearance="@style/TextAppearance.Footnote.Sans"
+                android:textColor="@color/text_gray"
+                app:drawableEndCompat="@drawable/ic_error"
+                app:drawableTint="@color/text_gray_lighter"
+                app:layout_constraintBottom_toBottomOf="@id/slippageToleranceTextView"
+                app:layout_constraintStart_toEndOf="@id/startGuideLine"
+                app:layout_constraintTop_toTopOf="@id/slippageToleranceTextView" />
+
+            <TextView
+                android:id="@+id/slippageToleranceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_xsmall"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:gravity="end|center_vertical"
+                android:textAppearance="@style/TextAppearance.Footnote.Sans"
+                app:drawableEndCompat="@drawable/ic_right_arrow"
+                app:drawableTint="@color/text_gray"
+                app:layout_constrainedHeight="true"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toTopOf="@id/priceImpactTextView"
+                app:layout_constraintEnd_toStartOf="@id/endGuideline"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintStart_toEndOf="@id/slippageToleranceLabelTextView"
+                tools:text="0.5%" />
+
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/slippageBarrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="top"
+                app:constraint_referenced_ids="priceImpactLabelTextView, priceImpactTextView" />
+
+            <TextView
+                android:id="@+id/priceImpactLabelTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/spacing_xsmall"
+                android:gravity="center_vertical"
+                android:text="@string/price_impact"
+                android:textAppearance="@style/TextAppearance.Footnote.Sans"
+                android:textColor="@color/text_gray"
+                app:drawableEndCompat="@drawable/ic_error"
+                app:drawableTint="@color/text_gray_lighter"
+                app:layout_constraintBottom_toBottomOf="@id/priceImpactTextView"
+                app:layout_constraintStart_toEndOf="@id/startGuideLine"
+                app:layout_constraintTop_toTopOf="@id/priceImpactTextView" />
+
+            <TextView
+                android:id="@+id/priceImpactTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_xsmall"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:gravity="end"
+                android:textAppearance="@style/TextAppearance.Footnote.Sans"
+                app:layout_constrainedHeight="true"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toTopOf="@id/minimumReceivedTextView"
+                app:layout_constraintEnd_toStartOf="@id/endGuideline"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintStart_toEndOf="@id/priceImpactLabelTextView"
+                tools:text="0.306%" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/priceImpactBarrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="top"
+                app:constraint_referenced_ids="minimumReceivedLabelTextView, minimumReceivedTextView" />
+
+            <TextView
+                android:id="@+id/minimumReceivedLabelTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/minimum_received"
+                android:textAppearance="@style/TextAppearance.Footnote.Sans"
+                android:textColor="@color/text_gray"
+                app:layout_constraintBottom_toBottomOf="@id/minimumReceivedTextView"
+                app:layout_constraintStart_toEndOf="@id/startGuideLine"
+                app:layout_constraintTop_toTopOf="@id/minimumReceivedTextView" />
+
+            <TextView
+                android:id="@+id/minimumReceivedTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_xsmall"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:gravity="end"
+                android:maxLines="2"
+                android:textAppearance="@style/TextAppearance.Footnote.Sans"
+                app:autoSizeTextType="uniform"
+                app:layout_constrainedHeight="true"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toTopOf="@id/exchangeFeeTextView"
+                app:layout_constraintEnd_toStartOf="@id/endGuideline"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintStart_toEndOf="@id/minimumReceivedLabelTextView"
+                tools:text="1,365,310.296595 AKTA" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/minimumReceivedBarrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="top"
+                app:constraint_referenced_ids="exchangeFeeLabelTextView, exchangeFeeTextView" />
+
+            <TextView
+                android:id="@+id/exchangeFeeLabelTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/spacing_xsmall"
+                android:gravity="center_vertical"
+                android:text="@string/exchange_fee"
+                android:textAppearance="@style/TextAppearance.Footnote.Sans"
+                android:textColor="@color/text_gray"
+                app:drawableEndCompat="@drawable/ic_error"
+                app:drawableTint="@color/text_gray_lighter"
+                app:layout_constraintBottom_toBottomOf="@id/exchangeFeeTextView"
+                app:layout_constraintStart_toEndOf="@id/startGuideLine"
+                app:layout_constraintTop_toTopOf="@id/exchangeFeeTextView" />
+
+            <TextView
+                android:id="@+id/exchangeFeeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_xsmall"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:gravity="end"
+                android:textAppearance="@style/TextAppearance.Footnote.Sans"
+                app:layout_constrainedHeight="true"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toTopOf="@id/exchangeFeeBarrier"
+                app:layout_constraintEnd_toStartOf="@id/endGuideline"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintStart_toEndOf="@id/exchangeFeeLabelTextView"
+                tools:text="2.637083" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/exchangeFeeBarrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="top"
+                app:constraint_referenced_ids="peraFeeLabelTextView, peraFeeTextView" />
+
+            <TextView
+                android:id="@+id/peraFeeLabelTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pera_fee"
+                android:textAppearance="@style/TextAppearance.Footnote.Sans"
+                android:textColor="@color/text_gray"
+                app:layout_constraintBottom_toBottomOf="@id/peraFeeTextView"
+                app:layout_constraintStart_toEndOf="@id/startGuideLine"
+                app:layout_constraintTop_toTopOf="@id/peraFeeTextView" />
+
+            <TextView
+                android:id="@+id/peraFeeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_xsmall"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:gravity="end"
+                android:textAppearance="@style/TextAppearance.Footnote.Sans"
+                app:layout_constrainedHeight="true"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/endGuideline"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintStart_toEndOf="@id/peraFeeLabelTextView"
+                tools:text="2.637083" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/startGuideLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="@dimen/spacing_xlarge" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/endGuideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/spacing_xlarge" />
+
+            <include
+                android:id="@+id/progressBar"
+                layout="@layout/layout_full_screen_progress" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/priceImpactErrorGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="priceImpactErrorTextView, priceImpactErrorImageView"
+                tools:visibility="visible" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/confirmSwapButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginHorizontal="@dimen/spacing_xlarge"
+        android:layout_marginBottom="@dimen/bottom_safe_area_margin"
+        android:text="@string/confirm_swap" />
+
+</FrameLayout>

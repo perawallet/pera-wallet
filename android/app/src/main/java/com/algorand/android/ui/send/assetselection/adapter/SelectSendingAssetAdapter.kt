@@ -7,8 +7,7 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- *  limitations under the License
- *
+ * limitations under the License
  */
 
 package com.algorand.android.ui.send.assetselection.adapter
@@ -19,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.algorand.android.models.BaseDiffUtil
 import com.algorand.android.models.BaseSelectAssetItem
 import com.algorand.android.models.BaseSelectAssetItem.ItemType.SELECT_ASSET_TEM
+import com.algorand.android.models.BaseSelectAssetItem.ItemType.SELECT_COLLECTIBLE_AUDIO_ITEM
 import com.algorand.android.models.BaseSelectAssetItem.ItemType.SELECT_COLLECTIBLE_IMAGE_ITEM
 import com.algorand.android.models.BaseSelectAssetItem.ItemType.SELECT_COLLECTIBLE_MIXED_ITEM
 import com.algorand.android.models.BaseSelectAssetItem.ItemType.SELECT_COLLECTIBLE_NOT_SUPPORTED_ITEM
@@ -40,6 +40,7 @@ class SelectSendingAssetAdapter(onAssetClick: (Long) -> Unit) :
             SELECT_ASSET_TEM.ordinal -> createAssetItemViewHolder(parent)
             SELECT_COLLECTIBLE_IMAGE_ITEM.ordinal -> createCollectibleImageItemViewHolder(parent)
             SELECT_COLLECTIBLE_VIDEO_ITEM.ordinal -> createCollectibleVideoItemViewHolder(parent)
+            SELECT_COLLECTIBLE_AUDIO_ITEM.ordinal -> createCollectibleAudioItemViewHolder(parent)
             SELECT_COLLECTIBLE_NOT_SUPPORTED_ITEM.ordinal -> createCollectibleNotSupportedItemViewHolder(parent)
             SELECT_COLLECTIBLE_MIXED_ITEM.ordinal -> createCollectibleMixedItemViewHolder(parent)
             else -> throw IllegalArgumentException("$logTag : Unknown viewType = $viewType")
@@ -56,6 +57,10 @@ class SelectSendingAssetAdapter(onAssetClick: (Long) -> Unit) :
 
     private fun createCollectibleVideoItemViewHolder(parent: ViewGroup): SelectCollectibleVideoItemViewHolder {
         return SelectCollectibleVideoItemViewHolder.create(parent, collectibleListener)
+    }
+
+    private fun createCollectibleAudioItemViewHolder(parent: ViewGroup): SelectCollectibleAudioItemViewHolder {
+        return SelectCollectibleAudioItemViewHolder.create(parent, collectibleListener)
     }
 
     private fun createCollectibleMixedItemViewHolder(parent: ViewGroup): SelectCollectibleMixedItemViewHolder {

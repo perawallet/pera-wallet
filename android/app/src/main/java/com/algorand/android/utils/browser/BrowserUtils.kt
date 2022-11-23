@@ -52,6 +52,7 @@ const val PERA_SUPPORT_URL = "https://perawallet.app/support/"
 private const val DISPENSER_URL = "https://dispenser.testnet.aws.algodev.network/"
 const val ASA_VERIFICATION_URL = "https://explorer.perawallet.app/asa-verification/"
 const val BASE_TWITTER_URL = "https://twitter.com/"
+private const val TINYMAN_TERMS_OF_SERVICE_URL = "https://tinyman.org/terms-of-service/"
 
 const val HTTPS_PROTOCOL = "https://"
 const val HTTP_PROTOCOL = "http://"
@@ -163,6 +164,15 @@ fun Context.openDispenserUrl(accountAddress: String?) {
 
 fun Context.openASAVerificationUrl() {
     openUrl(ASA_VERIFICATION_URL)
+}
+
+fun Context.openTinymanTermsOfServiceUrl() {
+    openUrl(TINYMAN_TERMS_OF_SERVICE_URL)
+}
+
+fun Context.openGroupTransactionInAlgoExplorer(groupId: String?, networkSlug: String?) {
+    val subDomain = createSubDomainWithNetworkSlug(networkSlug)
+    openUrl("https://$subDomain$ALGO_EXPLORER_URL/tx/group/$groupId")
 }
 
 fun getGoalSeekerUrl(transactionId: String, nodeSlug: String?): String {

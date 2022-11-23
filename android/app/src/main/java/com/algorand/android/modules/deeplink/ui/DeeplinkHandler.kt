@@ -15,6 +15,7 @@ package com.algorand.android.modules.deeplink.ui
 import com.algorand.android.models.AssetAction
 import com.algorand.android.models.AssetInformation
 import com.algorand.android.models.AssetTransaction
+import com.algorand.android.models.NotificationGroupType
 import com.algorand.android.models.User
 import com.algorand.android.modules.deeplink.DeepLinkParser
 import com.algorand.android.modules.deeplink.domain.model.BaseDeepLink
@@ -51,6 +52,7 @@ class DeeplinkHandler @Inject constructor(
             is BaseDeepLink.UndefinedDeepLink -> handleUndefinedDeepLink(baseDeeplink)
             is BaseDeepLink.MoonpayResultDeepLink -> handleMoonpayResultDeepLink(baseDeeplink)
             is BaseDeepLink.WebExportQrCodeDeepLink -> handleWebExportQrCodeDeepLink(baseDeeplink)
+            is BaseDeepLink.NotificationDeepLink -> handleNotificationDeepLink(baseDeeplink)
         }
         if (!isDeeplinkHandled) listener?.onDeepLinkNotHandled(baseDeeplink)
     }
@@ -123,6 +125,16 @@ class DeeplinkHandler @Inject constructor(
         }
     }
 
+    private fun handleNotificationDeepLink(notificationDeepLink: BaseDeepLink.NotificationDeepLink): Boolean {
+        return triggerListener {
+            it.onNotificationDeepLink(
+                accountAddress = notificationDeepLink.address,
+                assetId = notificationDeepLink.assetId,
+                notificationGroupType = notificationDeepLink.notificationGroupType
+            )
+        }
+    }
+
     private fun triggerListener(action: (Listener) -> Boolean): Boolean {
         return listener?.run(action) ?: false
     }
@@ -136,6 +148,11 @@ class DeeplinkHandler @Inject constructor(
         fun onAssetTransferWithNotOptInDeepLink(assetId: Long): Boolean = false
         fun onMoonpayResultDeepLink(accountAddress: String, txnStatus: String, txnId: String?): Boolean = false
         fun onWebExportQrCodeDeepLink(webExportQrCode: WebExportQrCode): Boolean = false
+        fun onNotificationDeepLink(
+            accountAddress: String,
+            assetId: Long,
+            notificationGroupType: NotificationGroupType
+        ): Boolean = false
         fun onUndefinedDeepLink(undefinedDeeplink: BaseDeepLink.UndefinedDeepLink)
         fun onDeepLinkNotHandled(deepLink: BaseDeepLink)
     }
